@@ -66,6 +66,7 @@ If using Cloudflare Workers or another edge runtime, review `references/workers-
 - Unit: pure helpers (config parsing, redaction).
 - Integration: `createApp().request()`.
 - E2E: use a runtime-specific harness (Cloudflare Workers: `wrangler unstable_dev`).
+For deeper testing guidance, use the `typescript-test-engineer` skill.
 
 ## When you need more detail
 Read only the relevant reference file:
@@ -84,5 +85,4 @@ Read only the relevant reference file:
 - `references/wrangler.md` – runtime config, compatibility flags, CPU limits (Workers).
 - `references/supabase.md` – Supabase usage patterns and RLS safety.
 - `references/workers-platform.md` – CPU/subrequest limits, fetch scope, `waitUntil`, service bindings.
-- `references/testing.md` – test structure and examples.
 - `references/contracts-types.md` – exporting request/response types to consumers.
