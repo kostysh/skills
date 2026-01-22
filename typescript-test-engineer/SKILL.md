@@ -24,7 +24,7 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 5. Add coverage and CI guardrails if missing.
 
 ## When you need more detail
-Read only the relevant reference file:
+Read only the relevant reference file or skill:
 - `references/testing.md` - patterns, examples, mocking, data handling, and coverage.
 - `references/react-vitest.md` - React testing with Vitest + Testing Library (jsdom/happy-dom, setup, and patterns).
-- `references/agent-browser.md` - UI E2E testing with agent-browser (workflow, snapshots, sessions, and debugging).
+- `agent-browser` skill - UI E2E testing with agent-browser (workflow, snapshots, sessions, and debugging).
