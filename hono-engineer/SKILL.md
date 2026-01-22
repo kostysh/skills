@@ -1,8 +1,6 @@
 ---
 name: HONO engineer
 description: Build and maintain production-grade Hono API services across projects. Use when designing endpoints, middleware, config, logging, validation, security, and tests for Hono-based APIs.
-metadata:
-  short-description: Production Hono API engineering
 ---
 
 # HONO engineer

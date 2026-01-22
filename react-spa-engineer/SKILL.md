@@ -4,11 +4,6 @@ description: |
   Comprehensive React SPA development expert for building production-ready single-page applications. Covers component architecture, state management (Zustand, Context), data fetching (TanStack Query v5), forms (React Hook Form + Zod), routing (React Router v7), TypeScript patterns, performance optimization, client-side persistence (IndexedDB/Dexie), testing (Vitest, RTL, Playwright), and accessibility.
 
   Use when building React SPAs, implementing features, reviewing code, setting up project architecture, or troubleshooting React client-side applications. Excludes SSR, RSC, Next.js server-side patterns.
-license: MIT
-metadata:
-  author: synthesized
-  version: "1.0.0"
-  sources: "vercel-react-best-practices, tanstack-query-skill, zustand-state-management, react-hook-form-zod, react-workflow, react-router-v7, mastering-typescript"
 ---
 
 # React SPA Engineer

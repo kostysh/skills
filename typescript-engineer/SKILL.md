@@ -6,29 +6,6 @@ description: |
   enterprise patterns (Result type, error handling, branded types), validation with Zod,
   and modern toolchain configuration (tsconfig, ESLint, Biome, pnpm).
   Framework-agnostic: no React, NestJS, or other framework-specific content.
-version: 1.0.0
-category: programming-languages
-triggers:
-  - typescript
-  - ts
-  - type-safe
-  - generics
-  - typescript migration
-  - tsconfig
-  - type guards
-  - mapped types
-  - conditional types
-  - satisfies operator
-  - zod validation
-  - branded types
-  - utility types
-author: Derived from Mastering TypeScript by Richard Hightower
-license: MIT
-tags:
-  - typescript
-  - type-safety
-  - language
-  - toolchain
 ---
 
 # TypeScript Engineer
