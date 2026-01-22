@@ -1,4 +1,4 @@
-`---
+---
 name: typescript-test-engineer
 description: Design, implement, and maintain robust tests for TypeScript projects (Node/React/edge) with focus on node:test, Vitest, mocking, determinism, and coverage.
 metadata:
