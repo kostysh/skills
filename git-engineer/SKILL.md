@@ -26,7 +26,8 @@ Types: `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `build`, `ci`, `chore`
 Rules:
 - Subject is imperative, lower-case, no trailing period.
 - Scope is optional but preferred and must follow repo conventions:
-  - **Monorepo rule:** use the **package name** (folder under `packages/`) as the scope, e.g. `kb-api`, `agent-ui`.
+  - **Monorepo rule:** when the change targets a specific package area, use the **package name** (folder under `packages/`) as the scope, e.g. `kb-api`, `agent-ui`.
+  - If the change is **package-wide** (applies to the whole package), **omit the scope**.
   - If changes span **multiple packages**, use a shared scope like `monorepo` (or follow the repo’s established multi-package scope if defined).
   - If the change is **root-level** (tooling/infra/config shared by all), **omit the scope**.
 - Use `BREAKING CHANGE:` footer for breaking changes.
@@ -223,6 +224,7 @@ Ready to implement <feature-name>
 ## Splitting changes (guidance)
 - Group by purpose: feature vs. fix vs. docs vs. infra.
 - Keep commits small and reviewable; avoid unrelated changes in one commit.
+- If changes touch multiple packages, prefer separate commits per affected package rather than one combined commit.
 - If the user requests separate commits, honor the split explicitly.
 
 ## Rebase vs merge (when asked)
