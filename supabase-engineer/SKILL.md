@@ -24,11 +24,27 @@ Build and operate Supabase-backed systems with strong security, performance, and
 6. Configure local dev, CI, and multi-env secrets.
 7. Prepare production checklist and incident runbook.
 
-## Database introspection (when tools are available)
-Use MCP Supabase tools for safe schema discovery:
-- `mcp__supabase__list_tables`
-- `mcp__supabase__get_table_schema`
-- `mcp__supabase__execute_sql` (read-only)
+## Database introspection (Use MCP Supabase - verified path)
+Use this exact sequence so you don't guess or probe unsupported endpoints:
+1. `mcp__supabase__list_projects` — confirm access and get the `project_id`.
+2. `mcp__supabase__list_tables` — fetch schema; this already includes columns, PKs, and FKs.
+3. `mcp__supabase__execute_sql` — read-only queries only (e.g., SELECTs) for deeper inspection.
+
+Additional introspection tools (use when relevant):
+- `mcp__supabase__list_extensions` — enabled Postgres extensions.
+- `mcp__supabase__list_migrations` — applied migrations/versions.
+- `mcp__supabase__get_advisors` — security/perf advisories and recommendations.
+- `mcp__supabase__get_project` — project details (region, Postgres version).
+
+Notes:
+- Do **not** call `resources/list` for Supabase MCP; it is not supported here.
+- If any MCP call fails, stop and ask the user to confirm auth/connection for Supabase MCP.
+
+## Finding other MCP Supabase tools (fast path)
+If you need a tool outside this list, use the tool registry (not MCP resources):
+1. Scan the available `mcp__supabase__*` tools in the current session.
+2. Prefer the most specific tool first (e.g., list/get over execute SQL).
+3. If unsure, ask the user which operation they want (schema, data, functions, logs, etc.).
 
 ## Reference map
 Read only what you need:

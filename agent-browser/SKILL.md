@@ -6,6 +6,48 @@ allowed-tools: Bash(agent-browser:*)
 
 # Browser Automation with agent-browser
 
+## Preflight: verify tool + Playwright setup
+
+Before using this skill, verify the CLI and its Playwright dependencies are installed. If anything is missing, fix it or hand off to the developer.
+
+### 1) Verify agent-browser is available
+
+```bash
+command -v agent-browser
+agent-browser --version
+```
+
+If not found, install `agent-browser` (per project/organization instructions) and re-check.
+
+### 2) Verify Playwright dependencies
+
+Playwright requires project dependencies to be installed before downloading browsers.
+
+```bash
+# In the target project root
+pnpm install
+```
+
+If the project does not depend on Playwright yet:
+
+```bash
+pnpm add -D @playwright/test
+```
+
+Then install browsers:
+
+```bash
+pnpm exec playwright install
+```
+
+### 3) Platform warning handling
+
+If Playwright warns that the OS is not officially supported (e.g., Ubuntu 24.04 fallback builds), surface this to the developer. Proceed only with explicit approval or after they confirm the fallback build is acceptable.
+
+### 4) Handoff rule
+
+If any of the checks fail and you cannot fix them quickly, stop and ask the developer to resolve the environment/setup before proceeding with UI automation.
+
 ## Quick start
 
 ```bash
