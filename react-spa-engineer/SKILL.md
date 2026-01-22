@@ -16,6 +16,7 @@ Build production-ready React single-page applications with TypeScript, modern st
 
 - Use `typescript-engineer` as the baseline for TypeScript language/toolchain rules (tsconfig, linting, @ts-expect-error policy, unsafe assertions).
 - Use this skill for React-specific patterns (hooks typing, JSX, React Router, TanStack Query, RHF, Dexie).
+- For UI/UX and visual design work in web apps, also use the `frontend-design` skill.
 - If rules conflict, follow `typescript-engineer` for TypeScript/toolchain and this skill for React API usage.
 
 ---
