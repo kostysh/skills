@@ -1,6 +1,6 @@
 ---
 name: git-engineer
-description: Enforce Conventional Commits and reliable Git hygiene. Use when making commits, crafting commit messages, splitting changes into multiple commits, or deciding between merge/rebase/cherry-pick in any repo.
+description: Enforce Conventional Commits, Git hygiene, and worktree-based isolation. Use when making commits, crafting commit messages, splitting changes into multiple commits, deciding between merge/rebase/cherry-pick, or setting up git worktrees in any repo.
 ---
 
 # Git Engineer
@@ -66,6 +66,159 @@ Example: `feat(server): ✨ add output validation middleware`
 3. If changes mix concerns, split into multiple commits.
 4. Write a Conventional Commit message.
 5. Confirm status is clean.
+
+## Git worktrees (isolation workflow)
+
+Use when starting feature work that needs isolation from the current workspace or before executing implementation plans.
+
+Announce at start: "I'm using the git worktrees workflow to set up an isolated workspace."
+
+### Directory selection process
+
+Follow this priority order:
+
+#### 1) Check existing directories
+
+```bash
+# Check in priority order
+ls -d .worktrees 2>/dev/null     # Preferred (hidden)
+ls -d worktrees 2>/dev/null      # Alternative
+```
+
+If found, use that directory. If both exist, `.worktrees` wins.
+
+#### 2) Check CLAUDE.md
+
+```bash
+grep -i "worktree.*director" CLAUDE.md 2>/dev/null
+```
+
+If a preference is specified, use it without asking.
+
+#### 3) Ask the user
+
+If no directory exists and no CLAUDE.md preference:
+
+```
+No worktree directory found. Where should I create worktrees?
+
+1. .worktrees/ (project-local, hidden)
+2. ~/.config/superpowers/worktrees/<project-name>/ (global location)
+
+Which would you prefer?
+```
+
+### Safety verification
+
+For project-local directories (`.worktrees` or `worktrees`), verify the directory is ignored before creating the worktree:
+
+```bash
+# Check if directory is ignored (respects local, global, and system gitignore)
+git check-ignore -q .worktrees 2>/dev/null || git check-ignore -q worktrees 2>/dev/null
+```
+
+If NOT ignored:
+1. Add the appropriate line to `.gitignore`.
+2. Commit the change.
+3. Proceed with worktree creation.
+
+Why this is critical: prevents accidentally committing worktree contents to the repository.
+
+For global directory (`~/.config/superpowers/worktrees`): no `.gitignore` verification needed.
+
+### Creation steps
+
+1) Detect project name:
+
+```bash
+project=$(basename "$(git rev-parse --show-toplevel)")
+```
+
+2) Create worktree:
+
+```bash
+# Determine full path
+case $LOCATION in
+  .worktrees|worktrees)
+    path="$LOCATION/$BRANCH_NAME"
+    ;;
+  ~/.config/superpowers/worktrees/*)
+    path="~/.config/superpowers/worktrees/$project/$BRANCH_NAME"
+    ;;
+esac
+
+# Create worktree with new branch
+git worktree add "$path" -b "$BRANCH_NAME"
+cd "$path"
+```
+
+3) Run project setup (auto-detect):
+
+```bash
+# Node.js
+if [ -f package.json ]; then npm install; fi
+
+# Rust
+if [ -f Cargo.toml ]; then cargo build; fi
+
+# Python
+if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+if [ -f pyproject.toml ]; then poetry install; fi
+
+# Go
+if [ -f go.mod ]; then go mod download; fi
+```
+
+4) Verify clean baseline:
+
+```bash
+# Examples - use project-appropriate command
+npm test
+cargo test
+pytest
+go test ./...
+```
+
+If tests fail: report failures, ask whether to proceed or investigate.
+If tests pass: report ready.
+
+5) Report location:
+
+```
+Worktree ready at <full-path>
+Tests passing (<N> tests, 0 failures)
+Ready to implement <feature-name>
+```
+
+### Quick reference
+
+| Situation | Action |
+|-----------|--------|
+| `.worktrees/` exists | Use it (verify ignored) |
+| `worktrees/` exists | Use it (verify ignored) |
+| Both exist | Use `.worktrees/` |
+| Neither exists | Check CLAUDE.md → Ask user |
+| Directory not ignored | Add to .gitignore + commit |
+| Tests fail during baseline | Report failures + ask |
+| No package.json/Cargo.toml | Skip dependency install |
+
+### Common mistakes
+
+#### Skipping ignore verification
+- Problem: Worktree contents get tracked, pollute git status
+- Fix: Always use `git check-ignore` before creating project-local worktree
+
+#### Assuming directory location
+- Problem: Creates inconsistency, violates project conventions
+- Fix: Follow priority: existing > CLAUDE.md > ask
+
+#### Proceeding with failing tests
+- Problem: Can't distinguish new bugs from pre-existing issues
+- Fix: Report failures, get explicit permission to proceed
+
+#### Hardcoding setup commands
+- Problem: Breaks on projects using different tools
+- Fix: Auto-detect from project files (package.json, etc.)
 
 ## Splitting changes (guidance)
 - Group by purpose: feature vs. fix vs. docs vs. infra.
