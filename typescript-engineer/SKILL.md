@@ -14,12 +14,10 @@ Professional TypeScript development - language and type system only, no framewor
 
 ## Scope
 Applies to TypeScript language features, type system design, and toolchain configuration. Avoid framework-specific guidance.
-
 ## Interop (Priority)
 - When paired with a framework skill (e.g. `react-spa-engineer`), this skill provides the baseline for TypeScript language/toolchain rules.
 - Defer framework-specific patterns (React, routing, hooks, UI) to the framework skill.
 - If rules conflict, follow this skill for TypeScript/toolchain and the framework skill for framework APIs.
-- If the user needs algorithmic visuals or generative art assets, use the `algorithmic-art` skill.
 
 ## Non-negotiables (baseline)
 - Keep tests and type checks deterministic; do not rely on implicit `any` or unsafe assertions.
