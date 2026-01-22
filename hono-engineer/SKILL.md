@@ -10,6 +10,9 @@ metadata:
 ## Scope
 Applies to any Hono-based API project. If the current project already has established conventions, follow them and avoid conflicts.
 
+## Skill interop
+- If the user needs algorithmic visuals (SVG/canvas patterns, generative backgrounds, illustrative assets for docs or demos), use the `algorithmic-art` skill.
+
 ## Non-negotiables (baseline)
 - Keep a single app factory (commonly `src/index.ts`) and mount routes via `app.route()`.
 - Preserve a stable global middleware order: `requestId` → `accessLog` → `runtimeConfig` → `secureHeaders` → `cors` → `requestLimits` (adapt names to your project).
