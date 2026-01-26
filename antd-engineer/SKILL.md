@@ -69,6 +69,8 @@ Use these references **only when you need concrete cases/examples**. Keep SKILL.
   - Use when the request is about page structure, sidebars, menus, tabs, or hierarchy.
 - **Data entry patterns**: `references/data-entry.md`
   - Use when selecting input controls, validation strategy, or multi-step forms.
+- **Form engineering (RHF + Zod + AntD integration)**: `references/forms-react-hook-form.md`
+  - Use when building AntD forms backed by React Hook Form, Zod validation, and external state/persistence.
 - **Data display & feedback patterns**: `references/data-display-feedback.md`
   - Use when choosing tables/lists, empty states, alerts, or result messaging.
 - **Tokens & theming**: `references/tokens-theming.md`
@@ -110,6 +112,7 @@ Reference: `https://ant.design/docs/react/customize-theme`
 ### Data entry
 - Prefer **Form** as the container; ensure field validation and clear affordances.
 - Use `data-entry` spec to keep labels/controls consistent: `https://ant.design/docs/spec/data-entry`
+- For React Hook Form + Zod integration with AntD, use the form engineering reference above (and keep consistent with `react-spa-engineer`).
 
 ### Data display and feedback
 - Use **Table/List** for structured data; **Empty/Result** for edge states.

@@ -60,6 +60,8 @@ When creating or modifying skills:
 - Keep SKILL.md focused on quick-reference rules and decision guidance
 - Move detailed documentation to `references/` files
 - Link to references with relative paths: `[Topic](references/topic.md)`
+- Avoid duplication across skills: if guidance already lives in another skill, reference that skill by name instead of copying
+- Cross-skill references must use the skill name only (no relative file links to other skills)
 - Use tables for quick lookup (anti-patterns, command grids, decision matrices)
 - Include explicit "When to use" and "When NOT to use" sections
 - Define interop priority when the skill works alongside others
