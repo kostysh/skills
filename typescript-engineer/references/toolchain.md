@@ -122,6 +122,14 @@ Choose `moduleResolution` based on runtime and bundler:
 Shortcut: Node.js apps use module resolution (NodeNext); React apps use bundler resolution.
 ---
 
+## Node ESM + source TypeScript (strip-types)
+
+If you run source `.ts` directly (e.g., `node --experimental-strip-types`):
+- Use `.ts` in ESM import specifiers to match the source files.
+- Avoid `.js` specifiers unless you are importing built output from `dist/`.
+- Do not rely on TS path aliases; Node will not rewrite them.
+
+
 ## Package Manager (pnpm)
 
 ### Why pnpm
