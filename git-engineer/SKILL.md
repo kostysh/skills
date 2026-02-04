@@ -63,10 +63,11 @@ Example: `feat(server): ✨ add output validation middleware`
 ## Workflow for commits
 
 1. Inspect status: `git status -sb`
-2. Stage only the intended files.
+2. Stage only the intended files; do not stage generated artifacts (e.g., `node_modules`, build outputs).
 3. If changes mix concerns, split into multiple commits.
-4. Write a Conventional Commit message.
-5. Confirm status is clean.
+4. Run required checks (type-check, lint, format, tests) unless the user explicitly waives them.
+5. Write a Conventional Commit message.
+6. Confirm status is clean.
 
 ## Git worktrees (isolation workflow)
 
@@ -220,6 +221,14 @@ Ready to implement <feature-name>
 #### Hardcoding setup commands
 - Problem: Breaks on projects using different tools
 - Fix: Auto-detect from project files (package.json, etc.)
+
+#### Committing with failing checks
+- Problem: Reduces trust in the commit and makes debugging harder
+- Fix: Run required checks before committing; only skip with explicit user approval
+
+#### Staging generated artifacts
+- Problem: Pollutes history with build outputs or dependencies
+- Fix: Keep `node_modules` and build outputs out of the index; update `.gitignore` if needed
 
 ## Splitting changes (guidance)
 - Group by purpose: feature vs. fix vs. docs vs. infra.
