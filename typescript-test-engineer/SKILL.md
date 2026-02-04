@@ -20,6 +20,7 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 3. Design fixtures/mocks for isolation and determinism.
 4. Implement tests with clear Arrange-Act-Assert.
 5. Add coverage and CI guardrails if missing.
+6. Run relevant tests; do not claim completion before they pass.
 
 ## Optional TDD mode (only with explicit request)
 

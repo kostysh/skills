@@ -10,6 +10,7 @@
 - No ts-node.
 Notes:
 - `--experimental-strip-types` has limitations (no TS emit transforms, decorators, or path-alias rewriting). If you need those, use a lightweight build step (e.g., `tsc --noEmit false` into `dist/` for tests) or a dedicated test build config.
+- When running source `.ts` files directly with `node --experimental-strip-types`, ESM import specifiers must match the source extension (use `.ts`, not `.js`). If you build to `dist/`, use `.js` in emitted output.
 
 ## Naming
 - File names: `<area>.test.ts` or `<area>.<behavior>.test.ts` (examples: `health.test.ts`, `users.create.test.ts`).
@@ -233,6 +234,7 @@ Notes:
 - By default, `node_modules` and test files are excluded. Override with:
   - `--test-coverage-include=<glob>`
   - `--test-coverage-exclude=<glob>`
+- If coverage includes test files in your setup, add `--test-coverage-exclude=test/**` (or your test glob) to keep reports focused on source.
 - For HTML reports, use an external converter (e.g., `lcov-viewer`).
 - Coverage is a signal, not a goal by itself. Prefer fewer tests with strong assertions over superficial line coverage.
 - In CI, consider a modest coverage threshold as a guardrail (but do not chase percentages at the expense of test quality).
