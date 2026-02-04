@@ -66,6 +66,7 @@ For each plan, design:
    - Skills to load
    - Tools required (explicitly list allowed external tools if needed)
    - Environment setup
+   - If the user or requirements mandate lint/format/type-check/coverage, schedule tooling setup as the first implementation step and make later steps depend on it
 
 3. **Implementation steps**:
    - Numbered, ordered steps

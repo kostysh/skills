@@ -89,7 +89,7 @@ For each task, follow the plan's testing strategy. If TDD is requested, use the 
 If TDD is not requested, use this lighter loop:
 
 ```markdown
-1. Write or update tests as defined in the plan
+1. Write or update tests for the new behavior in the same task (do not defer), as defined in the plan
 2. Implement the change
 3. Run relevant tests and verify acceptance criteria
 4. Update task status and notes
@@ -150,6 +150,13 @@ During implementation, ensure:
 - [ ] Imports are organized
 - [ ] Types are properly defined (if applicable)
 
+### Quality gate order (when required)
+
+- Run type-check first. If it fails, fix before lint/format.
+- Run lint and format only after type-check passes.
+- Run relevant tests after lint/format.
+- Do not claim task completion until all required checks pass.
+
 ### Phase 6: Handover Summary
 
 After completing all tasks, write implementation summary:
@@ -182,6 +189,7 @@ Write to `docs/sdd/{TICKET_ID}/P{N}-plan.summary.md`
 
 - [ ] All tasks completed or explicitly failed/skipped
 - [ ] Tests written and run per plan (if TDD requested, RED/GREEN/VERIFY followed)
+- [ ] Type-check, lint, and format run in the required order (type-check before lint/format)
 - [ ] All tests passing
 - [ ] No regressions (existing tests still pass)
 - [ ] Code follows constitution guidelines
@@ -204,6 +212,7 @@ If TDD is explicitly requested, use RED/GREEN/VERIFY and keep cycles small.
 - **Skipping tests**: No tests for new behavior or missing verification
 - **Test-after (when TDD requested)**: Writing tests only after implementation
 - **Test-to-pass**: Write test that verifies behavior, not implementation
+- **Claiming done without checks**: Declaring completion without running required checks
 - **Scope creep**: Only implement what's in the task
 - **Silent failures**: Log and handle all errors
 - **Copy-paste security**: Review security implications
