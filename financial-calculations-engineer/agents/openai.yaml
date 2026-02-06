@@ -1,0 +1,3 @@
+interface:
+  display_name: "Financial Calculations Engineer"
+  short_description: "Design reliable money and VAT calculations across stack"
