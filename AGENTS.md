@@ -65,3 +65,25 @@ When creating or modifying skills:
 - Use tables for quick lookup (anti-patterns, command grids, decision matrices)
 - Include explicit "When to use" and "When NOT to use" sections
 - Define interop priority when the skill works alongside others
+
+## Portable Skills (Required)
+
+All skills in this `custom` folder must be created and maintained as **PORTABLE** skills.
+
+Portable means:
+- A skill remains fully functional when the entire `custom` directory is copied to another machine.
+- The skill does not depend on machine-specific absolute paths.
+- The skill does not require external local files outside its own folder to understand core behavior.
+- Core practices, rules, and examples live inside the skill itself (`SKILL.md` and its local `references/`, `scripts/`, `assets/`).
+
+Required rules:
+- Do not reference absolute local paths like `/code/projects/...`, `/home/...`, `C:\\...`.
+- Do not rely on repo-specific docs outside the skill folder as mandatory prerequisites.
+- Use only relative paths inside the same skill directory when linking local files.
+- If external docs are mentioned, treat them as optional context, never as required dependency.
+- Keep instructions environment-agnostic; document assumptions explicitly when unavoidable.
+
+Portability check before finishing changes:
+- Search the skill folder for absolute paths and remove them.
+- Confirm all required references exist inside the same skill folder.
+- Ensure copied skill remains understandable and usable in isolation.
