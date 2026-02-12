@@ -41,7 +41,7 @@ After frontmatter, include the skill instructions in Markdown.
 |----------|--------|---------|
 | Git | `git-engineer` | Conventional Commits, worktrees, commit hygiene |
 | TypeScript | `typescript-engineer`, `typescript-test-engineer` | Language patterns, testing |
-| Frontend | `react-spa-engineer`, `frontend-design`, `antd-engineer`, `antd-components` | React SPAs, creative design, Ant Design |
+| Frontend | `react-spa-engineer`, `react-components-engineer`, `frontend-design`, `antd-engineer`, `antd-components` | React SPAs, component hardening, creative design, Ant Design |
 | Backend | `hono-engineer`, `supabase-engineer` | Hono framework, Supabase integration |
 | Tools | `agent-browser`, `web-ui-reviewer` | Browser automation, UI code review |
 
