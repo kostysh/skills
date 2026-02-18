@@ -29,6 +29,12 @@ Use this template when creating task breakdowns.
 - **Status**: pending | in_progress | blocked | completed | failed
 - **Effort**: small (< 15min) | medium (15-30min) | large (30-60min)
 
+## Quality Policy
+
+- Code tasks are complete only when all gate checks pass.
+- Tests are mandatory for every new/changed behavior and must be honest/effective.
+- Each code task must include explicit gate commands for `type-check`, `test:*`, and lint/format where applicable.
+
 ## Dependency Graph
 
 ```mermaid
@@ -72,6 +78,11 @@ flowchart LR
 - [ ] {Specific check 1}
 - [ ] {Specific check 2}
 
+**Gate Validation**:
+- [ ] `{package_cmd} type-check`
+- [ ] `{package_cmd} test:*`
+- [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+
 **Notes**:
 - {Implementation hint}
 - {Gotcha to watch for}
@@ -94,6 +105,11 @@ flowchart LR
 **Verification**:
 - [ ] {Specific check}
 
+**Gate Validation**:
+- [ ] `{package_cmd} type-check`
+- [ ] `{package_cmd} test:*`
+- [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+
 **Notes**:
 - {Implementation hint}
 
@@ -114,6 +130,11 @@ flowchart LR
 
 **Verification**:
 - [ ] {Specific check}
+
+**Gate Validation**:
+- [ ] `{package_cmd} type-check`
+- [ ] `{package_cmd} test:*`
+- [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
 
 **Blocked By**: T1 must complete first because {reason}
 
@@ -137,6 +158,11 @@ flowchart LR
 - [ ] All tests pass
 - [ ] {Additional check}
 
+**Gate Validation**:
+- [ ] `{package_cmd} type-check`
+- [ ] `{package_cmd} test:*`
+- [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+
 ---
 
 ### T5: {Task Title}
@@ -155,6 +181,9 @@ flowchart LR
 **Verification**:
 - [ ] Documentation updated
 - [ ] Links valid
+
+**Gate Validation**:
+- [ ] Evidence of relevant package gates is recorded in progress log/handover
 
 ---
 
@@ -184,4 +213,5 @@ flowchart LR
 4. **Effort estimates help planning** - But don't treat as commitments
 5. **Progress log is optional** - Use for complex/long-running work
 6. **Issues section captures learnings** - Helps future work
-7. **Use emojis for status/highlights** - e.g., ✅ Done, ⚠️ Blocked
+7. **Every code task has Gate Validation** - Must include `type-check`, `test:*`, and lint/format commands
+8. **No optional test execution wording** - Avoid "if test runner exists"

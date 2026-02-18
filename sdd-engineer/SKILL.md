@@ -103,6 +103,18 @@ At the start of every SDD phase (including /sdd-quick):
 - Use TDD (RED/GREEN/VERIFY) only when explicitly requested; otherwise follow the plan's testing strategy and typescript-test-engineer guidance
 - Record drift and get approval before proceeding
 
+## Non-negotiable quality gates
+
+- Any new/changed code must have honest, effective tests (behavior/contract focused; no "fake green" assertions).
+- Definition of done for implementation tasks: all listed gates pass with no exceptions.
+- SDD plan/tasks artifacts must include explicit, runnable gate commands per code task:
+  - package-level `type-check`
+  - package-level `test:*` relevant to the task scope
+- Formatting/lint gates are mandatory when applicable:
+  - Server package: `lint:fix`
+  - Client package: `format`
+- Do not mark test execution as optional in SDD artifacts.
+
 ## Constitution
 
 Ensure `docs/sdd/constitution.md` exists before starting. Use the [Constitution Template](references/constitution-template.md).

@@ -98,6 +98,7 @@ Before approving an implementation plan, verify:
 - [ ] Steps are numbered and ordered
 - [ ] Dependencies between steps are clear
 - [ ] Each step has verification criteria
+- [ ] Each code step includes explicit gate commands (`type-check`, `test:*`, lint/format)
 - [ ] Handover step is included
 - [ ] Standard footer is present
 
@@ -147,6 +148,7 @@ Before approving task breakdown, verify:
 - [ ] Tasks are appropriately sized
 - [ ] No circular dependencies
 - [ ] Test tasks exist for code tasks
+- [ ] Every code task contains Gate Validation commands (`type-check`, `test:*`, lint/format)
 
 ### Organization
 - [ ] Task overview table is complete
@@ -168,11 +170,13 @@ During and after implementation, verify:
 ### Testing
 - [ ] Tests exist for new behavior
 - [ ] Tests verify behavior, not implementation
+- [ ] Tests are honest/effective (no artificial pass conditions)
 - [ ] If TDD was requested: tests failed first (RED) and pass after implementation (GREEN)
 
 ### Code Quality
 - [ ] Follows project coding standards
 - [ ] No lint errors
+- [ ] Required formatter/linter command executed (`format` for client-style packages, `lint:fix` for server-style packages)
 - [ ] Types are properly defined
 - [ ] Error handling is complete
 - [ ] No hardcoded values
@@ -190,6 +194,7 @@ During and after implementation, verify:
 ### Testing
 - [ ] Unit tests pass
 - [ ] Integration tests pass
+- [ ] E2E tests pass (if in scope)
 - [ ] No test regressions
 - [ ] Coverage meets standards
 

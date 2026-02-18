@@ -31,6 +31,17 @@ Use this template when creating implementation plans.
 - [ ] Clean working directory
 - [ ] Required access/permissions
 
+## Definition of Done
+
+- Implementation tasks are complete only when all quality gates pass.
+- Mandatory gates for each touched package:
+  - `type-check`
+  - `test:*` (unit/integration/e2e as applicable)
+- Include formatting/lint gates explicitly:
+  - server-style packages: `lint:fix`
+  - client-style packages: `format`
+- Tests must be honest and effective (behavior/contract validation, no artificial pass conditions).
+
 ## Context
 
 ### Current State
@@ -61,6 +72,11 @@ Write tests for {component/feature}. If TDD is requested, write failing tests fi
 - Tests exist and fail with "not implemented" or similar
 - Run: `npm test -- --grep "{pattern}"`
 
+**Gate Validation**:
+- [ ] `{package_cmd} type-check`
+- [ ] `{package_cmd} test:*`
+- [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+
 ---
 
 ### Step 2: {Title - Implement X}
@@ -79,6 +95,11 @@ Implement {component/feature} to make tests pass.
 - No existing tests broken
 - Run: `npm test`
 
+**Gate Validation**:
+- [ ] `{package_cmd} type-check`
+- [ ] `{package_cmd} test:*`
+- [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+
 ---
 
 ### Step 3: {Title - Integration}
@@ -95,6 +116,11 @@ Integrate {component} with {other component}.
 **Verification**:
 - Integration test passes
 - Manual verification of flow
+
+**Gate Validation**:
+- [ ] `{package_cmd} type-check`
+- [ ] `{package_cmd} test:*`
+- [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
 
 ---
 
@@ -199,8 +225,9 @@ Write to `docs/sdd/{TICKET_ID}/P{N}-main-plan.summary.md`
 
 1. **Test steps precede implementation steps only when TDD is requested** - Otherwise follow the defined test strategy
 2. **Each step has verification** - How do you know it's done?
-3. **Reference functions, not lines** - Line numbers change
-4. **Handover step is mandatory** - Always ends with summary
-5. **Footer is mandatory** - Reminds agent to verify and not use external tools
-6. **Split if >10 steps** - Use main plan + specialized plans
-7. **Use emojis for status/highlights** - e.g., ✅ Approved, ⚠️ Risk
+3. **Each code step has Gate Validation commands** - Include `type-check`, `test:*`, and lint/format
+4. **Reference functions, not lines** - Line numbers change
+5. **Handover step is mandatory** - Always ends with summary
+6. **Footer is mandatory** - Reminds agent to verify and not use external tools
+7. **Split if >10 steps** - Use main plan + specialized plans
+8. **Do not mark tests as optional** - No wording like "if test runner exists"

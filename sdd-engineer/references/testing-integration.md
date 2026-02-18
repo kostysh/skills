@@ -11,6 +11,8 @@ Use the `typescript-test-engineer` skill for test organization, runners, mocks, 
 - Tests are required for new behavior.
 - The testing approach is defined in the plan.
 - Use RED/GREEN/VERIFY (TDD) **only when explicitly requested**.
+- Tests must be honest and effective: verify observable behavior/contracts and avoid artificial "always green" assertions.
+- Implementation tasks are incomplete until package quality gates pass (`type-check`, `test:*`, and lint/format as applicable).
 
 ### Optional: RED/GREEN/VERIFY (TDD)
 

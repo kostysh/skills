@@ -157,6 +157,10 @@ Response (400):
 
 ## Testing Strategy
 
+Testing policy:
+- Tests are mandatory for all new/changed behavior.
+- Tests must be honest and effective (validate behavior and contracts).
+
 ### Unit Tests
 - {Component} - {What to test}
 
@@ -165,6 +169,12 @@ Response (400):
 
 ### E2E Tests
 - {Scenario} - {User journey to test}
+
+### Quality Gates (Definition of Done)
+- `{package_cmd} type-check`
+- `{package_cmd} test:*`
+- `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+- Task completion is blocked until all listed gates pass.
 
 ## Alternatives Considered
 
@@ -205,4 +215,5 @@ Response (400):
 4. **Be specific about changes** - "Modify file" is not enough
 5. **Security is not optional** - Always consider security implications
 6. **Alternatives show thinking** - Document why you chose this approach
-7. **Use emojis for status/highlights** - e.g., ✅ Approved, ⚠️ Risk
+7. **Quality gates are mandatory** - Include `type-check`, `test:*`, and lint/format
+8. **No optional test execution wording** - Avoid "if test runner exists"
