@@ -153,6 +153,8 @@ Follow these guidelines when generating antd code:
 - **Form integration**: Wrap inputs in `Form.Item` with proper `name` prop
 - **Responsive design**: Use Grid system for layout
 - **Theme customization**: Use `ConfigProvider` for theming
+- **Styling policy (default)**: Prefer AntD tokens/theme/component props; avoid adding custom CSS files for routine app styling
+- **Reset baseline**: Use `antd/dist/reset.css` rather than ad-hoc reset styles
 
 ## Reference Material
 
