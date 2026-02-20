@@ -23,6 +23,10 @@ Then implement working code (HTML/CSS/JS, React, Vue, etc.) that is:
 - Cohesive with a clear aesthetic point-of-view
 - Meticulously refined in every detail
 
+If the project already has a design system/framework (for example Ant Design), keep creativity inside that system:
+- prefer design tokens, theme configuration, and framework components,
+- avoid introducing parallel ad-hoc styling systems without explicit approval.
+
 ## Frontend Aesthetics Guidelines
 
 Focus on:
