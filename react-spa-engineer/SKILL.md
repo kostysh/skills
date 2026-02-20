@@ -77,12 +77,32 @@ Example: see [State Management](references/state-management.md).
 
 Example: see [Data Fetching](references/data-fetching.md).
 
+**Non-negotiables**:
+- Components/pages MUST NOT call `fetch` directly for server API interactions.
+- Keep explicit layering:
+  - transport client (`http` wrapper, base URL, timeout, credentials),
+  - API contract functions,
+  - React Query adapters/options at feature layer,
+  - UI hooks/components consuming Query.
+- All external API requests in SPA flows MUST run via TanStack Query (`useQuery`/`useMutation`) unless explicitly justified (for example one-off non-UI bootstrap script).
+
 **v5 Breaking Changes**:
 - Object syntax required: `useQuery({ queryKey, queryFn })`
 - `cacheTime` → `gcTime`
 - `isLoading` → `isPending` for initial load
 - `onSuccess/onError` removed from queries (use `useEffect`)
 - `initialPageParam` required for infinite queries
+
+### Cookie-based Auth SPA Baseline
+
+For cookie-session auth SPAs, model auth explicitly:
+- Separate states: `loading` (bootstrap), `guest`, `authenticated`, `error`.
+- Do not collapse bootstrap network failures into `guest`; show recoverable error UI.
+- Implement both:
+  - reactive refresh (`401` -> single retry with refresh),
+  - proactive refresh (timer-based background refresh for active sessions).
+- Use single-flight coordination for refresh to avoid concurrent refresh storms.
+- Keep API `baseUrl` in env config and enforce required vars at build/deploy pipeline level.
 
 ### Forms & Validation
 
