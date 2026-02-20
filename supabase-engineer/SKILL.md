@@ -15,6 +15,17 @@ Build and operate Supabase-backed systems with strong security, performance, and
 - Prefer schema-first migrations: edit `supabase/schemas/*.sql`, then `supabase db diff`.
 - For Edge Functions, use `Deno.serve()`, versioned imports, and write only to `/tmp`.
 
+## Auth email/recovery troubleshooting checklist
+- If signup/recovery returns generic server errors, inspect Supabase Auth logs first (`/signup`, `/recover`, `/verify` paths).
+- Verify SMTP sender/domain constraints (for example provider domain verification requirements).
+- Verify Auth URL configuration:
+  - `Site URL`,
+  - allow-listed redirect URLs include exact recovery/reset path.
+- Treat email template redirect behavior as runtime-sensitive:
+  - `RedirectTo` can fallback unexpectedly in some setups,
+  - deterministic links via `SiteURL` + recovery params are often more reliable.
+- Do not silence all 4xx errors from upstream auth in server APIs; mask only anti-enumeration cases intentionally.
+
 ## Fast workflow
 1. Clarify data ownership, access rules, and latency requirements.
 2. Draft schema + RLS policies early; add indexes for RLS columns.
