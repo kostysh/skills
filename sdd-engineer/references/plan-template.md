@@ -37,8 +37,10 @@ Use this template when creating implementation plans.
 - Mandatory gates for each touched package:
   - `type-check`
   - `test:*` (unit/integration/e2e as applicable)
+- If split test kinds exist, list all: `test:unit`, `test:integration`, `test:e2e`.
 - Include formatting/lint gates explicitly:
   - server-style packages: `lint:fix`
+  - server test changes: `lint:test:fix`
   - client-style packages: `format`
 - Tests must be honest and effective (behavior/contract validation, no artificial pass conditions).
 

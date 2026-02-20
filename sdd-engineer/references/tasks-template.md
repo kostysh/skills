@@ -33,7 +33,8 @@ Use this template when creating task breakdowns.
 
 - Code tasks are complete only when all gate checks pass.
 - Tests are mandatory for every new/changed behavior and must be honest/effective.
-- Each code task must include explicit gate commands for `type-check`, `test:*`, and lint/format where applicable.
+- Each code task must include explicit gate commands for `type-check`, `test:*`, and lint/format where applicable (`lint:test:fix` for server test changes).
+- If the package has split test kinds, each code task must include all of: `test:unit`, `test:integration`, `test:e2e`.
 
 ## Dependency Graph
 

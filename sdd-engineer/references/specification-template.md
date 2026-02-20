@@ -174,6 +174,8 @@ Testing policy:
 - `{package_cmd} type-check`
 - `{package_cmd} test:*`
 - `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+- `{package_cmd} lint:test:fix` when server-side test files are changed
+- If split test scripts exist, include all: `test:unit`, `test:integration`, `test:e2e`.
 - Task completion is blocked until all listed gates pass.
 
 ## Alternatives Considered

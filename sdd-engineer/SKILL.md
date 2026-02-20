@@ -110,10 +110,31 @@ At the start of every SDD phase (including /sdd-quick):
 - SDD plan/tasks artifacts must include explicit, runnable gate commands per code task:
   - package-level `type-check`
   - package-level `test:*` relevant to the task scope
+- When a package exposes split test kinds (`test:unit`, `test:integration`, `test:e2e`), require all kinds in gates.
 - Formatting/lint gates are mandatory when applicable:
   - Server package: `lint:fix`
+  - Server test code: `lint:test:fix`
   - Client package: `format`
 - Do not mark test execution as optional in SDD artifacts.
+
+## Required artifact sections (delivery hardening)
+
+- `R*` / `S*` must include **Environment & Deployment Contract**:
+  - env/secret name,
+  - source of truth,
+  - injection point (build/deploy/runtime),
+  - validation point.
+- `S*` must include **External Dependency Behavior** for critical third-party services (auth/mail/payments/etc.) including known constraints and fallback strategies.
+- `P*` / `T*` must include explicit CI/CD configuration tasks when env/workflow updates are needed.
+- `T*` / `V*` must include browser-level smoke validation for user-facing deployed flows.
+- `V*` / `H*` must include an **Operational Troubleshooting** section (logs, commands, provider-vs-app triage).
+
+## External review protocol
+
+For each external review finding/question, record a dedicated subsection `Decision` directly under that finding:
+- decision status: `accepted` / `implemented` / `deferred` / `rejected`,
+- concrete action or rationale,
+- follow-up reference when deferred.
 
 ## Constitution
 

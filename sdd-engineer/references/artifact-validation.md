@@ -99,6 +99,7 @@ Before approving an implementation plan, verify:
 - [ ] Dependencies between steps are clear
 - [ ] Each step has verification criteria
 - [ ] Each code step includes explicit gate commands (`type-check`, `test:*`, lint/format)
+- [ ] If split test kinds exist in the package, the plan includes all (`test:unit`, `test:integration`, `test:e2e`)
 - [ ] Handover step is included
 - [ ] Standard footer is present
 
@@ -149,6 +150,7 @@ Before approving task breakdown, verify:
 - [ ] No circular dependencies
 - [ ] Test tasks exist for code tasks
 - [ ] Every code task contains Gate Validation commands (`type-check`, `test:*`, lint/format)
+- [ ] Task gates include all split test kinds when available (`test:unit`, `test:integration`, `test:e2e`)
 
 ### Organization
 - [ ] Task overview table is complete
@@ -177,6 +179,7 @@ During and after implementation, verify:
 - [ ] Follows project coding standards
 - [ ] No lint errors
 - [ ] Required formatter/linter command executed (`format` for client-style packages, `lint:fix` for server-style packages)
+- [ ] For changed server test files, `lint:test:fix` executed
 - [ ] Types are properly defined
 - [ ] Error handling is complete
 - [ ] No hardcoded values
