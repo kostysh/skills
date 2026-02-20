@@ -65,6 +65,15 @@ agent-browser close             # Close browser
 3. Interact using refs from the snapshot
 4. Re-snapshot after navigation or significant DOM changes
 
+## SPA/API verification checklist (before declaring backend/client broken)
+
+For auth and API flows, validate these in order:
+1. **Request target**: confirm requests go to intended API origin (`network requests`, browser URL checks).
+2. **Method/path**: confirm exact HTTP method/path to explain `404/405`.
+3. **Cookies/session**: verify expected cookies are set and included on subsequent requests.
+4. **CORS behavior**: verify preflight/response headers for cross-origin requests.
+5. **Error source split**: if API returns generic `500`, correlate with upstream provider logs (not only app logs).
+
 ## Commands
 
 ### Navigation
