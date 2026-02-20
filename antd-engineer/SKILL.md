@@ -92,8 +92,13 @@ Use this section to answer “when and how to use tokens” questions quickly.
 
 ### When to use ConfigProvider vs CSS
 - **ConfigProvider theme**: preferred for consistent, app-wide changes and component-level overrides.
-- **CSS/inline styles**: only for isolated, one-off adjustments where tokens don’t exist.
+- **AntD-first project policy (default)**: avoid custom CSS files for app styling; use AntD reset + tokens/components/theme overrides.
+- **CSS/inline styles**: only for isolated fallback cases where no token/component option exists.
 - **Avoid** overriding deep internal selectors; prefer tokens and component tokens.
+
+### Reset and baseline styling
+- Use Ant Design reset (`antd/dist/reset.css`) as the default baseline.
+- Do not introduce ad-hoc global reset styles when AntD reset is already active.
 
 ### When to use algorithms
 - **Default algorithm**: standard theme.
