@@ -37,6 +37,14 @@ description: |
 5. Implement with tests-first (/sdd-impl)
 6. Validate and hand over (/sdd-validate)
 
+## Owner context gate (required)
+
+Before starting any implementation task:
+- Mark tasks that require owner-provided context (business seeds, reference datasets, legal copy, external ids/urls, environment values, policy decisions).
+- Add explicit `Owner Input Required` blocks in `P*` and `T*` for those tasks with exact missing inputs.
+- Request and confirm owner input before implementation starts.
+- If input is missing, keep the task in `blocked` state and do not replace missing data with silent assumptions.
+
 ## Commands
 
 | Command | Purpose | Protocol |
@@ -110,12 +118,13 @@ At the start of every SDD phase (including /sdd-quick):
 - SDD plan/tasks artifacts must include explicit, runnable gate commands per code task:
   - package-level `type-check`
   - package-level `test:*` relevant to the task scope
+- For every implementation task, list gates as concrete commands; avoid placeholders like "run tests" or "if applicable".
 - When a package exposes split test kinds (`test:unit`, `test:integration`, `test:e2e`), require all kinds in gates.
 - Formatting/lint gates are mandatory when applicable:
   - Server package: `lint:fix`
   - Server test code: `lint:test:fix`
   - Client package: `format`
-- Do not mark test execution as optional in SDD artifacts.
+- Do not mark any gate execution as optional in SDD artifacts.
 
 ## Required artifact sections (delivery hardening)
 
@@ -135,6 +144,8 @@ For each external review finding/question, record a dedicated subsection `Decisi
 - decision status: `accepted` / `implemented` / `deferred` / `rejected`,
 - concrete action or rationale,
 - follow-up reference when deferred.
+- Maintain a review resolution matrix (`finding -> decision -> affected artifacts R/S/P/T -> task refs -> status`) so updates stay synchronized.
+- Do not close a finding until all listed affected artifacts are updated consistently.
 
 ## Constitution
 
