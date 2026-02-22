@@ -19,8 +19,20 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 2. Confirm runner and TypeScript execution path (node:test + strip/build, or existing toolchain). For React, prefer Vitest + Testing Library.
 3. Design fixtures/mocks for isolation and determinism.
 4. Implement tests with clear Arrange-Act-Assert.
-5. Run coverage checkpoints according to stage/task cadence.
-6. Run relevant tests; do not claim completion before they pass.
+5. Run relevant tests and inspect output for warnings (including stderr), not only failures.
+6. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
+7. Run coverage checkpoints according to stage/task cadence.
+8. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
+
+## Deprecated warnings gate (required)
+
+- Treat framework/runtime deprecation warnings in test output as mandatory fixes, not informational noise.
+- Do not stop at the single line shown in logs; search the entire affected package/scope for the deprecated API and migrate all occurrences in that scope in the same change.
+- Re-run the relevant test command after migration and verify the specific deprecation warning is gone.
+- If an immediate fix is impossible (for example blocked by upstream library constraints), explicitly document:
+  - exact warning text,
+  - why it cannot be fixed now,
+  - concrete follow-up task/owner.
 
 ## Coverage cadence (required)
 
