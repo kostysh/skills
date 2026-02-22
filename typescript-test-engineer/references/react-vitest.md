@@ -29,7 +29,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: ['**/*.d.ts', '**/*.config.*', '**/test/**']
+      exclude: ['**/*.d.ts', '**/*.config.*', '**/test/**', '**/*.test.*', '**/*.spec.*']
     },
     typecheck: {
       enabled: true
@@ -106,4 +106,6 @@ describe('Profile', () => {
 
 ## Coverage
 - Prefer `provider: 'v8'` with `reporter: ['text', 'json', 'html']`.
+- Keep source-only metrics by excluding test files (`**/test/**`, `**/*.test.*`, `**/*.spec.*`).
+- Run coverage at milestone checkpoints and before final stage closure.
 - Treat coverage as a signal; prioritize meaningful assertions and edge cases.

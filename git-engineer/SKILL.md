@@ -65,9 +65,10 @@ Example: `feat(server): ✨ add output validation middleware`
 1. Inspect status: `git status -sb`
 2. Stage only the intended files; do not stage generated artifacts (e.g., `node_modules`, build outputs).
 3. If changes mix concerns, split into multiple commits.
-4. Run required checks (type-check, lint, format, tests) unless the user explicitly waives them.
-5. Write a Conventional Commit message.
-6. Confirm status is clean.
+4. If the work follows SDD task artifacts (`docs/sdd/**/T*-tasks.md`), include matching task status/progress updates in the same task-completion commit (do not defer all status updates to stage end).
+5. Run required checks (type-check, lint, format, tests) unless the user explicitly waives them.
+6. Write a Conventional Commit message.
+7. Confirm status is clean.
 
 ## Docs-only commit workflow
 

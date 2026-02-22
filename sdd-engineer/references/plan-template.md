@@ -31,12 +31,23 @@ Use this template when creating implementation plans.
 - [ ] Clean working directory
 - [ ] Required access/permissions
 
+**Owner Input Required** (if any step depends on owner-only data/decisions):
+- Missing input: {explicit field/value list}
+- Why not derivable: {reason}
+- Source candidates: {files/links/systems/owners}
+- Question to owner: {single concrete ask}
+- Decision options (critical): `A` {tradeoffs} / `B` {tradeoffs}
+- Blocking steps/tasks: {Step/T* ids}
+
 ## Definition of Done
 
 - Implementation tasks are complete only when all quality gates pass.
 - Mandatory gates for each touched package:
   - `type-check`
   - `test:*` (unit/integration/e2e as applicable)
+- Coverage checkpoint command (`test:coverage` or equivalent) when package supports it:
+  - at least once before final stage closure,
+  - plus intermediate checkpoints for long/multi-wave stages.
 - If split test kinds exist, list all: `test:unit`, `test:integration`, `test:e2e`.
 - Include formatting/lint gates explicitly:
   - server-style packages: `lint:fix`
@@ -78,6 +89,7 @@ Write tests for {component/feature}. If TDD is requested, write failing tests fi
 - [ ] `{package_cmd} type-check`
 - [ ] `{package_cmd} test:*`
 - [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+- [ ] `{package_cmd} test:coverage` (coverage checkpoint tasks and final-stage closure when available)
 
 ---
 
@@ -101,6 +113,7 @@ Implement {component/feature} to make tests pass.
 - [ ] `{package_cmd} type-check`
 - [ ] `{package_cmd} test:*`
 - [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+- [ ] `{package_cmd} test:coverage` (coverage checkpoint tasks and final-stage closure when available)
 
 ---
 
@@ -123,6 +136,7 @@ Integrate {component} with {other component}.
 - [ ] `{package_cmd} type-check`
 - [ ] `{package_cmd} test:*`
 - [ ] `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
+- [ ] `{package_cmd} test:coverage` (coverage checkpoint tasks and final-stage closure when available)
 
 ---
 
@@ -227,9 +241,10 @@ Write to `docs/sdd/{TICKET_ID}/P{N}-main-plan.summary.md`
 
 1. **Test steps precede implementation steps only when TDD is requested** - Otherwise follow the defined test strategy
 2. **Each step has verification** - How do you know it's done?
-3. **Each code step has Gate Validation commands** - Include `type-check`, `test:*`, and lint/format
+3. **Each code step has Gate Validation commands** - Include `type-check`, `test:*`, lint/format, and coverage checkpoints when available
 4. **Reference functions, not lines** - Line numbers change
 5. **Handover step is mandatory** - Always ends with summary
 6. **Footer is mandatory** - Reminds agent to verify and not use external tools
 7. **Split if >10 steps** - Use main plan + specialized plans
 8. **Do not mark tests as optional** - No wording like "if test runner exists"
+9. **Owner requests must be concrete** - No wildcard asks; include source candidates and explicit A/B tradeoffs for critical decisions

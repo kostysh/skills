@@ -100,6 +100,8 @@ Before approving an implementation plan, verify:
 - [ ] Each step has verification criteria
 - [ ] Each code step includes explicit gate commands (`type-check`, `test:*`, lint/format)
 - [ ] If split test kinds exist in the package, the plan includes all (`test:unit`, `test:integration`, `test:e2e`)
+- [ ] Coverage checkpoints are explicit when package supports coverage commands (including final-stage checkpoint)
+- [ ] Owner-input asks are concrete (no wildcards) and include source candidates + A/B options where critical
 - [ ] Handover step is included
 - [ ] Standard footer is present
 
@@ -151,6 +153,9 @@ Before approving task breakdown, verify:
 - [ ] Test tasks exist for code tasks
 - [ ] Every code task contains Gate Validation commands (`type-check`, `test:*`, lint/format)
 - [ ] Task gates include all split test kinds when available (`test:unit`, `test:integration`, `test:e2e`)
+- [ ] Coverage checkpoint tasks exist when package supports coverage commands
+- [ ] Status sync policy requires overview + task section + progress log updates per transition
+- [ ] Owner-input blocks (if present) use explicit field lists and source-backed asks
 
 ### Organization
 - [ ] Task overview table is complete
@@ -200,6 +205,7 @@ During and after implementation, verify:
 - [ ] E2E tests pass (if in scope)
 - [ ] No test regressions
 - [ ] Coverage meets standards
+- [ ] Coverage checkpoints are executed and recorded according to plan/tasks
 
 ### Documentation
 - [ ] Code is self-documenting
@@ -222,6 +228,7 @@ Before approving validation report, verify:
 - [ ] All tests pass
 - [ ] No test regressions
 - [ ] Coverage meets standards
+- [ ] Coverage report focuses on source (test files excluded from KPI where applicable)
 - [ ] Performance tests pass (if applicable)
 
 ### Security
@@ -234,6 +241,7 @@ Before approving validation report, verify:
 - [ ] All drift documented
 - [ ] Drift justified or fixed
 - [ ] Significant drift approved
+- [ ] Deferred review follow-ups are either implemented or explicitly carried as open debt
 
 ### Handover
 - [ ] Summary document complete

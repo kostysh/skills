@@ -175,6 +175,7 @@ Testing policy:
 - `{package_cmd} test:*`
 - `{package_cmd} lint:fix` or `{package_cmd} format` (as applicable)
 - `{package_cmd} lint:test:fix` when server-side test files are changed
+- `{package_cmd} test:coverage` (or explicit equivalent) when package supports coverage command(s)
 - If split test scripts exist, include all: `test:unit`, `test:integration`, `test:e2e`.
 - Task completion is blocked until all listed gates pass.
 
@@ -217,5 +218,5 @@ Testing policy:
 4. **Be specific about changes** - "Modify file" is not enough
 5. **Security is not optional** - Always consider security implications
 6. **Alternatives show thinking** - Document why you chose this approach
-7. **Quality gates are mandatory** - Include `type-check`, `test:*`, and lint/format
+7. **Quality gates are mandatory** - Include `type-check`, `test:*`, lint/format, and coverage checkpoints when available
 8. **No optional test execution wording** - Avoid "if test runner exists"

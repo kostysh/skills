@@ -19,8 +19,25 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 2. Confirm runner and TypeScript execution path (node:test + strip/build, or existing toolchain). For React, prefer Vitest + Testing Library.
 3. Design fixtures/mocks for isolation and determinism.
 4. Implement tests with clear Arrange-Act-Assert.
-5. Add coverage and CI guardrails if missing.
+5. Run coverage checkpoints according to stage/task cadence.
 6. Run relevant tests; do not claim completion before they pass.
+
+## Coverage cadence (required)
+
+- If package has a coverage command (for example `test:coverage`), use it as the primary source of truth.
+- Run coverage after major implementation waves in long tasks/stages.
+- Run a final coverage checkpoint before closing stage-level implementation.
+- Prefer source-only coverage metrics; exclude test files if the runner includes them.
+- If there is no dedicated coverage script, run explicit runner coverage flags and record the exact command.
+
+## Coverage failure triage
+
+When normal tests pass but coverage run fails (or behaves differently):
+- Re-run using the exact coverage command first.
+- Compare runtime flags/environment between `test` and `test:coverage`.
+- Isolate failing suite with coverage instrumentation enabled.
+- Check for instrumentation-sensitive paths (timers, concurrency, unmocked network, module mocks order).
+- Follow `references/testing.md` runbook and record diagnosis in progress/handover.
 
 ## Optional TDD mode (only with explicit request)
 

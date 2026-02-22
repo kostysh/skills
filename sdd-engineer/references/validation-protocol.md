@@ -93,6 +93,11 @@ Verify:
 - [ ] Coverage meets project standards
 - [ ] No flaky tests introduced
 
+Coverage checkpoint verification:
+- [ ] Commands from plan/tasks were executed (`test:coverage` or explicit equivalent)
+- [ ] Final-stage coverage checkpoint executed before closure
+- [ ] Coverage report focuses on source files (exclude test sources when toolchain includes them)
+
 ### Phase 4: Specification Drift Detection
 
 Compare implementation against specification:
@@ -112,6 +117,13 @@ For each drift:
 2. Explain why it occurred
 3. Assess if it's acceptable
 4. Get user approval if significant
+
+### Phase 4.1: Deferred Review Follow-up Verification
+
+For findings deferred in review artifacts:
+1. Confirm target `T*` tasks include explicit follow-up entries (verification/gates/progress).
+2. Confirm implementation evidence exists in code/tests/docs.
+3. Mark unresolved follow-ups as open debt in validation report.
 
 ### Phase 5: Security Review
 
@@ -228,7 +240,9 @@ Create `docs/sdd/{TICKET_ID}/H{N}-handover.md`:
 - [ ] All requirements have traceability to code and tests
 - [ ] All acceptance criteria verified
 - [ ] Test suite passes completely
+- [ ] Coverage checkpoints executed and recorded (if package supports coverage)
 - [ ] No unintended specification drift
+- [ ] Deferred review follow-ups are implemented or explicitly carried as open debt
 - [ ] Security checklist complete
 - [ ] Performance requirements met
 - [ ] Edge cases covered

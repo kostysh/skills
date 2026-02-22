@@ -24,6 +24,7 @@ A tasks document (`T{N}-tasks.md`) containing:
 - Dependency graph
 - Parallelization markers
 - Verification criteria per task
+- Status sync policy and progress log entries
 
 ## Process
 
@@ -37,6 +38,11 @@ A tasks document (`T{N}-tasks.md`) containing:
    - Start from the plan's **Required Skills**
    - Add any additional skills needed for task execution
    - Record the decision in the tasks artifact under **Relevant Skills**
+6. **Extract owner-context blockers**:
+   - For every task that requires owner input, add an explicit `Owner Input Required` block.
+   - The block must include complete missing fields, source candidates, and a concrete owner question.
+   - For critical decisions, force `A/B` options with tradeoffs/consequences.
+   - Do not use wildcard asks (for example, `ref_*`).
 
 ### Phase 2: Task Extraction
 
@@ -45,7 +51,7 @@ For each plan step, create one or more tasks:
 ```markdown
 ### T{ID}: {Task Title}
 
-**Status**: pending
+**Status**: ⏳ pending
 **Dependencies**: T{X}, T{Y} (or "none")
 **Parallel**: yes/no
 **Files**: {specific file paths}
@@ -131,11 +137,11 @@ Create overview table:
 
 | ID | Task | Status | Deps | Parallel | Effort |
 |----|------|--------|------|----------|--------|
-| T1 | Create interface | pending | - | yes | small |
-| T2 | Write unit tests | pending | - | yes | medium |
-| T3 | Implement service | pending | T1 | no | medium |
-| T4 | Integration tests | pending | T2,T3 | no | small |
-| T5 | Update docs | pending | T3 | yes | small |
+| T1 | Create interface | ⏳ pending | - | yes | small |
+| T2 | Write unit tests | ⏳ pending | - | yes | medium |
+| T3 | Implement service | ⏳ pending | T1 | no | medium |
+| T4 | Integration tests | ⏳ pending | T2,T3 | no | small |
+| T5 | Update docs | ⏳ pending | T3 | yes | small |
 ```
 
 ### Phase 7: Verification Criteria
@@ -153,7 +159,20 @@ Each task needs clear verification:
 - "Feature works"
 - "No errors"
 
-### Phase 8: Review and Approval
+Coverage rules:
+- If package has `test:coverage`, define explicit coverage checkpoint task(s).
+- Include at least one final-stage coverage checkpoint before task-set closure.
+- For long stages, add intermediate checkpoint(s) after major waves.
+
+### Phase 8: Status Sync Policy
+
+Enforce real-time task status synchronization:
+1. On every task transition, update Task Overview row.
+2. Update the corresponding task section `Status`.
+3. Append a timestamped progress log entry with evidence.
+4. Never batch-update statuses at stage end.
+
+### Phase 9: Review and Approval
 
 Present tasks to user:
 1. Walk through task breakdown
@@ -161,7 +180,7 @@ Present tasks to user:
 3. Verify nothing is missing
 4. **Get explicit approval**
 
-### Phase 9: Write Artifact
+### Phase 10: Write Artifact
 
 Write tasks to `docs/sdd/{TICKET_ID}/T{N}-tasks.md`
 
@@ -177,17 +196,20 @@ Use the [Tasks Template](tasks-template.md).
 - [ ] Task effort estimates are reasonable
 - [ ] No circular dependencies exist
 - [ ] Test tasks precede implementation tasks (only if TDD is requested)
+- [ ] Owner-input blockers use explicit field lists + source candidates + concrete A/B decisions where critical
+- [ ] Coverage checkpoint tasks are defined when package supports coverage commands
+- [ ] Status sync policy is present and progress log is enabled
 - [ ] User has approved the task breakdown
 
 ## Task States
 
 | State | Meaning |
 |-------|---------|
-| pending | Not started |
-| in_progress | Currently being executed |
-| blocked | Waiting on dependency |
-| completed | Done and verified |
-| failed | Attempted but unsuccessful |
+| ⏳ pending | Not started |
+| 🔄 in_progress | Currently being executed |
+| ⛔ blocked | Waiting on dependency |
+| ✅ completed | Done and verified |
+| ❌ failed | Attempted but unsuccessful |
 
 ## Anti-Patterns to Avoid
 
@@ -202,5 +224,5 @@ Use the [Tasks Template](tasks-template.md).
 
 - Tasks may be reordered during execution if dependencies allow
 - Mark tasks blocked immediately when dependencies aren't met
-- Update task status in real-time during implementation
+- Update task status in real-time during implementation (overview + section + progress log)
 - If task scope changes significantly, return to planning

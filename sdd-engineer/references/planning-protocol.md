@@ -67,6 +67,12 @@ For each plan, design:
    - Tools required (explicitly list allowed external tools if needed)
    - Environment setup
    - If the user or requirements mandate lint/format/type-check/coverage, schedule tooling setup as the first implementation step and make later steps depend on it
+   - For owner-dependent inputs, add `Owner Input Required` blocks with:
+     - full missing input list (no wildcards),
+     - why it cannot be derived,
+     - source candidates (files/links/systems/owners),
+     - concrete owner question,
+     - explicit `A/B` options with consequences for critical decisions.
 
 3. **Implementation steps**:
    - Numbered, ordered steps
@@ -78,6 +84,9 @@ For each plan, design:
    - What tests to write
    - When to write them (before implementation if TDD is requested)
    - How to verify success
+   - Coverage cadence with explicit checkpoints:
+     - intermediate checkpoints for long stages,
+     - final-stage checkpoint before closure when package supports coverage command(s).
 
 ### Phase 4: Step Definition
 
@@ -149,6 +158,8 @@ Self-review each plan:
 - Are dependencies clear?
 - Can each step be verified?
 - Is test strategy included?
+- Are owner-input asks concrete and source-backed?
+- Are coverage checkpoints explicit?
 - Is handover step present?
 
 Present to user and **get explicit approval**.
@@ -168,6 +179,8 @@ Use the [Plan Template](plan-template.md).
 - [ ] Dependencies are clearly marked
 - [ ] Each step has verification criteria
 - [ ] Test strategy is included (TDD only if requested)
+- [ ] Owner-input asks are concrete (no wildcards) with source candidates and A/B options where critical
+- [ ] Coverage checkpoints are planned when package supports coverage
 - [ ] Handover step is present
 - [ ] Required skills are listed
 - [ ] No external tool usage without explicit permission

@@ -25,6 +25,7 @@ You need:
 - Updated task statuses
 - Implementation notes
 - Handover summary
+- Coverage checkpoint evidence (when package supports coverage commands)
 
 ## Process
 
@@ -95,6 +96,20 @@ If TDD is not requested, use this lighter loop:
 4. Update task status and notes
 ```
 
+### Task status transition contract (required)
+
+For each task transition, update all three artifacts immediately:
+1. Task Overview row (`⏳` -> `🔄` -> `✅` / `⛔` / `❌`)
+2. Task detail section `Status`
+3. Progress Log with timestamp and concise evidence
+
+Allowed task states:
+- `⏳ pending`
+- `🔄 in_progress`
+- `⛔ blocked`
+- `✅ completed`
+- `❌ failed`
+
 ### Phase 3: Progress Tracking
 
 Maintain real-time status:
@@ -104,11 +119,13 @@ Maintain real-time status:
 
 | Task | Status | Notes |
 |------|--------|-------|
-| T1 | completed | Tests: 3 passing |
-| T2 | in_progress | Writing tests... |
-| T3 | blocked | Waiting on T1 |
-| T4 | pending | - |
+| T1 | ✅ completed | Tests: 3 passing |
+| T2 | 🔄 in_progress | Writing tests... |
+| T3 | ⛔ blocked | Waiting on T1 |
+| T4 | ⏳ pending | - |
 ```
+
+Do not batch-update task states at stage end.
 
 ### Phase 4: Handling Issues
 
@@ -137,6 +154,11 @@ When problems arise:
 3. Work on parallel tasks if available
 4. Escalate if all tasks blocked
 
+**Deferred external review finding**:
+1. Record decision in review artifact.
+2. Immediately add explicit follow-up to target `T*` artifacts (verification/gates/progress).
+3. Keep source and target artifacts synchronized; do not rely on review file alone.
+
 ### Phase 5: Code Quality
 
 During implementation, ensure:
@@ -155,7 +177,15 @@ During implementation, ensure:
 - Run type-check first. If it fails, fix before lint/format.
 - Run lint and format only after type-check passes.
 - Run relevant tests after lint/format.
+- Run coverage checkpoint command(s) when scheduled in tasks/plan and at final-stage closure if available.
 - Do not claim task completion until all required checks pass.
+
+### Coverage cadence (required when available)
+
+- Execute coverage after major implementation waves in long stages.
+- Execute final coverage checkpoint before closing stage/final validation.
+- Use package-native coverage command from artifacts (`test:coverage`) or explicit equivalent.
+- Record command and summary in progress log/handover.
 
 ### Phase 6: Handover Summary
 
@@ -191,6 +221,7 @@ Write to `docs/sdd/{TICKET_ID}/P{N}-plan.summary.md`
 - [ ] Tests written and run per plan (if TDD requested, RED/GREEN/VERIFY followed)
 - [ ] Type-check, lint, and format run in the required order (type-check before lint/format)
 - [ ] All tests passing
+- [ ] Coverage checkpoints executed and recorded (if package supports coverage)
 - [ ] No regressions (existing tests still pass)
 - [ ] Code follows constitution guidelines
 - [ ] Security considerations addressed

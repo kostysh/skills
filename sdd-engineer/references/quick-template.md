@@ -40,15 +40,26 @@ Use this template for `Q{N}-quick.md`.
 2. {Implement ...}
 3. {Verify ...}
 
+## Owner Input Required (if applicable)
+- Missing input: {explicit list, no wildcards}
+- Why not derivable: {reason}
+- Source candidates: {files/links/systems/owners}
+- Question to owner: {single concrete ask}
+- Decision options (critical): `A` {tradeoffs} / `B` {tradeoffs}
+- Blocking task/step: {id}
+
 ## Tasks (Optional)
 | ID | Task | Status | Verification |
 |----|------|--------|--------------|
-| T1 | {task} | pending | {check} |
+| T1 | {task} | ⏳ pending | {check} |
+
+Status legend: `⏳ pending` | `🔄 in_progress` | `⛔ blocked` | `✅ completed` | `❌ failed`
 
 ## Validation
 - [ ] Tests written per plan (if TDD requested, before implementation)
 - [ ] All acceptance criteria verified
 - [ ] Test suite passes
+- [ ] Coverage checkpoint recorded (if package supports coverage command)
 - [ ] No spec drift (or approved drift noted)
 
 ## Results
@@ -66,4 +77,4 @@ Use this template for `Q{N}-quick.md`.
 ## Template Usage Notes
 
 1. **Keep it short** - Quick artifacts should be minimal
-2. **Use emojis for status/highlights** - e.g., ✅ Done, ⚠️ Risk
+2. **Use canonical task emojis** - `⏳`/`🔄`/`⛔`/`✅`/`❌` for status

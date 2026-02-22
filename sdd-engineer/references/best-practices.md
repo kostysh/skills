@@ -140,12 +140,13 @@ Always use `docs/sdd/` as the root for SDD artifacts. At the start of work:
 - If missing, create it before writing any artifacts
 - Keep all artifacts under `docs/sdd/{TICKET_ID}/`
 
-### Use Emojis for Status and Highlights (Optional)
+### Use Emojis for Status and Highlights
 
-Where it improves scanning, add emojis to mark status or emphasize key notes in artifacts.
+Use canonical emojis for task status in SDD task artifacts. For general highlights, use emojis when it improves scanning.
 
 Examples:
-- Status: `✅ Approved`, `🟡 In Review`, `🔴 Blocked`
+- Task status: `⏳ pending`, `🔄 in_progress`, `⛔ blocked`, `✅ completed`, `❌ failed`
+- Document status: `✅ Approved`, `🟡 In Review`, `🔴 Blocked`
 - Highlights: `⚠️ Risk`, `💡 Note`, `✅ Done`
 
 ## Context Management

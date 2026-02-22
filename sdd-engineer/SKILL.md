@@ -42,6 +42,13 @@ description: |
 Before starting any implementation task:
 - Mark tasks that require owner-provided context (business seeds, reference datasets, legal copy, external ids/urls, environment values, policy decisions).
 - Add explicit `Owner Input Required` blocks in `P*` and `T*` for those tasks with exact missing inputs.
+- Use this block shape (no wildcards, no generic asks):
+  - `Missing input` (complete list of required fields/values)
+  - `Why agent cannot derive it`
+  - `Source candidates` (exact files, links, systems, tables, owners)
+  - `Question to owner` (single concrete request)
+  - `Decision options` (`A` or `B`) for critical choices, with consequences/tradeoffs for each option
+  - `Blocking task` (`T*` id that remains blocked)
 - Request and confirm owner input before implementation starts.
 - If input is missing, keep the task in `blocked` state and do not replace missing data with silent assumptions.
 
@@ -110,6 +117,16 @@ At the start of every SDD phase (including /sdd-quick):
 - Keep explicit traceability from requirements to tests
 - Use TDD (RED/GREEN/VERIFY) only when explicitly requested; otherwise follow the plan's testing strategy and typescript-test-engineer guidance
 - Record drift and get approval before proceeding
+- Task status must be synchronized in real time after each task transition:
+  - update Task Overview row,
+  - update task section `Status`,
+  - append progress log entry with timestamp and evidence.
+- Use canonical task status labels with emojis for readability:
+  - `⏳ pending`
+  - `🔄 in_progress`
+  - `⛔ blocked`
+  - `✅ completed`
+  - `❌ failed`
 
 ## Non-negotiable quality gates
 
@@ -125,6 +142,10 @@ At the start of every SDD phase (including /sdd-quick):
   - Server test code: `lint:test:fix`
   - Client package: `format`
 - Do not mark any gate execution as optional in SDD artifacts.
+- Coverage checkpoints are mandatory when package supports coverage command(s):
+  - include explicit `test:coverage` command in SDD artifacts (or explicit equivalent runner command),
+  - run at least one final-stage checkpoint before stage closure,
+  - add intermediate checkpoints for long/multi-wave stages.
 
 ## Required artifact sections (delivery hardening)
 
@@ -146,6 +167,7 @@ For each external review finding/question, record a dedicated subsection `Decisi
 - follow-up reference when deferred.
 - Maintain a review resolution matrix (`finding -> decision -> affected artifacts R/S/P/T -> task refs -> status`) so updates stay synchronized.
 - Do not close a finding until all listed affected artifacts are updated consistently.
+- If a finding is deferred to a later task/stage, immediately add explicit follow-up items to target `T*` artifacts (verification/gates/progress), not only to the review document.
 
 ## Constitution
 
@@ -156,6 +178,9 @@ Ensure `docs/sdd/constitution.md` exists before starting. Use the [Constitution 
 - This skill governs process, artifacts, and approval gates
 - Language and framework skills govern code conventions and API usage (e.g., typescript-engineer, react-spa-engineer)
 - Testing organization and tooling defer to typescript-test-engineer when applicable
+- Coverage interop contract:
+  - `sdd-engineer` defines when coverage checkpoints are mandatory,
+  - `typescript-test-engineer` defines how coverage is executed, interpreted, and debugged.
 
 ## Key resources
 

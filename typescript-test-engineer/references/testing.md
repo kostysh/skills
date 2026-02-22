@@ -238,3 +238,33 @@ Notes:
 - For HTML reports, use an external converter (e.g., `lcov-viewer`).
 - Coverage is a signal, not a goal by itself. Prefer fewer tests with strong assertions over superficial line coverage.
 - In CI, consider a modest coverage threshold as a guardrail (but do not chase percentages at the expense of test quality).
+
+## Coverage cadence
+
+- Use project-native coverage command when available (for example `pnpm -C packages/server test:coverage`).
+- Run at milestone boundaries in long implementations (after major waves).
+- Run a final checkpoint before stage/release closure.
+- Record command + summary so coverage decisions are traceable.
+
+## Source-only coverage policy
+
+Coverage KPI should measure production source, not test files.
+
+- Node test runner:
+  - add `--test-coverage-exclude=test/**` (or your actual test glob) when needed.
+- Vitest:
+  - keep `coverage.exclude` aligned (`**/test/**`, `**/*.test.*`, `**/*.spec.*` as needed).
+- Verify report tables are source-focused before drawing conclusions.
+
+## Runbook: tests pass, coverage fails
+
+1. Re-run exact coverage command from package scripts (do not approximate flags).
+2. Compare command flags and env vars between normal tests and coverage run.
+3. Narrow failure to a single suite under coverage instrumentation.
+4. Inspect instrumentation-sensitive paths:
+   - fake timers / unflushed timers,
+   - concurrency assumptions,
+   - module mock initialization order,
+   - hidden network or filesystem calls.
+5. Fix root cause, then re-run full coverage command.
+6. Record diagnosis and fix in progress/handover notes.

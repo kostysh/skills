@@ -248,6 +248,28 @@ TDD cycle:
 4. THEN claim complete
 ```
 
+## Anti-Pattern 6: Closing a Stage Without Coverage Checkpoints
+
+**The violation:**
+```
+OK Tests are green
+X Coverage was never run after final changes
+"Stage complete"
+```
+
+**Why this is wrong:**
+- Instrumentation can reveal issues hidden in normal test runs
+- You lose visibility into untested branches/error paths
+- Coverage regressions are discovered too late
+
+**The fix:**
+```
+1. Run package-native coverage command (or explicit equivalent)
+2. Ensure report focuses on source files, not tests
+3. Fix high-risk uncovered paths
+4. Record checkpoint result before closure
+```
+
 ## When Mocks Become Too Complex
 
 **Warning signs:**
@@ -279,6 +301,7 @@ TDD cycle:
 | Mock without understanding | Understand dependencies first, mock minimally |
 | Incomplete mocks | Mirror real API completely |
 | Tests as afterthought | TDD - tests first |
+| No final coverage checkpoint | Run and record coverage before closure |
 | Over-complex mocks | Consider integration tests |
 
 ## Red Flags
@@ -289,6 +312,7 @@ TDD cycle:
 - Test fails when you remove mock
 - Can't explain why mock is needed
 - Mocking "just to be safe"
+- No recorded coverage checkpoint at milestone/final closure
 
 ## The Bottom Line
 

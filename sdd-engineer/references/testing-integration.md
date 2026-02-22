@@ -6,6 +6,10 @@
 
 Use the `typescript-test-engineer` skill for test organization, runners, mocks, and coverage strategy. This guide focuses on SDD-specific traceability and how tests map to acceptance criteria.
 
+Coverage interop contract:
+- `sdd-engineer` defines **when** coverage checkpoints are mandatory in plan/tasks/validation artifacts.
+- `typescript-test-engineer` defines **how** to run coverage, interpret reports, and troubleshoot instrumentation-only failures.
+
 ### Default rule
 
 - Tests are required for new behavior.
@@ -13,6 +17,7 @@ Use the `typescript-test-engineer` skill for test organization, runners, mocks, 
 - Use RED/GREEN/VERIFY (TDD) **only when explicitly requested**.
 - Tests must be honest and effective: verify observable behavior/contracts and avoid artificial "always green" assertions.
 - Implementation tasks are incomplete until package quality gates pass (`type-check`, `test:*`, and lint/format as applicable).
+- When package supports coverage command(s), include explicit coverage checkpoints and run a final-stage coverage checkpoint before closure.
 
 ### Optional: RED/GREEN/VERIFY (TDD)
 
