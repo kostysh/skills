@@ -9,10 +9,14 @@ Build and operate Supabase-backed systems with strong security, performance, and
 
 ## Non-negotiables
 - Keep service role keys server-side only; clients use anon/publishable keys.
+- Respect project SDK policy: when a repo mandates `@supabase/supabase-js` only, do not mix direct REST/PostgREST calls or alternative SDKs in runtime code.
 - Validate auth on the server with `auth.getUser()` (not `getSession()`).
 - Enable RLS on all public tables and storage; cache `auth.uid()` via `(select auth.uid())`.
 - Use `getAll`/`setAll` cookie methods with `@supabase/ssr` (avoid deprecated `get/set/remove`).
 - Prefer schema-first migrations: edit `supabase/schemas/*.sql`, then `supabase db diff`.
+- Separate Supabase clients by trust boundary (`anon`, `user`, `service`) and document where bypass-RLS access is allowed.
+- Build user-scoped clients per request and inject user JWT via request headers during client creation (avoid shared mutable auth state in server runtimes).
+- Default storage bucket provisioning to idempotent SQL migrations (not manual dashboard/runtime auto-create) unless the project explicitly chooses another ops model.
 - For Edge Functions, use `Deno.serve()`, versioned imports, and write only to `/tmp`.
 
 ## Auth email/recovery troubleshooting checklist
@@ -34,6 +38,21 @@ Build and operate Supabase-backed systems with strong security, performance, and
 5. Add retries/backoff/idempotency for writes; cache or batch hot reads.
 6. Configure local dev, CI, and multi-env secrets.
 7. Prepare production checklist and incident runbook.
+
+## Client model (anon / user / service)
+
+- `anon` client: publishable key without JWT; use only for endpoints intentionally exposed by RLS to unauthenticated reads.
+- `user` client: publishable key + end-user JWT from the incoming request (cookie/header) for RLS-scoped operations.
+- `service` client: service role key for internal/admin tasks only; never pass through from browser/client code.
+- Prefer request-scoped client factories to avoid cross-request auth leakage in long-lived runtimes.
+- For each endpoint, define expected trust level first, then choose the matching client type.
+
+## Storage bucket provisioning
+
+- Treat bucket config as infrastructure and manage it via migrations.
+- Use idempotent statements (`ON CONFLICT` updates) so stage/prod rollout is repeatable.
+- Keep bucket identifiers stable across environments unless there is an explicit isolation requirement.
+- Apply policy/config changes via append-only migrations and avoid dashboard-only drift.
 
 ## Database introspection (Use MCP Supabase - verified path)
 Use this exact sequence so you don't guess or probe unsupported endpoints:
