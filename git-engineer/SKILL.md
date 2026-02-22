@@ -69,6 +69,15 @@ Example: `feat(server): ✨ add output validation middleware`
 5. Write a Conventional Commit message.
 6. Confirm status is clean.
 
+## Docs-only commit workflow
+
+Use this flow when the user asks to commit only documentation/artifacts:
+1. Identify the target docs paths explicitly (for example `docs/**`).
+2. Stage only those files via explicit `git add <path>` commands (avoid `git add .`).
+3. Verify staged files with `git diff --cached --name-only` and ensure no non-doc files are included.
+4. Use `docs:` Conventional Commit type (scope optional by repo rules).
+5. Keep unrelated modified files unstaged for a later commit.
+
 ## Git worktrees (isolation workflow)
 
 Use when starting feature work that needs isolation from the current workspace or before executing implementation plans.
