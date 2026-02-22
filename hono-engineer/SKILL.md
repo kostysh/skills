@@ -11,9 +11,11 @@ Applies to any Hono-based API project. If the current project already has establ
 ## Non-negotiables (baseline)
 - Keep a single app factory (commonly `src/index.ts`) and mount routes via `app.route()`.
 - Preserve a stable global middleware order: `requestId` → `accessLog` → `runtimeConfig` → `secureHeaders` → `cors` → `requestLimits` (adapt names to your project).
+- Keep global request body limits conservative; use route-specific overrides for known large-payload endpoints.
 - Centralize error handling in `app.onError()` (not a regular middleware). Use a try/catch wrapper only when needed for structured error logging.
 - Validate env/config with a schema (Zod recommended) and expose parsed config via context (avoid raw env access in handlers).
 - Validate all request inputs and outputs against schemas. For output validation, use a response helper, per-route output middleware, or contract tests (see `references/validation-openapi.md`).
+- For rich HTML inputs, sanitize server-side before persistence using an explicit allowlist policy (default: `sanitize-html` when runtime-compatible).
 - Errors use Problem Details. Never leak secrets or raw input in error bodies.
 - Logs are structured JSON and must be redacted. Never log tokens, cookies, or bodies.
 - Include a `requestId` in responses, error payloads, logs, and upstream calls.
@@ -49,6 +51,13 @@ Design to work both for a greenfield project and for incremental adoption in an 
 
 ## Platform constraints
 If using Cloudflare Workers or another edge runtime, review `references/workers-platform.md` and adjust for platform limits, caching semantics, and async work handling.
+
+## Payload and content guardrails
+
+- Keep a strict global payload limit to reduce abuse surface.
+- Add endpoint-level limit increases only where required by explicit contracts (for example document upload endpoints).
+- Sanitize untrusted HTML on write-path as a minimum; optionally re-sanitize on read-path as defense in depth.
+- Verify sanitizer compatibility with the target runtime (Node vs Workers) before rollout.
 
 ## Environment and secrets
 - Add new env keys to your config schema and map them into a runtime config object.
