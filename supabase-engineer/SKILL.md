@@ -54,27 +54,44 @@ Build and operate Supabase-backed systems with strong security, performance, and
 - Keep bucket identifiers stable across environments unless there is an explicit isolation requirement.
 - Apply policy/config changes via append-only migrations and avoid dashboard-only drift.
 
-## Database introspection (Use MCP Supabase - verified path)
-Use this exact sequence so you don't guess or probe unsupported endpoints:
-1. `mcp__supabase__list_projects` — confirm access and get the `project_id`.
-2. `mcp__supabase__list_tables` — fetch schema; this already includes columns, PKs, and FKs.
-3. `mcp__supabase__execute_sql` — read-only queries only (e.g., SELECTs) for deeper inspection.
+## Database introspection (MCP workflow)
+Use this exact sequence for schema discovery:
+1. `mcp__supabase__list_projects` (if account-scoped access is available) — identify project.
+2. `mcp__supabase__list_tables` — fetch schema, columns, PKs, and FKs.
+3. `mcp__supabase__execute_sql` — read-only inspection queries only (SELECT).
 
-Additional introspection tools (use when relevant):
+Additional tools when needed:
 - `mcp__supabase__list_extensions` — enabled Postgres extensions.
 - `mcp__supabase__list_migrations` — applied migrations/versions.
-- `mcp__supabase__get_advisors` — security/perf advisories and recommendations.
-- `mcp__supabase__get_project` — project details (region, Postgres version).
+- `mcp__supabase__get_advisors` — security/perf advisories.
+- `mcp__supabase__get_project` — project metadata (region, Postgres version).
 
-Notes:
-- Do **not** call `resources/list` for Supabase MCP; it is not supported here.
-- If any MCP call fails, stop and ask the user to confirm auth/connection for Supabase MCP.
+For MCP transport behavior, endpoint constraints, and error-handling rules, see `Supabase MCP API behavior (critical)` below.
 
-## Finding other MCP Supabase tools (fast path)
-If you need a tool outside this list, use the tool registry (not MCP resources):
-1. Scan the available `mcp__supabase__*` tools in the current session.
-2. Prefer the most specific tool first (e.g., list/get over execute SQL).
-3. If unsure, ask the user which operation they want (schema, data, functions, logs, etc.).
+## Supabase MCP API behavior (critical)
+
+Supabase MCP is a **remote MCP endpoint**, not a REST API. Treat it as MCP Streamable HTTP/JSON-RPC transport:
+
+- Endpoint shape: `https://mcp.supabase.com/mcp` (optionally with query params).
+- Query options are transport-level server config:
+  - `project_ref=<id>`: scope to one project.
+  - `read_only=true`: force read-only DB execution.
+  - `features=...`: enable selected tool groups.
+- Client-to-server MCP messages are JSON-RPC over **HTTP POST**.
+- Raw HTTP `GET` to the MCP endpoint is not a valid generic tool call pattern and often returns `405 Method not allowed`.
+- Do not manually craft ad-hoc HTTP calls to MCP endpoints when MCP tools are available in the runtime.
+
+Practical rules for agents:
+
+1. Prefer runtime MCP tools (`mcp__<server>__*`) instead of direct `curl`/REST probing.
+2. Do not infer capability by probing random paths; use actual tool calls and handle tool errors.
+3. If project-scoped (`project_ref` set), expect account-level tools (e.g., `list_projects`) to be unavailable by design.
+4. In CI/non-interactive setups, PAT auth via `Authorization: Bearer ...` is supported; browser OAuth/dynamic registration is default for interactive clients.
+
+References (official):
+- Supabase MCP docs: https://supabase.com/docs/guides/getting-started/mcp
+- Supabase MCP server README: https://github.com/supabase-community/supabase-mcp
+- MCP transport spec (Streamable HTTP): https://modelcontextprotocol.io/specification/2025-06-18/basic/transports
 
 ## Reference map
 Read only what you need:
