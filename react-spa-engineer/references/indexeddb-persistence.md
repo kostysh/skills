@@ -19,6 +19,18 @@ Client-side persistence layer for React SPA using IndexedDB via Dexie.
 - Offline-first functionality
 - Real-time UI updates on data changes
 
+### Persistence Layer Contract
+
+| Layer | Source of truth | Responsibility |
+|------|------------------|----------------|
+| URL | URL params/path | Link-reproducible page state |
+| Zustand | In-memory store | Runtime UI state only |
+| Dexie | IndexedDB | Reload-safe local persistence and local cache |
+| TanStack Query | Server runtime cache | Network lifecycle and server state access |
+
+**Rule**: Components, UI hooks, and Zustand stores must not call HTTP directly for app data.
+Server calls are executed via TanStack Query `queryFn` / `mutationFn`.
+
 ---
 
 ## Setup
@@ -198,9 +210,11 @@ useLiveQuery<T>(
 
 ---
 
-## 4. Key-Value Meta Store Pattern
+## 4. Key-Value Meta Store Pattern (App-Level Preferences)
 
-**Rule: Use a meta table for app-level settings and state.**
+**Rule: Use a meta table for non-sensitive app-level preferences and bootstrap hints.**
+
+Do not store tenant/user business cache in this table. Use scoped cache tables with `tenantId`/`userId`.
 
 ```tsx
 // db.ts
@@ -482,19 +496,20 @@ await db.transaction('rw', [db.users, db.posts], async () => {
 
 ```tsx
 import { useQuery } from '@tanstack/react-query';
-import { getActiveChatId, setActiveChatId } from './db';
+import { getActiveChatId, setActiveChatId } from './db/meta';
+import { bootstrapKeys } from './keys';
 import { createChat, listChats } from './api';
 
-export const useAppBootstrap = () => {
+export const useAppBootstrap = (tenantId: string, userId: string) => {
   return useQuery({
-    queryKey: ['app-bootstrap'],
+    queryKey: bootstrapKeys.session({ tenantId, userId }),
     staleTime: Infinity,
     queryFn: async () => {
       // 1. Check persisted state
-      const persistedChatId = await getActiveChatId();
+      const persistedChatId = await getActiveChatId({ tenantId, userId });
 
       // 2. Validate with server
-      const chats = await listChats();
+      const chats = await listChats({ tenantId, userId });
       const canReuse = persistedChatId !== null &&
         chats.data.some((c) => c.chatId === persistedChatId);
 
@@ -503,8 +518,8 @@ export const useAppBootstrap = () => {
       }
 
       // 3. Create new and persist
-      const chat = await createChat();
-      await setActiveChatId(chat.chatId);
+      const chat = await createChat({ tenantId, userId });
+      await setActiveChatId({ tenantId, userId, chatId: chat.chatId });
       return { chatId: chat.chatId, reused: false };
     },
   });
@@ -533,6 +548,104 @@ src/
 
 ---
 
+## Cache Metadata and Isolation Contract
+
+**Rule: Cache entries must be context-scoped and self-describing.**
+
+```tsx
+type CacheEntry<TData> = {
+  cacheKey: string;
+  namespace: 'dictionary' | 'entity-list' | 'entity-detail' | 'derived';
+  tenantId: string;
+  userId?: string;
+  loadedAt: string; // ISO datetime
+  data: TData;
+};
+
+class AppDb extends Dexie {
+  cache!: Table<CacheEntry<unknown>, string>;
+
+  constructor() {
+    super('my-app');
+    this.version(1).stores({
+      cache: '&cacheKey, namespace, tenantId, userId, [tenantId+namespace], [tenantId+userId]',
+    });
+  }
+}
+```
+
+### queryKey/cacheKey Alignment
+
+**Rule: Build `queryKey` and `cacheKey` from the same semantic components.**
+
+```tsx
+const dictionaryKeys = {
+  all: (tenantId: string, userId: string) =>
+    ['dictionary', tenantId, userId] as const,
+  byName: (tenantId: string, userId: string, name: string, locale: string) =>
+    [...dictionaryKeys.all(tenantId, userId), name, { locale }] as const,
+};
+
+const stableStringify = (value: unknown): string =>
+  JSON.stringify(value, (_, v) =>
+    v && typeof v === 'object' && !Array.isArray(v)
+      ? Object.keys(v as Record<string, unknown>)
+          .sort()
+          .reduce<Record<string, unknown>>((acc, key) => {
+            acc[key] = (v as Record<string, unknown>)[key];
+            return acc;
+          }, {})
+      : v
+  );
+
+const toCacheKey = (queryKey: readonly unknown[]) => stableStringify(queryKey);
+```
+
+### TTL Read Flow (On-demand Passive Refresh)
+
+1. Build key from namespace + access context + params.
+2. Try Dexie lookup by exact `cacheKey`.
+3. If miss: fetch through TanStack Query, write Dexie, return data.
+4. If hit and `TTL` valid: return cache immediately.
+5. If hit and `TTL` expired: refetch via TanStack Query, update Dexie, return fresh data.
+
+Store TTL configuration centrally (app config/env); allow per-dictionary overrides when required.
+
+### Invalidation After Mutations
+
+**Rule: Invalidate runtime and persistent caches together.**
+
+```tsx
+const mutation = useMutation({
+  mutationFn: updateOrder,
+  onSuccess: async (_, vars) => {
+    await db.cache
+      .where('[tenantId+namespace]')
+      .equals([vars.tenantId, 'entity-list'])
+      .delete();
+
+    queryClient.invalidateQueries({
+      queryKey: orderKeys.lists({ tenantId: vars.tenantId, userId: vars.userId }),
+    });
+    queryClient.invalidateQueries({
+      queryKey: orderKeys.detail(
+        { tenantId: vars.tenantId, userId: vars.userId },
+        vars.orderId
+      ),
+    });
+  },
+});
+```
+
+### Context Switch Cleanup
+
+On logout or tenant/user switch:
+- delete Dexie entries for old `tenantId`/`userId`;
+- reset Zustand runtime state;
+- clear related TanStack Query runtime cache entries.
+
+---
+
 ## Critical Rules
 
 | Rule | Description |
@@ -544,6 +657,10 @@ src/
 | Deterministic IDs | Use for ephemeral items (typing indicators) |
 | Transactions | Use for multi-table atomic operations |
 | Validate events | Parse & validate before persisting real-time data |
+| Metadata required | Persist `cacheKey`, context (`tenantId`/`userId`), and `loadedAt` |
+| Scoped keys | Keep strict tenant/user isolation in keys and indexes |
+| Dual invalidation | Update/invalidate Dexie and Query caches together |
+| Context cleanup | Clear scoped Dexie + Query cache + runtime store on context switch |
 
 ---
 
@@ -556,6 +673,10 @@ src/
 | useEffect for queries | Manual subscription | Use `useLiveQuery` |
 | Storing in memory | Lost on refresh | Persist to IndexedDB |
 | No validation | Invalid data in DB | Validate with Zod before put |
+| Cache keys without context | Cross-tenant/user leakage | Include `tenantId` and `userId` in key/index |
+| Query key and cache key drift | Invalidation misses, duplicate cache lines | Generate both via centralized key factories |
+| Mutations without persistent invalidation | Stale IndexedDB after server update | Invalidate/update Dexie entries in mutation flow |
+| No cleanup on logout/switch | Previous account data reused | Scope-delete Dexie and reset runtime caches |
 
 ---
 
@@ -564,3 +685,4 @@ src/
 - **Dexie.js**: https://dexie.org/
 - **dexie-react-hooks**: https://dexie.org/docs/dexie-react-hooks/useLiveQuery()
 - **IndexedDB API**: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
+- **Persistence Architecture**: [persistence-architecture.md](persistence-architecture.md)

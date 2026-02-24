@@ -37,6 +37,7 @@ function App() {
 
 ```tsx
 import { useQuery } from '@tanstack/react-query';
+import { api } from './api-client';
 
 interface User {
   id: number;
@@ -59,11 +60,7 @@ function UserProfile({ userId }: UserProfileProps) {
     refetch,
   } = useQuery({
     queryKey: ['user', userId],  // Must be array
-    queryFn: async () => {
-      const response = await fetch(`/api/users/${userId}`);
-      if (!response.ok) throw new Error('Failed to fetch user');
-      return response.json() as Promise<User>;
-    },
+    queryFn: () => api.users.get(userId),
     staleTime: 1000 * 60 * 5,  // Consider fresh for 5 min
   });
 
@@ -99,37 +96,67 @@ if (data) return <Content data={data} />;
 
 ## 2. Query Keys
 
-**Rule: Query keys must be arrays and should be hierarchical.**
+**Rules**:
+- Query keys MUST be stable array/tuple structures.
+- Keys MUST be hierarchical: `domain / type / access context / params`.
+- For user/tenant data, include `tenantId` and `userId` (when applicable).
+- Include every parameter that changes result: filters, sort, pagination, search, locale, projection.
+- Use centralized key factories only; no ad-hoc key construction in components.
+- Keep query key semantics aligned with Dexie `cacheKey` semantics.
 
 ```tsx
-// Simple key
-queryKey: ['todos']
+type Access = { tenantId: string; userId?: string };
+type OrderFilters = { status?: 'new' | 'paid'; search?: string };
+type Sort = { by: 'createdAt' | 'total'; dir: 'asc' | 'desc' };
 
-// With parameters (hierarchical)
-queryKey: ['todos', { status, page }]
+const canonicalize = <T extends Record<string, unknown>>(value: T): T =>
+  Object.keys(value)
+    .sort()
+    .reduce((acc, key) => {
+      acc[key as keyof T] = value[key] as T[keyof T];
+      return acc;
+    }, {} as T);
 
-// Nested resources
-queryKey: ['users', userId, 'posts']
-queryKey: ['users', userId, 'posts', postId, 'comments']
-
-// Query key factory pattern (recommended)
-const todoKeys = {
-  all: ['todos'] as const,
-  lists: () => [...todoKeys.all, 'list'] as const,
-  list: (filters: Filters) => [...todoKeys.lists(), filters] as const,
-  details: () => [...todoKeys.all, 'detail'] as const,
-  detail: (id: number) => [...todoKeys.details(), id] as const,
+const orderKeys = {
+  all: (access: Access) =>
+    ['orders', access.tenantId, access.userId ?? 'anon'] as const,
+  lists: (access: Access) => [...orderKeys.all(access), 'list'] as const,
+  list: (
+    access: Access,
+    params: {
+      filters: OrderFilters;
+      sort: Sort;
+      page: number;
+      locale: string;
+    }
+  ) =>
+    [
+      ...orderKeys.lists(access),
+      canonicalize({
+        filters: canonicalize(params.filters),
+        sort: canonicalize(params.sort),
+        page: params.page,
+        locale: params.locale,
+      }),
+    ] as const,
+  details: (access: Access) => [...orderKeys.all(access), 'detail'] as const,
+  detail: (access: Access, id: string) => [...orderKeys.details(access), id] as const,
 };
 
 // Usage
 useQuery({
-  queryKey: todoKeys.detail(todoId),
-  queryFn: () => fetchTodo(todoId),
+  queryKey: orderKeys.list(
+    { tenantId, userId },
+    { filters, sort, page, locale }
+  ),
+  queryFn: () => api.orders.list({ tenantId, userId, filters, sort, page, locale }),
 });
 
-// Invalidation
-queryClient.invalidateQueries({ queryKey: todoKeys.lists() });
+// Prefix invalidation by namespace + access context
+queryClient.invalidateQueries({ queryKey: orderKeys.lists({ tenantId, userId }) });
 ```
+
+See [Persistence Architecture](persistence-architecture.md) for alignment rules between `queryKey` and Dexie `cacheKey`.
 
 ---
 
@@ -165,15 +192,7 @@ function AddTodo() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (newTodo: CreateTodoInput) => {
-      const response = await fetch('/api/todos', {
-        method: 'POST',
-        body: JSON.stringify(newTodo),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (!response.ok) throw new Error('Failed to create todo');
-      return response.json();
-    },
+    mutationFn: (newTodo: CreateTodoInput) => api.todos.create(newTodo),
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['todos'] });

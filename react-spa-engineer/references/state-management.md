@@ -14,7 +14,16 @@ Cross-cutting State (Context API)
 Global Client State (Zustand)
 ```
 
-**Persistence is orthogonal**: persist only what improves UX. Prefer IndexedDB (Dexie) for structured/offline data; use localStorage/sessionStorage only for small settings.
+**Persistence contract**: define source of truth per layer. Use URL for link-reproducible page state, Zustand for runtime UI state, Dexie (IndexedDB) for long-lived client persistence, and TanStack Query for all server state interactions.
+
+### Mandatory Layer Mapping
+
+| Layer | Source of truth | Typical data |
+|------|------------------|--------------|
+| URL state | URL (`path` + `search`) | Filters, sort, pagination, search, view mode |
+| Runtime UI state | Zustand | Modal open state, temporary selection, in-progress UI flags |
+| Client persistence | Dexie (IndexedDB) | Drafts, wizard progress, dictionary cache, local cache |
+| Server state | Server via TanStack Query | Business entities and remote reference data |
 
 ---
 
@@ -177,7 +186,7 @@ const [state, dispatch] = useReducer(
 // 1. Create context with type
 interface AuthContextType {
   user: User | null;
-  login: (credentials: Credentials) => Promise<void>;
+  login: (nextUser: User) => void;
   logout: () => void;
 }
 
@@ -191,9 +200,10 @@ interface AuthProviderProps {
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = useCallback(async (credentials: Credentials) => {
-    const response = await authApi.login(credentials);
-    setUser(response.user);
+  // Server auth calls live in TanStack Query mutation hooks.
+  // Context stores only runtime auth snapshot.
+  const login = useCallback((nextUser: User) => {
+    setUser(nextUser);
   }, []);
 
   const logout = useCallback(() => {
@@ -386,75 +396,81 @@ function BearInfo() {
 }
 ```
 
-### Async Actions
+### Runtime Actions (No Direct Server Calls in Store)
 
 ```tsx
-interface TodoState {
-  todos: Todo[];
-  loading: boolean;
-  error: string | null;
-  fetchTodos: () => Promise<void>;
-  addTodo: (text: string) => Promise<void>;
+interface TodoUiState {
+  isCreateModalOpen: boolean;
+  selectedTodoId: string | null;
+  optimisticIds: string[];
+  setCreateModalOpen: (open: boolean) => void;
+  selectTodo: (id: string | null) => void;
+  addOptimisticId: (id: string) => void;
+  removeOptimisticId: (id: string) => void;
 }
 
-const useTodoStore = create<TodoState>()((set, get) => ({
-  todos: [],
-  loading: false,
-  error: null,
-
-  fetchTodos: async () => {
-    set({ loading: true, error: null });
-    try {
-      const todos = await api.getTodos();
-      set({ todos, loading: false });
-    } catch (error) {
-      set({ error: 'Failed to fetch todos', loading: false });
-    }
-  },
-
-  addTodo: async (text) => {
-    const optimisticTodo = { id: Date.now(), text, completed: false };
-
-    // Optimistic update
-    set((state) => ({ todos: [...state.todos, optimisticTodo] }));
-
-    try {
-      const newTodo = await api.createTodo(text);
-      // Replace optimistic with real
-      set((state) => ({
-        todos: state.todos.map((t) =>
-          t.id === optimisticTodo.id ? newTodo : t
-        ),
-      }));
-    } catch (error) {
-      // Rollback on error
-      set((state) => ({
-        todos: state.todos.filter((t) => t.id !== optimisticTodo.id),
-        error: 'Failed to add todo',
-      }));
-    }
-  },
+const useTodoUiStore = create<TodoUiState>()((set) => ({
+  isCreateModalOpen: false,
+  selectedTodoId: null,
+  optimisticIds: [],
+  setCreateModalOpen: (open) => set({ isCreateModalOpen: open }),
+  selectTodo: (id) => set({ selectedTodoId: id }),
+  addOptimisticId: (id) =>
+    set((state) => ({ optimisticIds: [...state.optimisticIds, id] })),
+  removeOptimisticId: (id) =>
+    set((state) => ({
+      optimisticIds: state.optimisticIds.filter((x) => x !== id),
+    })),
 }));
+
+// Server IO belongs to TanStack Query hooks/services.
+function useTodoFeature(tenantId: string, userId: string) {
+  const queryClient = useQueryClient();
+  const addOptimisticId = useTodoUiStore((s) => s.addOptimisticId);
+  const removeOptimisticId = useTodoUiStore((s) => s.removeOptimisticId);
+
+  const todosQuery = useQuery({
+    queryKey: todoKeys.list({ tenantId, userId, filters: {} }),
+    queryFn: () => api.todos.list({ tenantId, userId }),
+  });
+
+  const createMutation = useMutation({
+    mutationFn: (input: { text: string }) =>
+      api.todos.create({ tenantId, userId, ...input }),
+    onMutate: async () => {
+      const optimisticId = `tmp-${crypto.randomUUID()}`;
+      addOptimisticId(optimisticId);
+      return { optimisticId };
+    },
+    onSettled: (_data, _error, _vars, ctx) => {
+      if (ctx?.optimisticId) removeOptimisticId(ctx.optimisticId);
+      queryClient.invalidateQueries({ queryKey: todoKeys.lists({ tenantId, userId }) });
+    },
+  });
+
+  return { todosQuery, createMutation };
+}
 ```
 
 ---
 
-## 5. Persistence (LocalStorage vs IndexedDB)
+## 5. Persistence Layer Contract
 
-**Rule: Persist deliberately. Keep server state in TanStack Query; persist client state and offline data when it improves UX.**
+**Rule: Persist by state semantics, not by convenience.**
 
-**Use localStorage/sessionStorage when:**
-- Small key-value settings (theme, locale, last tab)
-- No offline requirements
-- Data size is tiny and simple
+| State type | Storage | Why |
+|------------|---------|-----|
+| Link-reproducible page state | URL | Restores on direct link open and reload |
+| Runtime UI state | Zustand | Fast in-memory interaction state |
+| Long-lived client data | Dexie (IndexedDB) | Survives reload/navigation, supports structured cache |
+| Server business data | TanStack Query + server | Canonical source with request lifecycle and retries |
 
-**Use IndexedDB (Dexie) when:**
-- Structured data, collections, or indexes are needed
-- Data size exceeds localStorage limits
-- Offline-first or reliable persistence matters
-- UI should react to data changes
+**Do not use localStorage/sessionStorage as primary app persistence.**
+Use them only for tiny, non-critical preferences when URL/Dexie are not appropriate.
 
-**Reference**: See [IndexedDB Persistence](indexeddb-persistence.md) for Dexie schemas, `useLiveQuery`, and offline patterns.
+**References**:
+- [Persistence Architecture](persistence-architecture.md)
+- [IndexedDB Persistence](indexeddb-persistence.md)
 
 ---
 
@@ -462,10 +478,11 @@ const useTodoStore = create<TodoState>()((set, get) => ({
 
 | Scenario | Solution |
 |----------|----------|
+| Must be reproducible from link/reload | URL state (`search params`/route params) |
 | Single component, simple value | `useState` |
 | Single component, complex logic | `useReducer` |
 | Few components, parent-child | Lift state + props |
 | Auth, theme, locale | Context API |
 | Many components, frequent updates | Zustand |
 | Server data | TanStack Query (see data-fetching.md) |
-| Offline or structured persistence | IndexedDB (Dexie) + `useLiveQuery` |
+| Drafts/cache/reference data across reload | IndexedDB (Dexie) + `useLiveQuery` |

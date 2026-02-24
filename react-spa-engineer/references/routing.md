@@ -6,6 +6,8 @@
 
 **Package note**: For React Router v7, prefer installing/importing from `react-router`. `react-router-dom` is a compatibility re-export; avoid mixing both.
 
+**Project policy**: Server reads/mutations must go through TanStack Query. In examples below, direct loader calls are conceptual shortcuts; production code should route IO through Query `queryFn` / `mutationFn` and `queryClient`.
+
 **Component vs element**: Default to `Component` in route objects; use `element` only for inline composition/props. Never set both on the same route.
 
 ### Setup
@@ -281,115 +283,72 @@ function UserProfile() {
 
 ---
 
-## 5. Form vs useFetcher
+## 5. Form vs useFetcher (Query-First Policy)
 
-### Form for Navigation Mutations
+### Form for URL Navigation State
 
-**Rule: Use Form when mutation should navigate to new page.**
+**Rule: Use `<Form method="get">` for URL updates, not for server mutations.**
 
 ```tsx
-import { Form, redirect } from 'react-router';
+import { Form } from 'react-router';
 
-// Route with action
-{
-  path: 'users/new',
-  Component: NewUserForm,
-  action: async ({ request }) => {
-    const formData = await request.formData();
-    const user = await createUser({
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-    });
-    return redirect(`/users/${user.id}`);
-  },
-}
-
-// Component
-function NewUserForm() {
+function OrdersFilterForm() {
   return (
-    <Form method="post">
-      <input name="name" placeholder="Name" required />
-      <input name="email" type="email" placeholder="Email" required />
-      <button type="submit">Create User</button>
+    <Form method="get" replace>
+      <input name="search" placeholder="Search orders" />
+      <select name="status" defaultValue="all">
+        <option value="all">All</option>
+        <option value="new">New</option>
+        <option value="paid">Paid</option>
+      </select>
+      <button type="submit">Apply</button>
     </Form>
   );
 }
 ```
 
-### useFetcher for Non-Navigation Mutations
+### Server Mutations: `useMutation` + Navigate/Invalidate
 
-**Rule: Use useFetcher when mutation shouldn't change URL (inline edits, favorites, etc.).**
+**Rule: If action touches server data, execute it through TanStack Query mutation flow.**
 
 ```tsx
-import { useFetcher } from 'react-router';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 
-// Route action
-{
-  path: 'todos/:todoId',
-  action: async ({ request, params }) => {
-    const formData = await request.formData();
-    const intent = formData.get('intent');
+function NewUserForm() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-    if (intent === 'toggle') {
-      await toggleTodo(params.todoId!);
-    } else if (intent === 'delete') {
-      await deleteTodo(params.todoId!);
-    }
+  const createUserMutation = useMutation({
+    mutationFn: (input: { name: string; email: string }) =>
+      api.users.create(input),
+    onSuccess: (user) => {
+      queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+      navigate(`/users/${user.id}`);
+    },
+  });
 
-    return { ok: true };
-  },
-}
-
-// Component - stays on same page
-interface TodoItemProps {
-  todo: Todo;
-}
-
-function TodoItem({ todo }: TodoItemProps) {
-  const fetcher = useFetcher();
-
-  const isToggling = fetcher.state !== 'idle' &&
-    fetcher.formData?.get('intent') === 'toggle';
-
-  return (
-    <div className={isToggling ? 'opacity-50' : ''}>
-      <fetcher.Form method="post" action={`/todos/${todo.id}`}>
-        <input type="hidden" name="intent" value="toggle" />
-        <button type="submit">
-          {todo.completed ? 'Undo' : 'Complete'}
-        </button>
-      </fetcher.Form>
-
-      <span>{todo.title}</span>
-
-      <fetcher.Form method="post" action={`/todos/${todo.id}`}>
-        <input type="hidden" name="intent" value="delete" />
-        <button type="submit">Delete</button>
-      </fetcher.Form>
-    </div>
-  );
+  return <UserForm onSubmit={(values) => createUserMutation.mutate(values)} />;
 }
 ```
 
-### useFetcher.load for Data Without Navigation
+### Non-navigation Data Reads
+
+**Rule: Use TanStack Query for route-local reads instead of `fetcher.load` HTTP calls.**
 
 ```tsx
-function SearchResults() {
-  const fetcher = useFetcher<SearchData>();
+function SearchResults({ tenantId, userId }: { tenantId: string; userId: string }) {
+  const [searchParams] = useSearchParams();
+  const q = searchParams.get('q') ?? '';
 
-  useEffect(() => {
-    fetcher.load('/api/search?q=react');
-  }, []);
+  const searchQuery = useQuery({
+    queryKey: searchKeys.list({ tenantId, userId, q }),
+    queryFn: () => api.search.list({ tenantId, userId, q }),
+    enabled: q.length > 0,
+  });
 
-  if (fetcher.state === 'loading') return <Spinner />;
-
-  return (
-    <ul>
-      {fetcher.data?.results.map((result) => (
-        <li key={result.id}>{result.title}</li>
-      ))}
-    </ul>
-  );
+  if (searchQuery.isPending) return <Spinner />;
+  return <ResultsList items={searchQuery.data?.results ?? []} />;
 }
 ```
 
@@ -423,7 +382,10 @@ export function requireAdmin() {
   Component: Dashboard,
   loader: async () => {
     const user = requireAuth();
-    const data = await fetchDashboardData(user.id);
+    const data = await queryClient.ensureQueryData({
+      queryKey: dashboardKeys.detail({ tenantId: user.tenantId, userId: user.id }),
+      queryFn: () => api.dashboard.get({ tenantId: user.tenantId, userId: user.id }),
+    });
     return { user, data };
   },
 }
@@ -472,6 +434,46 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   ),
 }
 ```
+
+---
+
+## URL State Contract
+
+**Rule: If page state must be shareable/reload-safe, URL is the source of truth.**
+
+Keep in URL:
+- filters;
+- sorting;
+- pagination;
+- search;
+- view mode.
+
+```tsx
+import { useMemo } from 'react';
+import { useSearchParams } from 'react-router';
+
+function OrdersPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // URL -> UI derivation (source of truth)
+  const page = Number(searchParams.get('page') ?? '1');
+  const search = searchParams.get('search') ?? '';
+  const view = searchParams.get('view') ?? 'table';
+
+  const setFilters = (next: { page?: number; search?: string; view?: string }) => {
+    const merged = new URLSearchParams(searchParams);
+    if (next.page !== undefined) merged.set('page', String(next.page));
+    if (next.search !== undefined) merged.set('search', next.search);
+    if (next.view !== undefined) merged.set('view', next.view);
+    setSearchParams(merged, { replace: true });
+  };
+
+  const uiState = useMemo(() => ({ page, search, view }), [page, search, view]);
+  return <OrdersScreen state={uiState} onChange={setFilters} />;
+}
+```
+
+Do not duplicate this state in independent in-memory stores as a second source of truth.
 
 ---
 
@@ -565,7 +567,10 @@ function ErrorPage() {
       Component: UserDetail,
       ErrorBoundary: UserError, // Route-specific error
       loader: async ({ params }) => {
-        const user = await fetchUser(params.userId!);
+        const user = await queryClient.ensureQueryData({
+          queryKey: userKeys.detail(params.userId!),
+          queryFn: () => api.users.get(params.userId!),
+        });
         if (!user) {
           throw new Response('User not found', { status: 404 });
         }
@@ -585,8 +590,8 @@ function ErrorPage() {
 3. **`:paramName` for dynamic segments** - Always strings, parse if needed
 4. **`*` for catch-all routes** - 404 pages, file browsers
 5. **Loaders over useEffect** - Data ready before component mounts
-6. **Form for navigation mutations** - Redirects after submit
-7. **useFetcher for inline mutations** - Stays on same page
+6. **`Form method="get"` for URL state** - Search/filter/pagination in URL
+7. **Server mutations via TanStack Query** - `useMutation` + query invalidation/navigation
 8. **Protected routes via loaders** - Check auth, throw redirect
 9. **NavLink for active styling** - isActive prop for current route
 10. **errorElement for error handling** - Per-route or global
