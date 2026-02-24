@@ -56,8 +56,10 @@ Present the quick artifact and get **explicit approval** before coding.
 
 1. If TDD is requested, follow RED/GREEN/VERIFY
 2. Update status and notes in the quick artifact
-3. Record test results and coverage notes
-4. If package supports coverage command(s), run and record final coverage checkpoint before closure
+3. If task tracking is used, log transitions with the canonical schema from [Implementation Logging Model](../SKILL.md)
+4. If an architecture-level decision occurs, create a short ADR (`A{N}-adr-{slug}.md`) and reference `A{N}`
+5. Record test results and coverage notes
+6. If package supports coverage command(s), run and record final coverage checkpoint before closure
 
 ### Phase 6: Close Out
 
@@ -77,3 +79,4 @@ Use the [Quick Template](quick-template.md).
 - [ ] Tests run and results logged
 - [ ] Coverage checkpoint recorded when package supports coverage command(s)
 - [ ] Drift, if any, documented and approved
+- [ ] If task tracking was used, progress entries follow canonical schema from `SKILL.md`

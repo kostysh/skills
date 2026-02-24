@@ -22,6 +22,7 @@ You need:
 - Validation report (`V{N}-validation.md`)
 - Final handover document (`H{N}-handover.md`)
 - Updated task/plan statuses if issues found
+- ADR consistency check for architecture-level decisions/drift
 
 ## Process
 
@@ -115,8 +116,9 @@ Compare implementation against specification:
 For each drift:
 1. Document the deviation
 2. Explain why it occurred
-3. Assess if it's acceptable
-4. Get user approval if significant
+3. If drift is architecture-level, ensure ADR exists (`A{N}-adr-{slug}.md`) and is linked from tasks/handover
+4. Assess if it's acceptable
+5. Get user approval if significant
 
 ### Phase 4.1: Deferred Review Follow-up Verification
 
@@ -242,6 +244,7 @@ Create `docs/sdd/{TICKET_ID}/H{N}-handover.md`:
 - [ ] Test suite passes completely
 - [ ] Coverage checkpoints executed and recorded (if package supports coverage)
 - [ ] No unintended specification drift
+- [ ] Architecture-level drift/decisions are reflected in ADR artifacts and linked from tasks/handover
 - [ ] Deferred review follow-ups are implemented or explicitly carried as open debt
 - [ ] Security checklist complete
 - [ ] Performance requirements met

@@ -23,6 +23,8 @@ You need:
 - Working code changes
 - Tests (as defined in the plan)
 - Updated task statuses
+- Progress log entries (canonical schema)
+- ADR-lite artifacts for architecture decisions (when needed)
 - Implementation notes
 - Handover summary
 - Coverage checkpoint evidence (when package supports coverage commands)
@@ -101,7 +103,7 @@ If TDD is not requested, use this lighter loop:
 For each task transition, update all three artifacts immediately:
 1. Task Overview row (`⏳` -> `🔄` -> `✅` / `⛔` / `❌`)
 2. Task detail section `Status`
-3. Progress Log with timestamp and concise evidence
+3. Progress Log entry using the canonical schema from [Implementation Logging Model](../SKILL.md)
 
 Allowed task states:
 - `⏳ pending`
@@ -112,7 +114,7 @@ Allowed task states:
 
 ### Phase 3: Progress Tracking
 
-Maintain real-time status:
+Maintain real-time status. This snapshot is optional and does not replace the canonical task transition log:
 
 ```markdown
 ## Implementation Progress
@@ -139,14 +141,16 @@ When problems arise:
 
 **Unexpected complexity**:
 1. Document the issue
-2. If minor → proceed and note
-3. If major → STOP and return to planning
+2. If it changes architecture assumptions, create/update ADR (`A{N}-adr-{slug}.md`) and reference `A{N}` in progress log
+3. If minor → proceed and note
+4. If major → STOP and return to planning
 
 **Spec drift detected**:
 1. Current code differs from spec assumption
 2. Document the drift
-3. Assess impact on plan
-4. Discuss with user if significant
+3. If the drift is architectural, create/update ADR (`A{N}`) and link affected `S*`/`P*`/`T*`
+4. Assess impact on plan
+5. Discuss with user if significant
 
 **Blocked task**:
 1. Mark task as 'blocked'
@@ -226,6 +230,8 @@ Write to `docs/sdd/{TICKET_ID}/P{N}-plan.summary.md`
 - [ ] Code follows constitution guidelines
 - [ ] Security considerations addressed
 - [ ] Handover summary written
+- [ ] Progress log follows the canonical schema defined in `SKILL.md`
+- [ ] Architecture decisions are captured in ADR artifacts and reflected in handover when applicable
 - [ ] Implementation matches specification
 
 ## Testing Discipline (TDD optional)

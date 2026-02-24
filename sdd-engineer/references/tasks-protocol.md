@@ -24,7 +24,8 @@ A tasks document (`T{N}-tasks.md`) containing:
 - Dependency graph
 - Parallelization markers
 - Verification criteria per task
-- Status sync policy and progress log entries
+- Status sync policy and progress log entries (canonical schema)
+- ADR index entries when architecture decisions are needed
 
 ## Process
 
@@ -163,13 +164,16 @@ Coverage rules:
 - If package has `test:coverage`, define explicit coverage checkpoint task(s).
 - Include at least one final-stage coverage checkpoint before task-set closure.
 - For long stages, add intermediate checkpoint(s) after major waves.
+- If the plan has ADR trigger conditions, prepare ADR index scaffolding in `T*`:
+  - Reserve potential decision slots with provisional ids (`A{N}`).
+  - Do not create/close ADR decisions in this phase; actual capture happens during `/sdd-impl`.
 
 ### Phase 8: Status Sync Policy
 
 Enforce real-time task status synchronization:
 1. On every task transition, update Task Overview row.
 2. Update the corresponding task section `Status`.
-3. Append a timestamped progress log entry with evidence.
+3. Append a progress log entry using the canonical schema from [Implementation Logging Model](../SKILL.md).
 4. Never batch-update statuses at stage end.
 
 ### Phase 9: Review and Approval
@@ -199,6 +203,8 @@ Use the [Tasks Template](tasks-template.md).
 - [ ] Owner-input blockers use explicit field lists + source candidates + concrete A/B decisions where critical
 - [ ] Coverage checkpoint tasks are defined when package supports coverage commands
 - [ ] Status sync policy is present and progress log is enabled
+- [ ] Progress log references the canonical schema in `SKILL.md`
+- [ ] ADR scope is prepared in tasks (index/scaffold), with decision capture deferred to implementation
 - [ ] User has approved the task breakdown
 
 ## Task States

@@ -39,6 +39,14 @@ Use this template when creating implementation plans.
 - Decision options (critical): `A` {tradeoffs} / `B` {tradeoffs}
 - Blocking steps/tasks: {Step/T* ids}
 
+## Decision Logging
+
+- **ADR Trigger Conditions**: {what architecture-level decision types require ADR}
+- **ADR Non-Trigger Examples**: {routine local changes that must not create ADR}
+- **ADR ID Rule**: Use `A{N}` from filename prefix; do not create separate `ADR-001` numbering
+- **ADR Path Convention**: `docs/sdd/{TICKET_ID}/A{N}-adr-{slug}.md`
+- **Task Log Contract**: If ADR is created/updated, record `A{N}` in `T*` Progress Log `Decision/Result`
+
 ## Definition of Done
 
 - Implementation tasks are complete only when all quality gates pass.

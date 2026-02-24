@@ -88,6 +88,13 @@ For each plan, design:
      - intermediate checkpoints for long stages,
      - final-stage checkpoint before closure when package supports coverage command(s).
 
+5. **Decision logging strategy**:
+   - Define ADR trigger conditions for this plan (what counts as architecture-level decision)
+   - Define explicit non-trigger examples (what must NOT create ADR)
+   - ADR id is `A{N}` from filename prefix (no separate `ADR-001` counter)
+   - State ADR artifact path convention: `docs/sdd/{TICKET_ID}/A{N}-adr-{slug}.md`
+   - Require task logs to reference `A{N}` in `Decision/Result` when applicable
+
 ### Phase 4: Step Definition
 
 Each step should include:
@@ -181,6 +188,8 @@ Use the [Plan Template](plan-template.md).
 - [ ] Test strategy is included (TDD only if requested)
 - [ ] Owner-input asks are concrete (no wildcards) with source candidates and A/B options where critical
 - [ ] Coverage checkpoints are planned when package supports coverage
+- [ ] ADR trigger conditions are defined for architecture-level decisions
+- [ ] ADR non-triggers are explicitly defined to avoid over-logging
 - [ ] Handover step is present
 - [ ] Required skills are listed
 - [ ] No external tool usage without explicit permission

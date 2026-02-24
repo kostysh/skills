@@ -55,6 +55,15 @@ Use this template for `Q{N}-quick.md`.
 
 Status legend: `⏳ pending` | `🔄 in_progress` | `⛔ blocked` | `✅ completed` | `❌ failed`
 
+## Progress Log (Optional but recommended when tasks are used)
+| Timestamp | Task | Action | Decision/Result | Evidence |
+|-----------|------|--------|-----------------|----------|
+| {time} | T1 | 🔄 in_progress | Started implementation | `{command}` |
+| {time} | T1 | ✅ completed | AC-1 satisfied | `{test result}` |
+
+## ADR References (Optional)
+- A1: `docs/sdd/{TICKET_ID}/A1-adr-{slug}.md`
+
 ## Validation
 - [ ] Tests written per plan (if TDD requested, before implementation)
 - [ ] All acceptance criteria verified
@@ -78,3 +87,4 @@ Status legend: `⏳ pending` | `🔄 in_progress` | `⛔ blocked` | `✅ complet
 
 1. **Keep it short** - Quick artifacts should be minimal
 2. **Use canonical task emojis** - `⏳`/`🔄`/`⛔`/`✅`/`❌` for status
+3. **If you add task status tracking, use canonical schema from `SKILL.md` Implementation Logging Model**

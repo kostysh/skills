@@ -53,6 +53,12 @@ Use this template for handover and summary documents.
 |---------|--------|--------|
 | {Original plan item} | {What was done instead} | {Why} |
 
+## Architecture Decisions (ADR)
+
+| ADR ID | Status | Summary | File |
+|--------|--------|---------|------|
+| A1 | accepted | {decision summary} | `docs/sdd/{TICKET_ID}/A1-adr-{slug}.md` |
+
 ## Notes for Future
 
 - {Important consideration for maintenance}
@@ -198,6 +204,7 @@ Use this template for handover and summary documents.
 - Requirements: `docs/sdd/{TICKET_ID}/R{N}-requirements.md`
 - Specification: `docs/sdd/{TICKET_ID}/S{N}-specification.md`
 - Validation: `docs/sdd/{TICKET_ID}/V{N}-validation.md`
+- ADRs: `docs/sdd/{TICKET_ID}/A{N}-adr-{slug}.md` (if created)
 
 ## Acknowledgments
 

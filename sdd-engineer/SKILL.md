@@ -77,6 +77,7 @@ docs/sdd/
     ├── S1-specification.md
     ├── P1-plan.md
     ├── T1-tasks.md
+    ├── A1-adr-auth-flow.md
     ├── V1-validation.md
     ├── H1-handover.md
     └── Q1-quick.md
@@ -88,6 +89,7 @@ docs/sdd/
 | S | Specification | S1-specification.md |
 | P | Plan | P1-plan.md, P2-plan-api.md |
 | T | Tasks | T1-tasks.md |
+| A | Architecture Decision | A1-adr-auth-flow.md |
 | V | Validation | V1-validation.md |
 | H | Handover | H1-handover.md |
 | Q | Quick | Q1-quick.md |
@@ -120,13 +122,37 @@ At the start of every SDD phase (including /sdd-quick):
 - Task status must be synchronized in real time after each task transition:
   - update Task Overview row,
   - update task section `Status`,
-  - append progress log entry with timestamp and evidence.
+  - append progress log entry using the canonical schema from **Implementation Logging Model** below.
 - Use canonical task status labels with emojis for readability:
   - `⏳ pending`
   - `🔄 in_progress`
   - `⛔ blocked`
   - `✅ completed`
   - `❌ failed`
+
+## Implementation Logging Model (required)
+
+- Keep execution transitions in `T*` Progress Log with exactly five fields:
+  - `Timestamp` (include date/time and timezone)
+  - `Task` (`T*`)
+  - `Action` (`🔄 in_progress` / `⛔ blocked` / `✅ completed` / `❌ failed`)
+  - `Decision/Result` (single-line outcome or decision pointer)
+  - `Evidence` (test output summary, command, file path, or artifact reference)
+- Keep architectural decisions out of task logs. Record them as short ADR artifacts:
+  - path: `docs/sdd/{TICKET_ID}/A{N}-adr-{slug}.md`
+  - template: [ADR Template](references/adr-template.md)
+- ADR identifier is the file prefix (`A{N}`); do not use a separate `ADR-001` counter.
+- When a task transition is driven by an architecture decision, include `A{N}` in `Decision/Result`.
+- If a decision changes assumptions in `S*`, `P*`, or `T*`, update those artifacts and the ADR together.
+- Create ADR when decision impacts contracts/architecture:
+  - data model or migration strategy,
+  - API or integration contract,
+  - auth/security model,
+  - cross-cutting performance/reliability tradeoff.
+- Do NOT create ADR for routine local changes:
+  - naming/formatting/refactor with unchanged behavior,
+  - test-only fixture or assertion updates,
+  - trivial bug fixes without contract or architecture impact.
 
 ## Non-negotiable quality gates
 
@@ -189,6 +215,7 @@ Ensure `docs/sdd/constitution.md` exists before starting. Use the [Constitution 
 - [Specification Template](references/specification-template.md)
 - [Plan Template](references/plan-template.md)
 - [Tasks Template](references/tasks-template.md)
+- [ADR Template](references/adr-template.md)
 - [Handover Template](references/handover-template.md)
 - [Quick Template](references/quick-template.md)
 

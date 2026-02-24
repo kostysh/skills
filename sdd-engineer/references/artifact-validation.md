@@ -155,6 +155,8 @@ Before approving task breakdown, verify:
 - [ ] Task gates include all split test kinds when available (`test:unit`, `test:integration`, `test:e2e`)
 - [ ] Coverage checkpoint tasks exist when package supports coverage commands
 - [ ] Status sync policy requires overview + task section + progress log updates per transition
+- [ ] Progress log follows canonical schema from `SKILL.md` Implementation Logging Model
+- [ ] Architecture decisions are separated into ADR artifacts and linked from tasks (when applicable)
 - [ ] Owner-input blocks (if present) use explicit field lists and source-backed asks
 
 ### Organization
@@ -206,6 +208,8 @@ During and after implementation, verify:
 - [ ] No test regressions
 - [ ] Coverage meets standards
 - [ ] Coverage checkpoints are executed and recorded according to plan/tasks
+- [ ] Task progress log entries include both decision/result and concrete evidence
+- [ ] Architecture-level decisions are captured in ADR artifacts and cross-referenced
 
 ### Documentation
 - [ ] Code is self-documenting
@@ -242,6 +246,7 @@ Before approving validation report, verify:
 - [ ] Drift justified or fixed
 - [ ] Significant drift approved
 - [ ] Deferred review follow-ups are either implemented or explicitly carried as open debt
+- [ ] ADR references are included for architecture-level deviations/decisions
 
 ### Handover
 - [ ] Summary document complete

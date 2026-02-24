@@ -42,7 +42,7 @@ Use this template when creating task breakdowns.
 After each task transition (`🔄 in_progress`, `⛔ blocked`, `✅ completed`, `❌ failed`), update all of:
 - Task Overview row
 - Task detail section `Status`
-- Progress Log entry with timestamp + evidence/notes
+- Progress Log entry using the canonical schema from [Implementation Logging Model](../SKILL.md)
 
 Do not batch status updates at the end of the stage.
 
@@ -213,12 +213,20 @@ flowchart LR
 
 ## Progress Log
 
-| Timestamp | Task | Action | Notes |
-|-----------|------|--------|-------|
-| {time} | T1 | 🔄 in_progress | - |
-| {time} | T1 | ✅ completed | All checks pass |
-| {time} | T2 | 🔄 in_progress | - |
-| {time} | T3 | ⛔ blocked | Waiting on T1 |
+| Timestamp | Task | Action | Decision/Result | Evidence |
+|-----------|------|--------|-----------------|----------|
+| {time} | T1 | 🔄 in_progress | Started baseline implementation | `pnpm --filter app type-check` |
+| {time} | T1 | ✅ completed | Gates passed, no drift | tests: 18 passed |
+| {time} | T2 | 🔄 in_progress | Test setup started | `pnpm --filter app test:unit` |
+| {time} | T3 | ⛔ blocked | Waiting on T1 output | dependency: T1 |
+
+## ADR Index (when architecture decisions exist)
+
+Store short architecture decisions in separate artifacts: `docs/sdd/{TICKET_ID}/A{N}-adr-{slug}.md`.
+
+| ADR ID | Related Task(s) | Status | Summary | File |
+|--------|------------------|--------|---------|------|
+| A1 | T1, T3 | accepted | Choose approach X over Y | `docs/sdd/{TICKET_ID}/A1-adr-{slug}.md` |
 
 ## Issues Encountered
 
@@ -235,8 +243,9 @@ flowchart LR
 2. **Dependencies explicit** - List what must complete first
 3. **Parallel = no file overlap** - Tasks can't both modify same file
 4. **Effort estimates help planning** - But don't treat as commitments
-5. **Progress log is required** - Record every task transition with timestamp and evidence
+5. **Progress log is required** - Record every task transition using canonical schema from `SKILL.md` Implementation Logging Model
 6. **Issues section captures learnings** - Helps future work
 7. **Every code task has Gate Validation** - Must include `type-check`, `test:*`, and lint/format commands
 8. **No optional test execution wording** - Avoid "if test runner exists"
 9. **Owner input asks must be concrete** - No wildcard requests; include sources and explicit A/B tradeoff choices when critical
+10. **Architecture decisions stay out of task log body** - Track concise outcome in `Decision/Result`, put rationale in ADR files and link via `A{N}`

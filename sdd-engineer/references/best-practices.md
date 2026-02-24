@@ -202,6 +202,11 @@ Every artifact should reference its predecessors:
 - Tasks link to Plan
 - Tests link to Acceptance Criteria
 
+### Keep Implementation Logs Resume-Friendly
+
+Use the canonical progress log schema from `SKILL.md` (Implementation Logging Model) for each task transition.
+Keep architecture rationale out of task logs. Use short ADR artifacts and link `A{N}` from progress log entries.
+
 ### Use Consistent Identifiers
 
 ```markdown
