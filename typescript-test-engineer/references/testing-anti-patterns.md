@@ -270,6 +270,85 @@ X Coverage was never run after final changes
 4. Record checkpoint result before closure
 ```
 
+## Anti-Pattern 7: Never-Resolving Promises in Tests
+
+**The violation:**
+```typescript
+// X BAD: Promise never settles, test leaves pending async work
+apiMock.getCurrent.mockImplementation(() => new Promise(() => undefined));
+```
+
+**Why this is wrong:**
+- Leaves pending async work after test assertions
+- Can stall coverage runs or produce late flaky failures
+- Hides real UI lifecycle behavior
+
+**The fix:**
+```typescript
+// OK GOOD: controlled deferred promise
+const deferred = createDeferred<TermsResponse>();
+apiMock.getCurrent.mockImplementation(() => deferred.promise);
+
+// ...assert loading state...
+deferred.resolve(mockTerms);
+await waitFor(() => expect(submitButton).toBeEnabled());
+```
+
+### Gate Function
+
+```
+BEFORE using a pending promise in test mocks:
+  Ask: "How will this promise settle in this test?"
+
+  IF no explicit resolve/reject path:
+    STOP - add deferred + explicit settle path
+```
+
+## Anti-Pattern 8: Async Callback Inside waitFor
+
+**The violation:**
+```typescript
+// X BAD: async side effects inside waitFor callback
+await waitFor(async () => {
+  const draft = await readDraft(scope);
+  expect(draft).toBeNull();
+});
+```
+
+**Why this is wrong:**
+- `waitFor` expects polling assertions, not async workflows
+- Makes retry semantics unclear and can create hidden race conditions
+
+**The fix:**
+```typescript
+// OK GOOD: wait for observable signal, then run async read once
+await waitFor(() => {
+  expect(reloadSession).toHaveBeenCalledTimes(1);
+});
+const draft = await readDraft(scope);
+expect(draft).toBeNull();
+```
+
+## Anti-Pattern 9: Acting Before UI Is Ready
+
+**The violation:**
+```typescript
+// X BAD: click before async prerequisites enable the action
+await user.click(screen.getByRole('button', { name: 'Complete onboarding' }));
+```
+
+**Why this is wrong:**
+- Click can be ignored because control is still disabled
+- Produces flaky assertions ("sometimes validation didn't run")
+
+**The fix:**
+```typescript
+// OK GOOD: wait until actionable
+const submit = screen.getByRole('button', { name: 'Complete onboarding' });
+await waitFor(() => expect(submit).toBeEnabled());
+await user.click(submit);
+```
+
 ## When Mocks Become Too Complex
 
 **Warning signs:**
@@ -302,6 +381,9 @@ X Coverage was never run after final changes
 | Incomplete mocks | Mirror real API completely |
 | Tests as afterthought | TDD - tests first |
 | No final coverage checkpoint | Run and record coverage before closure |
+| Never-settled promises in test mocks | Use deferred and always resolve/reject |
+| `waitFor(async () => ...)` | Keep `waitFor` callback sync, run async work outside |
+| Click while control is disabled/loading | Wait until actionable (`toBeEnabled`) before action |
 | Over-complex mocks | Consider integration tests |
 
 ## Red Flags
@@ -313,6 +395,9 @@ X Coverage was never run after final changes
 - Can't explain why mock is needed
 - Mocking "just to be safe"
 - No recorded coverage checkpoint at milestone/final closure
+- Pending mock promises without explicit settle path
+- `waitFor` callback contains `await`
+- User actions fired before UI control is enabled
 
 ## The Bottom Line
 

@@ -21,6 +21,7 @@ Notes:
 
 ## Patterns
 - Unit tests: pure helpers (env parsing, redaction, small utilities).
+- Unit tests for error-mapping helpers are mandatory when logic branches on status/problem codes (do not rely only on integration tests for these paths).
 - Integration: use a local app factory or HTTP harness with mocked config/env and in-memory deps.
 - E2E: runtime-specific harness (Cloudflare Workers: `wrangler unstable_dev`), keep concurrency low.
   - Validate the current recommended runtime workflow for E2E (the `unstable_dev` flow may change).

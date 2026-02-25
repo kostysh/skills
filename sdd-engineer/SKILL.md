@@ -194,6 +194,9 @@ For each external review finding/question, record a dedicated subsection `Decisi
 - Maintain a review resolution matrix (`finding -> decision -> affected artifacts R/S/P/T -> task refs -> status`) so updates stay synchronized.
 - Do not close a finding until all listed affected artifacts are updated consistently.
 - If a finding is deferred to a later task/stage, immediately add explicit follow-up items to target `T*` artifacts (verification/gates/progress), not only to the review document.
+- If user requests an explicit approval gate (`decisions first, fixes later`), do not implement code changes until all findings have documented `Decision` subsections and user approval is received.
+- Prefer fixing findings in the current cycle; defer only with explicit rationale and concrete follow-up task binding.
+- Sequence remediation by risk: critical architecture/refactor findings first, then isolation fixes, then proving tests, then lower-risk/UI/docs cleanups.
 
 ## Constitution
 

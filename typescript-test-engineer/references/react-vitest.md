@@ -54,6 +54,25 @@ import '@testing-library/jest-dom/vitest';
 - Use `userEvent` for interactions; avoid direct DOM mutations.
 - Prefer `findBy*`/`waitFor` for async UI updates.
 
+## Async stability checklist
+- Keep `waitFor` callbacks synchronous; do not place `await` inside `waitFor(() => { ... })`.
+- Do not use never-settling mock promises (`new Promise(() => {})`) without explicit resolve/reject path.
+- For loading-state tests, use deferred promises and settle them before test end.
+- Before clicking async-dependent actions, wait for actionable state (`toBeEnabled`).
+
+```ts
+const deferred = createDeferred<TermsResponse>();
+api.getCurrent.mockImplementation(() => deferred.promise);
+
+render(<OnboardingWizardPage />);
+const submit = screen.getByRole('button', { name: 'Complete onboarding' });
+await waitFor(() => expect(submit).toBeDisabled());
+
+deferred.resolve(mockTerms);
+await waitFor(() => expect(submit).toBeEnabled());
+await user.click(submit);
+```
+
 ## Example tests
 ```ts
 // src/components/Counter.test.tsx
@@ -103,6 +122,13 @@ describe('Profile', () => {
 - Use `vi.fn()` / `vi.spyOn()` for mocks and spies.
 - Use `vi.useFakeTimers()` + `vi.setSystemTime()` for time-based UI; always `vi.useRealTimers()` after.
 - Prefer mocking at the boundary (API clients, fetch) rather than internal component functions.
+
+## Coverage hang triage (Vitest + RTL)
+If `test:coverage` hangs while normal tests pass:
+- Run exact package coverage command with a shell timeout (example: `timeout 900 pnpm -C packages/client test:coverage`).
+- Isolate suspect suites under coverage config (not unit-only config).
+- Check recently changed tests for unresolved promises, async-in-`waitFor`, and actions fired before controls are enabled.
+- Add explicit per-test timeout only for proven integration scenarios that are slow under instrumentation.
 
 ## Coverage
 - Prefer `provider: 'v8'` with `reporter: ['text', 'json', 'html']`.

@@ -122,6 +122,7 @@ Reference: `https://ant.design/docs/react/customize-theme`
 ### Data display and feedback
 - Use **Table/List** for structured data; **Empty/Result** for edge states.
 - Use **Alert/Message/Notification/Modal** for feedback, scoped by severity.
+- Trigger **Message/Notification** from event handlers or `useEffect`, not directly in render paths.
 - Validate against `data-display` and `feedback` specs when relevant:
   - `https://ant.design/docs/spec/data-display`
   - `https://ant.design/docs/spec/feedback`

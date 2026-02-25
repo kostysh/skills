@@ -26,6 +26,8 @@ Use this file when the request risks **misusing patterns** or **overriding AntD 
   Docs: `https://ant.design/components/popconfirm`
 - **Too many Notifications/Message** → creates noise; prefer inline Alert for persistent guidance.
   Docs: `https://ant.design/docs/spec/feedback`
+- **Calling `message`/`notification` during render** → React concurrent mode warning (`You are calling notice in render`) and unstable behavior. Trigger feedback from event handlers or `useEffect` after state change.
+  Docs: `https://ant.design/components/message`, `https://ant.design/components/notification`
 
 ## Tokens & theming
 
@@ -40,4 +42,3 @@ Use this file when the request risks **misusing patterns** or **overriding AntD 
   Docs: `https://ant.design/docs/react/server-side-rendering`
 - **Mixing date libraries** → parsing/format bugs. Use one official date library integration.
   Docs: `https://ant.design/docs/react/use-custom-date-library`
-

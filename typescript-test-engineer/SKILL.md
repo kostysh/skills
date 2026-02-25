@@ -49,7 +49,18 @@ When normal tests pass but coverage run fails (or behaves differently):
 - Compare runtime flags/environment between `test` and `test:coverage`.
 - Isolate failing suite with coverage instrumentation enabled.
 - Check for instrumentation-sensitive paths (timers, concurrency, unmocked network, module mocks order).
+- If coverage appears to hang near completion (for example `N-1` files done), inspect recently added/changed tests first.
+- Wrap local diagnostic runs with shell timeout to avoid blocked sessions while triaging (for example `timeout 900 <coverage-command>`).
 - Follow `references/testing.md` runbook and record diagnosis in progress/handover.
+
+## React/Vitest async stability checklist
+
+When touching React Testing Library + Vitest tests:
+- Do not leave unresolved promises in mocks (`new Promise(() => {})`) unless you also explicitly resolve/reject them in the test.
+- Prefer a deferred helper and close pending async paths before test end.
+- Avoid `waitFor(async () => ...)`; keep `waitFor` callbacks synchronous assertions.
+- Before clicking submit/action controls, wait until prerequisites are complete and controls are enabled.
+- If a legitimate integration scenario is slow only under coverage instrumentation, set explicit per-test timeout with rationale instead of increasing global timeout.
 
 ## Optional TDD mode (only with explicit request)
 
