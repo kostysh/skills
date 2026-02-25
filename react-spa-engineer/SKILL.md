@@ -180,6 +180,7 @@ See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patter
 - `getByRole` first; `getByTestId` last
 - Always use `userEvent.setup()` before render
 - For async UI, use `findBy*` and `waitFor`
+- For modal/dialog components with animation (for example Ant Design `Modal`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
 
 See [Testing](references/testing.md) for full setup and examples.
 
