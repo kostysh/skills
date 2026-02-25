@@ -197,6 +197,10 @@ For each external review finding/question, record a dedicated subsection `Decisi
 - If user requests an explicit approval gate (`decisions first, fixes later`), do not implement code changes until all findings have documented `Decision` subsections and user approval is received.
 - Prefer fixing findings in the current cycle; defer only with explicit rationale and concrete follow-up task binding.
 - Sequence remediation by risk: critical architecture/refactor findings first, then isolation fixes, then proving tests, then lower-risk/UI/docs cleanups.
+- After implementing accepted findings, run a verification pass against the original findings list:
+  - confirm each accepted item is fully implemented (not partially),
+  - confirm contract/docs edits landed on the intended endpoint/section (avoid copy-paste drift),
+  - confirm required tests mentioned in decisions are present and green in the same cycle.
 
 ## Constitution
 
