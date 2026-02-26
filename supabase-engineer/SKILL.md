@@ -18,6 +18,7 @@ Build and operate Supabase-backed systems with strong security, performance, and
 - Build user-scoped clients per request and inject user JWT via request headers during client creation (avoid shared mutable auth state in server runtimes).
 - Default storage bucket provisioning to idempotent SQL migrations (not manual dashboard/runtime auto-create) unless the project explicitly chooses another ops model.
 - For Edge Functions, use `Deno.serve()`, versioned imports, and write only to `/tmp`.
+- For cloud databases via MCP (stage/prod/remote), enforce read-only mode only: MCP writes are forbidden. Use `read_only=true` and do not run mutating tools/queries.
 
 ## Auth email/recovery troubleshooting checklist
 - If signup/recovery returns generic server errors, inspect Supabase Auth logs first (`/signup`, `/recover`, `/verify` paths).
@@ -60,6 +61,11 @@ Use this exact sequence for schema discovery:
 2. `mcp__supabase__list_tables` — fetch schema, columns, PKs, and FKs.
 3. `mcp__supabase__execute_sql` — read-only inspection queries only (SELECT).
 
+Cloud safety rule:
+- Allowed on cloud DBs: read-only tools and `SELECT` queries only.
+- Forbidden on cloud DBs: `apply_migration`, branch lifecycle writes (`create_branch`, `merge_branch`, `reset_branch`, `rebase_branch`, `delete_branch`), `deploy_edge_function`, and any `execute_sql` with DDL/DML (`insert`, `update`, `delete`, `alter`, `drop`, `create`, `truncate`, `grant`, `revoke`).
+- Schema/data changes for cloud environments must go through repository migrations and CI/CD, not direct MCP writes.
+
 Additional tools when needed:
 - `mcp__supabase__list_extensions` — enabled Postgres extensions.
 - `mcp__supabase__list_migrations` — applied migrations/versions.
@@ -87,6 +93,7 @@ Practical rules for agents:
 2. Do not infer capability by probing random paths; use actual tool calls and handle tool errors.
 3. If project-scoped (`project_ref` set), expect account-level tools (e.g., `list_projects`) to be unavailable by design.
 4. In CI/non-interactive setups, PAT auth via `Authorization: Bearer ...` is supported; browser OAuth/dynamic registration is default for interactive clients.
+5. For cloud DBs, treat MCP as strictly read-only even if write tools are visible in the runtime.
 
 References (official):
 - Supabase MCP docs: https://supabase.com/docs/guides/getting-started/mcp
