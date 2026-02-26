@@ -93,6 +93,21 @@ Use `gh` as the default interface for GitHub issues, pull requests, and CI statu
    - `gh repo set-default <owner>/<repo>`
 4. For cross-repo operations, always pass `-R <owner>/<repo>` explicitly.
 
+### Auth mode for agents (GitHub App)
+
+When working as an agent, prefer GitHub App auth over personal account auth.
+
+1. Do not use `gh auth login` with a GitHub App private key.
+   - GitHub App auth for `gh` works via temporary installation token in `GH_TOKEN`.
+2. Refresh token before GitHub operations:
+   - preferred: run your environment helper (for example `gh_app_refresh`) if available.
+   - fallback: mint an installation token with your approved method and export it to `GH_TOKEN` (for example `export GH_TOKEN="$(<token-mint-command>)"`).
+3. Verify active identity:
+   - `gh auth status`
+   - expected active account is App bot (`app/<slug>` or `<slug>[bot]`) with `(GH_TOKEN)`.
+4. Token lifetime is short (about 1 hour). Refresh on 401/403 or before long GH sessions.
+5. Never print raw tokens to logs.
+
 ### Non-interactive defaults (agent-safe)
 
 - Prefer explicit flags over prompts.
@@ -114,7 +129,8 @@ Inspect issue details:
 - `gh issue view <number> --json number,title,body,labels,assignees,state,url`
 
 Take issue into work:
-- `gh issue edit <number> --add-assignee "@me" --add-label "in-progress"`
+- if assignee is supported for current identity: `gh issue edit <number> --add-assignee "@me" --add-label "in-progress"`
+- if App/bot identity is not assignable: `gh issue edit <number> --add-label "in-progress"`
 - `gh issue comment <number> --body "Taken into work."`
 - Optional linked branch: `gh issue develop <number> --checkout --name <branch-name>`
 
@@ -158,6 +174,21 @@ Checks and merge:
 - If policy requires waiting for checks/queue: `gh pr merge <number> --auto --squash --delete-branch`
 - To prevent merging stale head: `gh pr merge <number> --match-head-commit <sha> --squash`
 
+### Branch discipline for multi-PR work
+
+1. One issue = one branch = one PR.
+2. Always create new work branch from fresh default branch (`<default-branch>`, often `main`):
+   - `git checkout <default-branch> && git pull --ff-only`
+   - `git checkout -b fix/<issue-number>-<short-topic>`
+3. Before edits, verify branch explicitly:
+   - `git branch --show-current`
+4. When switching to existing PR, use:
+   - `gh pr checkout <number>`
+5. Do not mix changes for different PRs in one branch.
+6. After PR creation/update, return local workspace to `<default-branch>`:
+   - `git checkout <default-branch> && git pull --ff-only`
+   - keep feature branch checked out only while implementing/review-fix for that PR.
+
 ### GitHub Actions / CI diagnostics
 
 - List runs: `gh run list --limit 20`
@@ -181,13 +212,14 @@ Notes:
 ### Suggested issue-to-PR flow
 
 1. `gh issue view <id> --comments`
-2. `gh issue edit <id> --add-assignee "@me" --add-label "in-progress"`
-3. Implement locally on a dedicated branch.
+2. `gh issue edit <id> --add-label "in-progress"` (and add assignee if supported)
+3. Create/switch to dedicated branch from updated `<default-branch>`.
 4. `gh pr create --base <base> --head <branch> --title "<cc-title>" --body-file <file>`
 5. `gh issue comment <id> --body "PR opened: <url>"`
 6. `gh pr checks <pr> --watch --fail-fast`
 7. `gh pr merge <pr> --squash --delete-branch` (or `--auto` if required)
 8. `gh issue close <id> --reason completed --comment "Completed in #<pr>"`
+9. Return to baseline locally: `git checkout <default-branch> && git pull --ff-only`
 
 ### Manual references
 
