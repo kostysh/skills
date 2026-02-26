@@ -62,6 +62,20 @@ When touching React Testing Library + Vitest tests:
 - Before clicking submit/action controls, wait until prerequisites are complete and controls are enabled.
 - If a legitimate integration scenario is slow only under coverage instrumentation, set explicit per-test timeout with rationale instead of increasing global timeout.
 
+## CI timeout budgeting for integration suites
+
+- Do not leave integration suites on default timeout (`5000ms`) when real runtime is materially higher.
+- Prefer suite-level timeout configuration (`testTimeout`, `hookTimeout`, `teardownTimeout`) over scattered per-test overrides.
+- Practical baseline: choose timeout as at least `3x` local mean runtime of the slowest integration file, then validate in CI.
+- If CI shows worker-termination timeouts or OOM, first check for unresolved async/mocks and accidental long polling before only increasing limits.
+
+## HTTP/SDK mock precision checklist
+
+- Match mocks by `method + pathname (+ query)`, not only by path.
+- Keep a strict fallback (`throw new Error("Unexpected request ...")`) to catch drift immediately.
+- For SDK-driven auth/session flows, account for secondary requests (for example token refresh calls) that may not be obvious from service code.
+- Avoid broad catch-all handlers that shadow other endpoints in the same path family.
+
 ## Optional TDD mode (only with explicit request)
 
 Use TDD only when the user explicitly asks for it. If they do, follow this stricter flow and load `references/tdd.md` for the full guide.
