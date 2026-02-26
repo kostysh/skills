@@ -40,6 +40,21 @@ Build and operate Supabase-backed systems with strong security, performance, and
 6. Configure local dev, CI, and multi-env secrets.
 7. Prepare production checklist and incident runbook.
 
+## Local deterministic bootstrapping (dev-only)
+
+For local integration environments where reproducibility is more important than preserving local data:
+1. Start local Supabase services.
+2. Reset DB from migrations (`supabase db reset`) to known baseline.
+3. Start application server runtime.
+4. Run one-time app bootstrap endpoint (for example ROOT/admin bootstrap) from trusted local automation.
+5. Start client app.
+
+Critical reminders:
+- `db reset` alone does not necessarily create interactive admin/root accounts; often it only sets baseline flags/data.
+- Treat bootstrap endpoint as idempotent in automation (`200 created` and `409 already initialized` are both acceptable outcomes).
+- Bootstrap credentials/tokens must come from local env files/secrets; never hardcode in scripts.
+- Keep bootstrap scripts local-only and refuse non-local target origins/hosts.
+
 ## Client model (anon / user / service)
 
 - `anon` client: publishable key without JWT; use only for endpoints intentionally exposed by RLS to unauthenticated reads.
