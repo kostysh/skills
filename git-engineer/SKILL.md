@@ -79,6 +79,123 @@ Use this flow when the user asks to commit only documentation/artifacts:
 4. Use `docs:` Conventional Commit type (scope optional by repo rules).
 5. Keep unrelated modified files unstaged for a later commit.
 
+## GitHub CLI (`gh`) workflow
+
+Use `gh` as the default interface for GitHub issues, pull requests, and CI status.
+
+### Setup and repository targeting
+
+1. Confirm auth and host:
+   - `gh auth status`
+2. Confirm repo context from current directory:
+   - `gh repo view --json nameWithOwner,defaultBranchRef`
+3. If needed, set default repo for the current local clone:
+   - `gh repo set-default <owner>/<repo>`
+4. For cross-repo operations, always pass `-R <owner>/<repo>` explicitly.
+
+### Non-interactive defaults (agent-safe)
+
+- Prefer explicit flags over prompts.
+- Prefer `--body-file <file>` for long content.
+- Prefer machine-readable output for scripts:
+  - `--json ... --jq ...`
+- Do not print or log tokens; use `gh auth status` to validate auth.
+
+### Issues: read, triage, and ownership
+
+Read queue:
+- `gh issue list --state open --limit 100`
+- `gh issue list --state open --label bug --limit 100`
+- `gh issue list --state all --search "is:issue sort:updated-desc" --limit 100`
+- `gh issue list --state open --json number,title,labels,assignees,updatedAt,url --jq '.[] | {n:.number,t:.title,u:.url}'`
+
+Inspect issue details:
+- `gh issue view <number> --comments`
+- `gh issue view <number> --json number,title,body,labels,assignees,state,url`
+
+Take issue into work:
+- `gh issue edit <number> --add-assignee "@me" --add-label "in-progress"`
+- `gh issue comment <number> --body "Taken into work."`
+- Optional linked branch: `gh issue develop <number> --checkout --name <branch-name>`
+
+Update triage metadata:
+- `gh issue edit <number> --add-label "bug" --remove-label "needs-triage"`
+- `gh issue edit <number> --title "<new title>"`
+
+Close/reopen:
+- `gh issue close <number> --reason completed --comment "Fixed in #<pr-number>"`
+- `gh issue reopen <number> --comment "Reopening: regression reproduced."`
+
+### Pull requests: create, review, merge
+
+Read PR queue:
+- `gh pr status`
+- `gh pr list --state open --limit 100`
+- `gh pr view <number> --comments --reviews`
+
+Check out and inspect locally:
+- `gh pr checkout <number>`
+- `gh pr diff <number>`
+
+Create PR (non-interactive):
+- `gh pr create --base <base> --head <branch> --title "<title>" --body-file <file>`
+- Draft PR when not ready: add `--draft`
+- Autofill from commits when appropriate: `gh pr create --fill`
+- Link issue auto-close in PR body: include `Fixes #<issue-number>` or `Closes #<issue-number>`
+
+Update PR metadata:
+- `gh pr edit <number> --add-label "ready-for-review" --remove-label "wip"`
+- `gh pr edit <number> --add-reviewer <login1>,<login2>`
+
+Review PR:
+- `gh pr review <number> --approve --body "LGTM"`
+- `gh pr review <number> --request-changes --body "Please address inline comments."`
+- `gh pr review <number> --comment --body "Left several suggestions."`
+
+Checks and merge:
+- `gh pr checks <number> --watch --fail-fast`
+- `gh pr merge <number> --squash --delete-branch`
+- If policy requires waiting for checks/queue: `gh pr merge <number> --auto --squash --delete-branch`
+- To prevent merging stale head: `gh pr merge <number> --match-head-commit <sha> --squash`
+
+### GitHub Actions / CI diagnostics
+
+- List runs: `gh run list --limit 20`
+- Filter branch/status: `gh run list --branch <branch> --status failure --limit 20`
+- View run summary: `gh run view <run-id>`
+- Watch run until completion: `gh run watch <run-id> --exit-status`
+- Re-run failed jobs when appropriate: `gh run rerun <run-id> --failed`
+
+Notes:
+- `gh pr checks` is the preferred PR-centric signal.
+- Use `gh run *` when you need workflow-level details, logs, or reruns.
+
+### Labels and metadata hygiene
+
+- List labels: `gh label list`
+- Create/update labels when repository workflow needs standardized triage:
+  - `gh label create "<name>" --color <hex> --description "<text>"`
+  - `gh label edit "<name>" --color <hex> --description "<text>"`
+- Keep issue/PR labels aligned with workflow states (`needs-triage`, `in-progress`, `review`, `blocked`, `done`).
+
+### Suggested issue-to-PR flow
+
+1. `gh issue view <id> --comments`
+2. `gh issue edit <id> --add-assignee "@me" --add-label "in-progress"`
+3. Implement locally on a dedicated branch.
+4. `gh pr create --base <base> --head <branch> --title "<cc-title>" --body-file <file>`
+5. `gh issue comment <id> --body "PR opened: <url>"`
+6. `gh pr checks <pr> --watch --fail-fast`
+7. `gh pr merge <pr> --squash --delete-branch` (or `--auto` if required)
+8. `gh issue close <id> --reason completed --comment "Completed in #<pr>"`
+
+### Manual references
+
+- `https://cli.github.com/manual`
+- `https://cli.github.com/manual/gh_issue`
+- `https://cli.github.com/manual/gh_pr`
+- `https://cli.github.com/manual/gh_run`
+
 ## Git worktrees (isolation workflow)
 
 Use when starting feature work that needs isolation from the current workspace or before executing implementation plans.
