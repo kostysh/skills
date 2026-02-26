@@ -91,6 +91,19 @@ Define storage layer and source of truth for each state explicitly:
 - `queryKey` and Dexie `cacheKey` MUST be generated from centralized key factories with aligned semantics.
 - For user/tenant-scoped data, both `queryKey` and `cacheKey` MUST include `tenantId` and `userId` when applicable.
 
+### URL State Authority (Critical)
+
+When a state value is represented in URL search params:
+- URL param is the highest-priority source of truth.
+- UI controls MUST update URL params, not independent local/global runtime state.
+- Runtime state MUST derive from URL changes (including manual address bar edits/navigation).
+- Canonicalize URL values (for example locale case normalization) before applying to runtime state.
+- If URL param is missing/invalid, resolve a deterministic fallback and write it back to URL.
+
+Avoid sync oscillation:
+- Do not implement competing effects that blindly write both `URL -> state` and `state -> URL`.
+- Every sync effect MUST have loop guards (`if same value -> return`) and explicit missing/invalid handling.
+
 See [Persistence Architecture](references/persistence-architecture.md) for full rules.
 
 ### Data Fetching (TanStack Query v5)
@@ -212,6 +225,8 @@ See [Accessibility](references/accessibility.md) for patterns and examples.
 | Multiple db instances | Conflicts, memory waste | Export singleton |
 | useEffect for DB queries | Manual subscription needed | Use `useLiveQuery` |
 | Keeping shareable page state only in Zustand | Lost on reload/direct link open | Store in URL search params and sync UI |
+| UI control updates URL-backed state directly (without URL write) | URL and runtime diverge; back/forward/manual URL edits break behavior | Write URL param first; derive runtime state from URL |
+| Bidirectional URL/state effects without equality guards | Oscillation/flicker loops, unstable UI | Add strict same-value guards and clear authority direction |
 | Direct HTTP in components/stores/hooks | Bypasses server-state lifecycle and cache | Use TanStack Query (`queryFn`/`mutationFn`) |
 | Query/cache keys without tenant/user context | Cross-user/tenant data leakage | Include `tenantId` and `userId` (when applicable) |
 | Ad-hoc key composition | Inconsistent cache hits and invalidation | Use centralized key factories + canonicalized params |
