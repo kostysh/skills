@@ -62,6 +62,22 @@ When touching React Testing Library + Vitest tests:
 - Before clicking submit/action controls, wait until prerequisites are complete and controls are enabled.
 - If a legitimate integration scenario is slow only under coverage instrumentation, set explicit per-test timeout with rationale instead of increasing global timeout.
 
+## URL-state regression checklist (React SPAs)
+
+When UI state is URL-backed (filters, locale, pagination, tabs):
+- Verify URL param has highest priority over runtime/persisted state.
+- Verify UI interaction updates URL first (or at least produces URL change observed by app state).
+- Verify manual URL change (navigate/update search params) immediately updates rendered state.
+- Verify no bounce-back/oscillation after change:
+  - set state via UI or URL,
+  - assert expected value,
+  - wait briefly and assert value remains stable.
+- Verify canonicalization for accepted variants (for example `IT` -> `it`) when contract requires normalized params.
+
+Recommended assertions:
+- assert both rendered value and `location.search` together.
+- use `waitFor` for post-navigation stabilization checks.
+
 ## CI timeout budgeting for integration suites
 
 - Do not leave integration suites on default timeout (`5000ms`) when real runtime is materially higher.
