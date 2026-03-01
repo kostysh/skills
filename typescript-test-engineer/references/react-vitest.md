@@ -41,6 +41,7 @@ export default defineConfig({
 Notes:
 - Keep `globals: true` if your repo prefers global `describe/it/expect`; otherwise disable and import explicitly.
 - Use `vite-tsconfig-paths` when TS path aliases exist.
+- Prefer timeout policy in Vitest config (`testTimeout`, `hookTimeout`, `teardownTimeout`) or contour-specific configs, not in individual test cases.
 
 ## Setup file
 ```ts
@@ -128,7 +129,8 @@ If `test:coverage` hangs while normal tests pass:
 - Run exact package coverage command with a shell timeout (example: `timeout 900 pnpm -C packages/client test:coverage`).
 - Isolate suspect suites under coverage config (not unit-only config).
 - Check recently changed tests for unresolved promises, async-in-`waitFor`, and actions fired before controls are enabled.
-- Add explicit per-test timeout only for proven integration scenarios that are slow under instrumentation.
+- Tune timeout values in the active Vitest config first (`testTimeout`, and when needed `hookTimeout`/`teardownTimeout`) and keep values centralized.
+- Use explicit per-test timeout only as a rare exception with a documented rationale.
 
 ## Coverage
 - Prefer `provider: 'v8'` with `reporter: ['text', 'json', 'html']`.

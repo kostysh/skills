@@ -21,6 +21,7 @@ If repo policy differs, follow repo policy and document the deviation.
 Notes:
 - `--experimental-strip-types` has limitations (no TS emit transforms, decorators, or path-alias rewriting). If you need those, use a lightweight build step (e.g., `tsc --noEmit false` into `dist/` for tests) or a dedicated test build config.
 - When running source `.ts` files directly with `node --experimental-strip-types`, ESM import specifiers must match the source extension (use `.ts`, not `.js`). If you build to `dist/`, use `.js` in emitted output.
+- For timeout policy in `node:test`, prefer runner-level script flags (for example `node --test --test-timeout=30000`) over per-test timeout options.
 
 ## Naming
 - File names: `<area>.test.ts` or `<area>.<behavior>.test.ts` (examples: `health.test.ts`, `users.create.test.ts`).
@@ -131,7 +132,7 @@ describe("GET /v1/profile", () => {
 ## Result interpretation
 - A failing test should point to the observable behavior that regressed. If the name is unclear, rename it.
 - Assertion errors: read the expected vs actual diff first; fix the behavior or the assertion, not both.
-- Timeouts/hangs: reduce shared global state, avoid real timers/IO, and set per-test timeouts only when needed.
+- Timeouts/hangs: reduce shared global state, avoid real timers/IO, and tune runner-level timeout settings first (Vitest config or `node --test --test-timeout=...`); use per-test timeout overrides only as rare exceptions with rationale.
 - Skips/TODOs: use sparingly; always leave a short reason in the test name or comment.
 
 ## CI lint/format policy

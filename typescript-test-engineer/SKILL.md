@@ -109,7 +109,7 @@ When touching React Testing Library + Vitest tests:
 - Prefer a deferred helper and close pending async paths before test end.
 - Avoid `waitFor(async () => ...)`; keep `waitFor` callbacks synchronous assertions.
 - Before clicking submit/action controls, wait until prerequisites are complete and controls are enabled.
-- If a legitimate integration scenario is slow only under coverage instrumentation, set explicit per-test timeout with rationale instead of increasing global timeout.
+- If a legitimate integration scenario is slow only under coverage instrumentation, prefer adjusting the active Vitest config (`testTimeout`, `hookTimeout`, `teardownTimeout`) with rationale; use per-test timeout override only as a last resort.
 
 ## URL-state regression checklist (React SPAs)
 
@@ -130,7 +130,9 @@ Recommended assertions:
 ## CI timeout budgeting for integration suites
 
 - Do not leave integration suites on default timeout (`5000ms`) when real runtime is materially higher.
-- Prefer suite-level timeout configuration (`testTimeout`, `hookTimeout`, `teardownTimeout`) over scattered per-test overrides.
+- For Vitest, set timeout policy in config files (`vitest.config.ts`, `vitest.integration.config.ts`) via `testTimeout`, `hookTimeout`, and `teardownTimeout` instead of scattering per-test overrides.
+- For Node.js test runner (`node:test`), configure timeout policy via runner flags in scripts (for example `node --test --test-timeout=30000`) instead of per-test overrides.
+- Use per-test timeout overrides only as an exception after root-cause analysis and add inline rationale.
 - Practical baseline: choose timeout as at least `3x` local mean runtime of the slowest integration file, then validate in CI.
 - If CI shows worker-termination timeouts or OOM, first check for unresolved async/mocks and accidental long polling before only increasing limits.
 
