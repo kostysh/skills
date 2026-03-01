@@ -25,6 +25,7 @@ Build finance-oriented features with reproducible money math that matches accoun
 4. Mirror the same formulas in SQL using identical rounding semantics.
 5. Add/extend golden cases for VAT/IVA, scorporo, allocation, and negative flows.
 6. Validate parity: SQL result == backend result == browser result.
+7. Execute tests by contour: changed-focused local loop, full PR gates, nightly parity stability checks for flaky paths.
 
 ## Required `money` usage
 Use these APIs by default:
