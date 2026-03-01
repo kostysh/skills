@@ -5,6 +5,16 @@
 - Integration: `test/integration/*.test.ts` (or your repo's equivalent)
 - E2E: `test/e2e/*.test.ts` (or your repo's equivalent)
 
+## Confidence contours (default)
+
+Apply test execution by contour:
+- Local: targeted/changed tests for fast feedback.
+- PR: full required quality gates for merge safety.
+- Nightly: shuffle/repeated integration/E2E for flake detection.
+- Release: full gates + coverage + smoke.
+
+If repo policy differs, follow repo policy and document the deviation.
+
 ## Runner
 - Use `node:test` and a lightweight TS strip/transform (`node --experimental-strip-types` or similar).
 - No ts-node.
@@ -123,6 +133,12 @@ describe("GET /v1/profile", () => {
 - Assertion errors: read the expected vs actual diff first; fix the behavior or the assertion, not both.
 - Timeouts/hangs: reduce shared global state, avoid real timers/IO, and set per-test timeouts only when needed.
 - Skips/TODOs: use sparingly; always leave a short reason in the test name or comment.
+
+## CI lint/format policy
+
+- Prefer check-only lint/format commands in CI.
+- Keep auto-fix commands local.
+- If CI still runs auto-fix, treat it as a migration candidate and document rationale.
 
 ## Test hooks (before/after)
 Use hooks for shared setup/cleanup; avoid hiding behavior in hooks. Hooks can be async, so always `await` setup/teardown work.

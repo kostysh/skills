@@ -24,6 +24,55 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 7. Run coverage checkpoints according to stage/task cadence.
 8. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
 
+## Multi-contour confidence model (default)
+
+Unless the target project defines a different policy, structure testing in four contours:
+
+1. Local contour (fast loop):
+   - run targeted or changed-only tests while developing;
+   - prioritize short feedback loops over full-suite reruns.
+2. PR contour (required checks):
+   - run full required quality gates for changed scopes;
+   - keep deterministic runner settings for merge protection.
+3. Nightly contour (stability):
+   - run shuffle/repeated integration suites to detect order-dependent and flaky tests.
+4. Release contour:
+   - run full required gates + coverage checkpoints + smoke validation.
+
+## CI check-only policy
+
+- In CI, prefer check-only lint/format commands.
+- Keep auto-fix commands for local development.
+- If CI still uses auto-fix commands, flag this as technical debt and propose migration to check-only scripts.
+
+## PR E2E policy decision tree
+
+Default:
+- keep full E2E in PR unless E2E is a proven bottleneck.
+
+Switch PR E2E to changed-only only if a project-level trigger is met and documented.
+Recommended trigger baseline (override when repo policy exists):
+- PR E2E p95 > 300s for 2 consecutive weeks, or
+- E2E suite size >= 30 spec files.
+
+When switching:
+1. keep full E2E in nightly/release contours;
+2. document exact trigger and rollback conditions in project docs/SDD artifacts.
+
+## Flake threshold and rollback guard
+
+For repeated nightly suites:
+- instability rate = failed runs / total repeated runs * 100.
+
+Recommended baseline threshold (override when repo policy exists):
+- instability rate < 2%.
+
+If threshold is exceeded:
+1. freeze parallelism increases;
+2. revert to safer deterministic profile (for example lower workers);
+3. create follow-up tasks for isolation fixes;
+4. restore accelerated profile only after stability returns below threshold.
+
 ## Deprecated warnings gate (required)
 
 - Treat framework/runtime deprecation warnings in test output as mandatory fixes, not informational noise.
