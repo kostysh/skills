@@ -40,6 +40,24 @@ Use this template for `Q{N}-quick.md`.
 2. {Implement ...}
 3. {Verify ...}
 
+## Test Contours (required when test strategy changes)
+- Local: {commands + intent}
+- PR: {commands + intent}
+- Nightly: {commands + intent}
+- Release: {commands + intent}
+
+## Budget / SLO (required when test strategy changes)
+- Local fast loop: {target}
+- PR tests: {target}
+- Bottleneck suite budget: {target}
+- Nightly instability threshold: {target}
+
+## Flake Policy (required when test strategy changes)
+- Instability formula: {failed_runs / total_runs * 100}
+- Threshold: {value}
+- Rollback trigger: {when to switch back to safer profile}
+- Rollback action: {exact command/profile to restore}
+
 ## Owner Input Required (if applicable)
 - Missing input: {explicit list, no wildcards}
 - Why not derivable: {reason}

@@ -182,6 +182,11 @@ At the start of every SDD phase (including /sdd-quick):
   - validation point.
 - `S*` must include **External Dependency Behavior** for critical third-party services (auth/mail/payments/etc.) including known constraints and fallback strategies.
 - `P*` / `T*` must include explicit CI/CD configuration tasks when env/workflow updates are needed.
+- `Q*` / `P*` / `T*` that change testing behavior must include **Testing Strategy Contract**:
+  - contours in scope (`Local` / `PR` / `Nightly` / `Release`),
+  - command matrix by contour,
+  - time budget/SLO targets,
+  - flake threshold and rollback trigger.
 - `T*` / `V*` must include browser-level smoke validation for user-facing deployed flows.
 - `V*` / `H*` must include an **Operational Troubleshooting** section (logs, commands, provider-vs-app triage).
 

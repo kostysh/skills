@@ -39,6 +39,11 @@ A single quick artifact: `Q{N}-quick.md` containing requirements, spec, plan, ta
 1. Describe the simplest solution that satisfies criteria
 2. List affected files and components
 3. Call out risks and alternatives (briefly)
+4. If testing behavior changes, add a compact `Testing Strategy Contract`:
+   - contours in scope (`Local` / `PR` / `Nightly` / `Release`)
+   - command matrix by contour
+   - time budget/SLO targets
+   - flake threshold + rollback trigger
 
 ### Phase 3: Plan and Tasks
 
@@ -80,3 +85,4 @@ Use the [Quick Template](quick-template.md).
 - [ ] Coverage checkpoint recorded when package supports coverage command(s)
 - [ ] Drift, if any, documented and approved
 - [ ] If task tracking was used, progress entries follow canonical schema from `SKILL.md`
+- [ ] If test strategy changed, `Testing Strategy Contract` includes contours, budgets, and flake/rollback policy

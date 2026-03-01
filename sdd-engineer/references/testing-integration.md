@@ -14,6 +14,7 @@ Coverage interop contract:
 
 - Tests are required for new behavior.
 - The testing approach is defined in the plan.
+- If testing behavior changes, artifacts must include contour split (`Local` / `PR` / `Nightly` / `Release`) with command matrix, budget/SLO, and flake rollback trigger.
 - Use RED/GREEN/VERIFY (TDD) **only when explicitly requested**.
 - Tests must be honest and effective: verify observable behavior/contracts and avoid artificial "always green" assertions.
 - Implementation tasks are incomplete until package quality gates pass (`type-check`, `test:*`, and lint/format as applicable).
