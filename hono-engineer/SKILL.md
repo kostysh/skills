@@ -73,6 +73,11 @@ If using Cloudflare Workers or another edge runtime, review `references/workers-
 - Unit: pure helpers (config parsing, redaction).
 - Integration: `createApp().request()`.
 - E2E: use a runtime-specific harness (Cloudflare Workers: `wrangler unstable_dev`).
+- Keep contour-aware execution:
+  - local: deterministic profile;
+  - PR CI: full required suite with check-only lint/format commands;
+  - nightly: repeated stability checks for flaky integration/e2e paths.
+- Prefer CI check-only lint commands; keep auto-fix lint commands for local development only.
 For deeper testing guidance, use the `typescript-test-engineer` skill.
 
 ## When you need more detail
