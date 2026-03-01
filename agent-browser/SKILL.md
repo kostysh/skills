@@ -65,6 +65,12 @@ agent-browser close             # Close browser
 3. Interact using refs from the snapshot
 4. Re-snapshot after navigation or significant DOM changes
 
+## CI contour alignment
+
+- Treat agent-browser checks as smoke/diagnostic tooling by default.
+- Do not silently replace required PR E2E suites with ad-hoc browser automation.
+- If PR policy switches to changed-only/smoke E2E, ensure the trigger and rollback policy is documented in project-level testing strategy docs.
+
 ## SPA/API verification checklist (before declaring backend/client broken)
 
 For auth and API flows, validate these in order:
