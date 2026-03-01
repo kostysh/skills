@@ -62,7 +62,8 @@ Build React components that survive real-world rendering contexts, not just happ
 2. Evaluate the component against all checklist axes.
 3. Apply exact fix patterns from `references/bulletproof-patterns.md`.
 4. Validate with scenario tests: SSR render, hydration, multi-instance, portal/iframe, transition, hidden activity, server/client boundary.
-5. Optimize only after correctness is verified.
+5. When introducing expensive integration coverage, align execution contour with project policy (local fast loop, PR required checks, nightly stability).
+6. Optimize only after correctness is verified.
 
 ## Anti-Patterns to Reject
 
