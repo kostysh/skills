@@ -48,6 +48,7 @@ Adjust `tsconfig.json` for your runtime and module resolution. See `references/t
 - Set up Biome + ESLint together.
 - Validate external data at boundaries (Zod or equivalent).
 - Delegate testing patterns to `typescript-test-engineer`.
+- When defining project scripts, keep test contours explicit (local fast loop, PR required gates, nightly stability) and defer details to `typescript-test-engineer`.
 
 ## When to Use This Skill
 Use when:
