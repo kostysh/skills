@@ -195,6 +195,13 @@ See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patter
 - For async UI, use `findBy*` and `waitFor`
 - For modal/dialog components with animation (for example Ant Design `Modal`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
 
+**Parallel integration isolation rules**:
+- Keep a deterministic local profile (for example single-worker integration) and a separate CI profile when parallelism is tuned.
+- Isolate IndexedDB state per test run where feasible; always clear tables in `afterEach`.
+- Always clear `localStorage`/`sessionStorage` in teardown.
+- When using global mocks/stubs (`fetch`, `ResizeObserver`, etc.), restore/unstub them after each test.
+- Add nightly shuffled/repeated integration checks before increasing CI workers again.
+
 See [Testing](references/testing.md) for full setup and examples.
 
 ### Accessibility
