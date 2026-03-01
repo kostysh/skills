@@ -39,6 +39,7 @@ Build and operate Supabase-backed systems with strong security, performance, and
 5. Add retries/backoff/idempotency for writes; cache or batch hot reads.
 6. Configure local dev, CI, and multi-env secrets.
 7. Prepare production checklist and incident runbook.
+8. Align database/app test execution with project contours (local fast loop, PR required gates, nightly stability).
 
 ## Local deterministic bootstrapping (dev-only)
 
