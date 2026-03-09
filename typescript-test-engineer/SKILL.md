@@ -23,6 +23,7 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 6. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
 7. Run coverage checkpoints according to stage/task cadence.
 8. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
+9. After any GitHub Actions workflow or CI YAML change, validate the touched YAML files locally before claiming completion (at minimum parse/syntax validation, and repo-standard workflow lint if available).
 
 ## Multi-contour confidence model (default)
 
