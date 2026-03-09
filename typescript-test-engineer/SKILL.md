@@ -27,18 +27,21 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 
 ## Multi-contour confidence model (default)
 
-Unless the target project defines a different policy, structure testing in four contours:
+Always follow the target repository policy first. Do not invent extra contours if the repo has already defined them.
+
+Default contour model when the repo does not define a different policy:
 
 1. Local contour (fast loop):
    - run targeted or changed-only tests while developing;
    - prioritize short feedback loops over full-suite reruns.
 2. PR contour (required checks):
-   - run full required quality gates for changed scopes;
+   - run required quality gates for changed scopes;
    - keep deterministic runner settings for merge protection.
-3. Nightly contour (stability):
-   - run shuffle/repeated integration suites to detect order-dependent and flaky tests.
-4. Release contour:
+3. Release contour:
    - run full required gates + coverage checkpoints + smoke validation.
+
+Optional contour:
+- Stability/nightly contour exists only when the repository explicitly defines scheduled repeated/shuffled validation. Do not assume nightly, telemetry, or soak runs are part of the active strategy.
 
 ## CI check-only policy
 
@@ -48,21 +51,21 @@ Unless the target project defines a different policy, structure testing in four 
 
 ## PR E2E policy decision tree
 
-Default:
-- keep full E2E in PR unless E2E is a proven bottleneck.
+Repository policy wins:
+- if the repo defines risk-based or path-based browser gating, follow that policy exactly;
+- do not restore full PR E2E by default when the repository intentionally moved browser coverage to conditional PR gates plus release/manual verification.
 
-Switch PR E2E to changed-only only if a project-level trigger is met and documented.
-Recommended trigger baseline (override when repo policy exists):
-- PR E2E p95 > 300s for 2 consecutive weeks, or
-- E2E suite size >= 30 spec files.
-
-When switching:
-1. keep full E2E in nightly/release contours;
-2. document exact trigger and rollback conditions in project docs/SDD artifacts.
+When the repo does not define a policy:
+1. start with the smallest browser gate that still protects the critical user journeys;
+2. keep PR browser tests deterministic and scoped to merge-critical risk;
+3. require explicit release/manual browser verification for flows removed from always-on PR coverage;
+4. document exact trigger paths or decision rules in project docs/SDD artifacts.
 
 ## Flake threshold and rollback guard
 
-For repeated nightly suites:
+Only apply this section when the repository explicitly uses repeated stability suites (for example nightly shuffle/soak runs).
+
+For repeated stability suites:
 - instability rate = failed runs / total repeated runs * 100.
 
 Recommended baseline threshold (override when repo policy exists):
@@ -70,9 +73,13 @@ Recommended baseline threshold (override when repo policy exists):
 
 If threshold is exceeded:
 1. freeze parallelism increases;
-2. revert to safer deterministic profile (for example lower workers);
+2. revert to a safer deterministic profile (for example lower workers);
 3. create follow-up tasks for isolation fixes;
-4. restore accelerated profile only after stability returns below threshold.
+4. restore the accelerated profile only after stability returns below threshold.
+
+If the repository has no active stability contour:
+- do not introduce nightly/telemetry thresholds on your own;
+- use the repo's PR and release policy as the source of truth for risk management.
 
 ## Deprecated warnings gate (required)
 
