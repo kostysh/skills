@@ -55,6 +55,20 @@ Templates:
 
 ## Commands / modes
 
+### `help`
+
+Provide a short workflow summary for the user.
+
+Output:
+
+- Keep it brief and practical.
+- Summarize the flow as:
+  `init -> feature-discovery -> confirm candidate -> feature-intake -> spec-compact -> plan-slice -> implementation -> checks`
+- Briefly remind the user:
+  - `docs/features/F-*.md` is the per-feature SSoT
+  - `docs/ssot/index.md` lists only real dossiers
+  - `docs/backlog/feature-candidates.md` is a non-SSoT candidate backlog
+
 ### `init`
 
 Bootstrap the dossier protocol in a repository that already has architecture.
