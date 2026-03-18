@@ -12,6 +12,9 @@ This repository uses the dossier protocol.
 - Repo architecture overview: `docs/architecture/system.md`
 - Per-feature canonical doc: `docs/features/F-*.md` (Feature Dossier)
 
+## Planning backlog
+- Candidate feature backlog: `docs/backlog/feature-candidates.md` (non-SSoT)
+
 ## Rules
 1) Do not duplicate acceptance criteria text outside dossiers.
 2) Start navigation from `docs/ssot/index.md`, then follow links into dossiers.
@@ -26,6 +29,7 @@ This repository uses the dossier protocol.
    - Coverage map
    - Change log when requirements changed
 5) Tests must reference AC IDs in test names or `// Covers:` comments.
+6) `docs/backlog/feature-candidates.md` may contain `CF-*` candidate entries, but `docs/ssot/index.md` must list only real dossiers.
 
 ## Common commands
 - Run tests: `node --test`

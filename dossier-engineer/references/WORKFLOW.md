@@ -6,14 +6,26 @@ Use `init` once per repository, after a repo-level architecture document already
 Expected output:
 - Canonical architecture doc at `docs/architecture/system.md`
 - Global index at `docs/ssot/index.md`
+- Candidate backlog at `docs/backlog/feature-candidates.md`
 - Feature dossier directory at `docs/features/`
 - Repo-root `AGENTS.md` with dossier-protocol rules for future agents
 
 Bootstrap rules:
 - Do not start dossier protocol before architecture exists.
 - Do not create placeholder feature dossiers during bootstrap.
+- It is fine to create an empty candidate backlog file during bootstrap.
 - The first real feature starts with `feature-intake`, not with `init`.
 - Keep bootstrap deterministic: if architecture selection or safe normalization of `AGENTS.md` / `docs/ssot/index.md` is ambiguous, ask the user instead of guessing.
+
+## Candidate backlog (`feature-discovery`)
+Use `feature-discovery` to translate architecture into a simple backlog in `docs/backlog/feature-candidates.md`.
+
+Rules:
+- Candidate backlog entries use temporary `CF-*` IDs.
+- Candidate backlog is non-SSoT and must not contain acceptance criteria text.
+- `feature-intake` promotes one candidate into a real dossier and links `CF-* -> F-*`.
+- `docs/ssot/index.md` must continue to list only real dossiers.
+- Keep candidate statuses current: `candidate -> confirmed -> intaken`, or `discarded` if not pursued.
 
 ## Status lifecycle
 `proposed` → `shaped` → `planned` → `in_progress` → `done` (or `parked`)

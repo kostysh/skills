@@ -1,3 +1,3 @@
 interface:
   display_name: "Dossier Engineer"
-  short_description: "Lean docs-as-code workflow: one Feature Dossier per feature + one global index + traceability + audits"
+  short_description: "Lean docs-as-code workflow with feature discovery, one Feature Dossier per feature, one global index, traceability, and audits"

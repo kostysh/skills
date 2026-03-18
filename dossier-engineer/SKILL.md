@@ -1,6 +1,6 @@
 ---
 name: dossier-engineer
-description: Lightweight docs-as-code process for building large apps with AI coding agents. Uses one Feature Dossier per feature (SSoT) and one global index, with commands to init repos, intake features, compact specs, plan slices, log ADRs, audit dependency/coverage, and sync/lint docs to prevent drift and duplication.
+description: Lightweight docs-as-code process for building large apps with AI coding agents. Uses one Feature Dossier per feature (SSoT), one global index, and a simple backlog discovery flow, with commands to init repos, discover features from architecture, intake features, compact specs, plan slices, log ADRs, audit dependency/coverage, and sync/lint docs to prevent drift and duplication.
 license: Apache-2.0
 compatibility: Designed for git repos. Optional scripts in scripts/ require Node.js >= 18.
 ---
@@ -18,6 +18,7 @@ This skill implements a **low-overhead, high-control** workflow for large projec
 
 - `docs/features/F-XXXX-<slug>.md` — **Feature Dossier** (**SSoT for that feature**).
 - `docs/ssot/index.md` — **Global index/registry** (**SSoT for navigation + dependency map**).
+- `docs/backlog/feature-candidates.md` — **Candidate feature backlog** (**non-SSoT**, created by `feature-discovery`).
 - `docs/architecture/system.md` — C4-lite architecture overview (**required before `init` can succeed**).
 - `docs/adr/*.md` — optional; only for cross-cutting ADRs (otherwise keep ADR blocks inside the dossier).
 - `AGENTS.md` — repo-level operating rules for agents (recommended; created or normalized by `init`).
@@ -26,6 +27,7 @@ Templates:
 
 - Feature dossier template: [references/DOSSIER_TEMPLATE.md](references/DOSSIER_TEMPLATE.md)
 - Index template: [references/SSOT_INDEX_TEMPLATE.md](references/SSOT_INDEX_TEMPLATE.md)
+- Feature candidates backlog template: [references/FEATURE_CANDIDATES_TEMPLATE.md](references/FEATURE_CANDIDATES_TEMPLATE.md)
 - ADR block template: [references/ADR_BLOCK_TEMPLATE.md](references/ADR_BLOCK_TEMPLATE.md)
 - Repo `AGENTS.md` template: [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md)
 
@@ -46,6 +48,10 @@ Templates:
 
 4. **Traceability via IDs.**
    Use: `F-0001`, `AC-F0001-01`, `ADR-F0001-01`, `SL-F0001-01`, `T-F0001-01`.
+
+5. **Candidate features are not dossiers.**
+   `docs/backlog/feature-candidates.md` may use temporary `CF-001` IDs, but
+   `docs/ssot/index.md` must list only real Feature Dossiers.
 
 ## Commands / modes
 
@@ -78,20 +84,52 @@ Steps:
    - Prefer an existing `docs/architecture/system.md`.
    - Otherwise choose a single repo-level document only if the canonical choice is obvious.
    - If the choice is not obvious, ask the user which document should become canonical instead of guessing.
-6. Ensure `docs/features/` exists.
+6. Ensure `docs/features/` and `docs/backlog/` exist.
 7. Create or normalize `docs/ssot/index.md`.
    - Prefer `node scripts/sync-index.mjs` after `docs/features/` exists.
    - If scripts are unavailable, create the index from [references/SSOT_INDEX_TEMPLATE.md](references/SSOT_INDEX_TEMPLATE.md).
    - If an existing index has custom content that cannot be preserved by safe block-level normalization, ask the user before replacing it.
-8. Create or update repo-root `AGENTS.md` using [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md).
+8. Create or normalize `docs/backlog/feature-candidates.md` from [references/FEATURE_CANDIDATES_TEMPLATE.md](references/FEATURE_CANDIDATES_TEMPLATE.md).
+9. Create or update repo-root `AGENTS.md` using [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md).
    - If `AGENTS.md` already exists, preserve unrelated repo instructions and add or update only the dossier-protocol rules.
    - If safe merge is not obvious, ask the user before rewriting it.
-9. Report what was created, moved, renamed, or left untouched.
+10. Report what was created, moved, renamed, or left untouched.
 
 Rules:
 
 - `init` is a one-time repository bootstrap step.
 - `init` must not create placeholder feature dossiers. The first real feature later uses `feature-intake`.
+
+### `feature-discovery`
+
+Read architecture and refresh a simple candidate feature backlog.
+
+Output:
+
+- `docs/backlog/feature-candidates.md` with temporary `CF-*` entries.
+- Each entry should be coarse, user-visible, and backlog-sized.
+
+Steps:
+
+1. Read canonical architecture from `docs/architecture/system.md`.
+2. Read existing `docs/backlog/feature-candidates.md` if present.
+3. Read existing dossiers and `docs/ssot/index.md` to avoid duplicating already-intaken features.
+4. Extract a short list of candidate features from architecture.
+   - Prefer user-visible workflows or bounded capabilities.
+   - Avoid infrastructure layers, modules, and speculative sub-features unless architecture clearly separates them.
+5. Create or update `docs/backlog/feature-candidates.md` using [references/FEATURE_CANDIDATES_TEMPLATE.md](references/FEATURE_CANDIDATES_TEMPLATE.md).
+6. If architecture is too vague to separate features confidently, ask the user instead of inventing a backlog.
+
+Rules:
+
+- `feature-discovery` creates or updates candidate backlog entries, not dossiers.
+- Do not put acceptance criteria text in the backlog file.
+- Use `CF-001`, `CF-002`, ... for candidate IDs.
+- Keep candidate status current:
+  - `candidate` when first discovered
+  - `confirmed` when the user decides it should become a dossier
+  - `intaken` when `feature-intake` creates the dossier
+  - `discarded` when the user decides not to pursue it
 
 ### `feature-intake`
 
@@ -103,7 +141,8 @@ Steps:
 2. Create `docs/features/F-XXXX-<slug>.md` from the dossier template:
    - Fill only **Context**, **Scope**, and a draft **Acceptance Criteria** list.
    - Fill frontmatter: id, title, status=`proposed`, area, impacts, depends_on.
-3. Run `scripts/sync-index.mjs` (or update index manually if scripts are unavailable).
+3. If this feature came from `docs/backlog/feature-candidates.md`, update the matching `CF-*` entry with status `intaken` and add the dossier link.
+4. Run `scripts/sync-index.mjs` (or update index manually if scripts are unavailable).
 
 ### `spec-compact`
 
