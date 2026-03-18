@@ -1,6 +1,11 @@
+# Repository `AGENTS.md` template for dossier protocol
+
+Use this as the minimal repo-root `AGENTS.md` content when bootstrapping `dossier-engineer`.
+
+```md
 # AGENTS.md
 
-This repository uses a low-overhead docs-as-code workflow.
+This repository uses the dossier protocol.
 
 ## Single sources of truth
 - Global navigation index: `docs/ssot/index.md`
@@ -10,7 +15,7 @@ This repository uses a low-overhead docs-as-code workflow.
 ## Rules
 1) Do not duplicate acceptance criteria text outside dossiers.
 2) Start navigation from `docs/ssot/index.md`, then follow links into dossiers.
-3) When implementing a feature, reference IDs:
+3) When implementing a feature, reference stable IDs:
    - Feature: `F-0001`
    - Acceptance criteria: `AC-F0001-01`
    - ADR block: `ADR-F0001-01`
@@ -20,10 +25,11 @@ This repository uses a low-overhead docs-as-code workflow.
    - Progress & links
    - Coverage map
    - Change log when requirements changed
-5) Tests must use `node:test` and include AC IDs in test names or `// Covers:` comments.
+5) Tests must reference AC IDs in test names or `// Covers:` comments.
 
 ## Common commands
 - Run tests: `node --test`
-- Lint dossiers: `node scripts/lint-dossiers.mjs` (in the skill folder; copy into repo or run from there)
-- Audit coverage: `node scripts/coverage-audit.mjs` (in the skill folder; copy into repo or run from there)
-- Sync index: `node scripts/sync-index.mjs` (in the skill folder; copy into repo or run from there)
+- Sync index: `node scripts/sync-index.mjs`
+- Lint dossiers: `node scripts/lint-dossiers.mjs`
+- Audit coverage: `node scripts/coverage-audit.mjs`
+```

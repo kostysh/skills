@@ -1,6 +1,6 @@
 ---
 name: dossier-engineer
-description: Lightweight docs-as-code process for building large apps with AI coding agents. Uses one Feature Dossier per feature (SSoT) and one global index, with commands to intake, compact specs, plan slices, log ADRs, audit dependency/coverage, and sync/lint docs to prevent drift and duplication.
+description: Lightweight docs-as-code process for building large apps with AI coding agents. Uses one Feature Dossier per feature (SSoT) and one global index, with commands to init repos, intake features, compact specs, plan slices, log ADRs, audit dependency/coverage, and sync/lint docs to prevent drift and duplication.
 license: Apache-2.0
 compatibility: Designed for git repos. Optional scripts in scripts/ require Node.js >= 18.
 ---
@@ -18,14 +18,16 @@ This skill implements a **low-overhead, high-control** workflow for large projec
 
 - `docs/features/F-XXXX-<slug>.md` — **Feature Dossier** (**SSoT for that feature**).
 - `docs/ssot/index.md` — **Global index/registry** (**SSoT for navigation + dependency map**).
-- `docs/architecture/system.md` — C4-lite architecture overview (recommended).
+- `docs/architecture/system.md` — C4-lite architecture overview (**required before `init` can succeed**).
 - `docs/adr/*.md` — optional; only for cross-cutting ADRs (otherwise keep ADR blocks inside the dossier).
+- `AGENTS.md` — repo-level operating rules for agents (recommended; created or normalized by `init`).
 
 Templates:
 
 - Feature dossier template: [references/DOSSIER_TEMPLATE.md](references/DOSSIER_TEMPLATE.md)
 - Index template: [references/SSOT_INDEX_TEMPLATE.md](references/SSOT_INDEX_TEMPLATE.md)
 - ADR block template: [references/ADR_BLOCK_TEMPLATE.md](references/ADR_BLOCK_TEMPLATE.md)
+- Repo `AGENTS.md` template: [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md)
 
 ## Hard rules (must follow)
 
@@ -46,6 +48,50 @@ Templates:
    Use: `F-0001`, `AC-F0001-01`, `ADR-F0001-01`, `SL-F0001-01`, `T-F0001-01`.
 
 ## Commands / modes
+
+### `init`
+
+Bootstrap the dossier protocol in a repository that already has architecture.
+
+Minimal requirement:
+
+- A repo-level architecture document must already exist. If none exists, stop and tell the user that dossier initialization requires architecture first.
+
+Determinism policy:
+
+- `init` should proceed automatically only when the next action is unambiguous.
+- If multiple plausible architecture documents exist and no canonical choice is obvious, ask the user which one should become canonical.
+- If an existing repo-root `AGENTS.md` or `docs/ssot/index.md` contains custom structure that cannot be safely normalized without overwriting intent, ask the user before rewriting it.
+- When in doubt, ask a short clarifying question instead of guessing.
+
+Steps:
+
+1. Check whether the canonical architecture file already exists at `docs/architecture/system.md`.
+2. If it does not exist, search for plausible repo-level architecture docs.
+   - Prefer Markdown files under `docs/` whose names contain `system`, `architecture`, or `arch`.
+   - Ignore `docs/features/*`, `docs/adr/*`, `docs/ssot/*`, issue templates, PR templates, and obviously feature-local docs.
+3. If no plausible architecture doc is found, stop and report that `init` cannot proceed until architecture exists.
+4. If exactly one clear architecture candidate exists and it is not canonical, move or rename it to `docs/architecture/system.md`.
+   - Preserve file content.
+   - Prefer `git mv` in git repositories.
+5. If multiple plausible architecture candidates exist:
+   - Prefer an existing `docs/architecture/system.md`.
+   - Otherwise choose a single repo-level document only if the canonical choice is obvious.
+   - If the choice is not obvious, ask the user which document should become canonical instead of guessing.
+6. Ensure `docs/features/` exists.
+7. Create or normalize `docs/ssot/index.md`.
+   - Prefer `node scripts/sync-index.mjs` after `docs/features/` exists.
+   - If scripts are unavailable, create the index from [references/SSOT_INDEX_TEMPLATE.md](references/SSOT_INDEX_TEMPLATE.md).
+   - If an existing index has custom content that cannot be preserved by safe block-level normalization, ask the user before replacing it.
+8. Create or update repo-root `AGENTS.md` using [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md).
+   - If `AGENTS.md` already exists, preserve unrelated repo instructions and add or update only the dossier-protocol rules.
+   - If safe merge is not obvious, ask the user before rewriting it.
+9. Report what was created, moved, renamed, or left untouched.
+
+Rules:
+
+- `init` is a one-time repository bootstrap step.
+- `init` must not create placeholder feature dossiers. The first real feature later uses `feature-intake`.
 
 ### `feature-intake`
 

@@ -1,5 +1,20 @@
 # 1F1D Workflow (operational guide)
 
+## Repository bootstrap (`init`)
+Use `init` once per repository, after a repo-level architecture document already exists.
+
+Expected output:
+- Canonical architecture doc at `docs/architecture/system.md`
+- Global index at `docs/ssot/index.md`
+- Feature dossier directory at `docs/features/`
+- Repo-root `AGENTS.md` with dossier-protocol rules for future agents
+
+Bootstrap rules:
+- Do not start dossier protocol before architecture exists.
+- Do not create placeholder feature dossiers during bootstrap.
+- The first real feature starts with `feature-intake`, not with `init`.
+- Keep bootstrap deterministic: if architecture selection or safe normalization of `AGENTS.md` / `docs/ssot/index.md` is ambiguous, ask the user instead of guessing.
+
 ## Status lifecycle
 `proposed` → `shaped` → `planned` → `in_progress` → `done` (or `parked`)
 
