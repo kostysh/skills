@@ -13,6 +13,8 @@ This skill implements a **low-overhead, high-control** workflow for large projec
 - **One global index** answers “where is it?” and “what’s missing?”.
 - **Traceability** is enforced with stable IDs and link-only references (no duplicated requirements text).
 - **Automation** (lint + coverage audit + dependency graph) replaces “more documents”.
+- **Architecture coverage stays visible** so both user-facing capabilities and required platform seams have an explicit owner in the backlog.
+- **Implementation starts from the canonical repo path** instead of rediscovering stack, runtime, or deployment assumptions feature by feature.
 
 ## Core artifacts (minimal set)
 
@@ -53,6 +55,32 @@ Templates:
    `docs/backlog/feature-candidates.md` may use temporary `CF-001` IDs, but
    `docs/ssot/index.md` must list only real Feature Dossiers.
 
+6. **Make architecture coverage explicit.**
+   Candidate backlog work should make it easy to see which major architecture seams already have an owner and which still need one.
+
+7. **Promote cross-cutting delivery assumptions early.**
+   When stack, runtime, deployment, or verification decisions constrain multiple features, capture them in architecture or a repo-level ADR so later features can build on them directly.
+
+## Mandatory independent review gate
+
+After completing any command, the authoring agent must run an independent review before reporting success.
+
+Protocol:
+
+1. Spawn a separate reviewer agent that did not produce the changes or answer.
+2. Give the reviewer the command name, touched files, relevant command output, and the command-specific checklist below.
+3. The reviewer must inspect actual repo state and generated output, not trust the authoring agent's summary.
+4. The reviewer returns:
+   - `PASS` or `FAIL`
+   - `must-fix` findings
+   - `should-fix` findings
+   - concrete evidence (file path + section/anchor, and command output when relevant)
+5. The authoring agent must resolve all `must-fix` findings, re-run relevant checks, and repeat review if the fixes were material.
+6. Do not claim a command is complete while known blocking findings remain.
+7. For read-only commands (`help`, `dependency-check`, `coverage-audit`, `lint-dossiers`), review the correctness and completeness of the output/report instead of expecting file mutations.
+8. When reviewer and author disagree, prefer the stricter interpretation unless architecture or an explicit user instruction clearly resolves the issue.
+9. Once the reviewer agent has finished and all findings it raised have been resolved, stop the reviewer agent so resources are not wasted.
+
 ## Commands / modes
 
 ### `help`
@@ -63,11 +91,21 @@ Output:
 
 - Keep it brief and practical.
 - Summarize the flow as:
-  `init -> feature-discovery -> confirm candidate -> feature-intake -> spec-compact -> plan-slice -> implementation -> checks`
+  `init -> feature-discovery -> mark candidate confirmed -> feature-intake -> spec-compact -> plan-slice -> implementation -> checks`
 - Briefly remind the user:
   - `docs/features/F-*.md` is the per-feature SSoT
   - `docs/ssot/index.md` lists only real dossiers
   - `docs/backlog/feature-candidates.md` is a non-SSoT candidate backlog
+  - `confirmed` is a backlog state that records the user’s decision to promote a candidate toward intake
+
+Review checklist:
+
+- [ ] The reply is brief and practical.
+- [ ] It includes the flow `init -> feature-discovery -> mark candidate confirmed -> feature-intake -> spec-compact -> plan-slice -> implementation -> checks`.
+- [ ] It correctly states that `docs/features/F-*.md` is the per-feature SSoT.
+- [ ] It correctly states that `docs/ssot/index.md` lists only real dossiers.
+- [ ] It correctly states that `docs/backlog/feature-candidates.md` is a non-SSoT candidate backlog.
+- [ ] It treats `confirmed` as a backlog state, not as a command.
 
 ### `init`
 
@@ -107,12 +145,29 @@ Steps:
 9. Create or update repo-root `AGENTS.md` using [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md).
    - If `AGENTS.md` already exists, preserve unrelated repo instructions and add or update only the dossier-protocol rules.
    - If safe merge is not obvious, ask the user before rewriting it.
-10. Report what was created, moved, renamed, or left untouched.
+10. Read the architecture once more and extract a short list of day-1 implementation invariants that later modes must preserve.
+
+- Typical examples: canonical stack, runtime substrate, deployment boundary, required verification paths, or other repo-wide engineering contracts.
+- If these invariants are already captured in architecture or ADRs, surface them in the report instead of duplicating them.
+- If they are clear in architecture but not yet easy to find, recommend the smallest durable home for them (for example architecture cross-reference, repo-root `AGENTS.md`, or repo-level ADR).
+
+11. Report what was created, moved, renamed, left untouched, and which implementation invariants future work should honor.
 
 Rules:
 
 - `init` is a one-time repository bootstrap step.
 - `init` must not create placeholder feature dossiers. The first real feature later uses `feature-intake`.
+
+Review checklist:
+
+- [ ] If no architecture existed, the command stopped cleanly with an explicit message and without half-created bootstrap artifacts.
+- [ ] If `init` proceeded, `docs/architecture/system.md`, `docs/features/`, `docs/backlog/feature-candidates.md`, and `docs/ssot/index.md` exist and follow the expected bootstrap structure.
+- [ ] If the canonical architecture was chosen from non-canonical files, the choice was obvious; otherwise the user was asked instead of the agent guessing.
+- [ ] Repo-root `AGENTS.md` includes dossier-protocol rules and preserves unrelated repo instructions.
+- [ ] No placeholder `docs/features/F-*.md` dossiers were created.
+- [ ] Existing custom index or `AGENTS.md` content was not overwritten without a safe merge or explicit user confirmation.
+- [ ] The final report accurately distinguishes created, moved, renamed, normalized, and untouched artifacts.
+- [ ] The final report surfaces repo-wide implementation invariants grounded in architecture/ADRs and does not invent unsupported ones.
 
 ### `feature-discovery`
 
@@ -121,7 +176,8 @@ Read architecture and refresh a simple candidate feature backlog.
 Output:
 
 - `docs/backlog/feature-candidates.md` with temporary `CF-*` entries.
-- Each entry should be coarse, user-visible, and backlog-sized.
+- Each entry should be coarse, backlog-sized, and clearly tied either to a user-visible capability or to an architecture-mandated platform seam.
+- When useful, include a short non-SSoT coverage note (`Backbone`, `Coverage watchpoints`, `Open questions`) so missing owners remain visible.
 
 Steps:
 
@@ -129,21 +185,37 @@ Steps:
 2. Read existing `docs/backlog/feature-candidates.md` if present.
 3. Read existing dossiers and `docs/ssot/index.md` to avoid duplicating already-intaken features.
 4. Extract a short list of candidate features from architecture.
-   - Prefer user-visible workflows or bounded capabilities.
-   - Avoid infrastructure layers, modules, and speculative sub-features unless architecture clearly separates them.
-5. Create or update `docs/backlog/feature-candidates.md` using [references/FEATURE_CANDIDATES_TEMPLATE.md](references/FEATURE_CANDIDATES_TEMPLATE.md).
-6. If architecture is too vague to separate features confidently, ask the user instead of inventing a backlog.
+   - Prefer user-visible workflows and bounded capabilities.
+   - Also include platform or backbone seams when architecture treats them as explicit prerequisites for the runtime or for later capabilities.
+5. Check coverage of major architecture areas.
+   - Make sure the backlog shows an owner or watchpoint for each important runtime, platform, data, model, security, and observability seam that the architecture elevates.
+6. Create or update `docs/backlog/feature-candidates.md` using [references/FEATURE_CANDIDATES_TEMPLATE.md](references/FEATURE_CANDIDATES_TEMPLATE.md).
+   - Order candidates so prerequisites and backbone seams are visible early.
+   - Add a small coverage note when it helps future intake work understand what is still missing.
+7. If architecture is too vague to separate features confidently, ask the user instead of inventing a backlog.
 
 Rules:
 
 - `feature-discovery` creates or updates candidate backlog entries, not dossiers.
 - Do not put acceptance criteria text in the backlog file.
 - Use `CF-001`, `CF-002`, ... for candidate IDs.
+- `confirmed` is a candidate status, not a separate command.
 - Keep candidate status current:
   - `candidate` when first discovered
   - `confirmed` when the user decides it should become a dossier
   - `intaken` when `feature-intake` creates the dossier
   - `discarded` when the user decides not to pursue it
+
+Review checklist:
+
+- [ ] The backlog was refreshed from architecture, or architecture ambiguity was surfaced explicitly instead of inventing speculative candidates.
+- [ ] If the backlog was updated, `docs/backlog/feature-candidates.md` uses only `CF-*` IDs with valid statuses.
+- [ ] Each candidate is backlog-sized and traceable to a user-visible capability or architecture-mandated platform seam.
+- [ ] Existing real dossiers were not duplicated as new candidates.
+- [ ] The backlog does not contain acceptance criteria text or dossier-only detail.
+- [ ] Candidate ordering makes prerequisites and backbone seams visible early.
+- [ ] Major architecture seams that still lack an owner are called out via candidate entries or a coverage note.
+- [ ] `docs/ssot/index.md` still lists only real dossiers, not `CF-*` entries.
 
 ### `feature-intake`
 
@@ -152,11 +224,29 @@ Create a new Feature Dossier and register it in the global index.
 Steps:
 
 1. Determine next available `F-XXXX` (scan existing dossiers).
-2. Create `docs/features/F-XXXX-<slug>.md` from the dossier template:
-   - Fill only **Context**, **Scope**, and a draft **Acceptance Criteria** list.
+2. Re-read the architecture and backlog context for the selected candidate and identify the current phase baseline for the feature.
+   - Capture which runtime, deployment, data, model, or security seams the feature assumes are already delivered.
+   - Identify which existing `F-XXXX` dossiers this feature depends on today.
+3. Create `docs/features/F-XXXX-<slug>.md` from the dossier template:
+   - Fill **Context**, **Scope**, **Constraints**, and a draft **Acceptance Criteria** list.
    - Fill frontmatter: id, title, status=`proposed`, area, impacts, depends_on.
-3. If this feature came from `docs/backlog/feature-candidates.md`, update the matching `CF-*` entry with status `intaken` and add the dossier link.
-4. Run `scripts/sync-index.mjs` (or update index manually if scripts are unavailable).
+   - Use `depends_on` for real delivered prerequisites, not for hoped-for future seams.
+   - Record the current phase baseline and implementation assumptions in Context or Constraints so later implementation starts from the right substrate.
+4. If intake reveals a missing prerequisite seam that does not yet have a clear backlog owner, refresh the candidate backlog first so the dependency becomes visible before coding starts.
+5. If this feature came from `docs/backlog/feature-candidates.md`, update the matching `CF-*` entry with status `intaken` and add the dossier link.
+6. Run `scripts/sync-index.mjs` (or update index manually if scripts are unavailable).
+
+Review checklist:
+
+- [ ] The new dossier uses the next free `F-XXXX` and a stable, readable slug.
+- [ ] Frontmatter is valid and complete enough for lint: `id`, `title`, `status`, `owners`, `area`, `depends_on`, `impacts`, `created`, and `updated`.
+- [ ] `status` is `proposed`, and acceptance criteria IDs are unique, testable, and match the dossier numeric ID.
+- [ ] Context, scope, constraints, and intake assumptions are grounded in architecture/backlog rather than invented locally.
+- [ ] `depends_on` contains only real delivered prerequisites, and the phase baseline/substrate assumptions are captured in the dossier.
+- [ ] If intake exposed a missing prerequisite seam, backlog ownership was refreshed before implementation starts.
+- [ ] The matching `CF-*` entry is marked `intaken` and links to the dossier.
+- [ ] `docs/ssot/index.md` contains exactly one row for the new dossier and still lists only real dossiers.
+- [ ] No acceptance criteria text was copied into the backlog or index.
 
 ### `spec-compact`
 
@@ -167,10 +257,26 @@ Steps:
 1. Refine acceptance criteria (AC) to be testable.
 2. Add compact design:
    - API surface (routes, DTOs)
+   - runtime and deployment surface (entrypoints, services, startup assumptions, env contract) when relevant
    - data model changes
    - edge cases + failure modes
-3. Add Definition of Done (DoD) and initial coverage map plan.
-4. If an architectural fork exists, run `adr-log`.
+   - verification surface (unit, integration, smoke, operator/manual) when relevant
+3. Check the feature against architecture and any repo-level ADRs that already constrain stack, runtime, or deployment shape.
+4. Add Definition of Done (DoD) and initial coverage map plan.
+   - Include non-test verification when runtime/process/container behavior matters.
+5. If an architectural fork exists, run `adr-log`.
+6. If the spec introduces or depends on a cross-cutting decision that multiple future features will inherit, promote that decision to a repo-level ADR or architecture update instead of leaving it implicit.
+
+Review checklist:
+
+- [ ] The same dossier was evolved in place; no shadow SSoT was created elsewhere.
+- [ ] Acceptance criteria are specific enough to verify, and stable IDs were preserved unless a documented change required otherwise.
+- [ ] The design covers API surface, runtime/deployment surface when relevant, data model changes, edge/failure modes, and verification surface.
+- [ ] The spec aligns with canonical architecture and repo-level ADRs, or any fork is explicitly resolved.
+- [ ] Definition of Done and an initial coverage map plan exist; non-test verification is included when runtime/process/container behavior matters.
+- [ ] Any feature-local fork is captured in an ADR block, and any cross-cutting decision is promoted to repo-level ADR or architecture instead of staying implicit.
+- [ ] Dossier status is consistent with spec maturity (`shaped` or a justified alternative).
+- [ ] New cross-cutting assumptions were not left hidden inside a single dossier.
 
 ### `plan-slice`
 
@@ -178,9 +284,60 @@ Add an incremental slicing plan inside the dossier.
 
 Steps:
 
-1. Create 2–6 slices (each delivers a testable increment).
-2. For each slice, list tasks that reference AC IDs (no duplicate AC text).
-3. Produce suggested issue titles (optional) that link back to dossier anchors.
+1. Create 2–6 slices in delivery order.
+   - Prefer substrate/alignment slices first, user-visible behavior next, expansion/polish last.
+2. For each slice, state what it delivers and which AC IDs it covers.
+3. For each slice, list the verification artifact that proves it (`unit`, `integration`, `smoke`, `manual`, or similar).
+4. For each slice, list tasks that reference AC IDs or Slice IDs (no duplicate AC text).
+5. If the feature requires realignment of an already-delivered dossier, make that realignment an explicit slice or linked task.
+6. Produce suggested issue titles (optional) that link back to dossier anchors.
+
+Review checklist:
+
+- [ ] The dossier contains 2–6 slices in delivery order.
+- [ ] Each slice states a concrete deliverable and cites the AC IDs it covers.
+- [ ] Each slice names the verification artifact(s) that prove it.
+- [ ] Tasks reference Slice IDs or AC IDs and do not restate acceptance criteria text.
+- [ ] Any required realignment of previously delivered work is explicit as a slice or linked task.
+- [ ] Optional issue titles, if present, point back to dossier anchors and match the slice/task plan.
+- [ ] Dossier status is consistent with planning maturity (`planned` or a justified alternative).
+
+### `implementation`
+
+Implement the planned feature while keeping dossier, architecture, and delivered substrate aligned.
+
+Steps:
+
+1. Start from `docs/ssot/index.md`, then open the target dossier, dependent dossiers, relevant architecture sections, and any repo-level ADRs that shape the work.
+2. Deliver on the repository’s canonical stack, runtime, and deployment path from the first commit.
+   - Treat already-fixed repo engineering contracts as the default path for code, tests, and runtime execution.
+3. Build verification alongside the implementation.
+   - Add AC-linked tests.
+   - Add process, startup, or container smoke verification when the feature changes runtime or deployment behavior.
+4. When implementation reveals a missing prerequisite seam or a cross-cutting invariant, make it explicit immediately.
+   - Refresh backlog ownership, add or realign the relevant dossier, or capture a repo-level ADR, then continue on the clarified path.
+5. Update the target dossier in the same workstream.
+   - Progress and links
+   - Coverage map
+   - Change log when behavior or assumptions changed
+6. Run project checks plus `scripts/lint-dossiers.mjs`, `scripts/coverage-audit.mjs`, and `scripts/sync-index.mjs`.
+
+Rules:
+
+- Favor durable alignment that matches the architecture and repo contracts from day 1.
+- Use `change-proposal` when newly delivered substrate changes the assumptions of an existing dossier.
+
+Review checklist:
+
+- [ ] Code changes follow the canonical stack, runtime, and deployment path defined by architecture/ADRs; no side-path was introduced silently.
+- [ ] Delivered behavior maps back to planned slices/ACs or to an explicit approved change.
+- [ ] Verification was added alongside code: AC-linked tests, plus smoke/startup/container checks when runtime or deployment behavior changed.
+- [ ] Newly discovered prerequisites or cross-cutting invariants were externalized promptly through backlog refresh, dossier realignment, or ADR work.
+- [ ] The target dossier was updated in the same workstream: progress, links, coverage map, and change log when behavior or assumptions changed.
+- [ ] Dossier status is consistent with delivery maturity (`in_progress`, `done`, or a justified alternative).
+- [ ] Project checks, `lint-dossiers`, `coverage-audit`, and `sync-index` were run on the final state and passed.
+- [ ] If delivered substrate changed assumptions of an existing dossier, `change-proposal` or equivalent dossier realignment was applied.
+- [ ] Final repo state keeps implementation, tests, dossiers, and index mutually consistent.
 
 ### `adr-log`
 
@@ -193,6 +350,14 @@ Rules:
 
 Template: [references/ADR_BLOCK_TEMPLATE.md](references/ADR_BLOCK_TEMPLATE.md)
 
+Review checklist:
+
+- [ ] The decision was recorded in the right place: dossier ADR block for feature-local, `docs/adr/ADR-YYYY-MM-DD-<slug>.md` only for cross-cutting work.
+- [ ] The ADR has a stable ID, title, status, date, context, decision, alternatives, and consequences.
+- [ ] The ADR captures a real architectural fork or durable constraint, not routine implementation trivia.
+- [ ] Consequences and follow-ups are reflected in the affected dossier, architecture, or backlog where needed.
+- [ ] The ADR is discoverable from the relevant dossier/index/architecture path, and it does not duplicate an already-settled decision.
+
 ### `dependency-check`
 
 Validate and visualize dependencies.
@@ -204,6 +369,14 @@ Steps:
 3. Generate a Mermaid dependency graph (stdout) via `scripts/dependency-graph.mjs`.
 4. Add/update the graph section in `docs/ssot/index.md`.
 
+Review checklist:
+
+- [ ] Every `depends_on` entry is formatted as `F-XXXX` and points to an existing dossier.
+- [ ] The generated Mermaid graph matches current dossier frontmatter and includes all current dossiers.
+- [ ] `docs/ssot/index.md` contains the refreshed dependency graph with no stale edges or missing nodes.
+- [ ] Any invalid or missing dependency was reported explicitly instead of being silently omitted.
+- [ ] The updated index remains metadata/link oriented and does not restate requirements text.
+
 ### `coverage-audit`
 
 Check that every AC is covered by tests.
@@ -214,6 +387,14 @@ Contract:
 
 Run: `node scripts/coverage-audit.mjs --dossier docs/features/F-XXXX-*.md`
 Run: `node scripts/coverage-audit.mjs --changed-only --base origin/main`
+
+Review checklist:
+
+- [ ] The audit ran against the intended scope (`--dossier`, all dossiers, or `--changed-only` with the intended base).
+- [ ] Every AC in the audited dossier(s) was checked against actual test files, and any missing IDs are listed explicitly.
+- [ ] Orphan AC references in tests were surfaced when present.
+- [ ] The reported pass/fail state matches the actual findings; no dossier with missing AC coverage is reported as passing.
+- [ ] If the audit passed, dossier coverage rows and test references are not obviously stale or contradictory.
 
 ### `change-proposal`
 
@@ -227,17 +408,42 @@ Steps:
 4. Run `scripts/lint-dossiers.mjs` + `scripts/coverage-audit.mjs`.
 5. Run `scripts/sync-index.mjs`.
 
+Review checklist:
+
+- [ ] The change log contains a new version/date/reason entry for this proposal.
+- [ ] Requirement edits were applied in the dossier AC list only; no shadow requirement text was created elsewhere.
+- [ ] Slices, tasks, and the coverage map were updated to match the changed AC set and references.
+- [ ] Stale AC IDs were removed or renamed consistently across dossier text, tests, and linked tasks.
+- [ ] `lint-dossiers`, `coverage-audit`, and `sync-index` were run after the change.
+- [ ] If the change altered cross-cutting assumptions, the relevant ADR or architecture doc was updated or explicitly flagged.
+
 ### `sync-index`
 
 Regenerate/refresh `docs/ssot/index.md` from dossier frontmatter.
 
 Run: `node scripts/sync-index.mjs`
 
+Review checklist:
+
+- [ ] `docs/ssot/index.md` was regenerated from current dossier frontmatter rather than hand-maintained requirements text.
+- [ ] The features table has one row per dossier, zero `CF-*` entries, and metadata that matches frontmatter.
+- [ ] The dependency graph matches current dossiers and `depends_on` edges.
+- [ ] Existing non-generated/custom sections were preserved, and generated blocks were refreshed cleanly.
+- [ ] The last-sync marker changed, and no stale dossier path/title/status remains.
+
 ### `lint-dossiers` (recommended)
 
 Validate structure, metadata, links, and duplication constraints.
 
 Run: `node scripts/lint-dossiers.mjs`
+
+Review checklist:
+
+- [ ] Lint was run against the current repo state and its findings were captured faithfully.
+- [ ] Any reported errors were fixed before claiming success, or were explicitly surfaced as unresolved blocking issues.
+- [ ] Frontmatter, AC IDs, coverage map rows, dependency references, and index consistency were actually checked.
+- [ ] If the index has a generated Red flags block, it was updated without clobbering other content.
+- [ ] The final claim (`clean` vs `has findings`) matches the tool exit status and output.
 
 ## Examples
 
