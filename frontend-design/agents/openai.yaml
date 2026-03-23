@@ -1,3 +1,4 @@
 interface:
   display_name: "Frontend Design"
-  short_description: "Help with Frontend Design tasks"
+  short_description: "Design visually strong landing pages and app UI"
+  default_prompt: "Use $frontend-design to choose a surface mode, then define a visual thesis, content plan, interaction thesis, and constraint guardrails before building the interface."
