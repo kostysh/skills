@@ -280,6 +280,9 @@ Steps:
 4. If intake reveals a missing prerequisite seam that does not yet have a clear backlog owner, refresh the candidate backlog first so the dependency becomes visible before coding starts.
 5. If this feature came from `docs/backlog/feature-candidates.md`, update the matching `CF-*` entry with status `intaken` and add the dossier link.
 6. Run `scripts/sync-index.mjs` (or update index manually if scripts are unavailable).
+7. If the repo provides `coverage-audit`, interpret it according to the repo's severity policy instead of assuming every early dossier must fail immediately.
+   - A status-aware audit may report missing AC references as informational for `proposed` / `shaped` dossiers while still blocking `planned` / `in_progress` / `done`.
+   - Do not "fix" an intake by inventing fake test references or by weakening later-stage enforcement.
 
 Review checklist:
 
@@ -292,6 +295,7 @@ Review checklist:
 - [ ] The matching `CF-*` entry is marked `intaken` and links to the dossier.
 - [ ] `docs/ssot/index.md` contains exactly one row for the new dossier and still lists only real dossiers.
 - [ ] No acceptance criteria text was copied into the backlog or index.
+- [ ] If the repo's coverage audit is status-aware, the intake result reports informational vs blocking gaps exactly as the tool defines them.
 
 ### `spec-compact`
 
@@ -429,6 +433,9 @@ Check that every AC is covered by tests.
 Contract:
 
 - Each acceptance criterion ID must appear in tests (either in the test name or in a `// Covers: AC-...` comment).
+- Some repos implement status-aware severity on top of this contract.
+  - When they do, report the status policy exactly as the tool defines it.
+  - Typical policy: `proposed` / `shaped` gaps may be informational, while `planned` / `in_progress` / `done` remain blocking.
 
 Run: `node scripts/coverage-audit.mjs --dossier docs/features/F-XXXX-*.md`
 Run: `node scripts/coverage-audit.mjs --changed-only --base origin/main`
@@ -439,6 +446,7 @@ Review checklist:
 - [ ] Every AC in the audited dossier(s) was checked against actual test files, and any missing IDs are listed explicitly.
 - [ ] Orphan AC references in tests were surfaced when present.
 - [ ] The reported pass/fail state matches the actual findings; no dossier with missing AC coverage is reported as passing.
+- [ ] If the repo uses status-aware severity, the report clearly distinguishes informational gaps from blocking gaps and does not silently downgrade later-stage enforcement.
 - [ ] If the audit passed, dossier coverage rows and test references are not obviously stale or contradictory.
 
 ### `debt-audit` (recommended)
