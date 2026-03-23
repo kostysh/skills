@@ -12,7 +12,7 @@ This skill implements a **low-overhead, high-control** workflow for large projec
 - **One Feature = One Dossier file** (canonical SSoT for requirements+design+plan+coverage).
 - **One global index** answers “where is it?” and “what’s missing?”.
 - **Traceability** is enforced with stable IDs and link-only references (no duplicated requirements text).
-- **Automation** (lint + coverage audit + dependency graph) replaces “more documents”.
+- **Automation** (lint + coverage audit + debt audit + dependency graph) replaces “more documents”.
 - **Architecture coverage stays visible** so both user-facing capabilities and required platform seams have an explicit owner in the backlog.
 - **Implementation starts from the canonical repo path** instead of rediscovering stack, runtime, or deployment assumptions feature by feature.
 
@@ -61,25 +61,60 @@ Templates:
 7. **Promote cross-cutting delivery assumptions early.**
    When stack, runtime, deployment, or verification decisions constrain multiple features, capture them in architecture or a repo-level ADR so later features can build on them directly.
 
+8. **No technical debt by default.**
+   Every completed workflow unit must include an explicit technical-debt review of the changed scope, a dependency/seam re-check to surface hidden debt, and a recorded resolution path for every finding before the unit is considered complete.
+
+## Mandatory technical-debt review gate
+
+In this workflow, a "step" means a completed command (`init`, `feature-discovery`, `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, etc.) or a user-approved implementation increment when delivery is intentionally split.
+
+Order of operations for every mutating step:
+
+1. Finish the command's local work and run the command-specific checks.
+2. Run a technical-debt review on the changed scope.
+3. When repo-local dossier automation scripts exist, run `node scripts/debt-audit.mjs --changed-only` as a narrow guardrail before the manual dependency/seam re-check.
+4. Re-check each debt item against dependencies, adjacent seams, delivered dossiers, architecture, and repo-level ADRs to surface hidden debt.
+5. Resolve every item by one of these paths before the step can close:
+   - eliminate it immediately in the same workstream;
+   - realign the relevant dossier / backlog / ADR if it exposes a missing prerequisite seam or cross-cutting invariant;
+   - record a user-approved follow-up in the canonical artifact for that debt class with stable references and explicit dependencies.
+6. Only then run the mandatory independent review gate and close the step if no blocking findings remain.
+
+Canonical follow-up artifacts:
+
+- existing Feature Dossier, when the debt belongs to an intaken feature;
+- `docs/backlog/feature-candidates.md`, when the debt exposes a not-yet-intaken seam;
+- `docs/adr/ADR-*.md`, when the debt is cross-cutting.
+
+Do not treat chat-only notes, TODO comments, or unlinked "known issues" as valid debt handling.
+
+Use this quick debt-review method after each mutating step:
+
+- Check the touched files and generated output for shortcuts, partial migrations, deferred verification, temporary compatibility shims, TODO-style placeholders, duplicated rules, or documentation drift.
+- Run `node scripts/debt-audit.mjs --changed-only` when the repo provides the canonical script; treat it as a guardrail, never as a substitute for the manual review.
+- Check outward from the changed scope into direct dependencies and adjacent seams: `depends_on` dossiers, the current architecture section, relevant repo-level ADRs, and the SSOT index/backlog entries that may inherit the change.
+- Prefer the smallest durable fix that keeps the workflow honest. If the debt cannot be removed immediately, make the owner, artifact, dependency links, and next action explicit before moving on.
+
 ## Mandatory independent review gate
 
 After completing any command, the authoring agent must run an independent review before reporting success.
 
 Protocol:
 
-1. Spawn a separate reviewer agent that did not produce the changes or answer.
-2. Give the reviewer the command name, touched files, relevant command output, and the command-specific checklist below.
-3. The reviewer must inspect actual repo state and generated output, not trust the authoring agent's summary.
-4. The reviewer returns:
+1. Before the reviewer runs, complete the technical-debt review gate above and resolve or explicitly record every debt item.
+2. Spawn a separate reviewer agent that did not produce the changes or answer.
+3. Give the reviewer the command name, touched files, relevant command output, debt-review outcome, and the command-specific checklist below.
+4. The reviewer must inspect actual repo state and generated output, not trust the authoring agent's summary.
+5. The reviewer returns:
    - `PASS` or `FAIL`
    - `must-fix` findings
    - `should-fix` findings
    - concrete evidence (file path + section/anchor, and command output when relevant)
-5. The authoring agent must resolve all `must-fix` findings, re-run relevant checks, and repeat review if the fixes were material.
-6. Do not claim a command is complete while known blocking findings remain.
-7. For read-only commands (`help`, `dependency-check`, `coverage-audit`, `lint-dossiers`), review the correctness and completeness of the output/report instead of expecting file mutations.
-8. When reviewer and author disagree, prefer the stricter interpretation unless architecture or an explicit user instruction clearly resolves the issue.
-9. Once the reviewer agent has finished and all findings it raised have been resolved, stop the reviewer agent so resources are not wasted.
+6. The authoring agent must resolve all `must-fix` findings, re-run relevant checks, repeat debt review if the fixes were material, and repeat review if needed.
+7. Do not claim a command is complete while known blocking findings or unresolved debt items remain.
+8. For read-only commands (`help`, `dependency-check`, `coverage-audit`, `lint-dossiers`), review the correctness and completeness of the output/report instead of expecting file mutations. Debt review still applies if the step produced a report that creates follow-up obligations.
+9. When reviewer and author disagree, prefer the stricter interpretation unless architecture or an explicit user instruction clearly resolves the issue.
+10. Once the reviewer agent has finished and all findings it raised have been resolved, stop the reviewer agent so resources are not wasted.
 
 ## Commands / modes
 
@@ -137,21 +172,30 @@ Steps:
    - Otherwise choose a single repo-level document only if the canonical choice is obvious.
    - If the choice is not obvious, ask the user which document should become canonical instead of guessing.
 6. Ensure `docs/features/` and `docs/backlog/` exist.
-7. Create or normalize `docs/ssot/index.md`.
+7. Provision canonical dossier automation scripts into repo `scripts/` when the repo does not already provide safe equivalents:
+   - `sync-index.mjs`
+   - `lint-dossiers.mjs`
+   - `coverage-audit.mjs`
+   - `dependency-graph.mjs`
+   - `debt-audit.mjs`
+   - Copy them from this skill's `scripts/` directory.
+   - If the repo already has an equivalent script and safe normalization is not obvious, preserve it and report the divergence instead of overwriting blindly.
+8. Create or normalize `docs/ssot/index.md`.
    - Prefer `node scripts/sync-index.mjs` after `docs/features/` exists.
    - If scripts are unavailable, create the index from [references/SSOT_INDEX_TEMPLATE.md](references/SSOT_INDEX_TEMPLATE.md).
    - If an existing index has custom content that cannot be preserved by safe block-level normalization, ask the user before replacing it.
-8. Create or normalize `docs/backlog/feature-candidates.md` from [references/FEATURE_CANDIDATES_TEMPLATE.md](references/FEATURE_CANDIDATES_TEMPLATE.md).
-9. Create or update repo-root `AGENTS.md` using [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md).
+9. Create or normalize `docs/backlog/feature-candidates.md` from [references/FEATURE_CANDIDATES_TEMPLATE.md](references/FEATURE_CANDIDATES_TEMPLATE.md).
+10. Create or update repo-root `AGENTS.md` using [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md).
    - If `AGENTS.md` already exists, preserve unrelated repo instructions and add or update only the dossier-protocol rules.
+   - If bootstrap preserved repo-specific script names or paths instead of the canonical `scripts/*.mjs` filenames, rewrite the command lines in `AGENTS.md` to the actual repo commands instead of forcing the template defaults.
    - If safe merge is not obvious, ask the user before rewriting it.
-10. Read the architecture once more and extract a short list of day-1 implementation invariants that later modes must preserve.
+11. Read the architecture once more and extract a short list of day-1 implementation invariants that later modes must preserve.
 
 - Typical examples: canonical stack, runtime substrate, deployment boundary, required verification paths, or other repo-wide engineering contracts.
 - If these invariants are already captured in architecture or ADRs, surface them in the report instead of duplicating them.
 - If they are clear in architecture but not yet easy to find, recommend the smallest durable home for them (for example architecture cross-reference, repo-root `AGENTS.md`, or repo-level ADR).
 
-11. Report what was created, moved, renamed, left untouched, and which implementation invariants future work should honor.
+12. Report what was created, moved, renamed, left untouched, and which implementation invariants future work should honor.
 
 Rules:
 
@@ -162,6 +206,7 @@ Review checklist:
 
 - [ ] If no architecture existed, the command stopped cleanly with an explicit message and without half-created bootstrap artifacts.
 - [ ] If `init` proceeded, `docs/architecture/system.md`, `docs/features/`, `docs/backlog/feature-candidates.md`, and `docs/ssot/index.md` exist and follow the expected bootstrap structure.
+- [ ] Canonical dossier automation scripts were provisioned into repo `scripts/` when safe, or any existing-script divergence was surfaced explicitly instead of being overwritten blindly.
 - [ ] If the canonical architecture was chosen from non-canonical files, the choice was obvious; otherwise the user was asked instead of the agent guessing.
 - [ ] Repo-root `AGENTS.md` includes dossier-protocol rules and preserves unrelated repo instructions.
 - [ ] No placeholder `docs/features/F-*.md` dossiers were created.
@@ -320,7 +365,7 @@ Steps:
    - Progress and links
    - Coverage map
    - Change log when behavior or assumptions changed
-6. Run project checks plus `scripts/lint-dossiers.mjs`, `scripts/coverage-audit.mjs`, and `scripts/sync-index.mjs`.
+6. Run project checks plus `scripts/lint-dossiers.mjs`, `scripts/coverage-audit.mjs`, `scripts/debt-audit.mjs`, and `scripts/sync-index.mjs`.
 
 Rules:
 
@@ -335,7 +380,7 @@ Review checklist:
 - [ ] Newly discovered prerequisites or cross-cutting invariants were externalized promptly through backlog refresh, dossier realignment, or ADR work.
 - [ ] The target dossier was updated in the same workstream: progress, links, coverage map, and change log when behavior or assumptions changed.
 - [ ] Dossier status is consistent with delivery maturity (`in_progress`, `done`, or a justified alternative).
-- [ ] Project checks, `lint-dossiers`, `coverage-audit`, and `sync-index` were run on the final state and passed.
+- [ ] Project checks, `lint-dossiers`, `coverage-audit`, `debt-audit`, and `sync-index` were run on the final state and passed.
 - [ ] If delivered substrate changed assumptions of an existing dossier, `change-proposal` or equivalent dossier realignment was applied.
 - [ ] Final repo state keeps implementation, tests, dossiers, and index mutually consistent.
 
@@ -396,6 +441,25 @@ Review checklist:
 - [ ] The reported pass/fail state matches the actual findings; no dossier with missing AC coverage is reported as passing.
 - [ ] If the audit passed, dossier coverage rows and test references are not obviously stale or contradictory.
 
+### `debt-audit` (recommended)
+
+Check for explicit unresolved debt markers.
+
+Contract:
+
+- This is a narrow automation guardrail for `TODO` / `FIXME` / `HACK` / `XXX` markers.
+- It augments, but does not replace, the manual debt review and dependency/seam re-check.
+
+Run: `node scripts/debt-audit.mjs`
+Run: `node scripts/debt-audit.mjs --changed-only --base origin/main`
+
+Review checklist:
+
+- [ ] The audit ran against the intended scope (full repo, explicit paths, or `--changed-only` with the intended base).
+- [ ] The reported pass/fail state matches the tool output; findings were not ignored or downplayed.
+- [ ] Any findings were either removed immediately or surfaced as blocking until a canonical follow-up artifact exists.
+- [ ] The final claim does not treat `debt-audit` as a substitute for the manual technical-debt review gate.
+
 ### `change-proposal`
 
 Apply requirement changes safely.
@@ -405,7 +469,7 @@ Steps:
 1. Add an entry to **Change log** (version bump + reason).
 2. Modify only the AC list (SSoT).
 3. Update slices/tasks/coverage map references.
-4. Run `scripts/lint-dossiers.mjs` + `scripts/coverage-audit.mjs`.
+4. Run `scripts/lint-dossiers.mjs` + `scripts/coverage-audit.mjs` + `scripts/debt-audit.mjs`.
 5. Run `scripts/sync-index.mjs`.
 
 Review checklist:
@@ -414,7 +478,7 @@ Review checklist:
 - [ ] Requirement edits were applied in the dossier AC list only; no shadow requirement text was created elsewhere.
 - [ ] Slices, tasks, and the coverage map were updated to match the changed AC set and references.
 - [ ] Stale AC IDs were removed or renamed consistently across dossier text, tests, and linked tasks.
-- [ ] `lint-dossiers`, `coverage-audit`, and `sync-index` were run after the change.
+- [ ] `lint-dossiers`, `coverage-audit`, `debt-audit`, and `sync-index` were run after the change.
 - [ ] If the change altered cross-cutting assumptions, the relevant ADR or architecture doc was updated or explicitly flagged.
 
 ### `sync-index`

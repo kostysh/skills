@@ -25,9 +25,15 @@ This repository uses a low-overhead docs-as-code workflow.
    - Change log when requirements changed
 5) Tests must use `node:test` and include AC IDs in test names or `// Covers:` comments.
 6) `docs/backlog/feature-candidates.md` may contain `CF-*` candidate entries, but `docs/ssot/index.md` must list only real dossiers.
+7) No technical debt by default. A "step" means any completed mutating dossier workflow unit (`init`, `feature-discovery`, `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, etc.) or a user-approved implementation increment.
+8) For each completed step: run local checks, then a technical-debt review of the changed scope, then `node scripts/debt-audit.mjs --changed-only` when the repo provides it, then a dependency/seam re-check, and only then the independent review gate.
+9) If debt cannot be removed immediately, record the follow-up with stable references and explicit dependencies in the canonical artifact for that debt class: Feature Dossier for intaken feature debt, candidate backlog for not-yet-intaken seam debt, repo-level ADR for cross-cutting debt. Chat-only notes and TODO-only follow-ups do not count.
+10) The common command examples below must match the actual repo commands. If bootstrap preserved repo-specific script names or paths, rewrite these lines instead of forcing the canonical `scripts/*.mjs` filenames.
 
 ## Common commands
 - Run tests: `node --test`
+- Audit repo debt markers: `node scripts/debt-audit.mjs` (copy into repo during bootstrap or run from the skill folder)
+- Audit changed-scope debt markers: `node scripts/debt-audit.mjs --changed-only` (copy into repo during bootstrap or run from the skill folder)
 - Lint dossiers: `node scripts/lint-dossiers.mjs` (in the skill folder; copy into repo or run from there)
 - Audit coverage: `node scripts/coverage-audit.mjs` (in the skill folder; copy into repo or run from there)
 - Sync index: `node scripts/sync-index.mjs` (in the skill folder; copy into repo or run from there)
