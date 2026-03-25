@@ -1,29 +1,30 @@
 # Migration guide: from `sdd-engineer` to `dossier-engineer`
 
 ## What changes
-`sdd-engineer` (full) typically creates multiple artifacts per ticket:
-- Requirements (R), Spec (S), Plan (P), Tasks (T), ADR, Validation (V), Handover (H)
+`sdd-engineer` typically creates multiple artifacts per ticket.
 
 `dossier-engineer` replaces that with:
 - **One Feature Dossier** per feature
 - **One global index**
-- Optional ADR files only when cross-cutting
+- **One explicit backlog file** for candidate discovery
+- **Durable process artifacts** for verification, review, and step closure under `.dossier/`
 
 ## Mapping table
 
-| sdd-engineer artifact | Where it goes in the dossier |
+| sdd-engineer artifact | Where it goes now |
 |---|---|
-| `R*` requirements | Section “Requirements & Acceptance Criteria” (SSoT) |
-| `S*` specification | Section “Design (compact)” |
-| `P*` plan | Section “Slicing plan” |
-| `T*` tasks | Section “Task list” |
-| `ADR*` | Section “Decision log (ADR blocks)” OR `docs/adr/*.md` |
-| `V*` validation | Section “Definition of Done / Validation commands” |
-| `H*` handover | Section “Runbook / Handover” |
-| status reports | Dossier frontmatter `status` + `docs/ssot/index.md` |
+| `R*` requirements | Dossier section “Requirements & Acceptance Criteria” |
+| `S*` specification | Dossier section “Design (compact)” |
+| `P*` plan | Dossier section “Slicing plan” |
+| `T*` tasks | Dossier section “Task list” |
+| `ADR*` | Dossier ADR block or `docs/adr/*.md` |
+| validation results | `.dossier/verification/*` |
+| review sign-off | `.dossier/reviews/*` |
+| step closure truth | `.dossier/steps/*` |
+| status reports | Dossier frontmatter `status`, frontmatter `coverage_gate`, and `docs/ssot/index.md` |
 
 ## Touch-to-migrate rule
-Do not migrate everything up-front. Migrate dossiers when:
+Do not migrate everything up front. Migrate dossiers when:
 - you start working on a feature again, or
 - you need the knowledge for new dependent work.
 

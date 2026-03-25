@@ -9,36 +9,33 @@ Required keys:
 - `id` (must match filename prefix `F-XXXX`)
 - `title` (non-empty)
 - `status` ∈ `{proposed, shaped, planned, in_progress, done, parked}`
-- `area` (short stable tag)
-- `owners` (non-empty array of strings)
+- `coverage_gate` is recommended and should be explicit on mature dossiers
+- `area`
+- `owners` (non-empty array)
+- `depends_on` (array)
+- `impacts` (array)
 - `created` (YYYY-MM-DD)
 - `updated` (YYYY-MM-DD)
-Optional but recommended:
-- `depends_on` (array of `F-XXXX`)
-- `impacts` (array; typical values: client/server/db)
 
 ### Acceptance criteria
 - Must contain at least one `AC-...` ID.
-- All AC IDs must be unique within the dossier.
-- AC IDs must follow `AC-Fdddd-nn` where `dddd` matches dossier numeric ID.
-- AC text must be on the same line as the ID (so it can be reviewed and tested).
+- AC IDs must match the dossier numeric ID.
 
 ### Coverage map
-- Must include a table row for every AC ID OR explicitly mark missing coverage with a justification (e.g. `not planned (reason)`).
-- Test references should include file paths and (ideally) test names.
+- If `coverage_gate` is `strict`, the dossier must include coverage rows for every AC.
+- If coverage is deferred, missing coverage rows are warnings rather than blocking errors.
 
 ### Change log
 - Must include at least an initial entry.
 
 ## Cross-file checks
-
 - `depends_on` must reference existing dossiers.
 - No duplicate feature IDs across dossiers.
-- `docs/ssot/index.md` must contain a row for every dossier (index is generated, but lint ensures it matches).
+- `docs/ssot/index.md` should reflect current dossier status and coverage gate when refreshed.
 
 ## Philosophy
 The goal is to prevent:
 - doc drift,
-- “second sources of truth”,
-- untestable requirements,
-- orphan docs without code/tests references.
+- overloaded status semantics,
+- untraceable coverage enforcement,
+- orphan docs without durable process truth.

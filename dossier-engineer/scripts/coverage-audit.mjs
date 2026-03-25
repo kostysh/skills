@@ -1,31 +1,54 @@
 #!/usr/bin/env node
 /**
+ * coverage-audit.mjs
+ *
  * Checks that each acceptance criterion ID is referenced in tests.
  * - Test reference can be in the test name or in a comment: // Covers: AC-...
+ * - Coverage enforcement is separated from dossier maturity via `coverage_gate`.
+ *   When `coverage_gate` is absent, the default blocking statuses are `in_progress` and `done`.
+ * - Orphan reporting is scope-aware so dossier-specific audits do not get buried in repo-wide noise.
  *
  * Usage:
  *   node scripts/coverage-audit.mjs --dossier docs/features/F-0001-foo.md
  *   node scripts/coverage-audit.mjs --dossiers-dir docs/features
  *   node scripts/coverage-audit.mjs --changed-only --base origin/main
+ *   node scripts/coverage-audit.mjs --dossier docs/features/F-0001-foo.md --orphans-scope=dossier
  */
 
-import { execFileSync } from 'node:child_process';
-import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-const DEFAULT_DOSSIERS_DIR = 'docs/features';
-const STRICT_COVERAGE_STATUSES = new Set(['planned', 'in_progress', 'done']);
+import {
+  DEFAULT_DOSSIERS_DIR,
+  DEFAULT_STRICT_COVERAGE_STATUSES,
+  extractAcIds,
+  extractFeatureIdFromAc,
+  listDossierFiles,
+  matchesFeatureFile,
+  readDossierRecord,
+} from './lib/dossier-utils.mjs';
+import { readText, walk } from './lib/fs-utils.mjs';
+import { getChangedFiles, inGitRepo, normalizeRepoPath, resolveBaseRef, toRepoRelativePath } from './lib/git-utils.mjs';
 
 const parseArgs = () => {
   const args = process.argv.slice(2);
   const has = (name) => args.includes(name);
   const get = (name, fallback) => {
-    const idx = args.indexOf(name);
-    if (idx === -1) return fallback;
-    const value = args[idx + 1];
+    const index = args.indexOf(name);
+    if (index === -1) return fallback;
+    const value = args[index + 1];
     if (!value || value.startsWith('--')) return fallback;
     return value;
   };
+
+  const strictStatusesRaw = get('--strict-statuses', null);
+  const strictStatuses = strictStatusesRaw
+    ? new Set(
+        strictStatusesRaw
+          .split(',')
+          .map((value) => value.trim())
+          .filter(Boolean),
+      )
+    : DEFAULT_STRICT_COVERAGE_STATUSES;
 
   return {
     root: get('--root', process.cwd()),
@@ -33,183 +56,18 @@ const parseArgs = () => {
     dossiersDir: get('--dossiers-dir', DEFAULT_DOSSIERS_DIR),
     changedOnly: has('--changed-only'),
     base: get('--base', null),
+    strictStatuses,
+    orphansScope: get('--orphans-scope', 'auto'),
   };
 };
 
-const readText = async (filePath) => fs.readFile(filePath, 'utf8');
-
-const isIgnoredDir = (name) =>
-  new Set(['.git', 'node_modules', 'dist', 'build', 'coverage', '.next', '.turbo', '.cache']).has(
-    name,
-  );
-
 const isTestFile = (filePath) =>
-  /\.(test|spec)\.(ts|tsx|js|jsx)$/.test(filePath) ||
+  /\.(test|spec)\.(ts|tsx|js|jsx|mjs|cjs)$/.test(filePath) ||
   filePath.split(path.sep).includes('test') ||
   filePath.split(path.sep).includes('tests');
 
-const walk = async (dir, files = []) => {
-  const entries = await fs.readdir(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    const absPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      if (isIgnoredDir(entry.name)) continue;
-      await walk(absPath, files);
-    } else if (entry.isFile()) {
-      if (isTestFile(absPath)) files.push(absPath);
-    }
-  }
-  return files;
-};
-
-const extractAcIds = (markdown) => {
-  const ids = new Set();
-  const regex = /\bAC-F(\d{4})-(\d{1,2})\b/g;
-  for (;;) {
-    const match = regex.exec(markdown);
-    if (!match) break;
-    ids.add(`AC-F${match[1]}-${match[2].padStart(2, '0')}`);
-  }
-  return [...ids].sort();
-};
-
-const extractFrontmatterStatus = (markdown) => {
-  const match = String(markdown).match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!match) return null;
-
-  const statusMatch = match[1].match(/^\s*status:\s*([^\s#]+)\s*$/m);
-  return statusMatch ? statusMatch[1].trim() : null;
-};
-
-const listDossierFiles = async (dir) => {
-  const entries = await fs.readdir(dir, { withFileTypes: true });
-  return entries
-    .filter((entry) => entry.isFile())
-    .map((entry) => entry.name)
-    .filter((fileName) => /^F-\d{4}-.+\.md$/i.test(fileName) || /^F-\d{4}\.md$/i.test(fileName))
-    .sort();
-};
-
-const normalizeGitPath = (filePath) => filePath.split('/').join(path.sep);
-
-const runGit = (root, args, { allowFailure = false } = {}) => {
-  try {
-    return execFileSync('git', ['-C', root, ...args], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'pipe'],
-    }).trim();
-  } catch (error) {
-    if (allowFailure) return null;
-    const stderr = error?.stderr?.toString?.().trim?.();
-    throw new Error(stderr || error?.message || `git ${args.join(' ')} failed`, {
-      cause: error,
-    });
-  }
-};
-
-const splitLines = (text) =>
-  String(text || '')
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-const getHeadRef = (root) =>
-  runGit(root, ['rev-parse', '--verify', 'HEAD'], { allowFailure: true });
-
-const resolveBaseRef = (root, explicitBase) => {
-  if (explicitBase) return explicitBase;
-
-  const envBase =
-    process.env.GITHUB_BASE_REF ||
-    process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME ||
-    process.env.CHANGE_TARGET;
-
-  if (envBase) {
-    for (const candidate of [envBase, `origin/${envBase}`]) {
-      if (
-        runGit(root, ['rev-parse', '--verify', candidate], {
-          allowFailure: true,
-        })
-      ) {
-        return candidate;
-      }
-    }
-  }
-
-  const originHead = runGit(
-    root,
-    ['symbolic-ref', '--quiet', '--short', 'refs/remotes/origin/HEAD'],
-    {
-      allowFailure: true,
-    },
-  );
-
-  if (originHead && runGit(root, ['rev-parse', '--verify', originHead], { allowFailure: true })) {
-    return originHead;
-  }
-
-  return null;
-};
-
-const getChangedFiles = (root, baseRef) => {
-  const files = new Set();
-  const addLines = (text) => {
-    for (const file of splitLines(text)) files.add(normalizeGitPath(file));
-  };
-
-  const headExists = Boolean(getHeadRef(root));
-
-  if (baseRef) {
-    const mergeBase = runGit(root, ['merge-base', 'HEAD', baseRef], {
-      allowFailure: true,
-    });
-    if (!mergeBase) {
-      throw new Error(`Could not resolve merge base for HEAD and "${baseRef}".`);
-    }
-    addLines(
-      runGit(root, ['diff', '--name-only', '--diff-filter=ACMR', mergeBase, 'HEAD'], {
-        allowFailure: true,
-      }),
-    );
-  } else if (headExists) {
-    addLines(
-      runGit(root, ['diff', '--name-only', '--diff-filter=ACMR', 'HEAD'], {
-        allowFailure: true,
-      }),
-    );
-  }
-
-  addLines(
-    runGit(root, ['diff', '--name-only', '--diff-filter=ACMR'], {
-      allowFailure: true,
-    }),
-  );
-  addLines(
-    runGit(root, ['diff', '--cached', '--name-only', '--diff-filter=ACMR'], {
-      allowFailure: true,
-    }),
-  );
-  addLines(
-    runGit(root, ['ls-files', '--others', '--exclude-standard'], {
-      allowFailure: true,
-    }),
-  );
-
-  return [...files].sort();
-};
-
-const extractFeatureIdFromAc = (acId) => {
-  const match = String(acId).match(/^AC-F(\d{4})-\d{2}$/);
-  return match ? `F-${match[1]}` : null;
-};
-
-const matchesFeatureFile = (featureId, filePath) => {
-  const baseName = path.basename(filePath);
-  return baseName === `${featureId}.md` || baseName.startsWith(`${featureId}-`);
-};
-
 const selectChangedDossiers = async ({ absRoot, dossiersDir, baseRef }) => {
-  if (!runGit(absRoot, ['rev-parse', '--show-toplevel'], { allowFailure: true })) {
+  if (!inGitRepo(absRoot)) {
     throw new Error('--changed-only requires a git repository.');
   }
 
@@ -219,9 +77,7 @@ const selectChangedDossiers = async ({ absRoot, dossiersDir, baseRef }) => {
   const selected = new Set();
 
   const changedFiles = getChangedFiles(absRoot, baseRef);
-  const changedAbsPaths = changedFiles.map((fileName) =>
-    path.resolve(absRoot, normalizeGitPath(fileName)),
-  );
+  const changedAbsPaths = changedFiles.map((fileName) => normalizeRepoPath(absRoot, fileName));
 
   for (const absPath of changedAbsPaths) {
     if (dossierAbsPaths.includes(absPath)) selected.add(absPath);
@@ -250,17 +106,24 @@ const selectChangedDossiers = async ({ absRoot, dossiersDir, baseRef }) => {
   return [...selected].sort();
 };
 
+const resolveOrphanScope = ({ orphansScope, dossier, changedOnly }) => {
+  if (orphansScope !== 'auto') return orphansScope;
+  if (dossier || changedOnly) return 'dossier';
+  return 'repo';
+};
+
 const main = async () => {
-  const { root, dossier, dossiersDir, changedOnly, base } = parseArgs();
+  const { root, dossier, dossiersDir, changedOnly, base, strictStatuses, orphansScope } = parseArgs();
   const absRoot = path.resolve(root);
 
   if (dossier && changedOnly) {
     throw new Error('--dossier and --changed-only cannot be used together.');
   }
 
-  const dossiers = [];
+  /** @type {string[]} */
+  const selectedDossiers = [];
   if (dossier) {
-    dossiers.push(path.resolve(absRoot, dossier));
+    selectedDossiers.push(path.resolve(absRoot, dossier));
   } else if (changedOnly) {
     const selected = await selectChangedDossiers({
       absRoot,
@@ -274,17 +137,15 @@ const main = async () => {
       return;
     }
 
-    dossiers.push(...selected);
+    selectedDossiers.push(...selected);
   } else {
     const absDossiersDir = path.resolve(absRoot, dossiersDir);
     const fileNames = await listDossierFiles(absDossiersDir);
-    for (const fileName of fileNames) dossiers.push(path.join(absDossiersDir, fileName));
+    for (const fileName of fileNames) selectedDossiers.push(path.join(absDossiersDir, fileName));
   }
 
-  const testFiles = await walk(absRoot);
-  /** @type {Map<string, string>} */
+  const testFiles = await walk(absRoot, [], { includeFile: isTestFile });
   const testContents = new Map();
-
   for (const testFile of testFiles) {
     try {
       testContents.set(testFile, await readText(testFile));
@@ -293,49 +154,42 @@ const main = async () => {
     }
   }
 
-  /** @type {{ dossier: string, status: string | null, strictCoverage: boolean, missing: string[], found: Map<string, string[]> }[]} */
   const results = [];
-
-  for (const dossierFile of dossiers) {
-    const markdown = await readText(dossierFile);
-    const status = extractFrontmatterStatus(markdown);
-    const strictCoverage = STRICT_COVERAGE_STATUSES.has(status);
-    const acIds = extractAcIds(markdown);
-
-    if (acIds.length === 0) {
-      results.push({
-        dossier: dossierFile,
-        status,
-        strictCoverage,
-        missing: [],
-        found: new Map(),
-      });
-      continue;
-    }
+  const selectedFeatureIds = new Set();
+  for (const dossierPath of selectedDossiers) {
+    const record = await readDossierRecord(dossierPath, {
+      root: absRoot,
+      strictStatuses,
+    });
+    const frontmatter = record.frontmatter ?? {};
+    const featureId = typeof frontmatter.id === 'string' ? frontmatter.id : path.basename(dossierPath, '.md');
+    selectedFeatureIds.add(featureId);
 
     const found = new Map();
     const missing = [];
-    for (const acId of acIds) {
+    for (const acId of record.acIds) {
       const hits = [];
       for (const [testFile, content] of testContents.entries()) {
-        if (content.includes(acId)) hits.push(path.relative(absRoot, testFile));
+        if (content.includes(acId)) hits.push(toRepoRelativePath(absRoot, testFile));
       }
       if (hits.length === 0) missing.push(acId);
       else found.set(acId, hits);
     }
 
     results.push({
-      dossier: path.relative(absRoot, dossierFile),
-      status,
-      strictCoverage,
-      missing,
+      dossier: record.relPath,
+      featureId,
+      title: frontmatter.title ?? '',
+      status: frontmatter.status ?? null,
+      coverageGate: record.coverageGate,
+      acCount: record.acIds.length,
       found,
+      missing,
     });
   }
 
-  const allDossierAcs = new Set(
-    results.flatMap((result) => [...result.found.keys(), ...result.missing]),
-  );
+  const orphanMode = resolveOrphanScope({ orphansScope, dossier, changedOnly });
+  const allAuditedAcs = new Set(results.flatMap((result) => [...result.found.keys(), ...result.missing]));
   const orphan = new Map();
   const regex = /\bAC-F(\d{4})-(\d{1,2})\b/g;
 
@@ -344,50 +198,56 @@ const main = async () => {
       const match = regex.exec(content);
       if (!match) break;
       const acId = `AC-F${match[1]}-${match[2].padStart(2, '0')}`;
-      if (!allDossierAcs.has(acId)) {
-        const relPath = path.relative(absRoot, testFile);
-        if (!orphan.has(acId)) orphan.set(acId, new Set());
-        orphan.get(acId).add(relPath);
-      }
+      if (allAuditedAcs.has(acId)) continue;
+
+      const featureId = extractFeatureIdFromAc(acId);
+      const inScope =
+        orphanMode === 'repo' ||
+        (orphanMode === 'dossier' && featureId && selectedFeatureIds.has(featureId));
+      if (!inScope || orphanMode === 'none') continue;
+
+      const relPath = toRepoRelativePath(absRoot, testFile);
+      if (!orphan.has(acId)) orphan.set(acId, new Set());
+      orphan.get(acId).add(relPath);
     }
   }
 
-  let totalBlockingMissing = 0;
-  for (const result of results) {
-    if (result.strictCoverage) totalBlockingMissing += result.missing.length;
-  }
+  const blockingMissing = results.reduce(
+    (total, result) => total + (result.coverageGate === 'strict' ? result.missing.length : 0),
+    0,
+  );
+  const informationalMissing = results.reduce(
+    (total, result) => total + (result.coverageGate !== 'strict' ? result.missing.length : 0),
+    0,
+  );
 
   console.log(
-    `Coverage audit: ${results.length} dossier(s), ${testFiles.length} test file(s) scanned.`,
+    `Coverage audit: ${results.length} dossier(s), ${testFiles.length} test file(s) scanned. Blocking missing: ${blockingMissing}. Informational missing: ${informationalMissing}. Orphans: ${orphan.size} (scope: ${orphanMode}).`,
   );
+
   for (const result of results) {
     console.log(`\n== ${result.dossier} ==`);
-    if (result.status) {
-      console.log(
-        `Status: ${result.status} (${result.strictCoverage ? 'blocking coverage audit' : 'informational coverage audit'})`,
-      );
-    }
+    console.log(
+      `Status: ${result.status ?? 'unknown'} | coverage gate: ${result.coverageGate} | AC count: ${result.acCount}`,
+    );
+
     if (result.missing.length === 0) {
-      console.log('All AC IDs referenced in tests.');
+      console.log('All audited AC IDs are referenced in tests.');
     } else {
-      console.log(`Missing ${result.missing.length} AC reference(s) in tests:`);
+      const label = result.coverageGate === 'strict' ? 'Blocking' : 'Informational';
+      console.log(`${label} missing AC reference(s):`);
       for (const acId of result.missing) console.log(`- ${acId}`);
-      if (!result.strictCoverage) {
-        console.log(
-          'Coverage gaps are informational for this dossier status; they become blocking when the dossier reaches `planned`.',
-        );
-      }
     }
   }
 
-  if (orphan.size) {
-    console.log('\n== Orphan AC references found in tests (no matching dossier AC) ==');
-    for (const [acId, files] of orphan.entries()) {
-      console.log(`- ${acId}: ${[...files].join(', ')}`);
+  if (orphan.size > 0) {
+    console.log(`\n== Orphan AC references (${orphanMode} scope) ==`);
+    for (const [acId, files] of [...orphan.entries()].sort((left, right) => left[0].localeCompare(right[0]))) {
+      console.log(`- ${acId}: ${[...files].sort().join(', ')}`);
     }
   }
 
-  if (totalBlockingMissing > 0) process.exit(3);
+  if (blockingMissing > 0) process.exit(3);
 };
 
 main().catch((error) => {

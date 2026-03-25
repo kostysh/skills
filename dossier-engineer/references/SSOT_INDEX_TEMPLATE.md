@@ -1,13 +1,13 @@
 # Global SSOT Index Template (`docs/ssot/index.md`)
 
-> Purpose: single file that answers “where is it described?” and provides a dependency/coverage overview.  
-> Rule: **Do not restate requirements text here.** Only metadata + links.
+> Purpose: single file that answers “where is it described?” and provides dependency and coverage-gate visibility.  
+> Rule: **Do not restate requirements text here.** Only metadata and links.
 
 ## Features
 
-| ID | Title | Status | Area | Depends on | Impacts | Dossier |
-|---|---|---|---|---|---|---|
-| F-0001 | Password reset (email) | proposed | auth | — | client,server,db | `../features/F-0001-password-reset.md` |
+| ID | Title | Status | Coverage | Area | Depends on | Impacts | Dossier |
+|---|---|---|---|---|---|---|---|
+| F-0001 | Password reset (email) | proposed | deferred | auth | — | client,server,db | `../features/F-0001-password-reset.md` |
 
 ## ADRs
 
@@ -26,6 +26,7 @@ graph TD
 ## Red flags (generated)
 
 - Dossiers missing required metadata
-- Acceptance criteria missing tests
+- Dossiers with missing or invalid `coverage_gate`
+- ACs missing test coverage when `coverage_gate` is strict
 - Unknown dependencies or cycles
 - Broken links
