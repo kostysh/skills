@@ -1,3 +1,4 @@
 interface:
-  display_name: "Typescript Engineer"
-  short_description: "Help with Typescript Engineer tasks"
+  display_name: "TypeScript Engineer"
+  short_description: "Advanced TypeScript typing and debugging"
+  default_prompt: "Use $typescript-engineer to diagnose TypeScript errors, remove unsafe any, and design sound type-safe APIs."
