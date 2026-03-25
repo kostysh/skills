@@ -1,6 +1,5 @@
 ---
 name: dossier-engineer
-version: 2.0.0
 description: Lean docs-as-code process for large app development with AI agents. Uses one Feature Dossier per feature, one global index, explicit backlog discovery, separated workflow and coverage state, machine-checkable review/verification/step-close artifacts, scoped audits, and repo-overlay ingestion.
 compatibility: Designed for git repos. Optional scripts in scripts/ require Node.js >= 18.
 ---
