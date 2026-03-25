@@ -135,6 +135,62 @@ describe("GET /v1/profile", () => {
 - Timeouts/hangs: reduce shared global state, avoid real timers/IO, and tune runner-level timeout settings first (Vitest config or `node --test --test-timeout=...`); use per-test timeout overrides only as rare exceptions with rationale.
 - Skips/TODOs: use sparingly; always leave a short reason in the test name or comment.
 
+## Event timing operational check
+
+Apply this check whenever a test waits on events from:
+- `EventEmitter`
+- streams
+- child processes
+- WebSocket/message APIs
+- any helper built on `once()`, `on()`, or listener callbacks
+
+Core rule:
+- create the listener or `once(...)` promise **before** the act step that may emit the event.
+
+Why this matters:
+- events can fire synchronously or earlier than the test expects;
+- if the listener is attached after the emission, the event is lost;
+- the test may then hang or fail intermittently.
+
+Correct pattern:
+
+```ts
+import { EventEmitter, once } from "node:events";
+import { it } from "node:test";
+import assert from "node:assert/strict";
+
+it("waits for ready before asserting", async () => {
+  const emitter = new EventEmitter();
+
+  const readyPromise = once(emitter, "ready");
+
+  startWorkThatEventuallyEmitsReady(emitter);
+
+  const [payload] = await readyPromise;
+  assert.equal(payload.status, "ok");
+});
+```
+
+Broken pattern:
+
+```ts
+import { EventEmitter, once } from "node:events";
+
+it("races the event emission", async () => {
+  const emitter = new EventEmitter();
+
+  startWorkThatEventuallyEmitsReady(emitter);
+
+  const [payload] = await once(emitter, "ready");
+});
+```
+
+Operational checklist:
+1. Put the event subscription in Arrange, not after the action.
+2. If the event may fire during constructor/setup code, expose a seam that lets the test subscribe first.
+3. Do not paper over ordering bugs with `setTimeout(...)` sleeps.
+4. When a hang appears around `once(...)`, inspect subscription order before increasing timeouts.
+
 ## CI lint/format policy
 
 - Prefer check-only lint/format commands in CI.
@@ -185,6 +241,110 @@ describe("users", () => {
   });
 });
 ```
+
+## Runbook: hanging tests and open handles
+
+Apply this runbook when:
+- `node --test` hangs;
+- the test runner appears finished but the process does not exit;
+- CI times out after tests complete;
+- logs mention open handles or active handles;
+- a test passes alone but hangs in the full suite.
+
+Definition of done:
+- isolated repro passes repeatedly without hangs;
+- the full suite exits cleanly;
+- any handle-dump tool shows no unexpected leftovers in the touched scope.
+
+### Required sequence
+
+1. Isolate to one file, then one test name.
+2. Rerun with explicit timeout and reporter output.
+3. Capture active handles if the process still hangs.
+4. Patch teardown in the same scope that created the resource.
+5. Stress-rerun the isolated repro, then rerun the full suite.
+
+Do not stop at "it passed once".
+
+### Command path for `node:test`
+
+Use the repo's exact command first if it wraps the Node runner. If there is no wrapper, use the direct runner path:
+
+```bash
+# 1) Reproduce with fail-fast context
+node --test --test-reporter=spec --test-timeout=15000
+
+# 2) Isolate file, then one test name
+node --test --test-timeout=15000 path/to/file.test.ts
+node --test --test-timeout=15000 --test-name-pattern="should close resources" path/to/file.test.ts
+
+# 3) Dump active handles when the process is still alive
+node --import why-is-node-running/include --test path/to/file.test.ts
+# then send SIGUSR1 to the printed PID from another shell
+kill -SIGUSR1 <pid>
+
+# 4) Stress-rerun isolated repro
+TIMEOUT_BIN="$(command -v timeout || command -v gtimeout)"
+for i in {1..30}; do
+  "$TIMEOUT_BIN" 30s node --test path/to/file.test.ts || { echo "failed on run $i"; break; }
+done
+```
+
+Install note for diagnostics:
+- modern ESM projects: `npm i -D why-is-node-running`
+- older CommonJS projects may need `why-is-node-running@v2`
+
+### High-probability root causes
+
+- HTTP server started but never closed
+- interval or timeout left running
+- database, cache, queue, or SDK client not disconnected
+- worker thread, child process, or message channel left alive
+- file watcher or readline interface still open
+- fire-and-forget async work still pending
+- teardown hook throws before cleanup finishes
+
+### Teardown rule
+
+Close the resource in the same scope that created it.
+
+Good:
+
+```ts
+import { once } from "node:events";
+import { it } from "node:test";
+
+it("serves requests without leaking handles", async (t) => {
+  const server = await startServer({ port: 0 });
+  const id = setInterval(() => {}, 1000);
+
+  t.after(async () => {
+    clearInterval(id);
+    server.close();
+    await once(server, "close");
+  });
+
+  // test body
+});
+```
+
+Bad:
+
+```ts
+it("serves requests without deterministic teardown", async () => {
+  const server = await startServer({ port: 0 });
+  const id = setInterval(() => {}, 1000);
+
+  // test body
+  // no cleanup registered
+});
+```
+
+### Extra triage notes
+
+- If the suite hangs only under coverage, compare coverage flags and environment with the non-coverage run before changing the test itself.
+- If the test hangs only in the full suite, inspect shared globals, singleton clients, and test-order assumptions.
+- If the process exits locally but not in CI, inspect worker count, retries, long-polling mocks, and environment-specific timers.
 
 ## Databases in tests
 If tests touch a database, design the tests so they leave no residue.

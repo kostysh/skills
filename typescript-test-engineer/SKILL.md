@@ -13,6 +13,8 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 - Keep tests small and behavior-focused; assert on observable outcomes.
 - Use dependency injection or targeted mocks; avoid real network calls in unit/integration tests.
 - Use real systems or dedicated sandboxes in E2E; never use production credentials.
+- For event-driven tests, subscribe or create the `once(...)`/listener promise before triggering the action that emits the event.
+- When tests hang or the process does not exit, isolate first, capture handles, patch teardown in the resource-creation scope, and verify repeated stability before calling the issue fixed.
 
 ## Quick workflow
 1. Identify test level: unit vs integration vs E2E.
@@ -143,6 +145,36 @@ Recommended assertions:
 - Use per-test timeout overrides only as an exception after root-cause analysis and add inline rationale.
 - Practical baseline: choose timeout as at least `3x` local mean runtime of the slowest integration file, then validate in CI.
 - If CI shows worker-termination timeouts or OOM, first check for unresolved async/mocks and accidental long polling before only increasing limits.
+
+## Hanging tests and open handles (required on trigger)
+
+Apply this workflow immediately when prompts or logs include any of:
+- `node --test` hangs
+- tests appear done but the process never exits
+- CI times out after tests complete
+- open handles / active handles
+- passes in isolation but hangs in the full suite
+
+Required sequence:
+1. isolate to one file, then one test name;
+2. rerun with an explicit reporter and timeout to get location context;
+3. capture active handles if the runner is still stuck;
+4. patch teardown in the same scope that created the resource, usually with `t.after(...)`;
+5. stress-rerun the isolated repro, then rerun the full suite.
+
+Do not mark the issue fixed until repeated isolated runs and a full suite run exit cleanly.
+
+Use `references/testing.md` for the detailed runbook and command path.
+
+## Event timing operational check (required for event-driven tests)
+
+Apply this check when tests involve `EventEmitter`, streams, WebSocket/message events, child processes, or any `once()`/listener-based synchronization:
+- create the listener or `once(...)` promise before the act step that may emit the event;
+- keep subscription in Arrange and the emitting action in Act;
+- avoid sleep-based workarounds for races that are actually caused by late subscription;
+- if the event may fire synchronously during setup, change the test arrangement or production seam so the listener can exist first.
+
+Use `references/testing.md` for examples and failure patterns.
 
 ## HTTP/SDK mock precision checklist
 

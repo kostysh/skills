@@ -1,0 +1,4 @@
+interface:
+  display_name: "Node engineer"
+  short_description: "Node.js runtime, modules, streams, and ops"
+  default_prompt: "Use $node-engineer to design or debug a Node.js runtime issue around TypeScript execution, modules, streams, shutdown, or profiling."
