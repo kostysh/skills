@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Reviewer"
+  short_description: "Exploitability-based security review with confidence gating"
+  default_prompt: "Use $security-reviewer to trace attacker-controlled inputs, load only the needed playbooks, and report only high-confidence security findings with impact, evidence, and remediation."
