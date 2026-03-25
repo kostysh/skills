@@ -163,13 +163,14 @@ Example: see [Routing](references/routing.md).
 ### Performance
 
 **Key moves**:
-- Code split with `React.lazy` + `<Suspense>`
-- Avoid barrel imports; import directly
-- Use `startTransition` for non-urgent updates
-- Parallelize independent calls with `Promise.all`
+- Eliminate request waterfalls first: start independent work early and await late
+- Reduce initial bundle pressure: route-level `React.lazy`, direct imports, intent-based preload for likely next navigation
+- Keep interactions responsive: use `startTransition` or `useDeferredValue` for expensive derived renders
+- Use virtualization or `content-visibility: auto` for long lists and feed-like UIs
+- Prefer Dexie for reload-safe client persistence; keep `localStorage` limited to tiny non-sensitive preferences or bootstrap hints when IndexedDB would be excessive
 - Profile before memoization
 
-See [Performance](references/performance.md) for patterns and examples.
+See [Performance](references/performance.md) for the prioritized rulepack and examples.
 
 ### IndexedDB Persistence (Dexie)
 

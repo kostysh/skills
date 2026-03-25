@@ -14,6 +14,17 @@ console.timeEnd('expensive operation');
 // Use browser Performance tab for overall app performance
 ```
 
+## Performance Triage Order
+
+Apply optimizations in this order:
+
+1. **Eliminate waterfalls first** - parallelize independent async work before touching memoization.
+2. **Cut initial bundle cost** - route-level splitting, direct imports, defer non-critical modules.
+3. **Protect interaction latency** - use `startTransition` or `useDeferredValue` when typing/filtering drives expensive renders.
+4. **Skip off-screen work** - virtualize or use `content-visibility: auto` for long feeds and lists.
+5. **Harden client persistence** - prefer Dexie for reload-safe state and local caches; if `localStorage` is unavoidable, keep it minimal, versioned, and failure-tolerant.
+6. **Profile before memoization** - `useMemo` and `useCallback` come after the larger wins above.
+
 ---
 
 ## 1. React.lazy + Suspense for Code Splitting
@@ -373,7 +384,38 @@ function TabContainer() {
 
 ---
 
-## 6. useShallow for Zustand Selectors
+## 6. useDeferredValue for Expensive Derived Renders
+
+**Rule: When user input drives an expensive derived render, defer the derived value instead of slowing the input path.**
+
+```tsx
+import { useDeferredValue, useMemo, useState } from 'react';
+
+function SearchableList({ items }: { items: Item[] }) {
+  const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
+
+  const filteredItems = useMemo(
+    () => items.filter((item) => fuzzyMatch(item, deferredQuery)),
+    [items, deferredQuery]
+  );
+
+  const isStale = query !== deferredQuery;
+
+  return (
+    <section aria-busy={isStale}>
+      <input value={query} onChange={(event) => setQuery(event.target.value)} />
+      <ResultsList items={filteredItems} dimmed={isStale} />
+    </section>
+  );
+}
+```
+
+Use this for typeahead, client-side filtering, and rich tables where the derived list is expensive. If the work is trivial, do not add deferral machinery.
+
+---
+
+## 7. useShallow for Zustand Selectors
 
 **Rule: Use useShallow when selecting multiple properties to prevent unnecessary re-renders.**
 
@@ -409,7 +451,7 @@ function UserName() {
 
 ---
 
-## 7. Avoid Barrel Imports
+## 8. Avoid Barrel Imports
 
 **Rule: Import directly from source files, not index.ts barrels.**
 
@@ -448,7 +490,7 @@ export type { User, Product, Order } from './types';
 
 ---
 
-## 8. memo() for Expensive Components
+## 9. memo() for Expensive Components
 
 **Rule: Use memo() for components that render often with same props.**
 
@@ -505,7 +547,7 @@ function TodoList({ todos }: TodoListProps) {
 
 ---
 
-## 9. Virtualization for Long Lists
+## 10. Virtualization for Long Lists
 
 **Rule: Use virtualization for lists with 100+ items.**
 
@@ -560,7 +602,99 @@ function VirtualList({ items }: VirtualListProps) {
 
 ---
 
-## 10. Image Optimization
+## 11. content-visibility for Long Lists
+
+**Rule: If a list is long but virtualization is too heavy or awkward, use CSS `content-visibility` to skip off-screen layout and paint.**
+
+```css
+.message-item {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 80px;
+}
+```
+
+Use this for feed-like UIs where rows are mostly independent and approximate height is predictable. If row height is highly dynamic or list size is extreme, prefer virtualization.
+
+---
+
+## 12. Resource Hints and Intent Preloading
+
+**Rule: Use resource hints only for resources that are either critical now or highly likely next.**
+
+```tsx
+import { preconnect } from 'react-dom';
+
+function AppShell() {
+  preconnect('https://api.example.com');
+
+  const preloadDashboard = () => {
+    void import('../pages/Dashboard');
+  };
+
+  return (
+    <nav>
+      <a href="/dashboard" onMouseEnter={preloadDashboard} onFocus={preloadDashboard}>
+        Dashboard
+      </a>
+    </nav>
+  );
+}
+```
+
+Use `preconnect` for APIs or CDNs needed immediately. Use preload-on-intent for code-split routes or panels the user is likely to open next. Do not spam hints for low-probability paths.
+
+---
+
+## 13. Client Persistence Hygiene
+
+**Rule: Default to Dexie for reload-safe persistence. Use `localStorage` only for tiny non-sensitive preferences or bootstrap hints.**
+
+Prefer Dexie when any of these are true:
+- data is user- or tenant-scoped;
+- shape may evolve across releases;
+- records need indexes, TTLs, or cleanup by context;
+- payload is larger than a few primitive values.
+
+If `localStorage` is still justified, version keys, store minimal fields, and wrap access in `try/catch`.
+
+```tsx
+const PREFS_KEY = 'prefs:v2';
+
+export function savePreferences(prefs: { theme: 'light' | 'dark'; language: string }) {
+  try {
+    localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+  } catch {
+    // private mode, disabled storage, or quota exceeded
+  }
+}
+
+export function loadPreferences() {
+  try {
+    const raw = localStorage.getItem(PREFS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+```
+
+Never persist access tokens, full server payloads, or context-scoped business cache in `localStorage`. Prefer URL state, TanStack Query cache, or Dexie when they match the ownership model better.
+
+---
+
+## 14. Global Event Listener Hygiene
+
+**Rule: Avoid one global listener per component instance. Deduplicate listeners when multiple instances subscribe to the same browser event.**
+
+- Keep the actual `window` or `document` listener shared at module or provider level.
+- Use passive listeners for `scroll`, `wheel`, and touch events unless you intentionally call `preventDefault()`.
+- Clean listeners up deterministically on unmount.
+
+This matters for keyboard shortcuts, resize listeners, visibility handlers, and scroll-driven UI.
+
+---
+
+## 15. Image Optimization
 
 ```tsx
 // Lazy loading images
@@ -599,12 +733,12 @@ function VirtualList({ items }: VirtualListProps) {
 ## Best Practices Summary
 
 1. **Profile first** - Never optimize without measuring
-2. **React.lazy at module level** - Never inside components
-3. **useMemo after profiling** - Only for >1ms calculations
-4. **useCallback with memo()** - Only when passing to memoized children
-5. **Promise.all for parallel requests** - Don't await sequentially
-6. **startTransition for non-urgent** - Filtering, tab switches
-7. **useShallow for Zustand** - When selecting multiple properties
-8. **Avoid barrel imports** - Import directly from source
-9. **memo() for expensive components** - That render with same props
-10. **Virtualize long lists** - 100+ items need virtualization
+2. **Parallelize before memoizing** - Kill waterfalls with `Promise.all`
+3. **React.lazy at module level** - Never inside components
+4. **Protect interaction paths** - `startTransition` / `useDeferredValue` for expensive UI updates
+5. **Profile `useMemo` and `useCallback`** - Add only when proven useful
+6. **Use `useShallow` for Zustand** - When selecting multiple properties
+7. **Avoid barrel imports** - Import directly from source
+8. **Use `content-visibility` or virtualization** - Skip off-screen work
+9. **Preload only high-likelihood next resources** - Use resource hints sparingly
+10. **Use Dexie as the default persistence layer** - Keep `localStorage` narrow, tiny, and non-sensitive
