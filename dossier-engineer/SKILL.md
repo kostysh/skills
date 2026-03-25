@@ -163,8 +163,8 @@ Applies to the working tree and closure target:
 11. **Ingest repo overlays before acting.**
     Before `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `dossier-verify`, and `next-step`, read repo-root `AGENTS.md` and any referenced repo-level ADRs that constrain the work.
 
-12. **Independent review should be truly independent.**
-    Prefer a separate (spawn) reviewer agent that did not author the changes or the close-out summary. If the platform cannot spawn agents, emulate role separation explicitly and use the stricter interpretation.
+12. **Independent review should be truly independent and fail closed.**
+    Spawn a separate reviewer agent that did not author the changes or the close-out summary whenever the `spawn_agent` tool exists. If platform policy requires explicit user authorization before spawning, ask for that authorization instead of downgrading the review. If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode. Do not silently substitute self-review or `emulated-independent-review`.
 
 ## Repo overlay ingestion
 
@@ -182,6 +182,12 @@ Typical overlay examples:
 - project-specific verification commands that must be added to `dossier-verify --extra`;
 - stricter coverage policy for `planned` dossiers;
 - repo-specific branch, commit, or release rules.
+- repo-specific source-of-truth paths, runtime commands, or smoke expectations.
+
+Overlay hygiene rule:
+
+- Repo-root `AGENTS.md` should contain repo-specific overlays only.
+- Do not duplicate the default dossier workflow, review model, or closure protocol in `AGENTS.md` unless the repository is intentionally tightening or overriding them.
 
 ## Step closure contract
 
@@ -193,7 +199,7 @@ For every **mutating** step (`init`, `feature-discovery`, `feature-intake`, `spe
 4. Run `node scripts/debt-audit.mjs --changed-only` when the repo provides it.
 5. Re-check dependencies, adjacent seams, delivered dossiers, architecture, and repo ADRs.
 6. Run `node scripts/dossier-verify.mjs ...` for the relevant scope.
-7. Run an independent review. Prefer a separate reviewer agent that did not author the change or the close-out summary.
+7. Run an independent review with a separate reviewer agent. If spawning requires explicit user authorization, ask for it. If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 8. Persist the verdict with `node scripts/review-artifact.mjs ...`.
 9. Close the step with `node scripts/dossier-step-close.mjs ...`.
 10. Only after `process_complete: true` may the agent say the step is complete.
@@ -234,13 +240,15 @@ After completing any command, the authoring agent must obtain an independent rev
 
 Default contract:
 
-1. Spawn a separate reviewer agent that did not produce the changes or the final answer whenever the platform supports it.
+1. Spawn a separate reviewer agent that did not produce the changes or the final answer whenever the `spawn_agent` tool exists.
 2. Give the reviewer the command name, touched files, relevant command output or artifacts, debt-review outcome, and the command-specific checklist.
 3. The reviewer must inspect actual repo state and generated artifacts, not trust the author’s summary.
 4. For mutating steps, persist the reviewer’s verdict with `review-artifact` and use it for step closure.
 5. For read-only or report-producing commands, the reviewer still checks output fidelity even when no step-close artifact is required.
 6. Resolve every `must-fix` finding, rerun affected checks, and rerun review when the fixes were material.
-7. If the platform cannot spawn agents, emulate role separation explicitly and prefer the stricter interpretation.
+7. If the current platform policy requires explicit user authorization before spawning, request that authorization rather than downgrading review.
+8. If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+9. Do not silently substitute self-review or `emulated-independent-review` for a required independent review.
 
 ## Review checklist design rules
 
@@ -319,7 +327,7 @@ Steps:
    - `scripts/lib/*`
 7. Create or normalize `docs/ssot/index.md`.
 8. Create or normalize `docs/backlog/feature-candidates.md`.
-9. Create or update repo-root `AGENTS.md`.
+9. Create or update repo-root `AGENTS.md` as an overlay-only file.
 10. Re-read architecture and surface day-1 implementation invariants that future modes must preserve.
 11. Report created, moved, renamed, normalized, and untouched artifacts separately.
 
@@ -328,7 +336,7 @@ Review checklist:
 - [ ] If no architecture existed, the command stopped cleanly and did not leave half-created bootstrap artifacts behind.
 - [ ] If `init` proceeded, canonical docs directories and `.dossier/` exist.
 - [ ] Canonical scripts and `scripts/lib/*` were provisioned when safe, or divergence was surfaced explicitly instead of overwritten blindly.
-- [ ] Repo-root `AGENTS.md` preserves unrelated repo instructions while adding dossier workflow rules.
+- [ ] Repo-root `AGENTS.md` preserves unrelated repo instructions while adding only repo-specific overlays; default skill workflow rules are not duplicated unless intentionally tightened.
 - [ ] No placeholder feature dossiers were created.
 - [ ] Reported invariants are grounded in architecture/ADRs instead of being invented.
 - [ ] The final report distinguishes created, moved, normalized, and untouched artifacts accurately.
@@ -471,7 +479,7 @@ Steps:
    - `coverage_gate: strict` when executable coverage must now block closure
 6. Run project checks plus `node scripts/dossier-verify.mjs ...`.
 7. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
-8. Run independent review and persist it. Prefer a separate reviewer agent that did not author the change.
+8. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 9. Close the step with `dossier-step-close` before saying it is complete.
 
 Required adversarial checklist for side-effecting code:

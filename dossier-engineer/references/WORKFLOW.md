@@ -47,7 +47,7 @@ Before a mutating step can be considered complete:
 4. Re-check dependencies and adjacent seams.
 5. Resolve or explicitly record every debt item in a canonical artifact.
 6. Run `node scripts/dossier-verify.mjs ...`.
-7. Run independent review with a separate reviewer agent when the platform supports it, then persist the verdict with `node scripts/review-artifact.mjs ...`.
+7. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode. Then persist the verdict with `node scripts/review-artifact.mjs ...`.
 8. Close the step with `node scripts/dossier-step-close.mjs ...`.
 
 Notes:

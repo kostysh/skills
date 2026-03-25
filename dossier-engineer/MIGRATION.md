@@ -49,7 +49,7 @@ After migration:
    Features that are currently active must move to the current verify → review → close protocol before more implementation continues.
 
 6. **Use independent review.**
-   For review of a migrated step, use a separate reviewer agent when the platform supports it. If separate agents are unavailable, emulate role separation explicitly and apply the stricter interpretation.
+   For review of a migrated step, use a separate reviewer agent whenever the `spawn_agent` tool exists. If platform policy requires explicit user authorization before spawning, ask for that authorization instead of downgrading review. If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 
 7. **Treat implementation completeness as a mandatory review dimension.**
    For implementation review, verify that delivered behavior fully matches the dossier, slicing plan, approved changes, and acceptance criteria. Hidden scope deferral is not acceptable.
@@ -103,6 +103,7 @@ From the current dossier skill package, provision or update the following in the
 Rules for this phase:
 
 - preserve repo-specific command names, paths, and overlays when updating `AGENTS.md`;
+- keep repo-root `AGENTS.md` overlay-only; do not duplicate default dossier workflow rules from the skill unless the repository is intentionally tightening them;
 - do not leave the repository dependent on running scripts from the skill folder;
 - if the repository already has equivalent directories, normalize them instead of deleting useful existing state;
 - do not remove valid repo-specific ADR references from `AGENTS.md`.
@@ -249,7 +250,7 @@ Use `--extra` when repo overlays require additional commands.
 #### Step 6.3 — Perform independent review
 
 Review must be independent from the authoring pass.
-Use a separate reviewer agent when available.
+Use a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode.
 
 For `implementation`, the review is not complete unless it explicitly covers **all** of the following:
 
