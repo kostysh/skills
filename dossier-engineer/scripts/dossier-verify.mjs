@@ -82,8 +82,10 @@ const runCommand = ({ name, command, args = [], cwd, shell = false, displayComma
   };
 };
 
-const relativeToRoot = (root, targetPath) => path.relative(root, targetPath).split(path.sep).join('/');
-const canonicalNodeCommand = (scriptName, args = []) => formatCli(['node', `scripts/${scriptName}`, ...args]);
+const relativeToRoot = (root, targetPath) =>
+  path.relative(root, targetPath).split(path.sep).join('/');
+const canonicalNodeCommand = (scriptName, args = []) =>
+  formatCli(['node', `scripts/${scriptName}`, ...args]);
 
 const main = async () => {
   const {
@@ -107,7 +109,9 @@ const main = async () => {
   let featureId = 'global';
   let dossierRelPath = null;
   if (dossier) {
-    const dossierRecord = await readDossierRecord(path.resolve(absRoot, dossier), { root: absRoot });
+    const dossierRecord = await readDossierRecord(path.resolve(absRoot, dossier), {
+      root: absRoot,
+    });
     featureId = String(dossierRecord.frontmatter.id ?? path.basename(dossierRecord.absPath, '.md'));
     dossierRelPath = dossierRecord.relPath;
   }
@@ -208,7 +212,9 @@ const main = async () => {
   console.log(`[dossier-verify] status=${overallStatus} step=${step} feature=${featureId}`);
   console.log(`[dossier-verify] artifact=${relativeToRoot(absRoot, outputPath)}`);
   for (const check of checks) {
-    console.log(`- ${check.name}: ${check.status} (exit ${check.exit_code}, ${check.duration_ms} ms)`);
+    console.log(
+      `- ${check.name}: ${check.status} (exit ${check.exit_code}, ${check.duration_ms} ms)`,
+    );
   }
 
   if (overallStatus !== 'pass') process.exit(2);

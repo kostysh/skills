@@ -3,7 +3,7 @@
  * debt-audit.mjs
  *
  * Marker audit compatibility entrypoint.
- * Checks only for explicit unresolved debt markers (TODO / FIXME / HACK / XXX).
+ * Checks only for explicit unresolved debt-marker keywords.
  * This script is intentionally narrow and must not be treated as a substitute
  * for manual debt review or step-closure verification.
  */
@@ -77,7 +77,7 @@ const collectExplicitPaths = async (root, relPaths) => {
     const absPath = path.resolve(root, relPath);
     const stat = await fs.stat(absPath);
     if (stat.isDirectory()) {
-      await walk(absPath, files);
+      await walk(absPath, files, { rootDir: root });
       continue;
     }
     if (stat.isFile()) files.push(absPath);
@@ -92,7 +92,7 @@ const collectDefaultFiles = async (root) => {
     try {
       const stat = await fs.stat(absPath);
       if (stat.isDirectory()) {
-        await walk(absPath, files);
+        await walk(absPath, files, { rootDir: root });
       } else if (stat.isFile()) {
         files.push(absPath);
       }
@@ -108,7 +108,7 @@ const main = async () => {
   const absRoot = path.resolve(root);
 
   /** @type {string[]} */
-  let filesToScan = [];
+  let filesToScan;
   if (paths.length > 0) {
     filesToScan = await collectExplicitPaths(absRoot, paths);
   } else if (changedOnly) {
@@ -117,7 +117,9 @@ const main = async () => {
     }
 
     const baseRef = resolveBaseRef(absRoot, base);
-    filesToScan = getChangedFiles(absRoot, baseRef).map((filePath) => normalizeRepoPath(absRoot, filePath));
+    filesToScan = getChangedFiles(absRoot, baseRef).map((filePath) =>
+      normalizeRepoPath(absRoot, filePath),
+    );
   } else {
     filesToScan = await collectDefaultFiles(absRoot);
   }
@@ -132,7 +134,8 @@ const main = async () => {
       continue;
     }
 
-    const relPath = path.relative(absRoot, filePath).split(path.sep).join('/') || path.basename(filePath);
+    const relPath =
+      path.relative(absRoot, filePath).split(path.sep).join('/') || path.basename(filePath);
     const lines = content.split(/\r?\n/);
     for (const [index, line] of lines.entries()) {
       if (!shouldFlagLine(filePath, line)) continue;

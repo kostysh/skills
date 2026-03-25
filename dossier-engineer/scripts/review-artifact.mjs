@@ -57,7 +57,19 @@ const ensureRequired = (value, message) => {
 };
 
 const main = async () => {
-  const { root, dossier, step, verdict, reviewer, reviewedCommit, notes, output, mustFix, shouldFix, evidence } = parseArgs();
+  const {
+    root,
+    dossier,
+    step,
+    verdict,
+    reviewer,
+    reviewedCommit,
+    notes,
+    output,
+    mustFix,
+    shouldFix,
+    evidence,
+  } = parseArgs();
   const absRoot = path.resolve(root);
   const absDossier = path.resolve(absRoot, ensureRequired(dossier, '--dossier is required.'));
   const normalizedStep = ensureRequired(step, '--step is required.');
@@ -74,7 +86,9 @@ const main = async () => {
   const featureId = String(dossierRecord.frontmatter.id ?? path.basename(absDossier, '.md'));
   const commit = reviewedCommit || (inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null);
   if (!commit) {
-    throw new Error('Could not determine reviewed commit. Provide --reviewed-commit when git metadata is unavailable.');
+    throw new Error(
+      'Could not determine reviewed commit. Provide --reviewed-commit when git metadata is unavailable.',
+    );
   }
 
   const artifact = {
@@ -104,8 +118,12 @@ const main = async () => {
   const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
   await writeJsonAtomic(outputPath, artifact);
 
-  console.log(`[review-artifact] Wrote ${path.relative(absRoot, outputPath).split(path.sep).join('/')}`);
-  console.log(`[review-artifact] verdict=${normalizedVerdict} step=${normalizedStep} feature=${featureId} commit=${commit}`);
+  console.log(
+    `[review-artifact] Wrote ${path.relative(absRoot, outputPath).split(path.sep).join('/')}`,
+  );
+  console.log(
+    `[review-artifact] verdict=${normalizedVerdict} step=${normalizedStep} feature=${featureId} commit=${commit}`,
+  );
 };
 
 main().catch((error) => {

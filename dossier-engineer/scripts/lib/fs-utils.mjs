@@ -27,28 +27,21 @@ export const ensureDir = async (dirPath) => {
   await fs.mkdir(dirPath, { recursive: true });
 };
 
-export const isIgnoredDir = (name) =>
-  new Set([
-    '.git',
-    'node_modules',
-    'dist',
-    'build',
-    'coverage',
-    '.next',
-    '.turbo',
-    '.cache',
-    'workspace',
-    'models',
-    'data',
-  ]).has(name);
+export const isIgnoredDir = (name, { isRepoTopLevel = false } = {}) =>
+  new Set(['.git', 'node_modules', 'dist', 'build', 'coverage', '.next', '.turbo', '.cache']).has(
+    name,
+  ) ||
+  (isRepoTopLevel && new Set(['workspace', 'models', 'data']).has(name));
 
-export const walk = async (dir, files = [], { includeFile } = {}) => {
+export const walk = async (dir, files = [], { includeFile, rootDir = dir } = {}) => {
+  const resolvedRootDir = path.resolve(rootDir);
   const entries = await fs.readdir(dir, { withFileTypes: true });
   for (const entry of entries) {
     const absPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (isIgnoredDir(entry.name)) continue;
-      await walk(absPath, files, { includeFile });
+      const isRepoTopLevel = path.dirname(absPath) === resolvedRootDir;
+      if (isIgnoredDir(entry.name, { isRepoTopLevel })) continue;
+      await walk(absPath, files, { includeFile, rootDir: resolvedRootDir });
       continue;
     }
 

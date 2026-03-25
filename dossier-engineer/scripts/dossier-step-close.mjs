@@ -39,7 +39,8 @@ const parseArgs = () => {
   };
 };
 
-const relativeToRoot = (root, targetPath) => path.relative(root, targetPath).split(path.sep).join('/');
+const relativeToRoot = (root, targetPath) =>
+  path.relative(root, targetPath).split(path.sep).join('/');
 
 const readJsonOrBlock = async ({ root, artifactPath, label, blockers }) => {
   const absPath = path.resolve(root, artifactPath);
@@ -77,7 +78,8 @@ const defaultNextStep = (status, step) => {
 };
 
 const main = async () => {
-  const { root, dossier, step, verifyArtifact, reviewArtifact, nextStep, output, allowDirty } = parseArgs();
+  const { root, dossier, step, verifyArtifact, reviewArtifact, nextStep, output, allowDirty } =
+    parseArgs();
   const absRoot = path.resolve(root);
   const absDossier = path.resolve(absRoot, dossier ?? '');
   const normalizedStep = step;
@@ -103,16 +105,22 @@ const main = async () => {
   });
   const currentCommit = inGitRepo(absRoot)
     ? getCurrentCommit(absRoot)
-    : review?.reviewed_commit ?? verify?.current_commit ?? null;
+    : (review?.reviewed_commit ?? verify?.current_commit ?? null);
 
   if (verify && verify.status !== 'pass') {
-    blockers.push(`Verification artifact does not report status=pass (got ${String(verify.status)}).`);
+    blockers.push(
+      `Verification artifact does not report status=pass (got ${String(verify.status)}).`,
+    );
   }
   if (verify && verify.step !== normalizedStep) {
-    blockers.push(`Verification artifact step mismatch: expected ${normalizedStep}, got ${verify.step}.`);
+    blockers.push(
+      `Verification artifact step mismatch: expected ${normalizedStep}, got ${verify.step}.`,
+    );
   }
   if (verify?.feature_id && verify.feature_id !== featureId) {
-    blockers.push(`Verification artifact feature mismatch: expected ${featureId}, got ${verify.feature_id}.`);
+    blockers.push(
+      `Verification artifact feature mismatch: expected ${featureId}, got ${verify.feature_id}.`,
+    );
   }
 
   if (review && review.verdict !== 'PASS') {
@@ -122,21 +130,29 @@ const main = async () => {
     blockers.push(`Review artifact step mismatch: expected ${normalizedStep}, got ${review.step}.`);
   }
   if (review?.feature_id && review.feature_id !== featureId) {
-    blockers.push(`Review artifact feature mismatch: expected ${featureId}, got ${review.feature_id}.`);
+    blockers.push(
+      `Review artifact feature mismatch: expected ${featureId}, got ${review.feature_id}.`,
+    );
   }
   if (Array.isArray(review?.findings?.must_fix) && review.findings.must_fix.length > 0) {
     blockers.push('Review artifact still contains must-fix findings.');
   }
 
   if (currentCommit && review?.reviewed_commit && review.reviewed_commit !== currentCommit) {
-    blockers.push(`Review freshness is stale for current commit ${currentCommit}; review artifact is tied to ${review.reviewed_commit}.`);
+    blockers.push(
+      `Review freshness is stale for current commit ${currentCommit}; review artifact is tied to ${review.reviewed_commit}.`,
+    );
   }
   if (currentCommit && verify?.current_commit && verify.current_commit !== currentCommit) {
-    blockers.push(`Verification artifact is stale for current commit ${currentCommit}; verify artifact is tied to ${verify.current_commit}.`);
+    blockers.push(
+      `Verification artifact is stale for current commit ${currentCommit}; verify artifact is tied to ${verify.current_commit}.`,
+    );
   }
 
   if (inGitRepo(absRoot) && !allowDirty) {
-    const dirtyPaths = getDirtyPaths(absRoot).filter((filePath) => !filePath.startsWith('.dossier/'));
+    const dirtyPaths = getDirtyPaths(absRoot).filter(
+      (filePath) => !filePath.startsWith('.dossier/'),
+    );
     if (dirtyPaths.length > 0) {
       blockers.push(`Worktree is dirty outside .dossier/: ${dirtyPaths.join(', ')}`);
     }
@@ -159,12 +175,20 @@ const main = async () => {
     next_step: nextStep || defaultNextStep(dossierRecord.frontmatter.status, normalizedStep),
   };
 
-  const defaultOutput = path.join(absRoot, '.dossier', 'steps', featureId, `${normalizedStep}.json`);
+  const defaultOutput = path.join(
+    absRoot,
+    '.dossier',
+    'steps',
+    featureId,
+    `${normalizedStep}.json`,
+  );
   const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
   await writeJsonAtomic(outputPath, artifact);
 
   console.log(`[dossier-step-close] Wrote ${relativeToRoot(absRoot, outputPath)}`);
-  console.log(`[dossier-step-close] process_complete=${processComplete ? 'yes' : 'no'} step=${normalizedStep} feature=${featureId}`);
+  console.log(
+    `[dossier-step-close] process_complete=${processComplete ? 'yes' : 'no'} step=${normalizedStep} feature=${featureId}`,
+  );
   if (blockers.length > 0) {
     console.error('[dossier-step-close] blockers:');
     for (const blocker of blockers) console.error(`- ${blocker}`);

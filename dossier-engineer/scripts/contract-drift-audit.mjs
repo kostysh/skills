@@ -10,7 +10,16 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
 import { extractAcIds, readDossierRecord } from './lib/dossier-utils.mjs';
-import { getChangedFiles, getCurrentCommit, getHeadRef, getMergeBase, inGitRepo, resolveBaseRef, runGit, toRepoRelativePath } from './lib/git-utils.mjs';
+import {
+  getChangedFiles,
+  getCurrentCommit,
+  getHeadRef,
+  getMergeBase,
+  inGitRepo,
+  resolveBaseRef,
+  runGit,
+  toRepoRelativePath,
+} from './lib/git-utils.mjs';
 import { writeJsonAtomic } from './lib/fs-utils.mjs';
 
 const EXECUTABLE_SECTION_PATTERNS = [
@@ -82,7 +91,8 @@ const getBaselineFromGit = (root, relPath, baseRef) => {
   const head = getHeadRef(root);
   if (!head) return null;
 
-  const diffVsHead = runGit(root, ['diff', '--name-only', 'HEAD', '--', relPath], { allowFailure: true }) || '';
+  const diffVsHead =
+    runGit(root, ['diff', '--name-only', 'HEAD', '--', relPath], { allowFailure: true }) || '';
   if (diffVsHead.trim()) {
     return {
       text: runGit(root, ['show', `HEAD:${relPath}`], { allowFailure: true }),
@@ -147,7 +157,9 @@ const main = async () => {
   }
 
   if (beforeText === null) {
-    throw new Error('Could not resolve a baseline dossier snapshot. Use --before-file or run inside a git repository.');
+    throw new Error(
+      'Could not resolve a baseline dossier snapshot. Use --before-file or run inside a git repository.',
+    );
   }
 
   const beforeSections = parseTopLevelSections(beforeText);
@@ -161,12 +173,17 @@ const main = async () => {
 
   const beforeStatusMatch = String(beforeText).match(/^---\r?\n([\s\S]*?)\r?\n---/);
   const beforeFrontmatter = beforeStatusMatch ? beforeStatusMatch[1] : '';
-  const afterFrontmatter = String(dossierRecord.markdown).match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+  const afterFrontmatter =
+    String(dossierRecord.markdown).match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
   const frontmatterChanged = ['depends_on', 'impacts', 'coverage_gate']
-    .filter((key) => new RegExp(`^\s*${key}:.*$`, 'm').test(beforeFrontmatter) || new RegExp(`^\s*${key}:.*$`, 'm').test(afterFrontmatter))
+    .filter(
+      (key) =>
+        new RegExp(`^\\s*${key}:.*$`, 'm').test(beforeFrontmatter) ||
+        new RegExp(`^\\s*${key}:.*$`, 'm').test(afterFrontmatter),
+    )
     .filter((key) => {
-      const beforeLine = beforeFrontmatter.match(new RegExp(`^\s*${key}:.*$`, 'm'))?.[0] ?? '';
-      const afterLine = afterFrontmatter.match(new RegExp(`^\s*${key}:.*$`, 'm'))?.[0] ?? '';
+      const beforeLine = beforeFrontmatter.match(new RegExp(`^\\s*${key}:.*$`, 'm'))?.[0] ?? '';
+      const afterLine = afterFrontmatter.match(new RegExp(`^\\s*${key}:.*$`, 'm'))?.[0] ?? '';
       return beforeLine.trim() !== afterLine.trim();
     });
 
@@ -176,7 +193,9 @@ const main = async () => {
     changedExecutableSections.length > 0 ||
     frontmatterChanged.length > 0;
 
-  const maturityRequiresAudit = ['planned', 'in_progress', 'done'].includes(String(dossierRecord.frontmatter.status));
+  const maturityRequiresAudit = ['planned', 'in_progress', 'done'].includes(
+    String(dossierRecord.frontmatter.status),
+  );
   let changedFiles = [];
   if (inGitRepo(absRoot)) {
     changedFiles = getChangedFiles(absRoot, resolveBaseRef(absRoot, base));
@@ -192,7 +211,8 @@ const main = async () => {
     (filePath) => filePath === 'docs/architecture/system.md' || filePath.startsWith('docs/adr/'),
   );
 
-  const requiresFollowUp = executableContractChanged && maturityRequiresAudit && codeFollowUpFiles.length === 0;
+  const requiresFollowUp =
+    executableContractChanged && maturityRequiresAudit && codeFollowUpFiles.length === 0;
   const artifact = {
     version: 1,
     created_at: new Date().toISOString(),
@@ -218,16 +238,22 @@ const main = async () => {
   await writeJsonAtomic(outputPath, artifact);
 
   console.log(`[contract-drift-audit] feature=${featureId} baseline=${baselineLabel}`);
-  console.log(`[contract-drift-audit] executable_contract_changed=${executableContractChanged ? 'yes' : 'no'} maturity_requires_audit=${maturityRequiresAudit ? 'yes' : 'no'} requires_follow_up=${requiresFollowUp ? 'yes' : 'no'}`);
+  console.log(
+    `[contract-drift-audit] executable_contract_changed=${executableContractChanged ? 'yes' : 'no'} maturity_requires_audit=${maturityRequiresAudit ? 'yes' : 'no'} requires_follow_up=${requiresFollowUp ? 'yes' : 'no'}`,
+  );
 
   if (addedAcIds.length > 0) console.log(`Added AC IDs: ${addedAcIds.join(', ')}`);
   if (removedAcIds.length > 0) console.log(`Removed AC IDs: ${removedAcIds.join(', ')}`);
-  if (changedExecutableSections.length > 0) console.log(`Changed executable sections: ${changedExecutableSections.join(' | ')}`);
-  if (frontmatterChanged.length > 0) console.log(`Changed frontmatter keys: ${frontmatterChanged.join(', ')}`);
+  if (changedExecutableSections.length > 0)
+    console.log(`Changed executable sections: ${changedExecutableSections.join(' | ')}`);
+  if (frontmatterChanged.length > 0)
+    console.log(`Changed frontmatter keys: ${frontmatterChanged.join(', ')}`);
   console.log(`Artifact: ${toRepoRelativePath(absRoot, outputPath)}`);
 
   if (requiresFollowUp) {
-    console.error('[contract-drift-audit] Executable contract changed without matching code/test/runtime follow-up in the same change set.');
+    console.error(
+      '[contract-drift-audit] Executable contract changed without matching code/test/runtime follow-up in the same change set.',
+    );
     process.exit(2);
   }
 };

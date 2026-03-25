@@ -27,7 +27,13 @@ import {
   readDossierRecord,
 } from './lib/dossier-utils.mjs';
 import { readText, walk } from './lib/fs-utils.mjs';
-import { getChangedFiles, inGitRepo, normalizeRepoPath, resolveBaseRef, toRepoRelativePath } from './lib/git-utils.mjs';
+import {
+  getChangedFiles,
+  inGitRepo,
+  normalizeRepoPath,
+  resolveBaseRef,
+  toRepoRelativePath,
+} from './lib/git-utils.mjs';
 
 const parseArgs = () => {
   const args = process.argv.slice(2);
@@ -113,7 +119,8 @@ const resolveOrphanScope = ({ orphansScope, dossier, changedOnly }) => {
 };
 
 const main = async () => {
-  const { root, dossier, dossiersDir, changedOnly, base, strictStatuses, orphansScope } = parseArgs();
+  const { root, dossier, dossiersDir, changedOnly, base, strictStatuses, orphansScope } =
+    parseArgs();
   const absRoot = path.resolve(root);
 
   if (dossier && changedOnly) {
@@ -144,7 +151,7 @@ const main = async () => {
     for (const fileName of fileNames) selectedDossiers.push(path.join(absDossiersDir, fileName));
   }
 
-  const testFiles = await walk(absRoot, [], { includeFile: isTestFile });
+  const testFiles = await walk(absRoot, [], { includeFile: isTestFile, rootDir: absRoot });
   const testContents = new Map();
   for (const testFile of testFiles) {
     try {
@@ -162,7 +169,8 @@ const main = async () => {
       strictStatuses,
     });
     const frontmatter = record.frontmatter ?? {};
-    const featureId = typeof frontmatter.id === 'string' ? frontmatter.id : path.basename(dossierPath, '.md');
+    const featureId =
+      typeof frontmatter.id === 'string' ? frontmatter.id : path.basename(dossierPath, '.md');
     selectedFeatureIds.add(featureId);
 
     const found = new Map();
@@ -189,7 +197,9 @@ const main = async () => {
   }
 
   const orphanMode = resolveOrphanScope({ orphansScope, dossier, changedOnly });
-  const allAuditedAcs = new Set(results.flatMap((result) => [...result.found.keys(), ...result.missing]));
+  const allAuditedAcs = new Set(
+    results.flatMap((result) => [...result.found.keys(), ...result.missing]),
+  );
   const orphan = new Map();
   const regex = /\bAC-F(\d{4})-(\d{1,2})\b/g;
 
@@ -242,7 +252,9 @@ const main = async () => {
 
   if (orphan.size > 0) {
     console.log(`\n== Orphan AC references (${orphanMode} scope) ==`);
-    for (const [acId, files] of [...orphan.entries()].sort((left, right) => left[0].localeCompare(right[0]))) {
+    for (const [acId, files] of [...orphan.entries()].sort((left, right) =>
+      left[0].localeCompare(right[0]),
+    )) {
       console.log(`- ${acId}: ${[...files].sort().join(', ')}`);
     }
   }

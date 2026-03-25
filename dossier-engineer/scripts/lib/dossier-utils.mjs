@@ -81,7 +81,9 @@ export const readDossierRecord = async (absPath, options = {}) => {
   const coverageGate = resolveCoverageGate(frontmatter, options);
   return {
     absPath,
-    relPath: options.root ? path.relative(options.root, absPath).split(path.sep).join('/') : absPath,
+    relPath: options.root
+      ? path.relative(options.root, absPath).split(path.sep).join('/')
+      : absPath,
     markdown,
     frontmatter,
     coverageGate,
@@ -102,11 +104,14 @@ export const readAllDossiers = async (root, dossiersDir, options = {}) => {
       }),
     );
   }
-  dossiers.sort((left, right) => String(left.frontmatter.id).localeCompare(String(right.frontmatter.id)));
+  dossiers.sort((left, right) =>
+    String(left.frontmatter.id).localeCompare(String(right.frontmatter.id)),
+  );
   return dossiers;
 };
 
-export const hasChangeLogEntry = (markdown) => /##\s+.*Change log|##\s+Change log/i.test(String(markdown));
+export const hasChangeLogEntry = (markdown) =>
+  /##\s+.*Change log|##\s+Change log/i.test(String(markdown));
 
 export const parseStatus = (markdown) => {
   const frontmatter = parseFrontmatter(markdown);

@@ -46,9 +46,13 @@ export const resolveBaseRef = (root, explicitBase) => {
     }
   }
 
-  const originHead = runGit(root, ['symbolic-ref', '--quiet', '--short', 'refs/remotes/origin/HEAD'], {
-    allowFailure: true,
-  });
+  const originHead = runGit(
+    root,
+    ['symbolic-ref', '--quiet', '--short', 'refs/remotes/origin/HEAD'],
+    {
+      allowFailure: true,
+    },
+  );
   if (originHead && runGit(root, ['rev-parse', '--verify', originHead], { allowFailure: true })) {
     return originHead;
   }
@@ -115,7 +119,6 @@ export const getDiffText = (root, args) =>
 export const getCurrentCommit = (root) =>
   runGit(root, ['rev-parse', '--verify', 'HEAD'], { allowFailure: true });
 
-
 export const getDirtyPaths = (root) => {
   const status = runGit(root, ['status', '--short'], { allowFailure: true }) || '';
   return splitLines(status)
@@ -126,8 +129,7 @@ export const getDirtyPaths = (root) => {
 
 export const hasDirtyWorktree = (root) => getDirtyPaths(root).length > 0;
 
-export const normalizeRepoPath = (root, filePath) =>
-  path.resolve(root, normalizeGitPath(filePath));
+export const normalizeRepoPath = (root, filePath) => path.resolve(root, normalizeGitPath(filePath));
 
 export const toRepoRelativePath = (root, filePath) =>
   path.relative(root, filePath).split(path.sep).join('/');

@@ -57,7 +57,9 @@ const main = async () => {
   try {
     dossiers = await readAllDossiers(absRoot, dossiersDir, { root: absRoot });
   } catch (error) {
-    console.error(`[lint-dossiers] ERROR: cannot read dossiers directory: ${path.resolve(absRoot, dossiersDir)}`);
+    console.error(
+      `[lint-dossiers] ERROR: cannot read dossiers directory: ${path.resolve(absRoot, dossiersDir)}`,
+    );
     console.error(error?.stack ?? String(error));
     process.exit(1);
   }
@@ -83,11 +85,13 @@ const main = async () => {
 
     for (const [key, value] of required) {
       const missing =
-        value === undefined ||
-        value === null ||
-        (typeof value === 'string' && value.trim() === '');
+        value === undefined || value === null || (typeof value === 'string' && value.trim() === '');
       if (missing) {
-        findings.push({ level: 'error', feature, message: `Missing required frontmatter key: ${key}` });
+        findings.push({
+          level: 'error',
+          feature,
+          message: `Missing required frontmatter key: ${key}`,
+        });
       }
     }
 
@@ -99,7 +103,11 @@ const main = async () => {
       });
     } else {
       if (featureIds.has(frontmatter.id)) {
-        findings.push({ level: 'error', feature: frontmatter.id, message: `Duplicate feature id across dossiers: ${frontmatter.id}` });
+        findings.push({
+          level: 'error',
+          feature: frontmatter.id,
+          message: `Duplicate feature id across dossiers: ${frontmatter.id}`,
+        });
       }
       featureIds.add(frontmatter.id);
     }
@@ -125,13 +133,18 @@ const main = async () => {
       ['updated', frontmatter.updated],
     ]) {
       if (typeof value === 'string' && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-        findings.push({ level: 'warn', feature, message: `${key} should be YYYY-MM-DD (got "${value}").` });
+        findings.push({
+          level: 'warn',
+          feature,
+          message: `${key} should be YYYY-MM-DD (got "${value}").`,
+        });
       }
     }
 
     if (
       frontmatter.coverage_gate !== undefined &&
-      (typeof frontmatter.coverage_gate !== 'string' || !COVERAGE_GATES.has(frontmatter.coverage_gate))
+      (typeof frontmatter.coverage_gate !== 'string' ||
+        !COVERAGE_GATES.has(frontmatter.coverage_gate))
     ) {
       findings.push({
         level: 'error',
@@ -140,11 +153,15 @@ const main = async () => {
       });
     }
 
-    if (frontmatter.coverage_gate === undefined && ['planned', 'in_progress', 'done'].includes(String(frontmatter.status))) {
+    if (
+      frontmatter.coverage_gate === undefined &&
+      ['planned', 'in_progress', 'done'].includes(String(frontmatter.status))
+    ) {
       findings.push({
         level: 'warn',
         feature,
-        message: 'coverage_gate is not explicit. Add `coverage_gate: deferred|strict` so workflow state and coverage enforcement stay separate.',
+        message:
+          'coverage_gate is not explicit. Add `coverage_gate: deferred|strict` so workflow state and coverage enforcement stay separate.',
       });
     }
 
@@ -174,10 +191,13 @@ const main = async () => {
         findings.push({
           level: 'error',
           feature,
-          message: 'Missing Coverage map rows for a strict coverage gate (expected rows like "| AC-F....-.. |").',
+          message:
+            'Missing Coverage map rows for a strict coverage gate (expected rows like "| AC-F....-.. |").',
         });
       } else {
-        const missingCoverageRows = dossier.acIds.filter((acId) => !dossier.coverageIds.includes(acId));
+        const missingCoverageRows = dossier.acIds.filter(
+          (acId) => !dossier.coverageIds.includes(acId),
+        );
         if (missingCoverageRows.length > 0) {
           findings.push({
             level: 'error',
@@ -219,7 +239,11 @@ const main = async () => {
     const feature = String(frontmatter.id ?? dossier.relPath);
     const dependencies = Array.isArray(frontmatter.depends_on) ? frontmatter.depends_on : [];
     for (const dependency of dependencies) {
-      if (typeof dependency === 'string' && /^F-\d{4}$/.test(dependency) && !featureIds.has(dependency)) {
+      if (
+        typeof dependency === 'string' &&
+        /^F-\d{4}$/.test(dependency) &&
+        !featureIds.has(dependency)
+      ) {
         findings.push({
           level: 'error',
           feature,
@@ -239,8 +263,12 @@ const main = async () => {
     byFeature.get(key).push(finding);
   }
 
-  const lines = [`Found ${errors.length} error(s), ${warnings.length} warning(s) across ${dossiers.length} dossier(s).`];
-  for (const [feature, items] of [...byFeature.entries()].sort((left, right) => String(left[0]).localeCompare(String(right[0])))) {
+  const lines = [
+    `Found ${errors.length} error(s), ${warnings.length} warning(s) across ${dossiers.length} dossier(s).`,
+  ];
+  for (const [feature, items] of [...byFeature.entries()].sort((left, right) =>
+    String(left[0]).localeCompare(String(right[0])),
+  )) {
     for (const item of items) {
       lines.push(`- [${item.level.toUpperCase()}] ${feature}: ${item.message}`);
     }
@@ -251,12 +279,21 @@ const main = async () => {
   if (updateIndex) {
     try {
       const indexText = await readText(absIndex);
-      const redFlags = findings.length > 0
-        ? findings
-            .map((finding) => `- **${finding.level.toUpperCase()}** ${finding.feature ?? 'global'} — ${finding.message}`)
-            .join('\n')
-        : '- ✅ No red flags detected.';
-      const updatedIndex = replaceBlock(indexText, '<!-- BEGIN GENERATED RED_FLAGS -->', '<!-- END GENERATED RED_FLAGS -->', redFlags);
+      const redFlags =
+        findings.length > 0
+          ? findings
+              .map(
+                (finding) =>
+                  `- **${finding.level.toUpperCase()}** ${finding.feature ?? 'global'} — ${finding.message}`,
+              )
+              .join('\n')
+          : '- ✅ No red flags detected.';
+      const updatedIndex = replaceBlock(
+        indexText,
+        '<!-- BEGIN GENERATED RED_FLAGS -->',
+        '<!-- END GENERATED RED_FLAGS -->',
+        redFlags,
+      );
       if (updatedIndex === indexText) {
         console.log(`[lint-dossiers] Red flags block already up to date in ${indexFile}.`);
       } else {

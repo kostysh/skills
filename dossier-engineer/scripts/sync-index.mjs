@@ -74,12 +74,14 @@ const escapeQuotes = (value) => String(value).replace(/"/g, '\\"');
 
 const featureRow = (dossier, indexDir) => {
   const frontmatter = dossier.frontmatter ?? {};
-  const depends = Array.isArray(frontmatter.depends_on) && frontmatter.depends_on.length
-    ? frontmatter.depends_on.join(', ')
-    : '—';
-  const impacts = Array.isArray(frontmatter.impacts) && frontmatter.impacts.length
-    ? frontmatter.impacts.join(',')
-    : '—';
+  const depends =
+    Array.isArray(frontmatter.depends_on) && frontmatter.depends_on.length
+      ? frontmatter.depends_on.join(', ')
+      : '—';
+  const impacts =
+    Array.isArray(frontmatter.impacts) && frontmatter.impacts.length
+      ? frontmatter.impacts.join(',')
+      : '—';
   const relPath = path.relative(indexDir, dossier.absPath).split(path.sep).join('/');
 
   return `| ${frontmatter.id ?? '—'} | ${escapePipe(frontmatter.title ?? '')} | ${frontmatter.status ?? ''} | ${dossier.coverageGate} | ${frontmatter.area ?? ''} | ${depends} | ${impacts} | \`${relPath}\` |`;
@@ -124,7 +126,7 @@ const main = async () => {
 
   const graphBlock = buildMermaidGraph(dossiers);
 
-  let content = '';
+  let content;
   try {
     content = await readText(absIndex);
   } catch {
@@ -132,7 +134,12 @@ const main = async () => {
   }
 
   const refreshedBlocks = replaceBlock(
-    replaceBlock(content, '<!-- BEGIN GENERATED FEATURES -->', '<!-- END GENERATED FEATURES -->', featuresBlock),
+    replaceBlock(
+      content,
+      '<!-- BEGIN GENERATED FEATURES -->',
+      '<!-- END GENERATED FEATURES -->',
+      featuresBlock,
+    ),
     '<!-- BEGIN GENERATED DEP_GRAPH -->',
     '<!-- END GENERATED DEP_GRAPH -->',
     graphBlock,
@@ -143,7 +150,10 @@ const main = async () => {
     return;
   }
 
-  const stamped = refreshedBlocks.replace(/_Last sync: .*?_\n/, `_Last sync: ${new Date().toISOString()}_\n`);
+  const stamped = refreshedBlocks.replace(
+    /_Last sync: .*?_\n/,
+    `_Last sync: ${new Date().toISOString()}_\n`,
+  );
   await writeTextAtomic(absIndex, stamped);
   console.log(`[sync-index] Updated ${indexFile} from ${dossiers.length} dossier(s).`);
 };

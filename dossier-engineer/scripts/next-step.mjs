@@ -85,12 +85,14 @@ const readLatestJsonFile = async (dirPath) => {
 
 const selectActiveDossier = (dossiers) => {
   const priority = ['in_progress', 'planned', 'shaped', 'proposed', 'parked', 'done'];
-  return [...dossiers].sort((left, right) => {
-    const leftPriority = priority.indexOf(String(left.frontmatter.status));
-    const rightPriority = priority.indexOf(String(right.frontmatter.status));
-    if (leftPriority !== rightPriority) return leftPriority - rightPriority;
-    return String(left.frontmatter.id).localeCompare(String(right.frontmatter.id));
-  })[0] ?? null;
+  return (
+    [...dossiers].sort((left, right) => {
+      const leftPriority = priority.indexOf(String(left.frontmatter.status));
+      const rightPriority = priority.indexOf(String(right.frontmatter.status));
+      if (leftPriority !== rightPriority) return leftPriority - rightPriority;
+      return String(left.frontmatter.id).localeCompare(String(right.frontmatter.id));
+    })[0] ?? null
+  );
 };
 
 const main = async () => {
@@ -98,7 +100,7 @@ const main = async () => {
   const absRoot = path.resolve(root);
   const dossiers = await readAllDossiers(absRoot, DEFAULT_DOSSIERS_DIR, { root: absRoot });
 
-  let target = null;
+  let target;
   if (dossier) {
     target = await readDossierRecord(path.resolve(absRoot, dossier), { root: absRoot });
   } else {
@@ -106,8 +108,13 @@ const main = async () => {
   }
 
   const backlogPath = path.resolve(absRoot, BACKLOG_FILE);
-  const candidates = (await fileExists(backlogPath)) ? parseCandidates(await readText(backlogPath)) : [];
-  const backlogNext = candidates.find((candidate) => candidate.status === 'confirmed') ?? candidates.find((candidate) => candidate.status === 'candidate') ?? null;
+  const candidates = (await fileExists(backlogPath))
+    ? parseCandidates(await readText(backlogPath))
+    : [];
+  const backlogNext =
+    candidates.find((candidate) => candidate.status === 'confirmed') ??
+    candidates.find((candidate) => candidate.status === 'candidate') ??
+    null;
 
   let latestStepArtifact = null;
   let latestReviewArtifact = null;
@@ -120,21 +127,25 @@ const main = async () => {
 
   if (target) {
     const featureId = String(target.frontmatter.id ?? path.basename(target.absPath, '.md'));
-    latestStepArtifact = await readLatestJsonFile(path.join(absRoot, '.dossier', 'steps', featureId));
-    latestReviewArtifact = await readLatestJsonFile(path.join(absRoot, '.dossier', 'reviews', featureId));
+    latestStepArtifact = await readLatestJsonFile(
+      path.join(absRoot, '.dossier', 'steps', featureId),
+    );
+    latestReviewArtifact = await readLatestJsonFile(
+      path.join(absRoot, '.dossier', 'reviews', featureId),
+    );
   }
 
-  const workflowNext = latestStepArtifact?.process_complete === false
-    ? latestStepArtifact.next_step
-    : target
-      ? statusToNextStep(target.frontmatter.status)
-      : backlogNext
-        ? 'feature-intake'
-        : 'feature-discovery';
+  const workflowNext =
+    latestStepArtifact?.process_complete === false
+      ? latestStepArtifact.next_step
+      : target
+        ? statusToNextStep(target.frontmatter.status)
+        : backlogNext
+          ? 'feature-intake'
+          : 'feature-discovery';
 
-  const blockers = latestStepArtifact?.process_complete === false
-    ? latestStepArtifact.blockers
-    : [];
+  const blockers =
+    latestStepArtifact?.process_complete === false ? latestStepArtifact.blockers : [];
   const reviewFreshness = latestReviewArtifact
     ? currentCommit && latestReviewArtifact.reviewed_commit !== currentCommit
       ? `stale for current commit ${currentCommit}`
@@ -160,11 +171,15 @@ const main = async () => {
   console.log(`Workflow next: ${summary.workflow_next}`);
   console.log(`Target dossier: ${summary.target_dossier ?? 'none selected'}`);
   console.log(`Dossier status: ${summary.dossier_status ?? 'n/a'}`);
-  console.log(`Blocking gate: ${summary.blocking_gate.length > 0 ? summary.blocking_gate.join(' | ') : 'none recorded'}`);
+  console.log(
+    `Blocking gate: ${summary.blocking_gate.length > 0 ? summary.blocking_gate.join(' | ') : 'none recorded'}`,
+  );
   console.log(`Backlog next: ${summary.backlog_next ?? 'none'}`);
   console.log(`Uncommitted work: ${summary.uncommitted_work ? 'yes' : 'no'}`);
   console.log(`Review freshness: ${summary.review_freshness}`);
-  console.log(`Process-complete: ${summary.process_complete === null ? 'unknown' : summary.process_complete ? 'yes' : 'no'}`);
+  console.log(
+    `Process-complete: ${summary.process_complete === null ? 'unknown' : summary.process_complete ? 'yes' : 'no'}`,
+  );
 };
 
 main().catch((error) => {
