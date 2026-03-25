@@ -263,6 +263,7 @@ Every command-specific checklist below follows the same review philosophy:
 7. **Green automation is never enough by itself**: a reviewer still checks for semantic gaps, especially for side-effecting code.
 8. **Check completeness against intended scope**: no silent stubs, hidden scope cuts, or undocumented “later” deferrals.
 9. **For implementation review, separate completeness review, code review, and security review** instead of assuming one umbrella check covers them.
+   Use `code-reviewer` for the nested code review pass and `security-reviewer` for the nested security review pass when those skills are available. These nested passes do **not** require separate durable report artifacts, but every finding they produce must be surfaced by the reviewer and reflected in the final review verdict or `must-fix` list.
 
 ## Commands / modes
 
@@ -479,8 +480,12 @@ Steps:
    - `coverage_gate: strict` when executable coverage must now block closure
 6. Run project checks plus `node scripts/dossier-verify.mjs ...`.
 7. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
-8. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
-9. Close the step with `dossier-step-close` before saying it is complete.
+8. During implementation review, run two nested review passes in addition to completeness review:
+   - `code-reviewer` for correctness, maintainability, contracts, lifecycle, and merge-risk findings;
+   - `security-reviewer` for auth/authz, trust boundaries, input handling, secret exposure, and exploitability findings.
+   These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
+9. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+10. Close the step with `dossier-step-close` before saying it is complete.
 
 Required adversarial checklist for side-effecting code:
 
@@ -497,8 +502,9 @@ Review checklist:
 - [ ] Code changes follow the canonical stack, runtime, deployment path, and repo overlays.
 - [ ] Delivered behavior maps back to slices/ACs or to an explicit approved change.
 - [ ] Completeness review passed: the implementation fully covers the intended slices/ACs/approved changes, with no silent stubs, placeholders, scope cuts, or undocumented “later” deferrals.
-- [ ] Code review passed: correctness, maintainability, typing/contracts, error handling, state/resource lifecycle, and boundary handling are sound for the changed scope.
-- [ ] Security review passed: auth/authz, input validation, injection, secret handling, logging/redaction, trust boundaries, and data exposure risks were checked for the changed scope.
+- [ ] Code review passed via `code-reviewer`: correctness, maintainability, typing/contracts, error handling, state/resource lifecycle, and boundary handling are sound for the changed scope.
+- [ ] Security review passed via `security-reviewer`: auth/authz, input validation, injection, secret handling, logging/redaction, trust boundaries, and data exposure risks were checked for the changed scope.
+- [ ] Findings from the nested `code-reviewer` and `security-reviewer` passes were explicitly reported by the reviewer, even though no separate nested review artifacts were created.
 - [ ] Verification was added alongside code: AC-linked tests plus smoke/startup/container checks when relevant.
 - [ ] Newly discovered prerequisites or cross-cutting invariants were externalized promptly.
 - [ ] The target dossier was updated in the same workstream.
