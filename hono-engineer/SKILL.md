@@ -14,11 +14,14 @@ Applies to any Hono-based API project. If the current project already has establ
 - Keep global request body limits conservative; use route-specific overrides for known large-payload endpoints.
 - Centralize error handling in `app.onError()` (not a regular middleware). Use a try/catch wrapper only when needed for structured error logging.
 - Validate env/config with a schema (Zod recommended) and expose parsed config via context (avoid raw env access in handlers).
+- On Cloudflare Workers, generate binding types with `wrangler types`; do not hand-write `Env` interfaces.
 - Validate all request inputs and outputs against schemas. For output validation, use a response helper, per-route output middleware, or contract tests (see `references/validation-openapi.md`).
 - For rich HTML inputs, sanitize server-side before persistence using an explicit allowlist policy (default: `sanitize-html` when runtime-compatible).
 - Errors use Problem Details. Never leak secrets or raw input in error bodies.
 - Logs are structured JSON and must be redacted. Never log tokens, cookies, or bodies.
 - Include a `requestId` in responses, error payloads, logs, and upstream calls.
+- Every Promise must be awaited, returned, intentionally `void`ed, or passed to `ctx.waitUntil()`; never leave floating async work in request paths.
+- For tokens, secrets, and webhook signatures, use Web Crypto randomness and timing-safe comparison. Never use `Math.random()` or plain string equality for sensitive comparisons.
 - For TypeScript tests, avoid ts-node; prefer `node:test` with a lightweight TS strip/transform.
 
 ## Project structure (recommended)
@@ -50,7 +53,7 @@ Design to work both for a greenfield project and for incremental adoption in an 
 5. Add tests at the right level (unit/integration/e2e).
 
 ## Platform constraints
-If using Cloudflare Workers or another edge runtime, review `references/workers-platform.md` and adjust for platform limits, caching semantics, and async work handling.
+If using Cloudflare Workers or another edge runtime, review `references/workers-platform.md` and `references/wrangler.md` and adjust for platform limits, binding typing, caching semantics, and async work handling. For Workers-specific APIs or config fields that may have changed, prefer current docs or the local Wrangler schema over memory.
 
 ## Payload and content guardrails
 
@@ -94,7 +97,7 @@ Read only the relevant reference file:
 - `references/security.md` – edge WAF, API Shield, endpoint discovery.
 - `references/rate-limiting.md` – pre/post-auth limits, key choice, edge/WAF limits.
 - `references/observability.md` – logs, metrics, tracing, requestId propagation.
-- `references/wrangler.md` – runtime config, compatibility flags, CPU limits (Workers).
+- `references/wrangler.md` – runtime config, compatibility flags, bindings, generated `Env`, observability (Workers).
 - `references/supabase.md` – Supabase usage patterns and RLS safety.
-- `references/workers-platform.md` – CPU/subrequest limits, fetch scope, `waitUntil`, service bindings.
+- `references/workers-platform.md` – CPU/subrequest limits, floating promises, binding safety, fetch scope, `waitUntil`, service bindings.
 - `references/contracts-types.md` – exporting request/response types to consumers.
