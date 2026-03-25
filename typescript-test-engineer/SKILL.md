@@ -13,19 +13,23 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 - Keep tests small and behavior-focused; assert on observable outcomes.
 - Use dependency injection or targeted mocks; avoid real network calls in unit/integration tests.
 - Use real systems or dedicated sandboxes in E2E; never use production credentials.
+- For test-review or CI-review tasks, read the full touched diff before judging test adequacy; do not infer coverage from one failing or passing test alone.
 - For event-driven tests, subscribe or create the `once(...)`/listener promise before triggering the action that emits the event.
 - When tests hang or the process does not exit, isolate first, capture handles, patch teardown in the resource-creation scope, and verify repeated stability before calling the issue fixed.
 
 ## Quick workflow
 1. Identify test level: unit vs integration vs E2E.
 2. Confirm runner and TypeScript execution path (node:test + strip/build, or existing toolchain). For React, prefer Vitest + Testing Library.
-3. Design fixtures/mocks for isolation and determinism.
-4. Implement tests with clear Arrange-Act-Assert.
-5. Run relevant tests and inspect output for warnings (including stderr), not only failures.
-6. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
-7. Run coverage checkpoints according to stage/task cadence.
-8. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
-9. After any GitHub Actions workflow or CI YAML change, validate the touched YAML files locally before claiming completion (at minimum parse/syntax validation, and repo-standard workflow lint if available).
+3. For changed behavior, enumerate touched files and behaviors first; verify what existing tests cover and where coverage is missing.
+4. Design fixtures/mocks for isolation and determinism.
+5. Implement tests with clear Arrange-Act-Assert.
+6. When reviewing test quality, flag removed tests, weakened assertions, and behavior changes without matching coverage.
+7. Run relevant tests and inspect output for warnings (including stderr), not only failures.
+8. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
+9. Run coverage checkpoints according to stage/task cadence.
+10. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
+11. After any GitHub Actions workflow or CI YAML change, validate the touched YAML files locally before claiming completion (at minimum parse/syntax validation, and repo-standard workflow lint if available).
+12. If the CI change also alters permissions, secret handling, or untrusted inputs, pair the task with `security-reviewer`.
 
 ## Multi-contour confidence model (default)
 

@@ -15,6 +15,26 @@ Apply test execution by contour:
 
 If repo policy differs, follow repo policy and document the deviation.
 
+## Changed-scope review for test adequacy
+
+Use this when reviewing a diff, not only when writing new tests.
+
+1. Read the full touched diff and list the changed files before judging coverage.
+2. For each changed behavior, identify the expected test layer:
+   - unit for pure branching and helpers,
+   - integration for HTTP/service composition,
+   - E2E for merge-critical user journeys.
+3. Check whether tests were added, updated, removed, or silently weakened.
+4. Flag any behavior change that lacks an assertion proving the new contract.
+5. Record areas you could not verify instead of assuming they are safe.
+
+Specific findings to look for:
+- changed production behavior with no matching test updates;
+- deleted tests without a replacement at another layer;
+- weaker assertions (`toBeTruthy`, status-only checks, broad snapshots) replacing contract checks;
+- mocks that bypass the real edge the change was supposed to exercise;
+- CI or workflow changes that reduce which tests actually run.
+
 ## Runner
 - Use `node:test` and a lightweight TS strip/transform (`node --experimental-strip-types` or similar).
 - No ts-node.
