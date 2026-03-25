@@ -12,10 +12,12 @@ Build and operate Supabase-backed systems with strong security, performance, and
 - Respect project SDK policy: when a repo mandates `@supabase/supabase-js` only, do not mix direct REST/PostgREST calls or alternative SDKs in runtime code.
 - Validate auth on the server with `auth.getUser()` (not `getSession()`).
 - Enable RLS on all public tables and storage; cache `auth.uid()` via `(select auth.uid())`.
+- Treat grants/privileges and RLS as separate controls: least-privilege grants still matter even when RLS is enabled.
 - Use `getAll`/`setAll` cookie methods with `@supabase/ssr` (avoid deprecated `get/set/remove`).
 - Prefer schema-first migrations: edit `supabase/schemas/*.sql`, then `supabase db diff`.
 - Separate Supabase clients by trust boundary (`anon`, `user`, `service`) and document where bypass-RLS access is allowed.
 - Build user-scoped clients per request and inject user JWT via request headers during client creation (avoid shared mutable auth state in server runtimes).
+- Use `security_invoker = true` on exposed views that must obey caller RLS semantics.
 - Default storage bucket provisioning to idempotent SQL migrations (not manual dashboard/runtime auto-create) unless the project explicitly chooses another ops model.
 - For Edge Functions, use `Deno.serve()`, versioned imports, and write only to `/tmp`.
 - For cloud databases via MCP (stage/prod/remote), enforce read-only mode only: MCP writes are forbidden. Use `read_only=true` and do not run mutating tools/queries.
@@ -33,7 +35,7 @@ Build and operate Supabase-backed systems with strong security, performance, and
 
 ## Fast workflow
 1. Clarify data ownership, access rules, and latency requirements.
-2. Draft schema + RLS policies early; add indexes for RLS columns.
+2. Draft schema, grants, and RLS policies early; add indexes for RLS columns.
 3. Pick architecture variant and client setup.
 4. Implement auth + storage + realtime with typed clients.
 5. Add retries/backoff/idempotency for writes; cache or batch hot reads.
@@ -122,6 +124,7 @@ Read only what you need:
 - Auth flows + protected routes: `references/auth.md`
 - Database CRUD, relationships, pagination: `references/database.md`
 - RLS policies + storage RLS: `references/rls.md`
+- Grants, privileges, and permission modeling: `references/security-privileges.md`
 - Realtime + presence: `references/realtime.md`
 - Storage operations: `references/storage.md`
 - Edge Functions (Deno): `references/edge-functions.md`
