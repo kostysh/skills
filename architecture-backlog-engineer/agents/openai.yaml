@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Backlog Engineer"
+  short_description: "Build deterministic backlog graphs from architecture."
+  default_prompt: "Use this skill when converting architecture and ADRs into a deterministic backlog graph, roadmap, and ownership model with validation and closure gates."
