@@ -16,7 +16,8 @@
     "lint:fix:root": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings --write package.json pnpm-workspace.yaml biome.json eslint.config.js tsconfig.eslint.json && eslint --fix \"eslint.config.js\"",
     "lint": "pnpm run lint:root && pnpm -r --filter './skills/*' --if-present lint",
     "lint:fix": "pnpm run lint:fix:root && pnpm -r --filter './skills/*' --if-present lint:fix",
-    "test": "pnpm -r --filter './skills/*' --if-present test"
+    "test": "pnpm -r --filter './skills/*' --if-present test",
+    "test:ci": "node scripts/test-ci.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.9",
