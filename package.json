@@ -17,7 +17,7 @@
     "lint": "pnpm run lint:root && pnpm -r --filter './skills/*' --if-present lint",
     "lint:fix": "pnpm run lint:fix:root && pnpm -r --filter './skills/*' --if-present lint:fix",
     "test": "pnpm -r --filter './skills/*' --if-present test",
-    "test:ci": "node scripts/test-ci.mjs"
+    "test:ci": "pnpm -r --filter './skills/*' --if-present test"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.9",
