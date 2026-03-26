@@ -1,5 +1,5 @@
-import fs from "node:fs";
-import path from "node:path";
+import fs from 'node:fs';
+import path from 'node:path';
 
 import {
   ACCEPTANCE_CLASSES,
@@ -14,9 +14,9 @@ import {
   type DiscoveryState,
   type Manifest,
   type ValidationFile,
-} from "./common.js";
+} from './common.js';
 
-const DEFAULT_ACCEPTANCE_TARGET: AcceptanceClass = "planning-grade";
+const DEFAULT_ACCEPTANCE_TARGET: AcceptanceClass = 'planning-grade';
 
 export interface InitializeDiscoveryRunOptions {
   acceptanceTarget?: AcceptanceClass;
@@ -88,12 +88,12 @@ export function initializeDiscoveryRun(
     proofs: [],
     reviews: [],
     tracks: [
-      { track_id: "minimal-working-system", title: "Minimal working system" },
+      { track_id: 'minimal-working-system', title: 'Minimal working system' },
       {
-        track_id: "externally-safe-operationally-supportable",
-        title: "Externally safe and operationally supportable system",
+        track_id: 'externally-safe-operationally-supportable',
+        title: 'Externally safe and operationally supportable system',
       },
-      { track_id: "full-target-system", title: "Full target system" },
+      { track_id: 'full-target-system', title: 'Full target system' },
     ],
   };
 
@@ -101,7 +101,7 @@ export function initializeDiscoveryRun(
     schema_version: SCHEMA_VERSION,
     run_id: runId,
     validated_at: createdAt,
-    status: "not-run",
+    status: 'not-run',
     errors: [],
     warnings: [],
     stats: {},
@@ -110,10 +110,10 @@ export function initializeDiscoveryRun(
   const closure: ClosureFile = {
     schema_version: SCHEMA_VERSION,
     run_id: runId,
-    status: "open",
-    acceptance_class: "draft-only",
+    status: 'open',
+    acceptance_class: 'draft-only',
     closed_at: null,
-    reason: "Run initialized but not validated.",
+    reason: 'Run initialized but not validated.',
   };
 
   writeJson(paths.manifest, manifest);
@@ -122,7 +122,7 @@ export function initializeDiscoveryRun(
   writeJson(paths.closure, closure);
   appendNdjson(paths.journal, {
     ts: createdAt,
-    event: "run_initialized",
+    event: 'run_initialized',
     run_id: runId,
     acceptance_target: acceptanceTarget,
   });

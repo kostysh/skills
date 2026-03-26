@@ -1,6 +1,6 @@
-import { builtinModules } from "node:module";
+import { builtinModules } from 'node:module';
 
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite';
 
 const BUILTIN_EXTERNALS = [
   ...builtinModules,
@@ -11,18 +11,18 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     minify: false,
-    outDir: "scripts",
+    outDir: 'scripts',
     sourcemap: true,
-    target: "node22",
+    target: 'node22',
     lib: {
-      entry: "src/cli.ts",
-      fileName: () => "architecture-backlog.mjs",
-      formats: ["es"],
+      entry: 'src/cli.ts',
+      fileName: () => 'architecture-backlog.mjs',
+      formats: ['es'],
     },
     rollupOptions: {
       external: BUILTIN_EXTERNALS,
       output: {
-        banner: "#!/usr/bin/env node",
+        banner: '#!/usr/bin/env node',
       },
     },
   },

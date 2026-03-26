@@ -14,14 +14,19 @@ var files = ["scripts"];
 var engines = { "node": ">=22.22.0" };
 var scripts = {
 	"build": "vite build && chmod +x scripts/architecture-backlog.mjs",
-	"lint": "tsc --noEmit",
+	"format": "biome format --files-ignore-unknown=true --write src test package.json tsconfig.json vite.config.ts",
+	"format:check": "biome check --files-ignore-unknown=true --formatter-enabled=true --linter-enabled=false --assist-enabled=false src test package.json tsconfig.json vite.config.ts",
+	"lint:biome": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings src test package.json tsconfig.json vite.config.ts",
+	"lint:eslint": "eslint \"src/**/*.ts\" \"test/**/*.mjs\" \"vite.config.ts\"",
+	"lint": "pnpm run lint:biome && pnpm run lint:eslint && pnpm run typecheck",
+	"lint:fix": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings --write src test package.json tsconfig.json vite.config.ts && eslint --fix \"src/**/*.ts\" \"test/**/*.mjs\" \"vite.config.ts\" && pnpm run typecheck",
 	"pretest": "pnpm run build",
 	"test": "node --test test/*.test.mjs",
 	"typecheck": "tsc --noEmit"
 };
 var devDependencies = {
 	"@types/node": "^25.5.0",
-	"typescript": "^6.0.2",
+	"typescript": "^5.9.3",
 	"vite": "^8.0.3"
 };
 var package_default = {
@@ -226,7 +231,9 @@ function initializeDiscoveryRun(options) {
 //#endregion
 //#region src/discovery/render-views.ts
 function escapeCell(value) {
-	return String(value ?? "").replace(/\|/g, "\\|");
+	if (value === null || value === void 0) return "";
+	if (typeof value === "string" || typeof value === "number" || typeof value === "boolean" || typeof value === "bigint") return String(value).replace(/\|/g, "\\|");
+	return (JSON.stringify(value) ?? "").replace(/\|/g, "\\|");
 }
 function relativeViewPath(fileName) {
 	return path.posix.join("views", fileName);
@@ -530,63 +537,66 @@ function renderHelp() {
 function toUsageError(error, helpText) {
 	return new UsageError(error instanceof Error ? error.message : String(error), helpText);
 }
-function requireSingleRunDir(positionals, commandName, helpText) {
-	if (positionals.length !== 1) throw new UsageError(`${commandName} requires exactly one <run-dir> argument.`, helpText);
-	return positionals[0];
-}
-function runInitCommand(argv, commandIo) {
-	const helpText = initHelp();
-	let parsed;
+function parseCommandArgs(config, helpText) {
 	try {
-		parsed = parseArgs({
-			args: argv,
-			allowPositionals: true,
-			strict: true,
-			options: {
-				"acceptance-target": { type: "string" },
-				force: {
-					short: "f",
-					type: "boolean"
-				},
-				help: {
-					short: "h",
-					type: "boolean"
-				}
-			}
-		});
+		return parseArgs(config);
 	} catch (error) {
 		throw toUsageError(error, helpText);
 	}
+}
+function requireSingleRunDir(positionals, commandName, helpText) {
+	if (positionals.length !== 1) throw new UsageError(`${commandName} requires exactly one <run-dir> argument.`, helpText);
+	const runDir = positionals[0];
+	if (runDir === void 0) throw new UsageError(`${commandName} requires exactly one <run-dir> argument.`, helpText);
+	return runDir;
+}
+function runInitCommand(argv, commandIo) {
+	const helpText = initHelp();
+	const parsed = parseCommandArgs({
+		args: argv,
+		allowPositionals: true,
+		strict: true,
+		options: {
+			"acceptance-target": { type: "string" },
+			force: {
+				short: "f",
+				type: "boolean"
+			},
+			help: {
+				short: "h",
+				type: "boolean"
+			}
+		}
+	}, helpText);
 	if (parsed.values.help) {
 		writeLine(commandIo.stdout, helpText);
 		return EXIT_SUCCESS;
 	}
 	const runDir = requireSingleRunDir(parsed.positionals, "init", helpText);
-	const acceptanceTarget = parsed.values["acceptance-target"];
+	const acceptanceTargetValue = parsed.values["acceptance-target"];
+	const acceptanceTarget = typeof acceptanceTargetValue === "string" ? acceptanceTargetValue : void 0;
+	if (acceptanceTargetValue !== void 0 && acceptanceTarget === void 0) throw new UsageError("Acceptance target must be provided as a single string value.", helpText);
 	if (acceptanceTarget !== void 0 && !isAcceptanceClass(acceptanceTarget)) throw new UsageError(`Invalid acceptance target: ${acceptanceTarget}. Expected one of ${ACCEPTANCE_CLASSES.join(", ")}.`, helpText);
 	const initOptions = { runDir };
 	if (acceptanceTarget !== void 0) initOptions.acceptanceTarget = acceptanceTarget;
-	if (parsed.values.force !== void 0) initOptions.force = parsed.values.force;
+	const forceValue = parsed.values.force;
+	if (forceValue !== void 0 && typeof forceValue !== "boolean") throw new UsageError("Force must be provided as a boolean flag.", helpText);
+	if (forceValue !== void 0) initOptions.force = forceValue;
 	const result = initializeDiscoveryRun(initOptions);
 	writeLine(commandIo.stdout, `Initialized discovery run at ${result.runDir}`);
 	return EXIT_SUCCESS;
 }
 function runValidateCommand(argv, commandIo) {
 	const helpText = validateHelp();
-	let parsed;
-	try {
-		parsed = parseArgs({
-			args: argv,
-			allowPositionals: true,
-			strict: true,
-			options: { help: {
-				short: "h",
-				type: "boolean"
-			} }
-		});
-	} catch (error) {
-		throw toUsageError(error, helpText);
-	}
+	const parsed = parseCommandArgs({
+		args: argv,
+		allowPositionals: true,
+		strict: true,
+		options: { help: {
+			short: "h",
+			type: "boolean"
+		} }
+	}, helpText);
 	if (parsed.values.help) {
 		writeLine(commandIo.stdout, helpText);
 		return EXIT_SUCCESS;
@@ -608,20 +618,15 @@ function runValidateCommand(argv, commandIo) {
 }
 function runRenderCommand(argv, commandIo) {
 	const helpText = renderHelp();
-	let parsed;
-	try {
-		parsed = parseArgs({
-			args: argv,
-			allowPositionals: true,
-			strict: true,
-			options: { help: {
-				short: "h",
-				type: "boolean"
-			} }
-		});
-	} catch (error) {
-		throw toUsageError(error, helpText);
-	}
+	const parsed = parseCommandArgs({
+		args: argv,
+		allowPositionals: true,
+		strict: true,
+		options: { help: {
+			short: "h",
+			type: "boolean"
+		} }
+	}, helpText);
 	if (parsed.values.help) {
 		writeLine(commandIo.stdout, helpText);
 		return EXIT_SUCCESS;
@@ -665,8 +670,8 @@ function printUsageError(error, commandIo) {
 	return EXIT_USAGE;
 }
 function executeCli(argv, commandIo = io) {
-	if (argv.length === 0) return printUsageError(new UsageError("A command is required.", globalHelp()), commandIo);
 	const firstToken = argv[0];
+	if (firstToken === void 0) return printUsageError(new UsageError("A command is required.", globalHelp()), commandIo);
 	const rest = argv.slice(1);
 	if (firstToken === "--help" || firstToken === "-h") {
 		writeLine(commandIo.stdout, globalHelp());
@@ -682,8 +687,10 @@ function executeCli(argv, commandIo = io) {
 			return EXIT_SUCCESS;
 		}
 		if (rest.length > 1) return printUsageError(new UsageError("help accepts at most one command name.", globalHelp()), commandIo);
-		const targetCommand = findCommand(rest[0]);
-		if (!targetCommand) return printUsageError(new UsageError(`Unknown command: ${rest[0]}`, globalHelp()), commandIo);
+		const targetName = rest[0];
+		if (targetName === void 0) return printUsageError(new UsageError("help accepts at most one command name.", globalHelp()), commandIo);
+		const targetCommand = findCommand(targetName);
+		if (!targetCommand) return printUsageError(new UsageError(`Unknown command: ${targetName}`, globalHelp()), commandIo);
 		writeLine(commandIo.stdout, targetCommand.helpText());
 		return EXIT_SUCCESS;
 	}

@@ -1,26 +1,22 @@
-import fs from "node:fs";
-import path from "node:path";
-import { parseArgs } from "node:util";
-import { fileURLToPath } from "node:url";
+import fs from 'node:fs';
+import path from 'node:path';
+import { parseArgs } from 'node:util';
+import { fileURLToPath } from 'node:url';
 
-import packageJson from "../package.json";
-import {
-  ACCEPTANCE_CLASSES,
-  isAcceptanceClass,
-  type AcceptanceClass,
-} from "./discovery/common.js";
-import { initializeDiscoveryRun } from "./discovery/init-run.js";
-import { renderDiscoveryViews } from "./discovery/render-views.js";
-import { validateDiscoveryRun } from "./discovery/validate-run.js";
+import packageJson from '../package.json';
+import { ACCEPTANCE_CLASSES, isAcceptanceClass, type AcceptanceClass } from './discovery/common.js';
+import { initializeDiscoveryRun } from './discovery/init-run.js';
+import { renderDiscoveryViews } from './discovery/render-views.js';
+import { validateDiscoveryRun } from './discovery/validate-run.js';
 
-const CLI_NAME = "architecture-backlog";
+const CLI_NAME = 'architecture-backlog';
 const EXIT_SUCCESS = 0;
 const EXIT_FAILURE = 1;
 const EXIT_USAGE = 2;
 
 interface CliIo {
-  stderr: Pick<NodeJS.WriteStream, "write">;
-  stdout: Pick<NodeJS.WriteStream, "write">;
+  stderr: Pick<NodeJS.WriteStream, 'write'>;
+  stdout: Pick<NodeJS.WriteStream, 'write'>;
 }
 
 interface CommandDefinition {
@@ -36,7 +32,7 @@ class UsageError extends Error {
 
   constructor(message: string, helpText?: string) {
     super(message);
-    this.name = "UsageError";
+    this.name = 'UsageError';
     this.helpText = helpText;
   }
 }
@@ -46,75 +42,75 @@ const io: CliIo = {
   stdout: process.stdout,
 };
 
-function writeLine(stream: Pick<NodeJS.WriteStream, "write">, line = ""): void {
+function writeLine(stream: Pick<NodeJS.WriteStream, 'write'>, line = ''): void {
   stream.write(`${line}\n`);
 }
 
 function globalHelp(): string {
   return [
-    "Architecture backlog discovery CLI.",
-    "",
-    "Usage:",
+    'Architecture backlog discovery CLI.',
+    '',
+    'Usage:',
     `  ${CLI_NAME} <command> [options]`,
     `  ${CLI_NAME} help [command]`,
-    "",
-    "Commands:",
-    "  init <run-dir>       Initialize canonical discovery artifacts.",
-    "  validate <run-dir>   Validate canonical state and refresh validation.json.",
-    "  render <run-dir>     Render disposable markdown projections into views/.",
-    "  help [command]       Show global or command-specific help.",
-    "",
-    "Compatibility aliases:",
-    "  init-discovery-run",
-    "  validate-discovery-run",
-    "  render-discovery-views",
-    "",
-    "Global options:",
-    "  -h, --help           Show help.",
-    "  --version            Show CLI version.",
-  ].join("\n");
+    '',
+    'Commands:',
+    '  init <run-dir>       Initialize canonical discovery artifacts.',
+    '  validate <run-dir>   Validate canonical state and refresh validation.json.',
+    '  render <run-dir>     Render disposable markdown projections into views/.',
+    '  help [command]       Show global or command-specific help.',
+    '',
+    'Compatibility aliases:',
+    '  init-discovery-run',
+    '  validate-discovery-run',
+    '  render-discovery-views',
+    '',
+    'Global options:',
+    '  -h, --help           Show help.',
+    '  --version            Show CLI version.',
+  ].join('\n');
 }
 
 function initHelp(): string {
   return [
-    "Initialize canonical discovery artifacts for a run directory.",
-    "",
-    "Usage:",
+    'Initialize canonical discovery artifacts for a run directory.',
+    '',
+    'Usage:',
     `  ${CLI_NAME} init <run-dir> [options]`,
     `  ${CLI_NAME} init-discovery-run <run-dir> [options]`,
-    "",
-    "Options:",
-    "  --acceptance-target <class>  Set acceptance target.",
-    "                               Values: draft-only, planning-grade, implementation-grade.",
-    "  --force                      Overwrite canonical artifacts in an existing run directory.",
-    "  -h, --help                   Show help.",
-  ].join("\n");
+    '',
+    'Options:',
+    '  --acceptance-target <class>  Set acceptance target.',
+    '                               Values: draft-only, planning-grade, implementation-grade.',
+    '  --force                      Overwrite canonical artifacts in an existing run directory.',
+    '  -h, --help                   Show help.',
+  ].join('\n');
 }
 
 function validateHelp(): string {
   return [
-    "Validate canonical discovery state and refresh validation.json.",
-    "",
-    "Usage:",
+    'Validate canonical discovery state and refresh validation.json.',
+    '',
+    'Usage:',
     `  ${CLI_NAME} validate <run-dir>`,
     `  ${CLI_NAME} validate-discovery-run <run-dir>`,
-    "",
-    "Options:",
-    "  -h, --help  Show help.",
-  ].join("\n");
+    '',
+    'Options:',
+    '  -h, --help  Show help.',
+  ].join('\n');
 }
 
 function renderHelp(): string {
   return [
-    "Render disposable markdown projections from canonical discovery state.",
-    "",
-    "Usage:",
+    'Render disposable markdown projections from canonical discovery state.',
+    '',
+    'Usage:',
     `  ${CLI_NAME} render <run-dir>`,
     `  ${CLI_NAME} render-discovery-views <run-dir>`,
-    "",
-    "Options:",
-    "  -h, --help  Show help.",
-  ].join("\n");
+    '',
+    'Options:',
+    '  -h, --help  Show help.',
+  ].join('\n');
 }
 
 function toUsageError(error: unknown, helpText: string): UsageError {
@@ -122,53 +118,69 @@ function toUsageError(error: unknown, helpText: string): UsageError {
   return new UsageError(message, helpText);
 }
 
-function requireSingleRunDir(
-  positionals: string[],
-  commandName: string,
+function parseCommandArgs<const T extends NonNullable<Parameters<typeof parseArgs>[0]>>(
+  config: T,
   helpText: string,
-): string {
+) {
+  try {
+    return parseArgs(config);
+  } catch (error) {
+    throw toUsageError(error, helpText);
+  }
+}
+
+function requireSingleRunDir(positionals: string[], commandName: string, helpText: string): string {
   if (positionals.length !== 1) {
     throw new UsageError(`${commandName} requires exactly one <run-dir> argument.`, helpText);
   }
-  return positionals[0]!;
+
+  const runDir = positionals[0];
+  if (runDir === undefined) {
+    throw new UsageError(`${commandName} requires exactly one <run-dir> argument.`, helpText);
+  }
+
+  return runDir;
 }
 
 function runInitCommand(argv: string[], commandIo: CliIo): number {
   const helpText = initHelp();
-  let parsed;
-  try {
-    parsed = parseArgs({
+  const parsed = parseCommandArgs(
+    {
       args: argv,
       allowPositionals: true,
       strict: true,
       options: {
-        "acceptance-target": {
-          type: "string",
+        'acceptance-target': {
+          type: 'string',
         },
         force: {
-          short: "f",
-          type: "boolean",
+          short: 'f',
+          type: 'boolean',
         },
         help: {
-          short: "h",
-          type: "boolean",
+          short: 'h',
+          type: 'boolean',
         },
       },
-    });
-  } catch (error) {
-    throw toUsageError(error, helpText);
-  }
+    },
+    helpText,
+  );
 
   if (parsed.values.help) {
     writeLine(commandIo.stdout, helpText);
     return EXIT_SUCCESS;
   }
 
-  const runDir = requireSingleRunDir(parsed.positionals, "init", helpText);
-  const acceptanceTarget = parsed.values["acceptance-target"];
+  const runDir = requireSingleRunDir(parsed.positionals, 'init', helpText);
+  const acceptanceTargetValue = parsed.values['acceptance-target'];
+  const acceptanceTarget =
+    typeof acceptanceTargetValue === 'string' ? acceptanceTargetValue : undefined;
+  if (acceptanceTargetValue !== undefined && acceptanceTarget === undefined) {
+    throw new UsageError('Acceptance target must be provided as a single string value.', helpText);
+  }
   if (acceptanceTarget !== undefined && !isAcceptanceClass(acceptanceTarget)) {
     throw new UsageError(
-      `Invalid acceptance target: ${acceptanceTarget}. Expected one of ${ACCEPTANCE_CLASSES.join(", ")}.`,
+      `Invalid acceptance target: ${acceptanceTarget}. Expected one of ${ACCEPTANCE_CLASSES.join(', ')}.`,
       helpText,
     );
   }
@@ -182,8 +194,12 @@ function runInitCommand(argv: string[], commandIo: CliIo): number {
   if (acceptanceTarget !== undefined) {
     initOptions.acceptanceTarget = acceptanceTarget;
   }
-  if (parsed.values.force !== undefined) {
-    initOptions.force = parsed.values.force;
+  const forceValue = parsed.values.force;
+  if (forceValue !== undefined && typeof forceValue !== 'boolean') {
+    throw new UsageError('Force must be provided as a boolean flag.', helpText);
+  }
+  if (forceValue !== undefined) {
+    initOptions.force = forceValue;
   }
 
   const result = initializeDiscoveryRun(initOptions);
@@ -193,29 +209,27 @@ function runInitCommand(argv: string[], commandIo: CliIo): number {
 
 function runValidateCommand(argv: string[], commandIo: CliIo): number {
   const helpText = validateHelp();
-  let parsed;
-  try {
-    parsed = parseArgs({
+  const parsed = parseCommandArgs(
+    {
       args: argv,
       allowPositionals: true,
       strict: true,
       options: {
         help: {
-          short: "h",
-          type: "boolean",
+          short: 'h',
+          type: 'boolean',
         },
       },
-    });
-  } catch (error) {
-    throw toUsageError(error, helpText);
-  }
+    },
+    helpText,
+  );
 
   if (parsed.values.help) {
     writeLine(commandIo.stdout, helpText);
     return EXIT_SUCCESS;
   }
 
-  const runDir = requireSingleRunDir(parsed.positionals, "validate", helpText);
+  const runDir = requireSingleRunDir(parsed.positionals, 'validate', helpText);
   const result = validateDiscoveryRun(runDir);
 
   if (result.missingArtifacts.length > 0) {
@@ -227,7 +241,7 @@ function runValidateCommand(argv: string[], commandIo: CliIo): number {
 
   const validation = result.validation;
   if (!validation) {
-    writeLine(commandIo.stderr, "Validation state could not be produced.");
+    writeLine(commandIo.stderr, 'Validation state could not be produced.');
     return EXIT_FAILURE;
   }
 
@@ -244,29 +258,27 @@ function runValidateCommand(argv: string[], commandIo: CliIo): number {
 
 function runRenderCommand(argv: string[], commandIo: CliIo): number {
   const helpText = renderHelp();
-  let parsed;
-  try {
-    parsed = parseArgs({
+  const parsed = parseCommandArgs(
+    {
       args: argv,
       allowPositionals: true,
       strict: true,
       options: {
         help: {
-          short: "h",
-          type: "boolean",
+          short: 'h',
+          type: 'boolean',
         },
       },
-    });
-  } catch (error) {
-    throw toUsageError(error, helpText);
-  }
+    },
+    helpText,
+  );
 
   if (parsed.values.help) {
     writeLine(commandIo.stdout, helpText);
     return EXIT_SUCCESS;
   }
 
-  const runDir = requireSingleRunDir(parsed.positionals, "render", helpText);
+  const runDir = requireSingleRunDir(parsed.positionals, 'render', helpText);
   const result = renderDiscoveryViews(runDir);
   writeLine(commandIo.stdout, `Rendered views into ${result.viewsDir}`);
   return EXIT_SUCCESS;
@@ -274,24 +286,24 @@ function runRenderCommand(argv: string[], commandIo: CliIo): number {
 
 const COMMANDS: CommandDefinition[] = [
   {
-    aliases: ["init-discovery-run"],
-    description: "Initialize canonical discovery artifacts.",
+    aliases: ['init-discovery-run'],
+    description: 'Initialize canonical discovery artifacts.',
     helpText: initHelp,
-    name: "init",
+    name: 'init',
     run: runInitCommand,
   },
   {
-    aliases: ["validate-discovery-run"],
-    description: "Validate canonical state and refresh validation.json.",
+    aliases: ['validate-discovery-run'],
+    description: 'Validate canonical state and refresh validation.json.',
     helpText: validateHelp,
-    name: "validate",
+    name: 'validate',
     run: runValidateCommand,
   },
   {
-    aliases: ["render-discovery-views"],
-    description: "Render markdown projections into views/.",
+    aliases: ['render-discovery-views'],
+    description: 'Render markdown projections into views/.',
     helpText: renderHelp,
-    name: "render",
+    name: 'render',
     run: runRenderCommand,
   },
 ];
@@ -312,39 +324,47 @@ function printUsageError(error: UsageError, commandIo: CliIo): number {
 }
 
 export function executeCli(argv: string[], commandIo: CliIo = io): number {
-  if (argv.length === 0) {
-    return printUsageError(new UsageError("A command is required.", globalHelp()), commandIo);
+  const firstToken = argv[0];
+  if (firstToken === undefined) {
+    return printUsageError(new UsageError('A command is required.', globalHelp()), commandIo);
   }
 
-  const firstToken = argv[0]!;
   const rest = argv.slice(1);
 
-  if (firstToken === "--help" || firstToken === "-h") {
+  if (firstToken === '--help' || firstToken === '-h') {
     writeLine(commandIo.stdout, globalHelp());
     return EXIT_SUCCESS;
   }
 
-  if (firstToken === "--version") {
+  if (firstToken === '--version') {
     writeLine(commandIo.stdout, packageJson.version);
     return EXIT_SUCCESS;
   }
 
-  if (firstToken === "help") {
+  if (firstToken === 'help') {
     if (rest.length === 0) {
       writeLine(commandIo.stdout, globalHelp());
       return EXIT_SUCCESS;
     }
     if (rest.length > 1) {
       return printUsageError(
-        new UsageError("help accepts at most one command name.", globalHelp()),
+        new UsageError('help accepts at most one command name.', globalHelp()),
         commandIo,
       );
     }
 
-    const targetCommand = findCommand(rest[0]!);
+    const targetName = rest[0];
+    if (targetName === undefined) {
+      return printUsageError(
+        new UsageError('help accepts at most one command name.', globalHelp()),
+        commandIo,
+      );
+    }
+
+    const targetCommand = findCommand(targetName);
     if (!targetCommand) {
       return printUsageError(
-        new UsageError(`Unknown command: ${rest[0]}`, globalHelp()),
+        new UsageError(`Unknown command: ${targetName}`, globalHelp()),
         commandIo,
       );
     }

@@ -15,5 +15,6 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true
   },
-  "include": ["src/**/*.ts", "vite.config.ts"]
+  "include": ["skills/*/src/**/*.ts", "skills/*/test/**/*.ts", "skills/*/vite.config.ts"],
+  "exclude": ["skills/*/scripts/**", "node_modules"]
 }

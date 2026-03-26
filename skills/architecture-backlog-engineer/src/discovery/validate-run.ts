@@ -1,5 +1,5 @@
-import fs from "node:fs";
-import path from "node:path";
+import fs from 'node:fs';
+import path from 'node:path';
 
 import {
   ITEM_CLASSES,
@@ -15,7 +15,7 @@ import {
   type DiscoveryState,
   type Manifest,
   type ValidationFile,
-} from "./common.js";
+} from './common.js';
 
 export interface ValidateDiscoveryRunResult {
   errors: string[];
@@ -52,33 +52,30 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   const warnings: string[] = [];
 
   if (manifest.schema_version !== SCHEMA_VERSION) {
-    errors.push("Unsupported schema_version in manifest.json");
+    errors.push('Unsupported schema_version in manifest.json');
   }
   if (!PHASE_STATES.includes(manifest.phase_state)) {
-    errors.push("Invalid phase_state in manifest.json");
+    errors.push('Invalid phase_state in manifest.json');
   }
   if (state.metadata?.schema_version !== SCHEMA_VERSION) {
-    errors.push("Unsupported schema_version in state.snapshot.json");
+    errors.push('Unsupported schema_version in state.snapshot.json');
   }
 
   const itemIds = new Set<string>();
   for (const item of state.items ?? []) {
     const itemId = item.item_id;
     if (!itemId) {
-      errors.push("Item missing item_id");
+      errors.push('Item missing item_id');
       continue;
     }
     if (itemIds.has(itemId)) {
       errors.push(`Duplicate item_id: ${itemId}`);
     }
     itemIds.add(itemId);
-    if (!item.item_class || !ITEM_CLASSES.includes(item.item_class as (typeof ITEM_CLASSES)[number])) {
+    if (!item.item_class || !ITEM_CLASSES.includes(item.item_class)) {
       errors.push(`Invalid item_class for ${itemId}`);
     }
-    if (
-      item.summary_label &&
-      !SUMMARY_LABELS.includes(item.summary_label as (typeof SUMMARY_LABELS)[number])
-    ) {
+    if (item.summary_label && !SUMMARY_LABELS.includes(item.summary_label)) {
       errors.push(`Invalid summary_label for ${itemId}`);
     }
     if (!Array.isArray(item.origin_ref) || item.origin_ref.length === 0) {
@@ -107,20 +104,17 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     const fromId = relation.from;
     const toId = relation.to;
 
-    if (!relType || !RELATION_TYPES.includes(relType as (typeof RELATION_TYPES)[number])) {
-      errors.push(`Invalid relation_type: ${String(relType ?? "")}`);
+    if (!relType || !RELATION_TYPES.includes(relType)) {
+      errors.push(`Invalid relation_type: ${String(relType ?? '')}`);
     }
     if (!fromId || !toId) {
-      errors.push("Relation missing from/to");
+      errors.push('Relation missing from/to');
       continue;
     }
 
     const validFrom = itemIds.has(fromId) || trackIds.has(fromId);
     const validTo =
-      itemIds.has(toId) ||
-      trackIds.has(toId) ||
-      proofIds.has(toId) ||
-      reviewIds.has(toId);
+      itemIds.has(toId) || trackIds.has(toId) || proofIds.has(toId) || reviewIds.has(toId);
 
     if (!validFrom) {
       errors.push(`Relation source not found: ${fromId}`);
@@ -130,7 +124,7 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
 
-  const validationStatus: "pass" | "fail" = errors.length === 0 ? "pass" : "fail";
+  const validationStatus: 'pass' | 'fail' = errors.length === 0 ? 'pass' : 'fail';
   const validation: ValidationFile = {
     schema_version: SCHEMA_VERSION,
     run_id: manifest.run_id ?? path.basename(runDir),
@@ -150,13 +144,16 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
 
   manifest.updated_at = validation.validated_at;
   manifest.last_validation_status = validationStatus;
-  if (validation.status === "pass" && !["closed", "reviewed", "rendered"].includes(manifest.phase_state)) {
-    manifest.phase_state = "validated";
+  if (
+    validation.status === 'pass' &&
+    !['closed', 'reviewed', 'rendered'].includes(manifest.phase_state)
+  ) {
+    manifest.phase_state = 'validated';
   }
   writeJson(paths.manifest, manifest);
   appendNdjson(paths.journal, {
     ts: validation.validated_at,
-    event: "run_validated",
+    event: 'run_validated',
     run_id: validation.run_id,
     status: validation.status,
     error_count: errors.length,
