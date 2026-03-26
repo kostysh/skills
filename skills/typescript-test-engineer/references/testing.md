@@ -65,6 +65,7 @@ Notes:
 - Keep data setup minimal and local; reset in-memory state between tests.
 - Assume tests run in parallel; avoid shared global state and order dependencies.
 - Prefer deterministic inputs (freeze time, seed RNG, and stabilize IDs when needed).
+- For larger synthetic data sets, prefer `@faker-js/faker` over hand-rolled random object generation, and seed it when reproducibility matters.
 
 ## E2E test specifics
 - Scope: runtime behavior in the real harness (Workers: `wrangler unstable_dev`).

@@ -12,6 +12,7 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 - Prefer deterministic, order-agnostic tests; avoid shared mutable global state.
 - Keep tests small and behavior-focused; assert on observable outcomes.
 - Use dependency injection or targeted mocks; avoid real network calls in unit/integration tests.
+- When generating larger synthetic test-data sets, prefer `@faker-js/faker` over ad hoc random builders, and seed it when determinism matters.
 - Use real systems or dedicated sandboxes in E2E; never use production credentials.
 - For test-review or CI-review tasks, read the full touched diff before judging test adequacy; do not infer coverage from one failing or passing test alone.
 - For event-driven tests, subscribe or create the `once(...)`/listener promise before triggering the action that emits the event.
@@ -21,7 +22,7 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 1. Identify test level: unit vs integration vs E2E.
 2. Confirm runner and TypeScript execution path (node:test + strip/build, or existing toolchain). For React, prefer Vitest + Testing Library.
 3. For changed behavior, enumerate touched files and behaviors first; verify what existing tests cover and where coverage is missing.
-4. Design fixtures/mocks for isolation and determinism.
+4. Design fixtures/mocks for isolation and determinism; when broader synthetic datasets are needed, prefer seeded `@faker-js/faker`.
 5. Implement tests with clear Arrange-Act-Assert.
 6. When reviewing test quality, flag removed tests, weakened assertions, and behavior changes without matching coverage.
 7. Run relevant tests and inspect output for warnings (including stderr), not only failures.
