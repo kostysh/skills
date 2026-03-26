@@ -1,0 +1,31 @@
+{
+  "name": "@kostysh/architecture-backlog-engineer-cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CLI utilities for the architecture-backlog-engineer skill.",
+  "type": "module",
+  "bin": {
+    "architecture-backlog": "scripts/architecture-backlog.mjs"
+  },
+  "exports": {
+    ".": "./scripts/architecture-backlog.mjs"
+  },
+  "files": [
+    "scripts"
+  ],
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "build": "vite build && chmod +x scripts/architecture-backlog.mjs",
+    "lint": "tsc --noEmit",
+    "pretest": "pnpm run build",
+    "test": "node --test test/*.test.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3"
+  }
+}

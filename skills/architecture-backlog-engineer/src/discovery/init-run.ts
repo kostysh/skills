@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
 
@@ -10,60 +9,69 @@ import {
   runPaths,
   utcNow,
   writeJson,
-} from "./discovery-common.mjs";
+  type AcceptanceClass,
+  type ClosureFile,
+  type DiscoveryState,
+  type Manifest,
+  type ValidationFile,
+} from "./common.js";
 
-function parseArgs(argv) {
-  const args = { force: false, acceptanceTarget: "planning-grade", runDir: null };
-  for (let i = 0; i < argv.length; i += 1) {
-    const token = argv[i];
-    if (token === "--force") {
-      args.force = true;
-    } else if (token === "--acceptance-target") {
-      args.acceptanceTarget = argv[i + 1];
-      i += 1;
-    } else if (!args.runDir) {
-      args.runDir = token;
-    } else {
-      throw new Error(`Unexpected argument: ${token}`);
-    }
-  }
-  if (!args.runDir) {
-    throw new Error("Usage: node scripts/init-discovery-run.mjs <run-dir> [--acceptance-target draft-only|planning-grade|implementation-grade] [--force]");
-  }
-  if (!ACCEPTANCE_CLASSES.includes(args.acceptanceTarget)) {
-    throw new Error(`Invalid acceptance target: ${args.acceptanceTarget}`);
-  }
-  return args;
+const DEFAULT_ACCEPTANCE_TARGET: AcceptanceClass = "planning-grade";
+
+export interface InitializeDiscoveryRunOptions {
+  acceptanceTarget?: AcceptanceClass;
+  force?: boolean;
+  runDir: string;
 }
 
-function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const runDir = path.resolve(args.runDir);
-  const paths = runPaths(runDir);
-  const canonicalPaths = [paths.manifest, paths.journal, paths.state, paths.validation, paths.closure];
+export interface InitializeDiscoveryRunResult {
+  createdAt: string;
+  runDir: string;
+}
 
-  if (!args.force && canonicalPaths.some((filePath) => fs.existsSync(filePath))) {
+export function initializeDiscoveryRun(
+  options: InitializeDiscoveryRunOptions,
+): InitializeDiscoveryRunResult {
+  const acceptanceTarget = options.acceptanceTarget ?? DEFAULT_ACCEPTANCE_TARGET;
+  if (!ACCEPTANCE_CLASSES.includes(acceptanceTarget)) {
+    throw new Error(`Invalid acceptance target: ${acceptanceTarget}`);
+  }
+
+  const runDir = path.resolve(options.runDir);
+  const paths = runPaths(runDir);
+  const canonicalPaths = [
+    paths.manifest,
+    paths.journal,
+    paths.state,
+    paths.validation,
+    paths.closure,
+  ];
+
+  if (!options.force && canonicalPaths.some((filePath) => fs.existsSync(filePath))) {
     throw new Error(`Run directory already contains canonical artifacts: ${runDir}`);
   }
 
   const createdAt = utcNow();
-  const manifest = {
+  const runId = path.basename(runDir);
+
+  const manifest: Manifest = {
     schema_version: SCHEMA_VERSION,
-    run_id: path.basename(runDir),
+    run_id: runId,
     created_at: createdAt,
     updated_at: createdAt,
     phase_state: PHASE_STATES[0],
-    acceptance_target: args.acceptanceTarget,
+    acceptance_target: acceptanceTarget,
     source_refs: [],
     source_hashes: {},
     dirty_flags: [],
     last_validation_status: null,
     last_render_at: null,
   };
-  const state = {
+
+  const state: DiscoveryState = {
     metadata: {
       schema_version: SCHEMA_VERSION,
-      run_id: path.basename(runDir),
+      run_id: runId,
       created_at: createdAt,
     },
     glossary: {},
@@ -88,18 +96,20 @@ function main() {
       { track_id: "full-target-system", title: "Full target system" },
     ],
   };
-  const validation = {
+
+  const validation: ValidationFile = {
     schema_version: SCHEMA_VERSION,
-    run_id: path.basename(runDir),
+    run_id: runId,
     validated_at: createdAt,
     status: "not-run",
     errors: [],
     warnings: [],
     stats: {},
   };
-  const closure = {
+
+  const closure: ClosureFile = {
     schema_version: SCHEMA_VERSION,
-    run_id: path.basename(runDir),
+    run_id: runId,
     status: "open",
     acceptance_class: "draft-only",
     closed_at: null,
@@ -113,16 +123,13 @@ function main() {
   appendNdjson(paths.journal, {
     ts: createdAt,
     event: "run_initialized",
-    run_id: path.basename(runDir),
-    acceptance_target: args.acceptanceTarget,
+    run_id: runId,
+    acceptance_target: acceptanceTarget,
   });
   fs.mkdirSync(paths.views, { recursive: true });
-  console.log(`Initialized discovery run at ${runDir}`);
-}
 
-try {
-  main();
-} catch (error) {
-  console.error(error instanceof Error ? error.message : String(error));
-  process.exit(1);
+  return {
+    createdAt,
+    runDir,
+  };
 }

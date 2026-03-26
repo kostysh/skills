@@ -34,19 +34,19 @@ They are disposable. Rebuild them from canonical state.
 Initialize a run:
 
 ```bash
-node scripts/init-discovery-run.mjs /path/to/run-dir
+node scripts/architecture-backlog.mjs init /path/to/run-dir
 ```
 
 Validate canonical state:
 
 ```bash
-node scripts/validate-discovery-run.mjs /path/to/run-dir
+node scripts/architecture-backlog.mjs validate /path/to/run-dir
 ```
 
 Render projections:
 
 ```bash
-node scripts/render-discovery-views.mjs /path/to/run-dir
+node scripts/architecture-backlog.mjs render /path/to/run-dir
 ```
 
 ## Failure handling

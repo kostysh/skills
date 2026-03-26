@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
 
@@ -13,36 +12,44 @@ import {
   runPaths,
   utcNow,
   writeJson,
-} from "./discovery-common.mjs";
+  type DiscoveryState,
+  type Manifest,
+  type ValidationFile,
+} from "./common.js";
 
-function parseArgs(argv) {
-  if (argv.length !== 1) {
-    throw new Error("Usage: node scripts/validate-discovery-run.mjs <run-dir>");
-  }
-  return path.resolve(argv[0]);
+export interface ValidateDiscoveryRunResult {
+  errors: string[];
+  missingArtifacts: string[];
+  runDir: string;
+  validation: ValidationFile | null;
+  warnings: string[];
 }
 
-function main() {
-  const runDir = parseArgs(process.argv.slice(2));
+export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunResult {
+  const runDir = path.resolve(runDirInput);
   const paths = runPaths(runDir);
-  const errors = [];
-  const warnings = [];
+  const missingArtifacts = [
+    paths.manifest,
+    paths.journal,
+    paths.state,
+    paths.validation,
+    paths.closure,
+  ].filter((filePath) => !fs.existsSync(filePath));
 
-  for (const filePath of [paths.manifest, paths.journal, paths.state, paths.validation, paths.closure]) {
-    if (!fs.existsSync(filePath)) {
-      errors.push(`Missing canonical artifact: ${filePath}`);
-    }
+  if (missingArtifacts.length > 0) {
+    return {
+      errors: [],
+      missingArtifacts,
+      runDir,
+      validation: null,
+      warnings: [],
+    };
   }
 
-  if (errors.length > 0) {
-    for (const error of errors) {
-      console.error(error);
-    }
-    process.exit(1);
-  }
-
-  const manifest = loadJson(paths.manifest);
-  const state = loadJson(paths.state);
+  const manifest = loadJson<Manifest>(paths.manifest);
+  const state = loadJson<DiscoveryState>(paths.state);
+  const errors: string[] = [];
+  const warnings: string[] = [];
 
   if (manifest.schema_version !== SCHEMA_VERSION) {
     errors.push("Unsupported schema_version in manifest.json");
@@ -50,11 +57,11 @@ function main() {
   if (!PHASE_STATES.includes(manifest.phase_state)) {
     errors.push("Invalid phase_state in manifest.json");
   }
-  if (state?.metadata?.schema_version !== SCHEMA_VERSION) {
+  if (state.metadata?.schema_version !== SCHEMA_VERSION) {
     errors.push("Unsupported schema_version in state.snapshot.json");
   }
 
-  const itemIds = new Set();
+  const itemIds = new Set<string>();
   for (const item of state.items ?? []) {
     const itemId = item.item_id;
     if (!itemId) {
@@ -65,10 +72,13 @@ function main() {
       errors.push(`Duplicate item_id: ${itemId}`);
     }
     itemIds.add(itemId);
-    if (!ITEM_CLASSES.includes(item.item_class)) {
+    if (!item.item_class || !ITEM_CLASSES.includes(item.item_class as (typeof ITEM_CLASSES)[number])) {
       errors.push(`Invalid item_class for ${itemId}`);
     }
-    if (item.summary_label && !SUMMARY_LABELS.includes(item.summary_label)) {
+    if (
+      item.summary_label &&
+      !SUMMARY_LABELS.includes(item.summary_label as (typeof SUMMARY_LABELS)[number])
+    ) {
       errors.push(`Invalid summary_label for ${itemId}`);
     }
     if (!Array.isArray(item.origin_ref) || item.origin_ref.length === 0) {
@@ -76,23 +86,42 @@ function main() {
     }
   }
 
-  const trackIds = new Set((state.tracks ?? []).map((track) => track.track_id).filter(Boolean));
-  const proofIds = new Set((state.proofs ?? []).map((proof) => proof.proof_id).filter(Boolean));
-  const reviewIds = new Set((state.reviews ?? []).map((review) => review.review_id).filter(Boolean));
+  const trackIds = new Set(
+    (state.tracks ?? [])
+      .map((track) => track.track_id)
+      .filter((trackId): trackId is string => Boolean(trackId)),
+  );
+  const proofIds = new Set(
+    (state.proofs ?? [])
+      .map((proof) => proof.proof_id)
+      .filter((proofId): proofId is string => Boolean(proofId)),
+  );
+  const reviewIds = new Set(
+    (state.reviews ?? [])
+      .map((review) => review.review_id)
+      .filter((reviewId): reviewId is string => Boolean(reviewId)),
+  );
 
   for (const relation of state.relations ?? []) {
     const relType = relation.relation_type;
     const fromId = relation.from;
     const toId = relation.to;
-    if (!RELATION_TYPES.includes(relType)) {
-      errors.push(`Invalid relation_type: ${relType}`);
+
+    if (!relType || !RELATION_TYPES.includes(relType as (typeof RELATION_TYPES)[number])) {
+      errors.push(`Invalid relation_type: ${String(relType ?? "")}`);
     }
     if (!fromId || !toId) {
       errors.push("Relation missing from/to");
       continue;
     }
+
     const validFrom = itemIds.has(fromId) || trackIds.has(fromId);
-    const validTo = itemIds.has(toId) || trackIds.has(toId) || proofIds.has(toId) || reviewIds.has(toId);
+    const validTo =
+      itemIds.has(toId) ||
+      trackIds.has(toId) ||
+      proofIds.has(toId) ||
+      reviewIds.has(toId);
+
     if (!validFrom) {
       errors.push(`Relation source not found: ${fromId}`);
     }
@@ -101,11 +130,12 @@ function main() {
     }
   }
 
-  const validation = {
+  const validationStatus: "pass" | "fail" = errors.length === 0 ? "pass" : "fail";
+  const validation: ValidationFile = {
     schema_version: SCHEMA_VERSION,
     run_id: manifest.run_id ?? path.basename(runDir),
     validated_at: utcNow(),
-    status: errors.length === 0 ? "pass" : "fail",
+    status: validationStatus,
     errors,
     warnings,
     stats: {
@@ -115,10 +145,11 @@ function main() {
       reviews: (state.reviews ?? []).length,
     },
   };
+
   writeJson(paths.validation, validation);
 
   manifest.updated_at = validation.validated_at;
-  manifest.last_validation_status = validation.status;
+  manifest.last_validation_status = validationStatus;
   if (validation.status === "pass" && !["closed", "reviewed", "rendered"].includes(manifest.phase_state)) {
     manifest.phase_state = "validated";
   }
@@ -132,21 +163,11 @@ function main() {
     warning_count: warnings.length,
   });
 
-  console.log(`Validation status: ${validation.status}`);
-  for (const error of errors) {
-    console.error(`ERROR: ${error}`);
-  }
-  for (const warning of warnings) {
-    console.log(`WARNING: ${warning}`);
-  }
-  if (errors.length > 0) {
-    process.exit(1);
-  }
-}
-
-try {
-  main();
-} catch (error) {
-  console.error(error instanceof Error ? error.message : String(error));
-  process.exit(1);
+  return {
+    errors,
+    missingArtifacts: [],
+    runDir,
+    validation,
+    warnings,
+  };
 }

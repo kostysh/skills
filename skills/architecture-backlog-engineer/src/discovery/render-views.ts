@@ -1,31 +1,34 @@
-#!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
 
 import {
+  appendNdjson,
   loadJson,
   runPaths,
   utcNow,
   writeJson,
-  appendNdjson,
-} from "./discovery-common.mjs";
+  type ClosureFile,
+  type DiscoveryItem,
+  type DiscoveryState,
+  type Manifest,
+  type ValidationFile,
+} from "./common.js";
 
-function parseArgs(argv) {
-  if (argv.length !== 1) {
-    throw new Error("Usage: node scripts/render-discovery-views.mjs <run-dir>");
-  }
-  return path.resolve(argv[0]);
+export interface RenderDiscoveryViewsResult {
+  renderedAt: string;
+  runDir: string;
+  viewsDir: string;
 }
 
-function escapeCell(value) {
+function escapeCell(value: unknown): string {
   return String(value ?? "").replace(/\|/g, "\\|");
 }
 
-function relativeViewPath(fileName) {
+function relativeViewPath(fileName: string): string {
   return path.posix.join("views", fileName);
 }
 
-function renderFeatureCandidates(state) {
+function renderFeatureCandidates(state: DiscoveryState): string {
   const items = [...(state.items ?? [])].sort((left, right) =>
     String(left.item_id ?? "").localeCompare(String(right.item_id ?? "")),
   );
@@ -49,7 +52,7 @@ function renderFeatureCandidates(state) {
   return `${lines.join("\n")}\n`;
 }
 
-function renderRoadmap(state) {
+function renderRoadmap(state: DiscoveryState): string {
   const items = [...(state.items ?? [])];
   const indexed = items.map((item, index) => ({ index: index + 1, item }));
   const lines = [
@@ -72,10 +75,18 @@ function renderRoadmap(state) {
   return `${lines.join("\n")}\n`;
 }
 
-function renderGapsAndValidation(manifest, state, validation, closure, projectedPhaseState) {
-  const gapItems = (state.items ?? []).filter((item) =>
-    ["Missing", "Blocked", "Needs clarification"].includes(item.summary_label),
-  );
+function isGapItem(item: DiscoveryItem): boolean {
+  return ["Missing", "Blocked", "Needs clarification"].includes(String(item.summary_label));
+}
+
+function renderGapsAndValidation(
+  manifest: Manifest,
+  state: DiscoveryState,
+  validation: ValidationFile,
+  closure: ClosureFile,
+  projectedPhaseState: Manifest["phase_state"],
+): string {
+  const gapItems = (state.items ?? []).filter((item) => isGapItem(item));
   const hardErrors = validation.errors ?? [];
   const warnings = validation.warnings ?? [];
 
@@ -116,24 +127,25 @@ function renderGapsAndValidation(manifest, state, validation, closure, projected
     lines.push("- None");
   } else {
     for (const item of gapItems) {
-      lines.push(`- ${item.item_id}: ${item.summary_label} — ${item.title ?? ""}`);
+      lines.push(`- ${item.item_id}: ${item.summary_label} - ${item.title ?? ""}`);
     }
   }
 
   return `${lines.join("\n")}\n`;
 }
 
-function main() {
-  const runDir = parseArgs(process.argv.slice(2));
+export function renderDiscoveryViews(runDirInput: string): RenderDiscoveryViewsResult {
+  const runDir = path.resolve(runDirInput);
   const paths = runPaths(runDir);
-  const manifest = loadJson(paths.manifest);
-  const state = loadJson(paths.state);
-  const validation = loadJson(paths.validation);
-  const closure = loadJson(paths.closure);
+  const manifest = loadJson<Manifest>(paths.manifest);
+  const state = loadJson<DiscoveryState>(paths.state);
+  const validation = loadJson<ValidationFile>(paths.validation);
+  const closure = loadJson<ClosureFile>(paths.closure);
   const renderedAt = utcNow();
-  const projectedPhaseState = validation.status === "pass" && manifest.phase_state !== "closed"
-    ? "rendered"
-    : manifest.phase_state;
+  const projectedPhaseState =
+    validation.status === "pass" && manifest.phase_state !== "closed"
+      ? "rendered"
+      : manifest.phase_state;
 
   const featureCandidates = renderFeatureCandidates(state);
   const roadmap = renderRoadmap(state);
@@ -165,7 +177,8 @@ function main() {
     ["feature-candidates.md", featureCandidates],
     ["roadmap.md", roadmap],
     ["gaps-and-validation.md", gapsAndValidation],
-  ];
+  ] as const;
+
   for (const [fileName, content] of markdownFiles) {
     const filePath = path.join(paths.views, fileName);
     const tmpPath = `${filePath}.tmp`;
@@ -175,7 +188,7 @@ function main() {
 
   manifest.updated_at = renderedAt;
   manifest.last_render_at = renderedAt;
-  if (!["closed"].includes(manifest.phase_state)) {
+  if (manifest.phase_state !== "closed") {
     manifest.phase_state = projectedPhaseState;
   }
   writeJson(paths.manifest, manifest);
@@ -185,12 +198,10 @@ function main() {
     run_id: manifest.run_id ?? path.basename(runDir),
     validation_status: validation.status ?? "unknown",
   });
-  console.log(`Rendered views into ${paths.views}`);
-}
 
-try {
-  main();
-} catch (error) {
-  console.error(error instanceof Error ? error.message : String(error));
-  process.exit(1);
+  return {
+    renderedAt,
+    runDir,
+    viewsDir: paths.views,
+  };
 }

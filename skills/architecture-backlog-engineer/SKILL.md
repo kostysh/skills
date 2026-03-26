@@ -86,23 +86,42 @@ Prefer a small canonical core and generated projections:
 
 If a generated view is stale or damaged, rebuild it. Do not block the whole process unless canonical state is invalid.
 
-## Scripts
+## CLI
 
-Use the bundled scripts for deterministic scaffolding and checks:
+Use the bundled CLI for deterministic scaffolding and checks.
 
-- `node scripts/init-discovery-run.mjs /path/to/run-dir`
+Runtime entry:
+
+- `node scripts/architecture-backlog.mjs`
+
+Primary commands:
+
+- `node scripts/architecture-backlog.mjs init /path/to/run-dir`
   Creates the canonical discovery core:
   - `manifest.json`
   - `journal.ndjson`
   - `state.snapshot.json`
   - `validation.json`
   - `closure.json`
-- `node scripts/validate-discovery-run.mjs /path/to/run-dir`
+- `node scripts/architecture-backlog.mjs validate /path/to/run-dir`
   Validates canonical state and writes a fresh `validation.json`.
-- `node scripts/render-discovery-views.mjs /path/to/run-dir`
+- `node scripts/architecture-backlog.mjs render /path/to/run-dir`
   Renders disposable markdown projections into `views/`.
+- `node scripts/architecture-backlog.mjs help`
+  Shows the global help for the utility.
 
-Use these scripts as the default path during debugging instead of inventing ad hoc files.
+Compatibility aliases are also accepted by the same binary:
+
+- `init-discovery-run`
+- `validate-discovery-run`
+- `render-discovery-views`
+
+When you change the CLI source, rebuild the runtime artifact in `scripts/`:
+
+- `pnpm --filter @kostysh/architecture-backlog-engineer-cli build`
+- `pnpm --filter @kostysh/architecture-backlog-engineer-cli test`
+
+Use this CLI as the default path during debugging instead of inventing ad hoc files.
 
 ## Progressive Disclosure
 
