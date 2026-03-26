@@ -6,18 +6,53 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a collection of custom Claude Code skills - reusable instruction sets that give Claude specialized capabilities for different development domains.
 
+The repository uses a pnpm workspace layout:
+
+```text
+.
+├── AGENTS.md
+├── package.json
+├── pnpm-workspace.yaml
+└── skills/
+    └── skill-name/
+        ├── SKILL.md
+        ├── agents/
+        ├── references/
+        ├── assets/
+        ├── scripts/
+        ├── src/      # for code-backed skills
+        ├── test/     # for code-backed skills
+        └── package.json
+```
+
+All actual skill folders live under `skills/`.
+
 ## Skill Structure
 
 Each skill follows this structure:
 
 ```
-skill-name/
-├── SKILL.md              # Main skill definition (required)
-├── references/           # Detailed reference docs (optional)
-│   └── topic.md
-├── assets/               # Config templates, scripts (optional)
-└── scripts/              # Utility scripts (optional)
+skills/
+└── skill-name/
+    ├── SKILL.md              # Main skill definition (required)
+    ├── agents/               # UI metadata (recommended)
+    ├── references/           # Detailed reference docs (optional)
+    │   └── topic.md
+    ├── assets/               # Templates and output resources (optional)
+    ├── scripts/              # Runtime-ready utility scripts (optional)
+    ├── src/                  # Source code for code-backed skills (optional)
+    ├── test/                 # Tests for code-backed skills (optional)
+    └── package.json          # Skill-local package manifest (optional)
 ```
+
+For documentation-only skills, `SKILL.md` plus local references/assets is enough.
+
+For code-backed skills, prefer developing scripts as normal package code:
+
+- keep source in `src/`
+- keep tests in `test/`
+- build runtime artifacts into `scripts/`
+- keep `SKILL.md` references aligned with the runtime artifact locations, not the source tree
 
 ### SKILL.md Format
 
@@ -34,16 +69,6 @@ allowed-tools: Bash(tool-pattern:*)  # Optional: tool permissions
 ```
 
 After frontmatter, include the skill instructions in Markdown.
-
-## Skill Categories
-
-| Category | Skills | Purpose |
-|----------|--------|---------|
-| Git | `git-engineer` | Conventional Commits, worktrees, commit hygiene |
-| TypeScript | `typescript-engineer`, `typescript-test-engineer` | Language patterns, testing |
-| Frontend | `react-spa-engineer`, `react-components-engineer`, `frontend-design`, `antd-engineer`, `antd-components` | React SPAs, component hardening, creative design, Ant Design |
-| Backend | `hono-engineer`, `supabase-engineer` | Hono framework, Supabase integration |
-| Tools | `agent-browser`, `web-ui-reviewer` | Browser automation, UI code review |
 
 ## Skill Interop Convention
 
@@ -68,10 +93,10 @@ When creating or modifying skills:
 
 ## Portable Skills (Required)
 
-All skills in this `custom` folder must be created and maintained as **PORTABLE** skills.
+All skills in this repository must be created and maintained as **PORTABLE** skills.
 
 Portable means:
-- A skill remains fully functional when the entire `custom` directory is copied to another machine.
+- A skill remains fully functional when the individual skill folder is copied to another machine.
 - The skill does not depend on machine-specific absolute paths.
 - The skill does not require external local files outside its own folder to understand core behavior.
 - Core practices, rules, and examples live inside the skill itself (`SKILL.md` and its local `references/`, `scripts/`, `assets/`).
