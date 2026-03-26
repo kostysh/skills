@@ -126,6 +126,7 @@ For npm-distributed CLIs:
 - ensure shebang handling survives the build tool
 - make uninstall straightforward and documented where install instructions are published
 - for bundled TypeScript CLIs, prefer Vite as the default bundler baseline and configure it for a Node target rather than browser defaults
+- choose the build output directory with the operator for the target repo; `dist/` is common, but `bin/` or `scripts/` may be the correct runtime folder in repos with established conventions
 - verify the built executable entry through the real `bin` path after bundling, not only via direct source execution
 
 For standalone distribution:

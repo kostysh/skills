@@ -157,17 +157,20 @@ Use this when:
 
 Do not let `tui/` become the only way to access core functionality.
 
+The blueprints above use `dist/` as the common default example. The actual build output directory should be agreed with the operator for the target repository and may instead be `bin/`, `scripts/`, or another repo-standard runtime folder.
+
 ## Packaging Structure
 
 For package-based CLI work:
 
 - source code lives in `src/`
 - tests live in `test/`
-- build output lives in `dist/`
-- `package.json#bin` points at the runtime entry
+- build output defaults to `dist/`, but the final output directory should be agreed with the operator and may be `dist/`, `bin/`, or `scripts/` depending on repo conventions
+- `package.json#bin` points at the runtime entry inside the chosen output directory
 - tiny shell wrappers are acceptable, but do not bury real product logic in `bin/`
 - Vite is the default bundler baseline when bundling is required
 - for Vite-based CLI builds, set an explicit Node-oriented target and entry instead of relying on browser defaults
+- set the bundler output directory explicitly so the runtime path matches the agreed package layout
 - keep sourcemaps enabled for production debugging unless the distribution model has a strong reason not to
 
 In a pnpm workspace:
@@ -225,7 +228,8 @@ Apply the rest of the CLI contract around that baseline:
 - replace `node<active-lts-major>` with the actual supported Node baseline for the package before shipping the config
 - if the bundled output drops the shebang, restore `#!/usr/bin/env node` in a post-build step or tiny wrapper and verify the final `bin` target is executable
 - externalize additional runtime-resolved packages when the CLI hosts plugins, uses native modules, or depends on filesystem-relative loading
-- point `package.json#bin` at the built entry and smoke test that exact path after build
+- set `outDir` to the agreed runtime folder and point `package.json#bin` at the built entry there
+- smoke test that exact runtime path after build
 - if the CLI grows into a more advanced non-browser build with custom chunking, unusual loaders, or long-lived packaging complexity, re-evaluate whether direct Rolldown or another Node-first bundling path is a better fit than carrying more Vite-specific caveats
 
 ## Documentation Surface
