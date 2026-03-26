@@ -43,12 +43,12 @@ Requirement changes on mature work use:
 Before a mutating step can be considered complete:
 1. Run the step’s local checks.
 2. Perform explicit debt review of the changed scope.
-3. Run `node scripts/debt-audit.mjs --changed-only` when available.
+3. Run `node scripts/dossier.mjs debt-audit --changed-only` when available.
 4. Re-check dependencies and adjacent seams.
 5. Resolve or explicitly record every debt item in a canonical artifact.
-6. Run `node scripts/dossier-verify.mjs ...`.
-7. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode. Then persist the verdict with `node scripts/review-artifact.mjs ...`.
-8. Close the step with `node scripts/dossier-step-close.mjs ...`.
+6. Run `node scripts/dossier.mjs dossier-verify ...`.
+7. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode. Then persist the verdict with `node scripts/dossier.mjs review-artifact ...`.
+8. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
 
 Notes:
 - `debt-audit` stays marker-only. It does not prove implementation completeness.
@@ -62,9 +62,9 @@ If a PR references `F-XXXX`, it must:
 - leave a truthful process state (`Process-complete: yes|no`) for the step it claims to finish.
 
 ## Recommended automation
-- `node scripts/index-refresh.mjs`
-- `node scripts/lint-dossiers.mjs`
-- `node scripts/coverage-audit.mjs --changed-only --base origin/main`
-- `node scripts/debt-audit.mjs --changed-only --base origin/main`
-- `node scripts/dossier-verify.mjs --step implementation --changed-only --base origin/main`
-- `node scripts/next-step.mjs`
+- `node scripts/dossier.mjs index-refresh`
+- `node scripts/dossier.mjs lint-dossiers`
+- `node scripts/dossier.mjs coverage-audit --changed-only --base origin/main`
+- `node scripts/dossier.mjs debt-audit --changed-only --base origin/main`
+- `node scripts/dossier.mjs dossier-verify --step implementation --changed-only --base origin/main`
+- `node scripts/dossier.mjs next-step`

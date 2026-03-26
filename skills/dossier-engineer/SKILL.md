@@ -1,7 +1,7 @@
 ---
 name: dossier-engineer
 description: Lean docs-as-code process for large app development with AI agents. Uses one Feature Dossier per feature, one global index, explicit backlog discovery, separated workflow and coverage state, machine-checkable review/verification/step-close artifacts, scoped audits, and repo-overlay ingestion.
-compatibility: Designed for git repos. Optional scripts in scripts/ require Node.js >= 18.
+compatibility: Designed for git repos. The packaged CLI at scripts/dossier.mjs requires Node.js >= 22.22.0.
 ---
 
 # Dossier Engineer
@@ -42,6 +42,15 @@ Canonical process artifacts:
 - `.dossier/reviews/<feature>/<step>-<commit>.json` — independent review result from `review-artifact`.
 - `.dossier/steps/<feature>/<step>.json` — machine-checkable closure state from `dossier-step-close`.
 - `.dossier/drift/<feature>/*.json` — executable-contract impact results from `contract-drift-audit`.
+
+CLI utility:
+
+- Canonical runtime entrypoint: `node scripts/dossier.mjs <command> [options]`
+- Built artifact path: `scripts/dossier.mjs`
+- Package maintenance:
+  `pnpm --filter @kostysh/dossier-engineer-cli build`
+  `pnpm --filter @kostysh/dossier-engineer-cli lint`
+  `pnpm --filter @kostysh/dossier-engineer-cli test`
 
 Templates:
 
@@ -196,12 +205,12 @@ For every **mutating** step (`init`, `feature-discovery`, `feature-intake`, `spe
 1. Finish the command’s local work.
 2. Run the command-specific checks.
 3. Perform manual debt review on the changed scope.
-4. Run `node scripts/debt-audit.mjs --changed-only` when the repo provides it.
+4. Run `node scripts/dossier.mjs debt-audit --changed-only` when the repo provides it.
 5. Re-check dependencies, adjacent seams, delivered dossiers, architecture, and repo ADRs.
-6. Run `node scripts/dossier-verify.mjs ...` for the relevant scope.
+6. Run `node scripts/dossier.mjs dossier-verify ...` for the relevant scope.
 7. Run an independent review with a separate reviewer agent. If spawning requires explicit user authorization, ask for it. If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
-8. Persist the verdict with `node scripts/review-artifact.mjs ...`.
-9. Close the step with `node scripts/dossier-step-close.mjs ...`.
+8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`.
+9. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
 10. Only after `process_complete: true` may the agent say the step is complete.
 
 ### Final step summary contract
@@ -393,7 +402,7 @@ Steps:
 5. Capture phase baseline, delivered prerequisites, runtime assumptions, and dependency seams.
 6. If intake reveals a missing prerequisite seam without an owner, refresh backlog ownership first.
 7. Mark the matching `CF-*` entry as `intaken` and link the dossier.
-8. Run `node scripts/sync-index.mjs` or `node scripts/index-refresh.mjs`.
+8. Run `node scripts/dossier.mjs sync-index` or `node scripts/dossier.mjs index-refresh`.
 
 Review checklist:
 
@@ -478,7 +487,7 @@ Steps:
    - coverage map
    - change log when behavior or assumptions changed
    - `coverage_gate: strict` when executable coverage must now block closure
-6. Run project checks plus `node scripts/dossier-verify.mjs ...`.
+6. Run project checks plus `node scripts/dossier.mjs dossier-verify ...`.
 7. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
 8. During implementation review, run two nested review passes in addition to completeness review:
    - `code-reviewer` for correctness, maintainability, contracts, lifecycle, and merge-risk findings;
@@ -538,8 +547,8 @@ Steps:
 
 1. Read `depends_on` and `impacts` from dossier frontmatter.
 2. Validate that all referenced `F-*` dossiers exist.
-3. Generate a Mermaid graph via `node scripts/dependency-graph.mjs`.
-4. Refresh the index with `node scripts/sync-index.mjs` or `node scripts/index-refresh.mjs`.
+3. Generate a Mermaid graph via `node scripts/dossier.mjs dependency-graph`.
+4. Refresh the index with `node scripts/dossier.mjs sync-index` or `node scripts/dossier.mjs index-refresh`.
 
 Review checklist:
 
@@ -561,9 +570,9 @@ Contract:
 
 Run examples:
 
-- `node scripts/coverage-audit.mjs --dossier docs/features/F-XXXX-*.md`
-- `node scripts/coverage-audit.mjs --changed-only --base origin/main`
-- `node scripts/coverage-audit.mjs --dossier docs/features/F-XXXX-*.md --orphans-scope=dossier`
+- `node scripts/dossier.mjs coverage-audit --dossier docs/features/F-XXXX-*.md`
+- `node scripts/dossier.mjs coverage-audit --changed-only --base origin/main`
+- `node scripts/dossier.mjs coverage-audit --dossier docs/features/F-XXXX-*.md --orphans-scope=dossier`
 
 Review checklist:
 
@@ -587,9 +596,9 @@ Contract:
 
 Run examples:
 
-- `node scripts/debt-audit.mjs`
-- `node scripts/debt-audit.mjs --changed-only --base origin/main`
-- `node scripts/marker-audit.mjs --paths src/server,docs/features/F-0001-foo.md`
+- `node scripts/dossier.mjs debt-audit`
+- `node scripts/dossier.mjs debt-audit --changed-only --base origin/main`
+- `node scripts/dossier.mjs marker-audit --paths src/server,docs/features/F-0001-foo.md`
 
 Review checklist:
 
@@ -608,7 +617,7 @@ Steps:
 2. Add a new change-log entry.
 3. Modify the AC list and every directly affected executable section.
 4. Update slices, tasks, coverage map references, DoD, and dependency references.
-5. If the dossier is `planned`, `in_progress`, or `done`, or if executable sections changed, run `node scripts/contract-drift-audit.mjs --dossier ...`.
+5. If the dossier is `planned`, `in_progress`, or `done`, or if executable sections changed, run `node scripts/dossier.mjs contract-drift-audit --dossier ...`.
 6. If drift audit says follow-up is required, make that follow-up explicit:
    - same dossier slice/task;
    - linked backlog item;
@@ -632,7 +641,7 @@ Regenerate `docs/ssot/index.md` from dossier frontmatter.
 
 Run:
 
-- `node scripts/sync-index.mjs`
+- `node scripts/dossier.mjs sync-index`
 
 Review checklist:
 
@@ -648,7 +657,7 @@ Canonical single-writer refresh for the index.
 
 Run:
 
-- `node scripts/index-refresh.mjs`
+- `node scripts/dossier.mjs index-refresh`
 
 Behavior:
 
@@ -669,8 +678,8 @@ Validate structure, metadata, links, and duplication constraints.
 
 Run:
 
-- `node scripts/lint-dossiers.mjs`
-- `node scripts/lint-dossiers.mjs --update-index`
+- `node scripts/dossier.mjs lint-dossiers`
+- `node scripts/dossier.mjs lint-dossiers --update-index`
 
 Contract:
 
@@ -697,8 +706,8 @@ Purpose:
 
 Run examples:
 
-- `node scripts/dossier-verify.mjs --step implementation --dossier docs/features/F-0001-foo.md`
-- `node scripts/dossier-verify.mjs --step implementation --changed-only --base origin/main --extra "pnpm test" --extra "pnpm lint"`
+- `node scripts/dossier.mjs dossier-verify --step implementation --dossier docs/features/F-0001-foo.md`
+- `node scripts/dossier.mjs dossier-verify --step implementation --changed-only --base origin/main --extra "pnpm test" --extra "pnpm lint"`
 
 Default bundle:
 
@@ -729,8 +738,8 @@ Purpose:
 
 Run examples:
 
-- `node scripts/review-artifact.mjs --dossier docs/features/F-0001-foo.md --step implementation --verdict PASS`
-- `node scripts/review-artifact.mjs --dossier docs/features/F-0001-foo.md --step implementation --verdict FAIL --must-fix "Missing rollback path"`
+- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --verdict PASS`
+- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --verdict FAIL --must-fix "Missing rollback path"`
 
 Review checklist:
 
@@ -752,7 +761,7 @@ Purpose:
 
 Run example:
 
-- `node scripts/dossier-step-close.mjs --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact .dossier/verification/F-0001/implementation-<sha>.json --review-artifact .dossier/reviews/F-0001/implementation-<sha>.json`
+- `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact .dossier/verification/F-0001/implementation-<sha>.json --review-artifact .dossier/reviews/F-0001/implementation-<sha>.json`
 
 Contract:
 
@@ -781,8 +790,8 @@ Purpose:
 
 Run examples:
 
-- `node scripts/contract-drift-audit.mjs --dossier docs/features/F-0001-foo.md`
-- `node scripts/contract-drift-audit.mjs --dossier docs/features/F-0001-foo.md --base origin/main`
+- `node scripts/dossier.mjs contract-drift-audit --dossier docs/features/F-0001-foo.md`
+- `node scripts/dossier.mjs contract-drift-audit --dossier docs/features/F-0001-foo.md --base origin/main`
 
 Review checklist:
 
@@ -802,9 +811,9 @@ Purpose:
 
 Run examples:
 
-- `node scripts/next-step.mjs`
-- `node scripts/next-step.mjs --dossier docs/features/F-0001-foo.md`
-- `node scripts/next-step.mjs --json`
+- `node scripts/dossier.mjs next-step`
+- `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md`
+- `node scripts/dossier.mjs next-step --json`
 
 Expected output dimensions:
 

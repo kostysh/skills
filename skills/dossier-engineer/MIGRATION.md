@@ -111,9 +111,9 @@ Rules for this phase:
 At the end of this phase, the repository must be able to run canonical commands from repo root, for example:
 
 ```bash
-node scripts/index-refresh.mjs
-node scripts/lint-dossiers.mjs
-node scripts/next-step.mjs
+node scripts/dossier.mjs index-refresh
+node scripts/dossier.mjs lint-dossiers
+node scripts/dossier.mjs next-step
 ```
 
 ### Phase 3 — Normalize dossier and backlog schema
@@ -155,11 +155,11 @@ invent current-process progress just to make old dossiers look uniform.
 Run the repository-wide read-only checks after provisioning and schema normalization:
 
 ```bash
-node scripts/index-refresh.mjs
-node scripts/lint-dossiers.mjs
-node scripts/coverage-audit.mjs
-node scripts/debt-audit.mjs
-node scripts/next-step.mjs
+node scripts/dossier.mjs index-refresh
+node scripts/dossier.mjs lint-dossiers
+node scripts/dossier.mjs coverage-audit
+node scripts/dossier.mjs debt-audit
+node scripts/dossier.mjs next-step
 ```
 
 Interpretation rules:
@@ -242,7 +242,7 @@ Run the repository checks that are appropriate for the step and changed scope. T
 Then run the canonical verification bundle:
 
 ```bash
-node scripts/dossier-verify.mjs --dossier "$DOSSIER" --step "$STEP"
+node scripts/dossier.mjs dossier-verify --dossier "$DOSSIER" --step "$STEP"
 ```
 
 Use `--extra` when repo overlays require additional commands.
@@ -264,7 +264,7 @@ For `implementation`, the review is not complete unless it explicitly covers **a
 Persist the review result:
 
 ```bash
-node scripts/review-artifact.mjs \
+node scripts/dossier.mjs review-artifact \
   --dossier "$DOSSIER" \
   --step "$STEP" \
   --verdict PASS \
@@ -287,7 +287,7 @@ if [ -z "$VERIFY_ARTIFACT" ] || [ -z "$REVIEW_ARTIFACT" ]; then
   exit 1
 fi
 
-node scripts/dossier-step-close.mjs \
+node scripts/dossier.mjs dossier-step-close \
   --dossier "$DOSSIER" \
   --step "$STEP" \
   --verify-artifact "$VERIFY_ARTIFACT" \
@@ -301,7 +301,7 @@ A step is not complete unless the resulting `.dossier/steps/<feature>/<step>.jso
 If migration changed executable dossier sections on a dossier whose maturity is `planned`, `in_progress`, or `done`, run:
 
 ```bash
-node scripts/contract-drift-audit.mjs --dossier "$DOSSIER"
+node scripts/dossier.mjs contract-drift-audit --dossier "$DOSSIER"
 ```
 
 Then make an explicit follow-up decision:
@@ -335,11 +335,11 @@ Truthful process state is more important than visual consistency.
 Run the final migration validation suite:
 
 ```bash
-node scripts/index-refresh.mjs
-node scripts/lint-dossiers.mjs
-node scripts/coverage-audit.mjs
-node scripts/debt-audit.mjs
-node scripts/next-step.mjs
+node scripts/dossier.mjs index-refresh
+node scripts/dossier.mjs lint-dossiers
+node scripts/dossier.mjs coverage-audit
+node scripts/dossier.mjs debt-audit
+node scripts/dossier.mjs next-step
 ```
 
 Then manually verify all of the following:

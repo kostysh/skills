@@ -1,6 +1,6 @@
 # Lint rules for dossiers and index
 
-These are the checks enforced by `scripts/lint-dossiers.mjs`.
+These are the checks enforced by `node scripts/dossier.mjs lint-dossiers`.
 
 ## Dossier file checks (`docs/features/F-*.md`)
 

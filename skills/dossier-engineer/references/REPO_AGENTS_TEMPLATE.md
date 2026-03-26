@@ -27,12 +27,12 @@ This file contains repo-specific overlays only.
 
 ## Common commands
 - Run tests: `node --test`
-- Refresh index: `node scripts/index-refresh.mjs`
-- Lint dossiers (read-only): `node scripts/lint-dossiers.mjs`
-- Audit coverage: `node scripts/coverage-audit.mjs`
-- Audit marker debt: `node scripts/debt-audit.mjs`
-- Verify step bundle: `node scripts/dossier-verify.mjs --step implementation --changed-only`
-- Persist review: `node scripts/review-artifact.mjs --dossier docs/features/F-0001-foo.md --step implementation --verdict PASS`
-- Close step: `node scripts/dossier-step-close.mjs --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact ... --review-artifact ...`
-- Resolve next action: `node scripts/next-step.mjs`
+- Refresh index: `node scripts/dossier.mjs index-refresh`
+- Lint dossiers (read-only): `node scripts/dossier.mjs lint-dossiers`
+- Audit coverage: `node scripts/dossier.mjs coverage-audit`
+- Audit marker debt: `node scripts/dossier.mjs debt-audit`
+- Verify step bundle: `node scripts/dossier.mjs dossier-verify --step implementation --changed-only`
+- Persist review: `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --verdict PASS`
+- Close step: `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact ... --review-artifact ...`
+- Resolve next action: `node scripts/dossier.mjs next-step`
 ```
