@@ -15,7 +15,7 @@ Use this skill to turn architecture into a backlog graph that is:
 - safe for planning and implementation;
 - auditable and re-baselinable.
 
-Do not treat prose backlog tables as primary truth. Build or audit the structured backlog graph first, then render candidate lists and roadmap views from it.
+Do not treat prose backlog tables or markdown reports as primary truth. Build or audit the structured backlog graph first, then render a human-facing report from it.
 
 ## When to use
 
@@ -38,6 +38,54 @@ Do not use this skill as a replacement for:
 - bug triage or defect investigation without architecture/backlog reshaping;
 - freeform brainstorming when no authoritative sources or runtime evidence are available.
 
+## Operator Contract
+
+The operator should normally provide only:
+
+- one or more architecture sources;
+- optional runtime-evidence sources;
+- optional explicit source-packet refs when the agent already has structured packet output;
+- one run directory;
+- optional acceptance target.
+
+The operator should not have to remember:
+
+- whether the CLI is installed;
+- whether a run must be initialized;
+- how to recover derivable canonical files when a run bundle is partially damaged;
+- which files are canonical;
+- which report files are disposable.
+
+This skill owns those bootstrap decisions.
+
+## Execution Contract
+
+When this skill is invoked, follow this sequence unless the user explicitly overrides it:
+
+1. Resolve the bundled runtime artifact.
+2. Inspect the target run directory.
+3. Initialize the run automatically if canonical artifacts are missing.
+4. Reuse the run if canonical artifacts already exist.
+5. Resolve real source inputs, extract embedded discovery packets, and populate or update `backlog.json`.
+6. Refresh source fingerprints from the actual source refs before computing drift or acceptance.
+7. Run `validate`.
+8. Repair canonical state if validation fails and the repair is derivable from the available evidence.
+9. Run `render`.
+10. Return the achieved acceptance class, main gaps, and report path.
+
+Do not ask the operator to remember internal lifecycle steps.
+
+## Bootstrap Decision Tree
+
+Apply these rules in order:
+
+1. If `scripts/architecture-backlog.mjs` exists, use it directly.
+2. If the runtime artifact is missing after local source edits, rebuild it from this skill package.
+3. If the target run directory contains no canonical files, run `init`.
+4. If the target run directory contains draft artifacts from an older pre-GA schema, stop and require an explicit rewrite to schema v3 or a fresh `init`.
+5. If a legacy v1 run layout is detected, stop and report the rewrite issue clearly.
+6. Never overwrite an existing run unless the operator explicitly requests it.
+
 ## Workflow
 
 Follow this order:
@@ -51,7 +99,7 @@ Follow this order:
 7. Slice planning-ready work items.
 8. Bind contract, migration, NFR, proof, rollout, rollback/recovery, docs, and support obligations.
 9. Apply Ready gates, ordering, economics, review applicability, and acceptance gates.
-10. Validate the graph, then render human-facing backlog and roadmap projections.
+10. Validate the graph, then render the report.
 
 ## Core Rules
 
@@ -67,28 +115,26 @@ Follow this order:
 2. Never count stubs, compatibility-only paths, or manual-only critical-path behavior as closure.
 3. Never rewrite delivered lineage to solve a newly discovered gap.
 4. Never leave mandatory missing owners only in prose.
-5. Never let derived markdown views become source-of-truth inputs for later phases.
+5. Never let `report.md` become source-of-truth input for later phases.
+6. Record missing owner input as gaps or blocked items; do not silently invent it.
 
 ## Outputs
 
-Prefer a small canonical core and generated projections:
+Prefer a small canonical core and one generated report.
 
 - canonical:
-  - source-authority state
-  - structured backlog graph
-  - proof/validation state
-  - review/closure state
+  - `manifest.json`
+  - `backlog.json`
+  - `assessment.json`
+  - `journal.ndjson`
 - generated:
-  - candidate backlog markdown
-  - roadmap markdown
-  - gap summaries
-  - score summaries
+  - `report.md`
 
-If a generated view is stale or damaged, rebuild it. Do not block the whole process unless canonical state is invalid.
+If the report is stale or damaged, rebuild it. Do not block the whole process unless canonical state is invalid.
 
 ## CLI
 
-Use the bundled CLI for deterministic scaffolding and checks.
+Use the bundled CLI for deterministic scaffolding, validation, drift checks, rebaselining, status checks, and report rendering.
 
 Runtime entry:
 
@@ -97,23 +143,37 @@ Runtime entry:
 Primary commands:
 
 - `node scripts/architecture-backlog.mjs init /path/to/run-dir`
-  Creates the canonical discovery core:
+  Creates the compact discovery bundle:
   - `manifest.json`
+  - `backlog.json`
+  - `assessment.json`
   - `journal.ndjson`
-  - `state.snapshot.json`
-  - `validation.json`
-  - `closure.json`
+- `node scripts/architecture-backlog.mjs discover /path/to/run-dir --architecture-source ./docs/architecture.md --runtime-source ./ops/runtime.md`
+  Resolves source inputs, auto-initializes or reuses the run, extracts embedded discovery packets, refreshes source fingerprints from the real source content, applies derivable repairs, validates, and renders.
+- `node scripts/architecture-backlog.mjs repair /path/to/run-dir`
+  Recreates derivable missing canonical files when possible, refreshes source fingerprints from the declared source refs, rebuilds derivable canonical fields such as summary labels and roadmap matrix, validates, and renders.
+- `node scripts/architecture-backlog.mjs status /path/to/run-dir`
+  Shows phase, acceptance, score, stale entities, drift state, review gaps, and next actions.
 - `node scripts/architecture-backlog.mjs validate /path/to/run-dir`
-  Validates canonical state and writes a fresh `validation.json`.
+  Repairs derivable bundle files when possible, refreshes source fingerprints from the declared source refs, hard-fails unreadable source truth, validates canonical state, and writes a fresh `assessment.json`.
+- `node scripts/architecture-backlog.mjs delta /path/to/run-dir`
+  Repairs derivable bundle files when possible, refreshes real source fingerprints, hard-fails unreadable source truth, then recomputes drift against the current baseline and refreshes `assessment.json`.
+- `node scripts/architecture-backlog.mjs rebaseline /path/to/run-dir`
+  Repairs derivable bundle files when possible, refreshes real source fingerprints, hard-fails unreadable source truth, accepts current canonical/source hashes as the new baseline, and refreshes `assessment.json`.
 - `node scripts/architecture-backlog.mjs render /path/to/run-dir`
-  Renders disposable markdown projections into `views/`.
+  Renders `report.md`, including roadmap-matrix projection, lifecycle/drift state, review governance, and final operating questions.
 - `node scripts/architecture-backlog.mjs help`
-  Shows the global help for the utility.
+  Shows global help.
 
 Compatibility aliases are also accepted by the same binary:
 
 - `init-discovery-run`
+- `discover-discovery-run`
+- `status-discovery-run`
+- `repair-discovery-run`
 - `validate-discovery-run`
+- `delta-discovery-run`
+- `rebaseline-discovery-run`
 - `render-discovery-views`
 
 When you change the CLI source, rebuild the runtime artifact in `scripts/`:
@@ -122,6 +182,31 @@ When you change the CLI source, rebuild the runtime artifact in `scripts/`:
 - `pnpm --filter @kostysh/architecture-backlog-engineer-cli test`
 
 Use this CLI as the default path during debugging instead of inventing ad hoc files.
+
+## First Use
+
+For a new run:
+
+1. Run `discover` with the available architecture, ADR, runtime, deployment-contract, or evidence sources.
+2. Let the CLI initialize the run if it does not exist.
+3. Let the CLI extract embedded discovery packets and populate `backlog.json`.
+4. Let the CLI repair derivable canonical state, validate, and render `report.md`.
+
+Do not stop after `init` unless the user asked only for scaffolding.
+
+## Repeat Use
+
+For an existing run:
+
+1. Inspect `status`.
+2. Run `discover` again with new architecture, ADR, runtime, or evidence sources to update the canonical graph from source truth.
+3. Run `repair` when canonical state drift is derivable from existing evidence and only normalized graph state must be rebuilt.
+4. Run `delta` when source fingerprints, topology, contracts, or gates have drifted.
+5. Re-run `validate`.
+6. If drift is accepted into the new baseline, run `rebaseline`.
+7. Re-render `report.md`.
+
+Never edit `assessment.json` by hand unless you are repairing corrupted generated state during debugging.
 
 ## Progressive Disclosure
 
@@ -146,9 +231,9 @@ Treat [references/standard.md](references/standard.md) as the bundled normative 
 
 Load [references/artifact-model.md](references/artifact-model.md) when you need:
 
-- the canonical-vs-derived artifact split;
-- the minimal run bundle;
-- failure handling and rebuild expectations;
+- the compact artifact split;
+- the bootstrap rules;
+- failure handling;
 - the default command sequence.
 
 ## Interop Priority
