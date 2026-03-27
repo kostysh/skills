@@ -1,0 +1,4 @@
+interface:
+  display_name: "Docusaurus Repo"
+  short_description: "Create and operate a Docusaurus documentation repository with pnpm tooling, AGENTS.md, CI, search, versioning, and plugin integrations"
+  default_prompt: "Use $docusaurus-repo to bootstrap, structure, govern, and maintain a Docusaurus documentation repository."
