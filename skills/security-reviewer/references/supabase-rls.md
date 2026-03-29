@@ -41,12 +41,19 @@ Flag when:
 - default `public` privileges stay wider than intended
 - privileged roles are reused for ordinary request paths
 
+## Detection Hints
+
+- search migrations and SQL for `enable row level security`, `force row level security`, `create policy`, `grant`, `revoke`, and `security definer`
+- inspect server code for service-role clients, admin clients, and RPC calls that cross user-scoped trust boundaries
+- compare application assumptions with actual policy coverage per operation
+
 ## Verification Questions
 
 - Does the user-scoped path actually use a user JWT, not a service client?
 - Does every privileged path document why bypass is allowed?
 - Is there a policy for each relevant operation, not just `select`?
 - Can ownership, foreign keys, or helper functions accidentally widen access?
+- Is the risky SQL or grant still current, or was it narrowed by a later migration in the same repo?
 
 ## Safe Patterns
 

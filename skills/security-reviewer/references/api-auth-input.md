@@ -18,6 +18,17 @@ High-signal classes:
 - mass assignment or unsafe object merge
 - unsafe deserialization
 
+Detection hints:
+
+- trace request, form, query, cookie, header, and persisted user content into SQL, shell, template, HTML, redirect, file path, or dynamic code sinks
+- search for unchecked object spread, patch merges, or schema validators that parse but still allow dangerous fields through
+- look for file upload handlers that trust MIME type, filename, storage key, or inline serving defaults
+
+What to verify before reporting:
+
+- whether the ORM, query builder, template engine, or framework already neutralizes the sink
+- whether the attacker can really reach the privileged fields or dangerous path from the exposed entry point
+
 ## Authentication
 
 Check:
@@ -26,6 +37,16 @@ Check:
 - fallback paths that silently treat failures as guest or authenticated
 - refresh or recovery flows that widen account takeover surface
 - trust in unsigned cookies, client claims, or unverified headers
+
+Detection hints:
+
+- search for optional auth branches, silent catch-and-continue flows, and header-based identity shortcuts
+- inspect password reset, magic link, recovery, invite, and token refresh paths for weak validation or widened trust
+
+What to verify before reporting:
+
+- whether the suspect path is actually reachable by an external attacker or only by a trusted operator
+- whether the claimed identity source is independently verified earlier in middleware or routing
 
 ## Authorization
 
@@ -36,6 +57,16 @@ Check:
 - admin or support paths with weak guards
 - server-side filtering that is not backed by a real permission boundary
 
+Detection hints:
+
+- search for resource identifiers taken directly from requests and used without ownership checks
+- look for admin-only code paths guarded only in UI code or only by route naming conventions
+
+What to verify before reporting:
+
+- whether downstream policy, RLS, or service-layer checks already enforce the boundary
+- whether the same privilege is required to exploit the path, making it non-escalating
+
 ## State-Changing Requests
 
 Check:
@@ -43,6 +74,17 @@ Check:
 - CSRF defenses for cookie-authenticated flows
 - replay handling for idempotent-looking endpoints
 - rate limits or abuse controls on expensive or privileged actions
+
+Detection hints:
+
+- enumerate non-GET routes and actions with side effects
+- inspect whether auth is ambient via cookies or explicit via headers
+- look for queue fan-out, retries, or repeated callback delivery with no dedupe or idempotency key
+
+What to verify before reporting:
+
+- whether the route is browser-reachable or only for trusted machine clients
+- whether upstream rate limiting, CSRF protection, or replay protection exists outside the reviewed file
 
 ## Safe-by-Default Patterns
 

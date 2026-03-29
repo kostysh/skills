@@ -2,6 +2,18 @@
 
 This skill owns security review method. Stop and hand off framework detail when you hit implementation-specific questions.
 
+## Stack Discovery
+
+Before loading a domain skill, identify all relevant stacks and surfaces:
+
+- frontend runtime or framework
+- backend runtime or framework
+- CI or automation context
+- database or storage privilege boundary
+- proxy, edge, or deployment assumptions that may change exploitability
+
+If both frontend and backend exist, inspect both sides before finalizing a security conclusion.
+
 ## Load `hono-engineer`
 
 When the finding depends on:
@@ -12,6 +24,12 @@ When the finding depends on:
 - Hono error mapping
 - edge runtime request handling details
 
+Security questions to resolve:
+
+- where request size, parser behavior, and middleware order are enforced
+- whether trusted proxy or edge behavior changes attacker control
+- whether auth context is attached before privileged handlers run
+
 ## Load `supabase-engineer`
 
 When the finding depends on:
@@ -20,6 +38,12 @@ When the finding depends on:
 - user vs service client construction
 - Edge Function auth wiring
 - migration strategy for grants, functions, or buckets
+
+Security questions to resolve:
+
+- whether the real permission boundary lives in RLS, grants, storage policy, or server code
+- whether a service-role path is intentionally narrow or accidentally broad
+- whether later migrations or platform defaults change the reviewed risk
 
 ## Load `react-spa-engineer` or `react-components-engineer`
 
@@ -30,6 +54,12 @@ When the finding depends on:
 - hydration or SSR behavior
 - component-level data leak paths
 
+Security questions to resolve:
+
+- whether data crosses a server-client boundary or only exists in trusted server code
+- whether rendering behavior can turn attacker content into HTML, navigation, or state leakage
+- whether the suspect path is browser-reachable or only internal to tooling
+
 ## Load `node-engineer`
 
 When the finding depends on:
@@ -38,3 +68,13 @@ When the finding depends on:
 - process environment handling
 - stream or backpressure behavior
 - shutdown or resource cleanup semantics
+
+Security questions to resolve:
+
+- whether runtime config or environment assumptions are actually attacker-influenced
+- whether stream handling, body limits, or client timeouts change exploitability
+- whether a process-level safeguard exists outside the reviewed file
+
+## Handoff Rule
+
+If exploitability depends on a stack-specific fact that this skill cannot confirm, keep the item in `needs verification` until the relevant domain skill resolves it.

@@ -66,33 +66,50 @@ Unless the user gives a different one, assume:
 
 Adjust the threat model explicitly if the code is internal-only or requires trusted operator access.
 
+## Operating Modes
+
+- Targeted review is the default. Load only the references needed for the changed surface and report only high-confidence findings.
+- Passive notice applies while editing nearby code. Mention only high-signal issues that are likely real and matter to the work in progress.
+- Formal audit or report mode applies only when the user explicitly asks to scan, audit, or produce a report. In this mode, enumerate all relevant surfaces, use the audit order from `references/methodology.md`, assign stable finding IDs, and include line-referenced evidence.
+
 ## Fast Workflow
 
-1. Classify the review scope and load only the needed references:
+1. Identify the reviewed surfaces and stack before judging findings:
+   - backend request handlers, jobs, and workers
+   - frontend browser code and client-side rendering paths
+   - auth, sessions, cookies, and identity boundaries
+   - CI, release automation, and supply chain paths
+   - storage, data plane, and database privilege boundaries
+   - inbound and outbound integrations such as webhooks and URL fetchers
+2. Classify the review scope and load only the needed references:
    - general methodology
    - API/auth/input
    - GitHub Actions
    - Supabase RLS
    - webhooks
    - secrets/config
-2. Map trust boundaries:
+   - domain handoffs when stack-specific behavior changes exploitability
+3. Map trust boundaries:
    - inputs
    - identities and roles
    - secrets and credentials
    - privileged actions
    - sensitive sinks
-3. Trace the attack path:
+4. Trace the attack path:
    - entry point
    - attacker-controlled value
    - execution or authorization mechanism
    - impact
-4. Verify mitigations:
+5. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
    - access controls
    - environment or deployment constraints
-5. Classify confidence and severity.
-6. Report confirmed findings first. Keep medium-confidence notes separate.
+6. Classify confidence and severity.
+7. Choose the output mode:
+   - targeted findings in chat
+   - formal audit sections with stable IDs
+   - remediation of one confirmed finding at a time
 
 ## What Not to Flag by Default
 
@@ -101,6 +118,7 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 - framework-protected patterns unless protections are disabled or bypassed
 - authenticated-only actions where the reported exploit still requires the same privileged role you are treating as trusted
 - defense-in-depth observations with no plausible exploit path
+- local or dev-only HTTP usage without evidence that the same assumption reaches production
 
 ## Confidence Levels
 
@@ -124,24 +142,40 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 - Findings first, ordered by severity.
 - Use the format from `references/methodology.md`.
 - Every reported finding must include:
-  - location
+  - location with line references when available
   - confidence
   - issue
   - impact
   - evidence
   - fix direction
+  - what still needs runtime or infrastructure verification if uncertainty remains
 - If useful, add a short "needs verification" section for medium-confidence items.
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
+- In formal audit mode, add stable finding IDs and a short executive summary.
+- Write a markdown report only when the user asks for one or the repo expects an artifact.
 - If nothing clears the bar, say so plainly instead of inventing issues.
+
+## Project Overrides
+
+- Respect explicit project rules and documented exceptions when they intentionally deviate from a best practice.
+- Do not report a finding just because a pattern is non-ideal. Report it only when the override still leaves a plausible exploit path.
+- If an override is necessary but undocumented, suggest documenting the rationale and compensating controls.
+
+## Remediation Rules
+
+- Fix one confirmed finding at a time.
+- Preserve expected behavior unless the security issue requires a breaking change. Call out that tradeoff before making it.
+- Prefer narrow, auditable changes over broad rewrites.
+- Follow the project's normal test and change flow so the security fix is likely to be accepted and kept.
 
 ## Reference Map
 
 Read only what you need:
 
-- `references/methodology.md` - confidence gating, exploitability test, and reporting format
-- `references/api-auth-input.md` - input validation, injection, authn, authz, CSRF, mass assignment, and file handling checks
-- `references/github-actions.md` - GitHub Actions threat model, attack classes, and safe patterns
+- `references/methodology.md` - confidence gating, surface discovery, audit order, uncertainty language, and report format
+- `references/api-auth-input.md` - input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints
+- `references/github-actions.md` - GitHub Actions threat model, attack classes, detection hints, and safe patterns
 - `references/supabase-rls.md` - RLS, grants, privileged functions, RPC, and service-role review
-- `references/webhooks.md` - signature verification, replay windows, raw body handling, and idempotency
-- `references/secrets-config.md` - secrets, config trust boundaries, token scope, and logging exposure
-- `references/domain-handoffs.md` - when to stop and defer to domain skills for framework-specific detail
+- `references/webhooks.md` - signature verification, replay windows, raw body handling, idempotency, and reporting checks
+- `references/secrets-config.md` - secrets, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance
+- `references/domain-handoffs.md` - stack discovery and when to defer to domain skills for framework-specific detail

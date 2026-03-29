@@ -57,6 +57,20 @@ Flag workflows that execute PR-controlled instructions or scripts from files suc
 
 when those files are loaded in a privileged workflow context.
 
+## Detection Hints
+
+- search for privileged triggers such as `pull_request_target`, `workflow_run`, `issue_comment`, and manual dispatch flows that can reach secret-bearing jobs
+- inspect `permissions:`, `secrets:`, OIDC setup, publish credentials, and environment protection rules
+- search for `actions/checkout`, local actions, or repo scripts executed after fork-controlled content is fetched
+- inspect `run:` blocks for attacker-controlled `${{ }}` interpolation, comment bodies, PR titles, branch names, or filenames
+- inspect `uses:` entries for unpinned third-party actions and mutable tag references
+
+## What to Verify Before Reporting
+
+- whether the trigger is actually reachable by forks or other untrusted actors
+- whether branch protection, environment approval, or actor allowlists already block the exploit path
+- whether a suspicious expression is only used in metadata fields such as `if:` or `with:` rather than in a shell execution context
+
 ## Safe Patterns
 
 Usually safe:
