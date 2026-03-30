@@ -99,12 +99,13 @@ When this skill is invoked, follow this sequence unless the user explicitly over
 2. Inspect the target run directory.
 3. Initialize the run automatically if canonical artifacts are missing.
 4. Reuse the run if canonical artifacts already exist.
-5. Read authoritative sources.
-6. Interpret the prose sources and author explicit packet files as needed.
-7. Register sources and packets through `discover`.
-8. Let the CLI materialize or update `backlog.json`.
-9. Let the CLI refresh fingerprints, repair derivable state, validate, and render.
-10. Return the achieved acceptance class, the main gaps or blockers, and the report path.
+5. Read authoritative domain sources.
+6. For any new run, after reading the authoritative domain sources, open [references/packet-schema.md](references/packet-schema.md) and use the section `Compact end-to-end example` as the starting example for packet authoring before consulting any other skill reference beyond the domain sources.
+7. Interpret the prose sources and author explicit packet files as needed.
+8. Register sources and packets through `discover`.
+9. Let the CLI materialize or update `backlog.json`.
+10. Let the CLI refresh fingerprints, repair derivable state, validate, and render.
+11. Return the achieved acceptance class, the main gaps or blockers, and the report path.
 
 Do not ask the operator to remember internal lifecycle steps.
 
@@ -125,7 +126,13 @@ Do not ask the operator to remember internal lifecycle steps.
 5. Never let `report.md` become source-of-truth input for later phases.
 6. Record missing owner input as gaps or blocked items; do not silently invent it.
 7. Use only the bundled CLI to create, update, validate, repair, rebaseline, or render methodology-owned artifacts.
-8. Do not create ad hoc generators, mutation scripts, or direct editors for methodology-owned artifacts during normal workflow.
+8. When authoring a new packet, resolve packet structure in this order:
+   - [references/packet-schema.md](references/packet-schema.md) section `Compact end-to-end example`
+   - [references/packet-schema.md](references/packet-schema.md) required-field and graph rules
+   - one `discover` run and its validator output
+9. Default new discovery runs to `--acceptance-target draft-only` unless the operator explicitly asks for `planning-grade` or `implementation-grade`, or the required review artifacts are already part of scope.
+10. If the operator provides an explicit mapping from an external planning-status vocabulary to backlog semantics, apply that mapping directly when authoring the packet unless it conflicts with packet-schema hard constraints.
+11. Do not create ad hoc generators, mutation scripts, or direct editors for methodology-owned artifacts during normal workflow.
 
 ## CLI
 
@@ -171,11 +178,12 @@ Compatibility aliases are also accepted:
 
 For a new run:
 
-1. Read the architecture and related prose sources.
-2. Author explicit packet files that encode the intended graph updates. Use [references/packet-schema.md](references/packet-schema.md) when you need the envelope, merge modes, allowed section keys, or minimal examples.
+1. Inspect and interpret the architecture and related authoritative prose sources together with operator-specified constraints.
+2. Author explicit packet files that encode the intended graph updates by adapting the `Compact end-to-end example` in [references/packet-schema.md](references/packet-schema.md) to the current sources. Use that reference when you need the packet envelope, merge modes, allowed section keys, or required-field and graph rules.
 3. Run `discover` with the relevant `--*-source` refs and `--source-packet` refs.
 4. Let the CLI initialize the run if it does not exist.
-5. Let the CLI materialize the canonical graph, validate it, and render `report.md`.
+5. If the run is invalid, correct the packet payload or source metadata according to the validator output and continue within the discovery workflow until the canonical state is valid or the blocker is made explicit.
+6. Let the CLI materialize the canonical graph, validate it, and render `report.md`.
 
 Do not stop after `init` unless the user asked only for scaffolding.
 
@@ -213,11 +221,12 @@ Load [references/artifact-model.md](references/artifact-model.md) when you need:
 
 Load [references/packet-schema.md](references/packet-schema.md) when you need:
 
+- the section `Compact end-to-end example` used as the starting example for new runs;
 - the explicit packet envelope;
 - allowed `source` and `packet_provenance` keys;
 - allowed section keys and upsert identities;
 - merge-mode restrictions;
-- minimal packet examples.
+- required-field and graph rules.
 
 Load [docs/concept-baseline.ru.md](docs/concept-baseline.ru.md) when you need the non-negotiable role split:
 
