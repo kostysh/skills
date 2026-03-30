@@ -289,6 +289,12 @@ In practice this means:
 
 Planning overlays must not claim delivery.
 
+Practical rule for external planning prose:
+
+- planning or workflow statuses from external backlog systems are not delivery evidence by themselves;
+- do not copy external planning vocabulary into `delivery_state` unless the operator explicitly gives a mapping rule for the current run;
+- when the operator does give such a mapping rule, restate that assumption before encoding it.
+
 ## Validation-required section shapes
 
 This section lists the fields you need when you are **creating** new entries.
@@ -513,6 +519,1156 @@ These sections are technically allowed in packets, but in normal workflow they s
 If you do author `roadmap_matrix`, it must mirror `items[]` + `relations[]` exactly: state fields, parent/child refs, dependency refs, dependency entries, proof refs, ranks, and economic factors are all cross-checked.
 
 ## Minimal examples
+
+### Compact end-to-end example
+
+This example is intentionally small, but still follows the full graph shape expected by `discover`.
+
+Use the same two-packet split in your own runs:
+
+1. Put the target-truth packet in the architecture source.
+2. Put the current-truth packet in the runtime/deployment/current-truth source.
+3. Run `discover` against both sources.
+
+Command shape:
+
+```bash
+node scripts/architecture-backlog.mjs discover ./tmp/abe-example \
+  --architecture-source ./tmp/abe-example/architecture.md \
+  --runtime-source ./tmp/abe-example/runtime.md
+```
+
+`architecture.md`
+
+````markdown
+# Architecture example
+
+```architecture-backlog-packet
+{
+  "source": {
+    "source_id": "src-architecture",
+    "ref": "./tmp/abe-example/architecture.md",
+    "kind": "architecture_doc",
+    "authority": "authoritative_target_truth",
+    "precedence": 1,
+    "notes": "Canonical target-truth example."
+  },
+  "packet_provenance": {
+    "merge_mode": "source_driven_refresh"
+  },
+  "id_strategy": {
+    "source": "src",
+    "claim": "claim",
+    "negative_scope": "neg",
+    "quality_attribute": "qa",
+    "policy_decision": "policy",
+    "contract": "contract",
+    "data_domain": "domain",
+    "gap": "gap",
+    "contradiction": "contradiction",
+    "unknown": "unknown",
+    "item": "item",
+    "proof": "proof",
+    "review": "review",
+    "track": "track",
+    "value_stream": "vs",
+    "journey": "journey",
+    "track_gate": "gate",
+    "track_proof": "track-proof",
+    "waiver": "waiver"
+  },
+  "glossary": {
+    "runtime": "Identity-bearing runtime surface.",
+    "guardrail": "Fail-closed control on the operator path."
+  },
+  "aliases": {
+    "runtime": ["core"],
+    "guardrail": ["control"]
+  },
+  "target_system": {
+    "actors": ["operator"],
+    "operator_personas": ["runtime-operator"],
+    "external_consumer_groups": ["operators"],
+    "external_dependencies": ["example-provider", "example-alerting"],
+    "trust_boundaries": ["operator boundary"],
+    "durable_state_families": ["example-state"],
+    "control_surfaces": ["operator api", "guardrails"],
+    "failure_domains": ["provider latency", "operator misuse"],
+    "team_and_ownership_assumptions": ["runtime-team owns the canonical path"],
+    "quality_goals": ["safe operator completion"],
+    "policy_surfaces": ["operator access policy"]
+  },
+  "value_streams": [
+    {
+      "value_stream_id": "vs-min",
+      "title": "Minimal operator flow",
+      "description": "First runnable operator flow.",
+      "primary_personas": ["operator"],
+      "initiating_triggers": ["operator submits request"],
+      "workflow_steps": ["Submit request", "Validate", "Persist result"],
+      "success_conditions": ["Operator request completes"],
+      "linked_track_ids": ["minimal-working-system"],
+      "support_handoff": "runtime-support"
+    },
+    {
+      "value_stream_id": "vs-safe",
+      "title": "Safety and ops closure",
+      "description": "Fail-closed and supportable operation.",
+      "primary_personas": ["operator"],
+      "initiating_triggers": ["external readiness review"],
+      "workflow_steps": ["Verify guardrail", "Confirm alerts", "Confirm runbook"],
+      "success_conditions": ["Safe and supportable control path"],
+      "linked_track_ids": ["externally-safe-operationally-supportable"],
+      "support_handoff": "runtime-support"
+    },
+    {
+      "value_stream_id": "vs-full",
+      "title": "Full target closure",
+      "description": "Durable documentation and handoff.",
+      "primary_personas": ["operator"],
+      "initiating_triggers": ["release handoff"],
+      "workflow_steps": ["Review docs", "Confirm ownership", "Publish handoff"],
+      "success_conditions": ["Support source of truth is current"],
+      "linked_track_ids": ["full-target-system"],
+      "support_handoff": "runtime-support"
+    }
+  ],
+  "tracks": [
+    {
+      "track_id": "minimal-working-system",
+      "title": "Minimal working system",
+      "description": "First runnable system.",
+      "closure_goal": "One runnable end-to-end operator flow.",
+      "backlog_protocol_state": "validated",
+      "delivery_state": "not_started",
+      "readiness_state": "ready",
+      "closure_state": "open",
+      "summary_label": "Planned",
+      "first_shippable_journey_ids": ["journey-min"],
+      "required_track_gate_ids": ["gate-min"],
+      "track_proof_refs": ["track-proof-min"]
+    },
+    {
+      "track_id": "externally-safe-operationally-supportable",
+      "title": "Externally safe and supportable",
+      "description": "Safe external operation.",
+      "closure_goal": "Fail-closed and supportable operator path.",
+      "backlog_protocol_state": "validated",
+      "delivery_state": "not_started",
+      "readiness_state": "ready",
+      "closure_state": "open",
+      "summary_label": "Planned",
+      "first_shippable_journey_ids": ["journey-safe"],
+      "required_track_gate_ids": ["gate-safe"],
+      "track_proof_refs": ["track-proof-safe"]
+    },
+    {
+      "track_id": "full-target-system",
+      "title": "Full target system",
+      "description": "Target-state closure.",
+      "closure_goal": "Durable docs and handoff close the target.",
+      "backlog_protocol_state": "validated",
+      "delivery_state": "not_started",
+      "readiness_state": "ready",
+      "closure_state": "open",
+      "summary_label": "Planned",
+      "first_shippable_journey_ids": ["journey-full"],
+      "required_track_gate_ids": ["gate-full"],
+      "track_proof_refs": ["track-proof-full"]
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim-core",
+      "title": "The system must expose one canonical operator flow.",
+      "claim_class": "functional_capability",
+      "commitment": "committed",
+      "source_refs": ["src-architecture"]
+    },
+    {
+      "claim_id": "claim-core-control",
+      "title": "Unsafe operator requests must fail closed.",
+      "claim_class": "control_obligation",
+      "commitment": "committed",
+      "source_refs": ["src-architecture"]
+    },
+    {
+      "claim_id": "claim-core-ops",
+      "title": "Operators must have explicit support handoff and runbooks.",
+      "claim_class": "operational_capability",
+      "commitment": "committed",
+      "source_refs": ["src-architecture"]
+    }
+  ],
+  "negative_scope": [],
+  "quality_attributes": [
+    {
+      "quality_attribute_id": "qa-latency",
+      "title": "Operator p95 latency target",
+      "quality_class": "latency",
+      "target": "p95 < 500ms",
+      "applies_to_refs": [
+        { "kind": "item", "id": "item-core-slice" },
+        { "kind": "track", "id": "minimal-working-system" }
+      ],
+      "owner_refs": ["runtime-team"],
+      "source_refs": ["src-architecture"],
+      "proof_refs": ["proof-core-slice"]
+    }
+  ],
+  "policy_decisions": [
+    {
+      "policy_decision_id": "policy-operator-access",
+      "title": "Operator access policy fixed",
+      "policy_surface": "operator-access",
+      "decision_state": "decided",
+      "owner": "security-team",
+      "source_refs": ["src-architecture"],
+      "related_item_refs": ["item-core-slice", "item-core-control"],
+      "revisit_trigger": "Access policy changes"
+    }
+  ],
+  "contracts": [
+    {
+      "contract_id": "contract-example-api",
+      "title": "Example operator API",
+      "owner": "example-architecture",
+      "versioning_strategy": "header-versioned",
+      "reconciliation_strategy": "daily state reconciliation",
+      "deprecation_window": "30d",
+      "retirement_condition": "all operators use v2"
+    }
+  ],
+  "data_domains": [
+    {
+      "domain_id": "domain-example-state",
+      "title": "Example state",
+      "data_class": "restricted",
+      "owners": ["runtime-team", "security-team"]
+    }
+  ]
+}
+```
+````
+
+`runtime.md`
+
+````markdown
+# Runtime example
+
+```architecture-backlog-packet
+{
+  "source": {
+    "source_id": "src-runtime",
+    "ref": "./tmp/abe-example/runtime.md",
+    "kind": "runtime_evidence",
+    "authority": "authoritative_current_truth",
+    "precedence": 2,
+    "notes": "Canonical current-truth example."
+  },
+  "packet_provenance": {
+    "merge_mode": "source_driven_refresh"
+  },
+  "as_built": {
+    "deployable_surfaces": ["api", "worker"],
+    "services": ["example-api"],
+    "processes": ["example-worker"],
+    "jobs": ["example-job"],
+    "apis": ["operator-api"],
+    "event_surfaces": ["example-events"],
+    "queues": ["example-queue"],
+    "state_stores": ["example-db"],
+    "deployable_units": ["example-api-image", "example-worker-image"],
+    "ownership_matrix": ["runtime-team"],
+    "environment_matrix": ["staging"],
+    "ingress_interfaces": ["operator-http"],
+    "egress_interfaces": ["provider-http"],
+    "canonical_writers": ["example-api"],
+    "trust_boundary_crossings": ["operator -> provider"],
+    "data_classes": ["restricted"],
+    "dependency_classifications": [
+      { "dependency_id": "example-provider", "criticality": "boot_critical", "owner": "vendor-provider" },
+      { "dependency_id": "example-alerting", "criticality": "degraded", "owner": "vendor-alerting" }
+    ],
+    "synthetic_behaviors": [],
+    "compatibility_only_behaviors": [],
+    "vendor_external_owners": ["vendor-provider", "vendor-alerting"],
+    "missing_operational_inputs": []
+  },
+  "track_gates": [
+    {
+      "track_gate_id": "gate-min",
+      "track_id": "minimal-working-system",
+      "title": "Minimal proof freshness",
+      "description": "The minimal journey has fresh proof.",
+      "gate_type": "readiness",
+      "fail_mode": "fail_open",
+      "governing_control_item_refs": [],
+      "owner_refs": ["runtime-team"],
+      "required_proof_refs": ["proof-core-slice"],
+      "applies_to_journey_ids": ["journey-min"],
+      "recalculation_triggers": ["source_change", "proof_change"]
+    },
+    {
+      "track_gate_id": "gate-safe",
+      "track_id": "externally-safe-operationally-supportable",
+      "title": "Fail-closed safety gate",
+      "description": "The external path is fail-closed and supportable.",
+      "gate_type": "safety",
+      "fail_mode": "fail_closed",
+      "governing_control_item_refs": ["item-core-control"],
+      "owner_refs": ["security", "runtime-ops"],
+      "required_proof_refs": ["proof-core-control", "proof-track-safe"],
+      "applies_to_journey_ids": ["journey-safe"],
+      "recalculation_triggers": ["source_change", "topology_change", "control_change"]
+    },
+    {
+      "track_gate_id": "gate-full",
+      "track_id": "full-target-system",
+      "title": "Full target docs gate",
+      "description": "The support source of truth is current.",
+      "gate_type": "completeness",
+      "fail_mode": "fail_open",
+      "governing_control_item_refs": [],
+      "owner_refs": ["runtime-team", "support"],
+      "required_proof_refs": ["proof-core-docs", "proof-track-full"],
+      "applies_to_journey_ids": ["journey-full"],
+      "recalculation_triggers": ["source_change", "topology_change", "release_change"]
+    }
+  ],
+  "track_journeys": [
+    {
+      "journey_id": "journey-min",
+      "track_id": "minimal-working-system",
+      "value_stream_id": "vs-min",
+      "persona": "operator",
+      "trigger": "Operator submits request",
+      "workflow_steps": ["Submit request", "Validate", "Persist result"],
+      "success_condition": "One operator request completes safely.",
+      "support_handoff": "runtime-support"
+    },
+    {
+      "journey_id": "journey-safe",
+      "track_id": "externally-safe-operationally-supportable",
+      "value_stream_id": "vs-safe",
+      "persona": "operator",
+      "trigger": "External readiness review",
+      "workflow_steps": ["Verify guardrail", "Confirm alerts", "Confirm runbook"],
+      "success_condition": "The external path is fail-closed and supportable.",
+      "support_handoff": "runtime-support"
+    },
+    {
+      "journey_id": "journey-full",
+      "track_id": "full-target-system",
+      "value_stream_id": "vs-full",
+      "persona": "operator",
+      "trigger": "Release handoff",
+      "workflow_steps": ["Review docs", "Confirm ownership", "Publish handoff"],
+      "success_condition": "Support documentation is current and owned.",
+      "support_handoff": "runtime-support"
+    }
+  ],
+  "unknowns": [],
+  "uncertainty_to_spike": [],
+  "delivered_lineage_notes": [],
+  "items": [
+    {
+      "item_id": "item-core-seam",
+      "item_class": "capability_seam",
+      "track_id": "minimal-working-system",
+      "backlog_protocol_state": "validated",
+      "delivery_state": "not_started",
+      "readiness_state": "ready",
+      "closure_state": "open",
+      "summary_label": "Planned",
+      "title": "Core runtime seam",
+      "claim_refs": ["claim-core"],
+      "adr_refs": ["ADR-EX-1"],
+      "origin_ref": [{ "kind": "claim_ref", "ref": "claim-core" }],
+      "owners": {
+        "decision_owner": "architecture",
+        "delivery_owner": "runtime-team",
+        "runtime_owner": "runtime-ops",
+        "escalation_owner": "incident-manager",
+        "consulted_teams": ["security-team"]
+      },
+      "proof_refs": ["proof-core-seam"],
+      "dependency_refs": [],
+      "change_surfaces": ["runtime"],
+      "interfaces_touched": ["contract-example-api"],
+      "data_domains_touched": ["domain-example-state"],
+      "trust_boundaries_crossed": ["operator-to-core"],
+      "actor_role_set": ["operator"],
+      "data_class": "restricted",
+      "value": {
+        "persona_or_operator_served": "operator",
+        "product_or_operator_value": "Own the first runnable runtime seam.",
+        "why_now": "Everything else depends on one canonical seam owner.",
+        "slice_value_kind": "user_value"
+      },
+      "estimate_band": "M",
+      "confidence": "medium",
+      "economic_priority_note": "Unlocks every downstream slice.",
+      "evidence_freshness_sla": "7d unless contract or topology changes",
+      "contract_governance": {
+        "applicable": true,
+        "contract_owner": "example-architecture",
+        "compatibility_class": "backward",
+        "versioning_strategy": "header-versioned",
+        "consumer_impact": "operator api and runtime worker",
+        "migration_strategy": "bounded phased rollout",
+        "canonical_writer": "example-api",
+        "reconciliation_strategy": "daily state reconciliation",
+        "deprecation_window": "30d",
+        "retirement_condition": "all callers use v2"
+      },
+      "nfr_contract": {
+        "latency": "p95 < 500ms for core-seam",
+        "throughput": "200 rps for core-seam",
+        "concurrency": "100 inflight for core-seam",
+        "availability": "99.9%",
+        "durability": "no silent loss for core-seam",
+        "rpo": "5m",
+        "rto": "30m",
+        "cost_budget": "within core-seam budget",
+        "privacy_compliance_class": "restricted",
+        "accessibility_localization_duty": "operator-visible outputs stay accessible",
+        "auditability_traceability": "core-seam changes are auditable",
+        "scalability_envelope": "3x load for core-seam"
+      },
+      "observability_contract": {
+        "sli_slo": ["core-seam-success-rate >= 99%"],
+        "alert_thresholds": ["core-seam-error-rate > 1% for 5m"],
+        "audit_requirements": ["core-seam actions logged"],
+        "security_controls": ["explicit operator access review"],
+        "privacy_controls": ["sensitive payload redaction"],
+        "analytics_obligations": ["core-seam telemetry emitted"],
+        "monitoring_evidence_refs": ["evidence:core-seam:monitoring"],
+        "dashboards": ["dashboard:core-seam"],
+        "runbook_refs": ["runbook:core-seam"],
+        "telemetry_signals": ["trace:core-seam"],
+        "bypass_governance": "No bypass outside incident authority.",
+        "residual_exceptions": ["none"]
+      },
+      "rollout": {
+        "applicability": "required",
+        "mode": "phased",
+        "temporary_controls": [
+          {
+            "control_id": "TMP-ALLOWLIST",
+            "description": "Early operator allowlist",
+            "retirement_owner": "runtime-team",
+            "retirement_date": "2026-06-01"
+          }
+        ]
+      },
+      "recovery": {
+        "applicability": "required",
+        "class": "deploy_rollback",
+        "strategy": "Rollback the runtime image"
+      },
+      "readiness_contract": {
+        "behavior_described": true,
+        "happy_path_defined": true,
+        "error_paths_defined": true,
+        "acceptance_examples_defined": true,
+        "interface_data_impact_described": true,
+        "nfr_impact_known": true,
+        "security_privacy_impact_known": true,
+        "rollout_defined": true,
+        "recovery_defined": true,
+        "observability_contract_defined": true,
+        "required_proof_defined": true,
+        "docs_support_impact_described": true,
+        "estimate_band_defined": true,
+        "confidence_defined": true,
+        "unresolved_questions_below_threshold": true,
+        "class_specific_checks": {}
+      },
+      "done_contract": {},
+      "class_payload": {
+        "capability_added": "One canonical runtime path",
+        "owner_surfaces": ["example-api", "example-worker"],
+        "real_closure_definition": "One operator request flows through the canonical runtime path."
+      }
+    },
+    {
+      "item_id": "item-core-slice",
+      "item_class": "feature_slice",
+      "track_id": "minimal-working-system",
+      "backlog_protocol_state": "validated",
+      "delivery_state": "not_started",
+      "readiness_state": "ready",
+      "closure_state": "open",
+      "summary_label": "Planned",
+      "title": "Operator request slice",
+      "claim_refs": ["claim-core"],
+      "adr_refs": ["ADR-EX-1"],
+      "origin_ref": [{ "kind": "claim_ref", "ref": "claim-core" }],
+      "owners": {
+        "decision_owner": "product",
+        "delivery_owner": "runtime-team",
+        "runtime_owner": "runtime-ops",
+        "escalation_owner": "incident-manager",
+        "consulted_teams": ["security-team"]
+      },
+      "proof_refs": ["proof-core-slice"],
+      "dependency_refs": ["item-core-seam"],
+      "change_surfaces": ["runtime", "trust_boundary", "data_class"],
+      "interfaces_touched": ["contract-example-api"],
+      "data_domains_touched": ["domain-example-state"],
+      "trust_boundaries_crossed": ["operator-to-core"],
+      "actor_role_set": ["operator"],
+      "data_class": "restricted",
+      "value": {
+        "persona_or_operator_served": "operator",
+        "product_or_operator_value": "An operator request completes through the canonical path.",
+        "why_now": "This is the first shippable journey.",
+        "slice_value_kind": "user_value"
+      },
+      "planning_constraints": {
+        "external_lead_time_risk": "none",
+        "staffing_skill_constraints": "runtime + api familiarity",
+        "blocked_by_decision_status": false,
+        "dominant_uncertainty_class": "integration_unknown",
+        "dominant_rollback_class": "deploy_rollback",
+        "blast_radius_note": "Operator control path only",
+        "unresolved_questions_below_threshold": true
+      },
+      "estimate_band": "S",
+      "confidence": "high",
+      "economic_priority_note": "First shippable journey.",
+      "evidence_freshness_sla": "7d unless contract or topology changes",
+      "contract_governance": {
+        "applicable": true,
+        "contract_owner": "example-architecture",
+        "compatibility_class": "backward",
+        "versioning_strategy": "header-versioned",
+        "consumer_impact": "operator api and runtime worker",
+        "migration_strategy": "bounded phased rollout",
+        "canonical_writer": "example-api",
+        "reconciliation_strategy": "daily state reconciliation",
+        "deprecation_window": "30d",
+        "retirement_condition": "all callers use v2"
+      },
+      "nfr_contract": {
+        "latency": "p95 < 500ms for core-slice",
+        "throughput": "200 rps for core-slice",
+        "concurrency": "100 inflight for core-slice",
+        "availability": "99.9%",
+        "durability": "no silent loss for core-slice",
+        "rpo": "5m",
+        "rto": "30m",
+        "cost_budget": "within core-slice budget",
+        "privacy_compliance_class": "restricted",
+        "accessibility_localization_duty": "operator-visible outputs stay accessible",
+        "auditability_traceability": "core-slice changes are auditable",
+        "scalability_envelope": "3x load for core-slice"
+      },
+      "observability_contract": {
+        "sli_slo": ["core-slice-success-rate >= 99%"],
+        "alert_thresholds": ["core-slice-error-rate > 1% for 5m"],
+        "audit_requirements": ["core-slice actions logged"],
+        "security_controls": ["explicit operator access review"],
+        "privacy_controls": ["sensitive payload redaction"],
+        "analytics_obligations": ["core-slice telemetry emitted"],
+        "monitoring_evidence_refs": ["evidence:core-slice:monitoring"],
+        "dashboards": ["dashboard:core-slice"],
+        "runbook_refs": ["runbook:core-slice"],
+        "telemetry_signals": ["trace:core-slice"],
+        "bypass_governance": "No bypass outside incident authority.",
+        "residual_exceptions": ["none"]
+      },
+      "rollout": {
+        "applicability": "required",
+        "mode": "phased",
+        "temporary_controls": [
+          {
+            "control_id": "TMP-SLICE",
+            "description": "Operator-only rollout",
+            "retirement_owner": "runtime-team",
+            "retirement_date": "2026-06-01"
+          }
+        ]
+      },
+      "recovery": {
+        "applicability": "required",
+        "class": "deploy_rollback",
+        "strategy": "Rollback the request path"
+      },
+      "readiness_contract": {
+        "behavior_described": true,
+        "happy_path_defined": true,
+        "error_paths_defined": true,
+        "acceptance_examples_defined": true,
+        "interface_data_impact_described": true,
+        "nfr_impact_known": true,
+        "security_privacy_impact_known": true,
+        "rollout_defined": true,
+        "recovery_defined": true,
+        "observability_contract_defined": true,
+        "required_proof_defined": true,
+        "docs_support_impact_described": true,
+        "estimate_band_defined": true,
+        "confidence_defined": true,
+        "unresolved_questions_below_threshold": true,
+        "class_specific_checks": {}
+      },
+      "done_contract": {},
+      "class_payload": {
+        "parent_seam_ref": { "kind": "item", "id": "item-core-seam" },
+        "acceptance_examples": [
+          "Operator submits a valid request and receives success.",
+          "Invalid input fails safely without partial write."
+        ]
+      }
+    },
+    {
+      "item_id": "item-core-control",
+      "item_class": "control_guardrail",
+      "track_id": "externally-safe-operationally-supportable",
+      "backlog_protocol_state": "validated",
+      "delivery_state": "not_started",
+      "readiness_state": "ready",
+      "closure_state": "open",
+      "summary_label": "Planned",
+      "title": "Fail-closed operator guardrail",
+      "origin_ref": [{ "kind": "control_obligation_ref", "ref": "claim-core-control" }],
+      "owners": {
+        "decision_owner": "security",
+        "delivery_owner": "runtime-team",
+        "runtime_owner": "runtime-ops",
+        "escalation_owner": "incident-manager",
+        "consulted_teams": ["security-team"]
+      },
+      "proof_refs": ["proof-core-control"],
+      "dependency_refs": ["item-core-slice"],
+      "change_surfaces": ["trust_boundary", "policy", "observability"],
+      "interfaces_touched": ["contract-example-api"],
+      "data_domains_touched": ["domain-example-state"],
+      "trust_boundaries_crossed": ["operator-to-core"],
+      "actor_role_set": ["operator"],
+      "data_class": "restricted",
+      "value": {
+        "persona_or_operator_served": "operator",
+        "product_or_operator_value": "The external operator path fails closed.",
+        "why_now": "The system is not safely operable without this guardrail.",
+        "slice_value_kind": "control_closure"
+      },
+      "estimate_band": "S",
+      "confidence": "medium",
+      "economic_priority_note": "Closes the fail-closed safety gap.",
+      "evidence_freshness_sla": "refresh before external release",
+      "contract_governance": {
+        "applicable": true,
+        "contract_owner": "example-architecture",
+        "compatibility_class": "backward",
+        "versioning_strategy": "header-versioned",
+        "consumer_impact": "operator api and runtime worker",
+        "migration_strategy": "bounded phased rollout",
+        "canonical_writer": "example-api",
+        "reconciliation_strategy": "daily state reconciliation",
+        "deprecation_window": "30d",
+        "retirement_condition": "all callers use v2"
+      },
+      "nfr_contract": {
+        "latency": "p95 < 500ms for core-control",
+        "throughput": "200 rps for core-control",
+        "concurrency": "100 inflight for core-control",
+        "availability": "99.9%",
+        "durability": "no silent loss for core-control",
+        "rpo": "5m",
+        "rto": "30m",
+        "cost_budget": "within core-control budget",
+        "privacy_compliance_class": "restricted",
+        "accessibility_localization_duty": "operator-visible outputs stay accessible",
+        "auditability_traceability": "core-control changes are auditable",
+        "scalability_envelope": "3x load for core-control"
+      },
+      "observability_contract": {
+        "sli_slo": ["core-control-success-rate >= 99%"],
+        "alert_thresholds": ["core-control-error-rate > 1% for 5m"],
+        "audit_requirements": ["core-control actions logged"],
+        "security_controls": ["explicit operator access review"],
+        "privacy_controls": ["sensitive payload redaction"],
+        "analytics_obligations": ["core-control telemetry emitted"],
+        "monitoring_evidence_refs": ["evidence:core-control:monitoring"],
+        "dashboards": ["dashboard:core-control"],
+        "runbook_refs": ["runbook:core-control"],
+        "telemetry_signals": ["trace:core-control"],
+        "bypass_governance": "No bypass outside incident authority.",
+        "residual_exceptions": ["none"]
+      },
+      "rollout": {
+        "applicability": "required",
+        "mode": "phased",
+        "temporary_controls": [
+          {
+            "control_id": "TMP-FAIL-CLOSED",
+            "description": "Temporary allowlist while controls are verified",
+            "retirement_owner": "security",
+            "retirement_date": "2026-06-10"
+          }
+        ]
+      },
+      "recovery": {
+        "applicability": "required",
+        "class": "forward_fix_only",
+        "strategy": "Disable launch and keep the fail-closed path active"
+      },
+      "readiness_contract": {
+        "behavior_described": true,
+        "happy_path_defined": true,
+        "error_paths_defined": true,
+        "acceptance_examples_defined": true,
+        "interface_data_impact_described": true,
+        "nfr_impact_known": true,
+        "security_privacy_impact_known": true,
+        "rollout_defined": true,
+        "recovery_defined": true,
+        "observability_contract_defined": true,
+        "required_proof_defined": true,
+        "docs_support_impact_described": true,
+        "estimate_band_defined": true,
+        "confidence_defined": true,
+        "unresolved_questions_below_threshold": true,
+        "class_specific_checks": {}
+      },
+      "done_contract": {},
+      "class_payload": {
+        "control_objective": "Prevent unsafe writes on invalid operator requests.",
+        "enforcing_surface": "operator request workflow",
+        "fail_mode": "fail_closed"
+      }
+    },
+    {
+      "item_id": "item-core-ops",
+      "item_class": "operational_enablement",
+      "track_id": "externally-safe-operationally-supportable",
+      "backlog_protocol_state": "validated",
+      "delivery_state": "not_started",
+      "readiness_state": "ready",
+      "closure_state": "open",
+      "summary_label": "Planned",
+      "title": "Runtime operational enablement",
+      "origin_ref": [{ "kind": "claim_ref", "ref": "claim-core-ops" }],
+      "owners": {
+        "decision_owner": "platform",
+        "delivery_owner": "runtime-team",
+        "runtime_owner": "runtime-ops",
+        "escalation_owner": "incident-manager",
+        "consulted_teams": ["support-team"]
+      },
+      "proof_refs": ["proof-core-ops"],
+      "dependency_refs": ["item-core-control"],
+      "change_surfaces": ["runtime", "deployment", "observability", "support"],
+      "actor_role_set": ["operator"],
+      "value": {
+        "persona_or_operator_served": "operator",
+        "product_or_operator_value": "Operators get runbooks, alerts, and escalation ownership.",
+        "why_now": "The safe track is incomplete without operational handoff.",
+        "slice_value_kind": "risk_retirement"
+      },
+      "estimate_band": "S",
+      "confidence": "medium",
+      "economic_priority_note": "Makes the safe track operable.",
+      "evidence_freshness_sla": "refresh on alerting or topology changes",
+      "nfr_contract": {
+        "latency": "p95 < 500ms for core-ops",
+        "throughput": "200 rps for core-ops",
+        "concurrency": "100 inflight for core-ops",
+        "availability": "99.9%",
+        "durability": "no silent loss for core-ops",
+        "rpo": "5m",
+        "rto": "30m",
+        "cost_budget": "within core-ops budget",
+        "privacy_compliance_class": "restricted",
+        "accessibility_localization_duty": "operator-visible outputs stay accessible",
+        "auditability_traceability": "core-ops changes are auditable",
+        "scalability_envelope": "3x load for core-ops"
+      },
+      "observability_contract": {
+        "sli_slo": ["core-ops-success-rate >= 99%"],
+        "alert_thresholds": ["core-ops-error-rate > 1% for 5m"],
+        "audit_requirements": ["core-ops actions logged"],
+        "security_controls": ["explicit operator access review"],
+        "privacy_controls": ["sensitive payload redaction"],
+        "analytics_obligations": ["core-ops telemetry emitted"],
+        "monitoring_evidence_refs": ["evidence:core-ops:monitoring"],
+        "dashboards": ["dashboard:core-ops"],
+        "runbook_refs": ["runbook:core-ops"],
+        "telemetry_signals": ["trace:core-ops"],
+        "bypass_governance": "No bypass outside incident authority.",
+        "residual_exceptions": ["none"]
+      },
+      "rollout": {
+        "applicability": "not_applicable",
+        "justification": "Enablement artifact only."
+      },
+      "recovery": {
+        "applicability": "not_applicable",
+        "justification": "Enablement artifact only."
+      },
+      "readiness_contract": {
+        "behavior_described": true,
+        "happy_path_defined": true,
+        "error_paths_defined": true,
+        "acceptance_examples_defined": true,
+        "interface_data_impact_described": true,
+        "nfr_impact_known": true,
+        "security_privacy_impact_known": true,
+        "rollout_defined": true,
+        "recovery_defined": true,
+        "observability_contract_defined": true,
+        "required_proof_defined": true,
+        "docs_support_impact_described": true,
+        "estimate_band_defined": true,
+        "confidence_defined": true,
+        "unresolved_questions_below_threshold": true,
+        "class_specific_checks": {}
+      },
+      "done_contract": {},
+      "class_payload": {
+        "runbook_or_enablement_artifact": "runbooks/example-ops.md",
+        "operational_audience": "runtime on-call"
+      }
+    },
+    {
+      "item_id": "item-core-docs",
+      "item_class": "documentation_support_enablement",
+      "track_id": "full-target-system",
+      "backlog_protocol_state": "validated",
+      "delivery_state": "not_started",
+      "readiness_state": "ready",
+      "closure_state": "open",
+      "summary_label": "Planned",
+      "title": "Runtime documentation source of truth",
+      "origin_ref": [{ "kind": "claim_ref", "ref": "claim-core-ops" }],
+      "owners": {
+        "decision_owner": "support",
+        "delivery_owner": "runtime-team",
+        "runtime_owner": "runtime-ops",
+        "escalation_owner": "incident-manager",
+        "consulted_teams": ["support-team"]
+      },
+      "proof_refs": ["proof-core-docs"],
+      "dependency_refs": ["item-core-ops"],
+      "change_surfaces": ["support"],
+      "actor_role_set": ["operator"],
+      "value": {
+        "persona_or_operator_served": "operator",
+        "product_or_operator_value": "Support uses one source of truth for the runtime.",
+        "why_now": "The full target track remains open without durable docs.",
+        "slice_value_kind": "risk_retirement"
+      },
+      "estimate_band": "XS",
+      "confidence": "high",
+      "economic_priority_note": "Closes the full-target support handoff.",
+      "evidence_freshness_sla": "refresh on support or runtime release",
+      "observability_contract": {
+        "sli_slo": ["core-docs-success-rate >= 99%"],
+        "alert_thresholds": ["core-docs-error-rate > 1% for 5m"],
+        "audit_requirements": ["core-docs actions logged"],
+        "security_controls": ["explicit operator access review"],
+        "privacy_controls": ["sensitive payload redaction"],
+        "analytics_obligations": ["core-docs telemetry emitted"],
+        "monitoring_evidence_refs": ["evidence:core-docs:monitoring"],
+        "dashboards": ["dashboard:core-docs"],
+        "runbook_refs": ["runbook:core-docs"],
+        "telemetry_signals": ["trace:core-docs"],
+        "bypass_governance": "No bypass outside incident authority.",
+        "residual_exceptions": ["none"]
+      },
+      "rollout": {
+        "applicability": "not_applicable",
+        "justification": "Documentation update only."
+      },
+      "recovery": {
+        "applicability": "not_applicable",
+        "justification": "Documentation update only."
+      },
+      "readiness_contract": {
+        "behavior_described": true,
+        "happy_path_defined": true,
+        "error_paths_defined": true,
+        "acceptance_examples_defined": true,
+        "interface_data_impact_described": true,
+        "nfr_impact_known": true,
+        "security_privacy_impact_known": true,
+        "rollout_defined": true,
+        "recovery_defined": true,
+        "observability_contract_defined": true,
+        "required_proof_defined": true,
+        "docs_support_impact_described": true,
+        "estimate_band_defined": true,
+        "confidence_defined": true,
+        "unresolved_questions_below_threshold": true,
+        "class_specific_checks": {}
+      },
+      "done_contract": {},
+      "class_payload": {
+        "doc_audience": "runtime operators",
+        "doc_scope": "runtime behavior, incident handling, operator workflow",
+        "source_of_truth_artifact": "docs/example-runtime-support.md",
+        "freshness_update_trigger": "any runtime release",
+        "freshness_update_owner": "support-lead",
+        "support_handoff_artifact": "docs/example-runtime-handoff.md"
+      }
+    }
+  ],
+  "relations": [
+    { "relation_type": "belongs_to_track", "from": { "kind": "item", "id": "item-core-seam" }, "to": { "kind": "track", "id": "minimal-working-system" } },
+    { "relation_type": "belongs_to_track", "from": { "kind": "item", "id": "item-core-slice" }, "to": { "kind": "track", "id": "minimal-working-system" } },
+    { "relation_type": "belongs_to_track", "from": { "kind": "item", "id": "item-core-control" }, "to": { "kind": "track", "id": "externally-safe-operationally-supportable" } },
+    { "relation_type": "belongs_to_track", "from": { "kind": "item", "id": "item-core-ops" }, "to": { "kind": "track", "id": "externally-safe-operationally-supportable" } },
+    { "relation_type": "belongs_to_track", "from": { "kind": "item", "id": "item-core-docs" }, "to": { "kind": "track", "id": "full-target-system" } },
+    { "relation_type": "decomposes_into", "from": { "kind": "item", "id": "item-core-seam" }, "to": { "kind": "item", "id": "item-core-slice" } },
+    { "relation_type": "decomposes_into", "from": { "kind": "item", "id": "item-core-seam" }, "to": { "kind": "item", "id": "item-core-control" } },
+    { "relation_type": "decomposes_into", "from": { "kind": "item", "id": "item-core-seam" }, "to": { "kind": "item", "id": "item-core-ops" } },
+    { "relation_type": "decomposes_into", "from": { "kind": "item", "id": "item-core-seam" }, "to": { "kind": "item", "id": "item-core-docs" } },
+    { "relation_type": "realizes", "from": { "kind": "item", "id": "item-core-slice" }, "to": { "kind": "item", "id": "item-core-seam" } },
+    { "relation_type": "depends_on", "from": { "kind": "item", "id": "item-core-control" }, "to": { "kind": "item", "id": "item-core-slice" } },
+    { "relation_type": "depends_on", "from": { "kind": "item", "id": "item-core-ops" }, "to": { "kind": "item", "id": "item-core-control" } },
+    { "relation_type": "depends_on", "from": { "kind": "item", "id": "item-core-docs" }, "to": { "kind": "item", "id": "item-core-ops" } },
+    { "relation_type": "governed_by", "from": { "kind": "item", "id": "item-core-slice" }, "to": { "kind": "item", "id": "item-core-control" } },
+    { "relation_type": "enabled_by", "from": { "kind": "item", "id": "item-core-ops" }, "to": { "kind": "item", "id": "item-core-slice" } },
+    { "relation_type": "enabled_by", "from": { "kind": "item", "id": "item-core-docs" }, "to": { "kind": "item", "id": "item-core-ops" } },
+    { "relation_type": "touches_contract", "from": { "kind": "item", "id": "item-core-seam" }, "to": { "kind": "contract", "id": "contract-example-api" } },
+    { "relation_type": "touches_contract", "from": { "kind": "item", "id": "item-core-slice" }, "to": { "kind": "contract", "id": "contract-example-api" } },
+    { "relation_type": "touches_contract", "from": { "kind": "item", "id": "item-core-control" }, "to": { "kind": "contract", "id": "contract-example-api" } },
+    { "relation_type": "touches_data_domain", "from": { "kind": "item", "id": "item-core-seam" }, "to": { "kind": "data_domain", "id": "domain-example-state" } },
+    { "relation_type": "touches_data_domain", "from": { "kind": "item", "id": "item-core-slice" }, "to": { "kind": "data_domain", "id": "domain-example-state" } },
+    { "relation_type": "touches_data_domain", "from": { "kind": "item", "id": "item-core-control" }, "to": { "kind": "data_domain", "id": "domain-example-state" } },
+    { "relation_type": "proves", "from": { "kind": "item", "id": "item-core-seam" }, "to": { "kind": "proof", "id": "proof-core-seam" } },
+    { "relation_type": "proves", "from": { "kind": "item", "id": "item-core-slice" }, "to": { "kind": "proof", "id": "proof-core-slice" } },
+    { "relation_type": "proves", "from": { "kind": "item", "id": "item-core-control" }, "to": { "kind": "proof", "id": "proof-core-control" } },
+    { "relation_type": "proves", "from": { "kind": "item", "id": "item-core-ops" }, "to": { "kind": "proof", "id": "proof-core-ops" } },
+    { "relation_type": "proves", "from": { "kind": "item", "id": "item-core-docs" }, "to": { "kind": "proof", "id": "proof-core-docs" } },
+    { "relation_type": "proves", "from": { "kind": "track", "id": "minimal-working-system" }, "to": { "kind": "track_proof", "id": "track-proof-min" } },
+    { "relation_type": "proves", "from": { "kind": "track", "id": "externally-safe-operationally-supportable" }, "to": { "kind": "track_proof", "id": "track-proof-safe" } },
+    { "relation_type": "proves", "from": { "kind": "track", "id": "full-target-system" }, "to": { "kind": "track_proof", "id": "track-proof-full" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "run", "id": "abe-example" }, "to": { "kind": "review", "id": "review-product" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "run", "id": "abe-example" }, "to": { "kind": "review", "id": "review-architecture" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "run", "id": "abe-example" }, "to": { "kind": "review", "id": "review-engineering" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "run", "id": "abe-example" }, "to": { "kind": "review", "id": "review-platform" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "run", "id": "abe-example" }, "to": { "kind": "review", "id": "review-security" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "run", "id": "abe-example" }, "to": { "kind": "review", "id": "review-qa" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "run", "id": "abe-example" }, "to": { "kind": "review", "id": "review-support" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "track_proof", "id": "track-proof-min" }, "to": { "kind": "review", "id": "review-track-min" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "track_proof", "id": "track-proof-safe" }, "to": { "kind": "review", "id": "review-track-safe" } },
+    { "relation_type": "reviewed_by", "from": { "kind": "track_proof", "id": "track-proof-full" }, "to": { "kind": "review", "id": "review-track-full" } }
+  ],
+  "proofs": [
+    {
+      "proof_id": "proof-core-seam",
+      "covered_ref": { "kind": "item", "id": "item-core-seam" },
+      "covered_commit_or_build": "build:abe-example",
+      "environment": "staging",
+      "executed_at": "2026-03-30T00:00:00Z",
+      "freshness_rule": "Refresh after source, contract, or topology changes.",
+      "invalidated_by": ["source_change", "contract_change", "topology_change"],
+      "dimensions": {
+        "architecture_trace": { "status": "present", "artifact": "docs/example-architecture.md" },
+        "implementation_trace": { "status": "present", "command": "pnpm test" },
+        "verification_trace": { "status": "present", "command": "pnpm test" },
+        "security_trace": { "status": "present", "artifact": "artifacts/security-review.md" },
+        "release_trace": { "status": "present", "procedure": "release/example" },
+        "rollback_or_recovery_trace": { "status": "present", "procedure": "runbooks/example-rollback" },
+        "operability_trace": { "status": "present", "artifact": "runbooks/example-ops.md" }
+      }
+    },
+    {
+      "proof_id": "proof-core-slice",
+      "covered_ref": { "kind": "item", "id": "item-core-slice" },
+      "covered_commit_or_build": "build:abe-example",
+      "environment": "staging",
+      "executed_at": "2026-03-30T00:00:00Z",
+      "freshness_rule": "Refresh after source, contract, or topology changes.",
+      "invalidated_by": ["source_change", "contract_change", "topology_change"],
+      "dimensions": {
+        "architecture_trace": { "status": "present", "artifact": "docs/example-architecture.md" },
+        "implementation_trace": { "status": "present", "command": "pnpm test" },
+        "verification_trace": { "status": "present", "command": "pnpm test" },
+        "security_trace": { "status": "present", "artifact": "artifacts/security-review.md" },
+        "release_trace": { "status": "present", "procedure": "release/example" },
+        "rollback_or_recovery_trace": { "status": "present", "procedure": "runbooks/example-rollback" },
+        "operability_trace": { "status": "present", "artifact": "runbooks/example-ops.md" }
+      }
+    },
+    {
+      "proof_id": "proof-core-control",
+      "covered_ref": { "kind": "item", "id": "item-core-control" },
+      "covered_commit_or_build": "build:abe-example",
+      "environment": "staging",
+      "executed_at": "2026-03-30T00:00:00Z",
+      "freshness_rule": "Refresh after source, contract, or topology changes.",
+      "invalidated_by": ["source_change", "contract_change", "topology_change", "track_gate_change"],
+      "dimensions": {
+        "architecture_trace": { "status": "present", "artifact": "docs/example-architecture.md" },
+        "implementation_trace": { "status": "present", "command": "pnpm test" },
+        "verification_trace": { "status": "present", "command": "pnpm test" },
+        "security_trace": { "status": "present", "artifact": "artifacts/security-review.md" },
+        "release_trace": { "status": "present", "procedure": "release/example" },
+        "rollback_or_recovery_trace": { "status": "present", "procedure": "runbooks/example-rollback" },
+        "operability_trace": { "status": "present", "artifact": "runbooks/example-ops.md" }
+      }
+    },
+    {
+      "proof_id": "proof-core-ops",
+      "covered_ref": { "kind": "item", "id": "item-core-ops" },
+      "covered_commit_or_build": "build:abe-example",
+      "environment": "staging",
+      "executed_at": "2026-03-30T00:00:00Z",
+      "freshness_rule": "Refresh after source or topology changes.",
+      "invalidated_by": ["source_change", "topology_change", "track_gate_change"],
+      "dimensions": {
+        "architecture_trace": { "status": "present", "artifact": "docs/example-architecture.md" },
+        "implementation_trace": { "status": "present", "command": "pnpm test" },
+        "verification_trace": { "status": "present", "command": "pnpm test" },
+        "security_trace": { "status": "present", "artifact": "artifacts/security-review.md" },
+        "release_trace": { "status": "present", "procedure": "release/example" },
+        "rollback_or_recovery_trace": { "status": "present", "procedure": "runbooks/example-rollback" },
+        "operability_trace": { "status": "present", "artifact": "runbooks/example-ops.md" }
+      }
+    },
+    {
+      "proof_id": "proof-core-docs",
+      "covered_ref": { "kind": "item", "id": "item-core-docs" },
+      "covered_commit_or_build": "build:abe-example",
+      "environment": "staging",
+      "executed_at": "2026-03-30T00:00:00Z",
+      "freshness_rule": "Refresh after source or topology changes.",
+      "invalidated_by": ["source_change", "topology_change"],
+      "dimensions": {
+        "architecture_trace": { "status": "present", "artifact": "docs/example-architecture.md" },
+        "implementation_trace": { "status": "present", "command": "pnpm test" },
+        "verification_trace": { "status": "present", "command": "pnpm test" },
+        "security_trace": { "status": "present", "artifact": "artifacts/security-review.md" },
+        "release_trace": { "status": "present", "procedure": "release/example" },
+        "rollback_or_recovery_trace": { "status": "present", "procedure": "runbooks/example-rollback" },
+        "operability_trace": { "status": "present", "artifact": "runbooks/example-ops.md" }
+      }
+    },
+    {
+      "proof_id": "proof-track-min",
+      "covered_ref": { "kind": "track_proof", "id": "track-proof-min" },
+      "covered_commit_or_build": "build:abe-example",
+      "environment": "staging",
+      "executed_at": "2026-03-30T00:00:00Z",
+      "freshness_rule": "Refresh after track or topology changes.",
+      "invalidated_by": ["source_change", "topology_change", "track_gate_change"],
+      "dimensions": {
+        "architecture_trace": { "status": "present", "artifact": "docs/example-architecture.md" },
+        "implementation_trace": { "status": "present", "command": "pnpm test" },
+        "verification_trace": { "status": "present", "command": "pnpm test" },
+        "security_trace": { "status": "present", "artifact": "artifacts/security-review.md" },
+        "release_trace": { "status": "present", "procedure": "release/example" },
+        "rollback_or_recovery_trace": { "status": "present", "procedure": "runbooks/example-rollback" },
+        "operability_trace": { "status": "present", "artifact": "runbooks/example-ops.md" }
+      }
+    },
+    {
+      "proof_id": "proof-track-safe",
+      "covered_ref": { "kind": "track_proof", "id": "track-proof-safe" },
+      "covered_commit_or_build": "build:abe-example",
+      "environment": "staging",
+      "executed_at": "2026-03-30T00:00:00Z",
+      "freshness_rule": "Refresh after track or topology changes.",
+      "invalidated_by": ["source_change", "topology_change", "track_gate_change"],
+      "dimensions": {
+        "architecture_trace": { "status": "present", "artifact": "docs/example-architecture.md" },
+        "implementation_trace": { "status": "present", "command": "pnpm test" },
+        "verification_trace": { "status": "present", "command": "pnpm test" },
+        "security_trace": { "status": "present", "artifact": "artifacts/security-review.md" },
+        "release_trace": { "status": "present", "procedure": "release/example" },
+        "rollback_or_recovery_trace": { "status": "present", "procedure": "runbooks/example-rollback" },
+        "operability_trace": { "status": "present", "artifact": "runbooks/example-ops.md" }
+      }
+    },
+    {
+      "proof_id": "proof-track-full",
+      "covered_ref": { "kind": "track_proof", "id": "track-proof-full" },
+      "covered_commit_or_build": "build:abe-example",
+      "environment": "staging",
+      "executed_at": "2026-03-30T00:00:00Z",
+      "freshness_rule": "Refresh after track or topology changes.",
+      "invalidated_by": ["source_change", "topology_change", "track_gate_change"],
+      "dimensions": {
+        "architecture_trace": { "status": "present", "artifact": "docs/example-architecture.md" },
+        "implementation_trace": { "status": "present", "command": "pnpm test" },
+        "verification_trace": { "status": "present", "command": "pnpm test" },
+        "security_trace": { "status": "present", "artifact": "artifacts/security-review.md" },
+        "release_trace": { "status": "present", "procedure": "release/example" },
+        "rollback_or_recovery_trace": { "status": "present", "procedure": "runbooks/example-rollback" },
+        "operability_trace": { "status": "present", "artifact": "runbooks/example-ops.md" }
+      }
+    }
+  ],
+  "track_proofs": [
+    {
+      "track_proof_id": "track-proof-min",
+      "track_id": "minimal-working-system",
+      "proof_refs": ["proof-core-slice", "proof-track-min"],
+      "coverage": {
+        "boot_startup_dependencies": true,
+        "end_to_end_journey": true,
+        "operator_control_path": true,
+        "degraded_mode_exercise": true,
+        "release_gate_execution": true,
+        "rollback_or_recovery_rehearsal": true,
+        "observability_and_alert_routing": true,
+        "runbook_and_escalation_path": true
+      }
+    },
+    {
+      "track_proof_id": "track-proof-safe",
+      "track_id": "externally-safe-operationally-supportable",
+      "proof_refs": ["proof-core-control", "proof-core-ops", "proof-track-safe"],
+      "coverage": {
+        "boot_startup_dependencies": true,
+        "end_to_end_journey": true,
+        "operator_control_path": true,
+        "degraded_mode_exercise": true,
+        "release_gate_execution": true,
+        "rollback_or_recovery_rehearsal": true,
+        "observability_and_alert_routing": true,
+        "runbook_and_escalation_path": true
+      }
+    },
+    {
+      "track_proof_id": "track-proof-full",
+      "track_id": "full-target-system",
+      "proof_refs": ["proof-core-docs", "proof-track-full"],
+      "coverage": {
+        "boot_startup_dependencies": true,
+        "end_to_end_journey": true,
+        "operator_control_path": true,
+        "degraded_mode_exercise": true,
+        "release_gate_execution": true,
+        "rollback_or_recovery_rehearsal": true,
+        "observability_and_alert_routing": true,
+        "runbook_and_escalation_path": true
+      }
+    }
+  ],
+  "reviews": [
+    { "review_id": "review-product", "review_scope": "run", "reviewed_ref": { "kind": "run", "id": "abe-example" }, "reviewer": "pm-1", "role": "product_strategy", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["note:product"], "score_contribution": 10, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-architecture", "review_scope": "run", "reviewed_ref": { "kind": "run", "id": "abe-example" }, "reviewer": "arch-1", "role": "system_architecture", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["note:architecture"], "score_contribution": 10, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-engineering", "review_scope": "run", "reviewed_ref": { "kind": "run", "id": "abe-example" }, "reviewer": "eng-1", "role": "application_engineering", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["note:engineering"], "score_contribution": 10, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-platform", "review_scope": "run", "reviewed_ref": { "kind": "run", "id": "abe-example" }, "reviewer": "sre-1", "role": "platform_sre", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["note:platform"], "score_contribution": 10, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-security", "review_scope": "run", "reviewed_ref": { "kind": "run", "id": "abe-example" }, "reviewer": "sec-1", "role": "security", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["note:security"], "score_contribution": 10, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-qa", "review_scope": "run", "reviewed_ref": { "kind": "run", "id": "abe-example" }, "reviewer": "qa-1", "role": "qa_release", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["note:qa"], "score_contribution": 10, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-support", "review_scope": "run", "reviewed_ref": { "kind": "run", "id": "abe-example" }, "reviewer": "ops-1", "role": "support_operations", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["note:support"], "score_contribution": 10, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-track-min", "review_scope": "track_proof", "reviewed_ref": { "kind": "track_proof", "id": "track-proof-min" }, "reviewer": "eng-track", "role": "application_engineering", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["proof:track:min"], "score_contribution": 5, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-track-safe", "review_scope": "track_proof", "reviewed_ref": { "kind": "track_proof", "id": "track-proof-safe" }, "reviewer": "sre-track", "role": "platform_sre", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["proof:track:safe"], "score_contribution": 5, "reviewed_at": "2026-03-30T00:00:00Z" },
+    { "review_id": "review-track-full", "review_scope": "track_proof", "reviewed_ref": { "kind": "track_proof", "id": "track-proof-full" }, "reviewer": "ops-track", "role": "support_operations", "independent": true, "verdict": "pass", "findings": [], "hard_fail_report": [], "evidence_refs": ["proof:track:full"], "score_contribution": 5, "reviewed_at": "2026-03-30T00:00:00Z" }
+  ],
+  "waivers": []
+}
+```
+````
+
+This example is intentionally verbose because a brand-new run must carry a whole graph, not just a few claims or items.
 
 ### Planning overlay example
 

@@ -133,6 +133,8 @@ That file defines:
 ## Bootstrap rules
 
 - If the bundled runtime artifact `scripts/architecture-backlog.mjs` exists, use it directly.
+- Inside this skill package, the bundled artifact lives at [../scripts/architecture-backlog.mjs](../scripts/architecture-backlog.mjs).
+  If the target repo does not contain its own copy, call that bundled file from the skill directory.
 - If it is missing after local source edits, rebuild it from the skill package.
 - If the target run directory has no canonical files, `discover` should initialize it automatically.
 - If the run already exists, reuse it; do not overwrite unless explicitly instructed.

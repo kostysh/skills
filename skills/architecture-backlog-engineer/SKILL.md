@@ -134,6 +134,8 @@ Use the bundled CLI for deterministic scaffolding, ingestion, validation, drift 
 Runtime entry:
 
 - `node scripts/architecture-backlog.mjs`
+- Bundled artifact path inside this skill package: [scripts/architecture-backlog.mjs](scripts/architecture-backlog.mjs)
+  If the target repo does not have a repo-local copy, use this bundled file directly.
 
 Primary commands:
 
