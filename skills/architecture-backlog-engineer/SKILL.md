@@ -170,7 +170,7 @@ Compatibility aliases are also accepted:
 For a new run:
 
 1. Read the architecture and related prose sources.
-2. Author explicit packet files that encode the intended graph updates.
+2. Author explicit packet files that encode the intended graph updates. Use [references/packet-schema.md](references/packet-schema.md) when you need the envelope, merge modes, allowed section keys, or minimal examples.
 3. Run `discover` with the relevant `--*-source` refs and `--source-packet` refs.
 4. Let the CLI initialize the run if it does not exist.
 5. Let the CLI materialize the canonical graph, validate it, and render `report.md`.
@@ -208,6 +208,14 @@ Load [references/artifact-model.md](references/artifact-model.md) when you need:
 - bootstrap rules;
 - failure handling;
 - the default command sequence.
+
+Load [references/packet-schema.md](references/packet-schema.md) when you need:
+
+- the explicit packet envelope;
+- allowed `source` and `packet_provenance` keys;
+- allowed section keys and upsert identities;
+- merge-mode restrictions;
+- minimal packet examples.
 
 Load [docs/concept-baseline.ru.md](docs/concept-baseline.ru.md) when you need the non-negotiable role split:
 

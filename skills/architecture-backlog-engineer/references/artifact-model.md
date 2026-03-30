@@ -118,6 +118,18 @@ Auto-render contract:
 - `render` remains the recovery-only explicit render path
 - `discover` and `repair` no longer expose `--no-render`
 
+## Packet authoring reference
+
+When the workflow requires explicit packet files, use [packet-schema.md](packet-schema.md) as the canonical packet-authoring reference.
+
+That file defines:
+
+- supported packet transport forms;
+- the explicit packet envelope;
+- allowed `source` and `packet_provenance` keys;
+- allowed packet sections and their upsert identities;
+- minimal `planning_overlay` and `source_driven_refresh` examples.
+
 ## Bootstrap rules
 
 - If the bundled runtime artifact `scripts/architecture-backlog.mjs` exists, use it directly.
