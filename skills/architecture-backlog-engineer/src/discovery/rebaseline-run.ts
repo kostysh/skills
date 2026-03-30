@@ -8,6 +8,7 @@ import {
   type DriftCause,
 } from './common.js';
 import { repairCompactRunBundle } from './bundle-repair.js';
+import { buildBaselineProjection } from './command-lineage.js';
 import { computeDriftState } from './drift-state.js';
 import { refreshRunSourceFingerprints } from './source-runtime.js';
 import { validateDiscoveryRun } from './validate-run.js';
@@ -23,40 +24,67 @@ export interface RebaselineRunResult {
   unsupportedSchemaMessages: string[];
 }
 
-export async function rebaselineDiscoveryRun(runDirInput: string): Promise<RebaselineRunResult> {
+export interface RebaselineDiscoveryRunOptions {
+  commandRunId?: string;
+}
+
+export async function rebaselineDiscoveryRun(
+  runDirInput: string,
+  options: RebaselineDiscoveryRunOptions = {},
+): Promise<RebaselineRunResult> {
   const bundleRepair = repairCompactRunBundle(runDirInput);
-  if (bundleRepair.legacyLayoutMessage || bundleRepair.irreparableMissingArtifacts.length > 0 || bundleRepair.unsupportedSchemaMessages.length > 0) {
+  if (
+    bundleRepair.legacyLayoutMessage ||
+    bundleRepair.irreparableMissingArtifacts.length > 0 ||
+    bundleRepair.unsupportedSchemaMessages.length > 0
+  ) {
     return {
       assessment: null,
       causes: [],
       inaccessibleSources: [],
-      ...(bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {}),
+      ...(bundleRepair.legacyLayoutMessage
+        ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage }
+        : {}),
       missingArtifacts: bundleRepair.irreparableMissingArtifacts,
       runDir: bundleRepair.runDir,
       unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages,
     };
   }
 
-  const refreshResult = await refreshRunSourceFingerprints(runDirInput);
-  if (refreshResult.legacyLayoutMessage || refreshResult.missingArtifacts.length > 0 || refreshResult.unsupportedSchemaMessages.length > 0) {
+  const refreshResult = await refreshRunSourceFingerprints(runDirInput, {
+    ...(options.commandRunId ? { commandRunId: options.commandRunId } : {}),
+  });
+  if (
+    refreshResult.legacyLayoutMessage ||
+    refreshResult.missingArtifacts.length > 0 ||
+    refreshResult.unsupportedSchemaMessages.length > 0
+  ) {
     return {
       assessment: null,
       causes: [],
       inaccessibleSources: refreshResult.inaccessibleSources,
-      ...(refreshResult.legacyLayoutMessage ? { legacyLayoutMessage: refreshResult.legacyLayoutMessage } : {}),
+      ...(refreshResult.legacyLayoutMessage
+        ? { legacyLayoutMessage: refreshResult.legacyLayoutMessage }
+        : {}),
       missingArtifacts: refreshResult.missingArtifacts,
       runDir: refreshResult.runDir,
       unsupportedSchemaMessages: refreshResult.unsupportedSchemaMessages,
     };
   }
   if (refreshResult.inaccessibleSources.length > 0) {
+    const validationResult = validateDiscoveryRun(refreshResult.runDir, {
+      ...(options.commandRunId ? { commandRunId: options.commandRunId } : {}),
+    });
     return {
-      assessment: null,
+      assessment: validationResult.assessment,
       causes: [],
       inaccessibleSources: refreshResult.inaccessibleSources,
-      missingArtifacts: [],
+      missingArtifacts: validationResult.missingArtifacts,
       runDir: refreshResult.runDir,
       unsupportedSchemaMessages: [],
+      ...(validationResult.legacyLayoutMessage
+        ? { legacyLayoutMessage: validationResult.legacyLayoutMessage }
+        : {}),
     };
   }
 
@@ -102,6 +130,7 @@ export async function rebaselineDiscoveryRun(runDirInput: string): Promise<Rebas
     ts: rebaselinedAt,
     event: 'rebaseline_started',
     run_id: manifest.run_id,
+    ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
     previous_baseline_source_hashes: manifest.baseline_source_hashes,
     previous_baseline_canonical_hashes: manifest.baseline_canonical_hashes,
     causes,
@@ -114,10 +143,14 @@ export async function rebaselineDiscoveryRun(runDirInput: string): Promise<Rebas
   manifest.current_source_hashes = driftState.currentSourceHashes;
   manifest.baseline_canonical_hashes = driftState.currentCanonicalHashes;
   manifest.current_canonical_hashes = driftState.currentCanonicalHashes;
+  manifest.baseline_issue_item_links = driftState.currentIssueItemLinks;
+  manifest.current_issue_item_links = driftState.currentIssueItemLinks;
   manifest.dirty_flags = [];
   writeJson(paths.manifest, manifest);
 
-  const validationResult = validateDiscoveryRun(runDir);
+  const validationResult = validateDiscoveryRun(runDir, {
+    ...(options.commandRunId ? { commandRunId: options.commandRunId } : {}),
+  });
   if (!validationResult.assessment) {
     const result: RebaselineRunResult = {
       assessment: null,
@@ -138,7 +171,9 @@ export async function rebaselineDiscoveryRun(runDirInput: string): Promise<Rebas
     ts: rebaselinedAt,
     event: 'rebaseline_completed',
     run_id: manifest.run_id,
+    ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
     causes,
+    baseline_projection: buildBaselineProjection(backlog),
     assessment_status: validationResult.assessment.status,
     stale_claim_ids: validationResult.assessment.stale_claims,
     stale_item_ids: validationResult.assessment.stale_items,

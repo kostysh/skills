@@ -81,13 +81,13 @@ function dependencyRefKey(ref: GraphRef | null | undefined): string {
   return `${ref?.kind ?? 'unknown'}:${ref?.id ?? 'unknown'}`;
 }
 
-function relationRef(ref: GraphRef | null | undefined): ref is GraphRef & { id: string; kind: 'item' } {
+function relationRef(
+  ref: GraphRef | null | undefined,
+): ref is GraphRef & { id: string; kind: 'item' } {
   return ref?.kind === 'item' && isNonEmptyString(ref.id);
 }
 
-function collectRelationsByItem(
-  relations: DiscoveryRelation[],
-): {
+function collectRelationsByItem(relations: DiscoveryRelation[]): {
   incoming: Map<string, DiscoveryRelation[]>;
   outgoing: Map<string, DiscoveryRelation[]>;
 } {
@@ -145,7 +145,9 @@ function buildTopologyRanks(
     if (!isNonEmptyString(item.item_id)) {
       continue;
     }
-    const predecessors = new Set(collectTopologyPredecessors(item, incomingByItemId.get(item.item_id) ?? []));
+    const predecessors = new Set(
+      collectTopologyPredecessors(item, incomingByItemId.get(item.item_id) ?? []),
+    );
     predecessorsByItemId.set(item.item_id, predecessors);
     indegreeByItemId.set(item.item_id, predecessors.size);
     if (!successorsByItemId.has(item.item_id)) {
@@ -222,10 +224,7 @@ function buildDependencyEntries(
   }
 
   for (const relation of outgoing) {
-    if (
-      relation.relation_type === 'depends_on' &&
-      relationRef(relation.to)
-    ) {
+    if (relation.relation_type === 'depends_on' && relationRef(relation.to)) {
       dependencyEntries.push({
         ref: relation.to,
         dependency_type: 'depends_on',
@@ -251,23 +250,35 @@ export function buildRoadmapMatrix(
   const topologyRanks = buildTopologyRanks(items, incoming);
 
   const rows = items
-    .filter((item): item is DiscoveryItem & { item_id: string; track_id: string; item_class: NonNullable<DiscoveryItem['item_class']> } =>
-      isNonEmptyString(item.item_id) &&
-      isNonEmptyString(item.track_id) &&
-      isNonEmptyString(item.item_class),
+    .filter(
+      (
+        item,
+      ): item is DiscoveryItem & {
+        item_id: string;
+        track_id: string;
+        item_class: NonNullable<DiscoveryItem['item_class']>;
+      } =>
+        isNonEmptyString(item.item_id) &&
+        isNonEmptyString(item.track_id) &&
+        isNonEmptyString(item.item_class),
     )
     .map((item) => {
       const incomingRelations = incoming.get(item.item_id) ?? [];
       const outgoingRelations = outgoing.get(item.item_id) ?? [];
       const parentRefs = stableGraphRefList(
         incomingRelations
-          .filter((relation) => relation.relation_type === 'decomposes_into' && relationRef(relation.from))
+          .filter(
+            (relation) =>
+              relation.relation_type === 'decomposes_into' && relationRef(relation.from),
+          )
           .map((relation) => relation.from)
           .filter((ref): ref is GraphRef => ref !== undefined),
       );
       const childRefs = stableGraphRefList(
         outgoingRelations
-          .filter((relation) => relation.relation_type === 'decomposes_into' && relationRef(relation.to))
+          .filter(
+            (relation) => relation.relation_type === 'decomposes_into' && relationRef(relation.to),
+          )
           .map((relation) => relation.to)
           .filter((ref): ref is GraphRef => ref !== undefined),
       );
@@ -276,7 +287,8 @@ export function buildRoadmapMatrix(
         .map((entry) => entry.ref)
         .filter((entry): entry is GraphRef => entry !== undefined);
       const retirementRelation = outgoingRelations.find(
-        (relation) => relation.relation_type === 'retires' && relation.to && isNonEmptyString(relation.to.id),
+        (relation) =>
+          relation.relation_type === 'retires' && relation.to && isNonEmptyString(relation.to.id),
       );
 
       const row: RoadmapMatrixEntry = {
@@ -335,13 +347,21 @@ export function buildRoadmapMatrix(
     if (precedence !== 0) {
       return precedence;
     }
-    const leftSafetyRank = safetyRankByItemId.get(left.item_ref?.id ?? '') ?? Number.MAX_SAFE_INTEGER;
-    const rightSafetyRank = safetyRankByItemId.get(right.item_ref?.id ?? '') ?? Number.MAX_SAFE_INTEGER;
+    const leftSafetyRank =
+      safetyRankByItemId.get(left.item_ref?.id ?? '') ?? Number.MAX_SAFE_INTEGER;
+    const rightSafetyRank =
+      safetyRankByItemId.get(right.item_ref?.id ?? '') ?? Number.MAX_SAFE_INTEGER;
     if (leftSafetyRank !== rightSafetyRank) {
       return leftSafetyRank - rightSafetyRank;
     }
-    if ((left.topology_rank ?? Number.MAX_SAFE_INTEGER) !== (right.topology_rank ?? Number.MAX_SAFE_INTEGER)) {
-      return (left.topology_rank ?? Number.MAX_SAFE_INTEGER) - (right.topology_rank ?? Number.MAX_SAFE_INTEGER);
+    if (
+      (left.topology_rank ?? Number.MAX_SAFE_INTEGER) !==
+      (right.topology_rank ?? Number.MAX_SAFE_INTEGER)
+    ) {
+      return (
+        (left.topology_rank ?? Number.MAX_SAFE_INTEGER) -
+        (right.topology_rank ?? Number.MAX_SAFE_INTEGER)
+      );
     }
     return String(left.item_ref?.id ?? '').localeCompare(String(right.item_ref?.id ?? ''));
   });
@@ -359,8 +379,6 @@ export function buildRoadmapMatrix(
   }));
 }
 
-export function roadmapMethodologyPrecedence(
-  backlog: BacklogFile,
-): BacklogFile['roadmap_matrix'] {
+export function roadmapMethodologyPrecedence(backlog: BacklogFile): BacklogFile['roadmap_matrix'] {
   return buildRoadmapMatrix(backlog.items, backlog.relations);
 }

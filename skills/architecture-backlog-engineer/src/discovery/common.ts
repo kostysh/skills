@@ -235,6 +235,8 @@ export interface Manifest {
   current_source_hashes: Record<string, string>;
   baseline_canonical_hashes: Record<string, string>;
   current_canonical_hashes: Record<string, string>;
+  baseline_issue_item_links?: Record<string, string[]>;
+  current_issue_item_links?: Record<string, string[]>;
   dirty_flags: DriftCause[];
   last_assessment_status: AssessmentStatus;
   last_render_at: string | null;
@@ -831,11 +833,40 @@ export interface DeltaSummary {
   stale_claim_ids: string[];
   stale_item_ids: string[];
   stale_proof_ids: string[];
+  stale_review_artifact_ids: string[];
   track_gate_ids_to_recalculate: string[];
   dirty_flags: DriftCause[];
   topology_changed: boolean;
   contract_changed: boolean;
   changed_track_gate_ids: string[];
+}
+
+export interface AssessmentStats {
+  sources_total: number;
+  claims_total: number;
+  contracts_total: number;
+  data_domains_total: number;
+  items_total: number;
+  items_delivered: number;
+  items_partially_delivered: number;
+  items_not_started: number;
+  gaps_total: number;
+  unknowns_total: number;
+  contradictions_total: number;
+  stale_claims_total: number;
+  stale_items_total: number;
+  stale_proofs_total: number;
+  stale_review_artifacts_total: number;
+  warnings_total: number;
+  hard_fails_total: number;
+  dor_ready_total: number;
+  review_artifacts_total: number;
+  waivers_total: number;
+}
+
+export interface RebaselineReadiness {
+  status: 'allowed' | 'blocked' | 'not_needed';
+  reasons: string[];
 }
 
 export interface AssessmentAcceptance {
@@ -862,6 +893,7 @@ export interface AssessmentFile {
   stale_proofs: string[];
   stale_items: string[];
   stale_claims: string[];
+  stale_review_artifacts: string[];
   track_gate_failures: string[];
   required_review_roles: ReviewRole[];
   present_review_roles: ReviewRole[];
@@ -879,7 +911,50 @@ export interface AssessmentFile {
   closure: AssessmentClosure;
   delta_summary: DeltaSummary;
   rebaseline_required: boolean;
-  stats: Record<string, number>;
+  rebaseline_readiness: RebaselineReadiness;
+  stats: AssessmentStats;
+}
+
+export function createEmptyDeltaSummary(): DeltaSummary {
+  return {
+    baseline_established: false,
+    changed_source_ids: [],
+    changed_claim_ids: [],
+    stale_claim_ids: [],
+    stale_item_ids: [],
+    stale_proof_ids: [],
+    stale_review_artifact_ids: [],
+    track_gate_ids_to_recalculate: [],
+    dirty_flags: [],
+    topology_changed: false,
+    contract_changed: false,
+    changed_track_gate_ids: [],
+  };
+}
+
+export function createEmptyAssessmentStats(): AssessmentStats {
+  return {
+    sources_total: 0,
+    claims_total: 0,
+    contracts_total: 0,
+    data_domains_total: 0,
+    items_total: 0,
+    items_delivered: 0,
+    items_partially_delivered: 0,
+    items_not_started: 0,
+    gaps_total: 0,
+    unknowns_total: 0,
+    contradictions_total: 0,
+    stale_claims_total: 0,
+    stale_items_total: 0,
+    stale_proofs_total: 0,
+    stale_review_artifacts_total: 0,
+    warnings_total: 0,
+    hard_fails_total: 0,
+    dor_ready_total: 0,
+    review_artifacts_total: 0,
+    waivers_total: 0,
+  };
 }
 
 export interface CompactRunArtifacts {
@@ -906,7 +981,11 @@ export function isGraphRef(value: unknown): value is GraphRef {
   }
 
   const candidate = value as GraphRef;
-  return isNonEmptyString(candidate.kind) && isGraphRefKind(candidate.kind) && isNonEmptyString(candidate.id);
+  return (
+    isNonEmptyString(candidate.kind) &&
+    isGraphRefKind(candidate.kind) &&
+    isNonEmptyString(candidate.id)
+  );
 }
 
 export function graphRef(kind: GraphRefKind, id: string): GraphRef {

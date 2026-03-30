@@ -24,13 +24,12 @@ import {
   resolveSourceInputs,
   type SourceInputSpec,
 } from './source-runtime.js';
-import { renderDiscoveryViews } from './render-views.js';
 import { validateDiscoveryRun } from './validate-run.js';
 
 export interface DiscoverRunOptions {
   acceptanceTarget?: AcceptanceClass;
+  commandRunId?: string;
   packetRefs?: string[];
-  render?: boolean;
   repair?: boolean;
   runDir: string;
   sourceInputs: SourceInputSpec[];
@@ -44,7 +43,6 @@ export interface DiscoverRunResult {
   inaccessibleSources: string[];
   legacyLayoutMessage?: string;
   missingArtifacts: string[];
-  reportPath?: string;
   runDir: string;
   sourceIds: string[];
   unsupportedSchemaMessages: string[];
@@ -52,8 +50,8 @@ export interface DiscoverRunResult {
 
 function runHasAnyCanonicalArtifact(runDir: string): boolean {
   const paths = runPaths(runDir);
-  return [paths.manifest, paths.backlog, paths.assessment, paths.journal, paths.report].some((filePath) =>
-    fs.existsSync(filePath),
+  return [paths.manifest, paths.backlog, paths.assessment, paths.journal, paths.report].some(
+    (filePath) => fs.existsSync(filePath),
   );
 }
 
@@ -80,7 +78,9 @@ function derivePhaseState(backlog: BacklogFile): PhaseState {
   return 'initialized';
 }
 
-export async function discoverDiscoveryRun(options: DiscoverRunOptions): Promise<DiscoverRunResult> {
+export async function discoverDiscoveryRun(
+  options: DiscoverRunOptions,
+): Promise<DiscoverRunResult> {
   const runDir = path.resolve(options.runDir);
   let initialized = false;
 
@@ -92,7 +92,9 @@ export async function discoverDiscoveryRun(options: DiscoverRunOptions): Promise
       appliedRepairs: [],
       initialized,
       inaccessibleSources: [],
-      ...(bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {}),
+      ...(bundleRepair.legacyLayoutMessage
+        ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage }
+        : {}),
       missingArtifacts: bundleRepair.irreparableMissingArtifacts,
       runDir: bundleRepair.runDir,
       sourceIds: [],
@@ -103,6 +105,7 @@ export async function discoverDiscoveryRun(options: DiscoverRunOptions): Promise
   if (!bundleRepair.hasAnyCanonicalArtifacts) {
     initializeDiscoveryRun({
       ...(options.acceptanceTarget ? { acceptanceTarget: options.acceptanceTarget } : {}),
+      ...(options.commandRunId ? { commandRunId: options.commandRunId } : {}),
       runDir,
     });
     initialized = true;
@@ -121,14 +124,19 @@ export async function discoverDiscoveryRun(options: DiscoverRunOptions): Promise
   }
 
   const compactArtifacts = loadCompactRunArtifacts(runDir);
-  if (compactArtifacts.legacyLayoutMessage || compactArtifacts.unsupportedSchemaMessages.length > 0) {
+  if (
+    compactArtifacts.legacyLayoutMessage ||
+    compactArtifacts.unsupportedSchemaMessages.length > 0
+  ) {
     return {
       assessment: null,
       appliedPackets: 0,
       appliedRepairs: [],
       initialized,
       inaccessibleSources: [],
-      ...(compactArtifacts.legacyLayoutMessage ? { legacyLayoutMessage: compactArtifacts.legacyLayoutMessage } : {}),
+      ...(compactArtifacts.legacyLayoutMessage
+        ? { legacyLayoutMessage: compactArtifacts.legacyLayoutMessage }
+        : {}),
       missingArtifacts: compactArtifacts.missingArtifacts,
       runDir: compactArtifacts.runDir,
       sourceIds: [],
@@ -172,7 +180,10 @@ export async function discoverDiscoveryRun(options: DiscoverRunOptions): Promise
   const explicitPackets = await loadSourcePacketRefs(options.packetRefs ?? [], process.cwd());
   const mergeResult = mergeDiscoveryPacketsIntoBacklog(backlog, resolvedSources, explicitPackets);
   const refreshResult = await refreshSourceFingerprintsInBacklog(backlog, process.cwd());
-  const repairResult = options.repair === false ? { appliedRepairs: [], changed: false } : repairBacklogCanonicalState(backlog);
+  const repairResult =
+    options.repair === false
+      ? { appliedRepairs: [], changed: false }
+      : repairBacklogCanonicalState(backlog);
 
   const loadedManifest = loadJson<Manifest>(paths.manifest);
   loadedManifest.updated_at = utcNow();
@@ -186,6 +197,7 @@ export async function discoverDiscoveryRun(options: DiscoverRunOptions): Promise
     ts: loadedManifest.updated_at,
     event: 'sources_discovered',
     run_id: loadedManifest.run_id,
+    ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
     source_ids: mergeResult.appliedSourceIds,
     packet_count: mergeResult.appliedPackets,
     initialized,
@@ -209,11 +221,9 @@ export async function discoverDiscoveryRun(options: DiscoverRunOptions): Promise
     };
   }
 
-  const validationResult = validateDiscoveryRun(runDir);
-  let reportPath: string | undefined;
-  if (options.render !== false) {
-    reportPath = renderDiscoveryViews(runDir).reportPath;
-  }
+  const validationResult = validateDiscoveryRun(runDir, {
+    ...(options.commandRunId ? { commandRunId: options.commandRunId } : {}),
+  });
 
   return {
     assessment: validationResult.assessment,
@@ -222,10 +232,11 @@ export async function discoverDiscoveryRun(options: DiscoverRunOptions): Promise
     initialized,
     inaccessibleSources: refreshResult.inaccessibleSources,
     missingArtifacts: validationResult.missingArtifacts,
-    ...(reportPath ? { reportPath } : {}),
     runDir,
     sourceIds: mergeResult.appliedSourceIds,
     unsupportedSchemaMessages: [],
-    ...(validationResult.legacyLayoutMessage ? { legacyLayoutMessage: validationResult.legacyLayoutMessage } : {}),
+    ...(validationResult.legacyLayoutMessage
+      ? { legacyLayoutMessage: validationResult.legacyLayoutMessage }
+      : {}),
   };
 }

@@ -262,6 +262,46 @@ var TRACK_PROOF_COVERAGE_KEYS = [
 	"observability_and_alert_routing",
 	"runbook_and_escalation_path"
 ];
+function createEmptyDeltaSummary() {
+	return {
+		baseline_established: false,
+		changed_source_ids: [],
+		changed_claim_ids: [],
+		stale_claim_ids: [],
+		stale_item_ids: [],
+		stale_proof_ids: [],
+		stale_review_artifact_ids: [],
+		track_gate_ids_to_recalculate: [],
+		dirty_flags: [],
+		topology_changed: false,
+		contract_changed: false,
+		changed_track_gate_ids: []
+	};
+}
+function createEmptyAssessmentStats() {
+	return {
+		sources_total: 0,
+		claims_total: 0,
+		contracts_total: 0,
+		data_domains_total: 0,
+		items_total: 0,
+		items_delivered: 0,
+		items_partially_delivered: 0,
+		items_not_started: 0,
+		gaps_total: 0,
+		unknowns_total: 0,
+		contradictions_total: 0,
+		stale_claims_total: 0,
+		stale_items_total: 0,
+		stale_proofs_total: 0,
+		stale_review_artifacts_total: 0,
+		warnings_total: 0,
+		hard_fails_total: 0,
+		dor_ready_total: 0,
+		review_artifacts_total: 0,
+		waivers_total: 0
+	};
+}
 function isAcceptanceClass(value) {
 	return ACCEPTANCE_CLASSES.includes(value);
 }
@@ -524,21 +564,14 @@ function createEmptyAssessment(runId, createdAt, target) {
 			status: "open",
 			reason: "Run initialized but discovery evidence has not been assessed yet."
 		},
-		delta_summary: {
-			baseline_established: false,
-			changed_source_ids: [],
-			changed_claim_ids: [],
-			stale_claim_ids: [],
-			stale_item_ids: [],
-			stale_proof_ids: [],
-			track_gate_ids_to_recalculate: [],
-			dirty_flags: [],
-			topology_changed: false,
-			contract_changed: false,
-			changed_track_gate_ids: []
-		},
+		delta_summary: createEmptyDeltaSummary(),
 		rebaseline_required: false,
-		stats: {}
+		stale_review_artifacts: [],
+		rebaseline_readiness: {
+			status: "not_needed",
+			reasons: ["Rebaseline is not needed until validation detects baseline drift."]
+		},
+		stats: createEmptyAssessmentStats()
 	};
 }
 function initializeDiscoveryRun(options) {
@@ -568,6 +601,8 @@ function initializeDiscoveryRun(options) {
 		current_source_hashes: {},
 		baseline_canonical_hashes: {},
 		current_canonical_hashes: {},
+		baseline_issue_item_links: {},
+		current_issue_item_links: {},
 		dirty_flags: [],
 		last_assessment_status: "not-run",
 		last_render_at: null,
@@ -636,6 +671,7 @@ function initializeDiscoveryRun(options) {
 		ts: createdAt,
 		event: "run_initialized",
 		run_id: runId,
+		...options.commandRunId ? { command_run_id: options.commandRunId } : {},
 		acceptance_target: acceptanceTarget,
 		schema_version: "3"
 	});
@@ -671,6 +707,8 @@ function createRecoveredManifest(backlog, existingAssessment, runDir, repairedAt
 		current_source_hashes: {},
 		baseline_canonical_hashes: {},
 		current_canonical_hashes: {},
+		baseline_issue_item_links: {},
+		current_issue_item_links: {},
 		dirty_flags: [],
 		last_assessment_status: existingAssessment?.status ?? "not-run",
 		last_render_at: null,
@@ -773,6 +811,195 @@ function repairCompactRunBundle(runDirInput) {
 		repairedArtifacts,
 		runDir,
 		unsupportedSchemaMessages
+	};
+}
+//#endregion
+//#region src/discovery/command-lineage.ts
+var FIRST_STALE_SNAPSHOT_REASON = "first recorded snapshot; no previous stale snapshot to diff";
+function sortDedupStrings(values) {
+	return [...new Set(values.filter(isNonEmptyString))].sort();
+}
+function sortByJsonHash(entries) {
+	return [...entries].sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+}
+function normalizeStringArray(value) {
+	return Array.isArray(value) ? sortDedupStrings(value.filter((entry) => typeof entry === "string")) : [];
+}
+function normalizeNullableString(value) {
+	return isNonEmptyString(value) ? value : null;
+}
+function createCommandRunId() {
+	return crypto.randomUUID();
+}
+function buildStaleSnapshot(assessment) {
+	return {
+		claims: sortDedupStrings(asArray(assessment.stale_claims)),
+		items: sortDedupStrings(asArray(assessment.stale_items)),
+		proofs: sortDedupStrings(asArray(assessment.stale_proofs)),
+		reviews: sortDedupStrings(asArray(assessment.stale_review_artifacts))
+	};
+}
+function normalizeStaleSnapshot(value) {
+	if (typeof value !== "object" || value === null || Array.isArray(value)) return null;
+	const record = value;
+	return {
+		claims: normalizeStringArray(record.claims),
+		items: normalizeStringArray(record.items),
+		proofs: normalizeStringArray(record.proofs),
+		reviews: normalizeStringArray(record.reviews)
+	};
+}
+function normalizeNewStaleSnapshot(value) {
+	if (typeof value !== "object" || value === null || Array.isArray(value)) return null;
+	const record = value;
+	const status = record.status;
+	if (status !== "known" && status !== "unknown") return null;
+	return {
+		status,
+		reason: normalizeNullableString(record.reason),
+		claims: normalizeStringArray(record.claims),
+		items: normalizeStringArray(record.items),
+		proofs: normalizeStringArray(record.proofs),
+		reviews: normalizeStringArray(record.reviews)
+	};
+}
+function readPreviousMutatingStaleSnapshot(journalPath) {
+	const previousRenderedEvent = [...loadNdjson(journalPath)].reverse().find((entry) => entry.event === "report_rendered" && entry.render_reason === "mutating_command" && entry.stale_snapshot !== void 0);
+	return previousRenderedEvent ? normalizeStaleSnapshot(previousRenderedEvent.stale_snapshot) : null;
+}
+function buildNewStaleSnapshot(previousSnapshot, currentSnapshot) {
+	if (previousSnapshot === null) return {
+		status: "unknown",
+		reason: FIRST_STALE_SNAPSHOT_REASON,
+		claims: [],
+		items: [],
+		proofs: [],
+		reviews: []
+	};
+	return {
+		status: "known",
+		reason: null,
+		claims: currentSnapshot.claims.filter((claimId) => !previousSnapshot.claims.includes(claimId)),
+		items: currentSnapshot.items.filter((itemId) => !previousSnapshot.items.includes(itemId)),
+		proofs: currentSnapshot.proofs.filter((proofId) => !previousSnapshot.proofs.includes(proofId)),
+		reviews: currentSnapshot.reviews.filter((reviewId) => !previousSnapshot.reviews.includes(reviewId))
+	};
+}
+function readLatestMutatingNewStaleSnapshot(journalPath) {
+	return normalizeNewStaleSnapshot([...loadNdjson(journalPath)].reverse().find((entry) => entry.event === "report_rendered" && entry.render_reason === "mutating_command" && entry.new_stale_snapshot !== void 0)?.new_stale_snapshot) ?? {
+		status: "unknown",
+		reason: "first recorded snapshot; no previous stale snapshot to diff",
+		claims: [],
+		items: [],
+		proofs: [],
+		reviews: []
+	};
+}
+function normalizeBaselineProjectionItem(value) {
+	const record = asStringRecord(value);
+	if (!isNonEmptyString(record.item_id)) return null;
+	return {
+		item_id: record.item_id,
+		title: normalizeNullableString(record.title),
+		delivery_state: normalizeNullableString(record.delivery_state),
+		readiness_state: normalizeNullableString(record.readiness_state),
+		closure_state: normalizeNullableString(record.closure_state),
+		summary_label: normalizeNullableString(record.summary_label),
+		track_id: normalizeNullableString(record.track_id),
+		dependency_item_ids: normalizeStringArray(record.dependency_item_ids)
+	};
+}
+function normalizeBaselineProjectionRelation(value) {
+	const record = asStringRecord(value);
+	const from = asStringRecord(record.from);
+	const to = asStringRecord(record.to);
+	if (!isNonEmptyString(record.relation_type) || !isNonEmptyString(from.kind) || !isNonEmptyString(from.id) || !isNonEmptyString(to.kind) || !isNonEmptyString(to.id)) return null;
+	return {
+		relation_type: record.relation_type,
+		from: {
+			kind: from.kind,
+			id: from.id
+		},
+		to: {
+			kind: to.kind,
+			id: to.id
+		}
+	};
+}
+function normalizeBaselineProjectionClaimCommitment(value) {
+	const record = asStringRecord(value);
+	if (!isNonEmptyString(record.claim_id)) return null;
+	return {
+		claim_id: record.claim_id,
+		commitment: normalizeNullableString(record.commitment),
+		revisit_trigger: normalizeNullableString(record.revisit_trigger)
+	};
+}
+function normalizeBaselineProjectionRoadmapRow(value) {
+	const record = asStringRecord(value);
+	if (!isNonEmptyString(record.row_id) || !isNonEmptyString(record.item_id)) return null;
+	const toNullableInteger = (entry) => Number.isInteger(entry) ? Number(entry) : null;
+	return {
+		row_id: record.row_id,
+		item_id: record.item_id,
+		track_id: normalizeNullableString(record.track_id),
+		topology_rank: toNullableInteger(record.topology_rank),
+		safety_rank: toNullableInteger(record.safety_rank),
+		economic_rank: toNullableInteger(record.economic_rank)
+	};
+}
+function normalizeBaselineProjection(value) {
+	if (typeof value !== "object" || value === null || Array.isArray(value)) return null;
+	const record = value;
+	return {
+		claim_commitments: sortByJsonHash((Array.isArray(record.claim_commitments) ? record.claim_commitments : []).map((entry) => normalizeBaselineProjectionClaimCommitment(entry)).filter((entry) => entry !== null)),
+		items: sortByJsonHash((Array.isArray(record.items) ? record.items : []).map((entry) => normalizeBaselineProjectionItem(entry)).filter((entry) => entry !== null)),
+		relations: sortByJsonHash((Array.isArray(record.relations) ? record.relations : []).map((entry) => normalizeBaselineProjectionRelation(entry)).filter((entry) => entry !== null)),
+		roadmap_rows: sortByJsonHash((Array.isArray(record.roadmap_rows) ? record.roadmap_rows : []).map((entry) => normalizeBaselineProjectionRoadmapRow(entry)).filter((entry) => entry !== null))
+	};
+}
+function readLatestBaselineProjection(journalPath) {
+	const latestRebaselineEvent = [...loadNdjson(journalPath)].reverse().find((entry) => entry.event === "rebaseline_completed" && entry.baseline_projection !== void 0);
+	return latestRebaselineEvent ? normalizeBaselineProjection(latestRebaselineEvent.baseline_projection) : null;
+}
+function buildBaselineProjection(backlog) {
+	const items = sortByJsonHash(backlog.items.filter((item) => isNonEmptyString(item.item_id)).map((item) => ({
+		item_id: item.item_id,
+		title: normalizeNullableString(item.title),
+		delivery_state: normalizeNullableString(item.delivery_state),
+		readiness_state: normalizeNullableString(item.readiness_state),
+		closure_state: normalizeNullableString(item.closure_state),
+		summary_label: normalizeNullableString(item.summary_label),
+		track_id: normalizeNullableString(item.track_id),
+		dependency_item_ids: sortDedupStrings(asArray(item.dependency_refs))
+	})));
+	const relations = sortByJsonHash(backlog.relations.filter((relation) => isNonEmptyString(relation.relation_type) && isNonEmptyString(relation.from?.kind) && isNonEmptyString(relation.from?.id) && isNonEmptyString(relation.to?.kind) && isNonEmptyString(relation.to?.id)).map((relation) => ({
+		relation_type: relation.relation_type,
+		from: {
+			kind: relation.from.kind,
+			id: relation.from.id
+		},
+		to: {
+			kind: relation.to.kind,
+			id: relation.to.id
+		}
+	})));
+	return {
+		claim_commitments: sortByJsonHash(backlog.claims.filter((claim) => isNonEmptyString(claim.claim_id)).map((claim) => ({
+			claim_id: claim.claim_id,
+			commitment: normalizeNullableString(claim.commitment),
+			revisit_trigger: normalizeNullableString(claim.revisit_trigger)
+		}))),
+		items,
+		relations,
+		roadmap_rows: sortByJsonHash(backlog.roadmap_matrix.filter((row) => isNonEmptyString(row.row_id) && isNonEmptyString(row.item_ref?.id)).map((row) => ({
+			row_id: row.row_id,
+			item_id: row.item_ref.id,
+			track_id: normalizeNullableString(row.track_ref?.id),
+			topology_rank: Number.isInteger(row.topology_rank) ? Number(row.topology_rank) : null,
+			safety_rank: Number.isInteger(row.safety_rank) ? Number(row.safety_rank) : null,
+			economic_rank: Number.isInteger(row.economic_rank) ? Number(row.economic_rank) : null
+		})))
 	};
 }
 //#endregion
@@ -978,7 +1205,9 @@ function upsertArraySection(current, incoming, sectionKey) {
 			merged.push(cloneJson(incomingEntry));
 			continue;
 		}
-		merged[existingIndex] = mergeValues(merged[existingIndex], incomingEntry);
+		const existingEntry = cloneJson(merged[existingIndex]);
+		if (sectionKey === "items" && asStringRecord(incomingEntry.packet_provenance).source_refs_managed === true) delete existingEntry.source_refs;
+		merged[existingIndex] = mergeValues(existingEntry, incomingEntry);
 	}
 	return merged;
 }
@@ -991,12 +1220,176 @@ var SOURCE_REF_SECTIONS = new Set([
 	"contradictions",
 	"unknowns"
 ]);
+var PLANNING_OVERLAY_SECTION_KEYS = new Set([
+	"items",
+	"relations",
+	"roadmap_matrix",
+	"gaps",
+	"unknowns",
+	"uncertainty_to_spike",
+	"claims",
+	"negative_scope"
+]);
+var PLANNING_OVERLAY_CLAIM_KEYS = new Set([
+	"claim_id",
+	"commitment",
+	"revisit_trigger"
+]);
+var PACKET_SOURCE_KEYS = new Set([
+	"source_id",
+	"ref",
+	"kind",
+	"authority",
+	"precedence",
+	"notes"
+]);
+var PACKET_PROVENANCE_KEYS = new Set([
+	"merge_mode",
+	"source_authority",
+	"source_id",
+	"source_kind"
+]);
 function defaultSourceRefs(entries, sourceId, sectionKey) {
 	if (!sourceId) return entries.map((entry) => cloneJson(entry));
 	return entries.map((entry) => {
 		const cloned = cloneJson(entry);
 		if ("source_refs" in cloned && Array.isArray(cloned.source_refs) && cloned.source_refs.length > 0) return cloned;
 		if (SOURCE_REF_SECTIONS.has(sectionKey)) cloned.source_refs = [sourceId];
+		return cloned;
+	});
+}
+function inferPacketMergeMode(source) {
+	if (source.authority === "planning_only" || source.kind === "backlog_text") return "planning_overlay";
+	return "source_driven_refresh";
+}
+function existingSourceIds(backlog) {
+	return new Set(backlog.source_authority.map((source) => isNonEmptyString(source.source_id) ? source.source_id : null).filter((sourceId) => sourceId !== null));
+}
+function findSourceAuthorityByIdentity(backlog, source) {
+	if (!isNonEmptyString(source.ref) || !isNonEmptyString(source.kind) || !isNonEmptyString(source.authority)) return null;
+	return backlog.source_authority.find((entry) => entry.ref === source.ref && entry.kind === source.kind && entry.authority === source.authority) ?? null;
+}
+function normalizePacketSourceRecord(packetSource, packetRef) {
+	const rawSource = packetSource;
+	if ("sourceId" in rawSource) throw new Error(`Packet ${packetRef ?? "<unknown-packet>"} must use packet.source.source_id; sourceId is not valid in canonical packets`);
+	const unexpectedKeys = Object.keys(rawSource).filter((key) => !PACKET_SOURCE_KEYS.has(key));
+	if (unexpectedKeys.length > 0) throw new Error(`Packet ${packetRef ?? "<unknown-packet>"} contains unsupported packet.source keys: ${unexpectedKeys.join(", ")}`);
+	return cloneJson(rawSource);
+}
+function normalizeExplicitPacketSource(backlog, packet, packetRef, usedIds) {
+	if (!packet.source || typeof packet.source !== "object") throw new Error(`Explicit source packet ${packetRef ?? "<unknown-packet>"} must define packet.source`);
+	const normalized = normalizePacketSourceRecord(packet.source, packetRef);
+	if (!isNonEmptyString(normalized.ref)) throw new Error(`Explicit source packet ${packetRef ?? "<unknown-packet>"} must define packet.source.ref`);
+	if (!isNonEmptyString(normalized.kind)) throw new Error(`Explicit source packet ${packetRef ?? "<unknown-packet>"} must define packet.source.kind`);
+	if (!isNonEmptyString(normalized.authority)) throw new Error(`Explicit source packet ${packetRef ?? "<unknown-packet>"} must define packet.source.authority`);
+	if (!isNonEmptyString(normalized.source_id)) normalized.source_id = findSourceAuthorityByIdentity(backlog, normalized)?.source_id ?? deriveSourceId(normalized.kind, normalized.ref, usedIds);
+	else usedIds.add(normalized.source_id);
+	return normalized;
+}
+function normalizePacketProvenance(packet, source, packetRef, requireExplicitMetadata) {
+	const rawProvenance = packet.packet_provenance && typeof packet.packet_provenance === "object" ? packet.packet_provenance : null;
+	if (requireExplicitMetadata && !rawProvenance) throw new Error(`Explicit source packet ${packetRef ?? "<unknown-packet>"} must define packet.packet_provenance.merge_mode`);
+	if (!requireExplicitMetadata && packet.packet_provenance !== void 0 && rawProvenance === null) throw new Error(`Packet ${packetRef ?? "<unknown-packet>"} has invalid packet.packet_provenance`);
+	const unexpectedKeys = Object.keys(rawProvenance ?? {}).filter((key) => !PACKET_PROVENANCE_KEYS.has(key));
+	if (unexpectedKeys.length > 0) throw new Error(`Packet ${packetRef ?? "<unknown-packet>"} contains unsupported packet.packet_provenance keys: ${unexpectedKeys.join(", ")}`);
+	const mergeModeValue = rawProvenance?.merge_mode;
+	if (requireExplicitMetadata && !isNonEmptyString(mergeModeValue)) throw new Error(`Explicit source packet ${packetRef ?? "<unknown-packet>"} must define packet.packet_provenance.merge_mode`);
+	const mergeMode = isNonEmptyString(mergeModeValue) ? mergeModeValue : inferPacketMergeMode(source);
+	if (mergeMode !== "planning_overlay" && mergeMode !== "source_driven_refresh") throw new Error(`Packet ${packetRef ?? "<unknown-packet>"} must use packet.packet_provenance.merge_mode of planning_overlay or source_driven_refresh`);
+	const normalized = {
+		merge_mode: inferPacketMergeMode(source),
+		...source.authority ? { source_authority: source.authority } : {},
+		...source.source_id ? { source_id: source.source_id } : {},
+		...source.kind ? { source_kind: source.kind } : {}
+	};
+	if (mergeMode !== normalized.merge_mode) throw new Error(`Packet ${packetRef ?? "<unknown-packet>"} declares packet.packet_provenance.merge_mode=${mergeMode} but resolved merge_mode=${normalized.merge_mode}`);
+	for (const field of [
+		"source_authority",
+		"source_id",
+		"source_kind"
+	]) {
+		const provided = rawProvenance?.[field];
+		const resolved = normalized[field];
+		if (provided !== void 0 && provided !== resolved) {
+			const providedLabel = typeof provided === "string" ? provided : JSON.stringify(provided);
+			const resolvedLabel = typeof resolved === "string" ? resolved : JSON.stringify(resolved);
+			throw new Error(`Packet ${packetRef ?? "<unknown-packet>"} has packet.packet_provenance.${field}=${providedLabel} but resolved ${field}=${resolvedLabel}`);
+		}
+	}
+	return normalized;
+}
+function sourceAuthorityIdentityKey$1(source) {
+	if (!isNonEmptyString(source.ref) || !isNonEmptyString(source.kind) || !isNonEmptyString(source.authority)) return null;
+	return `${source.ref}::${source.kind}::${source.authority}`;
+}
+function assertSourceAuthorityIdentityCompatibility(backlog, source, packetRef, allowedConflictingSourceId = null) {
+	if (!isNonEmptyString(source.source_id)) return;
+	const incomingIdentityKey = sourceAuthorityIdentityKey$1(source);
+	if (incomingIdentityKey !== null) {
+		const conflicting = backlog.source_authority.find((entry) => isNonEmptyString(entry.source_id) && entry.source_id !== source.source_id && entry.source_id !== allowedConflictingSourceId && sourceAuthorityIdentityKey$1(entry) === incomingIdentityKey);
+		if (conflicting && isNonEmptyString(conflicting.source_id)) throw new Error(`Explicit source packet ${packetRef ?? source.source_id} cannot register duplicate source_authority identity ${source.ref} (${source.kind}, ${source.authority}) under ${source.source_id}; reuse existing source_id ${conflicting.source_id}`);
+	}
+	const current = backlog.source_authority.find((entry) => entry.source_id === source.source_id);
+	if (!current) return;
+	for (const field of [
+		"ref",
+		"kind",
+		"authority"
+	]) {
+		const incoming = source[field];
+		const existing = current[field];
+		if (isNonEmptyString(incoming) && isNonEmptyString(existing) && incoming !== existing) throw new Error(`Explicit source packet ${packetRef ?? source.source_id} cannot rewrite source_authority.${field} for ${source.source_id}`);
+	}
+}
+function packetSectionsWithContent(packet) {
+	const populated = [];
+	for (const sectionKey of PACKET_SECTION_KEYS) {
+		const sectionValue = packet[sectionKey];
+		if (sectionValue === void 0) continue;
+		if (Array.isArray(sectionValue) && sectionValue.length === 0) continue;
+		populated.push(sectionKey);
+	}
+	return populated;
+}
+function assertPlanningOverlaySectionsAllowed(backlog, packet, packetRef) {
+	if (asArray(packet.replace_sections).filter(isNonEmptyString).length > 0) throw new Error(`Planning overlay packet ${packetRef ?? "<unknown-packet>"} cannot use replace_sections`);
+	for (const sectionKey of packetSectionsWithContent(packet)) if (!PLANNING_OVERLAY_SECTION_KEYS.has(sectionKey)) throw new Error(`Planning overlay packet ${packetRef ?? "<unknown-packet>"} cannot modify ${sectionKey}`);
+	for (const claimEntry of packet.claims ?? []) {
+		if (!isNonEmptyString(claimEntry.claim_id)) throw new Error(`Planning overlay packet ${packetRef ?? "<unknown-packet>"} must target claims by claim_id`);
+		if (!backlog.claims.find((claim) => claim.claim_id === claimEntry.claim_id)) throw new Error(`Planning overlay packet ${packetRef ?? "<unknown-packet>"} cannot create or replace claim ${claimEntry.claim_id}`);
+		const unexpectedKeys = Object.keys(claimEntry).filter((key) => !PLANNING_OVERLAY_CLAIM_KEYS.has(key));
+		if (unexpectedKeys.length > 0) throw new Error(`Planning overlay claim patch ${claimEntry.claim_id} may only change claim_id, commitment, and revisit_trigger; found ${unexpectedKeys.join(", ")}`);
+	}
+}
+function managedSourceRefsForEntry(existingEntry, sourceId, replaceSection, preserveExistingRefs) {
+	const managedRefs = /* @__PURE__ */ new Set();
+	if (preserveExistingRefs && !replaceSection && existingEntry && Array.isArray(existingEntry.source_refs)) {
+		for (const existingRef of existingEntry.source_refs) if (isNonEmptyString(existingRef)) managedRefs.add(existingRef);
+	}
+	if (isNonEmptyString(sourceId)) managedRefs.add(sourceId);
+	return managedRefs.size > 0 ? [...managedRefs].sort() : void 0;
+}
+function annotatePacketEntries(currentEntries, incomingEntries, sectionKey, packetProvenance, replaceSection) {
+	const idSelector = SECTION_ID_SELECTORS[sectionKey];
+	const currentById = /* @__PURE__ */ new Map();
+	if (idSelector) for (const currentEntry of currentEntries) {
+		const currentId = idSelector(currentEntry);
+		if (currentId) currentById.set(currentId, currentEntry);
+	}
+	return incomingEntries.map((entry) => {
+		const cloned = cloneJson(entry);
+		const entryId = idSelector ? idSelector(cloned) : null;
+		const currentEntry = entryId ? currentById.get(entryId) ?? null : null;
+		const manageSourceRefs = SOURCE_REF_SECTIONS.has(sectionKey) || sectionKey === "items" && packetProvenance.merge_mode === "source_driven_refresh";
+		if (manageSourceRefs) {
+			const preserveExistingRefs = sectionKey !== "items";
+			const managedSourceRefs = managedSourceRefsForEntry(currentEntry, packetProvenance.source_id ?? null, replaceSection, preserveExistingRefs);
+			if (managedSourceRefs) cloned.source_refs = managedSourceRefs;
+		}
+		cloned.packet_provenance = {
+			...packetProvenance,
+			...manageSourceRefs ? { source_refs_managed: true } : {}
+		};
 		return cloned;
 	});
 }
@@ -1041,7 +1434,10 @@ async function loadSourcePacketRefs(packetRefs, baseDir) {
 	const packets = [];
 	for (const packetRef of packetRefs) {
 		const { content, normalizedRef } = await readSourceContent(packetRef, baseDir);
-		packets.push(...parseDiscoverySourcePackets(content, normalizedRef));
+		packets.push(...parseDiscoverySourcePackets(content, normalizedRef).map((packet) => ({
+			packet,
+			packetRef: normalizedRef
+		})));
 	}
 	return packets;
 }
@@ -1058,6 +1454,7 @@ function mergeSourceAuthorityEntry(backlog, source) {
 }
 function mergeDiscoveryPacketsIntoBacklog(backlog, rawSources, packets) {
 	const appliedSourceIds = /* @__PURE__ */ new Set();
+	const usedIds = existingSourceIds(backlog);
 	for (const source of rawSources) {
 		const sourceId = mergeSourceAuthorityEntry(backlog, {
 			...source.source,
@@ -1067,13 +1464,19 @@ function mergeDiscoveryPacketsIntoBacklog(backlog, rawSources, packets) {
 	}
 	const allPackets = [...rawSources.flatMap((source) => source.packetBlocks.map((packet) => ({
 		packet,
-		fallbackSource: source.source
-	}))), ...packets.map((packet) => ({
+		fallbackSource: source.source,
+		packetRef: source.normalizedRef
+	}))), ...packets.map(({ packet, packetRef }) => ({
 		packet,
-		fallbackSource: null
+		fallbackSource: null,
+		packetRef
 	}))];
-	for (const { fallbackSource, packet } of allPackets) {
-		const mergedSource = mergeValues(fallbackSource ?? {}, packet.source ?? {});
+	for (const { fallbackSource, packet, packetRef } of allPackets) {
+		const explicitPacket = fallbackSource === null;
+		const mergedSource = fallbackSource ? mergeValues(fallbackSource, packet.source && typeof packet.source === "object" ? normalizePacketSourceRecord(packet.source, packetRef) : {}) : normalizeExplicitPacketSource(backlog, packet, packetRef, usedIds);
+		const packetProvenance = normalizePacketProvenance(packet, mergedSource, packetRef, explicitPacket);
+		if (packetProvenance.merge_mode === "planning_overlay") assertPlanningOverlaySectionsAllowed(backlog, packet, packetRef);
+		assertSourceAuthorityIdentityCompatibility(backlog, mergedSource, packetRef, fallbackSource && isNonEmptyString(fallbackSource.source_id) && isNonEmptyString(packet.source?.source_id) && fallbackSource.source_id !== packet.source.source_id ? fallbackSource.source_id : null);
 		if (fallbackSource && isNonEmptyString(fallbackSource.source_id) && isNonEmptyString(packet.source?.source_id) && fallbackSource.source_id !== packet.source.source_id) {
 			backlog.source_authority = backlog.source_authority.filter((entry) => entry.source_id !== fallbackSource.source_id);
 			appliedSourceIds.delete(fallbackSource.source_id);
@@ -1081,6 +1484,7 @@ function mergeDiscoveryPacketsIntoBacklog(backlog, rawSources, packets) {
 		const sourceId = mergeSourceAuthorityEntry(backlog, mergedSource);
 		if (sourceId) appliedSourceIds.add(sourceId);
 		const replaceSections = new Set(asArray(packet.replace_sections).filter(isNonEmptyString));
+		if (replaceSections.size > 0 && packetProvenance.merge_mode !== "source_driven_refresh") throw new Error(`Packet ${packetRef ?? sourceId ?? "<unknown-packet>"} cannot use replace_sections outside source-driven refresh`);
 		if (packet.id_strategy) backlog.id_strategy = mergeValues(replaceSections.has("id_strategy") ? {} : backlog.id_strategy, packet.id_strategy);
 		if (packet.glossary) backlog.glossary = mergeValues(replaceSections.has("glossary") ? {} : backlog.glossary, packet.glossary);
 		if (packet.aliases) backlog.aliases = mergeValues(replaceSections.has("aliases") ? {} : backlog.aliases, packet.aliases);
@@ -1091,7 +1495,7 @@ function mergeDiscoveryPacketsIntoBacklog(backlog, rawSources, packets) {
 			const sectionValue = packet[sectionKey];
 			if (!sectionValue) continue;
 			if (!Array.isArray(sectionValue)) continue;
-			const entries = defaultSourceRefs(sectionValue, sourceId, sectionKey);
+			const entries = annotatePacketEntries(backlog[sectionKey], defaultSourceRefs(sectionValue, sourceId, sectionKey), sectionKey, packetProvenance, replaceSections.has(sectionKey));
 			if (replaceSections.has(sectionKey)) {
 				backlog[sectionKey] = cloneJson(entries);
 				continue;
@@ -1142,7 +1546,7 @@ async function refreshSourceFingerprintsInBacklog(backlog, baseDir) {
 		inaccessibleSources: [...new Set(inaccessibleSources)].sort()
 	};
 }
-async function refreshRunSourceFingerprints(runDirInput) {
+async function refreshRunSourceFingerprints(runDirInput, options = {}) {
 	const bundleRepair = repairCompactRunBundle(runDirInput);
 	if (bundleRepair.legacyLayoutMessage || bundleRepair.irreparableMissingArtifacts.length > 0 || bundleRepair.unsupportedSchemaMessages.length > 0) return {
 		accessStateChangedSourceIds: [],
@@ -1183,6 +1587,7 @@ async function refreshRunSourceFingerprints(runDirInput) {
 			ts: refreshedAt,
 			event: "source_fingerprints_refreshed",
 			run_id: manifest.run_id,
+			...options.commandRunId ? { command_run_id: options.commandRunId } : {},
 			changed_source_ids: refreshResult.changedSourceIds,
 			access_state_changed_source_ids: refreshResult.accessStateChangedSourceIds,
 			inaccessible_source_ids: refreshResult.inaccessibleSources
@@ -1224,6 +1629,9 @@ function trackGateHashKey(trackGateId) {
 }
 function issueHashKey() {
 	return "issues";
+}
+function issueEntryHashKey(kind, issueId) {
+	return `issue:${kind}:${issueId}`;
 }
 function securityHashKey() {
 	return "security_posture";
@@ -1331,6 +1739,11 @@ function getCurrentCanonicalHashes(backlog) {
 	};
 	for (const claim of backlog.claims) if (isNonEmptyString(claim.claim_id)) hashes[claimHashKey(claim.claim_id)] = hashJsonValue(claim);
 	for (const trackGate of backlog.track_gates) if (isNonEmptyString(trackGate.track_gate_id)) hashes[trackGateHashKey(trackGate.track_gate_id)] = hashJsonValue(trackGate);
+	for (const [kind, entries] of [
+		["gap", backlog.gaps],
+		["contradiction", backlog.contradictions],
+		["unknown", backlog.unknowns]
+	]) for (const entry of entries) if (isNonEmptyString(entry.issue_id)) hashes[issueEntryHashKey(kind, entry.issue_id)] = hashJsonValue(entry);
 	return hashes;
 }
 function collectChangedKeys(baseline, current) {
@@ -1399,19 +1812,66 @@ function parseInvalidationCauses(value) {
 	]);
 	return asArray(Array.isArray(value) ? value : []).filter((entry) => typeof entry === "string" && validCauses.has(entry));
 }
-function itemTouchesIssueLedgers(item) {
-	return asArray(item.origin_ref).some((origin) => origin.kind === "gap_ref" || origin.kind === "unknown_ref" || origin.kind === "review_finding_ref");
+function collectChangedIssueKeys(changedCanonicalKeys) {
+	return new Set(changedCanonicalKeys.filter((key) => {
+		const [prefix, kind, issueId] = key.split(":");
+		return prefix === "issue" && isNonEmptyString(issueId) && (kind === "gap" || kind === "contradiction" || kind === "unknown");
+	}));
+}
+function buildIssueItemLinks(backlog) {
+	const links = /* @__PURE__ */ new Map();
+	const addLink = (issueKey, itemId) => {
+		const current = links.get(issueKey) ?? /* @__PURE__ */ new Set();
+		current.add(itemId);
+		links.set(issueKey, current);
+	};
+	for (const [kind, entries] of [
+		["gap", backlog.gaps],
+		["contradiction", backlog.contradictions],
+		["unknown", backlog.unknowns]
+	]) for (const entry of entries) {
+		if (!isNonEmptyString(entry.issue_id)) continue;
+		const issueKey = issueEntryHashKey(kind, entry.issue_id);
+		for (const itemRef of asArray(entry.related_item_refs)) if (isNonEmptyString(itemRef)) addLink(issueKey, itemRef);
+	}
+	for (const item of backlog.items) {
+		if (!isNonEmptyString(item.item_id)) continue;
+		for (const origin of asArray(item.origin_ref)) {
+			if (origin.kind === "gap_ref" && isNonEmptyString(origin.ref)) addLink(issueEntryHashKey("gap", origin.ref), item.item_id);
+			if (origin.kind === "unknown_ref" && isNonEmptyString(origin.ref)) addLink(issueEntryHashKey("unknown", origin.ref), item.item_id);
+		}
+	}
+	return Object.fromEntries([...links.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([issueKey, itemIds]) => [issueKey, [...itemIds].sort()]));
+}
+function normalizeIssueItemLinks(value) {
+	if (typeof value !== "object" || value === null) return null;
+	const normalized = /* @__PURE__ */ new Map();
+	for (const [issueKey, itemIds] of Object.entries(value)) {
+		if (!Array.isArray(itemIds)) continue;
+		const normalizedItemIds = asArray(itemIds).filter(isNonEmptyString).sort();
+		normalized.set(issueKey, [...new Set(normalizedItemIds)]);
+	}
+	return Object.fromEntries(normalized);
+}
+function collectAffectedIssueItemIds(changedIssueKeys, baselineIssueItemLinks, currentIssueItemLinks) {
+	const affectedItemIds = /* @__PURE__ */ new Set();
+	for (const issueKey of changedIssueKeys) for (const itemId of [...asArray(baselineIssueItemLinks[issueKey]), ...asArray(currentIssueItemLinks[issueKey])]) if (isNonEmptyString(itemId)) affectedItemIds.add(itemId);
+	return affectedItemIds;
 }
 function computeDriftState(manifest, backlog, nowMs = Date.now()) {
 	const currentSourceHashes = getCurrentSourceHashes(backlog);
 	const currentCanonicalHashes = getCurrentCanonicalHashes(backlog);
+	const currentIssueItemLinks = buildIssueItemLinks(backlog);
 	const baselineEstablished = Object.keys(manifest.baseline_source_hashes).length > 0 || Object.keys(manifest.baseline_canonical_hashes).length > 0;
 	const baselineSourceHashes = baselineEstablished ? manifest.baseline_source_hashes : currentSourceHashes;
 	const baselineCanonicalHashes = baselineEstablished ? manifest.baseline_canonical_hashes : currentCanonicalHashes;
+	const previousIssueItemLinks = normalizeIssueItemLinks(manifest.baseline_issue_item_links) ?? normalizeIssueItemLinks(manifest.current_issue_item_links);
+	const baselineIssueItemLinks = baselineEstablished ? previousIssueItemLinks ?? currentIssueItemLinks : currentIssueItemLinks;
 	const changedSourceIds = collectChangedKeys(baselineSourceHashes, currentSourceHashes);
 	const changedCanonicalKeys = collectChangedKeys(baselineCanonicalHashes, currentCanonicalHashes);
 	const changedClaimIds = changedCanonicalKeys.filter((key) => key.startsWith("claim:")).map((key) => key.slice(6));
 	const changedTrackGateIds = changedCanonicalKeys.filter((key) => key.startsWith("track_gate:")).map((key) => key.slice(11));
+	const affectedIssueItemIds = collectAffectedIssueItemIds(collectChangedIssueKeys(changedCanonicalKeys), baselineIssueItemLinks, currentIssueItemLinks);
 	const topologyChanged = baselineCanonicalHashes.topology !== void 0 && currentCanonicalHashes.topology !== void 0 && baselineCanonicalHashes.topology !== currentCanonicalHashes.topology;
 	const contractChanged = baselineCanonicalHashes.contracts !== void 0 && currentCanonicalHashes.contracts !== void 0 && baselineCanonicalHashes.contracts !== currentCanonicalHashes.contracts;
 	const incidentChanged = baselineCanonicalHashes[issueHashKey()] !== void 0 && currentCanonicalHashes[issueHashKey()] !== void 0 && baselineCanonicalHashes[issueHashKey()] !== currentCanonicalHashes[issueHashKey()];
@@ -1457,7 +1917,7 @@ function computeDriftState(manifest, backlog, nowMs = Date.now()) {
 				if (invalidatedBy.includes(SOURCE_CHANGE) && itemClaimRefs.some((claimRef) => staleClaims.has(claimRef))) stale = true;
 				if (invalidatedBy.includes(CONTRACT_CHANGE) && contractChanged && itemTouchesContractOrData(coveredItem)) stale = true;
 				if (invalidatedBy.includes(TOPOLOGY_CHANGE) && topologyChanged && itemTouchesTopology(coveredItem)) stale = true;
-				if (invalidatedBy.includes(INCIDENT_FALSE_CLOSURE) && incidentChanged && itemTouchesIssueLedgers(coveredItem)) stale = true;
+				if (invalidatedBy.includes(INCIDENT_FALSE_CLOSURE) && incidentChanged && affectedIssueItemIds.has(coveredItem.item_id)) stale = true;
 				if (invalidatedBy.includes(SECURITY_FINDING) && securityChanged && itemTouchesSecurity(coveredItem)) stale = true;
 				if (invalidatedBy.includes(NFR_BREACH) && nfrChanged && itemTouchesNfr(coveredItem)) stale = true;
 				if (invalidatedBy.includes(EXTERNAL_DEPENDENCY_CHANGE) && externalDependencyChanged && itemTouchesExternalDependencies(coveredItem)) stale = true;
@@ -1488,7 +1948,7 @@ function computeDriftState(manifest, backlog, nowMs = Date.now()) {
 		if (!isNonEmptyString(item.item_id)) continue;
 		const hasStaleClaims = collectItemClaimRefs(item).some((claimRef) => staleClaims.has(claimRef));
 		const hasStaleProofs = asArray(item.proof_refs).some((proofRef) => staleProofs.has(proofRef));
-		const invalidatedByNewDrift = incidentChanged && true || securityChanged && itemTouchesSecurity(item) || nfrChanged && itemTouchesNfr(item) || externalDependencyChanged && itemTouchesExternalDependencies(item) || ownershipChanged && itemTouchesOwnership(item) || releasePathChanged && itemTouchesReleasePaths(item);
+		const invalidatedByNewDrift = incidentChanged && affectedIssueItemIds.has(item.item_id) || securityChanged && itemTouchesSecurity(item) || nfrChanged && itemTouchesNfr(item) || externalDependencyChanged && itemTouchesExternalDependencies(item) || ownershipChanged && itemTouchesOwnership(item) || releasePathChanged && itemTouchesReleasePaths(item);
 		if (hasStaleClaims || hasStaleProofs || invalidatedByNewDrift) staleItems.add(item.item_id);
 	}
 	const trackGateIdsToRecalculate = new Set(changedTrackGateIds);
@@ -1496,8 +1956,10 @@ function computeDriftState(manifest, backlog, nowMs = Date.now()) {
 	return {
 		baselineCanonicalHashes,
 		baselineEstablished,
+		baselineIssueItemLinks,
 		baselineSourceHashes,
 		currentCanonicalHashes,
+		currentIssueItemLinks,
 		currentSourceHashes,
 		deltaSummary: {
 			baseline_established: baselineEstablished,
@@ -1506,6 +1968,7 @@ function computeDriftState(manifest, backlog, nowMs = Date.now()) {
 			stale_claim_ids: [...staleClaims].sort(),
 			stale_item_ids: [...staleItems].sort(),
 			stale_proof_ids: [...staleProofs].sort(),
+			stale_review_artifact_ids: [],
 			track_gate_ids_to_recalculate: [...trackGateIdsToRecalculate].sort(),
 			dirty_flags: dirtyFlags,
 			topology_changed: topologyChanged,
@@ -1696,6 +2159,13 @@ var MANUAL_ONLY_NEGATIVE_SCOPE_CLASSES = new Set([
 	"stub",
 	"trusted_local_only",
 	"compatibility_only"
+]);
+var DELIVERY_EVIDENCE_SOURCE_KINDS = new Set([
+	"runtime_evidence",
+	"deployment_contract",
+	"delivered_dossier_ssot",
+	"code_evidence",
+	"operational_evidence"
 ]);
 var REQUIRED_RETIREMENT_CLEANUP_SCOPE = [
 	"code",
@@ -2105,6 +2575,52 @@ function validateSourceRefs(refs, ownerLabel, sourceIds, excludedSourceIds, erro
 	else if (excludedSourceIds.has(sourceRef)) pushIssue(errors, `${ownerLabel} references excluded source ${sourceRef}`, hardFails, true);
 	return refs;
 }
+function getCurrentTruthEvidenceSourceIds(refs, sourceById) {
+	if (!Array.isArray(refs)) return [];
+	const sourceIds = /* @__PURE__ */ new Set();
+	for (const sourceRef of refs) {
+		if (!isNonEmptyString(sourceRef)) continue;
+		const source = sourceById.get(sourceRef);
+		if (source && source.authority === "authoritative_current_truth" && isNonEmptyString(source.kind) && DELIVERY_EVIDENCE_SOURCE_KINDS.has(source.kind)) sourceIds.add(sourceRef);
+	}
+	return [...sourceIds].sort();
+}
+function collectItemDeliveryEvidenceSourceIds(item, sourceById, excludedSourceIds) {
+	const packetProvenance = asStringRecord(item.packet_provenance);
+	if (packetProvenance.merge_mode !== "source_driven_refresh" || packetProvenance.source_refs_managed !== true) return [];
+	const managedSourceRefs = getCurrentTruthEvidenceSourceIds(item.source_refs, sourceById).filter((sourceId) => !excludedSourceIds.has(sourceId));
+	if (managedSourceRefs.length === 0) return [];
+	const sourceId = isNonEmptyString(packetProvenance.source_id) ? packetProvenance.source_id : null;
+	if (sourceId === null || !managedSourceRefs.includes(sourceId)) return [];
+	const source = sourceById.get(sourceId);
+	if (source !== void 0 && source.authority === "authoritative_current_truth" && isNonEmptyString(source.kind) && DELIVERY_EVIDENCE_SOURCE_KINDS.has(source.kind) && (packetProvenance.source_authority === void 0 || packetProvenance.source_authority === source.authority) && (packetProvenance.source_kind === void 0 || packetProvenance.source_kind === source.kind)) return [sourceId];
+	return [];
+}
+function sourceAuthorityIdentityKey(source) {
+	if (!isNonEmptyString(source.ref) || !isNonEmptyString(source.kind) || !isNonEmptyString(source.authority)) return null;
+	return `${source.ref}::${source.kind}::${source.authority}`;
+}
+function buildIssueResolutionSnapshot(entries) {
+	return entries.filter((entry) => isNonEmptyString(entry.issue_id)).map((entry) => ({
+		issue_id: entry.issue_id,
+		resolution_state: isNonEmptyString(entry.resolution_state) ? entry.resolution_state : null,
+		resolution_note: isNonEmptyString(entry.resolution_note) ? entry.resolution_note : null
+	})).sort((left, right) => left.issue_id.localeCompare(right.issue_id));
+}
+function readIssueResolutionSnapshotEntries(value) {
+	if (!Array.isArray(value)) return [];
+	const entries = [];
+	for (const candidate of value) {
+		const record = asStringRecord(candidate);
+		if (!isNonEmptyString(record.issue_id)) continue;
+		entries.push({
+			issue_id: record.issue_id,
+			resolution_state: isNonEmptyString(record.resolution_state) ? record.resolution_state : null,
+			resolution_note: isNonEmptyString(record.resolution_note) ? record.resolution_note : null
+		});
+	}
+	return entries;
+}
 function validateGraphRefArray(refs, ownerLabel, field, runId, itemIds, trackIds, trackProofIds, proofIds, reviewIds, contractIds, dataDomainIds, valueStreamIds, errors, hardFails) {
 	if (!Array.isArray(refs)) {
 		pushIssue(errors, `${ownerLabel} must include ${field}[]`, hardFails, true);
@@ -2280,7 +2796,7 @@ function scopeIsWaived(validWaivedScopesByRole, role, scope, runScopeKey) {
 	if (!waivedScopes) return false;
 	return waivedScopes.has(runScopeKey) || waivedScopes.has(graphRefKey(scope));
 }
-function validateDiscoveryRun(runDirInput) {
+function validateDiscoveryRun(runDirInput, options = {}) {
 	const runDir = path.resolve(runDirInput);
 	if (detectLegacyLayout(runDir)) return {
 		errors: [legacyLayoutMessage(runDir)],
@@ -2307,12 +2823,16 @@ function validateDiscoveryRun(runDirInput) {
 	const manifest = loadJson(paths.manifest);
 	const backlog = loadJson(paths.backlog);
 	const previousAssessment = loadJson(paths.assessment);
+	const journalEvents = loadNdjson(paths.journal);
 	const errors = [];
 	const warnings = [];
 	const hardFails = [];
 	const lintFindings = [];
 	const nextActions = [];
 	const backlogRecord = backlog;
+	const previousValidatedSnapshotRecord = asStringRecord([...journalEvents].reverse().find((event) => event.event === "run_validated" && event.status === "pass" && event.issue_resolution_snapshot !== void 0)?.issue_resolution_snapshot);
+	const previousGapResolutionById = new Map(readIssueResolutionSnapshotEntries(previousValidatedSnapshotRecord.gaps).map((entry) => [entry.issue_id, entry]));
+	const previousUnknownResolutionById = new Map(readIssueResolutionSnapshotEntries(previousValidatedSnapshotRecord.unknowns).map((entry) => [entry.issue_id, entry]));
 	if (manifest.schema_version !== "3") pushIssue(errors, unsupportedSchemaMessage("manifest.json"), hardFails, true);
 	if (!PHASE_STATES.includes(manifest.phase_state)) pushIssue(errors, "Invalid phase_state in manifest.json", hardFails, true);
 	if (backlog.metadata?.schema_version !== "3") pushIssue(errors, unsupportedSchemaMessage("backlog.json"), hardFails, true);
@@ -2356,6 +2876,7 @@ function validateDiscoveryRun(runDirInput) {
 		"as_built"
 	]) if (typeof backlogRecord[requiredObjectLedger] !== "object" || backlogRecord[requiredObjectLedger] === null) pushIssue(errors, `backlog.json.${requiredObjectLedger} must be an object`, hardFails, true);
 	const driftState = computeDriftState(manifest, backlog);
+	const hasBaselineIssueItemLinksSnapshot = typeof manifest.baseline_issue_item_links === "object" && manifest.baseline_issue_item_links !== null && !Array.isArray(manifest.baseline_issue_item_links);
 	if (backlog.source_authority.length === 0) pushIssue(errors, "No authoritative sources recorded in backlog.json.source_authority", hardFails, true);
 	if (!hasOwnEntries(backlog.glossary)) pushIssue(errors, "Glossary must be non-empty", hardFails, true);
 	else validateNonEmptyStringRecord(backlog.glossary, "glossary", errors, hardFails);
@@ -2455,6 +2976,7 @@ function validateDiscoveryRun(runDirInput) {
 	const protectedAuthoritativePrecedences = [];
 	const declaredItemIds = new Set(backlog.items.filter((item) => isNonEmptyString(item.item_id)).map((item) => item.item_id));
 	const declaredItemClassById = new Map(backlog.items.filter((item) => isNonEmptyString(item.item_id) && isNonEmptyString(item.item_class) && ITEM_CLASSES.includes(item.item_class)).map((item) => [item.item_id, item.item_class]));
+	const sourceIdentityByKey = /* @__PURE__ */ new Map();
 	for (const source of backlog.source_authority) {
 		if (!isNonEmptyString(source.source_id)) {
 			pushIssue(errors, "Source authority entry missing source_id", hardFails, true);
@@ -2463,6 +2985,12 @@ function validateDiscoveryRun(runDirInput) {
 		if (sourceIds.has(source.source_id)) pushIssue(errors, `Duplicate source_id: ${source.source_id}`, hardFails, true);
 		sourceIds.add(source.source_id);
 		sourceById.set(source.source_id, source);
+		const identityKey = sourceAuthorityIdentityKey(source);
+		if (identityKey !== null) {
+			const existingSourceId = sourceIdentityByKey.get(identityKey);
+			if (existingSourceId && existingSourceId !== source.source_id) pushIssue(errors, `Source ${source.source_id} duplicates source_authority identity ${source.ref} (${source.kind}, ${source.authority}); reuse source_id ${existingSourceId}`, hardFails, true);
+			else sourceIdentityByKey.set(identityKey, source.source_id);
+		}
 		if (!isNonEmptyString(source.ref)) pushIssue(errors, `Source ${source.source_id} is missing ref`, hardFails, true);
 		if (source.last_access_status === "inaccessible") pushIssue(errors, `Source ${source.source_id} is not readable from ref ${source.ref ?? "<missing-ref>"}`, hardFails, true);
 		if (!isNonEmptyString(source.kind) || !SOURCE_KINDS.includes(source.kind)) pushIssue(errors, `Source ${source.source_id} has invalid kind`, hardFails, true);
@@ -2620,6 +3148,7 @@ function validateDiscoveryRun(runDirInput) {
 		if (ownerRefs.length === 0 || gate.fail_mode === "fail_closed" && governingControlRefs.length === 0) trackGateFailures.push(gate.track_gate_id);
 	}
 	const claimIds = /* @__PURE__ */ new Set();
+	const claimById = /* @__PURE__ */ new Map();
 	const committedClaimIds = /* @__PURE__ */ new Set();
 	const controlObligationClaimIds = /* @__PURE__ */ new Set();
 	const decommissionNeedClaimIds = /* @__PURE__ */ new Set();
@@ -2630,6 +3159,7 @@ function validateDiscoveryRun(runDirInput) {
 		}
 		if (claimIds.has(claim.claim_id)) pushIssue(errors, `Duplicate claim_id: ${claim.claim_id}`, hardFails, true);
 		claimIds.add(claim.claim_id);
+		if (!claimById.has(claim.claim_id)) claimById.set(claim.claim_id, claim);
 		if (!isNonEmptyString(claim.claim_class) || !CLAIM_CLASSES.includes(claim.claim_class)) pushIssue(errors, `Claim ${claim.claim_id} has invalid claim_class`, hardFails, true);
 		if (!isNonEmptyString(claim.commitment) || !CLAIM_COMMITMENTS.includes(claim.commitment)) pushIssue(errors, `Claim ${claim.claim_id} has invalid commitment`, hardFails, true);
 		if (claim.commitment === "committed") committedClaimIds.add(claim.claim_id);
@@ -2774,9 +3304,7 @@ function validateDiscoveryRun(runDirInput) {
 	}
 	const reviewIds = /* @__PURE__ */ new Set();
 	const reviewFindingIds = /* @__PURE__ */ new Set();
-	const reviewRoleMap = /* @__PURE__ */ new Map();
-	const runReviewRoleMap = /* @__PURE__ */ new Map();
-	const trackProofReviewIds = /* @__PURE__ */ new Map();
+	const eligibleReviews = [];
 	for (const review of backlog.reviews) {
 		if (!isNonEmptyString(review.review_id)) {
 			pushIssue(errors, "Review artifact missing review_id", hardFails, true);
@@ -2798,37 +3326,30 @@ function validateDiscoveryRun(runDirInput) {
 		}
 		if (!Array.isArray(review.evidence_refs) || review.evidence_refs.length === 0) pushIssue(errors, `Review ${review.review_id} missing evidence_refs`, hardFails, true);
 		if (typeof review.score_contribution !== "number" || !Number.isFinite(review.score_contribution)) pushIssue(errors, `Review ${review.review_id} missing numeric score_contribution`, hardFails, true);
-		if (!isNonEmptyString(review.reviewed_at) || parseTimestamp(review.reviewed_at) === null) pushIssue(errors, `Review ${review.review_id} missing valid reviewed_at`, hardFails, true);
+		if (!isNonEmptyString(review.reviewed_at) || parseTimestamp(review.reviewed_at) === null) {
+			pushIssue(errors, `Review ${review.review_id} missing valid reviewed_at`, hardFails, true);
+			continue;
+		}
 		for (const collectionName of ["findings", "hard_fail_report"]) validateFindingCollection(review.review_id, review[collectionName], collectionName, errors, hardFails, reviewFindingIds);
 		if (review.verdict === "fail" && asArray(review.hard_fail_report).length === 0) pushIssue(errors, `Review ${review.review_id} with verdict=fail must include hard_fail_report findings`, hardFails, true);
-		if (review.review_scope === "item" && review.reviewed_ref?.kind !== "item") pushIssue(errors, `Review ${review.review_id} must reference an item when review_scope=item`, hardFails, true);
-		if (review.review_scope === "run" && review.reviewed_ref?.kind !== "run") pushIssue(errors, `Review ${review.review_id} must reference the run when review_scope=run`, hardFails, true);
-		if (review.review_scope === "track_proof" && review.reviewed_ref?.kind !== "track_proof") pushIssue(errors, `Review ${review.review_id} must reference a track_proof when review_scope=track_proof`, hardFails, true);
-		const state = reviewRoleMap.get(review.role) ?? {
-			independent: false,
-			verdicts: []
-		};
-		state.independent = state.independent || review.independent === true;
-		state.verdicts.push(review.verdict);
-		reviewRoleMap.set(review.role, state);
-		if (review.review_scope === "run") {
-			const runState = runReviewRoleMap.get(review.role) ?? {
-				independent: false,
-				verdicts: []
-			};
-			runState.independent = runState.independent || review.independent === true;
-			runState.verdicts.push(review.verdict);
-			runReviewRoleMap.set(review.role, runState);
+		if (review.review_scope === "item" && review.reviewed_ref?.kind !== "item") {
+			pushIssue(errors, `Review ${review.review_id} must reference an item when review_scope=item`, hardFails, true);
+			continue;
 		}
-		if (review.review_scope === "track_proof" && review.reviewed_ref?.kind === "track_proof") {
-			const existing = trackProofReviewIds.get(review.reviewed_ref.id ?? "") ?? [];
-			existing.push(review.review_id);
-			trackProofReviewIds.set(review.reviewed_ref.id ?? "", existing);
+		if (review.review_scope === "run" && review.reviewed_ref?.kind !== "run") {
+			pushIssue(errors, `Review ${review.review_id} must reference the run when review_scope=run`, hardFails, true);
+			continue;
 		}
+		if (review.review_scope === "track_proof" && review.reviewed_ref?.kind !== "track_proof") {
+			pushIssue(errors, `Review ${review.review_id} must reference a track_proof when review_scope=track_proof`, hardFails, true);
+			continue;
+		}
+		eligibleReviews.push(review);
 	}
 	const waiverFindings = [];
 	const waiverIds = /* @__PURE__ */ new Set();
 	const invalidWaiverIds = /* @__PURE__ */ new Set();
+	const invalidWaivedScopeKeysByRole = /* @__PURE__ */ new Map();
 	for (const waiver of backlog.waivers) {
 		if (!isNonEmptyString(waiver.waiver_id)) {
 			pushIssue(errors, "Waiver entry missing waiver_id", hardFails, true);
@@ -2881,11 +3402,14 @@ function validateDiscoveryRun(runDirInput) {
 			invalidWaiverIds.add(waiver.waiver_id);
 		}
 	}
+	const unknownEntryById = /* @__PURE__ */ new Map();
+	for (const entry of backlog.unknowns) if (isNonEmptyString(entry.issue_id) && !unknownEntryById.has(entry.issue_id)) unknownEntryById.set(entry.issue_id, entry);
 	const itemIds = /* @__PURE__ */ new Set();
 	const itemsById = /* @__PURE__ */ new Map();
 	const mappedClaimRefs = /* @__PURE__ */ new Set();
 	const itemOriginRefs = /* @__PURE__ */ new Map();
 	const missingOwners = [];
+	const itemsMissingDeliveryEvidence = [];
 	for (const item of backlog.items) {
 		if (!isNonEmptyString(item.item_id)) {
 			pushIssue(errors, "Item missing item_id", hardFails, true);
@@ -2901,6 +3425,12 @@ function validateDiscoveryRun(runDirInput) {
 		if (!isNonEmptyString(item.track_id) || !trackIds.has(item.track_id)) pushIssue(errors, `Item ${item.item_id} has invalid track_id`, hardFails, true);
 		if (!isNonEmptyString(item.backlog_protocol_state) || !BACKLOG_PROTOCOL_STATES.includes(item.backlog_protocol_state)) pushIssue(errors, `Item ${item.item_id} has invalid backlog_protocol_state`, hardFails, true);
 		if (!isNonEmptyString(item.delivery_state) || !DELIVERY_STATES.includes(item.delivery_state)) pushIssue(errors, `Item ${item.item_id} has invalid delivery_state`, hardFails, true);
+		else if (item.delivery_state === "delivered" || item.delivery_state === "partially_delivered") {
+			if (collectItemDeliveryEvidenceSourceIds(item, sourceById, excludedSourceIds).length === 0) {
+				pushIssue(errors, `Item ${item.item_id} sets delivery_state=${item.delivery_state} without authoritative current-truth evidence`, hardFails, true);
+				itemsMissingDeliveryEvidence.push(item.item_id);
+			}
+		}
 		if (!isNonEmptyString(item.readiness_state) || !READINESS_STATES.includes(item.readiness_state)) pushIssue(errors, `Item ${item.item_id} has invalid readiness_state`, hardFails, true);
 		if (!isNonEmptyString(item.closure_state) || !ITEM_CLOSURE_STATES.includes(item.closure_state)) pushIssue(errors, `Item ${item.item_id} has invalid closure_state`, hardFails, true);
 		if (!isNonEmptyString(item.summary_label) || !SUMMARY_LABELS.includes(item.summary_label)) pushIssue(errors, `Item ${item.item_id} has invalid summary_label`, hardFails, true);
@@ -3254,6 +3784,8 @@ function validateDiscoveryRun(runDirInput) {
 	]) for (const entry of issueCollection) if (isNonEmptyString(entry.issue_id) && entry.fail_closed_category === true && asArray(entry.related_item_refs).some((itemRef) => externallySafeItemIds.has(itemRef))) pushIssue(errors, `Externally safe track has unresolved fail-closed issue ${entry.issue_id}`, hardFails, true);
 	const negativeScopeIds = /* @__PURE__ */ new Set();
 	const negativeScopeByTitle = /* @__PURE__ */ new Map();
+	const claimsCoveredByNegativeScope = /* @__PURE__ */ new Set();
+	const negativeScopeClaimsMissingOutOfScopeCommitment = [];
 	for (const entry of backlog.negative_scope) {
 		if (!isNonEmptyString(entry.negative_scope_id)) {
 			pushIssue(errors, "Negative scope entry missing negative_scope_id", hardFails, true);
@@ -3265,8 +3797,18 @@ function validateDiscoveryRun(runDirInput) {
 		else negativeScopeByTitle.set(entry.title, entry);
 		if (!isNonEmptyString(entry.negative_scope_class) || !NEGATIVE_SCOPE_CLASSES.includes(entry.negative_scope_class)) pushIssue(errors, `Negative scope ${entry.negative_scope_id} has invalid negative_scope_class`, hardFails, true);
 		validateSourceRefs(entry.source_refs, `Negative scope ${entry.negative_scope_id}`, sourceIds, excludedSourceIds, errors, hardFails);
-		validateStringArrayField(entry, "owner_implications", `Negative scope ${entry.negative_scope_id}`, errors, hardFails);
-		for (const claimRef of validateStringArrayField(entry, "related_claim_refs", `Negative scope ${entry.negative_scope_id}`, errors, hardFails)) if (!claimIds.has(claimRef)) pushIssue(errors, `Negative scope ${entry.negative_scope_id} references unknown claim ${claimRef}`, hardFails, true);
+		requireNonEmptyStringArrayField(entry, "owner_implications", `Negative scope ${entry.negative_scope_id}`, errors, hardFails);
+		for (const claimRef of requireNonEmptyStringArrayField(entry, "related_claim_refs", `Negative scope ${entry.negative_scope_id}`, errors, hardFails)) {
+			if (!claimIds.has(claimRef)) {
+				pushIssue(errors, `Negative scope ${entry.negative_scope_id} references unknown claim ${claimRef}`, hardFails, true);
+				continue;
+			}
+			claimsCoveredByNegativeScope.add(claimRef);
+			if (claimById.get(claimRef)?.commitment !== "out_of_scope") {
+				pushIssue(errors, `Negative scope ${entry.negative_scope_id} claim ${claimRef} must set claim.commitment=out_of_scope`, hardFails, true);
+				negativeScopeClaimsMissingOutOfScopeCommitment.push(claimRef);
+			}
+		}
 		for (const itemRef of validateStringArrayField(entry, "related_item_refs", `Negative scope ${entry.negative_scope_id}`, errors, hardFails)) if (!itemIds.has(itemRef)) pushIssue(errors, `Negative scope ${entry.negative_scope_id} references unknown item ${itemRef}`, hardFails, true);
 		if (!isNonEmptyString(entry.revisit_trigger)) pushIssue(errors, `Negative scope ${entry.negative_scope_id} missing revisit_trigger`, hardFails, true);
 		const criticalPathItemRefs = entry.critical_path_item_refs === void 0 ? [] : validateStringArrayField(entry, "critical_path_item_refs", `Negative scope ${entry.negative_scope_id}`, errors, hardFails);
@@ -3289,6 +3831,8 @@ function validateDiscoveryRun(runDirInput) {
 			for (const trackId of criticalTracks) if (REQUIRED_TRACK_IDS.has(trackId) && !ownerTracks.has(trackId)) pushIssue(errors, `Negative scope ${entry.negative_scope_id} introduces manual/synthetic closure on required track ${trackId} without same-track owner seam`, hardFails, true);
 		}
 	}
+	const outOfScopeClaimsMissingNegativeScope = backlog.claims.filter((claim) => isNonEmptyString(claim.claim_id) && claim.commitment === "out_of_scope").map((claim) => claim.claim_id).filter((claimId) => !claimsCoveredByNegativeScope.has(claimId));
+	for (const claimId of outOfScopeClaimsMissingNegativeScope) pushIssue(errors, `Claim ${claimId} is out_of_scope but has no canonical negative_scope entry`, hardFails, true);
 	for (const behaviorTitle of backlog.as_built.synthetic_behaviors) {
 		const entry = negativeScopeByTitle.get(behaviorTitle);
 		if (!entry || !MANUAL_ONLY_NEGATIVE_SCOPE_CLASSES.has(entry.negative_scope_class ?? "")) pushIssue(errors, `Synthetic behavior ${behaviorTitle} must be modeled as manual/synthetic negative_scope with explicit critical-path and owner-seam linkage`, hardFails, true);
@@ -3335,7 +3879,7 @@ function validateDiscoveryRun(runDirInput) {
 	const gapIds = /* @__PURE__ */ new Set();
 	const contradictionIds = /* @__PURE__ */ new Set();
 	const unknownIds = /* @__PURE__ */ new Set();
-	const unknownEntriesById = /* @__PURE__ */ new Map();
+	const issuesWithInvalidResolutionState = [];
 	for (const [ledgerName, entries, idSet] of [
 		[
 			"Gap",
@@ -3359,21 +3903,63 @@ function validateDiscoveryRun(runDirInput) {
 		}
 		if (idSet.has(entry.issue_id)) pushIssue(errors, `Duplicate ${ledgerName.toLowerCase()} issue_id: ${entry.issue_id}`, hardFails, true);
 		idSet.add(entry.issue_id);
-		if (ledgerName === "Unknown") unknownEntriesById.set(entry.issue_id, entry);
 		if (!isNonEmptyString(entry.title)) pushIssue(errors, `${ledgerName} ${entry.issue_id} missing title`, hardFails, true);
 		if (!isNonEmptyString(entry.severity)) pushIssue(errors, `${ledgerName} ${entry.issue_id} missing severity`, hardFails, true);
 		if ("fail_closed_category" in entry && typeof entry.fail_closed_category !== "boolean") pushIssue(errors, `${ledgerName} ${entry.issue_id} has invalid fail_closed_category`, hardFails, true);
 		if ("resolution_state" in entry && entry.resolution_state !== void 0 && entry.resolution_state !== null) {
 			if (!isNonEmptyString(entry.resolution_state) || !ISSUE_RESOLUTION_STATES.includes(entry.resolution_state)) pushIssue(errors, `${ledgerName} ${entry.issue_id} has invalid resolution_state`, hardFails, true);
 		}
-		if (ledgerName === "Unknown") {
-			if (!isNonEmptyString(entry.resolution_state)) pushIssue(errors, `Unknown ${entry.issue_id} missing resolution_state`, hardFails, true);
-			else if (entry.resolution_state === "resolved" || entry.resolution_state === "downgraded") {
-				if (!isNonEmptyString(entry.resolution_note)) pushIssue(errors, `Unknown ${entry.issue_id} must include resolution_note when ${entry.resolution_state}`, hardFails, true);
+		if (ledgerName === "Gap" || ledgerName === "Unknown") {
+			const issueLabel = `${ledgerName} ${entry.issue_id}`;
+			const resolutionState = isNonEmptyString(entry.resolution_state) ? entry.resolution_state : null;
+			const hasResolutionNote = isNonEmptyString(entry.resolution_note);
+			const hasDowngradedSeverity = isNonEmptyString(entry.downgraded_severity);
+			const hasCurrentTruthReopenEvidence = getCurrentTruthEvidenceSourceIds(entry.source_refs, sourceById).length > 0;
+			const previousResolution = ledgerName === "Gap" ? previousGapResolutionById.get(entry.issue_id) : previousUnknownResolutionById.get(entry.issue_id);
+			if (ledgerName === "Unknown" && resolutionState === null) {
+				pushIssue(errors, `Unknown ${entry.issue_id} missing resolution_state`, hardFails, true);
+				issuesWithInvalidResolutionState.push(entry.issue_id);
 			}
-			if (entry.resolution_state === "downgraded") {
-				if (!isNonEmptyString(entry.downgraded_severity)) pushIssue(errors, `Unknown ${entry.issue_id} must include downgraded_severity when resolution_state=downgraded`, hardFails, true);
-				else if (isCriticalUnknownSeverity(entry.downgraded_severity)) pushIssue(errors, `Unknown ${entry.issue_id} downgraded_severity must be below critical/high`, hardFails, true);
+			if (resolutionState === null) {
+				if (hasResolutionNote || hasDowngradedSeverity) {
+					pushIssue(errors, `${issueLabel} has resolution fields but no resolution_state`, hardFails, true);
+					issuesWithInvalidResolutionState.push(entry.issue_id);
+				}
+			} else if (resolutionState === "open") {
+				if (hasResolutionNote) {
+					pushIssue(errors, `${issueLabel} must clear resolution_note when resolution_state=open`, hardFails, true);
+					issuesWithInvalidResolutionState.push(entry.issue_id);
+				}
+				if (hasDowngradedSeverity) {
+					pushIssue(errors, `${issueLabel} must clear downgraded_severity when resolution_state=open`, hardFails, true);
+					issuesWithInvalidResolutionState.push(entry.issue_id);
+				}
+				if (previousResolution && (previousResolution.resolution_state === "resolved" || previousResolution.resolution_state === "downgraded") && !hasCurrentTruthReopenEvidence && driftState.deltaSummary.dirty_flags.length === 0) {
+					pushIssue(errors, `${issueLabel} cannot transition ${previousResolution.resolution_state} -> open without authoritative current-truth evidence or drift reassessment`, hardFails, true);
+					issuesWithInvalidResolutionState.push(entry.issue_id);
+				}
+			} else if (resolutionState === "resolved" || resolutionState === "downgraded") {
+				if (!hasResolutionNote) {
+					pushIssue(errors, `${issueLabel} must include resolution_note when ${resolutionState}`, hardFails, true);
+					issuesWithInvalidResolutionState.push(entry.issue_id);
+				}
+			}
+			if (previousResolution?.resolution_state === "downgraded" && resolutionState === "resolved" && previousResolution.resolution_note === (hasResolutionNote ? entry.resolution_note : null)) {
+				pushIssue(errors, `${issueLabel} must include a new resolution_note when transitioning downgraded -> resolved`, hardFails, true);
+				issuesWithInvalidResolutionState.push(entry.issue_id);
+			}
+			if (resolutionState === "resolved" && hasDowngradedSeverity) {
+				pushIssue(errors, `${issueLabel} must clear downgraded_severity when resolution_state=resolved`, hardFails, true);
+				issuesWithInvalidResolutionState.push(entry.issue_id);
+			}
+			if (resolutionState === "downgraded") {
+				if (!hasDowngradedSeverity) {
+					pushIssue(errors, `${issueLabel} must include downgraded_severity when resolution_state=downgraded`, hardFails, true);
+					issuesWithInvalidResolutionState.push(entry.issue_id);
+				} else if (isCriticalUnknownSeverity(entry.downgraded_severity)) {
+					pushIssue(errors, `${issueLabel} downgraded_severity must be below critical/high`, hardFails, true);
+					issuesWithInvalidResolutionState.push(entry.issue_id);
+				}
 			}
 		}
 		validateSourceRefs(entry.source_refs, `${ledgerName} ${entry.issue_id}`, sourceIds, excludedSourceIds, errors, hardFails);
@@ -3396,7 +3982,7 @@ function validateDiscoveryRun(runDirInput) {
 		if (unknownToSpike.has(entry.unknown_id)) pushIssue(errors, `uncertainty_to_spike duplicates unknown_id ${entry.unknown_id}`, hardFails, true);
 		else unknownToSpike.set(entry.unknown_id, entry.spike_item_id);
 	}
-	for (const [unknownId, unknownEntry] of unknownEntriesById) if (unknownEntry.resolution_state !== "resolved" && unknownEntry.resolution_state !== "downgraded" && isCriticalUnknownSeverity(getIssueEffectiveSeverity(unknownEntry)) && !unknownToSpike.has(unknownId)) pushIssue(errors, `Critical unknown ${unknownId} must be resolved, downgraded, or linked to a bounded spike`, hardFails, true);
+	for (const [unknownId, unknownEntry] of unknownEntryById) if (unknownEntry.resolution_state !== "resolved" && unknownEntry.resolution_state !== "downgraded" && isCriticalUnknownSeverity(getIssueEffectiveSeverity(unknownEntry)) && !unknownToSpike.has(unknownId)) pushIssue(errors, `Critical unknown ${unknownId} must be resolved, downgraded, or linked to a bounded spike`, hardFails, true);
 	for (const entry of backlog.delivered_lineage_notes) {
 		if (!isNonEmptyString(entry.lineage_note_id)) {
 			pushIssue(errors, "Delivered lineage note missing lineage_note_id", hardFails, true);
@@ -3666,24 +4252,6 @@ function validateDiscoveryRun(runDirInput) {
 		const trackProofId = trackProof.track_proof_id;
 		if (!backlog.relations.some((relation) => relation.relation_type === "proves" && relationRefEquals(normalizeRelationRef(relation.from), graphRef("track", trackId)) && relationRefEquals(normalizeRelationRef(relation.to), graphRef("track_proof", trackProofId)))) pushIssue(errors, `Track proof ${trackProofId} is missing graph-level proves relation from track ${trackId}`, hardFails, true);
 	}
-	const pendingTrackProofReviews = [];
-	if (backlog.reviews.filter((review) => review.review_scope === "run" && relationRefEquals(review.reviewed_ref, graphRef("run", manifest.run_id))).length === 0) pushIssue(errors, "Run must be reviewed_by at least one run-scope review artifact", hardFails, true);
-	for (const trackProof of backlog.track_proofs) {
-		if (!isNonEmptyString(trackProof.track_proof_id)) continue;
-		const trackProofId = trackProof.track_proof_id;
-		const trackProofReviews = backlog.reviews.filter((review) => review.review_scope === "track_proof" && relationRefEquals(review.reviewed_ref, graphRef("track_proof", trackProofId)));
-		if (trackProofReviews.length === 0) {
-			pendingTrackProofReviews.push(trackProofId);
-			pushIssue(errors, `Track proof ${trackProofId} must be reviewed_by at least one track_proof review artifact`, hardFails, true);
-			continue;
-		}
-		if (!trackProofReviews.some((review) => review.independent === true)) {
-			pendingTrackProofReviews.push(trackProofId);
-			pushIssue(errors, `Track proof ${trackProofId} must have at least one independent track_proof review`, hardFails, true);
-		}
-		if (trackProofReviews.every((review) => review.verdict === "fail")) pushIssue(errors, `Track proof ${trackProofId} has only failing track_proof reviews`, hardFails, true);
-		if (trackProofReviews.some((review) => review.verdict === "pass_with_findings")) warnings.push(`Track proof ${trackProofId} passed review with findings; confirm track-closure follow-up actions are tracked.`);
-	}
 	for (const item of backlog.items) {
 		if (!isNonEmptyString(item.item_id) || !isNonEmptyString(item.item_class)) continue;
 		const itemId = item.item_id;
@@ -3837,6 +4405,9 @@ function validateDiscoveryRun(runDirInput) {
 			pushIssue(errors, message, hardFails, true);
 			waiverFindings.push(message);
 			invalidWaiverIds.add(waiver.waiver_id);
+			const invalidScopes = invalidWaivedScopeKeysByRole.get(waiver.waived_role) ?? /* @__PURE__ */ new Set();
+			invalidScopes.add(graphRefKey(waiver.scope));
+			invalidWaivedScopeKeysByRole.set(waiver.waived_role, invalidScopes);
 			continue;
 		}
 		const waivedScopes = validWaivedScopesByRole.get(waiver.waived_role) ?? /* @__PURE__ */ new Set();
@@ -3874,6 +4445,79 @@ function validateDiscoveryRun(runDirInput) {
 	for (const [role, scopes] of validWaivedScopesByRole) if (scopes.has(runScopeKey)) validRunWaivedRoles.add(role);
 	const requiredReviewRoles = /* @__PURE__ */ new Set();
 	for (const [role, scopes] of requiredRoleScopes) if ([...scopes.values()].some((scope) => !scopeIsWaived(validWaivedScopesByRole, role, scope, runScopeKey))) requiredReviewRoles.add(role);
+	const assessedAt = utcNow();
+	const staleItemIds = new Set(driftState.staleItems);
+	const staleProofIds = new Set([...staleProofs]);
+	const recalculatedTrackGateIds = new Set(driftState.deltaSummary.track_gate_ids_to_recalculate);
+	const trackById = new Map(backlog.tracks.filter((track) => isNonEmptyString(track.track_id)).map((track) => [track.track_id, track]));
+	const trackProofById = new Map(backlog.track_proofs.filter((trackProof) => isNonEmptyString(trackProof.track_proof_id)).map((trackProof) => [trackProof.track_proof_id, trackProof]));
+	const countUniqueIds = (entries, selector) => new Set(entries.map((entry) => selector(entry)).filter((value) => isNonEmptyString(value))).size;
+	const uniqueItemsById = /* @__PURE__ */ new Map();
+	for (const item of backlog.items) {
+		if (!isNonEmptyString(item.item_id) || uniqueItemsById.has(item.item_id)) continue;
+		uniqueItemsById.set(item.item_id, item);
+	}
+	const lastRebaselineAt = parseTimestamp(manifest.last_rebaseline_at);
+	const dirtyStateObservedAt = parseTimestamp(manifest.last_delta_at ?? manifest.updated_at);
+	const staleReviewArtifacts = [...new Set(eligibleReviews.flatMap((review) => {
+		if (!isNonEmptyString(review.review_id) || !isNonEmptyString(review.review_scope) || !isGraphRef(review.reviewed_ref)) return [];
+		const reviewTimestamp = isNonEmptyString(review.reviewed_at) ? parseTimestamp(review.reviewed_at) : null;
+		if (review.review_scope === "run" && review.reviewed_ref.kind === "run") {
+			const predatesRebaseline = reviewTimestamp !== null && lastRebaselineAt !== null && reviewTimestamp < lastRebaselineAt;
+			const predatesCurrentDirtyState = reviewTimestamp !== null && dirtyStateObservedAt !== null && reviewTimestamp < dirtyStateObservedAt && driftState.deltaSummary.dirty_flags.length > 0;
+			return predatesRebaseline || predatesCurrentDirtyState ? [review.review_id] : [];
+		}
+		let applicabilityMismatch = false;
+		if (isNonEmptyString(review.role) && REVIEW_ROLES.includes(review.role) && (review.review_scope === "item" || review.review_scope === "track_proof")) {
+			const roleScopes = requiredRoleScopes.get(review.role);
+			const reviewedScopeKey = graphRefKey(review.reviewed_ref);
+			const scopeItems = getScopedItemsForGraphRef(review.reviewed_ref, manifest.run_id, itemsById, backlog);
+			const directlyImpacted = isRoleDirectlyImpacted(review.role, scopeItems, targetAcceptance);
+			const comparableRequiredScopeExists = roleScopes !== void 0 && [...roleScopes.values()].some((scope) => scope.kind === review.review_scope);
+			const scopeStillRequired = directlyImpacted && (roleScopes?.has(reviewedScopeKey) ?? false) && !scopeIsWaived(validWaivedScopesByRole, review.role, review.reviewed_ref, runScopeKey);
+			const hasSameScopeInvalidWaiver = invalidWaivedScopeKeysByRole.get(review.role)?.has(reviewedScopeKey) ?? false;
+			applicabilityMismatch = comparableRequiredScopeExists && (!scopeStillRequired || hasSameScopeInvalidWaiver);
+		}
+		if (review.review_scope === "item" && review.reviewed_ref.kind === "item" && (staleItemIds.has(review.reviewed_ref.id ?? "") || applicabilityMismatch)) return [review.review_id];
+		if (review.review_scope === "track_proof" && review.reviewed_ref.kind === "track_proof") {
+			const trackProof = trackProofById.get(review.reviewed_ref.id ?? "");
+			const hasStaleProofDependency = asArray(trackProof?.proof_refs).some((proofId) => staleProofIds.has(proofId));
+			const needsRecalculation = (isNonEmptyString(trackProof?.track_id) ? asArray(trackById.get(trackProof.track_id)?.required_track_gate_ids).filter(isNonEmptyString) : []).some((gateId) => recalculatedTrackGateIds.has(gateId));
+			return hasStaleProofDependency || needsRecalculation || applicabilityMismatch ? [review.review_id] : [];
+		}
+		return [];
+	}))].sort();
+	const staleReviewArtifactIds = new Set(staleReviewArtifacts);
+	const effectiveReviews = eligibleReviews.filter((review) => isNonEmptyString(review.review_id) && !staleReviewArtifactIds.has(review.review_id));
+	const runReviewRoleMap = /* @__PURE__ */ new Map();
+	for (const review of effectiveReviews) {
+		if (!isNonEmptyString(review.role) || review.review_scope !== "run" || !relationRefEquals(review.reviewed_ref, graphRef("run", manifest.run_id))) continue;
+		const runState = runReviewRoleMap.get(review.role) ?? {
+			independent: false,
+			verdicts: []
+		};
+		runState.independent = runState.independent || review.independent === true;
+		runState.verdicts.push(review.verdict ?? "");
+		runReviewRoleMap.set(review.role, runState);
+	}
+	const pendingTrackProofReviews = [];
+	if (effectiveReviews.filter((review) => review.review_scope === "run" && relationRefEquals(review.reviewed_ref, graphRef("run", manifest.run_id))).length === 0) pushIssue(errors, "Run must be reviewed_by at least one fresh run-scope review artifact", hardFails, true);
+	for (const trackProof of backlog.track_proofs) {
+		if (!isNonEmptyString(trackProof.track_proof_id)) continue;
+		const trackProofId = trackProof.track_proof_id;
+		const trackProofReviews = effectiveReviews.filter((review) => review.review_scope === "track_proof" && relationRefEquals(review.reviewed_ref, graphRef("track_proof", trackProofId)));
+		if (trackProofReviews.length === 0) {
+			pendingTrackProofReviews.push(trackProofId);
+			pushIssue(errors, `Track proof ${trackProofId} must be reviewed_by at least one fresh track_proof review artifact`, hardFails, true);
+			continue;
+		}
+		if (!trackProofReviews.some((review) => review.independent === true)) {
+			pendingTrackProofReviews.push(trackProofId);
+			pushIssue(errors, `Track proof ${trackProofId} must have at least one independent fresh track_proof review`, hardFails, true);
+		}
+		if (trackProofReviews.every((review) => review.verdict === "fail")) pushIssue(errors, `Track proof ${trackProofId} has only failing fresh track_proof reviews`, hardFails, true);
+		if (trackProofReviews.some((review) => review.verdict === "pass_with_findings")) warnings.push(`Track proof ${trackProofId} passed fresh review with findings; confirm track-closure follow-up actions are tracked.`);
+	}
 	const presentReviewRoles = [...runReviewRoleMap.keys()].sort();
 	const missingRequiredReviews = [];
 	const validatedReviewRoles = /* @__PURE__ */ new Set();
@@ -3887,8 +4531,8 @@ function validateDiscoveryRun(runDirInput) {
 			pushIssue(errors, `Required review role missing: ${role}`, hardFails, true);
 			return;
 		}
-		if (!reviewState.independent) pushIssue(errors, `Required review role ${role} lacks an independent review artifact`, hardFails, true);
-		if (reviewState.verdicts.every((verdict) => verdict === "fail")) pushIssue(errors, `Required review role ${role} has only failing reviews`, hardFails, true);
+		if (!reviewState.independent) pushIssue(errors, `Required review role ${role} lacks an independent fresh review artifact`, hardFails, true);
+		if (reviewState.verdicts.every((verdict) => verdict === "fail")) pushIssue(errors, `Required review role ${role} has only failing fresh reviews`, hardFails, true);
 		if (reviewState.verdicts.some((verdict) => verdict === "pass_with_findings")) warnings.push(`Review role ${role} passed with findings; confirm follow-up actions are tracked.`);
 	};
 	for (const role of [...requiredReviewRoles].sort()) validateRequiredReviewRole(role);
@@ -3902,6 +4546,10 @@ function validateDiscoveryRun(runDirInput) {
 	const score = candidateForImplementationGrade ? computeScore(backlog, hardFails, errors, warnings, lintFindings, [...staleProofs], driftState.staleItems, driftState.staleClaims, missingRequiredReviews, pendingTrackProofReviews, committedClaimsWithoutItems, missingOwners) : preliminaryScore;
 	if (warnings.length > 0 && !warnings.some((warning) => warning.toLowerCase().includes("review"))) nextActions.push("Resolve remaining warnings before treating the run as stable planning input.");
 	if (hardFails.length > 0) nextActions.push("Fix hard-fail validation issues and rerun validate.");
+	if (itemsMissingDeliveryEvidence.length > 0) nextActions.push(`Back delivery_state with authoritative current-truth evidence: ${[...new Set(itemsMissingDeliveryEvidence)].sort().join(", ")}.`);
+	const negativeScopeAlignmentIssues = [...negativeScopeClaimsMissingOutOfScopeCommitment, ...outOfScopeClaimsMissingNegativeScope];
+	if (negativeScopeAlignmentIssues.length > 0) nextActions.push(`Align out_of_scope claims with canonical negative_scope entries: ${[...new Set(negativeScopeAlignmentIssues)].sort().join(", ")}.`);
+	if (issuesWithInvalidResolutionState.length > 0) nextActions.push(`Normalize Gap/Unknown resolution fields to the canonical state machine: ${[...new Set(issuesWithInvalidResolutionState)].sort().join(", ")}.`);
 	if (missingRequiredReviews.length > 0) nextActions.push(`Obtain independent reviews for: ${missingRequiredReviews.join(", ")}.`);
 	if (pendingTrackProofReviews.length > 0) nextActions.push(`Attach independent track-proof reviews for: ${pendingTrackProofReviews.join(", ")}.`);
 	if (staleProofs.size > 0) nextActions.push(`Refresh stale proof bundles: ${[...staleProofs].join(", ")}.`);
@@ -3931,14 +4579,37 @@ function validateDiscoveryRun(runDirInput) {
 		status: closureStatus,
 		reason: closureStatus === "implementation_ready" ? "No hard-fails remain and the score reaches implementation-grade." : closureStatus === "planning_ready" ? "No hard-fails remain and the run is fit for planning." : "Hard-fails, incomplete mandatory artifacts, review gaps, or insufficient score keep the run open."
 	};
+	const rebaselineReadinessReasons = [];
+	if (!driftState.rebaselineRequired) rebaselineReadinessReasons.push("Baseline drift is not detected, so rebaseline is not needed.");
+	else {
+		if (assessmentStatus !== "pass") rebaselineReadinessReasons.push("Assessment must pass before rebaseline is allowed.");
+		if (uniqueHardFails.length > 0) rebaselineReadinessReasons.push("Hard-fail validation issues must be resolved before rebaseline.");
+		if (driftState.staleItems.length > 0) rebaselineReadinessReasons.push(`Stale items remain: ${driftState.staleItems.join(", ")}.`);
+		if (staleProofs.size > 0) rebaselineReadinessReasons.push(`Stale proofs remain: ${[...staleProofs].sort().join(", ")}.`);
+		if (staleReviewArtifacts.length > 0) rebaselineReadinessReasons.push(`Stale review artifacts remain: ${[...staleReviewArtifacts].sort().join(", ")}.`);
+		if (missingRequiredReviews.length > 0) rebaselineReadinessReasons.push(`Missing required review roles remain: ${[...new Set(missingRequiredReviews)].sort().join(", ")}.`);
+		if (pendingTrackProofReviews.length > 0) rebaselineReadinessReasons.push(`Pending track-proof reviews remain: ${[...new Set(pendingTrackProofReviews)].sort().join(", ")}.`);
+		if (trackGateFailures.length > 0) rebaselineReadinessReasons.push(`Track gate failures remain: ${[...new Set(trackGateFailures)].sort().join(", ")}.`);
+	}
+	const rebaselineReadiness = !driftState.rebaselineRequired ? {
+		status: "not_needed",
+		reasons: rebaselineReadinessReasons
+	} : rebaselineReadinessReasons.length === 0 ? {
+		status: "allowed",
+		reasons: []
+	} : {
+		status: "blocked",
+		reasons: rebaselineReadinessReasons
+	};
+	if (staleReviewArtifacts.length > 0) nextActions.push(`Refresh stale review artifacts: ${staleReviewArtifacts.join(", ")}.`);
 	const deltaSummary = {
 		...driftState.deltaSummary,
-		baseline_established: true
+		stale_review_artifact_ids: [...staleReviewArtifacts].sort()
 	};
 	const assessment = {
 		schema_version: "3",
 		run_id: manifest.run_id ?? path.basename(runDir),
-		assessed_at: utcNow(),
+		assessed_at: assessedAt,
 		status: assessmentStatus,
 		errors,
 		warnings,
@@ -3947,6 +4618,7 @@ function validateDiscoveryRun(runDirInput) {
 		stale_proofs: [...new Set([...staleProofs])],
 		stale_items: driftState.staleItems,
 		stale_claims: driftState.staleClaims,
+		stale_review_artifacts: [...staleReviewArtifacts].sort(),
 		track_gate_failures: [...new Set(trackGateFailures)],
 		required_review_roles: [...requiredReviewRoles].sort(),
 		present_review_roles: presentReviewRoles,
@@ -3958,18 +4630,28 @@ function validateDiscoveryRun(runDirInput) {
 		score,
 		acceptance: acceptanceState,
 		closure: closureState,
+		rebaseline_readiness: rebaselineReadiness,
 		stats: {
-			sources: backlog.source_authority.length,
-			claims: backlog.claims.length,
-			contracts: backlog.contracts.length,
-			data_domains: backlog.data_domains.length,
-			items: backlog.items.length,
-			relations: backlog.relations.length,
-			proofs: backlog.proofs.length,
-			track_proofs: backlog.track_proofs.length,
-			reviews: backlog.reviews.length,
-			waivers: backlog.waivers.length,
-			previous_warnings: Array.isArray(previousAssessment.warnings) ? previousAssessment.warnings.length : 0
+			sources_total: countUniqueIds(backlog.source_authority, (entry) => entry.source_id),
+			claims_total: countUniqueIds(backlog.claims, (entry) => entry.claim_id),
+			contracts_total: countUniqueIds(backlog.contracts, (entry) => entry.contract_id),
+			data_domains_total: countUniqueIds(backlog.data_domains, (entry) => entry.domain_id),
+			items_total: uniqueItemsById.size,
+			items_delivered: [...uniqueItemsById.values()].filter((item) => item.delivery_state === "delivered").length,
+			items_partially_delivered: [...uniqueItemsById.values()].filter((item) => item.delivery_state === "partially_delivered").length,
+			items_not_started: [...uniqueItemsById.values()].filter((item) => item.delivery_state === "not_started").length,
+			gaps_total: countUniqueIds(backlog.gaps, (entry) => entry.issue_id),
+			unknowns_total: countUniqueIds(backlog.unknowns, (entry) => entry.issue_id),
+			contradictions_total: countUniqueIds(backlog.contradictions, (entry) => entry.issue_id),
+			stale_claims_total: new Set(driftState.staleClaims).size,
+			stale_items_total: staleItemIds.size,
+			stale_proofs_total: staleProofIds.size,
+			stale_review_artifacts_total: staleReviewArtifacts.length,
+			warnings_total: warnings.length,
+			hard_fails_total: uniqueHardFails.length,
+			dor_ready_total: [...uniqueItemsById.values()].filter((item) => item.readiness_state === "ready").length,
+			review_artifacts_total: countUniqueIds(backlog.reviews, (entry) => entry.review_id),
+			waivers_total: countUniqueIds(backlog.waivers, (entry) => entry.waiver_id)
 		},
 		delta_summary: deltaSummary,
 		rebaseline_required: driftState.rebaselineRequired
@@ -3979,14 +4661,15 @@ function validateDiscoveryRun(runDirInput) {
 	manifest.last_assessment_status = assessment.status;
 	manifest.current_source_hashes = driftState.currentSourceHashes;
 	manifest.current_canonical_hashes = driftState.currentCanonicalHashes;
+	manifest.current_issue_item_links = driftState.currentIssueItemLinks;
 	manifest.dirty_flags = driftState.deltaSummary.dirty_flags;
-	if (!driftState.baselineEstablished) {
+	if (!driftState.baselineEstablished || !hasBaselineIssueItemLinksSnapshot) {
 		manifest.baseline_source_hashes = driftState.baselineSourceHashes;
 		manifest.baseline_canonical_hashes = driftState.baselineCanonicalHashes;
+		manifest.baseline_issue_item_links = driftState.baselineIssueItemLinks;
 	}
 	if (assessment.status === "pass" && !["rendered", "closed"].includes(manifest.phase_state)) manifest.phase_state = "validated";
 	writeJson(paths.manifest, manifest);
-	const journalEvents = loadNdjson(paths.journal);
 	const recordedWaiverIds = new Set(journalEvents.filter((event) => event.event === "waiver_recorded").map((event) => event.waiver_id).filter((waiverId) => isNonEmptyString(waiverId)));
 	const closedTrackIds = new Set(journalEvents.filter((event) => event.event === "track_closed").map((event) => event.track_id).filter((trackId) => isNonEmptyString(trackId)));
 	for (const waiver of backlog.waivers) {
@@ -3995,6 +4678,7 @@ function validateDiscoveryRun(runDirInput) {
 			ts: assessment.assessed_at,
 			event: "waiver_recorded",
 			run_id: assessment.run_id,
+			...options.commandRunId ? { command_run_id: options.commandRunId } : {},
 			waiver_id: waiver.waiver_id,
 			waived_role: waiver.waived_role ?? null,
 			scope: formatGraphRef(waiver.scope),
@@ -4008,6 +4692,7 @@ function validateDiscoveryRun(runDirInput) {
 			ts: assessment.assessed_at,
 			event: "track_closed",
 			run_id: assessment.run_id,
+			...options.commandRunId ? { command_run_id: options.commandRunId } : {},
 			track_id: track.track_id,
 			summary_label: track.summary_label ?? null,
 			track_proof_refs: asArray(track.track_proof_refs)
@@ -4017,11 +4702,16 @@ function validateDiscoveryRun(runDirInput) {
 		ts: assessment.assessed_at,
 		event: "run_validated",
 		run_id: assessment.run_id,
+		...options.commandRunId ? { command_run_id: options.commandRunId } : {},
 		status: assessment.status,
 		achieved_acceptance: assessment.acceptance.achieved,
 		score: assessment.score.total,
 		error_count: errors.length,
-		warning_count: warnings.length
+		warning_count: warnings.length,
+		issue_resolution_snapshot: {
+			gaps: buildIssueResolutionSnapshot(backlog.gaps),
+			unknowns: buildIssueResolutionSnapshot(backlog.unknowns)
+		}
 	});
 	return {
 		errors,
@@ -4033,45 +4723,179 @@ function validateDiscoveryRun(runDirInput) {
 }
 //#endregion
 //#region src/discovery/delta-run.ts
-async function computeDiscoveryDelta(runDirInput) {
+function formatNullable(value) {
+	return value ?? "null";
+}
+function relationKey(relation) {
+	return `${relation.relation_type} ${relation.from.kind}:${relation.from.id} -> ${relation.to.kind}:${relation.to.id}`;
+}
+function roadmapRowKey(row) {
+	return `${row.row_id} (${row.item_id})`;
+}
+function createEmptyHumanReadableDelta() {
+	return {
+		baselineEstablished: false,
+		claimCommitmentChanges: [],
+		itemAdds: [],
+		itemRemovals: [],
+		itemStateChanges: [],
+		relationAdds: [],
+		relationRemovals: [],
+		roadmapOrderChanges: []
+	};
+}
+function buildHumanReadableDelta(baselineProjection, currentProjection) {
+	if (baselineProjection === null) return createEmptyHumanReadableDelta();
+	const itemAdds = [];
+	const itemRemovals = [];
+	const itemStateChanges = [];
+	const relationAdds = [];
+	const relationRemovals = [];
+	const claimCommitmentChanges = [];
+	const roadmapOrderChanges = [];
+	const baselineItemsById = new Map(baselineProjection.items.map((item) => [item.item_id, item]));
+	const currentItemsById = new Map(currentProjection.items.map((item) => [item.item_id, item]));
+	for (const item of currentProjection.items) {
+		if (!baselineItemsById.has(item.item_id)) {
+			itemAdds.push(`${item.item_id} (${item.title ?? "untitled"})`);
+			continue;
+		}
+		const previousItem = baselineItemsById.get(item.item_id);
+		if (!previousItem) continue;
+		const changes = [];
+		for (const [field, currentValue, previousValue] of [
+			[
+				"delivery_state",
+				item.delivery_state,
+				previousItem.delivery_state
+			],
+			[
+				"readiness_state",
+				item.readiness_state,
+				previousItem.readiness_state
+			],
+			[
+				"closure_state",
+				item.closure_state,
+				previousItem.closure_state
+			],
+			[
+				"summary_label",
+				item.summary_label,
+				previousItem.summary_label
+			]
+		]) if (currentValue !== previousValue) changes.push(`${field}: ${formatNullable(previousValue)} -> ${formatNullable(currentValue)}`);
+		if (changes.length > 0) itemStateChanges.push(`${item.item_id}: ${changes.join("; ")}`);
+	}
+	for (const item of baselineProjection.items) if (!currentItemsById.has(item.item_id)) itemRemovals.push(`${item.item_id} (${item.title ?? "untitled"})`);
+	const baselineRelationKeys = new Set(baselineProjection.relations.map((relation) => relationKey(relation)));
+	const currentRelationKeys = new Set(currentProjection.relations.map((relation) => relationKey(relation)));
+	for (const relation of currentProjection.relations.map((entry) => relationKey(entry))) if (!baselineRelationKeys.has(relation)) relationAdds.push(relation);
+	for (const relation of baselineProjection.relations.map((entry) => relationKey(entry))) if (!currentRelationKeys.has(relation)) relationRemovals.push(relation);
+	const baselineClaimsById = new Map(baselineProjection.claim_commitments.map((claim) => [claim.claim_id, claim]));
+	const currentClaimsById = new Map(currentProjection.claim_commitments.map((claim) => [claim.claim_id, claim]));
+	for (const claim of currentProjection.claim_commitments) {
+		const previousClaim = baselineClaimsById.get(claim.claim_id);
+		if (!previousClaim) {
+			claimCommitmentChanges.push(`${claim.claim_id}: commitment ${formatNullable(null)} -> ${formatNullable(claim.commitment)}; revisit_trigger: ${formatNullable(null)} -> ${formatNullable(claim.revisit_trigger)}`);
+			continue;
+		}
+		if (claim.commitment !== previousClaim.commitment || claim.revisit_trigger !== previousClaim.revisit_trigger) claimCommitmentChanges.push(`${claim.claim_id}: commitment ${formatNullable(previousClaim.commitment)} -> ${formatNullable(claim.commitment)}; revisit_trigger: ${formatNullable(previousClaim.revisit_trigger)} -> ${formatNullable(claim.revisit_trigger)}`);
+	}
+	for (const claim of baselineProjection.claim_commitments) if (!currentClaimsById.has(claim.claim_id)) claimCommitmentChanges.push(`${claim.claim_id}: commitment ${formatNullable(claim.commitment)} -> ${formatNullable(null)}; revisit_trigger: ${formatNullable(claim.revisit_trigger)} -> ${formatNullable(null)}`);
+	const baselineRoadmapByRowId = new Map(baselineProjection.roadmap_rows.map((row) => [row.row_id, row]));
+	const currentRoadmapByRowId = new Map(currentProjection.roadmap_rows.map((row) => [row.row_id, row]));
+	for (const row of currentProjection.roadmap_rows) {
+		const previousRow = baselineRoadmapByRowId.get(row.row_id);
+		if (!previousRow) {
+			roadmapOrderChanges.push(`${roadmapRowKey(row)} added to roadmap order`);
+			continue;
+		}
+		const changes = [];
+		for (const [field, currentValue, previousValue] of [
+			[
+				"track_id",
+				row.track_id,
+				previousRow.track_id
+			],
+			[
+				"topology_rank",
+				row.topology_rank,
+				previousRow.topology_rank
+			],
+			[
+				"safety_rank",
+				row.safety_rank,
+				previousRow.safety_rank
+			],
+			[
+				"economic_rank",
+				row.economic_rank,
+				previousRow.economic_rank
+			]
+		]) if (currentValue !== previousValue) changes.push(`${field}: ${String(previousValue)} -> ${String(currentValue)}`);
+		if (changes.length > 0) roadmapOrderChanges.push(`${roadmapRowKey(row)}: ${changes.join("; ")}`);
+	}
+	for (const row of baselineProjection.roadmap_rows) if (!currentRoadmapByRowId.has(row.row_id)) roadmapOrderChanges.push(`${roadmapRowKey(row)} removed from roadmap order`);
+	return {
+		baselineEstablished: true,
+		claimCommitmentChanges: claimCommitmentChanges.sort(),
+		itemAdds: itemAdds.sort(),
+		itemRemovals: itemRemovals.sort(),
+		itemStateChanges: itemStateChanges.sort(),
+		relationAdds: relationAdds.sort(),
+		relationRemovals: relationRemovals.sort(),
+		roadmapOrderChanges: roadmapOrderChanges.sort()
+	};
+}
+async function computeDiscoveryDelta(runDirInput, options = {}) {
 	const bundleRepair = repairCompactRunBundle(runDirInput);
 	if (bundleRepair.legacyLayoutMessage || bundleRepair.irreparableMissingArtifacts.length > 0 || bundleRepair.unsupportedSchemaMessages.length > 0) return {
 		assessment: null,
+		humanReadableDiff: createEmptyHumanReadableDelta(),
 		inaccessibleSources: [],
 		...bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {},
 		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
 		runDir: bundleRepair.runDir,
 		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages
 	};
-	const refreshResult = await refreshRunSourceFingerprints(runDirInput);
+	const refreshResult = await refreshRunSourceFingerprints(runDirInput, { ...options.commandRunId ? { commandRunId: options.commandRunId } : {} });
 	if (refreshResult.legacyLayoutMessage || refreshResult.missingArtifacts.length > 0 || refreshResult.unsupportedSchemaMessages.length > 0) return {
 		assessment: null,
+		humanReadableDiff: createEmptyHumanReadableDelta(),
 		inaccessibleSources: refreshResult.inaccessibleSources,
 		...refreshResult.legacyLayoutMessage ? { legacyLayoutMessage: refreshResult.legacyLayoutMessage } : {},
 		missingArtifacts: refreshResult.missingArtifacts,
 		runDir: refreshResult.runDir,
 		unsupportedSchemaMessages: refreshResult.unsupportedSchemaMessages
 	};
-	if (refreshResult.inaccessibleSources.length > 0) return {
-		assessment: null,
-		inaccessibleSources: refreshResult.inaccessibleSources,
-		missingArtifacts: [],
-		runDir: refreshResult.runDir,
-		unsupportedSchemaMessages: []
-	};
-	const { assessment, legacyLayoutMessage, manifest, missingArtifacts, runDir, unsupportedSchemaMessages } = loadCompactRunArtifacts(runDirInput);
+	if (refreshResult.inaccessibleSources.length > 0) {
+		const validationResult = validateDiscoveryRun(refreshResult.runDir, { ...options.commandRunId ? { commandRunId: options.commandRunId } : {} });
+		return {
+			assessment: validationResult.assessment,
+			humanReadableDiff: createEmptyHumanReadableDelta(),
+			inaccessibleSources: refreshResult.inaccessibleSources,
+			missingArtifacts: validationResult.missingArtifacts,
+			runDir: refreshResult.runDir,
+			unsupportedSchemaMessages: [],
+			...validationResult.legacyLayoutMessage ? { legacyLayoutMessage: validationResult.legacyLayoutMessage } : {}
+		};
+	}
+	const { assessment, backlog, legacyLayoutMessage, manifest, missingArtifacts, runDir, unsupportedSchemaMessages } = loadCompactRunArtifacts(runDirInput);
 	if (legacyLayoutMessage || missingArtifacts.length > 0 || unsupportedSchemaMessages.length > 0) return {
 		assessment: null,
+		humanReadableDiff: createEmptyHumanReadableDelta(),
 		inaccessibleSources: refreshResult.inaccessibleSources,
 		...legacyLayoutMessage ? { legacyLayoutMessage } : {},
 		missingArtifacts,
 		runDir,
 		unsupportedSchemaMessages
 	};
-	const validationResult = validateDiscoveryRun(runDir);
+	const validationResult = validateDiscoveryRun(runDir, { ...options.commandRunId ? { commandRunId: options.commandRunId } : {} });
 	if (!validationResult.assessment) {
 		const result = {
 			assessment: null,
+			humanReadableDiff: createEmptyHumanReadableDelta(),
 			inaccessibleSources: refreshResult.inaccessibleSources,
 			missingArtifacts: validationResult.missingArtifacts,
 			runDir,
@@ -4080,14 +4904,17 @@ async function computeDiscoveryDelta(runDirInput) {
 		if (validationResult.legacyLayoutMessage) result.legacyLayoutMessage = validationResult.legacyLayoutMessage;
 		return result;
 	}
-	if (!manifest || !assessment) return {
+	if (!manifest || !assessment || !backlog) return {
 		assessment: null,
+		humanReadableDiff: createEmptyHumanReadableDelta(),
 		inaccessibleSources: refreshResult.inaccessibleSources,
 		missingArtifacts: [],
 		runDir,
 		unsupportedSchemaMessages: []
 	};
 	const paths = runPaths(runDir);
+	const currentProjection = buildBaselineProjection(backlog);
+	const humanReadableDiff = buildHumanReadableDelta(readLatestBaselineProjection(paths.journal), currentProjection);
 	const refreshedManifest = loadJson(paths.manifest);
 	const refreshedAssessment = loadJson(paths.assessment);
 	const computedAt = utcNow();
@@ -4098,6 +4925,7 @@ async function computeDiscoveryDelta(runDirInput) {
 		ts: computedAt,
 		event: "delta_computed",
 		run_id: refreshedManifest.run_id,
+		...options.commandRunId ? { command_run_id: options.commandRunId } : {},
 		changed_source_ids: refreshedAssessment.delta_summary.changed_source_ids,
 		changed_claim_ids: refreshedAssessment.delta_summary.changed_claim_ids,
 		stale_item_ids: refreshedAssessment.delta_summary.stale_item_ids,
@@ -4107,6 +4935,7 @@ async function computeDiscoveryDelta(runDirInput) {
 	});
 	return {
 		assessment: refreshedAssessment,
+		humanReadableDiff,
 		inaccessibleSources: refreshResult.inaccessibleSources,
 		missingArtifacts: [],
 		runDir,
@@ -4421,7 +5250,7 @@ function repairBacklogCanonicalState(backlog) {
 		changed: appliedRepairs.length > 0
 	};
 }
-function repairDiscoveryRun(runDirInput) {
+function repairDiscoveryRun(runDirInput, options = {}) {
 	const bundleRepair = repairCompactRunBundle(runDirInput);
 	if (bundleRepair.legacyLayoutMessage || bundleRepair.unsupportedSchemaMessages.length > 0) return {
 		appliedRepairs: [],
@@ -4478,6 +5307,7 @@ function repairDiscoveryRun(runDirInput) {
 			ts: repairedAt,
 			event: "canonical_repaired",
 			run_id: manifest.run_id,
+			...options.commandRunId ? { command_run_id: options.commandRunId } : {},
 			applied_repairs: repairResult.appliedRepairs
 		});
 	}
@@ -4492,6 +5322,368 @@ function repairDiscoveryRun(runDirInput) {
 	};
 }
 //#endregion
+//#region src/discovery/discover-run.ts
+function runHasAnyCanonicalArtifact(runDir) {
+	const paths = runPaths(runDir);
+	return [
+		paths.manifest,
+		paths.backlog,
+		paths.assessment,
+		paths.journal,
+		paths.report
+	].some((filePath) => fs.existsSync(filePath));
+}
+function hasAnyEntries(record) {
+	return Object.values(record).some((value) => Array.isArray(value) && value.length > 0);
+}
+function derivePhaseState(backlog) {
+	if (backlog.items.length > 0) return "graph_built";
+	if (backlog.claims.length > 0) return "claims_extracted";
+	if (hasAnyEntries(backlog.as_built)) return "as_built_reconstructed";
+	if (hasAnyEntries(backlog.target_system)) return "target_reconstructed";
+	if (backlog.source_authority.length > 0) return "sources_resolved";
+	return "initialized";
+}
+async function discoverDiscoveryRun(options) {
+	const runDir = path.resolve(options.runDir);
+	let initialized = false;
+	const bundleRepair = repairCompactRunBundle(runDir);
+	if (bundleRepair.legacyLayoutMessage || bundleRepair.unsupportedSchemaMessages.length > 0) return {
+		assessment: null,
+		appliedPackets: 0,
+		appliedRepairs: [],
+		initialized,
+		inaccessibleSources: [],
+		...bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {},
+		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
+		runDir: bundleRepair.runDir,
+		sourceIds: [],
+		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages
+	};
+	if (!bundleRepair.hasAnyCanonicalArtifacts) {
+		initializeDiscoveryRun({
+			...options.acceptanceTarget ? { acceptanceTarget: options.acceptanceTarget } : {},
+			...options.commandRunId ? { commandRunId: options.commandRunId } : {},
+			runDir
+		});
+		initialized = true;
+	} else if (bundleRepair.irreparableMissingArtifacts.length > 0) return {
+		assessment: null,
+		appliedPackets: 0,
+		appliedRepairs: [],
+		initialized,
+		inaccessibleSources: [],
+		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
+		runDir: bundleRepair.runDir,
+		sourceIds: [],
+		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages
+	};
+	const compactArtifacts = loadCompactRunArtifacts(runDir);
+	if (compactArtifacts.legacyLayoutMessage || compactArtifacts.unsupportedSchemaMessages.length > 0) return {
+		assessment: null,
+		appliedPackets: 0,
+		appliedRepairs: [],
+		initialized,
+		inaccessibleSources: [],
+		...compactArtifacts.legacyLayoutMessage ? { legacyLayoutMessage: compactArtifacts.legacyLayoutMessage } : {},
+		missingArtifacts: compactArtifacts.missingArtifacts,
+		runDir: compactArtifacts.runDir,
+		sourceIds: [],
+		unsupportedSchemaMessages: compactArtifacts.unsupportedSchemaMessages
+	};
+	if (compactArtifacts.missingArtifacts.length > 0) {
+		if (runHasAnyCanonicalArtifact(runDir)) return {
+			assessment: null,
+			appliedPackets: 0,
+			appliedRepairs: [],
+			initialized,
+			inaccessibleSources: [],
+			missingArtifacts: compactArtifacts.missingArtifacts,
+			runDir: compactArtifacts.runDir,
+			sourceIds: [],
+			unsupportedSchemaMessages: compactArtifacts.unsupportedSchemaMessages
+		};
+	}
+	const { backlog, manifest } = compactArtifacts;
+	if (!backlog || !manifest) return {
+		assessment: null,
+		appliedPackets: 0,
+		appliedRepairs: [],
+		initialized,
+		inaccessibleSources: [],
+		missingArtifacts: compactArtifacts.missingArtifacts,
+		runDir: compactArtifacts.runDir,
+		sourceIds: [],
+		unsupportedSchemaMessages: compactArtifacts.unsupportedSchemaMessages
+	};
+	const paths = runPaths(runDir);
+	const mergeResult = mergeDiscoveryPacketsIntoBacklog(backlog, await resolveSourceInputs(options.sourceInputs, process.cwd()), await loadSourcePacketRefs(options.packetRefs ?? [], process.cwd()));
+	const refreshResult = await refreshSourceFingerprintsInBacklog(backlog, process.cwd());
+	const repairResult = options.repair === false ? {
+		appliedRepairs: [],
+		changed: false
+	} : repairBacklogCanonicalState(backlog);
+	const loadedManifest = loadJson(paths.manifest);
+	loadedManifest.updated_at = utcNow();
+	if (options.acceptanceTarget) loadedManifest.acceptance_target = options.acceptanceTarget;
+	loadedManifest.phase_state = derivePhaseState(backlog);
+	writeJson(paths.backlog, backlog);
+	writeJson(paths.manifest, loadedManifest);
+	appendNdjson(paths.journal, {
+		ts: loadedManifest.updated_at,
+		event: "sources_discovered",
+		run_id: loadedManifest.run_id,
+		...options.commandRunId ? { command_run_id: options.commandRunId } : {},
+		source_ids: mergeResult.appliedSourceIds,
+		packet_count: mergeResult.appliedPackets,
+		initialized,
+		refreshed_source_ids: refreshResult.changedSourceIds,
+		access_state_changed_source_ids: refreshResult.accessStateChangedSourceIds,
+		inaccessible_source_ids: refreshResult.inaccessibleSources,
+		applied_repairs: repairResult.appliedRepairs
+	});
+	if (refreshResult.inaccessibleSources.length > 0) return {
+		assessment: null,
+		appliedPackets: mergeResult.appliedPackets,
+		appliedRepairs: repairResult.appliedRepairs,
+		initialized,
+		inaccessibleSources: refreshResult.inaccessibleSources,
+		missingArtifacts: [],
+		runDir,
+		sourceIds: mergeResult.appliedSourceIds,
+		unsupportedSchemaMessages: []
+	};
+	const validationResult = validateDiscoveryRun(runDir, { ...options.commandRunId ? { commandRunId: options.commandRunId } : {} });
+	return {
+		assessment: validationResult.assessment,
+		appliedPackets: mergeResult.appliedPackets,
+		appliedRepairs: repairResult.appliedRepairs,
+		initialized,
+		inaccessibleSources: refreshResult.inaccessibleSources,
+		missingArtifacts: validationResult.missingArtifacts,
+		runDir,
+		sourceIds: mergeResult.appliedSourceIds,
+		unsupportedSchemaMessages: [],
+		...validationResult.legacyLayoutMessage ? { legacyLayoutMessage: validationResult.legacyLayoutMessage } : {}
+	};
+}
+//#endregion
+//#region src/discovery/rebaseline-run.ts
+async function rebaselineDiscoveryRun(runDirInput, options = {}) {
+	const bundleRepair = repairCompactRunBundle(runDirInput);
+	if (bundleRepair.legacyLayoutMessage || bundleRepair.irreparableMissingArtifacts.length > 0 || bundleRepair.unsupportedSchemaMessages.length > 0) return {
+		assessment: null,
+		causes: [],
+		inaccessibleSources: [],
+		...bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {},
+		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
+		runDir: bundleRepair.runDir,
+		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages
+	};
+	const refreshResult = await refreshRunSourceFingerprints(runDirInput, { ...options.commandRunId ? { commandRunId: options.commandRunId } : {} });
+	if (refreshResult.legacyLayoutMessage || refreshResult.missingArtifacts.length > 0 || refreshResult.unsupportedSchemaMessages.length > 0) return {
+		assessment: null,
+		causes: [],
+		inaccessibleSources: refreshResult.inaccessibleSources,
+		...refreshResult.legacyLayoutMessage ? { legacyLayoutMessage: refreshResult.legacyLayoutMessage } : {},
+		missingArtifacts: refreshResult.missingArtifacts,
+		runDir: refreshResult.runDir,
+		unsupportedSchemaMessages: refreshResult.unsupportedSchemaMessages
+	};
+	if (refreshResult.inaccessibleSources.length > 0) {
+		const validationResult = validateDiscoveryRun(refreshResult.runDir, { ...options.commandRunId ? { commandRunId: options.commandRunId } : {} });
+		return {
+			assessment: validationResult.assessment,
+			causes: [],
+			inaccessibleSources: refreshResult.inaccessibleSources,
+			missingArtifacts: validationResult.missingArtifacts,
+			runDir: refreshResult.runDir,
+			unsupportedSchemaMessages: [],
+			...validationResult.legacyLayoutMessage ? { legacyLayoutMessage: validationResult.legacyLayoutMessage } : {}
+		};
+	}
+	const { assessment, backlog, legacyLayoutMessage, manifest, missingArtifacts, runDir, unsupportedSchemaMessages } = loadCompactRunArtifacts(runDirInput);
+	if (legacyLayoutMessage || missingArtifacts.length > 0 || unsupportedSchemaMessages.length > 0) return {
+		assessment: null,
+		causes: [],
+		inaccessibleSources: refreshResult.inaccessibleSources,
+		...legacyLayoutMessage ? { legacyLayoutMessage } : {},
+		missingArtifacts,
+		runDir,
+		unsupportedSchemaMessages
+	};
+	if (!manifest || !backlog || !assessment) return {
+		assessment: null,
+		causes: [],
+		inaccessibleSources: refreshResult.inaccessibleSources,
+		missingArtifacts: [],
+		runDir,
+		unsupportedSchemaMessages: []
+	};
+	const paths = runPaths(runDir);
+	const driftState = computeDriftState(manifest, backlog);
+	const rebaselinedAt = utcNow();
+	const causes = [...new Set(driftState.deltaSummary.dirty_flags)];
+	appendNdjson(paths.journal, {
+		ts: rebaselinedAt,
+		event: "rebaseline_started",
+		run_id: manifest.run_id,
+		...options.commandRunId ? { command_run_id: options.commandRunId } : {},
+		previous_baseline_source_hashes: manifest.baseline_source_hashes,
+		previous_baseline_canonical_hashes: manifest.baseline_canonical_hashes,
+		causes
+	});
+	manifest.updated_at = rebaselinedAt;
+	manifest.last_rebaseline_at = rebaselinedAt;
+	manifest.last_rebaseline_causes = causes;
+	manifest.baseline_source_hashes = driftState.currentSourceHashes;
+	manifest.current_source_hashes = driftState.currentSourceHashes;
+	manifest.baseline_canonical_hashes = driftState.currentCanonicalHashes;
+	manifest.current_canonical_hashes = driftState.currentCanonicalHashes;
+	manifest.baseline_issue_item_links = driftState.currentIssueItemLinks;
+	manifest.current_issue_item_links = driftState.currentIssueItemLinks;
+	manifest.dirty_flags = [];
+	writeJson(paths.manifest, manifest);
+	const validationResult = validateDiscoveryRun(runDir, { ...options.commandRunId ? { commandRunId: options.commandRunId } : {} });
+	if (!validationResult.assessment) {
+		const result = {
+			assessment: null,
+			causes,
+			inaccessibleSources: refreshResult.inaccessibleSources,
+			missingArtifacts: validationResult.missingArtifacts,
+			rebaselinedAt,
+			runDir,
+			unsupportedSchemaMessages: []
+		};
+		if (validationResult.legacyLayoutMessage) result.legacyLayoutMessage = validationResult.legacyLayoutMessage;
+		return result;
+	}
+	appendNdjson(paths.journal, {
+		ts: rebaselinedAt,
+		event: "rebaseline_completed",
+		run_id: manifest.run_id,
+		...options.commandRunId ? { command_run_id: options.commandRunId } : {},
+		causes,
+		baseline_projection: buildBaselineProjection(backlog),
+		assessment_status: validationResult.assessment.status,
+		stale_claim_ids: validationResult.assessment.stale_claims,
+		stale_item_ids: validationResult.assessment.stale_items,
+		stale_proof_ids: validationResult.assessment.stale_proofs
+	});
+	return {
+		assessment: validationResult.assessment,
+		causes,
+		inaccessibleSources: refreshResult.inaccessibleSources,
+		missingArtifacts: [],
+		rebaselinedAt,
+		runDir,
+		unsupportedSchemaMessages: []
+	};
+}
+//#endregion
+//#region src/discovery/status-run.ts
+var SUMMARY_METRIC_DEFINITIONS = [
+	["sources_total", "sources_total"],
+	["claims_total", "claims_total"],
+	["contracts_total", "contracts_total"],
+	["data_domains_total", "data_domains_total"],
+	["items_total", "items_total"],
+	["items_delivered", "items_delivered"],
+	["items_partially_delivered", "items_partially_delivered"],
+	["items_not_started", "items_not_started"],
+	["gaps_total", "gaps_total"],
+	["unknowns_total", "unknowns_total"],
+	["contradictions_total", "contradictions_total"],
+	["stale_claims_total", "stale_claims_total"],
+	["stale_items_total", "stale_items_total"],
+	["stale_proofs_total", "stale_proofs_total"],
+	["stale_review_artifacts_total", "stale_review_artifacts_total"],
+	["warnings_total", "warnings_total"],
+	["hard_fails_total", "hard_fails_total"],
+	["dor_ready_total", "dor_ready_total"],
+	["review_artifacts_total", "review_artifacts_total"],
+	["waivers_total", "waivers_total"]
+];
+function formatStringList(values) {
+	return values.length > 0 ? values.join(", ") : "None";
+}
+function getSummaryMetricLines(assessment) {
+	return SUMMARY_METRIC_DEFINITIONS.map(([key, label]) => `${label}: ${String(assessment.stats[key] ?? 0)}`);
+}
+function getDiscoveryRunStatus(runDirInput) {
+	const bundleRepair = repairCompactRunBundle(runDirInput);
+	if (bundleRepair.legacyLayoutMessage || bundleRepair.irreparableMissingArtifacts.length > 0 || bundleRepair.unsupportedSchemaMessages.length > 0) return {
+		assessment: null,
+		manifest: null,
+		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
+		runDir: bundleRepair.runDir,
+		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages,
+		...bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {}
+	};
+	const { assessment, legacyLayoutMessage, manifest, missingArtifacts, runDir, unsupportedSchemaMessages } = loadCompactRunArtifacts(runDirInput);
+	return {
+		assessment,
+		manifest,
+		missingArtifacts,
+		runDir,
+		unsupportedSchemaMessages,
+		...legacyLayoutMessage ? { legacyLayoutMessage } : {}
+	};
+}
+function renderDiscoveryStatusOutput(runDirInput) {
+	const status = getDiscoveryRunStatus(runDirInput);
+	if (!status.manifest || !status.assessment) return [];
+	const { assessment, manifest, runDir } = status;
+	const newStale = readLatestMutatingNewStaleSnapshot(runPaths(runDir).journal);
+	return [
+		"Core run status:",
+		`Run: ${manifest.run_id}`,
+		`Phase: ${manifest.phase_state}`,
+		`Target acceptance: ${manifest.acceptance_target}`,
+		`Achieved acceptance: ${assessment.acceptance.achieved}`,
+		`Assessment: ${assessment.status}`,
+		`Closure: ${assessment.closure.status}`,
+		`Score: ${assessment.score.total}/${assessment.score.max}`,
+		`Last render: ${manifest.last_render_at ?? "Never"}`,
+		`Last delta: ${manifest.last_delta_at ?? "Never"}`,
+		`Last rebaseline: ${manifest.last_rebaseline_at ?? "Never"}`,
+		"",
+		"Summary metrics:",
+		...getSummaryMetricLines(assessment),
+		"",
+		"Drift and stale diagnostics:",
+		`Rebaseline required: ${assessment.rebaseline_required ? "Yes" : "No"}`,
+		`Dirty flags: ${formatStringList(assessment.delta_summary.dirty_flags)}`,
+		`Changed sources: ${formatStringList(assessment.delta_summary.changed_source_ids)}`,
+		`Changed claims: ${formatStringList(assessment.delta_summary.changed_claim_ids)}`,
+		`Track gates to recalculate: ${formatStringList(assessment.delta_summary.track_gate_ids_to_recalculate)}`,
+		`Stale claims: ${formatStringList(assessment.stale_claims)}`,
+		`Stale items: ${formatStringList(assessment.stale_items)}`,
+		`Stale proofs: ${formatStringList(assessment.stale_proofs)}`,
+		`Stale review artifacts: ${formatStringList(assessment.stale_review_artifacts)}`,
+		`Missing review roles: ${formatStringList(assessment.missing_review_roles)}`,
+		`Pending track-proof reviews: ${formatStringList(assessment.pending_track_proof_reviews)}`,
+		`Waiver findings: ${formatStringList(assessment.waiver_findings)}`,
+		"",
+		"Rebaseline readiness:",
+		`Status: ${assessment.rebaseline_readiness.status}`,
+		...assessment.rebaseline_readiness.reasons.length > 0 ? assessment.rebaseline_readiness.reasons.map((reason) => `- ${reason}`) : ["- None"],
+		"",
+		"New stale since last change:",
+		`Status: ${newStale.status}`,
+		`Reason: ${newStale.reason ?? "None"}`,
+		`Claims: ${formatStringList(newStale.claims)}`,
+		`Items: ${formatStringList(newStale.items)}`,
+		`Proofs: ${formatStringList(newStale.proofs)}`,
+		`Reviews: ${formatStringList(newStale.reviews)}`,
+		"",
+		"Hard-fails and next actions:",
+		`Hard-fails: ${assessment.hard_fails.length}`,
+		...assessment.hard_fails.length > 0 ? ["Hard-fail details:", ...assessment.hard_fails.map((hardFail) => `- ${hardFail}`)] : ["Hard-fail details: None"],
+		...assessment.next_actions.length > 0 ? ["Next actions:", ...assessment.next_actions.map((action) => `- ${action}`)] : ["Next actions: None"]
+	];
+}
+//#endregion
 //#region src/discovery/render-views.ts
 function escapeCell(value) {
 	if (value === null || value === void 0) return "";
@@ -4500,6 +5692,18 @@ function escapeCell(value) {
 }
 function itemSort(left, right) {
 	return String(left.item_id ?? "").localeCompare(String(right.item_id ?? ""));
+}
+function sortUniqueStrings(values) {
+	return [...new Set(values.filter(isNonEmptyString))].sort();
+}
+function formatList(values) {
+	return values.length > 0 ? values.join(", ") : "None";
+}
+function itemSummaryAnchor(itemId) {
+	return `item-summary-${itemId}`;
+}
+function itemDetailAnchor(itemId) {
+	return `item-detail-${itemId}`;
 }
 function stringValues(values) {
 	return values.filter((value) => typeof value === "string" && value.length > 0);
@@ -4526,6 +5730,10 @@ function renderRunSummary(manifest, assessment) {
 		`- Closure status: ${assessment.closure.status}`,
 		`- Score: ${assessment.score.total}/${assessment.score.max}`,
 		`- Last assessed at: ${assessment.assessed_at}`,
+		"",
+		"### Summary Metrics",
+		"",
+		...getSummaryMetricLines(assessment).map((line) => `- ${line}`),
 		""
 	];
 }
@@ -4654,6 +5862,170 @@ function renderExtendedItemSchema(backlog) {
 }
 function getItemMap(backlog) {
 	return new Map(backlog.items.filter((item) => typeof item.item_id === "string").map((item) => [item.item_id, item]));
+}
+function buildReviewMap(backlog) {
+	return new Map(backlog.reviews.filter((review) => isNonEmptyString(review.review_id)).map((review) => [review.review_id, review]));
+}
+function buildContractMap(backlog) {
+	return new Map(backlog.contracts.filter((contract) => isNonEmptyString(contract.contract_id)).map((contract) => [contract.contract_id, contract]));
+}
+function buildDataDomainMap(backlog) {
+	return new Map(backlog.data_domains.filter((domain) => isNonEmptyString(domain.domain_id)).map((domain) => [domain.domain_id, domain]));
+}
+function collectRelationTargets(backlog, fromKind, fromId, relationType, toKind) {
+	return sortUniqueStrings(backlog.relations.filter((relation) => relation.relation_type === relationType && relation.from?.kind === fromKind && relation.from?.id === fromId && (!toKind || relation.to?.kind === toKind) && isNonEmptyString(relation.to?.id)).map((relation) => relation.to?.id ?? ""));
+}
+function collectRelatedIssueIds(entries, itemId) {
+	return sortUniqueStrings(entries.filter((entry) => asArray(entry.related_item_refs).includes(itemId)).map((entry) => entry.issue_id ?? ""));
+}
+function collectRelatedSpikeIds(backlog, unknownIds) {
+	const unknownIdSet = new Set(unknownIds);
+	return sortUniqueStrings(backlog.uncertainty_to_spike.filter((entry) => unknownIdSet.has(entry.unknown_id ?? "") && isNonEmptyString(entry.spike_item_id)).map((entry) => entry.spike_item_id ?? ""));
+}
+function formatOwners(item) {
+	const owners = asStringRecord(item.owners);
+	const parts = [
+		["decision_owner", owners.decision_owner],
+		["delivery_owner", owners.delivery_owner],
+		["runtime_owner", owners.runtime_owner],
+		["escalation_owner", owners.escalation_owner]
+	].filter(([, value]) => isNonEmptyString(value)).map(([key, value]) => `${String(key)}=${String(value)}`);
+	const consultedTeams = Array.isArray(owners.consulted_teams) ? sortUniqueStrings(stringValues(owners.consulted_teams)) : [];
+	if (consultedTeams.length > 0) parts.push(`consulted_teams=${consultedTeams.join(", ")}`);
+	return parts.length > 0 ? parts.join("; ") : "None";
+}
+function collectItemProblems(backlog, assessment, item, reviewIds) {
+	const itemId = item.item_id ?? "";
+	const problems = [];
+	const staleProofIds = sortUniqueStrings(asArray(item.proof_refs).filter((proofRef) => assessment.stale_proofs.includes(proofRef)));
+	const staleReviewIds = sortUniqueStrings(reviewIds.filter((reviewId) => assessment.stale_review_artifacts.includes(reviewId)));
+	const relatedGaps = collectRelatedIssueIds(backlog.gaps, itemId);
+	const relatedUnknowns = collectRelatedIssueIds(backlog.unknowns, itemId);
+	const relatedContradictions = collectRelatedIssueIds(backlog.contradictions, itemId);
+	if (assessment.stale_items.includes(itemId)) problems.push("stale item");
+	if (staleProofIds.length > 0) problems.push(`stale proofs: ${staleProofIds.join(", ")}`);
+	if (staleReviewIds.length > 0) problems.push(`stale reviews: ${staleReviewIds.join(", ")}`);
+	if (relatedGaps.length > 0) problems.push(`gaps: ${relatedGaps.join(", ")}`);
+	if (relatedUnknowns.length > 0) problems.push(`unknowns: ${relatedUnknowns.join(", ")}`);
+	if (relatedContradictions.length > 0) problems.push(`contradictions: ${relatedContradictions.join(", ")}`);
+	return problems;
+}
+function renderItemSummaryIndex(backlog, assessment) {
+	const lines = ["## Item Summary Index", ""];
+	const items = [...backlog.items].sort(itemSort);
+	if (items.length === 0) return [
+		...lines,
+		"- None",
+		""
+	];
+	for (const item of items) {
+		const itemId = item.item_id ?? "unknown-item";
+		const reviewIds = collectRelationTargets(backlog, "item", itemId, "reviewed_by", "review");
+		const dependsOnIds = collectRelationTargets(backlog, "item", itemId, "depends_on", "item");
+		const problems = collectItemProblems(backlog, assessment, item, reviewIds);
+		lines.push(`<a id="${itemSummaryAnchor(itemId)}"></a>`);
+		lines.push(`### ${itemId}`);
+		lines.push(`- Jump to detail: [${itemId}](#${itemDetailAnchor(itemId)})`);
+		lines.push(`- item_id: ${itemId}`);
+		lines.push(`- title: ${item.title ?? "None"}`);
+		lines.push(`- item_class: ${item.item_class ?? "None"}`);
+		lines.push(`- summary_label: ${item.summary_label ?? "None"}`);
+		lines.push(`- delivery_state: ${item.delivery_state ?? "None"}`);
+		lines.push(`- track_id: ${item.track_id ?? "None"}`);
+		lines.push(`- owners: ${formatOwners(item)}`);
+		lines.push(`- depends_on: ${formatList(dependsOnIds)}`);
+		lines.push(`- major_problems: ${formatList(problems)}`);
+		lines.push("");
+	}
+	return lines;
+}
+function renderItemDetailSections(backlog, assessment) {
+	const lines = ["## Item Detail Sections", ""];
+	const items = [...backlog.items].sort(itemSort);
+	const reviewById = buildReviewMap(backlog);
+	const contractById = buildContractMap(backlog);
+	const dataDomainById = buildDataDomainMap(backlog);
+	if (items.length === 0) return [
+		...lines,
+		"- None",
+		""
+	];
+	for (const item of items) {
+		const itemId = item.item_id ?? "unknown-item";
+		const reviewIds = collectRelationTargets(backlog, "item", itemId, "reviewed_by", "review");
+		const contractIds = collectRelationTargets(backlog, "item", itemId, "touches_contract", "contract");
+		const dataDomainIds = collectRelationTargets(backlog, "item", itemId, "touches_data_domain", "data_domain");
+		const dependsOnIds = collectRelationTargets(backlog, "item", itemId, "depends_on", "item");
+		const relatedGaps = collectRelatedIssueIds(backlog.gaps, itemId);
+		const relatedUnknowns = collectRelatedIssueIds(backlog.unknowns, itemId);
+		const relatedContradictions = collectRelatedIssueIds(backlog.contradictions, itemId);
+		const relatedSpikes = collectRelatedSpikeIds(backlog, relatedUnknowns);
+		const problems = collectItemProblems(backlog, assessment, item, reviewIds);
+		const reviewSummaries = reviewIds.map((reviewId) => {
+			const review = reviewById.get(reviewId);
+			return review ? `${reviewId} (role=${review.role ?? "unknown"}, verdict=${review.verdict ?? "unknown"})` : reviewId;
+		});
+		const contractSummaries = contractIds.map((contractId) => {
+			const contract = contractById.get(contractId);
+			return contract ? `${contractId} (owner=${contract.owner ?? "unknown"}, versioning=${contract.versioning_strategy ?? "unknown"})` : contractId;
+		});
+		const dataDomainSummaries = dataDomainIds.map((domainId) => {
+			const domain = dataDomainById.get(domainId);
+			return domain ? `${domainId} (data_class=${domain.data_class ?? "unknown"}, owners=${asArray(domain.owners).join(", ") || "None"})` : domainId;
+		});
+		lines.push(`<a id="${itemDetailAnchor(itemId)}"></a>`);
+		lines.push(`### ${itemId}`);
+		lines.push(`- Jump to summary: [${itemId}](#${itemSummaryAnchor(itemId)})`);
+		lines.push(`- item_id: ${itemId}`);
+		lines.push(`- title: ${item.title ?? "None"}`);
+		lines.push(`- item_class: ${item.item_class ?? "None"}`);
+		lines.push(`- summary_label: ${item.summary_label ?? "None"}`);
+		lines.push(`- delivery_state: ${item.delivery_state ?? "None"}`);
+		lines.push(`- track_id: ${item.track_id ?? "None"}`);
+		lines.push(`- owners: ${formatOwners(item)}`);
+		lines.push(`- depends_on: ${formatList(dependsOnIds)}`);
+		lines.push(`- major_problems: ${formatList(problems)}`);
+		lines.push(`- origin_ref: ${formatList(asArray(item.origin_ref).map(formatOriginRef))}`);
+		lines.push(`- claim_refs: ${formatList(sortUniqueStrings(asArray(item.claim_refs)))}`);
+		lines.push(`- proof_refs: ${formatList(sortUniqueStrings(asArray(item.proof_refs)))}`);
+		lines.push(`- review_refs: ${formatList(reviewSummaries)}`);
+		lines.push(`- touches_contracts: ${formatList(contractSummaries)}`);
+		lines.push(`- touches_data_domains: ${formatList(dataDomainSummaries)}`);
+		lines.push(`- related_gaps: ${formatList(relatedGaps)}`);
+		lines.push(`- related_unknowns: ${formatList(relatedUnknowns)}`);
+		lines.push(`- related_contradictions: ${formatList(relatedContradictions)}`);
+		lines.push(`- related_spikes: ${formatList(relatedSpikes)}`);
+		lines.push("");
+		lines.push("#### Readiness Contract");
+		lines.push(`- baseline_checks: ${formatBooleanLedger(asStringRecord(item.readiness_contract), [
+			"behavior_described",
+			"happy_path_defined",
+			"error_paths_defined",
+			"acceptance_examples_defined",
+			"interface_data_impact_described",
+			"nfr_impact_known",
+			"security_privacy_impact_known",
+			"rollout_defined",
+			"recovery_defined",
+			"observability_contract_defined",
+			"required_proof_defined",
+			"docs_support_impact_described",
+			"estimate_band_defined",
+			"confidence_defined",
+			"unresolved_questions_below_threshold"
+		])}`);
+		lines.push(`- class_specific_checks: ${formatKeyValueLedger(asStringRecord(asStringRecord(item.readiness_contract).class_specific_checks)) || "None"}`);
+		lines.push("");
+		lines.push("#### Done Contract");
+		lines.push(`- baseline_checks: ${formatKeyValueLedger(asStringRecord(item.done_contract)) || "None"}`);
+		lines.push(`- class_specific_checks: ${formatKeyValueLedger(asStringRecord(asStringRecord(item.done_contract).class_specific_checks)) || "None"}`);
+		lines.push("");
+		lines.push("#### Rollout And Recovery");
+		lines.push(`- rollout: ${formatKeyValueLedger(asStringRecord(item.rollout)) || "None"}`);
+		lines.push(`- recovery: ${formatKeyValueLedger(asStringRecord(item.recovery)) || "None"}`);
+		lines.push("");
+	}
+	return lines;
 }
 function orderRoadmapRows(backlog) {
 	return [...backlog.roadmap_matrix].sort((left, right) => {
@@ -5188,8 +6560,32 @@ function renderLifecycleAndDrift(manifest, assessment) {
 		`- Stale claims: ${assessment.stale_claims.join(", ") || "None"}`,
 		`- Stale items: ${assessment.stale_items.join(", ") || "None"}`,
 		`- Stale proofs: ${assessment.stale_proofs.join(", ") || "None"}`,
+		`- Stale review artifacts: ${assessment.stale_review_artifacts.join(", ") || "None"}`,
 		`- Track gates to recalculate: ${assessment.delta_summary.track_gate_ids_to_recalculate.join(", ") || "None"}`,
+		`- Recalculation surfaces: dirty_flags=${manifest.dirty_flags.join(", ") || "None"}; track_gates=${assessment.delta_summary.track_gate_ids_to_recalculate.join(", ") || "None"}`,
 		`- Track gate failures: ${assessment.track_gate_failures.join(", ") || "None"}`,
+		""
+	];
+}
+function renderRebaselineReadiness(assessment) {
+	return [
+		"## Rebaseline Readiness",
+		"",
+		`- Status: ${assessment.rebaseline_readiness.status}`,
+		`- Reasons: ${assessment.rebaseline_readiness.reasons.join("; ") || "None"}`,
+		""
+	];
+}
+function renderNewStaleSinceLastChange(snapshot) {
+	return [
+		"## New Stale Since Last Change",
+		"",
+		`- Status: ${snapshot.status}`,
+		`- Reason: ${snapshot.reason ?? "None"}`,
+		`- Claims: ${snapshot.claims.join(", ") || "None"}`,
+		`- Items: ${snapshot.items.join(", ") || "None"}`,
+		`- Proofs: ${snapshot.proofs.join(", ") || "None"}`,
+		`- Reviews: ${snapshot.reviews.join(", ") || "None"}`,
 		""
 	];
 }
@@ -5272,7 +6668,7 @@ function renderInvalidBanner(assessment) {
 		""
 	];
 }
-function renderDiscoveryViews(runDirInput) {
+function renderDiscoveryViews(runDirInput, options = {}) {
 	const { assessment, backlog, legacyLayoutMessage, manifest, missingArtifacts, runDir, unsupportedSchemaMessages } = loadCompactRunArtifacts(runDirInput);
 	if (legacyLayoutMessage) throw new Error(legacyLayoutMessage);
 	if (missingArtifacts.length > 0) throw new Error(missingArtifacts.map((filePath) => `Missing discovery artifact: ${filePath}`).join("\n"));
@@ -5280,6 +6676,11 @@ function renderDiscoveryViews(runDirInput) {
 	if (!manifest || !backlog || !assessment) throw new Error("Render could not be completed.");
 	const paths = runPaths(runDir);
 	const renderedAt = utcNow();
+	const renderReason = options.renderReason ?? "recovery_render";
+	const previousStaleSnapshot = renderReason === "mutating_command" ? readPreviousMutatingStaleSnapshot(paths.journal) : null;
+	const staleSnapshot = renderReason === "mutating_command" ? buildStaleSnapshot(assessment) : null;
+	const newStaleSnapshot = renderReason === "mutating_command" && staleSnapshot ? buildNewStaleSnapshot(previousStaleSnapshot, staleSnapshot) : null;
+	const reportNewStaleSnapshot = newStaleSnapshot ?? readLatestMutatingNewStaleSnapshot(paths.journal);
 	const reportLines = [
 		"# Architecture Backlog Report",
 		"",
@@ -5306,11 +6707,15 @@ function renderDiscoveryViews(runDirInput) {
 		...renderApplicabilityAndExemptions(backlog),
 		...renderClosureEvidence(backlog, assessment),
 		...renderFeatureCandidates(backlog),
+		...renderItemSummaryIndex(backlog, assessment),
+		...renderItemDetailSections(backlog, assessment),
 		...renderRoadmap(backlog),
 		...renderRoadmapMatrix(backlog),
 		...renderTraceability(backlog),
 		...renderReviewGovernance(backlog, assessment),
 		...renderLifecycleAndDrift(manifest, assessment),
+		...renderRebaselineReadiness(assessment),
+		...renderNewStaleSinceLastChange(reportNewStaleSnapshot),
 		...renderGraphRelations(backlog),
 		...renderGapsAndValidation(assessment),
 		...renderScoreSummary(assessment),
@@ -5328,286 +6733,19 @@ function renderDiscoveryViews(runDirInput) {
 		ts: renderedAt,
 		event: "report_rendered",
 		run_id: manifest.run_id,
+		...options.commandRunId ? { command_run_id: options.commandRunId } : {},
+		render_reason: renderReason,
 		assessment_status: assessment.status,
-		achieved_acceptance: assessment.acceptance.achieved
+		achieved_acceptance: assessment.acceptance.achieved,
+		...renderReason === "mutating_command" && staleSnapshot ? {
+			stale_snapshot: staleSnapshot,
+			new_stale_snapshot: newStaleSnapshot
+		} : {}
 	});
 	return {
 		renderedAt,
 		reportPath: paths.report,
 		runDir
-	};
-}
-//#endregion
-//#region src/discovery/discover-run.ts
-function runHasAnyCanonicalArtifact(runDir) {
-	const paths = runPaths(runDir);
-	return [
-		paths.manifest,
-		paths.backlog,
-		paths.assessment,
-		paths.journal,
-		paths.report
-	].some((filePath) => fs.existsSync(filePath));
-}
-function hasAnyEntries(record) {
-	return Object.values(record).some((value) => Array.isArray(value) && value.length > 0);
-}
-function derivePhaseState(backlog) {
-	if (backlog.items.length > 0) return "graph_built";
-	if (backlog.claims.length > 0) return "claims_extracted";
-	if (hasAnyEntries(backlog.as_built)) return "as_built_reconstructed";
-	if (hasAnyEntries(backlog.target_system)) return "target_reconstructed";
-	if (backlog.source_authority.length > 0) return "sources_resolved";
-	return "initialized";
-}
-async function discoverDiscoveryRun(options) {
-	const runDir = path.resolve(options.runDir);
-	let initialized = false;
-	const bundleRepair = repairCompactRunBundle(runDir);
-	if (bundleRepair.legacyLayoutMessage || bundleRepair.unsupportedSchemaMessages.length > 0) return {
-		assessment: null,
-		appliedPackets: 0,
-		appliedRepairs: [],
-		initialized,
-		inaccessibleSources: [],
-		...bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {},
-		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
-		runDir: bundleRepair.runDir,
-		sourceIds: [],
-		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages
-	};
-	if (!bundleRepair.hasAnyCanonicalArtifacts) {
-		initializeDiscoveryRun({
-			...options.acceptanceTarget ? { acceptanceTarget: options.acceptanceTarget } : {},
-			runDir
-		});
-		initialized = true;
-	} else if (bundleRepair.irreparableMissingArtifacts.length > 0) return {
-		assessment: null,
-		appliedPackets: 0,
-		appliedRepairs: [],
-		initialized,
-		inaccessibleSources: [],
-		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
-		runDir: bundleRepair.runDir,
-		sourceIds: [],
-		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages
-	};
-	const compactArtifacts = loadCompactRunArtifacts(runDir);
-	if (compactArtifacts.legacyLayoutMessage || compactArtifacts.unsupportedSchemaMessages.length > 0) return {
-		assessment: null,
-		appliedPackets: 0,
-		appliedRepairs: [],
-		initialized,
-		inaccessibleSources: [],
-		...compactArtifacts.legacyLayoutMessage ? { legacyLayoutMessage: compactArtifacts.legacyLayoutMessage } : {},
-		missingArtifacts: compactArtifacts.missingArtifacts,
-		runDir: compactArtifacts.runDir,
-		sourceIds: [],
-		unsupportedSchemaMessages: compactArtifacts.unsupportedSchemaMessages
-	};
-	if (compactArtifacts.missingArtifacts.length > 0) {
-		if (runHasAnyCanonicalArtifact(runDir)) return {
-			assessment: null,
-			appliedPackets: 0,
-			appliedRepairs: [],
-			initialized,
-			inaccessibleSources: [],
-			missingArtifacts: compactArtifacts.missingArtifacts,
-			runDir: compactArtifacts.runDir,
-			sourceIds: [],
-			unsupportedSchemaMessages: compactArtifacts.unsupportedSchemaMessages
-		};
-	}
-	const { backlog, manifest } = compactArtifacts;
-	if (!backlog || !manifest) return {
-		assessment: null,
-		appliedPackets: 0,
-		appliedRepairs: [],
-		initialized,
-		inaccessibleSources: [],
-		missingArtifacts: compactArtifacts.missingArtifacts,
-		runDir: compactArtifacts.runDir,
-		sourceIds: [],
-		unsupportedSchemaMessages: compactArtifacts.unsupportedSchemaMessages
-	};
-	const paths = runPaths(runDir);
-	const mergeResult = mergeDiscoveryPacketsIntoBacklog(backlog, await resolveSourceInputs(options.sourceInputs, process.cwd()), await loadSourcePacketRefs(options.packetRefs ?? [], process.cwd()));
-	const refreshResult = await refreshSourceFingerprintsInBacklog(backlog, process.cwd());
-	const repairResult = options.repair === false ? {
-		appliedRepairs: [],
-		changed: false
-	} : repairBacklogCanonicalState(backlog);
-	const loadedManifest = loadJson(paths.manifest);
-	loadedManifest.updated_at = utcNow();
-	if (options.acceptanceTarget) loadedManifest.acceptance_target = options.acceptanceTarget;
-	loadedManifest.phase_state = derivePhaseState(backlog);
-	writeJson(paths.backlog, backlog);
-	writeJson(paths.manifest, loadedManifest);
-	appendNdjson(paths.journal, {
-		ts: loadedManifest.updated_at,
-		event: "sources_discovered",
-		run_id: loadedManifest.run_id,
-		source_ids: mergeResult.appliedSourceIds,
-		packet_count: mergeResult.appliedPackets,
-		initialized,
-		refreshed_source_ids: refreshResult.changedSourceIds,
-		access_state_changed_source_ids: refreshResult.accessStateChangedSourceIds,
-		inaccessible_source_ids: refreshResult.inaccessibleSources,
-		applied_repairs: repairResult.appliedRepairs
-	});
-	if (refreshResult.inaccessibleSources.length > 0) return {
-		assessment: null,
-		appliedPackets: mergeResult.appliedPackets,
-		appliedRepairs: repairResult.appliedRepairs,
-		initialized,
-		inaccessibleSources: refreshResult.inaccessibleSources,
-		missingArtifacts: [],
-		runDir,
-		sourceIds: mergeResult.appliedSourceIds,
-		unsupportedSchemaMessages: []
-	};
-	const validationResult = validateDiscoveryRun(runDir);
-	let reportPath;
-	if (options.render !== false) reportPath = renderDiscoveryViews(runDir).reportPath;
-	return {
-		assessment: validationResult.assessment,
-		appliedPackets: mergeResult.appliedPackets,
-		appliedRepairs: repairResult.appliedRepairs,
-		initialized,
-		inaccessibleSources: refreshResult.inaccessibleSources,
-		missingArtifacts: validationResult.missingArtifacts,
-		...reportPath ? { reportPath } : {},
-		runDir,
-		sourceIds: mergeResult.appliedSourceIds,
-		unsupportedSchemaMessages: [],
-		...validationResult.legacyLayoutMessage ? { legacyLayoutMessage: validationResult.legacyLayoutMessage } : {}
-	};
-}
-//#endregion
-//#region src/discovery/rebaseline-run.ts
-async function rebaselineDiscoveryRun(runDirInput) {
-	const bundleRepair = repairCompactRunBundle(runDirInput);
-	if (bundleRepair.legacyLayoutMessage || bundleRepair.irreparableMissingArtifacts.length > 0 || bundleRepair.unsupportedSchemaMessages.length > 0) return {
-		assessment: null,
-		causes: [],
-		inaccessibleSources: [],
-		...bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {},
-		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
-		runDir: bundleRepair.runDir,
-		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages
-	};
-	const refreshResult = await refreshRunSourceFingerprints(runDirInput);
-	if (refreshResult.legacyLayoutMessage || refreshResult.missingArtifacts.length > 0 || refreshResult.unsupportedSchemaMessages.length > 0) return {
-		assessment: null,
-		causes: [],
-		inaccessibleSources: refreshResult.inaccessibleSources,
-		...refreshResult.legacyLayoutMessage ? { legacyLayoutMessage: refreshResult.legacyLayoutMessage } : {},
-		missingArtifacts: refreshResult.missingArtifacts,
-		runDir: refreshResult.runDir,
-		unsupportedSchemaMessages: refreshResult.unsupportedSchemaMessages
-	};
-	if (refreshResult.inaccessibleSources.length > 0) return {
-		assessment: null,
-		causes: [],
-		inaccessibleSources: refreshResult.inaccessibleSources,
-		missingArtifacts: [],
-		runDir: refreshResult.runDir,
-		unsupportedSchemaMessages: []
-	};
-	const { assessment, backlog, legacyLayoutMessage, manifest, missingArtifacts, runDir, unsupportedSchemaMessages } = loadCompactRunArtifacts(runDirInput);
-	if (legacyLayoutMessage || missingArtifacts.length > 0 || unsupportedSchemaMessages.length > 0) return {
-		assessment: null,
-		causes: [],
-		inaccessibleSources: refreshResult.inaccessibleSources,
-		...legacyLayoutMessage ? { legacyLayoutMessage } : {},
-		missingArtifacts,
-		runDir,
-		unsupportedSchemaMessages
-	};
-	if (!manifest || !backlog || !assessment) return {
-		assessment: null,
-		causes: [],
-		inaccessibleSources: refreshResult.inaccessibleSources,
-		missingArtifacts: [],
-		runDir,
-		unsupportedSchemaMessages: []
-	};
-	const paths = runPaths(runDir);
-	const driftState = computeDriftState(manifest, backlog);
-	const rebaselinedAt = utcNow();
-	const causes = [...new Set(driftState.deltaSummary.dirty_flags)];
-	appendNdjson(paths.journal, {
-		ts: rebaselinedAt,
-		event: "rebaseline_started",
-		run_id: manifest.run_id,
-		previous_baseline_source_hashes: manifest.baseline_source_hashes,
-		previous_baseline_canonical_hashes: manifest.baseline_canonical_hashes,
-		causes
-	});
-	manifest.updated_at = rebaselinedAt;
-	manifest.last_rebaseline_at = rebaselinedAt;
-	manifest.last_rebaseline_causes = causes;
-	manifest.baseline_source_hashes = driftState.currentSourceHashes;
-	manifest.current_source_hashes = driftState.currentSourceHashes;
-	manifest.baseline_canonical_hashes = driftState.currentCanonicalHashes;
-	manifest.current_canonical_hashes = driftState.currentCanonicalHashes;
-	manifest.dirty_flags = [];
-	writeJson(paths.manifest, manifest);
-	const validationResult = validateDiscoveryRun(runDir);
-	if (!validationResult.assessment) {
-		const result = {
-			assessment: null,
-			causes,
-			inaccessibleSources: refreshResult.inaccessibleSources,
-			missingArtifacts: validationResult.missingArtifacts,
-			rebaselinedAt,
-			runDir,
-			unsupportedSchemaMessages: []
-		};
-		if (validationResult.legacyLayoutMessage) result.legacyLayoutMessage = validationResult.legacyLayoutMessage;
-		return result;
-	}
-	appendNdjson(paths.journal, {
-		ts: rebaselinedAt,
-		event: "rebaseline_completed",
-		run_id: manifest.run_id,
-		causes,
-		assessment_status: validationResult.assessment.status,
-		stale_claim_ids: validationResult.assessment.stale_claims,
-		stale_item_ids: validationResult.assessment.stale_items,
-		stale_proof_ids: validationResult.assessment.stale_proofs
-	});
-	return {
-		assessment: validationResult.assessment,
-		causes,
-		inaccessibleSources: refreshResult.inaccessibleSources,
-		missingArtifacts: [],
-		rebaselinedAt,
-		runDir,
-		unsupportedSchemaMessages: []
-	};
-}
-//#endregion
-//#region src/discovery/status-run.ts
-function getDiscoveryRunStatus(runDirInput) {
-	const bundleRepair = repairCompactRunBundle(runDirInput);
-	if (bundleRepair.legacyLayoutMessage || bundleRepair.irreparableMissingArtifacts.length > 0 || bundleRepair.unsupportedSchemaMessages.length > 0) return {
-		assessment: null,
-		manifest: null,
-		missingArtifacts: bundleRepair.irreparableMissingArtifacts,
-		runDir: bundleRepair.runDir,
-		unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages,
-		...bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {}
-	};
-	const { assessment, legacyLayoutMessage, manifest, missingArtifacts, runDir, unsupportedSchemaMessages } = loadCompactRunArtifacts(runDirInput);
-	return {
-		assessment,
-		manifest,
-		missingArtifacts,
-		runDir,
-		unsupportedSchemaMessages,
-		...legacyLayoutMessage ? { legacyLayoutMessage } : {}
 	};
 }
 //#endregion
@@ -5631,6 +6769,9 @@ var io = {
 function writeLine(stream, line = "") {
 	stream.write(`${line}\n`);
 }
+function writeLines(stream, lines) {
+	for (const line of lines) writeLine(stream, line);
+}
 function globalHelp() {
 	return [
 		"Architecture backlog discovery CLI.",
@@ -5640,14 +6781,14 @@ function globalHelp() {
 		`  ${CLI_NAME} help [command]`,
 		"",
 		"Commands:",
-		"  init <run-dir>       Initialize manifest.json, backlog.json, assessment.json, and journal.ndjson.",
+		"  init <run-dir>       Initialize canonical artifacts and auto-render report.md.",
 		"  discover <run-dir>   Resolve sources, populate backlog.json, repair derivable state, validate, and render.",
 		"  status <run-dir>     Show lifecycle status, acceptance state, and next actions.",
 		"  repair <run-dir>     Refresh source truth, repair derivable canonical state, validate, and render.",
-		"  validate <run-dir>   Validate canonical state and refresh assessment.json.",
-		"  render <run-dir>     Render report.md from canonical state and assessment.",
-		"  delta <run-dir>      Compute drift delta and refresh assessment.json.",
-		"  rebaseline <run-dir> Accept current source/canonical state as the new baseline.",
+		"  validate <run-dir>   Validate canonical state, refresh assessment.json, and render.",
+		"  render <run-dir>     Recovery-render report.md from canonical state and assessment.",
+		"  delta <run-dir>      Compute drift delta, refresh assessment.json, and render.",
+		"  rebaseline <run-dir> Accept current source/canonical state as the new baseline, refresh assessment.json, and render.",
 		"  help [command]       Show global or command-specific help.",
 		"",
 		"Compatibility aliases:",
@@ -5678,6 +6819,7 @@ function initHelp() {
 		"  - backlog.json",
 		"  - assessment.json",
 		"  - journal.ndjson",
+		"  - report.md",
 		"",
 		"Options:",
 		"  --acceptance-target <class>  Set acceptance target.",
@@ -5718,7 +6860,6 @@ function discoverHelp() {
 		"  --planning-source <ref>         Local path, file URL, or HTTP(S) URL. Repeatable.",
 		"  --source <kind>:<authority>:<ref>  Generic source spec. Repeatable.",
 		"  --source-packet <ref>           Explicit packet source. Repeatable.",
-		"  --no-render                     Skip report rendering.",
 		"  --no-repair                     Skip derivable repair before validation.",
 		"  -h, --help                      Show help."
 	].join("\n");
@@ -5732,13 +6873,12 @@ function repairHelp() {
 		`  ${CLI_NAME} repair-discovery-run <run-dir> [options]`,
 		"",
 		"Options:",
-		"  --no-render  Skip report rendering.",
-		"  -h, --help   Show help."
+		"  -h, --help  Show help."
 	].join("\n");
 }
 function validateHelp() {
 	return [
-		"Validate canonical discovery state and refresh assessment.json.",
+		"Validate canonical discovery state, refresh assessment.json, and auto-render report.md.",
 		"",
 		"Usage:",
 		`  ${CLI_NAME} validate <run-dir>`,
@@ -5750,7 +6890,7 @@ function validateHelp() {
 }
 function renderHelp() {
 	return [
-		"Render report.md from canonical discovery state.",
+		"Recovery-render report.md from canonical discovery state.",
 		"",
 		"Usage:",
 		`  ${CLI_NAME} render <run-dir>`,
@@ -5762,7 +6902,7 @@ function renderHelp() {
 }
 function deltaHelp() {
 	return [
-		"Compute drift delta for a discovery run and refresh assessment.json.",
+		"Compute drift delta for a discovery run, refresh assessment.json, and auto-render report.md.",
 		"",
 		"Usage:",
 		`  ${CLI_NAME} delta <run-dir>`,
@@ -5774,7 +6914,7 @@ function deltaHelp() {
 }
 function rebaselineHelp() {
 	return [
-		"Accept current source and canonical state as the new baseline, then refresh assessment.json.",
+		"Accept current source and canonical state as the new baseline, refresh assessment.json, and auto-render report.md.",
 		"",
 		"Usage:",
 		`  ${CLI_NAME} rebaseline <run-dir>`,
@@ -5841,6 +6981,87 @@ function writeAssessmentSummary(commandIo, assessment) {
 	writeLine(commandIo.stdout, `Pending track-proof reviews: ${assessment.pending_track_proof_reviews.length}`);
 	writeLine(commandIo.stdout, `Waiver findings: ${assessment.waiver_findings.length}`);
 }
+function formatOutputList(values) {
+	return values.length > 0 ? values.join(", ") : "None";
+}
+function writeSummaryMetricsBlock(commandIo, assessment) {
+	writeLine(commandIo.stdout, "Summary metrics:");
+	writeLines(commandIo.stdout, getSummaryMetricLines(assessment));
+}
+function writeRebaselineReadinessBlock(commandIo, assessment) {
+	writeLine(commandIo.stdout, "Rebaseline readiness:");
+	writeLine(commandIo.stdout, `Status: ${assessment.rebaseline_readiness.status}`);
+	if (assessment.rebaseline_readiness.reasons.length === 0) {
+		writeLine(commandIo.stdout, "- None");
+		return;
+	}
+	for (const reason of assessment.rebaseline_readiness.reasons) writeLine(commandIo.stdout, `- ${reason}`);
+}
+function writeNewStaleBlock(commandIo, runDir) {
+	const snapshot = readLatestMutatingNewStaleSnapshot(runPaths(runDir).journal);
+	writeLine(commandIo.stdout, "New stale since last change:");
+	writeLine(commandIo.stdout, `Status: ${snapshot.status}`);
+	writeLine(commandIo.stdout, `Reason: ${snapshot.reason ?? "None"}`);
+	writeLine(commandIo.stdout, `Claims: ${formatOutputList(snapshot.claims)}`);
+	writeLine(commandIo.stdout, `Items: ${formatOutputList(snapshot.items)}`);
+	writeLine(commandIo.stdout, `Proofs: ${formatOutputList(snapshot.proofs)}`);
+	writeLine(commandIo.stdout, `Reviews: ${formatOutputList(snapshot.reviews)}`);
+}
+function writeHumanReadableDeltaBlock(commandIo, diff) {
+	const unavailableReason = "Unavailable without baseline_projection.";
+	const renderCategory = (values) => {
+		if (!diff.baselineEstablished) return unavailableReason;
+		return values.length > 0 ? values.join(", ") : "None";
+	};
+	writeLine(commandIo.stdout, "Human-readable diff:");
+	writeLine(commandIo.stdout, `baseline_established=${diff.baselineEstablished}`);
+	writeLine(commandIo.stdout, `Item adds: ${renderCategory(diff.itemAdds)}`);
+	writeLine(commandIo.stdout, `Item removals: ${renderCategory(diff.itemRemovals)}`);
+	writeLine(commandIo.stdout, `Item state changes: ${renderCategory(diff.itemStateChanges)}`);
+	writeLine(commandIo.stdout, `Relation adds: ${renderCategory(diff.relationAdds)}`);
+	writeLine(commandIo.stdout, `Relation removals: ${renderCategory(diff.relationRemovals)}`);
+	writeLine(commandIo.stdout, `Claim commitment changes: ${renderCategory(diff.claimCommitmentChanges)}`);
+	writeLine(commandIo.stdout, `Roadmap order changes: ${renderCategory(diff.roadmapOrderChanges)}`);
+}
+function writeDeltaOperatorOutput(commandIo, runDir, assessment, diff) {
+	writeLine(commandIo.stdout, "Core assessment summary:");
+	writeAssessmentSummary(commandIo, assessment);
+	writeLine(commandIo.stdout);
+	writeSummaryMetricsBlock(commandIo, assessment);
+	writeLine(commandIo.stdout);
+	writeLine(commandIo.stdout, "Changed sources/claims/gates:");
+	writeLine(commandIo.stdout, `Changed sources: ${formatOutputList(assessment.delta_summary.changed_source_ids)}`);
+	writeLine(commandIo.stdout, `Changed claims: ${formatOutputList(assessment.delta_summary.changed_claim_ids)}`);
+	writeLine(commandIo.stdout, `Changed track gates: ${formatOutputList(assessment.delta_summary.changed_track_gate_ids)}`);
+	writeLine(commandIo.stdout, `Track gates to recalculate: ${formatOutputList(assessment.delta_summary.track_gate_ids_to_recalculate)}`);
+	writeLine(commandIo.stdout, `Dirty flags: ${formatOutputList(assessment.delta_summary.dirty_flags)}`);
+	writeLine(commandIo.stdout);
+	writeHumanReadableDeltaBlock(commandIo, diff);
+	writeLine(commandIo.stdout);
+	writeLine(commandIo.stdout, "Stale and readiness diagnostics:");
+	writeLine(commandIo.stdout, `Stale claims: ${formatOutputList(assessment.stale_claims)}`);
+	writeLine(commandIo.stdout, `Stale items: ${formatOutputList(assessment.stale_items)}`);
+	writeLine(commandIo.stdout, `Stale proofs: ${formatOutputList(assessment.stale_proofs)}`);
+	writeLine(commandIo.stdout, `Stale review artifacts: ${formatOutputList(assessment.stale_review_artifacts)}`);
+	writeRebaselineReadinessBlock(commandIo, assessment);
+	writeLine(commandIo.stdout);
+	writeNewStaleBlock(commandIo, runDir);
+}
+function writeDiscoverOperatorOutput(commandIo, runDir, assessment) {
+	writeLine(commandIo.stdout, `Stale review artifacts: ${formatOutputList(assessment.stale_review_artifacts)}`);
+	writeRebaselineReadinessBlock(commandIo, assessment);
+	writeLine(commandIo.stdout);
+	writeNewStaleBlock(commandIo, runDir);
+}
+function writeRebaselineOperatorOutput(commandIo, runDir, assessment) {
+	writeSummaryMetricsBlock(commandIo, assessment);
+	writeLine(commandIo.stdout);
+	writeLine(commandIo.stdout, `Stale proofs: ${formatOutputList(assessment.stale_proofs)}`);
+	writeLine(commandIo.stdout, `Stale review artifacts: ${formatOutputList(assessment.stale_review_artifacts)}`);
+	writeRebaselineReadinessBlock(commandIo, assessment);
+	writeLine(commandIo.stdout);
+	writeNewStaleBlock(commandIo, runDir);
+}
 function writeAssessmentDiagnostics(commandIo, assessment) {
 	for (const error of assessment.errors) writeLine(commandIo.stderr, `ERROR: ${error}`);
 	const explicitHardFails = assessment.hard_fails.filter((hardFail) => !assessment.errors.includes(hardFail));
@@ -5881,8 +7102,17 @@ function runInitCommand(argv, commandIo) {
 	const initOptions = { runDir };
 	if (acceptanceTarget !== void 0) initOptions.acceptanceTarget = acceptanceTarget;
 	if (parsed.values.force !== void 0) initOptions.force = parsed.values.force;
-	const result = initializeDiscoveryRun(initOptions);
+	const commandRunId = createCommandRunId();
+	const result = initializeDiscoveryRun({
+		...initOptions,
+		commandRunId
+	});
+	const renderResult = renderDiscoveryViews(result.runDir, {
+		commandRunId,
+		renderReason: "mutating_command"
+	});
 	writeLine(commandIo.stdout, `Initialized discovery run at ${result.runDir}`);
+	writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
 	return EXIT_SUCCESS;
 }
 async function runDiscoverCommand(argv, commandIo) {
@@ -5933,7 +7163,6 @@ async function runDiscoverCommand(argv, commandIo) {
 				type: "string",
 				multiple: true
 			},
-			"no-render": { type: "boolean" },
 			"no-repair": { type: "boolean" },
 			help: {
 				short: "h",
@@ -5959,10 +7188,11 @@ async function runDiscoverCommand(argv, commandIo) {
 	sourceInputs.push(...parseGenericSourceSpecs(parsed.values.source, helpText));
 	const packetRefs = Array.isArray(parsed.values["source-packet"]) ? parsed.values["source-packet"] : typeof parsed.values["source-packet"] === "string" ? [parsed.values["source-packet"]] : [];
 	if (sourceInputs.length === 0 && packetRefs.length === 0) throw new UsageError("discover requires at least one source input or --source-packet.", helpText);
+	const commandRunId = createCommandRunId();
 	const result = await discoverDiscoveryRun({
 		...acceptanceTarget ? { acceptanceTarget } : {},
+		commandRunId,
 		...packetRefs.length > 0 ? { packetRefs } : {},
-		render: !parsed.values["no-render"],
 		repair: !parsed.values["no-repair"],
 		runDir,
 		sourceInputs
@@ -5987,13 +7217,19 @@ async function runDiscoverCommand(argv, commandIo) {
 		writeLine(commandIo.stderr, "Discovery run could not be assessed.");
 		return EXIT_FAILURE;
 	}
+	const renderResult = renderDiscoveryViews(result.runDir, {
+		commandRunId,
+		renderReason: "mutating_command"
+	});
 	writeLine(commandIo.stdout, `${result.initialized ? "Initialized" : "Reused"} discovery run at ${result.runDir}`);
 	writeLine(commandIo.stdout, `Resolved sources: ${result.sourceIds.length > 0 ? result.sourceIds.join(", ") : "None"}`);
 	writeLine(commandIo.stdout, `Applied source packets: ${result.appliedPackets}`);
 	writeLine(commandIo.stdout, `Applied derivable repairs: ${result.appliedRepairs.length > 0 ? result.appliedRepairs.join(", ") : "None"}`);
 	writeAssessmentSummary(commandIo, result.assessment);
+	writeLine(commandIo.stdout);
+	writeDiscoverOperatorOutput(commandIo, result.runDir, result.assessment);
 	writeAssessmentDiagnostics(commandIo, result.assessment);
-	if (result.reportPath) writeLine(commandIo.stdout, `Rendered report into ${result.reportPath}`);
+	writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
 	return assessmentExitCode(result.assessment);
 }
 async function runStatusCommand(argv, commandIo) {
@@ -6029,53 +7265,21 @@ async function runStatusCommand(argv, commandIo) {
 		writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
 		return EXIT_FAILURE;
 	}
-	const status = getDiscoveryRunStatus(runDir);
-	if (status.legacyLayoutMessage) {
-		writeLine(commandIo.stderr, status.legacyLayoutMessage);
+	const validationResult = validateDiscoveryRun(runDir);
+	if (validationResult.legacyLayoutMessage) {
+		writeLine(commandIo.stderr, validationResult.legacyLayoutMessage);
 		return EXIT_FAILURE;
 	}
-	if (status.unsupportedSchemaMessages.length > 0) {
-		for (const message of status.unsupportedSchemaMessages) writeLine(commandIo.stderr, message);
+	if (validationResult.missingArtifacts.length > 0) {
+		for (const filePath of validationResult.missingArtifacts) writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
 		return EXIT_FAILURE;
 	}
-	if (status.missingArtifacts.length > 0) {
-		for (const filePath of status.missingArtifacts) writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
-		return EXIT_FAILURE;
-	}
-	if (!status.manifest || !status.assessment) {
+	if (!validationResult.assessment) {
 		writeLine(commandIo.stderr, "Status could not be determined.");
 		return EXIT_FAILURE;
 	}
-	writeLine(commandIo.stdout, `Run: ${status.manifest.run_id}`);
-	writeLine(commandIo.stdout, `Phase: ${status.manifest.phase_state}`);
-	writeLine(commandIo.stdout, `Target acceptance: ${status.manifest.acceptance_target}`);
-	writeLine(commandIo.stdout, `Achieved acceptance: ${status.assessment.acceptance.achieved}`);
-	writeLine(commandIo.stdout, `Assessment: ${status.assessment.status}`);
-	writeLine(commandIo.stdout, `Closure: ${status.assessment.closure.status}`);
-	writeLine(commandIo.stdout, `Score: ${status.assessment.score.total}/${status.assessment.score.max}`);
-	writeLine(commandIo.stdout, `Errors: ${status.assessment.errors.length}`);
-	writeLine(commandIo.stdout, `Warnings: ${status.assessment.warnings.length}`);
-	writeLine(commandIo.stdout, `Hard-fails: ${status.assessment.hard_fails.length}`);
-	writeLine(commandIo.stdout, `Rebaseline required: ${status.assessment.rebaseline_required ? "Yes" : "No"}`);
-	writeLine(commandIo.stdout, `Dirty flags: ${status.manifest.dirty_flags.length > 0 ? status.manifest.dirty_flags.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Stale proofs: ${status.assessment.stale_proofs.length > 0 ? status.assessment.stale_proofs.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Stale items: ${status.assessment.stale_items.length > 0 ? status.assessment.stale_items.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Stale claims: ${status.assessment.stale_claims.length > 0 ? status.assessment.stale_claims.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Track gate failures: ${status.assessment.track_gate_failures.length > 0 ? status.assessment.track_gate_failures.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Missing review roles: ${status.assessment.missing_review_roles.length > 0 ? status.assessment.missing_review_roles.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Pending track-proof reviews: ${status.assessment.pending_track_proof_reviews.length > 0 ? status.assessment.pending_track_proof_reviews.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Waiver findings: ${status.assessment.waiver_findings.length > 0 ? status.assessment.waiver_findings.join("; ") : "None"}`);
-	writeLine(commandIo.stdout, `Last delta: ${status.manifest.last_delta_at ?? "Never"}`);
-	writeLine(commandIo.stdout, `Last rebaseline: ${status.manifest.last_rebaseline_at ?? "Never"}`);
-	if (status.assessment.hard_fails.length > 0) {
-		writeLine(commandIo.stdout, "Hard-fail details:");
-		for (const hardFail of status.assessment.hard_fails) writeLine(commandIo.stdout, `- ${hardFail}`);
-	}
-	if (status.assessment.next_actions.length > 0) {
-		writeLine(commandIo.stdout, "Next actions:");
-		for (const action of status.assessment.next_actions) writeLine(commandIo.stdout, `- ${action}`);
-	}
-	return assessmentExitCode(status.assessment);
+	writeLines(commandIo.stdout, renderDiscoveryStatusOutput(runDir));
+	return assessmentExitCode(validationResult.assessment);
 }
 async function runRepairCommand(argv, commandIo) {
 	const helpText = repairHelp();
@@ -6083,20 +7287,18 @@ async function runRepairCommand(argv, commandIo) {
 		args: argv,
 		allowPositionals: true,
 		strict: true,
-		options: {
-			"no-render": { type: "boolean" },
-			help: {
-				short: "h",
-				type: "boolean"
-			}
-		}
+		options: { help: {
+			short: "h",
+			type: "boolean"
+		} }
 	}, helpText);
 	if (parsed.values.help) {
 		writeLine(commandIo.stdout, helpText);
 		return EXIT_SUCCESS;
 	}
 	const runDir = requireSingleRunDir(parsed.positionals, "repair", helpText);
-	const refreshResult = await refreshRunSourceFingerprints(runDir);
+	const commandRunId = createCommandRunId();
+	const refreshResult = await refreshRunSourceFingerprints(runDir, { commandRunId });
 	if (refreshResult.legacyLayoutMessage) {
 		writeLine(commandIo.stderr, refreshResult.legacyLayoutMessage);
 		return EXIT_FAILURE;
@@ -6109,11 +7311,12 @@ async function runRepairCommand(argv, commandIo) {
 		for (const filePath of refreshResult.missingArtifacts) writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
 		return EXIT_FAILURE;
 	}
-	if (refreshResult.inaccessibleSources.length > 0) {
-		writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
-		return EXIT_FAILURE;
-	}
-	const repairResult = repairDiscoveryRun(runDir);
+	const repairResult = refreshResult.inaccessibleSources.length > 0 ? {
+		appliedRepairs: [],
+		legacyLayoutMessage: void 0,
+		missingArtifacts: [],
+		unsupportedSchemaMessages: []
+	} : repairDiscoveryRun(runDir, { commandRunId });
 	if (repairResult.legacyLayoutMessage) {
 		writeLine(commandIo.stderr, repairResult.legacyLayoutMessage);
 		return EXIT_FAILURE;
@@ -6126,19 +7329,26 @@ async function runRepairCommand(argv, commandIo) {
 		for (const filePath of repairResult.missingArtifacts) writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
 		return EXIT_FAILURE;
 	}
-	const validationResult = validateDiscoveryRun(runDir);
+	const validationResult = validateDiscoveryRun(runDir, { commandRunId });
 	if (!validationResult.assessment) {
 		writeLine(commandIo.stderr, "Repair could not produce an assessment.");
 		return EXIT_FAILURE;
 	}
-	let reportPath;
-	if (!parsed.values["no-render"]) reportPath = renderDiscoveryViews(runDir).reportPath;
-	writeLine(commandIo.stdout, `Repaired discovery run at ${runDir}`);
+	const renderResult = renderDiscoveryViews(runDir, {
+		commandRunId,
+		renderReason: "mutating_command"
+	});
+	if (refreshResult.inaccessibleSources.length > 0) writeLine(commandIo.stdout, `Repair could not complete for ${runDir}`);
+	else writeLine(commandIo.stdout, `Repaired discovery run at ${runDir}`);
 	writeLine(commandIo.stdout, `Refreshed source fingerprints: ${refreshResult.changedSourceIds.length > 0 ? refreshResult.changedSourceIds.join(", ") : "None"}`);
 	writeLine(commandIo.stdout, `Applied derivable repairs: ${repairResult.appliedRepairs.length > 0 ? repairResult.appliedRepairs.join(", ") : "None"}`);
 	writeAssessmentSummary(commandIo, validationResult.assessment);
 	writeAssessmentDiagnostics(commandIo, validationResult.assessment);
-	if (reportPath) writeLine(commandIo.stdout, `Rendered report into ${reportPath}`);
+	writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
+	if (refreshResult.inaccessibleSources.length > 0) {
+		writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
+		return EXIT_FAILURE;
+	}
 	return assessmentExitCode(validationResult.assessment);
 }
 async function runValidateCommand(argv, commandIo) {
@@ -6157,7 +7367,8 @@ async function runValidateCommand(argv, commandIo) {
 		return EXIT_SUCCESS;
 	}
 	const runDir = requireSingleRunDir(parsed.positionals, "validate", helpText);
-	const refreshResult = await refreshRunSourceFingerprints(runDir);
+	const commandRunId = createCommandRunId();
+	const refreshResult = await refreshRunSourceFingerprints(runDir, { commandRunId });
 	if (refreshResult.legacyLayoutMessage) {
 		writeLine(commandIo.stderr, refreshResult.legacyLayoutMessage);
 		return EXIT_FAILURE;
@@ -6170,11 +7381,7 @@ async function runValidateCommand(argv, commandIo) {
 		for (const filePath of refreshResult.missingArtifacts) writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
 		return EXIT_FAILURE;
 	}
-	if (refreshResult.inaccessibleSources.length > 0) {
-		writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
-		return EXIT_FAILURE;
-	}
-	const result = validateDiscoveryRun(runDir);
+	const result = validateDiscoveryRun(runDir, { commandRunId });
 	if (result.legacyLayoutMessage) {
 		writeLine(commandIo.stderr, result.legacyLayoutMessage);
 		return EXIT_FAILURE;
@@ -6188,8 +7395,17 @@ async function runValidateCommand(argv, commandIo) {
 		writeLine(commandIo.stderr, "Assessment state could not be produced.");
 		return EXIT_FAILURE;
 	}
+	const renderResult = renderDiscoveryViews(runDir, {
+		commandRunId,
+		renderReason: "mutating_command"
+	});
 	writeAssessmentSummary(commandIo, assessment);
 	writeAssessmentDiagnostics(commandIo, assessment);
+	writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
+	if (refreshResult.inaccessibleSources.length > 0) {
+		writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
+		return EXIT_FAILURE;
+	}
 	return assessmentExitCode(assessment);
 }
 function runRenderCommand(argv, commandIo) {
@@ -6221,7 +7437,10 @@ function runRenderCommand(argv, commandIo) {
 		for (const filePath of bundleRepair.irreparableMissingArtifacts) writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
 		return EXIT_FAILURE;
 	}
-	const result = renderDiscoveryViews(runDir);
+	const result = renderDiscoveryViews(runDir, {
+		commandRunId: createCommandRunId(),
+		renderReason: "recovery_render"
+	});
 	writeLine(commandIo.stdout, `Rendered report into ${result.reportPath}`);
 	return EXIT_SUCCESS;
 }
@@ -6240,7 +7459,9 @@ async function runDeltaCommand(argv, commandIo) {
 		writeLine(commandIo.stdout, helpText);
 		return EXIT_SUCCESS;
 	}
-	const result = await computeDiscoveryDelta(requireSingleRunDir(parsed.positionals, "delta", helpText));
+	const runDir = requireSingleRunDir(parsed.positionals, "delta", helpText);
+	const commandRunId = createCommandRunId();
+	const result = await computeDiscoveryDelta(runDir, { commandRunId });
 	if (result.legacyLayoutMessage) {
 		writeLine(commandIo.stderr, result.legacyLayoutMessage);
 		return EXIT_FAILURE;
@@ -6253,21 +7474,26 @@ async function runDeltaCommand(argv, commandIo) {
 		for (const filePath of result.missingArtifacts) writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
 		return EXIT_FAILURE;
 	}
-	if (result.inaccessibleSources.length > 0) {
-		writeInaccessibleSources(commandIo, result.inaccessibleSources);
-		return EXIT_FAILURE;
-	}
 	if (!result.assessment) {
+		if (result.inaccessibleSources.length > 0) writeInaccessibleSources(commandIo, result.inaccessibleSources);
 		writeLine(commandIo.stderr, "Delta state could not be produced.");
 		return EXIT_FAILURE;
 	}
+	const renderResult = renderDiscoveryViews(result.runDir, {
+		commandRunId,
+		renderReason: "mutating_command"
+	});
+	if (result.inaccessibleSources.length > 0) {
+		writeDeltaOperatorOutput(commandIo, result.runDir, result.assessment, result.humanReadableDiff);
+		writeAssessmentDiagnostics(commandIo, result.assessment);
+		writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
+		writeInaccessibleSources(commandIo, result.inaccessibleSources);
+		return EXIT_FAILURE;
+	}
 	writeLine(commandIo.stdout, `Delta computed for ${result.runDir}`);
-	writeAssessmentSummary(commandIo, result.assessment);
-	writeLine(commandIo.stdout, `Changed sources: ${result.assessment.delta_summary.changed_source_ids.length > 0 ? result.assessment.delta_summary.changed_source_ids.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Changed claims: ${result.assessment.delta_summary.changed_claim_ids.length > 0 ? result.assessment.delta_summary.changed_claim_ids.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Stale items: ${result.assessment.stale_items.length > 0 ? result.assessment.stale_items.join(", ") : "None"}`);
-	writeLine(commandIo.stdout, `Stale proofs: ${result.assessment.stale_proofs.length > 0 ? result.assessment.stale_proofs.join(", ") : "None"}`);
+	writeDeltaOperatorOutput(commandIo, result.runDir, result.assessment, result.humanReadableDiff);
 	writeAssessmentDiagnostics(commandIo, result.assessment);
+	writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
 	return EXIT_SUCCESS;
 }
 async function runRebaselineCommand(argv, commandIo) {
@@ -6285,7 +7511,9 @@ async function runRebaselineCommand(argv, commandIo) {
 		writeLine(commandIo.stdout, helpText);
 		return EXIT_SUCCESS;
 	}
-	const result = await rebaselineDiscoveryRun(requireSingleRunDir(parsed.positionals, "rebaseline", helpText));
+	const runDir = requireSingleRunDir(parsed.positionals, "rebaseline", helpText);
+	const commandRunId = createCommandRunId();
+	const result = await rebaselineDiscoveryRun(runDir, { commandRunId });
 	if (result.legacyLayoutMessage) {
 		writeLine(commandIo.stderr, result.legacyLayoutMessage);
 		return EXIT_FAILURE;
@@ -6298,23 +7526,36 @@ async function runRebaselineCommand(argv, commandIo) {
 		for (const filePath of result.missingArtifacts) writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
 		return EXIT_FAILURE;
 	}
-	if (result.inaccessibleSources.length > 0) {
-		writeInaccessibleSources(commandIo, result.inaccessibleSources);
+	if (!result.assessment) {
+		if (result.inaccessibleSources.length > 0) writeInaccessibleSources(commandIo, result.inaccessibleSources);
+		writeLine(commandIo.stderr, "Rebaseline could not be completed.");
 		return EXIT_FAILURE;
 	}
-	if (!result.assessment) {
-		writeLine(commandIo.stderr, "Rebaseline could not be completed.");
+	const renderResult = renderDiscoveryViews(result.runDir, {
+		commandRunId,
+		renderReason: "mutating_command"
+	});
+	if (result.inaccessibleSources.length > 0) {
+		writeAssessmentSummary(commandIo, result.assessment);
+		writeLine(commandIo.stdout);
+		writeRebaselineOperatorOutput(commandIo, result.runDir, result.assessment);
+		writeAssessmentDiagnostics(commandIo, result.assessment);
+		writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
+		writeInaccessibleSources(commandIo, result.inaccessibleSources);
 		return EXIT_FAILURE;
 	}
 	writeLine(commandIo.stdout, `Rebaseline completed for ${result.runDir}`);
 	writeLine(commandIo.stdout, `Rebaseline recorded at ${result.rebaselinedAt ?? "unknown-time"}`);
 	writeLine(commandIo.stdout, `Rebaseline causes: ${result.causes.length > 0 ? result.causes.join(", ") : "none"}`);
 	writeAssessmentSummary(commandIo, result.assessment);
+	writeLine(commandIo.stdout);
+	writeRebaselineOperatorOutput(commandIo, result.runDir, result.assessment);
 	writeAssessmentDiagnostics(commandIo, result.assessment);
 	if (result.assessment.next_actions.length > 0) {
 		writeLine(commandIo.stdout, "Next actions:");
 		for (const action of result.assessment.next_actions) writeLine(commandIo.stdout, `- ${action}`);
 	}
+	writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
 	return EXIT_SUCCESS;
 }
 var COMMANDS = [

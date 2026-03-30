@@ -73,6 +73,8 @@ function createRecoveredManifest(
     current_source_hashes: {},
     baseline_canonical_hashes: {},
     current_canonical_hashes: {},
+    baseline_issue_item_links: {},
+    current_issue_item_links: {},
     dirty_flags: [],
     last_assessment_status: existingAssessment?.status ?? 'not-run',
     last_render_at: null,
@@ -198,7 +200,9 @@ export function repairCompactRunBundle(runDirInput: string): BundleRepairResult 
         event: 'run_bundle_repaired',
         run_id: updatedManifest.run_id,
         repaired_artifacts: repairedArtifacts.map((filePath) => path.basename(filePath)),
-        previously_missing_artifacts: missingArtifacts.map(([, filePath]) => path.basename(filePath)),
+        previously_missing_artifacts: missingArtifacts.map(([, filePath]) =>
+          path.basename(filePath),
+        ),
       })}\n`,
       'utf8',
     );

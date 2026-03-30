@@ -34,8 +34,10 @@ const RUNTIME_SURFACES = new Set([
 export interface DriftState {
   baselineCanonicalHashes: Record<string, string>;
   baselineEstablished: boolean;
+  baselineIssueItemLinks: Record<string, string[]>;
   baselineSourceHashes: Record<string, string>;
   currentCanonicalHashes: Record<string, string>;
+  currentIssueItemLinks: Record<string, string[]>;
   currentSourceHashes: Record<string, string>;
   deltaSummary: DeltaSummary;
   rebaselineRequired: boolean;
@@ -55,6 +57,12 @@ function trackGateHashKey(trackGateId: string): string {
 function issueHashKey(): string {
   return 'issues';
 }
+
+function issueEntryHashKey(kind: 'gap' | 'contradiction' | 'unknown', issueId: string): string {
+  return `issue:${kind}:${issueId}`;
+}
+
+type IssueItemLinkMap = Record<string, string[]>;
 
 function securityHashKey(): string {
   return 'security_posture';
@@ -79,7 +87,9 @@ function releasePathHashKey(): string {
 function getCurrentSourceHashes(backlog: BacklogFile): Record<string, string> {
   return Object.fromEntries(
     backlog.source_authority
-      .filter((source) => isNonEmptyString(source.source_id) && isNonEmptyString(source.fingerprint))
+      .filter(
+        (source) => isNonEmptyString(source.source_id) && isNonEmptyString(source.fingerprint),
+      )
       .map((source) => [source.source_id as string, source.fingerprint as string]),
   );
 }
@@ -195,6 +205,18 @@ function getCurrentCanonicalHashes(backlog: BacklogFile): Record<string, string>
     }
   }
 
+  for (const [kind, entries] of [
+    ['gap', backlog.gaps],
+    ['contradiction', backlog.contradictions],
+    ['unknown', backlog.unknowns],
+  ] as const) {
+    for (const entry of entries) {
+      if (isNonEmptyString(entry.issue_id)) {
+        hashes[issueEntryHashKey(kind, entry.issue_id)] = hashJsonValue(entry);
+      }
+    }
+  }
+
   return hashes;
 }
 
@@ -261,7 +283,9 @@ function itemTouchesSecurity(item: DiscoveryItem): boolean {
     item.item_class === 'control_guardrail' ||
     asArray(item.trust_boundaries_crossed).length > 0 ||
     asArray(item.change_surfaces).some((surface) =>
-      ['auth', 'authz', 'secrets', 'policy', 'data_class', 'external_api'].includes(String(surface)),
+      ['auth', 'authz', 'secrets', 'policy', 'data_class', 'external_api'].includes(
+        String(surface),
+      ),
     )
   );
 }
@@ -321,17 +345,106 @@ function parseInvalidationCauses(value: unknown): DriftCause[] {
     RELEASE_PATH_CHANGE,
   ]);
 
-  return asArray(Array.isArray(value) ? value : [])
-    .filter((entry): entry is DriftCause => typeof entry === 'string' && validCauses.has(entry as DriftCause));
+  return asArray(Array.isArray(value) ? value : []).filter(
+    (entry): entry is DriftCause =>
+      typeof entry === 'string' && validCauses.has(entry as DriftCause),
+  );
 }
 
-function itemTouchesIssueLedgers(item: DiscoveryItem): boolean {
-  return asArray(item.origin_ref).some(
-    (origin) =>
-      origin.kind === 'gap_ref' ||
-      origin.kind === 'unknown_ref' ||
-      origin.kind === 'review_finding_ref',
+function collectChangedIssueKeys(changedCanonicalKeys: string[]): Set<string> {
+  return new Set(
+    changedCanonicalKeys.filter((key) => {
+      const [prefix, kind, issueId] = key.split(':');
+      return (
+        prefix === 'issue' &&
+        isNonEmptyString(issueId) &&
+        (kind === 'gap' || kind === 'contradiction' || kind === 'unknown')
+      );
+    }),
   );
+}
+
+function buildIssueItemLinks(backlog: BacklogFile): IssueItemLinkMap {
+  const links = new Map<string, Set<string>>();
+  const addLink = (issueKey: string, itemId: string): void => {
+    const current = links.get(issueKey) ?? new Set<string>();
+    current.add(itemId);
+    links.set(issueKey, current);
+  };
+
+  for (const [kind, entries] of [
+    ['gap', backlog.gaps],
+    ['contradiction', backlog.contradictions],
+    ['unknown', backlog.unknowns],
+  ] as const) {
+    for (const entry of entries) {
+      if (!isNonEmptyString(entry.issue_id)) {
+        continue;
+      }
+      const issueKey = issueEntryHashKey(kind, entry.issue_id);
+      for (const itemRef of asArray(entry.related_item_refs)) {
+        if (isNonEmptyString(itemRef)) {
+          addLink(issueKey, itemRef);
+        }
+      }
+    }
+  }
+
+  for (const item of backlog.items) {
+    if (!isNonEmptyString(item.item_id)) {
+      continue;
+    }
+    for (const origin of asArray(item.origin_ref)) {
+      if (origin.kind === 'gap_ref' && isNonEmptyString(origin.ref)) {
+        addLink(issueEntryHashKey('gap', origin.ref), item.item_id);
+      }
+      if (origin.kind === 'unknown_ref' && isNonEmptyString(origin.ref)) {
+        addLink(issueEntryHashKey('unknown', origin.ref), item.item_id);
+      }
+    }
+  }
+
+  return Object.fromEntries(
+    [...links.entries()]
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([issueKey, itemIds]) => [issueKey, [...itemIds].sort()]),
+  );
+}
+
+function normalizeIssueItemLinks(value: unknown): IssueItemLinkMap | null {
+  if (typeof value !== 'object' || value === null) {
+    return null;
+  }
+
+  const normalized = new Map<string, string[]>();
+  for (const [issueKey, itemIds] of Object.entries(value)) {
+    if (!Array.isArray(itemIds)) {
+      continue;
+    }
+    const normalizedItemIds = asArray(itemIds).filter(isNonEmptyString).sort();
+    normalized.set(issueKey, [...new Set(normalizedItemIds)]);
+  }
+
+  return Object.fromEntries(normalized);
+}
+
+function collectAffectedIssueItemIds(
+  changedIssueKeys: Set<string>,
+  baselineIssueItemLinks: IssueItemLinkMap,
+  currentIssueItemLinks: IssueItemLinkMap,
+): Set<string> {
+  const affectedItemIds = new Set<string>();
+  for (const issueKey of changedIssueKeys) {
+    for (const itemId of [
+      ...asArray(baselineIssueItemLinks[issueKey]),
+      ...asArray(currentIssueItemLinks[issueKey]),
+    ]) {
+      if (isNonEmptyString(itemId)) {
+        affectedItemIds.add(itemId);
+      }
+    }
+  }
+  return affectedItemIds;
 }
 
 export function computeDriftState(
@@ -341,6 +454,7 @@ export function computeDriftState(
 ): DriftState {
   const currentSourceHashes = getCurrentSourceHashes(backlog);
   const currentCanonicalHashes = getCurrentCanonicalHashes(backlog);
+  const currentIssueItemLinks = buildIssueItemLinks(backlog);
   const baselineEstablished =
     Object.keys(manifest.baseline_source_hashes).length > 0 ||
     Object.keys(manifest.baseline_canonical_hashes).length > 0;
@@ -350,6 +464,12 @@ export function computeDriftState(
   const baselineCanonicalHashes = baselineEstablished
     ? manifest.baseline_canonical_hashes
     : currentCanonicalHashes;
+  const previousIssueItemLinks =
+    normalizeIssueItemLinks(manifest.baseline_issue_item_links) ??
+    normalizeIssueItemLinks(manifest.current_issue_item_links);
+  const baselineIssueItemLinks = baselineEstablished
+    ? (previousIssueItemLinks ?? currentIssueItemLinks)
+    : currentIssueItemLinks;
 
   const changedSourceIds = collectChangedKeys(baselineSourceHashes, currentSourceHashes);
   const changedCanonicalKeys = collectChangedKeys(baselineCanonicalHashes, currentCanonicalHashes);
@@ -359,6 +479,12 @@ export function computeDriftState(
   const changedTrackGateIds = changedCanonicalKeys
     .filter((key) => key.startsWith('track_gate:'))
     .map((key) => key.slice('track_gate:'.length));
+  const changedIssueKeys = collectChangedIssueKeys(changedCanonicalKeys);
+  const affectedIssueItemIds = collectAffectedIssueItemIds(
+    changedIssueKeys,
+    baselineIssueItemLinks,
+    currentIssueItemLinks,
+  );
   const topologyChanged =
     baselineCanonicalHashes.topology !== undefined &&
     currentCanonicalHashes.topology !== undefined &&
@@ -382,7 +508,8 @@ export function computeDriftState(
   const externalDependencyChanged =
     baselineCanonicalHashes[externalDependencyHashKey()] !== undefined &&
     currentCanonicalHashes[externalDependencyHashKey()] !== undefined &&
-    baselineCanonicalHashes[externalDependencyHashKey()] !== currentCanonicalHashes[externalDependencyHashKey()];
+    baselineCanonicalHashes[externalDependencyHashKey()] !==
+      currentCanonicalHashes[externalDependencyHashKey()];
   const ownershipChanged =
     baselineCanonicalHashes[ownershipHashKey()] !== undefined &&
     currentCanonicalHashes[ownershipHashKey()] !== undefined &&
@@ -426,7 +553,9 @@ export function computeDriftState(
 
   const claimsById = new Map(
     backlog.claims
-      .filter((claim): claim is typeof claim & { claim_id: string } => isNonEmptyString(claim.claim_id))
+      .filter((claim): claim is typeof claim & { claim_id: string } =>
+        isNonEmptyString(claim.claim_id),
+      )
       .map((claim) => [claim.claim_id, claim]),
   );
   const itemsById = new Map(
@@ -436,8 +565,11 @@ export function computeDriftState(
   );
   const trackProofsById = new Map(
     backlog.track_proofs
-      .filter((trackProof): trackProof is typeof trackProof & { track_proof_id: string; track_id: string } =>
-        isNonEmptyString(trackProof.track_proof_id) && isNonEmptyString(trackProof.track_id),
+      .filter(
+        (
+          trackProof,
+        ): trackProof is typeof trackProof & { track_proof_id: string; track_id: string } =>
+          isNonEmptyString(trackProof.track_proof_id) && isNonEmptyString(trackProof.track_id),
       )
       .map((trackProof) => [trackProof.track_proof_id, trackProof]),
   );
@@ -460,7 +592,6 @@ export function computeDriftState(
       staleClaims.add(claimId);
     }
   }
-
   const staleProofs = new Set<string>();
   for (const proof of backlog.proofs) {
     if (!isNonEmptyString(proof.proof_id)) {
@@ -475,23 +606,38 @@ export function computeDriftState(
       const coveredItem = itemsById.get(proof.covered_ref.id);
       if (coveredItem) {
         const itemClaimRefs = collectItemClaimRefs(coveredItem);
-        if (invalidatedBy.includes(SOURCE_CHANGE) && itemClaimRefs.some((claimRef) => staleClaims.has(claimRef))) {
+        if (
+          invalidatedBy.includes(SOURCE_CHANGE) &&
+          itemClaimRefs.some((claimRef) => staleClaims.has(claimRef))
+        ) {
           stale = true;
         }
-        if (invalidatedBy.includes(CONTRACT_CHANGE) && contractChanged && itemTouchesContractOrData(coveredItem)) {
+        if (
+          invalidatedBy.includes(CONTRACT_CHANGE) &&
+          contractChanged &&
+          itemTouchesContractOrData(coveredItem)
+        ) {
           stale = true;
         }
-        if (invalidatedBy.includes(TOPOLOGY_CHANGE) && topologyChanged && itemTouchesTopology(coveredItem)) {
+        if (
+          invalidatedBy.includes(TOPOLOGY_CHANGE) &&
+          topologyChanged &&
+          itemTouchesTopology(coveredItem)
+        ) {
           stale = true;
         }
         if (
           invalidatedBy.includes(INCIDENT_FALSE_CLOSURE) &&
           incidentChanged &&
-          itemTouchesIssueLedgers(coveredItem)
+          affectedIssueItemIds.has(coveredItem.item_id)
         ) {
           stale = true;
         }
-        if (invalidatedBy.includes(SECURITY_FINDING) && securityChanged && itemTouchesSecurity(coveredItem)) {
+        if (
+          invalidatedBy.includes(SECURITY_FINDING) &&
+          securityChanged &&
+          itemTouchesSecurity(coveredItem)
+        ) {
           stale = true;
         }
         if (invalidatedBy.includes(NFR_BREACH) && nfrChanged && itemTouchesNfr(coveredItem)) {
@@ -504,10 +650,18 @@ export function computeDriftState(
         ) {
           stale = true;
         }
-        if (invalidatedBy.includes(OWNER_BOUNDARY_CHANGE) && ownershipChanged && itemTouchesOwnership(coveredItem)) {
+        if (
+          invalidatedBy.includes(OWNER_BOUNDARY_CHANGE) &&
+          ownershipChanged &&
+          itemTouchesOwnership(coveredItem)
+        ) {
           stale = true;
         }
-        if (invalidatedBy.includes(RELEASE_PATH_CHANGE) && releasePathChanged && itemTouchesReleasePaths(coveredItem)) {
+        if (
+          invalidatedBy.includes(RELEASE_PATH_CHANGE) &&
+          releasePathChanged &&
+          itemTouchesReleasePaths(coveredItem)
+        ) {
           stale = true;
         }
         if (
@@ -520,7 +674,11 @@ export function computeDriftState(
           stale = true;
         }
       }
-    } else if (!stale && proof.covered_ref?.kind === 'track_proof' && isNonEmptyString(proof.covered_ref.id)) {
+    } else if (
+      !stale &&
+      proof.covered_ref?.kind === 'track_proof' &&
+      isNonEmptyString(proof.covered_ref.id)
+    ) {
       const trackProof = trackProofsById.get(proof.covered_ref.id);
       if (trackProof) {
         if (invalidatedBy.includes(SOURCE_CHANGE) && staleClaims.size > 0) {
@@ -580,7 +738,7 @@ export function computeDriftState(
     const hasStaleClaims = collectItemClaimRefs(item).some((claimRef) => staleClaims.has(claimRef));
     const hasStaleProofs = asArray(item.proof_refs).some((proofRef) => staleProofs.has(proofRef));
     const invalidatedByNewDrift =
-      (incidentChanged && true) ||
+      (incidentChanged && affectedIssueItemIds.has(item.item_id)) ||
       (securityChanged && itemTouchesSecurity(item)) ||
       (nfrChanged && itemTouchesNfr(item)) ||
       (externalDependencyChanged && itemTouchesExternalDependencies(item)) ||
@@ -604,8 +762,10 @@ export function computeDriftState(
   return {
     baselineCanonicalHashes,
     baselineEstablished,
+    baselineIssueItemLinks,
     baselineSourceHashes,
     currentCanonicalHashes,
+    currentIssueItemLinks,
     currentSourceHashes,
     deltaSummary: {
       baseline_established: baselineEstablished,
@@ -614,6 +774,7 @@ export function computeDriftState(
       stale_claim_ids: [...staleClaims].sort(),
       stale_item_ids: [...staleItems].sort(),
       stale_proof_ids: [...staleProofs].sort(),
+      stale_review_artifact_ids: [],
       track_gate_ids_to_recalculate: [...trackGateIdsToRecalculate].sort(),
       dirty_flags: dirtyFlags,
       topology_changed: topologyChanged,

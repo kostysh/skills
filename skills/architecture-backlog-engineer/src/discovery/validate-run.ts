@@ -86,7 +86,10 @@ const REVIEW_FINDING_SEVERITY_RANK = new Map<string, number>([
   ['info', 1],
 ]);
 
-const READINESS_EXEMPTIONS_BY_CLASS: Record<NonNullable<DiscoveryItem['item_class']>, Set<string>> = {
+const READINESS_EXEMPTIONS_BY_CLASS: Record<
+  NonNullable<DiscoveryItem['item_class']>,
+  Set<string>
+> = {
   capability_seam: new Set(),
   feature_slice: new Set(),
   control_guardrail: new Set(),
@@ -193,7 +196,13 @@ const OUTGOING_RELATIONS_BY_CLASS: Record<NonNullable<DiscoveryItem['item_class'
     'touches_contract',
     'touches_data_domain',
   ]),
-  spike_discovery: new Set(['enabled_by', 'depends_on', 'reviewed_by', 'proves', 'belongs_to_track']),
+  spike_discovery: new Set([
+    'enabled_by',
+    'depends_on',
+    'reviewed_by',
+    'proves',
+    'belongs_to_track',
+  ]),
   operational_enablement: new Set([
     'enabled_by',
     'depends_on',
@@ -254,6 +263,13 @@ const MANUAL_ONLY_NEGATIVE_SCOPE_CLASSES = new Set([
   'trusted_local_only',
   'compatibility_only',
 ]);
+const DELIVERY_EVIDENCE_SOURCE_KINDS = new Set([
+  'runtime_evidence',
+  'deployment_contract',
+  'delivered_dossier_ssot',
+  'code_evidence',
+  'operational_evidence',
+]);
 const REQUIRED_RETIREMENT_CLEANUP_SCOPE = [
   'code',
   'flags',
@@ -308,7 +324,11 @@ const CLASS_PAYLOAD_KEYS: Record<NonNullable<DiscoveryItem['item_class']>, Set<s
 const ORIGIN_KINDS_BY_CLASS: Record<NonNullable<DiscoveryItem['item_class']>, Set<string>> = {
   capability_seam: new Set(['claim_ref', 'gap_ref', 'review_finding_ref']),
   feature_slice: new Set(['claim_ref', 'gap_ref', 'review_finding_ref']),
-  control_guardrail: new Set(['control_obligation_ref', 'policy_decision_ref', 'review_finding_ref']),
+  control_guardrail: new Set([
+    'control_obligation_ref',
+    'policy_decision_ref',
+    'review_finding_ref',
+  ]),
   migration: new Set(['claim_ref', 'gap_ref', 'review_finding_ref', 'unknown_ref']),
   retirement: new Set(['decommission_need_ref', 'gap_ref', 'review_finding_ref']),
   spike_discovery: new Set(['unknown_ref', 'gap_ref', 'review_finding_ref']),
@@ -333,6 +353,10 @@ export interface ValidateDiscoveryRunResult {
   runDir: string;
   assessment: AssessmentFile | null;
   warnings: string[];
+}
+
+export interface ValidateDiscoveryRunOptions {
+  commandRunId?: string;
 }
 
 function pushIssue(
@@ -792,7 +816,10 @@ function validateFindingCollection(
       continue;
     }
     reviewFindingIds.add(finding.finding_id);
-    if (!isNonEmptyString(finding.severity) || !REVIEW_FINDING_SEVERITY_RANK.has(finding.severity)) {
+    if (
+      !isNonEmptyString(finding.severity) ||
+      !REVIEW_FINDING_SEVERITY_RANK.has(finding.severity)
+    ) {
       pushIssue(
         errors,
         `Review ${reviewId} has ${collectionName} entry ${finding.finding_id} with invalid severity`,
@@ -843,7 +870,11 @@ function getPayloadStringArray(item: DiscoveryItem, key: string, fallback?: stri
   return fallback ?? [];
 }
 
-function getPayloadGraphRef(item: DiscoveryItem, key: string, fallbackKind?: GraphRef['kind']): GraphRef | null {
+function getPayloadGraphRef(
+  item: DiscoveryItem,
+  key: string,
+  fallbackKind?: GraphRef['kind'],
+): GraphRef | null {
   const payload = getClassPayload(item);
   const value = payload[key];
   if (isGraphRef(value)) {
@@ -878,7 +909,7 @@ function isRuntimeOrSupportDirectlyImpacted(items: DiscoveryItem[]): boolean {
 
 function getRolloutMode(item: DiscoveryItem): string | null {
   const rollout = asStringRecord(item.rollout);
-  return isNonEmptyString(rollout.mode) ? String(rollout.mode) : item.rollout_mode ?? null;
+  return isNonEmptyString(rollout.mode) ? String(rollout.mode) : (item.rollout_mode ?? null);
 }
 
 function getRolloutApplicability(item: DiscoveryItem): string {
@@ -893,7 +924,7 @@ function getRolloutJustification(item: DiscoveryItem): string | null {
 
 function getRecoveryClass(item: DiscoveryItem): string | null {
   const recovery = asStringRecord(item.recovery);
-  return isNonEmptyString(recovery.class) ? String(recovery.class) : item.rollback_class ?? null;
+  return isNonEmptyString(recovery.class) ? String(recovery.class) : (item.rollback_class ?? null);
 }
 
 function getRecoveryApplicability(item: DiscoveryItem): string {
@@ -920,15 +951,18 @@ function isCriticalUnknownSeverity(value: unknown): boolean {
 
 function itemTouchesTrustBoundary(item: DiscoveryItem): boolean {
   return (
-    asArray(item.trust_boundaries_crossed).length > 0 ||
-    hasChangeSurface(item, SECURITY_SURFACES)
+    asArray(item.trust_boundaries_crossed).length > 0 || hasChangeSurface(item, SECURITY_SURFACES)
   );
 }
 
 function itemRequiresNfrContract(item: DiscoveryItem): boolean {
-  return ['capability_seam', 'feature_slice', 'control_guardrail', 'migration', 'operational_enablement'].includes(
-    item.item_class ?? '',
-  );
+  return [
+    'capability_seam',
+    'feature_slice',
+    'control_guardrail',
+    'migration',
+    'operational_enablement',
+  ].includes(item.item_class ?? '');
 }
 
 function itemRequiresObservabilityContract(item: DiscoveryItem): boolean {
@@ -940,7 +974,9 @@ function itemRequiresObservabilityContract(item: DiscoveryItem): boolean {
 }
 
 function hasGenericSliceTitle(title: unknown): boolean {
-  return isNonEmptyString(title) && GENERIC_SLICE_TITLE_PATTERNS.some((pattern) => pattern.test(title));
+  return (
+    isNonEmptyString(title) && GENERIC_SLICE_TITLE_PATTERNS.some((pattern) => pattern.test(title))
+  );
 }
 
 function getUnexpectedPayloadKeys(item: DiscoveryItem): string[] {
@@ -1017,7 +1053,12 @@ function validateAliasRecord(
       continue;
     }
     if (value.some((alias) => alias === key)) {
-      pushIssue(errors, `${ownerLabel}.${key} must not repeat the canonical term as an alias`, hardFails, true);
+      pushIssue(
+        errors,
+        `${ownerLabel}.${key} must not repeat the canonical term as an alias`,
+        hardFails,
+        true,
+      );
     }
   }
 }
@@ -1048,6 +1089,134 @@ function validateSourceRefs(
   }
 
   return refs;
+}
+
+function getCurrentTruthEvidenceSourceIds(
+  refs: unknown,
+  sourceById: Map<string, BacklogFile['source_authority'][number]>,
+): string[] {
+  if (!Array.isArray(refs)) {
+    return [];
+  }
+
+  const sourceIds = new Set<string>();
+  for (const sourceRef of refs) {
+    if (!isNonEmptyString(sourceRef)) {
+      continue;
+    }
+    const source = sourceById.get(sourceRef);
+    if (
+      source &&
+      source.authority === 'authoritative_current_truth' &&
+      isNonEmptyString(source.kind) &&
+      DELIVERY_EVIDENCE_SOURCE_KINDS.has(source.kind)
+    ) {
+      sourceIds.add(sourceRef);
+    }
+  }
+
+  return [...sourceIds].sort();
+}
+
+function collectItemDeliveryEvidenceSourceIds(
+  item: DiscoveryItem,
+  sourceById: Map<string, BacklogFile['source_authority'][number]>,
+  excludedSourceIds: Set<string>,
+): string[] {
+  const packetProvenance = asStringRecord((item as Record<string, unknown>).packet_provenance);
+  if (
+    packetProvenance.merge_mode !== 'source_driven_refresh' ||
+    packetProvenance.source_refs_managed !== true
+  ) {
+    return [];
+  }
+
+  const managedSourceRefs = getCurrentTruthEvidenceSourceIds(
+    (item as Record<string, unknown>).source_refs,
+    sourceById,
+  ).filter((sourceId) => !excludedSourceIds.has(sourceId));
+  if (managedSourceRefs.length === 0) {
+    return [];
+  }
+
+  const sourceId = isNonEmptyString(packetProvenance.source_id) ? packetProvenance.source_id : null;
+  if (sourceId === null || !managedSourceRefs.includes(sourceId)) {
+    return [];
+  }
+
+  const source = sourceById.get(sourceId);
+  if (
+    source !== undefined &&
+    source.authority === 'authoritative_current_truth' &&
+    isNonEmptyString(source.kind) &&
+    DELIVERY_EVIDENCE_SOURCE_KINDS.has(source.kind) &&
+    (packetProvenance.source_authority === undefined ||
+      packetProvenance.source_authority === source.authority) &&
+    (packetProvenance.source_kind === undefined || packetProvenance.source_kind === source.kind)
+  ) {
+    return [sourceId];
+  }
+
+  return [];
+}
+
+function sourceAuthorityIdentityKey(
+  source: Pick<BacklogFile['source_authority'][number], 'ref' | 'kind' | 'authority'>,
+): string | null {
+  if (
+    !isNonEmptyString(source.ref) ||
+    !isNonEmptyString(source.kind) ||
+    !isNonEmptyString(source.authority)
+  ) {
+    return null;
+  }
+
+  return `${source.ref}::${source.kind}::${source.authority}`;
+}
+
+interface IssueResolutionSnapshotEntry {
+  issue_id: string;
+  resolution_state: string | null;
+  resolution_note: string | null;
+}
+
+function buildIssueResolutionSnapshot<
+  T extends {
+    issue_id?: string | null;
+    resolution_state?: string | null;
+    resolution_note?: string | null;
+  },
+>(entries: T[]): IssueResolutionSnapshotEntry[] {
+  return entries
+    .filter((entry): entry is (typeof entries)[number] & { issue_id: string } =>
+      isNonEmptyString(entry.issue_id),
+    )
+    .map((entry) => ({
+      issue_id: entry.issue_id,
+      resolution_state: isNonEmptyString(entry.resolution_state) ? entry.resolution_state : null,
+      resolution_note: isNonEmptyString(entry.resolution_note) ? entry.resolution_note : null,
+    }))
+    .sort((left, right) => left.issue_id.localeCompare(right.issue_id));
+}
+
+function readIssueResolutionSnapshotEntries(value: unknown): IssueResolutionSnapshotEntry[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const entries: IssueResolutionSnapshotEntry[] = [];
+  for (const candidate of value) {
+    const record = asStringRecord(candidate);
+    if (!isNonEmptyString(record.issue_id)) {
+      continue;
+    }
+    entries.push({
+      issue_id: record.issue_id,
+      resolution_state: isNonEmptyString(record.resolution_state) ? record.resolution_state : null,
+      resolution_note: isNonEmptyString(record.resolution_note) ? record.resolution_note : null,
+    });
+  }
+  return entries;
 }
 
 function validateGraphRefArray(
@@ -1091,7 +1260,12 @@ function validateGraphRefArray(
         valueStreamIds,
       )
     ) {
-      pushIssue(errors, `${ownerLabel} references missing ${formatGraphRef(ref)} in ${field}`, hardFails, true);
+      pushIssue(
+        errors,
+        `${ownerLabel} references missing ${formatGraphRef(ref)} in ${field}`,
+        hardFails,
+        true,
+      );
       continue;
     }
     validatedRefs.push(ref);
@@ -1204,7 +1378,9 @@ const ECONOMIC_TIE_BREAK_GROUPS: string[][] = [
   ['strategic_fit'],
 ];
 
-function getSafetyPriority(entry: BacklogFile['roadmap_matrix'][number]): readonly [number, number] {
+function getSafetyPriority(
+  entry: BacklogFile['roadmap_matrix'][number],
+): readonly [number, number] {
   const trackId = entry.track_ref?.id ?? '';
   const trackPriority = SAFETY_TRACK_PRIORITY.get(trackId) ?? Number.MAX_SAFE_INTEGER;
   const itemPriority =
@@ -1268,7 +1444,11 @@ function computeScore(
   const sections: ScoreSection[] = [];
 
   const sourceAuthorityScore =
-    backlog.source_authority.length === 0 ? 0 : hardFails.some((issue) => issue.includes('source')) ? 4 : 10;
+    backlog.source_authority.length === 0
+      ? 0
+      : hardFails.some((issue) => issue.includes('source'))
+        ? 4
+        : 10;
   sections.push(
     scoreSection(
       'truth_model',
@@ -1300,11 +1480,16 @@ function computeScore(
   );
 
   const coverageScore =
-    committedClaimsWithoutItems.length === 0 && missingOwners.length === 0 && staleClaims.length === 0
+    committedClaimsWithoutItems.length === 0 &&
+    missingOwners.length === 0 &&
+    staleClaims.length === 0
       ? 15
       : Math.max(
           0,
-          15 - committedClaimsWithoutItems.length * 4 - missingOwners.length * 2 - staleClaims.length * 2,
+          15 -
+            committedClaimsWithoutItems.length * 4 -
+            missingOwners.length * 2 -
+            staleClaims.length * 2,
         );
   sections.push(
     scoreSection(
@@ -1312,7 +1497,9 @@ function computeScore(
       'Claim coverage and ownership completeness',
       15,
       coverageScore,
-      committedClaimsWithoutItems.length === 0 && missingOwners.length === 0 && staleClaims.length === 0
+      committedClaimsWithoutItems.length === 0 &&
+        missingOwners.length === 0 &&
+        staleClaims.length === 0
         ? 'Committed claims map to owned backlog items and no claim drift remains unresolved.'
         : 'Some committed claims are unmapped, stale, or items are missing owners.',
     ),
@@ -1335,7 +1522,9 @@ function computeScore(
       'Backlog ontology and decomposition quality',
       15,
       Math.max(0, 15 - ontologyPenalty * 2),
-      ontologyPenalty === 0 ? 'Item classes and graph relations are coherent.' : 'Graph semantics still have defects.',
+      ontologyPenalty === 0
+        ? 'Item classes and graph relations are coherent.'
+        : 'Graph semantics still have defects.',
     ),
   );
 
@@ -1556,8 +1745,8 @@ function getScopedItemsForGraphRef(
       return item ? [item] : [];
     }
     case 'run':
-      return backlog.items.filter(
-        (item): item is DiscoveryItem & { item_id: string } => isNonEmptyString(item.item_id),
+      return backlog.items.filter((item): item is DiscoveryItem & { item_id: string } =>
+        isNonEmptyString(item.item_id),
       );
     case 'track_proof': {
       const trackProof = backlog.track_proofs.find((entry) => entry.track_proof_id === scope.id);
@@ -1616,7 +1805,10 @@ function scopeIsWaived(
   return waivedScopes.has(runScopeKey) || waivedScopes.has(graphRefKey(scope));
 }
 
-export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunResult {
+export function validateDiscoveryRun(
+  runDirInput: string,
+  options: ValidateDiscoveryRunOptions = {},
+): ValidateDiscoveryRunResult {
   const runDir = path.resolve(runDirInput);
   if (detectLegacyLayout(runDir)) {
     return {
@@ -1647,12 +1839,35 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   const manifest = loadJson<Manifest>(paths.manifest);
   const backlog = loadJson<BacklogFile>(paths.backlog);
   const previousAssessment = loadJson<AssessmentFile>(paths.assessment);
+  const journalEvents = loadNdjson<Record<string, unknown>>(paths.journal);
   const errors: string[] = [];
   const warnings: string[] = [];
   const hardFails: string[] = [];
   const lintFindings: string[] = [];
   const nextActions: string[] = [];
   const backlogRecord = backlog as unknown as Record<string, unknown>;
+  const previousValidatedSnapshotRecord = asStringRecord(
+    [...journalEvents]
+      .reverse()
+      .find(
+        (event) =>
+          event.event === 'run_validated' &&
+          event.status === 'pass' &&
+          event.issue_resolution_snapshot !== undefined,
+      )?.issue_resolution_snapshot,
+  );
+  const previousGapResolutionById = new Map(
+    readIssueResolutionSnapshotEntries(previousValidatedSnapshotRecord.gaps).map((entry) => [
+      entry.issue_id,
+      entry,
+    ]),
+  );
+  const previousUnknownResolutionById = new Map(
+    readIssueResolutionSnapshotEntries(previousValidatedSnapshotRecord.unknowns).map((entry) => [
+      entry.issue_id,
+      entry,
+    ]),
+  );
 
   if (manifest.schema_version !== SCHEMA_VERSION) {
     pushIssue(errors, unsupportedSchemaMessage('manifest.json'), hardFails, true);
@@ -1669,10 +1884,16 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   if (backlog.metadata?.run_id !== manifest.run_id) {
     pushIssue(errors, 'manifest.json and backlog.json run_id values do not match', hardFails, true);
   }
-  if (typeof manifest.baseline_source_hashes !== 'object' || manifest.baseline_source_hashes === null) {
+  if (
+    typeof manifest.baseline_source_hashes !== 'object' ||
+    manifest.baseline_source_hashes === null
+  ) {
     pushIssue(errors, 'manifest.json baseline_source_hashes must be an object', hardFails, true);
   }
-  if (typeof manifest.current_source_hashes !== 'object' || manifest.current_source_hashes === null) {
+  if (
+    typeof manifest.current_source_hashes !== 'object' ||
+    manifest.current_source_hashes === null
+  ) {
     pushIssue(errors, 'manifest.json current_source_hashes must be an object', hardFails, true);
   }
   if (
@@ -1718,16 +1939,34 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       pushIssue(errors, `backlog.json.${requiredArrayLedger} must be an array`, hardFails, true);
     }
   }
-  for (const requiredObjectLedger of ['glossary', 'aliases', 'id_strategy', 'target_system', 'as_built']) {
-    if (typeof backlogRecord[requiredObjectLedger] !== 'object' || backlogRecord[requiredObjectLedger] === null) {
+  for (const requiredObjectLedger of [
+    'glossary',
+    'aliases',
+    'id_strategy',
+    'target_system',
+    'as_built',
+  ]) {
+    if (
+      typeof backlogRecord[requiredObjectLedger] !== 'object' ||
+      backlogRecord[requiredObjectLedger] === null
+    ) {
       pushIssue(errors, `backlog.json.${requiredObjectLedger} must be an object`, hardFails, true);
     }
   }
 
   const driftState = computeDriftState(manifest, backlog);
+  const hasBaselineIssueItemLinksSnapshot =
+    typeof manifest.baseline_issue_item_links === 'object' &&
+    manifest.baseline_issue_item_links !== null &&
+    !Array.isArray(manifest.baseline_issue_item_links);
 
   if (backlog.source_authority.length === 0) {
-    pushIssue(errors, 'No authoritative sources recorded in backlog.json.source_authority', hardFails, true);
+    pushIssue(
+      errors,
+      'No authoritative sources recorded in backlog.json.source_authority',
+      hardFails,
+      true,
+    );
   }
   if (!hasOwnEntries(backlog.glossary)) {
     pushIssue(errors, 'Glossary must be non-empty', hardFails, true);
@@ -1848,7 +2087,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     for (const dependency of asBuiltRecord.dependency_classifications) {
       const dependencyRecord = asStringRecord(dependency);
       if (!isNonEmptyString(dependencyRecord.dependency_id)) {
-        pushIssue(errors, 'as_built dependency classification missing dependency_id', hardFails, true);
+        pushIssue(
+          errors,
+          'as_built dependency classification missing dependency_id',
+          hardFails,
+          true,
+        );
       } else {
         dependencyIds.add(String(dependencyRecord.dependency_id));
       }
@@ -1858,7 +2102,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
           dependencyRecord.criticality as (typeof DEPENDENCY_CRITICALITIES)[number],
         )
       ) {
-        pushIssue(errors, 'as_built dependency classification has invalid criticality', hardFails, true);
+        pushIssue(
+          errors,
+          'as_built dependency classification has invalid criticality',
+          hardFails,
+          true,
+        );
       } else {
         dependencyCriticalities.add(String(dependencyRecord.criticality));
       }
@@ -1908,19 +2157,27 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   const protectedAuthoritativePrecedences: number[] = [];
   const declaredItemIds = new Set(
     backlog.items
-      .filter((item): item is BacklogFile['items'][number] & { item_id: string } => isNonEmptyString(item.item_id))
+      .filter((item): item is BacklogFile['items'][number] & { item_id: string } =>
+        isNonEmptyString(item.item_id),
+      )
       .map((item) => item.item_id),
   );
   const declaredItemClassById = new Map(
     backlog.items
       .filter(
-        (item): item is BacklogFile['items'][number] & { item_id: string; item_class: NonNullable<DiscoveryItem['item_class']> } =>
+        (
+          item,
+        ): item is BacklogFile['items'][number] & {
+          item_id: string;
+          item_class: NonNullable<DiscoveryItem['item_class']>;
+        } =>
           isNonEmptyString(item.item_id) &&
           isNonEmptyString(item.item_class) &&
           ITEM_CLASSES.includes(item.item_class),
       )
       .map((item) => [item.item_id, item.item_class]),
   );
+  const sourceIdentityByKey = new Map<string, string>();
   for (const source of backlog.source_authority) {
     if (!isNonEmptyString(source.source_id)) {
       pushIssue(errors, 'Source authority entry missing source_id', hardFails, true);
@@ -1931,6 +2188,20 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
     sourceIds.add(source.source_id);
     sourceById.set(source.source_id, source);
+    const identityKey = sourceAuthorityIdentityKey(source);
+    if (identityKey !== null) {
+      const existingSourceId = sourceIdentityByKey.get(identityKey);
+      if (existingSourceId && existingSourceId !== source.source_id) {
+        pushIssue(
+          errors,
+          `Source ${source.source_id} duplicates source_authority identity ${source.ref} (${source.kind}, ${source.authority}); reuse source_id ${existingSourceId}`,
+          hardFails,
+          true,
+        );
+      } else {
+        sourceIdentityByKey.set(identityKey, source.source_id);
+      }
+    }
     if (!isNonEmptyString(source.ref)) {
       pushIssue(errors, `Source ${source.source_id} is missing ref`, hardFails, true);
     }
@@ -1953,7 +2224,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       source.authority === 'authoritative_current_truth';
     if (requiresPrecedence) {
       if (!Number.isInteger(source.precedence) || Number(source.precedence) <= 0) {
-        pushIssue(errors, `Source ${source.source_id} must include a positive integer precedence`, hardFails, true);
+        pushIssue(
+          errors,
+          `Source ${source.source_id} must include a positive integer precedence`,
+          hardFails,
+          true,
+        );
       } else {
         const precedence = Number(source.precedence);
         authoritativePrecedenceBySourceId.set(source.source_id, precedence);
@@ -1982,13 +2258,21 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
     if (
       source.kind === 'backlog_text' &&
-      (source.authority === 'authoritative_target_truth' || source.authority === 'authoritative_current_truth')
+      (source.authority === 'authoritative_target_truth' ||
+        source.authority === 'authoritative_current_truth')
     ) {
-      pushIssue(errors, `Source ${source.source_id} uses backlog_text but is marked authoritative`, hardFails, true);
+      pushIssue(
+        errors,
+        `Source ${source.source_id} uses backlog_text but is marked authoritative`,
+        hardFails,
+        true,
+      );
     }
   }
 
-  const sortedAuthoritativePrecedences = [...authoritativeSourceIdByPrecedence.keys()].sort((left, right) => left - right);
+  const sortedAuthoritativePrecedences = [...authoritativeSourceIdByPrecedence.keys()].sort(
+    (left, right) => left - right,
+  );
   for (let index = 1; index < sortedAuthoritativePrecedences.length; index += 1) {
     const previous = sortedAuthoritativePrecedences[index - 1];
     const current = sortedAuthoritativePrecedences[index];
@@ -2006,7 +2290,9 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
   const strongestProtectedPrecedence =
-    protectedAuthoritativePrecedences.length > 0 ? Math.min(...protectedAuthoritativePrecedences) : null;
+    protectedAuthoritativePrecedences.length > 0
+      ? Math.min(...protectedAuthoritativePrecedences)
+      : null;
   if (strongestProtectedPrecedence !== null) {
     for (const source of backlog.source_authority) {
       if (
@@ -2031,11 +2317,21 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     if (excludedSourceIds.has(exclusion.source_id)) {
-      pushIssue(errors, `Duplicate source exclusion source_id: ${exclusion.source_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Duplicate source exclusion source_id: ${exclusion.source_id}`,
+        hardFails,
+        true,
+      );
     }
     excludedSourceIds.add(exclusion.source_id);
     if (!isNonEmptyString(exclusion.reason)) {
-      pushIssue(errors, `Source exclusion ${exclusion.source_id} is missing reason`, hardFails, true);
+      pushIssue(
+        errors,
+        `Source exclusion ${exclusion.source_id} is missing reason`,
+        hardFails,
+        true,
+      );
     }
     const matchingSourceAuthority = sourceById.get(exclusion.source_id);
     if (!matchingSourceAuthority) {
@@ -2056,7 +2352,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
     const supersededBy = asArray(exclusion.superseded_by);
     if (supersededBy.length === 0) {
-      pushIssue(errors, `Source exclusion ${exclusion.source_id} must include superseded_by[]`, hardFails, true);
+      pushIssue(
+        errors,
+        `Source exclusion ${exclusion.source_id} must include superseded_by[]`,
+        hardFails,
+        true,
+      );
     }
     for (const supersedingSourceId of supersededBy) {
       if (!sourceIds.has(supersedingSourceId)) {
@@ -2068,7 +2369,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         );
       }
       if (supersedingSourceId === exclusion.source_id) {
-        pushIssue(errors, `Source exclusion ${exclusion.source_id} cannot supersede itself`, hardFails, true);
+        pushIssue(
+          errors,
+          `Source exclusion ${exclusion.source_id} cannot supersede itself`,
+          hardFails,
+          true,
+        );
       }
     }
   }
@@ -2090,11 +2396,21 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     if (valueStreamIds.has(valueStream.value_stream_id)) {
-      pushIssue(errors, `Duplicate value_stream_id: ${valueStream.value_stream_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Duplicate value_stream_id: ${valueStream.value_stream_id}`,
+        hardFails,
+        true,
+      );
     }
     valueStreamIds.add(valueStream.value_stream_id);
     if (!isNonEmptyString(valueStream.title)) {
-      pushIssue(errors, `Value stream ${valueStream.value_stream_id} missing title`, hardFails, true);
+      pushIssue(
+        errors,
+        `Value stream ${valueStream.value_stream_id} missing title`,
+        hardFails,
+        true,
+      );
     }
   }
 
@@ -2117,39 +2433,81 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     if (!isNonEmptyString(track.closure_goal)) {
       pushIssue(errors, `Track ${track.track_id} missing closure_goal`, hardFails, true);
     }
-    if (!isNonEmptyString(track.backlog_protocol_state) || !BACKLOG_PROTOCOL_STATES.includes(track.backlog_protocol_state)) {
-      pushIssue(errors, `Track ${track.track_id} has invalid backlog_protocol_state`, hardFails, true);
+    if (
+      !isNonEmptyString(track.backlog_protocol_state) ||
+      !BACKLOG_PROTOCOL_STATES.includes(track.backlog_protocol_state)
+    ) {
+      pushIssue(
+        errors,
+        `Track ${track.track_id} has invalid backlog_protocol_state`,
+        hardFails,
+        true,
+      );
     }
-    if (!isNonEmptyString(track.delivery_state) || !DELIVERY_STATES.includes(track.delivery_state)) {
+    if (
+      !isNonEmptyString(track.delivery_state) ||
+      !DELIVERY_STATES.includes(track.delivery_state)
+    ) {
       pushIssue(errors, `Track ${track.track_id} has invalid delivery_state`, hardFails, true);
     }
-    if (!isNonEmptyString(track.readiness_state) || !READINESS_STATES.includes(track.readiness_state)) {
+    if (
+      !isNonEmptyString(track.readiness_state) ||
+      !READINESS_STATES.includes(track.readiness_state)
+    ) {
       pushIssue(errors, `Track ${track.track_id} has invalid readiness_state`, hardFails, true);
     }
-    if (!isNonEmptyString(track.closure_state) || !ITEM_CLOSURE_STATES.includes(track.closure_state)) {
+    if (
+      !isNonEmptyString(track.closure_state) ||
+      !ITEM_CLOSURE_STATES.includes(track.closure_state)
+    ) {
       pushIssue(errors, `Track ${track.track_id} has invalid closure_state`, hardFails, true);
     }
     if (!isNonEmptyString(track.summary_label) || !SUMMARY_LABELS.includes(track.summary_label)) {
       pushIssue(errors, `Track ${track.track_id} has invalid summary_label`, hardFails, true);
     }
     if (!Array.isArray(track.first_shippable_journey_ids)) {
-      pushIssue(errors, `Track ${track.track_id} must include first_shippable_journey_ids[]`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track ${track.track_id} must include first_shippable_journey_ids[]`,
+        hardFails,
+        true,
+      );
     }
     if (!Array.isArray(track.required_track_gate_ids)) {
-      pushIssue(errors, `Track ${track.track_id} must include required_track_gate_ids[]`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track ${track.track_id} must include required_track_gate_ids[]`,
+        hardFails,
+        true,
+      );
     }
     if (!Array.isArray(track.track_proof_refs)) {
       pushIssue(errors, `Track ${track.track_id} must include track_proof_refs[]`, hardFails, true);
     }
     if (REQUIRED_TRACK_IDS.has(track.track_id)) {
       if (asArray(track.first_shippable_journey_ids).length === 0) {
-        pushIssue(errors, `Required track ${track.track_id} must link at least one first_shippable_journey_id`, hardFails, true);
+        pushIssue(
+          errors,
+          `Required track ${track.track_id} must link at least one first_shippable_journey_id`,
+          hardFails,
+          true,
+        );
       }
       if (asArray(track.required_track_gate_ids).length === 0) {
-        pushIssue(errors, `Required track ${track.track_id} must link at least one required_track_gate_id`, hardFails, true);
+        pushIssue(
+          errors,
+          `Required track ${track.track_id} must link at least one required_track_gate_id`,
+          hardFails,
+          true,
+        );
       }
       if (asArray(track.track_proof_refs).length === 0) {
-        pushIssue(errors, `Required track ${track.track_id} must link at least one track_proof_ref`, hardFails, true);
+        pushIssue(
+          errors,
+          `Required track ${track.track_id} must link at least one track_proof_ref`,
+          hardFails,
+          true,
+        );
       }
     }
   }
@@ -2218,7 +2576,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     linkedTrackIdsByValueStreamId.set(valueStream.value_stream_id, linkedTrackIds);
     for (const linkedTrackId of linkedTrackIds) {
       if (!trackIds.has(linkedTrackId)) {
-        pushIssue(errors, `${valueStreamLabel} references unknown linked track ${linkedTrackId}`, hardFails, true);
+        pushIssue(
+          errors,
+          `${valueStreamLabel} references unknown linked track ${linkedTrackId}`,
+          hardFails,
+          true,
+        );
       }
     }
   }
@@ -2231,7 +2594,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       asArray(valueStream.linked_track_ids).includes(track.track_id),
     );
     if (asArray(track.first_shippable_journey_ids).length > 0 && !linkedToValueStream) {
-      pushIssue(errors, `Track ${track.track_id} does not map to any value stream`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track ${track.track_id} does not map to any value stream`,
+        hardFails,
+        true,
+      );
     }
   }
 
@@ -2246,10 +2614,23 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
     journeyIds.add(journey.journey_id);
     if (!isNonEmptyString(journey.track_id) || !trackIds.has(journey.track_id)) {
-      pushIssue(errors, `Track journey ${journey.journey_id} has invalid track_id`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track journey ${journey.journey_id} has invalid track_id`,
+        hardFails,
+        true,
+      );
     }
-    if (!isNonEmptyString(journey.value_stream_id) || !valueStreamIds.has(journey.value_stream_id)) {
-      pushIssue(errors, `Track journey ${journey.journey_id} has invalid value_stream_id`, hardFails, true);
+    if (
+      !isNonEmptyString(journey.value_stream_id) ||
+      !valueStreamIds.has(journey.value_stream_id)
+    ) {
+      pushIssue(
+        errors,
+        `Track journey ${journey.journey_id} has invalid value_stream_id`,
+        hardFails,
+        true,
+      );
     }
     if (
       isNonEmptyString(journey.track_id) &&
@@ -2281,22 +2662,44 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       hardFails,
     );
     if (!isNonEmptyString(journey.success_condition)) {
-      pushIssue(errors, `Track journey ${journey.journey_id} missing success_condition`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track journey ${journey.journey_id} missing success_condition`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(journey.support_handoff)) {
-      pushIssue(errors, `Track journey ${journey.journey_id} missing support_handoff`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track journey ${journey.journey_id} missing support_handoff`,
+        hardFails,
+        true,
+      );
     }
   }
   for (const trackId of REQUIRED_TRACK_IDS) {
-    const journeysForTrack = backlog.track_journeys.filter((journey) => journey.track_id === trackId);
+    const journeysForTrack = backlog.track_journeys.filter(
+      (journey) => journey.track_id === trackId,
+    );
     if (journeysForTrack.length === 0) {
-      pushIssue(errors, `Required track ${trackId} must resolve to at least one track journey`, hardFails, true);
+      pushIssue(
+        errors,
+        `Required track ${trackId} must resolve to at least one track journey`,
+        hardFails,
+        true,
+      );
     }
     const linkedValueStreams = backlog.value_streams.filter((valueStream) =>
       asArray(valueStream.linked_track_ids).includes(trackId),
     );
     if (linkedValueStreams.length === 0) {
-      pushIssue(errors, `Required track ${trackId} must map to at least one value stream`, hardFails, true);
+      pushIssue(
+        errors,
+        `Required track ${trackId} must map to at least one value stream`,
+        hardFails,
+        true,
+      );
     }
   }
 
@@ -2323,7 +2726,10 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     if (!isNonEmptyString(gate.gate_type)) {
       pushIssue(errors, `Track gate ${gate.track_gate_id} missing gate_type`, hardFails, true);
     }
-    if (!isNonEmptyString(gate.fail_mode) || !['fail_open', 'fail_closed'].includes(gate.fail_mode)) {
+    if (
+      !isNonEmptyString(gate.fail_mode) ||
+      !['fail_open', 'fail_closed'].includes(gate.fail_mode)
+    ) {
       pushIssue(errors, `Track gate ${gate.track_gate_id} has invalid fail_mode`, hardFails, true);
     }
     const ownerRefs = requireNonEmptyStringArrayField(
@@ -2389,12 +2795,16 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         );
       }
     }
-    if (ownerRefs.length === 0 || (gate.fail_mode === 'fail_closed' && governingControlRefs.length === 0)) {
+    if (
+      ownerRefs.length === 0 ||
+      (gate.fail_mode === 'fail_closed' && governingControlRefs.length === 0)
+    ) {
       trackGateFailures.push(gate.track_gate_id);
     }
   }
 
   const claimIds = new Set<string>();
+  const claimById = new Map<string, BacklogFile['claims'][number]>();
   const committedClaimIds = new Set<string>();
   const controlObligationClaimIds = new Set<string>();
   const decommissionNeedClaimIds = new Set<string>();
@@ -2407,6 +2817,9 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       pushIssue(errors, `Duplicate claim_id: ${claim.claim_id}`, hardFails, true);
     }
     claimIds.add(claim.claim_id);
+    if (!claimById.has(claim.claim_id)) {
+      claimById.set(claim.claim_id, claim);
+    }
     if (!isNonEmptyString(claim.claim_class) || !CLAIM_CLASSES.includes(claim.claim_class)) {
       pushIssue(errors, `Claim ${claim.claim_id} has invalid claim_class`, hardFails, true);
     }
@@ -2422,8 +2835,16 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     if (claim.claim_class === 'retirement') {
       decommissionNeedClaimIds.add(claim.claim_id);
     }
-    if ((claim.commitment === 'deferred' || claim.commitment === 'optional') && !isNonEmptyString(claim.revisit_trigger)) {
-      pushIssue(errors, `Claim ${claim.claim_id} is ${claim.commitment} but missing revisit_trigger`, hardFails, true);
+    if (
+      (claim.commitment === 'deferred' || claim.commitment === 'optional') &&
+      !isNonEmptyString(claim.revisit_trigger)
+    ) {
+      pushIssue(
+        errors,
+        `Claim ${claim.claim_id} is ${claim.commitment} but missing revisit_trigger`,
+        hardFails,
+        true,
+      );
     }
     validateSourceRefs(
       claim.source_refs,
@@ -2452,16 +2873,36 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       pushIssue(errors, `Contract ${contract.contract_id} missing owner`, hardFails, true);
     }
     if (!isNonEmptyString(contract.versioning_strategy)) {
-      pushIssue(errors, `Contract ${contract.contract_id} missing versioning_strategy`, hardFails, true);
+      pushIssue(
+        errors,
+        `Contract ${contract.contract_id} missing versioning_strategy`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(contract.reconciliation_strategy)) {
-      pushIssue(errors, `Contract ${contract.contract_id} missing reconciliation_strategy`, hardFails, true);
+      pushIssue(
+        errors,
+        `Contract ${contract.contract_id} missing reconciliation_strategy`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(contract.deprecation_window)) {
-      pushIssue(errors, `Contract ${contract.contract_id} missing deprecation_window`, hardFails, true);
+      pushIssue(
+        errors,
+        `Contract ${contract.contract_id} missing deprecation_window`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(contract.retirement_condition)) {
-      pushIssue(errors, `Contract ${contract.contract_id} missing retirement_condition`, hardFails, true);
+      pushIssue(
+        errors,
+        `Contract ${contract.contract_id} missing retirement_condition`,
+        hardFails,
+        true,
+      );
     }
   }
 
@@ -2525,8 +2966,17 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       pushIssue(errors, `Proof ${proof.proof_id} missing invalidated_by`, hardFails, true);
     } else {
       for (const cause of invalidatedBy) {
-        if (!['source_change', 'contract_change', 'topology_change', 'track_gate_change'].includes(cause)) {
-          pushIssue(errors, `Proof ${proof.proof_id} has invalid invalidated_by cause ${cause}`, hardFails, true);
+        if (
+          !['source_change', 'contract_change', 'topology_change', 'track_gate_change'].includes(
+            cause,
+          )
+        ) {
+          pushIssue(
+            errors,
+            `Proof ${proof.proof_id} has invalid invalidated_by cause ${cause}`,
+            hardFails,
+            true,
+          );
         }
       }
     }
@@ -2535,12 +2985,25 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     } else {
       for (const dimensionKey of PROOF_DIMENSION_KEYS) {
         const dimension = asStringRecord(proof.dimensions[dimensionKey]);
-        if (!isNonEmptyString(dimension.status) || !['present', 'missing', 'not_applicable'].includes(dimension.status)) {
-          pushIssue(errors, `Proof ${proof.proof_id} has invalid ${dimensionKey} status`, hardFails, true);
+        if (
+          !isNonEmptyString(dimension.status) ||
+          !['present', 'missing', 'not_applicable'].includes(dimension.status)
+        ) {
+          pushIssue(
+            errors,
+            `Proof ${proof.proof_id} has invalid ${dimensionKey} status`,
+            hardFails,
+            true,
+          );
           continue;
         }
         if (dimension.status === 'missing') {
-          pushIssue(errors, `Proof ${proof.proof_id} dimension ${dimensionKey} may not remain missing`, hardFails, true);
+          pushIssue(
+            errors,
+            `Proof ${proof.proof_id} dimension ${dimensionKey} may not remain missing`,
+            hardFails,
+            true,
+          );
         }
         if (
           dimension.status === 'present' &&
@@ -2595,17 +3058,37 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     const trackProofId = trackProof.track_proof_id;
     trackProofIds.add(trackProof.track_proof_id);
     if (!isNonEmptyString(trackProof.track_id) || !trackIds.has(trackProof.track_id)) {
-      pushIssue(errors, `Track proof ${trackProof.track_proof_id} has invalid track_id`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track proof ${trackProof.track_proof_id} has invalid track_id`,
+        hardFails,
+        true,
+      );
     } else {
       trackProofIdToTrackId.set(trackProofId, trackProof.track_id);
     }
     if (!Array.isArray(trackProof.proof_refs)) {
-      pushIssue(errors, `Track proof ${trackProof.track_proof_id} must include proof_refs[]`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track proof ${trackProof.track_proof_id} must include proof_refs[]`,
+        hardFails,
+        true,
+      );
     } else if (trackProof.proof_refs.length === 0) {
-      pushIssue(errors, `Track proof ${trackProof.track_proof_id} must include at least one proof_ref`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track proof ${trackProof.track_proof_id} must include at least one proof_ref`,
+        hardFails,
+        true,
+      );
     }
     if (typeof trackProof.coverage !== 'object' || trackProof.coverage === null) {
-      pushIssue(errors, `Track proof ${trackProof.track_proof_id} must include coverage`, hardFails, true);
+      pushIssue(
+        errors,
+        `Track proof ${trackProof.track_proof_id} must include coverage`,
+        hardFails,
+        true,
+      );
     } else {
       const coverageRecord = asStringRecord(trackProof.coverage);
       for (const coverageKey of TRACK_PROOF_COVERAGE_KEYS) {
@@ -2656,22 +3139,39 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   for (const track of backlog.tracks) {
     for (const journeyId of asArray(track.first_shippable_journey_ids)) {
       if (!journeyIds.has(journeyId)) {
-        pushIssue(errors, `Track ${track.track_id} references unknown journey ${journeyId}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Track ${track.track_id} references unknown journey ${journeyId}`,
+          hardFails,
+          true,
+        );
       }
     }
     for (const trackGateId of asArray(track.required_track_gate_ids)) {
       if (!trackGateIds.has(trackGateId)) {
-        pushIssue(errors, `Track ${track.track_id} references unknown track gate ${trackGateId}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Track ${track.track_id} references unknown track gate ${trackGateId}`,
+          hardFails,
+          true,
+        );
       }
     }
     for (const trackProofRef of asArray(track.track_proof_refs)) {
       if (!trackProofIds.has(trackProofRef)) {
-        pushIssue(errors, `Track ${track.track_id} references unknown track proof ${trackProofRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Track ${track.track_id} references unknown track proof ${trackProofRef}`,
+          hardFails,
+          true,
+        );
       }
     }
     if (REQUIRED_TRACK_IDS.has(track.track_id)) {
       for (const trackGateId of asArray(track.required_track_gate_ids)) {
-        const gate = backlog.track_gates.find((candidate) => candidate.track_gate_id === trackGateId);
+        const gate = backlog.track_gates.find(
+          (candidate) => candidate.track_gate_id === trackGateId,
+        );
         if (!gate || gate.track_id !== track.track_id) {
           pushIssue(
             errors,
@@ -2682,7 +3182,9 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         }
       }
       for (const trackProofRef of asArray(track.track_proof_refs)) {
-        const trackProof = backlog.track_proofs.find((candidate) => candidate.track_proof_id === trackProofRef);
+        const trackProof = backlog.track_proofs.find(
+          (candidate) => candidate.track_proof_id === trackProofRef,
+        );
         if (!trackProof || trackProof.track_id !== track.track_id) {
           pushIssue(
             errors,
@@ -2702,12 +3204,22 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
 
     for (const journeyId of asArray(gate.applies_to_journey_ids)) {
       if (!journeyIds.has(journeyId)) {
-        pushIssue(errors, `Track gate ${gate.track_gate_id} references unknown journey ${journeyId}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Track gate ${gate.track_gate_id} references unknown journey ${journeyId}`,
+          hardFails,
+          true,
+        );
       }
     }
     for (const proofRef of asArray(gate.required_proof_refs)) {
       if (!proofIds.has(proofRef)) {
-        pushIssue(errors, `Track gate ${gate.track_gate_id} references unknown proof ${proofRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Track gate ${gate.track_gate_id} references unknown proof ${proofRef}`,
+          hardFails,
+          true,
+        );
         if (gate.fail_mode === 'fail_closed') {
           trackGateFailures.push(gate.track_gate_id);
         }
@@ -2732,9 +3244,7 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
 
   const reviewIds = new Set<string>();
   const reviewFindingIds = new Set<string>();
-  const reviewRoleMap = new Map<ReviewRole, { independent: boolean; verdicts: string[] }>();
-  const runReviewRoleMap = new Map<ReviewRole, { independent: boolean; verdicts: string[] }>();
-  const trackProofReviewIds = new Map<string, string[]>();
+  const eligibleReviews: BacklogFile['reviews'][number][] = [];
   for (const review of backlog.reviews) {
     if (!isNonEmptyString(review.review_id)) {
       pushIssue(errors, 'Review artifact missing review_id', hardFails, true);
@@ -2759,7 +3269,9 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     if (review.independent !== true) {
-      warnings.push(`Review ${review.review_id} for role ${review.role} is not marked independent.`);
+      warnings.push(
+        `Review ${review.review_id} for role ${review.role} is not marked independent.`,
+      );
     }
     if (!isNonEmptyString(review.verdict) || !REVIEW_VERDICTS.includes(review.verdict)) {
       pushIssue(errors, `Review ${review.review_id} has invalid verdict`, hardFails, true);
@@ -2768,11 +3280,20 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     if (!Array.isArray(review.evidence_refs) || review.evidence_refs.length === 0) {
       pushIssue(errors, `Review ${review.review_id} missing evidence_refs`, hardFails, true);
     }
-    if (typeof review.score_contribution !== 'number' || !Number.isFinite(review.score_contribution)) {
-      pushIssue(errors, `Review ${review.review_id} missing numeric score_contribution`, hardFails, true);
+    if (
+      typeof review.score_contribution !== 'number' ||
+      !Number.isFinite(review.score_contribution)
+    ) {
+      pushIssue(
+        errors,
+        `Review ${review.review_id} missing numeric score_contribution`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(review.reviewed_at) || parseTimestamp(review.reviewed_at) === null) {
       pushIssue(errors, `Review ${review.review_id} missing valid reviewed_at`, hardFails, true);
+      continue;
     }
     for (const collectionName of ['findings', 'hard_fail_report'] as const) {
       validateFindingCollection(
@@ -2785,51 +3306,47 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       );
     }
     if (review.verdict === 'fail' && asArray(review.hard_fail_report).length === 0) {
-      pushIssue(errors, `Review ${review.review_id} with verdict=fail must include hard_fail_report findings`, hardFails, true);
+      pushIssue(
+        errors,
+        `Review ${review.review_id} with verdict=fail must include hard_fail_report findings`,
+        hardFails,
+        true,
+      );
     }
-    if (
-      review.review_scope === 'item' &&
-      review.reviewed_ref?.kind !== 'item'
-    ) {
-      pushIssue(errors, `Review ${review.review_id} must reference an item when review_scope=item`, hardFails, true);
+    if (review.review_scope === 'item' && review.reviewed_ref?.kind !== 'item') {
+      pushIssue(
+        errors,
+        `Review ${review.review_id} must reference an item when review_scope=item`,
+        hardFails,
+        true,
+      );
+      continue;
     }
-    if (
-      review.review_scope === 'run' &&
-      review.reviewed_ref?.kind !== 'run'
-    ) {
-      pushIssue(errors, `Review ${review.review_id} must reference the run when review_scope=run`, hardFails, true);
+    if (review.review_scope === 'run' && review.reviewed_ref?.kind !== 'run') {
+      pushIssue(
+        errors,
+        `Review ${review.review_id} must reference the run when review_scope=run`,
+        hardFails,
+        true,
+      );
+      continue;
     }
-    if (
-      review.review_scope === 'track_proof' &&
-      review.reviewed_ref?.kind !== 'track_proof'
-    ) {
+    if (review.review_scope === 'track_proof' && review.reviewed_ref?.kind !== 'track_proof') {
       pushIssue(
         errors,
         `Review ${review.review_id} must reference a track_proof when review_scope=track_proof`,
         hardFails,
         true,
       );
+      continue;
     }
-    const state = reviewRoleMap.get(review.role) ?? { independent: false, verdicts: [] };
-    state.independent = state.independent || review.independent === true;
-    state.verdicts.push(review.verdict);
-    reviewRoleMap.set(review.role, state);
-    if (review.review_scope === 'run') {
-      const runState = runReviewRoleMap.get(review.role) ?? { independent: false, verdicts: [] };
-      runState.independent = runState.independent || review.independent === true;
-      runState.verdicts.push(review.verdict);
-      runReviewRoleMap.set(review.role, runState);
-    }
-    if (review.review_scope === 'track_proof' && review.reviewed_ref?.kind === 'track_proof') {
-      const existing = trackProofReviewIds.get(review.reviewed_ref.id ?? '') ?? [];
-      existing.push(review.review_id);
-      trackProofReviewIds.set(review.reviewed_ref.id ?? '', existing);
-    }
+    eligibleReviews.push(review);
   }
 
   const waiverFindings: string[] = [];
   const waiverIds = new Set<string>();
   const invalidWaiverIds = new Set<string>();
+  const invalidWaivedScopeKeysByRole = new Map<ReviewRole, Set<string>>();
   for (const waiver of backlog.waivers) {
     if (!isNonEmptyString(waiver.waiver_id)) {
       pushIssue(errors, 'Waiver entry missing waiver_id', hardFails, true);
@@ -2894,11 +3411,19 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
 
+  const unknownEntryById = new Map<string, BacklogFile['unknowns'][number]>();
+  for (const entry of backlog.unknowns) {
+    if (isNonEmptyString(entry.issue_id) && !unknownEntryById.has(entry.issue_id)) {
+      unknownEntryById.set(entry.issue_id, entry);
+    }
+  }
+
   const itemIds = new Set<string>();
   const itemsById = new Map<string, DiscoveryItem>();
   const mappedClaimRefs = new Set<string>();
   const itemOriginRefs = new Map<string, BacklogFile['items'][number]['origin_ref']>();
   const missingOwners: string[] = [];
+  const itemsMissingDeliveryEvidence: string[] = [];
   for (const item of backlog.items) {
     if (!isNonEmptyString(item.item_id)) {
       pushIssue(errors, 'Item missing item_id', hardFails, true);
@@ -2917,22 +3442,53 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     if (!isNonEmptyString(item.track_id) || !trackIds.has(item.track_id)) {
       pushIssue(errors, `Item ${item.item_id} has invalid track_id`, hardFails, true);
     }
-    if (!isNonEmptyString(item.backlog_protocol_state) || !BACKLOG_PROTOCOL_STATES.includes(item.backlog_protocol_state)) {
+    if (
+      !isNonEmptyString(item.backlog_protocol_state) ||
+      !BACKLOG_PROTOCOL_STATES.includes(item.backlog_protocol_state)
+    ) {
       pushIssue(errors, `Item ${item.item_id} has invalid backlog_protocol_state`, hardFails, true);
     }
     if (!isNonEmptyString(item.delivery_state) || !DELIVERY_STATES.includes(item.delivery_state)) {
       pushIssue(errors, `Item ${item.item_id} has invalid delivery_state`, hardFails, true);
+    } else if (
+      item.delivery_state === 'delivered' ||
+      item.delivery_state === 'partially_delivered'
+    ) {
+      const deliveryEvidenceSourceIds = collectItemDeliveryEvidenceSourceIds(
+        item,
+        sourceById,
+        excludedSourceIds,
+      );
+      if (deliveryEvidenceSourceIds.length === 0) {
+        pushIssue(
+          errors,
+          `Item ${item.item_id} sets delivery_state=${item.delivery_state} without authoritative current-truth evidence`,
+          hardFails,
+          true,
+        );
+        itemsMissingDeliveryEvidence.push(item.item_id);
+      }
     }
-    if (!isNonEmptyString(item.readiness_state) || !READINESS_STATES.includes(item.readiness_state)) {
+    if (
+      !isNonEmptyString(item.readiness_state) ||
+      !READINESS_STATES.includes(item.readiness_state)
+    ) {
       pushIssue(errors, `Item ${item.item_id} has invalid readiness_state`, hardFails, true);
     }
-    if (!isNonEmptyString(item.closure_state) || !ITEM_CLOSURE_STATES.includes(item.closure_state)) {
+    if (
+      !isNonEmptyString(item.closure_state) ||
+      !ITEM_CLOSURE_STATES.includes(item.closure_state)
+    ) {
       pushIssue(errors, `Item ${item.item_id} has invalid closure_state`, hardFails, true);
     }
     if (!isNonEmptyString(item.summary_label) || !SUMMARY_LABELS.includes(item.summary_label)) {
       pushIssue(errors, `Item ${item.item_id} has invalid summary_label`, hardFails, true);
     }
-    if (item.rollout_mode !== undefined || item.rollback_class !== undefined || isNonEmptyString(item.n_a_justification)) {
+    if (
+      item.rollout_mode !== undefined ||
+      item.rollback_class !== undefined ||
+      isNonEmptyString(item.n_a_justification)
+    ) {
       pushIssue(
         errors,
         `Item ${item.item_id} uses obsolete pre-GA N/A fields; use rollout/recovery applicability plus explicit justification`,
@@ -2958,7 +3514,11 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       }
     }
 
-    if (!item.owners || !isNonEmptyString(item.owners.decision_owner) || !isNonEmptyString(item.owners.delivery_owner)) {
+    if (
+      !item.owners ||
+      !isNonEmptyString(item.owners.decision_owner) ||
+      !isNonEmptyString(item.owners.delivery_owner)
+    ) {
       const message = `Item ${item.item_id} is missing required owners`;
       pushIssue(errors, message, hardFails, true);
       missingOwners.push(item.item_id);
@@ -2968,7 +3528,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       pushIssue(errors, `Item ${item.item_id} must include dependency_refs[]`, hardFails, true);
     }
     if (!Array.isArray(item.proof_refs) || item.proof_refs.length === 0) {
-      pushIssue(errors, `Item ${item.item_id} must include non-empty proof_refs[]`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} must include non-empty proof_refs[]`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(item.evidence_freshness_sla)) {
       pushIssue(errors, `Item ${item.item_id} missing evidence_freshness_sla`, hardFails, true);
@@ -2987,7 +3552,9 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       pushIssue(errors, `Item ${item.item_id} must declare adr_refs`, hardFails, true);
     }
 
-    const policyDecisionRefs = Array.isArray(item.policy_decision_refs) ? item.policy_decision_refs : [];
+    const policyDecisionRefs = Array.isArray(item.policy_decision_refs)
+      ? item.policy_decision_refs
+      : [];
     if (item.policy_decision_refs !== undefined) {
       if (
         item.policy_decision_refs.length === 0 ||
@@ -2996,17 +3563,30 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         pushIssue(errors, `Item ${item.item_id} has invalid policy_decision_refs`, hardFails, true);
       }
       if (new Set(policyDecisionRefs).size !== policyDecisionRefs.length) {
-        pushIssue(errors, `Item ${item.item_id} has duplicate policy_decision_refs`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} has duplicate policy_decision_refs`,
+          hardFails,
+          true,
+        );
       }
     }
 
     const actorRoleSet = Array.isArray(item.actor_role_set) ? item.actor_role_set : [];
     if (item.actor_role_set !== undefined) {
-      if (item.actor_role_set.length === 0 || item.actor_role_set.some((actorRole) => !isNonEmptyString(actorRole))) {
+      if (
+        item.actor_role_set.length === 0 ||
+        item.actor_role_set.some((actorRole) => !isNonEmptyString(actorRole))
+      ) {
         pushIssue(errors, `Item ${item.item_id} has invalid actor_role_set`, hardFails, true);
       }
       if (new Set(actorRoleSet).size !== actorRoleSet.length) {
-        pushIssue(errors, `Item ${item.item_id} has duplicate actor_role_set entries`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} has duplicate actor_role_set entries`,
+          hardFails,
+          true,
+        );
       }
     }
     if (ITEM_CLASSES_REQUIRING_ACTOR_ROLE_SET.has(item.item_class) && actorRoleSet.length === 0) {
@@ -3090,43 +3670,99 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
 
     if (item.item_class === 'feature_slice') {
       if (!isNonEmptyString(getPlanningString(item, 'external_lead_time_risk'))) {
-        pushIssue(errors, `Feature slice ${item.item_id} missing external_lead_time_risk`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} missing external_lead_time_risk`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(getPlanningString(item, 'staffing_skill_constraints'))) {
-        pushIssue(errors, `Feature slice ${item.item_id} missing staffing_skill_constraints`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} missing staffing_skill_constraints`,
+          hardFails,
+          true,
+        );
       }
       if (getPlanningBoolean(item, 'blocked_by_decision_status') === null) {
-        pushIssue(errors, `Feature slice ${item.item_id} missing blocked_by_decision_status`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} missing blocked_by_decision_status`,
+          hardFails,
+          true,
+        );
       }
       const dominantUncertainty = getPlanningString(item, 'dominant_uncertainty_class');
       if (
         !isNonEmptyString(dominantUncertainty) ||
         !UNCERTAINTY_CLASSES.includes(dominantUncertainty as (typeof UNCERTAINTY_CLASSES)[number])
       ) {
-        pushIssue(errors, `Feature slice ${item.item_id} missing valid dominant_uncertainty_class`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} missing valid dominant_uncertainty_class`,
+          hardFails,
+          true,
+        );
       }
       const dominantRollbackClass = getPlanningString(item, 'dominant_rollback_class');
-      if (!isNonEmptyString(dominantRollbackClass) || !ROLLBACK_CLASSES.includes(dominantRollbackClass as (typeof ROLLBACK_CLASSES)[number])) {
-        pushIssue(errors, `Feature slice ${item.item_id} missing valid dominant_rollback_class`, hardFails, true);
+      if (
+        !isNonEmptyString(dominantRollbackClass) ||
+        !ROLLBACK_CLASSES.includes(dominantRollbackClass as (typeof ROLLBACK_CLASSES)[number])
+      ) {
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} missing valid dominant_rollback_class`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(getPlanningString(item, 'blast_radius_note'))) {
-        pushIssue(errors, `Feature slice ${item.item_id} missing blast_radius_note`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} missing blast_radius_note`,
+          hardFails,
+          true,
+        );
       }
       if (getPlanningBoolean(item, 'unresolved_questions_below_threshold') !== true) {
-        pushIssue(errors, `Feature slice ${item.item_id} must declare unresolved_questions_below_threshold=true`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} must declare unresolved_questions_below_threshold=true`,
+          hardFails,
+          true,
+        );
       }
-      if (!isNonEmptyString(sliceValueKind) || !['user_value', 'risk_retirement', 'control_closure'].includes(String(sliceValueKind))) {
-        pushIssue(errors, `Feature slice ${item.item_id} must declare a valid slice_value_kind`, hardFails, true);
+      if (
+        !isNonEmptyString(sliceValueKind) ||
+        !['user_value', 'risk_retirement', 'control_closure'].includes(String(sliceValueKind))
+      ) {
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} must declare a valid slice_value_kind`,
+          hardFails,
+          true,
+        );
       }
       if (hasGenericSliceTitle(item.title)) {
-        pushIssue(errors, `Feature slice ${item.item_id} uses an invalid generic horizontal title`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} uses an invalid generic horizontal title`,
+          hardFails,
+          true,
+        );
       }
       if (
         asArray(item.interfaces_touched).length === 0 &&
         asArray(item.data_domains_touched).length === 0 &&
         asArray(item.change_surfaces).length === 0
       ) {
-        pushIssue(errors, `Feature slice ${item.item_id} must describe bounded contract, data, or surface impact`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${item.item_id} must describe bounded contract, data, or surface impact`,
+          hardFails,
+          true,
+        );
       }
     }
 
@@ -3134,7 +3770,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     const allowedReadinessExemptions = READINESS_EXEMPTIONS_BY_CLASS[item.item_class];
     for (const exemptionKey of Object.keys(getContractExemptions(readinessContract))) {
       if (!allowedReadinessExemptions.has(exemptionKey)) {
-        pushIssue(errors, `Item ${item.item_id} has invalid readiness exemption ${exemptionKey}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} has invalid readiness exemption ${exemptionKey}`,
+          hardFails,
+          true,
+        );
       }
     }
     if (item.readiness_state === 'ready') {
@@ -3161,29 +3802,59 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
           allowedReadinessExemptions,
         );
         if (!readinessState.satisfied) {
-          pushIssue(errors, `Ready item ${item.item_id} must satisfy readiness_contract.${readinessKey}`, hardFails, true);
+          pushIssue(
+            errors,
+            `Ready item ${item.item_id} must satisfy readiness_contract.${readinessKey}`,
+            hardFails,
+            true,
+          );
         }
       }
     }
 
     for (const dataDomainId of asArray(item.data_domains_touched)) {
       if (!dataDomainIds.has(dataDomainId)) {
-        pushIssue(errors, `Item ${item.item_id} references unknown data domain ${dataDomainId}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} references unknown data domain ${dataDomainId}`,
+          hardFails,
+          true,
+        );
       }
     }
 
     if (itemTouchesTrustBoundary(item)) {
       if (asArray(item.trust_boundaries_crossed).length === 0) {
-        pushIssue(errors, `Item ${item.item_id} must declare trust_boundaries_crossed`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} must declare trust_boundaries_crossed`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(item.data_class)) {
-        pushIssue(errors, `Item ${item.item_id} must declare data_class for trust-boundary work`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} must declare data_class for trust-boundary work`,
+          hardFails,
+          true,
+        );
       }
       if (asArray(item.data_domains_touched).length === 0) {
-        pushIssue(errors, `Item ${item.item_id} must map trust-boundary work to data_domains_touched`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} must map trust-boundary work to data_domains_touched`,
+          hardFails,
+          true,
+        );
       }
       if (!item.owners || asArray(item.owners.consulted_teams).length === 0) {
-        pushIssue(errors, `Item ${item.item_id} must declare consulted security/data ownership teams`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} must declare consulted security/data ownership teams`,
+          hardFails,
+          true,
+        );
       }
     }
 
@@ -3263,7 +3934,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         hardFails,
       );
       if (!('bypass_governance' in observabilityContract)) {
-        pushIssue(errors, `Item ${item.item_id} observability_contract must declare bypass_governance`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} observability_contract must declare bypass_governance`,
+          hardFails,
+          true,
+        );
       }
     }
 
@@ -3272,14 +3948,36 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       const rolloutApplicability = getRolloutApplicability(item);
       const rolloutMode = getRolloutMode(item);
       if (!['required', 'not_applicable'].includes(rolloutApplicability)) {
-        pushIssue(errors, `Item ${item.item_id} has invalid rollout applicability`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} has invalid rollout applicability`,
+          hardFails,
+          true,
+        );
       } else if (rolloutApplicability === 'required') {
-        if (!isNonEmptyString(rolloutMode) || !ROLLOUT_MODES.includes(rolloutMode as (typeof ROLLOUT_MODES)[number])) {
-          pushIssue(errors, `Item ${item.item_id} is missing a valid rollout mode`, hardFails, true);
+        if (
+          !isNonEmptyString(rolloutMode) ||
+          !ROLLOUT_MODES.includes(rolloutMode as (typeof ROLLOUT_MODES)[number])
+        ) {
+          pushIssue(
+            errors,
+            `Item ${item.item_id} is missing a valid rollout mode`,
+            hardFails,
+            true,
+          );
         }
       } else if (!isNonEmptyString(getRolloutJustification(item))) {
-        pushIssue(errors, `Item ${item.item_id} uses not_applicable rollout without justification`, hardFails, true);
-      } else if (!['spike_discovery', 'operational_enablement', 'documentation_support_enablement'].includes(item.item_class)) {
+        pushIssue(
+          errors,
+          `Item ${item.item_id} uses not_applicable rollout without justification`,
+          hardFails,
+          true,
+        );
+      } else if (
+        !['spike_discovery', 'operational_enablement', 'documentation_support_enablement'].includes(
+          item.item_class,
+        )
+      ) {
         pushIssue(
           errors,
           `Item ${item.item_id} may not mark rollout as not_applicable for class ${item.item_class}`,
@@ -3291,10 +3989,13 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         ? rolloutRecord.temporary_controls
         : [];
       if (
-        (isNonEmptyString(rolloutRecord.feature_flag) || isNonEmptyString(rolloutRecord.kill_switch)) &&
+        (isNonEmptyString(rolloutRecord.feature_flag) ||
+          isNonEmptyString(rolloutRecord.kill_switch)) &&
         temporaryControls.length === 0
       ) {
-        lintFindings.push(`Item ${item.item_id} defines feature flag or kill switch without retirement control metadata.`);
+        lintFindings.push(
+          `Item ${item.item_id} defines feature flag or kill switch without retirement control metadata.`,
+        );
       }
       for (const entry of temporaryControls) {
         const temporaryControl = asStringRecord(entry);
@@ -3316,14 +4017,36 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       const recoveryApplicability = getRecoveryApplicability(item);
       const recoveryClass = getRecoveryClass(item);
       if (!['required', 'not_applicable'].includes(recoveryApplicability)) {
-        pushIssue(errors, `Item ${item.item_id} has invalid recovery applicability`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} has invalid recovery applicability`,
+          hardFails,
+          true,
+        );
       } else if (recoveryApplicability === 'required') {
-        if (!isNonEmptyString(recoveryClass) || !ROLLBACK_CLASSES.includes(recoveryClass as (typeof ROLLBACK_CLASSES)[number])) {
-          pushIssue(errors, `Item ${item.item_id} is missing a valid recovery class`, hardFails, true);
+        if (
+          !isNonEmptyString(recoveryClass) ||
+          !ROLLBACK_CLASSES.includes(recoveryClass as (typeof ROLLBACK_CLASSES)[number])
+        ) {
+          pushIssue(
+            errors,
+            `Item ${item.item_id} is missing a valid recovery class`,
+            hardFails,
+            true,
+          );
         }
       } else if (!isNonEmptyString(getRecoveryJustification(item))) {
-        pushIssue(errors, `Item ${item.item_id} uses not_applicable recovery without justification`, hardFails, true);
-      } else if (!['spike_discovery', 'operational_enablement', 'documentation_support_enablement'].includes(item.item_class)) {
+        pushIssue(
+          errors,
+          `Item ${item.item_id} uses not_applicable recovery without justification`,
+          hardFails,
+          true,
+        );
+      } else if (
+        !['spike_discovery', 'operational_enablement', 'documentation_support_enablement'].includes(
+          item.item_class,
+        )
+      ) {
         pushIssue(
           errors,
           `Item ${item.item_id} may not mark recovery as not_applicable for class ${item.item_class}`,
@@ -3345,53 +4068,124 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     switch (item.item_class) {
       case 'capability_seam':
         if (!isNonEmptyString(getPayloadString(item, 'capability_added', item.capability_added))) {
-          pushIssue(errors, `Capability seam ${item.item_id} missing capability_added`, hardFails, true);
+          pushIssue(
+            errors,
+            `Capability seam ${item.item_id} missing capability_added`,
+            hardFails,
+            true,
+          );
         }
-        if (getPayloadStringArray(item, 'owner_surfaces', asArray(item.owner_surfaces)).length === 0) {
-          pushIssue(errors, `Capability seam ${item.item_id} missing owner_surfaces`, hardFails, true);
+        if (
+          getPayloadStringArray(item, 'owner_surfaces', asArray(item.owner_surfaces)).length === 0
+        ) {
+          pushIssue(
+            errors,
+            `Capability seam ${item.item_id} missing owner_surfaces`,
+            hardFails,
+            true,
+          );
         }
-        if (!isNonEmptyString(getPayloadString(item, 'real_closure_definition', item.real_closure_definition))) {
-          pushIssue(errors, `Capability seam ${item.item_id} missing real_closure_definition`, hardFails, true);
+        if (
+          !isNonEmptyString(
+            getPayloadString(item, 'real_closure_definition', item.real_closure_definition),
+          )
+        ) {
+          pushIssue(
+            errors,
+            `Capability seam ${item.item_id} missing real_closure_definition`,
+            hardFails,
+            true,
+          );
         }
         break;
       case 'feature_slice':
-        if (!isGraphRef(getPayloadGraphRef(item, 'parent_seam_ref', 'item')) && !isNonEmptyString(item.parent_seam_id)) {
-          pushIssue(errors, `Feature slice ${item.item_id} missing parent_seam_id`, hardFails, true);
+        if (
+          !isGraphRef(getPayloadGraphRef(item, 'parent_seam_ref', 'item')) &&
+          !isNonEmptyString(item.parent_seam_id)
+        ) {
+          pushIssue(
+            errors,
+            `Feature slice ${item.item_id} missing parent_seam_id`,
+            hardFails,
+            true,
+          );
         }
-        if (!isNonEmptyString(getValueRecord(item).persona_or_operator_served) && !isNonEmptyString(item.persona)) {
+        if (
+          !isNonEmptyString(getValueRecord(item).persona_or_operator_served) &&
+          !isNonEmptyString(item.persona)
+        ) {
           pushIssue(errors, `Feature slice ${item.item_id} missing persona`, hardFails, true);
         }
         if (!isNonEmptyString(getValueRecord(item).product_or_operator_value)) {
-          pushIssue(errors, `Feature slice ${item.item_id} missing product_or_operator_value`, hardFails, true);
+          pushIssue(
+            errors,
+            `Feature slice ${item.item_id} missing product_or_operator_value`,
+            hardFails,
+            true,
+          );
         }
         if (!isNonEmptyString(getValueRecord(item).why_now) && !isNonEmptyString(item.why_now)) {
           pushIssue(errors, `Feature slice ${item.item_id} missing why_now`, hardFails, true);
         }
-        if (getPayloadStringArray(item, 'acceptance_examples', asArray(item.acceptance_examples)).length === 0) {
-          pushIssue(errors, `Feature slice ${item.item_id} missing acceptance_examples`, hardFails, true);
+        if (
+          getPayloadStringArray(item, 'acceptance_examples', asArray(item.acceptance_examples))
+            .length === 0
+        ) {
+          pushIssue(
+            errors,
+            `Feature slice ${item.item_id} missing acceptance_examples`,
+            hardFails,
+            true,
+          );
         }
         break;
       case 'control_guardrail':
-        if (!isNonEmptyString(getPayloadString(item, 'control_objective', item.control_objective))) {
-          pushIssue(errors, `Control guardrail ${item.item_id} missing control_objective`, hardFails, true);
+        if (
+          !isNonEmptyString(getPayloadString(item, 'control_objective', item.control_objective))
+        ) {
+          pushIssue(
+            errors,
+            `Control guardrail ${item.item_id} missing control_objective`,
+            hardFails,
+            true,
+          );
         }
-        if (!isNonEmptyString(getPayloadString(item, 'enforcing_surface', item.enforcing_surface))) {
-          pushIssue(errors, `Control guardrail ${item.item_id} missing enforcing_surface`, hardFails, true);
+        if (
+          !isNonEmptyString(getPayloadString(item, 'enforcing_surface', item.enforcing_surface))
+        ) {
+          pushIssue(
+            errors,
+            `Control guardrail ${item.item_id} missing enforcing_surface`,
+            hardFails,
+            true,
+          );
         }
         if (!isNonEmptyString(getPayloadString(item, 'fail_mode', item.fail_mode))) {
           pushIssue(errors, `Control guardrail ${item.item_id} missing fail_mode`, hardFails, true);
         }
-        if (validateStringArrayField(
-          getObservabilityContract(item),
-          'monitoring_evidence_refs',
-          `Control guardrail ${item.item_id} observability_contract`,
-          errors,
-          hardFails,
-        ).length === 0) {
-          pushIssue(errors, `Control guardrail ${item.item_id} missing monitoring_evidence_refs`, hardFails, true);
+        if (
+          validateStringArrayField(
+            getObservabilityContract(item),
+            'monitoring_evidence_refs',
+            `Control guardrail ${item.item_id} observability_contract`,
+            errors,
+            hardFails,
+          ).length === 0
+        ) {
+          pushIssue(
+            errors,
+            `Control guardrail ${item.item_id} missing monitoring_evidence_refs`,
+            hardFails,
+            true,
+          );
         }
         if (!('bypass_governance' in getObservabilityContract(item))) {
-          pushIssue(errors, `Control guardrail ${item.item_id} missing bypass_governance`, hardFails, true);
+          pushIssue(
+            errors,
+            `Control guardrail ${item.item_id} missing bypass_governance`,
+            hardFails,
+            true,
+          );
         }
         break;
       case 'migration': {
@@ -3403,41 +4197,91 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         }
         const compatibilityClass = getContractGovernance(item).compatibility_class;
         if (
-          (!isNonEmptyString(compatibilityClass) || !COMPATIBILITY_CLASSES.includes(compatibilityClass as (typeof COMPATIBILITY_CLASSES)[number])) &&
-          (!isNonEmptyString(item.compatibility_class) || !COMPATIBILITY_CLASSES.includes(item.compatibility_class))
+          (!isNonEmptyString(compatibilityClass) ||
+            !COMPATIBILITY_CLASSES.includes(
+              compatibilityClass as (typeof COMPATIBILITY_CLASSES)[number],
+            )) &&
+          (!isNonEmptyString(item.compatibility_class) ||
+            !COMPATIBILITY_CLASSES.includes(item.compatibility_class))
         ) {
-          pushIssue(errors, `Migration ${item.item_id} missing compatibility_class`, hardFails, true);
+          pushIssue(
+            errors,
+            `Migration ${item.item_id} missing compatibility_class`,
+            hardFails,
+            true,
+          );
         }
         const migrationStrategy = getContractGovernance(item).migration_strategy;
         const canonicalWriter = getContractGovernance(item).canonical_writer;
         if (!isNonEmptyString(migrationStrategy) && !isNonEmptyString(item.migration_strategy)) {
-          pushIssue(errors, `Migration ${item.item_id} missing migration_strategy`, hardFails, true);
+          pushIssue(
+            errors,
+            `Migration ${item.item_id} missing migration_strategy`,
+            hardFails,
+            true,
+          );
         }
         if (!isNonEmptyString(canonicalWriter) && !isNonEmptyString(item.canonical_writer)) {
           pushIssue(errors, `Migration ${item.item_id} missing canonical_writer`, hardFails, true);
         }
-        if (!isNonEmptyString(getPayloadString(item, 'stop_go_checkpoint', item.stop_go_checkpoint))) {
-          pushIssue(errors, `Migration ${item.item_id} missing stop_go_checkpoint`, hardFails, true);
+        if (
+          !isNonEmptyString(getPayloadString(item, 'stop_go_checkpoint', item.stop_go_checkpoint))
+        ) {
+          pushIssue(
+            errors,
+            `Migration ${item.item_id} missing stop_go_checkpoint`,
+            hardFails,
+            true,
+          );
         }
-        if (getPayloadStringArray(item, 'cleanup_scope', asArray(item.cleanup_scope)).length === 0) {
+        if (
+          getPayloadStringArray(item, 'cleanup_scope', asArray(item.cleanup_scope)).length === 0
+        ) {
           pushIssue(errors, `Migration ${item.item_id} missing cleanup_scope`, hardFails, true);
         }
         break;
       }
       case 'retirement': {
-        if (!isGraphRef(getPayloadGraphRef(item, 'replaces_or_retires_ref', 'item')) && !isNonEmptyString(item.replaces_or_retires_ref)) {
-          pushIssue(errors, `Retirement ${item.item_id} missing replaces_or_retires_ref`, hardFails, true);
+        if (
+          !isGraphRef(getPayloadGraphRef(item, 'replaces_or_retires_ref', 'item')) &&
+          !isNonEmptyString(item.replaces_or_retires_ref)
+        ) {
+          pushIssue(
+            errors,
+            `Retirement ${item.item_id} missing replaces_or_retires_ref`,
+            hardFails,
+            true,
+          );
         }
-        if (!isNonEmptyString(getPayloadString(item, 'retirement_trigger', item.retirement_trigger))) {
-          pushIssue(errors, `Retirement ${item.item_id} missing retirement_trigger`, hardFails, true);
+        if (
+          !isNonEmptyString(getPayloadString(item, 'retirement_trigger', item.retirement_trigger))
+        ) {
+          pushIssue(
+            errors,
+            `Retirement ${item.item_id} missing retirement_trigger`,
+            hardFails,
+            true,
+          );
         }
-        if (getPayloadStringArray(item, 'legacy_assets', asArray(item.legacy_assets)).length === 0) {
+        if (
+          getPayloadStringArray(item, 'legacy_assets', asArray(item.legacy_assets)).length === 0
+        ) {
           pushIssue(errors, `Retirement ${item.item_id} missing legacy_assets`, hardFails, true);
         }
-        if (getPayloadStringArray(item, 'dependent_consumers', asArray(item.dependent_consumers)).length === 0) {
-          pushIssue(errors, `Retirement ${item.item_id} missing dependent_consumers`, hardFails, true);
+        if (
+          getPayloadStringArray(item, 'dependent_consumers', asArray(item.dependent_consumers))
+            .length === 0
+        ) {
+          pushIssue(
+            errors,
+            `Retirement ${item.item_id} missing dependent_consumers`,
+            hardFails,
+            true,
+          );
         }
-        const cleanupScope = new Set(getPayloadStringArray(item, 'cleanup_scope', asArray(item.cleanup_scope)));
+        const cleanupScope = new Set(
+          getPayloadStringArray(item, 'cleanup_scope', asArray(item.cleanup_scope)),
+        );
         for (const requiredCleanupTarget of REQUIRED_RETIREMENT_CLEANUP_SCOPE) {
           if (!cleanupScope.has(requiredCleanupTarget)) {
             pushIssue(
@@ -3451,16 +4295,22 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         break;
       }
       case 'spike_discovery': {
-        if (!isNonEmptyString(getPayloadString(item, 'uncertainty_class', item.uncertainty_class))) {
+        if (
+          !isNonEmptyString(getPayloadString(item, 'uncertainty_class', item.uncertainty_class))
+        ) {
           pushIssue(errors, `Spike ${item.item_id} missing uncertainty_class`, hardFails, true);
         }
         if (!isNonEmptyString(getPayloadString(item, 'question', item.question))) {
           pushIssue(errors, `Spike ${item.item_id} missing question`, hardFails, true);
         }
-        if (!isNonEmptyString(getPayloadString(item, 'validation_method', item.validation_method))) {
+        if (
+          !isNonEmptyString(getPayloadString(item, 'validation_method', item.validation_method))
+        ) {
           pushIssue(errors, `Spike ${item.item_id} missing validation_method`, hardFails, true);
         }
-        if (!isNonEmptyString(getPayloadString(item, 'expected_artifact', item.expected_artifact))) {
+        if (
+          !isNonEmptyString(getPayloadString(item, 'expected_artifact', item.expected_artifact))
+        ) {
           pushIssue(errors, `Spike ${item.item_id} missing expected_artifact`, hardFails, true);
         }
         if (!isNonEmptyString(getPayloadString(item, 'max_duration', item.max_duration))) {
@@ -3472,7 +4322,10 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         if (!isNonEmptyString(getPayloadString(item, 'kill_criteria', item.kill_criteria))) {
           pushIssue(errors, `Spike ${item.item_id} missing kill_criteria`, hardFails, true);
         }
-        if (getPayloadStringArray(item, 'follow_on_item_refs', asArray(item.follow_on_item_refs)).length === 0) {
+        if (
+          getPayloadStringArray(item, 'follow_on_item_refs', asArray(item.follow_on_item_refs))
+            .length === 0
+        ) {
           pushIssue(errors, `Spike ${item.item_id} missing follow_on_item_refs`, hardFails, true);
         }
         for (const doneCheck of [
@@ -3491,54 +4344,147 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
           }
         }
         if (getDoneContractClassCheck(item, 'follow_on_items_linked') !== true) {
-          pushIssue(errors, `Spike ${item.item_id} must machine-check follow_on_items_linked`, hardFails, true);
+          pushIssue(
+            errors,
+            `Spike ${item.item_id} must machine-check follow_on_items_linked`,
+            hardFails,
+            true,
+          );
         }
         if (getDoneContractClassCheck(item, 'silent_continuation_blocked') !== true) {
-          pushIssue(errors, `Spike ${item.item_id} must machine-check silent_continuation_blocked`, hardFails, true);
+          pushIssue(
+            errors,
+            `Spike ${item.item_id} must machine-check silent_continuation_blocked`,
+            hardFails,
+            true,
+          );
         }
-        const spikeOutcome = getPayloadString(item, 'spike_outcome', isNonEmptyString(item.spike_outcome) ? item.spike_outcome : undefined);
+        const spikeOutcome = getPayloadString(
+          item,
+          'spike_outcome',
+          isNonEmptyString(item.spike_outcome) ? item.spike_outcome : undefined,
+        );
         if (
           item.closure_state === 'closed' ||
           (isNonEmptyString(spikeOutcome) && spikeOutcome !== 'pending')
         ) {
           if (getDoneContractClassCheck(item, 'promised_artifact_exists') !== true) {
-            pushIssue(errors, `Closed spike ${item.item_id} must machine-check promised_artifact_exists`, hardFails, true);
+            pushIssue(
+              errors,
+              `Closed spike ${item.item_id} must machine-check promised_artifact_exists`,
+              hardFails,
+              true,
+            );
           }
           if (getDoneContractClassCheck(item, 'outcome_recorded') !== true) {
-            pushIssue(errors, `Closed spike ${item.item_id} must machine-check outcome_recorded`, hardFails, true);
+            pushIssue(
+              errors,
+              `Closed spike ${item.item_id} must machine-check outcome_recorded`,
+              hardFails,
+              true,
+            );
           }
         }
         break;
       }
       case 'operational_enablement':
-        if (!isNonEmptyString(getPayloadString(item, 'runbook_or_enablement_artifact', item.runbook_or_enablement_artifact))) {
-          pushIssue(errors, `Operational enablement ${item.item_id} missing runbook_or_enablement_artifact`, hardFails, true);
+        if (
+          !isNonEmptyString(
+            getPayloadString(
+              item,
+              'runbook_or_enablement_artifact',
+              item.runbook_or_enablement_artifact,
+            ),
+          )
+        ) {
+          pushIssue(
+            errors,
+            `Operational enablement ${item.item_id} missing runbook_or_enablement_artifact`,
+            hardFails,
+            true,
+          );
         }
-        if (!isNonEmptyString(getPayloadString(item, 'operational_audience', item.operational_audience))) {
-          pushIssue(errors, `Operational enablement ${item.item_id} missing operational_audience`, hardFails, true);
+        if (
+          !isNonEmptyString(
+            getPayloadString(item, 'operational_audience', item.operational_audience),
+          )
+        ) {
+          pushIssue(
+            errors,
+            `Operational enablement ${item.item_id} missing operational_audience`,
+            hardFails,
+            true,
+          );
         }
-        if (!item.owners || !isNonEmptyString(item.owners.runtime_owner) || !isNonEmptyString(item.owners.escalation_owner)) {
-          pushIssue(errors, `Operational enablement ${item.item_id} missing runtime_owner or escalation_owner`, hardFails, true);
+        if (
+          !item.owners ||
+          !isNonEmptyString(item.owners.runtime_owner) ||
+          !isNonEmptyString(item.owners.escalation_owner)
+        ) {
+          pushIssue(
+            errors,
+            `Operational enablement ${item.item_id} missing runtime_owner or escalation_owner`,
+            hardFails,
+            true,
+          );
         }
         break;
       case 'documentation_support_enablement':
         if (!isNonEmptyString(getPayloadString(item, 'doc_audience', item.doc_audience))) {
-          pushIssue(errors, `Documentation/support enablement ${item.item_id} missing doc_audience`, hardFails, true);
+          pushIssue(
+            errors,
+            `Documentation/support enablement ${item.item_id} missing doc_audience`,
+            hardFails,
+            true,
+          );
         }
         if (!isNonEmptyString(getPayloadString(item, 'doc_scope', item.doc_scope))) {
-          pushIssue(errors, `Documentation/support enablement ${item.item_id} missing doc_scope`, hardFails, true);
+          pushIssue(
+            errors,
+            `Documentation/support enablement ${item.item_id} missing doc_scope`,
+            hardFails,
+            true,
+          );
         }
-        if (!isNonEmptyString(getPayloadString(item, 'source_of_truth_artifact', item.source_of_truth_artifact))) {
-          pushIssue(errors, `Documentation/support enablement ${item.item_id} missing source_of_truth_artifact`, hardFails, true);
+        if (
+          !isNonEmptyString(
+            getPayloadString(item, 'source_of_truth_artifact', item.source_of_truth_artifact),
+          )
+        ) {
+          pushIssue(
+            errors,
+            `Documentation/support enablement ${item.item_id} missing source_of_truth_artifact`,
+            hardFails,
+            true,
+          );
         }
-        if (!isNonEmptyString(getPayloadString(item, 'freshness_update_trigger', item.freshness_update_trigger))) {
-          pushIssue(errors, `Documentation/support enablement ${item.item_id} missing freshness_update_trigger`, hardFails, true);
+        if (
+          !isNonEmptyString(
+            getPayloadString(item, 'freshness_update_trigger', item.freshness_update_trigger),
+          )
+        ) {
+          pushIssue(
+            errors,
+            `Documentation/support enablement ${item.item_id} missing freshness_update_trigger`,
+            hardFails,
+            true,
+          );
         }
         if (!isNonEmptyString(getPayloadString(item, 'freshness_update_owner'))) {
-          pushIssue(errors, `Documentation/support enablement ${item.item_id} missing freshness_update_owner`, hardFails, true);
+          pushIssue(
+            errors,
+            `Documentation/support enablement ${item.item_id} missing freshness_update_owner`,
+            hardFails,
+            true,
+          );
         }
         if (!isNonEmptyString(getPayloadString(item, 'support_handoff_artifact'))) {
-          pushIssue(errors, `Documentation/support enablement ${item.item_id} missing support_handoff_artifact`, hardFails, true);
+          pushIssue(
+            errors,
+            `Documentation/support enablement ${item.item_id} missing support_handoff_artifact`,
+            hardFails,
+            true,
+          );
         }
         break;
     }
@@ -3547,7 +4493,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     const allowedDoneExemptions = DONE_EXEMPTIONS_BY_CLASS[item.item_class];
     for (const exemptionKey of Object.keys(getContractExemptions(doneContract))) {
       if (!allowedDoneExemptions.has(exemptionKey)) {
-        pushIssue(errors, `Item ${item.item_id} has invalid done exemption ${exemptionKey}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} has invalid done exemption ${exemptionKey}`,
+          hardFails,
+          true,
+        );
       }
     }
     if (item.closure_state === 'closed') {
@@ -3563,7 +4514,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       ]) {
         const doneState = contractCheckSatisfied(doneContract, doneKey, allowedDoneExemptions);
         if (!doneState.satisfied) {
-          pushIssue(errors, `Closed item ${item.item_id} must satisfy done_contract.${doneKey}`, hardFails, true);
+          pushIssue(
+            errors,
+            `Closed item ${item.item_id} must satisfy done_contract.${doneKey}`,
+            hardFails,
+            true,
+          );
         }
       }
 
@@ -3575,23 +4531,43 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             'rollout_and_recovery_rehearsed',
           ]) {
             if (getDoneContractClassCheck(item, check) !== true) {
-              pushIssue(errors, `Closed feature slice ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`, hardFails, true);
+              pushIssue(
+                errors,
+                `Closed feature slice ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`,
+                hardFails,
+                true,
+              );
             }
           }
           if (asArray(item.acceptance_examples).length === 0) {
-            pushIssue(errors, `Closed feature slice ${item.item_id} must retain acceptance_examples`, hardFails, true);
+            pushIssue(
+              errors,
+              `Closed feature slice ${item.item_id} must retain acceptance_examples`,
+              hardFails,
+              true,
+            );
           }
           if (asArray(item.proof_refs).some((proofRef) => staleProofs.has(proofRef))) {
-            pushIssue(errors, `Closed feature slice ${item.item_id} has stale proof evidence`, hardFails, true);
+            pushIssue(
+              errors,
+              `Closed feature slice ${item.item_id} has stale proof evidence`,
+              hardFails,
+              true,
+            );
           }
           const recovery = asStringRecord(item.recovery);
           const rehearsalProofRefs = Array.isArray(recovery.rehearsal_proof_refs)
-            ? recovery.rehearsal_proof_refs.filter(
-                (proofRef): proofRef is string => isNonEmptyString(proofRef),
+            ? recovery.rehearsal_proof_refs.filter((proofRef): proofRef is string =>
+                isNonEmptyString(proofRef),
               )
             : [];
           if (rehearsalProofRefs.length === 0) {
-            pushIssue(errors, `Closed feature slice ${item.item_id} must evidence rehearsal via recovery.rehearsal_proof_refs`, hardFails, true);
+            pushIssue(
+              errors,
+              `Closed feature slice ${item.item_id} must evidence rehearsal via recovery.rehearsal_proof_refs`,
+              hardFails,
+              true,
+            );
           }
           break;
         }
@@ -3603,7 +4579,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             'rollback_forward_fix_decision_evidenced',
           ]) {
             if (getDoneContractClassCheck(item, check) !== true) {
-              pushIssue(errors, `Closed migration ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`, hardFails, true);
+              pushIssue(
+                errors,
+                `Closed migration ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`,
+                hardFails,
+                true,
+              );
             }
           }
           break;
@@ -3615,7 +4596,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             'cleanup_proof_exists',
           ]) {
             if (getDoneContractClassCheck(item, check) !== true) {
-              pushIssue(errors, `Closed retirement ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`, hardFails, true);
+              pushIssue(
+                errors,
+                `Closed retirement ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`,
+                hardFails,
+                true,
+              );
             }
           }
           break;
@@ -3627,7 +4613,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             'residual_exceptions_recorded',
           ]) {
             if (getDoneContractClassCheck(item, check) !== true) {
-              pushIssue(errors, `Closed control guardrail ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`, hardFails, true);
+              pushIssue(
+                errors,
+                `Closed control guardrail ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`,
+                hardFails,
+                true,
+              );
             }
           }
           break;
@@ -3638,7 +4629,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             'enablement_proof_fresh',
           ]) {
             if (getDoneContractClassCheck(item, check) !== true) {
-              pushIssue(errors, `Closed operational enablement ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`, hardFails, true);
+              pushIssue(
+                errors,
+                `Closed operational enablement ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`,
+                hardFails,
+                true,
+              );
             }
           }
           break;
@@ -3649,7 +4645,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             'handoff_guidance_linked',
           ]) {
             if (getDoneContractClassCheck(item, check) !== true) {
-              pushIssue(errors, `Closed documentation/support enablement ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`, hardFails, true);
+              pushIssue(
+                errors,
+                `Closed documentation/support enablement ${item.item_id} must satisfy done_contract.class_specific_checks.${check}`,
+                hardFails,
+                true,
+              );
             }
           }
           break;
@@ -3662,7 +4663,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         asArray(item.owner_surfaces).length > 0 ||
         isNonEmptyString(item.real_closure_definition))
     ) {
-      pushIssue(errors, `Item ${item.item_id} mixes capability-seam semantics into ${item.item_class}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} mixes capability-seam semantics into ${item.item_class}`,
+        hardFails,
+        true,
+      );
     }
     if (
       item.item_class !== 'feature_slice' &&
@@ -3670,7 +4676,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         asArray(item.acceptance_examples).length > 0 ||
         isNonEmptyString(item.persona))
     ) {
-      pushIssue(errors, `Item ${item.item_id} mixes feature-slice semantics into ${item.item_class}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} mixes feature-slice semantics into ${item.item_class}`,
+        hardFails,
+        true,
+      );
     }
     if (
       item.item_class !== 'control_guardrail' &&
@@ -3678,7 +4689,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         isNonEmptyString(item.enforcing_surface) ||
         isNonEmptyString(item.fail_mode))
     ) {
-      pushIssue(errors, `Item ${item.item_id} mixes control semantics into ${item.item_class}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} mixes control semantics into ${item.item_class}`,
+        hardFails,
+        true,
+      );
     }
     if (
       item.item_class !== 'migration' &&
@@ -3686,7 +4702,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         isNonEmptyString(item.target_state) ||
         isNonEmptyString(item.stop_go_checkpoint))
     ) {
-      pushIssue(errors, `Item ${item.item_id} mixes migration semantics into ${item.item_class}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} mixes migration semantics into ${item.item_class}`,
+        hardFails,
+        true,
+      );
     }
     if (
       item.item_class !== 'retirement' &&
@@ -3695,7 +4716,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         asArray(item.legacy_assets).length > 0 ||
         asArray(item.cleanup_scope).length > 0)
     ) {
-      pushIssue(errors, `Item ${item.item_id} mixes retirement semantics into ${item.item_class}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} mixes retirement semantics into ${item.item_class}`,
+        hardFails,
+        true,
+      );
     }
     if (
       item.item_class !== 'spike_discovery' &&
@@ -3704,13 +4730,24 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         isNonEmptyString(item.expected_artifact) ||
         asArray(item.follow_on_item_refs).length > 0)
     ) {
-      pushIssue(errors, `Item ${item.item_id} mixes spike semantics into ${item.item_class}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} mixes spike semantics into ${item.item_class}`,
+        hardFails,
+        true,
+      );
     }
     if (
       item.item_class !== 'operational_enablement' &&
-      (isNonEmptyString(item.runbook_or_enablement_artifact) || isNonEmptyString(item.operational_audience))
+      (isNonEmptyString(item.runbook_or_enablement_artifact) ||
+        isNonEmptyString(item.operational_audience))
     ) {
-      pushIssue(errors, `Item ${item.item_id} mixes operational-enablement semantics into ${item.item_class}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} mixes operational-enablement semantics into ${item.item_class}`,
+        hardFails,
+        true,
+      );
     }
     if (
       item.item_class !== 'documentation_support_enablement' &&
@@ -3719,7 +4756,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         isNonEmptyString(item.source_of_truth_artifact) ||
         isNonEmptyString(item.freshness_update_trigger))
     ) {
-      pushIssue(errors, `Item ${item.item_id} mixes documentation/support semantics into ${item.item_class}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${item.item_id} mixes documentation/support semantics into ${item.item_class}`,
+        hardFails,
+        true,
+      );
     }
   }
 
@@ -3729,7 +4771,9 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       .filter((item) => item.track_id === externallySafeTrackId && isNonEmptyString(item.item_id))
       .map((item) => item.item_id as string),
   );
-  for (const gate of backlog.track_gates.filter((candidate) => candidate.track_id === externallySafeTrackId)) {
+  for (const gate of backlog.track_gates.filter(
+    (candidate) => candidate.track_id === externallySafeTrackId,
+  )) {
     if (gate.fail_mode !== 'fail_closed') {
       pushIssue(
         errors,
@@ -3766,6 +4810,8 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
 
   const negativeScopeIds = new Set<string>();
   const negativeScopeByTitle = new Map<string, BacklogFile['negative_scope'][number]>();
+  const claimsCoveredByNegativeScope = new Set<string>();
+  const negativeScopeClaimsMissingOutOfScopeCommitment: string[] = [];
   for (const entry of backlog.negative_scope) {
     if (!isNonEmptyString(entry.negative_scope_id)) {
       pushIssue(errors, 'Negative scope entry missing negative_scope_id', hardFails, true);
@@ -3780,8 +4826,16 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     } else {
       negativeScopeByTitle.set(entry.title, entry);
     }
-    if (!isNonEmptyString(entry.negative_scope_class) || !NEGATIVE_SCOPE_CLASSES.includes(entry.negative_scope_class)) {
-      pushIssue(errors, `Negative scope ${entry.negative_scope_id} has invalid negative_scope_class`, hardFails, true);
+    if (
+      !isNonEmptyString(entry.negative_scope_class) ||
+      !NEGATIVE_SCOPE_CLASSES.includes(entry.negative_scope_class)
+    ) {
+      pushIssue(
+        errors,
+        `Negative scope ${entry.negative_scope_id} has invalid negative_scope_class`,
+        hardFails,
+        true,
+      );
     }
     validateSourceRefs(
       entry.source_refs,
@@ -3791,14 +4845,14 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       errors,
       hardFails,
     );
-    validateStringArrayField(
+    requireNonEmptyStringArrayField(
       entry as Record<string, unknown>,
       'owner_implications',
       `Negative scope ${entry.negative_scope_id}`,
       errors,
       hardFails,
     );
-    for (const claimRef of validateStringArrayField(
+    for (const claimRef of requireNonEmptyStringArrayField(
       entry as Record<string, unknown>,
       'related_claim_refs',
       `Negative scope ${entry.negative_scope_id}`,
@@ -3806,7 +4860,24 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       hardFails,
     )) {
       if (!claimIds.has(claimRef)) {
-        pushIssue(errors, `Negative scope ${entry.negative_scope_id} references unknown claim ${claimRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Negative scope ${entry.negative_scope_id} references unknown claim ${claimRef}`,
+          hardFails,
+          true,
+        );
+        continue;
+      }
+      claimsCoveredByNegativeScope.add(claimRef);
+      const relatedClaim = claimById.get(claimRef);
+      if (relatedClaim?.commitment !== 'out_of_scope') {
+        pushIssue(
+          errors,
+          `Negative scope ${entry.negative_scope_id} claim ${claimRef} must set claim.commitment=out_of_scope`,
+          hardFails,
+          true,
+        );
+        negativeScopeClaimsMissingOutOfScopeCommitment.push(claimRef);
       }
     }
     for (const itemRef of validateStringArrayField(
@@ -3817,11 +4888,21 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       hardFails,
     )) {
       if (!itemIds.has(itemRef)) {
-        pushIssue(errors, `Negative scope ${entry.negative_scope_id} references unknown item ${itemRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Negative scope ${entry.negative_scope_id} references unknown item ${itemRef}`,
+          hardFails,
+          true,
+        );
       }
     }
     if (!isNonEmptyString(entry.revisit_trigger)) {
-      pushIssue(errors, `Negative scope ${entry.negative_scope_id} missing revisit_trigger`, hardFails, true);
+      pushIssue(
+        errors,
+        `Negative scope ${entry.negative_scope_id} missing revisit_trigger`,
+        hardFails,
+        true,
+      );
     }
     const criticalPathItemRefs =
       entry.critical_path_item_refs === undefined
@@ -3835,7 +4916,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
           );
     for (const itemRef of criticalPathItemRefs) {
       if (!itemIds.has(itemRef)) {
-        pushIssue(errors, `Negative scope ${entry.negative_scope_id} references unknown critical_path_item ${itemRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Negative scope ${entry.negative_scope_id} references unknown critical_path_item ${itemRef}`,
+          hardFails,
+          true,
+        );
       }
     }
     const ownerSeamItemRefs =
@@ -3850,7 +4936,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
           );
     for (const itemRef of ownerSeamItemRefs) {
       if (!itemIds.has(itemRef)) {
-        pushIssue(errors, `Negative scope ${entry.negative_scope_id} references unknown owner_seam_item ${itemRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Negative scope ${entry.negative_scope_id} references unknown owner_seam_item ${itemRef}`,
+          hardFails,
+          true,
+        );
       }
     }
     if (MANUAL_ONLY_NEGATIVE_SCOPE_CLASSES.has(entry.negative_scope_class ?? '')) {
@@ -3917,6 +5008,19 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
 
+  const outOfScopeClaimsMissingNegativeScope = backlog.claims
+    .filter((claim) => isNonEmptyString(claim.claim_id) && claim.commitment === 'out_of_scope')
+    .map((claim) => claim.claim_id as string)
+    .filter((claimId) => !claimsCoveredByNegativeScope.has(claimId));
+  for (const claimId of outOfScopeClaimsMissingNegativeScope) {
+    pushIssue(
+      errors,
+      `Claim ${claimId} is out_of_scope but has no canonical negative_scope entry`,
+      hardFails,
+      true,
+    );
+  }
+
   for (const behaviorTitle of backlog.as_built.synthetic_behaviors) {
     const entry = negativeScopeByTitle.get(behaviorTitle);
     if (!entry || !MANUAL_ONLY_NEGATIVE_SCOPE_CLASSES.has(entry.negative_scope_class ?? '')) {
@@ -3951,19 +5055,44 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     if (qualityAttributeIds.has(entry.quality_attribute_id)) {
-      pushIssue(errors, `Duplicate quality_attribute_id: ${entry.quality_attribute_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Duplicate quality_attribute_id: ${entry.quality_attribute_id}`,
+        hardFails,
+        true,
+      );
     }
     qualityAttributeIds.add(entry.quality_attribute_id);
     if (!isNonEmptyString(entry.title)) {
-      pushIssue(errors, `Quality attribute ${entry.quality_attribute_id} missing title`, hardFails, true);
+      pushIssue(
+        errors,
+        `Quality attribute ${entry.quality_attribute_id} missing title`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.quality_class)) {
-      pushIssue(errors, `Quality attribute ${entry.quality_attribute_id} missing quality_class`, hardFails, true);
+      pushIssue(
+        errors,
+        `Quality attribute ${entry.quality_attribute_id} missing quality_class`,
+        hardFails,
+        true,
+      );
     } else if (!QUALITY_CLASSES.has(entry.quality_class)) {
-      pushIssue(errors, `Quality attribute ${entry.quality_attribute_id} has unsupported quality_class`, hardFails, true);
+      pushIssue(
+        errors,
+        `Quality attribute ${entry.quality_attribute_id} has unsupported quality_class`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.target)) {
-      pushIssue(errors, `Quality attribute ${entry.quality_attribute_id} missing target`, hardFails, true);
+      pushIssue(
+        errors,
+        `Quality attribute ${entry.quality_attribute_id} missing target`,
+        hardFails,
+        true,
+      );
     }
     validateGraphRefArray(
       entry.applies_to_refs,
@@ -4004,7 +5133,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       hardFails,
     )) {
       if (!proofIds.has(proofRef)) {
-        pushIssue(errors, `Quality attribute ${entry.quality_attribute_id} references unknown proof ${proofRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Quality attribute ${entry.quality_attribute_id} references unknown proof ${proofRef}`,
+          hardFails,
+          true,
+        );
       }
     }
   }
@@ -4020,20 +5154,48 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     if (policyDecisionIds.has(entry.policy_decision_id)) {
-      pushIssue(errors, `Duplicate policy_decision_id: ${entry.policy_decision_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Duplicate policy_decision_id: ${entry.policy_decision_id}`,
+        hardFails,
+        true,
+      );
     }
     policyDecisionIds.add(entry.policy_decision_id);
     if (!isNonEmptyString(entry.title)) {
-      pushIssue(errors, `Policy decision ${entry.policy_decision_id} missing title`, hardFails, true);
+      pushIssue(
+        errors,
+        `Policy decision ${entry.policy_decision_id} missing title`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.policy_surface)) {
-      pushIssue(errors, `Policy decision ${entry.policy_decision_id} missing policy_surface`, hardFails, true);
+      pushIssue(
+        errors,
+        `Policy decision ${entry.policy_decision_id} missing policy_surface`,
+        hardFails,
+        true,
+      );
     }
-    if (!isNonEmptyString(entry.decision_state) || !POLICY_DECISION_STATES.includes(entry.decision_state)) {
-      pushIssue(errors, `Policy decision ${entry.policy_decision_id} has invalid decision_state`, hardFails, true);
+    if (
+      !isNonEmptyString(entry.decision_state) ||
+      !POLICY_DECISION_STATES.includes(entry.decision_state)
+    ) {
+      pushIssue(
+        errors,
+        `Policy decision ${entry.policy_decision_id} has invalid decision_state`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.owner)) {
-      pushIssue(errors, `Policy decision ${entry.policy_decision_id} missing owner`, hardFails, true);
+      pushIssue(
+        errors,
+        `Policy decision ${entry.policy_decision_id} missing owner`,
+        hardFails,
+        true,
+      );
     }
     validateSourceRefs(
       entry.source_refs,
@@ -4051,18 +5213,31 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       hardFails,
     )) {
       if (!itemIds.has(itemRef)) {
-        pushIssue(errors, `Policy decision ${entry.policy_decision_id} references unknown item ${itemRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Policy decision ${entry.policy_decision_id} references unknown item ${itemRef}`,
+          hardFails,
+          true,
+        );
       }
     }
-    if ((entry.decision_state === 'required' || entry.decision_state === 'deferred') && !isNonEmptyString(entry.revisit_trigger)) {
-      pushIssue(errors, `Policy decision ${entry.policy_decision_id} missing revisit_trigger`, hardFails, true);
+    if (
+      (entry.decision_state === 'required' || entry.decision_state === 'deferred') &&
+      !isNonEmptyString(entry.revisit_trigger)
+    ) {
+      pushIssue(
+        errors,
+        `Policy decision ${entry.policy_decision_id} missing revisit_trigger`,
+        hardFails,
+        true,
+      );
     }
   }
 
   const gapIds = new Set<string>();
   const contradictionIds = new Set<string>();
   const unknownIds = new Set<string>();
-  const unknownEntriesById = new Map<string, typeof backlog.unknowns[number]>();
+  const issuesWithInvalidResolutionState: string[] = [];
   for (const [ledgerName, entries, idSet] of [
     ['Gap', backlog.gaps, gapIds],
     ['Contradiction', backlog.contradictions, contradictionIds],
@@ -4074,12 +5249,14 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         continue;
       }
       if (idSet.has(entry.issue_id)) {
-        pushIssue(errors, `Duplicate ${ledgerName.toLowerCase()} issue_id: ${entry.issue_id}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Duplicate ${ledgerName.toLowerCase()} issue_id: ${entry.issue_id}`,
+          hardFails,
+          true,
+        );
       }
       idSet.add(entry.issue_id);
-      if (ledgerName === 'Unknown') {
-        unknownEntriesById.set(entry.issue_id, entry);
-      }
       if (!isNonEmptyString(entry.title)) {
         pushIssue(errors, `${ledgerName} ${entry.issue_id} missing title`, hardFails, true);
       }
@@ -4087,26 +5264,142 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         pushIssue(errors, `${ledgerName} ${entry.issue_id} missing severity`, hardFails, true);
       }
       if ('fail_closed_category' in entry && typeof entry.fail_closed_category !== 'boolean') {
-        pushIssue(errors, `${ledgerName} ${entry.issue_id} has invalid fail_closed_category`, hardFails, true);
+        pushIssue(
+          errors,
+          `${ledgerName} ${entry.issue_id} has invalid fail_closed_category`,
+          hardFails,
+          true,
+        );
       }
-      if ('resolution_state' in entry && entry.resolution_state !== undefined && entry.resolution_state !== null) {
-        if (!isNonEmptyString(entry.resolution_state) || !ISSUE_RESOLUTION_STATES.includes(entry.resolution_state)) {
-          pushIssue(errors, `${ledgerName} ${entry.issue_id} has invalid resolution_state`, hardFails, true);
+      if (
+        'resolution_state' in entry &&
+        entry.resolution_state !== undefined &&
+        entry.resolution_state !== null
+      ) {
+        if (
+          !isNonEmptyString(entry.resolution_state) ||
+          !ISSUE_RESOLUTION_STATES.includes(entry.resolution_state)
+        ) {
+          pushIssue(
+            errors,
+            `${ledgerName} ${entry.issue_id} has invalid resolution_state`,
+            hardFails,
+            true,
+          );
         }
       }
-      if (ledgerName === 'Unknown') {
-        if (!isNonEmptyString(entry.resolution_state)) {
+      if (ledgerName === 'Gap' || ledgerName === 'Unknown') {
+        const issueLabel = `${ledgerName} ${entry.issue_id}`;
+        const resolutionState = isNonEmptyString(entry.resolution_state)
+          ? entry.resolution_state
+          : null;
+        const hasResolutionNote = isNonEmptyString(entry.resolution_note);
+        const hasDowngradedSeverity = isNonEmptyString(entry.downgraded_severity);
+        const hasCurrentTruthReopenEvidence =
+          getCurrentTruthEvidenceSourceIds(entry.source_refs, sourceById).length > 0;
+        const previousResolution =
+          ledgerName === 'Gap'
+            ? previousGapResolutionById.get(entry.issue_id)
+            : previousUnknownResolutionById.get(entry.issue_id);
+
+        if (ledgerName === 'Unknown' && resolutionState === null) {
           pushIssue(errors, `Unknown ${entry.issue_id} missing resolution_state`, hardFails, true);
-        } else if (entry.resolution_state === 'resolved' || entry.resolution_state === 'downgraded') {
-          if (!isNonEmptyString(entry.resolution_note)) {
-            pushIssue(errors, `Unknown ${entry.issue_id} must include resolution_note when ${entry.resolution_state}`, hardFails, true);
+          issuesWithInvalidResolutionState.push(entry.issue_id);
+        }
+        if (resolutionState === null) {
+          if (hasResolutionNote || hasDowngradedSeverity) {
+            pushIssue(
+              errors,
+              `${issueLabel} has resolution fields but no resolution_state`,
+              hardFails,
+              true,
+            );
+            issuesWithInvalidResolutionState.push(entry.issue_id);
+          }
+        } else if (resolutionState === 'open') {
+          if (hasResolutionNote) {
+            pushIssue(
+              errors,
+              `${issueLabel} must clear resolution_note when resolution_state=open`,
+              hardFails,
+              true,
+            );
+            issuesWithInvalidResolutionState.push(entry.issue_id);
+          }
+          if (hasDowngradedSeverity) {
+            pushIssue(
+              errors,
+              `${issueLabel} must clear downgraded_severity when resolution_state=open`,
+              hardFails,
+              true,
+            );
+            issuesWithInvalidResolutionState.push(entry.issue_id);
+          }
+          if (
+            previousResolution &&
+            (previousResolution.resolution_state === 'resolved' ||
+              previousResolution.resolution_state === 'downgraded') &&
+            !hasCurrentTruthReopenEvidence &&
+            driftState.deltaSummary.dirty_flags.length === 0
+          ) {
+            pushIssue(
+              errors,
+              `${issueLabel} cannot transition ${previousResolution.resolution_state} -> open without authoritative current-truth evidence or drift reassessment`,
+              hardFails,
+              true,
+            );
+            issuesWithInvalidResolutionState.push(entry.issue_id);
+          }
+        } else if (resolutionState === 'resolved' || resolutionState === 'downgraded') {
+          if (!hasResolutionNote) {
+            pushIssue(
+              errors,
+              `${issueLabel} must include resolution_note when ${resolutionState}`,
+              hardFails,
+              true,
+            );
+            issuesWithInvalidResolutionState.push(entry.issue_id);
           }
         }
-        if (entry.resolution_state === 'downgraded') {
-          if (!isNonEmptyString(entry.downgraded_severity)) {
-            pushIssue(errors, `Unknown ${entry.issue_id} must include downgraded_severity when resolution_state=downgraded`, hardFails, true);
+        if (
+          previousResolution?.resolution_state === 'downgraded' &&
+          resolutionState === 'resolved' &&
+          previousResolution.resolution_note === (hasResolutionNote ? entry.resolution_note : null)
+        ) {
+          pushIssue(
+            errors,
+            `${issueLabel} must include a new resolution_note when transitioning downgraded -> resolved`,
+            hardFails,
+            true,
+          );
+          issuesWithInvalidResolutionState.push(entry.issue_id);
+        }
+        if (resolutionState === 'resolved' && hasDowngradedSeverity) {
+          pushIssue(
+            errors,
+            `${issueLabel} must clear downgraded_severity when resolution_state=resolved`,
+            hardFails,
+            true,
+          );
+          issuesWithInvalidResolutionState.push(entry.issue_id);
+        }
+        if (resolutionState === 'downgraded') {
+          if (!hasDowngradedSeverity) {
+            pushIssue(
+              errors,
+              `${issueLabel} must include downgraded_severity when resolution_state=downgraded`,
+              hardFails,
+              true,
+            );
+            issuesWithInvalidResolutionState.push(entry.issue_id);
           } else if (isCriticalUnknownSeverity(entry.downgraded_severity)) {
-            pushIssue(errors, `Unknown ${entry.issue_id} downgraded_severity must be below critical/high`, hardFails, true);
+            pushIssue(
+              errors,
+              `${issueLabel} downgraded_severity must be below critical/high`,
+              hardFails,
+              true,
+            );
+            issuesWithInvalidResolutionState.push(entry.issue_id);
           }
         }
       }
@@ -4133,7 +5426,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         hardFails,
       )) {
         if (!claimIds.has(claimRef)) {
-          pushIssue(errors, `${ledgerName} ${entry.issue_id} references unknown claim ${claimRef}`, hardFails, true);
+          pushIssue(
+            errors,
+            `${ledgerName} ${entry.issue_id} references unknown claim ${claimRef}`,
+            hardFails,
+            true,
+          );
         }
       }
       for (const itemRef of validateStringArrayField(
@@ -4144,7 +5442,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         hardFails,
       )) {
         if (!itemIds.has(itemRef)) {
-          pushIssue(errors, `${ledgerName} ${entry.issue_id} references unknown item ${itemRef}`, hardFails, true);
+          pushIssue(
+            errors,
+            `${ledgerName} ${entry.issue_id} references unknown item ${itemRef}`,
+            hardFails,
+            true,
+          );
         }
       }
     }
@@ -4157,22 +5460,42 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     if (!unknownIds.has(entry.unknown_id)) {
-      pushIssue(errors, `uncertainty_to_spike references unknown unknown_id ${entry.unknown_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `uncertainty_to_spike references unknown unknown_id ${entry.unknown_id}`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.spike_item_id) || !itemIds.has(entry.spike_item_id)) {
-      pushIssue(errors, `uncertainty_to_spike ${entry.unknown_id} references invalid spike_item_id`, hardFails, true);
+      pushIssue(
+        errors,
+        `uncertainty_to_spike ${entry.unknown_id} references invalid spike_item_id`,
+        hardFails,
+        true,
+      );
       continue;
     }
     if (declaredItemClassById.get(entry.spike_item_id) !== 'spike_discovery') {
-      pushIssue(errors, `uncertainty_to_spike ${entry.unknown_id} must point to a spike_discovery item`, hardFails, true);
+      pushIssue(
+        errors,
+        `uncertainty_to_spike ${entry.unknown_id} must point to a spike_discovery item`,
+        hardFails,
+        true,
+      );
     }
     if (unknownToSpike.has(entry.unknown_id)) {
-      pushIssue(errors, `uncertainty_to_spike duplicates unknown_id ${entry.unknown_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `uncertainty_to_spike duplicates unknown_id ${entry.unknown_id}`,
+        hardFails,
+        true,
+      );
     } else {
       unknownToSpike.set(entry.unknown_id, entry.spike_item_id);
     }
   }
-  for (const [unknownId, unknownEntry] of unknownEntriesById) {
+  for (const [unknownId, unknownEntry] of unknownEntryById) {
     if (
       unknownEntry.resolution_state !== 'resolved' &&
       unknownEntry.resolution_state !== 'downgraded' &&
@@ -4194,10 +5517,20 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     if (!isNonEmptyString(entry.item_id) || !itemIds.has(entry.item_id)) {
-      pushIssue(errors, `Delivered lineage note ${entry.lineage_note_id} has invalid item_id`, hardFails, true);
+      pushIssue(
+        errors,
+        `Delivered lineage note ${entry.lineage_note_id} has invalid item_id`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.note)) {
-      pushIssue(errors, `Delivered lineage note ${entry.lineage_note_id} missing note`, hardFails, true);
+      pushIssue(
+        errors,
+        `Delivered lineage note ${entry.lineage_note_id} missing note`,
+        hardFails,
+        true,
+      );
     }
     for (const proofRef of validateStringArrayField(
       entry as Record<string, unknown>,
@@ -4207,7 +5540,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       hardFails,
     )) {
       if (!proofIds.has(proofRef)) {
-        pushIssue(errors, `Delivered lineage note ${entry.lineage_note_id} references unknown proof ${proofRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Delivered lineage note ${entry.lineage_note_id} references unknown proof ${proofRef}`,
+          hardFails,
+          true,
+        );
       }
     }
   }
@@ -4220,12 +5558,22 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     if (!isGraphRef(entry.item_ref) || entry.item_ref.kind !== 'item') {
       pushIssue(errors, `Roadmap matrix ${entry.row_id} missing item_ref`, hardFails, true);
     } else if (!itemIds.has(entry.item_ref.id ?? '')) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} references unknown item ${entry.item_ref.id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} references unknown item ${entry.item_ref.id}`,
+        hardFails,
+        true,
+      );
     }
     if (!isGraphRef(entry.track_ref) || entry.track_ref.kind !== 'track') {
       pushIssue(errors, `Roadmap matrix ${entry.row_id} missing track_ref`, hardFails, true);
     } else if (!trackIds.has(entry.track_ref.id ?? '')) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} references unknown track ${entry.track_ref.id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} references unknown track ${entry.track_ref.id}`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.item_class) || !ITEM_CLASSES.includes(entry.item_class)) {
       pushIssue(errors, `Roadmap matrix ${entry.row_id} missing valid item_class`, hardFails, true);
@@ -4234,25 +5582,64 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       !isNonEmptyString(entry.backlog_protocol_state) ||
       !BACKLOG_PROTOCOL_STATES.includes(entry.backlog_protocol_state)
     ) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} missing valid backlog_protocol_state`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} missing valid backlog_protocol_state`,
+        hardFails,
+        true,
+      );
     }
-    if (!isNonEmptyString(entry.delivery_state) || !DELIVERY_STATES.includes(entry.delivery_state)) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} missing valid delivery_state`, hardFails, true);
+    if (
+      !isNonEmptyString(entry.delivery_state) ||
+      !DELIVERY_STATES.includes(entry.delivery_state)
+    ) {
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} missing valid delivery_state`,
+        hardFails,
+        true,
+      );
     }
-    if (!isNonEmptyString(entry.readiness_state) || !READINESS_STATES.includes(entry.readiness_state)) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} missing valid readiness_state`, hardFails, true);
+    if (
+      !isNonEmptyString(entry.readiness_state) ||
+      !READINESS_STATES.includes(entry.readiness_state)
+    ) {
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} missing valid readiness_state`,
+        hardFails,
+        true,
+      );
     }
-    if (!isNonEmptyString(entry.closure_state) || !ITEM_CLOSURE_STATES.includes(entry.closure_state)) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} missing valid closure_state`, hardFails, true);
+    if (
+      !isNonEmptyString(entry.closure_state) ||
+      !ITEM_CLOSURE_STATES.includes(entry.closure_state)
+    ) {
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} missing valid closure_state`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.summary_label) || !SUMMARY_LABELS.includes(entry.summary_label)) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} missing valid summary_label`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} missing valid summary_label`,
+        hardFails,
+        true,
+      );
     }
     if (!isNonEmptyString(entry.dependency_type)) {
       pushIssue(errors, `Roadmap matrix ${entry.row_id} missing dependency_type`, hardFails, true);
     }
     if (!isNonEmptyString(entry.economic_priority_note)) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} missing economic_priority_note`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} missing economic_priority_note`,
+        hardFails,
+        true,
+      );
     }
     validateGraphRefArray(
       entry.parent_refs ?? [],
@@ -4320,7 +5707,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     );
     for (const proofRef of asArray(entry.proof_refs)) {
       if (!proofIds.has(proofRef)) {
-        pushIssue(errors, `Roadmap matrix ${entry.row_id} references unknown proof ${proofRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Roadmap matrix ${entry.row_id} references unknown proof ${proofRef}`,
+          hardFails,
+          true,
+        );
       }
     }
   }
@@ -4332,7 +5724,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
 
     for (const claimRef of asArray(item.claim_refs)) {
       if (!claimIds.has(claimRef)) {
-        pushIssue(errors, `Item ${item.item_id} references unknown claim_ref ${claimRef}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${item.item_id} references unknown claim_ref ${claimRef}`,
+          hardFails,
+          true,
+        );
       } else {
         mappedClaimRefs.add(claimRef);
       }
@@ -4411,7 +5808,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         valueStreamIds,
       )
     ) {
-      pushIssue(errors, `Proof ${proof.proof_id} references missing covered_ref ${formatGraphRef(proof.covered_ref)}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Proof ${proof.proof_id} references missing covered_ref ${formatGraphRef(proof.covered_ref)}`,
+        hardFails,
+        true,
+      );
     }
     if (
       isGraphRef(proof.covered_ref) &&
@@ -4456,7 +5858,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         valueStreamIds,
       )
     ) {
-      pushIssue(errors, `Review ${review.review_id} references missing reviewed_ref ${formatGraphRef(review.reviewed_ref)}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Review ${review.review_id} references missing reviewed_ref ${formatGraphRef(review.reviewed_ref)}`,
+        hardFails,
+        true,
+      );
     }
   }
 
@@ -4485,8 +5892,16 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   const outgoingByItem = new Map<string, DiscoveryRelation[]>();
   const incomingByItem = new Map<string, DiscoveryRelation[]>();
   for (const relation of backlog.relations) {
-    if (!isNonEmptyString(relation.relation_type) || !RELATION_TYPES.includes(relation.relation_type)) {
-      pushIssue(errors, `Invalid relation_type: ${String(relation.relation_type ?? '')}`, hardFails, true);
+    if (
+      !isNonEmptyString(relation.relation_type) ||
+      !RELATION_TYPES.includes(relation.relation_type)
+    ) {
+      pushIssue(
+        errors,
+        `Invalid relation_type: ${String(relation.relation_type ?? '')}`,
+        hardFails,
+        true,
+      );
       continue;
     }
     const fromRef = normalizeRelationRef(relation.from, 'item');
@@ -4553,7 +5968,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     if (roadmapRowsByItemId.has(entry.item_ref.id)) {
-      pushIssue(errors, `Roadmap matrix has duplicate item row for ${entry.item_ref.id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix has duplicate item row for ${entry.item_ref.id}`,
+        hardFails,
+        true,
+      );
       continue;
     }
     roadmapRowsByItemId.set(entry.item_ref.id, entry);
@@ -4567,7 +5987,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
         continue;
       }
       if (bucket.has(value as number)) {
-        pushIssue(errors, `Roadmap matrix ${entry.row_id} duplicates ${label}=${value}`, hardFails, true);
+        pushIssue(
+          errors,
+          `Roadmap matrix ${entry.row_id} duplicates ${label}=${value}`,
+          hardFails,
+          true,
+        );
         continue;
       }
       bucket.add(value as number);
@@ -4577,8 +6002,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
   const roadmapRows = backlog.roadmap_matrix.filter(
-    (entry): entry is (typeof backlog.roadmap_matrix)[number] & { item_ref: GraphRef & { id: string } } =>
-      isGraphRef(entry.item_ref) && entry.item_ref.kind === 'item' && isNonEmptyString(entry.item_ref.id),
+    (
+      entry,
+    ): entry is (typeof backlog.roadmap_matrix)[number] & { item_ref: GraphRef & { id: string } } =>
+      isGraphRef(entry.item_ref) &&
+      entry.item_ref.kind === 'item' &&
+      isNonEmptyString(entry.item_ref.id),
   );
   for (let leftIndex = 0; leftIndex < roadmapRows.length; leftIndex += 1) {
     for (let rightIndex = leftIndex + 1; rightIndex < roadmapRows.length; rightIndex += 1) {
@@ -4620,7 +6049,11 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
 
       if (leftTrackPriority === rightTrackPriority && leftItemPriority === rightItemPriority) {
         const economicPriority = compareEconomicPriority(left, right);
-        if (economicPriority < 0 && (left.economic_rank ?? Number.MAX_SAFE_INTEGER) >= (right.economic_rank ?? Number.MAX_SAFE_INTEGER)) {
+        if (
+          economicPriority < 0 &&
+          (left.economic_rank ?? Number.MAX_SAFE_INTEGER) >=
+            (right.economic_rank ?? Number.MAX_SAFE_INTEGER)
+        ) {
           pushIssue(
             errors,
             `Roadmap matrix economic_rank must place ${left.item_ref.id} before ${right.item_ref.id} by methodology economic precedence`,
@@ -4628,7 +6061,11 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             true,
           );
         }
-        if (economicPriority > 0 && (left.economic_rank ?? Number.MAX_SAFE_INTEGER) <= (right.economic_rank ?? Number.MAX_SAFE_INTEGER)) {
+        if (
+          economicPriority > 0 &&
+          (left.economic_rank ?? Number.MAX_SAFE_INTEGER) <=
+            (right.economic_rank ?? Number.MAX_SAFE_INTEGER)
+        ) {
           pushIssue(
             errors,
             `Roadmap matrix economic_rank must place ${right.item_ref.id} before ${left.item_ref.id} by methodology economic precedence`,
@@ -4645,7 +6082,11 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
   for (const entry of backlog.roadmap_matrix) {
-    if (!isGraphRef(entry.item_ref) || entry.item_ref.kind !== 'item' || !isNonEmptyString(entry.item_ref.id)) {
+    if (
+      !isGraphRef(entry.item_ref) ||
+      entry.item_ref.kind !== 'item' ||
+      !isNonEmptyString(entry.item_ref.id)
+    ) {
       continue;
     }
     const rowItem = itemsById.get(entry.item_ref.id);
@@ -4655,31 +6096,76 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     const outgoing = outgoingByItem.get(rowItem.item_id) ?? [];
     const incoming = incomingByItem.get(rowItem.item_id) ?? [];
     if (entry.item_class !== rowItem.item_class) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} item_class mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} item_class mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (!relationRefEquals(entry.track_ref, graphRef('track', rowItem.track_id ?? ''))) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} track_ref mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} track_ref mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (entry.milestone !== rowItem.milestone) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} milestone mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} milestone mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (entry.backlog_protocol_state !== rowItem.backlog_protocol_state) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} backlog_protocol_state mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} backlog_protocol_state mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (entry.delivery_state !== rowItem.delivery_state) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} delivery_state mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} delivery_state mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (entry.readiness_state !== rowItem.readiness_state) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} readiness_state mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} readiness_state mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (entry.closure_state !== rowItem.closure_state) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} closure_state mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} closure_state mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (entry.summary_label !== rowItem.summary_label) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} summary_label mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} summary_label mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (entry.economic_priority_note !== rowItem.economic_priority_note) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} economic_priority_note mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} economic_priority_note mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     const expectedParents = incoming
       .filter((relation) => relation.relation_type === 'decomposes_into')
@@ -4690,7 +6176,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       .filter((ref): ref is GraphRef => isGraphRef(ref) && ref.kind === 'item')
       .sort((left, right) => graphRefKey(left).localeCompare(graphRefKey(right)));
     if (expectedParents.map(graphRefKey).join('|') !== actualParents.map(graphRefKey).join('|')) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} parent_refs mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} parent_refs mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     const expectedChildren = outgoing
       .filter((relation) => relation.relation_type === 'decomposes_into')
@@ -4701,7 +6192,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       .filter((ref): ref is GraphRef => isGraphRef(ref) && ref.kind === 'item')
       .sort((left, right) => graphRefKey(left).localeCompare(graphRefKey(right)));
     if (expectedChildren.map(graphRefKey).join('|') !== actualChildren.map(graphRefKey).join('|')) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} child_refs mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} child_refs mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     const expectedDependencies = getDependencyRefs(rowItem)
       .map((dependencyId) => graphRef('item', dependencyId))
@@ -4709,28 +6205,53 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     const actualDependencies = asArray(entry.dependency_refs)
       .filter((ref): ref is GraphRef => isGraphRef(ref) && ref.kind === 'item')
       .sort((left, right) => graphRefKey(left).localeCompare(graphRefKey(right)));
-    if (expectedDependencies.map(graphRefKey).join('|') !== actualDependencies.map(graphRefKey).join('|')) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} dependency_refs mismatch for ${rowItem.item_id}`, hardFails, true);
+    if (
+      expectedDependencies.map(graphRefKey).join('|') !==
+      actualDependencies.map(graphRefKey).join('|')
+    ) {
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} dependency_refs mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     if (!Array.isArray(entry.dependency_entries)) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} missing dependency_entries`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} missing dependency_entries`,
+        hardFails,
+        true,
+      );
     } else {
       const dependencyEntryKeys = new Set<string>();
       for (const dependencyEntry of entry.dependency_entries) {
         const dependencyEntryRecord = asStringRecord(dependencyEntry);
         const dependencyRef = dependencyEntryRecord.ref;
         if (!isGraphRef(dependencyRef) || dependencyRef.kind !== 'item') {
-          pushIssue(errors, `Roadmap matrix ${entry.row_id} has invalid dependency_entries.ref`, hardFails, true);
+          pushIssue(
+            errors,
+            `Roadmap matrix ${entry.row_id} has invalid dependency_entries.ref`,
+            hardFails,
+            true,
+          );
           continue;
         }
         if (!isNonEmptyString(dependencyEntryRecord.dependency_type)) {
-          pushIssue(errors, `Roadmap matrix ${entry.row_id} dependency entry missing dependency_type`, hardFails, true);
+          pushIssue(
+            errors,
+            `Roadmap matrix ${entry.row_id} dependency entry missing dependency_type`,
+            hardFails,
+            true,
+          );
           continue;
         }
         dependencyEntryKeys.add(`${dependencyRef.id}:${dependencyEntryRecord.dependency_type}`);
       }
       for (const dependencyRef of expectedDependencies) {
-        if (![...dependencyEntryKeys].some((entryKey) => entryKey.startsWith(`${dependencyRef.id}:`))) {
+        if (
+          ![...dependencyEntryKeys].some((entryKey) => entryKey.startsWith(`${dependencyRef.id}:`))
+        ) {
           pushIssue(
             errors,
             `Roadmap matrix ${entry.row_id} dependency_entries missing typed dependency for ${dependencyRef.id}`,
@@ -4759,21 +6280,37 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             'lead_time_risk',
           ].includes(economicFactor)
         ) {
-          pushIssue(errors, `Roadmap matrix ${entry.row_id} has invalid economic_factor ${String(economicFactor)}`, hardFails, true);
+          pushIssue(
+            errors,
+            `Roadmap matrix ${entry.row_id} has invalid economic_factor ${String(economicFactor)}`,
+            hardFails,
+            true,
+          );
         }
       }
     }
     const expectedProofRefs = [...asArray(rowItem.proof_refs)].sort();
     const actualProofRefs = [...asArray(entry.proof_refs)].sort();
     if (expectedProofRefs.join('|') !== actualProofRefs.join('|')) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} proof_refs mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} proof_refs mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
-    const expectedRetirementRef = outgoing
-      .filter((relation) => relation.relation_type === 'retires')
-      .map((relation) => normalizeRelationRef(relation.to))
-      .find((ref): ref is GraphRef => ref !== null) ?? null;
+    const expectedRetirementRef =
+      outgoing
+        .filter((relation) => relation.relation_type === 'retires')
+        .map((relation) => normalizeRelationRef(relation.to))
+        .find((ref): ref is GraphRef => ref !== null) ?? null;
     if (!relationRefEquals(entry.retirement_ref ?? null, expectedRetirementRef)) {
-      pushIssue(errors, `Roadmap matrix ${entry.row_id} retirement_ref mismatch for ${rowItem.item_id}`, hardFails, true);
+      pushIssue(
+        errors,
+        `Roadmap matrix ${entry.row_id} retirement_ref mismatch for ${rowItem.item_id}`,
+        hardFails,
+        true,
+      );
     }
     const rowTopologyRank = topologyRankByItemId.get(rowItem.item_id);
     if (rowTopologyRank !== undefined) {
@@ -4853,59 +6390,6 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
 
-  const pendingTrackProofReviews: string[] = [];
-  const runReviews = backlog.reviews.filter(
-    (review) =>
-      review.review_scope === 'run' &&
-      relationRefEquals(review.reviewed_ref, graphRef('run', manifest.run_id)),
-  );
-  if (runReviews.length === 0) {
-    pushIssue(errors, 'Run must be reviewed_by at least one run-scope review artifact', hardFails, true);
-  }
-  for (const trackProof of backlog.track_proofs) {
-    if (!isNonEmptyString(trackProof.track_proof_id)) {
-      continue;
-    }
-    const trackProofId = trackProof.track_proof_id;
-    const trackProofReviews = backlog.reviews.filter(
-      (review) =>
-        review.review_scope === 'track_proof' &&
-        relationRefEquals(review.reviewed_ref, graphRef('track_proof', trackProofId)),
-    );
-    if (trackProofReviews.length === 0) {
-      pendingTrackProofReviews.push(trackProofId);
-      pushIssue(
-        errors,
-        `Track proof ${trackProofId} must be reviewed_by at least one track_proof review artifact`,
-        hardFails,
-        true,
-      );
-      continue;
-    }
-    if (!trackProofReviews.some((review) => review.independent === true)) {
-      pendingTrackProofReviews.push(trackProofId);
-      pushIssue(
-        errors,
-        `Track proof ${trackProofId} must have at least one independent track_proof review`,
-        hardFails,
-        true,
-      );
-    }
-    if (trackProofReviews.every((review) => review.verdict === 'fail')) {
-      pushIssue(
-        errors,
-        `Track proof ${trackProofId} has only failing track_proof reviews`,
-        hardFails,
-        true,
-      );
-    }
-    if (trackProofReviews.some((review) => review.verdict === 'pass_with_findings')) {
-      warnings.push(
-        `Track proof ${trackProofId} passed review with findings; confirm track-closure follow-up actions are tracked.`,
-      );
-    }
-  }
-
   for (const item of backlog.items) {
     if (!isNonEmptyString(item.item_id) || !isNonEmptyString(item.item_class)) {
       continue;
@@ -4971,24 +6455,49 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       }
     }
 
-    const trackRelations = outgoing.filter((relation) => relation.relation_type === 'belongs_to_track');
+    const trackRelations = outgoing.filter(
+      (relation) => relation.relation_type === 'belongs_to_track',
+    );
     if (trackRelations.length !== 1) {
-      pushIssue(errors, `Item ${itemId} must have exactly one belongs_to_track relation`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${itemId} must have exactly one belongs_to_track relation`,
+        hardFails,
+        true,
+      );
     } else if (
       !isNonEmptyString(itemTrackId) ||
-      !relationRefEquals(normalizeRelationRef(trackRelations[0]?.to), graphRef('track', itemTrackId))
+      !relationRefEquals(
+        normalizeRelationRef(trackRelations[0]?.to),
+        graphRef('track', itemTrackId),
+      )
     ) {
-      pushIssue(errors, `Item ${itemId} has belongs_to_track mismatch with track_id`, hardFails, true);
+      pushIssue(
+        errors,
+        `Item ${itemId} has belongs_to_track mismatch with track_id`,
+        hardFails,
+        true,
+      );
     }
 
     if (itemClass === 'feature_slice') {
       const realizes = outgoing.filter((relation) => relation.relation_type === 'realizes');
       if (realizes.length !== 1) {
-        pushIssue(errors, `Feature slice ${itemId} must realize exactly one parent seam`, hardFails, true);
+        pushIssue(
+          errors,
+          `Feature slice ${itemId} must realize exactly one parent seam`,
+          hardFails,
+          true,
+        );
       } else {
         const realizeRelation = realizes[0];
         if (!realizeRelation) {
-          pushIssue(errors, `Feature slice ${itemId} must realize exactly one parent seam`, hardFails, true);
+          pushIssue(
+            errors,
+            `Feature slice ${itemId} must realize exactly one parent seam`,
+            hardFails,
+            true,
+          );
           continue;
         }
         const realizedParentRef = normalizeRelationRef(realizeRelation.to);
@@ -4997,7 +6506,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
             ? itemsById.get(realizedParentRef.id)
             : undefined;
         if (!parent || parent.item_class !== 'capability_seam') {
-          pushIssue(errors, `Feature slice ${itemId} must realize a capability seam`, hardFails, true);
+          pushIssue(
+            errors,
+            `Feature slice ${itemId} must realize a capability seam`,
+            hardFails,
+            true,
+          );
         }
         const parentSeamRef =
           getPayloadGraphRef(item, 'parent_seam_ref', 'item') ??
@@ -5009,30 +6523,56 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
 
     if (itemClass === 'control_guardrail') {
-      const governedByIncoming = incoming.filter((relation) => relation.relation_type === 'governed_by');
+      const governedByIncoming = incoming.filter(
+        (relation) => relation.relation_type === 'governed_by',
+      );
       if (governedByIncoming.length === 0) {
-        pushIssue(errors, `Control guardrail ${itemId} must be the target of governed_by`, hardFails, true);
+        pushIssue(
+          errors,
+          `Control guardrail ${itemId} must be the target of governed_by`,
+          hardFails,
+          true,
+        );
       }
     }
 
     if (itemClass === 'migration') {
-      const migrationsFrom = outgoing.filter((relation) => relation.relation_type === 'migrates_from');
+      const migrationsFrom = outgoing.filter(
+        (relation) => relation.relation_type === 'migrates_from',
+      );
       if (migrationsFrom.length !== 1) {
-        pushIssue(errors, `Migration ${itemId} must have exactly one migrates_from relation`, hardFails, true);
+        pushIssue(
+          errors,
+          `Migration ${itemId} must have exactly one migrates_from relation`,
+          hardFails,
+          true,
+        );
       }
     }
 
     if (itemClass === 'retirement') {
       const retires = outgoing.filter((relation) => relation.relation_type === 'retires');
       if (retires.length === 0) {
-        pushIssue(errors, `Retirement ${itemId} must retire at least one legacy path`, hardFails, true);
+        pushIssue(
+          errors,
+          `Retirement ${itemId} must retire at least one legacy path`,
+          hardFails,
+          true,
+        );
       }
     }
 
     if (itemClass === 'capability_seam') {
-      const decomposesInto = outgoing.filter((relation) => relation.relation_type === 'decomposes_into');
+      const decomposesInto = outgoing.filter(
+        (relation) => relation.relation_type === 'decomposes_into',
+      );
       if (decomposesInto.length === 0) {
-        pushIssue(errors, `Capability seam ${itemId} must decompose into owned child work`, hardFails, true);
+        pushIssue(
+          errors,
+          `Capability seam ${itemId} must decompose into owned child work`,
+          hardFails,
+          true,
+        );
       }
       for (const relation of decomposesInto) {
         const relationTarget = normalizeRelationRef(relation.to);
@@ -5062,26 +6602,57 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
 
     if (itemClass === 'spike_discovery') {
-      const hiddenImplementation = outgoing.filter((relation) => relation.relation_type === 'decomposes_into');
+      const hiddenImplementation = outgoing.filter(
+        (relation) => relation.relation_type === 'decomposes_into',
+      );
       if (hiddenImplementation.length > 0) {
-        pushIssue(errors, `Spike ${itemId} may not decompose into implementation work`, hardFails, true);
+        pushIssue(
+          errors,
+          `Spike ${itemId} may not decompose into implementation work`,
+          hardFails,
+          true,
+        );
       }
-      const mappedUnknowns = backlog.uncertainty_to_spike.filter((entry) => entry.spike_item_id === itemId);
+      const mappedUnknowns = backlog.uncertainty_to_spike.filter(
+        (entry) => entry.spike_item_id === itemId,
+      );
       if (mappedUnknowns.length === 0) {
-        pushIssue(errors, `Spike ${itemId} must be linked from uncertainty_to_spike`, hardFails, true);
+        pushIssue(
+          errors,
+          `Spike ${itemId} must be linked from uncertainty_to_spike`,
+          hardFails,
+          true,
+        );
       }
-      for (const followOnItemRef of getPayloadStringArray(item, 'follow_on_item_refs', asArray(item.follow_on_item_refs))) {
+      for (const followOnItemRef of getPayloadStringArray(
+        item,
+        'follow_on_item_refs',
+        asArray(item.follow_on_item_refs),
+      )) {
         if (!itemIds.has(followOnItemRef)) {
-          pushIssue(errors, `Spike ${itemId} references unknown follow-on item ${followOnItemRef}`, hardFails, true);
+          pushIssue(
+            errors,
+            `Spike ${itemId} references unknown follow-on item ${followOnItemRef}`,
+            hardFails,
+            true,
+          );
           continue;
         }
         if (followOnItemRef === itemId) {
-          pushIssue(errors, `Spike ${itemId} cannot reference itself as a follow-on item`, hardFails, true);
+          pushIssue(
+            errors,
+            `Spike ${itemId} cannot reference itself as a follow-on item`,
+            hardFails,
+            true,
+          );
         }
       }
     }
 
-    if (itemClass === 'operational_enablement' || itemClass === 'documentation_support_enablement') {
+    if (
+      itemClass === 'operational_enablement' ||
+      itemClass === 'documentation_support_enablement'
+    ) {
       const parentRelations = outgoing.filter(
         (relation) =>
           relation.relation_type === 'enabled_by' || relation.relation_type === 'governed_by',
@@ -5096,8 +6667,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       }
     }
 
-    const contractRelations = outgoing.filter((relation) => relation.relation_type === 'touches_contract');
-    const dataDomainRelations = outgoing.filter((relation) => relation.relation_type === 'touches_data_domain');
+    const contractRelations = outgoing.filter(
+      (relation) => relation.relation_type === 'touches_contract',
+    );
+    const dataDomainRelations = outgoing.filter(
+      (relation) => relation.relation_type === 'touches_data_domain',
+    );
     const contractChanging =
       contractRelations.length > 0 ||
       dataDomainRelations.length > 0 ||
@@ -5108,12 +6683,15 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     if (contractChanging) {
       const governance = getContractGovernance(item);
       if (governance.applicable !== true) {
-        pushIssue(errors, `Item ${itemId} is contract/data-changing but contract_governance.applicable is not true`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract/data-changing but contract_governance.applicable is not true`,
+          hardFails,
+          true,
+        );
       }
       const contractOwner =
-        typeof governance.contract_owner === 'string'
-          ? governance.contract_owner
-          : null;
+        typeof governance.contract_owner === 'string' ? governance.contract_owner : null;
       const compatibilityClass =
         typeof governance.compatibility_class === 'string'
           ? governance.compatibility_class
@@ -5131,61 +6709,117 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
           ? governance.consumer_impact
           : item.consumer_impact;
       const versioningStrategy =
-        typeof governance.versioning_strategy === 'string'
-          ? governance.versioning_strategy
-          : null;
+        typeof governance.versioning_strategy === 'string' ? governance.versioning_strategy : null;
       const reconciliationStrategy =
         typeof governance.reconciliation_strategy === 'string'
           ? governance.reconciliation_strategy
           : null;
       const deprecationWindow =
-        typeof governance.deprecation_window === 'string'
-          ? governance.deprecation_window
-          : null;
+        typeof governance.deprecation_window === 'string' ? governance.deprecation_window : null;
       const retirementCondition =
         typeof governance.retirement_condition === 'string'
           ? governance.retirement_condition
           : null;
 
       if (!isNonEmptyString(contractOwner)) {
-        pushIssue(errors, `Item ${itemId} is contract/data-changing but missing contract_owner`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract/data-changing but missing contract_owner`,
+          hardFails,
+          true,
+        );
       }
       if (
         !isNonEmptyString(compatibilityClass) ||
-        !COMPATIBILITY_CLASSES.includes(compatibilityClass as (typeof COMPATIBILITY_CLASSES)[number])
+        !COMPATIBILITY_CLASSES.includes(
+          compatibilityClass as (typeof COMPATIBILITY_CLASSES)[number],
+        )
       ) {
-        pushIssue(errors, `Item ${itemId} is contract-changing but missing compatibility_class`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract-changing but missing compatibility_class`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(migrationStrategy)) {
-        pushIssue(errors, `Item ${itemId} is contract-changing but missing migration governance`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract-changing but missing migration governance`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(canonicalWriter)) {
-        pushIssue(errors, `Item ${itemId} is contract-changing but missing canonical_writer`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract-changing but missing canonical_writer`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(consumerImpact)) {
-        pushIssue(errors, `Item ${itemId} is contract-changing but missing consumer_impact`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract-changing but missing consumer_impact`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(versioningStrategy)) {
-        pushIssue(errors, `Item ${itemId} is contract/data-changing but missing versioning_strategy`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract/data-changing but missing versioning_strategy`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(reconciliationStrategy)) {
-        pushIssue(errors, `Item ${itemId} is contract/data-changing but missing reconciliation_strategy`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract/data-changing but missing reconciliation_strategy`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(deprecationWindow)) {
-        pushIssue(errors, `Item ${itemId} is contract/data-changing but missing deprecation_window`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract/data-changing but missing deprecation_window`,
+          hardFails,
+          true,
+        );
       }
       if (!isNonEmptyString(retirementCondition)) {
-        pushIssue(errors, `Item ${itemId} is contract/data-changing but missing retirement_condition`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} is contract/data-changing but missing retirement_condition`,
+          hardFails,
+          true,
+        );
       }
       if (asArray(item.interfaces_touched).length > 0 && contractRelations.length === 0) {
-        pushIssue(errors, `Item ${itemId} lists interfaces_touched but has no touches_contract relation`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} lists interfaces_touched but has no touches_contract relation`,
+          hardFails,
+          true,
+        );
       }
       if (asArray(item.data_domains_touched).length > 0 && dataDomainRelations.length === 0) {
-        pushIssue(errors, `Item ${itemId} lists data_domains_touched but has no touches_data_domain relation`, hardFails, true);
+        pushIssue(
+          errors,
+          `Item ${itemId} lists data_domains_touched but has no touches_data_domain relation`,
+          hardFails,
+          true,
+        );
       }
       for (const relation of contractRelations) {
         const targetRef = normalizeRelationRef(relation.to);
-        if (targetRef?.kind === 'contract' && !asArray(item.interfaces_touched).includes(targetRef.id ?? '')) {
+        if (
+          targetRef?.kind === 'contract' &&
+          !asArray(item.interfaces_touched).includes(targetRef.id ?? '')
+        ) {
           pushIssue(
             errors,
             `Item ${itemId} touches contract ${targetRef.id} but does not list it in interfaces_touched`,
@@ -5196,7 +6830,10 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       }
       for (const relation of dataDomainRelations) {
         const targetRef = normalizeRelationRef(relation.to);
-        if (targetRef?.kind === 'data_domain' && !asArray(item.data_domains_touched).includes(targetRef.id ?? '')) {
+        if (
+          targetRef?.kind === 'data_domain' &&
+          !asArray(item.data_domains_touched).includes(targetRef.id ?? '')
+        ) {
           pushIssue(
             errors,
             `Item ${itemId} touches data domain ${targetRef.id} but does not list it in data_domains_touched`,
@@ -5208,12 +6845,16 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
 
-  const committedClaimsWithoutItems = [...committedClaimIds].filter((claimId) => !mappedClaimRefs.has(claimId));
+  const committedClaimsWithoutItems = [...committedClaimIds].filter(
+    (claimId) => !mappedClaimRefs.has(claimId),
+  );
   for (const claimId of committedClaimsWithoutItems) {
     pushIssue(errors, `Committed claim ${claimId} is not mapped to any item`, hardFails, true);
   }
 
-  const replacements = backlog.relations.filter((relation) => relation.relation_type === 'replaces');
+  const replacements = backlog.relations.filter(
+    (relation) => relation.relation_type === 'replaces',
+  );
   for (const relation of replacements) {
     const replacementTarget = normalizeRelationRef(relation.to);
     const replacementSource = normalizeRelationRef(relation.from, 'item');
@@ -5270,16 +6911,28 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   const runScopeKey = graphRefKey(runScopeRef);
   const validWaivedScopesByRole = new Map<ReviewRole, Set<string>>();
   for (const waiver of backlog.waivers) {
-    if (!isNonEmptyString(waiver.waiver_id) || !isNonEmptyString(waiver.waived_role) || !isGraphRef(waiver.scope)) {
+    if (
+      !isNonEmptyString(waiver.waiver_id) ||
+      !isNonEmptyString(waiver.waived_role) ||
+      !isGraphRef(waiver.scope)
+    ) {
       continue;
     }
     const scopeItems = getScopedItemsForGraphRef(waiver.scope, manifest.run_id, itemsById, backlog);
-    const directlyImpacted = isRoleDirectlyImpacted(waiver.waived_role, scopeItems, targetAcceptance);
+    const directlyImpacted = isRoleDirectlyImpacted(
+      waiver.waived_role,
+      scopeItems,
+      targetAcceptance,
+    );
     if (directlyImpacted) {
       const message = `Waiver ${waiver.waiver_id} is invalid because role ${waiver.waived_role} is directly impacted by its scope`;
       pushIssue(errors, message, hardFails, true);
       waiverFindings.push(message);
       invalidWaiverIds.add(waiver.waiver_id);
+      const invalidScopes =
+        invalidWaivedScopeKeysByRole.get(waiver.waived_role) ?? new Set<string>();
+      invalidScopes.add(graphRefKey(waiver.scope));
+      invalidWaivedScopeKeysByRole.set(waiver.waived_role, invalidScopes);
       continue;
     }
     const waivedScopes = validWaivedScopesByRole.get(waiver.waived_role) ?? new Set<string>();
@@ -5288,7 +6941,11 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   }
 
   const requiredRoleScopes = new Map<ReviewRole, Map<string, GraphRef>>();
-  for (const role of ['product_strategy', 'system_architecture', 'application_engineering'] as const) {
+  for (const role of [
+    'product_strategy',
+    'system_architecture',
+    'application_engineering',
+  ] as const) {
     addRequiredRoleScope(requiredRoleScopes, role, runScopeRef);
   }
   if (targetAcceptance !== 'draft-only') {
@@ -5316,7 +6973,12 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       continue;
     }
     const trackProofScope = graphRef('track_proof', trackProof.track_proof_id);
-    const scopedItems = getScopedItemsForGraphRef(trackProofScope, manifest.run_id, itemsById, backlog);
+    const scopedItems = getScopedItemsForGraphRef(
+      trackProofScope,
+      manifest.run_id,
+      itemsById,
+      backlog,
+    );
     if (
       trackProof.track_id === 'externally-safe-operationally-supportable' ||
       trackProof.track_id === 'full-target-system' ||
@@ -5353,6 +7015,200 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     }
   }
 
+  const assessedAt = utcNow();
+  const staleItemIds = new Set(driftState.staleItems);
+  const staleProofIds = new Set([...staleProofs]);
+  const recalculatedTrackGateIds = new Set(driftState.deltaSummary.track_gate_ids_to_recalculate);
+  const trackById = new Map(
+    backlog.tracks
+      .filter((track) => isNonEmptyString(track.track_id))
+      .map((track) => [track.track_id, track] as const),
+  );
+  const trackProofById = new Map(
+    backlog.track_proofs
+      .filter((trackProof) => isNonEmptyString(trackProof.track_proof_id))
+      .map((trackProof) => [trackProof.track_proof_id, trackProof] as const),
+  );
+  const countUniqueIds = <T>(entries: T[], selector: (entry: T) => string | undefined): number =>
+    new Set(
+      entries
+        .map((entry) => selector(entry))
+        .filter((value): value is string => isNonEmptyString(value)),
+    ).size;
+  const uniqueItemsById = new Map<string, DiscoveryItem>();
+  for (const item of backlog.items) {
+    if (!isNonEmptyString(item.item_id) || uniqueItemsById.has(item.item_id)) {
+      continue;
+    }
+    uniqueItemsById.set(item.item_id, item);
+  }
+  const lastRebaselineAt = parseTimestamp(manifest.last_rebaseline_at);
+  const dirtyStateObservedAt = parseTimestamp(manifest.last_delta_at ?? manifest.updated_at);
+  const staleReviewArtifacts = [
+    ...new Set(
+      eligibleReviews.flatMap((review) => {
+        if (
+          !isNonEmptyString(review.review_id) ||
+          !isNonEmptyString(review.review_scope) ||
+          !isGraphRef(review.reviewed_ref)
+        ) {
+          return [];
+        }
+
+        const reviewTimestamp = isNonEmptyString(review.reviewed_at)
+          ? parseTimestamp(review.reviewed_at)
+          : null;
+        if (review.review_scope === 'run' && review.reviewed_ref.kind === 'run') {
+          const predatesRebaseline =
+            reviewTimestamp !== null &&
+            lastRebaselineAt !== null &&
+            reviewTimestamp < lastRebaselineAt;
+          const predatesCurrentDirtyState =
+            reviewTimestamp !== null &&
+            dirtyStateObservedAt !== null &&
+            reviewTimestamp < dirtyStateObservedAt &&
+            driftState.deltaSummary.dirty_flags.length > 0;
+          return predatesRebaseline || predatesCurrentDirtyState ? [review.review_id] : [];
+        }
+
+        let applicabilityMismatch = false;
+        if (
+          isNonEmptyString(review.role) &&
+          REVIEW_ROLES.includes(review.role) &&
+          (review.review_scope === 'item' || review.review_scope === 'track_proof')
+        ) {
+          const roleScopes = requiredRoleScopes.get(review.role);
+          const reviewedScopeKey = graphRefKey(review.reviewed_ref);
+          const scopeItems = getScopedItemsForGraphRef(
+            review.reviewed_ref,
+            manifest.run_id,
+            itemsById,
+            backlog,
+          );
+          const directlyImpacted = isRoleDirectlyImpacted(
+            review.role,
+            scopeItems,
+            targetAcceptance,
+          );
+          const comparableRequiredScopeExists =
+            roleScopes !== undefined &&
+            [...roleScopes.values()].some((scope) => scope.kind === review.review_scope);
+          const scopeStillRequired =
+            directlyImpacted &&
+            (roleScopes?.has(reviewedScopeKey) ?? false) &&
+            !scopeIsWaived(validWaivedScopesByRole, review.role, review.reviewed_ref, runScopeKey);
+          const hasSameScopeInvalidWaiver =
+            invalidWaivedScopeKeysByRole.get(review.role)?.has(reviewedScopeKey) ?? false;
+          applicabilityMismatch =
+            comparableRequiredScopeExists && (!scopeStillRequired || hasSameScopeInvalidWaiver);
+        }
+
+        if (
+          review.review_scope === 'item' &&
+          review.reviewed_ref.kind === 'item' &&
+          (staleItemIds.has(review.reviewed_ref.id ?? '') || applicabilityMismatch)
+        ) {
+          return [review.review_id];
+        }
+
+        if (review.review_scope === 'track_proof' && review.reviewed_ref.kind === 'track_proof') {
+          const trackProof = trackProofById.get(review.reviewed_ref.id ?? '');
+          const hasStaleProofDependency = asArray(trackProof?.proof_refs).some((proofId) =>
+            staleProofIds.has(proofId),
+          );
+          const requiredTrackGateIds = isNonEmptyString(trackProof?.track_id)
+            ? asArray(trackById.get(trackProof.track_id)?.required_track_gate_ids).filter(
+                isNonEmptyString,
+              )
+            : [];
+          const needsRecalculation = requiredTrackGateIds.some((gateId) =>
+            recalculatedTrackGateIds.has(gateId),
+          );
+          return hasStaleProofDependency || needsRecalculation || applicabilityMismatch
+            ? [review.review_id]
+            : [];
+        }
+
+        return [];
+      }),
+    ),
+  ].sort();
+  const staleReviewArtifactIds = new Set(staleReviewArtifacts);
+  const effectiveReviews = eligibleReviews.filter(
+    (review) => isNonEmptyString(review.review_id) && !staleReviewArtifactIds.has(review.review_id),
+  );
+  const runReviewRoleMap = new Map<ReviewRole, { independent: boolean; verdicts: string[] }>();
+  for (const review of effectiveReviews) {
+    if (
+      !isNonEmptyString(review.role) ||
+      review.review_scope !== 'run' ||
+      !relationRefEquals(review.reviewed_ref, graphRef('run', manifest.run_id))
+    ) {
+      continue;
+    }
+    const runState = runReviewRoleMap.get(review.role) ?? { independent: false, verdicts: [] };
+    runState.independent = runState.independent || review.independent === true;
+    runState.verdicts.push(review.verdict ?? '');
+    runReviewRoleMap.set(review.role, runState);
+  }
+  const pendingTrackProofReviews: string[] = [];
+  const runReviews = effectiveReviews.filter(
+    (review) =>
+      review.review_scope === 'run' &&
+      relationRefEquals(review.reviewed_ref, graphRef('run', manifest.run_id)),
+  );
+  if (runReviews.length === 0) {
+    pushIssue(
+      errors,
+      'Run must be reviewed_by at least one fresh run-scope review artifact',
+      hardFails,
+      true,
+    );
+  }
+  for (const trackProof of backlog.track_proofs) {
+    if (!isNonEmptyString(trackProof.track_proof_id)) {
+      continue;
+    }
+    const trackProofId = trackProof.track_proof_id;
+    const trackProofReviews = effectiveReviews.filter(
+      (review) =>
+        review.review_scope === 'track_proof' &&
+        relationRefEquals(review.reviewed_ref, graphRef('track_proof', trackProofId)),
+    );
+    if (trackProofReviews.length === 0) {
+      pendingTrackProofReviews.push(trackProofId);
+      pushIssue(
+        errors,
+        `Track proof ${trackProofId} must be reviewed_by at least one fresh track_proof review artifact`,
+        hardFails,
+        true,
+      );
+      continue;
+    }
+    if (!trackProofReviews.some((review) => review.independent === true)) {
+      pendingTrackProofReviews.push(trackProofId);
+      pushIssue(
+        errors,
+        `Track proof ${trackProofId} must have at least one independent fresh track_proof review`,
+        hardFails,
+        true,
+      );
+    }
+    if (trackProofReviews.every((review) => review.verdict === 'fail')) {
+      pushIssue(
+        errors,
+        `Track proof ${trackProofId} has only failing fresh track_proof reviews`,
+        hardFails,
+        true,
+      );
+    }
+    if (trackProofReviews.some((review) => review.verdict === 'pass_with_findings')) {
+      warnings.push(
+        `Track proof ${trackProofId} passed fresh review with findings; confirm track-closure follow-up actions are tracked.`,
+      );
+    }
+  }
+
   const presentReviewRoles = [...runReviewRoleMap.keys()].sort();
   const missingRequiredReviews: ReviewRole[] = [];
   const validatedReviewRoles = new Set<ReviewRole>();
@@ -5373,13 +7229,25 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       return;
     }
     if (!reviewState.independent) {
-      pushIssue(errors, `Required review role ${role} lacks an independent review artifact`, hardFails, true);
+      pushIssue(
+        errors,
+        `Required review role ${role} lacks an independent fresh review artifact`,
+        hardFails,
+        true,
+      );
     }
     if (reviewState.verdicts.every((verdict) => verdict === 'fail')) {
-      pushIssue(errors, `Required review role ${role} has only failing reviews`, hardFails, true);
+      pushIssue(
+        errors,
+        `Required review role ${role} has only failing fresh reviews`,
+        hardFails,
+        true,
+      );
     }
     if (reviewState.verdicts.some((verdict) => verdict === 'pass_with_findings')) {
-      warnings.push(`Review role ${role} passed with findings; confirm follow-up actions are tracked.`);
+      warnings.push(
+        `Review role ${role} passed with findings; confirm follow-up actions are tracked.`,
+      );
     }
   };
   for (const role of [...requiredReviewRoles].sort()) {
@@ -5431,17 +7299,43 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       )
     : preliminaryScore;
 
-  if (warnings.length > 0 && !warnings.some((warning) => warning.toLowerCase().includes('review'))) {
-    nextActions.push('Resolve remaining warnings before treating the run as stable planning input.');
+  if (
+    warnings.length > 0 &&
+    !warnings.some((warning) => warning.toLowerCase().includes('review'))
+  ) {
+    nextActions.push(
+      'Resolve remaining warnings before treating the run as stable planning input.',
+    );
   }
   if (hardFails.length > 0) {
     nextActions.push('Fix hard-fail validation issues and rerun validate.');
+  }
+  if (itemsMissingDeliveryEvidence.length > 0) {
+    nextActions.push(
+      `Back delivery_state with authoritative current-truth evidence: ${[...new Set(itemsMissingDeliveryEvidence)].sort().join(', ')}.`,
+    );
+  }
+  const negativeScopeAlignmentIssues = [
+    ...negativeScopeClaimsMissingOutOfScopeCommitment,
+    ...outOfScopeClaimsMissingNegativeScope,
+  ];
+  if (negativeScopeAlignmentIssues.length > 0) {
+    nextActions.push(
+      `Align out_of_scope claims with canonical negative_scope entries: ${[...new Set(negativeScopeAlignmentIssues)].sort().join(', ')}.`,
+    );
+  }
+  if (issuesWithInvalidResolutionState.length > 0) {
+    nextActions.push(
+      `Normalize Gap/Unknown resolution fields to the canonical state machine: ${[...new Set(issuesWithInvalidResolutionState)].sort().join(', ')}.`,
+    );
   }
   if (missingRequiredReviews.length > 0) {
     nextActions.push(`Obtain independent reviews for: ${missingRequiredReviews.join(', ')}.`);
   }
   if (pendingTrackProofReviews.length > 0) {
-    nextActions.push(`Attach independent track-proof reviews for: ${pendingTrackProofReviews.join(', ')}.`);
+    nextActions.push(
+      `Attach independent track-proof reviews for: ${pendingTrackProofReviews.join(', ')}.`,
+    );
   }
   if (staleProofs.size > 0) {
     nextActions.push(`Refresh stale proof bundles: ${[...staleProofs].join(', ')}.`);
@@ -5453,7 +7347,9 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     nextActions.push(`Re-verify changed claims: ${driftState.staleClaims.join(', ')}.`);
   }
   if (driftState.rebaselineRequired) {
-    nextActions.push('Run delta, update canonical state, and rebaseline before relying on acceptance.');
+    nextActions.push(
+      'Run delta, update canonical state, and rebaseline before relying on acceptance.',
+    );
   }
   if (committedClaimsWithoutItems.length > 0) {
     nextActions.push(`Map committed claims to items: ${committedClaimsWithoutItems.join(', ')}.`);
@@ -5462,7 +7358,8 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     backlog.items.some(
       (item) =>
         item.readiness_state === 'ready' &&
-        (!isNonEmptyString(getItemEstimateBand(item)) || !isNonEmptyString(getItemConfidence(item))),
+        (!isNonEmptyString(getItemEstimateBand(item)) ||
+          !isNonEmptyString(getItemConfidence(item))),
     )
   ) {
     nextActions.push('Complete estimate_band and confidence on ready items.');
@@ -5483,8 +7380,15 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   const assessmentStatus: AssessmentFile['status'] =
     canonicalArtifactsComplete && !hasHardFails ? 'pass' : 'fail';
   let acceptanceAchieved: AcceptanceClass = 'draft-only';
-  if (canonicalArtifactsComplete && !hasHardFails && reviewGateErrors.length === 0 && planningScoreEligible) {
-    acceptanceAchieved = implementationAcceptanceEligible ? 'implementation-grade' : 'planning-grade';
+  if (
+    canonicalArtifactsComplete &&
+    !hasHardFails &&
+    reviewGateErrors.length === 0 &&
+    planningScoreEligible
+  ) {
+    acceptanceAchieved = implementationAcceptanceEligible
+      ? 'implementation-grade'
+      : 'planning-grade';
   }
 
   const blockingReasons = [...uniqueHardFails];
@@ -5495,11 +7399,15 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     blockingReasons.push(reviewIssue);
   }
   if (!planningScoreEligible) {
-    blockingReasons.push(`Score ${score.total}/${score.max} is below the planning-grade floor of 80.`);
+    blockingReasons.push(
+      `Score ${score.total}/${score.max} is below the planning-grade floor of 80.`,
+    );
   }
 
   if (!planningScoreEligible) {
-    nextActions.push('Raise the score to at least 80/100 before treating the run as planning-grade.');
+    nextActions.push(
+      'Raise the score to at least 80/100 before treating the run as planning-grade.',
+    );
   }
 
   const targetSatisfied = acceptanceAtLeast(acceptanceAchieved, targetAcceptance);
@@ -5524,16 +7432,74 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
           ? 'No hard-fails remain and the run is fit for planning.'
           : 'Hard-fails, incomplete mandatory artifacts, review gaps, or insufficient score keep the run open.',
   };
+  const rebaselineReadinessReasons: string[] = [];
+  if (!driftState.rebaselineRequired) {
+    rebaselineReadinessReasons.push('Baseline drift is not detected, so rebaseline is not needed.');
+  } else {
+    if (assessmentStatus !== 'pass') {
+      rebaselineReadinessReasons.push('Assessment must pass before rebaseline is allowed.');
+    }
+    if (uniqueHardFails.length > 0) {
+      rebaselineReadinessReasons.push(
+        'Hard-fail validation issues must be resolved before rebaseline.',
+      );
+    }
+    if (driftState.staleItems.length > 0) {
+      rebaselineReadinessReasons.push(`Stale items remain: ${driftState.staleItems.join(', ')}.`);
+    }
+    if (staleProofs.size > 0) {
+      rebaselineReadinessReasons.push(
+        `Stale proofs remain: ${[...staleProofs].sort().join(', ')}.`,
+      );
+    }
+    if (staleReviewArtifacts.length > 0) {
+      rebaselineReadinessReasons.push(
+        `Stale review artifacts remain: ${[...staleReviewArtifacts].sort().join(', ')}.`,
+      );
+    }
+    if (missingRequiredReviews.length > 0) {
+      rebaselineReadinessReasons.push(
+        `Missing required review roles remain: ${[...new Set(missingRequiredReviews)].sort().join(', ')}.`,
+      );
+    }
+    if (pendingTrackProofReviews.length > 0) {
+      rebaselineReadinessReasons.push(
+        `Pending track-proof reviews remain: ${[...new Set(pendingTrackProofReviews)].sort().join(', ')}.`,
+      );
+    }
+    if (trackGateFailures.length > 0) {
+      rebaselineReadinessReasons.push(
+        `Track gate failures remain: ${[...new Set(trackGateFailures)].sort().join(', ')}.`,
+      );
+    }
+  }
+  const rebaselineReadiness = !driftState.rebaselineRequired
+    ? {
+        status: 'not_needed' as const,
+        reasons: rebaselineReadinessReasons,
+      }
+    : rebaselineReadinessReasons.length === 0
+      ? {
+          status: 'allowed' as const,
+          reasons: [],
+        }
+      : {
+          status: 'blocked' as const,
+          reasons: rebaselineReadinessReasons,
+        };
+  if (staleReviewArtifacts.length > 0) {
+    nextActions.push(`Refresh stale review artifacts: ${staleReviewArtifacts.join(', ')}.`);
+  }
 
   const deltaSummary = {
     ...driftState.deltaSummary,
-    baseline_established: true,
+    stale_review_artifact_ids: [...staleReviewArtifacts].sort(),
   };
 
   const assessment: AssessmentFile = {
     schema_version: SCHEMA_VERSION,
     run_id: manifest.run_id ?? path.basename(runDir),
-    assessed_at: utcNow(),
+    assessed_at: assessedAt,
     status: assessmentStatus,
     errors,
     warnings,
@@ -5542,6 +7508,7 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     stale_proofs: [...new Set([...staleProofs])],
     stale_items: driftState.staleItems,
     stale_claims: driftState.staleClaims,
+    stale_review_artifacts: [...staleReviewArtifacts].sort(),
     track_gate_failures: [...new Set(trackGateFailures)],
     required_review_roles: [...requiredReviewRoles].sort(),
     present_review_roles: presentReviewRoles,
@@ -5553,18 +7520,36 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     score,
     acceptance: acceptanceState,
     closure: closureState,
+    rebaseline_readiness: rebaselineReadiness,
     stats: {
-      sources: backlog.source_authority.length,
-      claims: backlog.claims.length,
-      contracts: backlog.contracts.length,
-      data_domains: backlog.data_domains.length,
-      items: backlog.items.length,
-      relations: backlog.relations.length,
-      proofs: backlog.proofs.length,
-      track_proofs: backlog.track_proofs.length,
-      reviews: backlog.reviews.length,
-      waivers: backlog.waivers.length,
-      previous_warnings: Array.isArray(previousAssessment.warnings) ? previousAssessment.warnings.length : 0,
+      sources_total: countUniqueIds(backlog.source_authority, (entry) => entry.source_id),
+      claims_total: countUniqueIds(backlog.claims, (entry) => entry.claim_id),
+      contracts_total: countUniqueIds(backlog.contracts, (entry) => entry.contract_id),
+      data_domains_total: countUniqueIds(backlog.data_domains, (entry) => entry.domain_id),
+      items_total: uniqueItemsById.size,
+      items_delivered: [...uniqueItemsById.values()].filter(
+        (item) => item.delivery_state === 'delivered',
+      ).length,
+      items_partially_delivered: [...uniqueItemsById.values()].filter(
+        (item) => item.delivery_state === 'partially_delivered',
+      ).length,
+      items_not_started: [...uniqueItemsById.values()].filter(
+        (item) => item.delivery_state === 'not_started',
+      ).length,
+      gaps_total: countUniqueIds(backlog.gaps, (entry) => entry.issue_id),
+      unknowns_total: countUniqueIds(backlog.unknowns, (entry) => entry.issue_id),
+      contradictions_total: countUniqueIds(backlog.contradictions, (entry) => entry.issue_id),
+      stale_claims_total: new Set(driftState.staleClaims).size,
+      stale_items_total: staleItemIds.size,
+      stale_proofs_total: staleProofIds.size,
+      stale_review_artifacts_total: staleReviewArtifacts.length,
+      warnings_total: warnings.length,
+      hard_fails_total: uniqueHardFails.length,
+      dor_ready_total: [...uniqueItemsById.values()].filter(
+        (item) => item.readiness_state === 'ready',
+      ).length,
+      review_artifacts_total: countUniqueIds(backlog.reviews, (entry) => entry.review_id),
+      waivers_total: countUniqueIds(backlog.waivers, (entry) => entry.waiver_id),
     },
     delta_summary: deltaSummary,
     rebaseline_required: driftState.rebaselineRequired,
@@ -5576,16 +7561,17 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
   manifest.last_assessment_status = assessment.status;
   manifest.current_source_hashes = driftState.currentSourceHashes;
   manifest.current_canonical_hashes = driftState.currentCanonicalHashes;
+  manifest.current_issue_item_links = driftState.currentIssueItemLinks;
   manifest.dirty_flags = driftState.deltaSummary.dirty_flags;
-  if (!driftState.baselineEstablished) {
+  if (!driftState.baselineEstablished || !hasBaselineIssueItemLinksSnapshot) {
     manifest.baseline_source_hashes = driftState.baselineSourceHashes;
     manifest.baseline_canonical_hashes = driftState.baselineCanonicalHashes;
+    manifest.baseline_issue_item_links = driftState.baselineIssueItemLinks;
   }
   if (assessment.status === 'pass' && !['rendered', 'closed'].includes(manifest.phase_state)) {
     manifest.phase_state = 'validated';
   }
   writeJson(paths.manifest, manifest);
-  const journalEvents = loadNdjson<Record<string, unknown>>(paths.journal);
   const recordedWaiverIds = new Set(
     journalEvents
       .filter((event) => event.event === 'waiver_recorded')
@@ -5606,6 +7592,7 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       ts: assessment.assessed_at,
       event: 'waiver_recorded',
       run_id: assessment.run_id,
+      ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
       waiver_id: waiver.waiver_id,
       waived_role: waiver.waived_role ?? null,
       scope: formatGraphRef(waiver.scope),
@@ -5625,6 +7612,7 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
       ts: assessment.assessed_at,
       event: 'track_closed',
       run_id: assessment.run_id,
+      ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
       track_id: track.track_id,
       summary_label: track.summary_label ?? null,
       track_proof_refs: asArray(track.track_proof_refs),
@@ -5634,11 +7622,16 @@ export function validateDiscoveryRun(runDirInput: string): ValidateDiscoveryRunR
     ts: assessment.assessed_at,
     event: 'run_validated',
     run_id: assessment.run_id,
+    ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
     status: assessment.status,
     achieved_acceptance: assessment.acceptance.achieved,
     score: assessment.score.total,
     error_count: errors.length,
     warning_count: warnings.length,
+    issue_resolution_snapshot: {
+      gaps: buildIssueResolutionSnapshot(backlog.gaps),
+      unknowns: buildIssueResolutionSnapshot(backlog.unknowns),
+    },
   });
 
   return {

@@ -34,6 +34,10 @@ export interface RepairRunResult {
   unsupportedSchemaMessages: string[];
 }
 
+export interface RepairDiscoveryRunOptions {
+  commandRunId?: string;
+}
+
 function deriveSummaryLabel(
   backlogProtocolState: BacklogProtocolState | undefined,
   deliveryState: DeliveryState | undefined,
@@ -53,7 +57,11 @@ function deriveSummaryLabel(
   if (readinessState === 'needs_clarification') {
     return 'Needs clarification';
   }
-  if (backlogProtocolState === 'candidate' && deliveryState === 'not_started' && readinessState === 'not_ready') {
+  if (
+    backlogProtocolState === 'candidate' &&
+    deliveryState === 'not_started' &&
+    readinessState === 'not_ready'
+  ) {
     return 'Missing';
   }
   return 'Planned';
@@ -105,19 +113,25 @@ function syncTrackDerivedRefs(backlog: BacklogFile, appliedRepairs: string[]): v
     const derivedGateIds = [...new Set(gateIdsByTrackId.get(track.track_id) ?? [])];
     const derivedTrackProofIds = [...new Set(trackProofIdsByTrackId.get(track.track_id) ?? [])];
 
-    const currentJourneyIds = [...new Set(asArray(track.first_shippable_journey_ids).filter(isNonEmptyString))];
+    const currentJourneyIds = [
+      ...new Set(asArray(track.first_shippable_journey_ids).filter(isNonEmptyString)),
+    ];
     if (JSON.stringify(currentJourneyIds) !== JSON.stringify(derivedJourneyIds)) {
       track.first_shippable_journey_ids = derivedJourneyIds;
       appliedRepairs.push(`track:${track.track_id}:first_shippable_journey_ids`);
     }
 
-    const currentGateIds = [...new Set(asArray(track.required_track_gate_ids).filter(isNonEmptyString))];
+    const currentGateIds = [
+      ...new Set(asArray(track.required_track_gate_ids).filter(isNonEmptyString)),
+    ];
     if (JSON.stringify(currentGateIds) !== JSON.stringify(derivedGateIds)) {
       track.required_track_gate_ids = derivedGateIds;
       appliedRepairs.push(`track:${track.track_id}:required_track_gate_ids`);
     }
 
-    const currentTrackProofIds = [...new Set(asArray(track.track_proof_refs).filter(isNonEmptyString))];
+    const currentTrackProofIds = [
+      ...new Set(asArray(track.track_proof_refs).filter(isNonEmptyString)),
+    ];
     if (JSON.stringify(currentTrackProofIds) !== JSON.stringify(derivedTrackProofIds)) {
       track.track_proof_refs = derivedTrackProofIds;
       appliedRepairs.push(`track:${track.track_id}:track_proof_refs`);
@@ -180,14 +194,19 @@ export function repairBacklogCanonicalState(backlog: BacklogFile): RepairBacklog
   };
 }
 
-export function repairDiscoveryRun(runDirInput: string): RepairRunResult {
+export function repairDiscoveryRun(
+  runDirInput: string,
+  options: RepairDiscoveryRunOptions = {},
+): RepairRunResult {
   const bundleRepair = repairCompactRunBundle(runDirInput);
   if (bundleRepair.legacyLayoutMessage || bundleRepair.unsupportedSchemaMessages.length > 0) {
     return {
       appliedRepairs: [],
       backlog: null,
       manifest: null,
-      ...(bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {}),
+      ...(bundleRepair.legacyLayoutMessage
+        ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage }
+        : {}),
       missingArtifacts: bundleRepair.irreparableMissingArtifacts,
       runDir: bundleRepair.runDir,
       unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages,
@@ -261,6 +280,7 @@ export function repairDiscoveryRun(runDirInput: string): RepairRunResult {
       ts: repairedAt,
       event: 'canonical_repaired',
       run_id: manifest.run_id,
+      ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
       applied_repairs: repairResult.appliedRepairs,
     });
   }

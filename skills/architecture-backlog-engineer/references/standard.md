@@ -1077,7 +1077,254 @@ The actual multi-role review in this work pushed the methodology from discovery-
 - QA/Release forced reproducible proof, freshness rules, and independent acceptance artifacts.
 - Support/Ops forced empirical operational inputs, explicit support ownership, and system-level operability rehearsal.
 
-## 15. Final Operating Instruction
+## 15. Operator Extraction, Edit, And Freshness Contract
+
+This section defines the operator-facing methodology contract that must be stable without requiring the agent to infer workflow from CLI source code.
+
+### 15.1 Extraction checklist
+
+For every create or edit request, the agent must execute this checklist before authoring or registering any packet:
+
+1. Classify every input as one of:
+   - `architecture_doc`
+   - `adr`
+   - `runtime_evidence`
+   - `deployment_contract`
+   - `delivered_dossier_ssot`
+   - `code_evidence`
+   - `operational_evidence`
+   - `backlog_text`
+2. Assign authority to every input:
+   - `authoritative_target_truth`
+   - `authoritative_current_truth`
+   - `historical_context_only`
+   - `superseded_excluded`
+   - `planning_only`
+3. Identify which durable sections of canonical state are affected.
+4. Decide whether the request requires:
+   - authoritative prose inputs only as semantic source material for the agent;
+   - new authoritative current-truth evidence;
+   - explicit packet authoring by the agent;
+   - or both evidence and packet authoring.
+5. Author explicit packet files when the CLI needs machine-readable graph input.
+6. Register sources and packet refs only through the bundled CLI.
+7. After any create or edit workflow, rerun the appropriate CLI command so canonical state is recomputed through the normal run lifecycle.
+
+Normative clarification:
+
+- prose interpretation belongs to the agent;
+- packet authoring belongs to the agent;
+- canonical graph materialization belongs to the CLI;
+- support for embedded packet blocks, if present in runtime code, is an implementation detail and is not part of the normal methodology contract.
+
+### 15.2 Decision table: prose inputs, packets, and recomputation
+
+| Scenario | Allowed path | Forbidden path |
+| --- | --- | --- |
+| Create a new backlog from architecture, ADR, or runtime sources | agent reads authoritative prose inputs, authors explicit packet files, then runs `discover` with source refs and packet refs | expecting the CLI to derive backlog meaning from prose by itself; manually assembling canonical files without `discover` |
+| Enrich an existing run with new current truth | add authoritative-current evidence, author packet updates as needed, then rerun `discover` | editing `delivery_state` directly without evidence |
+| Edit owner, `depends_on`, roadmap, or general planning fields on an item | explicit packet with planning overlay, then rerun `discover` | hand-editing `backlog.json` |
+| Edit `Gap`, `Unknown`, or create `Spike` | explicit packet, then rerun `discover` | changing unrelated sections through a generic edit path |
+| Update `delivery_state` | evidence-backed authoritative-current input, plus packet authoring when needed, then rerun `discover` | planning-only packet edit of `delivery_state` |
+| Mark a claim as `deferred`, `optional`, or `negative scope` | explicit packet with planning-decision overlay that changes only commitment-related fields, then rerun `discover` | rewriting claim identity, class, or source trace with planning-only data |
+
+### 15.3 Mapping: operator intent to packet sections
+
+| Operator intent | Packet sections | Default authority/kind | Merge policy |
+| --- | --- | --- | --- |
+| Create backlog from architecture | `id_strategy`, `glossary`, `aliases`, `target_system`, `value_streams`, `tracks`, `claims`, `negative_scope`, `quality_attributes`, `policy_decisions`, `contracts`, `data_domains` | authoritative target-truth prose sources interpreted by the agent | source-driven upsert through agent-authored packet files |
+| Add current truth | `as_built`, `track_gates`, `track_journeys`, `unknowns`, `uncertainty_to_spike`, `delivered_lineage_notes`, `items`, `relations`, `proofs`, `track_proofs`, `reviews`, `waivers` | authoritative current-truth evidence interpreted by the agent | upsert |
+| Change general item data | `items` | planning-only packet authored by the agent | targeted item upsert only |
+| Change linked Spike question | `items` for `spike_discovery`, optionally `uncertainty_to_spike` | planning-only packet authored by the agent | upsert |
+| Change Gap | `gaps` | planning-only packet authored by the agent | upsert |
+| Change Unknown | `unknowns` | planning-only packet authored by the agent | upsert |
+| Create timeboxed Spike | `items`, `relations`, optionally `uncertainty_to_spike` and `roadmap_matrix` | planning-only packet authored by the agent | upsert |
+| Change owner | `items` | planning-only packet authored by the agent | upsert |
+| Change `depends_on` | `relations`, optionally `roadmap_matrix` | planning-only packet authored by the agent | upsert |
+| Update `delivery_state` from current truth | `items` and/or `as_built` through an evidence-backed current-truth input | authoritative current-truth evidence interpreted by the agent | upsert |
+| Mark claim as `deferred`, `optional`, or `negative scope` | `claims`, `negative_scope` | planning-decision packet authored by the agent | upsert of commitment-related fields only |
+
+### 15.4 Explicit packet restrictions
+
+These restrictions are mandatory:
+
+1. Explicit packet files are authored by the agent. The operator is not expected to author packet content directly.
+2. Methodology-owned artifacts must be created and updated only through the bundled CLI. The agent must not use ad hoc generators, mutation scripts, or direct editors for canonical artifacts.
+3. `replace_sections` is forbidden for targeted operator edits. It is allowed only for full source-driven refresh of a section.
+4. A planning overlay may not change immutable identity fields:
+   - `claim_id`, `claim_class`
+   - `contract_id`
+   - `domain_id`
+   - identity entries in the source-authority ledger
+5. For claim commitment edits, a planning overlay may change only:
+   - `claim.commitment`
+   - `claim.revisit_trigger`
+   - `negative_scope` entries and their links
+6. `source_refs` in packet-authored entries must remain system-traceable and may not degenerate into arbitrary manual strings.
+7. Every explicit packet must preserve enough provenance to identify:
+   - the source ref it came from or extends;
+   - the source kind and authority;
+   - whether it is acting as a source-driven refresh or a planning overlay.
+8. `delivery_state` changes remain admissible only when backed by authoritative current-truth evidence rather than planning-only intent.
+
+### 15.5 Edit semantics and guardrails
+
+#### General rule
+
+Every edit scenario must end with canonical recomputation through the bundled CLI; operator edits are not allowed to patch canonical files directly.
+
+#### Scenario boundaries
+
+- General item edit may change only planning fields that are not reserved for special scenarios.
+- A linked Spike question edit may change only the `question` of the target `spike_discovery` item.
+- Gap edit may change only:
+  - `title`
+  - `severity`
+  - `owner_implications`
+  - `related_claim_refs`
+  - `related_item_refs`
+  - `fail_closed_category`
+  - `resolution_state`
+  - `downgraded_severity`
+  - `resolution_note`
+- Unknown edit follows the same resolution field boundaries as Gap edit, plus severity and linkage fields.
+- Owner edit may change only `owners.*`.
+- `depends_on` edit may change only the directed `depends_on` relation and any roadmap projection needed to keep ordering consistent.
+- `delivery_state` edit is admissible only when backed by authoritative current-truth evidence.
+- Claim coverage edit for `deferred`, `optional`, or `negative scope` is restricted to claim commitment fields and canonical `negative_scope` representation.
+
+#### Canonical rule for `negative_scope`
+
+Operator-facing `negative scope` must be represented canonically as:
+
+1. `claim.commitment=out_of_scope`
+2. a `negative_scope` register entry with at least:
+   - `negative_scope_id`
+   - `title`
+   - `negative_scope_class`
+   - `source_refs`
+   - `owner_implications`
+   - `related_claim_refs`
+   - `related_item_refs`
+   - `revisit_trigger`
+3. if `negative_scope_class` implies manual or synthetic closure semantics, the entry must additionally include:
+   - `critical_path_item_refs`
+   - `owner_seam_item_refs`
+
+If the operator asks only for `deferred` or `optional`, update only `claim.commitment` and `claim.revisit_trigger` without creating `negative_scope` until an actual out-of-scope decision exists.
+
+#### Transition rules for Gap and Unknown
+
+Gap and Unknown follow the same state machine:
+
+- `open -> resolved`
+  - requires `resolution_note`
+- `open -> downgraded`
+  - requires both `resolution_note` and `downgraded_severity`
+- `downgraded -> resolved`
+  - requires a new `resolution_note`
+- `resolved -> open`
+  - allowed only when triggered by new authoritative input or drift reassessment
+
+Validation must hard-fail invalid transitions.
+
+#### Evidence-based delivery state
+
+The methodology requires:
+
+- `delivery_state=delivered` and `delivery_state=partially_delivered` only when supported by current-truth evidence;
+- admissible evidence sources are:
+  - `runtime_evidence`
+  - `deployment_contract`
+  - `delivered_dossier_ssot`
+  - `code_evidence`
+  - `operational_evidence`
+- a planning-only packet may not move an item to `partially_delivered` or `delivered`.
+
+Validation must hard-fail any delivery-state flip that lacks evidence-backed current-truth input.
+
+#### Spike authoring rule
+
+The minimum required fields for a new `spike_discovery` item are:
+
+- `item_id`
+- `title`
+- `item_class=spike_discovery`
+- `track_id`
+- `uncertainty_class`
+- `question`
+- `validation_method`
+- `expected_artifact`
+- `max_duration`
+- `kill_criteria`
+- `exit_criteria`
+- `follow_on_item_refs`
+
+The only fields that may be inherited automatically are:
+
+- `track_id`
+- owners
+- related `Unknown`
+- basic `origin_ref`
+
+Inheritance is allowed only when the parent item and related Unknown are unambiguous; otherwise the workflow must stop for disambiguation. If required spike fields are missing, the agent must first return the missing-field list instead of creating the spike.
+
+### 15.6 Review staleness and rebaseline readiness
+
+#### Stale review artifact
+
+A review artifact is stale if any of the following holds:
+
+1. `review_scope=run` and `reviewed_at < last_rebaseline_at`
+2. `review_scope=item` and the reviewed item is in `stale_items`
+3. `review_scope=track_proof` and the reviewed track proof depends on `stale_proofs` or requires recalculation by `track_gate_ids_to_recalculate`
+4. `review_scope=run` and any dirty flag that changes run acceptance or closure appeared after `reviewed_at`
+5. the reviewed scope no longer satisfies the review applicability matrix
+
+#### Rule after rebaseline
+
+`rebaseline` removes drift against the baseline but does not automatically refresh review artifacts.
+
+After `rebaseline`:
+
+- every run-scope review issued before `last_rebaseline_at` becomes stale;
+- item-scope and track-proof reviews become stale only when their actual scope is in stale or recalculated surfaces, or when applicability changed.
+
+#### Rebaseline readiness
+
+`rebaseline_readiness.status` is:
+
+- `allowed` when:
+  - `assessment.status=pass`
+  - `rebaseline_required=true`
+  - no `hard_fails`
+  - no `stale_items`
+  - no `stale_proofs`
+  - no `stale_review_artifacts`
+  - no `missing_review_roles`
+  - no `pending_track_proof_reviews`
+  - no `track_gate_failures`
+- `not_needed` when `rebaseline_required=false`
+- `blocked` in every other case
+
+`reasons` must enumerate blockers or the cause of `not_needed`.
+
+### 15.7 Command freshness lineage semantics
+
+The methodology uses the following run-level semantics:
+
+- `command_run_id` is created for every top-level CLI invocation, including standalone recovery `render`;
+- auto-render that closes a mutating command must reuse the same `command_run_id` as the preceding phase events of that command;
+- a retry or repeated invocation after failure must receive a new `command_run_id` and may not reuse lineage from the previous attempt;
+- `render_reason` is one of:
+  - `mutating_command`
+  - `recovery_render`
+- the canonical command-outcome event for stale lineage is `report_rendered` with `render_reason=mutating_command`;
+- only command-level snapshots from mutating commands participate in `New Stale Since Last Change`;
+- intermediate phase events inside the same command may exist for diagnostics but must not participate in stale-diff comparison;
+- if there is no previous command-level stale snapshot, operator-facing output must show `Unknown` with reason `first recorded snapshot; no previous stale snapshot to diff`.
+
+## 16. Final Operating Instruction
 
 An architecture-to-backlog run is complete only when it can answer, with durable evidence:
 
@@ -1158,9 +1405,12 @@ Additional required fields by class:
 - `Spike / discovery`:
   - `uncertainty_class`
   - `question`
+  - `validation_method`
+  - `expected_artifact`
   - `max_duration`
   - `exit_criteria`
   - `kill_criteria`
+  - `follow_on_item_refs`
 - `Operational enablement`:
   - `runbook_or_enablement_artifact`
   - `runtime_owner`

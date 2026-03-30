@@ -17,11 +17,25 @@ import {
   type Manifest,
   type ProofDimensionKey,
 } from './common.js';
+import {
+  buildNewStaleSnapshot,
+  buildStaleSnapshot,
+  readLatestMutatingNewStaleSnapshot,
+  readPreviousMutatingStaleSnapshot,
+  type NewStaleSnapshot,
+  type RenderReason,
+} from './command-lineage.js';
+import { getSummaryMetricLines } from './status-run.js';
 
 export interface RenderDiscoveryViewsResult {
   renderedAt: string;
   reportPath: string;
   runDir: string;
+}
+
+export interface RenderDiscoveryViewsOptions {
+  commandRunId?: string;
+  renderReason?: RenderReason;
 }
 
 function escapeCell(value: unknown): string {
@@ -43,6 +57,22 @@ function escapeCell(value: unknown): string {
 
 function itemSort(left: DiscoveryItem, right: DiscoveryItem): number {
   return String(left.item_id ?? '').localeCompare(String(right.item_id ?? ''));
+}
+
+function sortUniqueStrings(values: string[]): string[] {
+  return [...new Set(values.filter(isNonEmptyString))].sort();
+}
+
+function formatList(values: string[]): string {
+  return values.length > 0 ? values.join(', ') : 'None';
+}
+
+function itemSummaryAnchor(itemId: string): string {
+  return `item-summary-${itemId}`;
+}
+
+function itemDetailAnchor(itemId: string): string {
+  return `item-detail-${itemId}`;
 }
 
 function stringValues(values: unknown[]): string[] {
@@ -92,7 +122,6 @@ function asBuiltIsPopulated(backlog: BacklogFile): boolean {
   );
 }
 
-
 function renderRunSummary(manifest: Manifest, assessment: AssessmentFile): string[] {
   return [
     '## Run Summary',
@@ -106,6 +135,10 @@ function renderRunSummary(manifest: Manifest, assessment: AssessmentFile): strin
     `- Closure status: ${assessment.closure.status}`,
     `- Score: ${assessment.score.total}/${assessment.score.max}`,
     `- Last assessed at: ${assessment.assessed_at}`,
+    '',
+    '### Summary Metrics',
+    '',
+    ...getSummaryMetricLines(assessment).map((line) => `- ${line}`),
     '',
   ];
 }
@@ -152,10 +185,7 @@ function renderSourceExclusions(backlog: BacklogFile): string[] {
   return [...lines, ''];
 }
 
-function renderKeyedListSection(
-  title: string,
-  entries: Array<[string, string[]]>,
-): string[] {
+function renderKeyedListSection(title: string, entries: Array<[string, string[]]>): string[] {
   const lines = [title, '', '| Field | Values |', '| --- | --- |'];
 
   for (const [label, values] of entries) {
@@ -205,7 +235,14 @@ function renderAsBuilt(backlog: BacklogFile): string[] {
     ['Missing operational inputs', backlog.as_built.missing_operational_inputs],
   ]);
 
-  lines.splice(lines.length - 1, 0, '### Dependency Classifications', '', '| Dependency | Criticality | Owner |', '| --- | --- | --- |');
+  lines.splice(
+    lines.length - 1,
+    0,
+    '### Dependency Classifications',
+    '',
+    '| Dependency | Criticality | Owner |',
+    '| --- | --- | --- |',
+  );
   for (const dependency of backlog.as_built.dependency_classifications) {
     lines.splice(
       lines.length - 1,
@@ -303,9 +340,305 @@ function renderExtendedItemSchema(backlog: BacklogFile): string[] {
 function getItemMap(backlog: BacklogFile): Map<string, DiscoveryItem> {
   return new Map(
     backlog.items
-      .filter((item): item is DiscoveryItem & { item_id: string } => typeof item.item_id === 'string')
+      .filter(
+        (item): item is DiscoveryItem & { item_id: string } => typeof item.item_id === 'string',
+      )
       .map((item) => [item.item_id, item]),
   );
+}
+
+function buildReviewMap(backlog: BacklogFile): Map<string, BacklogFile['reviews'][number]> {
+  return new Map(
+    backlog.reviews
+      .filter((review): review is BacklogFile['reviews'][number] & { review_id: string } =>
+        isNonEmptyString(review.review_id),
+      )
+      .map((review) => [review.review_id, review]),
+  );
+}
+
+function buildContractMap(backlog: BacklogFile): Map<string, BacklogFile['contracts'][number]> {
+  return new Map(
+    backlog.contracts
+      .filter((contract): contract is BacklogFile['contracts'][number] & { contract_id: string } =>
+        isNonEmptyString(contract.contract_id),
+      )
+      .map((contract) => [contract.contract_id, contract]),
+  );
+}
+
+function buildDataDomainMap(
+  backlog: BacklogFile,
+): Map<string, BacklogFile['data_domains'][number]> {
+  return new Map(
+    backlog.data_domains
+      .filter((domain): domain is BacklogFile['data_domains'][number] & { domain_id: string } =>
+        isNonEmptyString(domain.domain_id),
+      )
+      .map((domain) => [domain.domain_id, domain]),
+  );
+}
+
+function collectRelationTargets(
+  backlog: BacklogFile,
+  fromKind: string,
+  fromId: string,
+  relationType: string,
+  toKind?: string,
+): string[] {
+  return sortUniqueStrings(
+    backlog.relations
+      .filter(
+        (relation) =>
+          relation.relation_type === relationType &&
+          relation.from?.kind === fromKind &&
+          relation.from?.id === fromId &&
+          (!toKind || relation.to?.kind === toKind) &&
+          isNonEmptyString(relation.to?.id),
+      )
+      .map((relation) => relation.to?.id ?? ''),
+  );
+}
+
+function collectRelatedIssueIds(
+  entries: Array<{ issue_id?: string; related_item_refs?: string[] }>,
+  itemId: string,
+): string[] {
+  return sortUniqueStrings(
+    entries
+      .filter((entry) => asArray(entry.related_item_refs).includes(itemId))
+      .map((entry) => entry.issue_id ?? ''),
+  );
+}
+
+function collectRelatedSpikeIds(backlog: BacklogFile, unknownIds: string[]): string[] {
+  const unknownIdSet = new Set(unknownIds);
+  return sortUniqueStrings(
+    backlog.uncertainty_to_spike
+      .filter(
+        (entry) =>
+          unknownIdSet.has(entry.unknown_id ?? '') && isNonEmptyString(entry.spike_item_id),
+      )
+      .map((entry) => entry.spike_item_id ?? ''),
+  );
+}
+
+function formatOwners(item: DiscoveryItem): string {
+  const owners = asStringRecord(item.owners);
+  const parts = [
+    ['decision_owner', owners.decision_owner],
+    ['delivery_owner', owners.delivery_owner],
+    ['runtime_owner', owners.runtime_owner],
+    ['escalation_owner', owners.escalation_owner],
+  ]
+    .filter(([, value]) => isNonEmptyString(value))
+    .map(([key, value]) => `${String(key)}=${String(value)}`);
+
+  const consultedTeams = Array.isArray(owners.consulted_teams)
+    ? sortUniqueStrings(stringValues(owners.consulted_teams))
+    : [];
+  if (consultedTeams.length > 0) {
+    parts.push(`consulted_teams=${consultedTeams.join(', ')}`);
+  }
+
+  return parts.length > 0 ? parts.join('; ') : 'None';
+}
+
+function collectItemProblems(
+  backlog: BacklogFile,
+  assessment: AssessmentFile,
+  item: DiscoveryItem,
+  reviewIds: string[],
+): string[] {
+  const itemId = item.item_id ?? '';
+  const problems: string[] = [];
+  const staleProofIds = sortUniqueStrings(
+    asArray(item.proof_refs).filter((proofRef) => assessment.stale_proofs.includes(proofRef)),
+  );
+  const staleReviewIds = sortUniqueStrings(
+    reviewIds.filter((reviewId) => assessment.stale_review_artifacts.includes(reviewId)),
+  );
+  const relatedGaps = collectRelatedIssueIds(backlog.gaps, itemId);
+  const relatedUnknowns = collectRelatedIssueIds(backlog.unknowns, itemId);
+  const relatedContradictions = collectRelatedIssueIds(backlog.contradictions, itemId);
+
+  if (assessment.stale_items.includes(itemId)) {
+    problems.push('stale item');
+  }
+  if (staleProofIds.length > 0) {
+    problems.push(`stale proofs: ${staleProofIds.join(', ')}`);
+  }
+  if (staleReviewIds.length > 0) {
+    problems.push(`stale reviews: ${staleReviewIds.join(', ')}`);
+  }
+  if (relatedGaps.length > 0) {
+    problems.push(`gaps: ${relatedGaps.join(', ')}`);
+  }
+  if (relatedUnknowns.length > 0) {
+    problems.push(`unknowns: ${relatedUnknowns.join(', ')}`);
+  }
+  if (relatedContradictions.length > 0) {
+    problems.push(`contradictions: ${relatedContradictions.join(', ')}`);
+  }
+
+  return problems;
+}
+
+function renderItemSummaryIndex(backlog: BacklogFile, assessment: AssessmentFile): string[] {
+  const lines = ['## Item Summary Index', ''];
+  const items = [...backlog.items].sort(itemSort);
+
+  if (items.length === 0) {
+    return [...lines, '- None', ''];
+  }
+
+  for (const item of items) {
+    const itemId = item.item_id ?? 'unknown-item';
+    const reviewIds = collectRelationTargets(backlog, 'item', itemId, 'reviewed_by', 'review');
+    const dependsOnIds = collectRelationTargets(backlog, 'item', itemId, 'depends_on', 'item');
+    const problems = collectItemProblems(backlog, assessment, item, reviewIds);
+
+    lines.push(`<a id="${itemSummaryAnchor(itemId)}"></a>`);
+    lines.push(`### ${itemId}`);
+    lines.push(`- Jump to detail: [${itemId}](#${itemDetailAnchor(itemId)})`);
+    lines.push(`- item_id: ${itemId}`);
+    lines.push(`- title: ${item.title ?? 'None'}`);
+    lines.push(`- item_class: ${item.item_class ?? 'None'}`);
+    lines.push(`- summary_label: ${item.summary_label ?? 'None'}`);
+    lines.push(`- delivery_state: ${item.delivery_state ?? 'None'}`);
+    lines.push(`- track_id: ${item.track_id ?? 'None'}`);
+    lines.push(`- owners: ${formatOwners(item)}`);
+    lines.push(`- depends_on: ${formatList(dependsOnIds)}`);
+    lines.push(`- major_problems: ${formatList(problems)}`);
+    lines.push('');
+  }
+
+  return lines;
+}
+
+function renderItemDetailSections(backlog: BacklogFile, assessment: AssessmentFile): string[] {
+  const lines = ['## Item Detail Sections', ''];
+  const items = [...backlog.items].sort(itemSort);
+  const reviewById = buildReviewMap(backlog);
+  const contractById = buildContractMap(backlog);
+  const dataDomainById = buildDataDomainMap(backlog);
+
+  if (items.length === 0) {
+    return [...lines, '- None', ''];
+  }
+
+  for (const item of items) {
+    const itemId = item.item_id ?? 'unknown-item';
+    const reviewIds = collectRelationTargets(backlog, 'item', itemId, 'reviewed_by', 'review');
+    const contractIds = collectRelationTargets(
+      backlog,
+      'item',
+      itemId,
+      'touches_contract',
+      'contract',
+    );
+    const dataDomainIds = collectRelationTargets(
+      backlog,
+      'item',
+      itemId,
+      'touches_data_domain',
+      'data_domain',
+    );
+    const dependsOnIds = collectRelationTargets(backlog, 'item', itemId, 'depends_on', 'item');
+    const relatedGaps = collectRelatedIssueIds(backlog.gaps, itemId);
+    const relatedUnknowns = collectRelatedIssueIds(backlog.unknowns, itemId);
+    const relatedContradictions = collectRelatedIssueIds(backlog.contradictions, itemId);
+    const relatedSpikes = collectRelatedSpikeIds(backlog, relatedUnknowns);
+    const problems = collectItemProblems(backlog, assessment, item, reviewIds);
+    const reviewSummaries = reviewIds.map((reviewId) => {
+      const review = reviewById.get(reviewId);
+      return review
+        ? `${reviewId} (role=${review.role ?? 'unknown'}, verdict=${review.verdict ?? 'unknown'})`
+        : reviewId;
+    });
+    const contractSummaries = contractIds.map((contractId) => {
+      const contract = contractById.get(contractId);
+      return contract
+        ? `${contractId} (owner=${contract.owner ?? 'unknown'}, versioning=${contract.versioning_strategy ?? 'unknown'})`
+        : contractId;
+    });
+    const dataDomainSummaries = dataDomainIds.map((domainId) => {
+      const domain = dataDomainById.get(domainId);
+      return domain
+        ? `${domainId} (data_class=${domain.data_class ?? 'unknown'}, owners=${asArray(domain.owners).join(', ') || 'None'})`
+        : domainId;
+    });
+
+    lines.push(`<a id="${itemDetailAnchor(itemId)}"></a>`);
+    lines.push(`### ${itemId}`);
+    lines.push(`- Jump to summary: [${itemId}](#${itemSummaryAnchor(itemId)})`);
+    lines.push(`- item_id: ${itemId}`);
+    lines.push(`- title: ${item.title ?? 'None'}`);
+    lines.push(`- item_class: ${item.item_class ?? 'None'}`);
+    lines.push(`- summary_label: ${item.summary_label ?? 'None'}`);
+    lines.push(`- delivery_state: ${item.delivery_state ?? 'None'}`);
+    lines.push(`- track_id: ${item.track_id ?? 'None'}`);
+    lines.push(`- owners: ${formatOwners(item)}`);
+    lines.push(`- depends_on: ${formatList(dependsOnIds)}`);
+    lines.push(`- major_problems: ${formatList(problems)}`);
+    lines.push(`- origin_ref: ${formatList(asArray(item.origin_ref).map(formatOriginRef))}`);
+    lines.push(`- claim_refs: ${formatList(sortUniqueStrings(asArray(item.claim_refs)))}`);
+    lines.push(`- proof_refs: ${formatList(sortUniqueStrings(asArray(item.proof_refs)))}`);
+    lines.push(`- review_refs: ${formatList(reviewSummaries)}`);
+    lines.push(`- touches_contracts: ${formatList(contractSummaries)}`);
+    lines.push(`- touches_data_domains: ${formatList(dataDomainSummaries)}`);
+    lines.push(`- related_gaps: ${formatList(relatedGaps)}`);
+    lines.push(`- related_unknowns: ${formatList(relatedUnknowns)}`);
+    lines.push(`- related_contradictions: ${formatList(relatedContradictions)}`);
+    lines.push(`- related_spikes: ${formatList(relatedSpikes)}`);
+    lines.push('');
+    lines.push('#### Readiness Contract');
+    lines.push(
+      `- baseline_checks: ${formatBooleanLedger(asStringRecord(item.readiness_contract), [
+        'behavior_described',
+        'happy_path_defined',
+        'error_paths_defined',
+        'acceptance_examples_defined',
+        'interface_data_impact_described',
+        'nfr_impact_known',
+        'security_privacy_impact_known',
+        'rollout_defined',
+        'recovery_defined',
+        'observability_contract_defined',
+        'required_proof_defined',
+        'docs_support_impact_described',
+        'estimate_band_defined',
+        'confidence_defined',
+        'unresolved_questions_below_threshold',
+      ])}`,
+    );
+    lines.push(
+      `- class_specific_checks: ${
+        formatKeyValueLedger(
+          asStringRecord(asStringRecord(item.readiness_contract).class_specific_checks),
+        ) || 'None'
+      }`,
+    );
+    lines.push('');
+    lines.push('#### Done Contract');
+    lines.push(
+      `- baseline_checks: ${formatKeyValueLedger(asStringRecord(item.done_contract)) || 'None'}`,
+    );
+    lines.push(
+      `- class_specific_checks: ${
+        formatKeyValueLedger(
+          asStringRecord(asStringRecord(item.done_contract).class_specific_checks),
+        ) || 'None'
+      }`,
+    );
+    lines.push('');
+    lines.push('#### Rollout And Recovery');
+    lines.push(`- rollout: ${formatKeyValueLedger(asStringRecord(item.rollout)) || 'None'}`);
+    lines.push(`- recovery: ${formatKeyValueLedger(asStringRecord(item.recovery)) || 'None'}`);
+    lines.push('');
+  }
+
+  return lines;
 }
 
 function orderRoadmapRows(backlog: BacklogFile): BacklogFile['roadmap_matrix'] {
@@ -345,7 +678,7 @@ function renderRoadmap(backlog: BacklogFile): string[] {
   for (const row of ordered) {
     const itemId = row.item_ref?.id ?? '';
     const item = itemMap.get(itemId);
-    const itemLabel = item ? item.title ?? item.item_id ?? '' : itemId;
+    const itemLabel = item ? (item.title ?? item.item_id ?? '') : itemId;
     const states = [
       row.backlog_protocol_state,
       row.delivery_state,
@@ -439,10 +772,14 @@ function renderProofBundles(backlog: BacklogFile, assessment: AssessmentFile): s
   return [...lines, ''];
 }
 
-function formatProofDimension(proof: BacklogFile['proofs'][number], dimensionKey: ProofDimensionKey): string {
+function formatProofDimension(
+  proof: BacklogFile['proofs'][number],
+  dimensionKey: ProofDimensionKey,
+): string {
   const dimension = asStringRecord(asStringRecord(proof.dimensions)[dimensionKey]);
   const status = isNonEmptyString(dimension.status) ? dimension.status : 'missing';
-  const locator = [dimension.command, dimension.artifact, dimension.procedure].find(isNonEmptyString) ?? '';
+  const locator =
+    [dimension.command, dimension.artifact, dimension.procedure].find(isNonEmptyString) ?? '';
   const justification = isNonEmptyString(dimension.justification) ? dimension.justification : '';
   const detail = locator || justification;
   return detail ? `${status}: ${detail}` : status;
@@ -476,7 +813,9 @@ function formatBooleanLedger(record: Record<string, unknown>, keys: string[]): s
 
 function formatKeyValueLedger(record: Record<string, unknown>): string {
   return Object.entries(record)
-    .map(([key, value]) => `${key}=${value === true ? 'yes' : value === false ? 'no' : String(value)}`)
+    .map(
+      ([key, value]) => `${key}=${value === true ? 'yes' : value === false ? 'no' : String(value)}`,
+    )
     .join('; ');
 }
 
@@ -505,7 +844,9 @@ function renderClosureEvidence(backlog: BacklogFile, assessment: AssessmentFile)
     const classSpecificChecks = formatKeyValueLedger(asStringRecord(done.class_specific_checks));
     const exemptions = formatKeyValueLedger(asStringRecord(done.exemptions));
     const proofEvidence = asArray(item.proof_refs)
-      .map((proofRef) => `${proofRef}:${staleProofIds.has(proofRef) ? 'stale' : 'fresh_or_current'}`)
+      .map(
+        (proofRef) => `${proofRef}:${staleProofIds.has(proofRef) ? 'stale' : 'fresh_or_current'}`,
+      )
       .join('; ');
     lines.push(
       `| ${escapeCell(item.item_id ?? '')} | ${escapeCell(item.item_class ?? '')} | ${escapeCell(formatBooleanLedger(done, baselineDoneKeys))} | ${escapeCell(classSpecificChecks || 'none')} | ${escapeCell(proofEvidence || 'none')} | ${escapeCell(exemptions || 'none')} |`,
@@ -520,12 +861,7 @@ function renderClosureEvidence(backlog: BacklogFile, assessment: AssessmentFile)
 }
 
 function renderGapsAndValidation(assessment: AssessmentFile): string[] {
-  const lines = [
-    '## Gaps And Validation',
-    '',
-    '### Hard Fails',
-    '',
-  ];
+  const lines = ['## Gaps And Validation', '', '### Hard Fails', ''];
 
   if (assessment.hard_fails.length === 0) {
     lines.push('- None');
@@ -616,12 +952,8 @@ function renderReviewAndClosure(assessment: AssessmentFile): string[] {
 
 function renderBackdrop(backlog: BacklogFile): string[] {
   const lines = ['## Context Coverage', ''];
-  lines.push(
-    `- Target-system model populated: ${targetSystemIsPopulated(backlog) ? 'Yes' : 'No'}`,
-  );
-  lines.push(
-    `- As-built model populated: ${asBuiltIsPopulated(backlog) ? 'Yes' : 'No'}`,
-  );
+  lines.push(`- Target-system model populated: ${targetSystemIsPopulated(backlog) ? 'Yes' : 'No'}`);
+  lines.push(`- As-built model populated: ${asBuiltIsPopulated(backlog) ? 'Yes' : 'No'}`);
   lines.push(`- Value streams recorded: ${backlog.value_streams.length}`);
   lines.push(`- Track journeys recorded: ${backlog.track_journeys.length}`);
   lines.push(`- Track gates recorded: ${backlog.track_gates.length}`);
@@ -810,7 +1142,9 @@ function renderUncertaintyAndSpikes(backlog: BacklogFile): string[] {
   );
 
   for (const unknown of backlog.unknowns) {
-    const mapping = backlog.uncertainty_to_spike.find((entry) => entry.unknown_id === unknown.issue_id);
+    const mapping = backlog.uncertainty_to_spike.find(
+      (entry) => entry.unknown_id === unknown.issue_id,
+    );
     const spike = mapping?.spike_item_id ? spikesById.get(mapping.spike_item_id) : undefined;
     const spikePayload = asStringRecord(spike?.class_payload);
     const followOns = Array.isArray(spikePayload.follow_on_item_refs)
@@ -829,12 +1163,7 @@ function renderUncertaintyAndSpikes(backlog: BacklogFile): string[] {
 }
 
 function renderGraphRelations(backlog: BacklogFile): string[] {
-  const lines = [
-    '## Graph Relations',
-    '',
-    '| Relation | From | To |',
-    '| --- | --- | --- |',
-  ];
+  const lines = ['## Graph Relations', '', '| Relation | From | To |', '| --- | --- | --- |'];
 
   for (const relation of backlog.relations) {
     lines.push(
@@ -937,7 +1266,11 @@ function renderIssueLedgers(backlog: BacklogFile): string[] {
     }
   }
 
-  if (backlog.gaps.length === 0 && backlog.contradictions.length === 0 && backlog.unknowns.length === 0) {
+  if (
+    backlog.gaps.length === 0 &&
+    backlog.contradictions.length === 0 &&
+    backlog.unknowns.length === 0
+  ) {
     lines.push('| _none_ |  |  |  |  |  |  |  |');
   }
 
@@ -954,7 +1287,10 @@ function renderTraceability(backlog: BacklogFile): string[] {
   const policyDecisionIds = new Set(
     backlog.policy_decisions
       .map((decision) => decision.policy_decision_id)
-      .filter((decisionId): decisionId is string => typeof decisionId === 'string' && decisionId.length > 0),
+      .filter(
+        (decisionId): decisionId is string =>
+          typeof decisionId === 'string' && decisionId.length > 0,
+      ),
   );
   const gapIds = new Set(
     backlog.gaps
@@ -964,7 +1300,9 @@ function renderTraceability(backlog: BacklogFile): string[] {
   const unknownIds = new Set(
     backlog.unknowns
       .map((unknown) => unknown.issue_id)
-      .filter((unknownId): unknownId is string => typeof unknownId === 'string' && unknownId.length > 0),
+      .filter(
+        (unknownId): unknownId is string => typeof unknownId === 'string' && unknownId.length > 0,
+      ),
   );
   const controlObligationClaimIds = new Set(
     backlog.claims
@@ -987,7 +1325,9 @@ function renderTraceability(backlog: BacklogFile): string[] {
       sourceRefs.every((sourceRef) => sourceIds.has(sourceRef) && !excludedSourceIds.has(sourceRef))
     );
   });
-  const itemsWithDeclaredOrigins = backlog.items.filter((item) => asArray(item.origin_ref).length > 0);
+  const itemsWithDeclaredOrigins = backlog.items.filter(
+    (item) => asArray(item.origin_ref).length > 0,
+  );
   const itemsWithClaimRefs = backlog.items.filter((item) => asArray(item.claim_refs).length > 0);
   const mappedClaimIds = new Set<string>();
   const itemsWithResolvedOrigins = new Set<string>();
@@ -1143,13 +1483,17 @@ function renderApplicabilityAndExemptions(backlog: BacklogFile): string[] {
     const doneExemptions = Object.entries(asStringRecord(done.exemptions))
       .map(([key, value]) => `${key}: ${String(value)}`)
       .join('; ');
-    const rolloutJustification = isNonEmptyString(rollout.justification) ? rollout.justification : '';
+    const rolloutJustification = isNonEmptyString(rollout.justification)
+      ? rollout.justification
+      : '';
     const rolloutMode = isNonEmptyString(rollout.mode) ? rollout.mode : '';
     const rolloutLabel =
       rollout.applicability === 'not_applicable'
         ? `not_applicable: ${rolloutJustification}`
         : rolloutMode;
-    const recoveryJustification = isNonEmptyString(recovery.justification) ? recovery.justification : '';
+    const recoveryJustification = isNonEmptyString(recovery.justification)
+      ? recovery.justification
+      : '';
     const recoveryClass = isNonEmptyString(recovery.class) ? recovery.class : '';
     const recoveryLabel =
       recovery.applicability === 'not_applicable'
@@ -1193,7 +1537,13 @@ function renderReviewGovernance(backlog: BacklogFile, assessment: AssessmentFile
     lines.push('| _none_ |  |  |  |  |  |  |  |  |  |');
   }
 
-  lines.push('', '### Waivers', '', '| Waiver | Role | Scope | Granting Authority | Valid | Trigger | Impacted Surfaces |', '| --- | --- | --- | --- | --- | --- | --- |');
+  lines.push(
+    '',
+    '### Waivers',
+    '',
+    '| Waiver | Role | Scope | Granting Authority | Valid | Trigger | Impacted Surfaces |',
+    '| --- | --- | --- | --- | --- | --- | --- |',
+  );
   for (const waiver of backlog.waivers) {
     const computedValidity =
       isNonEmptyString(waiver.waiver_id) && invalidWaiverIds.has(waiver.waiver_id)
@@ -1227,8 +1577,34 @@ function renderLifecycleAndDrift(manifest: Manifest, assessment: AssessmentFile)
     `- Stale claims: ${assessment.stale_claims.join(', ') || 'None'}`,
     `- Stale items: ${assessment.stale_items.join(', ') || 'None'}`,
     `- Stale proofs: ${assessment.stale_proofs.join(', ') || 'None'}`,
+    `- Stale review artifacts: ${assessment.stale_review_artifacts.join(', ') || 'None'}`,
     `- Track gates to recalculate: ${assessment.delta_summary.track_gate_ids_to_recalculate.join(', ') || 'None'}`,
+    `- Recalculation surfaces: dirty_flags=${manifest.dirty_flags.join(', ') || 'None'}; track_gates=${assessment.delta_summary.track_gate_ids_to_recalculate.join(', ') || 'None'}`,
     `- Track gate failures: ${assessment.track_gate_failures.join(', ') || 'None'}`,
+    '',
+  ];
+}
+
+function renderRebaselineReadiness(assessment: AssessmentFile): string[] {
+  return [
+    '## Rebaseline Readiness',
+    '',
+    `- Status: ${assessment.rebaseline_readiness.status}`,
+    `- Reasons: ${assessment.rebaseline_readiness.reasons.join('; ') || 'None'}`,
+    '',
+  ];
+}
+
+function renderNewStaleSinceLastChange(snapshot: NewStaleSnapshot): string[] {
+  return [
+    '## New Stale Since Last Change',
+    '',
+    `- Status: ${snapshot.status}`,
+    `- Reason: ${snapshot.reason ?? 'None'}`,
+    `- Claims: ${snapshot.claims.join(', ') || 'None'}`,
+    `- Items: ${snapshot.items.join(', ') || 'None'}`,
+    `- Proofs: ${snapshot.proofs.join(', ') || 'None'}`,
+    `- Reviews: ${snapshot.reviews.join(', ') || 'None'}`,
     '',
   ];
 }
@@ -1236,7 +1612,9 @@ function renderLifecycleAndDrift(manifest: Manifest, assessment: AssessmentFile)
 function buildProofMap(backlog: BacklogFile): Map<string, BacklogFile['proofs'][number]> {
   return new Map(
     backlog.proofs
-      .filter((proof): proof is BacklogFile['proofs'][number] & { proof_id: string } => isNonEmptyString(proof.proof_id))
+      .filter((proof): proof is BacklogFile['proofs'][number] & { proof_id: string } =>
+        isNonEmptyString(proof.proof_id),
+      )
       .map((proof) => [proof.proof_id, proof]),
   );
 }
@@ -1254,7 +1632,9 @@ function summarizeProofRefs(
     .map((proofRef) => {
       const proof = proofById.get(proofRef);
       const freshness = staleProofIds.has(proofRef) ? 'stale' : 'fresh_or_current';
-      const build = isNonEmptyString(proof?.covered_commit_or_build) ? proof.covered_commit_or_build : 'no-build';
+      const build = isNonEmptyString(proof?.covered_commit_or_build)
+        ? proof.covered_commit_or_build
+        : 'no-build';
       return `${proofRef} (${freshness}, ${build})`;
     })
     .join('; ');
@@ -1273,7 +1653,9 @@ function summarizeRoadmapAnswer(backlog: BacklogFile): string {
       const item = itemMap.get(itemId);
       const title = item?.title ?? itemId;
       const factors = asArray(row.economic_factors).join(', ') || 'no-economic-factors';
-      const note = isNonEmptyString(row.economic_priority_note) ? row.economic_priority_note : 'no-economic-note';
+      const note = isNonEmptyString(row.economic_priority_note)
+        ? row.economic_priority_note
+        : 'no-economic-note';
       return `${index + 1}) ${itemId} (${title}) [topology=${row.topology_rank ?? 'n/a'}, safety=${row.safety_rank ?? 'n/a'}, economic=${row.economic_rank ?? 'n/a'}; factors=${factors}; note=${note}]`;
     })
     .join(' ');
@@ -1287,7 +1669,10 @@ function summarizeItemProofAnswer(backlog: BacklogFile, assessment: AssessmentFi
   }
 
   return backlog.items
-    .map((item) => `${item.item_id ?? 'unknown'} -> ${summarizeProofRefs(asArray(item.proof_refs), proofById, staleProofIds)}`)
+    .map(
+      (item) =>
+        `${item.item_id ?? 'unknown'} -> ${summarizeProofRefs(asArray(item.proof_refs), proofById, staleProofIds)}`,
+    )
     .join('; ');
 }
 
@@ -1356,15 +1741,48 @@ function renderFinalOperatingQuestions(
     `3. What exists now? ${backlog.as_built.deployable_surfaces.length} deployable surfaces, ${backlog.as_built.services.length} services, ${backlog.as_built.state_stores.length} state stores, and ${backlog.as_built.vendor_external_owners.length} external owners are mapped.`,
     `4. What is synthetic, partial, optional, or manual-only? ${backlog.negative_scope.length > 0 ? backlog.negative_scope.map((entry) => `${entry.negative_scope_id}:${entry.negative_scope_class}`).join(', ') : 'No negative-scope entries recorded.'}`,
     `5. Which committed claims remain uncovered? ${uncoveredClaims.length > 0 ? uncoveredClaims.join(', ') : 'None.'}`,
-    `6. Which seams own each mandatory capability? ${backlog.items.filter((item) => item.item_class === 'capability_seam').map((item) => `${item.item_id}:${item.title ?? item.capability_added ?? ''}`).join(', ') || 'No capability seams recorded.'}`,
+    `6. Which seams own each mandatory capability? ${
+      backlog.items
+        .filter((item) => item.item_class === 'capability_seam')
+        .map((item) => `${item.item_id}:${item.title ?? item.capability_added ?? ''}`)
+        .join(', ') || 'No capability seams recorded.'
+    }`,
     `7. Which items are seams, slices, controls, migrations, retirements, spikes, or enablement work? ${backlog.items.map((item) => `${item.item_id}:${item.item_class}`).join(', ') || 'No items recorded.'}`,
-    `8. Which items are planning-ready now? ${backlog.items.filter((item) => item.readiness_state === 'ready').map((item) => item.item_id).join(', ') || 'None.'}`,
-    `9. Which contracts, migrations, and retirements are required? Contracts=${backlog.contracts.map((contract) => contract.contract_id).join(', ') || 'None'}; migrations=${backlog.items.filter((item) => item.item_class === 'migration').map((item) => item.item_id).join(', ') || 'None'}; retirements=${backlog.items.filter((item) => item.item_class === 'retirement').map((item) => item.item_id).join(', ') || 'None'}.`,
-    `10. Which quality budgets and control obligations are binding? Quality attributes=${backlog.quality_attributes.map((entry) => entry.quality_attribute_id).join(', ') || 'None'}; control obligations=${backlog.claims.filter((claim) => claim.claim_class === 'control_obligation').map((claim) => claim.claim_id).join(', ') || 'None'}.`,
+    `8. Which items are planning-ready now? ${
+      backlog.items
+        .filter((item) => item.readiness_state === 'ready')
+        .map((item) => item.item_id)
+        .join(', ') || 'None.'
+    }`,
+    `9. Which contracts, migrations, and retirements are required? Contracts=${backlog.contracts.map((contract) => contract.contract_id).join(', ') || 'None'}; migrations=${
+      backlog.items
+        .filter((item) => item.item_class === 'migration')
+        .map((item) => item.item_id)
+        .join(', ') || 'None'
+    }; retirements=${
+      backlog.items
+        .filter((item) => item.item_class === 'retirement')
+        .map((item) => item.item_id)
+        .join(', ') || 'None'
+    }.`,
+    `10. Which quality budgets and control obligations are binding? Quality attributes=${backlog.quality_attributes.map((entry) => entry.quality_attribute_id).join(', ') || 'None'}; control obligations=${
+      backlog.claims
+        .filter((claim) => claim.claim_class === 'control_obligation')
+        .map((claim) => claim.claim_id)
+        .join(', ') || 'None'
+    }.`,
     `11. In what order must items land, and why? ${roadmapAnswer}`,
     `12. What proof closes each item? ${itemProofAnswer}`,
     `13. What proof closes each track? ${trackProofAnswer}`,
-    `14. Which items remain blocked, stale, or unclear? stale_items=${assessment.stale_items.join(', ') || 'None'}; stale_claims=${assessment.stale_claims.join(', ') || 'None'}; stale_proofs=${assessment.stale_proofs.join(', ') || 'None'}; unresolved_unknowns=${backlog.unknowns.filter((entry) => entry.resolution_state !== 'resolved' && entry.resolution_state !== 'downgraded').map((entry) => entry.issue_id).join(', ') || 'None'}.`,
+    `14. Which items remain blocked, stale, or unclear? stale_items=${assessment.stale_items.join(', ') || 'None'}; stale_claims=${assessment.stale_claims.join(', ') || 'None'}; stale_proofs=${assessment.stale_proofs.join(', ') || 'None'}; unresolved_unknowns=${
+      backlog.unknowns
+        .filter(
+          (entry) =>
+            entry.resolution_state !== 'resolved' && entry.resolution_state !== 'downgraded',
+        )
+        .map((entry) => entry.issue_id)
+        .join(', ') || 'None'
+    }.`,
     `15. Does the roadmap end in a real, runnable, deployable, supportable system? ${roadmapEndsRunnable ? 'Yes.' : 'Not yet.'} Achieved acceptance=${assessment.acceptance.achieved}, track gate failures=${assessment.track_gate_failures.length}, stale proofs=${assessment.stale_proofs.length}, stale items=${assessment.stale_items.length}, rebaseline_required=${assessment.rebaseline_required ? 'yes' : 'no'}.`,
     '',
   ];
@@ -1382,9 +1800,19 @@ function renderInvalidBanner(assessment: AssessmentFile): string[] {
   ];
 }
 
-export function renderDiscoveryViews(runDirInput: string): RenderDiscoveryViewsResult {
-  const { assessment, backlog, legacyLayoutMessage, manifest, missingArtifacts, runDir, unsupportedSchemaMessages } =
-    loadCompactRunArtifacts(runDirInput);
+export function renderDiscoveryViews(
+  runDirInput: string,
+  options: RenderDiscoveryViewsOptions = {},
+): RenderDiscoveryViewsResult {
+  const {
+    assessment,
+    backlog,
+    legacyLayoutMessage,
+    manifest,
+    missingArtifacts,
+    runDir,
+    unsupportedSchemaMessages,
+  } = loadCompactRunArtifacts(runDirInput);
 
   if (legacyLayoutMessage) {
     throw new Error(legacyLayoutMessage);
@@ -1403,6 +1831,16 @@ export function renderDiscoveryViews(runDirInput: string): RenderDiscoveryViewsR
 
   const paths = runPaths(runDir);
   const renderedAt = utcNow();
+  const renderReason = options.renderReason ?? 'recovery_render';
+  const previousStaleSnapshot =
+    renderReason === 'mutating_command' ? readPreviousMutatingStaleSnapshot(paths.journal) : null;
+  const staleSnapshot = renderReason === 'mutating_command' ? buildStaleSnapshot(assessment) : null;
+  const newStaleSnapshot =
+    renderReason === 'mutating_command' && staleSnapshot
+      ? buildNewStaleSnapshot(previousStaleSnapshot, staleSnapshot)
+      : null;
+  const reportNewStaleSnapshot =
+    newStaleSnapshot ?? readLatestMutatingNewStaleSnapshot(paths.journal);
 
   const reportLines = [
     '# Architecture Backlog Report',
@@ -1430,11 +1868,15 @@ export function renderDiscoveryViews(runDirInput: string): RenderDiscoveryViewsR
     ...renderApplicabilityAndExemptions(backlog),
     ...renderClosureEvidence(backlog, assessment),
     ...renderFeatureCandidates(backlog),
+    ...renderItemSummaryIndex(backlog, assessment),
+    ...renderItemDetailSections(backlog, assessment),
     ...renderRoadmap(backlog),
     ...renderRoadmapMatrix(backlog),
     ...renderTraceability(backlog),
     ...renderReviewGovernance(backlog, assessment),
     ...renderLifecycleAndDrift(manifest, assessment),
+    ...renderRebaselineReadiness(assessment),
+    ...renderNewStaleSinceLastChange(reportNewStaleSnapshot),
     ...renderGraphRelations(backlog),
     ...renderGapsAndValidation(assessment),
     ...renderScoreSummary(assessment),
@@ -1456,8 +1898,16 @@ export function renderDiscoveryViews(runDirInput: string): RenderDiscoveryViewsR
     ts: renderedAt,
     event: 'report_rendered',
     run_id: manifest.run_id,
+    ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
+    render_reason: renderReason,
     assessment_status: assessment.status,
     achieved_acceptance: assessment.acceptance.achieved,
+    ...(renderReason === 'mutating_command' && staleSnapshot
+      ? {
+          stale_snapshot: staleSnapshot,
+          new_stale_snapshot: newStaleSnapshot,
+        }
+      : {}),
   });
 
   return {

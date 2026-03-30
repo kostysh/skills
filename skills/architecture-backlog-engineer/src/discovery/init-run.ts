@@ -12,6 +12,8 @@ import {
   SUMMARY_LABELS,
   appendNdjson,
   createEmptyAsBuiltModel,
+  createEmptyAssessmentStats,
+  createEmptyDeltaSummary,
   createEmptyTargetSystemModel,
   detectLegacyLayout,
   legacyLayoutMessage,
@@ -28,6 +30,7 @@ const DEFAULT_ACCEPTANCE_TARGET: AcceptanceClass = 'planning-grade';
 
 export interface InitializeDiscoveryRunOptions {
   acceptanceTarget?: AcceptanceClass;
+  commandRunId?: string;
   force?: boolean;
   runDir: string;
 }
@@ -97,21 +100,14 @@ export function createEmptyAssessment(
       status: 'open',
       reason: 'Run initialized but discovery evidence has not been assessed yet.',
     },
-    delta_summary: {
-      baseline_established: false,
-      changed_source_ids: [],
-      changed_claim_ids: [],
-      stale_claim_ids: [],
-      stale_item_ids: [],
-      stale_proof_ids: [],
-      track_gate_ids_to_recalculate: [],
-      dirty_flags: [],
-      topology_changed: false,
-      contract_changed: false,
-      changed_track_gate_ids: [],
-    },
+    delta_summary: createEmptyDeltaSummary(),
     rebaseline_required: false,
-    stats: {},
+    stale_review_artifacts: [],
+    rebaseline_readiness: {
+      status: 'not_needed',
+      reasons: ['Rebaseline is not needed until validation detects baseline drift.'],
+    },
+    stats: createEmptyAssessmentStats(),
   };
 }
 
@@ -129,7 +125,13 @@ export function initializeDiscoveryRun(
   }
 
   const paths = runPaths(runDir);
-  const canonicalPaths = [paths.manifest, paths.backlog, paths.assessment, paths.journal, paths.report];
+  const canonicalPaths = [
+    paths.manifest,
+    paths.backlog,
+    paths.assessment,
+    paths.journal,
+    paths.report,
+  ];
   if (!options.force && canonicalPaths.some((filePath) => fs.existsSync(filePath))) {
     throw new Error(`Run directory already contains discovery artifacts: ${runDir}`);
   }
@@ -148,6 +150,8 @@ export function initializeDiscoveryRun(
     current_source_hashes: {},
     baseline_canonical_hashes: {},
     current_canonical_hashes: {},
+    baseline_issue_item_links: {},
+    current_issue_item_links: {},
     dirty_flags: [],
     last_assessment_status: 'not-run',
     last_render_at: null,
@@ -231,6 +235,7 @@ export function initializeDiscoveryRun(
     ts: createdAt,
     event: 'run_initialized',
     run_id: runId,
+    ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
     acceptance_target: acceptanceTarget,
     schema_version: SCHEMA_VERSION,
   });

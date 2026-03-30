@@ -10,6 +10,67 @@ import { fileURLToPath } from 'node:url';
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
 const CLI_PATH = path.join(SKILL_DIR, 'scripts', 'architecture-backlog.mjs');
+const SKILL_DOC_PATH = path.join(SKILL_DIR, 'SKILL.md');
+const OPERATOR_HELP_PATH = path.join(SKILL_DIR, 'docs', 'operator-use-cases.ru.md');
+const OPERATOR_WORKFLOW_GROUPS = [
+  'Create backlog',
+  'Audit backlog',
+  'Audit one item',
+  'Edit backlog',
+];
+const OPERATOR_WORKFLOWS = [
+  ['UC-01', 'Create backlog from one source'],
+  ['UC-02', 'Create backlog from multiple sources'],
+  ['UC-03', 'Create backlog with current truth'],
+  ['UC-04', 'Draft backlog from incomplete architecture'],
+  ['UC-05', 'Show structured backlog'],
+  ['UC-06', 'Show backlog summary metrics'],
+  ['UC-07', 'Show delivery state for all items'],
+  ['UC-08', 'Show uncovered claims'],
+  ['UC-09', 'Show ranked problem list'],
+  ['UC-10', 'Show DoR-ready items'],
+  ['UC-23', 'Show delta from baseline'],
+  ['UC-24', 'Show stale items after drift'],
+  ['UC-25', 'Show stale proofs and reviews'],
+  ['UC-11', 'Show item summary'],
+  ['UC-12', 'Show item details'],
+  ['UC-13', 'Change general item data via explicit packet or updated inputs'],
+  ['UC-14', 'Change question on linked Spike'],
+  ['UC-15', 'Change Gap'],
+  ['UC-16', 'Change Unknown'],
+  ['UC-17', 'Create timeboxed Spike'],
+  ['UC-18', 'Change owner'],
+  ['UC-19', 'Change depends_on relation'],
+  ['UC-20', 'Update delivery state from current truth'],
+  ['UC-21', 'Mark architecture claim as deferred, optional, or negative scope'],
+  ['UC-22', 'Fix roadmap order through graph relations'],
+  ['UC-26', 'Set new baseline with rebaseline'],
+  ['UC-27', 'Check rebaseline readiness'],
+  ['UC-28', 'Check new stale after change'],
+  ['UC-29', 'Add current truth to existing run'],
+];
+const FIXED_ASSESSMENT_STATS_KEYS = [
+  'sources_total',
+  'claims_total',
+  'contracts_total',
+  'data_domains_total',
+  'items_total',
+  'items_delivered',
+  'items_partially_delivered',
+  'items_not_started',
+  'gaps_total',
+  'unknowns_total',
+  'contradictions_total',
+  'stale_claims_total',
+  'stale_items_total',
+  'stale_proofs_total',
+  'stale_review_artifacts_total',
+  'warnings_total',
+  'hard_fails_total',
+  'dor_ready_total',
+  'review_artifacts_total',
+  'waivers_total',
+];
 
 function runCli(args) {
   const result = spawnSync('node', [CLI_PATH, ...args], {
@@ -49,6 +110,14 @@ function loadNdjson(filePath) {
     .map((line) => JSON.parse(line));
 }
 
+function journalEventsByName(entries, eventName) {
+  return entries.filter((entry) => entry.event === eventName);
+}
+
+function lastJournalEvent(entries, eventName) {
+  return [...entries].reverse().find((entry) => entry.event === eventName);
+}
+
 function writeJson(filePath, data) {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
@@ -59,6 +128,54 @@ function sha256Fingerprint(content) {
 
 function ref(kind, id) {
   return { kind, id };
+}
+
+function countUniqueIds(entries, key) {
+  return new Set(
+    entries
+      .map((entry) => entry[key])
+      .filter((value) => typeof value === 'string' && value.length > 0),
+  ).size;
+}
+
+function uniqueEntriesById(entries, key) {
+  const unique = [];
+  const seen = new Set();
+  for (const entry of entries) {
+    const value = entry[key];
+    if (typeof value !== 'string' || value.length === 0 || seen.has(value)) {
+      continue;
+    }
+    seen.add(value);
+    unique.push(entry);
+  }
+  return unique;
+}
+
+function assertSubstringsInOrder(text, substrings) {
+  let previousIndex = -1;
+  for (const substring of substrings) {
+    const currentIndex = text.indexOf(substring);
+    assert.notEqual(
+      currentIndex,
+      -1,
+      `Expected output to contain substring in order: ${substring}`,
+    );
+    assert.ok(
+      currentIndex > previousIndex,
+      `Expected substring ${substring} to appear after the previous section marker`,
+    );
+    previousIndex = currentIndex;
+  }
+}
+
+function extractReportSection(report, heading) {
+  const sectionHeading = `## ${heading}\n`;
+  const sectionStart = report.indexOf(sectionHeading);
+  assert.notEqual(sectionStart, -1, `Expected report to contain section: ${heading}`);
+  const nextSectionStart = report.indexOf('\n## ', sectionStart + sectionHeading.length);
+  const sectionEnd = nextSectionStart === -1 ? report.length : nextSectionStart;
+  return report.slice(sectionStart, sectionEnd).replace(/\s+$/, '');
 }
 
 function buildProofDimensions() {
@@ -445,8 +562,7 @@ function buildRoadmapMatrix(items, relations) {
       economic_priority_note: item.economic_priority_note,
       economic_factors: getEconomicFactorsForItem(item),
       proof_refs: item.proof_refs,
-      retirement_ref:
-        outgoing.find((relation) => relation.relation_type === 'retires')?.to ?? null,
+      retirement_ref: outgoing.find((relation) => relation.relation_type === 'retires')?.to ?? null,
       topology_rank: index + 1,
       safety_rank: index + 1,
       economic_rank: index + 1,
@@ -724,7 +840,8 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
       actor_role_set: ['operator', 'support'],
       value: {
         persona_or_operator_served: 'operator',
-        product_or_operator_value: 'Support and runtime teams can operate the payment system safely.',
+        product_or_operator_value:
+          'Support and runtime teams can operate the payment system safely.',
         why_now: 'External supportability is impossible without runbooks and escalation ownership.',
         slice_value_kind: 'risk_retirement',
       },
@@ -800,7 +917,8 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
       data_class: 'pci-sensitive',
       value: {
         persona_or_operator_served: 'operator',
-        product_or_operator_value: 'Migrate the payment runtime to the target callback contract safely.',
+        product_or_operator_value:
+          'Migrate the payment runtime to the target callback contract safely.',
         why_now: 'Target architecture remains split until callback migration closes.',
         slice_value_kind: 'risk_retirement',
       },
@@ -977,7 +1095,8 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
       readiness_contract: buildReadinessContract(),
       done_contract: buildSpikeDoneContract(),
       class_payload: {
-        question: 'What retry window does the provider actually guarantee for duplicate callback suppression?',
+        question:
+          'What retry window does the provider actually guarantee for duplicate callback suppression?',
         uncertainty_class: 'integration_unknown',
         validation_method: 'Replay provider callbacks in staging with controlled duplicates',
         expected_artifact: 'artifacts/provider-retry-window-spike.md',
@@ -1014,7 +1133,8 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
       actor_role_set: ['operator', 'support'],
       value: {
         persona_or_operator_served: 'operator',
-        product_or_operator_value: 'Support and operators use a single source of truth for payment incidents.',
+        product_or_operator_value:
+          'Support and operators use a single source of truth for payment incidents.',
         why_now: 'Support handoff remains weak without durable docs.',
         slice_value_kind: 'risk_retirement',
       },
@@ -1055,52 +1175,236 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
   ];
 
   const relations = [
-    { relation_type: 'belongs_to_track', from: ref('item', 'item-payments-seam'), to: ref('track', 'minimal-working-system') },
-    { relation_type: 'belongs_to_track', from: ref('item', 'item-payments-slice'), to: ref('track', 'minimal-working-system') },
-    { relation_type: 'belongs_to_track', from: ref('item', 'item-payments-control'), to: ref('track', 'externally-safe-operationally-supportable') },
-    { relation_type: 'belongs_to_track', from: ref('item', 'item-payments-ops'), to: ref('track', 'externally-safe-operationally-supportable') },
-    { relation_type: 'belongs_to_track', from: ref('item', 'item-payments-migration'), to: ref('track', 'full-target-system') },
-    { relation_type: 'belongs_to_track', from: ref('item', 'item-payments-retirement'), to: ref('track', 'full-target-system') },
-    { relation_type: 'belongs_to_track', from: ref('item', 'item-payments-spike'), to: ref('track', 'full-target-system') },
-    { relation_type: 'belongs_to_track', from: ref('item', 'item-payments-docs'), to: ref('track', 'full-target-system') },
-    { relation_type: 'decomposes_into', from: ref('item', 'item-payments-seam'), to: ref('item', 'item-payments-slice') },
-    { relation_type: 'decomposes_into', from: ref('item', 'item-payments-seam'), to: ref('item', 'item-payments-control') },
-    { relation_type: 'decomposes_into', from: ref('item', 'item-payments-seam'), to: ref('item', 'item-payments-migration') },
-    { relation_type: 'decomposes_into', from: ref('item', 'item-payments-seam'), to: ref('item', 'item-payments-retirement') },
-    { relation_type: 'decomposes_into', from: ref('item', 'item-payments-seam'), to: ref('item', 'item-payments-docs') },
-    { relation_type: 'realizes', from: ref('item', 'item-payments-slice'), to: ref('item', 'item-payments-seam') },
-    { relation_type: 'depends_on', from: ref('item', 'item-payments-control'), to: ref('item', 'item-payments-slice') },
-    { relation_type: 'depends_on', from: ref('item', 'item-payments-ops'), to: ref('item', 'item-payments-control') },
-    { relation_type: 'depends_on', from: ref('item', 'item-payments-migration'), to: ref('item', 'item-payments-control') },
-    { relation_type: 'depends_on', from: ref('item', 'item-payments-retirement'), to: ref('item', 'item-payments-migration') },
-    { relation_type: 'depends_on', from: ref('item', 'item-payments-spike'), to: ref('item', 'item-payments-slice') },
-    { relation_type: 'depends_on', from: ref('item', 'item-payments-docs'), to: ref('item', 'item-payments-ops') },
-    { relation_type: 'governed_by', from: ref('item', 'item-payments-slice'), to: ref('item', 'item-payments-control') },
-    { relation_type: 'enabled_by', from: ref('item', 'item-payments-ops'), to: ref('item', 'item-payments-slice') },
-    { relation_type: 'enabled_by', from: ref('item', 'item-payments-docs'), to: ref('item', 'item-payments-ops') },
-    { relation_type: 'migrates_from', from: ref('item', 'item-payments-migration'), to: ref('contract', 'contract-payments-api') },
-    { relation_type: 'retires', from: ref('item', 'item-payments-retirement'), to: ref('contract', 'contract-payments-api') },
-    { relation_type: 'touches_contract', from: ref('item', 'item-payments-seam'), to: ref('contract', 'contract-payments-api') },
-    { relation_type: 'touches_contract', from: ref('item', 'item-payments-slice'), to: ref('contract', 'contract-payments-api') },
-    { relation_type: 'touches_contract', from: ref('item', 'item-payments-control'), to: ref('contract', 'contract-payments-api') },
-    { relation_type: 'touches_contract', from: ref('item', 'item-payments-migration'), to: ref('contract', 'contract-payments-api') },
-    { relation_type: 'touches_contract', from: ref('item', 'item-payments-retirement'), to: ref('contract', 'contract-payments-api') },
-    { relation_type: 'touches_data_domain', from: ref('item', 'item-payments-seam'), to: ref('data_domain', 'data-domain-payments') },
-    { relation_type: 'touches_data_domain', from: ref('item', 'item-payments-slice'), to: ref('data_domain', 'data-domain-payments') },
-    { relation_type: 'touches_data_domain', from: ref('item', 'item-payments-control'), to: ref('data_domain', 'data-domain-payments') },
-    { relation_type: 'touches_data_domain', from: ref('item', 'item-payments-migration'), to: ref('data_domain', 'data-domain-payments') },
-    { relation_type: 'touches_data_domain', from: ref('item', 'item-payments-retirement'), to: ref('data_domain', 'data-domain-payments') },
-    { relation_type: 'proves', from: ref('item', 'item-payments-seam'), to: ref('proof', 'proof-payments-seam') },
-    { relation_type: 'proves', from: ref('item', 'item-payments-slice'), to: ref('proof', 'proof-payments') },
-    { relation_type: 'proves', from: ref('item', 'item-payments-control'), to: ref('proof', 'proof-payments-control') },
-    { relation_type: 'proves', from: ref('item', 'item-payments-ops'), to: ref('proof', 'proof-payments-ops') },
-    { relation_type: 'proves', from: ref('item', 'item-payments-migration'), to: ref('proof', 'proof-payments-migration') },
-    { relation_type: 'proves', from: ref('item', 'item-payments-retirement'), to: ref('proof', 'proof-payments-retirement') },
-    { relation_type: 'proves', from: ref('item', 'item-payments-spike'), to: ref('proof', 'proof-payments-spike') },
-    { relation_type: 'proves', from: ref('item', 'item-payments-docs'), to: ref('proof', 'proof-payments-docs') },
-    { relation_type: 'proves', from: ref('track', 'minimal-working-system'), to: ref('track_proof', 'track-proof-payments') },
-    { relation_type: 'proves', from: ref('track', 'externally-safe-operationally-supportable'), to: ref('track_proof', 'track-proof-payments-safety') },
-    { relation_type: 'proves', from: ref('track', 'full-target-system'), to: ref('track_proof', 'track-proof-payments-target') },
+    {
+      relation_type: 'belongs_to_track',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('track', 'minimal-working-system'),
+    },
+    {
+      relation_type: 'belongs_to_track',
+      from: ref('item', 'item-payments-slice'),
+      to: ref('track', 'minimal-working-system'),
+    },
+    {
+      relation_type: 'belongs_to_track',
+      from: ref('item', 'item-payments-control'),
+      to: ref('track', 'externally-safe-operationally-supportable'),
+    },
+    {
+      relation_type: 'belongs_to_track',
+      from: ref('item', 'item-payments-ops'),
+      to: ref('track', 'externally-safe-operationally-supportable'),
+    },
+    {
+      relation_type: 'belongs_to_track',
+      from: ref('item', 'item-payments-migration'),
+      to: ref('track', 'full-target-system'),
+    },
+    {
+      relation_type: 'belongs_to_track',
+      from: ref('item', 'item-payments-retirement'),
+      to: ref('track', 'full-target-system'),
+    },
+    {
+      relation_type: 'belongs_to_track',
+      from: ref('item', 'item-payments-spike'),
+      to: ref('track', 'full-target-system'),
+    },
+    {
+      relation_type: 'belongs_to_track',
+      from: ref('item', 'item-payments-docs'),
+      to: ref('track', 'full-target-system'),
+    },
+    {
+      relation_type: 'decomposes_into',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('item', 'item-payments-slice'),
+    },
+    {
+      relation_type: 'decomposes_into',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('item', 'item-payments-control'),
+    },
+    {
+      relation_type: 'decomposes_into',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('item', 'item-payments-migration'),
+    },
+    {
+      relation_type: 'decomposes_into',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('item', 'item-payments-retirement'),
+    },
+    {
+      relation_type: 'decomposes_into',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('item', 'item-payments-docs'),
+    },
+    {
+      relation_type: 'realizes',
+      from: ref('item', 'item-payments-slice'),
+      to: ref('item', 'item-payments-seam'),
+    },
+    {
+      relation_type: 'depends_on',
+      from: ref('item', 'item-payments-control'),
+      to: ref('item', 'item-payments-slice'),
+    },
+    {
+      relation_type: 'depends_on',
+      from: ref('item', 'item-payments-ops'),
+      to: ref('item', 'item-payments-control'),
+    },
+    {
+      relation_type: 'depends_on',
+      from: ref('item', 'item-payments-migration'),
+      to: ref('item', 'item-payments-control'),
+    },
+    {
+      relation_type: 'depends_on',
+      from: ref('item', 'item-payments-retirement'),
+      to: ref('item', 'item-payments-migration'),
+    },
+    {
+      relation_type: 'depends_on',
+      from: ref('item', 'item-payments-spike'),
+      to: ref('item', 'item-payments-slice'),
+    },
+    {
+      relation_type: 'depends_on',
+      from: ref('item', 'item-payments-docs'),
+      to: ref('item', 'item-payments-ops'),
+    },
+    {
+      relation_type: 'governed_by',
+      from: ref('item', 'item-payments-slice'),
+      to: ref('item', 'item-payments-control'),
+    },
+    {
+      relation_type: 'enabled_by',
+      from: ref('item', 'item-payments-ops'),
+      to: ref('item', 'item-payments-slice'),
+    },
+    {
+      relation_type: 'enabled_by',
+      from: ref('item', 'item-payments-docs'),
+      to: ref('item', 'item-payments-ops'),
+    },
+    {
+      relation_type: 'migrates_from',
+      from: ref('item', 'item-payments-migration'),
+      to: ref('contract', 'contract-payments-api'),
+    },
+    {
+      relation_type: 'retires',
+      from: ref('item', 'item-payments-retirement'),
+      to: ref('contract', 'contract-payments-api'),
+    },
+    {
+      relation_type: 'touches_contract',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('contract', 'contract-payments-api'),
+    },
+    {
+      relation_type: 'touches_contract',
+      from: ref('item', 'item-payments-slice'),
+      to: ref('contract', 'contract-payments-api'),
+    },
+    {
+      relation_type: 'touches_contract',
+      from: ref('item', 'item-payments-control'),
+      to: ref('contract', 'contract-payments-api'),
+    },
+    {
+      relation_type: 'touches_contract',
+      from: ref('item', 'item-payments-migration'),
+      to: ref('contract', 'contract-payments-api'),
+    },
+    {
+      relation_type: 'touches_contract',
+      from: ref('item', 'item-payments-retirement'),
+      to: ref('contract', 'contract-payments-api'),
+    },
+    {
+      relation_type: 'touches_data_domain',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('data_domain', 'data-domain-payments'),
+    },
+    {
+      relation_type: 'touches_data_domain',
+      from: ref('item', 'item-payments-slice'),
+      to: ref('data_domain', 'data-domain-payments'),
+    },
+    {
+      relation_type: 'touches_data_domain',
+      from: ref('item', 'item-payments-control'),
+      to: ref('data_domain', 'data-domain-payments'),
+    },
+    {
+      relation_type: 'touches_data_domain',
+      from: ref('item', 'item-payments-migration'),
+      to: ref('data_domain', 'data-domain-payments'),
+    },
+    {
+      relation_type: 'touches_data_domain',
+      from: ref('item', 'item-payments-retirement'),
+      to: ref('data_domain', 'data-domain-payments'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('item', 'item-payments-seam'),
+      to: ref('proof', 'proof-payments-seam'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('item', 'item-payments-slice'),
+      to: ref('proof', 'proof-payments'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('item', 'item-payments-control'),
+      to: ref('proof', 'proof-payments-control'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('item', 'item-payments-ops'),
+      to: ref('proof', 'proof-payments-ops'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('item', 'item-payments-migration'),
+      to: ref('proof', 'proof-payments-migration'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('item', 'item-payments-retirement'),
+      to: ref('proof', 'proof-payments-retirement'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('item', 'item-payments-spike'),
+      to: ref('proof', 'proof-payments-spike'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('item', 'item-payments-docs'),
+      to: ref('proof', 'proof-payments-docs'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('track', 'minimal-working-system'),
+      to: ref('track_proof', 'track-proof-payments'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('track', 'externally-safe-operationally-supportable'),
+      to: ref('track_proof', 'track-proof-payments-safety'),
+    },
+    {
+      relation_type: 'proves',
+      from: ref('track', 'full-target-system'),
+      to: ref('track_proof', 'track-proof-payments-target'),
+    },
   ];
 
   const reviews = buildReviews(runId, { implementationGrade });
@@ -1217,7 +1521,12 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         description: 'Operators migrate callbacks, retire the old path, and publish durable docs.',
         primary_personas: ['operator'],
         initiating_triggers: ['v2 callback contract launch'],
-        workflow_steps: ['Resolve provider unknown', 'Migrate callbacks', 'Retire legacy path', 'Publish docs'],
+        workflow_steps: [
+          'Resolve provider unknown',
+          'Migrate callbacks',
+          'Retire legacy path',
+          'Publish docs',
+        ],
         linked_track_ids: ['full-target-system'],
         success_conditions: ['v2 callback path is canonical', 'legacy path retired safely'],
         support_handoff: 'support-payments-tier2',
@@ -1242,7 +1551,8 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         track_gate_id: 'gate-payments-external-safety',
         track_id: 'externally-safe-operationally-supportable',
         title: 'External safety guardrails closed',
-        description: 'Fail-closed safety, support, and observability obligations are all evidenced.',
+        description:
+          'Fail-closed safety, support, and observability obligations are all evidenced.',
         gate_type: 'safety',
         fail_mode: 'fail_closed',
         governing_control_item_refs: ['item-payments-control'],
@@ -1255,12 +1565,17 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         track_gate_id: 'gate-payments-full-target',
         track_id: 'full-target-system',
         title: 'Target-state migration and retirement closure',
-        description: 'Migration, retirement, and documentation closure are all evidenced for the target architecture.',
+        description:
+          'Migration, retirement, and documentation closure are all evidenced for the target architecture.',
         gate_type: 'completeness',
         fail_mode: 'fail_open',
         governing_control_item_refs: [],
         owner_refs: ['payments-team', 'support'],
-        required_proof_refs: ['proof-payments-migration', 'proof-payments-retirement', 'proof-track-payments-target'],
+        required_proof_refs: [
+          'proof-payments-migration',
+          'proof-payments-retirement',
+          'proof-track-payments-target',
+        ],
         applies_to_journey_ids: ['journey-payments-full-target'],
         recalculation_triggers: ['source_change', 'topology_change', 'release_change'],
       },
@@ -1282,7 +1597,11 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         value_stream_id: 'vs-payments-safety',
         persona: 'operator',
         trigger: 'External launch readiness review',
-        workflow_steps: ['Verify fail-closed controls', 'Confirm alerts and dashboards', 'Confirm support handoff'],
+        workflow_steps: [
+          'Verify fail-closed controls',
+          'Confirm alerts and dashboards',
+          'Confirm support handoff',
+        ],
         success_condition: 'External launch is fail-closed and supportable.',
         support_handoff: 'support-payments-tier2',
       },
@@ -1292,8 +1611,14 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         value_stream_id: 'vs-payments-target',
         persona: 'operator',
         trigger: 'Target-state callback migration',
-        workflow_steps: ['Resolve provider retry-window uncertainty', 'Migrate callbacks', 'Retire legacy path', 'Publish support docs'],
-        success_condition: 'Target payment architecture is deployable, supportable, and legacy-free.',
+        workflow_steps: [
+          'Resolve provider retry-window uncertainty',
+          'Migrate callbacks',
+          'Retire legacy path',
+          'Publish support docs',
+        ],
+        success_condition:
+          'Target payment architecture is deployable, supportable, and legacy-free.',
         support_handoff: 'support-payments-tier2',
       },
     ],
@@ -1362,7 +1687,8 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
       },
       {
         claim_id: 'claim-payments-ops',
-        title: 'Operators must support payment incidents with explicit runbooks and escalation paths.',
+        title:
+          'Operators must support payment incidents with explicit runbooks and escalation paths.',
         claim_class: 'operational_capability',
         commitment: 'committed',
         source_refs: ['src-architecture', 'src-runtime'],
@@ -1375,7 +1701,10 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         title: 'P95 under 500ms',
         quality_class: 'latency',
         target: 'p95 < 500ms',
-        applies_to_refs: [ref('item', 'item-payments-slice'), ref('track', 'minimal-working-system')],
+        applies_to_refs: [
+          ref('item', 'item-payments-slice'),
+          ref('track', 'minimal-working-system'),
+        ],
         owner_refs: ['payments-team'],
         source_refs: ['src-architecture'],
         proof_refs: ['proof-payments'],
@@ -1480,7 +1809,12 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         executed_at: '2026-03-26T00:00:00Z',
         freshness_rule: 'Refresh after safety control or topology changes.',
         fresh_until: '2026-06-30T00:00:00Z',
-        invalidated_by: ['source_change', 'contract_change', 'topology_change', 'track_gate_change'],
+        invalidated_by: [
+          'source_change',
+          'contract_change',
+          'topology_change',
+          'track_gate_change',
+        ],
         dimensions: buildProofDimensions(),
       },
       {
@@ -1564,7 +1898,12 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         executed_at: '2026-03-26T00:00:00Z',
         freshness_rule: 'Refresh after safety gate, alerting, or topology changes.',
         fresh_until: '2026-06-30T00:00:00Z',
-        invalidated_by: ['source_change', 'contract_change', 'topology_change', 'track_gate_change'],
+        invalidated_by: [
+          'source_change',
+          'contract_change',
+          'topology_change',
+          'track_gate_change',
+        ],
         dimensions: buildProofDimensions(),
       },
       {
@@ -1576,7 +1915,12 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
         executed_at: '2026-03-26T00:00:00Z',
         freshness_rule: 'Refresh after migration, retirement, or support changes.',
         fresh_until: '2026-06-30T00:00:00Z',
-        invalidated_by: ['source_change', 'contract_change', 'topology_change', 'track_gate_change'],
+        invalidated_by: [
+          'source_change',
+          'contract_change',
+          'topology_change',
+          'track_gate_change',
+        ],
         dimensions: buildProofDimensions(),
       },
     ],
@@ -1596,7 +1940,12 @@ function buildBaseBacklog(runId, { implementationGrade = false } = {}) {
       {
         track_proof_id: 'track-proof-payments-target',
         track_id: 'full-target-system',
-        proof_refs: ['proof-payments-migration', 'proof-payments-retirement', 'proof-payments-docs', 'proof-track-payments-target'],
+        proof_refs: [
+          'proof-payments-migration',
+          'proof-payments-retirement',
+          'proof-payments-docs',
+          'proof-track-payments-target',
+        ],
         coverage: buildTrackProofCoverage(),
       },
     ],
@@ -1615,12 +1964,14 @@ function seedBacklog(runDir, options) {
     architecture: {
       sourceId: 'src-architecture',
       filePath: path.join(sourceDir, 'architecture.md'),
-      content: '# Architecture\n\nCommitted capability seam, migration, retirement, and support obligations.\n',
+      content:
+        '# Architecture\n\nCommitted capability seam, migration, retirement, and support obligations.\n',
     },
     runtime: {
       sourceId: 'src-runtime',
       filePath: path.join(sourceDir, 'runtime.md'),
-      content: '# Runtime evidence\n\nCurrent provider behavior, ownership, and operational evidence.\n',
+      content:
+        '# Runtime evidence\n\nCurrent provider behavior, ownership, and operational evidence.\n',
     },
     superseded: {
       sourceId: 'src-old-brief',
@@ -1634,7 +1985,9 @@ function seedBacklog(runDir, options) {
   }
 
   for (const source of backlog.source_authority) {
-    const matchingFixture = Object.values(sourceFixtures).find((fixture) => fixture.sourceId === source.source_id);
+    const matchingFixture = Object.values(sourceFixtures).find(
+      (fixture) => fixture.sourceId === source.source_id,
+    );
     if (!matchingFixture) {
       continue;
     }
@@ -1740,16 +2093,23 @@ test('init creates compact v3 artifacts and empty runs fail validation honestly'
   const initResult = runCli(['init', runDir]);
   assert.equal(initResult.status, 0);
   assert.match(initResult.stdout, new RegExp(`Initialized discovery run at ${runDir}`));
+  assert.match(initResult.stdout, /Rendered report into/);
 
   for (const fileName of ['manifest.json', 'backlog.json', 'assessment.json', 'journal.ndjson']) {
     assert.equal(fs.existsSync(path.join(runDir, fileName)), true, `${fileName} should exist`);
   }
+  assert.equal(fs.existsSync(path.join(runDir, 'report.md')), true, 'report.md should exist');
 
   const manifest = loadJson(path.join(runDir, 'manifest.json'));
   const backlog = loadJson(path.join(runDir, 'backlog.json'));
+  const initialAssessment = loadJson(path.join(runDir, 'assessment.json'));
+  const initJournal = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const initEvent = lastJournalEvent(initJournal, 'run_initialized');
+  const initRenderEvent = lastJournalEvent(initJournal, 'report_rendered');
   assert.equal(manifest.schema_version, '3');
   assert.deepEqual(manifest.baseline_source_hashes, {});
   assert.deepEqual(manifest.current_source_hashes, {});
+  assert.notEqual(manifest.last_render_at, null);
   assert.deepEqual(backlog.source_exclusions, []);
   assert.deepEqual(backlog.value_streams, []);
   assert.deepEqual(backlog.track_gates, []);
@@ -1757,10 +2117,43 @@ test('init creates compact v3 artifacts and empty runs fail validation honestly'
   assert.deepEqual(backlog.track_proofs, []);
   assert.deepEqual(backlog.waivers, []);
   assert.deepEqual(backlog.roadmap_matrix, []);
+  assert.deepEqual(
+    Object.keys(initialAssessment.stats).sort(),
+    [...FIXED_ASSESSMENT_STATS_KEYS].sort(),
+  );
+  assert.deepEqual(
+    initialAssessment.stats,
+    Object.fromEntries(FIXED_ASSESSMENT_STATS_KEYS.map((key) => [key, 0])),
+  );
+  assert.deepEqual(initialAssessment.stale_review_artifacts, []);
+  assert.deepEqual(initialAssessment.delta_summary.stale_review_artifact_ids, []);
+  assert.deepEqual(initialAssessment.rebaseline_readiness, {
+    status: 'not_needed',
+    reasons: ['Rebaseline is not needed until validation detects baseline drift.'],
+  });
+  assert.ok(initEvent);
+  assert.ok(initRenderEvent);
+  assert.equal(initEvent.command_run_id, initRenderEvent.command_run_id);
+  assert.equal(initRenderEvent.render_reason, 'mutating_command');
+  assert.deepEqual(initRenderEvent.stale_snapshot, {
+    claims: [],
+    items: [],
+    proofs: [],
+    reviews: [],
+  });
+  assert.deepEqual(initRenderEvent.new_stale_snapshot, {
+    status: 'unknown',
+    reason: 'first recorded snapshot; no previous stale snapshot to diff',
+    claims: [],
+    items: [],
+    proofs: [],
+    reviews: [],
+  });
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
   assert.match(validationResult.stdout, /Assessment status: fail/);
+  assert.match(validationResult.stdout, /Rendered report into/);
   assert.match(validationResult.stderr, /No authoritative sources recorded/);
 
   const renderResult = runCli(['render', runDir]);
@@ -1772,6 +2165,12 @@ test('init creates compact v3 artifacts and empty runs fail validation honestly'
   const assessment = loadJson(path.join(runDir, 'assessment.json'));
   assert.equal(assessment.acceptance.achieved, 'draft-only');
   assert.equal(assessment.closure.status, 'open');
+  assert.deepEqual(Object.keys(assessment.stats).sort(), [...FIXED_ASSESSMENT_STATS_KEYS].sort());
+  assert.equal(assessment.stats.hard_fails_total, assessment.hard_fails.length);
+  assert.equal(assessment.stats.warnings_total, assessment.warnings.length);
+  assert.deepEqual(assessment.stale_review_artifacts, []);
+  assert.deepEqual(assessment.delta_summary.stale_review_artifact_ids, []);
+  assert.equal(assessment.rebaseline_readiness.status, 'not_needed');
 });
 
 test('discover bootstraps a run from source inputs with embedded architecture-backlog packets', (t) => {
@@ -1793,10 +2192,15 @@ test('discover bootstraps a run from source inputs with embedded architecture-ba
   assert.equal(discoverResult.status, 0);
   assert.match(discoverResult.stdout, /Initialized discovery run/);
   assert.match(discoverResult.stdout, /Applied source packets: 2/);
+  assert.match(discoverResult.stdout, /Rebaseline readiness:/);
+  assert.match(discoverResult.stdout, /New stale since last change:/);
+  assert.match(discoverResult.stdout, /Status: unknown/);
   assert.match(discoverResult.stdout, /Rendered report into/);
 
   const backlog = loadJson(path.join(runDir, 'backlog.json'));
+  const manifest = loadJson(path.join(runDir, 'manifest.json'));
   const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  assert.notEqual(manifest.last_render_at, null);
   assert.equal(backlog.source_authority.length, 2);
   assert.ok(
     backlog.source_authority.every(
@@ -1807,6 +2211,342 @@ test('discover bootstraps a run from source inputs with embedded architecture-ba
   assert.ok(backlog.roadmap_matrix.length > 0);
   assert.equal(assessment.acceptance.achieved, 'implementation-grade');
   assert.equal(fs.existsSync(path.join(runDir, 'report.md')), true);
+  const journal = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const discoverInitEvent = lastJournalEvent(journal, 'run_initialized');
+  const sourcesDiscoveredEvent = lastJournalEvent(journal, 'sources_discovered');
+  const validatedEvent = lastJournalEvent(journal, 'run_validated');
+  const renderEvent = lastJournalEvent(journal, 'report_rendered');
+  assert.ok(discoverInitEvent);
+  assert.ok(sourcesDiscoveredEvent);
+  assert.ok(validatedEvent);
+  assert.ok(renderEvent);
+  assert.equal(discoverInitEvent.command_run_id, sourcesDiscoveredEvent.command_run_id);
+  assert.equal(sourcesDiscoveredEvent.command_run_id, validatedEvent.command_run_id);
+  assert.equal(validatedEvent.command_run_id, renderEvent.command_run_id);
+  assert.equal(renderEvent.render_reason, 'mutating_command');
+});
+
+test('planning overlay packets cannot use replace_sections', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-planning-replace-sections');
+  const packetPath = path.join(runDir, 'packets', 'planning-replace-sections.md');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  fs.mkdirSync(path.dirname(packetPath), { recursive: true });
+  writePacketMarkdown(packetPath, 'Planning packet', {
+    source: {
+      ref: packetPath,
+      kind: 'backlog_text',
+      authority: 'planning_only',
+    },
+    packet_provenance: {
+      merge_mode: 'planning_overlay',
+    },
+    replace_sections: ['items'],
+    items: [
+      {
+        item_id: 'item-payments-seam',
+        title: 'Planning overlay should not replace the whole items section',
+      },
+    ],
+  });
+
+  const discoverResult = runCli(['discover', runDir, '--source-packet', packetPath]);
+  assert.equal(discoverResult.status, 1);
+  assert.match(discoverResult.stderr, /Planning overlay packet .* cannot use replace_sections/);
+});
+
+test('canonical packet boundaries reject sourceId and missing explicit merge provenance', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-explicit-packet-canonical-source-id');
+  const sourceIdPacketPath = path.join(runDir, 'packets', 'source-id-alias.md');
+  const missingProvenancePacketPath = path.join(runDir, 'packets', 'missing-merge-provenance.md');
+  const embeddedSourcePath = path.join(runDir, 'sources', 'embedded-source-id-alias.md');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  fs.mkdirSync(path.dirname(sourceIdPacketPath), { recursive: true });
+
+  writePacketMarkdown(sourceIdPacketPath, 'SourceId alias packet', {
+    source: {
+      sourceId: 'src-invalid-alias',
+      ref: sourceIdPacketPath,
+      kind: 'backlog_text',
+      authority: 'planning_only',
+    },
+    packet_provenance: {
+      merge_mode: 'planning_overlay',
+    },
+    items: [
+      {
+        item_id: 'item-payments-seam',
+        title: 'This packet must be rejected before merge',
+      },
+    ],
+  });
+
+  const aliasResult = runCli(['discover', runDir, '--source-packet', sourceIdPacketPath]);
+  assert.equal(aliasResult.status, 1);
+  assert.match(
+    aliasResult.stderr,
+    /Packet .* must use packet\.source\.source_id; sourceId is not valid in canonical packets/,
+  );
+
+  writePacketMarkdown(missingProvenancePacketPath, 'Missing merge provenance packet', {
+    source: {
+      ref: missingProvenancePacketPath,
+      kind: 'backlog_text',
+      authority: 'planning_only',
+    },
+    items: [
+      {
+        item_id: 'item-payments-seam',
+        title: 'This packet must declare merge_mode explicitly',
+      },
+    ],
+  });
+
+  const missingProvenanceResult = runCli([
+    'discover',
+    runDir,
+    '--source-packet',
+    missingProvenancePacketPath,
+  ]);
+  assert.equal(missingProvenanceResult.status, 1);
+  assert.match(
+    missingProvenanceResult.stderr,
+    /Explicit source packet .* must define packet\.packet_provenance\.merge_mode/,
+  );
+
+  fs.mkdirSync(path.dirname(embeddedSourcePath), { recursive: true });
+  writePacketMarkdown(embeddedSourcePath, 'Embedded sourceId alias packet', {
+    source: {
+      sourceId: 'src-embedded-alias',
+    },
+    items: [
+      {
+        item_id: 'item-payments-seam',
+        title: 'Embedded packet must also be rejected on canonical source boundary',
+      },
+    ],
+  });
+
+  const embeddedAliasResult = runCli([
+    'discover',
+    runDir,
+    '--source',
+    `architecture_doc:authoritative_target_truth:${embeddedSourcePath}`,
+  ]);
+  assert.equal(embeddedAliasResult.status, 1);
+  assert.match(
+    embeddedAliasResult.stderr,
+    /Packet .* must use packet\.source\.source_id; sourceId is not valid in canonical packets/,
+  );
+});
+
+test('planning overlay claim patches cannot change immutable claim fields', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-planning-claim-patch');
+  const packetPath = path.join(runDir, 'packets', 'planning-claim-patch.md');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  fs.mkdirSync(path.dirname(packetPath), { recursive: true });
+  writePacketMarkdown(packetPath, 'Planning claim patch', {
+    source: {
+      ref: packetPath,
+      kind: 'backlog_text',
+      authority: 'planning_only',
+    },
+    packet_provenance: {
+      merge_mode: 'planning_overlay',
+    },
+    claims: [
+      {
+        claim_id: 'claim-payments',
+        title: 'This title rewrite must be rejected',
+        commitment: 'optional',
+        revisit_trigger: 'Re-evaluate after payment provider stabilization.',
+      },
+    ],
+  });
+
+  const discoverResult = runCli(['discover', runDir, '--source-packet', packetPath]);
+  assert.equal(discoverResult.status, 1);
+  assert.match(
+    discoverResult.stderr,
+    /Planning overlay claim patch claim-payments may only change claim_id, commitment, and revisit_trigger; found title/,
+  );
+});
+
+test('explicit packet merge provenance must match resolved source authority semantics', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-merge-provenance-mismatch');
+  const packetPath = path.join(runDir, 'packets', 'merge-provenance-mismatch.md');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  fs.mkdirSync(path.dirname(packetPath), { recursive: true });
+  writePacketMarkdown(packetPath, 'Bad merge provenance packet', {
+    source: {
+      ref: packetPath,
+      kind: 'backlog_text',
+      authority: 'planning_only',
+    },
+    packet_provenance: {
+      merge_mode: 'source_driven_refresh',
+    },
+    replace_sections: ['items'],
+    items: [
+      {
+        item_id: 'item-payments-seam',
+        title: 'Planning packets may not masquerade as source-driven refresh',
+      },
+    ],
+  });
+
+  const discoverResult = runCli(['discover', runDir, '--source-packet', packetPath]);
+  assert.equal(discoverResult.status, 1);
+  assert.match(
+    discoverResult.stderr,
+    /Packet .* declares packet\.packet_provenance\.merge_mode=source_driven_refresh but resolved merge_mode=planning_overlay/,
+  );
+});
+
+test('explicit packets cannot rewrite existing source authority identity fields', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-source-authority-rewrite');
+  const packetPath = path.join(runDir, 'packets', 'source-authority-rewrite.md');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  fs.mkdirSync(path.dirname(packetPath), { recursive: true });
+  writePacketMarkdown(packetPath, 'Bad source authority rewrite', {
+    source: {
+      source_id: 'src-architecture',
+      ref: packetPath,
+      kind: 'backlog_text',
+      authority: 'planning_only',
+    },
+    packet_provenance: {
+      merge_mode: 'planning_overlay',
+      source_id: 'src-architecture',
+    },
+    items: [
+      {
+        item_id: 'item-payments-seam',
+        title: 'Attempted source authority rewrite',
+      },
+    ],
+  });
+
+  const discoverResult = runCli(['discover', runDir, '--source-packet', packetPath]);
+  assert.equal(discoverResult.status, 1);
+  assert.match(
+    discoverResult.stderr,
+    /Explicit source packet .* cannot rewrite source_authority\.(ref|kind|authority) for src-architecture/,
+  );
+});
+
+test('explicit packets cannot register duplicate source authority identity under a new source id', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-source-authority-identity-duplicate');
+  const packetPath = path.join(runDir, 'packets', 'source-authority-identity-duplicate.md');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  const sourceFixtures = seedBacklog(runDir, { implementationGrade: false });
+  fs.mkdirSync(path.dirname(packetPath), { recursive: true });
+  writePacketMarkdown(packetPath, 'Bad duplicate source authority identity', {
+    source: {
+      source_id: 'src-runtime-alias',
+      ref: sourceFixtures.runtime.filePath,
+      kind: 'runtime_evidence',
+      authority: 'authoritative_current_truth',
+      precedence: 2,
+    },
+    packet_provenance: {
+      merge_mode: 'source_driven_refresh',
+      source_id: 'src-runtime-alias',
+      source_kind: 'runtime_evidence',
+      source_authority: 'authoritative_current_truth',
+    },
+    items: [
+      {
+        item_id: 'item-payments-docs',
+        delivery_state: 'delivered',
+      },
+    ],
+  });
+
+  const discoverResult = runCli(['discover', runDir, '--source-packet', packetPath]);
+  assert.equal(discoverResult.status, 1);
+  assert.match(
+    discoverResult.stderr,
+    /cannot register duplicate source_authority identity .* under src-runtime-alias; reuse existing source_id src-runtime/,
+  );
+});
+
+test('explicit planning packets derive source authority ids and system-manage source refs', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-planning-source-refs');
+  const packetPath = path.join(runDir, 'packets', 'planning-negative-scope.md');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.id_strategy.negative_scope = 'neg-*';
+  });
+  fs.mkdirSync(path.dirname(packetPath), { recursive: true });
+  writePacketMarkdown(packetPath, 'Planning negative scope packet', {
+    source: {
+      ref: packetPath,
+      kind: 'backlog_text',
+      authority: 'planning_only',
+    },
+    packet_provenance: {
+      merge_mode: 'planning_overlay',
+    },
+    claims: [
+      {
+        claim_id: 'claim-payments',
+        commitment: 'out_of_scope',
+        revisit_trigger: 'Re-evaluate when reconciliation automation becomes funded.',
+      },
+    ],
+    negative_scope: [
+      {
+        negative_scope_id: 'neg-payments-manual-reconcile',
+        title: 'Manual reconciliation remains out of scope for phase one.',
+        negative_scope_class: 'manual',
+        source_refs: ['manually-authored-source-ref'],
+        owner_implications: ['payments-team'],
+        related_claim_refs: ['claim-payments'],
+        related_item_refs: ['item-payments-ops'],
+        critical_path_item_refs: ['item-payments-ops'],
+        owner_seam_item_refs: ['item-payments-ops'],
+        revisit_trigger: 'Revisit when operator capacity is exceeded.',
+      },
+    ],
+  });
+
+  const discoverResult = runCli(['discover', runDir, '--source-packet', packetPath]);
+  assert.equal(discoverResult.status, 0, discoverResult.stderr || discoverResult.stdout);
+
+  const backlog = loadJson(path.join(runDir, 'backlog.json'));
+  const planningSource = backlog.source_authority.find((source) => source.ref === packetPath);
+  assert.ok(
+    planningSource?.source_id,
+    'planning packet should create or reuse a source_authority entry',
+  );
+  assert.equal(planningSource.kind, 'backlog_text');
+  assert.equal(planningSource.authority, 'planning_only');
+
+  const negativeScope = backlog.negative_scope.find(
+    (entry) => entry.negative_scope_id === 'neg-payments-manual-reconcile',
+  );
+  assert.ok(negativeScope, 'negative scope entry should be created');
+  assert.deepEqual(negativeScope.source_refs, [planningSource.source_id]);
+  assert.deepEqual(negativeScope.packet_provenance, {
+    merge_mode: 'planning_overlay',
+    source_authority: 'planning_only',
+    source_id: planningSource.source_id,
+    source_kind: 'backlog_text',
+    source_refs_managed: true,
+  });
 });
 
 test('planning-grade fixture validates and renders a schema-v3 report', (t) => {
@@ -1826,10 +2566,66 @@ test('planning-grade fixture validates and renders a schema-v3 report', (t) => {
   assert.match(validationResult.stdout, /Achieved acceptance: planning-grade/);
 
   const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  const backlog = loadJson(path.join(runDir, 'backlog.json'));
+  const uniqueItems = uniqueEntriesById(backlog.items, 'item_id');
   assert.equal(assessment.acceptance.achieved, 'planning-grade');
   assert.equal(assessment.score.total < 95, true);
   assert.deepEqual(assessment.track_gate_failures, []);
   assert.deepEqual(assessment.waiver_findings, []);
+  assert.deepEqual(Object.keys(assessment.stats).sort(), [...FIXED_ASSESSMENT_STATS_KEYS].sort());
+  assert.equal(
+    assessment.stats.sources_total,
+    countUniqueIds(backlog.source_authority, 'source_id'),
+  );
+  assert.equal(assessment.stats.claims_total, countUniqueIds(backlog.claims, 'claim_id'));
+  assert.equal(assessment.stats.contracts_total, countUniqueIds(backlog.contracts, 'contract_id'));
+  assert.equal(
+    assessment.stats.data_domains_total,
+    countUniqueIds(backlog.data_domains, 'domain_id'),
+  );
+  assert.equal(assessment.stats.items_total, countUniqueIds(backlog.items, 'item_id'));
+  assert.equal(
+    assessment.stats.items_delivered,
+    uniqueItems.filter((item) => item.delivery_state === 'delivered').length,
+  );
+  assert.equal(
+    assessment.stats.items_partially_delivered,
+    uniqueItems.filter((item) => item.delivery_state === 'partially_delivered').length,
+  );
+  assert.equal(
+    assessment.stats.items_not_started,
+    uniqueItems.filter((item) => item.delivery_state === 'not_started').length,
+  );
+  assert.equal(assessment.stats.gaps_total, countUniqueIds(backlog.gaps, 'issue_id'));
+  assert.equal(assessment.stats.unknowns_total, countUniqueIds(backlog.unknowns, 'issue_id'));
+  assert.equal(
+    assessment.stats.contradictions_total,
+    countUniqueIds(backlog.contradictions, 'issue_id'),
+  );
+  assert.equal(assessment.stats.stale_claims_total, assessment.stale_claims.length);
+  assert.equal(assessment.stats.stale_items_total, assessment.stale_items.length);
+  assert.equal(assessment.stats.stale_proofs_total, assessment.stale_proofs.length);
+  assert.equal(
+    assessment.stats.stale_review_artifacts_total,
+    assessment.stale_review_artifacts.length,
+  );
+  assert.equal(assessment.stats.warnings_total, assessment.warnings.length);
+  assert.equal(assessment.stats.hard_fails_total, assessment.hard_fails.length);
+  assert.equal(
+    assessment.stats.dor_ready_total,
+    uniqueItems.filter((item) => item.readiness_state === 'ready').length,
+  );
+  assert.equal(
+    assessment.stats.review_artifacts_total,
+    countUniqueIds(backlog.reviews, 'review_id'),
+  );
+  assert.equal(assessment.stats.waivers_total, countUniqueIds(backlog.waivers, 'waiver_id'));
+  assert.deepEqual(assessment.delta_summary.stale_review_artifact_ids, []);
+  assert.deepEqual(assessment.stale_review_artifacts, []);
+  assert.deepEqual(assessment.rebaseline_readiness, {
+    status: 'not_needed',
+    reasons: ['Baseline drift is not detected, so rebaseline is not needed.'],
+  });
 
   const renderResult = runCli(['render', runDir]);
   assert.equal(renderResult.status, 0);
@@ -1838,7 +2634,10 @@ test('planning-grade fixture validates and renders a schema-v3 report', (t) => {
 
   const report = fs.readFileSync(path.join(runDir, 'report.md'), 'utf8');
   assert.match(report, /# Architecture Backlog Report/);
-  assert.match(report, /\| Source ID \| Kind \| Authority \| Precedence \| Reference \| Fingerprint \| Notes \|/);
+  assert.match(
+    report,
+    /\| Source ID \| Kind \| Authority \| Precedence \| Reference \| Fingerprint \| Notes \|/,
+  );
   assert.match(report, /## Value Streams/);
   assert.match(report, /## Track Closure/);
   assert.match(report, /## Proof Dimensions/);
@@ -1847,6 +2646,66 @@ test('planning-grade fixture validates and renders a schema-v3 report', (t) => {
   assert.match(report, /Committed claims mapped to items: 5\/5/);
   assert.match(report, /## Graph Relations/);
   assert.match(report, /track:minimal-working-system/);
+});
+
+test('assessment stats use deduplicated canonical ids instead of raw array lengths', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-dedup-stats');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.source_authority.push({ ...backlog.source_authority[0] });
+    backlog.claims.push({ ...backlog.claims[0] });
+    backlog.contracts.push({ ...backlog.contracts[0] });
+    backlog.data_domains.push({ ...backlog.data_domains[0] });
+    backlog.items.push({ ...backlog.items[0] });
+    backlog.gaps.push({ ...backlog.gaps[0] });
+    backlog.unknowns.push({ ...backlog.unknowns[0] });
+    backlog.contradictions.push({ ...backlog.contradictions[0] });
+    backlog.reviews.push({ ...backlog.reviews[0] });
+    backlog.waivers.push({ ...backlog.waivers[0] });
+  });
+
+  const validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+
+  const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  const backlog = loadJson(path.join(runDir, 'backlog.json'));
+  const uniqueItems = uniqueEntriesById(backlog.items, 'item_id');
+  assert.equal(
+    assessment.stats.sources_total,
+    countUniqueIds(backlog.source_authority, 'source_id'),
+  );
+  assert.equal(assessment.stats.claims_total, countUniqueIds(backlog.claims, 'claim_id'));
+  assert.equal(assessment.stats.contracts_total, countUniqueIds(backlog.contracts, 'contract_id'));
+  assert.equal(
+    assessment.stats.data_domains_total,
+    countUniqueIds(backlog.data_domains, 'domain_id'),
+  );
+  assert.equal(assessment.stats.items_total, countUniqueIds(backlog.items, 'item_id'));
+  assert.equal(
+    assessment.stats.items_delivered,
+    uniqueItems.filter((item) => item.delivery_state === 'delivered').length,
+  );
+  assert.equal(
+    assessment.stats.items_partially_delivered,
+    uniqueItems.filter((item) => item.delivery_state === 'partially_delivered').length,
+  );
+  assert.equal(
+    assessment.stats.items_not_started,
+    uniqueItems.filter((item) => item.delivery_state === 'not_started').length,
+  );
+  assert.equal(assessment.stats.gaps_total, countUniqueIds(backlog.gaps, 'issue_id'));
+  assert.equal(assessment.stats.unknowns_total, countUniqueIds(backlog.unknowns, 'issue_id'));
+  assert.equal(
+    assessment.stats.contradictions_total,
+    countUniqueIds(backlog.contradictions, 'issue_id'),
+  );
+  assert.equal(
+    assessment.stats.review_artifacts_total,
+    countUniqueIds(backlog.reviews, 'review_id'),
+  );
+  assert.equal(assessment.stats.waivers_total, countUniqueIds(backlog.waivers, 'waiver_id'));
 });
 
 test('repair rebuilds derivable summary labels, track refs, and roadmap matrix', (t) => {
@@ -1888,31 +2747,116 @@ test('repair recreates derivable missing assessment and journal artifacts before
 
   const repairResult = runCli(['repair', runDir]);
   assert.equal(repairResult.status, 0);
+  const manifestAfterRepair = loadJson(path.join(runDir, 'manifest.json'));
   assert.equal(fs.existsSync(path.join(runDir, 'assessment.json')), true);
   assert.equal(fs.existsSync(path.join(runDir, 'journal.ndjson')), true);
+  assert.notEqual(manifestAfterRepair.last_render_at, null);
 
   const journal = loadNdjson(path.join(runDir, 'journal.ndjson'));
-  assert.equal(journal.some((entry) => entry.event === 'run_bundle_repaired'), true);
+  const repairedEvent = lastJournalEvent(journal, 'run_bundle_repaired');
+  const renderEvent = lastJournalEvent(journal, 'report_rendered');
+  assert.ok(repairedEvent);
+  assert.ok(renderEvent);
+  assert.equal(manifestAfterRepair.last_render_at, renderEvent.ts);
+  assert.equal(renderEvent.render_reason, 'mutating_command');
+  assert.equal(
+    journal.some((entry) => entry.event === 'run_bundle_repaired'),
+    true,
+  );
 });
 
-test('validate, delta, and rebaseline hard-fail when authoritative source refs are unreadable', (t) => {
+test('repair, validate, delta, and rebaseline hard-fail with rendered lineage when authoritative source refs are unreadable', (t) => {
   const runDir = createTempRunDir(t, 'architecture-backlog-inaccessible-source');
 
   assert.equal(runCli(['init', runDir]).status, 0);
   const sourceFixtures = seedBacklog(runDir, { implementationGrade: true });
   fs.rmSync(sourceFixtures.architecture.filePath);
 
+  const repairResult = runCli(['repair', runDir]);
+  assert.equal(repairResult.status, 1);
+  assert.match(repairResult.stdout, /Rendered report into/);
+  assert.match(
+    repairResult.stderr,
+    /Source src-architecture could not be read from its declared ref\./,
+  );
+  const journalAfterRepair = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const repairRefreshEvent = lastJournalEvent(journalAfterRepair, 'source_fingerprints_refreshed');
+  const repairValidateEvent = lastJournalEvent(journalAfterRepair, 'run_validated');
+  const repairRenderEvent = lastJournalEvent(journalAfterRepair, 'report_rendered');
+  assert.ok(repairRefreshEvent);
+  assert.ok(repairValidateEvent);
+  assert.ok(repairRenderEvent);
+  assert.equal(repairRefreshEvent.command_run_id, repairValidateEvent.command_run_id);
+  assert.equal(repairValidateEvent.command_run_id, repairRenderEvent.command_run_id);
+
+  mutateBacklog(runDir, (backlog) => {
+    for (const source of backlog.source_authority) {
+      source.last_accessed_at = '2020-01-01T00:00:00Z';
+    }
+  });
   const validateResult = runCli(['validate', runDir]);
   assert.equal(validateResult.status, 1);
-  assert.match(validateResult.stderr, /Source src-architecture could not be read from its declared ref\./);
+  assert.match(validateResult.stdout, /Rendered report into/);
+  assert.match(
+    validateResult.stderr,
+    /Source src-architecture could not be read from its declared ref\./,
+  );
+  const journalAfterValidate = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const refreshEvent = lastJournalEvent(journalAfterValidate, 'source_fingerprints_refreshed');
+  const validateEvent = lastJournalEvent(journalAfterValidate, 'run_validated');
+  const validateRenderEvent = lastJournalEvent(journalAfterValidate, 'report_rendered');
+  assert.ok(refreshEvent);
+  assert.ok(validateEvent);
+  assert.ok(validateRenderEvent);
+  assert.equal(refreshEvent.command_run_id, validateEvent.command_run_id);
+  assert.equal(validateEvent.command_run_id, validateRenderEvent.command_run_id);
 
+  mutateBacklog(runDir, (backlog) => {
+    for (const source of backlog.source_authority) {
+      source.last_accessed_at = '2020-01-01T00:00:00Z';
+    }
+  });
   const deltaResult = runCli(['delta', runDir]);
   assert.equal(deltaResult.status, 1);
-  assert.match(deltaResult.stderr, /Source src-architecture could not be read from its declared ref\./);
+  assert.match(deltaResult.stdout, /Rendered report into/);
+  assert.match(
+    deltaResult.stderr,
+    /Source src-architecture could not be read from its declared ref\./,
+  );
+  const journalAfterDelta = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const deltaRefreshEvent = lastJournalEvent(journalAfterDelta, 'source_fingerprints_refreshed');
+  const deltaValidateEvent = lastJournalEvent(journalAfterDelta, 'run_validated');
+  const deltaRenderEvent = lastJournalEvent(journalAfterDelta, 'report_rendered');
+  assert.ok(deltaRefreshEvent);
+  assert.ok(deltaValidateEvent);
+  assert.ok(deltaRenderEvent);
+  assert.equal(deltaRefreshEvent.command_run_id, deltaValidateEvent.command_run_id);
+  assert.equal(deltaValidateEvent.command_run_id, deltaRenderEvent.command_run_id);
 
+  mutateBacklog(runDir, (backlog) => {
+    for (const source of backlog.source_authority) {
+      source.last_accessed_at = '2020-01-01T00:00:00Z';
+    }
+  });
   const rebaselineResult = runCli(['rebaseline', runDir]);
   assert.equal(rebaselineResult.status, 1);
-  assert.match(rebaselineResult.stderr, /Source src-architecture could not be read from its declared ref\./);
+  assert.match(rebaselineResult.stdout, /Rendered report into/);
+  assert.match(
+    rebaselineResult.stderr,
+    /Source src-architecture could not be read from its declared ref\./,
+  );
+  const journalAfterRebaseline = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const rebaselineRefreshEvent = lastJournalEvent(
+    journalAfterRebaseline,
+    'source_fingerprints_refreshed',
+  );
+  const rebaselineValidateEvent = lastJournalEvent(journalAfterRebaseline, 'run_validated');
+  const rebaselineRenderEvent = lastJournalEvent(journalAfterRebaseline, 'report_rendered');
+  assert.ok(rebaselineRefreshEvent);
+  assert.ok(rebaselineValidateEvent);
+  assert.ok(rebaselineRenderEvent);
+  assert.equal(rebaselineRefreshEvent.command_run_id, rebaselineValidateEvent.command_run_id);
+  assert.equal(rebaselineValidateEvent.command_run_id, rebaselineRenderEvent.command_run_id);
 });
 
 test('stale proof forces assessment fail and blocks acceptance uplift', (t) => {
@@ -1938,13 +2882,22 @@ test('stale proof forces assessment fail and blocks acceptance uplift', (t) => {
   assert.equal(assessment.acceptance.achieved, 'draft-only');
   assert.equal(assessment.score.total >= 95, true);
   assert.deepEqual(assessment.stale_proofs, ['proof-payments']);
+  assert.equal(assessment.stale_review_artifacts.includes('review-track-minimal'), true);
+  assert.equal(
+    assessment.delta_summary.stale_review_artifact_ids.includes('review-track-minimal'),
+    true,
+  );
+  assert.equal(assessment.rebaseline_readiness.status, 'not_needed');
 
   const statusResult = runCli(['status', runDir]);
   assert.equal(statusResult.status, 1);
-  assert.match(statusResult.stdout, /Hard-fails: 3/);
+  assert.match(statusResult.stdout, /Hard-fails: 4/);
   assert.match(statusResult.stdout, /Hard-fail details:/);
   assert.match(statusResult.stdout, /Proof proof-payments is stale\./);
-  assert.match(statusResult.stdout, /Item item-payments-slice is stale after proof, claim, contract, or topology drift/);
+  assert.match(
+    statusResult.stdout,
+    /Item item-payments-slice is stale after proof, claim, contract, or topology drift/,
+  );
 });
 
 test('score below 80 stays draft-only instead of becoming planning-grade', (t) => {
@@ -1976,7 +2929,10 @@ test('score below 80 stays draft-only instead of becoming planning-grade', (t) =
   assert.equal(assessment.status, 'pass');
   assert.equal(assessment.score.total < 80, true);
   assert.equal(assessment.acceptance.achieved, 'draft-only');
-  assert.match(assessment.acceptance.blocking_reasons.join('\n'), /below the planning-grade floor of 80/);
+  assert.match(
+    assessment.acceptance.blocking_reasons.join('\n'),
+    /below the planning-grade floor of 80/,
+  );
   assert.equal(assessment.closure.status, 'open');
 });
 
@@ -2007,11 +2963,10 @@ test('draft-only target cannot uplift to implementation-grade without full basel
   seedBacklog(runDir, { implementationGrade: true });
   mutateBacklog(runDir, (backlog) => {
     const removedReviewIds = new Set(['review-platform', 'review-security', 'review-support']);
-    backlog.reviews = backlog.reviews.filter(
-      (review) => !removedReviewIds.has(review.review_id),
-    );
+    backlog.reviews = backlog.reviews.filter((review) => !removedReviewIds.has(review.review_id));
     backlog.relations = backlog.relations.filter(
-      (relation) => !(relation.relation_type === 'reviewed_by' && removedReviewIds.has(relation.to?.id ?? '')),
+      (relation) =>
+        !(relation.relation_type === 'reviewed_by' && removedReviewIds.has(relation.to?.id ?? '')),
     );
   });
 
@@ -2051,7 +3006,10 @@ test('run review artifacts must also be linked through graph-level reviewed_by r
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Review review-product is missing graph-level reviewed_by relation/);
+  assert.match(
+    validationResult.stderr,
+    /Review review-product is missing graph-level reviewed_by relation/,
+  );
 });
 
 test('track proofs require the canonical coverage checklist and graph-level proves linkage', (t) => {
@@ -2075,8 +3033,14 @@ test('track proofs require the canonical coverage checklist and graph-level prov
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Track proof track-proof-payments must include boolean coverage\.runbook_and_escalation_path/);
-  assert.match(validationResult.stderr, /Track proof track-proof-payments is missing graph-level proves relation from track minimal-working-system/);
+  assert.match(
+    validationResult.stderr,
+    /Track proof track-proof-payments must include boolean coverage\.runbook_and_escalation_path/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /Track proof track-proof-payments is missing graph-level proves relation from track minimal-working-system/,
+  );
 });
 
 test('pre-GA compact schema v2 is rejected instead of being silently reinterpreted', (t) => {
@@ -2145,9 +3109,15 @@ test('value streams and journeys must carry the full typed linkage contract', (t
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Value stream vs-payments must include at least one primary_personas entry/);
+  assert.match(
+    validationResult.stderr,
+    /Value stream vs-payments must include at least one primary_personas entry/,
+  );
   assert.match(validationResult.stderr, /Value stream vs-payments missing support_handoff/);
-  assert.match(validationResult.stderr, /Track journey journey-payments-submit has invalid value_stream_id/);
+  assert.match(
+    validationResult.stderr,
+    /Track journey journey-payments-submit has invalid value_stream_id/,
+  );
 });
 
 test('journeys must point to a value stream that is linked back to the same track', (t) => {
@@ -2161,7 +3131,10 @@ test('journeys must point to a value stream that is linked back to the same trac
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Track minimal-working-system does not map to any value stream/);
+  assert.match(
+    validationResult.stderr,
+    /Track minimal-working-system does not map to any value stream/,
+  );
   assert.match(
     validationResult.stderr,
     /Track journey journey-payments-submit points to value stream vs-payments but that value stream is not linked to track minimal-working-system/,
@@ -2182,9 +3155,18 @@ test('fail-closed track gates must link to owned control work and required proof
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Track gate gate-payments-safe must include at least one governing_control_item_refs entry/);
-  assert.match(validationResult.stderr, /Track gate gate-payments-safe must include at least one owner_refs entry/);
-  assert.match(validationResult.stderr, /Track gate gate-payments-safe must include at least one required_proof_refs entry/);
+  assert.match(
+    validationResult.stderr,
+    /Track gate gate-payments-safe must include at least one governing_control_item_refs entry/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /Track gate gate-payments-safe must include at least one owner_refs entry/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /Track gate gate-payments-safe must include at least one required_proof_refs entry/,
+  );
 });
 
 test('track proofs require at least one atomic proof that covers the track_proof object', (t) => {
@@ -2215,18 +3197,27 @@ test('item proofs require self-covering proof bundles and graph-level proves lin
     assert.ok(proof);
     proof.covered_ref = ref('item', 'item-payments-seam');
     backlog.relations = backlog.relations.filter(
-      (relation) => !(relation.relation_type === 'proves' &&
-        relation.from?.kind === 'item' &&
-        relation.from?.id === 'item-payments-slice' &&
-        relation.to?.kind === 'proof' &&
-        relation.to?.id === 'proof-payments'),
+      (relation) =>
+        !(
+          relation.relation_type === 'proves' &&
+          relation.from?.kind === 'item' &&
+          relation.from?.id === 'item-payments-slice' &&
+          relation.to?.kind === 'proof' &&
+          relation.to?.id === 'proof-payments'
+        ),
     );
   });
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Item item-payments-slice proof_ref proof-payments is missing graph-level proves relation/);
-  assert.match(validationResult.stderr, /Item item-payments-slice must have at least one proof_ref whose covered_ref points to the item itself/);
+  assert.match(
+    validationResult.stderr,
+    /Item item-payments-slice proof_ref proof-payments is missing graph-level proves relation/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /Item item-payments-slice must have at least one proof_ref whose covered_ref points to the item itself/,
+  );
 });
 
 test('target system requires operator, consumer, quality, and policy surfaces', (t) => {
@@ -2243,10 +3234,22 @@ test('target system requires operator, consumer, quality, and policy surfaces', 
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /target_system must include at least one operator_personas entry/);
-  assert.match(validationResult.stderr, /target_system must include at least one external_consumer_groups entry/);
-  assert.match(validationResult.stderr, /target_system must include at least one quality_goals entry/);
-  assert.match(validationResult.stderr, /target_system must include at least one policy_surfaces entry/);
+  assert.match(
+    validationResult.stderr,
+    /target_system must include at least one operator_personas entry/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /target_system must include at least one external_consumer_groups entry/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /target_system must include at least one quality_goals entry/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /target_system must include at least one policy_surfaces entry/,
+  );
 });
 
 test('externally safe track only hard-fails unresolved fail-closed categories', (t) => {
@@ -2279,7 +3282,10 @@ test('externally safe track only hard-fails unresolved fail-closed categories', 
 
   validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Externally safe track has unresolved fail-closed issue gap-support-handoff-note/);
+  assert.match(
+    validationResult.stderr,
+    /Externally safe track has unresolved fail-closed issue gap-support-handoff-note/,
+  );
 });
 
 test('manual or synthetic closure on a required track must declare same-track owner seams', (t) => {
@@ -2305,7 +3311,148 @@ test('manual or synthetic closure on a required track must declare same-track ow
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Negative scope neg-manual-reconcile must declare owner_seam_item_refs for manual\/synthetic closure/);
+  assert.match(
+    validationResult.stderr,
+    /Negative scope neg-manual-reconcile must declare owner_seam_item_refs for manual\/synthetic closure/,
+  );
+});
+
+test('delivery_state requires authoritative current-truth evidence', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-delivery-evidence');
+  const runtimeDeliveryPacketPath = path.join(runDir, 'packets', 'runtime-delivery.md');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  const sourceFixtures = seedBacklog(runDir, { implementationGrade: false });
+  mutateBacklog(runDir, (backlog) => {
+    const seamItem = backlog.items.find((item) => item.item_id === 'item-payments-seam');
+    const docsItem = backlog.items.find((item) => item.item_id === 'item-payments-docs');
+    assert.ok(seamItem);
+    assert.ok(docsItem);
+    seamItem.delivery_state = 'delivered';
+    docsItem.delivery_state = 'delivered';
+    backlog.roadmap_matrix = buildRoadmapMatrix(backlog.items, backlog.relations);
+  });
+
+  let validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Item item-payments-seam sets delivery_state=delivered without authoritative current-truth evidence/,
+  );
+
+  mutateBacklog(runDir, (backlog) => {
+    const seamItem = backlog.items.find((item) => item.item_id === 'item-payments-seam');
+    const docsItem = backlog.items.find((item) => item.item_id === 'item-payments-docs');
+    assert.ok(seamItem);
+    assert.ok(docsItem);
+    seamItem.delivery_state = 'not_started';
+    docsItem.delivery_state = 'delivered';
+    docsItem.packet_provenance = {
+      merge_mode: 'source_driven_refresh',
+      source_id: 'src-missing-runtime',
+      source_kind: 'runtime_evidence',
+      source_authority: 'authoritative_current_truth',
+      source_refs_managed: true,
+    };
+    docsItem.source_refs = ['src-missing-runtime'];
+    backlog.roadmap_matrix = buildRoadmapMatrix(backlog.items, backlog.relations);
+  });
+
+  validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Item item-payments-docs sets delivery_state=delivered without authoritative current-truth evidence/,
+  );
+
+  fs.mkdirSync(path.dirname(runtimeDeliveryPacketPath), { recursive: true });
+  writePacketMarkdown(runtimeDeliveryPacketPath, 'Runtime delivery evidence', {
+    source: {
+      source_id: 'src-runtime',
+      ref: sourceFixtures.runtime.filePath,
+      kind: 'runtime_evidence',
+      authority: 'authoritative_current_truth',
+      precedence: 2,
+    },
+    packet_provenance: {
+      merge_mode: 'source_driven_refresh',
+      source_id: 'src-runtime',
+      source_kind: 'runtime_evidence',
+      source_authority: 'authoritative_current_truth',
+    },
+    items: [
+      {
+        item_id: 'item-payments-docs',
+        delivery_state: 'delivered',
+      },
+    ],
+  });
+
+  const discoverResult = runCli(['discover', runDir, '--source-packet', runtimeDeliveryPacketPath]);
+  assert.equal(discoverResult.status, 0, discoverResult.stderr || discoverResult.stdout);
+
+  validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 0, validationResult.stderr || validationResult.stdout);
+
+  const backlog = loadJson(path.join(runDir, 'backlog.json'));
+  const docsItem = backlog.items.find((item) => item.item_id === 'item-payments-docs');
+  assert.ok(docsItem);
+  assert.deepEqual(docsItem.source_refs, ['src-runtime']);
+  assert.deepEqual(docsItem.packet_provenance, {
+    merge_mode: 'source_driven_refresh',
+    source_authority: 'authoritative_current_truth',
+    source_id: 'src-runtime',
+    source_kind: 'runtime_evidence',
+    source_refs_managed: true,
+  });
+  const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  assert.equal(assessment.stats.items_delivered, 1);
+});
+
+test('out_of_scope claims must align with the canonical negative_scope register', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-negative-scope-canonical');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.id_strategy.negative_scope = 'neg-*';
+    const claim = backlog.claims.find((entry) => entry.claim_id === 'claim-payments');
+    assert.ok(claim);
+    claim.commitment = 'out_of_scope';
+    claim.revisit_trigger = 'Revisit when reconciliation automation is funded.';
+  });
+
+  let validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Claim claim-payments is out_of_scope but has no canonical negative_scope entry/,
+  );
+
+  mutateBacklog(runDir, (backlog) => {
+    backlog.negative_scope.push({
+      negative_scope_id: 'neg-payments-phase-one',
+      title: 'Manual payment reconciliation remains out of scope for phase one.',
+      negative_scope_class: 'manual',
+      source_refs: ['src-runtime'],
+      owner_implications: ['payments-team'],
+      related_claim_refs: ['claim-payments'],
+      related_item_refs: ['item-payments-ops'],
+      critical_path_item_refs: ['item-payments-ops'],
+      owner_seam_item_refs: ['item-payments-ops'],
+      revisit_trigger: 'Revisit when support volume exceeds manual capacity.',
+    });
+    const claim = backlog.claims.find((entry) => entry.claim_id === 'claim-payments');
+    assert.ok(claim);
+    claim.commitment = 'committed';
+  });
+
+  validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Negative scope neg-payments-phase-one claim claim-payments must set claim\.commitment=out_of_scope/,
+  );
 });
 
 test('critical unknowns may be downgraded instead of forcing bounded spikes', (t) => {
@@ -2316,20 +3463,137 @@ test('critical unknowns may be downgraded instead of forcing bounded spikes', (t
   mutateBacklog(runDir, (backlog) => {
     backlog.unknowns[0].resolution_state = 'downgraded';
     backlog.unknowns[0].downgraded_severity = 'medium';
-    backlog.unknowns[0].resolution_note = 'Provider SLA and callback retries are now bounded enough for planning work.';
+    backlog.unknowns[0].resolution_note =
+      'Provider SLA and callback retries are now bounded enough for planning work.';
     backlog.uncertainty_to_spike = [];
     backlog.items = backlog.items.filter((item) => item.item_id !== 'item-payments-spike');
     backlog.proofs = backlog.proofs.filter((proof) => proof.proof_id !== 'proof-payments-spike');
     backlog.relations = backlog.relations.filter(
-      (relation) => relation.from?.id !== 'item-payments-spike' &&
+      (relation) =>
+        relation.from?.id !== 'item-payments-spike' &&
         relation.to?.id !== 'item-payments-spike' &&
         relation.to?.id !== 'proof-payments-spike',
     );
-    backlog.roadmap_matrix = backlog.roadmap_matrix.filter((row) => row.item_ref?.id !== 'item-payments-spike');
+    backlog.roadmap_matrix = backlog.roadmap_matrix.filter(
+      (row) => row.item_ref?.id !== 'item-payments-spike',
+    );
   });
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 0);
+});
+
+test('gap and unknown resolution fields must follow the canonical state machine', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-issue-resolution-state-machine');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.id_strategy.gap = 'gap-*';
+    backlog.gaps.push({
+      issue_id: 'gap-payments-wording',
+      title: 'Payment support note wording needs correction.',
+      severity: 'low',
+      resolution_state: 'resolved',
+      source_refs: ['src-runtime'],
+      owner_implications: ['support'],
+      related_claim_refs: ['claim-payments-ops'],
+      related_item_refs: ['item-payments-docs'],
+    });
+    backlog.unknowns[0].resolution_note = 'This note should be cleared before reopening.';
+  });
+
+  const validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Gap gap-payments-wording must include resolution_note when resolved/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /Unknown unknown-provider-retry-window must clear resolution_note when resolution_state=open/,
+  );
+});
+
+test('run_validated journals issue resolution snapshots and requires a new note for downgraded to resolved transitions', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-issue-resolution-snapshots');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.unknowns[0].resolution_state = 'downgraded';
+    backlog.unknowns[0].downgraded_severity = 'medium';
+    backlog.unknowns[0].resolution_note = 'Provider ambiguity is now bounded enough for planning.';
+  });
+
+  let validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 0, validationResult.stderr || validationResult.stdout);
+
+  const journal = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const latestValidatedEvent = [...journal]
+    .reverse()
+    .find((entry) => entry.event === 'run_validated');
+  assert.ok(latestValidatedEvent, 'validate should persist a run_validated journal event');
+  assert.deepEqual(latestValidatedEvent.issue_resolution_snapshot, {
+    gaps: [],
+    unknowns: [
+      {
+        issue_id: 'unknown-provider-retry-window',
+        resolution_state: 'downgraded',
+        resolution_note: 'Provider ambiguity is now bounded enough for planning.',
+      },
+    ],
+  });
+
+  mutateBacklog(runDir, (backlog) => {
+    backlog.unknowns[0].resolution_state = 'resolved';
+    delete backlog.unknowns[0].downgraded_severity;
+  });
+
+  validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Unknown unknown-provider-retry-window must include a new resolution_note when transitioning downgraded -> resolved/,
+  );
+
+  validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Unknown unknown-provider-retry-window must include a new resolution_note when transitioning downgraded -> resolved/,
+  );
+});
+
+test('resolved issues cannot reopen without authoritative current-truth evidence or drift reassessment', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-issue-reopen-guardrails');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: false });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.unknowns[0].resolution_state = 'resolved';
+    backlog.unknowns[0].resolution_note =
+      'Provider contract now documents the retry-window guarantee explicitly.';
+  });
+
+  let validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 0, validationResult.stderr || validationResult.stdout);
+
+  mutateBacklog(runDir, (backlog) => {
+    backlog.unknowns[0].resolution_state = 'open';
+    delete backlog.unknowns[0].resolution_note;
+    backlog.unknowns[0].source_refs = ['src-architecture'];
+  });
+
+  assert.equal(runCli(['delta', runDir]).status, 0);
+  assert.equal(runCli(['rebaseline', runDir]).status, 0);
+
+  validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Unknown unknown-provider-retry-window cannot transition resolved -> open without authoritative current-truth evidence or drift reassessment/,
+  );
 });
 
 test('spikes require machine-checkable done-contract closure state', (t) => {
@@ -2345,8 +3609,14 @@ test('spikes require machine-checkable done-contract closure state', (t) => {
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Spike item-payments-spike done_contract.class_specific_checks.promised_artifact_exists must be a boolean/);
-  assert.match(validationResult.stderr, /Spike item-payments-spike done_contract.class_specific_checks.silent_continuation_blocked must be a boolean/);
+  assert.match(
+    validationResult.stderr,
+    /Spike item-payments-spike done_contract.class_specific_checks.promised_artifact_exists must be a boolean/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /Spike item-payments-spike done_contract.class_specific_checks.silent_continuation_blocked must be a boolean/,
+  );
 });
 
 test('quality attributes and policy decisions are required durable ledgers', (t) => {
@@ -2385,7 +3655,10 @@ test('extended item schema fields are enforced for planning-ready items', (t) =>
   assert.equal(validationResult.status, 1);
   assert.match(validationResult.stderr, /Item item-payments-slice must declare adr_refs/);
   assert.match(validationResult.stderr, /Item item-payments-slice must declare actor_role_set/);
-  assert.match(validationResult.stderr, /Item item-payments-slice missing value.product_or_operator_value/);
+  assert.match(
+    validationResult.stderr,
+    /Item item-payments-slice missing value.product_or_operator_value/,
+  );
 });
 
 test('item evidence freshness sla is mandatory', (t) => {
@@ -2429,7 +3702,10 @@ test('claims cannot satisfy traceability through excluded sources', (t) => {
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Claim claim-payments references excluded source src-old-brief/);
+  assert.match(
+    validationResult.stderr,
+    /Claim claim-payments references excluded source src-old-brief/,
+  );
 });
 
 test('source exclusions must also exist in source authority and declare superseding sources', (t) => {
@@ -2438,14 +3714,22 @@ test('source exclusions must also exist in source authority and declare supersed
   assert.equal(runCli(['init', runDir]).status, 0);
   seedBacklog(runDir, { implementationGrade: false });
   mutateBacklog(runDir, (backlog) => {
-    backlog.source_authority = backlog.source_authority.filter((source) => source.source_id !== 'src-old-brief');
+    backlog.source_authority = backlog.source_authority.filter(
+      (source) => source.source_id !== 'src-old-brief',
+    );
     backlog.source_exclusions[0].superseded_by = [];
   });
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Source exclusion src-old-brief has no matching source_authority entry/);
-  assert.match(validationResult.stderr, /Source exclusion src-old-brief must include superseded_by\[\]/);
+  assert.match(
+    validationResult.stderr,
+    /Source exclusion src-old-brief has no matching source_authority entry/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /Source exclusion src-old-brief must include superseded_by\[\]/,
+  );
 });
 
 test('id_strategy must cover every major ledger class used by the run', (t) => {
@@ -2550,8 +3834,14 @@ test('superseded_excluded sources require explicit exclusion metadata and exclus
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Source src-superseded is marked superseded_excluded but has no matching source_exclusions entry/);
-  assert.match(validationResult.stderr, /Source exclusion src-runtime conflicts with source_authority entry that is not superseded_excluded/);
+  assert.match(
+    validationResult.stderr,
+    /Source src-superseded is marked superseded_excluded but has no matching source_exclusions entry/,
+  );
+  assert.match(
+    validationResult.stderr,
+    /Source exclusion src-runtime conflicts with source_authority entry that is not superseded_excluded/,
+  );
 });
 
 test('origin refs must resolve against their canonical ledgers by kind', (t) => {
@@ -2631,7 +3921,10 @@ test('broken origin refs fail against the canonical ledger for that kind', (t) =
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Item item-payments-seam has unresolved gap_ref gap-does-not-exist/);
+  assert.match(
+    validationResult.stderr,
+    /Item item-payments-seam has unresolved gap_ref gap-does-not-exist/,
+  );
 });
 
 test('report traceability reflects invalid claim sources instead of counting them as covered', (t) => {
@@ -2660,6 +3953,10 @@ test('delta command surfaces drift, stale evidence, and rebaseline requirement',
   assert.equal(runCli(['init', runDir]).status, 0);
   const sourceFixtures = seedBacklog(runDir, { implementationGrade: true });
   assert.equal(runCli(['validate', runDir]).status, 0);
+  const renderEventsBeforeDelta = journalEventsByName(
+    loadNdjson(path.join(runDir, 'journal.ndjson')),
+    'report_rendered',
+  ).length;
 
   fs.writeFileSync(
     sourceFixtures.architecture.filePath,
@@ -2669,23 +3966,134 @@ test('delta command surfaces drift, stale evidence, and rebaseline requirement',
 
   const deltaResult = runCli(['delta', runDir]);
   assert.equal(deltaResult.status, 0);
+  assert.match(deltaResult.stdout, /Core assessment summary:/);
+  assert.match(deltaResult.stdout, /Summary metrics:/);
   assert.match(deltaResult.stdout, /Changed sources: src-architecture/);
   assert.match(deltaResult.stdout, /Rebaseline required: Yes/);
+  assert.match(deltaResult.stdout, /Human-readable diff:/);
+  assert.match(deltaResult.stdout, /baseline_established=false/);
+  assert.match(deltaResult.stdout, /Item adds: Unavailable without baseline_projection\./);
+  assert.match(deltaResult.stdout, /Item removals: Unavailable without baseline_projection\./);
+  assert.match(deltaResult.stdout, /Item state changes: Unavailable without baseline_projection\./);
+  assert.match(deltaResult.stdout, /Relation adds: Unavailable without baseline_projection\./);
+  assert.match(deltaResult.stdout, /Relation removals: Unavailable without baseline_projection\./);
+  assert.match(
+    deltaResult.stdout,
+    /Claim commitment changes: Unavailable without baseline_projection\./,
+  );
+  assert.match(
+    deltaResult.stdout,
+    /Roadmap order changes: Unavailable without baseline_projection\./,
+  );
+  assert.match(deltaResult.stdout, /Stale review artifacts: .*review-product/);
+  assert.match(deltaResult.stdout, /Rebaseline readiness:/);
+  assert.match(deltaResult.stdout, /Status: blocked/);
+  assert.match(deltaResult.stdout, /New stale since last change:/);
+  for (const key of FIXED_ASSESSMENT_STATS_KEYS) {
+    assert.match(deltaResult.stdout, new RegExp(`${key}: \\d+`));
+  }
 
   const manifest = loadJson(path.join(runDir, 'manifest.json'));
   const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  const journal = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const deltaEvent = lastJournalEvent(journal, 'delta_computed');
+  const validatedEvent = lastJournalEvent(journal, 'run_validated');
+  const renderEvents = journalEventsByName(journal, 'report_rendered');
+  const renderEvent = renderEvents[renderEvents.length - 1];
   assert.notEqual(manifest.last_delta_at, null);
+  assert.notEqual(manifest.last_render_at, null);
   assert.equal(assessment.delta_summary.changed_source_ids.includes('src-architecture'), true);
   assert.equal(assessment.rebaseline_required, true);
+  assert.equal(assessment.rebaseline_readiness.status, 'blocked');
   assert.equal(assessment.stale_claims.includes('claim-payments'), true);
   assert.equal(assessment.stale_items.includes('item-payments-seam'), true);
   assert.equal(assessment.stale_proofs.includes('proof-payments-seam'), true);
+  assert.ok(deltaEvent);
+  assert.ok(validatedEvent);
+  assert.ok(renderEvent);
+  assert.equal(renderEvents.length, renderEventsBeforeDelta + 1);
+  assert.equal(deltaEvent.command_run_id, validatedEvent.command_run_id);
+  assert.equal(validatedEvent.command_run_id, renderEvent.command_run_id);
+  assert.equal(manifest.last_render_at, renderEvent.ts);
+  assert.equal(renderEvent.render_reason, 'mutating_command');
+  assert.equal(renderEvent.stale_snapshot.claims.includes('claim-payments'), true);
+  assert.deepEqual(renderEvent.new_stale_snapshot.claims, renderEvent.stale_snapshot.claims);
 
   const statusResult = runCli(['status', runDir]);
   assert.equal(statusResult.status, 1);
+  assertSubstringsInOrder(statusResult.stdout, [
+    'Core run status:',
+    'Summary metrics:',
+    'Drift and stale diagnostics:',
+    'Rebaseline readiness:',
+    'New stale since last change:',
+    'Hard-fails and next actions:',
+  ]);
   assert.match(statusResult.stdout, /Rebaseline required: Yes/);
   assert.match(statusResult.stdout, /Dirty flags: source_change/);
   assert.match(statusResult.stdout, /Stale proofs: .*proof-payments-seam/);
+  assert.match(statusResult.stdout, /Stale review artifacts: .*review-product/);
+  for (const key of FIXED_ASSESSMENT_STATS_KEYS) {
+    assert.match(statusResult.stdout, new RegExp(`${key}: \\d+`));
+  }
+
+  const report = fs.readFileSync(path.join(runDir, 'report.md'), 'utf8');
+  assert.match(report, /## Rebaseline Readiness/);
+  assert.match(report, /## New Stale Since Last Change/);
+  assert.match(report, /- Stale review artifacts: .*review-product/);
+  assert.match(report, /- Reviews: .*review-product/);
+});
+
+test('delta uses baseline projection for human-readable diff after rebaseline', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-delta-baseline-projection');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: true });
+  assert.equal(runCli(['validate', runDir]).status, 0);
+  assert.equal(runCli(['rebaseline', runDir]).status, 0);
+
+  mutateBacklog(runDir, (backlog) => {
+    backlog.items[0].summary_label = 'Blocked';
+    backlog.claims[0].commitment = 'optional';
+    backlog.relations.push({
+      relation_type: 'enabled_by',
+      from: ref('item', 'item-payments-retirement'),
+      to: ref('item', 'item-payments-docs'),
+    });
+    backlog.roadmap_matrix[0].topology_rank = 99;
+  });
+
+  const deltaResult = runCli(['delta', runDir]);
+  assert.equal(deltaResult.status, 0, deltaResult.stderr || deltaResult.stdout);
+  assert.match(deltaResult.stdout, /baseline_established=true/);
+  assert.match(deltaResult.stdout, /Item state changes: .*item-payments-seam/);
+  assert.match(deltaResult.stdout, /Relation adds: .*item:item-payments-retirement/);
+  assert.match(deltaResult.stdout, /Claim commitment changes: .*claim-payments/);
+  assert.match(deltaResult.stdout, /Roadmap order changes: .*item-payments-seam/);
+});
+
+test('status recomputes assessment after source refresh and surfaces current drift', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-status-refresh-drift');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  const sourceFixtures = seedBacklog(runDir, { implementationGrade: true });
+  assert.equal(runCli(['validate', runDir]).status, 0);
+
+  fs.writeFileSync(
+    sourceFixtures.architecture.filePath,
+    '# Architecture\n\nCommitted capability seam, migration, retirement, and support obligations.\n\nStatus should detect this drift without a separate validate command.\n',
+    'utf8',
+  );
+
+  const statusResult = runCli(['status', runDir]);
+  assert.equal(statusResult.status, 1, statusResult.stderr || statusResult.stdout);
+  assert.match(statusResult.stdout, /Rebaseline required: Yes/);
+  assert.match(statusResult.stdout, /Dirty flags: source_change/);
+  assert.match(statusResult.stdout, /Changed sources: src-architecture/);
+
+  const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  assert.equal(assessment.rebaseline_required, true);
+  assert.equal(assessment.delta_summary.changed_source_ids.includes('src-architecture'), true);
 });
 
 test('rebaseline command resets drift baseline but preserves proof invalidation semantics', (t) => {
@@ -2702,23 +4110,423 @@ test('rebaseline command resets drift baseline but preserves proof invalidation 
   );
 
   assert.equal(runCli(['delta', runDir]).status, 0);
+  const renderEventsBeforeRebaseline = journalEventsByName(
+    loadNdjson(path.join(runDir, 'journal.ndjson')),
+    'report_rendered',
+  ).length;
   const rebaselineResult = runCli(['rebaseline', runDir]);
   assert.equal(rebaselineResult.status, 0);
   assert.match(rebaselineResult.stdout, /Rebaseline completed/);
   assert.match(rebaselineResult.stdout, /Rebaseline required: No/);
+  assert.match(rebaselineResult.stdout, /Summary metrics:/);
+  assert.match(rebaselineResult.stdout, /Stale review artifacts: .*review-product/);
+  assert.match(rebaselineResult.stdout, /Rebaseline readiness:/);
+  assert.match(rebaselineResult.stdout, /Status: not_needed/);
+  assert.match(rebaselineResult.stdout, /New stale since last change:/);
 
   const manifest = loadJson(path.join(runDir, 'manifest.json'));
   const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  const journal = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const rebaselineStartedEvent = lastJournalEvent(journal, 'rebaseline_started');
+  const rebaselineCompletedEvent = lastJournalEvent(journal, 'rebaseline_completed');
+  const renderEvent = lastJournalEvent(journal, 'report_rendered');
   assert.equal(
     manifest.baseline_source_hashes['src-architecture'],
     sha256Fingerprint(fs.readFileSync(sourceFixtures.architecture.filePath, 'utf8')),
   );
   assert.deepEqual(manifest.dirty_flags, []);
+  assert.notEqual(manifest.last_render_at, null);
   assert.notEqual(manifest.last_rebaseline_at, null);
   assert.deepEqual(manifest.last_rebaseline_causes, ['source_change']);
+  assert.deepEqual(manifest.baseline_issue_item_links, manifest.current_issue_item_links);
+  assert.deepEqual(
+    manifest.current_issue_item_links['issue:unknown:unknown-provider-retry-window'],
+    ['item-payments-migration', 'item-payments-spike'],
+  );
   assert.equal(assessment.rebaseline_required, false);
   assert.equal(assessment.stale_proofs.includes('proof-payments-seam'), true);
-  assert.equal(assessment.next_actions.some((action) => /Refresh stale proof bundles/.test(action)), true);
+  assert.equal(assessment.stale_review_artifacts.includes('review-product'), true);
+  assert.equal(assessment.delta_summary.stale_review_artifact_ids.includes('review-product'), true);
+  assert.ok(rebaselineStartedEvent);
+  assert.ok(rebaselineCompletedEvent);
+  assert.ok(renderEvent);
+  assert.equal(
+    journalEventsByName(journal, 'report_rendered').length,
+    renderEventsBeforeRebaseline + 1,
+  );
+  assert.equal(rebaselineStartedEvent.command_run_id, rebaselineCompletedEvent.command_run_id);
+  assert.equal(rebaselineCompletedEvent.command_run_id, renderEvent.command_run_id);
+  assert.equal(manifest.last_render_at, renderEvent.ts);
+  assert.ok(rebaselineCompletedEvent.baseline_projection);
+  assert.equal(Array.isArray(rebaselineCompletedEvent.baseline_projection.items), true);
+  assert.equal(
+    rebaselineCompletedEvent.baseline_projection.items.some(
+      (item) => item.item_id === 'item-payments-seam',
+    ),
+    true,
+  );
+  assert.equal(renderEvent.render_reason, 'mutating_command');
+  assert.equal(
+    assessment.next_actions.some((action) => /Refresh stale proof bundles/.test(action)),
+    true,
+  );
+});
+
+test('repair auto-renders with one command_run_id and --no-render is no longer accepted', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-repair-auto-render');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: true });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.items[0].summary_label = 'Blocked';
+  });
+
+  const renderEventsBeforeRepair = journalEventsByName(
+    loadNdjson(path.join(runDir, 'journal.ndjson')),
+    'report_rendered',
+  ).length;
+  const repairResult = runCli(['repair', runDir]);
+  assert.equal(repairResult.status, 0, repairResult.stderr || repairResult.stdout);
+  assert.match(repairResult.stdout, /Rendered report into/);
+  const manifestAfterRepair = loadJson(path.join(runDir, 'manifest.json'));
+  assert.notEqual(manifestAfterRepair.last_render_at, null);
+
+  const journal = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const repairedEvent = lastJournalEvent(journal, 'canonical_repaired');
+  const validatedEvent = lastJournalEvent(journal, 'run_validated');
+  const renderEvent = lastJournalEvent(journal, 'report_rendered');
+  assert.ok(repairedEvent);
+  assert.ok(validatedEvent);
+  assert.ok(renderEvent);
+  assert.equal(
+    journalEventsByName(journal, 'report_rendered').length,
+    renderEventsBeforeRepair + 1,
+  );
+  assert.equal(repairedEvent.command_run_id, validatedEvent.command_run_id);
+  assert.equal(validatedEvent.command_run_id, renderEvent.command_run_id);
+  assert.equal(manifestAfterRepair.last_render_at, renderEvent.ts);
+  assert.equal(renderEvent.render_reason, 'mutating_command');
+
+  const discoverHelpResult = runCli(['help', 'discover']);
+  assert.equal(discoverHelpResult.status, 0);
+  assert.doesNotMatch(discoverHelpResult.stdout, /--no-render/);
+
+  const repairHelpResult = runCli(['help', 'repair']);
+  assert.equal(repairHelpResult.status, 0);
+  assert.doesNotMatch(repairHelpResult.stdout, /--no-render/);
+
+  const discoverNoRenderResult = runCli(['discover', runDir, '--no-render']);
+  assert.equal(discoverNoRenderResult.status, 2);
+  assert.match(discoverNoRenderResult.stderr, /Unknown option '--no-render'/);
+
+  const repairNoRenderResult = runCli(['repair', runDir, '--no-render']);
+  assert.equal(repairNoRenderResult.status, 2);
+  assert.match(repairNoRenderResult.stderr, /Unknown option '--no-render'/);
+});
+
+test('validate auto-renders and recovery render stays outside mutating stale lineage', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-validate-render-lineage');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: true });
+
+  const renderEventsBeforeValidate = journalEventsByName(
+    loadNdjson(path.join(runDir, 'journal.ndjson')),
+    'report_rendered',
+  ).length;
+  const validateResult = runCli(['validate', runDir]);
+  assert.equal(validateResult.status, 0, validateResult.stderr || validateResult.stdout);
+  assert.match(validateResult.stdout, /Rendered report into/);
+  const manifestAfterValidate = loadJson(path.join(runDir, 'manifest.json'));
+  assert.notEqual(manifestAfterValidate.last_render_at, null);
+  const reportBeforeRecoveryRender = fs.readFileSync(path.join(runDir, 'report.md'), 'utf8');
+  const newStaleSectionBeforeRecoveryRender = extractReportSection(
+    reportBeforeRecoveryRender,
+    'New Stale Since Last Change',
+  );
+
+  const afterValidateJournal = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const validatedEvent = lastJournalEvent(afterValidateJournal, 'run_validated');
+  const mutatingRenderEvent = lastJournalEvent(afterValidateJournal, 'report_rendered');
+  assert.ok(validatedEvent);
+  assert.ok(mutatingRenderEvent);
+  assert.equal(
+    journalEventsByName(afterValidateJournal, 'report_rendered').length,
+    renderEventsBeforeValidate + 1,
+  );
+  assert.equal(validatedEvent.command_run_id, mutatingRenderEvent.command_run_id);
+  assert.equal(manifestAfterValidate.last_render_at, mutatingRenderEvent.ts);
+  assert.equal(mutatingRenderEvent.render_reason, 'mutating_command');
+  assert.ok(mutatingRenderEvent.stale_snapshot);
+  assert.ok(mutatingRenderEvent.new_stale_snapshot);
+
+  const explicitRenderResult = runCli(['render', runDir]);
+  assert.equal(
+    explicitRenderResult.status,
+    0,
+    explicitRenderResult.stderr || explicitRenderResult.stdout,
+  );
+
+  const afterExplicitRenderJournal = loadNdjson(path.join(runDir, 'journal.ndjson'));
+  const renderEvents = journalEventsByName(afterExplicitRenderJournal, 'report_rendered');
+  const recoveryRenderEvent = renderEvents[renderEvents.length - 1];
+  assert.equal(recoveryRenderEvent.render_reason, 'recovery_render');
+  assert.equal('stale_snapshot' in recoveryRenderEvent, false);
+  assert.equal('new_stale_snapshot' in recoveryRenderEvent, false);
+  const reportAfterRecoveryRender = fs.readFileSync(path.join(runDir, 'report.md'), 'utf8');
+  assert.equal(
+    extractReportSection(reportAfterRecoveryRender, 'New Stale Since Last Change'),
+    newStaleSectionBeforeRecoveryRender,
+  );
+});
+
+test('stale reviews do not satisfy fresh review coverage or acceptance after rebaseline', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-rebaseline-fresh-review-gates');
+
+  assert.equal(runCli(['init', '--acceptance-target', 'implementation-grade', runDir]).status, 0);
+  const sourceFixtures = seedBacklog(runDir, { implementationGrade: true });
+  assert.equal(runCli(['validate', runDir]).status, 0);
+
+  fs.writeFileSync(
+    sourceFixtures.architecture.filePath,
+    '# Architecture\n\nCommitted capability seam, migration, retirement, and support obligations.\n\nUpdated architecture promise.\n',
+    'utf8',
+  );
+
+  assert.equal(runCli(['delta', runDir]).status, 0);
+  assert.equal(runCli(['rebaseline', runDir]).status, 0);
+
+  const validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Run must be reviewed_by at least one fresh run-scope review artifact/,
+  );
+  assert.match(validationResult.stderr, /Required review role missing: product_strategy/);
+  assert.match(
+    validationResult.stderr,
+    /Track proof track-proof-payments must be reviewed_by at least one fresh track_proof review artifact/,
+  );
+
+  const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  assert.equal(assessment.acceptance.achieved, 'draft-only');
+  assert.equal(assessment.acceptance.target_satisfied, false);
+  assert.deepEqual(assessment.present_review_roles, []);
+  assert.equal(assessment.missing_review_roles.includes('product_strategy'), true);
+  assert.equal(assessment.pending_track_proof_reviews.includes('track-proof-payments'), true);
+});
+
+test('issue-ledger drift still stales linked reviews when current linkage is removed alongside the issue change', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-issue-link-removal-staleness');
+
+  assert.equal(runCli(['init', '--acceptance-target', 'implementation-grade', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: true });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.reviews.push({
+      review_id: 'review-migration-link-removal',
+      review_scope: 'item',
+      reviewed_ref: ref('item', 'item-payments-migration'),
+      reviewer: 'arch-link-removal-1',
+      role: 'system_architecture',
+      independent: true,
+      verdict: 'pass',
+      findings: [],
+      hard_fail_report: [],
+      evidence_refs: ['note:migration-link-removal'],
+      score_contribution: 3,
+      reviewed_at: '2026-03-26T00:00:00Z',
+    });
+    backlog.relations.push({
+      relation_id: 'rel-item-migration-review-link-removal',
+      relation_type: 'reviewed_by',
+      from: ref('item', 'item-payments-migration'),
+      to: ref('review', 'review-migration-link-removal'),
+    });
+  });
+
+  assert.equal(runCli(['validate', runDir]).status, 0);
+
+  mutateBacklog(runDir, (backlog) => {
+    backlog.unknowns[0].severity = 'medium';
+    backlog.unknowns[0].title = 'Provider retry-window changed while linkage was removed';
+    backlog.unknowns[0].related_item_refs = [];
+  });
+
+  const validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1, validationResult.stderr || validationResult.stdout);
+
+  const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  assert.equal(assessment.stale_review_artifacts.includes('review-migration-link-removal'), true);
+});
+
+test('validate backfills missing baseline issue-link snapshots on baselined runs', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-issue-link-snapshot-backfill');
+
+  assert.equal(runCli(['init', '--acceptance-target', 'implementation-grade', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: true });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.reviews.push({
+      review_id: 'review-migration-link-backfill',
+      review_scope: 'item',
+      reviewed_ref: ref('item', 'item-payments-migration'),
+      reviewer: 'arch-link-backfill-1',
+      role: 'system_architecture',
+      independent: true,
+      verdict: 'pass',
+      findings: [],
+      hard_fail_report: [],
+      evidence_refs: ['note:migration-link-backfill'],
+      score_contribution: 3,
+      reviewed_at: '2026-03-26T00:00:00Z',
+    });
+    backlog.relations.push({
+      relation_id: 'rel-item-migration-review-link-backfill',
+      relation_type: 'reviewed_by',
+      from: ref('item', 'item-payments-migration'),
+      to: ref('review', 'review-migration-link-backfill'),
+    });
+  });
+
+  assert.equal(runCli(['validate', runDir]).status, 0);
+
+  const manifestPath = path.join(runDir, 'manifest.json');
+  const manifest = loadJson(manifestPath);
+  delete manifest.baseline_issue_item_links;
+  writeJson(manifestPath, manifest);
+
+  mutateBacklog(runDir, (backlog) => {
+    backlog.unknowns[0].severity = 'medium';
+    backlog.unknowns[0].title = 'Provider retry-window changed after baseline snapshot upgrade';
+    backlog.unknowns[0].related_item_refs = [];
+  });
+
+  const validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1, validationResult.stderr || validationResult.stdout);
+
+  const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  const updatedManifest = loadJson(manifestPath);
+  assert.equal(assessment.stale_review_artifacts.includes('review-migration-link-backfill'), true);
+  assert.equal(
+    updatedManifest.baseline_issue_item_links[
+      'issue:unknown:unknown-provider-retry-window'
+    ].includes('item-payments-migration'),
+    true,
+  );
+  assert.equal(
+    updatedManifest.current_issue_item_links[
+      'issue:unknown:unknown-provider-retry-window'
+    ].includes('item-payments-migration'),
+    false,
+  );
+});
+
+test('issue-ledger drift stales only reviews whose item scope is linked to the changed issue surface', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-issue-scope-staleness');
+
+  assert.equal(runCli(['init', '--acceptance-target', 'implementation-grade', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: true });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.id_strategy.gap = 'gap-*';
+    backlog.reviews.push(
+      {
+        review_id: 'review-migration-issue-item',
+        review_scope: 'item',
+        reviewed_ref: ref('item', 'item-payments-migration'),
+        reviewer: 'arch-item-1',
+        role: 'system_architecture',
+        independent: true,
+        verdict: 'pass',
+        findings: [],
+        hard_fail_report: [],
+        evidence_refs: ['note:migration-issue-item'],
+        score_contribution: 3,
+        reviewed_at: '2026-03-26T00:00:00Z',
+      },
+      {
+        review_id: 'review-docs-unrelated-item',
+        review_scope: 'item',
+        reviewed_ref: ref('item', 'item-payments-docs'),
+        reviewer: 'ops-item-2',
+        role: 'support_operations',
+        independent: true,
+        verdict: 'pass',
+        findings: [],
+        hard_fail_report: [],
+        evidence_refs: ['note:docs-unrelated-item'],
+        score_contribution: 3,
+        reviewed_at: '2026-03-26T00:00:00Z',
+      },
+    );
+    backlog.relations.push(
+      {
+        relation_id: 'rel-item-migration-review-issue',
+        relation_type: 'reviewed_by',
+        from: ref('item', 'item-payments-migration'),
+        to: ref('review', 'review-migration-issue-item'),
+      },
+      {
+        relation_id: 'rel-item-docs-review-unrelated',
+        relation_type: 'reviewed_by',
+        from: ref('item', 'item-payments-docs'),
+        to: ref('review', 'review-docs-unrelated-item'),
+      },
+    );
+    backlog.gaps.push({
+      issue_id: 'gap-docs-unrelated-origin',
+      title: 'Historical docs wording gap remains unrelated to migration unknowns.',
+      severity: 'low',
+      resolution_state: 'open',
+      source_refs: ['src-runtime'],
+      owner_implications: ['support'],
+      related_claim_refs: ['claim-payments-ops'],
+      related_item_refs: ['item-payments-docs'],
+    });
+    const docsItem = backlog.items.find((item) => item.item_id === 'item-payments-docs');
+    assert.ok(docsItem);
+    docsItem.origin_ref = [
+      ...(docsItem.origin_ref ?? []),
+      { kind: 'gap_ref', ref: 'gap-docs-unrelated-origin' },
+    ];
+  });
+
+  assert.equal(runCli(['validate', runDir]).status, 0);
+
+  mutateBacklog(runDir, (backlog) => {
+    backlog.unknowns[0].severity = 'medium';
+    backlog.unknowns[0].title = 'Provider retry-window remains ambiguous after partner follow-up';
+  });
+
+  const validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1, validationResult.stderr || validationResult.stdout);
+
+  const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  assert.equal(assessment.stale_review_artifacts.includes('review-migration-issue-item'), true);
+  assert.equal(assessment.stale_review_artifacts.includes('review-docs-unrelated-item'), false);
+});
+
+test('validate rejects duplicate physical source authority identity even when source ids differ', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-duplicate-source-authority-identity');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  const sourceFixtures = seedBacklog(runDir, { implementationGrade: false });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.source_authority.push({
+      source_id: 'src-runtime-alias',
+      ref: sourceFixtures.runtime.filePath,
+      kind: 'runtime_evidence',
+      authority: 'authoritative_current_truth',
+      precedence: 4,
+      fingerprint: backlog.source_authority.find((source) => source.source_id === 'src-runtime')
+        ?.fingerprint,
+    });
+  });
+
+  const validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Source src-runtime-alias duplicates source_authority identity .*; reuse source_id src-runtime/,
+  );
 });
 
 test('render uses canonical roadmap matrix ordering and answers final operating questions', (t) => {
@@ -2734,21 +4542,97 @@ test('render uses canonical roadmap matrix ordering and answers final operating 
   assert.match(report, /## Extended Item Schema/);
   assert.match(report, /## Review Governance/);
   assert.match(report, /## Lifecycle And Drift/);
+  assert.match(report, /## Item Summary Index/);
+  assert.match(report, /## Item Detail Sections/);
+  assert.match(report, /## Rebaseline Readiness/);
+  assert.match(report, /## New Stale Since Last Change/);
   assert.match(report, /## Final Operating Questions/);
   assert.match(report, /## Roadmap Matrix/);
   assert.match(report, /## Proof Dimensions/);
   assert.match(report, /## Closure Evidence/);
+  for (const key of FIXED_ASSESSMENT_STATS_KEYS) {
+    assert.match(report, new RegExp(`- ${key}: \\d+`));
+  }
   assert.match(report, /11\. In what order must items land, and why\? 1\) item-payments-seam/);
-  assert.match(report, /12\. What proof closes each item\? item-payments-seam -> proof-payments-seam \(fresh_or_current, build:payments-v1\)/);
-  assert.match(report, /13\. What proof closes each track\? minimal-working-system -> track-proof-payments \[/);
+  assert.match(
+    report,
+    /12\. What proof closes each item\? item-payments-seam -> proof-payments-seam \(fresh_or_current, build:payments-v1\)/,
+  );
+  assert.match(
+    report,
+    /13\. What proof closes each track\? minimal-working-system -> track-proof-payments \[/,
+  );
 
-  const roadmapSection = report.slice(report.indexOf('## Roadmap'), report.indexOf('## Traceability'));
+  const roadmapSection = report.slice(
+    report.indexOf('## Roadmap'),
+    report.indexOf('## Traceability'),
+  );
   assert.equal(
     roadmapSection.indexOf('Payments capability seam') <
       roadmapSection.indexOf('Payments documentation and support source of truth'),
     true,
   );
-  assert.match(report, /15\. Does the roadmap end in a real, runnable, deployable, supportable system\?/);
+  assert.match(
+    report,
+    /15\. Does the roadmap end in a real, runnable, deployable, supportable system\?/,
+  );
+});
+
+test('report renders stable item summary and detail anchors with relation-resolved fields', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-item-report-navigation');
+
+  assert.equal(runCli(['init', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: true });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.reviews.push({
+      review_id: 'review-docs-item-report',
+      review_scope: 'item',
+      reviewed_ref: ref('item', 'item-payments-docs'),
+      reviewer: 'support-docs-reviewer',
+      role: 'support_operations',
+      independent: true,
+      verdict: 'pass',
+      findings: [],
+      hard_fail_report: [],
+      evidence_refs: ['note:docs-item-report'],
+      score_contribution: 2,
+      reviewed_at: '2026-03-26T00:00:00Z',
+    });
+    backlog.relations.push({
+      relation_type: 'reviewed_by',
+      from: ref('item', 'item-payments-docs'),
+      to: ref('review', 'review-docs-item-report'),
+    });
+  });
+
+  assert.equal(runCli(['validate', runDir]).status, 0);
+  assert.equal(runCli(['render', runDir]).status, 0);
+
+  const report = fs.readFileSync(path.join(runDir, 'report.md'), 'utf8');
+  assert.match(report, /<a id="item-summary-item-payments-seam"><\/a>/);
+  assert.match(report, /### item-payments-seam/);
+  assert.match(
+    report,
+    /- Jump to detail: \[item-payments-seam\]\(#item-detail-item-payments-seam\)/,
+  );
+  assert.match(report, /- item_id: item-payments-seam/);
+  assert.match(report, /- title: Payments capability seam/);
+  assert.match(report, /- item_class: capability_seam/);
+  assert.match(report, /- summary_label: Planned/);
+  assert.match(report, /- delivery_state: not_started/);
+  assert.match(report, /- track_id: minimal-working-system/);
+  assert.match(report, /- depends_on: None/);
+  assert.match(report, /<a id="item-detail-item-payments-seam"><\/a>/);
+  assert.match(report, /- touches_contracts: .*contract-payments-api/);
+  assert.match(report, /- touches_data_domains: .*data-domain-payments/);
+  assert.match(report, /- origin_ref: .*claim_ref:claim-payments/);
+  assert.match(report, /- claim_refs: claim-payments/);
+  assert.match(report, /- proof_refs: proof-payments-seam/);
+  assert.match(report, /<a id="item-detail-item-payments-docs"><\/a>/);
+  assert.match(
+    report,
+    /- review_refs: .*review-docs-item-report \(role=support_operations, verdict=pass\)/,
+  );
 });
 
 test('roadmap matrix topology ranks must respect dependency and parent-child order', (t) => {
@@ -2758,7 +4642,9 @@ test('roadmap matrix topology ranks must respect dependency and parent-child ord
   seedBacklog(runDir, { implementationGrade: true });
   mutateBacklog(runDir, (backlog) => {
     const seamRow = backlog.roadmap_matrix.find((row) => row.item_ref?.id === 'item-payments-seam');
-    const sliceRow = backlog.roadmap_matrix.find((row) => row.item_ref?.id === 'item-payments-slice');
+    const sliceRow = backlog.roadmap_matrix.find(
+      (row) => row.item_ref?.id === 'item-payments-slice',
+    );
     assert.ok(seamRow);
     assert.ok(sliceRow);
     seamRow.topology_rank = 2;
@@ -2781,8 +4667,12 @@ test('roadmap matrix safety and economic ranks must follow methodology precedenc
   mutateBacklog(runDir, (backlog) => {
     const seamRow = backlog.roadmap_matrix.find((row) => row.item_ref?.id === 'item-payments-seam');
     const docsRow = backlog.roadmap_matrix.find((row) => row.item_ref?.id === 'item-payments-docs');
-    const migrationRow = backlog.roadmap_matrix.find((row) => row.item_ref?.id === 'item-payments-migration');
-    const retirementRow = backlog.roadmap_matrix.find((row) => row.item_ref?.id === 'item-payments-retirement');
+    const migrationRow = backlog.roadmap_matrix.find(
+      (row) => row.item_ref?.id === 'item-payments-migration',
+    );
+    const retirementRow = backlog.roadmap_matrix.find(
+      (row) => row.item_ref?.id === 'item-payments-retirement',
+    );
     assert.ok(seamRow);
     assert.ok(docsRow);
     assert.ok(migrationRow);
@@ -2856,7 +4746,8 @@ test('invalid run-scope waivers do not satisfy implementation-grade baseline rev
   mutateBacklog(runDir, (backlog) => {
     backlog.reviews = backlog.reviews.filter((review) => review.review_id !== 'review-support');
     backlog.relations = backlog.relations.filter(
-      (relation) => !(relation.relation_type === 'reviewed_by' && relation.to?.id === 'review-support'),
+      (relation) =>
+        !(relation.relation_type === 'reviewed_by' && relation.to?.id === 'review-support'),
     );
     backlog.waivers.push({
       waiver_id: 'waiver-support-run',
@@ -2872,7 +4763,10 @@ test('invalid run-scope waivers do not satisfy implementation-grade baseline rev
 
   const validationResult = runCli(['validate', runDir]);
   assert.equal(validationResult.status, 1);
-  assert.match(validationResult.stderr, /Waiver waiver-support-run is invalid because role support_operations is directly impacted by its scope/);
+  assert.match(
+    validationResult.stderr,
+    /Waiver waiver-support-run is invalid because role support_operations is directly impacted by its scope/,
+  );
   assert.match(validationResult.stderr, /Required review role missing: support_operations/);
 
   assert.equal(runCli(['render', runDir]).status, 0);
@@ -2883,13 +4777,74 @@ test('invalid run-scope waivers do not satisfy implementation-grade baseline rev
   );
 });
 
+test('invalid same-scope waiver marks the matching scoped review stale', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-invalid-scoped-waiver');
+
+  assert.equal(runCli(['init', '--acceptance-target', 'implementation-grade', runDir]).status, 0);
+  seedBacklog(runDir, { implementationGrade: true });
+  mutateBacklog(runDir, (backlog) => {
+    backlog.reviews.push({
+      review_id: 'review-support-docs-item',
+      review_scope: 'item',
+      reviewed_ref: ref('item', 'item-payments-docs'),
+      reviewer: 'ops-item-1',
+      role: 'support_operations',
+      independent: true,
+      verdict: 'pass',
+      findings: [],
+      hard_fail_report: [],
+      evidence_refs: ['note:support-docs-item'],
+      score_contribution: 3,
+      reviewed_at: '2026-03-26T00:00:00Z',
+    });
+    backlog.relations.push({
+      relation_id: 'rel-item-docs-review-support-item',
+      relation_type: 'reviewed_by',
+      from: ref('item', 'item-payments-docs'),
+      to: ref('review', 'review-support-docs-item'),
+    });
+    backlog.waivers.push({
+      waiver_id: 'waiver-support-docs-item',
+      waived_role: 'support_operations',
+      scope: ref('item', 'item-payments-docs'),
+      granting_authority: 'Head of Support',
+      rationale: 'Directly impacted support scope should not be waived.',
+      expiry_or_revisit_trigger: 'next support-sensitive documentation change',
+      impacted_surfaces: ['support'],
+      valid: true,
+    });
+  });
+
+  const validationResult = runCli(['validate', runDir]);
+  assert.equal(validationResult.status, 1);
+  assert.match(
+    validationResult.stderr,
+    /Waiver waiver-support-docs-item is invalid because role support_operations is directly impacted by its scope/,
+  );
+
+  const assessment = loadJson(path.join(runDir, 'assessment.json'));
+  assert.equal(assessment.stale_review_artifacts.includes('review-support-docs-item'), true);
+  assert.equal(
+    assessment.delta_summary.stale_review_artifact_ids.includes('review-support-docs-item'),
+    true,
+  );
+  assert.equal(
+    assessment.next_actions.some((action) =>
+      /Refresh stale review artifacts: review-support-docs-item/.test(action),
+    ),
+    true,
+  );
+});
+
 test('validate journals waiver_recorded and track_closed lifecycle events', (t) => {
   const runDir = createTempRunDir(t, 'architecture-backlog-journal-events');
 
   assert.equal(runCli(['init', '--acceptance-target', 'implementation-grade', runDir]).status, 0);
   seedBacklog(runDir, { implementationGrade: true });
   mutateBacklog(runDir, (backlog) => {
-    const minimalTrack = backlog.tracks.find((track) => track.track_id === 'minimal-working-system');
+    const minimalTrack = backlog.tracks.find(
+      (track) => track.track_id === 'minimal-working-system',
+    );
     assert.ok(minimalTrack);
     minimalTrack.closure_state = 'closed';
     minimalTrack.summary_label = 'Implemented';
@@ -2909,11 +4864,22 @@ test('validate journals waiver_recorded and track_closed lifecycle events', (t) 
   assert.equal(validationResult.status, 0);
 
   const journal = loadNdjson(path.join(runDir, 'journal.ndjson'));
-  const waiverEvent = journal.find((event) => event.event === 'waiver_recorded' && event.waiver_id === 'waiver-security-docs');
-  const trackClosedEvent = journal.find((event) => event.event === 'track_closed' && event.track_id === 'minimal-working-system');
+  const waiverEvent = journal.find(
+    (event) => event.event === 'waiver_recorded' && event.waiver_id === 'waiver-security-docs',
+  );
+  const trackClosedEvent = journal.find(
+    (event) => event.event === 'track_closed' && event.track_id === 'minimal-working-system',
+  );
+  const validatedEvent = lastJournalEvent(journal, 'run_validated');
+  const renderEvent = lastJournalEvent(journal, 'report_rendered');
 
   assert.deepEqual(waiverEvent?.valid, true);
   assert.deepEqual(trackClosedEvent?.track_proof_refs, ['track-proof-payments']);
+  assert.ok(validatedEvent);
+  assert.ok(renderEvent);
+  assert.equal(waiverEvent?.command_run_id, validatedEvent.command_run_id);
+  assert.equal(trackClosedEvent?.command_run_id, validatedEvent.command_run_id);
+  assert.equal(validatedEvent.command_run_id, renderEvent.command_run_id);
 });
 
 test('delta surfaces extended rebaseline causes beyond source-contract-topology drift', (t) => {
@@ -2924,7 +4890,9 @@ test('delta surfaces extended rebaseline causes beyond source-contract-topology 
   assert.equal(runCli(['validate', runDir]).status, 0);
 
   mutateBacklog(runDir, (backlog) => {
-    const controlProof = backlog.proofs.find((proof) => proof.proof_id === 'proof-payments-control');
+    const controlProof = backlog.proofs.find(
+      (proof) => proof.proof_id === 'proof-payments-control',
+    );
     const migrationItem = backlog.items.find((item) => item.item_id === 'item-payments-migration');
     const controlItem = backlog.items.find((item) => item.item_id === 'item-payments-control');
     assert.ok(controlProof);
@@ -2940,10 +4908,13 @@ test('delta surfaces extended rebaseline causes beyond source-contract-topology 
       'owner_boundary_change',
       'release_path_change',
     ];
-    backlog.unknowns[0].resolution_note = 'Incident review showed the prior duplicate-suppression assumption was false.';
+    backlog.unknowns[0].resolution_note =
+      'Incident review showed the prior duplicate-suppression assumption was false.';
     backlog.quality_attributes[0].target = 'p95 < 300ms';
     backlog.target_system.external_dependencies.push('fraud-service');
-    backlog.target_system.team_and_ownership_assumptions.push('fraud-team owns provider risk controls');
+    backlog.target_system.team_and_ownership_assumptions.push(
+      'fraud-team owns provider risk controls',
+    );
     backlog.as_built.dependency_classifications.push({
       dependency_id: 'fraud-service',
       criticality: 'degraded',
@@ -2967,6 +4938,87 @@ test('delta surfaces extended rebaseline causes beyond source-contract-topology 
   assert.equal(assessment.delta_summary.dirty_flags.includes('owner_boundary_change'), true);
   assert.equal(assessment.delta_summary.dirty_flags.includes('release_path_change'), true);
   assert.equal(assessment.stale_proofs.includes('proof-payments-control'), true);
+});
+
+test('operator-facing help docs stay synchronized with workflow names, inputs, and runtime contract wording', () => {
+  const skillDoc = fs.readFileSync(SKILL_DOC_PATH, 'utf8');
+  const operatorHelpDoc = fs.readFileSync(OPERATOR_HELP_PATH, 'utf8');
+  const skillWorkflows = [...skillDoc.matchAll(/^#### (.+) \(`(UC-\d{2})`\)$/gm)].map(
+    ([, workflowName, ucCode]) => [ucCode, workflowName],
+  );
+  const operatorWorkflows = [...operatorHelpDoc.matchAll(/^\| `(UC-\d{2})` \| ([^|]+?) \|/gm)].map(
+    ([, ucCode, workflowName]) => [ucCode, workflowName.trim()],
+  );
+  const skillWorkflowCodes = skillWorkflows.map(([ucCode]) => ucCode);
+  const operatorWorkflowCodes = operatorWorkflows.map(([ucCode]) => ucCode);
+  const skillWorkflowNames = skillWorkflows.map(([, workflowName]) => workflowName);
+  const operatorWorkflowNames = operatorWorkflows.map(([, workflowName]) => workflowName);
+
+  assert.match(skillDoc, /^## Help$/m);
+  assert.match(skillDoc, /^## Prompt workflows$/m);
+  assert.match(
+    skillDoc,
+    /\[docs\/operator-use-cases\.ru\.md\]\(docs\/operator-use-cases\.ru\.md\)/,
+  );
+  assert.match(
+    skillDoc,
+    /edit scenarios accept either updated authoritative inputs or an explicit `source packet`; they never authorize manual edits to `manifest\.json`, `backlog\.json`, `assessment\.json`, or `journal\.ndjson`\./,
+  );
+
+  assert.match(operatorHelpDoc, /Этот файл является официальным operator-facing help-reference/);
+  assert.match(
+    operatorHelpDoc,
+    /\| Редактирование беклога \| updated authoritative source или explicit `source packet`; для `delivery state` только authoritative current-truth evidence \| planning-only packet, который напрямую пишет `delivery_state`; ручное редактирование canonical артефактов \|/,
+  );
+
+  for (const groupName of OPERATOR_WORKFLOW_GROUPS) {
+    assert.match(skillDoc, new RegExp(`^### ${groupName}$`, 'm'));
+  }
+
+  assert.equal(skillWorkflows.length, OPERATOR_WORKFLOWS.length);
+  assert.equal(operatorWorkflows.length, OPERATOR_WORKFLOWS.length);
+  assert.equal(new Set(skillWorkflowCodes).size, OPERATOR_WORKFLOWS.length);
+  assert.equal(new Set(operatorWorkflowCodes).size, OPERATOR_WORKFLOWS.length);
+  assert.equal(new Set(skillWorkflowNames).size, OPERATOR_WORKFLOWS.length);
+  assert.equal(new Set(operatorWorkflowNames).size, OPERATOR_WORKFLOWS.length);
+  assert.deepEqual(skillWorkflows, OPERATOR_WORKFLOWS);
+  assert.deepEqual(operatorWorkflows, OPERATOR_WORKFLOWS);
+  assert.deepEqual(skillWorkflows, operatorWorkflows);
+
+  for (const docText of [skillDoc, operatorHelpDoc]) {
+    assert.match(docText, /Gaps And Validation/);
+    assert.match(docText, /recovery/i);
+    assert.doesNotMatch(docText, /--no-render/);
+  }
+
+  assert.match(
+    skillDoc,
+    /CLI blocks `Rebaseline readiness` \/ `New stale since last change`, plus report sections `Lifecycle And Drift`, `Rebaseline Readiness`, `New Stale Since Last Change`, and `Gaps And Validation`/,
+  );
+  assert.match(
+    skillDoc,
+    /`discover` surfaces resolved sources, `stale review artifacts`, `Rebaseline readiness`, and `New stale since last change`[.;]/,
+  );
+  assert.match(
+    operatorHelpDoc,
+    /`status` \+ `report\.md`: .*`Rebaseline readiness`.*`Rebaseline Readiness`/,
+  );
+  assert.match(
+    operatorHelpDoc,
+    /`status` или `delta` \+ `report\.md`: .*`New stale since last change`.*`New Stale Since Last Change`/,
+  );
+  assert.match(
+    operatorHelpDoc,
+    /Формат ответа использует точные runtime statuses: `allowed`, `blocked` или `not_needed`, плюс причины\./,
+  );
+  assert.match(
+    operatorHelpDoc,
+    /Отвечает из блока `Rebaseline readiness` в `status` и из section `Rebaseline Readiness` в `report\.md`\./,
+  );
+  assert.match(
+    operatorHelpDoc,
+    /Отвечает из блока `New stale since last change` в `discover`, `status` или `delta`, а также из rendered section `New Stale Since Last Change`\./,
+  );
 });
 
 test('obsolete pre-GA n_a shapes are rejected in canonical items', (t) => {

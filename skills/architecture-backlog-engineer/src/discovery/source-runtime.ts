@@ -45,6 +45,18 @@ import { repairCompactRunBundle } from './bundle-repair.js';
 
 const PACKET_FENCE_MARKERS = ['architecture-backlog-packet', 'abe-packet', 'architecture-backlog'];
 
+type PacketMergeMode = 'source_driven_refresh' | 'planning_overlay';
+
+interface PacketProvenance {
+  merge_mode: PacketMergeMode;
+  source_authority?: SourceAuthorityClass;
+  source_id?: string;
+  source_kind?: SourceKind;
+  source_refs_managed?: boolean;
+}
+
+type PacketEnvelopeProvenance = Omit<PacketProvenance, 'source_refs_managed'>;
+
 type PacketSectionKey =
   | 'id_strategy'
   | 'glossary'
@@ -106,16 +118,22 @@ const PACKET_SECTION_KEYS: PacketSectionKey[] = [
   'roadmap_matrix',
 ];
 
-const SECTION_ID_SELECTORS: Partial<Record<PacketSectionKey, (entry: Record<string, unknown>) => string | null>> = {
+const SECTION_ID_SELECTORS: Partial<
+  Record<PacketSectionKey, (entry: Record<string, unknown>) => string | null>
+> = {
   source_exclusions: (entry) => (isNonEmptyString(entry.source_id) ? entry.source_id : null),
-  value_streams: (entry) => (isNonEmptyString(entry.value_stream_id) ? entry.value_stream_id : null),
+  value_streams: (entry) =>
+    isNonEmptyString(entry.value_stream_id) ? entry.value_stream_id : null,
   tracks: (entry) => (isNonEmptyString(entry.track_id) ? entry.track_id : null),
   track_gates: (entry) => (isNonEmptyString(entry.track_gate_id) ? entry.track_gate_id : null),
   track_journeys: (entry) => (isNonEmptyString(entry.journey_id) ? entry.journey_id : null),
   claims: (entry) => (isNonEmptyString(entry.claim_id) ? entry.claim_id : null),
-  negative_scope: (entry) => (isNonEmptyString(entry.negative_scope_id) ? entry.negative_scope_id : null),
-  quality_attributes: (entry) => (isNonEmptyString(entry.quality_attribute_id) ? entry.quality_attribute_id : null),
-  policy_decisions: (entry) => (isNonEmptyString(entry.policy_decision_id) ? entry.policy_decision_id : null),
+  negative_scope: (entry) =>
+    isNonEmptyString(entry.negative_scope_id) ? entry.negative_scope_id : null,
+  quality_attributes: (entry) =>
+    isNonEmptyString(entry.quality_attribute_id) ? entry.quality_attribute_id : null,
+  policy_decisions: (entry) =>
+    isNonEmptyString(entry.policy_decision_id) ? entry.policy_decision_id : null,
   contracts: (entry) => (isNonEmptyString(entry.contract_id) ? entry.contract_id : null),
   data_domains: (entry) => (isNonEmptyString(entry.domain_id) ? entry.domain_id : null),
   gaps: (entry) => (isNonEmptyString(entry.issue_id) ? entry.issue_id : null),
@@ -125,7 +143,8 @@ const SECTION_ID_SELECTORS: Partial<Record<PacketSectionKey, (entry: Record<stri
     isNonEmptyString(entry.unknown_id) && isNonEmptyString(entry.spike_item_id)
       ? `${entry.unknown_id}::${entry.spike_item_id}`
       : null,
-  delivered_lineage_notes: (entry) => (isNonEmptyString(entry.lineage_note_id) ? entry.lineage_note_id : null),
+  delivered_lineage_notes: (entry) =>
+    isNonEmptyString(entry.lineage_note_id) ? entry.lineage_note_id : null,
   items: (entry) => (isNonEmptyString(entry.item_id) ? entry.item_id : null),
   relations: (entry) => {
     if (isNonEmptyString(entry.relation_id)) {
@@ -188,6 +207,7 @@ export interface SourceInputSpec {
 
 export interface DiscoverySourcePacket {
   source?: Partial<SourceAuthorityRef>;
+  packet_provenance?: Partial<PacketEnvelopeProvenance>;
   replace_sections?: PacketSectionKey[];
   id_strategy?: BacklogFile['id_strategy'];
   glossary?: Record<string, string>;
@@ -240,6 +260,10 @@ export interface RefreshRunSourcesResult extends SourceRefreshResult {
   unsupportedSchemaMessages: string[];
 }
 
+export interface RefreshRunSourceFingerprintsOptions {
+  commandRunId?: string;
+}
+
 function cloneJson<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
 }
@@ -266,8 +290,9 @@ function sanitizeIdPart(value: string): string {
 
 function deriveSourceId(kind: SourceKind, normalizedRef: string, usedIds: Set<string>): string {
   const refName = isHttpRef(normalizedRef)
-    ? new URL(normalizedRef).pathname.split('/').filter(Boolean).at(-1) ?? 'source'
-    : path.parse(isFileUrl(normalizedRef) ? fileURLToPath(normalizedRef) : normalizedRef).name || 'source';
+    ? (new URL(normalizedRef).pathname.split('/').filter(Boolean).at(-1) ?? 'source')
+    : path.parse(isFileUrl(normalizedRef) ? fileURLToPath(normalizedRef) : normalizedRef).name ||
+      'source';
   const baseId = `src-${sanitizeIdPart(kind)}-${sanitizeIdPart(refName) || 'source'}`;
   if (!usedIds.has(baseId)) {
     usedIds.add(baseId);
@@ -288,12 +313,17 @@ function normalizeSourceRef(ref: string, baseDir: string): string {
   return path.resolve(baseDir, ref);
 }
 
-async function readSourceContent(ref: string, baseDir: string): Promise<{ content: string; normalizedRef: string }> {
+async function readSourceContent(
+  ref: string,
+  baseDir: string,
+): Promise<{ content: string; normalizedRef: string }> {
   const normalizedRef = normalizeSourceRef(ref, baseDir);
   if (isHttpRef(normalizedRef)) {
     const response = await fetch(normalizedRef);
     if (!response.ok) {
-      throw new Error(`Failed to read source ${normalizedRef}: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to read source ${normalizedRef}: ${response.status} ${response.statusText}`,
+      );
     }
     return {
       content: await response.text(),
@@ -334,10 +364,15 @@ function parsePacketPayload(payload: unknown, packetRef: string): DiscoverySourc
     return record.packets.flatMap((entry: unknown) => parsePacketPayload(entry, packetRef));
   }
 
-  throw new Error(`Source packet ${packetRef} does not contain a valid architecture-backlog packet`);
+  throw new Error(
+    `Source packet ${packetRef} does not contain a valid architecture-backlog packet`,
+  );
 }
 
-function extractPacketBlocksFromMarkdown(content: string, packetRef: string): DiscoverySourcePacket[] {
+function extractPacketBlocksFromMarkdown(
+  content: string,
+  packetRef: string,
+): DiscoverySourcePacket[] {
   const packets: DiscoverySourcePacket[] = [];
   const fencePattern = /```([^\n]*)\n([\s\S]*?)```/g;
   let match = fencePattern.exec(content);
@@ -363,7 +398,10 @@ function extractPacketBlocksFromMarkdown(content: string, packetRef: string): Di
   return packets;
 }
 
-export function parseDiscoverySourcePackets(content: string, packetRef: string): DiscoverySourcePacket[] {
+export function parseDiscoverySourcePackets(
+  content: string,
+  packetRef: string,
+): DiscoverySourcePacket[] {
   const trimmed = content.trim();
   if (trimmed.length === 0) {
     return [];
@@ -456,7 +494,15 @@ function upsertArraySection<T extends MergeablePacketRecord>(
       merged.push(cloneJson(incomingEntry));
       continue;
     }
-    merged[existingIndex] = mergeValues(merged[existingIndex], incomingEntry) as T;
+    const existingEntry = cloneJson(merged[existingIndex]) as Record<string, unknown>;
+    const incomingRecord = incomingEntry as Record<string, unknown>;
+    if (
+      sectionKey === 'items' &&
+      asStringRecord(incomingRecord.packet_provenance).source_refs_managed === true
+    ) {
+      delete existingEntry.source_refs;
+    }
+    merged[existingIndex] = mergeValues(existingEntry, incomingEntry) as T;
   }
 
   return merged;
@@ -470,6 +516,33 @@ const SOURCE_REF_SECTIONS = new Set<PacketSectionKey>([
   'gaps',
   'contradictions',
   'unknowns',
+]);
+
+const PLANNING_OVERLAY_SECTION_KEYS = new Set<PacketSectionKey>([
+  'items',
+  'relations',
+  'roadmap_matrix',
+  'gaps',
+  'unknowns',
+  'uncertainty_to_spike',
+  'claims',
+  'negative_scope',
+]);
+
+const PLANNING_OVERLAY_CLAIM_KEYS = new Set(['claim_id', 'commitment', 'revisit_trigger']);
+const PACKET_SOURCE_KEYS = new Set([
+  'source_id',
+  'ref',
+  'kind',
+  'authority',
+  'precedence',
+  'notes',
+]);
+const PACKET_PROVENANCE_KEYS = new Set([
+  'merge_mode',
+  'source_authority',
+  'source_id',
+  'source_kind',
 ]);
 
 function defaultSourceRefs<T extends Record<string, unknown>>(
@@ -497,6 +570,372 @@ function defaultSourceRefs<T extends Record<string, unknown>>(
   });
 }
 
+function inferPacketMergeMode(source: SourceAuthorityRef): PacketMergeMode {
+  if (source.authority === 'planning_only' || source.kind === 'backlog_text') {
+    return 'planning_overlay';
+  }
+  return 'source_driven_refresh';
+}
+
+function existingSourceIds(backlog: BacklogFile): Set<string> {
+  return new Set(
+    backlog.source_authority
+      .map((source) => (isNonEmptyString(source.source_id) ? source.source_id : null))
+      .filter((sourceId): sourceId is string => sourceId !== null),
+  );
+}
+
+function findSourceAuthorityByIdentity(
+  backlog: BacklogFile,
+  source: Partial<SourceAuthorityRef>,
+): SourceAuthorityRef | null {
+  if (
+    !isNonEmptyString(source.ref) ||
+    !isNonEmptyString(source.kind) ||
+    !isNonEmptyString(source.authority)
+  ) {
+    return null;
+  }
+
+  return (
+    backlog.source_authority.find(
+      (entry) =>
+        entry.ref === source.ref &&
+        entry.kind === source.kind &&
+        entry.authority === source.authority,
+    ) ?? null
+  );
+}
+
+function normalizePacketSourceRecord(
+  packetSource: Partial<SourceAuthorityRef>,
+  packetRef: string | null,
+): Partial<SourceAuthorityRef> {
+  const rawSource = packetSource as Record<string, unknown>;
+  if ('sourceId' in rawSource) {
+    throw new Error(
+      `Packet ${packetRef ?? '<unknown-packet>'} must use packet.source.source_id; sourceId is not valid in canonical packets`,
+    );
+  }
+  const unexpectedKeys = Object.keys(rawSource).filter((key) => !PACKET_SOURCE_KEYS.has(key));
+  if (unexpectedKeys.length > 0) {
+    throw new Error(
+      `Packet ${packetRef ?? '<unknown-packet>'} contains unsupported packet.source keys: ${unexpectedKeys.join(', ')}`,
+    );
+  }
+  return cloneJson(rawSource) as Partial<SourceAuthorityRef>;
+}
+
+function normalizeExplicitPacketSource(
+  backlog: BacklogFile,
+  packet: DiscoverySourcePacket,
+  packetRef: string | null,
+  usedIds: Set<string>,
+): SourceAuthorityRef {
+  if (!packet.source || typeof packet.source !== 'object') {
+    throw new Error(
+      `Explicit source packet ${packetRef ?? '<unknown-packet>'} must define packet.source`,
+    );
+  }
+
+  const normalized = normalizePacketSourceRecord(packet.source, packetRef) as SourceAuthorityRef;
+  if (!isNonEmptyString(normalized.ref)) {
+    throw new Error(
+      `Explicit source packet ${packetRef ?? '<unknown-packet>'} must define packet.source.ref`,
+    );
+  }
+  if (!isNonEmptyString(normalized.kind)) {
+    throw new Error(
+      `Explicit source packet ${packetRef ?? '<unknown-packet>'} must define packet.source.kind`,
+    );
+  }
+  if (!isNonEmptyString(normalized.authority)) {
+    throw new Error(
+      `Explicit source packet ${packetRef ?? '<unknown-packet>'} must define packet.source.authority`,
+    );
+  }
+
+  if (!isNonEmptyString(normalized.source_id)) {
+    const existing = findSourceAuthorityByIdentity(backlog, normalized);
+    normalized.source_id =
+      existing?.source_id ?? deriveSourceId(normalized.kind, normalized.ref, usedIds);
+  } else {
+    usedIds.add(normalized.source_id);
+  }
+
+  return normalized;
+}
+
+function normalizePacketProvenance(
+  packet: DiscoverySourcePacket,
+  source: SourceAuthorityRef,
+  packetRef: string | null,
+  requireExplicitMetadata: boolean,
+): PacketEnvelopeProvenance {
+  const rawProvenance =
+    packet.packet_provenance && typeof packet.packet_provenance === 'object'
+      ? (packet.packet_provenance as Record<string, unknown>)
+      : null;
+  if (requireExplicitMetadata && !rawProvenance) {
+    throw new Error(
+      `Explicit source packet ${packetRef ?? '<unknown-packet>'} must define packet.packet_provenance.merge_mode`,
+    );
+  }
+  if (
+    !requireExplicitMetadata &&
+    packet.packet_provenance !== undefined &&
+    rawProvenance === null
+  ) {
+    throw new Error(
+      `Packet ${packetRef ?? '<unknown-packet>'} has invalid packet.packet_provenance`,
+    );
+  }
+
+  const unexpectedKeys = Object.keys(rawProvenance ?? {}).filter(
+    (key) => !PACKET_PROVENANCE_KEYS.has(key),
+  );
+  if (unexpectedKeys.length > 0) {
+    throw new Error(
+      `Packet ${packetRef ?? '<unknown-packet>'} contains unsupported packet.packet_provenance keys: ${unexpectedKeys.join(', ')}`,
+    );
+  }
+
+  const mergeModeValue = rawProvenance?.merge_mode;
+  if (requireExplicitMetadata && !isNonEmptyString(mergeModeValue)) {
+    throw new Error(
+      `Explicit source packet ${packetRef ?? '<unknown-packet>'} must define packet.packet_provenance.merge_mode`,
+    );
+  }
+
+  const mergeMode = isNonEmptyString(mergeModeValue)
+    ? mergeModeValue
+    : inferPacketMergeMode(source);
+  if (mergeMode !== 'planning_overlay' && mergeMode !== 'source_driven_refresh') {
+    throw new Error(
+      `Packet ${packetRef ?? '<unknown-packet>'} must use packet.packet_provenance.merge_mode of planning_overlay or source_driven_refresh`,
+    );
+  }
+
+  const normalized: PacketEnvelopeProvenance = {
+    merge_mode: inferPacketMergeMode(source),
+    ...(source.authority ? { source_authority: source.authority } : {}),
+    ...(source.source_id ? { source_id: source.source_id } : {}),
+    ...(source.kind ? { source_kind: source.kind } : {}),
+  };
+
+  if (mergeMode !== normalized.merge_mode) {
+    throw new Error(
+      `Packet ${packetRef ?? '<unknown-packet>'} declares packet.packet_provenance.merge_mode=${mergeMode} but resolved merge_mode=${normalized.merge_mode}`,
+    );
+  }
+
+  const crossChecks: Array<keyof PacketEnvelopeProvenance> = [
+    'source_authority',
+    'source_id',
+    'source_kind',
+  ];
+  for (const field of crossChecks) {
+    const provided = rawProvenance?.[field];
+    const resolved = normalized[field];
+    if (provided !== undefined && provided !== resolved) {
+      const providedLabel = typeof provided === 'string' ? provided : JSON.stringify(provided);
+      const resolvedLabel = typeof resolved === 'string' ? resolved : JSON.stringify(resolved);
+      throw new Error(
+        `Packet ${packetRef ?? '<unknown-packet>'} has packet.packet_provenance.${field}=${providedLabel} but resolved ${field}=${resolvedLabel}`,
+      );
+    }
+  }
+
+  return normalized;
+}
+
+function sourceAuthorityIdentityKey(
+  source: Pick<SourceAuthorityRef, 'ref' | 'kind' | 'authority'>,
+): string | null {
+  if (
+    !isNonEmptyString(source.ref) ||
+    !isNonEmptyString(source.kind) ||
+    !isNonEmptyString(source.authority)
+  ) {
+    return null;
+  }
+
+  return `${source.ref}::${source.kind}::${source.authority}`;
+}
+
+function assertSourceAuthorityIdentityCompatibility(
+  backlog: BacklogFile,
+  source: SourceAuthorityRef,
+  packetRef: string | null,
+  allowedConflictingSourceId: string | null = null,
+): void {
+  if (!isNonEmptyString(source.source_id)) {
+    return;
+  }
+
+  const incomingIdentityKey = sourceAuthorityIdentityKey(source);
+  if (incomingIdentityKey !== null) {
+    const conflicting = backlog.source_authority.find(
+      (entry) =>
+        isNonEmptyString(entry.source_id) &&
+        entry.source_id !== source.source_id &&
+        entry.source_id !== allowedConflictingSourceId &&
+        sourceAuthorityIdentityKey(entry) === incomingIdentityKey,
+    );
+    if (conflicting && isNonEmptyString(conflicting.source_id)) {
+      throw new Error(
+        `Explicit source packet ${packetRef ?? source.source_id} cannot register duplicate source_authority identity ${source.ref} (${source.kind}, ${source.authority}) under ${source.source_id}; reuse existing source_id ${conflicting.source_id}`,
+      );
+    }
+  }
+
+  const current = backlog.source_authority.find((entry) => entry.source_id === source.source_id);
+  if (!current) {
+    return;
+  }
+
+  const immutableFields: Array<keyof SourceAuthorityRef> = ['ref', 'kind', 'authority'];
+  for (const field of immutableFields) {
+    const incoming = source[field];
+    const existing = current[field];
+    if (isNonEmptyString(incoming) && isNonEmptyString(existing) && incoming !== existing) {
+      throw new Error(
+        `Explicit source packet ${packetRef ?? source.source_id} cannot rewrite source_authority.${field} for ${source.source_id}`,
+      );
+    }
+  }
+}
+
+function packetSectionsWithContent(packet: DiscoverySourcePacket): PacketSectionKey[] {
+  const populated: PacketSectionKey[] = [];
+  for (const sectionKey of PACKET_SECTION_KEYS) {
+    const sectionValue = packet[sectionKey];
+    if (sectionValue === undefined) {
+      continue;
+    }
+    if (Array.isArray(sectionValue) && sectionValue.length === 0) {
+      continue;
+    }
+    populated.push(sectionKey);
+  }
+  return populated;
+}
+
+function assertPlanningOverlaySectionsAllowed(
+  backlog: BacklogFile,
+  packet: DiscoverySourcePacket,
+  packetRef: string | null,
+): void {
+  const replaceSections = asArray(packet.replace_sections).filter(isNonEmptyString);
+  if (replaceSections.length > 0) {
+    throw new Error(
+      `Planning overlay packet ${packetRef ?? '<unknown-packet>'} cannot use replace_sections`,
+    );
+  }
+
+  for (const sectionKey of packetSectionsWithContent(packet)) {
+    if (!PLANNING_OVERLAY_SECTION_KEYS.has(sectionKey)) {
+      throw new Error(
+        `Planning overlay packet ${packetRef ?? '<unknown-packet>'} cannot modify ${sectionKey}`,
+      );
+    }
+  }
+
+  for (const claimEntry of packet.claims ?? []) {
+    if (!isNonEmptyString(claimEntry.claim_id)) {
+      throw new Error(
+        `Planning overlay packet ${packetRef ?? '<unknown-packet>'} must target claims by claim_id`,
+      );
+    }
+    const current = backlog.claims.find((claim) => claim.claim_id === claimEntry.claim_id);
+    if (!current) {
+      throw new Error(
+        `Planning overlay packet ${packetRef ?? '<unknown-packet>'} cannot create or replace claim ${claimEntry.claim_id}`,
+      );
+    }
+    const unexpectedKeys = Object.keys(claimEntry).filter(
+      (key) => !PLANNING_OVERLAY_CLAIM_KEYS.has(key),
+    );
+    if (unexpectedKeys.length > 0) {
+      throw new Error(
+        `Planning overlay claim patch ${claimEntry.claim_id} may only change claim_id, commitment, and revisit_trigger; found ${unexpectedKeys.join(', ')}`,
+      );
+    }
+  }
+}
+
+function managedSourceRefsForEntry(
+  existingEntry: Record<string, unknown> | null,
+  sourceId: string | null,
+  replaceSection: boolean,
+  preserveExistingRefs: boolean,
+): string[] | undefined {
+  const managedRefs = new Set<string>();
+  if (
+    preserveExistingRefs &&
+    !replaceSection &&
+    existingEntry &&
+    Array.isArray(existingEntry.source_refs)
+  ) {
+    for (const existingRef of existingEntry.source_refs) {
+      if (isNonEmptyString(existingRef)) {
+        managedRefs.add(existingRef);
+      }
+    }
+  }
+  if (isNonEmptyString(sourceId)) {
+    managedRefs.add(sourceId);
+  }
+  return managedRefs.size > 0 ? [...managedRefs].sort() : undefined;
+}
+
+function annotatePacketEntries(
+  currentEntries: MergeablePacketRecord[],
+  incomingEntries: MergeablePacketRecord[],
+  sectionKey: PacketSectionKey,
+  packetProvenance: PacketEnvelopeProvenance,
+  replaceSection: boolean,
+): MergeablePacketRecord[] {
+  const idSelector = SECTION_ID_SELECTORS[sectionKey];
+  const currentById = new Map<string, Record<string, unknown>>();
+  if (idSelector) {
+    for (const currentEntry of currentEntries) {
+      const currentId = idSelector(currentEntry as Record<string, unknown>);
+      if (currentId) {
+        currentById.set(currentId, currentEntry as Record<string, unknown>);
+      }
+    }
+  }
+
+  return incomingEntries.map((entry) => {
+    const cloned = cloneJson(entry) as Record<string, unknown> & {
+      packet_provenance?: PacketProvenance;
+    };
+    const entryId = idSelector ? idSelector(cloned) : null;
+    const currentEntry = entryId ? (currentById.get(entryId) ?? null) : null;
+    const manageSourceRefs =
+      SOURCE_REF_SECTIONS.has(sectionKey) ||
+      (sectionKey === 'items' && packetProvenance.merge_mode === 'source_driven_refresh');
+    if (manageSourceRefs) {
+      const preserveExistingRefs = sectionKey !== 'items';
+      const managedSourceRefs = managedSourceRefsForEntry(
+        currentEntry,
+        packetProvenance.source_id ?? null,
+        replaceSection,
+        preserveExistingRefs,
+      );
+      if (managedSourceRefs) {
+        cloned.source_refs = managedSourceRefs;
+      }
+    }
+    cloned.packet_provenance = {
+      ...packetProvenance,
+      ...(manageSourceRefs ? { source_refs_managed: true } : {}),
+    };
+    return cloned as MergeablePacketRecord;
+  });
+}
+
 function assignAuthoritativePrecedence(backlog: BacklogFile): void {
   const authoritativeSources = backlog.source_authority.filter(
     (source) =>
@@ -505,8 +944,12 @@ function assignAuthoritativePrecedence(backlog: BacklogFile): void {
   );
 
   authoritativeSources.sort((left, right) => {
-    const leftPrecedence = Number.isInteger(left.precedence) ? Number(left.precedence) : Number.MAX_SAFE_INTEGER;
-    const rightPrecedence = Number.isInteger(right.precedence) ? Number(right.precedence) : Number.MAX_SAFE_INTEGER;
+    const leftPrecedence = Number.isInteger(left.precedence)
+      ? Number(left.precedence)
+      : Number.MAX_SAFE_INTEGER;
+    const rightPrecedence = Number.isInteger(right.precedence)
+      ? Number(right.precedence)
+      : Number.MAX_SAFE_INTEGER;
     if (leftPrecedence !== rightPrecedence) {
       return leftPrecedence - rightPrecedence;
     }
@@ -551,14 +994,24 @@ export async function resolveSourceInputs(
   return resolved;
 }
 
+export interface ExplicitPacketInput {
+  packet: DiscoverySourcePacket;
+  packetRef: string;
+}
+
 export async function loadSourcePacketRefs(
   packetRefs: string[],
   baseDir: string,
-): Promise<DiscoverySourcePacket[]> {
-  const packets: DiscoverySourcePacket[] = [];
+): Promise<ExplicitPacketInput[]> {
+  const packets: ExplicitPacketInput[] = [];
   for (const packetRef of packetRefs) {
     const { content, normalizedRef } = await readSourceContent(packetRef, baseDir);
-    packets.push(...parseDiscoverySourcePackets(content, normalizedRef));
+    packets.push(
+      ...parseDiscoverySourcePackets(content, normalizedRef).map((packet) => ({
+        packet,
+        packetRef: normalizedRef,
+      })),
+    );
   }
   return packets;
 }
@@ -585,9 +1038,10 @@ function mergeSourceAuthorityEntry(
 export function mergeDiscoveryPacketsIntoBacklog(
   backlog: BacklogFile,
   rawSources: ResolvedSourceInput[],
-  packets: DiscoverySourcePacket[],
+  packets: ExplicitPacketInput[],
 ): { appliedPackets: number; appliedSourceIds: string[] } {
   const appliedSourceIds = new Set<string>();
+  const usedIds = existingSourceIds(backlog);
 
   for (const source of rawSources) {
     const sourceId = mergeSourceAuthorityEntry(backlog, {
@@ -601,13 +1055,49 @@ export function mergeDiscoveryPacketsIntoBacklog(
 
   const allPackets = [
     ...rawSources.flatMap((source) =>
-      source.packetBlocks.map((packet) => ({ packet, fallbackSource: source.source })),
+      source.packetBlocks.map((packet) => ({
+        packet,
+        fallbackSource: source.source,
+        packetRef: source.normalizedRef,
+      })),
     ),
-    ...packets.map((packet) => ({ packet, fallbackSource: null as SourceAuthorityRef | null })),
+    ...packets.map(({ packet, packetRef }) => ({
+      packet,
+      fallbackSource: null as SourceAuthorityRef | null,
+      packetRef,
+    })),
   ];
 
-  for (const { fallbackSource, packet } of allPackets) {
-    const mergedSource = mergeValues(fallbackSource ?? {}, packet.source ?? {}) as SourceAuthorityRef;
+  for (const { fallbackSource, packet, packetRef } of allPackets) {
+    const explicitPacket = fallbackSource === null;
+    const mergedSource = fallbackSource
+      ? (mergeValues(
+          fallbackSource,
+          packet.source && typeof packet.source === 'object'
+            ? normalizePacketSourceRecord(packet.source, packetRef)
+            : {},
+        ) as SourceAuthorityRef)
+      : normalizeExplicitPacketSource(backlog, packet, packetRef, usedIds);
+    const packetProvenance = normalizePacketProvenance(
+      packet,
+      mergedSource,
+      packetRef,
+      explicitPacket,
+    );
+    if (packetProvenance.merge_mode === 'planning_overlay') {
+      assertPlanningOverlaySectionsAllowed(backlog, packet, packetRef);
+    }
+    assertSourceAuthorityIdentityCompatibility(
+      backlog,
+      mergedSource,
+      packetRef,
+      fallbackSource &&
+        isNonEmptyString(fallbackSource.source_id) &&
+        isNonEmptyString(packet.source?.source_id) &&
+        fallbackSource.source_id !== packet.source.source_id
+        ? fallbackSource.source_id
+        : null,
+    );
     if (
       fallbackSource &&
       isNonEmptyString(fallbackSource.source_id) &&
@@ -625,6 +1115,11 @@ export function mergeDiscoveryPacketsIntoBacklog(
     }
 
     const replaceSections = new Set(asArray(packet.replace_sections).filter(isNonEmptyString));
+    if (replaceSections.size > 0 && packetProvenance.merge_mode !== 'source_driven_refresh') {
+      throw new Error(
+        `Packet ${packetRef ?? sourceId ?? '<unknown-packet>'} cannot use replace_sections outside source-driven refresh`,
+      );
+    }
 
     if (packet.id_strategy) {
       backlog.id_strategy = mergeValues(
@@ -681,11 +1176,17 @@ export function mergeDiscoveryPacketsIntoBacklog(
         continue;
       }
 
-      const entries = defaultSourceRefs(
-        sectionValue as Record<string, unknown>[],
-        sourceId,
+      const entries = annotatePacketEntries(
+        backlog[sectionKey] as MergeablePacketRecord[],
+        defaultSourceRefs(
+          sectionValue as Record<string, unknown>[],
+          sourceId,
+          sectionKey,
+        ) as MergeablePacketRecord[],
         sectionKey,
-      ) as MergeablePacketRecord[];
+        packetProvenance,
+        replaceSections.has(sectionKey),
+      );
       if (replaceSections.has(sectionKey)) {
         backlog[sectionKey] = cloneJson(entries) as never;
         continue;
@@ -770,6 +1271,7 @@ export async function refreshSourceFingerprintsInBacklog(
 
 export async function refreshRunSourceFingerprints(
   runDirInput: string,
+  options: RefreshRunSourceFingerprintsOptions = {},
 ): Promise<RefreshRunSourcesResult> {
   const bundleRepair = repairCompactRunBundle(runDirInput);
   if (
@@ -781,7 +1283,9 @@ export async function refreshRunSourceFingerprints(
       accessStateChangedSourceIds: [],
       changedSourceIds: [],
       inaccessibleSources: [],
-      ...(bundleRepair.legacyLayoutMessage ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage } : {}),
+      ...(bundleRepair.legacyLayoutMessage
+        ? { legacyLayoutMessage: bundleRepair.legacyLayoutMessage }
+        : {}),
       missingArtifacts: bundleRepair.irreparableMissingArtifacts,
       runDir: bundleRepair.runDir,
       unsupportedSchemaMessages: bundleRepair.unsupportedSchemaMessages,
@@ -821,7 +1325,10 @@ export async function refreshRunSourceFingerprints(
   }
 
   const refreshResult = await refreshSourceFingerprintsInBacklog(backlog, process.cwd());
-  if (refreshResult.changedSourceIds.length > 0 || refreshResult.accessStateChangedSourceIds.length > 0) {
+  if (
+    refreshResult.changedSourceIds.length > 0 ||
+    refreshResult.accessStateChangedSourceIds.length > 0
+  ) {
     const refreshedAt = utcNow();
     backlog.metadata.updated_at = refreshedAt;
     manifest.updated_at = refreshedAt;
@@ -832,6 +1339,7 @@ export async function refreshRunSourceFingerprints(
       ts: refreshedAt,
       event: 'source_fingerprints_refreshed',
       run_id: manifest.run_id,
+      ...(options.commandRunId ? { command_run_id: options.commandRunId } : {}),
       changed_source_ids: refreshResult.changedSourceIds,
       access_state_changed_source_ids: refreshResult.accessStateChangedSourceIds,
       inaccessible_source_ids: refreshResult.inaccessibleSources,

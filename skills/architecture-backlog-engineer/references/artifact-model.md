@@ -16,8 +16,9 @@ For each discovery run:
   - timestamps
   - baseline and current source fingerprints
   - baseline and current canonical hashes
+  - baseline and current issue-to-item linkage snapshots
   - dirty flags
-  - last delta / rebaseline timestamps and causes
+  - last render / delta / rebaseline timestamps and causes
 - `backlog.json`
   - the canonical backlog graph payload
   - glossary and aliases
@@ -41,6 +42,11 @@ For each discovery run:
   - next actions
 - `journal.ndjson`
   - append-only event log
+  - `command_run_id` groups all lifecycle events from one top-level CLI invocation
+  - mutating commands end with canonical outcome event `report_rendered`
+  - `report_rendered.render_reason` is `mutating_command` for auto-render tails and `recovery_render` for explicit standalone `render`
+  - mutating `report_rendered` events carry `stale_snapshot` and `new_stale_snapshot`
+  - `rebaseline_completed` carries `baseline_projection`
 
 These four files carry process continuity.
 
@@ -51,6 +57,7 @@ These four files carry process continuity.
   - includes run summary, source authority, feature candidates, roadmap, roadmap matrix, review governance, lifecycle/drift state, gaps, score, review, closure, and final operating questions
 
 The report is disposable. Rebuild it from canonical state.
+Every mutating command auto-renders `report.md` and updates `manifest.last_render_at`.
 
 ## Default command sequence
 
@@ -65,7 +72,8 @@ Discover or update the backlog graph from architecture/runtime sources:
 ```bash
 node scripts/architecture-backlog.mjs discover /path/to/run-dir \
   --architecture-source ./docs/architecture.md \
-  --runtime-source ./ops/runtime.md
+  --runtime-source ./ops/runtime.md \
+  --source-packet ./tmp/packet.json
 ```
 
 Repair derivable canonical state from the existing run and source refs:
@@ -104,6 +112,12 @@ Render the report:
 node scripts/architecture-backlog.mjs render /path/to/run-dir
 ```
 
+Auto-render contract:
+
+- `init`, `discover`, `repair`, `validate`, `delta`, and `rebaseline` always finish by rendering `report.md`
+- `render` remains the recovery-only explicit render path
+- `discover` and `repair` no longer expose `--no-render`
+
 ## Bootstrap rules
 
 - If the bundled runtime artifact `scripts/architecture-backlog.mjs` exists, use it directly.
@@ -111,7 +125,10 @@ node scripts/architecture-backlog.mjs render /path/to/run-dir
 - If the target run directory has no canonical files, `discover` should initialize it automatically.
 - If the run already exists, reuse it; do not overwrite unless explicitly instructed.
 - Prefer `discover` over manual `backlog.json` editing when the change originates from architecture, ADR, runtime, or evidence sources.
-- Embedded `architecture-backlog-packet` blocks are the normal machine-readable transport for source-driven discovery.
+- `discover` supports two machine-readable packet transports:
+  - explicit packet refs passed through `--source-packet`
+  - embedded packet blocks inside source documents
+- Embedded packet support is a transport capability. It does not change the role split: prose meaning is interpreted by the agent, while the CLI ingests packet payload and materializes canonical state.
 
 ## Failure handling
 
@@ -130,7 +147,7 @@ node scripts/architecture-backlog.mjs render /path/to/run-dir
   - let the CLI recreate derivable missing files such as `manifest.json`, `assessment.json`, or `journal.ndjson`
   - then continue with `repair`, `validate`, `delta`, or `rebaseline`
 - invalid source-driven packet merge:
-  - fix the source packet or source metadata
+  - fix the packet payload or source metadata
   - rerun `validate`
   - rerender `report.md`
 - stale report:

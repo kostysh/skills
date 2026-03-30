@@ -9,18 +9,23 @@ import {
   SOURCE_AUTHORITIES,
   SOURCE_KINDS,
   isAcceptanceClass,
+  runPaths,
   type AcceptanceClass,
   type SourceAuthorityClass,
   type SourceKind,
 } from './discovery/common.js';
 import { repairCompactRunBundle } from './discovery/bundle-repair.js';
-import { computeDiscoveryDelta } from './discovery/delta-run.js';
+import {
+  createCommandRunId,
+  readLatestMutatingNewStaleSnapshot,
+} from './discovery/command-lineage.js';
+import { computeDiscoveryDelta, type HumanReadableDelta } from './discovery/delta-run.js';
 import { discoverDiscoveryRun } from './discovery/discover-run.js';
 import { initializeDiscoveryRun } from './discovery/init-run.js';
 import { repairDiscoveryRun } from './discovery/repair-run.js';
 import { rebaselineDiscoveryRun } from './discovery/rebaseline-run.js';
 import { renderDiscoveryViews } from './discovery/render-views.js';
-import { getDiscoveryRunStatus } from './discovery/status-run.js';
+import { getSummaryMetricLines, renderDiscoveryStatusOutput } from './discovery/status-run.js';
 import { refreshRunSourceFingerprints, type SourceInputSpec } from './discovery/source-runtime.js';
 import { validateDiscoveryRun } from './discovery/validate-run.js';
 
@@ -60,6 +65,12 @@ function writeLine(stream: Pick<NodeJS.WriteStream, 'write'>, line = ''): void {
   stream.write(`${line}\n`);
 }
 
+function writeLines(stream: Pick<NodeJS.WriteStream, 'write'>, lines: string[]): void {
+  for (const line of lines) {
+    writeLine(stream, line);
+  }
+}
+
 function globalHelp(): string {
   return [
     'Architecture backlog discovery CLI.',
@@ -69,14 +80,14 @@ function globalHelp(): string {
     `  ${CLI_NAME} help [command]`,
     '',
     'Commands:',
-    '  init <run-dir>       Initialize manifest.json, backlog.json, assessment.json, and journal.ndjson.',
+    '  init <run-dir>       Initialize canonical artifacts and auto-render report.md.',
     '  discover <run-dir>   Resolve sources, populate backlog.json, repair derivable state, validate, and render.',
     '  status <run-dir>     Show lifecycle status, acceptance state, and next actions.',
     '  repair <run-dir>     Refresh source truth, repair derivable canonical state, validate, and render.',
-    '  validate <run-dir>   Validate canonical state and refresh assessment.json.',
-    '  render <run-dir>     Render report.md from canonical state and assessment.',
-    '  delta <run-dir>      Compute drift delta and refresh assessment.json.',
-    '  rebaseline <run-dir> Accept current source/canonical state as the new baseline.',
+    '  validate <run-dir>   Validate canonical state, refresh assessment.json, and render.',
+    '  render <run-dir>     Recovery-render report.md from canonical state and assessment.',
+    '  delta <run-dir>      Compute drift delta, refresh assessment.json, and render.',
+    '  rebaseline <run-dir> Accept current source/canonical state as the new baseline, refresh assessment.json, and render.',
     '  help [command]       Show global or command-specific help.',
     '',
     'Compatibility aliases:',
@@ -108,6 +119,7 @@ function initHelp(): string {
     '  - backlog.json',
     '  - assessment.json',
     '  - journal.ndjson',
+    '  - report.md',
     '',
     'Options:',
     '  --acceptance-target <class>  Set acceptance target.',
@@ -150,7 +162,6 @@ function discoverHelp(): string {
     '  --planning-source <ref>         Local path, file URL, or HTTP(S) URL. Repeatable.',
     '  --source <kind>:<authority>:<ref>  Generic source spec. Repeatable.',
     '  --source-packet <ref>           Explicit packet source. Repeatable.',
-    '  --no-render                     Skip report rendering.',
     '  --no-repair                     Skip derivable repair before validation.',
     '  -h, --help                      Show help.',
   ].join('\n');
@@ -165,14 +176,13 @@ function repairHelp(): string {
     `  ${CLI_NAME} repair-discovery-run <run-dir> [options]`,
     '',
     'Options:',
-    '  --no-render  Skip report rendering.',
-    '  -h, --help   Show help.',
+    '  -h, --help  Show help.',
   ].join('\n');
 }
 
 function validateHelp(): string {
   return [
-    'Validate canonical discovery state and refresh assessment.json.',
+    'Validate canonical discovery state, refresh assessment.json, and auto-render report.md.',
     '',
     'Usage:',
     `  ${CLI_NAME} validate <run-dir>`,
@@ -185,7 +195,7 @@ function validateHelp(): string {
 
 function renderHelp(): string {
   return [
-    'Render report.md from canonical discovery state.',
+    'Recovery-render report.md from canonical discovery state.',
     '',
     'Usage:',
     `  ${CLI_NAME} render <run-dir>`,
@@ -198,7 +208,7 @@ function renderHelp(): string {
 
 function deltaHelp(): string {
   return [
-    'Compute drift delta for a discovery run and refresh assessment.json.',
+    'Compute drift delta for a discovery run, refresh assessment.json, and auto-render report.md.',
     '',
     'Usage:',
     `  ${CLI_NAME} delta <run-dir>`,
@@ -211,7 +221,7 @@ function deltaHelp(): string {
 
 function rebaselineHelp(): string {
   return [
-    'Accept current source and canonical state as the new baseline, then refresh assessment.json.',
+    'Accept current source and canonical state as the new baseline, refresh assessment.json, and auto-render report.md.',
     '',
     'Usage:',
     `  ${CLI_NAME} rebaseline <run-dir>`,
@@ -318,11 +328,17 @@ function parseGenericSourceSpecs(
   });
 }
 
-function writeAssessmentSummary(commandIo: CliIo, assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>): void {
+function writeAssessmentSummary(
+  commandIo: CliIo,
+  assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>,
+): void {
   writeLine(commandIo.stdout, `Assessment status: ${assessment.status}`);
   writeLine(commandIo.stdout, `Achieved acceptance: ${assessment.acceptance.achieved}`);
   writeLine(commandIo.stdout, `Score: ${assessment.score.total}/${assessment.score.max}`);
-  writeLine(commandIo.stdout, `Rebaseline required: ${assessment.rebaseline_required ? 'Yes' : 'No'}`);
+  writeLine(
+    commandIo.stdout,
+    `Rebaseline required: ${assessment.rebaseline_required ? 'Yes' : 'No'}`,
+  );
   writeLine(
     commandIo.stdout,
     `Stale claims/items/proofs: ${assessment.stale_claims.length}/${assessment.stale_items.length}/${assessment.stale_proofs.length}`,
@@ -343,11 +359,159 @@ function writeAssessmentSummary(commandIo: CliIo, assessment: NonNullable<Return
   writeLine(commandIo.stdout, `Waiver findings: ${assessment.waiver_findings.length}`);
 }
 
-function writeAssessmentDiagnostics(commandIo: CliIo, assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>): void {
+function formatOutputList(values: readonly string[]): string {
+  return values.length > 0 ? values.join(', ') : 'None';
+}
+
+function writeSummaryMetricsBlock(
+  commandIo: CliIo,
+  assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>,
+): void {
+  writeLine(commandIo.stdout, 'Summary metrics:');
+  writeLines(commandIo.stdout, getSummaryMetricLines(assessment));
+}
+
+function writeRebaselineReadinessBlock(
+  commandIo: CliIo,
+  assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>,
+): void {
+  writeLine(commandIo.stdout, 'Rebaseline readiness:');
+  writeLine(commandIo.stdout, `Status: ${assessment.rebaseline_readiness.status}`);
+  if (assessment.rebaseline_readiness.reasons.length === 0) {
+    writeLine(commandIo.stdout, '- None');
+    return;
+  }
+
+  for (const reason of assessment.rebaseline_readiness.reasons) {
+    writeLine(commandIo.stdout, `- ${reason}`);
+  }
+}
+
+function writeNewStaleBlock(commandIo: CliIo, runDir: string): void {
+  const snapshot = readLatestMutatingNewStaleSnapshot(runPaths(runDir).journal);
+  writeLine(commandIo.stdout, 'New stale since last change:');
+  writeLine(commandIo.stdout, `Status: ${snapshot.status}`);
+  writeLine(commandIo.stdout, `Reason: ${snapshot.reason ?? 'None'}`);
+  writeLine(commandIo.stdout, `Claims: ${formatOutputList(snapshot.claims)}`);
+  writeLine(commandIo.stdout, `Items: ${formatOutputList(snapshot.items)}`);
+  writeLine(commandIo.stdout, `Proofs: ${formatOutputList(snapshot.proofs)}`);
+  writeLine(commandIo.stdout, `Reviews: ${formatOutputList(snapshot.reviews)}`);
+}
+
+function writeHumanReadableDeltaBlock(commandIo: CliIo, diff: HumanReadableDelta): void {
+  const unavailableReason = 'Unavailable without baseline_projection.';
+  const renderCategory = (values: string[]): string => {
+    if (!diff.baselineEstablished) {
+      return unavailableReason;
+    }
+    return values.length > 0 ? values.join(', ') : 'None';
+  };
+
+  writeLine(commandIo.stdout, 'Human-readable diff:');
+  writeLine(commandIo.stdout, `baseline_established=${diff.baselineEstablished}`);
+  writeLine(commandIo.stdout, `Item adds: ${renderCategory(diff.itemAdds)}`);
+  writeLine(commandIo.stdout, `Item removals: ${renderCategory(diff.itemRemovals)}`);
+  writeLine(commandIo.stdout, `Item state changes: ${renderCategory(diff.itemStateChanges)}`);
+  writeLine(commandIo.stdout, `Relation adds: ${renderCategory(diff.relationAdds)}`);
+  writeLine(commandIo.stdout, `Relation removals: ${renderCategory(diff.relationRemovals)}`);
+  writeLine(
+    commandIo.stdout,
+    `Claim commitment changes: ${renderCategory(diff.claimCommitmentChanges)}`,
+  );
+  writeLine(commandIo.stdout, `Roadmap order changes: ${renderCategory(diff.roadmapOrderChanges)}`);
+}
+
+function writeDeltaOperatorOutput(
+  commandIo: CliIo,
+  runDir: string,
+  assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>,
+  diff: HumanReadableDelta,
+): void {
+  writeLine(commandIo.stdout, 'Core assessment summary:');
+  writeAssessmentSummary(commandIo, assessment);
+  writeLine(commandIo.stdout);
+  writeSummaryMetricsBlock(commandIo, assessment);
+  writeLine(commandIo.stdout);
+  writeLine(commandIo.stdout, 'Changed sources/claims/gates:');
+  writeLine(
+    commandIo.stdout,
+    `Changed sources: ${formatOutputList(assessment.delta_summary.changed_source_ids)}`,
+  );
+  writeLine(
+    commandIo.stdout,
+    `Changed claims: ${formatOutputList(assessment.delta_summary.changed_claim_ids)}`,
+  );
+  writeLine(
+    commandIo.stdout,
+    `Changed track gates: ${formatOutputList(assessment.delta_summary.changed_track_gate_ids)}`,
+  );
+  writeLine(
+    commandIo.stdout,
+    `Track gates to recalculate: ${formatOutputList(
+      assessment.delta_summary.track_gate_ids_to_recalculate,
+    )}`,
+  );
+  writeLine(
+    commandIo.stdout,
+    `Dirty flags: ${formatOutputList(assessment.delta_summary.dirty_flags)}`,
+  );
+  writeLine(commandIo.stdout);
+  writeHumanReadableDeltaBlock(commandIo, diff);
+  writeLine(commandIo.stdout);
+  writeLine(commandIo.stdout, 'Stale and readiness diagnostics:');
+  writeLine(commandIo.stdout, `Stale claims: ${formatOutputList(assessment.stale_claims)}`);
+  writeLine(commandIo.stdout, `Stale items: ${formatOutputList(assessment.stale_items)}`);
+  writeLine(commandIo.stdout, `Stale proofs: ${formatOutputList(assessment.stale_proofs)}`);
+  writeLine(
+    commandIo.stdout,
+    `Stale review artifacts: ${formatOutputList(assessment.stale_review_artifacts)}`,
+  );
+  writeRebaselineReadinessBlock(commandIo, assessment);
+  writeLine(commandIo.stdout);
+  writeNewStaleBlock(commandIo, runDir);
+}
+
+function writeDiscoverOperatorOutput(
+  commandIo: CliIo,
+  runDir: string,
+  assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>,
+): void {
+  writeLine(
+    commandIo.stdout,
+    `Stale review artifacts: ${formatOutputList(assessment.stale_review_artifacts)}`,
+  );
+  writeRebaselineReadinessBlock(commandIo, assessment);
+  writeLine(commandIo.stdout);
+  writeNewStaleBlock(commandIo, runDir);
+}
+
+function writeRebaselineOperatorOutput(
+  commandIo: CliIo,
+  runDir: string,
+  assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>,
+): void {
+  writeSummaryMetricsBlock(commandIo, assessment);
+  writeLine(commandIo.stdout);
+  writeLine(commandIo.stdout, `Stale proofs: ${formatOutputList(assessment.stale_proofs)}`);
+  writeLine(
+    commandIo.stdout,
+    `Stale review artifacts: ${formatOutputList(assessment.stale_review_artifacts)}`,
+  );
+  writeRebaselineReadinessBlock(commandIo, assessment);
+  writeLine(commandIo.stdout);
+  writeNewStaleBlock(commandIo, runDir);
+}
+
+function writeAssessmentDiagnostics(
+  commandIo: CliIo,
+  assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>,
+): void {
   for (const error of assessment.errors) {
     writeLine(commandIo.stderr, `ERROR: ${error}`);
   }
-  const explicitHardFails = assessment.hard_fails.filter((hardFail) => !assessment.errors.includes(hardFail));
+  const explicitHardFails = assessment.hard_fails.filter(
+    (hardFail) => !assessment.errors.includes(hardFail),
+  );
   for (const hardFail of explicitHardFails) {
     writeLine(commandIo.stderr, `HARD_FAIL: ${hardFail}`);
   }
@@ -361,12 +525,19 @@ function writeAssessmentDiagnostics(commandIo: CliIo, assessment: NonNullable<Re
 
 function writeInaccessibleSources(commandIo: CliIo, inaccessibleSources: string[]): void {
   for (const sourceId of inaccessibleSources) {
-    writeLine(commandIo.stderr, `ERROR: Source ${sourceId} could not be read from its declared ref.`);
+    writeLine(
+      commandIo.stderr,
+      `ERROR: Source ${sourceId} could not be read from its declared ref.`,
+    );
   }
 }
 
-function assessmentExitCode(assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>): number {
-  return assessment.status === 'pass' && !assessment.rebaseline_required ? EXIT_SUCCESS : EXIT_FAILURE;
+function assessmentExitCode(
+  assessment: NonNullable<ReturnType<typeof validateDiscoveryRun>['assessment']>,
+): number {
+  return assessment.status === 'pass' && !assessment.rebaseline_required
+    ? EXIT_SUCCESS
+    : EXIT_FAILURE;
 }
 
 function runInitCommand(argv: string[], commandIo: CliIo): number {
@@ -414,8 +585,17 @@ function runInitCommand(argv: string[], commandIo: CliIo): number {
     initOptions.force = parsed.values.force;
   }
 
-  const result = initializeDiscoveryRun(initOptions);
+  const commandRunId = createCommandRunId();
+  const result = initializeDiscoveryRun({
+    ...initOptions,
+    commandRunId,
+  });
+  const renderResult = renderDiscoveryViews(result.runDir, {
+    commandRunId,
+    renderReason: 'mutating_command',
+  });
   writeLine(commandIo.stdout, `Initialized discovery run at ${result.runDir}`);
+  writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
   return EXIT_SUCCESS;
 }
 
@@ -470,9 +650,6 @@ async function runDiscoverCommand(argv: string[], commandIo: CliIo): Promise<num
           type: 'string',
           multiple: true,
         },
-        'no-render': {
-          type: 'boolean',
-        },
         'no-repair': {
           type: 'boolean',
         },
@@ -493,14 +670,54 @@ async function runDiscoverCommand(argv: string[], commandIo: CliIo): Promise<num
   const runDir = requireSingleRunDir(parsed.positionals, 'discover', helpText);
   const acceptanceTarget = parseAcceptanceTarget(parsed.values['acceptance-target'], helpText);
   const sourceInputs: SourceInputSpec[] = [];
-  addTypedSourceSpecs(sourceInputs, parsed.values['architecture-source'], 'architecture_doc', 'authoritative_target_truth');
-  addTypedSourceSpecs(sourceInputs, parsed.values['adr-source'], 'adr', 'authoritative_target_truth');
-  addTypedSourceSpecs(sourceInputs, parsed.values['runtime-source'], 'runtime_evidence', 'authoritative_current_truth');
-  addTypedSourceSpecs(sourceInputs, parsed.values['deployment-contract'], 'deployment_contract', 'authoritative_current_truth');
-  addTypedSourceSpecs(sourceInputs, parsed.values['dossier-source'], 'delivered_dossier_ssot', 'authoritative_current_truth');
-  addTypedSourceSpecs(sourceInputs, parsed.values['code-evidence'], 'code_evidence', 'authoritative_current_truth');
-  addTypedSourceSpecs(sourceInputs, parsed.values['operational-evidence'], 'operational_evidence', 'authoritative_current_truth');
-  addTypedSourceSpecs(sourceInputs, parsed.values['planning-source'], 'backlog_text', 'planning_only');
+  addTypedSourceSpecs(
+    sourceInputs,
+    parsed.values['architecture-source'],
+    'architecture_doc',
+    'authoritative_target_truth',
+  );
+  addTypedSourceSpecs(
+    sourceInputs,
+    parsed.values['adr-source'],
+    'adr',
+    'authoritative_target_truth',
+  );
+  addTypedSourceSpecs(
+    sourceInputs,
+    parsed.values['runtime-source'],
+    'runtime_evidence',
+    'authoritative_current_truth',
+  );
+  addTypedSourceSpecs(
+    sourceInputs,
+    parsed.values['deployment-contract'],
+    'deployment_contract',
+    'authoritative_current_truth',
+  );
+  addTypedSourceSpecs(
+    sourceInputs,
+    parsed.values['dossier-source'],
+    'delivered_dossier_ssot',
+    'authoritative_current_truth',
+  );
+  addTypedSourceSpecs(
+    sourceInputs,
+    parsed.values['code-evidence'],
+    'code_evidence',
+    'authoritative_current_truth',
+  );
+  addTypedSourceSpecs(
+    sourceInputs,
+    parsed.values['operational-evidence'],
+    'operational_evidence',
+    'authoritative_current_truth',
+  );
+  addTypedSourceSpecs(
+    sourceInputs,
+    parsed.values['planning-source'],
+    'backlog_text',
+    'planning_only',
+  );
   sourceInputs.push(...parseGenericSourceSpecs(parsed.values.source, helpText));
 
   const packetRefs = Array.isArray(parsed.values['source-packet'])
@@ -510,13 +727,17 @@ async function runDiscoverCommand(argv: string[], commandIo: CliIo): Promise<num
       : [];
 
   if (sourceInputs.length === 0 && packetRefs.length === 0) {
-    throw new UsageError('discover requires at least one source input or --source-packet.', helpText);
+    throw new UsageError(
+      'discover requires at least one source input or --source-packet.',
+      helpText,
+    );
   }
 
+  const commandRunId = createCommandRunId();
   const result = await discoverDiscoveryRun({
     ...(acceptanceTarget ? { acceptanceTarget } : {}),
+    commandRunId,
     ...(packetRefs.length > 0 ? { packetRefs } : {}),
-    render: !parsed.values['no-render'],
     repair: !parsed.values['no-repair'],
     runDir,
     sourceInputs,
@@ -546,8 +767,15 @@ async function runDiscoverCommand(argv: string[], commandIo: CliIo): Promise<num
     writeLine(commandIo.stderr, 'Discovery run could not be assessed.');
     return EXIT_FAILURE;
   }
+  const renderResult = renderDiscoveryViews(result.runDir, {
+    commandRunId,
+    renderReason: 'mutating_command',
+  });
 
-  writeLine(commandIo.stdout, `${result.initialized ? 'Initialized' : 'Reused'} discovery run at ${result.runDir}`);
+  writeLine(
+    commandIo.stdout,
+    `${result.initialized ? 'Initialized' : 'Reused'} discovery run at ${result.runDir}`,
+  );
   writeLine(
     commandIo.stdout,
     `Resolved sources: ${result.sourceIds.length > 0 ? result.sourceIds.join(', ') : 'None'}`,
@@ -558,10 +786,10 @@ async function runDiscoverCommand(argv: string[], commandIo: CliIo): Promise<num
     `Applied derivable repairs: ${result.appliedRepairs.length > 0 ? result.appliedRepairs.join(', ') : 'None'}`,
   );
   writeAssessmentSummary(commandIo, result.assessment);
+  writeLine(commandIo.stdout);
+  writeDiscoverOperatorOutput(commandIo, result.runDir, result.assessment);
   writeAssessmentDiagnostics(commandIo, result.assessment);
-  if (result.reportPath) {
-    writeLine(commandIo.stdout, `Rendered report into ${result.reportPath}`);
-  }
+  writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
   return assessmentExitCode(result.assessment);
 }
 
@@ -610,109 +838,24 @@ async function runStatusCommand(argv: string[], commandIo: CliIo): Promise<numbe
     return EXIT_FAILURE;
   }
 
-  const status = getDiscoveryRunStatus(runDir);
-  if (status.legacyLayoutMessage) {
-    writeLine(commandIo.stderr, status.legacyLayoutMessage);
+  const validationResult = validateDiscoveryRun(runDir);
+  if (validationResult.legacyLayoutMessage) {
+    writeLine(commandIo.stderr, validationResult.legacyLayoutMessage);
     return EXIT_FAILURE;
   }
-  if (status.unsupportedSchemaMessages.length > 0) {
-    for (const message of status.unsupportedSchemaMessages) {
-      writeLine(commandIo.stderr, message);
-    }
-    return EXIT_FAILURE;
-  }
-  if (status.missingArtifacts.length > 0) {
-    for (const filePath of status.missingArtifacts) {
+  if (validationResult.missingArtifacts.length > 0) {
+    for (const filePath of validationResult.missingArtifacts) {
       writeLine(commandIo.stderr, `Missing discovery artifact: ${filePath}`);
     }
     return EXIT_FAILURE;
   }
-  if (!status.manifest || !status.assessment) {
+  if (!validationResult.assessment) {
     writeLine(commandIo.stderr, 'Status could not be determined.');
     return EXIT_FAILURE;
   }
+  writeLines(commandIo.stdout, renderDiscoveryStatusOutput(runDir));
 
-  writeLine(commandIo.stdout, `Run: ${status.manifest.run_id}`);
-  writeLine(commandIo.stdout, `Phase: ${status.manifest.phase_state}`);
-  writeLine(commandIo.stdout, `Target acceptance: ${status.manifest.acceptance_target}`);
-  writeLine(commandIo.stdout, `Achieved acceptance: ${status.assessment.acceptance.achieved}`);
-  writeLine(commandIo.stdout, `Assessment: ${status.assessment.status}`);
-  writeLine(commandIo.stdout, `Closure: ${status.assessment.closure.status}`);
-  writeLine(commandIo.stdout, `Score: ${status.assessment.score.total}/${status.assessment.score.max}`);
-  writeLine(commandIo.stdout, `Errors: ${status.assessment.errors.length}`);
-  writeLine(commandIo.stdout, `Warnings: ${status.assessment.warnings.length}`);
-  writeLine(commandIo.stdout, `Hard-fails: ${status.assessment.hard_fails.length}`);
-  writeLine(commandIo.stdout, `Rebaseline required: ${status.assessment.rebaseline_required ? 'Yes' : 'No'}`);
-  writeLine(
-    commandIo.stdout,
-    `Dirty flags: ${status.manifest.dirty_flags.length > 0 ? status.manifest.dirty_flags.join(', ') : 'None'}`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Stale proofs: ${status.assessment.stale_proofs.length > 0 ? status.assessment.stale_proofs.join(', ') : 'None'}`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Stale items: ${status.assessment.stale_items.length > 0 ? status.assessment.stale_items.join(', ') : 'None'}`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Stale claims: ${status.assessment.stale_claims.length > 0 ? status.assessment.stale_claims.join(', ') : 'None'}`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Track gate failures: ${
-      status.assessment.track_gate_failures.length > 0
-        ? status.assessment.track_gate_failures.join(', ')
-        : 'None'
-    }`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Missing review roles: ${
-      status.assessment.missing_review_roles.length > 0
-        ? status.assessment.missing_review_roles.join(', ')
-        : 'None'
-    }`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Pending track-proof reviews: ${
-      status.assessment.pending_track_proof_reviews.length > 0
-        ? status.assessment.pending_track_proof_reviews.join(', ')
-        : 'None'
-    }`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Waiver findings: ${
-      status.assessment.waiver_findings.length > 0
-        ? status.assessment.waiver_findings.join('; ')
-        : 'None'
-    }`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Last delta: ${status.manifest.last_delta_at ?? 'Never'}`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Last rebaseline: ${status.manifest.last_rebaseline_at ?? 'Never'}`,
-  );
-  if (status.assessment.hard_fails.length > 0) {
-    writeLine(commandIo.stdout, 'Hard-fail details:');
-    for (const hardFail of status.assessment.hard_fails) {
-      writeLine(commandIo.stdout, `- ${hardFail}`);
-    }
-  }
-  if (status.assessment.next_actions.length > 0) {
-    writeLine(commandIo.stdout, 'Next actions:');
-    for (const action of status.assessment.next_actions) {
-      writeLine(commandIo.stdout, `- ${action}`);
-    }
-  }
-
-  return assessmentExitCode(status.assessment);
+  return assessmentExitCode(validationResult.assessment);
 }
 
 async function runRepairCommand(argv: string[], commandIo: CliIo): Promise<number> {
@@ -723,9 +866,6 @@ async function runRepairCommand(argv: string[], commandIo: CliIo): Promise<numbe
       allowPositionals: true,
       strict: true,
       options: {
-        'no-render': {
-          type: 'boolean',
-        },
         help: {
           short: 'h',
           type: 'boolean',
@@ -741,7 +881,8 @@ async function runRepairCommand(argv: string[], commandIo: CliIo): Promise<numbe
   }
 
   const runDir = requireSingleRunDir(parsed.positionals, 'repair', helpText);
-  const refreshResult = await refreshRunSourceFingerprints(runDir);
+  const commandRunId = createCommandRunId();
+  const refreshResult = await refreshRunSourceFingerprints(runDir, { commandRunId });
   if (refreshResult.legacyLayoutMessage) {
     writeLine(commandIo.stderr, refreshResult.legacyLayoutMessage);
     return EXIT_FAILURE;
@@ -758,12 +899,15 @@ async function runRepairCommand(argv: string[], commandIo: CliIo): Promise<numbe
     }
     return EXIT_FAILURE;
   }
-  if (refreshResult.inaccessibleSources.length > 0) {
-    writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
-    return EXIT_FAILURE;
-  }
-
-  const repairResult = repairDiscoveryRun(runDir);
+  const repairResult =
+    refreshResult.inaccessibleSources.length > 0
+      ? {
+          appliedRepairs: [],
+          legacyLayoutMessage: undefined,
+          missingArtifacts: [],
+          unsupportedSchemaMessages: [],
+        }
+      : repairDiscoveryRun(runDir, { commandRunId });
   if (repairResult.legacyLayoutMessage) {
     writeLine(commandIo.stderr, repairResult.legacyLayoutMessage);
     return EXIT_FAILURE;
@@ -781,18 +925,21 @@ async function runRepairCommand(argv: string[], commandIo: CliIo): Promise<numbe
     return EXIT_FAILURE;
   }
 
-  const validationResult = validateDiscoveryRun(runDir);
+  const validationResult = validateDiscoveryRun(runDir, { commandRunId });
   if (!validationResult.assessment) {
     writeLine(commandIo.stderr, 'Repair could not produce an assessment.');
     return EXIT_FAILURE;
   }
+  const renderResult = renderDiscoveryViews(runDir, {
+    commandRunId,
+    renderReason: 'mutating_command',
+  });
 
-  let reportPath: string | undefined;
-  if (!parsed.values['no-render']) {
-    reportPath = renderDiscoveryViews(runDir).reportPath;
+  if (refreshResult.inaccessibleSources.length > 0) {
+    writeLine(commandIo.stdout, `Repair could not complete for ${runDir}`);
+  } else {
+    writeLine(commandIo.stdout, `Repaired discovery run at ${runDir}`);
   }
-
-  writeLine(commandIo.stdout, `Repaired discovery run at ${runDir}`);
   writeLine(
     commandIo.stdout,
     `Refreshed source fingerprints: ${refreshResult.changedSourceIds.length > 0 ? refreshResult.changedSourceIds.join(', ') : 'None'}`,
@@ -803,8 +950,10 @@ async function runRepairCommand(argv: string[], commandIo: CliIo): Promise<numbe
   );
   writeAssessmentSummary(commandIo, validationResult.assessment);
   writeAssessmentDiagnostics(commandIo, validationResult.assessment);
-  if (reportPath) {
-    writeLine(commandIo.stdout, `Rendered report into ${reportPath}`);
+  writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
+  if (refreshResult.inaccessibleSources.length > 0) {
+    writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
+    return EXIT_FAILURE;
   }
   return assessmentExitCode(validationResult.assessment);
 }
@@ -832,7 +981,8 @@ async function runValidateCommand(argv: string[], commandIo: CliIo): Promise<num
   }
 
   const runDir = requireSingleRunDir(parsed.positionals, 'validate', helpText);
-  const refreshResult = await refreshRunSourceFingerprints(runDir);
+  const commandRunId = createCommandRunId();
+  const refreshResult = await refreshRunSourceFingerprints(runDir, { commandRunId });
   if (refreshResult.legacyLayoutMessage) {
     writeLine(commandIo.stderr, refreshResult.legacyLayoutMessage);
     return EXIT_FAILURE;
@@ -849,12 +999,7 @@ async function runValidateCommand(argv: string[], commandIo: CliIo): Promise<num
     }
     return EXIT_FAILURE;
   }
-  if (refreshResult.inaccessibleSources.length > 0) {
-    writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
-    return EXIT_FAILURE;
-  }
-
-  const result = validateDiscoveryRun(runDir);
+  const result = validateDiscoveryRun(runDir, { commandRunId });
 
   if (result.legacyLayoutMessage) {
     writeLine(commandIo.stderr, result.legacyLayoutMessage);
@@ -873,9 +1018,18 @@ async function runValidateCommand(argv: string[], commandIo: CliIo): Promise<num
     writeLine(commandIo.stderr, 'Assessment state could not be produced.');
     return EXIT_FAILURE;
   }
+  const renderResult = renderDiscoveryViews(runDir, {
+    commandRunId,
+    renderReason: 'mutating_command',
+  });
 
   writeAssessmentSummary(commandIo, assessment);
   writeAssessmentDiagnostics(commandIo, assessment);
+  writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
+  if (refreshResult.inaccessibleSources.length > 0) {
+    writeInaccessibleSources(commandIo, refreshResult.inaccessibleSources);
+    return EXIT_FAILURE;
+  }
 
   return assessmentExitCode(assessment);
 }
@@ -920,7 +1074,11 @@ function runRenderCommand(argv: string[], commandIo: CliIo): number {
     }
     return EXIT_FAILURE;
   }
-  const result = renderDiscoveryViews(runDir);
+  const commandRunId = createCommandRunId();
+  const result = renderDiscoveryViews(runDir, {
+    commandRunId,
+    renderReason: 'recovery_render',
+  });
   writeLine(commandIo.stdout, `Rendered report into ${result.reportPath}`);
   return EXIT_SUCCESS;
 }
@@ -948,7 +1106,8 @@ async function runDeltaCommand(argv: string[], commandIo: CliIo): Promise<number
   }
 
   const runDir = requireSingleRunDir(parsed.positionals, 'delta', helpText);
-  const result = await computeDiscoveryDelta(runDir);
+  const commandRunId = createCommandRunId();
+  const result = await computeDiscoveryDelta(runDir, { commandRunId });
   if (result.legacyLayoutMessage) {
     writeLine(commandIo.stderr, result.legacyLayoutMessage);
     return EXIT_FAILURE;
@@ -965,34 +1124,30 @@ async function runDeltaCommand(argv: string[], commandIo: CliIo): Promise<number
     }
     return EXIT_FAILURE;
   }
-  if (result.inaccessibleSources.length > 0) {
-    writeInaccessibleSources(commandIo, result.inaccessibleSources);
+  if (!result.assessment) {
+    if (result.inaccessibleSources.length > 0) {
+      writeInaccessibleSources(commandIo, result.inaccessibleSources);
+    }
+    writeLine(commandIo.stderr, 'Delta state could not be produced.');
     return EXIT_FAILURE;
   }
-  if (!result.assessment) {
-    writeLine(commandIo.stderr, 'Delta state could not be produced.');
+  const renderResult = renderDiscoveryViews(result.runDir, {
+    commandRunId,
+    renderReason: 'mutating_command',
+  });
+
+  if (result.inaccessibleSources.length > 0) {
+    writeDeltaOperatorOutput(commandIo, result.runDir, result.assessment, result.humanReadableDiff);
+    writeAssessmentDiagnostics(commandIo, result.assessment);
+    writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
+    writeInaccessibleSources(commandIo, result.inaccessibleSources);
     return EXIT_FAILURE;
   }
 
   writeLine(commandIo.stdout, `Delta computed for ${result.runDir}`);
-  writeAssessmentSummary(commandIo, result.assessment);
-  writeLine(
-    commandIo.stdout,
-    `Changed sources: ${result.assessment.delta_summary.changed_source_ids.length > 0 ? result.assessment.delta_summary.changed_source_ids.join(', ') : 'None'}`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Changed claims: ${result.assessment.delta_summary.changed_claim_ids.length > 0 ? result.assessment.delta_summary.changed_claim_ids.join(', ') : 'None'}`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Stale items: ${result.assessment.stale_items.length > 0 ? result.assessment.stale_items.join(', ') : 'None'}`,
-  );
-  writeLine(
-    commandIo.stdout,
-    `Stale proofs: ${result.assessment.stale_proofs.length > 0 ? result.assessment.stale_proofs.join(', ') : 'None'}`,
-  );
+  writeDeltaOperatorOutput(commandIo, result.runDir, result.assessment, result.humanReadableDiff);
   writeAssessmentDiagnostics(commandIo, result.assessment);
+  writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
   return EXIT_SUCCESS;
 }
 
@@ -1019,7 +1174,8 @@ async function runRebaselineCommand(argv: string[], commandIo: CliIo): Promise<n
   }
 
   const runDir = requireSingleRunDir(parsed.positionals, 'rebaseline', helpText);
-  const result = await rebaselineDiscoveryRun(runDir);
+  const commandRunId = createCommandRunId();
+  const result = await rebaselineDiscoveryRun(runDir, { commandRunId });
   if (result.legacyLayoutMessage) {
     writeLine(commandIo.stderr, result.legacyLayoutMessage);
     return EXIT_FAILURE;
@@ -1036,12 +1192,25 @@ async function runRebaselineCommand(argv: string[], commandIo: CliIo): Promise<n
     }
     return EXIT_FAILURE;
   }
-  if (result.inaccessibleSources.length > 0) {
-    writeInaccessibleSources(commandIo, result.inaccessibleSources);
+  if (!result.assessment) {
+    if (result.inaccessibleSources.length > 0) {
+      writeInaccessibleSources(commandIo, result.inaccessibleSources);
+    }
+    writeLine(commandIo.stderr, 'Rebaseline could not be completed.');
     return EXIT_FAILURE;
   }
-  if (!result.assessment) {
-    writeLine(commandIo.stderr, 'Rebaseline could not be completed.');
+  const renderResult = renderDiscoveryViews(result.runDir, {
+    commandRunId,
+    renderReason: 'mutating_command',
+  });
+
+  if (result.inaccessibleSources.length > 0) {
+    writeAssessmentSummary(commandIo, result.assessment);
+    writeLine(commandIo.stdout);
+    writeRebaselineOperatorOutput(commandIo, result.runDir, result.assessment);
+    writeAssessmentDiagnostics(commandIo, result.assessment);
+    writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
+    writeInaccessibleSources(commandIo, result.inaccessibleSources);
     return EXIT_FAILURE;
   }
 
@@ -1052,6 +1221,8 @@ async function runRebaselineCommand(argv: string[], commandIo: CliIo): Promise<n
     `Rebaseline causes: ${result.causes.length > 0 ? result.causes.join(', ') : 'none'}`,
   );
   writeAssessmentSummary(commandIo, result.assessment);
+  writeLine(commandIo.stdout);
+  writeRebaselineOperatorOutput(commandIo, result.runDir, result.assessment);
   writeAssessmentDiagnostics(commandIo, result.assessment);
   if (result.assessment.next_actions.length > 0) {
     writeLine(commandIo.stdout, 'Next actions:');
@@ -1059,6 +1230,7 @@ async function runRebaselineCommand(argv: string[], commandIo: CliIo): Promise<n
       writeLine(commandIo.stdout, `- ${action}`);
     }
   }
+  writeLine(commandIo.stdout, `Rendered report into ${renderResult.reportPath}`);
   return EXIT_SUCCESS;
 }
 
