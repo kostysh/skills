@@ -1,4 +1,4 @@
-# Methodology V2: Turning Architecture Into A Versioned, Machine-Checkable Backlog Graph
+# Methodology: Turning Architecture Into A Versioned, Machine-Checkable Backlog Graph
 
 ## 1. Purpose
 
