@@ -626,6 +626,61 @@ function normalizePacketSourceRecord(
   return cloneJson(rawSource) as Partial<SourceAuthorityRef>;
 }
 
+function normalizeEmbeddedPacketSource(
+  backlog: BacklogFile,
+  fallbackSource: SourceAuthorityRef,
+  packetSource: DiscoverySourcePacket['source'],
+  packetRef: string | null,
+): { source: SourceAuthorityRef; replacedSourceId: string | null } {
+  if (!packetSource || typeof packetSource !== 'object') {
+    return {
+      source: cloneJson(fallbackSource),
+      replacedSourceId: null,
+    };
+  }
+
+  const normalized = normalizePacketSourceRecord(packetSource, packetRef);
+  const immutableFields: Array<keyof SourceAuthorityRef> = [
+    'ref',
+    'kind',
+    'authority',
+  ];
+
+  for (const field of immutableFields) {
+    const incoming = normalized[field];
+    const existing = fallbackSource[field];
+    if (incoming !== undefined && incoming !== existing) {
+      throw new Error(
+        `Embedded packet ${packetRef ?? '<unknown-packet>'} cannot override packet.source.${field} for containing source ${fallbackSource.source_id ?? fallbackSource.ref ?? '<unknown-source>'}`,
+      );
+    }
+  }
+
+  const mergedSource = cloneJson(fallbackSource);
+  const replacedSourceId =
+    isNonEmptyString(fallbackSource.source_id) &&
+    isNonEmptyString(normalized.source_id) &&
+    normalized.source_id !== fallbackSource.source_id
+      ? fallbackSource.source_id
+      : null;
+  if (isNonEmptyString(normalized.source_id)) {
+    mergedSource.source_id = normalized.source_id;
+  }
+  if (normalized.precedence !== undefined) {
+    mergedSource.precedence = normalized.precedence;
+  }
+  if (normalized.notes !== undefined) {
+    mergedSource.notes = normalized.notes;
+  }
+
+  assertSourceAuthorityIdentityCompatibility(backlog, mergedSource, packetRef, replacedSourceId);
+
+  return {
+    source: mergedSource,
+    replacedSourceId,
+  };
+}
+
 function normalizeExplicitPacketSource(
   backlog: BacklogFile,
   packet: DiscoverySourcePacket,
@@ -1070,14 +1125,13 @@ export function mergeDiscoveryPacketsIntoBacklog(
 
   for (const { fallbackSource, packet, packetRef } of allPackets) {
     const explicitPacket = fallbackSource === null;
-    const mergedSource = fallbackSource
-      ? (mergeValues(
-          fallbackSource,
-          packet.source && typeof packet.source === 'object'
-            ? normalizePacketSourceRecord(packet.source, packetRef)
-            : {},
-        ) as SourceAuthorityRef)
-      : normalizeExplicitPacketSource(backlog, packet, packetRef, usedIds);
+    const { source: mergedSource, replacedSourceId } =
+      fallbackSource === null
+        ? {
+            source: normalizeExplicitPacketSource(backlog, packet, packetRef, usedIds),
+            replacedSourceId: null,
+          }
+        : normalizeEmbeddedPacketSource(backlog, fallbackSource, packet.source, packetRef);
     const packetProvenance = normalizePacketProvenance(
       packet,
       mergedSource,
@@ -1087,27 +1141,14 @@ export function mergeDiscoveryPacketsIntoBacklog(
     if (packetProvenance.merge_mode === 'planning_overlay') {
       assertPlanningOverlaySectionsAllowed(backlog, packet, packetRef);
     }
-    assertSourceAuthorityIdentityCompatibility(
-      backlog,
-      mergedSource,
-      packetRef,
-      fallbackSource &&
-        isNonEmptyString(fallbackSource.source_id) &&
-        isNonEmptyString(packet.source?.source_id) &&
-        fallbackSource.source_id !== packet.source.source_id
-        ? fallbackSource.source_id
-        : null,
-    );
-    if (
-      fallbackSource &&
-      isNonEmptyString(fallbackSource.source_id) &&
-      isNonEmptyString(packet.source?.source_id) &&
-      fallbackSource.source_id !== packet.source.source_id
-    ) {
+    if (replacedSourceId !== null) {
       backlog.source_authority = backlog.source_authority.filter(
-        (entry) => entry.source_id !== fallbackSource.source_id,
+        (entry) => entry.source_id !== replacedSourceId,
       );
-      appliedSourceIds.delete(fallbackSource.source_id);
+      appliedSourceIds.delete(replacedSourceId);
+    }
+    if (explicitPacket) {
+      assertSourceAuthorityIdentityCompatibility(backlog, mergedSource, packetRef);
     }
     const sourceId = mergeSourceAuthorityEntry(backlog, mergedSource);
     if (sourceId) {

@@ -2,186 +2,174 @@
 
 Дата фиксации: 2026-03-30
 
-Этот документ фиксирует шаг 4 recovery-процедуры:
+Этот документ фиксирует актуальное решение по recovery после пофайловой проверки блоков `A/B/C/D`.
 
-- для каждого блока из [suspicious-code-block-audit.ru.md](./suspicious-code-block-audit.ru.md)
-  принято решение `keep / rewrite / drop`;
-- решение опирается на сравнение с `HEAD`, а не на текущий недоверенный operator-facing contract;
-- цель решения не “сохранить как можно больше”, а безопасно вернуть системе проверяемую границу истины.
+- решение опирается на код, тесты и реальную роль CLI, а не на прежний недоверенный operator-facing contract;
+- раннее provisional-решение `B/C/D = drop` признано слишком жёстким и снято;
+- текущая цель: сохранить и локально исправить только те изменения, которые подтверждаются кодом, тестами и принятой role split baseline.
 
 ## Принципы решения
 
-1. Если блок превращает спорные assumptions в machine-checked truth, базовое решение — `drop`.
-2. Если блок расширяет реальную роль CLI, но смешивает её с ложным нормативным смыслом, базовое решение — `rewrite`.
-3. `keep` разрешён только там, где изменение можно защитить напрямую от исходного поведения в `HEAD` без опоры на новые docs/spec/tests.
-4. Generated artifacts от недоверенного source tree не считаются источником истины и подлежат удалению или пересборке после очистки.
+1. `keep` разрешён только там, где изменение можно защитить напрямую от кода, тестов и реальной роли CLI.
+2. `rewrite` применяется только к тем местам, где найден конкретный дефект, а не как blanket-реакция на загрязнение docs/contract layer.
+3. `drop` применяется только тогда, когда блок действительно не удаётся защитить ни кодом, ни тестами, ни accepted baseline.
+4. Generated artifacts не являются источником истины, но сохраняются, если они синхронизированы с текущим source tree и входят в штатный bundle утилиты.
 
-## Решения по блокам
+## Актуальные решения по блокам
 
 | Блок | Решение | Почему |
 | --- | --- | --- |
-| `A. Source runtime и discover ingestion` | `rewrite` | Блок растёт из реальной старой роли CLI — packet parsing, source ingest, deterministic merge. Но поверх этого наложены новые provenance/source-id/merge-mode semantics, зафиксированные уже после искажения contract layer. |
-| `B. Shared schema, validation и drift` | `drop` | Это крупнейший semantic gate. Он кодирует новую stale/readiness/delivery-source модель как машинную истину. Пока исходная методика не восстановлена, держать этот слой нельзя. |
-| `C. CLI output и generated read model` | `drop` | Это operator-facing поверхность, напрямую обслуживающая уже признанный ложным contract. Даже полезные UX-идеи здесь встроены в недостоверную модель поведения. |
-| `D. Lifecycle, repair, rebaseline и lineage` | `drop` | Это новый lifecycle/journal subsystem, тесно сцепленный с блоками `B` и `C`. Пока stale/readiness/render lineage не переобоснованы от `HEAD`, безопаснее убрать его полностью. |
+| `A. Source runtime и discover ingestion` | `keep` | Блок подтверждён как реальное ядро CLI. Потребовался только targeted rewrite embedded-source identity path; после фикса и тестов блок сохраняется. |
+| `B. Shared schema, validation и drift` | `keep` | Блок не смешивает роли агента и CLI. Он считает drift и валидирует уже materialized canonical state. Оснований для rewrite/drop не найдено. |
+| `C. CLI output и generated read model` | `keep` | Это read-model и operator output layer поверх canonical state. Семантика подтверждается кодом и существующим тестовым покрытием. |
+| `D. Lifecycle, repair, rebaseline и lineage` | `keep` | Блок реализует детерминированный lifecycle/journal contract поверх canonical artifacts и подтверждён тестами на `command_run_id`, rebaseline, render lineage и recovery-render. |
 
 ## Обоснование по блокам
 
-### A. Source runtime и discover ingestion -> `rewrite`
+### A. Source runtime и discover ingestion -> `keep`
 
-### Что подтверждено от `HEAD`
+### Что подтверждено
 
-- В `HEAD` CLI уже умела:
+- CLI действительно умеет:
   - читать source refs;
-  - извлекать только machine-readable payload;
-  - парсить JSON packet или fenced packet blocks;
+  - ingest-ить explicit packet refs;
+  - ingest-ить embedded packet blocks из source documents;
   - merge-ить packets в `backlog.json`.
-- Это подтверждается исходным поведением в:
+- Это подтверждено кодом в:
   - `src/discovery/source-runtime.ts`
   - `src/discovery/discover-run.ts`
+- Это подтверждено тестами на:
+  - embedded packet ingest;
+  - mixed ingest `embedded + --source-packet`;
+  - packet guardrails.
 
-### Что добавлено поверх этого
+### Что было проблемным
 
-- `packet_provenance`;
-- `merge_mode`;
-- жёсткая canonicalization `packet.source.source_id`;
-- ограничение `replace_sections`;
-- derived `source_id`/source-authority identity logic;
-- `commandRunId` plumbing в discover path.
+- Единственный подтверждённый дефект был в embedded-source identity path:
+  - embedded packet мог подменять identity контейнерного source слишком широко.
+- Это не следовало ни из baseline, ни из transport semantics embedded packet blocks.
 
-### Почему не `keep`
+### Что исправлено
 
-- Эти additions уже не просто “укрепляют parser”.
-- Они навязывают новую packet governance model, которая была придумана уже после ложного раздувания роли CLI.
-- Значит текущую реализацию нельзя принять как достоверную без переавторинга.
+- Исправлено правило:
+  - embedded packet может canonicalize `source_id` для того же physical source;
+  - embedded packet может переносить metadata `precedence` и `notes`;
+  - embedded packet не может переписывать `ref`, `kind`, `authority` контейнерного source.
+- Под это добавлены и обновлены тесты.
 
-### Почему не `drop`
+### Итог
 
-- В этом блоке лежит реальное ядро существующей утилиты.
-- Полный откат блока к `HEAD` без повторного отбора приведёт к потере и genuine hardening, и фактического понимания того, как CLI работает с packets.
+- После targeted rewrite блок сохраняется как `keep`.
 
-### Практическое решение
+## B. Shared schema, validation и drift -> `keep`
 
-- Переписать блок от `HEAD` вверх.
-- Оставить только то, что можно защитить от истинной роли CLI:
-  - packet parsing;
-  - source ingest;
-  - deterministic merge;
-  - безопасные integrity checks, если они нужны именно packet workflow, а не ложному operator contract.
+### Что проверено
 
-## B. Shared schema, validation и drift -> `drop`
-
-### Что видно по diff
-
-- `common.ts`, `validate-run.ts`, `drift-state.ts` получили массивный semantic слой:
+- Проверены:
+  - `common.ts`
+  - `validate-run.ts`
+  - `drift-state.ts`
+- Подтверждено, что блок:
   - fixed `assessment.stats`;
   - `stale_review_artifacts`;
   - `rebaseline_readiness`;
-  - issue-item linkage snapshots;
   - delivery evidence source constraints;
   - negative-scope restrictions;
-  - new delta drift invalidation logic.
+  - drift calculation поверх canonical state.
 
-### Почему это нельзя сохранять сейчас
+### Почему это не требует rewrite/drop
 
-- Именно этот слой превращает assumptions в validator-enforced truth.
-- Если assumptions ошибочны, система начинает “строго доказывать” ложь.
-- Размер и сцепленность diff слишком велики для безопасного salvage-in-place.
+- Блок не интерпретирует prose и не расширяет роль CLI за пределы deterministic validation/drift.
+- Он валидирует уже materialized graph.
+- Проверенные guardrails (`delivery_state`, `negative_scope`, `stale_review_artifacts`, `rebaseline_readiness`) оказались внутренне консистентными и совпадающими с очищенным docs layer.
 
-### Почему решение именно `drop`, а не `rewrite`
+### Итог
 
-- Для `rewrite` нужно уже знать, какая из новой семантики действительно соответствует исходной методике.
-- Сейчас такой уверенности нет.
-- Следовательно, минимально безопасный путь — удалить весь этот semantic gate до состояния `HEAD`, а затем возвращать нужные invariants отдельно и по одному.
+- Оснований для переписывания или сноса блока не найдено. Решение — `keep`.
 
-### Практическое решение
+## C. CLI output и generated read model -> `keep`
 
-- Откатить блок `B` к `HEAD`.
-- После этого заново решить отдельными изменениями:
-  - нужны ли fixed stats;
-  - нужна ли stale review model;
-  - нужна ли readiness model;
-  - нужна ли issue-item linkage drift invalidation.
+### Что проверено
 
-## C. CLI output и generated read model -> `drop`
-
-### Что видно по diff
-
-- Новый CLI output surface:
+- Проверены:
+  - `cli.ts`
+  - `status-run.ts`
+  - `delta-run.ts`
+  - `render-views.ts`
+  - `roadmap-matrix.ts`
+- Подтверждено, что блок рендерит:
   - `Summary metrics`
   - `Rebaseline readiness`
   - `New stale since last change`
   - `Human-readable diff`
-- Новый `report.md` shape:
   - `Item Summary Index`
   - `Item Detail Sections`
   - `Rebaseline Readiness`
   - `New Stale Since Last Change`
-- Изменены help texts и render semantics.
+- Все эти surfaces строятся из `manifest + backlog + assessment`, а не из operator shortcut-ов.
 
-### Почему это нельзя сохранять сейчас
+### Почему это не требует rewrite/drop
 
-- Это не нейтральный presentation layer.
-- Он отвечает именно на тот набор operator questions, который уже зафиксирован ошибочно.
-- Пока неверен сам contract, улучшенный output только делает ложную модель убедительнее.
+- `status` работает как read-only surface после refresh + validate.
+- `delta` строит human-readable diff только из baseline projection и current graph.
+- `render` остаётся recovery-render из canonical state.
+- `roadmap-matrix` считается детерминированно из items/relations.
+- Существующие тесты уже покрывают operator output, render sections, `baseline_projection`, `render_reason` и manifest timestamps.
 
-### Почему решение именно `drop`
+### Итог
 
-- Здесь нет необходимости salvage-ить слой “как есть”.
-- После восстановления истинного operator contract этот output можно спроектировать заново, уже под реальные вопросы и реальные invariants.
+- Оснований для сноса блока не найдено. Решение — `keep`.
 
-### Практическое решение
+## D. Lifecycle, repair, rebaseline и lineage -> `keep`
 
-- Откатить блок `C` к `HEAD`.
-- Любые полезные элементы UI/read model возвращать только после очистки блока `B` и прояснения реальной роли CLI.
+### Что проверено
 
-## D. Lifecycle, repair, rebaseline и lineage -> `drop`
-
-### Что видно по diff
-
-- Добавлены:
+- Проверены:
+  - `init-run.ts`
+  - `repair-run.ts`
+  - `rebaseline-run.ts`
+  - `bundle-repair.ts`
+  - `command-lineage.ts`
+- Подтверждено, что блок реализует:
   - `commandRunId`;
-  - `command-lineage.ts`;
+  - bundle recovery;
+  - canonical derivable repair;
   - baseline projection journaling;
   - stale snapshot lineage;
-  - новые manifest fields для issue-item linkage;
-  - новый journal contract вокруг mutating/recovery render.
+  - mutating vs recovery render separation.
 
-### Почему это нельзя сохранять сейчас
+### Почему это не требует rewrite/drop
 
-- Этот блок не самостоятельный.
-- Он обслуживает именно новую stale/readiness/render semantics из блоков `B` и `C`.
-- Если `B` и `C` откатываются, текущий lifecycle/lineage слой теряет подтверждённый смысл.
+- Блок работает поверх canonical artifacts и не подменяет роль агента.
+- `repair` ограничен derivable state.
+- `rebaseline` пересчитывает baseline из canonical graph и journal.
+- `command-lineage` только нормализует и читает journal semantics.
+- Это всё уже подтверждено тестами на:
+  - `command_run_id` continuity;
+  - `rebaseline_started` / `rebaseline_completed`;
+  - `baseline_projection`;
+  - `stale_snapshot` / `new_stale_snapshot`;
+  - recovery-render separation.
 
-### Почему решение именно `drop`
+### Итог
 
-- Здесь нет устойчивого подмножества, которое можно принять без немедленного риска.
-- Новая subsystem не существовала в `HEAD`, а её необходимость не доказана независимо от ошибочной remediation-модели.
-
-### Практическое решение
-
-- Откатить блок `D` к `HEAD`.
-- Если потом действительно понадобится command grouping или lineage, вводить это отдельным, заново обоснованным change set.
+- Оснований для сноса блока не найдено. Решение — `keep`.
 
 ## Отдельные файлы вне блочного решения
 
 | Файл | Решение | Почему |
 | --- | --- | --- |
-| `scripts/architecture-backlog.mjs` | `drop` | Это generated artifact от недоверенного source tree. |
-| `scripts/architecture-backlog.mjs.map` | `drop` | Производный build artifact, не подлежит ручному спасению. |
-| `references/artifact-model.md` | `rewrite` | Может содержать полезные идеи, но сейчас зависит от тех же lifecycle/render assumptions, что и блоки `C/D`. |
+| `scripts/architecture-backlog.mjs` | `keep` | Это bundled generated artifact текущего source tree; он остаётся синхронизированным и тестируется косвенно через CLI. |
+| `scripts/architecture-backlog.mjs.map` | `keep` | Производный build artifact bundled CLI, сохраняется вместе с актуальным source tree. |
+| `references/artifact-model.md` | `keep` | Документ уже переписан под accepted transport model: explicit packets и embedded packet blocks как capability без ложного semantic-discovery narrative. |
 
 ## Итоговое решение
 
-Консервативный путь восстановления:
+Актуальный путь восстановления завершён так:
 
-1. `wrong`-слой не чинить, а считать подлежащим удалению/переписыванию от `HEAD`.
-2. По `suspicious` code-surface принять следующий план:
-   - блок `A` — `rewrite`;
-   - блок `B` — `drop`;
-   - блок `C` — `drop`;
-   - блок `D` — `drop`.
-3. Generated artifacts удалить и пересобирать только после очистки source tree.
+1. Contract/docs layer был очищен отдельно от runtime-кода.
+2. Блок `A` получил targeted rewrite по embedded-source identity semantics и после этого сохранён.
+3. Блоки `B`, `C` и `D` прошли пофайловую проверку и сохраняются как `keep`.
+4. Generated bundle и reference docs сохраняются как часть актуального tree.
 
-Это решение специально выбрано как минимально рискованное.
-Оно жертвует частью потенциально полезных изменений, но возвращает проверяемую основу: сначала восстановить истинную роль CLI, затем заново вводить только те улучшения, которые можно защитить от `HEAD` и от реального workflow.
+Главный вывод: исходное provisional-решение `B/C/D = drop` оказалось чрезмерным. После очистки docs layer и пофайловой инспекции кодовая база не требует массового отката. Нужна была только локальная коррекция блока `A`, а остальная runtime-модель сохраняется.

@@ -1276,6 +1276,32 @@ function normalizePacketSourceRecord(packetSource, packetRef) {
 	if (unexpectedKeys.length > 0) throw new Error(`Packet ${packetRef ?? "<unknown-packet>"} contains unsupported packet.source keys: ${unexpectedKeys.join(", ")}`);
 	return cloneJson(rawSource);
 }
+function normalizeEmbeddedPacketSource(backlog, fallbackSource, packetSource, packetRef) {
+	if (!packetSource || typeof packetSource !== "object") return {
+		source: cloneJson(fallbackSource),
+		replacedSourceId: null
+	};
+	const normalized = normalizePacketSourceRecord(packetSource, packetRef);
+	for (const field of [
+		"ref",
+		"kind",
+		"authority"
+	]) {
+		const incoming = normalized[field];
+		const existing = fallbackSource[field];
+		if (incoming !== void 0 && incoming !== existing) throw new Error(`Embedded packet ${packetRef ?? "<unknown-packet>"} cannot override packet.source.${field} for containing source ${fallbackSource.source_id ?? fallbackSource.ref ?? "<unknown-source>"}`);
+	}
+	const mergedSource = cloneJson(fallbackSource);
+	const replacedSourceId = isNonEmptyString(fallbackSource.source_id) && isNonEmptyString(normalized.source_id) && normalized.source_id !== fallbackSource.source_id ? fallbackSource.source_id : null;
+	if (isNonEmptyString(normalized.source_id)) mergedSource.source_id = normalized.source_id;
+	if (normalized.precedence !== void 0) mergedSource.precedence = normalized.precedence;
+	if (normalized.notes !== void 0) mergedSource.notes = normalized.notes;
+	assertSourceAuthorityIdentityCompatibility(backlog, mergedSource, packetRef, replacedSourceId);
+	return {
+		source: mergedSource,
+		replacedSourceId
+	};
+}
 function normalizeExplicitPacketSource(backlog, packet, packetRef, usedIds) {
 	if (!packet.source || typeof packet.source !== "object") throw new Error(`Explicit source packet ${packetRef ?? "<unknown-packet>"} must define packet.source`);
 	const normalized = normalizePacketSourceRecord(packet.source, packetRef);
@@ -1473,14 +1499,17 @@ function mergeDiscoveryPacketsIntoBacklog(backlog, rawSources, packets) {
 	}))];
 	for (const { fallbackSource, packet, packetRef } of allPackets) {
 		const explicitPacket = fallbackSource === null;
-		const mergedSource = fallbackSource ? mergeValues(fallbackSource, packet.source && typeof packet.source === "object" ? normalizePacketSourceRecord(packet.source, packetRef) : {}) : normalizeExplicitPacketSource(backlog, packet, packetRef, usedIds);
+		const { source: mergedSource, replacedSourceId } = fallbackSource === null ? {
+			source: normalizeExplicitPacketSource(backlog, packet, packetRef, usedIds),
+			replacedSourceId: null
+		} : normalizeEmbeddedPacketSource(backlog, fallbackSource, packet.source, packetRef);
 		const packetProvenance = normalizePacketProvenance(packet, mergedSource, packetRef, explicitPacket);
 		if (packetProvenance.merge_mode === "planning_overlay") assertPlanningOverlaySectionsAllowed(backlog, packet, packetRef);
-		assertSourceAuthorityIdentityCompatibility(backlog, mergedSource, packetRef, fallbackSource && isNonEmptyString(fallbackSource.source_id) && isNonEmptyString(packet.source?.source_id) && fallbackSource.source_id !== packet.source.source_id ? fallbackSource.source_id : null);
-		if (fallbackSource && isNonEmptyString(fallbackSource.source_id) && isNonEmptyString(packet.source?.source_id) && fallbackSource.source_id !== packet.source.source_id) {
-			backlog.source_authority = backlog.source_authority.filter((entry) => entry.source_id !== fallbackSource.source_id);
-			appliedSourceIds.delete(fallbackSource.source_id);
+		if (replacedSourceId !== null) {
+			backlog.source_authority = backlog.source_authority.filter((entry) => entry.source_id !== replacedSourceId);
+			appliedSourceIds.delete(replacedSourceId);
 		}
+		if (explicitPacket) assertSourceAuthorityIdentityCompatibility(backlog, mergedSource, packetRef);
 		const sourceId = mergeSourceAuthorityEntry(backlog, mergedSource);
 		if (sourceId) appliedSourceIds.add(sourceId);
 		const replaceSections = new Set(asArray(packet.replace_sections).filter(isNonEmptyString));

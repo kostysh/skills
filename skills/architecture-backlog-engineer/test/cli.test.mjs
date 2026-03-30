@@ -11,44 +11,8 @@ const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
 const CLI_PATH = path.join(SKILL_DIR, 'scripts', 'architecture-backlog.mjs');
 const SKILL_DOC_PATH = path.join(SKILL_DIR, 'SKILL.md');
-const OPERATOR_HELP_PATH = path.join(SKILL_DIR, 'docs', 'operator-use-cases.ru.md');
-const OPERATOR_WORKFLOW_GROUPS = [
-  'Create backlog',
-  'Audit backlog',
-  'Audit one item',
-  'Edit backlog',
-];
-const OPERATOR_WORKFLOWS = [
-  ['UC-01', 'Create backlog from one source'],
-  ['UC-02', 'Create backlog from multiple sources'],
-  ['UC-03', 'Create backlog with current truth'],
-  ['UC-04', 'Draft backlog from incomplete architecture'],
-  ['UC-05', 'Show structured backlog'],
-  ['UC-06', 'Show backlog summary metrics'],
-  ['UC-07', 'Show delivery state for all items'],
-  ['UC-08', 'Show uncovered claims'],
-  ['UC-09', 'Show ranked problem list'],
-  ['UC-10', 'Show DoR-ready items'],
-  ['UC-23', 'Show delta from baseline'],
-  ['UC-24', 'Show stale items after drift'],
-  ['UC-25', 'Show stale proofs and reviews'],
-  ['UC-11', 'Show item summary'],
-  ['UC-12', 'Show item details'],
-  ['UC-13', 'Change general item data via explicit packet or updated inputs'],
-  ['UC-14', 'Change question on linked Spike'],
-  ['UC-15', 'Change Gap'],
-  ['UC-16', 'Change Unknown'],
-  ['UC-17', 'Create timeboxed Spike'],
-  ['UC-18', 'Change owner'],
-  ['UC-19', 'Change depends_on relation'],
-  ['UC-20', 'Update delivery state from current truth'],
-  ['UC-21', 'Mark architecture claim as deferred, optional, or negative scope'],
-  ['UC-22', 'Fix roadmap order through graph relations'],
-  ['UC-26', 'Set new baseline with rebaseline'],
-  ['UC-27', 'Check rebaseline readiness'],
-  ['UC-28', 'Check new stale after change'],
-  ['UC-29', 'Add current truth to existing run'],
-];
+const OPERATOR_MANUAL_PATH = path.join(SKILL_DIR, 'references', 'operator-manual.md');
+const OPERATOR_DEV_DOC_PATH = path.join(SKILL_DIR, 'docs', 'operator-use-cases.ru.md');
 const FIXED_ASSESSMENT_STATS_KEYS = [
   'sources_total',
   'claims_total',
@@ -2022,6 +1986,7 @@ function createDiscoverSources(runDir, options) {
       kind: 'architecture_doc',
       authority: 'authoritative_target_truth',
       precedence: 1,
+      notes: 'Canonical architecture source embedded in prose.',
     },
     id_strategy: backlog.id_strategy,
     glossary: backlog.glossary,
@@ -2044,6 +2009,7 @@ function createDiscoverSources(runDir, options) {
       kind: 'runtime_evidence',
       authority: 'authoritative_current_truth',
       precedence: 2,
+      notes: 'Canonical runtime evidence source embedded in prose.',
     },
     as_built: backlog.as_built,
     track_gates: backlog.track_gates,
@@ -2202,12 +2168,24 @@ test('discover bootstraps a run from source inputs with embedded architecture-ba
   const assessment = loadJson(path.join(runDir, 'assessment.json'));
   assert.notEqual(manifest.last_render_at, null);
   assert.equal(backlog.source_authority.length, 2);
+  assert.deepEqual(
+    backlog.source_authority.map((source) => source.source_id).sort(),
+    ['src-architecture', 'src-runtime'],
+  );
   assert.ok(
     backlog.source_authority.every(
       (source) =>
         typeof source.fingerprint === 'string' && source.fingerprint.startsWith('sha256:'),
     ),
   );
+  const architectureSource = backlog.source_authority.find(
+    (source) => source.source_id === 'src-architecture',
+  );
+  const runtimeSource = backlog.source_authority.find((source) => source.source_id === 'src-runtime');
+  assert.equal(architectureSource?.precedence, 1);
+  assert.equal(runtimeSource?.precedence, 2);
+  assert.equal(architectureSource?.notes, 'Canonical architecture source embedded in prose.');
+  assert.equal(runtimeSource?.notes, 'Canonical runtime evidence source embedded in prose.');
   assert.ok(backlog.roadmap_matrix.length > 0);
   assert.equal(assessment.acceptance.achieved, 'implementation-grade');
   assert.equal(fs.existsSync(path.join(runDir, 'report.md')), true);
@@ -2224,6 +2202,62 @@ test('discover bootstraps a run from source inputs with embedded architecture-ba
   assert.equal(sourcesDiscoveredEvent.command_run_id, validatedEvent.command_run_id);
   assert.equal(validatedEvent.command_run_id, renderEvent.command_run_id);
   assert.equal(renderEvent.render_reason, 'mutating_command');
+});
+
+test('discover ingests embedded source packets and explicit source packets in the same run', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-discover-mixed-packets');
+  const packetPath = path.join(runDir, 'packets', 'runtime-delivery.md');
+  const { architecturePath, runtimePath } = createDiscoverSources(runDir, {
+    implementationGrade: false,
+  });
+
+  fs.mkdirSync(path.dirname(packetPath), { recursive: true });
+  writePacketMarkdown(packetPath, 'Runtime delivery packet', {
+    source: {
+      source_id: 'src-runtime',
+      ref: runtimePath,
+      kind: 'runtime_evidence',
+      authority: 'authoritative_current_truth',
+      precedence: 2,
+    },
+    packet_provenance: {
+      merge_mode: 'source_driven_refresh',
+      source_id: 'src-runtime',
+      source_kind: 'runtime_evidence',
+      source_authority: 'authoritative_current_truth',
+    },
+    items: [
+      {
+        item_id: 'item-payments-docs',
+        delivery_state: 'delivered',
+      },
+    ],
+  });
+
+  const discoverResult = runCli([
+    'discover',
+    runDir,
+    '--architecture-source',
+    architecturePath,
+    '--runtime-source',
+    runtimePath,
+    '--source-packet',
+    packetPath,
+  ]);
+  assert.equal(discoverResult.status, 0, discoverResult.stderr || discoverResult.stdout);
+  assert.match(discoverResult.stdout, /Applied source packets: 3/);
+
+  const backlog = loadJson(path.join(runDir, 'backlog.json'));
+  const docsItem = backlog.items.find((item) => item.item_id === 'item-payments-docs');
+  assert.ok(docsItem);
+  assert.deepEqual(docsItem.source_refs, ['src-runtime']);
+  assert.deepEqual(docsItem.packet_provenance, {
+    merge_mode: 'source_driven_refresh',
+    source_authority: 'authoritative_current_truth',
+    source_id: 'src-runtime',
+    source_kind: 'runtime_evidence',
+    source_refs_managed: true,
+  });
 });
 
 test('planning overlay packets cannot use replace_sections', (t) => {
@@ -2341,6 +2375,61 @@ test('canonical packet boundaries reject sourceId and missing explicit merge pro
     embeddedAliasResult.stderr,
     /Packet .* must use packet\.source\.source_id; sourceId is not valid in canonical packets/,
   );
+});
+
+test('embedded packets cannot rewrite containing source authority identity fields', (t) => {
+  const runDir = createTempRunDir(t, 'architecture-backlog-embedded-source-authority-rewrite');
+  const rewriteCases = [
+    {
+      field: 'ref',
+      value: path.join(runDir, 'sources', 'other-source.md'),
+      sourceId: 'src-architecture-doc-embedded-source-authority-rewrite-ref',
+    },
+    {
+      field: 'kind',
+      value: 'runtime_evidence',
+      sourceId: 'src-architecture-doc-embedded-source-authority-rewrite-kind',
+    },
+    {
+      field: 'authority',
+      value: 'planning_only',
+      sourceId: 'src-architecture-doc-embedded-source-authority-rewrite-authority',
+    },
+  ];
+
+  for (const rewriteCase of rewriteCases) {
+    const embeddedSourcePath = path.join(
+      runDir,
+      'sources',
+      `embedded-source-authority-rewrite-${rewriteCase.field}.md`,
+    );
+    fs.mkdirSync(path.dirname(embeddedSourcePath), { recursive: true });
+    writePacketMarkdown(embeddedSourcePath, 'Embedded source authority rewrite packet', {
+      source: {
+        [rewriteCase.field]: rewriteCase.value,
+      },
+      items: [
+        {
+          item_id: 'item-payments-seam',
+          title: 'Embedded packet should not be able to rewrite container source identity',
+        },
+      ],
+    });
+
+    const discoverResult = runCli([
+      'discover',
+      runDir,
+      '--source',
+      `architecture_doc:authoritative_target_truth:${embeddedSourcePath}`,
+    ]);
+    assert.equal(discoverResult.status, 1);
+    assert.match(
+      discoverResult.stderr,
+      new RegExp(
+        `Embedded packet .* cannot override packet\\.source\\.${rewriteCase.field} for containing source ${rewriteCase.sourceId}`,
+      ),
+    );
+  }
 });
 
 test('planning overlay claim patches cannot change immutable claim fields', (t) => {
@@ -4940,85 +5029,46 @@ test('delta surfaces extended rebaseline causes beyond source-contract-topology 
   assert.equal(assessment.stale_proofs.includes('proof-payments-control'), true);
 });
 
-test('operator-facing help docs stay synchronized with workflow names, inputs, and runtime contract wording', () => {
+test('shipped operator manual stays in the skill package and preserves the role split contract', () => {
   const skillDoc = fs.readFileSync(SKILL_DOC_PATH, 'utf8');
-  const operatorHelpDoc = fs.readFileSync(OPERATOR_HELP_PATH, 'utf8');
-  const skillWorkflows = [...skillDoc.matchAll(/^#### (.+) \(`(UC-\d{2})`\)$/gm)].map(
-    ([, workflowName, ucCode]) => [ucCode, workflowName],
-  );
-  const operatorWorkflows = [...operatorHelpDoc.matchAll(/^\| `(UC-\d{2})` \| ([^|]+?) \|/gm)].map(
-    ([, ucCode, workflowName]) => [ucCode, workflowName.trim()],
-  );
-  const skillWorkflowCodes = skillWorkflows.map(([ucCode]) => ucCode);
-  const operatorWorkflowCodes = operatorWorkflows.map(([ucCode]) => ucCode);
-  const skillWorkflowNames = skillWorkflows.map(([, workflowName]) => workflowName);
-  const operatorWorkflowNames = operatorWorkflows.map(([, workflowName]) => workflowName);
-
-  assert.match(skillDoc, /^## Help$/m);
-  assert.match(skillDoc, /^## Prompt workflows$/m);
-  assert.match(
-    skillDoc,
-    /\[docs\/operator-use-cases\.ru\.md\]\(docs\/operator-use-cases\.ru\.md\)/,
-  );
-  assert.match(
-    skillDoc,
-    /edit scenarios accept either updated authoritative inputs or an explicit `source packet`; they never authorize manual edits to `manifest\.json`, `backlog\.json`, `assessment\.json`, or `journal\.ndjson`\./,
-  );
-
-  assert.match(operatorHelpDoc, /Этот файл является официальным operator-facing help-reference/);
-  assert.match(
-    operatorHelpDoc,
-    /\| Редактирование беклога \| updated authoritative source или explicit `source packet`; для `delivery state` только authoritative current-truth evidence \| planning-only packet, который напрямую пишет `delivery_state`; ручное редактирование canonical артефактов \|/,
-  );
-
-  for (const groupName of OPERATOR_WORKFLOW_GROUPS) {
-    assert.match(skillDoc, new RegExp(`^### ${groupName}$`, 'm'));
-  }
-
-  assert.equal(skillWorkflows.length, OPERATOR_WORKFLOWS.length);
-  assert.equal(operatorWorkflows.length, OPERATOR_WORKFLOWS.length);
-  assert.equal(new Set(skillWorkflowCodes).size, OPERATOR_WORKFLOWS.length);
-  assert.equal(new Set(operatorWorkflowCodes).size, OPERATOR_WORKFLOWS.length);
-  assert.equal(new Set(skillWorkflowNames).size, OPERATOR_WORKFLOWS.length);
-  assert.equal(new Set(operatorWorkflowNames).size, OPERATOR_WORKFLOWS.length);
-  assert.deepEqual(skillWorkflows, OPERATOR_WORKFLOWS);
-  assert.deepEqual(operatorWorkflows, OPERATOR_WORKFLOWS);
-  assert.deepEqual(skillWorkflows, operatorWorkflows);
-
-  for (const docText of [skillDoc, operatorHelpDoc]) {
-    assert.match(docText, /Gaps And Validation/);
-    assert.match(docText, /recovery/i);
-    assert.doesNotMatch(docText, /--no-render/);
-  }
+  const operatorManualDoc = fs.readFileSync(OPERATOR_MANUAL_PATH, 'utf8');
+  const operatorDevDoc = fs.readFileSync(OPERATOR_DEV_DOC_PATH, 'utf8');
 
   assert.match(
     skillDoc,
-    /CLI blocks `Rebaseline readiness` \/ `New stale since last change`, plus report sections `Lifecycle And Drift`, `Rebaseline Readiness`, `New Stale Since Last Change`, and `Gaps And Validation`/,
+    /\[references\/operator-manual\.md\]\(references\/operator-manual\.md\)/,
   );
+  assert.doesNotMatch(skillDoc, /\[docs\/operator-use-cases\.ru\.md\]\(docs\/operator-use-cases\.ru\.md\)/);
   assert.match(
     skillDoc,
-    /`discover` surfaces resolved sources, `stale review artifacts`, `Rebaseline readiness`, and `New stale since last change`[.;]/,
+    /The operator does not:[\s\S]*author packet files[\s\S]*edit canonical artifacts by hand[\s\S]*manage internal lifecycle steps of the CLI\./,
+  );
+
+  assert.match(operatorManualDoc, /^# Operator Manual for `architecture-backlog-engineer`$/m);
+  assert.match(
+    operatorManualDoc,
+    /The CLI does not perform semantic discovery from arbitrary prose\. Prose interpretation belongs to the agent\./,
   );
   assert.match(
-    operatorHelpDoc,
-    /`status` \+ `report\.md`: .*`Rebaseline readiness`.*`Rebaseline Readiness`/,
+    operatorManualDoc,
+    /The agent must not create or mutate methodology-owned artifacts directly\. Those artifacts are created and updated only through the bundled CLI\./,
   );
   assert.match(
-    operatorHelpDoc,
-    /`status` или `delta` \+ `report\.md`: .*`New stale since last change`.*`New Stale Since Last Change`/,
+    operatorManualDoc,
+    /the agent may author explicit packet files internally, but the operator does not;/,
   );
   assert.match(
-    operatorHelpDoc,
-    /Формат ответа использует точные runtime statuses: `allowed`, `blocked` или `not_needed`, плюс причины\./,
+    operatorManualDoc,
+    /for `delivery_state`, authoritative current-truth evidence only/,
   );
   assert.match(
-    operatorHelpDoc,
-    /Отвечает из блока `Rebaseline readiness` в `status` и из section `Rebaseline Readiness` в `report\.md`\./,
+    operatorDevDoc,
+    /Этот файл является рабочим development-документом для доработки operator-facing сценариев\. Shipped operator manual находится в `references\/operator-manual\.md`\./,
   );
-  assert.match(
-    operatorHelpDoc,
-    /Отвечает из блока `New stale since last change` в `discover`, `status` или `delta`, а также из rendered section `New Stale Since Last Change`\./,
-  );
+  assert.doesNotMatch(operatorDevDoc, /официальным operator-facing help-reference/);
+  assert.doesNotMatch(operatorManualDoc, /TODO:/);
+  assert.doesNotMatch(operatorManualDoc, /`METH-\d{2}`|`CLI-\d{2}`/);
+  assert.doesNotMatch(operatorManualDoc, /operator-manual\.ru/);
 });
 
 test('obsolete pre-GA n_a shapes are rejected in canonical items', (t) => {
