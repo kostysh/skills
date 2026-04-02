@@ -1,0 +1,37 @@
+# Operator Workflows
+
+This file defines the stable operator-facing use cases and the agent workflows behind them.
+
+## Canonical operator asks
+
+| Operator ask | Canonical agent flow |
+| --- | --- |
+| Create backlog from architecture | `init` -> `register-source` for all documents -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
+| Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
+| Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
+| Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
+| Show what changed after the last action | Use the compact response of the last mutating command; only then fetch `items` if details are needed |
+| Show what needs attention | `attention` -> `items` only for selected tasks |
+| Show what can be taken next | `queue` -> `items` only for selected tasks |
+| Check one module, source, or task | If `item_key` is known: `items`; if a source is known: scoped `refresh` -> `search` -> optionally `items`; otherwise `search` -> `items` |
+
+## Queue semantics
+
+Treat `queue` as a list of ordered chains, not a flat list.
+
+- one root branch of the graph corresponds to one queue chain;
+- only tasks that are runnable now should appear there;
+- the utility should return the chain already ordered for next-step work.
+
+## Agent accents
+
+These emphases are mandatory:
+
+- keep the operator out of internal command choreography;
+- prefer scoped operations over global ones when scope is known;
+- keep mutation results compact;
+- do not read packets as current truth after registration;
+- do not silently invent missing context;
+- use `--dry-run` before risky or large mutations;
+- treat utility-generated state as authoritative for the current backlog;
+- use `template` before freehand packet or patch authoring when possible.

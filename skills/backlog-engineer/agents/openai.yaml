@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backlog Engineer"
+  short_description: "Build and sync backlog graphs from architecture."
+  default_prompt: "Use $backlog-engineer to create or update a backlog graph from architecture and technical decision documents."
