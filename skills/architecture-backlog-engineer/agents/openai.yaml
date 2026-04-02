@@ -1,4 +1,0 @@
-interface:
-  display_name: "Architecture Backlog Engineer"
-  short_description: "Discover, repair, validate, and rebaseline backlog graphs."
-  default_prompt: "Use $architecture-backlog-engineer to turn architecture, ADRs, and runtime evidence into a validated backlog run with a rendered report."
