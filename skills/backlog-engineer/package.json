@@ -1,0 +1,36 @@
+{
+  "name": "@kostysh/backlog-engineer-cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CLI utilities for the backlog-engineer skill.",
+  "type": "module",
+  "bin": {
+    "backlog-engineer": "scripts/backlog-engineer.mjs"
+  },
+  "exports": {
+    ".": "./scripts/backlog-engineer.mjs"
+  },
+  "files": [
+    "scripts"
+  ],
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "build": "vite build && chmod +x scripts/backlog-engineer.mjs",
+    "format": "biome format --files-ignore-unknown=true --write src test package.json tsconfig.json vite.config.ts",
+    "format:check": "biome check --files-ignore-unknown=true --formatter-enabled=true --linter-enabled=false --assist-enabled=false src test package.json tsconfig.json vite.config.ts",
+    "lint:biome": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings src test package.json tsconfig.json vite.config.ts",
+    "lint:eslint": "eslint \"src/**/*.ts\" \"test/**/*.mjs\" \"vite.config.ts\"",
+    "lint": "pnpm run lint:biome && pnpm run lint:eslint && pnpm run typecheck",
+    "lint:fix": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings --write src test package.json tsconfig.json vite.config.ts && eslint --fix \"src/**/*.ts\" \"test/**/*.mjs\" \"vite.config.ts\" && pnpm run typecheck",
+    "pretest": "pnpm run build",
+    "test": "node --test test/*.test.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.3"
+  }
+}

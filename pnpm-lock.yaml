@@ -33,7 +33,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  skills/architecture-backlog-engineer:
+  skills/backlog-engineer:
     devDependencies:
       '@types/node':
         specifier: ^25.5.0

@@ -71,7 +71,7 @@ Do not use this skill as a replacement for:
 
 ## Runtime status
 
-The runtime utility is part of the method contract, but it may not yet exist in the target repository.
+The skill now includes a scaffolded CLI package, but the command behavior is still placeholder-only.
 
 Use this skill even when the runtime is absent to:
 
@@ -80,7 +80,13 @@ Use this skill even when the runtime is absent to:
 - author packet and patch inputs;
 - avoid inventing behavior outside the documented method.
 
-Never claim that the CLI exists unless the target repository actually contains it.
+Current runtime status:
+
+- package: `@kostysh/backlog-engineer-cli`
+- source entrypoint: `src/cli.ts`
+- built artifact: `scripts/backlog-engineer.mjs`
+- command surface exists;
+- command semantics are not implemented yet.
 
 ## Role split
 
