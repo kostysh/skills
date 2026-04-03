@@ -76,7 +76,6 @@ Utility-owned `todo` follows these rules:
 
 - it is created only by the utility during `packet`, `patch-item`, `remove-item`, or `refresh`;
 - it stores only open actions;
-- it is not archived as backlog history;
 - when resolved, it is removed rather than marked as closed.
 
 Do not author `todo` in packets or patches.
