@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-04-03T12:00:00Z",
+  "updated_at": "2026-04-03T12:30:00Z",
+  "last_refresh_at": "2026-04-03T12:20:00Z",
+  "context": {
+    "glossary": [
+      {
+        "term": "Session Timeout",
+        "definition": "Maximum allowed interactive session lifetime enforced by the backend.",
+        "aliases": [
+          "Session expiry",
+          "Idle timeout"
+        ]
+      }
+    ],
+    "key_strategy": {
+      "module_prefix": "session-ui",
+      "item_pattern": "<module>-<capability>-<result>"
+    },
+    "target_system": [
+      {
+        "name": "Authentication subsystem",
+        "purpose": "Authenticate users and enforce session lifetime",
+        "actors": [
+          "web-app",
+          "api-clients"
+        ]
+      }
+    ],
+    "as_built": [
+      {
+        "service": "auth-service",
+        "runtime": "node",
+        "owners": [
+          "identity-team"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "claim_key": "auth-session-timeout",
+        "title": "Enforce server-side session timeout",
+        "claim_class": "security",
+        "commitment": "required",
+        "source_ids": [
+          "11111111-1111-4111-8111-111111111111"
+        ]
+      }
+    ],
+    "contracts": [
+      {
+        "contract_key": "auth-session-contract",
+        "title": "Session validation API",
+        "owner": "identity-team",
+        "versioning_strategy": "path-versioning",
+        "reconciliation_strategy": "backward-compatible",
+        "deprecation_window": "90d",
+        "retirement_condition": "all clients migrated"
+      }
+    ],
+    "data_domains": [
+      {
+        "data_domain_key": "user-session",
+        "title": "User session records",
+        "data_class": "sensitive",
+        "owners": [
+          "identity-team"
+        ]
+      }
+    ],
+    "quality_attributes": [
+      {
+        "quality_attribute_key": "security-session-timeout",
+        "title": "Session timeout is enforced consistently",
+        "quality_class": "security",
+        "target": "Server rejects expired sessions within 1 minute",
+        "applies_to_item_keys": [
+          "auth-session-timeout-enforcement",
+          "auth-session-timeout-audit"
+        ],
+        "owner_keys": [
+          "identity-team"
+        ],
+        "source_ids": [
+          "11111111-1111-4111-8111-111111111111"
+        ]
+      }
+    ],
+    "policy_decisions": [
+      {
+        "policy_decision_key": "policy-session-timeout-required",
+        "title": "Session timeout is mandatory for interactive clients",
+        "policy_surface": "security",
+        "decision_state": "accepted",
+        "owner": "architecture-board",
+        "source_ids": [
+          "11111111-1111-4111-8111-111111111111"
+        ],
+        "related_item_keys": [
+          "auth-session-timeout-enforcement"
+        ]
+      }
+    ]
+  },
+  "items": [
+    {
+      "item_key": "auth-core",
+      "title": "Implement core session validation",
+      "type": "feature",
+      "delivery_state": "specified",
+      "gaps": [],
+      "depends_on_keys": [],
+      "origin_source_ids": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [
+        "auth-session-contract"
+      ],
+      "data_domain_keys": [
+        "user-session"
+      ],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": [],
+      "reverse_dependency_keys": [
+        "auth-session-timeout-enforcement"
+      ],
+      "open_todo_ids": [],
+      "needs_attention": false,
+      "attention_reason_codes": [],
+      "attention_reasons": [],
+      "ready_for_next_step": true
+    },
+    {
+      "item_key": "auth-session-timeout-audit",
+      "title": "Emit audit event for timeout enforcement",
+      "type": "feature",
+      "delivery_state": "defined",
+      "gaps": [
+        "Audit event schema is not yet specified."
+      ],
+      "depends_on_keys": [
+        "auth-session-timeout-enforcement"
+      ],
+      "origin_source_ids": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [
+        "auth-session-timeout"
+      ],
+      "contract_keys": [],
+      "data_domain_keys": [
+        "user-session"
+      ],
+      "quality_attribute_keys": [
+        "security-session-timeout"
+      ],
+      "policy_decision_keys": [],
+      "reverse_dependency_keys": [],
+      "open_todo_ids": [],
+      "needs_attention": true,
+      "attention_reason_codes": [
+        "gaps"
+      ],
+      "attention_reasons": [
+        "Есть gap: задача заблокирована до уточнения входных данных."
+      ],
+      "ready_for_next_step": false
+    },
+    {
+      "item_key": "auth-session-timeout-enforcement",
+      "title": "Enforce session timeout in auth middleware",
+      "type": "feature",
+      "delivery_state": "specified",
+      "gaps": [],
+      "depends_on_keys": [
+        "auth-core"
+      ],
+      "origin_source_ids": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [
+        "auth-session-timeout"
+      ],
+      "contract_keys": [
+        "auth-session-contract"
+      ],
+      "data_domain_keys": [
+        "user-session"
+      ],
+      "quality_attribute_keys": [
+        "security-session-timeout"
+      ],
+      "policy_decision_keys": [
+        "policy-session-timeout-required"
+      ],
+      "reverse_dependency_keys": [
+        "auth-session-timeout-audit",
+        "session-ui-timeout-banner"
+      ],
+      "open_todo_ids": [],
+      "needs_attention": false,
+      "attention_reason_codes": [],
+      "attention_reasons": [],
+      "ready_for_next_step": true
+    },
+    {
+      "item_key": "billing-core",
+      "title": "Implement billing core flow",
+      "type": "feature",
+      "delivery_state": "defined",
+      "gaps": [],
+      "depends_on_keys": [],
+      "origin_source_ids": [
+        "22222222-2222-4222-8222-222222222222"
+      ],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [],
+      "data_domain_keys": [],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": [],
+      "reverse_dependency_keys": [
+        "billing-invoice-export"
+      ],
+      "open_todo_ids": [],
+      "needs_attention": false,
+      "attention_reason_codes": [],
+      "attention_reasons": [],
+      "ready_for_next_step": true
+    },
+    {
+      "item_key": "billing-invoice-export",
+      "title": "Add invoice export capability",
+      "type": "feature",
+      "delivery_state": "defined",
+      "gaps": [],
+      "depends_on_keys": [
+        "billing-core"
+      ],
+      "origin_source_ids": [
+        "22222222-2222-4222-8222-222222222222"
+      ],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [],
+      "data_domain_keys": [],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": [],
+      "reverse_dependency_keys": [],
+      "open_todo_ids": [],
+      "needs_attention": false,
+      "attention_reason_codes": [],
+      "attention_reasons": [],
+      "ready_for_next_step": true
+    },
+    {
+      "item_key": "session-ui-timeout-banner",
+      "title": "Show timeout warning banner in session UI",
+      "type": "feature",
+      "delivery_state": "defined",
+      "gaps": [],
+      "depends_on_keys": [
+        "auth-session-timeout-enforcement"
+      ],
+      "origin_source_ids": [
+        "33333333-3333-4333-8333-333333333333"
+      ],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [],
+      "data_domain_keys": [],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": [],
+      "reverse_dependency_keys": [],
+      "open_todo_ids": [],
+      "needs_attention": false,
+      "attention_reason_codes": [],
+      "attention_reasons": [],
+      "ready_for_next_step": true
+    }
+  ],
+  "todos": []
+}

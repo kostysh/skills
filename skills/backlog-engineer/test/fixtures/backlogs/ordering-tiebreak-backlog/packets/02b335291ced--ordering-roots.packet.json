@@ -1,0 +1,90 @@
+{
+  "context": {
+    "glossary": [],
+    "key_strategy": {
+      "module_prefix": "ordering",
+      "item_pattern": "<module>-<capability>-<result>"
+    },
+    "target_system": [],
+    "as_built": [],
+    "claims": [],
+    "contracts": [],
+    "data_domains": [],
+    "quality_attributes": [],
+    "policy_decisions": []
+  },
+  "items": [
+    {
+      "item_key": "alpha-root",
+      "title": "Alpha root task",
+      "type": "feature",
+      "delivery_state": "specified",
+      "gaps": [],
+      "depends_on_keys": [],
+      "origin_source_ids": ["55555555-5555-4555-8555-555555555555"],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [],
+      "data_domain_keys": [],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": []
+    },
+    {
+      "item_key": "alpha-child",
+      "title": "Alpha child task",
+      "type": "feature",
+      "delivery_state": "defined",
+      "gaps": [],
+      "depends_on_keys": ["alpha-root"],
+      "origin_source_ids": ["55555555-5555-4555-8555-555555555555"],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [],
+      "data_domain_keys": [],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": []
+    },
+    {
+      "item_key": "beta-root",
+      "title": "Beta root task",
+      "type": "feature",
+      "delivery_state": "specified",
+      "gaps": [],
+      "depends_on_keys": [],
+      "origin_source_ids": ["55555555-5555-4555-8555-555555555555"],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [],
+      "data_domain_keys": [],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": []
+    },
+    {
+      "item_key": "gamma-root",
+      "title": "Gamma root task",
+      "type": "feature",
+      "delivery_state": "specified",
+      "gaps": [],
+      "depends_on_keys": [],
+      "origin_source_ids": ["55555555-5555-4555-8555-555555555555"],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [],
+      "data_domain_keys": [],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": []
+    }
+  ]
+}

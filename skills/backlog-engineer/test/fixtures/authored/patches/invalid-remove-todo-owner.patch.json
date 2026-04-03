@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "patch_id": "2026-04-03-006-invalid-remove-todo-owner",
+    "created_at": "2026-04-03T12:50:00Z",
+    "sequence": 6,
+    "target_item_keys": ["auth-session-timeout-audit"]
+  },
+  "operations": [
+    {
+      "item_key": "auth-session-timeout-audit",
+      "action": "remove_todo",
+      "todo_ids": ["66666666-6666-4666-8666-666666666661"]
+    }
+  ]
+}
