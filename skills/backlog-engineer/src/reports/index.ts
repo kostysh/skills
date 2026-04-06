@@ -5,6 +5,14 @@ import type {
   SourceRegistryFile,
   StateFile,
 } from '../schemas/index.ts';
+import type { AttentionService, ItemsService, QueueService } from '../core/types.ts';
+import type { HookRegistry } from '../hooks/index.ts';
+import { buildReportModel as buildReportModelValue } from './build-report-model.ts';
+import { renderStateMermaidGraph } from './render-mermaid-graph.ts';
+import {
+  buildReportSections as buildReportSectionsValue,
+  renderReportMarkdown as renderReportMarkdownValue,
+} from './render-report-markdown.ts';
 
 export type ReportSection = {
   key: string;
@@ -43,3 +51,41 @@ export interface ReportsModule {
   renderMarkdown(sections: ReportSection[]): string;
   renderMermaid(model: ReportModel): string;
 }
+
+export function createReportsModule(payload: {
+  items: ItemsService;
+  attention: AttentionService;
+  queue: QueueService;
+  hooks: HookRegistry;
+}): ReportsModule {
+  return {
+    buildReportModel({ state, registry }) {
+      return buildReportModelValue({
+        state,
+        registry,
+        services: {
+          items: payload.items,
+          attention: payload.attention,
+          queue: payload.queue,
+        },
+        hooks: payload.hooks,
+      });
+    },
+    buildSections(model) {
+      return buildReportSectionsValue(model);
+    },
+    renderMarkdown(sections) {
+      return renderReportMarkdownValue(sections);
+    },
+    renderMermaid(model) {
+      return model.globalMermaidGraph;
+    },
+  };
+}
+
+export {
+  buildReportModelValue as buildReportModel,
+  buildReportSectionsValue as buildReportSections,
+  renderReportMarkdownValue as renderReportMarkdown,
+  renderStateMermaidGraph,
+};

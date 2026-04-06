@@ -7,7 +7,7 @@ import {
 } from '../artifacts/index.ts';
 import { ensureNoSymlinkAncestors } from '../artifacts/store-helpers.ts';
 import { createCoreModule, type CoreModule } from '../core/index.ts';
-import type { ReportsModule } from '../reports/index.ts';
+import { createReportsModule, type ReportsModule } from '../reports/index.ts';
 import { createSourcesModule, type SourcesModule } from '../sources/index.ts';
 import { createTemplatesModule, type TemplatesModule } from '../templates/index.ts';
 import type { RuntimeModule } from './index.ts';
@@ -39,34 +39,20 @@ function isErrnoException(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error;
 }
 
-function createUnavailableModuleProxy<T extends object>(
-  moduleName: string,
-  errorModule: ErrorModule,
-): T {
-  return new Proxy(
-    {},
-    {
-      get(_target, propertyKey) {
-        return () => {
-          throw errorModule.create('BE_INTERNAL_STATE_CORRUPT', undefined, {
-            details: {
-              module: moduleName,
-              property: String(propertyKey),
-            },
-            hint: 'Continue with the next implementation work package to install the concrete module implementation.',
-          });
-        };
-      },
-    },
-  ) as T;
-}
-
 function buildRuntimeModules(
   dependencies: RuntimeDependencies,
   overrides: CreateRuntimeOptions['modules'] = {},
 ): RuntimeModuleBag {
   const errors = overrides?.errors ?? createErrorModule();
   const schemas = overrides?.schemas ?? createSchemaModule();
+  const core =
+    overrides?.core ??
+    createCoreModule({
+      errors,
+      schemas,
+      clock: dependencies.clock,
+      uuid: dependencies.uuid,
+    });
 
   return {
     artifacts:
@@ -89,18 +75,18 @@ function buildRuntimeModules(
         errors,
       }),
     templates: overrides?.templates ?? createTemplatesModule(),
-    reports: overrides?.reports ?? createUnavailableModuleProxy<ReportsModule>('reports', errors),
+    reports:
+      overrides?.reports ??
+      createReportsModule({
+        items: core.items,
+        attention: core.attention,
+        queue: core.queue,
+        hooks: dependencies.hooks,
+      }),
     schemas,
     errors,
     hooks: dependencies.hooks,
-    core:
-      overrides?.core ??
-      createCoreModule({
-        errors,
-        schemas,
-        clock: dependencies.clock,
-        uuid: dependencies.uuid,
-      }),
+    core,
   };
 }
 

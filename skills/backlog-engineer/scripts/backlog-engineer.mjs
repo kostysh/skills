@@ -5555,7 +5555,7 @@ var ITEMS_COMMAND = {
 };
 //#endregion
 //#region src/commands/list-sources.ts
-function collectItemSourceIds$5(item) {
+function collectItemSourceIds$6(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -5601,7 +5601,7 @@ var LIST_SOURCES_COMMAND = {
 			const { state } = await context.ensureQueryState();
 			const item = state.items.find((candidate) => candidate.item_key === input.item_key);
 			if (!item) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: input.item_key } });
-			const itemSourceIds = collectItemSourceIds$5(item);
+			const itemSourceIds = collectItemSourceIds$6(item);
 			sources = sources.filter((source) => itemSourceIds.has(source.source_id));
 		}
 		if (input.path) {
@@ -5870,7 +5870,7 @@ var QUEUE_COMMAND = {
 };
 //#endregion
 //#region src/commands/refresh-helpers.ts
-function collectItemSourceIds$4(item) {
+function collectItemSourceIds$5(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -5884,7 +5884,7 @@ function collectSourceIdsForItemKeys(payload) {
 	const sourceIds = /* @__PURE__ */ new Set();
 	for (const item of payload.state.items) {
 		if (!itemKeySet.has(item.item_key)) continue;
-		for (const sourceId of collectItemSourceIds$4(item)) sourceIds.add(sourceId);
+		for (const sourceId of collectItemSourceIds$5(item)) sourceIds.add(sourceId);
 	}
 	return [...sourceIds].sort((left, right) => left.localeCompare(right));
 }
@@ -6498,7 +6498,7 @@ function resolveSourceAbsolutePath(payload) {
 }
 //#endregion
 //#region src/sources/source-scope-service.ts
-function collectItemSourceIds$3(item) {
+function collectItemSourceIds$4(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -6612,7 +6612,7 @@ function resolveSourceScope(payload) {
 	const selectedSourceIds = new Set(selectedSources.map((source) => source.source_id));
 	const linkedItemKeys = /* @__PURE__ */ new Set();
 	for (const item of payload.state.items) {
-		const sourceIds = collectItemSourceIds$3(item);
+		const sourceIds = collectItemSourceIds$4(item);
 		if ([...selectedSourceIds].some((sourceId) => sourceIds.has(sourceId))) linkedItemKeys.add(item.item_key);
 	}
 	const topLevelItemKeys = collectTopLevelItemKeys({
@@ -6881,29 +6881,7 @@ var REMOVE_ITEM_COMMAND = {
 		return output;
 	}
 };
-//#endregion
-//#region src/commands/placeholder.ts
-function runPlaceholderCommand(commandName) {
-	throw createBacklogError({
-		code: "BE_INTERNAL_STATE_CORRUPT",
-		message: `Command \`${commandName}\` is not implemented yet.`,
-		details: { command: commandName },
-		hint: "Continue with the next implementation work package and replace the placeholder handler."
-	});
-}
-function definePlaceholderCommand(config) {
-	return {
-		name: config.name,
-		summary: config.summary,
-		usage: config.usage,
-		options: config.options,
-		inputSchema: config.inputSchema,
-		outputSchema: config.outputSchema,
-		parseArgs: config.parseArgs,
-		execute: () => runPlaceholderCommand(config.name)
-	};
-}
-var REPORT_COMMAND = definePlaceholderCommand({
+var REPORT_COMMAND = {
 	name: "report",
 	summary: "Generate a human-readable backlog report on disk.",
 	usage: ["backlog-engineer report"],
@@ -6913,8 +6891,30 @@ var REPORT_COMMAND = definePlaceholderCommand({
 	parseArgs(args) {
 		assertNoPositionals("report", parseCommandArgs("report", args, {}).positionals);
 		return parseUsageInput("report", ReportCommandInputSchema, {});
+	},
+	async execute(_input, context) {
+		const backlogRoot = assertBacklogRoot(context);
+		const { state, registry } = await loadQueryStateWithRegistry(context);
+		const model = await context.reports.buildReportModel({
+			state,
+			registry
+		});
+		const baseSections = context.reports.buildSections(model);
+		const sections = await context.hooks.decorateReportSections?.({ sections: baseSections }) ?? baseSections;
+		const markdown = context.reports.renderMarkdown(sections);
+		const mermaid = context.reports.renderMermaid(model);
+		const { reportPath } = await context.artifacts.writeReportFiles({
+			root: backlogRoot,
+			markdown,
+			mermaid
+		});
+		return context.schemas.parseCommandOutput("report", {
+			report_path: reportPath,
+			generated_at: context.host.nowIsoUtc(),
+			item_count: model.metrics.totalItems
+		});
 	}
-});
+};
 var SEARCH_COMMAND = {
 	name: "search",
 	summary: "Search tasks when keys are not yet known.",
@@ -7950,7 +7950,7 @@ var ATTENTION_REASON_ORDER = [
 	"context_changed",
 	"gaps"
 ];
-function collectItemSourceIds$2(item) {
+function collectItemSourceIds$3(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -7966,7 +7966,7 @@ function createSourceSummaryLookup(registry) {
 	}]));
 }
 function collectSourceSummariesForItem(payload) {
-	return [...collectItemSourceIds$2(payload.item)].map((sourceId) => {
+	return [...collectItemSourceIds$3(payload.item)].map((sourceId) => {
 		const summary = payload.sourceSummariesById.get(sourceId);
 		if (!summary) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: {
 			source_id: sourceId,
@@ -8717,7 +8717,7 @@ function sortKeys(values) {
 function cloneState$1(value) {
 	return structuredClone(value);
 }
-function collectItemSourceIds$1(item) {
+function collectItemSourceIds$2(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -8751,7 +8751,7 @@ function resolveSourceIdsFromScope(payload) {
 function collectLinkedItemKeysBySourceIds(payload) {
 	const selectedSourceIds = new Set(payload.sourceIds);
 	return sortKeys(payload.state.items.filter((item) => {
-		const itemSourceIds = collectItemSourceIds$1(item);
+		const itemSourceIds = collectItemSourceIds$2(item);
 		return [...selectedSourceIds].some((sourceId) => itemSourceIds.has(sourceId));
 	}).map((item) => item.item_key));
 }
@@ -8784,7 +8784,7 @@ function collectChangedSourceIdsForItems(payload) {
 	for (const itemKey of sortKeys(payload.itemKeys)) {
 		const beforeItem = beforeByKey.get(itemKey);
 		const afterItem = afterByKey.get(itemKey);
-		const sourceIds = sortKeys(new Set([...beforeItem ? [...collectItemSourceIds$1(beforeItem)] : [], ...afterItem ? [...collectItemSourceIds$1(afterItem)] : []]));
+		const sourceIds = sortKeys(new Set([...beforeItem ? [...collectItemSourceIds$2(beforeItem)] : [], ...afterItem ? [...collectItemSourceIds$2(afterItem)] : []]));
 		sourceIdsByItem.set(itemKey, sourceIds);
 	}
 	return sourceIdsByItem;
@@ -8877,7 +8877,7 @@ function sortChangedSources(changedSources) {
 function collectActiveSourceTodoItemKeys(payload) {
 	const changedSourceIds = new Set(payload.changedSourceIds);
 	return sortKeys(payload.state.items.filter((item) => {
-		const itemSourceIds = collectItemSourceIds$1(item);
+		const itemSourceIds = collectItemSourceIds$2(item);
 		return [...changedSourceIds].some((sourceId) => itemSourceIds.has(sourceId));
 	}).map((item) => item.item_key));
 }
@@ -9279,7 +9279,7 @@ function createMutationService(payload) {
 			const scopeItemSet = new Set(scopeItemKeys);
 			const observedSourceIds = scope.kind === "all" ? sortKeys(sourceRegistry.sources.map((source) => source.source_id)) : scope.kind === "item" ? sortKeys(new Set(scopeItemKeys.flatMap((itemKey) => {
 				const item = state.items.find((candidate) => candidate.item_key === itemKey);
-				return item ? [...collectItemSourceIds$1(item)] : [];
+				return item ? [...collectItemSourceIds$2(item)] : [];
 			}))) : resolveSourceIdsFromScope({
 				registry: sourceRegistry,
 				scope,
@@ -9809,6 +9809,377 @@ function createCoreModule(payload) {
 			todo,
 			derivedState
 		})
+	};
+}
+//#endregion
+//#region src/reports/render-mermaid-graph.ts
+function escapeMermaidLabel(value) {
+	return value.replaceAll("\"", "'").replaceAll("\n", " ");
+}
+function renderStateMermaidGraph(items) {
+	const sortedItems = [...items].sort((left, right) => left.item_key.localeCompare(right.item_key));
+	const lines = ["flowchart TD"];
+	for (const item of sortedItems) lines.push(`  ${item.item_key}["${escapeMermaidLabel(`${item.item_key}: ${item.title}`)}"]`);
+	const edges = sortedItems.flatMap((item) => [...item.depends_on_keys].sort((left, right) => left.localeCompare(right)).map((dependencyKey) => ({
+		from: dependencyKey,
+		to: item.item_key
+	})));
+	for (const edge of edges) lines.push(`  ${edge.from} --> ${edge.to}`);
+	return `${lines.join("\n")}\n`;
+}
+//#endregion
+//#region src/reports/build-report-model.ts
+function collectItemSourceIds$1(item) {
+	return [
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	];
+}
+function formatSummaryValue(value) {
+	if (Array.isArray(value)) return value.map((entry) => entry === null ? "null" : String(entry)).join(", ");
+	return value === null ? "null" : String(value);
+}
+function formatStructuredSummaryBlock(payload) {
+	return payload.entries.map((entry, index) => {
+		const fields = Object.entries(entry).sort(([left], [right]) => left.localeCompare(right)).map(([key, value]) => `${key}: ${formatSummaryValue(value)}`).join("; ");
+		return `${payload.label} ${index + 1}: ${fields}`;
+	});
+}
+function buildFallbackSystemSummary(payload) {
+	const sourceLabelById = new Map(payload.registry.sources.map((source) => [source.source_id, source.source_label]));
+	const sourceCoverage = /* @__PURE__ */ new Map();
+	const typeCounts = /* @__PURE__ */ new Map();
+	const deliveryCounts = /* @__PURE__ */ new Map();
+	for (const item of payload.state.items) {
+		typeCounts.set(item.type, (typeCounts.get(item.type) ?? 0) + 1);
+		deliveryCounts.set(item.delivery_state, (deliveryCounts.get(item.delivery_state) ?? 0) + 1);
+		for (const sourceId of new Set(collectItemSourceIds$1(item))) sourceCoverage.set(sourceId, (sourceCoverage.get(sourceId) ?? 0) + 1);
+	}
+	const topSources = [...sourceCoverage.entries()].map(([sourceId, count]) => ({
+		source_id: sourceId,
+		source_label: sourceLabelById.get(sourceId) ?? sourceId,
+		count
+	})).sort((left, right) => {
+		const byCount = right.count - left.count;
+		if (byCount !== 0) return byCount;
+		const byLabel = left.source_label.localeCompare(right.source_label);
+		if (byLabel !== 0) return byLabel;
+		return left.source_id.localeCompare(right.source_id);
+	}).slice(0, 5).map((entry) => `${entry.source_label} (${entry.count})`);
+	const typeSummary = [...typeCounts.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([type, count]) => `${type}: ${count}`).join(", ");
+	const deliverySummary = [...deliveryCounts.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([deliveryState, count]) => `${deliveryState}: ${count}`).join(", ");
+	return [
+		`Registered sources: ${payload.registry.sources.length}`,
+		`Top sources by task coverage: ${topSources.length > 0 ? topSources.join("; ") : "none"}`,
+		`Items by type: ${typeSummary || "none"}`,
+		`Items by delivery state: ${deliverySummary || "none"}`
+	];
+}
+function buildSystemSummary(payload) {
+	const baseLines = payload.state.context.target_system.length > 0 || payload.state.context.as_built.length > 0 ? [...formatStructuredSummaryBlock({
+		label: "Target system",
+		entries: payload.state.context.target_system
+	}), ...formatStructuredSummaryBlock({
+		label: "As built",
+		entries: payload.state.context.as_built
+	})] : buildFallbackSystemSummary({
+		state: payload.state,
+		registry: payload.registry
+	});
+	return [...new Set([...baseLines, ...payload.hookLines.map((line) => line.trim()).filter(Boolean)])];
+}
+function isLargeBacklog(state) {
+	const edgeCount = state.items.reduce((sum, item) => sum + item.depends_on_keys.length, 0);
+	return state.items.length > 75 || edgeCount > 120;
+}
+function buildUndirectedAdjacency(items) {
+	const adjacency = /* @__PURE__ */ new Map();
+	for (const item of items) {
+		if (!adjacency.has(item.item_key)) adjacency.set(item.item_key, /* @__PURE__ */ new Set());
+		for (const dependencyKey of item.depends_on_keys) {
+			if (!adjacency.has(dependencyKey)) adjacency.set(dependencyKey, /* @__PURE__ */ new Set());
+			adjacency.get(item.item_key)?.add(dependencyKey);
+			adjacency.get(dependencyKey)?.add(item.item_key);
+		}
+	}
+	return adjacency;
+}
+function buildConnectedComponents(items) {
+	const itemByKey = new Map(items.map((item) => [item.item_key, item]));
+	const adjacency = buildUndirectedAdjacency(items);
+	const visited = /* @__PURE__ */ new Set();
+	const components = [];
+	for (const item of items.map((entry) => entry.item_key).sort((left, right) => left.localeCompare(right))) {
+		if (visited.has(item)) continue;
+		const component = [];
+		const queue = [item];
+		visited.add(item);
+		while (queue.length > 0) {
+			const current = queue.shift();
+			if (!current || !itemByKey.has(current)) continue;
+			component.push(current);
+			for (const neighbor of adjacency.get(current) ?? []) {
+				if (visited.has(neighbor) || !itemByKey.has(neighbor)) continue;
+				visited.add(neighbor);
+				queue.push(neighbor);
+			}
+		}
+		component.sort((left, right) => left.localeCompare(right));
+		components.push(component);
+	}
+	return components;
+}
+function chooseLocalGraphTitle(payload) {
+	const sourceLabelById = new Map(payload.registry.sources.map((source) => [source.source_id, source.source_label]));
+	const sourceCounts = /* @__PURE__ */ new Map();
+	for (const item of payload.componentItems) for (const sourceId of new Set(item.origin_source_ids)) sourceCounts.set(sourceId, (sourceCounts.get(sourceId) ?? 0) + 1);
+	if (sourceCounts.size === 0) return "Local graph — no origin source";
+	const [winner] = [...sourceCounts.entries()].map(([sourceId, count]) => ({
+		source_id: sourceId,
+		source_label: sourceLabelById.get(sourceId) ?? sourceId,
+		count
+	})).sort((left, right) => {
+		const byCount = right.count - left.count;
+		if (byCount !== 0) return byCount;
+		const byLabel = left.source_label.localeCompare(right.source_label);
+		if (byLabel !== 0) return byLabel;
+		return left.source_id.localeCompare(right.source_id);
+	});
+	return `Local graph — ${winner?.source_label ?? "no origin source"}`;
+}
+function buildLocalMermaidGraphs(payload) {
+	if (!isLargeBacklog(payload.state)) return [];
+	const itemByKey = new Map(payload.state.items.map((item) => [item.item_key, item]));
+	return buildConnectedComponents(payload.state.items).map((itemKeys) => {
+		const componentItems = itemKeys.map((itemKey) => itemByKey.get(itemKey)).filter((item) => item !== void 0);
+		return {
+			title: chooseLocalGraphTitle({
+				componentItems,
+				registry: payload.registry
+			}),
+			mermaid: renderStateMermaidGraph(componentItems),
+			item_keys: [...itemKeys]
+		};
+	}).sort((left, right) => {
+		const byTitle = left.title.localeCompare(right.title);
+		if (byTitle !== 0) return byTitle;
+		const byFirstItem = (left.item_keys[0] ?? "").localeCompare(right.item_keys[0] ?? "");
+		if (byFirstItem !== 0) return byFirstItem;
+		return left.item_keys.length - right.item_keys.length;
+	});
+}
+async function buildReportModel(payload) {
+	const sortedItemKeys = payload.state.items.map((item) => item.item_key).sort((left, right) => left.localeCompare(right));
+	const [itemCatalog, attentionItems, queueChains, hookSummary] = await Promise.all([
+		Promise.resolve(payload.services.items.getItems({
+			state: payload.state,
+			itemKeys: sortedItemKeys,
+			registry: payload.registry
+		})),
+		Promise.resolve(payload.services.attention.buildAttentionList({
+			state: payload.state,
+			registry: payload.registry
+		})),
+		Promise.resolve(payload.services.queue.buildQueueChains({ state: payload.state })),
+		payload.hooks.buildSystemSummary?.({
+			context: payload.state.context,
+			items: payload.state.items
+		}) ?? Promise.resolve([])
+	]);
+	const metrics = {
+		totalItems: payload.state.items.length,
+		itemsNeedingAttention: payload.state.items.filter((item) => item.needs_attention).length,
+		readyForNextStep: payload.state.items.filter((item) => item.ready_for_next_step).length,
+		openGaps: payload.state.items.filter((item) => item.gaps.length > 0).length,
+		openTodos: payload.state.todos.length
+	};
+	return {
+		systemSummary: buildSystemSummary({
+			state: payload.state,
+			registry: payload.registry,
+			hookLines: hookSummary
+		}),
+		metrics,
+		globalMermaidGraph: renderStateMermaidGraph(payload.state.items),
+		localMermaidGraphs: buildLocalMermaidGraphs({
+			state: payload.state,
+			registry: payload.registry
+		}),
+		attentionItems,
+		queueChains,
+		itemCatalog
+	};
+}
+//#endregion
+//#region src/reports/render-report-markdown.ts
+function renderBulletLines(lines) {
+	if (lines.length === 0) return "- none";
+	return lines.map((line) => `- ${line}`).join("\n");
+}
+function renderMermaidBlock(mermaid) {
+	return [
+		"```mermaid",
+		mermaid.trimEnd(),
+		"```"
+	].join("\n");
+}
+function countBy(values) {
+	const counts = /* @__PURE__ */ new Map();
+	for (const value of values) counts.set(value, (counts.get(value) ?? 0) + 1);
+	return [...counts.entries()].sort(([left], [right]) => left.localeCompare(right));
+}
+function renderItemKeyList(values) {
+	return values.length > 0 ? values.join(", ") : "none";
+}
+function renderContextSummary(card) {
+	return [
+		`Claims: ${renderItemKeyList(card.context.claim_keys)}`,
+		`Contracts: ${renderItemKeyList(card.context.contract_keys)}`,
+		`Data domains: ${renderItemKeyList(card.context.data_domain_keys)}`,
+		`Quality attributes: ${renderItemKeyList(card.context.quality_attribute_keys)}`,
+		`Policy decisions: ${renderItemKeyList(card.context.policy_decision_keys)}`
+	];
+}
+function countContextKeys(card) {
+	return card.context.claim_keys.length + card.context.contract_keys.length + card.context.data_domain_keys.length + card.context.quality_attribute_keys.length + card.context.policy_decision_keys.length;
+}
+function renderItemSection(card) {
+	const item = card.item;
+	return [
+		`### ${item.item_key} — ${item.title}`,
+		"",
+		`- Type: ${item.type}`,
+		`- Delivery state: ${item.delivery_state}`,
+		`- Needs attention: ${String(card.computed_state.needs_attention)}`,
+		`- Ready for next step: ${String(card.computed_state.ready_for_next_step)}`,
+		`- Gaps: ${item.gaps.length > 0 ? item.gaps.join("; ") : "none"}`,
+		`- Depends on: ${renderItemKeyList(item.depends_on_keys)}`,
+		`- Reverse dependencies: ${renderItemKeyList(card.reverse_dependency_keys)}`,
+		`- Related sources: ${card.source_summaries.map((source) => source.source_label).join(", ") || "none"}`,
+		`- Todo: ${card.todo.map((todo) => todo.message).join("; ") || "none"}`,
+		`- Attention reasons: ${card.computed_state.attention_reasons.join("; ") || "none"}`,
+		"",
+		"Context:",
+		renderBulletLines(renderContextSummary(card)),
+		"",
+		"Item metrics:",
+		renderBulletLines([
+			`Dependency count: ${item.depends_on_keys.length}`,
+			`Reverse dependency count: ${card.reverse_dependency_keys.length}`,
+			`Gap count: ${item.gaps.length}`,
+			`Related source count: ${card.source_summaries.length}`,
+			`Related context element count: ${countContextKeys(card)}`
+		])
+	].join("\n");
+}
+function buildReportSections(model) {
+	const typeCounts = countBy(model.itemCatalog.map((card) => card.item.type));
+	const deliveryStateCounts = countBy(model.itemCatalog.map((card) => card.item.delivery_state));
+	const taskGraphSection = [
+		"Global graph:",
+		"",
+		renderMermaidBlock(model.globalMermaidGraph),
+		...model.localMermaidGraphs.length > 0 ? [
+			"",
+			"Local graphs:",
+			"",
+			...model.localMermaidGraphs.flatMap((graph) => [
+				`### ${graph.title}`,
+				"",
+				`- Item keys: ${graph.item_keys.join(", ")}`,
+				"",
+				renderMermaidBlock(graph.mermaid),
+				""
+			])
+		] : []
+	].join("\n").trimEnd();
+	const attentionSection = model.attentionItems.length === 0 ? "No items currently require attention." : model.attentionItems.map((entry) => [
+		`### ${entry.item_key} — ${entry.title}`,
+		"",
+		renderBulletLines([
+			`Reason codes: ${entry.attention_reason_codes.join(", ")}`,
+			`Reasons: ${entry.attention_reasons.join("; ")}`,
+			`Sources: ${entry.source_summaries.map((source) => source.source_label).join(", ") || "none"}`
+		])
+	].join("\n")).join("\n\n");
+	const queueSection = model.queueChains.length === 0 ? "No tasks are ready for the next step." : model.queueChains.map((chain) => [
+		`### Root: ${chain.root_item_key}`,
+		"",
+		renderBulletLines([`Ordering rule: ${chain.ordering_rule.join(" -> ")}`, `Items: ${chain.items.join(" -> ")}`])
+	].join("\n")).join("\n\n");
+	const allItemsSection = model.itemCatalog.length === 0 ? "No items are registered." : model.itemCatalog.map((card) => renderItemSection(card)).join("\n\n");
+	return [
+		{
+			key: "system-summary",
+			title: "System Summary",
+			markdown: renderBulletLines(model.systemSummary)
+		},
+		{
+			key: "backlog-metrics",
+			title: "Backlog Metrics",
+			markdown: renderBulletLines([
+				`Total items: ${model.metrics.totalItems}`,
+				`Items needing attention: ${model.metrics.itemsNeedingAttention}`,
+				`Ready for next step: ${model.metrics.readyForNextStep}`,
+				`Items with gaps: ${model.metrics.openGaps}`,
+				`Open todo count: ${model.metrics.openTodos}`,
+				`Items by type: ${typeCounts.map(([type, count]) => `${type}=${count}`).join(", ") || "none"}`,
+				`Items by delivery state: ${deliveryStateCounts.map(([state, count]) => `${state}=${count}`).join(", ") || "none"}`
+			])
+		},
+		{
+			key: "task-graph",
+			title: "Task Graph",
+			markdown: taskGraphSection
+		},
+		{
+			key: "needs-attention",
+			title: "Needs Attention",
+			markdown: attentionSection
+		},
+		{
+			key: "ready-for-next-step",
+			title: "Ready For Next Step",
+			markdown: queueSection
+		},
+		{
+			key: "all-items",
+			title: "All Items",
+			markdown: allItemsSection
+		}
+	];
+}
+function renderReportMarkdown(sections) {
+	return `# Backlog Report\n\n${sections.map((section) => `## ${section.title}\n\n${section.markdown.trim()}`).join("\n\n")}\n`;
+}
+//#endregion
+//#region src/reports/index.ts
+function createReportsModule(payload) {
+	return {
+		buildReportModel({ state, registry }) {
+			return buildReportModel({
+				state,
+				registry,
+				services: {
+					items: payload.items,
+					attention: payload.attention,
+					queue: payload.queue
+				},
+				hooks: payload.hooks
+			});
+		},
+		buildSections(model) {
+			return buildReportSections(model);
+		},
+		renderMarkdown(sections) {
+			return renderReportMarkdown(sections);
+		},
+		renderMermaid(model) {
+			return model.globalMermaidGraph;
+		}
 	};
 }
 //#endregion
@@ -10348,22 +10719,15 @@ function createFileBackedStateCoordinator() {
 function isErrnoException(error) {
 	return error instanceof Error && "code" in error;
 }
-function createUnavailableModuleProxy(moduleName, errorModule) {
-	return new Proxy({}, { get(_target, propertyKey) {
-		return () => {
-			throw errorModule.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
-				details: {
-					module: moduleName,
-					property: String(propertyKey)
-				},
-				hint: "Continue with the next implementation work package to install the concrete module implementation."
-			});
-		};
-	} });
-}
 function buildRuntimeModules(dependencies, overrides = {}) {
 	const errors = overrides?.errors ?? createErrorModule();
 	const schemas = overrides?.schemas ?? createSchemaModule();
+	const core = overrides?.core ?? createCoreModule({
+		errors,
+		schemas,
+		clock: dependencies.clock,
+		uuid: dependencies.uuid
+	});
 	return {
 		artifacts: overrides?.artifacts ?? createArtifactsModule({
 			fs: dependencies.fs,
@@ -10381,16 +10745,16 @@ function buildRuntimeModules(dependencies, overrides = {}) {
 			errors
 		}),
 		templates: overrides?.templates ?? createTemplatesModule(),
-		reports: overrides?.reports ?? createUnavailableModuleProxy("reports", errors),
+		reports: overrides?.reports ?? createReportsModule({
+			items: core.items,
+			attention: core.attention,
+			queue: core.queue,
+			hooks: dependencies.hooks
+		}),
 		schemas,
 		errors,
 		hooks: dependencies.hooks,
-		core: overrides?.core ?? createCoreModule({
-			errors,
-			schemas,
-			clock: dependencies.clock,
-			uuid: dependencies.uuid
-		})
+		core
 	};
 }
 function createRuntime(options = {}) {

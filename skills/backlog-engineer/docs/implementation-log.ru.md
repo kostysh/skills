@@ -666,3 +666,61 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: `L — Reporting and report hooks`
+
+### Work package `L` — `Reporting and report hooks`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Начало работ: 2026-04-06 23:09:07 +02:00
+- Полное время закрытия: 00:22:17
+- Коммит:
+- Что сделано:
+  - реализована реальная команда `report` вместо placeholder-поведения
+  - runtime wired к concrete `reports` module вместо unavailable-proxy
+  - добавлен `buildReportModel(...)`, который:
+    - строит `system summary`
+    - считает backlog metrics
+    - собирает global mermaid graph
+    - включает local graphs в large-backlog mode
+    - формирует `Needs Attention`, `Ready For Next Step` и `All Items`
+    - применяет fallback summary для `target_system` и `as_built`
+  - реализованы markdown renderer и mermaid renderer с deterministic output
+  - `report` теперь:
+    - пишет `reports/backlog-report.md`
+    - пишет `reports/backlog-graph.mmd`
+    - вызывает hooks `buildSystemSummary` и `decorateReportSections`
+    - возвращает final DTO с `report_path`, `generated_at` и `item_count`
+  - `utility-spec.ru.md` синхронизирован по report artifacts и `report` write-path
+  - добавлены tests для:
+    - report model
+    - fallback summary
+    - large-backlog local graphs
+    - markdown sections
+    - deterministic Mermaid generation
+    - unsupported `--out`
+    - report writes
+    - report hook success/failure paths
+- Ключевые решения:
+  - report model использует только read-model services (`items`, `attention`, `queue`) и не дублирует graph logic внутри renderer layer
+  - large-backlog mode включается по порогу `state.items.length > 75 || edge_count > 120`, а local graphs строятся по connected components текущего graph snapshot
+  - Mermaid renderer использует raw `item_key` как stable node id, чтобы буквально соответствовать operator contract и spec review findings
+  - fallback summary формируется из source coverage и item distributions, если `target_system` и `as_built` пусты
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - первый spec conformance review — PARTIAL
+    - Mermaid renderer использовал derived node ids вместо raw `item_key`
+    - не хватало явного test coverage для unsupported `--out`
+  - согласованные исправления:
+    - Mermaid renderer переведён на raw `item_key`
+    - добавлен command-level regression test на `--out`
+    - добавлен explicit hook-failure test для report path
+  - повторный spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `M — Destructive command`

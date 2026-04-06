@@ -1732,12 +1732,11 @@ Dry-run не должен:
 
 - `state.json`
 - `sources.json`
-- `sources.json`
-- `sources.json`
 
 ### Writes
 
 - `reports/backlog-report.md`
+- `reports/backlog-graph.mmd`
 
 ### Algorithm
 
@@ -1781,7 +1780,7 @@ Dry-run не должен:
      - количество связанных источников
      - количество связанных контекстных элементов
 8. Вызвать report hooks.
-9. Записать report artifact.
+9. Записать report artifact и Mermaid sidecar file.
 10. Вернуть путь к файлу и базовые метрики.
 
 ### Response contract
