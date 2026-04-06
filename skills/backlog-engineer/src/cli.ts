@@ -1,6 +1,6 @@
-import packageJson from '../package.json';
-import { runCli } from './cli/run-cli.js';
-import type { CliIo } from './commands/types.js';
+import packageJson from '../package.json' with { type: 'json' };
+import { runCli } from './cli/run-cli.ts';
+import type { CliIo } from './commands/types.ts';
 
 const io: CliIo = {
   stdout: process.stdout,

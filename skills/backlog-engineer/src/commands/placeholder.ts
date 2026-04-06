@@ -1,5 +1,5 @@
-import { EXIT_NOT_IMPLEMENTED } from '../errors/index.js';
-import type { CliIo, CommandDefinition } from './types.js';
+import { EXIT_NOT_IMPLEMENTED } from '../errors/index.ts';
+import type { CliIo, CommandDefinition } from './types.ts';
 
 function writeLine(stream: Pick<NodeJS.WriteStream, 'write'>, line = ''): void {
   stream.write(`${line}\n`);

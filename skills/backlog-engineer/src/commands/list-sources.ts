@@ -1,4 +1,4 @@
-import { definePlaceholderCommand } from './placeholder.js';
+import { definePlaceholderCommand } from './placeholder.ts';
 
 export const LIST_SOURCES_COMMAND = definePlaceholderCommand(
   'list-sources',

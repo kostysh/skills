@@ -13,11 +13,11 @@ var scripts = {
 	"format": "biome format --files-ignore-unknown=true --write src test package.json tsconfig.json vite.config.ts biome.json",
 	"format:check": "biome check --files-ignore-unknown=true --formatter-enabled=true --linter-enabled=false --assist-enabled=false src test package.json tsconfig.json vite.config.ts biome.json",
 	"lint:biome": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings src test package.json tsconfig.json vite.config.ts biome.json",
-	"lint:eslint": "eslint \"src/**/*.ts\" \"test/**/*.mjs\" \"vite.config.ts\"",
+	"lint:eslint": "eslint \"src/**/*.ts\" \"test/**/*.ts\" \"vite.config.ts\"",
 	"lint": "pnpm run lint:biome && pnpm run lint:eslint && pnpm run typecheck",
-	"lint:fix": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings --write src test package.json tsconfig.json vite.config.ts biome.json && eslint --fix \"src/**/*.ts\" \"test/**/*.mjs\" \"vite.config.ts\" && pnpm run typecheck",
+	"lint:fix": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings --write src test package.json tsconfig.json vite.config.ts biome.json && eslint --fix \"src/**/*.ts\" \"test/**/*.ts\" \"vite.config.ts\" && pnpm run typecheck",
 	"pretest": "pnpm run build",
-	"test": "node --test test/*.test.mjs",
+	"test": "node --experimental-strip-types --test test/*.test.ts",
 	"typecheck": "tsc --noEmit"
 };
 var devDependencies = {
@@ -25,6 +25,7 @@ var devDependencies = {
 	"typescript": "^5.9.3",
 	"vite": "^8.0.3"
 };
+var dependencies = { "zod": "^4.3.6" };
 var package_default = {
 	name,
 	version,
@@ -36,7 +37,8 @@ var package_default = {
 	files,
 	engines,
 	scripts,
-	devDependencies
+	devDependencies,
+	dependencies
 };
 //#endregion
 //#region src/commands/placeholder.ts
@@ -186,7 +188,7 @@ async function runCli(argv, cliIo, version) {
 		if (!command) {
 			writeLine(cliIo.stderr, `Unknown command: ${helpTarget}`);
 			writeLine(cliIo.stderr, globalHelp());
-			return 64;
+			return 2;
 		}
 		writeLine(cliIo.stdout, command.helpText());
 		return 0;
@@ -196,7 +198,7 @@ async function runCli(argv, cliIo, version) {
 		writeLine(cliIo.stderr, `Unknown command: ${commandName}`);
 		writeLine(cliIo.stderr, "");
 		writeLine(cliIo.stderr, `Run \`${CLI_DISPLAY_NAME} help\` to list available commands.`);
-		return 64;
+		return 2;
 	}
 	return await executeCommand(command, rest, cliIo);
 }

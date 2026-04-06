@@ -1,22 +1,22 @@
-import { definePlaceholderCommand } from './placeholder.js';
-import { ATTENTION_COMMAND } from './attention.js';
-import { DELETE_BACKLOG_COMMAND } from './delete-backlog.js';
-import { GAPS_COMMAND } from './gaps.js';
-import { INIT_COMMAND } from './init.js';
-import { ITEMS_COMMAND } from './items.js';
-import { LIST_SOURCES_COMMAND } from './list-sources.js';
-import { PACKET_COMMAND } from './packet.js';
-import { PATCH_ITEM_COMMAND } from './patch-item.js';
-import { QUEUE_COMMAND } from './queue.js';
-import { REFRESH_COMMAND } from './refresh.js';
-import { REGISTER_SOURCE_COMMAND } from './register-source.js';
-import { REMOVE_ITEM_COMMAND } from './remove-item.js';
-import { REPORT_COMMAND } from './report.js';
-import { SEARCH_COMMAND } from './search.js';
-import { STATUS_COMMAND } from './status.js';
-import { TEMPLATE_COMMAND } from './template.js';
-import type { CliIo, CommandDefinition } from './types.js';
-import { EXIT_NOT_IMPLEMENTED, EXIT_SUCCESS, EXIT_USAGE } from '../errors/index.js';
+import { definePlaceholderCommand } from './placeholder.ts';
+import { ATTENTION_COMMAND } from './attention.ts';
+import { DELETE_BACKLOG_COMMAND } from './delete-backlog.ts';
+import { GAPS_COMMAND } from './gaps.ts';
+import { INIT_COMMAND } from './init.ts';
+import { ITEMS_COMMAND } from './items.ts';
+import { LIST_SOURCES_COMMAND } from './list-sources.ts';
+import { PACKET_COMMAND } from './packet.ts';
+import { PATCH_ITEM_COMMAND } from './patch-item.ts';
+import { QUEUE_COMMAND } from './queue.ts';
+import { REFRESH_COMMAND } from './refresh.ts';
+import { REGISTER_SOURCE_COMMAND } from './register-source.ts';
+import { REMOVE_ITEM_COMMAND } from './remove-item.ts';
+import { REPORT_COMMAND } from './report.ts';
+import { SEARCH_COMMAND } from './search.ts';
+import { STATUS_COMMAND } from './status.ts';
+import { TEMPLATE_COMMAND } from './template.ts';
+import type { CliIo, CommandDefinition } from './types.ts';
+import { EXIT_NOT_IMPLEMENTED, EXIT_SUCCESS, EXIT_USAGE } from '../errors/index.ts';
 
 export {
   ATTENTION_COMMAND,

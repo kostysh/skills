@@ -1,4 +1,4 @@
-import { definePlaceholderCommand } from './placeholder.js';
+import { definePlaceholderCommand } from './placeholder.ts';
 
 export const DELETE_BACKLOG_COMMAND = definePlaceholderCommand(
   'delete-backlog',

@@ -1,4 +1,4 @@
-import { definePlaceholderCommand } from './placeholder.js';
+import { definePlaceholderCommand } from './placeholder.ts';
 
 export const ITEMS_COMMAND = definePlaceholderCommand(
   'items',

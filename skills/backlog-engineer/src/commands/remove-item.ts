@@ -1,4 +1,4 @@
-import { definePlaceholderCommand } from './placeholder.js';
+import { definePlaceholderCommand } from './placeholder.ts';
 
 export const REMOVE_ITEM_COMMAND = definePlaceholderCommand(
   'remove-item',

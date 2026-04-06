@@ -16,7 +16,7 @@ import {
   STATUS_COMMAND,
   TEMPLATE_COMMAND,
   type CommandDefinition,
-} from '../commands/index.js';
+} from '../commands/index.ts';
 
 export const CLI_DISPLAY_NAME = 'backlog-engineer';
 

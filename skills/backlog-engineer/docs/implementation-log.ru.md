@@ -54,3 +54,37 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: `B — Schemas and errors`
+
+### Work package `B` — `Schemas and errors`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Коммит:
+- Что сделано:
+  - реализован полный schema/type слой на `zod@v4` для scalar values, `packet`, `patch`, utility-owned artifacts и command DTO
+  - реализован error catalog, machine-readable payload, default messages и exit-code mapping
+  - зафиксирован public process contract для usage errors через `EXIT_USAGE = 2`
+  - все source imports в `src/` переведены на `.ts`, чтобы тесты и source-run path работали через встроенный Node TypeScript runtime
+  - тесты переведены с ванильного JS на TypeScript и запускаются через `node --experimental-strip-types --test`
+  - добавлен schema/error test seam по реальным fixtures, negative parse cases и DTO edge cases из матрицы
+  - `BacklogError` теперь runtime-санацирует `details` до JSON-safe payload
+- Ключевые решения:
+  - package B закрывает весь authored/public contract до начала реализации runtime и command semantics
+  - generic `normalizeError()` больше не классифицирует любой `SyntaxError` как `BE_INVALID_JSON`; JSON-specific mapping остаётся только у явной parse boundary
+  - schema tests пишутся на TypeScript и работают напрямую по source `.ts`, а не через отдельную промежуточную компиляцию
+- Допущения вне спецификации:
+  - для встроенного Node TypeScript runtime source files переведены на `.ts`-спецификаторы и `tsconfig.json` переключён на `NodeNext` + `allowImportingTsExtensions`; это implementation/tooling решение, не описанное отдельно в концепте
+  - runtime-санация `BacklogError.details` использует фиксированную политику преобразования не-JSON значений:
+    - `Date` -> ISO string
+    - `Error` -> `{ name, message }`
+    - non-finite numbers -> string form (`NaN`, `Infinity`)
+    - circular references -> `\"[Circular]\"`
+    - прочие неподдерживаемые значения -> `\"[Unsupported value]\"`
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `C — CLI public API foundation`

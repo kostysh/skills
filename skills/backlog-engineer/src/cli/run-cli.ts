@@ -1,6 +1,6 @@
-import { CLI_DISPLAY_NAME, findCommand, globalHelp } from './command-registry.js';
-import { executeCommand, type CliIo } from '../commands/index.js';
-import { EXIT_SUCCESS, EXIT_USAGE } from '../errors/index.js';
+import { CLI_DISPLAY_NAME, findCommand, globalHelp } from './command-registry.ts';
+import { executeCommand, type CliIo } from '../commands/index.ts';
+import { EXIT_SUCCESS, EXIT_USAGE } from '../errors/index.ts';
 
 function writeLine(stream: Pick<NodeJS.WriteStream, 'write'>, line = ''): void {
   stream.write(`${line}\n`);
