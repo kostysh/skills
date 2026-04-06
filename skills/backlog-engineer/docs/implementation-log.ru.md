@@ -226,7 +226,7 @@
     - canonical packet/patch imports
     - report outputs
   - реализованы atomic JSON/text writes через temp sibling file + rename
-  - реализовано удаление backlog root целиком как отдельная artifact operation
+  - реализована artifact operation для удаления только штатных backlog-артефактов и удаления root только если он пуст после cleanup
   - runtime по умолчанию теперь wires concrete `artifacts` module вместо fail-fast proxy
   - добавлены adapter-level tests с in-memory FS для layout creation, round-trip, canonical imports, report writes, template outputs и destructive delete
 - Ключевые решения:
@@ -248,3 +248,74 @@
 - Дополнительные согласованные решения:
   - `delete-backlog` удаляет только штатные backlog-артефакты утилиты и отказывается работать, если в backlog root есть посторонние entry; это решение было отдельно согласовано и затем перенесено в концепт и спецификации
 - Следующий пакет: `F — init command`
+
+### Work package `F` — `init command`
+
+- Статус: локальная имплементация завершена, идёт внешний review
+- Дата: 2026-04-06
+- Коммит:
+- Что сделано:
+  - реализована полноценная команда `init` вместо placeholder handler
+  - runtime context дополнен semantic host helpers:
+    - `resolveCliPath(...)`
+    - `nowIsoUtc()`
+  - реализован concrete `TemplatesModule` и канонический `renderBacklogAgentsTemplate()`
+  - `ArtifactsModule` получил orchestration entrypoint `initializeBacklogRoot(...)` для init-time bootstrap
+  - `init` теперь:
+    - нормализует CLI path через runtime host
+    - создаёт root marker, `sources.json`, `applied.json`, `state.json`
+    - пишет backlog-local `AGENTS.md`
+    - возвращает final `InitCommandOutput`
+  - добавлены тесты на:
+    - unit equality `renderBacklogAgentsTemplate()` vs canonical asset
+    - command-level positive/negative `init` scenarios
+    - CLI process happy-path и negative non-empty-root scenario
+- Ключевые решения:
+  - команда `init` осталась тонким orchestrator-ом; init-time bootstrap вынесен в `artifacts.initializeBacklogRoot(...)`, потому что именно `artifacts` владеет layout и utility-owned bootstrap files
+  - `renderBacklogAgentsTemplate()` возвращает встроенную каноническую строку, а отдельный unit-test гарантирует полное совпадение с asset-файлом `assets/backlog-agents.template.md`
+- Допущения вне спецификации:
+  - `CommandExecutionContext` расширен semantic helper-слоем `host`, чтобы команды не обращались напрямую к `fs/path/clock` и не использовали `node:path` или `new Date()` в обход runtime boundary
+  - `ArtifactsModule` расширен методом `initializeBacklogRoot(...)` как artifact-owned bootstrap orchestration для `init`; это решение затем синхронизировано в `module-interfaces.ru.md`
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - spec conformance review — pending
+  - code review — pending
+  - security review — pending
+- Следующий пакет: `G — Sources and templates slice`
+
+### Cross-package correction — `delete-backlog` public command surface
+
+- Статус: локальная доработка завершена, начинается внешний review
+- Дата: 2026-04-06
+- Коммит:
+- Что сделано:
+  - `delete-backlog` перестал быть placeholder-командой и теперь реализует реальный success-path через `artifacts.deleteBacklog(...)`
+  - добавлены command-level tests для:
+    - confirmed delete happy-path
+    - confirmed refusal при посторонних entry в backlog root
+    - восстановление `cwd` при отказе
+    - отказ для backlog root с чужим `tool_name`
+  - добавлены CLI process tests для:
+    - `delete-backlog --confirm` success-path
+    - `delete-backlog --confirm` refusal при посторонних entry
+    - `delete-backlog --confirm` refusal при symlinked managed entry
+    - `delete-backlog --confirm` refusal для backlog root с чужим `tool_name`
+  - `artifacts.deleteBacklog(...)` теперь валидирует все present managed entries на expected type / no-symlink до начала удаления
+  - runtime root discovery больше не принимает symlinked `.backlog.json` marker
+- Ключевые решения:
+  - публичная destructive-команда не должна оставаться placeholder, если для неё уже есть нормативный contract, даже если её основной work package расположен позже в implementation plan
+- Допущения вне спецификации:
+  - `delete-backlog` перед финальным удалением пустого backlog root переводит процесс в родительскую директорию backlog root, если команда была запущена из самого backlog root или из его вложенной директории; это нужно, чтобы built CLI корректно завершался после удаления текущей рабочей директории
+  - `delete-backlog` дополнительно доказывает tool ownership через parsed root marker metadata (`tool_name`, `schema_version`, `layout_version`) перед destructive delete; это усиливает security boundary сверх исходной формулировки концепта
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS

@@ -16,8 +16,8 @@ export async function findBacklogRoot(
   while (true) {
     const markerPath = rootMarkerPath(pathPort, cursor);
     if (await fsPort.exists(markerPath)) {
-      const markerStat = await fsPort.stat(markerPath);
-      if (markerStat.isFile) {
+      const markerStat = await fsPort.lstat(markerPath);
+      if (markerStat.isFile && !markerStat.isSymbolicLink) {
         return cursor;
       }
     }

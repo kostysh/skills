@@ -9,6 +9,7 @@ import {
   ROOT_MARKER_BASENAME,
 } from './backlog-layout.ts';
 import { getManagedBacklogPaths } from './backlog-layout.ts';
+import { ensureManagedDirectoryPathSafe, ensureManagedFilePathSafe } from './store-helpers.ts';
 
 export async function deleteBacklog(
   dependencies: ArtifactsModuleDependencies,
@@ -48,11 +49,47 @@ export async function deleteBacklog(
   }
 
   const managedPaths = getManagedBacklogPaths(dependencies.path, root);
+  await ensureManagedFilePathSafe({
+    fs: dependencies.fs,
+    path: dependencies.path,
+    errors: dependencies.errors,
+    root,
+    filePath: managedPaths.rootMarkerPath,
+    errorCode: 'BE_INTERNAL_STATE_CORRUPT',
+  });
+  await ensureManagedFilePathSafe({
+    fs: dependencies.fs,
+    path: dependencies.path,
+    errors: dependencies.errors,
+    root,
+    filePath: managedPaths.agentsPath,
+    errorCode: 'BE_INTERNAL_STATE_CORRUPT',
+  });
+  for (const directoryPath of [
+    managedPaths.internalDir,
+    managedPaths.packetsDir,
+    managedPaths.patchesDir,
+    managedPaths.reportsDir,
+  ]) {
+    await ensureManagedDirectoryPathSafe({
+      fs: dependencies.fs,
+      path: dependencies.path,
+      errors: dependencies.errors,
+      root,
+      directoryPath,
+      errorCode: 'BE_INTERNAL_STATE_CORRUPT',
+    });
+  }
+
   await dependencies.fs.rm(managedPaths.rootMarkerPath, { force: true });
   await dependencies.fs.rm(managedPaths.agentsPath, { force: true });
   await dependencies.fs.rm(managedPaths.internalDir, { recursive: true, force: true });
   await dependencies.fs.rm(managedPaths.packetsDir, { recursive: true, force: true });
   await dependencies.fs.rm(managedPaths.patchesDir, { recursive: true, force: true });
   await dependencies.fs.rm(managedPaths.reportsDir, { recursive: true, force: true });
-  await dependencies.fs.rm(root, { recursive: true, force: true });
+
+  const leftoverEntries = await dependencies.fs.readdir(root);
+  if (leftoverEntries.length === 0) {
+    await dependencies.fs.rm(root, { recursive: true, force: true });
+  }
 }

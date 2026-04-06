@@ -1,11 +1,15 @@
 import { createBacklogError } from '../errors/index.ts';
+import path from 'node:path';
+import { LAYOUT_VERSION, SCHEMA_VERSION, TOOL_NAME } from '../runtime/tool-metadata.ts';
 import {
   DeleteBacklogCommandInputSchema,
   DeleteBacklogCommandOutputSchema,
   type CommandHelpOption,
+  type DeleteBacklogCommandInput,
+  type DeleteBacklogCommandOutput,
 } from '../schemas/index.ts';
 import { assertNoPositionals, parseCommandArgs, parseUsageInput } from './arg-parsers.ts';
-import { definePlaceholderCommand } from './placeholder.ts';
+import type { CommandDefinition } from './types.ts';
 
 const OPTIONS = [
   {
@@ -15,7 +19,10 @@ const OPTIONS = [
   },
 ] as const satisfies readonly CommandHelpOption[];
 
-export const DELETE_BACKLOG_COMMAND = definePlaceholderCommand({
+export const DELETE_BACKLOG_COMMAND: CommandDefinition<
+  DeleteBacklogCommandInput,
+  DeleteBacklogCommandOutput
+> = {
   name: 'delete-backlog',
   summary: 'Delete the backlog and its utility-owned artifacts.',
   usage: ['backlog-engineer delete-backlog --confirm'],
@@ -44,4 +51,55 @@ export const DELETE_BACKLOG_COMMAND = definePlaceholderCommand({
       confirm: true,
     });
   },
-});
+  async execute(_input, context) {
+    if (!context.backlogRoot) {
+      throw context.errors.create('BE_ROOT_NOT_FOUND', undefined, {
+        details: {
+          command: 'delete-backlog',
+        },
+      });
+    }
+
+    const marker = await context.artifacts.readRootMarker(context.backlogRoot);
+    if (
+      marker.tool_name !== TOOL_NAME ||
+      marker.schema_version !== SCHEMA_VERSION ||
+      marker.layout_version !== LAYOUT_VERSION
+    ) {
+      throw context.errors.create('BE_ROOT_NOT_FOUND', undefined, {
+        details: {
+          path: context.backlogRoot,
+          tool_name: marker.tool_name,
+          schema_version: marker.schema_version,
+          layout_version: marker.layout_version,
+        },
+      });
+    }
+
+    const currentWorkingDirectory = process.cwd();
+    const relativeToRoot = path.relative(context.backlogRoot, currentWorkingDirectory);
+    const runsInsideBacklogRoot =
+      relativeToRoot === '' ||
+      (relativeToRoot !== '' &&
+        !relativeToRoot.startsWith('..') &&
+        !path.isAbsolute(relativeToRoot));
+
+    if (runsInsideBacklogRoot) {
+      process.chdir(path.dirname(context.backlogRoot));
+    }
+
+    try {
+      await context.artifacts.deleteBacklog(context.backlogRoot);
+    } catch (error) {
+      if (runsInsideBacklogRoot) {
+        process.chdir(currentWorkingDirectory);
+      }
+      throw error;
+    }
+
+    return {
+      deleted_path: '.',
+      deleted: true,
+    };
+  },
+};

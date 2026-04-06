@@ -11,6 +11,7 @@ import {
   createNodeFileSystemPort,
   createNodeHashPort,
   createNodePathPort,
+  createNodeRuntimeDependencies,
 } from '../src/runtime/index.ts';
 import { createSchemaModule } from '../src/schemas/index.ts';
 import type {
@@ -272,7 +273,7 @@ void test('artifacts module resolves template output for directory and file targ
   assert.equal(await fs.readText(fileOutput), '{"mode":"patch"}\n');
 });
 
-void test('artifacts module deletes the whole backlog root recursively', async () => {
+void test('artifacts module deletes managed artifacts and prunes empty backlog root', async () => {
   const { fs, artifacts } = createArtifactsForTest();
   const fixture = await createFixtureBundle();
   const root = '/repo/backlog';
@@ -326,6 +327,57 @@ void test('artifacts module rejects deleteBacklog when root contains unrelated f
   assert.equal(await fs.exists('/repo/backlog/packets'), true);
   assert.equal(await fs.exists('/repo/backlog/patches'), true);
   assert.equal(await fs.exists('/repo/backlog/reports'), true);
+});
+
+void test('artifacts module rejects deleteBacklog when a managed entry is replaced by a symlink', async (t) => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-delete-symlink-'));
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const escapedDir = path.join(tempRoot, 'outside-packets');
+  const fixture = await createFixtureBundle();
+  const dependencies = createNodeRuntimeDependencies();
+  const errors = createErrorModule();
+  const artifacts = createArtifactsModule({
+    fs: dependencies.fs,
+    path: dependencies.path,
+    hash: dependencies.hash,
+    schemas: createSchemaModule(),
+    errors,
+  });
+
+  t.after(async () => {
+    await rmNode(tempRoot, { recursive: true, force: true });
+  });
+
+  await artifacts.writeInitialArtifacts({
+    root: backlogRoot,
+    marker: fixture.marker,
+    agentsContent: '# backlog agents\n',
+    sourceRegistry: fixture.sourceRegistry,
+    appliedRegistry: fixture.appliedRegistry,
+    state: fixture.state,
+  });
+  await mkdir(escapedDir, { recursive: true });
+  await rmNode(path.join(backlogRoot, 'packets'), { recursive: true, force: true });
+  await symlink(escapedDir, path.join(backlogRoot, 'packets'), 'dir');
+
+  await assert.rejects(
+    () => artifacts.deleteBacklog(backlogRoot),
+    (error: unknown) => {
+      assert.equal(errors.isBacklogError(error), true);
+      if (!errors.isBacklogError(error)) {
+        return false;
+      }
+      assert.equal(error.code, 'BE_INTERNAL_STATE_CORRUPT');
+      return true;
+    },
+  );
+
+  assert.equal(
+    (await dependencies.fs.lstat(path.join(backlogRoot, 'packets'))).isSymbolicLink,
+    true,
+  );
+  assert.equal(await dependencies.fs.exists(backlogRoot), true);
+  assert.equal(await dependencies.fs.exists(path.join(backlogRoot, '.backlog.json')), true);
 });
 
 void test('artifacts module maps missing root marker to BE_ROOT_NOT_FOUND', async () => {

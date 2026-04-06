@@ -1,14 +1,22 @@
 import assert from 'node:assert/strict';
 import { spawnSync, type SpawnSyncReturns } from 'node:child_process';
+import { lstat, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 
 import {
+  AppliedRegistryFileSchema,
   CommandHelpOutputSchema,
+  DeleteBacklogCommandOutputSchema,
   ErrorPayloadSchema,
   GlobalHelpOutputSchema,
+  InitCommandOutputSchema,
+  RootMarkerFileSchema,
+  SourceRegistryFileSchema,
+  StateFileSchema,
   VersionOutputSchema,
 } from '../src/schemas/index.ts';
 import { runCli as runCliSource } from '../src/cli/run-cli.ts';
@@ -18,6 +26,10 @@ import type { RuntimeModule } from '../src/runtime/index.ts';
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
 const CLI_PATH = path.join(SKILL_DIR, 'scripts', 'backlog-engineer.mjs');
+
+async function createTempDir(): Promise<string> {
+  return mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-cli-'));
+}
 
 function runBuiltCli(
   args: string[],
@@ -150,15 +162,174 @@ void test('delete-backlog without confirm returns destructive-action error on st
   assert.equal(parsed.error.code, 'BE_DELETE_CONFIRM_REQUIRED');
 });
 
-void test('placeholder command preserves final JSON error envelope', () => {
-  const result = runBuiltCli(['init', '--path', './backlog']);
+void test('delete-backlog --confirm deletes managed artifacts and prunes an empty backlog root', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
 
-  assert.equal(result.status, 1);
-  assert.equal(result.stdout, '');
+  try {
+    const initResult = runBuiltCli(['init', '--path', backlogRoot]);
+    assert.equal(initResult.status, 0);
 
-  const parsed = ErrorPayloadSchema.parse(parseStderrJson(result));
-  assert.equal(parsed.error.code, 'BE_INTERNAL_STATE_CORRUPT');
-  assert.match(parsed.error.message, /not implemented yet/i);
+    const result = runBuiltCli(['delete-backlog', '--confirm'], { cwd: backlogRoot });
+
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+    assert.deepEqual(DeleteBacklogCommandOutputSchema.parse(parseStdoutJson(result)), {
+      deleted_path: '.',
+      deleted: true,
+    });
+    await assert.rejects(() => readFile(path.join(backlogRoot, '.backlog.json'), 'utf8'));
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('delete-backlog --confirm rejects backlog roots with foreign entries and preserves all files', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    const initResult = runBuiltCli(['init', '--path', backlogRoot]);
+    assert.equal(initResult.status, 0);
+    await writeFile(path.join(backlogRoot, 'README.txt'), 'keep me\n', 'utf8');
+
+    const result = runBuiltCli(['delete-backlog', '--confirm'], { cwd: backlogRoot });
+
+    assert.equal(result.status, 1);
+    assert.equal(result.stdout, '');
+
+    const parsed = ErrorPayloadSchema.parse(parseStderrJson(result));
+    assert.equal(parsed.error.code, 'BE_INTERNAL_STATE_CORRUPT');
+    assert.equal(await readFile(path.join(backlogRoot, 'README.txt'), 'utf8'), 'keep me\n');
+    RootMarkerFileSchema.parse(
+      JSON.parse(await readFile(path.join(backlogRoot, '.backlog.json'), 'utf8')) as unknown,
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('delete-backlog --confirm rejects symlinked managed entries and preserves the backlog root', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const escapedDir = path.join(tempRoot, 'outside-packets');
+
+  try {
+    const initResult = runBuiltCli(['init', '--path', backlogRoot]);
+    assert.equal(initResult.status, 0);
+    await mkdir(escapedDir, { recursive: true });
+    await rm(path.join(backlogRoot, 'packets'), { recursive: true, force: true });
+    await symlink(escapedDir, path.join(backlogRoot, 'packets'), 'dir');
+
+    const result = runBuiltCli(['delete-backlog', '--confirm'], { cwd: backlogRoot });
+
+    assert.equal(result.status, 1);
+    assert.equal(result.stdout, '');
+
+    const parsed = ErrorPayloadSchema.parse(parseStderrJson(result));
+    assert.equal(parsed.error.code, 'BE_INTERNAL_STATE_CORRUPT');
+    RootMarkerFileSchema.parse(
+      JSON.parse(await readFile(path.join(backlogRoot, '.backlog.json'), 'utf8')) as unknown,
+    );
+    assert.equal((await lstat(path.join(backlogRoot, 'packets'))).isSymbolicLink(), true);
+    assert.equal((await lstat(escapedDir)).isDirectory(), true);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('delete-backlog --confirm rejects roots whose marker is not owned by this tool', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    const initResult = runBuiltCli(['init', '--path', backlogRoot]);
+    assert.equal(initResult.status, 0);
+    await writeFile(
+      path.join(backlogRoot, '.backlog.json'),
+      JSON.stringify(
+        {
+          schema_version: 1,
+          tool_name: '@other/tool',
+          created_at: '2026-04-06T12:00:00.000Z',
+          layout_version: 1,
+        },
+        null,
+        2,
+      ),
+      'utf8',
+    );
+
+    const result = runBuiltCli(['delete-backlog', '--confirm'], { cwd: backlogRoot });
+
+    assert.equal(result.status, 5);
+    assert.equal(result.stdout, '');
+
+    const parsed = ErrorPayloadSchema.parse(parseStderrJson(result));
+    assert.equal(parsed.error.code, 'BE_ROOT_NOT_FOUND');
+    RootMarkerFileSchema.parse(
+      JSON.parse(await readFile(path.join(backlogRoot, '.backlog.json'), 'utf8')) as unknown,
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('init creates backlog root and returns normalized output paths', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    const result = runBuiltCli(['init', '--path', backlogRoot]);
+
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+
+    const parsed = InitCommandOutputSchema.parse(parseStdoutJson(result));
+    assert.equal(parsed.path, backlogRoot);
+    assert.equal(parsed.root_marker_path, path.join(backlogRoot, '.backlog.json'));
+    assert.equal(parsed.agents_path, path.join(backlogRoot, 'AGENTS.md'));
+
+    RootMarkerFileSchema.parse(
+      JSON.parse(await readFile(path.join(backlogRoot, '.backlog.json'), 'utf8')) as unknown,
+    );
+    SourceRegistryFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'sources.json'), 'utf8'),
+      ) as unknown,
+    );
+    AppliedRegistryFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'applied.json'), 'utf8'),
+      ) as unknown,
+    );
+    StateFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'state.json'), 'utf8'),
+      ) as unknown,
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('init fails on non-empty directory without backlog marker', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  await mkdir(backlogRoot, { recursive: true });
+  await writeFile(path.join(backlogRoot, 'README.md'), '# notes\n', 'utf8');
+
+  try {
+    const result = runBuiltCli(['init', '--path', backlogRoot]);
+
+    assert.equal(result.status, 4);
+    assert.equal(result.stdout, '');
+
+    const parsed = ErrorPayloadSchema.parse(parseStderrJson(result));
+    assert.equal(parsed.error.code, 'BE_ROOT_NOT_EMPTY');
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
 });
 
 void test('runCli invokes beforeCommand and afterCommand hooks around successful execution', async () => {
@@ -183,6 +354,14 @@ void test('runCli invokes beforeCommand and afterCommand hooks around successful
   const runtime: RuntimeModule = {
     createContext() {
       return Promise.resolve({
+        host: {
+          resolveCliPath(inputPath) {
+            return path.resolve('/tmp/backlog', inputPath);
+          },
+          nowIsoUtc() {
+            return '2026-04-06T12:00:00.000Z';
+          },
+        },
         backlogRoot: '/tmp/backlog',
         artifacts: {} as never,
         sources: {} as never,

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, rm, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -84,6 +84,25 @@ void test('findBacklogRoot ignores non-file .backlog.json entries', async () => 
   }
 });
 
+void test('findBacklogRoot ignores symlinked .backlog.json markers', async () => {
+  const root = await createTempDir();
+  const nested = path.join(root, 'nested');
+  const realMarker = path.join(root, 'real-marker.json');
+
+  await writeFile(realMarker, '{}', 'utf8');
+  await symlink(realMarker, path.join(root, '.backlog.json'), 'file');
+  await mkdir(nested, { recursive: true });
+
+  try {
+    const dependencies = createNodeRuntimeDependencies();
+    const backlogRoot = await findBacklogRoot(dependencies.fs, dependencies.path, nested);
+
+    assert.equal(backlogRoot, undefined);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 void test('createContext allows init without existing backlog root', async () => {
   const root = await createTempDir();
   const runtime = createRuntime();
@@ -92,6 +111,8 @@ void test('createContext allows init without existing backlog root', async () =>
     const context = await runtime.createContext('init', root);
 
     assert.equal(context.backlogRoot, undefined);
+    assert.equal(context.host.resolveCliPath('./backlog'), path.resolve(root, 'backlog'));
+    assert.match(context.host.nowIsoUtc(), /^\d{4}-\d{2}-\d{2}T/);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
@@ -183,6 +204,7 @@ void test('runtime wires hooks and state coordinator through command context', a
 
     assert.equal(context.backlogRoot, root);
     assert.equal(context.hooks, hooks);
+    assert.equal(context.host.resolveCliPath('./child'), path.join(nested, 'child'));
     assert.deepEqual(await context.ensureQueryState(), { state, rebuilt: false });
     assert.deepEqual(await context.ensureMutationState(), state);
     assert.deepEqual(await runtime.rebuildState(root), state);
