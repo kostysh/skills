@@ -49,6 +49,8 @@
   - `security-reviewer` — обычно `high`
   - `xhigh` — только для самых тяжёлых и широких аудитов
 - С 2026-04-06 после получения финального `PASS` от внешнего review соответствующий review-агент сразу закрывается, чтобы не расходовать лимит подагентов на уже завершённые треды
+- С 2026-04-06 повторный `spec-conformance-reviewer` запускается только если изменения после последнего `PASS` могли затронуть фактическое соответствие спецификации; для test-only, type-only и аналогичных несемантических правок повторный spec review не нужен
+- С 2026-04-06 `tsx` не используется; TypeScript-код и TypeScript-тесты запускаются только через Node.js с `--experimental-strip-types` или через built artifact
 - Для текущего work package `D` сохраняется ранее действовавший review-контур:
   - `code-reviewer`
   - `security-reviewer`
@@ -551,3 +553,55 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: `J — Refresh and query-state recovery`
+
+### Work package `J` — `Refresh and query-state recovery`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Начало работ: 2026-04-06 21:35:02 +02:00
+- Полное время закрытия: 01:07:22
+- Коммит: `feat(backlog-engineer): implement refresh and query-state recovery`
+- Что сделано:
+  - реализованы реальные команды `refresh` и `status` вместо placeholder-поведения
+  - добавлен общий orchestration helper `refresh-helpers.ts` для refresh/status flows
+  - реализованы все refresh scopes:
+    - `all`
+    - `item`
+    - `source_id`
+    - `source_label`
+    - `source_path`
+  - `status --refresh` реализован как явная композиция `refresh + status`
+  - `rebuild-state.ts` доведён до финального query-recovery контракта:
+    - hidden maintenance rebuild поднимает runtime state из canonical artifacts
+    - broken registries / missing canonical artifacts / invalid canonical artifacts валятся fail-fast
+    - semantic pruning применяется только к `managed_by: "refresh"` todo
+    - `managed_by: "mutation"` todo сохраняются, пока существует owning item
+    - retained todo синхронизируют `source_label` по source registry
+  - refresh persistence доведён до rollback-safe поведения:
+    - сначала пишется `state.json`
+    - затем `sources.json`
+    - при ошибке записи `sources.json` выполняется rollback `state.json`
+    - при ошибке rollback выбрасывается `BE_INTERNAL_STATE_CORRUPT`
+  - добавлены и обновлены tests:
+    - command-level `refresh` / `status --refresh`
+    - built CLI success/failure scenarios для `refresh` и `status`
+    - runtime recovery tests для `ensureQueryState()` и `rebuildState()`
+    - regression tests на сохранение mutation-managed todo через hidden rebuild
+- Ключевые решения:
+  - `refresh` всегда идёт через `context.ensureMutationState()`, plain `status` — через `context.ensureQueryState()`
+  - hidden rebuild остаётся техническим восстановлением консистентности и не выполняет semantic refresh
+  - semantic cleanup refresh-owned todo делается по текущему rebuilt graph, но mutation-owned todo не auto-prune-ятся по source/dependency drift
+  - `status --refresh` не имеет отдельной business logic и использует тот же refresh path, что и явная команда `refresh`
+- Допущения вне спецификации:
+  - fixture snapshots и canonical packet copies в `multi-branch-backlog`, `refreshable-backlog` и `todo-dedup-backlog` были синхронизированы с replay-valid canonical state, чтобы recovery и built CLI tests проверяли один и тот же нормативный contract
+  - hidden rebuild выполняет semantic revalidation только для refresh-managed todo; для mutation-managed todo достаточно проверки существования owning item и синхронизации derived state
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `K — Read model commands`

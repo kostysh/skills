@@ -2,10 +2,13 @@ import { createUsageError } from '../errors/index.ts';
 import {
   RefreshCommandInputSchema,
   RefreshCommandOutputSchema,
+  type RefreshCommandInput,
+  type RefreshCommandOutput,
   type CommandHelpOption,
 } from '../schemas/index.ts';
 import { assertNoPositionals, parseCommandArgs, parseUsageInput } from './arg-parsers.ts';
-import { definePlaceholderCommand } from './placeholder.ts';
+import type { CommandDefinition } from './types.ts';
+import { executeRefreshFlow } from './refresh-helpers.ts';
 
 const OPTIONS = [
   {
@@ -30,7 +33,7 @@ const OPTIONS = [
   },
 ] as const satisfies readonly CommandHelpOption[];
 
-export const REFRESH_COMMAND = definePlaceholderCommand({
+export const REFRESH_COMMAND: CommandDefinition<RefreshCommandInput, RefreshCommandOutput> = {
   name: 'refresh',
   summary: 'Refresh source-derived state in full or scoped form.',
   usage: [
@@ -103,4 +106,12 @@ export const REFRESH_COMMAND = definePlaceholderCommand({
       kind: 'all',
     });
   },
-});
+  async execute(input, context) {
+    const { summary } = await executeRefreshFlow({
+      input,
+      context,
+    });
+
+    return summary;
+  },
+};

@@ -25,6 +25,54 @@ type RuntimeStateArtifacts = {
   appliedRegistry: AppliedRegistryFile;
 };
 
+function collectItemSourceIds(item: StateFile['items'][number]): Set<string> {
+  return new Set([
+    ...item.origin_source_ids,
+    ...item.specification_source_ids,
+    ...item.plan_source_ids,
+    ...item.implementation_source_ids,
+    ...item.test_source_ids,
+  ]);
+}
+
+function shouldRetainRuntimeTodo(payload: {
+  todo: StateFile['todos'][number];
+  rebuiltItemsByKey: Map<string, StateFile['items'][number]>;
+  sourceLabelsById: Map<string, string>;
+}): boolean {
+  const item = payload.rebuiltItemsByKey.get(payload.todo.item_key);
+  if (!item) {
+    return false;
+  }
+
+  if (payload.todo.managed_by !== 'refresh') {
+    return true;
+  }
+
+  if (!payload.todo.related_item_keys.every((itemKey) => payload.rebuiltItemsByKey.has(itemKey))) {
+    return false;
+  }
+
+  if (
+    !payload.todo.related_sources.every((source) => payload.sourceLabelsById.has(source.source_id))
+  ) {
+    return false;
+  }
+
+  if (payload.todo.type === 'review_source_change') {
+    const itemSourceIds = collectItemSourceIds(item);
+    return payload.todo.related_sources.every((source) => itemSourceIds.has(source.source_id));
+  }
+
+  if (payload.todo.type === 'review_dependency_change') {
+    return payload.todo.related_item_keys.every((itemKey) =>
+      item.depends_on_keys.includes(itemKey),
+    );
+  }
+
+  return true;
+}
+
 function deepEqual(left: unknown, right: unknown): boolean {
   return JSON.stringify(left) === JSON.stringify(right);
 }
@@ -179,16 +227,43 @@ function preserveRuntimeMetadata(payload: {
   rebuiltState: StateFile;
   currentState: StateFile | undefined;
   schemas: SchemaModule;
+  sourceRegistry: RuntimeStateArtifacts['sourceRegistry'];
 }): StateFile {
   if (!payload.currentState) {
     return payload.schemas.parseStateFile(payload.rebuiltState);
   }
 
-  return payload.schemas.parseStateFile({
-    ...payload.rebuiltState,
-    created_at: payload.currentState.created_at,
-    updated_at: payload.currentState.updated_at,
-    last_refresh_at: payload.currentState.last_refresh_at,
+  const rebuiltItemsByKey = new Map(
+    payload.rebuiltState.items.map((item) => [item.item_key, item] as const),
+  );
+  const sourceLabelsById = new Map(
+    payload.sourceRegistry.sources.map((source) => [source.source_id, source.source_label]),
+  );
+  const retainedTodos = payload.currentState.todos
+    .filter((todo) =>
+      shouldRetainRuntimeTodo({
+        todo,
+        rebuiltItemsByKey,
+        sourceLabelsById,
+      }),
+    )
+    .map((todo) => ({
+      ...todo,
+      related_sources: todo.related_sources.map((source) => ({
+        source_id: source.source_id,
+        source_label: sourceLabelsById.get(source.source_id) ?? source.source_label,
+      })),
+    }));
+
+  return recomputeDerivedState({
+    schemas: payload.schemas,
+    state: payload.schemas.parseStateFile({
+      ...payload.rebuiltState,
+      created_at: payload.currentState.created_at,
+      updated_at: payload.currentState.updated_at,
+      last_refresh_at: payload.currentState.last_refresh_at,
+      todos: retainedTodos,
+    }),
   });
 }
 
@@ -312,6 +387,7 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
     }),
     currentState,
     schemas: payload.schemas,
+    sourceRegistry: runtimeArtifacts.sourceRegistry,
   });
 }
 

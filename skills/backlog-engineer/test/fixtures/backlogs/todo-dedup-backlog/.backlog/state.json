@@ -15,7 +15,7 @@
       }
     ],
     "key_strategy": {
-      "module_prefix": "session-ui",
+      "module_prefix": "auth",
       "item_pattern": "<module>-<capability>-<result>"
     },
     "target_system": [

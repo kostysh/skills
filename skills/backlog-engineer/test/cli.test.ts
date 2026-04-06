@@ -14,9 +14,11 @@ import {
   GlobalHelpOutputSchema,
   InitCommandOutputSchema,
   ListSourcesCommandOutputSchema,
+  RefreshCommandOutputSchema,
   RegisterSourceCommandOutputSchema,
   RootMarkerFileSchema,
   SourceRegistryFileSchema,
+  StatusCommandOutputSchema,
   TemplateCommandOutputSchema,
   VersionOutputSchema,
   StateFileSchema,
@@ -33,6 +35,12 @@ const FIXTURES_DIR = path.join(TEST_DIR, 'fixtures');
 
 async function createTempDir(): Promise<string> {
   return mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-cli-'));
+}
+
+async function copyBacklogFixture(fixtureName: string, targetRoot: string): Promise<void> {
+  await cp(path.join(FIXTURES_DIR, 'backlogs', fixtureName), targetRoot, {
+    recursive: true,
+  });
 }
 
 function runBuiltCli(
@@ -347,6 +355,160 @@ void test('list-sources and template patch reject symlinked managed JSON artifac
       ErrorPayloadSchema.parse(parseStderrJson(templateResult)).error.code,
       'BE_INTERNAL_STATE_CORRUPT',
     );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('refresh --source-path updates source registry and state on the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    await copyBacklogFixture('refreshable-backlog', backlogRoot);
+    await writeFile(
+      path.join(backlogRoot, 'sources', 'docs', 'modules', 'auth.md'),
+      await readFile(
+        path.join(
+          FIXTURES_DIR,
+          'backlogs',
+          'refreshable-backlog',
+          'sources',
+          'docs',
+          'modules',
+          'auth.v2.md',
+        ),
+        'utf8',
+      ),
+      'utf8',
+    );
+
+    const result = runBuiltCli(['refresh', '--source-path', './sources/docs/modules/auth.md'], {
+      cwd: backlogRoot,
+    });
+
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+
+    const output = RefreshCommandOutputSchema.parse(parseStdoutJson(result));
+    assert.equal(output.counts.changed_sources, 1);
+    assert.deepEqual(
+      output.changed_sources.map((source) => source.source_label),
+      ['sources/docs/modules/auth.md'],
+    );
+
+    const state = StateFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'state.json'), 'utf8'),
+      ) as unknown,
+    );
+    const sourceRegistry = SourceRegistryFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'sources.json'), 'utf8'),
+      ) as unknown,
+    );
+    const authSource = sourceRegistry.sources.find(
+      (source) => source.source_label === 'sources/docs/modules/auth.md',
+    );
+
+    assert.ok(state.last_refresh_at);
+    assert.ok(authSource);
+    assert.notEqual(
+      authSource?.hash,
+      'bd9499983cfceaa0aa7cf63e29e832c141d1ff9b20f2da9d658d8cf3da605b65',
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('refresh --source-path rejects an unregistered source path on the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    await copyBacklogFixture('refreshable-backlog', backlogRoot);
+
+    const result = runBuiltCli(['refresh', '--source-path', './sources/docs/modules/missing.md'], {
+      cwd: backlogRoot,
+    });
+
+    assert.notEqual(result.status, 0);
+    assert.equal(result.stdout, '');
+
+    const errorPayload = ErrorPayloadSchema.parse(parseStderrJson(result));
+    assert.equal(errorPayload.error.code, 'BE_SOURCE_NOT_FOUND');
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('status --refresh runs refresh first on the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    await copyBacklogFixture('refreshable-backlog', backlogRoot);
+    await writeFile(
+      path.join(backlogRoot, 'sources', 'docs', 'modules', 'auth.md'),
+      await readFile(
+        path.join(
+          FIXTURES_DIR,
+          'backlogs',
+          'refreshable-backlog',
+          'sources',
+          'docs',
+          'modules',
+          'auth.v2.md',
+        ),
+        'utf8',
+      ),
+      'utf8',
+    );
+
+    const result = runBuiltCli(['status', '--refresh'], { cwd: backlogRoot });
+
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+
+    const output = StatusCommandOutputSchema.parse(parseStdoutJson(result));
+    assert.equal(output.total_items, 4);
+    assert.ok(output.open_todo_count > 0);
+    assert.ok(output.last_refresh_at);
+
+    const state = StateFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'state.json'), 'utf8'),
+      ) as unknown,
+    );
+    assert.equal(state.last_refresh_at, output.last_refresh_at);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('status rebuilds missing state.json through hidden maintenance rebuild on the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    await copyBacklogFixture('refreshable-backlog', backlogRoot);
+    await rm(path.join(backlogRoot, '.backlog', 'state.json'));
+
+    const result = runBuiltCli(['status'], { cwd: backlogRoot });
+
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+
+    const status = StatusCommandOutputSchema.parse(parseStdoutJson(result));
+    assert.equal(status.total_items, 4);
+
+    const rebuiltState = StateFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'state.json'), 'utf8'),
+      ) as unknown,
+    );
+    assert.equal(rebuiltState.items.length, 4);
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

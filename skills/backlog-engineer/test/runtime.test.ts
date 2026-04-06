@@ -13,6 +13,7 @@ import {
   createRuntime,
   findBacklogRoot,
 } from '../src/runtime/index.ts';
+import type { FileSystemPort } from '../src/runtime/ports.ts';
 import { createInMemoryFileSystemPort } from './support/in-memory-fs.ts';
 
 const FIXTURES_DIR = path.join(path.dirname(new URL(import.meta.url).pathname), 'fixtures');
@@ -72,6 +73,30 @@ async function buildInMemorySeedFromFixture(payload: {
 
   await walkDirectory(fixtureRoot, payload.targetRoot);
   return seed;
+}
+
+function mapSeedFileContent(
+  seed: Array<
+    | { path: string; type: 'directory' }
+    | {
+        path: string;
+        type: 'file';
+        content: string;
+      }
+  >,
+  targetPath: string,
+  transform: (content: string) => string,
+) {
+  return seed.map((entry) => {
+    if (entry.type !== 'file' || entry.path !== targetPath) {
+      return entry;
+    }
+
+    return {
+      ...entry,
+      content: transform(entry.content),
+    };
+  });
 }
 
 async function writeRootMarker(root: string): Promise<void> {
@@ -383,7 +408,7 @@ void test('default ensureQueryState rewrites divergent state.json to match canon
   }
 });
 
-void test('default ensureQueryState drops todo-only divergence and restores canonical state', async () => {
+void test('default ensureQueryState preserves a valid runtime todo layer and canonicalizes derived state', async () => {
   const tempRoot = await createTempDir();
   const backlogRoot = path.join(tempRoot, 'backlog');
   const runtime = createRuntime({
@@ -437,13 +462,256 @@ void test('default ensureQueryState drops todo-only divergence and restores cano
     const result = await context.ensureQueryState();
 
     assert.equal(result.rebuilt, true);
-    assert.deepEqual(result.state.todos, []);
+    assert.equal(result.state.todos.length, 1);
     const restoredItem = result.state.items.find((item) => item.item_key === 'auth-core');
-    assert.deepEqual(restoredItem?.open_todo_ids, []);
-    assert.equal(restoredItem?.needs_attention, false);
+    assert.deepEqual(restoredItem?.open_todo_ids, ['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa']);
+    assert.equal(restoredItem?.needs_attention, true);
+    assert.deepEqual(restoredItem?.attention_reason_codes, ['source_changed']);
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }
+});
+
+void test('default ensureQueryState drops stale refresh-managed source todo when rebuilt item no longer links the source', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = mapSeedFileContent(
+    mapSeedFileContent(
+      await buildInMemorySeedFromFixture({
+        fixtureDirName: 'single-branch-backlog',
+        targetRoot: backlogRoot,
+      }),
+      `${backlogRoot}/packets/2d764141a49f--auth-module.packet.json`,
+      (content) => {
+        const packet = JSON.parse(content) as {
+          items: Array<{
+            item_key: string;
+            origin_source_ids: string[];
+            specification_source_ids: string[];
+            plan_source_ids: string[];
+            implementation_source_ids: string[];
+            test_source_ids: string[];
+          }>;
+        };
+        packet.items = packet.items.map((item) =>
+          item.item_key === 'auth-core'
+            ? {
+                ...item,
+                origin_source_ids: [],
+                specification_source_ids: [],
+                plan_source_ids: [],
+                implementation_source_ids: [],
+                test_source_ids: [],
+              }
+            : item,
+        );
+        return `${JSON.stringify(packet, null, 2)}\n`;
+      },
+    ),
+    `${backlogRoot}/.backlog/state.json`,
+    (content) => {
+      const state = StateFileSchema.parse(JSON.parse(content) as unknown);
+      state.todos.push({
+        todo_id: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+        item_key: 'auth-core',
+        type: 'review_source_change',
+        managed_by: 'refresh',
+        message: 'Re-check auth source.',
+        created_at: '2026-04-06T11:59:00.000Z',
+        related_sources: [
+          {
+            source_id: '11111111-1111-4111-8111-111111111111',
+            source_label: 'sources/docs/modules/auth.md',
+          },
+        ],
+        related_item_keys: [],
+      });
+      state.items = state.items.map((item) =>
+        item.item_key === 'auth-core'
+          ? {
+              ...item,
+              open_todo_ids: ['bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'],
+              needs_attention: true,
+              attention_reason_codes: ['source_changed'],
+              attention_reasons: [
+                'нужно проверить изменение источника sources/docs/modules/auth.md',
+              ],
+              ready_for_next_step: false,
+            }
+          : item,
+      );
+      return `${JSON.stringify(state, null, 2)}\n`;
+    },
+  );
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('status', backlogRoot);
+  const result = await context.ensureQueryState();
+  const authCore = result.state.items.find((item) => item.item_key === 'auth-core');
+
+  assert.deepEqual(authCore?.origin_source_ids, []);
+  assert.equal(
+    result.state.todos.some((todo) => todo.todo_id === 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'),
+    false,
+  );
+  assert.deepEqual(authCore?.open_todo_ids, []);
+  assert.deepEqual(authCore?.attention_reason_codes, []);
+});
+
+void test('default ensureQueryState preserves mutation-managed source review todo when rebuilt item no longer links the source', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = mapSeedFileContent(
+    mapSeedFileContent(
+      await buildInMemorySeedFromFixture({
+        fixtureDirName: 'single-branch-backlog',
+        targetRoot: backlogRoot,
+      }),
+      `${backlogRoot}/packets/2d764141a49f--auth-module.packet.json`,
+      (content) => {
+        const packet = JSON.parse(content) as {
+          items: Array<{
+            item_key: string;
+            origin_source_ids: string[];
+            specification_source_ids: string[];
+            plan_source_ids: string[];
+            implementation_source_ids: string[];
+            test_source_ids: string[];
+          }>;
+        };
+        packet.items = packet.items.map((item) =>
+          item.item_key === 'auth-core'
+            ? {
+                ...item,
+                origin_source_ids: [],
+                specification_source_ids: [],
+                plan_source_ids: [],
+                implementation_source_ids: [],
+                test_source_ids: [],
+              }
+            : item,
+        );
+        return `${JSON.stringify(packet, null, 2)}\n`;
+      },
+    ),
+    `${backlogRoot}/.backlog/state.json`,
+    (content) => {
+      const state = StateFileSchema.parse(JSON.parse(content) as unknown);
+      state.todos.push({
+        todo_id: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+        item_key: 'auth-core',
+        type: 'review_source_change',
+        managed_by: 'mutation',
+        message: 'Keep mutation-managed review.',
+        created_at: '2026-04-06T11:58:00.000Z',
+        related_sources: [
+          {
+            source_id: '11111111-1111-4111-8111-111111111111',
+            source_label: 'sources/docs/modules/auth.md',
+          },
+        ],
+        related_item_keys: [],
+      });
+      state.items = state.items.map((item) =>
+        item.item_key === 'auth-core'
+          ? {
+              ...item,
+              open_todo_ids: ['cccccccc-cccc-4ccc-8ccc-cccccccccccc'],
+              needs_attention: true,
+              attention_reason_codes: ['source_changed'],
+              attention_reasons: [
+                'нужно проверить изменение источника sources/docs/modules/auth.md',
+              ],
+              ready_for_next_step: false,
+            }
+          : item,
+      );
+      return `${JSON.stringify(state, null, 2)}\n`;
+    },
+  );
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('status', backlogRoot);
+  const result = await context.ensureQueryState();
+  const authCore = result.state.items.find((item) => item.item_key === 'auth-core');
+
+  assert.equal(
+    result.state.todos.some((todo) => todo.todo_id === 'cccccccc-cccc-4ccc-8ccc-cccccccccccc'),
+    true,
+  );
+  assert.deepEqual(authCore?.open_todo_ids, ['cccccccc-cccc-4ccc-8ccc-cccccccccccc']);
+  assert.deepEqual(authCore?.attention_reason_codes, ['source_changed']);
+});
+
+void test('default ensureQueryState preserves mutation-managed dependency review todo when related item is absent from canonical state', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = mapSeedFileContent(
+    await buildInMemorySeedFromFixture({
+      fixtureDirName: 'single-branch-backlog',
+      targetRoot: backlogRoot,
+    }),
+    `${backlogRoot}/.backlog/state.json`,
+    (content) => {
+      const state = StateFileSchema.parse(JSON.parse(content) as unknown);
+      state.todos.push({
+        todo_id: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+        item_key: 'auth-core',
+        type: 'review_dependency_change',
+        managed_by: 'mutation',
+        message: 'Keep mutation-managed dependency review.',
+        created_at: '2026-04-06T11:57:00.000Z',
+        related_sources: [],
+        related_item_keys: ['removed-item'],
+      });
+      state.items = state.items.map((item) =>
+        item.item_key === 'auth-core'
+          ? {
+              ...item,
+              open_todo_ids: ['dddddddd-dddd-4ddd-8ddd-dddddddddddd'],
+              needs_attention: true,
+              attention_reason_codes: ['dependency_changed'],
+              attention_reasons: ['Нужен review: изменилась зависимость задачи.'],
+              ready_for_next_step: false,
+            }
+          : item,
+      );
+      return `${JSON.stringify(state, null, 2)}\n`;
+    },
+  );
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('status', backlogRoot);
+  const result = await context.ensureQueryState();
+  const authCore = result.state.items.find((item) => item.item_key === 'auth-core');
+
+  assert.equal(
+    result.state.todos.some((todo) => todo.todo_id === 'dddddddd-dddd-4ddd-8ddd-dddddddddddd'),
+    true,
+  );
+  assert.deepEqual(authCore?.open_todo_ids, ['dddddddd-dddd-4ddd-8ddd-dddddddddddd']);
+  assert.deepEqual(authCore?.attention_reason_codes, ['dependency_changed']);
 });
 
 void test('default ensureQueryState fails fast on duplicate patch sequence in applied registry', async () => {
@@ -550,6 +818,135 @@ void test('ensureMutationState with in-memory adapters returns current state for
   assert.equal(state.items.length, 3);
 });
 
+void test('ensureQueryState with in-memory adapters reuses an existing valid state snapshot', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = await buildInMemorySeedFromFixture({
+    fixtureDirName: 'single-branch-backlog',
+    targetRoot: backlogRoot,
+  });
+  const fs: FileSystemPort = createInMemoryFileSystemPort({
+    cwd: backlogRoot,
+    seed,
+  });
+  const runtime = createRuntime({
+    dependencies: {
+      fs,
+      path: createNodePathPort(),
+    },
+  });
+
+  const originalState = await fs.readText(`${backlogRoot}/.backlog/state.json`);
+  const originalSources = await fs.readText(`${backlogRoot}/.backlog/sources.json`);
+  const originalApplied = await fs.readText(`${backlogRoot}/.backlog/applied.json`);
+
+  const context = await runtime.createContext('status', backlogRoot);
+  const result = await context.ensureQueryState();
+
+  assert.equal(result.rebuilt, false);
+  assert.equal(await fs.readText(`${backlogRoot}/.backlog/state.json`), originalState);
+  assert.equal(await fs.readText(`${backlogRoot}/.backlog/sources.json`), originalSources);
+  assert.equal(await fs.readText(`${backlogRoot}/.backlog/applied.json`), originalApplied);
+});
+
+void test('ensureQueryState with in-memory adapters rebuilds a missing state snapshot without mutating registries', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = (
+    await buildInMemorySeedFromFixture({
+      fixtureDirName: 'single-branch-backlog',
+      targetRoot: backlogRoot,
+    })
+  ).filter((entry) => entry.path !== `${backlogRoot}/.backlog/state.json`);
+  const fs: FileSystemPort = createInMemoryFileSystemPort({
+    cwd: backlogRoot,
+    seed,
+  });
+  const runtime = createRuntime({
+    dependencies: {
+      fs,
+      path: createNodePathPort(),
+    },
+  });
+
+  const originalSources = await fs.readText(`${backlogRoot}/.backlog/sources.json`);
+  const originalApplied = await fs.readText(`${backlogRoot}/.backlog/applied.json`);
+
+  const context = await runtime.createContext('status', backlogRoot);
+  const result = await context.ensureQueryState();
+
+  assert.equal(result.rebuilt, true);
+  assert.ok(result.state.items.some((item) => item.item_key === 'auth-core'));
+  assert.equal(await fs.readText(`${backlogRoot}/.backlog/sources.json`), originalSources);
+  assert.equal(await fs.readText(`${backlogRoot}/.backlog/applied.json`), originalApplied);
+});
+
+void test('ensureQueryState with in-memory adapters rebuilds a corrupted state snapshot', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = mapSeedFileContent(
+    await buildInMemorySeedFromFixture({
+      fixtureDirName: 'single-branch-backlog',
+      targetRoot: backlogRoot,
+    }),
+    `${backlogRoot}/.backlog/state.json`,
+    () => '{"schema_version":1,"created_at":"broken"',
+  );
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('status', backlogRoot);
+  const result = await context.ensureQueryState();
+
+  assert.equal(result.rebuilt, true);
+  assert.equal(
+    result.state.items.find((item) => item.item_key === 'auth-core')?.title,
+    'Implement core session validation',
+  );
+});
+
+void test('ensureQueryState with in-memory adapters rebuilds a divergent state snapshot', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = mapSeedFileContent(
+    await buildInMemorySeedFromFixture({
+      fixtureDirName: 'single-branch-backlog',
+      targetRoot: backlogRoot,
+    }),
+    `${backlogRoot}/.backlog/state.json`,
+    (content) => {
+      const state = JSON.parse(content) as {
+        items: Array<{ item_key: string; title: string }>;
+      };
+      state.items = state.items.map((item) =>
+        item.item_key === 'auth-core' ? { ...item, title: 'TAMPERED TITLE' } : item,
+      );
+      return `${JSON.stringify(state, null, 2)}\n`;
+    },
+  );
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('status', backlogRoot);
+  const result = await context.ensureQueryState();
+
+  assert.equal(result.rebuilt, true);
+  assert.equal(
+    result.state.items.find((item) => item.item_key === 'auth-core')?.title,
+    'Implement core session validation',
+  );
+});
+
 void test('ensureMutationState with in-memory adapters returns rebuilt canonical state when state.json is tampered', async () => {
   const backlogRoot = '/repo/backlog';
   const seed = await buildInMemorySeedFromFixture({
@@ -583,6 +980,150 @@ void test('ensureMutationState with in-memory adapters returns rebuilt canonical
     state.items.find((item) => item.item_key === 'auth-core')?.title,
     'Implement core session validation',
   );
+});
+
+void test('runtime rebuildState with in-memory adapters fails fast for broken registries and canonical artifacts', async () => {
+  const cases = [
+    'broken-registry-backlog-missing-sources',
+    'broken-registry-backlog-invalid-sources',
+    'broken-registry-backlog-missing-applied',
+    'broken-registry-backlog-invalid-applied',
+    'missing-canonical-artifact-backlog',
+    'missing-canonical-patch-backlog',
+    'invalid-canonical-packet-backlog',
+    'invalid-canonical-patch-backlog',
+  ] as const;
+
+  for (const fixtureDirName of cases) {
+    const backlogRoot = `/repo/${fixtureDirName}`;
+    const seed = await buildInMemorySeedFromFixture({
+      fixtureDirName,
+      targetRoot: backlogRoot,
+    });
+    const runtime = createRuntime({
+      dependencies: {
+        fs: createInMemoryFileSystemPort({
+          cwd: backlogRoot,
+          seed,
+        }),
+        path: createNodePathPort(),
+      },
+    });
+
+    await assert.rejects(
+      () => runtime.rebuildState(backlogRoot),
+      (error: unknown) =>
+        error instanceof BacklogError &&
+        (error.code === 'BE_INTERNAL_STATE_CORRUPT' || error.code === 'BE_PATCH_SEQUENCE_CONFLICT'),
+      fixtureDirName,
+    );
+  }
+});
+
+void test('runtime rebuildState with in-memory adapters rejects patch_id collisions in applied registry', async () => {
+  const backlogRoot = '/repo/backlog';
+  const baseSeed = await buildInMemorySeedFromFixture({
+    fixtureDirName: 'single-branch-backlog',
+    targetRoot: backlogRoot,
+  });
+  const seed = mapSeedFileContent(baseSeed, `${backlogRoot}/.backlog/applied.json`, (content) => {
+    const applied = JSON.parse(content) as {
+      patches: Array<{ patch_id: string; apply_index: number }>;
+    };
+    const firstPatch = applied.patches[0];
+    assert.ok(firstPatch);
+    applied.patches = [
+      ...applied.patches,
+      {
+        ...firstPatch,
+        apply_index: 3,
+      },
+    ];
+    return `${JSON.stringify(applied, null, 2)}\n`;
+  });
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  await assert.rejects(
+    () => runtime.rebuildState(backlogRoot),
+    (error: unknown) => error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
+  );
+});
+
+void test('runtime rebuildState with in-memory adapters rejects apply_index collisions in applied registry', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = mapSeedFileContent(
+    await buildInMemorySeedFromFixture({
+      fixtureDirName: 'single-branch-backlog',
+      targetRoot: backlogRoot,
+    }),
+    `${backlogRoot}/.backlog/applied.json`,
+    (content) => {
+      const applied = JSON.parse(content) as {
+        patches: Array<{ patch_id: string; apply_index: number }>;
+      };
+      const firstPatch = applied.patches[0];
+      assert.ok(firstPatch);
+      applied.patches = [
+        ...applied.patches,
+        {
+          ...firstPatch,
+          patch_id: '2026-04-03-777-collision',
+        },
+      ];
+      return `${JSON.stringify(applied, null, 2)}\n`;
+    },
+  );
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  await assert.rejects(
+    () => runtime.rebuildState(backlogRoot),
+    (error: unknown) => error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
+  );
+});
+
+void test('runtime rebuildState with in-memory adapters does not invoke top-level command hooks', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = await buildInMemorySeedFromFixture({
+    fixtureDirName: 'single-branch-backlog',
+    targetRoot: backlogRoot,
+  });
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+      hooks: {
+        ...createNoOpRegistry(),
+        beforeCommand() {
+          throw new Error('beforeCommand should not run during rebuild');
+        },
+        afterCommand() {
+          throw new Error('afterCommand should not run during rebuild');
+        },
+      },
+    },
+  });
+
+  const state = await runtime.rebuildState(backlogRoot);
+  assert.ok(state.items.some((item) => item.item_key === 'auth-core'));
 });
 
 void test('ensureMutationState with in-memory adapters fails fast on invalid canonical packet artifacts', async () => {

@@ -5536,7 +5536,7 @@ var ITEMS_COMMAND = definePlaceholderCommand({
 });
 //#endregion
 //#region src/commands/list-sources.ts
-function collectItemSourceIds$2(item) {
+function collectItemSourceIds$4(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -5582,7 +5582,7 @@ var LIST_SOURCES_COMMAND = {
 			const { state } = await context.ensureQueryState();
 			const item = state.items.find((candidate) => candidate.item_key === input.item_key);
 			if (!item) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: input.item_key } });
-			const itemSourceIds = collectItemSourceIds$2(item);
+			const itemSourceIds = collectItemSourceIds$4(item);
 			sources = sources.filter((source) => itemSourceIds.has(source.source_id));
 		}
 		if (input.path) {
@@ -5845,7 +5845,145 @@ var QUEUE_COMMAND = definePlaceholderCommand({
 		return parseUsageInput("queue", QueueCommandInputSchema, {});
 	}
 });
-var REFRESH_COMMAND = definePlaceholderCommand({
+//#endregion
+//#region src/commands/refresh-helpers.ts
+function collectItemSourceIds$3(item) {
+	return new Set([
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	]);
+}
+function collectSourceIdsForItemKeys(payload) {
+	const itemKeySet = new Set(payload.itemKeys);
+	const sourceIds = /* @__PURE__ */ new Set();
+	for (const item of payload.state.items) {
+		if (!itemKeySet.has(item.item_key)) continue;
+		for (const sourceId of collectItemSourceIds$3(item)) sourceIds.add(sourceId);
+	}
+	return [...sourceIds].sort((left, right) => left.localeCompare(right));
+}
+function resolveRefreshSourceIds(payload) {
+	const { input, context, state, registry, backlogRoot } = payload;
+	if (input.kind === "all") return {
+		selectedSourceIds: [...registry.sources].map((source) => source.source_id).sort((left, right) => left.localeCompare(right)),
+		mutationScope: input
+	};
+	if (input.kind === "item") {
+		if (!state.items.find((item) => item.item_key === input.item_key)) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: input.item_key } });
+		return {
+			selectedSourceIds: collectSourceIdsForItemKeys({
+				state,
+				itemKeys: context.core.graph.resolveItemSubgraph({
+					state,
+					rootItemKeys: [input.item_key]
+				})
+			}),
+			mutationScope: input
+		};
+	}
+	const scope = context.sources.resolveSourceScope({
+		backlogRoot,
+		state,
+		registry,
+		selector: input
+	});
+	const [selectedSourceId] = scope.sourceIds;
+	if (!selectedSourceId) throw context.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: input.kind === "source_label" ? { source_label: input.source_label } : input.kind === "source_path" ? { source_path: input.source_path } : {} });
+	return {
+		selectedSourceIds: [...new Set([...scope.sourceIds, ...collectSourceIdsForItemKeys({
+			state,
+			itemKeys: scope.subgraphItemKeys
+		})])].sort((left, right) => left.localeCompare(right)),
+		mutationScope: {
+			kind: "source_id",
+			source_id: selectedSourceId
+		}
+	};
+}
+async function executeRefreshFlow(payload) {
+	const { input, context } = payload;
+	const backlogRoot = context.backlogRoot;
+	if (!backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+	const [state, registry] = await Promise.all([context.ensureMutationState(), context.artifacts.readSourceRegistry(backlogRoot)]);
+	const { selectedSourceIds, mutationScope } = resolveRefreshSourceIds({
+		input,
+		context,
+		state,
+		registry,
+		backlogRoot
+	});
+	const refreshedSources = await context.sources.refreshSourceHashes({
+		backlogRoot,
+		registry,
+		selectedSourceIds
+	});
+	const { state: nextState, registry: nextRegistry, ...summary } = await context.core.mutation.refresh({
+		state,
+		sourceRegistry: refreshedSources.registry,
+		changedSourceIds: refreshedSources.changedSourceIds,
+		scope: mutationScope
+	});
+	await context.artifacts.writeState(backlogRoot, nextState);
+	try {
+		await context.artifacts.writeSourceRegistry(backlogRoot, nextRegistry);
+	} catch (error) {
+		try {
+			await context.artifacts.writeState(backlogRoot, state);
+		} catch (rollbackError) {
+			throw context.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+				details: {
+					command: "refresh",
+					phase: "write_source_registry",
+					rollback: "write_state"
+				},
+				hint: "Refresh failed after persisting state and state rollback also failed.",
+				cause: rollbackError
+			});
+		}
+		throw error;
+	}
+	await context.hooks.afterRefresh?.({
+		summary,
+		state: nextState,
+		backlogRoot
+	});
+	return {
+		summary,
+		state: nextState,
+		registry: nextRegistry
+	};
+}
+function buildStatusSummary(payload) {
+	const { context, state } = payload;
+	const counts = {
+		defined_count: 0,
+		specified_count: 0,
+		planned_count: 0,
+		implemented_count: 0,
+		gaps_count: 0,
+		needs_attention_count: 0,
+		ready_for_next_step_count: 0,
+		open_todo_count: state.todos.length
+	};
+	for (const item of state.items) {
+		if (item.delivery_state === "defined") counts.defined_count += 1;
+		if (item.delivery_state === "specified") counts.specified_count += 1;
+		if (item.delivery_state === "planned") counts.planned_count += 1;
+		if (item.delivery_state === "implemented") counts.implemented_count += 1;
+		if (item.gaps.length > 0) counts.gaps_count += 1;
+		if (item.needs_attention) counts.needs_attention_count += 1;
+		if (item.ready_for_next_step) counts.ready_for_next_step_count += 1;
+	}
+	return context.schemas.parseCommandOutput("status", {
+		total_items: state.items.length,
+		last_refresh_at: state.last_refresh_at,
+		...counts
+	});
+}
+var REFRESH_COMMAND = {
 	name: "refresh",
 	summary: "Refresh source-derived state in full or scoped form.",
 	usage: [
@@ -5914,8 +6052,15 @@ var REFRESH_COMMAND = definePlaceholderCommand({
 			source_path: parsed.values["source-path"]
 		});
 		return parseUsageInput("refresh", RefreshCommandInputSchema, { kind: "all" });
+	},
+	async execute(input, context) {
+		const { summary } = await executeRefreshFlow({
+			input,
+			context
+		});
+		return summary;
 	}
-});
+};
 //#endregion
 //#region src/runtime/path-safety.ts
 function isWindowsDriveRootEscape(relativePath) {
@@ -6330,7 +6475,7 @@ function resolveSourceAbsolutePath(payload) {
 }
 //#endregion
 //#region src/sources/source-scope-service.ts
-function collectItemSourceIds$1(item) {
+function collectItemSourceIds$2(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -6444,7 +6589,7 @@ function resolveSourceScope(payload) {
 	const selectedSourceIds = new Set(selectedSources.map((source) => source.source_id));
 	const linkedItemKeys = /* @__PURE__ */ new Set();
 	for (const item of payload.state.items) {
-		const sourceIds = collectItemSourceIds$1(item);
+		const sourceIds = collectItemSourceIds$2(item);
 		if ([...selectedSourceIds].some((sourceId) => sourceIds.has(sourceId))) linkedItemKeys.add(item.item_key);
 	}
 	const topLevelItemKeys = collectTopLevelItemKeys({
@@ -6804,7 +6949,7 @@ var SEARCH_COMMAND = definePlaceholderCommand({
 		});
 	}
 });
-var STATUS_COMMAND = definePlaceholderCommand({
+var STATUS_COMMAND = {
 	name: "status",
 	summary: "Show short backlog status summary.",
 	usage: ["backlog-engineer status [--refresh]"],
@@ -6818,8 +6963,23 @@ var STATUS_COMMAND = definePlaceholderCommand({
 		const parsed = parseCommandArgs("status", args, { options: { refresh: { type: "boolean" } } });
 		assertNoPositionals("status", parsed.positionals);
 		return parseUsageInput("status", StatusCommandInputSchema, { refresh: parsed.values.refresh === true });
+	},
+	async execute(input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+		if (input.refresh) return buildStatusSummary({
+			context,
+			state: (await executeRefreshFlow({
+				input: { kind: "all" },
+				context
+			})).state
+		});
+		const { state } = await context.ensureQueryState();
+		return buildStatusSummary({
+			context,
+			state
+		});
 	}
-});
+};
 //#endregion
 //#region src/commands/template.ts
 var OPTIONS = [{
@@ -8350,7 +8510,7 @@ function sortKeys(values) {
 function cloneState$1(value) {
 	return structuredClone(value);
 }
-function collectItemSourceIds(item) {
+function collectItemSourceIds$1(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -8384,7 +8544,7 @@ function resolveSourceIdsFromScope(payload) {
 function collectLinkedItemKeysBySourceIds(payload) {
 	const selectedSourceIds = new Set(payload.sourceIds);
 	return sortKeys(payload.state.items.filter((item) => {
-		const itemSourceIds = collectItemSourceIds(item);
+		const itemSourceIds = collectItemSourceIds$1(item);
 		return [...selectedSourceIds].some((sourceId) => itemSourceIds.has(sourceId));
 	}).map((item) => item.item_key));
 }
@@ -8417,7 +8577,7 @@ function collectChangedSourceIdsForItems(payload) {
 	for (const itemKey of sortKeys(payload.itemKeys)) {
 		const beforeItem = beforeByKey.get(itemKey);
 		const afterItem = afterByKey.get(itemKey);
-		const sourceIds = sortKeys(new Set([...beforeItem ? [...collectItemSourceIds(beforeItem)] : [], ...afterItem ? [...collectItemSourceIds(afterItem)] : []]));
+		const sourceIds = sortKeys(new Set([...beforeItem ? [...collectItemSourceIds$1(beforeItem)] : [], ...afterItem ? [...collectItemSourceIds$1(afterItem)] : []]));
 		sourceIdsByItem.set(itemKey, sourceIds);
 	}
 	return sourceIdsByItem;
@@ -8510,7 +8670,7 @@ function sortChangedSources(changedSources) {
 function collectActiveSourceTodoItemKeys(payload) {
 	const changedSourceIds = new Set(payload.changedSourceIds);
 	return sortKeys(payload.state.items.filter((item) => {
-		const itemSourceIds = collectItemSourceIds(item);
+		const itemSourceIds = collectItemSourceIds$1(item);
 		return [...changedSourceIds].some((sourceId) => itemSourceIds.has(sourceId));
 	}).map((item) => item.item_key));
 }
@@ -8912,7 +9072,7 @@ function createMutationService(payload) {
 			const scopeItemSet = new Set(scopeItemKeys);
 			const observedSourceIds = scope.kind === "all" ? sortKeys(sourceRegistry.sources.map((source) => source.source_id)) : scope.kind === "item" ? sortKeys(new Set(scopeItemKeys.flatMap((itemKey) => {
 				const item = state.items.find((candidate) => candidate.item_key === itemKey);
-				return item ? [...collectItemSourceIds(item)] : [];
+				return item ? [...collectItemSourceIds$1(item)] : [];
 			}))) : resolveSourceIdsFromScope({
 				registry: sourceRegistry,
 				scope,
@@ -9558,6 +9718,28 @@ async function resolveCommandBacklogRoot(payload) {
 }
 //#endregion
 //#region src/runtime/rebuild-state.ts
+function collectItemSourceIds(item) {
+	return new Set([
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	]);
+}
+function shouldRetainRuntimeTodo(payload) {
+	const item = payload.rebuiltItemsByKey.get(payload.todo.item_key);
+	if (!item) return false;
+	if (payload.todo.managed_by !== "refresh") return true;
+	if (!payload.todo.related_item_keys.every((itemKey) => payload.rebuiltItemsByKey.has(itemKey))) return false;
+	if (!payload.todo.related_sources.every((source) => payload.sourceLabelsById.has(source.source_id))) return false;
+	if (payload.todo.type === "review_source_change") {
+		const itemSourceIds = collectItemSourceIds(item);
+		return payload.todo.related_sources.every((source) => itemSourceIds.has(source.source_id));
+	}
+	if (payload.todo.type === "review_dependency_change") return payload.todo.related_item_keys.every((itemKey) => item.depends_on_keys.includes(itemKey));
+	return true;
+}
 function deepEqual(left, right) {
 	return JSON.stringify(left) === JSON.stringify(right);
 }
@@ -9643,11 +9825,28 @@ async function loadRuntimeArtifacts(payload) {
 }
 function preserveRuntimeMetadata(payload) {
 	if (!payload.currentState) return payload.schemas.parseStateFile(payload.rebuiltState);
-	return payload.schemas.parseStateFile({
-		...payload.rebuiltState,
-		created_at: payload.currentState.created_at,
-		updated_at: payload.currentState.updated_at,
-		last_refresh_at: payload.currentState.last_refresh_at
+	const rebuiltItemsByKey = new Map(payload.rebuiltState.items.map((item) => [item.item_key, item]));
+	const sourceLabelsById = new Map(payload.sourceRegistry.sources.map((source) => [source.source_id, source.source_label]));
+	const retainedTodos = payload.currentState.todos.filter((todo) => shouldRetainRuntimeTodo({
+		todo,
+		rebuiltItemsByKey,
+		sourceLabelsById
+	})).map((todo) => ({
+		...todo,
+		related_sources: todo.related_sources.map((source) => ({
+			source_id: source.source_id,
+			source_label: sourceLabelsById.get(source.source_id) ?? source.source_label
+		}))
+	}));
+	return recomputeDerivedState({
+		schemas: payload.schemas,
+		state: payload.schemas.parseStateFile({
+			...payload.rebuiltState,
+			created_at: payload.currentState.created_at,
+			updated_at: payload.currentState.updated_at,
+			last_refresh_at: payload.currentState.last_refresh_at,
+			todos: retainedTodos
+		})
 	});
 }
 function stampUpdatedAt(payload) {
@@ -9728,7 +9927,8 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 			state
 		}),
 		currentState,
-		schemas: payload.schemas
+		schemas: payload.schemas,
+		sourceRegistry: runtimeArtifacts.sourceRegistry
 	});
 }
 function areStatesEquivalent(left, right) {
