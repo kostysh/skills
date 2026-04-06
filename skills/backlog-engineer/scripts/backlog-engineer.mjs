@@ -5980,6 +5980,630 @@ function parseCliIntent(argv) {
 	};
 }
 //#endregion
+//#region src/artifacts/store-helpers.ts
+function createJsonIssueDetails(error) {
+	return { issues: error.issues.map((issue) => ({
+		path: issue.path.join("."),
+		message: issue.message,
+		code: issue.code
+	})) };
+}
+function isMissingFileError(error) {
+	return error instanceof Error && "code" in error && error.code === "ENOENT";
+}
+function createTempSiblingPath(path, targetPath, seedHash) {
+	return path.join(path.dirname(targetPath), `.${path.basename(targetPath)}.tmp-${seedHash.slice(0, 12)}`);
+}
+function listPathChain(path, target) {
+	const normalizedTarget = path.resolve(target);
+	const chain = [normalizedTarget];
+	let cursor = path.dirname(normalizedTarget);
+	while (cursor !== chain[chain.length - 1]) {
+		chain.push(cursor);
+		cursor = path.dirname(cursor);
+	}
+	return chain.reverse();
+}
+function isPathInsideRoot(path, root, target) {
+	const relative = path.relative(root, target).replaceAll("\\", "/");
+	if (relative.length === 0) return true;
+	return relative !== ".." && !relative.startsWith("../");
+}
+async function ensureDirectoryChainIsSafe(payload) {
+	const { fs, path, errors, root, leafDirectory, errorCode, detailPath } = payload;
+	const normalizedRoot = path.resolve(root);
+	const normalizedLeaf = path.resolve(leafDirectory);
+	if (!isPathInsideRoot(path, normalizedRoot, normalizedLeaf)) throw errors.create(errorCode, void 0, { details: { path: detailPath } });
+	for (const candidate of listPathChain(path, normalizedLeaf)) {
+		if (!await fs.exists(candidate)) continue;
+		const entry = await fs.lstat(candidate);
+		if (entry.isSymbolicLink || !entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: detailPath } });
+	}
+}
+async function ensureManagedDirectoryPathSafe(payload) {
+	const { fs, path, errors, root, directoryPath, errorCode } = payload;
+	const targetDirectory = path.resolve(directoryPath);
+	await ensureDirectoryChainIsSafe({
+		fs,
+		path,
+		errors,
+		root,
+		leafDirectory: targetDirectory,
+		errorCode,
+		detailPath: targetDirectory
+	});
+	if (!await fs.exists(targetDirectory)) return;
+	const entry = await fs.lstat(targetDirectory);
+	if (entry.isSymbolicLink || !entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: targetDirectory } });
+}
+async function ensureManagedFilePathSafe(payload) {
+	const { fs, path, errors, root, filePath, errorCode } = payload;
+	const targetFile = path.resolve(filePath);
+	await ensureDirectoryChainIsSafe({
+		fs,
+		path,
+		errors,
+		root,
+		leafDirectory: path.dirname(targetFile),
+		errorCode,
+		detailPath: targetFile
+	});
+	if (!await fs.exists(targetFile)) return;
+	const entry = await fs.lstat(targetFile);
+	if (entry.isSymbolicLink || entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: targetFile } });
+}
+async function ensureNoSymlinkAncestors(payload) {
+	const { fs, path, errors, targetPath, errorCode } = payload;
+	const normalizedTarget = path.resolve(targetPath);
+	for (const candidate of listPathChain(path, normalizedTarget)) {
+		if (!await fs.exists(candidate)) continue;
+		if ((await fs.lstat(candidate)).isSymbolicLink) throw errors.create(errorCode, void 0, { details: { path: normalizedTarget } });
+	}
+}
+async function readJsonArtifact(payload) {
+	const { fs, errors, filePath, parse, missingCode = "BE_INTERNAL_STATE_CORRUPT", corruptCode = "BE_INTERNAL_STATE_CORRUPT" } = payload;
+	let rawText;
+	try {
+		rawText = await fs.readText(filePath);
+	} catch (error) {
+		if (isMissingFileError(error)) throw errors.create(missingCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+		throw errors.create(corruptCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+	}
+	let rawJson;
+	try {
+		rawJson = JSON.parse(rawText);
+	} catch (error) {
+		throw errors.create("BE_INVALID_JSON", void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+	}
+	try {
+		return parse(rawJson);
+	} catch (error) {
+		if (error instanceof ZodError) throw errors.create("BE_SCHEMA_INVALID", void 0, {
+			details: {
+				path: filePath,
+				...createJsonIssueDetails(error)
+			},
+			cause: error
+		});
+		throw errors.create(corruptCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+	}
+}
+async function writeTextAtomically(payload) {
+	const { fs, path, hash, errors, root, targetPath, content, writeErrorCode } = payload;
+	const tempPath = createTempSiblingPath(path, targetPath, await hash.sha256Text(`${targetPath}\n${content}`));
+	if (root) await ensureManagedFilePathSafe({
+		fs,
+		path,
+		errors,
+		root,
+		filePath: targetPath,
+		errorCode: writeErrorCode
+	});
+	try {
+		await fs.mkdir(path.dirname(targetPath), { recursive: true });
+		await fs.rm(tempPath, { force: true });
+		await fs.writeText(tempPath, content);
+		await fs.rename(tempPath, targetPath);
+	} catch (error) {
+		try {
+			await fs.rm(tempPath, { force: true });
+		} catch {}
+		throw errors.create(writeErrorCode, void 0, {
+			details: { path: targetPath },
+			cause: error
+		});
+	}
+}
+async function writeJsonArtifact(payload) {
+	const { fs, path, hash, errors, root, filePath, value, validate, writeErrorCode } = payload;
+	let validatedValue;
+	try {
+		validatedValue = validate(value);
+	} catch (error) {
+		if (error instanceof ZodError) throw errors.create("BE_SCHEMA_INVALID", void 0, {
+			details: {
+				path: filePath,
+				...createJsonIssueDetails(error)
+			},
+			cause: error
+		});
+		throw errors.create(writeErrorCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+	}
+	await writeTextAtomically({
+		fs,
+		path,
+		hash,
+		errors,
+		root,
+		targetPath: filePath,
+		content: `${JSON.stringify(validatedValue, null, 2)}\n`,
+		writeErrorCode
+	});
+}
+//#endregion
+//#region src/artifacts/backlog-layout.ts
+var ROOT_MARKER_BASENAME = ".backlog.json";
+var BACKLOG_INTERNAL_DIRNAME = ".backlog";
+var PACKETS_DIRNAME = "packets";
+var PATCHES_DIRNAME = "patches";
+var REPORTS_DIRNAME = "reports";
+var AGENTS_BASENAME = "AGENTS.md";
+var SOURCES_REGISTRY_BASENAME = "sources.json";
+var APPLIED_REGISTRY_BASENAME = "applied.json";
+var STATE_BASENAME = "state.json";
+var REPORT_MARKDOWN_BASENAME = "backlog-report.md";
+var REPORT_GRAPH_BASENAME = "backlog-graph.mmd";
+function getLayoutDirectories(path, root) {
+	return {
+		internalDir: path.join(root, BACKLOG_INTERNAL_DIRNAME),
+		packetsDir: path.join(root, PACKETS_DIRNAME),
+		patchesDir: path.join(root, PATCHES_DIRNAME),
+		reportsDir: path.join(root, REPORTS_DIRNAME)
+	};
+}
+function getManagedBacklogPaths(path, root) {
+	return {
+		...getLayoutDirectories(path, root),
+		rootMarkerPath: getRootMarkerPath(path, root),
+		agentsPath: getAgentsPath(path, root)
+	};
+}
+async function createBacklogDirectories(fs, path, errors, root) {
+	const { internalDir, packetsDir, patchesDir, reportsDir } = getLayoutDirectories(path, root);
+	for (const directoryPath of [
+		root,
+		internalDir,
+		packetsDir,
+		patchesDir,
+		reportsDir
+	]) await ensureManagedDirectoryPathSafe({
+		fs,
+		path,
+		errors,
+		root,
+		directoryPath,
+		errorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+	await fs.mkdir(root, { recursive: true });
+	await fs.mkdir(internalDir, { recursive: true });
+	await fs.mkdir(packetsDir, { recursive: true });
+	await fs.mkdir(patchesDir, { recursive: true });
+	await fs.mkdir(reportsDir, { recursive: true });
+}
+function getRootMarkerPath(path, root) {
+	return path.join(root, ROOT_MARKER_BASENAME);
+}
+function getAgentsPath(path, root) {
+	return path.join(root, AGENTS_BASENAME);
+}
+function getSourceRegistryPath(path, root) {
+	return path.join(root, BACKLOG_INTERNAL_DIRNAME, SOURCES_REGISTRY_BASENAME);
+}
+function getAppliedRegistryPath(path, root) {
+	return path.join(root, BACKLOG_INTERNAL_DIRNAME, APPLIED_REGISTRY_BASENAME);
+}
+function getStatePath(path, root) {
+	return path.join(root, BACKLOG_INTERNAL_DIRNAME, STATE_BASENAME);
+}
+function getReportMarkdownPath(path, root) {
+	return path.join(root, REPORTS_DIRNAME, REPORT_MARKDOWN_BASENAME);
+}
+function getReportGraphPath(path, root) {
+	return path.join(root, REPORTS_DIRNAME, REPORT_GRAPH_BASENAME);
+}
+function toBacklogRelativePosixPath(path, root, target) {
+	return path.relative(root, target).replaceAll("\\", "/");
+}
+function createCanonicalImportFilename(sha256, canonicalBasename, errors) {
+	const trimmedBasename = canonicalBasename.trim();
+	if (trimmedBasename.length === 0 || trimmedBasename.includes("/") || trimmedBasename.includes("\\") || trimmedBasename === "." || trimmedBasename === "..") throw errors.create("BE_CANONICAL_WRITE_FAILED", void 0, {
+		details: { canonical_basename: canonicalBasename },
+		hint: "Canonical import basenames must be plain filenames without path separators."
+	});
+	return `${sha256.slice(0, 12)}--${trimmedBasename}`;
+}
+async function resolveTemplateOutputPath(payload) {
+	const { fs, path, errors, cwd, out, defaultBasename } = payload;
+	const absoluteTarget = path.resolve(cwd, out);
+	const explicitDirectory = out.endsWith("/") || out.endsWith("\\");
+	await ensureNoSymlinkAncestors({
+		fs,
+		path,
+		errors,
+		targetPath: absoluteTarget,
+		errorCode: "BE_TEMPLATE_OUTPUT_INVALID"
+	});
+	if (await fs.exists(absoluteTarget)) {
+		const stat = await fs.lstat(absoluteTarget);
+		if (stat.isSymbolicLink) throw errors.create("BE_TEMPLATE_OUTPUT_INVALID", void 0, { details: { out } });
+		if (stat.isDirectory) return path.join(absoluteTarget, defaultBasename);
+		if (stat.isFile) return absoluteTarget;
+	}
+	if (explicitDirectory) {
+		await fs.mkdir(absoluteTarget, { recursive: true });
+		return path.join(absoluteTarget, defaultBasename);
+	}
+	if (path.basename(absoluteTarget).trim().length === 0) throw errors.create("BE_TEMPLATE_OUTPUT_INVALID", void 0, { details: { out } });
+	return absoluteTarget;
+}
+//#endregion
+//#region src/artifacts/canonical-import-store.ts
+async function importCanonicalArtifact(payload) {
+	const { dependencies, root, sourcePath, rawContent, canonicalBasename, directoryName } = payload;
+	const sha256 = await dependencies.hash.sha256Text(rawContent);
+	const filename = createCanonicalImportFilename(sha256, canonicalBasename, dependencies.errors);
+	const directories = getLayoutDirectories(dependencies.path, root);
+	const targetDir = directoryName === "packets" ? directories.packetsDir : directories.patchesDir;
+	const targetPath = dependencies.path.join(targetDir, filename);
+	const normalizedSourcePath = dependencies.path.resolve(sourcePath);
+	await ensureManagedFilePathSafe({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		errors: dependencies.errors,
+		root,
+		filePath: targetPath,
+		errorCode: "BE_CANONICAL_WRITE_FAILED"
+	});
+	if (normalizedSourcePath === targetPath) return {
+		canonicalPath: toBacklogRelativePosixPath(dependencies.path, root, targetPath),
+		sha256
+	};
+	if (await dependencies.fs.exists(targetPath)) {
+		if ((await dependencies.fs.stat(targetPath)).isFile) {
+			if (await dependencies.fs.readText(targetPath) === rawContent) return {
+				canonicalPath: toBacklogRelativePosixPath(dependencies.path, root, targetPath),
+				sha256
+			};
+		}
+	}
+	await writeTextAtomically({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		root,
+		targetPath,
+		content: rawContent,
+		writeErrorCode: "BE_CANONICAL_WRITE_FAILED"
+	});
+	return {
+		canonicalPath: toBacklogRelativePosixPath(dependencies.path, root, targetPath),
+		sha256
+	};
+}
+async function importPacketFile(dependencies, payload) {
+	payload.packetId;
+	payload.sourcePath;
+	return importCanonicalArtifact({
+		dependencies,
+		root: payload.root,
+		sourcePath: payload.sourcePath,
+		rawContent: payload.rawContent,
+		canonicalBasename: payload.canonicalBasename,
+		directoryName: PACKETS_DIRNAME
+	});
+}
+async function importPatchFile(dependencies, payload) {
+	payload.patchId;
+	payload.sourcePath;
+	return importCanonicalArtifact({
+		dependencies,
+		root: payload.root,
+		sourcePath: payload.sourcePath,
+		rawContent: payload.rawContent,
+		canonicalBasename: payload.canonicalBasename,
+		directoryName: PATCHES_DIRNAME
+	});
+}
+//#endregion
+//#region src/artifacts/delete-backlog.ts
+async function deleteBacklog(dependencies, root) {
+	if (!await dependencies.fs.exists(root)) return;
+	const rootStat = await dependencies.fs.lstat(root);
+	if (!rootStat.isDirectory || rootStat.isSymbolicLink) throw dependencies.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: { path: root } });
+	const remainingEntries = await dependencies.fs.readdir(root);
+	const allowedEntries = new Set([
+		ROOT_MARKER_BASENAME,
+		AGENTS_BASENAME,
+		BACKLOG_INTERNAL_DIRNAME,
+		PACKETS_DIRNAME,
+		PATCHES_DIRNAME,
+		REPORTS_DIRNAME
+	]);
+	const unexpectedEntries = remainingEntries.filter((entry) => !allowedEntries.has(entry));
+	if (unexpectedEntries.length > 0) throw dependencies.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+		path: root,
+		unexpected_entries: unexpectedEntries
+	} });
+	const managedPaths = getManagedBacklogPaths(dependencies.path, root);
+	await dependencies.fs.rm(managedPaths.rootMarkerPath, { force: true });
+	await dependencies.fs.rm(managedPaths.agentsPath, { force: true });
+	await dependencies.fs.rm(managedPaths.internalDir, {
+		recursive: true,
+		force: true
+	});
+	await dependencies.fs.rm(managedPaths.packetsDir, {
+		recursive: true,
+		force: true
+	});
+	await dependencies.fs.rm(managedPaths.patchesDir, {
+		recursive: true,
+		force: true
+	});
+	await dependencies.fs.rm(managedPaths.reportsDir, {
+		recursive: true,
+		force: true
+	});
+	await dependencies.fs.rm(root, {
+		recursive: true,
+		force: true
+	});
+}
+//#endregion
+//#region src/artifacts/report-store.ts
+async function writeReportFiles(dependencies, payload) {
+	const reportPath = getReportMarkdownPath(dependencies.path, payload.root);
+	const graphPath = getReportGraphPath(dependencies.path, payload.root);
+	await writeTextAtomically({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		root: payload.root,
+		targetPath: reportPath,
+		content: payload.markdown,
+		writeErrorCode: "BE_REPORT_WRITE_FAILED"
+	});
+	await writeTextAtomically({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		root: payload.root,
+		targetPath: graphPath,
+		content: payload.mermaid,
+		writeErrorCode: "BE_REPORT_WRITE_FAILED"
+	});
+	return {
+		reportPath: toBacklogRelativePosixPath(dependencies.path, payload.root, reportPath),
+		graphPath: toBacklogRelativePosixPath(dependencies.path, payload.root, graphPath)
+	};
+}
+async function writeTemplateOutput(dependencies, payload) {
+	const targetPath = await resolveTemplateOutputPath({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		errors: dependencies.errors,
+		cwd: payload.cwd,
+		out: payload.out,
+		defaultBasename: payload.defaultBasename
+	});
+	await writeTextAtomically({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		targetPath,
+		content: payload.content,
+		writeErrorCode: "BE_TEMPLATE_OUTPUT_INVALID"
+	});
+	return targetPath;
+}
+//#endregion
+//#region src/artifacts/root-marker-store.ts
+async function readRootMarker(dependencies, root) {
+	return readJsonArtifact({
+		fs: dependencies.fs,
+		errors: dependencies.errors,
+		filePath: getRootMarkerPath(dependencies.path, root),
+		parse: (raw) => dependencies.schemas.parseRootMarker(raw),
+		missingCode: "BE_ROOT_NOT_FOUND",
+		corruptCode: "BE_ROOT_NOT_FOUND"
+	});
+}
+async function writeRootMarker(dependencies, root, marker) {
+	await writeJsonArtifact({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		root,
+		filePath: getRootMarkerPath(dependencies.path, root),
+		value: marker,
+		validate: (raw) => dependencies.schemas.parseRootMarker(raw),
+		writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+}
+//#endregion
+//#region src/artifacts/source-registry-store.ts
+async function readSourceRegistry(dependencies, root) {
+	return readJsonArtifact({
+		fs: dependencies.fs,
+		errors: dependencies.errors,
+		filePath: getSourceRegistryPath(dependencies.path, root),
+		parse: (raw) => dependencies.schemas.parseSourceRegistry(raw)
+	});
+}
+async function writeSourceRegistry(dependencies, root, value) {
+	await writeJsonArtifact({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		root,
+		filePath: getSourceRegistryPath(dependencies.path, root),
+		value,
+		validate: (raw) => dependencies.schemas.parseSourceRegistry(raw),
+		writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+}
+//#endregion
+//#region src/artifacts/applied-registry-store.ts
+async function readAppliedRegistry(dependencies, root) {
+	return readJsonArtifact({
+		fs: dependencies.fs,
+		errors: dependencies.errors,
+		filePath: getAppliedRegistryPath(dependencies.path, root),
+		parse: (raw) => dependencies.schemas.parseAppliedRegistry(raw)
+	});
+}
+async function writeAppliedRegistry(dependencies, root, value) {
+	await writeJsonArtifact({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		root,
+		filePath: getAppliedRegistryPath(dependencies.path, root),
+		value,
+		validate: (raw) => dependencies.schemas.parseAppliedRegistry(raw),
+		writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+}
+//#endregion
+//#region src/artifacts/state-store.ts
+async function readState(dependencies, root) {
+	return readJsonArtifact({
+		fs: dependencies.fs,
+		errors: dependencies.errors,
+		filePath: getStatePath(dependencies.path, root),
+		parse: (raw) => dependencies.schemas.parseStateFile(raw)
+	});
+}
+async function writeState(dependencies, root, value) {
+	await writeJsonArtifact({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		root,
+		filePath: getStatePath(dependencies.path, root),
+		value,
+		validate: (raw) => dependencies.schemas.parseStateFile(raw),
+		writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+}
+async function stateExists(dependencies, root) {
+	const statePath = getStatePath(dependencies.path, root);
+	if (!await dependencies.fs.exists(statePath)) return false;
+	return (await dependencies.fs.stat(statePath)).isFile;
+}
+//#endregion
+//#region src/artifacts/index.ts
+function createArtifactsModule(dependencies) {
+	return {
+		createBacklogDirectories(root) {
+			return createBacklogDirectories(dependencies.fs, dependencies.path, dependencies.errors, root);
+		},
+		readRootMarker(root) {
+			return readRootMarker(dependencies, root);
+		},
+		writeRootMarker(root, marker) {
+			return writeRootMarker(dependencies, root, marker);
+		},
+		async writeAgentsFile(root, content) {
+			await writeTextAtomically({
+				fs: dependencies.fs,
+				path: dependencies.path,
+				hash: dependencies.hash,
+				errors: dependencies.errors,
+				root,
+				targetPath: getAgentsPath(dependencies.path, root),
+				content,
+				writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+			});
+		},
+		async writeInitialArtifacts(payload) {
+			await createBacklogDirectories(dependencies.fs, dependencies.path, dependencies.errors, payload.root);
+			await writeSourceRegistry(dependencies, payload.root, payload.sourceRegistry);
+			await writeAppliedRegistry(dependencies, payload.root, payload.appliedRegistry);
+			await writeState(dependencies, payload.root, payload.state);
+			await writeTextAtomically({
+				fs: dependencies.fs,
+				path: dependencies.path,
+				hash: dependencies.hash,
+				errors: dependencies.errors,
+				root: payload.root,
+				targetPath: getAgentsPath(dependencies.path, payload.root),
+				content: payload.agentsContent,
+				writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+			});
+			await writeRootMarker(dependencies, payload.root, payload.marker);
+		},
+		readSourceRegistry(root) {
+			return readSourceRegistry(dependencies, root);
+		},
+		writeSourceRegistry(root, value) {
+			return writeSourceRegistry(dependencies, root, value);
+		},
+		readAppliedRegistry(root) {
+			return readAppliedRegistry(dependencies, root);
+		},
+		writeAppliedRegistry(root, value) {
+			return writeAppliedRegistry(dependencies, root, value);
+		},
+		readState(root) {
+			return readState(dependencies, root);
+		},
+		writeState(root, value) {
+			return writeState(dependencies, root, value);
+		},
+		stateExists(root) {
+			return stateExists(dependencies, root);
+		},
+		importPacketFile(payload) {
+			return importPacketFile(dependencies, payload);
+		},
+		importPatchFile(payload) {
+			return importPatchFile(dependencies, payload);
+		},
+		writeReportFiles(payload) {
+			return writeReportFiles(dependencies, payload);
+		},
+		writeTemplateOutput(payload) {
+			return writeTemplateOutput(dependencies, payload);
+		},
+		deleteBacklog(root) {
+			return deleteBacklog(dependencies, root);
+		}
+	};
+}
+//#endregion
 //#region src/hooks/no-op-hooks.ts
 function createNoOpRegistry() {
 	return {
@@ -6019,6 +6643,9 @@ function createNodeFileSystemPort() {
 		async writeText(filePath, content) {
 			await fs.writeFile(filePath, content, "utf8");
 		},
+		async rename(fromPath, toPath) {
+			await fs.rename(fromPath, toPath);
+		},
 		async exists(filePath) {
 			try {
 				await fs.access(filePath);
@@ -6041,9 +6668,23 @@ function createNodeFileSystemPort() {
 			return {
 				isFile: stat.isFile(),
 				isDirectory: stat.isDirectory(),
+				isSymbolicLink: false,
 				size: stat.size,
 				mtimeMs: stat.mtimeMs
 			};
+		},
+		async lstat(targetPath) {
+			const stat = await fs.lstat(targetPath);
+			return {
+				isFile: stat.isFile(),
+				isDirectory: stat.isDirectory(),
+				isSymbolicLink: stat.isSymbolicLink(),
+				size: stat.size,
+				mtimeMs: stat.mtimeMs
+			};
+		},
+		async realpath(targetPath) {
+			return fs.realpath(targetPath);
 		},
 		cwd() {
 			return path.resolve(process.cwd());
@@ -6099,7 +6740,6 @@ function createNodeRuntimeDependencies(overrides = {}) {
 }
 //#endregion
 //#region src/runtime/root-discovery.ts
-var ROOT_MARKER_BASENAME = ".backlog.json";
 function rootMarkerPath(pathPort, root) {
 	return pathPort.join(root, ROOT_MARKER_BASENAME);
 }
@@ -6154,12 +6794,19 @@ function createUnavailableModuleProxy(moduleName, errorModule) {
 }
 function buildRuntimeModules(dependencies, overrides = {}) {
 	const errors = overrides?.errors ?? createErrorModule();
+	const schemas = overrides?.schemas ?? createSchemaModule();
 	return {
-		artifacts: overrides?.artifacts ?? createUnavailableModuleProxy("artifacts", errors),
+		artifacts: overrides?.artifacts ?? createArtifactsModule({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			hash: dependencies.hash,
+			schemas,
+			errors
+		}),
 		sources: overrides?.sources ?? createUnavailableModuleProxy("sources", errors),
 		templates: overrides?.templates ?? createUnavailableModuleProxy("templates", errors),
 		reports: overrides?.reports ?? createUnavailableModuleProxy("reports", errors),
-		schemas: overrides?.schemas ?? createSchemaModule(),
+		schemas,
 		errors,
 		hooks: dependencies.hooks,
 		core: overrides?.core ?? createUnavailableModuleProxy("core", errors)

@@ -8,6 +8,7 @@ import type { AbsoluteFsPath } from './shared.ts';
 export interface FileSystemPort {
   readText(path: AbsoluteFsPath): Promise<string>;
   writeText(path: AbsoluteFsPath, content: string): Promise<void>;
+  rename(fromPath: AbsoluteFsPath, toPath: AbsoluteFsPath): Promise<void>;
   exists(path: AbsoluteFsPath): Promise<boolean>;
   mkdir(path: AbsoluteFsPath, options?: { recursive?: boolean }): Promise<void>;
   readdir(path: AbsoluteFsPath): Promise<string[]>;
@@ -15,9 +16,18 @@ export interface FileSystemPort {
   stat(path: AbsoluteFsPath): Promise<{
     isFile: boolean;
     isDirectory: boolean;
+    isSymbolicLink: boolean;
     size: number;
     mtimeMs: number;
   }>;
+  lstat(path: AbsoluteFsPath): Promise<{
+    isFile: boolean;
+    isDirectory: boolean;
+    isSymbolicLink: boolean;
+    size: number;
+    mtimeMs: number;
+  }>;
+  realpath(path: AbsoluteFsPath): Promise<AbsoluteFsPath>;
   cwd(): AbsoluteFsPath;
 }
 
@@ -64,6 +74,9 @@ export function createNodeFileSystemPort(): FileSystemPort {
     async writeText(filePath, content) {
       await fs.writeFile(filePath, content, 'utf8');
     },
+    async rename(fromPath, toPath) {
+      await fs.rename(fromPath, toPath);
+    },
     async exists(filePath) {
       try {
         await fs.access(filePath);
@@ -87,9 +100,23 @@ export function createNodeFileSystemPort(): FileSystemPort {
       return {
         isFile: stat.isFile(),
         isDirectory: stat.isDirectory(),
+        isSymbolicLink: false,
         size: stat.size,
         mtimeMs: stat.mtimeMs,
       };
+    },
+    async lstat(targetPath) {
+      const stat = await fs.lstat(targetPath);
+      return {
+        isFile: stat.isFile(),
+        isDirectory: stat.isDirectory(),
+        isSymbolicLink: stat.isSymbolicLink(),
+        size: stat.size,
+        mtimeMs: stat.mtimeMs,
+      };
+    },
+    async realpath(targetPath) {
+      return fs.realpath(targetPath);
     },
     cwd() {
       return path.resolve(process.cwd());

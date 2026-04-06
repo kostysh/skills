@@ -247,7 +247,7 @@ void test('runtime uses injected ErrorModule for root, unavailable-module, and d
         error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
     );
 
-    assert.throws(
+    await assert.rejects(
       () => context.artifacts.readState(root),
       (error: unknown) =>
         error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',

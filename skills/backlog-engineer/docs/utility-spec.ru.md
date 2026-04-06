@@ -2107,12 +2107,21 @@ Severity reasons compare in this order:
 
 ### Writes
 
-- удаление backlog root directory
+- удаление только штатных backlog-артефактов внутри backlog root
 
 ### Algorithm
 
 1. Проверить наличие explicit confirmation flag.
-2. Удалить backlog root целиком.
+2. Проверить backlog root на наличие посторонних файлов и директорий вне штатного layout-а утилиты.
+3. Если посторонние entry найдены, завершиться ошибкой без удаления.
+4. Удалить только штатные backlog-артефакты:
+   - `.backlog.json`
+   - `AGENTS.md`
+   - `.backlog/`
+   - `packets/`
+   - `patches/`
+   - `reports/`
+5. Если после этого backlog root пуст, удалить и сам root.
 
 ### Response contract
 
@@ -2126,11 +2135,13 @@ Severity reasons compare in this order:
 ### Errors
 
 - `BE_DELETE_CONFIRM_REQUIRED`
+- `BE_INTERNAL_STATE_CORRUPT`
 
 ### Unit-test focus
 
 - destructive guard;
-- full directory removal.
+- удаление только штатных backlog-артефактов;
+- отказ при посторонних entry в backlog root.
 
 ## 11. Query vs mutation boundaries
 

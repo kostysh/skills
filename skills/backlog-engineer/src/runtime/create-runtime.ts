@@ -1,6 +1,10 @@
 import { createErrorModule, type ErrorModule } from '../errors/index.ts';
 import { createSchemaModule, type SchemaModule } from '../schemas/index.ts';
-import type { ArtifactsModule } from '../artifacts/index.ts';
+import {
+  ROOT_MARKER_BASENAME,
+  createArtifactsModule,
+  type ArtifactsModule,
+} from '../artifacts/index.ts';
 import type { CoreModule } from '../core/index.ts';
 import type { ReportsModule } from '../reports/index.ts';
 import type { SourcesModule } from '../sources/index.ts';
@@ -8,7 +12,7 @@ import type { TemplatesModule } from '../templates/index.ts';
 import type { RuntimeModule } from './index.ts';
 import type { CommandExecutionContext } from './command-context.ts';
 import { createNodeRuntimeDependencies, type RuntimeDependencies } from './ports.ts';
-import { resolveCommandBacklogRoot, ROOT_MARKER_BASENAME } from './root-discovery.ts';
+import { resolveCommandBacklogRoot } from './root-discovery.ts';
 import {
   createUnconfiguredStateCoordinator,
   type RuntimeModuleBag,
@@ -57,15 +61,23 @@ function buildRuntimeModules(
   overrides: CreateRuntimeOptions['modules'] = {},
 ): RuntimeModuleBag {
   const errors = overrides?.errors ?? createErrorModule();
+  const schemas = overrides?.schemas ?? createSchemaModule();
 
   return {
     artifacts:
-      overrides?.artifacts ?? createUnavailableModuleProxy<ArtifactsModule>('artifacts', errors),
+      overrides?.artifacts ??
+      createArtifactsModule({
+        fs: dependencies.fs,
+        path: dependencies.path,
+        hash: dependencies.hash,
+        schemas,
+        errors,
+      }),
     sources: overrides?.sources ?? createUnavailableModuleProxy<SourcesModule>('sources', errors),
     templates:
       overrides?.templates ?? createUnavailableModuleProxy<TemplatesModule>('templates', errors),
     reports: overrides?.reports ?? createUnavailableModuleProxy<ReportsModule>('reports', errors),
-    schemas: overrides?.schemas ?? createSchemaModule(),
+    schemas,
     errors,
     hooks: dependencies.hooks,
     core: overrides?.core ?? createUnavailableModuleProxy<CoreModule>('core', errors),

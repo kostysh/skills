@@ -29,12 +29,13 @@
 1. Выполнять только один work package за раз.
 2. Не переходить к следующему work package, пока текущий полностью не прошёл приёмку.
 3. После завершения имплементации work package обязательно проверить все правила приёмки этого пакета.
-4. После локальной приёмки каждого work package запускать внешний code review и security review агентом наивысшей доступной квалификации.
-5. Начиная со следующего после текущего work package, дополнительно запускать внешний review на соответствие спецификациям с использованием `spec-conformance-reviewer`.
-6. Все согласованные находки внешнего ревью устранять до тех пор, пока пакет не получит чистый результат без оставшихся замечаний.
-7. Только после успешного внешнего ревью делать отдельный commit, закрывающий один work package.
-8. Вести инкрементальный лог имплементации и решений в отдельном файле [implementation-log.ru.md](implementation-log.ru.md).
-9. Любое решение или допущение, принятое во время имплементации за пределами существующей концепции или спецификаций, обязательно фиксировать в [implementation-log.ru.md](implementation-log.ru.md) как отдельную пометку.
+4. После локальной приёмки каждого work package сначала запускать внешний review на соответствие спецификациям с использованием `spec-conformance-reviewer`.
+5. Не запускать `code-reviewer` и `security-reviewer`, пока `spec-conformance-reviewer` не вернул `PASS` для текущего work package.
+6. После `PASS` от `spec-conformance-reviewer` запускать внешний code review и security review агентами наивысшей доступной квалификации.
+7. Все согласованные находки внешнего ревью устранять до тех пор, пока пакет не получит чистый результат без оставшихся замечаний.
+8. Только после успешного внешнего ревью делать отдельный commit, закрывающий один work package.
+9. Вести инкрементальный лог имплементации и решений в отдельном файле [implementation-log.ru.md](implementation-log.ru.md).
+10. Любое решение или допущение, принятое во время имплементации за пределами существующей концепции или спецификаций, обязательно фиксировать в [implementation-log.ru.md](implementation-log.ru.md) как отдельную пометку.
 
 ## 1.2. Единые правила приёмки work package
 
@@ -49,8 +50,8 @@
    - `pnpm run lint`
    - `pnpm run typecheck`
    - релевантные тесты пакета
-6. Внешний code & security review для пакета завершён успешно.
-7. Для пакетов, которые попадают под правило из раздела `1.1`, внешний review на соответствие спецификациям (`spec-conformance-reviewer`) также завершён успешно.
+6. Внешний review на соответствие спецификациям (`spec-conformance-reviewer`) завершён успешно.
+7. После этого внешний code review и security review для пакета также завершены успешно.
 8. Результат и принятые решения записаны в [implementation-log.ru.md](implementation-log.ru.md).
 
 ## 2. Финальный результат
@@ -321,7 +322,7 @@
 - adapter-level tests с in-memory FS;
 - canonical filename generation;
 - write/read round-trips;
-- destructive delete behavior.
+- scoped delete behavior for utility-owned artifacts only.
 
 **Definition of done**
 

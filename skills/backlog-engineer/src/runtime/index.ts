@@ -1,3 +1,4 @@
+export { ROOT_MARKER_BASENAME } from '../artifacts/index.ts';
 export { createRuntime } from './create-runtime.ts';
 export {
   createNodeClockPort,
@@ -18,7 +19,6 @@ export {
 export {
   findBacklogRoot,
   resolveCommandBacklogRoot,
-  ROOT_MARKER_BASENAME,
 } from './root-discovery.ts';
 export {
   createUnconfiguredStateCoordinator,

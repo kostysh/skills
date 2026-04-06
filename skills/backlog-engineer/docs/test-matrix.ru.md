@@ -415,7 +415,8 @@
 - `writeTemplateOutput()` writes to explicit file path
 - `writeTemplateOutput()` writes inside output directory with default basename
 - `writeReportFiles()` writes markdown and graph files
-- `deleteBacklog()` removes backlog directory
+- `deleteBacklog()` removes only utility-owned backlog artifacts
+- `deleteBacklog()` refuses deletion when backlog root contains unrelated entries
 - atomic write policy does not leave half-written JSON
 
 ## 10.2. `runtime` with in-memory adapters

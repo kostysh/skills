@@ -9,10 +9,10 @@
 - В логе фиксируются только факты и принятые решения, которые важны для следующих пакетов.
 - Любое решение или допущение за пределами текущей концепции, спецификаций и утверждённых контрактов фиксируется отдельной явной пометкой.
 - Лог не заменяет git history, а дополняет её инженерным контекстом.
-- Начиная со следующего после текущего work package, для каждого пакета обязательны три внешних ревью:
-  - `code-reviewer`
-  - `security-reviewer`
-  - `spec-conformance-reviewer`
+- Начиная с work package `E`, для каждого пакета обязательны три внешних ревью в фиксированном порядке:
+  1. `spec-conformance-reviewer`
+  2. после `PASS` — `code-reviewer`
+  3. после `PASS` — `security-reviewer`
 
 ## Формат записи
 
@@ -32,10 +32,10 @@
 
 ## Общие решения по процессу
 
-- С 2026-04-06, начиная со следующего после текущего work package, обязательный внешний review-контур включает:
-  - `code-reviewer`
-  - `security-reviewer`
-  - `spec-conformance-reviewer`
+- С 2026-04-06, начиная с work package `E`, обязательный внешний review-контур включает:
+  1. `spec-conformance-reviewer`
+  2. после `PASS` — `code-reviewer`
+  3. после `PASS` — `security-reviewer`
 - Для текущего work package `D` сохраняется ранее действовавший review-контур:
   - `code-reviewer`
   - `security-reviewer`
@@ -203,3 +203,48 @@
 - Следующий пакет: `E — Artifacts bootstrap and layout ownership`
 - Дополнительная пометка:
   - начиная с work package `E`, кроме `code-reviewer` и `security-reviewer` обязателен также внешний review через `spec-conformance-reviewer`
+
+### Work package `E` — `Artifact stores and backlog layout`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Коммит:
+- Что сделано:
+  - реализован concrete `ArtifactsModule` как единая точка владения utility-owned артефактами backlog root
+  - реализованы backlog layout constants и path helpers для:
+    - `.backlog.json`
+    - `.backlog/`
+    - `packets/`
+    - `patches/`
+    - `reports/`
+    - `AGENTS.md`
+  - реализованы stores для:
+    - root marker
+    - source registry
+    - applied registry
+    - runtime state
+    - canonical packet/patch imports
+    - report outputs
+  - реализованы atomic JSON/text writes через temp sibling file + rename
+  - реализовано удаление backlog root целиком как отдельная artifact operation
+  - runtime по умолчанию теперь wires concrete `artifacts` module вместо fail-fast proxy
+  - добавлены adapter-level tests с in-memory FS для layout creation, round-trip, canonical imports, report writes, template outputs и destructive delete
+- Ключевые решения:
+  - все utility-owned JSON artifacts читаются и пишутся только через artifact stores; командный слой не знает layout напрямую
+  - root discovery больше не держит собственную строковую константу marker basename и использует единый artifact-owned export
+  - canonical imports сохраняют исходное имя файла, но получают стабильный hash-prefix для дедупликации и аудита
+  - `writeInitialArtifacts()` собирает init-time bootstrap как единый artifact workflow, а не разрозненный набор writes
+- Допущения вне спецификации:
+  - `template --out`, указывающий на ещё не существующий путь с завершающим `/` или `\\`, интерпретируется как явный directory target: утилита создаёт директорию и записывает туда файл с каноническим basename шаблона
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
+- Дополнительные согласованные решения:
+  - `delete-backlog` удаляет только штатные backlog-артефакты утилиты и отказывается работать, если в backlog root есть посторонние entry; это решение было отдельно согласовано и затем перенесено в концепт и спецификации
+- Следующий пакет: `F — init command`

@@ -1,7 +1,6 @@
+import { ROOT_MARKER_BASENAME } from '../artifacts/index.ts';
 import type { FileSystemPort, PathPort } from './ports.ts';
 import type { BacklogRootPath, CommandName } from './shared.ts';
-
-export const ROOT_MARKER_BASENAME = '.backlog.json';
 
 function rootMarkerPath(pathPort: PathPort, root: BacklogRootPath): string {
   return pathPort.join(root, ROOT_MARKER_BASENAME);
