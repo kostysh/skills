@@ -59,7 +59,7 @@ Users forget passwords and get locked out. We need a reset flow that is secure, 
 - Existing email adapter retries delivery after accepted queue handoff.
 
 ### Open questions
-- None at spec-compact time.
+- None at planning time.
 
 ## 3. Requirements & Acceptance Criteria (SSoT)
 
@@ -132,13 +132,19 @@ Invariants:
 
 ## 6. Slicing plan
 
+Slices are forecast increments ordered prerequisite-first and risk-first.
+
 ### Slice SL-F0001-01: token issuance + persistence
 Covers: AC-F0001-02, AC-F0001-03
 Verification: integration
+Assumes: the existing auth storage seam can persist single-use token metadata without a wider schema split.
+Fallback: keep issuance on the existing auth path until storage invariants are confirmed.
 
 ### Slice SL-F0001-02: email dispatch
 Covers: AC-F0001-01
 Verification: integration, smoke
+Assumes: the existing email adapter accepts queue handoff from the auth service.
+Fallback: keep the reset request generic and emit an audit signal if queue handoff fails.
 
 ### Slice SL-F0001-03: confirm endpoint + password update
 Covers: AC-F0001-04
@@ -185,3 +191,4 @@ Verification: unit, integration
 ## 11. Change log
 
 - **v1.0 (2026-03-04):** Intake + compact spec + slicing plan.
+- **v1.1 (2026-03-05) [risk discovery]:** Added explicit fallback notes for delivery-risk slices.

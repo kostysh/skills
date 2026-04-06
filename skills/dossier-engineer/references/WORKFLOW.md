@@ -33,6 +33,11 @@ Keep these separate:
 ## Default feature flow
 `feature-intake -> spec-compact -> plan-slice -> implementation`
 
+Planning notes:
+- `planned` means the slice/task **forecast** is ready; commitment still lives in ACs, DoD, verification/coverage gates, and explicit rollout constraints.
+- An unresolved `Open question` marked `needed_by: before_planned` blocks promotion to `planned`.
+- If rollout order, external dependencies, or risky assumptions materially affect delivery order, make them explicit in the slicing plan rather than leaving them implicit.
+
 Each mutating step then closes through:
 `dossier-verify -> review-artifact -> dossier-step-close`
 

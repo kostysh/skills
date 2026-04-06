@@ -31,6 +31,7 @@ Notes:
 - `status` tracks **workflow maturity**.
 - `coverage_gate` tracks **coverage enforcement strictness**.
 - Default policy is usually `deferred` for `proposed|shaped|planned` and `strict` for `in_progress|done`, unless repo overlays say otherwise.
+- Slices and tasks are **forecast by default**. Commitment usually lives in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints.
 
 ## 1. Context & Goal
 
@@ -62,7 +63,8 @@ Notes:
 - Existing substrate or external-system behavior that this dossier relies on.
 
 ### Open questions (optional)
-- Unresolved items with an owner/date or explicit next decision path.
+- Unresolved items with an owner/date, `needed_by: before_planned|before_implementation|before_done`, and an explicit next decision path.
+- `needed_by: before_planned` blocks promotion to `status: planned`.
 
 ## 3. Requirements & Acceptance Criteria (SSoT)
 
@@ -115,22 +117,40 @@ Notes:
 ### 5.7 Definition of Done
 - Delivered behavior, proof artifacts, and operational signals required before the implementation step can claim closure.
 
+### 5.8 Rollout / activation note (triggered only when needed)
+- Add this only when migration, feature flag, cutover, backfill, user-visible activation order, or irreversible side effects make release order matter.
+- Record activation order, rollback limits, and any “must happen before/after” steps.
+
 ## 6. Slicing plan (2–6 increments)
 
+> Treat slices/tasks as forecast, not commitment.
+> Order slices prerequisite-first and risk-first.
 > Each slice should produce something testable and cite the AC IDs it covers.
+> Each slice should be small enough to verify and review in one coherent increment.
+> Add `Depends on`, `Assumes`, `Fallback`, and `Approval path` only when triggered.
 > Example slices:
 
 ### Slice SL-F0001-01: Token issuance + persistence
 Covers: AC-F0001-02, AC-F0001-03
 Verification: integration
+Assumes: existing auth storage can persist single-use token metadata without schema fan-out.
+Fallback: keep token issuance behind the existing auth service path until the storage seam is confirmed.
 
 ### Slice SL-F0001-02: Email sending pipeline
 Covers: AC-F0001-01
 Verification: integration, smoke
+Assumes: existing email adapter accepts queue handoff from the auth service.
+Fallback: keep the request response generic and emit an audit signal if queue handoff fails.
 
 ### Slice SL-F0001-03: Rate limiting
 Covers: AC-F0001-04
 Verification: unit, integration
+
+Optional slice notes when triggered:
+- `Depends on:` another dossier, external team, or shared subsystem, plus owner and unblock condition.
+- `Assumes:` a high-risk assumption the slice relies on.
+- `Fallback:` what happens if that assumption fails.
+- `Approval path:` repo ADR, architecture update, owner sign-off, or linked follow-up for shared runtime/contract/migration surfaces.
 
 ## 7. Task list (implementation units)
 
@@ -178,5 +198,7 @@ Verification: unit, integration
 
 ## 11. Change log
 
+- Use short reason tags for planning-affecting changes after the initial entry:
+  `[clarification]`, `[scope realignment]`, `[dependency realignment]`, `[risk discovery]`, `[contract drift]`
 - **v1.0 (2026-03-04):** Initial dossier created.
-- **v1.1 (2026-03-05):** Added rate-limiting requirement after security review.
+- **v1.1 (2026-03-05) [risk discovery]:** Added rate-limiting requirement after security review.

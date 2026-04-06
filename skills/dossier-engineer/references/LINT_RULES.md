@@ -23,11 +23,15 @@ Required keys:
 - Lint warns on compound AC statements because each AC should carry one obligation.
 - Lint warns on raw `TBD` and vague wording in executable sections because they often hide unresolved spec work.
 
-### Compact-spec nudges for shaped/planned+ dossiers
+### Compact-spec and planning nudges for shaped/planned+ dossiers
 - `Definition of Done` should be present once the dossier reaches `shaped` or later.
 - The dossier should contain a verification section or initial coverage plan once it reaches `shaped` or later.
 - If a shaped/planned+ dossier describes boundary I/O, lint expects at least one contract/schema/error-model cue.
 - If an NFR is normative, lint expects a metric, budget/threshold, or observable signal.
+- If an `Open questions` section is non-empty, lint expects owner/date plus a `needed_by` readiness cue.
+- If a planned/in-progress dossier has `depends_on` entries, lint expects the slicing plan to expose `Depends on:` / unblock visibility when those dependencies matter to delivery order.
+- If migration, feature flags, cutover, backfill, or irreversible activation appears in planning/design text, lint expects a rollout / activation cue.
+- If a planned/in-progress dossier has replanning entries in the change log, lint recommends a short reason tag such as `[clarification]`, `[scope realignment]`, `[dependency realignment]`, `[risk discovery]`, or `[contract drift]`.
 
 ### Coverage map
 - If `coverage_gate` is `strict`, the dossier must include coverage rows for every AC.

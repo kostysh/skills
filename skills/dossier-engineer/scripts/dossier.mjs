@@ -6352,6 +6352,19 @@ function isShapedOrLaterStatus(status) {
 		"done"
 	].includes(String(status));
 }
+function isPlannedOrLaterStatus(status) {
+	return [
+		"planned",
+		"in_progress",
+		"done"
+	].includes(String(status));
+}
+function sectionLooksExplicitlyNone(text) {
+	return /\bnone\b|\bno open questions\b/i.test(String(text));
+}
+function countBulletEntries(text) {
+	return String(text).split(/\r?\n/).filter((line) => /^\s*-\s+/.test(line)).length;
+}
 var EXECUTABLE_SECTION_PATTERNS = [
 	/scope/i,
 	/requirements/i,
@@ -6363,15 +6376,25 @@ var EXECUTABLE_SECTION_PATTERNS = [
 	/verification/i,
 	/test plan/i,
 	/coverage map/i,
+	/rollout/i,
+	/activation/i,
 	/edge cases/i,
 	/failure modes/i,
 	/slicing plan/i
 ];
 var DOD_HEADING_PATTERN = /^#{2,6}\s+.*definition of done.*$/im;
 var VERIFICATION_HEADING_PATTERN = /^#{2,6}\s+.*(verification|test plan|coverage map).*$/im;
+var ROLLOUT_HEADING_PATTERN = /^#{2,6}\s+.*(rollout|activation|cutover|rollback).*$/im;
 var BOUNDARY_TRIGGER_PATTERN = /`?(GET|POST|PUT|PATCH|DELETE)\s+\/|^\s*-\s*(body|response|payload|dto|event|webhook)\b/im;
 var CONTRACT_CUE_PATTERN = /\b(contract|schema|openapi|json schema|error model|retry|idempotent|idempotency|backward-compat|compatibility)\b/i;
 var MEASURABLE_NFR_CUE_PATTERN = /\b(metric|metrics|budget|threshold|signal|signals|p\d{2}|latency|availability|throughput|counter|gauge|histogram|log|logs|trace|traces|event|events|ms|seconds?|minutes?|hours?)\b/i;
+var OPEN_QUESTION_READY_CUE_PATTERN = /\bneeded[_ ]by\b/i;
+var BEFORE_PLANNED_CUE_PATTERN = /\bneeded[_ ]by\b[^\n]*\bbefore[_ -]planned\b/i;
+var DEPENDENCY_NOTE_PATTERN = /^\s*(?:[-*]\s*)?depends on:\s*/im;
+var OWNER_CUE_PATTERN = /@\w+|\bowner\b/i;
+var UNBLOCK_CUE_PATTERN = /\bunblock\b/i;
+var ROLLOUT_TRIGGER_PATTERN = /\b(feature flag|backfill|cutover|activation|rollback|rollout|dual[- ]write|migrat(?:e|ion)|irreversible)\b/i;
+var REPLANNING_REASON_TAG_PATTERN = /\[(clarification|scope realignment|dependency realignment|risk discovery|contract drift)\]/i;
 var COMPOUND_AC_PATTERN = /\b(and\/or|and|or)\b/i;
 var RAW_TBD_PATTERN = /\bTBD\b/i;
 var VAGUE_EXECUTABLE_PATTERNS = [
@@ -6894,6 +6917,9 @@ async function runLintDossiersCommand(argv, io) {
 			message: "Missing verification cue for a shaped/planned+ dossier. Add a verification section or an initial coverage plan."
 		});
 		const designText = getSectionText(dossier.markdown, /design/i);
+		const openQuestionsText = getSectionText(dossier.markdown, /open questions/i);
+		const slicingText = getSectionText(dossier.markdown, /slicing plan/i);
+		const changeLogText = getSectionText(dossier.markdown, /change log/i);
 		if (isShapedOrLaterStatus(status) && designText && BOUNDARY_TRIGGER_PATTERN.test(designText) && !CONTRACT_CUE_PATTERN.test(designText)) findings.push({
 			level: "warn",
 			feature,
@@ -6904,6 +6930,32 @@ async function runLintDossiersCommand(argv, io) {
 			level: "warn",
 			feature,
 			message: "NFR section looks aspirational. Add a metric, budget/threshold, or observable signal for any normative NFR."
+		});
+		if (isShapedOrLaterStatus(status) && openQuestionsText && !sectionLooksExplicitlyNone(openQuestionsText) && !OPEN_QUESTION_READY_CUE_PATTERN.test(openQuestionsText)) findings.push({
+			level: "warn",
+			feature,
+			message: "Open questions are present without a planning-readiness cue. Add owner/date plus `needed_by: before_planned|before_implementation|before_done` and a next decision path."
+		});
+		if (isPlannedOrLaterStatus(status) && openQuestionsText && BEFORE_PLANNED_CUE_PATTERN.test(openQuestionsText)) findings.push({
+			level: "warn",
+			feature,
+			message: "A planned/in-progress dossier still contains an open question marked `needed_by: before_planned`. Resolve it or reclassify the readiness gate before keeping the dossier planned+."
+		});
+		const dependsOn = toStringArray(frontmatter.depends_on);
+		if (isPlannedOrLaterStatus(status) && dependsOn.length > 0 && (!slicingText || !DEPENDENCY_NOTE_PATTERN.test(slicingText) || !OWNER_CUE_PATTERN.test(slicingText) || !UNBLOCK_CUE_PATTERN.test(slicingText))) findings.push({
+			level: "warn",
+			feature,
+			message: "Planned+ dossier has dependencies, but the slicing plan does not show clear `Depends on:` visibility with owner and unblock condition. Add the dependency note where it affects delivery order."
+		});
+		if (isPlannedOrLaterStatus(status) && `${designText}\n${slicingText}`.trim() && ROLLOUT_TRIGGER_PATTERN.test(`${designText}\n${slicingText}`) && !hasHeading(dossier.markdown, ROLLOUT_HEADING_PATTERN)) findings.push({
+			level: "warn",
+			feature,
+			message: "Planning/design text suggests rollout order matters, but no rollout / activation note was found. Add a compact activation order and rollback-limits note."
+		});
+		if (isPlannedOrLaterStatus(status) && countBulletEntries(changeLogText) > 1 && !REPLANNING_REASON_TAG_PATTERN.test(changeLogText)) findings.push({
+			level: "warn",
+			feature,
+			message: "Change log shows mature replanning, but no short reason tags were found. Prefer tags like `[clarification]`, `[scope realignment]`, `[dependency realignment]`, `[risk discovery]`, or `[contract drift]`."
 		});
 		const compoundAcIds = extractAcStatementLines(dossier.markdown).filter(({ line }) => COMPOUND_AC_PATTERN.test(line)).map(({ acId }) => acId);
 		if (compoundAcIds.length > 0) findings.push({

@@ -87,8 +87,8 @@ Applies only to dossier frontmatter `status`:
 Meaning:
 
 - `proposed` — intake exists, but design is still draft.
-- `shaped` — compact design and constraints are resolved enough to plan slices.
-- `planned` — slices/tasks are ready; implementation can start.
+- `shaped` — compact design and planning blockers are explicit enough to plan slices.
+- `planned` — slice/task forecast is ready; implementation can start.
 - `in_progress` — executable work is active.
 - `done` — the feature is delivered and aligned.
 - `parked` — intentionally paused.
@@ -168,6 +168,9 @@ Applies to the working tree and closure target:
 
 10. **Material change invalidates prior review by default.**
     If code, tests, executable dossier sections, architecture, or ADRs change after review, treat the review as stale unless a stricter repo-local rule says otherwise.
+
+11. **Forecast is not commitment.**
+    Slices and tasks are forecast by default. Commitment lives in acceptance criteria, Definition of Done, verification/coverage gates, and explicit rollout constraints unless a repo overlay says otherwise.
 
 11. **Ingest repo overlays before acting.**
     Before `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `dossier-verify`, and `next-step`, read repo-root `AGENTS.md` and any referenced repo-level ADRs that constrain the work.
@@ -425,6 +428,7 @@ Trigger summary:
 - If the feature changes a request, response, event, webhook, or external payload, add a compact contract cue.
 - If a rule has 2+ independent conditions, add a decision table or decision list.
 - If the feature has named states, transitions, or guards, add a compact state list or state table.
+- If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note.
 
 Steps:
 
@@ -442,7 +446,7 @@ Steps:
 5. Separate three things explicitly:
    - `Constraints` = mandatory solution bounds;
    - `Assumptions` = expected substrate or external behavior;
-   - `Open questions` = unresolved items with an owner/date or explicit next decision path.
+   - `Open questions` = unresolved items with an owner/date, a `needed_by` marker (`before_planned`, `before_implementation`, or `before_done`), and an explicit next decision path.
 6. Add compact design with trigger-based representations:
    - If the feature adds or changes boundary I/O, include either an inline contract sketch or a link to the canonical schema/OpenAPI/protocol.
      Add the error model, and add retry/idempotency or duplicate-delivery semantics when the operation can be repeated.
@@ -457,7 +461,7 @@ Steps:
 7. Keep NFRs compact and normative only.
    - include only NFRs that can materially change implementation, verification, or feature closure;
    - every normative NFR needs a metric, budget/threshold, or explicit observable signal.
-8. Add Definition of Done and an initial coverage plan.
+8. Add Definition of Done, an initial coverage plan, and a compact rollout / activation note when activation order matters.
 9. Run a one-minute quick wording pass (`smell pass`):
    - remove vague words such as `etc.`, `usually`, `as appropriate`, `fast`, or `user-friendly`;
    - split compound ACs;
@@ -475,6 +479,7 @@ Spec quality:
 - [ ] The dossier captures success behavior plus invalid input / dependency failure / duplicate-retry behavior where relevant.
 - [ ] New ambiguous terms or thresholds were normalized via a compact `Terms & thresholds` block when triggered.
 - [ ] Constraints, assumptions, and open questions are explicit instead of being hidden inside prose.
+- [ ] Open questions carry owner/date, a `needed_by` marker, and a next decision path.
 - [ ] NFRs are compact, normative-only, and measurable via a metric, budget, threshold, or observable signal.
 - [ ] A quick wording pass removed vague wording, compound ACs, and raw `TBD`.
 
@@ -482,6 +487,7 @@ Trigger-based additions:
 - [ ] Boundary I/O changes include a contract/schema pointer or compact contract sketch, plus error model and retry/idempotency notes when relevant.
 - [ ] Design covers API, runtime/deployment, data changes, invariants or migration notes, failure modes, and an initial verification plan when relevant.
 - [ ] Decision tables or state lists were added when rule complexity or statefulness crossed the trigger threshold.
+- [ ] Rollout / activation notes were added when migration, feature flags, cutover, backfill, or irreversible side effects make activation order matter.
 - [ ] Definition of Done and the initial coverage plan were recorded explicitly.
 
 Process integrity:
@@ -494,26 +500,51 @@ Process integrity:
 
 Add an incremental slicing plan inside the dossier.
 
+Trigger summary:
+
+- Do not move to `planned` while an unresolved `Open question` is marked `needed_by: before_planned`.
+- Treat slices and tasks as forecast by default; commitment stays in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints.
+- If a slice depends on another dossier, an external team, or a shared subsystem, add `Depends on:` with owner and unblock condition.
+- If a slice relies on a high-risk assumption, add `Assumes:` and `Fallback:` notes.
+- If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note.
+- If a slice touches a shared runtime, contract, migration path, or other cross-cutting surface, name the approval path.
+
 Steps:
 
-1. Re-read repo overlays that constrain planning.
-2. Create 2–6 slices in delivery order.
-3. For each slice, state the deliverable and which AC IDs it covers.
-4. For each slice, name the verification artifact that proves it.
-5. For each slice, list tasks that reference AC IDs or Slice IDs only.
-6. If the feature requires realignment of delivered work, make that realignment explicit as a slice or linked task.
-7. Set dossier `status: planned`.
-8. Set or confirm `coverage_gate` explicitly.
+1. Re-read repo overlays that constrain planning, then re-check open questions, assumptions, dependencies, and the latest change log.
+2. Do not move to `planned` while any unresolved `Open question` is marked `needed_by: before_planned`. Resolve it or explicitly reclassify it first.
+3. Create 2–6 slices in delivery order.
+   - order them prerequisite-first and risk-first, not just by happy path;
+   - ensure at least one early slice proves the highest-risk boundary behavior, rollout path, or expensive assumption instead of only laying groundwork.
+4. Keep each slice reviewable and provable as one coherent increment.
+   - if a slice cannot be verified and reviewed in one bundle, split it.
+5. For each slice, state the deliverable, which AC IDs it covers, and the verification artifact(s) that prove it.
+6. When a slice depends on another dossier, external team, or shared subsystem, add `Depends on:` with owner and unblock condition.
+7. When a slice relies on a high-risk assumption, add `Assumes:` and `Fallback:` notes.
+8. If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note with activation order and rollback limits.
+9. If a slice touches a shared runtime, contract, migration path, or other cross-cutting surface, name the approval or decision path (repo ADR, architecture update, owner approval, or linked follow-up).
+10. For each slice, list tasks that reference AC IDs or Slice IDs only.
+11. If the feature requires realignment of delivered work, make that realignment explicit as a slice or linked task.
+12. Treat slices and tasks as forecast. Commitment remains in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints unless repo overlays say otherwise.
+13. Set dossier `status: planned`.
+14. Set or confirm `coverage_gate` explicitly.
    - Default: `deferred`
    - Tighten to `strict` only when the repo overlay requires it or planning is intentionally treated as a blocking verification gate.
 
 Review checklist:
 
+- [ ] No unresolved `Open question` marked `needed_by: before_planned` remains.
 - [ ] The dossier contains 2–6 slices in delivery order.
-- [ ] Every slice states a concrete deliverable and cites AC IDs.
-- [ ] Every slice names the verification artifact(s) that prove it.
+- [ ] Slices are ordered prerequisite-first and risk-first, and at least one early slice proves a key risk, assumption, or rollout path.
+- [ ] Every slice is small enough to verify and review as one coherent increment.
+- [ ] Every slice states a concrete deliverable, cites AC IDs, and names the verification artifact(s) that prove it.
+- [ ] `Depends on:` with owner/unblock condition is present when slice-level external dependencies exist.
+- [ ] `Assumes:` and `Fallback:` notes are present when slice-level high-risk assumptions exist.
+- [ ] A rollout / activation note exists when migration, feature flags, cutover, backfill, or irreversible side effects make release order matter.
+- [ ] A cross-cutting approval or decision path is explicit when shared runtime, contract, or migration surfaces are involved.
 - [ ] Tasks reference Slice IDs or AC IDs and do not restate AC text.
 - [ ] Any required realignment of existing delivered work is explicit.
+- [ ] The plan treats slices/tasks as forecast, while ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints carry the commitment signal.
 - [ ] `status: planned` is used for planning maturity, while `coverage_gate` independently captures coverage strictness.
 - [ ] The final answer does not rationalize a status workaround such as “planned but really shaped”; it uses the explicit state model instead.
 
@@ -660,8 +691,9 @@ Steps:
 
 1. Re-read repo overlays, architecture, and the current dossier maturity.
 2. Add a new change-log entry.
+   - When the change affects planning or execution sequencing, tag it as `[clarification]`, `[scope realignment]`, `[dependency realignment]`, `[risk discovery]`, or `[contract drift]`.
 3. Modify the AC list and every directly affected executable section.
-4. Update slices, tasks, coverage map references, DoD, and dependency references.
+4. Update slices, tasks, coverage map references, DoD, dependency references, rollout notes, approval-path notes, and assumption/fallback notes.
 5. If the dossier is `planned`, `in_progress`, or `done`, or if executable sections changed, run `node scripts/dossier.mjs contract-drift-audit --dossier ...`.
 6. If drift audit says follow-up is required, make that follow-up explicit:
    - same dossier slice/task;
@@ -673,8 +705,9 @@ Steps:
 Review checklist:
 
 - [ ] The change log contains a new version/date/reason entry.
+- [ ] Planning-affecting changes use an explicit reason tag such as `[clarification]`, `[scope realignment]`, `[dependency realignment]`, `[risk discovery]`, or `[contract drift]`.
 - [ ] Requirement edits were applied in the dossier SSoT, not in a shadow source.
-- [ ] Slices, tasks, coverage map, DoD, and dependency references were updated consistently.
+- [ ] Slices, tasks, coverage map, DoD, dependency references, rollout notes, approval paths, and assumption/fallback notes were updated consistently.
 - [ ] `contract-drift-audit` ran when executable contract changes or mature dossier states made it necessary.
 - [ ] If executable follow-up is required, it is explicit in a canonical artifact.
 - [ ] `lint-dossiers`, `coverage-audit`, marker audit, and index refresh ran after the change.

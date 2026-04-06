@@ -217,6 +217,110 @@ Implement a shaped API feature.
   assert.match(result.stdout, /Vague wording in executable sections/);
 });
 
+test('lint-dossiers reports planning nudges for readiness, dependencies, rollout notes, and replanning tags', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-plan-lint-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  });
+
+  writeFile(
+    repoRoot,
+    'docs/features/F-0009-platform-adapter.md',
+    `---
+id: F-0009
+title: Platform adapter seam
+status: done
+area: platform
+owners: ["@platform"]
+depends_on: []
+impacts: ["worker"]
+coverage_gate: strict
+created: 2026-03-26
+updated: 2026-03-26
+---
+
+## Requirements & Acceptance Criteria
+
+- AC-F0009-01 Adapter accepts queued work from the shared worker.
+
+## Definition of Done
+
+- Adapter handoff is verified by tests.
+
+## Coverage map
+
+| AC-F0009-01 | test/platform-adapter.test.mjs |
+
+## Change log
+
+- 2026-03-26: Initial adapter dossier.
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    'docs/features/F-0003-planning-smells.md',
+    `---
+id: F-0003
+title: Planning smell dossier
+status: planned
+area: worker
+owners: ["@team"]
+depends_on: ["F-0009"]
+impacts: ["worker", "db"]
+coverage_gate: deferred
+created: 2026-03-26
+updated: 2026-03-27
+---
+
+## Open questions
+
+- What retry ceiling should the worker assume? Owner: @team. Next: align with ops before implementation.
+
+## Requirements & Acceptance Criteria
+
+- AC-F0003-01 Worker handoff persists the delivery marker before downstream dispatch.
+
+## Definition of Done
+
+- The handoff path is verified end to end.
+
+## Design (compact)
+
+### Runtime / deployment surface
+- Shared worker consumes outbound handoff jobs on the existing runtime path.
+
+### Data model changes
+- Add \`handoff_started_at\`; the migration becomes one-way once the worker reads the new column.
+
+### Verification surface / initial verification plan
+- AC-F0003-01: integration
+
+## Slicing plan
+
+### Slice SL-F0003-01: worker handoff
+Covers: AC-F0003-01
+Verification: integration
+
+## Coverage map
+
+| AC-F0003-01 | test/worker-handoff.test.mjs | planned |
+
+## Change log
+
+- **v1.0 (2026-03-26):** Initial planned dossier.
+- **v1.1 (2026-03-27):** Updated slices after new migration notes.
+`,
+  );
+
+  const result = runCli(['lint-dossiers', '--root', repoRoot]);
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /planning-readiness cue/);
+  assert.match(result.stdout, /Planned\+ dossier has dependencies/);
+  assert.match(result.stdout, /rollout order matters/);
+  assert.match(result.stdout, /no short reason tags were found/);
+});
+
 test('verify, review-artifact, and dossier-step-close complete the implementation step', (t) => {
   const repoRoot = createRepoFixture(t);
 
