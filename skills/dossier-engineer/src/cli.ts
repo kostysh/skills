@@ -8,7 +8,7 @@ import {
   executeCommand,
   findCommand,
   globalHelp,
-} from './commands.js';
+} from './commands.ts';
 
 const io: CliIo = {
   stdout: process.stdout,

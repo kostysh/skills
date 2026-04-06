@@ -1,8 +1,8 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-import { parseFrontmatter } from './frontmatter.js';
-import { readText } from './fs-utils.js';
+import { parseFrontmatter } from './frontmatter.ts';
+import { readText } from './fs-utils.ts';
 
 export const DEFAULT_DOSSIERS_DIR = 'docs/features';
 export const DOSSIER_STATUSES = new Set([

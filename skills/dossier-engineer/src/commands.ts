@@ -3,21 +3,17 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
 import {
-  COVERAGE_GATES,
   DEFAULT_DOSSIERS_DIR,
   DEFAULT_STRICT_COVERAGE_STATUSES,
-  DOSSIER_STATUSES,
   extractAcIds,
   extractFeatureIdFromAc,
-  extractFeatureNumericId,
-  hasChangeLogEntry,
   listDossierFiles,
   matchesFeatureFile,
   readAllDossiers,
   readDossierRecord,
   type DossierRecord,
-} from './lib/dossier-utils.js';
-import { fileExists, readText, walk, writeJsonAtomic, writeTextAtomic } from './lib/fs-utils.js';
+} from './lib/dossier-utils.ts';
+import { fileExists, readText, walk, writeJsonAtomic, writeTextAtomic } from './lib/fs-utils.ts';
 import {
   getChangedFiles,
   getCurrentCommit,
@@ -30,7 +26,19 @@ import {
   resolveBaseRef,
   runGit,
   toRepoRelativePath,
-} from './lib/git-utils.js';
+} from './lib/git-utils.ts';
+import {
+  buildRedFlagsBlock,
+  analyzeDossiers,
+  renderLintSummary,
+} from './core/lint-dossiers.ts';
+import { hasExecutableSectionChange, parseTopLevelSections } from './core/markdown.ts';
+import {
+  defaultNextStep,
+  parseCandidates,
+  selectActiveDossier,
+  statusToNextStep,
+} from './core/workflow.ts';
 
 export const CLI_NAME = 'dossier';
 export const CLI_DISPLAY_NAME = 'node scripts/dossier.mjs';
@@ -51,12 +59,6 @@ export interface CommandDefinition {
   helpText: () => string;
   name: string;
   run: (argv: string[], io: CliIo) => Promise<number> | number;
-}
-
-interface LintFinding {
-  feature?: string;
-  level: 'error' | 'warn';
-  message: string;
 }
 
 interface CoverageAuditResult {
@@ -180,24 +182,6 @@ function frontmatterString(
   return stringOrFallback(frontmatter[key], fallback);
 }
 
-function describeValue(value: unknown): string {
-  if (
-    typeof value === 'string' ||
-    typeof value === 'number' ||
-    typeof value === 'boolean' ||
-    value === null ||
-    value === undefined
-  ) {
-    return String(value);
-  }
-
-  try {
-    return JSON.stringify(value) ?? '[unserializable]';
-  } catch {
-    return '[unserializable]';
-  }
-}
-
 function relativeToRoot(root: string, targetPath: string): string {
   return path.relative(root, targetPath).split(path.sep).join('/');
 }
@@ -292,167 +276,6 @@ _Last sync: ${new Date().toISOString()}_
 <!-- BEGIN GENERATED RED_FLAGS -->
 <!-- END GENERATED RED_FLAGS -->
 `;
-}
-
-function parseTopLevelSections(markdown: string): Map<string, string> {
-  const source = String(markdown ?? '');
-  const lines = source.split(/\r?\n/);
-  const sections = new Map<string, string>();
-  let currentHeading = '__preamble__';
-  let buffer: string[] = [];
-
-  const flush = () => {
-    sections.set(currentHeading, buffer.join('\n').trim());
-  };
-
-  for (const line of lines) {
-    const headingMatch = line.match(/^##\s+(.+)$/);
-    if (headingMatch) {
-      flush();
-      currentHeading = headingMatch[1]?.trim() ?? '__preamble__';
-      buffer = [];
-      continue;
-    }
-    buffer.push(line);
-  }
-  flush();
-  return sections;
-}
-
-function normalizeSectionText(text: string | undefined): string {
-  return String(text ?? '')
-    .replace(/\r\n/g, '\n')
-    .replace(/[ \t]+$/gm, '')
-    .trim();
-}
-
-function getSectionText(markdown: string, headingPattern: RegExp): string {
-  const sections = parseTopLevelSections(markdown);
-  return [...sections.entries()]
-    .filter(([heading]) => heading !== '__preamble__' && headingPattern.test(heading))
-    .map(([, body]) => body)
-    .join('\n')
-    .trim();
-}
-
-function hasHeading(markdown: string, headingPattern: RegExp): boolean {
-  return headingPattern.test(String(markdown));
-}
-
-function collectExecutableSectionLines(markdown: string): string[] {
-  const sections = parseTopLevelSections(markdown);
-  const lines: string[] = [];
-  for (const [heading, body] of sections) {
-    if (heading === '__preamble__') {
-      continue;
-    }
-    if (!EXECUTABLE_SECTION_PATTERNS.some((pattern) => pattern.test(heading))) {
-      continue;
-    }
-    lines.push(...String(body).split(/\r?\n/));
-  }
-  return lines.map((line) => line.trim()).filter(Boolean);
-}
-
-function extractAcStatementLines(markdown: string): Array<{ acId: string; line: string }> {
-  const lines = String(markdown).split(/\r?\n/);
-  const acStatements: Array<{ acId: string; line: string }> = [];
-  for (const line of lines) {
-    const match = line.match(/\b(AC-F\d{4}-\d{1,2})\b/);
-    if (!match) {
-      continue;
-    }
-    const acId = (match[1] ?? '').replace(/-(\d{1,2})$/, (_, number: string) => `-${number.padStart(2, '0')}`);
-    acStatements.push({ acId, line: line.trim() });
-  }
-  return acStatements;
-}
-
-function isShapedOrLaterStatus(status: unknown): boolean {
-  return ['shaped', 'planned', 'in_progress', 'done'].includes(String(status));
-}
-
-function isPlannedOrLaterStatus(status: unknown): boolean {
-  return ['planned', 'in_progress', 'done'].includes(String(status));
-}
-
-function sectionLooksExplicitlyNone(text: string): boolean {
-  return /\bnone\b|\bno open questions\b/i.test(String(text));
-}
-
-function countBulletEntries(text: string): number {
-  return String(text)
-    .split(/\r?\n/)
-    .filter((line) => /^\s*-\s+/.test(line))
-    .length;
-}
-
-const EXECUTABLE_SECTION_PATTERNS = [
-  /scope/i,
-  /requirements/i,
-  /acceptance criteria/i,
-  /non-functional/i,
-  /^nfr$/i,
-  /design/i,
-  /definition of done/i,
-  /verification/i,
-  /test plan/i,
-  /coverage map/i,
-  /rollout/i,
-  /activation/i,
-  /edge cases/i,
-  /failure modes/i,
-  /slicing plan/i,
-];
-
-const DOD_HEADING_PATTERN = /^#{2,6}\s+.*definition of done.*$/im;
-const VERIFICATION_HEADING_PATTERN = /^#{2,6}\s+.*(verification|test plan|coverage map).*$/im;
-const ROLLOUT_HEADING_PATTERN = /^#{2,6}\s+.*(rollout|activation|cutover|rollback).*$/im;
-const BOUNDARY_TRIGGER_PATTERN =
-  /`?(GET|POST|PUT|PATCH|DELETE)\s+\/|^\s*-\s*(body|response|payload|dto|event|webhook)\b/im;
-const CONTRACT_CUE_PATTERN =
-  /\b(contract|schema|openapi|json schema|error model|retry|idempotent|idempotency|backward-compat|compatibility)\b/i;
-const MEASURABLE_NFR_CUE_PATTERN =
-  /\b(metric|metrics|budget|threshold|signal|signals|p\d{2}|latency|availability|throughput|counter|gauge|histogram|log|logs|trace|traces|event|events|ms|seconds?|minutes?|hours?)\b/i;
-const OPEN_QUESTION_READY_CUE_PATTERN = /\bneeded[_ ]by\b/i;
-const BEFORE_PLANNED_CUE_PATTERN = /\bneeded[_ ]by\b[^\n]*\bbefore[_ -]planned\b/i;
-const DEPENDENCY_NOTE_PATTERN = /^\s*(?:[-*]\s*)?depends on:\s*/im;
-const OWNER_CUE_PATTERN = /@\w+|\bowner\b/i;
-const UNBLOCK_CUE_PATTERN = /\bunblock\b/i;
-const ROLLOUT_TRIGGER_PATTERN =
-  /\b(feature flag|backfill|cutover|activation|rollback|rollout|dual[- ]write|migrat(?:e|ion)|irreversible)\b/i;
-const REPLANNING_REASON_TAG_PATTERN =
-  /\[(clarification|scope realignment|dependency realignment|risk discovery|contract drift)\]/i;
-const COMPOUND_AC_PATTERN = /\b(and\/or|and|or)\b/i;
-const RAW_TBD_PATTERN = /\bTBD\b/i;
-const VAGUE_EXECUTABLE_PATTERNS: Array<{ label: string; pattern: RegExp }> = [
-  { label: 'etc.', pattern: /\betc\./i },
-  { label: 'usually', pattern: /\busually\b/i },
-  { label: 'as appropriate', pattern: /\bas appropriate\b/i },
-  { label: 'fast', pattern: /\bfast\b/i },
-  { label: 'user-friendly', pattern: /\buser-friendly\b/i },
-];
-
-function hasExecutableSectionChange(
-  beforeSections: Map<string, string>,
-  afterSections: Map<string, string>,
-): string[] {
-  const changedSections: string[] = [];
-  const allHeadings = new Set([...beforeSections.keys(), ...afterSections.keys()]);
-  for (const heading of allHeadings) {
-    if (heading === '__preamble__') {
-      continue;
-    }
-    const before = normalizeSectionText(beforeSections.get(heading));
-    const after = normalizeSectionText(afterSections.get(heading));
-    if (before === after) {
-      continue;
-    }
-    if (EXECUTABLE_SECTION_PATTERNS.some((pattern) => pattern.test(heading))) {
-      changedSections.push(heading);
-    }
-  }
-  return changedSections;
 }
 
 function getBaselineFromGit(
@@ -675,97 +498,6 @@ async function readLatestJsonFile(dirPath: string): Promise<Record<string, unkno
     return null;
   }
   return JSON.parse(await fs.readFile(latest.absPath, 'utf8')) as Record<string, unknown>;
-}
-
-function parseCandidates(markdown: string): Array<{
-  area: string;
-  dependsOn: string;
-  dossier: string;
-  id: string;
-  status: string;
-  title: string;
-  why: string;
-}> {
-  const candidates = [];
-  for (const line of String(markdown).split(/\r?\n/)) {
-    if (!/^\|\s*CF-\d+\s*\|/.test(line)) {
-      continue;
-    }
-    const cells = line
-      .split('|')
-      .slice(1, -1)
-      .map((cell) => cell.trim());
-    if (cells.length < 7) {
-      continue;
-    }
-    const [id = '', title = '', area = '', status = '', dependsOn = '', why = '', dossier = ''] =
-      cells;
-    candidates.push({ area, dependsOn, dossier, id, status, title, why });
-  }
-  return candidates;
-}
-
-function statusToNextStep(status: unknown): string {
-  switch (status) {
-    case 'proposed':
-      return 'spec-compact';
-    case 'shaped':
-      return 'plan-slice';
-    case 'planned':
-    case 'in_progress':
-      return 'implementation';
-    case 'done':
-      return 'none';
-    case 'parked':
-      return 'resume-or-discard';
-    default:
-      return 'feature-intake';
-  }
-}
-
-function selectActiveDossier(dossiers: DossierRecord[]): DossierRecord | null {
-  const priority = ['in_progress', 'planned', 'shaped', 'proposed', 'parked', 'done'];
-  return (
-    [...dossiers].sort((left, right) => {
-      const leftPriority = priority.indexOf(String(left.frontmatter.status));
-      const rightPriority = priority.indexOf(String(right.frontmatter.status));
-      if (leftPriority !== rightPriority) {
-        return leftPriority - rightPriority;
-      }
-      return String(left.frontmatter.id).localeCompare(String(right.frontmatter.id));
-    })[0] ?? null
-  );
-}
-
-function defaultNextStep(status: unknown, step: string): string {
-  if (step === 'feature-intake') {
-    return 'spec-compact';
-  }
-  if (step === 'spec-compact') {
-    return 'plan-slice';
-  }
-  if (step === 'plan-slice') {
-    return 'implementation';
-  }
-  if (step === 'change-proposal') {
-    return 'contract-drift-audit';
-  }
-
-  switch (status) {
-    case 'proposed':
-      return 'spec-compact';
-    case 'shaped':
-      return 'plan-slice';
-    case 'planned':
-    case 'in_progress':
-      return 'implementation';
-    case 'done':
-      return 'none';
-    case 'parked':
-      return 'resume-or-discard';
-    default:
-      return 'next-step';
-  }
 }
 
 function createBufferedIo(): {
@@ -1049,388 +781,19 @@ async function runLintDossiersCommand(argv: string[], io: CliIo): Promise<number
     return EXIT_FAILURE;
   }
 
-  const findings: LintFinding[] = [];
-  const featureIds = new Set<string>();
-
-  for (const dossier of dossiers) {
-    const frontmatter = dossier.frontmatter ?? {};
-    const feature = frontmatterString(frontmatter, 'id', dossier.relPath);
-    const required: Array<[string, unknown]> = [
-      ['id', frontmatter.id],
-      ['title', frontmatter.title],
-      ['status', frontmatter.status],
-      ['area', frontmatter.area],
-      ['owners', frontmatter.owners],
-      ['depends_on', frontmatter.depends_on],
-      ['impacts', frontmatter.impacts],
-      ['created', frontmatter.created],
-      ['updated', frontmatter.updated],
-    ];
-
-    for (const [key, value] of required) {
-      const missing =
-        value === undefined || value === null || (typeof value === 'string' && value.trim() === '');
-      if (missing) {
-        findings.push({
-          level: 'error',
-          feature,
-          message: `Missing required frontmatter key: ${key}`,
-        });
-      }
-    }
-
-    if (typeof frontmatter.id !== 'string' || !/^F-\d{4}$/.test(frontmatter.id)) {
-      findings.push({
-        level: 'error',
-        feature,
-        message: `Invalid feature id "${describeValue(frontmatter.id)}" (expected F-0001).`,
-      });
-    } else {
-      if (featureIds.has(frontmatter.id)) {
-        findings.push({
-          level: 'error',
-          feature: frontmatter.id,
-          message: `Duplicate feature id across dossiers: ${frontmatter.id}`,
-        });
-      }
-      featureIds.add(frontmatter.id);
-    }
-
-    if (typeof frontmatter.status !== 'string' || !DOSSIER_STATUSES.has(frontmatter.status)) {
-      findings.push({
-        level: 'error',
-        feature,
-        message: `Invalid status "${describeValue(frontmatter.status)}" (allowed: ${[...DOSSIER_STATUSES].join(', ')}).`,
-      });
-    }
-
-    if (!Array.isArray(frontmatter.owners) || frontmatter.owners.length === 0) {
-      findings.push({
-        level: 'error',
-        feature,
-        message: 'owners must be a non-empty array (for example: owners: ["@you"]).',
-      });
-    }
-
-    for (const [key, value] of [
-      ['created', frontmatter.created],
-      ['updated', frontmatter.updated],
-    ] as const) {
-      if (typeof value === 'string' && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-        findings.push({
-          level: 'warn',
-          feature,
-          message: `${key} should be YYYY-MM-DD (got "${value}").`,
-        });
-      }
-    }
-
-    if (
-      frontmatter.coverage_gate !== undefined &&
-      (typeof frontmatter.coverage_gate !== 'string' ||
-        !COVERAGE_GATES.has(frontmatter.coverage_gate))
-    ) {
-      findings.push({
-        level: 'error',
-        feature,
-        message: `Invalid coverage_gate "${describeValue(frontmatter.coverage_gate)}" (allowed: ${[...COVERAGE_GATES].join(', ')}).`,
-      });
-    }
-
-    if (
-      frontmatter.coverage_gate === undefined &&
-      ['planned', 'in_progress', 'done'].includes(String(frontmatter.status))
-    ) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'coverage_gate is not explicit. Add `coverage_gate: deferred|strict` so workflow state and coverage enforcement stay separate.',
-      });
-    }
-
-    if (dossier.acIds.length === 0) {
-      findings.push({
-        level: 'error',
-        feature,
-        message: 'No acceptance criteria IDs found. Add at least one AC-F....-.. entry.',
-      });
-    }
-
-    const featureNum = extractFeatureNumericId(
-      typeof frontmatter.id === 'string' ? frontmatter.id : null,
-    );
-    if (featureNum) {
-      for (const acId of dossier.acIds) {
-        if (!acId.startsWith(`AC-F${featureNum}-`)) {
-          findings.push({
-            level: 'error',
-            feature: String(frontmatter.id),
-            message: `AC ID "${acId}" does not match feature numeric id ${featureNum}.`,
-          });
-        }
-      }
-    }
-
-    if (dossier.coverageGate === 'strict') {
-      if (dossier.coverageIds.length === 0) {
-        findings.push({
-          level: 'error',
-          feature,
-          message:
-            'Missing Coverage map rows for a strict coverage gate (expected rows like "| AC-F....-.. |").',
-        });
-      } else {
-        const missingCoverageRows = dossier.acIds.filter(
-          (acId) => !dossier.coverageIds.includes(acId),
-        );
-        if (missingCoverageRows.length > 0) {
-          findings.push({
-            level: 'error',
-            feature,
-            message: `Coverage map is missing AC rows: ${missingCoverageRows.join(', ')}`,
-          });
-        }
-      }
-    } else if (dossier.coverageIds.length === 0) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message: 'Coverage map rows are recommended even when coverage is deferred.',
-      });
-    }
-
-    if (!hasChangeLogEntry(dossier.markdown)) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message: 'Missing Change log section. Add at least an initial entry for traceability.',
-      });
-    }
-
-    const status = frontmatter.status;
-    if (isShapedOrLaterStatus(status) && !hasHeading(dossier.markdown, DOD_HEADING_PATTERN)) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'Missing Definition of Done section for a shaped/planned+ dossier. Add a compact closure target before implementation.',
-      });
-    }
-
-    if (
-      isShapedOrLaterStatus(status) &&
-      !hasHeading(dossier.markdown, VERIFICATION_HEADING_PATTERN) &&
-      dossier.coverageIds.length === 0
-    ) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'Missing verification cue for a shaped/planned+ dossier. Add a verification section or an initial coverage plan.',
-      });
-    }
-
-    const designText = getSectionText(dossier.markdown, /design/i);
-    const openQuestionsText = getSectionText(dossier.markdown, /open questions/i);
-    const slicingText = getSectionText(dossier.markdown, /slicing plan/i);
-    const changeLogText = getSectionText(dossier.markdown, /change log/i);
-    if (isShapedOrLaterStatus(status) && designText && BOUNDARY_TRIGGER_PATTERN.test(designText) && !CONTRACT_CUE_PATTERN.test(designText)) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'Boundary I/O appears in the compact design, but no contract/schema/error-model cue was found. Add a compact contract sketch or link to the canonical contract.',
-      });
-    }
-
-    const nfrText = getSectionText(dossier.markdown, /\bnon-functional\b|\bnfr\b/i);
-    if (isShapedOrLaterStatus(status) && nfrText && !MEASURABLE_NFR_CUE_PATTERN.test(nfrText)) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'NFR section looks aspirational. Add a metric, budget/threshold, or observable signal for any normative NFR.',
-      });
-    }
-
-    if (
-      isShapedOrLaterStatus(status) &&
-      openQuestionsText &&
-      !sectionLooksExplicitlyNone(openQuestionsText) &&
-      !OPEN_QUESTION_READY_CUE_PATTERN.test(openQuestionsText)
-    ) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'Open questions are present without a planning-readiness cue. Add owner/date plus `needed_by: before_planned|before_implementation|before_done` and a next decision path.',
-      });
-    }
-
-    if (
-      isPlannedOrLaterStatus(status) &&
-      openQuestionsText &&
-      BEFORE_PLANNED_CUE_PATTERN.test(openQuestionsText)
-    ) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'A planned/in-progress dossier still contains an open question marked `needed_by: before_planned`. Resolve it or reclassify the readiness gate before keeping the dossier planned+.',
-      });
-    }
-
-    const dependsOn = toStringArray(frontmatter.depends_on);
-    if (
-      isPlannedOrLaterStatus(status) &&
-      dependsOn.length > 0 &&
-      (!slicingText ||
-        !DEPENDENCY_NOTE_PATTERN.test(slicingText) ||
-        !OWNER_CUE_PATTERN.test(slicingText) ||
-        !UNBLOCK_CUE_PATTERN.test(slicingText))
-    ) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'Planned+ dossier has dependencies, but the slicing plan does not show clear `Depends on:` visibility with owner and unblock condition. Add the dependency note where it affects delivery order.',
-      });
-    }
-
-    if (
-      isPlannedOrLaterStatus(status) &&
-      `${designText}\n${slicingText}`.trim() &&
-      ROLLOUT_TRIGGER_PATTERN.test(`${designText}\n${slicingText}`) &&
-      !hasHeading(dossier.markdown, ROLLOUT_HEADING_PATTERN)
-    ) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'Planning/design text suggests rollout order matters, but no rollout / activation note was found. Add a compact activation order and rollback-limits note.',
-      });
-    }
-
-    if (
-      isPlannedOrLaterStatus(status) &&
-      countBulletEntries(changeLogText) > 1 &&
-      !REPLANNING_REASON_TAG_PATTERN.test(changeLogText)
-    ) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'Change log shows mature replanning, but no short reason tags were found. Prefer tags like `[clarification]`, `[scope realignment]`, `[dependency realignment]`, `[risk discovery]`, or `[contract drift]`.',
-      });
-    }
-
-    const compoundAcIds = extractAcStatementLines(dossier.markdown)
-      .filter(({ line }) => COMPOUND_AC_PATTERN.test(line))
-      .map(({ acId }) => acId);
-    if (compoundAcIds.length > 0) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message: `Potential compound ACs detected: ${compoundAcIds.join(', ')}. Prefer one obligation per AC.`,
-      });
-    }
-
-    const executableLines = collectExecutableSectionLines(dossier.markdown);
-    if (executableLines.some((line) => RAW_TBD_PATTERN.test(line))) {
-      findings.push({
-        level: 'warn',
-        feature,
-        message:
-          'Raw TBD found in executable sections. Convert it into an Open question with an owner/date or explicit next decision path.',
-      });
-    }
-
-    const vagueMatches = executableLines.flatMap((line) =>
-      VAGUE_EXECUTABLE_PATTERNS.filter(({ pattern }) => pattern.test(line)).map(({ label }) => ({
-        label,
-        line,
-      })),
-    );
-    if (vagueMatches.length > 0) {
-      const samples = vagueMatches
-        .slice(0, 2)
-        .map(({ label, line }) => `"${label}" in "${line}"`)
-        .join('; ');
-      findings.push({
-        level: 'warn',
-        feature,
-        message: `Vague wording in executable sections: ${samples}. Rewrite the statement more concretely.`,
-      });
-    }
-
-    for (const dependency of toStringArray(frontmatter.depends_on)) {
-      if (!/^F-\d{4}$/.test(dependency)) {
-        findings.push({
-          level: 'error',
-          feature,
-          message: `Invalid depends_on entry "${dependency}" (expected F-0002).`,
-        });
-      }
-    }
-  }
-
-  for (const dossier of dossiers) {
-    const frontmatter = dossier.frontmatter ?? {};
-    const feature = frontmatterString(frontmatter, 'id', dossier.relPath);
-    for (const dependency of toStringArray(frontmatter.depends_on)) {
-      if (/^F-\d{4}$/.test(dependency) && !featureIds.has(dependency)) {
-        findings.push({
-          level: 'error',
-          feature,
-          message: `depends_on references missing dossier: ${dependency}`,
-        });
-      }
-    }
-  }
-
+  const findings = analyzeDossiers(dossiers);
   const errors = findings.filter((finding) => finding.level === 'error');
-  const warnings = findings.filter((finding) => finding.level === 'warn');
-  const byFeature = new Map<string, LintFinding[]>();
 
-  for (const finding of findings) {
-    const key = finding.feature ?? 'global';
-    if (!byFeature.has(key)) {
-      byFeature.set(key, []);
-    }
-    byFeature.get(key)?.push(finding);
-  }
-
-  const lines = [
-    `Found ${errors.length} error(s), ${warnings.length} warning(s) across ${dossiers.length} dossier(s).`,
-  ];
-  for (const [feature, items] of [...byFeature.entries()].sort((left, right) =>
-    String(left[0]).localeCompare(String(right[0])),
-  )) {
-    for (const item of items) {
-      lines.push(`- [${item.level.toUpperCase()}] ${feature}: ${item.message}`);
-    }
-  }
-
-  writeLine(io.stdout, lines.join('\n'));
+  writeLine(io.stdout, renderLintSummary(findings, dossiers.length));
 
   if (updateIndex) {
     try {
       const indexText = await readText(absIndex);
-      const redFlags =
-        findings.length > 0
-          ? findings
-              .map(
-                (finding) =>
-                  `- **${finding.level.toUpperCase()}** ${finding.feature ?? 'global'} — ${finding.message}`,
-              )
-              .join('\n')
-          : '- ✅ No red flags detected.';
       const updatedIndex = replaceBlock(
         indexText,
         '<!-- BEGIN GENERATED RED_FLAGS -->',
         '<!-- END GENERATED RED_FLAGS -->',
-        redFlags,
+        buildRedFlagsBlock(findings),
       );
       if (updatedIndex === indexText) {
         writeLine(io.stdout, `[lint-dossiers] Red flags block already up to date in ${indexFile}.`);

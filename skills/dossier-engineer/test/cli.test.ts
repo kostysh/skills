@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
@@ -10,9 +10,9 @@ const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
 const CLI_PATH = path.join(SKILL_DIR, 'scripts', 'dossier.mjs');
 
-function runCli(args, { cwd = SKILL_DIR } = {}) {
+function runCli(args: string[], options: { cwd?: string } = {}) {
   const result = spawnSync('node', [CLI_PATH, ...args], {
-    cwd,
+    cwd: options.cwd ?? SKILL_DIR,
     encoding: 'utf8',
   });
 
@@ -23,7 +23,7 @@ function runCli(args, { cwd = SKILL_DIR } = {}) {
   return result;
 }
 
-function runCommand(command, args, cwd) {
+function runCommand(command: string, args: string[], cwd: string) {
   const result = spawnSync(command, args, {
     cwd,
     encoding: 'utf8',
@@ -36,13 +36,13 @@ function runCommand(command, args, cwd) {
   return result;
 }
 
-function writeFile(root, relPath, content) {
+function writeFile(root: string, relPath: string, content: string): void {
   const absPath = path.join(root, relPath);
   fs.mkdirSync(path.dirname(absPath), { recursive: true });
   fs.writeFileSync(absPath, content);
 }
 
-function createRepoFixture(t) {
+function createRepoFixture(t: test.TestContext): string {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-'));
   t.after(() => {
     fs.rmSync(root, { recursive: true, force: true });
@@ -112,7 +112,7 @@ test('AC-F0001-02 rejects malformed payloads', () => {
   return root;
 }
 
-test('global help exposes unified commands and compatibility aliases', () => {
+void test('global help exposes unified commands and compatibility aliases', () => {
   const result = runCli(['--help']);
 
   assert.equal(result.status, 0);
@@ -122,7 +122,7 @@ test('global help exposes unified commands and compatibility aliases', () => {
   assert.equal(result.stderr, '');
 });
 
-test('index-refresh creates the generated index content', (t) => {
+void test('index-refresh creates the generated index content', (t) => {
   const repoRoot = createRepoFixture(t);
 
   const result = runCli(['index-refresh', '--root', repoRoot]);
@@ -135,7 +135,7 @@ test('index-refresh creates the generated index content', (t) => {
   assert.match(indexText, /No red flags detected/);
 });
 
-test('coverage-audit passes and next-step returns implementation for the active dossier', (t) => {
+void test('coverage-audit passes and next-step returns implementation for the active dossier', (t) => {
   const repoRoot = createRepoFixture(t);
 
   const coverageResult = runCli([
@@ -151,13 +151,17 @@ test('coverage-audit passes and next-step returns implementation for the active 
   const nextStepResult = runCli(['next-step', '--root', repoRoot, '--json']);
   assert.equal(nextStepResult.status, 0);
 
-  const summary = JSON.parse(nextStepResult.stdout);
+  const summary = JSON.parse(nextStepResult.stdout) as {
+    dossier_status: string;
+    target_dossier: string;
+    workflow_next: string;
+  };
   assert.equal(summary.target_dossier, 'docs/features/F-0001-sample.md');
   assert.equal(summary.workflow_next, 'implementation');
   assert.equal(summary.dossier_status, 'planned');
 });
 
-test('lint-dossiers reports compact-spec nudges for smells and weak contract cues', (t) => {
+void test('lint-dossiers reports compact-spec nudges for smells and weak contract cues', (t) => {
   const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-lint-'));
   t.after(() => {
     fs.rmSync(repoRoot, { recursive: true, force: true });
@@ -217,7 +221,7 @@ Implement a shaped API feature.
   assert.match(result.stdout, /Vague wording in executable sections/);
 });
 
-test('lint-dossiers reports planning nudges for readiness, dependencies, rollout notes, and replanning tags', (t) => {
+void test('lint-dossiers reports planning nudges for readiness, dependencies, rollout notes, and replanning tags', (t) => {
   const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-plan-lint-'));
   t.after(() => {
     fs.rmSync(repoRoot, { recursive: true, force: true });
@@ -321,7 +325,7 @@ Verification: integration
   assert.match(result.stdout, /no short reason tags were found/);
 });
 
-test('verify, review-artifact, and dossier-step-close complete the implementation step', (t) => {
+void test('verify, review-artifact, and dossier-step-close complete the implementation step', (t) => {
   const repoRoot = createRepoFixture(t);
 
   assert.equal(runCli(['index-refresh', '--root', repoRoot]).status, 0);
@@ -378,7 +382,10 @@ test('verify, review-artifact, and dossier-step-close complete the implementatio
 
   const stepArtifact = JSON.parse(
     fs.readFileSync(path.join(repoRoot, '.dossier/steps/F-0001/implementation.json'), 'utf8'),
-  );
+  ) as {
+    next_step: string;
+    process_complete: boolean;
+  };
   assert.equal(stepArtifact.process_complete, true);
   assert.equal(stepArtifact.next_step, 'implementation');
 });
