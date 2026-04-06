@@ -11,6 +11,7 @@ import type { AbsoluteFsPath, BacklogRootPath } from './shared.ts';
 export interface CommandHost {
   resolveCliPath(path: CliPathInput): AbsoluteFsPath;
   nowIsoUtc(): string;
+  createUuid(): string;
 }
 
 export interface CommandExecutionContext {

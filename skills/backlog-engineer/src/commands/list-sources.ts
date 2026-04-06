@@ -1,10 +1,28 @@
 import {
   ListSourcesCommandInputSchema,
   ListSourcesCommandOutputSchema,
+  type ListSourcesCommandInput,
+  type ListSourcesCommandOutput,
   type CommandHelpOption,
 } from '../schemas/index.ts';
 import { assertNoPositionals, parseCommandArgs, parseUsageInput } from './arg-parsers.ts';
-import { definePlaceholderCommand } from './placeholder.ts';
+import type { CommandDefinition } from './types.ts';
+
+function collectItemSourceIds(item: {
+  origin_source_ids: string[];
+  specification_source_ids: string[];
+  plan_source_ids: string[];
+  implementation_source_ids: string[];
+  test_source_ids: string[];
+}): Set<string> {
+  return new Set([
+    ...item.origin_source_ids,
+    ...item.specification_source_ids,
+    ...item.plan_source_ids,
+    ...item.implementation_source_ids,
+    ...item.test_source_ids,
+  ]);
+}
 
 const OPTIONS = [
   {
@@ -19,7 +37,10 @@ const OPTIONS = [
   },
 ] as const satisfies readonly CommandHelpOption[];
 
-export const LIST_SOURCES_COMMAND = definePlaceholderCommand({
+export const LIST_SOURCES_COMMAND: CommandDefinition<
+  ListSourcesCommandInput,
+  ListSourcesCommandOutput
+> = {
   name: 'list-sources',
   summary: 'List registered sources and source metadata.',
   usage: [
@@ -46,4 +67,46 @@ export const LIST_SOURCES_COMMAND = definePlaceholderCommand({
       ...(typeof parsed.values.path === 'string' ? { path: parsed.values.path } : {}),
     });
   },
-});
+  async execute(input, context) {
+    if (!context.backlogRoot) {
+      throw context.errors.create('BE_ROOT_NOT_FOUND');
+    }
+
+    let sources = [...(await context.artifacts.readSourceRegistry(context.backlogRoot)).sources];
+
+    if (input.item_key) {
+      const state = await context.artifacts.readState(context.backlogRoot);
+      const item = state.items.find((candidate) => candidate.item_key === input.item_key);
+      if (!item) {
+        throw context.errors.create('BE_ITEM_NOT_FOUND', undefined, {
+          details: {
+            item_key: input.item_key,
+          },
+        });
+      }
+
+      const itemSourceIds = collectItemSourceIds(item);
+      sources = sources.filter((source) => itemSourceIds.has(source.source_id));
+    }
+
+    if (input.path) {
+      const normalizedSource = await context.sources.resolveCliSourcePath({
+        backlogRoot: context.backlogRoot,
+        inputPath: context.host.resolveCliPath(input.path),
+      });
+      sources = sources.filter((source) => source.path === normalizedSource.relative_path);
+    }
+
+    return context.schemas.parseCommandOutput(
+      'list-sources',
+      [...sources].sort((left, right) => {
+        const labelCompare = left.source_label.localeCompare(right.source_label);
+        if (labelCompare !== 0) {
+          return labelCompare;
+        }
+
+        return left.source_id.localeCompare(right.source_id);
+      }),
+    );
+  },
+};

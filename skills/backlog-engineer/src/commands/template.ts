@@ -2,6 +2,8 @@ import { createUsageError } from '../errors/index.ts';
 import {
   TemplateCommandInputSchema,
   TemplateCommandOutputSchema,
+  type TemplateCommandInput,
+  type TemplateCommandOutput,
   type CommandHelpOption,
 } from '../schemas/index.ts';
 import {
@@ -11,7 +13,7 @@ import {
   requireStringOption,
   splitCsvFlag,
 } from './arg-parsers.ts';
-import { definePlaceholderCommand } from './placeholder.ts';
+import type { CommandDefinition } from './types.ts';
 
 const OPTIONS = [
   {
@@ -27,7 +29,15 @@ const OPTIONS = [
   },
 ] as const satisfies readonly CommandHelpOption[];
 
-export const TEMPLATE_COMMAND = definePlaceholderCommand({
+function formatPatchSequence(sequence: number): string {
+  return String(sequence).padStart(3, '0');
+}
+
+function createPatchTemplateId(createdAt: string, sequence: number): string {
+  return `${createdAt.slice(0, 10)}-${formatPatchSequence(sequence)}-patch-template`;
+}
+
+export const TEMPLATE_COMMAND: CommandDefinition<TemplateCommandInput, TemplateCommandOutput> = {
   name: 'template',
   summary: 'Generate packet or patch templates.',
   usage: [
@@ -81,4 +91,63 @@ export const TEMPLATE_COMMAND = definePlaceholderCommand({
       'Use `template packet` or `template patch`.',
     );
   },
-});
+  async execute(input, context) {
+    const cwd = context.host.resolveCliPath('.');
+
+    if (input.mode === 'packet') {
+      const outputPath = await context.artifacts.writeTemplateOutput({
+        cwd,
+        out: input.out,
+        defaultBasename: 'packet.template.json',
+        content: context.templates.renderPacketTemplate(),
+      });
+
+      return context.schemas.parseCommandOutput('template', {
+        mode: 'packet',
+        output_path: outputPath,
+      });
+    }
+
+    if (!context.backlogRoot) {
+      throw context.errors.create('BE_ROOT_NOT_FOUND');
+    }
+
+    const [appliedRegistry, state] = await Promise.all([
+      context.artifacts.readAppliedRegistry(context.backlogRoot),
+      context.artifacts.readState(context.backlogRoot),
+    ]);
+    const missingItemKeys = input.item_keys.filter(
+      (itemKey) => !state.items.some((candidate) => candidate.item_key === itemKey),
+    );
+    if (missingItemKeys.length > 0) {
+      throw context.errors.create('BE_ITEM_NOT_FOUND', undefined, {
+        details: {
+          item_keys: missingItemKeys,
+        },
+      });
+    }
+
+    const nextSequence =
+      appliedRegistry.patches.reduce((maxSequence, patch) => {
+        return Math.max(maxSequence, patch.sequence);
+      }, 0) + 1;
+    const createdAt = context.host.nowIsoUtc();
+    const outputPath = await context.artifacts.writeTemplateOutput({
+      cwd,
+      out: input.out,
+      defaultBasename: `${formatPatchSequence(nextSequence)}-patch.template.json`,
+      content: context.templates.renderPatchTemplate({
+        targetItemKeys: input.item_keys,
+        kind: 'patch-item',
+        patchId: createPatchTemplateId(createdAt, nextSequence),
+        createdAt,
+        sequence: nextSequence,
+      }),
+    });
+
+    return context.schemas.parseCommandOutput('template', {
+      mode: 'patch',
+      output_path: outputPath,
+    });
+  },
+};

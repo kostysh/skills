@@ -7,7 +7,7 @@ import {
 } from '../artifacts/index.ts';
 import type { CoreModule } from '../core/index.ts';
 import type { ReportsModule } from '../reports/index.ts';
-import type { SourcesModule } from '../sources/index.ts';
+import { createSourcesModule, type SourcesModule } from '../sources/index.ts';
 import { createTemplatesModule, type TemplatesModule } from '../templates/index.ts';
 import type { RuntimeModule } from './index.ts';
 import type { CommandExecutionContext } from './command-context.ts';
@@ -73,7 +73,16 @@ function buildRuntimeModules(
         schemas,
         errors,
       }),
-    sources: overrides?.sources ?? createUnavailableModuleProxy<SourcesModule>('sources', errors),
+    sources:
+      overrides?.sources ??
+      createSourcesModule({
+        fs: dependencies.fs,
+        path: dependencies.path,
+        hash: dependencies.hash,
+        clock: dependencies.clock,
+        schemas,
+        errors,
+      }),
     templates: overrides?.templates ?? createTemplatesModule(),
     reports: overrides?.reports ?? createUnavailableModuleProxy<ReportsModule>('reports', errors),
     schemas,
@@ -128,6 +137,9 @@ export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule
           },
           nowIsoUtc() {
             return dependencies.clock.nowIsoUtc();
+          },
+          createUuid() {
+            return dependencies.uuid.create();
           },
         },
         ...(backlogRoot ? { backlogRoot } : {}),

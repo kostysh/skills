@@ -7,6 +7,8 @@ export function renderPatchTemplate(payload: {
   createdAt: string;
   sequence: Sequence;
 }): string {
+  void payload.kind;
+
   return `${JSON.stringify(
     {
       metadata: {
@@ -15,22 +17,7 @@ export function renderPatchTemplate(payload: {
         sequence: payload.sequence,
         target_item_keys: payload.targetItemKeys,
       },
-      operations: [
-        payload.kind === 'remove-item'
-          ? {
-              item_key: payload.targetItemKeys[0] ?? '<item_key>',
-              action: 'remove_item',
-            }
-          : {
-              item_key: payload.targetItemKeys[0] ?? '<item_key>',
-              action: 'replace_fields',
-              fields: {
-                title: '<new_title>',
-                delivery_state: '<new_delivery_state>',
-                gaps: [],
-              },
-            },
-      ],
+      operations: [],
     },
     null,
     2,

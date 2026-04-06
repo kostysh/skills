@@ -13,26 +13,7 @@ const PACKET_TEMPLATE = `{
     "quality_attributes": [],
     "policy_decisions": []
   },
-  "items": [
-    {
-      "item_key": "<item_key>",
-      "title": "<title>",
-      "type": "<item_type>",
-      "delivery_state": "defined",
-      "gaps": [],
-      "depends_on_keys": [],
-      "origin_source_ids": ["<source_id>"],
-      "specification_source_ids": [],
-      "plan_source_ids": [],
-      "implementation_source_ids": [],
-      "test_source_ids": [],
-      "claim_keys": [],
-      "contract_keys": [],
-      "data_domain_keys": [],
-      "quality_attribute_keys": [],
-      "policy_decision_keys": []
-    }
-  ]
+  "items": []
 }
 `;
 

@@ -327,3 +327,70 @@
   - spec conformance review — PASS
   - code review — PASS
   - security review — PASS
+
+### Work package `G` — `Sources and templates slice`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Коммит:
+- Что сделано:
+  - реализован concrete `SourcesModule` вместо fail-fast proxy
+  - реализованы source services:
+    - `resolveCliSourcePath(...)`
+    - `hashSourceFile(...)`
+    - `buildSourceRecord(...)`
+    - `registerSource(...)`
+    - `refreshSourceHashes(...)`
+    - `resolveSourceScope(...)`
+  - реализована реальная команда `register-source`:
+    - нормализация пути относительно backlog root
+    - hash source file
+    - idempotent registration по нормализованному пути
+    - запись в `.backlog/sources.json`
+    - вызов hook `afterSourceRegistered`
+  - реализована реальная команда `list-sources`:
+    - полный список
+    - filter по `item_key`
+    - filter по `path`
+    - deterministic ordering по `source_label`, затем по `source_id`
+  - реализована реальная команда `template` для режимов:
+    - `packet`
+    - `patch`
+  - packet template приведён к каноническому пустому skeleton-формату с `context` scaffold и пустым `items`
+  - patch template приведён к каноническому partially-prefilled draft-формату с metadata и пустым `operations`
+  - `TemplatesModule` теперь экспортирует named renderers:
+    - `renderBacklogAgentsTemplate`
+    - `renderPacketTemplate`
+    - `renderPatchTemplate`
+  - обновлены canonical assets:
+    - `assets/packet.template.json`
+    - `assets/patch.template.json`
+  - добавлены и/или обновлены тесты на:
+    - unit-level source normalization / hashing / registry behavior
+    - command-level `register-source`, `list-sources`, `template packet`, `template patch`
+    - built CLI smoke-tests для `register-source`, `list-sources`, `template packet`, `template patch`
+    - asset-equality tests для packet/patch templates
+    - rejection path для source inputs, выходящих за пределы backlog root
+- Ключевые решения:
+  - source registration принимает только пути внутри backlog root; `source_label` всегда равен нормализованному backlog-relative POSIX path
+  - invalid source path, выходящий за пределы backlog root, отбрасывается до чтения файла и до вычисления `hash`
+  - повторная регистрация того же нормализованного пути возвращает существующий `source_id` и существующий `hash`, не пере-хешируя и не создавая duplicate entry
+  - `template patch` вычисляет sequence как `max(applied.patches.sequence) + 1` и валидирует все `item_keys` по текущему `state.json`
+  - `list-sources --item-key` опирается на `state.items[*]._source_ids`, а не на authored packet files
+- Допущения вне спецификации:
+  - `CommandExecutionContext.host` расширен helper-методом `createUuid()`, чтобы команды не зависели напрямую от runtime dependency graph для генерации `source_id`; это решение синхронизировано в `module-interfaces.ru.md`
+  - default basename для `template patch` фиксирован как zero-padded `<sequence>-patch.template.json`; спецификация требует sequence-based draft, но не фиксирует точный basename
+- Согласованные синхронизации документации:
+  - `utility-spec.ru.md` приведён к текущей концепции для `register-source`: `source_label` и `path` в response contract теперь отражают нормализованный backlog-relative path, а не старый `../docs/...`
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - внешний thread для `spec-conformance-reviewer` в этой сессии не вернул usable review artifact
+  - после этого выполнен строгий same-agent fallback review по тем же нормативным источникам; confirmed non-compliance не осталось
+  - same-agent spec conformance review — PASS
+  - same-agent code review — PASS
+  - same-agent security review — PASS
+- Следующий пакет: `H — Core graph services`

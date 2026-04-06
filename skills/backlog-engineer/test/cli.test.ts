@@ -14,9 +14,12 @@ import {
   ErrorPayloadSchema,
   GlobalHelpOutputSchema,
   InitCommandOutputSchema,
+  ListSourcesCommandOutputSchema,
+  RegisterSourceCommandOutputSchema,
   RootMarkerFileSchema,
   SourceRegistryFileSchema,
   StateFileSchema,
+  TemplateCommandOutputSchema,
   VersionOutputSchema,
 } from '../src/schemas/index.ts';
 import { runCli as runCliSource } from '../src/cli/run-cli.ts';
@@ -150,6 +153,176 @@ void test('unsupported command flag returns usage error on stderr', () => {
   const parsed = ErrorPayloadSchema.parse(parseStderrJson(result));
   assert.equal(parsed.error.code, 'BE_USAGE_INVALID');
   assert.equal(parsed.error.details?.command, 'status');
+});
+
+void test('register-source and list-sources work on the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const docsDir = path.join(backlogRoot, 'sources', 'docs', 'modules');
+
+  try {
+    assert.equal(runBuiltCli(['init', '--path', backlogRoot]).status, 0);
+    await mkdir(docsDir, { recursive: true });
+    await writeFile(path.join(docsDir, 'auth.md'), '# auth\n', 'utf8');
+    await writeFile(path.join(docsDir, 'session-ui.md'), '# session\n', 'utf8');
+
+    const registerAuth = runBuiltCli(
+      [
+        'register-source',
+        '--path',
+        './sources/docs/modules/auth.md',
+        '--kind',
+        'module',
+        '--authority',
+        'authoritative',
+      ],
+      { cwd: backlogRoot },
+    );
+    const registerSession = runBuiltCli(
+      [
+        'register-source',
+        '--path',
+        './sources/docs/modules/session-ui.md',
+        '--kind',
+        'module',
+        '--authority',
+        'authoritative',
+      ],
+      { cwd: backlogRoot },
+    );
+
+    assert.equal(registerAuth.status, 0);
+    assert.equal(registerSession.status, 0);
+
+    const authOutput = RegisterSourceCommandOutputSchema.parse(parseStdoutJson(registerAuth));
+    assert.equal(authOutput.source_label, 'sources/docs/modules/auth.md');
+
+    const listed = runBuiltCli(['list-sources'], { cwd: backlogRoot });
+    assert.equal(listed.status, 0);
+    assert.deepEqual(
+      ListSourcesCommandOutputSchema.parse(parseStdoutJson(listed)).map(
+        (source) => source.source_label,
+      ),
+      ['sources/docs/modules/auth.md', 'sources/docs/modules/session-ui.md'],
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('template packet and template patch write draft files through the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    assert.equal(runBuiltCli(['init', '--path', backlogRoot]).status, 0);
+
+    const packetTemplate = runBuiltCli(['template', 'packet', '--out', './drafts/'], {
+      cwd: backlogRoot,
+    });
+    assert.equal(packetTemplate.status, 0);
+    const packetOutput = TemplateCommandOutputSchema.parse(parseStdoutJson(packetTemplate));
+    assert.equal(
+      packetOutput.output_path,
+      path.join(backlogRoot, 'drafts', 'packet.template.json'),
+    );
+
+    const statePath = path.join(backlogRoot, '.backlog', 'state.json');
+    const appliedPath = path.join(backlogRoot, '.backlog', 'applied.json');
+    const state = StateFileSchema.parse(JSON.parse(await readFile(statePath, 'utf8')) as unknown);
+    const applied = AppliedRegistryFileSchema.parse(
+      JSON.parse(await readFile(appliedPath, 'utf8')) as unknown,
+    );
+
+    await writeFile(
+      statePath,
+      JSON.stringify(
+        {
+          ...state,
+          items: [
+            {
+              item_key: 'auth-core',
+              title: 'Auth item',
+              type: 'module-task',
+              delivery_state: 'defined',
+              gaps: [],
+              depends_on_keys: [],
+              origin_source_ids: [],
+              specification_source_ids: [],
+              plan_source_ids: [],
+              implementation_source_ids: [],
+              test_source_ids: [],
+              claim_keys: [],
+              contract_keys: [],
+              data_domain_keys: [],
+              quality_attribute_keys: [],
+              policy_decision_keys: [],
+              reverse_dependency_keys: [],
+              open_todo_ids: [],
+              needs_attention: false,
+              attention_reason_codes: [],
+              attention_reasons: [],
+              ready_for_next_step: true,
+            },
+          ],
+        },
+        null,
+        2,
+      ) + '\n',
+      'utf8',
+    );
+    await writeFile(
+      appliedPath,
+      JSON.stringify(
+        {
+          ...applied,
+          updated_at: '2026-04-06T12:00:00.000Z',
+          patches: [
+            {
+              patch_id: '2026-04-05-003-auth-progress',
+              apply_index: 1,
+              canonical_path: 'patches/123456789abc--auth-progress.patch.json',
+              content_hash: 'a'.repeat(64),
+              sequence: 3,
+              applied_at: '2026-04-05T09:00:00.000Z',
+              kind: 'patch-item',
+              target_item_keys: ['auth-core'],
+            },
+          ],
+        },
+        null,
+        2,
+      ) + '\n',
+      'utf8',
+    );
+
+    const patchTemplate = runBuiltCli(
+      ['template', 'patch', '--item-keys', 'auth-core', '--out', './drafts/'],
+      { cwd: backlogRoot },
+    );
+    assert.equal(patchTemplate.status, 0);
+    const patchOutput = TemplateCommandOutputSchema.parse(parseStdoutJson(patchTemplate));
+    assert.equal(
+      patchOutput.output_path,
+      path.join(backlogRoot, 'drafts', '004-patch.template.json'),
+    );
+    const patchDraft = JSON.parse(await readFile(patchOutput.output_path, 'utf8')) as {
+      metadata: {
+        patch_id: string;
+        created_at: string;
+        sequence: number;
+        target_item_keys: string[];
+      };
+      operations: unknown[];
+    };
+    assert.equal(patchDraft.metadata.patch_id, '2026-04-06-004-patch-template');
+    assert.match(patchDraft.metadata.created_at, /^\d{4}-\d{2}-\d{2}T.*Z$/);
+    assert.equal(patchDraft.metadata.sequence, 4);
+    assert.deepEqual(patchDraft.metadata.target_item_keys, ['auth-core']);
+    assert.deepEqual(patchDraft.operations, []);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
 });
 
 void test('delete-backlog without confirm returns destructive-action error on stderr', () => {
@@ -360,6 +533,9 @@ void test('runCli invokes beforeCommand and afterCommand hooks around successful
           },
           nowIsoUtc() {
             return '2026-04-06T12:00:00.000Z';
+          },
+          createUuid() {
+            return '11111111-1111-4111-8111-111111111111';
           },
         },
         backlogRoot: '/tmp/backlog',

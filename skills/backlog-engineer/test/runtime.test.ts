@@ -113,6 +113,7 @@ void test('createContext allows init without existing backlog root', async () =>
     assert.equal(context.backlogRoot, undefined);
     assert.equal(context.host.resolveCliPath('./backlog'), path.resolve(root, 'backlog'));
     assert.match(context.host.nowIsoUtc(), /^\d{4}-\d{2}-\d{2}T/);
+    assert.match(context.host.createUuid(), /^[0-9a-f-]{36}$/i);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
@@ -179,6 +180,11 @@ void test('runtime wires hooks and state coordinator through command context', a
   const runtime = createRuntime({
     dependencies: {
       hooks,
+      uuid: {
+        create() {
+          return '11111111-1111-4111-8111-111111111111';
+        },
+      },
     },
     stateCoordinator: {
       ensureQueryState() {
@@ -205,6 +211,7 @@ void test('runtime wires hooks and state coordinator through command context', a
     assert.equal(context.backlogRoot, root);
     assert.equal(context.hooks, hooks);
     assert.equal(context.host.resolveCliPath('./child'), path.join(nested, 'child'));
+    assert.equal(context.host.createUuid(), '11111111-1111-4111-8111-111111111111');
     assert.deepEqual(await context.ensureQueryState(), { state, rebuilt: false });
     assert.deepEqual(await context.ensureMutationState(), state);
     assert.deepEqual(await runtime.rebuildState(root), state);

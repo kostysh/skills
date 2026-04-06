@@ -5,15 +5,5 @@
     "sequence": "<monotonic_sequence>",
     "target_item_keys": ["<item_key>"]
   },
-  "operations": [
-    {
-      "item_key": "<item_key>",
-      "action": "replace_fields",
-      "fields": {
-        "title": "<new_title>",
-        "delivery_state": "<new_delivery_state>",
-        "gaps": []
-      }
-    }
-  ]
+  "operations": []
 }

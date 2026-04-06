@@ -22,3 +22,5 @@ export function createTemplatesModule(): TemplatesModule {
     renderPatchTemplate,
   };
 }
+
+export { renderBacklogAgentsTemplate, renderPacketTemplate, renderPatchTemplate };

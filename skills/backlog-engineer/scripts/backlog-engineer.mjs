@@ -5517,7 +5517,18 @@ var ITEMS_COMMAND = definePlaceholderCommand({
 		return parseUsageInput("items", ItemsCommandInputSchema, { item_keys: splitCsvFlag(requireStringOption("items", "--item-keys", getStringOption(parsed.values["item-keys"]))) });
 	}
 });
-var LIST_SOURCES_COMMAND = definePlaceholderCommand({
+//#endregion
+//#region src/commands/list-sources.ts
+function collectItemSourceIds$1(item) {
+	return new Set([
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	]);
+}
+var LIST_SOURCES_COMMAND = {
 	name: "list-sources",
 	summary: "List registered sources and source metadata.",
 	usage: [
@@ -5546,8 +5557,30 @@ var LIST_SOURCES_COMMAND = definePlaceholderCommand({
 			...typeof parsed.values["item-key"] === "string" ? { item_key: parsed.values["item-key"] } : {},
 			...typeof parsed.values.path === "string" ? { path: parsed.values.path } : {}
 		});
+	},
+	async execute(input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+		let sources = [...(await context.artifacts.readSourceRegistry(context.backlogRoot)).sources];
+		if (input.item_key) {
+			const item = (await context.artifacts.readState(context.backlogRoot)).items.find((candidate) => candidate.item_key === input.item_key);
+			if (!item) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: input.item_key } });
+			const itemSourceIds = collectItemSourceIds$1(item);
+			sources = sources.filter((source) => itemSourceIds.has(source.source_id));
+		}
+		if (input.path) {
+			const normalizedSource = await context.sources.resolveCliSourcePath({
+				backlogRoot: context.backlogRoot,
+				inputPath: context.host.resolveCliPath(input.path)
+			});
+			sources = sources.filter((source) => source.path === normalizedSource.relative_path);
+		}
+		return context.schemas.parseCommandOutput("list-sources", [...sources].sort((left, right) => {
+			const labelCompare = left.source_label.localeCompare(right.source_label);
+			if (labelCompare !== 0) return labelCompare;
+			return left.source_id.localeCompare(right.source_id);
+		}));
 	}
-});
+};
 var PACKET_COMMAND = definePlaceholderCommand({
 	name: "packet",
 	summary: "Apply a packet that adds new backlog tasks.",
@@ -5685,7 +5718,7 @@ var REFRESH_COMMAND = definePlaceholderCommand({
 		return parseUsageInput("refresh", RefreshCommandInputSchema, { kind: "all" });
 	}
 });
-var REGISTER_SOURCE_COMMAND = definePlaceholderCommand({
+var REGISTER_SOURCE_COMMAND = {
 	name: "register-source",
 	summary: "Register a source document and obtain a source ID.",
 	usage: ["backlog-engineer register-source --path <path> --kind <kind> --authority <authority> [--note <note>]"],
@@ -5730,8 +5763,58 @@ var REGISTER_SOURCE_COMMAND = definePlaceholderCommand({
 			authority: requireStringOption("register-source", "--authority", getStringOption(parsed.values.authority)),
 			...getStringOption(parsed.values.note) ? { note: getStringOption(parsed.values.note) } : {}
 		});
+	},
+	async execute(input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+		const normalizedSource = await context.sources.resolveCliSourcePath({
+			backlogRoot: context.backlogRoot,
+			inputPath: context.host.resolveCliPath(input.path)
+		});
+		const existingRegistry = await context.artifacts.readSourceRegistry(context.backlogRoot);
+		const existingSource = existingRegistry.sources.find((source) => source.path === normalizedSource.relative_path);
+		if (existingSource) return context.schemas.parseCommandOutput("register-source", {
+			source_id: existingSource.source_id,
+			source_label: existingSource.source_label,
+			path: existingSource.path,
+			kind: existingSource.kind,
+			authority: existingSource.authority,
+			...existingSource.note ? { note: existingSource.note } : {},
+			hash: existingSource.hash
+		});
+		const now = context.host.nowIsoUtc();
+		const sourceHash = await context.sources.hashSourceFile(normalizedSource.absolute_path);
+		const source = context.sources.buildSourceRecord({
+			sourceId: context.host.createUuid(),
+			relativePath: normalizedSource.relative_path,
+			kind: input.kind,
+			authority: input.authority,
+			...input.note ? { note: input.note } : {},
+			registeredAt: now,
+			lastCheckedAt: now,
+			sourceHash
+		});
+		const { registry, created } = context.sources.registerSource({
+			registry: existingRegistry,
+			source
+		});
+		if (created) {
+			await context.artifacts.writeSourceRegistry(context.backlogRoot, registry);
+			await context.hooks.afterSourceRegistered?.({
+				source,
+				backlogRoot: context.backlogRoot
+			});
+		}
+		return context.schemas.parseCommandOutput("register-source", {
+			source_id: source.source_id,
+			source_label: source.source_label,
+			path: source.path,
+			kind: source.kind,
+			authority: source.authority,
+			...source.note ? { note: source.note } : {},
+			hash: source.hash
+		});
 	}
-});
+};
 var REMOVE_ITEM_COMMAND = definePlaceholderCommand({
 	name: "remove-item",
 	summary: "Apply a patch that removes obsolete tasks.",
@@ -5866,20 +5949,29 @@ var STATUS_COMMAND = definePlaceholderCommand({
 		return parseUsageInput("status", StatusCommandInputSchema, { refresh: parsed.values.refresh === true });
 	}
 });
-var TEMPLATE_COMMAND = definePlaceholderCommand({
+//#endregion
+//#region src/commands/template.ts
+var OPTIONS = [{
+	flags: ["--out"],
+	value_name: "<path>",
+	description: "Output path for the generated template file.",
+	required: true
+}, {
+	flags: ["--item-keys"],
+	value_name: "<item_key_1>,<item_key_2>",
+	description: "Required for patch templates; comma-separated target item keys."
+}];
+function formatPatchSequence(sequence) {
+	return String(sequence).padStart(3, "0");
+}
+function createPatchTemplateId(createdAt, sequence) {
+	return `${createdAt.slice(0, 10)}-${formatPatchSequence(sequence)}-patch-template`;
+}
+var TEMPLATE_COMMAND = {
 	name: "template",
 	summary: "Generate packet or patch templates.",
 	usage: ["backlog-engineer template packet --out <path>", "backlog-engineer template patch --item-keys <item_key_1>,<item_key_2> --out <path>"],
-	options: [{
-		flags: ["--out"],
-		value_name: "<path>",
-		description: "Output path for the generated template file.",
-		required: true
-	}, {
-		flags: ["--item-keys"],
-		value_name: "<item_key_1>,<item_key_2>",
-		description: "Required for patch templates; comma-separated target item keys."
-	}],
+	options: OPTIONS,
 	inputSchema: TemplateCommandInputSchema,
 	outputSchema: TemplateCommandOutputSchema,
 	parseArgs(args) {
@@ -5909,8 +6001,47 @@ var TEMPLATE_COMMAND = definePlaceholderCommand({
 			command: "template",
 			invalid_mode: mode ?? null
 		}, "Use `template packet` or `template patch`.");
+	},
+	async execute(input, context) {
+		const cwd = context.host.resolveCliPath(".");
+		if (input.mode === "packet") {
+			const outputPath = await context.artifacts.writeTemplateOutput({
+				cwd,
+				out: input.out,
+				defaultBasename: "packet.template.json",
+				content: context.templates.renderPacketTemplate()
+			});
+			return context.schemas.parseCommandOutput("template", {
+				mode: "packet",
+				output_path: outputPath
+			});
+		}
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+		const [appliedRegistry, state] = await Promise.all([context.artifacts.readAppliedRegistry(context.backlogRoot), context.artifacts.readState(context.backlogRoot)]);
+		const missingItemKeys = input.item_keys.filter((itemKey) => !state.items.some((candidate) => candidate.item_key === itemKey));
+		if (missingItemKeys.length > 0) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_keys: missingItemKeys } });
+		const nextSequence = appliedRegistry.patches.reduce((maxSequence, patch) => {
+			return Math.max(maxSequence, patch.sequence);
+		}, 0) + 1;
+		const createdAt = context.host.nowIsoUtc();
+		const outputPath = await context.artifacts.writeTemplateOutput({
+			cwd,
+			out: input.out,
+			defaultBasename: `${formatPatchSequence(nextSequence)}-patch.template.json`,
+			content: context.templates.renderPatchTemplate({
+				targetItemKeys: input.item_keys,
+				kind: "patch-item",
+				patchId: createPatchTemplateId(createdAt, nextSequence),
+				createdAt,
+				sequence: nextSequence
+			})
+		});
+		return context.schemas.parseCommandOutput("template", {
+			mode: "patch",
+			output_path: outputPath
+		});
 	}
-});
+};
 //#endregion
 //#region src/cli/command-registry.ts
 var CLI_DISPLAY_NAME = "backlog-engineer";
@@ -6845,6 +6976,328 @@ function createArtifactsModule(dependencies) {
 	};
 }
 //#endregion
+//#region src/sources/path-normalizer.ts
+function toPosixRelativePath(relativePath) {
+	return relativePath.replaceAll("\\", "/");
+}
+function createSourceLabel(relativePath) {
+	return relativePath;
+}
+function normalizeSourcePath(payload) {
+	const absolutePath = payload.path.resolve(payload.backlogRoot, payload.inputPath);
+	const relativePath = toPosixRelativePath(payload.path.relative(payload.backlogRoot, absolutePath));
+	const parsedRelativePath = BacklogRelativePosixPathSchema.safeParse(relativePath);
+	if (!parsedRelativePath.success) throw fromZodError(parsedRelativePath.error, {
+		path: absolutePath,
+		relative_path: relativePath
+	});
+	return {
+		absolute_path: absolutePath,
+		relative_path: parsedRelativePath.data,
+		source_label: createSourceLabel(parsedRelativePath.data)
+	};
+}
+function sortSourceLabels(values) {
+	return [...values].sort((left, right) => {
+		const labelCompare = left.source_label.localeCompare(right.source_label);
+		if (labelCompare !== 0) return labelCompare;
+		return (left.source_id ?? "").localeCompare(right.source_id ?? "");
+	});
+}
+//#endregion
+//#region src/sources/source-hash-service.ts
+async function hashSourceFile(payload) {
+	let content;
+	try {
+		content = await payload.fs.readText(payload.filePath);
+	} catch (error) {
+		throw payload.errors.create("BE_SOURCE_FILE_MISSING", void 0, {
+			details: { path: payload.filePath },
+			cause: error
+		});
+	}
+	return payload.hash.sha256Text(content);
+}
+//#endregion
+//#region src/sources/source-registry-service.ts
+var SOURCE_KIND_VALUES = [
+	"architecture",
+	"module",
+	"adr",
+	"technical-decision",
+	"integration",
+	"operations",
+	"planning",
+	"specification"
+];
+var SOURCE_AUTHORITY_VALUES = [
+	"authoritative",
+	"supporting",
+	"derived"
+];
+var SOURCE_KIND_SET = new Set(SOURCE_KIND_VALUES);
+var SOURCE_AUTHORITY_SET = new Set(SOURCE_AUTHORITY_VALUES);
+function validateSourceKind(kind, errors) {
+	if (SOURCE_KIND_SET.has(kind)) return;
+	throw errors.create("BE_SOURCE_KIND_INVALID", void 0, { details: {
+		kind,
+		allowed_values: [...SOURCE_KIND_VALUES]
+	} });
+}
+function validateSourceAuthority(authority, errors) {
+	if (SOURCE_AUTHORITY_SET.has(authority)) return;
+	throw errors.create("BE_SOURCE_AUTHORITY_INVALID", void 0, { details: {
+		authority,
+		allowed_values: [...SOURCE_AUTHORITY_VALUES]
+	} });
+}
+function buildSourceRecord(payload) {
+	validateSourceKind(payload.kind, payload.errors);
+	validateSourceAuthority(payload.authority, payload.errors);
+	const [record] = payload.schemas.parseSourceRegistry({
+		schema_version: 1,
+		created_at: payload.registeredAt,
+		updated_at: payload.registeredAt,
+		sources: [{
+			source_id: payload.sourceId,
+			source_label: payload.relativePath,
+			path: payload.relativePath,
+			kind: payload.kind,
+			authority: payload.authority,
+			...payload.note ? { note: payload.note } : {},
+			hash: payload.sourceHash,
+			registered_at: payload.registeredAt,
+			last_checked_at: payload.lastCheckedAt
+		}]
+	}).sources;
+	if (!record) throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: { reason: "source_registry_parse_returned_empty_sources" } });
+	return record;
+}
+function registerSourceRecord(payload) {
+	const existingSource = payload.registry.sources.find((source) => source.path === payload.source.path);
+	if (existingSource) return {
+		registry: payload.registry,
+		source: existingSource,
+		created: false
+	};
+	return {
+		registry: payload.schemas.parseSourceRegistry({
+			...payload.registry,
+			updated_at: payload.source.registered_at,
+			sources: sortSourceLabels([...payload.registry.sources, payload.source])
+		}),
+		source: payload.source,
+		created: true
+	};
+}
+function createSourceSummary(source) {
+	return {
+		source_id: source.source_id,
+		source_label: source.source_label
+	};
+}
+function resolveSourceAbsolutePath(payload) {
+	return payload.path.resolve(payload.backlogRoot, payload.sourcePath);
+}
+//#endregion
+//#region src/sources/source-scope-service.ts
+function collectItemSourceIds(item) {
+	return new Set([
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	]);
+}
+function sortStringKeys(values) {
+	return [...values].sort((left, right) => left.localeCompare(right));
+}
+function resolveSourceBySelector(payload) {
+	const { selector } = payload;
+	if (selector.kind === "source_id") {
+		const source = payload.registry.sources.find((record) => record.source_id === selector.source_id);
+		if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_id: selector.source_id } });
+		return [source];
+	}
+	if (selector.kind === "source_label") {
+		const source = payload.registry.sources.find((record) => record.source_label === selector.source_label);
+		if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_label: selector.source_label } });
+		return [source];
+	}
+	const normalized = normalizeSourcePath({
+		path: payload.path,
+		errors: payload.errors,
+		backlogRoot: payload.backlogRoot,
+		inputPath: selector.source_path
+	});
+	const source = payload.registry.sources.find((record) => record.path === normalized.relative_path);
+	if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { path: normalized.relative_path } });
+	return [source];
+}
+function collectTopLevelItemKeys(payload) {
+	const itemsByKey = new Map(payload.state.items.map((item) => [item.item_key, item]));
+	const topLevelItemKeys = /* @__PURE__ */ new Set();
+	for (const linkedItemKey of payload.linkedItemKeys) {
+		const stack = [linkedItemKey];
+		const seen = /* @__PURE__ */ new Set();
+		while (stack.length > 0) {
+			const itemKey = stack.pop();
+			if (!itemKey) break;
+			if (seen.has(itemKey)) continue;
+			seen.add(itemKey);
+			const item = itemsByKey.get(itemKey);
+			if (!item || item.depends_on_keys.length === 0) {
+				topLevelItemKeys.add(itemKey);
+				continue;
+			}
+			for (const dependencyKey of item.depends_on_keys) stack.push(dependencyKey);
+		}
+	}
+	return topLevelItemKeys;
+}
+function collectSubgraphItemKeys(payload) {
+	const itemsByKey = new Map(payload.state.items.map((item) => [item.item_key, item]));
+	const subgraphItemKeys = /* @__PURE__ */ new Set();
+	const stack = [...payload.topLevelItemKeys];
+	while (stack.length > 0) {
+		const itemKey = stack.pop();
+		if (!itemKey) break;
+		if (subgraphItemKeys.has(itemKey)) continue;
+		subgraphItemKeys.add(itemKey);
+		const item = itemsByKey.get(itemKey);
+		if (!item) continue;
+		for (const reverseDependencyKey of item.reverse_dependency_keys) stack.push(reverseDependencyKey);
+	}
+	return subgraphItemKeys;
+}
+async function refreshSourceHashes(payload) {
+	const selectedIds = new Set(payload.selectedSourceIds);
+	const refreshedAt = payload.clock.nowIsoUtc();
+	const changedSourceIds = [];
+	const changedSources = [];
+	const nextSources = await Promise.all(payload.registry.sources.map(async (source) => {
+		if (!selectedIds.has(source.source_id)) return source;
+		const nextHash = await hashSourceFile({
+			fs: payload.fs,
+			hash: payload.hash,
+			errors: payload.errors,
+			filePath: resolveSourceAbsolutePath({
+				path: payload.path,
+				backlogRoot: payload.backlogRoot,
+				sourcePath: source.path
+			})
+		});
+		const nextSource = {
+			...source,
+			hash: nextHash,
+			last_checked_at: refreshedAt
+		};
+		if (nextHash !== source.hash) {
+			changedSourceIds.push(source.source_id);
+			changedSources.push(createSourceSummary(source));
+		}
+		return nextSource;
+	}));
+	return {
+		registry: selectedIds.size === 0 ? payload.registry : payload.schemas.parseSourceRegistry({
+			...payload.registry,
+			updated_at: refreshedAt,
+			sources: sortSourceLabels(nextSources)
+		}),
+		changedSourceIds: sortStringKeys(changedSourceIds),
+		changedSources: sortSourceLabels(changedSources)
+	};
+}
+function resolveSourceScope(payload) {
+	const selectedSources = resolveSourceBySelector(payload);
+	const selectedSourceIds = new Set(selectedSources.map((source) => source.source_id));
+	const linkedItemKeys = /* @__PURE__ */ new Set();
+	for (const item of payload.state.items) {
+		const sourceIds = collectItemSourceIds(item);
+		if ([...selectedSourceIds].some((sourceId) => sourceIds.has(sourceId))) linkedItemKeys.add(item.item_key);
+	}
+	const topLevelItemKeys = collectTopLevelItemKeys({
+		state: payload.state,
+		linkedItemKeys
+	});
+	const subgraphItemKeys = collectSubgraphItemKeys({
+		state: payload.state,
+		topLevelItemKeys
+	});
+	return {
+		sourceIds: sortStringKeys(selectedSourceIds),
+		topLevelItemKeys: sortStringKeys(topLevelItemKeys),
+		subgraphItemKeys: sortStringKeys(subgraphItemKeys)
+	};
+}
+//#endregion
+//#region src/sources/index.ts
+function createSourcesModule(dependencies) {
+	return {
+		resolveCliSourcePath(payload) {
+			return Promise.resolve(normalizeSourcePath({
+				path: dependencies.path,
+				errors: dependencies.errors,
+				backlogRoot: payload.backlogRoot,
+				inputPath: payload.inputPath
+			}));
+		},
+		buildSourceRecord(payload) {
+			return buildSourceRecord({
+				schemas: dependencies.schemas,
+				errors: dependencies.errors,
+				sourceId: payload.sourceId,
+				relativePath: payload.relativePath,
+				kind: payload.kind,
+				authority: payload.authority,
+				registeredAt: payload.registeredAt,
+				lastCheckedAt: payload.lastCheckedAt,
+				sourceHash: payload.sourceHash,
+				...payload.note ? { note: payload.note } : {}
+			});
+		},
+		hashSourceFile(path) {
+			return hashSourceFile({
+				fs: dependencies.fs,
+				hash: dependencies.hash,
+				errors: dependencies.errors,
+				filePath: path
+			});
+		},
+		registerSource(payload) {
+			return registerSourceRecord({
+				schemas: dependencies.schemas,
+				registry: payload.registry,
+				source: payload.source
+			});
+		},
+		refreshSourceHashes(payload) {
+			return refreshSourceHashes({
+				fs: dependencies.fs,
+				path: dependencies.path,
+				hash: dependencies.hash,
+				clock: dependencies.clock,
+				schemas: dependencies.schemas,
+				errors: dependencies.errors,
+				backlogRoot: payload.backlogRoot,
+				registry: payload.registry,
+				selectedSourceIds: payload.selectedSourceIds
+			});
+		},
+		resolveSourceScope(payload) {
+			return resolveSourceScope({
+				path: dependencies.path,
+				errors: dependencies.errors,
+				backlogRoot: payload.backlogRoot,
+				state: payload.state,
+				registry: payload.registry,
+				selector: payload.selector
+			});
+		}
+	};
+}
+//#endregion
 //#region src/templates/render-agents-template.ts
 var BACKLOG_AGENTS_TEMPLATE = `# AGENTS.md
 
@@ -6911,26 +7364,7 @@ var PACKET_TEMPLATE = `{
     "quality_attributes": [],
     "policy_decisions": []
   },
-  "items": [
-    {
-      "item_key": "<item_key>",
-      "title": "<title>",
-      "type": "<item_type>",
-      "delivery_state": "defined",
-      "gaps": [],
-      "depends_on_keys": [],
-      "origin_source_ids": ["<source_id>"],
-      "specification_source_ids": [],
-      "plan_source_ids": [],
-      "implementation_source_ids": [],
-      "test_source_ids": [],
-      "claim_keys": [],
-      "contract_keys": [],
-      "data_domain_keys": [],
-      "quality_attribute_keys": [],
-      "policy_decision_keys": []
-    }
-  ]
+  "items": []
 }
 `;
 function renderPacketTemplate() {
@@ -6939,6 +7373,7 @@ function renderPacketTemplate() {
 //#endregion
 //#region src/templates/render-patch-template.ts
 function renderPatchTemplate(payload) {
+	payload.kind;
 	return `${JSON.stringify({
 		metadata: {
 			patch_id: payload.patchId,
@@ -6946,18 +7381,7 @@ function renderPatchTemplate(payload) {
 			sequence: payload.sequence,
 			target_item_keys: payload.targetItemKeys
 		},
-		operations: [payload.kind === "remove-item" ? {
-			item_key: payload.targetItemKeys[0] ?? "<item_key>",
-			action: "remove_item"
-		} : {
-			item_key: payload.targetItemKeys[0] ?? "<item_key>",
-			action: "replace_fields",
-			fields: {
-				title: "<new_title>",
-				delivery_state: "<new_delivery_state>",
-				gaps: []
-			}
-		}]
+		operations: []
 	}, null, 2)}\n`;
 }
 //#endregion
@@ -7170,7 +7594,14 @@ function buildRuntimeModules(dependencies, overrides = {}) {
 			schemas,
 			errors
 		}),
-		sources: overrides?.sources ?? createUnavailableModuleProxy("sources", errors),
+		sources: overrides?.sources ?? createSourcesModule({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			hash: dependencies.hash,
+			clock: dependencies.clock,
+			schemas,
+			errors
+		}),
 		templates: overrides?.templates ?? createTemplatesModule(),
 		reports: overrides?.reports ?? createUnavailableModuleProxy("reports", errors),
 		schemas,
@@ -7211,6 +7642,9 @@ function createRuntime(options = {}) {
 					},
 					nowIsoUtc() {
 						return dependencies.clock.nowIsoUtc();
+					},
+					createUuid() {
+						return dependencies.uuid.create();
 					}
 				},
 				...backlogRoot ? { backlogRoot } : {},

@@ -710,6 +710,7 @@ interface CommandExecutionContext {
   host: {
     resolveCliPath(path: CliPathInput): AbsoluteFsPath;
     nowIsoUtc(): IsoUtcTimestamp;
+    createUuid(): string;
   };
   backlogRoot?: BacklogRootPath;
   artifacts: ArtifactsModule;

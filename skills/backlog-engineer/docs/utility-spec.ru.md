@@ -292,8 +292,8 @@ flowchart TD
 ```json
 {
   "source_id": "<uuid>",
-  "source_label": "docs/modules/auth.md",
-  "path": "../docs/modules/auth.md",
+  "source_label": "sources/docs/modules/auth.md",
+  "path": "sources/docs/modules/auth.md",
   "kind": "module",
   "authority": "authoritative",
   "note": "Auth module architecture",
@@ -450,7 +450,7 @@ flowchart TD
   "related_sources": [
     {
       "source_id": "<source_id>",
-      "source_label": "docs/modules/auth.md"
+      "source_label": "sources/docs/modules/auth.md"
     }
   ],
   "related_item_keys": ["auth-session-timeout"]
@@ -1170,8 +1170,8 @@ Dry-run не должен:
 ```json
 {
   "source_id": "<uuid>",
-  "source_label": "docs/modules/auth.md",
-  "path": "../docs/modules/auth.md",
+  "source_label": "sources/docs/modules/auth.md",
+  "path": "sources/docs/modules/auth.md",
   "kind": "module",
   "authority": "authoritative",
   "note": "Auth module architecture",
@@ -1621,7 +1621,7 @@ Dry-run не должен:
   "changed_sources": [
     {
       "source_id": "<source_id>",
-      "source_label": "docs/modules/auth.md"
+      "source_label": "sources/docs/modules/auth.md"
     }
   ],
   "todo_created": ["auth-core", "session-ui"],
@@ -1825,7 +1825,7 @@ Dry-run не должен:
     "source_summaries": [
       {
         "source_id": "<source_id>",
-        "source_label": "docs/modules/auth.md"
+        "source_label": "sources/docs/modules/auth.md"
       }
     ],
     "context": {
@@ -1903,7 +1903,7 @@ Dry-run не должен:
     "source_summaries": [
       {
         "source_id": "<source_id>",
-        "source_label": "docs/modules/auth.md"
+        "source_label": "sources/docs/modules/auth.md"
       }
     ],
     "match_reasons": [
@@ -2071,7 +2071,7 @@ Dry-run не должен:
     "source_summaries": [
       {
         "source_id": "<source_id>",
-        "source_label": "docs/modules/auth.md"
+        "source_label": "sources/docs/modules/auth.md"
       }
     ]
   }
