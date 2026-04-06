@@ -451,7 +451,7 @@ void test('default ensureQueryState preserves a valid runtime todo layer and can
             open_todo_ids: ['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'],
             needs_attention: true,
             attention_reason_codes: ['source_changed'],
-            attention_reasons: ['нужно проверить изменение источника sources/docs/modules/auth.md'],
+            attention_reasons: ['Source changed: review sources/docs/modules/auth.md.'],
             ready_for_next_step: false,
           }
         : item,
@@ -532,9 +532,7 @@ void test('default ensureQueryState drops stale refresh-managed source todo when
               open_todo_ids: ['bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'],
               needs_attention: true,
               attention_reason_codes: ['source_changed'],
-              attention_reasons: [
-                'нужно проверить изменение источника sources/docs/modules/auth.md',
-              ],
+              attention_reasons: ['Source changed: review sources/docs/modules/auth.md.'],
               ready_for_next_step: false,
             }
           : item,
@@ -625,9 +623,7 @@ void test('default ensureQueryState preserves mutation-managed source review tod
               open_todo_ids: ['cccccccc-cccc-4ccc-8ccc-cccccccccccc'],
               needs_attention: true,
               attention_reason_codes: ['source_changed'],
-              attention_reasons: [
-                'нужно проверить изменение источника sources/docs/modules/auth.md',
-              ],
+              attention_reasons: ['Source changed: review sources/docs/modules/auth.md.'],
               ready_for_next_step: false,
             }
           : item,
@@ -684,7 +680,7 @@ void test('default ensureQueryState preserves mutation-managed dependency review
               open_todo_ids: ['dddddddd-dddd-4ddd-8ddd-dddddddddddd'],
               needs_attention: true,
               attention_reason_codes: ['dependency_changed'],
-              attention_reasons: ['Нужен review: изменилась зависимость задачи.'],
+              attention_reasons: ['Dependency changed: review the task.'],
               ready_for_next_step: false,
             }
           : item,

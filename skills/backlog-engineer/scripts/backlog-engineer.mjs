@@ -8302,13 +8302,13 @@ function synchronizeOpenTodoIds(payload) {
 function toAttentionReason(todo, code) {
 	if (code === "dependency_changed") {
 		const relatedItemKey = todo.related_item_keys[0];
-		return relatedItemKey ? `нужно проверить изменение зависимости ${relatedItemKey}` : "нужно проверить изменение зависимости";
+		return relatedItemKey ? `Dependency changed: review ${relatedItemKey}.` : "Dependency changed: review the task.";
 	}
 	if (code === "source_changed") {
 		const relatedSource = todo.related_sources[0];
-		return relatedSource ? `нужно проверить изменение источника ${relatedSource.source_label}` : "нужно проверить изменение источника";
+		return relatedSource ? `Source changed: review ${relatedSource.source_label}.` : "Source changed: review the task.";
 	}
-	return "нужно проверить изменение контекста";
+	return "Context changed: review the task.";
 }
 function applyPacketReplay(payload) {
 	const merged = mergePacketContextOnly(payload);
@@ -8464,7 +8464,7 @@ function recomputeDerivedState(payload) {
 		}
 		if (item.gaps.length > 0) {
 			attentionReasonCodes.push("gaps");
-			attentionReasons.push("Есть gap: задача заблокирована до уточнения входных данных.");
+			attentionReasons.push("Gap present: the task is blocked until missing input is clarified.");
 		}
 		const dependencyReady = item.depends_on_keys.every((dependencyKey) => {
 			const dependency = next.items.find((candidate) => candidate.item_key === dependencyKey);
@@ -9607,18 +9607,18 @@ function buildSemanticKey(todo) {
 }
 function createSourceChangeMessage(relatedSources) {
 	const labels = sortSourceSummaries(relatedSources).map((source) => source.source_label);
-	if (labels.length === 0) return "Проверь, изменился ли связанный источник.";
-	return `Проверь источник: ${labels.join(", ")}.`;
+	if (labels.length === 0) return "Review the linked source change.";
+	return `Review source change: ${labels.join(", ")}.`;
 }
 function createDependencyChangeMessage(relatedItemKeys) {
 	const keys = sortItemKeys(relatedItemKeys);
-	if (keys.length === 0) return "Проверь, изменились ли зависимости задачи.";
-	return `Родительская задача изменилась: ${keys.join(", ")}. Проверь, нужны ли изменения для этой задачи.`;
+	if (keys.length === 0) return "Review dependency changes for this task.";
+	return `Upstream task changed: ${keys.join(", ")}. Review whether this task needs updates.`;
 }
 function createContextChangeMessage(relatedItemKeys) {
 	const keys = sortItemKeys(relatedItemKeys);
-	if (keys.length === 0) return "Проверь, изменился ли контекст задачи.";
-	return `Контекст задачи изменился через: ${keys.join(", ")}. Проверь, нужны ли изменения.`;
+	if (keys.length === 0) return "Review task context changes.";
+	return `Task context changed through: ${keys.join(", ")}. Review whether updates are needed.`;
 }
 function buildTodo(payload) {
 	const relatedSources = sortSourceSummaries(payload.relatedSources ?? []);

@@ -290,7 +290,7 @@ void test('unchanged global refresh produces no semantic changes and preserves e
             open_todo_ids: ['00000000-0000-4000-8000-000000000299'],
             needs_attention: true,
             attention_reason_codes: ['context_changed'],
-            attention_reasons: ['Нужен review: изменился контекст задачи.'],
+            attention_reasons: ['Context changed: review the task.'],
             ready_for_next_step: false,
           }
         : item,

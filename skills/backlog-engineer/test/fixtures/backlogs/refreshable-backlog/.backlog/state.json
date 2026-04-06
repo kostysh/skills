@@ -172,7 +172,7 @@
         "gaps"
       ],
       "attention_reasons": [
-        "Есть gap: задача заблокирована до уточнения входных данных."
+        "Gap present: the task is blocked until missing input is clarified."
       ],
       "ready_for_next_step": false
     },

@@ -439,18 +439,18 @@ function toAttentionReason(todo: Todo, code: Exclude<AttentionReasonCode, 'gaps'
   if (code === 'dependency_changed') {
     const relatedItemKey = todo.related_item_keys[0];
     return relatedItemKey
-      ? `нужно проверить изменение зависимости ${relatedItemKey}`
-      : 'нужно проверить изменение зависимости';
+      ? `Dependency changed: review ${relatedItemKey}.`
+      : 'Dependency changed: review the task.';
   }
 
   if (code === 'source_changed') {
     const relatedSource = todo.related_sources[0];
     return relatedSource
-      ? `нужно проверить изменение источника ${relatedSource.source_label}`
-      : 'нужно проверить изменение источника';
+      ? `Source changed: review ${relatedSource.source_label}.`
+      : 'Source changed: review the task.';
   }
 
-  return 'нужно проверить изменение контекста';
+  return 'Context changed: review the task.';
 }
 
 export function applyPacketReplay(payload: {
@@ -718,7 +718,7 @@ export function recomputeDerivedState(payload: {
 
     if (item.gaps.length > 0) {
       attentionReasonCodes.push('gaps');
-      attentionReasons.push('Есть gap: задача заблокирована до уточнения входных данных.');
+      attentionReasons.push('Gap present: the task is blocked until missing input is clarified.');
     }
 
     const dependencyReady = item.depends_on_keys.every((dependencyKey) => {

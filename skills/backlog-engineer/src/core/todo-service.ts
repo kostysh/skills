@@ -55,28 +55,28 @@ function buildSemanticKey(todo: Todo): string {
 function createSourceChangeMessage(relatedSources: readonly SourceSummary[]): string {
   const labels = sortSourceSummaries(relatedSources).map((source) => source.source_label);
   if (labels.length === 0) {
-    return 'Проверь, изменился ли связанный источник.';
+    return 'Review the linked source change.';
   }
 
-  return `Проверь источник: ${labels.join(', ')}.`;
+  return `Review source change: ${labels.join(', ')}.`;
 }
 
 function createDependencyChangeMessage(relatedItemKeys: readonly ItemKey[]): string {
   const keys = sortItemKeys(relatedItemKeys);
   if (keys.length === 0) {
-    return 'Проверь, изменились ли зависимости задачи.';
+    return 'Review dependency changes for this task.';
   }
 
-  return `Родительская задача изменилась: ${keys.join(', ')}. Проверь, нужны ли изменения для этой задачи.`;
+  return `Upstream task changed: ${keys.join(', ')}. Review whether this task needs updates.`;
 }
 
 function createContextChangeMessage(relatedItemKeys: readonly ItemKey[]): string {
   const keys = sortItemKeys(relatedItemKeys);
   if (keys.length === 0) {
-    return 'Проверь, изменился ли контекст задачи.';
+    return 'Review task context changes.';
   }
 
-  return `Контекст задачи изменился через: ${keys.join(', ')}. Проверь, нужны ли изменения.`;
+  return `Task context changed through: ${keys.join(', ')}. Review whether updates are needed.`;
 }
 
 function buildTodo(payload: {

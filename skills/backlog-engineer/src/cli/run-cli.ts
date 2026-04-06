@@ -83,13 +83,8 @@ export async function runCli(
 
     const input = command.parseArgs(intent.args);
     const runtime = createRuntimeImpl();
-    const commandCwd = dependencies.getCwd
-      ? dependencies.getCwd()
-      : runtime.getProcessCwd();
-    const context = await runtime.createContext(
-      command.name,
-      commandCwd,
-    );
+    const commandCwd = dependencies.getCwd ? dependencies.getCwd() : runtime.getProcessCwd();
+    const context = await runtime.createContext(command.name, commandCwd);
     await context.hooks.beforeCommand?.({
       command: command.name,
       input,

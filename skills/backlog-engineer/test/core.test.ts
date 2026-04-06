@@ -704,7 +704,7 @@ void test('mutation-service refresh creates source and dependency review todo an
           open_todo_ids: ['00000000-0000-4000-8000-000000000200'],
           needs_attention: true,
           attention_reason_codes: ['context_changed'],
-          attention_reasons: ['Нужен review: изменился контекст задачи.'],
+          attention_reasons: ['Context changed: review the task.'],
           ready_for_next_step: false,
         }
       : item,
@@ -787,7 +787,10 @@ void test('mutation-service refresh updates matching source review todo and repl
     authCoreSourceTodos[0]?.related_sources.map((source) => source.source_id),
     ['11111111-1111-4111-8111-111111111111'],
   );
-  assert.equal(authCoreSourceTodos[0]?.message, 'Проверь источник: sources/docs/modules/auth.md.');
+  assert.equal(
+    authCoreSourceTodos[0]?.message,
+    'Review source change: sources/docs/modules/auth.md.',
+  );
   assert.equal(bannerDependencyTodos.length, 1);
   assert.deepEqual(bannerDependencyTodos[0]?.related_item_keys, [
     'auth-core',
