@@ -1,1 +1,26 @@
-export {};
+import type { ArtifactsModule } from '../artifacts/index.ts';
+import type { CoreModule } from '../core/index.ts';
+import type { ErrorModule } from '../errors/index.ts';
+import type { HookRegistry } from '../hooks/index.ts';
+import type { ReportsModule } from '../reports/index.ts';
+import type { SchemaModule, StateFile } from '../schemas/index.ts';
+import type { SourcesModule } from '../sources/index.ts';
+import type { TemplatesModule } from '../templates/index.ts';
+import type { BacklogRootPath } from './shared.ts';
+
+export interface CommandExecutionContext {
+  backlogRoot?: BacklogRootPath;
+  artifacts: ArtifactsModule;
+  sources: SourcesModule;
+  templates: TemplatesModule;
+  reports: ReportsModule;
+  schemas: SchemaModule;
+  errors: ErrorModule;
+  hooks: HookRegistry;
+  core: CoreModule;
+  ensureQueryState(): Promise<{
+    state: StateFile;
+    rebuilt: boolean;
+  }>;
+  ensureMutationState(): Promise<StateFile>;
+}

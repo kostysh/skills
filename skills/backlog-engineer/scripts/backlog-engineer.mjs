@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import path from "node:path";
 import { parseArgs } from "node:util";
+import crypto from "node:crypto";
+import fs from "node:fs/promises";
 //#region package.json
 var name = "@kostysh/backlog-engineer-cli";
 var version$1 = "0.1.0";
@@ -4410,7 +4412,7 @@ var PacketItemSchema = strictObject({
 		path: ["depends_on_keys"]
 	});
 });
-strictObject({
+var PacketFileSchema = strictObject({
 	context: PacketContextSchema,
 	items: array(PacketItemSchema)
 }).superRefine((value, ctx) => {
@@ -4431,7 +4433,9 @@ strictObject({
 		seenItemKeys.add(item.item_key);
 	}
 });
-strictObject({
+//#endregion
+//#region src/schemas/artifacts.ts
+var RootMarkerFileSchema = strictObject({
 	schema_version: SchemaVersionSchema,
 	tool_name: NonEmptyStringSchema,
 	created_at: IsoUtcTimestampSchema,
@@ -4448,7 +4452,7 @@ var SourceRecordSchema = strictObject({
 	registered_at: IsoUtcTimestampSchema,
 	last_checked_at: IsoUtcTimestampSchema
 });
-strictObject({
+var SourceRegistryFileSchema = strictObject({
 	schema_version: SchemaVersionSchema,
 	created_at: IsoUtcTimestampSchema,
 	updated_at: IsoUtcTimestampSchema,
@@ -4489,7 +4493,7 @@ var AppliedPatchEntrySchema = strictObject({
 	kind: PatchKindSchema,
 	target_item_keys: uniqueArraySchema(ItemKeySchema, (value) => value, "Target item keys must be unique.")
 });
-strictObject({
+var AppliedRegistryFileSchema = strictObject({
 	schema_version: SchemaVersionSchema,
 	created_at: IsoUtcTimestampSchema,
 	updated_at: IsoUtcTimestampSchema,
@@ -4552,7 +4556,7 @@ var TodoSchema = strictObject({
 	related_sources: uniqueArraySchema(SourceSummarySchema, (value) => value.source_id, "Related sources must be unique by source_id."),
 	related_item_keys: uniqueArraySchema(ItemKeySchema, (value) => value, "Related item keys must be unique.")
 });
-strictObject({
+var StateFileSchema = strictObject({
 	schema_version: SchemaVersionSchema,
 	created_at: IsoUtcTimestampSchema,
 	updated_at: IsoUtcTimestampSchema,
@@ -4588,37 +4592,6 @@ strictObject({
 			]
 		});
 	}
-});
-//#endregion
-//#region src/schemas/cli.ts
-var CommandCatalogEntrySchema = strictObject({
-	name: NonEmptyStringSchema,
-	summary: NonEmptyStringSchema
-});
-var CommandHelpOptionSchema = strictObject({
-	flags: array(NonEmptyStringSchema).min(1),
-	value_name: NonEmptyStringSchema.optional(),
-	description: NonEmptyStringSchema,
-	required: boolean().optional(),
-	repeatable: boolean().optional()
-});
-var GlobalHelpOutputSchema = strictObject({
-	cli_name: NonEmptyStringSchema,
-	version: NonEmptyStringSchema,
-	usage: array(NonEmptyStringSchema).min(1),
-	commands: array(CommandCatalogEntrySchema).min(1)
-});
-var CommandHelpOutputSchema = strictObject({
-	cli_name: NonEmptyStringSchema,
-	version: NonEmptyStringSchema,
-	command: NonEmptyStringSchema,
-	summary: NonEmptyStringSchema,
-	usage: array(NonEmptyStringSchema).min(1),
-	options: array(CommandHelpOptionSchema)
-});
-var VersionOutputSchema = strictObject({
-	cli_name: NonEmptyStringSchema,
-	version: NonEmptyStringSchema
 });
 //#endregion
 //#region src/schemas/commands.ts
@@ -4977,7 +4950,7 @@ var JsonValueSchema = lazy(() => union([
 ]));
 var JsonArraySchema = lazy(() => array(JsonValueSchema));
 var JsonObjectSchema = lazy(() => record(NonEmptyStringSchema, JsonValueSchema));
-strictObject({ error: strictObject({
+var ErrorPayloadSchema = strictObject({ error: strictObject({
 	code: ErrorCodeSchema,
 	message: NonEmptyStringSchema,
 	details: JsonObjectSchema.optional(),
@@ -5115,6 +5088,106 @@ PatchFileSchema.superRefine((value, ctx) => {
 	});
 });
 //#endregion
+//#region src/schemas/cli.ts
+var CommandCatalogEntrySchema = strictObject({
+	name: NonEmptyStringSchema,
+	summary: NonEmptyStringSchema
+});
+var CommandHelpOptionSchema = strictObject({
+	flags: array(NonEmptyStringSchema).min(1),
+	value_name: NonEmptyStringSchema.optional(),
+	description: NonEmptyStringSchema,
+	required: boolean().optional(),
+	repeatable: boolean().optional()
+});
+var GlobalHelpOutputSchema = strictObject({
+	cli_name: NonEmptyStringSchema,
+	version: NonEmptyStringSchema,
+	usage: array(NonEmptyStringSchema).min(1),
+	commands: array(CommandCatalogEntrySchema).min(1)
+});
+var CommandHelpOutputSchema = strictObject({
+	cli_name: NonEmptyStringSchema,
+	version: NonEmptyStringSchema,
+	command: NonEmptyStringSchema,
+	summary: NonEmptyStringSchema,
+	usage: array(NonEmptyStringSchema).min(1),
+	options: array(CommandHelpOptionSchema)
+});
+var VersionOutputSchema = strictObject({
+	cli_name: NonEmptyStringSchema,
+	version: NonEmptyStringSchema
+});
+//#endregion
+//#region src/schemas/index.ts
+var commandInputSchemas = {
+	init: InitCommandInputSchema,
+	"register-source": RegisterSourceCommandInputSchema,
+	"list-sources": ListSourcesCommandInputSchema,
+	template: TemplateCommandInputSchema,
+	packet: PacketCommandInputSchema,
+	"patch-item": PatchItemCommandInputSchema,
+	"remove-item": RemoveItemCommandInputSchema,
+	refresh: RefreshCommandInputSchema,
+	status: StatusCommandInputSchema,
+	report: ReportCommandInputSchema,
+	items: ItemsCommandInputSchema,
+	search: SearchCommandInputSchema,
+	gaps: GapsCommandInputSchema,
+	queue: QueueCommandInputSchema,
+	attention: AttentionCommandInputSchema,
+	"delete-backlog": DeleteBacklogCommandInputSchema
+};
+var commandOutputSchemas = {
+	init: InitCommandOutputSchema,
+	"register-source": RegisterSourceCommandOutputSchema,
+	"list-sources": ListSourcesCommandOutputSchema,
+	template: TemplateCommandOutputSchema,
+	packet: PacketCommandOutputSchema,
+	"patch-item": PatchItemCommandOutputSchema,
+	"remove-item": RemoveItemCommandOutputSchema,
+	refresh: RefreshCommandOutputSchema,
+	status: StatusCommandOutputSchema,
+	report: ReportCommandOutputSchema,
+	items: ItemsCommandOutputSchema,
+	search: SearchCommandOutputSchema,
+	gaps: GapsCommandOutputSchema,
+	queue: QueueCommandOutputSchema,
+	attention: AttentionCommandOutputSchema,
+	"delete-backlog": DeleteBacklogCommandOutputSchema
+};
+function createSchemaModule() {
+	return {
+		parseRootMarker(raw) {
+			return RootMarkerFileSchema.parse(raw);
+		},
+		parseSourceRegistry(raw) {
+			return SourceRegistryFileSchema.parse(raw);
+		},
+		parseAppliedRegistry(raw) {
+			return AppliedRegistryFileSchema.parse(raw);
+		},
+		parseStateFile(raw) {
+			return StateFileSchema.parse(raw);
+		},
+		parsePacketFile(raw) {
+			return PacketFileSchema.parse(raw);
+		},
+		parsePatchFile(raw) {
+			return PatchFileSchema.parse(raw);
+		},
+		parseCommandInput(name, raw) {
+			return commandInputSchemas[name].parse(raw);
+		},
+		parseCommandOutput(name, raw) {
+			return commandOutputSchemas[name].parse(raw);
+		},
+		parseErrorPayload(raw) {
+			return ErrorPayloadSchema.parse(raw);
+		}
+	};
+}
+//#endregion
 //#region src/errors/backlog-error.ts
 function isJsonObjectCandidate(value) {
 	return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -5212,6 +5285,28 @@ function normalizeError(error) {
 		...error instanceof Error ? { details: { cause_name: error.name } } : {},
 		...error ? { cause: error } : {}
 	});
+}
+//#endregion
+//#region src/errors/index.ts
+function createErrorModule() {
+	return {
+		create(code, message, options) {
+			return createBacklogError({
+				code,
+				...message ? { message } : {},
+				...options?.details ? { details: options.details } : {},
+				...options?.hint ? { hint: options.hint } : {},
+				...options?.cause ? { cause: options.cause } : {}
+			});
+		},
+		isBacklogError,
+		toPayload(error) {
+			return normalizeError(error).toPayload();
+		},
+		toExitCode(error) {
+			return normalizeError(error).exitCode;
+		}
+	};
 }
 //#endregion
 //#region src/commands/arg-parsers.ts
@@ -5885,6 +5980,246 @@ function parseCliIntent(argv) {
 	};
 }
 //#endregion
+//#region src/hooks/no-op-hooks.ts
+function createNoOpRegistry() {
+	return {
+		beforeCommand() {
+			return Promise.resolve();
+		},
+		afterCommand() {
+			return Promise.resolve();
+		},
+		afterSourceRegistered() {
+			return Promise.resolve();
+		},
+		afterPacketApplied() {
+			return Promise.resolve();
+		},
+		afterPatchApplied() {
+			return Promise.resolve();
+		},
+		afterRefresh() {
+			return Promise.resolve();
+		},
+		buildSystemSummary() {
+			return Promise.resolve([]);
+		},
+		decorateReportSections({ sections }) {
+			return Promise.resolve(sections);
+		}
+	};
+}
+//#endregion
+//#region src/runtime/ports.ts
+function createNodeFileSystemPort() {
+	return {
+		async readText(filePath) {
+			return fs.readFile(filePath, "utf8");
+		},
+		async writeText(filePath, content) {
+			await fs.writeFile(filePath, content, "utf8");
+		},
+		async exists(filePath) {
+			try {
+				await fs.access(filePath);
+				return true;
+			} catch {
+				return false;
+			}
+		},
+		async mkdir(dirPath, options) {
+			await fs.mkdir(dirPath, options);
+		},
+		async readdir(dirPath) {
+			return (await fs.readdir(dirPath)).sort((left, right) => left.localeCompare(right));
+		},
+		async rm(targetPath, options) {
+			await fs.rm(targetPath, options);
+		},
+		async stat(targetPath) {
+			const stat = await fs.stat(targetPath);
+			return {
+				isFile: stat.isFile(),
+				isDirectory: stat.isDirectory(),
+				size: stat.size,
+				mtimeMs: stat.mtimeMs
+			};
+		},
+		cwd() {
+			return path.resolve(process.cwd());
+		}
+	};
+}
+function createNodePathPort() {
+	return {
+		resolve(...parts) {
+			return path.resolve(...parts);
+		},
+		dirname(pathValue) {
+			return path.dirname(pathValue);
+		},
+		basename(pathValue) {
+			return path.basename(pathValue);
+		},
+		relative(from, to) {
+			return path.relative(from, to);
+		},
+		normalize(pathValue) {
+			return path.normalize(pathValue);
+		},
+		join(...parts) {
+			return path.join(...parts);
+		}
+	};
+}
+function createNodeClockPort() {
+	return { nowIsoUtc() {
+		return (/* @__PURE__ */ new Date()).toISOString();
+	} };
+}
+function createNodeUuidPort() {
+	return { create() {
+		return crypto.randomUUID();
+	} };
+}
+function createNodeHashPort() {
+	return { sha256Text(text) {
+		return Promise.resolve(crypto.createHash("sha256").update(text).digest("hex"));
+	} };
+}
+function createNodeRuntimeDependencies(overrides = {}) {
+	return {
+		fs: overrides.fs ?? createNodeFileSystemPort(),
+		path: overrides.path ?? createNodePathPort(),
+		clock: overrides.clock ?? createNodeClockPort(),
+		uuid: overrides.uuid ?? createNodeUuidPort(),
+		hash: overrides.hash ?? createNodeHashPort(),
+		hooks: overrides.hooks ?? createNoOpRegistry()
+	};
+}
+//#endregion
+//#region src/runtime/root-discovery.ts
+var ROOT_MARKER_BASENAME = ".backlog.json";
+function rootMarkerPath(pathPort, root) {
+	return pathPort.join(root, ROOT_MARKER_BASENAME);
+}
+async function findBacklogRoot(fsPort, pathPort, startPath) {
+	let cursor = pathPort.resolve(startPath);
+	while (true) {
+		const markerPath = rootMarkerPath(pathPort, cursor);
+		if (await fsPort.exists(markerPath)) {
+			if ((await fsPort.stat(markerPath)).isFile) return cursor;
+		}
+		const parent = pathPort.dirname(cursor);
+		if (parent === cursor) return;
+		cursor = parent;
+	}
+}
+async function resolveCommandBacklogRoot(payload) {
+	return findBacklogRoot(payload.fs, payload.path, payload.cwd);
+}
+//#endregion
+//#region src/runtime/state-recovery.ts
+function createUnconfiguredStateCoordinator(errorModule) {
+	const createUnconfiguredError = (operation) => errorModule.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+		details: { operation },
+		hint: "Continue with the runtime/artifacts implementation work packages before invoking state-dependent command semantics."
+	});
+	return {
+		ensureQueryState() {
+			return Promise.reject(createUnconfiguredError("ensureQueryState"));
+		},
+		ensureMutationState() {
+			return Promise.reject(createUnconfiguredError("ensureMutationState"));
+		},
+		rebuildState() {
+			return Promise.reject(createUnconfiguredError("rebuildState"));
+		}
+	};
+}
+//#endregion
+//#region src/runtime/create-runtime.ts
+function createUnavailableModuleProxy(moduleName, errorModule) {
+	return new Proxy({}, { get(_target, propertyKey) {
+		return () => {
+			throw errorModule.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+				details: {
+					module: moduleName,
+					property: String(propertyKey)
+				},
+				hint: "Continue with the next implementation work package to install the concrete module implementation."
+			});
+		};
+	} });
+}
+function buildRuntimeModules(dependencies, overrides = {}) {
+	const errors = overrides?.errors ?? createErrorModule();
+	return {
+		artifacts: overrides?.artifacts ?? createUnavailableModuleProxy("artifacts", errors),
+		sources: overrides?.sources ?? createUnavailableModuleProxy("sources", errors),
+		templates: overrides?.templates ?? createUnavailableModuleProxy("templates", errors),
+		reports: overrides?.reports ?? createUnavailableModuleProxy("reports", errors),
+		schemas: overrides?.schemas ?? createSchemaModule(),
+		errors,
+		hooks: dependencies.hooks,
+		core: overrides?.core ?? createUnavailableModuleProxy("core", errors)
+	};
+}
+function createRuntime(options = {}) {
+	const dependencies = createNodeRuntimeDependencies(options.dependencies);
+	const modules = buildRuntimeModules(dependencies, options.modules);
+	const stateCoordinator = options.stateCoordinator ?? createUnconfiguredStateCoordinator(modules.errors);
+	return {
+		async createContext(command, cwd) {
+			const backlogRoot = await resolveCommandBacklogRoot({
+				command,
+				cwd,
+				fs: dependencies.fs,
+				path: dependencies.path
+			});
+			if (!backlogRoot && command !== "init") throw modules.errors.create("BE_ROOT_NOT_FOUND", void 0, {
+				details: {
+					command,
+					cwd: dependencies.path.resolve(cwd),
+					root_marker: ROOT_MARKER_BASENAME
+				},
+				hint: "Run `backlog-engineer init --path <path>` inside a new backlog root or execute the command from an existing backlog directory."
+			});
+			const coordinatorPayload = backlogRoot === void 0 ? void 0 : {
+				backlogRoot,
+				dependencies,
+				modules
+			};
+			return {
+				...backlogRoot ? { backlogRoot } : {},
+				artifacts: modules.artifacts,
+				sources: modules.sources,
+				templates: modules.templates,
+				reports: modules.reports,
+				schemas: modules.schemas,
+				errors: modules.errors,
+				hooks: modules.hooks,
+				core: modules.core,
+				async ensureQueryState() {
+					if (!coordinatorPayload) throw modules.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: { command } });
+					return stateCoordinator.ensureQueryState(coordinatorPayload);
+				},
+				async ensureMutationState() {
+					if (!coordinatorPayload) throw modules.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: { command } });
+					return stateCoordinator.ensureMutationState(coordinatorPayload);
+				}
+			};
+		},
+		async rebuildState(root) {
+			return stateCoordinator.rebuildState({
+				backlogRoot: root,
+				dependencies,
+				modules
+			});
+		}
+	};
+}
+//#endregion
 //#region src/cli/run-cli.ts
 function commandHelpRequested(args) {
 	return args.includes("--help") || args.includes("-h");
@@ -5899,9 +6234,11 @@ function writeErrorPayload(cliIo, error) {
 	writeJson(cliIo.stderr, error.toPayload());
 	return error.exitCode;
 }
-async function runCli(argv, cliIo, version) {
+async function runCli(argv, cliIo, version, dependencies = {}) {
 	try {
 		const intent = parseCliIntent(argv);
+		const findCommandImpl = dependencies.findCommand ?? findCommand;
+		const createRuntimeImpl = dependencies.createRuntime ?? createRuntime;
 		if (intent.kind === "global_help") {
 			writeJson(cliIo.stdout, buildGlobalHelpOutput(version));
 			return 0;
@@ -5911,7 +6248,7 @@ async function runCli(argv, cliIo, version) {
 			return 0;
 		}
 		const commandName = intent.commandName;
-		const command = findCommand(commandName);
+		const command = findCommandImpl(commandName);
 		if (!command) throw createUsageError({
 			reason: "unknown_command",
 			command: commandName
@@ -5925,8 +6262,19 @@ async function runCli(argv, cliIo, version) {
 			return 0;
 		}
 		const input = command.parseArgs(intent.args);
-		const output = await command.execute(input, {});
+		const context = await createRuntimeImpl().createContext(command.name, process.cwd());
+		await context.hooks.beforeCommand?.({
+			command: command.name,
+			input,
+			...context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}
+		});
+		const output = await command.execute(input, context);
 		const validatedOutput = command.outputSchema.parse(output);
+		await context.hooks.afterCommand?.({
+			command: command.name,
+			output: validatedOutput,
+			...context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}
+		});
 		writeJson(cliIo.stdout, validatedOutput);
 		return 0;
 	} catch (error) {

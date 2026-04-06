@@ -1,8 +1,9 @@
 import { createBacklogError } from '../errors/index.ts';
 import type { CommandDefinition } from './types.ts';
+import type { CommandName } from '../runtime/shared.ts';
 
 type PlaceholderCommandConfig<TInput, TOutput> = {
-  name: string;
+  name: CommandName;
   summary: string;
   usage: readonly string[];
   options: CommandDefinition<TInput, TOutput>['options'];

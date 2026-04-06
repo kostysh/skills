@@ -9,6 +9,10 @@
 - В логе фиксируются только факты и принятые решения, которые важны для следующих пакетов.
 - Любое решение или допущение за пределами текущей концепции, спецификаций и утверждённых контрактов фиксируется отдельной явной пометкой.
 - Лог не заменяет git history, а дополняет её инженерным контекстом.
+- Начиная со следующего после текущего work package, для каждого пакета обязательны три внешних ревью:
+  - `code-reviewer`
+  - `security-reviewer`
+  - `spec-conformance-reviewer`
 
 ## Формат записи
 
@@ -25,6 +29,16 @@
 - Следующий пакет:
 
 ## Записи
+
+## Общие решения по процессу
+
+- С 2026-04-06, начиная со следующего после текущего work package, обязательный внешний review-контур включает:
+  - `code-reviewer`
+  - `security-reviewer`
+  - `spec-conformance-reviewer`
+- Для текущего work package `D` сохраняется ранее действовавший review-контур:
+  - `code-reviewer`
+  - `security-reviewer`
 
 ### Work package `A` — `Structural bootstrap`
 
@@ -43,7 +57,7 @@
   - package A не вводит новую business logic и не меняет поведение scaffold-команд
   - file-level skeleton создан сразу полностью, чтобы следующие пакеты не начинались с неполного дерева `src/`
   - ownership exit codes закреплён сразу в `errors`, чтобы не допустить drift process-level concerns в `commands`
-  - локальный `biome.json` выбран вместо shell-specific scripts, чтобы не делать workflow POSIX-specific и не урезать lint/format boundary до `*.test.mjs`
+  - локальный `biome.json` выбран вместо shell-specific scripts, чтобы не делать workflow POSIX-specific и сохранить единый lint/format boundary для TypeScript source и test файлов
 - Допущения вне спецификации:
   - нет
 - Проверки приёмки:
@@ -143,3 +157,49 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: `D — Runtime foundation and orchestration boundary`
+
+### Work package `D` — `Runtime foundation and orchestration boundary`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Коммит:
+- Что сделано:
+  - реализованы shared runtime types и runtime ports:
+    - `FileSystemPort`
+    - `PathPort`
+    - `ClockPort`
+    - `UuidPort`
+    - `HashPort`
+    - `ProcessIoPort`
+  - реализованы Node adapters и сборка default runtime dependency bag
+  - реализован backlog-root discovery по `.backlog.json`
+  - реализован fail-fast no-op hooks registry с безопасными default return values
+  - введены typed module entrypoints для `artifacts`, `sources`, `templates`, `reports`, `core`, `schemas`, `errors`, `hooks`
+  - реализованы `SchemaModule` и `ErrorModule` как concrete runtime services
+  - реализованы `RuntimeStateCoordinator` contract и runtime-level command context
+  - `runCli()` теперь создаёт runtime/context и вызывает top-level command hooks только для реальных command executions
+  - добавлены runtime tests на:
+    - root discovery
+    - `createContext()`
+    - no-op hooks
+    - wiring `ensureQueryState()` / `ensureMutationState()` / `rebuildState()`
+  - добавлен прямой unit-test на `beforeCommand` / `afterCommand` orchestration в `runCli()`, чтобы hook flow был покрыт не только косвенными process tests
+- Ключевые решения:
+  - argv validation и command-local `parseArgs` выполняются до `runtime.createContext()`, чтобы usage errors не зависели от наличия backlog root
+  - hooks для `beforeCommand` / `afterCommand` не вызываются для `--help`, `help <command>` и `--version`; они относятся только к реальным command executions
+  - `schemas` и `errors` оформлены как concrete runtime modules уже на package D, потому что дальше все command contexts должны получать единый service bundle, а не raw namespace imports
+- Допущения вне спецификации:
+  - до реализации concrete `artifacts` / `sources` / `templates` / `reports` / `core` runtime подставляет fail-fast module proxies, которые явно падают с `BE_INTERNAL_STATE_CORRUPT`, если кто-то попытается вызвать ещё не реализованный module surface
+  - до реализации state recovery semantics `ensureQueryState()` / `ensureMutationState()` / `rebuildState()` делегируются в explicit unconfigured state coordinator, который так же fail-fast падает с `BE_INTERNAL_STATE_CORRUPT`; это временная runtime guard policy для сохранения архитектурной границы без преждевременной реализации rebuild logic
+  - для точной проверки CLI hook orchestration в `runCli()` добавлен внутренний dependency seam только для unit-tests: optional injection `findCommand` и `createRuntime`; production path по умолчанию использует те же concrete зависимости и не меняет публичный CLI contract
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `E — Artifacts bootstrap and layout ownership`
+- Дополнительная пометка:
+  - начиная с work package `E`, кроме `code-reviewer` и `security-reviewer` обязателен также внешний review через `spec-conformance-reviewer`

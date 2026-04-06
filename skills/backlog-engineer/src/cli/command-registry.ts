@@ -49,7 +49,9 @@ const TYPED_COMMANDS = [
 
 export const COMMANDS = TYPED_COMMANDS as readonly AnyCommandDefinition[];
 
-const COMMAND_MAP = new Map(COMMANDS.map((command) => [command.name, command]));
+const COMMAND_MAP = new Map<string, AnyCommandDefinition>(
+  COMMANDS.map((command) => [command.name, command]),
+);
 
 export function findCommand(name: string): AnyCommandDefinition | undefined {
   return COMMAND_MAP.get(name);

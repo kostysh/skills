@@ -1,16 +1,18 @@
 import type { ZodType } from 'zod';
 
 import type { CommandHelpOption } from '../schemas/index.ts';
+import type { CommandExecutionContext } from '../runtime/command-context.ts';
+import type { CommandName } from '../runtime/shared.ts';
 
 export type CliIo = {
   stdout: Pick<NodeJS.WriteStream, 'write'>;
   stderr: Pick<NodeJS.WriteStream, 'write'>;
 };
 
-export type CommandExecutionContext = Record<string, never>;
+export type { CommandExecutionContext };
 
 export type CommandDefinition<TInput = unknown, TOutput = unknown> = {
-  name: string;
+  name: CommandName;
   summary: string;
   usage: readonly string[];
   options: readonly CommandHelpOption[];

@@ -12,7 +12,13 @@ import {
   type BacklogError,
   EXIT_SUCCESS,
 } from '../errors/index.ts';
-import type { CliIo } from '../commands/index.ts';
+import type { AnyCommandDefinition, CliIo } from '../commands/index.ts';
+import { createRuntime, type RuntimeModule } from '../runtime/index.ts';
+
+type RunCliDependencies = {
+  findCommand?: (name: string) => AnyCommandDefinition | undefined;
+  createRuntime?: () => RuntimeModule;
+};
 
 function commandHelpRequested(args: string[]): boolean {
   return args.includes('--help') || args.includes('-h');
@@ -31,9 +37,16 @@ function writeErrorPayload(cliIo: CliIo, error: BacklogError): number {
   return error.exitCode;
 }
 
-export async function runCli(argv: string[], cliIo: CliIo, version: string): Promise<number> {
+export async function runCli(
+  argv: string[],
+  cliIo: CliIo,
+  version: string,
+  dependencies: RunCliDependencies = {},
+): Promise<number> {
   try {
     const intent = parseCliIntent(argv);
+    const findCommandImpl = dependencies.findCommand ?? findCommand;
+    const createRuntimeImpl = dependencies.createRuntime ?? createRuntime;
 
     if (intent.kind === 'global_help') {
       writeJson(cliIo.stdout, buildGlobalHelpOutput(version));
@@ -46,7 +59,7 @@ export async function runCli(argv: string[], cliIo: CliIo, version: string): Pro
     }
 
     const commandName = intent.commandName;
-    const command = findCommand(commandName);
+    const command = findCommandImpl(commandName);
     if (!command) {
       throw createUsageError(
         {
@@ -68,8 +81,21 @@ export async function runCli(argv: string[], cliIo: CliIo, version: string): Pro
     }
 
     const input = command.parseArgs(intent.args);
-    const output = await command.execute(input, {});
+    const runtime = createRuntimeImpl();
+    const context = await runtime.createContext(command.name, process.cwd());
+    await context.hooks.beforeCommand?.({
+      command: command.name,
+      input,
+      ...(context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}),
+    });
+
+    const output = await command.execute(input, context);
     const validatedOutput = command.outputSchema.parse(output);
+    await context.hooks.afterCommand?.({
+      command: command.name,
+      output: validatedOutput,
+      ...(context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}),
+    });
     writeJson(cliIo.stdout, validatedOutput);
     return EXIT_SUCCESS;
   } catch (error) {
