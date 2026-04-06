@@ -8,15 +8,20 @@ import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 
 import {
+  AttentionCommandOutputSchema,
   CommandHelpOutputSchema,
   DeleteBacklogCommandOutputSchema,
   ErrorPayloadSchema,
+  GapsCommandOutputSchema,
   GlobalHelpOutputSchema,
   InitCommandOutputSchema,
+  ItemsCommandOutputSchema,
   ListSourcesCommandOutputSchema,
+  QueueCommandOutputSchema,
   RefreshCommandOutputSchema,
   RegisterSourceCommandOutputSchema,
   RootMarkerFileSchema,
+  SearchCommandOutputSchema,
   SourceRegistryFileSchema,
   StatusCommandOutputSchema,
   TemplateCommandOutputSchema,
@@ -509,6 +514,66 @@ void test('status rebuilds missing state.json through hidden maintenance rebuild
       ) as unknown,
     );
     assert.equal(rebuiltState.items.length, 4);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('items, search, gaps, queue, and attention work on the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    await copyBacklogFixture('todo-dedup-backlog', backlogRoot);
+
+    const itemsResult = runBuiltCli(
+      ['items', '--item-keys', 'session-ui-timeout-banner,auth-core'],
+      { cwd: backlogRoot },
+    );
+    assert.equal(itemsResult.status, 0);
+    assert.deepEqual(
+      ItemsCommandOutputSchema.parse(parseStdoutJson(itemsResult)).map(
+        (entry) => entry.item.item_key,
+      ),
+      ['session-ui-timeout-banner', 'auth-core'],
+    );
+
+    const searchResult = runBuiltCli(['search', '--needs-attention', 'true'], {
+      cwd: backlogRoot,
+    });
+    assert.equal(searchResult.status, 0);
+    assert.deepEqual(
+      SearchCommandOutputSchema.parse(parseStdoutJson(searchResult)).map((entry) => entry.item_key),
+      ['auth-session-timeout-audit', 'session-ui-timeout-banner'],
+    );
+
+    const gapsResult = runBuiltCli(['gaps'], { cwd: backlogRoot });
+    assert.equal(gapsResult.status, 0);
+    assert.deepEqual(
+      GapsCommandOutputSchema.parse(parseStdoutJson(gapsResult)).map((entry) => entry.item_key),
+      ['auth-session-timeout-audit'],
+    );
+
+    const queueFixtureRoot = path.join(tempRoot, 'queue-backlog');
+    await copyBacklogFixture('refreshable-backlog', queueFixtureRoot);
+
+    const queueResult = runBuiltCli(['queue'], { cwd: queueFixtureRoot });
+    assert.equal(queueResult.status, 0);
+    assert.deepEqual(
+      QueueCommandOutputSchema.parse(parseStdoutJson(queueResult)).map(
+        (entry) => entry.root_item_key,
+      ),
+      ['auth-core'],
+    );
+
+    const attentionResult = runBuiltCli(['attention'], { cwd: backlogRoot });
+    assert.equal(attentionResult.status, 0);
+    assert.deepEqual(
+      AttentionCommandOutputSchema.parse(parseStdoutJson(attentionResult)).map(
+        (entry) => entry.item_key,
+      ),
+      ['session-ui-timeout-banner', 'auth-session-timeout-audit'],
+    );
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

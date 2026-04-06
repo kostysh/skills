@@ -99,7 +99,11 @@ export interface DerivedStateService {
 }
 
 export interface SearchService {
-  search(payload: { state: StateFile; filters: SearchCommandInput }): SearchCommandOutput;
+  search(payload: {
+    state: StateFile;
+    filters: SearchCommandInput;
+    registry: SourceRegistryFile;
+  }): SearchCommandOutput;
 }
 
 export interface ItemsService {

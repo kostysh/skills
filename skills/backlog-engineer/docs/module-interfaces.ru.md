@@ -978,6 +978,7 @@ interface SearchService {
   search(payload: {
     state: StateFile;
     filters: SearchCommandInput;
+    registry: SourceRegistryFile;
   }): SearchCommandOutput;
 }
 ```

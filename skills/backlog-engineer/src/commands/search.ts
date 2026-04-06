@@ -1,6 +1,8 @@
 import {
   SearchCommandInputSchema,
   SearchCommandOutputSchema,
+  type SearchCommandInput,
+  type SearchCommandOutput,
   type CommandHelpOption,
 } from '../schemas/index.ts';
 import {
@@ -11,7 +13,8 @@ import {
   parseUsageInput,
   splitCsvFlag,
 } from './arg-parsers.ts';
-import { definePlaceholderCommand } from './placeholder.ts';
+import type { CommandDefinition } from './types.ts';
+import { loadQueryStateWithRegistry } from './query-helpers.ts';
 
 const OPTIONS = [
   {
@@ -61,7 +64,7 @@ const OPTIONS = [
   },
 ] as const satisfies readonly CommandHelpOption[];
 
-export const SEARCH_COMMAND = definePlaceholderCommand({
+export const SEARCH_COMMAND: CommandDefinition<SearchCommandInput, SearchCommandOutput> = {
   name: 'search',
   summary: 'Search tasks when keys are not yet known.',
   usage: [
@@ -136,4 +139,12 @@ export const SEARCH_COMMAND = definePlaceholderCommand({
         : {}),
     });
   },
-});
+  async execute(input, context) {
+    const { state, registry } = await loadQueryStateWithRegistry(context);
+    return context.core.search.search({
+      state,
+      filters: input,
+      registry,
+    });
+  },
+};

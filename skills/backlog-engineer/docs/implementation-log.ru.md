@@ -605,3 +605,64 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: `K — Read model commands`
+
+### Work package `K` — `Read model commands`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Начало работ: 2026-04-06 22:42:38 +02:00
+- Полное время закрытия: 00:26:18
+- Коммит: `feat(backlog-engineer): implement read model commands`
+- Что сделано:
+  - реализованы реальные read-команды:
+    - `items`
+    - `search`
+    - `gaps`
+    - `queue`
+    - `attention`
+  - добавлен общий helper-слой `query-helpers.ts` для query-path команд:
+    - `assertBacklogRoot(...)`
+    - `loadQueryState(...)`
+    - `loadQueryStateWithRegistry(...)`
+  - добавлен utility-owned helper `read-model-helpers.ts` для:
+    - source summary lookup
+    - item context summary
+    - item todo projection
+    - packet item projection
+    - attention ordering
+    - ready-queue roots и downstream counting
+  - `createCoreModule(...)` и `core` exports теперь wire-ят реальные services:
+    - `search`
+    - `items`
+    - `queue`
+    - `attention`
+  - `SearchService` contract синхронизирован с реальным read surface и принимает `registry`, чтобы возвращать `source_summaries`
+  - добавлены unit, command-level и built-CLI tests для read-model surface, включая:
+    - hidden maintenance rebuild для read path
+    - `search.match_reasons`
+    - filter coverage для всех search filters
+    - scoped `gaps --item-key`
+    - `queue` после реальной mutation-derived-state change
+- Ключевые решения:
+  - `items`, `search` и `attention` читают `state` только через `ensureQueryState()`, а `sources.json` читают отдельно через artifact store, потому что source labels входят во внешний DTO
+  - read-команды не выполняют semantic refresh и опираются только на hidden maintenance rebuild плюс текущее persisted state
+  - `search.match_reasons` для массивных filters отражают только реально совпавшие значения, а не весь запрос
+  - `queue` строится только из уже вычисленного derived state и не имеет собственной refresh/recompute логики
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - первый spec conformance review — PARTIAL
+    - `utility-spec.ru.md` не был полностью синхронизирован по `Reads` для `items` / `search` / `attention`
+    - matrix-level coverage для `search` и `queue` ещё не закрывала все ветки пакета `K`
+  - согласованные исправления:
+    - `utility-spec.ru.md` синхронизирован по `sources.json` reads для read-команд, которым нужен source registry
+    - добавлены unit/command tests по всем search filters, hidden rebuild в `items` и queue-after-mutation scenario
+  - повторный spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `L — Reporting and report hooks`

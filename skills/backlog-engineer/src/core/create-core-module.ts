@@ -4,38 +4,13 @@ import type { SchemaModule } from '../schemas/index.ts';
 import { createContextService } from './context-service.ts';
 import { createDerivedStateService } from './derived-state-service.ts';
 import { createGraphService } from './graph-service.ts';
+import { createItemsService } from './items-service.ts';
 import { createMutationService } from './mutation-service.ts';
+import { createAttentionService } from './attention-service.ts';
+import { createQueueService } from './queue-service.ts';
+import { createSearchService } from './search-service.ts';
 import { createTodoService } from './todo-service.ts';
-import type {
-  AttentionService,
-  CoreModule,
-  ItemsService,
-  QueueService,
-  SearchService,
-} from './types.ts';
-
-function createUnavailableQueryService<T extends object>(
-  serviceName: string,
-  errors: ErrorModule,
-): T {
-  return new Proxy(
-    {},
-    {
-      get(_target, propertyKey) {
-        return () => {
-          throw errors.create('BE_INTERNAL_STATE_CORRUPT', undefined, {
-            details: {
-              module: 'core',
-              service: serviceName,
-              property: String(propertyKey),
-            },
-            hint: 'Continue with the read-model work packages before invoking query services.',
-          });
-        };
-      },
-    },
-  ) as T;
-}
+import type { CoreModule } from './types.ts';
 
 export function createCoreModule(payload: {
   errors: ErrorModule;
@@ -61,6 +36,22 @@ export function createCoreModule(payload: {
     errors: payload.errors,
     schemas: payload.schemas,
   });
+  const search = createSearchService({
+    errors: payload.errors,
+    schemas: payload.schemas,
+  });
+  const items = createItemsService({
+    errors: payload.errors,
+    schemas: payload.schemas,
+  });
+  const queue = createQueueService({
+    errors: payload.errors,
+    schemas: payload.schemas,
+  });
+  const attention = createAttentionService({
+    errors: payload.errors,
+    schemas: payload.schemas,
+  });
   const mutation = createMutationService({
     errors: payload.errors,
     schemas: payload.schemas,
@@ -76,10 +67,10 @@ export function createCoreModule(payload: {
     context,
     todo,
     derivedState,
+    search,
+    items,
+    queue,
+    attention,
     mutation,
-    search: createUnavailableQueryService<SearchService>('search', payload.errors),
-    items: createUnavailableQueryService<ItemsService>('items', payload.errors),
-    queue: createUnavailableQueryService<QueueService>('queue', payload.errors),
-    attention: createUnavailableQueryService<AttentionService>('attention', payload.errors),
   };
 }

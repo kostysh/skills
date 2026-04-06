@@ -5,10 +5,14 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import {
+  createAttentionService,
   createContextService,
   createDerivedStateService,
   createGraphService,
+  createItemsService,
   createMutationService,
+  createQueueService,
+  createSearchService,
   createTodoService,
 } from '../src/core/index.ts';
 import { createErrorModule } from '../src/errors/index.ts';
@@ -49,6 +53,10 @@ function createCoreServices() {
   const context = createContextService({ errors, schemas });
   const todo = createTodoService({ errors, schemas, clock, uuid });
   const derivedState = createDerivedStateService({ errors, schemas });
+  const search = createSearchService({ errors, schemas });
+  const items = createItemsService({ errors, schemas });
+  const queue = createQueueService({ errors, schemas });
+  const attention = createAttentionService({ errors, schemas });
   const mutation = createMutationService({
     errors,
     schemas,
@@ -66,6 +74,10 @@ function createCoreServices() {
     context,
     todo,
     derivedState,
+    search,
+    items,
+    queue,
+    attention,
     mutation,
   };
 }
@@ -975,6 +987,278 @@ void test('mutation-service refresh preserves unrelated refresh-managed dependen
     ),
     ['11111111-1111-4111-8111-111111111111', '33333333-3333-4333-8333-333333333333'],
   );
+});
+
+void test('items-service returns full cards in requested order', async () => {
+  const { items } = createCoreServices();
+  const state = await readFixtureJson<StateFile>(
+    'backlogs/refreshable-backlog/.backlog/state.json',
+  );
+  const registry = await readFixtureJson<SourceRegistryFile>(
+    'backlogs/refreshable-backlog/.backlog/sources.json',
+  );
+
+  const result = items.getItems({
+    state,
+    itemKeys: ['session-ui-timeout-banner', 'auth-core'],
+    registry,
+  });
+
+  assert.deepEqual(
+    result.map((entry) => entry.item.item_key),
+    ['session-ui-timeout-banner', 'auth-core'],
+  );
+  assert.deepEqual(
+    result[0]?.source_summaries.map((source) => source.source_label),
+    ['sources/docs/modules/session-ui.md'],
+  );
+  assert.deepEqual(result[1]?.context.contract_keys, ['auth-session-contract']);
+});
+
+void test('search-service filters deterministically and returns compact matches', async () => {
+  const { search } = createCoreServices();
+  const state = await readFixtureJson<StateFile>('backlogs/todo-dedup-backlog/.backlog/state.json');
+  const registry = await readFixtureJson<SourceRegistryFile>(
+    'backlogs/todo-dedup-backlog/.backlog/sources.json',
+  );
+
+  const result = search.search({
+    state,
+    registry,
+    filters: {
+      needs_attention: true,
+    },
+  });
+
+  assert.deepEqual(
+    result.map((entry) => entry.item_key),
+    ['auth-session-timeout-audit', 'session-ui-timeout-banner'],
+  );
+  assert.deepEqual(result[0]?.match_reasons, ['needs_attention=true']);
+});
+
+void test('search-service intersects combined filters and reports only matching source_ids', async () => {
+  const { search } = createCoreServices();
+  const state = await readFixtureJson<StateFile>(
+    'backlogs/refreshable-backlog/.backlog/state.json',
+  );
+  const registry = await readFixtureJson<SourceRegistryFile>(
+    'backlogs/refreshable-backlog/.backlog/sources.json',
+  );
+
+  const result = search.search({
+    state,
+    registry,
+    filters: {
+      source_ids: ['11111111-1111-4111-8111-111111111111', '33333333-3333-4333-8333-333333333333'],
+      contract_keys: ['auth-session-contract'],
+      needs_attention: false,
+    },
+  });
+
+  assert.deepEqual(
+    result.map((entry) => entry.item_key),
+    ['auth-core', 'auth-session-timeout-enforcement'],
+  );
+  assert.deepEqual(result[0]?.match_reasons, [
+    'source_ids=11111111-1111-4111-8111-111111111111',
+    'needs_attention=false',
+    'contract_keys=auth-session-contract',
+  ]);
+});
+
+void test('search-service supports every documented filter branch', async () => {
+  const { search } = createCoreServices();
+  const state = await readFixtureJson<StateFile>(
+    'backlogs/refreshable-backlog/.backlog/state.json',
+  );
+  const registry = await readFixtureJson<SourceRegistryFile>(
+    'backlogs/refreshable-backlog/.backlog/sources.json',
+  );
+
+  const cases: Array<{
+    name: string;
+    filters: Parameters<typeof search.search>[0]['filters'];
+    expected: string[];
+  }> = [
+    {
+      name: 'source_ids',
+      filters: {
+        source_ids: ['11111111-1111-4111-8111-111111111111'],
+      },
+      expected: ['auth-core', 'auth-session-timeout-audit', 'auth-session-timeout-enforcement'],
+    },
+    {
+      name: 'delivery_state',
+      filters: {
+        delivery_state: 'defined' as const,
+      },
+      expected: ['auth-session-timeout-audit', 'session-ui-timeout-banner'],
+    },
+    {
+      name: 'ready_for_next_step',
+      filters: {
+        ready_for_next_step: true,
+      },
+      expected: ['auth-core', 'auth-session-timeout-enforcement', 'session-ui-timeout-banner'],
+    },
+    {
+      name: 'claim_keys',
+      filters: {
+        claim_keys: ['auth-session-timeout'],
+      },
+      expected: ['auth-session-timeout-audit', 'auth-session-timeout-enforcement'],
+    },
+    {
+      name: 'contract_keys',
+      filters: {
+        contract_keys: ['auth-session-contract'],
+      },
+      expected: ['auth-core', 'auth-session-timeout-enforcement'],
+    },
+    {
+      name: 'data_domain_keys',
+      filters: {
+        data_domain_keys: ['user-session'],
+      },
+      expected: ['auth-core', 'auth-session-timeout-audit', 'auth-session-timeout-enforcement'],
+    },
+    {
+      name: 'quality_attribute_keys',
+      filters: {
+        quality_attribute_keys: ['security-session-timeout'],
+      },
+      expected: ['auth-session-timeout-audit', 'auth-session-timeout-enforcement'],
+    },
+    {
+      name: 'policy_decision_keys',
+      filters: {
+        policy_decision_keys: ['policy-session-timeout-required'],
+      },
+      expected: ['auth-session-timeout-enforcement'],
+    },
+  ];
+
+  for (const testCase of cases) {
+    const result = search.search({
+      state,
+      registry,
+      filters: testCase.filters,
+    });
+
+    assert.deepEqual(
+      result.map((entry) => entry.item_key),
+      testCase.expected,
+      `search filter branch ${testCase.name}`,
+    );
+  }
+});
+
+void test('items-service rejects an unknown item key with command-level error code', async () => {
+  const { items, errors } = createCoreServices();
+  const state = await readFixtureJson<StateFile>(
+    'backlogs/refreshable-backlog/.backlog/state.json',
+  );
+  const registry = await readFixtureJson<SourceRegistryFile>(
+    'backlogs/refreshable-backlog/.backlog/sources.json',
+  );
+
+  assert.throws(
+    () =>
+      items.getItems({
+        state,
+        itemKeys: ['missing-item'],
+        registry,
+      }),
+    (error: unknown) => errors.isBacklogError(error) && error.code === 'BE_ITEM_NOT_FOUND',
+  );
+});
+
+void test('queue-service returns ordered chains for ready work', async () => {
+  const { queue } = createCoreServices();
+  const state = await readFixtureJson<StateFile>(
+    'backlogs/multi-branch-backlog/.backlog/state.json',
+  );
+
+  const result = queue.buildQueueChains({ state });
+
+  assert.deepEqual(result, [
+    {
+      root_item_key: 'auth-core',
+      items: ['auth-core', 'auth-session-timeout-enforcement', 'session-ui-timeout-banner'],
+      ordering_rule: ['depth', 'downstream_dependency_count', 'item_key'],
+    },
+    {
+      root_item_key: 'billing-core',
+      items: ['billing-core', 'billing-invoice-export'],
+      ordering_rule: ['depth', 'downstream_dependency_count', 'item_key'],
+    },
+  ]);
+});
+
+void test('queue-service excludes blocked, gap-bearing, and already-implemented tasks', async () => {
+  const { queue } = createCoreServices();
+  const state = await readFixtureJson<StateFile>('backlogs/todo-dedup-backlog/.backlog/state.json');
+
+  const result = queue.buildQueueChains({ state });
+
+  assert.deepEqual(result, [
+    {
+      root_item_key: 'auth-core',
+      items: ['auth-core', 'auth-session-timeout-enforcement'],
+      ordering_rule: ['depth', 'downstream_dependency_count', 'item_key'],
+    },
+  ]);
+});
+
+void test('attention-service returns items ordered by severity then item_key', async () => {
+  const { attention } = createCoreServices();
+  const state = await readFixtureJson<StateFile>('backlogs/todo-dedup-backlog/.backlog/state.json');
+  const registry = await readFixtureJson<SourceRegistryFile>(
+    'backlogs/todo-dedup-backlog/.backlog/sources.json',
+  );
+
+  const result = attention.buildAttentionList({
+    state,
+    registry,
+  });
+
+  assert.deepEqual(
+    result.map((entry) => entry.item_key),
+    ['session-ui-timeout-banner', 'auth-session-timeout-audit'],
+  );
+  assert.deepEqual(result[0]?.attention_reason_codes, ['dependency_changed']);
+  assert.deepEqual(result[1]?.attention_reason_codes, ['gaps']);
+});
+
+void test('attention-service excludes clean items and carries source summaries', async () => {
+  const { attention } = createCoreServices();
+  const state = await readFixtureJson<StateFile>('backlogs/todo-dedup-backlog/.backlog/state.json');
+  const registry = await readFixtureJson<SourceRegistryFile>(
+    'backlogs/todo-dedup-backlog/.backlog/sources.json',
+  );
+
+  const result = attention.buildAttentionList({
+    state,
+    registry,
+  });
+
+  assert.equal(
+    result.some((entry) => entry.item_key === 'auth-core'),
+    false,
+  );
+  assert.deepEqual(result[0]?.source_summaries, [
+    {
+      source_id: '33333333-3333-4333-8333-333333333333',
+      source_label: 'sources/docs/modules/session-ui.md',
+    },
+  ]);
+  assert.deepEqual(result[1]?.source_summaries, [
+    {
+      source_id: '11111111-1111-4111-8111-111111111111',
+      source_label: 'sources/docs/modules/auth.md',
+    },
+  ]);
 });
 
 void test('mutation-service refresh removes stale refresh-managed todo when selected source is unchanged', async () => {

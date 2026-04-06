@@ -11,7 +11,9 @@ import {
   requireStringOption,
   splitCsvFlag,
 } from './arg-parsers.ts';
-import { definePlaceholderCommand } from './placeholder.ts';
+import type { CommandDefinition } from './types.ts';
+import type { ItemsCommandInput, ItemsCommandOutput } from '../schemas/index.ts';
+import { loadQueryStateWithRegistry } from './query-helpers.ts';
 
 const OPTIONS = [
   {
@@ -22,7 +24,7 @@ const OPTIONS = [
   },
 ] as const satisfies readonly CommandHelpOption[];
 
-export const ITEMS_COMMAND = definePlaceholderCommand({
+export const ITEMS_COMMAND: CommandDefinition<ItemsCommandInput, ItemsCommandOutput> = {
   name: 'items',
   summary: 'Show one or more full task cards by item key.',
   usage: ['backlog-engineer items --item-keys <item_key_1>,<item_key_2>'],
@@ -43,4 +45,12 @@ export const ITEMS_COMMAND = definePlaceholderCommand({
       ),
     });
   },
-});
+  async execute(input, context) {
+    const { state, registry } = await loadQueryStateWithRegistry(context);
+    return context.core.items.getItems({
+      state,
+      itemKeys: input.item_keys,
+      registry,
+    });
+  },
+};

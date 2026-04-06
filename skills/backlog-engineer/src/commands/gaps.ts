@@ -1,10 +1,13 @@
 import {
   GapsCommandInputSchema,
   GapsCommandOutputSchema,
+  type GapsCommandInput,
+  type GapsCommandOutput,
   type CommandHelpOption,
 } from '../schemas/index.ts';
 import { assertNoPositionals, parseCommandArgs, parseUsageInput } from './arg-parsers.ts';
-import { definePlaceholderCommand } from './placeholder.ts';
+import type { CommandDefinition } from './types.ts';
+import { loadQueryState } from './query-helpers.ts';
 
 const OPTIONS = [
   {
@@ -14,7 +17,7 @@ const OPTIONS = [
   },
 ] as const satisfies readonly CommandHelpOption[];
 
-export const GAPS_COMMAND = definePlaceholderCommand({
+export const GAPS_COMMAND: CommandDefinition<GapsCommandInput, GapsCommandOutput> = {
   name: 'gaps',
   summary: 'List explicit blockers and unresolved gaps.',
   usage: ['backlog-engineer gaps', 'backlog-engineer gaps --item-key <item_key>'],
@@ -35,4 +38,11 @@ export const GAPS_COMMAND = definePlaceholderCommand({
         : {}),
     });
   },
-});
+  async execute(input, context) {
+    const state = await loadQueryState(context);
+    return context.core.mutation.getGaps({
+      state,
+      filters: input,
+    });
+  },
+};

@@ -1681,6 +1681,9 @@ Dry-run не должен:
 ### Reads
 
 - `state.json`
+- `sources.json`
+- `sources.json`
+- `sources.json`
 
 ### Writes
 
@@ -1728,6 +1731,9 @@ Dry-run не должен:
 ### Reads
 
 - `state.json`
+- `sources.json`
+- `sources.json`
+- `sources.json`
 
 ### Writes
 
@@ -1807,6 +1813,7 @@ Dry-run не должен:
 ### Reads
 
 - `state.json`
+- `sources.json`
 
 ### Writes
 
@@ -1896,6 +1903,7 @@ Dry-run не должен:
 ### Reads
 
 - `state.json`
+- `sources.json`
 
 ### Writes
 
@@ -1954,6 +1962,7 @@ Dry-run не должен:
 ### Reads
 
 - `state.json`
+- `sources.json`
 
 ### Writes
 
@@ -2069,6 +2078,7 @@ Dry-run не должен:
 ### Reads
 
 - `state.json`
+- `sources.json`
 
 ### Writes
 

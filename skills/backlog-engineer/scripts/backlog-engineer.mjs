@@ -5389,28 +5389,25 @@ function parseUsageInput(commandName, schema, candidate) {
 	}, helpHint(commandName), parsed.error);
 }
 //#endregion
-//#region src/commands/placeholder.ts
-function runPlaceholderCommand(commandName) {
-	throw createBacklogError({
-		code: "BE_INTERNAL_STATE_CORRUPT",
-		message: `Command \`${commandName}\` is not implemented yet.`,
-		details: { command: commandName },
-		hint: "Continue with the next implementation work package and replace the placeholder handler."
-	});
+//#region src/commands/query-helpers.ts
+function assertBacklogRoot(context) {
+	const backlogRoot = context.backlogRoot;
+	if (!backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+	return backlogRoot;
 }
-function definePlaceholderCommand(config) {
+async function loadQueryState(context) {
+	const { state } = await context.ensureQueryState();
+	return state;
+}
+async function loadQueryStateWithRegistry(context) {
+	const backlogRoot = assertBacklogRoot(context);
+	const [{ state }, registry] = await Promise.all([context.ensureQueryState(), context.artifacts.readSourceRegistry(backlogRoot)]);
 	return {
-		name: config.name,
-		summary: config.summary,
-		usage: config.usage,
-		options: config.options,
-		inputSchema: config.inputSchema,
-		outputSchema: config.outputSchema,
-		parseArgs: config.parseArgs,
-		execute: () => runPlaceholderCommand(config.name)
+		state,
+		registry
 	};
 }
-var ATTENTION_COMMAND = definePlaceholderCommand({
+var ATTENTION_COMMAND = {
 	name: "attention",
 	summary: "Return tasks that require review or re-checking.",
 	usage: ["backlog-engineer attention"],
@@ -5420,8 +5417,15 @@ var ATTENTION_COMMAND = definePlaceholderCommand({
 	parseArgs(args) {
 		assertNoPositionals("attention", parseCommandArgs("attention", args, {}).positionals);
 		return parseUsageInput("attention", AttentionCommandInputSchema, {});
+	},
+	async execute(_input, context) {
+		const { state, registry } = await loadQueryStateWithRegistry(context);
+		return context.core.attention.buildAttentionList({
+			state,
+			registry
+		});
 	}
-});
+};
 //#endregion
 //#region src/runtime/tool-metadata.ts
 var TOOL_NAME = "@kostysh/backlog-engineer-cli";
@@ -5471,7 +5475,7 @@ var DELETE_BACKLOG_COMMAND = {
 		};
 	}
 };
-var GAPS_COMMAND = definePlaceholderCommand({
+var GAPS_COMMAND = {
 	name: "gaps",
 	summary: "List explicit blockers and unresolved gaps.",
 	usage: ["backlog-engineer gaps", "backlog-engineer gaps --item-key <item_key>"],
@@ -5486,8 +5490,15 @@ var GAPS_COMMAND = definePlaceholderCommand({
 		const parsed = parseCommandArgs("gaps", args, { options: { "item-key": { type: "string" } } });
 		assertNoPositionals("gaps", parsed.positionals);
 		return parseUsageInput("gaps", GapsCommandInputSchema, { ...typeof parsed.values["item-key"] === "string" ? { item_key: parsed.values["item-key"] } : {} });
+	},
+	async execute(input, context) {
+		const state = await loadQueryState(context);
+		return context.core.mutation.getGaps({
+			state,
+			filters: input
+		});
 	}
-});
+};
 var INIT_COMMAND = {
 	name: "init",
 	summary: "Initialize a backlog directory and utility-owned artifacts.",
@@ -5516,7 +5527,7 @@ var INIT_COMMAND = {
 		});
 	}
 };
-var ITEMS_COMMAND = definePlaceholderCommand({
+var ITEMS_COMMAND = {
 	name: "items",
 	summary: "Show one or more full task cards by item key.",
 	usage: ["backlog-engineer items --item-keys <item_key_1>,<item_key_2>"],
@@ -5532,11 +5543,19 @@ var ITEMS_COMMAND = definePlaceholderCommand({
 		const parsed = parseCommandArgs("items", args, { options: { "item-keys": { type: "string" } } });
 		assertNoPositionals("items", parsed.positionals);
 		return parseUsageInput("items", ItemsCommandInputSchema, { item_keys: splitCsvFlag(requireStringOption("items", "--item-keys", getStringOption(parsed.values["item-keys"]))) });
+	},
+	async execute(input, context) {
+		const { state, registry } = await loadQueryStateWithRegistry(context);
+		return context.core.items.getItems({
+			state,
+			itemKeys: input.item_keys,
+			registry
+		});
 	}
-});
+};
 //#endregion
 //#region src/commands/list-sources.ts
-function collectItemSourceIds$4(item) {
+function collectItemSourceIds$5(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -5582,7 +5601,7 @@ var LIST_SOURCES_COMMAND = {
 			const { state } = await context.ensureQueryState();
 			const item = state.items.find((candidate) => candidate.item_key === input.item_key);
 			if (!item) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: input.item_key } });
-			const itemSourceIds = collectItemSourceIds$4(item);
+			const itemSourceIds = collectItemSourceIds$5(item);
 			sources = sources.filter((source) => itemSourceIds.has(source.source_id));
 		}
 		if (input.path) {
@@ -5833,7 +5852,7 @@ var PATCH_ITEM_COMMAND = {
 		return output;
 	}
 };
-var QUEUE_COMMAND = definePlaceholderCommand({
+var QUEUE_COMMAND = {
 	name: "queue",
 	summary: "Return ordered chains of tasks that can be taken next.",
 	usage: ["backlog-engineer queue"],
@@ -5843,11 +5862,15 @@ var QUEUE_COMMAND = definePlaceholderCommand({
 	parseArgs(args) {
 		assertNoPositionals("queue", parseCommandArgs("queue", args, {}).positionals);
 		return parseUsageInput("queue", QueueCommandInputSchema, {});
+	},
+	async execute(_input, context) {
+		const state = await loadQueryState(context);
+		return context.core.queue.buildQueueChains({ state });
 	}
-});
+};
 //#endregion
 //#region src/commands/refresh-helpers.ts
-function collectItemSourceIds$3(item) {
+function collectItemSourceIds$4(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -5861,7 +5884,7 @@ function collectSourceIdsForItemKeys(payload) {
 	const sourceIds = /* @__PURE__ */ new Set();
 	for (const item of payload.state.items) {
 		if (!itemKeySet.has(item.item_key)) continue;
-		for (const sourceId of collectItemSourceIds$3(item)) sourceIds.add(sourceId);
+		for (const sourceId of collectItemSourceIds$4(item)) sourceIds.add(sourceId);
 	}
 	return [...sourceIds].sort((left, right) => left.localeCompare(right));
 }
@@ -6475,7 +6498,7 @@ function resolveSourceAbsolutePath(payload) {
 }
 //#endregion
 //#region src/sources/source-scope-service.ts
-function collectItemSourceIds$2(item) {
+function collectItemSourceIds$3(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -6589,7 +6612,7 @@ function resolveSourceScope(payload) {
 	const selectedSourceIds = new Set(selectedSources.map((source) => source.source_id));
 	const linkedItemKeys = /* @__PURE__ */ new Set();
 	for (const item of payload.state.items) {
-		const sourceIds = collectItemSourceIds$2(item);
+		const sourceIds = collectItemSourceIds$3(item);
 		if ([...selectedSourceIds].some((sourceId) => sourceIds.has(sourceId))) linkedItemKeys.add(item.item_key);
 	}
 	const topLevelItemKeys = collectTopLevelItemKeys({
@@ -6858,6 +6881,28 @@ var REMOVE_ITEM_COMMAND = {
 		return output;
 	}
 };
+//#endregion
+//#region src/commands/placeholder.ts
+function runPlaceholderCommand(commandName) {
+	throw createBacklogError({
+		code: "BE_INTERNAL_STATE_CORRUPT",
+		message: `Command \`${commandName}\` is not implemented yet.`,
+		details: { command: commandName },
+		hint: "Continue with the next implementation work package and replace the placeholder handler."
+	});
+}
+function definePlaceholderCommand(config) {
+	return {
+		name: config.name,
+		summary: config.summary,
+		usage: config.usage,
+		options: config.options,
+		inputSchema: config.inputSchema,
+		outputSchema: config.outputSchema,
+		parseArgs: config.parseArgs,
+		execute: () => runPlaceholderCommand(config.name)
+	};
+}
 var REPORT_COMMAND = definePlaceholderCommand({
 	name: "report",
 	summary: "Generate a human-readable backlog report on disk.",
@@ -6870,7 +6915,7 @@ var REPORT_COMMAND = definePlaceholderCommand({
 		return parseUsageInput("report", ReportCommandInputSchema, {});
 	}
 });
-var SEARCH_COMMAND = definePlaceholderCommand({
+var SEARCH_COMMAND = {
 	name: "search",
 	summary: "Search tasks when keys are not yet known.",
 	usage: ["backlog-engineer search [--source-ids <source_id_1>,<source_id_2>] [--delivery-state <state>] [--needs-attention true|false] [--ready-for-next-step true|false] [--claim-keys <claim_key_1>,<claim_key_2>] [--contract-keys <contract_key_1>,<contract_key_2>] [--data-domain-keys <data_domain_key_1>,<data_domain_key_2>] [--quality-attribute-keys <quality_attribute_key_1>,<quality_attribute_key_2>] [--policy-decision-keys <policy_decision_key_1>,<policy_decision_key_2>]"],
@@ -6947,8 +6992,16 @@ var SEARCH_COMMAND = definePlaceholderCommand({
 			...getStringOption(parsed.values["quality-attribute-keys"]) ? { quality_attribute_keys: splitCsvFlag(getStringOption(parsed.values["quality-attribute-keys"])) } : {},
 			...getStringOption(parsed.values["policy-decision-keys"]) ? { policy_decision_keys: splitCsvFlag(getStringOption(parsed.values["policy-decision-keys"])) } : {}
 		});
+	},
+	async execute(input, context) {
+		const { state, registry } = await loadQueryStateWithRegistry(context);
+		return context.core.search.search({
+			state,
+			filters: input,
+			registry
+		});
 	}
-});
+};
 var STATUS_COMMAND = {
 	name: "status",
 	summary: "Show short backlog status summary.",
@@ -7890,6 +7943,127 @@ function createArtifactsModule(dependencies) {
 	};
 }
 //#endregion
+//#region src/core/read-model-helpers.ts
+var ATTENTION_REASON_ORDER = [
+	"source_changed",
+	"dependency_changed",
+	"context_changed",
+	"gaps"
+];
+function collectItemSourceIds$2(item) {
+	return new Set([
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	]);
+}
+function createSourceSummaryLookup(registry) {
+	return new Map(registry.sources.map((source) => [source.source_id, {
+		source_id: source.source_id,
+		source_label: source.source_label
+	}]));
+}
+function collectSourceSummariesForItem(payload) {
+	return [...collectItemSourceIds$2(payload.item)].map((sourceId) => {
+		const summary = payload.sourceSummariesById.get(sourceId);
+		if (!summary) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: {
+			source_id: sourceId,
+			item_key: payload.item.item_key
+		} });
+		return summary;
+	}).sort((left, right) => {
+		const byLabel = left.source_label.localeCompare(right.source_label);
+		if (byLabel !== 0) return byLabel;
+		return left.source_id.localeCompare(right.source_id);
+	});
+}
+function toPacketItem(item) {
+	return {
+		item_key: item.item_key,
+		title: item.title,
+		type: item.type,
+		delivery_state: item.delivery_state,
+		gaps: [...item.gaps],
+		depends_on_keys: [...item.depends_on_keys],
+		origin_source_ids: [...item.origin_source_ids],
+		specification_source_ids: [...item.specification_source_ids],
+		plan_source_ids: [...item.plan_source_ids],
+		implementation_source_ids: [...item.implementation_source_ids],
+		test_source_ids: [...item.test_source_ids],
+		claim_keys: [...item.claim_keys],
+		contract_keys: [...item.contract_keys],
+		data_domain_keys: [...item.data_domain_keys],
+		quality_attribute_keys: [...item.quality_attribute_keys],
+		policy_decision_keys: [...item.policy_decision_keys]
+	};
+}
+function buildItemContextSummary(item) {
+	return {
+		claim_keys: [...item.claim_keys],
+		contract_keys: [...item.contract_keys],
+		data_domain_keys: [...item.data_domain_keys],
+		quality_attribute_keys: [...item.quality_attribute_keys],
+		policy_decision_keys: [...item.policy_decision_keys]
+	};
+}
+function collectItemTodos(payload) {
+	const openTodoIds = new Set(payload.state.items.find((item) => item.item_key === payload.itemKey)?.open_todo_ids ?? []);
+	return payload.state.todos.filter((todo) => todo.item_key === payload.itemKey && openTodoIds.has(todo.todo_id)).sort((left, right) => left.todo_id.localeCompare(right.todo_id));
+}
+function compareAttentionReasonCodes(left, right) {
+	const rank = new Map(ATTENTION_REASON_ORDER.map((code, index) => [code, index]));
+	const maxLength = Math.max(left.length, right.length);
+	for (let index = 0; index < maxLength; index += 1) {
+		const leftCode = left[index];
+		const rightCode = right[index];
+		if (leftCode === rightCode) continue;
+		if (leftCode === void 0) return -1;
+		if (rightCode === void 0) return 1;
+		return (rank.get(leftCode) ?? Number.MAX_SAFE_INTEGER) - (rank.get(rightCode) ?? Number.MAX_SAFE_INTEGER);
+	}
+	return 0;
+}
+function buildReadyQueueRoots(items) {
+	const readyItemKeys = new Set(items.map((item) => item.item_key));
+	return items.filter((item) => item.depends_on_keys.every((itemKey) => !readyItemKeys.has(itemKey))).map((item) => item.item_key).sort((left, right) => left.localeCompare(right));
+}
+function countReadyDescendants(payload) {
+	const visited = /* @__PURE__ */ new Set();
+	const stack = [...payload.reverseDependencies.get(payload.rootItemKey) ?? []];
+	while (stack.length > 0) {
+		const itemKey = stack.pop();
+		if (!itemKey || visited.has(itemKey) || !payload.readyItemKeys.has(itemKey)) continue;
+		visited.add(itemKey);
+		for (const dependentKey of payload.reverseDependencies.get(itemKey) ?? []) stack.push(dependentKey);
+	}
+	return visited.size;
+}
+//#endregion
+//#region src/core/attention-service.ts
+function createAttentionService(payload) {
+	return { buildAttentionList({ state, registry }) {
+		const sourceSummariesById = createSourceSummaryLookup(registry);
+		const entries = state.items.filter((item) => item.needs_attention).map((item) => ({
+			item_key: item.item_key,
+			title: item.title,
+			attention_reason_codes: [...item.attention_reason_codes],
+			attention_reasons: [...item.attention_reasons],
+			source_summaries: collectSourceSummariesForItem({
+				item,
+				sourceSummariesById,
+				errors: payload.errors
+			})
+		})).sort((left, right) => {
+			const byReasons = compareAttentionReasonCodes(left.attention_reason_codes, right.attention_reason_codes);
+			if (byReasons !== 0) return byReasons;
+			return left.item_key.localeCompare(right.item_key);
+		});
+		return payload.schemas.parseCommandOutput("attention", entries);
+	} };
+}
+//#endregion
 //#region src/core/replay-pipeline.ts
 var DERIVED_TODO_TYPES = {
 	review_source_change: "source_changed",
@@ -8501,6 +8675,39 @@ function createGraphService(payload) {
 		resolveItemSubgraph,
 		cleanupRemovedItemReferences
 	};
+}
+//#endregion
+//#region src/core/items-service.ts
+function createItemsService(payload) {
+	return { getItems({ state, itemKeys, registry }) {
+		const itemsByKey = new Map(state.items.map((item) => [item.item_key, item]));
+		const sourceSummariesById = createSourceSummaryLookup(registry);
+		const cards = itemKeys.map((itemKey) => {
+			const item = itemsByKey.get(itemKey);
+			if (!item) throw payload.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: itemKey } });
+			return {
+				item: toPacketItem(item),
+				reverse_dependency_keys: [...item.reverse_dependency_keys],
+				source_summaries: collectSourceSummariesForItem({
+					item,
+					sourceSummariesById,
+					errors: payload.errors
+				}),
+				context: buildItemContextSummary(item),
+				computed_state: {
+					needs_attention: item.needs_attention,
+					attention_reason_codes: [...item.attention_reason_codes],
+					attention_reasons: [...item.attention_reasons],
+					ready_for_next_step: item.ready_for_next_step
+				},
+				todo: collectItemTodos({
+					state,
+					itemKey
+				})
+			};
+		});
+		return payload.schemas.parseCommandOutput("items", cards);
+	} };
 }
 //#endregion
 //#region src/core/mutation-service.ts
@@ -9224,6 +9431,148 @@ function createMutationService(payload) {
 	};
 }
 //#endregion
+//#region src/core/queue-service.ts
+function createReadySubset(items) {
+	return items.filter((item) => item.ready_for_next_step && item.delivery_state !== "implemented" && item.gaps.length === 0);
+}
+function computeDepths(payload) {
+	const depths = new Map([[payload.rootItemKey, 0]]);
+	const queue = [payload.rootItemKey];
+	while (queue.length > 0) {
+		const itemKey = queue.shift();
+		if (!itemKey) continue;
+		const depth = depths.get(itemKey) ?? 0;
+		for (const dependentKey of payload.reverseDependencies.get(itemKey) ?? []) {
+			if (!payload.readyItemKeys.has(dependentKey) || depths.has(dependentKey)) continue;
+			depths.set(dependentKey, depth + 1);
+			queue.push(dependentKey);
+		}
+	}
+	return depths;
+}
+function createQueueService(payload) {
+	return { buildQueueChains({ state }) {
+		const readyItems = createReadySubset(state.items);
+		const readyItemKeys = new Set(readyItems.map((item) => item.item_key));
+		const reverseDependencies = buildReverseDependencyIndex(state);
+		const sortedChains = buildReadyQueueRoots(readyItems).map((rootItemKey) => {
+			const depths = computeDepths({
+				reverseDependencies,
+				rootItemKey,
+				readyItemKeys
+			});
+			return {
+				root_item_key: rootItemKey,
+				items: [...depths.keys()].sort((left, right) => {
+					const byDepth = (depths.get(left) ?? Number.MAX_SAFE_INTEGER) - (depths.get(right) ?? Number.MAX_SAFE_INTEGER);
+					if (byDepth !== 0) return byDepth;
+					const byDownstream = countReadyDescendants({
+						reverseDependencies,
+						readyItemKeys,
+						rootItemKey: right
+					}) - countReadyDescendants({
+						reverseDependencies,
+						readyItemKeys,
+						rootItemKey: left
+					});
+					if (byDownstream !== 0) return byDownstream;
+					return left.localeCompare(right);
+				}),
+				ordering_rule: [
+					"depth",
+					"downstream_dependency_count",
+					"item_key"
+				]
+			};
+		}).sort((left, right) => {
+			const byRoot = left.root_item_key.localeCompare(right.root_item_key);
+			if (byRoot !== 0) return byRoot;
+			const leftFirst = left.items[1] ?? left.items[0] ?? "";
+			const rightFirst = right.items[1] ?? right.items[0] ?? "";
+			const byFirst = leftFirst.localeCompare(rightFirst);
+			if (byFirst !== 0) return byFirst;
+			return left.items.length - right.items.length;
+		});
+		return payload.schemas.parseCommandOutput("queue", sortedChains);
+	} };
+}
+//#endregion
+//#region src/core/search-service.ts
+function intersects(left, right) {
+	const rightSet = new Set(right);
+	return left.some((value) => rightSet.has(value));
+}
+function collectMatchReasons(payload) {
+	const reasons = [];
+	const context = buildItemContextSummary(payload.item);
+	const sourceIds = [
+		...payload.item.origin_source_ids,
+		...payload.item.specification_source_ids,
+		...payload.item.plan_source_ids,
+		...payload.item.implementation_source_ids,
+		...payload.item.test_source_ids
+	];
+	if (payload.filters.source_ids) reasons.push(`source_ids=${sourceIds.filter((sourceId) => payload.filters.source_ids?.includes(sourceId)).join(",")}`);
+	if (payload.filters.delivery_state) reasons.push(`delivery_state=${payload.filters.delivery_state}`);
+	if (payload.filters.needs_attention !== void 0) reasons.push(`needs_attention=${String(payload.filters.needs_attention)}`);
+	if (payload.filters.ready_for_next_step !== void 0) reasons.push(`ready_for_next_step=${String(payload.filters.ready_for_next_step)}`);
+	if (payload.filters.claim_keys) reasons.push(`claim_keys=${context.claim_keys.filter((key) => payload.filters.claim_keys?.includes(key)).join(",")}`);
+	if (payload.filters.contract_keys) reasons.push(`contract_keys=${context.contract_keys.filter((key) => payload.filters.contract_keys?.includes(key)).join(",")}`);
+	if (payload.filters.data_domain_keys) reasons.push(`data_domain_keys=${context.data_domain_keys.filter((key) => payload.filters.data_domain_keys?.includes(key)).join(",")}`);
+	if (payload.filters.quality_attribute_keys) reasons.push(`quality_attribute_keys=${context.quality_attribute_keys.filter((key) => payload.filters.quality_attribute_keys?.includes(key)).join(",")}`);
+	if (payload.filters.policy_decision_keys) reasons.push(`policy_decision_keys=${context.policy_decision_keys.filter((key) => payload.filters.policy_decision_keys?.includes(key)).join(",")}`);
+	return reasons;
+}
+function matchesFilters(payload) {
+	const { item, filters } = payload;
+	const context = buildItemContextSummary(item);
+	const sourceIds = [
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	];
+	if (filters.source_ids && !intersects(sourceIds, filters.source_ids)) return false;
+	if (filters.delivery_state && item.delivery_state !== filters.delivery_state) return false;
+	if (filters.needs_attention !== void 0 && item.needs_attention !== filters.needs_attention) return false;
+	if (filters.ready_for_next_step !== void 0 && item.ready_for_next_step !== filters.ready_for_next_step) return false;
+	if (filters.claim_keys && !intersects(context.claim_keys, filters.claim_keys)) return false;
+	if (filters.contract_keys && !intersects(context.contract_keys, filters.contract_keys)) return false;
+	if (filters.data_domain_keys && !intersects(context.data_domain_keys, filters.data_domain_keys)) return false;
+	if (filters.quality_attribute_keys && !intersects(context.quality_attribute_keys, filters.quality_attribute_keys)) return false;
+	if (filters.policy_decision_keys && !intersects(context.policy_decision_keys, filters.policy_decision_keys)) return false;
+	return true;
+}
+function createSearchService(payload) {
+	return { search({ state, filters, registry }) {
+		const sourceSummariesById = createSourceSummaryLookup(registry);
+		const results = [...state.items].filter((item) => matchesFilters({
+			item,
+			filters
+		})).sort((left, right) => left.item_key.localeCompare(right.item_key)).map((item) => ({
+			item_key: item.item_key,
+			title: item.title,
+			type: item.type,
+			delivery_state: item.delivery_state,
+			needs_attention: item.needs_attention,
+			ready_for_next_step: item.ready_for_next_step,
+			attention_reason_codes: [...item.attention_reason_codes],
+			attention_reasons: [...item.attention_reasons],
+			source_summaries: collectSourceSummariesForItem({
+				item,
+				sourceSummariesById,
+				errors: payload.errors
+			}),
+			match_reasons: collectMatchReasons({
+				filters,
+				item
+			})
+		}));
+		return payload.schemas.parseCommandOutput("search", results);
+	} };
+}
+//#endregion
 //#region src/core/todo-service.ts
 function cloneState(value) {
 	return structuredClone(value);
@@ -9411,20 +9760,6 @@ function createTodoService(payload) {
 }
 //#endregion
 //#region src/core/create-core-module.ts
-function createUnavailableQueryService(serviceName, errors) {
-	return new Proxy({}, { get(_target, propertyKey) {
-		return () => {
-			throw errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
-				details: {
-					module: "core",
-					service: serviceName,
-					property: String(propertyKey)
-				},
-				hint: "Continue with the read-model work packages before invoking query services."
-			});
-		};
-	} });
-}
 function createCoreModule(payload) {
 	const graph = createGraphService({
 		errors: payload.errors,
@@ -9449,6 +9784,22 @@ function createCoreModule(payload) {
 		context,
 		todo,
 		derivedState,
+		search: createSearchService({
+			errors: payload.errors,
+			schemas: payload.schemas
+		}),
+		items: createItemsService({
+			errors: payload.errors,
+			schemas: payload.schemas
+		}),
+		queue: createQueueService({
+			errors: payload.errors,
+			schemas: payload.schemas
+		}),
+		attention: createAttentionService({
+			errors: payload.errors,
+			schemas: payload.schemas
+		}),
 		mutation: createMutationService({
 			errors: payload.errors,
 			schemas: payload.schemas,
@@ -9457,11 +9808,7 @@ function createCoreModule(payload) {
 			context,
 			todo,
 			derivedState
-		}),
-		search: createUnavailableQueryService("search", payload.errors),
-		items: createUnavailableQueryService("items", payload.errors),
-		queue: createUnavailableQueryService("queue", payload.errors),
-		attention: createUnavailableQueryService("attention", payload.errors)
+		})
 	};
 }
 //#endregion
