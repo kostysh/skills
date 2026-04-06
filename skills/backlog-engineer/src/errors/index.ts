@@ -1,4 +1,4 @@
-export { EXIT_NOT_IMPLEMENTED, EXIT_SUCCESS, EXIT_USAGE } from './exit-codes.ts';
+export { EXIT_SUCCESS, EXIT_USAGE } from './exit-codes.ts';
 export { BacklogError, isBacklogError, type BacklogErrorOptions } from './backlog-error.ts';
 export {
   ERROR_CODES,
@@ -11,6 +11,7 @@ export {
   createBacklogError,
   createInvalidJsonError,
   createSchemaInvalidError,
+  createUsageError,
   fromZodError,
   getExitCodeForErrorCode,
   normalizeError,

@@ -15,12 +15,20 @@ import {
   SEARCH_COMMAND,
   STATUS_COMMAND,
   TEMPLATE_COMMAND,
-  type CommandDefinition,
 } from '../commands/index.ts';
+import type { AnyCommandDefinition } from '../commands/types.ts';
+import {
+  CommandHelpOutputSchema,
+  GlobalHelpOutputSchema,
+  VersionOutputSchema,
+  type CommandHelpOutput,
+  type GlobalHelpOutput,
+  type VersionOutput,
+} from '../schemas/index.ts';
 
 export const CLI_DISPLAY_NAME = 'backlog-engineer';
 
-export const COMMANDS = [
+const TYPED_COMMANDS = [
   INIT_COMMAND,
   REGISTER_SOURCE_COMMAND,
   LIST_SOURCES_COMMAND,
@@ -37,32 +45,50 @@ export const COMMANDS = [
   QUEUE_COMMAND,
   ATTENTION_COMMAND,
   DELETE_BACKLOG_COMMAND,
-] as const satisfies readonly CommandDefinition[];
+] as const;
+
+export const COMMANDS = TYPED_COMMANDS as readonly AnyCommandDefinition[];
 
 const COMMAND_MAP = new Map(COMMANDS.map((command) => [command.name, command]));
 
-export function findCommand(name: string): CommandDefinition | undefined {
+export function findCommand(name: string): AnyCommandDefinition | undefined {
   return COMMAND_MAP.get(name);
 }
 
-export function globalHelp(): string {
-  const lines = [
-    `${CLI_DISPLAY_NAME}`,
-    '',
-    'Scaffolded CLI for the backlog-engineer skill.',
-    'The command surface exists, but command behavior is still to be implemented.',
-    '',
-    'Usage:',
-    `  ${CLI_DISPLAY_NAME} <command> [options]`,
-    `  ${CLI_DISPLAY_NAME} help [command]`,
-    `  ${CLI_DISPLAY_NAME} --version`,
-    '',
-    'Commands:',
-  ];
+export function buildGlobalHelpOutput(version: string): GlobalHelpOutput {
+  return GlobalHelpOutputSchema.parse({
+    cli_name: CLI_DISPLAY_NAME,
+    version,
+    usage: [
+      `${CLI_DISPLAY_NAME} <command> [options]`,
+      `${CLI_DISPLAY_NAME} help [command]`,
+      `${CLI_DISPLAY_NAME} --help`,
+      `${CLI_DISPLAY_NAME} --version`,
+    ],
+    commands: COMMANDS.map((command) => ({
+      name: command.name,
+      summary: command.summary,
+    })),
+  });
+}
 
-  for (const command of COMMANDS) {
-    lines.push(`  ${command.name.padEnd(16)} ${command.summary}`);
-  }
+export function buildCommandHelpOutput(
+  command: AnyCommandDefinition,
+  version: string,
+): CommandHelpOutput {
+  return CommandHelpOutputSchema.parse({
+    cli_name: CLI_DISPLAY_NAME,
+    version,
+    command: command.name,
+    summary: command.summary,
+    usage: [...command.usage],
+    options: [...command.options],
+  });
+}
 
-  return lines.join('\n');
+export function buildVersionOutput(version: string): VersionOutput {
+  return VersionOutputSchema.parse({
+    cli_name: CLI_DISPLAY_NAME,
+    version,
+  });
 }

@@ -88,3 +88,58 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: `C — CLI public API foundation`
+
+### Work package `C` — `CLI public API foundation`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Коммит:
+- Что сделано:
+  - реализован final CLI process contract для глобальных сценариев:
+    - `--help`
+    - `help <command>`
+    - `command --help`
+    - `--version`
+    - `unknown command`
+    - `usage errors`
+  - CLI переведён на JSON-first поведение:
+    - success payloads идут в `stdout`
+    - error payloads идут в `stderr`
+    - exit codes мапятся только через error catalog и public contract
+  - command layer переведён на typed adapters:
+    - у каждой команды есть `usage`, `options`, `parseArgs`, `inputSchema`, `outputSchema`
+    - argv parsing и usage validation теперь происходят до business logic
+  - добавлены CLI-level schemas для:
+    - global help output
+    - command help output
+    - version output
+  - введён общий machine-readable usage error code для argv-конфликтов
+  - процессные tests на built artifact переписаны под финальный JSON contract
+  - добавлены unit-tests для:
+    - `parseCliIntent`
+    - command registry
+    - help/version builders
+- Ключевые решения:
+  - CLI остаётся тонким и знает только:
+    - global intent parsing
+    - command registry
+    - success/error serialization
+    - help/version rendering
+  - command adapters уже принимают final DTO even while command semantics in later packages remain placeholder-backed
+  - `delete-backlog` уже на CLI/command boundary возвращает `BE_DELETE_CONFIRM_REQUIRED`, потому что это публичное destructive guard behavior, а не внутренняя business detail
+  - built artifact `scripts/backlog-engineer.mjs` проверяется process tests, а не только source-level unit-tests
+- Допущения вне спецификации:
+  - спецификация требовала JSON для всех успешных ответов, но не задавала отдельные DTO для `--help` и `--version`; поэтому добавлены явные CLI-level JSON payloads для:
+    - global help
+    - command help
+    - version
+  - в существующем error catalog не было общего stable code для argv/usage conflicts, поэтому добавлен `BE_USAGE_INVALID` с exit code `2`; это implementation-level уточнение общего usage-error класса
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `D — Runtime foundation and orchestration boundary`

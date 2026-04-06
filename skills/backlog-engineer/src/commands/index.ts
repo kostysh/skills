@@ -1,4 +1,3 @@
-import { definePlaceholderCommand } from './placeholder.ts';
 import { ATTENTION_COMMAND } from './attention.ts';
 import { DELETE_BACKLOG_COMMAND } from './delete-backlog.ts';
 import { GAPS_COMMAND } from './gaps.ts';
@@ -15,8 +14,6 @@ import { REPORT_COMMAND } from './report.ts';
 import { SEARCH_COMMAND } from './search.ts';
 import { STATUS_COMMAND } from './status.ts';
 import { TEMPLATE_COMMAND } from './template.ts';
-import type { CliIo, CommandDefinition } from './types.ts';
-import { EXIT_NOT_IMPLEMENTED, EXIT_SUCCESS, EXIT_USAGE } from '../errors/index.ts';
 
 export {
   ATTENTION_COMMAND,
@@ -35,18 +32,11 @@ export {
   SEARCH_COMMAND,
   STATUS_COMMAND,
   TEMPLATE_COMMAND,
-  definePlaceholderCommand,
-  EXIT_NOT_IMPLEMENTED,
-  EXIT_SUCCESS,
-  EXIT_USAGE,
-  type CliIo,
-  type CommandDefinition,
 };
 
-export async function executeCommand(
-  command: CommandDefinition,
-  args: string[],
-  io: CliIo,
-): Promise<number> {
-  return await command.execute(args, io);
-}
+export type {
+  AnyCommandDefinition,
+  CliIo,
+  CommandDefinition,
+  CommandExecutionContext,
+} from './types.ts';

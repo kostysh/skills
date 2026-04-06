@@ -17,6 +17,19 @@ export function createInvalidJsonError(details?: JsonObject, cause?: unknown): B
   });
 }
 
+export function createUsageError(
+  details?: JsonObject,
+  hint?: string,
+  cause?: unknown,
+): BacklogError {
+  return createBacklogError({
+    code: 'BE_USAGE_INVALID',
+    ...(hint ? { hint } : {}),
+    ...(details ? { details } : {}),
+    ...(cause ? { cause } : {}),
+  });
+}
+
 export function createSchemaInvalidError(details?: JsonObject, cause?: unknown): BacklogError {
   return createBacklogError({
     code: 'BE_SCHEMA_INVALID',

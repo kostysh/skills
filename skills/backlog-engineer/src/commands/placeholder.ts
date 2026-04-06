@@ -1,34 +1,38 @@
-import { EXIT_NOT_IMPLEMENTED } from '../errors/index.ts';
-import type { CliIo, CommandDefinition } from './types.ts';
+import { createBacklogError } from '../errors/index.ts';
+import type { CommandDefinition } from './types.ts';
 
-function writeLine(stream: Pick<NodeJS.WriteStream, 'write'>, line = ''): void {
-  stream.write(`${line}\n`);
+type PlaceholderCommandConfig<TInput, TOutput> = {
+  name: string;
+  summary: string;
+  usage: readonly string[];
+  options: CommandDefinition<TInput, TOutput>['options'];
+  inputSchema: CommandDefinition<TInput, TOutput>['inputSchema'];
+  outputSchema: CommandDefinition<TInput, TOutput>['outputSchema'];
+  parseArgs: CommandDefinition<TInput, TOutput>['parseArgs'];
+};
+
+function runPlaceholderCommand(commandName: string): never {
+  throw createBacklogError({
+    code: 'BE_INTERNAL_STATE_CORRUPT',
+    message: `Command \`${commandName}\` is not implemented yet.`,
+    details: {
+      command: commandName,
+    },
+    hint: 'Continue with the next implementation work package and replace the placeholder handler.',
+  });
 }
 
-function placeholderHelp(name: string, summary: string): string {
-  return [
-    `backlog-engineer ${name}`,
-    '',
-    summary,
-    '',
-    'Status: scaffolded command, behavior not implemented yet.',
-  ].join('\n');
-}
-
-function runPlaceholderCommand(commandName: string, io: CliIo, args: string[]): number {
-  writeLine(io.stderr, `Command \`${commandName}\` is scaffolded but not implemented yet.`);
-  if (args.length > 0) {
-    writeLine(io.stderr, `Received args: ${args.join(' ')}`);
-  }
-  writeLine(io.stderr, 'Use `backlog-engineer help` to inspect the planned command surface.');
-  return EXIT_NOT_IMPLEMENTED;
-}
-
-export function definePlaceholderCommand(name: string, summary: string): CommandDefinition {
+export function definePlaceholderCommand<TInput, TOutput>(
+  config: PlaceholderCommandConfig<TInput, TOutput>,
+): CommandDefinition<TInput, TOutput> {
   return {
-    name,
-    summary,
-    helpText: () => placeholderHelp(name, summary),
-    execute: (args, io) => runPlaceholderCommand(name, io, args),
+    name: config.name,
+    summary: config.summary,
+    usage: config.usage,
+    options: config.options,
+    inputSchema: config.inputSchema,
+    outputSchema: config.outputSchema,
+    parseArgs: config.parseArgs,
+    execute: () => runPlaceholderCommand(config.name),
   };
 }

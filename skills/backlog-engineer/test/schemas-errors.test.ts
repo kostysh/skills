@@ -355,6 +355,10 @@ void test('accepts valid error payload and maps error codes to exit codes', () =
 
   const usageError = errors.createBacklogError({ code: 'BE_SOURCE_KIND_INVALID' });
   assert.equal(usageError.exitCode, 2);
+
+  const genericUsageError = errors.createUsageError({ command: 'status' });
+  assert.equal(genericUsageError.code, 'BE_USAGE_INVALID');
+  assert.equal(genericUsageError.exitCode, 2);
 });
 
 void test('sanitizes error details to a JSON-safe payload', () => {

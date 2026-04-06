@@ -1,6 +1,7 @@
 import { EXIT_USAGE } from './exit-codes.ts';
 
 export const ERROR_CODES = [
+  'BE_USAGE_INVALID',
   'BE_ROOT_NOT_FOUND',
   'BE_ROOT_ALREADY_EXISTS',
   'BE_ROOT_NOT_EMPTY',
@@ -32,6 +33,7 @@ export const ERROR_CODES = [
 export type ErrorCode = (typeof ERROR_CODES)[number];
 
 export const ERROR_EXIT_CODES = {
+  BE_USAGE_INVALID: EXIT_USAGE,
   BE_ROOT_NOT_FOUND: 5,
   BE_ROOT_ALREADY_EXISTS: 4,
   BE_ROOT_NOT_EMPTY: 4,
@@ -61,6 +63,7 @@ export const ERROR_EXIT_CODES = {
 } as const satisfies Record<ErrorCode, number>;
 
 export const ERROR_DEFAULT_MESSAGES = {
+  BE_USAGE_INVALID: 'Command arguments are invalid.',
   BE_ROOT_NOT_FOUND: 'Backlog root was not found.',
   BE_ROOT_ALREADY_EXISTS: 'Backlog root already exists.',
   BE_ROOT_NOT_EMPTY: 'Cannot initialize backlog in a non-empty directory.',
