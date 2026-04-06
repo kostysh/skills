@@ -558,6 +558,13 @@ void test('runCli invokes beforeCommand and afterCommand hooks around successful
           resolveCliPath(inputPath) {
             return path.resolve('/tmp/backlog', inputPath);
           },
+          readCliTextFile(inputPath) {
+            return Promise.resolve({
+              absolutePath: path.resolve('/tmp/backlog', inputPath),
+              canonicalBasename: path.basename(String(inputPath)),
+              rawContent: '',
+            });
+          },
           nowIsoUtc() {
             return '2026-04-06T12:00:00.000Z';
           },

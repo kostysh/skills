@@ -496,3 +496,58 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: `I — Query services`
+
+### Work package `I` — `Mutation commands and mutation-state guard`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Начало работ: 2026-04-06 20:52:51 +02:00
+- Полное время закрытия: 00:41:38
+- Коммит:
+- Что сделано:
+  - реализованы реальные mutation-команды:
+    - `packet`
+    - `patch-item`
+    - `remove-item`
+  - добавлен общий helper-слой `mutation-helpers.ts` для чтения authored packet/patch через runtime host и для обновления applied registry
+  - runtime `CommandHost` расширен typed-операциями:
+    - `readCliTextFile(...)`
+    - `resolveCliPath(...)`
+    - `nowIsoUtc()`
+    - `createUuid()`
+  - authored packet/patch inputs больше не читаются через прямые `node:fs` / `node:path`; все reads идут через injected runtime adapters и общий path-guard
+  - реализован `createCoreModule(...)` и runtime теперь wired к concrete `graph`, `context`, `todo`, `derivedState`, `mutation` services вместо заглушек
+  - `ensureMutationState()` доведён до финального контракта:
+    - broken canonical artifacts -> fail-fast
+    - stale/tampered `state.json` -> rebuild canonical state и использование rebuilt snapshot для mutation path
+    - rebuild не пишет state на диск сам по себе
+  - mutation-команды теперь:
+    - импортируют canonical packet/patch copies
+    - обновляют `applied.json`
+    - пишут финальный `state.json`
+    - поддерживают `--dry-run`
+    - вызывают hook points `afterPacketApplied` / `afterPatchApplied`
+  - добавлены regression-тесты для:
+    - stale/tampered `state.json`
+    - adapter-only authored file reads
+    - symlink rejection
+    - mutation hook invocation и error propagation
+    - partial-write recovery через последующий canonical rebuild
+- Ключевые решения:
+  - `ensureMutationState()` возвращает rebuilt canonical snapshot при divergence, а не просто валидирует registries и оставляет текущий `state.json` в памяти
+  - чтение authored packet/patch вынесено в runtime host, чтобы commands не обходили ownership границы `runtime` / `artifacts`
+  - mutation summary для applied registry сохраняет `item_keys` в authored order, чтобы replay order и human-facing audit trail не расходились
+  - hook failure на mutation path всегда превращается в final error contract и не даёт partially successful CLI response
+- Допущения вне спецификации:
+  - direct remove-item regression test на fixture `context-linked-cleanup-backlog` использует custom `stateCoordinator`, потому что сам fixture не replay-valid under immutable-context semantics; это test-scoping допущение для проверки cleanup logic без ослабления runtime invariants
+  - rebuild inside `ensureMutationState()` intentionally не записывает rebuilt state на диск; это implementation choice для сохранения dry-run non-persistence и затем синхронизировано с package-I review выводами
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `J — Refresh and query-state recovery`

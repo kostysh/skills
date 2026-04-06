@@ -87,8 +87,23 @@ export function createFileBackedStateCoordinator(): RuntimeStateCoordinator {
         rebuilt: true,
       };
     },
-    ensureMutationState(payload) {
-      return payload.modules.artifacts.readState(payload.backlogRoot);
+    async ensureMutationState(payload) {
+      const currentState = await payload.modules.artifacts.readState(payload.backlogRoot);
+
+      const rebuiltState = await rebuildStateFromCanonicalArtifacts({
+        backlogRoot: payload.backlogRoot,
+        dependencies: payload.dependencies,
+        artifacts: payload.modules.artifacts,
+        schemas: payload.modules.schemas,
+        errors: payload.modules.errors,
+        currentState,
+      });
+
+      if (areStatesEquivalent(currentState, rebuiltState)) {
+        return currentState;
+      }
+
+      return rebuiltState;
     },
     rebuildState(payload) {
       return rebuildStateFromCanonicalArtifacts({

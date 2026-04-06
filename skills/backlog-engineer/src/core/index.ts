@@ -10,6 +10,7 @@ export type {
   SearchService,
   TodoService,
 } from './types.ts';
+export { createCoreModule } from './create-core-module.ts';
 export { createContextService } from './context-service.ts';
 export { createDerivedStateService } from './derived-state-service.ts';
 export {

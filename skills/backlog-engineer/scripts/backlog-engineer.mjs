@@ -5058,7 +5058,7 @@ var PatchFileSchema = strictObject({
 		]
 	});
 });
-PatchFileSchema.superRefine((value, ctx) => {
+var PatchItemFileSchema = PatchFileSchema.superRefine((value, ctx) => {
 	for (const [index, operation] of value.operations.entries()) if (operation.action === "remove_item") ctx.addIssue({
 		code: ZodIssueCode.custom,
 		message: "patch-item must not contain remove_item operations.",
@@ -5069,7 +5069,7 @@ PatchFileSchema.superRefine((value, ctx) => {
 		]
 	});
 });
-PatchFileSchema.superRefine((value, ctx) => {
+var RemoveItemPatchFileSchema = PatchFileSchema.superRefine((value, ctx) => {
 	const removedKeys = /* @__PURE__ */ new Set();
 	for (const [index, operation] of value.operations.entries()) {
 		if (operation.action !== "remove_item") {
@@ -5263,6 +5263,14 @@ function isBacklogError(value) {
 //#region src/errors/factories.ts
 function createBacklogError(options) {
 	return new BacklogError(options);
+}
+function createInvalidJsonError(details, cause) {
+	return createBacklogError({
+		code: "BE_INVALID_JSON",
+		hint: "Fix the JSON syntax and retry the command.",
+		...details ? { details } : {},
+		...cause ? { cause } : {}
+	});
 }
 function createUsageError(details, hint, cause) {
 	return createBacklogError({
@@ -5528,7 +5536,7 @@ var ITEMS_COMMAND = definePlaceholderCommand({
 });
 //#endregion
 //#region src/commands/list-sources.ts
-function collectItemSourceIds$1(item) {
+function collectItemSourceIds$2(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -5574,7 +5582,7 @@ var LIST_SOURCES_COMMAND = {
 			const { state } = await context.ensureQueryState();
 			const item = state.items.find((candidate) => candidate.item_key === input.item_key);
 			if (!item) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: input.item_key } });
-			const itemSourceIds = collectItemSourceIds$1(item);
+			const itemSourceIds = collectItemSourceIds$2(item);
 			sources = sources.filter((source) => itemSourceIds.has(source.source_id));
 		}
 		if (input.path) {
@@ -5591,7 +5599,80 @@ var LIST_SOURCES_COMMAND = {
 		}));
 	}
 };
-var PACKET_COMMAND = definePlaceholderCommand({
+//#endregion
+//#region src/commands/mutation-helpers.ts
+async function readAuthoredJsonFile(payload) {
+	const { absolutePath, canonicalBasename, rawContent } = await payload.context.host.readCliTextFile(payload.inputPath);
+	let rawJson;
+	try {
+		rawJson = JSON.parse(rawContent);
+	} catch (error) {
+		throw createInvalidJsonError({
+			command: payload.commandName,
+			path: absolutePath
+		}, error);
+	}
+	try {
+		return {
+			absolutePath,
+			canonicalBasename,
+			rawContent,
+			value: payload.parse(rawJson)
+		};
+	} catch (error) {
+		if (error instanceof ZodError) throw fromZodError(error, {
+			command: payload.commandName,
+			path: absolutePath
+		});
+		throw error;
+	}
+}
+function appendAppliedPacketEntry(payload) {
+	const nextApplyIndex = payload.registry.next_apply_index;
+	return payload.schemas.parseAppliedRegistry({
+		...payload.registry,
+		updated_at: payload.appliedAt,
+		next_apply_index: nextApplyIndex + 1,
+		packets: [...payload.registry.packets, {
+			packet_id: payload.packetId,
+			apply_index: nextApplyIndex,
+			canonical_path: payload.canonicalPath,
+			content_hash: payload.contentHash,
+			applied_at: payload.appliedAt,
+			item_keys: payload.itemKeys
+		}]
+	});
+}
+function appendAppliedPatchEntry(payload) {
+	const nextApplyIndex = payload.registry.next_apply_index;
+	return payload.schemas.parseAppliedRegistry({
+		...payload.registry,
+		updated_at: payload.appliedAt,
+		next_apply_index: nextApplyIndex + 1,
+		patches: [...payload.registry.patches, {
+			patch_id: payload.patch.metadata.patch_id,
+			apply_index: nextApplyIndex,
+			canonical_path: payload.canonicalPath,
+			content_hash: payload.contentHash,
+			sequence: payload.patch.metadata.sequence,
+			applied_at: payload.appliedAt,
+			kind: payload.kind,
+			target_item_keys: payload.patch.metadata.target_item_keys
+		}]
+	});
+}
+function assertPatchRegistryConstraints(payload) {
+	if (payload.registry.patches.some((entry) => entry.patch_id === payload.patch.metadata.patch_id)) throw payload.context.errors.create("BE_PATCH_ID_CONFLICT", void 0, { details: { patch_id: payload.patch.metadata.patch_id } });
+	const maxSequence = payload.registry.patches.reduce((maxValue, entry) => {
+		return Math.max(maxValue, entry.sequence);
+	}, 0);
+	if (payload.patch.metadata.sequence <= maxSequence) throw payload.context.errors.create("BE_PATCH_SEQUENCE_CONFLICT", void 0, { details: {
+		patch_id: payload.patch.metadata.patch_id,
+		sequence: payload.patch.metadata.sequence,
+		max_existing_sequence: maxSequence
+	} });
+}
+var PACKET_COMMAND = {
 	name: "packet",
 	summary: "Apply a packet that adds new backlog tasks.",
 	usage: ["backlog-engineer packet --path <path> [--dry-run]"],
@@ -5616,9 +5697,57 @@ var PACKET_COMMAND = definePlaceholderCommand({
 			path: requireStringOption("packet", "--path", getStringOption(parsed.values.path)),
 			dry_run: parsed.values["dry-run"] === true
 		});
+	},
+	async execute(input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: { command: "packet" } });
+		const [state, sourceRegistry, appliedRegistry, packetInput] = await Promise.all([
+			context.ensureMutationState(),
+			context.artifacts.readSourceRegistry(context.backlogRoot),
+			context.artifacts.readAppliedRegistry(context.backlogRoot),
+			readAuthoredJsonFile({
+				context,
+				commandName: "packet",
+				inputPath: input.path,
+				parse: (raw) => context.schemas.parsePacketFile(raw)
+			})
+		]);
+		const packetId = context.host.createUuid();
+		const { state: nextState, ...output } = await context.core.mutation.applyPacket({
+			state,
+			packet: packetInput.value,
+			sourceRegistry,
+			packetId,
+			dryRun: input.dry_run
+		});
+		if (input.dry_run) return output;
+		const appliedAt = context.host.nowIsoUtc();
+		const canonicalImport = await context.artifacts.importPacketFile({
+			root: context.backlogRoot,
+			packetId,
+			sourcePath: packetInput.absolutePath,
+			canonicalBasename: packetInput.canonicalBasename,
+			rawContent: packetInput.rawContent
+		});
+		const nextAppliedRegistry = appendAppliedPacketEntry({
+			schemas: context.schemas,
+			registry: appliedRegistry,
+			packetId,
+			canonicalPath: canonicalImport.canonicalPath,
+			contentHash: canonicalImport.sha256,
+			appliedAt,
+			itemKeys: packetInput.value.items.map((item) => item.item_key)
+		});
+		await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
+		await context.artifacts.writeState(context.backlogRoot, nextState);
+		await context.hooks.afterPacketApplied?.({
+			summary: output,
+			state: nextState,
+			backlogRoot: context.backlogRoot
+		});
+		return output;
 	}
-});
-var PATCH_ITEM_COMMAND = definePlaceholderCommand({
+};
+var PATCH_ITEM_COMMAND = {
 	name: "patch-item",
 	summary: "Apply a patch that updates existing tasks.",
 	usage: ["backlog-engineer patch-item --patch <path> [--dry-run]"],
@@ -5643,8 +5772,67 @@ var PATCH_ITEM_COMMAND = definePlaceholderCommand({
 			patch: requireStringOption("patch-item", "--patch", getStringOption(parsed.values.patch)),
 			dry_run: parsed.values["dry-run"] === true
 		});
+	},
+	async execute(input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: { command: "patch-item" } });
+		const [state, sourceRegistry, appliedRegistry, patchInput] = await Promise.all([
+			context.ensureMutationState(),
+			context.artifacts.readSourceRegistry(context.backlogRoot),
+			context.artifacts.readAppliedRegistry(context.backlogRoot),
+			readAuthoredJsonFile({
+				context,
+				commandName: "patch-item",
+				inputPath: input.patch,
+				parse: (raw) => PatchItemFileSchema.parse(raw)
+			})
+		]);
+		assertPatchRegistryConstraints({
+			context,
+			registry: appliedRegistry,
+			patch: patchInput.value
+		});
+		const summary = await context.core.mutation.applyPatch({
+			state,
+			patch: patchInput.value,
+			sourceRegistry,
+			dryRun: input.dry_run
+		});
+		if (!("updated" in summary)) throw context.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+			details: {
+				command: "patch-item",
+				patch_id: patchInput.value.metadata.patch_id
+			},
+			hint: "patch-item must receive a patch summary with updated item keys."
+		});
+		const { state: nextState, ...output } = summary;
+		if (input.dry_run) return output;
+		const appliedAt = context.host.nowIsoUtc();
+		const canonicalImport = await context.artifacts.importPatchFile({
+			root: context.backlogRoot,
+			patchId: patchInput.value.metadata.patch_id,
+			sourcePath: patchInput.absolutePath,
+			canonicalBasename: patchInput.canonicalBasename,
+			rawContent: patchInput.rawContent
+		});
+		const nextAppliedRegistry = appendAppliedPatchEntry({
+			schemas: context.schemas,
+			registry: appliedRegistry,
+			patch: patchInput.value,
+			kind: "patch-item",
+			canonicalPath: canonicalImport.canonicalPath,
+			contentHash: canonicalImport.sha256,
+			appliedAt
+		});
+		await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
+		await context.artifacts.writeState(context.backlogRoot, nextState);
+		await context.hooks.afterPatchApplied?.({
+			summary: output,
+			state: nextState,
+			backlogRoot: context.backlogRoot
+		});
+		return output;
 	}
-});
+};
 var QUEUE_COMMAND = definePlaceholderCommand({
 	name: "queue",
 	summary: "Return ordered chains of tasks that can be taken next.",
@@ -5979,11 +6167,11 @@ async function writeJsonArtifact(payload) {
 //#endregion
 //#region src/sources/source-hash-service.ts
 var MAX_SOURCE_FILE_BYTES = 10 * 1024 * 1024;
-function isErrnoException(error) {
+function isErrnoException$1(error) {
 	return error instanceof Error && "code" in error;
 }
 function isMissingFileError(error) {
-	return isErrnoException(error) && error.code === "ENOENT";
+	return isErrnoException$1(error) && error.code === "ENOENT";
 }
 async function hashSourceFile(payload) {
 	try {
@@ -6142,7 +6330,7 @@ function resolveSourceAbsolutePath(payload) {
 }
 //#endregion
 //#region src/sources/source-scope-service.ts
-function collectItemSourceIds(item) {
+function collectItemSourceIds$1(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -6256,7 +6444,7 @@ function resolveSourceScope(payload) {
 	const selectedSourceIds = new Set(selectedSources.map((source) => source.source_id));
 	const linkedItemKeys = /* @__PURE__ */ new Set();
 	for (const item of payload.state.items) {
-		const sourceIds = collectItemSourceIds(item);
+		const sourceIds = collectItemSourceIds$1(item);
 		if ([...selectedSourceIds].some((sourceId) => sourceIds.has(sourceId))) linkedItemKeys.add(item.item_key);
 	}
 	const topLevelItemKeys = collectTopLevelItemKeys({
@@ -6439,7 +6627,7 @@ var REGISTER_SOURCE_COMMAND = {
 		});
 	}
 };
-var REMOVE_ITEM_COMMAND = definePlaceholderCommand({
+var REMOVE_ITEM_COMMAND = {
 	name: "remove-item",
 	summary: "Apply a patch that removes obsolete tasks.",
 	usage: ["backlog-engineer remove-item --patch <path> [--dry-run]"],
@@ -6464,8 +6652,67 @@ var REMOVE_ITEM_COMMAND = definePlaceholderCommand({
 			patch: requireStringOption("remove-item", "--patch", getStringOption(parsed.values.patch)),
 			dry_run: parsed.values["dry-run"] === true
 		});
+	},
+	async execute(input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: { command: "remove-item" } });
+		const [state, sourceRegistry, appliedRegistry, patchInput] = await Promise.all([
+			context.ensureMutationState(),
+			context.artifacts.readSourceRegistry(context.backlogRoot),
+			context.artifacts.readAppliedRegistry(context.backlogRoot),
+			readAuthoredJsonFile({
+				context,
+				commandName: "remove-item",
+				inputPath: input.patch,
+				parse: (raw) => RemoveItemPatchFileSchema.parse(raw)
+			})
+		]);
+		assertPatchRegistryConstraints({
+			context,
+			registry: appliedRegistry,
+			patch: patchInput.value
+		});
+		const summary = await context.core.mutation.applyPatch({
+			state,
+			patch: patchInput.value,
+			sourceRegistry,
+			dryRun: input.dry_run
+		});
+		if (!("removed" in summary)) throw context.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+			details: {
+				command: "remove-item",
+				patch_id: patchInput.value.metadata.patch_id
+			},
+			hint: "remove-item must receive a patch summary with removed item keys."
+		});
+		const { state: nextState, ...output } = summary;
+		if (input.dry_run) return output;
+		const appliedAt = context.host.nowIsoUtc();
+		const canonicalImport = await context.artifacts.importPatchFile({
+			root: context.backlogRoot,
+			patchId: patchInput.value.metadata.patch_id,
+			sourcePath: patchInput.absolutePath,
+			canonicalBasename: patchInput.canonicalBasename,
+			rawContent: patchInput.rawContent
+		});
+		const nextAppliedRegistry = appendAppliedPatchEntry({
+			schemas: context.schemas,
+			registry: appliedRegistry,
+			patch: patchInput.value,
+			kind: "remove-item",
+			canonicalPath: canonicalImport.canonicalPath,
+			contentHash: canonicalImport.sha256,
+			appliedAt
+		});
+		await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
+		await context.artifacts.writeState(context.backlogRoot, nextState);
+		await context.hooks.afterPatchApplied?.({
+			summary: output,
+			state: nextState,
+			backlogRoot: context.backlogRoot
+		});
+		return output;
 	}
-});
+};
 var REPORT_COMMAND = definePlaceholderCommand({
 	name: "report",
 	summary: "Generate a human-readable backlog report on disk.",
@@ -7483,6 +7730,1581 @@ function createArtifactsModule(dependencies) {
 	};
 }
 //#endregion
+//#region src/core/replay-pipeline.ts
+var DERIVED_TODO_TYPES = {
+	review_source_change: "source_changed",
+	review_dependency_change: "dependency_changed",
+	review_context_change: "context_changed"
+};
+function dedupeStable(values, getKey) {
+	const seen = /* @__PURE__ */ new Set();
+	const result = [];
+	for (const value of values) {
+		const key = getKey(value);
+		if (seen.has(key)) continue;
+		seen.add(key);
+		result.push(value);
+	}
+	return result;
+}
+function deepEqual$2(left, right) {
+	return JSON.stringify(left) === JSON.stringify(right);
+}
+function cloneState$2(value) {
+	return structuredClone(value);
+}
+function mergeGlossary(payload) {
+	const result = [...payload.current];
+	const byTerm = new Map(result.map((entry, index) => [entry.term, index]));
+	for (const entry of payload.incoming) {
+		const index = byTerm.get(entry.term);
+		if (index === void 0) {
+			byTerm.set(entry.term, result.length);
+			result.push(entry);
+			continue;
+		}
+		const existing = result[index];
+		if (!existing) continue;
+		if (existing.definition !== entry.definition) throw payload.errors.create("BE_CONTEXT_CONFLICT_GLOSSARY", void 0, { details: { term: entry.term } });
+		result[index] = {
+			...existing,
+			aliases: dedupeStable([...existing.aliases, ...entry.aliases], (value) => value)
+		};
+	}
+	return result;
+}
+function mergeUniqueByKey(payload) {
+	const result = [...payload.current];
+	const byKey = /* @__PURE__ */ new Map();
+	for (const [index, entry] of result.entries()) byKey.set(String(entry[payload.key]), index);
+	for (const entry of payload.incoming) {
+		const keyValue = String(entry[payload.key]);
+		const existingIndex = byKey.get(keyValue);
+		if (existingIndex === void 0) {
+			byKey.set(keyValue, result.length);
+			result.push(entry);
+			continue;
+		}
+		const existing = result[existingIndex];
+		if (!deepEqual$2(existing, entry)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			key: keyValue,
+			key_field: String(payload.key)
+		} });
+	}
+	return result;
+}
+function mergeAppendUnique(current, incoming) {
+	const result = [...current];
+	for (const entry of incoming) {
+		if (result.some((candidate) => deepEqual$2(candidate, entry))) continue;
+		result.push(entry);
+	}
+	return result;
+}
+function mergePacketContextOnly(payload) {
+	const next = cloneState$2(payload.state);
+	const current = next.context;
+	const incoming = payload.packet.context;
+	const keyStrategy = Object.keys(current.key_strategy).length === 0 ? incoming.key_strategy : deepEqual$2(current.key_strategy, incoming.key_strategy) ? current.key_strategy : (() => {
+		throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: { key_field: "key_strategy" } });
+	})();
+	next.context = {
+		glossary: mergeGlossary({
+			current: current.glossary,
+			incoming: incoming.glossary,
+			errors: payload.errors
+		}),
+		key_strategy: keyStrategy,
+		target_system: mergeAppendUnique(current.target_system, incoming.target_system),
+		as_built: mergeAppendUnique(current.as_built, incoming.as_built),
+		claims: mergeUniqueByKey({
+			current: current.claims,
+			incoming: incoming.claims,
+			key: "claim_key",
+			errors: payload.errors
+		}),
+		contracts: mergeUniqueByKey({
+			current: current.contracts,
+			incoming: incoming.contracts,
+			key: "contract_key",
+			errors: payload.errors
+		}),
+		data_domains: mergeUniqueByKey({
+			current: current.data_domains,
+			incoming: incoming.data_domains,
+			key: "data_domain_key",
+			errors: payload.errors
+		}),
+		quality_attributes: mergeUniqueByKey({
+			current: current.quality_attributes,
+			incoming: incoming.quality_attributes,
+			key: "quality_attribute_key",
+			errors: payload.errors
+		}),
+		policy_decisions: mergeUniqueByKey({
+			current: current.policy_decisions,
+			incoming: incoming.policy_decisions,
+			key: "policy_decision_key",
+			errors: payload.errors
+		})
+	};
+	return next;
+}
+function toStateItem(item) {
+	return {
+		...item,
+		reverse_dependency_keys: [],
+		open_todo_ids: [],
+		needs_attention: false,
+		attention_reason_codes: [],
+		attention_reasons: [],
+		ready_for_next_step: false
+	};
+}
+function validateReferentialIntegrity(payload) {
+	const itemKeys = new Set(payload.state.items.map((item) => item.item_key));
+	const claimKeys = new Set(payload.state.context.claims.map((claim) => claim.claim_key));
+	const contractKeys = new Set(payload.state.context.contracts.map((contract) => contract.contract_key));
+	const dataDomainKeys = new Set(payload.state.context.data_domains.map((dataDomain) => dataDomain.data_domain_key));
+	const qualityAttributeKeys = new Set(payload.state.context.quality_attributes.map((qualityAttribute) => qualityAttribute.quality_attribute_key));
+	const policyDecisionKeys = new Set(payload.state.context.policy_decisions.map((policyDecision) => policyDecision.policy_decision_key));
+	for (const item of payload.state.items) {
+		for (const dependencyKey of item.depends_on_keys) if (!itemKeys.has(dependencyKey) || dependencyKey === item.item_key) throw payload.errors.create("BE_DEPENDENCY_NOT_FOUND", void 0, { details: {
+			item_key: item.item_key,
+			dependency_key: dependencyKey
+		} });
+		for (const claimKey of item.claim_keys) if (!claimKeys.has(claimKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			claim_key: claimKey
+		} });
+		for (const contractKey of item.contract_keys) if (!contractKeys.has(contractKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			contract_key: contractKey
+		} });
+		for (const dataDomainKey of item.data_domain_keys) if (!dataDomainKeys.has(dataDomainKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			data_domain_key: dataDomainKey
+		} });
+		for (const qualityAttributeKey of item.quality_attribute_keys) if (!qualityAttributeKeys.has(qualityAttributeKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			quality_attribute_key: qualityAttributeKey
+		} });
+		for (const policyDecisionKey of item.policy_decision_keys) if (!policyDecisionKeys.has(policyDecisionKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			policy_decision_key: policyDecisionKey
+		} });
+	}
+	for (const qualityAttribute of payload.state.context.quality_attributes) for (const itemKey of qualityAttribute.applies_to_item_keys) if (!itemKeys.has(itemKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+		quality_attribute_key: qualityAttribute.quality_attribute_key,
+		item_key: itemKey
+	} });
+	for (const policyDecision of payload.state.context.policy_decisions) for (const itemKey of policyDecision.related_item_keys) if (!itemKeys.has(itemKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+		policy_decision_key: policyDecision.policy_decision_key,
+		item_key: itemKey
+	} });
+}
+function replaceFields(target, fields) {
+	Object.assign(target, fields);
+}
+function appendUniqueValues(target, field, values) {
+	const current = target[field];
+	if (!Array.isArray(current)) return;
+	target[field] = dedupeStable([...current, ...values], (value) => String(value));
+}
+function removeValues(target, field, values) {
+	const current = target[field];
+	if (!Array.isArray(current)) return;
+	const valueSet = new Set(values);
+	target[field] = current.filter((value) => !valueSet.has(String(value)));
+}
+function removeTodosFromState(payload) {
+	const next = cloneState$2(payload.state);
+	const todoIds = new Set(payload.todoIds);
+	const ownedTodoIds = new Set(next.todos.filter((todo) => todo.item_key === payload.itemKey).map((todo) => todo.todo_id));
+	for (const todoId of todoIds) if (!ownedTodoIds.has(todoId)) throw payload.errors.create("BE_TODO_NOT_FOUND", void 0, { details: {
+		item_key: payload.itemKey,
+		todo_id: todoId
+	} });
+	next.todos = next.todos.filter((todo) => !todoIds.has(todo.todo_id));
+	return next;
+}
+function cleanupRemovedItemReferences$1(state, removedItemKeys) {
+	const next = cloneState$2(state);
+	next.items = next.items.filter((item) => !removedItemKeys.has(item.item_key)).map((item) => ({
+		...item,
+		depends_on_keys: item.depends_on_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	next.todos = next.todos.filter((todo) => !removedItemKeys.has(todo.item_key));
+	next.context.quality_attributes = next.context.quality_attributes.map((qualityAttribute) => ({
+		...qualityAttribute,
+		applies_to_item_keys: qualityAttribute.applies_to_item_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	next.context.policy_decisions = next.context.policy_decisions.map((policyDecision) => ({
+		...policyDecision,
+		related_item_keys: policyDecision.related_item_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	return next;
+}
+function sortItems(items) {
+	return [...items].sort((left, right) => left.item_key.localeCompare(right.item_key));
+}
+function sortTodos$1(todos) {
+	return [...todos].sort((left, right) => left.todo_id.localeCompare(right.todo_id));
+}
+function synchronizeOpenTodoIds(payload) {
+	const next = cloneState$2(payload.state);
+	const todoIdsByItem = /* @__PURE__ */ new Map();
+	for (const todo of sortTodos$1(next.todos)) {
+		const ownedTodoIds = todoIdsByItem.get(todo.item_key) ?? [];
+		ownedTodoIds.push(todo.todo_id);
+		todoIdsByItem.set(todo.item_key, ownedTodoIds);
+	}
+	next.items = next.items.map((item) => ({
+		...item,
+		open_todo_ids: [...todoIdsByItem.get(item.item_key) ?? []]
+	}));
+	return payload.schemas.parseStateFile(next);
+}
+function toAttentionReason(todo, code) {
+	if (code === "dependency_changed") {
+		const relatedItemKey = todo.related_item_keys[0];
+		return relatedItemKey ? `нужно проверить изменение зависимости ${relatedItemKey}` : "нужно проверить изменение зависимости";
+	}
+	if (code === "source_changed") {
+		const relatedSource = todo.related_sources[0];
+		return relatedSource ? `нужно проверить изменение источника ${relatedSource.source_label}` : "нужно проверить изменение источника";
+	}
+	return "нужно проверить изменение контекста";
+}
+function applyPacketReplay(payload) {
+	const merged = mergePacketContextOnly(payload);
+	const existingKeys = new Set(merged.items.map((item) => item.item_key));
+	const nextItems = [...merged.items];
+	for (const item of payload.packet.items) {
+		if (existingKeys.has(item.item_key)) throw payload.errors.create("BE_PACKET_ITEM_ALREADY_EXISTS", void 0, { details: { item_key: item.item_key } });
+		existingKeys.add(item.item_key);
+		nextItems.push(toStateItem(item));
+	}
+	const next = {
+		...merged,
+		items: nextItems
+	};
+	validateReferentialIntegrity({
+		state: next,
+		errors: payload.errors
+	});
+	return next;
+}
+function applyPacketItemsOnly(payload) {
+	const next = cloneState$2(payload.state);
+	const existingKeys = new Set(next.items.map((item) => item.item_key));
+	for (const item of payload.items) {
+		if (existingKeys.has(item.item_key)) throw payload.errors.create("BE_PACKET_ITEM_ALREADY_EXISTS", void 0, { details: { item_key: item.item_key } });
+		existingKeys.add(item.item_key);
+		next.items.push(toStateItem(item));
+	}
+	validateReferentialIntegrity({
+		state: next,
+		errors: payload.errors
+	});
+	return next;
+}
+function applyPatchReplay(payload) {
+	let next = cloneState$2(payload.state);
+	const removedItemKeys = /* @__PURE__ */ new Set();
+	for (const operation of payload.patch.operations) {
+		const targetItem = next.items.find((item) => item.item_key === operation.item_key);
+		if (!targetItem) throw payload.errors.create("BE_PATCH_TARGET_NOT_FOUND", void 0, { details: { item_key: operation.item_key } });
+		switch (operation.action) {
+			case "replace_fields":
+				replaceFields(targetItem, operation.fields);
+				break;
+			case "append_unique":
+				appendUniqueValues(targetItem, operation.field, operation.values);
+				break;
+			case "remove_values":
+				removeValues(targetItem, operation.field, operation.values);
+				break;
+			case "remove_todo":
+				next = removeTodosFromState({
+					state: next,
+					itemKey: operation.item_key,
+					todoIds: operation.todo_ids,
+					errors: payload.errors
+				});
+				break;
+			case "remove_item":
+				removedItemKeys.add(operation.item_key);
+				break;
+			default: {
+				const exhaustiveCheck = operation;
+				throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { operation: exhaustiveCheck } });
+			}
+		}
+	}
+	if (removedItemKeys.size > 0) next = cleanupRemovedItemReferences$1(next, removedItemKeys);
+	validateReferentialIntegrity({
+		state: next,
+		errors: payload.errors
+	});
+	return next;
+}
+function validateSourceRegistryReferences(payload) {
+	const ensureSourceExists = (sourceId, details) => {
+		if (payload.availableSourceIds.has(sourceId)) return;
+		throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+			...details,
+			source_id: sourceId,
+			reason: "Canonical backlog references source_id that is missing from sources.json."
+		} });
+	};
+	for (const item of payload.state.items) {
+		for (const sourceId of item.origin_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "origin_source_ids"
+		});
+		for (const sourceId of item.specification_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "specification_source_ids"
+		});
+		for (const sourceId of item.plan_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "plan_source_ids"
+		});
+		for (const sourceId of item.implementation_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "implementation_source_ids"
+		});
+		for (const sourceId of item.test_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "test_source_ids"
+		});
+	}
+	for (const claim of payload.state.context.claims) for (const sourceId of claim.source_ids) ensureSourceExists(sourceId, {
+		claim_key: claim.claim_key,
+		field: "source_ids"
+	});
+	for (const qualityAttribute of payload.state.context.quality_attributes) for (const sourceId of qualityAttribute.source_ids) ensureSourceExists(sourceId, {
+		quality_attribute_key: qualityAttribute.quality_attribute_key,
+		field: "source_ids"
+	});
+	for (const policyDecision of payload.state.context.policy_decisions) for (const sourceId of policyDecision.source_ids) ensureSourceExists(sourceId, {
+		policy_decision_key: policyDecision.policy_decision_key,
+		field: "source_ids"
+	});
+}
+function recomputeDerivedState(payload) {
+	const next = cloneState$2(payload.state);
+	const reverseDependencies = /* @__PURE__ */ new Map();
+	for (const item of next.items) reverseDependencies.set(item.item_key, []);
+	for (const item of next.items) for (const dependencyKey of item.depends_on_keys) {
+		const dependents = reverseDependencies.get(dependencyKey);
+		if (dependents) dependents.push(item.item_key);
+	}
+	const todoIdsByItem = /* @__PURE__ */ new Map();
+	for (const todo of sortTodos$1(next.todos)) {
+		const ownedTodoIds = todoIdsByItem.get(todo.item_key) ?? [];
+		ownedTodoIds.push(todo.todo_id);
+		todoIdsByItem.set(todo.item_key, ownedTodoIds);
+	}
+	const stageRank = {
+		defined: 0,
+		specified: 1,
+		planned: 2,
+		implemented: 3
+	};
+	next.items = sortItems(next.items).map((item) => {
+		const itemTodos = next.todos.filter((todo) => todo.item_key === item.item_key);
+		const attentionReasonCodes = [];
+		const attentionReasons = [];
+		for (const todoType of [
+			"review_source_change",
+			"review_dependency_change",
+			"review_context_change"
+		]) {
+			const todo = itemTodos.find((candidate) => candidate.type === todoType);
+			if (!todo) continue;
+			const code = DERIVED_TODO_TYPES[todoType];
+			attentionReasonCodes.push(code);
+			attentionReasons.push(toAttentionReason(todo, code));
+		}
+		if (item.gaps.length > 0) {
+			attentionReasonCodes.push("gaps");
+			attentionReasons.push("Есть gap: задача заблокирована до уточнения входных данных.");
+		}
+		const dependencyReady = item.depends_on_keys.every((dependencyKey) => {
+			const dependency = next.items.find((candidate) => candidate.item_key === dependencyKey);
+			if (!dependency) return false;
+			return dependency.gaps.length === 0 && (todoIdsByItem.get(dependency.item_key)?.length ?? 0) === 0 && stageRank[dependency.delivery_state] >= stageRank[item.delivery_state];
+		});
+		return {
+			...item,
+			reverse_dependency_keys: [...reverseDependencies.get(item.item_key) ?? []].sort((left, right) => left.localeCompare(right)),
+			open_todo_ids: [...todoIdsByItem.get(item.item_key) ?? []],
+			needs_attention: attentionReasonCodes.length > 0,
+			attention_reason_codes: attentionReasonCodes,
+			attention_reasons: attentionReasons,
+			ready_for_next_step: item.delivery_state !== "implemented" && item.gaps.length === 0 && (todoIdsByItem.get(item.item_key)?.length ?? 0) === 0 && dependencyReady
+		};
+	});
+	next.todos = sortTodos$1(next.todos).filter((todo) => next.items.some((item) => item.item_key === todo.item_key));
+	return payload.schemas.parseStateFile(next);
+}
+//#endregion
+//#region src/core/context-service.ts
+function deepEqual$1(left, right) {
+	return JSON.stringify(left) === JSON.stringify(right);
+}
+function compareByKey(current, incoming, keyField, errors) {
+	const currentByKey = new Map(current.map((entry) => [String(entry[keyField]), entry]));
+	for (const entry of incoming) {
+		const key = String(entry[keyField]);
+		const existing = currentByKey.get(key);
+		if (!existing) continue;
+		if (!deepEqual$1(existing, entry)) throw errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			key,
+			key_field: String(keyField)
+		} });
+	}
+}
+function diffContextKeys(before, after) {
+	const changed = [];
+	if (!deepEqual$1(before.glossary, after.glossary)) changed.push("glossary");
+	if (!deepEqual$1(before.key_strategy, after.key_strategy)) changed.push("key_strategy");
+	if (!deepEqual$1(before.target_system, after.target_system)) changed.push("target_system");
+	if (!deepEqual$1(before.as_built, after.as_built)) changed.push("as_built");
+	if (!deepEqual$1(before.claims, after.claims)) changed.push("claims");
+	if (!deepEqual$1(before.contracts, after.contracts)) changed.push("contracts");
+	if (!deepEqual$1(before.data_domains, after.data_domains)) changed.push("data_domains");
+	if (!deepEqual$1(before.quality_attributes, after.quality_attributes)) changed.push("quality_attributes");
+	if (!deepEqual$1(before.policy_decisions, after.policy_decisions)) changed.push("policy_decisions");
+	return changed;
+}
+function createContextService(payload) {
+	return {
+		mergePacketContext({ state, packet }) {
+			const nextState = mergePacketContextOnly({
+				state,
+				packet,
+				errors: payload.errors
+			});
+			return {
+				state: nextState,
+				changedContextKeys: diffContextKeys(state.context, nextState.context)
+			};
+		},
+		assertNoGlossaryConflicts({ state, packet }) {
+			const glossaryByTerm = new Map(state.context.glossary.map((entry) => [entry.term, entry.definition]));
+			for (const entry of packet.context.glossary) {
+				const existingDefinition = glossaryByTerm.get(entry.term);
+				if (existingDefinition === void 0 || existingDefinition === entry.definition) continue;
+				throw payload.errors.create("BE_CONTEXT_CONFLICT_GLOSSARY", void 0, { details: { term: entry.term } });
+			}
+		},
+		assertImmutableContextEntities({ state, packet }) {
+			if (Object.keys(state.context.key_strategy).length > 0 && !deepEqual$1(state.context.key_strategy, packet.context.key_strategy)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: { key_field: "key_strategy" } });
+			compareByKey(state.context.claims, packet.context.claims, "claim_key", payload.errors);
+			compareByKey(state.context.contracts, packet.context.contracts, "contract_key", payload.errors);
+			compareByKey(state.context.data_domains, packet.context.data_domains, "data_domain_key", payload.errors);
+			compareByKey(state.context.quality_attributes, packet.context.quality_attributes, "quality_attribute_key", payload.errors);
+			compareByKey(state.context.policy_decisions, packet.context.policy_decisions, "policy_decision_key", payload.errors);
+		}
+	};
+}
+//#endregion
+//#region src/core/derived-state-service.ts
+function createDerivedStateService(payload) {
+	return {
+		recomputeAll(state) {
+			return recomputeDerivedState({
+				schemas: payload.schemas,
+				state
+			});
+		},
+		recomputeItems({ state }) {
+			return recomputeDerivedState({
+				schemas: payload.schemas,
+				state
+			});
+		},
+		computeItemState({ state, itemKey }) {
+			const item = recomputeDerivedState({
+				schemas: payload.schemas,
+				state
+			}).items.find((candidate) => candidate.item_key === itemKey);
+			if (!item) throw payload.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: itemKey } });
+			return {
+				needs_attention: item.needs_attention,
+				attention_reason_codes: item.attention_reason_codes,
+				attention_reasons: item.attention_reasons,
+				ready_for_next_step: item.ready_for_next_step
+			};
+		}
+	};
+}
+//#endregion
+//#region src/core/graph-service.ts
+function uniqueSorted(values) {
+	return [...new Set(values)].sort((left, right) => left.localeCompare(right));
+}
+function collectRemovedTodoIds(before, after) {
+	const remainingTodoIds = new Set(after.todos.map((todo) => todo.todo_id));
+	return uniqueSorted(before.todos.filter((todo) => !remainingTodoIds.has(todo.todo_id)).map((todo) => todo.todo_id));
+}
+function buildDependencyIndex(state) {
+	return new Map(state.items.map((item) => [item.item_key, [...item.depends_on_keys].sort((a, b) => a.localeCompare(b))]));
+}
+function buildReverseDependencyIndex(state) {
+	const reverse = /* @__PURE__ */ new Map();
+	for (const item of state.items) reverse.set(item.item_key, /* @__PURE__ */ new Set());
+	for (const item of state.items) for (const dependencyKey of item.depends_on_keys) {
+		const dependents = reverse.get(dependencyKey);
+		if (dependents) dependents.add(item.item_key);
+	}
+	return new Map([...reverse.entries()].map(([itemKey, dependents]) => [itemKey, [...dependents].sort((left, right) => left.localeCompare(right))]));
+}
+function resolveItemSubgraph(payload) {
+	const reverse = buildReverseDependencyIndex(payload.state);
+	const visited = /* @__PURE__ */ new Set();
+	const stack = [...payload.rootItemKeys].sort((left, right) => right.localeCompare(left));
+	while (stack.length > 0) {
+		const itemKey = stack.pop();
+		if (!itemKey || visited.has(itemKey)) continue;
+		visited.add(itemKey);
+		for (const dependentKey of reverse.get(itemKey) ?? []) stack.push(dependentKey);
+	}
+	return [...visited].sort((left, right) => left.localeCompare(right));
+}
+function cleanupRemovedItemReferences(payload) {
+	if (payload.removedItemKeys.length === 0) return payload.state;
+	const removedItemKeys = new Set(payload.removedItemKeys);
+	const nextState = structuredClone(payload.state);
+	nextState.items = nextState.items.filter((item) => !removedItemKeys.has(item.item_key)).map((item) => ({
+		...item,
+		depends_on_keys: item.depends_on_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	nextState.todos = nextState.todos.filter((todo) => !removedItemKeys.has(todo.item_key));
+	nextState.context.quality_attributes = nextState.context.quality_attributes.map((qualityAttribute) => ({
+		...qualityAttribute,
+		applies_to_item_keys: qualityAttribute.applies_to_item_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	nextState.context.policy_decisions = nextState.context.policy_decisions.map((policyDecision) => ({
+		...policyDecision,
+		related_item_keys: policyDecision.related_item_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	return nextState;
+}
+function createGraphService(payload) {
+	return {
+		assertPacketAddsOnlyNewItems({ state, packet }) {
+			const existingItemKeys = new Set(state.items.map((item) => item.item_key));
+			for (const item of packet.items) {
+				if (!existingItemKeys.has(item.item_key)) continue;
+				throw payload.errors.create("BE_PACKET_ITEM_ALREADY_EXISTS", void 0, { details: { item_key: item.item_key } });
+			}
+		},
+		applyPacketItems({ state, packet }) {
+			const addedItemKeys = packet.items.map((item) => item.item_key);
+			const nextState = applyPacketItemsOnly({
+				state,
+				items: packet.items,
+				errors: payload.errors
+			});
+			return {
+				state: synchronizeOpenTodoIds({
+					schemas: payload.schemas,
+					state: nextState
+				}),
+				addedItemKeys: uniqueSorted(addedItemKeys)
+			};
+		},
+		applyPatchOperations({ state, patch }) {
+			const removedItemKeys = uniqueSorted(patch.operations.filter((operation) => operation.action === "remove_item").map((operation) => operation.item_key));
+			const updatedItemKeys = uniqueSorted(patch.operations.filter((operation) => operation.action !== "remove_item").map((operation) => operation.item_key));
+			const nextState = applyPatchReplay({
+				state,
+				patch,
+				errors: payload.errors
+			});
+			return {
+				state: synchronizeOpenTodoIds({
+					schemas: payload.schemas,
+					state: nextState
+				}),
+				updatedItemKeys,
+				removedItemKeys,
+				removedTodoIds: collectRemovedTodoIds(state, nextState)
+			};
+		},
+		buildDependencyIndex,
+		buildReverseDependencyIndex,
+		resolveItemSubgraph,
+		cleanupRemovedItemReferences
+	};
+}
+//#endregion
+//#region src/core/mutation-service.ts
+function sortKeys(values) {
+	return [...new Set(values)].sort((left, right) => left.localeCompare(right));
+}
+function cloneState$1(value) {
+	return structuredClone(value);
+}
+function collectItemSourceIds(item) {
+	return new Set([
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	]);
+}
+function buildSourceSummaryLookup(registry) {
+	return new Map(registry.sources.map((source) => [source.source_id, {
+		source_id: source.source_id,
+		source_label: source.source_label
+	}]));
+}
+function resolveSourceIdsFromScope(payload) {
+	const { scope } = payload;
+	if (scope.kind === "all" || scope.kind === "item") return [];
+	if (scope.kind === "source_id") {
+		if (!payload.registry.sources.some((source) => source.source_id === scope.source_id)) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_id: scope.source_id } });
+		return [scope.source_id];
+	}
+	if (scope.kind === "source_label") {
+		const source = payload.registry.sources.find((candidate) => candidate.source_label === scope.source_label);
+		if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_label: scope.source_label } });
+		return [source.source_id];
+	}
+	const source = payload.registry.sources.find((candidate) => candidate.path === scope.source_path || candidate.source_label === scope.source_path);
+	if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_path: scope.source_path } });
+	return [source.source_id];
+}
+function collectLinkedItemKeysBySourceIds(payload) {
+	const selectedSourceIds = new Set(payload.sourceIds);
+	return sortKeys(payload.state.items.filter((item) => {
+		const itemSourceIds = collectItemSourceIds(item);
+		return [...selectedSourceIds].some((sourceId) => itemSourceIds.has(sourceId));
+	}).map((item) => item.item_key));
+}
+function collectPacketContextAffectedExistingItems(payload) {
+	const existingItemKeys = new Set(payload.beforeState.items.map((item) => item.item_key));
+	const existingQualityAttributeKeys = new Set(payload.beforeState.context.quality_attributes.map((qualityAttribute) => qualityAttribute.quality_attribute_key));
+	const existingPolicyDecisionKeys = new Set(payload.beforeState.context.policy_decisions.map((policyDecision) => policyDecision.policy_decision_key));
+	const affected = /* @__PURE__ */ new Set();
+	for (const qualityAttribute of payload.packet.context.quality_attributes) {
+		if (existingQualityAttributeKeys.has(qualityAttribute.quality_attribute_key)) continue;
+		for (const itemKey of qualityAttribute.applies_to_item_keys) if (existingItemKeys.has(itemKey)) affected.add(itemKey);
+	}
+	for (const policyDecision of payload.packet.context.policy_decisions) {
+		if (existingPolicyDecisionKeys.has(policyDecision.policy_decision_key)) continue;
+		for (const itemKey of policyDecision.related_item_keys) if (existingItemKeys.has(itemKey)) affected.add(itemKey);
+	}
+	return sortKeys(affected);
+}
+function collectDownstreamItemKeys(graph, state, rootItemKeys) {
+	const rootSet = new Set(rootItemKeys);
+	return graph.resolveItemSubgraph({
+		state,
+		rootItemKeys: [...rootSet]
+	}).filter((itemKey) => !rootSet.has(itemKey));
+}
+function collectChangedSourceIdsForItems(payload) {
+	const beforeByKey = new Map(payload.beforeState.items.map((item) => [item.item_key, item]));
+	const afterByKey = new Map(payload.afterState.items.map((item) => [item.item_key, item]));
+	const sourceIdsByItem = /* @__PURE__ */ new Map();
+	for (const itemKey of sortKeys(payload.itemKeys)) {
+		const beforeItem = beforeByKey.get(itemKey);
+		const afterItem = afterByKey.get(itemKey);
+		const sourceIds = sortKeys(new Set([...beforeItem ? [...collectItemSourceIds(beforeItem)] : [], ...afterItem ? [...collectItemSourceIds(afterItem)] : []]));
+		sourceIdsByItem.set(itemKey, sourceIds);
+	}
+	return sourceIdsByItem;
+}
+function collectPatchFieldChanges(patch) {
+	const changedItemKeys = /* @__PURE__ */ new Set();
+	const sourceChangedItemKeys = /* @__PURE__ */ new Set();
+	const contextChangedItemKeys = /* @__PURE__ */ new Set();
+	const sourceFieldNames = new Set([
+		"origin_source_ids",
+		"specification_source_ids",
+		"plan_source_ids",
+		"implementation_source_ids",
+		"test_source_ids"
+	]);
+	const contextFieldNames = new Set([
+		"claim_keys",
+		"contract_keys",
+		"data_domain_keys",
+		"quality_attribute_keys",
+		"policy_decision_keys"
+	]);
+	for (const operation of patch.operations) {
+		if (operation.action === "remove_todo" || operation.action === "remove_item") continue;
+		changedItemKeys.add(operation.item_key);
+		if (operation.action === "replace_fields") {
+			for (const fieldName of Object.keys(operation.fields)) {
+				if (sourceFieldNames.has(fieldName)) sourceChangedItemKeys.add(operation.item_key);
+				if (contextFieldNames.has(fieldName)) contextChangedItemKeys.add(operation.item_key);
+			}
+			continue;
+		}
+		if (sourceFieldNames.has(operation.field)) sourceChangedItemKeys.add(operation.item_key);
+		if (contextFieldNames.has(operation.field)) contextChangedItemKeys.add(operation.item_key);
+	}
+	return {
+		changedItemKeys: sortKeys(changedItemKeys),
+		sourceChangedItemKeys: sortKeys(sourceChangedItemKeys),
+		contextChangedItemKeys: sortKeys(contextChangedItemKeys)
+	};
+}
+function mapTodoIdsToItemKeys(payload) {
+	if (payload.todoIds.length === 0) return [];
+	const todoById = new Map(payload.state.todos.map((todo) => [todo.todo_id, todo.item_key]));
+	return sortKeys(payload.todoIds.flatMap((todoId) => {
+		const itemKey = todoById.get(todoId);
+		return itemKey ? [itemKey] : [];
+	}));
+}
+function touchState(payload) {
+	return payload.schemas.parseStateFile({
+		...payload.state,
+		updated_at: payload.updatedAt,
+		...payload.refreshAt !== void 0 ? { last_refresh_at: payload.refreshAt } : {}
+	});
+}
+function buildMutationNextCommands(payload) {
+	const itemKeys = sortKeys([...payload.todoCreated, ...payload.todoUpdated]);
+	if (itemKeys.length === 0) return [];
+	return [{
+		command: "attention",
+		args: [],
+		reason: payload.fallbackReason
+	}, {
+		command: "items",
+		args: ["--item-keys", itemKeys.join(",")],
+		reason: payload.itemsReason
+	}];
+}
+function buildRefreshNextCommands(itemKeys) {
+	const normalizedItemKeys = sortKeys(itemKeys);
+	if (normalizedItemKeys.length === 0) return [];
+	return [{
+		command: "attention",
+		args: [],
+		reason: "Review tasks affected by refreshed source changes."
+	}, {
+		command: "items",
+		args: ["--item-keys", normalizedItemKeys.join(",")],
+		reason: "Inspect the full cards of tasks with refreshed review todo."
+	}];
+}
+function sortChangedSources(changedSources) {
+	return [...changedSources].sort((left, right) => {
+		const labelCompare = left.source_label.localeCompare(right.source_label);
+		if (labelCompare !== 0) return labelCompare;
+		return left.source_id.localeCompare(right.source_id);
+	});
+}
+function collectActiveSourceTodoItemKeys(payload) {
+	const changedSourceIds = new Set(payload.changedSourceIds);
+	return sortKeys(payload.state.items.filter((item) => {
+		const itemSourceIds = collectItemSourceIds(item);
+		return [...changedSourceIds].some((sourceId) => itemSourceIds.has(sourceId));
+	}).map((item) => item.item_key));
+}
+function buildTodoSemanticKey(todo) {
+	return [
+		todo.item_key,
+		todo.type,
+		sortKeys(todo.related_sources.map((source) => source.source_id)).join(","),
+		sortKeys(todo.related_item_keys).join(",")
+	].join("|");
+}
+function removeTodosByType(payload) {
+	const scopedItemKeys = new Set(payload.scopedItemKeys);
+	const removedTodoIds = payload.state.todos.filter((todo) => {
+		if (todo.type !== payload.todoType) return false;
+		if (!scopedItemKeys.has(todo.item_key)) return false;
+		if ((todo.managed_by ?? "mutation") !== "refresh") return false;
+		if (!payload.isCleanupCandidate?.(todo)) return false;
+		if (payload.allowedSemanticKeys?.has(buildTodoSemanticKey(todo))) return false;
+		return true;
+	}).map((todo) => todo.todo_id);
+	if (removedTodoIds.length === 0) return {
+		state: payload.state,
+		removedTodoIds: []
+	};
+	const removalSet = new Set(removedTodoIds);
+	const nextState = cloneState$1(payload.state);
+	nextState.todos = nextState.todos.filter((todo) => !removalSet.has(todo.todo_id));
+	return {
+		state: synchronizeOpenTodoIds({
+			schemas: payload.schemas,
+			state: nextState
+		}),
+		removedTodoIds: sortKeys(removedTodoIds)
+	};
+}
+function createMutationService(payload) {
+	const assertKnownSourceReferences = (state, sourceRegistry) => {
+		const sourceIds = new Set(sourceRegistry.sources.map((source) => source.source_id));
+		const ensureKnownSource = (sourceId, details) => {
+			if (sourceIds.has(sourceId)) return;
+			throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: {
+				...details,
+				source_id: sourceId
+			} });
+		};
+		for (const item of state.items) {
+			for (const sourceId of item.origin_source_ids) ensureKnownSource(sourceId, {
+				item_key: item.item_key,
+				field: "origin_source_ids"
+			});
+			for (const sourceId of item.specification_source_ids) ensureKnownSource(sourceId, {
+				item_key: item.item_key,
+				field: "specification_source_ids"
+			});
+			for (const sourceId of item.plan_source_ids) ensureKnownSource(sourceId, {
+				item_key: item.item_key,
+				field: "plan_source_ids"
+			});
+			for (const sourceId of item.implementation_source_ids) ensureKnownSource(sourceId, {
+				item_key: item.item_key,
+				field: "implementation_source_ids"
+			});
+			for (const sourceId of item.test_source_ids) ensureKnownSource(sourceId, {
+				item_key: item.item_key,
+				field: "test_source_ids"
+			});
+		}
+		for (const claim of state.context.claims) for (const sourceId of claim.source_ids) ensureKnownSource(sourceId, {
+			claim_key: claim.claim_key,
+			field: "source_ids"
+		});
+		for (const qualityAttribute of state.context.quality_attributes) for (const sourceId of qualityAttribute.source_ids) ensureKnownSource(sourceId, {
+			quality_attribute_key: qualityAttribute.quality_attribute_key,
+			field: "source_ids"
+		});
+		for (const policyDecision of state.context.policy_decisions) for (const sourceId of policyDecision.source_ids) ensureKnownSource(sourceId, {
+			policy_decision_key: policyDecision.policy_decision_key,
+			field: "source_ids"
+		});
+	};
+	return {
+		applyPacket({ state, packet, sourceRegistry, dryRun, packetId: _packetId }) {
+			payload.context.assertNoGlossaryConflicts({
+				state,
+				packet
+			});
+			payload.context.assertImmutableContextEntities({
+				state,
+				packet
+			});
+			payload.graph.assertPacketAddsOnlyNewItems({
+				state,
+				packet
+			});
+			const existingAffectedItemKeys = collectPacketContextAffectedExistingItems({
+				beforeState: state,
+				packet
+			});
+			const mergedContext = payload.context.mergePacketContext({
+				state,
+				packet
+			});
+			const appliedItems = payload.graph.applyPacketItems({
+				state: mergedContext.state,
+				packet
+			});
+			assertKnownSourceReferences(appliedItems.state, sourceRegistry);
+			let nextState = appliedItems.state;
+			let createdTodoIds = [];
+			let updatedTodoIds = [];
+			if (existingAffectedItemKeys.length > 0) {
+				const contextTodos = payload.todo.generateTodosForContextChange({
+					state: nextState,
+					changedItemKeys: existingAffectedItemKeys
+				});
+				const contextResult = payload.todo.createOrMergeTodos({
+					state: nextState,
+					todos: contextTodos
+				});
+				nextState = contextResult.state;
+				createdTodoIds = [...createdTodoIds, ...contextResult.createdTodoIds];
+				updatedTodoIds = [...updatedTodoIds, ...contextResult.updatedTodoIds];
+				const downstreamItemKeys = collectDownstreamItemKeys(payload.graph, nextState, existingAffectedItemKeys);
+				if (downstreamItemKeys.length > 0) {
+					const dependencyTodos = payload.todo.generateTodosForDependencyChange({
+						state: nextState,
+						changedItemKeys: existingAffectedItemKeys,
+						dependentItemKeys: downstreamItemKeys
+					});
+					const dependencyResult = payload.todo.createOrMergeTodos({
+						state: nextState,
+						todos: dependencyTodos
+					});
+					nextState = dependencyResult.state;
+					createdTodoIds = [...createdTodoIds, ...dependencyResult.createdTodoIds];
+					updatedTodoIds = [...updatedTodoIds, ...dependencyResult.updatedTodoIds];
+				}
+			}
+			nextState = touchState({
+				schemas: payload.schemas,
+				state: payload.derivedState.recomputeAll(nextState),
+				updatedAt: payload.clock.nowIsoUtc()
+			});
+			const todoCreated = mapTodoIdsToItemKeys({
+				state: nextState,
+				todoIds: createdTodoIds
+			});
+			const todoUpdated = mapTodoIdsToItemKeys({
+				state: nextState,
+				todoIds: updatedTodoIds
+			});
+			const summary = {
+				state: nextState,
+				dry_run: dryRun,
+				counts: {
+					added: appliedItems.addedItemKeys.length,
+					removed: 0,
+					todo_created: todoCreated.length,
+					todo_updated: todoUpdated.length
+				},
+				added: appliedItems.addedItemKeys,
+				removed: [],
+				todo_created: todoCreated,
+				todo_updated: todoUpdated,
+				next_commands: buildMutationNextCommands({
+					todoCreated,
+					todoUpdated,
+					fallbackReason: "Review existing tasks affected by newly introduced context.",
+					itemsReason: "Inspect full cards of tasks that received review todo."
+				})
+			};
+			return Promise.resolve({
+				...payload.schemas.parseCommandOutput("packet", {
+					dry_run: summary.dry_run,
+					counts: summary.counts,
+					added: summary.added,
+					removed: summary.removed,
+					todo_created: summary.todo_created,
+					todo_updated: summary.todo_updated,
+					next_commands: summary.next_commands
+				}),
+				state: nextState
+			});
+		},
+		applyPatch({ state, patch, sourceRegistry, dryRun }) {
+			const isRemoveItemPatch = patch.operations.every((operation) => operation.action === "remove_item");
+			const { changedItemKeys, sourceChangedItemKeys, contextChangedItemKeys } = collectPatchFieldChanges(patch);
+			const graphResult = payload.graph.applyPatchOperations({
+				state,
+				patch
+			});
+			assertKnownSourceReferences(graphResult.state, sourceRegistry);
+			let nextState = graphResult.state;
+			let createdTodoIds = [];
+			let updatedTodoIds = [];
+			const removedTodoIds = [...graphResult.removedTodoIds];
+			if (isRemoveItemPatch) {
+				const downstreamItemKeys = collectDownstreamItemKeys(payload.graph, state, graphResult.removedItemKeys);
+				if (downstreamItemKeys.length > 0) {
+					const dependencyTodos = payload.todo.generateTodosForDependencyChange({
+						state: nextState,
+						changedItemKeys: graphResult.removedItemKeys,
+						dependentItemKeys: downstreamItemKeys
+					});
+					const dependencyResult = payload.todo.createOrMergeTodos({
+						state: nextState,
+						todos: dependencyTodos
+					});
+					nextState = dependencyResult.state;
+					createdTodoIds = [...createdTodoIds, ...dependencyResult.createdTodoIds];
+					updatedTodoIds = [...updatedTodoIds, ...dependencyResult.updatedTodoIds];
+				}
+			} else {
+				const downstreamItemKeys = changedItemKeys.length ? sortKeys(new Set([...collectDownstreamItemKeys(payload.graph, state, changedItemKeys), ...collectDownstreamItemKeys(payload.graph, nextState, changedItemKeys)])) : [];
+				if (changedItemKeys.length > 0 && downstreamItemKeys.length > 0) {
+					const dependencyTodos = payload.todo.generateTodosForDependencyChange({
+						state: nextState,
+						changedItemKeys,
+						dependentItemKeys: downstreamItemKeys
+					});
+					const dependencyResult = payload.todo.createOrMergeTodos({
+						state: nextState,
+						todos: dependencyTodos
+					});
+					nextState = dependencyResult.state;
+					createdTodoIds = [...createdTodoIds, ...dependencyResult.createdTodoIds];
+					updatedTodoIds = [...updatedTodoIds, ...dependencyResult.updatedTodoIds];
+				}
+				if (contextChangedItemKeys.length > 0) {
+					const contextTodos = payload.todo.generateTodosForContextChange({
+						state: nextState,
+						changedItemKeys: contextChangedItemKeys,
+						affectedItemKeys: [...contextChangedItemKeys, ...downstreamItemKeys]
+					});
+					const contextResult = payload.todo.createOrMergeTodos({
+						state: nextState,
+						todos: contextTodos
+					});
+					nextState = contextResult.state;
+					createdTodoIds = [...createdTodoIds, ...contextResult.createdTodoIds];
+					updatedTodoIds = [...updatedTodoIds, ...contextResult.updatedTodoIds];
+				}
+				if (sourceChangedItemKeys.length > 0) {
+					const sourceIdsByItem = collectChangedSourceIdsForItems({
+						beforeState: state,
+						afterState: nextState,
+						itemKeys: sourceChangedItemKeys
+					});
+					for (const itemKey of sourceChangedItemKeys) {
+						const sourceIds = sourceIdsByItem.get(itemKey) ?? [];
+						if (sourceIds.length === 0) continue;
+						const affectedItemKeys = sortKeys([
+							itemKey,
+							...collectDownstreamItemKeys(payload.graph, state, [itemKey]),
+							...collectDownstreamItemKeys(payload.graph, nextState, [itemKey])
+						]);
+						const sourceTodos = payload.todo.generateTodosForSourceChange({
+							state: nextState,
+							registry: sourceRegistry,
+							sourceIds,
+							affectedItemKeys,
+							requireDirectSourceLink: false
+						});
+						const sourceResult = payload.todo.createOrMergeTodos({
+							state: nextState,
+							todos: sourceTodos
+						});
+						nextState = sourceResult.state;
+						createdTodoIds = [...createdTodoIds, ...sourceResult.createdTodoIds];
+						updatedTodoIds = [...updatedTodoIds, ...sourceResult.updatedTodoIds];
+					}
+				}
+			}
+			nextState = touchState({
+				schemas: payload.schemas,
+				state: payload.derivedState.recomputeAll(nextState),
+				updatedAt: payload.clock.nowIsoUtc()
+			});
+			const todoCreated = mapTodoIdsToItemKeys({
+				state: nextState,
+				todoIds: createdTodoIds
+			});
+			const todoUpdated = mapTodoIdsToItemKeys({
+				state: nextState,
+				todoIds: updatedTodoIds
+			});
+			const todoRemoved = sortKeys(new Set([...mapTodoIdsToItemKeys({
+				state,
+				todoIds: removedTodoIds
+			}), ...graphResult.removedItemKeys]));
+			if (isRemoveItemPatch) {
+				const summary = {
+					state: nextState,
+					dry_run: dryRun,
+					counts: {
+						removed: graphResult.removedItemKeys.length,
+						todo_created: todoCreated.length,
+						todo_updated: todoUpdated.length,
+						todo_removed: todoRemoved.length
+					},
+					removed: graphResult.removedItemKeys,
+					todo_created: todoCreated,
+					todo_updated: todoUpdated,
+					todo_removed: todoRemoved,
+					next_commands: buildMutationNextCommands({
+						todoCreated,
+						todoUpdated,
+						fallbackReason: "Review tasks affected by the removal.",
+						itemsReason: "Inspect full cards of tasks affected by item removal."
+					})
+				};
+				return Promise.resolve({
+					...payload.schemas.parseCommandOutput("remove-item", {
+						dry_run: summary.dry_run,
+						counts: summary.counts,
+						removed: summary.removed,
+						todo_created: summary.todo_created,
+						todo_updated: summary.todo_updated,
+						todo_removed: summary.todo_removed,
+						next_commands: summary.next_commands
+					}),
+					state: nextState
+				});
+			}
+			const updated = sortKeys(new Set(patch.metadata.target_item_keys));
+			const summary = {
+				state: nextState,
+				dry_run: dryRun,
+				counts: {
+					updated: updated.length,
+					todo_created: todoCreated.length,
+					todo_updated: todoUpdated.length,
+					todo_removed: todoRemoved.length
+				},
+				updated,
+				todo_created: todoCreated,
+				todo_updated: todoUpdated,
+				todo_removed: todoRemoved,
+				next_commands: buildMutationNextCommands({
+					todoCreated,
+					todoUpdated,
+					fallbackReason: "Review tasks affected by the patch.",
+					itemsReason: "Inspect full cards of directly changed tasks."
+				})
+			};
+			return Promise.resolve({
+				...payload.schemas.parseCommandOutput("patch-item", {
+					dry_run: summary.dry_run,
+					counts: summary.counts,
+					updated: summary.updated,
+					todo_created: summary.todo_created,
+					todo_updated: summary.todo_updated,
+					todo_removed: summary.todo_removed,
+					next_commands: summary.next_commands
+				}),
+				state: nextState
+			});
+		},
+		refresh({ state, sourceRegistry, changedSourceIds, scope }) {
+			const scopeItemKeys = scope.kind === "all" ? sortKeys(state.items.map((item) => item.item_key)) : scope.kind === "item" ? (() => {
+				if (!state.items.some((item) => item.item_key === scope.item_key)) throw payload.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: scope.item_key } });
+				return payload.graph.resolveItemSubgraph({
+					state,
+					rootItemKeys: [scope.item_key]
+				});
+			})() : (() => {
+				const linkedItemKeys = collectLinkedItemKeysBySourceIds({
+					state,
+					sourceIds: resolveSourceIdsFromScope({
+						registry: sourceRegistry,
+						scope,
+						errors: payload.errors
+					})
+				});
+				if (linkedItemKeys.length === 0) return [];
+				const topLevelItemKeys = sortKeys(new Set(linkedItemKeys.flatMap((linkedItemKey) => {
+					const topLevelKeys = /* @__PURE__ */ new Set();
+					const stack = [linkedItemKey];
+					const seen = /* @__PURE__ */ new Set();
+					while (stack.length > 0) {
+						const itemKey = stack.pop();
+						if (!itemKey || seen.has(itemKey)) continue;
+						seen.add(itemKey);
+						const item = state.items.find((candidate) => candidate.item_key === itemKey);
+						if (!item || item.depends_on_keys.length === 0) {
+							topLevelKeys.add(itemKey);
+							continue;
+						}
+						for (const dependencyKey of item.depends_on_keys) stack.push(dependencyKey);
+					}
+					return [...topLevelKeys];
+				})));
+				return payload.graph.resolveItemSubgraph({
+					state,
+					rootItemKeys: topLevelItemKeys
+				});
+			})();
+			const scopeItemSet = new Set(scopeItemKeys);
+			const observedSourceIds = scope.kind === "all" ? sortKeys(sourceRegistry.sources.map((source) => source.source_id)) : scope.kind === "item" ? sortKeys(new Set(scopeItemKeys.flatMap((itemKey) => {
+				const item = state.items.find((candidate) => candidate.item_key === itemKey);
+				return item ? [...collectItemSourceIds(item)] : [];
+			}))) : resolveSourceIdsFromScope({
+				registry: sourceRegistry,
+				scope,
+				errors: payload.errors
+			});
+			const observedSourceIdSet = new Set(observedSourceIds);
+			const observedDirectSourceItemKeySet = new Set(collectLinkedItemKeysBySourceIds({
+				state,
+				sourceIds: observedSourceIds
+			}).filter((itemKey) => scopeItemSet.has(itemKey)));
+			const directSourceItemKeys = collectActiveSourceTodoItemKeys({
+				state,
+				changedSourceIds
+			}).filter((itemKey) => scopeItemSet.has(itemKey));
+			const downstreamItemKeys = collectDownstreamItemKeys(payload.graph, state, directSourceItemKeys).filter((itemKey) => scopeItemSet.has(itemKey));
+			let nextState = state;
+			let createdTodoIds = [];
+			let updatedTodoIds = [];
+			let removedTodoIds = [];
+			const activeSourceTodoSemanticKeys = /* @__PURE__ */ new Set();
+			const activeDependencyTodoSemanticKeys = /* @__PURE__ */ new Set();
+			const sourceSummaryLookup = buildSourceSummaryLookup(sourceRegistry);
+			const changedSourceSummaries = sortChangedSources(changedSourceIds.flatMap((sourceId) => {
+				const source = sourceSummaryLookup.get(sourceId);
+				return source ? [source] : [];
+			}));
+			if (directSourceItemKeys.length > 0) {
+				const sourceTodos = payload.todo.generateTodosForSourceChange({
+					state: nextState,
+					registry: sourceRegistry,
+					sourceIds: changedSourceIds,
+					affectedItemKeys: directSourceItemKeys,
+					managedBy: "refresh"
+				});
+				for (const todo of sourceTodos) activeSourceTodoSemanticKeys.add([
+					todo.item_key,
+					todo.type,
+					sortKeys(todo.related_sources.map((source) => source.source_id)).join(","),
+					sortKeys(todo.related_item_keys).join(",")
+				].join("|"));
+				const sourceResult = payload.todo.createOrMergeTodos({
+					state: nextState,
+					todos: sourceTodos
+				});
+				nextState = sourceResult.state;
+				createdTodoIds = [...createdTodoIds, ...sourceResult.createdTodoIds];
+				updatedTodoIds = [...updatedTodoIds, ...sourceResult.updatedTodoIds];
+			}
+			if (downstreamItemKeys.length > 0) {
+				const dependencyTodos = payload.todo.generateTodosForDependencyChange({
+					state: nextState,
+					changedItemKeys: directSourceItemKeys,
+					dependentItemKeys: downstreamItemKeys,
+					managedBy: "refresh",
+					relatedSources: changedSourceSummaries
+				});
+				for (const todo of dependencyTodos) activeDependencyTodoSemanticKeys.add([
+					todo.item_key,
+					todo.type,
+					sortKeys(todo.related_sources.map((source) => source.source_id)).join(","),
+					sortKeys(todo.related_item_keys).join(",")
+				].join("|"));
+				const dependencyResult = payload.todo.createOrMergeTodos({
+					state: nextState,
+					todos: dependencyTodos
+				});
+				nextState = dependencyResult.state;
+				createdTodoIds = [...createdTodoIds, ...dependencyResult.createdTodoIds];
+				updatedTodoIds = [...updatedTodoIds, ...dependencyResult.updatedTodoIds];
+			}
+			const sourceTodoCleanup = removeTodosByType({
+				state: nextState,
+				schemas: payload.schemas,
+				todoType: "review_source_change",
+				scopedItemKeys: scopeItemKeys,
+				allowedSemanticKeys: activeSourceTodoSemanticKeys,
+				isCleanupCandidate(todo) {
+					return todo.related_sources.length > 0 && todo.related_sources.every((source) => observedSourceIdSet.has(source.source_id));
+				}
+			});
+			nextState = sourceTodoCleanup.state;
+			removedTodoIds = [...removedTodoIds, ...sourceTodoCleanup.removedTodoIds];
+			const dependencyTodoCleanup = removeTodosByType({
+				state: nextState,
+				schemas: payload.schemas,
+				todoType: "review_dependency_change",
+				scopedItemKeys: scopeItemKeys,
+				allowedSemanticKeys: activeDependencyTodoSemanticKeys,
+				isCleanupCandidate(todo) {
+					return todo.related_sources.length > 0 && todo.related_sources.every((source) => observedSourceIdSet.has(source.source_id)) && todo.related_item_keys.length > 0 && todo.related_item_keys.every((itemKey) => observedDirectSourceItemKeySet.has(itemKey));
+				}
+			});
+			nextState = dependencyTodoCleanup.state;
+			removedTodoIds = [...removedTodoIds, ...dependencyTodoCleanup.removedTodoIds];
+			nextState = touchState({
+				schemas: payload.schemas,
+				state: payload.derivedState.recomputeAll(nextState),
+				updatedAt: payload.clock.nowIsoUtc(),
+				refreshAt: payload.clock.nowIsoUtc()
+			});
+			const changedSources = changedSourceSummaries;
+			const todoCreated = mapTodoIdsToItemKeys({
+				state: nextState,
+				todoIds: createdTodoIds
+			});
+			const todoUpdated = mapTodoIdsToItemKeys({
+				state: nextState,
+				todoIds: updatedTodoIds
+			});
+			const todoRemoved = mapTodoIdsToItemKeys({
+				state,
+				todoIds: removedTodoIds
+			});
+			const summary = {
+				state: nextState,
+				registry: sourceRegistry,
+				counts: {
+					changed_sources: changedSources.length,
+					todo_created: todoCreated.length,
+					todo_updated: todoUpdated.length,
+					todo_removed: todoRemoved.length
+				},
+				changed_sources: changedSources,
+				todo_created: todoCreated,
+				todo_updated: todoUpdated,
+				todo_removed: todoRemoved,
+				next_commands: buildRefreshNextCommands([...todoCreated, ...todoUpdated])
+			};
+			return Promise.resolve({
+				...payload.schemas.parseCommandOutput("refresh", {
+					counts: summary.counts,
+					changed_sources: summary.changed_sources,
+					todo_created: summary.todo_created,
+					todo_updated: summary.todo_updated,
+					todo_removed: summary.todo_removed,
+					next_commands: summary.next_commands
+				}),
+				state: nextState,
+				registry: sourceRegistry
+			});
+		},
+		getGaps({ state, filters }) {
+			return (filters.item_key ? state.items.filter((item) => item.item_key === filters.item_key) : state.items).filter((item) => item.gaps.length > 0).map((item) => ({
+				item_key: item.item_key,
+				title: item.title,
+				gaps: item.gaps
+			}));
+		}
+	};
+}
+//#endregion
+//#region src/core/todo-service.ts
+function cloneState(value) {
+	return structuredClone(value);
+}
+function sortItemKeys(values) {
+	return [...new Set(values)].sort((left, right) => left.localeCompare(right));
+}
+function sortSourceSummaries(values) {
+	const deduped = /* @__PURE__ */ new Map();
+	for (const value of values) deduped.set(value.source_id, value);
+	return [...deduped.values()].sort((left, right) => {
+		const labelCompare = left.source_label.localeCompare(right.source_label);
+		if (labelCompare !== 0) return labelCompare;
+		return left.source_id.localeCompare(right.source_id);
+	});
+}
+function sortTodos(values) {
+	return [...values].sort((left, right) => left.todo_id.localeCompare(right.todo_id));
+}
+function resolveTodoManagedBy(todo) {
+	return todo.managed_by ?? "mutation";
+}
+function buildSemanticKey(todo) {
+	const sourceIds = sortSourceSummaries(todo.related_sources).map((source) => source.source_id);
+	const relatedItemKeys = sortItemKeys(todo.related_item_keys);
+	return [
+		todo.item_key,
+		todo.type,
+		sourceIds.join(","),
+		relatedItemKeys.join(",")
+	].join("|");
+}
+function createSourceChangeMessage(relatedSources) {
+	const labels = sortSourceSummaries(relatedSources).map((source) => source.source_label);
+	if (labels.length === 0) return "Проверь, изменился ли связанный источник.";
+	return `Проверь источник: ${labels.join(", ")}.`;
+}
+function createDependencyChangeMessage(relatedItemKeys) {
+	const keys = sortItemKeys(relatedItemKeys);
+	if (keys.length === 0) return "Проверь, изменились ли зависимости задачи.";
+	return `Родительская задача изменилась: ${keys.join(", ")}. Проверь, нужны ли изменения для этой задачи.`;
+}
+function createContextChangeMessage(relatedItemKeys) {
+	const keys = sortItemKeys(relatedItemKeys);
+	if (keys.length === 0) return "Проверь, изменился ли контекст задачи.";
+	return `Контекст задачи изменился через: ${keys.join(", ")}. Проверь, нужны ли изменения.`;
+}
+function buildTodo(payload) {
+	const relatedSources = sortSourceSummaries(payload.relatedSources ?? []);
+	const relatedItemKeys = sortItemKeys(payload.relatedItemKeys ?? []);
+	const message = payload.type === "review_source_change" ? createSourceChangeMessage(relatedSources) : payload.type === "review_dependency_change" ? createDependencyChangeMessage(relatedItemKeys) : createContextChangeMessage(relatedItemKeys);
+	return {
+		todo_id: payload.uuid.create(),
+		item_key: payload.itemKey,
+		type: payload.type,
+		managed_by: payload.managedBy,
+		message,
+		created_at: payload.clock.nowIsoUtc(),
+		related_sources: relatedSources,
+		related_item_keys: relatedItemKeys
+	};
+}
+function resolveSourceSummaries(payload) {
+	const byId = new Map(payload.registry.sources.map((source) => [source.source_id, source]));
+	const summaries = [];
+	for (const sourceId of payload.sourceIds) {
+		const source = byId.get(sourceId);
+		if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_id: sourceId } });
+		summaries.push({
+			source_id: source.source_id,
+			source_label: source.source_label
+		});
+	}
+	return sortSourceSummaries(summaries);
+}
+function createTodoService(payload) {
+	return {
+		createOrMergeTodos({ state, todos }) {
+			const nextState = cloneState(state);
+			const bySemanticKey = new Map(nextState.todos.map((todo) => [buildSemanticKey(todo), todo]));
+			const createdTodoIds = [];
+			const updatedTodoIds = [];
+			for (const incomingTodo of sortTodos(todos)) {
+				const semanticKey = buildSemanticKey(incomingTodo);
+				const existing = bySemanticKey.get(semanticKey);
+				if (!existing) {
+					nextState.todos.push(incomingTodo);
+					bySemanticKey.set(semanticKey, incomingTodo);
+					createdTodoIds.push(incomingTodo.todo_id);
+					continue;
+				}
+				const normalizedIncoming = {
+					...incomingTodo,
+					todo_id: existing.todo_id,
+					created_at: existing.created_at,
+					managed_by: resolveTodoManagedBy(existing) === "mutation" || resolveTodoManagedBy(incomingTodo) === "mutation" ? "mutation" : "refresh"
+				};
+				if (JSON.stringify(existing) === JSON.stringify(normalizedIncoming)) continue;
+				nextState.todos = nextState.todos.map((todo) => todo.todo_id === existing.todo_id ? normalizedIncoming : todo);
+				bySemanticKey.set(semanticKey, normalizedIncoming);
+				updatedTodoIds.push(existing.todo_id);
+			}
+			nextState.todos = sortTodos(nextState.todos);
+			return {
+				state: synchronizeOpenTodoIds({
+					schemas: payload.schemas,
+					state: nextState
+				}),
+				createdTodoIds: sortItemKeys(createdTodoIds),
+				updatedTodoIds: sortItemKeys(updatedTodoIds)
+			};
+		},
+		removeTodos({ state, todoIds }) {
+			const nextState = cloneState(state);
+			const requestedTodoIds = new Set(todoIds);
+			const existingTodoIds = new Set(nextState.todos.map((todo) => todo.todo_id));
+			for (const todoId of requestedTodoIds) {
+				if (existingTodoIds.has(todoId)) continue;
+				throw payload.errors.create("BE_TODO_NOT_FOUND", void 0, { details: { todo_id: todoId } });
+			}
+			nextState.todos = sortTodos(nextState.todos.filter((todo) => !requestedTodoIds.has(todo.todo_id)));
+			return {
+				state: synchronizeOpenTodoIds({
+					schemas: payload.schemas,
+					state: nextState
+				}),
+				removedTodoIds: sortItemKeys(requestedTodoIds)
+			};
+		},
+		generateTodosForSourceChange({ state, registry, sourceIds, affectedItemKeys, requireDirectSourceLink = true, managedBy = "mutation" }) {
+			const relatedSources = resolveSourceSummaries({
+				registry,
+				sourceIds,
+				errors: payload.errors
+			});
+			const itemKeys = sortItemKeys(affectedItemKeys);
+			const itemsByKey = new Map(state.items.map((item) => [item.item_key, item]));
+			return itemKeys.flatMap((itemKey) => {
+				const item = itemsByKey.get(itemKey);
+				if (!item) return [];
+				const itemSourceIds = new Set([
+					...item.origin_source_ids,
+					...item.specification_source_ids,
+					...item.plan_source_ids,
+					...item.implementation_source_ids,
+					...item.test_source_ids
+				]);
+				const relevantSources = relatedSources.filter((source) => itemSourceIds.has(source.source_id));
+				if (requireDirectSourceLink && relevantSources.length === 0) return [];
+				return [buildTodo({
+					uuid: payload.uuid,
+					clock: payload.clock,
+					itemKey,
+					type: "review_source_change",
+					managedBy,
+					relatedSources: requireDirectSourceLink ? relevantSources : relatedSources
+				})];
+			});
+		},
+		generateTodosForDependencyChange({ dependentItemKeys, changedItemKeys, managedBy = "mutation", relatedSources = [] }) {
+			const sortedChangedKeys = sortItemKeys(changedItemKeys);
+			const sortedRelatedSources = sortSourceSummaries(relatedSources);
+			return sortItemKeys(dependentItemKeys).map((itemKey) => buildTodo({
+				uuid: payload.uuid,
+				clock: payload.clock,
+				itemKey,
+				type: "review_dependency_change",
+				managedBy,
+				relatedSources: sortedRelatedSources,
+				relatedItemKeys: sortedChangedKeys
+			}));
+		},
+		generateTodosForContextChange({ changedItemKeys, affectedItemKeys, managedBy = "mutation" }) {
+			const sortedChangedKeys = sortItemKeys(changedItemKeys);
+			return sortItemKeys(affectedItemKeys ?? changedItemKeys).map((itemKey) => buildTodo({
+				uuid: payload.uuid,
+				clock: payload.clock,
+				itemKey,
+				type: "review_context_change",
+				managedBy,
+				relatedItemKeys: sortedChangedKeys
+			}));
+		}
+	};
+}
+//#endregion
+//#region src/core/create-core-module.ts
+function createUnavailableQueryService(serviceName, errors) {
+	return new Proxy({}, { get(_target, propertyKey) {
+		return () => {
+			throw errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+				details: {
+					module: "core",
+					service: serviceName,
+					property: String(propertyKey)
+				},
+				hint: "Continue with the read-model work packages before invoking query services."
+			});
+		};
+	} });
+}
+function createCoreModule(payload) {
+	const graph = createGraphService({
+		errors: payload.errors,
+		schemas: payload.schemas
+	});
+	const context = createContextService({
+		errors: payload.errors,
+		schemas: payload.schemas
+	});
+	const todo = createTodoService({
+		errors: payload.errors,
+		schemas: payload.schemas,
+		clock: payload.clock,
+		uuid: payload.uuid
+	});
+	const derivedState = createDerivedStateService({
+		errors: payload.errors,
+		schemas: payload.schemas
+	});
+	return {
+		graph,
+		context,
+		todo,
+		derivedState,
+		mutation: createMutationService({
+			errors: payload.errors,
+			schemas: payload.schemas,
+			clock: payload.clock,
+			graph,
+			context,
+			todo,
+			derivedState
+		}),
+		search: createUnavailableQueryService("search", payload.errors),
+		items: createUnavailableQueryService("items", payload.errors),
+		queue: createUnavailableQueryService("queue", payload.errors),
+		attention: createUnavailableQueryService("attention", payload.errors)
+	};
+}
+//#endregion
 //#region src/templates/render-agents-template.ts
 var BACKLOG_AGENTS_TEMPLATE = `# AGENTS.md
 
@@ -7735,399 +9557,6 @@ async function resolveCommandBacklogRoot(payload) {
 	return findBacklogRoot(payload.fs, payload.path, payload.cwd);
 }
 //#endregion
-//#region src/core/replay-pipeline.ts
-var DERIVED_TODO_TYPES = {
-	review_source_change: "source_changed",
-	review_dependency_change: "dependency_changed",
-	review_context_change: "context_changed"
-};
-function dedupeStable(values, getKey) {
-	const seen = /* @__PURE__ */ new Set();
-	const result = [];
-	for (const value of values) {
-		const key = getKey(value);
-		if (seen.has(key)) continue;
-		seen.add(key);
-		result.push(value);
-	}
-	return result;
-}
-function deepEqual$1(left, right) {
-	return JSON.stringify(left) === JSON.stringify(right);
-}
-function cloneState(value) {
-	return structuredClone(value);
-}
-function mergeGlossary(payload) {
-	const result = [...payload.current];
-	const byTerm = new Map(result.map((entry, index) => [entry.term, index]));
-	for (const entry of payload.incoming) {
-		const index = byTerm.get(entry.term);
-		if (index === void 0) {
-			byTerm.set(entry.term, result.length);
-			result.push(entry);
-			continue;
-		}
-		const existing = result[index];
-		if (!existing) continue;
-		if (existing.definition !== entry.definition) throw payload.errors.create("BE_CONTEXT_CONFLICT_GLOSSARY", void 0, { details: { term: entry.term } });
-		result[index] = {
-			...existing,
-			aliases: dedupeStable([...existing.aliases, ...entry.aliases], (value) => value)
-		};
-	}
-	return result;
-}
-function mergeUniqueByKey(payload) {
-	const result = [...payload.current];
-	const byKey = /* @__PURE__ */ new Map();
-	for (const [index, entry] of result.entries()) byKey.set(String(entry[payload.key]), index);
-	for (const entry of payload.incoming) {
-		const keyValue = String(entry[payload.key]);
-		const existingIndex = byKey.get(keyValue);
-		if (existingIndex === void 0) {
-			byKey.set(keyValue, result.length);
-			result.push(entry);
-			continue;
-		}
-		const existing = result[existingIndex];
-		if (!deepEqual$1(existing, entry)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
-			key: keyValue,
-			key_field: String(payload.key)
-		} });
-	}
-	return result;
-}
-function mergeAppendUnique(current, incoming) {
-	const result = [...current];
-	for (const entry of incoming) {
-		if (result.some((candidate) => deepEqual$1(candidate, entry))) continue;
-		result.push(entry);
-	}
-	return result;
-}
-function mergePacketContextOnly(payload) {
-	const next = cloneState(payload.state);
-	const current = next.context;
-	const incoming = payload.packet.context;
-	const keyStrategy = Object.keys(current.key_strategy).length === 0 ? incoming.key_strategy : deepEqual$1(current.key_strategy, incoming.key_strategy) ? current.key_strategy : (() => {
-		throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: { key_field: "key_strategy" } });
-	})();
-	next.context = {
-		glossary: mergeGlossary({
-			current: current.glossary,
-			incoming: incoming.glossary,
-			errors: payload.errors
-		}),
-		key_strategy: keyStrategy,
-		target_system: mergeAppendUnique(current.target_system, incoming.target_system),
-		as_built: mergeAppendUnique(current.as_built, incoming.as_built),
-		claims: mergeUniqueByKey({
-			current: current.claims,
-			incoming: incoming.claims,
-			key: "claim_key",
-			errors: payload.errors
-		}),
-		contracts: mergeUniqueByKey({
-			current: current.contracts,
-			incoming: incoming.contracts,
-			key: "contract_key",
-			errors: payload.errors
-		}),
-		data_domains: mergeUniqueByKey({
-			current: current.data_domains,
-			incoming: incoming.data_domains,
-			key: "data_domain_key",
-			errors: payload.errors
-		}),
-		quality_attributes: mergeUniqueByKey({
-			current: current.quality_attributes,
-			incoming: incoming.quality_attributes,
-			key: "quality_attribute_key",
-			errors: payload.errors
-		}),
-		policy_decisions: mergeUniqueByKey({
-			current: current.policy_decisions,
-			incoming: incoming.policy_decisions,
-			key: "policy_decision_key",
-			errors: payload.errors
-		})
-	};
-	return next;
-}
-function toStateItem(item) {
-	return {
-		...item,
-		reverse_dependency_keys: [],
-		open_todo_ids: [],
-		needs_attention: false,
-		attention_reason_codes: [],
-		attention_reasons: [],
-		ready_for_next_step: false
-	};
-}
-function validateReferentialIntegrity(payload) {
-	const itemKeys = new Set(payload.state.items.map((item) => item.item_key));
-	const claimKeys = new Set(payload.state.context.claims.map((claim) => claim.claim_key));
-	const contractKeys = new Set(payload.state.context.contracts.map((contract) => contract.contract_key));
-	const dataDomainKeys = new Set(payload.state.context.data_domains.map((dataDomain) => dataDomain.data_domain_key));
-	const qualityAttributeKeys = new Set(payload.state.context.quality_attributes.map((qualityAttribute) => qualityAttribute.quality_attribute_key));
-	const policyDecisionKeys = new Set(payload.state.context.policy_decisions.map((policyDecision) => policyDecision.policy_decision_key));
-	for (const item of payload.state.items) {
-		for (const dependencyKey of item.depends_on_keys) if (!itemKeys.has(dependencyKey) || dependencyKey === item.item_key) throw payload.errors.create("BE_DEPENDENCY_NOT_FOUND", void 0, { details: {
-			item_key: item.item_key,
-			dependency_key: dependencyKey
-		} });
-		for (const claimKey of item.claim_keys) if (!claimKeys.has(claimKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
-			item_key: item.item_key,
-			claim_key: claimKey
-		} });
-		for (const contractKey of item.contract_keys) if (!contractKeys.has(contractKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
-			item_key: item.item_key,
-			contract_key: contractKey
-		} });
-		for (const dataDomainKey of item.data_domain_keys) if (!dataDomainKeys.has(dataDomainKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
-			item_key: item.item_key,
-			data_domain_key: dataDomainKey
-		} });
-		for (const qualityAttributeKey of item.quality_attribute_keys) if (!qualityAttributeKeys.has(qualityAttributeKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
-			item_key: item.item_key,
-			quality_attribute_key: qualityAttributeKey
-		} });
-		for (const policyDecisionKey of item.policy_decision_keys) if (!policyDecisionKeys.has(policyDecisionKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
-			item_key: item.item_key,
-			policy_decision_key: policyDecisionKey
-		} });
-	}
-	for (const qualityAttribute of payload.state.context.quality_attributes) for (const itemKey of qualityAttribute.applies_to_item_keys) if (!itemKeys.has(itemKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
-		quality_attribute_key: qualityAttribute.quality_attribute_key,
-		item_key: itemKey
-	} });
-	for (const policyDecision of payload.state.context.policy_decisions) for (const itemKey of policyDecision.related_item_keys) if (!itemKeys.has(itemKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
-		policy_decision_key: policyDecision.policy_decision_key,
-		item_key: itemKey
-	} });
-}
-function replaceFields(target, fields) {
-	Object.assign(target, fields);
-}
-function appendUniqueValues(target, field, values) {
-	const current = target[field];
-	if (!Array.isArray(current)) return;
-	target[field] = dedupeStable([...current, ...values], (value) => String(value));
-}
-function removeValues(target, field, values) {
-	const current = target[field];
-	if (!Array.isArray(current)) return;
-	const valueSet = new Set(values);
-	target[field] = current.filter((value) => !valueSet.has(String(value)));
-}
-function removeTodosFromState(payload) {
-	const next = cloneState(payload.state);
-	const todoIds = new Set(payload.todoIds);
-	const ownedTodoIds = new Set(next.todos.filter((todo) => todo.item_key === payload.itemKey).map((todo) => todo.todo_id));
-	for (const todoId of todoIds) if (!ownedTodoIds.has(todoId)) throw payload.errors.create("BE_TODO_NOT_FOUND", void 0, { details: {
-		item_key: payload.itemKey,
-		todo_id: todoId
-	} });
-	next.todos = next.todos.filter((todo) => !todoIds.has(todo.todo_id));
-	return next;
-}
-function cleanupRemovedItemReferences(state, removedItemKeys) {
-	const next = cloneState(state);
-	next.items = next.items.filter((item) => !removedItemKeys.has(item.item_key)).map((item) => ({
-		...item,
-		depends_on_keys: item.depends_on_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
-	}));
-	next.todos = next.todos.filter((todo) => !removedItemKeys.has(todo.item_key));
-	next.context.quality_attributes = next.context.quality_attributes.map((qualityAttribute) => ({
-		...qualityAttribute,
-		applies_to_item_keys: qualityAttribute.applies_to_item_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
-	}));
-	next.context.policy_decisions = next.context.policy_decisions.map((policyDecision) => ({
-		...policyDecision,
-		related_item_keys: policyDecision.related_item_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
-	}));
-	return next;
-}
-function sortItems(items) {
-	return [...items].sort((left, right) => left.item_key.localeCompare(right.item_key));
-}
-function sortTodos(todos) {
-	return [...todos].sort((left, right) => left.todo_id.localeCompare(right.todo_id));
-}
-function toAttentionReason(todo, code) {
-	if (code === "dependency_changed") {
-		const relatedItemKey = todo.related_item_keys[0];
-		return relatedItemKey ? `нужно проверить изменение зависимости ${relatedItemKey}` : "нужно проверить изменение зависимости";
-	}
-	if (code === "source_changed") {
-		const relatedSource = todo.related_sources[0];
-		return relatedSource ? `нужно проверить изменение источника ${relatedSource.source_label}` : "нужно проверить изменение источника";
-	}
-	return "нужно проверить изменение контекста";
-}
-function applyPacketReplay(payload) {
-	const merged = mergePacketContextOnly(payload);
-	const existingKeys = new Set(merged.items.map((item) => item.item_key));
-	const nextItems = [...merged.items];
-	for (const item of payload.packet.items) {
-		if (existingKeys.has(item.item_key)) throw payload.errors.create("BE_PACKET_ITEM_ALREADY_EXISTS", void 0, { details: { item_key: item.item_key } });
-		existingKeys.add(item.item_key);
-		nextItems.push(toStateItem(item));
-	}
-	const next = {
-		...merged,
-		items: nextItems
-	};
-	validateReferentialIntegrity({
-		state: next,
-		errors: payload.errors
-	});
-	return next;
-}
-function applyPatchReplay(payload) {
-	let next = cloneState(payload.state);
-	const removedItemKeys = /* @__PURE__ */ new Set();
-	for (const operation of payload.patch.operations) {
-		const targetItem = next.items.find((item) => item.item_key === operation.item_key);
-		if (!targetItem) throw payload.errors.create("BE_PATCH_TARGET_NOT_FOUND", void 0, { details: { item_key: operation.item_key } });
-		switch (operation.action) {
-			case "replace_fields":
-				replaceFields(targetItem, operation.fields);
-				break;
-			case "append_unique":
-				appendUniqueValues(targetItem, operation.field, operation.values);
-				break;
-			case "remove_values":
-				removeValues(targetItem, operation.field, operation.values);
-				break;
-			case "remove_todo":
-				next = removeTodosFromState({
-					state: next,
-					itemKey: operation.item_key,
-					todoIds: operation.todo_ids,
-					errors: payload.errors
-				});
-				break;
-			case "remove_item":
-				removedItemKeys.add(operation.item_key);
-				break;
-			default: {
-				const exhaustiveCheck = operation;
-				throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { operation: exhaustiveCheck } });
-			}
-		}
-	}
-	if (removedItemKeys.size > 0) next = cleanupRemovedItemReferences(next, removedItemKeys);
-	validateReferentialIntegrity({
-		state: next,
-		errors: payload.errors
-	});
-	return next;
-}
-function validateSourceRegistryReferences(payload) {
-	const ensureSourceExists = (sourceId, details) => {
-		if (payload.availableSourceIds.has(sourceId)) return;
-		throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
-			...details,
-			source_id: sourceId,
-			reason: "Canonical backlog references source_id that is missing from sources.json."
-		} });
-	};
-	for (const item of payload.state.items) {
-		for (const sourceId of item.origin_source_ids) ensureSourceExists(sourceId, {
-			item_key: item.item_key,
-			field: "origin_source_ids"
-		});
-		for (const sourceId of item.specification_source_ids) ensureSourceExists(sourceId, {
-			item_key: item.item_key,
-			field: "specification_source_ids"
-		});
-		for (const sourceId of item.plan_source_ids) ensureSourceExists(sourceId, {
-			item_key: item.item_key,
-			field: "plan_source_ids"
-		});
-		for (const sourceId of item.implementation_source_ids) ensureSourceExists(sourceId, {
-			item_key: item.item_key,
-			field: "implementation_source_ids"
-		});
-		for (const sourceId of item.test_source_ids) ensureSourceExists(sourceId, {
-			item_key: item.item_key,
-			field: "test_source_ids"
-		});
-	}
-	for (const claim of payload.state.context.claims) for (const sourceId of claim.source_ids) ensureSourceExists(sourceId, {
-		claim_key: claim.claim_key,
-		field: "source_ids"
-	});
-	for (const qualityAttribute of payload.state.context.quality_attributes) for (const sourceId of qualityAttribute.source_ids) ensureSourceExists(sourceId, {
-		quality_attribute_key: qualityAttribute.quality_attribute_key,
-		field: "source_ids"
-	});
-	for (const policyDecision of payload.state.context.policy_decisions) for (const sourceId of policyDecision.source_ids) ensureSourceExists(sourceId, {
-		policy_decision_key: policyDecision.policy_decision_key,
-		field: "source_ids"
-	});
-}
-function recomputeDerivedState(payload) {
-	const next = cloneState(payload.state);
-	const reverseDependencies = /* @__PURE__ */ new Map();
-	for (const item of next.items) reverseDependencies.set(item.item_key, []);
-	for (const item of next.items) for (const dependencyKey of item.depends_on_keys) {
-		const dependents = reverseDependencies.get(dependencyKey);
-		if (dependents) dependents.push(item.item_key);
-	}
-	const todoIdsByItem = /* @__PURE__ */ new Map();
-	for (const todo of sortTodos(next.todos)) {
-		const ownedTodoIds = todoIdsByItem.get(todo.item_key) ?? [];
-		ownedTodoIds.push(todo.todo_id);
-		todoIdsByItem.set(todo.item_key, ownedTodoIds);
-	}
-	const stageRank = {
-		defined: 0,
-		specified: 1,
-		planned: 2,
-		implemented: 3
-	};
-	next.items = sortItems(next.items).map((item) => {
-		const itemTodos = next.todos.filter((todo) => todo.item_key === item.item_key);
-		const attentionReasonCodes = [];
-		const attentionReasons = [];
-		for (const todoType of [
-			"review_source_change",
-			"review_dependency_change",
-			"review_context_change"
-		]) {
-			const todo = itemTodos.find((candidate) => candidate.type === todoType);
-			if (!todo) continue;
-			const code = DERIVED_TODO_TYPES[todoType];
-			attentionReasonCodes.push(code);
-			attentionReasons.push(toAttentionReason(todo, code));
-		}
-		if (item.gaps.length > 0) {
-			attentionReasonCodes.push("gaps");
-			attentionReasons.push("Есть gap: задача заблокирована до уточнения входных данных.");
-		}
-		const dependencyReady = item.depends_on_keys.every((dependencyKey) => {
-			const dependency = next.items.find((candidate) => candidate.item_key === dependencyKey);
-			if (!dependency) return false;
-			return dependency.gaps.length === 0 && (todoIdsByItem.get(dependency.item_key)?.length ?? 0) === 0 && stageRank[dependency.delivery_state] >= stageRank[item.delivery_state];
-		});
-		return {
-			...item,
-			reverse_dependency_keys: [...reverseDependencies.get(item.item_key) ?? []].sort((left, right) => left.localeCompare(right)),
-			open_todo_ids: [...todoIdsByItem.get(item.item_key) ?? []],
-			needs_attention: attentionReasonCodes.length > 0,
-			attention_reason_codes: attentionReasonCodes,
-			attention_reasons: attentionReasons,
-			ready_for_next_step: item.delivery_state !== "implemented" && item.gaps.length === 0 && (todoIdsByItem.get(item.item_key)?.length ?? 0) === 0 && dependencyReady
-		};
-	});
-	next.todos = sortTodos(next.todos).filter((todo) => next.items.some((item) => item.item_key === todo.item_key));
-	return payload.schemas.parseStateFile(next);
-}
-//#endregion
 //#region src/runtime/rebuild-state.ts
 function deepEqual(left, right) {
 	return JSON.stringify(left) === JSON.stringify(right);
@@ -8343,8 +9772,18 @@ function createFileBackedStateCoordinator() {
 				rebuilt: true
 			};
 		},
-		ensureMutationState(payload) {
-			return payload.modules.artifacts.readState(payload.backlogRoot);
+		async ensureMutationState(payload) {
+			const currentState = await payload.modules.artifacts.readState(payload.backlogRoot);
+			const rebuiltState = await rebuildStateFromCanonicalArtifacts({
+				backlogRoot: payload.backlogRoot,
+				dependencies: payload.dependencies,
+				artifacts: payload.modules.artifacts,
+				schemas: payload.modules.schemas,
+				errors: payload.modules.errors,
+				currentState
+			});
+			if (areStatesEquivalent(currentState, rebuiltState)) return currentState;
+			return rebuiltState;
 		},
 		rebuildState(payload) {
 			return rebuildStateFromCanonicalArtifacts({
@@ -8359,6 +9798,9 @@ function createFileBackedStateCoordinator() {
 }
 //#endregion
 //#region src/runtime/create-runtime.ts
+function isErrnoException(error) {
+	return error instanceof Error && "code" in error;
+}
 function createUnavailableModuleProxy(moduleName, errorModule) {
 	return new Proxy({}, { get(_target, propertyKey) {
 		return () => {
@@ -8396,7 +9838,12 @@ function buildRuntimeModules(dependencies, overrides = {}) {
 		schemas,
 		errors,
 		hooks: dependencies.hooks,
-		core: overrides?.core ?? createUnavailableModuleProxy("core", errors)
+		core: overrides?.core ?? createCoreModule({
+			errors,
+			schemas,
+			clock: dependencies.clock,
+			uuid: dependencies.uuid
+		})
 	};
 }
 function createRuntime(options = {}) {
@@ -8428,6 +9875,67 @@ function createRuntime(options = {}) {
 				host: {
 					resolveCliPath(inputPath) {
 						return dependencies.path.resolve(cwd, inputPath);
+					},
+					async readCliTextFile(inputPath) {
+						const absolutePath = dependencies.path.resolve(cwd, inputPath);
+						try {
+							await ensureNoSymlinkAncestors({
+								fs: dependencies.fs,
+								path: dependencies.path,
+								errors: modules.errors,
+								targetPath: absolutePath,
+								errorCode: "BE_INPUT_FILE_NOT_FOUND"
+							});
+						} catch (error) {
+							if (modules.errors.isBacklogError(error)) throw error;
+							throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, {
+								details: { path: absolutePath },
+								cause: error
+							});
+						}
+						let entry;
+						try {
+							entry = await dependencies.fs.lstat(absolutePath);
+						} catch (error) {
+							if (isErrnoException(error) && error.code === "ENOENT") throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, {
+								details: { path: absolutePath },
+								cause: error
+							});
+							throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, {
+								details: {
+									path: absolutePath,
+									reason: "lstat_failed"
+								},
+								cause: error
+							});
+						}
+						if (entry.isSymbolicLink) throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, { details: {
+							path: absolutePath,
+							reason: "symbolic_link"
+						} });
+						if (!entry.isFile) throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, { details: {
+							path: absolutePath,
+							reason: "not_regular_file"
+						} });
+						try {
+							return {
+								absolutePath,
+								canonicalBasename: dependencies.path.basename(absolutePath),
+								rawContent: await dependencies.fs.readText(absolutePath)
+							};
+						} catch (error) {
+							if (isErrnoException(error) && error.code === "ENOENT") throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, {
+								details: { path: absolutePath },
+								cause: error
+							});
+							throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, {
+								details: {
+									path: absolutePath,
+									reason: "read_failed"
+								},
+								cause: error
+							});
+						}
 					},
 					nowIsoUtc() {
 						return dependencies.clock.nowIsoUtc();

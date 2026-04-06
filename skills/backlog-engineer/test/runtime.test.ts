@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { cp, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { cp, mkdtemp, mkdir, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -8,15 +8,70 @@ import { BacklogError, type ErrorModule } from '../src/errors/index.ts';
 import { createNoOpRegistry } from '../src/hooks/index.ts';
 import { RootMarkerFileSchema, StateFileSchema } from '../src/schemas/index.ts';
 import {
+  createNodePathPort,
   createNodeRuntimeDependencies,
   createRuntime,
   findBacklogRoot,
 } from '../src/runtime/index.ts';
+import { createInMemoryFileSystemPort } from './support/in-memory-fs.ts';
 
 const FIXTURES_DIR = path.join(path.dirname(new URL(import.meta.url).pathname), 'fixtures');
 
 async function createTempDir(): Promise<string> {
   return mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-runtime-'));
+}
+
+async function buildInMemorySeedFromFixture(payload: {
+  fixtureDirName: string;
+  targetRoot: string;
+}): Promise<
+  Array<
+    | { path: string; type: 'directory' }
+    | {
+        path: string;
+        type: 'file';
+        content: string;
+      }
+  >
+> {
+  const fixtureRoot = path.join(FIXTURES_DIR, 'backlogs', payload.fixtureDirName);
+  const seed: Array<
+    | { path: string; type: 'directory' }
+    | {
+        path: string;
+        type: 'file';
+        content: string;
+      }
+  > = [{ path: payload.targetRoot, type: 'directory' }];
+
+  async function walkDirectory(sourceDir: string, targetDir: string): Promise<void> {
+    const entries = await readdir(sourceDir, {
+      withFileTypes: true,
+    });
+
+    for (const entry of entries) {
+      const sourcePath = path.join(sourceDir, entry.name);
+      const targetPath = path.posix.join(targetDir, entry.name);
+
+      if (entry.isDirectory()) {
+        seed.push({
+          path: targetPath,
+          type: 'directory',
+        });
+        await walkDirectory(sourcePath, targetPath);
+        continue;
+      }
+
+      seed.push({
+        path: targetPath,
+        type: 'file',
+        content: await readFile(sourcePath, 'utf8'),
+      });
+    }
+  }
+
+  await walkDirectory(fixtureRoot, payload.targetRoot);
+  return seed;
 }
 
 async function writeRootMarker(root: string): Promise<void> {
@@ -470,6 +525,110 @@ void test('default ensureQueryState fails when canonical backlog references sour
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }
+});
+
+void test('ensureMutationState with in-memory adapters returns current state for a valid backlog snapshot', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = await buildInMemorySeedFromFixture({
+    fixtureDirName: 'single-branch-backlog',
+    targetRoot: backlogRoot,
+  });
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('packet', backlogRoot);
+  const state = await context.ensureMutationState();
+
+  assert.ok(state.items.some((item) => item.item_key === 'auth-core'));
+  assert.equal(state.items.length, 3);
+});
+
+void test('ensureMutationState with in-memory adapters returns rebuilt canonical state when state.json is tampered', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = await buildInMemorySeedFromFixture({
+    fixtureDirName: 'single-branch-backlog',
+    targetRoot: backlogRoot,
+  });
+  const tamperedSeed = seed.map((entry) => {
+    if (entry.type !== 'file' || entry.path !== `${backlogRoot}/.backlog/state.json`) {
+      return entry;
+    }
+
+    return {
+      ...entry,
+      content: entry.content.replace('Implement core session validation', 'TAMPERED TITLE'),
+    };
+  });
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed: tamperedSeed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('patch-item', backlogRoot);
+  const state = await context.ensureMutationState();
+
+  assert.equal(
+    state.items.find((item) => item.item_key === 'auth-core')?.title,
+    'Implement core session validation',
+  );
+});
+
+void test('ensureMutationState with in-memory adapters fails fast on invalid canonical packet artifacts', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = await buildInMemorySeedFromFixture({
+    fixtureDirName: 'invalid-canonical-packet-backlog',
+    targetRoot: backlogRoot,
+  });
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('packet', backlogRoot);
+  await assert.rejects(
+    () => context.ensureMutationState(),
+    (error: unknown) => error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
+  );
+});
+
+void test('ensureMutationState with in-memory adapters fails fast on missing canonical patch artifacts', async () => {
+  const backlogRoot = '/repo/backlog';
+  const seed = await buildInMemorySeedFromFixture({
+    fixtureDirName: 'missing-canonical-patch-backlog',
+    targetRoot: backlogRoot,
+  });
+  const runtime = createRuntime({
+    dependencies: {
+      fs: createInMemoryFileSystemPort({
+        cwd: backlogRoot,
+        seed,
+      }),
+      path: createNodePathPort(),
+    },
+  });
+
+  const context = await runtime.createContext('patch-item', backlogRoot);
+  await assert.rejects(
+    () => context.ensureMutationState(),
+    (error: unknown) => error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
+  );
 });
 
 void test('runtime uses injected ErrorModule for root, unavailable-module, and default coordinator failures', async () => {

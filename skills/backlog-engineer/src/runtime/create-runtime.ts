@@ -5,7 +5,8 @@ import {
   createArtifactsModule,
   type ArtifactsModule,
 } from '../artifacts/index.ts';
-import type { CoreModule } from '../core/index.ts';
+import { ensureNoSymlinkAncestors } from '../artifacts/store-helpers.ts';
+import { createCoreModule, type CoreModule } from '../core/index.ts';
 import type { ReportsModule } from '../reports/index.ts';
 import { createSourcesModule, type SourcesModule } from '../sources/index.ts';
 import { createTemplatesModule, type TemplatesModule } from '../templates/index.ts';
@@ -33,6 +34,10 @@ type CreateRuntimeOptions = {
   }>;
   stateCoordinator?: RuntimeStateCoordinator;
 };
+
+function isErrnoException(error: unknown): error is NodeJS.ErrnoException {
+  return error instanceof Error && 'code' in error;
+}
 
 function createUnavailableModuleProxy<T extends object>(
   moduleName: string,
@@ -88,7 +93,14 @@ function buildRuntimeModules(
     schemas,
     errors,
     hooks: dependencies.hooks,
-    core: overrides?.core ?? createUnavailableModuleProxy<CoreModule>('core', errors),
+    core:
+      overrides?.core ??
+      createCoreModule({
+        errors,
+        schemas,
+        clock: dependencies.clock,
+        uuid: dependencies.uuid,
+      }),
   };
 }
 
@@ -133,6 +145,95 @@ export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule
         host: {
           resolveCliPath(inputPath) {
             return dependencies.path.resolve(cwd, inputPath);
+          },
+          async readCliTextFile(inputPath) {
+            const absolutePath = dependencies.path.resolve(cwd, inputPath);
+
+            try {
+              await ensureNoSymlinkAncestors({
+                fs: dependencies.fs,
+                path: dependencies.path,
+                errors: modules.errors,
+                targetPath: absolutePath,
+                errorCode: 'BE_INPUT_FILE_NOT_FOUND',
+              });
+            } catch (error) {
+              if (modules.errors.isBacklogError(error)) {
+                throw error;
+              }
+
+              throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
+                details: {
+                  path: absolutePath,
+                },
+                cause: error,
+              });
+            }
+
+            let entry: Awaited<ReturnType<typeof dependencies.fs.lstat>>;
+            try {
+              entry = await dependencies.fs.lstat(absolutePath);
+            } catch (error) {
+              if (isErrnoException(error) && error.code === 'ENOENT') {
+                throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
+                  details: {
+                    path: absolutePath,
+                  },
+                  cause: error,
+                });
+              }
+
+              throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
+                details: {
+                  path: absolutePath,
+                  reason: 'lstat_failed',
+                },
+                cause: error,
+              });
+            }
+
+            if (entry.isSymbolicLink) {
+              throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
+                details: {
+                  path: absolutePath,
+                  reason: 'symbolic_link',
+                },
+              });
+            }
+
+            if (!entry.isFile) {
+              throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
+                details: {
+                  path: absolutePath,
+                  reason: 'not_regular_file',
+                },
+              });
+            }
+
+            try {
+              return {
+                absolutePath,
+                canonicalBasename: dependencies.path.basename(absolutePath),
+                rawContent: await dependencies.fs.readText(absolutePath),
+              };
+            } catch (error) {
+              if (isErrnoException(error) && error.code === 'ENOENT') {
+                throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
+                  details: {
+                    path: absolutePath,
+                  },
+                  cause: error,
+                });
+              }
+
+              throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
+                details: {
+                  path: absolutePath,
+                  reason: 'read_failed',
+                },
+                cause: error,
+              });
+            }
           },
           nowIsoUtc() {
             return dependencies.clock.nowIsoUtc();

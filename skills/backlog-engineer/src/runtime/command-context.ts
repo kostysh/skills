@@ -10,6 +10,11 @@ import type { AbsoluteFsPath, BacklogRootPath } from './shared.ts';
 
 export interface CommandHost {
   resolveCliPath(path: CliPathInput): AbsoluteFsPath;
+  readCliTextFile(path: CliPathInput): Promise<{
+    absolutePath: AbsoluteFsPath;
+    canonicalBasename: string;
+    rawContent: string;
+  }>;
   nowIsoUtc(): string;
   createUuid(): string;
 }
