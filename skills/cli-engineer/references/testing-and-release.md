@@ -1,10 +1,21 @@
 # CLI Testing And Release
 
+## Language And Runner Baseline
+
+For this skill, runtime code and tests are both TypeScript.
+
+- execute tests with Node's built-in runner and native type stripping
+- representative command: `node --experimental-strip-types --test test/*.test.ts`
+- do not use the `tsx` runtime to execute tests
+- keep test entrypoints and helpers compatible with direct Node execution
+
 ## Test Pyramid
 
 Treat CLI quality as more than parser correctness.
 
 ### Unit tests
+
+Unit tests are mandatory.
 
 Test:
 
@@ -58,7 +69,7 @@ Good fit:
 - internal tools
 - repositories already committed to Node-native execution
 
-This is the default test baseline for this skill unless a repo or framework requires something else.
+This is the required test baseline for this skill.
 
 Use it to cover:
 
@@ -69,20 +80,14 @@ Use it to cover:
 
 Use built-in mocking only where it meaningfully simplifies isolated tests. Keep published-command verification black-box and process-level.
 
-### Vitest
-
-Prefer when:
-
-- the repo already uses Vitest
-- you need stronger TS ergonomics, watch mode, or richer mocks
-- the CLI includes UI-adjacent logic or shared code with frontend packages
+Do not replace this with `tsx`-driven test execution. If the repo needs TypeScript test execution without precompilation, use Node's type-stripping path directly.
 
 ### Framework-specific helpers
 
 Use them only when they materially reduce boilerplate.
 
 - `@oclif/test` is useful for oclif command execution
-- framework helpers do not replace process-level tests for published artifacts
+- framework helpers do not replace `node:test` as the primary runner or process-level tests for published artifacts
 
 ## TUI And Interactive Testing
 
@@ -100,6 +105,32 @@ Verify:
 - password prompts do not echo sensitive input
 
 If the interactive framework offers test helpers, use them, but still keep at least one process-level smoke test for the real entrypoint.
+
+## Quality Gate Baseline
+
+If the target CLI repository does not already provide an equivalent gate, add one.
+
+Minimum required quality checks before a CLI is considered ready:
+
+1. typecheck
+2. format check
+3. lint
+4. unit tests
+5. integration tests
+6. contract tests
+7. build
+8. artifact smoke test
+
+Repository scripts should expose these checks clearly. Typical script names are:
+
+- `typecheck`
+- `format`
+- `format:check`
+- `lint`
+- `lint:fix`
+- `test`
+
+The exact formatter or linter may vary by repo, but the gate itself should not be omitted just because the repository started without one.
 
 ## Release Baseline
 

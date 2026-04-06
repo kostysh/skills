@@ -1,17 +1,18 @@
 ---
 name: cli-engineer
 description: |
-  Standardize and build production-grade command-line tools in Node.js and TypeScript.
+  Standardize and build production-grade TypeScript command-line tools on Node.js.
   Use when designing or reviewing CLI/TUI utilities, choosing frameworks, structuring
-  packages, defining help/output/error contracts, testing command behavior, handling
-  prompts or terminal UI, and packaging or releasing command-line apps.
+  packages, enforcing modular architecture, defining help/output/error contracts,
+  testing command behavior, setting up quality gates, handling prompts or terminal
+  UI, and packaging or releasing command-line apps.
 ---
 
 # CLI Engineer
 
 ## Scope
 
-Applies to Node.js and TypeScript command-line software, from tiny single-command tools to plugin-capable CLIs and interactive TUI applications.
+Applies to TypeScript-only Node.js command-line software, from tiny single-command tools to plugin-capable CLIs and interactive TUI applications.
 
 If the repository already has established CLI conventions, follow them unless they are the source of the problem.
 
@@ -20,24 +21,28 @@ If the repository already has established CLI conventions, follow them unless th
 Within this repository's convention, when the target repository does not already enforce a different choice:
 
 - prefer Vite as the default bundler for TypeScript CLI builds
-- prefer `node:test` as the default test runner for CLI packages
+- use `node:test` as the test runner for CLI packages
+- write CLI code and tests in TypeScript
+- execute TypeScript tests with Node's built-in runner and native type stripping, for example `node --experimental-strip-types --test test/*.test.ts`
+- do not use the `tsx` runtime for CLI execution or test execution
 - configure Vite for a Node CLI entrypoint, preserved executable startup behavior, and artifact smoke tests after build
 - treat the Vite choice as a repository standard, not as a claim that the broader CLI ecosystem has one universal bundler default
 
-Do not force either tool when framework-specific or repo-specific constraints clearly require something else.
+Do not force Vite when bundling is unnecessary or repo-specific constraints clearly require something else. The `node:test` plus native type-stripping baseline remains the test execution standard for this skill.
 
 ## Interop (Priority)
 
 - This skill owns CLI architecture, command model, output/error contracts, prompts/TUI behavior, packaging, and CLI-specific DX.
 - Defer low-level Node runtime behavior, module-resolution problems, and shutdown/resource issues to `node-engineer`.
 - Defer TypeScript type-system design, advanced generics, and tsconfig policy to `typescript-engineer`.
-- Defer broad test policy, runner mechanics, and CI test gating to `typescript-test-engineer`.
+- Defer broad test policy, runner mechanics, and CI test gating to `typescript-test-engineer`, except for the CLI-specific requirements in this skill around mandatory unit coverage and Node-native TypeScript test execution.
 - Defer deep threat modeling, secrets review, and security sign-off to `security-reviewer`.
 - If rules conflict, this skill owns the CLI contract; the other skills own their domain specialties.
 
 ## Non-negotiables
 
 - Keep the CLI layer thin. Parsing, help, TTY detection, formatting, and exit codes belong in CLI code; business rules do not.
+- Design the utility as modular layers and modules with explicit boundaries so commands, use cases, formatters, and adapters stay independently testable.
 - Every interactive flow must have a non-interactive path through flags, args, stdin, config, or files.
 - Use `stdout` for primary output and machine-readable output; use `stderr` for diagnostics, prompts, and errors.
 - Treat `--help`, output shape, flag names, and exit codes as public API.
@@ -46,6 +51,10 @@ Do not force either tool when framework-specific or repo-specific constraints cl
 - Detect TTY before prompts, spinners, colors, or full-screen UI; respect CI and non-interactive shells.
 - Keep CLI evolution additive where possible: prefer explicit aliases, avoid catch-all subcommands, and do not rely on ambiguous prefix abbreviations.
 - Never require secrets on the command line when stdin, env, keychain, or config files are safer.
+- Unit tests are mandatory. Do not treat integration or smoke coverage as a substitute for unit coverage of core behavior.
+- Use TypeScript for both utility code and tests.
+- Run tests with Node's test runner and native type stripping; do not use the `tsx` runtime. A representative command is `node --experimental-strip-types --test test/*.test.ts`.
+- If the target repository does not already provide an equivalent quality gate, add and enforce one for at least typecheck, format, and lint before considering the CLI ready.
 - Prefer the current Active LTS Node baseline for new CLI work, but verify the current release state before locking version advice into code or docs.
 
 ## When to Use This Skill
@@ -57,6 +66,7 @@ Use when:
 - Standardizing help text, errors, stdout/stderr behavior, `--json`, conditional `--plain`, and exit codes
 - Building interactive prompts or a terminal UI while preserving automation-safe behavior
 - Setting up CLI testing, release automation, packaging, npm publishing, provenance, or optional standalone distribution
+- Requiring modular CLI architecture for better testability or adding a missing repo quality gate
 - Standardizing Vite-based CLI bundling and `node:test` process-level verification
 - Reviewing a CLI for UX, scripting composability, cross-platform behavior, or operational safety
 
@@ -86,10 +96,11 @@ Do NOT use for:
 1. Classify the CLI before choosing tools: tiny utility, standard multi-command CLI, plugin platform, or rich TUI.
 2. Decide the automation contract first: human-only, human-first but scriptable, or machine-first with human affordances.
 3. Pick the thinnest framework that satisfies the real requirements.
-4. Separate CLI/adapters from app/domain logic and define config precedence, output modes, and error codes.
+4. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
 5. Design non-interactive paths before prompts or TUI polish.
-6. Build tests at three levels: behavior, process execution, and contract surface, with `node:test` as the default baseline unless the repo already dictates otherwise.
-7. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, and provenance where supported.
+6. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
+7. Ensure the repo has a quality gate for typecheck, format, and lint if one is not already established.
+8. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, and provenance where supported.
 
 ## High-signal Triggers
 
@@ -99,6 +110,7 @@ Do NOT use for:
 - **Need bundling guidance or executable artifact rules**: read `references/architecture-and-layout.md` and `references/testing-and-release.md` for the Vite baseline.
 - **Need interactive flows**: read `references/ux-and-security.md` before adding prompts or Ink. TUI is never the only path.
 - **Need contract-safe testing or packaging**: read `references/testing-and-release.md` before finalizing command output or publish workflows.
+- **Need modular boundaries or mandatory quality gates**: read `references/architecture-and-layout.md` and `references/testing-and-release.md`.
 
 ## When You Need More Detail
 

@@ -11,6 +11,25 @@ Use this separation by default:
 
 Keep command handlers thin. A command should translate input into a use-case call, not implement the product logic itself.
 
+## Modularity And Testability
+
+Prefer modular boundaries even for small CLIs. The goal is not abstraction for its own sake; the goal is testability and replaceability.
+
+- keep parsing, orchestration, formatting, and side effects in separate modules
+- structure commands so they assemble inputs and delegate to app/use-case modules
+- keep domain rules and pure transformations isolated from process, filesystem, network, and terminal concerns
+- inject or wrap side-effectful dependencies such as filesystem access, subprocess execution, clocks, randomness, and HTTP clients
+- avoid command files that instantiate deep dependency graphs inline and then hide logic inside callbacks
+- if a module is hard to unit test without spawning the CLI, the boundary is probably in the wrong place
+
+Useful modular split inside a feature:
+
+- `cli/commands/*`: argument parsing and command wiring
+- `app/usecases/*`: command orchestration and workflow steps
+- `domain/*`: rules, invariants, pure decisions
+- `infra/*`: adapters for IO, HTTP, filesystem, subprocesses
+- `cli/output/*`: renderers and serializers for human and machine output
+
 ## Config Precedence
 
 Use deterministic precedence and document it:
@@ -163,8 +182,8 @@ The blueprints above use `dist/` as the common default example. The actual build
 
 For package-based CLI work:
 
-- source code lives in `src/`
-- tests live in `test/`
+- source code lives in `src/` as TypeScript
+- tests live in `test/` as TypeScript
 - build output defaults to `dist/`, but the final output directory should be agreed with the operator and may be `dist/`, `bin/`, or `scripts/` depending on repo conventions
 - `package.json#bin` points at the runtime entry inside the chosen output directory
 - tiny shell wrappers are acceptable, but do not bury real product logic in `bin/`
@@ -259,6 +278,7 @@ Apply the rest of the CLI contract around that baseline:
 ## Design Review Checklist
 
 - Does the CLI layer stay thin?
+- Are the module boundaries explicit enough that core behavior can be unit tested without spawning the full CLI?
 - Is config precedence deterministic?
 - Is the output contract explicit?
 - Is command grammar future-proof enough to evolve safely?
