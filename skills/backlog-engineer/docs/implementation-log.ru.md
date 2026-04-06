@@ -7,6 +7,7 @@
 - Одна завершённая запись соответствует одному завершённому work package.
 - Запись добавляется до коммита пакета и обновляется после внешнего ревью.
 - В логе фиксируются только факты и принятые решения, которые важны для следующих пакетов.
+- Любое решение или допущение за пределами текущей концепции, спецификаций и утверждённых контрактов фиксируется отдельной явной пометкой.
 - Лог не заменяет git history, а дополняет её инженерным контекстом.
 
 ## Формат записи
@@ -18,10 +19,38 @@
 - Коммит:
 - Что сделано:
 - Ключевые решения:
+- Допущения вне спецификации:
 - Проверки приёмки:
 - Внешнее ревью:
 - Следующий пакет:
 
 ## Записи
 
-Пока записей нет.
+### Work package `A` — `Structural bootstrap`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Коммит: `refactor(backlog-engineer): complete work package A structural bootstrap`
+- Что сделано:
+  - текущий scaffold разложен по модульной структуре `src/`
+  - `src/cli.ts` стал тонким entrypoint
+  - CLI registry и run-loop вынесены в `src/cli/`
+  - command scaffold разложен по `src/commands/*`
+  - создан file-level каркас модулей `runtime`, `core`, `artifacts`, `sources`, `templates`, `reports`, `schemas`, `errors`, `hooks`
+  - exit codes вынесены в `src/errors/exit-codes.ts`
+  - добавлен локальный `biome.json`, который сохраняет coverage по `src` и `test`, но точечно игнорирует intentionally broken JSON fixtures
+- Ключевые решения:
+  - package A не вводит новую business logic и не меняет поведение scaffold-команд
+  - file-level skeleton создан сразу полностью, чтобы следующие пакеты не начинались с неполного дерева `src/`
+  - ownership exit codes закреплён сразу в `errors`, чтобы не допустить drift process-level concerns в `commands`
+  - локальный `biome.json` выбран вместо shell-specific scripts, чтобы не делать workflow POSIX-specific и не урезать lint/format boundary до `*.test.mjs`
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `B — Schemas and errors`

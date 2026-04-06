@@ -1,0 +1,48 @@
+{
+  "$schema": "https://biomejs.dev/schemas/latest/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": [
+      "**",
+      "!node_modules",
+      "!scripts",
+      "!*.map",
+      "!.*",
+      "!test/fixtures",
+      "!test/fixtures/backlogs/broken-registry-backlog-invalid-applied/.backlog/applied.json",
+      "!test/fixtures/backlogs/broken-registry-backlog-invalid-sources/.backlog/sources.json",
+      "!test/fixtures/backlogs/corrupted-state-backlog/.backlog/state.json",
+      "!test/fixtures/backlogs/invalid-canonical-packet-backlog/packets",
+      "!test/fixtures/backlogs/invalid-canonical-patch-backlog/patches"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}
