@@ -51,6 +51,9 @@
 - С 2026-04-06 после получения финального `PASS` от внешнего review соответствующий review-агент сразу закрывается, чтобы не расходовать лимит подагентов на уже завершённые треды
 - С 2026-04-06 повторный `spec-conformance-reviewer` запускается только если изменения после последнего `PASS` могли затронуть фактическое соответствие спецификации; для test-only, type-only и аналогичных несемантических правок повторный spec review не нужен
 - С 2026-04-06 `tsx` не используется; TypeScript-код и TypeScript-тесты запускаются только через Node.js с `--experimental-strip-types` или через built artifact
+- С 2026-04-06 служебное общение с оператором остаётся максимально лаконичным; токены экономятся в коммуникации, а не в коде, тестах и процессных документах
+- С 2026-04-06 активный внешний review не прерывается без причины; при задержке сначала дожидаемся verdict или выясняем причину задержки
+- С 2026-04-06 отчёты внешнего review не сохраняются как обязательные артефакты, если согласованные проблемы устранены и финальный статус пакета — `PASS`
 - Для текущего work package `D` сохраняется ранее действовавший review-контур:
   - `code-reviewer`
   - `security-reviewer`
@@ -724,3 +727,72 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: `M — Destructive command`
+
+### Work package `M` — `Destructive command`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Начало работ: 2026-04-06 23:31:25 +02:00
+- Полное время закрытия: 00:00:00
+- Коммит: `c0383af` `fix(backlog-engineer): harden delete-backlog workflow`
+- Что сделано:
+  - `delete-backlog --confirm` реализован как реальная destructive-команда
+  - удаляются только штатные backlog-артефакты утилиты
+  - при посторонних entry команда завершается ошибкой без удаления
+  - empty backlog root prunes itself только после успешного cleanup managed entries
+  - добавлены command-level, CLI, runtime и artifacts tests для confirm/refusal paths
+- Ключевые решения:
+  - destructive path проверяет ownership backlog root по parsed root marker metadata перед удалением
+  - команда при запуске из backlog root или его поддиректории временно выходит в parent directory, чтобы корректно завершить процесс после удаления root
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `N — Full hardening pass`
+
+### Work package `N` — `Full hardening pass`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Начало работ: 2026-04-06 23:31:55 +02:00
+- Полное время закрытия: 00:16:24
+- Коммит: `79f31bd` `refactor(backlog-engineer): complete final hardening pass`
+- Что сделано:
+  - удалены stale scaffold remnants:
+    - `src/commands/placeholder.ts`
+    - export `createUnconfiguredStateCoordinator` из runtime surface
+  - `SKILL.md` синхронизирован с реальным состоянием runtime: CLI описан как fully implemented, без placeholder-only формулировок
+  - `runCli()` перестал брать cwd из нового node adapter; теперь default cwd всегда приходит из инжектированного runtime через `runtime.getProcessCwd()`
+  - runtime host/FS seam для cwd сделан явным:
+    - `RuntimeModule.getProcessCwd()`
+    - `CommandHost.getProcessCwd()`
+    - `CommandHost.chdir(...)`
+    - `FileSystemPort.chdir(...)`
+  - `delete-backlog` полностью отвязан от прямого `process.cwd()` / `process.chdir()` и использует только runtime host abstractions
+  - добавлены regression tests на:
+    - использование injected runtime cwd без `getCwd` override
+    - обновлённый `RuntimeModule` contract в mutation test doubles
+    - сохранение delete-backlog behavior через host cwd seam
+- Ключевые решения:
+  - повторный `spec-conformance-reviewer` после package-level `PASS` не запускался, потому что финальная дельта меняла только внутренний runtime seam и тесты, не меняя нормативное поведение и не добавляя новых spec bindings
+  - process cwd оставлен только за runtime dependencies/host, чтобы embedded callers и test runtimes не расходились с production path
+  - hardening-пакет не вводит новых feature surfaces и не меняет внешние DTO
+- Допущения вне спецификации:
+  - явный метод `RuntimeModule.getProcessCwd()` — это внутренний orchestration seam для сохранения консистентности между `runCli()` и инжектированным runtime; внешние command contracts и artifact semantics он не меняет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: нет, план имплементации закрыт

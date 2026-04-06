@@ -116,27 +116,3 @@ export function createFileBackedStateCoordinator(): RuntimeStateCoordinator {
     },
   };
 }
-
-export function createUnconfiguredStateCoordinator(
-  errorModule: ErrorModule,
-): RuntimeStateCoordinator {
-  const createUnconfiguredError = (operation: string) =>
-    errorModule.create('BE_INTERNAL_STATE_CORRUPT', undefined, {
-      details: {
-        operation,
-      },
-      hint: 'Continue with the runtime/artifacts implementation work packages before invoking state-dependent command semantics.',
-    });
-
-  return {
-    ensureQueryState() {
-      return Promise.reject(createUnconfiguredError('ensureQueryState'));
-    },
-    ensureMutationState() {
-      return Promise.reject(createUnconfiguredError('ensureMutationState'));
-    },
-    rebuildState() {
-      return Promise.reject(createUnconfiguredError('rebuildState'));
-    },
-  };
-}

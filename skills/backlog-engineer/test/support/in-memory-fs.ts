@@ -48,7 +48,7 @@ export function createInMemoryFileSystemPort(
   } = {},
 ): FileSystemPort {
   const posixPath = path.posix;
-  const cwd = options.cwd ?? '/workspace';
+  let currentWorkingDirectory = options.cwd ?? '/workspace';
   const entries = new Map<AbsoluteFsPath, Entry>();
   const faults = [...(options.faults ?? [])];
   let currentMtime = 1;
@@ -122,7 +122,7 @@ export function createInMemoryFileSystemPort(
   }
 
   ensureDirectory('/');
-  ensureDirectory(cwd);
+  ensureDirectory(currentWorkingDirectory);
 
   for (const seedEntry of options.seed ?? []) {
     const normalized = normalize(seedEntry.path);
@@ -268,7 +268,15 @@ export function createInMemoryFileSystemPort(
       return Promise.resolve(normalize(targetPath));
     },
     cwd() {
-      return cwd;
+      return currentWorkingDirectory;
+    },
+    chdir(targetPath) {
+      const normalized = normalize(targetPath);
+      const entry = requireEntry(normalized);
+      if (entry.kind !== 'directory') {
+        throw createFsError('ENOTDIR', normalized);
+      }
+      currentWorkingDirectory = normalized;
     },
   };
 }

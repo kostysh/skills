@@ -276,6 +276,9 @@ function createFixedBacklogRuntime(payload: {
   backlogRoot: string;
 }): RuntimeModule {
   return {
+    getProcessCwd() {
+      return payload.backlogRoot;
+    },
     createContext(command) {
       return payload.runtime.createContext(command, payload.backlogRoot);
     },

@@ -15,6 +15,8 @@ export interface CommandHost {
     canonicalBasename: string;
     rawContent: string;
   }>;
+  getProcessCwd(): AbsoluteFsPath;
+  chdir(path: AbsoluteFsPath): void;
   nowIsoUtc(): string;
   createUuid(): string;
 }

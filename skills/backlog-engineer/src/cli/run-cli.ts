@@ -18,6 +18,7 @@ import { createRuntime, type RuntimeModule } from '../runtime/index.ts';
 type RunCliDependencies = {
   findCommand?: (name: string) => AnyCommandDefinition | undefined;
   createRuntime?: () => RuntimeModule;
+  getCwd?: () => string;
 };
 
 function commandHelpRequested(args: string[]): boolean {
@@ -82,7 +83,13 @@ export async function runCli(
 
     const input = command.parseArgs(intent.args);
     const runtime = createRuntimeImpl();
-    const context = await runtime.createContext(command.name, process.cwd());
+    const commandCwd = dependencies.getCwd
+      ? dependencies.getCwd()
+      : runtime.getProcessCwd();
+    const context = await runtime.createContext(
+      command.name,
+      commandCwd,
+    );
     await context.hooks.beforeCommand?.({
       command: command.name,
       input,

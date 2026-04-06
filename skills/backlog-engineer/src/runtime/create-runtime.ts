@@ -96,6 +96,9 @@ export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule
   const stateCoordinator = options.stateCoordinator ?? createFileBackedStateCoordinator();
 
   return {
+    getProcessCwd() {
+      return dependencies.fs.cwd();
+    },
     async createContext(
       command: CommandName,
       cwd: AbsoluteFsPath,
@@ -220,6 +223,12 @@ export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule
                 cause: error,
               });
             }
+          },
+          getProcessCwd() {
+            return dependencies.fs.cwd();
+          },
+          chdir(targetPath) {
+            dependencies.fs.chdir(targetPath);
           },
           nowIsoUtc() {
             return dependencies.clock.nowIsoUtc();

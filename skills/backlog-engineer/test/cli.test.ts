@@ -779,6 +779,9 @@ void test('runCli invokes beforeCommand and afterCommand hooks around successful
     },
   };
   const runtime: RuntimeModule = {
+    getProcessCwd() {
+      return '/tmp/runtime-cwd';
+    },
     createContext() {
       return Promise.resolve({
         host: {
@@ -792,6 +795,10 @@ void test('runCli invokes beforeCommand and afterCommand hooks around successful
               rawContent: '',
             });
           },
+          getProcessCwd() {
+            return '/tmp';
+          },
+          chdir() {},
           nowIsoUtc() {
             return '2026-04-06T12:00:00.000Z';
           },
@@ -862,4 +869,71 @@ void test('runCli invokes beforeCommand and afterCommand hooks around successful
       },
     },
   ]);
+});
+
+void test('runCli uses injected runtime cwd when getCwd override is not provided', async () => {
+  const captured: string[] = [];
+  const command: AnyCommandDefinition = {
+    name: 'status',
+    summary: 'test command',
+    usage: ['backlog-engineer status'],
+    options: [],
+    inputSchema: z.object({ refresh: z.boolean() }),
+    outputSchema: z.object({ ok: z.literal(true) }),
+    parseArgs: () => ({ refresh: false }),
+    execute: () => Promise.resolve({ ok: true }),
+  };
+  const runtime: RuntimeModule = {
+    getProcessCwd() {
+      return '/tmp/runtime-only-cwd';
+    },
+    createContext(_command, cwd) {
+      captured.push(cwd);
+      return Promise.resolve({
+        host: {
+          resolveCliPath(inputPath) {
+            return path.resolve('/tmp/runtime-only-cwd', inputPath);
+          },
+          readCliTextFile(inputPath) {
+            return Promise.resolve({
+              absolutePath: path.resolve('/tmp/runtime-only-cwd', inputPath),
+              canonicalBasename: path.basename(String(inputPath)),
+              rawContent: '',
+            });
+          },
+          getProcessCwd() {
+            return '/tmp/runtime-only-cwd';
+          },
+          chdir() {},
+          nowIsoUtc() {
+            return '2026-04-06T12:00:00.000Z';
+          },
+          createUuid() {
+            return '11111111-1111-4111-8111-111111111111';
+          },
+        },
+        backlogRoot: '/tmp/backlog',
+        artifacts: {} as never,
+        sources: {} as never,
+        templates: {} as never,
+        reports: {} as never,
+        schemas: {} as never,
+        errors: {} as never,
+        core: {} as never,
+        hooks: {},
+        ensureQueryState: () => Promise.reject(new Error('not used in cwd test')),
+        ensureMutationState: () => Promise.reject(new Error('not used in cwd test')),
+      });
+    },
+    rebuildState: () => Promise.reject(new Error('not used in cwd test')),
+  };
+  const { cliIo } = createBufferingCliIo();
+
+  const exitCode = await runCliSource(['status'], cliIo, '0.1.0-test', {
+    findCommand: (name) => (name === 'status' ? command : undefined),
+    createRuntime: () => runtime,
+  });
+
+  assert.equal(exitCode, 0);
+  assert.deepEqual(captured, ['/tmp/runtime-only-cwd']);
 });

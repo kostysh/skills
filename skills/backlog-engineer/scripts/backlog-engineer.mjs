@@ -5459,14 +5459,14 @@ var DELETE_BACKLOG_COMMAND = {
 			schema_version: marker.schema_version,
 			layout_version: marker.layout_version
 		} });
-		const currentWorkingDirectory = process.cwd();
+		const currentWorkingDirectory = context.host.getProcessCwd();
 		const relativeToRoot = path.relative(context.backlogRoot, currentWorkingDirectory);
 		const runsInsideBacklogRoot = relativeToRoot === "" || relativeToRoot !== "" && !relativeToRoot.startsWith("..") && !path.isAbsolute(relativeToRoot);
-		if (runsInsideBacklogRoot) process.chdir(path.dirname(context.backlogRoot));
+		if (runsInsideBacklogRoot) context.host.chdir(path.dirname(context.backlogRoot));
 		try {
 			await context.artifacts.deleteBacklog(context.backlogRoot);
 		} catch (error) {
-			if (runsInsideBacklogRoot) process.chdir(currentWorkingDirectory);
+			if (runsInsideBacklogRoot) context.host.chdir(currentWorkingDirectory);
 			throw error;
 		}
 		return {
@@ -10363,6 +10363,9 @@ function createNodeFileSystemPort() {
 		},
 		cwd() {
 			return path.resolve(process.cwd());
+		},
+		chdir(targetPath) {
+			process.chdir(targetPath);
 		}
 	};
 }
@@ -10762,6 +10765,9 @@ function createRuntime(options = {}) {
 	const modules = buildRuntimeModules(dependencies, options.modules);
 	const stateCoordinator = options.stateCoordinator ?? createFileBackedStateCoordinator();
 	return {
+		getProcessCwd() {
+			return dependencies.fs.cwd();
+		},
 		async createContext(command, cwd) {
 			const backlogRoot = await resolveCommandBacklogRoot({
 				command,
@@ -10848,6 +10854,12 @@ function createRuntime(options = {}) {
 							});
 						}
 					},
+					getProcessCwd() {
+						return dependencies.fs.cwd();
+					},
+					chdir(targetPath) {
+						dependencies.fs.chdir(targetPath);
+					},
 					nowIsoUtc() {
 						return dependencies.clock.nowIsoUtc();
 					},
@@ -10926,7 +10938,9 @@ async function runCli(argv, cliIo, version, dependencies = {}) {
 			return 0;
 		}
 		const input = command.parseArgs(intent.args);
-		const context = await createRuntimeImpl().createContext(command.name, process.cwd());
+		const runtime = createRuntimeImpl();
+		const commandCwd = dependencies.getCwd ? dependencies.getCwd() : runtime.getProcessCwd();
+		const context = await runtime.createContext(command.name, commandCwd);
 		await context.hooks.beforeCommand?.({
 			command: command.name,
 			input,

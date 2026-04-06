@@ -76,7 +76,7 @@ export const DELETE_BACKLOG_COMMAND: CommandDefinition<
       });
     }
 
-    const currentWorkingDirectory = process.cwd();
+    const currentWorkingDirectory = context.host.getProcessCwd();
     const relativeToRoot = path.relative(context.backlogRoot, currentWorkingDirectory);
     const runsInsideBacklogRoot =
       relativeToRoot === '' ||
@@ -85,14 +85,14 @@ export const DELETE_BACKLOG_COMMAND: CommandDefinition<
         !path.isAbsolute(relativeToRoot));
 
     if (runsInsideBacklogRoot) {
-      process.chdir(path.dirname(context.backlogRoot));
+      context.host.chdir(path.dirname(context.backlogRoot));
     }
 
     try {
       await context.artifacts.deleteBacklog(context.backlogRoot);
     } catch (error) {
       if (runsInsideBacklogRoot) {
-        process.chdir(currentWorkingDirectory);
+        context.host.chdir(currentWorkingDirectory);
       }
       throw error;
     }

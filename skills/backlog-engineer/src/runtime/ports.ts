@@ -29,6 +29,7 @@ export interface FileSystemPort {
   }>;
   realpath(path: AbsoluteFsPath): Promise<AbsoluteFsPath>;
   cwd(): AbsoluteFsPath;
+  chdir(path: AbsoluteFsPath): void;
 }
 
 export interface PathPort {
@@ -120,6 +121,9 @@ export function createNodeFileSystemPort(): FileSystemPort {
     },
     cwd() {
       return path.resolve(process.cwd());
+    },
+    chdir(targetPath) {
+      process.chdir(targetPath);
     },
   };
 }

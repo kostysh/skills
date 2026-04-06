@@ -71,22 +71,16 @@ Do not use this skill as a replacement for:
 
 ## Runtime status
 
-The skill now includes a scaffolded CLI package, but the command behavior is still placeholder-only.
-
-Use this skill even when the runtime is absent to:
-
-- read source documents;
-- decide the right backlog workflow;
-- author packet and patch inputs;
-- avoid inventing behavior outside the documented method.
+The skill now includes a working CLI implementation.
 
 Current runtime status:
 
 - package: `@kostysh/backlog-engineer-cli`
 - source entrypoint: `src/cli.ts`
 - built artifact: `scripts/backlog-engineer.mjs`
-- command surface exists;
-- command semantics are not implemented yet.
+- full command surface is implemented;
+- runtime state, canonical artifacts, packets, patches, reports, and delete flow are wired end to end;
+- packet and patch authoring rules in this skill match the implemented CLI surface.
 
 ## Role split
 

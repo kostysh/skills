@@ -22,7 +22,6 @@ export {
 } from './root-discovery.ts';
 export {
   createFileBackedStateCoordinator,
-  createUnconfiguredStateCoordinator,
   type RuntimeModuleBag,
   type RuntimeStateCoordinator,
   type RuntimeStateCoordinatorPayload,
@@ -36,6 +35,7 @@ export {
 } from './shared.ts';
 
 export interface RuntimeModule {
+  getProcessCwd(): import('./shared.ts').AbsoluteFsPath;
   createContext(
     command: import('./shared.ts').CommandName,
     cwd: import('./shared.ts').AbsoluteFsPath,
