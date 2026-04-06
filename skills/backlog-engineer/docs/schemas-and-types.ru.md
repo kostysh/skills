@@ -632,6 +632,7 @@ type Todo = {
   todo_id: TodoId;
   item_key: ItemKey;
   type: TodoType;
+  managed_by: "refresh" | "mutation";
   message: NonEmptyString;
   created_at: IsoUtcTimestamp;
   related_sources: SourceSummary[];
@@ -643,6 +644,9 @@ Rules:
 
 - only open todo records exist in state;
 - resolved todo is removed, not status-flipped.
+- `managed_by` is utility-owned and indicates which subsystem is allowed to auto-clean the todo:
+  - `refresh`
+  - `mutation`
 - canonicalization for semantic equality must:
   - sort `related_item_keys`;
   - sort `related_sources` by `source_id`;
@@ -652,6 +656,7 @@ Rules:
   - `type`
   - canonicalized `related_item_keys`
   - canonicalized `related_sources`
+- `managed_by` does not participate in the semantic equality key; when semantic effect matches, resulting todo keeps `managed_by = mutation` if either side is mutation-managed.
 
 ### 5.9. `StateFile`
 

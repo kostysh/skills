@@ -10,3 +10,14 @@ export type {
   SearchService,
   TodoService,
 } from './types.ts';
+export { createContextService } from './context-service.ts';
+export { createDerivedStateService } from './derived-state-service.ts';
+export {
+  buildDependencyIndex,
+  buildReverseDependencyIndex,
+  cleanupRemovedItemReferences,
+  createGraphService,
+  resolveItemSubgraph,
+} from './graph-service.ts';
+export { createMutationService } from './mutation-service.ts';
+export { createTodoService } from './todo-service.ts';

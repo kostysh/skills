@@ -445,6 +445,7 @@ flowchart TD
   "todo_id": "<uuid>",
   "item_key": "session-ui",
   "type": "review_dependency_change",
+  "managed_by": "refresh",
   "message": "Зависимая задача auth-session-timeout изменилась. Проверь, нужны ли изменения в этой задаче.",
   "created_at": "2026-04-03T12:20:00Z",
   "related_sources": [
@@ -461,11 +462,18 @@ flowchart TD
 
 - в `state.json` хранятся только открытые `todo`;
 - закрытие `todo` = физическое удаление записи;
+- `managed_by` — utility-owned marker со значениями:
+  - `refresh`
+  - `mutation`
 - дедупликация делается по комбинации:
   - `item_key`
   - `type`
   - canonicalised `related_item_keys`
   - canonicalised `related_sources`
+- `managed_by` не входит в semantic equality key;
+- если semantic effect совпадает, итоговая запись получает:
+  - `managed_by = mutation`, если хотя бы одна из двух записей была `mutation`;
+  - `managed_by = refresh` только если обе записи были `refresh`;
 - canonicalisation должна:
   - сортировать `related_item_keys`;
   - сортировать `related_sources` по `source_id`;
@@ -967,6 +975,7 @@ Dry-run не должен:
 - закрытие `todo` = физическое удаление записи, а не смена статуса;
 - если semantic effect совпадает с уже существующим open `todo`, создаётся не новая запись, а обновляется существующая;
 - если semantic effect совпадает, но `message` отличается, утилита должна перезаписать `message` детерминированным актуальным текстом;
+- если semantic effect совпадает и одна запись `managed_by = mutation`, итоговая запись должна оставаться `managed_by = mutation`;
 - `todo_removed` в ответах mutating-команд означает список `item_key`, у которых хотя бы один open `todo` был удалён в результате операции.
 
 ### Packet import
@@ -984,6 +993,7 @@ Dry-run не должен:
 
 - самой существующей задаче создаётся или обновляется `review_context_change`;
 - downstream задачам создаётся или обновляется `review_dependency_change`.
+- все `todo`, созданные или обновлённые через `packet`, получают `managed_by = mutation`.
 
 `packet` не создаёт `todo` для upstream задач только потому, что новая задача стала от них зависеть.
 
@@ -1016,6 +1026,8 @@ Dry-run не должен:
 
 - для самой задачи и её downstream задач создаётся или обновляется `review_source_change`.
 
+Все `todo`, созданные или обновлённые через `patch-item` и `remove-item`, получают `managed_by = mutation`.
+
 Если patch содержит `remove_todo`:
 
 - утилита удаляет только явно перечисленные `todo_id`, принадлежащие `item_key`;
@@ -1039,7 +1051,11 @@ Dry-run не должен:
 
 - `refresh` может создавать или обновлять `review_source_change`;
 - `refresh` может создавать или обновлять `review_dependency_change`;
-- `refresh` может удалять только те `review_source_change` и производные `review_dependency_change`, чья причина больше не существует по наблюдаемым source/dependency данным;
+- `refresh` создаёт новые `todo` с `managed_by = refresh`;
+- `refresh` может удалять только те `review_source_change` и производные `review_dependency_change`, которые:
+  - имеют `managed_by = refresh`;
+  - относятся к наблюдаемому refresh scope;
+  - больше не имеют active semantic cause по наблюдаемым source/dependency данным;
 - `review_context_change` удаляется только через:
   - `patch-item` с `remove_todo`;
   - `remove-item`, если удаляется сама задача-владелец `todo`;

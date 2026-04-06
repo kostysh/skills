@@ -17,9 +17,11 @@ import type {
   SearchCommandOutput,
   SourceId,
   SourceRegistryFile,
+  SourceSummary,
   StateFile,
   Todo,
   TodoId,
+  TodoManagedBy,
 } from '../schemas/index.ts';
 
 export interface GraphService {
@@ -64,15 +66,25 @@ export interface TodoService {
   };
   generateTodosForSourceChange(payload: {
     state: StateFile;
+    registry: SourceRegistryFile;
     sourceIds: SourceId[];
     affectedItemKeys: ItemKey[];
+    requireDirectSourceLink?: boolean;
+    managedBy?: TodoManagedBy;
   }): Todo[];
   generateTodosForDependencyChange(payload: {
     state: StateFile;
     changedItemKeys: ItemKey[];
     dependentItemKeys: ItemKey[];
+    managedBy?: TodoManagedBy;
+    relatedSources?: SourceSummary[];
   }): Todo[];
-  generateTodosForContextChange(payload: { state: StateFile; changedItemKeys: ItemKey[] }): Todo[];
+  generateTodosForContextChange(payload: {
+    state: StateFile;
+    changedItemKeys: ItemKey[];
+    affectedItemKeys?: ItemKey[];
+    managedBy?: TodoManagedBy;
+  }): Todo[];
 }
 
 export interface DerivedStateService {
@@ -129,6 +141,7 @@ export interface MutationService {
   refresh(payload: {
     state: StateFile;
     sourceRegistry: SourceRegistryFile;
+    changedSourceIds: SourceId[];
     scope: RefreshCommandInput;
   }): Promise<RefreshCommandOutput & { state: StateFile; registry: SourceRegistryFile }>;
   getGaps(payload: { state: StateFile; filters: GapsCommandInput }): GapsCommandOutput;

@@ -4313,6 +4313,7 @@ var TodoTypeSchema = _enum([
 	"review_dependency_change",
 	"review_context_change"
 ]);
+var TodoManagedBySchema = _enum(["refresh", "mutation"]);
 var PatchKindSchema = _enum(["patch-item", "remove-item"]);
 _enum([
 	"replace_fields",
@@ -4555,6 +4556,7 @@ var TodoSchema = strictObject({
 	todo_id: TodoIdSchema,
 	item_key: ItemKeySchema,
 	type: TodoTypeSchema,
+	managed_by: TodoManagedBySchema.default("mutation"),
 	message: NonEmptyStringSchema,
 	created_at: IsoUtcTimestampSchema,
 	related_sources: uniqueArraySchema(SourceSummarySchema, (value) => value.source_id, "Related sources must be unique by source_id."),
@@ -7804,7 +7806,7 @@ function mergeAppendUnique(current, incoming) {
 	}
 	return result;
 }
-function mergePacketContext(payload) {
+function mergePacketContextOnly(payload) {
 	const next = cloneState(payload.state);
 	const current = next.context;
 	const incoming = payload.packet.context;
@@ -7966,7 +7968,7 @@ function toAttentionReason(todo, code) {
 	return "нужно проверить изменение контекста";
 }
 function applyPacketReplay(payload) {
-	const merged = mergePacketContext(payload);
+	const merged = mergePacketContextOnly(payload);
 	const existingKeys = new Set(merged.items.map((item) => item.item_key));
 	const nextItems = [...merged.items];
 	for (const item of payload.packet.items) {

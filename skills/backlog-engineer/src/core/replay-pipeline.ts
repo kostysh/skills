@@ -126,7 +126,7 @@ function mergeAppendUnique<T>(current: readonly T[], incoming: readonly T[]): T[
   return result;
 }
 
-function mergePacketContext(payload: {
+export function mergePacketContextOnly(payload: {
   state: StateFile;
   packet: PacketFile;
   errors: ErrorModule;
@@ -204,7 +204,10 @@ function toStateItem(item: PacketItem): StateItem {
   };
 }
 
-function validateReferentialIntegrity(payload: { state: StateFile; errors: ErrorModule }): void {
+export function validateReferentialIntegrity(payload: {
+  state: StateFile;
+  errors: ErrorModule;
+}): void {
   const itemKeys = new Set(payload.state.items.map((item) => item.item_key));
   const claimKeys = new Set(payload.state.context.claims.map((claim) => claim.claim_key));
   const contractKeys = new Set(
@@ -411,6 +414,27 @@ function sortTodos(todos: readonly Todo[]): Todo[] {
   return [...todos].sort((left, right) => left.todo_id.localeCompare(right.todo_id));
 }
 
+export function synchronizeOpenTodoIds(payload: {
+  schemas: SchemaModule;
+  state: StateFile;
+}): StateFile {
+  const next = cloneState(payload.state);
+  const todoIdsByItem = new Map<string, string[]>();
+
+  for (const todo of sortTodos(next.todos)) {
+    const ownedTodoIds = todoIdsByItem.get(todo.item_key) ?? [];
+    ownedTodoIds.push(todo.todo_id);
+    todoIdsByItem.set(todo.item_key, ownedTodoIds);
+  }
+
+  next.items = next.items.map((item) => ({
+    ...item,
+    open_todo_ids: [...(todoIdsByItem.get(item.item_key) ?? [])],
+  }));
+
+  return payload.schemas.parseStateFile(next);
+}
+
 function toAttentionReason(todo: Todo, code: Exclude<AttentionReasonCode, 'gaps'>): string {
   if (code === 'dependency_changed') {
     const relatedItemKey = todo.related_item_keys[0];
@@ -434,7 +458,7 @@ export function applyPacketReplay(payload: {
   packet: PacketFile;
   errors: ErrorModule;
 }): StateFile {
-  const merged = mergePacketContext(payload);
+  const merged = mergePacketContextOnly(payload);
   const existingKeys = new Set(merged.items.map((item) => item.item_key));
   const nextItems = [...merged.items];
 
@@ -459,6 +483,35 @@ export function applyPacketReplay(payload: {
     state: next,
     errors: payload.errors,
   });
+  return next;
+}
+
+export function applyPacketItemsOnly(payload: {
+  state: StateFile;
+  items: readonly PacketItem[];
+  errors: ErrorModule;
+}): StateFile {
+  const next = cloneState(payload.state);
+  const existingKeys = new Set(next.items.map((item) => item.item_key));
+
+  for (const item of payload.items) {
+    if (existingKeys.has(item.item_key)) {
+      throw payload.errors.create('BE_PACKET_ITEM_ALREADY_EXISTS', undefined, {
+        details: {
+          item_key: item.item_key,
+        },
+      });
+    }
+
+    existingKeys.add(item.item_key);
+    next.items.push(toStateItem(item));
+  }
+
+  validateReferentialIntegrity({
+    state: next,
+    errors: payload.errors,
+  });
+
   return next;
 }
 

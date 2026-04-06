@@ -151,6 +151,7 @@ export const TodoTypeSchema = z.enum([
   'review_dependency_change',
   'review_context_change',
 ]);
+export const TodoManagedBySchema = z.enum(['refresh', 'mutation']);
 export const PatchKindSchema = z.enum(['patch-item', 'remove-item']);
 export const PatchOperationActionSchema = z.enum([
   'replace_fields',
@@ -208,6 +209,7 @@ export type Sequence = z.infer<typeof SequenceSchema>;
 export type DeliveryState = z.infer<typeof DeliveryStateSchema>;
 export type AttentionReasonCode = z.infer<typeof AttentionReasonCodeSchema>;
 export type TodoType = z.infer<typeof TodoTypeSchema>;
+export type TodoManagedBy = z.infer<typeof TodoManagedBySchema>;
 export type PatchKind = z.infer<typeof PatchKindSchema>;
 export type PatchOperationAction = z.infer<typeof PatchOperationActionSchema>;
 export type KeyStrategy = z.infer<typeof KeyStrategySchema>;

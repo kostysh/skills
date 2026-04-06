@@ -20,6 +20,7 @@ import {
   SourceLabelSchema,
   SourceSummarySchema,
   TodoIdSchema,
+  TodoManagedBySchema,
   TodoTypeSchema,
   uniqueArraySchema,
 } from './scalars.ts';
@@ -167,6 +168,7 @@ export const TodoSchema = z.strictObject({
   todo_id: TodoIdSchema,
   item_key: ItemKeySchema,
   type: TodoTypeSchema,
+  managed_by: TodoManagedBySchema.default('mutation'),
   message: NonEmptyStringSchema,
   created_at: IsoUtcTimestampSchema,
   related_sources: uniqueArraySchema(

@@ -9,6 +9,7 @@
 - В логе фиксируются только факты и принятые решения, которые важны для следующих пакетов.
 - Любое решение или допущение за пределами текущей концепции, спецификаций и утверждённых контрактов фиксируется отдельной явной пометкой.
 - Лог не заменяет git history, а дополняет её инженерным контекстом.
+- Для каждого work package в записи обязательно фиксируется полное время закрытия пакета: от начала работ по пакету до коммита, закрывающего пакет.
 - Начиная с work package `E`, для каждого пакета обязательны три внешних ревью в фиксированном порядке:
   1. `spec-conformance-reviewer`
   2. после `PASS` — `code-reviewer`
@@ -20,6 +21,8 @@
 
 - Статус:
 - Дата:
+- Начало работ:
+- Полное время закрытия:
 - Коммит:
 - Что сделано:
 - Ключевые решения:
@@ -36,6 +39,16 @@
   1. `spec-conformance-reviewer`
   2. после `PASS` — `code-reviewer`
   3. после `PASS` — `security-reviewer`
+- С 2026-04-06 для любого внешнего review scope и context формулируются как отдельная часть задания:
+  - scope должен быть минимально достаточным и совпадать с текущим work package;
+  - context должен включать только релевантные нормативные документы, изменённые файлы и уже закрытые находки;
+  - reviewer не должен тратить время на соседние пакеты и stale-проблемы.
+- С 2026-04-06 reasoning-уровень внешних review выбирается по фиксированному правилу:
+  - `spec-conformance-reviewer` — `high`
+  - `code-reviewer` — `medium` или `high` по сложности changed surface
+  - `security-reviewer` — обычно `high`
+  - `xhigh` — только для самых тяжёлых и широких аудитов
+- С 2026-04-06 после получения финального `PASS` от внешнего review соответствующий review-агент сразу закрывается, чтобы не расходовать лимит подагентов на уже завершённые треды
 - Для текущего work package `D` сохраняется ранее действовавший review-контур:
   - `code-reviewer`
   - `security-reviewer`
@@ -409,3 +422,77 @@
   - повторный code review — PASS
   - security review — PASS
 - Следующий пакет: `H — Core graph services`
+
+### Work package `H` — `Core graph services`
+
+- Статус: завершён
+- Дата: 2026-04-06
+- Начало работ: 2026-04-06 19:15:09 +02:00
+- Полное время закрытия: 01:37:30
+- Коммит:
+- Что сделано:
+  - реализованы concrete core services:
+    - `context-service`
+    - `graph-service`
+    - `todo-service`
+    - `derived-state-service`
+    - `mutation-service`
+  - `core/index.ts` теперь экспортирует реальные сервисы и graph helpers вместо пустого surface
+  - `graph-service` реализует:
+    - new-only guard для `packet`
+    - packet item apply
+    - patch apply
+    - dependency / reverse dependency indexes
+    - subgraph resolution
+    - cleanup removed item references
+  - `context-service` реализует:
+    - merge packet context
+    - glossary conflict detection
+    - immutable context entity checks
+  - `todo-service` реализует:
+    - semantic deduplication
+    - remove flow
+    - generation для source / dependency / context review todo
+  - `derived-state-service` реализует:
+    - full recompute
+    - single-item derived state projection
+    - ordered `attention_reason_codes` / `attention_reasons`
+    - stage-aligned readiness
+  - `mutation-service` реализует:
+    - `applyPacket`
+    - `applyPatch`
+    - `refresh`
+    - `getGaps`
+  - added core tests:
+    - graph behavior
+    - context immutability
+    - todo dedup/remove
+    - derived state
+    - mutation packet / patch / remove / refresh scenarios
+- Ключевые решения:
+  - `graph.applyPacketItems(...)` больше не пытается повторно мержить “пустой” context поверх уже объединённого state; для этого выделен item-only replay path
+  - `context.mergePacketContext(...)` использует context-only merge helper, чтобы не валидировать referential integrity слишком рано, когда packet context ссылается на items, вводимые тем же packet
+  - `mutation-service` валидирует user-authored source references через `BE_SOURCE_NOT_FOUND`, а не через internal-corruption ошибки
+  - `remove_todo` и другие todo mutations всегда синхронизируют `open_todo_ids` через общий helper перед финальной parse boundary
+  - `Todo` получил utility-owned поле `managed_by: "refresh" | "mutation"`, а dedup / cleanup semantics разделены по owner: refresh может auto-clean только свои source/dependency todo, mutation-owned todo удаляются только через mutation flows
+  - source-change review для `patch-item` вычисляется по каждому изменённому item отдельно по объединению pre/post source links, чтобы не терять причину при полном удалении source links и не схлопывать причины разных item в один union
+- Допущения вне спецификации:
+  - в чистом `core` трактовка `refresh` selector `source_path` выполняется через exact match по `SourceRegistryFile.sources[].path` или `source_label`; path normalization намеренно не протягивается в `core`, потому что ownership нормализации закреплён за модулем `sources`
+  - `TodoService.generateTodosForSourceChange(...)` получил `registry` и опциональный `requireDirectSourceLink`, а `generateTodosForContextChange(...)` — опциональный `affectedItemKeys`; это implementation-level уточнение service contract, затем синхронизированное в `module-interfaces.ru.md`
+  - для стабильной синхронизации editor/CLI type-aware linting root ESLint переведён на `projectService: true`, а workspace VS Code settings закрепляют `eslint.useFlatConfig`, auto working directories и workspace TypeScript SDK; это repo-tooling решение, не меняющее runtime contract утилиты
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - первый spec conformance review — PARTIAL
+    - `patch-item` сохранял source-change причину при полном удалении source links, но ещё схлопывал source ids в единый union для всех source-mutated item одного multi-item patch
+  - согласованные исправления:
+    - `mutation-service` переведён на per-item source-cause mapping через `collectChangedSourceIdsForItems(...)`
+    - `applyPatch()` теперь генерирует source review todo отдельно по каждому source-mutated item и его pre/post downstream scope
+    - добавлен regression test на multi-item patch с раздельными source-cause expectations
+  - повторный spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
+- Следующий пакет: `I — Query services`

@@ -353,6 +353,7 @@ void test('default ensureQueryState drops todo-only divergence and restores cano
       todo_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
       item_key: 'auth-core',
       type: 'review_source_change',
+      managed_by: 'refresh',
       message: 'Re-check source change.',
       created_at: '2026-04-06T11:59:00.000Z',
       related_sources: [

@@ -397,6 +397,7 @@ Expected todo shape:
 {
   "todo_id": "<todo_id>",
   "type": "review_source_change",
+  "managed_by": "refresh",
   "message": "<human_readable_reason>",
   "created_at": "<iso8601>",
   "related_sources": [
@@ -416,6 +417,11 @@ Starter `todo.type` values:
 - `review_context_change`
 
 Do not invent additional todo types unless the repository standardizes them.
+
+`managed_by` is utility-owned:
+
+- `refresh` means the todo may be auto-cleared by a later `refresh` when the same observed cause disappears;
+- `mutation` means the todo came from packet/patch/remove semantics and must not be auto-cleared by `refresh`.
 
 ## Derived task state
 

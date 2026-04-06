@@ -910,19 +910,25 @@ interface TodoService {
 
   generateTodosForSourceChange(payload: {
     state: StateFile;
+    registry: SourceRegistryFile;
     sourceIds: SourceId[];
     affectedItemKeys: ItemKey[];
+    requireDirectSourceLink?: boolean;
+    managedBy?: TodoManagedBy;
   }): Todo[];
 
   generateTodosForDependencyChange(payload: {
     state: StateFile;
     changedItemKeys: ItemKey[];
     dependentItemKeys: ItemKey[];
+    managedBy?: TodoManagedBy;
   }): Todo[];
 
   generateTodosForContextChange(payload: {
     state: StateFile;
     changedItemKeys: ItemKey[];
+    affectedItemKeys?: ItemKey[];
+    managedBy?: TodoManagedBy;
   }): Todo[];
 }
 ```
@@ -931,6 +937,9 @@ interface TodoService {
 
 - хранить только open `todo`;
 - дедуплицировать по semantic effect, а не только по `todo_id`.
+- не терять более сильный ownership:
+  - если semantic effect совпал и одна запись `managedBy = mutation`, итоговая запись должна остаться `mutation`;
+  - `refresh` cleanup имеет право удалять только `managedBy = refresh`.
 
 ## 7.4. `DerivedStateService`
 
@@ -1063,6 +1072,7 @@ interface MutationService {
   refresh(payload: {
     state: StateFile;
     sourceRegistry: SourceRegistryFile;
+    changedSourceIds: SourceId[];
     scope:
       | { kind: "all" }
       | { kind: "item"; item_key: ItemKey }

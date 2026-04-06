@@ -846,6 +846,10 @@ graph TD
 
 `todo` хранит только открытые действия.
 
+Поле `managed_by` тоже служебное:
+- `refresh` — такие `todo` утилита может снять автоматически при следующем `refresh`, если наблюдаемая причина исчезла;
+- `mutation` — такие `todo` появились из `packet` / `patch-item` / `remove-item` и не должны сниматься обычным `refresh`.
+
 Закрытые `todo` в графе не хранятся и не архивируются.
 
 **Пример ответа `items`:**
@@ -891,6 +895,7 @@ graph TD
       {
         "todo_id": "<todo_id>",
         "type": "review_dependency_change",
+        "managed_by": "mutation",
         "message": "Родительская задача auth-core изменилась. Проверь, нужны ли изменения для этой задачи.",
         "created_at": "2026-04-02T08:30:00Z",
         "related_item_keys": ["auth-core"],
@@ -1397,6 +1402,7 @@ graph TD
 {
   "todo_id": "<todo_id>",
   "type": "review_source_change",
+  "managed_by": "refresh",
   "message": "Источник docs/modules/auth.md изменился. Проверь, влияет ли это на задачу.",
   "created_at": "2026-04-01T10:15:00Z",
   "related_sources": [
