@@ -73,6 +73,11 @@ Implement the sample flow.
 - AC-F0001-01 Request succeeds for a valid payload.
 - AC-F0001-02 Request rejects malformed payloads.
 
+## Definition of Done
+
+- AC-backed tests exist for both request outcomes.
+- The sample flow is covered by the coverage map.
+
 ## Coverage map
 
 | AC-F0001-01 | test/sample.test.mjs |
@@ -150,6 +155,66 @@ test('coverage-audit passes and next-step returns implementation for the active 
   assert.equal(summary.target_dossier, 'docs/features/F-0001-sample.md');
   assert.equal(summary.workflow_next, 'implementation');
   assert.equal(summary.dossier_status, 'planned');
+});
+
+test('lint-dossiers reports compact-spec nudges for smells and weak contract cues', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-lint-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  });
+
+  writeFile(
+    repoRoot,
+    'docs/features/F-0002-smelly.md',
+    `---
+id: F-0002
+title: Smelly dossier
+status: shaped
+area: api
+owners: ["@team"]
+depends_on: []
+impacts: ["api"]
+coverage_gate: deferred
+created: 2026-03-26
+updated: 2026-03-26
+---
+
+## Scope
+
+Implement a shaped API feature.
+
+## Requirements & Acceptance Criteria
+
+- AC-F0002-01 Request validates the payload and stores the result.
+
+## NFR
+
+- Performance: fast.
+
+## Design (compact)
+
+### API surface
+- POST /widgets
+  - body: { name: string }
+  - response: { ok: true }
+
+### Edge cases and failure modes
+- TBD: decide how duplicate submissions behave.
+
+## Change log
+
+- 2026-03-26: Initial shaped draft.
+`,
+  );
+
+  const result = runCli(['lint-dossiers', '--root', repoRoot]);
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /Missing Definition of Done section/);
+  assert.match(result.stdout, /Boundary I\/O appears in the compact design/);
+  assert.match(result.stdout, /Potential compound ACs detected/);
+  assert.match(result.stdout, /Raw TBD found in executable sections/);
+  assert.match(result.stdout, /NFR section looks aspirational/);
+  assert.match(result.stdout, /Vague wording in executable sections/);
 });
 
 test('verify, review-artifact, and dossier-step-close complete the implementation step', (t) => {

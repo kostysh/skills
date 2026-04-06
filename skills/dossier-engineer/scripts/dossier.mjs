@@ -6314,6 +6314,44 @@ function parseTopLevelSections(markdown) {
 function normalizeSectionText(text) {
 	return String(text ?? "").replace(/\r\n/g, "\n").replace(/[ \t]+$/gm, "").trim();
 }
+function getSectionText(markdown, headingPattern) {
+	return [...parseTopLevelSections(markdown).entries()].filter(([heading]) => heading !== "__preamble__" && headingPattern.test(heading)).map(([, body]) => body).join("\n").trim();
+}
+function hasHeading(markdown, headingPattern) {
+	return headingPattern.test(String(markdown));
+}
+function collectExecutableSectionLines(markdown) {
+	const sections = parseTopLevelSections(markdown);
+	const lines = [];
+	for (const [heading, body] of sections) {
+		if (heading === "__preamble__") continue;
+		if (!EXECUTABLE_SECTION_PATTERNS.some((pattern) => pattern.test(heading))) continue;
+		lines.push(...String(body).split(/\r?\n/));
+	}
+	return lines.map((line) => line.trim()).filter(Boolean);
+}
+function extractAcStatementLines(markdown) {
+	const lines = String(markdown).split(/\r?\n/);
+	const acStatements = [];
+	for (const line of lines) {
+		const match = line.match(/\b(AC-F\d{4}-\d{1,2})\b/);
+		if (!match) continue;
+		const acId = (match[1] ?? "").replace(/-(\d{1,2})$/, (_, number) => `-${number.padStart(2, "0")}`);
+		acStatements.push({
+			acId,
+			line: line.trim()
+		});
+	}
+	return acStatements;
+}
+function isShapedOrLaterStatus(status) {
+	return [
+		"shaped",
+		"planned",
+		"in_progress",
+		"done"
+	].includes(String(status));
+}
 var EXECUTABLE_SECTION_PATTERNS = [
 	/scope/i,
 	/requirements/i,
@@ -6328,6 +6366,35 @@ var EXECUTABLE_SECTION_PATTERNS = [
 	/edge cases/i,
 	/failure modes/i,
 	/slicing plan/i
+];
+var DOD_HEADING_PATTERN = /^#{2,6}\s+.*definition of done.*$/im;
+var VERIFICATION_HEADING_PATTERN = /^#{2,6}\s+.*(verification|test plan|coverage map).*$/im;
+var BOUNDARY_TRIGGER_PATTERN = /`?(GET|POST|PUT|PATCH|DELETE)\s+\/|^\s*-\s*(body|response|payload|dto|event|webhook)\b/im;
+var CONTRACT_CUE_PATTERN = /\b(contract|schema|openapi|json schema|error model|retry|idempotent|idempotency|backward-compat|compatibility)\b/i;
+var MEASURABLE_NFR_CUE_PATTERN = /\b(metric|metrics|budget|threshold|signal|signals|p\d{2}|latency|availability|throughput|counter|gauge|histogram|log|logs|trace|traces|event|events|ms|seconds?|minutes?|hours?)\b/i;
+var COMPOUND_AC_PATTERN = /\b(and\/or|and|or)\b/i;
+var RAW_TBD_PATTERN = /\bTBD\b/i;
+var VAGUE_EXECUTABLE_PATTERNS = [
+	{
+		label: "etc.",
+		pattern: /\betc\./i
+	},
+	{
+		label: "usually",
+		pattern: /\busually\b/i
+	},
+	{
+		label: "as appropriate",
+		pattern: /\bas appropriate\b/i
+	},
+	{
+		label: "fast",
+		pattern: /\bfast\b/i
+	},
+	{
+		label: "user-friendly",
+		pattern: /\buser-friendly\b/i
+	}
 ];
 function hasExecutableSectionChange(beforeSections, afterSections) {
 	const changedSections = [];
@@ -6815,6 +6882,53 @@ async function runLintDossiersCommand(argv, io) {
 			feature,
 			message: "Missing Change log section. Add at least an initial entry for traceability."
 		});
+		const status = frontmatter.status;
+		if (isShapedOrLaterStatus(status) && !hasHeading(dossier.markdown, DOD_HEADING_PATTERN)) findings.push({
+			level: "warn",
+			feature,
+			message: "Missing Definition of Done section for a shaped/planned+ dossier. Add a compact closure target before implementation."
+		});
+		if (isShapedOrLaterStatus(status) && !hasHeading(dossier.markdown, VERIFICATION_HEADING_PATTERN) && dossier.coverageIds.length === 0) findings.push({
+			level: "warn",
+			feature,
+			message: "Missing verification cue for a shaped/planned+ dossier. Add a verification section or an initial coverage plan."
+		});
+		const designText = getSectionText(dossier.markdown, /design/i);
+		if (isShapedOrLaterStatus(status) && designText && BOUNDARY_TRIGGER_PATTERN.test(designText) && !CONTRACT_CUE_PATTERN.test(designText)) findings.push({
+			level: "warn",
+			feature,
+			message: "Boundary I/O appears in the compact design, but no contract/schema/error-model cue was found. Add a compact contract sketch or link to the canonical contract."
+		});
+		const nfrText = getSectionText(dossier.markdown, /\bnon-functional\b|\bnfr\b/i);
+		if (isShapedOrLaterStatus(status) && nfrText && !MEASURABLE_NFR_CUE_PATTERN.test(nfrText)) findings.push({
+			level: "warn",
+			feature,
+			message: "NFR section looks aspirational. Add a metric, budget/threshold, or observable signal for any normative NFR."
+		});
+		const compoundAcIds = extractAcStatementLines(dossier.markdown).filter(({ line }) => COMPOUND_AC_PATTERN.test(line)).map(({ acId }) => acId);
+		if (compoundAcIds.length > 0) findings.push({
+			level: "warn",
+			feature,
+			message: `Potential compound ACs detected: ${compoundAcIds.join(", ")}. Prefer one obligation per AC.`
+		});
+		const executableLines = collectExecutableSectionLines(dossier.markdown);
+		if (executableLines.some((line) => RAW_TBD_PATTERN.test(line))) findings.push({
+			level: "warn",
+			feature,
+			message: "Raw TBD found in executable sections. Convert it into an Open question with an owner/date or explicit next decision path."
+		});
+		const vagueMatches = executableLines.flatMap((line) => VAGUE_EXECUTABLE_PATTERNS.filter(({ pattern }) => pattern.test(line)).map(({ label }) => ({
+			label,
+			line
+		})));
+		if (vagueMatches.length > 0) {
+			const samples = vagueMatches.slice(0, 2).map(({ label, line }) => `"${label}" in "${line}"`).join("; ");
+			findings.push({
+				level: "warn",
+				feature,
+				message: `Vague wording in executable sections: ${samples}. Rewrite the statement more concretely.`
+			});
+		}
 		for (const dependency of toStringArray(frontmatter.depends_on)) if (!/^F-\d{4}$/.test(dependency)) findings.push({
 			level: "error",
 			feature,

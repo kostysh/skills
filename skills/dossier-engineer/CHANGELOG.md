@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.0
+
+- Tightened `spec-compact` with compact-safe triggers for atomic ACs, mini glossaries, explicit assumptions/open questions, failure coverage, contract/schema cues, proof planning, and lightweight smell checks.
+- Added explicit trigger guidance to the dossier template for when contracts, decision tables, state lists, and measurable NFRs should appear.
+- Added lightweight `lint-dossiers` nudges for compound ACs, vague executable wording, missing `Definition of Done`, weak API contract cues, and aspirational NFR sections.
+- Updated the example dossier and example repo to demonstrate the revised compact-spec style without requiring heavyweight formal artifacts.
+
 ## v2.0.1
 
 - Restored the explicit separate-reviewer-agent instruction as the default execution model for independent review when the platform supports agent spawning.

@@ -20,6 +20,14 @@ Required keys:
 ### Acceptance criteria
 - Must contain at least one `AC-...` ID.
 - AC IDs must match the dossier numeric ID.
+- Lint warns on compound AC statements because each AC should carry one obligation.
+- Lint warns on raw `TBD` and vague wording in executable sections because they often hide unresolved spec work.
+
+### Compact-spec nudges for shaped/planned+ dossiers
+- `Definition of Done` should be present once the dossier reaches `shaped` or later.
+- The dossier should contain a verification section or initial coverage plan once it reaches `shaped` or later.
+- If a shaped/planned+ dossier describes boundary I/O, lint expects at least one contract/schema/error-model cue.
+- If an NFR is normative, lint expects a metric, budget/threshold, or observable signal.
 
 ### Coverage map
 - If `coverage_gate` is `strict`, the dossier must include coverage rows for every AC.

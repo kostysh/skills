@@ -417,29 +417,74 @@ Review checklist:
 
 ### `spec-compact`
 
-Evolve the same dossier into a minimal implementable spec.
+Turn the existing dossier into a compact spec that is specific enough to implement and verify.
+
+Trigger summary:
+
+- Add `Terms & thresholds` only when the feature introduces new terms, roles, states, statuses, or limits that could be read in more than one way.
+- If the feature changes a request, response, event, webhook, or external payload, add a compact contract cue.
+- If a rule has 2+ independent conditions, add a decision table or decision list.
+- If the feature has named states, transitions, or guards, add a compact state list or state table.
 
 Steps:
 
 1. Re-read repo overlays from `AGENTS.md` and relevant repo ADRs.
-2. Refine ACs to be testable.
-3. Add compact design:
-   - API surface
-   - runtime and deployment surface when relevant
-   - data model changes
-   - edge cases and failure modes
-   - verification surface
-4. Add Definition of Done and an initial coverage map plan.
-5. If an architectural fork exists, run `adr-log`.
-6. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
-7. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
-8. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
+2. Map the user-visible and boundary-facing behavior before editing the spec:
+   - list each user-visible or boundary operation;
+   - for each operation, note success behavior plus invalid input, dependency failure/timeout, and duplicate/retry behavior when relevant.
+3. Refine ACs into **atomic, observable, behavior-first** statements.
+   - one AC = one obligation;
+   - if one sentence contains multiple independent outcomes, split it;
+   - make triggers, guards, or preconditions explicit when they matter.
+4. Add a mini `Terms & thresholds` block only when triggered.
+   Trigger it when the feature introduces new domain terms, roles, states, statuses, or time/size limits that a reader could interpret in more than one way.
+   Keep it to 3–5 bullets max.
+5. Separate three things explicitly:
+   - `Constraints` = mandatory solution bounds;
+   - `Assumptions` = expected substrate or external behavior;
+   - `Open questions` = unresolved items with an owner/date or explicit next decision path.
+6. Add compact design with trigger-based representations:
+   - If the feature adds or changes boundary I/O, include either an inline contract sketch or a link to the canonical schema/OpenAPI/protocol.
+     Add the error model, and add retry/idempotency or duplicate-delivery semantics when the operation can be repeated.
+   - runtime and deployment surface when relevant;
+   - data model changes, invariants, and migration notes when relevant;
+   - edge cases and failure modes;
+   - verification surface as an **initial verification plan** that names the proof type for each AC or AC group;
+   - representation upgrades only when triggered:
+     - If a rule has 2+ independent conditions, add a decision table or decision list.
+     - If the feature has named states, transitions, or guards, add a state list or compact state table.
+     - If a DTO/event/request/response crosses a boundary, add a schema/contract pointer or compact structure block.
+7. Keep NFRs compact and normative only.
+   - include only NFRs that can materially change implementation, verification, or feature closure;
+   - every normative NFR needs a metric, budget/threshold, or explicit observable signal.
+8. Add Definition of Done and an initial coverage plan.
+9. Run a one-minute quick wording pass (`smell pass`):
+   - remove vague words such as `etc.`, `usually`, `as appropriate`, `fast`, or `user-friendly`;
+   - split compound ACs;
+   - do not leave raw `TBD`; convert it into an `Open question` with owner/date or next decision path.
+10. If an architectural fork exists, run `adr-log`.
+11. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
+12. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
+13. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
 
 Review checklist:
 
+Spec quality:
 - [ ] The same dossier was evolved in place; no shadow SSoT exists.
-- [ ] Acceptance criteria are specific enough to verify.
-- [ ] Design covers API, runtime/deployment, data changes, failure modes, and verification surface when relevant.
+- [ ] Acceptance criteria are atomic, observable, behavior-first, and specific enough to verify.
+- [ ] The dossier captures success behavior plus invalid input / dependency failure / duplicate-retry behavior where relevant.
+- [ ] New ambiguous terms or thresholds were normalized via a compact `Terms & thresholds` block when triggered.
+- [ ] Constraints, assumptions, and open questions are explicit instead of being hidden inside prose.
+- [ ] NFRs are compact, normative-only, and measurable via a metric, budget, threshold, or observable signal.
+- [ ] A quick wording pass removed vague wording, compound ACs, and raw `TBD`.
+
+Trigger-based additions:
+- [ ] Boundary I/O changes include a contract/schema pointer or compact contract sketch, plus error model and retry/idempotency notes when relevant.
+- [ ] Design covers API, runtime/deployment, data changes, invariants or migration notes, failure modes, and an initial verification plan when relevant.
+- [ ] Decision tables or state lists were added when rule complexity or statefulness crossed the trigger threshold.
+- [ ] Definition of Done and the initial coverage plan were recorded explicitly.
+
+Process integrity:
 - [ ] Repo overlays and repo ADRs were ingested before finalizing the spec.
 - [ ] Any cross-cutting decision was externalized instead of being left hidden inside one dossier.
 - [ ] `status` is consistent with spec maturity and `coverage_gate` stays explicit.

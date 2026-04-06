@@ -326,6 +326,52 @@ function normalizeSectionText(text: string | undefined): string {
     .trim();
 }
 
+function getSectionText(markdown: string, headingPattern: RegExp): string {
+  const sections = parseTopLevelSections(markdown);
+  return [...sections.entries()]
+    .filter(([heading]) => heading !== '__preamble__' && headingPattern.test(heading))
+    .map(([, body]) => body)
+    .join('\n')
+    .trim();
+}
+
+function hasHeading(markdown: string, headingPattern: RegExp): boolean {
+  return headingPattern.test(String(markdown));
+}
+
+function collectExecutableSectionLines(markdown: string): string[] {
+  const sections = parseTopLevelSections(markdown);
+  const lines: string[] = [];
+  for (const [heading, body] of sections) {
+    if (heading === '__preamble__') {
+      continue;
+    }
+    if (!EXECUTABLE_SECTION_PATTERNS.some((pattern) => pattern.test(heading))) {
+      continue;
+    }
+    lines.push(...String(body).split(/\r?\n/));
+  }
+  return lines.map((line) => line.trim()).filter(Boolean);
+}
+
+function extractAcStatementLines(markdown: string): Array<{ acId: string; line: string }> {
+  const lines = String(markdown).split(/\r?\n/);
+  const acStatements: Array<{ acId: string; line: string }> = [];
+  for (const line of lines) {
+    const match = line.match(/\b(AC-F\d{4}-\d{1,2})\b/);
+    if (!match) {
+      continue;
+    }
+    const acId = (match[1] ?? '').replace(/-(\d{1,2})$/, (_, number: string) => `-${number.padStart(2, '0')}`);
+    acStatements.push({ acId, line: line.trim() });
+  }
+  return acStatements;
+}
+
+function isShapedOrLaterStatus(status: unknown): boolean {
+  return ['shaped', 'planned', 'in_progress', 'done'].includes(String(status));
+}
+
 const EXECUTABLE_SECTION_PATTERNS = [
   /scope/i,
   /requirements/i,
@@ -340,6 +386,24 @@ const EXECUTABLE_SECTION_PATTERNS = [
   /edge cases/i,
   /failure modes/i,
   /slicing plan/i,
+];
+
+const DOD_HEADING_PATTERN = /^#{2,6}\s+.*definition of done.*$/im;
+const VERIFICATION_HEADING_PATTERN = /^#{2,6}\s+.*(verification|test plan|coverage map).*$/im;
+const BOUNDARY_TRIGGER_PATTERN =
+  /`?(GET|POST|PUT|PATCH|DELETE)\s+\/|^\s*-\s*(body|response|payload|dto|event|webhook)\b/im;
+const CONTRACT_CUE_PATTERN =
+  /\b(contract|schema|openapi|json schema|error model|retry|idempotent|idempotency|backward-compat|compatibility)\b/i;
+const MEASURABLE_NFR_CUE_PATTERN =
+  /\b(metric|metrics|budget|threshold|signal|signals|p\d{2}|latency|availability|throughput|counter|gauge|histogram|log|logs|trace|traces|event|events|ms|seconds?|minutes?|hours?)\b/i;
+const COMPOUND_AC_PATTERN = /\b(and\/or|and|or)\b/i;
+const RAW_TBD_PATTERN = /\bTBD\b/i;
+const VAGUE_EXECUTABLE_PATTERNS: Array<{ label: string; pattern: RegExp }> = [
+  { label: 'etc.', pattern: /\betc\./i },
+  { label: 'usually', pattern: /\busually\b/i },
+  { label: 'as appropriate', pattern: /\bas appropriate\b/i },
+  { label: 'fast', pattern: /\bfast\b/i },
+  { label: 'user-friendly', pattern: /\buser-friendly\b/i },
 ];
 
 function hasExecutableSectionChange(
@@ -1114,6 +1178,88 @@ async function runLintDossiersCommand(argv: string[], io: CliIo): Promise<number
         level: 'warn',
         feature,
         message: 'Missing Change log section. Add at least an initial entry for traceability.',
+      });
+    }
+
+    const status = frontmatter.status;
+    if (isShapedOrLaterStatus(status) && !hasHeading(dossier.markdown, DOD_HEADING_PATTERN)) {
+      findings.push({
+        level: 'warn',
+        feature,
+        message:
+          'Missing Definition of Done section for a shaped/planned+ dossier. Add a compact closure target before implementation.',
+      });
+    }
+
+    if (
+      isShapedOrLaterStatus(status) &&
+      !hasHeading(dossier.markdown, VERIFICATION_HEADING_PATTERN) &&
+      dossier.coverageIds.length === 0
+    ) {
+      findings.push({
+        level: 'warn',
+        feature,
+        message:
+          'Missing verification cue for a shaped/planned+ dossier. Add a verification section or an initial coverage plan.',
+      });
+    }
+
+    const designText = getSectionText(dossier.markdown, /design/i);
+    if (isShapedOrLaterStatus(status) && designText && BOUNDARY_TRIGGER_PATTERN.test(designText) && !CONTRACT_CUE_PATTERN.test(designText)) {
+      findings.push({
+        level: 'warn',
+        feature,
+        message:
+          'Boundary I/O appears in the compact design, but no contract/schema/error-model cue was found. Add a compact contract sketch or link to the canonical contract.',
+      });
+    }
+
+    const nfrText = getSectionText(dossier.markdown, /\bnon-functional\b|\bnfr\b/i);
+    if (isShapedOrLaterStatus(status) && nfrText && !MEASURABLE_NFR_CUE_PATTERN.test(nfrText)) {
+      findings.push({
+        level: 'warn',
+        feature,
+        message:
+          'NFR section looks aspirational. Add a metric, budget/threshold, or observable signal for any normative NFR.',
+      });
+    }
+
+    const compoundAcIds = extractAcStatementLines(dossier.markdown)
+      .filter(({ line }) => COMPOUND_AC_PATTERN.test(line))
+      .map(({ acId }) => acId);
+    if (compoundAcIds.length > 0) {
+      findings.push({
+        level: 'warn',
+        feature,
+        message: `Potential compound ACs detected: ${compoundAcIds.join(', ')}. Prefer one obligation per AC.`,
+      });
+    }
+
+    const executableLines = collectExecutableSectionLines(dossier.markdown);
+    if (executableLines.some((line) => RAW_TBD_PATTERN.test(line))) {
+      findings.push({
+        level: 'warn',
+        feature,
+        message:
+          'Raw TBD found in executable sections. Convert it into an Open question with an owner/date or explicit next decision path.',
+      });
+    }
+
+    const vagueMatches = executableLines.flatMap((line) =>
+      VAGUE_EXECUTABLE_PATTERNS.filter(({ pattern }) => pattern.test(line)).map(({ label }) => ({
+        label,
+        line,
+      })),
+    );
+    if (vagueMatches.length > 0) {
+      const samples = vagueMatches
+        .slice(0, 2)
+        .map(({ label, line }) => `"${label}" in "${line}"`)
+        .join('; ');
+      findings.push({
+        level: 'warn',
+        feature,
+        message: `Vague wording in executable sections: ${samples}. Rewrite the statement more concretely.`,
       });
     }
 

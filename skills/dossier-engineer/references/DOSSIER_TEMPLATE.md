@@ -39,6 +39,14 @@ Notes:
 - **Non-goals:** List what is explicitly out of scope.
 - **Current substrate / baseline:** Record which runtime, deployment, data, or platform seams are assumed to already exist.
 
+### Terms & thresholds (optional, max 3–5 bullets)
+
+> Add this only when the feature introduces new roles, states, statuses, or time/size limits that could be read in more than one way.
+> Example:
+
+- `reset request`: starts when the API accepts the request and ends when the email job is handed off.
+- `within 30 seconds`: measured from accepted request to queue handoff.
+
 ## 2. Scope
 
 ### In scope
@@ -50,42 +58,67 @@ Notes:
 ### Constraints
 - Security, compliance, deployment, compatibility, operational, or repo-overlay constraints.
 
+### Assumptions (optional)
+- Existing substrate or external-system behavior that this dossier relies on.
+
+### Open questions (optional)
+- Unresolved items with an owner/date or explicit next decision path.
+
 ## 3. Requirements & Acceptance Criteria (SSoT)
 
-> Each AC must be **testable** and have a stable ID.
+> Each AC must be **testable**, **atomic**, and have a stable ID.
+> One AC = one obligation. If one sentence carries multiple independent outcomes, split it.
+> Prefer behavior and externally visible effects over mechanism.
+> Example ACs:
 
 - **AC-F0001-01:** Requesting a reset for an existing account sends a reset email within 30 seconds.
-- **AC-F0001-02:** Reset tokens are single-use and expire after 30 minutes.
-- **AC-F0001-03:** Requesting a reset for a non-existing email returns a generic success response.
-- **AC-F0001-04:** Rate limiting prevents more than N reset requests per account per hour.
+- **AC-F0001-02:** Requesting a reset for a non-existing email returns a generic success response.
+- **AC-F0001-03:** Issued reset tokens expire after 30 minutes.
+- **AC-F0001-04:** A reset token can be used successfully at most once.
+- **AC-F0001-05:** Rate limiting prevents more than N reset requests per account per hour.
 
 ## 4. Non-functional requirements (NFR)
 
-- **Security:** token entropy, storage, anti-enumeration, audit log events.
-- **Reliability:** retries, idempotency, compensation/rollback expectations.
-- **Performance:** response-time budgets, queueing budgets, indexing assumptions.
-- **Observability:** metrics/logs/traces that confirm AC outcomes.
+> Keep only NFRs that materially constrain design or block `done`.
+> Each normative NFR should include a metric, budget/threshold, or explicit observable signal.
+> Example NFRs:
+
+- **Security:** Reset request responses never reveal account existence; audit event `auth.password_reset.requested` is emitted for every accepted request.
+- **Reliability:** Duplicate request submissions are safe to retry; confirm flow remains single-use under concurrent submits.
+- **Performance:** Reset request handoff to the email queue completes within 30 seconds.
+- **Observability:** Metrics/logs/traces exist that let an operator confirm AC outcomes.
 
 ## 5. Design (compact)
 
 ### 5.1 API surface
-- Routes, DTOs, status codes, error cases.
+- Trigger: if the feature changes a request, response, event, webhook, or external payload, include an inline contract sketch or a link to the canonical contract/schema/OpenAPI/protocol.
+- Routes, DTOs, status codes, error model, and backward-compat notes when relevant.
+- Retry/idempotency or duplicate-delivery semantics when the operation can be repeated.
 
 ### 5.2 Runtime / deployment surface
 - Entrypoints, services, workers, jobs, containers, startup assumptions, env contract.
 
 ### 5.3 Data model changes
-- Tables/collections impacted; migration notes.
+- Tables/collections impacted; invariants and migration notes when relevant.
 
 ### 5.4 Edge cases and failure modes
-- Retries, timeouts, duplicate delivery, cancellation, partial side effects, crash/restart boundaries.
+- Invalid input, retries, timeouts, duplicate delivery, cancellation, partial side effects, crash/restart boundaries.
 
-### 5.5 Verification surface
-- Unit, integration, smoke, manual/operator, or migration verification paths.
+### 5.5 Verification surface / initial verification plan
+- For each AC or AC group, name the proof type: unit, integration, smoke, manual/operator, or migration.
+
+### 5.6 Representation upgrades (triggered only when needed)
+- Add a decision table/list when a rule has 2+ independent conditions.
+- Add a state list/table when the feature has named states, transitions, or guards.
+- Add a schema/contract snippet or link when DTOs/events/requests/responses cross a boundary.
+
+### 5.7 Definition of Done
+- Delivered behavior, proof artifacts, and operational signals required before the implementation step can claim closure.
 
 ## 6. Slicing plan (2–6 increments)
 
 > Each slice should produce something testable and cite the AC IDs it covers.
+> Example slices:
 
 ### Slice SL-F0001-01: Token issuance + persistence
 Covers: AC-F0001-02, AC-F0001-03
