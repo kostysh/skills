@@ -85,6 +85,12 @@ Supported modes:
 - `target_item_keys`
 - `operations`
 
+`template patch` must keep draft generation collision-safe:
+
+- generated `patch_id` should be unique even before the patch is ever applied;
+- default directory output starts with `<sequence>-patch.template.json`;
+- if that draft file already exists, the utility should choose a unique suffixed basename instead of overwriting it.
+
 ## `packet`
 
 Use only for new tasks.

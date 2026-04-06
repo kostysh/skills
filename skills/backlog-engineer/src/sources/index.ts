@@ -112,6 +112,7 @@ export function createSourcesModule(dependencies: SourcesModuleDependencies): So
     hashSourceFile(path) {
       return hashSourceFileFromDisk({
         fs: dependencies.fs,
+        path: dependencies.path,
         hash: dependencies.hash,
         errors: dependencies.errors,
         filePath: path,

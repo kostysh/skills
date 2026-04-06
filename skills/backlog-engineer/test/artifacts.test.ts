@@ -6,6 +6,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { createArtifactsModule } from '../src/artifacts/index.ts';
+import { ensureManagedFilePathSafe } from '../src/artifacts/store-helpers.ts';
 import { createErrorModule } from '../src/errors/index.ts';
 import {
   createNodeFileSystemPort,
@@ -126,6 +127,172 @@ void test('artifacts module writes AGENTS.md directly through writeAgentsFile', 
   await artifacts.writeAgentsFile(root, '# backlog agents\n');
 
   assert.equal(await fs.readText('/repo/backlog/AGENTS.md'), '# backlog agents\n');
+});
+
+void test('artifacts module rejects reading managed JSON artifacts through symlinked files', async (t) => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-read-symlink-'));
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const fixture = await createFixtureBundle();
+  const runtime = createNodeRuntimeDependencies();
+  const artifacts = createArtifactsModule({
+    fs: runtime.fs,
+    path: runtime.path,
+    hash: runtime.hash,
+    schemas: createSchemaModule(),
+    errors: createErrorModule(),
+  });
+
+  await artifacts.writeInitialArtifacts({
+    root: backlogRoot,
+    marker: fixture.marker,
+    agentsContent: '# backlog agents\n',
+    sourceRegistry: fixture.sourceRegistry,
+    appliedRegistry: fixture.appliedRegistry,
+    state: fixture.state,
+  });
+  await t.test('source registry read rejects symlink target', async () => {
+    const escapedFile = path.join(tempRoot, 'escaped-sources.json');
+    await writeFile(escapedFile, JSON.stringify(fixture.sourceRegistry, null, 2), 'utf8');
+    await rmNode(path.join(backlogRoot, '.backlog', 'sources.json'));
+    await symlink(escapedFile, path.join(backlogRoot, '.backlog', 'sources.json'), 'file');
+
+    await assert.rejects(
+      async () => {
+        await artifacts.readSourceRegistry(backlogRoot);
+      },
+      (error: unknown) => {
+        assert.ok(error instanceof Error);
+        return 'code' in error && error.code === 'BE_INTERNAL_STATE_CORRUPT';
+      },
+    );
+  });
+
+  await rmNode(tempRoot, { recursive: true, force: true });
+});
+
+void test('artifacts module maps malformed root marker JSON to BE_ROOT_NOT_FOUND', async () => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-root-marker-invalid-'));
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const fixture = await createFixtureBundle();
+  const runtime = createNodeRuntimeDependencies();
+  const artifacts = createArtifactsModule({
+    fs: runtime.fs,
+    path: runtime.path,
+    hash: runtime.hash,
+    schemas: createSchemaModule(),
+    errors: createErrorModule(),
+  });
+
+  await artifacts.writeInitialArtifacts({
+    root: backlogRoot,
+    marker: fixture.marker,
+    agentsContent: '# backlog agents\n',
+    sourceRegistry: fixture.sourceRegistry,
+    appliedRegistry: fixture.appliedRegistry,
+    state: fixture.state,
+  });
+  await writeFile(path.join(backlogRoot, '.backlog.json'), '{ invalid json', 'utf8');
+
+  await assert.rejects(
+    async () => {
+      await artifacts.readRootMarker(backlogRoot);
+    },
+    (error: unknown) => {
+      assert.ok(error instanceof Error);
+      return 'code' in error && error.code === 'BE_ROOT_NOT_FOUND';
+    },
+  );
+
+  await rmNode(tempRoot, { recursive: true, force: true });
+});
+
+void test('managed artifact path guard rejects Windows cross-drive file paths', async () => {
+  const errors = createErrorModule();
+  const fsStub = {
+    exists() {
+      return Promise.resolve(false);
+    },
+    lstat() {
+      throw new Error('lstat should not be reached for escaped paths');
+    },
+  };
+  const win32PathPort = {
+    resolve(...parts: string[]) {
+      return path.win32.resolve(...parts);
+    },
+    dirname(pathValue: string) {
+      return path.win32.dirname(pathValue);
+    },
+    basename(pathValue: string) {
+      return path.win32.basename(pathValue);
+    },
+    relative(from: string, to: string) {
+      return path.win32.relative(from, to);
+    },
+    normalize(pathValue: string) {
+      return path.win32.normalize(pathValue);
+    },
+    join(...parts: string[]) {
+      return path.win32.join(...parts);
+    },
+  };
+
+  await assert.rejects(
+    async () => {
+      await ensureManagedFilePathSafe({
+        fs: fsStub as never,
+        path: win32PathPort,
+        errors,
+        root: 'C:\\repo\\backlog',
+        filePath: 'D:\\escaped\\state.json',
+        errorCode: 'BE_INTERNAL_STATE_CORRUPT',
+      });
+    },
+    (error: unknown) => {
+      assert.ok(error instanceof Error);
+      return 'code' in error && error.code === 'BE_INTERNAL_STATE_CORRUPT';
+    },
+  );
+});
+
+void test('artifacts module rejects stateExists when managed state file is symlinked', async () => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-state-exists-symlink-'));
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const fixture = await createFixtureBundle();
+  const runtime = createNodeRuntimeDependencies();
+  const artifacts = createArtifactsModule({
+    fs: runtime.fs,
+    path: runtime.path,
+    hash: runtime.hash,
+    schemas: createSchemaModule(),
+    errors: createErrorModule(),
+  });
+
+  await artifacts.writeInitialArtifacts({
+    root: backlogRoot,
+    marker: fixture.marker,
+    agentsContent: '# backlog agents\n',
+    sourceRegistry: fixture.sourceRegistry,
+    appliedRegistry: fixture.appliedRegistry,
+    state: fixture.state,
+  });
+
+  const escapedFile = path.join(tempRoot, 'escaped-state.json');
+  await writeFile(escapedFile, JSON.stringify(fixture.state, null, 2), 'utf8');
+  await rmNode(path.join(backlogRoot, '.backlog', 'state.json'));
+  await symlink(escapedFile, path.join(backlogRoot, '.backlog', 'state.json'), 'file');
+
+  await assert.rejects(
+    async () => {
+      await artifacts.stateExists(backlogRoot);
+    },
+    (error: unknown) => {
+      assert.ok(error instanceof Error);
+      return 'code' in error && error.code === 'BE_INTERNAL_STATE_CORRUPT';
+    },
+  );
+
+  await rmNode(tempRoot, { recursive: true, force: true });
 });
 
 void test('artifacts module writes canonical packet and patch copies with hash-prefixed filenames', async () => {

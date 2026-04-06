@@ -1059,6 +1059,7 @@ Dry-run не должен:
 | `BE_INPUT_FILE_NOT_FOUND` | packet/patch/template input path не найден |
 | `BE_SOURCE_NOT_FOUND` | source не найден по `source_id`, `label` или `path` |
 | `BE_SOURCE_FILE_MISSING` | зарегистрированный source file отсутствует на диске |
+| `BE_SOURCE_READ_FAILED` | source file существует, но не может быть безопасно прочитан |
 | `BE_SOURCE_KIND_INVALID` | `kind` не соответствует допустимому формату |
 | `BE_SOURCE_AUTHORITY_INVALID` | `authority` не соответствует допустимому формату |
 | `BE_PACKET_ITEM_ALREADY_EXISTS` | packet пытается добавить существующий `item_key` |
@@ -1183,7 +1184,10 @@ Dry-run не должен:
 
 - `BE_ROOT_NOT_FOUND`
 - `BE_SCHEMA_INVALID`
+- `BE_SOURCE_KIND_INVALID`
+- `BE_SOURCE_AUTHORITY_INVALID`
 - `BE_SOURCE_FILE_MISSING`
+- `BE_SOURCE_READ_FAILED`
 
 ### Unit-test focus
 
@@ -1261,8 +1265,8 @@ Dry-run не должен:
 4. Найти max `sequence` среди applied patches.
 5. Сформировать patch skeleton с `sequence = max + 1`.
 6. Подставить `target_item_keys`.
-7. Сгенерировать `patch_id`.
-8. Если `--out` указывает на директорию, выбрать стандартное имя файла `<sequence>-patch.template.json`.
+7. Сгенерировать уникальный draft `patch_id`.
+8. Если `--out` указывает на директорию, выбрать стандартное имя файла `<sequence>-patch.template.json`; если такой draft уже существует, выбрать collision-safe имя с уникальным suffix.
 9. Записать файл в `--out`.
 
 ### Errors
@@ -1641,6 +1645,7 @@ Dry-run не должен:
 
 - `BE_SOURCE_NOT_FOUND`
 - `BE_SOURCE_FILE_MISSING`
+- `BE_SOURCE_READ_FAILED`
 - `BE_ITEM_NOT_FOUND`
 
 ### Unit-test focus

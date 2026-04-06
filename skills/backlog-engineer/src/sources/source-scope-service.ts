@@ -185,6 +185,7 @@ export async function refreshSourceHashes(payload: {
 
       const nextHash = await hashSourceFile({
         fs: payload.fs,
+        path: payload.path,
         hash: payload.hash,
         errors: payload.errors,
         filePath: resolveSourceAbsolutePath({

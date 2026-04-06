@@ -53,6 +53,7 @@ export async function writeTemplateOutput(
     cwd: AbsoluteFsPath;
     out: CliPathInput;
     defaultBasename: string;
+    collisionBasename?: string;
     content: string;
   },
 ): Promise<NormalizedFsPath> {
@@ -63,6 +64,7 @@ export async function writeTemplateOutput(
     cwd: payload.cwd,
     out: payload.out,
     defaultBasename: payload.defaultBasename,
+    ...(payload.collisionBasename ? { collisionBasename: payload.collisionBasename } : {}),
   });
 
   await writeTextAtomically({

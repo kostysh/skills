@@ -14,7 +14,7 @@ import type { CommandExecutionContext } from './command-context.ts';
 import { createNodeRuntimeDependencies, type RuntimeDependencies } from './ports.ts';
 import { resolveCommandBacklogRoot } from './root-discovery.ts';
 import {
-  createUnconfiguredStateCoordinator,
+  createFileBackedStateCoordinator,
   type RuntimeModuleBag,
   type RuntimeStateCoordinator,
 } from './state-recovery.ts';
@@ -95,8 +95,7 @@ function buildRuntimeModules(
 export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule {
   const dependencies = createNodeRuntimeDependencies(options.dependencies);
   const modules = buildRuntimeModules(dependencies, options.modules);
-  const stateCoordinator =
-    options.stateCoordinator ?? createUnconfiguredStateCoordinator(modules.errors);
+  const stateCoordinator = options.stateCoordinator ?? createFileBackedStateCoordinator();
 
   return {
     async createContext(

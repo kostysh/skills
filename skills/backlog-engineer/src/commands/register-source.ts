@@ -13,6 +13,7 @@ import {
   requireStringOption,
 } from './arg-parsers.ts';
 import type { CommandDefinition } from './types.ts';
+import { validateSourceAuthority, validateSourceKind } from '../sources/index.ts';
 
 const OPTIONS = [
   {
@@ -78,6 +79,9 @@ export const REGISTER_SOURCE_COMMAND: CommandDefinition<
     if (!context.backlogRoot) {
       throw context.errors.create('BE_ROOT_NOT_FOUND');
     }
+
+    validateSourceKind(input.kind, context.errors);
+    validateSourceAuthority(input.authority, context.errors);
 
     const normalizedSource = await context.sources.resolveCliSourcePath({
       backlogRoot: context.backlogRoot,

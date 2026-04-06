@@ -75,7 +75,7 @@ export const LIST_SOURCES_COMMAND: CommandDefinition<
     let sources = [...(await context.artifacts.readSourceRegistry(context.backlogRoot)).sources];
 
     if (input.item_key) {
-      const state = await context.artifacts.readState(context.backlogRoot);
+      const { state } = await context.ensureQueryState();
       const item = state.items.find((candidate) => candidate.item_key === input.item_key);
       if (!item) {
         throw context.errors.create('BE_ITEM_NOT_FOUND', undefined, {

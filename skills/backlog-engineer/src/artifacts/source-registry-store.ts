@@ -10,9 +10,12 @@ export async function readSourceRegistry(
 ): Promise<SourceRegistryFile> {
   return readJsonArtifact({
     fs: dependencies.fs,
+    path: dependencies.path,
     errors: dependencies.errors,
+    root,
     filePath: getSourceRegistryPath(dependencies.path, root),
     parse: (raw) => dependencies.schemas.parseSourceRegistry(raw),
+    readErrorCode: 'BE_INTERNAL_STATE_CORRUPT',
   });
 }
 

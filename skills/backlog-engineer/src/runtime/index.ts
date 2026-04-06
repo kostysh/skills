@@ -21,6 +21,7 @@ export {
   resolveCommandBacklogRoot,
 } from './root-discovery.ts';
 export {
+  createFileBackedStateCoordinator,
   createUnconfiguredStateCoordinator,
   type RuntimeModuleBag,
   type RuntimeStateCoordinator,

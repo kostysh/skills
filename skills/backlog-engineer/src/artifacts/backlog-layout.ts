@@ -138,10 +138,24 @@ export async function resolveTemplateOutputPath(payload: {
   cwd: AbsoluteFsPath;
   out: CliPathInput;
   defaultBasename: string;
+  collisionBasename?: string;
 }): Promise<NormalizedFsPath> {
-  const { fs, path, errors, cwd, out, defaultBasename } = payload;
+  const { fs, path, errors, cwd, out, defaultBasename, collisionBasename } = payload;
   const absoluteTarget = path.resolve(cwd, out);
   const explicitDirectory = out.endsWith('/') || out.endsWith('\\');
+
+  async function resolveDirectoryTarget(directoryPath: AbsoluteFsPath): Promise<NormalizedFsPath> {
+    const primaryTarget = path.join(directoryPath, defaultBasename);
+    if (!(await fs.exists(primaryTarget))) {
+      return primaryTarget;
+    }
+
+    if (collisionBasename) {
+      return path.join(directoryPath, collisionBasename);
+    }
+
+    return primaryTarget;
+  }
 
   await ensureNoSymlinkAncestors({
     fs,
@@ -161,17 +175,34 @@ export async function resolveTemplateOutputPath(payload: {
       });
     }
     if (stat.isDirectory) {
-      return path.join(absoluteTarget, defaultBasename);
+      return resolveDirectoryTarget(absoluteTarget);
     }
 
     if (stat.isFile) {
+      if (explicitDirectory) {
+        throw errors.create('BE_TEMPLATE_OUTPUT_INVALID', undefined, {
+          details: {
+            out,
+          },
+          hint: 'A trailing slash requires an existing directory or a creatable directory path.',
+        });
+      }
       return absoluteTarget;
     }
   }
 
   if (explicitDirectory) {
-    await fs.mkdir(absoluteTarget, { recursive: true });
-    return path.join(absoluteTarget, defaultBasename);
+    try {
+      await fs.mkdir(absoluteTarget, { recursive: true });
+    } catch (error) {
+      throw errors.create('BE_TEMPLATE_OUTPUT_INVALID', undefined, {
+        details: {
+          out,
+        },
+        cause: error,
+      });
+    }
+    return resolveDirectoryTarget(absoluteTarget);
   }
 
   const basename = path.basename(absoluteTarget);

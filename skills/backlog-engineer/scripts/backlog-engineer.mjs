@@ -4274,6 +4274,10 @@ var BacklogRelativePosixPathSchema = NonEmptyStringSchema.superRefine((value, ct
 		code: ZodIssueCode.custom,
 		message: "Backlog-relative path must use POSIX separators."
 	});
+	if (/^[A-Za-z]:(?:$|\/)/.test(value)) ctx.addIssue({
+		code: ZodIssueCode.custom,
+		message: "Backlog-relative path must not use Windows drive-prefixed forms."
+	});
 	const segments = value.split("/");
 	if (segments.some((segment) => segment.length === 0)) ctx.addIssue({
 		code: ZodIssueCode.custom,
@@ -4857,6 +4861,7 @@ var ERROR_CODES = [
 	"BE_INPUT_FILE_NOT_FOUND",
 	"BE_SOURCE_NOT_FOUND",
 	"BE_SOURCE_FILE_MISSING",
+	"BE_SOURCE_READ_FAILED",
 	"BE_SOURCE_KIND_INVALID",
 	"BE_SOURCE_AUTHORITY_INVALID",
 	"BE_PACKET_ITEM_ALREADY_EXISTS",
@@ -4886,6 +4891,7 @@ var ERROR_EXIT_CODES = {
 	BE_INPUT_FILE_NOT_FOUND: 5,
 	BE_SOURCE_NOT_FOUND: 5,
 	BE_SOURCE_FILE_MISSING: 5,
+	BE_SOURCE_READ_FAILED: 5,
 	BE_SOURCE_KIND_INVALID: 2,
 	BE_SOURCE_AUTHORITY_INVALID: 2,
 	BE_PACKET_ITEM_ALREADY_EXISTS: 4,
@@ -4915,6 +4921,7 @@ var ERROR_DEFAULT_MESSAGES = {
 	BE_INPUT_FILE_NOT_FOUND: "Input file was not found.",
 	BE_SOURCE_NOT_FOUND: "Source was not found.",
 	BE_SOURCE_FILE_MISSING: "Registered source file is missing on disk.",
+	BE_SOURCE_READ_FAILED: "Registered source file could not be read safely.",
 	BE_SOURCE_KIND_INVALID: "Source kind is invalid.",
 	BE_SOURCE_AUTHORITY_INVALID: "Source authority is invalid.",
 	BE_PACKET_ITEM_ALREADY_EXISTS: "Packet contains item_key that already exists in the backlog.",
@@ -5562,7 +5569,8 @@ var LIST_SOURCES_COMMAND = {
 		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
 		let sources = [...(await context.artifacts.readSourceRegistry(context.backlogRoot)).sources];
 		if (input.item_key) {
-			const item = (await context.artifacts.readState(context.backlogRoot)).items.find((candidate) => candidate.item_key === input.item_key);
+			const { state } = await context.ensureQueryState();
+			const item = state.items.find((candidate) => candidate.item_key === input.item_key);
 			if (!item) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: input.item_key } });
 			const itemSourceIds = collectItemSourceIds$1(item);
 			sources = sources.filter((source) => itemSourceIds.has(source.source_id));
@@ -5718,6 +5726,618 @@ var REFRESH_COMMAND = definePlaceholderCommand({
 		return parseUsageInput("refresh", RefreshCommandInputSchema, { kind: "all" });
 	}
 });
+//#endregion
+//#region src/runtime/path-safety.ts
+function isWindowsDriveRootEscape(relativePath) {
+	return /^[A-Za-z]:\\/.test(relativePath);
+}
+function isUncRootEscape(relativePath) {
+	return relativePath.startsWith("\\\\");
+}
+function resolvePathRelativeToRoot(payload) {
+	const resolvedRoot = payload.path.resolve(payload.root);
+	const resolvedTarget = payload.path.resolve(payload.target);
+	const platformRelativePath = payload.path.relative(resolvedRoot, resolvedTarget);
+	if (platformRelativePath.length === 0) return {
+		platformRelativePath,
+		posixRelativePath: ""
+	};
+	if (isWindowsDriveRootEscape(platformRelativePath) || isUncRootEscape(platformRelativePath)) return null;
+	const posixRelativePath = platformRelativePath.replaceAll("\\", "/");
+	if (posixRelativePath === ".." || posixRelativePath.startsWith("../")) return null;
+	return {
+		platformRelativePath,
+		posixRelativePath
+	};
+}
+function isPathInsideRoot(payload) {
+	return resolvePathRelativeToRoot(payload) !== null;
+}
+//#endregion
+//#region src/sources/path-normalizer.ts
+function toPosixRelativePath(relativePath) {
+	return relativePath.replaceAll("\\", "/");
+}
+function createSourceLabel(relativePath) {
+	return relativePath;
+}
+function normalizeSourcePath(payload) {
+	const absolutePath = payload.path.resolve(payload.backlogRoot, payload.inputPath);
+	const rootRelativePath = resolvePathRelativeToRoot({
+		path: payload.path,
+		root: payload.backlogRoot,
+		target: absolutePath
+	});
+	if (!rootRelativePath) throw payload.errors.create("BE_SCHEMA_INVALID", void 0, {
+		details: { path: absolutePath },
+		hint: "Source path must stay inside the current backlog root."
+	});
+	const relativePath = toPosixRelativePath(rootRelativePath.posixRelativePath);
+	const parsedRelativePath = BacklogRelativePosixPathSchema.safeParse(relativePath);
+	if (!parsedRelativePath.success) throw fromZodError(parsedRelativePath.error, {
+		path: absolutePath,
+		relative_path: relativePath
+	});
+	return {
+		absolute_path: absolutePath,
+		relative_path: parsedRelativePath.data,
+		source_label: createSourceLabel(parsedRelativePath.data)
+	};
+}
+function sortSourceLabels(values) {
+	return [...values].sort((left, right) => {
+		const labelCompare = left.source_label.localeCompare(right.source_label);
+		if (labelCompare !== 0) return labelCompare;
+		return (left.source_id ?? "").localeCompare(right.source_id ?? "");
+	});
+}
+//#endregion
+//#region src/artifacts/store-helpers.ts
+function createJsonIssueDetails(error) {
+	return { issues: error.issues.map((issue) => ({
+		path: issue.path.join("."),
+		message: issue.message,
+		code: issue.code
+	})) };
+}
+function isMissingFileError$1(error) {
+	return error instanceof Error && "code" in error && error.code === "ENOENT";
+}
+function createTempSiblingPath$1(path, targetPath, seedHash) {
+	return path.join(path.dirname(targetPath), `.${path.basename(targetPath)}.tmp-${seedHash.slice(0, 12)}`);
+}
+function listPathChain(path, target) {
+	const normalizedTarget = path.resolve(target);
+	const chain = [normalizedTarget];
+	let cursor = path.dirname(normalizedTarget);
+	while (cursor !== chain[chain.length - 1]) {
+		chain.push(cursor);
+		cursor = path.dirname(cursor);
+	}
+	return chain.reverse();
+}
+async function ensureDirectoryChainIsSafe(payload) {
+	const { fs, path, errors, root, leafDirectory, errorCode, detailPath } = payload;
+	const normalizedRoot = path.resolve(root);
+	const normalizedLeaf = path.resolve(leafDirectory);
+	if (!isPathInsideRoot({
+		path,
+		root: normalizedRoot,
+		target: normalizedLeaf
+	})) throw errors.create(errorCode, void 0, { details: { path: detailPath } });
+	for (const candidate of listPathChain(path, normalizedLeaf)) {
+		if (!await fs.exists(candidate)) continue;
+		const entry = await fs.lstat(candidate);
+		if (entry.isSymbolicLink || !entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: detailPath } });
+	}
+}
+async function ensureManagedDirectoryPathSafe(payload) {
+	const { fs, path, errors, root, directoryPath, errorCode } = payload;
+	const targetDirectory = path.resolve(directoryPath);
+	await ensureDirectoryChainIsSafe({
+		fs,
+		path,
+		errors,
+		root,
+		leafDirectory: targetDirectory,
+		errorCode,
+		detailPath: targetDirectory
+	});
+	if (!await fs.exists(targetDirectory)) return;
+	const entry = await fs.lstat(targetDirectory);
+	if (entry.isSymbolicLink || !entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: targetDirectory } });
+}
+async function ensureManagedFilePathSafe(payload) {
+	const { fs, path, errors, root, filePath, errorCode } = payload;
+	const targetFile = path.resolve(filePath);
+	await ensureDirectoryChainIsSafe({
+		fs,
+		path,
+		errors,
+		root,
+		leafDirectory: path.dirname(targetFile),
+		errorCode,
+		detailPath: targetFile
+	});
+	if (!await fs.exists(targetFile)) return;
+	const entry = await fs.lstat(targetFile);
+	if (entry.isSymbolicLink || entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: targetFile } });
+}
+async function ensureNoSymlinkAncestors(payload) {
+	const { fs, path, errors, targetPath, errorCode } = payload;
+	const normalizedTarget = path.resolve(targetPath);
+	for (const candidate of listPathChain(path, normalizedTarget)) {
+		if (!await fs.exists(candidate)) continue;
+		if ((await fs.lstat(candidate)).isSymbolicLink) throw errors.create(errorCode, void 0, { details: { path: normalizedTarget } });
+	}
+}
+async function readJsonArtifact(payload) {
+	const { fs, path, errors, filePath, parse, root, readErrorCode = "BE_INTERNAL_STATE_CORRUPT", missingCode = "BE_INTERNAL_STATE_CORRUPT", corruptCode = "BE_INTERNAL_STATE_CORRUPT" } = payload;
+	if (root && path) await ensureManagedFilePathSafe({
+		fs,
+		path,
+		errors,
+		root,
+		filePath,
+		errorCode: readErrorCode
+	});
+	let rawText;
+	try {
+		rawText = await fs.readText(filePath);
+	} catch (error) {
+		if (isMissingFileError$1(error)) throw errors.create(missingCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+		throw errors.create(corruptCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+	}
+	let rawJson;
+	try {
+		rawJson = JSON.parse(rawText);
+	} catch (error) {
+		throw errors.create(corruptCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+	}
+	try {
+		return parse(rawJson);
+	} catch (error) {
+		if (error instanceof ZodError) throw errors.create(corruptCode, void 0, {
+			details: {
+				path: filePath,
+				...createJsonIssueDetails(error)
+			},
+			cause: error
+		});
+		throw errors.create(corruptCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+	}
+}
+async function writeTextAtomically(payload) {
+	const { fs, path, hash, errors, root, targetPath, content, writeErrorCode } = payload;
+	const tempPath = createTempSiblingPath$1(path, targetPath, await hash.sha256Text(`${targetPath}\n${content}`));
+	if (root) await ensureManagedFilePathSafe({
+		fs,
+		path,
+		errors,
+		root,
+		filePath: targetPath,
+		errorCode: writeErrorCode
+	});
+	try {
+		await fs.mkdir(path.dirname(targetPath), { recursive: true });
+		await fs.rm(tempPath, { force: true });
+		await fs.writeText(tempPath, content);
+		await fs.rename(tempPath, targetPath);
+	} catch (error) {
+		try {
+			await fs.rm(tempPath, { force: true });
+		} catch {}
+		throw errors.create(writeErrorCode, void 0, {
+			details: { path: targetPath },
+			cause: error
+		});
+	}
+}
+async function writeJsonArtifact(payload) {
+	const { fs, path, hash, errors, root, filePath, value, validate, writeErrorCode } = payload;
+	let validatedValue;
+	try {
+		validatedValue = validate(value);
+	} catch (error) {
+		if (error instanceof ZodError) throw errors.create("BE_SCHEMA_INVALID", void 0, {
+			details: {
+				path: filePath,
+				...createJsonIssueDetails(error)
+			},
+			cause: error
+		});
+		throw errors.create(writeErrorCode, void 0, {
+			details: { path: filePath },
+			cause: error
+		});
+	}
+	await writeTextAtomically({
+		fs,
+		path,
+		hash,
+		errors,
+		root,
+		targetPath: filePath,
+		content: `${JSON.stringify(validatedValue, null, 2)}\n`,
+		writeErrorCode
+	});
+}
+//#endregion
+//#region src/sources/source-hash-service.ts
+var MAX_SOURCE_FILE_BYTES = 10 * 1024 * 1024;
+function isErrnoException(error) {
+	return error instanceof Error && "code" in error;
+}
+function isMissingFileError(error) {
+	return isErrnoException(error) && error.code === "ENOENT";
+}
+async function hashSourceFile(payload) {
+	try {
+		await ensureNoSymlinkAncestors({
+			fs: payload.fs,
+			path: payload.path,
+			errors: payload.errors,
+			targetPath: payload.filePath,
+			errorCode: "BE_SOURCE_READ_FAILED"
+		});
+	} catch (error) {
+		if (isMissingFileError(error)) throw payload.errors.create("BE_SOURCE_FILE_MISSING", void 0, {
+			details: { path: payload.filePath },
+			cause: error
+		});
+		throw error;
+	}
+	let entry;
+	try {
+		entry = await payload.fs.lstat(payload.filePath);
+	} catch (error) {
+		if (isMissingFileError(error)) throw payload.errors.create("BE_SOURCE_FILE_MISSING", void 0, {
+			details: { path: payload.filePath },
+			cause: error
+		});
+		throw payload.errors.create("BE_SOURCE_READ_FAILED", void 0, {
+			details: {
+				path: payload.filePath,
+				reason: "lstat_failed"
+			},
+			cause: error
+		});
+	}
+	if (entry.isSymbolicLink) throw payload.errors.create("BE_SOURCE_READ_FAILED", void 0, { details: {
+		path: payload.filePath,
+		reason: "symbolic_link"
+	} });
+	if (!entry.isFile) throw payload.errors.create("BE_SOURCE_READ_FAILED", void 0, { details: {
+		path: payload.filePath,
+		reason: "not_regular_file"
+	} });
+	if (entry.size > MAX_SOURCE_FILE_BYTES) throw payload.errors.create("BE_SOURCE_READ_FAILED", void 0, { details: {
+		path: payload.filePath,
+		reason: "file_too_large",
+		max_bytes: MAX_SOURCE_FILE_BYTES,
+		actual_bytes: entry.size
+	} });
+	let content;
+	try {
+		content = await payload.fs.readText(payload.filePath);
+	} catch (error) {
+		if (isMissingFileError(error)) throw payload.errors.create("BE_SOURCE_FILE_MISSING", void 0, {
+			details: { path: payload.filePath },
+			cause: error
+		});
+		throw payload.errors.create("BE_SOURCE_READ_FAILED", void 0, {
+			details: {
+				path: payload.filePath,
+				reason: "read_failed"
+			},
+			cause: error
+		});
+	}
+	try {
+		return await payload.hash.sha256Text(content);
+	} catch (error) {
+		throw payload.errors.create("BE_SOURCE_READ_FAILED", void 0, {
+			details: {
+				path: payload.filePath,
+				reason: "hash_failed"
+			},
+			cause: error
+		});
+	}
+}
+//#endregion
+//#region src/sources/source-registry-service.ts
+var SOURCE_KIND_VALUES = [
+	"architecture",
+	"module",
+	"adr",
+	"technical-decision",
+	"integration",
+	"operations",
+	"planning",
+	"specification"
+];
+var SOURCE_AUTHORITY_VALUES = [
+	"authoritative",
+	"supporting",
+	"derived"
+];
+var SOURCE_KIND_SET = new Set(SOURCE_KIND_VALUES);
+var SOURCE_AUTHORITY_SET = new Set(SOURCE_AUTHORITY_VALUES);
+function validateSourceKind(kind, errors) {
+	if (SOURCE_KIND_SET.has(kind)) return;
+	throw errors.create("BE_SOURCE_KIND_INVALID", void 0, { details: {
+		kind,
+		allowed_values: [...SOURCE_KIND_VALUES]
+	} });
+}
+function validateSourceAuthority(authority, errors) {
+	if (SOURCE_AUTHORITY_SET.has(authority)) return;
+	throw errors.create("BE_SOURCE_AUTHORITY_INVALID", void 0, { details: {
+		authority,
+		allowed_values: [...SOURCE_AUTHORITY_VALUES]
+	} });
+}
+function buildSourceRecord(payload) {
+	validateSourceKind(payload.kind, payload.errors);
+	validateSourceAuthority(payload.authority, payload.errors);
+	const [record] = payload.schemas.parseSourceRegistry({
+		schema_version: 1,
+		created_at: payload.registeredAt,
+		updated_at: payload.registeredAt,
+		sources: [{
+			source_id: payload.sourceId,
+			source_label: payload.relativePath,
+			path: payload.relativePath,
+			kind: payload.kind,
+			authority: payload.authority,
+			...payload.note ? { note: payload.note } : {},
+			hash: payload.sourceHash,
+			registered_at: payload.registeredAt,
+			last_checked_at: payload.lastCheckedAt
+		}]
+	}).sources;
+	if (!record) throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: { reason: "source_registry_parse_returned_empty_sources" } });
+	return record;
+}
+function registerSourceRecord(payload) {
+	const existingSource = payload.registry.sources.find((source) => source.path === payload.source.path);
+	if (existingSource) return {
+		registry: payload.registry,
+		source: existingSource,
+		created: false
+	};
+	return {
+		registry: payload.schemas.parseSourceRegistry({
+			...payload.registry,
+			updated_at: payload.source.registered_at,
+			sources: sortSourceLabels([...payload.registry.sources, payload.source])
+		}),
+		source: payload.source,
+		created: true
+	};
+}
+function createSourceSummary(source) {
+	return {
+		source_id: source.source_id,
+		source_label: source.source_label
+	};
+}
+function resolveSourceAbsolutePath(payload) {
+	return payload.path.resolve(payload.backlogRoot, payload.sourcePath);
+}
+//#endregion
+//#region src/sources/source-scope-service.ts
+function collectItemSourceIds(item) {
+	return new Set([
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	]);
+}
+function sortStringKeys(values) {
+	return [...values].sort((left, right) => left.localeCompare(right));
+}
+function resolveSourceBySelector(payload) {
+	const { selector } = payload;
+	if (selector.kind === "source_id") {
+		const source = payload.registry.sources.find((record) => record.source_id === selector.source_id);
+		if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_id: selector.source_id } });
+		return [source];
+	}
+	if (selector.kind === "source_label") {
+		const source = payload.registry.sources.find((record) => record.source_label === selector.source_label);
+		if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_label: selector.source_label } });
+		return [source];
+	}
+	const normalized = normalizeSourcePath({
+		path: payload.path,
+		errors: payload.errors,
+		backlogRoot: payload.backlogRoot,
+		inputPath: selector.source_path
+	});
+	const source = payload.registry.sources.find((record) => record.path === normalized.relative_path);
+	if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { path: normalized.relative_path } });
+	return [source];
+}
+function collectTopLevelItemKeys(payload) {
+	const itemsByKey = new Map(payload.state.items.map((item) => [item.item_key, item]));
+	const topLevelItemKeys = /* @__PURE__ */ new Set();
+	for (const linkedItemKey of payload.linkedItemKeys) {
+		const stack = [linkedItemKey];
+		const seen = /* @__PURE__ */ new Set();
+		while (stack.length > 0) {
+			const itemKey = stack.pop();
+			if (!itemKey) break;
+			if (seen.has(itemKey)) continue;
+			seen.add(itemKey);
+			const item = itemsByKey.get(itemKey);
+			if (!item || item.depends_on_keys.length === 0) {
+				topLevelItemKeys.add(itemKey);
+				continue;
+			}
+			for (const dependencyKey of item.depends_on_keys) stack.push(dependencyKey);
+		}
+	}
+	return topLevelItemKeys;
+}
+function collectSubgraphItemKeys(payload) {
+	const itemsByKey = new Map(payload.state.items.map((item) => [item.item_key, item]));
+	const subgraphItemKeys = /* @__PURE__ */ new Set();
+	const stack = [...payload.topLevelItemKeys];
+	while (stack.length > 0) {
+		const itemKey = stack.pop();
+		if (!itemKey) break;
+		if (subgraphItemKeys.has(itemKey)) continue;
+		subgraphItemKeys.add(itemKey);
+		const item = itemsByKey.get(itemKey);
+		if (!item) continue;
+		for (const reverseDependencyKey of item.reverse_dependency_keys) stack.push(reverseDependencyKey);
+	}
+	return subgraphItemKeys;
+}
+async function refreshSourceHashes(payload) {
+	const selectedIds = new Set(payload.selectedSourceIds);
+	const refreshedAt = payload.clock.nowIsoUtc();
+	const changedSourceIds = [];
+	const changedSources = [];
+	const nextSources = await Promise.all(payload.registry.sources.map(async (source) => {
+		if (!selectedIds.has(source.source_id)) return source;
+		const nextHash = await hashSourceFile({
+			fs: payload.fs,
+			path: payload.path,
+			hash: payload.hash,
+			errors: payload.errors,
+			filePath: resolveSourceAbsolutePath({
+				path: payload.path,
+				backlogRoot: payload.backlogRoot,
+				sourcePath: source.path
+			})
+		});
+		const nextSource = {
+			...source,
+			hash: nextHash,
+			last_checked_at: refreshedAt
+		};
+		if (nextHash !== source.hash) {
+			changedSourceIds.push(source.source_id);
+			changedSources.push(createSourceSummary(source));
+		}
+		return nextSource;
+	}));
+	return {
+		registry: selectedIds.size === 0 ? payload.registry : payload.schemas.parseSourceRegistry({
+			...payload.registry,
+			updated_at: refreshedAt,
+			sources: sortSourceLabels(nextSources)
+		}),
+		changedSourceIds: sortStringKeys(changedSourceIds),
+		changedSources: sortSourceLabels(changedSources)
+	};
+}
+function resolveSourceScope(payload) {
+	const selectedSources = resolveSourceBySelector(payload);
+	const selectedSourceIds = new Set(selectedSources.map((source) => source.source_id));
+	const linkedItemKeys = /* @__PURE__ */ new Set();
+	for (const item of payload.state.items) {
+		const sourceIds = collectItemSourceIds(item);
+		if ([...selectedSourceIds].some((sourceId) => sourceIds.has(sourceId))) linkedItemKeys.add(item.item_key);
+	}
+	const topLevelItemKeys = collectTopLevelItemKeys({
+		state: payload.state,
+		linkedItemKeys
+	});
+	const subgraphItemKeys = collectSubgraphItemKeys({
+		state: payload.state,
+		topLevelItemKeys
+	});
+	return {
+		sourceIds: sortStringKeys(selectedSourceIds),
+		topLevelItemKeys: sortStringKeys(topLevelItemKeys),
+		subgraphItemKeys: sortStringKeys(subgraphItemKeys)
+	};
+}
+//#endregion
+//#region src/sources/index.ts
+function createSourcesModule(dependencies) {
+	return {
+		resolveCliSourcePath(payload) {
+			return Promise.resolve(normalizeSourcePath({
+				path: dependencies.path,
+				errors: dependencies.errors,
+				backlogRoot: payload.backlogRoot,
+				inputPath: payload.inputPath
+			}));
+		},
+		buildSourceRecord(payload) {
+			return buildSourceRecord({
+				schemas: dependencies.schemas,
+				errors: dependencies.errors,
+				sourceId: payload.sourceId,
+				relativePath: payload.relativePath,
+				kind: payload.kind,
+				authority: payload.authority,
+				registeredAt: payload.registeredAt,
+				lastCheckedAt: payload.lastCheckedAt,
+				sourceHash: payload.sourceHash,
+				...payload.note ? { note: payload.note } : {}
+			});
+		},
+		hashSourceFile(path) {
+			return hashSourceFile({
+				fs: dependencies.fs,
+				path: dependencies.path,
+				hash: dependencies.hash,
+				errors: dependencies.errors,
+				filePath: path
+			});
+		},
+		registerSource(payload) {
+			return registerSourceRecord({
+				schemas: dependencies.schemas,
+				registry: payload.registry,
+				source: payload.source
+			});
+		},
+		refreshSourceHashes(payload) {
+			return refreshSourceHashes({
+				fs: dependencies.fs,
+				path: dependencies.path,
+				hash: dependencies.hash,
+				clock: dependencies.clock,
+				schemas: dependencies.schemas,
+				errors: dependencies.errors,
+				backlogRoot: payload.backlogRoot,
+				registry: payload.registry,
+				selectedSourceIds: payload.selectedSourceIds
+			});
+		},
+		resolveSourceScope(payload) {
+			return resolveSourceScope({
+				path: dependencies.path,
+				errors: dependencies.errors,
+				backlogRoot: payload.backlogRoot,
+				state: payload.state,
+				registry: payload.registry,
+				selector: payload.selector
+			});
+		}
+	};
+}
 var REGISTER_SOURCE_COMMAND = {
 	name: "register-source",
 	summary: "Register a source document and obtain a source ID.",
@@ -5766,6 +6386,8 @@ var REGISTER_SOURCE_COMMAND = {
 	},
 	async execute(input, context) {
 		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+		validateSourceKind(input.kind, context.errors);
+		validateSourceAuthority(input.authority, context.errors);
 		const normalizedSource = await context.sources.resolveCliSourcePath({
 			backlogRoot: context.backlogRoot,
 			inputPath: context.host.resolveCliPath(input.path)
@@ -5964,8 +6586,11 @@ var OPTIONS = [{
 function formatPatchSequence(sequence) {
 	return String(sequence).padStart(3, "0");
 }
-function createPatchTemplateId(createdAt, sequence) {
-	return `${createdAt.slice(0, 10)}-${formatPatchSequence(sequence)}-patch-template`;
+function createPatchTemplateId(createdAt, sequence, suffix) {
+	return `${createdAt.slice(0, 10)}-${formatPatchSequence(sequence)}-patch-template-${suffix}`;
+}
+function createDraftSuffix(uuid) {
+	return uuid.replaceAll("-", "").slice(0, 8).toLowerCase();
 }
 var TEMPLATE_COMMAND = {
 	name: "template",
@@ -6017,21 +6642,24 @@ var TEMPLATE_COMMAND = {
 			});
 		}
 		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
-		const [appliedRegistry, state] = await Promise.all([context.artifacts.readAppliedRegistry(context.backlogRoot), context.artifacts.readState(context.backlogRoot)]);
+		const [appliedRegistry, queryState] = await Promise.all([context.artifacts.readAppliedRegistry(context.backlogRoot), context.ensureQueryState()]);
+		const { state } = queryState;
 		const missingItemKeys = input.item_keys.filter((itemKey) => !state.items.some((candidate) => candidate.item_key === itemKey));
 		if (missingItemKeys.length > 0) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_keys: missingItemKeys } });
 		const nextSequence = appliedRegistry.patches.reduce((maxSequence, patch) => {
 			return Math.max(maxSequence, patch.sequence);
 		}, 0) + 1;
 		const createdAt = context.host.nowIsoUtc();
+		const draftSuffix = createDraftSuffix(context.host.createUuid());
 		const outputPath = await context.artifacts.writeTemplateOutput({
 			cwd,
 			out: input.out,
 			defaultBasename: `${formatPatchSequence(nextSequence)}-patch.template.json`,
+			collisionBasename: `${formatPatchSequence(nextSequence)}-${draftSuffix}-patch.template.json`,
 			content: context.templates.renderPatchTemplate({
 				targetItemKeys: input.item_keys,
 				kind: "patch-item",
-				patchId: createPatchTemplateId(createdAt, nextSequence),
+				patchId: createPatchTemplateId(createdAt, nextSequence, draftSuffix),
 				createdAt,
 				sequence: nextSequence
 			})
@@ -6148,182 +6776,6 @@ function parseCliIntent(argv) {
 	};
 }
 //#endregion
-//#region src/artifacts/store-helpers.ts
-function createJsonIssueDetails(error) {
-	return { issues: error.issues.map((issue) => ({
-		path: issue.path.join("."),
-		message: issue.message,
-		code: issue.code
-	})) };
-}
-function isMissingFileError(error) {
-	return error instanceof Error && "code" in error && error.code === "ENOENT";
-}
-function createTempSiblingPath$1(path, targetPath, seedHash) {
-	return path.join(path.dirname(targetPath), `.${path.basename(targetPath)}.tmp-${seedHash.slice(0, 12)}`);
-}
-function listPathChain(path, target) {
-	const normalizedTarget = path.resolve(target);
-	const chain = [normalizedTarget];
-	let cursor = path.dirname(normalizedTarget);
-	while (cursor !== chain[chain.length - 1]) {
-		chain.push(cursor);
-		cursor = path.dirname(cursor);
-	}
-	return chain.reverse();
-}
-function isPathInsideRoot(path, root, target) {
-	const relative = path.relative(root, target).replaceAll("\\", "/");
-	if (relative.length === 0) return true;
-	return relative !== ".." && !relative.startsWith("../");
-}
-async function ensureDirectoryChainIsSafe(payload) {
-	const { fs, path, errors, root, leafDirectory, errorCode, detailPath } = payload;
-	const normalizedRoot = path.resolve(root);
-	const normalizedLeaf = path.resolve(leafDirectory);
-	if (!isPathInsideRoot(path, normalizedRoot, normalizedLeaf)) throw errors.create(errorCode, void 0, { details: { path: detailPath } });
-	for (const candidate of listPathChain(path, normalizedLeaf)) {
-		if (!await fs.exists(candidate)) continue;
-		const entry = await fs.lstat(candidate);
-		if (entry.isSymbolicLink || !entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: detailPath } });
-	}
-}
-async function ensureManagedDirectoryPathSafe(payload) {
-	const { fs, path, errors, root, directoryPath, errorCode } = payload;
-	const targetDirectory = path.resolve(directoryPath);
-	await ensureDirectoryChainIsSafe({
-		fs,
-		path,
-		errors,
-		root,
-		leafDirectory: targetDirectory,
-		errorCode,
-		detailPath: targetDirectory
-	});
-	if (!await fs.exists(targetDirectory)) return;
-	const entry = await fs.lstat(targetDirectory);
-	if (entry.isSymbolicLink || !entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: targetDirectory } });
-}
-async function ensureManagedFilePathSafe(payload) {
-	const { fs, path, errors, root, filePath, errorCode } = payload;
-	const targetFile = path.resolve(filePath);
-	await ensureDirectoryChainIsSafe({
-		fs,
-		path,
-		errors,
-		root,
-		leafDirectory: path.dirname(targetFile),
-		errorCode,
-		detailPath: targetFile
-	});
-	if (!await fs.exists(targetFile)) return;
-	const entry = await fs.lstat(targetFile);
-	if (entry.isSymbolicLink || entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: targetFile } });
-}
-async function ensureNoSymlinkAncestors(payload) {
-	const { fs, path, errors, targetPath, errorCode } = payload;
-	const normalizedTarget = path.resolve(targetPath);
-	for (const candidate of listPathChain(path, normalizedTarget)) {
-		if (!await fs.exists(candidate)) continue;
-		if ((await fs.lstat(candidate)).isSymbolicLink) throw errors.create(errorCode, void 0, { details: { path: normalizedTarget } });
-	}
-}
-async function readJsonArtifact(payload) {
-	const { fs, errors, filePath, parse, missingCode = "BE_INTERNAL_STATE_CORRUPT", corruptCode = "BE_INTERNAL_STATE_CORRUPT" } = payload;
-	let rawText;
-	try {
-		rawText = await fs.readText(filePath);
-	} catch (error) {
-		if (isMissingFileError(error)) throw errors.create(missingCode, void 0, {
-			details: { path: filePath },
-			cause: error
-		});
-		throw errors.create(corruptCode, void 0, {
-			details: { path: filePath },
-			cause: error
-		});
-	}
-	let rawJson;
-	try {
-		rawJson = JSON.parse(rawText);
-	} catch (error) {
-		throw errors.create("BE_INVALID_JSON", void 0, {
-			details: { path: filePath },
-			cause: error
-		});
-	}
-	try {
-		return parse(rawJson);
-	} catch (error) {
-		if (error instanceof ZodError) throw errors.create("BE_SCHEMA_INVALID", void 0, {
-			details: {
-				path: filePath,
-				...createJsonIssueDetails(error)
-			},
-			cause: error
-		});
-		throw errors.create(corruptCode, void 0, {
-			details: { path: filePath },
-			cause: error
-		});
-	}
-}
-async function writeTextAtomically(payload) {
-	const { fs, path, hash, errors, root, targetPath, content, writeErrorCode } = payload;
-	const tempPath = createTempSiblingPath$1(path, targetPath, await hash.sha256Text(`${targetPath}\n${content}`));
-	if (root) await ensureManagedFilePathSafe({
-		fs,
-		path,
-		errors,
-		root,
-		filePath: targetPath,
-		errorCode: writeErrorCode
-	});
-	try {
-		await fs.mkdir(path.dirname(targetPath), { recursive: true });
-		await fs.rm(tempPath, { force: true });
-		await fs.writeText(tempPath, content);
-		await fs.rename(tempPath, targetPath);
-	} catch (error) {
-		try {
-			await fs.rm(tempPath, { force: true });
-		} catch {}
-		throw errors.create(writeErrorCode, void 0, {
-			details: { path: targetPath },
-			cause: error
-		});
-	}
-}
-async function writeJsonArtifact(payload) {
-	const { fs, path, hash, errors, root, filePath, value, validate, writeErrorCode } = payload;
-	let validatedValue;
-	try {
-		validatedValue = validate(value);
-	} catch (error) {
-		if (error instanceof ZodError) throw errors.create("BE_SCHEMA_INVALID", void 0, {
-			details: {
-				path: filePath,
-				...createJsonIssueDetails(error)
-			},
-			cause: error
-		});
-		throw errors.create(writeErrorCode, void 0, {
-			details: { path: filePath },
-			cause: error
-		});
-	}
-	await writeTextAtomically({
-		fs,
-		path,
-		hash,
-		errors,
-		root,
-		targetPath: filePath,
-		content: `${JSON.stringify(validatedValue, null, 2)}\n`,
-		writeErrorCode
-	});
-}
-//#endregion
 //#region src/artifacts/backlog-layout.ts
 var ROOT_MARKER_BASENAME = ".backlog.json";
 var BACKLOG_INTERNAL_DIRNAME = ".backlog";
@@ -6406,9 +6858,15 @@ function createCanonicalImportFilename(sha256, canonicalBasename, errors) {
 	return `${sha256.slice(0, 12)}--${trimmedBasename}`;
 }
 async function resolveTemplateOutputPath(payload) {
-	const { fs, path, errors, cwd, out, defaultBasename } = payload;
+	const { fs, path, errors, cwd, out, defaultBasename, collisionBasename } = payload;
 	const absoluteTarget = path.resolve(cwd, out);
 	const explicitDirectory = out.endsWith("/") || out.endsWith("\\");
+	async function resolveDirectoryTarget(directoryPath) {
+		const primaryTarget = path.join(directoryPath, defaultBasename);
+		if (!await fs.exists(primaryTarget)) return primaryTarget;
+		if (collisionBasename) return path.join(directoryPath, collisionBasename);
+		return primaryTarget;
+	}
 	await ensureNoSymlinkAncestors({
 		fs,
 		path,
@@ -6419,12 +6877,25 @@ async function resolveTemplateOutputPath(payload) {
 	if (await fs.exists(absoluteTarget)) {
 		const stat = await fs.lstat(absoluteTarget);
 		if (stat.isSymbolicLink) throw errors.create("BE_TEMPLATE_OUTPUT_INVALID", void 0, { details: { out } });
-		if (stat.isDirectory) return path.join(absoluteTarget, defaultBasename);
-		if (stat.isFile) return absoluteTarget;
+		if (stat.isDirectory) return resolveDirectoryTarget(absoluteTarget);
+		if (stat.isFile) {
+			if (explicitDirectory) throw errors.create("BE_TEMPLATE_OUTPUT_INVALID", void 0, {
+				details: { out },
+				hint: "A trailing slash requires an existing directory or a creatable directory path."
+			});
+			return absoluteTarget;
+		}
 	}
 	if (explicitDirectory) {
-		await fs.mkdir(absoluteTarget, { recursive: true });
-		return path.join(absoluteTarget, defaultBasename);
+		try {
+			await fs.mkdir(absoluteTarget, { recursive: true });
+		} catch (error) {
+			throw errors.create("BE_TEMPLATE_OUTPUT_INVALID", void 0, {
+				details: { out },
+				cause: error
+			});
+		}
+		return resolveDirectoryTarget(absoluteTarget);
 	}
 	if (path.basename(absoluteTarget).trim().length === 0) throw errors.create("BE_TEMPLATE_OUTPUT_INVALID", void 0, { details: { out } });
 	return absoluteTarget;
@@ -6695,7 +7166,8 @@ async function writeTemplateOutput(dependencies, payload) {
 		errors: dependencies.errors,
 		cwd: payload.cwd,
 		out: payload.out,
-		defaultBasename: payload.defaultBasename
+		defaultBasename: payload.defaultBasename,
+		...payload.collisionBasename ? { collisionBasename: payload.collisionBasename } : {}
 	});
 	await writeTextAtomically({
 		fs: dependencies.fs,
@@ -6713,9 +7185,12 @@ async function writeTemplateOutput(dependencies, payload) {
 async function readRootMarker(dependencies, root) {
 	return readJsonArtifact({
 		fs: dependencies.fs,
+		path: dependencies.path,
 		errors: dependencies.errors,
+		root,
 		filePath: getRootMarkerPath(dependencies.path, root),
 		parse: (raw) => dependencies.schemas.parseRootMarker(raw),
+		readErrorCode: "BE_ROOT_NOT_FOUND",
 		missingCode: "BE_ROOT_NOT_FOUND",
 		corruptCode: "BE_ROOT_NOT_FOUND"
 	});
@@ -6738,9 +7213,12 @@ async function writeRootMarker(dependencies, root, marker) {
 async function readSourceRegistry(dependencies, root) {
 	return readJsonArtifact({
 		fs: dependencies.fs,
+		path: dependencies.path,
 		errors: dependencies.errors,
+		root,
 		filePath: getSourceRegistryPath(dependencies.path, root),
-		parse: (raw) => dependencies.schemas.parseSourceRegistry(raw)
+		parse: (raw) => dependencies.schemas.parseSourceRegistry(raw),
+		readErrorCode: "BE_INTERNAL_STATE_CORRUPT"
 	});
 }
 async function writeSourceRegistry(dependencies, root, value) {
@@ -6758,15 +7236,31 @@ async function writeSourceRegistry(dependencies, root, value) {
 }
 //#endregion
 //#region src/artifacts/applied-registry-store.ts
+function assertAppliedRegistrySemanticInvariants(value, dependencies) {
+	const seenSequences = /* @__PURE__ */ new Set();
+	for (const patch of value.patches) {
+		if (seenSequences.has(patch.sequence)) throw dependencies.errors.create("BE_PATCH_SEQUENCE_CONFLICT", void 0, { details: {
+			patch_id: patch.patch_id,
+			sequence: patch.sequence
+		} });
+		seenSequences.add(patch.sequence);
+	}
+}
 async function readAppliedRegistry(dependencies, root) {
-	return readJsonArtifact({
+	const registry = await readJsonArtifact({
 		fs: dependencies.fs,
+		path: dependencies.path,
 		errors: dependencies.errors,
+		root,
 		filePath: getAppliedRegistryPath(dependencies.path, root),
-		parse: (raw) => dependencies.schemas.parseAppliedRegistry(raw)
+		parse: (raw) => dependencies.schemas.parseAppliedRegistry(raw),
+		readErrorCode: "BE_INTERNAL_STATE_CORRUPT"
 	});
+	assertAppliedRegistrySemanticInvariants(registry, dependencies);
+	return registry;
 }
 async function writeAppliedRegistry(dependencies, root, value) {
+	assertAppliedRegistrySemanticInvariants(value, dependencies);
 	await writeJsonArtifact({
 		fs: dependencies.fs,
 		path: dependencies.path,
@@ -6784,9 +7278,12 @@ async function writeAppliedRegistry(dependencies, root, value) {
 async function readState(dependencies, root) {
 	return readJsonArtifact({
 		fs: dependencies.fs,
+		path: dependencies.path,
 		errors: dependencies.errors,
+		root,
 		filePath: getStatePath(dependencies.path, root),
-		parse: (raw) => dependencies.schemas.parseStateFile(raw)
+		parse: (raw) => dependencies.schemas.parseStateFile(raw),
+		readErrorCode: "BE_INTERNAL_STATE_CORRUPT"
 	});
 }
 async function writeState(dependencies, root, value) {
@@ -6804,8 +7301,16 @@ async function writeState(dependencies, root, value) {
 }
 async function stateExists(dependencies, root) {
 	const statePath = getStatePath(dependencies.path, root);
+	await ensureManagedFilePathSafe({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		errors: dependencies.errors,
+		root,
+		filePath: statePath,
+		errorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
 	if (!await dependencies.fs.exists(statePath)) return false;
-	return (await dependencies.fs.stat(statePath)).isFile;
+	return (await dependencies.fs.lstat(statePath)).isFile;
 }
 //#endregion
 //#region src/artifacts/index.ts
@@ -6972,328 +7477,6 @@ function createArtifactsModule(dependencies) {
 		},
 		deleteBacklog(root) {
 			return deleteBacklog(dependencies, root);
-		}
-	};
-}
-//#endregion
-//#region src/sources/path-normalizer.ts
-function toPosixRelativePath(relativePath) {
-	return relativePath.replaceAll("\\", "/");
-}
-function createSourceLabel(relativePath) {
-	return relativePath;
-}
-function normalizeSourcePath(payload) {
-	const absolutePath = payload.path.resolve(payload.backlogRoot, payload.inputPath);
-	const relativePath = toPosixRelativePath(payload.path.relative(payload.backlogRoot, absolutePath));
-	const parsedRelativePath = BacklogRelativePosixPathSchema.safeParse(relativePath);
-	if (!parsedRelativePath.success) throw fromZodError(parsedRelativePath.error, {
-		path: absolutePath,
-		relative_path: relativePath
-	});
-	return {
-		absolute_path: absolutePath,
-		relative_path: parsedRelativePath.data,
-		source_label: createSourceLabel(parsedRelativePath.data)
-	};
-}
-function sortSourceLabels(values) {
-	return [...values].sort((left, right) => {
-		const labelCompare = left.source_label.localeCompare(right.source_label);
-		if (labelCompare !== 0) return labelCompare;
-		return (left.source_id ?? "").localeCompare(right.source_id ?? "");
-	});
-}
-//#endregion
-//#region src/sources/source-hash-service.ts
-async function hashSourceFile(payload) {
-	let content;
-	try {
-		content = await payload.fs.readText(payload.filePath);
-	} catch (error) {
-		throw payload.errors.create("BE_SOURCE_FILE_MISSING", void 0, {
-			details: { path: payload.filePath },
-			cause: error
-		});
-	}
-	return payload.hash.sha256Text(content);
-}
-//#endregion
-//#region src/sources/source-registry-service.ts
-var SOURCE_KIND_VALUES = [
-	"architecture",
-	"module",
-	"adr",
-	"technical-decision",
-	"integration",
-	"operations",
-	"planning",
-	"specification"
-];
-var SOURCE_AUTHORITY_VALUES = [
-	"authoritative",
-	"supporting",
-	"derived"
-];
-var SOURCE_KIND_SET = new Set(SOURCE_KIND_VALUES);
-var SOURCE_AUTHORITY_SET = new Set(SOURCE_AUTHORITY_VALUES);
-function validateSourceKind(kind, errors) {
-	if (SOURCE_KIND_SET.has(kind)) return;
-	throw errors.create("BE_SOURCE_KIND_INVALID", void 0, { details: {
-		kind,
-		allowed_values: [...SOURCE_KIND_VALUES]
-	} });
-}
-function validateSourceAuthority(authority, errors) {
-	if (SOURCE_AUTHORITY_SET.has(authority)) return;
-	throw errors.create("BE_SOURCE_AUTHORITY_INVALID", void 0, { details: {
-		authority,
-		allowed_values: [...SOURCE_AUTHORITY_VALUES]
-	} });
-}
-function buildSourceRecord(payload) {
-	validateSourceKind(payload.kind, payload.errors);
-	validateSourceAuthority(payload.authority, payload.errors);
-	const [record] = payload.schemas.parseSourceRegistry({
-		schema_version: 1,
-		created_at: payload.registeredAt,
-		updated_at: payload.registeredAt,
-		sources: [{
-			source_id: payload.sourceId,
-			source_label: payload.relativePath,
-			path: payload.relativePath,
-			kind: payload.kind,
-			authority: payload.authority,
-			...payload.note ? { note: payload.note } : {},
-			hash: payload.sourceHash,
-			registered_at: payload.registeredAt,
-			last_checked_at: payload.lastCheckedAt
-		}]
-	}).sources;
-	if (!record) throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: { reason: "source_registry_parse_returned_empty_sources" } });
-	return record;
-}
-function registerSourceRecord(payload) {
-	const existingSource = payload.registry.sources.find((source) => source.path === payload.source.path);
-	if (existingSource) return {
-		registry: payload.registry,
-		source: existingSource,
-		created: false
-	};
-	return {
-		registry: payload.schemas.parseSourceRegistry({
-			...payload.registry,
-			updated_at: payload.source.registered_at,
-			sources: sortSourceLabels([...payload.registry.sources, payload.source])
-		}),
-		source: payload.source,
-		created: true
-	};
-}
-function createSourceSummary(source) {
-	return {
-		source_id: source.source_id,
-		source_label: source.source_label
-	};
-}
-function resolveSourceAbsolutePath(payload) {
-	return payload.path.resolve(payload.backlogRoot, payload.sourcePath);
-}
-//#endregion
-//#region src/sources/source-scope-service.ts
-function collectItemSourceIds(item) {
-	return new Set([
-		...item.origin_source_ids,
-		...item.specification_source_ids,
-		...item.plan_source_ids,
-		...item.implementation_source_ids,
-		...item.test_source_ids
-	]);
-}
-function sortStringKeys(values) {
-	return [...values].sort((left, right) => left.localeCompare(right));
-}
-function resolveSourceBySelector(payload) {
-	const { selector } = payload;
-	if (selector.kind === "source_id") {
-		const source = payload.registry.sources.find((record) => record.source_id === selector.source_id);
-		if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_id: selector.source_id } });
-		return [source];
-	}
-	if (selector.kind === "source_label") {
-		const source = payload.registry.sources.find((record) => record.source_label === selector.source_label);
-		if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_label: selector.source_label } });
-		return [source];
-	}
-	const normalized = normalizeSourcePath({
-		path: payload.path,
-		errors: payload.errors,
-		backlogRoot: payload.backlogRoot,
-		inputPath: selector.source_path
-	});
-	const source = payload.registry.sources.find((record) => record.path === normalized.relative_path);
-	if (!source) throw payload.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { path: normalized.relative_path } });
-	return [source];
-}
-function collectTopLevelItemKeys(payload) {
-	const itemsByKey = new Map(payload.state.items.map((item) => [item.item_key, item]));
-	const topLevelItemKeys = /* @__PURE__ */ new Set();
-	for (const linkedItemKey of payload.linkedItemKeys) {
-		const stack = [linkedItemKey];
-		const seen = /* @__PURE__ */ new Set();
-		while (stack.length > 0) {
-			const itemKey = stack.pop();
-			if (!itemKey) break;
-			if (seen.has(itemKey)) continue;
-			seen.add(itemKey);
-			const item = itemsByKey.get(itemKey);
-			if (!item || item.depends_on_keys.length === 0) {
-				topLevelItemKeys.add(itemKey);
-				continue;
-			}
-			for (const dependencyKey of item.depends_on_keys) stack.push(dependencyKey);
-		}
-	}
-	return topLevelItemKeys;
-}
-function collectSubgraphItemKeys(payload) {
-	const itemsByKey = new Map(payload.state.items.map((item) => [item.item_key, item]));
-	const subgraphItemKeys = /* @__PURE__ */ new Set();
-	const stack = [...payload.topLevelItemKeys];
-	while (stack.length > 0) {
-		const itemKey = stack.pop();
-		if (!itemKey) break;
-		if (subgraphItemKeys.has(itemKey)) continue;
-		subgraphItemKeys.add(itemKey);
-		const item = itemsByKey.get(itemKey);
-		if (!item) continue;
-		for (const reverseDependencyKey of item.reverse_dependency_keys) stack.push(reverseDependencyKey);
-	}
-	return subgraphItemKeys;
-}
-async function refreshSourceHashes(payload) {
-	const selectedIds = new Set(payload.selectedSourceIds);
-	const refreshedAt = payload.clock.nowIsoUtc();
-	const changedSourceIds = [];
-	const changedSources = [];
-	const nextSources = await Promise.all(payload.registry.sources.map(async (source) => {
-		if (!selectedIds.has(source.source_id)) return source;
-		const nextHash = await hashSourceFile({
-			fs: payload.fs,
-			hash: payload.hash,
-			errors: payload.errors,
-			filePath: resolveSourceAbsolutePath({
-				path: payload.path,
-				backlogRoot: payload.backlogRoot,
-				sourcePath: source.path
-			})
-		});
-		const nextSource = {
-			...source,
-			hash: nextHash,
-			last_checked_at: refreshedAt
-		};
-		if (nextHash !== source.hash) {
-			changedSourceIds.push(source.source_id);
-			changedSources.push(createSourceSummary(source));
-		}
-		return nextSource;
-	}));
-	return {
-		registry: selectedIds.size === 0 ? payload.registry : payload.schemas.parseSourceRegistry({
-			...payload.registry,
-			updated_at: refreshedAt,
-			sources: sortSourceLabels(nextSources)
-		}),
-		changedSourceIds: sortStringKeys(changedSourceIds),
-		changedSources: sortSourceLabels(changedSources)
-	};
-}
-function resolveSourceScope(payload) {
-	const selectedSources = resolveSourceBySelector(payload);
-	const selectedSourceIds = new Set(selectedSources.map((source) => source.source_id));
-	const linkedItemKeys = /* @__PURE__ */ new Set();
-	for (const item of payload.state.items) {
-		const sourceIds = collectItemSourceIds(item);
-		if ([...selectedSourceIds].some((sourceId) => sourceIds.has(sourceId))) linkedItemKeys.add(item.item_key);
-	}
-	const topLevelItemKeys = collectTopLevelItemKeys({
-		state: payload.state,
-		linkedItemKeys
-	});
-	const subgraphItemKeys = collectSubgraphItemKeys({
-		state: payload.state,
-		topLevelItemKeys
-	});
-	return {
-		sourceIds: sortStringKeys(selectedSourceIds),
-		topLevelItemKeys: sortStringKeys(topLevelItemKeys),
-		subgraphItemKeys: sortStringKeys(subgraphItemKeys)
-	};
-}
-//#endregion
-//#region src/sources/index.ts
-function createSourcesModule(dependencies) {
-	return {
-		resolveCliSourcePath(payload) {
-			return Promise.resolve(normalizeSourcePath({
-				path: dependencies.path,
-				errors: dependencies.errors,
-				backlogRoot: payload.backlogRoot,
-				inputPath: payload.inputPath
-			}));
-		},
-		buildSourceRecord(payload) {
-			return buildSourceRecord({
-				schemas: dependencies.schemas,
-				errors: dependencies.errors,
-				sourceId: payload.sourceId,
-				relativePath: payload.relativePath,
-				kind: payload.kind,
-				authority: payload.authority,
-				registeredAt: payload.registeredAt,
-				lastCheckedAt: payload.lastCheckedAt,
-				sourceHash: payload.sourceHash,
-				...payload.note ? { note: payload.note } : {}
-			});
-		},
-		hashSourceFile(path) {
-			return hashSourceFile({
-				fs: dependencies.fs,
-				hash: dependencies.hash,
-				errors: dependencies.errors,
-				filePath: path
-			});
-		},
-		registerSource(payload) {
-			return registerSourceRecord({
-				schemas: dependencies.schemas,
-				registry: payload.registry,
-				source: payload.source
-			});
-		},
-		refreshSourceHashes(payload) {
-			return refreshSourceHashes({
-				fs: dependencies.fs,
-				path: dependencies.path,
-				hash: dependencies.hash,
-				clock: dependencies.clock,
-				schemas: dependencies.schemas,
-				errors: dependencies.errors,
-				backlogRoot: payload.backlogRoot,
-				registry: payload.registry,
-				selectedSourceIds: payload.selectedSourceIds
-			});
-		},
-		resolveSourceScope(payload) {
-			return resolveSourceScope({
-				path: dependencies.path,
-				errors: dependencies.errors,
-				backlogRoot: payload.backlogRoot,
-				state: payload.state,
-				registry: payload.registry,
-				selector: payload.selector
-			});
 		}
 	};
 }
@@ -7550,21 +7733,625 @@ async function resolveCommandBacklogRoot(payload) {
 	return findBacklogRoot(payload.fs, payload.path, payload.cwd);
 }
 //#endregion
-//#region src/runtime/state-recovery.ts
-function createUnconfiguredStateCoordinator(errorModule) {
-	const createUnconfiguredError = (operation) => errorModule.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
-		details: { operation },
-		hint: "Continue with the runtime/artifacts implementation work packages before invoking state-dependent command semantics."
-	});
+//#region src/core/replay-pipeline.ts
+var DERIVED_TODO_TYPES = {
+	review_source_change: "source_changed",
+	review_dependency_change: "dependency_changed",
+	review_context_change: "context_changed"
+};
+function dedupeStable(values, getKey) {
+	const seen = /* @__PURE__ */ new Set();
+	const result = [];
+	for (const value of values) {
+		const key = getKey(value);
+		if (seen.has(key)) continue;
+		seen.add(key);
+		result.push(value);
+	}
+	return result;
+}
+function deepEqual$1(left, right) {
+	return JSON.stringify(left) === JSON.stringify(right);
+}
+function cloneState(value) {
+	return structuredClone(value);
+}
+function mergeGlossary(payload) {
+	const result = [...payload.current];
+	const byTerm = new Map(result.map((entry, index) => [entry.term, index]));
+	for (const entry of payload.incoming) {
+		const index = byTerm.get(entry.term);
+		if (index === void 0) {
+			byTerm.set(entry.term, result.length);
+			result.push(entry);
+			continue;
+		}
+		const existing = result[index];
+		if (!existing) continue;
+		if (existing.definition !== entry.definition) throw payload.errors.create("BE_CONTEXT_CONFLICT_GLOSSARY", void 0, { details: { term: entry.term } });
+		result[index] = {
+			...existing,
+			aliases: dedupeStable([...existing.aliases, ...entry.aliases], (value) => value)
+		};
+	}
+	return result;
+}
+function mergeUniqueByKey(payload) {
+	const result = [...payload.current];
+	const byKey = /* @__PURE__ */ new Map();
+	for (const [index, entry] of result.entries()) byKey.set(String(entry[payload.key]), index);
+	for (const entry of payload.incoming) {
+		const keyValue = String(entry[payload.key]);
+		const existingIndex = byKey.get(keyValue);
+		if (existingIndex === void 0) {
+			byKey.set(keyValue, result.length);
+			result.push(entry);
+			continue;
+		}
+		const existing = result[existingIndex];
+		if (!deepEqual$1(existing, entry)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			key: keyValue,
+			key_field: String(payload.key)
+		} });
+	}
+	return result;
+}
+function mergeAppendUnique(current, incoming) {
+	const result = [...current];
+	for (const entry of incoming) {
+		if (result.some((candidate) => deepEqual$1(candidate, entry))) continue;
+		result.push(entry);
+	}
+	return result;
+}
+function mergePacketContext(payload) {
+	const next = cloneState(payload.state);
+	const current = next.context;
+	const incoming = payload.packet.context;
+	const keyStrategy = Object.keys(current.key_strategy).length === 0 ? incoming.key_strategy : deepEqual$1(current.key_strategy, incoming.key_strategy) ? current.key_strategy : (() => {
+		throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: { key_field: "key_strategy" } });
+	})();
+	next.context = {
+		glossary: mergeGlossary({
+			current: current.glossary,
+			incoming: incoming.glossary,
+			errors: payload.errors
+		}),
+		key_strategy: keyStrategy,
+		target_system: mergeAppendUnique(current.target_system, incoming.target_system),
+		as_built: mergeAppendUnique(current.as_built, incoming.as_built),
+		claims: mergeUniqueByKey({
+			current: current.claims,
+			incoming: incoming.claims,
+			key: "claim_key",
+			errors: payload.errors
+		}),
+		contracts: mergeUniqueByKey({
+			current: current.contracts,
+			incoming: incoming.contracts,
+			key: "contract_key",
+			errors: payload.errors
+		}),
+		data_domains: mergeUniqueByKey({
+			current: current.data_domains,
+			incoming: incoming.data_domains,
+			key: "data_domain_key",
+			errors: payload.errors
+		}),
+		quality_attributes: mergeUniqueByKey({
+			current: current.quality_attributes,
+			incoming: incoming.quality_attributes,
+			key: "quality_attribute_key",
+			errors: payload.errors
+		}),
+		policy_decisions: mergeUniqueByKey({
+			current: current.policy_decisions,
+			incoming: incoming.policy_decisions,
+			key: "policy_decision_key",
+			errors: payload.errors
+		})
+	};
+	return next;
+}
+function toStateItem(item) {
 	return {
-		ensureQueryState() {
-			return Promise.reject(createUnconfiguredError("ensureQueryState"));
+		...item,
+		reverse_dependency_keys: [],
+		open_todo_ids: [],
+		needs_attention: false,
+		attention_reason_codes: [],
+		attention_reasons: [],
+		ready_for_next_step: false
+	};
+}
+function validateReferentialIntegrity(payload) {
+	const itemKeys = new Set(payload.state.items.map((item) => item.item_key));
+	const claimKeys = new Set(payload.state.context.claims.map((claim) => claim.claim_key));
+	const contractKeys = new Set(payload.state.context.contracts.map((contract) => contract.contract_key));
+	const dataDomainKeys = new Set(payload.state.context.data_domains.map((dataDomain) => dataDomain.data_domain_key));
+	const qualityAttributeKeys = new Set(payload.state.context.quality_attributes.map((qualityAttribute) => qualityAttribute.quality_attribute_key));
+	const policyDecisionKeys = new Set(payload.state.context.policy_decisions.map((policyDecision) => policyDecision.policy_decision_key));
+	for (const item of payload.state.items) {
+		for (const dependencyKey of item.depends_on_keys) if (!itemKeys.has(dependencyKey) || dependencyKey === item.item_key) throw payload.errors.create("BE_DEPENDENCY_NOT_FOUND", void 0, { details: {
+			item_key: item.item_key,
+			dependency_key: dependencyKey
+		} });
+		for (const claimKey of item.claim_keys) if (!claimKeys.has(claimKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			claim_key: claimKey
+		} });
+		for (const contractKey of item.contract_keys) if (!contractKeys.has(contractKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			contract_key: contractKey
+		} });
+		for (const dataDomainKey of item.data_domain_keys) if (!dataDomainKeys.has(dataDomainKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			data_domain_key: dataDomainKey
+		} });
+		for (const qualityAttributeKey of item.quality_attribute_keys) if (!qualityAttributeKeys.has(qualityAttributeKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			quality_attribute_key: qualityAttributeKey
+		} });
+		for (const policyDecisionKey of item.policy_decision_keys) if (!policyDecisionKeys.has(policyDecisionKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+			item_key: item.item_key,
+			policy_decision_key: policyDecisionKey
+		} });
+	}
+	for (const qualityAttribute of payload.state.context.quality_attributes) for (const itemKey of qualityAttribute.applies_to_item_keys) if (!itemKeys.has(itemKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+		quality_attribute_key: qualityAttribute.quality_attribute_key,
+		item_key: itemKey
+	} });
+	for (const policyDecision of payload.state.context.policy_decisions) for (const itemKey of policyDecision.related_item_keys) if (!itemKeys.has(itemKey)) throw payload.errors.create("BE_CONTEXT_CONFLICT_ENTITY", void 0, { details: {
+		policy_decision_key: policyDecision.policy_decision_key,
+		item_key: itemKey
+	} });
+}
+function replaceFields(target, fields) {
+	Object.assign(target, fields);
+}
+function appendUniqueValues(target, field, values) {
+	const current = target[field];
+	if (!Array.isArray(current)) return;
+	target[field] = dedupeStable([...current, ...values], (value) => String(value));
+}
+function removeValues(target, field, values) {
+	const current = target[field];
+	if (!Array.isArray(current)) return;
+	const valueSet = new Set(values);
+	target[field] = current.filter((value) => !valueSet.has(String(value)));
+}
+function removeTodosFromState(payload) {
+	const next = cloneState(payload.state);
+	const todoIds = new Set(payload.todoIds);
+	const ownedTodoIds = new Set(next.todos.filter((todo) => todo.item_key === payload.itemKey).map((todo) => todo.todo_id));
+	for (const todoId of todoIds) if (!ownedTodoIds.has(todoId)) throw payload.errors.create("BE_TODO_NOT_FOUND", void 0, { details: {
+		item_key: payload.itemKey,
+		todo_id: todoId
+	} });
+	next.todos = next.todos.filter((todo) => !todoIds.has(todo.todo_id));
+	return next;
+}
+function cleanupRemovedItemReferences(state, removedItemKeys) {
+	const next = cloneState(state);
+	next.items = next.items.filter((item) => !removedItemKeys.has(item.item_key)).map((item) => ({
+		...item,
+		depends_on_keys: item.depends_on_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	next.todos = next.todos.filter((todo) => !removedItemKeys.has(todo.item_key));
+	next.context.quality_attributes = next.context.quality_attributes.map((qualityAttribute) => ({
+		...qualityAttribute,
+		applies_to_item_keys: qualityAttribute.applies_to_item_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	next.context.policy_decisions = next.context.policy_decisions.map((policyDecision) => ({
+		...policyDecision,
+		related_item_keys: policyDecision.related_item_keys.filter((itemKey) => !removedItemKeys.has(itemKey))
+	}));
+	return next;
+}
+function sortItems(items) {
+	return [...items].sort((left, right) => left.item_key.localeCompare(right.item_key));
+}
+function sortTodos(todos) {
+	return [...todos].sort((left, right) => left.todo_id.localeCompare(right.todo_id));
+}
+function toAttentionReason(todo, code) {
+	if (code === "dependency_changed") {
+		const relatedItemKey = todo.related_item_keys[0];
+		return relatedItemKey ? `нужно проверить изменение зависимости ${relatedItemKey}` : "нужно проверить изменение зависимости";
+	}
+	if (code === "source_changed") {
+		const relatedSource = todo.related_sources[0];
+		return relatedSource ? `нужно проверить изменение источника ${relatedSource.source_label}` : "нужно проверить изменение источника";
+	}
+	return "нужно проверить изменение контекста";
+}
+function applyPacketReplay(payload) {
+	const merged = mergePacketContext(payload);
+	const existingKeys = new Set(merged.items.map((item) => item.item_key));
+	const nextItems = [...merged.items];
+	for (const item of payload.packet.items) {
+		if (existingKeys.has(item.item_key)) throw payload.errors.create("BE_PACKET_ITEM_ALREADY_EXISTS", void 0, { details: { item_key: item.item_key } });
+		existingKeys.add(item.item_key);
+		nextItems.push(toStateItem(item));
+	}
+	const next = {
+		...merged,
+		items: nextItems
+	};
+	validateReferentialIntegrity({
+		state: next,
+		errors: payload.errors
+	});
+	return next;
+}
+function applyPatchReplay(payload) {
+	let next = cloneState(payload.state);
+	const removedItemKeys = /* @__PURE__ */ new Set();
+	for (const operation of payload.patch.operations) {
+		const targetItem = next.items.find((item) => item.item_key === operation.item_key);
+		if (!targetItem) throw payload.errors.create("BE_PATCH_TARGET_NOT_FOUND", void 0, { details: { item_key: operation.item_key } });
+		switch (operation.action) {
+			case "replace_fields":
+				replaceFields(targetItem, operation.fields);
+				break;
+			case "append_unique":
+				appendUniqueValues(targetItem, operation.field, operation.values);
+				break;
+			case "remove_values":
+				removeValues(targetItem, operation.field, operation.values);
+				break;
+			case "remove_todo":
+				next = removeTodosFromState({
+					state: next,
+					itemKey: operation.item_key,
+					todoIds: operation.todo_ids,
+					errors: payload.errors
+				});
+				break;
+			case "remove_item":
+				removedItemKeys.add(operation.item_key);
+				break;
+			default: {
+				const exhaustiveCheck = operation;
+				throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { operation: exhaustiveCheck } });
+			}
+		}
+	}
+	if (removedItemKeys.size > 0) next = cleanupRemovedItemReferences(next, removedItemKeys);
+	validateReferentialIntegrity({
+		state: next,
+		errors: payload.errors
+	});
+	return next;
+}
+function validateSourceRegistryReferences(payload) {
+	const ensureSourceExists = (sourceId, details) => {
+		if (payload.availableSourceIds.has(sourceId)) return;
+		throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+			...details,
+			source_id: sourceId,
+			reason: "Canonical backlog references source_id that is missing from sources.json."
+		} });
+	};
+	for (const item of payload.state.items) {
+		for (const sourceId of item.origin_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "origin_source_ids"
+		});
+		for (const sourceId of item.specification_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "specification_source_ids"
+		});
+		for (const sourceId of item.plan_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "plan_source_ids"
+		});
+		for (const sourceId of item.implementation_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "implementation_source_ids"
+		});
+		for (const sourceId of item.test_source_ids) ensureSourceExists(sourceId, {
+			item_key: item.item_key,
+			field: "test_source_ids"
+		});
+	}
+	for (const claim of payload.state.context.claims) for (const sourceId of claim.source_ids) ensureSourceExists(sourceId, {
+		claim_key: claim.claim_key,
+		field: "source_ids"
+	});
+	for (const qualityAttribute of payload.state.context.quality_attributes) for (const sourceId of qualityAttribute.source_ids) ensureSourceExists(sourceId, {
+		quality_attribute_key: qualityAttribute.quality_attribute_key,
+		field: "source_ids"
+	});
+	for (const policyDecision of payload.state.context.policy_decisions) for (const sourceId of policyDecision.source_ids) ensureSourceExists(sourceId, {
+		policy_decision_key: policyDecision.policy_decision_key,
+		field: "source_ids"
+	});
+}
+function recomputeDerivedState(payload) {
+	const next = cloneState(payload.state);
+	const reverseDependencies = /* @__PURE__ */ new Map();
+	for (const item of next.items) reverseDependencies.set(item.item_key, []);
+	for (const item of next.items) for (const dependencyKey of item.depends_on_keys) {
+		const dependents = reverseDependencies.get(dependencyKey);
+		if (dependents) dependents.push(item.item_key);
+	}
+	const todoIdsByItem = /* @__PURE__ */ new Map();
+	for (const todo of sortTodos(next.todos)) {
+		const ownedTodoIds = todoIdsByItem.get(todo.item_key) ?? [];
+		ownedTodoIds.push(todo.todo_id);
+		todoIdsByItem.set(todo.item_key, ownedTodoIds);
+	}
+	const stageRank = {
+		defined: 0,
+		specified: 1,
+		planned: 2,
+		implemented: 3
+	};
+	next.items = sortItems(next.items).map((item) => {
+		const itemTodos = next.todos.filter((todo) => todo.item_key === item.item_key);
+		const attentionReasonCodes = [];
+		const attentionReasons = [];
+		for (const todoType of [
+			"review_source_change",
+			"review_dependency_change",
+			"review_context_change"
+		]) {
+			const todo = itemTodos.find((candidate) => candidate.type === todoType);
+			if (!todo) continue;
+			const code = DERIVED_TODO_TYPES[todoType];
+			attentionReasonCodes.push(code);
+			attentionReasons.push(toAttentionReason(todo, code));
+		}
+		if (item.gaps.length > 0) {
+			attentionReasonCodes.push("gaps");
+			attentionReasons.push("Есть gap: задача заблокирована до уточнения входных данных.");
+		}
+		const dependencyReady = item.depends_on_keys.every((dependencyKey) => {
+			const dependency = next.items.find((candidate) => candidate.item_key === dependencyKey);
+			if (!dependency) return false;
+			return dependency.gaps.length === 0 && (todoIdsByItem.get(dependency.item_key)?.length ?? 0) === 0 && stageRank[dependency.delivery_state] >= stageRank[item.delivery_state];
+		});
+		return {
+			...item,
+			reverse_dependency_keys: [...reverseDependencies.get(item.item_key) ?? []].sort((left, right) => left.localeCompare(right)),
+			open_todo_ids: [...todoIdsByItem.get(item.item_key) ?? []],
+			needs_attention: attentionReasonCodes.length > 0,
+			attention_reason_codes: attentionReasonCodes,
+			attention_reasons: attentionReasons,
+			ready_for_next_step: item.delivery_state !== "implemented" && item.gaps.length === 0 && (todoIdsByItem.get(item.item_key)?.length ?? 0) === 0 && dependencyReady
+		};
+	});
+	next.todos = sortTodos(next.todos).filter((todo) => next.items.some((item) => item.item_key === todo.item_key));
+	return payload.schemas.parseStateFile(next);
+}
+//#endregion
+//#region src/runtime/rebuild-state.ts
+function deepEqual(left, right) {
+	return JSON.stringify(left) === JSON.stringify(right);
+}
+function createEmptyContext() {
+	return {
+		glossary: [],
+		key_strategy: {},
+		target_system: [],
+		as_built: [],
+		claims: [],
+		contracts: [],
+		data_domains: [],
+		quality_attributes: [],
+		policy_decisions: []
+	};
+}
+function createEmptyState(payload) {
+	return payload.schemas.parseStateFile({
+		schema_version: 1,
+		created_at: payload.createdAt,
+		updated_at: payload.updatedAt,
+		last_refresh_at: payload.lastRefreshAt,
+		context: createEmptyContext(),
+		items: [],
+		todos: []
+	});
+}
+function validatePatchKind(payload) {
+	if (payload.patch.metadata.patch_id !== payload.entry.patch_id) throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+		patch_id: payload.entry.patch_id,
+		reason: "Patch metadata does not match applied registry entry."
+	} });
+	if (payload.patch.metadata.target_item_keys.length !== payload.entry.target_item_keys.length || payload.patch.metadata.target_item_keys.some((itemKey, index) => itemKey !== payload.entry.target_item_keys[index])) throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+		patch_id: payload.entry.patch_id,
+		reason: "Patch metadata target_item_keys do not match applied registry entry."
+	} });
+	if (payload.entry.kind === "patch-item") {
+		if (payload.patch.operations.some((operation) => operation.action === "remove_item")) throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { patch_id: payload.entry.patch_id } });
+		return;
+	}
+	const removedKeys = new Set(payload.patch.operations.filter((operation) => operation.action === "remove_item").map((operation) => operation.item_key));
+	if (payload.patch.operations.some((operation) => operation.action !== "remove_item") || payload.entry.target_item_keys.some((itemKey) => !removedKeys.has(itemKey))) throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { patch_id: payload.entry.patch_id } });
+}
+async function readCanonicalPacket(payload) {
+	const filePath = payload.dependencies.path.resolve(payload.backlogRoot, payload.canonicalPath);
+	return readJsonArtifact({
+		fs: payload.dependencies.fs,
+		path: payload.dependencies.path,
+		errors: payload.errors,
+		root: payload.backlogRoot,
+		filePath,
+		parse: (raw) => payload.schemas.parsePacketFile(raw),
+		readErrorCode: "BE_INTERNAL_STATE_CORRUPT",
+		missingCode: "BE_INTERNAL_STATE_CORRUPT",
+		corruptCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+}
+async function readCanonicalPatch(payload) {
+	const filePath = payload.dependencies.path.resolve(payload.backlogRoot, payload.canonicalPath);
+	return readJsonArtifact({
+		fs: payload.dependencies.fs,
+		path: payload.dependencies.path,
+		errors: payload.errors,
+		root: payload.backlogRoot,
+		filePath,
+		parse: (raw) => payload.schemas.parsePatchFile(raw),
+		readErrorCode: "BE_INTERNAL_STATE_CORRUPT",
+		missingCode: "BE_INTERNAL_STATE_CORRUPT",
+		corruptCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+}
+async function loadRuntimeArtifacts(payload) {
+	const [rootMarker, sourceRegistry, appliedRegistry] = await Promise.all([
+		payload.artifacts.readRootMarker(payload.backlogRoot),
+		payload.artifacts.readSourceRegistry(payload.backlogRoot),
+		payload.artifacts.readAppliedRegistry(payload.backlogRoot)
+	]);
+	return {
+		rootMarkerCreatedAt: rootMarker.created_at,
+		sourceRegistry,
+		appliedRegistry
+	};
+}
+function preserveRuntimeMetadata(payload) {
+	if (!payload.currentState) return payload.schemas.parseStateFile(payload.rebuiltState);
+	return payload.schemas.parseStateFile({
+		...payload.rebuiltState,
+		created_at: payload.currentState.created_at,
+		updated_at: payload.currentState.updated_at,
+		last_refresh_at: payload.currentState.last_refresh_at
+	});
+}
+function stampUpdatedAt(payload) {
+	return payload.schemas.parseStateFile({
+		...payload.state,
+		updated_at: payload.updatedAt
+	});
+}
+async function rebuildStateFromCanonicalArtifacts(payload) {
+	const runtimeArtifacts = await loadRuntimeArtifacts({
+		backlogRoot: payload.backlogRoot,
+		artifacts: payload.artifacts
+	});
+	const currentState = payload.currentState;
+	let state = createEmptyState({
+		schemas: payload.schemas,
+		createdAt: currentState?.created_at ?? runtimeArtifacts.rootMarkerCreatedAt,
+		updatedAt: currentState?.updated_at ?? payload.dependencies.clock.nowIsoUtc(),
+		lastRefreshAt: currentState?.last_refresh_at ?? null
+	});
+	const packetEntries = [...runtimeArtifacts.appliedRegistry.packets].sort((left, right) => {
+		const applyCompare = left.apply_index - right.apply_index;
+		if (applyCompare !== 0) return applyCompare;
+		return left.canonical_path.localeCompare(right.canonical_path);
+	});
+	for (const packetEntry of packetEntries) {
+		const packet = await readCanonicalPacket({
+			backlogRoot: payload.backlogRoot,
+			dependencies: payload.dependencies,
+			schemas: payload.schemas,
+			errors: payload.errors,
+			canonicalPath: packetEntry.canonical_path
+		});
+		if (JSON.stringify(packet.items.map((item) => item.item_key)) !== JSON.stringify(packetEntry.item_keys)) throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+			packet_id: packetEntry.packet_id,
+			reason: "Packet item_keys do not match applied registry entry."
+		} });
+		state = applyPacketReplay({
+			state,
+			packet,
+			errors: payload.errors
+		});
+	}
+	const patchEntries = [...runtimeArtifacts.appliedRegistry.patches].sort((left, right) => {
+		const applyCompare = left.apply_index - right.apply_index;
+		if (applyCompare !== 0) return applyCompare;
+		const sequenceCompare = left.sequence - right.sequence;
+		if (sequenceCompare !== 0) return sequenceCompare;
+		return left.canonical_path.localeCompare(right.canonical_path);
+	});
+	for (const patchEntry of patchEntries) {
+		const patch = await readCanonicalPatch({
+			backlogRoot: payload.backlogRoot,
+			dependencies: payload.dependencies,
+			schemas: payload.schemas,
+			errors: payload.errors,
+			canonicalPath: patchEntry.canonical_path
+		});
+		validatePatchKind({
+			entry: patchEntry,
+			patch,
+			errors: payload.errors
+		});
+		state = applyPatchReplay({
+			state,
+			patch,
+			errors: payload.errors
+		});
+	}
+	validateSourceRegistryReferences({
+		state,
+		availableSourceIds: new Set(runtimeArtifacts.sourceRegistry.sources.map((source) => source.source_id)),
+		errors: payload.errors
+	});
+	return preserveRuntimeMetadata({
+		rebuiltState: recomputeDerivedState({
+			schemas: payload.schemas,
+			state
+		}),
+		currentState,
+		schemas: payload.schemas
+	});
+}
+function areStatesEquivalent(left, right) {
+	return deepEqual(left, right);
+}
+function updateRebuiltStateTimestamp(payload) {
+	return stampUpdatedAt(payload);
+}
+//#endregion
+//#region src/runtime/state-recovery.ts
+function createFileBackedStateCoordinator() {
+	return {
+		async ensureQueryState(payload) {
+			let currentState;
+			const updatedAt = payload.dependencies.clock.nowIsoUtc();
+			try {
+				currentState = await payload.modules.artifacts.readState(payload.backlogRoot);
+			} catch (error) {
+				if (!payload.modules.errors.isBacklogError(error) || error.code !== "BE_INTERNAL_STATE_CORRUPT") throw error;
+			}
+			const rebuiltState = await rebuildStateFromCanonicalArtifacts({
+				backlogRoot: payload.backlogRoot,
+				dependencies: payload.dependencies,
+				artifacts: payload.modules.artifacts,
+				schemas: payload.modules.schemas,
+				errors: payload.modules.errors,
+				...currentState ? { currentState } : {}
+			});
+			if (currentState && areStatesEquivalent(currentState, rebuiltState)) return {
+				state: currentState,
+				rebuilt: false
+			};
+			const stateToPersist = currentState ? updateRebuiltStateTimestamp({
+				state: rebuiltState,
+				schemas: payload.modules.schemas,
+				updatedAt
+			}) : rebuiltState;
+			await payload.modules.artifacts.writeState(payload.backlogRoot, stateToPersist);
+			return {
+				state: stateToPersist,
+				rebuilt: true
+			};
 		},
-		ensureMutationState() {
-			return Promise.reject(createUnconfiguredError("ensureMutationState"));
+		ensureMutationState(payload) {
+			return payload.modules.artifacts.readState(payload.backlogRoot);
 		},
-		rebuildState() {
-			return Promise.reject(createUnconfiguredError("rebuildState"));
+		rebuildState(payload) {
+			return rebuildStateFromCanonicalArtifacts({
+				backlogRoot: payload.backlogRoot,
+				dependencies: payload.dependencies,
+				artifacts: payload.modules.artifacts,
+				schemas: payload.modules.schemas,
+				errors: payload.modules.errors
+			});
 		}
 	};
 }
@@ -7613,7 +8400,7 @@ function buildRuntimeModules(dependencies, overrides = {}) {
 function createRuntime(options = {}) {
 	const dependencies = createNodeRuntimeDependencies(options.dependencies);
 	const modules = buildRuntimeModules(dependencies, options.modules);
-	const stateCoordinator = options.stateCoordinator ?? createUnconfiguredStateCoordinator(modules.errors);
+	const stateCoordinator = options.stateCoordinator ?? createFileBackedStateCoordinator();
 	return {
 		async createContext(command, cwd) {
 			const backlogRoot = await resolveCommandBacklogRoot({

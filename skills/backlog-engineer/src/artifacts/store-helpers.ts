@@ -3,6 +3,7 @@ import { ZodError } from 'zod';
 import type { ErrorCode, ErrorModule } from '../errors/index.ts';
 import type { AbsoluteFsPath, BacklogRootPath } from '../runtime/shared.ts';
 import type { FileSystemPort, HashPort, PathPort } from '../runtime/ports.ts';
+import { isPathInsideRoot } from '../runtime/path-safety.ts';
 
 export function createJsonIssueDetails(error: ZodError): {
   issues: Array<{
@@ -50,15 +51,6 @@ function listPathChain(path: PathPort, target: AbsoluteFsPath): AbsoluteFsPath[]
   return chain.reverse();
 }
 
-function isPathInsideRoot(path: PathPort, root: AbsoluteFsPath, target: AbsoluteFsPath): boolean {
-  const relative = path.relative(root, target).replaceAll('\\', '/');
-  if (relative.length === 0) {
-    return true;
-  }
-
-  return relative !== '..' && !relative.startsWith('../');
-}
-
 async function ensureDirectoryChainIsSafe(payload: {
   fs: FileSystemPort;
   path: PathPort;
@@ -72,7 +64,13 @@ async function ensureDirectoryChainIsSafe(payload: {
   const normalizedRoot = path.resolve(root);
   const normalizedLeaf = path.resolve(leafDirectory);
 
-  if (!isPathInsideRoot(path, normalizedRoot, normalizedLeaf)) {
+  if (
+    !isPathInsideRoot({
+      path,
+      root: normalizedRoot,
+      target: normalizedLeaf,
+    })
+  ) {
     throw errors.create(errorCode, undefined, {
       details: {
         path: detailPath,
@@ -192,20 +190,37 @@ export async function ensureNoSymlinkAncestors(payload: {
 
 export async function readJsonArtifact<T>(payload: {
   fs: FileSystemPort;
+  path?: PathPort;
   errors: ErrorModule;
   filePath: AbsoluteFsPath;
   parse: (raw: unknown) => T;
+  root?: BacklogRootPath;
+  readErrorCode?: ErrorCode;
   missingCode?: ErrorCode;
   corruptCode?: ErrorCode;
 }): Promise<T> {
   const {
     fs,
+    path,
     errors,
     filePath,
     parse,
+    root,
+    readErrorCode = 'BE_INTERNAL_STATE_CORRUPT',
     missingCode = 'BE_INTERNAL_STATE_CORRUPT',
     corruptCode = 'BE_INTERNAL_STATE_CORRUPT',
   } = payload;
+
+  if (root && path) {
+    await ensureManagedFilePathSafe({
+      fs,
+      path,
+      errors,
+      root,
+      filePath,
+      errorCode: readErrorCode,
+    });
+  }
 
   let rawText: string;
   try {
@@ -232,7 +247,7 @@ export async function readJsonArtifact<T>(payload: {
   try {
     rawJson = JSON.parse(rawText) as unknown;
   } catch (error) {
-    throw errors.create('BE_INVALID_JSON', undefined, {
+    throw errors.create(corruptCode, undefined, {
       details: {
         path: filePath,
       },
@@ -244,7 +259,7 @@ export async function readJsonArtifact<T>(payload: {
     return parse(rawJson);
   } catch (error) {
     if (error instanceof ZodError) {
-      throw errors.create('BE_SCHEMA_INVALID', undefined, {
+      throw errors.create(corruptCode, undefined, {
         details: {
           path: filePath,
           ...createJsonIssueDetails(error),

@@ -106,6 +106,13 @@ export const BacklogRelativePosixPathSchema = NonEmptyStringSchema.superRefine((
     });
   }
 
+  if (/^[A-Za-z]:(?:$|\/)/.test(value)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Backlog-relative path must not use Windows drive-prefixed forms.',
+    });
+  }
+
   const segments = value.split('/');
   if (segments.some((segment) => segment.length === 0)) {
     ctx.addIssue({

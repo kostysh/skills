@@ -10,9 +10,12 @@ export async function readRootMarker(
 ): Promise<RootMarkerFile> {
   return readJsonArtifact({
     fs: dependencies.fs,
+    path: dependencies.path,
     errors: dependencies.errors,
+    root,
     filePath: getRootMarkerPath(dependencies.path, root),
     parse: (raw) => dependencies.schemas.parseRootMarker(raw),
+    readErrorCode: 'BE_ROOT_NOT_FOUND',
     missingCode: 'BE_ROOT_NOT_FOUND',
     corruptCode: 'BE_ROOT_NOT_FOUND',
   });

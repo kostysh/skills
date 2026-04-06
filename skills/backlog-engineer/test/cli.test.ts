@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync, type SpawnSyncReturns } from 'node:child_process';
-import { lstat, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { cp, lstat, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -8,7 +8,6 @@ import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 
 import {
-  AppliedRegistryFileSchema,
   CommandHelpOutputSchema,
   DeleteBacklogCommandOutputSchema,
   ErrorPayloadSchema,
@@ -18,9 +17,10 @@ import {
   RegisterSourceCommandOutputSchema,
   RootMarkerFileSchema,
   SourceRegistryFileSchema,
-  StateFileSchema,
   TemplateCommandOutputSchema,
   VersionOutputSchema,
+  StateFileSchema,
+  AppliedRegistryFileSchema,
 } from '../src/schemas/index.ts';
 import { runCli as runCliSource } from '../src/cli/run-cli.ts';
 import type { AnyCommandDefinition, CliIo } from '../src/commands/index.ts';
@@ -29,6 +29,7 @@ import type { RuntimeModule } from '../src/runtime/index.ts';
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
 const CLI_PATH = path.join(SKILL_DIR, 'scripts', 'backlog-engineer.mjs');
+const FIXTURES_DIR = path.join(TEST_DIR, 'fixtures');
 
 async function createTempDir(): Promise<string> {
   return mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-cli-'));
@@ -213,6 +214,7 @@ void test('register-source and list-sources work on the built CLI', async () => 
 void test('template packet and template patch write draft files through the built CLI', async () => {
   const tempRoot = await createTempDir();
   const backlogRoot = path.join(tempRoot, 'backlog');
+  const fixtureBacklogRoot = path.join(tempRoot, 'fixture-backlog');
 
   try {
     assert.equal(runBuiltCli(['init', '--path', backlogRoot]).status, 0);
@@ -227,84 +229,19 @@ void test('template packet and template patch write draft files through the buil
       path.join(backlogRoot, 'drafts', 'packet.template.json'),
     );
 
-    const statePath = path.join(backlogRoot, '.backlog', 'state.json');
-    const appliedPath = path.join(backlogRoot, '.backlog', 'applied.json');
-    const state = StateFileSchema.parse(JSON.parse(await readFile(statePath, 'utf8')) as unknown);
-    const applied = AppliedRegistryFileSchema.parse(
-      JSON.parse(await readFile(appliedPath, 'utf8')) as unknown,
-    );
-
-    await writeFile(
-      statePath,
-      JSON.stringify(
-        {
-          ...state,
-          items: [
-            {
-              item_key: 'auth-core',
-              title: 'Auth item',
-              type: 'module-task',
-              delivery_state: 'defined',
-              gaps: [],
-              depends_on_keys: [],
-              origin_source_ids: [],
-              specification_source_ids: [],
-              plan_source_ids: [],
-              implementation_source_ids: [],
-              test_source_ids: [],
-              claim_keys: [],
-              contract_keys: [],
-              data_domain_keys: [],
-              quality_attribute_keys: [],
-              policy_decision_keys: [],
-              reverse_dependency_keys: [],
-              open_todo_ids: [],
-              needs_attention: false,
-              attention_reason_codes: [],
-              attention_reasons: [],
-              ready_for_next_step: true,
-            },
-          ],
-        },
-        null,
-        2,
-      ) + '\n',
-      'utf8',
-    );
-    await writeFile(
-      appliedPath,
-      JSON.stringify(
-        {
-          ...applied,
-          updated_at: '2026-04-06T12:00:00.000Z',
-          patches: [
-            {
-              patch_id: '2026-04-05-003-auth-progress',
-              apply_index: 1,
-              canonical_path: 'patches/123456789abc--auth-progress.patch.json',
-              content_hash: 'a'.repeat(64),
-              sequence: 3,
-              applied_at: '2026-04-05T09:00:00.000Z',
-              kind: 'patch-item',
-              target_item_keys: ['auth-core'],
-            },
-          ],
-        },
-        null,
-        2,
-      ) + '\n',
-      'utf8',
-    );
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), fixtureBacklogRoot, {
+      recursive: true,
+    });
 
     const patchTemplate = runBuiltCli(
       ['template', 'patch', '--item-keys', 'auth-core', '--out', './drafts/'],
-      { cwd: backlogRoot },
+      { cwd: fixtureBacklogRoot },
     );
     assert.equal(patchTemplate.status, 0);
     const patchOutput = TemplateCommandOutputSchema.parse(parseStdoutJson(patchTemplate));
     assert.equal(
       patchOutput.output_path,
-      path.join(backlogRoot, 'drafts', '004-patch.template.json'),
+      path.join(fixtureBacklogRoot, 'drafts', '002-patch.template.json'),
     );
     const patchDraft = JSON.parse(await readFile(patchOutput.output_path, 'utf8')) as {
       metadata: {
@@ -315,11 +252,101 @@ void test('template packet and template patch write draft files through the buil
       };
       operations: unknown[];
     };
-    assert.equal(patchDraft.metadata.patch_id, '2026-04-06-004-patch-template');
+    assert.match(patchDraft.metadata.patch_id, /^2026-04-06-002-patch-template-[a-f0-9]{8}$/);
     assert.match(patchDraft.metadata.created_at, /^\d{4}-\d{2}-\d{2}T.*Z$/);
-    assert.equal(patchDraft.metadata.sequence, 4);
+    assert.equal(patchDraft.metadata.sequence, 2);
     assert.deepEqual(patchDraft.metadata.target_item_keys, ['auth-core']);
     assert.deepEqual(patchDraft.operations, []);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('template patch rebuilds missing state.json through the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    await rm(path.join(backlogRoot, '.backlog', 'state.json'));
+
+    const result = runBuiltCli(
+      ['template', 'patch', '--item-keys', 'auth-core', '--out', './drafts/'],
+      { cwd: backlogRoot },
+    );
+
+    assert.equal(result.status, 0);
+    const output = TemplateCommandOutputSchema.parse(parseStdoutJson(result));
+    assert.equal(output.output_path, path.join(backlogRoot, 'drafts', '002-patch.template.json'));
+    StateFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'state.json'), 'utf8'),
+      ) as unknown,
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('list-sources and template patch reject symlinked managed JSON artifacts on the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const docsDir = path.join(backlogRoot, 'sources', 'docs', 'modules');
+
+  try {
+    assert.equal(runBuiltCli(['init', '--path', backlogRoot]).status, 0);
+    await mkdir(docsDir, { recursive: true });
+    await writeFile(path.join(docsDir, 'auth.md'), '# auth\n', 'utf8');
+
+    const registerResult = runBuiltCli(
+      [
+        'register-source',
+        '--path',
+        './sources/docs/modules/auth.md',
+        '--kind',
+        'module',
+        '--authority',
+        'authoritative',
+      ],
+      { cwd: backlogRoot },
+    );
+    assert.equal(registerResult.status, 0);
+
+    const escapedSourcesPath = path.join(tempRoot, 'escaped-sources.json');
+    const escapedStatePath = path.join(tempRoot, 'escaped-state.json');
+    await writeFile(
+      escapedSourcesPath,
+      await readFile(path.join(backlogRoot, '.backlog', 'sources.json'), 'utf8'),
+      'utf8',
+    );
+    await writeFile(
+      escapedStatePath,
+      await readFile(path.join(backlogRoot, '.backlog', 'state.json'), 'utf8'),
+      'utf8',
+    );
+    await rm(path.join(backlogRoot, '.backlog', 'sources.json'));
+    await rm(path.join(backlogRoot, '.backlog', 'state.json'));
+    await symlink(escapedSourcesPath, path.join(backlogRoot, '.backlog', 'sources.json'), 'file');
+    await symlink(escapedStatePath, path.join(backlogRoot, '.backlog', 'state.json'), 'file');
+
+    const listResult = runBuiltCli(['list-sources'], { cwd: backlogRoot });
+    assert.equal(listResult.status, 1);
+    assert.equal(
+      ErrorPayloadSchema.parse(parseStderrJson(listResult)).error.code,
+      'BE_INTERNAL_STATE_CORRUPT',
+    );
+
+    const templateResult = runBuiltCli(
+      ['template', 'patch', '--item-keys', 'auth-core', '--out', './drafts/'],
+      { cwd: backlogRoot },
+    );
+    assert.equal(templateResult.status, 1);
+    assert.equal(
+      ErrorPayloadSchema.parse(parseStderrJson(templateResult)).error.code,
+      'BE_INTERNAL_STATE_CORRUPT',
+    );
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

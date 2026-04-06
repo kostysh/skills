@@ -1,0 +1,328 @@
+import type { ArtifactsModule } from '../artifacts/index.ts';
+import { readJsonArtifact } from '../artifacts/store-helpers.ts';
+import {
+  applyPacketReplay,
+  applyPatchReplay,
+  recomputeDerivedState,
+  validateSourceRegistryReferences,
+} from '../core/replay-pipeline.ts';
+import type { ErrorModule } from '../errors/index.ts';
+import type { RuntimeDependencies } from './ports.ts';
+import type { BacklogRootPath } from './shared.ts';
+import type {
+  AppliedPatchEntry,
+  AppliedRegistryFile,
+  PacketContext,
+  PacketFile,
+  PatchFile,
+  SchemaModule,
+  StateFile,
+} from '../schemas/index.ts';
+
+type RuntimeStateArtifacts = {
+  rootMarkerCreatedAt: string;
+  sourceRegistry: ReturnType<SchemaModule['parseSourceRegistry']>;
+  appliedRegistry: AppliedRegistryFile;
+};
+
+function deepEqual(left: unknown, right: unknown): boolean {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function createEmptyContext(): PacketContext {
+  return {
+    glossary: [],
+    key_strategy: {},
+    target_system: [],
+    as_built: [],
+    claims: [],
+    contracts: [],
+    data_domains: [],
+    quality_attributes: [],
+    policy_decisions: [],
+  };
+}
+
+function createEmptyState(payload: {
+  schemas: SchemaModule;
+  createdAt: string;
+  updatedAt: string;
+  lastRefreshAt: string | null;
+}): StateFile {
+  return payload.schemas.parseStateFile({
+    schema_version: 1,
+    created_at: payload.createdAt,
+    updated_at: payload.updatedAt,
+    last_refresh_at: payload.lastRefreshAt,
+    context: createEmptyContext(),
+    items: [],
+    todos: [],
+  });
+}
+
+function validatePatchKind(payload: {
+  entry: AppliedPatchEntry;
+  patch: PatchFile;
+  errors: ErrorModule;
+}): void {
+  if (payload.patch.metadata.patch_id !== payload.entry.patch_id) {
+    throw payload.errors.create('BE_INTERNAL_STATE_CORRUPT', undefined, {
+      details: {
+        patch_id: payload.entry.patch_id,
+        reason: 'Patch metadata does not match applied registry entry.',
+      },
+    });
+  }
+
+  if (
+    payload.patch.metadata.target_item_keys.length !== payload.entry.target_item_keys.length ||
+    payload.patch.metadata.target_item_keys.some(
+      (itemKey, index) => itemKey !== payload.entry.target_item_keys[index],
+    )
+  ) {
+    throw payload.errors.create('BE_INTERNAL_STATE_CORRUPT', undefined, {
+      details: {
+        patch_id: payload.entry.patch_id,
+        reason: 'Patch metadata target_item_keys do not match applied registry entry.',
+      },
+    });
+  }
+
+  if (payload.entry.kind === 'patch-item') {
+    if (payload.patch.operations.some((operation) => operation.action === 'remove_item')) {
+      throw payload.errors.create('BE_PATCH_OPERATION_INVALID', undefined, {
+        details: {
+          patch_id: payload.entry.patch_id,
+        },
+      });
+    }
+    return;
+  }
+
+  const removedKeys = new Set(
+    payload.patch.operations
+      .filter((operation) => operation.action === 'remove_item')
+      .map((operation) => operation.item_key),
+  );
+  if (
+    payload.patch.operations.some((operation) => operation.action !== 'remove_item') ||
+    payload.entry.target_item_keys.some((itemKey) => !removedKeys.has(itemKey))
+  ) {
+    throw payload.errors.create('BE_PATCH_OPERATION_INVALID', undefined, {
+      details: {
+        patch_id: payload.entry.patch_id,
+      },
+    });
+  }
+}
+
+async function readCanonicalPacket(payload: {
+  backlogRoot: BacklogRootPath;
+  dependencies: RuntimeDependencies;
+  schemas: SchemaModule;
+  errors: ErrorModule;
+  canonicalPath: string;
+}): Promise<PacketFile> {
+  const filePath = payload.dependencies.path.resolve(payload.backlogRoot, payload.canonicalPath);
+  return readJsonArtifact({
+    fs: payload.dependencies.fs,
+    path: payload.dependencies.path,
+    errors: payload.errors,
+    root: payload.backlogRoot,
+    filePath,
+    parse: (raw) => payload.schemas.parsePacketFile(raw),
+    readErrorCode: 'BE_INTERNAL_STATE_CORRUPT',
+    missingCode: 'BE_INTERNAL_STATE_CORRUPT',
+    corruptCode: 'BE_INTERNAL_STATE_CORRUPT',
+  });
+}
+
+async function readCanonicalPatch(payload: {
+  backlogRoot: BacklogRootPath;
+  dependencies: RuntimeDependencies;
+  schemas: SchemaModule;
+  errors: ErrorModule;
+  canonicalPath: string;
+}): Promise<PatchFile> {
+  const filePath = payload.dependencies.path.resolve(payload.backlogRoot, payload.canonicalPath);
+  return readJsonArtifact({
+    fs: payload.dependencies.fs,
+    path: payload.dependencies.path,
+    errors: payload.errors,
+    root: payload.backlogRoot,
+    filePath,
+    parse: (raw) => payload.schemas.parsePatchFile(raw),
+    readErrorCode: 'BE_INTERNAL_STATE_CORRUPT',
+    missingCode: 'BE_INTERNAL_STATE_CORRUPT',
+    corruptCode: 'BE_INTERNAL_STATE_CORRUPT',
+  });
+}
+
+async function loadRuntimeArtifacts(payload: {
+  backlogRoot: BacklogRootPath;
+  artifacts: ArtifactsModule;
+}): Promise<RuntimeStateArtifacts> {
+  const [rootMarker, sourceRegistry, appliedRegistry] = await Promise.all([
+    payload.artifacts.readRootMarker(payload.backlogRoot),
+    payload.artifacts.readSourceRegistry(payload.backlogRoot),
+    payload.artifacts.readAppliedRegistry(payload.backlogRoot),
+  ]);
+
+  return {
+    rootMarkerCreatedAt: rootMarker.created_at,
+    sourceRegistry,
+    appliedRegistry,
+  };
+}
+
+function preserveRuntimeMetadata(payload: {
+  rebuiltState: StateFile;
+  currentState: StateFile | undefined;
+  schemas: SchemaModule;
+}): StateFile {
+  if (!payload.currentState) {
+    return payload.schemas.parseStateFile(payload.rebuiltState);
+  }
+
+  return payload.schemas.parseStateFile({
+    ...payload.rebuiltState,
+    created_at: payload.currentState.created_at,
+    updated_at: payload.currentState.updated_at,
+    last_refresh_at: payload.currentState.last_refresh_at,
+  });
+}
+
+function stampUpdatedAt(payload: {
+  state: StateFile;
+  schemas: SchemaModule;
+  updatedAt: string;
+}): StateFile {
+  return payload.schemas.parseStateFile({
+    ...payload.state,
+    updated_at: payload.updatedAt,
+  });
+}
+
+export async function rebuildStateFromCanonicalArtifacts(payload: {
+  backlogRoot: BacklogRootPath;
+  dependencies: RuntimeDependencies;
+  artifacts: ArtifactsModule;
+  schemas: SchemaModule;
+  errors: ErrorModule;
+  currentState?: StateFile;
+}): Promise<StateFile> {
+  const runtimeArtifacts = await loadRuntimeArtifacts({
+    backlogRoot: payload.backlogRoot,
+    artifacts: payload.artifacts,
+  });
+
+  const currentState = payload.currentState;
+  let state = createEmptyState({
+    schemas: payload.schemas,
+    createdAt: currentState?.created_at ?? runtimeArtifacts.rootMarkerCreatedAt,
+    updatedAt: currentState?.updated_at ?? payload.dependencies.clock.nowIsoUtc(),
+    lastRefreshAt: currentState?.last_refresh_at ?? null,
+  });
+
+  const packetEntries = [...runtimeArtifacts.appliedRegistry.packets].sort((left, right) => {
+    const applyCompare = left.apply_index - right.apply_index;
+    if (applyCompare !== 0) {
+      return applyCompare;
+    }
+
+    return left.canonical_path.localeCompare(right.canonical_path);
+  });
+
+  for (const packetEntry of packetEntries) {
+    const packet = await readCanonicalPacket({
+      backlogRoot: payload.backlogRoot,
+      dependencies: payload.dependencies,
+      schemas: payload.schemas,
+      errors: payload.errors,
+      canonicalPath: packetEntry.canonical_path,
+    });
+
+    if (
+      JSON.stringify(packet.items.map((item) => item.item_key)) !==
+      JSON.stringify(packetEntry.item_keys)
+    ) {
+      throw payload.errors.create('BE_INTERNAL_STATE_CORRUPT', undefined, {
+        details: {
+          packet_id: packetEntry.packet_id,
+          reason: 'Packet item_keys do not match applied registry entry.',
+        },
+      });
+    }
+
+    state = applyPacketReplay({
+      state,
+      packet,
+      errors: payload.errors,
+    });
+  }
+
+  const patchEntries = [...runtimeArtifacts.appliedRegistry.patches].sort((left, right) => {
+    const applyCompare = left.apply_index - right.apply_index;
+    if (applyCompare !== 0) {
+      return applyCompare;
+    }
+
+    const sequenceCompare = left.sequence - right.sequence;
+    if (sequenceCompare !== 0) {
+      return sequenceCompare;
+    }
+
+    return left.canonical_path.localeCompare(right.canonical_path);
+  });
+
+  for (const patchEntry of patchEntries) {
+    const patch = await readCanonicalPatch({
+      backlogRoot: payload.backlogRoot,
+      dependencies: payload.dependencies,
+      schemas: payload.schemas,
+      errors: payload.errors,
+      canonicalPath: patchEntry.canonical_path,
+    });
+
+    validatePatchKind({
+      entry: patchEntry,
+      patch,
+      errors: payload.errors,
+    });
+
+    state = applyPatchReplay({
+      state,
+      patch,
+      errors: payload.errors,
+    });
+  }
+
+  validateSourceRegistryReferences({
+    state,
+    availableSourceIds: new Set(
+      runtimeArtifacts.sourceRegistry.sources.map((source) => source.source_id),
+    ),
+    errors: payload.errors,
+  });
+
+  return preserveRuntimeMetadata({
+    rebuiltState: recomputeDerivedState({
+      schemas: payload.schemas,
+      state,
+    }),
+    currentState,
+    schemas: payload.schemas,
+  });
+}
+
+export function areStatesEquivalent(left: StateFile, right: StateFile): boolean {
+  return deepEqual(left, right);
+}
+
+export function updateRebuiltStateTimestamp(payload: {
+  state: StateFile;
+  schemas: SchemaModule;
+  updatedAt: string;
+}): StateFile {
+  return stampUpdatedAt(payload);
+}

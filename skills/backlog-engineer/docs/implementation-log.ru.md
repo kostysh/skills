@@ -375,11 +375,13 @@
   - source registration принимает только пути внутри backlog root; `source_label` всегда равен нормализованному backlog-relative POSIX path
   - invalid source path, выходящий за пределы backlog root, отбрасывается до чтения файла и до вычисления `hash`
   - повторная регистрация того же нормализованного пути возвращает существующий `source_id` и существующий `hash`, не пере-хешируя и не создавая duplicate entry
-  - `template patch` вычисляет sequence как `max(applied.patches.sequence) + 1` и валидирует все `item_keys` по текущему `state.json`
+  - `template patch` вычисляет sequence как `max(applied.patches.sequence) + 1`
   - `list-sources --item-key` опирается на `state.items[*]._source_ids`, а не на authored packet files
+  - команды, которым нужен `state.json`, проходят через `context.ensureQueryState()`, а не читают state artifact напрямую
 - Допущения вне спецификации:
   - `CommandExecutionContext.host` расширен helper-методом `createUuid()`, чтобы команды не зависели напрямую от runtime dependency graph для генерации `source_id`; это решение синхронизировано в `module-interfaces.ru.md`
   - default basename для `template patch` фиксирован как zero-padded `<sequence>-patch.template.json`; спецификация требует sequence-based draft, но не фиксирует точный basename
+  - default runtime composition теперь использует file-backed state coordinator, который читает текущий `state.json` через `artifacts` и удерживает `ensureQueryState()` / `ensureMutationState()` за runtime boundary; это решение понадобилось, чтобы package G команды соблюдали runtime contract и были исполнимы через built CLI до появления полного rebuild pipeline
 - Согласованные синхронизации документации:
   - `utility-spec.ru.md` приведён к текущей концепции для `register-source`: `source_label` и `path` в response contract теперь отражают нормализованный backlog-relative path, а не старый `../docs/...`
 - Проверки приёмки:
@@ -388,9 +390,22 @@
   - `pnpm --dir skills/backlog-engineer run typecheck` — OK
   - `pnpm --dir skills/backlog-engineer run test` — OK
 - Внешнее ревью:
-  - внешний thread для `spec-conformance-reviewer` в этой сессии не вернул usable review artifact
-  - после этого выполнен строгий same-agent fallback review по тем же нормативным источникам; confirmed non-compliance не осталось
-  - same-agent spec conformance review — PASS
-  - same-agent code review — PASS
-  - same-agent security review — PASS
+  - первый spec conformance review — FAIL
+    - `list-sources --item-key` читал `state.json` напрямую вместо `context.ensureQueryState()`
+    - `template patch` валидировал `item_keys` по прямому `readState()` вместо `context.ensureQueryState()`
+  - согласованные исправления:
+    - `list-sources` переведён на `context.ensureQueryState()`
+    - `template patch` переведён на `context.ensureQueryState()`
+    - добавлены tests на:
+      - `register-source` missing source file
+      - `template` explicit file-target output
+    - default runtime composition wires file-backed state coordinator вместо аварийной unconfigured-заглушки
+    - hidden rebuild теперь валидирует все item/context `source_id` ссылки против `.backlog/sources.json` и fail-fast падает на dangling registry references
+    - добавлены regression tests для:
+      - `ensureQueryState()` на backlog с syntactically valid `sources.json`, но без referenced source records
+      - `list-sources --item-key` на таком же broken registry
+  - повторный spec conformance review — PASS
+  - последующий code review сначала вернул stale-находку, уже закрытую в текущем working tree; после этого правило постановки review-задач усилено: в prompt обязательно перечисляются нормативные источники, точный changed surface, новые untracked файлы и уже согласованные фиксы
+  - повторный code review — PASS
+  - security review — PASS
 - Следующий пакет: `H — Core graph services`

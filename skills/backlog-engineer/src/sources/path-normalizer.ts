@@ -8,6 +8,7 @@ import type {
 } from '../schemas/index.ts';
 import type { PathPort } from '../runtime/ports.ts';
 import { BacklogRelativePosixPathSchema as BacklogRelativePosixPathValueSchema } from '../schemas/index.ts';
+import { resolvePathRelativeToRoot } from '../runtime/path-safety.ts';
 
 function toPosixRelativePath(relativePath: string): BacklogRelativePosixPath {
   return relativePath.replaceAll('\\', '/');
@@ -28,9 +29,21 @@ export function normalizeSourcePath(payload: {
   source_label: SourceLabel;
 } {
   const absolutePath = payload.path.resolve(payload.backlogRoot, payload.inputPath);
-  const relativePath = toPosixRelativePath(
-    payload.path.relative(payload.backlogRoot, absolutePath),
-  );
+  const rootRelativePath = resolvePathRelativeToRoot({
+    path: payload.path,
+    root: payload.backlogRoot,
+    target: absolutePath,
+  });
+  if (!rootRelativePath) {
+    throw payload.errors.create('BE_SCHEMA_INVALID', undefined, {
+      details: {
+        path: absolutePath,
+      },
+      hint: 'Source path must stay inside the current backlog root.',
+    });
+  }
+
+  const relativePath = toPosixRelativePath(rootRelativePath.posixRelativePath);
   const parsedRelativePath = BacklogRelativePosixPathValueSchema.safeParse(relativePath);
   if (!parsedRelativePath.success) {
     throw fromZodError(parsedRelativePath.error, {

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, rm, symlink, writeFile } from 'node:fs/promises';
+import { cp, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -12,6 +12,8 @@ import {
   createRuntime,
   findBacklogRoot,
 } from '../src/runtime/index.ts';
+
+const FIXTURES_DIR = path.join(path.dirname(new URL(import.meta.url).pathname), 'fixtures');
 
 async function createTempDir(): Promise<string> {
   return mkdtemp(path.join(os.tmpdir(), 'backlog-engineer-runtime-'));
@@ -225,6 +227,250 @@ void test('runtime wires hooks and state coordinator through command context', a
   }
 });
 
+void test('default ensureQueryState rebuilds missing state.json from canonical artifacts', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const runtime = createRuntime({
+    dependencies: {
+      clock: {
+        nowIsoUtc() {
+          return '2026-04-06T12:00:00.000Z';
+        },
+      },
+    },
+  });
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    await rm(path.join(backlogRoot, '.backlog', 'state.json'));
+
+    const context = await runtime.createContext('status', backlogRoot);
+    const result = await context.ensureQueryState();
+
+    assert.equal(result.rebuilt, true);
+    assert.ok(result.state.items.some((item) => item.item_key === 'auth-core'));
+    StateFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'state.json'), 'utf8'),
+      ) as unknown,
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('default ensureQueryState reuses an existing valid state.json without hidden rewrite', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const runtime = createRuntime({
+    dependencies: {
+      clock: {
+        nowIsoUtc() {
+          return '2099-01-01T00:00:00.000Z';
+        },
+      },
+    },
+  });
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    const statePath = path.join(backlogRoot, '.backlog', 'state.json');
+    const originalState = await readFile(statePath, 'utf8');
+
+    const context = await runtime.createContext('status', backlogRoot);
+    const result = await context.ensureQueryState();
+
+    assert.equal(result.rebuilt, false);
+    assert.equal(await readFile(statePath, 'utf8'), originalState);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('default ensureQueryState rewrites divergent state.json to match canonical artifacts', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const runtime = createRuntime({
+    dependencies: {
+      clock: {
+        nowIsoUtc() {
+          return '2026-04-06T12:00:00.000Z';
+        },
+      },
+    },
+  });
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    const statePath = path.join(backlogRoot, '.backlog', 'state.json');
+    const divergentState = StateFileSchema.parse(
+      JSON.parse(await readFile(statePath, 'utf8')) as unknown,
+    );
+    divergentState.items = divergentState.items.map((item) =>
+      item.item_key === 'auth-core' ? { ...item, title: 'Divergent title' } : item,
+    );
+    await writeFile(statePath, `${JSON.stringify(divergentState, null, 2)}\n`, 'utf8');
+
+    const context = await runtime.createContext('status', backlogRoot);
+    const result = await context.ensureQueryState();
+
+    assert.equal(result.rebuilt, true);
+    const restoredItem = result.state.items.find((item) => item.item_key === 'auth-core');
+    assert.equal(restoredItem?.title, 'Implement core session validation');
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('default ensureQueryState drops todo-only divergence and restores canonical state', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const runtime = createRuntime({
+    dependencies: {
+      clock: {
+        nowIsoUtc() {
+          return '2026-04-06T12:00:00.000Z';
+        },
+      },
+    },
+  });
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    const statePath = path.join(backlogRoot, '.backlog', 'state.json');
+    const divergentState = StateFileSchema.parse(
+      JSON.parse(await readFile(statePath, 'utf8')) as unknown,
+    );
+    divergentState.todos.push({
+      todo_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      item_key: 'auth-core',
+      type: 'review_source_change',
+      message: 'Re-check source change.',
+      created_at: '2026-04-06T11:59:00.000Z',
+      related_sources: [
+        {
+          source_id: '11111111-1111-4111-8111-111111111111',
+          source_label: 'sources/docs/modules/auth.md',
+        },
+      ],
+      related_item_keys: [],
+    });
+    divergentState.items = divergentState.items.map((item) =>
+      item.item_key === 'auth-core'
+        ? {
+            ...item,
+            open_todo_ids: ['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'],
+            needs_attention: true,
+            attention_reason_codes: ['source_changed'],
+            attention_reasons: ['нужно проверить изменение источника sources/docs/modules/auth.md'],
+            ready_for_next_step: false,
+          }
+        : item,
+    );
+    await writeFile(statePath, `${JSON.stringify(divergentState, null, 2)}\n`, 'utf8');
+
+    const context = await runtime.createContext('status', backlogRoot);
+    const result = await context.ensureQueryState();
+
+    assert.equal(result.rebuilt, true);
+    assert.deepEqual(result.state.todos, []);
+    const restoredItem = result.state.items.find((item) => item.item_key === 'auth-core');
+    assert.deepEqual(restoredItem?.open_todo_ids, []);
+    assert.equal(restoredItem?.needs_attention, false);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('default ensureQueryState fails fast on duplicate patch sequence in applied registry', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const runtime = createRuntime();
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    const appliedPath = path.join(backlogRoot, '.backlog', 'applied.json');
+    const applied = JSON.parse(await readFile(appliedPath, 'utf8')) as {
+      schema_version: number;
+      created_at: string;
+      updated_at: string;
+      next_apply_index: number;
+      packets: unknown[];
+      patches: Array<{
+        patch_id: string;
+        apply_index: number;
+        canonical_path: string;
+        content_hash: string;
+        sequence: number;
+        applied_at: string;
+        kind: string;
+        target_item_keys: string[];
+      }>;
+    };
+    applied.patches.push({
+      patch_id: '2026-04-03-002-auth-progress',
+      apply_index: 3,
+      canonical_path: 'patches/222c4f042c00--auth-module.patch-item.json',
+      content_hash: '2'.repeat(64),
+      sequence: 1,
+      applied_at: '2026-04-03T12:25:00Z',
+      kind: 'patch-item',
+      target_item_keys: ['auth-core'],
+    });
+    await writeFile(appliedPath, `${JSON.stringify(applied, null, 2)}\n`, 'utf8');
+
+    const context = await runtime.createContext('status', backlogRoot);
+    await assert.rejects(
+      () => context.ensureQueryState(),
+      (error: unknown) =>
+        error instanceof BacklogError && error.code === 'BE_PATCH_SEQUENCE_CONFLICT',
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('default ensureQueryState fails when canonical backlog references source_ids missing from sources.json', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const runtime = createRuntime();
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    const sourcesPath = path.join(backlogRoot, '.backlog', 'sources.json');
+    const registry = JSON.parse(await readFile(sourcesPath, 'utf8')) as {
+      schema_version: number;
+      created_at: string;
+      updated_at: string;
+      sources: unknown[];
+    };
+    registry.sources = [];
+    await writeFile(sourcesPath, `${JSON.stringify(registry, null, 2)}\n`, 'utf8');
+    await rm(path.join(backlogRoot, '.backlog', 'state.json'));
+
+    const context = await runtime.createContext('status', backlogRoot);
+    await assert.rejects(
+      () => context.ensureQueryState(),
+      (error: unknown) =>
+        error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
 void test('runtime uses injected ErrorModule for root, unavailable-module, and default coordinator failures', async () => {
   const root = await createTempDir();
   const outsideRoot = await createTempDir();
@@ -284,6 +530,8 @@ void test('runtime uses injected ErrorModule for root, unavailable-module, and d
 
     assert.deepEqual(createdCodes, [
       'BE_ROOT_NOT_FOUND',
+      'BE_INTERNAL_STATE_CORRUPT',
+      'BE_INTERNAL_STATE_CORRUPT',
       'BE_INTERNAL_STATE_CORRUPT',
       'BE_INTERNAL_STATE_CORRUPT',
     ]);

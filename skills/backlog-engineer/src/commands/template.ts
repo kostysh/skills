@@ -33,8 +33,12 @@ function formatPatchSequence(sequence: number): string {
   return String(sequence).padStart(3, '0');
 }
 
-function createPatchTemplateId(createdAt: string, sequence: number): string {
-  return `${createdAt.slice(0, 10)}-${formatPatchSequence(sequence)}-patch-template`;
+function createPatchTemplateId(createdAt: string, sequence: number, suffix: string): string {
+  return `${createdAt.slice(0, 10)}-${formatPatchSequence(sequence)}-patch-template-${suffix}`;
+}
+
+function createDraftSuffix(uuid: string): string {
+  return uuid.replaceAll('-', '').slice(0, 8).toLowerCase();
 }
 
 export const TEMPLATE_COMMAND: CommandDefinition<TemplateCommandInput, TemplateCommandOutput> = {
@@ -112,10 +116,11 @@ export const TEMPLATE_COMMAND: CommandDefinition<TemplateCommandInput, TemplateC
       throw context.errors.create('BE_ROOT_NOT_FOUND');
     }
 
-    const [appliedRegistry, state] = await Promise.all([
+    const [appliedRegistry, queryState] = await Promise.all([
       context.artifacts.readAppliedRegistry(context.backlogRoot),
-      context.artifacts.readState(context.backlogRoot),
+      context.ensureQueryState(),
     ]);
+    const { state } = queryState;
     const missingItemKeys = input.item_keys.filter(
       (itemKey) => !state.items.some((candidate) => candidate.item_key === itemKey),
     );
@@ -132,14 +137,16 @@ export const TEMPLATE_COMMAND: CommandDefinition<TemplateCommandInput, TemplateC
         return Math.max(maxSequence, patch.sequence);
       }, 0) + 1;
     const createdAt = context.host.nowIsoUtc();
+    const draftSuffix = createDraftSuffix(context.host.createUuid());
     const outputPath = await context.artifacts.writeTemplateOutput({
       cwd,
       out: input.out,
       defaultBasename: `${formatPatchSequence(nextSequence)}-patch.template.json`,
+      collisionBasename: `${formatPatchSequence(nextSequence)}-${draftSuffix}-patch.template.json`,
       content: context.templates.renderPatchTemplate({
         targetItemKeys: input.item_keys,
         kind: 'patch-item',
-        patchId: createPatchTemplateId(createdAt, nextSequence),
+        patchId: createPatchTemplateId(createdAt, nextSequence, draftSuffix),
         createdAt,
         sequence: nextSequence,
       }),

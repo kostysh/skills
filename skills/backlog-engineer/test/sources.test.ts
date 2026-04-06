@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import path from 'node:path';
 import test from 'node:test';
 
 import { createErrorModule } from '../src/errors/index.ts';
@@ -53,6 +54,54 @@ void test('sources module rejects normalized paths that escape backlog root', as
       await sources.resolveCliSourcePath({
         backlogRoot: '/repo/backlog',
         inputPath: '/repo/outside/auth.md',
+      });
+    },
+    (error: unknown) => errors.isBacklogError(error) && error.code === 'BE_SCHEMA_INVALID',
+  );
+});
+
+void test('sources module rejects Windows cross-drive paths outside backlog root', async () => {
+  const fs = createInMemoryFileSystemPort({ cwd: '/repo' });
+  const errors = createErrorModule();
+  const schemas = createSchemaModule();
+  const win32PathPort = {
+    resolve(...parts: string[]) {
+      return path.win32.resolve(...parts);
+    },
+    dirname(pathValue: string) {
+      return path.win32.dirname(pathValue);
+    },
+    basename(pathValue: string) {
+      return path.win32.basename(pathValue);
+    },
+    relative(from: string, to: string) {
+      return path.win32.relative(from, to);
+    },
+    normalize(pathValue: string) {
+      return path.win32.normalize(pathValue);
+    },
+    join(...parts: string[]) {
+      return path.win32.join(...parts);
+    },
+  };
+  const sources = createSourcesModule({
+    fs,
+    path: win32PathPort,
+    hash: createNodeHashPort(),
+    clock: {
+      nowIsoUtc() {
+        return '2026-04-06T12:00:00.000Z';
+      },
+    },
+    schemas,
+    errors,
+  });
+
+  await assert.rejects(
+    async () => {
+      await sources.resolveCliSourcePath({
+        backlogRoot: 'C:\\repo\\backlog',
+        inputPath: 'D:\\outside\\auth.md',
       });
     },
     (error: unknown) => errors.isBacklogError(error) && error.code === 'BE_SCHEMA_INVALID',

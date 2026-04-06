@@ -121,6 +121,7 @@ export interface ArtifactsModule {
     cwd: AbsoluteFsPath;
     out: CliPathInput;
     defaultBasename: string;
+    collisionBasename?: string;
     content: string;
   }): Promise<NormalizedFsPath>;
   deleteBacklog(root: BacklogRootPath): Promise<void>;
