@@ -251,9 +251,9 @@
 
 ### Work package `F` — `init command`
 
-- Статус: локальная имплементация завершена, идёт внешний review
+- Статус: завершён
 - Дата: 2026-04-06
-- Коммит:
+- Коммит: `feat(backlog-engineer): implement init bootstrap command`
 - Что сделано:
   - реализована полноценная команда `init` вместо placeholder handler
   - runtime context дополнен semantic host helpers:
@@ -270,21 +270,29 @@
     - unit equality `renderBacklogAgentsTemplate()` vs canonical asset
     - command-level positive/negative `init` scenarios
     - CLI process happy-path и negative non-empty-root scenario
+  - после code review доработан rollback `writeInitialArtifacts(...)`:
+    - cleanup теперь удаляет не только partially written files, но и все штатные layout directories
+    - rollback удаляет предсказуемые temp sibling files для root marker, registries, state и `AGENTS.md`
+    - после cleanup root удаляется, если он пуст
+  - усилен artifact-level тест bootstrap failure:
+    - теперь он доказывает retry-safe поведение `init` после первой неуспешной попытки
 - Ключевые решения:
   - команда `init` осталась тонким orchestrator-ом; init-time bootstrap вынесен в `artifacts.initializeBacklogRoot(...)`, потому что именно `artifacts` владеет layout и utility-owned bootstrap files
   - `renderBacklogAgentsTemplate()` возвращает встроенную каноническую строку, а отдельный unit-test гарантирует полное совпадение с asset-файлом `assets/backlog-agents.template.md`
+  - rollback bootstrap не использует `deleteBacklog(...)`, потому что failure-path `init` должен удалять также предсказуемые temp sibling files, которые не входят в штатный steady-state layout
 - Допущения вне спецификации:
   - `CommandExecutionContext` расширен semantic helper-слоем `host`, чтобы команды не обращались напрямую к `fs/path/clock` и не использовали `node:path` или `new Date()` в обход runtime boundary
   - `ArtifactsModule` расширен методом `initializeBacklogRoot(...)` как artifact-owned bootstrap orchestration для `init`; это решение затем синхронизировано в `module-interfaces.ru.md`
+  - rollback bootstrap дополнительно вычисляет temp sibling paths из тех же `targetPath + content`, что и `writeTextAtomically(...)`, чтобы cleanup покрывал прерванные atomic writes; это implementation-level решение для retry-safe `init`, не описанное отдельно в концепте
 - Проверки приёмки:
   - `pnpm --dir skills/backlog-engineer run format` — OK
   - `pnpm --dir skills/backlog-engineer run lint` — OK
   - `pnpm --dir skills/backlog-engineer run typecheck` — OK
   - `pnpm --dir skills/backlog-engineer run test` — OK
 - Внешнее ревью:
-  - spec conformance review — pending
-  - code review — pending
-  - security review — pending
+  - spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS
 - Следующий пакет: `G — Sources and templates slice`
 
 ### Cross-package correction — `delete-backlog` public command surface

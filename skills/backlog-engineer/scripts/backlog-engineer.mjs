@@ -5405,7 +5405,10 @@ var ATTENTION_COMMAND = definePlaceholderCommand({
 		return parseUsageInput("attention", AttentionCommandInputSchema, {});
 	}
 });
-var DELETE_BACKLOG_COMMAND = definePlaceholderCommand({
+//#endregion
+//#region src/runtime/tool-metadata.ts
+var TOOL_NAME = "@kostysh/backlog-engineer-cli";
+var DELETE_BACKLOG_COMMAND = {
 	name: "delete-backlog",
 	summary: "Delete the backlog and its utility-owned artifacts.",
 	usage: ["backlog-engineer delete-backlog --confirm"],
@@ -5425,8 +5428,32 @@ var DELETE_BACKLOG_COMMAND = definePlaceholderCommand({
 			hint: "Re-run the command with `--confirm` only after explicit operator approval."
 		});
 		return parseUsageInput("delete-backlog", DeleteBacklogCommandInputSchema, { confirm: true });
+	},
+	async execute(_input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: { command: "delete-backlog" } });
+		const marker = await context.artifacts.readRootMarker(context.backlogRoot);
+		if (marker.tool_name !== "@kostysh/backlog-engineer-cli" || marker.schema_version !== 1 || marker.layout_version !== 1) throw context.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: {
+			path: context.backlogRoot,
+			tool_name: marker.tool_name,
+			schema_version: marker.schema_version,
+			layout_version: marker.layout_version
+		} });
+		const currentWorkingDirectory = process.cwd();
+		const relativeToRoot = path.relative(context.backlogRoot, currentWorkingDirectory);
+		const runsInsideBacklogRoot = relativeToRoot === "" || relativeToRoot !== "" && !relativeToRoot.startsWith("..") && !path.isAbsolute(relativeToRoot);
+		if (runsInsideBacklogRoot) process.chdir(path.dirname(context.backlogRoot));
+		try {
+			await context.artifacts.deleteBacklog(context.backlogRoot);
+		} catch (error) {
+			if (runsInsideBacklogRoot) process.chdir(currentWorkingDirectory);
+			throw error;
+		}
+		return {
+			deleted_path: ".",
+			deleted: true
+		};
 	}
-});
+};
 var GAPS_COMMAND = definePlaceholderCommand({
 	name: "gaps",
 	summary: "List explicit blockers and unresolved gaps.",
@@ -5444,7 +5471,7 @@ var GAPS_COMMAND = definePlaceholderCommand({
 		return parseUsageInput("gaps", GapsCommandInputSchema, { ...typeof parsed.values["item-key"] === "string" ? { item_key: parsed.values["item-key"] } : {} });
 	}
 });
-var INIT_COMMAND = definePlaceholderCommand({
+var INIT_COMMAND = {
 	name: "init",
 	summary: "Initialize a backlog directory and utility-owned artifacts.",
 	usage: ["backlog-engineer init --path <path>"],
@@ -5460,8 +5487,18 @@ var INIT_COMMAND = definePlaceholderCommand({
 		const parsed = parseCommandArgs("init", args, { options: { path: { type: "string" } } });
 		assertNoPositionals("init", parsed.positionals);
 		return parseUsageInput("init", InitCommandInputSchema, { path: requireStringOption("init", "--path", getStringOption(parsed.values.path)) });
+	},
+	async execute(input, context) {
+		const root = context.host.resolveCliPath(input.path);
+		const createdAt = context.host.nowIsoUtc();
+		const agentsContent = context.templates.renderBacklogAgentsTemplate();
+		return context.artifacts.initializeBacklogRoot({
+			root,
+			createdAt,
+			agentsContent
+		});
 	}
-});
+};
 var ITEMS_COMMAND = definePlaceholderCommand({
 	name: "items",
 	summary: "Show one or more full task cards by item key.",
@@ -5991,7 +6028,7 @@ function createJsonIssueDetails(error) {
 function isMissingFileError(error) {
 	return error instanceof Error && "code" in error && error.code === "ENOENT";
 }
-function createTempSiblingPath(path, targetPath, seedHash) {
+function createTempSiblingPath$1(path, targetPath, seedHash) {
 	return path.join(path.dirname(targetPath), `.${path.basename(targetPath)}.tmp-${seedHash.slice(0, 12)}`);
 }
 function listPathChain(path, target) {
@@ -6102,7 +6139,7 @@ async function readJsonArtifact(payload) {
 }
 async function writeTextAtomically(payload) {
 	const { fs, path, hash, errors, root, targetPath, content, writeErrorCode } = payload;
-	const tempPath = createTempSiblingPath(path, targetPath, await hash.sha256Text(`${targetPath}\n${content}`));
+	const tempPath = createTempSiblingPath$1(path, targetPath, await hash.sha256Text(`${targetPath}\n${content}`));
 	if (root) await ensureManagedFilePathSafe({
 		fs,
 		path,
@@ -6351,6 +6388,35 @@ async function deleteBacklog(dependencies, root) {
 		unexpected_entries: unexpectedEntries
 	} });
 	const managedPaths = getManagedBacklogPaths(dependencies.path, root);
+	await ensureManagedFilePathSafe({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		errors: dependencies.errors,
+		root,
+		filePath: managedPaths.rootMarkerPath,
+		errorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+	await ensureManagedFilePathSafe({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		errors: dependencies.errors,
+		root,
+		filePath: managedPaths.agentsPath,
+		errorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+	for (const directoryPath of [
+		managedPaths.internalDir,
+		managedPaths.packetsDir,
+		managedPaths.patchesDir,
+		managedPaths.reportsDir
+	]) await ensureManagedDirectoryPathSafe({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		errors: dependencies.errors,
+		root,
+		directoryPath,
+		errorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
 	await dependencies.fs.rm(managedPaths.rootMarkerPath, { force: true });
 	await dependencies.fs.rm(managedPaths.agentsPath, { force: true });
 	await dependencies.fs.rm(managedPaths.internalDir, {
@@ -6369,9 +6435,96 @@ async function deleteBacklog(dependencies, root) {
 		recursive: true,
 		force: true
 	});
-	await dependencies.fs.rm(root, {
+	if ((await dependencies.fs.readdir(root)).length === 0) await dependencies.fs.rm(root, {
 		recursive: true,
 		force: true
+	});
+}
+//#endregion
+//#region src/artifacts/initialize-backlog.ts
+function createInitialRootMarker(createdAt) {
+	return {
+		schema_version: 1,
+		tool_name: TOOL_NAME,
+		created_at: createdAt,
+		layout_version: 1
+	};
+}
+function createInitialSourceRegistry(createdAt) {
+	return {
+		schema_version: 1,
+		created_at: createdAt,
+		updated_at: createdAt,
+		sources: []
+	};
+}
+function createInitialAppliedRegistry(createdAt) {
+	return {
+		schema_version: 1,
+		created_at: createdAt,
+		updated_at: createdAt,
+		next_apply_index: 1,
+		packets: [],
+		patches: []
+	};
+}
+function createInitialState(createdAt) {
+	return {
+		schema_version: 1,
+		created_at: createdAt,
+		updated_at: createdAt,
+		last_refresh_at: null,
+		context: {
+			glossary: [],
+			key_strategy: {},
+			target_system: [],
+			as_built: [],
+			claims: [],
+			contracts: [],
+			data_domains: [],
+			quality_attributes: [],
+			policy_decisions: []
+		},
+		items: [],
+		todos: []
+	};
+}
+async function assertInitTargetAvailable(dependencies, root) {
+	const markerPath = getRootMarkerPath(dependencies.path, root);
+	if (await dependencies.fs.exists(markerPath)) {
+		const markerStat = await dependencies.fs.lstat(markerPath);
+		if (markerStat.isFile && !markerStat.isSymbolicLink) throw dependencies.errors.create("BE_ROOT_ALREADY_EXISTS", void 0, { details: {
+			path: root,
+			root_marker_path: markerPath
+		} });
+	}
+	if (!await dependencies.fs.exists(root)) return;
+	const rootStat = await dependencies.fs.lstat(root);
+	if (rootStat.isSymbolicLink || !rootStat.isDirectory) throw dependencies.errors.create("BE_ROOT_NOT_EMPTY", void 0, { details: { path: root } });
+	const entries = await dependencies.fs.readdir(root);
+	if (entries.length > 0) throw dependencies.errors.create("BE_ROOT_NOT_EMPTY", void 0, { details: {
+		path: root,
+		entries
+	} });
+}
+async function initializeBacklogRoot(dependencies, payload) {
+	await assertInitTargetAvailable(dependencies, payload.root);
+	const marker = dependencies.schemas.parseRootMarker(createInitialRootMarker(payload.createdAt));
+	const sourceRegistry = dependencies.schemas.parseSourceRegistry(createInitialSourceRegistry(payload.createdAt));
+	const appliedRegistry = dependencies.schemas.parseAppliedRegistry(createInitialAppliedRegistry(payload.createdAt));
+	const state = dependencies.schemas.parseStateFile(createInitialState(payload.createdAt));
+	await dependencies.artifacts.writeInitialArtifacts({
+		root: payload.root,
+		marker,
+		agentsContent: payload.agentsContent,
+		sourceRegistry,
+		appliedRegistry,
+		state
+	});
+	return dependencies.schemas.parseCommandOutput("init", {
+		path: dependencies.path.resolve(payload.root),
+		root_marker_path: getRootMarkerPath(dependencies.path, payload.root),
+		agents_path: getAgentsPath(dependencies.path, payload.root)
 	});
 }
 //#endregion
@@ -6525,6 +6678,19 @@ async function stateExists(dependencies, root) {
 }
 //#endregion
 //#region src/artifacts/index.ts
+async function createTempSiblingPath(payload) {
+	const seedHash = await payload.hash.sha256Text(`${payload.targetPath}\n${payload.content}`);
+	return payload.path.join(payload.path.dirname(payload.targetPath), `.${payload.path.basename(payload.targetPath)}.tmp-${seedHash.slice(0, 12)}`);
+}
+async function pruneEmptyRoot(payload) {
+	if (!await payload.fs.exists(payload.root)) return;
+	const rootStat = await payload.fs.lstat(payload.root);
+	if (!rootStat.isDirectory || rootStat.isSymbolicLink) return;
+	if ((await payload.fs.readdir(payload.root)).length === 0) await payload.fs.rm(payload.root, {
+		recursive: true,
+		force: true
+	});
+}
 function createArtifactsModule(dependencies) {
 	return {
 		createBacklogDirectories(root) {
@@ -6548,22 +6714,97 @@ function createArtifactsModule(dependencies) {
 				writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
 			});
 		},
+		initializeBacklogRoot(payload) {
+			return initializeBacklogRoot({
+				...dependencies,
+				artifacts: this
+			}, payload);
+		},
 		async writeInitialArtifacts(payload) {
+			const rootMarkerPath = getRootMarkerPath(dependencies.path, payload.root);
+			const statePath = getStatePath(dependencies.path, payload.root);
+			const sourceRegistryPath = getSourceRegistryPath(dependencies.path, payload.root);
+			const appliedRegistryPath = getAppliedRegistryPath(dependencies.path, payload.root);
+			const agentsPath = getAgentsPath(dependencies.path, payload.root);
+			const layoutDirectories = getLayoutDirectories(dependencies.path, payload.root);
+			const rootMarkerContent = `${JSON.stringify(payload.marker, null, 2)}\n`;
+			const stateContent = `${JSON.stringify(payload.state, null, 2)}\n`;
+			const sourceRegistryContent = `${JSON.stringify(payload.sourceRegistry, null, 2)}\n`;
+			const appliedRegistryContent = `${JSON.stringify(payload.appliedRegistry, null, 2)}\n`;
+			const tempPaths = await Promise.all([
+				createTempSiblingPath({
+					path: dependencies.path,
+					hash: dependencies.hash,
+					targetPath: rootMarkerPath,
+					content: rootMarkerContent
+				}),
+				createTempSiblingPath({
+					path: dependencies.path,
+					hash: dependencies.hash,
+					targetPath: statePath,
+					content: stateContent
+				}),
+				createTempSiblingPath({
+					path: dependencies.path,
+					hash: dependencies.hash,
+					targetPath: sourceRegistryPath,
+					content: sourceRegistryContent
+				}),
+				createTempSiblingPath({
+					path: dependencies.path,
+					hash: dependencies.hash,
+					targetPath: appliedRegistryPath,
+					content: appliedRegistryContent
+				}),
+				createTempSiblingPath({
+					path: dependencies.path,
+					hash: dependencies.hash,
+					targetPath: agentsPath,
+					content: payload.agentsContent
+				})
+			]);
 			await createBacklogDirectories(dependencies.fs, dependencies.path, dependencies.errors, payload.root);
-			await writeSourceRegistry(dependencies, payload.root, payload.sourceRegistry);
-			await writeAppliedRegistry(dependencies, payload.root, payload.appliedRegistry);
-			await writeState(dependencies, payload.root, payload.state);
-			await writeTextAtomically({
-				fs: dependencies.fs,
-				path: dependencies.path,
-				hash: dependencies.hash,
-				errors: dependencies.errors,
-				root: payload.root,
-				targetPath: getAgentsPath(dependencies.path, payload.root),
-				content: payload.agentsContent,
-				writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
-			});
-			await writeRootMarker(dependencies, payload.root, payload.marker);
+			try {
+				await writeRootMarker(dependencies, payload.root, payload.marker);
+				await writeState(dependencies, payload.root, payload.state);
+				await writeSourceRegistry(dependencies, payload.root, payload.sourceRegistry);
+				await writeAppliedRegistry(dependencies, payload.root, payload.appliedRegistry);
+				await writeTextAtomically({
+					fs: dependencies.fs,
+					path: dependencies.path,
+					hash: dependencies.hash,
+					errors: dependencies.errors,
+					root: payload.root,
+					targetPath: agentsPath,
+					content: payload.agentsContent,
+					writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+				});
+			} catch (error) {
+				for (const targetPath of [
+					...tempPaths,
+					agentsPath,
+					appliedRegistryPath,
+					sourceRegistryPath,
+					statePath,
+					rootMarkerPath,
+					layoutDirectories.internalDir,
+					layoutDirectories.packetsDir,
+					layoutDirectories.patchesDir,
+					layoutDirectories.reportsDir
+				]) try {
+					await dependencies.fs.rm(targetPath, {
+						recursive: true,
+						force: true
+					});
+				} catch {}
+				try {
+					await pruneEmptyRoot({
+						fs: dependencies.fs,
+						root: payload.root
+					});
+				} catch {}
+				throw error;
+			}
 		},
 		readSourceRegistry(root) {
 			return readSourceRegistry(dependencies, root);
@@ -6601,6 +6842,131 @@ function createArtifactsModule(dependencies) {
 		deleteBacklog(root) {
 			return deleteBacklog(dependencies, root);
 		}
+	};
+}
+//#endregion
+//#region src/templates/render-agents-template.ts
+var BACKLOG_AGENTS_TEMPLATE = `# AGENTS.md
+
+This directory is a backlog root managed by \`@kostysh/backlog-engineer-cli\`.
+
+## Core rules
+
+- Treat the utility as the source of truth for the current backlog state.
+- Do not reconstruct current state by reading \`packets/\`, \`patches/\`, or \`.backlog/*\` directly.
+- Do not edit \`.backlog.json\`, \`.backlog/\`, \`packets/\`, \`patches/\`, or \`reports/\` manually unless the task is explicitly about the utility implementation itself.
+- Packets are immutable after registration.
+- Add new tasks only through \`packet\`.
+- Change existing tasks only through patch-based commands.
+- Remove existing tasks only through patch-based commands.
+- Prefer scoped operations over global ones when the affected source or task is known.
+- Use \`--dry-run\` for risky or large mutations before applying them for real.
+
+## Command selection
+
+- Use \`search\` when task keys are unknown or filtering is needed.
+- Use \`items\` when task keys are already known and full task cards are needed.
+- Use \`refresh\` when source documents may have changed.
+- Use \`queue\` when you need to know what can be taken next.
+- Use \`attention\` when you need tasks that require review or re-review.
+- Use \`gaps\` when you need explicit blockers.
+- Use \`status\` for a short summary in chat.
+- Use \`report\` only when a report file on disk is explicitly needed.
+
+## Source handling
+
+- Read source documents first.
+- Register sources through the utility before relying on them in packets.
+- Use utility lookups such as \`list-sources\` instead of rebuilding source mappings from packet files.
+
+## Mutation follow-up
+
+- After \`packet\`, \`patch-item\`, \`remove-item\`, or \`refresh\`, trust the command result first.
+- If the result reports new or updated \`todo\`, follow up only with \`attention\` or \`items\` for the returned task keys.
+- If there are no \`todo\` changes and the operator asked only for the result, avoid extra reads.
+
+## Working assumptions
+
+- \`gaps\` means blocked.
+- Open \`todo\` caused by source, dependency, or context change means review is needed.
+- \`ready_for_next_step = true\` means the task can be taken further.
+`;
+function renderBacklogAgentsTemplate() {
+	return BACKLOG_AGENTS_TEMPLATE;
+}
+//#endregion
+//#region src/templates/render-packet-template.ts
+var PACKET_TEMPLATE = `{
+  "context": {
+    "glossary": [],
+    "key_strategy": {
+      "module_prefix": "<module_prefix>",
+      "item_pattern": "<module>-<capability>-<result>"
+    },
+    "target_system": [],
+    "as_built": [],
+    "claims": [],
+    "contracts": [],
+    "data_domains": [],
+    "quality_attributes": [],
+    "policy_decisions": []
+  },
+  "items": [
+    {
+      "item_key": "<item_key>",
+      "title": "<title>",
+      "type": "<item_type>",
+      "delivery_state": "defined",
+      "gaps": [],
+      "depends_on_keys": [],
+      "origin_source_ids": ["<source_id>"],
+      "specification_source_ids": [],
+      "plan_source_ids": [],
+      "implementation_source_ids": [],
+      "test_source_ids": [],
+      "claim_keys": [],
+      "contract_keys": [],
+      "data_domain_keys": [],
+      "quality_attribute_keys": [],
+      "policy_decision_keys": []
+    }
+  ]
+}
+`;
+function renderPacketTemplate() {
+	return PACKET_TEMPLATE;
+}
+//#endregion
+//#region src/templates/render-patch-template.ts
+function renderPatchTemplate(payload) {
+	return `${JSON.stringify({
+		metadata: {
+			patch_id: payload.patchId,
+			created_at: payload.createdAt,
+			sequence: payload.sequence,
+			target_item_keys: payload.targetItemKeys
+		},
+		operations: [payload.kind === "remove-item" ? {
+			item_key: payload.targetItemKeys[0] ?? "<item_key>",
+			action: "remove_item"
+		} : {
+			item_key: payload.targetItemKeys[0] ?? "<item_key>",
+			action: "replace_fields",
+			fields: {
+				title: "<new_title>",
+				delivery_state: "<new_delivery_state>",
+				gaps: []
+			}
+		}]
+	}, null, 2)}\n`;
+}
+//#endregion
+//#region src/templates/index.ts
+function createTemplatesModule() {
+	return {
+		renderBacklogAgentsTemplate,
+		renderPacketTemplate,
+		renderPatchTemplate
 	};
 }
 //#endregion
@@ -6748,7 +7114,8 @@ async function findBacklogRoot(fsPort, pathPort, startPath) {
 	while (true) {
 		const markerPath = rootMarkerPath(pathPort, cursor);
 		if (await fsPort.exists(markerPath)) {
-			if ((await fsPort.stat(markerPath)).isFile) return cursor;
+			const markerStat = await fsPort.lstat(markerPath);
+			if (markerStat.isFile && !markerStat.isSymbolicLink) return cursor;
 		}
 		const parent = pathPort.dirname(cursor);
 		if (parent === cursor) return;
@@ -6804,7 +7171,7 @@ function buildRuntimeModules(dependencies, overrides = {}) {
 			errors
 		}),
 		sources: overrides?.sources ?? createUnavailableModuleProxy("sources", errors),
-		templates: overrides?.templates ?? createUnavailableModuleProxy("templates", errors),
+		templates: overrides?.templates ?? createTemplatesModule(),
 		reports: overrides?.reports ?? createUnavailableModuleProxy("reports", errors),
 		schemas,
 		errors,
@@ -6838,6 +7205,14 @@ function createRuntime(options = {}) {
 				modules
 			};
 			return {
+				host: {
+					resolveCliPath(inputPath) {
+						return dependencies.path.resolve(cwd, inputPath);
+					},
+					nowIsoUtc() {
+						return dependencies.clock.nowIsoUtc();
+					}
+				},
 				...backlogRoot ? { backlogRoot } : {},
 				artifacts: modules.artifacts,
 				sources: modules.sources,

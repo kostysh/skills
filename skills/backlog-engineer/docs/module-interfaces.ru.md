@@ -423,6 +423,11 @@ interface ArtifactsModule {
   readRootMarker(root: BacklogRootPath): Promise<RootMarkerFile>;
   writeRootMarker(root: BacklogRootPath, marker: RootMarkerFile): Promise<void>;
   writeAgentsFile(root: BacklogRootPath, content: string): Promise<void>;
+  initializeBacklogRoot(payload: {
+    root: BacklogRootPath;
+    createdAt: IsoUtcTimestamp;
+    agentsContent: string;
+  }): Promise<InitCommandOutput>;
 
   writeInitialArtifacts(payload: {
     root: BacklogRootPath;
@@ -702,6 +707,10 @@ Backlog-root discovery относится к `runtime`. Если использ�
 
 ```ts
 interface CommandExecutionContext {
+  host: {
+    resolveCliPath(path: CliPathInput): AbsoluteFsPath;
+    nowIsoUtc(): IsoUtcTimestamp;
+  };
   backlogRoot?: BacklogRootPath;
   artifacts: ArtifactsModule;
   sources: SourcesModule;
@@ -735,6 +744,7 @@ interface RuntimeModule {
 `createContext(...)` обязан:
 
 - для non-`init` команд находить backlog root через internal runtime helper;
+- прикреплять к `CommandExecutionContext.host` semantic helpers для CLI path resolution и runtime clock;
 - прикреплять к `CommandExecutionContext` методы `ensureQueryState()` и `ensureMutationState()`;
 - не требовать от `commands` ручного конструирования runtime service graph.
 
@@ -1128,6 +1138,7 @@ Hidden maintenance rebuild разрешён только в `runtime.ensureQuery
 - `reports -> core mutation services`
 - `templates -> artifacts`
 - `commands -> fs/path/clock/uuid/hash` напрямую
+- `commands -> node:path` и `new Date()` для обхода `CommandExecutionContext.host`
 - `cli -> runtime` напрямую в обход `commands`
 
 Разрешённые зависимости должны следовать диаграмме из `utility-spec.ru.md`.

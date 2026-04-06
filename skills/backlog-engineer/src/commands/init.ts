@@ -2,6 +2,8 @@ import {
   InitCommandInputSchema,
   InitCommandOutputSchema,
   type CommandHelpOption,
+  type InitCommandInput,
+  type InitCommandOutput,
 } from '../schemas/index.ts';
 import {
   assertNoPositionals,
@@ -10,7 +12,7 @@ import {
   parseUsageInput,
   requireStringOption,
 } from './arg-parsers.ts';
-import { definePlaceholderCommand } from './placeholder.ts';
+import type { CommandDefinition } from './types.ts';
 
 const OPTIONS = [
   {
@@ -21,7 +23,7 @@ const OPTIONS = [
   },
 ] as const satisfies readonly CommandHelpOption[];
 
-export const INIT_COMMAND = definePlaceholderCommand({
+export const INIT_COMMAND: CommandDefinition<InitCommandInput, InitCommandOutput> = {
   name: 'init',
   summary: 'Initialize a backlog directory and utility-owned artifacts.',
   usage: ['backlog-engineer init --path <path>'],
@@ -40,4 +42,15 @@ export const INIT_COMMAND = definePlaceholderCommand({
       path: requireStringOption('init', '--path', getStringOption(parsed.values.path)),
     });
   },
-});
+  async execute(input, context) {
+    const root = context.host.resolveCliPath(input.path);
+    const createdAt = context.host.nowIsoUtc();
+    const agentsContent = context.templates.renderBacklogAgentsTemplate();
+
+    return context.artifacts.initializeBacklogRoot({
+      root,
+      createdAt,
+      agentsContent,
+    });
+  },
+};

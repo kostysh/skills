@@ -396,7 +396,7 @@ void test('artifacts module maps missing root marker to BE_ROOT_NOT_FOUND', asyn
   );
 });
 
-void test('writeInitialArtifacts leaves no discoverable backlog root when a later bootstrap write fails', async () => {
+void test('writeInitialArtifacts rolls back managed paths so init can be retried after bootstrap failure', async () => {
   const fixture = await createFixtureBundle();
   const stateContent = `${JSON.stringify(fixture.state, null, 2)}\n`;
   const statePath = '/repo/backlog/.backlog/state.json';
@@ -430,6 +430,24 @@ void test('writeInitialArtifacts leaves no discoverable backlog root when a late
   assert.equal(await fs.exists('/repo/backlog/.backlog.json'), false);
   assert.equal(await fs.exists(statePath), false);
   assert.equal(await fs.exists(await computeTempSiblingPath(statePath, stateContent)), false);
+  assert.equal(await fs.exists('/repo/backlog/.backlog'), false);
+  assert.equal(await fs.exists('/repo/backlog/packets'), false);
+  assert.equal(await fs.exists('/repo/backlog/patches'), false);
+  assert.equal(await fs.exists('/repo/backlog/reports'), false);
+  assert.equal(await fs.exists('/repo/backlog'), false);
+
+  await artifacts.writeInitialArtifacts({
+    root: '/repo/backlog',
+    marker: fixture.marker,
+    agentsContent: '# backlog agents\n',
+    sourceRegistry: fixture.sourceRegistry,
+    appliedRegistry: fixture.appliedRegistry,
+    state: fixture.state,
+  });
+
+  assert.equal(await fs.exists('/repo/backlog/.backlog.json'), true);
+  assert.equal(await fs.exists('/repo/backlog/AGENTS.md'), true);
+  assert.equal(await fs.exists('/repo/backlog/.backlog/state.json'), true);
 });
 
 void test('writeTextAtomically preserves backlog errors when temp cleanup also fails', async () => {

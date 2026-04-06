@@ -1,4 +1,7 @@
 import type { ItemKey, PatchId, PatchKind, Sequence } from '../schemas/index.ts';
+import { renderBacklogAgentsTemplate } from './render-agents-template.ts';
+import { renderPacketTemplate } from './render-packet-template.ts';
+import { renderPatchTemplate } from './render-patch-template.ts';
 
 export interface TemplatesModule {
   renderBacklogAgentsTemplate(): string;
@@ -10,4 +13,12 @@ export interface TemplatesModule {
     createdAt: string;
     sequence: Sequence;
   }): string;
+}
+
+export function createTemplatesModule(): TemplatesModule {
+  return {
+    renderBacklogAgentsTemplate,
+    renderPacketTemplate,
+    renderPatchTemplate,
+  };
 }
