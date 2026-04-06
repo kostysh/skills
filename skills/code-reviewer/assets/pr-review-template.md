@@ -7,9 +7,9 @@ Why: runtime impact
 Evidence: why this is real
 Fix: safest next move
 
-## Open Questions
+## Open Questions / Assumptions
 
-- unresolved assumption or design clarification
+- unresolved assumption, design clarification, or spec limit
 
 ## Recommendation
 

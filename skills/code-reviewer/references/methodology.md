@@ -20,6 +20,7 @@ Before writing findings:
    - background work
    - CI workflows
    - tests removed or weakened
+5. If a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
 
 If any diff output is truncated, read the touched files directly until every changed hunk is seen.
 
@@ -29,6 +30,7 @@ If any diff output is truncated, read the touched files directly until every cha
 
 Ask:
 
+- What behavior is explicitly required by the linked issue, acceptance criteria, or contract, and does the diff align with it?
 - Can this produce the wrong value or wrong side effect?
 - Does the control flow still hold under empty, null, duplicate, reordered, or partial input?
 - Is the new invariant actually enforced?

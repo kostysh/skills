@@ -1,4 +1,4 @@
 interface:
   display_name: "Code Reviewer"
   short_description: "Systematic PR review with severity-based findings"
-  default_prompt: "Use $code-reviewer to read the full diff, load only the relevant domain skills, and report behavior-changing findings first with severity, evidence, and fix direction."
+  default_prompt: "Use $code-reviewer to read the full diff, run a lightweight spec or intent alignment pass when normative sources exist, load only the relevant domain skills, and report behavior-changing findings first with severity, evidence, and fix direction."
