@@ -38,7 +38,7 @@ Critical rules:
 4. Missing information becomes explicit `gaps`, not agent invention.
 5. Use `--dry-run` before risky or large mutations.
 6. Prefer scoped operations over global ones when scope is known.
-7. Before creating a new backlog, determine whether the system is design-only or already partially implemented.
+7. Before creating a new backlog, analyze what the operator already told you; if system state is missing, ask once and wait.
 8. All mutating commands for one backlog root run only sequentially, never in parallel.
 
 Fast navigation:
@@ -51,15 +51,25 @@ Fast navigation:
 
 ## Preflight before first backlog
 
-Before creating a new backlog, determine the current state of the system.
+Before creating a new backlog, analyze the operator request first.
 
-If the operator already stated it clearly, use that statement.
+Decide which of these facts the operator already provided explicitly:
 
-If not, ask a short preflight question before starting:
+- whether the system is design-only or already partially implemented;
+- what source of truth should be used to infer `delivery_state`;
+- whether the operator is explicitly directing you to inspect the repo or codebase.
+
+If the operator already stated the system state clearly, use that statement.
+
+If the operator did not state it clearly, ask one short preflight question and then stop until the operator answers:
 
 - is the system still only being designed;
 - is it already partially implemented;
 - or is the operator unsure.
+
+Negative rule:
+
+- until the operator answers that question, do not go into the repo, code, or tests to infer implementation state on your own.
 
 If the system is partially implemented, ask for the best available source of truth for delivery state:
 
@@ -78,6 +88,22 @@ If the operator is unsure:
 
 - assume mixed evidence may exist;
 - inspect the strongest available implementation signal before assigning `delivery_state`.
+
+## First backlog strategy
+
+For a brand-new backlog built from architecture, use `coverage-first backlog` as the default strategy.
+
+That means:
+
+- include already implemented architecture-significant tasks;
+- include not-yet-implemented tasks;
+- use `implemented` items as part of the architecture coverage map, not as future work.
+
+Do not exclude implemented tasks just to keep the backlog short.
+
+Exception:
+
+- do not create backlog items for incidental code that does not form a meaningful architecture-significant task.
 
 ## When to use
 
@@ -169,8 +195,8 @@ Allowed evidence sources:
 
 Use this priority order:
 
-1. direct implementation evidence from code and tests
-2. explicit operator instruction
+1. explicit operator instruction about system state or source of truth
+2. direct implementation evidence from code and tests
 3. architecture or ADR statements
 4. planning or backlog documents
 
@@ -229,6 +255,32 @@ Simple rule:
 
 - if the missing fact would make the task false, too optimistic, or not safely actionable, add a `gap`;
 - otherwise continue.
+
+If the missing fact can be resolved by explicit work, do not stop at `gap` alone.
+
+Create a separate task such as:
+
+- `clarification`
+- `investigation`
+- `decision`
+
+Then:
+
+- make the blocked task depend on that new task;
+- keep the `gap` on the blocked task if the uncertainty still matters.
+
+Do not leave a brand-new backlog with only blocked gap items when the blocking uncertainty itself can be expressed as concrete work.
+
+## Path and root mental model
+
+Use this model consistently:
+
+- one backlog equals one backlog root directory;
+- the utility discovers backlog root by finding `.backlog.json` from the current working directory upward;
+- query commands are backlog-scoped, not global;
+- for one active backlog workflow, keep a stable working directory inside the backlog root;
+- source document paths may point outside the backlog root;
+- command flags like `--path` and `--out` still resolve as normal CLI filesystem paths unless the command explicitly says otherwise.
 
 ## Quick command choice
 
@@ -309,9 +361,16 @@ This applies to:
 
 Do not run these in parallel for the same root even if they look independent.
 
+This rule is especially strict for source registration:
+
+- if multiple sources are needed, register them one by one;
+- never run `register-source` in parallel for one backlog root.
+
 ## What to expect in output
 
-Use these notes to interpret command output correctly.
+Use these notes only as high-level interpretation rules.
+
+Do not treat this section as a replacement for command-level reference details.
 
 ### Mutating commands
 
@@ -331,17 +390,9 @@ Follow-up rule:
 
 Interpret `packet` success like this:
 
-- `authored_packet_path` is the authored draft file you supplied to the command;
-- `canonical_packet_path` is the utility-owned immutable import copy inside the backlog root;
-- `canonical_packet_purpose = immutable_import_copy` means that file is intentional, not clutter;
-- the authored packet file remains your authored draft;
-- the utility stores its own immutable canonical import copy;
-- current backlog truth still comes from the utility, not from either packet file.
-
-Dry-run note:
-
-- in `packet --dry-run`, expect `authored_packet_path`;
-- do not expect `canonical_packet_path`, because no canonical import copy is written.
+- your authored packet file remains your authored draft;
+- the utility may store its own immutable canonical import copy;
+- current backlog truth still comes from the utility, not from packet files.
 
 ### `status`
 
@@ -397,7 +448,7 @@ These are non-negotiable emphases for agent behavior:
 - use `--dry-run` before risky or large mutations;
 - treat utility-generated state as authoritative for the current backlog;
 - use `template` before freehand packet or patch authoring when possible.
-- determine system state before first backlog authoring if the operator did not state it;
+- analyze operator input before first backlog authoring and ask one blocking preflight question if system state is missing;
 - serialize all mutating commands for one backlog root;
 - interpret command outputs by utility semantics, not by filename intuition.
 

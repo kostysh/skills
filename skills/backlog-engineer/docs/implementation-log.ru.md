@@ -33,6 +33,44 @@
 
 ## Записи
 
+## Follow-up packages after real-world UX feedback
+
+### Follow-up Package `1` — `Agent contract hardening`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07T20:04:31+02:00
+- Полное время закрытия: ~2 минуты
+- Коммит:
+- Что сделано:
+  - `SKILL.md` переписан в части preflight:
+    - первый шаг теперь анализирует запрос оператора;
+    - если system state не задан, агент задаёт один короткий вопрос и ждёт ответа;
+    - до ответа оператору агент не идёт в repo/код/тесты для самостоятельного вывода implementation state
+  - в `SKILL.md` зафиксирован `coverage-first backlog` как default strategy для нового backlog
+  - правило `gap -> explicit clarification work` сделано директивным:
+    - если неопределённость можно выразить как работу, агент обязан создать `clarification` / `investigation` / `decision` item
+  - в `SKILL.md` добавлена цельная path/root mental model
+  - в `SKILL.md` усилено буквальное правило про serial-only source registration
+  - high-level interpretation notes для command output сохранены, но ужаты так, чтобы не дублировать command reference
+  - `references/document-to-packet-workflow.md` синхронизирован с теми же нормами:
+    - operator-input-first preflight
+    - coverage-first
+    - serial registration
+    - gap resolved through explicit clarification work
+- Ключевые решения:
+  - package 1 intentionally не меняет runtime и не вводит новых CLI flags
+  - first-run defect исправляется прежде всего в agent contract, а не в коде утилиты
+  - `coverage-first backlog` зафиксирован как default без введения dual-mode
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - manual consistency check между `SKILL.md` и `references/document-to-packet-workflow.md` — OK
+  - проверено, что skill теперь содержит буквальный запрет идти в repo до ответа оператора, если system state не задан
+- Внешнее ревью:
+  - не требуется; пакет docs-only и не меняет runtime behavior утилиты
+- Следующий пакет: `Follow-up Package 2 — Reference normalization for first-run authoring`
+
 ## Общие решения по процессу
 
 - С 2026-04-06, начиная с work package `E`, обязательный внешний review-контур включает:

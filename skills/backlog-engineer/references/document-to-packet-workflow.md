@@ -10,9 +10,26 @@ The utility does not interpret prose for you.
 
 ## Step-by-step workflow
 
-### 1. Read the documents
+### 1. Do preflight first, then read the documents
 
-Read the relevant inputs first:
+Before reading the repo or implementation evidence, analyze the operator request first.
+
+Decide whether the operator already told you:
+
+- the system is design-only;
+- the system is already partially implemented;
+- what source of truth should be used for `delivery_state`.
+
+If the operator did not state system state clearly:
+
+- ask one short question;
+- then stop and wait for the answer.
+
+Until that answer is given:
+
+- do not inspect the repo, code, or tests to infer implementation state on your own.
+
+After preflight, read the relevant inputs:
 
 - architecture overview
 - module documents
@@ -27,11 +44,11 @@ Before authoring anything, answer these questions for yourself:
 - what interfaces, data, and constraints matter?
 - what is still unclear?
 
-Before a brand-new backlog, also answer:
+For a brand-new backlog, use `coverage-first backlog` by default:
 
-- is the system only being designed;
-- is it already partially implemented;
-- what evidence is available to infer `delivery_state`.
+- include architecture-significant already implemented tasks;
+- include not-yet-implemented tasks;
+- do not treat implemented work as irrelevant just because it is already delivered.
 
 ### 2. Register the sources
 
@@ -47,6 +64,10 @@ Workflow:
 Do not guess `source_id`.
 
 For one backlog root, do not register sources in parallel with other mutating commands.
+
+If multiple sources are needed:
+
+- register them strictly one by one.
 
 ### 3. Extract stable context
 
@@ -113,6 +134,14 @@ Typical gap cases:
 - unclear sequencing between tasks.
 
 Continue without a `gap` only when the available evidence is already enough to describe the task correctly without invention.
+
+If the missing fact can itself be resolved by concrete work:
+
+- create an explicit `clarification`, `investigation`, or `decision` task;
+- make the blocked task depend on that new task;
+- keep the `gap` on the blocked task if the uncertainty still matters.
+
+Do not leave a brand-new backlog with only blocked gap items when the blocking uncertainty can be expressed as concrete work.
 
 ### 8. Choose packet vs patch
 
