@@ -6,6 +6,7 @@ This file defines the stable command-level contract for the backlog utility.
 
 - one backlog equals one directory;
 - the utility owns `.backlog.json` in that root;
+- the utility also owns backlog-local `.gitignore` there;
 - the utility also owns `packets/`, `patches/`, and report-artifact directories there;
 - `init` should also materialize a local `AGENTS.md` reinforcement file in the backlog root;
 - after `init`, commands are expected to run from that directory or its subdirectories;
@@ -62,9 +63,18 @@ Treat these as mutating commands:
 - `patch-item`
 - `remove-item`
 - `refresh`
+- `report`
+- `status --refresh`
 - `delete-backlog`
 
 For one backlog root, run all mutating commands only sequentially.
+
+Runtime enforcement:
+
+- the utility uses advisory lock at `/.backlog/mutation.lock`;
+- if another mutating command already holds the lock, expect `BE_MUTATION_LOCKED`;
+- `init` creates or updates a managed `.gitignore` section so the lock file does not pollute normal git status.
+- if the host runtime cannot provide safe anchored directory handling for utility-owned artifacts, expect `BE_PLATFORM_UNSUPPORTED` instead of a silent lexical-path fallback.
 
 They should return compact results, not full task cards.
 

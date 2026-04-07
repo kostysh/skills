@@ -6,7 +6,7 @@ import type { ReportsModule } from '../reports/index.ts';
 import type { CliPathInput, SchemaModule, StateFile } from '../schemas/index.ts';
 import type { SourcesModule } from '../sources/index.ts';
 import type { TemplatesModule } from '../templates/index.ts';
-import type { AbsoluteFsPath, BacklogRootPath } from './shared.ts';
+import type { AbsoluteFsPath, BacklogRootPath, CommandName } from './shared.ts';
 
 export interface CommandHost {
   resolveCliPath(path: CliPathInput): AbsoluteFsPath;
@@ -37,4 +37,5 @@ export interface CommandExecutionContext {
     rebuilt: boolean;
   }>;
   ensureMutationState(): Promise<StateFile>;
+  acquireMutationLock(command: CommandName): Promise<() => Promise<void>>;
 }

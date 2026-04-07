@@ -10,6 +10,7 @@ Creates:
 
 - backlog root directory;
 - `.backlog.json`;
+- backlog-local `.gitignore`;
 - `AGENTS.md`;
 - utility-owned state artifacts;
 - `packets/`, `patches/`, and report-artifact directories.
@@ -23,6 +24,12 @@ Expected response:
   "agents_path": "<backlog_dir>/AGENTS.md"
 }
 ```
+
+Behavior notes:
+
+- `init` creates or updates a managed `.gitignore` section that ignores `/.backlog/mutation.lock`;
+- if the target directory already contains a single regular `.gitignore`, `init` preserves its existing content and appends or refreshes the managed section instead of overwriting the file.
+- if file-backed execution cannot provide safe anchored directory handling for managed artifact writes, `init` fails with `BE_PLATFORM_UNSUPPORTED`.
 
 ## `register-source`
 
@@ -55,6 +62,8 @@ Behavior:
 - `path` is stored as a normalized POSIX path relative to backlog root and may contain `..` for external source files;
 - does not create a duplicate for the same normalized path.
 - do not run `register-source` in parallel with other mutating commands for the same backlog root.
+- if another mutating command already owns the backlog root, expect `BE_MUTATION_LOCKED`.
+- if the host runtime cannot provide safe anchored directory handling for utility-owned artifacts, expect `BE_PLATFORM_UNSUPPORTED`.
 
 ## `list-sources`
 
@@ -341,3 +350,15 @@ Reason order should be:
 Use only on direct operator request.
 
 Treat as destructive and confirm intent before use.
+
+Managed deletion scope:
+
+- `.backlog.json`
+- utility-managed section in `.gitignore`
+- `AGENTS.md`
+- `.backlog/`
+- `packets/`
+- `patches/`
+- `reports/`
+
+If `.gitignore` also contains user rules, `delete-backlog` removes only the managed section and keeps the remaining file content.

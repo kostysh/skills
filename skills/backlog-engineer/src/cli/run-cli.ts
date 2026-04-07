@@ -21,6 +21,28 @@ type RunCliDependencies = {
   getCwd?: () => string;
 };
 
+function shouldAcquireMutationLock(commandName: string, input: unknown): boolean {
+  switch (commandName) {
+    case 'register-source':
+    case 'packet':
+    case 'patch-item':
+    case 'remove-item':
+    case 'refresh':
+    case 'report':
+    case 'delete-backlog':
+      return true;
+    case 'status':
+      return (
+        typeof input === 'object' &&
+        input !== null &&
+        'refresh' in input &&
+        (input as { refresh?: unknown }).refresh === true
+      );
+    default:
+      return false;
+  }
+}
+
 function commandHelpRequested(args: string[]): boolean {
   return args.includes('--help') || args.includes('-h');
 }
@@ -85,21 +107,29 @@ export async function runCli(
     const runtime = createRuntimeImpl();
     const commandCwd = dependencies.getCwd ? dependencies.getCwd() : runtime.getProcessCwd();
     const context = await runtime.createContext(command.name, commandCwd);
-    await context.hooks.beforeCommand?.({
-      command: command.name,
-      input,
-      ...(context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}),
-    });
+    const releaseMutationLock =
+      context.backlogRoot && shouldAcquireMutationLock(command.name, input)
+        ? await context.acquireMutationLock(command.name)
+        : undefined;
+    try {
+      await context.hooks.beforeCommand?.({
+        command: command.name,
+        input,
+        ...(context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}),
+      });
 
-    const output = await command.execute(input, context);
-    const validatedOutput = command.outputSchema.parse(output);
-    await context.hooks.afterCommand?.({
-      command: command.name,
-      output: validatedOutput,
-      ...(context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}),
-    });
-    writeJson(cliIo.stdout, validatedOutput);
-    return EXIT_SUCCESS;
+      const output = await command.execute(input, context);
+      const validatedOutput = command.outputSchema.parse(output);
+      await context.hooks.afterCommand?.({
+        command: command.name,
+        output: validatedOutput,
+        ...(context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}),
+      });
+      writeJson(cliIo.stdout, validatedOutput);
+      return EXIT_SUCCESS;
+    } finally {
+      await releaseMutationLock?.();
+    }
   } catch (error) {
     return writeErrorPayload(cliIo, normalizeError(error));
   }

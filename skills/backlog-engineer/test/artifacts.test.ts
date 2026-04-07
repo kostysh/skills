@@ -104,6 +104,7 @@ void test('artifacts module creates backlog layout and round-trips initial artif
   });
 
   assert.equal(await fs.exists('/repo/backlog/.backlog.json'), true);
+  assert.equal(await fs.exists('/repo/backlog/.gitignore'), true);
   assert.equal(await fs.exists('/repo/backlog/AGENTS.md'), true);
   assert.equal(await fs.exists('/repo/backlog/.backlog/sources.json'), true);
   assert.equal(await fs.exists('/repo/backlog/.backlog/applied.json'), true);
@@ -117,6 +118,10 @@ void test('artifacts module creates backlog layout and round-trips initial artif
   assert.deepEqual(await artifacts.readSourceRegistry(root), fixture.sourceRegistry);
   assert.deepEqual(await artifacts.readAppliedRegistry(root), fixture.appliedRegistry);
   assert.deepEqual(await artifacts.readState(root), fixture.state);
+  assert.equal(
+    await fs.readText('/repo/backlog/.gitignore'),
+    '# backlog-engineer managed start\n/.backlog/mutation.lock\n# backlog-engineer managed end\n',
+  );
 });
 
 void test('artifacts module writes AGENTS.md directly through writeAgentsFile', async () => {
@@ -168,6 +173,42 @@ void test('artifacts module rejects reading managed JSON artifacts through symli
   });
 
   await rmNode(tempRoot, { recursive: true, force: true });
+});
+
+void test('artifacts module fails closed when anchored managed reads are unsupported on the platform', async () => {
+  const { marker, sourceRegistry, appliedRegistry, state } = await createFixtureBundle();
+  const fs = createInMemoryFileSystemPort({ cwd: '/repo' });
+  const artifacts = createArtifactsModule({
+    fs,
+    path: createNodePathPort(),
+    hash: createNodeHashPort(),
+    schemas: createSchemaModule(),
+    errors: createErrorModule(),
+  });
+
+  await artifacts.writeInitialArtifacts({
+    root: '/repo/backlog',
+    marker,
+    agentsContent: '# backlog agents\n',
+    sourceRegistry,
+    appliedRegistry,
+    state,
+  });
+
+  fs.openDirectory = () => {
+    const error = new Error('ENOTSUP: /repo/backlog/.backlog') as NodeJS.ErrnoException;
+    error.code = 'ENOTSUP';
+    error.path = '/repo/backlog/.backlog';
+    return Promise.reject(error);
+  };
+
+  await assert.rejects(
+    async () => {
+      await artifacts.readState('/repo/backlog');
+    },
+    (error: unknown) =>
+      error instanceof Error && 'code' in error && error.code === 'BE_PLATFORM_UNSUPPORTED',
+  );
 });
 
 void test('artifacts module maps malformed root marker JSON to BE_ROOT_NOT_FOUND', async () => {
@@ -489,6 +530,7 @@ void test('artifacts module rejects deleteBacklog when root contains unrelated f
   assert.equal(await fs.exists(root), true);
   assert.equal(await fs.exists('/repo/backlog/README.txt'), true);
   assert.equal(await fs.exists('/repo/backlog/.backlog.json'), true);
+  assert.equal(await fs.exists('/repo/backlog/.gitignore'), true);
   assert.equal(await fs.exists('/repo/backlog/.backlog'), true);
   assert.equal(await fs.exists('/repo/backlog/AGENTS.md'), true);
   assert.equal(await fs.exists('/repo/backlog/packets'), true);
@@ -614,6 +656,7 @@ void test('writeInitialArtifacts rolls back managed paths so init can be retried
 
   assert.equal(await fs.exists('/repo/backlog/.backlog.json'), true);
   assert.equal(await fs.exists('/repo/backlog/AGENTS.md'), true);
+  assert.equal(await fs.exists('/repo/backlog/.gitignore'), true);
   assert.equal(await fs.exists('/repo/backlog/.backlog/state.json'), true);
 });
 

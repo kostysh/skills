@@ -444,7 +444,10 @@
 
 - creates empty layout
 - writes initial `state.json`, `sources.json`, `applied.json`
+- writes backlog-local `.gitignore`
 - writes backlog `AGENTS.md`
+- merges managed section into a preexisting regular `.gitignore`
+- fails with `BE_PLATFORM_UNSUPPORTED` when safe anchored directory handling is unavailable for file-backed artifact writes
 - fails on existing backlog root
 - fails on non-empty directory without backlog marker
 
@@ -458,6 +461,7 @@
 - repeated registration of same path does not silently refresh stored `hash`
 - invokes hook after registration
 - fails on missing source file
+- fails with `BE_MUTATION_LOCKED` when backlog mutation lock already exists
 
 ## 11.3. `list-sources`
 
@@ -606,6 +610,9 @@
 
 - requires explicit confirm
 - deletes backlog directory when confirmed
+- removes the utility-managed `.gitignore` section
+- preserves user-owned `.gitignore` content when present
+- deletes `.gitignore` only if it becomes empty after managed-section removal
 - returns exact `DeleteBacklogCommandOutput`
 
 ## 12. Output-contract coverage
@@ -642,6 +649,9 @@
 - destructive command without confirm returns blocking exit code
 - `report --out` or other unsupported argv surface returns usage error if parser receives it
 - built artifact happy-path chain `init -> register-source -> packet -> status`
+- built artifact refusal path when `/.backlog/mutation.lock` already exists for a mutating command
+- built artifact mutation command removes `/.backlog/mutation.lock` after error path
+- file-backed command fails with `BE_PLATFORM_UNSUPPORTED` when anchored directory handling is unavailable
 - built artifact mutation chain `template patch -> patch-item --dry-run -> patch-item -> items`
 - built artifact refresh chain `refresh --source-id -> attention -> report`
 - built artifact query after deleting `state.json` triggers hidden maintenance rebuild and still succeeds

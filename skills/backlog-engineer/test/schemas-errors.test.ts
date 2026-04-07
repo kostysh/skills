@@ -47,14 +47,8 @@ void test('rejects invalid path-shaped values', () => {
   assert.equal(schemas.CliPathInputSchema.safeParse('bad\0path').success, false);
   assert.equal(schemas.NormalizedFsPathSchema.safeParse('./relative/path').success, false);
   assert.equal(schemas.BacklogRelativePosixPathSchema.safeParse('../escape').success, false);
-  assert.equal(
-    schemas.SourceRelativePosixPathSchema.safeParse('../outside/auth.md').success,
-    true,
-  );
-  assert.equal(
-    schemas.SourceRelativePosixPathSchema.safeParse('foo/../auth.md').success,
-    false,
-  );
+  assert.equal(schemas.SourceRelativePosixPathSchema.safeParse('../outside/auth.md').success, true);
+  assert.equal(schemas.SourceRelativePosixPathSchema.safeParse('foo/../auth.md').success, false);
   assert.equal(
     schemas.BacklogRelativePosixPathSchema.safeParse('C:/secret/auth.md').success,
     false,
@@ -367,6 +361,9 @@ void test('accepts valid error payload and maps error codes to exit codes', () =
 
   const usageError = errors.createBacklogError({ code: 'BE_SOURCE_KIND_INVALID' });
   assert.equal(usageError.exitCode, 2);
+
+  const platformError = errors.createBacklogError({ code: 'BE_PLATFORM_UNSUPPORTED' });
+  assert.equal(platformError.exitCode, 1);
 
   const genericUsageError = errors.createUsageError({ command: 'status' });
   assert.equal(genericUsageError.code, 'BE_USAGE_INVALID');

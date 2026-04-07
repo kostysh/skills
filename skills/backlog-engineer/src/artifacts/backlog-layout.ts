@@ -5,7 +5,9 @@ import type { FileSystemPort, PathPort } from '../runtime/ports.ts';
 import { ensureManagedDirectoryPathSafe, ensureNoSymlinkAncestors } from './store-helpers.ts';
 
 export const ROOT_MARKER_BASENAME = '.backlog.json';
+export const GITIGNORE_BASENAME = '.gitignore';
 export const BACKLOG_INTERNAL_DIRNAME = '.backlog';
+export const MUTATION_LOCK_BASENAME = 'mutation.lock';
 export const PACKETS_DIRNAME = 'packets';
 export const PATCHES_DIRNAME = 'patches';
 export const REPORTS_DIRNAME = 'reports';
@@ -26,6 +28,8 @@ type LayoutDirectories = {
 export type ManagedBacklogPaths = LayoutDirectories & {
   rootMarkerPath: AbsoluteFsPath;
   agentsPath: AbsoluteFsPath;
+  gitignorePath: AbsoluteFsPath;
+  mutationLockPath: AbsoluteFsPath;
 };
 
 export function getLayoutDirectories(path: PathPort, root: BacklogRootPath): LayoutDirectories {
@@ -42,6 +46,8 @@ export function getManagedBacklogPaths(path: PathPort, root: BacklogRootPath): M
     ...getLayoutDirectories(path, root),
     rootMarkerPath: getRootMarkerPath(path, root),
     agentsPath: getAgentsPath(path, root),
+    gitignorePath: getGitignorePath(path, root),
+    mutationLockPath: getMutationLockPath(path, root),
   };
 }
 
@@ -79,6 +85,10 @@ export function getAgentsPath(path: PathPort, root: BacklogRootPath): AbsoluteFs
   return path.join(root, AGENTS_BASENAME);
 }
 
+export function getGitignorePath(path: PathPort, root: BacklogRootPath): AbsoluteFsPath {
+  return path.join(root, GITIGNORE_BASENAME);
+}
+
 export function getSourceRegistryPath(path: PathPort, root: BacklogRootPath): AbsoluteFsPath {
   return path.join(root, BACKLOG_INTERNAL_DIRNAME, SOURCES_REGISTRY_BASENAME);
 }
@@ -89,6 +99,10 @@ export function getAppliedRegistryPath(path: PathPort, root: BacklogRootPath): A
 
 export function getStatePath(path: PathPort, root: BacklogRootPath): AbsoluteFsPath {
   return path.join(root, BACKLOG_INTERNAL_DIRNAME, STATE_BASENAME);
+}
+
+export function getMutationLockPath(path: PathPort, root: BacklogRootPath): AbsoluteFsPath {
+  return path.join(root, BACKLOG_INTERNAL_DIRNAME, MUTATION_LOCK_BASENAME);
 }
 
 export function getReportMarkdownPath(path: PathPort, root: BacklogRootPath): AbsoluteFsPath {

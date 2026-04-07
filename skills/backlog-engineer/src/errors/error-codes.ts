@@ -28,6 +28,8 @@ export const ERROR_CODES = [
   'BE_REPORT_WRITE_FAILED',
   'BE_TEMPLATE_OUTPUT_INVALID',
   'BE_DELETE_CONFIRM_REQUIRED',
+  'BE_MUTATION_LOCKED',
+  'BE_PLATFORM_UNSUPPORTED',
   'BE_INTERNAL_STATE_CORRUPT',
 ] as const;
 
@@ -61,6 +63,8 @@ export const ERROR_EXIT_CODES = {
   BE_REPORT_WRITE_FAILED: 1,
   BE_TEMPLATE_OUTPUT_INVALID: EXIT_USAGE,
   BE_DELETE_CONFIRM_REQUIRED: 6,
+  BE_MUTATION_LOCKED: 7,
+  BE_PLATFORM_UNSUPPORTED: 1,
   BE_INTERNAL_STATE_CORRUPT: 1,
 } as const satisfies Record<ErrorCode, number>;
 
@@ -92,6 +96,9 @@ export const ERROR_DEFAULT_MESSAGES = {
   BE_REPORT_WRITE_FAILED: 'Failed to write report artifact.',
   BE_TEMPLATE_OUTPUT_INVALID: 'Template output path is invalid.',
   BE_DELETE_CONFIRM_REQUIRED: 'Destructive command requires explicit confirmation.',
+  BE_MUTATION_LOCKED: 'Another mutating command is already running for this backlog root.',
+  BE_PLATFORM_UNSUPPORTED:
+    'This operation requires anchored directory handling that is unsupported on the current platform.',
   BE_INTERNAL_STATE_CORRUPT: 'Internal runtime state is corrupt.',
 } as const satisfies Record<ErrorCode, string>;
 

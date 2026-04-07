@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { access, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { access, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -74,6 +74,72 @@ void test('delete-backlog command rejects a backlog root with foreign entries wi
     const stat = await context.artifacts.readRootMarker(backlogRoot);
     assert.equal(stat.tool_name, '@kostysh/backlog-engineer-cli');
     assert.equal(await readFile(path.join(backlogRoot, 'README.txt'), 'utf8'), 'keep me\n');
+  } finally {
+    await rm(cwd, { recursive: true, force: true });
+  }
+});
+
+void test('delete-backlog command preserves user gitignore content and removes only the managed section', async () => {
+  const cwd = await createTempDir();
+  const backlogRoot = path.join(cwd, 'backlog');
+  const runtime = createRuntime();
+
+  try {
+    await initializeBacklogRoot(cwd, backlogRoot);
+    await writeFile(
+      path.join(backlogRoot, '.gitignore'),
+      [
+        'node_modules/',
+        '# backlog-engineer managed start',
+        '/.backlog/mutation.lock',
+        '# backlog-engineer managed end',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+    const context = await runtime.createContext('delete-backlog', backlogRoot);
+
+    const output = await DELETE_BACKLOG_COMMAND.execute({ confirm: true }, context);
+
+    assert.deepEqual(DeleteBacklogCommandOutputSchema.parse(output), {
+      deleted_path: '.',
+      deleted: true,
+    });
+    assert.equal(await readFile(path.join(backlogRoot, '.gitignore'), 'utf8'), 'node_modules/\n');
+    await assert.rejects(() => readFile(path.join(backlogRoot, '.backlog.json'), 'utf8'));
+  } finally {
+    await rm(cwd, { recursive: true, force: true });
+  }
+});
+
+void test('delete-backlog command prevalidates managed files before removing the root marker', async () => {
+  const cwd = await createTempDir();
+  const backlogRoot = path.join(cwd, 'backlog');
+  const runtime = createRuntime();
+
+  try {
+    await initializeBacklogRoot(cwd, backlogRoot);
+    await rm(path.join(backlogRoot, '.gitignore'), { force: true });
+    await writeFile(path.join(cwd, 'foreign-gitignore'), 'keep\n', 'utf8');
+    await symlink(
+      path.join(cwd, 'foreign-gitignore'),
+      path.join(backlogRoot, '.gitignore'),
+      'file',
+    );
+    const context = await runtime.createContext('delete-backlog', backlogRoot);
+
+    await assert.rejects(
+      async () => {
+        await DELETE_BACKLOG_COMMAND.execute({ confirm: true }, context);
+      },
+      (error: unknown) =>
+        error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
+    );
+
+    assert.equal(
+      await readFile(path.join(backlogRoot, '.backlog.json'), 'utf8').then(Boolean),
+      true,
+    );
   } finally {
     await rm(cwd, { recursive: true, force: true });
   }

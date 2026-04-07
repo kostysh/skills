@@ -17,7 +17,7 @@ type DirectoryEntry = {
 type Entry = FileEntry | DirectoryEntry;
 
 type FaultRule = {
-  op: 'writeText' | 'rename' | 'rm' | 'mkdir';
+  op: 'writeText' | 'writeTextExclusive' | 'rename' | 'rm' | 'mkdir';
   path?: AbsoluteFsPath;
   code: string;
   once?: boolean;
@@ -147,9 +147,30 @@ export function createInMemoryFileSystemPort(
       }
       return Promise.resolve(entry.content);
     },
+    readTextNoFollow(targetPath) {
+      const entry = requireEntry(targetPath);
+      if (entry.kind !== 'file') {
+        throw createFsError('EISDIR', targetPath);
+      }
+      return Promise.resolve(entry.content);
+    },
     writeText(targetPath, content) {
       const normalized = normalize(targetPath);
       maybeThrow('writeText', normalized);
+      ensureDirectory(posixPath.dirname(normalized));
+      entries.set(normalized, {
+        kind: 'file',
+        content,
+        mtimeMs: currentMtime++,
+      });
+      return Promise.resolve();
+    },
+    writeTextExclusive(targetPath, content) {
+      const normalized = normalize(targetPath);
+      maybeThrow('writeTextExclusive', normalized);
+      if (entries.has(normalized)) {
+        throw createFsError('EEXIST', normalized);
+      }
       ensureDirectory(posixPath.dirname(normalized));
       entries.set(normalized, {
         kind: 'file',
@@ -266,6 +287,21 @@ export function createInMemoryFileSystemPort(
     },
     realpath(targetPath) {
       return Promise.resolve(normalize(targetPath));
+    },
+    openDirectory(targetPath) {
+      const normalized = normalize(targetPath);
+      const entry = requireEntry(normalized);
+      if (entry.kind !== 'directory') {
+        throw createFsError('ENOTDIR', normalized);
+      }
+      return Promise.resolve({
+        resolveEntry(name: string) {
+          return normalize(posixPath.join(normalized, name));
+        },
+        close() {
+          return Promise.resolve();
+        },
+      });
     },
     cwd() {
       return currentWorkingDirectory;

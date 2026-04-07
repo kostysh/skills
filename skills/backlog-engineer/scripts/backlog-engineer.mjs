@@ -2,6 +2,7 @@
 import path from "node:path";
 import { parseArgs } from "node:util";
 import crypto from "node:crypto";
+import { constants } from "node:fs";
 import fs from "node:fs/promises";
 //#region package.json
 var name = "@kostysh/backlog-engineer-cli";
@@ -4901,6 +4902,8 @@ var ERROR_CODES = [
 	"BE_REPORT_WRITE_FAILED",
 	"BE_TEMPLATE_OUTPUT_INVALID",
 	"BE_DELETE_CONFIRM_REQUIRED",
+	"BE_MUTATION_LOCKED",
+	"BE_PLATFORM_UNSUPPORTED",
 	"BE_INTERNAL_STATE_CORRUPT"
 ];
 var ERROR_EXIT_CODES = {
@@ -4931,6 +4934,8 @@ var ERROR_EXIT_CODES = {
 	BE_REPORT_WRITE_FAILED: 1,
 	BE_TEMPLATE_OUTPUT_INVALID: 2,
 	BE_DELETE_CONFIRM_REQUIRED: 6,
+	BE_MUTATION_LOCKED: 7,
+	BE_PLATFORM_UNSUPPORTED: 1,
 	BE_INTERNAL_STATE_CORRUPT: 1
 };
 var ERROR_DEFAULT_MESSAGES = {
@@ -4961,6 +4966,8 @@ var ERROR_DEFAULT_MESSAGES = {
 	BE_REPORT_WRITE_FAILED: "Failed to write report artifact.",
 	BE_TEMPLATE_OUTPUT_INVALID: "Template output path is invalid.",
 	BE_DELETE_CONFIRM_REQUIRED: "Destructive command requires explicit confirmation.",
+	BE_MUTATION_LOCKED: "Another mutating command is already running for this backlog root.",
+	BE_PLATFORM_UNSUPPORTED: "This operation requires anchored directory handling that is unsupported on the current platform.",
 	BE_INTERNAL_STATE_CORRUPT: "Internal runtime state is corrupt."
 };
 //#endregion
@@ -6175,8 +6182,14 @@ function createJsonIssueDetails(error) {
 function isMissingFileError$1(error) {
 	return error instanceof Error && "code" in error && error.code === "ENOENT";
 }
+function isUnsupportedPlatformError(error) {
+	return error instanceof Error && "code" in error && error.code === "ENOTSUP";
+}
 function createTempSiblingPath$1(path, targetPath, seedHash) {
 	return path.join(path.dirname(targetPath), `.${path.basename(targetPath)}.tmp-${seedHash.slice(0, 12)}`);
+}
+function createTempSiblingBasename(path, targetPath, seedHash) {
+	return `.${path.basename(targetPath)}.tmp-${seedHash.slice(0, 12)}`;
 }
 function listPathChain(path, target) {
 	const normalizedTarget = path.resolve(target);
@@ -6235,6 +6248,48 @@ async function ensureManagedFilePathSafe(payload) {
 	const entry = await fs.lstat(targetFile);
 	if (entry.isSymbolicLink || entry.isDirectory) throw errors.create(errorCode, void 0, { details: { path: targetFile } });
 }
+async function openManagedParentDirectory(payload) {
+	const { fs, path, errors, root, filePath, errorCode } = payload;
+	const targetFile = path.resolve(filePath);
+	await ensureManagedFilePathSafe({
+		fs,
+		path,
+		errors,
+		root,
+		filePath: targetFile,
+		errorCode
+	});
+	try {
+		return await fs.openDirectory(path.dirname(targetFile));
+	} catch (error) {
+		if (isUnsupportedPlatformError(error)) throw errors.create("BE_PLATFORM_UNSUPPORTED", void 0, {
+			details: { path: targetFile },
+			cause: error
+		});
+		throw error;
+	}
+}
+async function openManagedDirectory(payload) {
+	const { fs, path, errors, root, directoryPath, errorCode } = payload;
+	const targetDirectory = path.resolve(directoryPath);
+	await ensureManagedDirectoryPathSafe({
+		fs,
+		path,
+		errors,
+		root,
+		directoryPath: targetDirectory,
+		errorCode
+	});
+	try {
+		return await fs.openDirectory(targetDirectory);
+	} catch (error) {
+		if (isUnsupportedPlatformError(error)) throw errors.create("BE_PLATFORM_UNSUPPORTED", void 0, {
+			details: { path: targetDirectory },
+			cause: error
+		});
+		throw error;
+	}
+}
 async function ensureNoSymlinkAncestors(payload) {
 	const { fs, path, errors, targetPath, errorCode } = payload;
 	const normalizedTarget = path.resolve(targetPath);
@@ -6245,16 +6300,33 @@ async function ensureNoSymlinkAncestors(payload) {
 }
 async function readJsonArtifact(payload) {
 	const { fs, path, errors, filePath, parse, root, readErrorCode = "BE_INTERNAL_STATE_CORRUPT", missingCode = "BE_INTERNAL_STATE_CORRUPT", corruptCode = "BE_INTERNAL_STATE_CORRUPT" } = payload;
-	if (root && path) await ensureManagedFilePathSafe({
-		fs,
-		path,
-		errors,
-		root,
-		filePath,
-		errorCode: readErrorCode
-	});
 	let rawText;
-	try {
+	if (root && path) {
+		let parentDirectory;
+		try {
+			parentDirectory = await openManagedParentDirectory({
+				fs,
+				path,
+				errors,
+				root,
+				filePath,
+				errorCode: readErrorCode
+			});
+			rawText = await fs.readTextNoFollow(parentDirectory.resolveEntry(path.basename(filePath)));
+		} catch (error) {
+			await parentDirectory?.close().catch(() => void 0);
+			if (errors.isBacklogError(error)) throw error;
+			if (isMissingFileError$1(error)) throw errors.create(missingCode, void 0, {
+				details: { path: filePath },
+				cause: error
+			});
+			throw errors.create(corruptCode, void 0, {
+				details: { path: filePath },
+				cause: error
+			});
+		}
+		await parentDirectory.close();
+	} else try {
 		rawText = await fs.readText(filePath);
 	} catch (error) {
 		if (isMissingFileError$1(error)) throw errors.create(missingCode, void 0, {
@@ -6293,28 +6365,43 @@ async function readJsonArtifact(payload) {
 }
 async function writeTextAtomically(payload) {
 	const { fs, path, hash, errors, root, targetPath, content, writeErrorCode } = payload;
-	const tempPath = createTempSiblingPath$1(path, targetPath, await hash.sha256Text(`${targetPath}\n${content}`));
-	if (root) await ensureManagedFilePathSafe({
-		fs,
-		path,
-		errors,
-		root,
-		filePath: targetPath,
-		errorCode: writeErrorCode
-	});
+	const seedHash = await hash.sha256Text(`${targetPath}\n${content}`);
+	const tempBasename = createTempSiblingBasename(path, targetPath, seedHash);
+	let parentDirectory;
 	try {
-		await fs.mkdir(path.dirname(targetPath), { recursive: true });
-		await fs.rm(tempPath, { force: true });
-		await fs.writeText(tempPath, content);
-		await fs.rename(tempPath, targetPath);
-	} catch (error) {
-		try {
+		if (root) {
+			parentDirectory = await openManagedParentDirectory({
+				fs,
+				path,
+				errors,
+				root,
+				filePath: targetPath,
+				errorCode: writeErrorCode
+			});
+			const stableTargetPath = parentDirectory.resolveEntry(path.basename(targetPath));
+			const tempPath = parentDirectory.resolveEntry(tempBasename);
 			await fs.rm(tempPath, { force: true });
+			await fs.writeTextExclusive(tempPath, content);
+			await fs.rename(tempPath, stableTargetPath);
+		} else {
+			const tempPath = createTempSiblingPath$1(path, targetPath, seedHash);
+			await fs.mkdir(path.dirname(targetPath), { recursive: true });
+			await fs.rm(tempPath, { force: true });
+			await fs.writeTextExclusive(tempPath, content);
+			await fs.rename(tempPath, targetPath);
+		}
+	} catch (error) {
+		const cleanupPath = parentDirectory === void 0 ? createTempSiblingPath$1(path, targetPath, seedHash) : parentDirectory.resolveEntry(tempBasename);
+		try {
+			await fs.rm(cleanupPath, { force: true });
 		} catch {}
+		if (errors.isBacklogError(error)) throw error;
 		throw errors.create(writeErrorCode, void 0, {
 			details: { path: targetPath },
 			cause: error
 		});
+	} finally {
+		await parentDirectory?.close();
 	}
 }
 async function writeJsonArtifact(payload) {
@@ -6349,11 +6436,11 @@ async function writeJsonArtifact(payload) {
 //#endregion
 //#region src/sources/source-hash-service.ts
 var MAX_SOURCE_FILE_BYTES = 10 * 1024 * 1024;
-function isErrnoException$1(error) {
+function isErrnoException$2(error) {
 	return error instanceof Error && "code" in error;
 }
 function isMissingFileError(error) {
-	return isErrnoException$1(error) && error.code === "ENOENT";
+	return isErrnoException$2(error) && error.code === "ENOENT";
 }
 async function hashSourceFile(payload) {
 	try {
@@ -7252,7 +7339,9 @@ function parseCliIntent(argv) {
 //#endregion
 //#region src/artifacts/backlog-layout.ts
 var ROOT_MARKER_BASENAME = ".backlog.json";
+var GITIGNORE_BASENAME = ".gitignore";
 var BACKLOG_INTERNAL_DIRNAME = ".backlog";
+var MUTATION_LOCK_BASENAME = "mutation.lock";
 var PACKETS_DIRNAME = "packets";
 var PATCHES_DIRNAME = "patches";
 var REPORTS_DIRNAME = "reports";
@@ -7274,7 +7363,9 @@ function getManagedBacklogPaths(path, root) {
 	return {
 		...getLayoutDirectories(path, root),
 		rootMarkerPath: getRootMarkerPath(path, root),
-		agentsPath: getAgentsPath(path, root)
+		agentsPath: getAgentsPath(path, root),
+		gitignorePath: getGitignorePath(path, root),
+		mutationLockPath: getMutationLockPath(path, root)
 	};
 }
 async function createBacklogDirectories(fs, path, errors, root) {
@@ -7305,6 +7396,9 @@ function getRootMarkerPath(path, root) {
 function getAgentsPath(path, root) {
 	return path.join(root, AGENTS_BASENAME);
 }
+function getGitignorePath(path, root) {
+	return path.join(root, GITIGNORE_BASENAME);
+}
 function getSourceRegistryPath(path, root) {
 	return path.join(root, BACKLOG_INTERNAL_DIRNAME, SOURCES_REGISTRY_BASENAME);
 }
@@ -7313,6 +7407,9 @@ function getAppliedRegistryPath(path, root) {
 }
 function getStatePath(path, root) {
 	return path.join(root, BACKLOG_INTERNAL_DIRNAME, STATE_BASENAME);
+}
+function getMutationLockPath(path, root) {
+	return path.join(root, BACKLOG_INTERNAL_DIRNAME, MUTATION_LOCK_BASENAME);
 }
 function getReportMarkdownPath(path, root) {
 	return path.join(root, REPORTS_DIRNAME, REPORT_MARKDOWN_BASENAME);
@@ -7444,77 +7541,215 @@ async function importPatchFile(dependencies, payload) {
 	});
 }
 //#endregion
+//#region src/artifacts/gitignore-store.ts
+var MANAGED_SECTION_START = "# backlog-engineer managed start";
+var MANAGED_SECTION_END = "# backlog-engineer managed end";
+var MANAGED_SECTION_LINES = ["/.backlog/mutation.lock"];
+function normalizeTrailingNewline(content) {
+	return content.endsWith("\n") ? content : `${content}\n`;
+}
+function renderManagedSection() {
+	return `${MANAGED_SECTION_START}\n${MANAGED_SECTION_LINES.join("\n")}\n${MANAGED_SECTION_END}\n`;
+}
+function stripManagedSections(content) {
+	const normalized = normalizeTrailingNewline(content);
+	let result = "";
+	let cursor = 0;
+	let removedBlockCount = 0;
+	while (cursor < normalized.length) {
+		const startIndex = normalized.indexOf(MANAGED_SECTION_START, cursor);
+		if (startIndex === -1) {
+			result += normalized.slice(cursor);
+			break;
+		}
+		const endIndex = normalized.indexOf(MANAGED_SECTION_END, startIndex + 32);
+		if (endIndex === -1) {
+			result += normalized.slice(cursor);
+			break;
+		}
+		result += normalized.slice(cursor, startIndex);
+		cursor = endIndex + 30;
+		if (normalized.charAt(cursor) === "\n") cursor += 1;
+		removedBlockCount += 1;
+	}
+	return {
+		content: normalizeTrailingNewline(result),
+		removedBlockCount
+	};
+}
+function renderManagedGitignoreContent(content) {
+	const managedSection = renderManagedSection();
+	const trimmed = stripManagedSections(content).content.trimEnd();
+	return [
+		...trimmed.length > 0 ? [trimmed] : [],
+		managedSection.trimEnd(),
+		""
+	].join("\n");
+}
+function stripManagedGitignoreSection(content) {
+	const stripped = stripManagedSections(content);
+	return {
+		content: stripped.content.trim().length > 0 ? `${stripped.content.trimEnd()}\n` : "",
+		hadManagedSection: stripped.removedBlockCount > 0
+	};
+}
+async function writeManagedGitignore(dependencies, payload) {
+	const gitignorePath = getGitignorePath(dependencies.path, payload.root);
+	const content = renderManagedGitignoreContent(payload.existingContent ?? "");
+	await writeTextAtomically({
+		fs: dependencies.fs,
+		path: dependencies.path,
+		hash: dependencies.hash,
+		errors: dependencies.errors,
+		root: payload.root,
+		targetPath: gitignorePath,
+		content,
+		writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+}
+//#endregion
 //#region src/artifacts/delete-backlog.ts
 async function deleteBacklog(dependencies, root) {
 	if (!await dependencies.fs.exists(root)) return;
 	const rootStat = await dependencies.fs.lstat(root);
 	if (!rootStat.isDirectory || rootStat.isSymbolicLink) throw dependencies.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: { path: root } });
-	const remainingEntries = await dependencies.fs.readdir(root);
-	const allowedEntries = new Set([
-		ROOT_MARKER_BASENAME,
-		AGENTS_BASENAME,
-		BACKLOG_INTERNAL_DIRNAME,
-		PACKETS_DIRNAME,
-		PATCHES_DIRNAME,
-		REPORTS_DIRNAME
-	]);
-	const unexpectedEntries = remainingEntries.filter((entry) => !allowedEntries.has(entry));
-	if (unexpectedEntries.length > 0) throw dependencies.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
-		path: root,
-		unexpected_entries: unexpectedEntries
-	} });
-	const managedPaths = getManagedBacklogPaths(dependencies.path, root);
-	await ensureManagedFilePathSafe({
+	const rootDirectory = await openManagedDirectory({
 		fs: dependencies.fs,
 		path: dependencies.path,
 		errors: dependencies.errors,
 		root,
-		filePath: managedPaths.rootMarkerPath,
+		directoryPath: root,
 		errorCode: "BE_INTERNAL_STATE_CORRUPT"
 	});
-	await ensureManagedFilePathSafe({
-		fs: dependencies.fs,
-		path: dependencies.path,
-		errors: dependencies.errors,
-		root,
-		filePath: managedPaths.agentsPath,
-		errorCode: "BE_INTERNAL_STATE_CORRUPT"
-	});
-	for (const directoryPath of [
-		managedPaths.internalDir,
-		managedPaths.packetsDir,
-		managedPaths.patchesDir,
-		managedPaths.reportsDir
-	]) await ensureManagedDirectoryPathSafe({
-		fs: dependencies.fs,
-		path: dependencies.path,
-		errors: dependencies.errors,
-		root,
-		directoryPath,
-		errorCode: "BE_INTERNAL_STATE_CORRUPT"
-	});
-	await dependencies.fs.rm(managedPaths.rootMarkerPath, { force: true });
-	await dependencies.fs.rm(managedPaths.agentsPath, { force: true });
-	await dependencies.fs.rm(managedPaths.internalDir, {
-		recursive: true,
-		force: true
-	});
-	await dependencies.fs.rm(managedPaths.packetsDir, {
-		recursive: true,
-		force: true
-	});
-	await dependencies.fs.rm(managedPaths.patchesDir, {
-		recursive: true,
-		force: true
-	});
-	await dependencies.fs.rm(managedPaths.reportsDir, {
-		recursive: true,
-		force: true
-	});
-	if ((await dependencies.fs.readdir(root)).length === 0) await dependencies.fs.rm(root, {
-		recursive: true,
-		force: true
-	});
+	let rootParentDirectory;
+	try {
+		const remainingEntries = await dependencies.fs.readdir(rootDirectory.resolveEntry("."));
+		const allowedEntries = new Set([
+			ROOT_MARKER_BASENAME,
+			GITIGNORE_BASENAME,
+			AGENTS_BASENAME,
+			BACKLOG_INTERNAL_DIRNAME,
+			PACKETS_DIRNAME,
+			PATCHES_DIRNAME,
+			REPORTS_DIRNAME
+		]);
+		const unexpectedEntries = remainingEntries.filter((entry) => !allowedEntries.has(entry));
+		if (unexpectedEntries.length > 0) throw dependencies.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+			path: root,
+			unexpected_entries: unexpectedEntries
+		} });
+		const managedPaths = getManagedBacklogPaths(dependencies.path, root);
+		await ensureManagedDirectoryPathSafe({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			errors: dependencies.errors,
+			root,
+			directoryPath: managedPaths.internalDir,
+			errorCode: "BE_INTERNAL_STATE_CORRUPT"
+		});
+		await ensureManagedDirectoryPathSafe({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			errors: dependencies.errors,
+			root,
+			directoryPath: managedPaths.packetsDir,
+			errorCode: "BE_INTERNAL_STATE_CORRUPT"
+		});
+		await ensureManagedDirectoryPathSafe({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			errors: dependencies.errors,
+			root,
+			directoryPath: managedPaths.patchesDir,
+			errorCode: "BE_INTERNAL_STATE_CORRUPT"
+		});
+		await ensureManagedDirectoryPathSafe({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			errors: dependencies.errors,
+			root,
+			directoryPath: managedPaths.reportsDir,
+			errorCode: "BE_INTERNAL_STATE_CORRUPT"
+		});
+		await ensureManagedFilePathSafe({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			errors: dependencies.errors,
+			root,
+			filePath: managedPaths.rootMarkerPath,
+			errorCode: "BE_INTERNAL_STATE_CORRUPT"
+		});
+		await ensureManagedFilePathSafe({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			errors: dependencies.errors,
+			root,
+			filePath: managedPaths.gitignorePath,
+			errorCode: "BE_INTERNAL_STATE_CORRUPT"
+		});
+		await ensureManagedFilePathSafe({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			errors: dependencies.errors,
+			root,
+			filePath: managedPaths.agentsPath,
+			errorCode: "BE_INTERNAL_STATE_CORRUPT"
+		});
+		await ensureNoSymlinkAncestors({
+			fs: dependencies.fs,
+			path: dependencies.path,
+			errors: dependencies.errors,
+			targetPath: dependencies.path.dirname(root),
+			errorCode: "BE_INTERNAL_STATE_CORRUPT"
+		});
+		rootParentDirectory = await dependencies.fs.openDirectory(dependencies.path.dirname(root));
+		const stableRootMarkerPath = rootDirectory.resolveEntry(ROOT_MARKER_BASENAME);
+		const stableGitignorePath = rootDirectory.resolveEntry(GITIGNORE_BASENAME);
+		const stableAgentsPath = rootDirectory.resolveEntry(AGENTS_BASENAME);
+		const stableInternalDir = rootDirectory.resolveEntry(BACKLOG_INTERNAL_DIRNAME);
+		const stablePacketsDir = rootDirectory.resolveEntry(PACKETS_DIRNAME);
+		const stablePatchesDir = rootDirectory.resolveEntry(PATCHES_DIRNAME);
+		const stableReportsDir = rootDirectory.resolveEntry(REPORTS_DIRNAME);
+		if (await dependencies.fs.exists(stableGitignorePath)) {
+			const strippedGitignore = stripManagedGitignoreSection(await dependencies.fs.readTextNoFollow(stableGitignorePath));
+			if (strippedGitignore.content.length === 0) await dependencies.fs.rm(stableGitignorePath, { force: true });
+			else await writeTextAtomically({
+				fs: dependencies.fs,
+				path: dependencies.path,
+				hash: dependencies.hash,
+				errors: dependencies.errors,
+				root,
+				targetPath: managedPaths.gitignorePath,
+				content: strippedGitignore.content,
+				writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
+			});
+		}
+		await dependencies.fs.rm(stableAgentsPath, { force: true });
+		await dependencies.fs.rm(stableInternalDir, {
+			recursive: true,
+			force: true
+		});
+		await dependencies.fs.rm(stablePacketsDir, {
+			recursive: true,
+			force: true
+		});
+		await dependencies.fs.rm(stablePatchesDir, {
+			recursive: true,
+			force: true
+		});
+		await dependencies.fs.rm(stableReportsDir, {
+			recursive: true,
+			force: true
+		});
+		await dependencies.fs.rm(stableRootMarkerPath, { force: true });
+		if ((await dependencies.fs.readdir(rootDirectory.resolveEntry("."))).length === 0) await dependencies.fs.rm(rootParentDirectory.resolveEntry(dependencies.path.basename(root)), {
+			recursive: true,
+			force: true
+		});
+	} finally {
+		await rootParentDirectory?.close().catch(() => void 0);
+		await rootDirectory.close().catch(() => void 0);
+	}
 }
 //#endregion
 //#region src/artifacts/initialize-backlog.ts
@@ -7574,17 +7809,28 @@ async function assertInitTargetAvailable(dependencies, root) {
 			root_marker_path: markerPath
 		} });
 	}
-	if (!await dependencies.fs.exists(root)) return;
+	if (!await dependencies.fs.exists(root)) return {};
 	const rootStat = await dependencies.fs.lstat(root);
 	if (rootStat.isSymbolicLink || !rootStat.isDirectory) throw dependencies.errors.create("BE_ROOT_NOT_EMPTY", void 0, { details: { path: root } });
 	const entries = await dependencies.fs.readdir(root);
+	if (entries.length === 0) return {};
+	if (entries.length === 1 && entries[0] === ".gitignore") {
+		const gitignorePath = getGitignorePath(dependencies.path, root);
+		const gitignoreStat = await dependencies.fs.lstat(gitignorePath);
+		if (!gitignoreStat.isFile || gitignoreStat.isSymbolicLink) throw dependencies.errors.create("BE_ROOT_NOT_EMPTY", void 0, { details: {
+			path: root,
+			entries
+		} });
+		return { existingGitignoreContent: await dependencies.fs.readText(gitignorePath) };
+	}
 	if (entries.length > 0) throw dependencies.errors.create("BE_ROOT_NOT_EMPTY", void 0, { details: {
 		path: root,
 		entries
 	} });
+	return {};
 }
 async function initializeBacklogRoot(dependencies, payload) {
-	await assertInitTargetAvailable(dependencies, payload.root);
+	const initTarget = await assertInitTargetAvailable(dependencies, payload.root);
 	const marker = dependencies.schemas.parseRootMarker(createInitialRootMarker(payload.createdAt));
 	const sourceRegistry = dependencies.schemas.parseSourceRegistry(createInitialSourceRegistry(payload.createdAt));
 	const appliedRegistry = dependencies.schemas.parseAppliedRegistry(createInitialAppliedRegistry(payload.createdAt));
@@ -7593,6 +7839,7 @@ async function initializeBacklogRoot(dependencies, payload) {
 		root: payload.root,
 		marker,
 		agentsContent: payload.agentsContent,
+		...initTarget.existingGitignoreContent !== void 0 ? { existingGitignoreContent: initTarget.existingGitignoreContent } : {},
 		sourceRegistry,
 		appliedRegistry,
 		state
@@ -7824,6 +8071,9 @@ function createArtifactsModule(dependencies) {
 				writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
 			});
 		},
+		writeManagedGitignore(payload) {
+			return writeManagedGitignore(dependencies, payload);
+		},
 		initializeBacklogRoot(payload) {
 			return initializeBacklogRoot({
 				...dependencies,
@@ -7836,6 +8086,7 @@ function createArtifactsModule(dependencies) {
 			const sourceRegistryPath = getSourceRegistryPath(dependencies.path, payload.root);
 			const appliedRegistryPath = getAppliedRegistryPath(dependencies.path, payload.root);
 			const agentsPath = getAgentsPath(dependencies.path, payload.root);
+			const gitignorePath = getGitignorePath(dependencies.path, payload.root);
 			const layoutDirectories = getLayoutDirectories(dependencies.path, payload.root);
 			const rootMarkerContent = `${JSON.stringify(payload.marker, null, 2)}\n`;
 			const stateContent = `${JSON.stringify(payload.state, null, 2)}\n`;
@@ -7871,6 +8122,12 @@ function createArtifactsModule(dependencies) {
 					hash: dependencies.hash,
 					targetPath: agentsPath,
 					content: payload.agentsContent
+				}),
+				createTempSiblingPath({
+					path: dependencies.path,
+					hash: dependencies.hash,
+					targetPath: gitignorePath,
+					content: renderManagedGitignoreContent(payload.existingGitignoreContent ?? "")
 				})
 			]);
 			await createBacklogDirectories(dependencies.fs, dependencies.path, dependencies.errors, payload.root);
@@ -7889,8 +8146,12 @@ function createArtifactsModule(dependencies) {
 					content: payload.agentsContent,
 					writeErrorCode: "BE_INTERNAL_STATE_CORRUPT"
 				});
+				await writeManagedGitignore(dependencies, {
+					root: payload.root,
+					...payload.existingGitignoreContent !== void 0 ? { existingContent: payload.existingGitignoreContent } : {}
+				});
 			} catch (error) {
-				for (const targetPath of [
+				const cleanupTargets = [
 					...tempPaths,
 					agentsPath,
 					appliedRegistryPath,
@@ -7901,7 +8162,9 @@ function createArtifactsModule(dependencies) {
 					layoutDirectories.packetsDir,
 					layoutDirectories.patchesDir,
 					layoutDirectories.reportsDir
-				]) try {
+				];
+				if (payload.existingGitignoreContent === void 0) cleanupTargets.unshift(gitignorePath);
+				for (const targetPath of cleanupTargets) try {
 					await dependencies.fs.rm(targetPath, {
 						recursive: true,
 						force: true
@@ -10322,13 +10585,33 @@ function createNoOpRegistry() {
 }
 //#endregion
 //#region src/runtime/ports.ts
+function createFsError(code, targetPath) {
+	const error = /* @__PURE__ */ new Error(`${code}: ${targetPath}`);
+	error.code = code;
+	error.path = targetPath;
+	return error;
+}
 function createNodeFileSystemPort() {
 	return {
 		async readText(filePath) {
 			return fs.readFile(filePath, "utf8");
 		},
+		async readTextNoFollow(filePath) {
+			const handle = await fs.open(filePath, constants.O_RDONLY | constants.O_NOFOLLOW);
+			try {
+				return await handle.readFile({ encoding: "utf8" });
+			} finally {
+				await handle.close();
+			}
+		},
 		async writeText(filePath, content) {
 			await fs.writeFile(filePath, content, "utf8");
+		},
+		async writeTextExclusive(filePath, content) {
+			await fs.writeFile(filePath, content, {
+				encoding: "utf8",
+				flag: "wx"
+			});
 		},
 		async rename(fromPath, toPath) {
 			await fs.rename(fromPath, toPath);
@@ -10372,6 +10655,31 @@ function createNodeFileSystemPort() {
 		},
 		async realpath(targetPath) {
 			return fs.realpath(targetPath);
+		},
+		async openDirectory(targetPath) {
+			if (process.platform !== "linux") throw createFsError("ENOTSUP", path.resolve(targetPath));
+			const root = path.parse(targetPath).root;
+			const segments = path.resolve(targetPath).slice(root.length).split(path.sep).filter((segment) => segment.length > 0);
+			let handle = await fs.open(root, constants.O_RDONLY | constants.O_DIRECTORY);
+			try {
+				for (const segment of segments) {
+					const nextPath = path.posix.join("/proc/self/fd", String(handle.fd), segment);
+					const nextHandle = await fs.open(nextPath, constants.O_RDONLY | constants.O_DIRECTORY | constants.O_NOFOLLOW);
+					await handle.close();
+					handle = nextHandle;
+				}
+			} catch (error) {
+				await handle.close().catch(() => void 0);
+				throw error;
+			}
+			return {
+				resolveEntry(name) {
+					return path.posix.join("/proc/self/fd", String(handle.fd), name);
+				},
+				close() {
+					return handle.close();
+				}
+			};
 		},
 		cwd() {
 			return path.resolve(process.cwd());
@@ -10730,6 +11038,60 @@ function createFileBackedStateCoordinator() {
 	};
 }
 //#endregion
+//#region src/runtime/mutation-lock.ts
+function isErrnoException$1(error) {
+	return error instanceof Error && "code" in error;
+}
+async function acquireMutationLock(payload) {
+	const lockPath = getMutationLockPath(payload.path, payload.backlogRoot);
+	const parentDirectory = await openManagedParentDirectory({
+		fs: payload.fs,
+		path: payload.path,
+		errors: payload.errors,
+		root: payload.backlogRoot,
+		filePath: lockPath,
+		errorCode: "BE_INTERNAL_STATE_CORRUPT"
+	});
+	const stableLockPath = parentDirectory.resolveEntry(payload.path.basename(lockPath));
+	const content = `${JSON.stringify({
+		command: payload.command,
+		cwd: payload.cwd,
+		acquired_at: payload.acquiredAt
+	}, null, 2)}\n`;
+	try {
+		await payload.fs.writeTextExclusive(stableLockPath, content);
+	} catch (error) {
+		await parentDirectory.close().catch(() => void 0);
+		if (isErrnoException$1(error) && error.code === "EEXIST") throw payload.errors.create("BE_MUTATION_LOCKED", void 0, {
+			details: {
+				backlog_root: payload.backlogRoot,
+				lock_path: lockPath
+			},
+			cause: error
+		});
+		throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+			details: { path: stableLockPath },
+			cause: error
+		});
+	}
+	return async () => {
+		try {
+			await payload.fs.rm(stableLockPath, { force: true });
+		} catch (error) {
+			if (isErrnoException$1(error) && error.code === "ENOENT") {
+				await parentDirectory.close().catch(() => void 0);
+				return;
+			}
+			await parentDirectory.close().catch(() => void 0);
+			throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+				details: { path: stableLockPath },
+				cause: error
+			});
+		}
+		await parentDirectory.close();
+	};
+}
+//#endregion
 //#region src/runtime/create-runtime.ts
 function isErrnoException(error) {
 	return error instanceof Error && "code" in error;
@@ -10830,6 +11192,10 @@ function createRuntime(options = {}) {
 								details: { path: absolutePath },
 								cause: error
 							});
+							if (isErrnoException(error) && error.code === "ENOTSUP") throw modules.errors.create("BE_PLATFORM_UNSUPPORTED", void 0, {
+								details: { path: absolutePath },
+								cause: error
+							});
 							throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, {
 								details: {
 									path: absolutePath,
@@ -10847,13 +11213,22 @@ function createRuntime(options = {}) {
 							reason: "not_regular_file"
 						} });
 						try {
-							return {
-								absolutePath,
-								canonicalBasename: dependencies.path.basename(absolutePath),
-								rawContent: await dependencies.fs.readText(absolutePath)
-							};
+							const parentDirectory = await dependencies.fs.openDirectory(dependencies.path.dirname(absolutePath));
+							try {
+								return {
+									absolutePath,
+									canonicalBasename: dependencies.path.basename(absolutePath),
+									rawContent: await dependencies.fs.readTextNoFollow(parentDirectory.resolveEntry(dependencies.path.basename(absolutePath)))
+								};
+							} finally {
+								await parentDirectory.close();
+							}
 						} catch (error) {
 							if (isErrnoException(error) && error.code === "ENOENT") throw modules.errors.create("BE_INPUT_FILE_NOT_FOUND", void 0, {
+								details: { path: absolutePath },
+								cause: error
+							});
+							if (isErrnoException(error) && error.code === "ENOTSUP") throw modules.errors.create("BE_PLATFORM_UNSUPPORTED", void 0, {
 								details: { path: absolutePath },
 								cause: error
 							});
@@ -10895,6 +11270,18 @@ function createRuntime(options = {}) {
 				async ensureMutationState() {
 					if (!coordinatorPayload) throw modules.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: { command } });
 					return stateCoordinator.ensureMutationState(coordinatorPayload);
+				},
+				async acquireMutationLock(lockCommand) {
+					if (!backlogRoot) throw modules.errors.create("BE_ROOT_NOT_FOUND", void 0, { details: { command: lockCommand } });
+					return acquireMutationLock({
+						fs: dependencies.fs,
+						path: dependencies.path,
+						errors: modules.errors,
+						backlogRoot,
+						command: lockCommand,
+						cwd,
+						acquiredAt: dependencies.clock.nowIsoUtc()
+					});
 				}
 			};
 		},
@@ -10909,6 +11296,19 @@ function createRuntime(options = {}) {
 }
 //#endregion
 //#region src/cli/run-cli.ts
+function shouldAcquireMutationLock(commandName, input) {
+	switch (commandName) {
+		case "register-source":
+		case "packet":
+		case "patch-item":
+		case "remove-item":
+		case "refresh":
+		case "report":
+		case "delete-backlog": return true;
+		case "status": return typeof input === "object" && input !== null && "refresh" in input && input.refresh === true;
+		default: return false;
+	}
+}
 function commandHelpRequested(args) {
 	return args.includes("--help") || args.includes("-h");
 }
@@ -10953,20 +11353,25 @@ async function runCli(argv, cliIo, version, dependencies = {}) {
 		const runtime = createRuntimeImpl();
 		const commandCwd = dependencies.getCwd ? dependencies.getCwd() : runtime.getProcessCwd();
 		const context = await runtime.createContext(command.name, commandCwd);
-		await context.hooks.beforeCommand?.({
-			command: command.name,
-			input,
-			...context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}
-		});
-		const output = await command.execute(input, context);
-		const validatedOutput = command.outputSchema.parse(output);
-		await context.hooks.afterCommand?.({
-			command: command.name,
-			output: validatedOutput,
-			...context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}
-		});
-		writeJson(cliIo.stdout, validatedOutput);
-		return 0;
+		const releaseMutationLock = context.backlogRoot && shouldAcquireMutationLock(command.name, input) ? await context.acquireMutationLock(command.name) : void 0;
+		try {
+			await context.hooks.beforeCommand?.({
+				command: command.name,
+				input,
+				...context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}
+			});
+			const output = await command.execute(input, context);
+			const validatedOutput = command.outputSchema.parse(output);
+			await context.hooks.afterCommand?.({
+				command: command.name,
+				output: validatedOutput,
+				...context.backlogRoot ? { backlogRoot: context.backlogRoot } : {}
+			});
+			writeJson(cliIo.stdout, validatedOutput);
+			return 0;
+		} finally {
+			await releaseMutationLock?.();
+		}
 	} catch (error) {
 		return writeErrorPayload(cliIo, normalizeError(error));
 	}

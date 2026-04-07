@@ -57,6 +57,7 @@
 Все артефакты backlog-а живут внутри этой директории:
 
 - root-marker `.backlog.json`;
+- backlog-local `.gitignore`;
 - `AGENTS.md`;
 - `packets/`;
 - `patches/`;
@@ -76,6 +77,7 @@
 ```text
 <backlog-root>/
 ├── .backlog.json
+├── .gitignore
 ├── AGENTS.md
 ├── packets/
 ├── patches/
@@ -103,12 +105,13 @@
 | Exit code | Класс ошибки | Примеры |
 | --- | --- | --- |
 | `0` | success | команда выполнена |
-| `1` | internal error | непойманное исключение, ошибка сериализации, повреждённое внутреннее состояние |
+| `1` | internal error | непойманное исключение, ошибка сериализации, повреждённое внутреннее состояние, неподдерживаемые platform-level runtime capabilities |
 | `2` | usage error | неверный набор флагов, несовместимые аргументы, отсутствует обязательный аргумент |
 | `3` | schema validation error | невалидный JSON, невалидный packet, невалидный patch |
 | `4` | semantic/state conflict | `item_key` уже существует, конфликт glossary, sequence не монотонен |
 | `5` | not found | backlog root не найден, item/source не найден |
 | `6` | destructive action blocked | `delete-backlog` без подтверждения, запрещённая destructive-операция |
+| `7` | mutation locked | backlog root уже занят другой mutating-командой |
 
 ### 4.4. Стандартный error payload
 
@@ -133,6 +136,52 @@
 - `details` содержит только факты;
 - `hint` объясняет следующий правильный шаг;
 - тексты не должны быть двусмысленными.
+
+### 4.5. Advisory lock для mutating-команд
+
+Для одного backlog root mutating-команды должны выполняться только последовательно.
+
+Runtime обязан обеспечивать это через advisory lock:
+
+- lock file: `/.backlog/mutation.lock`
+- захват lock: атомарное exclusive create
+- release: удаление lock file в `finally`
+- stale-lock auto recovery отсутствует
+
+Под lock работают:
+
+- `register-source`
+- `packet`
+- `patch-item`
+- `remove-item`
+- `refresh`
+- `report`
+- `delete-backlog`
+- `status --refresh`
+
+Read-only команды lock не берут.
+
+Если lock уже существует, команда должна завершаться ошибкой:
+
+- `code = "BE_MUTATION_LOCKED"`
+- `details.backlog_root`
+- `details.lock_path`
+
+### 4.6. Anchored directory handling
+
+Часть операций с utility-owned артефактами требует anchored directory handling:
+
+- безопасное открытие managed directories;
+- fd-anchored запись utility-owned файлов;
+- чтение managed artifacts без final-path symlink hop;
+- удаление managed entry без lexical fallback.
+
+Если host runtime не может предоставить такую capability, утилита не должна silently деградировать к менее безопасным lexical path операциям.
+
+Вместо этого команда должна завершаться ошибкой:
+
+- `code = "BE_PLATFORM_UNSUPPORTED"`
+- `details.path`
 
 ## 5. Модульная архитектура
 
@@ -1093,6 +1142,8 @@ Dry-run не должен:
 | `BE_REPORT_WRITE_FAILED` | report artifact нельзя записать |
 | `BE_TEMPLATE_OUTPUT_INVALID` | `template --out` указывает на невалидный путь или недопустимый target |
 | `BE_DELETE_CONFIRM_REQUIRED` | `delete-backlog` без подтверждения |
+| `BE_MUTATION_LOCKED` | backlog root уже занят другой mutating-командой |
+| `BE_PLATFORM_UNSUPPORTED` | host runtime не поддерживает безопасные anchored directory операции для utility-owned артефактов |
 | `BE_INTERNAL_STATE_CORRUPT` | `state.json` повреждён или противоречив |
 
 ## 10. Команды и их алгоритмы
@@ -1118,6 +1169,7 @@ Dry-run не должен:
 ### Writes
 
 - `.backlog.json`
+- `.gitignore`
 - `AGENTS.md`
 - `packets/`
 - `patches/`
@@ -1130,14 +1182,15 @@ Dry-run не должен:
 
 1. Нормализовать `--path`.
 2. Проверить, что целевая директория не содержит существующий backlog root.
-3. Если директория существует и не пуста, но backlog root нет, вернуть ошибку.
+3. Если директория существует и не пуста, но backlog root нет, вернуть ошибку, кроме special-case: разрешён один preexisting regular `.gitignore`.
 4. Создать layout backlog root.
 5. Создать root marker.
 6. Создать initial `state.json`.
 7. Создать initial `sources.json`.
 8. Создать initial `applied.json`.
 9. Сгенерировать `AGENTS.md` из шаблона.
-10. Вернуть пути созданных артефактов.
+10. Создать или обновить backlog-local `.gitignore`, сохранив существующее содержимое и гарантировав managed section для `/.backlog/mutation.lock`.
+11. Вернуть пути созданных артефактов.
 
 ### Errors
 
@@ -1149,6 +1202,7 @@ Dry-run не должен:
 - создание пустого layout;
 - повторный `init`;
 - корректность `AGENTS.md`;
+- корректность backlog-local `.gitignore`;
 - корректность initial `state.json`.
 
 ## 10.2. `register-source`
@@ -2146,12 +2200,17 @@ Severity reasons compare in this order:
 3. Если посторонние entry найдены, завершиться ошибкой без удаления.
 4. Удалить только штатные backlog-артефакты:
    - `.backlog.json`
+   - utility-managed section в `.gitignore`
    - `AGENTS.md`
    - `.backlog/`
    - `packets/`
    - `patches/`
    - `reports/`
-5. Если после этого backlog root пуст, удалить и сам root.
+5. Если `.gitignore` содержит пользовательские правила помимо utility-managed section:
+   - удалить только managed section;
+   - сохранить пользовательское содержимое;
+   - удалить `.gitignore` целиком только если после удаления managed section файл стал пустым.
+6. Если после этого backlog root пуст, удалить и сам root.
 
 ### Response contract
 

@@ -20,6 +20,7 @@ import {
   type RuntimeStateCoordinator,
 } from './state-recovery.ts';
 import type { AbsoluteFsPath, CommandName } from './shared.ts';
+import { acquireMutationLock } from './mutation-lock.ts';
 
 type CreateRuntimeOptions = {
   dependencies?: Partial<RuntimeDependencies>;
@@ -171,6 +172,14 @@ export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule
                   cause: error,
                 });
               }
+              if (isErrnoException(error) && error.code === 'ENOTSUP') {
+                throw modules.errors.create('BE_PLATFORM_UNSUPPORTED', undefined, {
+                  details: {
+                    path: absolutePath,
+                  },
+                  cause: error,
+                });
+              }
 
               throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
                 details: {
@@ -200,14 +209,31 @@ export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule
             }
 
             try {
-              return {
-                absolutePath,
-                canonicalBasename: dependencies.path.basename(absolutePath),
-                rawContent: await dependencies.fs.readText(absolutePath),
-              };
+              const parentDirectory = await dependencies.fs.openDirectory(
+                dependencies.path.dirname(absolutePath),
+              );
+              try {
+                return {
+                  absolutePath,
+                  canonicalBasename: dependencies.path.basename(absolutePath),
+                  rawContent: await dependencies.fs.readTextNoFollow(
+                    parentDirectory.resolveEntry(dependencies.path.basename(absolutePath)),
+                  ),
+                };
+              } finally {
+                await parentDirectory.close();
+              }
             } catch (error) {
               if (isErrnoException(error) && error.code === 'ENOENT') {
                 throw modules.errors.create('BE_INPUT_FILE_NOT_FOUND', undefined, {
+                  details: {
+                    path: absolutePath,
+                  },
+                  cause: error,
+                });
+              }
+              if (isErrnoException(error) && error.code === 'ENOTSUP') {
+                throw modules.errors.create('BE_PLATFORM_UNSUPPORTED', undefined, {
                   details: {
                     path: absolutePath,
                   },
@@ -267,6 +293,25 @@ export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule
           }
 
           return stateCoordinator.ensureMutationState(coordinatorPayload);
+        },
+        async acquireMutationLock(lockCommand) {
+          if (!backlogRoot) {
+            throw modules.errors.create('BE_ROOT_NOT_FOUND', undefined, {
+              details: {
+                command: lockCommand,
+              },
+            });
+          }
+
+          return acquireMutationLock({
+            fs: dependencies.fs,
+            path: dependencies.path,
+            errors: modules.errors,
+            backlogRoot,
+            command: lockCommand,
+            cwd,
+            acquiredAt: dependencies.clock.nowIsoUtc(),
+          });
         },
       };
     },

@@ -836,7 +836,7 @@
 - Дата: 2026-04-07
 - Начало работ: 2026-04-07 16:05:00 +02:00
 - Полное время закрытия: 00:25:00
-- Коммит: pending
+- Коммит: `30bd58b` `docs(backlog-engineer): harden first-run guidance`
 - Что сделано:
   - `SKILL.md` усилен как self-contained first-run contract:
     - добавлен preflight по состоянию системы;
@@ -863,3 +863,52 @@
   - skill/reference drift checks on updated topics — OK
 - Внешнее ревью:
   - не запускалось; пакет не меняет runtime behavior и не вводит новый code surface
+
+### Follow-up package `S2` — `Mutation lock and managed gitignore`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07 16:31:43 +02:00
+- Полное время закрытия: 1h 17m 08s
+- Коммит:
+- Что сделано:
+  - подготовлен runtime concurrency guard на backlog root:
+    - advisory lock через `open(..., 'wx')`
+    - lock file `/.backlog/mutation.lock`
+    - explicit refusal path `BE_MUTATION_LOCKED`
+  - lock внедрён в command runtime для mutating-команд и для `status --refresh`
+  - `init` расширен backlog-local `.gitignore` c managed section под ignore правила lock file
+  - существующий `.gitignore` в backlog root теперь сохраняется и дополняется вместо слепого overwrite
+  - `delete-backlog` расширен удалением utility-owned `.gitignore`
+  - для file-backed runtime убран небезопасный lexical fallback:
+    - utility-owned anchored directory operations теперь fail-closed завершаются `BE_PLATFORM_UNSUPPORTED`
+  - синхронизированы runtime-facing docs:
+    - `process-cli.ru.md`
+    - `utility-spec.ru.md`
+    - `schemas-and-types.ru.md`
+    - `module-interfaces.ru.md`
+    - `test-matrix.ru.md`
+    - `references/cli-contract.md`
+    - `references/command-reference.md`
+  - добавлены tests на:
+    - lock refusal
+    - lock release after failure
+    - `.gitignore` creation/update contract
+    - `.gitignore` ownership in delete flow
+- Ключевые решения:
+  - mutating guard реализуется именно как advisory lock на backlog root, а не как optimistic write conflict detection
+  - stale lock автоматически не снимается; занятый lock всегда даёт явный refusal path
+  - backlog-local `.gitignore` стал частью utility-owned artifact set, но при существующем пользовательском `.gitignore` обновляется только managed section
+  - utility-owned artifact I/O не имеет права silently деградировать к lexical-path fallback; при отсутствии anchored directory handling runtime возвращает `BE_PLATFORM_UNSUPPORTED`
+  - `delete-backlog` обязан предвалидировать managed entries и удалять `.backlog.json` последней, чтобы error-path не оставлял полудестроенный backlog root
+- Допущения вне спецификации:
+  - нет; реализуется уже согласованный follow-up contract
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - `spec-conformance-reviewer` повторно не запускался после ранее полученного `PASS`, потому что финальная дельта содержала только code/security hardening без новых spec-link изменений
+  - `code-reviewer` — PASS
+  - `security-reviewer` — PASS

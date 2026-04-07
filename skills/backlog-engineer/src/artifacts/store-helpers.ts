@@ -2,7 +2,7 @@ import { ZodError } from 'zod';
 
 import type { ErrorCode, ErrorModule } from '../errors/index.ts';
 import type { AbsoluteFsPath, BacklogRootPath } from '../runtime/shared.ts';
-import type { FileSystemPort, HashPort, PathPort } from '../runtime/ports.ts';
+import type { FileSystemPort, HashPort, OpenedDirectoryPort, PathPort } from '../runtime/ports.ts';
 import { isPathInsideRoot } from '../runtime/path-safety.ts';
 
 export function createJsonIssueDetails(error: ZodError): {
@@ -27,6 +27,12 @@ function isMissingFileError(error: unknown): boolean {
   );
 }
 
+function isUnsupportedPlatformError(error: unknown): boolean {
+  return (
+    error instanceof Error && 'code' in error && (error as NodeJS.ErrnoException).code === 'ENOTSUP'
+  );
+}
+
 function createTempSiblingPath(
   path: PathPort,
   targetPath: AbsoluteFsPath,
@@ -36,6 +42,14 @@ function createTempSiblingPath(
     path.dirname(targetPath),
     `.${path.basename(targetPath)}.tmp-${seedHash.slice(0, 12)}`,
   );
+}
+
+function createTempSiblingBasename(
+  path: PathPort,
+  targetPath: AbsoluteFsPath,
+  seedHash: string,
+): string {
+  return `.${path.basename(targetPath)}.tmp-${seedHash.slice(0, 12)}`;
 }
 
 function listPathChain(path: PathPort, target: AbsoluteFsPath): AbsoluteFsPath[] {
@@ -162,6 +176,76 @@ export async function ensureManagedFilePathSafe(payload: {
   }
 }
 
+export async function openManagedParentDirectory(payload: {
+  fs: FileSystemPort;
+  path: PathPort;
+  errors: ErrorModule;
+  root: BacklogRootPath;
+  filePath: AbsoluteFsPath;
+  errorCode: ErrorCode;
+}): Promise<OpenedDirectoryPort> {
+  const { fs, path, errors, root, filePath, errorCode } = payload;
+  const targetFile = path.resolve(filePath);
+  await ensureManagedFilePathSafe({
+    fs,
+    path,
+    errors,
+    root,
+    filePath: targetFile,
+    errorCode,
+  });
+
+  try {
+    return await fs.openDirectory(path.dirname(targetFile));
+  } catch (error) {
+    if (isUnsupportedPlatformError(error)) {
+      throw errors.create('BE_PLATFORM_UNSUPPORTED', undefined, {
+        details: {
+          path: targetFile,
+        },
+        cause: error,
+      });
+    }
+
+    throw error;
+  }
+}
+
+export async function openManagedDirectory(payload: {
+  fs: FileSystemPort;
+  path: PathPort;
+  errors: ErrorModule;
+  root: BacklogRootPath;
+  directoryPath: AbsoluteFsPath;
+  errorCode: ErrorCode;
+}): Promise<OpenedDirectoryPort> {
+  const { fs, path, errors, root, directoryPath, errorCode } = payload;
+  const targetDirectory = path.resolve(directoryPath);
+  await ensureManagedDirectoryPathSafe({
+    fs,
+    path,
+    errors,
+    root,
+    directoryPath: targetDirectory,
+    errorCode,
+  });
+
+  try {
+    return await fs.openDirectory(targetDirectory);
+  } catch (error) {
+    if (isUnsupportedPlatformError(error)) {
+      throw errors.create('BE_PLATFORM_UNSUPPORTED', undefined, {
+        details: {
+          path: targetDirectory,
+        },
+        cause: error,
+      });
+    }
+
+    throw error;
+  }
+}
+
 export async function ensureNoSymlinkAncestors(payload: {
   fs: FileSystemPort;
   path: PathPort;
@@ -210,37 +294,62 @@ export async function readJsonArtifact<T>(payload: {
     missingCode = 'BE_INTERNAL_STATE_CORRUPT',
     corruptCode = 'BE_INTERNAL_STATE_CORRUPT',
   } = payload;
+  let rawText: string;
 
   if (root && path) {
-    await ensureManagedFilePathSafe({
-      fs,
-      path,
-      errors,
-      root,
-      filePath,
-      errorCode: readErrorCode,
-    });
-  }
+    let parentDirectory: OpenedDirectoryPort | undefined;
+    try {
+      parentDirectory = await openManagedParentDirectory({
+        fs,
+        path,
+        errors,
+        root,
+        filePath,
+        errorCode: readErrorCode,
+      });
+      rawText = await fs.readTextNoFollow(parentDirectory.resolveEntry(path.basename(filePath)));
+    } catch (error) {
+      await parentDirectory?.close().catch(() => undefined);
+      if (errors.isBacklogError(error)) {
+        throw error;
+      }
+      if (isMissingFileError(error)) {
+        throw errors.create(missingCode, undefined, {
+          details: {
+            path: filePath,
+          },
+          cause: error,
+        });
+      }
 
-  let rawText: string;
-  try {
-    rawText = await fs.readText(filePath);
-  } catch (error) {
-    if (isMissingFileError(error)) {
-      throw errors.create(missingCode, undefined, {
+      throw errors.create(corruptCode, undefined, {
         details: {
           path: filePath,
         },
         cause: error,
       });
     }
+    await parentDirectory.close();
+  } else {
+    try {
+      rawText = await fs.readText(filePath);
+    } catch (error) {
+      if (isMissingFileError(error)) {
+        throw errors.create(missingCode, undefined, {
+          details: {
+            path: filePath,
+          },
+          cause: error,
+        });
+      }
 
-    throw errors.create(corruptCode, undefined, {
-      details: {
-        path: filePath,
-      },
-      cause: error,
-    });
+      throw errors.create(corruptCode, undefined, {
+        details: {
+          path: filePath,
+        },
+        cause: error,
+      });
+    }
   }
 
   let rawJson: unknown;
@@ -289,29 +398,43 @@ export async function writeTextAtomically(payload: {
 }): Promise<void> {
   const { fs, path, hash, errors, root, targetPath, content, writeErrorCode } = payload;
   const seedHash = await hash.sha256Text(`${targetPath}\n${content}`);
-  const tempPath = createTempSiblingPath(path, targetPath, seedHash);
-
-  if (root) {
-    await ensureManagedFilePathSafe({
-      fs,
-      path,
-      errors,
-      root,
-      filePath: targetPath,
-      errorCode: writeErrorCode,
-    });
-  }
+  const tempBasename = createTempSiblingBasename(path, targetPath, seedHash);
+  let parentDirectory: OpenedDirectoryPort | undefined;
 
   try {
-    await fs.mkdir(path.dirname(targetPath), { recursive: true });
-    await fs.rm(tempPath, { force: true });
-    await fs.writeText(tempPath, content);
-    await fs.rename(tempPath, targetPath);
-  } catch (error) {
-    try {
+    if (root) {
+      parentDirectory = await openManagedParentDirectory({
+        fs,
+        path,
+        errors,
+        root,
+        filePath: targetPath,
+        errorCode: writeErrorCode,
+      });
+      const stableTargetPath = parentDirectory.resolveEntry(path.basename(targetPath));
+      const tempPath = parentDirectory.resolveEntry(tempBasename);
       await fs.rm(tempPath, { force: true });
+      await fs.writeTextExclusive(tempPath, content);
+      await fs.rename(tempPath, stableTargetPath);
+    } else {
+      const tempPath = createTempSiblingPath(path, targetPath, seedHash);
+      await fs.mkdir(path.dirname(targetPath), { recursive: true });
+      await fs.rm(tempPath, { force: true });
+      await fs.writeTextExclusive(tempPath, content);
+      await fs.rename(tempPath, targetPath);
+    }
+  } catch (error) {
+    const cleanupPath =
+      parentDirectory === undefined
+        ? createTempSiblingPath(path, targetPath, seedHash)
+        : parentDirectory.resolveEntry(tempBasename);
+    try {
+      await fs.rm(cleanupPath, { force: true });
     } catch {
       // Ignore cleanup failures and preserve the original write failure for the caller.
+    }
+    if (errors.isBacklogError(error)) {
+      throw error;
     }
     throw errors.create(writeErrorCode, undefined, {
       details: {
@@ -319,6 +442,8 @@ export async function writeTextAtomically(payload: {
       },
       cause: error,
     });
+  } finally {
+    await parentDirectory?.close();
   }
 }
 

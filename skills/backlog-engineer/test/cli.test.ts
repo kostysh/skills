@@ -224,6 +224,103 @@ void test('register-source and list-sources work on the built CLI', async () => 
   }
 });
 
+void test('mutating commands fail with BE_MUTATION_LOCKED when backlog lock file already exists', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const docsDir = path.join(tempRoot, 'docs');
+
+  try {
+    assert.equal(runBuiltCli(['init', '--path', backlogRoot]).status, 0);
+    await mkdir(docsDir, { recursive: true });
+    await writeFile(path.join(docsDir, 'auth.md'), '# auth\n', 'utf8');
+    await writeFile(
+      path.join(backlogRoot, '.backlog', 'mutation.lock'),
+      '{"command":"register-source"}\n',
+      'utf8',
+    );
+
+    const registerResult = runBuiltCli(
+      [
+        'register-source',
+        '--path',
+        '../docs/auth.md',
+        '--kind',
+        'module',
+        '--authority',
+        'authoritative',
+      ],
+      { cwd: backlogRoot },
+    );
+
+    assert.equal(registerResult.status, 7);
+    const registerError = ErrorPayloadSchema.parse(parseStderrJson(registerResult));
+    assert.equal(registerError.error.code, 'BE_MUTATION_LOCKED');
+    assert.equal(
+      registerError.error.details?.lock_path,
+      path.join(backlogRoot, '.backlog', 'mutation.lock'),
+    );
+
+    const refreshStatusResult = runBuiltCli(['status', '--refresh'], { cwd: backlogRoot });
+    assert.equal(refreshStatusResult.status, 7);
+    const refreshStatusError = ErrorPayloadSchema.parse(parseStderrJson(refreshStatusResult));
+    assert.equal(refreshStatusError.error.code, 'BE_MUTATION_LOCKED');
+
+    const plainStatusResult = runBuiltCli(['status'], { cwd: backlogRoot });
+    assert.equal(plainStatusResult.status, 0);
+    StatusCommandOutputSchema.parse(parseStdoutJson(plainStatusResult));
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('mutation lock is removed after a mutating command fails', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const docsDir = path.join(tempRoot, 'docs');
+
+  try {
+    assert.equal(runBuiltCli(['init', '--path', backlogRoot]).status, 0);
+    await mkdir(docsDir, { recursive: true });
+
+    const failedRegister = runBuiltCli(
+      [
+        'register-source',
+        '--path',
+        '../docs/missing.md',
+        '--kind',
+        'module',
+        '--authority',
+        'authoritative',
+      ],
+      { cwd: backlogRoot },
+    );
+
+    assert.notEqual(failedRegister.status, 0);
+    assert.equal(await lstat(path.join(backlogRoot, '.backlog')).then(() => true), true);
+    await assert.rejects(lstat(path.join(backlogRoot, '.backlog', 'mutation.lock')), /ENOENT/);
+
+    await writeFile(path.join(docsDir, 'missing.md'), '# now present\n', 'utf8');
+    const successfulRegister = runBuiltCli(
+      [
+        'register-source',
+        '--path',
+        '../docs/missing.md',
+        '--kind',
+        'module',
+        '--authority',
+        'authoritative',
+      ],
+      { cwd: backlogRoot },
+    );
+
+    assert.equal(successfulRegister.status, 0);
+    RegisterSourceCommandOutputSchema.parse(parseStdoutJson(successfulRegister));
+    await assert.rejects(lstat(path.join(backlogRoot, '.backlog', 'mutation.lock')), /ENOENT/);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
 void test('template packet and template patch write draft files through the built CLI', async () => {
   const tempRoot = await createTempDir();
   const backlogRoot = path.join(tempRoot, 'backlog');
@@ -639,6 +736,40 @@ void test('delete-backlog --confirm rejects backlog roots with foreign entries a
   }
 });
 
+void test('delete-backlog --confirm preserves user gitignore content and removes only the managed section', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    const initResult = runBuiltCli(['init', '--path', backlogRoot]);
+    assert.equal(initResult.status, 0);
+    await writeFile(
+      path.join(backlogRoot, '.gitignore'),
+      [
+        'node_modules/',
+        '# backlog-engineer managed start',
+        '/.backlog/mutation.lock',
+        '# backlog-engineer managed end',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+
+    const result = runBuiltCli(['delete-backlog', '--confirm'], { cwd: backlogRoot });
+
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+    assert.deepEqual(DeleteBacklogCommandOutputSchema.parse(parseStdoutJson(result)), {
+      deleted_path: '.',
+      deleted: true,
+    });
+    assert.equal(await readFile(path.join(backlogRoot, '.gitignore'), 'utf8'), 'node_modules/\n');
+    await assert.rejects(() => readFile(path.join(backlogRoot, '.backlog.json'), 'utf8'));
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
 void test('delete-backlog --confirm rejects symlinked managed entries and preserves the backlog root', async () => {
   const tempRoot = await createTempDir();
   const backlogRoot = path.join(tempRoot, 'backlog');
@@ -835,6 +966,7 @@ void test('runCli invokes beforeCommand and afterCommand hooks around successful
         },
         ensureQueryState: () => Promise.reject(new Error('not used in hook test')),
         ensureMutationState: () => Promise.reject(new Error('not used in hook test')),
+        acquireMutationLock: () => Promise.resolve(async () => {}),
       });
     },
     rebuildState: () => Promise.reject(new Error('not used in hook test')),
@@ -926,6 +1058,7 @@ void test('runCli uses injected runtime cwd when getCwd override is not provided
         hooks: {},
         ensureQueryState: () => Promise.reject(new Error('not used in cwd test')),
         ensureMutationState: () => Promise.reject(new Error('not used in cwd test')),
+        acquireMutationLock: () => Promise.resolve(async () => {}),
       });
     },
     rebuildState: () => Promise.reject(new Error('not used in cwd test')),

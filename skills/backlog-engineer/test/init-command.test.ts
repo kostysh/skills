@@ -108,6 +108,130 @@ void test('init command creates the full backlog bootstrap layout through runtim
       },
     );
     assert.equal(await readFile(output.agents_path, 'utf8'), renderBacklogAgentsTemplate());
+    assert.equal(
+      await readFile(path.join(backlogRoot, '.gitignore'), 'utf8'),
+      '# backlog-engineer managed start\n/.backlog/mutation.lock\n# backlog-engineer managed end\n',
+    );
+  } finally {
+    await rm(cwd, { recursive: true, force: true });
+  }
+});
+
+void test('init command preserves existing .gitignore and adds managed lock section', async () => {
+  const cwd = await createTempDir();
+  const runtime = createRuntime({
+    dependencies: {
+      clock: {
+        nowIsoUtc() {
+          return '2026-04-06T12:00:00.000Z';
+        },
+      },
+    },
+  });
+  const backlogRoot = path.join(cwd, 'backlog');
+
+  try {
+    await mkdir(backlogRoot, { recursive: true });
+    await writeFile(path.join(backlogRoot, '.gitignore'), 'node_modules/\n', 'utf8');
+
+    const context = await runtime.createContext('init', cwd);
+    await INIT_COMMAND.execute({ path: './backlog' }, context);
+
+    assert.equal(
+      await readFile(path.join(backlogRoot, '.gitignore'), 'utf8'),
+      'node_modules/\n# backlog-engineer managed start\n/.backlog/mutation.lock\n# backlog-engineer managed end\n',
+    );
+  } finally {
+    await rm(cwd, { recursive: true, force: true });
+  }
+});
+
+void test('init command collapses duplicate managed gitignore sections to one canonical block', async () => {
+  const cwd = await createTempDir();
+  const runtime = createRuntime({
+    dependencies: {
+      clock: {
+        nowIsoUtc() {
+          return '2026-04-06T12:00:00.000Z';
+        },
+      },
+    },
+  });
+  const backlogRoot = path.join(cwd, 'backlog');
+
+  try {
+    await mkdir(backlogRoot, { recursive: true });
+    await writeFile(
+      path.join(backlogRoot, '.gitignore'),
+      [
+        'node_modules/',
+        '# backlog-engineer managed start',
+        '/.backlog/mutation.lock',
+        '# backlog-engineer managed end',
+        'dist/',
+        '# backlog-engineer managed start',
+        '/.backlog/mutation.lock',
+        '# backlog-engineer managed end',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+
+    const context = await runtime.createContext('init', cwd);
+    await INIT_COMMAND.execute({ path: './backlog' }, context);
+
+    assert.equal(
+      await readFile(path.join(backlogRoot, '.gitignore'), 'utf8'),
+      [
+        'node_modules/',
+        'dist/',
+        '# backlog-engineer managed start',
+        '/.backlog/mutation.lock',
+        '# backlog-engineer managed end',
+        '',
+      ].join('\n'),
+    );
+  } finally {
+    await rm(cwd, { recursive: true, force: true });
+  }
+});
+
+void test('init command preserves unmatched managed marker lines as user content', async () => {
+  const cwd = await createTempDir();
+  const runtime = createRuntime({
+    dependencies: {
+      clock: {
+        nowIsoUtc() {
+          return '2026-04-06T12:00:00.000Z';
+        },
+      },
+    },
+  });
+  const backlogRoot = path.join(cwd, 'backlog');
+
+  try {
+    await mkdir(backlogRoot, { recursive: true });
+    await writeFile(
+      path.join(backlogRoot, '.gitignore'),
+      ['node_modules/', '# backlog-engineer managed start', 'dist/', ''].join('\n'),
+      'utf8',
+    );
+
+    const context = await runtime.createContext('init', cwd);
+    await INIT_COMMAND.execute({ path: './backlog' }, context);
+
+    assert.equal(
+      await readFile(path.join(backlogRoot, '.gitignore'), 'utf8'),
+      [
+        'node_modules/',
+        '# backlog-engineer managed start',
+        'dist/',
+        '# backlog-engineer managed start',
+        '/.backlog/mutation.lock',
+        '# backlog-engineer managed end',
+        '',
+      ].join('\n'),
+    );
   } finally {
     await rm(cwd, { recursive: true, force: true });
   }

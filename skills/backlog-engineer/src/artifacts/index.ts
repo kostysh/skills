@@ -16,6 +16,7 @@ import {
   createBacklogDirectories as createBacklogDirectoriesOnDisk,
   getAgentsPath,
   getAppliedRegistryPath,
+  getGitignorePath,
   getLayoutDirectories,
   getRootMarkerPath,
   getSourceRegistryPath,
@@ -24,6 +25,7 @@ import {
 import type { ArtifactsModuleDependencies } from './shared.ts';
 import { importPacketFile, importPatchFile } from './canonical-import-store.ts';
 import { deleteBacklog as deleteBacklogFromDisk } from './delete-backlog.ts';
+import { renderManagedGitignoreContent, writeManagedGitignore } from './gitignore-store.ts';
 import { initializeBacklogRoot as initializeBacklogRootOnDisk } from './initialize-backlog.ts';
 import { writeReportFiles, writeTemplateOutput } from './report-store.ts';
 import { readRootMarker, writeRootMarker } from './root-marker-store.ts';
@@ -69,6 +71,10 @@ export interface ArtifactsModule {
   readRootMarker(root: BacklogRootPath): Promise<RootMarkerFile>;
   writeRootMarker(root: BacklogRootPath, marker: RootMarkerFile): Promise<void>;
   writeAgentsFile(root: BacklogRootPath, content: string): Promise<void>;
+  writeManagedGitignore(payload: {
+    root: BacklogRootPath;
+    existingContent?: string;
+  }): Promise<void>;
   initializeBacklogRoot(payload: {
     root: BacklogRootPath;
     createdAt: string;
@@ -82,6 +88,7 @@ export interface ArtifactsModule {
     root: BacklogRootPath;
     marker: RootMarkerFile;
     agentsContent: string;
+    existingGitignoreContent?: string;
     sourceRegistry: SourceRegistryFile;
     appliedRegistry: AppliedRegistryFile;
     state: StateFile;
@@ -155,6 +162,9 @@ export function createArtifactsModule(dependencies: ArtifactsModuleDependencies)
         writeErrorCode: 'BE_INTERNAL_STATE_CORRUPT',
       });
     },
+    writeManagedGitignore(payload) {
+      return writeManagedGitignore(dependencies, payload);
+    },
     initializeBacklogRoot(payload) {
       return initializeBacklogRootOnDisk(
         {
@@ -170,6 +180,7 @@ export function createArtifactsModule(dependencies: ArtifactsModuleDependencies)
       const sourceRegistryPath = getSourceRegistryPath(dependencies.path, payload.root);
       const appliedRegistryPath = getAppliedRegistryPath(dependencies.path, payload.root);
       const agentsPath = getAgentsPath(dependencies.path, payload.root);
+      const gitignorePath = getGitignorePath(dependencies.path, payload.root);
       const layoutDirectories = getLayoutDirectories(dependencies.path, payload.root);
       const rootMarkerContent = `${JSON.stringify(payload.marker, null, 2)}\n`;
       const stateContent = `${JSON.stringify(payload.state, null, 2)}\n`;
@@ -206,6 +217,12 @@ export function createArtifactsModule(dependencies: ArtifactsModuleDependencies)
           targetPath: agentsPath,
           content: payload.agentsContent,
         }),
+        createTempSiblingPath({
+          path: dependencies.path,
+          hash: dependencies.hash,
+          targetPath: gitignorePath,
+          content: renderManagedGitignoreContent(payload.existingGitignoreContent ?? ''),
+        }),
       ]);
 
       await createBacklogDirectoriesOnDisk(
@@ -229,8 +246,14 @@ export function createArtifactsModule(dependencies: ArtifactsModuleDependencies)
           content: payload.agentsContent,
           writeErrorCode: 'BE_INTERNAL_STATE_CORRUPT',
         });
+        await writeManagedGitignore(dependencies, {
+          root: payload.root,
+          ...(payload.existingGitignoreContent !== undefined
+            ? { existingContent: payload.existingGitignoreContent }
+            : {}),
+        });
       } catch (error) {
-        for (const targetPath of [
+        const cleanupTargets = [
           ...tempPaths,
           agentsPath,
           appliedRegistryPath,
@@ -241,7 +264,13 @@ export function createArtifactsModule(dependencies: ArtifactsModuleDependencies)
           layoutDirectories.packetsDir,
           layoutDirectories.patchesDir,
           layoutDirectories.reportsDir,
-        ]) {
+        ];
+
+        if (payload.existingGitignoreContent === undefined) {
+          cleanupTargets.unshift(gitignorePath);
+        }
+
+        for (const targetPath of cleanupTargets) {
           try {
             await dependencies.fs.rm(targetPath, { recursive: true, force: true });
           } catch {

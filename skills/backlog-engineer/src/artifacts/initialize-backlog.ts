@@ -8,7 +8,12 @@ import type {
 import type { BacklogRootPath } from '../runtime/shared.ts';
 import { LAYOUT_VERSION, SCHEMA_VERSION, TOOL_NAME } from '../runtime/tool-metadata.ts';
 import type { ArtifactsModuleDependencies } from './shared.ts';
-import { getAgentsPath, getRootMarkerPath } from './backlog-layout.ts';
+import {
+  GITIGNORE_BASENAME,
+  getAgentsPath,
+  getGitignorePath,
+  getRootMarkerPath,
+} from './backlog-layout.ts';
 
 function createInitialRootMarker(createdAt: string): RootMarkerFile {
   return {
@@ -64,7 +69,7 @@ function createInitialState(createdAt: string): StateFile {
 async function assertInitTargetAvailable(
   dependencies: ArtifactsModuleDependencies,
   root: BacklogRootPath,
-): Promise<void> {
+): Promise<{ existingGitignoreContent?: string }> {
   const markerPath = getRootMarkerPath(dependencies.path, root);
   if (await dependencies.fs.exists(markerPath)) {
     const markerStat = await dependencies.fs.lstat(markerPath);
@@ -79,7 +84,7 @@ async function assertInitTargetAvailable(
   }
 
   if (!(await dependencies.fs.exists(root))) {
-    return;
+    return {};
   }
 
   const rootStat = await dependencies.fs.lstat(root);
@@ -92,6 +97,27 @@ async function assertInitTargetAvailable(
   }
 
   const entries = await dependencies.fs.readdir(root);
+  if (entries.length === 0) {
+    return {};
+  }
+
+  if (entries.length === 1 && entries[0] === GITIGNORE_BASENAME) {
+    const gitignorePath = getGitignorePath(dependencies.path, root);
+    const gitignoreStat = await dependencies.fs.lstat(gitignorePath);
+    if (!gitignoreStat.isFile || gitignoreStat.isSymbolicLink) {
+      throw dependencies.errors.create('BE_ROOT_NOT_EMPTY', undefined, {
+        details: {
+          path: root,
+          entries,
+        },
+      });
+    }
+
+    return {
+      existingGitignoreContent: await dependencies.fs.readText(gitignorePath),
+    };
+  }
+
   if (entries.length > 0) {
     throw dependencies.errors.create('BE_ROOT_NOT_EMPTY', undefined, {
       details: {
@@ -100,6 +126,8 @@ async function assertInitTargetAvailable(
       },
     });
   }
+
+  return {};
 }
 
 export async function initializeBacklogRoot(
@@ -112,7 +140,7 @@ export async function initializeBacklogRoot(
     agentsContent: string;
   },
 ): Promise<InitCommandOutput> {
-  await assertInitTargetAvailable(dependencies, payload.root);
+  const initTarget = await assertInitTargetAvailable(dependencies, payload.root);
 
   const marker = dependencies.schemas.parseRootMarker(createInitialRootMarker(payload.createdAt));
   const sourceRegistry = dependencies.schemas.parseSourceRegistry(
@@ -127,6 +155,9 @@ export async function initializeBacklogRoot(
     root: payload.root,
     marker,
     agentsContent: payload.agentsContent,
+    ...(initTarget.existingGitignoreContent !== undefined
+      ? { existingGitignoreContent: initTarget.existingGitignoreContent }
+      : {}),
     sourceRegistry,
     appliedRegistry,
     state,

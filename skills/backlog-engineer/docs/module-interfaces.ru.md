@@ -168,7 +168,9 @@ type CommandName =
 ```ts
 interface FileSystemPort {
   readText(path: AbsoluteFsPath): Promise<string>;
+  readTextNoFollow(path: AbsoluteFsPath): Promise<string>;
   writeText(path: AbsoluteFsPath, content: string): Promise<void>;
+  writeTextExclusive(path: AbsoluteFsPath, content: string): Promise<void>;
   exists(path: AbsoluteFsPath): Promise<boolean>;
   mkdir(path: AbsoluteFsPath, options?: { recursive?: boolean }): Promise<void>;
   readdir(path: AbsoluteFsPath): Promise<string[]>;
@@ -179,9 +181,24 @@ interface FileSystemPort {
     size: number;
     mtimeMs: number;
   }>;
+  realpath(path: AbsoluteFsPath): Promise<AbsoluteFsPath>;
+  openDirectory(path: AbsoluteFsPath): Promise<OpenedDirectoryPort>;
   cwd(): AbsoluteFsPath;
 }
 ```
+
+`readTextNoFollow(...)` обязателен для authored input reads, где нужно исключить final-path symlink hop после предварительной валидации пути.
+
+```ts
+interface OpenedDirectoryPort {
+  resolveEntry(name: string): AbsoluteFsPath;
+  close(): Promise<void>;
+}
+```
+
+`openDirectory(...)` обязателен для file-backed Node runtime. Он должен открывать директорию как anchored capability для fd-relative sink paths и не должен silently follow symlink hops в промежуточных сегментах.
+
+Если host runtime не может предоставить anchored directory capability, `FileSystemPort` не должен silently деградировать к lexical-path fallback. Такой случай должен подниматься выше и в user-facing runtime маппиться на `BE_PLATFORM_UNSUPPORTED`.
 
 ### `PathPort`
 
@@ -267,6 +284,7 @@ interface RuntimeDependencies {
 | Артефакт | I/O владелец | Кто поставляет content/model |
 | --- | --- | --- |
 | `.backlog.json` | `artifacts` | `runtime` |
+| `.gitignore` inside backlog root | `artifacts` | `artifacts` |
 | `.backlog/sources.json` | `artifacts` | `sources` / `runtime` |
 | `.backlog/applied.json` | `artifacts` | `runtime` |
 | `.backlog/state.json` | `artifacts` | `core` / `runtime` |
@@ -274,6 +292,7 @@ interface RuntimeDependencies {
 | `patches/*` | `artifacts` | `commands` / `runtime` |
 | `reports/*` | `artifacts` | `reports` |
 | `AGENTS.md` inside backlog root | `artifacts` | `templates` |
+| `/.backlog/mutation.lock` | `runtime` | `runtime` |
 
 Правило: только `artifacts` знает реальные пути и умеет читать/писать эти файлы.
 
@@ -727,6 +746,7 @@ interface CommandExecutionContext {
     rebuilt: boolean;
   }>;
   ensureMutationState(): Promise<StateFile>;
+  acquireMutationLock(command: CommandName): Promise<() => Promise<void>>;
 }
 
 interface RuntimeModule {

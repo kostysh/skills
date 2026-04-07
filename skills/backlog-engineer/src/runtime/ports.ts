@@ -1,13 +1,23 @@
 import crypto from 'node:crypto';
+import { constants as fsConstants } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { createNoOpRegistry, type HookRegistry } from '../hooks/index.ts';
 import type { AbsoluteFsPath } from './shared.ts';
 
+function createFsError(code: string, targetPath: string): NodeJS.ErrnoException {
+  const error = new Error(`${code}: ${targetPath}`) as NodeJS.ErrnoException;
+  error.code = code;
+  error.path = targetPath;
+  return error;
+}
+
 export interface FileSystemPort {
   readText(path: AbsoluteFsPath): Promise<string>;
+  readTextNoFollow(path: AbsoluteFsPath): Promise<string>;
   writeText(path: AbsoluteFsPath, content: string): Promise<void>;
+  writeTextExclusive(path: AbsoluteFsPath, content: string): Promise<void>;
   rename(fromPath: AbsoluteFsPath, toPath: AbsoluteFsPath): Promise<void>;
   exists(path: AbsoluteFsPath): Promise<boolean>;
   mkdir(path: AbsoluteFsPath, options?: { recursive?: boolean }): Promise<void>;
@@ -28,8 +38,14 @@ export interface FileSystemPort {
     mtimeMs: number;
   }>;
   realpath(path: AbsoluteFsPath): Promise<AbsoluteFsPath>;
+  openDirectory(path: AbsoluteFsPath): Promise<OpenedDirectoryPort>;
   cwd(): AbsoluteFsPath;
   chdir(path: AbsoluteFsPath): void;
+}
+
+export interface OpenedDirectoryPort {
+  resolveEntry(name: string): AbsoluteFsPath;
+  close(): Promise<void>;
 }
 
 export interface PathPort {
@@ -72,8 +88,24 @@ export function createNodeFileSystemPort(): FileSystemPort {
     async readText(filePath) {
       return fs.readFile(filePath, 'utf8');
     },
+    async readTextNoFollow(filePath) {
+      const handle = await fs.open(filePath, fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW);
+      try {
+        return await handle.readFile({
+          encoding: 'utf8',
+        });
+      } finally {
+        await handle.close();
+      }
+    },
     async writeText(filePath, content) {
       await fs.writeFile(filePath, content, 'utf8');
+    },
+    async writeTextExclusive(filePath, content) {
+      await fs.writeFile(filePath, content, {
+        encoding: 'utf8',
+        flag: 'wx',
+      });
     },
     async rename(fromPath, toPath) {
       await fs.rename(fromPath, toPath);
@@ -118,6 +150,43 @@ export function createNodeFileSystemPort(): FileSystemPort {
     },
     async realpath(targetPath) {
       return fs.realpath(targetPath);
+    },
+    async openDirectory(targetPath) {
+      if (process.platform !== 'linux') {
+        throw createFsError('ENOTSUP', path.resolve(targetPath));
+      }
+
+      const root = path.parse(targetPath).root;
+      const segments = path
+        .resolve(targetPath)
+        .slice(root.length)
+        .split(path.sep)
+        .filter((segment) => segment.length > 0);
+      let handle = await fs.open(root, fsConstants.O_RDONLY | fsConstants.O_DIRECTORY);
+
+      try {
+        for (const segment of segments) {
+          const nextPath = path.posix.join('/proc/self/fd', String(handle.fd), segment);
+          const nextHandle = await fs.open(
+            nextPath,
+            fsConstants.O_RDONLY | fsConstants.O_DIRECTORY | fsConstants.O_NOFOLLOW,
+          );
+          await handle.close();
+          handle = nextHandle;
+        }
+      } catch (error) {
+        await handle.close().catch(() => undefined);
+        throw error;
+      }
+
+      return {
+        resolveEntry(name) {
+          return path.posix.join('/proc/self/fd', String(handle.fd), name);
+        },
+        close() {
+          return handle.close();
+        },
+      };
     },
     cwd() {
       return path.resolve(process.cwd());

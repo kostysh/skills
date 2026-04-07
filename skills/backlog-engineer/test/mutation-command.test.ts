@@ -889,6 +889,35 @@ void test('packet command rejects symlinked authored packet files', async () => 
   }
 });
 
+void test('runtime host fails closed when anchored authored-input reads are unsupported on the platform', async () => {
+  const { cwd, fs, runtime } = createInMemoryMutationRuntime({
+    cwd: '/workspace',
+    uuidValues: AUTH_RUNTIME_UUID_VALUES,
+  });
+
+  await bootstrapBacklog(cwd, runtime);
+  await writeFixtureToInMemoryFile({
+    fs,
+    targetPath: '/workspace/backlog/drafts/auth-module.packet.json',
+    fixtureRelativePath: 'authored/packets/auth-module.packet.json',
+  });
+  fs.openDirectory = () => {
+    const error = new Error('ENOTSUP: /workspace/backlog/drafts') as NodeJS.ErrnoException;
+    error.code = 'ENOTSUP';
+    error.path = '/workspace/backlog/drafts';
+    return Promise.reject(error);
+  };
+
+  const context = await runtime.createContext('packet', '/workspace/backlog');
+  await assert.rejects(
+    async () => {
+      await context.host.readCliTextFile('./drafts/auth-module.packet.json');
+    },
+    (error: unknown) =>
+      error instanceof Error && 'code' in error && error.code === 'BE_PLATFORM_UNSUPPORTED',
+  );
+});
+
 void test('patch-item rebuilds canonical state before mutating after a previous writeState failure', async () => {
   const cwd = await createTempDir();
   const runtime = createRuntimeForMutationTest({
