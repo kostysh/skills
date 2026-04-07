@@ -201,3 +201,31 @@
 - Внешнее ревью:
   - не запускалось; пакет docs-only и не меняет runtime behavior утилиты
 - Следующий пакет: `S6 — Preflight wording hardening`
+
+### Follow-up package `S6` — `Preflight wording hardening`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07 22:01:22 +02:00
+- Полное время закрытия: 00:00:26
+- Коммит:
+- Что сделано:
+  - в `SKILL.md` preflight wording переписан на один combined blocking question
+  - combined question теперь покрывает сразу:
+    - system state
+    - source of truth for `delivery_state`, если система уже partially implemented
+  - вторичный шаг про source of truth ужат:
+    - если partial implementation уже подтверждена, использовать источник, который оператор уже дал, или спросить его только если он всё ещё отсутствует после первого blocking question
+  - walkthrough синхронизирован по тому же wording и тому же example question
+- Ключевые решения:
+  - primary fix живёт в `SKILL.md`; walkthrough только синхронизируется следом
+  - defect считался wording-problem в основном agent contract, а не проблемой walkthrough itself
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - combined-preflight consistency check across `SKILL.md` and walkthrough — OK
+  - `node --experimental-strip-types --test skills/backlog-engineer/test/docs-contract.test.ts` — OK
+- Внешнее ревью:
+  - не запускалось; пакет docs-only и не меняет runtime behavior утилиты
+- Следующий пакет:
+  - corrective pass from [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md) закрыт

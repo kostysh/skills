@@ -50,7 +50,7 @@ Before touching the repo or the codebase, check whether the operator already tol
 - whether the system is design-only or partially implemented;
 - what source of truth should be used for `delivery_state`.
 
-If that information is missing, ask one short question and wait.
+If that information is missing, ask one short combined question and wait.
 
 Example:
 

@@ -62,23 +62,22 @@ Decide which of these facts the operator already provided explicitly:
 
 If the operator already stated the system state clearly, use that statement.
 
-If the operator did not state it clearly, ask one short preflight question and then stop until the operator answers:
+If the operator did not state it clearly, ask one short combined preflight question and then stop until the operator answers.
 
-- is the system still only being designed;
-- is it already partially implemented;
-- or is the operator unsure.
+The question must cover both:
+
+- whether the system is design-only or already partially implemented;
+- what source of truth should be used for `delivery_state`, if implementation already exists.
+
+Example shape:
+
+> Is the system still only being designed, or is it already partially implemented? If it is partially implemented, what should I use as the source of truth for delivery state: codebase, tests, architecture docs, or something else?
 
 Negative rule:
 
 - until the operator answers that question, do not go into the repo, code, or tests to infer implementation state on your own.
 
-If the system is partially implemented, ask for the best available source of truth for delivery state:
-
-- codebase;
-- tests;
-- architecture or ADR documents;
-- existing backlog or planning docs;
-- other concrete evidence.
+If the system is partially implemented, use the source of truth the operator already gave you, or ask for that source only if it is still missing after the first blocking question.
 
 If the system is design-only:
 
