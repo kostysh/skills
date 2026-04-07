@@ -20,6 +20,7 @@
 | [implementation-log-2.ru.md](implementation-log-2.ru.md) | Отдельный лог текущего follow-up цикла. Фиксирует последние UX/runtime/doc улучшения и их review trail без смешивания со старой историей. | Читать при восстановлении контекста по последнему циклу доработок. |
 | [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md) | План follow-up изменений после real-world UX feedback. Фиксирует, какие проблемы нужно исправить в `SKILL.md`, runtime, references и нормативных документах, в каком порядке и по каким критериям закрытия. | Читать перед началом post-implementation UX/hardening цикла. |
 | [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md) | Детальный execution plan follow-up исправлений после real-world UX feedback. Разбивает remediation на конкретные пакеты изменений, файлы, acceptance и порядок выполнения. | Читать перед началом follow-up имплементации, если нужен уже не анализ, а пошаговый план изменений. |
+| [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md) | Маленький corrective plan после post-refactor review. Закрывает два remaining first-run defects: local invocation contract и единый blocking preflight question. | Читать перед последним коротким doc-only corrective pass. |
 | [utility-spec.ru.md](utility-spec.ru.md) | Полная спецификация утилиты. Описывает внутренние артефакты, алгоритмы команд, recovery/rebuild, derived state, error taxonomy и runtime behavior. | Читать после концепции, когда нужно проектировать реализацию. |
 | [schemas-and-types.ru.md](schemas-and-types.ru.md) | Строгие схемы и exact types для `zod@v4` и TypeScript. Включает authored packet/patch, utility-owned artifacts, command DTOs и error payload. | Читать при реализации `schemas`, `errors`, DTO и parser/validator слоёв. |
 | [module-interfaces.ru.md](module-interfaces.ru.md) | Контракты верхнеуровневых модулей и внутренних сервисов. Фиксирует `src/`-структуру, порты среды, ownership артефактов и test seams. | Читать перед проектированием модулей и unit-тестов. |
@@ -41,6 +42,7 @@
 4. [implementation-log-2.ru.md](implementation-log-2.ru.md)
 4. [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md)
 5. [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md)
+6. [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md)
 6. [utility-spec.ru.md](utility-spec.ru.md)
 7. [schemas-and-types.ru.md](schemas-and-types.ru.md)
 8. [module-interfaces.ru.md](module-interfaces.ru.md)
