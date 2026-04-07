@@ -81,6 +81,8 @@ Returns an array of registered source records.
 
 Use before freehand authoring when a skeleton helps.
 
+For exact packet and patch field shapes, use [Data Model](data-model.md) as the normative source.
+
 Supported modes:
 
 - `template packet`

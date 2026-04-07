@@ -41,8 +41,8 @@ Expected returned source shape:
 
 When assigning `delivery_state`, use the strongest available evidence in this order:
 
-1. code and tests
-2. explicit operator instruction
+1. explicit operator instruction about system state or source of truth
+2. code and tests
 3. architecture and ADR documents
 4. planning or backlog documents
 
@@ -72,6 +72,38 @@ Use a small controlled set unless a repository has already standardized a differ
 - `derived`
 
 Use `authoritative` only when the document is a true source of requirements or design truth for the scoped work.
+
+## Strict fields vs starter vocabulary
+
+Not every classification-like field is enforced the same way by the CLI.
+
+Treat this section as the single normative place for that distinction.
+
+### Strictly enforced by the CLI
+
+These fields are validated as a fixed enum or technical schema:
+
+- `delivery_state`
+- `source.kind`
+- `source.authority`
+- packet and patch structural fields
+- utility-owned IDs and keys where the schema requires a specific shape
+
+### Starter vocabulary only
+
+These are free-form non-empty strings in the current CLI contract:
+
+- `item.type`
+- `claim_class`
+- `commitment`
+- `data_class`
+- `quality_class`
+- `policy_surface`
+- `decision_state`
+
+The values listed in this document for these fields are starter vocabulary, not enforced enums.
+
+Use them to stay consistent inside one backlog root, but do not assume the CLI will reject typos or drift in those fields.
 
 ## Packet shape
 
@@ -129,11 +161,53 @@ Use it:
 
 Do not turn it into a long prose block.
 
+Exact shape:
+
+- `target_system` is an array;
+- each array item is an object;
+- object keys are free-form non-empty strings;
+- each value must be:
+  - a primitive (`string`, `number`, `boolean`, `null`);
+  - or an array of primitive values;
+- nested objects are not allowed.
+
+Example:
+
+```json
+[
+  {
+    "area": "auth",
+    "summary": "Session lifecycle is enforced in the auth service.",
+    "services": ["auth-api", "session-worker"],
+    "public_http": true
+  }
+]
+```
+
 ### `context.as_built`
 
 Optional, short, structured summary of current known implementation reality.
 
 Use it only when needed to explain why tasks are required or why existing tasks must change.
+
+Exact shape:
+
+- `as_built` follows the same shape as `target_system`;
+- it is also an array of summary-entry objects;
+- nested objects are not allowed here either.
+
+Example:
+
+```json
+[
+  {
+    "area": "auth",
+    "implemented_services": ["auth-api"],
+    "missing_services": ["session-worker"],
+    "session_timeout_enforced": false
+  }
+]
+```
 
 ### `context.claims`
 

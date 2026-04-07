@@ -71,6 +71,33 @@
   - не требуется; пакет docs-only и не меняет runtime behavior утилиты
 - Следующий пакет: `Follow-up Package 2 — Reference normalization for first-run authoring`
 
+### Follow-up Package `2` — `Reference normalization for first-run authoring`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07T20:06:12+02:00
+- Полное время закрытия: ~2 минуты
+- Коммит:
+- Что сделано:
+  - в `references/data-model.md` зафиксирован exact shape для `target_system` и `as_built`
+  - там же введено единое нормативное разделение:
+    - strict fields
+    - starter vocabulary only
+  - в `references/examples-and-templates.md` добавлены иллюстративные примеры `target_system` / `as_built`
+  - в `examples-and-templates.md` явно отмечено, что нормативный shape живёт в `data-model.md`
+  - в `references/command-reference.md` добавлена явная ссылка на `data-model.md` как на normative source для field shapes
+- Ключевые решения:
+  - strict/free-form distinction закреплена только в `data-model.md`, чтобы не плодить competing normative layers
+  - examples оставлены как illustrative only и не дублируют нормативные правила
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - manual consistency check между `data-model.md`, `examples-and-templates.md` и actual schema contracts — OK
+  - подтверждено, что references теперь задают packet authoring rules без обязательного чтения `src/`
+- Внешнее ревью:
+  - не требуется; пакет docs-only и не меняет runtime behavior утилиты
+- Следующий пакет: `Follow-up Package 3 — Local contract consistency`
+
 ## Общие решения по процессу
 
 - С 2026-04-06, начиная с work package `E`, обязательный внешний review-контур включает:

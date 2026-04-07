@@ -2,6 +2,12 @@
 
 Use this file when you need concrete authoring examples instead of just rules.
 
+Important:
+
+- this file is illustrative;
+- the normative field-shape rules live in [Data Model](data-model.md);
+- when example wording and normative shape ever appear to disagree, follow `data-model.md`.
+
 Template files also live in local assets:
 
 - [Packet template](../assets/packet.template.json)
@@ -26,6 +32,21 @@ This example adds new auth-related tasks extracted from architecture.
       "module_prefix": "auth",
       "item_pattern": "<module>-<capability>-<result>"
     },
+    "target_system": [
+      {
+        "area": "auth",
+        "summary": "Session lifecycle is enforced in the auth service.",
+        "services": ["auth-api", "session-worker"]
+      }
+    ],
+    "as_built": [
+      {
+        "area": "auth",
+        "implemented_services": ["auth-api"],
+        "missing_services": ["session-worker"],
+        "session_timeout_enforced": false
+      }
+    ],
     "claims": [
       {
         "claim_key": "auth-session-timeout",
@@ -68,9 +89,7 @@ This example adds new auth-related tasks extracted from architecture.
         "source_ids": ["<source_id_auth_module>"]
       }
     ],
-    "policy_decisions": [],
-    "target_system": [],
-    "as_built": []
+    "policy_decisions": []
   },
   "items": [
     {
