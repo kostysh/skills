@@ -27,7 +27,7 @@ Expected returned source shape:
 
 ```json
 {
-  "id": "<uuid>",
+  "source_id": "<uuid>",
   "source_label": "docs/architecture/system.md",
   "path": "<normalized_path>",
   "kind": "<source_kind>",
@@ -36,6 +36,19 @@ Expected returned source shape:
   "hash": "<content_hash>"
 }
 ```
+
+## Delivery state authoring rule
+
+When assigning `delivery_state`, use the strongest available evidence in this order:
+
+1. code and tests
+2. explicit operator instruction
+3. architecture and ADR documents
+4. planning or backlog documents
+
+Conservative rule:
+
+- if evidence is weak or conflicting, prefer the less advanced state or add a `gap`.
 
 ### Starter source kinds
 

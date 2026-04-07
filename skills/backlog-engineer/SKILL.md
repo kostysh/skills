@@ -6,7 +6,7 @@ description: |
   packets, patch-based updates, and operator-friendly backlog sync workflows.
   Use when creating a backlog from architecture, adding a new module,
   synchronizing backlog after document changes, or authoring packet and patch
-  inputs for the planned directory-root backlog utility.
+  inputs for the directory-root backlog utility.
 ---
 
 # Backlog Engineer
@@ -38,6 +38,8 @@ Critical rules:
 4. Missing information becomes explicit `gaps`, not agent invention.
 5. Use `--dry-run` before risky or large mutations.
 6. Prefer scoped operations over global ones when scope is known.
+7. Before creating a new backlog, determine whether the system is design-only or already partially implemented.
+8. All mutating commands for one backlog root run only sequentially, never in parallel.
 
 Fast navigation:
 
@@ -46,6 +48,36 @@ Fast navigation:
 - need packet or patch shapes: open [Data Model](references/data-model.md)
 - need to turn documents into tasks: open [Document-to-Packet Workflow](references/document-to-packet-workflow.md)
 - need concrete examples or starter files: open [Examples and Templates](references/examples-and-templates.md)
+
+## Preflight before first backlog
+
+Before creating a new backlog, determine the current state of the system.
+
+If the operator already stated it clearly, use that statement.
+
+If not, ask a short preflight question before starting:
+
+- is the system still only being designed;
+- is it already partially implemented;
+- or is the operator unsure.
+
+If the system is partially implemented, ask for the best available source of truth for delivery state:
+
+- codebase;
+- tests;
+- architecture or ADR documents;
+- existing backlog or planning docs;
+- other concrete evidence.
+
+If the system is design-only:
+
+- do not spend time searching for `implemented` work;
+- proceed directly to backlog authoring from design inputs.
+
+If the operator is unsure:
+
+- assume mixed evidence may exist;
+- inspect the strongest available implementation signal before assigning `delivery_state`.
 
 ## When to use
 
@@ -123,6 +155,81 @@ The agent must not reconstruct current backlog truth from packet and patch files
 12. Utility-owned `todo` items are not authored in packets.
 13. Use `--dry-run` before risky or large mutations.
 
+## Delivery state inference
+
+Use these rules when assigning `delivery_state`.
+
+Allowed evidence sources:
+
+- explicit operator instruction;
+- real code paths and runtime wiring;
+- tests that prove a capability exists;
+- architecture or ADR documents;
+- planning or backlog documents.
+
+Use this priority order:
+
+1. direct implementation evidence from code and tests
+2. explicit operator instruction
+3. architecture or ADR statements
+4. planning or backlog documents
+
+Conservative rules:
+
+- use `implemented` only when there is strong evidence that the capability already exists in the system;
+- use `planned` or `specified` when the design is clear but implementation evidence is missing;
+- use `defined` when the task is real but the shape is still too loose for stronger staging;
+- if evidence conflicts and cannot be resolved confidently, prefer the less advanced state or add a `gap`.
+
+Do not turn temporary input labels into permanent backlog semantics.
+
+Example:
+
+- a planning document says `intaken`
+- the agent may use that as one input signal
+- but the final backlog still stores only the utility's real `delivery_state` values
+
+## Reconciliation rules
+
+When both as-built reality and planning-state documents exist:
+
+- treat as-built evidence as the source of truth for what is already delivered;
+- treat planning-state evidence as the source of truth for future ownership, intended seams, and candidate work;
+- reconcile them in the packet the agent authors;
+- do not expect the utility to perform reconciliation for you.
+
+Typical split:
+
+- code, tests, or delivery index -> what is already implemented
+- planning backlog or candidate list -> what still needs to exist
+
+If the two disagree and you cannot resolve the disagreement confidently:
+
+- do not guess;
+- capture the uncertainty as a `gap` on the affected task or tasks.
+
+## `gap` vs continue
+
+`Gap` means a missing external fact that makes the task unsafe to state confidently without invention.
+
+Add a `gap` when:
+
+- a required prerequisite is unknown;
+- an ownership or contract decision is missing;
+- migration or sequencing cannot be established from available evidence;
+- the current implementation state cannot be determined well enough to stage the task honestly.
+
+Continue without a `gap` when:
+
+- the available evidence is enough to describe the task correctly;
+- some lower-level detail is still open but does not invalidate the task itself;
+- no invention is needed to keep the task accurate.
+
+Simple rule:
+
+- if the missing fact would make the task false, too optimistic, or not safely actionable, add a `gap`;
+- otherwise continue.
+
 ## Quick command choice
 
 Use this table for the first command decision. Command details and workflow rules live in local references.
@@ -153,7 +260,7 @@ Use these as the canonical top-level flows:
 
 | Operator ask | Canonical agent flow |
 | --- | --- |
-| Create backlog from architecture | `init` -> `register-source` for all documents -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
+| Create backlog from architecture | preflight on system state -> `init` -> `register-source` for all documents -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
 | Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
@@ -180,6 +287,79 @@ Also keep these command boundaries explicit:
 - `attention` = review-oriented subset with utility-provided reasons.
 
 Do not invent hidden interpretations beyond these rules.
+
+`Queue` rule:
+
+- `queue` returns chains, not a flat set of all ready tasks;
+- a task can be ready and still appear inside more than one chain;
+- therefore `ready_for_next_step` count and queue chain count are not expected to be equal.
+
+## Mutation serialization
+
+For one backlog root, all mutating commands must run only sequentially.
+
+This applies to:
+
+- `register-source`
+- `packet`
+- `patch-item`
+- `remove-item`
+- `refresh`
+- `delete-backlog`
+
+Do not run these in parallel for the same root even if they look independent.
+
+## What to expect in output
+
+Use these notes to interpret command output correctly.
+
+### Mutating commands
+
+For `packet`, `patch-item`, `remove-item`, and `refresh`:
+
+- expect a compact mutation summary, not full task cards;
+- use `counts` for the broad result;
+- use `todo_created`, `todo_updated`, and `todo_removed` to see where follow-up work appeared;
+- use `next_commands` as the preferred next-step hint from the utility.
+
+Follow-up rule:
+
+- if `todo_created` or `todo_updated` is non-zero, go only to `attention` or `items` for the returned scope;
+- if no new review work appeared and the operator asked only for the mutation result, stop there.
+
+### `packet`
+
+Interpret `packet` success like this:
+
+- the authored packet file remains your authored draft;
+- the utility stores its own immutable canonical import copy;
+- current backlog truth still comes from the utility, not from either packet file.
+
+### `status`
+
+- `status` is only a short summary for dialog;
+- `status --refresh` performs refresh first, then returns the same summary shape.
+
+### `search`
+
+- use `search` when keys are unknown or you need candidate selection;
+- do not use it as a replacement for full task cards.
+
+### `items`
+
+- use `items` only after keys are known;
+- treat it as the authoritative full-card view for those tasks.
+
+### `attention`
+
+- `attention` is review-oriented, not a full task inventory;
+- use it when the operator asks what needs checking now.
+
+### `queue`
+
+- `queue` is the preferred answer to “what can be taken next”;
+- it already returns ordered chains;
+- do not reinterpret it as “all tasks with `ready_for_next_step = true`”.
 
 ## Interop
 
@@ -209,6 +389,9 @@ These are non-negotiable emphases for agent behavior:
 - use `--dry-run` before risky or large mutations;
 - treat utility-generated state as authoritative for the current backlog;
 - use `template` before freehand packet or patch authoring when possible.
+- determine system state before first backlog authoring if the operator did not state it;
+- serialize all mutating commands for one backlog root;
+- interpret command outputs by utility semantics, not by filename intuition.
 
 ## Local references
 

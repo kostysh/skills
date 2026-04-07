@@ -54,6 +54,7 @@ Behavior:
 - returns existing source if the normalized path is already registered;
 - `path` is stored as a normalized POSIX path relative to backlog root and may contain `..` for external source files;
 - does not create a duplicate for the same normalized path.
+- do not run `register-source` in parallel with other mutating commands for the same backlog root.
 
 ## `list-sources`
 
@@ -118,6 +119,12 @@ Compact response should include:
 - `todo_updated`
 - `dry_run`
 - `next_commands`
+
+Interpretation:
+
+- the authored packet remains your draft file;
+- the utility stores a separate immutable canonical import copy;
+- current backlog truth is still read from the utility.
 
 ## `patch-item`
 
@@ -253,6 +260,15 @@ Each item card should include:
 - `attention_reasons`;
 - `ready_for_next_step`;
 - open `todo`.
+
+## `queue`
+
+Use `queue` as the answer to “what can be taken next”.
+
+Interpretation:
+
+- it returns ordered chains, not a flat set of all ready tasks;
+- queue chain count is not expected to equal the count of all `ready_for_next_step` tasks.
 
 ## `search`
 

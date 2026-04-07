@@ -6,7 +6,7 @@ This file defines the stable operator-facing use cases and the agent workflows b
 
 | Operator ask | Canonical agent flow |
 | --- | --- |
-| Create backlog from architecture | `init` -> `register-source` for all documents -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
+| Create backlog from architecture | preflight on system state -> `init` -> `register-source` for all documents -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
 | Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
@@ -22,6 +22,52 @@ Treat `queue` as a list of ordered chains, not a flat list.
 - one root branch of the graph corresponds to one queue chain;
 - only tasks that are runnable now should appear there;
 - the utility should return the chain already ordered for next-step work.
+- queue chain count is not expected to equal the count of all `ready_for_next_step` tasks.
+
+## First-run preflight
+
+Before creating a new backlog, determine system state first.
+
+- if the operator already said the system is design-only, proceed directly to backlog authoring;
+- if the operator already said the system is partially implemented, request the best available source of truth for delivery state;
+- if the operator did not say, ask a short preflight question before running `init`.
+
+Allowed evidence for delivery state:
+
+- codebase;
+- tests;
+- architecture and ADR documents;
+- existing backlog or planning docs;
+- explicit operator instruction.
+
+Use the strongest evidence first and stay conservative when evidence conflicts.
+
+## Mutation serialization
+
+For one backlog root, all mutating commands must run only sequentially.
+
+Never run these in parallel for the same root:
+
+- `register-source`
+- `packet`
+- `patch-item`
+- `remove-item`
+- `refresh`
+- `delete-backlog`
+
+## Output interpretation
+
+### Mutating commands
+
+- expect compact summaries, not full task cards;
+- if `todo_created` or `todo_updated` is non-zero, follow only the returned scope through `attention` or `items`;
+- otherwise stop if the operator asked only for the mutation result.
+
+### `packet`
+
+- the authored packet stays your draft;
+- the utility keeps its own immutable canonical import copy;
+- current truth still comes from the utility, not from either packet file.
 
 ## Agent accents
 

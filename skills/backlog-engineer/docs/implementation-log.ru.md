@@ -805,7 +805,7 @@
 - Дата: 2026-04-07
 - Начало работ: 2026-04-07 16:55:00 +02:00
 - Полное время закрытия: 00:25:00
-- Коммит: pending
+- Коммит: `6de68ae` `fix(backlog-engineer): allow external source paths`
 - Что сделано:
   - исправлена ошибочная трактовка source paths: source files теперь могут находиться вне backlog root
   - persisted source path остаётся normalized POSIX path relative to backlog root и может содержать `..`
@@ -829,3 +829,37 @@
   - spec conformance review — PASS
   - code review — PASS
   - security review — PASS
+
+### Follow-up package `S1` — `Skill and reference hardening`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07 16:05:00 +02:00
+- Полное время закрытия: 00:25:00
+- Коммит: pending
+- Что сделано:
+  - `SKILL.md` усилен как self-contained first-run contract:
+    - добавлен preflight по состоянию системы;
+    - добавлены правила inference для `delivery_state`;
+    - добавлен reconciliation playbook для as-built и planning-state;
+    - добавлено явное правило `gap vs continue`;
+    - добавлено правило serial-only mutations для одного backlog root;
+    - добавлены notes по интерпретации output ключевых команд;
+    - уточнены semantics `queue` и canonical packet copy;
+  - supporting references выровнены под тот же agent-facing contract:
+    - `cli-contract.md`
+    - `command-reference.md`
+    - `data-model.md`
+    - `document-to-packet-workflow.md`
+    - `operator-workflows.md`
+- Ключевые решения:
+  - operational knowledge, нужное агенту для первого рабочего прохода, должно жить прежде всего в `SKILL.md`, а не только в `docs/`;
+  - packet/import semantics в skill сформулированы так, чтобы агент не считал canonical copy дубликатом или источником текущей истины;
+  - вопрос `queue` пока решается через skill/docs clarification, без изменения runtime output contract.
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - self-review diff against follow-up plan — OK
+  - skill/reference drift checks on updated topics — OK
+- Внешнее ревью:
+  - не запускалось; пакет не меняет runtime behavior и не вводит новый code surface

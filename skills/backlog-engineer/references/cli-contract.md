@@ -1,6 +1,6 @@
 # CLI Contract
 
-This file defines the stable command-level contract for the planned backlog utility.
+This file defines the stable command-level contract for the backlog utility.
 
 ## Directory-root contract
 
@@ -57,10 +57,14 @@ Use `refresh --item-key ...` when the work is task-scoped rather than source-sco
 
 Treat these as mutating commands:
 
+- `register-source`
 - `packet`
 - `patch-item`
 - `remove-item`
 - `refresh`
+- `delete-backlog`
+
+For one backlog root, run all mutating commands only sequentially.
 
 They should return compact results, not full task cards.
 
@@ -78,6 +82,12 @@ Expect a compact structured summary with:
   - `reason`
 
 Do not expect full task cards or full field-level diffs in these responses.
+
+`packet` interpretation rule:
+
+- the authored packet file remains the agent-authored draft;
+- the utility keeps its own immutable canonical import copy;
+- current backlog truth is still read from the utility.
 
 ### Follow-up rule
 
@@ -100,6 +110,10 @@ Keep these boundaries explicit:
 - `items` = keys known and full cards needed;
 - `queue` = ordered chains of tasks that can be taken next;
 - `attention` = review-oriented subset with utility-provided reasons.
+
+Queue interpretation rule:
+
+- queue chain count is not expected to equal the total count of tasks with `ready_for_next_step = true`.
 
 ## Scoped checks
 

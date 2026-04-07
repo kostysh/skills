@@ -27,6 +27,12 @@ Before authoring anything, answer these questions for yourself:
 - what interfaces, data, and constraints matter?
 - what is still unclear?
 
+Before a brand-new backlog, also answer:
+
+- is the system only being designed;
+- is it already partially implemented;
+- what evidence is available to infer `delivery_state`.
+
 ### 2. Register the sources
 
 Every document that materially participates in the backlog should become a registered source.
@@ -39,6 +45,8 @@ Workflow:
 4. keep the returned `source_id`.
 
 Do not guess `source_id`.
+
+For one backlog root, do not register sources in parallel with other mutating commands.
 
 ### 3. Extract stable context
 
@@ -104,6 +112,8 @@ Typical gap cases:
 - missing migration strategy;
 - unclear sequencing between tasks.
 
+Continue without a `gap` only when the available evidence is already enough to describe the task correctly without invention.
+
 ### 8. Choose packet vs patch
 
 Use this rule:
@@ -149,6 +159,12 @@ After a mutating command:
 
 - if `todo_created` or `todo_updated` is non-zero, go only to `attention` or `items` for the returned keys;
 - otherwise stop if the operator only asked for the result.
+
+After `packet` specifically:
+
+- treat the authored packet file as your draft;
+- expect the utility to keep a separate immutable canonical import copy;
+- read current backlog truth from the utility, not from packet files.
 
 ## Practical checklist
 
