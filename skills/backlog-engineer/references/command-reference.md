@@ -2,6 +2,26 @@
 
 This file gives the agent a stable per-command contract without relying on working documents.
 
+## Execution note
+
+Command examples in this skill may use `backlog-engineer ...` as the semantic command form.
+
+If the CLI is not installed in `PATH`, use this fallback command prefix instead:
+
+```bash
+node <skill-root>/scripts/backlog-engineer.mjs ...
+```
+
+Where:
+
+- `<skill-root>` means the directory that contains this skill's `SKILL.md`
+
+Important:
+
+- this fallback changes only the script path;
+- it does not change `cwd`;
+- backlog root discovery and relative path resolution still depend on the working directory where the command is executed.
+
 ## `init`
 
 Use when backlog does not exist yet.

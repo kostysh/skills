@@ -175,3 +175,29 @@
   - `security-reviewer` — PASS
 - Следующий пакет:
   - follow-up цикл закрыт; новых пакетов по [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md) не осталось
+
+### Follow-up package `S5` — `Invocation contract normalization`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07 21:59:24 +02:00
+- Полное время закрытия: 00:01:33
+- Коммит:
+- Что сделано:
+  - в `SKILL.md` добавлен явный execution note для local fallback invocation
+  - в `references/first-backlog-walkthrough.md` execution note перенесён выше первого command example
+  - в `references/command-reference.md` добавлен единый execution note для semantic command form и local fallback
+  - во всех трёх местах `<skill-root>` определён буквально как директория, где лежит `SKILL.md` этого skill
+  - во всех трёх местах зафиксировано, что fallback invocation меняет только command prefix и не меняет `cwd`
+- Ключевые решения:
+  - default examples остаются в semantic form `backlog-engineer ...`
+  - local fallback pattern фиксируется как `node <skill-root>/scripts/backlog-engineer.mjs ...`
+  - script path и working directory теперь разведены явно, чтобы не ломать root discovery и relative path resolution
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - execution-note consistency check across `SKILL.md`, walkthrough, and command reference — OK
+  - `node --experimental-strip-types --test skills/backlog-engineer/test/docs-contract.test.ts` — OK
+- Внешнее ревью:
+  - не запускалось; пакет docs-only и не меняет runtime behavior утилиты
+- Следующий пакет: `S6 — Preflight wording hardening`

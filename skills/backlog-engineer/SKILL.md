@@ -141,6 +141,15 @@ Current runtime status:
 - runtime state, canonical artifacts, packets, patches, reports, and delete flow are wired end to end;
 - packet and patch authoring rules in this skill match the implemented CLI surface.
 
+Execution note:
+
+- default command examples use `backlog-engineer ...` as the semantic command form;
+- if the CLI is not installed in `PATH`, replace only the command prefix with:
+  - `node <skill-root>/scripts/backlog-engineer.mjs ...`
+- `<skill-root>` means the directory that contains this skill's `SKILL.md`;
+- do not change `cwd` for that substitution:
+  - root discovery and relative path resolution still depend on the working directory where you execute the command.
+
 ## Role split
 
 Keep the operator, the agent, and the utility separate.

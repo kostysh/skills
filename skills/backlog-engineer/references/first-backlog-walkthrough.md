@@ -24,6 +24,25 @@ to:
 - applied packet
 - first read of `status`, `gaps`, `queue`, and `attention`
 
+## Execution note
+
+Command examples below use `backlog-engineer ...` as the semantic command form.
+
+If the CLI is not installed in `PATH`, replace only the command prefix with:
+
+```bash
+node <skill-root>/scripts/backlog-engineer.mjs ...
+```
+
+Where:
+
+- `<skill-root>` means the directory that contains this skill's `SKILL.md`
+
+Important:
+
+- do not change `cwd` for that substitution;
+- root discovery and relative path resolution still depend on the working directory where you execute the command.
+
 ## Step 1. Analyze operator input first
 
 Before touching the repo or the codebase, check whether the operator already told you:
