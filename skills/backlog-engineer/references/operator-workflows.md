@@ -2,6 +2,8 @@
 
 This file defines the stable operator-facing use cases and the agent workflows behind them.
 
+For one canonical first-run walkthrough, use [First Backlog Walkthrough](first-backlog-walkthrough.md).
+
 ## Canonical operator asks
 
 | Operator ask | Canonical agent flow |
@@ -26,7 +28,7 @@ Treat `queue` as a list of ordered chains, not a flat list.
 
 ## First-run preflight
 
-Before creating a new backlog, determine system state first.
+Before creating a new backlog, analyze operator input first.
 
 - if the operator already said the system is design-only, proceed directly to backlog authoring;
 - if the operator already said the system is partially implemented, request the best available source of truth for delivery state;

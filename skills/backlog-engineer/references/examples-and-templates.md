@@ -14,6 +14,14 @@ Template files also live in local assets:
 - [Patch template](../assets/patch.template.json)
 - [Removal patch template](../assets/remove-item.patch.template.json)
 
+For one complete first-run scenario, use [First Backlog Walkthrough](first-backlog-walkthrough.md).
+
+Important:
+
+- the packet template is a starter draft, not an apply-ready packet;
+- replace placeholder values such as `<source_id_1>` before running `packet`;
+- remove starter entries that do not apply to the current backlog slice.
+
 ## Example packet
 
 This example adds new auth-related tasks extracted from architecture.

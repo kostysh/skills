@@ -137,7 +137,7 @@
 - Дата: 2026-04-07
 - Начало работ: ~2026-04-07T20:15:00+02:00
 - Полное время закрытия: ~34 минуты
-- Коммит:
+- Коммит: `dfa2cb7` `feat(backlog-engineer): improve cli discoverability and output ergonomics`
 - Что сделано:
   - help output стал структурированным:
     - global help теперь несёт `notes`;
@@ -176,6 +176,38 @@
   - `code-reviewer` — PASS
   - `security-reviewer` — PASS
 - Следующий пакет: `Follow-up Package 5 — First-run walkthrough and template usefulness`
+
+### Follow-up Package `5` — `First-run walkthrough and template usefulness`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: ~2026-04-07T20:50:00+02:00
+- Полное время закрытия: ~14 минут
+- Коммит:
+- Что сделано:
+  - `template packet` переведён с пустого skeleton на richer starter draft
+  - starter draft теперь включает:
+    - starter `target_system`
+    - starter `as_built`
+    - placeholder `source_id` slots
+    - starter item/context links
+  - добавлен канонический first-run walkthrough
+  - references и skill синхронизированы так, чтобы ссылаться на walkthrough без дублирования полного сценария
+- Ключевые решения:
+  - richer packet template остаётся draft-only и не обязан быть apply-ready до замены placeholders
+  - walkthrough вынесен в отдельный reference-файл, а не в `SKILL.md`
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format:check` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run build` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - `spec-conformance-reviewer` — PASS
+  - `code-reviewer` — PASS
+  - `security-reviewer` — PASS
+- Следующий пакет: follow-up cycle closed
 
 ## Общие решения по процессу
 

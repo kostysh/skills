@@ -2,6 +2,8 @@
 
 This file explains how to turn architecture documents into a packet without inventing missing facts.
 
+If you need one exact end-to-end first-run scenario, use [First Backlog Walkthrough](first-backlog-walkthrough.md). This file stays focused on the reusable extraction workflow.
+
 ## Core idea
 
 The agent reads prose documents, extracts stable context and atomic tasks, then authors a packet that the utility can materialize.

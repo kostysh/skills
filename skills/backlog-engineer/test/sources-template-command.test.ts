@@ -402,7 +402,7 @@ void test('list-sources returns deterministic ordering and supports item and pat
   }
 });
 
-void test('template packet writes the canonical empty packet skeleton', async () => {
+void test('template packet writes the canonical richer starter packet draft', async () => {
   const cwd = await createTempDir();
   const { runtime } = await bootstrapBacklog(cwd);
 

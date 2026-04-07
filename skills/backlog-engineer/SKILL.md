@@ -47,6 +47,7 @@ Fast navigation:
 - need full command behavior: open [Command Reference](references/command-reference.md)
 - need packet or patch shapes: open [Data Model](references/data-model.md)
 - need to turn documents into tasks: open [Document-to-Packet Workflow](references/document-to-packet-workflow.md)
+- need one exact first-run flow: open [First Backlog Walkthrough](references/first-backlog-walkthrough.md)
 - need concrete examples or starter files: open [Examples and Templates](references/examples-and-templates.md)
 
 ## Preflight before first backlog
@@ -291,7 +292,7 @@ Use this table for the first command decision. Command details and workflow rule
 | initialize backlog directory | `init` | Start the backlog directory and utility-owned artifacts. |
 | register a document source | `register-source` | Read the document first, then register it. |
 | inspect registered sources | `list-sources` | Use when `source_id` or `source_label` is needed. |
-| create an empty packet or patch skeleton | `template` | Prefer `template packet` and `template patch` over freehand authoring. |
+| create a starter packet draft or patch skeleton | `template` | `template packet` creates a richer starter draft; `template patch` creates the patch skeleton. |
 | add new tasks | `packet` | New tasks only. Never mutate or delete existing tasks through `packet`. |
 | change existing tasks | `patch-item` | Use patches for changes to existing tasks. |
 | remove existing tasks | `remove-item` | Use patches for deletions too. |

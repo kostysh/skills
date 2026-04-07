@@ -95,7 +95,16 @@ Supported modes:
 - `template packet`
 - `template patch`
 
-`template packet` should create a packet skeleton with `context` and `items`.
+`template packet` should create a richer starter draft with:
+
+- `context` and `items`;
+- starter entries for `target_system` and `as_built`;
+- placeholder `source_id` slots;
+- starter item/context links that show expected field usage.
+
+The packet template is a draft, not an apply-ready packet. Replace placeholders and remove starter entries that do not apply before running `packet`.
+
+For one end-to-end first-run flow, use [First Backlog Walkthrough](first-backlog-walkthrough.md).
 
 `template patch` should create a patch skeleton with:
 

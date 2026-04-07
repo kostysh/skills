@@ -9,7 +9,7 @@ import {
   renderPacketTemplate,
   renderPatchTemplate,
 } from '../src/templates/index.ts';
-import { PatchFileSchema } from '../src/schemas/index.ts';
+import { PacketFileSchema, PatchFileSchema } from '../src/schemas/index.ts';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
@@ -27,6 +27,29 @@ void test('renderPacketTemplate stays identical to the canonical packet asset', 
   const expected = await readFile(PACKET_TEMPLATE_PATH, 'utf8');
 
   assert.equal(renderPacketTemplate(), expected);
+});
+
+void test('renderPacketTemplate produces a richer starter draft with placeholders', () => {
+  const rendered = JSON.parse(renderPacketTemplate()) as Record<string, unknown>;
+  const parsed = PacketFileSchema.safeParse(rendered);
+  assert.equal(parsed.success, false);
+
+  const context = rendered.context as Record<string, unknown>;
+  const targetSystem = context.target_system as Array<Record<string, unknown>>;
+  const asBuilt = context.as_built as Array<Record<string, unknown>>;
+  const claims = context.claims as Array<Record<string, unknown>>;
+  const qualityAttributes = context.quality_attributes as Array<Record<string, unknown>>;
+  const items = rendered.items as Array<Record<string, unknown>>;
+
+  assert.equal(targetSystem.length, 1);
+  assert.equal(asBuilt.length, 1);
+  assert.equal(claims.length, 1);
+  assert.equal(qualityAttributes.length, 1);
+  assert.equal(items.length, 1);
+  assert.deepEqual(claims[0]?.source_ids, ['<source_id_1>']);
+  assert.deepEqual(items[0]?.origin_source_ids, ['<source_id_1>']);
+  assert.deepEqual(qualityAttributes[0]?.applies_to_item_keys, ['<module>-<capability>-<result>']);
+  assert.equal(items[0]?.delivery_state, 'defined');
 });
 
 void test('renderPatchTemplate produces an empty partially prefilled patch draft', async () => {

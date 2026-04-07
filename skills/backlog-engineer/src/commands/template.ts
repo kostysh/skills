@@ -51,7 +51,8 @@ export const TEMPLATE_COMMAND: CommandDefinition<TemplateCommandInput, TemplateC
   ],
   options: OPTIONS,
   notes: [
-    '`template packet` writes a draft skeleton and does not require an existing backlog root.',
+    '`template packet` writes a richer starter draft with placeholders and does not require an existing backlog root.',
+    'Before running `packet`, replace placeholders and remove starter entries that do not apply.',
     '`template patch` is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.',
     '`--out` resolves from the current working directory.',
     ABSOLUTE_OUTPUT_NOTE,

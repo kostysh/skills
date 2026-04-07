@@ -287,9 +287,9 @@
 Кейсы:
 
 - backlog `AGENTS.md` template renders non-empty stable content
-- packet template renders empty canonical skeleton
+- packet template renders richer starter draft
 - patch template renders `target_item_keys`, `patch_id`, `sequence`
-- packet template does not prefill undocumented fields
+- packet template includes source-id placeholders and starter `target_system` / `as_built`
 
 ## 9.4. `graph-service`
 
@@ -481,6 +481,7 @@
 Кейсы:
 
 - `template packet` writes `packet.template.json`
+- `template packet` writes the richer starter draft, not an empty skeleton
 - `template patch` computes `sequence = max + 1`
 - `template patch` validates `--item-keys`
 - output path may be file or directory

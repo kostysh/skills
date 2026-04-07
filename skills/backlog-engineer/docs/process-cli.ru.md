@@ -1485,8 +1485,10 @@ graph TD
 ```
 
 Результат:
-- пустой пакет в каноническом формате;
+- starter draft пакета в каноническом формате;
 - с готовой структурой `context` и `items`;
+- со starter blocks для `target_system` и `as_built`;
+- с placeholder `source_id` slots и starter item/context links;
 - без служебных вычисляемых полей.
 
 **Шаблон патча**

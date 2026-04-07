@@ -1326,9 +1326,15 @@ Dry-run не должен:
 
 ### Algorithm: `template packet`
 
-1. Сформировать пустой packet canonical shape.
-2. Если `--out` указывает на директорию, выбрать стандартное имя файла `packet.template.json`.
-3. Записать файл в `--out`.
+1. Сформировать richer starter packet draft в canonical shape.
+2. Включить:
+   - starter `target_system`;
+   - starter `as_built`;
+   - placeholder `source_id` slots;
+   - starter item/context links, показывающие ожидаемое field usage.
+3. Этот draft не обязан быть apply-ready без замены placeholders и удаления неиспользуемых starter entries.
+4. Если `--out` указывает на директорию, выбрать стандартное имя файла `packet.template.json`.
+5. Записать файл в `--out`.
 
 ### Algorithm: `template patch`
 
@@ -1350,7 +1356,7 @@ Dry-run не должен:
 
 ### Unit-test focus
 
-- shape packet template;
+- richer starter shape packet template;
 - shape patch template;
 - корректный next sequence.
 
