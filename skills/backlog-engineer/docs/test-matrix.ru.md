@@ -26,6 +26,7 @@
 5. dry-run проходит тот же semantic pipeline, что и реальная команда;
 6. queue, attention, gaps и ready-state вычисляются стабильно;
 7. CLI возвращает machine-readable JSON и корректные exit codes.
+8. Критичные agent-facing contract rules в `SKILL.md` и `references/*` не расходятся с runtime silently.
 
 ## 2. Классификация тестов
 
@@ -39,6 +40,7 @@
 | `command-level` | orchestration конкретной команды без shell | неправильные reads/writes, плохой summary, неверный scope |
 | `cli-process` | built artifact как пользовательский процесс | argv parsing, help/version, JSON printing, exit codes |
 | `recovery` | rebuild и hidden maintenance behavior | расхождение runtime snapshot с canonical artifacts, dry-run persistence bugs |
+| `doc-contract` | drift guard для критичных skill/reference правил | silent divergence между runtime-backed contract invariants и agent-facing docs |
 
 Правило:
 
@@ -57,6 +59,7 @@
    - реальный apply;
    - тот же сценарий через `--dry-run`.
 8. Для read-команд нужен минимум один тест с hidden maintenance rebuild.
+9. Для agent-facing contract changes нужен минимум один lightweight doc-contract test на критичные правила, привязанный к runtime-backed invariants там, где это возможно.
 
 ## 4. Набор обязательных фикстур
 

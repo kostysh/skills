@@ -919,7 +919,7 @@
 - Дата: 2026-04-07
 - Начало работ: 2026-04-07 17:50:38 +02:00
 - Полное время закрытия: 13m 19s
-- Коммит:
+- Коммит: `15e71bb` (`feat(backlog-engineer): clarify packet output contract`)
 - Что делаем:
   - делаем `packet` success output self-explanatory для authored draft vs immutable canonical import copy
   - добавляем структурные поля:
@@ -939,3 +939,31 @@
   - `spec-conformance-reviewer` — PASS
   - `code-reviewer` — PASS
   - `security-reviewer` — PASS
+
+### Follow-up package `S4` — `Doc/runtime drift guard`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07 18:07:45 +02:00
+- Полное время закрытия: 10m 00s
+- Коммит:
+- Что делаем:
+  - добавляем системный doc-sync checklist в process rules имплементации;
+  - добавляем lightweight doc-contract tests для критичных agent-facing правил;
+  - закрываем риск silent drift между `SKILL.md`, `references/*` и runtime contract.
+- Ключевые решения:
+  - drift guard делаем через лёгкие semantic anchors, а не через тяжёлый snapshot всех docs;
+  - там, где это возможно, doc-contract tests привязываются к runtime-backed invariants (`PacketCommandOutputSchema`, `QueueCommandOutputSchema`, `ERROR_CODES`, `renderManagedGitignoreContent`);
+  - полный doc/runtime diff не вводится; пакет закрывает только high-signal agent-facing rules.
+- Допущения вне спецификации:
+  - нет; пакет усиливает process/test guard rails вокруг уже принятого follow-up scope
+- Локальная приёмка:
+  - `pnpm --dir skills/backlog-engineer run format`
+  - `pnpm --dir skills/backlog-engineer run lint`
+  - `pnpm --dir skills/backlog-engineer run test`
+- Внешние ревью:
+  - `spec-conformance-reviewer` — PASS
+  - `code-reviewer` — PASS после одной доработки
+  - `security-reviewer` — PASS
+- Следующий пакет:
+  - follow-up цикл закрыт; новых пакетов по [ux-followup-plan.ru.md](ux-followup-plan.ru.md) не осталось

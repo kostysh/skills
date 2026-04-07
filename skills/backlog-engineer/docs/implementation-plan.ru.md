@@ -55,6 +55,11 @@
 17. В служебном общении с оператором быть максимально лаконичным; экономить токены в коммуникации, а не в коде, тестах и процессных документах.
 18. Не обрывать активный внешний review без причины; при задержке сначала дождаться verdict или выяснить причину задержки.
 19. Отчёты внешнего review не являются обязательными артефактами пакета, если согласованные проблемы устранены и финальный статус пакета — `PASS`.
+20. Если пакет меняет command DTO, runtime-visible behavior или agent-facing operational semantics, до закрытия пакета обязателен doc-sync checklist:
+    - `SKILL.md`;
+    - релевантные `references/*`;
+    - релевантные `docs/*` нормативного слоя;
+    - тесты или lightweight doc-contract checks, которые ловят критичный drift и по возможности привязаны к runtime-backed invariants.
 
 ## 1.2. Единые правила приёмки work package
 
@@ -73,6 +78,7 @@
 7. После этого внешний code review и security review для пакета также завершены успешно.
 8. Результат и принятые решения записаны в [implementation-log.ru.md](implementation-log.ru.md).
 9. В записи пакета зафиксировано полное время закрытия пакета: от старта работ до коммита.
+10. Если пакет меняет command DTO, runtime-visible behavior или agent-facing operational semantics, выполнен doc-sync checklist и обновлены drift-guards, привязанные к runtime-backed invariants там, где это возможно.
 
 ## 2. Финальный результат
 
