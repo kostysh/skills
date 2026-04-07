@@ -1,50 +1,31 @@
-import { fromZodError, type ErrorModule } from '../errors/index.ts';
+import { fromZodError } from '../errors/index.ts';
 import type { BacklogRootPath } from '../runtime/shared.ts';
-import type {
-  BacklogRelativePosixPath,
-  CliPathInput,
-  NormalizedFsPath,
-  SourceLabel,
-} from '../schemas/index.ts';
+import type { NormalizedFsPath, SourceLabel, SourceRelativePosixPath } from '../schemas/index.ts';
 import type { PathPort } from '../runtime/ports.ts';
-import { BacklogRelativePosixPathSchema as BacklogRelativePosixPathValueSchema } from '../schemas/index.ts';
-import { resolvePathRelativeToRoot } from '../runtime/path-safety.ts';
+import { SourceRelativePosixPathSchema as SourceRelativePosixPathValueSchema } from '../schemas/index.ts';
 
-function toPosixRelativePath(relativePath: string): BacklogRelativePosixPath {
+function toPosixRelativePath(relativePath: string): SourceRelativePosixPath {
   return relativePath.replaceAll('\\', '/');
 }
 
-function createSourceLabel(relativePath: BacklogRelativePosixPath): SourceLabel {
+function createSourceLabel(relativePath: SourceRelativePosixPath): SourceLabel {
   return relativePath;
 }
 
 export function normalizeSourcePath(payload: {
   path: PathPort;
-  errors: ErrorModule;
   backlogRoot: BacklogRootPath;
-  inputPath: CliPathInput;
+  inputPath: NormalizedFsPath;
 }): {
   absolute_path: NormalizedFsPath;
-  relative_path: BacklogRelativePosixPath;
+  relative_path: SourceRelativePosixPath;
   source_label: SourceLabel;
 } {
-  const absolutePath = payload.path.resolve(payload.backlogRoot, payload.inputPath);
-  const rootRelativePath = resolvePathRelativeToRoot({
-    path: payload.path,
-    root: payload.backlogRoot,
-    target: absolutePath,
-  });
-  if (!rootRelativePath) {
-    throw payload.errors.create('BE_SCHEMA_INVALID', undefined, {
-      details: {
-        path: absolutePath,
-      },
-      hint: 'Source path must stay inside the current backlog root.',
-    });
-  }
-
-  const relativePath = toPosixRelativePath(rootRelativePath.posixRelativePath);
-  const parsedRelativePath = BacklogRelativePosixPathValueSchema.safeParse(relativePath);
+  const absolutePath = payload.path.resolve(payload.inputPath);
+  const relativePath = toPosixRelativePath(
+    payload.path.relative(payload.backlogRoot, absolutePath),
+  );
+  const parsedRelativePath = SourceRelativePosixPathValueSchema.safeParse(relativePath);
   if (!parsedRelativePath.success) {
     throw fromZodError(parsedRelativePath.error, {
       path: absolutePath,

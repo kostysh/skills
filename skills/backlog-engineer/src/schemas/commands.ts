@@ -17,6 +17,7 @@ import {
   PolicyDecisionKeySchema,
   QualityAttributeKeySchema,
   SourceIdSchema,
+  SourceRelativePosixPathSchema,
   SourceSummarySchema,
   SourceLabelSchema,
   IsoUtcTimestampSchema,
@@ -117,7 +118,7 @@ export const RegisterSourceCommandInputSchema = z.strictObject({
 export const RegisterSourceCommandOutputSchema = z.strictObject({
   source_id: SourceIdSchema,
   source_label: SourceLabelSchema,
-  path: BacklogRelativePosixPathSchema,
+  path: SourceRelativePosixPathSchema,
   kind: NonEmptyStringSchema,
   authority: NonEmptyStringSchema,
   note: NonEmptyStringSchema.optional(),

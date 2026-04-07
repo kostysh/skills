@@ -2,8 +2,8 @@ import type { ErrorModule } from '../errors/index.ts';
 import { SCHEMA_VERSION } from '../runtime/tool-metadata.ts';
 import type { SchemaModule } from '../schemas/index.ts';
 import type {
-  BacklogRelativePosixPath,
   NormalizedFsPath,
+  SourceRelativePosixPath,
   SourceId,
   SourceRecord,
   SourceRegistryFile,
@@ -56,7 +56,7 @@ export function buildSourceRecord(payload: {
   schemas: SchemaModule;
   errors: ErrorModule;
   sourceId: SourceId;
-  relativePath: BacklogRelativePosixPath;
+  relativePath: SourceRelativePosixPath;
   kind: string;
   note?: string;
   authority: string;
@@ -141,7 +141,7 @@ export function createSourceSummary(source: Pick<SourceRecord, 'source_id' | 'so
 export function resolveSourceAbsolutePath(payload: {
   path: { resolve(...parts: string[]): string };
   backlogRoot: string;
-  sourcePath: BacklogRelativePosixPath;
+  sourcePath: SourceRelativePosixPath;
 }): NormalizedFsPath {
   return payload.path.resolve(payload.backlogRoot, payload.sourcePath);
 }

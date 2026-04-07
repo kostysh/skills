@@ -61,6 +61,7 @@ type Sha256Hex = string;
 type CliPathInput = string;
 type NormalizedFsPath = string;
 type BacklogRelativePosixPath = string;
+type SourceRelativePosixPath = string;
 type SourceLabel = string;
 type SchemaVersion = number;
 type LayoutVersion = number;
@@ -81,7 +82,8 @@ type Sequence = number;
 - `Sha256Hex`: `z.string().regex(/^[a-f0-9]{64}$/)`
 - `CliPathInput`: `z.string().trim().min(1)`
 - `NormalizedFsPath`: `z.string().trim().min(1)`
-- `BacklogRelativePosixPath`: `z.string().trim().min(1)` + semantic validation в `sources` / `artifacts`
+- `BacklogRelativePosixPath`: `z.string().trim().min(1)` + semantic validation для utility-owned paths внутри backlog root
+- `SourceRelativePosixPath`: `z.string().trim().min(1)` + semantic validation для source paths relative to backlog root; parent segments `..` допустимы
 - `SchemaVersion` / `LayoutVersion` / `NonNegativeInt`: `z.number().int().min(0)`
 - `PositiveInt` / `ApplyIndex` / `Sequence`: `z.number().int().positive()`
 
@@ -89,7 +91,8 @@ Path aliases are used at different normalization levels:
 
 - `CliPathInput` = raw path from argv or command call
 - `NormalizedFsPath` = normalized filesystem path returned to caller
-- `BacklogRelativePosixPath` = persisted path inside backlog artifacts, relative to backlog root
+- `BacklogRelativePosixPath` = persisted utility-owned path inside backlog root
+- `SourceRelativePosixPath` = persisted source path relative to backlog root; may contain `..`
 
 ### 1.4. Common enums
 
@@ -544,7 +547,7 @@ type RootMarkerFile = {
 type SourceRecord = {
   source_id: SourceId;
   source_label: SourceLabel;
-  path: BacklogRelativePosixPath;
+  path: SourceRelativePosixPath;
   kind: NonEmptyString;
   authority: NonEmptyString;
   note?: NonEmptyString;
@@ -778,7 +781,7 @@ type RegisterSourceCommandInput = {
 type RegisterSourceCommandOutput = {
   source_id: SourceId;
   source_label: SourceLabel;
-  path: BacklogRelativePosixPath;
+  path: SourceRelativePosixPath;
   kind: NonEmptyString;
   authority: NonEmptyString;
   note?: NonEmptyString;

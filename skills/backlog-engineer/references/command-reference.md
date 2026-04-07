@@ -9,7 +9,7 @@ Use when backlog does not exist yet.
 Creates:
 
 - backlog root directory;
-- `.architecture-backlog.json`;
+- `.backlog.json`;
 - `AGENTS.md`;
 - utility-owned state artifacts;
 - `packets/`, `patches/`, and report-artifact directories.
@@ -19,7 +19,7 @@ Expected response:
 ```json
 {
   "path": "<backlog_dir>",
-  "root_marker_path": "<backlog_dir>/.architecture-backlog.json",
+  "root_marker_path": "<backlog_dir>/.backlog.json",
   "agents_path": "<backlog_dir>/AGENTS.md"
 }
 ```
@@ -39,7 +39,7 @@ Expected response shape:
 
 ```json
 {
-  "id": "<uuid>",
+  "source_id": "<uuid>",
   "source_label": "<readable_label>",
   "path": "<normalized_path>",
   "kind": "<source_kind>",
@@ -52,6 +52,7 @@ Expected response shape:
 Behavior:
 
 - returns existing source if the normalized path is already registered;
+- `path` is stored as a normalized POSIX path relative to backlog root and may contain `..` for external source files;
 - does not create a duplicate for the same normalized path.
 
 ## `list-sources`

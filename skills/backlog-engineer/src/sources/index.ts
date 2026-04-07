@@ -1,11 +1,10 @@
 import type { ErrorModule } from '../errors/index.ts';
 import type { BacklogRootPath } from '../runtime/shared.ts';
 import type {
-  BacklogRelativePosixPath,
-  CliPathInput,
   ItemKey,
   NormalizedFsPath,
   SchemaModule,
+  SourceRelativePosixPath,
   SourceRecord,
   SourceRegistryFile,
   SourceId,
@@ -28,15 +27,15 @@ import {
 export interface SourcesModule {
   resolveCliSourcePath(payload: {
     backlogRoot: BacklogRootPath;
-    inputPath: CliPathInput;
+    inputPath: NormalizedFsPath;
   }): Promise<{
     absolute_path: NormalizedFsPath;
-    relative_path: BacklogRelativePosixPath;
+    relative_path: SourceRelativePosixPath;
     source_label: SourceLabel;
   }>;
   buildSourceRecord(payload: {
     sourceId: SourceId;
-    relativePath: BacklogRelativePosixPath;
+    relativePath: SourceRelativePosixPath;
     kind: string;
     note?: string;
     authority: string;
@@ -66,7 +65,7 @@ export interface SourcesModule {
     selector:
       | { kind: 'source_id'; source_id: SourceId }
       | { kind: 'source_label'; source_label: string }
-      | { kind: 'source_path'; source_path: CliPathInput };
+      | { kind: 'source_path'; source_path: NormalizedFsPath };
   }): {
     sourceIds: SourceId[];
     topLevelItemKeys: ItemKey[];
@@ -89,7 +88,6 @@ export function createSourcesModule(dependencies: SourcesModuleDependencies): So
       return Promise.resolve(
         normalizeSourcePath({
           path: dependencies.path,
-          errors: dependencies.errors,
           backlogRoot: payload.backlogRoot,
           inputPath: payload.inputPath,
         }),

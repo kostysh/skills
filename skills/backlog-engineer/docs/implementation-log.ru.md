@@ -390,8 +390,8 @@
     - asset-equality tests для packet/patch templates
     - rejection path для source inputs, выходящих за пределы backlog root
 - Ключевые решения:
-  - source registration принимает только пути внутри backlog root; `source_label` всегда равен нормализованному backlog-relative POSIX path
-  - invalid source path, выходящий за пределы backlog root, отбрасывается до чтения файла и до вычисления `hash`
+  - source registration хранит путь как нормализованный POSIX path относительно backlog root; для внешних документов такой путь может содержать `..`
+  - repeated registration сравнивается по нормализованному относительному пути, а не по исходной строке CLI
   - повторная регистрация того же нормализованного пути возвращает существующий `source_id` и существующий `hash`, не пере-хешируя и не создавая duplicate entry
   - `template patch` вычисляет sequence как `max(applied.patches.sequence) + 1`
   - `list-sources --item-key` опирается на `state.items[*]._source_ids`, а не на authored packet files
@@ -401,7 +401,7 @@
   - default basename для `template patch` фиксирован как zero-padded `<sequence>-patch.template.json`; спецификация требует sequence-based draft, но не фиксирует точный basename
   - default runtime composition теперь использует file-backed state coordinator, который читает текущий `state.json` через `artifacts` и удерживает `ensureQueryState()` / `ensureMutationState()` за runtime boundary; это решение понадобилось, чтобы package G команды соблюдали runtime contract и были исполнимы через built CLI до появления полного rebuild pipeline
 - Согласованные синхронизации документации:
-  - `utility-spec.ru.md` приведён к текущей концепции для `register-source`: `source_label` и `path` в response contract теперь отражают нормализованный backlog-relative path, а не старый `../docs/...`
+  - `utility-spec.ru.md` приведён к текущей концепции для `register-source`: `source_label` и `path` в response contract отражают нормализованный relative-to-root path и допускают `..` для внешних документов
 - Проверки приёмки:
   - `pnpm --dir skills/backlog-engineer run format` — OK
   - `pnpm --dir skills/backlog-engineer run lint` — OK
@@ -796,3 +796,36 @@
   - code review — PASS
   - security review — PASS
 - Следующий пакет: нет, план имплементации закрыт
+
+## Post-plan corrective changes
+
+### External source paths relative to backlog root
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07 16:55:00 +02:00
+- Полное время закрытия: 00:25:00
+- Коммит: pending
+- Что сделано:
+  - исправлена ошибочная трактовка source paths: source files теперь могут находиться вне backlog root
+  - persisted source path остаётся normalized POSIX path relative to backlog root и может содержать `..`
+  - введено явное разделение между:
+    - `BacklogRelativePosixPath` для utility-owned paths внутри backlog root
+    - `SourceRelativePosixPath` для persisted source paths relative to backlog root
+  - `refresh --source-path` переведён на resolution CLI input -> absolute fs path -> canonical source-relative path
+  - обновлены normative docs, references, tests и built artifact
+  - после code review tightening добавлена валидация canonical normalization для `SourceRelativePosixPath`, чтобы schema не принимала формы вроде `foo/../auth.md`
+- Ключевые решения:
+  - “relative to backlog root” не означает “inside backlog root”; внешний source должен регистрироваться как относительный путь с `..`, если это требуется
+  - duplicate detection и selector matching должны опираться только на каноническую normalized source path string
+  - повторный spec review после первоначального PASS не запускался для финального tightening, потому что последняя правка не меняла spec bindings и только доводила реализацию до уже зафиксированного контракта
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - spec conformance review — PASS
+  - code review — PASS
+  - security review — PASS

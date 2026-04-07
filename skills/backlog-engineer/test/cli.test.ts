@@ -172,7 +172,7 @@ void test('unsupported command flag returns usage error on stderr', () => {
 void test('register-source and list-sources work on the built CLI', async () => {
   const tempRoot = await createTempDir();
   const backlogRoot = path.join(tempRoot, 'backlog');
-  const docsDir = path.join(backlogRoot, 'sources', 'docs', 'modules');
+  const docsDir = path.join(tempRoot, 'docs', 'modules');
 
   try {
     assert.equal(runBuiltCli(['init', '--path', backlogRoot]).status, 0);
@@ -184,7 +184,7 @@ void test('register-source and list-sources work on the built CLI', async () => 
       [
         'register-source',
         '--path',
-        './sources/docs/modules/auth.md',
+        '../docs/modules/auth.md',
         '--kind',
         'module',
         '--authority',
@@ -196,7 +196,7 @@ void test('register-source and list-sources work on the built CLI', async () => 
       [
         'register-source',
         '--path',
-        './sources/docs/modules/session-ui.md',
+        '../docs/modules/session-ui.md',
         '--kind',
         'module',
         '--authority',
@@ -209,7 +209,7 @@ void test('register-source and list-sources work on the built CLI', async () => 
     assert.equal(registerSession.status, 0);
 
     const authOutput = RegisterSourceCommandOutputSchema.parse(parseStdoutJson(registerAuth));
-    assert.equal(authOutput.source_label, 'sources/docs/modules/auth.md');
+    assert.equal(authOutput.source_label, '../docs/modules/auth.md');
 
     const listed = runBuiltCli(['list-sources'], { cwd: backlogRoot });
     assert.equal(listed.status, 0);
@@ -217,7 +217,7 @@ void test('register-source and list-sources work on the built CLI', async () => 
       ListSourcesCommandOutputSchema.parse(parseStdoutJson(listed)).map(
         (source) => source.source_label,
       ),
-      ['sources/docs/modules/auth.md', 'sources/docs/modules/session-ui.md'],
+      ['../docs/modules/auth.md', '../docs/modules/session-ui.md'],
     );
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
@@ -265,7 +265,10 @@ void test('template packet and template patch write draft files through the buil
       };
       operations: unknown[];
     };
-    assert.match(patchDraft.metadata.patch_id, /^2026-04-06-002-patch-template-[a-f0-9]{8}$/);
+    assert.match(
+      patchDraft.metadata.patch_id,
+      /^\d{4}-\d{2}-\d{2}-002-patch-template-[a-f0-9]{8}$/,
+    );
     assert.match(patchDraft.metadata.created_at, /^\d{4}-\d{2}-\d{2}T.*Z$/);
     assert.equal(patchDraft.metadata.sequence, 2);
     assert.deepEqual(patchDraft.metadata.target_item_keys, ['auth-core']);

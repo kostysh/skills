@@ -256,9 +256,9 @@
 
 Кейсы:
 
-- normalize relative source path into backlog-relative posix path
-- normalize absolute source path into backlog-relative posix path
-- reject path escaping backlog root semantics if policy forbids
+- normalize relative source path into source path relative to backlog root
+- normalize absolute source path into source path relative to backlog root
+- preserve parent segments when the source is outside backlog root
 - two equivalent paths normalize to same persisted path
 
 ### `source-registry-service`

@@ -404,7 +404,7 @@
 
 ```bash
 ./path/to/cli.mjs register-source \
-  --path "./architecture.md" \
+  --path "../docs/architecture/system.md" \
   --kind "<source_type>" \
   --authority "<authority_type>" \
   --note "<readable_note>"
@@ -423,8 +423,8 @@
 ```json
 {
   "source_id": "<uuid>",
-  "source_label": "docs/architecture/system.md",
-  "path": "<normalized_path>/architecture.md",
+  "source_label": "../docs/architecture/system.md",
+  "path": "../docs/architecture/system.md",
   "kind": "<source_type>",
   "authority": "<authority_type>",
   "note": "<readable_note>",
@@ -441,6 +441,8 @@
 **Инструкции скила для агента:**
 
 - Перед `register-source` сначала прочитай сам документ и только потом выбирай `kind` и `authority`.
+- `--path` может указывать как на документ внутри backlog-директории, так и на документ снаружи неё.
+- Утилита хранит путь источника как нормализованный POSIX-путь относительно backlog root; внешний источник может выглядеть как `../docs/...` или `../../...`.
 - Если не уверен, что источник уже зарегистрирован, сначала вызови `list-sources`, а не регистрируй дубликат вслепую.
 - После регистрации используй в пакетах и ответах утилиты именно `source_id`, а не пытайся повторно вычислять его по имени файла.
 

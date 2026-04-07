@@ -5,7 +5,7 @@ This file defines the stable command-level contract for the planned backlog util
 ## Directory-root contract
 
 - one backlog equals one directory;
-- the utility owns `.architecture-backlog.json` in that root;
+- the utility owns `.backlog.json` in that root;
 - the utility also owns `packets/`, `patches/`, and report-artifact directories there;
 - `init` should also materialize a local `AGENTS.md` reinforcement file in the backlog root;
 - after `init`, commands are expected to run from that directory or its subdirectories;
@@ -21,6 +21,7 @@ Always separate source discovery from task authoring.
 - register it through `register-source`;
 - use `list-sources` whenever the current `source_id` or `source_label` is needed;
 - prefer `list-sources --path` or other utility lookups over reconstructing source mappings from packet files.
+- source files may live outside the backlog root; the utility persists them as normalized POSIX paths relative to backlog root and such paths may include `..`.
 
 When source scope is known, prefer scoped refresh:
 

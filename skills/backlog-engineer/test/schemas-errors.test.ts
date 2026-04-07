@@ -48,6 +48,14 @@ void test('rejects invalid path-shaped values', () => {
   assert.equal(schemas.NormalizedFsPathSchema.safeParse('./relative/path').success, false);
   assert.equal(schemas.BacklogRelativePosixPathSchema.safeParse('../escape').success, false);
   assert.equal(
+    schemas.SourceRelativePosixPathSchema.safeParse('../outside/auth.md').success,
+    true,
+  );
+  assert.equal(
+    schemas.SourceRelativePosixPathSchema.safeParse('foo/../auth.md').success,
+    false,
+  );
+  assert.equal(
     schemas.BacklogRelativePosixPathSchema.safeParse('C:/secret/auth.md').success,
     false,
   );

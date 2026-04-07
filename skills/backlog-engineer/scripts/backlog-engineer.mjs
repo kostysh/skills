@@ -4261,31 +4261,51 @@ var NormalizedFsPathSchema = NonEmptyStringSchema.superRefine((value, ctx) => {
 		message: "Filesystem path must already be normalized."
 	});
 });
-var BacklogRelativePosixPathSchema = NonEmptyStringSchema.superRefine((value, ctx) => {
+function validateRelativePosixPath(value, ctx, options) {
 	if (value.includes("\0")) ctx.addIssue({
 		code: ZodIssueCode.custom,
-		message: "Backlog-relative path must not contain NUL bytes."
+		message: `${options.label} must not contain NUL bytes.`
 	});
 	if (value.startsWith("/")) ctx.addIssue({
 		code: ZodIssueCode.custom,
-		message: "Backlog-relative path must not be absolute."
+		message: `${options.label} must not be absolute.`
 	});
 	if (value.includes("\\")) ctx.addIssue({
 		code: ZodIssueCode.custom,
-		message: "Backlog-relative path must use POSIX separators."
+		message: `${options.label} must use POSIX separators.`
 	});
 	if (/^[A-Za-z]:(?:$|\/)/.test(value)) ctx.addIssue({
 		code: ZodIssueCode.custom,
-		message: "Backlog-relative path must not use Windows drive-prefixed forms."
+		message: `${options.label} must not use Windows drive-prefixed forms.`
 	});
 	const segments = value.split("/");
 	if (segments.some((segment) => segment.length === 0)) ctx.addIssue({
 		code: ZodIssueCode.custom,
-		message: "Backlog-relative path must not contain empty segments."
+		message: `${options.label} must not contain empty segments.`
 	});
-	if (segments.some((segment) => segment === "." || segment === "..")) ctx.addIssue({
+	if (segments.some((segment) => segment === ".")) ctx.addIssue({
 		code: ZodIssueCode.custom,
-		message: "Backlog-relative path must not contain dot segments."
+		message: `${options.label} must not contain dot segments.`
+	});
+	if (!options.allowParentSegments && segments.some((segment) => segment === "..")) ctx.addIssue({
+		code: ZodIssueCode.custom,
+		message: `${options.label} must not contain parent segments.`
+	});
+	if (path.posix.normalize(value) !== value) ctx.addIssue({
+		code: ZodIssueCode.custom,
+		message: `${options.label} must already be normalized.`
+	});
+}
+var BacklogRelativePosixPathSchema = NonEmptyStringSchema.superRefine((value, ctx) => {
+	validateRelativePosixPath(value, ctx, {
+		label: "Backlog-relative path",
+		allowParentSegments: false
+	});
+});
+var SourceRelativePosixPathSchema = NonEmptyStringSchema.superRefine((value, ctx) => {
+	validateRelativePosixPath(value, ctx, {
+		label: "Source path",
+		allowParentSegments: true
 	});
 });
 var Sha256HexSchema = string().regex(/^[a-f0-9]{64}$/);
@@ -4449,7 +4469,7 @@ var RootMarkerFileSchema = strictObject({
 var SourceRecordSchema = strictObject({
 	source_id: SourceIdSchema,
 	source_label: SourceLabelSchema,
-	path: BacklogRelativePosixPathSchema,
+	path: SourceRelativePosixPathSchema,
 	kind: ControlledStringSchema,
 	authority: ControlledStringSchema,
 	note: NonEmptyStringSchema.optional(),
@@ -4672,7 +4692,7 @@ var RegisterSourceCommandInputSchema = strictObject({
 var RegisterSourceCommandOutputSchema = strictObject({
 	source_id: SourceIdSchema,
 	source_label: SourceLabelSchema,
-	path: BacklogRelativePosixPathSchema,
+	path: SourceRelativePosixPathSchema,
 	kind: NonEmptyStringSchema,
 	authority: NonEmptyStringSchema,
 	note: NonEmptyStringSchema.optional(),
@@ -5911,7 +5931,10 @@ function resolveRefreshSourceIds(payload) {
 		backlogRoot,
 		state,
 		registry,
-		selector: input
+		selector: input.kind === "source_path" ? {
+			kind: "source_path",
+			source_path: context.host.resolveCliPath(input.source_path)
+		} : input
 	});
 	const [selectedSourceId] = scope.sourceIds;
 	if (!selectedSourceId) throw context.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: input.kind === "source_label" ? { source_label: input.source_label } : input.kind === "source_path" ? { source_path: input.source_path } : {} });
@@ -6085,6 +6108,35 @@ var REFRESH_COMMAND = {
 	}
 };
 //#endregion
+//#region src/sources/path-normalizer.ts
+function toPosixRelativePath(relativePath) {
+	return relativePath.replaceAll("\\", "/");
+}
+function createSourceLabel(relativePath) {
+	return relativePath;
+}
+function normalizeSourcePath(payload) {
+	const absolutePath = payload.path.resolve(payload.inputPath);
+	const relativePath = toPosixRelativePath(payload.path.relative(payload.backlogRoot, absolutePath));
+	const parsedRelativePath = SourceRelativePosixPathSchema.safeParse(relativePath);
+	if (!parsedRelativePath.success) throw fromZodError(parsedRelativePath.error, {
+		path: absolutePath,
+		relative_path: relativePath
+	});
+	return {
+		absolute_path: absolutePath,
+		relative_path: parsedRelativePath.data,
+		source_label: createSourceLabel(parsedRelativePath.data)
+	};
+}
+function sortSourceLabels(values) {
+	return [...values].sort((left, right) => {
+		const labelCompare = left.source_label.localeCompare(right.source_label);
+		if (labelCompare !== 0) return labelCompare;
+		return (left.source_id ?? "").localeCompare(right.source_id ?? "");
+	});
+}
+//#endregion
 //#region src/runtime/path-safety.ts
 function isWindowsDriveRootEscape(relativePath) {
 	return /^[A-Za-z]:\\/.test(relativePath);
@@ -6110,44 +6162,6 @@ function resolvePathRelativeToRoot(payload) {
 }
 function isPathInsideRoot(payload) {
 	return resolvePathRelativeToRoot(payload) !== null;
-}
-//#endregion
-//#region src/sources/path-normalizer.ts
-function toPosixRelativePath(relativePath) {
-	return relativePath.replaceAll("\\", "/");
-}
-function createSourceLabel(relativePath) {
-	return relativePath;
-}
-function normalizeSourcePath(payload) {
-	const absolutePath = payload.path.resolve(payload.backlogRoot, payload.inputPath);
-	const rootRelativePath = resolvePathRelativeToRoot({
-		path: payload.path,
-		root: payload.backlogRoot,
-		target: absolutePath
-	});
-	if (!rootRelativePath) throw payload.errors.create("BE_SCHEMA_INVALID", void 0, {
-		details: { path: absolutePath },
-		hint: "Source path must stay inside the current backlog root."
-	});
-	const relativePath = toPosixRelativePath(rootRelativePath.posixRelativePath);
-	const parsedRelativePath = BacklogRelativePosixPathSchema.safeParse(relativePath);
-	if (!parsedRelativePath.success) throw fromZodError(parsedRelativePath.error, {
-		path: absolutePath,
-		relative_path: relativePath
-	});
-	return {
-		absolute_path: absolutePath,
-		relative_path: parsedRelativePath.data,
-		source_label: createSourceLabel(parsedRelativePath.data)
-	};
-}
-function sortSourceLabels(values) {
-	return [...values].sort((left, right) => {
-		const labelCompare = left.source_label.localeCompare(right.source_label);
-		if (labelCompare !== 0) return labelCompare;
-		return (left.source_id ?? "").localeCompare(right.source_id ?? "");
-	});
 }
 //#endregion
 //#region src/artifacts/store-helpers.ts
@@ -6524,7 +6538,6 @@ function resolveSourceBySelector(payload) {
 	}
 	const normalized = normalizeSourcePath({
 		path: payload.path,
-		errors: payload.errors,
 		backlogRoot: payload.backlogRoot,
 		inputPath: selector.source_path
 	});
@@ -6636,7 +6649,6 @@ function createSourcesModule(dependencies) {
 		resolveCliSourcePath(payload) {
 			return Promise.resolve(normalizeSourcePath({
 				path: dependencies.path,
-				errors: dependencies.errors,
 				backlogRoot: payload.backlogRoot,
 				inputPath: payload.inputPath
 			}));

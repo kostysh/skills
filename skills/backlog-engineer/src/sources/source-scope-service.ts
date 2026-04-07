@@ -2,6 +2,7 @@ import type { ErrorModule } from '../errors/index.ts';
 import type { BacklogRootPath } from '../runtime/shared.ts';
 import type {
   ItemKey,
+  NormalizedFsPath,
   SchemaModule,
   SourceRecord,
   SourceRegistryFile,
@@ -36,7 +37,7 @@ function resolveSourceBySelector(payload: {
   selector:
     | { kind: 'source_id'; source_id: SourceId }
     | { kind: 'source_label'; source_label: string }
-    | { kind: 'source_path'; source_path: string };
+    | { kind: 'source_path'; source_path: NormalizedFsPath };
 }): SourceRecord[] {
   const { selector } = payload;
 
@@ -72,7 +73,6 @@ function resolveSourceBySelector(payload: {
 
   const normalized = normalizeSourcePath({
     path: payload.path,
-    errors: payload.errors,
     backlogRoot: payload.backlogRoot,
     inputPath: selector.source_path,
   });
@@ -235,7 +235,7 @@ export function resolveSourceScope(payload: {
   selector:
     | { kind: 'source_id'; source_id: SourceId }
     | { kind: 'source_label'; source_label: string }
-    | { kind: 'source_path'; source_path: string };
+    | { kind: 'source_path'; source_path: NormalizedFsPath };
 }): {
   sourceIds: SourceId[];
   topLevelItemKeys: ItemKey[];

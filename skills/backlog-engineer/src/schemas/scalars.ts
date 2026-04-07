@@ -84,32 +84,39 @@ export const NormalizedFsPathSchema = NonEmptyStringSchema.superRefine((value, c
     });
   }
 });
-export const BacklogRelativePosixPathSchema = NonEmptyStringSchema.superRefine((value, ctx) => {
+function validateRelativePosixPath(
+  value: string,
+  ctx: z.RefinementCtx,
+  options: {
+    label: string;
+    allowParentSegments: boolean;
+  },
+) {
   if (value.includes('\0')) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'Backlog-relative path must not contain NUL bytes.',
+      message: `${options.label} must not contain NUL bytes.`,
     });
   }
 
   if (value.startsWith('/')) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'Backlog-relative path must not be absolute.',
+      message: `${options.label} must not be absolute.`,
     });
   }
 
   if (value.includes('\\')) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'Backlog-relative path must use POSIX separators.',
+      message: `${options.label} must use POSIX separators.`,
     });
   }
 
   if (/^[A-Za-z]:(?:$|\/)/.test(value)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'Backlog-relative path must not use Windows drive-prefixed forms.',
+      message: `${options.label} must not use Windows drive-prefixed forms.`,
     });
   }
 
@@ -117,16 +124,43 @@ export const BacklogRelativePosixPathSchema = NonEmptyStringSchema.superRefine((
   if (segments.some((segment) => segment.length === 0)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'Backlog-relative path must not contain empty segments.',
+      message: `${options.label} must not contain empty segments.`,
     });
   }
 
-  if (segments.some((segment) => segment === '.' || segment === '..')) {
+  if (segments.some((segment) => segment === '.')) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'Backlog-relative path must not contain dot segments.',
+      message: `${options.label} must not contain dot segments.`,
     });
   }
+  if (!options.allowParentSegments && segments.some((segment) => segment === '..')) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `${options.label} must not contain parent segments.`,
+    });
+  }
+
+  if (path.posix.normalize(value) !== value) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `${options.label} must already be normalized.`,
+    });
+  }
+}
+
+export const BacklogRelativePosixPathSchema = NonEmptyStringSchema.superRefine((value, ctx) => {
+  validateRelativePosixPath(value, ctx, {
+    label: 'Backlog-relative path',
+    allowParentSegments: false,
+  });
+});
+
+export const SourceRelativePosixPathSchema = NonEmptyStringSchema.superRefine((value, ctx) => {
+  validateRelativePosixPath(value, ctx, {
+    label: 'Source path',
+    allowParentSegments: true,
+  });
 });
 export const Sha256HexSchema = z.string().regex(/^[a-f0-9]{64}$/);
 export const IsoUtcTimestampSchema = z
@@ -198,6 +232,7 @@ export type SourceLabel = z.infer<typeof SourceLabelSchema>;
 export type CliPathInput = z.infer<typeof CliPathInputSchema>;
 export type NormalizedFsPath = z.infer<typeof NormalizedFsPathSchema>;
 export type BacklogRelativePosixPath = z.infer<typeof BacklogRelativePosixPathSchema>;
+export type SourceRelativePosixPath = z.infer<typeof SourceRelativePosixPathSchema>;
 export type Sha256Hex = z.infer<typeof Sha256HexSchema>;
 export type IsoUtcTimestamp = z.infer<typeof IsoUtcTimestampSchema>;
 export type SchemaVersion = z.infer<typeof SchemaVersionSchema>;

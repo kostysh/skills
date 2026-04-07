@@ -292,8 +292,8 @@ flowchart TD
 ```json
 {
   "source_id": "<uuid>",
-  "source_label": "sources/docs/modules/auth.md",
-  "path": "sources/docs/modules/auth.md",
+  "source_label": "../docs/modules/auth.md",
+  "path": "../docs/modules/auth.md",
   "kind": "module",
   "authority": "authoritative",
   "note": "Auth module architecture",
@@ -305,7 +305,7 @@ flowchart TD
 
 Правила:
 
-- `path` хранится в нормализованном виде, относительно backlog root;
+ - `path` хранится в нормализованном виде, относительно backlog root, и может содержать `..`, если источник лежит вне backlog root;
 - `source_label` пригоден для чтения человеком;
 - `source_label` должен быть детерминированным и уникальным внутри backlog-а; базовое правило: normalised relative path with POSIX separators;
 - `hash` обновляется только через `refresh` или первичную регистрацию;
@@ -1172,7 +1172,7 @@ Dry-run не должен:
 ### Algorithm
 
 1. Найти backlog root.
-2. Нормализовать путь к источнику относительно backlog root.
+2. Нормализовать путь к источнику относительно backlog root с POSIX separators; путь может содержать `..`.
 3. Прочитать `.backlog/sources.json`.
 4. Если источник с тем же нормализованным путём уже существует, вернуть существующую запись без изменения состояния.
 5. Иначе вычислить `hash`.
@@ -1187,8 +1187,8 @@ Dry-run не должен:
 ```json
 {
   "source_id": "<uuid>",
-  "source_label": "sources/docs/modules/auth.md",
-  "path": "sources/docs/modules/auth.md",
+  "source_label": "../docs/modules/auth.md",
+  "path": "../docs/modules/auth.md",
   "kind": "module",
   "authority": "authoritative",
   "note": "Auth module architecture",

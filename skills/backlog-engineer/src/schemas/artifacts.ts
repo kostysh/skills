@@ -18,6 +18,7 @@ import {
   Sha256HexSchema,
   SourceIdSchema,
   SourceLabelSchema,
+  SourceRelativePosixPathSchema,
   SourceSummarySchema,
   TodoIdSchema,
   TodoManagedBySchema,
@@ -35,7 +36,7 @@ export const RootMarkerFileSchema = z.strictObject({
 export const SourceRecordSchema = z.strictObject({
   source_id: SourceIdSchema,
   source_label: SourceLabelSchema,
-  path: BacklogRelativePosixPathSchema,
+  path: SourceRelativePosixPathSchema,
   kind: ControlledStringSchema,
   authority: ControlledStringSchema,
   note: NonEmptyStringSchema.optional(),

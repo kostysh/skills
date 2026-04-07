@@ -90,7 +90,13 @@ function resolveRefreshSourceIds(payload: {
     backlogRoot,
     state,
     registry,
-    selector: input,
+    selector:
+      input.kind === 'source_path'
+        ? {
+            kind: 'source_path',
+            source_path: context.host.resolveCliPath(input.source_path),
+          }
+        : input,
   });
   const [selectedSourceId] = scope.sourceIds;
   if (!selectedSourceId) {

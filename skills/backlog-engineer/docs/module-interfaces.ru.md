@@ -514,7 +514,8 @@ Boundary для `init`:
 
 Правило path-модели:
 
-- persisted `SourceRecord.path` всегда хранится как `BacklogRelativePosixPath`;
+- persisted `SourceRecord.path` всегда хранится как `SourceRelativePosixPath`;
+- `SourceRecord.path` нормализуется относительно backlog root, но может содержать `..`, если исходный документ расположен вне backlog root;
 - `source_label` должен детерминированно выводиться из нормализованного относительного пути;
 - внешний caller не должен override-ить `source_label` произвольной строкой;
 - `buildSourceRecord(...)` сам производит `source_label` из `relativePath`.
@@ -523,16 +524,16 @@ Boundary для `init`:
 interface SourcesModule {
   resolveCliSourcePath(payload: {
     backlogRoot: BacklogRootPath;
-    inputPath: CliPathInput;
+    inputPath: NormalizedFsPath;
   }): Promise<{
     absolute_path: NormalizedFsPath;
-    relative_path: BacklogRelativePosixPath;
+    relative_path: SourceRelativePosixPath;
     source_label: SourceLabel;
   }>;
 
   buildSourceRecord(payload: {
     sourceId: SourceId;
-    relativePath: BacklogRelativePosixPath;
+    relativePath: SourceRelativePosixPath;
     kind: string;
     note?: string;
     authority: string;
@@ -569,7 +570,7 @@ interface SourcesModule {
     selector:
       | { kind: "source_id"; source_id: SourceId }
       | { kind: "source_label"; source_label: string }
-      | { kind: "source_path"; source_path: CliPathInput };
+      | { kind: "source_path"; source_path: NormalizedFsPath };
   }): {
     sourceIds: SourceId[];
     topLevelItemKeys: ItemKey[];

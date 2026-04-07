@@ -130,7 +130,7 @@ void test('register-source stores a new source, calls afterSourceRegistered once
   }
 });
 
-void test('register-source rejects source paths outside backlog root before creating a source record', async () => {
+void test('register-source accepts source paths outside backlog root and persists them relative to the root', async () => {
   const cwd = await createTempDir();
   const runtime = createRuntimeForTest({});
 
@@ -146,19 +146,23 @@ void test('register-source rejects source paths outside backlog root before crea
       path.join(cwd, 'backlog'),
     );
 
-    await assert.rejects(
-      async () => {
-        await REGISTER_SOURCE_COMMAND.execute(
-          {
-            path: '../outside/auth.md',
-            kind: 'module',
-            authority: 'authoritative',
-          },
-          registerContext,
-        );
+    const output = await REGISTER_SOURCE_COMMAND.execute(
+      {
+        path: '../outside/auth.md',
+        kind: 'module',
+        authority: 'authoritative',
       },
-      (error: unknown) => error instanceof BacklogError && error.code === 'BE_SCHEMA_INVALID',
+      registerContext,
     );
+
+    assert.equal(output.path, '../outside/auth.md');
+    assert.equal(output.source_label, '../outside/auth.md');
+    const registry = SourceRegistryFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(cwd, 'backlog', '.backlog', 'sources.json'), 'utf8'),
+      ) as unknown,
+    );
+    assert.equal(registry.sources[0]?.path, '../outside/auth.md');
   } finally {
     await rm(cwd, { recursive: true, force: true });
   }

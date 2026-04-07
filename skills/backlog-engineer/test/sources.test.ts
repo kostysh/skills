@@ -46,18 +46,19 @@ void test('sources module normalizes CLI source paths relative to backlog root w
   });
 });
 
-void test('sources module rejects normalized paths that escape backlog root', async () => {
-  const { sources, errors } = createSourcesForTest();
+void test('sources module preserves parent segments for source paths outside backlog root', async () => {
+  const { sources } = createSourcesForTest();
 
-  await assert.rejects(
-    async () => {
-      await sources.resolveCliSourcePath({
-        backlogRoot: '/repo/backlog',
-        inputPath: '/repo/outside/auth.md',
-      });
-    },
-    (error: unknown) => errors.isBacklogError(error) && error.code === 'BE_SCHEMA_INVALID',
-  );
+  const normalized = await sources.resolveCliSourcePath({
+    backlogRoot: '/repo/backlog',
+    inputPath: '/repo/outside/auth.md',
+  });
+
+  assert.deepEqual(normalized, {
+    absolute_path: '/repo/outside/auth.md',
+    relative_path: '../outside/auth.md',
+    source_label: '../outside/auth.md',
+  });
 });
 
 void test('sources module rejects Windows cross-drive paths outside backlog root', async () => {
