@@ -1,6 +1,6 @@
 # Лог имплементации 1 `@kostysh/backlog-engineer-cli`
 
-Документ ведётся инкрементально во время реализации плана из [implementation-plan.ru.md](implementation-plan.ru.md).
+Документ ведётся инкрементально во время реализации плана из [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md).
 
 ## Правила ведения лога
 

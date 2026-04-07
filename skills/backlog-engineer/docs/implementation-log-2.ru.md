@@ -2,7 +2,7 @@
 
 Этот файл продолжает основной лог из [implementation-log-1.ru.md](implementation-log-1.ru.md) и фиксирует отдельный follow-up цикл после завершения базовой имплементации.
 
-Документ ведётся инкрементально во время реализации follow-up плана из [ux-followup-implementation-plan.ru.md](ux-followup-implementation-plan.ru.md).
+Документ ведётся инкрементально во время реализации follow-up плана из [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md).
 
 ## Правила ведения лога
 
@@ -174,4 +174,4 @@
   - `code-reviewer` — PASS после одной доработки
   - `security-reviewer` — PASS
 - Следующий пакет:
-  - follow-up цикл закрыт; новых пакетов по [ux-followup-plan.ru.md](ux-followup-plan.ru.md) не осталось
+  - follow-up цикл закрыт; новых пакетов по [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md) не осталось

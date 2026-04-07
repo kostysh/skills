@@ -13,7 +13,7 @@ const SKILL_DIR = path.resolve(TEST_DIR, '..');
 
 const SKILL_PATH = path.join(SKILL_DIR, 'SKILL.md');
 const COMMAND_REFERENCE_PATH = path.join(SKILL_DIR, 'references', 'command-reference.md');
-const IMPLEMENTATION_PLAN_PATH = path.join(SKILL_DIR, 'docs', 'implementation-plan.ru.md');
+const IMPLEMENTATION_PLAN_PATH = path.join(SKILL_DIR, 'docs', 'refactoring-plan-1.ru.md');
 
 function extractSection(text: string, heading: string): string {
   const headingIndex = text.indexOf(heading);

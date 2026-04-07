@@ -1,4 +1,4 @@
-# План доработок после real-world UX feedback
+# План рефакторинга 2 `@kostysh/backlog-engineer-cli`
 
 ## Назначение документа
 

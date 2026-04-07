@@ -1,4 +1,4 @@
-# Детальный план имплементации follow-up исправлений
+# План рефакторинга 3 `@kostysh/backlog-engineer-cli`
 
 ## Назначение
 
@@ -6,7 +6,7 @@
 
 - [session-usage-analysis-2026-04-07.ru.md](session-usage-analysis-2026-04-07.ru.md)
 - [session-usage-analysis-codex-2026-04-07-codex.ru.md](session-usage-analysis-codex-2026-04-07-codex.ru.md)
-- [ux-followup-plan.ru.md](ux-followup-plan.ru.md)
+- [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md)
 
 в последовательный execution plan.
 
