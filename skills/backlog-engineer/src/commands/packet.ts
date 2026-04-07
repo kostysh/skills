@@ -14,6 +14,12 @@ import {
 } from './arg-parsers.ts';
 import type { CommandDefinition } from './types.ts';
 import { appendAppliedPacketEntry, readAuthoredJsonFile } from './mutation-helpers.ts';
+import {
+  ABSOLUTE_OUTPUT_NOTE,
+  BACKLOG_MUTATION_SCOPE_NOTE,
+  SERIAL_MUTATION_NOTE,
+} from './help-notes.ts';
+import path from 'node:path';
 
 const OPTIONS = [
   {
@@ -33,6 +39,14 @@ export const PACKET_COMMAND: CommandDefinition<PacketCommandInput, PacketCommand
   summary: 'Apply a packet that adds new backlog tasks.',
   usage: ['backlog-engineer packet --path <path> [--dry-run]'],
   options: OPTIONS,
+  notes: [
+    BACKLOG_MUTATION_SCOPE_NOTE,
+    '`--path` resolves from the current working directory.',
+    '`--dry-run` validates and simulates packet apply without writing canonical imports or backlog state.',
+    'On real apply, output distinguishes the authored draft from the immutable canonical import copy.',
+    SERIAL_MUTATION_NOTE,
+    ABSOLUTE_OUTPUT_NOTE,
+  ],
   inputSchema: PacketCommandInputSchema,
   outputSchema: PacketCommandOutputSchema,
   parseArgs(args) {
@@ -110,7 +124,7 @@ export const PACKET_COMMAND: CommandDefinition<PacketCommandInput, PacketCommand
     await context.artifacts.writeState(context.backlogRoot, nextState);
     const output = {
       ...outputBase,
-      canonical_packet_path: canonicalImport.canonicalPath,
+      canonical_packet_path: path.resolve(context.backlogRoot, canonicalImport.canonicalPath),
       canonical_packet_purpose: 'immutable_import_copy' as const,
     };
     await context.hooks.afterPacketApplied?.({

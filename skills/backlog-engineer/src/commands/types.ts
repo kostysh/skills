@@ -1,6 +1,6 @@
 import type { ZodType } from 'zod';
 
-import type { CommandHelpOption } from '../schemas/index.ts';
+import type { CommandHelpOption, CommandHelpValidation } from '../schemas/index.ts';
 import type { CommandExecutionContext } from '../runtime/command-context.ts';
 import type { CommandName } from '../runtime/shared.ts';
 
@@ -16,6 +16,8 @@ export type CommandDefinition<TInput = unknown, TOutput = unknown> = {
   summary: string;
   usage: readonly string[];
   options: readonly CommandHelpOption[];
+  validations?: readonly CommandHelpValidation[];
+  notes?: readonly string[];
   inputSchema: ZodType<TInput>;
   outputSchema: ZodType<TOutput>;
   parseArgs: (args: string[]) => TInput;

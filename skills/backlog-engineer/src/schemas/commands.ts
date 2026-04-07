@@ -1,10 +1,9 @@
 import { z } from 'zod';
 
-import { SourceRecordSchema, TodoSchema } from './artifacts.ts';
+import { TodoSchema } from './artifacts.ts';
 import { PacketItemSchema } from './packet.ts';
 import {
   AttentionReasonCodeSchema,
-  BacklogRelativePosixPathSchema,
   ClaimKeySchema,
   CliPathInputSchema,
   ContractKeySchema,
@@ -17,7 +16,6 @@ import {
   PolicyDecisionKeySchema,
   QualityAttributeKeySchema,
   SourceIdSchema,
-  SourceRelativePosixPathSchema,
   SourceSummarySchema,
   SourceLabelSchema,
   IsoUtcTimestampSchema,
@@ -115,22 +113,29 @@ export const RegisterSourceCommandInputSchema = z.strictObject({
   note: NonEmptyStringSchema.optional(),
 });
 
-export const RegisterSourceCommandOutputSchema = z.strictObject({
+export const RegisteredSourceOutputSchema = z.strictObject({
   source_id: SourceIdSchema,
   source_label: SourceLabelSchema,
-  path: SourceRelativePosixPathSchema,
+  path: NormalizedFsPathSchema,
   kind: NonEmptyStringSchema,
   authority: NonEmptyStringSchema,
   note: NonEmptyStringSchema.optional(),
   hash: z.string().regex(/^[a-f0-9]{64}$/),
 });
 
+export const RegisterSourceCommandOutputSchema = RegisteredSourceOutputSchema;
+
 export const ListSourcesCommandInputSchema = z.strictObject({
   item_key: ItemKeySchema.optional(),
   path: CliPathInputSchema.optional(),
 });
 
-export const ListSourcesCommandOutputSchema = z.array(SourceRecordSchema);
+export const ListedSourceOutputSchema = RegisteredSourceOutputSchema.extend({
+  registered_at: IsoUtcTimestampSchema,
+  last_checked_at: IsoUtcTimestampSchema,
+});
+
+export const ListSourcesCommandOutputSchema = z.array(ListedSourceOutputSchema);
 
 const TemplatePacketCommandInputSchema = z.strictObject({
   mode: z.literal('packet'),
@@ -161,7 +166,7 @@ export const PacketCommandInputSchema = z.strictObject({
 export const PacketCommandOutputSchema = z.strictObject({
   dry_run: z.boolean(),
   authored_packet_path: NormalizedFsPathSchema,
-  canonical_packet_path: BacklogRelativePosixPathSchema.optional(),
+  canonical_packet_path: NormalizedFsPathSchema.optional(),
   canonical_packet_purpose: z.literal('immutable_import_copy').optional(),
   counts: PacketMutationCountsSchema,
   added: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
@@ -238,7 +243,7 @@ export const StatusCommandOutputSchema = z.strictObject({
 export const ReportCommandInputSchema = z.strictObject({});
 
 export const ReportCommandOutputSchema = z.strictObject({
-  report_path: BacklogRelativePosixPathSchema,
+  report_path: NormalizedFsPathSchema,
   generated_at: IsoUtcTimestampSchema,
   item_count: NonNegativeIntSchema,
 });
@@ -392,7 +397,7 @@ export const DeleteBacklogCommandInputSchema = z.strictObject({
 });
 
 export const DeleteBacklogCommandOutputSchema = z.strictObject({
-  deleted_path: z.literal('.'),
+  deleted_path: NormalizedFsPathSchema,
   deleted: z.literal(true),
 });
 

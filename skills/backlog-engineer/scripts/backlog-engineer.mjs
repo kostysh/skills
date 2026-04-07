@@ -4467,22 +4467,21 @@ var RootMarkerFileSchema = strictObject({
 	created_at: IsoUtcTimestampSchema,
 	layout_version: LayoutVersionSchema
 });
-var SourceRecordSchema = strictObject({
-	source_id: SourceIdSchema,
-	source_label: SourceLabelSchema,
-	path: SourceRelativePosixPathSchema,
-	kind: ControlledStringSchema,
-	authority: ControlledStringSchema,
-	note: NonEmptyStringSchema.optional(),
-	hash: Sha256HexSchema,
-	registered_at: IsoUtcTimestampSchema,
-	last_checked_at: IsoUtcTimestampSchema
-});
 var SourceRegistryFileSchema = strictObject({
 	schema_version: SchemaVersionSchema,
 	created_at: IsoUtcTimestampSchema,
 	updated_at: IsoUtcTimestampSchema,
-	sources: uniqueArraySchema(SourceRecordSchema, (value) => value.source_id, "Source IDs must be unique.")
+	sources: uniqueArraySchema(strictObject({
+		source_id: SourceIdSchema,
+		source_label: SourceLabelSchema,
+		path: SourceRelativePosixPathSchema,
+		kind: ControlledStringSchema,
+		authority: ControlledStringSchema,
+		note: NonEmptyStringSchema.optional(),
+		hash: Sha256HexSchema,
+		registered_at: IsoUtcTimestampSchema,
+		last_checked_at: IsoUtcTimestampSchema
+	}), (value) => value.source_id, "Source IDs must be unique.")
 }).superRefine((value, ctx) => {
 	const seenPaths = /* @__PURE__ */ new Set();
 	for (const [index, source] of value.sources.entries()) {
@@ -4690,20 +4689,24 @@ var RegisterSourceCommandInputSchema = strictObject({
 	authority: NonEmptyStringSchema,
 	note: NonEmptyStringSchema.optional()
 });
-var RegisterSourceCommandOutputSchema = strictObject({
+var RegisteredSourceOutputSchema = strictObject({
 	source_id: SourceIdSchema,
 	source_label: SourceLabelSchema,
-	path: SourceRelativePosixPathSchema,
+	path: NormalizedFsPathSchema,
 	kind: NonEmptyStringSchema,
 	authority: NonEmptyStringSchema,
 	note: NonEmptyStringSchema.optional(),
 	hash: string().regex(/^[a-f0-9]{64}$/)
 });
+var RegisterSourceCommandOutputSchema = RegisteredSourceOutputSchema;
 var ListSourcesCommandInputSchema = strictObject({
 	item_key: ItemKeySchema.optional(),
 	path: CliPathInputSchema.optional()
 });
-var ListSourcesCommandOutputSchema = array(SourceRecordSchema);
+var ListSourcesCommandOutputSchema = array(RegisteredSourceOutputSchema.extend({
+	registered_at: IsoUtcTimestampSchema,
+	last_checked_at: IsoUtcTimestampSchema
+}));
 var TemplateCommandInputSchema = discriminatedUnion("mode", [strictObject({
 	mode: literal("packet"),
 	out: CliPathInputSchema
@@ -4723,7 +4726,7 @@ var PacketCommandInputSchema = strictObject({
 var PacketCommandOutputSchema = strictObject({
 	dry_run: boolean(),
 	authored_packet_path: NormalizedFsPathSchema,
-	canonical_packet_path: BacklogRelativePosixPathSchema.optional(),
+	canonical_packet_path: NormalizedFsPathSchema.optional(),
 	canonical_packet_purpose: literal("immutable_import_copy").optional(),
 	counts: PacketMutationCountsSchema,
 	added: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
@@ -4800,7 +4803,7 @@ var StatusCommandOutputSchema = strictObject({
 });
 var ReportCommandInputSchema = strictObject({});
 var ReportCommandOutputSchema = strictObject({
-	report_path: BacklogRelativePosixPathSchema,
+	report_path: NormalizedFsPathSchema,
 	generated_at: IsoUtcTimestampSchema,
 	item_count: NonNegativeIntSchema
 });
@@ -4872,7 +4875,7 @@ var AttentionCommandOutputSchema = array(strictObject({
 }));
 var DeleteBacklogCommandInputSchema = strictObject({ confirm: literal(true) });
 var DeleteBacklogCommandOutputSchema = strictObject({
-	deleted_path: literal("."),
+	deleted_path: NormalizedFsPathSchema,
 	deleted: literal(true)
 });
 //#endregion
@@ -5139,11 +5142,16 @@ var CommandHelpOptionSchema = strictObject({
 	required: boolean().optional(),
 	repeatable: boolean().optional()
 });
+var CommandHelpValidationSchema = strictObject({
+	target: NonEmptyStringSchema,
+	allowed_values: array(NonEmptyStringSchema).min(1)
+});
 var GlobalHelpOutputSchema = strictObject({
 	cli_name: NonEmptyStringSchema,
 	version: NonEmptyStringSchema,
 	usage: array(NonEmptyStringSchema).min(1),
-	commands: array(CommandCatalogEntrySchema).min(1)
+	commands: array(CommandCatalogEntrySchema).min(1),
+	notes: array(NonEmptyStringSchema)
 });
 var CommandHelpOutputSchema = strictObject({
 	cli_name: NonEmptyStringSchema,
@@ -5151,7 +5159,9 @@ var CommandHelpOutputSchema = strictObject({
 	command: NonEmptyStringSchema,
 	summary: NonEmptyStringSchema,
 	usage: array(NonEmptyStringSchema).min(1),
-	options: array(CommandHelpOptionSchema)
+	options: array(CommandHelpOptionSchema),
+	validations: array(CommandHelpValidationSchema),
+	notes: array(NonEmptyStringSchema)
 });
 var VersionOutputSchema = strictObject({
 	cli_name: NonEmptyStringSchema,
@@ -5419,6 +5429,12 @@ function parseUsageInput(commandName, schema, candidate) {
 	}, helpHint(commandName), parsed.error);
 }
 //#endregion
+//#region src/commands/help-notes.ts
+var BACKLOG_QUERY_SCOPE_NOTE = "This command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.";
+var BACKLOG_MUTATION_SCOPE_NOTE = "This mutating command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.";
+var SERIAL_MUTATION_NOTE = "For one backlog root, run mutating commands strictly one at a time.";
+var ABSOLUTE_OUTPUT_NOTE = "Machine-facing filesystem paths in command output are absolute.";
+//#endregion
 //#region src/commands/query-helpers.ts
 function assertBacklogRoot(context) {
 	const backlogRoot = context.backlogRoot;
@@ -5442,6 +5458,11 @@ var ATTENTION_COMMAND = {
 	summary: "Return tasks that require review or re-checking.",
 	usage: ["backlog-engineer attention"],
 	options: [],
+	notes: [
+		BACKLOG_QUERY_SCOPE_NOTE,
+		"`attention` returns review and re-check items, not every blocked task in the backlog.",
+		"Entries are ordered by severity first, then by item key."
+	],
 	inputSchema: AttentionCommandInputSchema,
 	outputSchema: AttentionCommandOutputSchema,
 	parseArgs(args) {
@@ -5468,6 +5489,12 @@ var DELETE_BACKLOG_COMMAND = {
 		description: "Explicitly confirm backlog deletion.",
 		required: true
 	}],
+	notes: [
+		BACKLOG_MUTATION_SCOPE_NOTE,
+		"Only utility-owned backlog files are deleted; foreign entries prevent deletion.",
+		SERIAL_MUTATION_NOTE,
+		ABSOLUTE_OUTPUT_NOTE
+	],
 	inputSchema: DeleteBacklogCommandInputSchema,
 	outputSchema: DeleteBacklogCommandOutputSchema,
 	parseArgs(args) {
@@ -5500,7 +5527,7 @@ var DELETE_BACKLOG_COMMAND = {
 			throw error;
 		}
 		return {
-			deleted_path: ".",
+			deleted_path: context.backlogRoot,
 			deleted: true
 		};
 	}
@@ -5514,6 +5541,11 @@ var GAPS_COMMAND = {
 		value_name: "<item_key>",
 		description: "Restrict output to a single task key."
 	}],
+	notes: [
+		BACKLOG_QUERY_SCOPE_NOTE,
+		"`--item-key` narrows the result to one task.",
+		"Empty output means there are no explicit blockers in the selected scope."
+	],
 	inputSchema: GapsCommandInputSchema,
 	outputSchema: GapsCommandOutputSchema,
 	parseArgs(args) {
@@ -5539,6 +5571,11 @@ var INIT_COMMAND = {
 		description: "Path to the backlog root directory to initialize.",
 		required: true
 	}],
+	notes: [
+		"`--path` resolves from the current working directory.",
+		"The target directory becomes a backlog root and receives `.backlog.json`, `.backlog/`, `AGENTS.md`, and standard artifact directories.",
+		ABSOLUTE_OUTPUT_NOTE
+	],
 	inputSchema: InitCommandInputSchema,
 	outputSchema: InitCommandOutputSchema,
 	parseArgs(args) {
@@ -5611,6 +5648,11 @@ var LIST_SOURCES_COMMAND = {
 		value_name: "<path>",
 		description: "Filter sources by the provided source path."
 	}],
+	notes: [
+		BACKLOG_QUERY_SCOPE_NOTE,
+		"`--path` resolves from the current working directory before it is normalized relative to backlog root for matching.",
+		ABSOLUTE_OUTPUT_NOTE
+	],
 	inputSchema: ListSourcesCommandInputSchema,
 	outputSchema: ListSourcesCommandOutputSchema,
 	parseArgs(args) {
@@ -5626,7 +5668,8 @@ var LIST_SOURCES_COMMAND = {
 	},
 	async execute(input, context) {
 		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
-		let sources = [...(await context.artifacts.readSourceRegistry(context.backlogRoot)).sources];
+		const backlogRoot = context.backlogRoot;
+		let sources = [...(await context.artifacts.readSourceRegistry(backlogRoot)).sources];
 		if (input.item_key) {
 			const { state } = await context.ensureQueryState();
 			const item = state.items.find((candidate) => candidate.item_key === input.item_key);
@@ -5636,16 +5679,26 @@ var LIST_SOURCES_COMMAND = {
 		}
 		if (input.path) {
 			const normalizedSource = await context.sources.resolveCliSourcePath({
-				backlogRoot: context.backlogRoot,
+				backlogRoot,
 				inputPath: context.host.resolveCliPath(input.path)
 			});
 			sources = sources.filter((source) => source.path === normalizedSource.relative_path);
 		}
-		return context.schemas.parseCommandOutput("list-sources", [...sources].sort((left, right) => {
+		return context.schemas.parseCommandOutput("list-sources", [...sources.sort((left, right) => {
 			const labelCompare = left.source_label.localeCompare(right.source_label);
 			if (labelCompare !== 0) return labelCompare;
 			return left.source_id.localeCompare(right.source_id);
-		}));
+		}).map((source) => ({
+			source_id: source.source_id,
+			source_label: source.source_label,
+			path: path.resolve(backlogRoot, source.path),
+			kind: source.kind,
+			authority: source.authority,
+			...source.note ? { note: source.note } : {},
+			hash: source.hash,
+			registered_at: source.registered_at,
+			last_checked_at: source.last_checked_at
+		}))]);
 	}
 };
 //#endregion
@@ -5734,6 +5787,14 @@ var PACKET_COMMAND = {
 		flags: ["--dry-run"],
 		description: "Validate and simulate packet application without writing to disk."
 	}],
+	notes: [
+		BACKLOG_MUTATION_SCOPE_NOTE,
+		"`--path` resolves from the current working directory.",
+		"`--dry-run` validates and simulates packet apply without writing canonical imports or backlog state.",
+		"On real apply, output distinguishes the authored draft from the immutable canonical import copy.",
+		SERIAL_MUTATION_NOTE,
+		ABSOLUTE_OUTPUT_NOTE
+	],
 	inputSchema: PacketCommandInputSchema,
 	outputSchema: PacketCommandOutputSchema,
 	parseArgs(args) {
@@ -5794,7 +5855,7 @@ var PACKET_COMMAND = {
 		await context.artifacts.writeState(context.backlogRoot, nextState);
 		const output = {
 			...outputBase,
-			canonical_packet_path: canonicalImport.canonicalPath,
+			canonical_packet_path: path.resolve(context.backlogRoot, canonicalImport.canonicalPath),
 			canonical_packet_purpose: "immutable_import_copy"
 		};
 		await context.hooks.afterPacketApplied?.({
@@ -5896,6 +5957,11 @@ var QUEUE_COMMAND = {
 	summary: "Return ordered chains of tasks that can be taken next.",
 	usage: ["backlog-engineer queue"],
 	options: [],
+	notes: [
+		BACKLOG_QUERY_SCOPE_NOTE,
+		"`queue` returns ordered ready chains, not a flat list of every ready item.",
+		"If `queue` is empty, inspect `gaps` and `attention` before assuming backlog creation failed."
+	],
 	inputSchema: QueueCommandInputSchema,
 	outputSchema: QueueCommandOutputSchema,
 	parseArgs(args) {
@@ -6836,6 +6902,19 @@ var REGISTER_SOURCE_COMMAND = {
 			description: "Readable operator note attached to the source registration."
 		}
 	],
+	validations: [{
+		target: "--kind",
+		allowed_values: [...SOURCE_KIND_VALUES]
+	}, {
+		target: "--authority",
+		allowed_values: [...SOURCE_AUTHORITY_VALUES]
+	}],
+	notes: [
+		BACKLOG_MUTATION_SCOPE_NOTE,
+		"`--path` resolves from the current working directory, then the registered path is normalized relative to backlog root and may contain `..` for external sources.",
+		SERIAL_MUTATION_NOTE,
+		ABSOLUTE_OUTPUT_NOTE
+	],
 	inputSchema: RegisterSourceCommandInputSchema,
 	outputSchema: RegisterSourceCommandOutputSchema,
 	parseArgs(args) {
@@ -6855,18 +6934,19 @@ var REGISTER_SOURCE_COMMAND = {
 	},
 	async execute(input, context) {
 		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+		const backlogRoot = context.backlogRoot;
 		validateSourceKind(input.kind, context.errors);
 		validateSourceAuthority(input.authority, context.errors);
 		const normalizedSource = await context.sources.resolveCliSourcePath({
-			backlogRoot: context.backlogRoot,
+			backlogRoot,
 			inputPath: context.host.resolveCliPath(input.path)
 		});
-		const existingRegistry = await context.artifacts.readSourceRegistry(context.backlogRoot);
+		const existingRegistry = await context.artifacts.readSourceRegistry(backlogRoot);
 		const existingSource = existingRegistry.sources.find((source) => source.path === normalizedSource.relative_path);
 		if (existingSource) return context.schemas.parseCommandOutput("register-source", {
 			source_id: existingSource.source_id,
 			source_label: existingSource.source_label,
-			path: existingSource.path,
+			path: path.resolve(backlogRoot, existingSource.path),
 			kind: existingSource.kind,
 			authority: existingSource.authority,
 			...existingSource.note ? { note: existingSource.note } : {},
@@ -6892,13 +6972,13 @@ var REGISTER_SOURCE_COMMAND = {
 			await context.artifacts.writeSourceRegistry(context.backlogRoot, registry);
 			await context.hooks.afterSourceRegistered?.({
 				source,
-				backlogRoot: context.backlogRoot
+				backlogRoot
 			});
 		}
 		return context.schemas.parseCommandOutput("register-source", {
 			source_id: source.source_id,
 			source_label: source.source_label,
-			path: source.path,
+			path: path.resolve(backlogRoot, source.path),
 			kind: source.kind,
 			authority: source.authority,
 			...source.note ? { note: source.note } : {},
@@ -6997,6 +7077,12 @@ var REPORT_COMMAND = {
 	summary: "Generate a human-readable backlog report on disk.",
 	usage: ["backlog-engineer report"],
 	options: [],
+	notes: [
+		BACKLOG_MUTATION_SCOPE_NOTE,
+		"Report files are always written into the standard reports directory inside the backlog root.",
+		SERIAL_MUTATION_NOTE,
+		ABSOLUTE_OUTPUT_NOTE
+	],
 	inputSchema: ReportCommandInputSchema,
 	outputSchema: ReportCommandOutputSchema,
 	parseArgs(args) {
@@ -7020,7 +7106,7 @@ var REPORT_COMMAND = {
 			mermaid
 		});
 		return context.schemas.parseCommandOutput("report", {
-			report_path: reportPath,
+			report_path: path.resolve(backlogRoot, reportPath),
 			generated_at: context.host.nowIsoUtc(),
 			item_count: model.metrics.totalItems
 		});
@@ -7121,6 +7207,12 @@ var STATUS_COMMAND = {
 		flags: ["--refresh"],
 		description: "Run refresh before returning the status summary."
 	}],
+	notes: [
+		BACKLOG_QUERY_SCOPE_NOTE,
+		"`status` returns a short summary of the current backlog state.",
+		"`status --refresh` first runs refresh, so treat it as a mutating composite command.",
+		SERIAL_MUTATION_NOTE
+	],
 	inputSchema: StatusCommandInputSchema,
 	outputSchema: StatusCommandOutputSchema,
 	parseArgs(args) {
@@ -7170,6 +7262,12 @@ var TEMPLATE_COMMAND = {
 	summary: "Generate packet or patch templates.",
 	usage: ["backlog-engineer template packet --out <path>", "backlog-engineer template patch --item-keys <item_key_1>,<item_key_2> --out <path>"],
 	options: OPTIONS,
+	notes: [
+		"`template packet` writes a draft skeleton and does not require an existing backlog root.",
+		"`template patch` is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+		"`--out` resolves from the current working directory.",
+		ABSOLUTE_OUTPUT_NOTE
+	],
 	inputSchema: TemplateCommandInputSchema,
 	outputSchema: TemplateCommandOutputSchema,
 	parseArgs(args) {
@@ -7281,7 +7379,12 @@ function buildGlobalHelpOutput(version) {
 		commands: COMMANDS.map((command) => ({
 			name: command.name,
 			summary: command.summary
-		}))
+		})),
+		notes: [
+			"Most commands are backlog-scoped and auto-discover `.backlog.json` from the current working directory or its parent directories.",
+			"For one backlog root, run mutating commands strictly one at a time.",
+			"Help shows strictly validated values and command semantics that change the mental model; use the reference docs for full field-level contracts."
+		]
 	});
 }
 function buildCommandHelpOutput(command, version) {
@@ -7291,7 +7394,9 @@ function buildCommandHelpOutput(command, version) {
 		command: command.name,
 		summary: command.summary,
 		usage: [...command.usage],
-		options: [...command.options]
+		options: [...command.options],
+		validations: [...command.validations ?? []],
+		notes: [...command.notes ?? []]
 	});
 }
 function buildVersionOutput(version) {

@@ -27,6 +27,7 @@ Expected response:
 
 Behavior notes:
 
+- machine-facing filesystem paths in command output are absolute;
 - `init` creates or updates a managed `.gitignore` section that ignores `/.backlog/mutation.lock`;
 - if the target directory already contains a single regular `.gitignore`, `init` preserves its existing content and appends or refreshes the managed section instead of overwriting the file.
 - if file-backed execution cannot provide safe anchored directory handling for managed artifact writes, `init` fails with `BE_PLATFORM_UNSUPPORTED`.
@@ -48,7 +49,7 @@ Expected response shape:
 {
   "source_id": "<uuid>",
   "source_label": "<readable_label>",
-  "path": "<normalized_path>",
+  "path": "<absolute_source_path>",
   "kind": "<source_kind>",
   "authority": "<source_authority>",
   "note": "<readable_note>",
@@ -59,7 +60,8 @@ Expected response shape:
 Behavior:
 
 - returns existing source if the normalized path is already registered;
-- `path` is stored as a normalized POSIX path relative to backlog root and may contain `..` for external source files;
+- the source registry stores `path` as a normalized POSIX path relative to backlog root and may contain `..` for external source files;
+- machine-facing command output returns source `path` as an absolute filesystem path;
 - does not create a duplicate for the same normalized path.
 - do not run `register-source` in parallel with other mutating commands for the same backlog root.
 - if another mutating command already owns the backlog root, expect `BE_MUTATION_LOCKED`.
@@ -76,6 +78,11 @@ Supported scopes:
 - by `--path`.
 
 Returns an array of registered source records.
+
+Behavior:
+
+- each returned source record uses an absolute filesystem path in the machine-facing `path` field;
+- internal source registry storage remains relative to backlog root.
 
 ## `template`
 
@@ -103,6 +110,7 @@ Supported modes:
 - generated `patch_id` should be unique even before the patch is ever applied;
 - default directory output starts with `<sequence>-patch.template.json`;
 - if that draft file already exists, the utility should choose a unique suffixed basename instead of overwriting it.
+- machine-facing `output_path` is absolute.
 
 ## `packet`
 
@@ -137,6 +145,7 @@ Compact response should include:
 Interpretation:
 
 - `authored_packet_path` is the authored draft that the agent supplied;
+- `authored_packet_path` and `canonical_packet_path` are absolute filesystem paths in machine-facing output;
 - `canonical_packet_path` is the immutable import copy owned by the utility;
 - `canonical_packet_purpose = "immutable_import_copy"` means the canonical file is intentional, not clutter;
 - the authored packet remains your draft file;
@@ -256,6 +265,8 @@ Report should contain:
 - ready-for-next-step section;
 - full human-readable task catalog.
 
+Machine-facing output returns `report_path` as an absolute filesystem path.
+
 ## `items`
 
 Use when task keys are already known and full cards are needed.
@@ -370,3 +381,5 @@ Managed deletion scope:
 - `reports/`
 
 If `.gitignore` also contains user rules, `delete-backlog` removes only the managed section and keeps the remaining file content.
+
+Machine-facing output returns `deleted_path` as an absolute filesystem path for the removed backlog root.

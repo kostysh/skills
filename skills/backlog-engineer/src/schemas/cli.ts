@@ -15,11 +15,17 @@ export const CommandHelpOptionSchema = z.strictObject({
   repeatable: z.boolean().optional(),
 });
 
+export const CommandHelpValidationSchema = z.strictObject({
+  target: NonEmptyStringSchema,
+  allowed_values: z.array(NonEmptyStringSchema).min(1),
+});
+
 export const GlobalHelpOutputSchema = z.strictObject({
   cli_name: NonEmptyStringSchema,
   version: NonEmptyStringSchema,
   usage: z.array(NonEmptyStringSchema).min(1),
   commands: z.array(CommandCatalogEntrySchema).min(1),
+  notes: z.array(NonEmptyStringSchema),
 });
 
 export const CommandHelpOutputSchema = z.strictObject({
@@ -29,6 +35,8 @@ export const CommandHelpOutputSchema = z.strictObject({
   summary: NonEmptyStringSchema,
   usage: z.array(NonEmptyStringSchema).min(1),
   options: z.array(CommandHelpOptionSchema),
+  validations: z.array(CommandHelpValidationSchema),
+  notes: z.array(NonEmptyStringSchema),
 });
 
 export const VersionOutputSchema = z.strictObject({
@@ -38,6 +46,7 @@ export const VersionOutputSchema = z.strictObject({
 
 export type CommandCatalogEntry = z.infer<typeof CommandCatalogEntrySchema>;
 export type CommandHelpOption = z.infer<typeof CommandHelpOptionSchema>;
+export type CommandHelpValidation = z.infer<typeof CommandHelpValidationSchema>;
 export type GlobalHelpOutput = z.infer<typeof GlobalHelpOutputSchema>;
 export type CommandHelpOutput = z.infer<typeof CommandHelpOutputSchema>;
 export type VersionOutput = z.infer<typeof VersionOutputSchema>;

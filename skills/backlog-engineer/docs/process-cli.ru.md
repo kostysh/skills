@@ -437,7 +437,7 @@
 {
   "source_id": "<uuid>",
   "source_label": "../docs/architecture/system.md",
-  "path": "../docs/architecture/system.md",
+  "path": "/abs/docs/architecture/system.md",
   "kind": "<source_type>",
   "authority": "<authority_type>",
   "note": "<readable_note>",
@@ -457,6 +457,7 @@
 - Перед `register-source` сначала прочитай сам документ и только потом выбирай `kind` и `authority`.
 - `--path` может указывать как на документ внутри backlog-директории, так и на документ снаружи неё.
 - Утилита хранит путь источника как нормализованный POSIX-путь относительно backlog root; внешний источник может выглядеть как `../docs/...` или `../../...`.
+- Во внешнем machine-facing output поле `path` должно быть абсолютным filesystem path.
 - Если не уверен, что источник уже зарегистрирован, сначала вызови `list-sources`, а не регистрируй дубликат вслепую.
 - После регистрации используй в пакетах и ответах утилиты именно `source_id`, а не пытайся повторно вычислять его по имени файла.
 
@@ -491,7 +492,7 @@
   {
     "source_id": "<uuid>",
     "source_label": "docs/architecture/system.md",
-    "path": "<normalized_path>/architecture.md",
+    "path": "/abs/docs/architecture/system.md",
     "kind": "<source_type>",
     "authority": "<authority_type>",
     "note": "<readable_note>",
@@ -504,6 +505,7 @@
 
 - Используй `list-sources`, когда нужны актуальные `source_id` и `source_label`.
 - Не восстанавливай соответствие `source_id -> документ` по пакетам или патчам вручную.
+- Во внешнем machine-facing output поле `path` должно быть абсолютным filesystem path.
 - Если нужно найти источник по документу, используй `list-sources --path ...`, а не ручное сравнение полного списка.
 - Если работаешь с конкретной задачей, сначала пробуй `list-sources --item-key ...`, а не общий список по всему backlog.
 
@@ -557,7 +559,7 @@
 ```json
 {
   "authored_packet_path": "/abs/backlog/drafts/users-db.packet.json",
-  "canonical_packet_path": "packets/9fa45c5797fc--users-db.packet.json",
+  "canonical_packet_path": "/abs/backlog/packets/9fa45c5797fc--users-db.packet.json",
   "canonical_packet_purpose": "immutable_import_copy",
   "counts": {
     "added": 1,
@@ -574,7 +576,7 @@
     {
       "command": "attention",
       "args": [],
-      "reason": "После регистрации пакета появились новые открытые todo."
+      "reason": "Review existing tasks affected by newly introduced context."
     },
     {
       "command": "items",
@@ -582,7 +584,7 @@
         "--item-keys",
         "auth-core,session-service"
       ],
-      "reason": "Нужно прочитать полные карточки задач, для которых утилита создала или обновила todo."
+      "reason": "Inspect full cards of tasks that received review todo."
     }
   ]
 }
@@ -592,6 +594,7 @@
 - `authored_packet_path`: authored packet draft, который агент подал на вход;
 - `canonical_packet_path`: immutable canonical import copy, которую утилита хранит внутри backlog root;
 - `canonical_packet_purpose = "immutable_import_copy"`: короткий machine-readable маркер смысла canonical copy;
+- `authored_packet_path` и `canonical_packet_path` во внешнем machine-facing output должны быть абсолютными filesystem paths;
 - `added`: новые задачи;
 - `removed`: для `packet` всегда пустой список; поле сохраняется только для единообразия с другими mutating-командами;
 - `todo_created`: задачи, для которых утилита создала новые действия;

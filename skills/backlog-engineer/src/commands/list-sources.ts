@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import {
   ListSourcesCommandInputSchema,
   ListSourcesCommandOutputSchema,
@@ -7,6 +9,7 @@ import {
 } from '../schemas/index.ts';
 import { assertNoPositionals, parseCommandArgs, parseUsageInput } from './arg-parsers.ts';
 import type { CommandDefinition } from './types.ts';
+import { ABSOLUTE_OUTPUT_NOTE, BACKLOG_QUERY_SCOPE_NOTE } from './help-notes.ts';
 
 function collectItemSourceIds(item: {
   origin_source_ids: string[];
@@ -49,6 +52,11 @@ export const LIST_SOURCES_COMMAND: CommandDefinition<
     'backlog-engineer list-sources --path <path>',
   ],
   options: OPTIONS,
+  notes: [
+    BACKLOG_QUERY_SCOPE_NOTE,
+    '`--path` resolves from the current working directory before it is normalized relative to backlog root for matching.',
+    ABSOLUTE_OUTPUT_NOTE,
+  ],
   inputSchema: ListSourcesCommandInputSchema,
   outputSchema: ListSourcesCommandOutputSchema,
   parseArgs(args) {
@@ -71,8 +79,9 @@ export const LIST_SOURCES_COMMAND: CommandDefinition<
     if (!context.backlogRoot) {
       throw context.errors.create('BE_ROOT_NOT_FOUND');
     }
+    const backlogRoot = context.backlogRoot;
 
-    let sources = [...(await context.artifacts.readSourceRegistry(context.backlogRoot)).sources];
+    let sources = [...(await context.artifacts.readSourceRegistry(backlogRoot)).sources];
 
     if (input.item_key) {
       const { state } = await context.ensureQueryState();
@@ -91,22 +100,33 @@ export const LIST_SOURCES_COMMAND: CommandDefinition<
 
     if (input.path) {
       const normalizedSource = await context.sources.resolveCliSourcePath({
-        backlogRoot: context.backlogRoot,
+        backlogRoot,
         inputPath: context.host.resolveCliPath(input.path),
       });
       sources = sources.filter((source) => source.path === normalizedSource.relative_path);
     }
 
-    return context.schemas.parseCommandOutput(
-      'list-sources',
-      [...sources].sort((left, right) => {
-        const labelCompare = left.source_label.localeCompare(right.source_label);
-        if (labelCompare !== 0) {
-          return labelCompare;
-        }
+    return context.schemas.parseCommandOutput('list-sources', [
+      ...sources
+        .sort((left, right) => {
+          const labelCompare = left.source_label.localeCompare(right.source_label);
+          if (labelCompare !== 0) {
+            return labelCompare;
+          }
 
-        return left.source_id.localeCompare(right.source_id);
-      }),
-    );
+          return left.source_id.localeCompare(right.source_id);
+        })
+        .map((source) => ({
+          source_id: source.source_id,
+          source_label: source.source_label,
+          path: path.resolve(backlogRoot, source.path),
+          kind: source.kind,
+          authority: source.authority,
+          ...(source.note ? { note: source.note } : {}),
+          hash: source.hash,
+          registered_at: source.registered_at,
+          last_checked_at: source.last_checked_at,
+        })),
+    ]);
   },
 };

@@ -1242,13 +1242,16 @@ Dry-run не должен:
 {
   "source_id": "<uuid>",
   "source_label": "../docs/modules/auth.md",
-  "path": "../docs/modules/auth.md",
+  "path": "/abs/docs/modules/auth.md",
   "kind": "module",
   "authority": "authoritative",
   "note": "Auth module architecture",
   "hash": "<sha256>"
 }
 ```
+
+Во внешнем machine-facing output поле `path` всегда должно быть абсолютным filesystem path.
+Внутри source registry путь остаётся нормализованным POSIX-путём относительно backlog root.
 
 ### Errors
 
@@ -1292,7 +1295,7 @@ Dry-run не должен:
 
 Команда возвращает массив source records в стабильном порядке по `source_label`.
 
-Каждая запись имеет ту же форму, что и элемент `sources[]` из `.backlog/sources.json`.
+Каждая запись имеет ту же форму, что и source record, но поле `path` во внешнем output возвращается как абсолютный filesystem path.
 
 ### Errors
 
@@ -1407,7 +1410,7 @@ Dry-run не должен:
 {
   "dry_run": false,
   "authored_packet_path": "/abs/backlog/drafts/auth-module.packet.json",
-  "canonical_packet_path": "packets/ef9458cc0e32--auth-module.packet.json",
+  "canonical_packet_path": "/abs/backlog/packets/ef9458cc0e32--auth-module.packet.json",
   "canonical_packet_purpose": "immutable_import_copy",
   "counts": {
     "added": 2,
@@ -1433,6 +1436,8 @@ Dry-run не должен:
   ]
 }
 ```
+
+`authored_packet_path` и `canonical_packet_path` во внешнем machine-facing output должны быть абсолютными filesystem paths.
 
 ### Errors
 
@@ -1849,11 +1854,13 @@ Dry-run variant:
 
 ```json
 {
-  "report_path": "reports/backlog-report.md",
+  "report_path": "/abs/backlog/reports/backlog-report.md",
   "generated_at": "2026-04-03T12:40:00Z",
   "item_count": 42
 }
 ```
+
+`report_path` во внешнем machine-facing output должен быть абсолютным filesystem path.
 
 ### Unit-test focus
 
@@ -2224,10 +2231,12 @@ Severity reasons compare in this order:
 
 ```json
 {
-  "deleted_path": ".",
+  "deleted_path": "/abs/backlog",
   "deleted": true
 }
 ```
+
+`deleted_path` во внешнем machine-facing output должен быть абсолютным filesystem path backlog root.
 
 ### Errors
 

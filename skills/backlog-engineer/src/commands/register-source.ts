@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import {
   RegisterSourceCommandInputSchema,
   RegisterSourceCommandOutputSchema,
@@ -13,7 +15,17 @@ import {
   requireStringOption,
 } from './arg-parsers.ts';
 import type { CommandDefinition } from './types.ts';
-import { validateSourceAuthority, validateSourceKind } from '../sources/index.ts';
+import {
+  SOURCE_AUTHORITY_VALUES,
+  SOURCE_KIND_VALUES,
+  validateSourceAuthority,
+  validateSourceKind,
+} from '../sources/index.ts';
+import {
+  ABSOLUTE_OUTPUT_NOTE,
+  BACKLOG_MUTATION_SCOPE_NOTE,
+  SERIAL_MUTATION_NOTE,
+} from './help-notes.ts';
 
 const OPTIONS = [
   {
@@ -51,6 +63,22 @@ export const REGISTER_SOURCE_COMMAND: CommandDefinition<
     'backlog-engineer register-source --path <path> --kind <kind> --authority <authority> [--note <note>]',
   ],
   options: OPTIONS,
+  validations: [
+    {
+      target: '--kind',
+      allowed_values: [...SOURCE_KIND_VALUES],
+    },
+    {
+      target: '--authority',
+      allowed_values: [...SOURCE_AUTHORITY_VALUES],
+    },
+  ],
+  notes: [
+    BACKLOG_MUTATION_SCOPE_NOTE,
+    '`--path` resolves from the current working directory, then the registered path is normalized relative to backlog root and may contain `..` for external sources.',
+    SERIAL_MUTATION_NOTE,
+    ABSOLUTE_OUTPUT_NOTE,
+  ],
   inputSchema: RegisterSourceCommandInputSchema,
   outputSchema: RegisterSourceCommandOutputSchema,
   parseArgs(args) {
@@ -79,15 +107,16 @@ export const REGISTER_SOURCE_COMMAND: CommandDefinition<
     if (!context.backlogRoot) {
       throw context.errors.create('BE_ROOT_NOT_FOUND');
     }
+    const backlogRoot = context.backlogRoot;
 
     validateSourceKind(input.kind, context.errors);
     validateSourceAuthority(input.authority, context.errors);
 
     const normalizedSource = await context.sources.resolveCliSourcePath({
-      backlogRoot: context.backlogRoot,
+      backlogRoot,
       inputPath: context.host.resolveCliPath(input.path),
     });
-    const existingRegistry = await context.artifacts.readSourceRegistry(context.backlogRoot);
+    const existingRegistry = await context.artifacts.readSourceRegistry(backlogRoot);
     const existingSource = existingRegistry.sources.find(
       (source) => source.path === normalizedSource.relative_path,
     );
@@ -96,7 +125,7 @@ export const REGISTER_SOURCE_COMMAND: CommandDefinition<
       return context.schemas.parseCommandOutput('register-source', {
         source_id: existingSource.source_id,
         source_label: existingSource.source_label,
-        path: existingSource.path,
+        path: path.resolve(backlogRoot, existingSource.path),
         kind: existingSource.kind,
         authority: existingSource.authority,
         ...(existingSource.note ? { note: existingSource.note } : {}),
@@ -125,14 +154,14 @@ export const REGISTER_SOURCE_COMMAND: CommandDefinition<
       await context.artifacts.writeSourceRegistry(context.backlogRoot, registry);
       await context.hooks.afterSourceRegistered?.({
         source,
-        backlogRoot: context.backlogRoot,
+        backlogRoot,
       });
     }
 
     return context.schemas.parseCommandOutput('register-source', {
       source_id: source.source_id,
       source_label: source.source_label,
-      path: source.path,
+      path: path.resolve(backlogRoot, source.path),
       kind: source.kind,
       authority: source.authority,
       ...(source.note ? { note: source.note } : {}),

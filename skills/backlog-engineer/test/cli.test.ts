@@ -702,7 +702,7 @@ void test('delete-backlog --confirm deletes managed artifacts and prunes an empt
     assert.equal(result.status, 0);
     assert.equal(result.stderr, '');
     assert.deepEqual(DeleteBacklogCommandOutputSchema.parse(parseStdoutJson(result)), {
-      deleted_path: '.',
+      deleted_path: backlogRoot,
       deleted: true,
     });
     await assert.rejects(() => readFile(path.join(backlogRoot, '.backlog.json'), 'utf8'));
@@ -760,7 +760,7 @@ void test('delete-backlog --confirm preserves user gitignore content and removes
     assert.equal(result.status, 0);
     assert.equal(result.stderr, '');
     assert.deepEqual(DeleteBacklogCommandOutputSchema.parse(parseStdoutJson(result)), {
-      deleted_path: '.',
+      deleted_path: backlogRoot,
       deleted: true,
     });
     assert.equal(await readFile(path.join(backlogRoot, '.gitignore'), 'utf8'), 'node_modules/\n');

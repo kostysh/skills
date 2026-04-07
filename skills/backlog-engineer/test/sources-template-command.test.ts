@@ -116,7 +116,7 @@ void test('register-source stores a new source, calls afterSourceRegistered once
 
     assert.equal(first.source_id, '11111111-1111-4111-8111-111111111111');
     assert.equal(first.source_label, 'sources/docs/modules/auth.md');
-    assert.equal(first.path, 'sources/docs/modules/auth.md');
+    assert.equal(first.path, path.join(backlogRoot, 'sources/docs/modules/auth.md'));
     assert.equal(second.source_id, first.source_id);
     assert.equal(second.hash, first.hash);
     assert.deepEqual(afterSourceRegisteredCalls, ['11111111-1111-4111-8111-111111111111']);
@@ -155,7 +155,7 @@ void test('register-source accepts source paths outside backlog root and persist
       registerContext,
     );
 
-    assert.equal(output.path, '../outside/auth.md');
+    assert.equal(output.path, path.join(cwd, 'outside', 'auth.md'));
     assert.equal(output.source_label, '../outside/auth.md');
     const registry = SourceRegistryFileSchema.parse(
       JSON.parse(

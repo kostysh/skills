@@ -43,7 +43,7 @@ void test('delete-backlog command removes managed artifacts and prunes an empty 
     const output = await DELETE_BACKLOG_COMMAND.execute({ confirm: true }, context);
 
     assert.deepEqual(DeleteBacklogCommandOutputSchema.parse(output), {
-      deleted_path: '.',
+      deleted_path: backlogRoot,
       deleted: true,
     });
     assert.equal(context.backlogRoot, backlogRoot);
@@ -102,7 +102,7 @@ void test('delete-backlog command preserves user gitignore content and removes o
     const output = await DELETE_BACKLOG_COMMAND.execute({ confirm: true }, context);
 
     assert.deepEqual(DeleteBacklogCommandOutputSchema.parse(output), {
-      deleted_path: '.',
+      deleted_path: backlogRoot,
       deleted: true,
     });
     assert.equal(await readFile(path.join(backlogRoot, '.gitignore'), 'utf8'), 'node_modules/\n');

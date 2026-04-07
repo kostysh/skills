@@ -7,7 +7,13 @@ import {
 } from '../schemas/index.ts';
 import { assertNoPositionals, parseCommandArgs, parseUsageInput } from './arg-parsers.ts';
 import type { CommandDefinition } from './types.ts';
+import {
+  ABSOLUTE_OUTPUT_NOTE,
+  BACKLOG_MUTATION_SCOPE_NOTE,
+  SERIAL_MUTATION_NOTE,
+} from './help-notes.ts';
 import { assertBacklogRoot, loadQueryStateWithRegistry } from './query-helpers.ts';
+import path from 'node:path';
 
 const OPTIONS = [] as const satisfies readonly CommandHelpOption[];
 
@@ -16,6 +22,12 @@ export const REPORT_COMMAND: CommandDefinition<ReportCommandInput, ReportCommand
   summary: 'Generate a human-readable backlog report on disk.',
   usage: ['backlog-engineer report'],
   options: OPTIONS,
+  notes: [
+    BACKLOG_MUTATION_SCOPE_NOTE,
+    'Report files are always written into the standard reports directory inside the backlog root.',
+    SERIAL_MUTATION_NOTE,
+    ABSOLUTE_OUTPUT_NOTE,
+  ],
   inputSchema: ReportCommandInputSchema,
   outputSchema: ReportCommandOutputSchema,
   parseArgs(args) {
@@ -45,7 +57,7 @@ export const REPORT_COMMAND: CommandDefinition<ReportCommandInput, ReportCommand
     });
 
     return context.schemas.parseCommandOutput('report', {
-      report_path: reportPath,
+      report_path: path.resolve(backlogRoot, reportPath),
       generated_at: context.host.nowIsoUtc(),
       item_count: model.metrics.totalItems,
     });

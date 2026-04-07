@@ -336,7 +336,7 @@ void test('report command writes markdown and mermaid files to reports directory
     const { state } = await loadFixtureBacklog('refreshable-backlog');
 
     assert.deepEqual(output, {
-      report_path: 'reports/backlog-report.md',
+      report_path: path.join(backlogRoot, 'reports', 'backlog-report.md'),
       generated_at: '2026-04-06T12:34:56Z',
       item_count: state.items.length,
     });

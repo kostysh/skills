@@ -12,6 +12,7 @@ import {
   parseUsageInput,
   requireStringOption,
 } from './arg-parsers.ts';
+import { ABSOLUTE_OUTPUT_NOTE } from './help-notes.ts';
 import type { CommandDefinition } from './types.ts';
 
 const OPTIONS = [
@@ -28,6 +29,11 @@ export const INIT_COMMAND: CommandDefinition<InitCommandInput, InitCommandOutput
   summary: 'Initialize a backlog directory and utility-owned artifacts.',
   usage: ['backlog-engineer init --path <path>'],
   options: OPTIONS,
+  notes: [
+    '`--path` resolves from the current working directory.',
+    'The target directory becomes a backlog root and receives `.backlog.json`, `.backlog/`, `AGENTS.md`, and standard artifact directories.',
+    ABSOLUTE_OUTPUT_NOTE,
+  ],
   inputSchema: InitCommandInputSchema,
   outputSchema: InitCommandOutputSchema,
   parseArgs(args) {

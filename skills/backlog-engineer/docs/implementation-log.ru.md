@@ -104,7 +104,7 @@
 - Дата: 2026-04-07
 - Начало работ: ~2026-04-07T20:08:00+02:00
 - Полное время закрытия: ~8 минут
-- Коммит:
+- Коммит: `319c140` `docs(backlog-engineer): align generated agents contract`
 - Что сделано:
   - generated backlog `AGENTS.md` приведён к реальному workflow:
     - authored draft packet/patch files можно готовить вручную до apply;
@@ -130,6 +130,52 @@
   - `code-reviewer` — PASS
   - `security-reviewer` — PASS
 - Следующий пакет: `Follow-up Package 4 — CLI discoverability and output ergonomics`
+
+### Follow-up Package `4` — `CLI discoverability and output ergonomics`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: ~2026-04-07T20:15:00+02:00
+- Полное время закрытия: ~34 минуты
+- Коммит:
+- Что сделано:
+  - help output стал структурированным:
+    - global help теперь несёт `notes`;
+    - command help теперь несёт `validations` и `notes`
+  - для минимального набора команд в follow-up scope добавлены high-level help notes:
+    - root discovery / backlog scope
+    - serial mutation rule
+    - dry-run semantics
+    - authored draft vs canonical immutable copy
+    - `queue` / `gaps` / `attention` mental-model hints
+  - machine-facing path fields приведены к absolute filesystem path contract для:
+    - `init`
+    - `register-source`
+    - `list-sources`
+    - `template`
+    - `packet`
+    - `report`
+    - `delete-backlog`
+  - references и normative docs синхронизированы под тот же contract
+  - добавлены golden/snapshot-level tests для:
+    - help output
+    - machine-facing outputs
+- Ключевые решения:
+  - help остаётся high-level и не превращается в schema dump
+  - absolute-path rule применяется только к machine-facing output, а не к внутреннему storage
+  - snapshot fixtures фиксируют именно minimal command set follow-up scope, а не весь command surface
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format:check` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run build` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - `spec-conformance-reviewer` — PASS
+  - `code-reviewer` — PASS
+  - `security-reviewer` — PASS
+- Следующий пакет: `Follow-up Package 5 — First-run walkthrough and template usefulness`
 
 ## Общие решения по процессу
 

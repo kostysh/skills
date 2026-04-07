@@ -781,7 +781,7 @@ type RegisterSourceCommandInput = {
 type RegisterSourceCommandOutput = {
   source_id: SourceId;
   source_label: SourceLabel;
-  path: SourceRelativePosixPath;
+  path: NormalizedFsPath;
   kind: NonEmptyString;
   authority: NonEmptyString;
   note?: NonEmptyString;
@@ -802,7 +802,17 @@ type ListSourcesCommandInput = {
   path?: CliPathInput;
 };
 
-type ListSourcesCommandOutput = SourceRecord[];
+type RegisteredSourceOutput = {
+  source_id: SourceId;
+  source_label: SourceLabel;
+  path: NormalizedFsPath;
+  kind: NonEmptyString;
+  authority: NonEmptyString;
+  note?: NonEmptyString;
+  hash: Sha256Hex;
+};
+
+type ListSourcesCommandOutput = RegisteredSourceOutput[];
 ```
 
 ### 7.4. `TemplateCommandInput` / `TemplateCommandOutput`
@@ -840,7 +850,7 @@ type PacketCommandInput = {
 type PacketCommandOutput = {
   dry_run: boolean;
   authored_packet_path: NormalizedFsPath;
-  canonical_packet_path?: BacklogRelativePosixPath;
+  canonical_packet_path?: NormalizedFsPath;
   canonical_packet_purpose?: "immutable_import_copy";
   counts: PacketMutationCounts;
   added: ItemKey[];
@@ -936,7 +946,7 @@ type StatusCommandOutput = {
 type ReportCommandInput = {};
 
 type ReportCommandOutput = {
-  report_path: BacklogRelativePosixPath;
+  report_path: NormalizedFsPath;
   generated_at: IsoUtcTimestamp;
   item_count: NonNegativeInt;
 };
@@ -1050,7 +1060,7 @@ type DeleteBacklogCommandInput = {
 };
 
 type DeleteBacklogCommandOutput = {
-  deleted_path: ".";
+  deleted_path: NormalizedFsPath;
   deleted: true;
 };
 ```

@@ -71,6 +71,11 @@ export function buildGlobalHelpOutput(version: string): GlobalHelpOutput {
       name: command.name,
       summary: command.summary,
     })),
+    notes: [
+      'Most commands are backlog-scoped and auto-discover `.backlog.json` from the current working directory or its parent directories.',
+      'For one backlog root, run mutating commands strictly one at a time.',
+      'Help shows strictly validated values and command semantics that change the mental model; use the reference docs for full field-level contracts.',
+    ],
   });
 }
 
@@ -85,6 +90,8 @@ export function buildCommandHelpOutput(
     summary: command.summary,
     usage: [...command.usage],
     options: [...command.options],
+    validations: [...(command.validations ?? [])],
+    notes: [...(command.notes ?? [])],
   });
 }
 

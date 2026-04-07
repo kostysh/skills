@@ -101,7 +101,7 @@ void test('packet output docs stay aligned with packet command schema invariants
   const realApplyResult = PacketCommandOutputSchema.safeParse({
     dry_run: false,
     authored_packet_path: '/abs/backlog/drafts/auth.packet.json',
-    canonical_packet_path: 'packets/abcd1234--auth.packet.json',
+    canonical_packet_path: '/abs/backlog/packets/abcd1234--auth.packet.json',
     canonical_packet_purpose: 'immutable_import_copy',
     counts: {
       added: 1,
@@ -124,9 +124,11 @@ void test('command reference lock and packet output notes stay aligned with expo
   assertContainsTerms(reference, [
     '/.backlog/mutation.lock',
     'BE_MUTATION_LOCKED',
+    'machine-facing filesystem paths in command output are absolute',
     'authored_packet_path',
     'canonical_packet_path',
     'immutable_import_copy',
+    'source registry stores `path` as a normalized POSIX path relative to backlog root',
   ]);
 
   assert.equal(ERROR_CODES.includes('BE_MUTATION_LOCKED'), true);

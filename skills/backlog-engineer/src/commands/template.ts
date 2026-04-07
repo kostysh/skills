@@ -14,6 +14,7 @@ import {
   splitCsvFlag,
 } from './arg-parsers.ts';
 import type { CommandDefinition } from './types.ts';
+import { ABSOLUTE_OUTPUT_NOTE } from './help-notes.ts';
 
 const OPTIONS = [
   {
@@ -49,6 +50,12 @@ export const TEMPLATE_COMMAND: CommandDefinition<TemplateCommandInput, TemplateC
     'backlog-engineer template patch --item-keys <item_key_1>,<item_key_2> --out <path>',
   ],
   options: OPTIONS,
+  notes: [
+    '`template packet` writes a draft skeleton and does not require an existing backlog root.',
+    '`template patch` is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.',
+    '`--out` resolves from the current working directory.',
+    ABSOLUTE_OUTPUT_NOTE,
+  ],
   inputSchema: TemplateCommandInputSchema,
   outputSchema: TemplateCommandOutputSchema,
   parseArgs(args) {

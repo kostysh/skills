@@ -454,7 +454,7 @@ void test('packet command applies a packet, persists canonical imports, and skip
 
     assert.deepEqual(withoutDryRun(realOutput), {
       ...withoutDryRun(dryRunOutput),
-      canonical_packet_path: 'packets/2d764141a49f--auth-module.packet.json',
+      canonical_packet_path: `${backlogRoot}/packets/2d764141a49f--auth-module.packet.json`,
       canonical_packet_purpose: 'immutable_import_copy',
     });
     assert.equal(realOutput.dry_run, false);
@@ -804,7 +804,10 @@ void test('mutation commands read authored packet and patch files through inject
   );
   assert.equal(packetOutput.counts.added, 3);
   assert.equal(packetOutput.authored_packet_path, `${backlogRoot}/drafts/auth-module.packet.json`);
-  assert.equal(packetOutput.canonical_packet_path, 'packets/2d764141a49f--auth-module.packet.json');
+  assert.equal(
+    packetOutput.canonical_packet_path,
+    `${backlogRoot}/packets/2d764141a49f--auth-module.packet.json`,
+  );
   assert.equal(packetOutput.canonical_packet_purpose, 'immutable_import_copy');
 
   await writeFixtureToInMemoryFile({

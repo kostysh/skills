@@ -7,6 +7,7 @@ import {
 } from '../schemas/index.ts';
 import { assertNoPositionals, parseCommandArgs, parseUsageInput } from './arg-parsers.ts';
 import type { CommandDefinition } from './types.ts';
+import { BACKLOG_QUERY_SCOPE_NOTE } from './help-notes.ts';
 import { loadQueryState } from './query-helpers.ts';
 
 const OPTIONS = [
@@ -22,6 +23,11 @@ export const GAPS_COMMAND: CommandDefinition<GapsCommandInput, GapsCommandOutput
   summary: 'List explicit blockers and unresolved gaps.',
   usage: ['backlog-engineer gaps', 'backlog-engineer gaps --item-key <item_key>'],
   options: OPTIONS,
+  notes: [
+    BACKLOG_QUERY_SCOPE_NOTE,
+    '`--item-key` narrows the result to one task.',
+    'Empty output means there are no explicit blockers in the selected scope.',
+  ],
   inputSchema: GapsCommandInputSchema,
   outputSchema: GapsCommandOutputSchema,
   parseArgs(args) {

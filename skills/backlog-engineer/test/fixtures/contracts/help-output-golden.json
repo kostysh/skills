@@ -1,0 +1,320 @@
+{
+  "global": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "usage": [
+      "backlog-engineer <command> [options]",
+      "backlog-engineer help [command]",
+      "backlog-engineer --help",
+      "backlog-engineer --version"
+    ],
+    "commands": [
+      {
+        "name": "init",
+        "summary": "Initialize a backlog directory and utility-owned artifacts."
+      },
+      {
+        "name": "register-source",
+        "summary": "Register a source document and obtain a source ID."
+      },
+      {
+        "name": "list-sources",
+        "summary": "List registered sources and source metadata."
+      },
+      {
+        "name": "template",
+        "summary": "Generate packet or patch templates."
+      },
+      {
+        "name": "packet",
+        "summary": "Apply a packet that adds new backlog tasks."
+      },
+      {
+        "name": "patch-item",
+        "summary": "Apply a patch that updates existing tasks."
+      },
+      {
+        "name": "remove-item",
+        "summary": "Apply a patch that removes obsolete tasks."
+      },
+      {
+        "name": "refresh",
+        "summary": "Refresh source-derived state in full or scoped form."
+      },
+      {
+        "name": "status",
+        "summary": "Show short backlog status summary."
+      },
+      {
+        "name": "report",
+        "summary": "Generate a human-readable backlog report on disk."
+      },
+      {
+        "name": "items",
+        "summary": "Show one or more full task cards by item key."
+      },
+      {
+        "name": "search",
+        "summary": "Search tasks when keys are not yet known."
+      },
+      {
+        "name": "gaps",
+        "summary": "List explicit blockers and unresolved gaps."
+      },
+      {
+        "name": "queue",
+        "summary": "Return ordered chains of tasks that can be taken next."
+      },
+      {
+        "name": "attention",
+        "summary": "Return tasks that require review or re-checking."
+      },
+      {
+        "name": "delete-backlog",
+        "summary": "Delete the backlog and its utility-owned artifacts."
+      }
+    ],
+    "notes": [
+      "Most commands are backlog-scoped and auto-discover `.backlog.json` from the current working directory or its parent directories.",
+      "For one backlog root, run mutating commands strictly one at a time.",
+      "Help shows strictly validated values and command semantics that change the mental model; use the reference docs for full field-level contracts."
+    ]
+  },
+  "register-source": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "command": "register-source",
+    "summary": "Register a source document and obtain a source ID.",
+    "usage": [
+      "backlog-engineer register-source --path <path> --kind <kind> --authority <authority> [--note <note>]"
+    ],
+    "options": [
+      {
+        "flags": [
+          "--path"
+        ],
+        "value_name": "<path>",
+        "description": "Path to the source document to register.",
+        "required": true
+      },
+      {
+        "flags": [
+          "--kind"
+        ],
+        "value_name": "<kind>",
+        "description": "Source kind defined by the skill contract.",
+        "required": true
+      },
+      {
+        "flags": [
+          "--authority"
+        ],
+        "value_name": "<authority>",
+        "description": "Source authority defined by the skill contract.",
+        "required": true
+      },
+      {
+        "flags": [
+          "--note"
+        ],
+        "value_name": "<note>",
+        "description": "Readable operator note attached to the source registration."
+      }
+    ],
+    "validations": [
+      {
+        "target": "--kind",
+        "allowed_values": [
+          "architecture",
+          "module",
+          "adr",
+          "technical-decision",
+          "integration",
+          "operations",
+          "planning",
+          "specification"
+        ]
+      },
+      {
+        "target": "--authority",
+        "allowed_values": [
+          "authoritative",
+          "supporting",
+          "derived"
+        ]
+      }
+    ],
+    "notes": [
+      "This mutating command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+      "`--path` resolves from the current working directory, then the registered path is normalized relative to backlog root and may contain `..` for external sources.",
+      "For one backlog root, run mutating commands strictly one at a time.",
+      "Machine-facing filesystem paths in command output are absolute."
+    ]
+  },
+  "template": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "command": "template",
+    "summary": "Generate packet or patch templates.",
+    "usage": [
+      "backlog-engineer template packet --out <path>",
+      "backlog-engineer template patch --item-keys <item_key_1>,<item_key_2> --out <path>"
+    ],
+    "options": [
+      {
+        "flags": [
+          "--out"
+        ],
+        "value_name": "<path>",
+        "description": "Output path for the generated template file.",
+        "required": true
+      },
+      {
+        "flags": [
+          "--item-keys"
+        ],
+        "value_name": "<item_key_1>,<item_key_2>",
+        "description": "Required for patch templates; comma-separated target item keys."
+      }
+    ],
+    "validations": [],
+    "notes": [
+      "`template packet` writes a draft skeleton and does not require an existing backlog root.",
+      "`template patch` is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+      "`--out` resolves from the current working directory.",
+      "Machine-facing filesystem paths in command output are absolute."
+    ]
+  },
+  "packet": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "command": "packet",
+    "summary": "Apply a packet that adds new backlog tasks.",
+    "usage": [
+      "backlog-engineer packet --path <path> [--dry-run]"
+    ],
+    "options": [
+      {
+        "flags": [
+          "--path"
+        ],
+        "value_name": "<path>",
+        "description": "Path to the authored packet file.",
+        "required": true
+      },
+      {
+        "flags": [
+          "--dry-run"
+        ],
+        "description": "Validate and simulate packet application without writing to disk."
+      }
+    ],
+    "validations": [],
+    "notes": [
+      "This mutating command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+      "`--path` resolves from the current working directory.",
+      "`--dry-run` validates and simulates packet apply without writing canonical imports or backlog state.",
+      "On real apply, output distinguishes the authored draft from the immutable canonical import copy.",
+      "For one backlog root, run mutating commands strictly one at a time.",
+      "Machine-facing filesystem paths in command output are absolute."
+    ]
+  },
+  "status": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "command": "status",
+    "summary": "Show short backlog status summary.",
+    "usage": [
+      "backlog-engineer status [--refresh]"
+    ],
+    "options": [
+      {
+        "flags": [
+          "--refresh"
+        ],
+        "description": "Run refresh before returning the status summary."
+      }
+    ],
+    "validations": [],
+    "notes": [
+      "This command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+      "`status` returns a short summary of the current backlog state.",
+      "`status --refresh` first runs refresh, so treat it as a mutating composite command.",
+      "For one backlog root, run mutating commands strictly one at a time."
+    ]
+  },
+  "report": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "command": "report",
+    "summary": "Generate a human-readable backlog report on disk.",
+    "usage": [
+      "backlog-engineer report"
+    ],
+    "options": [],
+    "validations": [],
+    "notes": [
+      "This mutating command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+      "Report files are always written into the standard reports directory inside the backlog root.",
+      "For one backlog root, run mutating commands strictly one at a time.",
+      "Machine-facing filesystem paths in command output are absolute."
+    ]
+  },
+  "queue": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "command": "queue",
+    "summary": "Return ordered chains of tasks that can be taken next.",
+    "usage": [
+      "backlog-engineer queue"
+    ],
+    "options": [],
+    "validations": [],
+    "notes": [
+      "This command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+      "`queue` returns ordered ready chains, not a flat list of every ready item.",
+      "If `queue` is empty, inspect `gaps` and `attention` before assuming backlog creation failed."
+    ]
+  },
+  "gaps": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "command": "gaps",
+    "summary": "List explicit blockers and unresolved gaps.",
+    "usage": [
+      "backlog-engineer gaps",
+      "backlog-engineer gaps --item-key <item_key>"
+    ],
+    "options": [
+      {
+        "flags": [
+          "--item-key"
+        ],
+        "value_name": "<item_key>",
+        "description": "Restrict output to a single task key."
+      }
+    ],
+    "validations": [],
+    "notes": [
+      "This command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+      "`--item-key` narrows the result to one task.",
+      "Empty output means there are no explicit blockers in the selected scope."
+    ]
+  },
+  "attention": {
+    "cli_name": "backlog-engineer",
+    "version": "0.1.0",
+    "command": "attention",
+    "summary": "Return tasks that require review or re-checking.",
+    "usage": [
+      "backlog-engineer attention"
+    ],
+    "options": [],
+    "validations": [],
+    "notes": [
+      "This command is backlog-scoped: run it from a backlog root or one of its child directories discovered through `.backlog.json`.",
+      "`attention` returns review and re-check items, not every blocked task in the backlog.",
+      "Entries are ordered by severity first, then by item key."
+    ]
+  }
+}

@@ -9,6 +9,11 @@ import {
   type DeleteBacklogCommandOutput,
 } from '../schemas/index.ts';
 import { assertNoPositionals, parseCommandArgs, parseUsageInput } from './arg-parsers.ts';
+import {
+  ABSOLUTE_OUTPUT_NOTE,
+  BACKLOG_MUTATION_SCOPE_NOTE,
+  SERIAL_MUTATION_NOTE,
+} from './help-notes.ts';
 import type { CommandDefinition } from './types.ts';
 
 const OPTIONS = [
@@ -27,6 +32,12 @@ export const DELETE_BACKLOG_COMMAND: CommandDefinition<
   summary: 'Delete the backlog and its utility-owned artifacts.',
   usage: ['backlog-engineer delete-backlog --confirm'],
   options: OPTIONS,
+  notes: [
+    BACKLOG_MUTATION_SCOPE_NOTE,
+    'Only utility-owned backlog files are deleted; foreign entries prevent deletion.',
+    SERIAL_MUTATION_NOTE,
+    ABSOLUTE_OUTPUT_NOTE,
+  ],
   inputSchema: DeleteBacklogCommandInputSchema,
   outputSchema: DeleteBacklogCommandOutputSchema,
   parseArgs(args) {
@@ -98,7 +109,7 @@ export const DELETE_BACKLOG_COMMAND: CommandDefinition<
     }
 
     return {
-      deleted_path: '.',
+      deleted_path: context.backlogRoot,
       deleted: true,
     };
   },
