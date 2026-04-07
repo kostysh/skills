@@ -17,7 +17,8 @@
 | [process-cli.ru.md](process-cli.ru.md) | Базовая концепция утилиты и CLI UX. Описывает операторский и агентский workflow, команды, правила `packet` vs `patch`, модель backlog-директории и ожидаемое поведение без углубления во внутреннюю реализацию. | Читать первым. Это главный источник истины по продуктовой логике и UX. |
 | [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md) | Детальный инженерный план базовой реализации. Описывает полный definition of done, порядок сборки системы по зависимостям модулей, work packages и критерии завершения без скрытых упрощений. | Читать перед началом основной имплементации и использовать как execution plan. |
 | [implementation-log-1.ru.md](implementation-log-1.ru.md) | Исторический лог: базовая имплементация, ранний follow-up цикл и первые corrective changes. Фиксирует исходные work packages, ключевые инженерные решения, результаты внешнего ревью и связь с коммитами. | Читать при восстановлении контекста по основной истории реализации утилиты. |
-| [implementation-log-2.ru.md](implementation-log-2.ru.md) | Отдельный лог текущего follow-up цикла. Фиксирует последние UX/runtime/doc улучшения и их review trail без смешивания со старой историей. | Читать при восстановлении контекста по последнему циклу доработок. |
+| [implementation-log-2.ru.md](implementation-log-2.ru.md) | Лог основного follow-up цикла после базовой имплементации. Фиксирует UX/runtime/doc улучшения `S1-S4` без смешивания с базовой историей. | Читать при восстановлении контекста по основному follow-up циклу. |
+| [implementation-log-3.ru.md](implementation-log-3.ru.md) | Лог финального corrective pass. Фиксирует последние doc-only доработки `S5-S6` после post-refactor review. | Читать при восстановлении контекста по самому последнему корректирующему циклу. |
 | [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md) | План follow-up изменений после real-world UX feedback. Фиксирует, какие проблемы нужно исправить в `SKILL.md`, runtime, references и нормативных документах, в каком порядке и по каким критериям закрытия. | Читать перед началом post-implementation UX/hardening цикла. |
 | [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md) | Детальный execution plan follow-up исправлений после real-world UX feedback. Разбивает remediation на конкретные пакеты изменений, файлы, acceptance и порядок выполнения. | Читать перед началом follow-up имплементации, если нужен уже не анализ, а пошаговый план изменений. |
 | [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md) | Маленький corrective plan после post-refactor review. Закрывает два remaining first-run defects: local invocation contract и единый blocking preflight question. | Читать перед последним коротким doc-only corrective pass. |
@@ -40,12 +41,13 @@
 2. [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md)
 3. [implementation-log-1.ru.md](implementation-log-1.ru.md)
 4. [implementation-log-2.ru.md](implementation-log-2.ru.md)
-4. [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md)
-5. [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md)
-6. [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md)
-6. [utility-spec.ru.md](utility-spec.ru.md)
-7. [schemas-and-types.ru.md](schemas-and-types.ru.md)
-8. [module-interfaces.ru.md](module-interfaces.ru.md)
+5. [implementation-log-3.ru.md](implementation-log-3.ru.md)
+6. [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md)
+7. [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md)
+8. [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md)
+9. [utility-spec.ru.md](utility-spec.ru.md)
+10. [schemas-and-types.ru.md](schemas-and-types.ru.md)
+11. [module-interfaces.ru.md](module-interfaces.ru.md)
 
 ### Если нужно проектировать тесты
 
@@ -64,7 +66,8 @@
 
 - Изменение CLI UX сначала отражается в [process-cli.ru.md](process-cli.ru.md), затем ниже по стеку.
 - Ход базовой реализации и исходные work packages фиксируются в [implementation-log-1.ru.md](implementation-log-1.ru.md).
-- Пост-имплементационные follow-up доработки фиксируются в [implementation-log-2.ru.md](implementation-log-2.ru.md).
+- Основной post-implementation follow-up цикл фиксируется в [implementation-log-2.ru.md](implementation-log-2.ru.md).
+- Последний corrective pass фиксируется в [implementation-log-3.ru.md](implementation-log-3.ru.md).
 - Изменение runtime behavior или артефактов должно отражаться в [utility-spec.ru.md](utility-spec.ru.md).
 - Изменение shape данных должно отражаться в [schemas-and-types.ru.md](schemas-and-types.ru.md).
 - Изменение модульной границы должно отражаться в [module-interfaces.ru.md](module-interfaces.ru.md).

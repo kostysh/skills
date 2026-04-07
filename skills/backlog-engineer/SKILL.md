@@ -60,9 +60,14 @@ Decide which of these facts the operator already provided explicitly:
 - what source of truth should be used to infer `delivery_state`;
 - whether the operator is explicitly directing you to inspect the repo or codebase.
 
-If the operator already stated the system state clearly, use that statement.
+If the operator already stated both:
 
-If the operator did not state it clearly, ask one short combined preflight question and then stop until the operator answers.
+- the system state;
+- and the source of truth for `delivery_state`, when implementation already exists;
+
+use that information directly.
+
+If either of those facts is still missing, ask one short combined preflight question and then stop until the operator answers.
 
 The question must cover both:
 
