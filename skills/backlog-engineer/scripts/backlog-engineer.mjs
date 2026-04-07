@@ -10468,8 +10468,8 @@ This directory is a backlog root managed by \`@kostysh/backlog-engineer-cli\`.
 
 - Treat the utility as the source of truth for the current backlog state.
 - Do not reconstruct current state by reading \`packets/\`, \`patches/\`, or \`.backlog/*\` directly.
-- Do not edit \`.backlog.json\`, \`.backlog/\`, \`packets/\`, \`patches/\`, or \`reports/\` manually unless the task is explicitly about the utility implementation itself.
-- Packets are immutable after registration.
+- Do not edit \`.backlog.json\`, \`.backlog/\`, \`reports/\`, or canonical import copies manually.
+- Canonical import copies are immutable after registration.
 - Add new tasks only through \`packet\`.
 - Change existing tasks only through patch-based commands.
 - Remove existing tasks only through patch-based commands.
@@ -10491,7 +10491,14 @@ This directory is a backlog root managed by \`@kostysh/backlog-engineer-cli\`.
 
 - Read source documents first.
 - Register sources through the utility before relying on them in packets.
+- If multiple sources are needed for one backlog root, register them strictly one by one.
 - Use utility lookups such as \`list-sources\` instead of rebuilding source mappings from packet files.
+
+## Drafts vs canonical copies
+
+- You may author draft packet and patch files in \`packets/\` and \`patches/\` before applying them.
+- After apply, treat utility-owned canonical import copies as immutable.
+- The existence of both a draft file and a canonical copy is intentional, not clutter.
 
 ## Mutation follow-up
 

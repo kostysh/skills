@@ -76,10 +76,9 @@ void test('packet output docs stay aligned with packet command schema invariants
   const packetSection = extractSection(skill, '### `packet`');
 
   assertContainsTerms(packetSection, [
-    'authored_packet_path',
-    'canonical_packet_path',
-    'canonical_packet_purpose',
-    'dry-run',
+    'authored draft',
+    'immutable canonical import copy',
+    'current backlog truth',
   ]);
 
   const dryRunResult = PacketCommandOutputSchema.safeParse({

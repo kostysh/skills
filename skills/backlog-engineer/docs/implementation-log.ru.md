@@ -98,6 +98,39 @@
   - не требуется; пакет docs-only и не меняет runtime behavior утилиты
 - Следующий пакет: `Follow-up Package 3 — Local contract consistency`
 
+### Follow-up Package `3` — `Local contract consistency`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: ~2026-04-07T20:08:00+02:00
+- Полное время закрытия: ~8 минут
+- Коммит:
+- Что сделано:
+  - generated backlog `AGENTS.md` приведён к реальному workflow:
+    - authored draft packet/patch files можно готовить вручную до apply;
+    - вручную нельзя редактировать utility-owned canonical import copies;
+    - правило про неизменяемость теперь относится к canonical copies, а не ко всем packet files
+  - в generated template добавлен отдельный блок `Drafts vs canonical copies`
+  - в generated template усилено буквальное правило:
+    - если для одного backlog root нужно несколько источников, регистрировать их строго по одному
+  - docs contract test для `packet` синхронизирован с high-level output guidance в `SKILL.md`
+  - built artifact пересобран, чтобы runtime template и shipped script не расходились
+- Ключевые решения:
+  - package intentionally исправляет локальный agent contract через generated `AGENTS.md`, не меняя продуктовую модель packet/patch
+  - `SKILL.md` остаётся high-level, поэтому packet output semantics в docs-contract test проверяются через semantic anchors, а не через полный dump полей
+- Допущения вне спецификации:
+  - нет
+- Проверки приёмки:
+  - `pnpm --dir skills/backlog-engineer run format:check` — OK
+  - `pnpm --dir skills/backlog-engineer run lint` — OK
+  - `pnpm --dir skills/backlog-engineer run typecheck` — OK
+  - `pnpm --dir skills/backlog-engineer run test` — OK
+- Внешнее ревью:
+  - `spec-conformance-reviewer` — PASS
+  - `code-reviewer` — PASS
+  - `security-reviewer` — PASS
+- Следующий пакет: `Follow-up Package 4 — CLI discoverability and output ergonomics`
+
 ## Общие решения по процессу
 
 - С 2026-04-06, начиная с work package `E`, обязательный внешний review-контур включает:
