@@ -13,6 +13,21 @@ const SKILL_DIR = path.resolve(TEST_DIR, '..');
 
 const SKILL_PATH = path.join(SKILL_DIR, 'SKILL.md');
 const COMMAND_REFERENCE_PATH = path.join(SKILL_DIR, 'references', 'command-reference.md');
+const DOCUMENT_TO_PACKET_WORKFLOW_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'document-to-packet-workflow.md',
+);
+const FIRST_BACKLOG_WALKTHROUGH_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'first-backlog-walkthrough.md',
+);
+const OPERATOR_WORKFLOWS_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'operator-workflows.md',
+);
 const IMPLEMENTATION_PLAN_PATH = path.join(SKILL_DIR, 'docs', 'refactoring-plan-1.ru.md');
 
 function extractSection(text: string, heading: string): string {
@@ -143,5 +158,52 @@ void test('implementation plan keeps the doc-sync checklist explicit', async () 
     '`SKILL.md`',
     'релевантные `references/*`',
     'runtime-backed invariants',
+  ]);
+});
+
+void test('first backlog docs enforce a blocking source-set gate before packet authoring', async () => {
+  const [skill, workflow, walkthrough, operatorWorkflows] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(DOCUMENT_TO_PACKET_WORKFLOW_PATH, 'utf8'),
+    readFile(FIRST_BACKLOG_WALKTHROUGH_PATH, 'utf8'),
+    readFile(OPERATOR_WORKFLOWS_PATH, 'utf8'),
+  ]);
+
+  const skillGate = extractSection(skill, '## Source-set gate before first packet');
+
+  assertContainsTerms(skillGate, [
+    'full source set',
+    'anchor source',
+    'only from X',
+    'mandatory backlog inputs',
+    'Planning backlog documents',
+    'must not substitute extraction',
+    'concept, architecture, and ADR sources',
+    'do not author the first packet until the source-set gate is closed',
+  ]);
+
+  assertContainsTerms(workflow, [
+    '### 2. Close the source-set gate',
+    'anchor source',
+    'exclusive source',
+    'minimum source set',
+    'Self-expanding source graph rule',
+    'must not substitute extraction',
+  ]);
+
+  assertContainsTerms(walkthrough, [
+    '## Step 2. Close the source-set gate',
+    'anchor source',
+    'the full source set',
+    'do not author the first packet until the source-set gate is closed',
+    'Then repeat `register-source` for the rest of the source set, one source at a time.',
+  ]);
+
+  assertContainsTerms(operatorWorkflows, [
+    'source-set gate',
+    'register-source` for all relevant sources',
+    'anchor source',
+    'mandatory inputs',
+    'do not substitute extraction',
   ]);
 });

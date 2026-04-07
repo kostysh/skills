@@ -31,13 +31,57 @@ Until that answer is given:
 
 - do not inspect the repo, code, or tests to infer implementation state on your own.
 
-After preflight, read the relevant inputs:
+After preflight, do not jump straight to source registration or packet authoring.
 
-- architecture overview
-- module documents
-- ADRs
-- technical decisions
-- integration notes
+### 2. Close the source-set gate
+
+Before authoring anything, identify the full source set you will use for the first backlog pass.
+
+Treat the operator wording conservatively:
+
+- if the operator says `based on X`, treat `X` as the anchor source;
+- do not treat `X` as the exclusive source unless the operator explicitly says `only from X`.
+
+At minimum, list:
+
+- authoritative sources you will extract from directly;
+- supporting sources you will use for staging, ownership, or cross-checking;
+- one short reason why each source belongs in the first pass.
+
+For partially implemented repositories, the minimum source set is:
+
+- architecture anchor source;
+- source of truth for `delivery_state`;
+- repo-level cross-cutting ADR or decision sources, when they are declared as canonical;
+- upstream concept or system-definition sources that the architecture source explicitly relies on.
+
+Self-expanding source graph rule:
+
+- if a source says it is based on a concept document, ADRs, cross-cutting contracts, or other canonical inputs, stop and expand the source set before packet authoring.
+
+Typical first-pass sources include:
+
+- architecture overview;
+- module documents;
+- ADRs;
+- technical decisions;
+- integration notes.
+
+Planning backlog documents may help with:
+
+- candidate task names;
+- ownership hints;
+- delivery hints.
+
+But they must not substitute extraction of:
+
+- claims;
+- constraints;
+- policies;
+- contracts;
+- cross-cutting decisions;
+
+from concept, architecture, and ADR sources.
 
 Before authoring anything, answer these questions for yourself:
 
@@ -52,7 +96,7 @@ For a brand-new backlog, use `coverage-first backlog` by default:
 - include not-yet-implemented tasks;
 - do not treat implemented work as irrelevant just because it is already delivered.
 
-### 2. Register the sources
+### 3. Register the sources
 
 Every document that materially participates in the backlog should become a registered source.
 
@@ -71,7 +115,7 @@ If multiple sources are needed:
 
 - register them strictly one by one.
 
-### 3. Extract stable context
+### 4. Extract stable context
 
 Create packet context only where it helps the backlog stay complete and understandable.
 
@@ -86,7 +130,7 @@ Extract:
 
 Do not dump the whole document into context.
 
-### 4. Extract candidate tasks
+### 5. Extract candidate tasks
 
 Turn prose into candidate tasks by looking for:
 
@@ -98,7 +142,7 @@ Turn prose into candidate tasks by looking for:
 
 Each candidate should be small enough to hand off later.
 
-### 5. Enforce atomicity
+### 6. Enforce atomicity
 
 For each candidate, check:
 
@@ -110,7 +154,7 @@ For each candidate, check:
 
 If not, split it.
 
-### 6. Add dependencies
+### 7. Add dependencies
 
 For each atomic task, ask:
 
@@ -121,7 +165,7 @@ Only real blockers belong in `depends_on_keys`.
 
 Do not use dependencies to express weak association or module membership.
 
-### 7. Add explicit gaps
+### 8. Add explicit gaps
 
 Whenever the source documents do not support a confident decision:
 
@@ -145,7 +189,7 @@ If the missing fact can itself be resolved by concrete work:
 
 Do not leave a brand-new backlog with only blocked gap items when the blocking uncertainty can be expressed as concrete work.
 
-### 8. Choose packet vs patch
+### 9. Choose packet vs patch
 
 Use this rule:
 
@@ -159,7 +203,7 @@ If the same document change creates both new tasks and modifications to old task
 - one patch for updates;
 - one removal patch if tasks became obsolete.
 
-### 9. Start from templates
+### 10. Start from templates
 
 Do not author from memory when a template is available.
 
@@ -176,7 +220,7 @@ Then fill in:
 - context links
 - gaps
 
-### 10. Run preview when risky
+### 11. Run preview when risky
 
 Before a risky or large mutation:
 
@@ -184,7 +228,7 @@ Before a risky or large mutation:
 - `patch-item --dry-run`
 - `remove-item --dry-run`
 
-### 11. Read the right follow-up
+### 12. Read the right follow-up
 
 After a mutating command:
 
@@ -201,6 +245,7 @@ After `packet` specifically:
 
 Before applying a packet, confirm:
 
+- the source-set gate is closed;
 - all relevant documents were registered as sources;
 - every task has `item_key`, `title`, `type`, `delivery_state`, `origin_source_ids`;
 - dependencies are real blockers;

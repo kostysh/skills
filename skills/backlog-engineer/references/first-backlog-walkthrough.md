@@ -5,7 +5,7 @@ Use this walkthrough when you need one exact first-run flow instead of separate 
 This walkthrough assumes:
 
 - the operator wants a brand-new backlog;
-- the first source is an architecture document;
+- an architecture document is the anchor source;
 - the agent is driving the CLI;
 - packet authoring happens from a draft template, not from memory.
 
@@ -13,12 +13,12 @@ This walkthrough assumes:
 
 Go from:
 
-- architecture document
+- architecture anchor source plus its required supporting sources
 
 to:
 
 - initialized backlog root
-- registered source
+- registered source set
 - authored packet draft
 - validated `packet --dry-run`
 - applied packet
@@ -60,7 +60,39 @@ Negative rule:
 
 - until the operator answers, do not inspect the repo to infer implementation state on your own.
 
-## Step 2. Initialize the backlog root
+## Step 2. Close the source-set gate
+
+Before `init`, `register-source`, `template packet`, or packet authoring, identify the full source set for the first backlog pass.
+
+Interpret operator wording conservatively:
+
+- if the operator says `based on system.md`, treat `system.md` as the anchor source;
+- do not treat it as the only source unless the operator explicitly says `only from system.md`.
+
+Minimum source-set expectations for a partially implemented repository:
+
+- architecture anchor source;
+- source of truth for `delivery_state`;
+- repo-level cross-cutting ADR or decision sources, when they are declared as canonical;
+- upstream concept or system-definition sources that the architecture source explicitly relies on.
+
+Self-expanding source graph rule:
+
+- if the anchor architecture source points to concept documents, ADRs, cross-cutting contracts, or other canonical sources, stop and expand the source set before packet authoring.
+
+Planning backlog documents may still help with:
+
+- candidate task names;
+- ownership hints;
+- delivery hints.
+
+But they must not replace extraction from concept, architecture, and ADR sources.
+
+Negative rule:
+
+- do not author the first packet until the source-set gate is closed.
+
+## Step 3. Initialize the backlog root
 
 Example:
 
@@ -79,7 +111,7 @@ Result:
 - `./backlog` becomes the backlog root
 - utility-owned files and directories are created there
 
-## Step 3. Register the first architecture source
+## Step 4. Register the sources one by one
 
 Run source registration from the backlog root or one of its child directories.
 
@@ -92,6 +124,8 @@ backlog-engineer register-source \
   --kind architecture \
   --authority authoritative
 ```
+
+Then repeat `register-source` for the rest of the source set, one source at a time.
 
 Important:
 
@@ -109,9 +143,9 @@ Expect in output:
 - `authority`
 - `hash`
 
-Keep the returned `source_id`. Do not invent it later.
+Keep every returned `source_id`. Do not invent them later.
 
-## Step 4. Generate a packet draft
+## Step 5. Generate a packet draft
 
 Example:
 
@@ -139,12 +173,13 @@ What the draft is not:
 
 Replace placeholders such as `<source_id_1>` and remove starter entries that do not apply.
 
-## Step 5. Author the first packet
+## Step 6. Author the first packet
 
 Use the generated draft and fill it from the source document.
 
 Checklist:
 
+- use the full source set, not only the anchor architecture document;
 - replace placeholder `source_id` values with the real registered `source_id`
 - keep only context entries that materially help backlog understanding
 - create atomic tasks, not module-sized blobs
@@ -152,7 +187,14 @@ Checklist:
 - if an uncertainty can be expressed as concrete work, create a `clarification`, `investigation`, or `decision` task instead of leaving only blocked gap items
 - keep the default strategy `coverage-first backlog`
 
-## Step 6. Validate with dry-run first
+Do not let planning backlog documents replace extraction from:
+
+- concept documents;
+- architecture sources;
+- ADRs;
+- cross-cutting decisions.
+
+## Step 7. Validate with dry-run first
 
 Example:
 
@@ -174,7 +216,7 @@ If dry-run reports a problem:
 - fix the draft
 - rerun dry-run
 
-## Step 7. Apply the packet
+## Step 8. Apply the packet
 
 Example:
 
@@ -195,7 +237,7 @@ Interpretation:
 - `canonical_packet_path` is the immutable import copy owned by the utility
 - current backlog truth is not read from either packet file; read it from the utility
 
-## Step 8. Read the first backlog state
+## Step 9. Read the first backlog state
 
 Minimal first-pass flow:
 

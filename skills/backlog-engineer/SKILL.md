@@ -38,7 +38,7 @@ Critical rules:
 4. Missing information becomes explicit `gaps`, not agent invention.
 5. Use `--dry-run` before risky or large mutations.
 6. Prefer scoped operations over global ones when scope is known.
-7. Before creating a new backlog, analyze what the operator already told you; if system state is missing, ask once and wait.
+7. Before creating a new backlog, analyze what the operator already told you; if system state, `delivery_state` source, or the full source set is still missing, stop and close that gap before packet authoring.
 8. All mutating commands for one backlog root run only sequentially, never in parallel.
 
 Fast navigation:
@@ -93,6 +93,54 @@ If the operator is unsure:
 
 - assume mixed evidence may exist;
 - inspect the strongest available implementation signal before assigning `delivery_state`.
+
+## Source-set gate before first packet
+
+After preflight, do not move directly to `register-source`, `template packet`, or packet authoring.
+
+First identify the full source set you will use for the initial backlog.
+
+Minimum rule:
+
+- enumerate the authoritative and supporting sources you will use;
+- know why each source belongs in the first backlog pass;
+- stop and expand the set before packet authoring if a read source points to upstream canonical inputs.
+
+Interpret operator wording conservatively:
+
+- if the operator says `based on X`, treat `X` as the anchor source;
+- do not treat `X` as the only source unless the operator explicitly says `only from X`.
+
+Self-expanding source graph rule:
+
+- if a source says it is based on a concept document, ADRs, repo-level cross-cutting decisions, or other canonical contracts, those referenced sources become mandatory backlog inputs unless the operator explicitly excludes them.
+
+Minimum source set for a partially implemented repository:
+
+- architecture anchor source;
+- source of truth for `delivery_state`;
+- repo-level cross-cutting ADR or decision sources, when they are declared as canonical;
+- upstream concept or system-definition sources that the architecture source explicitly relies on.
+
+Planning backlog documents may still help with:
+
+- candidate task names;
+- ownership hints;
+- delivery hints.
+
+But they must not substitute extraction of:
+
+- claims;
+- constraints;
+- policies;
+- contracts;
+- cross-cutting decisions;
+
+from concept, architecture, and ADR sources.
+
+Negative rule:
+
+- do not author the first packet until the source-set gate is closed.
 
 ## First backlog strategy
 
@@ -326,7 +374,7 @@ Use these as the canonical top-level flows:
 
 | Operator ask | Canonical agent flow |
 | --- | --- |
-| Create backlog from architecture | preflight on system state -> `init` -> `register-source` for all documents -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
+| Create backlog from architecture | preflight on system state -> source-set gate -> `init` -> `register-source` for all relevant sources -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
 | Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |

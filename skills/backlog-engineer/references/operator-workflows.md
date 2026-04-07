@@ -8,7 +8,7 @@ For one canonical first-run walkthrough, use [First Backlog Walkthrough](first-b
 
 | Operator ask | Canonical agent flow |
 | --- | --- |
-| Create backlog from architecture | preflight on system state -> `init` -> `register-source` for all documents -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
+| Create backlog from architecture | preflight on system state -> source-set gate -> `init` -> `register-source` for all relevant sources -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
 | Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
@@ -34,6 +34,12 @@ Before creating a new backlog, analyze operator input first.
 - if the operator already said the system is partially implemented, request the best available source of truth for delivery state;
 - if the operator did not say, ask a short preflight question before running `init`.
 
+After preflight, close a separate source-set gate before packet authoring.
+
+- identify the full source set, not just the anchor source;
+- if the operator says `based on X`, treat `X` as the anchor source, not the only source, unless the operator explicitly says `only from X`;
+- if an architecture source points to upstream concept documents, ADRs, or cross-cutting contracts, those become mandatory inputs unless the operator explicitly excludes them.
+
 Allowed evidence for delivery state:
 
 - codebase;
@@ -43,6 +49,15 @@ Allowed evidence for delivery state:
 - explicit operator instruction.
 
 Use the strongest evidence first and stay conservative when evidence conflicts.
+
+For partially implemented repositories, the minimum first-pass source set includes:
+
+- architecture anchor source;
+- source of truth for delivery state;
+- repo-level cross-cutting ADR or decision sources, when declared as canonical;
+- upstream concept or system-definition sources that the architecture source explicitly relies on.
+
+Planning backlog documents may inform task names, ownership, or delivery hints, but they do not substitute extraction from concept, architecture, and ADR sources.
 
 ## Mutation serialization
 
