@@ -18,6 +18,7 @@
 | [implementation-plan.ru.md](implementation-plan.ru.md) | Детальный инженерный план реализации. Описывает полный definition of done, порядок сборки системы по зависимостям модулей, work packages и критерии завершения без скрытых упрощений. | Читать перед началом кодирования и использовать как execution plan. |
 | [implementation-log.ru.md](implementation-log.ru.md) | Инкрементальный лог выполнения плана. Фиксирует завершённые work packages, принятые инженерные решения, результаты внешнего ревью и связь с коммитами. | Читать во время реализации и при восстановлении контекста по уже завершённым пакетам. |
 | [ux-followup-plan.ru.md](ux-followup-plan.ru.md) | План follow-up изменений после real-world UX feedback. Фиксирует, какие проблемы нужно исправить в `SKILL.md`, runtime, references и нормативных документах, в каком порядке и по каким критериям закрытия. | Читать перед началом post-implementation UX/hardening цикла. |
+| [ux-followup-implementation-plan.ru.md](ux-followup-implementation-plan.ru.md) | Детальный execution plan follow-up исправлений после real-world UX feedback. Разбивает remediation на конкретные пакеты изменений, файлы, acceptance и порядок выполнения. | Читать перед началом follow-up имплементации, если нужен уже не анализ, а пошаговый план изменений. |
 | [utility-spec.ru.md](utility-spec.ru.md) | Полная спецификация утилиты. Описывает внутренние артефакты, алгоритмы команд, recovery/rebuild, derived state, error taxonomy и runtime behavior. | Читать после концепции, когда нужно проектировать реализацию. |
 | [schemas-and-types.ru.md](schemas-and-types.ru.md) | Строгие схемы и exact types для `zod@v4` и TypeScript. Включает authored packet/patch, utility-owned artifacts, command DTOs и error payload. | Читать при реализации `schemas`, `errors`, DTO и parser/validator слоёв. |
 | [module-interfaces.ru.md](module-interfaces.ru.md) | Контракты верхнеуровневых модулей и внутренних сервисов. Фиксирует `src/`-структуру, порты среды, ownership артефактов и test seams. | Читать перед проектированием модулей и unit-тестов. |
@@ -37,9 +38,10 @@
 2. [implementation-plan.ru.md](implementation-plan.ru.md)
 3. [implementation-log.ru.md](implementation-log.ru.md)
 4. [ux-followup-plan.ru.md](ux-followup-plan.ru.md)
-5. [utility-spec.ru.md](utility-spec.ru.md)
-6. [schemas-and-types.ru.md](schemas-and-types.ru.md)
-7. [module-interfaces.ru.md](module-interfaces.ru.md)
+5. [ux-followup-implementation-plan.ru.md](ux-followup-implementation-plan.ru.md)
+6. [utility-spec.ru.md](utility-spec.ru.md)
+7. [schemas-and-types.ru.md](schemas-and-types.ru.md)
+8. [module-interfaces.ru.md](module-interfaces.ru.md)
 
 ### Если нужно проектировать тесты
 
