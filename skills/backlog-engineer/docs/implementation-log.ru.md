@@ -870,7 +870,7 @@
 - Дата: 2026-04-07
 - Начало работ: 2026-04-07 16:31:43 +02:00
 - Полное время закрытия: 1h 17m 08s
-- Коммит:
+- Коммит: `858829c` (`feat(backlog-engineer): add mutation lock and managed gitignore`)
 - Что сделано:
   - подготовлен runtime concurrency guard на backlog root:
     - advisory lock через `open(..., 'wx')`
@@ -910,5 +910,32 @@
   - `pnpm --dir skills/backlog-engineer run test` — OK
 - Внешнее ревью:
   - `spec-conformance-reviewer` повторно не запускался после ранее полученного `PASS`, потому что финальная дельта содержала только code/security hardening без новых spec-link изменений
+  - `code-reviewer` — PASS
+  - `security-reviewer` — PASS
+
+### Follow-up package `S3` — `Packet output clarity`
+
+- Статус: завершён
+- Дата: 2026-04-07
+- Начало работ: 2026-04-07 17:50:38 +02:00
+- Полное время закрытия: 13m 19s
+- Коммит:
+- Что делаем:
+  - делаем `packet` success output self-explanatory для authored draft vs immutable canonical import copy
+  - добавляем структурные поля:
+    - `authored_packet_path`
+    - `canonical_packet_path`
+    - `canonical_packet_purpose = "immutable_import_copy"`
+  - синхронизируем `SKILL.md`, `references/*`, концепцию, спецификацию, схемы и тесты
+- Ключевые решения:
+  - свободный prose-блок в output не добавляется; различение authored/canonical packet делается только структурными полями
+- Допущения вне спецификации:
+  - нет; реализуется уже согласованный follow-up contract
+- Локальная приёмка:
+  - `pnpm --dir skills/backlog-engineer run format`
+  - `pnpm --dir skills/backlog-engineer run lint`
+  - `pnpm --dir skills/backlog-engineer run test`
+- Внешние ревью:
+  - `spec-conformance-reviewer` — PASS
   - `code-reviewer` — PASS
   - `security-reviewer` — PASS

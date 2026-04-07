@@ -1406,6 +1406,9 @@ Dry-run не должен:
 ```json
 {
   "dry_run": false,
+  "authored_packet_path": "/abs/backlog/drafts/auth-module.packet.json",
+  "canonical_packet_path": "packets/ef9458cc0e32--auth-module.packet.json",
+  "canonical_packet_purpose": "immutable_import_copy",
   "counts": {
     "added": 2,
     "removed": 0,
@@ -1442,6 +1445,11 @@ Dry-run не должен:
 - `BE_CONTEXT_CONFLICT_ENTITY`
 - `BE_DEPENDENCY_NOT_FOUND`
 - `BE_CANONICAL_WRITE_FAILED`
+
+Dry-run variant:
+
+- `authored_packet_path` остаётся в response contract;
+- `canonical_packet_path` и `canonical_packet_purpose` отсутствуют, потому что canonical import copy не создаётся.
 
 ### Unit-test focus
 

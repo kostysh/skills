@@ -839,6 +839,9 @@ type PacketCommandInput = {
 
 type PacketCommandOutput = {
   dry_run: boolean;
+  authored_packet_path: NormalizedFsPath;
+  canonical_packet_path?: BacklogRelativePosixPath;
+  canonical_packet_purpose?: "immutable_import_copy";
   counts: PacketMutationCounts;
   added: ItemKey[];
   removed: ItemKey[];

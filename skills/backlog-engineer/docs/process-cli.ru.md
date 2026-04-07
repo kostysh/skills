@@ -556,6 +556,9 @@
 
 ```json
 {
+  "authored_packet_path": "/abs/backlog/drafts/users-db.packet.json",
+  "canonical_packet_path": "packets/9fa45c5797fc--users-db.packet.json",
+  "canonical_packet_purpose": "immutable_import_copy",
   "counts": {
     "added": 1,
     "removed": 0,
@@ -586,6 +589,9 @@
 ```
 
 Где:
+- `authored_packet_path`: authored packet draft, который агент подал на вход;
+- `canonical_packet_path`: immutable canonical import copy, которую утилита хранит внутри backlog root;
+- `canonical_packet_purpose = "immutable_import_copy"`: короткий machine-readable маркер смысла canonical copy;
 - `added`: новые задачи;
 - `removed`: для `packet` всегда пустой список; поле сохраняется только для единообразия с другими mutating-командами;
 - `todo_created`: задачи, для которых утилита создала новые действия;
@@ -608,6 +614,7 @@
 - если открытых `todo` в результате нет и оператор просил только результат изменения, дополнительных чтений не нужно.
 
 После успешного `packet` исходный пакет считается immutable.
+Если команда шла в `--dry-run`, `authored_packet_path` остаётся в ответе, а `canonical_packet_path` и `canonical_packet_purpose` отсутствуют.
 
 **Инструкции скила для агента:**
 

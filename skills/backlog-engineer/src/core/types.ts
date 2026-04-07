@@ -1,13 +1,14 @@
 import type {
   AttentionCommandOutput,
   AttentionReasonCode,
+  CommandSuggestion,
   GapsCommandInput,
   GapsCommandOutput,
   ItemsCommandOutput,
   ItemKey,
-  PacketCommandOutput,
   PacketFile,
   PacketId,
+  PacketMutationCounts,
   PatchFile,
   PatchItemCommandOutput,
   RefreshCommandInput,
@@ -125,6 +126,16 @@ export interface AttentionService {
   }): AttentionCommandOutput;
 }
 
+export interface PacketMutationSummary {
+  dry_run: boolean;
+  counts: PacketMutationCounts;
+  added: ItemKey[];
+  removed: ItemKey[];
+  todo_created: ItemKey[];
+  todo_updated: ItemKey[];
+  next_commands: CommandSuggestion[];
+}
+
 export interface MutationService {
   applyPacket(payload: {
     state: StateFile;
@@ -132,7 +143,7 @@ export interface MutationService {
     sourceRegistry: SourceRegistryFile;
     packetId: PacketId;
     dryRun: boolean;
-  }): Promise<PacketCommandOutput & { state: StateFile }>;
+  }): Promise<PacketMutationSummary & { state: StateFile }>;
   applyPatch(payload: {
     state: StateFile;
     patch: PatchFile;

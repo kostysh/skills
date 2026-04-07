@@ -495,6 +495,8 @@
 - preserves referential integrity after apply
 - summary contains exact fields from `PacketCommandOutput`
 - writes canonical packet copy and applied entry
+- real apply returns `authored_packet_path`, `canonical_packet_path`, and `canonical_packet_purpose`
+- dry-run returns `authored_packet_path` but does not claim a canonical copy
 - dry-run returns same summary counts without writes
 
 ## 11.6. `patch-item`

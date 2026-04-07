@@ -121,6 +121,9 @@ Supports:
 
 Compact response should include:
 
+- `authored_packet_path`
+- `canonical_packet_path` on real apply
+- `canonical_packet_purpose = "immutable_import_copy"` on real apply
 - `counts`
 - `added`
 - `removed` as an always-empty compatibility bucket
@@ -131,6 +134,9 @@ Compact response should include:
 
 Interpretation:
 
+- `authored_packet_path` is the authored draft that the agent supplied;
+- `canonical_packet_path` is the immutable import copy owned by the utility;
+- `canonical_packet_purpose = "immutable_import_copy"` means the canonical file is intentional, not clutter;
 - the authored packet remains your draft file;
 - the utility stores a separate immutable canonical import copy;
 - current backlog truth is still read from the utility.

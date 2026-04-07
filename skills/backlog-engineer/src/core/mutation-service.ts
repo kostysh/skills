@@ -3,7 +3,6 @@ import type { ClockPort } from '../runtime/ports.ts';
 import type {
   CommandSuggestion,
   ItemKey,
-  PacketCommandOutput,
   PacketFile,
   PatchFile,
   RefreshCommandInput,
@@ -22,10 +21,11 @@ import type {
   DerivedStateService,
   GraphService,
   MutationService,
+  PacketMutationSummary,
   TodoService,
 } from './types.ts';
 
-type PacketSummary = PacketCommandOutput & { state: StateFile };
+type PacketSummary = PacketMutationSummary & { state: StateFile };
 type RefreshSummary = RefreshCommandOutput & { state: StateFile; registry: SourceRegistryFile };
 
 function sortKeys<T extends string>(values: Iterable<T>): T[] {
@@ -590,18 +590,7 @@ export function createMutationService(payload: {
         }),
       };
 
-      return Promise.resolve({
-        ...payload.schemas.parseCommandOutput('packet', {
-          dry_run: summary.dry_run,
-          counts: summary.counts,
-          added: summary.added,
-          removed: summary.removed,
-          todo_created: summary.todo_created,
-          todo_updated: summary.todo_updated,
-          next_commands: summary.next_commands,
-        }),
-        state: nextState,
-      });
+      return Promise.resolve(summary);
     },
 
     applyPatch({ state, patch, sourceRegistry, dryRun }) {

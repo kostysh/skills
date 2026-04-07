@@ -160,6 +160,9 @@ export const PacketCommandInputSchema = z.strictObject({
 
 export const PacketCommandOutputSchema = z.strictObject({
   dry_run: z.boolean(),
+  authored_packet_path: NormalizedFsPathSchema,
+  canonical_packet_path: BacklogRelativePosixPathSchema.optional(),
+  canonical_packet_purpose: z.literal('immutable_import_copy').optional(),
   counts: PacketMutationCountsSchema,
   added: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
   removed: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),

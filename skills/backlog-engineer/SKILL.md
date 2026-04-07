@@ -331,9 +331,17 @@ Follow-up rule:
 
 Interpret `packet` success like this:
 
+- `authored_packet_path` is the authored draft file you supplied to the command;
+- `canonical_packet_path` is the utility-owned immutable import copy inside the backlog root;
+- `canonical_packet_purpose = immutable_import_copy` means that file is intentional, not clutter;
 - the authored packet file remains your authored draft;
 - the utility stores its own immutable canonical import copy;
 - current backlog truth still comes from the utility, not from either packet file.
+
+Dry-run note:
+
+- in `packet --dry-run`, expect `authored_packet_path`;
+- do not expect `canonical_packet_path`, because no canonical import copy is written.
 
 ### `status`
 

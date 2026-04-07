@@ -78,10 +78,14 @@ export const PACKET_COMMAND: CommandDefinition<PacketCommandInput, PacketCommand
       packetId,
       dryRun: input.dry_run,
     });
-    const { state: nextState, ...output } = summary;
+    const { state: nextState, ...summaryOutput } = summary;
+    const outputBase = {
+      ...summaryOutput,
+      authored_packet_path: packetInput.absolutePath,
+    };
 
     if (input.dry_run) {
-      return output;
+      return outputBase;
     }
 
     const appliedAt = context.host.nowIsoUtc();
@@ -104,6 +108,11 @@ export const PACKET_COMMAND: CommandDefinition<PacketCommandInput, PacketCommand
 
     await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
     await context.artifacts.writeState(context.backlogRoot, nextState);
+    const output = {
+      ...outputBase,
+      canonical_packet_path: canonicalImport.canonicalPath,
+      canonical_packet_purpose: 'immutable_import_copy' as const,
+    };
     await context.hooks.afterPacketApplied?.({
       summary: output,
       state: nextState,

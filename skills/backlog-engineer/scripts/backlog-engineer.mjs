@@ -4722,6 +4722,9 @@ var PacketCommandInputSchema = strictObject({
 });
 var PacketCommandOutputSchema = strictObject({
 	dry_run: boolean(),
+	authored_packet_path: NormalizedFsPathSchema,
+	canonical_packet_path: BacklogRelativePosixPathSchema.optional(),
+	canonical_packet_purpose: literal("immutable_import_copy").optional(),
 	counts: PacketMutationCountsSchema,
 	added: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
 	removed: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
@@ -5758,14 +5761,18 @@ var PACKET_COMMAND = {
 			})
 		]);
 		const packetId = context.host.createUuid();
-		const { state: nextState, ...output } = await context.core.mutation.applyPacket({
+		const { state: nextState, ...summaryOutput } = await context.core.mutation.applyPacket({
 			state,
 			packet: packetInput.value,
 			sourceRegistry,
 			packetId,
 			dryRun: input.dry_run
 		});
-		if (input.dry_run) return output;
+		const outputBase = {
+			...summaryOutput,
+			authored_packet_path: packetInput.absolutePath
+		};
+		if (input.dry_run) return outputBase;
 		const appliedAt = context.host.nowIsoUtc();
 		const canonicalImport = await context.artifacts.importPacketFile({
 			root: context.backlogRoot,
@@ -5785,6 +5792,11 @@ var PACKET_COMMAND = {
 		});
 		await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
 		await context.artifacts.writeState(context.backlogRoot, nextState);
+		const output = {
+			...outputBase,
+			canonical_packet_path: canonicalImport.canonicalPath,
+			canonical_packet_purpose: "immutable_import_copy"
+		};
 		await context.hooks.afterPacketApplied?.({
 			summary: output,
 			state: nextState,
@@ -9325,18 +9337,7 @@ function createMutationService(payload) {
 					itemsReason: "Inspect full cards of tasks that received review todo."
 				})
 			};
-			return Promise.resolve({
-				...payload.schemas.parseCommandOutput("packet", {
-					dry_run: summary.dry_run,
-					counts: summary.counts,
-					added: summary.added,
-					removed: summary.removed,
-					todo_created: summary.todo_created,
-					todo_updated: summary.todo_updated,
-					next_commands: summary.next_commands
-				}),
-				state: nextState
-			});
+			return Promise.resolve(summary);
 		},
 		applyPatch({ state, patch, sourceRegistry, dryRun }) {
 			const isRemoveItemPatch = patch.operations.every((operation) => operation.action === "remove_item");
