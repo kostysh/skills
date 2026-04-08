@@ -34,5 +34,5 @@ This file contains repo-specific overlays only.
 - Verify step bundle: `node scripts/dossier.mjs dossier-verify --step implementation --changed-only`
 - Persist review: `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --verdict PASS`
 - Close step: `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact ... --review-artifact ...`
-- Resolve dossier-local next action: `node scripts/dossier.mjs next-step`
+- Resolve dossier-local next action: `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md`
 ```

@@ -15,7 +15,7 @@ Use `backlog-engineer` first to:
 
 Use `dossier-engineer` after work has already been selected.
 
-## Repository bootstrap (`init`)
+## Workflow stage: repository bootstrap (`init`)
 
 Use `init` once per repository, after a repo-level architecture document already exists.
 
@@ -28,7 +28,7 @@ Expected output:
 - Repo-local dossier automation scripts in `scripts/`
 - Repo-root `AGENTS.md` with dossier rules and repo overlays
 
-## Intake starts from selected backlog work (`feature-intake`)
+## CLI command: `feature-intake`
 
 Use `feature-intake` only after `backlog-engineer` has already selected the work item.
 
@@ -36,7 +36,13 @@ Rules:
 
 - `feature-intake` creates a real dossier for selected backlog work.
 - The selected work remains owned by the backlog graph; the dossier does not replace backlog state.
+- Intake must preserve one durable backlog handoff:
+  - backlog item key
+  - backlog delivery state at intake
+  - source traceability
+  - known blockers / dependencies at intake time
 - If intake discovers new blockers, missing dependencies, missing context, or lifecycle-changing facts, return to `backlog-engineer` and actualize backlog state before continuing.
+- `index-refresh` is the canonical full refresh path after intake. Use `sync-index` only when you intentionally want table/graph refresh without a Red flags update.
 - `docs/ssot/index.md` lists only real dossiers.
 
 ## State dimensions
@@ -72,7 +78,7 @@ Return to `backlog-engineer` when dossier-side work changes backlog truth:
 - implementation and closure make the work `implemented`;
 - new blockers, dependencies, clarified context, or cross-cutting decisions must be reflected in backlog state.
 
-## `next-step` scope
+## CLI command: `next-step`
 
 `next-step` is dossier-local only.
 
@@ -88,6 +94,11 @@ It does **not** answer:
 - whether another task has higher project priority.
 
 Those questions belong to `backlog-engineer`.
+
+Important:
+
+- if multiple dossiers are active, pass `--dossier` explicitly;
+- `next-step` output is dossier-local and does not replace repo overlay ingestion before acting.
 
 ## No-technical-debt policy
 
@@ -124,4 +135,4 @@ If a PR references `F-XXXX`, it must:
 - `node scripts/dossier.mjs coverage-audit --changed-only --base origin/main`
 - `node scripts/dossier.mjs debt-audit --changed-only --base origin/main`
 - `node scripts/dossier.mjs dossier-verify --step implementation --changed-only --base origin/main`
-- `node scripts/dossier.mjs next-step`
+- `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md`

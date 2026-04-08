@@ -23,6 +23,8 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [backlog-process-gap-analysis.ru.md](backlog-process-gap-analysis.ru.md) | Detailed gap analysis of `backlog-engineer` against the target cross-skill process: what already fits, what interop rules are still missing, and what should be adjusted later for full alignment. This document is written in Russian. | Read after the dossier gap analysis, before planning backlog-side alignment changes. |
 | [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md) | Stage-1 refactoring plan for `dossier-engineer` under the backlog-driven process: fixed decisions, work packages, sequencing, and acceptance gates. This document is written in Russian. | Read when moving from process analysis to actual dossier-side refactoring work. |
 | [implementation-log-1.ru.md](implementation-log-1.ru.md) | Incremental log for dossier harmonization implementation work. This document is written in Russian. | Read when you need the package-by-package record of decisions, checks, review rounds, and commits. |
+| [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md) | Corrective UX pass plan after operator/agent audit: command-surface cleanup, durable backlog handoff, step-local backlog sync, and safe `next-step` targeting. This document is written in Russian. | Read when working on the post-refactor UX hardening cycle. |
+| [implementation-log-2.ru.md](implementation-log-2.ru.md) | Incremental log for the UX corrective pass. This document is written in Russian. | Read when you need the package-by-package record for the UX hardening cycle. |
 
 ## Related Materials
 
@@ -57,6 +59,14 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 6. [implementation-log-1.ru.md](implementation-log-1.ru.md)
 7. [../SKILL.md](../SKILL.md)
 8. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+
+### If you are working on the UX corrective pass
+
+1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
+2. [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md)
+3. [implementation-log-2.ru.md](implementation-log-2.ru.md)
+4. [../SKILL.md](../SKILL.md)
+5. [../references/WORKFLOW.md](../references/WORKFLOW.md)
 
 ## Scope of This Folder
 

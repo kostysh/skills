@@ -30,11 +30,18 @@ Notes:
 
 - `status` tracks **workflow maturity**.
 - `coverage_gate` tracks **coverage enforcement strictness**.
+- Preserve one explicit backlog handoff block in the dossier body:
+  backlog item key, backlog delivery state at intake, source traceability, and intake-time blockers/dependencies.
 - Default policy is usually `deferred` for `proposed|shaped|planned` and `strict` for `in_progress|done`, unless repo overlays say otherwise.
 - Slices and tasks are **forecast by default**. Commitment usually lives in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints.
 
 ## 1. Context & Goal
 
+- **Backlog handoff:**
+  - Backlog item key:
+  - Backlog delivery state at intake:
+  - Source traceability:
+  - Known blockers / dependencies at intake:
 - **User problem:** Describe the user’s pain in 2–5 sentences.
 - **Goal:** Describe observable outcomes.
 - **Non-goals:** List what is explicitly out of scope.

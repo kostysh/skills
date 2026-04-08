@@ -208,7 +208,7 @@ When dossier work changes backlog truth, return to `backlog-engineer` explicitly
 
 ## Step closure contract
 
-For every **mutating** step (`init`, `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `adr-log`, `dependency-check`, `sync-index`, `index-refresh`, or a user-approved implementation increment):
+For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, or a user-approved implementation increment):
 
 1. Finish the command’s local work.
 2. Run the command-specific checks.
@@ -282,7 +282,30 @@ Every command-specific checklist below follows the same review philosophy:
 9. **For implementation review, separate completeness review, code review, and security review** instead of assuming one umbrella check covers them.
    Use `code-reviewer` for the nested code review pass and `security-reviewer` for the nested security review pass when those skills are available. These nested passes do **not** require separate durable report artifacts, but every finding they produce must be surfaced by the reviewer and reflected in the final review verdict or `must-fix` list.
 
-## Commands / modes
+## Workflow stages and shipped CLI commands
+
+Two layers exist in this skill:
+
+- workflow stages that the agent must perform as part of the process;
+- shipped CLI commands that are actually exposed by `node scripts/dossier.mjs`.
+
+Do not assume that every workflow stage is a runnable CLI subcommand.
+
+Shipped CLI commands in the current runtime:
+
+- `feature-intake`
+- `sync-index`
+- `index-refresh`
+- `lint-dossiers`
+- `dependency-graph`
+- `coverage-audit`
+- `debt-audit`
+- `marker-audit`
+- `contract-drift-audit`
+- `review-artifact`
+- `dossier-step-close`
+- `dossier-verify`
+- `next-step`
 
 ### `help`
 
@@ -309,7 +332,7 @@ Review checklist:
 - [ ] It correctly states that `docs/ssot/index.md` lists only real dossiers.
 - [ ] It correctly states that backlog shaping and selection belong to `backlog-engineer`.
 
-### `init`
+### Workflow stage: `init`
 
 Bootstrap the dossier protocol in a repository that already has architecture.
 
@@ -330,20 +353,8 @@ Steps:
 3. If no architecture exists, stop without partial bootstrap.
 4. If exactly one clear candidate exists, move or rename it to `docs/architecture/system.md`.
 5. Ensure `docs/features/` and `.dossier/` directories exist.
-6. Provision canonical dossier automation scripts into repo `scripts/` when safe:
-   - `sync-index.mjs`
-   - `lint-dossiers.mjs`
-   - `coverage-audit.mjs`
-   - `dependency-graph.mjs`
-   - `debt-audit.mjs`
-   - `marker-audit.mjs`
-   - `index-refresh.mjs`
-   - `dossier-verify.mjs`
-   - `review-artifact.mjs`
-   - `dossier-step-close.mjs`
-   - `contract-drift-audit.mjs`
-   - `next-step.mjs`
-   - `scripts/lib/*`
+6. If the repository chooses embedded dossier automation, provision repo-local scripts or wrappers when safe and report exactly which commands and paths were created.
+   The shipped skill runtime itself remains `node scripts/dossier.mjs <command>` inside this skill package; do not imply that bootstrap automatically creates a repo-local `scripts/dossier.mjs` unless the bootstrap report explicitly says it did.
 7. Create or normalize `docs/ssot/index.md`.
 8. Create or update repo-root `AGENTS.md` as an overlay-only file.
 9. Re-read architecture and surface day-1 implementation invariants that future modes must preserve.
@@ -359,7 +370,7 @@ Review checklist:
 - [ ] Reported invariants are grounded in architecture/ADRs instead of being invented.
 - [ ] The final report distinguishes created, moved, normalized, and untouched artifacts accurately.
 
-### `feature-intake`
+### CLI command: `feature-intake`
 
 Create a new Feature Dossier and register it in the global index.
 
@@ -380,22 +391,29 @@ Steps:
    - `impacts`
    - `created`
    - `updated`
-6. Capture the selected backlog work, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
-7. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
-8. Run `node scripts/dossier.mjs sync-index` or `node scripts/dossier.mjs index-refresh`.
+6. Record one canonical backlog handoff block in the dossier:
+   - backlog item key;
+   - backlog delivery state at intake;
+   - relevant backlog source traceability;
+   - known blockers and dependencies already visible at intake time.
+7. Capture the selected backlog context, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
+8. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path after intake.
+   Use `sync-index` only when you intentionally need table/graph refresh without a Red flags update.
+9. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
 
 Review checklist:
 
 - [ ] The selected work came from `backlog-engineer`, not from local architecture rediscovery.
 - [ ] The new dossier uses the next free `F-XXXX` and a stable slug.
-- [ ] Frontmatter is valid and complete enough for lint, including explicit `coverage_gate`.
-- [ ] `status` is `proposed`, `coverage_gate` is explicit, and AC IDs match the feature numeric ID.
+- [ ] Frontmatter is valid and complete enough for the workflow, including explicit `coverage_gate`.
+- [ ] `status` is `proposed`, `coverage_gate` is explicit, and the dossier does not pretend that compact specification is already complete.
+- [ ] The dossier contains one explicit backlog handoff block with item key, backlog state, source traceability, and intake-time blockers/dependencies.
 - [ ] Context, scope, constraints, and assumptions are grounded in architecture, ADR, and selected-work context.
 - [ ] `depends_on` contains only real delivered prerequisites.
-- [ ] Intake-side blockers or missing dependencies were returned to `backlog-engineer` before implementation starts.
+- [ ] Intake-side blockers or missing dependencies were returned to `backlog-engineer` before the next downstream stage.
 - [ ] `docs/ssot/index.md` contains exactly one row for the new dossier.
 
-### `spec-compact`
+### Workflow stage: `spec-compact`
 
 Turn the existing dossier into a compact spec that is specific enough to implement and verify.
 
@@ -447,6 +465,7 @@ Steps:
 11. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
 12. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
 13. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
+14. Before moving to planning, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = specified`, or when shaping exposed new blockers, dependencies, or context facts.
 
 Review checklist:
 
@@ -471,9 +490,10 @@ Process integrity:
 - [ ] Repo overlays and repo ADRs were ingested before finalizing the spec.
 - [ ] Any cross-cutting decision was externalized instead of being left hidden inside one dossier.
 - [ ] `status` is consistent with spec maturity and `coverage_gate` stays explicit.
+- [ ] If shaping changed backlog truth, the backlog was updated through `backlog-engineer` before leaving this stage.
 - [ ] The final answer reports any overlay that changed the default path.
 
-### `plan-slice`
+### Workflow stage: `plan-slice`
 
 Add an incremental slicing plan inside the dossier.
 
@@ -507,6 +527,7 @@ Steps:
 14. Set or confirm `coverage_gate` explicitly.
    - Default: `deferred`
    - Tighten to `strict` only when the repo overlay requires it or planning is intentionally treated as a blocking verification gate.
+15. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
 
 Review checklist:
 
@@ -523,9 +544,10 @@ Review checklist:
 - [ ] Any required realignment of existing delivered work is explicit.
 - [ ] The plan treats slices/tasks as forecast, while ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints carry the commitment signal.
 - [ ] `status: planned` is used for planning maturity, while `coverage_gate` independently captures coverage strictness.
+- [ ] If planning changed backlog truth, the backlog was updated through `backlog-engineer` before leaving this stage.
 - [ ] The final answer does not rationalize a status workaround such as “planned but really shaped”; it uses the explicit state model instead.
 
-### `implementation`
+### Workflow stage: `implementation`
 
 Implement the planned feature while keeping dossier, architecture, overlays, and delivered substrate aligned.
 
@@ -548,6 +570,7 @@ Steps:
    These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
 9. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 10. Close the step with `dossier-step-close` before saying it is complete.
+11. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
 
 Required adversarial checklist for side-effecting code:
 
@@ -572,10 +595,11 @@ Review checklist:
 - [ ] The target dossier was updated in the same workstream.
 - [ ] Side-effecting behavior passed the adversarial checklist above.
 - [ ] `coverage_gate` is strict when implementation closure depends on executable verification.
+- [ ] If implementation changed backlog truth, the backlog was updated through `backlog-engineer` before leaving this stage.
 - [ ] `dossier-verify`, independent review, and `dossier-step-close` all ran on the closure target.
 - [ ] The final answer accurately reports `Process-complete: yes|no`.
 
-### `adr-log`
+### Workflow stage: `adr-log`
 
 Record an architectural decision as an ADR block (default) or separate ADR file (rare).
 
@@ -592,7 +616,7 @@ Review checklist:
 - [ ] Consequences and follow-ups are reflected in the affected dossier, backlog, or architecture.
 - [ ] Discoverability from dossier/index/architecture paths is preserved.
 
-### `dependency-check`
+### Workflow stage: `dependency-check`
 
 Validate and visualize dependencies.
 
@@ -601,7 +625,8 @@ Steps:
 1. Read `depends_on` and `impacts` from dossier frontmatter.
 2. Validate that all referenced `F-*` dossiers exist.
 3. Generate a Mermaid graph via `node scripts/dossier.mjs dependency-graph`.
-4. Refresh the index with `node scripts/dossier.mjs sync-index` or `node scripts/dossier.mjs index-refresh`.
+4. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path.
+   Use `sync-index` only when you intentionally want table/graph refresh without a Red flags update.
 
 Review checklist:
 
@@ -660,7 +685,7 @@ Review checklist:
 - [ ] Any findings were removed immediately or surfaced as blocking until a canonical follow-up artifact exists.
 - [ ] The final claim does not treat this audit as a substitute for manual debt review or implementation-completeness review.
 
-### `change-proposal`
+### Workflow stage: `change-proposal`
 
 Apply requirement changes safely.
 
@@ -676,7 +701,7 @@ Steps:
    - same dossier slice/task;
    - linked backlog item;
    - ADR or architecture update.
-7. Run `lint-dossiers`, `coverage-audit`, marker audit, and `sync-index` or `index-refresh`.
+7. Run `lint-dossiers`, `coverage-audit`, marker audit, and `index-refresh` as the canonical full refresh path.
 8. Do not report the step as docs-only complete when executable follow-up is still required.
 
 Review checklist:
@@ -856,7 +881,7 @@ Review checklist:
 - [ ] If code/test/runtime follow-up is missing, the report says so explicitly.
 - [ ] The final answer does not call the change docs-only when the audit disagrees.
 
-### `next-step`
+### CLI command: `next-step`
 
 Return the next dossier-local workflow action for already selected work.
 
@@ -866,9 +891,8 @@ Purpose:
 
 Run examples:
 
-- `node scripts/dossier.mjs next-step`
 - `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md`
-- `node scripts/dossier.mjs next-step --json`
+- `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md --json`
 
 Expected output dimensions:
 
@@ -883,9 +907,11 @@ Expected output dimensions:
 Review checklist:
 
 - [ ] The answer stays dossier-local and does not try to choose backlog work.
+- [ ] When more than one dossier is active, `--dossier` was used instead of relying on implicit selection.
 - [ ] Blocking gates come from actual durable artifacts when available.
 - [ ] Dirty worktree state is surfaced explicitly.
 - [ ] Review freshness is reported against the current commit.
+- [ ] Repo overlays and repo ADRs were ingested before acting on the result; `next-step` output does not replace overlay ingestion.
 - [ ] The final answer tells the user to return to `backlog-engineer` when backlog blockers or lifecycle updates must be resolved.
 
 ## Examples
