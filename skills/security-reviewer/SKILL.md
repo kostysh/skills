@@ -137,6 +137,18 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 | Medium | real weakness with narrower preconditions or reduced blast radius |
 | Low | defense-in-depth only; usually do not report unless explicitly requested |
 
+## Default Brevity Mode
+
+Unless the user explicitly asks for a formal audit or report:
+
+- use terse chat output
+- do not narrate intermediate reasoning or review passes
+- do not produce tables, matrices, executive summaries, or cleared-surfaces sections
+- report all confirmed in-scope findings, but keep the output compressed
+- make each finding short, behavior-based, and evidence-backed
+- collapse duplicate symptoms into one root-cause finding where possible
+- keep questions and assumptions to the minimum necessary for correctness
+
 ## Output Rules
 
 - Findings first, ordered by severity.

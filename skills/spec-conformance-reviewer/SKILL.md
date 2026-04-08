@@ -87,6 +87,18 @@ If sources conflict, do not silently choose one. Record the conflict, cite both 
 - tests that actually prove the required behavior
 - runtime-dependent areas that cannot be proven from the current evidence
 
+## Default Brevity Mode
+
+Unless the user explicitly asks for a formal audit or report:
+
+- use terse chat output
+- do not narrate intermediate reasoning or review passes
+- do not produce tables, matrices, executive summaries, or cleared-surfaces sections
+- report all confirmed in-scope findings, but keep the output compressed
+- make each finding short, behavior-based, and evidence-backed
+- collapse duplicate symptoms into one root-cause finding where possible
+- keep questions and assumptions to the minimum necessary for correctness
+
 ## Output Rules
 
 - Findings must cite requirement IDs, spec basis, implementation evidence, impact, and fix direction.
