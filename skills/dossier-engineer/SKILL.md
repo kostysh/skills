@@ -315,6 +315,12 @@ Shipped CLI commands in the current runtime:
 - `dossier-verify`
 - `next-step`
 
+Checklist meaning in this section:
+
+- These checklists are internal self-check and completion gates for the agent using this skill.
+- They define what must be true before a workflow stage is treated as complete or before a CLI command result is trusted.
+- They do **not** replace external audits such as spec-conformance review, code review, or security review when those audits are required by the process.
+
 ### Workflow stages
 
 #### Workflow stage: `init`
@@ -345,7 +351,7 @@ Steps:
 9. Re-read architecture and surface day-1 implementation invariants that future modes must preserve.
 10. Report created, moved, renamed, normalized, and untouched artifacts separately.
 
-Review checklist:
+Stage exit checklist:
 
 - [ ] If no architecture existed, the command stopped cleanly and did not leave half-created bootstrap artifacts behind.
 - [ ] If `init` proceeded, canonical docs directories and `.dossier/` exist.
@@ -409,7 +415,7 @@ Steps:
 13. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
 14. Before moving to planning, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = specified`, or when shaping exposed new blockers, dependencies, or context facts.
 
-Review checklist:
+Stage exit checklist:
 
 Spec quality:
 - [ ] The same dossier was evolved in place; no shadow SSoT exists.
@@ -472,7 +478,7 @@ Steps:
 15. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
     The planning stage is not complete until this required backlog actualization is done.
 
-Review checklist:
+Stage exit checklist:
 
 - [ ] No unresolved `Open question` marked `needed_by: before_planned` remains.
 - [ ] The dossier contains 2–6 slices in delivery order.
@@ -527,7 +533,7 @@ Required adversarial checklist for side-effecting code:
 - logging/audit append failures have defined behavior;
 - crash/restart boundaries do not produce impossible states.
 
-Review checklist:
+Stage exit checklist:
 
 - [ ] Code changes follow the canonical stack, runtime, deployment path, and repo overlays.
 - [ ] Delivered behavior maps back to slices/ACs or to an explicit approved change.
@@ -553,7 +559,7 @@ Rules:
 - Use ADR blocks inside the dossier for feature-local decisions.
 - Create `docs/adr/ADR-YYYY-MM-DD-<slug>.md` only for cross-cutting decisions.
 
-Review checklist:
+Stage exit checklist:
 
 - [ ] The decision was recorded in the right place.
 - [ ] The ADR has a stable ID, title, status, date, context, decision, alternatives, and consequences.
@@ -573,7 +579,7 @@ Steps:
 4. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path.
    Use `sync-index` only when you intentionally want table/graph refresh without a Red flags update.
 
-Review checklist:
+Stage exit checklist:
 
 - [ ] Every `depends_on` entry is formatted as `F-XXXX` and points to an existing dossier.
 - [ ] The Mermaid graph matches current frontmatter.
@@ -600,7 +606,7 @@ Steps:
 7. Run `lint-dossiers`, `coverage-audit`, marker audit, and `index-refresh` as the canonical full refresh path.
 8. Do not report the step as docs-only complete when executable follow-up is still required.
 
-Review checklist:
+Stage exit checklist:
 
 - [ ] The change log contains a new version/date/reason entry.
 - [ ] Planning-affecting changes use an explicit reason tag such as `[clarification]`, `[scope realignment]`, `[dependency realignment]`, `[risk discovery]`, or `[contract drift]`.
@@ -630,7 +636,7 @@ Output:
   - `coverage_gate` is distinct from dossier `status`;
   - `next-step` is dossier-local and does not choose backlog work.
 
-Review checklist:
+Stage exit checklist:
 
 - [ ] The reply is brief and practical.
 - [ ] The flow includes closure steps, not just authoring steps.
@@ -672,7 +678,7 @@ Steps:
 10. If `feature-intake --json` returns `partial_success: true`, treat intake as incomplete until the reported `index-refresh` failure is resolved.
 11. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
 
-Review checklist:
+Command correctness checklist:
 
 - [ ] The selected work came from `backlog-engineer`, not from local architecture rediscovery.
 - [ ] The new dossier uses the next free `F-XXXX` and a stable slug.
@@ -700,7 +706,7 @@ Run examples:
 - `node scripts/dossier.mjs coverage-audit --changed-only --base origin/main`
 - `node scripts/dossier.mjs coverage-audit --dossier docs/features/F-XXXX-*.md --orphans-scope=dossier`
 
-Review checklist:
+Command correctness checklist:
 
 - [ ] The audit ran against the intended scope.
 - [ ] `coverage_gate` handling matches the actual frontmatter or repo policy.
@@ -726,7 +732,7 @@ Run examples:
 - `node scripts/dossier.mjs debt-audit --changed-only --base origin/main`
 - `node scripts/dossier.mjs marker-audit --paths src/server,docs/features/F-0001-foo.md`
 
-Review checklist:
+Audit fidelity checklist:
 
 - [ ] The audit ran against the intended scope.
 - [ ] The report clearly states that it is marker-only.
@@ -741,7 +747,7 @@ Run:
 
 - `node scripts/dossier.mjs dependency-graph`
 
-Review checklist:
+Audit fidelity checklist:
 
 - [ ] The graph is generated from current dossier frontmatter.
 - [ ] Dependency edges reflect current `depends_on` relationships.
@@ -756,7 +762,7 @@ Run:
 
 - `node scripts/dossier.mjs sync-index`
 
-Review checklist:
+Command correctness checklist:
 
 - [ ] `docs/ssot/index.md` was regenerated from current dossier frontmatter.
 - [ ] The features table contains one row per dossier and no `CF-*` entries.
@@ -778,7 +784,7 @@ Behavior:
 - Then runs `lint-dossiers --update-index` to refresh the generated Red flags block.
 - Use this when you want one deterministic writer for both generated sections.
 
-Review checklist:
+Command correctness checklist:
 
 - [ ] `sync-index` ran before any Red flags update.
 - [ ] The index was mutated by one orchestrated path rather than multiple ad hoc writers.
@@ -799,7 +805,7 @@ Contract:
 - By default, `lint-dossiers` is read-only.
 - Use `--update-index` only when you intentionally want to refresh the Red flags block.
 
-Review checklist:
+Audit fidelity checklist:
 
 - [ ] Lint was run against the current repo state and findings were captured faithfully.
 - [ ] Any reported errors were fixed before claiming success, or surfaced as blocking.
@@ -836,7 +842,7 @@ Important:
 - Use `--dossier` as the canonical closure path for one dossier.
 - Use `--changed-only` only for repo-scope verification of the current change set.
 
-Review checklist:
+Audit fidelity checklist:
 
 - [ ] The artifact scope matches the intended dossier or changed set.
 - [ ] The recorded command list includes both canonical dossier checks and required repo-specific extras.
@@ -861,7 +867,7 @@ Run examples:
 - `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer independent-reviewer --verdict PASS`
 - `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer independent-reviewer --verdict FAIL --must-fix "Missing rollback path"`
 
-Review checklist:
+Command correctness checklist:
 
 - [ ] The artifact is tied to the intended dossier, step, and reviewed commit.
 - [ ] Reviewer provenance is explicit.
@@ -892,7 +898,7 @@ Contract:
 - Fails if the worktree is dirty unless explicitly allowed.
 - Writes a step artifact either way so blockers stay durable.
 
-Review checklist:
+Command correctness checklist:
 
 - [ ] The step artifact exists for the intended dossier and step.
 - [ ] `process_complete: true` appears only when verification passed, review passed, and freshness is valid.
@@ -914,7 +920,7 @@ Run examples:
 - `node scripts/dossier.mjs contract-drift-audit --dossier docs/features/F-0001-foo.md`
 - `node scripts/dossier.mjs contract-drift-audit --dossier docs/features/F-0001-foo.md --base origin/main`
 
-Review checklist:
+Audit fidelity checklist:
 
 - [ ] The baseline snapshot is correct for the comparison being made.
 - [ ] Added/removed AC IDs and changed executable sections are reported accurately.
@@ -946,7 +952,7 @@ Expected output dimensions:
 - `review_freshness`
 - `process_complete`
 
-Review checklist:
+Command correctness checklist:
 
 - [ ] The answer stays dossier-local and does not try to choose backlog work.
 - [ ] When more than one dossier exists in the repo, `--dossier` was used instead of relying on implicit selection.
