@@ -21,7 +21,7 @@ This file contains repo-specific overlays only.
 - Cross-cutting ADRs: `docs/adr/ADR-*.md`
 
 ## Repo-specific overlays
-1) Before `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, or `next-step`, ingest this file and any referenced repo ADRs as workflow overlays.
+1) Before `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `dossier-verify`, or `next-step`, ingest this file and any referenced repo ADRs as workflow overlays.
 2) Keep this file overlay-only. Default dossier workflow, review, and closure rules live in the `dossier-engineer` skill and should not be copied here unless the repo intentionally tightens them.
 3) The common command examples below must match the actual repo commands. If bootstrap preserved repo-specific script names or paths, rewrite these lines instead of forcing canonical filenames.
 
@@ -33,7 +33,11 @@ This file contains repo-specific overlays only.
 - Audit marker debt: `node scripts/dossier.mjs debt-audit`
 - Verify one dossier step bundle: `node scripts/dossier.mjs dossier-verify --step implementation --dossier docs/features/F-0001-foo.md`
 - Verify repo-scope changed set: `node scripts/dossier.mjs dossier-verify --step implementation --changed-only`
-- Persist review: `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer code-reviewer --verdict PASS`
+- Persist independent review: `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer independent-reviewer --verdict PASS`
 - Close step: `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact ... --review-artifact ...`
 - Resolve dossier-local next action: `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md`
+
+Review note:
+- `review-artifact` only records an already obtained independent review verdict; it does not perform the review itself.
+- Implementation close-out still requires completeness review, nested `code-reviewer` and `security-reviewer` passes, and a separate independent reviewer before `dossier-step-close`.
 ```

@@ -17,6 +17,8 @@ Use `dossier-engineer` after work has already been selected.
 
 ## Workflow stage: repository bootstrap (`init`)
 
+This is a workflow stage, not a shipped `dossier.mjs` subcommand.
+
 Use `init` once per repository, after a repo-level architecture document already exists.
 
 Expected output:
@@ -43,6 +45,7 @@ Rules:
   - known blockers / dependencies at intake time
 - If intake discovers new blockers, missing dependencies, missing context, or lifecycle-changing facts, return to `backlog-engineer` and actualize backlog state before continuing.
 - `index-refresh` is the canonical full refresh path after intake. Use `sync-index` only when you intentionally want table/graph refresh without a Red flags update.
+- If `feature-intake --json` returns `partial_success: true`, the dossier was created but `index-refresh` failed; fix that before continuing.
 - `docs/ssot/index.md` lists only real dossiers.
 
 ## State dimensions
@@ -97,9 +100,10 @@ Those questions belong to `backlog-engineer`.
 
 Important:
 
-- if multiple dossiers are active, pass `--dossier` explicitly;
+- if more than one dossier exists in the repo, pass `--dossier` explicitly;
 - `next-step` reads only structured dossier state and durable artifacts; CLI never interprets dossier body prose;
-- `next-step` output is dossier-local and does not replace repo overlay ingestion before acting.
+- `next-step` output is dossier-local and does not replace repo overlay ingestion before acting;
+- `workflow_stage_next` is either a real workflow stage name or `null`; it never uses shipped CLI command names or prose-derived labels.
 
 ## No-technical-debt policy
 
@@ -107,12 +111,12 @@ Before a mutating step can be considered complete:
 
 1. Run the step’s local checks.
 2. Perform explicit debt review of the changed scope.
-3. Run `node scripts/dossier.mjs debt-audit --changed-only` when available.
+3. Run `node scripts/dossier.mjs debt-audit --changed-only`.
 4. Re-check dependencies and adjacent seams.
 5. Resolve or explicitly record every debt item in a canonical artifact.
 6. Run `node scripts/dossier.mjs dossier-verify --dossier <path> ...` for one-dossier close-out. Use `--changed-only` only for repo-scope verification of the current change set.
 7. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode.
-8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`; this command records an already obtained review result and does not perform the review itself.
+8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`; this command records an already obtained independent review result and does not perform the review itself.
 9. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
 
 Notes:
@@ -138,6 +142,6 @@ If a PR references `F-XXXX`, it must:
 - `node scripts/dossier.mjs debt-audit --changed-only --base origin/main`
 - `node scripts/dossier.mjs dossier-verify --step implementation --dossier docs/features/F-0001-foo.md`
 - `node scripts/dossier.mjs dossier-verify --step implementation --changed-only --base origin/main` for repo-scope audit of the current change set
-- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer code-reviewer --verdict PASS`
+- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer independent-reviewer --verdict PASS`
 - `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact ... --review-artifact ...`
 - `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md`

@@ -30,7 +30,7 @@ import {
 } from './lib/git-utils.ts';
 import { buildRedFlagsBlock, analyzeDossiers, renderLintSummary } from './core/lint-dossiers.ts';
 import { hasExecutableSectionChange, parseTopLevelSections } from './core/markdown.ts';
-import { defaultNextStep, statusToNextStep } from './core/workflow.ts';
+import { defaultNextStep, normalizeWorkflowStage, statusToNextStep } from './core/workflow.ts';
 
 export const CLI_NAME = 'dossier';
 export const CLI_DISPLAY_NAME = 'node scripts/dossier.mjs';
@@ -805,6 +805,11 @@ function featureIntakeHelp(): string {
     '  --output <path>              Optional dossier output path directly inside docs/features.',
     '  --json                       Emit JSON output.',
     '  -h, --help                   Show help.',
+    '',
+    'Notes:',
+    '  - feature-intake runs index-refresh after creating the dossier.',
+    '  - JSON partial_success=true means the dossier was created but index-refresh failed; fix the reported refresh issues before continuing.',
+    '  - workflow_stage_next values name workflow stages, not shipped CLI subcommands.',
   ].join('\n');
 }
 
@@ -975,13 +980,13 @@ async function runFeatureIntakeCommand(argv: string[], io: CliIo): Promise<numbe
   writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
   writeLine(io.stdout, `[feature-intake] backlog_item_key=${backlogItemKey}`);
   writeLine(io.stdout, `[feature-intake] backlog_delivery_state=${backlogDeliveryState}`);
-  writeLine(io.stdout, '[feature-intake] next_workflow_stage=spec-compact');
+  writeLine(io.stdout, '[feature-intake] next_workflow_stage=spec-compact (workflow stage, not CLI command)');
   return EXIT_SUCCESS;
 }
 
 function syncIndexHelp(): string {
   return [
-    'Regenerate docs/ssot/index.md from Feature Dossier frontmatter.',
+    'Regenerate only the generated dossier table and dependency graph blocks in docs/ssot/index.md.',
     '',
     'Usage:',
     `  ${CLI_DISPLAY_NAME} sync-index [options]`,
@@ -991,6 +996,10 @@ function syncIndexHelp(): string {
     `  --dossiers-dir <path>        Dossiers directory. Defaults to ${DEFAULT_DOSSIERS_DIR}.`,
     `  --index-file <path>          Index file. Defaults to ${DEFAULT_INDEX_FILE}.`,
     '  -h, --help                   Show help.',
+    '',
+    'Notes:',
+    '  - sync-index does not refresh the generated Red flags block.',
+    '  - Use index-refresh for the canonical full refresh path after mutating dossier work.',
   ].join('\n');
 }
 
@@ -1661,7 +1670,7 @@ async function runContractDriftAuditCommand(argv: string[], io: CliIo): Promise<
 
 function reviewArtifactHelp(): string {
   return [
-    'Persist a supplied review result as a durable artifact.',
+    'Persist an already obtained independent review result as a durable artifact.',
     '',
     'Usage:',
     `  ${CLI_DISPLAY_NAME} review-artifact --dossier <path> --step <name> --verdict PASS|FAIL [options]`,
@@ -1679,6 +1688,10 @@ function reviewArtifactHelp(): string {
     '  --should-fix <text>          Repeatable should-fix finding.',
     '  --evidence <text>            Repeatable evidence pointer.',
     '  -h, --help                   Show help.',
+    '',
+    'Notes:',
+    '  - review-artifact does not perform the review itself; it records a verdict produced elsewhere.',
+    '  - --reviewer should name the separate reviewer agent or review skill that produced the verdict.',
   ].join('\n');
 }
 
@@ -1919,7 +1932,7 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     review_fresh_for_commit: Boolean(currentCommit && review?.reviewed_commit === currentCommit),
     process_complete: processComplete,
     blockers,
-    next_step: nextStep || defaultNextStep(dossierRecord.frontmatter.status, step),
+    next_step: nextStep || defaultNextStep(dossierRecord.frontmatter.status, step) || undefined,
   };
 
   const defaultOutput = path.join(absRoot, '.dossier', 'steps', featureId, `${step}.json`);
@@ -1960,6 +1973,11 @@ function dossierVerifyHelp(): string {
     '  --coverage-orphans-scope <scope>  Scope for coverage orphan detection.',
     '  --extra <command>                 Repeatable extra shell command.',
     '  -h, --help                        Show help.',
+    '',
+    'Notes:',
+    '  - Use --dossier for the canonical one-dossier close-out path.',
+    '  - Use --changed-only only for repo-scope verification of the current change set.',
+    '  - Without --dossier or --changed-only, dossier-verify runs repo-wide and writes a global artifact that is not a dossier-step-close input.',
   ].join('\n');
 }
 
@@ -2136,9 +2154,13 @@ function nextStepHelp(): string {
     '',
     'Options:',
     '  --root <path>                Repository root. Defaults to cwd.',
-    '  --dossier <path>             Resolve next step for one dossier. Required when multiple dossiers exist.',
+    '  --dossier <path>             Resolve next step for one dossier. Required whenever more than one dossier exists in the repo.',
     '  --json                       Emit JSON output.',
     '  -h, --help                   Show help.',
+    '',
+    'Notes:',
+    '  - workflow_stage_next is a real workflow stage name or null; it never uses shipped CLI command names.',
+    '  - next-step stays dossier-local; use backlog-engineer for backlog selection, readiness, or lifecycle actualization.',
   ].join('\n');
 }
 
@@ -2196,9 +2218,9 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
 
   const workflowNext =
     latestStepArtifact?.process_complete === false
-      ? (latestStepArtifact.next_step ?? null)
+      ? normalizeWorkflowStage(latestStepArtifact.next_step ?? null)
       : target
-        ? statusToNextStep(target.frontmatter.status)
+        ? normalizeWorkflowStage(statusToNextStep(target.frontmatter.status))
         : null;
 
   const blockers =
@@ -2231,7 +2253,10 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
     return EXIT_SUCCESS;
   }
 
-  writeLine(io.stdout, `Workflow stage next: ${summary.workflow_stage_next ?? 'unknown'}`);
+  writeLine(
+    io.stdout,
+    `Workflow stage next (workflow stage, not CLI command): ${summary.workflow_stage_next ?? 'none'}`,
+  );
   writeLine(io.stdout, `Target dossier: ${summary.target_dossier ?? 'none selected'}`);
   writeLine(io.stdout, `Dossier status: ${summary.dossier_status ?? 'n/a'}`);
   writeLine(
@@ -2258,7 +2283,7 @@ export const COMMANDS: CommandDefinition[] = [
   {
     name: 'sync-index',
     aliases: [],
-    description: 'Regenerate docs/ssot/index.md from current dossier frontmatter.',
+    description: 'Refresh generated dossier table/graph blocks only; use index-refresh for a full refresh.',
     helpText: syncIndexHelp,
     run: runSyncIndexCommand,
   },
@@ -2307,7 +2332,7 @@ export const COMMANDS: CommandDefinition[] = [
   {
     name: 'review-artifact',
     aliases: [],
-    description: 'Persist a supplied review-result artifact.',
+    description: 'Persist an already obtained independent review artifact.',
     helpText: reviewArtifactHelp,
     run: runReviewArtifactCommand,
   },
@@ -2344,7 +2369,7 @@ export function globalHelp(): string {
   return [
     'Unified CLI for the dossier-engineer skill.',
     'Commands below are shipped CLI commands only.',
-    'Workflow stages such as spec-compact, plan-slice, implementation, change-proposal, adr-log, dependency-check, and repo bootstrap are documented in SKILL.md and references/WORKFLOW.md.',
+    'Workflow stages such as init (repository bootstrap), spec-compact, plan-slice, implementation, change-proposal, adr-log, and dependency-check are documented in SKILL.md and references/WORKFLOW.md.',
     '',
     'Usage:',
     `  ${CLI_DISPLAY_NAME} <command> [options]`,

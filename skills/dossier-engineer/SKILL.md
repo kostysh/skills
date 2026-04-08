@@ -213,11 +213,11 @@ For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-sl
 1. Finish the command’s local work.
 2. Run the command-specific checks.
 3. Perform manual debt review on the changed scope.
-4. Run `node scripts/dossier.mjs debt-audit --changed-only` when the repo provides it.
+4. Run `node scripts/dossier.mjs debt-audit --changed-only`.
 5. Re-check dependencies, adjacent seams, delivered dossiers, architecture, and repo ADRs.
 6. Run `node scripts/dossier.mjs dossier-verify ...` for the relevant scope.
 7. Run an independent review with a separate reviewer agent. If spawning requires explicit user authorization, ask for it. If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
-8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`.
+8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`. This command records an already obtained independent review result; it does not perform the review itself.
 9. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
 10. Only after `process_complete: true` may the agent say the step is complete.
 
@@ -299,8 +299,7 @@ Shipped CLI commands in the current runtime:
 - `lint-dossiers`
 - `dependency-graph`
 - `coverage-audit`
-- `debt-audit`
-- `marker-audit`
+- `debt-audit` (compatibility alias: `marker-audit`)
 - `contract-drift-audit`
 - `review-artifact`
 - `dossier-step-close`
@@ -399,7 +398,8 @@ Steps:
 7. Capture the selected backlog context, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
 8. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path after intake.
    Use `sync-index` only when you intentionally need table/graph refresh without a Red flags update.
-9. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
+9. If `feature-intake --json` returns `partial_success: true`, treat intake as incomplete until the reported `index-refresh` failure is resolved.
+10. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
 
 Review checklist:
 
@@ -569,8 +569,9 @@ Steps:
    - `security-reviewer` for auth/authz, trust boundaries, input handling, secret exposure, and exploitability findings.
    These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
 9. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
-10. Close the step with `dossier-step-close` before saying it is complete.
-11. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
+10. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
+11. Close the step with `dossier-step-close` before saying it is complete.
+12. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
 
 Required adversarial checklist for side-effecting code:
 
@@ -668,7 +669,7 @@ Check for explicit unresolved debt markers.
 Contract:
 
 - This is intentionally narrow automation for `TODO` / `FIXME` / `HACK` / `XXX` markers.
-- `debt-audit.mjs` is retained as the compatibility entrypoint.
+- `debt-audit` is the shipped CLI command; `marker-audit` is a compatibility alias.
 - It augments, but never replaces, the manual technical-debt review.
 - It is **not** a completeness audit and does not prove that the implementation matches the full intended scope.
 
@@ -825,8 +826,8 @@ Purpose:
 
 Run examples:
 
-- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer code-reviewer --verdict PASS`
-- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer security-reviewer --verdict FAIL --must-fix "Missing rollback path"`
+- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer independent-reviewer --verdict PASS`
+- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer independent-reviewer --verdict FAIL --must-fix "Missing rollback path"`
 
 Review checklist:
 
@@ -905,7 +906,7 @@ Run examples:
 
 Expected output dimensions:
 
-- `workflow_stage_next`
+- `workflow_stage_next` (real workflow stage or `null`)
 - `target_dossier`
 - `dossier_status`
 - `blocking_gate`
@@ -916,7 +917,7 @@ Expected output dimensions:
 Review checklist:
 
 - [ ] The answer stays dossier-local and does not try to choose backlog work.
-- [ ] When more than one dossier is active, `--dossier` was used instead of relying on implicit selection.
+- [ ] When more than one dossier exists in the repo, `--dossier` was used instead of relying on implicit selection.
 - [ ] The command is treated as structured-state/artifact-driven only; it never infers blockers or decisions from dossier body prose.
 - [ ] Blocking gates come from actual durable artifacts when available.
 - [ ] Dirty worktree state is surfaced explicitly.

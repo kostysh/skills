@@ -26,6 +26,28 @@
 
 ### Reviews
 
+- Narrow operator-perspective UX audit — PASS.
+- Narrow agent-perspective UX audit — initially found two issues:
+  - `workflow_stage_next` was documented as stage-only while runtime could still emit non-stage labels;
+  - `assets/example-repo/AGENTS.md` lagged behind the updated close-out contract.
+- Follow-up fix:
+  - normalized `workflow_stage_next` to real workflow stages or `null`;
+  - moved non-stage guidance out of that field;
+  - synchronized `assets/example-repo/AGENTS.md` with the canonical repo template.
+- Narrow agent-perspective UX re-audit — PASS.
+
+### Decisions / assumptions added during implementation
+
+- `workflow_stage_next` remains the machine-facing field name, but its value domain is now constrained to real dossier workflow stages or `null`; non-stage guidance belongs in other output dimensions instead of overloading the stage field.
+
+### Commit
+
+- Commit: pending
+- Close time: 2026-04-08 19:07:59 CEST
+- Total time to close package: 01:23:14
+
+### Reviews
+
 - Spec/process review against [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md) and [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md) — PASS.
 - Security review — PASS.
 - Code review — initial NOT PASS because `dossier-step-close` trusted a hand-written PASS review artifact without `reviewer`; fixed by enforcing reviewer provenance on the consumer side and adding a regression test.

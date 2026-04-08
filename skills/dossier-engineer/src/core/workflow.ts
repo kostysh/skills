@@ -1,3 +1,16 @@
+const WORKFLOW_STAGES = new Set([
+  'spec-compact',
+  'plan-slice',
+  'implementation',
+  'change-proposal',
+  'adr-log',
+  'dependency-check',
+]);
+
+export function normalizeWorkflowStage(value: unknown): string | null {
+  return typeof value === 'string' && WORKFLOW_STAGES.has(value) ? value : null;
+}
+
 export function statusToNextStep(status: unknown): string | null {
   switch (status) {
     case 'proposed':
@@ -7,16 +20,12 @@ export function statusToNextStep(status: unknown): string | null {
     case 'planned':
     case 'in_progress':
       return 'implementation';
-    case 'done':
-      return 'none';
-    case 'parked':
-      return 'resume-or-discard';
     default:
       return null;
   }
 }
 
-export function defaultNextStep(status: unknown, step: string): string {
+export function defaultNextStep(status: unknown, step: string): string | null {
   if (step === 'feature-intake') {
     return 'spec-compact';
   }
@@ -26,9 +35,6 @@ export function defaultNextStep(status: unknown, step: string): string {
   if (step === 'plan-slice') {
     return 'implementation';
   }
-  if (step === 'change-proposal') {
-    return 'contract-drift-audit';
-  }
 
-  return statusToNextStep(status) ?? 'next-step';
+  return statusToNextStep(status);
 }

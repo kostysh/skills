@@ -117,7 +117,10 @@ void test('global help exposes unified commands and compatibility aliases', () =
 
   assert.equal(result.status, 0);
   assert.match(result.stdout, /Commands below are shipped CLI commands only\./);
-  assert.match(result.stdout, /Workflow stages such as spec-compact, plan-slice, implementation/);
+  assert.match(
+    result.stdout,
+    /Workflow stages such as init \(repository bootstrap\), spec-compact, plan-slice, implementation/,
+  );
   assert.match(result.stdout, /feature-intake/);
   assert.match(result.stdout, /sync-index/);
   assert.match(result.stdout, /dossier-verify/);
@@ -518,6 +521,45 @@ void test('next-step returns a dossier-local blocker when no dossier exists yet'
   assert.equal(summary.workflow_stage_next, null);
   assert.deepEqual(summary.blocking_gate, [
     'No active dossier found. Select backlog work with backlog-engineer and create a dossier via feature-intake before using next-step.',
+  ]);
+});
+
+void test('next-step normalizes non-stage artifact next_step values to null', (t) => {
+  const repoRoot = createRepoFixture(t);
+
+  fs.mkdirSync(path.join(repoRoot, '.dossier', 'steps', 'F-0001'), { recursive: true });
+  fs.writeFileSync(
+    path.join(repoRoot, '.dossier/steps/F-0001/change-proposal.json'),
+    JSON.stringify({
+      version: 1,
+      created_at: new Date().toISOString(),
+      feature_id: 'F-0001',
+      dossier: 'docs/features/F-0001-sample.md',
+      step: 'change-proposal',
+      process_complete: false,
+      blockers: ['Executable contract changed; run contract-drift-audit before choosing the next workflow stage.'],
+      next_step: 'contract-drift-audit',
+    }),
+  );
+
+  const nextStepResult = runCli([
+    'next-step',
+    '--root',
+    repoRoot,
+    '--dossier',
+    'docs/features/F-0001-sample.md',
+    '--json',
+  ]);
+  assert.equal(nextStepResult.status, 0);
+
+  const summary = JSON.parse(nextStepResult.stdout) as {
+    blocking_gate: string[];
+    workflow_stage_next: string | null;
+  };
+
+  assert.equal(summary.workflow_stage_next, null);
+  assert.deepEqual(summary.blocking_gate, [
+    'Executable contract changed; run contract-drift-audit before choosing the next workflow stage.',
   ]);
 });
 
