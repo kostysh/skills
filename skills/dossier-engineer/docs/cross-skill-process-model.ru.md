@@ -440,6 +440,7 @@ Backlog должен узнавать о:
 - до выбора работы используется `backlog-engineer`;
 - после выбора работы и проверки backlog readiness используется `dossier-engineer next-step`;
 - если внутри dossier workflow обнаружился новый blocker, dependency, context change, or lifecycle change, агент возвращается в `backlog-engineer` для актуализации backlog state.
+- `dossier-engineer next-step` читает только structured dossier state и durable artifacts; CLI никогда не интерпретирует prose из dossier body.
 
 Короткая формула:
 

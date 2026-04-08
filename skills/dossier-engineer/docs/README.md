@@ -25,6 +25,8 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [implementation-log-1.ru.md](implementation-log-1.ru.md) | Incremental log for dossier harmonization implementation work. This document is written in Russian. | Read when you need the package-by-package record of decisions, checks, review rounds, and commits. |
 | [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md) | Corrective UX pass plan after operator/agent audit: command-surface cleanup, durable backlog handoff, step-local backlog sync, and safe `next-step` targeting. This document is written in Russian. | Read when working on the post-refactor UX hardening cycle. |
 | [implementation-log-2.ru.md](implementation-log-2.ru.md) | Incremental log for the UX corrective pass. This document is written in Russian. | Read when you need the package-by-package record for the UX hardening cycle. |
+| [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md) | Second UX corrective pass plan after targeted operator/agent audit: closure-path wording, help/output clarity, explicit reviewer provenance, and refresh-contract alignment. This document is written in Russian. | Read when working on the follow-up UX hardening cycle after the first corrective pass. |
+| [implementation-log-3.ru.md](implementation-log-3.ru.md) | Incremental log for the second UX corrective pass. This document is written in Russian. | Read when you need the package-by-package record for the latest UX hardening cycle. |
 
 ## Related Materials
 
@@ -65,6 +67,14 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
 2. [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md)
 3. [implementation-log-2.ru.md](implementation-log-2.ru.md)
+4. [../SKILL.md](../SKILL.md)
+5. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+
+### If you are working on the second UX corrective pass
+
+1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
+2. [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md)
+3. [implementation-log-3.ru.md](implementation-log-3.ru.md)
 4. [../SKILL.md](../SKILL.md)
 5. [../references/WORKFLOW.md](../references/WORKFLOW.md)
 

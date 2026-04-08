@@ -791,12 +791,16 @@ Run examples:
 
 Default bundle:
 
-- `sync-index`
-- `lint-dossiers`
+- `index-refresh`
 - `coverage-audit`
 - marker audit / `debt-audit`
 - `git diff --check` when git is available
 - repo-specific extras via repeated `--extra`
+
+Important:
+
+- Use `--dossier` as the canonical closure path for one dossier.
+- Use `--changed-only` only for repo-scope verification of the current change set.
 
 Review checklist:
 
@@ -808,22 +812,25 @@ Review checklist:
 
 ### `review-artifact`
 
-Persist the independent reviewer’s verdict as a durable artifact.
+Persist a reviewer-supplied verdict as a durable artifact.
 
 Purpose:
 
 - Tie review to a specific commit.
 - Make review freshness machine-checkable.
 - Preserve must-fix and should-fix findings outside chat.
+- Record reviewer provenance explicitly.
+- Persist the result of a review that already happened; this command does not perform the review itself.
 
 Run examples:
 
-- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --verdict PASS`
-- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --verdict FAIL --must-fix "Missing rollback path"`
+- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer code-reviewer --verdict PASS`
+- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer security-reviewer --verdict FAIL --must-fix "Missing rollback path"`
 
 Review checklist:
 
 - [ ] The artifact is tied to the intended dossier, step, and reviewed commit.
+- [ ] Reviewer provenance is explicit.
 - [ ] PASS artifacts do not contain unresolved must-fix findings.
 - [ ] Findings are explicit and durable instead of being left in chat only.
 - [ ] The reviewed commit matches the closure target or is clearly marked stale later.
@@ -888,6 +895,7 @@ Return the next dossier-local workflow action for already selected work.
 Purpose:
 
 - Resolve ambiguity inside the dossier workflow after work has already been selected through `backlog-engineer`.
+- For this decision, the CLI reads only structured dossier fields and durable artifacts. It never interprets dossier body prose.
 
 Run examples:
 
@@ -908,6 +916,7 @@ Review checklist:
 
 - [ ] The answer stays dossier-local and does not try to choose backlog work.
 - [ ] When more than one dossier is active, `--dossier` was used instead of relying on implicit selection.
+- [ ] The command is treated as structured-state/artifact-driven only; it never infers blockers or decisions from dossier body prose.
 - [ ] Blocking gates come from actual durable artifacts when available.
 - [ ] Dirty worktree state is surfaced explicitly.
 - [ ] Review freshness is reported against the current commit.

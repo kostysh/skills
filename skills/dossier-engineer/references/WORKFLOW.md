@@ -98,6 +98,7 @@ Those questions belong to `backlog-engineer`.
 Important:
 
 - if multiple dossiers are active, pass `--dossier` explicitly;
+- `next-step` reads only structured dossier state and durable artifacts; CLI never interprets dossier body prose;
 - `next-step` output is dossier-local and does not replace repo overlay ingestion before acting.
 
 ## No-technical-debt policy
@@ -109,9 +110,10 @@ Before a mutating step can be considered complete:
 3. Run `node scripts/dossier.mjs debt-audit --changed-only` when available.
 4. Re-check dependencies and adjacent seams.
 5. Resolve or explicitly record every debt item in a canonical artifact.
-6. Run `node scripts/dossier.mjs dossier-verify ...`.
-7. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode. Then persist the verdict with `node scripts/dossier.mjs review-artifact ...`.
-8. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
+6. Run `node scripts/dossier.mjs dossier-verify --dossier <path> ...` for one-dossier close-out. Use `--changed-only` only for repo-scope verification of the current change set.
+7. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode.
+8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`; this command records an already obtained review result and does not perform the review itself.
+9. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
 
 Notes:
 
@@ -134,5 +136,8 @@ If a PR references `F-XXXX`, it must:
 - `node scripts/dossier.mjs lint-dossiers`
 - `node scripts/dossier.mjs coverage-audit --changed-only --base origin/main`
 - `node scripts/dossier.mjs debt-audit --changed-only --base origin/main`
-- `node scripts/dossier.mjs dossier-verify --step implementation --changed-only --base origin/main`
+- `node scripts/dossier.mjs dossier-verify --step implementation --dossier docs/features/F-0001-foo.md`
+- `node scripts/dossier.mjs dossier-verify --step implementation --changed-only --base origin/main` for repo-scope audit of the current change set
+- `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer code-reviewer --verdict PASS`
+- `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact ... --review-artifact ...`
 - `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md`

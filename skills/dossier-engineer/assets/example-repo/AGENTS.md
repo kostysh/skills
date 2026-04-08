@@ -27,4 +27,6 @@ Once the repository has been bootstrapped with repo-local dossier scripts:
 - Audit coverage: `node scripts/dossier.mjs coverage-audit`
 - Audit marker debt: `node scripts/dossier.mjs debt-audit`
 - Verify step bundle: `node scripts/dossier.mjs dossier-verify --step implementation --dossier docs/features/F-0001-password-reset.md`
+- Persist review: `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-password-reset.md --step implementation --reviewer code-reviewer --verdict PASS`
+- Close step: `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-password-reset.md --step implementation --verify-artifact ... --review-artifact ...`
 - Resolve dossier-local next action: `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-password-reset.md`
