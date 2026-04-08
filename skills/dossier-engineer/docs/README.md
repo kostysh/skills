@@ -16,6 +16,11 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | --- | --- | --- |
 | [utility-architecture.md](utility-architecture.md) | Technical architecture of the `dossier-engineer` CLI: runtime model, module boundaries, core layers, and testing approach. | Read first when you need to understand how the utility is structured internally. |
 | [utility-spec.ru.md](utility-spec.ru.md) | Current behavioral specification of the CLI utility, including command contracts, artifacts, path rules, and exit-code behavior. This document is written in Russian. | Read when you need exact runtime behavior or want to validate implementation details against the documented contract. |
+| [backlog-harmonization-prep.ru.md](backlog-harmonization-prep.ru.md) | Preparatory report for harmonizing `dossier-engineer` with `backlog-engineer`: role boundaries, overlap map, friction points, migration from legacy candidate-backlog to backlog-driven model, and recommended stage-1 direction. This document is written in Russian. | Read before planning dossier/backlog harmonization work. |
+| [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md) | Target cross-skill development process: how `backlog-engineer` and `dossier-engineer` should work together from backlog creation to intake, spec, planning, implementation, closure, and backlog sync. This document is written in Russian. | Read when you need the agreed target process before comparing it with current skill behavior. |
+| [dossier-process-gap-analysis.ru.md](dossier-process-gap-analysis.ru.md) | Detailed gap analysis of `dossier-engineer` against the target cross-skill process: what conflicts, what must be removed, what must be rewritten, and what can stay. This document is written in Russian. | Read before designing the dossier refactor. |
+| [backlog-process-gap-analysis.ru.md](backlog-process-gap-analysis.ru.md) | Detailed gap analysis of `backlog-engineer` against the target cross-skill process: what already fits, what interop rules are still missing, and what should be adjusted later for full alignment. This document is written in Russian. | Read after the dossier gap analysis, before planning backlog-side alignment changes. |
+| [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md) | Stage-1 refactoring plan for `dossier-engineer` under the backlog-driven process: fixed decisions, work packages, sequencing, and acceptance gates. This document is written in Russian. | Read when moving from process analysis to actual dossier-side refactoring work. |
 
 ## Related Materials
 
@@ -40,6 +45,16 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 2. [utility-spec.ru.md](utility-spec.ru.md)
 3. [../src/](../src/)
 4. [../test/](../test/)
+
+### If you are preparing backlog/dossier harmonization
+
+1. [backlog-harmonization-prep.ru.md](backlog-harmonization-prep.ru.md)
+2. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
+3. [dossier-process-gap-analysis.ru.md](dossier-process-gap-analysis.ru.md)
+4. [backlog-process-gap-analysis.ru.md](backlog-process-gap-analysis.ru.md)
+5. [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md)
+6. [../SKILL.md](../SKILL.md)
+7. [../references/WORKFLOW.md](../references/WORKFLOW.md)
 
 ## Scope of This Folder
 
