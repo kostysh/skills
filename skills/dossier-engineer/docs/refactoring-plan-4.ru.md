@@ -47,13 +47,9 @@
 4. Полная унификация всех status enums между двумя skill-ами.
 5. Новая backlog model или пересмотр core packet/patch architecture.
 
-## Open decision to resolve during implementation
+## Additional fixed decision
 
-Эта точка пока не закрыта и должна быть явно решена во время имплементации, прежде чем фиксировать final handoff contract:
-
-1. Входит ли `attention` в минимальный backlog -> dossier handoff как durable signal, или он остаётся только backlog-side read model и не копируется в dossier handoff?
-
-Пока решения нет, все остальные изменения stage 2 можно готовить, но exact handoff wording должен оставаться совместимым с будущим ответом на этот вопрос.
+`attention` остаётся backlog-side read model и не входит в минимальный durable backlog -> dossier handoff.
 
 ## Target end state for `backlog-engineer`
 
@@ -98,8 +94,10 @@
   - selected backlog item key;
   - current backlog delivery state;
   - relevant source traceability;
-  - known blockers / dependencies;
-  - optional `attention`, depending on the unresolved decision above.
+  - known blockers / dependencies.
+- отдельно зафиксировать:
+  - `attention` можно читать до intake как текущий backlog signal;
+  - `attention` не копируется в dossier handoff как durable field.
 - явно развести:
   - `anchor source` / architecture truth;
   - dossier handoff as downstream working context.
@@ -185,7 +183,7 @@
   - explicit status actualization after dossier steps;
   - supporting-evidence role of dossier artifacts;
   - explicit backlog `next` vs dossier `next-step` boundary.
-- if `attention` handoff decision is resolved during implementation, reflect it in both normative docs.
+- explicitly record that `attention` remains backlog-side and is not part of the durable handoff.
 
 #### B. Runtime/help alignment only where needed
 

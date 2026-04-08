@@ -340,7 +340,13 @@ Backlog status effect:
 - выбранная backlog work;
 - её текущее backlog state;
 - relevant source traceability;
-- known blockers / attention / dependencies.
+- known blockers / dependencies.
+
+Важно:
+
+- `attention` остаётся backlog-side read model;
+- агент может читать `attention` до intake как текущий backlog signal;
+- `attention` не входит в минимальный durable backlog -> dossier handoff.
 
 ### Handoff от dossier обратно в backlog
 
