@@ -47,11 +47,33 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   const stageVsCommand = extractSection(skill, '## Workflow stages and shipped CLI commands');
   const bootstrap = extractSection(workflow, '## Workflow stage: repository bootstrap (`init`)');
   const defaultFlow = extractSection(workflow, '## Default dossier flow');
+  const workflowStagesIndex = skill.indexOf('### Workflow stages');
+  const cliCommandsIndex = skill.indexOf('### CLI commands');
 
   assertContainsTerms(stageVsCommand, [
     'workflow-only unless it appears in the shipped CLI command list',
     'Do not write or infer examples such as `node scripts/dossier.mjs spec-compact`',
     'Shipped CLI commands in the current runtime',
+  ]);
+  assert.notEqual(workflowStagesIndex, -1, 'Missing grouped workflow stages heading');
+  assert.notEqual(cliCommandsIndex, -1, 'Missing grouped CLI commands heading');
+  assert.ok(
+    workflowStagesIndex < cliCommandsIndex,
+    'Workflow stages must be grouped before CLI commands',
+  );
+  assertContainsTerms(skill, [
+    '#### Workflow stage: `init`',
+    '#### Workflow stage: `spec-compact`',
+    '#### Workflow stage: `plan-slice`',
+    '#### Workflow stage: `implementation`',
+    '#### Workflow stage: `change-proposal`',
+  ]);
+  assertContainsTerms(skill, [
+    '#### CLI command: `help`',
+    '#### CLI command: `feature-intake`',
+    '#### CLI command: `dependency-graph`',
+    '#### CLI command: `dossier-verify`',
+    '#### CLI command: `next-step`',
   ]);
   assertContainsTerms(bootstrap, [
     'This is a workflow stage, not a shipped `dossier.mjs` subcommand.',
@@ -71,7 +93,7 @@ void test('dossier docs keep backlog actualization and handoff boundaries litera
 
   const actualization = extractSection(skill, '## Backlog actualization rules');
   const closure = extractSection(skill, '## Step closure contract');
-  const intake = extractSection(skill, '### CLI command: `feature-intake`');
+  const intake = extractSection(skill, '#### CLI command: `feature-intake`');
   const workflowActualization = extractSection(workflow, '## Backlog actualization rule');
 
   assertContainsTerms(actualization, [
