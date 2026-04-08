@@ -6369,9 +6369,9 @@ function analyzeDossiers(dossiers) {
 			message: "coverage_gate is not explicit. Add `coverage_gate: deferred|strict` so workflow state and coverage enforcement stay separate."
 		});
 		if (dossier.acIds.length === 0) findings.push({
-			level: "error",
+			level: frontmatter.status === "proposed" ? "warn" : "error",
 			feature,
-			message: "No acceptance criteria IDs found. Add at least one AC-F....-.. entry."
+			message: frontmatter.status === "proposed" ? "No acceptance criteria IDs found yet. Add at least one AC-F....-.. entry before leaving the proposed intake state." : "No acceptance criteria IDs found. Add at least one AC-F....-.. entry."
 		});
 		const featureNum = extractFeatureNumericId(typeof frontmatter.id === "string" ? frontmatter.id : null);
 		if (featureNum) {
@@ -6526,22 +6526,6 @@ function statusToNextStep(status) {
 		default: return null;
 	}
 }
-function selectActiveDossier(dossiers) {
-	const priority = [
-		"in_progress",
-		"planned",
-		"shaped",
-		"proposed",
-		"parked",
-		"done"
-	];
-	return [...dossiers].sort((left, right) => {
-		const leftPriority = priority.indexOf(String(left.frontmatter.status));
-		const rightPriority = priority.indexOf(String(right.frontmatter.status));
-		if (leftPriority !== rightPriority) return leftPriority - rightPriority;
-		return String(left.frontmatter.id).localeCompare(String(right.frontmatter.id));
-	})[0] ?? null;
-}
 function defaultNextStep(status, step) {
 	if (step === "feature-intake") return "spec-compact";
 	if (step === "spec-compact") return "plan-slice";
@@ -6553,6 +6537,12 @@ function defaultNextStep(status, step) {
 //#region src/commands.ts
 var CLI_DISPLAY_NAME = "node scripts/dossier.mjs";
 var DEFAULT_INDEX_FILE = "docs/ssot/index.md";
+var BACKLOG_DELIVERY_STATES = [
+	"defined",
+	"specified",
+	"planned",
+	"implemented"
+];
 var UsageError = class extends Error {
 	helpText;
 	constructor(message, helpText) {
@@ -6596,6 +6586,14 @@ function ensureRequired(value, message, helpText) {
 	if (!value) throw new UsageError(message, helpText);
 	return value;
 }
+function ensureNonEmpty(values, message, helpText) {
+	if (values.length === 0) throw new UsageError(message, helpText);
+	return values;
+}
+function ensureEnumValue(value, allowedValues, optionName, helpText) {
+	if (allowedValues.includes(value)) return value;
+	throw new UsageError(`${optionName} must be one of: ${allowedValues.map((item) => `"${item}"`).join(", ")}.`, helpText);
+}
 function toStringArray(value) {
 	return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
 }
@@ -6636,7 +6634,8 @@ function nextFeatureId(dossiers) {
 	return `F-${String(maxNumeric + 1).padStart(4, "0")}`;
 }
 function renderInitialDossier(params) {
-	const { area, created, dependsOn, featureId, impacts, owners, selectedWork, title } = params;
+	const { area, backlogBlockers, backlogDeliveryState, backlogDependencies, backlogItemKey, backlogSources, created, dependsOn, featureId, impacts, owners, title } = params;
+	const formatNestedList = (values) => values.length > 0 ? values.map((value) => `    - ${value}`).join("\n") : "    - none recorded";
 	return `---
 id: ${featureId}
 title: ${title}
@@ -6656,7 +6655,15 @@ links:
 
 ## 1. Context & Goal
 
-- Selected backlog work: ${selectedWork}
+- **Backlog handoff:**
+  - Backlog item key: ${backlogItemKey}
+  - Backlog delivery state at intake: ${backlogDeliveryState}
+  - Source traceability:
+${formatNestedList(backlogSources)}
+  - Known blockers at intake:
+${formatNestedList(backlogBlockers)}
+  - Known dependencies at intake:
+${formatNestedList(backlogDependencies)}
 - User problem:
 - Goal:
 - Non-goals:
@@ -6709,14 +6716,14 @@ links:
 
 ## 10. Progress & links
 
-- Selected backlog work: ${selectedWork}
+- Backlog item key: ${backlogItemKey}
 - Status progression: \`proposed -> shaped -> planned -> in_progress -> done\`
 - Issue:
 - PRs:
 
 ## 11. Change log
 
-- ${created}: Initial dossier created from selected backlog work \`${selectedWork}\`.
+- ${created}: Initial dossier created from backlog item \`${backlogItemKey}\` at backlog delivery state \`${backlogDeliveryState}\`.
 `;
 }
 function replaceBlock(content, beginMarker, endMarker, block) {
@@ -6996,18 +7003,23 @@ function featureIntakeHelp() {
 		"Create a new Feature Dossier for already selected backlog work.",
 		"",
 		"Usage:",
-		`  ${CLI_DISPLAY_NAME} feature-intake --title <text> --selected-work <text> --area <name> --owner <owner> --impact <impact> [options]`,
+		`  ${CLI_DISPLAY_NAME} feature-intake --title <text> --backlog-item-key <key> --backlog-delivery-state <state> --backlog-source <source> --area <name> --owner <owner> --impact <impact> [options]`,
 		"",
 		"Options:",
 		"  --root <path>                Repository root. Defaults to cwd.",
 		"  --title <text>               Dossier title. Required.",
-		"  --selected-work <text>       Selected backlog work from backlog-engineer. Required.",
+		"  --backlog-item-key <key>     Selected backlog item key from backlog-engineer. Required.",
+		"  --backlog-delivery-state <state>  Backlog delivery state at intake. Required.",
+		"                               Allowed: defined, specified, planned, implemented.",
+		"  --backlog-source <source>    Repeatable backlog source traceability entry. At least one required.",
+		"  --backlog-dependency <key>   Repeatable backlog dependency visible at intake.",
+		"  --backlog-blocker <text>     Repeatable backlog blocker visible at intake.",
 		"  --area <name>                Area label for frontmatter. Required.",
 		"  --owner <name>               Repeatable owner value. At least one required.",
 		"  --impact <name>              Repeatable impact value. At least one required.",
 		"  --depends-on <id>            Repeatable delivered prerequisite.",
 		"  --slug <slug>                Optional dossier slug. Defaults to slugified title.",
-		"  --output <path>              Optional dossier output path.",
+		"  --output <path>              Optional dossier output path directly inside docs/features.",
 		"  --json                       Emit JSON output.",
 		"  -h, --help                   Show help."
 	].join("\n");
@@ -7019,8 +7031,13 @@ async function runFeatureIntakeCommand(argv, io) {
 		return 0;
 	}
 	const root = takeOption(argv, "--root", process.cwd()) ?? process.cwd();
+	if (argv.includes("--selected-work") || argv.some((arg) => arg.startsWith("--selected-work="))) throw new UsageError("--selected-work is no longer supported. Use --backlog-item-key, --backlog-delivery-state, and at least one --backlog-source.", helpText);
 	const title = ensureRequired(takeOption(argv, "--title", null), "--title is required.", helpText);
-	const selectedWork = ensureRequired(takeOption(argv, "--selected-work", null), "--selected-work is required.", helpText);
+	const backlogItemKey = ensureRequired(takeOption(argv, "--backlog-item-key", null), "--backlog-item-key is required.", helpText);
+	const backlogDeliveryState = ensureEnumValue(ensureRequired(takeOption(argv, "--backlog-delivery-state", null), "--backlog-delivery-state is required.", helpText), BACKLOG_DELIVERY_STATES, "--backlog-delivery-state", helpText);
+	const backlogSources = ensureNonEmpty(takeManyOptions(argv, "--backlog-source"), "At least one --backlog-source is required.", helpText);
+	const backlogDependencies = takeManyOptions(argv, "--backlog-dependency");
+	const backlogBlockers = takeManyOptions(argv, "--backlog-blocker");
 	const area = ensureRequired(takeOption(argv, "--area", null), "--area is required.", helpText);
 	const owners = takeManyOptions(argv, "--owner");
 	const impacts = takeManyOptions(argv, "--impact");
@@ -7036,36 +7053,66 @@ async function runFeatureIntakeCommand(argv, io) {
 	const defaultRelPath = path.join(DEFAULT_DOSSIERS_DIR, `${featureId}-${slug}.md`);
 	const outputPath = output ? path.resolve(absRoot, output) : path.resolve(absRoot, defaultRelPath);
 	const outputBaseName = path.basename(outputPath);
-	const relativeOutputDir = path.relative(absDossiersDir, path.dirname(outputPath));
+	const outputDir = path.dirname(outputPath);
 	if (!isDossierFile(outputBaseName) || !matchesFeatureFile(featureId, outputBaseName)) throw new UsageError("--output must point to a dossier file named like docs/features/F-XXXX-slug.md for the allocated feature id.", helpText);
-	if (relativeOutputDir === "" || !relativeOutputDir.startsWith("..") && !path.isAbsolute(relativeOutputDir)) {} else throw new UsageError("--output must stay inside docs/features for the current repository root.", helpText);
+	if (outputDir !== absDossiersDir) throw new UsageError("--output must point to a dossier file directly inside docs/features for the current repository root.", helpText);
+	await promises.mkdir(absDossiersDir, { recursive: true });
+	const realRoot = await promises.realpath(absRoot);
+	if (await promises.realpath(absDossiersDir) !== path.join(realRoot, "docs/features")) throw new UsageError("docs/features must be a real directory inside the repository root and must not be a symlinked path.", helpText);
 	if (await fileExists(outputPath)) throw new UsageError(`Refusing to overwrite existing dossier ${relativeToRoot(absRoot, outputPath)}.`, helpText);
-	await promises.mkdir(path.dirname(outputPath), { recursive: true });
 	await writeTextAtomic(outputPath, renderInitialDossier({
 		area,
+		backlogBlockers,
+		backlogDeliveryState,
+		backlogDependencies,
+		backlogItemKey,
+		backlogSources,
 		created: (/* @__PURE__ */ new Date()).toISOString().slice(0, 10),
 		dependsOn,
 		featureId,
 		impacts,
 		owners,
-		selectedWork,
 		title
 	}));
-	const syncIo = createBufferedIo();
-	await runSyncIndexCommand(["--root", absRoot], syncIo.io);
 	const summary = {
 		dossier: relativeToRoot(absRoot, outputPath),
 		feature_id: featureId,
-		selected_work: selectedWork,
+		backlog_item_key: backlogItemKey,
+		backlog_delivery_state: backlogDeliveryState,
+		backlog_source_traceability: backlogSources,
+		backlog_dependencies: backlogDependencies,
+		backlog_blockers: backlogBlockers,
+		partial_success: false,
 		workflow_next: "spec-compact"
 	};
+	const refreshIo = createBufferedIo();
+	const refreshExit = await runIndexRefreshCommand(["--root", absRoot], refreshIo.io);
+	if (refreshExit !== 0) {
+		const refreshStdout = refreshIo.readStdout();
+		const refreshStderr = refreshIo.readStderr();
+		if (json) {
+			writeLine$1(io.stdout, JSON.stringify({
+				...summary,
+				partial_success: true,
+				refresh_exit_code: refreshExit,
+				refresh_stdout: refreshStdout.trim() || null,
+				refresh_stderr: refreshStderr.trim() || null
+			}, null, 2));
+			return refreshExit;
+		}
+		if (refreshStdout) io.stdout.write(refreshStdout);
+		if (refreshStderr) io.stderr.write(refreshStderr);
+		writeLine$1(io.stderr, "[feature-intake] Dossier was created, but index-refresh failed. Resolve the reported issues before continuing.");
+		return refreshExit;
+	}
 	if (json) {
 		writeLine$1(io.stdout, JSON.stringify(summary, null, 2));
 		return 0;
 	}
 	writeLine$1(io.stdout, `[feature-intake] Created ${summary.dossier}`);
 	writeLine$1(io.stdout, `[feature-intake] feature=${featureId}`);
-	writeLine$1(io.stdout, `[feature-intake] selected_work=${selectedWork}`);
+	writeLine$1(io.stdout, `[feature-intake] backlog_item_key=${backlogItemKey}`);
+	writeLine$1(io.stdout, `[feature-intake] backlog_delivery_state=${backlogDeliveryState}`);
 	writeLine$1(io.stdout, "[feature-intake] next=dossier-local spec-compact");
 	return 0;
 }
@@ -7830,7 +7877,7 @@ function nextStepHelp() {
 		"",
 		"Options:",
 		"  --root <path>                Repository root. Defaults to cwd.",
-		"  --dossier <path>             Resolve next step for one dossier.",
+		"  --dossier <path>             Resolve next step for one dossier. Required when multiple dossiers exist.",
 		"  --json                       Emit JSON output.",
 		"  -h, --help                   Show help."
 	].join("\n");
@@ -7846,7 +7893,8 @@ async function runNextStepCommand(argv, io) {
 	const json = hasOption(argv, "--json");
 	const absRoot = path.resolve(root);
 	const dossiers = await fileExists(path.resolve(absRoot, "docs/features")) ? await readAllDossiers(absRoot, DEFAULT_DOSSIERS_DIR, { strictStatuses: DEFAULT_STRICT_COVERAGE_STATUSES }) : [];
-	const target = dossier ? await readDossierRecord(path.resolve(absRoot, dossier), { root: absRoot }) : selectActiveDossier(dossiers);
+	if (!dossier && dossiers.length > 1) throw new UsageError("When more than one dossier exists, --dossier is required for next-step.", helpText);
+	const target = dossier ? await readDossierRecord(path.resolve(absRoot, dossier), { root: absRoot }) : dossiers[0] ?? null;
 	let latestStepArtifact = null;
 	let latestReviewArtifact = null;
 	let currentCommit = null;

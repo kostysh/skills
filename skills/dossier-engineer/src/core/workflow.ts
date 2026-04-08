@@ -1,5 +1,3 @@
-import type { DossierRecord } from '../lib/dossier-utils.ts';
-
 export function statusToNextStep(status: unknown): string | null {
   switch (status) {
     case 'proposed':
@@ -16,20 +14,6 @@ export function statusToNextStep(status: unknown): string | null {
     default:
       return null;
   }
-}
-
-export function selectActiveDossier(dossiers: DossierRecord[]): DossierRecord | null {
-  const priority = ['in_progress', 'planned', 'shaped', 'proposed', 'parked', 'done'];
-  return (
-    [...dossiers].sort((left, right) => {
-      const leftPriority = priority.indexOf(String(left.frontmatter.status));
-      const rightPriority = priority.indexOf(String(right.frontmatter.status));
-      if (leftPriority !== rightPriority) {
-        return leftPriority - rightPriority;
-      }
-      return String(left.frontmatter.id).localeCompare(String(right.frontmatter.id));
-    })[0] ?? null
-  );
 }
 
 export function defaultNextStep(status: unknown, step: string): string {

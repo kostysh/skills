@@ -158,3 +158,25 @@ Verification: integration
   assert(redFlags.includes('F-0003'));
   assert(redFlags.includes('WARN'));
 });
+
+void test('analyzeDossiers treats missing ACs in proposed dossiers as a warning', () => {
+  const dossier = makeDossier({
+    id: 'F-0011',
+    status: 'proposed',
+    markdown: `## Context & Goal
+
+- Intake started from backlog work.
+
+## Change log
+
+- 2026-03-26: Initial intake.
+`,
+  });
+
+  const findings = analyzeDossiers([dossier]);
+  const acFinding = findings.find((finding) =>
+    finding.message.includes('No acceptance criteria IDs found'),
+  );
+
+  assert.equal(acFinding?.level, 'warn');
+});

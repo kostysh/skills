@@ -145,7 +145,11 @@ node scripts/dossier.mjs --version
 
 - `--root <path>`
 - `--title <text>`; обязательный
-- `--selected-work <text>`; обязательный
+- `--backlog-item-key <key>`; обязательный
+- `--backlog-delivery-state <state>`; обязательный
+- repeatable `--backlog-source <source>`; минимум один
+- repeatable `--backlog-dependency <key>`
+- repeatable `--backlog-blocker <text>`
 - `--area <name>`; обязательный
 - repeatable `--owner <name>`; минимум один
 - repeatable `--impact <name>`; минимум один
@@ -159,7 +163,7 @@ node scripts/dossier.mjs --version
 Команда:
 
 1. определяет следующий свободный `F-XXXX`
-2. ожидает, что selected backlog work уже был выбран через `backlog-engineer`
+2. ожидает, что backlog item уже был выбран через `backlog-engineer`
 3. создаёт новый dossier markdown file в `docs/features/F-XXXX-<slug>.md`, если не задан `--output`
 4. заполняет deterministic frontmatter:
    - `id`
@@ -173,13 +177,26 @@ node scripts/dossier.mjs --version
    - `created`
    - `updated`
    - `links`
-5. добавляет selected backlog work в dossier body как handoff context
-6. запускает `sync-index`
+5. записывает в dossier body structured backlog handoff:
+   - backlog item key
+   - backlog delivery state at intake
+   - source traceability
+   - known blockers at intake
+   - known dependencies at intake
+6. запускает `index-refresh` как canonical full refresh path
 
 ### Ограничения и валидация
 
+- `--backlog-delivery-state` допускает только:
+  - `defined`
+  - `specified`
+  - `planned`
+  - `implemented`
+- `--backlog-source` требуется минимум один раз
+- `--selected-work` больше не поддерживается; при передаче этого флага команда завершаетcя `UsageError` с указанием новых backlog handoff flags
 - `--output`, если задан, должен указывать на валидный dossier filename для выделенного `F-XXXX`
-- `--output`, если задан, должен оставаться внутри `docs/features`
+- `--output`, если задан, должен указывать на файл **непосредственно** внутри `docs/features`
+- `docs/features` должен быть реальным каталогом внутри repo root; symlinked path для него запрещён
 - существующий dossier файл не перезаписывается
 - команда не читает backlog artifacts и не пытается проверить backlog readiness сама
 
@@ -191,7 +208,13 @@ node scripts/dossier.mjs --version
 {
   "dossier": "docs/features/F-0001-password-reset.md",
   "feature_id": "F-0001",
-  "selected_work": "auth-password-reset",
+  "backlog_item_key": "auth-password-reset",
+  "backlog_delivery_state": "planned",
+  "backlog_source_traceability": [
+    "docs/architecture/system.md"
+  ],
+  "backlog_dependencies": [],
+  "backlog_blockers": [],
   "workflow_next": "spec-compact"
 }
 ```
@@ -200,12 +223,16 @@ node scripts/dossier.mjs --version
 
 - созданный путь dossier
 - feature id
-- selected backlog work
+- backlog item key
+- backlog delivery state
 - следующий dossier-local шаг (`spec-compact`)
 
 ### Коды завершения
 
 - `0` при успешном intake
+- если dossier уже создан, но `index-refresh` завершился неуспешно:
+  - без `--json` команда проксирует non-zero exit code и сообщает, что dossier создан, но refresh нужно исправить вручную;
+  - с `--json` команда возвращает structured partial-success payload с `partial_success=true`, `refresh_exit_code`, `refresh_stdout`, `refresh_stderr`
 - `2` при ошибке использования или при конфликте с уже существующим dossier
 - `1` при фатальной ошибке
 
@@ -795,13 +822,8 @@ Baseline берётся в порядке:
 ### Правила выбора target dossier
 
 - если задан `--dossier`, используется он
-- иначе выбирается active dossier по приоритету статусов:
-  - `in_progress`
-  - `planned`
-  - `shaped`
-  - `proposed`
-  - `parked`
-  - `done`
+- если `--dossier` не задан и dossier один, используется он
+- если `--dossier` не задан и dossiers несколько, команда завершаетcя ошибкой использования и требует явный `--dossier`
 
 ### Workflow next resolution
 
@@ -847,6 +869,7 @@ Baseline берётся в порядке:
 
 - команда не выбирает backlog item;
 - команда не эмулирует backlog selection при отсутствии dossier;
+- команда не выбирает dossier молча, если в repo больше одного dossier;
 - при отсутствии active dossier она возвращает dossier-local blocking explanation и отправляет оператора обратно в `backlog-engineer`.
 
 ### Коды завершения

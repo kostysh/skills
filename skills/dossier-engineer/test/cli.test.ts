@@ -137,8 +137,18 @@ void test('feature-intake creates a dossier from selected backlog work and updat
     repoRoot,
     '--title',
     'Password reset',
-    '--selected-work',
+    '--backlog-item-key',
     'auth-password-reset',
+    '--backlog-delivery-state',
+    'planned',
+    '--backlog-source',
+    'docs/architecture/system.md',
+    '--backlog-source',
+    'docs/adr/ADR-001-auth-contract.md',
+    '--backlog-dependency',
+    'identity-session-hardening',
+    '--backlog-blocker',
+    'Awaiting password reset copy review',
     '--area',
     'auth',
     '--owner',
@@ -152,18 +162,34 @@ void test('feature-intake creates a dossier from selected backlog work and updat
   assert.equal(result.status, 0);
 
   const summary = JSON.parse(result.stdout) as {
+    backlog_blockers: string[];
+    backlog_delivery_state: string;
+    backlog_dependencies: string[];
+    backlog_item_key: string;
+    backlog_source_traceability: string[];
     dossier: string;
     feature_id: string;
-    selected_work: string;
+    partial_success: boolean;
     workflow_next: string;
   };
 
   assert.equal(summary.feature_id, 'F-0001');
-  assert.equal(summary.selected_work, 'auth-password-reset');
+  assert.equal(summary.backlog_item_key, 'auth-password-reset');
+  assert.equal(summary.backlog_delivery_state, 'planned');
+  assert.deepEqual(summary.backlog_source_traceability, [
+    'docs/architecture/system.md',
+    'docs/adr/ADR-001-auth-contract.md',
+  ]);
+  assert.deepEqual(summary.backlog_dependencies, ['identity-session-hardening']);
+  assert.deepEqual(summary.backlog_blockers, ['Awaiting password reset copy review']);
+  assert.equal(summary.partial_success, false);
   assert.equal(summary.workflow_next, 'spec-compact');
 
   const dossierText = fs.readFileSync(path.join(repoRoot, summary.dossier), 'utf8');
-  assert.match(dossierText, /Selected backlog work: auth-password-reset/);
+  assert.match(dossierText, /Backlog item key: auth-password-reset/);
+  assert.match(dossierText, /Backlog delivery state at intake: planned/);
+  assert.match(dossierText, /docs\/architecture\/system\.md/);
+  assert.match(dossierText, /Awaiting password reset copy review/);
   assert.match(dossierText, /status: proposed/);
 
   const indexText = fs.readFileSync(path.join(repoRoot, 'docs/ssot/index.md'), 'utf8');
@@ -184,8 +210,12 @@ void test('feature-intake rejects outputs outside docs/features', (t) => {
     repoRoot,
     '--title',
     'Password reset',
-    '--selected-work',
+    '--backlog-item-key',
     'auth-password-reset',
+    '--backlog-delivery-state',
+    'planned',
+    '--backlog-source',
+    'docs/architecture/system.md',
     '--area',
     'auth',
     '--owner',
@@ -197,10 +227,50 @@ void test('feature-intake rejects outputs outside docs/features', (t) => {
   ]);
 
   assert.equal(result.status, 2);
-  assert.match(result.stderr, /--output must stay inside docs\/features/);
+  assert.match(
+    result.stderr,
+    /--output must point to a dossier file directly inside docs\/features/,
+  );
   assert.equal(
     fs.existsSync(path.join(repoRoot, '..', 'outside', 'F-0001-password-reset.md')),
     false,
+  );
+});
+
+void test('feature-intake rejects nested outputs below docs/features', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-intake-nested-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  });
+
+  writeFile(repoRoot, 'docs/architecture/system.md', '# System\n');
+
+  const result = runCli([
+    'feature-intake',
+    '--root',
+    repoRoot,
+    '--title',
+    'Password reset',
+    '--backlog-item-key',
+    'auth-password-reset',
+    '--backlog-delivery-state',
+    'planned',
+    '--backlog-source',
+    'docs/architecture/system.md',
+    '--area',
+    'auth',
+    '--owner',
+    '@auth-team',
+    '--impact',
+    'client',
+    '--output',
+    'docs/features/nested/F-0001-password-reset.md',
+  ]);
+
+  assert.equal(result.status, 2);
+  assert.match(
+    result.stderr,
+    /--output must point to a dossier file directly inside docs\/features/,
   );
 });
 
@@ -241,6 +311,188 @@ void test('coverage-audit passes and next-step returns implementation for the ac
   assert.equal(summary.target_dossier, 'docs/features/F-0001-sample.md');
   assert.equal(summary.workflow_next, 'implementation');
   assert.equal(summary.dossier_status, 'planned');
+});
+
+void test('next-step requires --dossier when multiple dossiers exist', (t) => {
+  const repoRoot = createRepoFixture(t);
+  writeFile(
+    repoRoot,
+    'docs/features/F-0002-another.md',
+    `---
+id: F-0002
+title: Another dossier
+status: proposed
+area: auth
+owners: ["@team"]
+depends_on: []
+impacts: ["api"]
+coverage_gate: deferred
+created: 2026-03-26
+updated: 2026-03-26
+---
+
+## Scope
+
+Another dossier.
+`,
+  );
+
+  const result = runCli(['next-step', '--root', repoRoot, '--json']);
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /When more than one dossier exists, --dossier is required/);
+});
+
+void test('feature-intake help exposes structured backlog handoff options', () => {
+  const result = runCli(['feature-intake', '--help']);
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /--backlog-item-key/);
+  assert.match(result.stdout, /--backlog-delivery-state/);
+  assert.match(result.stdout, /--backlog-source/);
+  assert.doesNotMatch(result.stdout, /--selected-work/);
+});
+
+void test('feature-intake propagates index-refresh failure after dossier creation', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-intake-refresh-fail-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  });
+
+  writeFile(repoRoot, 'docs/architecture/system.md', '# System\n');
+  writeFile(
+    repoRoot,
+    'docs/features/F-0001-broken.md',
+    `---
+id: F-0001
+title: Broken dossier
+status: planned
+area: auth
+owners: ["@team"]
+depends_on: []
+impacts: ["api"]
+coverage_gate: strict
+created: 2026-03-26
+updated: 2026-03-26
+---
+
+## Scope
+
+Broken dossier.
+
+## Change log
+
+- 2026-03-26: Created.
+`,
+  );
+
+  const result = runCli([
+    'feature-intake',
+    '--root',
+    repoRoot,
+    '--title',
+    'Password reset',
+    '--backlog-item-key',
+    'auth-password-reset',
+    '--backlog-delivery-state',
+    'planned',
+    '--backlog-source',
+    'docs/architecture/system.md',
+    '--area',
+    'auth',
+    '--owner',
+    '@auth-team',
+    '--impact',
+    'client',
+    '--json',
+  ]);
+
+  assert.equal(result.status, 2);
+  const summary = JSON.parse(result.stdout) as {
+    backlog_item_key: string;
+    dossier: string;
+    feature_id: string;
+    partial_success: boolean;
+    refresh_exit_code: number;
+    refresh_stderr: string | null;
+    refresh_stdout: string | null;
+  };
+  assert.equal(summary.feature_id, 'F-0002');
+  assert.equal(summary.backlog_item_key, 'auth-password-reset');
+  assert.equal(summary.partial_success, true);
+  assert.equal(summary.refresh_exit_code, 2);
+  assert.match(summary.refresh_stdout ?? '', /Found 2 error\(s\), 4 warning\(s\)/);
+  assert.equal(summary.refresh_stderr, null);
+  assert.equal(fs.existsSync(path.join(repoRoot, 'docs/features/F-0002-password-reset.md')), true);
+});
+
+void test('feature-intake rejects deprecated selected-work flag with a migration error', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-intake-selected-work-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  });
+
+  writeFile(repoRoot, 'docs/architecture/system.md', '# System\n');
+
+  const result = runCli([
+    'feature-intake',
+    '--root',
+    repoRoot,
+    '--title',
+    'Password reset',
+    '--selected-work',
+    'auth-password-reset',
+    '--area',
+    'auth',
+    '--owner',
+    '@auth-team',
+    '--impact',
+    'client',
+  ]);
+
+  assert.equal(result.status, 2);
+  assert.match(
+    result.stderr,
+    /--selected-work is no longer supported\. Use --backlog-item-key, --backlog-delivery-state, and at least one --backlog-source\./,
+  );
+});
+
+void test('feature-intake rejects symlinked dossier directories that escape the repo root', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-intake-symlink-'));
+  const outsideRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-outside-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+    fs.rmSync(outsideRoot, { recursive: true, force: true });
+  });
+
+  writeFile(repoRoot, 'docs/architecture/system.md', '# System\n');
+  fs.rmSync(path.join(repoRoot, 'docs', 'features'), { recursive: true, force: true });
+  fs.symlinkSync(outsideRoot, path.join(repoRoot, 'docs', 'features'), 'dir');
+
+  const result = runCli([
+    'feature-intake',
+    '--root',
+    repoRoot,
+    '--title',
+    'Password reset',
+    '--backlog-item-key',
+    'auth-password-reset',
+    '--backlog-delivery-state',
+    'planned',
+    '--backlog-source',
+    'docs/architecture/system.md',
+    '--area',
+    'auth',
+    '--owner',
+    '@auth-team',
+    '--impact',
+    'client',
+  ]);
+
+  assert.equal(result.status, 2);
+  assert.match(
+    result.stderr,
+    /docs\/features must be a real directory inside the repository root and must not be a symlinked path\./,
+  );
+  assert.equal(fs.existsSync(path.join(outsideRoot, 'F-0001-password-reset.md')), false);
 });
 
 void test('next-step returns a dossier-local blocker when no dossier exists yet', (t) => {

@@ -177,9 +177,12 @@ export function analyzeDossiers(dossiers: DossierRecord[]): LintFinding[] {
 
     if (dossier.acIds.length === 0) {
       findings.push({
-        level: 'error',
+        level: frontmatter.status === 'proposed' ? 'warn' : 'error',
         feature,
-        message: 'No acceptance criteria IDs found. Add at least one AC-F....-.. entry.',
+        message:
+          frontmatter.status === 'proposed'
+            ? 'No acceptance criteria IDs found yet. Add at least one AC-F....-.. entry before leaving the proposed intake state.'
+            : 'No acceptance criteria IDs found. Add at least one AC-F....-.. entry.',
       });
     }
 
