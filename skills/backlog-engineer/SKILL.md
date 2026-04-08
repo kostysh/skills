@@ -26,6 +26,31 @@ The method is centered on:
 
 This skill is not for proof bundles, review gates, scoring, drift control, or rebaseline workflows.
 
+## Cross-skill role
+
+`backlog-engineer` is the backlog layer in the agreed cross-skill process.
+
+Use it to:
+
+- build the backlog graph from architecture, ADRs, and technical decisions;
+- choose the next backlog work item;
+- determine whether that work is ready to move;
+- actualize backlog truth after dossier-side lifecycle changes.
+
+After backlog work is selected and backlog readiness is clear, the normal downstream continuation is `dossier-engineer`.
+
+`dossier-engineer` owns the local workflow of the selected work:
+
+- `feature-intake`
+- `spec-compact`
+- `plan-slice`
+- `implementation`
+- `dossier-verify`
+- `review-artifact`
+- `dossier-step-close`
+
+Do not use `backlog-engineer` to replace dossier-local spec, planning, or closure work.
+
 ## Start here
 
 If you only read one section before acting, read this one.
@@ -40,6 +65,7 @@ Critical rules:
 6. Prefer scoped operations over global ones when scope is known.
 7. Before creating a new backlog, analyze what the operator already told you; if system state, `delivery_state` source, or the full source set is still missing, stop and close that gap before packet authoring.
 8. All mutating commands for one backlog root run only sequentially, never in parallel.
+9. `backlog-engineer` answers whether work can move; dossier `next-step` answers how already selected work moves locally.
 
 Fast navigation:
 
@@ -227,6 +253,12 @@ The operator should not be pulled into internal command choreography.
 
 The agent must not reconstruct current backlog truth from packet and patch files after registration.
 
+Cross-skill boundary:
+
+- backlog `queue`, `status`, `gaps`, `attention`, and `ready_for_next_step` determine project-level or task-level readiness;
+- dossier `next-step` is dossier-local only and must not be used to choose backlog work;
+- once selected work moves through dossier-side shaping / planning / implementation, backlog truth must be actualized back through this skill.
+
 ## Core rules
 
 1. The main backlog unit is an atomic task.
@@ -242,6 +274,44 @@ The agent must not reconstruct current backlog truth from packet and patch files
 11. Registered packets are immutable.
 12. Utility-owned `todo` items are not authored in packets.
 13. Use `--dry-run` before risky or large mutations.
+14. Dossier artifacts may be supporting evidence for backlog sync, but they do not replace architecture or ADR sources as canonical upstream truth.
+
+## Backlog handoff to dossier
+
+After `queue`, `status`, or scoped backlog reads identify the work that should move next, hand off only the durable backlog facts needed by `dossier-engineer`.
+
+Minimum durable backlog -> dossier handoff:
+
+- selected `item_key`
+- current `delivery_state`
+- relevant source traceability
+- known blockers
+- known dependencies
+
+Important:
+
+- `attention` remains a backlog-side read model;
+- you may inspect `attention` before intake as a current backlog signal;
+- do not copy `attention` into dossier handoff as durable state.
+
+The dossier layer then owns the selected work locally until backlog truth changes again.
+
+## Backlog actualization after dossier work
+
+Return to `backlog-engineer` explicitly when dossier-side work changes backlog truth.
+
+Use these literal rules:
+
+- when dossier shaping or specification removes design ambiguity with enough evidence, actualize the backlog work to `specified`;
+- when dossier planning makes implementation-ready sequencing explicit with enough evidence, actualize the backlog work to `planned`;
+- when implementation plus closure establish delivered behavior with enough evidence, actualize the backlog work to `implemented`;
+- when dossier work reveals new blockers, dependencies, context facts, or cross-cutting decisions, patch backlog state before continuing.
+
+Status crosswalk notes:
+
+- dossier `planned` is not the same state layer as backlog `planned`;
+- dossier `done` is not automatically equal to backlog `implemented`;
+- use backlog `delivery_state` only when the strongest available evidence for that backlog layer is present.
 
 ## Delivery state inference
 

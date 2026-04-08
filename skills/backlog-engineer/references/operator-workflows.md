@@ -11,6 +11,10 @@ For one canonical first-run walkthrough, use [First Backlog Walkthrough](first-b
 | Create backlog from architecture | preflight on system state -> source-set gate -> `init` -> `register-source` for all relevant sources -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
 | Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
+| Choose the next work and hand off to dossier | `queue` or scoped `status`/`items` -> read current `delivery_state`, blockers, dependencies, and source traceability -> hand off the selected backlog work to `dossier-engineer feature-intake` |
+| Update backlog after dossier shaping/specification | after dossier `spec-compact`, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `specified` and record any new blockers, dependencies, or context facts |
+| Update backlog after dossier planning | after dossier `plan-slice`, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `planned` and record any newly explicit dependencies or sequencing constraints |
+| Update backlog after dossier implementation/closure | after dossier `implementation -> dossier-verify -> review-artifact -> dossier-step-close`, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `implemented` and record any new follow-up backlog facts |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
 | Show what changed after the last action | Use the compact response of the last mutating command; only then fetch `items` if details are needed |
 | Show what needs attention | `attention` -> `items` only for selected tasks |
@@ -25,6 +29,12 @@ Treat `queue` as a list of ordered chains, not a flat list.
 - only tasks that are runnable now should appear there;
 - the utility should return the chain already ordered for next-step work.
 - queue chain count is not expected to equal the count of all `ready_for_next_step` tasks.
+
+Cross-skill interpretation:
+
+- `queue` decides which backlog work should move next;
+- dossier-local `next-step` decides how already selected work should move locally;
+- do not use dossier-local `next-step` as a substitute for backlog selection.
 
 ## First-run preflight
 
@@ -85,6 +95,15 @@ Never run these in parallel for the same root:
 - the authored packet stays your draft;
 - the utility keeps its own immutable canonical import copy;
 - current truth still comes from the utility, not from either packet file.
+
+### Dossier-side actualization
+
+When dossier work changes backlog truth:
+
+- use `patch-item` when the affected backlog items are already known;
+- use scoped `refresh` first when the dossier-side change came from updated source documents;
+- keep the mutation scoped to the selected work and the newly discovered linked facts whenever possible;
+- if dossier work surfaced a new blocker, dependency, or context fact, patch backlog before continuing dossier-local workflow.
 
 ## Agent accents
 

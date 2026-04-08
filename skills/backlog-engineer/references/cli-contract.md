@@ -32,6 +32,12 @@ When source scope is known, prefer scoped refresh:
 
 Use `refresh --item-key ...` when the work is task-scoped rather than source-scoped.
 
+Cross-skill note:
+
+- dossier artifacts may be supporting evidence for why backlog sync is needed;
+- backlog sync still uses backlog commands and canonical backlog state;
+- dossier artifacts do not replace architecture or ADR sources as canonical upstream truth.
+
 ## Command boundaries
 
 | Command | Use when | Do not use when |
@@ -124,6 +130,11 @@ Keep these boundaries explicit:
 Queue interpretation rule:
 
 - queue chain count is not expected to equal the total count of tasks with `ready_for_next_step = true`.
+
+Backlog vs dossier-local boundary:
+
+- use `queue`, `status`, `gaps`, `attention`, and `ready_for_next_step` for backlog-layer readiness and task selection;
+- use `dossier-engineer next-step` only after a backlog work item has already been selected and handed off.
 
 ## Scoped checks
 

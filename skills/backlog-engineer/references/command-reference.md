@@ -52,6 +52,11 @@ Behavior notes:
 - if the target directory already contains a single regular `.gitignore`, `init` preserves its existing content and appends or refreshes the managed section instead of overwriting the file.
 - if file-backed execution cannot provide safe anchored directory handling for managed artifact writes, `init` fails with `BE_PLATFORM_UNSUPPORTED`.
 
+Cross-skill note:
+
+- `init` establishes the backlog layer only;
+- after backlog selection later in the process, downstream dossier work moves to `dossier-engineer`, not to more backlog authoring.
+
 ## `register-source`
 
 Use when a document must become part of backlog inputs.
@@ -181,6 +186,10 @@ Interpretation:
 - the utility stores a separate immutable canonical import copy;
 - current backlog truth is still read from the utility.
 
+Cross-skill note:
+
+- `packet` is for backlog creation and backlog growth, not for dossier-side lifecycle actualization of already selected work.
+
 ## `patch-item`
 
 Use only for existing tasks that changed.
@@ -206,6 +215,11 @@ Compact response should include:
 - `todo_removed`
 - `dry_run`
 - `next_commands`
+
+Cross-skill note:
+
+- `patch-item` is the normal backlog mutation after dossier shaping / planning / implementation when the affected backlog items are already known;
+- use it to actualize `delivery_state`, blockers, dependencies, and context facts that dossier work made explicit.
 
 ## `remove-item`
 
@@ -260,6 +274,11 @@ Compact response should include:
 - `todo_removed`
 - `next_commands`
 
+Cross-skill note:
+
+- use scoped `refresh` after dossier work when updated source documents may have changed backlog-derived state;
+- dossier artifacts may support the decision to refresh or patch, but they do not replace architecture or ADR sources as canonical upstream truth.
+
 ## `status`
 
 Use for a short overall summary in dialog.
@@ -278,6 +297,11 @@ Expected fields:
 - count of tasks with `needs_attention`;
 - count of tasks with `ready_for_next_step`;
 - count of tasks with open `todo`.
+
+Cross-skill note:
+
+- use `status` before dossier intake when the operator wants the current backlog picture;
+- use `status` again after dossier-side lifecycle changes when you need to confirm the updated backlog state after actualization.
 
 ## `report`
 
@@ -318,6 +342,11 @@ Each item card should include:
 - `ready_for_next_step`;
 - open `todo`.
 
+Cross-skill note:
+
+- use `items` to inspect the selected backlog work before dossier intake or after backlog actualization;
+- do not treat dossier-local state as a substitute for the canonical item card in the backlog utility.
+
 ## `queue`
 
 Use `queue` as the answer to “what can be taken next”.
@@ -326,6 +355,21 @@ Interpretation:
 
 - it returns ordered chains, not a flat set of all ready tasks;
 - queue chain count is not expected to equal the count of all `ready_for_next_step` tasks.
+
+Cross-skill note:
+
+- use `queue` to choose the next backlog work item;
+- use dossier-local `next-step` only after a backlog item has already been selected and handed off.
+
+## `attention`
+
+Use `attention` when the operator needs the review-oriented backlog subset.
+
+Cross-skill note:
+
+- `attention` remains a backlog-side read model;
+- read it before dossier intake when you need the current review-oriented backlog signal;
+- do not persist `attention` as part of the durable dossier handoff.
 
 ## `search`
 
@@ -348,6 +392,11 @@ At minimum, each result should include:
 ## `gaps`
 
 Use when explicit blockers are needed.
+
+Cross-skill note:
+
+- use `gaps` before dossier intake when you need the backlog-side blocker picture for the selected work;
+- if dossier work discovers a new blocker or unresolved dependency, return here or to `items` after backlog actualization to confirm the updated blocker state.
 
 Supported scopes:
 

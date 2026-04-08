@@ -23,6 +23,7 @@ to:
 - validated `packet --dry-run`
 - applied packet
 - first read of `status`, `gaps`, `queue`, and `attention`
+- explicit handoff to `dossier-engineer` for the selected work
 
 ## Execution note
 
@@ -260,7 +261,38 @@ If `queue` is empty:
 - check `gaps`
 - then check `attention`
 
-## Step 9. What not to do
+Important:
+
+- use this backlog read model to choose the first selected work;
+- do not jump into dossier-local workflow before backlog selection and readiness are clear.
+
+## Step 10. Hand off selected work to `dossier-engineer`
+
+Once backlog selection is clear:
+
+- take the selected `item_key`
+- keep its current `delivery_state`
+- keep the relevant source traceability
+- keep known blockers and dependencies
+
+Then continue in `dossier-engineer`:
+
+- `feature-intake`
+- `spec-compact`
+- `plan-slice`
+- `implementation`
+- `dossier-verify`
+- `review-artifact`
+- `dossier-step-close`
+
+Return to `backlog-engineer` again whenever dossier-side work changes backlog truth:
+
+- actualize to `specified` after shaping/specification evidence
+- actualize to `planned` after planning evidence
+- actualize to `implemented` after implementation + closure evidence
+- patch blockers, dependencies, and context facts discovered in dossier work
+
+## Step 11. What not to do
 
 Do not do these in the first run:
 
@@ -279,3 +311,4 @@ After this walkthrough you should have:
 - one authored packet draft
 - one applied packet
 - the first real backlog state materialized by the utility
+- one clear downstream handoff into `dossier-engineer`
