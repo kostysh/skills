@@ -33,7 +33,7 @@
 
 ### Commit
 
-- Commit: pending
+- Commit: `fc37c34` `refactor(dossier-engineer): harden verification workflow contracts`
 - Close time: 2026-04-08 18:14:47 CEST
 - Total time to close package: 00:30:02
 
