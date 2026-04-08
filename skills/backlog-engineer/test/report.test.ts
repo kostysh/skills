@@ -330,6 +330,7 @@ void test('report command writes markdown and mermaid files to reports directory
 
   try {
     await copyBacklogFixture('refreshable-backlog', backlogRoot);
+    await rm(path.join(backlogRoot, 'reports'), { recursive: true, force: true });
     const context = await runtime.createContext('report', backlogRoot);
     const output = ReportCommandOutputSchema.parse(await REPORT_COMMAND.execute({}, context));
 
@@ -381,6 +382,7 @@ void test('report command applies buildSystemSummary and decorateReportSections 
 
   try {
     await copyBacklogFixture('refreshable-backlog', backlogRoot);
+    await rm(path.join(backlogRoot, 'reports'), { recursive: true, force: true });
     const context = await runtime.createContext('report', backlogRoot);
     await REPORT_COMMAND.execute({}, context);
 

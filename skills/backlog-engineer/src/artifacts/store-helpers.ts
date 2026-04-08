@@ -403,6 +403,15 @@ export async function writeTextAtomically(payload: {
 
   try {
     if (root) {
+      await ensureManagedDirectoryPathSafe({
+        fs,
+        path,
+        errors,
+        root,
+        directoryPath: path.dirname(targetPath),
+        errorCode: writeErrorCode,
+      });
+      await fs.mkdir(path.dirname(targetPath), { recursive: true });
       parentDirectory = await openManagedParentDirectory({
         fs,
         path,
