@@ -116,10 +116,92 @@ void test('global help exposes unified commands and compatibility aliases', () =
   const result = runCli(['--help']);
 
   assert.equal(result.status, 0);
+  assert.match(result.stdout, /feature-intake/);
   assert.match(result.stdout, /sync-index/);
   assert.match(result.stdout, /dossier-verify/);
   assert.match(result.stdout, /marker-audit/);
   assert.equal(result.stderr, '');
+});
+
+void test('feature-intake creates a dossier from selected backlog work and updates the index', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-intake-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  });
+
+  writeFile(repoRoot, 'docs/architecture/system.md', '# System\n');
+
+  const result = runCli([
+    'feature-intake',
+    '--root',
+    repoRoot,
+    '--title',
+    'Password reset',
+    '--selected-work',
+    'auth-password-reset',
+    '--area',
+    'auth',
+    '--owner',
+    '@auth-team',
+    '--impact',
+    'client',
+    '--impact',
+    'server',
+    '--json',
+  ]);
+  assert.equal(result.status, 0);
+
+  const summary = JSON.parse(result.stdout) as {
+    dossier: string;
+    feature_id: string;
+    selected_work: string;
+    workflow_next: string;
+  };
+
+  assert.equal(summary.feature_id, 'F-0001');
+  assert.equal(summary.selected_work, 'auth-password-reset');
+  assert.equal(summary.workflow_next, 'spec-compact');
+
+  const dossierText = fs.readFileSync(path.join(repoRoot, summary.dossier), 'utf8');
+  assert.match(dossierText, /Selected backlog work: auth-password-reset/);
+  assert.match(dossierText, /status: proposed/);
+
+  const indexText = fs.readFileSync(path.join(repoRoot, 'docs/ssot/index.md'), 'utf8');
+  assert.match(indexText, /\| F-0001 \| Password reset \| proposed \| deferred \| auth \|/);
+});
+
+void test('feature-intake rejects outputs outside docs/features', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-intake-boundary-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  });
+
+  writeFile(repoRoot, 'docs/architecture/system.md', '# System\n');
+
+  const result = runCli([
+    'feature-intake',
+    '--root',
+    repoRoot,
+    '--title',
+    'Password reset',
+    '--selected-work',
+    'auth-password-reset',
+    '--area',
+    'auth',
+    '--owner',
+    '@auth-team',
+    '--impact',
+    'client',
+    '--output',
+    '../outside/F-0001-password-reset.md',
+  ]);
+
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /--output must stay inside docs\/features/);
+  assert.equal(
+    fs.existsSync(path.join(repoRoot, '..', 'outside', 'F-0001-password-reset.md')),
+    false,
+  );
 });
 
 void test('index-refresh creates the generated index content', (t) => {
@@ -159,6 +241,30 @@ void test('coverage-audit passes and next-step returns implementation for the ac
   assert.equal(summary.target_dossier, 'docs/features/F-0001-sample.md');
   assert.equal(summary.workflow_next, 'implementation');
   assert.equal(summary.dossier_status, 'planned');
+});
+
+void test('next-step returns a dossier-local blocker when no dossier exists yet', (t) => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dossier-engineer-empty-'));
+  t.after(() => {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  });
+
+  const nextStepResult = runCli(['next-step', '--root', repoRoot, '--json']);
+  assert.equal(nextStepResult.status, 0);
+
+  const summary = JSON.parse(nextStepResult.stdout) as {
+    blocking_gate: string[];
+    dossier_status: string | null;
+    target_dossier: string | null;
+    workflow_next: string | null;
+  };
+
+  assert.equal(summary.target_dossier, null);
+  assert.equal(summary.dossier_status, null);
+  assert.equal(summary.workflow_next, null);
+  assert.deepEqual(summary.blocking_gate, [
+    'No active dossier found. Select backlog work with backlog-engineer and create a dossier via feature-intake before using next-step.',
+  ]);
 });
 
 void test('lint-dossiers reports compact-spec nudges for smells and weak contract cues', (t) => {

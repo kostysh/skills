@@ -73,7 +73,9 @@ void test('analyzeDossiers surfaces compact-spec nudges for weak shaped dossiers
   const messages = findings.map((finding) => finding.message);
 
   assert(messages.some((message) => message.includes('Missing Definition of Done section')));
-  assert(messages.some((message) => message.includes('Boundary I/O appears in the compact design')));
+  assert(
+    messages.some((message) => message.includes('Boundary I/O appears in the compact design')),
+  );
   assert(messages.some((message) => message.includes('Potential compound ACs detected')));
   assert(messages.some((message) => message.includes('Raw TBD found in executable sections')));
   assert(messages.some((message) => message.includes('NFR section looks aspirational')));

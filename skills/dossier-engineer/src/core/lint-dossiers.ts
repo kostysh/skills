@@ -207,7 +207,9 @@ export function analyzeDossiers(dossiers: DossierRecord[]): LintFinding[] {
             'Missing Coverage map rows for a strict coverage gate (expected rows like "| AC-F....-.. |").',
         });
       } else {
-        const missingCoverageRows = dossier.acIds.filter((acId) => !dossier.coverageIds.includes(acId));
+        const missingCoverageRows = dossier.acIds.filter(
+          (acId) => !dossier.coverageIds.includes(acId),
+        );
         if (missingCoverageRows.length > 0) {
           findings.push({
             level: 'error',

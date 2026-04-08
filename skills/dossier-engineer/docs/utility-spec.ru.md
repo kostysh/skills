@@ -18,9 +18,10 @@
 
 - markdown-досье в `docs/features`
 - глобальным индексом `docs/ssot/index.md`
-- backlog-кандидатами в `docs/backlog/feature-candidates.md`
 - машинно-проверяемыми JSON-артефактами в `.dossier/`
 - состоянием git-репозитория
+
+Backlog graph, backlog selection, and backlog lifecycle actualization остаются вне этой утилиты и принадлежат `backlog-engineer`.
 
 Утилита не хранит собственную базу данных и не использует внешний сервис как источник истины. Все вычисления строятся поверх файлов репозитория и, при необходимости, состояния git.
 
@@ -34,7 +35,7 @@
 - поиск явных debt markers
 - аудит drift между изменённым досье и кодовым follow-up
 - запись review / verification / step-close артефактов
-- вычисление следующего шага workflow
+- вычисление dossier-local следующего шага workflow
 
 Утилита не отвечает за:
 
@@ -125,7 +126,6 @@ node scripts/dossier.mjs --version
 |---|---|
 | Досье | `docs/features` |
 | SSOT index | `docs/ssot/index.md` |
-| Backlog candidates | `docs/backlog/feature-candidates.md` |
 | Drift artifacts | `.dossier/drift/<feature-id>/...` |
 | Review artifacts | `.dossier/reviews/<feature-id>/...` |
 | Verification artifacts | `.dossier/verification/<feature-id>/...` |
@@ -133,7 +133,83 @@ node scripts/dossier.mjs --version
 
 ## 6. Спецификация команд
 
-## 6.1 `sync-index`
+## 6.1 `feature-intake`
+
+### Назначение
+
+Создать новый Feature Dossier для уже выбранной backlog work.
+
+Команда не выбирает backlog work сама. Она принимает уже выбранную работу как вход и materialize-ит dossier-side intake.
+
+### Входы
+
+- `--root <path>`
+- `--title <text>`; обязательный
+- `--selected-work <text>`; обязательный
+- `--area <name>`; обязательный
+- repeatable `--owner <name>`; минимум один
+- repeatable `--impact <name>`; минимум один
+- repeatable `--depends-on <id>`
+- `--slug <slug>`
+- `--output <path>`
+- `--json`
+
+### Поведение
+
+Команда:
+
+1. определяет следующий свободный `F-XXXX`
+2. ожидает, что selected backlog work уже был выбран через `backlog-engineer`
+3. создаёт новый dossier markdown file в `docs/features/F-XXXX-<slug>.md`, если не задан `--output`
+4. заполняет deterministic frontmatter:
+   - `id`
+   - `title`
+   - `status: proposed`
+   - `coverage_gate: deferred`
+   - `owners`
+   - `area`
+   - `depends_on`
+   - `impacts`
+   - `created`
+   - `updated`
+   - `links`
+5. добавляет selected backlog work в dossier body как handoff context
+6. запускает `sync-index`
+
+### Ограничения и валидация
+
+- `--output`, если задан, должен указывать на валидный dossier filename для выделенного `F-XXXX`
+- `--output`, если задан, должен оставаться внутри `docs/features`
+- существующий dossier файл не перезаписывается
+- команда не читает backlog artifacts и не пытается проверить backlog readiness сама
+
+### Выход
+
+Если задан `--json`, возвращается объект:
+
+```json
+{
+  "dossier": "docs/features/F-0001-password-reset.md",
+  "feature_id": "F-0001",
+  "selected_work": "auth-password-reset",
+  "workflow_next": "spec-compact"
+}
+```
+
+Без `--json` команда печатает:
+
+- созданный путь dossier
+- feature id
+- selected backlog work
+- следующий dossier-local шаг (`spec-compact`)
+
+### Коды завершения
+
+- `0` при успешном intake
+- `2` при ошибке использования или при конфликте с уже существующим dossier
+- `1` при фатальной ошибке
+
+## 6.2 `sync-index`
 
 ### Назначение
 
@@ -179,7 +255,7 @@ node scripts/dossier.mjs --version
 
 - может создать или переписать index-файл
 
-## 6.2 `index-refresh`
+## 6.3 `index-refresh`
 
 ### Назначение
 
@@ -197,7 +273,7 @@ node scripts/dossier.mjs --version
 
 - код завершения проксируется из `sync-index` или `lint-dossiers`
 
-## 6.3 `lint-dossiers`
+## 6.4 `lint-dossiers`
 
 ### Назначение
 
@@ -246,7 +322,7 @@ node scripts/dossier.mjs --version
 
 Предупреждения `warn` сами по себе не переводят команду в non-zero.
 
-## 6.4 `dependency-graph`
+## 6.5 `dependency-graph`
 
 ### Назначение
 
@@ -266,7 +342,7 @@ node scripts/dossier.mjs --version
 - `stdout`: fenced block ```mermaid ... graph TD ... ```
 - код `0`
 
-## 6.5 `coverage-audit`
+## 6.6 `coverage-audit`
 
 ### Назначение
 
@@ -333,7 +409,7 @@ AC считается покрытым, если literal AC id встречае�
 
 Informational missing для non-strict dossier не делают команду blocking.
 
-## 6.6 `debt-audit` / `marker-audit`
+## 6.7 `debt-audit` / `marker-audit`
 
 ### Назначение
 
@@ -392,7 +468,7 @@ Informational missing для non-strict dossier не делают команду
 | `2` | Найден хотя бы один marker или ошибка использования |
 | `1` | Фатальная ошибка |
 
-## 6.7 `contract-drift-audit`
+## 6.8 `contract-drift-audit`
 
 ### Назначение
 
@@ -484,7 +560,7 @@ Baseline берётся в порядке:
 | `2` | `requires_follow_up=true` или ошибка использования |
 | `1` | Фатальная ошибка |
 
-## 6.8 `review-artifact`
+## 6.9 `review-artifact`
 
 ### Назначение
 
@@ -545,7 +621,7 @@ Baseline берётся в порядке:
 - `stdout`: путь к артефакту и summary по verdict/step/feature/commit
 - код `0`
 
-## 6.9 `dossier-step-close`
+## 6.10 `dossier-step-close`
 
 ### Назначение
 
@@ -617,7 +693,7 @@ Baseline берётся в порядке:
 | `2` | Есть blockers или ошибка использования |
 | `1` | Фатальная ошибка |
 
-## 6.10 `dossier-verify`
+## 6.11 `dossier-verify`
 
 ### Назначение
 
@@ -704,11 +780,11 @@ Baseline берётся в порядке:
 | `2` | Хотя бы один check имеет `status=fail` или ошибка использования |
 | `1` | Фатальная ошибка |
 
-## 6.11 `next-step`
+## 6.12 `next-step`
 
 ### Назначение
 
-Вернуть канонический ответ на вопрос “что делать дальше?” по состоянию dossier, backlog и process artifacts.
+Вернуть dossier-local ответ на вопрос “что делать дальше?” по состоянию dossier и process artifacts.
 
 ### Входы
 
@@ -727,13 +803,6 @@ Baseline берётся в порядке:
   - `parked`
   - `done`
 
-### Backlog resolution
-
-Если существует `docs/backlog/feature-candidates.md`, утилита парсит таблицу кандидатов и выбирает:
-
-1. первый `confirmed`
-2. иначе первый `candidate`
-
 ### Workflow next resolution
 
 `workflow_next` вычисляется так:
@@ -746,9 +815,8 @@ Baseline берётся в порядке:
    - `in_progress -> implementation`
    - `done -> none`
    - `parked -> resume-or-discard`
-   - прочее -> `feature-intake`
-3. иначе, если найден backlog candidate, результат `feature-intake`
-4. иначе результат `feature-discovery`
+   - прочее -> `null`
+3. иначе результат `null`, а в `blocking_gate` добавляется явное указание вернуться к `backlog-engineer` и сначала выбрать backlog work / создать dossier через `feature-intake`
 
 ### Review freshness
 
@@ -765,9 +833,8 @@ Baseline берётся в порядке:
 {
   "target_dossier": "docs/features/F-0001.md|null",
   "dossier_status": "planned|null",
-  "workflow_next": "implementation",
+  "workflow_next": "implementation|null",
   "blocking_gate": [],
-  "backlog_next": "CF-0007 Title|null",
   "uncommitted_work": false,
   "review_freshness": "valid for commit ...",
   "process_complete": true
@@ -775,6 +842,12 @@ Baseline берётся в порядке:
 ```
 
 Без `--json` команда печатает ту же информацию в текстовом виде.
+
+Важно:
+
+- команда не выбирает backlog item;
+- команда не эмулирует backlog selection при отсутствии dossier;
+- при отсутствии active dossier она возвращает dossier-local blocking explanation и отправляет оператора обратно в `backlog-engineer`.
 
 ### Коды завершения
 

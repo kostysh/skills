@@ -113,8 +113,9 @@ export function extractAcStatementLines(markdown: string): Array<{ acId: string;
     if (!match) {
       continue;
     }
-    const acId = (match[1] ?? '').replace(/-(\d{1,2})$/, (_, number: string) =>
-      `-${number.padStart(2, '0')}`,
+    const acId = (match[1] ?? '').replace(
+      /-(\d{1,2})$/,
+      (_, number: string) => `-${number.padStart(2, '0')}`,
     );
     acStatements.push({ acId, line: line.trim() });
   }
@@ -136,8 +137,7 @@ export function sectionLooksExplicitlyNone(text: string): boolean {
 export function countBulletEntries(text: string): number {
   return String(text)
     .split(/\r?\n/)
-    .filter((line) => /^\s*-\s+/.test(line))
-    .length;
+    .filter((line) => /^\s*-\s+/.test(line)).length;
 }
 
 export function hasExecutableSectionChange(

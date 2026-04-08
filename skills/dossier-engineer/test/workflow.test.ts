@@ -2,12 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import type { DossierRecord } from '../src/lib/dossier-utils.ts';
-import {
-  defaultNextStep,
-  parseCandidates,
-  selectActiveDossier,
-  statusToNextStep,
-} from '../src/core/workflow.ts';
+import { defaultNextStep, selectActiveDossier, statusToNextStep } from '../src/core/workflow.ts';
 
 function makeDossier(id: string, status: string): DossierRecord {
   return {
@@ -21,28 +16,12 @@ function makeDossier(id: string, status: string): DossierRecord {
   };
 }
 
-void test('parseCandidates reads feature candidate table rows', () => {
-  const candidates = parseCandidates(`| ID | Title | Area | Status | Depends on | Why now | Dossier |
-| --- | --- | --- | --- | --- | --- | --- |
-| CF-0001 | Queue retry handling | worker | proposed | F-0009 | unblock retries | docs/features/F-0001.md |
-`);
-
-  assert.deepEqual(candidates, [
-    {
-      id: 'CF-0001',
-      title: 'Queue retry handling',
-      area: 'worker',
-      status: 'proposed',
-      dependsOn: 'F-0009',
-      why: 'unblock retries',
-      dossier: 'docs/features/F-0001.md',
-    },
-  ]);
-});
-
-void test('workflow helpers prefer active implementation work and preserve compact defaults', () => {
+void test('workflow helpers keep next-step dossier-local', () => {
   assert.equal(statusToNextStep('shaped'), 'plan-slice');
+  assert.equal(statusToNextStep('done'), 'none');
+  assert.equal(statusToNextStep('unexpected-status'), null);
   assert.equal(defaultNextStep('planned', 'plan-slice'), 'implementation');
+  assert.equal(defaultNextStep('mystery-status', 'custom-step'), 'next-step');
 
   const selected = selectActiveDossier([
     makeDossier('F-0003', 'shaped'),

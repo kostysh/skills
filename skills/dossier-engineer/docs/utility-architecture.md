@@ -81,7 +81,6 @@ It is responsible for:
 - translating dossier status into the next workflow step
 - selecting the active dossier among existing dossiers
 - providing dossier-local `next-step` transitions
-- validating intake assumptions for already selected backlog work
 
 This module encodes workflow policy in a testable form.
 
@@ -228,6 +227,7 @@ Unit tests should avoid:
 [`test/cli.test.ts`](../test/cli.test.ts) exercises the built CLI as an external process.
 It creates temporary repositories, writes minimal dossier fixtures, and verifies command behavior such as:
 
+- feature intake
 - help output
 - index generation
 - coverage audit

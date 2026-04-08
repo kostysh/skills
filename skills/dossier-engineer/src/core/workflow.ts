@@ -1,36 +1,6 @@
 import type { DossierRecord } from '../lib/dossier-utils.ts';
 
-export interface CandidateRecord {
-  area: string;
-  dependsOn: string;
-  dossier: string;
-  id: string;
-  status: string;
-  title: string;
-  why: string;
-}
-
-export function parseCandidates(markdown: string): CandidateRecord[] {
-  const candidates: CandidateRecord[] = [];
-  for (const line of String(markdown).split(/\r?\n/)) {
-    if (!/^\|\s*CF-\d+\s*\|/.test(line)) {
-      continue;
-    }
-    const cells = line
-      .split('|')
-      .slice(1, -1)
-      .map((cell) => cell.trim());
-    if (cells.length < 7) {
-      continue;
-    }
-    const [id = '', title = '', area = '', status = '', dependsOn = '', why = '', dossier = ''] =
-      cells;
-    candidates.push({ area, dependsOn, dossier, id, status, title, why });
-  }
-  return candidates;
-}
-
-export function statusToNextStep(status: unknown): string {
+export function statusToNextStep(status: unknown): string | null {
   switch (status) {
     case 'proposed':
       return 'spec-compact';
@@ -44,7 +14,7 @@ export function statusToNextStep(status: unknown): string {
     case 'parked':
       return 'resume-or-discard';
     default:
-      return 'feature-intake';
+      return null;
   }
 }
 
@@ -76,19 +46,5 @@ export function defaultNextStep(status: unknown, step: string): string {
     return 'contract-drift-audit';
   }
 
-  switch (status) {
-    case 'proposed':
-      return 'spec-compact';
-    case 'shaped':
-      return 'plan-slice';
-    case 'planned':
-    case 'in_progress':
-      return 'implementation';
-    case 'done':
-      return 'none';
-    case 'parked':
-      return 'resume-or-discard';
-    default:
-      return 'next-step';
-  }
+  return statusToNextStep(status) ?? 'next-step';
 }

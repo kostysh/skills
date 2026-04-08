@@ -23,10 +23,7 @@ Implement the flow.
 
   const sections = parseTopLevelSections(markdown);
   assert.equal(sections.get('Scope'), 'Implement the flow.');
-  assert.equal(
-    getSectionText(markdown, /verification|test plan/i),
-    '- AC-F0001-01: integration',
-  );
+  assert.equal(getSectionText(markdown, /verification|test plan/i), '- AC-F0001-01: integration');
 });
 
 void test('collectExecutableSectionLines keeps only executable sections', () => {
