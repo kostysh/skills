@@ -78,7 +78,7 @@ Stage 1 должен закончиться на:
 
 - [../SKILL.md](../SKILL.md)
 - [../references/WORKFLOW.md](../references/WORKFLOW.md)
-- [../references/FEATURE_CANDIDATES_TEMPLATE.md](../references/FEATURE_CANDIDATES_TEMPLATE.md)
+- `references/FEATURE_CANDIDATES_TEMPLATE.md` (must be removed in this package)
 - [../references/REPO_AGENTS_TEMPLATE.md](../references/REPO_AGENTS_TEMPLATE.md)
 - [README.md](README.md)
 - [utility-architecture.md](utility-architecture.md)

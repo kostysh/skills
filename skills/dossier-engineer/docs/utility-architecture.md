@@ -6,6 +6,8 @@ The `dossier-engineer` utility is a Node.js CLI that supports the skill's docs-a
 It operates on feature dossiers, generated process artifacts, coverage traces, and repository state.
 The utility is intentionally file-oriented and local-first: the repository is the source of truth, and each command derives its result from markdown files, frontmatter, git state, and generated JSON artifacts.
 
+Under the backlog-driven cross-skill model, this utility is the downstream dossier workflow layer. It should operate on already selected backlog work and should not own backlog extraction or a local candidate-backlog surface.
+
 This document describes the current utility architecture, the role of each module, and the testing principles that keep the tool safe to evolve.
 
 ## Runtime Model
@@ -76,10 +78,10 @@ This module does not read files or invoke git. It only transforms strings into s
 [`src/core/workflow.ts`](../src/core/workflow.ts) contains compact workflow decisions.
 It is responsible for:
 
-- parsing feature-candidate table rows
 - translating dossier status into the next workflow step
-- selecting the active dossier among multiple candidates
-- providing default next-step transitions
+- selecting the active dossier among existing dossiers
+- providing dossier-local `next-step` transitions
+- validating intake assumptions for already selected backlog work
 
 This module encodes workflow policy in a testable form.
 
@@ -212,7 +214,7 @@ These tests focus on:
 
 - pure input/output behavior
 - edge cases in parsing and normalization
-- workflow policy transitions
+- dossier-local workflow policy transitions
 - lint-rule behavior and rendering
 
 Unit tests should avoid:
@@ -229,7 +231,7 @@ It creates temporary repositories, writes minimal dossier fixtures, and verifies
 - help output
 - index generation
 - coverage audit
-- next-step resolution
+- dossier-local next-step resolution
 - lint output
 - verification/review/step-close artifact flow
 
@@ -286,7 +288,7 @@ Tests should protect these contracts especially carefully:
 
 - feature and AC ID normalization
 - coverage-gate behavior
-- next-step decisions
+- dossier-local next-step decisions
 - lint warning semantics
 - generated artifact locations and JSON shape
 

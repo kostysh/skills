@@ -1,12 +1,14 @@
 ---
 name: dossier-engineer
-description: Lean docs-as-code process for large app development with AI agents. Uses one Feature Dossier per feature, one global index, explicit backlog discovery, separated workflow and coverage state, machine-checkable review/verification/step-close artifacts, scoped audits, and repo-overlay ingestion.
+description: Lean docs-as-code process for large app development with AI agents. Uses one Feature Dossier per selected backlog work, one global index, separated workflow and coverage state, machine-checkable review/verification/step-close artifacts, scoped audits, and repo-overlay ingestion. Works downstream from backlog-engineer rather than competing with it for backlog extraction.
 compatibility: Designed for git repos. The packaged CLI at scripts/dossier.mjs requires Node.js >= 22.22.0.
 ---
 
 # Dossier Engineer
 
-This skill implements a **low-overhead, high-control** workflow for large projects with AI agents.
+This skill implements a **low-overhead, high-control** downstream workflow for large projects with AI agents.
+
+`dossier-engineer` does not extract backlog from architecture. Backlog shaping, backlog selection, and backlog readiness belong to `backlog-engineer`. This skill starts from already selected backlog work and carries that work through intake, specification, planning, implementation, review, and closure.
 
 The workflow addresses five failure modes commonly encountered in long real-world sessions:
 
@@ -22,7 +24,8 @@ The workflow addresses five failure modes commonly encountered in long real-worl
 - **One global index**: navigation and dependency visibility stay centralized.
 - **Traceability by stable IDs**: `F-*`, `AC-*`, `SL-*`, `T-*`, `ADR-*`.
 - **Machine-checkable process closure**: verification, review, and closure become durable repo artifacts instead of chat memory.
-- **Explicit architecture coverage**: backbone seams stay visible alongside user-facing capabilities.
+- **Selected-work discipline**: dossier work starts from already selected backlog work instead of rediscovering backlog locally.
+- **Backlog-aware delivery**: dossier-side shaping, planning, and implementation flow feed lifecycle-changing facts back into `backlog-engineer`.
 - **Repo-aware execution**: repo-local rules from `AGENTS.md` and ADRs are ingested before planning or implementation decisions are made.
 
 ## Core artifacts
@@ -31,10 +34,13 @@ Canonical product docs:
 
 - `docs/features/F-XXXX-<slug>.md` — **Feature Dossier** (**SSoT for that feature**).
 - `docs/ssot/index.md` — **Global navigation + dependency index**.
-- `docs/backlog/feature-candidates.md` — **Candidate backlog** (**non-SSoT**).
 - `docs/architecture/system.md` — canonical architecture overview.
 - `docs/adr/*.md` — optional cross-cutting ADRs.
 - `AGENTS.md` — repo-level operating rules and workflow overlays.
+
+Backlog source of truth:
+
+- backlog graph creation, backlog selection, backlog readiness, and backlog status actualization live in `backlog-engineer`, not in `dossier-engineer`.
 
 Canonical process artifacts:
 
@@ -56,7 +62,6 @@ Templates:
 
 - Feature dossier template: [references/DOSSIER_TEMPLATE.md](references/DOSSIER_TEMPLATE.md)
 - Index template: [references/SSOT_INDEX_TEMPLATE.md](references/SSOT_INDEX_TEMPLATE.md)
-- Candidate backlog template: [references/FEATURE_CANDIDATES_TEMPLATE.md](references/FEATURE_CANDIDATES_TEMPLATE.md)
 - ADR block template: [references/ADR_BLOCK_TEMPLATE.md](references/ADR_BLOCK_TEMPLATE.md)
 - Repo `AGENTS.md` template: [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md)
 
@@ -64,16 +69,7 @@ Templates:
 
 Do **not** overload one field to mean multiple things.
 
-### 1. Candidate backlog state
-
-Applies only to `docs/backlog/feature-candidates.md` entries:
-
-- `candidate`
-- `confirmed`
-- `intaken`
-- `discarded`
-
-### 2. Dossier maturity state
+### 1. Dossier maturity state
 
 Applies only to dossier frontmatter `status`:
 
@@ -93,7 +89,7 @@ Meaning:
 - `done` — the feature is delivered and aligned.
 - `parked` — intentionally paused.
 
-### 3. Coverage enforcement state
+### 2. Coverage enforcement state
 
 Applies via dossier frontmatter `coverage_gate`:
 
@@ -107,7 +103,7 @@ Default policy when `coverage_gate` is omitted:
 
 Repo overlays may tighten this. If they do, follow the repo rule and make it explicit in the dossier.
 
-### 4. Review freshness state
+### 3. Review freshness state
 
 Applies to `.dossier/reviews/...` artifacts:
 
@@ -118,7 +114,7 @@ Applies to `.dossier/reviews/...` artifacts:
 
 A review is **stale** when the reviewed commit no longer matches the current closure target.
 
-### 5. Step closure state
+### 4. Step closure state
 
 Applies to `.dossier/steps/...` artifacts:
 
@@ -128,7 +124,7 @@ Applies to `.dossier/steps/...` artifacts:
 
 A step is `closed` only when `process_complete: true`.
 
-### 6. Commit completeness state
+### 5. Commit completeness state
 
 Applies to the working tree and closure target:
 
@@ -151,8 +147,8 @@ Applies to the working tree and closure target:
 4. **Traceability uses stable IDs only.**
    Use `F-*`, `AC-*`, `ADR-*`, `SL-*`, and `T-*`.
 
-5. **Candidate features are not dossiers.**
-   `docs/ssot/index.md` lists only real dossiers.
+5. **Backlog shaping belongs to `backlog-engineer`.**
+   `dossier-engineer` must not rediscover backlog from architecture or maintain its own candidate backlog surface.
 
 6. **Make architecture coverage explicit.**
    Backbone seams need visible ownership just like user-visible features do.
@@ -172,10 +168,10 @@ Applies to the working tree and closure target:
 11. **Forecast is not commitment.**
     Slices and tasks are forecast by default. Commitment lives in acceptance criteria, Definition of Done, verification/coverage gates, and explicit rollout constraints unless a repo overlay says otherwise.
 
-11. **Ingest repo overlays before acting.**
-    Before `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `dossier-verify`, and `next-step`, read repo-root `AGENTS.md` and any referenced repo-level ADRs that constrain the work.
+12. **Ingest repo overlays before acting.**
+    Before `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `dossier-verify`, and `next-step`, read repo-root `AGENTS.md` and any referenced repo-level ADRs that constrain the work.
 
-12. **Independent review should be truly independent and fail closed.**
+13. **Independent review should be truly independent and fail closed.**
     Spawn a separate reviewer agent that did not author the changes or the close-out summary whenever the `spawn_agent` tool exists. If platform policy requires explicit user authorization before spawning, ask for that authorization instead of downgrading the review. If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode. Do not silently substitute self-review or `emulated-independent-review`.
 
 ## Repo overlay ingestion
@@ -201,9 +197,18 @@ Overlay hygiene rule:
 - Repo-root `AGENTS.md` should contain repo-specific overlays only.
 - Do not duplicate the default dossier workflow, review model, or closure protocol in `AGENTS.md` unless the repository is intentionally tightening or overriding them.
 
+## Backlog actualization rules
+
+When dossier work changes backlog truth, return to `backlog-engineer` explicitly:
+
+- after dossier shaping/specification is complete enough to remove design ambiguity, actualize the selected backlog work to `specified`;
+- after planning is complete enough to make implementation-ready sequencing explicit, actualize the selected backlog work to `planned`;
+- after implementation and closure establish delivered behavior, actualize the selected backlog work to `implemented`;
+- if dossier work reveals new blockers, dependencies, clarified context, or cross-cutting decisions, patch backlog state before continuing.
+
 ## Step closure contract
 
-For every **mutating** step (`init`, `feature-discovery`, `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `adr-log`, `dependency-check`, `sync-index`, `index-refresh`, or a user-approved implementation increment):
+For every **mutating** step (`init`, `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `adr-log`, `dependency-check`, `sync-index`, `index-refresh`, or a user-approved implementation increment):
 
 1. Finish the command’s local work.
 2. Run the command-specific checks.
@@ -287,13 +292,14 @@ Output:
 
 - Keep it brief and practical.
 - Summarize the default flow as:
-  `init -> feature-discovery -> mark candidate confirmed -> feature-intake -> spec-compact -> plan-slice -> implementation -> dossier-verify -> review-artifact -> dossier-step-close`
+  `selected backlog work -> feature-intake -> spec-compact -> plan-slice -> implementation -> dossier-verify -> review-artifact -> dossier-step-close`
+- Mention that backlog creation, backlog selection, readiness, gaps, and lifecycle actualization belong to `backlog-engineer`.
 - Mention that `change-proposal` + `contract-drift-audit` is the side path for requirement changes on mature work.
 - Remind the user:
   - `docs/features/F-*.md` is the per-feature SSoT;
   - `docs/ssot/index.md` lists only real dossiers;
-  - `docs/backlog/feature-candidates.md` is a non-SSoT candidate backlog;
-  - `coverage_gate` is distinct from dossier `status`.
+  - `coverage_gate` is distinct from dossier `status`;
+  - `next-step` is dossier-local and does not choose backlog work.
 
 Review checklist:
 
@@ -301,7 +307,7 @@ Review checklist:
 - [ ] The flow includes closure steps, not just authoring steps.
 - [ ] The reply correctly distinguishes dossier `status` from `coverage_gate`.
 - [ ] It correctly states that `docs/ssot/index.md` lists only real dossiers.
-- [ ] It correctly states that `docs/backlog/feature-candidates.md` is non-SSoT.
+- [ ] It correctly states that backlog shaping and selection belong to `backlog-engineer`.
 
 ### `init`
 
@@ -323,7 +329,7 @@ Steps:
 2. If missing, search for plausible repo-level architecture docs under `docs/`.
 3. If no architecture exists, stop without partial bootstrap.
 4. If exactly one clear candidate exists, move or rename it to `docs/architecture/system.md`.
-5. Ensure `docs/features/`, `docs/backlog/`, and `.dossier/` directories exist.
+5. Ensure `docs/features/` and `.dossier/` directories exist.
 6. Provision canonical dossier automation scripts into repo `scripts/` when safe:
    - `sync-index.mjs`
    - `lint-dossiers.mjs`
@@ -339,10 +345,9 @@ Steps:
    - `next-step.mjs`
    - `scripts/lib/*`
 7. Create or normalize `docs/ssot/index.md`.
-8. Create or normalize `docs/backlog/feature-candidates.md`.
-9. Create or update repo-root `AGENTS.md` as an overlay-only file.
-10. Re-read architecture and surface day-1 implementation invariants that future modes must preserve.
-11. Report created, moved, renamed, normalized, and untouched artifacts separately.
+8. Create or update repo-root `AGENTS.md` as an overlay-only file.
+9. Re-read architecture and surface day-1 implementation invariants that future modes must preserve.
+10. Report created, moved, renamed, normalized, and untouched artifacts separately.
 
 Review checklist:
 
@@ -354,44 +359,17 @@ Review checklist:
 - [ ] Reported invariants are grounded in architecture/ADRs instead of being invented.
 - [ ] The final report distinguishes created, moved, normalized, and untouched artifacts accurately.
 
-### `feature-discovery`
-
-Read architecture and refresh the candidate backlog.
-
-Output:
-
-- `docs/backlog/feature-candidates.md` with temporary `CF-*` entries.
-- Candidate entries must be coarse, backlog-sized, and tied either to a user-visible capability or to an architecture-mandated backbone seam.
-
-Steps:
-
-1. Read canonical architecture from `docs/architecture/system.md`.
-2. Read existing `docs/backlog/feature-candidates.md`.
-3. Read existing dossiers and `docs/ssot/index.md` to avoid duplication.
-4. Extract candidate features from architecture.
-5. Check coverage of major architecture seams so missing owners remain visible.
-6. Create or update `docs/backlog/feature-candidates.md`.
-7. If architecture is too vague to separate features confidently, ask the user instead of inventing a backlog.
-
-Review checklist:
-
-- [ ] The backlog was refreshed from architecture, or architecture ambiguity was surfaced explicitly.
-- [ ] Only `CF-*` IDs are used in the candidate backlog.
-- [ ] Candidate entries are backlog-sized and traceable to user-visible capabilities or architecture seams.
-- [ ] Existing real dossiers were not duplicated as new candidates.
-- [ ] `docs/ssot/index.md` still lists only real dossiers.
-- [ ] Missing backbone owners are visible via candidate entries or coverage notes.
-
 ### `feature-intake`
 
 Create a new Feature Dossier and register it in the global index.
 
 Steps:
 
-1. Determine the next free `F-XXXX`.
-2. Re-read architecture and backlog context for the selected candidate.
-3. Create `docs/features/F-XXXX-<slug>.md` from the dossier template.
-4. Fill frontmatter with:
+1. Confirm that backlog work has already been selected through `backlog-engineer`.
+2. Determine the next free `F-XXXX`.
+3. Re-read architecture, ADR, and backlog context for the selected work.
+4. Create `docs/features/F-XXXX-<slug>.md` from the dossier template.
+5. Fill frontmatter with:
    - `id`
    - `title`
    - `status: proposed`
@@ -402,20 +380,19 @@ Steps:
    - `impacts`
    - `created`
    - `updated`
-5. Capture phase baseline, delivered prerequisites, runtime assumptions, and dependency seams.
-6. If intake reveals a missing prerequisite seam without an owner, refresh backlog ownership first.
-7. Mark the matching `CF-*` entry as `intaken` and link the dossier.
+6. Capture the selected backlog work, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
+7. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
 8. Run `node scripts/dossier.mjs sync-index` or `node scripts/dossier.mjs index-refresh`.
 
 Review checklist:
 
+- [ ] The selected work came from `backlog-engineer`, not from local architecture rediscovery.
 - [ ] The new dossier uses the next free `F-XXXX` and a stable slug.
 - [ ] Frontmatter is valid and complete enough for lint, including explicit `coverage_gate`.
 - [ ] `status` is `proposed`, `coverage_gate` is explicit, and AC IDs match the feature numeric ID.
-- [ ] Context, scope, constraints, and assumptions are grounded in architecture/backlog context.
+- [ ] Context, scope, constraints, and assumptions are grounded in architecture, ADR, and selected-work context.
 - [ ] `depends_on` contains only real delivered prerequisites.
-- [ ] If intake exposed a missing prerequisite seam, backlog ownership was refreshed before implementation starts.
-- [ ] The matching `CF-*` entry is marked `intaken` and links to the dossier.
+- [ ] Intake-side blockers or missing dependencies were returned to `backlog-engineer` before implementation starts.
 - [ ] `docs/ssot/index.md` contains exactly one row for the new dossier.
 
 ### `spec-compact`
@@ -881,11 +858,11 @@ Review checklist:
 
 ### `next-step`
 
-Return a canonical answer to “what next?” across multiple state machines.
+Return the next dossier-local workflow action for already selected work.
 
 Purpose:
 
-- Resolve ambiguity across backlog order, dossier maturity, blocking gates, review freshness, and dirty worktree state.
+- Resolve ambiguity inside the dossier workflow after work has already been selected through `backlog-engineer`.
 
 Run examples:
 
@@ -899,18 +876,17 @@ Expected output dimensions:
 - `target_dossier`
 - `dossier_status`
 - `blocking_gate`
-- `backlog_next`
 - `uncommitted_work`
 - `review_freshness`
 - `process_complete`
 
 Review checklist:
 
-- [ ] The answer distinguishes workflow next from backlog next.
+- [ ] The answer stays dossier-local and does not try to choose backlog work.
 - [ ] Blocking gates come from actual durable artifacts when available.
 - [ ] Dirty worktree state is surfaced explicitly.
 - [ ] Review freshness is reported against the current commit.
-- [ ] The final answer does not collapse multiple state dimensions into one vague “next”.
+- [ ] The final answer tells the user to return to `backlog-engineer` when backlog blockers or lifecycle updates must be resolved.
 
 ## Examples
 
