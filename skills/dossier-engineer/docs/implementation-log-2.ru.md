@@ -75,5 +75,5 @@
 
 ### Commit
 
-- Commit: pending
-- Total time to close package: pending until commit
+- Commit: `360768d` `refactor(dossier-engineer): harden intake and next-step contracts`
+- Total time to close package: about 16 minutes (`2026-04-08 16:58:00 CEST` -> `2026-04-08 17:14:10 CEST`)
