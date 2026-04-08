@@ -140,6 +140,7 @@ Interpret operator wording conservatively:
 Self-expanding source graph rule:
 
 - if a source says it is based on a concept document, ADRs, repo-level cross-cutting decisions, or other canonical contracts, those referenced sources become mandatory backlog inputs unless the operator explicitly excludes them.
+- if the source graph keeps expanding but the authoritative boundary is still ambiguous, stop and ask the operator to confirm the canonical source set before packet authoring.
 
 Minimum source set for a partially implemented repository:
 
@@ -306,6 +307,11 @@ Use these literal rules:
 - when dossier planning makes implementation-ready sequencing explicit with enough evidence, actualize the backlog work to `planned`;
 - when implementation plus closure establish delivered behavior with enough evidence, actualize the backlog work to `implemented`;
 - when dossier work reveals new blockers, dependencies, context facts, or cross-cutting decisions, patch backlog state before continuing.
+- for truth-changing dossier stages, backlog actualization is part of that stage closure contract;
+- do not treat the dossier stage as complete until required backlog actualization is finished through this skill;
+- use `patch-item` for `delivery_state` changes and dossier-discovered blockers, dependencies, or context facts on already known backlog items;
+- use scoped `refresh` only when updated source documents may have changed source-derived backlog state;
+- `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch.
 
 Status crosswalk notes:
 

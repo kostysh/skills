@@ -178,6 +178,7 @@ void test('first backlog docs enforce a blocking source-set gate before packet a
     'must not substitute extraction',
     'concept, architecture, and ADR sources',
     'do not author the first packet until the source-set gate is closed',
+    'stop and ask the operator to confirm the canonical source set',
   ]);
 
   assertContainsTerms(workflow, [
@@ -187,6 +188,7 @@ void test('first backlog docs enforce a blocking source-set gate before packet a
     'minimum source set',
     'Self-expanding source graph rule',
     'must not substitute extraction',
+    'stop and ask the operator to confirm the canonical source set',
   ]);
 
   assertContainsTerms(walkthrough, [
@@ -245,5 +247,36 @@ void test('normative backlog docs keep cross-skill handoff and actualization lit
     'dossier `planned` не равен backlog `planned`',
     'dossier `done` не равен backlog `implemented`',
     'dossier-local `next-step` отвечает только на вопрос',
+  ]);
+
+  const [skill, operatorWorkflows, commandReference] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(OPERATOR_WORKFLOWS_PATH, 'utf8'),
+    readFile(COMMAND_REFERENCE_PATH, 'utf8'),
+  ]);
+
+  const actualizationSection = extractSection(skill, '## Backlog actualization after dossier work');
+
+  assertContainsTerms(actualizationSection, [
+    'backlog actualization is part of that stage closure contract',
+    'do not treat the dossier stage as complete until required backlog actualization is finished',
+    'use `patch-item` for `delivery_state` changes',
+    'use scoped `refresh` only when updated source documents may have changed source-derived backlog state',
+    '`refresh` alone does not actualize `delivery_state`',
+  ]);
+
+  assertContainsTerms(operatorWorkflows, [
+    'workflow stages, not to shipped backlog or dossier CLI subcommands',
+    'workflow stage `spec-compact`',
+    'workflow stage `plan-slice`',
+    'before `dossier-step-close`',
+    'before that stage is treated as complete',
+    '`refresh` alone does not actualize `delivery_state`',
+    'part of stage closure',
+  ]);
+
+  assertContainsTerms(commandReference, [
+    '`patch-item`-driven actualization belongs to the closure contract',
+    '`refresh` alone does not actualize `delivery_state`',
   ]);
 });

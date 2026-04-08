@@ -27,7 +27,7 @@ Expected output:
 - Global index at `docs/ssot/index.md`
 - Feature dossier directory at `docs/features/`
 - Process artifact directories under `.dossier/`
-- Repo-local dossier automation scripts in `scripts/`
+- Repo-local dossier automation scripts or wrappers in `scripts/` only when bootstrap explicitly provisions them
 - Repo-root `AGENTS.md` with dossier rules and repo overlays
 
 ## CLI command: `feature-intake`
@@ -43,6 +43,7 @@ Rules:
   - backlog delivery state at intake
   - source traceability
   - known blockers / dependencies at intake time
+- That handoff block is for human/agent continuity and traceability; `next-step` does not parse dossier prose or use it as machine-readable state.
 - If intake discovers new blockers, missing dependencies, missing context, or lifecycle-changing facts, return to `backlog-engineer` and actualize backlog state before continuing.
 - `index-refresh` is the canonical full refresh path after intake. Use `sync-index` only when you intentionally want table/graph refresh without a Red flags update.
 - If `feature-intake --json` returns `partial_success: true`, the dossier was created but `index-refresh` failed; fix that before continuing.
@@ -64,6 +65,8 @@ Backlog lifecycle state remains outside this skill and belongs to `backlog-engin
 
 `selected backlog work -> feature-intake -> spec-compact -> plan-slice -> implementation`
 
+`spec-compact`, `plan-slice`, and `implementation` are workflow stages, not shipped `dossier.mjs` subcommands.
+
 Each mutating step then closes through:
 
 `dossier-verify -> review-artifact -> dossier-step-close`
@@ -80,6 +83,13 @@ Return to `backlog-engineer` when dossier-side work changes backlog truth:
 - planning makes the work `planned`;
 - implementation and closure make the work `implemented`;
 - new blockers, dependencies, clarified context, or cross-cutting decisions must be reflected in backlog state.
+
+Rules:
+
+- for truth-changing stages, backlog actualization is part of stage closure, not an optional follow-up;
+- use `patch-item` when dossier work made lifecycle, blocker, dependency, or context facts explicit for already known backlog items;
+- use scoped `refresh` first only when updated source documents may have changed source-derived backlog state;
+- `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch.
 
 ## CLI command: `next-step`
 
@@ -117,12 +127,14 @@ Before a mutating step can be considered complete:
 6. Run `node scripts/dossier.mjs dossier-verify --dossier <path> ...` for one-dossier close-out. Use `--changed-only` only for repo-scope verification of the current change set.
 7. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode.
 8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`; this command records an already obtained independent review result and does not perform the review itself.
-9. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
+9. If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.
+10. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
 
 Notes:
 
 - `debt-audit` stays marker-only. It does not prove implementation completeness.
 - After `implementation`, review must explicitly cover completeness against dossier/slices/approved changes, code review, and security review.
+- If a separate reviewer agent is unavailable for any reason, stop, report the blocker, and ask the operator whether degraded review mode is acceptable.
 
 ## Minimal PR contract
 

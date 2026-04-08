@@ -4,6 +4,10 @@ This file defines the stable operator-facing use cases and the agent workflows b
 
 For one canonical first-run walkthrough, use [First Backlog Walkthrough](first-backlog-walkthrough.md).
 
+Cross-skill wording rule:
+
+- names such as `spec-compact`, `plan-slice`, and `implementation` refer to dossier workflow stages, not to shipped backlog or dossier CLI subcommands.
+
 ## Canonical operator asks
 
 | Operator ask | Canonical agent flow |
@@ -12,9 +16,9 @@ For one canonical first-run walkthrough, use [First Backlog Walkthrough](first-b
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
 | Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
 | Choose the next work and hand off to dossier | `queue` or scoped `status`/`items` -> read current `delivery_state`, blockers, dependencies, and source traceability -> hand off the selected backlog work to `dossier-engineer feature-intake` |
-| Update backlog after dossier shaping/specification | after dossier `spec-compact`, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `specified` and record any new blockers, dependencies, or context facts |
-| Update backlog after dossier planning | after dossier `plan-slice`, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `planned` and record any newly explicit dependencies or sequencing constraints |
-| Update backlog after dossier implementation/closure | after dossier `implementation -> dossier-verify -> review-artifact -> dossier-step-close`, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `implemented` and record any new follow-up backlog facts |
+| Update backlog after dossier shaping/specification | after dossier workflow stage `spec-compact`, and before that stage is treated as complete, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `specified` and record any new blockers, dependencies, or context facts |
+| Update backlog after dossier planning | after dossier workflow stage `plan-slice`, and before that stage is treated as complete, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `planned` and record any newly explicit dependencies or sequencing constraints |
+| Update backlog after dossier implementation/closure | after dossier workflow stage `implementation`, then `dossier-verify` and `review-artifact`, actualize backlog truth before `dossier-step-close`; only then close the dossier stage and confirm the selected backlog work as `implemented` or record any new follow-up backlog facts |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
 | Show what changed after the last action | Use the compact response of the last mutating command; only then fetch `items` if details are needed |
 | Show what needs attention | `attention` -> `items` only for selected tasks |
@@ -102,8 +106,11 @@ When dossier work changes backlog truth:
 
 - use `patch-item` when the affected backlog items are already known;
 - use scoped `refresh` first when the dossier-side change came from updated source documents;
+- use `patch-item` after that refresh when `delivery_state`, blockers, dependencies, or context facts still need explicit actualization on already known backlog items;
+- `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch;
 - keep the mutation scoped to the selected work and the newly discovered linked facts whenever possible;
 - if dossier work surfaced a new blocker, dependency, or context fact, patch backlog before continuing dossier-local workflow.
+- for truth-changing dossier stages, backlog actualization is part of stage closure, not an optional follow-up after closure.
 
 ## Agent accents
 

@@ -58,6 +58,7 @@ For partially implemented repositories, the minimum source set is:
 Self-expanding source graph rule:
 
 - if a source says it is based on a concept document, ADRs, cross-cutting contracts, or other canonical inputs, stop and expand the source set before packet authoring.
+- if the source graph keeps expanding but the authoritative boundary is still ambiguous, stop and ask the operator to confirm the canonical source set before packet authoring.
 
 Typical first-pass sources include:
 

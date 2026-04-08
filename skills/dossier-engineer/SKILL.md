@@ -206,6 +206,12 @@ When dossier work changes backlog truth, return to `backlog-engineer` explicitly
 - after implementation and closure establish delivered behavior, actualize the selected backlog work to `implemented`;
 - if dossier work reveals new blockers, dependencies, clarified context, or cross-cutting decisions, patch backlog state before continuing.
 
+Closure rule:
+
+- for truth-changing workflow stages, backlog actualization is part of the stage closure contract;
+- do not treat the stage as complete until backlog actualization through `backlog-engineer` is done;
+- `refresh` alone is not backlog actualization when dossier work changed `delivery_state` or surfaced dossier-local blockers, dependencies, or context facts that must be patched explicitly.
+
 ## Step closure contract
 
 For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, or a user-approved implementation increment):
@@ -218,8 +224,9 @@ For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-sl
 6. Run `node scripts/dossier.mjs dossier-verify ...` for the relevant scope.
 7. Run an independent review with a separate reviewer agent. If spawning requires explicit user authorization, ask for it. If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`. This command records an already obtained independent review result; it does not perform the review itself.
-9. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
-10. Only after `process_complete: true` may the agent say the step is complete.
+9. If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.
+10. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
+11. Only after `process_complete: true` and required backlog actualization may the agent say the step is complete.
 
 ### Final step summary contract
 
@@ -290,6 +297,8 @@ Two layers exist in this skill:
 - shipped CLI commands that are actually exposed by `node scripts/dossier.mjs`.
 
 Do not assume that every workflow stage is a runnable CLI subcommand.
+Treat a named step as workflow-only unless it appears in the shipped CLI command list below or in `node scripts/dossier.mjs --help`.
+Do not write or infer examples such as `node scripts/dossier.mjs spec-compact`, `node scripts/dossier.mjs plan-slice`, or `node scripts/dossier.mjs implementation`.
 
 Shipped CLI commands in the current runtime:
 
@@ -395,11 +404,13 @@ Steps:
    - backlog delivery state at intake;
    - relevant backlog source traceability;
    - known blockers and dependencies already visible at intake time.
-7. Capture the selected backlog context, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
-8. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path after intake.
+7. Treat that backlog handoff block as human-facing continuity and traceability only.
+   CLI commands such as `next-step` do not parse dossier prose or use that block as machine-readable state.
+8. Capture the selected backlog context, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
+9. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path after intake.
    Use `sync-index` only when you intentionally need table/graph refresh without a Red flags update.
-9. If `feature-intake --json` returns `partial_success: true`, treat intake as incomplete until the reported `index-refresh` failure is resolved.
-10. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
+10. If `feature-intake --json` returns `partial_success: true`, treat intake as incomplete until the reported `index-refresh` failure is resolved.
+11. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
 
 Review checklist:
 
@@ -528,6 +539,7 @@ Steps:
    - Default: `deferred`
    - Tighten to `strict` only when the repo overlay requires it or planning is intentionally treated as a blocking verification gate.
 15. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
+    The planning stage is not complete until this required backlog actualization is done.
 
 Review checklist:
 
@@ -570,8 +582,9 @@ Steps:
    These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
 9. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 10. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
-11. Close the step with `dossier-step-close` before saying it is complete.
-12. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
+11. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
+    The implementation stage is not complete until this required backlog actualization is done.
+12. Close the step with `dossier-step-close` only after the required backlog actualization is done.
 
 Required adversarial checklist for side-effecting code:
 

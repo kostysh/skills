@@ -187,6 +187,8 @@ Owned by dossier process:
 
 - backlog status обновляется не по самому факту прохождения команды `dossier-engineer`, а по strongest available evidence;
 - если backlog item уже находится на этом или более высоком корректном состоянии, агент не должен делать фиктивный status bump только ради симметрии.
+- для truth-changing downstream стадий backlog actualization входит в closure contract этой стадии;
+- если actualization обязательна, downstream стадия не считается завершённой, пока backlog не актуализирован через `backlog-engineer`.
 
 ## 4. Intake выбранной работы в dossier workflow
 
@@ -216,7 +218,7 @@ Backlog status effect:
 
 Шаги:
 
-1. Выполнить `spec-compact`.
+1. Пройти workflow stage `spec-compact`.
 2. Уточнить acceptance criteria, assumptions, open questions.
 3. Проверить architecture/ADR constraints для выбранной работы.
 4. Подготовить basis for plan-slice.
@@ -232,6 +234,7 @@ Backlog status effect:
 - если после shaping/specification работа действительно стала достаточно определённой для отдельной спецификации, агент должен актуализировать backlog task через `backlog-engineer` до `delivery_state = specified`;
 - если shaping выявил новые blockers, они должны быть выражены в backlog как `gaps` или другие relevant task-level changes;
 - если доказательств для `specified` всё ещё недостаточно, backlog status не повышается искусственно.
+- если shaping/specification меняет backlog truth, stage closure не считается завершённым до выполнения этой actualization.
 
 ## 6. Planning
 
@@ -239,7 +242,7 @@ Backlog status effect:
 
 Шаги:
 
-1. Выполнить `plan-slice`.
+1. Пройти workflow stage `plan-slice`.
 2. Разложить работу на execution slices/tasks.
 3. Зафиксировать rollout constraints, dependencies, verification expectations.
 
@@ -253,6 +256,7 @@ Backlog status effect:
 - если planning действительно сделал работу ready for implementation, агент должен актуализировать backlog task через `backlog-engineer` до `delivery_state = planned`;
 - если planning выявил новые dependencies, rollout constraints, or context facts, они тоже должны быть возвращены в backlog graph;
 - dossier `planned` и backlog `planned` не считаются автоматически тождественными: backlog status меняется только при наличии достаточного evidence для task-level planning readiness.
+- если planning меняет backlog truth, stage closure не считается завершённым до выполнения этой actualization.
 
 ## 7. Implementation и closure
 
@@ -260,7 +264,7 @@ Backlog status effect:
 
 Шаги:
 
-1. Выполнить implementation increment.
+1. Пройти workflow stage `implementation`.
 2. Обновить dossier.
 3. Прогнать verification.
 4. Получить independent review.
@@ -276,6 +280,7 @@ Backlog status effect:
 - когда implementation и closure дают сильное evidence, что capability реально существует в системе, агент должен актуализировать backlog task через `backlog-engineer` до `delivery_state = implemented`;
 - `implemented` в backlog не должен выставляться только потому, что dossier step закрыт формально;
 - если implementation uncovered new architecture-significant follow-up work, backlog должен быть расширен или обновлён отдельно через `backlog-engineer`.
+- если implementation меняет backlog truth, stage closure не считается завершённым до выполнения этой actualization.
 
 ## 8. Обратная синхронизация backlog
 
@@ -291,8 +296,8 @@ Backlog status effect:
 
 Шаги:
 
-1. Синхронизировать relevant sources.
-2. При необходимости применить patch или refresh.
+1. Если updated source documents могли изменить source-derived backlog state, сначала выполнить scoped `refresh`.
+2. Если dossier-side facts уже explicit для известных backlog items, применить `patch-item`.
 3. Перечитать `status`, `queue`, `attention`, `gaps`.
 
 Результат:

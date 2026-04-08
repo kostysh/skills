@@ -29,6 +29,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [implementation-log-3.ru.md](implementation-log-3.ru.md) | Incremental log for the second UX corrective pass. This document is written in Russian. | Read when you need the package-by-package record for the latest UX hardening cycle. |
 | [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md) | Stage-2 harmonization plan for `backlog-engineer`: explicit backlog→dossier handoff, backlog status actualization after dossier steps, dossier-supporting evidence rules, and cross-skill doc/spec alignment. This document is written in Russian. | Read when moving from dossier-side harmonization to backlog-side cross-skill alignment work. |
 | [implementation-log-4.ru.md](implementation-log-4.ru.md) | Incremental log for backlog-side harmonization work. This document is written in Russian. | Read when you need the package-by-package record for stage-2 backlog-engineer alignment. |
+| [implementation-log-5.ru.md](implementation-log-5.ru.md) | Incremental log for the narrow cross-skill UX corrective pass after the first end-to-end harmonized audit. This document is written in Russian. | Read when you need the record of literal wording and handoff/closure contract fixes after the cross-skill UX audit. |
 
 ## Related Materials
 
@@ -89,6 +90,15 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 5. [../../backlog-engineer/SKILL.md](../../backlog-engineer/SKILL.md)
 6. [../../backlog-engineer/references/operator-workflows.md](../../backlog-engineer/references/operator-workflows.md)
 7. [../../backlog-engineer/references/command-reference.md](../../backlog-engineer/references/command-reference.md)
+
+### If you are working on the narrow cross-skill UX corrective pass
+
+1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
+2. [implementation-log-5.ru.md](implementation-log-5.ru.md)
+3. [../SKILL.md](../SKILL.md)
+4. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+5. [../../backlog-engineer/SKILL.md](../../backlog-engineer/SKILL.md)
+6. [../../backlog-engineer/references/operator-workflows.md](../../backlog-engineer/references/operator-workflows.md)
 
 ## Scope of This Folder
 

@@ -219,7 +219,8 @@ Compact response should include:
 Cross-skill note:
 
 - `patch-item` is the normal backlog mutation after dossier shaping / planning / implementation when the affected backlog items are already known;
-- use it to actualize `delivery_state`, blockers, dependencies, and context facts that dossier work made explicit.
+- use it to actualize `delivery_state`, blockers, dependencies, and context facts that dossier work made explicit;
+- for truth-changing dossier stages, `patch-item`-driven actualization belongs to the closure contract of that stage, not to an optional later cleanup pass.
 
 ## `remove-item`
 
@@ -277,7 +278,8 @@ Compact response should include:
 Cross-skill note:
 
 - use scoped `refresh` after dossier work when updated source documents may have changed backlog-derived state;
-- dossier artifacts may support the decision to refresh or patch, but they do not replace architecture or ADR sources as canonical upstream truth.
+- dossier artifacts may support the decision to refresh or patch, but they do not replace architecture or ADR sources as canonical upstream truth;
+- `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch on already known backlog items.
 
 ## `status`
 

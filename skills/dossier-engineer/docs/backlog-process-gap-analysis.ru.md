@@ -2,6 +2,13 @@
 
 ## Назначение
 
+Статус документа:
+
+- это historical gap-analysis, который использовался для подготовки stage-2 harmonization;
+- перечисленные ниже gaps уже закрыты в текущих версиях `backlog-engineer` и `dossier-engineer`;
+- документ сохраняется для traceability и объясняет, почему появился [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md);
+- текущий нормативный источник — [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md) плюс актуальные `SKILL.md` и `references/*` обоих skill-ов.
+
 Этот документ фиксирует расхождения между:
 
 - текущим состоянием `backlog-engineer`;
@@ -32,9 +39,9 @@
 - planning docs не подменяют extraction;
 - skill уже отделяет backlog-level states от внешних planning-state labels.
 
-Основной remaining gap не в backlog core, а в explicit interop contract с dossier workflow.
+Исторически основной gap был не в backlog core, а в explicit interop contract с dossier workflow.
 
-То есть для `backlog-engineer` нужен не тяжёлый рефакторинг, а:
+Именно поэтому для `backlog-engineer` потребовался не тяжёлый рефакторинг, а:
 
 - явный handoff to `dossier-engineer`;
 - явные правила backlog status actualization after downstream steps;
@@ -89,62 +96,62 @@
 
 Эти dimensions уже хорошо подходят для backlog layer в кросс-скил процессе.
 
-## Где есть явные пробелы
+## Исторические пробелы, закрытые в stage 2
 
-### P0. Нет буквального handoff contract from backlog to dossier
+### P0. Не было буквального handoff contract from backlog to dossier
 
-Сейчас в `backlog-engineer` не зафиксировано достаточно явно:
+До stage 2 в `backlog-engineer` не было достаточно явно зафиксировано:
 
 - что происходит после выбора selected work;
 - как selected work передаётся в dossier workflow;
 - что `dossier-engineer` является normal downstream layer для выбранной work.
 
-Почему это важно:
+Почему это было важно:
 
 - без этого агент может воспринимать `backlog-engineer` как замкнутую planning utility без явного продолжения;
 - combined process останется в голове, а не в skill contract.
 
-Что нужно:
+Что было сделано:
 
 - явный interop section;
 - literal rule:
   backlog chooses work -> dossier owns local lifecycle.
 
-### P0. Нет explicit backlog status actualization contract after dossier steps
+### P0. Не было explicit backlog status actualization contract after dossier steps
 
-Процессная модель теперь требует:
+Процессная модель требовала:
 
 - shaping/specification -> backlog `delivery_state = specified`, when evidence is sufficient;
 - planning -> backlog `delivery_state = planned`, when evidence is sufficient;
 - implementation/closure -> backlog `delivery_state = implemented`, when evidence is sufficient;
 - dossier-side blockers/dependencies/context facts -> backlog update through `backlog-engineer`.
 
-Сейчас skill такого literal cross-skill rule не содержит.
+До stage 2 skill не содержал такого literal cross-skill rule.
 
-Что нужно:
+Что было сделано:
 
 - добавить explicit rule в `SKILL.md`;
 - добавить operator workflow for “update backlog after dossier step”;
 - добавить examples/patch guidance for these status changes.
 
-### P0. Не зафиксирована граница между backlog `next` и dossier `next-step`
+### P0. Не была зафиксирована граница между backlog `next` и dossier `next-step`
 
-Сейчас:
+До stage 2:
 
 - `backlog-engineer` хорошо объясняет `queue`, `attention`, `ready_for_next_step`;
 - но не говорит буквально, что dossier `next-step` — это другой, более локальный вопрос.
 
-Что нужно:
+Что было сделано:
 
 - зафиксировать, что backlog layer determines whether work can move;
 - dossier layer determines how the selected work moves locally;
 - не допускать ложной конкуренции между backlog `queue` and dossier `next-step`.
 
-## Где есть недоопределённость
+## Исторические недоопределённости, закрытые в stage 2
 
-### P1. Dossier artifacts пока не названы supporting backlog inputs
+### P1. Dossier artifacts не были названы supporting backlog inputs
 
-Целевой процесс предполагает, что backlog может актуализироваться после dossier-side facts:
+Целевой процесс предполагал, что backlog может актуализироваться после dossier-side facts:
 
 - new blockers;
 - new dependencies;
@@ -152,39 +159,39 @@
 - implementation evidence;
 - context changes.
 
-Сейчас `backlog-engineer` умеет работать с source registration и refresh/sync, но не проговаривает dossier artifacts как нормальный supporting source in combined workflow.
+До stage 2 `backlog-engineer` умел работать с source registration и refresh/sync, но не проговаривал dossier artifacts как нормальный supporting source in combined workflow.
 
-Что нужно:
+Что было сделано:
 
 - явно разрешить dossier artifacts как valid supporting evidence for backlog sync;
 - не подменяя architecture / ADR, но признавая dossier-side discovered facts как легитимный input для patch/refresh decisions.
 
-### P1. Нет explicit distinction `implemented` vs dossier `done`
+### P1. Не было explicit distinction `implemented` vs dossier `done`
 
-Сейчас `backlog-engineer` уже консервативен по `implemented`, но combined process требует ещё более явного contrast:
+До stage 2 `backlog-engineer` уже был консервативен по `implemented`, но combined process требовал ещё более явного contrast:
 
 - `implemented` = capability exists;
 - dossier `done` = delivered and aligned under process discipline.
 
-Что нужно:
+Что было сделано:
 
 - отдельная note в interop section;
 - не допускать naive `done -> implemented` wording.
 
-### P1. Нет explicit distinction `planned` vs dossier `planned`
+### P1. Не было explicit distinction `planned` vs dossier `planned`
 
-Сейчас backlog `planned` и dossier `planned` легко спутать.
+До stage 2 backlog `planned` и dossier `planned` было легко спутать.
 
-Что нужно:
+Что было сделано:
 
 - brief crosswalk note;
 - reminder that same word does not mean same state layer.
 
-## Конфликты в references
+## Исторические reference-конфликты, закрытые в stage 2
 
-### P1. `operator-workflows.md` не описывает dossier handoff
+### P1. `operator-workflows.md` не описывал dossier handoff
 
-Сейчас workflows покрывают:
+До stage 2 workflows покрывали:
 
 - create backlog
 - add module
@@ -192,23 +199,23 @@
 - show state
 - check one source/task
 
-Но нет workflow вида:
+Но тогда не хватало workflow вида:
 
 - choose next work in backlog -> handoff to dossier workflow;
 - after dossier shaping/planning/implementation -> return to backlog for explicit status actualization.
 
-Это уже нужно combined process.
+Это было нужно combined process и теперь закрыто.
 
-### P1. `command-reference.md` не помогает агенту думать cross-skill
+### P1. `command-reference.md` не помогал агенту думать cross-skill
 
-Сейчас command reference сильный внутри backlog domain, но не объясняет:
+До stage 2 command reference был сильным внутри backlog domain, но не объяснял:
 
 - когда backlog mutation нужен после dossier-side step;
 - что patch/status refresh может быть driven by dossier evidence.
 
-### P1. `examples-and-templates.md` не показывает dossier-driven status updates
+### P1. `examples-and-templates.md` не показывал dossier-driven status updates
 
-Нужны примеры:
+Исторически для закрытия этого gap нужны были примеры:
 
 - patch to `specified` after specification;
 - patch to `planned` after planning;
@@ -236,35 +243,18 @@
 
 Нужен process interop, а не coupled runtime.
 
-## Карта изменений по слоям
+## Что закрыто сейчас
 
-| Layer | Required changes |
-| --- | --- |
-| `SKILL.md` | add interop section, add backlog-status-actualization rules, narrow relation to dossier `next-step` |
-| `references/operator-workflows.md` | add dossier handoff and return-to-backlog workflows |
-| `references/command-reference.md` | add cross-skill interpretation notes for patch/refresh/status after dossier steps |
-| `references/examples-and-templates.md` | add dossier-driven patch examples |
-| runtime/spec | probably minor or no immediate changes unless later process review exposes missing command support |
+- явный backlog -> dossier handoff;
+- explicit backlog status actualization after dossier steps;
+- явная граница между backlog `queue/status/gaps/attention` и dossier-local `next-step`;
+- dossier artifacts как supporting evidence для backlog sync;
+- status crosswalk notes;
+- cross-skill operator workflows и command interpretation notes.
 
-## Приоритеты
+Новые harmonization gaps должны фиксироваться уже в новом документе, а не через этот historical snapshot.
 
-### P0
-
-- add explicit backlog -> dossier handoff
-- add explicit backlog status actualization after dossier steps
-- add explicit boundary between backlog `next` and dossier `next-step`
-
-### P1
-
-- recognize dossier artifacts as supporting backlog inputs
-- add status crosswalk notes
-- extend workflows and examples
-
-### P2
-
-- optional runtime/help polish once new process wording stabilizes
-
-## Definition of done для доработки `backlog-engineer`
+## Historical definition of done для stage-2 доработки `backlog-engineer`
 
 `backlog-engineer` можно считать fully aligned with the combined process, если одновременно верно следующее:
 
