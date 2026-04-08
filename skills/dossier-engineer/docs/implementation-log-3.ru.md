@@ -10,12 +10,32 @@
   - closure path wording
   - closure trio in repo-facing examples
   - stage-vs-command wording
-  - prose non-interpretation wording
+  - workflow-resolution prose non-interpretation wording
   - explicit `review-artifact` persistence/provenance wording
 
 ### Decisions / assumptions beyond the current process model
 
 - None at package start.
+
+### Local acceptance
+
+- `pnpm --dir skills/dossier-engineer run format` — PASS
+- `pnpm --dir skills/dossier-engineer run lint` — PASS
+- `pnpm --dir skills/dossier-engineer run test` — PASS
+- `git diff --check -- skills/dossier-engineer` — PASS
+
+### Reviews
+
+- Spec/process review against [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md) and [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md) — PASS.
+- Security review — PASS.
+- Code review — initial NOT PASS because `dossier-step-close` trusted a hand-written PASS review artifact without `reviewer`; fixed by enforcing reviewer provenance on the consumer side and adding a regression test.
+- Code review re-check — PASS.
+
+### Commit
+
+- Commit: pending
+- Close time: 2026-04-08 18:14:47 CEST
+- Total time to close package: 00:30:02
 
 ### Local acceptance
 
@@ -31,10 +51,34 @@
 
 ### Commit
 
-- Commit: pending
+- Commit: `7843d7d` `docs(dossier-engineer): tighten closure workflow contract`
 - Close time: 2026-04-08 17:40:40 CEST
 - Total time to close package: exact duration could not be computed because the start timestamp was not captured before the first edit in this pass.
 
 ## Package 2 — Runtime/spec/test alignment
 
-- Not started yet.
+- Start time: 2026-04-08 17:44:45 CEST
+- Normative process source: [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
+- Supporting planning source:
+  - [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md)
+- Scope:
+  - shipped-command help wording
+  - `workflow_stage_next` output clarity
+  - explicit `--reviewer`
+  - `dossier-verify -> index-refresh` alignment
+  - runtime/spec/test sync
+
+### Decisions / assumptions beyond the current process model
+
+- None at package start.
+
+### Decisions / assumptions added during implementation
+
+- The prose non-interpretation rule is scoped to workflow-resolution and closure decisions; it does not disable deterministic anti-debt lint heuristics such as explicit marker scans and documented dossier-quality nudges.
+
+### Local acceptance
+
+- `pnpm --dir skills/dossier-engineer run format` — PASS
+- `pnpm --dir skills/dossier-engineer run lint` — PASS
+- `pnpm --dir skills/dossier-engineer run test` — PASS
+- `git diff --check -- skills/dossier-engineer` — PASS

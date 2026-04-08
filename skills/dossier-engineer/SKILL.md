@@ -792,6 +792,7 @@ Run examples:
 Default bundle:
 
 - `index-refresh`
+- `lint-dossiers`
 - `coverage-audit`
 - marker audit / `debt-audit`
 - `git diff --check` when git is available
@@ -904,7 +905,7 @@ Run examples:
 
 Expected output dimensions:
 
-- `workflow_next`
+- `workflow_stage_next`
 - `target_dossier`
 - `dossier_status`
 - `blocking_gate`

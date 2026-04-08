@@ -7083,7 +7083,7 @@ async function runFeatureIntakeCommand(argv, io) {
 		backlog_dependencies: backlogDependencies,
 		backlog_blockers: backlogBlockers,
 		partial_success: false,
-		workflow_next: "spec-compact"
+		workflow_stage_next: "spec-compact"
 	};
 	const refreshIo = createBufferedIo();
 	const refreshExit = await runIndexRefreshCommand(["--root", absRoot], refreshIo.io);
@@ -7113,7 +7113,7 @@ async function runFeatureIntakeCommand(argv, io) {
 	writeLine$1(io.stdout, `[feature-intake] feature=${featureId}`);
 	writeLine$1(io.stdout, `[feature-intake] backlog_item_key=${backlogItemKey}`);
 	writeLine$1(io.stdout, `[feature-intake] backlog_delivery_state=${backlogDeliveryState}`);
-	writeLine$1(io.stdout, "[feature-intake] next=dossier-local spec-compact");
+	writeLine$1(io.stdout, "[feature-intake] next_workflow_stage=spec-compact");
 	return 0;
 }
 function syncIndexHelp() {
@@ -7567,7 +7567,7 @@ async function runContractDriftAuditCommand(argv, io) {
 }
 function reviewArtifactHelp() {
 	return [
-		"Persist an independent review result as a durable artifact.",
+		"Persist a supplied review result as a durable artifact.",
 		"",
 		"Usage:",
 		`  ${CLI_DISPLAY_NAME} review-artifact --dossier <path> --step <name> --verdict PASS|FAIL [options]`,
@@ -7577,7 +7577,7 @@ function reviewArtifactHelp() {
 		"  --dossier <path>             Dossier under review.",
 		"  --step <name>                Workflow step under review.",
 		"  --verdict <PASS|FAIL>        Review verdict.",
-		"  --reviewer <name>            Reviewer identifier.",
+		"  --reviewer <name>            Reviewer identifier. Required.",
 		"  --reviewed-commit <sha>      Explicit reviewed commit.",
 		"  --notes <text>               Free-form reviewer notes.",
 		"  --output <path>              Artifact output path.",
@@ -7597,7 +7597,7 @@ async function runReviewArtifactCommand(argv, io) {
 	const dossier = ensureRequired(takeOption(argv, "--dossier", null), "--dossier is required.", helpText);
 	const step = ensureRequired(takeOption(argv, "--step", null), "--step is required.", helpText);
 	const verdict = ensureRequired(takeOption(argv, "--verdict", null), "--verdict is required.", helpText).toUpperCase();
-	const reviewer = takeOption(argv, "--reviewer", "independent-reviewer") ?? "independent-reviewer";
+	const reviewer = ensureRequired(takeOption(argv, "--reviewer", null), "--reviewer is required.", helpText);
 	const reviewedCommit = takeOption(argv, "--reviewed-commit", null);
 	const notes = takeOption(argv, "--notes", "") ?? "";
 	const output = takeOption(argv, "--output", null);
@@ -7690,6 +7690,7 @@ async function runDossierStepCloseCommand(argv, io) {
 	if (verify && verify.step !== step) blockers.push(`Verification artifact step mismatch: expected ${step}, got ${String(verify.step)}.`);
 	if (verify?.feature_id && verify.feature_id !== featureId) blockers.push(`Verification artifact feature mismatch: expected ${featureId}, got ${verify.feature_id}.`);
 	if (review && review.verdict !== "PASS") blockers.push(`Review artifact verdict is ${String(review.verdict)}, expected PASS.`);
+	if (review && (!review.reviewer || !String(review.reviewer).trim())) blockers.push("Review artifact is missing reviewer provenance.");
 	if (review && review.step !== step) blockers.push(`Review artifact step mismatch: expected ${step}, got ${String(review.step)}.`);
 	if (review?.feature_id && review.feature_id !== featureId) blockers.push(`Review artifact feature mismatch: expected ${featureId}, got ${review.feature_id}.`);
 	if (Array.isArray(review?.findings?.must_fix) && review.findings.must_fix.length > 0) blockers.push("Review artifact still contains must-fix findings.");
@@ -7741,7 +7742,7 @@ function dossierVerifyHelp() {
 		"  --changed-only                    Verify changed dossiers only.",
 		"  --base <ref>                      Git base ref for --changed-only.",
 		"  --output <path>                   Artifact output path.",
-		"  --skip-sync-index                 Skip sync-index in the verification bundle.",
+		"  --skip-index-refresh              Skip index-refresh in the verification bundle.",
 		"  --skip-diff-check                 Skip git diff --check.",
 		"  --coverage-orphans-scope <scope>  Scope for coverage orphan detection.",
 		"  --extra <command>                 Repeatable extra shell command.",
@@ -7760,7 +7761,7 @@ async function runDossierVerifyCommand(argv, io) {
 	const changedOnly = hasOption(argv, "--changed-only");
 	const base = takeOption(argv, "--base", null);
 	const output = takeOption(argv, "--output", null);
-	const skipSyncIndex = hasOption(argv, "--skip-sync-index");
+	const skipIndexRefresh = hasOption(argv, "--skip-index-refresh");
 	const skipDiffCheck = hasOption(argv, "--skip-diff-check");
 	const coverageOrphansScope = takeOption(argv, "--coverage-orphans-scope", "auto") ?? "auto";
 	const extra = takeManyOptions(argv, "--extra");
@@ -7774,9 +7775,9 @@ async function runDossierVerifyCommand(argv, io) {
 		dossierRelPath = dossierRecord.relPath;
 	}
 	const checks = [];
-	if (!skipSyncIndex) checks.push(await captureCommandResult({
-		name: "sync-index",
-		commandName: "sync-index",
+	if (!skipIndexRefresh) checks.push(await captureCommandResult({
+		name: "index-refresh",
+		commandName: "index-refresh",
 		args: ["--root", absRoot],
 		displayArgs: ["--root", "."]
 	}));
@@ -7870,7 +7871,7 @@ async function runDossierVerifyCommand(argv, io) {
 }
 function nextStepHelp() {
 	return [
-		"Return the next dossier-local workflow action for already selected work.",
+		"Return the next dossier-local workflow stage for already selected work.",
 		"",
 		"Usage:",
 		`  ${CLI_DISPLAY_NAME} next-step [options]`,
@@ -7914,7 +7915,7 @@ async function runNextStepCommand(argv, io) {
 	const summary = {
 		target_dossier: target ? target.relPath : null,
 		dossier_status: typeof target?.frontmatter.status === "string" ? target.frontmatter.status : null,
-		workflow_next: workflowNext,
+		workflow_stage_next: workflowNext,
 		blocking_gate: blockers,
 		uncommitted_work: dirtyWorktree,
 		review_freshness: reviewFreshness,
@@ -7924,7 +7925,7 @@ async function runNextStepCommand(argv, io) {
 		writeLine$1(io.stdout, JSON.stringify(summary, null, 2));
 		return 0;
 	}
-	writeLine$1(io.stdout, `Workflow next: ${summary.workflow_next ?? "unknown"}`);
+	writeLine$1(io.stdout, `Workflow stage next: ${summary.workflow_stage_next ?? "unknown"}`);
 	writeLine$1(io.stdout, `Target dossier: ${summary.target_dossier ?? "none selected"}`);
 	writeLine$1(io.stdout, `Dossier status: ${summary.dossier_status ?? "n/a"}`);
 	writeLine$1(io.stdout, `Blocking gate: ${summary.blocking_gate.length > 0 ? summary.blocking_gate.join(" | ") : "none recorded"}`);
@@ -7993,7 +7994,7 @@ var COMMANDS = [
 	{
 		name: "review-artifact",
 		aliases: [],
-		description: "Persist an independent review artifact.",
+		description: "Persist a supplied review-result artifact.",
 		helpText: reviewArtifactHelp,
 		run: runReviewArtifactCommand
 	},
@@ -8014,7 +8015,7 @@ var COMMANDS = [
 	{
 		name: "next-step",
 		aliases: [],
-		description: "Resolve the next recommended action across dossier state.",
+		description: "Resolve the next dossier-local workflow stage from structured state.",
 		helpText: nextStepHelp,
 		run: runNextStepCommand
 	}
@@ -8026,6 +8027,8 @@ function globalHelp() {
 	});
 	return [
 		"Unified CLI for the dossier-engineer skill.",
+		"Commands below are shipped CLI commands only.",
+		"Workflow stages such as spec-compact, plan-slice, implementation, change-proposal, adr-log, dependency-check, and repo bootstrap are documented in SKILL.md and references/WORKFLOW.md.",
 		"",
 		"Usage:",
 		`  ${CLI_DISPLAY_NAME} <command> [options]`,

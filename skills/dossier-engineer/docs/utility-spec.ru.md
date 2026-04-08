@@ -215,7 +215,7 @@ node scripts/dossier.mjs --version
   ],
   "backlog_dependencies": [],
   "backlog_blockers": [],
-  "workflow_next": "spec-compact"
+  "workflow_stage_next": "spec-compact"
 }
 ```
 
@@ -591,7 +591,7 @@ Baseline берётся в порядке:
 
 ### Назначение
 
-Сохранить независимый review result как долговечный workflow artifact.
+Сохранить уже полученный review result как долговечный workflow artifact.
 
 ### Входы
 
@@ -599,7 +599,7 @@ Baseline берётся в порядке:
 - `--dossier <path>`; обязательный
 - `--step <name>`; обязательный
 - `--verdict PASS|FAIL`; обязательный
-- `--reviewer <name>`
+- `--reviewer <name>`; обязательный
 - `--reviewed-commit <sha>`
 - `--notes <text>`
 - `--output <path>`
@@ -612,6 +612,7 @@ Baseline берётся в порядке:
 
 - `--verdict` допускает только `PASS` или `FAIL`
 - `PASS` не может содержать `--must-fix`
+- `--reviewer` обязателен; команда не подставляет reviewer по умолчанию
 - если commit нельзя получить из git, требуется `--reviewed-commit`
 
 ### Артефакт
@@ -646,6 +647,7 @@ Baseline берётся в порядке:
 ### Выход
 
 - `stdout`: путь к артефакту и summary по verdict/step/feature/commit
+- команда только фиксирует supplied verdict и reviewer provenance; она не выполняет review сама
 - код `0`
 
 ## 6.10 `dossier-step-close`
@@ -675,6 +677,7 @@ Baseline берётся в порядке:
 - шаги в артефактах не совпадают с `--step`
 - feature id в артефактах не совпадает с dossier
 - review verdict не `PASS`
+- в review artifact отсутствует `reviewer`
 - в review artifact есть `must_fix`
 - review или verification stale относительно текущего commit
 - worktree dirty вне `.dossier/`, если не задан `--allow-dirty`
@@ -734,7 +737,7 @@ Baseline берётся в порядке:
 - `--changed-only`
 - `--base <ref>`
 - `--output <path>`
-- `--skip-sync-index`
+- `--skip-index-refresh`
 - `--skip-diff-check`
 - `--coverage-orphans-scope <scope>`
 - repeatable `--extra <command>`
@@ -745,9 +748,9 @@ Baseline берётся в порядке:
 
 ### Состав verification bundle
 
-Если не задан `--skip-sync-index`:
+Если не задан `--skip-index-refresh`:
 
-1. `sync-index`
+1. `index-refresh`
 
 Всегда:
 
@@ -787,8 +790,8 @@ Baseline берётся в порядке:
   "status": "pass|fail",
   "checks": [
     {
-      "name": "sync-index",
-      "command": "node scripts/dossier.mjs sync-index ...",
+      "name": "index-refresh",
+      "command": "node scripts/dossier.mjs index-refresh ...",
       "exit_code": 0,
       "stdout": "",
       "stderr": "",
@@ -827,7 +830,7 @@ Baseline берётся в порядке:
 
 ### Workflow next resolution
 
-`workflow_next` вычисляется так:
+`workflow_stage_next` вычисляется так:
 
 1. если latest step artifact существует и `process_complete === false`, берётся `latestStepArtifact.next_step`
 2. иначе, если есть target dossier, применяется mapping по status:
@@ -855,7 +858,7 @@ Baseline берётся в порядке:
 {
   "target_dossier": "docs/features/F-0001.md|null",
   "dossier_status": "planned|null",
-  "workflow_next": "implementation|null",
+  "workflow_stage_next": "implementation|null",
   "blocking_gate": [],
   "uncommitted_work": false,
   "review_freshness": "valid for commit ...",
@@ -870,6 +873,7 @@ Baseline берётся в порядке:
 - команда не выбирает backlog item;
 - команда не эмулирует backlog selection при отсутствии dossier;
 - команда не выбирает dossier молча, если в repo больше одного dossier;
+- команда читает только structured state (`status`, latest step artifact, latest review artifact) и durable artifacts; CLI никогда не интерпретирует prose из body dossier;
 - при отсутствии active dossier она возвращает dossier-local blocking explanation и отправляет оператора обратно в `backlog-engineer`.
 
 ### Коды завершения

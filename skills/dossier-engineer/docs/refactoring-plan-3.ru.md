@@ -23,18 +23,19 @@
 4. убрать двусмысленность `workflow_next` как будто это runnable subcommand;
 5. сделать `review-artifact` честным persistence command с явным reviewer provenance;
 6. выровнять `dossier-verify` с canonical `index-refresh` path;
-7. жёстко зафиксировать, что CLI никогда не интерпретирует prose из dossier body.
+7. жёстко зафиксировать, что workflow-resolution и closure commands не интерпретируют prose из dossier body для принятия решений.
 
 ## Fixed decisions
 
 Эти решения не переоткрываются в рамках данного pass:
 
-1. CLI никогда не интерпретирует prose из dossier body.
-2. `next-step` остаётся artifact/state-driven command и не становится content-aware.
-3. Новые команды, артефакты или machine-readable body structures не добавляются.
-4. `dossier-verify --changed-only` остаётся repo-scope audit mode, а не canonical closure path for one dossier.
-5. `review-artifact` не выполняет review и не эмулирует независимость; она только фиксирует уже полученный reviewer verdict.
-6. `index-refresh` — canonical full refresh path; `sync-index` — narrow table/graph refresh path.
+1. Workflow-resolution и closure commands не интерпретируют prose из dossier body для принятия решений.
+2. `lint-dossiers` остаётся deterministic anti-debt command и может использовать документированные exact-marker и narrow heuristic checks.
+3. `next-step` остаётся artifact/state-driven command и не становится content-aware.
+4. Новые команды, артефакты или machine-readable body structures не добавляются.
+5. `dossier-verify --changed-only` остаётся repo-scope audit mode, а не canonical closure path for one dossier.
+6. `review-artifact` не выполняет review и не эмулирует независимость; она только фиксирует уже полученный reviewer verdict.
+7. `index-refresh` — canonical full refresh path; `sync-index` — narrow table/graph refresh path.
 
 ## Package 1. Text/docs contract
 
@@ -54,7 +55,7 @@
    - описать `--changed-only` как repo-scope audit mode;
    - явно развести workflow stages и shipped CLI commands;
    - сузить wording `next-step` до dossier-local workflow stage resolution;
-   - явно записать, что CLI never interprets dossier body prose.
+   - явно записать, что workflow-resolution commands never interpret dossier body prose for decisions.
 2. В repo templates/examples:
    - добавить closure trio:
      - `dossier-verify`
@@ -69,7 +70,7 @@
 
 - closure examples больше не нормализуют `--changed-only` как one-dossier close-out path;
 - repo-facing examples включают полный closure trio;
-- wording нигде не намекает, что CLI interprets dossier prose;
+- wording нигде не намекает, что workflow-resolution commands infer decisions from dossier prose;
 - shipped CLI commands и workflow stages больше не смешиваются;
 - `git diff --check -- skills/dossier-engineer` проходит.
 

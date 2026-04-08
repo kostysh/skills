@@ -116,6 +116,8 @@ void test('global help exposes unified commands and compatibility aliases', () =
   const result = runCli(['--help']);
 
   assert.equal(result.status, 0);
+  assert.match(result.stdout, /Commands below are shipped CLI commands only\./);
+  assert.match(result.stdout, /Workflow stages such as spec-compact, plan-slice, implementation/);
   assert.match(result.stdout, /feature-intake/);
   assert.match(result.stdout, /sync-index/);
   assert.match(result.stdout, /dossier-verify/);
@@ -170,7 +172,7 @@ void test('feature-intake creates a dossier from selected backlog work and updat
     dossier: string;
     feature_id: string;
     partial_success: boolean;
-    workflow_next: string;
+    workflow_stage_next: string;
   };
 
   assert.equal(summary.feature_id, 'F-0001');
@@ -183,7 +185,7 @@ void test('feature-intake creates a dossier from selected backlog work and updat
   assert.deepEqual(summary.backlog_dependencies, ['identity-session-hardening']);
   assert.deepEqual(summary.backlog_blockers, ['Awaiting password reset copy review']);
   assert.equal(summary.partial_success, false);
-  assert.equal(summary.workflow_next, 'spec-compact');
+  assert.equal(summary.workflow_stage_next, 'spec-compact');
 
   const dossierText = fs.readFileSync(path.join(repoRoot, summary.dossier), 'utf8');
   assert.match(dossierText, /Backlog item key: auth-password-reset/);
@@ -306,10 +308,10 @@ void test('coverage-audit passes and next-step returns implementation for the ac
   const summary = JSON.parse(nextStepResult.stdout) as {
     dossier_status: string;
     target_dossier: string;
-    workflow_next: string;
+    workflow_stage_next: string;
   };
   assert.equal(summary.target_dossier, 'docs/features/F-0001-sample.md');
-  assert.equal(summary.workflow_next, 'implementation');
+  assert.equal(summary.workflow_stage_next, 'implementation');
   assert.equal(summary.dossier_status, 'planned');
 });
 
@@ -508,15 +510,38 @@ void test('next-step returns a dossier-local blocker when no dossier exists yet'
     blocking_gate: string[];
     dossier_status: string | null;
     target_dossier: string | null;
-    workflow_next: string | null;
+    workflow_stage_next: string | null;
   };
 
   assert.equal(summary.target_dossier, null);
   assert.equal(summary.dossier_status, null);
-  assert.equal(summary.workflow_next, null);
+  assert.equal(summary.workflow_stage_next, null);
   assert.deepEqual(summary.blocking_gate, [
     'No active dossier found. Select backlog work with backlog-engineer and create a dossier via feature-intake before using next-step.',
   ]);
+});
+
+void test('review-artifact requires explicit reviewer provenance', (t) => {
+  const repoRoot = createRepoFixture(t);
+
+  assert.equal(runCli(['index-refresh', '--root', repoRoot]).status, 0);
+  assert.equal(runCommand('git', ['add', '.'], repoRoot).status, 0);
+  assert.equal(runCommand('git', ['commit', '-m', 'seed dossier repo'], repoRoot).status, 0);
+
+  const result = runCli([
+    'review-artifact',
+    '--root',
+    repoRoot,
+    '--dossier',
+    'docs/features/F-0001-sample.md',
+    '--step',
+    'implementation',
+    '--verdict',
+    'PASS',
+  ]);
+
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /--reviewer is required\./);
 });
 
 void test('lint-dossiers reports compact-spec nudges for smells and weak contract cues', (t) => {
@@ -706,6 +731,13 @@ void test('verify, review-artifact, and dossier-step-close complete the implemen
 
   const verificationArtifact = `.dossier/verification/F-0001/implementation-${shortCommit}.json`;
   assert.equal(fs.existsSync(path.join(repoRoot, verificationArtifact)), true);
+  const verificationPayload = JSON.parse(
+    fs.readFileSync(path.join(repoRoot, verificationArtifact), 'utf8'),
+  ) as {
+    checks: Array<{ name: string }>;
+  };
+  assert.equal(verificationPayload.checks[0]?.name, 'index-refresh');
+  assert.equal(verificationPayload.checks[1]?.name, 'lint-dossiers');
 
   const reviewResult = runCli([
     'review-artifact',
@@ -715,6 +747,8 @@ void test('verify, review-artifact, and dossier-step-close complete the implemen
     'docs/features/F-0001-sample.md',
     '--step',
     'implementation',
+    '--reviewer',
+    'code-reviewer',
     '--verdict',
     'PASS',
   ]);
@@ -746,4 +780,71 @@ void test('verify, review-artifact, and dossier-step-close complete the implemen
   };
   assert.equal(stepArtifact.process_complete, true);
   assert.equal(stepArtifact.next_step, 'implementation');
+});
+
+void test('dossier-step-close rejects a review artifact without reviewer provenance', (t) => {
+  const repoRoot = createRepoFixture(t);
+
+  assert.equal(runCli(['index-refresh', '--root', repoRoot]).status, 0);
+  assert.equal(runCommand('git', ['add', '.'], repoRoot).status, 0);
+  assert.equal(runCommand('git', ['commit', '-m', 'seed dossier repo'], repoRoot).status, 0);
+
+  const commit = runCommand('git', ['rev-parse', '--verify', 'HEAD'], repoRoot).stdout.trim();
+  const shortCommit = commit.slice(0, 12);
+
+  assert.equal(
+    runCli([
+      'dossier-verify',
+      '--root',
+      repoRoot,
+      '--step',
+      'implementation',
+      '--dossier',
+      'docs/features/F-0001-sample.md',
+    ]).status,
+    0,
+  );
+
+  const verificationArtifact = `.dossier/verification/F-0001/implementation-${shortCommit}.json`;
+  const reviewArtifact = `.dossier/reviews/F-0001/implementation-${shortCommit}.json`;
+  fs.mkdirSync(path.join(repoRoot, '.dossier/reviews/F-0001'), { recursive: true });
+  fs.writeFileSync(
+    path.join(repoRoot, reviewArtifact),
+    JSON.stringify(
+      {
+        version: 1,
+        created_at: new Date().toISOString(),
+        step: 'implementation',
+        dossier: 'docs/features/F-0001-sample.md',
+        feature_id: 'F-0001',
+        reviewed_commit: commit,
+        verdict: 'PASS',
+        findings: {
+          must_fix: [],
+          should_fix: [],
+          evidence: [],
+        },
+        notes: '',
+      },
+      null,
+      2,
+    ),
+  );
+
+  const closeResult = runCli([
+    'dossier-step-close',
+    '--root',
+    repoRoot,
+    '--dossier',
+    'docs/features/F-0001-sample.md',
+    '--step',
+    'implementation',
+    '--verify-artifact',
+    verificationArtifact,
+    '--review-artifact',
+    reviewArtifact,
+  ]);
+
+  assert.equal(closeResult.status, 2);
+  assert.match(closeResult.stderr, /Review artifact is missing reviewer provenance\./);
 });

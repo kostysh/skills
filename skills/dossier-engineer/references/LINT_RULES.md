@@ -51,3 +51,8 @@ The goal is to prevent:
 - overloaded status semantics,
 - untraceable coverage enforcement,
 - orphan docs without durable process truth.
+
+Lint stays deterministic:
+- it validates declared structure and documented dossier conventions;
+- it may use exact markers and narrow documented heuristics to surface debt-minimization issues;
+- workflow-resolution commands still do not infer blockers or next actions from dossier prose.
