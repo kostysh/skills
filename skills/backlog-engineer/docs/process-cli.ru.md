@@ -118,6 +118,10 @@
 | Создать backlog с нуля по архитектуре | Получить первый backlog-граф проекта | `init` -> `register-source` для всех исходных документов -> `template packet` -> подготовка пакета -> при рискованном или крупном изменении `packet --dry-run` -> `packet` -> `status` |
 | Добавить в backlog новый модуль или источник | Дозагрузить в backlog новый участок системы | `list-sources` -> `register-source` для нового документа -> `template packet` -> подготовка пакета -> при рискованном или крупном изменении `packet --dry-run` -> `packet` -> при необходимости `items` или `attention` по затронутым задачам |
 | Обновить backlog после изменения существующего модуля или источника | Синхронизировать backlog с изменившейся архитектурой | Если известен источник: `refresh --source-id ...` или `refresh --source-path ...`; если известна задача: `refresh --item-key ...`; иначе `refresh` -> `search` для поиска затронутых задач -> если появились новые задачи: `template packet` -> при рискованном или крупном изменении `packet --dry-run` -> `packet`; если нужно изменить существующие задачи: `template patch` -> при рискованном или крупном изменении `patch-item --dry-run` -> `patch-item`; если задачи устарели: `remove-item --dry-run` -> `remove-item` |
+| Выбрать следующую backlog-задачу и передать её в dossier workflow | Понять, какую работу брать дальше и с чем входить в dossier | `queue` или scoped `status`/`items` -> прочитать текущий `delivery_state`, blockers, dependencies и source traceability -> `dossier-engineer feature-intake` |
+| Актуализировать backlog после dossier shaping/specification | Зафиксировать, что выбранная backlog-задача стала достаточно определённой | после dossier `spec-compact` -> `patch-item` или scoped `refresh` + patch workflow -> при необходимости `status` или `items` для подтверждения нового backlog state |
+| Актуализировать backlog после dossier planning | Зафиксировать, что выбранная backlog-задача стала implementation-ready на backlog-слое | после dossier `plan-slice` -> `patch-item` или scoped `refresh` + patch workflow -> при необходимости `status` или `items` |
+| Актуализировать backlog после dossier implementation/closure | Зафиксировать, что capability реально существует и backlog state должен быть повышен | после dossier `implementation -> dossier-verify -> review-artifact -> dossier-step-close` -> `patch-item` или scoped `refresh` + patch workflow -> при необходимости `status` или `items` |
 | Показать общее состояние backlog | Понять текущее состояние backlog в целом | `status`; если оператор просит именно актуальное состояние на сейчас: `status --refresh`; если нужен полноценный обзорный документ для оператора: `report` |
 | Показать, что изменилось после последнего действия | Понять результат последнего обновления backlog | Использовать компактный ответ последней mutating-команды (`packet`, `patch-item`, `remove-item`, `refresh`); если нужны детали по конкретным задачам: `items` |
 | Показать, что требует внимания | Найти задачи, которые надо проверить или пересмотреть | `attention` -> при необходимости `items` по выбранным задачам |
@@ -125,6 +129,40 @@
 | Проверить один модуль, источник или конкретную задачу | Получить scoped-картину без обзора всего backlog | Если известен `item_key`: `items`; если известен источник: `refresh --source-id ...` или `refresh --source-path ...` -> `search --source-ids ...` -> при необходимости `items`; если ключи задач неизвестны: `search` -> `items` |
 
 Эта матрица должна быть дублирована в `SKILL.md` в короткой форме.
+
+**Кросс-скил handoff и return path**
+
+Согласованный процесс выглядит так:
+
+- `backlog-engineer` выбирает backlog work и определяет, может ли она двигаться дальше;
+- `dossier-engineer` ведёт локальный lifecycle уже выбранной работы;
+- если dossier-side шаг меняет backlog truth, агент обязан вернуться в `backlog-engineer` и явно актуализировать backlog state.
+- dossier artifacts могут быть supporting evidence для backlog sync, но не заменяют architecture / ADR как canonical upstream truth.
+
+Минимальный durable backlog -> dossier handoff должен содержать:
+
+- `item_key`
+- текущий `delivery_state`
+- relevant source traceability
+- known blockers
+- known dependencies
+
+`attention` при этом:
+
+- остаётся backlog-side read model;
+- может читаться до intake как текущий backlog signal;
+- не копируется в dossier как durable handoff state.
+
+Буквальное различие:
+
+- backlog `queue` / `status` / `gaps` / `attention` / `ready_for_next_step` отвечают на вопрос, может ли backlog work двигаться;
+- dossier-local `next-step` отвечает только на вопрос, как уже выбранная работа движется внутри dossier workflow.
+
+Literal dossier -> backlog actualization mapping:
+
+- shaping / specification с достаточным evidence -> backlog `delivery_state = specified`
+- planning с достаточным evidence -> backlog `delivery_state = planned`
+- implementation + closure с достаточным evidence -> backlog `delivery_state = implemented`
 
 **Scoped UX для вопроса “проверь один модуль/источник/задачу”**
 
@@ -1059,6 +1097,7 @@ graph TD
 - Используй `gaps`, когда нужно явно увидеть незакрытые пробелы, а не только общее `needs_attention`.
 - Для одной задачи сначала можно вызвать `items`, но если нужны именно gaps как отдельный список, используй `gaps`.
 - Не пытайся выводить gaps косвенно из других полей, если утилита умеет вернуть их напрямую.
+- Если dossier-side работа выявила новый blocker или unresolved dependency, вернись в backlog utility и перечитай `gaps` после актуализации backlog state.
 
 ## queue
 
@@ -1116,6 +1155,7 @@ graph TD
 - Используй `queue`, когда оператор спрашивает “что делать дальше”.
 - Не пытайся собирать очередь вручную из `search` и `items`, если утилита уже вычисляет `ready_for_next_step`.
 - После `queue` используй `items` только для задач, которые реально планируешь разбирать дальше.
+- `queue` отвечает за выбор backlog work; dossier-local `next-step` не заменяет этот backlog-level выбор.
 
 ## attention
 
@@ -1152,6 +1192,7 @@ graph TD
 - Используй `attention` после `refresh`, после применения патчей и в ситуациях, когда нужно понять, что требует перепроверки.
 - Не интерпретируй `needs_attention` без причины; если задача важна, после `attention` открой её через `items`.
 - Если оператор спрашивает, “что сейчас проблемное”, начинай с `attention`.
+- `attention` остаётся backlog-side read model и не переносится в dossier handoff как durable field.
 
 ## patch-item
 

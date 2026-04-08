@@ -1016,6 +1016,39 @@ Dry-run не должен:
 
 Это правило обязательно для всех мест, где утилита вычисляет или показывает `ready_for_next_step`.
 
+### Cross-skill interop invariants
+
+`backlog-engineer` и `dossier-engineer` работают в одном согласованном процессе, но не образуют shared runtime.
+
+Нормативные правила:
+
+- `backlog-engineer` выбирает backlog work и определяет, может ли она двигаться дальше;
+- `dossier-engineer` ведёт локальный lifecycle уже выбранной работы;
+- dossier artifacts могут быть supporting evidence для backlog sync, но не заменяют architecture / ADR как canonical upstream truth;
+- `attention` остаётся backlog-side read model и не входит в минимальный durable backlog -> dossier handoff.
+
+Минимальный durable backlog -> dossier handoff:
+
+- `item_key`
+- текущий `delivery_state`
+- relevant source traceability
+- known blockers
+- known dependencies
+
+Явная актуализация backlog truth после dossier-side шагов:
+
+- dossier shaping / specification с достаточным evidence -> backlog `delivery_state = specified`;
+- dossier planning с достаточным evidence -> backlog `delivery_state = planned`;
+- dossier implementation + closure с достаточным evidence -> backlog `delivery_state = implemented`;
+- dossier-discovered blockers, dependencies, context facts, или cross-cutting decisions -> patch backlog state before dossier workflow continues.
+
+Слои статуса нельзя смешивать:
+
+- dossier `planned` не равен backlog `planned`;
+- dossier `done` не равен backlog `implemented`;
+- backlog `queue` / `status` / `gaps` / `attention` / `ready_for_next_step` отвечают на вопрос, может ли work двигаться;
+- dossier-local `next-step` отвечает только на вопрос, как уже выбранная work движется внутри dossier workflow.
+
 ## 8.4. Todo generation rules
 
 ### Общие правила lifecycle
@@ -1745,6 +1778,11 @@ Dry-run variant:
 - repeated refresh without changes;
 - source change -> todo propagation.
 
+### Cross-skill interpretation
+
+- use scoped `refresh` after dossier work when updated source documents may have changed backlog-derived state;
+- dossier artifacts may support the decision to refresh or patch, but they do not replace architecture or ADR sources as canonical upstream truth.
+
 ## 10.9. `status`
 
 ### Input
@@ -1794,6 +1832,11 @@ Dry-run variant:
 - plain status non-mutating;
 - status with refresh;
 - count correctness.
+
+### Cross-skill interpretation
+
+- use `status` before dossier intake when the operator needs the current backlog picture for selected work;
+- use `status` again after dossier-side lifecycle changes when backlog truth was actualized and needs confirmation.
 
 ## 10.10. `report`
 
@@ -1958,6 +2001,11 @@ Dry-run variant:
 - multi-key order preservation;
 - full card completeness.
 
+### Cross-skill interpretation
+
+- use `items` to inspect selected backlog work before dossier intake or after backlog actualization;
+- dossier-local state does not replace the canonical backlog item card.
+
 ## 10.12. `search`
 
 ### Input
@@ -2082,6 +2130,11 @@ Dry-run variant:
 - single-item gaps;
 - tasks without gaps are excluded.
 
+### Cross-skill interpretation
+
+- use `gaps` before dossier intake when explicit backlog-side blockers must be visible for the selected work;
+- if dossier work discovers a new blocker or unresolved dependency, read `gaps` again after backlog actualization to confirm the updated blocker state.
+
 ## 10.14. `queue`
 
 ### Input
@@ -2143,6 +2196,11 @@ Dry-run variant:
 - stable ordering;
 - exclusion of implemented/blocked items.
 
+### Cross-skill interpretation
+
+- `queue` chooses which backlog work moves next;
+- dossier-local `next-step` does not replace backlog selection.
+
 ## 10.15. `attention`
 
 ### Input
@@ -2199,6 +2257,12 @@ Severity reasons compare in this order:
 - reason ordering;
 - inclusion of source summaries;
 - exclusion of tasks without attention.
+
+### Cross-skill interpretation
+
+- `attention` remains a backlog-side read model;
+- inspect it before dossier intake when the current review-oriented backlog signal matters;
+- do not persist `attention` inside the durable dossier handoff.
 
 ## 10.16. `delete-backlog`
 

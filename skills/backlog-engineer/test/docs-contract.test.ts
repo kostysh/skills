@@ -23,11 +23,9 @@ const FIRST_BACKLOG_WALKTHROUGH_PATH = path.join(
   'references',
   'first-backlog-walkthrough.md',
 );
-const OPERATOR_WORKFLOWS_PATH = path.join(
-  SKILL_DIR,
-  'references',
-  'operator-workflows.md',
-);
+const OPERATOR_WORKFLOWS_PATH = path.join(SKILL_DIR, 'references', 'operator-workflows.md');
+const PROCESS_CLI_PATH = path.join(SKILL_DIR, 'docs', 'process-cli.ru.md');
+const UTILITY_SPEC_PATH = path.join(SKILL_DIR, 'docs', 'utility-spec.ru.md');
 const IMPLEMENTATION_PLAN_PATH = path.join(SKILL_DIR, 'docs', 'refactoring-plan-1.ru.md');
 
 function extractSection(text: string, heading: string): string {
@@ -205,5 +203,47 @@ void test('first backlog docs enforce a blocking source-set gate before packet a
     'anchor source',
     'mandatory inputs',
     'do not substitute extraction',
+  ]);
+});
+
+void test('normative backlog docs keep cross-skill handoff and actualization literal', async () => {
+  const [processCli, utilitySpec] = await Promise.all([
+    readFile(PROCESS_CLI_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(processCli, [
+    'Кросс-скил handoff и return path',
+    'текущий `delivery_state`',
+    '`dossier-engineer` ведёт локальный lifecycle',
+    '`attention` при этом',
+    'dossier-local `next-step` отвечает только на вопрос',
+    'supporting evidence для backlog sync, но не заменяют architecture / ADR как canonical upstream truth',
+    'shaping / specification с достаточным evidence -> backlog `delivery_state = specified`',
+    'planning с достаточным evidence -> backlog `delivery_state = planned`',
+    'implementation + closure с достаточным evidence -> backlog `delivery_state = implemented`',
+    'Если dossier-side работа выявила новый blocker или unresolved dependency',
+    '`queue` отвечает за выбор backlog work; dossier-local `next-step` не заменяет этот backlog-level выбор.',
+    '`attention` остаётся backlog-side read model и не переносится в dossier handoff как durable field.',
+  ]);
+
+  assertContainsTerms(utilitySpec, [
+    'Cross-skill interop invariants',
+    '`attention` остаётся backlog-side read model',
+    'Минимальный durable backlog -> dossier handoff',
+    'supporting evidence для backlog sync, но не заменяют architecture / ADR как canonical upstream truth',
+    'dossier shaping / specification с достаточным evidence -> backlog `delivery_state = specified`',
+    'dossier planning с достаточным evidence -> backlog `delivery_state = planned`',
+    'dossier implementation + closure с достаточным evidence -> backlog `delivery_state = implemented`',
+    'dossier-discovered blockers, dependencies, context facts, или cross-cutting decisions -> patch backlog state before dossier workflow continues',
+    'use scoped `refresh` after dossier work when updated source documents may have changed backlog-derived state',
+    'use `status` before dossier intake',
+    'use `items` to inspect selected backlog work before dossier intake or after backlog actualization',
+    'use `gaps` before dossier intake when explicit backlog-side blockers must be visible',
+    '`queue` chooses which backlog work moves next',
+    '`attention` remains a backlog-side read model',
+    'dossier `planned` не равен backlog `planned`',
+    'dossier `done` не равен backlog `implemented`',
+    'dossier-local `next-step` отвечает только на вопрос',
   ]);
 });
