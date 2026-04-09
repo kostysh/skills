@@ -9,7 +9,13 @@ import type { BacklogRootPath } from '../runtime/shared.ts';
 import { LAYOUT_VERSION, SCHEMA_VERSION, TOOL_NAME } from '../runtime/tool-metadata.ts';
 import type { ArtifactsModuleDependencies } from './shared.ts';
 import {
+  AGENTS_BASENAME,
+  BACKLOG_INTERNAL_DIRNAME,
   GITIGNORE_BASENAME,
+  PACKETS_DIRNAME,
+  PATCHES_DIRNAME,
+  REPORTS_DIRNAME,
+  ROOT_MARKER_BASENAME,
   getAgentsPath,
   getGitignorePath,
   getRootMarkerPath,
@@ -66,6 +72,40 @@ function createInitialState(createdAt: string): StateFile {
   };
 }
 
+const RESERVED_INIT_ENTRY_NAMES = [
+  ROOT_MARKER_BASENAME,
+  AGENTS_BASENAME,
+  BACKLOG_INTERNAL_DIRNAME,
+  PACKETS_DIRNAME,
+  PATCHES_DIRNAME,
+  REPORTS_DIRNAME,
+] as const;
+
+function createInitConflictError(
+  dependencies: ArtifactsModuleDependencies,
+  payload: {
+    root: BacklogRootPath;
+    conflictingEntries?: string[];
+    message?: string;
+  },
+) {
+  const conflictingEntries = payload.conflictingEntries ?? [];
+  return dependencies.errors.create('BE_ROOT_NOT_EMPTY', payload.message, {
+    details: {
+      path: payload.root,
+      ...(conflictingEntries.length > 0
+        ? {
+            conflicting_entries: conflictingEntries,
+            conflicting_paths: conflictingEntries.map((entry) =>
+              dependencies.path.join(payload.root, entry),
+            ),
+          }
+        : {}),
+    },
+    hint: 'Use a different directory or remove/rename only the conflicting backlog-managed artifact paths. Unrelated existing files and subdirectories are allowed.',
+  });
+}
+
 async function assertInitTargetAvailable(
   dependencies: ArtifactsModuleDependencies,
   root: BacklogRootPath,
@@ -89,10 +129,9 @@ async function assertInitTargetAvailable(
 
   const rootStat = await dependencies.fs.lstat(root);
   if (rootStat.isSymbolicLink || !rootStat.isDirectory) {
-    throw dependencies.errors.create('BE_ROOT_NOT_EMPTY', undefined, {
-      details: {
-        path: root,
-      },
+    throw createInitConflictError(dependencies, {
+      root,
+      message: 'Cannot initialize backlog because the target path is not a regular directory.',
     });
   }
 
@@ -101,33 +140,40 @@ async function assertInitTargetAvailable(
     return {};
   }
 
-  if (entries.length === 1 && entries[0] === GITIGNORE_BASENAME) {
+  let existingGitignoreContent: string | undefined;
+  if (entries.includes(GITIGNORE_BASENAME)) {
     const gitignorePath = getGitignorePath(dependencies.path, root);
     const gitignoreStat = await dependencies.fs.lstat(gitignorePath);
     if (!gitignoreStat.isFile || gitignoreStat.isSymbolicLink) {
-      throw dependencies.errors.create('BE_ROOT_NOT_EMPTY', undefined, {
-        details: {
-          path: root,
-          entries,
-        },
+      throw createInitConflictError(dependencies, {
+        root,
+        conflictingEntries: [GITIGNORE_BASENAME],
       });
     }
 
-    return {
-      existingGitignoreContent: await dependencies.fs.readText(gitignorePath),
-    };
+    existingGitignoreContent = await dependencies.fs.readText(gitignorePath);
   }
 
-  if (entries.length > 0) {
-    throw dependencies.errors.create('BE_ROOT_NOT_EMPTY', undefined, {
-      details: {
-        path: root,
-        entries,
-      },
+  const conflictingEntries = entries.filter((entry) => {
+    if (entry === GITIGNORE_BASENAME) {
+      return false;
+    }
+
+    return RESERVED_INIT_ENTRY_NAMES.includes(entry as (typeof RESERVED_INIT_ENTRY_NAMES)[number]);
+  });
+
+  if (conflictingEntries.length > 0) {
+    throw createInitConflictError(dependencies, {
+      root,
+      conflictingEntries,
     });
   }
 
-  return {};
+  return existingGitignoreContent !== undefined
+    ? {
+        existingGitignoreContent,
+      }
+    : {};
 }
 
 export async function initializeBacklogRoot(

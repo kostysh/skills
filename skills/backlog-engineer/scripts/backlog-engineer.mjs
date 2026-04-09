@@ -4948,7 +4948,7 @@ var ERROR_DEFAULT_MESSAGES = {
 	BE_USAGE_INVALID: "Command arguments are invalid.",
 	BE_ROOT_NOT_FOUND: "Backlog root was not found.",
 	BE_ROOT_ALREADY_EXISTS: "Backlog root already exists.",
-	BE_ROOT_NOT_EMPTY: "Cannot initialize backlog in a non-empty directory.",
+	BE_ROOT_NOT_EMPTY: "Cannot initialize backlog because the target directory contains entries that conflict with backlog-managed artifacts.",
 	BE_INVALID_JSON: "Input JSON is invalid.",
 	BE_SCHEMA_INVALID: "Input does not match the required schema.",
 	BE_INPUT_FILE_NOT_FOUND: "Input file was not found.",
@@ -7927,6 +7927,27 @@ function createInitialState(createdAt) {
 		todos: []
 	};
 }
+var RESERVED_INIT_ENTRY_NAMES = [
+	ROOT_MARKER_BASENAME,
+	AGENTS_BASENAME,
+	BACKLOG_INTERNAL_DIRNAME,
+	PACKETS_DIRNAME,
+	PATCHES_DIRNAME,
+	REPORTS_DIRNAME
+];
+function createInitConflictError(dependencies, payload) {
+	const conflictingEntries = payload.conflictingEntries ?? [];
+	return dependencies.errors.create("BE_ROOT_NOT_EMPTY", payload.message, {
+		details: {
+			path: payload.root,
+			...conflictingEntries.length > 0 ? {
+				conflicting_entries: conflictingEntries,
+				conflicting_paths: conflictingEntries.map((entry) => dependencies.path.join(payload.root, entry))
+			} : {}
+		},
+		hint: "Use a different directory or remove/rename only the conflicting backlog-managed artifact paths. Unrelated existing files and subdirectories are allowed."
+	});
+}
 async function assertInitTargetAvailable(dependencies, root) {
 	const markerPath = getRootMarkerPath(dependencies.path, root);
 	if (await dependencies.fs.exists(markerPath)) {
@@ -7938,23 +7959,31 @@ async function assertInitTargetAvailable(dependencies, root) {
 	}
 	if (!await dependencies.fs.exists(root)) return {};
 	const rootStat = await dependencies.fs.lstat(root);
-	if (rootStat.isSymbolicLink || !rootStat.isDirectory) throw dependencies.errors.create("BE_ROOT_NOT_EMPTY", void 0, { details: { path: root } });
+	if (rootStat.isSymbolicLink || !rootStat.isDirectory) throw createInitConflictError(dependencies, {
+		root,
+		message: "Cannot initialize backlog because the target path is not a regular directory."
+	});
 	const entries = await dependencies.fs.readdir(root);
 	if (entries.length === 0) return {};
-	if (entries.length === 1 && entries[0] === ".gitignore") {
+	let existingGitignoreContent;
+	if (entries.includes(".gitignore")) {
 		const gitignorePath = getGitignorePath(dependencies.path, root);
 		const gitignoreStat = await dependencies.fs.lstat(gitignorePath);
-		if (!gitignoreStat.isFile || gitignoreStat.isSymbolicLink) throw dependencies.errors.create("BE_ROOT_NOT_EMPTY", void 0, { details: {
-			path: root,
-			entries
-		} });
-		return { existingGitignoreContent: await dependencies.fs.readText(gitignorePath) };
+		if (!gitignoreStat.isFile || gitignoreStat.isSymbolicLink) throw createInitConflictError(dependencies, {
+			root,
+			conflictingEntries: [GITIGNORE_BASENAME]
+		});
+		existingGitignoreContent = await dependencies.fs.readText(gitignorePath);
 	}
-	if (entries.length > 0) throw dependencies.errors.create("BE_ROOT_NOT_EMPTY", void 0, { details: {
-		path: root,
-		entries
-	} });
-	return {};
+	const conflictingEntries = entries.filter((entry) => {
+		if (entry === ".gitignore") return false;
+		return RESERVED_INIT_ENTRY_NAMES.includes(entry);
+	});
+	if (conflictingEntries.length > 0) throw createInitConflictError(dependencies, {
+		root,
+		conflictingEntries
+	});
+	return existingGitignoreContent !== void 0 ? { existingGitignoreContent } : {};
 }
 async function initializeBacklogRoot(dependencies, payload) {
 	const initTarget = await assertInitTargetAvailable(dependencies, payload.root);

@@ -268,13 +268,42 @@ void test('init command fails when backlog root already exists', async () => {
   }
 });
 
-void test('init command fails on non-empty directory without backlog marker', async () => {
+void test('init command allows unrelated preexisting files in target directory', async () => {
   const cwd = await createTempDir();
   const runtime = createRuntime();
   const backlogRoot = path.join(cwd, 'backlog');
 
   try {
     await mkdir(backlogRoot, { recursive: true });
+    await writeFile(path.join(backlogRoot, 'notes.md'), '# temp\n', 'utf8');
+    await mkdir(path.join(backlogRoot, 'docs'), { recursive: true });
+    await writeFile(path.join(backlogRoot, 'docs', 'system.md'), '# architecture\n', 'utf8');
+
+    const context = await runtime.createContext('init', cwd);
+
+    const output = await INIT_COMMAND.execute({ path: './backlog' }, context);
+
+    assert.equal(output.path, backlogRoot);
+    assert.equal(await readFile(path.join(backlogRoot, 'notes.md'), 'utf8'), '# temp\n');
+    assert.equal(
+      await readFile(path.join(backlogRoot, 'docs', 'system.md'), 'utf8'),
+      '# architecture\n',
+    );
+    RootMarkerFileSchema.parse(
+      JSON.parse(await readFile(path.join(backlogRoot, '.backlog.json'), 'utf8')) as unknown,
+    );
+  } finally {
+    await rm(cwd, { recursive: true, force: true });
+  }
+});
+
+void test('init command fails when target directory already contains conflicting managed entries', async () => {
+  const cwd = await createTempDir();
+  const runtime = createRuntime();
+  const backlogRoot = path.join(cwd, 'backlog');
+
+  try {
+    await mkdir(path.join(backlogRoot, 'packets'), { recursive: true });
     await writeFile(path.join(backlogRoot, 'notes.md'), '# temp\n', 'utf8');
 
     const context = await runtime.createContext('init', cwd);
@@ -283,7 +312,11 @@ void test('init command fails on non-empty directory without backlog marker', as
       async () => {
         await INIT_COMMAND.execute({ path: './backlog' }, context);
       },
-      (error: unknown) => error instanceof BacklogError && error.code === 'BE_ROOT_NOT_EMPTY',
+      (error: unknown) =>
+        error instanceof BacklogError &&
+        error.code === 'BE_ROOT_NOT_EMPTY' &&
+        Array.isArray(error.details?.conflicting_entries) &&
+        error.details.conflicting_entries.includes('packets'),
     );
   } finally {
     await rm(cwd, { recursive: true, force: true });

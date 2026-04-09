@@ -72,7 +72,8 @@ export const ERROR_DEFAULT_MESSAGES = {
   BE_USAGE_INVALID: 'Command arguments are invalid.',
   BE_ROOT_NOT_FOUND: 'Backlog root was not found.',
   BE_ROOT_ALREADY_EXISTS: 'Backlog root already exists.',
-  BE_ROOT_NOT_EMPTY: 'Cannot initialize backlog in a non-empty directory.',
+  BE_ROOT_NOT_EMPTY:
+    'Cannot initialize backlog because the target directory contains entries that conflict with backlog-managed artifacts.',
   BE_INVALID_JSON: 'Input JSON is invalid.',
   BE_SCHEMA_INVALID: 'Input does not match the required schema.',
   BE_INPUT_FILE_NOT_FOUND: 'Input file was not found.',

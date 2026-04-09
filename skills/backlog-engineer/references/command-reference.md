@@ -50,6 +50,15 @@ Behavior notes:
 - machine-facing filesystem paths in command output are absolute;
 - `init` creates or updates a managed `.gitignore` section that ignores `/.backlog/mutation.lock`;
 - if the target directory already contains a single regular `.gitignore`, `init` preserves its existing content and appends or refreshes the managed section instead of overwriting the file.
+- `init` may be used in a non-empty directory as long as existing files and subdirectories do not conflict with backlog-managed artifact paths;
+- conflicting reserved paths are:
+  - `.backlog.json`
+  - `.backlog/`
+  - `AGENTS.md`
+  - `packets/`
+  - `patches/`
+  - `reports/`
+- if such a conflict exists, expect `BE_ROOT_NOT_EMPTY` with conflict details and a hint that unrelated existing files are allowed.
 - if file-backed execution cannot provide safe anchored directory handling for managed artifact writes, `init` fails with `BE_PLATFORM_UNSUPPORTED`.
 
 Cross-skill note:

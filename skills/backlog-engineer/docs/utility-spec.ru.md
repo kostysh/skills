@@ -1229,25 +1229,43 @@ Dry-run не должен:
 
 1. Нормализовать `--path`.
 2. Проверить, что целевая директория не содержит существующий backlog root.
-3. Если директория существует и не пуста, но backlog root нет, вернуть ошибку, кроме special-case: разрешён один preexisting regular `.gitignore`.
-4. Создать layout backlog root.
-5. Создать root marker.
-6. Создать initial `state.json`.
-7. Создать initial `sources.json`.
-8. Создать initial `applied.json`.
-9. Сгенерировать `AGENTS.md` из шаблона.
-10. Создать или обновить backlog-local `.gitignore`, сохранив существующее содержимое и гарантировав managed section для `/.backlog/mutation.lock`.
-11. Вернуть пути созданных артефактов.
+3. Если директория уже существует и не пуста, разрешить preexisting content, который не конфликтует с backlog-managed artifact paths.
+4. Conflict считается буквальным пересечением с reserved backlog artifact names:
+   - `.backlog.json`
+   - `.backlog/`
+   - `AGENTS.md`
+   - `packets/`
+   - `patches/`
+   - `reports/`
+5. Regular preexisting `.gitignore` разрешён и должен быть сохранён с добавлением или обновлением managed section для `/.backlog/mutation.lock`.
+6. Если target path не является обычной директорией, вернуть понятную ошибку.
+7. Создать layout backlog root.
+8. Создать root marker.
+9. Создать initial `state.json`.
+10. Создать initial `sources.json`.
+11. Создать initial `applied.json`.
+12. Сгенерировать `AGENTS.md` из шаблона.
+13. Создать или обновить backlog-local `.gitignore`, сохранив существующее содержимое и гарантировав managed section для `/.backlog/mutation.lock`.
+14. Вернуть пути созданных артефактов.
 
 ### Errors
 
 - `BE_ROOT_ALREADY_EXISTS`
 - `BE_ROOT_NOT_EMPTY`
 
+Для `BE_ROOT_NOT_EMPTY` error payload должен помогать агенту объяснить проблему оператору:
+
+- `details.path`
+- `details.conflicting_entries`, если конфликтуют reserved backlog artifact names
+- `details.conflicting_paths`, если конфликтуют reserved backlog artifact paths
+- `hint`, который говорит, что можно оставить unrelated existing files and subdirectories, но нужно убрать или переименовать только конфликтующие backlog-managed paths
+
 ### Unit-test focus
 
 - создание пустого layout;
 - повторный `init`;
+- разрешённый init в непустой директории с unrelated preexisting files;
+- отказ на conflicting managed entry inside non-empty target directory;
 - корректность `AGENTS.md`;
 - корректность backlog-local `.gitignore`;
 - корректность initial `state.json`.

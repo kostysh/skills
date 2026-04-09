@@ -874,10 +874,36 @@ void test('init creates backlog root and returns normalized output paths', async
   }
 });
 
-void test('init fails on non-empty directory without backlog marker', async () => {
+void test('init allows unrelated preexisting files in target directory', async () => {
   const tempRoot = await createTempDir();
   const backlogRoot = path.join(tempRoot, 'backlog');
   await mkdir(backlogRoot, { recursive: true });
+  await writeFile(path.join(backlogRoot, 'README.md'), '# notes\n', 'utf8');
+  await mkdir(path.join(backlogRoot, 'docs'), { recursive: true });
+  await writeFile(path.join(backlogRoot, 'docs', 'system.md'), '# architecture\n', 'utf8');
+
+  try {
+    const result = runBuiltCli(['init', '--path', backlogRoot]);
+
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+
+    const parsed = InitCommandOutputSchema.parse(parseStdoutJson(result));
+    assert.equal(parsed.path, backlogRoot);
+    assert.equal(await readFile(path.join(backlogRoot, 'README.md'), 'utf8'), '# notes\n');
+    assert.equal(
+      await readFile(path.join(backlogRoot, 'docs', 'system.md'), 'utf8'),
+      '# architecture\n',
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('init fails when target directory contains conflicting managed entries', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  await mkdir(path.join(backlogRoot, 'reports'), { recursive: true });
   await writeFile(path.join(backlogRoot, 'README.md'), '# notes\n', 'utf8');
 
   try {
@@ -888,6 +914,11 @@ void test('init fails on non-empty directory without backlog marker', async () =
 
     const parsed = ErrorPayloadSchema.parse(parseStderrJson(result));
     assert.equal(parsed.error.code, 'BE_ROOT_NOT_EMPTY');
+    assert.deepEqual(parsed.error.details?.conflicting_entries, ['reports']);
+    assert.match(
+      parsed.error.hint ?? '',
+      /remove\/rename only the conflicting backlog-managed artifact paths/u,
+    );
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

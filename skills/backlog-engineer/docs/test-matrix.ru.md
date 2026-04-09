@@ -450,9 +450,10 @@
 - writes backlog-local `.gitignore`
 - writes backlog `AGENTS.md`
 - merges managed section into a preexisting regular `.gitignore`
+- allows unrelated preexisting files and subdirectories in target directory
 - fails with `BE_PLATFORM_UNSUPPORTED` when safe anchored directory handling is unavailable for file-backed artifact writes
 - fails on existing backlog root
-- fails on non-empty directory without backlog marker
+- fails when target directory already contains conflicting managed artifact paths
 
 ## 11.2. `register-source`
 
