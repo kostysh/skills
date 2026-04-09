@@ -31,10 +31,13 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [implementation-log-4.ru.md](implementation-log-4.ru.md) | Incremental log for backlog-side harmonization work. This document is written in Russian. | Read when you need the package-by-package record for stage-2 backlog-engineer alignment. |
 | [implementation-log-5.ru.md](implementation-log-5.ru.md) | Incremental log for the narrow cross-skill UX corrective pass after the first end-to-end harmonized audit. This document is written in Russian. | Read when you need the record of literal wording and handoff/closure contract fixes after the cross-skill UX audit. |
 | [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md) | Process-hardening plan for `dossier-engineer`: audit management, implementation logging contract, metrics, and stronger `spec-compact` / `plan-slice` process rules. This document is written in Russian. | Read when planning how to carry implementation discipline and real-usage lessons into future projects. |
+| [implementation-log-6.ru.md](implementation-log-6.ru.md) | Incremental log for the process-hardening implementation cycle that moves audit and logging discipline into the canonical skill contract. This document is written in Russian. | Read when you need the package-by-package record for the process-hardening cycle. |
 
 ## Related Materials
 
 - [../references/WORKFLOW.md](../references/WORKFLOW.md) explains the end-to-end dossier workflow.
+- [../references/implementation-audit-policy.md](../references/implementation-audit-policy.md) defines the external audit stack for implementation work.
+- [../references/implementation-logging.md](../references/implementation-logging.md) defines the implementation logging contract and metrics.
 - [../references/DOSSIER_TEMPLATE.md](../references/DOSSIER_TEMPLATE.md) provides the canonical Feature Dossier template.
 - [../references/SSOT_INDEX_TEMPLATE.md](../references/SSOT_INDEX_TEMPLATE.md) provides the global index template.
 - [../references/EXAMPLE_FEATURE_DOSSIER.md](../references/EXAMPLE_FEATURE_DOSSIER.md) shows a worked dossier example.
@@ -105,9 +108,12 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 
 1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
 2. [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md)
-3. [AGENTS.md](AGENTS.md)
-4. [../SKILL.md](../SKILL.md)
-5. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+3. [implementation-log-6.ru.md](implementation-log-6.ru.md)
+4. [../references/implementation-audit-policy.md](../references/implementation-audit-policy.md)
+5. [../references/implementation-logging.md](../references/implementation-logging.md)
+6. [AGENTS.md](AGENTS.md)
+7. [../SKILL.md](../SKILL.md)
+8. [../references/WORKFLOW.md](../references/WORKFLOW.md)
 
 ## Scope of This Folder
 

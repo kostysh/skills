@@ -119,16 +119,18 @@ Important:
 
 Before a mutating step can be considered complete:
 
-1. Run the step’s local checks.
-2. Perform explicit debt review of the changed scope.
-3. Run `node scripts/dossier.mjs debt-audit --changed-only`.
-4. Re-check dependencies and adjacent seams.
-5. Resolve or explicitly record every debt item in a canonical artifact.
-6. Run `node scripts/dossier.mjs dossier-verify --dossier <path> ...` for one-dossier close-out. Use `--changed-only` only for repo-scope verification of the current change set.
-7. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode.
-8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`; this command records an already obtained independent review result and does not perform the review itself.
-9. If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.
-10. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
+1. For multi-step or package-based work, open or update the implementation log before the first mutating edit. Use [implementation-logging.md](implementation-logging.md).
+2. Run the step’s local checks.
+3. Perform explicit debt review of the changed scope.
+4. Run `node scripts/dossier.mjs debt-audit --changed-only`.
+5. Re-check dependencies and adjacent seams.
+6. Resolve or explicitly record every debt item in a canonical artifact.
+7. Run `node scripts/dossier.mjs dossier-verify --dossier <path> ...` for one-dossier close-out. Use `--changed-only` only for repo-scope verification of the current change set.
+8. Run `spec-conformance` review first. Then run `code` and `security` only when the changed scope still requires them. Use [implementation-audit-policy.md](implementation-audit-policy.md) for the audit brief, review order, and classifier-based re-audit rules.
+9. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode.
+10. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`; this command records an already obtained independent review result and does not perform the review itself.
+11. If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.
+12. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
 
 Notes:
 

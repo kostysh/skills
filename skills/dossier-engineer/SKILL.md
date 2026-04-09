@@ -500,28 +500,35 @@ Stage exit checklist:
 
 Implement the planned feature while keeping dossier, architecture, overlays, and delivered substrate aligned.
 
+Use these references together with this stage:
+
+- [Implementation audit policy](references/implementation-audit-policy.md)
+- [Implementation logging](references/implementation-logging.md)
+
 Steps:
 
-1. Start from `docs/ssot/index.md`, then open the target dossier, dependent dossiers, relevant architecture sections, repo `AGENTS.md`, and repo ADRs.
-2. Deliver on the canonical stack, runtime, and deployment path from the first executable change.
-3. Build verification alongside implementation.
-4. When implementation reveals a missing prerequisite seam or cross-cutting invariant, externalize it immediately.
-5. Update the target dossier in the same workstream:
+1. For multi-step or package-based work, open or update the implementation log before the first mutating edit.
+2. Start from `docs/ssot/index.md`, then open the target dossier, dependent dossiers, relevant architecture sections, repo `AGENTS.md`, and repo ADRs.
+3. Deliver on the canonical stack, runtime, and deployment path from the first executable change.
+4. Build verification alongside implementation.
+5. When implementation reveals a missing prerequisite seam or cross-cutting invariant, externalize it immediately.
+6. Update the target dossier in the same workstream:
    - progress and links
    - coverage map
    - change log when behavior or assumptions changed
    - `coverage_gate: strict` when executable coverage must now block closure
-6. Run project checks plus `node scripts/dossier.mjs dossier-verify ...`.
-7. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
-8. During implementation review, run two nested review passes in addition to completeness review:
+7. Run project checks plus `node scripts/dossier.mjs dossier-verify ...`.
+8. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
+9. Run `spec-conformance` review first against the dossier, overlays, approved changes, and relevant contracts. Use the audit brief and reround rules from [Implementation audit policy](references/implementation-audit-policy.md).
+10. If the changed scope includes executable code, runtime wiring, or trust-boundary changes, run two nested review passes after `spec-conformance` passes:
    - `code-reviewer` for correctness, maintainability, contracts, lifecycle, and merge-risk findings;
    - `security-reviewer` for auth/authz, trust boundaries, input handling, secret exposure, and exploitability findings.
    These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
-9. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
-10. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
-11. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
+11. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+12. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
+13. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
     The implementation stage is not complete until this required backlog actualization is done.
-12. Close the step with `dossier-step-close` only after the required backlog actualization is done.
+14. Close the step with `dossier-step-close` only after the required backlog actualization is done.
 
 Required adversarial checklist for side-effecting code:
 
@@ -535,12 +542,15 @@ Required adversarial checklist for side-effecting code:
 
 Stage exit checklist:
 
+- [ ] For multi-step or package-based work, the implementation log was opened before the first mutating edit and kept current through close-out.
 - [ ] Code changes follow the canonical stack, runtime, deployment path, and repo overlays.
 - [ ] Delivered behavior maps back to slices/ACs or to an explicit approved change.
 - [ ] Completeness review passed: the implementation fully covers the intended slices/ACs/approved changes, with no silent stubs, placeholders, scope cuts, or undocumented “later” deferrals.
-- [ ] Code review passed via `code-reviewer`: correctness, maintainability, typing/contracts, error handling, state/resource lifecycle, and boundary handling are sound for the changed scope.
-- [ ] Security review passed via `security-reviewer`: auth/authz, input validation, injection, secret handling, logging/redaction, trust boundaries, and data exposure risks were checked for the changed scope.
+- [ ] `spec-conformance` review passed against the dossier, overlays, approved changes, and relevant contracts for the changed scope.
+- [ ] If the changed scope includes executable code, runtime wiring, or trust-boundary changes, code review passed via `code-reviewer`: correctness, maintainability, typing/contracts, error handling, state/resource lifecycle, and boundary handling are sound for the changed scope.
+- [ ] If the changed scope includes executable code, runtime wiring, or trust-boundary changes, security review passed via `security-reviewer`: auth/authz, input validation, injection, secret handling, logging/redaction, trust boundaries, and data exposure risks were checked for the changed scope.
 - [ ] Findings from the nested `code-reviewer` and `security-reviewer` passes were explicitly reported by the reviewer, even though no separate nested review artifacts were created.
+- [ ] Follow-up fixes were re-audited according to the classifier-based narrow re-audit rules from [Implementation audit policy](references/implementation-audit-policy.md).
 - [ ] Verification was added alongside code: AC-linked tests plus smoke/startup/container checks when relevant.
 - [ ] Newly discovered prerequisites or cross-cutting invariants were externalized promptly.
 - [ ] The target dossier was updated in the same workstream.

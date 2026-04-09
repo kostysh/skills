@@ -9,6 +9,16 @@ const SKILL_DIR = path.resolve(TEST_DIR, '..');
 
 const SKILL_PATH = path.join(SKILL_DIR, 'SKILL.md');
 const WORKFLOW_PATH = path.join(SKILL_DIR, 'references', 'WORKFLOW.md');
+const IMPLEMENTATION_AUDIT_POLICY_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'implementation-audit-policy.md',
+);
+const IMPLEMENTATION_LOGGING_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'implementation-logging.md',
+);
 const PROCESS_MODEL_PATH = path.join(SKILL_DIR, 'docs', 'cross-skill-process-model.ru.md');
 const BACKLOG_GAP_ANALYSIS_PATH = path.join(
   SKILL_DIR,
@@ -131,5 +141,47 @@ void test('historical backlog gap analysis is marked non-normative after stage 2
     'gaps уже закрыты',
     'текущий нормативный источник',
     'Новые harmonization gaps должны фиксироваться уже в новом документе',
+  ]);
+});
+
+void test('implementation stage points to audit and logging refs with explicit spec-first audit semantics', async () => {
+  const [skill, workflow, auditPolicy, loggingPolicy] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(IMPLEMENTATION_AUDIT_POLICY_PATH, 'utf8'),
+    readFile(IMPLEMENTATION_LOGGING_PATH, 'utf8'),
+  ]);
+
+  const implementation = extractSection(skill, '#### Workflow stage: `implementation`');
+  const debtPolicy = extractSection(workflow, '## No-technical-debt policy');
+
+  assertContainsTerms(implementation, [
+    '[Implementation audit policy](references/implementation-audit-policy.md)',
+    '[Implementation logging](references/implementation-logging.md)',
+    'Run `spec-conformance` review first',
+    'For multi-step or package-based work, open or update the implementation log before the first mutating edit.',
+  ]);
+  assertContainsTerms(debtPolicy, [
+    '[implementation-logging.md](implementation-logging.md)',
+    '[implementation-audit-policy.md](implementation-audit-policy.md)',
+    'Run `spec-conformance` review first.',
+  ]);
+  assertContainsTerms(auditPolicy, [
+    '## Review brief template',
+    'spec-conformance-reviewer',
+    'code-reviewer',
+    'security-reviewer',
+    '## Follow-up re-audit classifier',
+    'Normative/process/docs contract changes',
+  ]);
+  assertContainsTerms(loggingPolicy, [
+    '## Mandatory metadata block',
+    'session_id',
+    '## Review event log',
+    '## Process misses',
+    '## Metrics to capture',
+    'Spec gap decisions',
+    'Implementation freedom decisions',
+    'Temporary assumptions',
   ]);
 });
