@@ -30,6 +30,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md) | Stage-2 harmonization plan for `backlog-engineer`: explicit backlog→dossier handoff, backlog status actualization after dossier steps, dossier-supporting evidence rules, and cross-skill doc/spec alignment. This document is written in Russian. | Read when moving from dossier-side harmonization to backlog-side cross-skill alignment work. |
 | [implementation-log-4.ru.md](implementation-log-4.ru.md) | Incremental log for backlog-side harmonization work. This document is written in Russian. | Read when you need the package-by-package record for stage-2 backlog-engineer alignment. |
 | [implementation-log-5.ru.md](implementation-log-5.ru.md) | Incremental log for the narrow cross-skill UX corrective pass after the first end-to-end harmonized audit. This document is written in Russian. | Read when you need the record of literal wording and handoff/closure contract fixes after the cross-skill UX audit. |
+| [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md) | Process-hardening plan for `dossier-engineer`: audit management, implementation logging contract, metrics, and stronger `spec-compact` / `plan-slice` process rules. This document is written in Russian. | Read when planning how to carry implementation discipline and real-usage lessons into future projects. |
 
 ## Related Materials
 
@@ -99,6 +100,14 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 4. [../references/WORKFLOW.md](../references/WORKFLOW.md)
 5. [../../backlog-engineer/SKILL.md](../../backlog-engineer/SKILL.md)
 6. [../../backlog-engineer/references/operator-workflows.md](../../backlog-engineer/references/operator-workflows.md)
+
+### If you are hardening the future implementation process
+
+1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
+2. [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md)
+3. [AGENTS.md](AGENTS.md)
+4. [../SKILL.md](../SKILL.md)
+5. [../references/WORKFLOW.md](../references/WORKFLOW.md)
 
 ## Scope of This Folder
 

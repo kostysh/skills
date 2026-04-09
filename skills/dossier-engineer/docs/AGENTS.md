@@ -151,12 +151,19 @@ Review in this order:
 When an audit returns findings:
 
 - if fixing the findings would require going beyond the current specification/process model, report that to the operator, ask for the decision, then stop and wait;
-- if the findings can be fixed immediately within the current specification/process model, fix them and re-run the audit on the narrow follow-up scope only;
+- if the findings can be fixed immediately within the current specification/process model, fix them and re-run only the audits that are still relevant to the narrow follow-up scope;
 - continue this fix -> narrow re-audit cycle until the relevant audit returns PASS.
 
-If follow-up fixes introduce changes that could conflict with the specification/process model, run a narrow spec/process conformance re-audit on those follow-up changes.
+Choose follow-up re-audits by change classifier, not by one coarse rule:
 
-If follow-up fixes only adjust tests, typing, or non-normative internals without changing process/spec alignment, do not rerun spec/process review.
+- `normative/process/docs contract changes`
+  - run narrow spec/process conformance review
+- `runtime/code/trust-boundary changes`
+  - run narrow code review and narrow security review, and also rerun narrow spec/process review if the follow-up could affect the normative contract
+- `tests/typing/non-normative internal changes`
+  - rerun only the audits still relevant to those changes; do not rerun spec/process review automatically
+- `docs polish with no normative impact`
+  - no automatic external re-audit unless the change touches a normative/process surface
 
 ## Logging rules
 
