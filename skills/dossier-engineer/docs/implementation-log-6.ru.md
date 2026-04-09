@@ -14,13 +14,13 @@ change_kind:
 normative_sources:
   - docs/cross-skill-process-model.ru.md
   - SKILL.md
-  - references/WORKFLOW.md
+  - references/workflow.md
   - docs/refactoring-plan-5.ru.md
 start_ts: 2026-04-09T02:27:01+02:00
 ready_for_review_ts: 2026-04-09T02:30:45+02:00
 final_pass_ts: 2026-04-09T02:36:42+02:00
 commit_ts: 2026-04-09T02:37:04+02:00
-session_id: unavailable-in-runtime-context
+session_id: 019d3d53-b9a0-7811-974f-27688bba0eb7
 review_policy:
   spec: required
   code: skipped
@@ -42,7 +42,7 @@ log_quality:
 - move audit-management rules into skill-owned references
 - move implementation logging contract into skill-owned references
 - keep `SKILL.md` compact and link the new references from `Workflow stage: implementation`
-- sync `WORKFLOW.md`, docs index, and narrow docs-contract coverage
+- sync `workflow.md`, docs index, and narrow docs-contract coverage
 
 ## Decisions / assumptions beyond the current model
 
@@ -56,7 +56,7 @@ log_quality:
 
 ### Temporary assumptions
 
-- `session_id` is not exposed by the current runtime context of this session, so the live log records `unavailable-in-runtime-context` instead of a real identifier.
+- None yet.
 
 ## Review events
 
@@ -95,13 +95,13 @@ change_kind:
 normative_sources:
   - docs/cross-skill-process-model.ru.md
   - SKILL.md
-  - references/WORKFLOW.md
+  - references/workflow.md
   - docs/refactoring-plan-5.ru.md
 start_ts: 2026-04-09T02:37:32+02:00
 ready_for_review_ts: 2026-04-09T02:39:54+02:00
 final_pass_ts: 2026-04-09T02:42:14+02:00
 commit_ts: 2026-04-09T02:42:32+02:00
-session_id: unavailable-in-runtime-context
+session_id: 019d3d53-b9a0-7811-974f-27688bba0eb7
 review_policy:
   spec: required
   code: skipped
@@ -123,7 +123,7 @@ log_quality:
 - harden `Workflow stage: spec-compact`
 - harden `Workflow stage: plan-slice`
 - create a skill-owned reference for spec/plan risk patterns
-- sync `WORKFLOW.md`, docs index, and narrow docs-contract coverage
+- sync `workflow.md`, docs index, and narrow docs-contract coverage
 
 ## Decisions / assumptions beyond the current model
 

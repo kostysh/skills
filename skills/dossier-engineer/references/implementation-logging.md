@@ -43,7 +43,7 @@ change_kind:
 normative_sources:
   - docs/cross-skill-process-model.ru.md
   - SKILL.md
-  - references/WORKFLOW.md
+  - references/workflow.md
   - docs/refactoring-plan-5.ru.md
 session_id: 019d...
 start_ts: 2026-04-09T02:27:01+02:00
@@ -69,12 +69,18 @@ log_quality:
 
 Record the session id when the runtime exposes it.
 
-If the session id is not available in the current environment, say so explicitly instead of inventing a value.
+In the current Codex runtime, use `CODEX_THREAD_ID` when it is present. In practice this value matches the active rollout/session id used in `$CODEX_HOME/sessions/.../rollout-...-<id>.jsonl`.
 
-Example:
+If no reliable runtime signal exists, omit `session_id` instead of inventing a placeholder string.
+
+Examples:
 
 ```yaml
-session_id: unavailable-in-runtime-context
+session_id: 019d3d53-b9a0-7811-974f-27688bba0eb7
+```
+
+```yaml
+# session_id omitted because the runtime did not expose a reliable value
 ```
 
 ## Required narrative sections
