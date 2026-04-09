@@ -342,6 +342,7 @@ Bootstrap the dossier protocol in a repository that already has architecture.
 Operational summary:
 
 - [Workflow guide: repository bootstrap](references/workflow.md#workflow-stage-repository-bootstrap-init)
+- [Detailed stage steps](references/workflow-stage-init.md)
 
 Minimal requirement:
 
@@ -355,17 +356,7 @@ Determinism policy:
 
 Steps:
 
-1. Check for `docs/architecture/system.md`.
-2. If missing, search for plausible repo-level architecture docs under `docs/`.
-3. If no architecture exists, stop without partial bootstrap.
-4. If exactly one clear candidate exists, move or rename it to `docs/architecture/system.md`.
-5. Ensure `docs/features/` and `.dossier/` directories exist.
-6. If the repository chooses embedded dossier automation, provision repo-local scripts or wrappers when safe and report exactly which commands and paths were created.
-   The shipped skill runtime itself remains `node scripts/dossier.mjs <command>` inside this skill package; do not imply that bootstrap automatically creates a repo-local `scripts/dossier.mjs` unless the bootstrap report explicitly says it did.
-7. Create or normalize `docs/ssot/index.md`.
-8. Create or update repo-root `AGENTS.md` as an overlay-only file.
-9. Re-read architecture and surface day-1 implementation invariants that future modes must preserve.
-10. Report created, moved, renamed, normalized, and untouched artifacts separately.
+- See [workflow-stage-init.md](references/workflow-stage-init.md).
 
 Stage exit checklist:
 
@@ -384,6 +375,7 @@ Turn the existing dossier into a compact spec that is specific enough to impleme
 Use this reference when the feature has meaningful operator/agent/machine-facing or safety-sensitive surface:
 
 - [Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)
+- [Detailed stage steps](references/workflow-stage-spec-compact.md)
 
 Trigger summary:
 
@@ -395,49 +387,7 @@ Trigger summary:
 
 Steps:
 
-1. Re-read repo overlays from `AGENTS.md` and relevant repo ADRs.
-2. Map the user-visible and boundary-facing behavior before editing the spec:
-   - list each user-visible or boundary operation;
-   - for each operation, note success behavior plus invalid input, dependency failure/timeout, and duplicate/retry behavior when relevant.
-3. Refine ACs into **atomic, observable, behavior-first** statements.
-   - one AC = one obligation;
-   - if one sentence contains multiple independent outcomes, split it;
-   - make triggers, guards, or preconditions explicit when they matter.
-4. Add a mini `Terms & thresholds` block only when triggered.
-   Trigger it when the feature introduces new domain terms, roles, states, statuses, or time/size limits that a reader could interpret in more than one way.
-   Keep it to 3–5 bullets max.
-5. When the feature has operator-facing, agent-facing, or machine-facing behavior, make the operator/agent contract explicit where it materially affects implementation or later usage.
-   Capture what is relevant: first-run flow, ambiguity policy, path/root semantics, machine-facing output fields, error interpretation rules, and cross-tool or cross-skill handoff notes.
-6. Separate three things explicitly:
-   - `Constraints` = mandatory solution bounds;
-   - `Assumptions` = expected substrate or external behavior;
-   - `Open questions` = unresolved items with an owner/date, a `needed_by` marker (`before_planned`, `before_implementation`, or `before_done`), and an explicit next decision path.
-7. When the feature touches trust boundaries or failure-prone surfaces, add the relevant safety and boundary semantics: ownership, symlink policy, rollback vs partial success, concurrency or mutation ordering, stale-state handling, and provenance requirements.
-8. Add compact design with trigger-based representations:
-   - If the feature adds or changes boundary I/O, include either an inline contract sketch or a link to the canonical schema/OpenAPI/protocol.
-     Add the error model, and add retry/idempotency or duplicate-delivery semantics when the operation can be repeated.
-   - runtime and deployment surface when relevant;
-   - data model changes, invariants, and migration notes when relevant;
-   - edge cases and failure modes;
-   - verification surface as an **initial verification plan** that names the proof type for each AC or AC group;
-   - representation upgrades only when triggered:
-     - If a rule has 2+ independent conditions, add a decision table or decision list.
-     - If the feature has named states, transitions, or guards, add a state list or compact state table.
-     - If a DTO/event/request/response crosses a boundary, add a schema/contract pointer or compact structure block.
-9. Keep NFRs compact and normative only.
-   - include only NFRs that can materially change implementation, verification, or feature closure;
-   - every normative NFR needs a metric, budget/threshold, or explicit observable signal.
-10. Classify unresolved implementation-shaping decisions explicitly as `normative now`, `implementation freedom`, or `temporary assumption` instead of leaving them all in one undifferentiated bucket.
-11. Add Definition of Done, an initial coverage plan, and a compact rollout / activation note when activation order matters.
-12. Run a one-minute quick wording pass (`smell pass`):
-   - remove vague words such as `etc.`, `usually`, `as appropriate`, `fast`, or `user-friendly`;
-   - split compound ACs;
-   - do not leave raw `TBD`; convert it into an `Open question` with owner/date or next decision path.
-13. If an architectural fork exists, run `adr-log`.
-14. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
-15. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
-16. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
-17. Before moving to planning, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = specified`, or when shaping exposed new blockers, dependencies, or context facts.
+- See [workflow-stage-spec-compact.md](references/workflow-stage-spec-compact.md).
 
 Stage exit checklist:
 
@@ -475,6 +425,7 @@ Add an incremental slicing plan inside the dossier.
 Use this reference when the feature needs explicit contract-risk planning or post-implementation usage validation:
 
 - [Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)
+- [Detailed stage steps](references/workflow-stage-plan-slice.md)
 
 Trigger summary:
 
@@ -487,30 +438,7 @@ Trigger summary:
 
 Steps:
 
-1. Re-read repo overlays that constrain planning, then re-check open questions, assumptions, dependencies, and the latest change log.
-2. Do not move to `planned` while any unresolved `Open question` is marked `needed_by: before_planned`. Resolve it or explicitly reclassify it first.
-3. Identify the contract risks that must be killed before close-out. At minimum consider first-run behavior, machine-facing outputs, help/discoverability, path/root semantics, cross-skill handoff, docs/runtime parity, and operator ambiguity points when they are relevant.
-4. Create 2–6 slices in delivery order.
-   - order them prerequisite-first and risk-first, not just by happy path;
-   - ensure at least one early slice proves the highest-risk boundary behavior, rollout path, or expensive assumption instead of only laying groundwork.
-5. Keep each slice reviewable and provable as one coherent increment.
-   - if a slice cannot be verified and reviewed in one bundle, split it.
-6. For each slice, state the deliverable, which AC IDs it covers, and the verification artifact(s) that prove it.
-7. When a slice depends on another dossier, external team, or shared subsystem, add `Depends on:` with owner and unblock condition.
-8. When a slice relies on a high-risk assumption, add `Assumes:` and `Fallback:` notes.
-9. If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note with activation order and rollback limits.
-10. If a slice touches a shared runtime, contract, migration path, or other cross-cutting surface, name the approval or decision path (repo ADR, architecture update, owner approval, or linked follow-up).
-11. Plan drift-guard work when the feature spans multiple normative layers such as skill/process docs, utility spec, help output, and tests.
-12. When the feature has meaningful operator-facing, agent-facing, or machine-facing behavior, add a real usage audit after the main implementation flow and pre-classify expected corrective findings as `docs-only`, `runtime`, `schema/help`, `cross-skill`, or `audit-only`.
-13. For each slice, list tasks that reference AC IDs or Slice IDs only.
-14. If the feature requires realignment of delivered work, make that realignment explicit as a slice or linked task.
-15. Treat slices and tasks as forecast. Commitment remains in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints unless repo overlays say otherwise.
-16. Set dossier `status: planned`.
-17. Set or confirm `coverage_gate` explicitly.
-   - Default: `deferred`
-   - Tighten to `strict` only when the repo overlay requires it or planning is intentionally treated as a blocking verification gate.
-18. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
-    The planning stage is not complete until this required backlog actualization is done.
+- See [workflow-stage-plan-slice.md](references/workflow-stage-plan-slice.md).
 
 Stage exit checklist:
 
@@ -542,32 +470,11 @@ Use these references together with this stage:
 - [Implementation audit policy](references/implementation-audit-policy.md)
 - [Implementation logging](references/implementation-logging.md)
 - [Workflow guide](references/workflow.md#no-technical-debt-policy)
+- [Detailed stage steps](references/workflow-stage-implementation.md)
 
 Steps:
 
-1. For multi-step or package-based work, open or update the implementation log before the first mutating edit.
-2. Start from `docs/ssot/index.md`, then open the target dossier, dependent dossiers, relevant architecture sections, repo `AGENTS.md`, and repo ADRs.
-3. Deliver on the canonical stack, runtime, and deployment path from the first executable change.
-4. Build verification alongside implementation.
-5. When implementation reveals a missing prerequisite seam or cross-cutting invariant, externalize it immediately.
-6. Update the target dossier in the same workstream:
-   - progress and links
-   - coverage map
-   - change log when behavior or assumptions changed
-   - `coverage_gate: strict` when executable coverage must now block closure
-7. Apply the [No-technical-debt policy](references/workflow.md#no-technical-debt-policy) before moving to verification and close-out.
-8. Run project checks plus `node scripts/dossier.mjs dossier-verify ...`.
-9. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
-10. Run `spec-conformance` review first against the dossier, overlays, approved changes, and relevant contracts. Use the audit brief and reround rules from [Implementation audit policy](references/implementation-audit-policy.md).
-11. If the changed scope includes executable code, runtime wiring, or trust-boundary changes, run two nested review passes after `spec-conformance` passes:
-   - `code-reviewer` for correctness, maintainability, contracts, lifecycle, and merge-risk findings;
-   - `security-reviewer` for auth/authz, trust boundaries, input handling, secret exposure, and exploitability findings.
-   These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
-12. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
-13. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
-14. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
-    The implementation stage is not complete until this required backlog actualization is done.
-15. Close the step with `dossier-step-close` only after the required backlog actualization is done.
+- See [workflow-stage-implementation.md](references/workflow-stage-implementation.md).
 
 Required adversarial checklist for side-effecting code:
 
@@ -623,11 +530,7 @@ Validate and visualize dependencies.
 
 Steps:
 
-1. Read `depends_on` and `impacts` from dossier frontmatter.
-2. Validate that all referenced `F-*` dossiers exist.
-3. Generate a Mermaid graph via `node scripts/dossier.mjs dependency-graph`.
-4. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path.
-   Use `sync-index` only when you intentionally want table/graph refresh without a Red flags update.
+- [Detailed stage steps](references/workflow-stage-dependency-check.md)
 
 Stage exit checklist:
 
@@ -643,18 +546,7 @@ Apply requirement changes safely.
 
 Steps:
 
-1. Re-read repo overlays, architecture, and the current dossier maturity.
-2. Add a new change-log entry.
-   - When the change affects planning or execution sequencing, tag it as `[clarification]`, `[scope realignment]`, `[dependency realignment]`, `[risk discovery]`, or `[contract drift]`.
-3. Modify the AC list and every directly affected executable section.
-4. Update slices, tasks, coverage map references, DoD, dependency references, rollout notes, approval-path notes, and assumption/fallback notes.
-5. If the dossier is `planned`, `in_progress`, or `done`, or if executable sections changed, run `node scripts/dossier.mjs contract-drift-audit --dossier ...`.
-6. If drift audit says follow-up is required, make that follow-up explicit:
-   - same dossier slice/task;
-   - linked backlog item;
-   - ADR or architecture update.
-7. Run `lint-dossiers`, `coverage-audit`, marker audit, and `index-refresh` as the canonical full refresh path.
-8. Do not report the step as docs-only complete when executable follow-up is still required.
+- [Detailed stage steps](references/workflow-stage-change-proposal.md)
 
 Stage exit checklist:
 

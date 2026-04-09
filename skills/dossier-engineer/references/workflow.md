@@ -75,6 +75,15 @@ Requirement changes on mature work use:
 
 `change-proposal -> contract-drift-audit -> explicit follow-up decision`
 
+Detailed workflow-stage steps:
+
+- `init`: [workflow-stage-init.md](workflow-stage-init.md)
+- `spec-compact`: [workflow-stage-spec-compact.md](workflow-stage-spec-compact.md)
+- `plan-slice`: [workflow-stage-plan-slice.md](workflow-stage-plan-slice.md)
+- `implementation`: [workflow-stage-implementation.md](workflow-stage-implementation.md)
+- `dependency-check`: [workflow-stage-dependency-check.md](workflow-stage-dependency-check.md)
+- `change-proposal`: [workflow-stage-change-proposal.md](workflow-stage-change-proposal.md)
+
 ## Spec and planning risk hardening
 
 Use [spec-and-plan-risk-patterns.md](spec-and-plan-risk-patterns.md) when:

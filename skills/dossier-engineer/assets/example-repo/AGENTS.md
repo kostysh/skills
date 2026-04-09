@@ -22,7 +22,8 @@ This file contains repo-specific overlays only.
 4) If bootstrap preserved repo-specific script names or paths, rewrite these lines instead of forcing canonical filenames.
 
 ## Common commands
-Once the repository has been bootstrapped with repo-local dossier scripts:
+Use the repository's actual dossier command surface after bootstrap.
+If bootstrap created or preserved repo-local `scripts/dossier.mjs`, commands may look like this:
 - Format code: `<repo format command>`
 - Lint code: `<repo lint command>`
 - Run tests: `<repo test command>`

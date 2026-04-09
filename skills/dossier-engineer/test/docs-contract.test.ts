@@ -14,6 +14,32 @@ const IMPLEMENTATION_AUDIT_POLICY_PATH = path.join(
   'references',
   'implementation-audit-policy.md',
 );
+const WORKFLOW_STAGE_INIT_PATH = path.join(SKILL_DIR, 'references', 'workflow-stage-init.md');
+const WORKFLOW_STAGE_SPEC_COMPACT_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'workflow-stage-spec-compact.md',
+);
+const WORKFLOW_STAGE_PLAN_SLICE_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'workflow-stage-plan-slice.md',
+);
+const WORKFLOW_STAGE_IMPLEMENTATION_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'workflow-stage-implementation.md',
+);
+const WORKFLOW_STAGE_DEPENDENCY_CHECK_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'workflow-stage-dependency-check.md',
+);
+const WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'workflow-stage-change-proposal.md',
+);
 const IMPLEMENTATION_LOGGING_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -75,6 +101,11 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   const bootstrap = extractSection(workflow, '## Workflow stage: repository bootstrap (`init`)');
   const defaultFlow = extractSection(workflow, '## Default dossier flow');
   const initStage = extractSection(skill, '#### Workflow stage: `init`');
+  const specCompactStage = extractSection(skill, '#### Workflow stage: `spec-compact`');
+  const planSliceStage = extractSection(skill, '#### Workflow stage: `plan-slice`');
+  const implementationStage = extractSection(skill, '#### Workflow stage: `implementation`');
+  const dependencyCheckStage = extractSection(skill, '#### Workflow stage: `dependency-check`');
+  const changeProposalStage = extractSection(skill, '#### Workflow stage: `change-proposal`');
   const intakeCommand = extractSection(skill, '#### CLI command: `feature-intake`');
   const lintCommand = extractSection(skill, '#### CLI command: `lint-dossiers` (recommended)');
   const nextStepCommand = extractSection(skill, '#### CLI command: `next-step`');
@@ -113,6 +144,22 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   ]);
   assertContainsTerms(initStage, [
     '[Workflow guide: repository bootstrap](references/workflow.md#workflow-stage-repository-bootstrap-init)',
+    '[Detailed stage steps](references/workflow-stage-init.md)',
+  ]);
+  assertContainsTerms(specCompactStage, [
+    '[Detailed stage steps](references/workflow-stage-spec-compact.md)',
+  ]);
+  assertContainsTerms(planSliceStage, [
+    '[Detailed stage steps](references/workflow-stage-plan-slice.md)',
+  ]);
+  assertContainsTerms(implementationStage, [
+    '[Detailed stage steps](references/workflow-stage-implementation.md)',
+  ]);
+  assertContainsTerms(dependencyCheckStage, [
+    '[Detailed stage steps](references/workflow-stage-dependency-check.md)',
+  ]);
+  assertContainsTerms(changeProposalStage, [
+    '[Detailed stage steps](references/workflow-stage-change-proposal.md)',
   ]);
   assertContainsTerms(intakeCommand, [
     '[Workflow guide: feature-intake](references/workflow.md#cli-command-feature-intake)',
@@ -128,6 +175,10 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   ]);
   assertContainsTerms(defaultFlow, [
     '`spec-compact`, `plan-slice`, and `implementation` are workflow stages',
+    'Detailed workflow-stage steps:',
+    '`init`: [workflow-stage-init.md](workflow-stage-init.md)',
+    '`dependency-check`: [workflow-stage-dependency-check.md](workflow-stage-dependency-check.md)',
+    '`change-proposal`: [workflow-stage-change-proposal.md](workflow-stage-change-proposal.md)',
   ]);
 });
 
@@ -182,9 +233,10 @@ void test('historical backlog gap analysis is marked non-normative after stage 2
 });
 
 void test('implementation stage points to audit and logging refs with explicit spec-first audit semantics', async () => {
-  const [skill, workflow, auditPolicy, loggingPolicy] = await Promise.all([
+  const [skill, workflow, implementationSteps, auditPolicy, loggingPolicy] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
     readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
     readFile(IMPLEMENTATION_AUDIT_POLICY_PATH, 'utf8'),
     readFile(IMPLEMENTATION_LOGGING_PATH, 'utf8'),
   ]);
@@ -195,9 +247,14 @@ void test('implementation stage points to audit and logging refs with explicit s
   assertContainsTerms(implementation, [
     '[Implementation audit policy](references/implementation-audit-policy.md)',
     '[Implementation logging](references/implementation-logging.md)',
-    '[No-technical-debt policy](references/workflow.md#no-technical-debt-policy)',
+    '[Workflow guide](references/workflow.md#no-technical-debt-policy)',
+    '[Detailed stage steps](references/workflow-stage-implementation.md)',
+  ]);
+  assertContainsTerms(implementationSteps, [
+    'Apply the [No-technical-debt policy](workflow.md#no-technical-debt-policy)',
     'Run `spec-conformance` review first',
-    'For multi-step or package-based work, open or update the implementation log before the first mutating edit.',
+    'Persist only the independent reviewer verdict with `review-artifact`',
+    'Close the step with `dossier-step-close` only after the required backlog actualization is done.',
   ]);
   assertContainsTerms(debtPolicy, [
     'Apply this policy during `Workflow stage: implementation`',
@@ -242,9 +299,11 @@ void test('skill-wide review sections stay distinct from implementation-specific
 });
 
 void test('spec-compact and plan-slice point to risk patterns and literal risk-killing duties', async () => {
-  const [skill, workflow, riskPatterns] = await Promise.all([
+  const [skill, workflow, specCompactSteps, planSliceSteps, riskPatterns] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
     readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_SPEC_COMPACT_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_PLAN_SLICE_PATH, 'utf8'),
     readFile(SPEC_AND_PLAN_RISK_PATTERNS_PATH, 'utf8'),
   ]);
 
@@ -254,12 +313,18 @@ void test('spec-compact and plan-slice point to risk patterns and literal risk-k
 
   assertContainsTerms(specCompact, [
     '[Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)',
-    'operator/agent contract explicit',
-    'safety and boundary semantics',
-    '`normative now`, `implementation freedom`, or `temporary assumption`',
+    '[Detailed stage steps](references/workflow-stage-spec-compact.md)',
   ]);
   assertContainsTerms(planSlice, [
     '[Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)',
+    '[Detailed stage steps](references/workflow-stage-plan-slice.md)',
+  ]);
+  assertContainsTerms(specCompactSteps, [
+    'make the operator/agent contract explicit',
+    'add the relevant safety and boundary semantics',
+    '`normative now`, `implementation freedom`, or `temporary assumption`',
+  ]);
+  assertContainsTerms(planSliceSteps, [
     'Identify the contract risks that must be killed before close-out.',
     'Plan drift-guard work',
     'add a real usage audit after the main implementation flow',
@@ -290,6 +355,8 @@ void test('repo AGENTS template reinforces current common-command and audit-stac
   for (const text of [template, example]) {
     assertContainsTerms(text, [
       'Replace the placeholders with the real formatter, linter, and test commands for this repository.',
+      "Use the repository's actual dossier command surface after bootstrap.",
+      'If bootstrap created or preserved repo-local `scripts/dossier.mjs`, commands may look like this:',
       '- Format code: `<repo format command>`',
       '- Lint code: `<repo lint command>`',
       '- Run tests: `<repo test command>`',
@@ -300,4 +367,9 @@ void test('repo AGENTS template reinforces current common-command and audit-stac
       '`code-reviewer` and `security-reviewer` when the changed scope includes code;',
     ]);
   }
+
+  const changeProposalSteps = await readFile(WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH, 'utf8');
+  assertContainsTerms(changeProposalSteps, [
+    '`debt-audit` (compatibility alias: `marker-audit`)',
+  ]);
 });
