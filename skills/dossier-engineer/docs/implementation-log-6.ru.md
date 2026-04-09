@@ -78,7 +78,7 @@ log_quality:
 
 ## Close-out
 
-- Package status: ready to commit
+- Package status: committed
 - Final commit: `0e990da` `docs(dossier-engineer): define implementation audit and logging policy`
 
 ## Package P2 — spec and plan risk hardening
@@ -100,6 +100,7 @@ normative_sources:
 start_ts: 2026-04-09T02:37:32+02:00
 ready_for_review_ts: 2026-04-09T02:39:54+02:00
 final_pass_ts: 2026-04-09T02:42:14+02:00
+commit_ts: 2026-04-09T02:42:32+02:00
 session_id: unavailable-in-runtime-context
 review_policy:
   spec: required
@@ -108,11 +109,13 @@ review_policy:
 review_rounds: 1
 review_findings_total: 0
 out_of_spec_decisions_total: 0
+duration_minutes: 5
+commit_sha: a56cb58
 base_commit_sha: 0e990da
 log_quality:
   start_captured: true
-  commit_recorded: false
-  duration_exact: false
+  commit_recorded: true
+  duration_exact: true
 ```
 
 ## Scope
@@ -152,5 +155,5 @@ log_quality:
 
 ## Close-out
 
-- Package status: ready to commit
-- Final commit is not recorded yet because the package is not closed
+- Package status: committed
+- Final commit: `a56cb58` `docs(dossier-engineer): harden spec and plan risk rules`
