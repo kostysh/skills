@@ -73,7 +73,7 @@ Each mutating step then closes through:
 
 Requirement changes on mature work use:
 
-`change-proposal -> contract-drift-audit -> explicit follow-up decision`
+`change-proposal -> contract-drift-audit -> explicit backlog impact verdict -> backlog actualization if needed`
 
 Detailed workflow-stage steps:
 
@@ -107,6 +107,15 @@ Rules:
 - use `patch-item` when dossier work made lifecycle, blocker, dependency, or context facts explicit for already known backlog items;
 - use scoped `refresh` first only when updated source documents may have changed source-derived backlog state;
 - `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch.
+
+During `change-proposal`, determine one explicit dossier-side `backlog impact verdict` before closure:
+
+- `no-op`
+- `patch existing item`
+- `source update`
+- `new backlog item`
+
+If the verdict is not `no-op`, backlog actualization is mandatory before stage closure.
 
 ## CLI command: `next-step`
 

@@ -84,6 +84,12 @@ It is responsible for:
 
 This module encodes workflow policy in a testable form.
 
+Important boundary:
+
+- dossier CLI may emit supporting signals for workflow reasoning;
+- authoritative `backlog impact verdict` for `Workflow stage: change-proposal` remains stage-owned process logic;
+- do not move that verdict into dossier-local runtime heuristics unless the skill contract is explicitly expanded first.
+
 #### Dossier Lint Analysis
 
 [`src/core/lint-dossiers.ts`](../src/core/lint-dossiers.ts) contains dossier-quality analysis logic.
@@ -291,6 +297,7 @@ Tests should protect these contracts especially carefully:
 - dossier-local next-step decisions
 - lint warning semantics
 - generated artifact locations and JSON shape
+- the boundary where `contract-drift-audit` stays a support signal and does not become the authoritative `backlog impact verdict`
 
 These behaviors are consumed by the skill workflow, so accidental drift here creates operational debt quickly.
 

@@ -160,6 +160,11 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   ]);
   assertContainsTerms(changeProposalStage, [
     '[Detailed stage steps](references/workflow-stage-change-proposal.md)',
+    'explicit dossier-side `backlog impact verdict`',
+    '`patch existing item`',
+    '`source update`',
+    '`new backlog item`',
+    'If the verdict is not `no-op`, backlog actualization through `backlog-engineer` finished before stage closure.',
   ]);
   assertContainsTerms(intakeCommand, [
     '[Workflow guide: feature-intake](references/workflow.md#cli-command-feature-intake)',
@@ -211,6 +216,9 @@ void test('dossier docs keep backlog actualization and handoff boundaries litera
     'backlog actualization is part of stage closure',
     'use `patch-item` when dossier work made lifecycle, blocker, dependency, or context facts explicit',
     '`refresh` alone does not actualize `delivery_state`',
+    'During `change-proposal`, determine one explicit dossier-side `backlog impact verdict` before closure:',
+    '`source update`',
+    '`new backlog item`',
   ]);
   assertContainsTerms(processModel, [
     'backlog actualization входит в closure contract этой стадии',
@@ -229,6 +237,27 @@ void test('historical backlog gap analysis is marked non-normative after stage 2
     'gaps уже закрыты',
     'текущий нормативный источник',
     'Новые harmonization gaps должны фиксироваться уже в новом документе',
+  ]);
+});
+
+void test('contract-drift-audit stays a support signal rather than the authoritative backlog-impact classifier', async () => {
+  const [utilitySpec, utilityArchitecture] = await Promise.all([
+    readFile(path.join(SKILL_DIR, 'docs', 'utility-spec.ru.md'), 'utf8'),
+    readFile(path.join(SKILL_DIR, 'docs', 'utility-architecture.md'), 'utf8'),
+  ]);
+
+  assertContainsTerms(utilitySpec, [
+    'supporting signal для `Workflow stage: change-proposal`',
+    'не определяет authoritative dossier-side `backlog impact verdict`',
+    '`no-op`',
+    '`patch existing item`',
+    '`source update`',
+    '`new backlog item`',
+    'authoritative остаётся stage-level verdict',
+  ]);
+  assertContainsTerms(utilityArchitecture, [
+    'authoritative `backlog impact verdict` for `Workflow stage: change-proposal` remains stage-owned process logic',
+    'do not move that verdict into dossier-local runtime heuristics',
   ]);
 });
 
@@ -371,5 +400,11 @@ void test('repo AGENTS template reinforces current common-command and audit-stac
   const changeProposalSteps = await readFile(WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH, 'utf8');
   assertContainsTerms(changeProposalSteps, [
     '`debt-audit` (compatibility alias: `marker-audit`)',
+    'Select one explicit dossier-side `backlog impact verdict`',
+    '`no-op` only when all of the following are true',
+    'no backlog-relevant canonical source was created or changed; ordinary dossier wording edits alone do not count, but ADR decisions logged through `adr-log` do',
+    'dossier SSoT wording edits alone do not trigger this verdict unless they introduce or change such a source',
+    'If the change both updates a canonical source and changes current-work truth, treat `source update` as the primary verdict.',
+    'If the verdict is not `no-op`, return to `backlog-engineer` and complete the required backlog actualization before closing the stage.',
   ]);
 });

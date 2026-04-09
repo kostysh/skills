@@ -544,6 +544,13 @@ Stage exit checklist:
 
 Apply requirement changes safely.
 
+This stage must end with one explicit dossier-side `backlog impact verdict`:
+
+- `no-op`
+- `patch existing item`
+- `source update`
+- `new backlog item`
+
 Steps:
 
 - [Detailed stage steps](references/workflow-stage-change-proposal.md)
@@ -556,6 +563,9 @@ Stage exit checklist:
 - [ ] Slices, tasks, coverage map, DoD, dependency references, rollout notes, approval paths, and assumption/fallback notes were updated consistently.
 - [ ] `contract-drift-audit` ran when executable contract changes or mature dossier states made it necessary.
 - [ ] If executable follow-up is required, it is explicit in a canonical artifact.
+- [ ] One explicit dossier-side `backlog impact verdict` was selected: `no-op`, `patch existing item`, `source update`, or `new backlog item`.
+- [ ] If the verdict is `no-op`, the change meets the literal no-op criteria.
+- [ ] If the verdict is not `no-op`, backlog actualization through `backlog-engineer` finished before stage closure.
 - [ ] `lint-dossiers`, `coverage-audit`, marker audit, and index refresh ran after the change.
 - [ ] The final answer explicitly states whether code/test/runtime follow-up is still required.
 

@@ -24,6 +24,7 @@
 | [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md) | Детальный execution plan follow-up исправлений после real-world UX feedback. Разбивает remediation на конкретные пакеты изменений, файлы, acceptance и порядок выполнения. | Читать перед началом follow-up имплементации, если нужен уже не анализ, а пошаговый план изменений. |
 | [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md) | Маленький corrective plan после post-refactor review. Закрывает два remaining first-run defects: local invocation contract и единый blocking preflight question. | Читать перед последним коротким doc-only corrective pass. |
 | [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md) | Маленький corrective plan на source-set discovery. Закрывает оставшийся defect, где агент может рано перейти к packet authoring и пропустить ADR, concept и другие обязательные архитектурные входы. | Читать перед корректировкой first-run source discovery contract. |
+| [refactoring-plan-6.ru.md](refactoring-plan-6.ru.md) | План backlog-side harmonization для `change-proposal`: verdict-driven actualization branches, delta-over-implemented rule, ADR/source update flow и multi-item shared remediation path. | Читать перед backlog-side доработкой cross-skill requirement-change workflow. |
 | [utility-spec.ru.md](utility-spec.ru.md) | Полная спецификация утилиты. Описывает внутренние артефакты, алгоритмы команд, recovery/rebuild, derived state, error taxonomy и runtime behavior. | Читать после концепции, когда нужно проектировать реализацию. |
 | [schemas-and-types.ru.md](schemas-and-types.ru.md) | Строгие схемы и exact types для `zod@v4` и TypeScript. Включает authored packet/patch, utility-owned artifacts, command DTOs и error payload. | Читать при реализации `schemas`, `errors`, DTO и parser/validator слоёв. |
 | [module-interfaces.ru.md](module-interfaces.ru.md) | Контракты верхнеуровневых модулей и внутренних сервисов. Фиксирует `src/`-структуру, порты среды, ownership артефактов и test seams. | Читать перед проектированием модулей и unit-тестов. |
@@ -52,6 +53,15 @@
 11. [utility-spec.ru.md](utility-spec.ru.md)
 12. [schemas-and-types.ru.md](schemas-and-types.ru.md)
 13. [module-interfaces.ru.md](module-interfaces.ru.md)
+
+### Если нужно планировать backlog-side покрытие для `change-proposal`
+
+1. [../../dossier-engineer/docs/change-proposal-cross-skill-use-cases.ru.md](../../dossier-engineer/docs/change-proposal-cross-skill-use-cases.ru.md)
+2. [../../dossier-engineer/docs/cross-skill-process-model.ru.md](../../dossier-engineer/docs/cross-skill-process-model.ru.md)
+3. [refactoring-plan-6.ru.md](refactoring-plan-6.ru.md)
+4. [../SKILL.md](../SKILL.md)
+5. [operator-workflows.md](../references/operator-workflows.md)
+6. [command-reference.md](../references/command-reference.md)
 
 ### Если нужно проектировать тесты
 

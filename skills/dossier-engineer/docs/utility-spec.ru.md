@@ -548,6 +548,25 @@ Baseline берётся в порядке:
 - maturity status dossier входит в `planned | in_progress | done`
 - в change set нет code follow-up files
 
+### Граница относительно `change-proposal`
+
+`contract-drift-audit` может давать supporting signal для `Workflow stage: change-proposal`, но не определяет authoritative dossier-side `backlog impact verdict`.
+
+Команда сама по себе не различает:
+
+- `no-op`
+- `patch existing item`
+- `source update`
+- `new backlog item`
+
+Потому что эти verdict-ы зависят не только от drift, но и от cross-skill process reasoning:
+
+- появились ли backlog-relevant blockers / dependencies / context facts;
+- был ли создан или изменён backlog-relevant canonical source;
+- требует ли изменение новой backlog work вместо patch existing item.
+
+Если output `contract-drift-audit` конфликтует со stage-level verdict в `change-proposal`, authoritative остаётся stage-level verdict, а конфликт должен быть разрешён до step closure.
+
 ### Артефакт
 
 По умолчанию пишется в:

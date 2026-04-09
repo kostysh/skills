@@ -19,6 +19,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [AGENTS.md](AGENTS.md) | Local process rules for planning, implementation, review, and logging during dossier/backlog harmonization work. | Read before executing any refactor package from the harmonization plans. |
 | [backlog-harmonization-prep.ru.md](backlog-harmonization-prep.ru.md) | Preparatory report for harmonizing `dossier-engineer` with `backlog-engineer`: role boundaries, overlap map, friction points, migration from legacy candidate-backlog to backlog-driven model, and recommended direction. This document is written in Russian. | Read before planning dossier/backlog harmonization work. |
 | [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md) | Target cross-skill development process: how `backlog-engineer` and `dossier-engineer` should work together from backlog creation to intake, spec, planning, implementation, closure, and backlog sync. This document is written in Russian. | Read when you need the agreed target process before comparing it with current skill behavior. |
+| [change-proposal-cross-skill-use-cases.ru.md](change-proposal-cross-skill-use-cases.ru.md) | Matrix of real operator-facing `change-proposal` scenarios across `dossier-engineer` and `backlog-engineer`: dossier-side workflow, backlog-side workflow, and current support status. This document is written in Russian. | Read when you need to reason about requirement-change flows after the initial dossier/backlog handshake. |
 | [dossier-process-gap-analysis.ru.md](dossier-process-gap-analysis.ru.md) | Detailed gap analysis of `dossier-engineer` against the target cross-skill process: what conflicts, what must be removed, what must be rewritten, and what can stay. This document is written in Russian. | Read before designing the dossier refactor. |
 | [backlog-process-gap-analysis.ru.md](backlog-process-gap-analysis.ru.md) | Detailed gap analysis of `backlog-engineer` against the target cross-skill process: what already fits, what interop rules are still missing, and what should be adjusted later for full alignment. This document is written in Russian. | Read after the dossier gap analysis, before planning backlog-side alignment changes. |
 | [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md) | Stage-1 refactoring plan for `dossier-engineer` under the backlog-driven process: fixed decisions, work packages, sequencing, and acceptance gates. This document is written in Russian. | Read when moving from process analysis to actual dossier-side refactoring work. |
@@ -32,6 +33,8 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [implementation-log-5.ru.md](implementation-log-5.ru.md) | Incremental log for the narrow cross-skill UX corrective pass after the first end-to-end harmonized audit. This document is written in Russian. | Read when you need the record of literal wording and handoff/closure contract fixes after the cross-skill UX audit. |
 | [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md) | Process-hardening plan for `dossier-engineer`: audit management, implementation logging contract, metrics, and stronger `spec-compact` / `plan-slice` process rules. This document is written in Russian. | Read when planning how to carry implementation discipline and real-usage lessons into future projects. |
 | [implementation-log-6.ru.md](implementation-log-6.ru.md) | Incremental log for the process-hardening implementation cycle that moves audit and logging discipline into the canonical skill contract. This document is written in Russian. | Read when you need the package-by-package record for the process-hardening cycle. |
+| [refactoring-plan-6.ru.md](refactoring-plan-6.ru.md) | Dossier-side implementation plan for `change-proposal` cross-skill hardening: explicit backlog-impact classifier, stage-level handoff, and optional runtime hints without new commands or artifacts. This document is written in Russian. | Read when planning the dossier-side half of the `change-proposal` harmonization cycle. |
+| [implementation-log-7.ru.md](implementation-log-7.ru.md) | Incremental log for the dossier-side `change-proposal` hardening cycle: explicit backlog-impact verdict, closure semantics, and runtime-boundary decisions for `contract-drift-audit`. This document is written in Russian. | Read when you need the package-by-package record for the dossier-side half of `change-proposal` harmonization. |
 
 ## Related Materials
 
@@ -89,12 +92,23 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 ### If you are starting backlog-side harmonization
 
 1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
-2. [backlog-process-gap-analysis.ru.md](backlog-process-gap-analysis.ru.md)
-3. [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md)
-4. [implementation-log-4.ru.md](implementation-log-4.ru.md)
-5. [../../backlog-engineer/SKILL.md](../../backlog-engineer/SKILL.md)
-6. [../../backlog-engineer/references/operator-workflows.md](../../backlog-engineer/references/operator-workflows.md)
-7. [../../backlog-engineer/references/command-reference.md](../../backlog-engineer/references/command-reference.md)
+2. [change-proposal-cross-skill-use-cases.ru.md](change-proposal-cross-skill-use-cases.ru.md)
+3. [backlog-process-gap-analysis.ru.md](backlog-process-gap-analysis.ru.md)
+4. [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md)
+5. [implementation-log-4.ru.md](implementation-log-4.ru.md)
+6. [../../backlog-engineer/SKILL.md](../../backlog-engineer/SKILL.md)
+7. [../../backlog-engineer/references/operator-workflows.md](../../backlog-engineer/references/operator-workflows.md)
+8. [../../backlog-engineer/references/command-reference.md](../../backlog-engineer/references/command-reference.md)
+
+### If you are planning `change-proposal` harmonization
+
+1. [change-proposal-cross-skill-use-cases.ru.md](change-proposal-cross-skill-use-cases.ru.md)
+2. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
+3. [refactoring-plan-6.ru.md](refactoring-plan-6.ru.md)
+4. [implementation-log-7.ru.md](implementation-log-7.ru.md)
+5. [../../backlog-engineer/docs/refactoring-plan-6.ru.md](../../backlog-engineer/docs/refactoring-plan-6.ru.md)
+6. [../SKILL.md](../SKILL.md)
+7. [../references/workflow-stage-change-proposal.md](../references/workflow-stage-change-proposal.md)
 
 ### If you are working on the narrow cross-skill UX corrective pass
 
