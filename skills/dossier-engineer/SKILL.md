@@ -267,6 +267,9 @@ Conservative default:
 
 After completing any command, the authoring agent must obtain an independent review before claiming success.
 
+This section defines the skill-wide independence rule.
+For `Workflow stage: implementation`, the audit stack, review brief, and classifier-based re-audit rules live in [Implementation audit policy](references/implementation-audit-policy.md).
+
 Default contract:
 
 1. Spawn a separate reviewer agent that did not produce the changes or the final answer whenever the `spawn_agent` tool exists.
@@ -291,8 +294,8 @@ Every command-specific checklist below follows the same review philosophy:
 6. **For read-only commands**, review the report fidelity instead of expecting mutations.
 7. **Green automation is never enough by itself**: a reviewer still checks for semantic gaps, especially for side-effecting code.
 8. **Check completeness against intended scope**: no silent stubs, hidden scope cuts, or undocumented “later” deferrals.
-9. **For implementation review, separate completeness review, code review, and security review** instead of assuming one umbrella check covers them.
-   Use `code-reviewer` for the nested code review pass and `security-reviewer` for the nested security review pass when those skills are available. These nested passes do **not** require separate durable report artifacts, but every finding they produce must be surfaced by the reviewer and reflected in the final review verdict or `must-fix` list.
+9. **When a stage has a dedicated audit policy, use it instead of inventing a local audit stack.**
+   For `Workflow stage: implementation`, use [Implementation audit policy](references/implementation-audit-policy.md) for audit order, brief shape, and classifier-based re-audit rules.
 
 ## Workflow stages and shipped CLI commands
 
@@ -1029,7 +1032,3 @@ Command correctness checklist:
 - Repository-level example:
   [assets/example-repo/AGENTS.md](assets/example-repo/AGENTS.md)
   with companion docs in `assets/example-repo/docs/*` and test stubs in `assets/example-repo/src/*`.
-
-## Migration from sdd-engineer
-
-See: [references/migration-from-sdd-engineer.md](references/migration-from-sdd-engineer.md)

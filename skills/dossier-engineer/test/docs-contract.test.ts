@@ -225,6 +225,22 @@ void test('implementation stage points to audit and logging refs with explicit s
   ]);
 });
 
+void test('skill-wide review sections stay distinct from implementation-specific audit policy', async () => {
+  const skill = await readFile(SKILL_PATH, 'utf8');
+
+  const independentReview = extractSection(skill, '## Independent review execution model');
+  const reviewChecklistRules = extractSection(skill, '## Review checklist design rules');
+
+  assertContainsTerms(independentReview, [
+    'This section defines the skill-wide independence rule.',
+    'For `Workflow stage: implementation`, the audit stack, review brief, and classifier-based re-audit rules live in [Implementation audit policy](references/implementation-audit-policy.md).',
+  ]);
+  assertContainsTerms(reviewChecklistRules, [
+    'When a stage has a dedicated audit policy, use it instead of inventing a local audit stack.',
+    'For `Workflow stage: implementation`, use [Implementation audit policy](references/implementation-audit-policy.md) for audit order, brief shape, and classifier-based re-audit rules.',
+  ]);
+});
+
 void test('spec-compact and plan-slice point to risk patterns and literal risk-killing duties', async () => {
   const [skill, workflow, riskPatterns] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
