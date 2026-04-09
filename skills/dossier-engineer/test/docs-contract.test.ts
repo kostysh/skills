@@ -8,7 +8,7 @@ const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
 
 const SKILL_PATH = path.join(SKILL_DIR, 'SKILL.md');
-const WORKFLOW_PATH = path.join(SKILL_DIR, 'references', 'WORKFLOW.md');
+const WORKFLOW_PATH = path.join(SKILL_DIR, 'references', 'workflow.md');
 const IMPLEMENTATION_AUDIT_POLICY_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -60,12 +60,18 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   ]);
 
   const stageVsCommand = extractSection(skill, '## Workflow stages and shipped CLI commands');
+  const backlogActualization = extractSection(skill, '## Backlog actualization rules');
   const bootstrap = extractSection(workflow, '## Workflow stage: repository bootstrap (`init`)');
   const defaultFlow = extractSection(workflow, '## Default dossier flow');
+  const initStage = extractSection(skill, '#### Workflow stage: `init`');
+  const intakeCommand = extractSection(skill, '#### CLI command: `feature-intake`');
+  const lintCommand = extractSection(skill, '#### CLI command: `lint-dossiers` (recommended)');
+  const nextStepCommand = extractSection(skill, '#### CLI command: `next-step`');
   const workflowStagesIndex = skill.indexOf('### Workflow stages');
   const cliCommandsIndex = skill.indexOf('### CLI commands');
 
   assertContainsTerms(stageVsCommand, [
+    '[Workflow guide](references/workflow.md)',
     'workflow-only unless it appears in the shipped CLI command list',
     'Do not write or infer examples such as `node scripts/dossier.mjs spec-compact`',
     'Shipped CLI commands in the current runtime',
@@ -93,6 +99,21 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   assertContainsTerms(bootstrap, [
     'This is a workflow stage, not a shipped `dossier.mjs` subcommand.',
     'only when bootstrap explicitly provisions them',
+  ]);
+  assertContainsTerms(initStage, [
+    '[Workflow guide: repository bootstrap](references/workflow.md#workflow-stage-repository-bootstrap-init)',
+  ]);
+  assertContainsTerms(intakeCommand, [
+    '[Workflow guide: feature-intake](references/workflow.md#cli-command-feature-intake)',
+  ]);
+  assertContainsTerms(backlogActualization, [
+    '[Workflow guide: backlog actualization rule](references/workflow.md#backlog-actualization-rule)',
+  ]);
+  assertContainsTerms(lintCommand, [
+    '[Lint rules](references/lint-rules.md)',
+  ]);
+  assertContainsTerms(nextStepCommand, [
+    '[Workflow guide: next-step](references/workflow.md#cli-command-next-step)',
   ]);
   assertContainsTerms(defaultFlow, [
     '`spec-compact`, `plan-slice`, and `implementation` are workflow stages',
@@ -163,13 +184,15 @@ void test('implementation stage points to audit and logging refs with explicit s
   assertContainsTerms(implementation, [
     '[Implementation audit policy](references/implementation-audit-policy.md)',
     '[Implementation logging](references/implementation-logging.md)',
+    '[No-technical-debt policy](references/workflow.md#no-technical-debt-policy)',
     'Run `spec-conformance` review first',
     'For multi-step or package-based work, open or update the implementation log before the first mutating edit.',
   ]);
   assertContainsTerms(debtPolicy, [
-    '[implementation-logging.md](implementation-logging.md)',
-    '[implementation-audit-policy.md](implementation-audit-policy.md)',
-    'Run `spec-conformance` review first.',
+    'Apply this policy during `Workflow stage: implementation`',
+    'Run `node scripts/dossier.mjs debt-audit --changed-only`',
+    'Resolve or explicitly record every debt item in a canonical artifact.',
+    'This policy is about debt handling only.',
   ]);
   assertContainsTerms(auditPolicy, [
     '## Review brief template',

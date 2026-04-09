@@ -42,7 +42,7 @@
 ### Scope
 
 - [../SKILL.md](../SKILL.md)
-- [../references/WORKFLOW.md](../references/WORKFLOW.md)
+- [../references/workflow.md](../references/workflow.md)
 - [../references/REPO_AGENTS_TEMPLATE.md](../references/REPO_AGENTS_TEMPLATE.md)
 - [../assets/example-repo/AGENTS.md](../assets/example-repo/AGENTS.md)
 - [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
@@ -50,7 +50,7 @@
 
 ### Changes
 
-1. В `SKILL.md` и `WORKFLOW.md`:
+1. В `SKILL.md` и `workflow.md`:
    - закрепить, что `dossier-verify --dossier` — canonical closure path for one dossier;
    - описать `--changed-only` как repo-scope audit mode;
    - явно развести workflow stages и shipped CLI commands;
@@ -88,7 +88,7 @@
 
 1. `globalHelp`:
    - явно сказать, что help lists shipped CLI commands only;
-   - отправлять workflow stages в `SKILL.md` / `WORKFLOW.md`;
+   - отправлять workflow stages в `SKILL.md` / `workflow.md`;
    - сузить description `next-step` до dossier-local.
 2. `feature-intake` и `next-step` output:
    - перестать подавать raw `workflow_next` как будто это subcommand;

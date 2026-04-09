@@ -57,6 +57,7 @@ CLI utility:
   `pnpm --filter @kostysh/dossier-engineer-cli build`
   `pnpm --filter @kostysh/dossier-engineer-cli lint`
   `pnpm --filter @kostysh/dossier-engineer-cli test`
+- Operational workflow guide: [references/workflow.md](references/workflow.md)
 
 Templates:
 
@@ -199,6 +200,10 @@ Overlay hygiene rule:
 
 ## Backlog actualization rules
 
+Operational summary:
+
+- [Workflow guide: backlog actualization rule](references/workflow.md#backlog-actualization-rule)
+
 When dossier work changes backlog truth, return to `backlog-engineer` explicitly:
 
 - after dossier shaping/specification is complete enough to remove design ambiguity, actualize the selected backlog work to `specified`;
@@ -291,6 +296,10 @@ Every command-specific checklist below follows the same review philosophy:
 
 ## Workflow stages and shipped CLI commands
 
+Compact operational summary:
+
+- [Workflow guide](references/workflow.md)
+
 Two layers exist in this skill:
 
 - workflow stages that the agent must perform as part of the process;
@@ -326,6 +335,10 @@ Checklist meaning in this section:
 #### Workflow stage: `init`
 
 Bootstrap the dossier protocol in a repository that already has architecture.
+
+Operational summary:
+
+- [Workflow guide: repository bootstrap](references/workflow.md#workflow-stage-repository-bootstrap-init)
 
 Minimal requirement:
 
@@ -525,6 +538,7 @@ Use these references together with this stage:
 
 - [Implementation audit policy](references/implementation-audit-policy.md)
 - [Implementation logging](references/implementation-logging.md)
+- [Workflow guide](references/workflow.md#no-technical-debt-policy)
 
 Steps:
 
@@ -538,18 +552,19 @@ Steps:
    - coverage map
    - change log when behavior or assumptions changed
    - `coverage_gate: strict` when executable coverage must now block closure
-7. Run project checks plus `node scripts/dossier.mjs dossier-verify ...`.
-8. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
-9. Run `spec-conformance` review first against the dossier, overlays, approved changes, and relevant contracts. Use the audit brief and reround rules from [Implementation audit policy](references/implementation-audit-policy.md).
-10. If the changed scope includes executable code, runtime wiring, or trust-boundary changes, run two nested review passes after `spec-conformance` passes:
+7. Apply the [No-technical-debt policy](references/workflow.md#no-technical-debt-policy) before moving to verification and close-out.
+8. Run project checks plus `node scripts/dossier.mjs dossier-verify ...`.
+9. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
+10. Run `spec-conformance` review first against the dossier, overlays, approved changes, and relevant contracts. Use the audit brief and reround rules from [Implementation audit policy](references/implementation-audit-policy.md).
+11. If the changed scope includes executable code, runtime wiring, or trust-boundary changes, run two nested review passes after `spec-conformance` passes:
    - `code-reviewer` for correctness, maintainability, contracts, lifecycle, and merge-risk findings;
    - `security-reviewer` for auth/authz, trust boundaries, input handling, secret exposure, and exploitability findings.
    These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
-11. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
-12. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
-13. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
+12. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+13. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
+14. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
     The implementation stage is not complete until this required backlog actualization is done.
-14. Close the step with `dossier-step-close` only after the required backlog actualization is done.
+15. Close the step with `dossier-step-close` only after the required backlog actualization is done.
 
 Required adversarial checklist for side-effecting code:
 
@@ -575,6 +590,7 @@ Stage exit checklist:
 - [ ] Verification was added alongside code: AC-linked tests plus smoke/startup/container checks when relevant.
 - [ ] Newly discovered prerequisites or cross-cutting invariants were externalized promptly.
 - [ ] The target dossier was updated in the same workstream.
+- [ ] The no-technical-debt policy was applied and every debt item was either resolved or explicitly recorded in a canonical artifact.
 - [ ] Side-effecting behavior passed the adversarial checklist above.
 - [ ] `coverage_gate` is strict when implementation closure depends on executable verification.
 - [ ] If implementation changed backlog truth, the backlog was updated through `backlog-engineer` before leaving this stage.
@@ -678,6 +694,10 @@ Stage exit checklist:
 #### CLI command: `feature-intake`
 
 Create a new Feature Dossier and register it in the global index.
+
+Operational summary:
+
+- [Workflow guide: feature-intake](references/workflow.md#cli-command-feature-intake)
 
 Steps:
 
@@ -826,6 +846,10 @@ Command correctness checklist:
 
 Validate structure, metadata, links, and duplication constraints.
 
+Reference:
+
+- [Lint rules](references/lint-rules.md)
+
 Run:
 
 - `node scripts/dossier.mjs lint-dossiers`
@@ -963,6 +987,10 @@ Audit fidelity checklist:
 
 Return the next dossier-local workflow action for already selected work.
 
+Operational summary:
+
+- [Workflow guide: next-step](references/workflow.md#cli-command-next-step)
+
 Purpose:
 
 - Resolve ambiguity inside the dossier workflow after work has already been selected through `backlog-engineer`.
@@ -997,11 +1025,11 @@ Command correctness checklist:
 ## Examples
 
 - Single Feature Dossier example:
-  [references/EXAMPLE_FEATURE_DOSSIER.md](references/EXAMPLE_FEATURE_DOSSIER.md)
+  [references/example-feature-dossier.md](references/example-feature-dossier.md)
 - Repository-level example:
   [assets/example-repo/AGENTS.md](assets/example-repo/AGENTS.md)
   with companion docs in `assets/example-repo/docs/*` and test stubs in `assets/example-repo/src/*`.
 
 ## Migration from sdd-engineer
 
-See: [references/MIGRATION_FROM_SDD_ENGINEER.md](references/MIGRATION_FROM_SDD_ENGINEER.md)
+See: [references/migration-from-sdd-engineer.md](references/migration-from-sdd-engineer.md)

@@ -69,7 +69,7 @@
 
 ### Reviews
 
-- Spec/process review against [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md) and [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md) — PASS after one follow-up wording fix in `WORKFLOW.md` and one scope-traceability fix in this log.
+- Spec/process review against [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md) and [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md) — PASS after one follow-up wording fix in `workflow.md` and one scope-traceability fix in this log.
 
 ### Commit
 

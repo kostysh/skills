@@ -79,7 +79,7 @@
   - [dossier-process-gap-analysis.ru.md](dossier-process-gap-analysis.ru.md)
   - [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md)
   - [../SKILL.md](../SKILL.md)
-  - [../references/WORKFLOW.md](../references/WORKFLOW.md)
+  - [../references/workflow.md](../references/workflow.md)
 - Initial verdict: non-compliant
   - gap: no active `feature-intake` runtime/spec/test surface
   - gap: `utility-architecture.md` overstated `src/core/workflow.ts` intake role

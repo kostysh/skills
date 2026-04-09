@@ -2369,7 +2369,7 @@ export function globalHelp(): string {
   return [
     'Unified CLI for the dossier-engineer skill.',
     'Commands below are shipped CLI commands only.',
-    'Workflow stages such as init (repository bootstrap), spec-compact, plan-slice, implementation, change-proposal, adr-log, and dependency-check are documented in SKILL.md and references/WORKFLOW.md.',
+    'Workflow stages such as init (repository bootstrap), spec-compact, plan-slice, implementation, change-proposal, adr-log, and dependency-check are documented in SKILL.md and references/workflow.md.',
     '',
     'Usage:',
     `  ${CLI_DISPLAY_NAME} <command> [options]`,

@@ -7,7 +7,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 ## Start Here
 
 - Read [../SKILL.md](../SKILL.md) for the operator-facing workflow, rules, and command guidance.
-- Read [../references/WORKFLOW.md](../references/WORKFLOW.md) for a compact workflow reference.
+- Read [../references/workflow.md](../references/workflow.md) for a compact workflow reference.
 - Use this `docs/` folder when you need deeper utility-specific architecture or behavior details.
 
 ## Document Map
@@ -35,13 +35,13 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 
 ## Related Materials
 
-- [../references/WORKFLOW.md](../references/WORKFLOW.md) explains the end-to-end dossier workflow.
+- [../references/workflow.md](../references/workflow.md) explains the end-to-end dossier workflow.
 - [../references/implementation-audit-policy.md](../references/implementation-audit-policy.md) defines the external audit stack for implementation work.
 - [../references/implementation-logging.md](../references/implementation-logging.md) defines the implementation logging contract and metrics.
 - [../references/spec-and-plan-risk-patterns.md](../references/spec-and-plan-risk-patterns.md) defines the contract-risk patterns that `spec-compact` and `plan-slice` should kill before late corrective cycles.
 - [../references/DOSSIER_TEMPLATE.md](../references/DOSSIER_TEMPLATE.md) provides the canonical Feature Dossier template.
 - [../references/SSOT_INDEX_TEMPLATE.md](../references/SSOT_INDEX_TEMPLATE.md) provides the global index template.
-- [../references/EXAMPLE_FEATURE_DOSSIER.md](../references/EXAMPLE_FEATURE_DOSSIER.md) shows a worked dossier example.
+- [../references/example-feature-dossier.md](../references/example-feature-dossier.md) shows a worked dossier example.
 - [../assets/example-repo/](../assets/example-repo/) contains a small example repository that demonstrates the expected repo layout.
 
 ## Suggested Reading Paths
@@ -49,8 +49,8 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 ### If you are new to the skill
 
 1. [../SKILL.md](../SKILL.md)
-2. [../references/WORKFLOW.md](../references/WORKFLOW.md)
-3. [../references/EXAMPLE_FEATURE_DOSSIER.md](../references/EXAMPLE_FEATURE_DOSSIER.md)
+2. [../references/workflow.md](../references/workflow.md)
+3. [../references/example-feature-dossier.md](../references/example-feature-dossier.md)
 
 ### If you are working on the CLI
 
@@ -68,7 +68,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 5. [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md)
 6. [implementation-log-1.ru.md](implementation-log-1.ru.md)
 7. [../SKILL.md](../SKILL.md)
-8. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+8. [../references/workflow.md](../references/workflow.md)
 
 ### If you are working on the UX corrective pass
 
@@ -76,7 +76,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 2. [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md)
 3. [implementation-log-2.ru.md](implementation-log-2.ru.md)
 4. [../SKILL.md](../SKILL.md)
-5. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+5. [../references/workflow.md](../references/workflow.md)
 
 ### If you are working on the second UX corrective pass
 
@@ -84,7 +84,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 2. [refactoring-plan-3.ru.md](refactoring-plan-3.ru.md)
 3. [implementation-log-3.ru.md](implementation-log-3.ru.md)
 4. [../SKILL.md](../SKILL.md)
-5. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+5. [../references/workflow.md](../references/workflow.md)
 
 ### If you are starting backlog-side harmonization
 
@@ -101,7 +101,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
 2. [implementation-log-5.ru.md](implementation-log-5.ru.md)
 3. [../SKILL.md](../SKILL.md)
-4. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+4. [../references/workflow.md](../references/workflow.md)
 5. [../../backlog-engineer/SKILL.md](../../backlog-engineer/SKILL.md)
 6. [../../backlog-engineer/references/operator-workflows.md](../../backlog-engineer/references/operator-workflows.md)
 
@@ -114,7 +114,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 5. [../references/implementation-logging.md](../references/implementation-logging.md)
 6. [AGENTS.md](AGENTS.md)
 7. [../SKILL.md](../SKILL.md)
-8. [../references/WORKFLOW.md](../references/WORKFLOW.md)
+8. [../references/workflow.md](../references/workflow.md)
 
 ## Scope of This Folder
 

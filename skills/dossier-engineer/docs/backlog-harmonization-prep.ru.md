@@ -544,7 +544,7 @@ Recommended direction:
 - `next-step`
 - interop priority / when to use
 
-### `references/WORKFLOW.md`
+### `references/workflow.md`
 
 Вероятные зоны:
 

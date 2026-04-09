@@ -26,7 +26,7 @@
 
 - [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
 - [../SKILL.md](../SKILL.md)
-- [../references/WORKFLOW.md](../references/WORKFLOW.md)
+- [../references/workflow.md](../references/workflow.md)
 
 Дополнительные аналитические источники:
 
@@ -44,7 +44,7 @@
    - `/code/projects/research/reports/backlog-dossier-log-analysis-2026-04-08.ru.md`
 2. Текущее состояние самого `dossier-engineer` skill contract:
    - [../SKILL.md](../SKILL.md)
-   - [../references/WORKFLOW.md](../references/WORKFLOW.md)
+   - [../references/workflow.md](../references/workflow.md)
 
 Ключевые мотивирующие findings из аналитики:
 
@@ -238,7 +238,7 @@
 ### Scope
 
 - [../SKILL.md](../SKILL.md)
-- [../references/WORKFLOW.md](../references/WORKFLOW.md)
+- [../references/workflow.md](../references/workflow.md)
 - new reference:
   - `references/implementation-audit-policy.md`
 - new reference:
@@ -427,7 +427,7 @@ Reduce later corrective cycles by making spec and planning stages kill contract-
 ### Scope
 
 - [../SKILL.md](../SKILL.md)
-- [../references/WORKFLOW.md](../references/WORKFLOW.md)
+- [../references/workflow.md](../references/workflow.md)
 - new reference:
   - `references/spec-and-plan-risk-patterns.md`
 - [README.md](README.md)

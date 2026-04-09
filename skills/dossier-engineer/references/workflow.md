@@ -125,26 +125,27 @@ Important:
 
 ## No-technical-debt policy
 
-Before a mutating step can be considered complete:
+Apply this policy during `Workflow stage: implementation`, after the dossier was updated and before verification and step close-out.
 
-1. For multi-step or package-based work, open or update the implementation log before the first mutating edit. Use [implementation-logging.md](implementation-logging.md).
-2. Run the step’s local checks.
-3. Perform explicit debt review of the changed scope.
-4. Run `node scripts/dossier.mjs debt-audit --changed-only`.
-5. Re-check dependencies and adjacent seams.
-6. Resolve or explicitly record every debt item in a canonical artifact.
-7. Run `node scripts/dossier.mjs dossier-verify --dossier <path> ...` for one-dossier close-out. Use `--changed-only` only for repo-scope verification of the current change set.
-8. Run `spec-conformance` review first. Then run `code` and `security` only when the changed scope still requires them. Use [implementation-audit-policy.md](implementation-audit-policy.md) for the audit brief, review order, and classifier-based re-audit rules.
-9. Run independent review with a separate reviewer agent whenever the `spawn_agent` tool exists. If session policy requires explicit user authorization before spawning, request it before continuing. Do not silently downgrade to self-review or `emulated-independent-review`; if a separate reviewer agent still cannot be used, leave the step blocked unless the user explicitly approves degraded review mode.
-10. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`; this command records an already obtained independent review result and does not perform the review itself.
-11. If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.
-12. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
+Use it to ensure the changed scope does not leave hidden technical debt behind.
+
+Required actions:
+
+1. Perform explicit debt review of the changed scope.
+2. Run `node scripts/dossier.mjs debt-audit --changed-only`.
+3. Re-check dependencies and adjacent seams.
+4. Resolve or explicitly record every debt item in a canonical artifact.
 
 Notes:
 
+- `debt-audit` is the canonical debt-detection command for this policy.
 - `debt-audit` stays marker-only. It does not prove implementation completeness.
-- After `implementation`, review must explicitly cover completeness against dossier/slices/approved changes, code review, and security review.
-- If a separate reviewer agent is unavailable for any reason, stop, report the blocker, and ask the operator whether degraded review mode is acceptable.
+- This policy is about debt handling only. Verification, external audits, backlog actualization, and `dossier-step-close` are governed by `Workflow stage: implementation` and its dedicated references.
+- A debt item may be closed only by:
+  - fixing it now;
+  - recording it explicitly in a canonical artifact as an approved limitation, follow-up, blocker, or dependency;
+  - returning it to `backlog-engineer` when it changes backlog truth or requires backlog-level follow-up.
+- Never leave debt implicit in chat-only reasoning or undocumented “later” intent.
 
 ## Minimal PR contract
 

@@ -2,7 +2,7 @@
 
 This reference defines the external audit stack for `Workflow stage: implementation`.
 
-Use it together with [WORKFLOW.md](WORKFLOW.md) and the `implementation` stage in [../SKILL.md](../SKILL.md).
+Use it together with [workflow.md](workflow.md) and the `implementation` stage in [../SKILL.md](../SKILL.md).
 
 ## Purpose
 

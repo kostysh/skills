@@ -16,7 +16,7 @@
 - [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
 - [backlog-harmonization-prep.ru.md](backlog-harmonization-prep.ru.md)
 - [../SKILL.md](../SKILL.md)
-- [../references/WORKFLOW.md](../references/WORKFLOW.md)
+- [../references/workflow.md](../references/workflow.md)
 - [utility-spec.ru.md](utility-spec.ru.md)
 
 ## Короткий вывод
@@ -114,7 +114,7 @@
 Сейчас:
 
 - [../SKILL.md](../SKILL.md) описывает `feature-discovery` как перевод архитектуры в simple candidate backlog;
-- [../references/WORKFLOW.md](../references/WORKFLOW.md) делает `feature-discovery` canonical backlog step;
+- [../references/workflow.md](../references/workflow.md) делает `feature-discovery` canonical backlog step;
 - [utility-spec.ru.md](utility-spec.ru.md) продолжает считать candidate backlog частью CLI contract.
 
 Почему это конфликт:
@@ -284,7 +284,7 @@
 
 ## Конфликты в workflow docs
 
-### P0. `references/WORKFLOW.md` полностью противоречит новому процессу
+### P0. `references/workflow.md` полностью противоречит новому процессу
 
 Сейчас он говорит:
 
@@ -411,7 +411,7 @@
 | `SKILL.md` | major rewrite of core artifacts, state model, workflow framing, command semantics |
 | `docs/README.md` | rewrite top-level positioning away from explicit backlog discovery |
 | `docs/utility-architecture.md` | rewrite workflow/helper framing around downstream model |
-| `references/WORKFLOW.md` | full rewrite |
+| `references/workflow.md` | full rewrite |
 | `references/FEATURE_CANDIDATES_TEMPLATE.md` | remove from the new version of the skill |
 | `references/REPO_AGENTS_TEMPLATE.md` | remove candidate-backlog-first framing |
 | `docs/utility-spec.ru.md` | significant rewrite of command and artifact contract |

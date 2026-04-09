@@ -38,7 +38,7 @@
 ### Scope
 
 - [../SKILL.md](../SKILL.md)
-- [../references/WORKFLOW.md](../references/WORKFLOW.md)
+- [../references/workflow.md](../references/workflow.md)
 - [../references/DOSSIER_TEMPLATE.md](../references/DOSSIER_TEMPLATE.md)
 - [README.md](README.md)
 
