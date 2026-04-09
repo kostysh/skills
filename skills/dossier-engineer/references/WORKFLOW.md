@@ -75,6 +75,14 @@ Requirement changes on mature work use:
 
 `change-proposal -> contract-drift-audit -> explicit follow-up decision`
 
+## Spec and planning risk hardening
+
+Use [spec-and-plan-risk-patterns.md](spec-and-plan-risk-patterns.md) when:
+
+- `spec-compact` needs explicit operator/agent contract or safety semantics;
+- unresolved design decisions need triage as `normative now`, `implementation freedom`, or `temporary assumption`;
+- `plan-slice` must explicitly plan contract-risk cleanup, drift-guard work, or a real usage audit after implementation.
+
 ## Backlog actualization rule
 
 Return to `backlog-engineer` when dossier-side work changes backlog truth:

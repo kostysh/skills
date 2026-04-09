@@ -365,6 +365,10 @@ Stage exit checklist:
 
 Turn the existing dossier into a compact spec that is specific enough to implement and verify.
 
+Use this reference when the feature has meaningful operator/agent/machine-facing or safety-sensitive surface:
+
+- [Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)
+
 Trigger summary:
 
 - Add `Terms & thresholds` only when the feature introduces new terms, roles, states, statuses, or limits that could be read in more than one way.
@@ -386,11 +390,14 @@ Steps:
 4. Add a mini `Terms & thresholds` block only when triggered.
    Trigger it when the feature introduces new domain terms, roles, states, statuses, or time/size limits that a reader could interpret in more than one way.
    Keep it to 3–5 bullets max.
-5. Separate three things explicitly:
+5. When the feature has operator-facing, agent-facing, or machine-facing behavior, make the operator/agent contract explicit where it materially affects implementation or later usage.
+   Capture what is relevant: first-run flow, ambiguity policy, path/root semantics, machine-facing output fields, error interpretation rules, and cross-tool or cross-skill handoff notes.
+6. Separate three things explicitly:
    - `Constraints` = mandatory solution bounds;
    - `Assumptions` = expected substrate or external behavior;
    - `Open questions` = unresolved items with an owner/date, a `needed_by` marker (`before_planned`, `before_implementation`, or `before_done`), and an explicit next decision path.
-6. Add compact design with trigger-based representations:
+7. When the feature touches trust boundaries or failure-prone surfaces, add the relevant safety and boundary semantics: ownership, symlink policy, rollback vs partial success, concurrency or mutation ordering, stale-state handling, and provenance requirements.
+8. Add compact design with trigger-based representations:
    - If the feature adds or changes boundary I/O, include either an inline contract sketch or a link to the canonical schema/OpenAPI/protocol.
      Add the error model, and add retry/idempotency or duplicate-delivery semantics when the operation can be repeated.
    - runtime and deployment surface when relevant;
@@ -401,19 +408,20 @@ Steps:
      - If a rule has 2+ independent conditions, add a decision table or decision list.
      - If the feature has named states, transitions, or guards, add a state list or compact state table.
      - If a DTO/event/request/response crosses a boundary, add a schema/contract pointer or compact structure block.
-7. Keep NFRs compact and normative only.
+9. Keep NFRs compact and normative only.
    - include only NFRs that can materially change implementation, verification, or feature closure;
    - every normative NFR needs a metric, budget/threshold, or explicit observable signal.
-8. Add Definition of Done, an initial coverage plan, and a compact rollout / activation note when activation order matters.
-9. Run a one-minute quick wording pass (`smell pass`):
+10. Classify unresolved implementation-shaping decisions explicitly as `normative now`, `implementation freedom`, or `temporary assumption` instead of leaving them all in one undifferentiated bucket.
+11. Add Definition of Done, an initial coverage plan, and a compact rollout / activation note when activation order matters.
+12. Run a one-minute quick wording pass (`smell pass`):
    - remove vague words such as `etc.`, `usually`, `as appropriate`, `fast`, or `user-friendly`;
    - split compound ACs;
    - do not leave raw `TBD`; convert it into an `Open question` with owner/date or next decision path.
-10. If an architectural fork exists, run `adr-log`.
-11. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
-12. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
-13. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
-14. Before moving to planning, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = specified`, or when shaping exposed new blockers, dependencies, or context facts.
+13. If an architectural fork exists, run `adr-log`.
+14. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
+15. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
+16. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
+17. Before moving to planning, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = specified`, or when shaping exposed new blockers, dependencies, or context facts.
 
 Stage exit checklist:
 
@@ -424,8 +432,11 @@ Spec quality:
 - [ ] New ambiguous terms or thresholds were normalized via a compact `Terms & thresholds` block when triggered.
 - [ ] Constraints, assumptions, and open questions are explicit instead of being hidden inside prose.
 - [ ] Open questions carry owner/date, a `needed_by` marker, and a next decision path.
+- [ ] Operator/agent contract was captured explicitly when the feature has meaningful operator-facing, agent-facing, or machine-facing behavior.
+- [ ] Safety and boundary semantics were captured when the feature touches trust boundaries or failure-prone surfaces.
 - [ ] NFRs are compact, normative-only, and measurable via a metric, budget, threshold, or observable signal.
 - [ ] A quick wording pass removed vague wording, compound ACs, and raw `TBD`.
+- [ ] Unresolved implementation-shaping decisions were triaged as `normative now`, `implementation freedom`, or `temporary assumption` instead of being left in one vague bucket.
 
 Trigger-based additions:
 - [ ] Boundary I/O changes include a contract/schema pointer or compact contract sketch, plus error model and retry/idempotency notes when relevant.
@@ -445,6 +456,10 @@ Process integrity:
 
 Add an incremental slicing plan inside the dossier.
 
+Use this reference when the feature needs explicit contract-risk planning or post-implementation usage validation:
+
+- [Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)
+
 Trigger summary:
 
 - Do not move to `planned` while an unresolved `Open question` is marked `needed_by: before_planned`.
@@ -458,24 +473,27 @@ Steps:
 
 1. Re-read repo overlays that constrain planning, then re-check open questions, assumptions, dependencies, and the latest change log.
 2. Do not move to `planned` while any unresolved `Open question` is marked `needed_by: before_planned`. Resolve it or explicitly reclassify it first.
-3. Create 2–6 slices in delivery order.
+3. Identify the contract risks that must be killed before close-out. At minimum consider first-run behavior, machine-facing outputs, help/discoverability, path/root semantics, cross-skill handoff, docs/runtime parity, and operator ambiguity points when they are relevant.
+4. Create 2–6 slices in delivery order.
    - order them prerequisite-first and risk-first, not just by happy path;
    - ensure at least one early slice proves the highest-risk boundary behavior, rollout path, or expensive assumption instead of only laying groundwork.
-4. Keep each slice reviewable and provable as one coherent increment.
+5. Keep each slice reviewable and provable as one coherent increment.
    - if a slice cannot be verified and reviewed in one bundle, split it.
-5. For each slice, state the deliverable, which AC IDs it covers, and the verification artifact(s) that prove it.
-6. When a slice depends on another dossier, external team, or shared subsystem, add `Depends on:` with owner and unblock condition.
-7. When a slice relies on a high-risk assumption, add `Assumes:` and `Fallback:` notes.
-8. If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note with activation order and rollback limits.
-9. If a slice touches a shared runtime, contract, migration path, or other cross-cutting surface, name the approval or decision path (repo ADR, architecture update, owner approval, or linked follow-up).
-10. For each slice, list tasks that reference AC IDs or Slice IDs only.
-11. If the feature requires realignment of delivered work, make that realignment explicit as a slice or linked task.
-12. Treat slices and tasks as forecast. Commitment remains in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints unless repo overlays say otherwise.
-13. Set dossier `status: planned`.
-14. Set or confirm `coverage_gate` explicitly.
+6. For each slice, state the deliverable, which AC IDs it covers, and the verification artifact(s) that prove it.
+7. When a slice depends on another dossier, external team, or shared subsystem, add `Depends on:` with owner and unblock condition.
+8. When a slice relies on a high-risk assumption, add `Assumes:` and `Fallback:` notes.
+9. If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note with activation order and rollback limits.
+10. If a slice touches a shared runtime, contract, migration path, or other cross-cutting surface, name the approval or decision path (repo ADR, architecture update, owner approval, or linked follow-up).
+11. Plan drift-guard work when the feature spans multiple normative layers such as skill/process docs, utility spec, help output, and tests.
+12. When the feature has meaningful operator-facing, agent-facing, or machine-facing behavior, add a real usage audit after the main implementation flow and pre-classify expected corrective findings as `docs-only`, `runtime`, `schema/help`, `cross-skill`, or `audit-only`.
+13. For each slice, list tasks that reference AC IDs or Slice IDs only.
+14. If the feature requires realignment of delivered work, make that realignment explicit as a slice or linked task.
+15. Treat slices and tasks as forecast. Commitment remains in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints unless repo overlays say otherwise.
+16. Set dossier `status: planned`.
+17. Set or confirm `coverage_gate` explicitly.
    - Default: `deferred`
    - Tighten to `strict` only when the repo overlay requires it or planning is intentionally treated as a blocking verification gate.
-15. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
+18. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
     The planning stage is not complete until this required backlog actualization is done.
 
 Stage exit checklist:
@@ -485,10 +503,13 @@ Stage exit checklist:
 - [ ] Slices are ordered prerequisite-first and risk-first, and at least one early slice proves a key risk, assumption, or rollout path.
 - [ ] Every slice is small enough to verify and review as one coherent increment.
 - [ ] Every slice states a concrete deliverable, cites AC IDs, and names the verification artifact(s) that prove it.
+- [ ] Relevant contract risks were identified explicitly instead of being left for late corrective work.
 - [ ] `Depends on:` with owner/unblock condition is present when slice-level external dependencies exist.
 - [ ] `Assumes:` and `Fallback:` notes are present when slice-level high-risk assumptions exist.
 - [ ] A rollout / activation note exists when migration, feature flags, cutover, backfill, or irreversible side effects make release order matter.
 - [ ] A cross-cutting approval or decision path is explicit when shared runtime, contract, or migration surfaces are involved.
+- [ ] Drift-guard work was planned when the feature spans multiple normative layers.
+- [ ] A real usage audit and corrective categories were planned when the feature has meaningful operator-facing, agent-facing, or machine-facing behavior.
 - [ ] Tasks reference Slice IDs or AC IDs and do not restate AC text.
 - [ ] Any required realignment of existing delivered work is explicit.
 - [ ] The plan treats slices/tasks as forecast, while ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints carry the commitment signal.

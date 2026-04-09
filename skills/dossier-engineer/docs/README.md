@@ -38,6 +38,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 - [../references/WORKFLOW.md](../references/WORKFLOW.md) explains the end-to-end dossier workflow.
 - [../references/implementation-audit-policy.md](../references/implementation-audit-policy.md) defines the external audit stack for implementation work.
 - [../references/implementation-logging.md](../references/implementation-logging.md) defines the implementation logging contract and metrics.
+- [../references/spec-and-plan-risk-patterns.md](../references/spec-and-plan-risk-patterns.md) defines the contract-risk patterns that `spec-compact` and `plan-slice` should kill before late corrective cycles.
 - [../references/DOSSIER_TEMPLATE.md](../references/DOSSIER_TEMPLATE.md) provides the canonical Feature Dossier template.
 - [../references/SSOT_INDEX_TEMPLATE.md](../references/SSOT_INDEX_TEMPLATE.md) provides the global index template.
 - [../references/EXAMPLE_FEATURE_DOSSIER.md](../references/EXAMPLE_FEATURE_DOSSIER.md) shows a worked dossier example.

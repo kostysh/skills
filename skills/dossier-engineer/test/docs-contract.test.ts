@@ -19,6 +19,11 @@ const IMPLEMENTATION_LOGGING_PATH = path.join(
   'references',
   'implementation-logging.md',
 );
+const SPEC_AND_PLAN_RISK_PATTERNS_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'spec-and-plan-risk-patterns.md',
+);
 const PROCESS_MODEL_PATH = path.join(SKILL_DIR, 'docs', 'cross-skill-process-model.ru.md');
 const BACKLOG_GAP_ANALYSIS_PATH = path.join(
   SKILL_DIR,
@@ -183,5 +188,45 @@ void test('implementation stage points to audit and logging refs with explicit s
     'Spec gap decisions',
     'Implementation freedom decisions',
     'Temporary assumptions',
+  ]);
+});
+
+void test('spec-compact and plan-slice point to risk patterns and literal risk-killing duties', async () => {
+  const [skill, workflow, riskPatterns] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(SPEC_AND_PLAN_RISK_PATTERNS_PATH, 'utf8'),
+  ]);
+
+  const specCompact = extractSection(skill, '#### Workflow stage: `spec-compact`');
+  const planSlice = extractSection(skill, '#### Workflow stage: `plan-slice`');
+  const riskHardening = extractSection(workflow, '## Spec and planning risk hardening');
+
+  assertContainsTerms(specCompact, [
+    '[Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)',
+    'operator/agent contract explicit',
+    'safety and boundary semantics',
+    '`normative now`, `implementation freedom`, or `temporary assumption`',
+  ]);
+  assertContainsTerms(planSlice, [
+    '[Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)',
+    'Identify the contract risks that must be killed before close-out.',
+    'Plan drift-guard work',
+    'add a real usage audit after the main implementation flow',
+  ]);
+  assertContainsTerms(riskHardening, [
+    '[spec-and-plan-risk-patterns.md](spec-and-plan-risk-patterns.md)',
+    '`spec-compact` needs explicit operator/agent contract or safety semantics',
+    '`plan-slice` must explicitly plan contract-risk cleanup, drift-guard work, or a real usage audit',
+  ]);
+  assertContainsTerms(riskPatterns, [
+    '## During `spec-compact`',
+    '## During `plan-slice`',
+    'Operator/agent contract',
+    'Safety and boundary semantics',
+    'Unresolved-decision triage',
+    'Contract-risk block',
+    'Real usage audit',
+    'Corrective backlog categories',
   ]);
 });
