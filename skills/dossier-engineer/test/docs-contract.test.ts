@@ -24,6 +24,17 @@ const SPEC_AND_PLAN_RISK_PATTERNS_PATH = path.join(
   'references',
   'spec-and-plan-risk-patterns.md',
 );
+const REPO_AGENTS_TEMPLATE_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'REPO_AGENTS_TEMPLATE.md',
+);
+const EXAMPLE_REPO_AGENTS_PATH = path.join(
+  SKILL_DIR,
+  'assets',
+  'example-repo',
+  'AGENTS.md',
+);
 const PROCESS_MODEL_PATH = path.join(SKILL_DIR, 'docs', 'cross-skill-process-model.ru.md');
 const BACKLOG_GAP_ANALYSIS_PATH = path.join(
   SKILL_DIR,
@@ -252,4 +263,25 @@ void test('spec-compact and plan-slice point to risk patterns and literal risk-k
     'Real usage audit',
     'Corrective backlog categories',
   ]);
+});
+
+void test('repo AGENTS template reinforces current common-command and audit-stack rules', async () => {
+  const [template, example] = await Promise.all([
+    readFile(REPO_AGENTS_TEMPLATE_PATH, 'utf8'),
+    readFile(EXAMPLE_REPO_AGENTS_PATH, 'utf8'),
+  ]);
+
+  for (const text of [template, example]) {
+    assertContainsTerms(text, [
+      'Replace the placeholders with the real formatter, linter, and test commands for this repository.',
+      '- Format code: `<repo format command>`',
+      '- Lint code: `<repo lint command>`',
+      '- Run tests: `<repo test command>`',
+      'node scripts/dossier.mjs index-refresh',
+      'node scripts/dossier.mjs lint-dossiers',
+      'node scripts/dossier.mjs debt-audit',
+      '`spec-conformance` first;',
+      '`code-reviewer` and `security-reviewer` when the changed scope includes code;',
+    ]);
+  }
 });

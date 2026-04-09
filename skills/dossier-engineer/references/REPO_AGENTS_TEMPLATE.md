@@ -23,10 +23,13 @@ This file contains repo-specific overlays only.
 ## Repo-specific overlays
 1) Before `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `dossier-verify`, or `next-step`, ingest this file and any referenced repo ADRs as workflow overlays.
 2) Keep this file overlay-only. Default dossier workflow, review, and closure rules live in the `dossier-engineer` skill and should not be copied here unless the repo intentionally tightens them.
-3) The common command examples below must match the actual repo commands. If bootstrap preserved repo-specific script names or paths, rewrite these lines instead of forcing canonical filenames.
+3) The common command examples below must match the actual repo commands. Replace the placeholders with the real formatter, linter, and test commands for this repository.
+4) If bootstrap preserved repo-specific script names or paths, rewrite these lines instead of forcing canonical filenames.
 
 ## Common commands
-- Run tests: `node --test`
+- Format code: `<repo format command>`
+- Lint code: `<repo lint command>`
+- Run tests: `<repo test command>`
 - Refresh index: `node scripts/dossier.mjs index-refresh`
 - Lint dossiers (read-only): `node scripts/dossier.mjs lint-dossiers`
 - Audit coverage: `node scripts/dossier.mjs coverage-audit`
@@ -39,5 +42,8 @@ This file contains repo-specific overlays only.
 
 Review note:
 - `review-artifact` only records an already obtained independent review verdict; it does not perform the review itself.
-- Implementation close-out still requires completeness review, nested `code-reviewer` and `security-reviewer` passes, and a separate independent reviewer before `dossier-step-close`.
+- Implementation close-out still requires the full audit stack defined by the skill process:
+  - `spec-conformance` first;
+  - `code-reviewer` and `security-reviewer` when the changed scope includes code;
+  - a separate independent reviewer before `dossier-step-close`.
 ```
