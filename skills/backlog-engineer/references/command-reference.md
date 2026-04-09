@@ -92,6 +92,11 @@ Behavior:
 - if another mutating command already owns the backlog root, expect `BE_MUTATION_LOCKED`.
 - if the host runtime cannot provide safe anchored directory handling for utility-owned artifacts, expect `BE_PLATFORM_UNSUPPORTED`.
 
+Cross-skill note:
+
+- if dossier workflow stage `change-proposal` creates a new ADR or other canonical source, `source update` starts here with `register-source` before any dependent-item patching.
+- after dossier workflow stage `change-proposal`, use `register-source` first only when the canonical source is new.
+
 ## `list-sources`
 
 Use when `source_id` or `source_label` is needed.
@@ -189,6 +194,8 @@ Interpretation:
 Cross-skill note:
 
 - `packet` is for backlog creation and backlog growth, not for dossier-side lifecycle actualization of already selected work.
+- after dossier workflow stage `change-proposal`, use `packet` only for the `new backlog item` branch;
+- keep already `implemented` item history honest instead of reopening it as if the delivered work never happened.
 
 ## `patch-item`
 
@@ -221,6 +228,7 @@ Cross-skill note:
 - `patch-item` is the normal backlog mutation after dossier shaping / planning / implementation when the affected backlog items are already known;
 - use it to actualize `delivery_state`, blockers, dependencies, and context facts that dossier work made explicit;
 - for truth-changing dossier stages, `patch-item`-driven actualization belongs to the closure contract of that stage, not to an optional later cleanup pass.
+- after dossier workflow stage `change-proposal`, `patch-item` is the branch for `patch existing item` and the dependent-item update step after `source update`.
 
 ## `remove-item`
 
@@ -280,6 +288,8 @@ Cross-skill note:
 - use scoped `refresh` after dossier work when updated source documents may have changed backlog-derived state;
 - dossier artifacts may support the decision to refresh or patch, but they do not replace architecture or ADR sources as canonical upstream truth;
 - `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch on already known backlog items.
+- after dossier workflow stage `change-proposal`, `source update` always refreshes a changed registered source before dependent-item patching;
+- for shared-source or multi-item impact, do not stop at partial sync after `refresh`: patch all known impacted items or split them into new backlog work before dossier stage closure.
 
 ## `status`
 

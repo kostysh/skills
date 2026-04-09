@@ -263,6 +263,13 @@ void test('normative backlog docs keep cross-skill handoff and actualization lit
     'use `patch-item` for `delivery_state` changes',
     'use scoped `refresh` only when updated source documents may have changed source-derived backlog state',
     '`refresh` alone does not actualize `delivery_state`',
+    'dossier-side `backlog impact verdict`',
+    '`no-op` means no backlog mutation',
+    '`patch existing item` means patch already known backlog items',
+    '`source update` means: if the canonical source is new, `register-source` first',
+    '`new backlog item` means keep existing item history honest',
+    'an already `implemented` item stays `implemented`',
+    'partial sync is not an allowed closure outcome',
   ]);
 
   assertContainsTerms(operatorWorkflows, [
@@ -273,10 +280,28 @@ void test('normative backlog docs keep cross-skill handoff and actualization lit
     'before that stage is treated as complete',
     '`refresh` alone does not actualize `delivery_state`',
     'part of stage closure',
+    'Update backlog after dossier `change-proposal`',
+    'read the dossier-side `backlog impact verdict`',
+    'primary branch = `source update`',
+    'partial sync is not an allowed closure outcome',
+    'an already `implemented` item does not silently downgrade',
   ]);
 
   assertContainsTerms(commandReference, [
     '`patch-item`-driven actualization belongs to the closure contract',
     '`refresh` alone does not actualize `delivery_state`',
+    'creates a new ADR or other canonical source',
+    'use `packet` only for the `new backlog item` branch',
+    '`patch existing item` and the dependent-item update step after `source update`',
+    'do not stop at partial sync after `refresh`',
+  ]);
+
+  assertContainsTerms(utilitySpec, [
+    '`backlog impact verdict`',
+    '`no-op` -> backlog mutation отсутствует',
+    '`source update` -> if the canonical source is new, register it first',
+    'новый ADR, созданный во время `change-proposal`, всегда считается backlog-relevant source update',
+    'already `implemented` item stays `implemented`',
+    'partial sync',
   ]);
 });

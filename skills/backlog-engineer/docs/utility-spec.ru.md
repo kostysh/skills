@@ -1042,6 +1042,20 @@ Dry-run не должен:
 - dossier implementation + closure с достаточным evidence -> backlog `delivery_state = implemented`;
 - dossier-discovered blockers, dependencies, context facts, или cross-cutting decisions -> patch backlog state before dossier workflow continues.
 
+Для dossier workflow stage `change-proposal` backlog-side branch selector задаётся dossier-side `backlog impact verdict`:
+
+- `no-op` -> backlog mutation отсутствует;
+- `patch existing item` -> patch already known impacted items without creating a new work unit;
+- `source update` -> if the canonical source is new, register it first; if the canonical source is already registered and changed, refresh it first; then patch all known impacted items; then create new work only if the refreshed source still implies separate delta work;
+- `new backlog item` -> create a separate delta item and keep existing implemented history honest.
+
+Обязательные guards:
+
+- новый ADR, созданный во время `change-proposal`, всегда считается backlog-relevant source update;
+- если одновременно изменился canonical source и изменилась current-work truth, primary branch = `source update`;
+- already `implemented` item stays `implemented`; later delta work becomes new backlog work;
+- shared-source или multi-item impact не может завершаться partial sync: все известные impacted items должны быть patched или явно split into new backlog work before dossier stage closure.
+
 Слои статуса нельзя смешивать:
 
 - dossier `planned` не равен backlog `planned`;

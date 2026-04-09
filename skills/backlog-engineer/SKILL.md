@@ -45,6 +45,7 @@ After backlog work is selected and backlog readiness is clear, the normal downst
 - `spec-compact`
 - `plan-slice`
 - `implementation`
+- `change-proposal`
 - `dossier-verify`
 - `review-artifact`
 - `dossier-step-close`
@@ -313,6 +314,20 @@ Use these literal rules:
 - use scoped `refresh` only when updated source documents may have changed source-derived backlog state;
 - `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch.
 
+For dossier workflow stage `change-proposal`, use the dossier-side `backlog impact verdict` as the backlog branch selector:
+
+- `no-op` means no backlog mutation and no backlog rediscovery; do not reinterpret it into a mutation branch unless the dossier-side verdict is reopened explicitly;
+- `patch existing item` means patch already known backlog items without inventing a new work unit;
+- `source update` means: if the canonical source is new, `register-source` first; if the canonical source is already registered and changed, scoped `refresh` first; then patch all known impacted items, and only then create new backlog work if the refreshed source still implies a separate delta;
+- `new backlog item` means keep existing item history honest and create a truly separate delta item instead of silently reopening old completed history.
+
+Special guards:
+
+- if a dossier `change-proposal` creates a new ADR or other canonical source, backlog-side handling must treat that as `source update`;
+- if a source changed and current work truth changed together, primary branch = `source update`;
+- an already `implemented` item stays `implemented`; later delta work becomes a new backlog item;
+- for shared-source or multi-item impact, partial sync is not an allowed closure outcome: all known impacted items must be patched or explicitly split into new backlog work before the dossier stage closes.
+
 Status crosswalk notes:
 
 - dossier `planned` is not the same state layer as backlog `planned`;
@@ -453,6 +468,7 @@ Use these as the canonical top-level flows:
 | Create backlog from architecture | preflight on system state -> source-set gate -> `init` -> `register-source` for all relevant sources -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
 | Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
+| Update backlog after dossier `change-proposal` | read dossier-side `backlog impact verdict`; `no-op` -> confirm no backlog mutation; `patch existing item` -> `template patch` -> `patch-item`; `source update` -> if source is new, `register-source` first; if source is already registered and changed, scoped `refresh` first -> patch all known impacted items -> create new item only if needed; `new backlog item` -> `template packet` -> `packet`, while keeping old item history honest |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
 | Show what changed after the last action | Use the compact response of the last mutating command; only then fetch `items` if details are needed |
 | Show what needs attention | `attention` -> `items` only for selected tasks |

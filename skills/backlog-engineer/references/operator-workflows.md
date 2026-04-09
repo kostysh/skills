@@ -19,6 +19,7 @@ Cross-skill wording rule:
 | Update backlog after dossier shaping/specification | after dossier workflow stage `spec-compact`, and before that stage is treated as complete, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `specified` and record any new blockers, dependencies, or context facts |
 | Update backlog after dossier planning | after dossier workflow stage `plan-slice`, and before that stage is treated as complete, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `planned` and record any newly explicit dependencies or sequencing constraints |
 | Update backlog after dossier implementation/closure | after dossier workflow stage `implementation`, then `dossier-verify` and `review-artifact`, actualize backlog truth before `dossier-step-close`; only then close the dossier stage and confirm the selected backlog work as `implemented` or record any new follow-up backlog facts |
+| Update backlog after dossier `change-proposal` | read the dossier-side `backlog impact verdict`; `no-op` -> confirm no backlog mutation; `patch existing item` -> `template patch` -> `patch-item`; `source update` -> if source is new, `register-source` first; if source is already registered and changed, scoped `refresh` first -> patch every known impacted item -> create new work only if the refreshed source still implies separate delta work; `new backlog item` -> `template packet` -> `packet`, while keeping old item history honest |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
 | Show what changed after the last action | Use the compact response of the last mutating command; only then fetch `items` if details are needed |
 | Show what needs attention | `attention` -> `items` only for selected tasks |
@@ -111,6 +112,20 @@ When dossier work changes backlog truth:
 - keep the mutation scoped to the selected work and the newly discovered linked facts whenever possible;
 - if dossier work surfaced a new blocker, dependency, or context fact, patch backlog before continuing dossier-local workflow.
 - for truth-changing dossier stages, backlog actualization is part of stage closure, not an optional follow-up after closure.
+
+For dossier workflow stage `change-proposal`, use the dossier-side `backlog impact verdict` literally:
+
+- `no-op` -> no backlog mutation and no backlog rediscovery;
+- `patch existing item` -> patch already known impacted items only;
+- `source update` -> if the source is new, `register-source` first; if the source is already registered and changed, scoped `refresh` first; then patch all known impacted items; then create new work only if the refreshed source still implies separate delta work;
+- `new backlog item` -> create a separate delta item and keep existing implemented history honest.
+
+Special guards:
+
+- a new ADR created during `change-proposal` is always a backlog-relevant source update;
+- if changed source and changed work truth appear together, primary branch = `source update`;
+- for shared-source or multi-item impact, partial sync is not an allowed closure outcome;
+- an already `implemented` item does not silently downgrade just because later delta work was discovered; later delta work becomes a new backlog item.
 
 ## Agent accents
 
