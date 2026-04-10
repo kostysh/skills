@@ -31,6 +31,28 @@
 - live `patch-item` reject для refresh-managed todo;
 - hidden rebuild recovery для legacy bad patch.
 
+## Operator / agent workflow rule
+
+После этого бага agent должен различать `todo.managed_by` перед закрытием todo.
+
+Правила:
+
+- если `items` / `attention` показывает `todo.managed_by = "refresh"`, не закрывать такой todo через `patch-item remove_todo`;
+- refresh-managed todo являются runtime review signals от `refresh`;
+- после review такие todo очищаются повторным scoped `refresh`, когда причина больше не наблюдается;
+- если review показал, что изменилась backlog truth, использовать `patch-item` только для фактической актуализации задачи: `delivery_state`, blockers/gaps, dependencies, context/source links и другие task fields;
+- `patch-item remove_todo` допустим только для `managed_by = "mutation"` todo;
+- если команда вернула `BE_TODO_REFRESH_MANAGED`, объяснить operator-у: этот todo создан `refresh`, поэтому закрывается не patch-ем, а повторным scoped `refresh` после проверки source/dependency cause;
+- не редактировать вручную `.backlog/state.json` или `.backlog/applied.json`.
+
+Практический flow:
+
+1. Прочитать affected item через `items`.
+2. Проверить `managed_by` у каждого todo.
+3. Для `managed_by = "refresh"`: выполнить review, затем повторный scoped `refresh --source-id ...` / `refresh --source-path ...` / `refresh --item-key ...`.
+4. Для `managed_by = "mutation"`: можно использовать `template patch` -> `patch-item` с `remove_todo`.
+5. После этого проверить `status`, `attention` или `items`.
+
 ## Симптом
 
 После успешного `patch-item` для `remove_todo`:
