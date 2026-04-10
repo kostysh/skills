@@ -760,6 +760,82 @@ void test('default ensureQueryState fails fast on duplicate patch sequence in ap
   }
 });
 
+void test('default ensureQueryState tolerates legacy remove_todo patch when the todo is already absent from rebuilt state', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const runtime = createRuntime();
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    await mkdir(path.join(backlogRoot, 'patches'), { recursive: true });
+    await writeFile(
+      path.join(backlogRoot, 'patches', '333c4f042c00--legacy-remove-refresh-todo.patch-item.json'),
+      `${JSON.stringify(
+        {
+          metadata: {
+            patch_id: '2026-04-10-001-legacy-remove-refresh-todo',
+            created_at: '2026-04-10T09:40:00Z',
+            sequence: 2,
+            target_item_keys: ['auth-core'],
+          },
+          operations: [
+            {
+              item_key: 'auth-core',
+              action: 'remove_todo',
+              todo_ids: ['ffffffff-ffff-4fff-8fff-ffffffffffff'],
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+      'utf8',
+    );
+
+    const appliedPath = path.join(backlogRoot, '.backlog', 'applied.json');
+    const applied = JSON.parse(await readFile(appliedPath, 'utf8')) as {
+      schema_version: number;
+      created_at: string;
+      updated_at: string;
+      next_apply_index: number;
+      packets: unknown[];
+      patches: Array<{
+        patch_id: string;
+        apply_index: number;
+        canonical_path: string;
+        content_hash: string;
+        sequence: number;
+        applied_at: string;
+        kind: string;
+        target_item_keys: string[];
+      }>;
+    };
+    applied.patches.push({
+      patch_id: '2026-04-10-001-legacy-remove-refresh-todo',
+      apply_index: 3,
+      canonical_path: 'patches/333c4f042c00--legacy-remove-refresh-todo.patch-item.json',
+      content_hash: '3'.repeat(64),
+      sequence: 2,
+      applied_at: '2026-04-10T09:45:00Z',
+      kind: 'patch-item',
+      target_item_keys: ['auth-core'],
+    });
+    applied.next_apply_index = 4;
+    applied.updated_at = '2026-04-10T09:45:00Z';
+    await writeFile(appliedPath, `${JSON.stringify(applied, null, 2)}\n`, 'utf8');
+
+    const context = await runtime.createContext('status', backlogRoot);
+    const result = await context.ensureQueryState();
+
+    assert.ok(result.state.items.some((item) => item.item_key === 'auth-core'));
+    assert.equal(result.state.todos.length, 0);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
 void test('default ensureQueryState fails when canonical backlog references source_ids missing from sources.json', async () => {
   const tempRoot = await createTempDir();
   const backlogRoot = path.join(tempRoot, 'backlog');

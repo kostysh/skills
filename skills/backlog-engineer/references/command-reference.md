@@ -214,6 +214,7 @@ Behavior:
 
 - validates patch metadata;
 - validates `target_item_keys`;
+- rejects `remove_todo` for refresh-managed review todo;
 - applies operations to existing tasks;
 - rebuilds affected graph region;
 - updates derived state and utility-owned `todo`.
@@ -236,6 +237,7 @@ Cross-skill note:
 
 - `patch-item` is the normal backlog mutation after dossier shaping / planning / implementation when the affected backlog items are already known;
 - use it to actualize `delivery_state`, blockers, dependencies, and context facts that dossier work made explicit;
+- use `remove_todo` only for mutation-managed todo; refresh-managed review todo are cleared by scoped `refresh` after the source/dependency cause is gone;
 - for truth-changing dossier stages, `patch-item`-driven actualization belongs to the closure contract of that stage, not to an optional later cleanup pass.
 - after dossier workflow stage `change-proposal`, `patch-item` is the branch for `patch existing item` and the dependent-item update step after `source update`.
 

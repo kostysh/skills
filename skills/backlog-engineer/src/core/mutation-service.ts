@@ -278,6 +278,41 @@ function mapTodoIdsToItemKeys(payload: {
   );
 }
 
+function assertPatchTodoOperationsAreMutationSafe(payload: {
+  state: StateFile;
+  patch: PatchFile;
+  errors: ErrorModule;
+}): void {
+  const todosById = new Map(payload.state.todos.map((todo) => [todo.todo_id, todo] as const));
+
+  for (const operation of payload.patch.operations) {
+    if (operation.action !== 'remove_todo') {
+      continue;
+    }
+
+    for (const todoId of operation.todo_ids) {
+      const todo = todosById.get(todoId);
+      if (!todo) {
+        continue;
+      }
+
+      if ((todo.managed_by ?? 'mutation') !== 'refresh') {
+        continue;
+      }
+
+      throw payload.errors.create('BE_TODO_REFRESH_MANAGED', undefined, {
+        details: {
+          item_key: operation.item_key,
+          todo_id: todoId,
+          todo_type: todo.type,
+          managed_by: todo.managed_by ?? 'refresh',
+        },
+        hint: 'Refresh-managed review todo are cleared through scoped refresh, not patch-item. Re-run refresh after review; use patch-item only if the review changes backlog truth.',
+      });
+    }
+  }
+}
+
 function touchState(payload: {
   schemas: SchemaModule;
   state: StateFile;
@@ -597,6 +632,11 @@ export function createMutationService(payload: {
       const isRemoveItemPatch = patch.operations.every(
         (operation) => operation.action === 'remove_item',
       );
+      assertPatchTodoOperationsAreMutationSafe({
+        state,
+        patch,
+        errors: payload.errors,
+      });
       const { changedItemKeys, sourceChangedItemKeys, contextChangedItemKeys } =
         collectPatchFieldChanges(patch);
       const graphResult = payload.graph.applyPatchOperations({ state, patch });

@@ -428,6 +428,8 @@ Recommended starter operations:
 - `remove_todo`
 - `remove_item`
 
+`remove_todo` is for mutation-managed todo only. Refresh-managed review todo are utility runtime signals and are cleared by scoped `refresh` when their observed cause is gone.
+
 Example update operation:
 
 ```json
@@ -476,7 +478,7 @@ Use `remove-item` to apply removal patches, even though the file still has patch
 
 ## Utility-owned todo model
 
-Open `todo` is utility-owned derived state. The agent may close it through patch workflows but must not author it in packets.
+Open `todo` is utility-owned derived state. The agent may close mutation-managed todo through patch workflows but must not author todo in packets.
 
 Expected todo shape:
 

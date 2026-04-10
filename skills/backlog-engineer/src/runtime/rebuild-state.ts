@@ -369,6 +369,7 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
       state,
       patch,
       errors: payload.errors,
+      missingTodoPolicy: 'ignore',
     });
   }
 

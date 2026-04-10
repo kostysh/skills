@@ -511,7 +511,8 @@
 - updates allowed fields
 - rejects non-existing target item
 - can update several tasks in one patch
-- may remove todo via `remove_todo`
+- may remove mutation-managed todo via `remove_todo`
+- rejects refresh-managed todo removal with `BE_TODO_REFRESH_MANAGED`
 - preserves referential integrity after apply
 - summary contains exact fields from `PatchItemCommandOutput`
 - writes canonical patch copy and applied entry

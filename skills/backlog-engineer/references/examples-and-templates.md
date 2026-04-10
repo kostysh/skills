@@ -144,7 +144,7 @@ This example adds new auth-related tasks extracted from architecture.
 
 ## Example update patch
 
-This patch updates existing tasks and closes one open todo.
+This patch updates existing tasks and closes one open mutation-managed todo.
 
 ```json
 {
@@ -175,7 +175,7 @@ This patch updates existing tasks and closes one open todo.
     {
       "item_key": "auth-session-timeout-audit",
       "action": "remove_todo",
-      "todo_ids": ["<todo_id>"]
+      "todo_ids": ["<mutation-managed todo_id>"]
     }
   ]
 }

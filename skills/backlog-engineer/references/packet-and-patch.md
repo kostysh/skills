@@ -65,7 +65,7 @@ Patch rules:
 
 - changes existing tasks;
 - may remove existing tasks through the remove flow;
-- may close open utility-owned `todo` items;
+- may close open mutation-managed `todo` items;
 - never acts as a second kind of packet for adding new tasks.
 
 Start from `template patch` whenever possible.
@@ -77,6 +77,8 @@ Utility-owned `todo` follows these rules:
 - it is created only by the utility during `packet`, `patch-item`, `remove-item`, or `refresh`;
 - it stores only open actions;
 - when resolved, it is removed rather than marked as closed.
+- `patch-item remove_todo` may remove only `managed_by = mutation` todo.
+- `managed_by = refresh` review todo are cleared by scoped `refresh` when their source/dependency cause is no longer observed.
 
 Do not author `todo` in packets or patches.
 

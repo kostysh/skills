@@ -357,15 +357,20 @@ function removeTodosFromState(payload: {
   itemKey: string;
   todoIds: readonly string[];
   errors: ErrorModule;
+  missingTodoPolicy?: 'error' | 'ignore';
 }): StateFile {
   const next = cloneState(payload.state);
   const todoIds = new Set(payload.todoIds);
   const ownedTodoIds = new Set(
     next.todos.filter((todo) => todo.item_key === payload.itemKey).map((todo) => todo.todo_id),
   );
+  const removableTodoIds = new Set<string>();
 
   for (const todoId of todoIds) {
     if (!ownedTodoIds.has(todoId)) {
+      if (payload.missingTodoPolicy === 'ignore') {
+        continue;
+      }
       throw payload.errors.create('BE_TODO_NOT_FOUND', undefined, {
         details: {
           item_key: payload.itemKey,
@@ -373,9 +378,11 @@ function removeTodosFromState(payload: {
         },
       });
     }
+
+    removableTodoIds.add(todoId);
   }
 
-  next.todos = next.todos.filter((todo) => !todoIds.has(todo.todo_id));
+  next.todos = next.todos.filter((todo) => !removableTodoIds.has(todo.todo_id));
   return next;
 }
 
@@ -519,6 +526,7 @@ export function applyPatchReplay(payload: {
   state: StateFile;
   patch: PatchFile;
   errors: ErrorModule;
+  missingTodoPolicy?: 'error' | 'ignore';
 }): StateFile {
   let next = cloneState(payload.state);
   const removedItemKeys = new Set<string>();
@@ -549,6 +557,7 @@ export function applyPatchReplay(payload: {
           itemKey: operation.item_key,
           todoIds: operation.todo_ids,
           errors: payload.errors,
+          missingTodoPolicy: payload.missingTodoPolicy ?? 'error',
         });
         break;
       case 'remove_item':

@@ -4902,6 +4902,7 @@ var ERROR_CODES = [
 	"BE_PATCH_ID_CONFLICT",
 	"BE_PATCH_SEQUENCE_CONFLICT",
 	"BE_PATCH_OPERATION_INVALID",
+	"BE_TODO_REFRESH_MANAGED",
 	"BE_TODO_NOT_FOUND",
 	"BE_ITEM_NOT_FOUND",
 	"BE_CANONICAL_WRITE_FAILED",
@@ -4934,6 +4935,7 @@ var ERROR_EXIT_CODES = {
 	BE_PATCH_ID_CONFLICT: 4,
 	BE_PATCH_SEQUENCE_CONFLICT: 4,
 	BE_PATCH_OPERATION_INVALID: 4,
+	BE_TODO_REFRESH_MANAGED: 4,
 	BE_TODO_NOT_FOUND: 5,
 	BE_ITEM_NOT_FOUND: 5,
 	BE_CANONICAL_WRITE_FAILED: 1,
@@ -4966,6 +4968,7 @@ var ERROR_DEFAULT_MESSAGES = {
 	BE_PATCH_ID_CONFLICT: "Patch ID already exists in applied registry.",
 	BE_PATCH_SEQUENCE_CONFLICT: "Patch sequence is not monotonic.",
 	BE_PATCH_OPERATION_INVALID: "Patch operation is invalid for this command.",
+	BE_TODO_REFRESH_MANAGED: "Refresh-managed review todo cannot be removed through patch-item.",
 	BE_TODO_NOT_FOUND: "Todo was not found.",
 	BE_ITEM_NOT_FOUND: "Item was not found.",
 	BE_CANONICAL_WRITE_FAILED: "Failed to write canonical artifact.",
@@ -8686,11 +8689,18 @@ function removeTodosFromState(payload) {
 	const next = cloneState$2(payload.state);
 	const todoIds = new Set(payload.todoIds);
 	const ownedTodoIds = new Set(next.todos.filter((todo) => todo.item_key === payload.itemKey).map((todo) => todo.todo_id));
-	for (const todoId of todoIds) if (!ownedTodoIds.has(todoId)) throw payload.errors.create("BE_TODO_NOT_FOUND", void 0, { details: {
-		item_key: payload.itemKey,
-		todo_id: todoId
-	} });
-	next.todos = next.todos.filter((todo) => !todoIds.has(todo.todo_id));
+	const removableTodoIds = /* @__PURE__ */ new Set();
+	for (const todoId of todoIds) {
+		if (!ownedTodoIds.has(todoId)) {
+			if (payload.missingTodoPolicy === "ignore") continue;
+			throw payload.errors.create("BE_TODO_NOT_FOUND", void 0, { details: {
+				item_key: payload.itemKey,
+				todo_id: todoId
+			} });
+		}
+		removableTodoIds.add(todoId);
+	}
+	next.todos = next.todos.filter((todo) => !removableTodoIds.has(todo.todo_id));
 	return next;
 }
 function cleanupRemovedItemReferences$1(state, removedItemKeys) {
@@ -8795,7 +8805,8 @@ function applyPatchReplay(payload) {
 					state: next,
 					itemKey: operation.item_key,
 					todoIds: operation.todo_ids,
-					errors: payload.errors
+					errors: payload.errors,
+					missingTodoPolicy: payload.missingTodoPolicy ?? "error"
 				});
 				break;
 			case "remove_item":
@@ -9265,6 +9276,26 @@ function mapTodoIdsToItemKeys(payload) {
 		return itemKey ? [itemKey] : [];
 	}));
 }
+function assertPatchTodoOperationsAreMutationSafe(payload) {
+	const todosById = new Map(payload.state.todos.map((todo) => [todo.todo_id, todo]));
+	for (const operation of payload.patch.operations) {
+		if (operation.action !== "remove_todo") continue;
+		for (const todoId of operation.todo_ids) {
+			const todo = todosById.get(todoId);
+			if (!todo) continue;
+			if ((todo.managed_by ?? "mutation") !== "refresh") continue;
+			throw payload.errors.create("BE_TODO_REFRESH_MANAGED", void 0, {
+				details: {
+					item_key: operation.item_key,
+					todo_id: todoId,
+					todo_type: todo.type,
+					managed_by: todo.managed_by ?? "refresh"
+				},
+				hint: "Refresh-managed review todo are cleared through scoped refresh, not patch-item. Re-run refresh after review; use patch-item only if the review changes backlog truth."
+			});
+		}
+	}
+}
 function touchState(payload) {
 	return payload.schemas.parseStateFile({
 		...payload.state,
@@ -9485,6 +9516,11 @@ function createMutationService(payload) {
 		},
 		applyPatch({ state, patch, sourceRegistry, dryRun }) {
 			const isRemoveItemPatch = patch.operations.every((operation) => operation.action === "remove_item");
+			assertPatchTodoOperationsAreMutationSafe({
+				state,
+				patch,
+				errors: payload.errors
+			});
 			const { changedItemKeys, sourceChangedItemKeys, contextChangedItemKeys } = collectPatchFieldChanges(patch);
 			const graphResult = payload.graph.applyPatchOperations({
 				state,
@@ -11178,7 +11214,8 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 		state = applyPatchReplay({
 			state,
 			patch,
-			errors: payload.errors
+			errors: payload.errors,
+			missingTodoPolicy: "ignore"
 		});
 	}
 	validateSourceRegistryReferences({

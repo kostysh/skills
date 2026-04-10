@@ -11,6 +11,7 @@ import { PACKET_COMMAND } from '../src/commands/packet.ts';
 import { PATCH_ITEM_COMMAND } from '../src/commands/patch-item.ts';
 import { REGISTER_SOURCE_COMMAND } from '../src/commands/register-source.ts';
 import { REMOVE_ITEM_COMMAND } from '../src/commands/remove-item.ts';
+import { BacklogError } from '../src/errors/index.ts';
 import { createNoOpRegistry } from '../src/hooks/index.ts';
 import { createNodePathPort, createRuntime } from '../src/runtime/index.ts';
 import {
@@ -859,6 +860,103 @@ void test('mutation commands read authored packet and patch files through inject
     ),
   );
   assert.equal(removeOutput.counts.removed, 1);
+});
+
+void test('patch-item rejects remove_todo for refresh-managed review todo', async () => {
+  const cwd = await createTempDir();
+  const runtime = createRuntimeForMutationTest({});
+
+  try {
+    const backlogRoot = path.join(cwd, 'backlog');
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'refreshable-backlog'), backlogRoot, {
+      recursive: true,
+    });
+
+    const refreshTodoId = 'ffffffff-ffff-4fff-8fff-ffffffffffff';
+    const state = await readState(backlogRoot);
+    state.todos.push({
+      todo_id: refreshTodoId,
+      item_key: 'auth-core',
+      type: 'review_source_change',
+      managed_by: 'refresh',
+      message: 'Review source change: sources/docs/modules/auth.md.',
+      created_at: '2026-04-10T09:30:00.000Z',
+      related_sources: [
+        {
+          source_id: '11111111-1111-4111-8111-111111111111',
+          source_label: 'sources/docs/modules/auth.md',
+        },
+      ],
+      related_item_keys: [],
+    });
+    state.items = state.items.map((item) =>
+      item.item_key === 'auth-core'
+        ? {
+            ...item,
+            open_todo_ids: [refreshTodoId],
+            needs_attention: true,
+            attention_reason_codes: ['source_changed'],
+            attention_reasons: ['Source changed: review sources/docs/modules/auth.md.'],
+            ready_for_next_step: false,
+          }
+        : item,
+    );
+    await writeFile(
+      path.join(backlogRoot, '.backlog', 'state.json'),
+      `${JSON.stringify(state, null, 2)}\n`,
+      'utf8',
+    );
+
+    const patchPath = path.join(backlogRoot, 'drafts', 'close-refresh-review.patch.json');
+    await mkdir(path.dirname(patchPath), { recursive: true });
+    await writeFile(
+      patchPath,
+      `${JSON.stringify(
+        {
+          metadata: {
+            patch_id: '2026-04-10-001-close-refresh-review',
+            created_at: '2026-04-10T09:35:00.000Z',
+            sequence: 2,
+            target_item_keys: ['auth-core'],
+          },
+          operations: [
+            {
+              item_key: 'auth-core',
+              action: 'remove_todo',
+              todo_ids: [refreshTodoId],
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+      'utf8',
+    );
+
+    const beforeApplied = await readAppliedRegistry(backlogRoot);
+    const patchContext = await runtime.createContext('patch-item', backlogRoot);
+    await assert.rejects(
+      async () => {
+        await PATCH_ITEM_COMMAND.execute(
+          {
+            patch: './drafts/close-refresh-review.patch.json',
+            dry_run: false,
+          },
+          patchContext,
+        );
+      },
+      (error: unknown) =>
+        error instanceof BacklogError &&
+        error.code === 'BE_TODO_REFRESH_MANAGED' &&
+        error.details?.todo_id === refreshTodoId &&
+        typeof error.hint === 'string' &&
+        error.hint.includes('refresh'),
+    );
+
+    assert.deepEqual(await readAppliedRegistry(backlogRoot), beforeApplied);
+  } finally {
+    await rm(cwd, { recursive: true, force: true });
+  }
 });
 
 void test('packet command rejects symlinked authored packet files', async () => {

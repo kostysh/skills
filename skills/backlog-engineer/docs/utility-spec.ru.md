@@ -850,6 +850,9 @@ Dry-run не должен:
 
 - `item_key` должен входить в `target_item_keys`;
 - `todo_ids` должны ссылаться только на `todo`, принадлежащие этой задаче;
+- `patch-item` может удалять только `todo` с `managed_by = mutation`;
+- попытка удалить refresh-managed review `todo` = `BE_TODO_REFRESH_MANAGED`;
+- refresh-managed review `todo` очищаются повторным scoped `refresh`, когда их source/dependency cause больше не наблюдается;
 - попытка удалить чужой или несуществующий `todo` = `BE_TODO_NOT_FOUND`.
 
 ### Операция `remove_item`
@@ -1127,6 +1130,8 @@ Dry-run не должен:
 Если patch содержит `remove_todo`:
 
 - утилита удаляет только явно перечисленные `todo_id`, принадлежащие `item_key`;
+- удаляемые `todo` должны иметь `managed_by = mutation`;
+- если `todo` имеет `managed_by = refresh`, `patch-item` обязан fail-closed с `BE_TODO_REFRESH_MANAGED` и подсказкой выполнить scoped `refresh` после review;
 - после применения patch derived-state пересчитывается заново;
 - если semantic cause для удалённого `todo` всё ещё существует, утилита имеет право создать новый `todo` того же типа заново уже как результат пересчёта.
 
@@ -1183,6 +1188,7 @@ Dry-run не должен:
 | `BE_PATCH_ID_CONFLICT` | `patch_id` уже существует в applied registry |
 | `BE_PATCH_SEQUENCE_CONFLICT` | `sequence` не монотонен |
 | `BE_PATCH_OPERATION_INVALID` | patch operation невалидна для этой команды |
+| `BE_TODO_REFRESH_MANAGED` | patch пытается удалить refresh-managed review `todo` через `patch-item` |
 | `BE_TODO_NOT_FOUND` | patch пытается удалить несуществующий `todo` |
 | `BE_ITEM_NOT_FOUND` | `items` или scoped-команда не нашла `item_key` |
 | `BE_CANONICAL_WRITE_FAILED` | canonical copy или internal artifact нельзя записать |
@@ -1620,6 +1626,7 @@ Dry-run variant:
 - `BE_PATCH_ID_CONFLICT`
 - `BE_PATCH_SEQUENCE_CONFLICT`
 - `BE_PATCH_OPERATION_INVALID`
+- `BE_TODO_REFRESH_MANAGED`
 - `BE_TODO_NOT_FOUND`
 - `BE_DEPENDENCY_NOT_FOUND`
 - `BE_CANONICAL_WRITE_FAILED`

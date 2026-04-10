@@ -258,7 +258,8 @@ Before applying a patch, confirm:
 
 - target tasks already exist;
 - you read current state through `search` and `items`;
-- the patch only changes existing tasks or closes utility-owned `todo`;
+- the patch only changes existing tasks or closes mutation-managed `todo`;
+- do not close refresh-managed review `todo` through `patch-item`; after review, rerun scoped `refresh` so the utility clears stale refresh signals when their cause is gone;
 - sequence and metadata are filled;
 - the operation list matches the intended change.
 
