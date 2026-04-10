@@ -26,6 +26,7 @@
 | [refactoring-plan-4.ru.md](refactoring-plan-4.ru.md) | Маленький corrective plan после post-refactor review. Закрывает два remaining first-run defects: local invocation contract и единый blocking preflight question. | Читать перед последним коротким doc-only corrective pass. |
 | [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md) | Маленький corrective plan на source-set discovery. Закрывает оставшийся defect, где агент может рано перейти к packet authoring и пропустить ADR, concept и другие обязательные архитектурные входы. | Читать перед корректировкой first-run source discovery contract. |
 | [refactoring-plan-6.ru.md](refactoring-plan-6.ru.md) | План backlog-side harmonization для `change-proposal`: verdict-driven actualization branches, delta-over-implemented rule, ADR/source update flow и multi-item shared remediation path. | Читать перед backlog-side доработкой cross-skill requirement-change workflow. |
+| [refactoring-plan-7.ru.md](refactoring-plan-7.ru.md) | План имплементации source registry maintenance: `update-source-path`, `remove-source`, durable cleanup model, error contract, tests и built CLI sync. | Читать перед доработкой source registry maintenance command surface. |
 | [source-registry-maintenance-spec.ru.md](source-registry-maintenance-spec.ru.md) | Спецификация lifecycle maintenance для source registry: удаление source records и смена source path при сохранении stable `source_id`, error contract, dry-run semantics и test scope. | Читать перед проектированием `remove-source` и `update-source-path`. |
 | [utility-spec.ru.md](utility-spec.ru.md) | Полная спецификация утилиты. Описывает внутренние артефакты, алгоритмы команд, recovery/rebuild, derived state, error taxonomy и runtime behavior. | Читать после концепции, когда нужно проектировать реализацию. |
 | [schemas-and-types.ru.md](schemas-and-types.ru.md) | Строгие схемы и exact types для `zod@v4` и TypeScript. Включает authored packet/patch, utility-owned artifacts, command DTOs и error payload. | Читать при реализации `schemas`, `errors`, DTO и parser/validator слоёв. |
@@ -62,9 +63,10 @@
 ### Если нужно проектировать maintenance source registry
 
 1. [source-registry-maintenance-spec.ru.md](source-registry-maintenance-spec.ru.md)
-2. [utility-spec.ru.md](utility-spec.ru.md)
-3. [schemas-and-types.ru.md](schemas-and-types.ru.md)
-4. [test-matrix.ru.md](test-matrix.ru.md)
+2. [refactoring-plan-7.ru.md](refactoring-plan-7.ru.md)
+3. [utility-spec.ru.md](utility-spec.ru.md)
+4. [schemas-and-types.ru.md](schemas-and-types.ru.md)
+5. [test-matrix.ru.md](test-matrix.ru.md)
 
 ### Если нужно планировать backlog-side покрытие для `change-proposal`
 
