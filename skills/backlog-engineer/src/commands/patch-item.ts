@@ -17,6 +17,7 @@ import type { CommandDefinition } from './types.ts';
 import {
   appendAppliedPatchEntry,
   assertPatchRegistryConstraints,
+  assertCanonicalReplayMatchesState,
   readAuthoredJsonFile,
 } from './mutation-helpers.ts';
 
@@ -123,6 +124,13 @@ export const PATCH_ITEM_COMMAND: CommandDefinition<PatchItemCommandInput, PatchI
 
       await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
       await context.artifacts.writeState(context.backlogRoot, nextState);
+      await assertCanonicalReplayMatchesState({
+        artifactKind: 'patch',
+        canonicalPath: canonicalImport.canonicalPath,
+        commandName: 'patch-item',
+        context,
+        state: nextState,
+      });
       await context.hooks.afterPatchApplied?.({
         summary: output,
         state: nextState,

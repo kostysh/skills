@@ -583,7 +583,7 @@ Baseline берётся в порядке:
   "created_at": "ISO timestamp",
   "feature_id": "F-0001",
   "dossier": "docs/features/F-0001.md",
-  "current_commit": "sha|null",
+  "event_commit": "sha|null",
   "baseline": "label",
   "executable_contract_changed": true,
   "maturity_requires_audit": true,
@@ -619,7 +619,7 @@ Baseline берётся в порядке:
 - `--step <name>`; обязательный
 - `--verdict PASS|FAIL`; обязательный
 - `--reviewer <name>`; обязательный
-- `--reviewed-commit <sha>`
+- `--event-commit <sha>`
 - `--notes <text>`
 - `--output <path>`
 - repeatable:
@@ -632,14 +632,14 @@ Baseline берётся в порядке:
 - `--verdict` допускает только `PASS` или `FAIL`
 - `PASS` не может содержать `--must-fix`
 - `--reviewer` обязателен; команда не подставляет reviewer по умолчанию
-- если commit нельзя получить из git, требуется `--reviewed-commit`
+- commit SHA является только trace metadata; если git недоступен и `--event-commit` не задан, артефакт всё равно создаётся
 
 ### Артефакт
 
 Путь по умолчанию:
 
 ```text
-.dossier/reviews/<feature-id>/<step>-<commit12>.json
+.dossier/reviews/<feature-id>/<step>-<event12|timestamp>.json
 ```
 
 Структура:
@@ -652,7 +652,7 @@ Baseline берётся в порядке:
   "step": "implementation",
   "dossier": "docs/features/F-0001.md",
   "feature_id": "F-0001",
-  "reviewed_commit": "sha",
+  "event_commit": "sha|null",
   "verdict": "PASS",
   "findings": {
     "must_fix": [],
@@ -665,7 +665,7 @@ Baseline берётся в порядке:
 
 ### Выход
 
-- `stdout`: путь к артефакту и summary по verdict/step/feature/commit
+- `stdout`: путь к артефакту и summary по verdict/step/feature/event commit
 - команда только фиксирует supplied verdict и reviewer provenance; она не выполняет review сама
 - код `0`
 
@@ -698,7 +698,6 @@ Baseline берётся в порядке:
 - review verdict не `PASS`
 - в review artifact отсутствует `reviewer`
 - в review artifact есть `must_fix`
-- review или verification stale относительно текущего commit
 - worktree dirty вне `.dossier/`, если не задан `--allow-dirty`
 
 ### Артефакт
@@ -719,10 +718,12 @@ Baseline берётся в порядке:
   "dossier": "docs/features/F-0001.md",
   "step": "implementation",
   "dossier_status": "planned",
-  "current_commit": "sha|null",
+  "event_commit": "sha|null",
+  "review_trace_commit": "sha|null",
+  "verification_trace_commit": "sha|null",
   "verification_artifact": ".dossier/verification/...",
   "review_artifact": ".dossier/reviews/...",
-  "review_fresh_for_commit": true,
+  "review_freshness": "pass|fail|unknown",
   "process_complete": true,
   "blockers": [],
   "next_step": "implementation"
@@ -793,7 +794,7 @@ Baseline берётся в порядке:
 Путь по умолчанию:
 
 ```text
-.dossier/verification/<feature-id>/<step>-<commit12|workspace>.json
+.dossier/verification/<feature-id>/<step>-<event12|workspace>.json
 ```
 
 Структура:
@@ -805,7 +806,7 @@ Baseline берётся в порядке:
   "step": "implementation",
   "feature_id": "F-0001|global",
   "dossier": "docs/features/F-0001.md|null",
-  "current_commit": "sha|null",
+  "event_commit": "sha|null",
   "status": "pass|fail",
   "checks": [
     {
@@ -864,10 +865,14 @@ Baseline берётся в порядке:
 
 ### Review freshness
 
-Если есть latest review artifact, команда сообщает:
+Если есть latest review artifact, команда сообщает durable review state:
 
-- `valid for commit <sha>`, если reviewed commit совпадает с текущим
-- `stale for current commit <sha>`, если не совпадает
+- `pass`, если latest review artifact имеет `verdict=PASS`
+- `fail`, если latest review artifact имеет `verdict=FAIL`
+- `unknown`, если artifact shape не даёт однозначный verdict
+- `missing`, если review artifact отсутствует
+
+Commit SHA не участвует в вычислении freshness. Он может выводиться только как event trace metadata.
 
 ### Выход
 
@@ -880,7 +885,9 @@ Baseline берётся в порядке:
   "workflow_stage_next": "implementation|null",
   "blocking_gate": [],
   "uncommitted_work": false,
-  "review_freshness": "valid for commit ...",
+  "review_freshness": "pass",
+  "event_commit": "sha|null",
+  "review_trace_commit": "sha|null",
   "process_complete": true
 }
 ```

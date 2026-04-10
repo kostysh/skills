@@ -6,6 +6,7 @@ import type {
   PacketFile,
   PacketItem,
   PatchFile,
+  PatchOperation,
   RemoveValuesOperation,
   ReplaceFields,
   SchemaModule,
@@ -421,6 +422,56 @@ function sortTodos(todos: readonly Todo[]): Todo[] {
   return [...todos].sort((left, right) => left.todo_id.localeCompare(right.todo_id));
 }
 
+function createPatchReplayFailedError(payload: {
+  errors: ErrorModule;
+  error: unknown;
+  patch: PatchFile;
+  operation?: PatchOperation;
+  operationIndex?: number;
+  replayContext: {
+    applyIndex: number;
+    canonicalPath: string;
+    kind: string;
+    sequence: number;
+  };
+}): Error {
+  return payload.errors.create(
+    'BE_REBUILD_REPLAY_FAILED',
+    payload.operation
+      ? 'Backlog rebuild failed while replaying a canonical patch operation.'
+      : 'Backlog rebuild failed after replaying a canonical patch.',
+    {
+      details: {
+        artifact_kind: 'patch',
+        canonical_path: payload.replayContext.canonicalPath,
+        patch_id: payload.patch.metadata.patch_id,
+        patch_kind: payload.replayContext.kind,
+        apply_index: payload.replayContext.applyIndex,
+        sequence: payload.replayContext.sequence,
+        ...(payload.operation
+          ? {
+              operation_index: payload.operationIndex ?? null,
+              operation_action: payload.operation.action,
+              item_key: payload.operation.item_key,
+            }
+          : {}),
+        ...(payload.errors.isBacklogError(payload.error)
+          ? {
+              original_code: payload.error.code,
+              original_message: payload.error.message,
+            }
+          : payload.error instanceof Error
+            ? {
+                original_message: payload.error.message,
+              }
+            : {}),
+      },
+      hint: 'Inspect the named canonical patch artifact. Do not repair replay failures by manually editing state.json or applied.json.',
+      cause: payload.error,
+    },
+  );
+}
+
 export function synchronizeOpenTodoIds(payload: {
   schemas: SchemaModule;
   state: StateFile;
@@ -527,50 +578,71 @@ export function applyPatchReplay(payload: {
   patch: PatchFile;
   errors: ErrorModule;
   missingTodoPolicy?: 'error' | 'ignore';
+  replayContext?: {
+    applyIndex: number;
+    canonicalPath: string;
+    kind: string;
+    sequence: number;
+  };
 }): StateFile {
   let next = cloneState(payload.state);
   const removedItemKeys = new Set<string>();
 
-  for (const operation of payload.patch.operations) {
-    const targetItem = next.items.find((item) => item.item_key === operation.item_key);
-    if (!targetItem) {
-      throw payload.errors.create('BE_PATCH_TARGET_NOT_FOUND', undefined, {
-        details: {
-          item_key: operation.item_key,
-        },
-      });
-    }
-
-    switch (operation.action) {
-      case 'replace_fields':
-        replaceFields(targetItem, operation.fields);
-        break;
-      case 'append_unique':
-        appendUniqueValues(targetItem, operation.field, operation.values);
-        break;
-      case 'remove_values':
-        removeValues(targetItem, operation.field, operation.values);
-        break;
-      case 'remove_todo':
-        next = removeTodosFromState({
-          state: next,
-          itemKey: operation.item_key,
-          todoIds: operation.todo_ids,
-          errors: payload.errors,
-          missingTodoPolicy: payload.missingTodoPolicy ?? 'error',
-        });
-        break;
-      case 'remove_item':
-        removedItemKeys.add(operation.item_key);
-        break;
-      default: {
-        const exhaustiveCheck: never = operation;
-        throw payload.errors.create('BE_PATCH_OPERATION_INVALID', undefined, {
+  for (const [operationIndex, operation] of payload.patch.operations.entries()) {
+    try {
+      const targetItem = next.items.find((item) => item.item_key === operation.item_key);
+      if (!targetItem) {
+        throw payload.errors.create('BE_PATCH_TARGET_NOT_FOUND', undefined, {
           details: {
-            operation: exhaustiveCheck,
+            item_key: operation.item_key,
           },
         });
       }
+
+      switch (operation.action) {
+        case 'replace_fields':
+          replaceFields(targetItem, operation.fields);
+          break;
+        case 'append_unique':
+          appendUniqueValues(targetItem, operation.field, operation.values);
+          break;
+        case 'remove_values':
+          removeValues(targetItem, operation.field, operation.values);
+          break;
+        case 'remove_todo':
+          next = removeTodosFromState({
+            state: next,
+            itemKey: operation.item_key,
+            todoIds: operation.todo_ids,
+            errors: payload.errors,
+            missingTodoPolicy: payload.missingTodoPolicy ?? 'error',
+          });
+          break;
+        case 'remove_item':
+          removedItemKeys.add(operation.item_key);
+          break;
+        default: {
+          const exhaustiveCheck: never = operation;
+          throw payload.errors.create('BE_PATCH_OPERATION_INVALID', undefined, {
+            details: {
+              operation: exhaustiveCheck,
+            },
+          });
+        }
+      }
+    } catch (error) {
+      if (!payload.replayContext) {
+        throw error;
+      }
+
+      throw createPatchReplayFailedError({
+        errors: payload.errors,
+        error,
+        patch: payload.patch,
+        operation,
+        operationIndex,
+        replayContext: payload.replayContext,
+      });
     }
   }
 
@@ -578,10 +650,23 @@ export function applyPatchReplay(payload: {
     next = cleanupRemovedItemReferences(next, removedItemKeys);
   }
 
-  validateReferentialIntegrity({
-    state: next,
-    errors: payload.errors,
-  });
+  try {
+    validateReferentialIntegrity({
+      state: next,
+      errors: payload.errors,
+    });
+  } catch (error) {
+    if (!payload.replayContext) {
+      throw error;
+    }
+
+    throw createPatchReplayFailedError({
+      errors: payload.errors,
+      error,
+      patch: payload.patch,
+      replayContext: payload.replayContext,
+    });
+  }
 
   return next;
 }

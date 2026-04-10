@@ -836,6 +836,97 @@ void test('default ensureQueryState tolerates legacy remove_todo patch when the 
   }
 });
 
+void test('default ensureQueryState reports canonical patch operation when rebuild replay fails', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+  const runtime = createRuntime();
+
+  try {
+    await cp(path.join(FIXTURES_DIR, 'backlogs', 'single-branch-backlog'), backlogRoot, {
+      recursive: true,
+    });
+    await mkdir(path.join(backlogRoot, 'patches'), { recursive: true });
+    await writeFile(
+      path.join(backlogRoot, 'patches', '444c4f042c00--missing-target.patch-item.json'),
+      `${JSON.stringify(
+        {
+          metadata: {
+            patch_id: '2026-04-10-002-missing-target',
+            created_at: '2026-04-10T10:00:00Z',
+            sequence: 2,
+            target_item_keys: ['missing-task'],
+          },
+          operations: [
+            {
+              item_key: 'missing-task',
+              action: 'replace_fields',
+              fields: {
+                delivery_state: 'planned',
+              },
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+      'utf8',
+    );
+
+    const appliedPath = path.join(backlogRoot, '.backlog', 'applied.json');
+    const applied = JSON.parse(await readFile(appliedPath, 'utf8')) as {
+      schema_version: number;
+      created_at: string;
+      updated_at: string;
+      next_apply_index: number;
+      packets: unknown[];
+      patches: Array<{
+        patch_id: string;
+        apply_index: number;
+        canonical_path: string;
+        content_hash: string;
+        sequence: number;
+        applied_at: string;
+        kind: string;
+        target_item_keys: string[];
+      }>;
+    };
+    applied.patches.push({
+      patch_id: '2026-04-10-002-missing-target',
+      apply_index: 3,
+      canonical_path: 'patches/444c4f042c00--missing-target.patch-item.json',
+      content_hash: '4'.repeat(64),
+      sequence: 2,
+      applied_at: '2026-04-10T10:05:00Z',
+      kind: 'patch-item',
+      target_item_keys: ['missing-task'],
+    });
+    applied.next_apply_index = 4;
+    applied.updated_at = '2026-04-10T10:05:00Z';
+    await writeFile(appliedPath, `${JSON.stringify(applied, null, 2)}\n`, 'utf8');
+
+    const context = await runtime.createContext('status', backlogRoot);
+    await assert.rejects(
+      () => context.ensureQueryState(),
+      (error: unknown) => {
+        assert.ok(error instanceof BacklogError);
+        assert.equal(error.code, 'BE_REBUILD_REPLAY_FAILED');
+        assert.match(error.message, /canonical patch operation/);
+        assert.equal(
+          error.details?.canonical_path,
+          'patches/444c4f042c00--missing-target.patch-item.json',
+        );
+        assert.equal(error.details?.patch_id, '2026-04-10-002-missing-target');
+        assert.equal(error.details?.operation_index, 0);
+        assert.equal(error.details?.operation_action, 'replace_fields');
+        assert.equal(error.details?.original_code, 'BE_PATCH_TARGET_NOT_FOUND');
+        return true;
+      },
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
 void test('default ensureQueryState fails when canonical backlog references source_ids missing from sources.json', async () => {
   const tempRoot = await createTempDir();
   const backlogRoot = path.join(tempRoot, 'backlog');
@@ -1086,7 +1177,9 @@ void test('runtime rebuildState with in-memory adapters fails fast for broken re
       () => runtime.rebuildState(backlogRoot),
       (error: unknown) =>
         error instanceof BacklogError &&
-        (error.code === 'BE_INTERNAL_STATE_CORRUPT' || error.code === 'BE_PATCH_SEQUENCE_CONFLICT'),
+        (error.code === 'BE_INTERNAL_STATE_CORRUPT' ||
+          error.code === 'BE_PATCH_SEQUENCE_CONFLICT' ||
+          error.code === 'BE_REBUILD_REPLAY_FAILED'),
       fixtureDirName,
     );
   }
@@ -1217,7 +1310,7 @@ void test('ensureMutationState with in-memory adapters fails fast on invalid can
   const context = await runtime.createContext('packet', backlogRoot);
   await assert.rejects(
     () => context.ensureMutationState(),
-    (error: unknown) => error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
+    (error: unknown) => error instanceof BacklogError && error.code === 'BE_REBUILD_REPLAY_FAILED',
   );
 });
 
@@ -1240,7 +1333,7 @@ void test('ensureMutationState with in-memory adapters fails fast on missing can
   const context = await runtime.createContext('patch-item', backlogRoot);
   await assert.rejects(
     () => context.ensureMutationState(),
-    (error: unknown) => error instanceof BacklogError && error.code === 'BE_INTERNAL_STATE_CORRUPT',
+    (error: unknown) => error instanceof BacklogError && error.code === 'BE_REBUILD_REPLAY_FAILED',
   );
 });
 

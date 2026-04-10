@@ -13,7 +13,11 @@ import {
   requireStringOption,
 } from './arg-parsers.ts';
 import type { CommandDefinition } from './types.ts';
-import { appendAppliedPacketEntry, readAuthoredJsonFile } from './mutation-helpers.ts';
+import {
+  appendAppliedPacketEntry,
+  assertCanonicalReplayMatchesState,
+  readAuthoredJsonFile,
+} from './mutation-helpers.ts';
 import {
   ABSOLUTE_OUTPUT_NOTE,
   BACKLOG_MUTATION_SCOPE_NOTE,
@@ -122,6 +126,13 @@ export const PACKET_COMMAND: CommandDefinition<PacketCommandInput, PacketCommand
 
     await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
     await context.artifacts.writeState(context.backlogRoot, nextState);
+    await assertCanonicalReplayMatchesState({
+      artifactKind: 'packet',
+      canonicalPath: canonicalImport.canonicalPath,
+      commandName: 'packet',
+      context,
+      state: nextState,
+    });
     const output = {
       ...outputBase,
       canonical_packet_path: path.resolve(context.backlogRoot, canonicalImport.canonicalPath),

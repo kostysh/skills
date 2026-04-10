@@ -14,7 +14,6 @@ const IMPLEMENTATION_AUDIT_POLICY_PATH = path.join(
   'references',
   'implementation-audit-policy.md',
 );
-const WORKFLOW_STAGE_INIT_PATH = path.join(SKILL_DIR, 'references', 'workflow-stage-init.md');
 const WORKFLOW_STAGE_SPEC_COMPACT_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -30,37 +29,19 @@ const WORKFLOW_STAGE_IMPLEMENTATION_PATH = path.join(
   'references',
   'workflow-stage-implementation.md',
 );
-const WORKFLOW_STAGE_DEPENDENCY_CHECK_PATH = path.join(
-  SKILL_DIR,
-  'references',
-  'workflow-stage-dependency-check.md',
-);
 const WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH = path.join(
   SKILL_DIR,
   'references',
   'workflow-stage-change-proposal.md',
 );
-const IMPLEMENTATION_LOGGING_PATH = path.join(
-  SKILL_DIR,
-  'references',
-  'implementation-logging.md',
-);
+const IMPLEMENTATION_LOGGING_PATH = path.join(SKILL_DIR, 'references', 'implementation-logging.md');
 const SPEC_AND_PLAN_RISK_PATTERNS_PATH = path.join(
   SKILL_DIR,
   'references',
   'spec-and-plan-risk-patterns.md',
 );
-const REPO_AGENTS_TEMPLATE_PATH = path.join(
-  SKILL_DIR,
-  'references',
-  'REPO_AGENTS_TEMPLATE.md',
-);
-const EXAMPLE_REPO_AGENTS_PATH = path.join(
-  SKILL_DIR,
-  'assets',
-  'example-repo',
-  'AGENTS.md',
-);
+const REPO_AGENTS_TEMPLATE_PATH = path.join(SKILL_DIR, 'references', 'REPO_AGENTS_TEMPLATE.md');
+const EXAMPLE_REPO_AGENTS_PATH = path.join(SKILL_DIR, 'assets', 'example-repo', 'AGENTS.md');
 const PROCESS_MODEL_PATH = path.join(SKILL_DIR, 'docs', 'cross-skill-process-model.ru.md');
 const BACKLOG_GAP_ANALYSIS_PATH = path.join(
   SKILL_DIR,
@@ -172,9 +153,7 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   assertContainsTerms(backlogActualization, [
     '[Workflow guide: backlog actualization rule](references/workflow.md#backlog-actualization-rule)',
   ]);
-  assertContainsTerms(lintCommand, [
-    '[Lint rules](references/lint-rules.md)',
-  ]);
+  assertContainsTerms(lintCommand, ['[Lint rules](references/lint-rules.md)']);
   assertContainsTerms(nextStepCommand, [
     '[Workflow guide: next-step](references/workflow.md#cli-command-next-step)',
   ]);

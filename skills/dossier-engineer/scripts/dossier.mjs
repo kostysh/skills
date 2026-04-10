@@ -7554,7 +7554,7 @@ async function runContractDriftAuditCommand(argv, io) {
 		created_at: (/* @__PURE__ */ new Date()).toISOString(),
 		feature_id: featureId,
 		dossier: relDossier,
-		current_commit: inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null,
+		event_commit: inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null,
 		baseline: baselineLabel,
 		executable_contract_changed: executableContractChanged,
 		maturity_requires_audit: maturityRequiresAudit,
@@ -7595,7 +7595,7 @@ function reviewArtifactHelp() {
 		"  --step <name>                Workflow step under review.",
 		"  --verdict <PASS|FAIL>        Review verdict.",
 		"  --reviewer <name>            Reviewer identifier. Required.",
-		"  --reviewed-commit <sha>      Explicit reviewed commit.",
+		"  --event-commit <sha>         Trace commit SHA for event provenance. Defaults to current HEAD when available.",
 		"  --notes <text>               Free-form reviewer notes.",
 		"  --output <path>              Artifact output path.",
 		"  --must-fix <text>            Repeatable must-fix finding.",
@@ -7619,7 +7619,7 @@ async function runReviewArtifactCommand(argv, io) {
 	const step = ensureRequired(takeOption(argv, "--step", null), "--step is required.", helpText);
 	const verdict = ensureRequired(takeOption(argv, "--verdict", null), "--verdict is required.", helpText).toUpperCase();
 	const reviewer = ensureRequired(takeOption(argv, "--reviewer", null), "--reviewer is required.", helpText);
-	const reviewedCommit = takeOption(argv, "--reviewed-commit", null);
+	const eventCommit = takeOption(argv, "--event-commit", null);
 	const notes = takeOption(argv, "--notes", "") ?? "";
 	const output = takeOption(argv, "--output", null);
 	const mustFix = takeManyOptions(argv, "--must-fix");
@@ -7631,8 +7631,7 @@ async function runReviewArtifactCommand(argv, io) {
 	if (verdict === "PASS" && mustFix.length > 0) throw new UsageError("PASS review artifacts cannot contain --must-fix findings.", helpText);
 	const dossierRecord = await readDossierRecord(absDossier, { root: absRoot });
 	const featureId = frontmatterString(dossierRecord.frontmatter, "id", path.basename(absDossier, ".md"));
-	const commit = reviewedCommit || (inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null);
-	if (!commit) throw new UsageError("Could not determine reviewed commit. Provide --reviewed-commit when git metadata is unavailable.", helpText);
+	const commit = eventCommit || (inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null);
 	const artifact = {
 		version: 1,
 		created_at: (/* @__PURE__ */ new Date()).toISOString(),
@@ -7640,7 +7639,7 @@ async function runReviewArtifactCommand(argv, io) {
 		step,
 		dossier: dossierRecord.relPath,
 		feature_id: featureId,
-		reviewed_commit: commit,
+		event_commit: commit,
 		verdict,
 		findings: {
 			must_fix: mustFix,
@@ -7649,11 +7648,11 @@ async function runReviewArtifactCommand(argv, io) {
 		},
 		notes
 	};
-	const defaultOutput = path.join(absRoot, ".dossier", "reviews", featureId, `${step}-${commit.slice(0, 12)}.json`);
+	const defaultOutput = path.join(absRoot, ".dossier", "reviews", featureId, `${step}-${commit ? commit.slice(0, 12) : Date.now()}.json`);
 	const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
 	await writeJsonAtomic(outputPath, artifact);
 	writeLine$1(io.stdout, `[review-artifact] Wrote ${relativeToRoot(absRoot, outputPath)}`);
-	writeLine$1(io.stdout, `[review-artifact] verdict=${verdict} step=${step} feature=${featureId} commit=${commit}`);
+	writeLine$1(io.stdout, `[review-artifact] verdict=${verdict} step=${step} feature=${featureId} event_commit=${commit ?? "none"}`);
 	return 0;
 }
 function dossierStepCloseHelp() {
@@ -7706,7 +7705,7 @@ async function runDossierStepCloseCommand(argv, io) {
 	} catch (error) {
 		blockers.push(`Could not read review artifact ${relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact))} (${error instanceof Error ? error.message : String(error)}).`);
 	}
-	const currentCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : review?.reviewed_commit ?? verify?.current_commit ?? null;
+	const eventCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
 	if (verify && verify.status !== "pass") blockers.push(`Verification artifact does not report status=pass (got ${String(verify.status)}).`);
 	if (verify && verify.step !== step) blockers.push(`Verification artifact step mismatch: expected ${step}, got ${String(verify.step)}.`);
 	if (verify?.feature_id && verify.feature_id !== featureId) blockers.push(`Verification artifact feature mismatch: expected ${featureId}, got ${verify.feature_id}.`);
@@ -7715,8 +7714,6 @@ async function runDossierStepCloseCommand(argv, io) {
 	if (review && review.step !== step) blockers.push(`Review artifact step mismatch: expected ${step}, got ${String(review.step)}.`);
 	if (review?.feature_id && review.feature_id !== featureId) blockers.push(`Review artifact feature mismatch: expected ${featureId}, got ${review.feature_id}.`);
 	if (Array.isArray(review?.findings?.must_fix) && review.findings.must_fix.length > 0) blockers.push("Review artifact still contains must-fix findings.");
-	if (currentCommit && review?.reviewed_commit && review.reviewed_commit !== currentCommit) blockers.push(`Review freshness is stale for current commit ${currentCommit}; review artifact is tied to ${review.reviewed_commit}.`);
-	if (currentCommit && verify?.current_commit && verify.current_commit !== currentCommit) blockers.push(`Verification artifact is stale for current commit ${currentCommit}; verify artifact is tied to ${verify.current_commit}.`);
 	if (inGitRepo(absRoot) && !allowDirty) {
 		const dirtyPaths = getDirtyPaths(absRoot).filter((filePath) => !filePath.startsWith(".dossier/"));
 		if (dirtyPaths.length > 0) blockers.push(`Worktree is dirty outside .dossier/: ${dirtyPaths.join(", ")}`);
@@ -7729,10 +7726,12 @@ async function runDossierStepCloseCommand(argv, io) {
 		dossier: dossierRecord.relPath,
 		step,
 		dossier_status: dossierRecord.frontmatter.status ?? null,
-		current_commit: currentCommit,
+		event_commit: eventCommit,
+		review_trace_commit: review?.event_commit ?? null,
+		verification_trace_commit: verify?.event_commit ?? null,
 		verification_artifact: relativeToRoot(absRoot, path.resolve(absRoot, verifyArtifact)),
 		review_artifact: relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact)),
-		review_fresh_for_commit: Boolean(currentCommit && review?.reviewed_commit === currentCommit),
+		review_freshness: review?.verdict === "PASS" ? "pass" : review?.verdict === "FAIL" ? "fail" : "unknown",
 		process_complete: processComplete,
 		blockers,
 		next_step: nextStep || defaultNextStep(dossierRecord.frontmatter.status, step) || void 0
@@ -7876,18 +7875,18 @@ async function runDossierVerifyCommand(argv, io) {
 		displayCommand: extraCommand
 	}));
 	const overallStatus = checks.every((check) => check.status === "pass") ? "pass" : "fail";
-	const currentCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
+	const eventCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
 	const artifact = {
 		version: 1,
 		created_at: (/* @__PURE__ */ new Date()).toISOString(),
 		step,
 		feature_id: featureId,
 		dossier: dossierRelPath,
-		current_commit: currentCommit,
+		event_commit: eventCommit,
 		status: overallStatus,
 		checks
 	};
-	const defaultOutput = path.join(absRoot, ".dossier", "verification", featureId, `${step}-${currentCommit ? currentCommit.slice(0, 12) : "workspace"}.json`);
+	const defaultOutput = path.join(absRoot, ".dossier", "verification", featureId, `${step}-${eventCommit ? eventCommit.slice(0, 12) : "workspace"}.json`);
 	const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
 	await writeJsonAtomic(outputPath, artifact);
 	writeLine$1(io.stdout, `[dossier-verify] status=${overallStatus} step=${step} feature=${featureId}`);
@@ -7928,10 +7927,10 @@ async function runNextStepCommand(argv, io) {
 	const target = dossier ? await readDossierRecord(path.resolve(absRoot, dossier), { root: absRoot }) : dossiers[0] ?? null;
 	let latestStepArtifact = null;
 	let latestReviewArtifact = null;
-	let currentCommit = null;
+	let eventCommit = null;
 	let dirtyWorktree = false;
 	if (inGitRepo(absRoot)) {
-		currentCommit = getCurrentCommit(absRoot);
+		eventCommit = getCurrentCommit(absRoot);
 		dirtyWorktree = hasDirtyWorktree(absRoot);
 	}
 	if (target) {
@@ -7941,7 +7940,7 @@ async function runNextStepCommand(argv, io) {
 	}
 	const workflowNext = latestStepArtifact?.process_complete === false ? normalizeWorkflowStage(latestStepArtifact.next_step ?? null) : target ? normalizeWorkflowStage(statusToNextStep(target.frontmatter.status)) : null;
 	const blockers = latestStepArtifact?.process_complete === false && Array.isArray(latestStepArtifact.blockers) ? latestStepArtifact.blockers.filter((value) => typeof value === "string") : target ? [] : ["No active dossier found. Select backlog work with backlog-engineer and create a dossier via feature-intake before using next-step."];
-	const reviewFreshness = latestReviewArtifact ? currentCommit && latestReviewArtifact.reviewed_commit !== currentCommit ? `stale for current commit ${currentCommit}` : `valid for commit ${latestReviewArtifact.reviewed_commit}` : "no review artifact found";
+	const reviewFreshness = latestReviewArtifact ? latestReviewArtifact.verdict === "PASS" ? "pass" : latestReviewArtifact.verdict === "FAIL" ? "fail" : "unknown" : "missing";
 	const summary = {
 		target_dossier: target ? target.relPath : null,
 		dossier_status: typeof target?.frontmatter.status === "string" ? target.frontmatter.status : null,
@@ -7949,6 +7948,8 @@ async function runNextStepCommand(argv, io) {
 		blocking_gate: blockers,
 		uncommitted_work: dirtyWorktree,
 		review_freshness: reviewFreshness,
+		event_commit: eventCommit,
+		review_trace_commit: latestReviewArtifact?.event_commit ?? null,
 		process_complete: latestStepArtifact ? Boolean(latestStepArtifact.process_complete) : null
 	};
 	if (json) {
@@ -7961,6 +7962,8 @@ async function runNextStepCommand(argv, io) {
 	writeLine$1(io.stdout, `Blocking gate: ${summary.blocking_gate.length > 0 ? summary.blocking_gate.join(" | ") : "none recorded"}`);
 	writeLine$1(io.stdout, `Uncommitted work: ${summary.uncommitted_work ? "yes" : "no"}`);
 	writeLine$1(io.stdout, `Review freshness: ${summary.review_freshness}`);
+	writeLine$1(io.stdout, `Event commit: ${summary.event_commit ?? "none"}`);
+	writeLine$1(io.stdout, `Review trace commit: ${summary.review_trace_commit ?? "none"}`);
 	writeLine$1(io.stdout, `Process-complete: ${summary.process_complete === null ? "unknown" : summary.process_complete ? "yes" : "no"}`);
 	return 0;
 }

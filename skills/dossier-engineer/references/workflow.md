@@ -57,7 +57,9 @@ Keep these separate:
 - Coverage enforcement (`coverage_gate: deferred|strict`)
 - Review freshness (`missing|pass|fail|stale`)
 - Step closure (`process_complete: true|false` in `.dossier/steps/*`)
-- Commit completeness (`dirty|clean-unreviewed|clean-reviewed|clean-but-stale-review`)
+- Worktree cleanliness (`dirty|clean`)
+
+Commit SHA is trace metadata only. It may identify which repository state was visible during an event, but it is not a validity or freshness gate.
 
 Backlog lifecycle state remains outside this skill and belongs to `backlog-engineer`.
 

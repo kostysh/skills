@@ -75,12 +75,12 @@ interface VerificationCheck {
 }
 
 interface ReviewArtifactShape {
+  event_commit?: string | null;
   feature_id?: string;
   findings?: {
     must_fix?: unknown;
   };
   reviewer?: string;
-  reviewed_commit?: string;
   step?: string;
   verdict?: string;
 }
@@ -92,7 +92,7 @@ interface StepArtifactShape {
 }
 
 interface VerifyArtifactShape {
-  current_commit?: string;
+  event_commit?: string | null;
   feature_id?: string;
   status?: string;
   step?: string;
@@ -980,7 +980,10 @@ async function runFeatureIntakeCommand(argv: string[], io: CliIo): Promise<numbe
   writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
   writeLine(io.stdout, `[feature-intake] backlog_item_key=${backlogItemKey}`);
   writeLine(io.stdout, `[feature-intake] backlog_delivery_state=${backlogDeliveryState}`);
-  writeLine(io.stdout, '[feature-intake] next_workflow_stage=spec-compact (workflow stage, not CLI command)');
+  writeLine(
+    io.stdout,
+    '[feature-intake] next_workflow_stage=spec-compact (workflow stage, not CLI command)',
+  );
   return EXIT_SUCCESS;
 }
 
@@ -1620,7 +1623,7 @@ async function runContractDriftAuditCommand(argv: string[], io: CliIo): Promise<
     created_at: new Date().toISOString(),
     feature_id: featureId,
     dossier: relDossier,
-    current_commit: inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null,
+    event_commit: inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null,
     baseline: baselineLabel,
     executable_contract_changed: executableContractChanged,
     maturity_requires_audit: maturityRequiresAudit,
@@ -1681,7 +1684,7 @@ function reviewArtifactHelp(): string {
     '  --step <name>                Workflow step under review.',
     '  --verdict <PASS|FAIL>        Review verdict.',
     '  --reviewer <name>            Reviewer identifier. Required.',
-    '  --reviewed-commit <sha>      Explicit reviewed commit.',
+    '  --event-commit <sha>         Trace commit SHA for event provenance. Defaults to current HEAD when available.',
     '  --notes <text>               Free-form reviewer notes.',
     '  --output <path>              Artifact output path.',
     '  --must-fix <text>            Repeatable must-fix finding.',
@@ -1719,7 +1722,7 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     '--reviewer is required.',
     helpText,
   );
-  const reviewedCommit = takeOption(argv, '--reviewed-commit', null);
+  const eventCommit = takeOption(argv, '--event-commit', null);
   const notes = takeOption(argv, '--notes', '') ?? '';
   const output = takeOption(argv, '--output', null);
   const mustFix = takeManyOptions(argv, '--must-fix');
@@ -1741,13 +1744,7 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     'id',
     path.basename(absDossier, '.md'),
   );
-  const commit = reviewedCommit || (inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null);
-  if (!commit) {
-    throw new UsageError(
-      'Could not determine reviewed commit. Provide --reviewed-commit when git metadata is unavailable.',
-      helpText,
-    );
-  }
+  const commit = eventCommit || (inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null);
 
   const artifact = {
     version: 1,
@@ -1756,7 +1753,7 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     step,
     dossier: dossierRecord.relPath,
     feature_id: featureId,
-    reviewed_commit: commit,
+    event_commit: commit,
     verdict,
     findings: {
       must_fix: mustFix,
@@ -1771,7 +1768,7 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     '.dossier',
     'reviews',
     featureId,
-    `${step}-${commit.slice(0, 12)}.json`,
+    `${step}-${commit ? commit.slice(0, 12) : Date.now()}.json`,
   );
   const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
   await writeJsonAtomic(outputPath, artifact);
@@ -1779,7 +1776,7 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
   writeLine(io.stdout, `[review-artifact] Wrote ${relativeToRoot(absRoot, outputPath)}`);
   writeLine(
     io.stdout,
-    `[review-artifact] verdict=${verdict} step=${step} feature=${featureId} commit=${commit}`,
+    `[review-artifact] verdict=${verdict} step=${step} feature=${featureId} event_commit=${commit ?? 'none'}`,
   );
   return EXIT_SUCCESS;
 }
@@ -1860,9 +1857,7 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     );
   }
 
-  const currentCommit = inGitRepo(absRoot)
-    ? getCurrentCommit(absRoot)
-    : (review?.reviewed_commit ?? verify?.current_commit ?? null);
+  const eventCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
 
   if (verify && verify.status !== 'pass') {
     blockers.push(
@@ -1898,17 +1893,6 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     blockers.push('Review artifact still contains must-fix findings.');
   }
 
-  if (currentCommit && review?.reviewed_commit && review.reviewed_commit !== currentCommit) {
-    blockers.push(
-      `Review freshness is stale for current commit ${currentCommit}; review artifact is tied to ${review.reviewed_commit}.`,
-    );
-  }
-  if (currentCommit && verify?.current_commit && verify.current_commit !== currentCommit) {
-    blockers.push(
-      `Verification artifact is stale for current commit ${currentCommit}; verify artifact is tied to ${verify.current_commit}.`,
-    );
-  }
-
   if (inGitRepo(absRoot) && !allowDirty) {
     const dirtyPaths = getDirtyPaths(absRoot).filter(
       (filePath) => !filePath.startsWith('.dossier/'),
@@ -1926,10 +1910,13 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     dossier: dossierRecord.relPath,
     step,
     dossier_status: dossierRecord.frontmatter.status ?? null,
-    current_commit: currentCommit,
+    event_commit: eventCommit,
+    review_trace_commit: review?.event_commit ?? null,
+    verification_trace_commit: verify?.event_commit ?? null,
     verification_artifact: relativeToRoot(absRoot, path.resolve(absRoot, verifyArtifact)),
     review_artifact: relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact)),
-    review_fresh_for_commit: Boolean(currentCommit && review?.reviewed_commit === currentCommit),
+    review_freshness:
+      review?.verdict === 'PASS' ? 'pass' : review?.verdict === 'FAIL' ? 'fail' : 'unknown',
     process_complete: processComplete,
     blockers,
     next_step: nextStep || defaultNextStep(dossierRecord.frontmatter.status, step) || undefined,
@@ -2108,14 +2095,14 @@ async function runDossierVerifyCommand(argv: string[], io: CliIo): Promise<numbe
   }
 
   const overallStatus = checks.every((check) => check.status === 'pass') ? 'pass' : 'fail';
-  const currentCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
+  const eventCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
   const artifact = {
     version: 1,
     created_at: new Date().toISOString(),
     step,
     feature_id: featureId,
     dossier: dossierRelPath,
-    current_commit: currentCommit,
+    event_commit: eventCommit,
     status: overallStatus,
     checks,
   };
@@ -2125,7 +2112,7 @@ async function runDossierVerifyCommand(argv: string[], io: CliIo): Promise<numbe
     '.dossier',
     'verification',
     featureId,
-    `${step}-${currentCommit ? currentCommit.slice(0, 12) : 'workspace'}.json`,
+    `${step}-${eventCommit ? eventCommit.slice(0, 12) : 'workspace'}.json`,
   );
   const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
   await writeJsonAtomic(outputPath, artifact);
@@ -2195,10 +2182,10 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
 
   let latestStepArtifact: StepArtifactShape | null = null;
   let latestReviewArtifact: ReviewArtifactShape | null = null;
-  let currentCommit: string | null = null;
+  let eventCommit: string | null = null;
   let dirtyWorktree = false;
   if (inGitRepo(absRoot)) {
-    currentCommit = getCurrentCommit(absRoot);
+    eventCommit = getCurrentCommit(absRoot);
     dirtyWorktree = hasDirtyWorktree(absRoot);
   }
 
@@ -2232,10 +2219,12 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
             'No active dossier found. Select backlog work with backlog-engineer and create a dossier via feature-intake before using next-step.',
           ];
   const reviewFreshness = latestReviewArtifact
-    ? currentCommit && latestReviewArtifact.reviewed_commit !== currentCommit
-      ? `stale for current commit ${currentCommit}`
-      : `valid for commit ${latestReviewArtifact.reviewed_commit}`
-    : 'no review artifact found';
+    ? latestReviewArtifact.verdict === 'PASS'
+      ? 'pass'
+      : latestReviewArtifact.verdict === 'FAIL'
+        ? 'fail'
+        : 'unknown'
+    : 'missing';
 
   const summary = {
     target_dossier: target ? target.relPath : null,
@@ -2245,6 +2234,8 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
     blocking_gate: blockers,
     uncommitted_work: dirtyWorktree,
     review_freshness: reviewFreshness,
+    event_commit: eventCommit,
+    review_trace_commit: latestReviewArtifact?.event_commit ?? null,
     process_complete: latestStepArtifact ? Boolean(latestStepArtifact.process_complete) : null,
   };
 
@@ -2265,6 +2256,8 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
   );
   writeLine(io.stdout, `Uncommitted work: ${summary.uncommitted_work ? 'yes' : 'no'}`);
   writeLine(io.stdout, `Review freshness: ${summary.review_freshness}`);
+  writeLine(io.stdout, `Event commit: ${summary.event_commit ?? 'none'}`);
+  writeLine(io.stdout, `Review trace commit: ${summary.review_trace_commit ?? 'none'}`);
   writeLine(
     io.stdout,
     `Process-complete: ${summary.process_complete === null ? 'unknown' : summary.process_complete ? 'yes' : 'no'}`,
@@ -2283,7 +2276,8 @@ export const COMMANDS: CommandDefinition[] = [
   {
     name: 'sync-index',
     aliases: [],
-    description: 'Refresh generated dossier table/graph blocks only; use index-refresh for a full refresh.',
+    description:
+      'Refresh generated dossier table/graph blocks only; use index-refresh for a full refresh.',
     helpText: syncIndexHelp,
     run: runSyncIndexCommand,
   },

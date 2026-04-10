@@ -17,6 +17,7 @@ import type { CommandDefinition } from './types.ts';
 import {
   appendAppliedPatchEntry,
   assertPatchRegistryConstraints,
+  assertCanonicalReplayMatchesState,
   readAuthoredJsonFile,
 } from './mutation-helpers.ts';
 
@@ -125,6 +126,13 @@ export const REMOVE_ITEM_COMMAND: CommandDefinition<
 
     await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
     await context.artifacts.writeState(context.backlogRoot, nextState);
+    await assertCanonicalReplayMatchesState({
+      artifactKind: 'patch',
+      canonicalPath: canonicalImport.canonicalPath,
+      commandName: 'remove-item',
+      context,
+      state: nextState,
+    });
     await context.hooks.afterPatchApplied?.({
       summary: output,
       state: nextState,

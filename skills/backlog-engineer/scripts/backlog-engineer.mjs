@@ -4911,6 +4911,7 @@ var ERROR_CODES = [
 	"BE_DELETE_CONFIRM_REQUIRED",
 	"BE_MUTATION_LOCKED",
 	"BE_PLATFORM_UNSUPPORTED",
+	"BE_REBUILD_REPLAY_FAILED",
 	"BE_INTERNAL_STATE_CORRUPT"
 ];
 var ERROR_EXIT_CODES = {
@@ -4944,6 +4945,7 @@ var ERROR_EXIT_CODES = {
 	BE_DELETE_CONFIRM_REQUIRED: 6,
 	BE_MUTATION_LOCKED: 7,
 	BE_PLATFORM_UNSUPPORTED: 1,
+	BE_REBUILD_REPLAY_FAILED: 1,
 	BE_INTERNAL_STATE_CORRUPT: 1
 };
 var ERROR_DEFAULT_MESSAGES = {
@@ -4977,6 +4979,7 @@ var ERROR_DEFAULT_MESSAGES = {
 	BE_DELETE_CONFIRM_REQUIRED: "Destructive command requires explicit confirmation.",
 	BE_MUTATION_LOCKED: "Another mutating command is already running for this backlog root.",
 	BE_PLATFORM_UNSUPPORTED: "This operation requires anchored directory handling that is unsupported on the current platform.",
+	BE_REBUILD_REPLAY_FAILED: "Backlog rebuild failed while replaying canonical artifacts.",
 	BE_INTERNAL_STATE_CORRUPT: "Internal runtime state is corrupt."
 };
 //#endregion
@@ -5777,6 +5780,19 @@ function assertPatchRegistryConstraints(payload) {
 		max_existing_sequence: maxSequence
 	} });
 }
+async function assertCanonicalReplayMatchesState(payload) {
+	const rebuiltState = await payload.context.ensureMutationState();
+	if (JSON.stringify(rebuiltState) === JSON.stringify(payload.state)) return;
+	throw payload.context.errors.create("BE_REBUILD_REPLAY_FAILED", "Backlog mutation produced state that does not match canonical artifact replay.", {
+		details: {
+			command: payload.commandName,
+			artifact_kind: payload.artifactKind,
+			canonical_path: payload.canonicalPath,
+			reason: "post_mutation_replay_mismatch"
+		},
+		hint: "The command did not return success because canonical artifacts are not replay-equivalent to the produced state."
+	});
+}
 var PACKET_COMMAND = {
 	name: "packet",
 	summary: "Apply a packet that adds new backlog tasks.",
@@ -5856,6 +5872,13 @@ var PACKET_COMMAND = {
 		});
 		await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
 		await context.artifacts.writeState(context.backlogRoot, nextState);
+		await assertCanonicalReplayMatchesState({
+			artifactKind: "packet",
+			canonicalPath: canonicalImport.canonicalPath,
+			commandName: "packet",
+			context,
+			state: nextState
+		});
 		const output = {
 			...outputBase,
 			canonical_packet_path: path.resolve(context.backlogRoot, canonicalImport.canonicalPath),
@@ -5947,6 +5970,13 @@ var PATCH_ITEM_COMMAND = {
 		});
 		await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
 		await context.artifacts.writeState(context.backlogRoot, nextState);
+		await assertCanonicalReplayMatchesState({
+			artifactKind: "patch",
+			canonicalPath: canonicalImport.canonicalPath,
+			commandName: "patch-item",
+			context,
+			state: nextState
+		});
 		await context.hooks.afterPatchApplied?.({
 			summary: output,
 			state: nextState,
@@ -7076,6 +7106,13 @@ var REMOVE_ITEM_COMMAND = {
 		});
 		await context.artifacts.writeAppliedRegistry(context.backlogRoot, nextAppliedRegistry);
 		await context.artifacts.writeState(context.backlogRoot, nextState);
+		await assertCanonicalReplayMatchesState({
+			artifactKind: "patch",
+			canonicalPath: canonicalImport.canonicalPath,
+			commandName: "remove-item",
+			context,
+			state: nextState
+		});
 		await context.hooks.afterPatchApplied?.({
 			summary: output,
 			state: nextState,
@@ -8726,6 +8763,29 @@ function sortItems(items) {
 function sortTodos$1(todos) {
 	return [...todos].sort((left, right) => left.todo_id.localeCompare(right.todo_id));
 }
+function createPatchReplayFailedError(payload) {
+	return payload.errors.create("BE_REBUILD_REPLAY_FAILED", payload.operation ? "Backlog rebuild failed while replaying a canonical patch operation." : "Backlog rebuild failed after replaying a canonical patch.", {
+		details: {
+			artifact_kind: "patch",
+			canonical_path: payload.replayContext.canonicalPath,
+			patch_id: payload.patch.metadata.patch_id,
+			patch_kind: payload.replayContext.kind,
+			apply_index: payload.replayContext.applyIndex,
+			sequence: payload.replayContext.sequence,
+			...payload.operation ? {
+				operation_index: payload.operationIndex ?? null,
+				operation_action: payload.operation.action,
+				item_key: payload.operation.item_key
+			} : {},
+			...payload.errors.isBacklogError(payload.error) ? {
+				original_code: payload.error.code,
+				original_message: payload.error.message
+			} : payload.error instanceof Error ? { original_message: payload.error.message } : {}
+		},
+		hint: "Inspect the named canonical patch artifact. Do not repair replay failures by manually editing state.json or applied.json.",
+		cause: payload.error
+	});
+}
 function synchronizeOpenTodoIds(payload) {
 	const next = cloneState$2(payload.state);
 	const todoIdsByItem = /* @__PURE__ */ new Map();
@@ -8787,7 +8847,7 @@ function applyPacketItemsOnly(payload) {
 function applyPatchReplay(payload) {
 	let next = cloneState$2(payload.state);
 	const removedItemKeys = /* @__PURE__ */ new Set();
-	for (const operation of payload.patch.operations) {
+	for (const [operationIndex, operation] of payload.patch.operations.entries()) try {
 		const targetItem = next.items.find((item) => item.item_key === operation.item_key);
 		if (!targetItem) throw payload.errors.create("BE_PATCH_TARGET_NOT_FOUND", void 0, { details: { item_key: operation.item_key } });
 		switch (operation.action) {
@@ -8817,12 +8877,32 @@ function applyPatchReplay(payload) {
 				throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { operation: exhaustiveCheck } });
 			}
 		}
+	} catch (error) {
+		if (!payload.replayContext) throw error;
+		throw createPatchReplayFailedError({
+			errors: payload.errors,
+			error,
+			patch: payload.patch,
+			operation,
+			operationIndex,
+			replayContext: payload.replayContext
+		});
 	}
 	if (removedItemKeys.size > 0) next = cleanupRemovedItemReferences$1(next, removedItemKeys);
-	validateReferentialIntegrity({
-		state: next,
-		errors: payload.errors
-	});
+	try {
+		validateReferentialIntegrity({
+			state: next,
+			errors: payload.errors
+		});
+	} catch (error) {
+		if (!payload.replayContext) throw error;
+		throw createPatchReplayFailedError({
+			errors: payload.errors,
+			error,
+			patch: payload.patch,
+			replayContext: payload.replayContext
+		});
+	}
 	return next;
 }
 function validateSourceRegistryReferences(payload) {
@@ -11084,6 +11164,22 @@ function validatePatchKind(payload) {
 	const removedKeys = new Set(payload.patch.operations.filter((operation) => operation.action === "remove_item").map((operation) => operation.item_key));
 	if (payload.patch.operations.some((operation) => operation.action !== "remove_item") || payload.entry.target_item_keys.some((itemKey) => !removedKeys.has(itemKey))) throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { patch_id: payload.entry.patch_id } });
 }
+function createArtifactReplayFailedError(payload) {
+	return payload.errors.create("BE_REBUILD_REPLAY_FAILED", payload.message, {
+		details: {
+			artifact_kind: payload.artifactKind,
+			canonical_path: payload.canonicalPath,
+			...payload.packetId ? { packet_id: payload.packetId } : {},
+			...payload.patchId ? { patch_id: payload.patchId } : {},
+			...payload.errors.isBacklogError(payload.error) ? {
+				original_code: payload.error.code,
+				original_message: payload.error.message
+			} : payload.error instanceof Error ? { original_message: payload.error.message } : {}
+		},
+		hint: "Inspect the named canonical artifact. Do not repair rebuild failures by manually editing state.json or applied.json.",
+		cause: payload.error
+	});
+}
 async function readCanonicalPacket(payload) {
 	const filePath = payload.dependencies.path.resolve(payload.backlogRoot, payload.canonicalPath);
 	return readJsonArtifact({
@@ -11174,22 +11270,55 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 		return left.canonical_path.localeCompare(right.canonical_path);
 	});
 	for (const packetEntry of packetEntries) {
-		const packet = await readCanonicalPacket({
-			backlogRoot: payload.backlogRoot,
-			dependencies: payload.dependencies,
-			schemas: payload.schemas,
-			errors: payload.errors,
-			canonicalPath: packetEntry.canonical_path
-		});
-		if (JSON.stringify(packet.items.map((item) => item.item_key)) !== JSON.stringify(packetEntry.item_keys)) throw payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
-			packet_id: packetEntry.packet_id,
-			reason: "Packet item_keys do not match applied registry entry."
-		} });
-		state = applyPacketReplay({
-			state,
-			packet,
-			errors: payload.errors
-		});
+		let packet;
+		try {
+			packet = await readCanonicalPacket({
+				backlogRoot: payload.backlogRoot,
+				dependencies: payload.dependencies,
+				schemas: payload.schemas,
+				errors: payload.errors,
+				canonicalPath: packetEntry.canonical_path
+			});
+		} catch (error) {
+			throw createArtifactReplayFailedError({
+				artifactKind: "packet",
+				canonicalPath: packetEntry.canonical_path,
+				errors: payload.errors,
+				error,
+				message: "Backlog rebuild failed while reading a canonical packet.",
+				packetId: packetEntry.packet_id
+			});
+		}
+		if (JSON.stringify(packet.items.map((item) => item.item_key)) !== JSON.stringify(packetEntry.item_keys)) {
+			const error = payload.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+				packet_id: packetEntry.packet_id,
+				reason: "Packet item_keys do not match applied registry entry."
+			} });
+			throw createArtifactReplayFailedError({
+				artifactKind: "packet",
+				canonicalPath: packetEntry.canonical_path,
+				errors: payload.errors,
+				error,
+				message: "Backlog rebuild failed while validating a canonical packet.",
+				packetId: packetEntry.packet_id
+			});
+		}
+		try {
+			state = applyPacketReplay({
+				state,
+				packet,
+				errors: payload.errors
+			});
+		} catch (error) {
+			throw createArtifactReplayFailedError({
+				artifactKind: "packet",
+				canonicalPath: packetEntry.canonical_path,
+				errors: payload.errors,
+				error,
+				message: "Backlog rebuild failed while replaying a canonical packet.",
+				packetId: packetEntry.packet_id
+			});
+		}
 	}
 	const patchEntries = [...runtimeArtifacts.appliedRegistry.patches].sort((left, right) => {
 		const applyCompare = left.apply_index - right.apply_index;
@@ -11199,23 +11328,52 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 		return left.canonical_path.localeCompare(right.canonical_path);
 	});
 	for (const patchEntry of patchEntries) {
-		const patch = await readCanonicalPatch({
-			backlogRoot: payload.backlogRoot,
-			dependencies: payload.dependencies,
-			schemas: payload.schemas,
-			errors: payload.errors,
-			canonicalPath: patchEntry.canonical_path
-		});
-		validatePatchKind({
-			entry: patchEntry,
-			patch,
-			errors: payload.errors
-		});
+		let patch;
+		try {
+			patch = await readCanonicalPatch({
+				backlogRoot: payload.backlogRoot,
+				dependencies: payload.dependencies,
+				schemas: payload.schemas,
+				errors: payload.errors,
+				canonicalPath: patchEntry.canonical_path
+			});
+		} catch (error) {
+			throw createArtifactReplayFailedError({
+				artifactKind: "patch",
+				canonicalPath: patchEntry.canonical_path,
+				errors: payload.errors,
+				error,
+				message: "Backlog rebuild failed while reading a canonical patch.",
+				patchId: patchEntry.patch_id
+			});
+		}
+		try {
+			validatePatchKind({
+				entry: patchEntry,
+				patch,
+				errors: payload.errors
+			});
+		} catch (error) {
+			throw createArtifactReplayFailedError({
+				artifactKind: "patch",
+				canonicalPath: patchEntry.canonical_path,
+				errors: payload.errors,
+				error,
+				message: "Backlog rebuild failed while validating a canonical patch.",
+				patchId: patchEntry.patch_id
+			});
+		}
 		state = applyPatchReplay({
 			state,
 			patch,
 			errors: payload.errors,
-			missingTodoPolicy: "ignore"
+			missingTodoPolicy: "ignore",
+			replayContext: {
+				applyIndex: patchEntry.apply_index,
+				canonicalPath: patchEntry.canonical_path,
+				kind: patchEntry.kind,
+				sequence: patchEntry.sequence
+			}
 		});
 	}
 	validateSourceRegistryReferences({

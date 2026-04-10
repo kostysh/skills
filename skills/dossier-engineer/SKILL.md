@@ -44,8 +44,8 @@ Backlog source of truth:
 
 Canonical process artifacts:
 
-- `.dossier/verification/<feature>/<step>-<commit>.json` — verification bundle result from `dossier-verify`.
-- `.dossier/reviews/<feature>/<step>-<commit>.json` — independent review result from `review-artifact`.
+- `.dossier/verification/<feature>/<step>-<event>.json` — verification bundle result from `dossier-verify`.
+- `.dossier/reviews/<feature>/<step>-<event>.json` — independent review result from `review-artifact`.
 - `.dossier/steps/<feature>/<step>.json` — machine-checkable closure state from `dossier-step-close`.
 - `.dossier/drift/<feature>/*.json` — executable-contract impact results from `contract-drift-audit`.
 
@@ -113,7 +113,9 @@ Applies to `.dossier/reviews/...` artifacts:
 - `fail`
 - `stale`
 
-A review is **stale** when the reviewed commit no longer matches the current closure target.
+A review is **stale** when a material change alters the reviewed scope after the review.
+
+Commit SHA is trace metadata only. It records which repository state was visible when the event happened; it is not a freshness, validity, or lifecycle gate.
 
 ### 4. Step closure state
 
@@ -125,14 +127,12 @@ Applies to `.dossier/steps/...` artifacts:
 
 A step is `closed` only when `process_complete: true`.
 
-### 5. Commit completeness state
+### 5. Worktree cleanliness state
 
-Applies to the working tree and closure target:
+Applies to the working tree only:
 
 - `dirty`
-- `clean-unreviewed`
-- `clean-reviewed`
-- `clean-but-stale-review`
+- `clean`
 
 ## Hard rules (must follow)
 
@@ -161,7 +161,7 @@ Applies to the working tree and closure target:
    Every mutating step must include an explicit debt review, dependency/seam re-check, and durable handling path for every finding.
 
 9. **No “step complete” claim without machine-checkable closure.**
-   A mutating step is not complete until `dossier-verify`, independent review, and `dossier-step-close` all pass on the same closure target.
+   A mutating step is not complete until `dossier-verify`, independent review, and `dossier-step-close` all pass for the same intended scope.
 
 10. **Material change invalidates prior review by default.**
     If code, tests, executable dossier sections, architecture, or ADRs change after review, treat the review as stale unless a stricter repo-local rule says otherwise.
@@ -250,7 +250,7 @@ If `Process-complete: no`, the response must not use “complete”, “closed�
 
 ## Material change / review freshness policy
 
-Treat the review as stale when any of the following changed after the reviewed commit:
+Treat the review as stale when any of the following changed after the reviewed scope:
 
 - source code;
 - tests;
@@ -289,7 +289,7 @@ Every command-specific checklist below follows the same review philosophy:
 1. **Check actual repo state**, not the author’s summary.
 2. **Separate artifact correctness from process correctness.**
 3. **Check cross-artifact alignment**: dossier ↔ tests ↔ index ↔ backlog ↔ architecture ↔ ADRs.
-4. **Check freshness**: if review or verification is tied to an older commit, it does not count.
+4. **Check freshness**: if a material change altered the reviewed scope after review, the previous review does not count. Commit SHA is only trace metadata.
 5. **Check close-out truthfulness**: the final answer must accurately report blockers, next step, and process-complete state.
 6. **For read-only commands**, review the report fidelity instead of expecting mutations.
 7. **Green automation is never enough by itself**: a reviewer still checks for semantic gaps, especially for side-effecting code.
@@ -807,7 +807,7 @@ Audit fidelity checklist:
 - [ ] The artifact scope matches the intended dossier or changed set.
 - [ ] The recorded command list includes both canonical dossier checks and required repo-specific extras.
 - [ ] Exit codes, stdout/stderr, and overall pass/fail are captured faithfully.
-- [ ] The artifact is tied to the current closure target commit.
+- [ ] The artifact records event commit only as trace metadata when git is available.
 - [ ] The author did not claim “all checks passed” if the artifact says otherwise.
 
 #### CLI command: `review-artifact`
@@ -816,8 +816,8 @@ Persist a reviewer-supplied verdict as a durable artifact.
 
 Purpose:
 
-- Tie review to a specific commit.
-- Make review freshness machine-checkable.
+- Record review event provenance, including event commit when git is available.
+- Keep review freshness tied to material scope changes, not commit SHA changes.
 - Preserve must-fix and should-fix findings outside chat.
 - Record reviewer provenance explicitly.
 - Persist the result of a review that already happened; this command does not perform the review itself.
@@ -829,11 +829,11 @@ Run examples:
 
 Command correctness checklist:
 
-- [ ] The artifact is tied to the intended dossier, step, and reviewed commit.
+- [ ] The artifact is tied to the intended dossier and step.
 - [ ] Reviewer provenance is explicit.
 - [ ] PASS artifacts do not contain unresolved must-fix findings.
 - [ ] Findings are explicit and durable instead of being left in chat only.
-- [ ] The reviewed commit matches the closure target or is clearly marked stale later.
+- [ ] Commit SHA, if recorded, is treated as trace metadata only.
 - [ ] The final answer references review freshness accurately.
 
 #### CLI command: `dossier-step-close`
@@ -843,25 +843,24 @@ Machine-checkable closure gate for a mutating step.
 Purpose:
 
 - Block false “done” claims.
-- Merge verification truth, review truth, and current commit freshness.
+- Merge verification truth, review truth, and material-scope freshness.
 - Persist canonical `process_complete` state.
 
 Run example:
 
-- `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact .dossier/verification/F-0001/implementation-<sha>.json --review-artifact .dossier/reviews/F-0001/implementation-<sha>.json`
+- `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact .dossier/verification/F-0001/implementation-<event>.json --review-artifact .dossier/reviews/F-0001/implementation-<event>.json`
 
 Contract:
 
 - Fails if verification artifact did not pass.
 - Fails if review artifact is not PASS.
-- Fails if review or verification is stale for the current commit.
 - Fails if the worktree is dirty unless explicitly allowed.
 - Writes a step artifact either way so blockers stay durable.
 
 Command correctness checklist:
 
 - [ ] The step artifact exists for the intended dossier and step.
-- [ ] `process_complete: true` appears only when verification passed, review passed, and freshness is valid.
+- [ ] `process_complete: true` appears only when verification passed, review passed, and no known material-scope freshness blocker exists.
 - [ ] Any blockers are explicit and accurate.
 - [ ] The artifact’s `next_step` is sensible for the dossier’s current state.
 - [ ] The final answer uses the artifact truth rather than wishful language.
@@ -923,7 +922,7 @@ Command correctness checklist:
 - [ ] The command is treated as structured-state/artifact-driven only; it never infers blockers or decisions from dossier body prose.
 - [ ] Blocking gates come from actual durable artifacts when available.
 - [ ] Dirty worktree state is surfaced explicitly.
-- [ ] Review freshness is reported against the current commit.
+- [ ] Review freshness is reported from durable review state and material-scope policy, not from current commit SHA.
 - [ ] Repo overlays and repo ADRs were ingested before acting on the result; `next-step` output does not replace overlay ingestion.
 - [ ] The final answer tells the user to return to `backlog-engineer` when backlog blockers or lifecycle updates must be resolved.
 

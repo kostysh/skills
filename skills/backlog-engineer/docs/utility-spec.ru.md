@@ -611,7 +611,24 @@ Runtime не имеет права восстанавливать состоян
   - `applied.json`
   - порядок применения artifacts
   - authored fields задач
-- если rebuild невозможен, runtime обязан завершаться machine-readable ошибкой.
+- если rebuild невозможен, runtime обязан завершаться machine-readable ошибкой;
+- если rebuild падает во время чтения, валидации или replay canonical packet/patch artifact, ошибка должна использовать `BE_REBUILD_REPLAY_FAILED` и включать минимум:
+  - `artifact_kind`;
+  - `canonical_path`;
+  - `packet_id` или `patch_id`, когда применимо;
+  - `operation_index`, `operation_action`, `item_key`, когда ошибка связана с конкретной patch operation;
+  - `original_code` и `original_message`, когда нижележащая ошибка была backlog error.
+
+### Post-mutation replay-safety gate
+
+После успешной записи canonical packet/patch artifact, `applied.json` и `state.json` mutating-команда обязана выполнить replay-safety check до возврата success.
+
+Правила:
+
+- команда должна rebuild-ить state из canonical artifacts;
+- rebuilt state должен совпасть с state, который команда только что произвела;
+- если replay падает или rebuilt state расходится с produced state, команда должна завершиться `BE_REBUILD_REPLAY_FAILED`;
+- success mutating-команды означает, что записанные canonical artifacts replay-safe для последующих query-команд.
 
 ## 6.6. Canonical import policy for packets and patches
 
@@ -1197,6 +1214,7 @@ Dry-run не должен:
 | `BE_DELETE_CONFIRM_REQUIRED` | `delete-backlog` без подтверждения |
 | `BE_MUTATION_LOCKED` | backlog root уже занят другой mutating-командой |
 | `BE_PLATFORM_UNSUPPORTED` | host runtime не поддерживает безопасные anchored directory операции для utility-owned артефактов |
+| `BE_REBUILD_REPLAY_FAILED` | rebuild не смог прочитать, провалидировать или replay-нуть canonical packet/patch artifact |
 | `BE_INTERNAL_STATE_CORRUPT` | `state.json` повреждён или противоречив |
 
 ## 10. Команды и их алгоритмы

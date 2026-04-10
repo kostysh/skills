@@ -164,6 +164,37 @@ function validatePatchKind(payload: {
   }
 }
 
+function createArtifactReplayFailedError(payload: {
+  artifactKind: 'packet' | 'patch';
+  canonicalPath: string;
+  errors: ErrorModule;
+  error: unknown;
+  message: string;
+  packetId?: string;
+  patchId?: string;
+}): Error {
+  return payload.errors.create('BE_REBUILD_REPLAY_FAILED', payload.message, {
+    details: {
+      artifact_kind: payload.artifactKind,
+      canonical_path: payload.canonicalPath,
+      ...(payload.packetId ? { packet_id: payload.packetId } : {}),
+      ...(payload.patchId ? { patch_id: payload.patchId } : {}),
+      ...(payload.errors.isBacklogError(payload.error)
+        ? {
+            original_code: payload.error.code,
+            original_message: payload.error.message,
+          }
+        : payload.error instanceof Error
+          ? {
+              original_message: payload.error.message,
+            }
+          : {}),
+    },
+    hint: 'Inspect the named canonical artifact. Do not repair rebuild failures by manually editing state.json or applied.json.',
+    cause: payload.error,
+  });
+}
+
 async function readCanonicalPacket(payload: {
   backlogRoot: BacklogRootPath;
   dependencies: RuntimeDependencies;
@@ -309,31 +340,62 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
   });
 
   for (const packetEntry of packetEntries) {
-    const packet = await readCanonicalPacket({
-      backlogRoot: payload.backlogRoot,
-      dependencies: payload.dependencies,
-      schemas: payload.schemas,
-      errors: payload.errors,
-      canonicalPath: packetEntry.canonical_path,
-    });
+    let packet: PacketFile;
+    try {
+      packet = await readCanonicalPacket({
+        backlogRoot: payload.backlogRoot,
+        dependencies: payload.dependencies,
+        schemas: payload.schemas,
+        errors: payload.errors,
+        canonicalPath: packetEntry.canonical_path,
+      });
+    } catch (error) {
+      throw createArtifactReplayFailedError({
+        artifactKind: 'packet',
+        canonicalPath: packetEntry.canonical_path,
+        errors: payload.errors,
+        error,
+        message: 'Backlog rebuild failed while reading a canonical packet.',
+        packetId: packetEntry.packet_id,
+      });
+    }
 
     if (
       JSON.stringify(packet.items.map((item) => item.item_key)) !==
       JSON.stringify(packetEntry.item_keys)
     ) {
-      throw payload.errors.create('BE_INTERNAL_STATE_CORRUPT', undefined, {
+      const error = payload.errors.create('BE_INTERNAL_STATE_CORRUPT', undefined, {
         details: {
           packet_id: packetEntry.packet_id,
           reason: 'Packet item_keys do not match applied registry entry.',
         },
       });
+      throw createArtifactReplayFailedError({
+        artifactKind: 'packet',
+        canonicalPath: packetEntry.canonical_path,
+        errors: payload.errors,
+        error,
+        message: 'Backlog rebuild failed while validating a canonical packet.',
+        packetId: packetEntry.packet_id,
+      });
     }
 
-    state = applyPacketReplay({
-      state,
-      packet,
-      errors: payload.errors,
-    });
+    try {
+      state = applyPacketReplay({
+        state,
+        packet,
+        errors: payload.errors,
+      });
+    } catch (error) {
+      throw createArtifactReplayFailedError({
+        artifactKind: 'packet',
+        canonicalPath: packetEntry.canonical_path,
+        errors: payload.errors,
+        error,
+        message: 'Backlog rebuild failed while replaying a canonical packet.',
+        packetId: packetEntry.packet_id,
+      });
+    }
   }
 
   const patchEntries = [...runtimeArtifacts.appliedRegistry.patches].sort((left, right) => {
@@ -351,25 +413,54 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
   });
 
   for (const patchEntry of patchEntries) {
-    const patch = await readCanonicalPatch({
-      backlogRoot: payload.backlogRoot,
-      dependencies: payload.dependencies,
-      schemas: payload.schemas,
-      errors: payload.errors,
-      canonicalPath: patchEntry.canonical_path,
-    });
+    let patch: PatchFile;
+    try {
+      patch = await readCanonicalPatch({
+        backlogRoot: payload.backlogRoot,
+        dependencies: payload.dependencies,
+        schemas: payload.schemas,
+        errors: payload.errors,
+        canonicalPath: patchEntry.canonical_path,
+      });
+    } catch (error) {
+      throw createArtifactReplayFailedError({
+        artifactKind: 'patch',
+        canonicalPath: patchEntry.canonical_path,
+        errors: payload.errors,
+        error,
+        message: 'Backlog rebuild failed while reading a canonical patch.',
+        patchId: patchEntry.patch_id,
+      });
+    }
 
-    validatePatchKind({
-      entry: patchEntry,
-      patch,
-      errors: payload.errors,
-    });
+    try {
+      validatePatchKind({
+        entry: patchEntry,
+        patch,
+        errors: payload.errors,
+      });
+    } catch (error) {
+      throw createArtifactReplayFailedError({
+        artifactKind: 'patch',
+        canonicalPath: patchEntry.canonical_path,
+        errors: payload.errors,
+        error,
+        message: 'Backlog rebuild failed while validating a canonical patch.',
+        patchId: patchEntry.patch_id,
+      });
+    }
 
     state = applyPatchReplay({
       state,
       patch,
       errors: payload.errors,
       missingTodoPolicy: 'ignore',
+      replayContext: {
+        applyIndex: patchEntry.apply_index,
+        canonicalPath: patchEntry.canonical_path,
+        kind: patchEntry.kind,
+        sequence: patchEntry.sequence,
+      },
     });
   }
 

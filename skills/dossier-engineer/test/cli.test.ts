@@ -537,7 +537,9 @@ void test('next-step normalizes non-stage artifact next_step values to null', (t
       dossier: 'docs/features/F-0001-sample.md',
       step: 'change-proposal',
       process_complete: false,
-      blockers: ['Executable contract changed; run contract-drift-audit before choosing the next workflow stage.'],
+      blockers: [
+        'Executable contract changed; run contract-drift-audit before choosing the next workflow stage.',
+      ],
       next_step: 'contract-drift-audit',
     }),
   );
@@ -777,7 +779,9 @@ void test('verify, review-artifact, and dossier-step-close complete the implemen
     fs.readFileSync(path.join(repoRoot, verificationArtifact), 'utf8'),
   ) as {
     checks: Array<{ name: string }>;
+    event_commit: string | null;
   };
+  assert.equal(verificationPayload.event_commit, commit);
   assert.equal(verificationPayload.checks[0]?.name, 'index-refresh');
   assert.equal(verificationPayload.checks[1]?.name, 'lint-dossiers');
 
@@ -798,6 +802,16 @@ void test('verify, review-artifact, and dossier-step-close complete the implemen
 
   const reviewArtifact = `.dossier/reviews/F-0001/implementation-${shortCommit}.json`;
   assert.equal(fs.existsSync(path.join(repoRoot, reviewArtifact)), true);
+  const reviewPayload = JSON.parse(
+    fs.readFileSync(path.join(repoRoot, reviewArtifact), 'utf8'),
+  ) as {
+    event_commit: string | null;
+  };
+  assert.equal(reviewPayload.event_commit, commit);
+
+  writeFile(repoRoot, 'README.md', 'Unrelated repository note.\n');
+  assert.equal(runCommand('git', ['add', 'README.md'], repoRoot).status, 0);
+  assert.equal(runCommand('git', ['commit', '-m', 'add unrelated note'], repoRoot).status, 0);
 
   const closeResult = runCli([
     'dossier-step-close',
@@ -817,10 +831,16 @@ void test('verify, review-artifact, and dossier-step-close complete the implemen
   const stepArtifact = JSON.parse(
     fs.readFileSync(path.join(repoRoot, '.dossier/steps/F-0001/implementation.json'), 'utf8'),
   ) as {
+    event_commit: string | null;
     next_step: string;
     process_complete: boolean;
+    review_freshness: string;
+    review_trace_commit: string | null;
   };
+  assert.notEqual(stepArtifact.event_commit, commit);
   assert.equal(stepArtifact.process_complete, true);
+  assert.equal(stepArtifact.review_freshness, 'pass');
+  assert.equal(stepArtifact.review_trace_commit, commit);
   assert.equal(stepArtifact.next_step, 'implementation');
 });
 
@@ -859,7 +879,7 @@ void test('dossier-step-close rejects a review artifact without reviewer provena
         step: 'implementation',
         dossier: 'docs/features/F-0001-sample.md',
         feature_id: 'F-0001',
-        reviewed_commit: commit,
+        event_commit: commit,
         verdict: 'PASS',
         findings: {
           must_fix: [],

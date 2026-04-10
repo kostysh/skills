@@ -149,6 +149,33 @@ export function assertPatchRegistryConstraints(payload: {
   }
 }
 
+export async function assertCanonicalReplayMatchesState(payload: {
+  artifactKind: 'packet' | 'patch';
+  canonicalPath: BacklogRelativePosixPath;
+  commandName: CommandName;
+  context: CommandExecutionContext;
+  state: StateFile;
+}): Promise<void> {
+  const rebuiltState = await payload.context.ensureMutationState();
+  if (JSON.stringify(rebuiltState) === JSON.stringify(payload.state)) {
+    return;
+  }
+
+  throw payload.context.errors.create(
+    'BE_REBUILD_REPLAY_FAILED',
+    'Backlog mutation produced state that does not match canonical artifact replay.',
+    {
+      details: {
+        command: payload.commandName,
+        artifact_kind: payload.artifactKind,
+        canonical_path: payload.canonicalPath,
+        reason: 'post_mutation_replay_mismatch',
+      },
+      hint: 'The command did not return success because canonical artifacts are not replay-equivalent to the produced state.',
+    },
+  );
+}
+
 export function countItemsInStateWithTodos(payload: {
   beforeState: StateFile;
   afterState: StateFile;
