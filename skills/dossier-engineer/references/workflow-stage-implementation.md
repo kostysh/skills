@@ -1,6 +1,7 @@
 # Workflow stage steps: `implementation`
 
-1. For multi-step or package-based work, open or update the implementation log before the first mutating edit.
+1. Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).
+   For multi-step or package-based work, open or update the stage log before the first mutating edit.
 2. Start from `docs/ssot/index.md`, then open the target dossier, dependent dossiers, relevant architecture sections, repo `AGENTS.md`, and repo ADRs.
 3. Deliver on the canonical stack, runtime, and deployment path from the first executable change.
 4. Build verification alongside implementation.
@@ -23,3 +24,4 @@
 14. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
     The implementation stage is not complete until this required backlog actualization is done.
 15. Close the step with `dossier-step-close` only after the required backlog actualization is done.
+16. If logging was required, update the stage log with review events, debt review result, process misses, backlog actualization result, commit metadata when available, and links to applicable verification, review, and step-close artifacts.

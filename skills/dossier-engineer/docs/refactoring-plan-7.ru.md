@@ -7,7 +7,7 @@
 
 ## Контекст и проблема
 
-В текущем состоянии скила есть отдельный контракт логирования для `implementation`: [references/implementation-logging.md](../references/implementation-logging.md). Для `spec-compact` и `plan-slice` аналогичной политики нет.
+На момент планирования в скиле был отдельный контракт логирования для `implementation`: `references/implementation-logging.md`. Для `spec-compact` и `plan-slice` аналогичной политики не было.
 
 Это создает процессный разрыв:
 
@@ -26,7 +26,7 @@
 - [../references/workflow-stage-spec-compact.md](../references/workflow-stage-spec-compact.md) — детальный workflow для `spec-compact`.
 - [../references/workflow-stage-plan-slice.md](../references/workflow-stage-plan-slice.md) — детальный workflow для `plan-slice`.
 - [../references/workflow-stage-implementation.md](../references/workflow-stage-implementation.md) — детальный workflow для `implementation`.
-- [../references/implementation-logging.md](../references/implementation-logging.md) — существующая implementation-only политика, из которой нужно перенести полезные элементы.
+- `../references/implementation-logging.md` — существующая на момент планирования implementation-only политика, из которой нужно перенести полезные элементы.
 
 ## Решения
 

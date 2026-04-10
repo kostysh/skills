@@ -44,6 +44,7 @@ Backlog source of truth:
 
 Canonical process artifacts:
 
+- `.dossier/logs/<feature>/<stage>-<cycle>.md` — workflow-stage process telemetry for `spec-compact`, `plan-slice`, and `implementation`.
 - `.dossier/verification/<feature>/<step>-<event>.json` — verification bundle result from `dossier-verify`.
 - `.dossier/reviews/<feature>/<step>-<event>.json` — independent review result from `review-artifact`.
 - `.dossier/steps/<feature>/<step>.json` — machine-checkable closure state from `dossier-step-close`.
@@ -375,6 +376,7 @@ Turn the existing dossier into a compact spec that is specific enough to impleme
 Use this reference when the feature has meaningful operator/agent/machine-facing or safety-sensitive surface:
 
 - [Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)
+- [Workflow stage logging](references/workflow-stage-logging.md)
 - [Detailed stage steps](references/workflow-stage-spec-compact.md)
 
 Trigger summary:
@@ -413,6 +415,9 @@ Trigger-based additions:
 
 Process integrity:
 - [ ] Repo overlays and repo ADRs were ingested before finalizing the spec.
+- [ ] If a workflow-stage logging trigger fired, the stage log was opened or updated.
+- [ ] The stage log records inputs, decisions/reclassifications, operator/review cycles, process misses, and backlog actualization outcome.
+- [ ] The stage log does not duplicate AC text or dossier truth.
 - [ ] Any cross-cutting decision was externalized instead of being left hidden inside one dossier.
 - [ ] `status` is consistent with spec maturity and `coverage_gate` stays explicit.
 - [ ] If shaping changed backlog truth, the backlog was updated through `backlog-engineer` before leaving this stage.
@@ -425,6 +430,7 @@ Add an incremental slicing plan inside the dossier.
 Use this reference when the feature needs explicit contract-risk planning or post-implementation usage validation:
 
 - [Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)
+- [Workflow stage logging](references/workflow-stage-logging.md)
 - [Detailed stage steps](references/workflow-stage-plan-slice.md)
 
 Trigger summary:
@@ -457,6 +463,9 @@ Stage exit checklist:
 - [ ] Tasks reference Slice IDs or AC IDs and do not restate AC text.
 - [ ] Any required realignment of existing delivered work is explicit.
 - [ ] The plan treats slices/tasks as forecast, while ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints carry the commitment signal.
+- [ ] If a workflow-stage logging trigger fired, the stage log was opened or updated.
+- [ ] The stage log records slice boundary decisions, planning assumptions/fallbacks, review cycles, process misses, and backlog actualization outcome.
+- [ ] The stage log does not duplicate slice or task text from the dossier.
 - [ ] `status: planned` is used for planning maturity, while `coverage_gate` independently captures coverage strictness.
 - [ ] If planning changed backlog truth, the backlog was updated through `backlog-engineer` before leaving this stage.
 - [ ] The final answer does not rationalize a status workaround such as “planned but really shaped”; it uses the explicit state model instead.
@@ -468,7 +477,7 @@ Implement the planned feature while keeping dossier, architecture, overlays, and
 Use these references together with this stage:
 
 - [Implementation audit policy](references/implementation-audit-policy.md)
-- [Implementation logging](references/implementation-logging.md)
+- [Workflow stage logging](references/workflow-stage-logging.md)
 - [Workflow guide](references/workflow.md#no-technical-debt-policy)
 - [Detailed stage steps](references/workflow-stage-implementation.md)
 
@@ -488,7 +497,7 @@ Required adversarial checklist for side-effecting code:
 
 Stage exit checklist:
 
-- [ ] For multi-step or package-based work, the implementation log was opened before the first mutating edit and kept current through close-out.
+- [ ] For multi-step or package-based work, the stage log was opened before the first mutating edit and kept current through close-out.
 - [ ] Code changes follow the canonical stack, runtime, deployment path, and repo overlays.
 - [ ] Delivered behavior maps back to slices/ACs or to an explicit approved change.
 - [ ] Completeness review passed: the implementation fully covers the intended slices/ACs/approved changes, with no silent stubs, placeholders, scope cuts, or undocumented “later” deferrals.

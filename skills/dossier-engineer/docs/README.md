@@ -35,12 +35,14 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [implementation-log-6.ru.md](implementation-log-6.ru.md) | Incremental log for the process-hardening implementation cycle that moves audit and logging discipline into the canonical skill contract. This document is written in Russian. | Read when you need the package-by-package record for the process-hardening cycle. |
 | [refactoring-plan-6.ru.md](refactoring-plan-6.ru.md) | Dossier-side implementation plan for `change-proposal` cross-skill hardening: explicit backlog-impact classifier, stage-level handoff, and optional runtime hints without new commands or artifacts. This document is written in Russian. | Read when planning the dossier-side half of the `change-proposal` harmonization cycle. |
 | [implementation-log-7.ru.md](implementation-log-7.ru.md) | Incremental log for the dossier-side `change-proposal` hardening cycle: explicit backlog-impact verdict, closure semantics, and runtime-boundary decisions for `contract-drift-audit`. This document is written in Russian. | Read when you need the package-by-package record for the dossier-side half of `change-proposal` harmonization. |
+| [refactoring-plan-7.ru.md](refactoring-plan-7.ru.md) | Plan for unifying workflow-stage logging across `spec-compact`, `plan-slice`, and `implementation`. This document is written in Russian. | Read when updating process telemetry rules for dossier workflow stages. |
+| [implementation-log-8.ru.md](implementation-log-8.ru.md) | Incremental log for the workflow-stage logging policy implementation cycle. This document is written in Russian. | Read when you need the package record for the stage-logging policy cycle. |
 
 ## Related Materials
 
 - [../references/workflow.md](../references/workflow.md) explains the end-to-end dossier workflow.
 - [../references/implementation-audit-policy.md](../references/implementation-audit-policy.md) defines the external audit stack for implementation work.
-- [../references/implementation-logging.md](../references/implementation-logging.md) defines the implementation logging contract and metrics.
+- [../references/workflow-stage-logging.md](../references/workflow-stage-logging.md) defines the logging contract and metrics for `spec-compact`, `plan-slice`, and `implementation`.
 - [../references/spec-and-plan-risk-patterns.md](../references/spec-and-plan-risk-patterns.md) defines the contract-risk patterns that `spec-compact` and `plan-slice` should kill before late corrective cycles.
 - [../references/DOSSIER_TEMPLATE.md](../references/DOSSIER_TEMPLATE.md) provides the canonical Feature Dossier template.
 - [../references/SSOT_INDEX_TEMPLATE.md](../references/SSOT_INDEX_TEMPLATE.md) provides the global index template.
@@ -125,7 +127,7 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 2. [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md)
 3. [implementation-log-6.ru.md](implementation-log-6.ru.md)
 4. [../references/implementation-audit-policy.md](../references/implementation-audit-policy.md)
-5. [../references/implementation-logging.md](../references/implementation-logging.md)
+5. [../references/workflow-stage-logging.md](../references/workflow-stage-logging.md)
 6. [AGENTS.md](AGENTS.md)
 7. [../SKILL.md](../SKILL.md)
 8. [../references/workflow.md](../references/workflow.md)

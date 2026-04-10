@@ -34,7 +34,7 @@ const WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH = path.join(
   'references',
   'workflow-stage-change-proposal.md',
 );
-const IMPLEMENTATION_LOGGING_PATH = path.join(SKILL_DIR, 'references', 'implementation-logging.md');
+const WORKFLOW_STAGE_LOGGING_PATH = path.join(SKILL_DIR, 'references', 'workflow-stage-logging.md');
 const SPEC_AND_PLAN_RISK_PATTERNS_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -240,13 +240,13 @@ void test('contract-drift-audit stays a support signal rather than the authorita
   ]);
 });
 
-void test('implementation stage points to audit and logging refs with explicit spec-first audit semantics', async () => {
+void test('implementation stage points to audit and workflow-stage logging refs with explicit spec-first audit semantics', async () => {
   const [skill, workflow, implementationSteps, auditPolicy, loggingPolicy] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
     readFile(WORKFLOW_PATH, 'utf8'),
     readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
     readFile(IMPLEMENTATION_AUDIT_POLICY_PATH, 'utf8'),
-    readFile(IMPLEMENTATION_LOGGING_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_LOGGING_PATH, 'utf8'),
   ]);
 
   const implementation = extractSection(skill, '#### Workflow stage: `implementation`');
@@ -254,15 +254,18 @@ void test('implementation stage points to audit and logging refs with explicit s
 
   assertContainsTerms(implementation, [
     '[Implementation audit policy](references/implementation-audit-policy.md)',
-    '[Implementation logging](references/implementation-logging.md)',
+    '[Workflow stage logging](references/workflow-stage-logging.md)',
     '[Workflow guide](references/workflow.md#no-technical-debt-policy)',
     '[Detailed stage steps](references/workflow-stage-implementation.md)',
   ]);
   assertContainsTerms(implementationSteps, [
+    'Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).',
+    'open or update the stage log before the first mutating edit',
     'Apply the [No-technical-debt policy](workflow.md#no-technical-debt-policy)',
     'Run `spec-conformance` review first',
     'Persist only the independent reviewer verdict with `review-artifact`',
     'Close the step with `dossier-step-close` only after the required backlog actualization is done.',
+    'If logging was required, update the stage log with review events, debt review result, process misses, backlog actualization result, commit metadata when available, and links to applicable verification, review, and step-close artifacts.',
   ]);
   assertContainsTerms(debtPolicy, [
     'Apply this policy during `Workflow stage: implementation`',
@@ -279,15 +282,94 @@ void test('implementation stage points to audit and logging refs with explicit s
     'Normative/process/docs contract changes',
   ]);
   assertContainsTerms(loggingPolicy, [
+    '## Applies to',
+    'Workflow stage: spec-compact',
+    'Workflow stage: plan-slice',
+    'Workflow stage: implementation',
+    '.dossier/logs/<feature>/<stage>-<cycle>.md',
+    '## Low-overhead skip path',
     '## Mandatory metadata block',
     'session_id',
+    '## Required narrative sections',
+    '## Stage-specific sections',
     '## Review event log',
+    '## Backlog actualization',
     '## Process misses',
     '## Metrics to capture',
+    'review policy',
+    'debt review',
+    'commit metadata',
+    'Feature Dossier',
+    'process telemetry',
     'Spec gap decisions',
     'Implementation freedom decisions',
     'Temporary assumptions',
   ]);
+});
+
+void test('active dossier instructions use the unified workflow-stage logging reference', async () => {
+  const [skill, specCompactSteps, planSliceSteps, implementationSteps, loggingPolicy] =
+    await Promise.all([
+      readFile(SKILL_PATH, 'utf8'),
+      readFile(WORKFLOW_STAGE_SPEC_COMPACT_PATH, 'utf8'),
+      readFile(WORKFLOW_STAGE_PLAN_SLICE_PATH, 'utf8'),
+      readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
+      readFile(WORKFLOW_STAGE_LOGGING_PATH, 'utf8'),
+    ]);
+
+  const specCompact = extractSection(skill, '#### Workflow stage: `spec-compact`');
+  const planSlice = extractSection(skill, '#### Workflow stage: `plan-slice`');
+  const implementation = extractSection(skill, '#### Workflow stage: `implementation`');
+  const coreArtifacts = extractSection(skill, '## Core artifacts');
+
+  assertContainsTerms(coreArtifacts, ['.dossier/logs/<feature>/<stage>-<cycle>.md']);
+  assertContainsTerms(specCompact, [
+    '[Workflow stage logging](references/workflow-stage-logging.md)',
+    'If a workflow-stage logging trigger fired, the stage log was opened or updated.',
+    'The stage log records inputs, decisions/reclassifications, operator/review cycles, process misses, and backlog actualization outcome.',
+    'The stage log does not duplicate AC text or dossier truth.',
+  ]);
+  assertContainsTerms(planSlice, [
+    '[Workflow stage logging](references/workflow-stage-logging.md)',
+    'If a workflow-stage logging trigger fired, the stage log was opened or updated.',
+    'The stage log records slice boundary decisions, planning assumptions/fallbacks, review cycles, process misses, and backlog actualization outcome.',
+    'The stage log does not duplicate slice or task text from the dossier.',
+  ]);
+  assertContainsTerms(implementation, [
+    '[Workflow stage logging](references/workflow-stage-logging.md)',
+    'For multi-step or package-based work, the stage log was opened before the first mutating edit and kept current through close-out.',
+  ]);
+  assertContainsTerms(specCompactSteps, [
+    'Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).',
+    'If logging is required, open `.dossier/logs/...` before the first substantive spec mutation.',
+    'If logging was required, update the stage log with review events, decisions/reclassifications, process misses, and the planned backlog actualization outcome before closure.',
+    'If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.',
+  ]);
+  assertContainsTerms(planSliceSteps, [
+    'Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).',
+    'If logging is required, open `.dossier/logs/...` before the first substantive planning mutation.',
+    'If logging was required, update the stage log with slice boundary decisions, assumptions/fallbacks, review events, process misses, and the planned backlog actualization outcome before closure.',
+    'If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.',
+  ]);
+  assertContainsTerms(loggingPolicy, [
+    'A stage log is process telemetry.',
+    'It does not replace the Feature Dossier.',
+    'stage: spec-compact | plan-slice | implementation',
+    'log_required_reason',
+    '`spec-compact`',
+    '`plan-slice`',
+    '`implementation`',
+  ]);
+
+  for (const activeText of [
+    skill,
+    specCompactSteps,
+    planSliceSteps,
+    implementationSteps,
+    loggingPolicy,
+  ]) {
+    assert.doesNotMatch(activeText, /references\/implementation-logging\.md/u);
+  }
 });
 
 void test('skill-wide review sections stay distinct from implementation-specific audit policy', async () => {
@@ -321,10 +403,12 @@ void test('spec-compact and plan-slice point to risk patterns and literal risk-k
 
   assertContainsTerms(specCompact, [
     '[Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)',
+    '[Workflow stage logging](references/workflow-stage-logging.md)',
     '[Detailed stage steps](references/workflow-stage-spec-compact.md)',
   ]);
   assertContainsTerms(planSlice, [
     '[Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)',
+    '[Workflow stage logging](references/workflow-stage-logging.md)',
     '[Detailed stage steps](references/workflow-stage-plan-slice.md)',
   ]);
   assertContainsTerms(specCompactSteps, [
