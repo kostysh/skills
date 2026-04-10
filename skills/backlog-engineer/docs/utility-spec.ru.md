@@ -151,6 +151,8 @@ Runtime обязан обеспечивать это через advisory lock:
 Под lock работают:
 
 - `register-source`
+- `update-source-path`
+- `remove-source`
 - `packet`
 - `patch-item`
 - `remove-item`
@@ -354,10 +356,10 @@ flowchart TD
 
 Правила:
 
- - `path` хранится в нормализованном виде, относительно backlog root, и может содержать `..`, если источник лежит вне backlog root;
+- `path` хранится в нормализованном виде, относительно backlog root, и может содержать `..`, если источник лежит вне backlog root;
 - `source_label` пригоден для чтения человеком;
 - `source_label` должен быть детерминированным и уникальным внутри backlog-а; базовое правило: normalised relative path with POSIX separators;
-- `hash` обновляется только через `refresh` или первичную регистрацию;
+- `hash` обновляется только через `refresh`, `update-source-path` или первичную регистрацию;
 - повторный `register-source` по тому же пути возвращает существующую запись без скрытого обновления hash.
 
 ## 6.3. Applied artifact registry `.backlog/applied.json`
@@ -583,6 +585,7 @@ Runtime не имеет права восстанавливать состоян
    - packet entry -> pipeline команды `packet`
    - patch entry с `kind = patch-item` -> pipeline команды `patch-item`
    - patch entry с `kind = remove-item` -> pipeline команды `remove-item`
+   - patch entry с `kind = source-maintenance` -> utility-owned maintenance cleanup pipeline
    При replay отключаются только:
    - canonical import file copy;
    - повторная регистрация в `applied.json`;
@@ -1066,7 +1069,7 @@ Dry-run не должен:
 
 - `no-op` -> backlog mutation отсутствует;
 - `patch existing item` -> patch already known impacted items without creating a new work unit;
-- `source update` -> if the canonical source is new, register it first; if the canonical source is already registered and changed, refresh it first; then patch all known impacted items; then create new work only if the refreshed source still implies separate delta work;
+- `source update` -> if the canonical source is new, register it first; if the same canonical source moved, run `update-source-path`; if a registered source was deleted, run `remove-source`; if the canonical source is already registered and changed, refresh it first; then patch all known impacted items; then create new work only if the refreshed source still implies separate delta work;
 - `new backlog item` -> create a separate delta item and keep existing implemented history honest.
 
 Обязательные guards:
@@ -1194,6 +1197,8 @@ Dry-run не должен:
 | `BE_SOURCE_NOT_FOUND` | source не найден по `source_id`, `label` или `path` |
 | `BE_SOURCE_FILE_MISSING` | зарегистрированный source file отсутствует на диске |
 | `BE_SOURCE_READ_FAILED` | source file существует, но не может быть безопасно прочитан |
+| `BE_SOURCE_PATH_CONFLICT` | другой source уже зарегистрирован на requested normalized path |
+| `BE_SOURCE_REMOVE_UNSUPPORTED` | source removal не может безопасно materialize полный cleanup affected truth |
 | `BE_SOURCE_KIND_INVALID` | `kind` не соответствует допустимому формату |
 | `BE_SOURCE_AUTHORITY_INVALID` | `authority` не соответствует допустимому формату |
 | `BE_PACKET_ITEM_ALREADY_EXISTS` | packet пытается добавить существующий `item_key` |
@@ -1395,6 +1400,153 @@ Dry-run не должен:
 - глобальный список;
 - фильтр по `item_key`;
 - фильтр по `path`.
+
+## 10.3.1. `update-source-path`
+
+### Input
+
+- exactly one selector:
+  - `--source-id`
+  - `--source-label`
+  - `--source-path`
+- `--new-path`
+- optional `--dry-run`
+
+### Reads
+
+- `.backlog/state.json`
+- `.backlog/sources.json`
+- content файла по `--new-path`
+
+### Writes
+
+Если `dry_run = false` и путь реально изменился:
+
+- `.backlog/state.json`
+- `.backlog/sources.json`
+
+Canonical patch artifact не создаётся.
+
+### Algorithm
+
+1. Найти backlog root.
+2. Разрешить selector в ровно один source record.
+3. Нормализовать `--new-path` относительно backlog root.
+4. Проверить, что новый файл существует и безопасно читается.
+5. Если normalized new path совпадает с текущим source path, вернуть no-op summary без записи.
+6. Если другой source уже зарегистрирован на этот normalized path, завершиться с `BE_SOURCE_PATH_CONFLICT`.
+7. Пересчитать hash нового файла.
+8. Обновить source record, сохранив `source_id`, `kind`, `authority`, `note`, `registered_at`.
+9. Синхронизировать source labels в persisted state read models.
+10. Если hash не изменился, вернуть label-only summary: `changed_sources = 1`, `todo_updated` только для механически синхронизированных existing todo/read models, `next_commands = []`.
+11. Если hash изменился, применить scoped refresh semantics для этого `source_id` и обновить `last_refresh_at`.
+12. Сохранить state и registry.
+
+### Response contract
+
+```json
+{
+  "dry_run": false,
+  "source_id": "<uuid>",
+  "source_label": "sources/docs/modules/auth.v2.md",
+  "previous_path": "/abs/backlog/sources/docs/modules/auth.md",
+  "path": "/abs/backlog/sources/docs/modules/auth.v2.md",
+  "kind": "module",
+  "authority": "authoritative",
+  "hash": "<sha256>",
+  "hash_changed": true,
+  "counts": {
+    "changed_sources": 1,
+    "todo_created": 1,
+    "todo_updated": 0,
+    "todo_removed": 0
+  },
+  "todo_created": ["auth-core"],
+  "todo_updated": [],
+  "todo_removed": [],
+  "next_commands": []
+}
+```
+
+### Errors
+
+- `BE_SOURCE_NOT_FOUND`
+- `BE_SOURCE_FILE_MISSING`
+- `BE_SOURCE_READ_FAILED`
+- `BE_SOURCE_PATH_CONFLICT`
+- `BE_MUTATION_LOCKED`
+
+## 10.3.2. `remove-source`
+
+### Input
+
+- exactly one selector:
+  - `--source-id`
+  - `--source-label`
+  - `--source-path`
+- optional `--dry-run`
+
+### Reads
+
+- `.backlog/state.json`
+- `.backlog/sources.json`
+- `.backlog/applied.json`
+
+### Writes
+
+Если `dry_run = false`:
+
+- canonical source-maintenance patch under `patches/`, when cleanup is needed
+- `.backlog/applied.json`, when cleanup patch is written
+- `.backlog/state.json`, when affected review state is created
+- `.backlog/sources.json`
+
+### Algorithm
+
+1. Найти backlog root.
+2. Разрешить selector в ровно один source record.
+3. Найти item-level ссылки на `source_id`.
+4. Найти context entity `source_ids`, которые ссылаются на `source_id`.
+5. Построить affected item scope из прямых item refs, context-linked items и downstream dependency subgraph.
+6. Если context refs есть, но deterministic affected item scope построить нельзя, завершиться с `BE_SOURCE_REMOVE_UNSUPPORTED`.
+7. Если affected item scope не пустой, создать utility-owned canonical patch с `kind = source-maintenance` и operation `remove_source_references`.
+8. Replay cleanup должен удалить `source_id` из item source lists и context entity `source_ids`.
+9. Создать или обновить mutation-managed review todo для affected items; message должен явно говорить, что source was removed.
+10. Сохранить canonical patch, applied entry, state.
+11. Удалить source record из `.backlog/sources.json`.
+12. Проверить replay-safety перед возвратом success.
+
+### Response contract
+
+```json
+{
+  "dry_run": false,
+  "source_id": "<uuid>",
+  "source_label": "sources/docs/modules/auth.md",
+  "path": "/abs/backlog/sources/docs/modules/auth.md",
+  "kind": "module",
+  "authority": "authoritative",
+  "hash": "<sha256>",
+  "removed": true,
+  "counts": {
+    "updated": 1,
+    "todo_created": 1,
+    "todo_updated": 0,
+    "todo_removed": 0
+  },
+  "updated_item_keys": ["auth-core"],
+  "todo_created": ["auth-core"],
+  "todo_updated": [],
+  "todo_removed": [],
+  "next_commands": []
+}
+```
+
+### Errors
+
+- `BE_SOURCE_NOT_FOUND`
+- `BE_SOURCE_REMOVE_UNSUPPORTED`
+- `BE_MUTATION_LOCKED`
 
 ## 10.4. `template`
 
@@ -2404,6 +2556,8 @@ Query-команды не выполняют semantic mutation backlog-а.
 
 - `init`
 - `register-source`
+- `update-source-path`
+- `remove-source`
 - `packet`
 - `patch-item`
 - `remove-item`
@@ -2415,7 +2569,7 @@ Query-команды не выполняют semantic mutation backlog-а.
 
 ## 12. Минимальный follow-up contract после mutating-команд
 
-Для `packet`, `patch-item`, `remove-item`, `refresh` утилита обязана возвращать компактную summary.
+Для `packet`, `patch-item`, `remove-item`, `update-source-path`, `remove-source`, `refresh` утилита обязана возвращать компактную summary.
 
 Правило для агента и для проектирования ответов:
 
@@ -2460,6 +2614,8 @@ Unit tests должны покрывать:
 
 - `init`
 - `register-source`
+- `update-source-path`
+- `remove-source`
 - `packet`
 - `patch-item`
 - `remove-item`

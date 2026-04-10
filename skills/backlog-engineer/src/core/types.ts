@@ -73,6 +73,13 @@ export interface TodoService {
     requireDirectSourceLink?: boolean;
     managedBy?: TodoManagedBy;
   }): Todo[];
+  generateTodosForSourceRemoval(payload: {
+    state: StateFile;
+    registry: SourceRegistryFile;
+    sourceIds: SourceId[];
+    affectedItemKeys: ItemKey[];
+    managedBy?: TodoManagedBy;
+  }): Todo[];
   generateTodosForDependencyChange(payload: {
     state: StateFile;
     changedItemKeys: ItemKey[];
@@ -136,6 +143,21 @@ export interface PacketMutationSummary {
   next_commands: CommandSuggestion[];
 }
 
+export interface RemoveSourceMaintenanceSummary {
+  state: StateFile;
+  counts: {
+    updated: number;
+    todo_created: number;
+    todo_updated: number;
+    todo_removed: number;
+  };
+  updated_item_keys: ItemKey[];
+  todo_created: ItemKey[];
+  todo_updated: ItemKey[];
+  todo_removed: ItemKey[];
+  next_commands: CommandSuggestion[];
+}
+
 export interface MutationService {
   applyPacket(payload: {
     state: StateFile;
@@ -159,6 +181,14 @@ export interface MutationService {
     changedSourceIds: SourceId[];
     scope: RefreshCommandInput;
   }): Promise<RefreshCommandOutput & { state: StateFile; registry: SourceRegistryFile }>;
+  removeSourceReferences(payload: {
+    state: StateFile;
+    patch: PatchFile;
+    sourceRegistry: SourceRegistryFile;
+    sourceId: SourceId;
+    affectedItemKeys: ItemKey[];
+    updatedItemKeys: ItemKey[];
+  }): Promise<RemoveSourceMaintenanceSummary>;
   getGaps(payload: { state: StateFile; filters: GapsCommandInput }): GapsCommandOutput;
 }
 

@@ -4335,13 +4335,18 @@ var TodoTypeSchema = _enum([
 	"review_context_change"
 ]);
 var TodoManagedBySchema = _enum(["refresh", "mutation"]);
-var PatchKindSchema = _enum(["patch-item", "remove-item"]);
+var PatchKindSchema = _enum([
+	"patch-item",
+	"remove-item",
+	"source-maintenance"
+]);
 _enum([
 	"replace_fields",
 	"append_unique",
 	"remove_values",
 	"remove_todo",
-	"remove_item"
+	"remove_item",
+	"remove_source_references"
 ]);
 var ControlledStringSchema = NonEmptyStringSchema;
 var KeyStrategySchema = record(NonEmptyStringSchema, NonEmptyStringSchema);
@@ -4707,6 +4712,61 @@ var ListSourcesCommandOutputSchema = array(RegisteredSourceOutputSchema.extend({
 	registered_at: IsoUtcTimestampSchema,
 	last_checked_at: IsoUtcTimestampSchema
 }));
+var SourceSelectorInputSchema = discriminatedUnion("kind", [
+	strictObject({
+		kind: literal("source_id"),
+		source_id: SourceIdSchema
+	}),
+	strictObject({
+		kind: literal("source_label"),
+		source_label: SourceLabelSchema
+	}),
+	strictObject({
+		kind: literal("source_path"),
+		source_path: CliPathInputSchema
+	})
+]);
+var UpdateSourcePathMutationCountsSchema = strictObject({
+	changed_sources: NonNegativeIntSchema,
+	todo_created: NonNegativeIntSchema,
+	todo_updated: NonNegativeIntSchema,
+	todo_removed: NonNegativeIntSchema
+});
+var UpdateSourcePathCommandInputSchema = strictObject({
+	selector: SourceSelectorInputSchema,
+	new_path: CliPathInputSchema,
+	dry_run: boolean().default(false)
+});
+var UpdateSourcePathCommandOutputSchema = RegisteredSourceOutputSchema.extend({
+	dry_run: boolean(),
+	previous_path: NormalizedFsPathSchema,
+	hash_changed: boolean(),
+	counts: UpdateSourcePathMutationCountsSchema,
+	todo_created: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
+	todo_updated: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
+	todo_removed: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
+	next_commands: array(CommandSuggestionSchema)
+});
+var RemoveSourceMutationCountsSchema = strictObject({
+	updated: NonNegativeIntSchema,
+	todo_created: NonNegativeIntSchema,
+	todo_updated: NonNegativeIntSchema,
+	todo_removed: NonNegativeIntSchema
+});
+var RemoveSourceCommandInputSchema = strictObject({
+	selector: SourceSelectorInputSchema,
+	dry_run: boolean().default(false)
+});
+var RemoveSourceCommandOutputSchema = RegisteredSourceOutputSchema.extend({
+	dry_run: boolean(),
+	removed: boolean(),
+	counts: RemoveSourceMutationCountsSchema,
+	updated_item_keys: uniqueArraySchema(ItemKeySchema, (value) => value, "Updated item keys must be unique."),
+	todo_created: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
+	todo_updated: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
+	todo_removed: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
+	next_commands: array(CommandSuggestionSchema)
+});
 var TemplateCommandInputSchema = discriminatedUnion("mode", [strictObject({
 	mode: literal("packet"),
 	out: CliPathInputSchema
@@ -4891,6 +4951,8 @@ var ERROR_CODES = [
 	"BE_SOURCE_NOT_FOUND",
 	"BE_SOURCE_FILE_MISSING",
 	"BE_SOURCE_READ_FAILED",
+	"BE_SOURCE_PATH_CONFLICT",
+	"BE_SOURCE_REMOVE_UNSUPPORTED",
 	"BE_SOURCE_KIND_INVALID",
 	"BE_SOURCE_AUTHORITY_INVALID",
 	"BE_PACKET_ITEM_ALREADY_EXISTS",
@@ -4925,6 +4987,8 @@ var ERROR_EXIT_CODES = {
 	BE_SOURCE_NOT_FOUND: 5,
 	BE_SOURCE_FILE_MISSING: 5,
 	BE_SOURCE_READ_FAILED: 5,
+	BE_SOURCE_PATH_CONFLICT: 4,
+	BE_SOURCE_REMOVE_UNSUPPORTED: 4,
 	BE_SOURCE_KIND_INVALID: 2,
 	BE_SOURCE_AUTHORITY_INVALID: 2,
 	BE_PACKET_ITEM_ALREADY_EXISTS: 4,
@@ -4959,6 +5023,8 @@ var ERROR_DEFAULT_MESSAGES = {
 	BE_SOURCE_NOT_FOUND: "Source was not found.",
 	BE_SOURCE_FILE_MISSING: "Registered source file is missing on disk.",
 	BE_SOURCE_READ_FAILED: "Registered source file could not be read safely.",
+	BE_SOURCE_PATH_CONFLICT: "Another source is already registered at the requested path.",
+	BE_SOURCE_REMOVE_UNSUPPORTED: "Source removal cannot be safely materialized under the current maintenance model.",
 	BE_SOURCE_KIND_INVALID: "Source kind is invalid.",
 	BE_SOURCE_AUTHORITY_INVALID: "Source authority is invalid.",
 	BE_PACKET_ITEM_ALREADY_EXISTS: "Packet contains item_key that already exists in the backlog.",
@@ -5083,11 +5149,16 @@ var PatchFileSchema = strictObject({
 		strictObject({
 			item_key: ItemKeySchema,
 			action: literal("remove_item")
+		}),
+		strictObject({
+			action: literal("remove_source_references"),
+			source_id: SourceIdSchema,
+			affected_item_keys: uniqueArraySchema(ItemKeySchema, (value) => value, "Affected item keys must be unique.")
 		})
 	])).min(1)
 }).superRefine((value, ctx) => {
 	const targetKeys = new Set(value.metadata.target_item_keys);
-	for (const [index, operation] of value.operations.entries()) if (!targetKeys.has(operation.item_key)) ctx.addIssue({
+	for (const [index, operation] of value.operations.entries()) if ("item_key" in operation && !targetKeys.has(operation.item_key)) ctx.addIssue({
 		code: ZodIssueCode.custom,
 		message: "Patch operation item_key must belong to metadata.target_item_keys.",
 		path: [
@@ -5098,9 +5169,9 @@ var PatchFileSchema = strictObject({
 	});
 });
 var PatchItemFileSchema = PatchFileSchema.superRefine((value, ctx) => {
-	for (const [index, operation] of value.operations.entries()) if (operation.action === "remove_item") ctx.addIssue({
+	for (const [index, operation] of value.operations.entries()) if (operation.action === "remove_item" || operation.action === "remove_source_references") ctx.addIssue({
 		code: ZodIssueCode.custom,
-		message: "patch-item must not contain remove_item operations.",
+		message: "patch-item must not contain remove_item or source maintenance operations.",
 		path: [
 			"operations",
 			index,
@@ -5179,6 +5250,8 @@ var commandInputSchemas = {
 	init: InitCommandInputSchema,
 	"register-source": RegisterSourceCommandInputSchema,
 	"list-sources": ListSourcesCommandInputSchema,
+	"update-source-path": UpdateSourcePathCommandInputSchema,
+	"remove-source": RemoveSourceCommandInputSchema,
 	template: TemplateCommandInputSchema,
 	packet: PacketCommandInputSchema,
 	"patch-item": PatchItemCommandInputSchema,
@@ -5197,6 +5270,8 @@ var commandOutputSchemas = {
 	init: InitCommandOutputSchema,
 	"register-source": RegisterSourceCommandOutputSchema,
 	"list-sources": ListSourcesCommandOutputSchema,
+	"update-source-path": UpdateSourcePathCommandOutputSchema,
+	"remove-source": RemoveSourceCommandOutputSchema,
 	template: TemplateCommandOutputSchema,
 	packet: PacketCommandOutputSchema,
 	"patch-item": PatchItemCommandOutputSchema,
@@ -5628,7 +5703,7 @@ var ITEMS_COMMAND = {
 };
 //#endregion
 //#region src/commands/list-sources.ts
-function collectItemSourceIds$6(item) {
+function collectItemSourceIds$7(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -5680,7 +5755,7 @@ var LIST_SOURCES_COMMAND = {
 			const { state } = await context.ensureQueryState();
 			const item = state.items.find((candidate) => candidate.item_key === input.item_key);
 			if (!item) throw context.errors.create("BE_ITEM_NOT_FOUND", void 0, { details: { item_key: input.item_key } });
-			const itemSourceIds = collectItemSourceIds$6(item);
+			const itemSourceIds = collectItemSourceIds$7(item);
 			sources = sources.filter((source) => itemSourceIds.has(source.source_id));
 		}
 		if (input.path) {
@@ -6008,7 +6083,7 @@ var QUEUE_COMMAND = {
 };
 //#endregion
 //#region src/commands/refresh-helpers.ts
-function collectItemSourceIds$5(item) {
+function collectItemSourceIds$6(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -6022,7 +6097,7 @@ function collectSourceIdsForItemKeys(payload) {
 	const sourceIds = /* @__PURE__ */ new Set();
 	for (const item of payload.state.items) {
 		if (!itemKeySet.has(item.item_key)) continue;
-		for (const sourceId of collectItemSourceIds$5(item)) sourceIds.add(sourceId);
+		for (const sourceId of collectItemSourceIds$6(item)) sourceIds.add(sourceId);
 	}
 	return [...sourceIds].sort((left, right) => left.localeCompare(right));
 }
@@ -6719,7 +6794,7 @@ function resolveSourceAbsolutePath(payload) {
 }
 //#endregion
 //#region src/sources/source-scope-service.ts
-function collectItemSourceIds$4(item) {
+function collectItemSourceIds$5(item) {
 	return new Set([
 		...item.origin_source_ids,
 		...item.specification_source_ids,
@@ -6832,7 +6907,7 @@ function resolveSourceScope(payload) {
 	const selectedSourceIds = new Set(selectedSources.map((source) => source.source_id));
 	const linkedItemKeys = /* @__PURE__ */ new Set();
 	for (const item of payload.state.items) {
-		const sourceIds = collectItemSourceIds$4(item);
+		const sourceIds = collectItemSourceIds$5(item);
 		if ([...selectedSourceIds].some((sourceId) => sourceIds.has(sourceId))) linkedItemKeys.add(item.item_key);
 	}
 	const topLevelItemKeys = collectTopLevelItemKeys({
@@ -7121,6 +7196,447 @@ var REMOVE_ITEM_COMMAND = {
 		return output;
 	}
 };
+//#endregion
+//#region src/commands/source-selector.ts
+function buildSourceSelectorFromFlags(payload) {
+	const selectors = [
+		payload.sourceId ? "source_id" : null,
+		payload.sourceLabel ? "source_label" : null,
+		payload.sourcePath ? "source_path" : null
+	].filter((value) => value !== null);
+	if (selectors.length !== 1) throw createUsageError({
+		command: payload.commandName,
+		selectors
+	}, `Use exactly one source selector: --source-id, --source-label, or --source-path. Run \`backlog-engineer help ${payload.commandName}\` to inspect the command contract.`);
+	if (payload.sourceId) return {
+		kind: "source_id",
+		source_id: payload.sourceId
+	};
+	if (payload.sourceLabel) return {
+		kind: "source_label",
+		source_label: payload.sourceLabel
+	};
+	return {
+		kind: "source_path",
+		source_path: payload.sourcePath ?? ""
+	};
+}
+async function resolveSourceRecord(payload) {
+	const { context, registry, selector } = payload;
+	if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+	if (selector.kind === "source_id") {
+		const source = registry.sources.find((candidate) => candidate.source_id === selector.source_id);
+		if (!source) throw context.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_id: selector.source_id } });
+		return source;
+	}
+	if (selector.kind === "source_label") {
+		const source = registry.sources.find((candidate) => candidate.source_label === selector.source_label);
+		if (!source) throw context.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: { source_label: selector.source_label } });
+		return source;
+	}
+	const normalized = await context.sources.resolveCliSourcePath({
+		backlogRoot: context.backlogRoot,
+		inputPath: context.host.resolveCliPath(selector.source_path)
+	});
+	const source = registry.sources.find((candidate) => candidate.path === normalized.relative_path);
+	if (!source) throw context.errors.create("BE_SOURCE_NOT_FOUND", void 0, { details: {
+		source_path: selector.source_path,
+		normalized_path: normalized.relative_path
+	} });
+	return source;
+}
+//#endregion
+//#region src/commands/source-maintenance-helpers.ts
+function sortKeys$1(values) {
+	return [...new Set(values)].sort((left, right) => left.localeCompare(right));
+}
+function toSourceOutput(payload) {
+	return {
+		source_id: payload.source.source_id,
+		source_label: payload.source.source_label,
+		path: path.resolve(payload.backlogRoot, payload.source.path),
+		kind: payload.source.kind,
+		authority: payload.source.authority,
+		...payload.source.note ? { note: payload.source.note } : {},
+		hash: payload.source.hash
+	};
+}
+function sortSourceSummaries$1(values) {
+	const deduped = /* @__PURE__ */ new Map();
+	for (const value of values) deduped.set(value.source_id, value);
+	return [...deduped.values()].sort((left, right) => {
+		const labelCompare = left.source_label.localeCompare(right.source_label);
+		if (labelCompare !== 0) return labelCompare;
+		return left.source_id.localeCompare(right.source_id);
+	});
+}
+function createSourceChangeMessage$1(relatedSources) {
+	const labels = sortSourceSummaries$1(relatedSources).map((source) => source.source_label);
+	if (labels.length === 0) return "Review the linked source change.";
+	return `Review source change: ${labels.join(", ")}.`;
+}
+function createSourceRemovalMessage$1(relatedSources) {
+	const labels = sortSourceSummaries$1(relatedSources).map((source) => source.source_label);
+	if (labels.length === 0) return "Source was removed. Review whether this task needs replacement source coverage.";
+	return `Source was removed: ${labels.join(", ")}. Review whether this task needs replacement source coverage.`;
+}
+function syncUtilityOwnedSourceMessage(payload) {
+	if (payload.todo.type !== "review_source_change") return payload.todo.message;
+	const previousChangeMessage = createSourceChangeMessage$1(payload.previousRelatedSources);
+	const currentChangeMessage = createSourceChangeMessage$1(payload.currentRelatedSources);
+	if (payload.todo.message === previousChangeMessage || payload.todo.message === currentChangeMessage) return createSourceChangeMessage$1(payload.nextRelatedSources);
+	const previousRemovalMessage = createSourceRemovalMessage$1(payload.previousRelatedSources);
+	const currentRemovalMessage = createSourceRemovalMessage$1(payload.currentRelatedSources);
+	if (payload.todo.message === previousRemovalMessage || payload.todo.message === currentRemovalMessage) return createSourceRemovalMessage$1(payload.nextRelatedSources);
+	return payload.todo.message;
+}
+function relatedSourcesChanged(payload) {
+	if (payload.before.length !== payload.after.length) return true;
+	return payload.before.some((source, index) => {
+		const afterSource = payload.after[index];
+		return afterSource === void 0 || source.source_id !== afterSource.source_id || source.source_label !== afterSource.source_label;
+	});
+}
+function syncTodoSourceLabels(payload) {
+	const labelsById = new Map(payload.registry.sources.map((source) => [source.source_id, source.source_label]));
+	const previousLabelsById = new Map((payload.previousRegistry?.sources ?? []).map((source) => [source.source_id, source.source_label]));
+	const todoUpdated = /* @__PURE__ */ new Set();
+	const todos = payload.state.todos.map((todo) => {
+		const previousRelatedSources = todo.related_sources.map((source) => ({
+			...source,
+			source_label: previousLabelsById.get(source.source_id) ?? source.source_label
+		}));
+		const currentRelatedSources = todo.related_sources;
+		const relatedSources = todo.related_sources.map((source) => {
+			const nextLabel = labelsById.get(source.source_id) ?? source.source_label;
+			return {
+				...source,
+				source_label: nextLabel
+			};
+		});
+		const message = syncUtilityOwnedSourceMessage({
+			todo,
+			previousRelatedSources,
+			currentRelatedSources,
+			nextRelatedSources: relatedSources
+		});
+		if (message !== todo.message || relatedSourcesChanged({
+			before: todo.related_sources,
+			after: relatedSources
+		})) todoUpdated.add(todo.item_key);
+		return {
+			...todo,
+			message,
+			related_sources: relatedSources
+		};
+	});
+	return {
+		state: payload.schemas.parseStateFile({
+			...payload.state,
+			todos
+		}),
+		todoUpdated: sortKeys$1(todoUpdated)
+	};
+}
+//#endregion
+//#region src/commands/remove-source.ts
+var OPTIONS$5 = [
+	{
+		flags: ["--source-id"],
+		value_name: "<source_id>",
+		description: "Registered source ID to remove."
+	},
+	{
+		flags: ["--source-label"],
+		value_name: "<source_label>",
+		description: "Registered source label to remove."
+	},
+	{
+		flags: ["--source-path"],
+		value_name: "<path>",
+		description: "Registered source path to remove."
+	},
+	{
+		flags: ["--dry-run"],
+		description: "Validate and simulate source removal without writing to disk."
+	}
+];
+function collectItemSourceIds$4(item) {
+	return new Set([
+		...item.origin_source_ids,
+		...item.specification_source_ids,
+		...item.plan_source_ids,
+		...item.implementation_source_ids,
+		...item.test_source_ids
+	]);
+}
+function collectSourceRemovalScope(payload) {
+	const rootItemKeys = /* @__PURE__ */ new Set();
+	const directItemKeys = /* @__PURE__ */ new Set();
+	const referencingContextKeys = /* @__PURE__ */ new Set();
+	for (const item of payload.state.items) {
+		if (!collectItemSourceIds$4(item).has(payload.sourceId)) continue;
+		rootItemKeys.add(item.item_key);
+		directItemKeys.add(item.item_key);
+	}
+	const itemsByClaimKey = /* @__PURE__ */ new Map();
+	const itemsByQualityAttributeKey = /* @__PURE__ */ new Map();
+	const itemsByPolicyDecisionKey = /* @__PURE__ */ new Map();
+	for (const item of payload.state.items) {
+		for (const claimKey of item.claim_keys) itemsByClaimKey.set(claimKey, [...itemsByClaimKey.get(claimKey) ?? [], item.item_key]);
+		for (const qualityAttributeKey of item.quality_attribute_keys) itemsByQualityAttributeKey.set(qualityAttributeKey, [...itemsByQualityAttributeKey.get(qualityAttributeKey) ?? [], item.item_key]);
+		for (const policyDecisionKey of item.policy_decision_keys) itemsByPolicyDecisionKey.set(policyDecisionKey, [...itemsByPolicyDecisionKey.get(policyDecisionKey) ?? [], item.item_key]);
+	}
+	for (const claim of payload.state.context.claims) {
+		if (!claim.source_ids.includes(payload.sourceId)) continue;
+		referencingContextKeys.add(`claim:${claim.claim_key}`);
+		for (const itemKey of itemsByClaimKey.get(claim.claim_key) ?? []) rootItemKeys.add(itemKey);
+	}
+	for (const qualityAttribute of payload.state.context.quality_attributes) {
+		if (!qualityAttribute.source_ids.includes(payload.sourceId)) continue;
+		referencingContextKeys.add(`quality_attribute:${qualityAttribute.quality_attribute_key}`);
+		for (const itemKey of qualityAttribute.applies_to_item_keys) rootItemKeys.add(itemKey);
+		for (const itemKey of itemsByQualityAttributeKey.get(qualityAttribute.quality_attribute_key) ?? []) rootItemKeys.add(itemKey);
+	}
+	for (const policyDecision of payload.state.context.policy_decisions) {
+		if (!policyDecision.source_ids.includes(payload.sourceId)) continue;
+		referencingContextKeys.add(`policy_decision:${policyDecision.policy_decision_key}`);
+		for (const itemKey of policyDecision.related_item_keys) rootItemKeys.add(itemKey);
+		for (const itemKey of itemsByPolicyDecisionKey.get(policyDecision.policy_decision_key) ?? []) rootItemKeys.add(itemKey);
+	}
+	return {
+		rootItemKeys: sortKeys$1(rootItemKeys),
+		directItemKeys: sortKeys$1(directItemKeys),
+		referencingContextKeys: sortKeys$1(referencingContextKeys)
+	};
+}
+function removeSourceFromRegistry(payload) {
+	return {
+		...payload.registry,
+		updated_at: payload.updatedAt,
+		sources: payload.registry.sources.filter((candidate) => candidate.source_id !== payload.source.source_id)
+	};
+}
+function createMaintenancePatch(payload) {
+	return payload.context.schemas.parsePatchFile({
+		metadata: {
+			patch_id: `source-maintenance-${payload.context.host.createUuid()}`,
+			created_at: payload.context.host.nowIsoUtc(),
+			sequence: payload.sequence,
+			target_item_keys: payload.affectedItemKeys
+		},
+		operations: [{
+			action: "remove_source_references",
+			source_id: payload.sourceId,
+			affected_item_keys: payload.affectedItemKeys
+		}]
+	});
+}
+var REMOVE_SOURCE_COMMAND = {
+	name: "remove-source",
+	summary: "Remove a source after durable cleanup of backlog references.",
+	usage: [
+		"backlog-engineer remove-source --source-id <source_id> [--dry-run]",
+		"backlog-engineer remove-source --source-label <source_label> [--dry-run]",
+		"backlog-engineer remove-source --source-path <path> [--dry-run]"
+	],
+	options: OPTIONS$5,
+	notes: [
+		BACKLOG_MUTATION_SCOPE_NOTE,
+		"The command removes source references from durable backlog truth before deleting the source registry record.",
+		"Affected items receive mutation-managed review todo that explicitly says the source was removed.",
+		SERIAL_MUTATION_NOTE,
+		ABSOLUTE_OUTPUT_NOTE
+	],
+	inputSchema: RemoveSourceCommandInputSchema,
+	outputSchema: RemoveSourceCommandOutputSchema,
+	parseArgs(args) {
+		const parsed = parseCommandArgs("remove-source", args, { options: {
+			"source-id": { type: "string" },
+			"source-label": { type: "string" },
+			"source-path": { type: "string" },
+			"dry-run": { type: "boolean" }
+		} });
+		assertNoPositionals("remove-source", parsed.positionals);
+		return parseUsageInput("remove-source", RemoveSourceCommandInputSchema, {
+			selector: buildSourceSelectorFromFlags({
+				commandName: "remove-source",
+				sourceId: getStringOption(parsed.values["source-id"]),
+				sourceLabel: getStringOption(parsed.values["source-label"]),
+				sourcePath: getStringOption(parsed.values["source-path"])
+			}),
+			dry_run: parsed.values["dry-run"] === true
+		});
+	},
+	async execute(input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+		const backlogRoot = context.backlogRoot;
+		const [state, registry, appliedRegistry] = await Promise.all([
+			context.ensureMutationState(),
+			context.artifacts.readSourceRegistry(backlogRoot),
+			context.artifacts.readAppliedRegistry(backlogRoot)
+		]);
+		const source = await resolveSourceRecord({
+			context,
+			registry,
+			selector: input.selector
+		});
+		const sourceOutput = toSourceOutput({
+			backlogRoot,
+			source
+		});
+		const removalScope = collectSourceRemovalScope({
+			state,
+			sourceId: source.source_id
+		});
+		if (removalScope.rootItemKeys.length === 0 && removalScope.referencingContextKeys.length > 0) throw context.errors.create("BE_SOURCE_REMOVE_UNSUPPORTED", void 0, {
+			details: {
+				source_id: source.source_id,
+				source_label: source.source_label,
+				path: source.path,
+				referencing_item_keys: removalScope.directItemKeys,
+				referencing_context_keys: removalScope.referencingContextKeys
+			},
+			hint: "The source is referenced only by context entities with no affected item scope, so this utility version cannot attach a review-visible cleanup mutation."
+		});
+		const affectedItemKeys = removalScope.rootItemKeys.length === 0 ? [] : context.core.graph.resolveItemSubgraph({
+			state,
+			rootItemKeys: removalScope.rootItemKeys
+		});
+		const sequence = Math.max(0, ...appliedRegistry.patches.map((entry) => entry.sequence)) + 1;
+		const maintenancePatch = affectedItemKeys.length === 0 ? void 0 : createMaintenancePatch({
+			context,
+			sourceId: source.source_id,
+			affectedItemKeys,
+			sequence
+		});
+		let nextState = state;
+		let summary = {
+			counts: {
+				updated: 0,
+				todo_created: 0,
+				todo_updated: 0,
+				todo_removed: 0
+			},
+			updated_item_keys: [],
+			todo_created: [],
+			todo_updated: [],
+			todo_removed: [],
+			next_commands: []
+		};
+		if (maintenancePatch) {
+			assertPatchRegistryConstraints({
+				context,
+				registry: appliedRegistry,
+				patch: maintenancePatch
+			});
+			const maintenanceSummary = await context.core.mutation.removeSourceReferences({
+				state,
+				patch: maintenancePatch,
+				sourceRegistry: registry,
+				sourceId: source.source_id,
+				affectedItemKeys,
+				updatedItemKeys: removalScope.directItemKeys
+			});
+			nextState = maintenanceSummary.state;
+			summary = {
+				counts: maintenanceSummary.counts,
+				updated_item_keys: maintenanceSummary.updated_item_keys,
+				todo_created: maintenanceSummary.todo_created,
+				todo_updated: maintenanceSummary.todo_updated,
+				todo_removed: maintenanceSummary.todo_removed,
+				next_commands: maintenanceSummary.next_commands
+			};
+		}
+		const output = context.schemas.parseCommandOutput("remove-source", {
+			dry_run: input.dry_run,
+			...sourceOutput,
+			removed: true,
+			...summary
+		});
+		if (input.dry_run) return output;
+		const nextRegistry = context.schemas.parseSourceRegistry({
+			...removeSourceFromRegistry({
+				registry,
+				source,
+				updatedAt: context.host.nowIsoUtc()
+			}),
+			schema_version: 1
+		});
+		if (maintenancePatch) {
+			const rawContent = `${JSON.stringify(maintenancePatch, null, 2)}\n`;
+			let canonicalPath;
+			try {
+				const canonicalImport = await context.artifacts.importPatchFile({
+					root: backlogRoot,
+					patchId: maintenancePatch.metadata.patch_id,
+					sourcePath: backlogRoot,
+					canonicalBasename: `${maintenancePatch.metadata.patch_id}.json`,
+					rawContent
+				});
+				canonicalPath = canonicalImport.canonicalPath;
+				const nextAppliedRegistry = appendAppliedPatchEntry({
+					schemas: context.schemas,
+					registry: appliedRegistry,
+					patch: maintenancePatch,
+					kind: "source-maintenance",
+					canonicalPath,
+					contentHash: canonicalImport.sha256,
+					appliedAt: context.host.nowIsoUtc()
+				});
+				await context.artifacts.writeAppliedRegistry(backlogRoot, nextAppliedRegistry);
+				await context.artifacts.writeState(backlogRoot, nextState);
+				await context.artifacts.writeSourceRegistry(backlogRoot, nextRegistry);
+				await assertCanonicalReplayMatchesState({
+					artifactKind: "patch",
+					canonicalPath,
+					commandName: "remove-source",
+					context,
+					state: nextState
+				});
+			} catch (error) {
+				const rollbackErrors = [];
+				try {
+					await context.artifacts.writeSourceRegistry(backlogRoot, registry);
+				} catch (rollbackError) {
+					rollbackErrors.push(rollbackError);
+				}
+				try {
+					await context.artifacts.writeState(backlogRoot, state);
+				} catch (rollbackError) {
+					rollbackErrors.push(rollbackError);
+				}
+				try {
+					await context.artifacts.writeAppliedRegistry(backlogRoot, appliedRegistry);
+				} catch (rollbackError) {
+					rollbackErrors.push(rollbackError);
+				}
+				if (canonicalPath) try {
+					await context.artifacts.removeCanonicalPatchFile({
+						root: backlogRoot,
+						canonicalPath
+					});
+				} catch (rollbackError) {
+					rollbackErrors.push(rollbackError);
+				}
+				if (rollbackErrors.length > 0) throw context.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+					details: {
+						command: "remove-source",
+						phase: "source_maintenance_write",
+						rollback: "failed",
+						rollback_error_count: rollbackErrors.length
+					},
+					hint: "Source removal failed after partial writes and rollback also failed; inspect backlog artifacts before retrying.",
+					cause: error
+				});
+				throw error;
+			}
+			return output;
+		}
+		await context.artifacts.writeSourceRegistry(backlogRoot, nextRegistry);
+		return output;
+	}
+};
 var REPORT_COMMAND = {
 	name: "report",
 	summary: "Generate a human-readable backlog report on disk.",
@@ -7287,7 +7803,7 @@ var STATUS_COMMAND = {
 };
 //#endregion
 //#region src/commands/template.ts
-var OPTIONS = [{
+var OPTIONS$1 = [{
 	flags: ["--out"],
 	value_name: "<path>",
 	description: "Output path for the generated template file.",
@@ -7310,7 +7826,7 @@ var TEMPLATE_COMMAND = {
 	name: "template",
 	summary: "Generate packet or patch templates.",
 	usage: ["backlog-engineer template packet --out <path>", "backlog-engineer template patch --item-keys <item_key_1>,<item_key_2> --out <path>"],
-	options: OPTIONS,
+	options: OPTIONS$1,
 	notes: [
 		"`template packet` writes a richer starter draft with placeholders and does not require an existing backlog root.",
 		"Before running `packet`, replace placeholders and remove starter entries that do not apply.",
@@ -7392,12 +7908,287 @@ var TEMPLATE_COMMAND = {
 	}
 };
 //#endregion
+//#region src/commands/update-source-path.ts
+var OPTIONS = [
+	{
+		flags: ["--source-id"],
+		value_name: "<source_id>",
+		description: "Registered source ID to update."
+	},
+	{
+		flags: ["--source-label"],
+		value_name: "<source_label>",
+		description: "Registered source label to update."
+	},
+	{
+		flags: ["--source-path"],
+		value_name: "<path>",
+		description: "Registered source path to update."
+	},
+	{
+		flags: ["--new-path"],
+		value_name: "<path>",
+		description: "New filesystem path for the same logical source.",
+		required: true
+	},
+	{
+		flags: ["--dry-run"],
+		description: "Validate and simulate path update without writing to disk."
+	}
+];
+function sortSources(values) {
+	return [...values].sort((left, right) => {
+		const labelCompare = left.source_label.localeCompare(right.source_label);
+		if (labelCompare !== 0) return labelCompare;
+		return left.source_id.localeCompare(right.source_id);
+	});
+}
+function updateRegistrySource(payload) {
+	return {
+		...payload.registry,
+		updated_at: payload.updatedAt,
+		sources: sortSources(payload.registry.sources.map((candidate) => candidate.source_id === payload.source.source_id ? payload.updatedSource : candidate))
+	};
+}
+var UPDATE_SOURCE_PATH_COMMAND = {
+	name: "update-source-path",
+	summary: "Update the registered path of an existing source.",
+	usage: [
+		"backlog-engineer update-source-path --source-id <source_id> --new-path <path> [--dry-run]",
+		"backlog-engineer update-source-path --source-label <source_label> --new-path <path> [--dry-run]",
+		"backlog-engineer update-source-path --source-path <path> --new-path <path> [--dry-run]"
+	],
+	options: OPTIONS,
+	notes: [
+		BACKLOG_MUTATION_SCOPE_NOTE,
+		"The source keeps the same source_id; only its path, label, hash, and last_checked_at can change.",
+		"If the new file hash changed, the command applies scoped refresh semantics for the same source_id.",
+		SERIAL_MUTATION_NOTE,
+		ABSOLUTE_OUTPUT_NOTE
+	],
+	inputSchema: UpdateSourcePathCommandInputSchema,
+	outputSchema: UpdateSourcePathCommandOutputSchema,
+	parseArgs(args) {
+		const parsed = parseCommandArgs("update-source-path", args, { options: {
+			"source-id": { type: "string" },
+			"source-label": { type: "string" },
+			"source-path": { type: "string" },
+			"new-path": { type: "string" },
+			"dry-run": { type: "boolean" }
+		} });
+		assertNoPositionals("update-source-path", parsed.positionals);
+		return parseUsageInput("update-source-path", UpdateSourcePathCommandInputSchema, {
+			selector: buildSourceSelectorFromFlags({
+				commandName: "update-source-path",
+				sourceId: getStringOption(parsed.values["source-id"]),
+				sourceLabel: getStringOption(parsed.values["source-label"]),
+				sourcePath: getStringOption(parsed.values["source-path"])
+			}),
+			new_path: requireStringOption("update-source-path", "--new-path", getStringOption(parsed.values["new-path"])),
+			dry_run: parsed.values["dry-run"] === true
+		});
+	},
+	async execute(input, context) {
+		if (!context.backlogRoot) throw context.errors.create("BE_ROOT_NOT_FOUND");
+		const backlogRoot = context.backlogRoot;
+		const [state, registry] = await Promise.all([context.ensureMutationState(), context.artifacts.readSourceRegistry(backlogRoot)]);
+		const source = await resolveSourceRecord({
+			context,
+			registry,
+			selector: input.selector
+		});
+		const normalizedNewPath = await context.sources.resolveCliSourcePath({
+			backlogRoot,
+			inputPath: context.host.resolveCliPath(input.new_path)
+		});
+		if (normalizedNewPath.relative_path === source.path) {
+			await context.sources.hashSourceFile(normalizedNewPath.absolute_path);
+			return context.schemas.parseCommandOutput("update-source-path", {
+				dry_run: input.dry_run,
+				...toSourceOutput({
+					backlogRoot,
+					source
+				}),
+				previous_path: toSourceOutput({
+					backlogRoot,
+					source
+				}).path,
+				hash_changed: false,
+				counts: {
+					changed_sources: 0,
+					todo_created: 0,
+					todo_updated: 0,
+					todo_removed: 0
+				},
+				todo_created: [],
+				todo_updated: [],
+				todo_removed: [],
+				next_commands: []
+			});
+		}
+		const conflictingSource = registry.sources.find((candidate) => candidate.path === normalizedNewPath.relative_path && candidate.source_id !== source.source_id);
+		if (conflictingSource) throw context.errors.create("BE_SOURCE_PATH_CONFLICT", void 0, {
+			details: {
+				source_id: source.source_id,
+				source_label: source.source_label,
+				new_path: normalizedNewPath.relative_path,
+				conflicting_source_id: conflictingSource.source_id,
+				conflicting_source_label: conflictingSource.source_label
+			},
+			hint: "Use a path not already registered by another source, or remove/update the conflicting source first."
+		});
+		const newHash = await context.sources.hashSourceFile(normalizedNewPath.absolute_path);
+		const now = context.host.nowIsoUtc();
+		const updatedSource = context.schemas.parseSourceRegistry({
+			...registry,
+			sources: [{
+				...source,
+				source_label: normalizedNewPath.source_label,
+				path: normalizedNewPath.relative_path,
+				hash: newHash,
+				last_checked_at: now
+			}]
+		}).sources[0];
+		if (!updatedSource) throw context.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, { details: {
+			command: "update-source-path",
+			reason: "updated_source_parse_failed"
+		} });
+		const nextRegistry = context.schemas.parseSourceRegistry(updateRegistrySource({
+			registry,
+			source,
+			updatedSource,
+			updatedAt: now
+		}));
+		const hashChanged = newHash !== source.hash;
+		const previousPath = toSourceOutput({
+			backlogRoot,
+			source
+		}).path;
+		if (!hashChanged) {
+			const syncResult = syncTodoSourceLabels({
+				schemas: context.schemas,
+				state,
+				registry: nextRegistry,
+				previousRegistry: registry
+			});
+			const syncedState = context.schemas.parseStateFile({
+				...syncResult.state,
+				updated_at: now
+			});
+			const output = context.schemas.parseCommandOutput("update-source-path", {
+				dry_run: input.dry_run,
+				...toSourceOutput({
+					backlogRoot,
+					source: updatedSource
+				}),
+				previous_path: previousPath,
+				hash_changed: false,
+				counts: {
+					changed_sources: 1,
+					todo_created: 0,
+					todo_updated: syncResult.todoUpdated.length,
+					todo_removed: 0
+				},
+				todo_created: [],
+				todo_updated: syncResult.todoUpdated,
+				todo_removed: [],
+				next_commands: []
+			});
+			if (!input.dry_run) {
+				await context.artifacts.writeState(backlogRoot, syncedState);
+				try {
+					await context.artifacts.writeSourceRegistry(backlogRoot, nextRegistry);
+				} catch (error) {
+					try {
+						await context.artifacts.writeState(backlogRoot, state);
+					} catch (rollbackError) {
+						throw context.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+							details: {
+								command: "update-source-path",
+								phase: "write_source_registry",
+								rollback: "write_state"
+							},
+							hint: "Source path update failed after persisting state and state rollback also failed.",
+							cause: rollbackError
+						});
+					}
+					throw error;
+				}
+			}
+			return output;
+		}
+		const { state: refreshedState, registry: refreshedRegistry, ...refreshSummary } = await context.core.mutation.refresh({
+			state,
+			sourceRegistry: nextRegistry,
+			changedSourceIds: [source.source_id],
+			scope: {
+				kind: "source_id",
+				source_id: source.source_id
+			}
+		});
+		const syncResult = syncTodoSourceLabels({
+			schemas: context.schemas,
+			state: refreshedState,
+			registry: refreshedRegistry,
+			previousRegistry: registry
+		});
+		const nextState = syncResult.state;
+		const todoUpdated = sortKeys$1([...refreshSummary.todo_updated, ...syncResult.todoUpdated]);
+		const output = context.schemas.parseCommandOutput("update-source-path", {
+			dry_run: input.dry_run,
+			...toSourceOutput({
+				backlogRoot,
+				source: updatedSource
+			}),
+			previous_path: previousPath,
+			hash_changed: true,
+			counts: {
+				...refreshSummary.counts,
+				todo_updated: todoUpdated.length
+			},
+			todo_created: sortKeys$1(refreshSummary.todo_created),
+			todo_updated: todoUpdated,
+			todo_removed: sortKeys$1(refreshSummary.todo_removed),
+			next_commands: refreshSummary.next_commands
+		});
+		if (!input.dry_run) {
+			await context.artifacts.writeState(backlogRoot, nextState);
+			try {
+				await context.artifacts.writeSourceRegistry(backlogRoot, refreshedRegistry);
+			} catch (error) {
+				try {
+					await context.artifacts.writeState(backlogRoot, state);
+				} catch (rollbackError) {
+					throw context.errors.create("BE_INTERNAL_STATE_CORRUPT", void 0, {
+						details: {
+							command: "update-source-path",
+							phase: "write_source_registry",
+							rollback: "write_state"
+						},
+						hint: "Source path update failed after persisting state and state rollback also failed.",
+						cause: rollbackError
+					});
+				}
+				throw error;
+			}
+			await context.hooks.afterRefresh?.({
+				summary: refreshSummary,
+				state: nextState,
+				backlogRoot
+			});
+		}
+		return output;
+	}
+};
+//#endregion
 //#region src/cli/command-registry.ts
 var CLI_DISPLAY_NAME = "backlog-engineer";
 var COMMANDS = [
 	INIT_COMMAND,
 	REGISTER_SOURCE_COMMAND,
 	LIST_SOURCES_COMMAND,
+	UPDATE_SOURCE_PATH_COMMAND,
+	REMOVE_SOURCE_COMMAND,
 	TEMPLATE_COMMAND,
 	PACKET_COMMAND,
 	PATCH_ITEM_COMMAND,
@@ -8402,6 +9193,18 @@ function createArtifactsModule(dependencies) {
 		importPatchFile(payload) {
 			return importPatchFile(dependencies, payload);
 		},
+		async removeCanonicalPatchFile(payload) {
+			const targetPath = dependencies.path.join(payload.root, payload.canonicalPath);
+			await ensureManagedFilePathSafe({
+				fs: dependencies.fs,
+				path: dependencies.path,
+				errors: dependencies.errors,
+				root: payload.root,
+				filePath: targetPath,
+				errorCode: "BE_CANONICAL_WRITE_FAILED"
+			});
+			await dependencies.fs.rm(targetPath, { force: true });
+		},
 		writeReportFiles(payload) {
 			return writeReportFiles(dependencies, payload);
 		},
@@ -8757,6 +9560,45 @@ function cleanupRemovedItemReferences$1(state, removedItemKeys) {
 	}));
 	return next;
 }
+function removeSourceIds(values, sourceId) {
+	return values.filter((value) => value !== sourceId);
+}
+function removeSourceReferencesFromState(payload) {
+	const next = cloneState$2(payload.state);
+	const itemKeys = new Set(next.items.map((item) => item.item_key));
+	const affectedItemKeys = new Set(payload.affectedItemKeys);
+	for (const itemKey of affectedItemKeys) {
+		if (itemKeys.has(itemKey)) continue;
+		throw payload.errors.create("BE_PATCH_TARGET_NOT_FOUND", void 0, { details: {
+			item_key: itemKey,
+			source_id: payload.sourceId
+		} });
+	}
+	next.items = next.items.map((item) => {
+		if (!affectedItemKeys.has(item.item_key)) return item;
+		return {
+			...item,
+			origin_source_ids: removeSourceIds(item.origin_source_ids, payload.sourceId),
+			specification_source_ids: removeSourceIds(item.specification_source_ids, payload.sourceId),
+			plan_source_ids: removeSourceIds(item.plan_source_ids, payload.sourceId),
+			implementation_source_ids: removeSourceIds(item.implementation_source_ids, payload.sourceId),
+			test_source_ids: removeSourceIds(item.test_source_ids, payload.sourceId)
+		};
+	});
+	next.context.claims = next.context.claims.map((claim) => ({
+		...claim,
+		source_ids: removeSourceIds(claim.source_ids, payload.sourceId)
+	}));
+	next.context.quality_attributes = next.context.quality_attributes.map((qualityAttribute) => ({
+		...qualityAttribute,
+		source_ids: removeSourceIds(qualityAttribute.source_ids, payload.sourceId)
+	}));
+	next.context.policy_decisions = next.context.policy_decisions.map((policyDecision) => ({
+		...policyDecision,
+		source_ids: removeSourceIds(policyDecision.source_ids, payload.sourceId)
+	}));
+	return next;
+}
 function sortItems(items) {
 	return [...items].sort((left, right) => left.item_key.localeCompare(right.item_key));
 }
@@ -8775,7 +9617,10 @@ function createPatchReplayFailedError(payload) {
 			...payload.operation ? {
 				operation_index: payload.operationIndex ?? null,
 				operation_action: payload.operation.action,
-				item_key: payload.operation.item_key
+				..."item_key" in payload.operation ? { item_key: payload.operation.item_key } : {
+					source_id: payload.operation.source_id,
+					affected_item_keys: payload.operation.affected_item_keys
+				}
 			} : {},
 			...payload.errors.isBacklogError(payload.error) ? {
 				original_code: payload.error.code,
@@ -8848,6 +9693,15 @@ function applyPatchReplay(payload) {
 	let next = cloneState$2(payload.state);
 	const removedItemKeys = /* @__PURE__ */ new Set();
 	for (const [operationIndex, operation] of payload.patch.operations.entries()) try {
+		if (operation.action === "remove_source_references") {
+			next = removeSourceReferencesFromState({
+				state: next,
+				sourceId: operation.source_id,
+				affectedItemKeys: operation.affected_item_keys,
+				errors: payload.errors
+			});
+			continue;
+		}
 		const targetItem = next.items.find((item) => item.item_key === operation.item_key);
 		if (!targetItem) throw payload.errors.create("BE_PATCH_TARGET_NOT_FOUND", void 0, { details: { item_key: operation.item_key } });
 		switch (operation.action) {
@@ -9176,7 +10030,7 @@ function createGraphService(payload) {
 		},
 		applyPatchOperations({ state, patch }) {
 			const removedItemKeys = uniqueSorted(patch.operations.filter((operation) => operation.action === "remove_item").map((operation) => operation.item_key));
-			const updatedItemKeys = uniqueSorted(patch.operations.filter((operation) => operation.action !== "remove_item").map((operation) => operation.item_key));
+			const updatedItemKeys = uniqueSorted(patch.operations.filter((operation) => operation.action !== "remove_item" && "item_key" in operation).map((operation) => operation.item_key));
 			const nextState = applyPatchReplay({
 				state,
 				patch,
@@ -9330,7 +10184,7 @@ function collectPatchFieldChanges(patch) {
 		"policy_decision_keys"
 	]);
 	for (const operation of patch.operations) {
-		if (operation.action === "remove_todo" || operation.action === "remove_item") continue;
+		if (operation.action === "remove_todo" || operation.action === "remove_item" || operation.action === "remove_source_references") continue;
 		changedItemKeys.add(operation.item_key);
 		if (operation.action === "replace_fields") {
 			for (const fieldName of Object.keys(operation.fields)) {
@@ -9957,6 +10811,61 @@ function createMutationService(payload) {
 				registry: sourceRegistry
 			});
 		},
+		removeSourceReferences({ state, patch, sourceRegistry, sourceId, affectedItemKeys, updatedItemKeys }) {
+			const graphResult = payload.graph.applyPatchOperations({
+				state,
+				patch
+			});
+			assertKnownSourceReferences(graphResult.state, sourceRegistry);
+			const sourceRemovalTodos = payload.todo.generateTodosForSourceRemoval({
+				state: graphResult.state,
+				registry: sourceRegistry,
+				sourceIds: [sourceId],
+				affectedItemKeys,
+				managedBy: "mutation"
+			});
+			const sourceRemovalResult = payload.todo.createOrMergeTodos({
+				state: graphResult.state,
+				todos: sourceRemovalTodos
+			});
+			const nextState = touchState({
+				schemas: payload.schemas,
+				state: payload.derivedState.recomputeAll(sourceRemovalResult.state),
+				updatedAt: payload.clock.nowIsoUtc()
+			});
+			const todoCreated = mapTodoIdsToItemKeys({
+				state: nextState,
+				todoIds: sourceRemovalResult.createdTodoIds
+			});
+			const todoUpdated = mapTodoIdsToItemKeys({
+				state: nextState,
+				todoIds: sourceRemovalResult.updatedTodoIds
+			});
+			const todoRemoved = mapTodoIdsToItemKeys({
+				state,
+				todoIds: graphResult.removedTodoIds
+			});
+			const summary = {
+				state: nextState,
+				counts: {
+					updated: updatedItemKeys.length,
+					todo_created: todoCreated.length,
+					todo_updated: todoUpdated.length,
+					todo_removed: todoRemoved.length
+				},
+				updated_item_keys: sortKeys(updatedItemKeys),
+				todo_created: todoCreated,
+				todo_updated: todoUpdated,
+				todo_removed: todoRemoved,
+				next_commands: buildMutationNextCommands({
+					todoCreated,
+					todoUpdated,
+					fallbackReason: "Review tasks affected by source removal.",
+					itemsReason: "Inspect full cards of tasks affected by source removal."
+				})
+			};
+			return Promise.resolve(summary);
+		},
 		getGaps({ state, filters }) {
 			return (filters.item_key ? state.items.filter((item) => item.item_key === filters.item_key) : state.items).filter((item) => item.gaps.length > 0).map((item) => ({
 				item_key: item.item_key,
@@ -10146,6 +11055,11 @@ function createSourceChangeMessage(relatedSources) {
 	if (labels.length === 0) return "Review the linked source change.";
 	return `Review source change: ${labels.join(", ")}.`;
 }
+function createSourceRemovalMessage(relatedSources) {
+	const labels = sortSourceSummaries(relatedSources).map((source) => source.source_label);
+	if (labels.length === 0) return "Source was removed. Review whether this task needs replacement source coverage.";
+	return `Source was removed: ${labels.join(", ")}. Review whether this task needs replacement source coverage.`;
+}
 function createDependencyChangeMessage(relatedItemKeys) {
 	const keys = sortItemKeys(relatedItemKeys);
 	if (keys.length === 0) return "Review dependency changes for this task.";
@@ -10159,7 +11073,7 @@ function createContextChangeMessage(relatedItemKeys) {
 function buildTodo(payload) {
 	const relatedSources = sortSourceSummaries(payload.relatedSources ?? []);
 	const relatedItemKeys = sortItemKeys(payload.relatedItemKeys ?? []);
-	const message = payload.type === "review_source_change" ? createSourceChangeMessage(relatedSources) : payload.type === "review_dependency_change" ? createDependencyChangeMessage(relatedItemKeys) : createContextChangeMessage(relatedItemKeys);
+	const message = payload.message ?? (payload.type === "review_source_change" ? createSourceChangeMessage(relatedSources) : payload.type === "review_dependency_change" ? createDependencyChangeMessage(relatedItemKeys) : createContextChangeMessage(relatedItemKeys));
 	return {
 		todo_id: payload.uuid.create(),
 		item_key: payload.itemKey,
@@ -10265,6 +11179,28 @@ function createTodoService(payload) {
 					type: "review_source_change",
 					managedBy,
 					relatedSources: requireDirectSourceLink ? relevantSources : relatedSources
+				})];
+			});
+		},
+		generateTodosForSourceRemoval({ state, registry, sourceIds, affectedItemKeys, managedBy = "mutation" }) {
+			const relatedSources = resolveSourceSummaries({
+				registry,
+				sourceIds,
+				errors: payload.errors
+			});
+			const itemKeys = sortItemKeys(affectedItemKeys);
+			const itemsByKey = new Map(state.items.map((item) => [item.item_key, item]));
+			const message = createSourceRemovalMessage(relatedSources);
+			return itemKeys.flatMap((itemKey) => {
+				if (!itemsByKey.has(itemKey)) return [];
+				return [buildTodo({
+					uuid: payload.uuid,
+					clock: payload.clock,
+					itemKey,
+					type: "review_source_change",
+					managedBy,
+					relatedSources,
+					message
 				})];
 			});
 		},
@@ -11158,7 +12094,16 @@ function validatePatchKind(payload) {
 		reason: "Patch metadata target_item_keys do not match applied registry entry."
 	} });
 	if (payload.entry.kind === "patch-item") {
-		if (payload.patch.operations.some((operation) => operation.action === "remove_item")) throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { patch_id: payload.entry.patch_id } });
+		if (payload.patch.operations.some((operation) => operation.action === "remove_item" || operation.action === "remove_source_references")) throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { patch_id: payload.entry.patch_id } });
+		return;
+	}
+	if (payload.entry.kind === "source-maintenance") {
+		if (payload.patch.operations.some((operation) => operation.action !== "remove_source_references")) throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { patch_id: payload.entry.patch_id } });
+		const affectedKeys = new Set(payload.patch.operations.flatMap((operation) => operation.action === "remove_source_references" ? operation.affected_item_keys : []));
+		if (affectedKeys.size !== payload.entry.target_item_keys.length || payload.entry.target_item_keys.some((itemKey) => !affectedKeys.has(itemKey))) throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: {
+			patch_id: payload.entry.patch_id,
+			reason: "source-maintenance affected_item_keys must cover target_item_keys."
+		} });
 		return;
 	}
 	const removedKeys = new Set(payload.patch.operations.filter((operation) => operation.action === "remove_item").map((operation) => operation.item_key));
@@ -11718,6 +12663,8 @@ function createRuntime(options = {}) {
 function shouldAcquireMutationLock(commandName, input) {
 	switch (commandName) {
 		case "register-source":
+		case "update-source-path":
+		case "remove-source":
 		case "packet":
 		case "patch-item":
 		case "remove-item":

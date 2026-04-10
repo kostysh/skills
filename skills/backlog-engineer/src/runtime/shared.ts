@@ -2,6 +2,8 @@ export const COMMAND_NAMES = [
   'init',
   'register-source',
   'list-sources',
+  'update-source-path',
+  'remove-source',
   'template',
   'packet',
   'patch-item',

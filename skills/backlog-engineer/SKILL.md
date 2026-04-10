@@ -318,7 +318,7 @@ For dossier workflow stage `change-proposal`, use the dossier-side `backlog impa
 
 - `no-op` means no backlog mutation and no backlog rediscovery; do not reinterpret it into a mutation branch unless the dossier-side verdict is reopened explicitly;
 - `patch existing item` means patch already known backlog items without inventing a new work unit;
-- `source update` means: if the canonical source is new, `register-source` first; if the canonical source is already registered and changed, scoped `refresh` first; then patch all known impacted items, and only then create new backlog work if the refreshed source still implies a separate delta;
+- `source update` means: if the canonical source is new, `register-source` first; if the same canonical source moved, `update-source-path`; if a registered source was deleted, `remove-source`; if the canonical source is already registered and changed, scoped `refresh` first; then patch all known impacted items, and only then create new backlog work if the refreshed source still implies a separate delta;
 - `new backlog item` means keep existing item history honest and create a truly separate delta item instead of silently reopening old completed history.
 
 Special guards:
@@ -444,6 +444,8 @@ Use this table for the first command decision. Command details and workflow rule
 | initialize backlog directory | `init` | Start the backlog directory and utility-owned artifacts. |
 | register a document source | `register-source` | Read the document first, then register it. |
 | inspect registered sources | `list-sources` | Use when `source_id` or `source_label` is needed. |
+| update a moved source path | `update-source-path` | Preserve `source_id`; use when the same canonical source moved. |
+| remove a deleted source | `remove-source` | Utility cleans backlog truth and review state before registry deletion. |
 | create a starter packet draft or patch skeleton | `template` | `template packet` creates a richer starter draft; `template patch` creates the patch skeleton. |
 | add new tasks | `packet` | New tasks only. Never mutate or delete existing tasks through `packet`. |
 | change existing tasks | `patch-item` | Use patches for changes to existing tasks. |
@@ -467,7 +469,7 @@ Use these as the canonical top-level flows:
 | --- | --- |
 | Create backlog from architecture | preflight on system state -> source-set gate -> `init` -> `register-source` for all relevant sources -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
-| Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
+| Update backlog after document changes | If a source moved, use `update-source-path`; if a source was deleted, use `remove-source`; otherwise prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
 | Update backlog after dossier `change-proposal` | read dossier-side `backlog impact verdict`; `no-op` -> confirm no backlog mutation; `patch existing item` -> `template patch` -> `patch-item`; `source update` -> if source is new, `register-source` first; if source is already registered and changed, scoped `refresh` first -> patch all known impacted items -> create new item only if needed; `new backlog item` -> `template packet` -> `packet`, while keeping old item history honest |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
 | Show what changed after the last action | Use the compact response of the last mutating command; only then fetch `items` if details are needed |
@@ -507,6 +509,8 @@ For one backlog root, all mutating commands must run only sequentially.
 This applies to:
 
 - `register-source`
+- `update-source-path`
+- `remove-source`
 - `packet`
 - `patch-item`
 - `remove-item`
@@ -528,7 +532,7 @@ Do not treat this section as a replacement for command-level reference details.
 
 ### Mutating commands
 
-For `packet`, `patch-item`, `remove-item`, and `refresh`:
+For `packet`, `patch-item`, `remove-item`, `update-source-path`, `remove-source`, and `refresh`:
 
 - expect a compact mutation summary, not full task cards;
 - use `counts` for the broad result;

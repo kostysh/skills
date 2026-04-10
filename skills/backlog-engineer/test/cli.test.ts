@@ -20,11 +20,13 @@ import {
   QueueCommandOutputSchema,
   RefreshCommandOutputSchema,
   RegisterSourceCommandOutputSchema,
+  RemoveSourceCommandOutputSchema,
   RootMarkerFileSchema,
   SearchCommandOutputSchema,
   SourceRegistryFileSchema,
   StatusCommandOutputSchema,
   TemplateCommandOutputSchema,
+  UpdateSourcePathCommandOutputSchema,
   VersionOutputSchema,
   StateFileSchema,
   AppliedRegistryFileSchema,
@@ -134,6 +136,22 @@ void test('help for a specific command returns command help JSON', () => {
   const parsed = CommandHelpOutputSchema.parse(parseStdoutJson(result));
   assert.equal(parsed.command, 'refresh');
   assert.ok(parsed.usage.some((entry) => entry.includes('refresh --source-id')));
+});
+
+void test('help for source maintenance commands returns command help JSON', () => {
+  const updateHelp = runBuiltCli(['help', 'update-source-path']);
+  assert.equal(updateHelp.status, 0);
+  assert.equal(updateHelp.stderr, '');
+  const updateParsed = CommandHelpOutputSchema.parse(parseStdoutJson(updateHelp));
+  assert.equal(updateParsed.command, 'update-source-path');
+  assert.ok(updateParsed.options.some((option) => option.flags.includes('--new-path')));
+
+  const removeHelp = runBuiltCli(['help', 'remove-source']);
+  assert.equal(removeHelp.status, 0);
+  assert.equal(removeHelp.stderr, '');
+  const removeParsed = CommandHelpOutputSchema.parse(parseStdoutJson(removeHelp));
+  assert.equal(removeParsed.command, 'remove-source');
+  assert.ok(removeParsed.usage.some((entry) => entry.includes('remove-source --source-id')));
 });
 
 void test('command-local --help returns command help JSON', () => {
@@ -521,6 +539,65 @@ void test('refresh --source-path updates source registry and state on the built 
     assert.notEqual(
       authSource?.hash,
       'bd9499983cfceaa0aa7cf63e29e832c141d1ff9b20f2da9d658d8cf3da605b65',
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('update-source-path and remove-source work on the built CLI', async () => {
+  const tempRoot = await createTempDir();
+  const backlogRoot = path.join(tempRoot, 'backlog');
+
+  try {
+    await copyBacklogFixture('refreshable-backlog', backlogRoot);
+    const originalAuthPath = path.join(backlogRoot, 'sources', 'docs', 'modules', 'auth.md');
+    const movedAuthPath = path.join(backlogRoot, 'sources', 'docs', 'modules', 'auth-renamed.md');
+    await writeFile(movedAuthPath, await readFile(originalAuthPath, 'utf8'), 'utf8');
+
+    const updateResult = runBuiltCli(
+      [
+        'update-source-path',
+        '--source-path',
+        './sources/docs/modules/auth.md',
+        '--new-path',
+        './sources/docs/modules/auth-renamed.md',
+      ],
+      { cwd: backlogRoot },
+    );
+
+    assert.equal(updateResult.status, 0);
+    assert.equal(updateResult.stderr, '');
+    const updateOutput = UpdateSourcePathCommandOutputSchema.parse(parseStdoutJson(updateResult));
+    assert.equal(updateOutput.source_label, 'sources/docs/modules/auth-renamed.md');
+    assert.equal(updateOutput.hash_changed, false);
+
+    const removeResult = runBuiltCli(
+      ['remove-source', '--source-path', './sources/docs/modules/auth-renamed.md'],
+      { cwd: backlogRoot },
+    );
+
+    assert.equal(removeResult.status, 0);
+    assert.equal(removeResult.stderr, '');
+    const removeOutput = RemoveSourceCommandOutputSchema.parse(parseStdoutJson(removeResult));
+    assert.equal(removeOutput.removed, true);
+    assert.equal(removeOutput.source_label, 'sources/docs/modules/auth-renamed.md');
+    assert.ok(removeOutput.updated_item_keys.length > 0);
+
+    const statusResult = runBuiltCli(['status'], { cwd: backlogRoot });
+    assert.equal(statusResult.status, 0);
+    StatusCommandOutputSchema.parse(parseStdoutJson(statusResult));
+
+    const registry = SourceRegistryFileSchema.parse(
+      JSON.parse(
+        await readFile(path.join(backlogRoot, '.backlog', 'sources.json'), 'utf8'),
+      ) as unknown,
+    );
+    assert.equal(
+      registry.sources.some(
+        (source) => source.source_label === 'sources/docs/modules/auth-renamed.md',
+      ),
+      false,
     );
   } finally {
     await rm(tempRoot, { recursive: true, force: true });

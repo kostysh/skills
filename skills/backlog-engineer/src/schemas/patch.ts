@@ -164,12 +164,23 @@ export const RemoveItemOperationSchema = z.strictObject({
   action: z.literal('remove_item'),
 });
 
+export const RemoveSourceReferencesOperationSchema = z.strictObject({
+  action: z.literal('remove_source_references'),
+  source_id: SourceIdSchema,
+  affected_item_keys: uniqueArraySchema(
+    ItemKeySchema,
+    (value) => value,
+    'Affected item keys must be unique.',
+  ),
+});
+
 export const PatchOperationSchema = z.union([
   ReplaceFieldsOperationSchema,
   AppendUniqueOperationSchema,
   RemoveValuesOperationSchema,
   RemoveTodoOperationSchema,
   RemoveItemOperationSchema,
+  RemoveSourceReferencesOperationSchema,
 ]);
 
 export const PatchFileSchema = z
@@ -181,7 +192,7 @@ export const PatchFileSchema = z
     const targetKeys = new Set(value.metadata.target_item_keys);
 
     for (const [index, operation] of value.operations.entries()) {
-      if (!targetKeys.has(operation.item_key)) {
+      if ('item_key' in operation && !targetKeys.has(operation.item_key)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Patch operation item_key must belong to metadata.target_item_keys.',
@@ -193,10 +204,10 @@ export const PatchFileSchema = z
 
 export const PatchItemFileSchema = PatchFileSchema.superRefine((value, ctx) => {
   for (const [index, operation] of value.operations.entries()) {
-    if (operation.action === 'remove_item') {
+    if (operation.action === 'remove_item' || operation.action === 'remove_source_references') {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'patch-item must not contain remove_item operations.',
+        message: 'patch-item must not contain remove_item or source maintenance operations.',
         path: ['operations', index, 'action'],
       });
     }

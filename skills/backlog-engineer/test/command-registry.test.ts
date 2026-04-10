@@ -16,8 +16,10 @@ import {
 } from '../src/schemas/index.ts';
 
 void test('registry exposes the complete planned command surface', () => {
-  assert.equal(COMMANDS.length, 16);
+  assert.equal(COMMANDS.length, 18);
   assert.ok(findCommand('init'));
+  assert.ok(findCommand('update-source-path'));
+  assert.ok(findCommand('remove-source'));
   assert.ok(findCommand('delete-backlog'));
   assert.equal(findCommand('missing-command'), undefined);
 });

@@ -186,13 +186,14 @@ export const TodoTypeSchema = z.enum([
   'review_context_change',
 ]);
 export const TodoManagedBySchema = z.enum(['refresh', 'mutation']);
-export const PatchKindSchema = z.enum(['patch-item', 'remove-item']);
+export const PatchKindSchema = z.enum(['patch-item', 'remove-item', 'source-maintenance']);
 export const PatchOperationActionSchema = z.enum([
   'replace_fields',
   'append_unique',
   'remove_values',
   'remove_todo',
   'remove_item',
+  'remove_source_references',
 ]);
 
 export const ControlledStringSchema = NonEmptyStringSchema;

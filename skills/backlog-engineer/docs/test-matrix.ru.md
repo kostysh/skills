@@ -477,6 +477,33 @@
 - ordering is deterministic by `source_label`
 - does not mutate registries or state
 
+## 11.3.1. `update-source-path`
+
+Кейсы:
+
+- path changed, hash unchanged, same `source_id`
+- path changed, hash changed, scoped refresh-like todo delta
+- no-op when normalized new path equals current path
+- rejects missing new file
+- rejects unsafe or symlinked new file
+- rejects selector miss with `BE_SOURCE_NOT_FOUND`
+- rejects path collision with `BE_SOURCE_PATH_CONFLICT`
+- dry-run parity with real apply
+
+## 11.3.2. `remove-source`
+
+Кейсы:
+
+- removes source after durable cleanup of item source lists
+- removes source after durable cleanup of context entity `source_ids`
+- writes `source-maintenance` canonical patch when cleanup is needed
+- affected items get mutation-managed review todo with source-removal message
+- source registry record is deleted only after cleanup
+- rebuild after success remains valid
+- rejects selector miss with `BE_SOURCE_NOT_FOUND`
+- fail-closed with `BE_SOURCE_REMOVE_UNSUPPORTED` when cleanup cannot be materialized safely
+- dry-run parity with real apply
+
 ## 11.4. `template`
 
 Кейсы:
@@ -662,6 +689,7 @@
 - file-backed command fails with `BE_PLATFORM_UNSUPPORTED` when anchored directory handling is unavailable
 - built artifact mutation chain `template patch -> patch-item --dry-run -> patch-item -> items`
 - built artifact refresh chain `refresh --source-id -> attention -> report`
+- built artifact source maintenance chain `update-source-path -> remove-source -> status`
 - built artifact query after deleting `state.json` triggers hidden maintenance rebuild and still succeeds
 - built artifact dry-run chain leaves canonical artifacts unchanged on disk
 

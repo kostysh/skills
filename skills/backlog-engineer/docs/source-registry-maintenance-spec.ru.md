@@ -169,6 +169,8 @@
 9. If `new_hash === old_hash`:
    - write updated registry and synchronized state;
    - do not create new review todo;
+   - report mechanical source-label sync in `todo_updated` when existing source-linked todo/read models changed;
+   - keep `next_commands` empty because no semantic source review was introduced;
    - do not advance `last_refresh_at`.
 10. If `new_hash !== old_hash`:
    - treat the command as `path update + scoped refresh semantics` for the same `source_id`;
@@ -207,6 +209,7 @@
 
 - `previous_path` и `path` в output всегда absolute;
 - `hash_changed = false` должен быть literal signal для агента, что path changed without semantic source change;
+- при `hash_changed = false`, `todo_updated` может отражать только mechanical label sync existing todo/read models; это не требует automatic follow-up reads, поэтому `next_commands` остаётся empty;
 - если `hash_changed = true`, `counts` и `next_commands` должны следовать той же compact mutation discipline, что и `refresh`.
 
 ### Error contract

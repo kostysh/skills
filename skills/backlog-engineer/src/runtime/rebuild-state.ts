@@ -137,10 +137,44 @@ function validatePatchKind(payload: {
   }
 
   if (payload.entry.kind === 'patch-item') {
-    if (payload.patch.operations.some((operation) => operation.action === 'remove_item')) {
+    if (
+      payload.patch.operations.some(
+        (operation) =>
+          operation.action === 'remove_item' || operation.action === 'remove_source_references',
+      )
+    ) {
       throw payload.errors.create('BE_PATCH_OPERATION_INVALID', undefined, {
         details: {
           patch_id: payload.entry.patch_id,
+        },
+      });
+    }
+    return;
+  }
+
+  if (payload.entry.kind === 'source-maintenance') {
+    if (
+      payload.patch.operations.some((operation) => operation.action !== 'remove_source_references')
+    ) {
+      throw payload.errors.create('BE_PATCH_OPERATION_INVALID', undefined, {
+        details: {
+          patch_id: payload.entry.patch_id,
+        },
+      });
+    }
+    const affectedKeys = new Set(
+      payload.patch.operations.flatMap((operation) =>
+        operation.action === 'remove_source_references' ? operation.affected_item_keys : [],
+      ),
+    );
+    if (
+      affectedKeys.size !== payload.entry.target_item_keys.length ||
+      payload.entry.target_item_keys.some((itemKey) => !affectedKeys.has(itemKey))
+    ) {
+      throw payload.errors.create('BE_PATCH_OPERATION_INVALID', undefined, {
+        details: {
+          patch_id: payload.entry.patch_id,
+          reason: 'source-maintenance affected_item_keys must cover target_item_keys.',
         },
       });
     }

@@ -22,6 +22,14 @@
         "summary": "List registered sources and source metadata."
       },
       {
+        "name": "update-source-path",
+        "summary": "Update the registered path of an existing source."
+      },
+      {
+        "name": "remove-source",
+        "summary": "Remove a source after durable cleanup of backlog references."
+      },
+      {
         "name": "template",
         "summary": "Generate packet or patch templates."
       },

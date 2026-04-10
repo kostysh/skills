@@ -124,7 +124,7 @@ type TodoType =
 #### `PatchKind`
 
 ```ts
-type PatchKind = "patch-item" | "remove-item";
+type PatchKind = "patch-item" | "remove-item" | "source-maintenance";
 ```
 
 #### `PatchOperationAction`
@@ -135,7 +135,8 @@ type PatchOperationAction =
   | "append_unique"
   | "remove_values"
   | "remove_todo"
-  | "remove_item";
+  | "remove_item"
+  | "remove_source_references";
 ```
 
 ### 1.5. Extensible controlled strings
@@ -516,7 +517,7 @@ File-level invariants:
 - `metadata.sequence` must be a positive integer;
 - `metadata.patch_id` must be non-empty;
 - `remove-item` requires that every `target_item_key` has a matching `remove_item` operation;
-- `patch-item` must not contain `remove_item`.
+- `patch-item` must not contain `remove_item` or `remove_source_references`.
 
 Semantic command restrictions:
 
@@ -527,6 +528,8 @@ Semantic command restrictions:
   - `remove_todo`
 - `remove-item` accepts only:
   - `remove_item`
+- `source-maintenance` accepts only:
+  - `remove_source_references`
 
 ## 5. Utility-owned artifact schemas
 
@@ -725,6 +728,15 @@ type RefreshMutationCounts = {
   todo_updated: NonNegativeInt;
   todo_removed: NonNegativeInt;
 };
+
+type UpdateSourcePathMutationCounts = RefreshMutationCounts;
+
+type RemoveSourceMutationCounts = {
+  updated: NonNegativeInt;
+  todo_created: NonNegativeInt;
+  todo_updated: NonNegativeInt;
+  todo_removed: NonNegativeInt;
+};
 ```
 
 ### 6.3. `ItemComputedState`
@@ -813,6 +825,52 @@ type RegisteredSourceOutput = {
 };
 
 type ListSourcesCommandOutput = RegisteredSourceOutput[];
+```
+
+### 7.3.1. `UpdateSourcePathCommandInput` / `UpdateSourcePathCommandOutput`
+
+```ts
+type SourceSelectorInput =
+  | { kind: "source_id"; source_id: SourceId }
+  | { kind: "source_label"; source_label: SourceLabel }
+  | { kind: "source_path"; source_path: CliPathInput };
+
+type UpdateSourcePathCommandInput = {
+  selector: SourceSelectorInput;
+  new_path: CliPathInput;
+  dry_run?: boolean;
+};
+
+type UpdateSourcePathCommandOutput = RegisteredSourceOutput & {
+  dry_run: boolean;
+  previous_path: NormalizedFsPath;
+  hash_changed: boolean;
+  counts: UpdateSourcePathMutationCounts;
+  todo_created: ItemKey[];
+  todo_updated: ItemKey[];
+  todo_removed: ItemKey[];
+  next_commands: CommandSuggestion[];
+};
+```
+
+### 7.3.2. `RemoveSourceCommandInput` / `RemoveSourceCommandOutput`
+
+```ts
+type RemoveSourceCommandInput = {
+  selector: SourceSelectorInput;
+  dry_run?: boolean;
+};
+
+type RemoveSourceCommandOutput = RegisteredSourceOutput & {
+  dry_run: boolean;
+  removed: boolean;
+  counts: RemoveSourceMutationCounts;
+  updated_item_keys: ItemKey[];
+  todo_created: ItemKey[];
+  todo_updated: ItemKey[];
+  todo_removed: ItemKey[];
+  next_commands: CommandSuggestion[];
+};
 ```
 
 ### 7.4. `TemplateCommandInput` / `TemplateCommandOutput`

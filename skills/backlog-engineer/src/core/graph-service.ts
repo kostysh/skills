@@ -157,7 +157,7 @@ export function createGraphService(payload: {
       );
       const updatedItemKeys = uniqueSorted(
         patch.operations
-          .filter((operation) => operation.action !== 'remove_item')
+          .filter((operation) => operation.action !== 'remove_item' && 'item_key' in operation)
           .map((operation) => operation.item_key),
       );
       const nextState = applyPatchReplay({

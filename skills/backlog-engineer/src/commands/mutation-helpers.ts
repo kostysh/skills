@@ -93,7 +93,7 @@ export function appendAppliedPatchEntry(payload: {
   schemas: SchemaModule;
   registry: AppliedRegistryFile;
   patch: PatchFile;
-  kind: 'patch-item' | 'remove-item';
+  kind: 'patch-item' | 'remove-item' | 'source-maintenance';
   canonicalPath: BacklogRelativePosixPath;
   contentHash: string;
   appliedAt: string;

@@ -32,7 +32,7 @@ import { readRootMarker, writeRootMarker } from './root-marker-store.ts';
 import { readSourceRegistry, writeSourceRegistry } from './source-registry-store.ts';
 import { readAppliedRegistry, writeAppliedRegistry } from './applied-registry-store.ts';
 import { readState, stateExists, writeState } from './state-store.ts';
-import { writeTextAtomically } from './store-helpers.ts';
+import { ensureManagedFilePathSafe, writeTextAtomically } from './store-helpers.ts';
 
 async function createTempSiblingPath(payload: {
   path: ArtifactsModuleDependencies['path'];
@@ -120,6 +120,10 @@ export interface ArtifactsModule {
     canonicalPath: BacklogRelativePosixPath;
     sha256: string;
   }>;
+  removeCanonicalPatchFile(payload: {
+    root: BacklogRootPath;
+    canonicalPath: BacklogRelativePosixPath;
+  }): Promise<void>;
   writeReportFiles(payload: { root: BacklogRootPath; markdown: string; mermaid: string }): Promise<{
     reportPath: BacklogRelativePosixPath;
     graphPath: BacklogRelativePosixPath;
@@ -316,6 +320,18 @@ export function createArtifactsModule(dependencies: ArtifactsModuleDependencies)
     },
     importPatchFile(payload) {
       return importPatchFile(dependencies, payload);
+    },
+    async removeCanonicalPatchFile(payload) {
+      const targetPath = dependencies.path.join(payload.root, payload.canonicalPath);
+      await ensureManagedFilePathSafe({
+        fs: dependencies.fs,
+        path: dependencies.path,
+        errors: dependencies.errors,
+        root: payload.root,
+        filePath: targetPath,
+        errorCode: 'BE_CANONICAL_WRITE_FAILED',
+      });
+      await dependencies.fs.rm(targetPath, { force: true });
     },
     writeReportFiles(payload) {
       return writeReportFiles(dependencies, payload);

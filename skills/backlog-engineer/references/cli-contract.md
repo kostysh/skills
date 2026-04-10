@@ -23,6 +23,8 @@ Always separate source discovery from task authoring.
 - use `list-sources` whenever the current `source_id` or `source_label` is needed;
 - prefer `list-sources --path` or other utility lookups over reconstructing source mappings from packet files.
 - source files may live outside the backlog root; the utility persists them as normalized POSIX paths relative to backlog root and such paths may include `..`.
+- if a registered source moved, use `update-source-path` so the same `source_id` survives relocation.
+- if a registered source was deleted, use `remove-source`; do not delete the registry record by hand.
 
 When source scope is known, prefer scoped refresh:
 
@@ -45,6 +47,8 @@ Cross-skill note:
 | `init` | backlog does not exist yet | you only need to inspect an existing backlog |
 | `register-source` | a document must become part of backlog inputs | you only need to inspect already registered sources |
 | `list-sources` | source IDs or labels are needed | task keys are already known and you need full task cards |
+| `update-source-path` | registered source moved but remains the same logical source | source content changed without relocation; use scoped `refresh` |
+| `remove-source` | registered source must be removed from backlog truth and registry | you only need to remove a task; use `remove-item` |
 | `template` | you need a packet or patch skeleton | you already have a correct packet or patch file |
 | `packet` | adding new tasks | changing or deleting existing tasks |
 | `patch-item` | changing existing tasks | adding brand-new tasks |
@@ -65,6 +69,8 @@ Cross-skill note:
 Treat these as mutating commands:
 
 - `register-source`
+- `update-source-path`
+- `remove-source`
 - `packet`
 - `patch-item`
 - `remove-item`

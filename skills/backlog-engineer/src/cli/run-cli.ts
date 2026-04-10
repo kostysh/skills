@@ -24,6 +24,8 @@ type RunCliDependencies = {
 function shouldAcquireMutationLock(commandName: string, input: unknown): boolean {
   switch (commandName) {
     case 'register-source':
+    case 'update-source-path':
+    case 'remove-source':
     case 'packet':
     case 'patch-item':
     case 'remove-item':

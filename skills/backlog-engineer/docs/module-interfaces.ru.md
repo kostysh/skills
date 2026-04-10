@@ -53,6 +53,8 @@ src/
 │   ├── init.ts
 │   ├── register-source.ts
 │   ├── list-sources.ts
+│   ├── update-source-path.ts
+│   ├── remove-source.ts
 │   ├── template.ts
 │   ├── packet.ts
 │   ├── patch-item.ts
@@ -144,6 +146,8 @@ type CommandName =
   | "init"
   | "register-source"
   | "list-sources"
+  | "update-source-path"
+  | "remove-source"
   | "template"
   | "packet"
   | "patch-item"
@@ -1118,6 +1122,8 @@ interface MutationService {
 | `init` | `commands/init` | `runtime`, `artifacts`, `templates` |
 | `register-source` | `commands/register-source` | `runtime`, `sources`, `artifacts`, `hooks` |
 | `list-sources` | `commands/list-sources` | `runtime`, `artifacts`, `sources` |
+| `update-source-path` | `commands/update-source-path` | `runtime`, `sources`, `artifacts`, `core` |
+| `remove-source` | `commands/remove-source` | `runtime`, `schemas`, `artifacts`, `core`, `sources` |
 | `template` | `commands/template` | `runtime`, `templates`, `artifacts` |
 | `packet` | `commands/packet` | `runtime`, `schemas`, `artifacts`, `core`, `hooks` |
 | `patch-item` | `commands/patch-item` | `runtime`, `schemas`, `artifacts`, `core`, `hooks` |

@@ -10,6 +10,7 @@ import type {
   RemoveValuesOperation,
   ReplaceFields,
   SchemaModule,
+  SourceId,
   StateFile,
   StateItem,
   Todo,
@@ -414,6 +415,64 @@ function cleanupRemovedItemReferences(state: StateFile, removedItemKeys: Set<str
   return next;
 }
 
+function removeSourceIds(values: readonly SourceId[], sourceId: SourceId): SourceId[] {
+  return values.filter((value) => value !== sourceId);
+}
+
+function removeSourceReferencesFromState(payload: {
+  state: StateFile;
+  sourceId: SourceId;
+  affectedItemKeys: readonly string[];
+  errors: ErrorModule;
+}): StateFile {
+  const next = cloneState(payload.state);
+  const itemKeys = new Set(next.items.map((item) => item.item_key));
+  const affectedItemKeys = new Set(payload.affectedItemKeys);
+
+  for (const itemKey of affectedItemKeys) {
+    if (itemKeys.has(itemKey)) {
+      continue;
+    }
+
+    throw payload.errors.create('BE_PATCH_TARGET_NOT_FOUND', undefined, {
+      details: {
+        item_key: itemKey,
+        source_id: payload.sourceId,
+      },
+    });
+  }
+
+  next.items = next.items.map((item) => {
+    if (!affectedItemKeys.has(item.item_key)) {
+      return item;
+    }
+
+    return {
+      ...item,
+      origin_source_ids: removeSourceIds(item.origin_source_ids, payload.sourceId),
+      specification_source_ids: removeSourceIds(item.specification_source_ids, payload.sourceId),
+      plan_source_ids: removeSourceIds(item.plan_source_ids, payload.sourceId),
+      implementation_source_ids: removeSourceIds(item.implementation_source_ids, payload.sourceId),
+      test_source_ids: removeSourceIds(item.test_source_ids, payload.sourceId),
+    };
+  });
+
+  next.context.claims = next.context.claims.map((claim) => ({
+    ...claim,
+    source_ids: removeSourceIds(claim.source_ids, payload.sourceId),
+  }));
+  next.context.quality_attributes = next.context.quality_attributes.map((qualityAttribute) => ({
+    ...qualityAttribute,
+    source_ids: removeSourceIds(qualityAttribute.source_ids, payload.sourceId),
+  }));
+  next.context.policy_decisions = next.context.policy_decisions.map((policyDecision) => ({
+    ...policyDecision,
+    source_ids: removeSourceIds(policyDecision.source_ids, payload.sourceId),
+  }));
+
+  return next;
+}
+
 function sortItems(items: readonly StateItem[]): StateItem[] {
   return [...items].sort((left, right) => left.item_key.localeCompare(right.item_key));
 }
@@ -452,7 +511,12 @@ function createPatchReplayFailedError(payload: {
           ? {
               operation_index: payload.operationIndex ?? null,
               operation_action: payload.operation.action,
-              item_key: payload.operation.item_key,
+              ...('item_key' in payload.operation
+                ? { item_key: payload.operation.item_key }
+                : {
+                    source_id: payload.operation.source_id,
+                    affected_item_keys: payload.operation.affected_item_keys,
+                  }),
             }
           : {}),
         ...(payload.errors.isBacklogError(payload.error)
@@ -590,6 +654,16 @@ export function applyPatchReplay(payload: {
 
   for (const [operationIndex, operation] of payload.patch.operations.entries()) {
     try {
+      if (operation.action === 'remove_source_references') {
+        next = removeSourceReferencesFromState({
+          state: next,
+          sourceId: operation.source_id,
+          affectedItemKeys: operation.affected_item_keys,
+          errors: payload.errors,
+        });
+        continue;
+      }
+
       const targetItem = next.items.find((item) => item.item_key === operation.item_key);
       if (!targetItem) {
         throw payload.errors.create('BE_PATCH_TARGET_NOT_FOUND', undefined, {

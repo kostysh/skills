@@ -137,6 +137,63 @@ export const ListedSourceOutputSchema = RegisteredSourceOutputSchema.extend({
 
 export const ListSourcesCommandOutputSchema = z.array(ListedSourceOutputSchema);
 
+export const SourceSelectorInputSchema = z.discriminatedUnion('kind', [
+  z.strictObject({ kind: z.literal('source_id'), source_id: SourceIdSchema }),
+  z.strictObject({ kind: z.literal('source_label'), source_label: SourceLabelSchema }),
+  z.strictObject({ kind: z.literal('source_path'), source_path: CliPathInputSchema }),
+]);
+
+export const UpdateSourcePathMutationCountsSchema = z.strictObject({
+  changed_sources: NonNegativeIntSchema,
+  todo_created: NonNegativeIntSchema,
+  todo_updated: NonNegativeIntSchema,
+  todo_removed: NonNegativeIntSchema,
+});
+
+export const UpdateSourcePathCommandInputSchema = z.strictObject({
+  selector: SourceSelectorInputSchema,
+  new_path: CliPathInputSchema,
+  dry_run: z.boolean().default(false),
+});
+
+export const UpdateSourcePathCommandOutputSchema = RegisteredSourceOutputSchema.extend({
+  dry_run: z.boolean(),
+  previous_path: NormalizedFsPathSchema,
+  hash_changed: z.boolean(),
+  counts: UpdateSourcePathMutationCountsSchema,
+  todo_created: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
+  todo_updated: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
+  todo_removed: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
+  next_commands: z.array(CommandSuggestionSchema),
+});
+
+export const RemoveSourceMutationCountsSchema = z.strictObject({
+  updated: NonNegativeIntSchema,
+  todo_created: NonNegativeIntSchema,
+  todo_updated: NonNegativeIntSchema,
+  todo_removed: NonNegativeIntSchema,
+});
+
+export const RemoveSourceCommandInputSchema = z.strictObject({
+  selector: SourceSelectorInputSchema,
+  dry_run: z.boolean().default(false),
+});
+
+export const RemoveSourceCommandOutputSchema = RegisteredSourceOutputSchema.extend({
+  dry_run: z.boolean(),
+  removed: z.boolean(),
+  counts: RemoveSourceMutationCountsSchema,
+  updated_item_keys: uniqueArraySchema(
+    ItemKeySchema,
+    (value) => value,
+    'Updated item keys must be unique.',
+  ),
+  todo_created: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
+  todo_updated: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
+  todo_removed: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
+  next_commands: z.array(CommandSuggestionSchema),
+});
+
 const TemplatePacketCommandInputSchema = z.strictObject({
   mode: z.literal('packet'),
   out: CliPathInputSchema,
@@ -414,6 +471,13 @@ export type RegisterSourceCommandInput = z.infer<typeof RegisterSourceCommandInp
 export type RegisterSourceCommandOutput = z.infer<typeof RegisterSourceCommandOutputSchema>;
 export type ListSourcesCommandInput = z.infer<typeof ListSourcesCommandInputSchema>;
 export type ListSourcesCommandOutput = z.infer<typeof ListSourcesCommandOutputSchema>;
+export type SourceSelectorInput = z.infer<typeof SourceSelectorInputSchema>;
+export type UpdateSourcePathMutationCounts = z.infer<typeof UpdateSourcePathMutationCountsSchema>;
+export type UpdateSourcePathCommandInput = z.infer<typeof UpdateSourcePathCommandInputSchema>;
+export type UpdateSourcePathCommandOutput = z.infer<typeof UpdateSourcePathCommandOutputSchema>;
+export type RemoveSourceMutationCounts = z.infer<typeof RemoveSourceMutationCountsSchema>;
+export type RemoveSourceCommandInput = z.infer<typeof RemoveSourceCommandInputSchema>;
+export type RemoveSourceCommandOutput = z.infer<typeof RemoveSourceCommandOutputSchema>;
 export type TemplateCommandInput = z.infer<typeof TemplateCommandInputSchema>;
 export type TemplateCommandOutput = z.infer<typeof TemplateCommandOutputSchema>;
 export type PacketCommandInput = z.infer<typeof PacketCommandInputSchema>;

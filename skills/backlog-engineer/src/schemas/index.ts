@@ -23,6 +23,8 @@ import {
   ItemsCommandOutputSchema,
   ListSourcesCommandInputSchema,
   ListSourcesCommandOutputSchema,
+  RemoveSourceCommandInputSchema,
+  RemoveSourceCommandOutputSchema,
   PacketCommandInputSchema,
   PacketCommandOutputSchema,
   PatchItemCommandInputSchema,
@@ -33,6 +35,8 @@ import {
   RefreshCommandOutputSchema,
   RegisterSourceCommandInputSchema,
   RegisterSourceCommandOutputSchema,
+  UpdateSourcePathCommandInputSchema,
+  UpdateSourcePathCommandOutputSchema,
   RemoveItemCommandInputSchema,
   RemoveItemCommandOutputSchema,
   ReportCommandInputSchema,
@@ -55,6 +59,8 @@ import {
   type ItemsCommandOutput,
   type ListSourcesCommandInput,
   type ListSourcesCommandOutput,
+  type RemoveSourceCommandInput,
+  type RemoveSourceCommandOutput,
   type PacketCommandInput,
   type PacketCommandOutput,
   type PatchItemCommandInput,
@@ -65,6 +71,8 @@ import {
   type RefreshCommandOutput,
   type RegisterSourceCommandInput,
   type RegisterSourceCommandOutput,
+  type UpdateSourcePathCommandInput,
+  type UpdateSourcePathCommandOutput,
   type RemoveItemCommandInput,
   type RemoveItemCommandOutput,
   type ReportCommandInput,
@@ -87,6 +95,8 @@ export type CommandInputByName = {
   init: InitCommandInput;
   'register-source': RegisterSourceCommandInput;
   'list-sources': ListSourcesCommandInput;
+  'update-source-path': UpdateSourcePathCommandInput;
+  'remove-source': RemoveSourceCommandInput;
   template: TemplateCommandInput;
   packet: PacketCommandInput;
   'patch-item': PatchItemCommandInput;
@@ -106,6 +116,8 @@ export type CommandOutputByName = {
   init: InitCommandOutput;
   'register-source': RegisterSourceCommandOutput;
   'list-sources': ListSourcesCommandOutput;
+  'update-source-path': UpdateSourcePathCommandOutput;
+  'remove-source': RemoveSourceCommandOutput;
   template: TemplateCommandOutput;
   packet: PacketCommandOutput;
   'patch-item': PatchItemCommandOutput;
@@ -145,6 +157,8 @@ const commandInputSchemas: {
   init: InitCommandInputSchema,
   'register-source': RegisterSourceCommandInputSchema,
   'list-sources': ListSourcesCommandInputSchema,
+  'update-source-path': UpdateSourcePathCommandInputSchema,
+  'remove-source': RemoveSourceCommandInputSchema,
   template: TemplateCommandInputSchema,
   packet: PacketCommandInputSchema,
   'patch-item': PatchItemCommandInputSchema,
@@ -166,6 +180,8 @@ const commandOutputSchemas: {
   init: InitCommandOutputSchema,
   'register-source': RegisterSourceCommandOutputSchema,
   'list-sources': ListSourcesCommandOutputSchema,
+  'update-source-path': UpdateSourcePathCommandOutputSchema,
+  'remove-source': RemoveSourceCommandOutputSchema,
   template: TemplateCommandOutputSchema,
   packet: PacketCommandOutputSchema,
   'patch-item': PatchItemCommandOutputSchema,

@@ -96,6 +96,8 @@
 3. Изменение backlog
    - `patch-item`
    - `remove-item`
+   - `update-source-path`
+   - `remove-source`
    - `delete-backlog`
 4. Сервисные действия
    - `refresh`
@@ -119,13 +121,13 @@
 |---|---|---|
 | Создать backlog с нуля по архитектуре | Получить первый backlog-граф проекта | `init` -> `register-source` для всех исходных документов -> `template packet` -> подготовка пакета -> при рискованном или крупном изменении `packet --dry-run` -> `packet` -> `status` |
 | Добавить в backlog новый модуль или источник | Дозагрузить в backlog новый участок системы | `list-sources` -> `register-source` для нового документа -> `template packet` -> подготовка пакета -> при рискованном или крупном изменении `packet --dry-run` -> `packet` -> при необходимости `items` или `attention` по затронутым задачам |
-| Обновить backlog после изменения существующего модуля или источника | Синхронизировать backlog с изменившейся архитектурой | Если известен источник: `refresh --source-id ...` или `refresh --source-path ...`; если известна задача: `refresh --item-key ...`; иначе `refresh` -> `search` для поиска затронутых задач -> если появились новые задачи: `template packet` -> при рискованном или крупном изменении `packet --dry-run` -> `packet`; если нужно изменить существующие задачи: `template patch` -> при рискованном или крупном изменении `patch-item --dry-run` -> `patch-item`; если задачи устарели: `remove-item --dry-run` -> `remove-item` |
+| Обновить backlog после изменения существующего модуля или источника | Синхронизировать backlog с изменившейся архитектурой | Если source moved: `update-source-path`; если source удалён: `remove-source`; если известен изменившийся источник: `refresh --source-id ...` или `refresh --source-path ...`; если известна задача: `refresh --item-key ...`; иначе `refresh` -> `search` для поиска затронутых задач -> если появились новые задачи: `template packet` -> при рискованном или крупном изменении `packet --dry-run` -> `packet`; если нужно изменить существующие задачи: `template patch` -> при рискованном или крупном изменении `patch-item --dry-run` -> `patch-item`; если задачи устарели: `remove-item --dry-run` -> `remove-item` |
 | Выбрать следующую backlog-задачу и передать её в dossier workflow | Понять, какую работу брать дальше и с чем входить в dossier | `queue` или scoped `status`/`items` -> прочитать текущий `delivery_state`, blockers, dependencies и source traceability -> `dossier-engineer feature-intake` |
 | Актуализировать backlog после dossier shaping/specification | Зафиксировать, что выбранная backlog-задача стала достаточно определённой | после dossier `spec-compact` -> `patch-item` или scoped `refresh` + patch workflow -> при необходимости `status` или `items` для подтверждения нового backlog state |
 | Актуализировать backlog после dossier planning | Зафиксировать, что выбранная backlog-задача стала implementation-ready на backlog-слое | после dossier `plan-slice` -> `patch-item` или scoped `refresh` + patch workflow -> при необходимости `status` или `items` |
 | Актуализировать backlog после dossier implementation/closure | Зафиксировать, что capability реально существует и backlog state должен быть повышен | после dossier `implementation -> dossier-verify -> review-artifact -> dossier-step-close` -> `patch-item` или scoped `refresh` + patch workflow -> при необходимости `status` или `items` |
 | Показать общее состояние backlog | Понять текущее состояние backlog в целом | `status`; если оператор просит именно актуальное состояние на сейчас: `status --refresh`; если нужен полноценный обзорный документ для оператора: `report` |
-| Показать, что изменилось после последнего действия | Понять результат последнего обновления backlog | Использовать компактный ответ последней mutating-команды (`packet`, `patch-item`, `remove-item`, `refresh`); если нужны детали по конкретным задачам: `items` |
+| Показать, что изменилось после последнего действия | Понять результат последнего обновления backlog | Использовать компактный ответ последней mutating-команды (`packet`, `patch-item`, `remove-item`, `update-source-path`, `remove-source`, `refresh`); если нужны детали по конкретным задачам: `items` |
 | Показать, что требует внимания | Найти задачи, которые надо проверить или пересмотреть | `attention` -> при необходимости `items` по выбранным задачам |
 | Показать, что можно брать дальше | Найти следующий исполнимый фронт работы | `queue` -> при необходимости `items` по задачам из выбранной цепочки |
 | Проверить один модуль, источник или конкретную задачу | Получить scoped-картину без обзора всего backlog | Если известен `item_key`: `items`; если известен источник: `refresh --source-id ...` или `refresh --source-path ...` -> `search --source-ids ...` -> при необходимости `items`; если ключи задач неизвестны: `search` -> `items` |
@@ -548,6 +550,58 @@ Literal dossier -> backlog actualization mapping:
 - Во внешнем machine-facing output поле `path` должно быть абсолютным filesystem path.
 - Если нужно найти источник по документу, используй `list-sources --path ...`, а не ручное сравнение полного списка.
 - Если работаешь с конкретной задачей, сначала пробуй `list-sources --item-key ...`, а не общий список по всему backlog.
+
+## update-source-path
+
+**Назначение:** обновить путь зарегистрированного source, сохранив тот же `source_id`.
+
+**Когда использовать:** когда документ переехал или был переименован, но это всё ещё тот же canonical source.
+
+**Команда:**
+
+```bash
+./path/to/cli.mjs update-source-path \
+  --source-id "<source_id>" \
+  --new-path "../docs/architecture/system.v2.md"
+```
+
+Допустимые selectors:
+
+- `--source-id`
+- `--source-label`
+- `--source-path`
+
+**Инструкции скила для агента:**
+
+- Не регистрируй moved source как новый, если это тот же logical source.
+- Если `hash_changed = false`, дополнительных backlog reads не требуется, если оператор просил только результат.
+- Если `hash_changed = true`, следуй `next_commands` так же, как после scoped `refresh`.
+- При `BE_SOURCE_PATH_CONFLICT` объясни оператору, какой source уже занимает requested path.
+
+## remove-source
+
+**Назначение:** удалить registered source из backlog truth и source registry.
+
+**Когда использовать:** когда source file удалён или больше не должен участвовать в backlog.
+
+**Команда:**
+
+```bash
+./path/to/cli.mjs remove-source --source-id "<source_id>"
+```
+
+Допустимые selectors:
+
+- `--source-id`
+- `--source-label`
+- `--source-path`
+
+**Инструкции скила для агента:**
+
+- Не редактируй `.backlog/sources.json` вручную.
+- Команда сначала materializes durable cleanup patch, затем удаляет source record.
+- Если ответ содержит `todo_created` или `todo_updated`, переходи только к `attention` или `items` по возвращённым ключам.
+- При `BE_SOURCE_REMOVE_UNSUPPORTED` сообщи оператору affected scope из error details; не выполняй forced delete.
 
 ## packet
 
@@ -1411,7 +1465,7 @@ graph TD
 
 **Когда использовать:** когда есть риск, что документы-источники изменились после регистрации.
 
-`refresh`, `register-source`, `packet`, `patch-item`, `remove-item`, `report`, `delete-backlog` и `status --refresh` должны работать только последовательно для одного backlog root.
+`refresh`, `register-source`, `update-source-path`, `remove-source`, `packet`, `patch-item`, `remove-item`, `report`, `delete-backlog` и `status --refresh` должны работать только последовательно для одного backlog root.
 
 Утилита должна обеспечивать это через advisory lock:
 - lock file: `/.backlog/mutation.lock`

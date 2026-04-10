@@ -61,6 +61,15 @@ function createSourceChangeMessage(relatedSources: readonly SourceSummary[]): st
   return `Review source change: ${labels.join(', ')}.`;
 }
 
+function createSourceRemovalMessage(relatedSources: readonly SourceSummary[]): string {
+  const labels = sortSourceSummaries(relatedSources).map((source) => source.source_label);
+  if (labels.length === 0) {
+    return 'Source was removed. Review whether this task needs replacement source coverage.';
+  }
+
+  return `Source was removed: ${labels.join(', ')}. Review whether this task needs replacement source coverage.`;
+}
+
 function createDependencyChangeMessage(relatedItemKeys: readonly ItemKey[]): string {
   const keys = sortItemKeys(relatedItemKeys);
   if (keys.length === 0) {
@@ -87,16 +96,18 @@ function buildTodo(payload: {
   managedBy: TodoManagedBy;
   relatedSources?: SourceSummary[];
   relatedItemKeys?: ItemKey[];
+  message?: string;
 }): Todo {
   const relatedSources = sortSourceSummaries(payload.relatedSources ?? []);
   const relatedItemKeys = sortItemKeys(payload.relatedItemKeys ?? []);
 
   const message =
-    payload.type === 'review_source_change'
+    payload.message ??
+    (payload.type === 'review_source_change'
       ? createSourceChangeMessage(relatedSources)
       : payload.type === 'review_dependency_change'
         ? createDependencyChangeMessage(relatedItemKeys)
-        : createContextChangeMessage(relatedItemKeys);
+        : createContextChangeMessage(relatedItemKeys));
 
   return {
     todo_id: payload.uuid.create(),
@@ -270,6 +281,41 @@ export function createTodoService(payload: {
             type: 'review_source_change',
             managedBy,
             relatedSources: requireDirectSourceLink ? relevantSources : relatedSources,
+          }),
+        ];
+      });
+    },
+
+    generateTodosForSourceRemoval({
+      state,
+      registry,
+      sourceIds,
+      affectedItemKeys,
+      managedBy = 'mutation',
+    }) {
+      const relatedSources = resolveSourceSummaries({
+        registry,
+        sourceIds,
+        errors: payload.errors,
+      });
+      const itemKeys = sortItemKeys(affectedItemKeys);
+      const itemsByKey = new Map(state.items.map((item) => [item.item_key, item]));
+      const message = createSourceRemovalMessage(relatedSources);
+
+      return itemKeys.flatMap((itemKey) => {
+        if (!itemsByKey.has(itemKey)) {
+          return [];
+        }
+
+        return [
+          buildTodo({
+            uuid: payload.uuid,
+            clock: payload.clock,
+            itemKey,
+            type: 'review_source_change',
+            managedBy,
+            relatedSources,
+            message,
           }),
         ];
       });

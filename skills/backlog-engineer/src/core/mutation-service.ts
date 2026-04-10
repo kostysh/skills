@@ -22,6 +22,7 @@ import type {
   GraphService,
   MutationService,
   PacketMutationSummary,
+  RemoveSourceMaintenanceSummary,
   TodoService,
 } from './types.ts';
 
@@ -228,7 +229,11 @@ function collectPatchFieldChanges(patch: PatchFile): {
   ]);
 
   for (const operation of patch.operations) {
-    if (operation.action === 'remove_todo' || operation.action === 'remove_item') {
+    if (
+      operation.action === 'remove_todo' ||
+      operation.action === 'remove_item' ||
+      operation.action === 'remove_source_references'
+    ) {
       continue;
     }
 
@@ -1094,6 +1099,68 @@ export function createMutationService(payload: {
         state: nextState,
         registry: sourceRegistry,
       });
+    },
+
+    removeSourceReferences({
+      state,
+      patch,
+      sourceRegistry,
+      sourceId,
+      affectedItemKeys,
+      updatedItemKeys,
+    }) {
+      const graphResult = payload.graph.applyPatchOperations({ state, patch });
+      assertKnownSourceReferences(graphResult.state, sourceRegistry);
+
+      const sourceRemovalTodos = payload.todo.generateTodosForSourceRemoval({
+        state: graphResult.state,
+        registry: sourceRegistry,
+        sourceIds: [sourceId],
+        affectedItemKeys,
+        managedBy: 'mutation',
+      });
+      const sourceRemovalResult = payload.todo.createOrMergeTodos({
+        state: graphResult.state,
+        todos: sourceRemovalTodos,
+      });
+      const nextState = touchState({
+        schemas: payload.schemas,
+        state: payload.derivedState.recomputeAll(sourceRemovalResult.state),
+        updatedAt: payload.clock.nowIsoUtc(),
+      });
+      const todoCreated = mapTodoIdsToItemKeys({
+        state: nextState,
+        todoIds: sourceRemovalResult.createdTodoIds,
+      });
+      const todoUpdated = mapTodoIdsToItemKeys({
+        state: nextState,
+        todoIds: sourceRemovalResult.updatedTodoIds,
+      });
+      const todoRemoved = mapTodoIdsToItemKeys({
+        state,
+        todoIds: graphResult.removedTodoIds,
+      });
+      const summary: RemoveSourceMaintenanceSummary = {
+        state: nextState,
+        counts: {
+          updated: updatedItemKeys.length,
+          todo_created: todoCreated.length,
+          todo_updated: todoUpdated.length,
+          todo_removed: todoRemoved.length,
+        },
+        updated_item_keys: sortKeys(updatedItemKeys),
+        todo_created: todoCreated,
+        todo_updated: todoUpdated,
+        todo_removed: todoRemoved,
+        next_commands: buildMutationNextCommands({
+          todoCreated,
+          todoUpdated,
+          fallbackReason: 'Review tasks affected by source removal.',
+          itemsReason: 'Inspect full cards of tasks affected by source removal.',
+        }),
+      };
+
+      return Promise.resolve(summary);
     },
 
     getGaps({ state, filters }) {

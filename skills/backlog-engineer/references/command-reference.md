@@ -123,6 +123,102 @@ Behavior:
 - each returned source record uses an absolute filesystem path in the machine-facing `path` field;
 - internal source registry storage remains relative to backlog root.
 
+## `update-source-path`
+
+Use when a registered source file moved but remains the same logical canonical source.
+
+Supported selectors:
+
+- `--source-id`
+- `--source-label`
+- `--source-path`
+
+Required:
+
+- `--new-path`
+
+Supports:
+
+- `--dry-run`
+
+Behavior:
+
+- resolves exactly one existing source;
+- normalizes `--new-path` with the same source-path rules as `register-source`;
+- preserves `source_id`, `kind`, `authority`, `note`, and `registered_at`;
+- updates `path`, `source_label`, `hash`, and `last_checked_at`;
+- fails with `BE_SOURCE_PATH_CONFLICT` if another source already owns the new normalized path;
+- synchronizes persisted state labels for source-linked todo/read models;
+- if the new hash differs from the old hash, applies scoped `refresh` semantics for that `source_id`;
+- does not create a canonical patch artifact.
+
+Compact response should include:
+
+- `source_id`
+- `source_label`
+- `previous_path`
+- `path`
+- `hash`
+- `hash_changed`
+- `counts`
+- `todo_created`
+- `todo_updated`
+- `todo_removed`
+- `dry_run`
+- `next_commands`
+
+Interpretation:
+
+- `hash_changed = false` means the path moved without a semantic source-content change;
+- with `hash_changed = false`, `todo_updated` can report mechanical label sync for existing source-linked todo/read models; this does not require follow-up reads, so `next_commands` stays empty;
+- `hash_changed = true` means follow the returned `next_commands` exactly as after scoped `refresh`;
+- `previous_path` and `path` are absolute filesystem paths in machine-facing output.
+
+## `remove-source`
+
+Use when a registered source was deleted or must be removed from backlog truth.
+
+Supported selectors:
+
+- `--source-id`
+- `--source-label`
+- `--source-path`
+
+Supports:
+
+- `--dry-run`
+
+Behavior:
+
+- resolves exactly one existing source;
+- identifies item-level and context-level references to that `source_id`;
+- writes a utility-owned canonical maintenance patch when cleanup is needed;
+- removes the `source_id` from item source lists and context entity `source_ids`;
+- creates or updates mutation-managed review todo on affected items;
+- the todo message must literally say the source was removed;
+- deletes the source record from `.backlog/sources.json` only after durable cleanup is materialized;
+- fails closed with `BE_SOURCE_REMOVE_UNSUPPORTED` when cleanup cannot be attached to a deterministic affected item scope.
+
+Compact response should include:
+
+- `source_id`
+- `source_label`
+- `path`
+- `removed`
+- `counts`
+- `updated_item_keys`
+- `todo_created`
+- `todo_updated`
+- `todo_removed`
+- `dry_run`
+- `next_commands`
+
+Interpretation:
+
+- `remove-source` is not a registry-only cleanup;
+- after success, canonical replay must not contain source references to the removed source;
+- follow returned `next_commands` to review affected work.
+
 ## `template`
 
 Use before freehand authoring when a skeleton helps.

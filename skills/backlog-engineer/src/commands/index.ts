@@ -10,10 +10,12 @@ import { QUEUE_COMMAND } from './queue.ts';
 import { REFRESH_COMMAND } from './refresh.ts';
 import { REGISTER_SOURCE_COMMAND } from './register-source.ts';
 import { REMOVE_ITEM_COMMAND } from './remove-item.ts';
+import { REMOVE_SOURCE_COMMAND } from './remove-source.ts';
 import { REPORT_COMMAND } from './report.ts';
 import { SEARCH_COMMAND } from './search.ts';
 import { STATUS_COMMAND } from './status.ts';
 import { TEMPLATE_COMMAND } from './template.ts';
+import { UPDATE_SOURCE_PATH_COMMAND } from './update-source-path.ts';
 
 export {
   ATTENTION_COMMAND,
@@ -28,10 +30,12 @@ export {
   REFRESH_COMMAND,
   REGISTER_SOURCE_COMMAND,
   REMOVE_ITEM_COMMAND,
+  REMOVE_SOURCE_COMMAND,
   REPORT_COMMAND,
   SEARCH_COMMAND,
   STATUS_COMMAND,
   TEMPLATE_COMMAND,
+  UPDATE_SOURCE_PATH_COMMAND,
 };
 
 export type {
