@@ -16,6 +16,8 @@ The included CLI is generic and heuristic, so adapt field mappings if your sessi
 
 ## Deterministic path discovery order
 
+The agent performs path discovery after it has resolved `session_id` and found the canonical session trace.
+
 When the trace exposes `session_meta.cwd`, treat it as the candidate `project root` and discover evidence in this order:
 
 1. session trace
@@ -29,3 +31,5 @@ When the trace exposes `session_meta.cwd`, treat it as the candidate `project ro
 9. `docs/backlog`
 
 These are only candidate evidence roots. Move an artifact into the real retrospective scope only when it is linked by trace-derived ids or paths.
+
+For `.dossier/logs`, apply a stricter rule: include only the stage-log paths that the trace shows as created or changed in the analyzed session. Do not widen stage-log scope by feature-id matching alone.

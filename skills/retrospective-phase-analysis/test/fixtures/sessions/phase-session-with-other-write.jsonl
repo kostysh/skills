@@ -1,0 +1,3 @@
+{"timestamp":"2026-04-10T09:59:00Z","type":"session_meta","payload":{"id":"019d7490-46d0-7811-b43f-056bb617a7af","cwd":"/fixture/project"}}
+{"timestamp":"2026-04-10T10:05:00Z","type":"tool_call","tool":"functions.exec_command","command":"echo done >> docs/notes.md","message":"Read .dossier/logs/implementation.md before updating docs/notes.md for CF-0016 / F-0016."}
+{"time":"2026-04-10T10:06:00Z","kind":"tool_result","recipient":"functions.exec_command","status":"ok","exit_code":0}

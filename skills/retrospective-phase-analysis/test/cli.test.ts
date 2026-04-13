@@ -38,16 +38,14 @@ async function createTempDir(): Promise<string> {
 
 async function createDiscoveryFixture(): Promise<{
   tempDir: string;
-  codexHome: string;
   projectRoot: string;
-  sessionId: string;
+  sessionPath: string;
 }> {
   const tempDir = await createTempDir();
   const projectRoot = path.join(tempDir, 'project');
-  const codexHome = path.join(tempDir, 'codex-home');
   const sessionId = '019d7490-46d0-7811-b43f-056bb617a7ab';
   const logsDir = path.join(projectRoot, '.dossier', 'logs');
-  const sessionsDir = path.join(codexHome, 'sessions', '2026', '04', '10');
+  const sessionsDir = path.join(tempDir, 'sessions');
   const sessionPath = path.join(sessionsDir, `rollout-2026-04-10T10-00-00-${sessionId}.jsonl`);
 
   await cp(fixturePath('artifacts'), projectRoot, { recursive: true });
@@ -68,14 +66,22 @@ async function createDiscoveryFixture(): Promise<{
     }),
     JSON.stringify({
       created_at: '2026-04-10T10:05:00Z',
-      event: 'tool_call',
-      tool_name: 'functions.exec_command',
-      command: "sed -n '1,200p' src/retro/collector.ts",
+      type: 'tool_call',
+      tool: 'functions.apply_patch',
+      patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+      message: 'Update .dossier/logs/implementation.md after review.',
+    }),
+    JSON.stringify({
+      time: '2026-04-10T10:06:00Z',
+      kind: 'tool_result',
+      recipient: 'functions.apply_patch',
+      status: 'ok',
+      notes: 'Updated .dossier/logs/implementation.md',
     }),
   ];
   await writeFile(sessionPath, `${sessionLines.join('\n')}\n`, 'utf8');
 
-  return { tempDir, codexHome, projectRoot, sessionId };
+  return { tempDir, projectRoot, sessionPath };
 }
 
 void test('global help and command help are available on the built CLI', () => {
@@ -91,6 +97,16 @@ void test('global help and command help are available on the built CLI', () => {
   assert.equal(commandHelp.stderr, '');
   assert.match(commandHelp.stdout, /^report - Generate a Markdown retrospective draft\./mu);
   assert.match(commandHelp.stdout, /--title <text>/u);
+
+  const scanHelp = runBuiltCli(['help', 'scan']);
+  assert.equal(scanHelp.status, 0);
+  assert.equal(scanHelp.stderr, '');
+  assert.match(scanHelp.stdout, /scan --session <file> --logs-dir <dir> --out <file>/u);
+  assert.match(scanHelp.stdout, /scan --session <file> --out <file> --pretty/u);
+  assert.doesNotMatch(
+    scanHelp.stdout,
+    /scan --logs-dir <dir> --artifacts-dir <dir> --out <file> --pretty/u,
+  );
 });
 
 void test('scan writes a JSON summary file from fixture inputs', async () => {
@@ -101,9 +117,9 @@ void test('scan writes a JSON summary file from fixture inputs', async () => {
     const result = runBuiltCli([
       'scan',
       '--session',
-      fixturePath('sessions', 'phase-session.jsonl'),
+      fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
       '--logs-dir',
-      fixturePath('logs'),
+      fixturePath('artifacts', '.dossier', 'logs'),
       '--artifacts-dir',
       fixturePath('artifacts'),
       '--skills-dir',
@@ -121,60 +137,66 @@ void test('scan writes a JSON summary file from fixture inputs', async () => {
       stageLogs: { count: number };
       candidateIncidents: unknown[];
     };
-    assert.equal(parsed.stageLogs.count, 2);
+    assert.equal(parsed.stageLogs.count, 1);
     assert.equal(parsed.candidateIncidents.length > 0, true);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
 });
 
-void test('scan resolves a trace from --session-id and discovers standard evidence directories', async () => {
-  const { tempDir, codexHome, projectRoot, sessionId } = await createDiscoveryFixture();
+void test('scan returns a usage error when --session is omitted', async () => {
+  const tempDir = await createTempDir();
   const outputPath = path.join(tempDir, 'scan-summary.json');
 
   try {
-    const result = runBuiltCli(
-      ['scan', '--session-id', sessionId, '--out', outputPath, '--pretty'],
-      {
-        env: { ...process.env, CODEX_HOME: codexHome },
-      },
-    );
+    const result = runBuiltCli([
+      'scan',
+      '--logs-dir',
+      fixturePath('artifacts', '.dossier', 'logs'),
+      '--artifacts-dir',
+      fixturePath('artifacts'),
+      '--out',
+      outputPath,
+    ]);
+
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /scan requires --session/u);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('scan discovers standard evidence directories from session_meta.cwd after the agent supplies the trace file', async () => {
+  const { tempDir, projectRoot, sessionPath } = await createDiscoveryFixture();
+  const outputPath = path.join(tempDir, 'scan-summary.json');
+
+  try {
+    const result = runBuiltCli(['scan', '--session', sessionPath, '--out', outputPath, '--pretty']);
 
     assert.equal(result.status, 0);
     assert.equal(result.stdout, '');
     assert.equal(result.stderr, '');
 
     const parsed = JSON.parse(await readFile(outputPath, 'utf8')) as {
-      resolved: { sessionId: string | null; logsDir: string | null; discoveryMode: string };
+      resolved: { session: string | null; logsDir: string | null };
+      stageLogs: { count: number };
       scope: {
         project_root: string | null;
         mentioned_backlog_items: string[];
         mentioned_features: string[];
+        candidate_stage_logs: string[];
       };
     };
 
-    assert.equal(parsed.resolved.discoveryMode, 'explicit_session_id');
-    assert.equal(parsed.resolved.sessionId, sessionId);
+    assert.equal(parsed.resolved.session, sessionPath);
     assert.equal(parsed.resolved.logsDir, path.join(projectRoot, '.dossier', 'logs'));
     assert.equal(parsed.scope.project_root, projectRoot);
     assert.deepEqual(parsed.scope.mentioned_backlog_items, ['CF-0016']);
     assert.deepEqual(parsed.scope.mentioned_features, ['F-0016']);
-  } finally {
-    await rm(tempDir, { recursive: true, force: true });
-  }
-});
-
-void test('scan returns a clear error when an explicit --session-id cannot be resolved', async () => {
-  const tempDir = await createTempDir();
-  const outputPath = path.join(tempDir, 'scan-summary.json');
-
-  try {
-    const result = runBuiltCli(['scan', '--session-id', '019d0000-missing', '--out', outputPath], {
-      env: { ...process.env, CODEX_HOME: path.join(tempDir, 'empty-codex-home') },
-    });
-
-    assert.equal(result.status, 2);
-    assert.match(result.stderr, /Could not resolve session trace for session_id/u);
+    assert.equal(parsed.stageLogs.count, 1);
+    assert.deepEqual(parsed.scope.candidate_stage_logs, [
+      path.join(projectRoot, '.dossier', 'logs', 'implementation.md'),
+    ]);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
@@ -188,9 +210,9 @@ void test('report writes a markdown draft from fixture inputs', async () => {
     const result = runBuiltCli([
       'report',
       '--session',
-      fixturePath('sessions', 'phase-session.jsonl'),
+      fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
       '--logs-dir',
-      fixturePath('logs'),
+      fixturePath('artifacts', '.dossier', 'logs'),
       '--artifacts-dir',
       fixturePath('artifacts'),
       '--skills-dir',
@@ -210,6 +232,7 @@ void test('report writes a markdown draft from fixture inputs', async () => {
     const markdown = await readFile(outputPath, 'utf8');
     assert.match(markdown, /^# Retrospective: implementation/mu);
     assert.match(markdown, /^## Candidate incidents$/mu);
+    assert.match(markdown, /Backlog actualization deferred/mu);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }

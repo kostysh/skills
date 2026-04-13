@@ -2,18 +2,15 @@
   "generatedAt": "<generated>",
   "inputs": {
     "session": "/abs/fixtures/sessions/phase-session.jsonl",
-    "sessionId": null,
     "logsDir": "/abs/fixtures/logs",
     "artifactsDir": "/abs/fixtures/artifacts",
     "skillsDir": "/abs/fixtures/skills"
   },
   "resolved": {
     "session": "/abs/fixtures/sessions/phase-session.jsonl",
-    "sessionId": null,
     "logsDir": "/abs/fixtures/logs",
     "artifactsDir": "/abs/fixtures/artifacts",
-    "skillsDir": "/abs/fixtures/skills",
-    "discoveryMode": "explicit_session_file"
+    "skillsDir": "/abs/fixtures/skills"
   },
   "dataQuality": {
     "sessionPresent": true,
@@ -35,104 +32,48 @@
       "functions.exec_command": 2,
       "functions.update_plan": 1
     },
-    "sampleEventTypes": [
-      "session_meta",
-      "assistant",
-      "tool_call",
-      "tool_result"
-    ]
+    "sampleEventTypes": ["session_meta", "assistant", "tool_call", "tool_result"]
   },
   "stageLogs": {
-    "count": 2,
+    "count": 0,
     "metrics": {
-      "logsTotal": 2,
-      "reviewRoundsTotal": 3,
-      "reviewFindingsTotal": 3,
-      "processMissesTotal": 1,
-      "backlogActualizedCount": 1,
-      "stages": {
-        "closure": 1,
-        "implementation": 1
-      },
-      "skillsReferenced": {
-        "backlog-engineer": 1,
-        "dossier-engineer": 1
-      },
-      "lateLogStartCount": 1
+      "logsTotal": 0,
+      "reviewRoundsTotal": 0,
+      "reviewFindingsTotal": 0,
+      "processMissesTotal": 0,
+      "backlogActualizedCount": 0,
+      "stages": {},
+      "skillsReferenced": {},
+      "lateLogStartCount": 0
     },
-    "files": [
-      {
-        "filePath": "/abs/fixtures/logs/closure.md",
-        "metadata": {
-          "stage": "closure",
-          "feature_id": "F-0016",
-          "skill": "backlog-engineer",
-          "review_rounds_total": 1,
-          "review_findings_total": 0,
-          "process_misses_total": 0,
-          "backlog_actualized": true,
-          "review_artifact": ".dossier/reviews/F-0016-review.md",
-          "verification_artifact": ".dossier/verification/F-0016-verification.md",
-          "step_artifact": ".dossier/steps/F-0016-step.md",
-          "log_quality": {
-            "duration_exact": false
-          }
-        },
-        "reviewEvents": 1,
-        "processMissLines": []
-      },
-      {
-        "filePath": "/abs/fixtures/logs/implementation.md",
-        "metadata": {
-          "stage": "implementation",
-          "feature_id": "F-0016",
-          "skill": "dossier-engineer",
-          "review_rounds_total": 2,
-          "review_findings_total": 3,
-          "process_misses_total": 1,
-          "backlog_actualized": false,
-          "late_log_start": true,
-          "review_artifact": ".dossier/reviews/F-0016-review.md",
-          "verification_artifact": ".dossier/verification/F-0016-verification.md"
-        },
-        "reviewEvents": 2,
-        "processMissLines": [
-          "backlog actualization deferred until closure evidence was assembled"
-        ]
-      }
-    ]
+    "files": []
   },
   "scope": {
     "project_root": "/abs/fixtures/artifacts",
-    "mentioned_backlog_items": [
-      "CF-0016"
-    ],
-    "mentioned_features": [
-      "F-0016"
-    ],
+    "mentioned_backlog_items": ["CF-0016"],
+    "mentioned_features": ["F-0016"],
     "touched_paths": [
+      "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md",
+      "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md",
       "/abs/fixtures/artifacts/docs/adr/ADR-0016-observability.md",
       "/abs/fixtures/artifacts/docs/features/F-0016-retro.md",
       "/abs/fixtures/artifacts/package.json",
       "/abs/fixtures/artifacts/src/retro/collector.ts"
     ],
     "referenced_artifacts": [
+      "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md",
+      "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md",
       "/abs/fixtures/artifacts/docs/adr/ADR-0016-observability.md",
       "/abs/fixtures/artifacts/docs/features/F-0016-retro.md"
     ],
-    "candidate_stage_logs": [
-      "/abs/fixtures/logs/closure.md",
-      "/abs/fixtures/logs/implementation.md"
-    ],
-    "candidate_review_artifacts": [
-      "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md"
-    ],
+    "candidate_stage_logs": [],
+    "candidate_review_artifacts": ["/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md"],
     "candidate_verification_artifacts": [
       "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md"
     ],
     "scope_confidence": "medium",
     "scope_ambiguities": [
-      "Stage logs were discovered from the standard logs directory but not directly linked from the trace."
+      "The session trace did not confirm any stage-log path created or changed in this session."
     ]
   },
   "skills": [
@@ -148,41 +89,15 @@
     }
   ],
   "artifacts": {
-    "scannedCount": 2,
+    "scannedCount": 4,
     "sample": [
+      "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md",
+      "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md",
       "/abs/fixtures/artifacts/docs/adr/ADR-0016-observability.md",
       "/abs/fixtures/artifacts/docs/features/F-0016-retro.md"
     ]
   },
   "candidateIncidents": [
-    {
-      "title": "Process misses in implementation.md",
-      "severity": "medium",
-      "stage": "implementation",
-      "evidence": "/abs/fixtures/logs/implementation.md",
-      "reason": "backlog actualization deferred until closure evidence was assembled"
-    },
-    {
-      "title": "Review findings in implementation.md",
-      "severity": "high",
-      "stage": "implementation",
-      "evidence": "/abs/fixtures/logs/implementation.md",
-      "reason": "3 review finding(s) recorded."
-    },
-    {
-      "title": "Backlog actualization deferred in implementation.md",
-      "severity": "low",
-      "stage": "implementation",
-      "evidence": "/abs/fixtures/logs/implementation.md",
-      "reason": "The log references backlog actualization but marks it incomplete or deferred."
-    },
-    {
-      "title": "Non-pass review cycle in implementation.md",
-      "severity": "medium",
-      "stage": "implementation",
-      "evidence": "/abs/fixtures/logs/implementation.md",
-      "reason": "At least one review event returned FAIL or non-compliant before final pass."
-    },
     {
       "title": "Aborted or restarted turns detected",
       "severity": "medium",

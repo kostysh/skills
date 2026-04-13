@@ -24,8 +24,17 @@ function buildFixtureSummary() {
   });
 }
 
+function buildLinkedFixtureSummary() {
+  return buildScanSummary({
+    session: fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
+    logsDir: fixturePath('artifacts', '.dossier', 'logs'),
+    artifactsDir: fixturePath('artifacts'),
+    skillsDir: fixturePath('skills'),
+  });
+}
+
 void test('report markdown includes core retrospective sections and inferred signals', () => {
-  const markdown = buildReportMarkdown(buildFixtureSummary(), {
+  const markdown = buildReportMarkdown(buildLinkedFixtureSummary(), {
     phase: 'implementation',
     title: 'Retrospective: implementation',
   });
@@ -34,7 +43,7 @@ void test('report markdown includes core retrospective sections and inferred sig
   assert.match(markdown, /^## Evidence manifest$/mu);
   assert.match(markdown, /^## Candidate incidents$/mu);
   assert.match(markdown, /Backlog actualization deferred/mu);
-  assert.match(markdown, /Distinct tools observed: 2/mu);
+  assert.match(markdown, /Distinct tools observed: 3/mu);
 });
 
 void test('skill audit markdown keeps manual review prompts explicit', () => {
@@ -47,7 +56,7 @@ void test('skill audit markdown keeps manual review prompts explicit', () => {
 });
 
 void test('logging review markdown highlights missing artifact links and automation ideas', () => {
-  const markdown = buildLoggingReviewMarkdown(buildFixtureSummary());
+  const markdown = buildLoggingReviewMarkdown(buildLinkedFixtureSummary());
 
   assert.match(markdown, /^# Logging review draft$/mu);
   assert.match(markdown, /Missing review artifacts: 0/mu);

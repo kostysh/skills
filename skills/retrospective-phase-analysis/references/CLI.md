@@ -20,12 +20,12 @@ Build an evidence summary and metrics snapshot.
 
 ```bash
 node scripts/retro-cli.mjs scan \
-  --session-id 019d7490-46d0-7811-b43f-056bb617a7ab \
+  --session /path/to/rollout.jsonl \
   --out out/scan-summary.json
 ```
 
 Outputs:
-- resolved session trace path
+- provided session trace path
 - resolved project root from `session_meta.cwd`
 - trace-derived scope block
 - timeline bounds
@@ -34,10 +34,10 @@ Outputs:
 - stage-log metrics
 - review metrics
 - process-miss metrics
-- candidate incidents
+- candidate incidents scoped to the analyzed trace and linked stage logs
 - data-quality notes
 
-If `--logs-dir` or `--artifacts-dir` is omitted, `scan` tries the standard directories derived from `session_meta.cwd`.
+The agent must resolve `session_id` and find the canonical trace file before calling the CLI. If `--logs-dir` or `--artifacts-dir` is omitted, `scan` tries the standard directories derived from `session_meta.cwd` after the trace file is provided.
 
 ### `report`
 
@@ -78,7 +78,6 @@ node scripts/retro-cli.mjs logging-review \
 ## Supported options
 
 - `--session <file>`: rollout or session JSONL file
-- `--session-id <id>`: session id used to discover the rollout or session JSONL file
 - `--logs-dir <dir>`: directory containing stage logs
 - `--artifacts-dir <dir>`: project root or evidence root
 - `--skills-dir <dir>`: directory containing skill folders
@@ -105,6 +104,8 @@ The CLI tries to infer:
 - The script is intentionally dependency-free and therefore heuristic.
 - Unknown event schemas are preserved but may not be fully classified.
 - Markdown stage logs are parsed best when they begin with a YAML block.
+- `scan` does not discover the session trace for you; the agent must pass `--session <file>`.
+- `scan` only treats `.dossier/logs` as in-scope when the trace shows those log paths as created or changed in the analyzed session.
 - `scan` does not replace manual scope review when the trace contains multiple tasks or multiple features.
 - The generated report is a draft. The agent should read the cited artifacts before finalizing findings.
 

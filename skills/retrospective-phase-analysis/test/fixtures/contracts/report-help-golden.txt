@@ -6,7 +6,6 @@ Usage:
 
 Options:
   -h, --help                  Show command help.
-  --session-id <id>           Session id used to discover the rollout JSONL trace.
   --session <file>            Rollout or session JSONL file.
   --logs-dir <dir>            Directory containing stage logs.
   --artifacts-dir <dir>       Project root or evidence root.

@@ -22,6 +22,8 @@ Use only tasks and artifacts that are mentioned in the trace or linked from trac
 
 Do not begin with broad repo-wide reading. Expand only through explicit linkage.
 
+For `.dossier/logs`, use the strictest linkage rule: include only stage-log paths that the trace shows as created or changed in the analyzed session.
+
 ## 1b. Scope partition order
 
 When one session mixes multiple work items, partition in this order:

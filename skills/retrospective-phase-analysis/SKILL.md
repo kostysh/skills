@@ -80,24 +80,26 @@ If an expected input is missing, record the gap explicitly.
 
 ## Session id resolution order
 
+The agent owns `session_id` resolution and canonical trace lookup. The CLI does not search the runtime session store on the agent's behalf.
+
 Resolve `session_id` in this order:
 
 1. Use the `session_id` explicitly provided by the operator.
-2. If the retrospective request is made inside the same active Codex session, use the current runtime session id.
+2. If the retrospective request is made inside the same active session, use the current runtime session id.
 3. If neither source is available, stop and say that the trace cannot be determined reliably.
 
-In Codex, `CODEX_THREAD_ID` is the runtime signal to use when the current session is the retrospective target.
+In Codex, the runtime may expose the current session id via `CODEX_THREAD_ID`. In another agent runtime, use that runtime's equivalent signal and session-store lookup.
 
 ## Quick start from session id only
 
 When you start with only `session_id`, use this minimal path:
 
 1. Resolve `session_id`.
-2. Find the rollout/session JSONL trace among your Codex sessions.
+2. Find the canonical rollout/session JSONL trace in your runtime's session store.
 3. Read `session_meta.cwd` from the trace.
 4. Treat that value as the candidate `project root`.
 5. Discover standard evidence directories from that root.
-6. Run the first `scan`.
+6. Run the first `scan` with the explicit trace file path.
 
 Do not begin with broad repo reading before this preflight is complete.
 
@@ -117,6 +119,7 @@ Use trace-driven scoping:
 - analyze only tasks, files, and artifacts that are actually mentioned in the session trace;
 - do not start with repo-wide reading;
 - expand beyond the trace only when a trace-derived id or path links you to the next artifact.
+- for `.dossier/logs`, include only the stage-log paths that the trace itself shows as created or changed in the analyzed session.
 
 Record the phase boundary explicitly:
 
@@ -342,7 +345,7 @@ Minimum viable workflow:
 
 When Node.js is available, use:
 
-- `scripts/retro-cli.mjs scan --session-id <id> --out out/scan-summary.json` to inventory evidence and generate metrics;
+- `scripts/retro-cli.mjs scan --session <file> --out out/scan-summary.json` to inventory evidence and generate metrics;
 - `scripts/retro-cli.mjs report ...` to create a draft retrospective report;
 - `scripts/retro-cli.mjs logging-review ...` to generate logging findings;
 - `scripts/retro-cli.mjs skill-audit ...` to generate a skill-focused draft.

@@ -2,12 +2,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { listFilesRecursive, sortUnique } from './shared.ts';
-import type { LogsSummary, ScopeConfidence, SessionSummary } from './types.ts';
+import type { ScopeConfidence, SessionSummary } from './types.ts';
 
 interface TraceScopeInputs {
   sessionSummary: SessionSummary;
   projectRoot: string | null;
-  logsSummary: LogsSummary;
 }
 
 interface TraceScopeSummary {
@@ -29,6 +28,10 @@ const SKIPPED_KEYS = new Set([
   'user_instructions',
   'formatted_output',
 ]);
+
+function escapeForRegex(value: string): string {
+  return value.replaceAll(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+}
 
 function trimPathCandidate(value: string): string {
   return value.replaceAll(/^[\s("'`[{<]+|[\s"',.;:)\]}>`]+$/gu, '');
@@ -88,6 +91,22 @@ function isReferencedArtifact(value: string, projectRoot: string | null): boolea
     relative.startsWith(`.dossier${path.sep}`) ||
     relative.startsWith('docs/') ||
     relative.startsWith(`docs${path.sep}`)
+  );
+}
+
+function isStageLogArtifact(value: string, projectRoot: string | null): boolean {
+  if (!projectRoot) {
+    return false;
+  }
+
+  const relative = path.relative(projectRoot, value);
+  if (relative.startsWith('..')) {
+    return false;
+  }
+
+  return (
+    relative.startsWith('.dossier/logs/') ||
+    relative.startsWith(`.dossier${path.sep}logs${path.sep}`)
   );
 }
 
@@ -158,7 +177,7 @@ function extractTouchedPaths(values: readonly string[], projectRoot: string | nu
   const rawCandidates: string[] = [];
   const absolutePathPattern = /(?:^|[\s("'`[{<])((?:\/[A-Za-z0-9._@-]+)+(?:\.[A-Za-z0-9._-]+)?)/gu;
   const relativePathPattern =
-    /\b((?:\.dossier|docs|src|test|scripts|skills|packages)\/[A-Za-z0-9._@/\-]+(?:\.[A-Za-z0-9._-]+)?)\b/gu;
+    /(?:^|[\s("'`[{<])((?:\.dossier|docs|src|test|scripts|skills|packages)\/[A-Za-z0-9._@/\-]+(?:\.[A-Za-z0-9._-]+)?)/gu;
   const rootFilePattern =
     /\b(AGENTS\.md|README\.md|package\.json|pnpm-lock\.yaml|tsconfig\.json)\b/gu;
 
@@ -174,6 +193,179 @@ function extractTouchedPaths(values: readonly string[], projectRoot: string | nu
   return sortUnique(normalized);
 }
 
+function extractEventType(record: Record<string, unknown>): string | null {
+  return (
+    [record.type, record.event_type, record.kind, record.event, record.name].find(
+      (value): value is string => typeof value === 'string',
+    ) ?? null
+  );
+}
+
+function extractEventToolName(record: Record<string, unknown>): string | null {
+  return (
+    [record.tool, record.tool_name, record.recipient].find(
+      (value): value is string => typeof value === 'string',
+    ) ?? null
+  );
+}
+
+function isToolCallEvent(record: Record<string, unknown>): boolean {
+  const eventType = extractEventType(record);
+  return (
+    typeof record.command === 'string' ||
+    typeof record.patch === 'string' ||
+    typeof record.diff === 'string' ||
+    (typeof eventType === 'string' && /tool_call/u.test(eventType))
+  );
+}
+
+function isToolResultEvent(record: Record<string, unknown>): boolean {
+  const eventType = extractEventType(record);
+  return typeof eventType === 'string' && /tool_result/u.test(eventType);
+}
+
+function eventRequestsStageLogWrite(
+  record: Record<string, unknown>,
+  stageLogPaths: readonly string[],
+  projectRoot: string | null,
+): boolean {
+  const toolName = extractEventToolName(record)?.toLowerCase() ?? '';
+  if (toolName.includes('apply_patch')) {
+    const patchBlob = [record.patch, record.diff, record.command]
+      .filter((value): value is string => typeof value === 'string')
+      .join('\n');
+    const patchTargets = sortUnique(
+      patchBlob.split(/\r?\n/u).flatMap((line) => {
+        const match = line.match(/^\*\*\* (?:Update File|Add File|Move to): (.+)$/u);
+        if (!match?.[1]) {
+          return [];
+        }
+        const normalized = normalizePathCandidate(match[1], projectRoot);
+        if (!normalized || !isProjectScopedPath(normalized, projectRoot)) {
+          return [];
+        }
+        return [normalized];
+      }),
+    );
+    return stageLogPaths.some((filePath) => patchTargets.includes(filePath));
+  }
+
+  const commandBlob = [record.command, record.body]
+    .filter((value): value is string => typeof value === 'string')
+    .join('\n');
+
+  return stageLogPaths.some((filePath) => {
+    const relativePath =
+      projectRoot && isProjectScopedPath(filePath, projectRoot)
+        ? path.relative(projectRoot, filePath)
+        : null;
+    const candidates = [filePath, relativePath].filter((value): value is string => value !== null);
+
+    return candidates.some((candidate) => {
+      const escaped = escapeForRegex(candidate);
+      const destinationPatterns = [
+        new RegExp(`(?:>|>>)\\s*['"]?${escaped}['"]?(?:\\s|$)`, 'iu'),
+        new RegExp(`\\btee\\b(?:\\s+-a)?\\s+['"]?${escaped}['"]?(?:\\s|$)`, 'iu'),
+        new RegExp(`\\btouch\\b\\s+['"]?${escaped}['"]?(?:\\s|$)`, 'iu'),
+        new RegExp(`\\bsed\\b[\\s\\S]*?-i(?:\\S*)?\\s+['"]?${escaped}['"]?(?:\\s|$)`, 'iu'),
+        new RegExp(`\\bperl\\b[\\s\\S]*?-0pi(?:\\S*)?\\s+['"]?${escaped}['"]?(?:\\s|$)`, 'iu'),
+        new RegExp(`\\b(?:cp|mv)\\b(?:\\s+[^\\s]+)+\\s+['"]?${escaped}['"]?(?:\\s|$)`, 'iu'),
+      ];
+      return destinationPatterns.some((pattern) => pattern.test(commandBlob));
+    });
+  });
+}
+
+function isSuccessfulToolResult(record: Record<string, unknown>): boolean {
+  if (record.aborted === true) {
+    return false;
+  }
+  if (typeof record.exit_code === 'number' && record.exit_code !== 0) {
+    return false;
+  }
+  if (typeof record.status === 'string' && !/^(ok|success|passed|pass)$/iu.test(record.status)) {
+    return false;
+  }
+  if (typeof record.error === 'string' && record.error.length > 0) {
+    return false;
+  }
+  return true;
+}
+
+function hasConfirmedToolResult(
+  events: readonly unknown[],
+  startIndex: number,
+  expectedToolName: string | null,
+): boolean {
+  for (let index = startIndex + 1; index < events.length; index += 1) {
+    const candidate = events[index];
+    if (!candidate || typeof candidate !== 'object') {
+      continue;
+    }
+
+    const record = candidate as Record<string, unknown>;
+    if (isToolResultEvent(record)) {
+      const resultToolName = extractEventToolName(record)?.toLowerCase() ?? null;
+      if (
+        expectedToolName !== null &&
+        resultToolName !== null &&
+        resultToolName !== expectedToolName
+      ) {
+        continue;
+      }
+      return isSuccessfulToolResult(record);
+    }
+
+    if (
+      isToolCallEvent(record) ||
+      typeof record.type === 'string' ||
+      typeof record.event === 'string'
+    ) {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+function extractChangedStageLogPaths(
+  events: readonly unknown[],
+  projectRoot: string | null,
+): string[] {
+  const out: string[] = [];
+
+  for (const [index, event] of events.entries()) {
+    if (!event || typeof event !== 'object') {
+      continue;
+    }
+
+    const record = event as Record<string, unknown>;
+    if (!isToolCallEvent(record)) {
+      continue;
+    }
+
+    const eventTexts = collectEventTexts(event);
+    const eventStageLogPaths = extractTouchedPaths(eventTexts, projectRoot).filter((filePath) =>
+      isStageLogArtifact(filePath, projectRoot),
+    );
+    if (eventStageLogPaths.length === 0) {
+      continue;
+    }
+    if (!eventRequestsStageLogWrite(record, eventStageLogPaths, projectRoot)) {
+      continue;
+    }
+    if (
+      !hasConfirmedToolResult(events, index, extractEventToolName(record)?.toLowerCase() ?? null)
+    ) {
+      continue;
+    }
+
+    out.push(...eventStageLogPaths);
+  }
+
+  return sortUnique(out);
+}
+
 function collectFeatureScopedCandidates(
   baseDir: string | undefined,
   featureIds: readonly string[],
@@ -187,31 +379,6 @@ function collectFeatureScopedCandidates(
       featureIds.some((featureId) => filePath.includes(featureId)),
     ),
   );
-}
-
-function collectLogCandidates(
-  logsSummary: LogsSummary,
-  featureIds: readonly string[],
-  backlogItems: readonly string[],
-  referencedArtifacts: readonly string[],
-): string[] {
-  const direct = referencedArtifacts.filter((filePath) =>
-    filePath.includes(`${path.sep}.dossier${path.sep}logs${path.sep}`),
-  );
-  const anchored = logsSummary.logs
-    .filter((log) =>
-      [...featureIds, ...backlogItems].some(
-        (anchor) => log.filePath.includes(anchor) || log.raw.includes(anchor),
-      ),
-    )
-    .map((log) => log.filePath);
-
-  const candidates = sortUnique([...direct, ...anchored]);
-  if (candidates.length > 0) {
-    return candidates;
-  }
-
-  return sortUnique(logsSummary.logs.map((log) => log.filePath));
 }
 
 function scoreScopeConfidence(
@@ -238,12 +405,12 @@ function scoreScopeConfidence(
 export function extractTraceScope({
   sessionSummary,
   projectRoot,
-  logsSummary,
 }: TraceScopeInputs): TraceScopeSummary {
   const texts = sessionSummary.events.flatMap((event) => collectEventTexts(event));
   const mentionedBacklogItems = extractMatches(texts, /\b(CF-[A-Za-z0-9._-]+)\b/gu);
   const mentionedFeatures = extractMatches(texts, /\b(F-\d{4,})\b/gu);
   const touchedPaths = extractTouchedPaths(texts, projectRoot);
+  const touchedStageLogs = extractChangedStageLogPaths(sessionSummary.events, projectRoot);
   const referencedArtifacts = sortUnique(
     touchedPaths.filter((filePath) => isReferencedArtifact(filePath, projectRoot)),
   );
@@ -266,12 +433,7 @@ export function extractTraceScope({
       mentionedFeatures,
     ),
   ]);
-  const candidateStageLogs = collectLogCandidates(
-    logsSummary,
-    mentionedFeatures,
-    mentionedBacklogItems,
-    referencedArtifacts,
-  );
+  const candidateStageLogs = touchedStageLogs;
 
   const scopeAmbiguities: string[] = [];
   if (
@@ -294,14 +456,9 @@ export function extractTraceScope({
       `Multiple feature ids were mentioned in one trace: ${mentionedFeatures.join(', ')}.`,
     );
   }
-  if (
-    candidateStageLogs.length > 1 &&
-    referencedArtifacts.every(
-      (filePath) => !filePath.includes(`${path.sep}.dossier${path.sep}logs${path.sep}`),
-    )
-  ) {
+  if (candidateStageLogs.length === 0) {
     scopeAmbiguities.push(
-      'Stage logs were discovered from the standard logs directory but not directly linked from the trace.',
+      'The session trace did not confirm any stage-log path created or changed in this session.',
     );
   }
   if (mentionedFeatures.length > 0 && candidateReviewArtifacts.length === 0) {

@@ -1,40 +1,36 @@
 import fs from 'node:fs';
+import path from 'node:path';
 
 import { parseStageLog } from '../parsers/stage-log.ts';
-import { listFilesRecursive, stringFromUnknown } from './shared.ts';
-import type { LogsSummary } from './types.ts';
+import { stringFromUnknown } from './shared.ts';
+import type { LogMetrics, LogsSummary, ParsedStageLog } from './types.ts';
 
-export function summarizeLogs(logsDir?: string): LogsSummary {
-  if (!logsDir || !fs.existsSync(logsDir)) {
-    return {
-      exists: false,
-      logs: [],
-      metrics: {
-        logsTotal: 0,
-        reviewRoundsTotal: 0,
-        reviewFindingsTotal: 0,
-        processMissesTotal: 0,
-        backlogActualizedCount: 0,
-        stages: {},
-        skillsReferenced: {},
-        lateLogStartCount: 0,
-      },
-    };
-  }
+function isWithinLogsDir(filePath: string, logsDir: string): boolean {
+  const normalizedDir = path.resolve(logsDir);
+  const normalizedFile = path.resolve(filePath);
+  return (
+    normalizedFile === normalizedDir ||
+    normalizedFile.startsWith(`${normalizedDir}${path.sep}`) ||
+    normalizedFile.startsWith(`${normalizedDir}/`)
+  );
+}
 
-  const files = listFilesRecursive(logsDir).filter((filePath) => filePath.endsWith('.md'));
-  const logs = files.map((filePath) => parseStageLog(filePath));
-
-  const metrics = {
-    logsTotal: logs.length,
+function createEmptyMetrics(): LogMetrics {
+  return {
+    logsTotal: 0,
     reviewRoundsTotal: 0,
     reviewFindingsTotal: 0,
     processMissesTotal: 0,
     backlogActualizedCount: 0,
-    stages: {} as Record<string, number>,
-    skillsReferenced: {} as Record<string, number>,
+    stages: {},
+    skillsReferenced: {},
     lateLogStartCount: 0,
   };
+}
+
+function summarizeParsedLogs(logs: ParsedStageLog[]): LogsSummary {
+  const metrics = createEmptyMetrics();
+  metrics.logsTotal = logs.length;
 
   for (const log of logs) {
     const metadata = log.metadata;
@@ -63,4 +59,34 @@ export function summarizeLogs(logsDir?: string): LogsSummary {
     logs,
     metrics,
   };
+}
+
+export function summarizeLogs(
+  logsDir?: string,
+  allowedFilePaths?: readonly string[],
+): LogsSummary {
+  if (!logsDir || !fs.existsSync(logsDir)) {
+    return {
+      exists: false,
+      logs: [],
+      metrics: createEmptyMetrics(),
+    };
+  }
+
+  const files =
+    allowedFilePaths === undefined
+      ? []
+      : Array.from(
+          new Set(
+            allowedFilePaths.filter(
+              (filePath) =>
+                filePath.endsWith('.md') &&
+                fs.existsSync(filePath) &&
+                isWithinLogsDir(filePath, logsDir),
+            ),
+          ),
+        );
+  const logs = files.map((filePath) => parseStageLog(filePath));
+
+  return summarizeParsedLogs(logs);
 }

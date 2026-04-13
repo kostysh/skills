@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import os from "node:os";
 //#region package.json
 var name = "@kostysh/retrospective-phase-analysis-cli";
 var version = "0.1.0";
@@ -112,7 +111,7 @@ function extractTimestamp(event) {
 	const first = getDeepValues(event, (value) => isIsoLike(value)).map((value) => tryParseDate(value)).find(Boolean);
 	return first ? first.toISOString() : null;
 }
-function extractEventType(event) {
+function extractEventType$1(event) {
 	if (!event || typeof event !== "object") return "unknown";
 	const direct = coalesce(event.type, event.event_type, event.kind, event.event, event.name);
 	return typeof direct === "string" ? direct : "unknown";
@@ -162,6 +161,9 @@ var SKIPPED_KEYS = new Set([
 	"user_instructions",
 	"formatted_output"
 ]);
+function escapeForRegex(value) {
+	return value.replaceAll(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+}
 function trimPathCandidate(value) {
 	return value.replaceAll(/^[\s("'`[{<]+|[\s"',.;:)\]}>`]+$/gu, "");
 }
@@ -189,6 +191,12 @@ function isReferencedArtifact(value, projectRoot) {
 	const relative = path.relative(projectRoot, value);
 	if (relative.startsWith("..")) return false;
 	return relative.startsWith(".dossier/") || relative.startsWith(`.dossier${path.sep}`) || relative.startsWith("docs/") || relative.startsWith(`docs${path.sep}`);
+}
+function isStageLogArtifact(value, projectRoot) {
+	if (!projectRoot) return false;
+	const relative = path.relative(projectRoot, value);
+	if (relative.startsWith("..")) return false;
+	return relative.startsWith(".dossier/logs/") || relative.startsWith(`.dossier${path.sep}logs${path.sep}`);
 }
 function collectEventTexts(input, pathTrail = []) {
 	if (input === null || input === void 0) return [];
@@ -223,43 +231,126 @@ function extractMatches(values, pattern) {
 function extractTouchedPaths(values, projectRoot) {
 	const rawCandidates = [];
 	const absolutePathPattern = /(?:^|[\s("'`[{<])((?:\/[A-Za-z0-9._@-]+)+(?:\.[A-Za-z0-9._-]+)?)/gu;
-	const relativePathPattern = /\b((?:\.dossier|docs|src|test|scripts|skills|packages)\/[A-Za-z0-9._@/\-]+(?:\.[A-Za-z0-9._-]+)?)\b/gu;
+	const relativePathPattern = /(?:^|[\s("'`[{<])((?:\.dossier|docs|src|test|scripts|skills|packages)\/[A-Za-z0-9._@/\-]+(?:\.[A-Za-z0-9._-]+)?)/gu;
 	const rootFilePattern = /\b(AGENTS\.md|README\.md|package\.json|pnpm-lock\.yaml|tsconfig\.json)\b/gu;
 	rawCandidates.push(...extractMatches(values, absolutePathPattern));
 	rawCandidates.push(...extractMatches(values, relativePathPattern));
 	rawCandidates.push(...extractMatches(values, rootFilePattern));
 	return sortUnique(rawCandidates.map((value) => normalizePathCandidate(value, projectRoot)).filter((value) => value !== null).filter((value) => isProjectScopedPath(value, projectRoot)));
 }
+function extractEventType(record) {
+	return [
+		record.type,
+		record.event_type,
+		record.kind,
+		record.event,
+		record.name
+	].find((value) => typeof value === "string") ?? null;
+}
+function extractEventToolName(record) {
+	return [
+		record.tool,
+		record.tool_name,
+		record.recipient
+	].find((value) => typeof value === "string") ?? null;
+}
+function isToolCallEvent(record) {
+	const eventType = extractEventType(record);
+	return typeof record.command === "string" || typeof record.patch === "string" || typeof record.diff === "string" || typeof eventType === "string" && /tool_call/u.test(eventType);
+}
+function isToolResultEvent(record) {
+	const eventType = extractEventType(record);
+	return typeof eventType === "string" && /tool_result/u.test(eventType);
+}
+function eventRequestsStageLogWrite(record, stageLogPaths, projectRoot) {
+	if ((extractEventToolName(record)?.toLowerCase() ?? "").includes("apply_patch")) {
+		const patchTargets = sortUnique([
+			record.patch,
+			record.diff,
+			record.command
+		].filter((value) => typeof value === "string").join("\n").split(/\r?\n/u).flatMap((line) => {
+			const match = line.match(/^\*\*\* (?:Update File|Add File|Move to): (.+)$/u);
+			if (!match?.[1]) return [];
+			const normalized = normalizePathCandidate(match[1], projectRoot);
+			if (!normalized || !isProjectScopedPath(normalized, projectRoot)) return [];
+			return [normalized];
+		}));
+		return stageLogPaths.some((filePath) => patchTargets.includes(filePath));
+	}
+	const commandBlob = [record.command, record.body].filter((value) => typeof value === "string").join("\n");
+	return stageLogPaths.some((filePath) => {
+		return [filePath, projectRoot && isProjectScopedPath(filePath, projectRoot) ? path.relative(projectRoot, filePath) : null].filter((value) => value !== null).some((candidate) => {
+			const escaped = escapeForRegex(candidate);
+			return [
+				new RegExp(`(?:>|>>)\\s*['"]?${escaped}['"]?(?:\\s|$)`, "iu"),
+				new RegExp(`\\btee\\b(?:\\s+-a)?\\s+['"]?${escaped}['"]?(?:\\s|$)`, "iu"),
+				new RegExp(`\\btouch\\b\\s+['"]?${escaped}['"]?(?:\\s|$)`, "iu"),
+				new RegExp(`\\bsed\\b[\\s\\S]*?-i(?:\\S*)?\\s+['"]?${escaped}['"]?(?:\\s|$)`, "iu"),
+				new RegExp(`\\bperl\\b[\\s\\S]*?-0pi(?:\\S*)?\\s+['"]?${escaped}['"]?(?:\\s|$)`, "iu"),
+				new RegExp(`\\b(?:cp|mv)\\b(?:\\s+[^\\s]+)+\\s+['"]?${escaped}['"]?(?:\\s|$)`, "iu")
+			].some((pattern) => pattern.test(commandBlob));
+		});
+	});
+}
+function isSuccessfulToolResult(record) {
+	if (record.aborted === true) return false;
+	if (typeof record.exit_code === "number" && record.exit_code !== 0) return false;
+	if (typeof record.status === "string" && !/^(ok|success|passed|pass)$/iu.test(record.status)) return false;
+	if (typeof record.error === "string" && record.error.length > 0) return false;
+	return true;
+}
+function hasConfirmedToolResult(events, startIndex, expectedToolName) {
+	for (let index = startIndex + 1; index < events.length; index += 1) {
+		const candidate = events[index];
+		if (!candidate || typeof candidate !== "object") continue;
+		const record = candidate;
+		if (isToolResultEvent(record)) {
+			const resultToolName = extractEventToolName(record)?.toLowerCase() ?? null;
+			if (expectedToolName !== null && resultToolName !== null && resultToolName !== expectedToolName) continue;
+			return isSuccessfulToolResult(record);
+		}
+		if (isToolCallEvent(record) || typeof record.type === "string" || typeof record.event === "string") return false;
+	}
+	return false;
+}
+function extractChangedStageLogPaths(events, projectRoot) {
+	const out = [];
+	for (const [index, event] of events.entries()) {
+		if (!event || typeof event !== "object") continue;
+		const record = event;
+		if (!isToolCallEvent(record)) continue;
+		const eventStageLogPaths = extractTouchedPaths(collectEventTexts(event), projectRoot).filter((filePath) => isStageLogArtifact(filePath, projectRoot));
+		if (eventStageLogPaths.length === 0) continue;
+		if (!eventRequestsStageLogWrite(record, eventStageLogPaths, projectRoot)) continue;
+		if (!hasConfirmedToolResult(events, index, extractEventToolName(record)?.toLowerCase() ?? null)) continue;
+		out.push(...eventStageLogPaths);
+	}
+	return sortUnique(out);
+}
 function collectFeatureScopedCandidates(baseDir, featureIds) {
 	if (!baseDir || featureIds.length === 0 || !fs.existsSync(baseDir)) return [];
 	return sortUnique(listFilesRecursive(baseDir).filter((filePath) => featureIds.some((featureId) => filePath.includes(featureId))));
-}
-function collectLogCandidates(logsSummary, featureIds, backlogItems, referencedArtifacts) {
-	const direct = referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}logs${path.sep}`));
-	const anchored = logsSummary.logs.filter((log) => [...featureIds, ...backlogItems].some((anchor) => log.filePath.includes(anchor) || log.raw.includes(anchor))).map((log) => log.filePath);
-	const candidates = sortUnique([...direct, ...anchored]);
-	if (candidates.length > 0) return candidates;
-	return sortUnique(logsSummary.logs.map((log) => log.filePath));
 }
 function scoreScopeConfidence(sessionPresent, backlogItems, featureIds, touchedPaths, referencedArtifacts, ambiguities) {
 	if (!sessionPresent) return "low";
 	if (backlogItems.length + featureIds.length + touchedPaths.length + referencedArtifacts.length === 0) return "low";
 	return ambiguities.length > 0 ? "medium" : "high";
 }
-function extractTraceScope({ sessionSummary, projectRoot, logsSummary }) {
+function extractTraceScope({ sessionSummary, projectRoot }) {
 	const texts = sessionSummary.events.flatMap((event) => collectEventTexts(event));
 	const mentionedBacklogItems = extractMatches(texts, /\b(CF-[A-Za-z0-9._-]+)\b/gu);
 	const mentionedFeatures = extractMatches(texts, /\b(F-\d{4,})\b/gu);
 	const touchedPaths = extractTouchedPaths(texts, projectRoot);
+	const touchedStageLogs = extractChangedStageLogPaths(sessionSummary.events, projectRoot);
 	const referencedArtifacts = sortUnique(touchedPaths.filter((filePath) => isReferencedArtifact(filePath, projectRoot)));
 	const candidateReviewArtifacts = sortUnique([...referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}reviews${path.sep}`)), ...collectFeatureScopedCandidates(projectRoot ? path.join(projectRoot, ".dossier", "reviews") : void 0, mentionedFeatures)]);
 	const candidateVerificationArtifacts = sortUnique([...referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}verification${path.sep}`)), ...collectFeatureScopedCandidates(projectRoot ? path.join(projectRoot, ".dossier", "verification") : void 0, mentionedFeatures)]);
-	const candidateStageLogs = collectLogCandidates(logsSummary, mentionedFeatures, mentionedBacklogItems, referencedArtifacts);
+	const candidateStageLogs = touchedStageLogs;
 	const scopeAmbiguities = [];
 	if (mentionedBacklogItems.length === 0 && mentionedFeatures.length === 0 && touchedPaths.length === 0 && referencedArtifacts.length === 0) scopeAmbiguities.push("No trace-derived backlog items, feature ids, or touched project paths were found.");
 	if (mentionedBacklogItems.length > 1) scopeAmbiguities.push(`Multiple backlog items were mentioned in one trace: ${mentionedBacklogItems.join(", ")}.`);
 	if (mentionedFeatures.length > 1) scopeAmbiguities.push(`Multiple feature ids were mentioned in one trace: ${mentionedFeatures.join(", ")}.`);
-	if (candidateStageLogs.length > 1 && referencedArtifacts.every((filePath) => !filePath.includes(`${path.sep}.dossier${path.sep}logs${path.sep}`))) scopeAmbiguities.push("Stage logs were discovered from the standard logs directory but not directly linked from the trace.");
+	if (candidateStageLogs.length === 0) scopeAmbiguities.push("The session trace did not confirm any stage-log path created or changed in this session.");
 	if (mentionedFeatures.length > 0 && candidateReviewArtifacts.length === 0) scopeAmbiguities.push(`No review artifacts were auto-linked for feature ids ${mentionedFeatures.join(", ")}.`);
 	if (mentionedFeatures.length > 0 && candidateVerificationArtifacts.length === 0) scopeAmbiguities.push(`No verification artifacts were auto-linked for feature ids ${mentionedFeatures.join(", ")}.`);
 	return {
@@ -324,51 +415,7 @@ function inferCandidateIncidents(sessionSummary, logSummary) {
 	return incidents;
 }
 //#endregion
-//#region src/core/resolve-scan-inputs.ts
-function codexHomeDir() {
-	return process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
-}
-function sessionsRootDir() {
-	return path.join(codexHomeDir(), "sessions");
-}
-function findSessionTraceCandidates(sessionId, rootDir) {
-	if (!fs.existsSync(rootDir)) return [];
-	const matches = [];
-	function walk(currentDir) {
-		const entries = fs.readdirSync(currentDir, { withFileTypes: true });
-		for (const entry of entries) {
-			const nextPath = path.join(currentDir, entry.name);
-			if (entry.isDirectory()) {
-				walk(nextPath);
-				continue;
-			}
-			if (entry.isFile() && entry.name.endsWith(".jsonl") && (entry.name.includes(sessionId) || nextPath.includes(sessionId))) matches.push(nextPath);
-		}
-	}
-	walk(rootDir);
-	return matches.sort();
-}
-function resolveSessionTrace(session, sessionId) {
-	if (session) return {
-		session,
-		sessionId: sessionId ?? null,
-		discoveryMode: "explicit_session_file"
-	};
-	if (!sessionId) return {
-		session: void 0,
-		sessionId: null,
-		discoveryMode: "missing"
-	};
-	const sessionsRoot = sessionsRootDir();
-	const matches = findSessionTraceCandidates(sessionId, sessionsRoot);
-	if (matches.length === 0) throw new Error(`Could not resolve session trace for session_id ${sessionId} under ${sessionsRoot}.`);
-	if (matches.length > 1) throw new Error(`Multiple session trace candidates were found for session_id ${sessionId}: ${matches.join(", ")}`);
-	return {
-		session: matches[0],
-		sessionId,
-		discoveryMode: "explicit_session_id"
-	};
-}
+//#region src/core/resolve-evidence-roots.ts
 function resolveStandardEvidenceDir(projectRoot, relativeDir) {
 	if (!projectRoot) return;
 	const absoluteDir = path.join(projectRoot, relativeDir);
@@ -518,24 +565,14 @@ function parseStageLog(filePath) {
 }
 //#endregion
 //#region src/core/summarize-logs.ts
-function summarizeLogs(logsDir) {
-	if (!logsDir || !fs.existsSync(logsDir)) return {
-		exists: false,
-		logs: [],
-		metrics: {
-			logsTotal: 0,
-			reviewRoundsTotal: 0,
-			reviewFindingsTotal: 0,
-			processMissesTotal: 0,
-			backlogActualizedCount: 0,
-			stages: {},
-			skillsReferenced: {},
-			lateLogStartCount: 0
-		}
-	};
-	const logs = listFilesRecursive(logsDir).filter((filePath) => filePath.endsWith(".md")).map((filePath) => parseStageLog(filePath));
-	const metrics = {
-		logsTotal: logs.length,
+function isWithinLogsDir(filePath, logsDir) {
+	const normalizedDir = path.resolve(logsDir);
+	const normalizedFile = path.resolve(filePath);
+	return normalizedFile === normalizedDir || normalizedFile.startsWith(`${normalizedDir}${path.sep}`) || normalizedFile.startsWith(`${normalizedDir}/`);
+}
+function createEmptyMetrics() {
+	return {
+		logsTotal: 0,
 		reviewRoundsTotal: 0,
 		reviewFindingsTotal: 0,
 		processMissesTotal: 0,
@@ -544,6 +581,10 @@ function summarizeLogs(logsDir) {
 		skillsReferenced: {},
 		lateLogStartCount: 0
 	};
+}
+function summarizeParsedLogs(logs) {
+	const metrics = createEmptyMetrics();
+	metrics.logsTotal = logs.length;
 	for (const log of logs) {
 		const metadata = log.metadata;
 		const stage = stringFromUnknown(metadata.stage, "unknown");
@@ -564,6 +605,14 @@ function summarizeLogs(logsDir) {
 		logs,
 		metrics
 	};
+}
+function summarizeLogs(logsDir, allowedFilePaths) {
+	if (!logsDir || !fs.existsSync(logsDir)) return {
+		exists: false,
+		logs: [],
+		metrics: createEmptyMetrics()
+	};
+	return summarizeParsedLogs((allowedFilePaths === void 0 ? [] : Array.from(new Set(allowedFilePaths.filter((filePath) => filePath.endsWith(".md") && fs.existsSync(filePath) && isWithinLogsDir(filePath, logsDir))))).map((filePath) => parseStageLog(filePath)));
 }
 //#endregion
 //#region src/parsers/jsonl.ts
@@ -636,7 +685,7 @@ function summarizeSession(filePath) {
 			}
 			if (currentDate) previousDate = currentDate;
 		}
-		const eventType = extractEventType(event).toLowerCase();
+		const eventType = extractEventType$1(event).toLowerCase();
 		const eventText = JSON.stringify(event).toLowerCase();
 		if (eventType.includes("abort") || eventText.includes("aborted turn") || eventText.includes("\"aborted\":true")) abortedTurns += 1;
 		for (const toolName of extractToolNames(event)) toolCounts.set(toolName, (toolCounts.get(toolName) ?? 0) + 1);
@@ -654,7 +703,7 @@ function summarizeSession(filePath) {
 		abortedTurns,
 		longGaps,
 		tools: Object.fromEntries(Array.from(toolCounts.entries()).sort((left, right) => right[1] - left[1])),
-		sampleEventTypes: Array.from(new Set(events.map((event) => extractEventType(event)))).slice(0, 25),
+		sampleEventTypes: Array.from(new Set(events.map((event) => extractEventType$1(event)))).slice(0, 25),
 		events
 	};
 }
@@ -681,35 +730,30 @@ function summarizeSkills(skillsDir) {
 //#endregion
 //#region src/core/build-scan-summary.ts
 function buildScanSummary(args) {
-	const resolvedSession = resolveSessionTrace(args.session, args.sessionId);
-	const sessionSummary = summarizeSession(resolvedSession.session);
+	const sessionSummary = summarizeSession(args.session);
 	const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
 	const resolvedLogsDir = args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, ".dossier/logs");
 	const resolvedArtifactsDir = args.artifactsDir ?? resolvedProjectRoot ?? void 0;
 	const skillsSummary = summarizeSkills(args.skillsDir);
-	const logSummary = summarizeLogs(resolvedLogsDir);
 	const scope = extractTraceScope({
 		sessionSummary,
-		projectRoot: resolvedProjectRoot,
-		logsSummary: logSummary
+		projectRoot: resolvedProjectRoot
 	});
+	const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
 	const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
 	return {
 		generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
 		inputs: {
 			session: args.session ?? null,
-			sessionId: args.sessionId ?? null,
 			logsDir: args.logsDir ?? null,
 			artifactsDir: args.artifactsDir ?? null,
 			skillsDir: args.skillsDir ?? null
 		},
 		resolved: {
-			session: resolvedSession.session ?? null,
-			sessionId: resolvedSession.sessionId,
+			session: args.session ?? null,
 			logsDir: resolvedLogsDir ?? null,
 			artifactsDir: resolvedArtifactsDir ?? null,
-			skillsDir: args.skillsDir ?? null,
-			discoveryMode: resolvedSession.discoveryMode
+			skillsDir: args.skillsDir ?? null
 		},
 		dataQuality: {
 			sessionPresent: sessionSummary.exists,
@@ -839,12 +883,6 @@ function normalizeCliError(error) {
 //#region src/commands/shared.ts
 var COMMON_OPTION_SPECS = [
 	{
-		name: "session-id",
-		type: "string",
-		valueLabel: "<id>",
-		description: "Session id used to discover the rollout JSONL trace."
-	},
-	{
 		name: "session",
 		type: "string",
 		valueLabel: "<file>",
@@ -901,12 +939,10 @@ function optionToHelpLine(spec) {
 }
 function toCommonCommandInput(options) {
 	const input = {};
-	const sessionId = toOptionalString(options["session-id"]);
 	const session = toOptionalString(options.session);
 	const logsDir = toOptionalString(options["logs-dir"]);
 	const artifactsDir = toOptionalString(options["artifacts-dir"]);
 	const skillsDir = toOptionalString(options["skills-dir"]);
-	if (sessionId) input.sessionId = sessionId;
 	if (session) input.session = session;
 	if (logsDir) input.logsDir = logsDir;
 	if (artifactsDir) input.artifactsDir = artifactsDir;
@@ -981,7 +1017,7 @@ function buildReportMarkdown(scan, options) {
 
 - Phase: ${options.phase ?? "unspecified"}
 - Session trace: ${scan.resolved.session ?? "not provided"}
-- Session id: ${scan.resolved.sessionId ?? "not provided"}
+- Session id: ${scan.session.sessionId ?? "not provided"}
 - Stage logs analyzed: ${scan.stageLogs.count}
 - Candidate incidents: ${scan.candidateIncidents.length}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
@@ -1114,12 +1150,8 @@ var REPORT_COMMAND = {
 //#region src/commands/scan.ts
 var SCAN_COMMAND = {
 	name: "scan",
-	summary: "Build a JSON summary from a session trace, session id, and stage logs.",
-	usage: [
-		"node scripts/retro-cli.mjs scan --session <file> --logs-dir <dir> --out <file>",
-		"node scripts/retro-cli.mjs scan --session-id <id> --out <file>",
-		"node scripts/retro-cli.mjs scan --logs-dir <dir> --artifacts-dir <dir> --out <file> --pretty"
-	],
+	summary: "Build a JSON summary from a session trace and stage logs.",
+	usage: ["node scripts/retro-cli.mjs scan --session <file> --logs-dir <dir> --out <file>", "node scripts/retro-cli.mjs scan --session <file> --out <file> --pretty"],
 	options: [
 		...COMMON_OPTION_SPECS,
 		{
@@ -1136,14 +1168,15 @@ var SCAN_COMMAND = {
 		}
 	],
 	notes: [
+		"The agent must resolve the target session and pass the canonical trace file via --session.",
 		"The JSON summary is heuristic and should be validated against the cited artifacts.",
-		"When --session-id is provided, the command resolves the rollout JSONL trace beneath $CODEX_HOME/sessions or ~/.codex/sessions.",
 		"If logs or artifacts directories are omitted, the command tries standard project directories derived from session_meta.cwd."
 	],
 	parseArgs(argv) {
 		const options = parseOptions(argv, this.options);
 		return {
 			...toCommonCommandInput(options),
+			session: toRequiredString(options.session, "scan requires --session"),
 			out: toRequiredString(options.out, "scan requires --out"),
 			pretty: toBoolean(options.pretty)
 		};

@@ -8,12 +8,6 @@ type ParsedOptions = Record<string, string | boolean>;
 
 export const COMMON_OPTION_SPECS: OptionSpec[] = [
   {
-    name: 'session-id',
-    type: 'string',
-    valueLabel: '<id>',
-    description: 'Session id used to discover the rollout JSONL trace.',
-  },
-  {
     name: 'session',
     type: 'string',
     valueLabel: '<file>',
@@ -95,15 +89,11 @@ export function optionToHelpLine(spec: OptionSpec): string {
 
 export function toCommonCommandInput(options: ParsedOptions): CommonCommandInput {
   const input: CommonCommandInput = {};
-  const sessionId = toOptionalString(options['session-id']);
   const session = toOptionalString(options.session);
   const logsDir = toOptionalString(options['logs-dir']);
   const artifactsDir = toOptionalString(options['artifacts-dir']);
   const skillsDir = toOptionalString(options['skills-dir']);
 
-  if (sessionId) {
-    input.sessionId = sessionId;
-  }
   if (session) {
     input.session = session;
   }

@@ -1,25 +1,23 @@
 import { extractTraceScope } from './extract-trace-scope.ts';
 import { inferCandidateIncidents } from './infer-candidate-incidents.ts';
-import { resolveSessionTrace, resolveStandardEvidenceDir } from './resolve-scan-inputs.ts';
+import { resolveStandardEvidenceDir } from './resolve-evidence-roots.ts';
 import { summarizeLogs } from './summarize-logs.ts';
 import { summarizeSession } from './summarize-session.ts';
 import { summarizeSkills } from './summarize-skills.ts';
 import type { ScanSourceOptions, ScanSummary } from './types.ts';
 
 export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
-  const resolvedSession = resolveSessionTrace(args.session, args.sessionId);
-  const sessionSummary = summarizeSession(resolvedSession.session);
+  const sessionSummary = summarizeSession(args.session);
   const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
   const resolvedLogsDir =
     args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, '.dossier/logs');
   const resolvedArtifactsDir = args.artifactsDir ?? resolvedProjectRoot ?? undefined;
   const skillsSummary = summarizeSkills(args.skillsDir);
-  const logSummary = summarizeLogs(resolvedLogsDir);
   const scope = extractTraceScope({
     sessionSummary,
     projectRoot: resolvedProjectRoot,
-    logsSummary: logSummary,
   });
+  const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
 
   const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
 
@@ -27,18 +25,15 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
     generatedAt: new Date().toISOString(),
     inputs: {
       session: args.session ?? null,
-      sessionId: args.sessionId ?? null,
       logsDir: args.logsDir ?? null,
       artifactsDir: args.artifactsDir ?? null,
       skillsDir: args.skillsDir ?? null,
     },
     resolved: {
-      session: resolvedSession.session ?? null,
-      sessionId: resolvedSession.sessionId,
+      session: args.session ?? null,
       logsDir: resolvedLogsDir ?? null,
       artifactsDir: resolvedArtifactsDir ?? null,
       skillsDir: args.skillsDir ?? null,
-      discoveryMode: resolvedSession.discoveryMode,
     },
     dataQuality: {
       sessionPresent: sessionSummary.exists,

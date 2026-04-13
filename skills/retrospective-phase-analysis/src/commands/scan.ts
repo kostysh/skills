@@ -11,11 +11,10 @@ import type { CommandDefinition, ScanCommandInput } from './types.ts';
 
 export const SCAN_COMMAND: CommandDefinition<ScanCommandInput> = {
   name: 'scan',
-  summary: 'Build a JSON summary from a session trace, session id, and stage logs.',
+  summary: 'Build a JSON summary from a session trace and stage logs.',
   usage: [
     'node scripts/retro-cli.mjs scan --session <file> --logs-dir <dir> --out <file>',
-    'node scripts/retro-cli.mjs scan --session-id <id> --out <file>',
-    'node scripts/retro-cli.mjs scan --logs-dir <dir> --artifacts-dir <dir> --out <file> --pretty',
+    'node scripts/retro-cli.mjs scan --session <file> --out <file> --pretty',
   ],
   options: [
     ...COMMON_OPTION_SPECS,
@@ -33,14 +32,15 @@ export const SCAN_COMMAND: CommandDefinition<ScanCommandInput> = {
     },
   ],
   notes: [
+    'The agent must resolve the target session and pass the canonical trace file via --session.',
     'The JSON summary is heuristic and should be validated against the cited artifacts.',
-    'When --session-id is provided, the command resolves the rollout JSONL trace beneath $CODEX_HOME/sessions or ~/.codex/sessions.',
     'If logs or artifacts directories are omitted, the command tries standard project directories derived from session_meta.cwd.',
   ],
   parseArgs(argv) {
     const options = parseOptions(argv, this.options);
     return {
       ...toCommonCommandInput(options),
+      session: toRequiredString(options.session, 'scan requires --session'),
       out: toRequiredString(options.out, 'scan requires --out'),
       pretty: toBoolean(options.pretty),
     };

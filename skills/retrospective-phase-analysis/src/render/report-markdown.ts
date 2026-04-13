@@ -38,7 +38,7 @@ export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOpti
 
 - Phase: ${options.phase ?? 'unspecified'}
 - Session trace: ${scan.resolved.session ?? 'not provided'}
-- Session id: ${scan.resolved.sessionId ?? 'not provided'}
+- Session id: ${scan.session.sessionId ?? 'not provided'}
 - Stage logs analyzed: ${scan.stageLogs.count}
 - Candidate incidents: ${scan.candidateIncidents.length}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}

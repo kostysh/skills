@@ -2,7 +2,6 @@ export type LooseRecord = Record<string, unknown>;
 
 export type IncidentSeverity = 'high' | 'medium' | 'low';
 export type ScopeConfidence = 'high' | 'medium' | 'low';
-export type SessionDiscoveryMode = 'explicit_session_file' | 'explicit_session_id' | 'missing';
 
 export interface ReviewEvent {
   raw: string;
@@ -76,7 +75,6 @@ export interface CandidateIncident {
 
 export interface ScanSourceOptions {
   session?: string;
-  sessionId?: string;
   logsDir?: string;
   artifactsDir?: string;
   skillsDir?: string;
@@ -86,18 +84,15 @@ export interface ScanSummary {
   generatedAt: string;
   inputs: {
     session: string | null;
-    sessionId: string | null;
     logsDir: string | null;
     artifactsDir: string | null;
     skillsDir: string | null;
   };
   resolved: {
     session: string | null;
-    sessionId: string | null;
     logsDir: string | null;
     artifactsDir: string | null;
     skillsDir: string | null;
-    discoveryMode: SessionDiscoveryMode;
   };
   dataQuality: {
     sessionPresent: boolean;
