@@ -1,0 +1,135 @@
+# Detailed retrospective method reference
+
+## 1. Evidence hierarchy
+
+Prefer evidence in this order:
+1. Session trace / rollout JSONL
+2. Structured stage logs
+3. Review artifacts
+4. Verification artifacts
+5. Produced project artifacts
+6. Skill files
+7. Commit metadata and diffs
+8. Final summary messages
+
+Higher-ranked evidence wins when sources disagree, unless the higher-ranked source is obviously incomplete.
+
+## 2. Finding taxonomy
+
+Use these classes consistently:
+- **Incident**: A concrete failure, deviation, blocker, or costly misstep.
+- **Weak signal**: A small symptom that is not yet a confirmed problem.
+- **Root cause**: The most plausible underlying cause based on evidence.
+- **Contributing factor**: Something that amplified the issue but was not sufficient on its own.
+- **Control**: A review, gate, test, or checklist that should prevent or detect a problem.
+- **Blind spot**: Missing or weak telemetry that reduced confidence.
+
+## 3. Severity model
+
+Recommended scale:
+- **Critical**: materially threatened correctness, security, or phase completion.
+- **High**: caused substantial rework, hidden risk, or major schedule drag.
+- **Medium**: caused localized inefficiency or reduced confidence.
+- **Low**: minor friction, documentation gap, or low-cost noise.
+
+## 4. Time-sink identification rules
+
+Flag a task as a time sink when at least one of these is true:
+- it took unusually long relative to its complexity;
+- it required repeated audit or validation loops;
+- it involved repeated tool retries or command reformulations;
+- it was delayed by unclear instructions, missing prerequisites, or poor observability;
+- it triggered multiple downstream corrections.
+
+Explain whether the sink was:
+- necessary complexity;
+- avoidable friction;
+- avoidable ambiguity;
+- avoidable process miss;
+- environment or tooling overhead.
+
+## 5. Skill-friction heuristics
+
+A skill likely has a quality problem when one or more of these appear:
+- the agent paused or hesitated around a required action;
+- the agent used a wrong review order or skipped a mandatory check;
+- the same instruction had to be reinterpreted mid-flow;
+- the skill omitted key decision rules or exit criteria;
+- the skill created false blockers or false confidence;
+- the skill forced excessive manual inference from scattered references.
+
+Possible remediations:
+- add decision tables;
+- add examples for non-obvious cases;
+- separate normative rules from optional guidance;
+- add stronger entry and exit criteria;
+- reduce instruction ambiguity;
+- encode review policy explicitly;
+- add machine-readable sidecar assets.
+
+## 6. Stage weakness questions
+
+### Specification
+- Were requirements complete enough before implementation started?
+- Did implementation discover unresolved normative decisions?
+- Did threshold terms require late interpretation?
+
+### Planning
+- Were slice boundaries stable?
+- Were dependencies and fallbacks identified early enough?
+- Did planning include drift guard and review strategy?
+
+### Implementation
+- Did implementation stay inside stage scope?
+- Were failures mostly logic defects, concurrency defects, contract drift, or boundary drift?
+- Was there evidence of design thrash?
+
+### Review
+- Did reviews catch distinct classes of issues?
+- Were reviews timely?
+- Did rerounds arise from avoidable omissions?
+
+### Backlog actualization
+- Did backlog truth change promptly and durably?
+- Was actualization evidenced, not merely implied?
+
+### Closure
+- Were verification, review, commit, and step-close artifacts linked?
+- Was closure delayed by missing process telemetry?
+
+## 7. Confidence scoring
+
+Give every major conclusion a qualitative confidence:
+- **High**: directly supported by multiple strong sources.
+- **Medium**: supported by one strong source or several weaker ones.
+- **Low**: plausible inference with limited evidence.
+
+## 8. Minimum deliverable set
+
+For a serious phase retrospective, produce:
+- executive summary;
+- evidence manifest;
+- timeline summary;
+- incident register;
+- stage weakness analysis;
+- skill audit;
+- time sinks;
+- control effectiveness;
+- prioritized improvements;
+- data-quality limits.
+
+## 9. Suggested operator-facing recommendations
+
+Structure recommendations by horizon:
+- **Immediate**: fixes before the next phase.
+- **Near-term**: fixes for the next 1-3 similar cycles.
+- **Systemic**: changes to skills, workflow, or telemetry.
+
+## 10. Anti-patterns to avoid
+
+Do not:
+- overfit conclusions to one noisy event;
+- confuse successful rerounds with efficient process;
+- count every review finding as a process failure;
+- hide uncertainty;
+- treat missing telemetry as proof that nothing happened.

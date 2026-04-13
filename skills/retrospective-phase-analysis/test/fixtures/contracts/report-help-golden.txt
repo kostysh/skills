@@ -1,0 +1,18 @@
+report - Generate a Markdown retrospective draft.
+
+Usage:
+  node scripts/retro-cli.mjs report --session <file> --logs-dir <dir> --out <file>
+  node scripts/retro-cli.mjs report --phase <name> --title <text> --out <file>
+
+Options:
+  -h, --help                  Show command help.
+  --session <file>            Rollout or session JSONL file.
+  --logs-dir <dir>            Directory containing stage logs.
+  --artifacts-dir <dir>       Project root or evidence root.
+  --skills-dir <dir>          Directory containing skill folders.
+  --phase <name>              Optional phase label for the report.
+  --title <text>              Title override.
+  --out <file>                Output Markdown path.
+
+Notes:
+  - The generated report is a draft; read the cited artifacts before finalizing conclusions.

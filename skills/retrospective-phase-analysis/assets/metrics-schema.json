@@ -1,0 +1,36 @@
+{
+  "sharedMetrics": [
+    "duration_minutes",
+    "operator_clarifications_total",
+    "review_rounds_total",
+    "review_findings_total",
+    "process_misses_total",
+    "backlog_actualization_count",
+    "late_log_start"
+  ],
+  "reviewMetrics": [
+    "initial_verdict_by_review_type",
+    "final_verdict_by_review_type",
+    "findings_count_by_review_type",
+    "findings_count_by_severity",
+    "reround_count",
+    "ready_for_review_to_first_verdict_latency_minutes",
+    "first_non_pass_to_final_pass_latency_minutes",
+    "stale_finding_count",
+    "skipped_review_count"
+  ],
+  "skillMetrics": [
+    "skill_reference_count",
+    "skill_issue_count",
+    "skill_related_rerounds",
+    "skill_related_time_sinks"
+  ],
+  "retrospectiveMetrics": [
+    "candidate_incidents_total",
+    "timeline_events_total",
+    "tool_calls_total",
+    "distinct_tools_total",
+    "aborted_turns_total",
+    "long_gaps_total"
+  ]
+}

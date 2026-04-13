@@ -1,0 +1,139 @@
+{
+  "generatedAt": "<generated>",
+  "inputs": {
+    "session": "/abs/fixtures/sessions/phase-session.jsonl",
+    "logsDir": "/abs/fixtures/logs",
+    "artifactsDir": "/abs/fixtures/artifacts",
+    "skillsDir": "/abs/fixtures/skills"
+  },
+  "dataQuality": {
+    "sessionPresent": true,
+    "logsPresent": true,
+    "skillCatalogPresent": true,
+    "sessionParseErrors": 0
+  },
+  "session": {
+    "filePath": "/abs/fixtures/sessions/phase-session.jsonl",
+    "eventCount": 4,
+    "firstTimestamp": "2026-04-10T10:00:00.000Z",
+    "lastTimestamp": "2026-04-10T10:25:00.000Z",
+    "durationMinutes": 25,
+    "abortedTurns": 1,
+    "longGaps": 1,
+    "tools": {
+      "functions.exec_command": 2,
+      "functions.update_plan": 1
+    },
+    "sampleEventTypes": ["assistant", "tool_call", "tool_result"]
+  },
+  "stageLogs": {
+    "count": 2,
+    "metrics": {
+      "logsTotal": 2,
+      "reviewRoundsTotal": 3,
+      "reviewFindingsTotal": 3,
+      "processMissesTotal": 1,
+      "backlogActualizedCount": 1,
+      "stages": {
+        "closure": 1,
+        "implementation": 1
+      },
+      "skillsReferenced": {
+        "backlog-engineer": 1,
+        "dossier-engineer": 1
+      },
+      "lateLogStartCount": 1
+    },
+    "files": [
+      {
+        "filePath": "/abs/fixtures/logs/closure.md",
+        "metadata": {
+          "stage": "closure",
+          "skill": "backlog-engineer",
+          "review_rounds_total": 1,
+          "review_findings_total": 0,
+          "process_misses_total": 0,
+          "backlog_actualized": true,
+          "review_artifact": "reviews/closure.md",
+          "verification_artifact": "verification/closure.md",
+          "step_artifact": "steps/closure.md",
+          "log_quality": {
+            "duration_exact": false
+          }
+        },
+        "reviewEvents": 1,
+        "processMissLines": []
+      },
+      {
+        "filePath": "/abs/fixtures/logs/implementation.md",
+        "metadata": {
+          "stage": "implementation",
+          "skill": "dossier-engineer",
+          "review_rounds_total": 2,
+          "review_findings_total": 3,
+          "process_misses_total": 1,
+          "backlog_actualized": false,
+          "late_log_start": true
+        },
+        "reviewEvents": 2,
+        "processMissLines": ["backlog actualization deferred until closure evidence was assembled"]
+      }
+    ]
+  },
+  "skills": [
+    {
+      "skillFile": "/abs/fixtures/skills/backlog-engineer/SKILL.md",
+      "name": "backlog-engineer",
+      "description": "Build and synchronize backlog graphs from architecture and decision documents."
+    },
+    {
+      "skillFile": "/abs/fixtures/skills/dossier-engineer/SKILL.md",
+      "name": "dossier-engineer",
+      "description": "Lean docs-as-code workflow with feature dossiers and machine-checkable closure artifacts."
+    }
+  ],
+  "artifacts": {
+    "scannedCount": 2,
+    "sample": [
+      "/abs/fixtures/artifacts/docs/spec.md",
+      "/abs/fixtures/artifacts/docs/verification.md"
+    ]
+  },
+  "candidateIncidents": [
+    {
+      "title": "Process misses in implementation.md",
+      "severity": "medium",
+      "stage": "implementation",
+      "evidence": "/abs/fixtures/logs/implementation.md",
+      "reason": "backlog actualization deferred until closure evidence was assembled"
+    },
+    {
+      "title": "Review findings in implementation.md",
+      "severity": "high",
+      "stage": "implementation",
+      "evidence": "/abs/fixtures/logs/implementation.md",
+      "reason": "3 review finding(s) recorded."
+    },
+    {
+      "title": "Backlog actualization deferred in implementation.md",
+      "severity": "low",
+      "stage": "implementation",
+      "evidence": "/abs/fixtures/logs/implementation.md",
+      "reason": "The log references backlog actualization but marks it incomplete or deferred."
+    },
+    {
+      "title": "Non-pass review cycle in implementation.md",
+      "severity": "medium",
+      "stage": "implementation",
+      "evidence": "/abs/fixtures/logs/implementation.md",
+      "reason": "At least one review event returned FAIL or non-compliant before final pass."
+    },
+    {
+      "title": "Aborted or restarted turns detected",
+      "severity": "medium",
+      "stage": "session",
+      "evidence": "/abs/fixtures/sessions/phase-session.jsonl",
+      "reason": "1 aborted/restarted turn(s) detected in the session trace."
+    }
+  ]
+}
