@@ -14,6 +14,25 @@ Prefer evidence in this order:
 
 Higher-ranked evidence wins when sources disagree, unless the higher-ranked source is obviously incomplete.
 
+## 1a. Scope derivation rule
+
+Derive retrospective scope from the session trace first.
+
+Use only tasks and artifacts that are mentioned in the trace or linked from trace-derived ids and paths.
+
+Do not begin with broad repo-wide reading. Expand only through explicit linkage.
+
+## 1b. Scope partition order
+
+When one session mixes multiple work items, partition in this order:
+1. explicit backlog item ids such as `CF-*`
+2. explicit feature ids such as `F-*`
+3. review, verification, or step-artifact linkage
+4. touched file paths
+5. time windows
+
+If ambiguity remains after this order, keep the ambiguity explicit instead of inventing a single merged narrative.
+
 ## 2. Finding taxonomy
 
 Use these classes consistently:
@@ -66,6 +85,11 @@ Possible remediations:
 - reduce instruction ambiguity;
 - encode review policy explicitly;
 - add machine-readable sidecar assets.
+
+Confidence levels for skill audit:
+- **confirmed_used**: direct trace or stage-log evidence shows the skill was used.
+- **probably_used**: the trace strongly suggests usage, but the linkage is indirect.
+- **implicitly_relevant**: the skill is contextually relevant, but usage is not evidenced directly.
 
 ## 6. Stage weakness questions
 

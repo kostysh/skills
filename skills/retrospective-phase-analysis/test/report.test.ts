@@ -50,7 +50,7 @@ void test('logging review markdown highlights missing artifact links and automat
   const markdown = buildLoggingReviewMarkdown(buildFixtureSummary());
 
   assert.match(markdown, /^# Logging review draft$/mu);
-  assert.match(markdown, /Missing review artifacts: 1/mu);
-  assert.match(markdown, /Missing verification artifacts: 1/mu);
+  assert.match(markdown, /Missing review artifacts: 0/mu);
+  assert.match(markdown, /Missing verification artifacts: 0/mu);
   assert.match(markdown, /Add machine-readable trace anchors to each stage log/mu);
 });

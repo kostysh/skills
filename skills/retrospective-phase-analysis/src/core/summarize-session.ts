@@ -14,6 +14,8 @@ export function summarizeSession(filePath?: string): SessionSummary {
   if (!filePath || !fs.existsSync(filePath)) {
     return {
       filePath,
+      sessionId: null,
+      projectRoot: null,
       exists: false,
       eventCount: 0,
       parseErrors: [],
@@ -30,6 +32,8 @@ export function summarizeSession(filePath?: string): SessionSummary {
 
   const { events, errors } = parseJsonl(filePath);
   const toolCounts = new Map<string, number>();
+  let sessionId: string | null = null;
+  let projectRoot: string | null = null;
   let firstTimestamp: string | null = null;
   let lastTimestamp: string | null = null;
   let abortedTurns = 0;
@@ -37,6 +41,23 @@ export function summarizeSession(filePath?: string): SessionSummary {
   let previousDate: Date | null = null;
 
   for (const event of events) {
+    if (
+      event &&
+      typeof event === 'object' &&
+      (event as Record<string, unknown>).type === 'session_meta'
+    ) {
+      const payload = (event as Record<string, unknown>).payload;
+      if (payload && typeof payload === 'object') {
+        const meta = payload as Record<string, unknown>;
+        if (typeof meta.id === 'string' && meta.id.length > 0) {
+          sessionId = meta.id;
+        }
+        if (typeof meta.cwd === 'string' && meta.cwd.length > 0) {
+          projectRoot = meta.cwd;
+        }
+      }
+    }
+
     const timestamp = extractTimestamp(event);
     if (timestamp) {
       firstTimestamp ??= timestamp;
@@ -72,6 +93,8 @@ export function summarizeSession(filePath?: string): SessionSummary {
 
   return {
     filePath,
+    sessionId,
+    projectRoot,
     exists: true,
     eventCount: events.length,
     parseErrors: errors,

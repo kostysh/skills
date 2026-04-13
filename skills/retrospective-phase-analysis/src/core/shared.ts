@@ -186,3 +186,7 @@ export function formatList(items: string[]): string {
 export function stringFromUnknown(value: unknown, fallback: string): string {
   return typeof value === 'string' && value.length > 0 ? value : fallback;
 }
+
+export function sortUnique(values: string[]): string[] {
+  return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
+}

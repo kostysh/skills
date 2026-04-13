@@ -26,16 +26,23 @@ export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOpti
     scan.stageLogs.files.map((entry) => `- ${entry.filePath}`).join('\n') || '- none';
   const skillFiles =
     scan.skills.map((skill) => `- ${skill.name}: ${skill.skillFile}`).join('\n') || '- none';
+  const scopePaths = scan.scope.touched_paths.map((entry) => `- ${entry}`).join('\n') || '- none';
+  const scopeArtifacts =
+    scan.scope.referenced_artifacts.map((entry) => `- ${entry}`).join('\n') || '- none';
+  const scopeAmbiguities =
+    scan.scope.scope_ambiguities.map((entry) => `- ${entry}`).join('\n') || '- none';
 
   return `# ${title}
 
 ## Executive summary
 
 - Phase: ${options.phase ?? 'unspecified'}
-- Session trace: ${scan.inputs.session ?? 'not provided'}
+- Session trace: ${scan.resolved.session ?? 'not provided'}
+- Session id: ${scan.resolved.sessionId ?? 'not provided'}
 - Stage logs analyzed: ${scan.stageLogs.count}
 - Candidate incidents: ${scan.candidateIncidents.length}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
+- Scope confidence: ${scan.scope.scope_confidence}
 - Data-quality note: ${
     scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent
       ? 'Both session trace and stage logs were available.'
@@ -51,7 +58,18 @@ ${logFiles}
 ${skillFiles}
 
 ### Session trace
-- ${scan.inputs.session ?? 'not provided'}
+- ${scan.resolved.session ?? 'not provided'}
+
+### Trace-derived scope
+- Project root: ${scan.scope.project_root ?? 'unknown'}
+- Backlog items: ${scan.scope.mentioned_backlog_items.join(', ') || 'none'}
+- Features: ${scan.scope.mentioned_features.join(', ') || 'none'}
+
+### Touched paths
+${scopePaths}
+
+### Referenced artifacts
+${scopeArtifacts}
 
 ## Timeline summary
 
@@ -93,9 +111,14 @@ ${formatList(
   ),
 )}
 
+## Scope ambiguities
+
+${scopeAmbiguities}
+
 ## Recommended next manual checks
 
 - Confirm each inferred incident against the actual stage log and trace excerpts.
+- Stop scope expansion when the ambiguities above remain unresolved after checking linked artifacts.
 - Review rerounds and non-pass reviews for avoidable causes.
 - Inspect skills referenced in the logs for missing decision rules, outdated assumptions, and ambiguity.
 - Validate whether late or missing backlog actualization affected closure quality.

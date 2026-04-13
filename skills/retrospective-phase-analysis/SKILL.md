@@ -68,6 +68,7 @@ Produce one or more Markdown reports that help the operator understand:
 
 At minimum, try to gather:
 
+- session id when the runtime or operator can provide it;
 - session trace JSONL or equivalent;
 - stage logs for the phase;
 - relevant dossier/spec/plan/implementation artifacts;
@@ -76,6 +77,29 @@ At minimum, try to gather:
 - commit or patch metadata if available.
 
 If an expected input is missing, record the gap explicitly.
+
+## Session id resolution order
+
+Resolve `session_id` in this order:
+
+1. Use the `session_id` explicitly provided by the operator.
+2. If the retrospective request is made inside the same active Codex session, use the current runtime session id.
+3. If neither source is available, stop and say that the trace cannot be determined reliably.
+
+In Codex, `CODEX_THREAD_ID` is the runtime signal to use when the current session is the retrospective target.
+
+## Quick start from session id only
+
+When you start with only `session_id`, use this minimal path:
+
+1. Resolve `session_id`.
+2. Find the rollout/session JSONL trace among your Codex sessions.
+3. Read `session_meta.cwd` from the trace.
+4. Treat that value as the candidate `project root`.
+5. Discover standard evidence directories from that root.
+6. Run the first `scan`.
+
+Do not begin with broad repo reading before this preflight is complete.
 
 ## Procedure
 
@@ -88,12 +112,30 @@ Establish:
 - source-of-truth artifact set;
 - output files to produce.
 
+Use trace-driven scoping:
+
+- analyze only tasks, files, and artifacts that are actually mentioned in the session trace;
+- do not start with repo-wide reading;
+- expand beyond the trace only when a trace-derived id or path links you to the next artifact.
+
 Record the phase boundary explicitly:
 
 - start trigger;
 - end trigger;
 - included sessions/cycles;
 - excluded follow-up work.
+
+When one session mentions multiple work items, partition the scope in this order:
+
+1. explicit backlog item ids such as `CF-*`;
+2. explicit feature ids such as `F-*`;
+3. linkage through review, verification, or step artifacts;
+4. touched file paths;
+5. time windows.
+
+Stop expansion when the partition remains ambiguous after those checks. Record the ambiguity in the manifest instead of guessing.
+
+By default, place generated outputs under a local `out/` directory for first-pass analysis. Write inside a project-owned documentation or analysis directory only when the operator or project convention explicitly requires durable project artifacts.
 
 ### 2) Build the evidence manifest
 
@@ -160,7 +202,13 @@ Classify incidents at least into:
 
 ### 5) Run the skill audit
 
-For every skill clearly used during the phase:
+Use these confidence levels:
+
+- `confirmed_used`: direct trace or stage-log evidence shows the skill was used;
+- `probably_used`: the trace strongly suggests the skill influenced execution, but the linkage is indirect;
+- `implicitly_relevant`: the skill is contextually relevant, but usage is not evidenced directly.
+
+For every skill that reaches at least `probably_used`:
 
 - identify where it influenced decisions or execution;
 - inspect whether the skill instructions were complete enough for the task;
@@ -279,11 +327,22 @@ Use the report templates in:
 - references/SKILL-AUDIT-TEMPLATE.md
 - references/LOGGING-IMPROVEMENTS-TEMPLATE.md
 
+A findings-first draft is acceptable before full template expansion. Do not force the full template before the scope is confirmed.
+
 ## Recommended workflow with the CLI
+
+Minimum viable workflow:
+
+1. Resolve `session_id`.
+2. Find the trace and read `session_meta.cwd`.
+3. Run `scan` to build the first evidence summary and trace-derived scope.
+4. Check the candidate incidents and scope ambiguities.
+5. Read only the highest-ranked linked evidence.
+6. Decide whether `report`, `skill-audit`, or `logging-review` are needed.
 
 When Node.js is available, use:
 
-- `scripts/retro-cli.mjs scan ...` to inventory evidence and generate metrics;
+- `scripts/retro-cli.mjs scan --session-id <id> --out out/scan-summary.json` to inventory evidence and generate metrics;
 - `scripts/retro-cli.mjs report ...` to create a draft retrospective report;
 - `scripts/retro-cli.mjs logging-review ...` to generate logging findings;
 - `scripts/retro-cli.mjs skill-audit ...` to generate a skill-focused draft.
@@ -321,11 +380,19 @@ Sample structure first, then run the CLI over the full file. Avoid loading every
 
 ### Multiple features in one session
 
-Partition the evidence by feature id, cycle id, file path, or artifact linkage before making conclusions.
+Partition the evidence in this order:
+
+1. `CF-*`
+2. `F-*`
+3. review/verification/step artifact linkage
+4. touched file paths
+5. time windows
+
+If ambiguity remains after this order, keep the ambiguity explicit in the report instead of collapsing multiple scopes into one invented narrative.
 
 ### Skill usage is implicit
 
-Treat the skill assessment as lower-confidence unless you can connect the behavior to the relevant skill file, stage artifact, or repeated action pattern.
+Use `implicitly_relevant` only when you cannot connect the behavior to the relevant skill file, stage artifact, or repeated action pattern. Do not promote implicit relevance to a stronger claim without direct evidence.
 
 ## File usage guidance
 

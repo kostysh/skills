@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import os from "node:os";
 //#region package.json
 var name = "@kostysh/retrospective-phase-analysis-cli";
 var version = "0.1.0";
@@ -150,6 +151,130 @@ function formatList(items) {
 function stringFromUnknown(value, fallback) {
 	return typeof value === "string" && value.length > 0 ? value : fallback;
 }
+function sortUnique(values) {
+	return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
+}
+//#endregion
+//#region src/core/extract-trace-scope.ts
+var SKIPPED_KEYS = new Set([
+	"base_instructions",
+	"developer_instructions",
+	"user_instructions",
+	"formatted_output"
+]);
+function trimPathCandidate(value) {
+	return value.replaceAll(/^[\s("'`[{<]+|[\s"',.;:)\]}>`]+$/gu, "");
+}
+function isInterestingRelativePath(value) {
+	return /^(?:\.dossier|docs|src|test|scripts|skills|packages)\//u.test(value);
+}
+function isInterestingRootFile(value) {
+	return /^(?:AGENTS\.md|README\.md|package\.json|pnpm-lock\.yaml|tsconfig\.json)$/u.test(value);
+}
+function normalizePathCandidate(candidate, projectRoot) {
+	const trimmed = trimPathCandidate(candidate);
+	if (!trimmed) return null;
+	if (path.isAbsolute(trimmed)) return path.normalize(trimmed);
+	if (projectRoot && (isInterestingRelativePath(trimmed) || isInterestingRootFile(trimmed))) return path.resolve(projectRoot, trimmed);
+	return null;
+}
+function isProjectScopedPath(value, projectRoot) {
+	if (!projectRoot) return false;
+	const normalizedRoot = path.resolve(projectRoot);
+	const normalizedValue = path.resolve(value);
+	return normalizedValue === normalizedRoot || normalizedValue.startsWith(`${normalizedRoot}${path.sep}`) || normalizedValue.startsWith(`${normalizedRoot}/`);
+}
+function isReferencedArtifact(value, projectRoot) {
+	if (!projectRoot) return false;
+	const relative = path.relative(projectRoot, value);
+	if (relative.startsWith("..")) return false;
+	return relative.startsWith(".dossier/") || relative.startsWith(`.dossier${path.sep}`) || relative.startsWith("docs/") || relative.startsWith(`docs${path.sep}`);
+}
+function collectEventTexts(input, pathTrail = []) {
+	if (input === null || input === void 0) return [];
+	if (typeof input === "string") return [input];
+	if (Array.isArray(input)) return input.flatMap((item) => collectEventTexts(item, pathTrail));
+	if (typeof input !== "object") return [];
+	const record = input;
+	const eventType = typeof record.type === "string" ? record.type : null;
+	if (eventType === "session_meta") {
+		const payload = record.payload && typeof record.payload === "object" ? record.payload : null;
+		const out = [];
+		if (typeof payload?.id === "string") out.push(payload.id);
+		if (typeof payload?.cwd === "string") out.push(payload.cwd);
+		return out;
+	}
+	if (eventType === "turn_context") return [];
+	const out = [];
+	for (const [key, value] of Object.entries(record)) {
+		if (SKIPPED_KEYS.has(key)) continue;
+		out.push(...collectEventTexts(value, [...pathTrail, key]));
+	}
+	return out;
+}
+function extractMatches(values, pattern) {
+	const matches = [];
+	for (const value of values) for (const match of value.matchAll(pattern)) {
+		const candidate = match[1] ?? match[0];
+		if (candidate) matches.push(candidate);
+	}
+	return sortUnique(matches);
+}
+function extractTouchedPaths(values, projectRoot) {
+	const rawCandidates = [];
+	const absolutePathPattern = /(?:^|[\s("'`[{<])((?:\/[A-Za-z0-9._@-]+)+(?:\.[A-Za-z0-9._-]+)?)/gu;
+	const relativePathPattern = /\b((?:\.dossier|docs|src|test|scripts|skills|packages)\/[A-Za-z0-9._@/\-]+(?:\.[A-Za-z0-9._-]+)?)\b/gu;
+	const rootFilePattern = /\b(AGENTS\.md|README\.md|package\.json|pnpm-lock\.yaml|tsconfig\.json)\b/gu;
+	rawCandidates.push(...extractMatches(values, absolutePathPattern));
+	rawCandidates.push(...extractMatches(values, relativePathPattern));
+	rawCandidates.push(...extractMatches(values, rootFilePattern));
+	return sortUnique(rawCandidates.map((value) => normalizePathCandidate(value, projectRoot)).filter((value) => value !== null).filter((value) => isProjectScopedPath(value, projectRoot)));
+}
+function collectFeatureScopedCandidates(baseDir, featureIds) {
+	if (!baseDir || featureIds.length === 0 || !fs.existsSync(baseDir)) return [];
+	return sortUnique(listFilesRecursive(baseDir).filter((filePath) => featureIds.some((featureId) => filePath.includes(featureId))));
+}
+function collectLogCandidates(logsSummary, featureIds, backlogItems, referencedArtifacts) {
+	const direct = referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}logs${path.sep}`));
+	const anchored = logsSummary.logs.filter((log) => [...featureIds, ...backlogItems].some((anchor) => log.filePath.includes(anchor) || log.raw.includes(anchor))).map((log) => log.filePath);
+	const candidates = sortUnique([...direct, ...anchored]);
+	if (candidates.length > 0) return candidates;
+	return sortUnique(logsSummary.logs.map((log) => log.filePath));
+}
+function scoreScopeConfidence(sessionPresent, backlogItems, featureIds, touchedPaths, referencedArtifacts, ambiguities) {
+	if (!sessionPresent) return "low";
+	if (backlogItems.length + featureIds.length + touchedPaths.length + referencedArtifacts.length === 0) return "low";
+	return ambiguities.length > 0 ? "medium" : "high";
+}
+function extractTraceScope({ sessionSummary, projectRoot, logsSummary }) {
+	const texts = sessionSummary.events.flatMap((event) => collectEventTexts(event));
+	const mentionedBacklogItems = extractMatches(texts, /\b(CF-[A-Za-z0-9._-]+)\b/gu);
+	const mentionedFeatures = extractMatches(texts, /\b(F-\d{4,})\b/gu);
+	const touchedPaths = extractTouchedPaths(texts, projectRoot);
+	const referencedArtifacts = sortUnique(touchedPaths.filter((filePath) => isReferencedArtifact(filePath, projectRoot)));
+	const candidateReviewArtifacts = sortUnique([...referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}reviews${path.sep}`)), ...collectFeatureScopedCandidates(projectRoot ? path.join(projectRoot, ".dossier", "reviews") : void 0, mentionedFeatures)]);
+	const candidateVerificationArtifacts = sortUnique([...referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}verification${path.sep}`)), ...collectFeatureScopedCandidates(projectRoot ? path.join(projectRoot, ".dossier", "verification") : void 0, mentionedFeatures)]);
+	const candidateStageLogs = collectLogCandidates(logsSummary, mentionedFeatures, mentionedBacklogItems, referencedArtifacts);
+	const scopeAmbiguities = [];
+	if (mentionedBacklogItems.length === 0 && mentionedFeatures.length === 0 && touchedPaths.length === 0 && referencedArtifacts.length === 0) scopeAmbiguities.push("No trace-derived backlog items, feature ids, or touched project paths were found.");
+	if (mentionedBacklogItems.length > 1) scopeAmbiguities.push(`Multiple backlog items were mentioned in one trace: ${mentionedBacklogItems.join(", ")}.`);
+	if (mentionedFeatures.length > 1) scopeAmbiguities.push(`Multiple feature ids were mentioned in one trace: ${mentionedFeatures.join(", ")}.`);
+	if (candidateStageLogs.length > 1 && referencedArtifacts.every((filePath) => !filePath.includes(`${path.sep}.dossier${path.sep}logs${path.sep}`))) scopeAmbiguities.push("Stage logs were discovered from the standard logs directory but not directly linked from the trace.");
+	if (mentionedFeatures.length > 0 && candidateReviewArtifacts.length === 0) scopeAmbiguities.push(`No review artifacts were auto-linked for feature ids ${mentionedFeatures.join(", ")}.`);
+	if (mentionedFeatures.length > 0 && candidateVerificationArtifacts.length === 0) scopeAmbiguities.push(`No verification artifacts were auto-linked for feature ids ${mentionedFeatures.join(", ")}.`);
+	return {
+		project_root: projectRoot,
+		mentioned_backlog_items: mentionedBacklogItems,
+		mentioned_features: mentionedFeatures,
+		touched_paths: touchedPaths,
+		referenced_artifacts: referencedArtifacts,
+		candidate_stage_logs: candidateStageLogs,
+		candidate_review_artifacts: candidateReviewArtifacts,
+		candidate_verification_artifacts: candidateVerificationArtifacts,
+		scope_confidence: scoreScopeConfidence(sessionSummary.exists, mentionedBacklogItems, mentionedFeatures, touchedPaths, referencedArtifacts, scopeAmbiguities),
+		scope_ambiguities: scopeAmbiguities
+	};
+}
 //#endregion
 //#region src/core/infer-candidate-incidents.ts
 function inferCandidateIncidents(sessionSummary, logSummary) {
@@ -197,6 +322,57 @@ function inferCandidateIncidents(sessionSummary, logSummary) {
 		reason: `${sessionSummary.abortedTurns} aborted/restarted turn(s) detected in the session trace.`
 	});
 	return incidents;
+}
+//#endregion
+//#region src/core/resolve-scan-inputs.ts
+function codexHomeDir() {
+	return process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
+}
+function sessionsRootDir() {
+	return path.join(codexHomeDir(), "sessions");
+}
+function findSessionTraceCandidates(sessionId, rootDir) {
+	if (!fs.existsSync(rootDir)) return [];
+	const matches = [];
+	function walk(currentDir) {
+		const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+		for (const entry of entries) {
+			const nextPath = path.join(currentDir, entry.name);
+			if (entry.isDirectory()) {
+				walk(nextPath);
+				continue;
+			}
+			if (entry.isFile() && entry.name.endsWith(".jsonl") && (entry.name.includes(sessionId) || nextPath.includes(sessionId))) matches.push(nextPath);
+		}
+	}
+	walk(rootDir);
+	return matches.sort();
+}
+function resolveSessionTrace(session, sessionId) {
+	if (session) return {
+		session,
+		sessionId: sessionId ?? null,
+		discoveryMode: "explicit_session_file"
+	};
+	if (!sessionId) return {
+		session: void 0,
+		sessionId: null,
+		discoveryMode: "missing"
+	};
+	const sessionsRoot = sessionsRootDir();
+	const matches = findSessionTraceCandidates(sessionId, sessionsRoot);
+	if (matches.length === 0) throw new Error(`Could not resolve session trace for session_id ${sessionId} under ${sessionsRoot}.`);
+	if (matches.length > 1) throw new Error(`Multiple session trace candidates were found for session_id ${sessionId}: ${matches.join(", ")}`);
+	return {
+		session: matches[0],
+		sessionId,
+		discoveryMode: "explicit_session_id"
+	};
+}
+function resolveStandardEvidenceDir(projectRoot, relativeDir) {
+	if (!projectRoot) return;
+	const absoluteDir = path.join(projectRoot, relativeDir);
+	return fs.existsSync(absoluteDir) ? absoluteDir : void 0;
 }
 //#endregion
 //#region src/parsers/loose-yaml.ts
@@ -417,6 +593,8 @@ function parseJsonl(filePath) {
 function summarizeSession(filePath) {
 	if (!filePath || !fs.existsSync(filePath)) return {
 		filePath,
+		sessionId: null,
+		projectRoot: null,
 		exists: false,
 		eventCount: 0,
 		parseErrors: [],
@@ -431,12 +609,22 @@ function summarizeSession(filePath) {
 	};
 	const { events, errors } = parseJsonl(filePath);
 	const toolCounts = /* @__PURE__ */ new Map();
+	let sessionId = null;
+	let projectRoot = null;
 	let firstTimestamp = null;
 	let lastTimestamp = null;
 	let abortedTurns = 0;
 	let longGaps = 0;
 	let previousDate = null;
 	for (const event of events) {
+		if (event && typeof event === "object" && event.type === "session_meta") {
+			const payload = event.payload;
+			if (payload && typeof payload === "object") {
+				const meta = payload;
+				if (typeof meta.id === "string" && meta.id.length > 0) sessionId = meta.id;
+				if (typeof meta.cwd === "string" && meta.cwd.length > 0) projectRoot = meta.cwd;
+			}
+		}
 		const timestamp = extractTimestamp(event);
 		if (timestamp) {
 			firstTimestamp ??= timestamp;
@@ -455,6 +643,8 @@ function summarizeSession(filePath) {
 	}
 	return {
 		filePath,
+		sessionId,
+		projectRoot,
 		exists: true,
 		eventCount: events.length,
 		parseErrors: errors,
@@ -491,18 +681,35 @@ function summarizeSkills(skillsDir) {
 //#endregion
 //#region src/core/build-scan-summary.ts
 function buildScanSummary(args) {
-	const sessionSummary = summarizeSession(args.session);
-	const logSummary = summarizeLogs(args.logsDir);
+	const resolvedSession = resolveSessionTrace(args.session, args.sessionId);
+	const sessionSummary = summarizeSession(resolvedSession.session);
+	const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
+	const resolvedLogsDir = args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, ".dossier/logs");
+	const resolvedArtifactsDir = args.artifactsDir ?? resolvedProjectRoot ?? void 0;
 	const skillsSummary = summarizeSkills(args.skillsDir);
-	const artifactFiles = args.artifactsDir && fs.existsSync(args.artifactsDir) ? listFilesRecursive(args.artifactsDir).slice(0, 500) : [];
+	const logSummary = summarizeLogs(resolvedLogsDir);
+	const scope = extractTraceScope({
+		sessionSummary,
+		projectRoot: resolvedProjectRoot,
+		logsSummary: logSummary
+	});
 	const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
 	return {
 		generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
 		inputs: {
 			session: args.session ?? null,
+			sessionId: args.sessionId ?? null,
 			logsDir: args.logsDir ?? null,
 			artifactsDir: args.artifactsDir ?? null,
 			skillsDir: args.skillsDir ?? null
+		},
+		resolved: {
+			session: resolvedSession.session ?? null,
+			sessionId: resolvedSession.sessionId,
+			logsDir: resolvedLogsDir ?? null,
+			artifactsDir: resolvedArtifactsDir ?? null,
+			skillsDir: args.skillsDir ?? null,
+			discoveryMode: resolvedSession.discoveryMode
 		},
 		dataQuality: {
 			sessionPresent: sessionSummary.exists,
@@ -512,6 +719,8 @@ function buildScanSummary(args) {
 		},
 		session: {
 			filePath: sessionSummary.filePath,
+			sessionId: sessionSummary.sessionId,
+			projectRoot: sessionSummary.projectRoot,
 			eventCount: sessionSummary.eventCount,
 			firstTimestamp: sessionSummary.firstTimestamp,
 			lastTimestamp: sessionSummary.lastTimestamp,
@@ -531,10 +740,11 @@ function buildScanSummary(args) {
 				processMissLines: log.processMissLines
 			}))
 		},
+		scope,
 		skills: skillsSummary.skills,
 		artifacts: {
-			scannedCount: artifactFiles.length,
-			sample: artifactFiles.slice(0, 50)
+			scannedCount: scope.referenced_artifacts.length,
+			sample: scope.referenced_artifacts.slice(0, 50)
 		},
 		candidateIncidents
 	};
@@ -629,6 +839,12 @@ function normalizeCliError(error) {
 //#region src/commands/shared.ts
 var COMMON_OPTION_SPECS = [
 	{
+		name: "session-id",
+		type: "string",
+		valueLabel: "<id>",
+		description: "Session id used to discover the rollout JSONL trace."
+	},
+	{
 		name: "session",
 		type: "string",
 		valueLabel: "<file>",
@@ -685,10 +901,12 @@ function optionToHelpLine(spec) {
 }
 function toCommonCommandInput(options) {
 	const input = {};
+	const sessionId = toOptionalString(options["session-id"]);
 	const session = toOptionalString(options.session);
 	const logsDir = toOptionalString(options["logs-dir"]);
 	const artifactsDir = toOptionalString(options["artifacts-dir"]);
 	const skillsDir = toOptionalString(options["skills-dir"]);
+	if (sessionId) input.sessionId = sessionId;
 	if (session) input.session = session;
 	if (logsDir) input.logsDir = logsDir;
 	if (artifactsDir) input.artifactsDir = artifactsDir;
@@ -754,15 +972,20 @@ function buildReportMarkdown(scan, options) {
 	].join("\n")).join("\n");
 	const logFiles = scan.stageLogs.files.map((entry) => `- ${entry.filePath}`).join("\n") || "- none";
 	const skillFiles = scan.skills.map((skill) => `- ${skill.name}: ${skill.skillFile}`).join("\n") || "- none";
+	const scopePaths = scan.scope.touched_paths.map((entry) => `- ${entry}`).join("\n") || "- none";
+	const scopeArtifacts = scan.scope.referenced_artifacts.map((entry) => `- ${entry}`).join("\n") || "- none";
+	const scopeAmbiguities = scan.scope.scope_ambiguities.map((entry) => `- ${entry}`).join("\n") || "- none";
 	return `# ${title}
 
 ## Executive summary
 
 - Phase: ${options.phase ?? "unspecified"}
-- Session trace: ${scan.inputs.session ?? "not provided"}
+- Session trace: ${scan.resolved.session ?? "not provided"}
+- Session id: ${scan.resolved.sessionId ?? "not provided"}
 - Stage logs analyzed: ${scan.stageLogs.count}
 - Candidate incidents: ${scan.candidateIncidents.length}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
+- Scope confidence: ${scan.scope.scope_confidence}
 - Data-quality note: ${scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent ? "Both session trace and stage logs were available." : "One or more core evidence sources were missing; confidence is reduced."}
 
 ## Evidence manifest
@@ -774,7 +997,18 @@ ${logFiles}
 ${skillFiles}
 
 ### Session trace
-- ${scan.inputs.session ?? "not provided"}
+- ${scan.resolved.session ?? "not provided"}
+
+### Trace-derived scope
+- Project root: ${scan.scope.project_root ?? "unknown"}
+- Backlog items: ${scan.scope.mentioned_backlog_items.join(", ") || "none"}
+- Features: ${scan.scope.mentioned_features.join(", ") || "none"}
+
+### Touched paths
+${scopePaths}
+
+### Referenced artifacts
+${scopeArtifacts}
 
 ## Timeline summary
 
@@ -808,9 +1042,14 @@ ${formatList(topEntries(scan.stageLogs.metrics.stages, 20).map(([stage, count]) 
 
 ${formatList(topEntries(scan.stageLogs.metrics.skillsReferenced, 20).map(([skill, count]) => `${skill}: referenced in ${count} log(s)`))}
 
+## Scope ambiguities
+
+${scopeAmbiguities}
+
 ## Recommended next manual checks
 
 - Confirm each inferred incident against the actual stage log and trace excerpts.
+- Stop scope expansion when the ambiguities above remain unresolved after checking linked artifacts.
 - Review rerounds and non-pass reviews for avoidable causes.
 - Inspect skills referenced in the logs for missing decision rules, outdated assumptions, and ambiguity.
 - Validate whether late or missing backlog actualization affected closure quality.
@@ -875,8 +1114,12 @@ var REPORT_COMMAND = {
 //#region src/commands/scan.ts
 var SCAN_COMMAND = {
 	name: "scan",
-	summary: "Build a JSON summary from a session trace and stage logs.",
-	usage: ["node scripts/retro-cli.mjs scan --session <file> --logs-dir <dir> --out <file>", "node scripts/retro-cli.mjs scan --logs-dir <dir> --artifacts-dir <dir> --out <file> --pretty"],
+	summary: "Build a JSON summary from a session trace, session id, and stage logs.",
+	usage: [
+		"node scripts/retro-cli.mjs scan --session <file> --logs-dir <dir> --out <file>",
+		"node scripts/retro-cli.mjs scan --session-id <id> --out <file>",
+		"node scripts/retro-cli.mjs scan --logs-dir <dir> --artifacts-dir <dir> --out <file> --pretty"
+	],
 	options: [
 		...COMMON_OPTION_SPECS,
 		{
@@ -892,7 +1135,11 @@ var SCAN_COMMAND = {
 			description: "Pretty-print JSON output."
 		}
 	],
-	notes: ["The JSON summary is heuristic and should be validated against the cited artifacts."],
+	notes: [
+		"The JSON summary is heuristic and should be validated against the cited artifacts.",
+		"When --session-id is provided, the command resolves the rollout JSONL trace beneath $CODEX_HOME/sessions or ~/.codex/sessions.",
+		"If logs or artifacts directories are omitted, the command tries standard project directories derived from session_meta.cwd."
+	],
 	parseArgs(argv) {
 		const options = parseOptions(argv, this.options);
 		return {
@@ -915,11 +1162,13 @@ function buildSkillAuditMarkdown(scan) {
 	}));
 	const rows = skills.map((skill) => {
 		const references = scan.stageLogs.files.filter((entry) => stringFromUnknown(entry.metadata.skill, "") === skill.name).length;
+		const confidence = references > 0 ? "confirmed_used" : scan.scope.touched_paths.includes(skill.skillFile) ? "probably_used" : "implicitly_relevant";
 		const issueCount = scan.candidateIncidents.filter((incident) => incident.evidence.includes(".md")).length;
 		return `### Skill: ${skill.name}
 
 - Skill file: ${skill.skillFile}
 - Description: ${skill.description || "n/a"}
+- Confidence: ${confidence}
 - Direct log references: ${references}
 - Potential friction signals: ${issueCount > 0 ? issueCount : "none automatically inferred"}
 - Manual review prompts:

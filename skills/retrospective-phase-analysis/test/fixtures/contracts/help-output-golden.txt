@@ -7,7 +7,7 @@ Usage:
   node scripts/retro-cli.mjs --version
 
 Commands:
-  scan           Build a JSON summary from a session trace and stage logs.
+  scan           Build a JSON summary from a session trace, session id, and stage logs.
   report         Generate a Markdown retrospective draft.
   skill-audit    Generate a skill-focused Markdown draft.
   logging-review Generate a logging-quality and improvement draft.

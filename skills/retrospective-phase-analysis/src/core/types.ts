@@ -1,6 +1,8 @@
 export type LooseRecord = Record<string, unknown>;
 
 export type IncidentSeverity = 'high' | 'medium' | 'low';
+export type ScopeConfidence = 'high' | 'medium' | 'low';
+export type SessionDiscoveryMode = 'explicit_session_file' | 'explicit_session_id' | 'missing';
 
 export interface ReviewEvent {
   raw: string;
@@ -21,6 +23,8 @@ export interface ParsedStageLog {
 
 export interface SessionSummary {
   filePath: string | undefined;
+  sessionId: string | null;
+  projectRoot: string | null;
   exists: boolean;
   eventCount: number;
   parseErrors: Array<{ line: number; message: string }>;
@@ -72,6 +76,7 @@ export interface CandidateIncident {
 
 export interface ScanSourceOptions {
   session?: string;
+  sessionId?: string;
   logsDir?: string;
   artifactsDir?: string;
   skillsDir?: string;
@@ -81,9 +86,18 @@ export interface ScanSummary {
   generatedAt: string;
   inputs: {
     session: string | null;
+    sessionId: string | null;
     logsDir: string | null;
     artifactsDir: string | null;
     skillsDir: string | null;
+  };
+  resolved: {
+    session: string | null;
+    sessionId: string | null;
+    logsDir: string | null;
+    artifactsDir: string | null;
+    skillsDir: string | null;
+    discoveryMode: SessionDiscoveryMode;
   };
   dataQuality: {
     sessionPresent: boolean;
@@ -93,6 +107,8 @@ export interface ScanSummary {
   };
   session: {
     filePath: string | undefined;
+    sessionId: string | null;
+    projectRoot: string | null;
     eventCount: number;
     firstTimestamp: string | null;
     lastTimestamp: string | null;
@@ -111,6 +127,18 @@ export interface ScanSummary {
       reviewEvents: number;
       processMissLines: string[];
     }>;
+  };
+  scope: {
+    project_root: string | null;
+    mentioned_backlog_items: string[];
+    mentioned_features: string[];
+    touched_paths: string[];
+    referenced_artifacts: string[];
+    candidate_stage_logs: string[];
+    candidate_review_artifacts: string[];
+    candidate_verification_artifacts: string[];
+    scope_confidence: ScopeConfidence;
+    scope_ambiguities: string[];
   };
   skills: SkillSummary[];
   artifacts: {

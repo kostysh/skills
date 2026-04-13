@@ -26,6 +26,7 @@ export type AnyCommandDefinition = CommandDefinition<unknown>;
 
 export interface CommonCommandInput {
   session?: string;
+  sessionId?: string;
   logsDir?: string;
   artifactsDir?: string;
   skillsDir?: string;

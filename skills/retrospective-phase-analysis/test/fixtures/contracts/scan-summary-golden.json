@@ -2,9 +2,18 @@
   "generatedAt": "<generated>",
   "inputs": {
     "session": "/abs/fixtures/sessions/phase-session.jsonl",
+    "sessionId": null,
     "logsDir": "/abs/fixtures/logs",
     "artifactsDir": "/abs/fixtures/artifacts",
     "skillsDir": "/abs/fixtures/skills"
+  },
+  "resolved": {
+    "session": "/abs/fixtures/sessions/phase-session.jsonl",
+    "sessionId": null,
+    "logsDir": "/abs/fixtures/logs",
+    "artifactsDir": "/abs/fixtures/artifacts",
+    "skillsDir": "/abs/fixtures/skills",
+    "discoveryMode": "explicit_session_file"
   },
   "dataQuality": {
     "sessionPresent": true,
@@ -14,17 +23,24 @@
   },
   "session": {
     "filePath": "/abs/fixtures/sessions/phase-session.jsonl",
-    "eventCount": 4,
-    "firstTimestamp": "2026-04-10T10:00:00.000Z",
+    "sessionId": "019d7490-46d0-7811-b43f-056bb617a7ab",
+    "projectRoot": "/fixture/project",
+    "eventCount": 5,
+    "firstTimestamp": "2026-04-10T09:59:00.000Z",
     "lastTimestamp": "2026-04-10T10:25:00.000Z",
-    "durationMinutes": 25,
+    "durationMinutes": 26,
     "abortedTurns": 1,
     "longGaps": 1,
     "tools": {
       "functions.exec_command": 2,
       "functions.update_plan": 1
     },
-    "sampleEventTypes": ["assistant", "tool_call", "tool_result"]
+    "sampleEventTypes": [
+      "session_meta",
+      "assistant",
+      "tool_call",
+      "tool_result"
+    ]
   },
   "stageLogs": {
     "count": 2,
@@ -49,14 +65,15 @@
         "filePath": "/abs/fixtures/logs/closure.md",
         "metadata": {
           "stage": "closure",
+          "feature_id": "F-0016",
           "skill": "backlog-engineer",
           "review_rounds_total": 1,
           "review_findings_total": 0,
           "process_misses_total": 0,
           "backlog_actualized": true,
-          "review_artifact": "reviews/closure.md",
-          "verification_artifact": "verification/closure.md",
-          "step_artifact": "steps/closure.md",
+          "review_artifact": ".dossier/reviews/F-0016-review.md",
+          "verification_artifact": ".dossier/verification/F-0016-verification.md",
+          "step_artifact": ".dossier/steps/F-0016-step.md",
           "log_quality": {
             "duration_exact": false
           }
@@ -68,16 +85,54 @@
         "filePath": "/abs/fixtures/logs/implementation.md",
         "metadata": {
           "stage": "implementation",
+          "feature_id": "F-0016",
           "skill": "dossier-engineer",
           "review_rounds_total": 2,
           "review_findings_total": 3,
           "process_misses_total": 1,
           "backlog_actualized": false,
-          "late_log_start": true
+          "late_log_start": true,
+          "review_artifact": ".dossier/reviews/F-0016-review.md",
+          "verification_artifact": ".dossier/verification/F-0016-verification.md"
         },
         "reviewEvents": 2,
-        "processMissLines": ["backlog actualization deferred until closure evidence was assembled"]
+        "processMissLines": [
+          "backlog actualization deferred until closure evidence was assembled"
+        ]
       }
+    ]
+  },
+  "scope": {
+    "project_root": "/abs/fixtures/artifacts",
+    "mentioned_backlog_items": [
+      "CF-0016"
+    ],
+    "mentioned_features": [
+      "F-0016"
+    ],
+    "touched_paths": [
+      "/abs/fixtures/artifacts/docs/adr/ADR-0016-observability.md",
+      "/abs/fixtures/artifacts/docs/features/F-0016-retro.md",
+      "/abs/fixtures/artifacts/package.json",
+      "/abs/fixtures/artifacts/src/retro/collector.ts"
+    ],
+    "referenced_artifacts": [
+      "/abs/fixtures/artifacts/docs/adr/ADR-0016-observability.md",
+      "/abs/fixtures/artifacts/docs/features/F-0016-retro.md"
+    ],
+    "candidate_stage_logs": [
+      "/abs/fixtures/logs/closure.md",
+      "/abs/fixtures/logs/implementation.md"
+    ],
+    "candidate_review_artifacts": [
+      "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md"
+    ],
+    "candidate_verification_artifacts": [
+      "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md"
+    ],
+    "scope_confidence": "medium",
+    "scope_ambiguities": [
+      "Stage logs were discovered from the standard logs directory but not directly linked from the trace."
     ]
   },
   "skills": [
@@ -95,8 +150,8 @@
   "artifacts": {
     "scannedCount": 2,
     "sample": [
-      "/abs/fixtures/artifacts/docs/spec.md",
-      "/abs/fixtures/artifacts/docs/verification.md"
+      "/abs/fixtures/artifacts/docs/adr/ADR-0016-observability.md",
+      "/abs/fixtures/artifacts/docs/features/F-0016-retro.md"
     ]
   },
   "candidateIncidents": [

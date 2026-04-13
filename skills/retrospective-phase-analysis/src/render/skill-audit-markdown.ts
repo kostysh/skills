@@ -16,6 +16,12 @@ export function buildSkillAuditMarkdown(scan: ScanSummary): string {
       const references = scan.stageLogs.files.filter(
         (entry) => stringFromUnknown(entry.metadata.skill, '') === skill.name,
       ).length;
+      const confidence =
+        references > 0
+          ? 'confirmed_used'
+          : scan.scope.touched_paths.includes(skill.skillFile)
+            ? 'probably_used'
+            : 'implicitly_relevant';
       const issueCount = scan.candidateIncidents.filter((incident) =>
         incident.evidence.includes('.md'),
       ).length;
@@ -24,6 +30,7 @@ export function buildSkillAuditMarkdown(scan: ScanSummary): string {
 
 - Skill file: ${skill.skillFile}
 - Description: ${skill.description || 'n/a'}
+- Confidence: ${confidence}
 - Direct log references: ${references}
 - Potential friction signals: ${issueCount > 0 ? issueCount : 'none automatically inferred'}
 - Manual review prompts:

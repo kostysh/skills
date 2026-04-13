@@ -11,9 +11,10 @@ import type { CommandDefinition, ScanCommandInput } from './types.ts';
 
 export const SCAN_COMMAND: CommandDefinition<ScanCommandInput> = {
   name: 'scan',
-  summary: 'Build a JSON summary from a session trace and stage logs.',
+  summary: 'Build a JSON summary from a session trace, session id, and stage logs.',
   usage: [
     'node scripts/retro-cli.mjs scan --session <file> --logs-dir <dir> --out <file>',
+    'node scripts/retro-cli.mjs scan --session-id <id> --out <file>',
     'node scripts/retro-cli.mjs scan --logs-dir <dir> --artifacts-dir <dir> --out <file> --pretty',
   ],
   options: [
@@ -31,7 +32,11 @@ export const SCAN_COMMAND: CommandDefinition<ScanCommandInput> = {
       description: 'Pretty-print JSON output.',
     },
   ],
-  notes: ['The JSON summary is heuristic and should be validated against the cited artifacts.'],
+  notes: [
+    'The JSON summary is heuristic and should be validated against the cited artifacts.',
+    'When --session-id is provided, the command resolves the rollout JSONL trace beneath $CODEX_HOME/sessions or ~/.codex/sessions.',
+    'If logs or artifacts directories are omitted, the command tries standard project directories derived from session_meta.cwd.',
+  ],
   parseArgs(argv) {
     const options = parseOptions(argv, this.options);
     return {
