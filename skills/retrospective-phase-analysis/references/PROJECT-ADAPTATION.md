@@ -33,3 +33,10 @@ When the trace exposes `session_meta.cwd`, treat it as the candidate `project ro
 These are only candidate evidence roots. Move an artifact into the real retrospective scope only when it is linked by trace-derived ids or paths.
 
 For `.dossier/logs`, apply a stricter rule: include only the stage-log paths that the trace shows as created or changed in the analyzed session. Do not widen stage-log scope by feature-id matching alone.
+
+If `session_meta.cwd` is missing, stale, or otherwise unreliable, do not widen the search across arbitrary repositories. First try:
+
+1. an explicit project root provided by the operator;
+2. a single candidate root implied by repeated trace-linked file paths.
+
+If these anchors do not converge on one reliable root, stop and surface the ambiguity instead of guessing `--logs-dir` or `--artifacts-dir`.

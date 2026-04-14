@@ -66,15 +66,19 @@ Produce one or more Markdown reports that help the operator understand:
 
 ## Inputs to collect
 
-At minimum, try to gather:
+At minimum, gather only the preflight anchors first:
 
 - session id when the runtime or operator can provide it;
 - session trace JSONL or equivalent;
-- stage logs for the phase;
-- relevant dossier/spec/plan/implementation artifacts;
-- review artifacts and verification artifacts if present;
+- candidate `project root` from `session_meta.cwd` when available;
+- standard evidence roots only after the candidate `project root` is known;
+- stage logs only when the trace links those log paths as created or changed in the analyzed session;
+- dossier/spec/plan/implementation artifacts only when trace-derived ids or paths link them into scope;
+- review artifacts and verification artifacts only when the trace or linked stage logs point to them;
 - skill files used during the phase;
 - commit or patch metadata if available.
+
+Do not treat this list as permission for broad repo reading before trace-driven scoping is established.
 
 If an expected input is missing, record the gap explicitly.
 
@@ -97,9 +101,11 @@ When you start with only `session_id`, use this minimal path:
 1. Resolve `session_id`.
 2. Find the canonical rollout/session JSONL trace in your runtime's session store.
 3. Read `session_meta.cwd` from the trace.
-4. Treat that value as the candidate `project root`.
-5. Discover standard evidence directories from that root.
-6. Run the first `scan` with the explicit trace file path.
+4. If `session_meta.cwd` is present and reliable, treat it as the candidate `project root`.
+5. If `session_meta.cwd` is missing, stale, or cannot be trusted, do not guess. First try an operator-provided project root or a single root implied by repeated trace-linked file paths.
+6. If no single candidate `project root` can be confirmed, stop and surface the ambiguity explicitly.
+7. Discover standard evidence directories from the confirmed root.
+8. Run the first `scan` with the explicit trace file path.
 
 Do not begin with broad repo reading before this preflight is complete.
 
@@ -355,6 +361,7 @@ Read the CLI reference first:
 - [CLI reference](references/CLI.md)
 
 The CLI is heuristic. Validate its output against the actual artifacts before finalizing the report.
+Do not pass guessed `--logs-dir` or `--artifacts-dir` values when the `project root` is still ambiguous.
 
 ## Report quality bar
 
@@ -372,6 +379,17 @@ A good retrospective report should:
 ### Missing session trace
 
 Use stage logs, commits, review artifacts, and changed files. State that trace-derived timing and tool metrics are partial.
+
+### Trace present but `session_meta.cwd` missing or unreliable
+
+Do not guess a repo root from broad filesystem search.
+
+Use one of these anchors:
+
+- operator-provided project root;
+- a single candidate root implied by repeated trace-linked file paths.
+
+If those anchors do not converge on one reliable root, stop and record the ambiguity instead of widening the search.
 
 ### No structured stage logs
 

@@ -38,6 +38,7 @@ Outputs:
 - data-quality notes
 
 The agent must resolve `session_id` and find the canonical trace file before calling the CLI. If `--logs-dir` or `--artifacts-dir` is omitted, `scan` tries the standard directories derived from `session_meta.cwd` after the trace file is provided.
+If `session_meta.cwd` is missing or unreliable, resolve a confirmed `project root` first. Do not pass guessed `--logs-dir` or `--artifacts-dir` values just to make the command run.
 
 ### `report`
 
@@ -105,6 +106,7 @@ The CLI tries to infer:
 - Unknown event schemas are preserved but may not be fully classified.
 - Markdown stage logs are parsed best when they begin with a YAML block.
 - `scan` does not discover the session trace for you; the agent must pass `--session <file>`.
+- when `session_meta.cwd` is missing or stale, the agent must resolve `project root` before supplying optional directories.
 - `scan` only treats `.dossier/logs` as in-scope when the trace shows those log paths as created or changed in the analyzed session.
 - `scan` does not replace manual scope review when the trace contains multiple tasks or multiple features.
 - The generated report is a draft. The agent should read the cited artifacts before finalizing findings.
