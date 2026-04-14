@@ -1,7 +1,8 @@
 report - Generate a Markdown retrospective draft.
 
 Usage:
-  node scripts/retro-cli.mjs report --session <file> --logs-dir <dir> --out <file>
+  node scripts/retro-cli.mjs report --session <file> --phase <name>
+  node scripts/retro-cli.mjs report --session <file> --out-root <dir>
   node scripts/retro-cli.mjs report --phase <name> --title <text> --out <file>
 
 Options:
@@ -10,9 +11,11 @@ Options:
   --logs-dir <dir>            Directory containing stage logs.
   --artifacts-dir <dir>       Project root or evidence root.
   --skills-dir <dir>          Directory containing skill folders.
+  --out-root <dir>            Root directory for durable retrospective outputs.
   --phase <name>              Optional phase label for the report.
   --title <text>              Title override.
-  --out <file>                Output Markdown path.
+  --out <file>                Output Markdown path override.
 
 Notes:
   - The generated report is a draft; read the cited artifacts before finalizing conclusions.
+  - Without --out, the command writes retrospective-report.md into the durable run directory selected for this retrospective scope.

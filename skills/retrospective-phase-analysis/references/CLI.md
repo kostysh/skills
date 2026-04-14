@@ -20,8 +20,12 @@ Build an evidence summary and metrics snapshot.
 
 ```bash
 node scripts/retro-cli.mjs scan \
+  --session /path/to/rollout.jsonl
+
+node scripts/retro-cli.mjs scan \
   --session /path/to/rollout.jsonl \
-  --out out/scan-summary.json
+  --out-root /path/to/analysis-root \
+  --pretty
 ```
 
 Outputs:
@@ -39,6 +43,8 @@ Outputs:
 
 The agent must resolve `session_id` and find the canonical trace file before calling the CLI. If `--logs-dir` or `--artifacts-dir` is omitted, `scan` tries the standard directories derived from `session_meta.cwd` after the trace file is provided.
 If `session_meta.cwd` is missing or unreliable, resolve a confirmed `project root` first. Do not pass guessed `--logs-dir` or `--artifacts-dir` values just to make the command run.
+`--artifacts-dir` may help evidence discovery, but it does not redefine the durable retrospective root. Only `--out-root` may override that root explicitly.
+Without `--out`, commands write into a durable bundle under `.dossier/retro/<scope>/<run>/` when a dossier-managed project root is available. Otherwise they fall back to `out/retro/<scope>/<run>/`.
 
 ### `report`
 
@@ -47,11 +53,12 @@ Generate a Markdown draft retrospective report.
 ```bash
 node scripts/retro-cli.mjs report \
   --session /path/to/rollout.jsonl \
-  --logs-dir /path/to/.dossier/logs \
-  --artifacts-dir /path/to/project \
   --phase "implementation" \
-  --title "Retrospective: F-0016 implementation" \
-  --out out/retrospective-report.md
+  --title "Retrospective: F-0016 implementation"
+
+node scripts/retro-cli.mjs report \
+  --session /path/to/rollout.jsonl \
+  --out /path/to/retrospective-report.md
 ```
 
 ### `skill-audit`
@@ -61,9 +68,7 @@ Generate a skill-focused Markdown draft.
 ```bash
 node scripts/retro-cli.mjs skill-audit \
   --session /path/to/rollout.jsonl \
-  --logs-dir /path/to/.dossier/logs \
-  --skills-dir /path/to/skills \
-  --out out/skill-audit.md
+  --skills-dir /path/to/skills
 ```
 
 ### `logging-review`
@@ -72,8 +77,7 @@ Generate a logging-quality and improvement draft.
 
 ```bash
 node scripts/retro-cli.mjs logging-review \
-  --logs-dir /path/to/.dossier/logs \
-  --out out/logging-review.md
+  --session /path/to/rollout.jsonl
 ```
 
 ## Supported options
@@ -84,7 +88,8 @@ node scripts/retro-cli.mjs logging-review \
 - `--skills-dir <dir>`: directory containing skill folders
 - `--phase <name>`: optional phase label for the report
 - `--title <text>`: title override
-- `--out <file>`: output path
+- `--out <file>`: exact output file override
+- `--out-root <dir>`: override the retrospective root directory
 - `--pretty`: pretty-print JSON for `scan`
 - `--help`: show command help
 

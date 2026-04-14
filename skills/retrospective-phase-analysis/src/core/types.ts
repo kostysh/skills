@@ -78,6 +78,24 @@ export interface ScanSourceOptions {
   logsDir?: string;
   artifactsDir?: string;
   skillsDir?: string;
+  outRoot?: string;
+}
+
+export type RetroOutputMode = 'dossier-default' | 'fallback-default' | 'root-override';
+
+export interface RetroOutputLayout {
+  mode: RetroOutputMode;
+  root: string;
+  scopeSlug: string;
+  runSlug: string;
+  runDir: string;
+  filePath: string;
+  files: {
+    scanSummary: string;
+    retrospectiveReport: string;
+    skillAudit: string;
+    loggingReview: string;
+  };
 }
 
 export interface ScanSummary {
@@ -87,6 +105,7 @@ export interface ScanSummary {
     logsDir: string | null;
     artifactsDir: string | null;
     skillsDir: string | null;
+    outRoot: string | null;
   };
   resolved: {
     session: string | null;
@@ -140,5 +159,6 @@ export interface ScanSummary {
     scannedCount: number;
     sample: string[];
   };
+  recommendedOutput: RetroOutputLayout;
   candidateIncidents: CandidateIncident[];
 }

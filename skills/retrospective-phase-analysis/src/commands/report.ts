@@ -3,9 +3,9 @@ import { buildReportMarkdown } from '../render/report-markdown.ts';
 import {
   COMMON_OPTION_SPECS,
   parseOptions,
+  resolveCommandOutputPath,
   toCommonCommandInput,
   toOptionalString,
-  toRequiredString,
   writeText,
 } from './shared.ts';
 import type { CommandDefinition, ReportCommandInput } from './types.ts';
@@ -14,7 +14,8 @@ export const REPORT_COMMAND: CommandDefinition<ReportCommandInput> = {
   name: 'report',
   summary: 'Generate a Markdown retrospective draft.',
   usage: [
-    'node scripts/retro-cli.mjs report --session <file> --logs-dir <dir> --out <file>',
+    'node scripts/retro-cli.mjs report --session <file> --phase <name>',
+    'node scripts/retro-cli.mjs report --session <file> --out-root <dir>',
     'node scripts/retro-cli.mjs report --phase <name> --title <text> --out <file>',
   ],
   options: [
@@ -35,19 +36,22 @@ export const REPORT_COMMAND: CommandDefinition<ReportCommandInput> = {
       name: 'out',
       type: 'string',
       valueLabel: '<file>',
-      description: 'Output Markdown path.',
-      required: true,
+      description: 'Output Markdown path override.',
     },
   ],
   notes: [
     'The generated report is a draft; read the cited artifacts before finalizing conclusions.',
+    'Without --out, the command writes retrospective-report.md into the durable run directory selected for this retrospective scope.',
   ],
   parseArgs(argv) {
     const options = parseOptions(argv, this.options);
     const input: ReportCommandInput = {
       ...toCommonCommandInput(options),
-      out: toRequiredString(options.out, 'report requires --out'),
     };
+    const out = toOptionalString(options.out);
+    if (out) {
+      input.out = out;
+    }
     const phase = toOptionalString(options.phase);
     const title = toOptionalString(options.title);
     if (phase) {
@@ -60,6 +64,7 @@ export const REPORT_COMMAND: CommandDefinition<ReportCommandInput> = {
   },
   run(input) {
     const scan = buildScanSummary(input);
-    writeText(input.out, buildReportMarkdown(scan, input));
+    const outputPath = resolveCommandOutputPath(scan, input, 'report');
+    writeText(outputPath, buildReportMarkdown(scan, input));
   },
 };

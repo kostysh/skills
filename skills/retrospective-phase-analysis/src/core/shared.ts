@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import type { RetroOutputLayout, ScanSummary } from './types.ts';
+
 export function readText(filePath: string): string {
   return fs.readFileSync(filePath, 'utf8');
 }
@@ -189,4 +191,163 @@ export function stringFromUnknown(value: unknown, fallback: string): string {
 
 export function sortUnique(values: string[]): string[] {
   return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
+}
+
+export type RetroOutputCommandName = 'scan' | 'report' | 'skill-audit' | 'logging-review';
+
+const RETRO_OUTPUT_FILE_NAMES = {
+  scan: 'scan-summary.json',
+  report: 'retrospective-report.md',
+  'skill-audit': 'skill-audit.md',
+  'logging-review': 'logging-review.md',
+} as const;
+
+function slugifyOutputPart(value: string): string {
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replaceAll(/[^a-z0-9]+/gu, '-')
+    .replaceAll(/^-+|-+$/gu, '');
+  return normalized.length > 0 ? normalized : 'session-unknown';
+}
+
+function shortSessionId(sessionId: string | null): string | null {
+  if (!sessionId) {
+    return null;
+  }
+  const firstSegment = sessionId.split('-')[0];
+  return firstSegment && firstSegment.length > 0
+    ? firstSegment.toLowerCase()
+    : slugifyOutputPart(sessionId);
+}
+
+function formatCompactTimestamp(value: string | null): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.valueOf())) {
+    return null;
+  }
+
+  const year = String(date.getUTCFullYear());
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+  return [year, month, day].join('') + "-" + [hours, minutes, seconds].join('');
+}
+
+function inferProjectRootFromLogsDir(logsDir: string | null): string | null {
+  if (!logsDir) {
+    return null;
+  }
+
+  const normalized = path.resolve(logsDir);
+  const parent = path.dirname(normalized);
+  if (path.basename(normalized) !== 'logs' || path.basename(parent) !== '.dossier') {
+    return null;
+  }
+
+  return path.dirname(parent);
+}
+
+function resolveRetroRoot(summary: ScanSummary, explicitRoot?: string): Pick<RetroOutputLayout, 'mode' | 'root'> {
+  if (explicitRoot) {
+    return {
+      mode: 'root-override',
+      root: path.resolve(explicitRoot),
+    };
+  }
+
+  const projectRoot = summary.session.projectRoot ?? inferProjectRootFromLogsDir(summary.resolved.logsDir);
+
+  if (projectRoot && fs.existsSync(path.join(projectRoot, '.dossier'))) {
+    return {
+      mode: 'dossier-default',
+      root: path.join(projectRoot, '.dossier', 'retro'),
+    };
+  }
+
+  if (projectRoot) {
+    return {
+      mode: 'fallback-default',
+      root: path.join(projectRoot, 'out', 'retro'),
+    };
+  }
+
+  return {
+    mode: 'fallback-default',
+    root: path.resolve('out', 'retro'),
+  };
+}
+
+function resolveScopeSlug(summary: ScanSummary): string {
+  if (summary.scope.mentioned_backlog_items.length === 1) {
+    return slugifyOutputPart(summary.scope.mentioned_backlog_items[0] ?? 'session-unknown');
+  }
+
+  if (summary.scope.mentioned_features.length === 1) {
+    return slugifyOutputPart(summary.scope.mentioned_features[0] ?? 'session-unknown');
+  }
+
+  const sessionSlug = shortSessionId(summary.session.sessionId);
+  return sessionSlug ? `session-${sessionSlug}` : 'session-unknown';
+}
+
+function resolveBaseRunSlug(summary: ScanSummary): string {
+  const timestamp = formatCompactTimestamp(summary.session.firstTimestamp);
+  const sessionSlug = shortSessionId(summary.session.sessionId);
+  const parts = ['retrospective', timestamp, sessionSlug].filter(
+    (value): value is string => typeof value === 'string' && value.length > 0,
+  );
+  return parts.join('-');
+}
+
+function resolveRunLocation(
+  root: string,
+  scopeSlug: string,
+  baseRunSlug: string,
+  targetFileName: string,
+): Pick<RetroOutputLayout, 'runSlug' | 'runDir'> {
+  const scopeDir = path.join(root, scopeSlug);
+
+  for (let attempt = 1; attempt < 1000; attempt += 1) {
+    const runSlug = attempt === 1 ? baseRunSlug : `${baseRunSlug}-r${attempt}`;
+    const runDir = path.join(scopeDir, runSlug);
+    const targetFilePath = path.join(runDir, targetFileName);
+    if (!fs.existsSync(targetFilePath)) {
+      return { runSlug, runDir };
+    }
+  }
+
+  throw new Error(`Could not allocate retrospective output path for ${targetFileName}`);
+}
+
+export function resolveRetroOutputLayout(
+  summary: ScanSummary,
+  options: { commandName: RetroOutputCommandName; outRoot?: string },
+): RetroOutputLayout {
+  const targetFileName = RETRO_OUTPUT_FILE_NAMES[options.commandName];
+  const rootInfo = resolveRetroRoot(summary, options.outRoot);
+  const scopeSlug = resolveScopeSlug(summary);
+  const baseRunSlug = resolveBaseRunSlug(summary);
+  const runInfo = resolveRunLocation(rootInfo.root, scopeSlug, baseRunSlug, targetFileName);
+
+  return {
+    mode: rootInfo.mode,
+    root: rootInfo.root,
+    scopeSlug,
+    runSlug: runInfo.runSlug,
+    runDir: runInfo.runDir,
+    filePath: path.join(runInfo.runDir, targetFileName),
+    files: {
+      scanSummary: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES.scan),
+      retrospectiveReport: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES.report),
+      skillAudit: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES['skill-audit']),
+      loggingReview: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES['logging-review']),
+    },
+  };
 }

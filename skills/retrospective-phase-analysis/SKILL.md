@@ -144,7 +144,21 @@ When one session mentions multiple work items, partition the scope in this order
 
 Stop expansion when the partition remains ambiguous after those checks. Record the ambiguity in the manifest instead of guessing.
 
-By default, place generated outputs under a local `out/` directory for first-pass analysis. Write inside a project-owned documentation or analysis directory only when the operator or project convention explicitly requires durable project artifacts.
+By default, use a durable retrospective root instead of flat files.
+
+- For dossier-driven projects, write under `.dossier/retro/`.
+- If the operator explicitly requests another root, use that root.
+- If no dossier-managed project root can be confirmed, fall back to local `out/retro/`.
+
+Within the root, keep every analysis under `<scope-slug>/<run-slug>/` so old and new retrospectives never overwrite each other. The standard bundle is:
+
+- `scan-summary.json`
+- `retrospective-report.md`
+- `skill-audit.md`
+- `logging-review.md`
+
+Treat `--out <file>` as a low-level override, not the normal workflow.
+Treat `--artifacts-dir` only as an evidence hint; it must not silently redefine the retrospective root.
 
 ### 2) Build the evidence manifest
 
@@ -351,10 +365,10 @@ Minimum viable workflow:
 
 When Node.js is available, use:
 
-- `scripts/retro-cli.mjs scan --session <file> --out out/scan-summary.json` to inventory evidence and generate metrics;
-- `scripts/retro-cli.mjs report ...` to create a draft retrospective report;
-- `scripts/retro-cli.mjs logging-review ...` to generate logging findings;
-- `scripts/retro-cli.mjs skill-audit ...` to generate a skill-focused draft.
+- `scripts/retro-cli.mjs scan --session <file>` to inventory evidence and create or extend the current retrospective bundle;
+- `scripts/retro-cli.mjs report --session <file> ...` to add `retrospective-report.md` to that bundle;
+- `scripts/retro-cli.mjs logging-review --session <file> ...` to add `logging-review.md`;
+- `scripts/retro-cli.mjs skill-audit --session <file> ...` to add `skill-audit.md`.
 
 Read the CLI reference first:
 

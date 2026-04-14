@@ -174,6 +174,49 @@ void test('buildScanSummary only parses trace-confirmed stage logs instead of re
   }
 });
 
+void test('buildScanSummary keeps the durable output root tied to the confirmed project root instead of artifacts-dir', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const evidenceRoot = path.join(tempDir, 'evidence-root');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+    await mkdir(evidenceRoot, { recursive: true });
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b4', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      logsDir,
+      artifactsDir: evidenceRoot,
+      skillsDir: fixturePath('skills'),
+    });
+
+    assert.equal(summary.recommendedOutput.mode, 'dossier-default');
+    assert.equal(summary.recommendedOutput.root, path.join(projectRoot, '.dossier', 'retro'));
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 void test('buildScanSummary does not scope stage logs from read-only or prose-only mentions', () => {
   const summary = buildScanSummary({
     session: fixturePath('sessions', 'phase-session-with-log-read-only.jsonl'),

@@ -4,7 +4,8 @@
     "session": "/abs/fixtures/sessions/phase-session.jsonl",
     "logsDir": "/abs/fixtures/logs",
     "artifactsDir": "/abs/fixtures/artifacts",
-    "skillsDir": "/abs/fixtures/skills"
+    "skillsDir": "/abs/fixtures/skills",
+    "outRoot": null
   },
   "resolved": {
     "session": "/abs/fixtures/sessions/phase-session.jsonl",
@@ -32,7 +33,12 @@
       "functions.exec_command": 2,
       "functions.update_plan": 1
     },
-    "sampleEventTypes": ["session_meta", "assistant", "tool_call", "tool_result"]
+    "sampleEventTypes": [
+      "session_meta",
+      "assistant",
+      "tool_call",
+      "tool_result"
+    ]
   },
   "stageLogs": {
     "count": 0,
@@ -50,8 +56,12 @@
   },
   "scope": {
     "project_root": "/abs/fixtures/artifacts",
-    "mentioned_backlog_items": ["CF-0016"],
-    "mentioned_features": ["F-0016"],
+    "mentioned_backlog_items": [
+      "CF-0016"
+    ],
+    "mentioned_features": [
+      "F-0016"
+    ],
     "touched_paths": [
       "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md",
       "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md",
@@ -67,7 +77,9 @@
       "/abs/fixtures/artifacts/docs/features/F-0016-retro.md"
     ],
     "candidate_stage_logs": [],
-    "candidate_review_artifacts": ["/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md"],
+    "candidate_review_artifacts": [
+      "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md"
+    ],
     "candidate_verification_artifacts": [
       "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md"
     ],
@@ -105,5 +117,19 @@
       "evidence": "/abs/fixtures/sessions/phase-session.jsonl",
       "reason": "1 aborted/restarted turn(s) detected in the session trace."
     }
-  ]
+  ],
+  "recommendedOutput": {
+    "mode": "fallback-default",
+    "root": "/fixture/project/out/retro",
+    "scopeSlug": "cf-0016",
+    "runSlug": "retrospective-20260410-095900-019d7490",
+    "runDir": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490",
+    "filePath": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/scan-summary.json",
+    "files": {
+      "scanSummary": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/scan-summary.json",
+      "retrospectiveReport": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/retrospective-report.md",
+      "skillAudit": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/skill-audit.md",
+      "loggingReview": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/logging-review.md"
+    }
+  }
 }

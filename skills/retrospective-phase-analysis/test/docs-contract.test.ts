@@ -38,6 +38,9 @@ void test('SKILL.md keeps explicit selection, interop, and runtime-reference sec
     'references/REPORT-TEMPLATE.md',
     'references/SKILL-AUDIT-TEMPLATE.md',
     'references/LOGGING-IMPROVEMENTS-TEMPLATE.md',
+    '.dossier/retro/',
+    'out/retro/',
+    '<scope-slug>/<run-slug>/',
   ]);
 });
 
@@ -49,6 +52,7 @@ void test('CLI reference documents global help, version, and the four command su
     'node scripts/retro-cli.mjs help report',
     'node scripts/retro-cli.mjs --version',
     '--session <file>',
+    '--out-root <dir>',
     'scan',
     'report',
     'skill-audit',

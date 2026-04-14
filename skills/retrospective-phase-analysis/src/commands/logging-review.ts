@@ -3,8 +3,9 @@ import { buildLoggingReviewMarkdown } from '../render/logging-review-markdown.ts
 import {
   COMMON_OPTION_SPECS,
   parseOptions,
+  resolveCommandOutputPath,
   toCommonCommandInput,
-  toRequiredString,
+  toOptionalString,
   writeText,
 } from './shared.ts';
 import type { CommandDefinition, LoggingReviewCommandInput } from './types.ts';
@@ -12,27 +13,38 @@ import type { CommandDefinition, LoggingReviewCommandInput } from './types.ts';
 export const LOGGING_REVIEW_COMMAND: CommandDefinition<LoggingReviewCommandInput> = {
   name: 'logging-review',
   summary: 'Generate a logging-quality and improvement draft.',
-  usage: ['node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out <file>'],
+  usage: [
+    'node scripts/retro-cli.mjs logging-review --session <file>',
+    'node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out-root <dir>',
+    'node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out <file>',
+  ],
   options: [
     ...COMMON_OPTION_SPECS,
     {
       name: 'out',
       type: 'string',
       valueLabel: '<file>',
-      description: 'Output Markdown path.',
-      required: true,
+      description: 'Output Markdown path override.',
     },
   ],
-  notes: ['Logging review drafts focus on observability quality and follow-up automation ideas.'],
+  notes: [
+    'Logging review drafts focus on observability quality and follow-up automation ideas.',
+    'Without --out, the command writes logging-review.md into the durable run directory selected for this retrospective scope.',
+  ],
   parseArgs(argv) {
     const options = parseOptions(argv, this.options);
-    return {
+    const input: LoggingReviewCommandInput = {
       ...toCommonCommandInput(options),
-      out: toRequiredString(options.out, 'logging-review requires --out'),
     };
+    const out = toOptionalString(options.out);
+    if (out) {
+      input.out = out;
+    }
+    return input;
   },
   run(input) {
     const scan = buildScanSummary(input);
-    writeText(input.out, buildLoggingReviewMarkdown(scan));
+    const outputPath = resolveCommandOutputPath(scan, input, 'logging-review');
+    writeText(outputPath, buildLoggingReviewMarkdown(scan));
   },
 };

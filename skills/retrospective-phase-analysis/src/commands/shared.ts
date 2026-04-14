@@ -1,8 +1,10 @@
 import fs from 'node:fs';
 
-import { safeMkdirForFile } from '../core/shared.ts';
+import { resolveRetroOutputLayout, safeMkdirForFile } from '../core/shared.ts';
 import { createUsageError } from '../cli/errors.ts';
 import type { CommonCommandInput, OptionSpec } from './types.ts';
+import type { ScanSummary } from '../core/types.ts';
+import type { RetroOutputCommandName } from '../core/shared.ts';
 
 type ParsedOptions = Record<string, string | boolean>;
 
@@ -30,6 +32,12 @@ export const COMMON_OPTION_SPECS: OptionSpec[] = [
     type: 'string',
     valueLabel: '<dir>',
     description: 'Directory containing skill folders.',
+  },
+  {
+    name: 'out-root',
+    type: 'string',
+    valueLabel: '<dir>',
+    description: 'Root directory for durable retrospective outputs.',
   },
 ];
 
@@ -93,6 +101,7 @@ export function toCommonCommandInput(options: ParsedOptions): CommonCommandInput
   const logsDir = toOptionalString(options['logs-dir']);
   const artifactsDir = toOptionalString(options['artifacts-dir']);
   const skillsDir = toOptionalString(options['skills-dir']);
+  const outRoot = toOptionalString(options['out-root']);
 
   if (session) {
     input.session = session;
@@ -105,6 +114,9 @@ export function toCommonCommandInput(options: ParsedOptions): CommonCommandInput
   }
   if (skillsDir) {
     input.skillsDir = skillsDir;
+  }
+  if (outRoot) {
+    input.outRoot = outRoot;
   }
 
   return input;
@@ -133,4 +145,24 @@ export function writeJson(filePath: string, data: unknown, pretty = false): void
 export function writeText(filePath: string, data: string): void {
   safeMkdirForFile(filePath);
   fs.writeFileSync(filePath, data, 'utf8');
+}
+
+export function resolveCommandOutputPath(
+  summary: ScanSummary,
+  input: CommonCommandInput & { out?: string },
+  commandName: RetroOutputCommandName,
+): string {
+  const explicitOut = input.out;
+  if (typeof explicitOut === 'string' && explicitOut.length > 0) {
+    return explicitOut;
+  }
+
+  const layoutOptions: { commandName: RetroOutputCommandName; outRoot?: string } = {
+    commandName,
+  };
+  if (input.outRoot) {
+    layoutOptions.outRoot = input.outRoot;
+  }
+
+  return resolveRetroOutputLayout(summary, layoutOptions).filePath;
 }

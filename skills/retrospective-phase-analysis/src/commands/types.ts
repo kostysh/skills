@@ -29,23 +29,24 @@ export interface CommonCommandInput {
   logsDir?: string;
   artifactsDir?: string;
   skillsDir?: string;
+  outRoot?: string;
 }
 
 export interface ScanCommandInput extends CommonCommandInput {
-  out: string;
+  out?: string;
   pretty: boolean;
 }
 
 export interface ReportCommandInput extends CommonCommandInput {
-  out: string;
+  out?: string;
   phase?: string;
   title?: string;
 }
 
 export interface SkillAuditCommandInput extends CommonCommandInput {
-  out: string;
+  out?: string;
 }
 
 export interface LoggingReviewCommandInput extends CommonCommandInput {
-  out: string;
+  out?: string;
 }

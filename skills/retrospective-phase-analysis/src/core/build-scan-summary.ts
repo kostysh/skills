@@ -1,6 +1,7 @@
 import { extractTraceScope } from './extract-trace-scope.ts';
 import { inferCandidateIncidents } from './infer-candidate-incidents.ts';
 import { resolveStandardEvidenceDir } from './resolve-evidence-roots.ts';
+import { resolveRetroOutputLayout } from './shared.ts';
 import { summarizeLogs } from './summarize-logs.ts';
 import { summarizeSession } from './summarize-session.ts';
 import { summarizeSkills } from './summarize-skills.ts';
@@ -21,13 +22,14 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
 
   const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
 
-  return {
+  const summaryBase: Omit<ScanSummary, 'recommendedOutput'> = {
     generatedAt: new Date().toISOString(),
     inputs: {
       session: args.session ?? null,
       logsDir: args.logsDir ?? null,
       artifactsDir: args.artifactsDir ?? null,
       skillsDir: args.skillsDir ?? null,
+      outRoot: args.outRoot ?? null,
     },
     resolved: {
       session: args.session ?? null,
@@ -71,5 +73,17 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
       sample: scope.referenced_artifacts.slice(0, 50),
     },
     candidateIncidents,
+  };
+
+  const outputOptions: { commandName: 'scan'; outRoot?: string } = {
+    commandName: 'scan',
+  };
+  if (args.outRoot) {
+    outputOptions.outRoot = args.outRoot;
+  }
+
+  return {
+    ...summaryBase,
+    recommendedOutput: resolveRetroOutputLayout(summaryBase as ScanSummary, outputOptions),
   };
 }

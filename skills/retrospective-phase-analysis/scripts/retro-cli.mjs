@@ -153,6 +153,114 @@ function stringFromUnknown(value, fallback) {
 function sortUnique(values) {
 	return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
 }
+var RETRO_OUTPUT_FILE_NAMES = {
+	scan: "scan-summary.json",
+	report: "retrospective-report.md",
+	"skill-audit": "skill-audit.md",
+	"logging-review": "logging-review.md"
+};
+function slugifyOutputPart(value) {
+	const normalized = value.trim().toLowerCase().replaceAll(/[^a-z0-9]+/gu, "-").replaceAll(/^-+|-+$/gu, "");
+	return normalized.length > 0 ? normalized : "session-unknown";
+}
+function shortSessionId(sessionId) {
+	if (!sessionId) return null;
+	const firstSegment = sessionId.split("-")[0];
+	return firstSegment && firstSegment.length > 0 ? firstSegment.toLowerCase() : slugifyOutputPart(sessionId);
+}
+function formatCompactTimestamp(value) {
+	if (!value) return null;
+	const date = new Date(value);
+	if (Number.isNaN(date.valueOf())) return null;
+	const year = String(date.getUTCFullYear());
+	const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+	const day = String(date.getUTCDate()).padStart(2, "0");
+	const hours = String(date.getUTCHours()).padStart(2, "0");
+	const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+	const seconds = String(date.getUTCSeconds()).padStart(2, "0");
+	return [
+		year,
+		month,
+		day
+	].join("") + "-" + [
+		hours,
+		minutes,
+		seconds
+	].join("");
+}
+function inferProjectRootFromLogsDir(logsDir) {
+	if (!logsDir) return null;
+	const normalized = path.resolve(logsDir);
+	const parent = path.dirname(normalized);
+	if (path.basename(normalized) !== "logs" || path.basename(parent) !== ".dossier") return null;
+	return path.dirname(parent);
+}
+function resolveRetroRoot(summary, explicitRoot) {
+	if (explicitRoot) return {
+		mode: "root-override",
+		root: path.resolve(explicitRoot)
+	};
+	const projectRoot = summary.session.projectRoot ?? inferProjectRootFromLogsDir(summary.resolved.logsDir);
+	if (projectRoot && fs.existsSync(path.join(projectRoot, ".dossier"))) return {
+		mode: "dossier-default",
+		root: path.join(projectRoot, ".dossier", "retro")
+	};
+	if (projectRoot) return {
+		mode: "fallback-default",
+		root: path.join(projectRoot, "out", "retro")
+	};
+	return {
+		mode: "fallback-default",
+		root: path.resolve("out", "retro")
+	};
+}
+function resolveScopeSlug(summary) {
+	if (summary.scope.mentioned_backlog_items.length === 1) return slugifyOutputPart(summary.scope.mentioned_backlog_items[0] ?? "session-unknown");
+	if (summary.scope.mentioned_features.length === 1) return slugifyOutputPart(summary.scope.mentioned_features[0] ?? "session-unknown");
+	const sessionSlug = shortSessionId(summary.session.sessionId);
+	return sessionSlug ? `session-${sessionSlug}` : "session-unknown";
+}
+function resolveBaseRunSlug(summary) {
+	return [
+		"retrospective",
+		formatCompactTimestamp(summary.session.firstTimestamp),
+		shortSessionId(summary.session.sessionId)
+	].filter((value) => typeof value === "string" && value.length > 0).join("-");
+}
+function resolveRunLocation(root, scopeSlug, baseRunSlug, targetFileName) {
+	const scopeDir = path.join(root, scopeSlug);
+	for (let attempt = 1; attempt < 1e3; attempt += 1) {
+		const runSlug = attempt === 1 ? baseRunSlug : `${baseRunSlug}-r${attempt}`;
+		const runDir = path.join(scopeDir, runSlug);
+		const targetFilePath = path.join(runDir, targetFileName);
+		if (!fs.existsSync(targetFilePath)) return {
+			runSlug,
+			runDir
+		};
+	}
+	throw new Error(`Could not allocate retrospective output path for ${targetFileName}`);
+}
+function resolveRetroOutputLayout(summary, options) {
+	const targetFileName = RETRO_OUTPUT_FILE_NAMES[options.commandName];
+	const rootInfo = resolveRetroRoot(summary, options.outRoot);
+	const scopeSlug = resolveScopeSlug(summary);
+	const baseRunSlug = resolveBaseRunSlug(summary);
+	const runInfo = resolveRunLocation(rootInfo.root, scopeSlug, baseRunSlug, targetFileName);
+	return {
+		mode: rootInfo.mode,
+		root: rootInfo.root,
+		scopeSlug,
+		runSlug: runInfo.runSlug,
+		runDir: runInfo.runDir,
+		filePath: path.join(runInfo.runDir, targetFileName),
+		files: {
+			scanSummary: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES.scan),
+			retrospectiveReport: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES.report),
+			skillAudit: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES["skill-audit"]),
+			loggingReview: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES["logging-review"])
+		}
+	};
+}
 //#endregion
 //#region src/core/extract-trace-scope.ts
 var SKIPPED_KEYS = new Set([
@@ -741,13 +849,14 @@ function buildScanSummary(args) {
 	});
 	const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
 	const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
-	return {
+	const summaryBase = {
 		generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
 		inputs: {
 			session: args.session ?? null,
 			logsDir: args.logsDir ?? null,
 			artifactsDir: args.artifactsDir ?? null,
-			skillsDir: args.skillsDir ?? null
+			skillsDir: args.skillsDir ?? null,
+			outRoot: args.outRoot ?? null
 		},
 		resolved: {
 			session: args.session ?? null,
@@ -791,6 +900,12 @@ function buildScanSummary(args) {
 			sample: scope.referenced_artifacts.slice(0, 50)
 		},
 		candidateIncidents
+	};
+	const outputOptions = { commandName: "scan" };
+	if (args.outRoot) outputOptions.outRoot = args.outRoot;
+	return {
+		...summaryBase,
+		recommendedOutput: resolveRetroOutputLayout(summaryBase, outputOptions)
 	};
 }
 //#endregion
@@ -905,6 +1020,12 @@ var COMMON_OPTION_SPECS = [
 		type: "string",
 		valueLabel: "<dir>",
 		description: "Directory containing skill folders."
+	},
+	{
+		name: "out-root",
+		type: "string",
+		valueLabel: "<dir>",
+		description: "Root directory for durable retrospective outputs."
 	}
 ];
 function parseOptions(argv, specs) {
@@ -943,10 +1064,12 @@ function toCommonCommandInput(options) {
 	const logsDir = toOptionalString(options["logs-dir"]);
 	const artifactsDir = toOptionalString(options["artifacts-dir"]);
 	const skillsDir = toOptionalString(options["skills-dir"]);
+	const outRoot = toOptionalString(options["out-root"]);
 	if (session) input.session = session;
 	if (logsDir) input.logsDir = logsDir;
 	if (artifactsDir) input.artifactsDir = artifactsDir;
 	if (skillsDir) input.skillsDir = skillsDir;
+	if (outRoot) input.outRoot = outRoot;
 	return input;
 }
 function toRequiredString(value, message) {
@@ -967,30 +1090,40 @@ function writeText(filePath, data) {
 	safeMkdirForFile(filePath);
 	fs.writeFileSync(filePath, data, "utf8");
 }
+function resolveCommandOutputPath(summary, input, commandName) {
+	const explicitOut = input.out;
+	if (typeof explicitOut === "string" && explicitOut.length > 0) return explicitOut;
+	const layoutOptions = { commandName };
+	if (input.outRoot) layoutOptions.outRoot = input.outRoot;
+	return resolveRetroOutputLayout(summary, layoutOptions).filePath;
+}
 //#endregion
 //#region src/commands/logging-review.ts
 var LOGGING_REVIEW_COMMAND = {
 	name: "logging-review",
 	summary: "Generate a logging-quality and improvement draft.",
-	usage: ["node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out <file>"],
+	usage: [
+		"node scripts/retro-cli.mjs logging-review --session <file>",
+		"node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out-root <dir>",
+		"node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out <file>"
+	],
 	options: [...COMMON_OPTION_SPECS, {
 		name: "out",
 		type: "string",
 		valueLabel: "<file>",
-		description: "Output Markdown path.",
-		required: true
+		description: "Output Markdown path override."
 	}],
-	notes: ["Logging review drafts focus on observability quality and follow-up automation ideas."],
+	notes: ["Logging review drafts focus on observability quality and follow-up automation ideas.", "Without --out, the command writes logging-review.md into the durable run directory selected for this retrospective scope."],
 	parseArgs(argv) {
 		const options = parseOptions(argv, this.options);
-		return {
-			...toCommonCommandInput(options),
-			out: toRequiredString(options.out, "logging-review requires --out")
-		};
+		const input = { ...toCommonCommandInput(options) };
+		const out = toOptionalString(options.out);
+		if (out) input.out = out;
+		return input;
 	},
 	run(input) {
 		const scan = buildScanSummary(input);
-		writeText(input.out, buildLoggingReviewMarkdown(scan));
+		writeText(resolveCommandOutputPath(scan, input, "logging-review"), buildLoggingReviewMarkdown(scan));
 	}
 };
 //#endregion
@@ -1105,7 +1238,11 @@ ${scopeAmbiguities}
 var REPORT_COMMAND = {
 	name: "report",
 	summary: "Generate a Markdown retrospective draft.",
-	usage: ["node scripts/retro-cli.mjs report --session <file> --logs-dir <dir> --out <file>", "node scripts/retro-cli.mjs report --phase <name> --title <text> --out <file>"],
+	usage: [
+		"node scripts/retro-cli.mjs report --session <file> --phase <name>",
+		"node scripts/retro-cli.mjs report --session <file> --out-root <dir>",
+		"node scripts/retro-cli.mjs report --phase <name> --title <text> --out <file>"
+	],
 	options: [
 		...COMMON_OPTION_SPECS,
 		{
@@ -1124,17 +1261,15 @@ var REPORT_COMMAND = {
 			name: "out",
 			type: "string",
 			valueLabel: "<file>",
-			description: "Output Markdown path.",
-			required: true
+			description: "Output Markdown path override."
 		}
 	],
-	notes: ["The generated report is a draft; read the cited artifacts before finalizing conclusions."],
+	notes: ["The generated report is a draft; read the cited artifacts before finalizing conclusions.", "Without --out, the command writes retrospective-report.md into the durable run directory selected for this retrospective scope."],
 	parseArgs(argv) {
 		const options = parseOptions(argv, this.options);
-		const input = {
-			...toCommonCommandInput(options),
-			out: toRequiredString(options.out, "report requires --out")
-		};
+		const input = { ...toCommonCommandInput(options) };
+		const out = toOptionalString(options.out);
+		if (out) input.out = out;
 		const phase = toOptionalString(options.phase);
 		const title = toOptionalString(options.title);
 		if (phase) input.phase = phase;
@@ -1143,7 +1278,7 @@ var REPORT_COMMAND = {
 	},
 	run(input) {
 		const scan = buildScanSummary(input);
-		writeText(input.out, buildReportMarkdown(scan, input));
+		writeText(resolveCommandOutputPath(scan, input, "report"), buildReportMarkdown(scan, input));
 	}
 };
 //#endregion
@@ -1151,15 +1286,18 @@ var REPORT_COMMAND = {
 var SCAN_COMMAND = {
 	name: "scan",
 	summary: "Build a JSON summary from a session trace and stage logs.",
-	usage: ["node scripts/retro-cli.mjs scan --session <file> --logs-dir <dir> --out <file>", "node scripts/retro-cli.mjs scan --session <file> --out <file> --pretty"],
+	usage: [
+		"node scripts/retro-cli.mjs scan --session <file>",
+		"node scripts/retro-cli.mjs scan --session <file> --out-root <dir> --pretty",
+		"node scripts/retro-cli.mjs scan --session <file> --out <file> --pretty"
+	],
 	options: [
 		...COMMON_OPTION_SPECS,
 		{
 			name: "out",
 			type: "string",
 			valueLabel: "<file>",
-			description: "Output JSON path.",
-			required: true
+			description: "Output JSON path override."
 		},
 		{
 			name: "pretty",
@@ -1170,19 +1308,23 @@ var SCAN_COMMAND = {
 	notes: [
 		"The agent must resolve the target session and pass the canonical trace file via --session.",
 		"The JSON summary is heuristic and should be validated against the cited artifacts.",
-		"If logs or artifacts directories are omitted, the command tries standard project directories derived from session_meta.cwd."
+		"If logs or artifacts directories are omitted, the command tries standard project directories derived from session_meta.cwd.",
+		"Without --out, the command writes to a durable run directory under .dossier/retro when a dossier-managed project root is available."
 	],
 	parseArgs(argv) {
 		const options = parseOptions(argv, this.options);
-		return {
+		const input = {
 			...toCommonCommandInput(options),
 			session: toRequiredString(options.session, "scan requires --session"),
-			out: toRequiredString(options.out, "scan requires --out"),
 			pretty: toBoolean(options.pretty)
 		};
+		const out = toOptionalString(options.out);
+		if (out) input.out = out;
+		return input;
 	},
 	run(input) {
-		writeJson(input.out, buildScanSummary(input), input.pretty);
+		const summary = buildScanSummary(input);
+		writeJson(resolveCommandOutputPath(summary, input, "scan"), summary, input.pretty);
 	}
 };
 //#endregion
@@ -1243,25 +1385,28 @@ ${rows}
 var SKILL_AUDIT_COMMAND = {
 	name: "skill-audit",
 	summary: "Generate a skill-focused Markdown draft.",
-	usage: ["node scripts/retro-cli.mjs skill-audit --logs-dir <dir> --skills-dir <dir> --out <file>"],
+	usage: [
+		"node scripts/retro-cli.mjs skill-audit --session <file> --skills-dir <dir>",
+		"node scripts/retro-cli.mjs skill-audit --skills-dir <dir> --out-root <dir>",
+		"node scripts/retro-cli.mjs skill-audit --logs-dir <dir> --skills-dir <dir> --out <file>"
+	],
 	options: [...COMMON_OPTION_SPECS, {
 		name: "out",
 		type: "string",
 		valueLabel: "<file>",
-		description: "Output Markdown path.",
-		required: true
+		description: "Output Markdown path override."
 	}],
-	notes: ["Use this draft as a triage aid before editing skill instructions or process policy."],
+	notes: ["Use this draft as a triage aid before editing skill instructions or process policy.", "Without --out, the command writes skill-audit.md into the durable run directory selected for this retrospective scope."],
 	parseArgs(argv) {
 		const options = parseOptions(argv, this.options);
-		return {
-			...toCommonCommandInput(options),
-			out: toRequiredString(options.out, "skill-audit requires --out")
-		};
+		const input = { ...toCommonCommandInput(options) };
+		const out = toOptionalString(options.out);
+		if (out) input.out = out;
+		return input;
 	},
 	run(input) {
 		const scan = buildScanSummary(input);
-		writeText(input.out, buildSkillAuditMarkdown(scan));
+		writeText(resolveCommandOutputPath(scan, input, "skill-audit"), buildSkillAuditMarkdown(scan));
 	}
 };
 //#endregion
