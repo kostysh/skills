@@ -91,6 +91,95 @@ When creating or modifying skills:
 - Include explicit "When to use" and "When NOT to use" sections
 - Define interop priority when the skill works alongside others
 
+## Documentation Layers
+
+Every skill should make its documentation layers explicit.
+
+Active normative surface:
+
+- `SKILL.md`
+- any `references/*` files that `SKILL.md` explicitly points to as required guidance
+
+Supporting or historical surface:
+
+- `docs/*`
+- `docs/issues/*`
+- implementation logs
+- refactoring plans
+- analysis notes
+
+Rules:
+
+- Do not treat `docs/*` as active instruction by default.
+- Historical or analytical documents may inform a change, but they do not override the skill unless `SKILL.md` explicitly promotes them into the active workflow.
+- When a skill has both active references and historical docs, the distinction should be obvious from `SKILL.md`.
+
+## Workflow Stages vs Shipped CLI
+
+Some skills define workflow stages, CLI commands, or both.
+
+Rules:
+
+- If a skill contains both process stages and runnable commands, separate them explicitly.
+- A workflow stage is not a shipped CLI command unless the runtime actually exposes it.
+- Do not present a stage name as a runnable command unless it appears in the built runtime/help surface.
+- If a code-backed skill documents a command surface, the help text, runtime behavior, and tests must protect that boundary.
+
+Recommended practice:
+
+- label workflow sections clearly, for example `Workflow stage: ...`
+- label runnable commands clearly, for example `CLI command: ...`
+
+## Docs / Runtime / Test Parity
+
+For code-backed skills, machine-facing behavior must stay aligned across:
+
+- `SKILL.md`
+- active `references/*`
+- built runtime in `scripts/`
+- tests
+
+Rules:
+
+- Do not change command semantics only in prose.
+- If docs promise a command, flag, output field, error code, path contract, or artifact contract, the runtime and tests must be updated in the same change set.
+- Prefer contract-style tests or snapshots for help output, JSON fields, error codes, and path/output conventions.
+- When a skill references built artifacts, keep those references aligned with `scripts/`, not `src/`.
+
+## Runtime-Specific Discovery
+
+Portable skills must not hide runtime-specific environment assumptions inside generic utility contracts.
+
+Examples of runtime-specific discovery:
+
+- session store lookup
+- runtime-specific environment variables
+- local trace/log storage layout
+- agent-platform-specific working directories
+
+Rules:
+
+- If discovery depends on a specific agent runtime, keep that logic in agent-side instructions unless the skill is explicitly runtime-specific.
+- Do not hardcode one platform's local session/log layout into a portable CLI contract.
+- If a runtime-specific example is useful, label it as an example, not as a universal rule.
+
+## Reference Reachability and Naming
+
+Active references should be easy for the agent to find.
+
+Rules:
+
+- Every required `references/*` file should be reachable from `SKILL.md`.
+- Do not keep hidden mandatory rules in orphan reference files.
+- Use `docs/issues/` for proposals, bug reports, and investigations; they are non-normative unless promoted explicitly by `SKILL.md`.
+- For large skills, provide a short `Start here` or equivalent navigation section.
+
+Naming convention:
+
+- use lowercase names for ordinary reference files
+- reserve uppercase reference filenames for templates or other intentionally special artifacts
+- keep naming stable enough that agents can infer whether a file is an active reference, a template, or historical analysis
+
 ## Portable Skills (Required)
 
 All skills in this repository must be created and maintained as **PORTABLE** skills.
