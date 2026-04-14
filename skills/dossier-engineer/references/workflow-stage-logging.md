@@ -9,6 +9,7 @@ This reference defines the logging contract for three workflow stages only:
 - `Workflow stage: implementation`
 
 It is not a generic logging policy for every command or future stage.
+It does not apply to `CLI command: feature-intake`; use [feature-intake-logging.md](feature-intake-logging.md) for intake telemetry.
 
 Use it together with the relevant stage in [../SKILL.md](../SKILL.md) and the detailed stage step references.
 

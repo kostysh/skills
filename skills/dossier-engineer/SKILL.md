@@ -44,6 +44,7 @@ Backlog source of truth:
 
 Canonical process artifacts:
 
+- `.dossier/logs/<feature-id>/feature-intake-<cycle>.md` — command-level process telemetry for `feature-intake`.
 - `.dossier/logs/<feature>/<stage>-<cycle>.md` — workflow-stage process telemetry for `spec-compact`, `plan-slice`, and `implementation`.
 - `.dossier/ops/<session>/<episode>.md` — session-level ops telemetry for cross-skill migration, repair, or audit-infrastructure episodes that do not fit one dossier stage.
 - `.dossier/verification/<feature>/<step>-<event>.json` — verification bundle result from `dossier-verify`.
@@ -239,6 +240,7 @@ For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-sl
 
 1. Finish the command’s local work.
 2. Run the command-specific checks.
+   For `feature-intake`, if an intake logging trigger fired, the required intake log must be open and current according to [Feature intake logging](references/feature-intake-logging.md).
 3. Perform manual debt review on the changed scope.
 4. Run `node scripts/dossier.mjs debt-audit --changed-only`.
 5. Re-check dependencies, adjacent seams, delivered dossiers, architecture, and repo ADRs.
@@ -248,6 +250,8 @@ For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-sl
 9. If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.
 10. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
 11. Only after `process_complete: true` and required backlog actualization may the agent say the step is complete.
+
+For `feature-intake`, process telemetry is command-level and lives in the intake log, not in workflow-stage logging. If a required intake log is missing or stale, `process_complete` is not truthful.
 
 ### Final step summary contract
 
@@ -627,14 +631,17 @@ Create a new Feature Dossier and register it in the global index.
 Operational summary:
 
 - [Workflow guide: feature-intake](references/workflow.md#cli-command-feature-intake)
+- [Feature intake logging](references/feature-intake-logging.md)
 
 Steps:
 
 1. Confirm that backlog work has already been selected through `backlog-engineer`.
 2. Determine the next free `F-XXXX`.
 3. Re-read architecture, ADR, and backlog context for the selected work.
-4. Create `docs/features/F-XXXX-<slug>.md` from the dossier template.
-5. Fill frontmatter with:
+4. Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).
+   If a trigger is already known, open `.dossier/logs/<feature-id>/feature-intake-<cycle>.md` before the first substantive dossier mutation.
+5. Create `docs/features/F-XXXX-<slug>.md` from the dossier template.
+6. Fill frontmatter with:
    - `id`
    - `title`
    - `status: proposed`
@@ -645,18 +652,22 @@ Steps:
    - `impacts`
    - `created`
    - `updated`
-6. Record one canonical backlog handoff block in the dossier:
+7. Record one canonical backlog handoff block in the dossier:
    - backlog item key;
    - backlog delivery state at intake;
    - relevant backlog source traceability;
    - known blockers and dependencies already visible at intake time.
-7. Treat that backlog handoff block as human-facing continuity and traceability only.
+8. Treat that backlog handoff block as human-facing continuity and traceability only.
    CLI commands such as `next-step` do not parse dossier prose or use that block as machine-readable state.
-8. Capture the selected backlog context, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
-9. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path after intake.
+9. Capture the selected backlog context, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
+10. If an intake logging trigger appears mid-command, open the intake log immediately and record a late start as a process miss.
+11. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path after intake.
    Use `sync-index` only when you intentionally need table/graph refresh without a Red flags update.
-10. If `feature-intake --json` returns `partial_success: true`, treat intake as incomplete until the reported `index-refresh` failure is resolved.
-11. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
+12. If `feature-intake --json` returns `partial_success: true`, treat intake as incomplete until the reported `index-refresh` failure is resolved.
+13. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
+14. If intake logging was required, backfill the intake log with close-out fields before claiming truthful command closure.
+15. Operator rerounds, `index-refresh` reruns, and backlog actualization follow-ups stay in the same intake-log cycle while the literal closure target is unchanged.
+16. If a normal intake turns into a cross-skill migration, repair, or backlog-recovery episode, keep the intake log as the primary command record and open a companion session-level ops log for the cross-skill boundary.
 
 Command correctness checklist:
 
@@ -669,6 +680,10 @@ Command correctness checklist:
 - [ ] `depends_on` contains only real delivered prerequisites.
 - [ ] Intake-side blockers or missing dependencies were returned to `backlog-engineer` before the next downstream stage.
 - [ ] `docs/ssot/index.md` contains exactly one row for the new dossier.
+- [ ] If an intake logging trigger fired, the intake log was opened or updated and reflects the final state of the intake cycle.
+- [ ] If intake logging was skipped, the final summary states the skip reason explicitly.
+- [ ] If the intake required `index-refresh` reruns, backlog actualization, or operator rerounds, those events remain in the same intake-log cycle while the literal closure target is unchanged.
+- [ ] If intake turned into a cross-skill recovery episode, the intake log stayed primary and the companion session-level ops log was cross-linked instead of replacing it.
 
 #### CLI command: `coverage-audit`
 

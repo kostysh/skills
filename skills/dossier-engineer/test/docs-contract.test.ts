@@ -29,6 +29,11 @@ const WORKFLOW_STAGE_IMPLEMENTATION_PATH = path.join(
   'references',
   'workflow-stage-implementation.md',
 );
+const FEATURE_INTAKE_LOGGING_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'feature-intake-logging.md',
+);
 const WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -73,9 +78,10 @@ function assertContainsTerms(text: string, terms: readonly string[]): void {
 }
 
 void test('dossier docs keep workflow-stage vs shipped-command boundaries explicit', async () => {
-  const [skill, workflow] = await Promise.all([
+  const [skill, workflow, intakeLogging] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
     readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(FEATURE_INTAKE_LOGGING_PATH, 'utf8'),
   ]);
 
   const stageVsCommand = extractSection(skill, '## Workflow stages and shipped CLI commands');
@@ -150,6 +156,7 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   ]);
   assertContainsTerms(intakeCommand, [
     '[Workflow guide: feature-intake](references/workflow.md#cli-command-feature-intake)',
+    '[Feature intake logging](references/feature-intake-logging.md)',
   ]);
   assertContainsTerms(backlogActualization, [
     '[Workflow guide: backlog actualization rule](references/workflow.md#backlog-actualization-rule)',
@@ -165,13 +172,19 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
     '`dependency-check`: [workflow-stage-dependency-check.md](workflow-stage-dependency-check.md)',
     '`change-proposal`: [workflow-stage-change-proposal.md](workflow-stage-change-proposal.md)',
   ]);
+  assertContainsTerms(intakeLogging, [
+    '## Applies to',
+    'CLI command: feature-intake',
+    'It does not apply to workflow stages such as `spec-compact`, `plan-slice`, or `implementation`.',
+  ]);
 });
 
 void test('dossier docs keep backlog actualization and handoff boundaries literal', async () => {
-  const [skill, workflow, processModel] = await Promise.all([
+  const [skill, workflow, processModel, intakeLogging] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
     readFile(WORKFLOW_PATH, 'utf8'),
     readFile(PROCESS_MODEL_PATH, 'utf8'),
+    readFile(FEATURE_INTAKE_LOGGING_PATH, 'utf8'),
   ]);
 
   const actualization = extractSection(skill, '## Backlog actualization rules');
@@ -187,10 +200,12 @@ void test('dossier docs keep backlog actualization and handoff boundaries litera
   assertContainsTerms(closure, [
     'If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.',
     'Only after `process_complete: true` and required backlog actualization may the agent say the step is complete.',
+    'If a required intake log is missing or stale, `process_complete` is not truthful.',
   ]);
   assertContainsTerms(intake, [
     'human-facing continuity and traceability only',
     '`next-step` do not parse dossier prose',
+    'Operator rerounds, `index-refresh` reruns, and backlog actualization follow-ups stay in the same intake-log cycle',
   ]);
   assertContainsTerms(workflowActualization, [
     'backlog actualization is part of stage closure',
@@ -206,6 +221,11 @@ void test('dossier docs keep backlog actualization and handoff boundaries litera
     'Пройти workflow stage `spec-compact`',
     'Пройти workflow stage `plan-slice`',
     'Пройти workflow stage `implementation`',
+  ]);
+  assertContainsTerms(intakeLogging, [
+    'If an intake logging trigger fired, `feature-intake` cannot be treated as truthfully `process_complete: true`',
+    'required backlog actualization still incomplete',
+    'which blockers, dependencies, or missing-context facts appeared during intake',
   ]);
 });
 
@@ -324,13 +344,14 @@ void test('implementation stage points to audit and workflow-stage logging refs 
 });
 
 void test('active dossier instructions use the unified workflow-stage logging reference', async () => {
-  const [skill, specCompactSteps, planSliceSteps, implementationSteps, loggingPolicy] =
+  const [skill, specCompactSteps, planSliceSteps, implementationSteps, loggingPolicy, intakeLogging] =
     await Promise.all([
       readFile(SKILL_PATH, 'utf8'),
       readFile(WORKFLOW_STAGE_SPEC_COMPACT_PATH, 'utf8'),
       readFile(WORKFLOW_STAGE_PLAN_SLICE_PATH, 'utf8'),
       readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
       readFile(WORKFLOW_STAGE_LOGGING_PATH, 'utf8'),
+      readFile(FEATURE_INTAKE_LOGGING_PATH, 'utf8'),
     ]);
 
   const specCompact = extractSection(skill, '#### Workflow stage: `spec-compact`');
@@ -339,6 +360,7 @@ void test('active dossier instructions use the unified workflow-stage logging re
   const coreArtifacts = extractSection(skill, '## Core artifacts');
 
   assertContainsTerms(coreArtifacts, [
+    '.dossier/logs/<feature-id>/feature-intake-<cycle>.md',
     '.dossier/logs/<feature>/<stage>-<cycle>.md',
     '.dossier/ops/<session>/<episode>.md',
   ]);
@@ -381,6 +403,13 @@ void test('active dossier instructions use the unified workflow-stage logging re
     '`spec-compact`',
     '`plan-slice`',
     '`implementation`',
+    'It does not apply to `CLI command: feature-intake`',
+    '[feature-intake-logging.md](feature-intake-logging.md)',
+  ]);
+  assertContainsTerms(intakeLogging, [
+    '.dossier/logs/<feature-id>/feature-intake-<cycle>.md',
+    'Ordinary intake stays in the intake log only.',
+    'the intake log remains the primary record of the `feature-intake` command flow',
   ]);
 
   for (const activeText of [
@@ -389,9 +418,63 @@ void test('active dossier instructions use the unified workflow-stage logging re
     planSliceSteps,
     implementationSteps,
     loggingPolicy,
+    intakeLogging,
   ]) {
     assert.doesNotMatch(activeText, /references\/implementation-logging\.md/u);
   }
+});
+
+void test('feature-intake logging stays explicit, command-level, and distinct from stage logging', async () => {
+  const [skill, workflow, intakeLogging] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(FEATURE_INTAKE_LOGGING_PATH, 'utf8'),
+  ]);
+
+  const intake = extractSection(skill, '#### CLI command: `feature-intake`');
+  const closure = extractSection(skill, '## Step closure contract');
+  const coreArtifacts = extractSection(skill, '## Core artifacts');
+  const workflowIntake = extractSection(workflow, '## CLI command: `feature-intake`');
+
+  assertContainsTerms(coreArtifacts, [
+    '.dossier/logs/<feature-id>/feature-intake-<cycle>.md',
+    '.dossier/logs/<feature>/<stage>-<cycle>.md',
+  ]);
+  assertContainsTerms(intake, [
+    '[Feature intake logging](references/feature-intake-logging.md)',
+    'Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).',
+    'If a trigger is already known, open `.dossier/logs/<feature-id>/feature-intake-<cycle>.md` before the first substantive dossier mutation.',
+    'If an intake logging trigger appears mid-command, open the intake log immediately',
+    'If a normal intake turns into a cross-skill migration, repair, or backlog-recovery episode',
+  ]);
+  assertContainsTerms(closure, [
+    'For `feature-intake`, process telemetry is command-level and lives in the intake log',
+    'If a required intake log is missing or stale, `process_complete` is not truthful.',
+  ]);
+  assertContainsTerms(workflowIntake, [
+    '[feature-intake-logging.md](feature-intake-logging.md)',
+    'If an intake logging trigger fired, the required intake log is part of truthful command closure',
+    'Open a new intake-log cycle only when the closure target changes literally',
+    'open a companion session-level ops log for the cross-skill boundary',
+  ]);
+  assertContainsTerms(intakeLogging, [
+    '## Closure blocking rule',
+    '## Interaction with session-level ops log',
+    'One intake log equals one literal intake closure target.',
+    '`<feature-id>` must match the dossier feature id `F-XXXX`.',
+    'Open-time minimum fields:',
+    'Close-out fields to add or backfill before truthful command closure:',
+    'omit fields that are not yet knowable',
+    'Keep the same cycle when the literal closure target is unchanged',
+    'Open a new cycle only when the closure target changes literally',
+    'Ordinary intake stays in the intake log only.',
+  ]);
+
+  assert.ok(
+    intake.indexOf('Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).') <
+      intake.indexOf('Create `docs/features/F-XXXX-<slug>.md` from the dossier template.'),
+    'feature-intake must evaluate logging triggers before dossier creation',
+  );
 });
 
 void test('skill-wide review sections stay distinct from implementation-specific audit policy', async () => {

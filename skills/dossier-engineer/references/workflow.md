@@ -34,6 +34,8 @@ Expected output:
 
 Use `feature-intake` only after `backlog-engineer` has already selected the work item.
 
+Use [feature-intake-logging.md](feature-intake-logging.md) when intake logging triggers fire.
+
 Rules:
 
 - `feature-intake` creates a real dossier for selected backlog work.
@@ -47,6 +49,10 @@ Rules:
 - If intake discovers new blockers, missing dependencies, missing context, or lifecycle-changing facts, return to `backlog-engineer` and actualize backlog state before continuing.
 - `index-refresh` is the canonical full refresh path after intake. Use `sync-index` only when you intentionally want table/graph refresh without a Red flags update.
 - If `feature-intake --json` returns `partial_success: true`, the dossier was created but `index-refresh` failed; fix that before continuing.
+- If an intake logging trigger fired, the required intake log is part of truthful command closure; do not treat intake as process-complete until the log is current, `index-refresh` is settled, and required backlog actualization is done.
+- Keep the same intake-log cycle for operator rerounds, `index-refresh` reruns, and backlog actualization follow-ups while the literal closure target is unchanged.
+- Open a new intake-log cycle only when the closure target changes literally: another backlog item, another canonical dossier target, or a new independent intake attempt.
+- Ordinary intake stays in the intake log only. If intake turns into a cross-skill migration, repair, or backlog-recovery episode, keep the intake log as the primary command record and open a companion session-level ops log for the cross-skill boundary.
 - `docs/ssot/index.md` lists only real dossiers.
 
 ## State dimensions
