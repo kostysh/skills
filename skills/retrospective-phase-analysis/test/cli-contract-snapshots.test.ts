@@ -24,6 +24,7 @@ function normalizeScanSummary(summary: unknown): unknown {
   return JSON.parse(
     JSON.stringify(summary)
       .replaceAll(FIXTURES_DIR, '/abs/fixtures')
+      .replaceAll(process.cwd(), '/abs/cwd')
       .replace(/"generatedAt":"[^"]+"/u, '"generatedAt":"<generated>"'),
   ) as unknown;
 }

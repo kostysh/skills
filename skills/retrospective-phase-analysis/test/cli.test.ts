@@ -270,8 +270,9 @@ void test('report writes a markdown draft from fixture inputs', async () => {
   }
 });
 
-void test('scan and report reuse the same durable retrospective run directory by default', async () => {
+void test('scan and report reuse the same durable retrospective run directory from a nested dossier workdir', async () => {
   const { tempDir, projectRoot, sessionPath } = await createDiscoveryFixture();
+  const nestedWorkdir = path.join(projectRoot, 'src');
   const baseRunDir = path.join(
     projectRoot,
     '.dossier',
@@ -282,24 +283,30 @@ void test('scan and report reuse the same durable retrospective run directory by
   const rerunDir = `${baseRunDir}-r2`;
 
   try {
-    const firstScan = runBuiltCli(['scan', '--session', sessionPath]);
+    const firstScan = runBuiltCli(['scan', '--session', sessionPath], { cwd: nestedWorkdir });
     assert.equal(firstScan.status, 0);
 
     const firstScanOutput = path.join(baseRunDir, 'scan-summary.json');
     await readFile(firstScanOutput, 'utf8');
 
-    const firstReport = runBuiltCli(['report', '--session', sessionPath, '--phase', 'implementation']);
+    const firstReport = runBuiltCli(
+      ['report', '--session', sessionPath, '--phase', 'implementation'],
+      { cwd: nestedWorkdir },
+    );
     assert.equal(firstReport.status, 0);
 
     const firstReportOutput = path.join(baseRunDir, 'retrospective-report.md');
     const firstReportMarkdown = await readFile(firstReportOutput, 'utf8');
     assert.match(firstReportMarkdown, /^# Retrospective:/mu);
 
-    const secondScan = runBuiltCli(['scan', '--session', sessionPath]);
+    const secondScan = runBuiltCli(['scan', '--session', sessionPath], { cwd: nestedWorkdir });
     assert.equal(secondScan.status, 0);
     await readFile(path.join(rerunDir, 'scan-summary.json'), 'utf8');
 
-    const secondReport = runBuiltCli(['report', '--session', sessionPath, '--phase', 'implementation']);
+    const secondReport = runBuiltCli(
+      ['report', '--session', sessionPath, '--phase', 'implementation'],
+      { cwd: nestedWorkdir },
+    );
     assert.equal(secondReport.status, 0);
     await readFile(path.join(rerunDir, 'retrospective-report.md'), 'utf8');
   } finally {
@@ -311,7 +318,7 @@ void test('scan falls back to out/retro when the project root is not dossier-man
   const { tempDir, projectRoot, sessionPath } = await createFallbackOutputFixture();
 
   try {
-    const result = runBuiltCli(['scan', '--session', sessionPath]);
+    const result = runBuiltCli(['scan', '--session', sessionPath], { cwd: projectRoot });
     assert.equal(result.status, 0);
 
     const outputPath = path.join(
@@ -328,6 +335,48 @@ void test('scan falls back to out/retro when the project root is not dossier-man
     assert.equal(parsed.recommendedOutput.mode, 'fallback-default');
     assert.equal(parsed.recommendedOutput.root, path.join(projectRoot, 'out', 'retro'));
   } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('scan does not derive fallback out/retro from session_meta.cwd when no evidence root is confirmed', async () => {
+  const { tempDir, projectRoot, sessionPath } = await createFallbackOutputFixture();
+  const outputPath = path.join(
+    SKILL_DIR,
+    'out',
+    'retro',
+    'cf-0016',
+    'retrospective-20260410-095900-019d7490',
+    'scan-summary.json',
+  );
+
+  try {
+    await rm(path.join(SKILL_DIR, 'out'), { recursive: true, force: true });
+
+    const result = runBuiltCli(['scan', '--session', sessionPath]);
+    assert.equal(result.status, 0);
+
+    const parsed = JSON.parse(await readFile(outputPath, 'utf8')) as {
+      recommendedOutput: { mode: string; root: string };
+    };
+    assert.equal(parsed.recommendedOutput.mode, 'fallback-default');
+    assert.equal(parsed.recommendedOutput.root, path.join(SKILL_DIR, 'out', 'retro'));
+
+    await assert.rejects(
+      readFile(
+        path.join(
+          projectRoot,
+          'out',
+          'retro',
+          'cf-0016',
+          'retrospective-20260410-095900-019d7490',
+          'scan-summary.json',
+        ),
+        'utf8',
+      ),
+    );
+  } finally {
+    await rm(path.join(SKILL_DIR, 'out'), { recursive: true, force: true });
     await rm(tempDir, { recursive: true, force: true });
   }
 });

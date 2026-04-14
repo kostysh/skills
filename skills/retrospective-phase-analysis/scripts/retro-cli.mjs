@@ -195,23 +195,29 @@ function inferProjectRootFromLogsDir(logsDir) {
 	if (path.basename(normalized) !== "logs" || path.basename(parent) !== ".dossier") return null;
 	return path.dirname(parent);
 }
-function resolveRetroRoot(summary, explicitRoot) {
+function findDossierManagedAncestor(startDir) {
+	let current = path.resolve(startDir);
+	while (true) {
+		if (fs.existsSync(path.join(current, ".dossier"))) return current;
+		const parent = path.dirname(current);
+		if (parent === current) return null;
+		current = parent;
+	}
+}
+function resolveRetroRoot(_summary, explicitRoot) {
 	if (explicitRoot) return {
 		mode: "root-override",
 		root: path.resolve(explicitRoot)
 	};
-	const projectRoot = summary.session.projectRoot ?? inferProjectRootFromLogsDir(summary.resolved.logsDir);
-	if (projectRoot && fs.existsSync(path.join(projectRoot, ".dossier"))) return {
+	const currentWorkingRoot = path.resolve(".");
+	const dossierRoot = findDossierManagedAncestor(currentWorkingRoot);
+	if (dossierRoot) return {
 		mode: "dossier-default",
-		root: path.join(projectRoot, ".dossier", "retro")
-	};
-	if (projectRoot) return {
-		mode: "fallback-default",
-		root: path.join(projectRoot, "out", "retro")
+		root: path.join(dossierRoot, ".dossier", "retro")
 	};
 	return {
 		mode: "fallback-default",
-		root: path.resolve("out", "retro")
+		root: path.join(currentWorkingRoot, "out", "retro")
 	};
 }
 function resolveScopeSlug(summary) {
@@ -841,7 +847,7 @@ function buildScanSummary(args) {
 	const sessionSummary = summarizeSession(args.session);
 	const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
 	const resolvedLogsDir = args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, ".dossier/logs");
-	const resolvedArtifactsDir = args.artifactsDir ?? resolvedProjectRoot ?? void 0;
+	const resolvedArtifactsDir = args.artifactsDir ?? inferProjectRootFromLogsDir(resolvedLogsDir ?? null) ?? void 0;
 	const skillsSummary = summarizeSkills(args.skillsDir);
 	const scope = extractTraceScope({
 		sessionSummary,

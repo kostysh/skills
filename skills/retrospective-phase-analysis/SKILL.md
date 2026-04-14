@@ -148,7 +148,7 @@ By default, use a durable retrospective root instead of flat files.
 
 - For dossier-driven projects, write under `.dossier/retro/`.
 - If the operator explicitly requests another root, use that root.
-- If no dossier-managed project root can be confirmed, fall back to local `out/retro/`.
+- If the current working directory and its ancestors are not dossier-managed, fall back to local `out/retro/` relative to the current working directory.
 
 Within the root, keep every analysis under `<scope-slug>/<run-slug>/` so old and new retrospectives never overwrite each other. The standard bundle is:
 
@@ -158,6 +158,7 @@ Within the root, keep every analysis under `<scope-slug>/<run-slug>/` so old and
 - `logging-review.md`
 
 Treat `--out <file>` as a low-level override, not the normal workflow.
+Treat auto-discovered paths from `session_meta.cwd` and explicit evidence hints such as `--artifacts-dir` or `--logs-dir` only as read-side inputs; they must not silently redefine the retrospective root.
 Treat `--artifacts-dir` only as an evidence hint; it must not silently redefine the retrospective root.
 
 ### 2) Build the evidence manifest

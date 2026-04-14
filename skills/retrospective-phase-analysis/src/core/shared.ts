@@ -240,7 +240,7 @@ function formatCompactTimestamp(value: string | null): string | null {
   return [year, month, day].join('') + "-" + [hours, minutes, seconds].join('');
 }
 
-function inferProjectRootFromLogsDir(logsDir: string | null): string | null {
+export function inferProjectRootFromLogsDir(logsDir: string | null): string | null {
   if (!logsDir) {
     return null;
   }
@@ -254,7 +254,23 @@ function inferProjectRootFromLogsDir(logsDir: string | null): string | null {
   return path.dirname(parent);
 }
 
-function resolveRetroRoot(summary: ScanSummary, explicitRoot?: string): Pick<RetroOutputLayout, 'mode' | 'root'> {
+function findDossierManagedAncestor(startDir: string): string | null {
+  let current = path.resolve(startDir);
+
+  while (true) {
+    if (fs.existsSync(path.join(current, '.dossier'))) {
+      return current;
+    }
+
+    const parent = path.dirname(current);
+    if (parent === current) {
+      return null;
+    }
+    current = parent;
+  }
+}
+
+function resolveRetroRoot(_summary: ScanSummary, explicitRoot?: string): Pick<RetroOutputLayout, 'mode' | 'root'> {
   if (explicitRoot) {
     return {
       mode: 'root-override',
@@ -262,25 +278,19 @@ function resolveRetroRoot(summary: ScanSummary, explicitRoot?: string): Pick<Ret
     };
   }
 
-  const projectRoot = summary.session.projectRoot ?? inferProjectRootFromLogsDir(summary.resolved.logsDir);
+  const currentWorkingRoot = path.resolve('.');
+  const dossierRoot = findDossierManagedAncestor(currentWorkingRoot);
 
-  if (projectRoot && fs.existsSync(path.join(projectRoot, '.dossier'))) {
+  if (dossierRoot) {
     return {
       mode: 'dossier-default',
-      root: path.join(projectRoot, '.dossier', 'retro'),
-    };
-  }
-
-  if (projectRoot) {
-    return {
-      mode: 'fallback-default',
-      root: path.join(projectRoot, 'out', 'retro'),
+      root: path.join(dossierRoot, '.dossier', 'retro'),
     };
   }
 
   return {
     mode: 'fallback-default',
-    root: path.resolve('out', 'retro'),
+    root: path.join(currentWorkingRoot, 'out', 'retro'),
   };
 }
 

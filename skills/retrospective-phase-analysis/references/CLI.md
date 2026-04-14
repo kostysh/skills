@@ -43,8 +43,8 @@ Outputs:
 
 The agent must resolve `session_id` and find the canonical trace file before calling the CLI. If `--logs-dir` or `--artifacts-dir` is omitted, `scan` tries the standard directories derived from `session_meta.cwd` after the trace file is provided.
 If `session_meta.cwd` is missing or unreliable, resolve a confirmed `project root` first. Do not pass guessed `--logs-dir` or `--artifacts-dir` values just to make the command run.
-`--artifacts-dir` may help evidence discovery, but it does not redefine the durable retrospective root. Only `--out-root` may override that root explicitly.
-Without `--out`, commands write into a durable bundle under `.dossier/retro/<scope>/<run>/` when a dossier-managed project root is available. Otherwise they fall back to `out/retro/<scope>/<run>/`.
+Auto-discovered directories from `session_meta.cwd` are read-side hints only. Explicit `--artifacts-dir` and `--logs-dir` are also read-side hints. None of them redefine the durable output root.
+Without `--out`, commands write into a durable bundle under `.dossier/retro/<scope>/<run>/` when the current working directory or one of its ancestors is dossier-managed. Otherwise they fall back to `out/retro/<scope>/<run>/` relative to the current working directory.
 
 ### `report`
 

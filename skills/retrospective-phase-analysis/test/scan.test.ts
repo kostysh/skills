@@ -174,7 +174,7 @@ void test('buildScanSummary only parses trace-confirmed stage logs instead of re
   }
 });
 
-void test('buildScanSummary keeps the durable output root tied to the confirmed project root instead of artifacts-dir', async () => {
+void test('buildScanSummary keeps the durable output root tied to the current working directory instead of explicit artifacts-dir', async () => {
   const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
   const projectRoot = path.join(tempDir, 'project');
   const evidenceRoot = path.join(tempDir, 'evidence-root');
@@ -210,8 +210,8 @@ void test('buildScanSummary keeps the durable output root tied to the confirmed 
       skillsDir: fixturePath('skills'),
     });
 
-    assert.equal(summary.recommendedOutput.mode, 'dossier-default');
-    assert.equal(summary.recommendedOutput.root, path.join(projectRoot, '.dossier', 'retro'));
+    assert.equal(summary.recommendedOutput.mode, 'fallback-default');
+    assert.equal(summary.recommendedOutput.root, path.resolve('out', 'retro'));
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }

@@ -1,7 +1,7 @@
 import { extractTraceScope } from './extract-trace-scope.ts';
 import { inferCandidateIncidents } from './infer-candidate-incidents.ts';
 import { resolveStandardEvidenceDir } from './resolve-evidence-roots.ts';
-import { resolveRetroOutputLayout } from './shared.ts';
+import { inferProjectRootFromLogsDir, resolveRetroOutputLayout } from './shared.ts';
 import { summarizeLogs } from './summarize-logs.ts';
 import { summarizeSession } from './summarize-session.ts';
 import { summarizeSkills } from './summarize-skills.ts';
@@ -12,7 +12,8 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
   const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
   const resolvedLogsDir =
     args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, '.dossier/logs');
-  const resolvedArtifactsDir = args.artifactsDir ?? resolvedProjectRoot ?? undefined;
+  const resolvedArtifactsDir =
+    args.artifactsDir ?? inferProjectRootFromLogsDir(resolvedLogsDir ?? null) ?? undefined;
   const skillsSummary = summarizeSkills(args.skillsDir);
   const scope = extractTraceScope({
     sessionSummary,

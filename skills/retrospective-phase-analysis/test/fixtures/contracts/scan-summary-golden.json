@@ -120,16 +120,16 @@
   ],
   "recommendedOutput": {
     "mode": "fallback-default",
-    "root": "/fixture/project/out/retro",
+    "root": "/abs/cwd/out/retro",
     "scopeSlug": "cf-0016",
     "runSlug": "retrospective-20260410-095900-019d7490",
-    "runDir": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490",
-    "filePath": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/scan-summary.json",
+    "runDir": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490",
+    "filePath": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/scan-summary.json",
     "files": {
-      "scanSummary": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/scan-summary.json",
-      "retrospectiveReport": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/retrospective-report.md",
-      "skillAudit": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/skill-audit.md",
-      "loggingReview": "/fixture/project/out/retro/cf-0016/retrospective-20260410-095900-019d7490/logging-review.md"
+      "scanSummary": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/scan-summary.json",
+      "retrospectiveReport": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/retrospective-report.md",
+      "skillAudit": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/skill-audit.md",
+      "loggingReview": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/logging-review.md"
     }
   }
 }
