@@ -7,6 +7,12 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# Tracked test fixtures that intentionally model stage-log directories
+!skills/retrospective-phase-analysis/test/fixtures/logs/
+!skills/retrospective-phase-analysis/test/fixtures/logs/**
+!skills/retrospective-phase-analysis/test/fixtures/artifacts/.dossier/logs/
+!skills/retrospective-phase-analysis/test/fixtures/artifacts/.dossier/logs/**
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
