@@ -275,6 +275,33 @@ var SKIPPED_KEYS = new Set([
 	"user_instructions",
 	"formatted_output"
 ]);
+var ID_TEXT_KEYS = new Set([
+	"content",
+	"message",
+	"text",
+	"command",
+	"patch",
+	"body"
+]);
+var PATH_TEXT_KEYS = new Set([
+	"content",
+	"message",
+	"text",
+	"command",
+	"patch",
+	"body",
+	"notes",
+	"path",
+	"paths",
+	"filePath",
+	"file_path",
+	"dossier",
+	"verify_artifact",
+	"review_artifact"
+]);
+var CANONICAL_BACKLOG_ITEM_PATTERN = /(^|[^A-Za-z0-9_-])(CF-\d{3,4})(?![A-Za-z0-9_.-])/gu;
+var CANONICAL_FEATURE_ID_PATTERN = /(^|[^A-Za-z0-9_-])(F-\d{4})(?![A-Za-z0-9_.-])/gu;
+var FEATURE_ID_IN_PATH_PATTERN = /(?:^|[\\/])(F-\d{4})(?=[\\/]|[-_.])/gu;
 function escapeForRegex(value) {
 	return value.replaceAll(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 }
@@ -300,6 +327,25 @@ function isProjectScopedPath(value, projectRoot) {
 	const normalizedValue = path.resolve(value);
 	return normalizedValue === normalizedRoot || normalizedValue.startsWith(`${normalizedRoot}${path.sep}`) || normalizedValue.startsWith(`${normalizedRoot}/`);
 }
+function isHighSignalAnchorText(value) {
+	const trimmed = value.trim();
+	if (trimmed.length === 0) return false;
+	const lineCount = trimmed.split(/\r?\n/u).length;
+	if (trimmed.length > 4e3 || lineCount > 40) return false;
+	return !(trimmed.includes("<INSTRUCTIONS>") || trimmed.includes("# AGENTS.md") || trimmed.includes("Original token count:") || trimmed.includes("Process exited with code") || trimmed.startsWith("Command: /bin/bash -lc") || trimmed.startsWith("Command: node "));
+}
+function extractPathAnchorTexts(value) {
+	const trimmed = value.trim();
+	if (trimmed.length === 0) return [];
+	if (isHighSignalAnchorText(trimmed)) return [trimmed];
+	const out = trimmed.split(/\r?\n/u).map((line) => line.trim()).filter((line) => {
+		if (line.length === 0) return false;
+		if (/^\*\*\* (?:Update File|Add File|Move to): /u.test(line)) return true;
+		if (!(/(?:^|[\s("'`[{<])(?:\.dossier|docs|src|test|scripts|skills|packages)\//u.test(line) || /(?:^|[\s("'`[{<])(?:\/[A-Za-z0-9._@-]+)+(?:\.[A-Za-z0-9._-]+)?/u.test(line))) return false;
+		return /(>|>>)\s*['"]?/u.test(line) || /\btee\b(?:\s+-a)?\s+/u.test(line) || /\btouch\b\s+/u.test(line) || /\bsed\b[\s\S]*?-i/u.test(line) || /\bperl\b[\s\S]*?-0pi/u.test(line) || /\b(?:cp|mv)\b(?:\s+\S+)+\s+/u.test(line);
+	});
+	return out.length > 0 ? out : [];
+}
 function isReferencedArtifact(value, projectRoot) {
 	if (!projectRoot) return false;
 	const relative = path.relative(projectRoot, value);
@@ -312,32 +358,37 @@ function isStageLogArtifact(value, projectRoot) {
 	if (relative.startsWith("..")) return false;
 	return relative.startsWith(".dossier/logs/") || relative.startsWith(`.dossier${path.sep}logs${path.sep}`);
 }
-function collectEventTexts(input, pathTrail = []) {
-	if (input === null || input === void 0) return [];
+function collectNestedStrings(input, depth = 0) {
+	if (depth > 8 || input === null || input === void 0) return [];
 	if (typeof input === "string") return [input];
-	if (Array.isArray(input)) return input.flatMap((item) => collectEventTexts(item, pathTrail));
+	if (Array.isArray(input)) return input.flatMap((item) => collectNestedStrings(item, depth + 1));
+	if (typeof input !== "object") return [];
+	return Object.entries(input).flatMap(([key, value]) => {
+		if (SKIPPED_KEYS.has(key)) return [];
+		return collectNestedStrings(value, depth + 1);
+	});
+}
+function collectEventTextsByKeys(input, allowedKeys, depth = 0) {
+	if (depth > 8 || input === null || input === void 0) return [];
+	if (Array.isArray(input)) return input.flatMap((item) => collectEventTextsByKeys(item, allowedKeys, depth + 1));
 	if (typeof input !== "object") return [];
 	const record = input;
-	const eventType = typeof record.type === "string" ? record.type : null;
-	if (eventType === "session_meta") {
-		const payload = record.payload && typeof record.payload === "object" ? record.payload : null;
-		const out = [];
-		if (typeof payload?.id === "string") out.push(payload.id);
-		if (typeof payload?.cwd === "string") out.push(payload.cwd);
-		return out;
-	}
-	if (eventType === "turn_context") return [];
+	if (record.type === "session_meta") return [];
 	const out = [];
 	for (const [key, value] of Object.entries(record)) {
 		if (SKIPPED_KEYS.has(key)) continue;
-		out.push(...collectEventTexts(value, [...pathTrail, key]));
+		if (allowedKeys.has(key)) {
+			out.push(...collectNestedStrings(value, depth + 1));
+			continue;
+		}
+		out.push(...collectEventTextsByKeys(value, allowedKeys, depth + 1));
 	}
 	return out;
 }
 function extractMatches(values, pattern) {
 	const matches = [];
 	for (const value of values) for (const match of value.matchAll(pattern)) {
-		const candidate = match[1] ?? match[0];
+		const candidate = match[2] ?? match[1] ?? match[0];
 		if (candidate) matches.push(candidate);
 	}
 	return sortUnique(matches);
@@ -350,7 +401,27 @@ function extractTouchedPaths(values, projectRoot) {
 	rawCandidates.push(...extractMatches(values, absolutePathPattern));
 	rawCandidates.push(...extractMatches(values, relativePathPattern));
 	rawCandidates.push(...extractMatches(values, rootFilePattern));
-	return sortUnique(rawCandidates.map((value) => normalizePathCandidate(value, projectRoot)).filter((value) => value !== null).filter((value) => isProjectScopedPath(value, projectRoot)));
+	return sortUnique(rawCandidates.map((value) => normalizePathCandidate(value, projectRoot)).filter((value) => value !== null).filter((value) => isProjectScopedPath(value, projectRoot)).filter((value) => {
+		if (projectRoot && path.resolve(value) === path.resolve(projectRoot)) return false;
+		if (fs.existsSync(value)) return fs.statSync(value).isFile();
+		return path.extname(value).length > 0 || isInterestingRootFile(path.basename(value));
+	}));
+}
+function extractCanonicalBacklogItems(values) {
+	return extractMatches(values, CANONICAL_BACKLOG_ITEM_PATTERN);
+}
+function extractCanonicalFeatureIds(values) {
+	return extractMatches(values, CANONICAL_FEATURE_ID_PATTERN);
+}
+function extractFeatureIdsFromPaths(values, projectRoot) {
+	if (!projectRoot) return [];
+	const matches = [];
+	for (const value of values) {
+		const relativePath = path.relative(projectRoot, value);
+		if (relativePath.startsWith("..")) continue;
+		for (const match of relativePath.matchAll(FEATURE_ID_IN_PATH_PATTERN)) if (match[1]) matches.push(match[1]);
+	}
+	return sortUnique(matches);
 }
 function extractEventType(record) {
 	return [
@@ -368,9 +439,19 @@ function extractEventToolName(record) {
 		record.recipient
 	].find((value) => typeof value === "string") ?? null;
 }
+function hasCommandLikeValue(value) {
+	return collectNestedStrings(value).some((entry) => entry.trim().length > 0);
+}
+function unwrapToolExecutionRecord(event) {
+	if (!event || typeof event !== "object") return null;
+	const record = event;
+	const payload = record.payload && typeof record.payload === "object" ? record.payload : null;
+	if (payload && (hasCommandLikeValue(payload.command) || hasCommandLikeValue(payload.patch) || hasCommandLikeValue(payload.diff))) return payload;
+	return record;
+}
 function isToolCallEvent(record) {
 	const eventType = extractEventType(record);
-	return typeof record.command === "string" || typeof record.patch === "string" || typeof record.diff === "string" || typeof eventType === "string" && /tool_call/u.test(eventType);
+	return hasCommandLikeValue(record.command) || hasCommandLikeValue(record.patch) || hasCommandLikeValue(record.diff) || typeof eventType === "string" && /tool_call/u.test(eventType);
 }
 function isToolResultEvent(record) {
 	const eventType = extractEventType(record);
@@ -391,7 +472,12 @@ function eventRequestsStageLogWrite(record, stageLogPaths, projectRoot) {
 		}));
 		return stageLogPaths.some((filePath) => patchTargets.includes(filePath));
 	}
-	const commandBlob = [record.command, record.body].filter((value) => typeof value === "string").join("\n");
+	const commandBlob = [
+		record.command,
+		record.body,
+		record.patch,
+		record.diff
+	].flatMap((value) => collectNestedStrings(value)).join("\n");
 	return stageLogPaths.some((filePath) => {
 		return [filePath, projectRoot && isProjectScopedPath(filePath, projectRoot) ? path.relative(projectRoot, filePath) : null].filter((value) => value !== null).some((candidate) => {
 			const escaped = escapeForRegex(candidate);
@@ -409,7 +495,7 @@ function eventRequestsStageLogWrite(record, stageLogPaths, projectRoot) {
 function isSuccessfulToolResult(record) {
 	if (record.aborted === true) return false;
 	if (typeof record.exit_code === "number" && record.exit_code !== 0) return false;
-	if (typeof record.status === "string" && !/^(ok|success|passed|pass)$/iu.test(record.status)) return false;
+	if (typeof record.status === "string" && !/^(ok|success|passed|pass|completed|complete)$/iu.test(record.status)) return false;
 	if (typeof record.error === "string" && record.error.length > 0) return false;
 	return true;
 }
@@ -430,20 +516,16 @@ function hasConfirmedToolResult(events, startIndex, expectedToolName) {
 function extractChangedStageLogPaths(events, projectRoot) {
 	const out = [];
 	for (const [index, event] of events.entries()) {
-		if (!event || typeof event !== "object") continue;
-		const record = event;
+		const record = unwrapToolExecutionRecord(event);
+		if (!record) continue;
 		if (!isToolCallEvent(record)) continue;
-		const eventStageLogPaths = extractTouchedPaths(collectEventTexts(event), projectRoot).filter((filePath) => isStageLogArtifact(filePath, projectRoot));
+		const eventStageLogPaths = extractTouchedPaths(collectEventTextsByKeys(event, PATH_TEXT_KEYS), projectRoot).filter((filePath) => isStageLogArtifact(filePath, projectRoot));
 		if (eventStageLogPaths.length === 0) continue;
 		if (!eventRequestsStageLogWrite(record, eventStageLogPaths, projectRoot)) continue;
-		if (!hasConfirmedToolResult(events, index, extractEventToolName(record)?.toLowerCase() ?? null)) continue;
+		if (!(extractEventType(record) === "exec_command_end" && isSuccessfulToolResult(record)) && !hasConfirmedToolResult(events, index, extractEventToolName(record)?.toLowerCase() ?? null)) continue;
 		out.push(...eventStageLogPaths);
 	}
 	return sortUnique(out);
-}
-function collectFeatureScopedCandidates(baseDir, featureIds) {
-	if (!baseDir || featureIds.length === 0 || !fs.existsSync(baseDir)) return [];
-	return sortUnique(listFilesRecursive(baseDir).filter((filePath) => featureIds.some((featureId) => filePath.includes(featureId))));
 }
 function scoreScopeConfidence(sessionPresent, backlogItems, featureIds, touchedPaths, referencedArtifacts, ambiguities) {
 	if (!sessionPresent) return "low";
@@ -451,22 +533,22 @@ function scoreScopeConfidence(sessionPresent, backlogItems, featureIds, touchedP
 	return ambiguities.length > 0 ? "medium" : "high";
 }
 function extractTraceScope({ sessionSummary, projectRoot }) {
-	const texts = sessionSummary.events.flatMap((event) => collectEventTexts(event));
-	const mentionedBacklogItems = extractMatches(texts, /\b(CF-[A-Za-z0-9._-]+)\b/gu);
-	const mentionedFeatures = extractMatches(texts, /\b(F-\d{4,})\b/gu);
-	const touchedPaths = extractTouchedPaths(texts, projectRoot);
+	const idTexts = sessionSummary.events.flatMap((event) => collectEventTextsByKeys(event, ID_TEXT_KEYS)).filter(isHighSignalAnchorText);
+	const touchedPaths = extractTouchedPaths(sessionSummary.events.flatMap((event) => collectEventTextsByKeys(event, PATH_TEXT_KEYS)).flatMap((value) => extractPathAnchorTexts(value)), projectRoot);
 	const touchedStageLogs = extractChangedStageLogPaths(sessionSummary.events, projectRoot);
+	const mentionedBacklogItems = extractCanonicalBacklogItems(idTexts);
+	const mentionedFeatures = sortUnique([...extractCanonicalFeatureIds(idTexts), ...extractFeatureIdsFromPaths(touchedPaths, projectRoot)]);
 	const referencedArtifacts = sortUnique(touchedPaths.filter((filePath) => isReferencedArtifact(filePath, projectRoot)));
-	const candidateReviewArtifacts = sortUnique([...referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}reviews${path.sep}`)), ...collectFeatureScopedCandidates(projectRoot ? path.join(projectRoot, ".dossier", "reviews") : void 0, mentionedFeatures)]);
-	const candidateVerificationArtifacts = sortUnique([...referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}verification${path.sep}`)), ...collectFeatureScopedCandidates(projectRoot ? path.join(projectRoot, ".dossier", "verification") : void 0, mentionedFeatures)]);
+	const candidateReviewArtifacts = sortUnique(referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}reviews${path.sep}`)));
+	const candidateVerificationArtifacts = sortUnique(referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}verification${path.sep}`)));
 	const candidateStageLogs = touchedStageLogs;
 	const scopeAmbiguities = [];
 	if (mentionedBacklogItems.length === 0 && mentionedFeatures.length === 0 && touchedPaths.length === 0 && referencedArtifacts.length === 0) scopeAmbiguities.push("No trace-derived backlog items, feature ids, or touched project paths were found.");
 	if (mentionedBacklogItems.length > 1) scopeAmbiguities.push(`Multiple backlog items were mentioned in one trace: ${mentionedBacklogItems.join(", ")}.`);
 	if (mentionedFeatures.length > 1) scopeAmbiguities.push(`Multiple feature ids were mentioned in one trace: ${mentionedFeatures.join(", ")}.`);
 	if (candidateStageLogs.length === 0) scopeAmbiguities.push("The session trace did not confirm any stage-log path created or changed in this session.");
-	if (mentionedFeatures.length > 0 && candidateReviewArtifacts.length === 0) scopeAmbiguities.push(`No review artifacts were auto-linked for feature ids ${mentionedFeatures.join(", ")}.`);
-	if (mentionedFeatures.length > 0 && candidateVerificationArtifacts.length === 0) scopeAmbiguities.push(`No verification artifacts were auto-linked for feature ids ${mentionedFeatures.join(", ")}.`);
+	if (mentionedFeatures.length > 0 && candidateReviewArtifacts.length === 0) scopeAmbiguities.push(`The trace did not directly reference any review artifacts for extracted feature ids ${mentionedFeatures.join(", ")}.`);
+	if (mentionedFeatures.length > 0 && candidateVerificationArtifacts.length === 0) scopeAmbiguities.push(`The trace did not directly reference any verification artifacts for extracted feature ids ${mentionedFeatures.join(", ")}.`);
 	return {
 		project_root: projectRoot,
 		mentioned_backlog_items: mentionedBacklogItems,

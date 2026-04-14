@@ -136,8 +136,8 @@ Record the phase boundary explicitly:
 
 When one session mentions multiple work items, partition the scope in this order:
 
-1. explicit backlog item ids such as `CF-*`;
-2. explicit feature ids such as `F-*`;
+1. explicit canonical backlog item ids such as `CF-016` or `CF-0016`;
+2. explicit canonical feature ids such as `F-0016`;
 3. linkage through review, verification, or step artifacts;
 4. touched file paths;
 5. time windows.

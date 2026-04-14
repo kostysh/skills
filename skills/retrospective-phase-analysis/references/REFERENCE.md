@@ -27,8 +27,8 @@ For `.dossier/logs`, use the strictest linkage rule: include only stage-log path
 ## 1b. Scope partition order
 
 When one session mixes multiple work items, partition in this order:
-1. explicit backlog item ids such as `CF-*`
-2. explicit feature ids such as `F-*`
+1. explicit canonical backlog item ids such as `CF-016` or `CF-0016`
+2. explicit canonical feature ids such as `F-0016`
 3. review, verification, or step-artifact linkage
 4. touched file paths
 5. time windows

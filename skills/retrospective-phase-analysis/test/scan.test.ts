@@ -247,6 +247,155 @@ void test('buildScanSummary does not scope stage logs when a shell write targets
   assert.equal(summary.stageLogs.count, 0);
 });
 
+void test('buildScanSummary preserves direct review artifact linkage from large apply_patch payloads', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const reviewPath = path.join(projectRoot, '.dossier', 'reviews', 'F-0016-review.md');
+  const patchBody = [
+    `*** Update File: ${reviewPath}`,
+    '@@',
+    ...Array.from({ length: 60 }, (_, index) => `+line ${index + 1}`),
+  ].join('\n');
+
+  try {
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b0', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: patchBody,
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      skillsDir: fixturePath('skills'),
+    });
+
+    assert.deepEqual(summary.scope.referenced_artifacts, [reviewPath]);
+    assert.deepEqual(summary.scope.candidate_review_artifacts, [reviewPath]);
+    assert.deepEqual(summary.scope.mentioned_features, ['F-0016']);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary does not treat git add of a stage log as direct change evidence', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b1', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.exec_command',
+          command:
+            'git add .dossier/logs/implementation.md docs/features/F-0016-retro.md && git diff --cached --name-only',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.exec_command',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      skillsDir: fixturePath('skills'),
+    });
+
+    assert.deepEqual(summary.scope.candidate_stage_logs, []);
+    assert.equal(summary.stageLogs.count, 0);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary reads command-bearing exec_command_end payloads as direct stage-log change evidence when the command writes the log', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b1', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'event_msg',
+          payload: {
+            type: 'exec_command_end',
+            command: [
+              '/bin/bash',
+              '-lc',
+              "printf 'entry\\n' >> .dossier/logs/implementation.md && git add .dossier/logs/implementation.md",
+            ],
+            exit_code: 0,
+            status: 'completed',
+          },
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      skillsDir: fixturePath('skills'),
+    });
+
+    assert.deepEqual(summary.scope.candidate_stage_logs, [
+      path.join(projectRoot, '.dossier', 'logs', 'implementation.md'),
+    ]);
+    assert.equal(summary.stageLogs.count, 1);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 void test('buildScanSummary does not scope stage logs when apply_patch targets another file', () => {
   const summary = buildScanSummary({
     session: fixturePath('sessions', 'phase-session-with-other-apply-patch.jsonl'),
@@ -269,6 +418,70 @@ void test('buildScanSummary does not scope stage logs when apply_patch body ment
 
   assert.deepEqual(summary.scope.candidate_stage_logs, []);
   assert.equal(summary.stageLogs.count, 0);
+});
+
+void test('buildScanSummary keeps canonical backlog and feature ids strict when the trace contains malformed tokens and noisy listings', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7ae', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content:
+            'Investigate CF-0016 and F-0016, but ignore CF-012.delivery_state, CF-018-backed, CF-XXX, CF-0, F-1, and F-0017-backed.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.exec_command',
+          command:
+            "sed -n '1,200p' docs/features/F-0016-retro.md && sed -n '1,200p' src/retro/collector.ts",
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.exec_command',
+          status: 'ok',
+          stdout:
+            'docs/features/F-0001-alpha.md\\ndocs/features/F-0002-beta.md\\ndocs/features/F-0017-gamma.md',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      skillsDir: fixturePath('skills'),
+    });
+
+    assert.deepEqual(summary.scope.mentioned_backlog_items, ['CF-0016']);
+    assert.deepEqual(summary.scope.mentioned_features, ['F-0016']);
+    assert.equal(
+      summary.scope.touched_paths.some((entry) => entry.endsWith('docs/features/F-0016-retro.md')),
+      true,
+    );
+    assert.equal(
+      summary.scope.mentioned_features.some((entry) => entry === 'F-0001' || entry === 'F-0017'),
+      false,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
 });
 
 void test('buildScanSummary does not scope stage logs when the stage log is only a shell source operand', () => {
@@ -310,6 +523,70 @@ void test('buildScanSummary records ambiguity when one trace references multiple
     summary.scope.scope_ambiguities.some((entry) => entry.includes('Multiple feature ids')),
     true,
   );
+});
+
+void test('buildScanSummary does not auto-link review or verification artifacts from feature ids alone', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const reviewsDir = path.join(projectRoot, '.dossier', 'reviews');
+  const verificationDir = path.join(projectRoot, '.dossier', 'verification');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+    await mkdir(reviewsDir, { recursive: true });
+    await mkdir(verificationDir, { recursive: true });
+    await writeFile(path.join(reviewsDir, 'F-0016-review.md'), '# review\n', 'utf8');
+    await writeFile(path.join(verificationDir, 'F-0016-verification.md'), '# verification\n', 'utf8');
+
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7af', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Investigate CF-0016 and F-0016 via docs/features/F-0016-retro.md.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.exec_command',
+          command: "sed -n '1,200p' docs/features/F-0016-retro.md",
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      skillsDir: fixturePath('skills'),
+    });
+
+    assert.deepEqual(summary.scope.candidate_review_artifacts, []);
+    assert.deepEqual(summary.scope.candidate_verification_artifacts, []);
+    assert.equal(
+      summary.scope.scope_ambiguities.some((entry) =>
+        entry.includes('did not directly reference any review artifacts'),
+      ),
+      true,
+    );
+    assert.equal(
+      summary.scope.scope_ambiguities.some((entry) =>
+        entry.includes('did not directly reference any verification artifacts'),
+      ),
+      true,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
 });
 
 void test('buildScanSummary downgrades data quality when logs are missing', () => {

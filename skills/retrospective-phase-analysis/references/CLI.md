@@ -100,7 +100,7 @@ The CLI tries to infer:
 - event types from `type`, `event_type`, `kind`, and `event`;
 - tool names from common `tool`, `tool_name`, and nested call objects;
 - `session_id` and `project_root` from `session_meta`;
-- backlog items, feature ids, touched paths, and referenced artifacts from trace text;
+- canonical backlog items, canonical feature ids, touched paths, and referenced artifacts from high-confidence trace anchors;
 - review findings from stage-log metadata and review-event text;
 - process misses from stage-log sections and metadata;
 - skill references from metadata `skill:` lines and file paths.
@@ -113,6 +113,8 @@ The CLI tries to infer:
 - `scan` does not discover the session trace for you; the agent must pass `--session <file>`.
 - when `session_meta.cwd` is missing or stale, the agent must resolve `project root` before supplying optional directories.
 - `scan` only treats `.dossier/logs` as in-scope when the trace shows those log paths as created or changed in the analyzed session.
+- `scan` does not treat malformed ids such as `CF-012.delivery_state`, `CF-018-backed`, `CF-0`, or `CF-XXX` as canonical backlog items.
+- `scan` does not widen review or verification scope by feature-id fan-out alone; those artifacts must be directly referenced in the trace.
 - `scan` does not replace manual scope review when the trace contains multiple tasks or multiple features.
 - The generated report is a draft. The agent should read the cited artifacts before finalizing findings.
 
