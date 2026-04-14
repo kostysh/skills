@@ -125,6 +125,8 @@ void test('global help exposes unified commands and compatibility aliases', () =
   assert.match(result.stdout, /sync-index/);
   assert.match(result.stdout, /dossier-verify/);
   assert.match(result.stdout, /marker-audit/);
+  assert.doesNotMatch(result.stdout, /ops-log/);
+  assert.doesNotMatch(result.stdout, /session-ops-log/);
   assert.equal(result.stderr, '');
 });
 

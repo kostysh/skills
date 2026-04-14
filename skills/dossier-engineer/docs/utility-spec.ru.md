@@ -77,6 +77,11 @@ Feature Dossier — markdown-файл в `docs/features`, который:
 
 Все артефакты хранятся в `.dossier/` и сериализуются в JSON.
 
+Важно:
+
+- workflow-stage logs в `.dossier/logs/...` остаются process telemetry artifacts, но не создаются текущим CLI автоматически;
+- session-level ops logs в `.dossier/ops/...` тоже являются process telemetry artifacts skill workflow, но в текущем runtime не имеют собственного shipped subcommand и ведутся как markdown-артефакты процесса, а не utility-owned JSON.
+
 ## 4. Глобальный CLI-контракт
 
 ### 4.1 Имя и запуск
@@ -130,6 +135,13 @@ node scripts/dossier.mjs --version
 | Review artifacts | `.dossier/reviews/<feature-id>/...` |
 | Verification artifacts | `.dossier/verification/<feature-id>/...` |
 | Step artifacts | `.dossier/steps/<feature-id>/...` |
+
+Дополнительно skill workflow использует, но текущий CLI не генерирует автоматически:
+
+| Назначение | Путь |
+|---|---|
+| Workflow-stage logs | `.dossier/logs/<feature>/<stage>-<cycle>.md` |
+| Session-level ops logs | `.dossier/ops/<session>/<episode>.md` |
 
 ## 6. Спецификация команд
 

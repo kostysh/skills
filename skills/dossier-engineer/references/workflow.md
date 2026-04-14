@@ -86,6 +86,19 @@ Detailed workflow-stage steps:
 - `dependency-check`: [workflow-stage-dependency-check.md](workflow-stage-dependency-check.md)
 - `change-proposal`: [workflow-stage-change-proposal.md](workflow-stage-change-proposal.md)
 
+## Session-level ops log
+
+Use [session-ops-log.md](session-ops-log.md) when the meaningful work sits outside one clean dossier stage and crosses skill or stage boundaries.
+
+Open `.dossier/ops/<session>/<episode>.md` when:
+
+- the main effort is migration, repair, cross-skill handoff recovery, or audit-infrastructure stabilization;
+- stage-local logs would not explain the episode without replaying raw trace;
+- the episode materially touches more than one skill or temporarily exits the normal dossier-stage flow.
+
+Update the ops log when skill ownership, touched artifacts, or outcome changes materially.
+Keep stage-local facts in stage logs; the session-level ops log records only the cross-skill or cross-stage episode boundary, linked artifacts, operator interventions, and outcome.
+
 ## Spec and planning risk hardening
 
 Use [spec-and-plan-risk-patterns.md](spec-and-plan-risk-patterns.md) when:

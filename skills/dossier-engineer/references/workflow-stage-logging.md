@@ -106,6 +106,16 @@ backlog_actualized: true
 verification_artifact: .dossier/verification/...
 review_artifact: .dossier/reviews/...
 step_artifact: .dossier/steps/...
+review_requested_ts: 2026-04-10T10:44:00+02:00
+first_review_agent_started_ts: 2026-04-10T10:45:00+02:00
+review_models:
+  - gpt-5.4
+review_retry_count: 1
+review_wait_minutes: 17
+transport_failures_total: 0
+rerun_reasons:
+  - review_findings
+operator_review_interventions_total: 1
 ```
 
 ## `session_id`
@@ -142,6 +152,30 @@ After the metadata block, keep a short narrative structure:
 The narrative is still useful. The metadata block does not replace it.
 
 Keep these sections concise. Do not copy Feature Dossier truth, full AC text, slice text, task text, or full review reports into the log.
+
+## Review orchestration telemetry
+
+When any external review was requested, record review orchestration as structured data, not only prose.
+
+Required fields:
+
+- `review_requested_ts`
+- `first_review_agent_started_ts`
+- `review_models`
+- `review_retry_count`
+- `review_wait_minutes`
+- `transport_failures_total`
+- `rerun_reasons`
+- `operator_review_interventions_total`
+
+Interpretation rules:
+
+- `review_retry_count` counts reruns or retries after the initial request.
+- `review_wait_minutes` should cover the total wait between the first review request and the final usable review verdict.
+- `transport_failures_total` counts API, runtime, transport, or platform failures that forced a retry.
+- `rerun_reasons` must distinguish `review_findings` from `transport_runtime_instability`.
+- If the same cycle had both findings-driven and transport-driven reruns, record both reasons instead of collapsing them into one prose summary.
+- `review_models` should list the actual reviewer model(s) used across the cycle when that information is visible.
 
 ## Stage-specific sections
 
@@ -228,6 +262,7 @@ Useful fields to capture:
 - short findings summary;
 - whether follow-up was applied;
 - whether the follow-up required narrow re-audit.
+- whether the reround happened because of review findings or because of transport/runtime instability.
 
 ## Backlog actualization
 
@@ -266,6 +301,10 @@ Do not hide process misses inside general prose.
 - `process_misses_total`
 - `backlog_actualization_count`
 - `late_log_start`
+- `review_retry_count`
+- `review_wait_minutes`
+- `transport_failures_total`
+- `operator_review_interventions_total`
 
 ### Specification metrics
 
@@ -303,8 +342,11 @@ Do not hide process misses inside general prose.
 - findings count by review type;
 - findings count by severity;
 - reround count;
+- rerun reason count by class;
 - `ready_for_review -> first verdict` latency;
 - `first non-pass -> final pass` latency;
+- `review_requested -> first reviewer start` latency;
+- `review_requested -> final usable verdict` latency;
 - stale finding count;
 - skipped review count and reason.
 

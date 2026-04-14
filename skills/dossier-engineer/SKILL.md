@@ -45,6 +45,7 @@ Backlog source of truth:
 Canonical process artifacts:
 
 - `.dossier/logs/<feature>/<stage>-<cycle>.md` — workflow-stage process telemetry for `spec-compact`, `plan-slice`, and `implementation`.
+- `.dossier/ops/<session>/<episode>.md` — session-level ops telemetry for cross-skill migration, repair, or audit-infrastructure episodes that do not fit one dossier stage.
 - `.dossier/verification/<feature>/<step>-<event>.json` — verification bundle result from `dossier-verify`.
 - `.dossier/reviews/<feature>/<step>-<event>.json` — independent review result from `review-artifact`.
 - `.dossier/steps/<feature>/<step>.json` — machine-checkable closure state from `dossier-step-close`.
@@ -65,6 +66,7 @@ Templates:
 - Feature dossier template: [references/DOSSIER_TEMPLATE.md](references/DOSSIER_TEMPLATE.md)
 - Index template: [references/SSOT_INDEX_TEMPLATE.md](references/SSOT_INDEX_TEMPLATE.md)
 - ADR block template: [references/ADR_BLOCK_TEMPLATE.md](references/ADR_BLOCK_TEMPLATE.md)
+- Session ops log template: [references/SESSION_OPS_LOG_TEMPLATE.md](references/SESSION_OPS_LOG_TEMPLATE.md)
 - Repo `AGENTS.md` template: [references/REPO_AGENTS_TEMPLATE.md](references/REPO_AGENTS_TEMPLATE.md)
 
 ## State model (keep these dimensions separate)
@@ -217,6 +219,19 @@ Closure rule:
 - for truth-changing workflow stages, backlog actualization is part of the stage closure contract;
 - do not treat the stage as complete until backlog actualization through `backlog-engineer` is done;
 - `refresh` alone is not backlog actualization when dossier work changed `delivery_state` or surfaced dossier-local blockers, dependencies, or context facts that must be patched explicitly.
+
+## Session-level ops log routing
+
+Use [Session-level ops log](references/session-ops-log.md) when a meaningful cross-skill episode falls outside one clean dossier-stage boundary.
+
+Open this log only when:
+
+- the episode spans multiple skills or temporarily leaves one dossier stage;
+- the main effort is migration, repair, handoff recovery, or audit-infrastructure stabilization;
+- reconstructing the episode later would otherwise depend mostly on raw session trace.
+
+Do not open it for ordinary stage-local rerounds, narrow review follow-ups, or trivial one-command fixes.
+Keep stage-local decisions in the relevant stage log; use the session ops log only for cross-skill or cross-stage process telemetry.
 
 ## Step closure contract
 

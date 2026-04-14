@@ -101,6 +101,24 @@ When an audit returns findings:
 
 Continue this fix -> narrow re-audit cycle until the relevant audit returns PASS.
 
+## Review orchestration telemetry
+
+If workflow-stage logging was required, update the stage log after every audit reround.
+
+At minimum:
+
+- record `review_requested_ts` when the external review bundle is first requested;
+- record `first_review_agent_started_ts` when the first reviewer actually starts;
+- append or correct `review_models` when the visible reviewer model changes;
+- increment `review_retry_count` for each rerun or retry after the first request;
+- increment `transport_failures_total` when the rerun happened because of API, runtime, transport, or platform instability;
+- update `rerun_reasons` after each reround;
+- update `review_wait_minutes` and `operator_review_interventions_total` before closure.
+
+Do not collapse different causes into one vague note.
+Distinguish reruns caused by real review findings from reruns caused by transport/runtime instability.
+Only findings-driven reruns change the audit scope; instability-driven retries still count as orchestration cost and must remain visible in the stage log.
+
 ## Follow-up re-audit classifier
 
 Choose re-audits by the class of the follow-up change.

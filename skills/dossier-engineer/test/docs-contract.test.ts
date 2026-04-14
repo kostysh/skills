@@ -35,6 +35,7 @@ const WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH = path.join(
   'workflow-stage-change-proposal.md',
 );
 const WORKFLOW_STAGE_LOGGING_PATH = path.join(SKILL_DIR, 'references', 'workflow-stage-logging.md');
+const SESSION_OPS_LOG_PATH = path.join(SKILL_DIR, 'references', 'session-ops-log.md');
 const SPEC_AND_PLAN_RISK_PATTERNS_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -278,6 +279,12 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     'spec-conformance-reviewer',
     'code-reviewer',
     'security-reviewer',
+    '## Review orchestration telemetry',
+    'update the stage log after every audit reround',
+    '`review_retry_count`',
+    '`transport_failures_total`',
+    '`rerun_reasons`',
+    'transport/runtime instability',
     '## Follow-up re-audit classifier',
     'Normative/process/docs contract changes',
   ]);
@@ -293,6 +300,7 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     '## Required narrative sections',
     '## Stage-specific sections',
     '## Review event log',
+    '## Review orchestration telemetry',
     '## Backlog actualization',
     '## Process misses',
     '## Metrics to capture',
@@ -301,6 +309,14 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     'commit metadata',
     'Feature Dossier',
     'process telemetry',
+    'review_requested_ts',
+    'first_review_agent_started_ts',
+    'review_models',
+    'review_retry_count',
+    'review_wait_minutes',
+    'transport_failures_total',
+    'rerun_reasons',
+    'operator_review_interventions_total',
     'Spec gap decisions',
     'Implementation freedom decisions',
     'Temporary assumptions',
@@ -322,7 +338,10 @@ void test('active dossier instructions use the unified workflow-stage logging re
   const implementation = extractSection(skill, '#### Workflow stage: `implementation`');
   const coreArtifacts = extractSection(skill, '## Core artifacts');
 
-  assertContainsTerms(coreArtifacts, ['.dossier/logs/<feature>/<stage>-<cycle>.md']);
+  assertContainsTerms(coreArtifacts, [
+    '.dossier/logs/<feature>/<stage>-<cycle>.md',
+    '.dossier/ops/<session>/<episode>.md',
+  ]);
   assertContainsTerms(specCompact, [
     '[Workflow stage logging](references/workflow-stage-logging.md)',
     'If a workflow-stage logging trigger fired, the stage log was opened or updated.',
@@ -356,6 +375,9 @@ void test('active dossier instructions use the unified workflow-stage logging re
     'It does not replace the Feature Dossier.',
     'stage: spec-compact | plan-slice | implementation',
     'log_required_reason',
+    'review_requested_ts',
+    'rerun_reasons',
+    'transport_runtime_instability',
     '`spec-compact`',
     '`plan-slice`',
     '`implementation`',
@@ -385,6 +407,49 @@ void test('skill-wide review sections stay distinct from implementation-specific
   assertContainsTerms(reviewChecklistRules, [
     'When a stage has a dedicated audit policy, use it instead of inventing a local audit stack.',
     'For `Workflow stage: implementation`, use [Implementation audit policy](references/implementation-audit-policy.md) for audit order, brief shape, and classifier-based re-audit rules.',
+  ]);
+});
+
+void test('session-level ops log routing stays distinct from workflow-stage logging', async () => {
+  const [skill, workflow, sessionOpsLog] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(SESSION_OPS_LOG_PATH, 'utf8'),
+  ]);
+
+  const coreArtifacts = extractSection(skill, '## Core artifacts');
+  const opsRouting = extractSection(skill, '## Session-level ops log routing');
+  const opsWorkflow = extractSection(workflow, '## Session-level ops log');
+
+  assertContainsTerms(coreArtifacts, [
+    '.dossier/ops/<session>/<episode>.md',
+    'session-level ops telemetry',
+  ]);
+  assertContainsTerms(opsRouting, [
+    '[Session-level ops log](references/session-ops-log.md)',
+    'cross-skill episode',
+    'Do not open it for ordinary stage-local rerounds',
+    'Keep stage-local decisions in the relevant stage log',
+  ]);
+  assertContainsTerms(opsWorkflow, [
+    '[session-ops-log.md](session-ops-log.md)',
+    '.dossier/ops/<session>/<episode>.md',
+    'outside one clean dossier stage',
+    'Update the ops log when skill ownership, touched artifacts, or outcome changes materially.',
+  ]);
+  assertContainsTerms(sessionOpsLog, [
+    '## Applies to',
+    '## Purpose',
+    '.dossier/ops/<session>/<episode>.md',
+    '## When the ops log is required',
+    '## When not to open it',
+    'episode_kind',
+    'skills_involved',
+    'linked_stage_logs',
+    'linked_review_artifacts',
+    'linked_verification_artifacts',
+    'linked_backlog_artifacts',
+    'Do not use this as a second stage log.',
   ]);
 });
 

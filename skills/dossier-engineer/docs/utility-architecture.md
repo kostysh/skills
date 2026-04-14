@@ -88,6 +88,7 @@ Important boundary:
 
 - dossier CLI may emit supporting signals for workflow reasoning;
 - authoritative `backlog impact verdict` for `Workflow stage: change-proposal` remains stage-owned process logic;
+- session-level ops logs remain process-owned markdown artifacts outside the current shipped CLI surface;
 - do not move that verdict into dossier-local runtime heuristics unless the skill contract is explicitly expanded first.
 
 #### Dossier Lint Analysis
