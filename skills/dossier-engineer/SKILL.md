@@ -44,7 +44,7 @@ Backlog source of truth:
 
 Canonical process artifacts:
 
-- `.dossier/logs/<feature-id>/feature-intake-<cycle>.md` — command-level process telemetry for `feature-intake`.
+- `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` — command-level process telemetry for `feature-intake`.
 - `.dossier/logs/<feature>/<stage>-<cycle>.md` — workflow-stage process telemetry for `spec-compact`, `plan-slice`, and `implementation`.
 - `.dossier/ops/<session>/<episode>.md` — session-level ops telemetry for cross-skill migration, repair, or audit-infrastructure episodes that do not fit one dossier stage.
 - `.dossier/verification/<feature>/<step>-<event>.json` — verification bundle result from `dossier-verify`.
@@ -240,7 +240,7 @@ For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-sl
 
 1. Finish the command’s local work.
 2. Run the command-specific checks.
-   For `feature-intake`, if an intake logging trigger fired, the required intake log must be open and current according to [Feature intake logging](references/feature-intake-logging.md).
+   For `feature-intake`, if an objective intake logging trigger fired, the required intake log must be open and current according to [Feature intake logging](references/feature-intake-logging.md).
 3. Perform manual debt review on the changed scope.
 4. Run `node scripts/dossier.mjs debt-audit --changed-only`.
 5. Re-check dependencies, adjacent seams, delivered dossiers, architecture, and repo ADRs.
@@ -639,7 +639,7 @@ Steps:
 2. Determine the next free `F-XXXX`.
 3. Re-read architecture, ADR, and backlog context for the selected work.
 4. Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).
-   If a trigger is already known, open `.dossier/logs/<feature-id>/feature-intake-<cycle>.md` before the first substantive dossier mutation.
+   If an objective trigger is already known, open `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` before creating `docs/features/F-XXXX-<slug>.md`.
 5. Create `docs/features/F-XXXX-<slug>.md` from the dossier template.
 6. Fill frontmatter with:
    - `id`
@@ -660,7 +660,8 @@ Steps:
 8. Treat that backlog handoff block as human-facing continuity and traceability only.
    CLI commands such as `next-step` do not parse dossier prose or use that block as machine-readable state.
 9. Capture the selected backlog context, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
-10. If an intake logging trigger appears mid-command, open the intake log immediately and record a late start as a process miss.
+10. If an objective intake logging trigger appears after dossier creation or after dossier edits started, open the intake log immediately.
+    Mark `late_start: true` only when that trigger had already been known before dossier creation.
 11. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path after intake.
    Use `sync-index` only when you intentionally need table/graph refresh without a Red flags update.
 12. If `feature-intake --json` returns `partial_success: true`, treat intake as incomplete until the reported `index-refresh` failure is resolved.
@@ -680,8 +681,8 @@ Command correctness checklist:
 - [ ] `depends_on` contains only real delivered prerequisites.
 - [ ] Intake-side blockers or missing dependencies were returned to `backlog-engineer` before the next downstream stage.
 - [ ] `docs/ssot/index.md` contains exactly one row for the new dossier.
-- [ ] If an intake logging trigger fired, the intake log was opened or updated and reflects the final state of the intake cycle.
-- [ ] If intake logging was skipped, the final summary states the skip reason explicitly.
+- [ ] If an objective intake logging trigger fired, the intake log was opened or updated and reflects the final state of the intake cycle.
+- [ ] If intake logging was skipped, the final summary states that no objective intake logging trigger fired.
 - [ ] If the intake required `index-refresh` reruns, backlog actualization, or operator rerounds, those events remain in the same intake-log cycle while the literal closure target is unchanged.
 - [ ] If intake turned into a cross-skill recovery episode, the intake log stayed primary and the companion session-level ops log was cross-linked instead of replacing it.
 

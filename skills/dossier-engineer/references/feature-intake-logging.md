@@ -34,13 +34,14 @@ It also does not replace session-level ops logs, verification artifacts, review 
 Use:
 
 ```text
-.dossier/logs/<feature-id>/feature-intake-<cycle>.md
+.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md
 ```
 
 Rules:
 
 - `<feature-id>` must match the dossier feature id `F-XXXX`.
-- `<cycle>` should be short and human-readable.
+- `<cycle-id>` must use the canonical format `cNN` where `NN` is a two-digit decimal counter starting at `01`.
+- The filename suffix must match the `cycle_id` value in the metadata block exactly.
 - One intake log equals one literal intake closure target.
 
 Cycle rule:
@@ -53,52 +54,64 @@ Cycle rule:
   - intake stops and is replaced by intake for another backlog item;
   - the agent abandons the original dossier target and creates a different dossier as the new canonical target;
   - the previous intake cycle was closed or abandoned and a new independent intake attempt starts.
+- For a new cycle under the same `feature_id`, use the next free `cNN`.
 
 ## When logging is required
 
-Open or update an intake log when any trigger fires:
+Open or update an intake log when any objective trigger fires:
 
-- intake discovered new blockers, dependencies, missing context, or lifecycle-changing facts;
 - intake requires backlog actualization through `backlog-engineer`;
-- operator feedback changes intake direction after the first draft;
-- intake runs in more than one meaningful pass;
-- `index-refresh` returns `partial_success`, fails, or needs a rerun;
-- a process miss occurs;
-- retrospective telemetry was requested or is reasonably expected.
+- operator feedback arrives after dossier creation or after the backlog handoff block was written and forces a correction in the same intake cycle;
+- `index-refresh` returns `partial_success`;
+- `index-refresh` fails;
+- `index-refresh` for the current cycle is rerun after an earlier non-success result or after operator correction;
+- a process miss occurs, including late log start;
+- operator explicitly requested retrospective telemetry for this intake cycle.
+
+Use only these canonical `log_required_reason` values:
+
+- `backlog_actualization_required`
+- `operator_reround_after_dossier_creation`
+- `index_refresh_partial_success`
+- `index_refresh_failed`
+- `index_refresh_rerun`
+- `process_miss`
+- `retrospective_requested`
+
+For `feature-intake`, treat only these cases as `process_miss`:
+
+- `late_start: true`;
+- the intake log had to be renamed or moved because `feature_id`, `cycle_id`, or the filename suffix was wrong;
+- the agent attempted truthful closure while a required intake log update, a required backlog actualization, or the current cycle `index-refresh` outcome was still unresolved.
+
+Do not invent additional `process_miss` categories locally. If an event does not match one of the cases above, record it in narrative prose instead of using `process_miss` as a machine-facing trigger.
 
 ## Low-overhead skip path
 
-An intake log may be skipped only when all conditions are true:
-
-- intake was completed in one clean pass;
-- the dossier was created cleanly and the backlog handoff block did not need rerounds;
-- no new blockers, dependencies, or missing context were discovered;
-- backlog actualization was not required;
-- `index-refresh` completed cleanly without `partial_success` and without a rerun;
-- no process miss occurred;
-- retrospective telemetry was not requested and is not reasonably expected.
+An intake log may be skipped only when none of the objective triggers above fired for the current intake cycle.
 
 If skipped, state the reason in the final summary. Example:
 
 ```text
-intake log skipped: one-pass dossier creation; no intake logging trigger fired
+intake log skipped: no objective intake logging trigger fired
 ```
 
 ## Timing rule
 
-- If an intake logging trigger is known before edits, open the log before the first substantive dossier mutation.
-- If the trigger appears mid-command, open the log immediately.
-- For late starts, record `late_start: true` and a process miss note.
+- If an objective trigger is already known before dossier creation, open the log before creating `docs/features/F-XXXX-<slug>.md`.
+- If an objective trigger appears after dossier creation, after the backlog handoff block was written, or after dossier body edits started, open the log immediately.
+- Mark `late_start: true` only when the trigger was already known before dossier creation but the log was opened later.
+- Record a process miss note whenever `late_start: true`.
 - Keep the log current through `feature-intake`, `index-refresh`, backlog actualization, and the final close-out summary.
 
 ## Closure blocking rule
 
-If an intake logging trigger fired, `feature-intake` cannot be treated as truthfully `process_complete: true` until the required intake log was opened or updated to the final state of that intake cycle.
+If an objective intake logging trigger fired, `feature-intake` cannot be treated as truthfully `process_complete: true` until the required intake log was opened or updated to the final state of that intake cycle.
 
 Treat these as blocking:
 
 - required intake log missing;
-- required intake log stale after a material intake change;
+- required intake log missing the latest `index-refresh` outcome, the latest backlog actualization outcome, or the latest operator reround outcome for the current cycle;
 - `partial_success` still unresolved;
 - required backlog actualization still incomplete.
 
@@ -112,7 +125,8 @@ Open-time minimum fields:
 feature_id: F-XXXX
 backlog_item_key: CF-XXX
 command: feature-intake
-cycle_id: short-human-readable-id
+cycle_id: c01
+late_start: false
 session_id: 019d... # omit if runtime does not expose a reliable value
 start_ts: 2026-04-14T10:00:00+02:00
 source_inputs:
@@ -121,8 +135,8 @@ repo_overlays:
   - AGENTS.md
 log_required: true
 log_required_reason:
-  - backlog_actualization
-  - intake_reround
+  - backlog_actualization_required
+  - operator_reround_after_dossier_creation
 ```
 
 Close-out fields to add or backfill before truthful command closure:
@@ -130,7 +144,7 @@ Close-out fields to add or backfill before truthful command closure:
 ```yaml
 index_refresh_ts: 2026-04-14T10:05:00+02:00
 index_refresh_status: success | partial_success | failed
-backlog_actualized: true
+backlog_actualized: true | false
 handoff_block_written: true
 dossier_path: docs/features/F-XXXX-foo.md
 ```
@@ -141,6 +155,8 @@ Rule:
 - omit fields that are not yet knowable;
 - backfill close-out fields before the command is treated as truthfully complete;
 - never invent placeholders for unknown values.
+- if `late_start` becomes true, update the open-time metadata block instead of recording it only in narrative prose.
+- always backfill `backlog_actualized` as an explicit boolean: use `true` only when backlog actualization actually ran and completed for this intake cycle; otherwise write `false`.
 
 ## `session_id`
 

@@ -223,7 +223,7 @@ void test('dossier docs keep backlog actualization and handoff boundaries litera
     'Пройти workflow stage `implementation`',
   ]);
   assertContainsTerms(intakeLogging, [
-    'If an intake logging trigger fired, `feature-intake` cannot be treated as truthfully `process_complete: true`',
+    'If an objective intake logging trigger fired, `feature-intake` cannot be treated as truthfully `process_complete: true`',
     'required backlog actualization still incomplete',
     'which blockers, dependencies, or missing-context facts appeared during intake',
   ]);
@@ -360,7 +360,7 @@ void test('active dossier instructions use the unified workflow-stage logging re
   const coreArtifacts = extractSection(skill, '## Core artifacts');
 
   assertContainsTerms(coreArtifacts, [
-    '.dossier/logs/<feature-id>/feature-intake-<cycle>.md',
+    '.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md',
     '.dossier/logs/<feature>/<stage>-<cycle>.md',
     '.dossier/ops/<session>/<episode>.md',
   ]);
@@ -407,7 +407,7 @@ void test('active dossier instructions use the unified workflow-stage logging re
     '[feature-intake-logging.md](feature-intake-logging.md)',
   ]);
   assertContainsTerms(intakeLogging, [
-    '.dossier/logs/<feature-id>/feature-intake-<cycle>.md',
+    '.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md',
     'Ordinary intake stays in the intake log only.',
     'the intake log remains the primary record of the `feature-intake` command flow',
   ]);
@@ -437,14 +437,15 @@ void test('feature-intake logging stays explicit, command-level, and distinct fr
   const workflowIntake = extractSection(workflow, '## CLI command: `feature-intake`');
 
   assertContainsTerms(coreArtifacts, [
-    '.dossier/logs/<feature-id>/feature-intake-<cycle>.md',
+    '.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md',
     '.dossier/logs/<feature>/<stage>-<cycle>.md',
   ]);
   assertContainsTerms(intake, [
     '[Feature intake logging](references/feature-intake-logging.md)',
     'Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).',
-    'If a trigger is already known, open `.dossier/logs/<feature-id>/feature-intake-<cycle>.md` before the first substantive dossier mutation.',
-    'If an intake logging trigger appears mid-command, open the intake log immediately',
+    'If an objective trigger is already known, open `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` before creating `docs/features/F-XXXX-<slug>.md`.',
+    'If an objective intake logging trigger appears after dossier creation or after dossier edits started, open the intake log immediately.',
+    'Mark `late_start: true` only when that trigger had already been known before dossier creation.',
     'If a normal intake turns into a cross-skill migration, repair, or backlog-recovery episode',
   ]);
   assertContainsTerms(closure, [
@@ -453,8 +454,8 @@ void test('feature-intake logging stays explicit, command-level, and distinct fr
   ]);
   assertContainsTerms(workflowIntake, [
     '[feature-intake-logging.md](feature-intake-logging.md)',
-    'If an intake logging trigger fired, the required intake log is part of truthful command closure',
-    'Open a new intake-log cycle only when the closure target changes literally',
+    'If an objective intake logging trigger fired, the required intake log is part of truthful command closure',
+    'Use the next free `cNN` and keep the filename suffix equal to `cycle_id`',
     'open a companion session-level ops log for the cross-skill boundary',
   ]);
   assertContainsTerms(intakeLogging, [
@@ -462,12 +463,25 @@ void test('feature-intake logging stays explicit, command-level, and distinct fr
     '## Interaction with session-level ops log',
     'One intake log equals one literal intake closure target.',
     '`<feature-id>` must match the dossier feature id `F-XXXX`.',
+    '`<cycle-id>` must use the canonical format `cNN`',
+    'The filename suffix must match the `cycle_id` value in the metadata block exactly.',
     'Open-time minimum fields:',
     'Close-out fields to add or backfill before truthful command closure:',
     'omit fields that are not yet knowable',
+    'late_start: false',
+    'if `late_start` becomes true, update the open-time metadata block',
     'Keep the same cycle when the literal closure target is unchanged',
     'Open a new cycle only when the closure target changes literally',
     'Ordinary intake stays in the intake log only.',
+    'Use only these canonical `log_required_reason` values:',
+    'backlog_actualization_required',
+    'operator_reround_after_dossier_creation',
+    'For `feature-intake`, treat only these cases as `process_miss`:',
+    'the intake log had to be renamed or moved because `feature_id`, `cycle_id`, or the filename suffix was wrong;',
+    'attempted truthful closure while a required intake log update',
+    'An intake log may be skipped only when none of the objective triggers above fired',
+    'backlog_actualized: true | false',
+    'always backfill `backlog_actualized` as an explicit boolean',
   ]);
 
   assert.ok(
