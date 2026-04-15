@@ -6,7 +6,8 @@
 3. Deliver on the canonical stack, runtime, and deployment path from the first executable change.
 4. Before treating the first green increment as closure, identify the planned slices/packages and the allowed stop points recorded during `plan-slice`.
 5. Build verification alongside implementation.
-6. When the first working increment changes a security-sensitive seam, run the early security seam checkpoint from [Implementation audit policy](implementation-audit-policy.md) before building more work around that seam.
+6. When the first working increment changes a security-sensitive seam, run the `Audit launch gate` from [Implementation audit policy](implementation-audit-policy.md) for `early-security-checkpoint`; do not spawn if the gate fails.
+   After the gate passes, run the early security seam checkpoint before building more work around that seam.
    This checkpoint is narrow, uses `security-reviewer`, and does not replace the final security audit.
    If the checkpoint finding requires behavior outside the dossier/spec/approved process model, stop and ask the operator instead of widening scope silently.
 7. When implementation reveals a missing prerequisite seam or cross-cutting invariant, externalize it immediately.
@@ -19,12 +20,16 @@
 10. Establish the intended final tree before closure: apply all in-scope code, dossier, verification, review, and backlog actualization changes that belong to the current closure target.
 11. Run project checks plus `node scripts/dossier.mjs dossier-verify ...` on the intended final tree.
 12. Run an explicit completeness review against the dossier, slices, approved changes, and repo overlays. Any stub, reduced scope, placeholder, or deferred behavior must be recorded explicitly; never leave it implicit.
-13. Run `spec-conformance` review first against the dossier, overlays, approved changes, and relevant contracts. Use the audit brief and reround rules from [Implementation audit policy](implementation-audit-policy.md).
-14. If the changed scope includes executable code, runtime wiring, or trust-boundary changes, run two nested review passes after `spec-conformance` passes:
+13. Run the `Audit launch gate` from [Implementation audit policy](implementation-audit-policy.md) for `spec-conformance`; do not spawn if the gate fails.
+    After the gate passes, run `spec-conformance` review first against the dossier, overlays, approved changes, and relevant contracts. Use the audit brief and reround rules from [Implementation audit policy](implementation-audit-policy.md).
+14. If the changed scope includes executable code, runtime wiring, or trust-boundary changes, run the `Audit launch gate` before each nested `code` and `security` review; do not spawn if either gate fails.
+    After the relevant gate passes, run two nested review passes after `spec-conformance` passes:
    - `code-reviewer` for correctness, maintainability, contracts, lifecycle, and merge-risk findings;
    - `security-reviewer` for auth/authz, trust boundaries, input handling, secret exposure, and exploitability findings.
    These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
-15. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.` If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+15. Run the `Audit launch gate` for `independent-review`; do not spawn if the gate fails.
+    After the gate passes, run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.` If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+    Apply operational launch guardrails from [Implementation audit policy](implementation-audit-policy.md) after each launch passes the model gate.
 16. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
 17. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
     The implementation stage is not complete until this required backlog actualization is done and backlog artifact integrity is clean when backlog truth changed.

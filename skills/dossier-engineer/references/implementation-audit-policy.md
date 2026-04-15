@@ -62,10 +62,66 @@ Out-of-spec stop rule:
 - if the checkpoint identifies a problem whose fix requires behavior outside the dossier, current specification, or approved process model, stop and ask the operator;
 - do not silently widen scope, invent new security behavior, or encode an unstated security requirement just to make the checkpoint pass.
 
+## Audit launch gate
+
+Complete an `Audit launch gate` before every `spawn_agent` call for a blocking audit.
+
+The gate is required for:
+
+- `spec-conformance`;
+- `code`;
+- `security`;
+- `independent-review`;
+- `early-security-checkpoint`;
+- any other named blocking audit.
+
+Minimum gate record:
+
+```md
+Audit launch gate:
+- audit_class:
+- required_skill:
+- scope:
+- model:
+- reasoning_effort:
+- blocking: true | false
+- allowed_by_policy: true | false
+- disallowed_reason:
+```
+
+Fail-closed rules:
+
+- missing `model` blocks launch;
+- missing `reasoning_effort` blocks blocking audit launch;
+- weak/mini model class blocks blocking audit launch;
+- model disallowed by repo/operator policy blocks launch;
+- runtime inability to choose `model` or `reasoning_effort` explicitly blocks the step unless the operator explicitly approves degraded mode.
+
+Launch semantics:
+
+- `allowed_by_policy: true` is required before `spawn_agent` for blocking audits;
+- if `allowed_by_policy: true`, `disallowed_reason` must be empty;
+- if `allowed_by_policy: false`, spawning is blocked and `disallowed_reason` must state why;
+- operational launch guardrails apply only after the model gate passes.
+
+Invalidation semantics:
+
+- weak/mini models cannot produce blocking audit verdicts;
+- weak/mini results must be treated as invalidated;
+- invalidated attempts are telemetry/process-miss evidence only;
+- invalidated attempts must not be summarized as PASS/FAIL evidence;
+- rerun the blocking audit with a policy-allowed model before using the audit as review evidence.
+
+Proportionality rule:
+
+- non-blocking helper agents may use lighter models only with explicit operator approval;
+- helper output cannot satisfy blocking audit requirements.
+
 ## Spawned agents only
 
 When the process requires an external audit:
 
+- complete the `Audit launch gate` before spawning;
 - run it through a spawned external agent;
 - assign the agent an explicit role;
 - explicitly recommend the correct review skill:

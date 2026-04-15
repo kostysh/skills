@@ -178,6 +178,7 @@ Applies to the working tree only:
 
 13. **Independent review should be truly independent and fail closed.**
     Spawn a separate reviewer agent that did not author the changes or the close-out summary whenever the `spawn_agent` tool exists. If platform policy requires explicit user authorization before spawning, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.` If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode. Do not silently substitute self-review or `emulated-independent-review`.
+    Required independent review must declare model/reasoning when the runtime supports those fields. Unmet model policy blocks the step unless operator explicitly approves degraded review mode, and degraded mode cannot be silently treated as normal independent review.
 
 ## Repo overlay ingestion
 
@@ -293,14 +294,20 @@ For `Workflow stage: implementation`, the audit stack, review brief, and classif
 Default contract:
 
 1. Spawn a separate reviewer agent that did not produce the changes or the final answer whenever the `spawn_agent` tool exists.
-2. Give the reviewer the command name, touched files, relevant command output or artifacts, debt-review outcome, and the command-specific checklist.
-3. The reviewer must inspect actual repo state and generated artifacts, not trust the author’s summary.
-4. For mutating steps, persist the reviewer’s verdict with `review-artifact` and use it for step closure.
-5. For read-only or report-producing commands, the reviewer still checks output fidelity even when no step-close artifact is required.
-6. Resolve every `must-fix` finding, rerun affected checks, and rerun review when the fixes were material.
-7. If the current platform policy requires explicit user authorization before spawning, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.`
-8. If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
-9. Do not silently substitute self-review or `emulated-independent-review` for a required independent review.
+2. Before spawning a required independent review, declare model, reasoning effort, required skill, scope, and allowed-model verdict when the runtime supports those fields.
+   For implementation blocking audits, use the `Audit launch gate` and record `model`, `reasoning_effort`, and `allowed_by_policy` before spawning.
+3. Unmet model policy blocks the step unless operator explicitly approves degraded review mode.
+4. Degraded review mode remains explicit and cannot be silently treated as normal independent review.
+5. A weak/mini model verdict cannot satisfy a required independent review or any blocking audit requirement.
+   Treat any weak/mini verdict as invalidated process telemetry, not review evidence.
+6. Give the reviewer the command name, touched files, relevant command output or artifacts, debt-review outcome, and the command-specific checklist.
+7. The reviewer must inspect actual repo state and generated artifacts, not trust the author’s summary.
+8. For mutating steps, persist the reviewer’s verdict with `review-artifact` and use it for step closure.
+9. For read-only or report-producing commands, the reviewer still checks output fidelity even when no step-close artifact is required.
+10. Resolve every `must-fix` finding, rerun affected checks, and rerun review when the fixes were material.
+11. If the current platform policy requires explicit user authorization before spawning, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.`
+12. If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+13. Do not silently substitute self-review or `emulated-independent-review` for a required independent review.
 
 Operational guardrails for reviewer agents:
 
@@ -542,6 +549,8 @@ Stage exit checklist:
 - [ ] Delivered behavior maps back to slices/ACs or to an explicit approved change.
 - [ ] Completeness review passed: the implementation fully covers the intended slices/ACs/approved changes, with no silent stubs, placeholders, scope cuts, or undocumented “later” deferrals.
 - [ ] If the first working increment changed a security-sensitive seam, the early security seam checkpoint ran via `security-reviewer` before additional work was built around that seam, or the non-trigger reason is explicit.
+- [ ] Every blocking external audit launch declared model, reasoning effort, required skill, scope, and allowed-model verdict before spawning.
+- [ ] No blocking audit verdict from a weak/mini model was accepted as review evidence.
 - [ ] `spec-conformance` review passed against the dossier, overlays, approved changes, and relevant contracts for the changed scope.
 - [ ] If the changed scope includes executable code, runtime wiring, or trust-boundary changes, code review passed via `code-reviewer`: correctness, maintainability, typing/contracts, error handling, state/resource lifecycle, and boundary handling are sound for the changed scope.
 - [ ] If the changed scope includes executable code, runtime wiring, or trust-boundary changes, security review passed via `security-reviewer`: auth/authz, input validation, injection, secret handling, logging/redaction, trust boundaries, and data exposure risks were checked for the changed scope.

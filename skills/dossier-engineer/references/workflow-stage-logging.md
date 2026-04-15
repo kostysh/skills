@@ -128,7 +128,13 @@ process_miss_refs:
 review_events:
   - agent_id: reviewer-agent-id
     role: spec-conformance | code | security | independent
+    audit_launch_gate_checked: true
+    audit_class: spec-conformance
+    required_skill: spec-conformance-reviewer
     model: gpt-5.4
+    reasoning_effort: high
+    allowed_by_policy: true
+    disallowed_reason: ""
     requested_ts: 2026-04-10T10:44:00+02:00
     verdict_ts: 2026-04-10T10:50:00+02:00
     verdict: pass | findings | blocked
@@ -139,6 +145,9 @@ review_events:
     mutation_check: clean | dirty_worktree | head_changed | not_checked
     invalidated: false
     invalidated_reason: none | reviewer_mutation | forked_context_exception | wrong_model | scope_drift | not_applicable
+    operator_intervention_required: false
+    operator_intervention_ref: null
+    replacement_event_ref: null
 verification_artifact: .dossier/verification/...
 review_artifact: .dossier/reviews/...
 step_artifact: .dossier/steps/...
@@ -221,9 +230,32 @@ Trace anchors:
 
 - `operator_command_refs` records the operator commands that materially shaped this stage.
 - `process_miss_refs` records `miss_id`, `severity`, `operator_command_ref`, `stage_log_ref`, `decision_ref`, and `resolution_ref` for each process miss.
-- `review_events` records `agent_id`, `role`, `model`, `requested_ts`, `verdict_ts`, `verdict`, `rerun_reason`, `scope`, `fork_context`, `read_only_expected`, `mutation_check`, `invalidated`, and `invalidated_reason` for each external review event.
+- `review_events` records `agent_id`, `role`, `audit_launch_gate_checked`, `audit_class`, `required_skill`, `model`, `reasoning_effort`, `allowed_by_policy`, `disallowed_reason`, `requested_ts`, `verdict_ts`, `verdict`, `rerun_reason`, `scope`, `fork_context`, `read_only_expected`, `mutation_check`, `invalidated`, `invalidated_reason`, `operator_intervention_required`, optional `operator_intervention_ref`, and optional `replacement_event_ref` for each external review event.
 
 These fields are required only when the corresponding events actually happened.
+
+Review-event field rules:
+
+- `audit_launch_gate_checked` records whether the audit launch gate from [implementation-audit-policy.md](implementation-audit-policy.md) ran before the external audit attempt.
+- `audit_class` is the normalized audit class, such as `early-security-checkpoint`, `spec-conformance`, `code`, `security`, or `independent-review`.
+- `required_skill` records the reviewer skill required by the audit policy.
+- `model` and `reasoning_effort` record the requested reviewer configuration when visible.
+- `allowed_by_policy` records the launch-gate verdict.
+- `disallowed_reason` must be empty when `allowed_by_policy: true`.
+- `disallowed_reason` must be filled when `allowed_by_policy: false`.
+- `invalidated: true` means the attempt does not count as review evidence.
+- `invalidated_reason` records why the attempt was invalidated, such as `wrong_model`, `missing_reasoning_effort`, `reviewer_mutation`, `forked_context_exception`, or `scope_drift`.
+- `operator_intervention_required` records whether this specific attempt required an operator decision or authorization before the audit could proceed.
+- `operator_intervention_ref` links to the operator command, decision, or log anchor when intervention was required.
+- `replacement_event_ref` links to the replacement rerun when an invalidated attempt was replaced.
+
+Invalidated attempts:
+
+- do not count as review evidence;
+- must not be represented as PASS/FAIL review verdicts;
+- still count as orchestration cost/process miss;
+- record whether operator intervention was required for that attempt;
+- must link to the replacement rerun when one exists.
 
 ## Review orchestration telemetry
 
