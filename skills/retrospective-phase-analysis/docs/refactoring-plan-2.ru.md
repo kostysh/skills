@@ -35,6 +35,7 @@
 - Не считать `compacted` summaries evidence для skill-audit scope.
 - Не hardcode-ить Codex-specific absolute session-store layout в CLI.
 - Не сохранять абсолютные локальные runtime paths в emitted `skills.available`, `skills.referenced` evidence, `scan-summary.json` или Markdown.
+- Не использовать `--skills-dir` как fallback discovery, даже если injected catalog отсутствует.
 - Не превращать `docs/issues/*` в active normative surface без отдельного promotion.
 
 ## Package 0. Зафиксировать fixture реального формата session trace
@@ -63,7 +64,7 @@
 5. Добавить ложный случай: skill name встречается только в bootstrap catalog.
 6. Добавить ложный случай: skill name встречается только внутри full `function_call_output.output` от чтения другого файла.
 7. Добавить ложный случай: skill name встречается только в `compacted` summary.
-8. Добавить пример absolute path в evidence-bearing field, чтобы проверить display-safe serialization.
+8. Добавить synthetic absolute path в evidence-bearing field, чтобы проверить display-safe serialization without committing machine-local paths.
 
 ### Acceptance
 
@@ -115,7 +116,8 @@ CLI должен уметь получить список допустимых s
    }
    ```
 
-5. Если catalog не найден, summary должен фиксировать data-quality gap и fallback behavior, а не молча сканировать весь `--skills-dir`.
+5. Если catalog не найден, summary должен фиксировать data-quality gap.
+6. Missing catalog must not fan out through `--skills-dir`: without injected catalog or an explicit future catalog input, `skills.referenced` remains empty even when `--skills-dir` is provided.
 
 ### Acceptance
 
@@ -123,6 +125,7 @@ CLI должен уметь получить список допустимых s
 - Test: parser links display label and path-derived name as aliases.
 - Test: наличие skill в `available` не добавляет его в `referenced`.
 - Test: missing catalog produces explicit warning/data-quality note.
+- Test: missing catalog plus populated `--skills-dir` does not add any `skills.referenced` entries.
 
 ## Package 2. Построить operational trace allowlist
 
@@ -197,6 +200,7 @@ CLI должен уметь получить список допустимых s
 4. Match не должен срабатывать на substring inside larger identifiers.
 5. Summary должен хранить evidence list for every referenced skill and preserve which alias matched.
 6. Evidence excerpts and catalog metadata persisted to `scan-summary.json` must use display-safe paths and must not serialize local absolute runtime paths.
+7. Exact-token matching for display labels with spaces must be tested separately from path-name matching.
 
 ### Acceptance
 
@@ -204,6 +208,7 @@ CLI должен уметь получить список допустимых s
 - Test: path evidence `skills/git-engineer/SKILL.md` references `git-engineer`.
 - Test: path evidence `skills/hono-engineer/SKILL.md` references catalog entry with display label `HONO engineer`.
 - Test: `typescript-engineer` does not match `typescript-engineer-extra`.
+- Test: display label alias with spaces matches as a full token and does not match across unrelated prose fragments.
 - Test: persisted `skills.available` and `skills.referenced[*].evidence` do not contain raw local absolute path prefixes.
 - Golden fixture обновлен под новый `skills` shape.
 
@@ -252,8 +257,10 @@ CLI должен уметь получить список допустимых s
 - `SKILL.md`
 - `references/CLI.md`
 - `references/REFERENCE.md` if it documents summary fields
+- command definitions and help text
 - `scripts/retro-cli.mjs`
 - `scripts/retro-cli.mjs.map`
+- help snapshots
 - all affected tests and fixtures
 
 ### Изменения
@@ -267,9 +274,11 @@ CLI должен уметь получить список допустимых s
    - describe `skills.referenced`;
    - define operational trace allowlist;
    - define bootstrap exclusions.
-3. Удалить docs references to `confirmed_used`, `probably_used`, `implicitly_relevant` if they remain active.
-4. Rebuild `scripts/retro-cli.mjs`.
-5. Keep proposal issue and this plan historical unless promoted by implementation changes.
+3. Обновить command help so `--skills-dir` is described as optional enrichment, not scope discovery.
+4. Add or update help snapshot coverage for `skill-audit` command help, not only global help.
+5. Удалить docs references to `confirmed_used`, `probably_used`, `implicitly_relevant` if they remain active.
+6. Rebuild `scripts/retro-cli.mjs`.
+7. Keep proposal issue and this plan historical unless promoted by implementation changes.
 
 ### Acceptance
 
@@ -277,7 +286,7 @@ CLI должен уметь получить список допустимых s
 - `pnpm --filter @kostysh/retrospective-phase-analysis-cli lint`
 - `git diff --check`
 - Search active surface for removed taxonomy terms.
-- Search changed active files for absolute local paths.
+- Search the whole skill folder for absolute local paths across `docs`, `references`, `scripts`, `src`, and `test`, with an explicit allowlist for synthetic placeholders only.
 - Contract test persisted `scan-summary.json` and generated Markdown for absolute local path leakage in new skill evidence fields.
 
 ## Rollout notes
