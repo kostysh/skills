@@ -18,13 +18,15 @@
 12. Plan drift-guard work when the feature spans multiple normative layers such as skill/process docs, utility spec, help output, and tests.
 13. When the feature has meaningful operator-facing, agent-facing, or machine-facing behavior, add a real usage audit after the main implementation flow and pre-classify expected corrective findings as `docs-only`, `runtime`, `schema/help`, `cross-skill`, or `audit-only`.
 14. For each slice, list tasks that reference AC IDs or Slice IDs only.
-15. If the feature requires realignment of delivered work, make that realignment explicit as a slice or linked task.
-16. Treat slices and tasks as forecast. Commitment remains in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints unless repo overlays say otherwise.
-17. Set dossier `status: planned`.
-18. Set or confirm `coverage_gate` explicitly.
+15. If the work is multi-slice or package-based, define `allowed_stop_points` explicitly before implementation starts.
+    Each allowed stop point must name the completed slice/package boundary, the safe reason to stop there, the verification expected at that boundary, and what remains outside that stop.
+16. If the feature requires realignment of delivered work, make that realignment explicit as a slice or linked task.
+17. Treat slices and tasks as forecast. Commitment remains in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints unless repo overlays say otherwise.
+18. Set dossier `status: planned`.
+19. Set or confirm `coverage_gate` explicitly.
    - Default: `deferred`
    - Tighten to `strict` only when the repo overlay requires it or planning is intentionally treated as a blocking verification gate.
-19. If logging was required, update the stage log with slice boundary decisions, assumptions/fallbacks, review events, process misses, and the planned backlog actualization outcome before closure.
-20. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
+20. If logging was required, update the stage log with slice boundary decisions, assumptions/fallbacks, review events, process misses, and the planned backlog actualization outcome before closure.
+21. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
     The planning stage is not complete until this required backlog actualization is done.
-21. If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.
+22. If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.

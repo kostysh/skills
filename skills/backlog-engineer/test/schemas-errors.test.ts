@@ -311,6 +311,10 @@ void test('rejects exact output objects with unknown fields', () => {
     needs_attention_count: 0,
     ready_for_next_step_count: 1,
     open_todo_count: 0,
+    artifact_integrity: {
+      applied_canonical_paths_exist: true,
+      missing_canonical_paths: [],
+    },
     unexpected: true,
   });
 

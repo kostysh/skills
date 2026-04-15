@@ -29,11 +29,7 @@ const WORKFLOW_STAGE_IMPLEMENTATION_PATH = path.join(
   'references',
   'workflow-stage-implementation.md',
 );
-const FEATURE_INTAKE_LOGGING_PATH = path.join(
-  SKILL_DIR,
-  'references',
-  'feature-intake-logging.md',
-);
+const FEATURE_INTAKE_LOGGING_PATH = path.join(SKILL_DIR, 'references', 'feature-intake-logging.md');
 const WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -139,9 +135,12 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
   ]);
   assertContainsTerms(planSliceStage, [
     '[Detailed stage steps](references/workflow-stage-plan-slice.md)',
+    'define `allowed_stop_points` before implementation starts',
   ]);
   assertContainsTerms(implementationStage, [
     '[Detailed stage steps](references/workflow-stage-implementation.md)',
+    'The implementation did not claim final completion after a partial green increment',
+    'backlog artifact integrity was confirmed clean',
   ]);
   assertContainsTerms(dependencyCheckStage, [
     '[Detailed stage steps](references/workflow-stage-dependency-check.md)',
@@ -282,11 +281,16 @@ void test('implementation stage points to audit and workflow-stage logging refs 
   assertContainsTerms(implementationSteps, [
     'Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).',
     'open or update the stage log before the first mutating edit',
+    'Before treating the first green increment as closure',
     'Apply the [No-technical-debt policy](workflow.md#no-technical-debt-policy)',
     'Run `spec-conformance` review first',
+    'run the early security seam checkpoint',
+    'Establish the intended final tree before closure',
+    'Use this closure sequence: intended final tree -> verification -> external audits -> review / verification / step-close artifacts -> commit -> trace-only metadata backfill when needed.',
     'Persist only the independent reviewer verdict with `review-artifact`',
-    'Close the step with `dossier-step-close` only after the required backlog actualization is done.',
-    'If logging was required, update the stage log with review events, debt review result, process misses, backlog actualization result, commit metadata when available, and links to applicable verification, review, and step-close artifacts.',
+    'Close the step with `dossier-step-close` only after the required backlog actualization and artifact-integrity confirmation are done.',
+    'If logging was required, update the stage log with slice status, completion decision, review events, debt review result, process misses, backlog actualization and artifact-integrity result, freshness fields, commit metadata when available, and links to applicable verification, review, and step-close artifacts.',
+    'A final implementation close-out is allowed only when one of these conditions is true:',
   ]);
   assertContainsTerms(debtPolicy, [
     'Apply this policy during `Workflow stage: implementation`',
@@ -299,6 +303,13 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     'spec-conformance-reviewer',
     'code-reviewer',
     'security-reviewer',
+    '## Early security seam checkpoint',
+    'public route exposure or reserved route behavior',
+    'auth/admission gate',
+    'trusted ingress or internal bypass',
+    'secret material, redaction, or export controls',
+    'does not replace the final security audit',
+    'Out-of-spec stop rule',
     '## Review orchestration telemetry',
     'update the stage log after every audit reround',
     '`review_retry_count`',
@@ -317,6 +328,16 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     '## Low-overhead skip path',
     '## Mandatory metadata block',
     'session_id',
+    'planned_slices',
+    'slice_status',
+    'current_checkpoint',
+    'completion_decision',
+    'canonical_for_commit',
+    'freshness_basis',
+    'operator_command_refs',
+    'process_miss_refs',
+    'review_events',
+    '## Completion, freshness, and trace anchors',
     '## Required narrative sections',
     '## Stage-specific sections',
     '## Review event log',
@@ -326,6 +347,9 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     '## Metrics to capture',
     'review policy',
     'debt review',
+    'early security seam checkpoint event when triggered',
+    'freshness fields for implementation closure / step-close artifacts when applicable',
+    'backlog artifact-integrity result',
     'commit metadata',
     'Feature Dossier',
     'process telemetry',
@@ -347,15 +371,21 @@ void test('implementation stage points to audit and workflow-stage logging refs 
 });
 
 void test('active dossier instructions use the unified workflow-stage logging reference', async () => {
-  const [skill, specCompactSteps, planSliceSteps, implementationSteps, loggingPolicy, intakeLogging] =
-    await Promise.all([
-      readFile(SKILL_PATH, 'utf8'),
-      readFile(WORKFLOW_STAGE_SPEC_COMPACT_PATH, 'utf8'),
-      readFile(WORKFLOW_STAGE_PLAN_SLICE_PATH, 'utf8'),
-      readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
-      readFile(WORKFLOW_STAGE_LOGGING_PATH, 'utf8'),
-      readFile(FEATURE_INTAKE_LOGGING_PATH, 'utf8'),
-    ]);
+  const [
+    skill,
+    specCompactSteps,
+    planSliceSteps,
+    implementationSteps,
+    loggingPolicy,
+    intakeLogging,
+  ] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_SPEC_COMPACT_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_PLAN_SLICE_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_LOGGING_PATH, 'utf8'),
+    readFile(FEATURE_INTAKE_LOGGING_PATH, 'utf8'),
+  ]);
 
   const specCompact = extractSection(skill, '#### Workflow stage: `spec-compact`');
   const planSlice = extractSection(skill, '#### Workflow stage: `plan-slice`');
@@ -491,8 +521,9 @@ void test('feature-intake logging stays explicit, command-level, and distinct fr
   ]);
 
   assert.ok(
-    intake.indexOf('Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).') <
-      intake.indexOf('Create `docs/features/F-XXXX-<slug>.md` from the dossier template.'),
+    intake.indexOf(
+      'Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).',
+    ) < intake.indexOf('Create `docs/features/F-XXXX-<slug>.md` from the dossier template.'),
     'feature-intake must evaluate logging triggers before dossier creation',
   );
 });
@@ -588,6 +619,7 @@ void test('spec-compact and plan-slice point to risk patterns and literal risk-k
     'Identify the contract risks that must be killed before close-out.',
     'Plan drift-guard work',
     'add a real usage audit after the main implementation flow',
+    'define `allowed_stop_points` explicitly before implementation starts',
   ]);
   assertContainsTerms(riskHardening, [
     '[spec-and-plan-risk-patterns.md](spec-and-plan-risk-patterns.md)',

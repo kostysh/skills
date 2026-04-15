@@ -863,6 +863,8 @@ type RemoveSourceCommandInput = {
 
 type RemoveSourceCommandOutput = RegisteredSourceOutput & {
   dry_run: boolean;
+  canonical_patch_path?: NormalizedFsPath;
+  canonical_patch_purpose?: "immutable_replay_artifact";
   removed: boolean;
   counts: RemoveSourceMutationCounts;
   updated_item_keys: ItemKey[];
@@ -929,6 +931,9 @@ type PatchItemCommandInput = {
 
 type PatchItemCommandOutput = {
   dry_run: boolean;
+  authored_patch_path?: NormalizedFsPath;
+  canonical_patch_path?: NormalizedFsPath;
+  canonical_patch_purpose?: "immutable_replay_artifact";
   counts: PatchItemMutationCounts;
   updated: ItemKey[];
   todo_created: ItemKey[];
@@ -948,6 +953,9 @@ type RemoveItemCommandInput = {
 
 type RemoveItemCommandOutput = {
   dry_run: boolean;
+  authored_patch_path?: NormalizedFsPath;
+  canonical_patch_path?: NormalizedFsPath;
+  canonical_patch_purpose?: "immutable_replay_artifact";
   counts: RemoveItemMutationCounts;
   removed: ItemKey[];
   todo_created: ItemKey[];
@@ -984,6 +992,18 @@ type StatusCommandInput = {
   refresh?: boolean;
 };
 
+type CanonicalArtifactIntegrity = {
+  applied_canonical_paths_exist: boolean;
+  missing_canonical_paths: Array<{
+    artifact_kind: "packet" | "patch";
+    canonical_path: NormalizedFsPath;
+    packet_id?: string;
+    patch_id?: string;
+    apply_index: NonNegativeInt;
+    sequence?: NonNegativeInt;
+  }>;
+};
+
 type StatusCommandOutput = {
   total_items: NonNegativeInt;
   last_refresh_at: IsoUtcTimestamp | null;
@@ -995,6 +1015,7 @@ type StatusCommandOutput = {
   needs_attention_count: NonNegativeInt;
   ready_for_next_step_count: NonNegativeInt;
   open_todo_count: NonNegativeInt;
+  artifact_integrity: CanonicalArtifactIntegrity;
 };
 ```
 
@@ -1174,6 +1195,7 @@ type ErrorCode =
   | "BE_TODO_NOT_FOUND"
   | "BE_ITEM_NOT_FOUND"
   | "BE_CANONICAL_WRITE_FAILED"
+  | "BE_CANONICAL_ARTIFACT_MISSING"
   | "BE_REPORT_WRITE_FAILED"
   | "BE_TEMPLATE_OUTPUT_INVALID"
   | "BE_DELETE_CONFIRM_REQUIRED"

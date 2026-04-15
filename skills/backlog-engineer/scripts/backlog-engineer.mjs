@@ -4759,6 +4759,8 @@ var RemoveSourceCommandInputSchema = strictObject({
 });
 var RemoveSourceCommandOutputSchema = RegisteredSourceOutputSchema.extend({
 	dry_run: boolean(),
+	canonical_patch_path: NormalizedFsPathSchema.optional(),
+	canonical_patch_purpose: literal("immutable_replay_artifact").optional(),
 	removed: boolean(),
 	counts: RemoveSourceMutationCountsSchema,
 	updated_item_keys: uniqueArraySchema(ItemKeySchema, (value) => value, "Updated item keys must be unique."),
@@ -4801,6 +4803,9 @@ var PatchItemCommandInputSchema = strictObject({
 });
 var PatchItemCommandOutputSchema = strictObject({
 	dry_run: boolean(),
+	authored_patch_path: NormalizedFsPathSchema.optional(),
+	canonical_patch_path: NormalizedFsPathSchema.optional(),
+	canonical_patch_purpose: literal("immutable_replay_artifact").optional(),
 	counts: PatchItemMutationCountsSchema,
 	updated: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
 	todo_created: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
@@ -4814,6 +4819,9 @@ var RemoveItemCommandInputSchema = strictObject({
 });
 var RemoveItemCommandOutputSchema = strictObject({
 	dry_run: boolean(),
+	authored_patch_path: NormalizedFsPathSchema.optional(),
+	canonical_patch_path: NormalizedFsPathSchema.optional(),
+	canonical_patch_purpose: literal("immutable_replay_artifact").optional(),
 	counts: RemoveItemMutationCountsSchema,
 	removed: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
 	todo_created: uniqueArraySchema(ItemKeySchema, (value) => value, "Item keys must be unique."),
@@ -4849,6 +4857,18 @@ var RefreshCommandOutputSchema = strictObject({
 	next_commands: array(CommandSuggestionSchema)
 });
 var StatusCommandInputSchema = strictObject({ refresh: boolean().default(false) });
+var CanonicalArtifactIntegrityMissingPathSchema = strictObject({
+	artifact_kind: _enum(["packet", "patch"]),
+	canonical_path: NormalizedFsPathSchema,
+	packet_id: NonEmptyStringSchema.optional(),
+	patch_id: NonEmptyStringSchema.optional(),
+	apply_index: NonNegativeIntSchema,
+	sequence: NonNegativeIntSchema.optional()
+});
+var CanonicalArtifactIntegritySchema = strictObject({
+	applied_canonical_paths_exist: boolean(),
+	missing_canonical_paths: array(CanonicalArtifactIntegrityMissingPathSchema)
+});
 var StatusCommandOutputSchema = strictObject({
 	total_items: NonNegativeIntSchema,
 	last_refresh_at: nullable(IsoUtcTimestampSchema),
@@ -4859,7 +4879,8 @@ var StatusCommandOutputSchema = strictObject({
 	gaps_count: NonNegativeIntSchema,
 	needs_attention_count: NonNegativeIntSchema,
 	ready_for_next_step_count: NonNegativeIntSchema,
-	open_todo_count: NonNegativeIntSchema
+	open_todo_count: NonNegativeIntSchema,
+	artifact_integrity: CanonicalArtifactIntegritySchema
 });
 var ReportCommandInputSchema = strictObject({});
 var ReportCommandOutputSchema = strictObject({
@@ -4968,6 +4989,7 @@ var ERROR_CODES = [
 	"BE_TODO_NOT_FOUND",
 	"BE_ITEM_NOT_FOUND",
 	"BE_CANONICAL_WRITE_FAILED",
+	"BE_CANONICAL_ARTIFACT_MISSING",
 	"BE_REPORT_WRITE_FAILED",
 	"BE_TEMPLATE_OUTPUT_INVALID",
 	"BE_DELETE_CONFIRM_REQUIRED",
@@ -5004,6 +5026,7 @@ var ERROR_EXIT_CODES = {
 	BE_TODO_NOT_FOUND: 5,
 	BE_ITEM_NOT_FOUND: 5,
 	BE_CANONICAL_WRITE_FAILED: 1,
+	BE_CANONICAL_ARTIFACT_MISSING: 1,
 	BE_REPORT_WRITE_FAILED: 1,
 	BE_TEMPLATE_OUTPUT_INVALID: 2,
 	BE_DELETE_CONFIRM_REQUIRED: 6,
@@ -5040,6 +5063,7 @@ var ERROR_DEFAULT_MESSAGES = {
 	BE_TODO_NOT_FOUND: "Todo was not found.",
 	BE_ITEM_NOT_FOUND: "Item was not found.",
 	BE_CANONICAL_WRITE_FAILED: "Failed to write canonical artifact.",
+	BE_CANONICAL_ARTIFACT_MISSING: "Canonical artifact referenced by applied registry is missing.",
 	BE_REPORT_WRITE_FAILED: "Failed to write report artifact.",
 	BE_TEMPLATE_OUTPUT_INVALID: "Template output path is invalid.",
 	BE_DELETE_CONFIRM_REQUIRED: "Destructive command requires explicit confirmation.",
@@ -6024,8 +6048,12 @@ var PATCH_ITEM_COMMAND = {
 			},
 			hint: "patch-item must receive a patch summary with updated item keys."
 		});
-		const { state: nextState, ...output } = summary;
-		if (input.dry_run) return output;
+		const { state: nextState, ...summaryOutput } = summary;
+		const outputBase = {
+			...summaryOutput,
+			authored_patch_path: patchInput.absolutePath
+		};
+		if (input.dry_run) return outputBase;
 		const appliedAt = context.host.nowIsoUtc();
 		const canonicalImport = await context.artifacts.importPatchFile({
 			root: context.backlogRoot,
@@ -6052,6 +6080,11 @@ var PATCH_ITEM_COMMAND = {
 			context,
 			state: nextState
 		});
+		const output = {
+			...outputBase,
+			canonical_patch_path: path.resolve(context.backlogRoot, canonicalImport.canonicalPath),
+			canonical_patch_purpose: "immutable_replay_artifact"
+		};
 		await context.hooks.afterPatchApplied?.({
 			summary: output,
 			state: nextState,
@@ -6205,7 +6238,11 @@ function buildStatusSummary(payload) {
 		gaps_count: 0,
 		needs_attention_count: 0,
 		ready_for_next_step_count: 0,
-		open_todo_count: state.todos.length
+		open_todo_count: state.todos.length,
+		artifact_integrity: {
+			applied_canonical_paths_exist: true,
+			missing_canonical_paths: []
+		}
 	};
 	for (const item of state.items) {
 		if (item.delivery_state === "defined") counts.defined_count += 1;
@@ -7160,8 +7197,12 @@ var REMOVE_ITEM_COMMAND = {
 			},
 			hint: "remove-item must receive a patch summary with removed item keys."
 		});
-		const { state: nextState, ...output } = summary;
-		if (input.dry_run) return output;
+		const { state: nextState, ...summaryOutput } = summary;
+		const outputBase = {
+			...summaryOutput,
+			authored_patch_path: patchInput.absolutePath
+		};
+		if (input.dry_run) return outputBase;
 		const appliedAt = context.host.nowIsoUtc();
 		const canonicalImport = await context.artifacts.importPatchFile({
 			root: context.backlogRoot,
@@ -7188,6 +7229,11 @@ var REMOVE_ITEM_COMMAND = {
 			context,
 			state: nextState
 		});
+		const output = {
+			...outputBase,
+			canonical_patch_path: path.resolve(context.backlogRoot, canonicalImport.canonicalPath),
+			canonical_patch_purpose: "immutable_replay_artifact"
+		};
 		await context.hooks.afterPatchApplied?.({
 			summary: output,
 			state: nextState,
@@ -7548,12 +7594,13 @@ var REMOVE_SOURCE_COMMAND = {
 				next_commands: maintenanceSummary.next_commands
 			};
 		}
-		const output = context.schemas.parseCommandOutput("remove-source", {
+		const outputBase = {
 			dry_run: input.dry_run,
 			...sourceOutput,
 			removed: true,
 			...summary
-		});
+		};
+		const output = context.schemas.parseCommandOutput("remove-source", outputBase);
 		if (input.dry_run) return output;
 		const nextRegistry = context.schemas.parseSourceRegistry({
 			...removeSourceFromRegistry({
@@ -7594,6 +7641,11 @@ var REMOVE_SOURCE_COMMAND = {
 					context,
 					state: nextState
 				});
+				return context.schemas.parseCommandOutput("remove-source", {
+					...outputBase,
+					canonical_patch_path: path.resolve(backlogRoot, canonicalPath),
+					canonical_patch_purpose: "immutable_replay_artifact"
+				});
 			} catch (error) {
 				const rollbackErrors = [];
 				try {
@@ -7631,7 +7683,6 @@ var REMOVE_SOURCE_COMMAND = {
 				});
 				throw error;
 			}
-			return output;
 		}
 		await context.artifacts.writeSourceRegistry(backlogRoot, nextRegistry);
 		return output;
@@ -12110,18 +12161,21 @@ function validatePatchKind(payload) {
 	if (payload.patch.operations.some((operation) => operation.action !== "remove_item") || payload.entry.target_item_keys.some((itemKey) => !removedKeys.has(itemKey))) throw payload.errors.create("BE_PATCH_OPERATION_INVALID", void 0, { details: { patch_id: payload.entry.patch_id } });
 }
 function createArtifactReplayFailedError(payload) {
-	return payload.errors.create("BE_REBUILD_REPLAY_FAILED", payload.message, {
+	const isMissingCanonicalArtifact = payload.errors.isBacklogError(payload.error) && payload.error.code === "BE_CANONICAL_ARTIFACT_MISSING";
+	return payload.errors.create(isMissingCanonicalArtifact ? "BE_CANONICAL_ARTIFACT_MISSING" : "BE_REBUILD_REPLAY_FAILED", isMissingCanonicalArtifact ? `Canonical ${payload.artifactKind} artifact referenced by applied registry is missing.` : payload.message, {
 		details: {
 			artifact_kind: payload.artifactKind,
 			canonical_path: payload.canonicalPath,
 			...payload.packetId ? { packet_id: payload.packetId } : {},
 			...payload.patchId ? { patch_id: payload.patchId } : {},
+			...payload.applyIndex !== void 0 ? { apply_index: payload.applyIndex } : {},
+			...payload.sequence !== void 0 ? { sequence: payload.sequence } : {},
 			...payload.errors.isBacklogError(payload.error) ? {
 				original_code: payload.error.code,
 				original_message: payload.error.message
 			} : payload.error instanceof Error ? { original_message: payload.error.message } : {}
 		},
-		hint: "Inspect the named canonical artifact. Do not repair rebuild failures by manually editing state.json or applied.json.",
+		hint: isMissingCanonicalArtifact ? "Restore the referenced canonical artifact or undo the invalid registry reference through the documented backlog workflow; do not repair state.json or applied.json manually." : "Inspect the named canonical artifact. Do not repair rebuild failures by manually editing state.json or applied.json.",
 		cause: payload.error
 	});
 }
@@ -12135,7 +12189,7 @@ async function readCanonicalPacket(payload) {
 		filePath,
 		parse: (raw) => payload.schemas.parsePacketFile(raw),
 		readErrorCode: "BE_INTERNAL_STATE_CORRUPT",
-		missingCode: "BE_INTERNAL_STATE_CORRUPT",
+		missingCode: "BE_CANONICAL_ARTIFACT_MISSING",
 		corruptCode: "BE_INTERNAL_STATE_CORRUPT"
 	});
 }
@@ -12149,7 +12203,7 @@ async function readCanonicalPatch(payload) {
 		filePath,
 		parse: (raw) => payload.schemas.parsePatchFile(raw),
 		readErrorCode: "BE_INTERNAL_STATE_CORRUPT",
-		missingCode: "BE_INTERNAL_STATE_CORRUPT",
+		missingCode: "BE_CANONICAL_ARTIFACT_MISSING",
 		corruptCode: "BE_INTERNAL_STATE_CORRUPT"
 	});
 }
@@ -12231,7 +12285,8 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 				errors: payload.errors,
 				error,
 				message: "Backlog rebuild failed while reading a canonical packet.",
-				packetId: packetEntry.packet_id
+				packetId: packetEntry.packet_id,
+				applyIndex: packetEntry.apply_index
 			});
 		}
 		if (JSON.stringify(packet.items.map((item) => item.item_key)) !== JSON.stringify(packetEntry.item_keys)) {
@@ -12245,7 +12300,8 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 				errors: payload.errors,
 				error,
 				message: "Backlog rebuild failed while validating a canonical packet.",
-				packetId: packetEntry.packet_id
+				packetId: packetEntry.packet_id,
+				applyIndex: packetEntry.apply_index
 			});
 		}
 		try {
@@ -12261,7 +12317,8 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 				errors: payload.errors,
 				error,
 				message: "Backlog rebuild failed while replaying a canonical packet.",
-				packetId: packetEntry.packet_id
+				packetId: packetEntry.packet_id,
+				applyIndex: packetEntry.apply_index
 			});
 		}
 	}
@@ -12289,7 +12346,9 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 				errors: payload.errors,
 				error,
 				message: "Backlog rebuild failed while reading a canonical patch.",
-				patchId: patchEntry.patch_id
+				patchId: patchEntry.patch_id,
+				applyIndex: patchEntry.apply_index,
+				sequence: patchEntry.sequence
 			});
 		}
 		try {
@@ -12305,7 +12364,9 @@ async function rebuildStateFromCanonicalArtifacts(payload) {
 				errors: payload.errors,
 				error,
 				message: "Backlog rebuild failed while validating a canonical patch.",
-				patchId: patchEntry.patch_id
+				patchId: patchEntry.patch_id,
+				applyIndex: patchEntry.apply_index,
+				sequence: patchEntry.sequence
 			});
 		}
 		state = applyPatchReplay({

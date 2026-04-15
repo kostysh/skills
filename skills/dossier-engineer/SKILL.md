@@ -459,6 +459,7 @@ Trigger summary:
 - If a slice depends on another dossier, an external team, or a shared subsystem, add `Depends on:` with owner and unblock condition.
 - If a slice relies on a high-risk assumption, add `Assumes:` and `Fallback:` notes.
 - If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note.
+- If the plan is multi-slice or package-based, define `allowed_stop_points` before implementation starts.
 - If a slice touches a shared runtime, contract, migration path, or other cross-cutting surface, name the approval path.
 
 Steps:
@@ -477,6 +478,7 @@ Stage exit checklist:
 - [ ] `Assumes:` and `Fallback:` notes are present when slice-level high-risk assumptions exist.
 - [ ] A rollout / activation note exists when migration, feature flags, cutover, backfill, or irreversible side effects make release order matter.
 - [ ] A cross-cutting approval or decision path is explicit when shared runtime, contract, or migration surfaces are involved.
+- [ ] `allowed_stop_points` are explicit for multi-slice or package-based work, including safe stop reason, verification expected at that boundary, and remaining scope.
 - [ ] Drift-guard work was planned when the feature spans multiple normative layers.
 - [ ] A real usage audit and corrective categories were planned when the feature has meaningful operator-facing, agent-facing, or machine-facing behavior.
 - [ ] Tasks reference Slice IDs or AC IDs and do not restate AC text.
@@ -517,9 +519,11 @@ Required adversarial checklist for side-effecting code:
 Stage exit checklist:
 
 - [ ] For multi-step or package-based work, the stage log was opened before the first mutating edit and kept current through close-out.
+- [ ] The implementation did not claim final completion after a partial green increment unless all planned slices were complete, a recorded `allowed_stop_point` was reached, a blocker required operator decision, or the operator explicitly asked to stop at a checkpoint.
 - [ ] Code changes follow the canonical stack, runtime, deployment path, and repo overlays.
 - [ ] Delivered behavior maps back to slices/ACs or to an explicit approved change.
 - [ ] Completeness review passed: the implementation fully covers the intended slices/ACs/approved changes, with no silent stubs, placeholders, scope cuts, or undocumented “later” deferrals.
+- [ ] If the first working increment changed a security-sensitive seam, the early security seam checkpoint ran via `security-reviewer` before additional work was built around that seam, or the non-trigger reason is explicit.
 - [ ] `spec-conformance` review passed against the dossier, overlays, approved changes, and relevant contracts for the changed scope.
 - [ ] If the changed scope includes executable code, runtime wiring, or trust-boundary changes, code review passed via `code-reviewer`: correctness, maintainability, typing/contracts, error handling, state/resource lifecycle, and boundary handling are sound for the changed scope.
 - [ ] If the changed scope includes executable code, runtime wiring, or trust-boundary changes, security review passed via `security-reviewer`: auth/authz, input validation, injection, secret handling, logging/redaction, trust boundaries, and data exposure risks were checked for the changed scope.
@@ -531,7 +535,8 @@ Stage exit checklist:
 - [ ] The no-technical-debt policy was applied and every debt item was either resolved or explicitly recorded in a canonical artifact.
 - [ ] Side-effecting behavior passed the adversarial checklist above.
 - [ ] `coverage_gate` is strict when implementation closure depends on executable verification.
-- [ ] If implementation changed backlog truth, the backlog was updated through `backlog-engineer` before leaving this stage.
+- [ ] If implementation changed backlog truth, the backlog was updated through `backlog-engineer` before leaving this stage and backlog artifact integrity was confirmed clean.
+- [ ] Closure artifacts reflect the intended final tree: verification, external audits, review/verification/step-close artifacts, commit, and any post-commit backfill are ordered so that trace-only metadata does not alter technical content.
 - [ ] `dossier-verify`, independent review, and `dossier-step-close` all ran on the closure target.
 - [ ] The final answer accurately reports `Process-complete: yes|no`.
 

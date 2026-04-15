@@ -6,7 +6,13 @@ import { fileURLToPath } from 'node:url';
 
 import { renderManagedGitignoreContent } from '../src/artifacts/gitignore-store.ts';
 import { ERROR_CODES } from '../src/errors/error-codes.ts';
-import { PacketCommandOutputSchema, QueueCommandOutputSchema } from '../src/schemas/index.ts';
+import {
+  PacketCommandOutputSchema,
+  PatchItemCommandOutputSchema,
+  QueueCommandOutputSchema,
+  RemoveItemCommandOutputSchema,
+  StatusCommandOutputSchema,
+} from '../src/schemas/index.ts';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
@@ -131,6 +137,87 @@ void test('packet output docs stay aligned with packet command schema invariants
   assert.equal(realApplyResult.success, true);
 });
 
+void test('patch and status output docs stay aligned with replay artifact integrity invariants', async () => {
+  const [skill, reference, utilitySpec] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(COMMAND_REFERENCE_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(skill, [
+    'canonical_patch_path',
+    'immutable_replay_artifact',
+    'artifact_integrity.applied_canonical_paths_exist',
+    'missing canonical artifacts block clean dossier stage closure',
+  ]);
+  assertContainsTerms(reference, [
+    'canonical_patch_path',
+    'canonical_patch_purpose = "immutable_replay_artifact"',
+    'BE_CANONICAL_ARTIFACT_MISSING',
+    'artifact_integrity.missing_canonical_paths',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'BE_CANONICAL_ARTIFACT_MISSING',
+    'applied registry ссылается на отсутствующий canonical packet/patch artifact',
+    'referenced by applied registry, source registry, packet registry, dependency graph или item metadata',
+  ]);
+
+  const dryRunPatch = PatchItemCommandOutputSchema.safeParse({
+    dry_run: true,
+    authored_patch_path: '/abs/backlog/drafts/auth.patch.json',
+    counts: {
+      updated: 1,
+      todo_created: 0,
+      todo_updated: 0,
+      todo_removed: 0,
+    },
+    updated: ['auth-core'],
+    todo_created: [],
+    todo_updated: [],
+    todo_removed: [],
+    next_commands: [],
+  });
+  assert.equal(dryRunPatch.success, true);
+
+  const realRemove = RemoveItemCommandOutputSchema.safeParse({
+    dry_run: false,
+    authored_patch_path: '/abs/backlog/drafts/remove-auth.patch.json',
+    canonical_patch_path: '/abs/backlog/patches/abcd1234--remove-auth.patch.json',
+    canonical_patch_purpose: 'immutable_replay_artifact',
+    counts: {
+      removed: 1,
+      todo_created: 0,
+      todo_updated: 0,
+      todo_removed: 1,
+    },
+    removed: ['legacy-auth-ui'],
+    todo_created: [],
+    todo_updated: [],
+    todo_removed: ['legacy-auth-ui'],
+    next_commands: [],
+  });
+  assert.equal(realRemove.success, true);
+
+  const status = StatusCommandOutputSchema.safeParse({
+    total_items: 1,
+    last_refresh_at: null,
+    defined_count: 1,
+    specified_count: 0,
+    planned_count: 0,
+    implemented_count: 0,
+    gaps_count: 0,
+    needs_attention_count: 0,
+    ready_for_next_step_count: 1,
+    open_todo_count: 0,
+    artifact_integrity: {
+      applied_canonical_paths_exist: true,
+      missing_canonical_paths: [],
+    },
+  });
+  assert.equal(status.success, true);
+  assert.equal(ERROR_CODES.includes('BE_CANONICAL_ARTIFACT_MISSING'), true);
+});
+
 void test('command reference lock and packet output notes stay aligned with exported runtime invariants', async () => {
   const reference = await readFile(COMMAND_REFERENCE_PATH, 'utf8');
 
@@ -141,6 +228,8 @@ void test('command reference lock and packet output notes stay aligned with expo
     'authored_packet_path',
     'canonical_packet_path',
     'immutable_import_copy',
+    'canonical_patch_path',
+    'immutable_replay_artifact',
     'source registry stores `path` as a normalized POSIX path relative to backlog root',
   ]);
 
@@ -294,6 +383,7 @@ void test('normative backlog docs keep cross-skill handoff and actualization lit
     'use `packet` only for the `new backlog item` branch',
     '`patch existing item` and the dependent-item update step after `source update`',
     'do not stop at partial sync after `refresh`',
+    'confirm backlog state and artifact integrity before treating the dossier stage as cleanly closed',
   ]);
 
   assertContainsTerms(utilitySpec, [

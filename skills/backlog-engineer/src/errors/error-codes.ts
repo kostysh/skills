@@ -28,6 +28,7 @@ export const ERROR_CODES = [
   'BE_TODO_NOT_FOUND',
   'BE_ITEM_NOT_FOUND',
   'BE_CANONICAL_WRITE_FAILED',
+  'BE_CANONICAL_ARTIFACT_MISSING',
   'BE_REPORT_WRITE_FAILED',
   'BE_TEMPLATE_OUTPUT_INVALID',
   'BE_DELETE_CONFIRM_REQUIRED',
@@ -67,6 +68,7 @@ export const ERROR_EXIT_CODES = {
   BE_TODO_NOT_FOUND: 5,
   BE_ITEM_NOT_FOUND: 5,
   BE_CANONICAL_WRITE_FAILED: 1,
+  BE_CANONICAL_ARTIFACT_MISSING: 1,
   BE_REPORT_WRITE_FAILED: 1,
   BE_TEMPLATE_OUTPUT_INVALID: EXIT_USAGE,
   BE_DELETE_CONFIRM_REQUIRED: 6,
@@ -106,6 +108,7 @@ export const ERROR_DEFAULT_MESSAGES = {
   BE_TODO_NOT_FOUND: 'Todo was not found.',
   BE_ITEM_NOT_FOUND: 'Item was not found.',
   BE_CANONICAL_WRITE_FAILED: 'Failed to write canonical artifact.',
+  BE_CANONICAL_ARTIFACT_MISSING: 'Canonical artifact referenced by applied registry is missing.',
   BE_REPORT_WRITE_FAILED: 'Failed to write report artifact.',
   BE_TEMPLATE_OUTPUT_INVALID: 'Template output path is invalid.',
   BE_DELETE_CONFIRM_REQUIRED: 'Destructive command requires explicit confirmation.',
@@ -118,6 +121,7 @@ export const ERROR_DEFAULT_MESSAGES = {
 
 export const INTERNAL_ERROR_CODES = new Set<ErrorCode>([
   'BE_CANONICAL_WRITE_FAILED',
+  'BE_CANONICAL_ARTIFACT_MISSING',
   'BE_REPORT_WRITE_FAILED',
   'BE_REBUILD_REPLAY_FAILED',
   'BE_INTERNAL_STATE_CORRUPT',

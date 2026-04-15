@@ -308,6 +308,8 @@ Use these literal rules:
 - when dossier planning makes implementation-ready sequencing explicit with enough evidence, actualize the backlog work to `planned`;
 - when implementation plus closure establish delivered behavior with enough evidence, actualize the backlog work to `implemented`;
 - when dossier work reveals new blockers, dependencies, context facts, or cross-cutting decisions, patch backlog state before continuing.
+- after any dossier-side backlog actualization that changed backlog truth, run scoped backlog confirmation (`items`, scoped `refresh`, or `status` as appropriate) and verify that canonical artifact integrity is clean;
+- missing canonical artifacts block clean dossier stage closure because replay-safe backlog truth is not available;
 - for truth-changing dossier stages, backlog actualization is part of that stage closure contract;
 - do not treat the dossier stage as complete until required backlog actualization is finished through this skill;
 - use `patch-item` for `delivery_state` changes and dossier-discovered blockers, dependencies, or context facts on already known backlog items;
@@ -538,6 +540,7 @@ For `packet`, `patch-item`, `remove-item`, `update-source-path`, `remove-source`
 - use `counts` for the broad result;
 - use `todo_created`, `todo_updated`, and `todo_removed` to see where follow-up work appeared;
 - use `next_commands` as the preferred next-step hint from the utility.
+- when output includes `canonical_patch_path`, treat it as immutable replay evidence that must be committed and retained while `.backlog/applied.json` references it.
 
 Follow-up rule:
 
@@ -550,12 +553,23 @@ Interpret `packet` success like this:
 
 - your authored packet file remains your authored draft;
 - the utility may store its own immutable canonical import copy;
-- current backlog truth still comes from the utility, not from packet files.
+- current backlog truth still comes from the utility, not from packet files;
+- referenced canonical packet and patch artifacts are not cleanup candidates.
+
+### `patch-item` / `remove-item` / source-maintenance patches
+
+Interpret successful real patch mutations like this:
+
+- `authored_patch_path` is the authored input when the command used one;
+- `canonical_patch_path` is the immutable replay artifact stored under `patches/`;
+- `canonical_patch_purpose = "immutable_replay_artifact"` means the hashed copy is intentional, not clutter;
+- never delete canonical artifacts referenced by `.backlog/applied.json`, source registry, packet registry, dependency graph, or item metadata.
 
 ### `status`
 
 - `status` is only a short summary for dialog;
-- `status --refresh` performs refresh first, then returns the same summary shape.
+- `status --refresh` performs refresh first, then returns the same summary shape;
+- `artifact_integrity.applied_canonical_paths_exist = true` means applied registry references are replay-safe at the time of the command; missing canonical artifacts fail the command and block clean closure.
 
 ### `search`
 

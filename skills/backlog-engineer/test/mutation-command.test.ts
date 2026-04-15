@@ -576,6 +576,7 @@ void test('patch-item command applies patch semantics, persists canonical import
 
     assert.deepEqual(dryRunOutput, {
       dry_run: true,
+      authored_patch_path: patchPath,
       counts: {
         updated: 2,
         todo_created: 1,
@@ -620,15 +621,21 @@ void test('patch-item command applies patch semantics, persists canonical import
       ),
     );
 
-    assert.deepEqual(withoutDryRun(realOutput), withoutDryRun(dryRunOutput));
     assert.equal(realOutput.dry_run, false);
 
     const appliedRegistry = await readAppliedRegistry(backlogRoot);
     assert.equal(appliedRegistry.patches.length, 1);
-    assert.equal(appliedRegistry.patches[0]?.patch_id, '2026-04-03-001-auth-progress');
-    assert.equal(appliedRegistry.patches[0]?.kind, 'patch-item');
+    const patchEntry = appliedRegistry.patches[0];
+    assert.ok(patchEntry);
+    assert.equal(patchEntry.patch_id, '2026-04-03-001-auth-progress');
+    assert.equal(patchEntry.kind, 'patch-item');
+    assert.deepEqual(withoutDryRun(realOutput), {
+      ...withoutDryRun(dryRunOutput),
+      canonical_patch_path: path.resolve(backlogRoot, patchEntry.canonical_path),
+      canonical_patch_purpose: 'immutable_replay_artifact',
+    });
     assert.deepEqual(await listDirectory(path.join(backlogRoot, 'patches')), [
-      appliedRegistry.patches[0]?.canonical_path.split('/')[1],
+      patchEntry.canonical_path.split('/')[1],
     ]);
 
     const nextState = await readState(backlogRoot);
@@ -1247,6 +1254,7 @@ void test('remove-item command deletes target items, cleans linked context refer
 
     assert.deepEqual(dryRunOutput, {
       dry_run: true,
+      authored_patch_path: removePatchPath,
       counts: {
         removed: 1,
         todo_created: 0,
@@ -1280,17 +1288,22 @@ void test('remove-item command deletes target items, cleans linked context refer
       ),
     );
 
-    assert.deepEqual(withoutDryRun(realOutput), withoutDryRun(dryRunOutput));
     assert.equal(realOutput.dry_run, false);
 
     const appliedRegistry = await readAppliedRegistry(backlogRoot);
     assert.equal(appliedRegistry.patches.length, 2);
     const removePatchEntry = appliedRegistry.patches.at(-1);
-    assert.equal(removePatchEntry?.patch_id, '2026-04-03-002-remove-legacy-auth-ui');
-    assert.equal(removePatchEntry?.kind, 'remove-item');
+    assert.ok(removePatchEntry);
+    assert.equal(removePatchEntry.patch_id, '2026-04-03-002-remove-legacy-auth-ui');
+    assert.equal(removePatchEntry.kind, 'remove-item');
+    assert.deepEqual(withoutDryRun(realOutput), {
+      ...withoutDryRun(dryRunOutput),
+      canonical_patch_path: path.resolve(backlogRoot, removePatchEntry.canonical_path),
+      canonical_patch_purpose: 'immutable_replay_artifact',
+    });
     assert.deepEqual(await listDirectory(path.join(backlogRoot, 'patches')), [
       ...beforePatchFiles,
-      removePatchEntry?.canonical_path.split('/')[1],
+      removePatchEntry.canonical_path.split('/')[1],
     ]);
 
     const nextState = await readState(backlogRoot);
@@ -1424,7 +1437,6 @@ void test('remove-source writes durable cleanup, deletes registry record, and st
       ),
     );
 
-    assert.deepEqual(withoutDryRun(output), withoutDryRun(dryRunOutput));
     assert.equal(output.removed, true);
     assert.equal(output.source_label, 'sources/docs/modules/auth.md');
     assert.deepEqual(output.updated_item_keys, [
@@ -1445,7 +1457,14 @@ void test('remove-source writes durable cleanup, deletes registry record, and st
 
     const appliedRegistry = await readAppliedRegistry(backlogRoot);
     assert.equal(appliedRegistry.patches.length, 1);
-    assert.equal(appliedRegistry.patches.at(-1)?.kind, 'source-maintenance');
+    const sourceMaintenanceEntry = appliedRegistry.patches.at(-1);
+    assert.ok(sourceMaintenanceEntry);
+    assert.equal(sourceMaintenanceEntry.kind, 'source-maintenance');
+    assert.deepEqual(withoutDryRun(output), {
+      ...withoutDryRun(dryRunOutput),
+      canonical_patch_path: path.resolve(backlogRoot, sourceMaintenanceEntry.canonical_path),
+      canonical_patch_purpose: 'immutable_replay_artifact',
+    });
 
     const state = await readState(backlogRoot);
     for (const item of state.items) {

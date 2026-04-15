@@ -70,6 +70,18 @@ Patch rules:
 
 Start from `template patch` whenever possible.
 
+### Canonical patch retention
+
+A successful real patch mutation writes an immutable canonical patch artifact and registers that path in `.backlog/applied.json`.
+
+Rules:
+
+- authored patch files are operator/agent drafts;
+- canonical patch files under `patches/` are replay evidence;
+- `canonical_patch_purpose = "immutable_replay_artifact"` means the hashed copy is intentional, not clutter;
+- retain and commit canonical patch artifacts while applied registry references them;
+- cleanup must not remove files referenced by applied registry, source registry, packet registry, dependency graph, or item metadata.
+
 ## Utility-owned todo
 
 Utility-owned `todo` follows these rules:

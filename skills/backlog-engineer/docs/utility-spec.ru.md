@@ -615,10 +615,11 @@ Runtime не имеет права восстанавливать состоян
   - порядок применения artifacts
   - authored fields задач
 - если rebuild невозможен, runtime обязан завершаться machine-readable ошибкой;
-- если rebuild падает во время чтения, валидации или replay canonical packet/patch artifact, ошибка должна использовать `BE_REBUILD_REPLAY_FAILED` и включать минимум:
+- если rebuild падает во время чтения, валидации или replay canonical packet/patch artifact, ошибка должна использовать `BE_REBUILD_REPLAY_FAILED` или `BE_CANONICAL_ARTIFACT_MISSING` для отсутствующего referenced artifact и включать минимум:
   - `artifact_kind`;
   - `canonical_path`;
   - `packet_id` или `patch_id`, когда применимо;
+  - `apply_index` и `sequence`, когда применимо;
   - `operation_index`, `operation_action`, `item_key`, когда ошибка связана с конкретной patch operation;
   - `original_code` и `original_message`, когда нижележащая ошибка была backlog error.
 
@@ -631,7 +632,8 @@ Runtime не имеет права восстанавливать состоян
 - команда должна rebuild-ить state из canonical artifacts;
 - rebuilt state должен совпасть с state, который команда только что произвела;
 - если replay падает или rebuilt state расходится с produced state, команда должна завершиться `BE_REBUILD_REPLAY_FAILED`;
-- success mutating-команды означает, что записанные canonical artifacts replay-safe для последующих query-команд.
+- success mutating-команды означает, что записанные canonical artifacts replay-safe для последующих query-команд;
+- canonical artifacts, на которые ссылается `.backlog/applied.json`, должны сохраняться и коммититься; cleanup не должен удалять файлы, referenced by applied registry, source registry, packet registry, dependency graph или item metadata.
 
 ## 6.6. Canonical import policy for packets and patches
 
@@ -1214,6 +1216,7 @@ Dry-run не должен:
 | `BE_TODO_NOT_FOUND` | patch пытается удалить несуществующий `todo` |
 | `BE_ITEM_NOT_FOUND` | `items` или scoped-команда не нашла `item_key` |
 | `BE_CANONICAL_WRITE_FAILED` | canonical copy или internal artifact нельзя записать |
+| `BE_CANONICAL_ARTIFACT_MISSING` | applied registry ссылается на отсутствующий canonical packet/patch artifact |
 | `BE_REPORT_WRITE_FAILED` | report artifact нельзя записать |
 | `BE_TEMPLATE_OUTPUT_INVALID` | `template --out` указывает на невалидный путь или недопустимый target |
 | `BE_DELETE_CONFIRM_REQUIRED` | `delete-backlog` без подтверждения |
@@ -1764,6 +1767,9 @@ Dry-run variant:
 ```json
 {
   "dry_run": false,
+  "authored_patch_path": "/abs/backlog/drafts/auth.patch.json",
+  "canonical_patch_path": "/abs/backlog/patches/ef9458cc0e32--auth.patch.json",
+  "canonical_patch_purpose": "immutable_replay_artifact",
   "counts": {
     "updated": 2,
     "todo_created": 1,
@@ -1860,6 +1866,9 @@ Dry-run variant:
 ```json
 {
   "dry_run": false,
+  "authored_patch_path": "/abs/backlog/drafts/remove-auth.patch.json",
+  "canonical_patch_path": "/abs/backlog/patches/aa9458cc0e32--remove-auth.patch.json",
+  "canonical_patch_purpose": "immutable_replay_artifact",
   "counts": {
     "removed": 1,
     "todo_created": 1,
@@ -2032,7 +2041,11 @@ Dry-run variant:
   "gaps_count": 3,
   "needs_attention_count": 7,
   "ready_for_next_step_count": 11,
-  "open_todo_count": 5
+  "open_todo_count": 5,
+  "artifact_integrity": {
+    "applied_canonical_paths_exist": true,
+    "missing_canonical_paths": []
+  }
 }
 ```
 
@@ -2040,12 +2053,15 @@ Dry-run variant:
 
 - plain status non-mutating;
 - status with refresh;
-- count correctness.
+- count correctness;
+- successful status returns clean `artifact_integrity`;
+- missing canonical artifact fails with `BE_CANONICAL_ARTIFACT_MISSING` and context.
 
 ### Cross-skill interpretation
 
 - use `status` before dossier intake when the operator needs the current backlog picture for selected work;
-- use `status` again after dossier-side lifecycle changes when backlog truth was actualized and needs confirmation.
+- use `status` again after dossier-side lifecycle changes when backlog truth was actualized and needs confirmation;
+- clean closure requires canonical artifact integrity to remain clean after actualization.
 
 ## 10.10. `report`
 

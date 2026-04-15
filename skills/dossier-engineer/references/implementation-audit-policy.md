@@ -38,6 +38,30 @@ If the changed scope is prose-only and does not change executable behavior, do n
 If the changed scope includes executable code, runtime wiring, or trust-boundary changes, `code` and `security` are required after `spec-conformance` passes.
 Do not auto-trigger `code` or `security` only because follow-up work touched tests, typing, or other non-normative internals.
 
+## Early security seam checkpoint
+
+Run an early narrow security checkpoint when the first working implementation increment changes any of these seams:
+
+- public route exposure or reserved route behavior;
+- auth/admission gate;
+- trusted ingress or internal bypass;
+- secret material, redaction, or export controls;
+- failure semantics for security-sensitive paths.
+
+Rules:
+
+- use a spawned external agent with the `security-reviewer` skill;
+- scope the checkpoint to the changed seam only;
+- run it before building additional tests, logs, or closure artifacts around that seam;
+- do not treat it as a replacement for the final security audit when final security audit is required;
+- the checkpoint does not replace the final security audit;
+- do not run it for prose-only, formatting-only, or non-security refactors.
+
+Out-of-spec stop rule:
+
+- if the checkpoint identifies a problem whose fix requires behavior outside the dossier, current specification, or approved process model, stop and ask the operator;
+- do not silently widen scope, invent new security behavior, or encode an unstated security requirement just to make the checkpoint pass.
+
 ## Spawned agents only
 
 When the process requires an external audit:

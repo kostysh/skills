@@ -211,6 +211,8 @@ Compact response should include:
 - `todo_updated`
 - `todo_removed`
 - `dry_run`
+- `canonical_patch_path` when cleanup produced a maintenance patch on real apply
+- `canonical_patch_purpose = "immutable_replay_artifact"` when cleanup produced a maintenance patch on real apply
 - `next_commands`
 
 Interpretation:
@@ -321,6 +323,9 @@ Supports:
 
 Compact response should include:
 
+- `authored_patch_path`
+- `canonical_patch_path` on real apply
+- `canonical_patch_purpose = "immutable_replay_artifact"` on real apply
 - `counts`
 - `updated`
 - `todo_created`
@@ -335,6 +340,7 @@ Cross-skill note:
 - use it to actualize `delivery_state`, blockers, dependencies, and context facts that dossier work made explicit;
 - use `remove_todo` only for mutation-managed todo; refresh-managed review todo are cleared by scoped `refresh` after the source/dependency cause is gone;
 - for truth-changing dossier stages, `patch-item`-driven actualization belongs to the closure contract of that stage, not to an optional later cleanup pass.
+- after actualization, confirm backlog state and artifact integrity before treating the dossier stage as cleanly closed.
 - after dossier workflow stage `change-proposal`, `patch-item` is the branch for `patch existing item` and the dependent-item update step after `source update`.
 
 ## `remove-item`
@@ -355,6 +361,9 @@ Supports:
 
 Compact response should include:
 
+- `authored_patch_path`
+- `canonical_patch_path` on real apply
+- `canonical_patch_purpose = "immutable_replay_artifact"` on real apply
 - `counts`
 - `removed`
 - `todo_created`
@@ -415,12 +424,15 @@ Expected fields:
 - count of tasks with `gaps`;
 - count of tasks with `needs_attention`;
 - count of tasks with `ready_for_next_step`;
-- count of tasks with open `todo`.
+- count of tasks with open `todo`;
+- `artifact_integrity.applied_canonical_paths_exist`;
+- `artifact_integrity.missing_canonical_paths`.
 
 Cross-skill note:
 
 - use `status` before dossier intake when the operator wants the current backlog picture;
-- use `status` again after dossier-side lifecycle changes when you need to confirm the updated backlog state after actualization.
+- use `status` again after dossier-side lifecycle changes when you need to confirm the updated backlog state after actualization;
+- if `status` or `status --refresh` fails with `BE_CANONICAL_ARTIFACT_MISSING`, dossier closure is blocked until the referenced canonical artifact is restored or the bad registry reference is corrected through the documented backlog workflow.
 
 ## `report`
 

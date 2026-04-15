@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import {
   RemoveSourceCommandInputSchema,
   RemoveSourceCommandOutputSchema,
@@ -337,12 +339,13 @@ export const REMOVE_SOURCE_COMMAND: CommandDefinition<
       };
     }
 
-    const output = context.schemas.parseCommandOutput('remove-source', {
+    const outputBase = {
       dry_run: input.dry_run,
       ...sourceOutput,
       removed: true,
       ...summary,
-    });
+    };
+    const output = context.schemas.parseCommandOutput('remove-source', outputBase);
 
     if (input.dry_run) {
       return output;
@@ -390,6 +393,12 @@ export const REMOVE_SOURCE_COMMAND: CommandDefinition<
           context,
           state: nextState,
         });
+        const outputWithCanonicalPatch = context.schemas.parseCommandOutput('remove-source', {
+          ...outputBase,
+          canonical_patch_path: path.resolve(backlogRoot, canonicalPath),
+          canonical_patch_purpose: 'immutable_replay_artifact' as const,
+        });
+        return outputWithCanonicalPatch;
       } catch (error) {
         const rollbackErrors: unknown[] = [];
         try {
@@ -433,7 +442,6 @@ export const REMOVE_SOURCE_COMMAND: CommandDefinition<
 
         throw error;
       }
-      return output;
     }
 
     await context.artifacts.writeSourceRegistry(backlogRoot, nextRegistry);

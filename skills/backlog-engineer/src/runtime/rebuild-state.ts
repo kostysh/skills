@@ -206,27 +206,43 @@ function createArtifactReplayFailedError(payload: {
   message: string;
   packetId?: string;
   patchId?: string;
+  applyIndex?: number;
+  sequence?: number;
 }): Error {
-  return payload.errors.create('BE_REBUILD_REPLAY_FAILED', payload.message, {
-    details: {
-      artifact_kind: payload.artifactKind,
-      canonical_path: payload.canonicalPath,
-      ...(payload.packetId ? { packet_id: payload.packetId } : {}),
-      ...(payload.patchId ? { patch_id: payload.patchId } : {}),
-      ...(payload.errors.isBacklogError(payload.error)
-        ? {
-            original_code: payload.error.code,
-            original_message: payload.error.message,
-          }
-        : payload.error instanceof Error
+  const isMissingCanonicalArtifact =
+    payload.errors.isBacklogError(payload.error) &&
+    payload.error.code === 'BE_CANONICAL_ARTIFACT_MISSING';
+
+  return payload.errors.create(
+    isMissingCanonicalArtifact ? 'BE_CANONICAL_ARTIFACT_MISSING' : 'BE_REBUILD_REPLAY_FAILED',
+    isMissingCanonicalArtifact
+      ? `Canonical ${payload.artifactKind} artifact referenced by applied registry is missing.`
+      : payload.message,
+    {
+      details: {
+        artifact_kind: payload.artifactKind,
+        canonical_path: payload.canonicalPath,
+        ...(payload.packetId ? { packet_id: payload.packetId } : {}),
+        ...(payload.patchId ? { patch_id: payload.patchId } : {}),
+        ...(payload.applyIndex !== undefined ? { apply_index: payload.applyIndex } : {}),
+        ...(payload.sequence !== undefined ? { sequence: payload.sequence } : {}),
+        ...(payload.errors.isBacklogError(payload.error)
           ? {
+              original_code: payload.error.code,
               original_message: payload.error.message,
             }
-          : {}),
+          : payload.error instanceof Error
+            ? {
+                original_message: payload.error.message,
+              }
+            : {}),
+      },
+      hint: isMissingCanonicalArtifact
+        ? 'Restore the referenced canonical artifact or undo the invalid registry reference through the documented backlog workflow; do not repair state.json or applied.json manually.'
+        : 'Inspect the named canonical artifact. Do not repair rebuild failures by manually editing state.json or applied.json.',
+      cause: payload.error,
     },
-    hint: 'Inspect the named canonical artifact. Do not repair rebuild failures by manually editing state.json or applied.json.',
-    cause: payload.error,
-  });
+  );
 }
 
 async function readCanonicalPacket(payload: {
@@ -245,7 +261,7 @@ async function readCanonicalPacket(payload: {
     filePath,
     parse: (raw) => payload.schemas.parsePacketFile(raw),
     readErrorCode: 'BE_INTERNAL_STATE_CORRUPT',
-    missingCode: 'BE_INTERNAL_STATE_CORRUPT',
+    missingCode: 'BE_CANONICAL_ARTIFACT_MISSING',
     corruptCode: 'BE_INTERNAL_STATE_CORRUPT',
   });
 }
@@ -266,7 +282,7 @@ async function readCanonicalPatch(payload: {
     filePath,
     parse: (raw) => payload.schemas.parsePatchFile(raw),
     readErrorCode: 'BE_INTERNAL_STATE_CORRUPT',
-    missingCode: 'BE_INTERNAL_STATE_CORRUPT',
+    missingCode: 'BE_CANONICAL_ARTIFACT_MISSING',
     corruptCode: 'BE_INTERNAL_STATE_CORRUPT',
   });
 }
@@ -391,6 +407,7 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
         error,
         message: 'Backlog rebuild failed while reading a canonical packet.',
         packetId: packetEntry.packet_id,
+        applyIndex: packetEntry.apply_index,
       });
     }
 
@@ -411,6 +428,7 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
         error,
         message: 'Backlog rebuild failed while validating a canonical packet.',
         packetId: packetEntry.packet_id,
+        applyIndex: packetEntry.apply_index,
       });
     }
 
@@ -428,6 +446,7 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
         error,
         message: 'Backlog rebuild failed while replaying a canonical packet.',
         packetId: packetEntry.packet_id,
+        applyIndex: packetEntry.apply_index,
       });
     }
   }
@@ -464,6 +483,8 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
         error,
         message: 'Backlog rebuild failed while reading a canonical patch.',
         patchId: patchEntry.patch_id,
+        applyIndex: patchEntry.apply_index,
+        sequence: patchEntry.sequence,
       });
     }
 
@@ -481,6 +502,8 @@ export async function rebuildStateFromCanonicalArtifacts(payload: {
         error,
         message: 'Backlog rebuild failed while validating a canonical patch.',
         patchId: patchEntry.patch_id,
+        applyIndex: patchEntry.apply_index,
+        sequence: patchEntry.sequence,
       });
     }
 

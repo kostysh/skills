@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import {
   PatchItemFileSchema,
   PatchItemCommandInputSchema,
@@ -98,10 +100,14 @@ export const PATCH_ITEM_COMMAND: CommandDefinition<PatchItemCommandInput, PatchI
           hint: 'patch-item must receive a patch summary with updated item keys.',
         });
       }
-      const { state: nextState, ...output } = summary;
+      const { state: nextState, ...summaryOutput } = summary;
+      const outputBase = {
+        ...summaryOutput,
+        authored_patch_path: patchInput.absolutePath,
+      };
 
       if (input.dry_run) {
-        return output;
+        return outputBase;
       }
 
       const appliedAt = context.host.nowIsoUtc();
@@ -131,6 +137,11 @@ export const PATCH_ITEM_COMMAND: CommandDefinition<PatchItemCommandInput, PatchI
         context,
         state: nextState,
       });
+      const output = {
+        ...outputBase,
+        canonical_patch_path: path.resolve(context.backlogRoot, canonicalImport.canonicalPath),
+        canonical_patch_purpose: 'immutable_replay_artifact' as const,
+      };
       await context.hooks.afterPatchApplied?.({
         summary: output,
         state: nextState,

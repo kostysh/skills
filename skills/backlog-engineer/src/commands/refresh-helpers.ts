@@ -212,6 +212,10 @@ export function buildStatusSummary(payload: {
     needs_attention_count: 0,
     ready_for_next_step_count: 0,
     open_todo_count: state.todos.length,
+    artifact_integrity: {
+      applied_canonical_paths_exist: true,
+      missing_canonical_paths: [],
+    },
   };
 
   for (const item of state.items) {

@@ -104,6 +104,36 @@ log_required_reason:
   - backlog_actualization
   - review_reround
 backlog_actualized: true
+backlog_artifact_integrity: clean | blocked | not_applicable
+planned_slices:
+  - SL-1
+slice_status:
+  SL-1: complete | in_progress | blocked | not_started
+current_checkpoint: all_planned_slices_complete | allowed_stop_point | blocked | operator_pause | checkpoint_only
+completion_decision: final_closeout | allowed_stop | blocked_waiting_operator | checkpoint_progress_only
+canonical_for_commit: true | false | not_applicable
+supersedes:
+  - .dossier/reviews/old-review.md
+generated_after_commit: true | false
+freshness_basis: intended_final_tree | post_commit_trace_backfill | superseded_draft | not_applicable
+operator_command_refs:
+  - cmd-001
+process_miss_refs:
+  - miss_id: PM-001
+    severity: low | medium | high
+    operator_command_ref: cmd-001
+    stage_log_ref: .dossier/logs/...
+    decision_ref: .dossier/logs/...#decision
+    resolution_ref: .dossier/logs/...#resolution
+review_events:
+  - agent_id: reviewer-agent-id
+    role: spec-conformance | code | security | independent
+    model: gpt-5.4
+    requested_ts: 2026-04-10T10:44:00+02:00
+    verdict_ts: 2026-04-10T10:50:00+02:00
+    verdict: pass | findings | blocked
+    rerun_reason: none | review_findings | transport_runtime_instability
+    scope: short scope description
 verification_artifact: .dossier/verification/...
 review_artifact: .dossier/reviews/...
 step_artifact: .dossier/steps/...
@@ -162,6 +192,34 @@ If a class has no entries, write `none` under that subheading instead of omittin
 
 Keep these sections concise. Do not copy Feature Dossier truth, full AC text, slice text, task text, or full review reports into the log.
 
+## Completion, freshness, and trace anchors
+
+Use these fields when they apply; do not fill them with invented placeholders.
+
+Implementation completion fields:
+
+- `planned_slices`: planned slice or package ids for the current closure target.
+- `slice_status`: per-slice state: `complete`, `in_progress`, `blocked`, or `not_started`.
+- `current_checkpoint`: current boundary, such as `all_planned_slices_complete`, `allowed_stop_point`, `blocked`, `operator_pause`, or `checkpoint_only`.
+- `completion_decision`: why the agent is allowed to close, stop, block, or report checkpoint progress.
+
+Freshness fields are conditionally required for new implementation closure / step-close artifacts when freshness applies: the artifact was created after verification/review, supersedes a previous artifact, references committed state, or receives post-commit trace-only metadata.
+
+- `canonical_for_commit`: whether this artifact is the canonical final artifact for the commit-linked closure target.
+- `supersedes`: previous artifacts made obsolete by this artifact.
+- `generated_after_commit`: true only for post-commit artifacts or trace-only backfills.
+- `freshness_basis`: `intended_final_tree`, `post_commit_trace_backfill`, `superseded_draft`, or `not_applicable`.
+
+Commit SHA, when recorded, is a trace link only. It is not a validity criterion for dossier or backlog artifacts. Post-commit metadata backfill must not change technical content, verification conclusions, review conclusions, or backlog truth.
+
+Trace anchors:
+
+- `operator_command_refs` records the operator commands that materially shaped this stage.
+- `process_miss_refs` records `miss_id`, `severity`, `operator_command_ref`, `stage_log_ref`, `decision_ref`, and `resolution_ref` for each process miss.
+- `review_events` records `agent_id`, `role`, `model`, `requested_ts`, `verdict_ts`, `verdict`, `rerun_reason`, and `scope` for each external review event.
+
+These fields are required only when the corresponding events actually happened.
+
 ## Review orchestration telemetry
 
 When any external review was requested, record review orchestration as structured data, not only prose.
@@ -209,6 +267,7 @@ Classify implementation-shaping decisions as:
 Capture:
 
 - slice boundary decisions by `SL-*` id only;
+- `allowed_stop_points` for multi-slice or package-based plans;
 - slices created, removed, or reshaped;
 - dependencies, assumptions, and fallbacks added during planning;
 - drift-guard planning;
@@ -221,13 +280,16 @@ Capture:
 Capture:
 
 - package or increment id;
+- planned slices, slice status, current checkpoint, and completion decision;
 - changed scope paths count;
 - review policy and review rounds;
 - `spec-conformance`, `code-reviewer`, and `security-reviewer` audit events when applicable;
+- early security seam checkpoint event when triggered;
 - debt review result;
+- freshness fields for implementation closure / step-close artifacts when applicable;
 - commit metadata when committed;
 - implementation-specific process misses;
-- backlog actualization outcome.
+- backlog actualization outcome and backlog artifact-integrity result.
 
 ## Decision classes
 
@@ -280,7 +342,8 @@ When the stage changes backlog truth, the log must record:
 - what changed: lifecycle state, blocker, dependency, context fact, source registration, or follow-up work;
 - which `backlog-engineer` action was used;
 - the patch, packet, command output, or durable artifact that proves actualization;
-- whether actualization completed before stage closure.
+- whether actualization completed before stage closure;
+- whether backlog artifact integrity was clean after actualization, or which command/error blocked clean closure.
 
 Do not treat `refresh` alone as actualization when dossier work changed lifecycle, blockers, dependencies, or context facts.
 
@@ -343,6 +406,11 @@ Do not hide process misses inside general prose.
 - `debt_items_found_total`
 - `debt_items_resolved_total`
 - `commit_recorded`
+- `planned_slices_total`
+- `completed_slices_total`
+- `allowed_stop_point_used`
+- `early_security_checkpoint_count`
+- `freshness_backfill_count`
 
 ### Review metrics
 

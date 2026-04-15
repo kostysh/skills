@@ -543,6 +543,8 @@
 - preserves referential integrity after apply
 - summary contains exact fields from `PatchItemCommandOutput`
 - writes canonical patch copy and applied entry
+- real apply returns `authored_patch_path`, `canonical_patch_path`, and `canonical_patch_purpose`
+- dry-run returns `authored_patch_path` but does not claim a canonical copy
 - dry-run parity with real apply
 
 ## 11.7. `remove-item`
@@ -556,6 +558,8 @@
 - updates or creates downstream todo when needed
 - summary contains exact fields from `RemoveItemCommandOutput`
 - writes canonical patch copy and applied entry
+- real apply returns `authored_patch_path`, `canonical_patch_path`, and `canonical_patch_purpose`
+- dry-run returns `authored_patch_path` but does not claim a canonical copy
 - dry-run parity with real apply
 
 ## 11.8. `refresh`
@@ -708,8 +712,8 @@
 - invalid `.backlog/sources.json` causes fail-fast instead of rebuild
 - missing `.backlog/applied.json` causes fail-fast instead of rebuild
 - invalid `.backlog/applied.json` causes fail-fast instead of rebuild
-- missing canonical packet file causes fail-fast instead of rebuild
-- missing canonical patch file causes fail-fast instead of rebuild
+- missing canonical packet file causes fail-fast with `BE_CANONICAL_ARTIFACT_MISSING` instead of rebuild
+- missing canonical patch file causes fail-fast with `BE_CANONICAL_ARTIFACT_MISSING` instead of rebuild
 - invalid canonical packet file causes fail-fast instead of rebuild
 - invalid canonical patch file causes fail-fast instead of rebuild
 - duplicate `patch_id` in applied registry is detected

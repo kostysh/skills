@@ -181,6 +181,8 @@ export const RemoveSourceCommandInputSchema = z.strictObject({
 
 export const RemoveSourceCommandOutputSchema = RegisteredSourceOutputSchema.extend({
   dry_run: z.boolean(),
+  canonical_patch_path: NormalizedFsPathSchema.optional(),
+  canonical_patch_purpose: z.literal('immutable_replay_artifact').optional(),
   removed: z.boolean(),
   counts: RemoveSourceMutationCountsSchema,
   updated_item_keys: uniqueArraySchema(
@@ -240,6 +242,9 @@ export const PatchItemCommandInputSchema = z.strictObject({
 
 export const PatchItemCommandOutputSchema = z.strictObject({
   dry_run: z.boolean(),
+  authored_patch_path: NormalizedFsPathSchema.optional(),
+  canonical_patch_path: NormalizedFsPathSchema.optional(),
+  canonical_patch_purpose: z.literal('immutable_replay_artifact').optional(),
   counts: PatchItemMutationCountsSchema,
   updated: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
   todo_created: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
@@ -255,6 +260,9 @@ export const RemoveItemCommandInputSchema = z.strictObject({
 
 export const RemoveItemCommandOutputSchema = z.strictObject({
   dry_run: z.boolean(),
+  authored_patch_path: NormalizedFsPathSchema.optional(),
+  canonical_patch_path: NormalizedFsPathSchema.optional(),
+  canonical_patch_purpose: z.literal('immutable_replay_artifact').optional(),
   counts: RemoveItemMutationCountsSchema,
   removed: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
   todo_created: uniqueArraySchema(ItemKeySchema, (value) => value, 'Item keys must be unique.'),
@@ -284,6 +292,20 @@ export const StatusCommandInputSchema = z.strictObject({
   refresh: z.boolean().default(false),
 });
 
+export const CanonicalArtifactIntegrityMissingPathSchema = z.strictObject({
+  artifact_kind: z.enum(['packet', 'patch']),
+  canonical_path: NormalizedFsPathSchema,
+  packet_id: NonEmptyStringSchema.optional(),
+  patch_id: NonEmptyStringSchema.optional(),
+  apply_index: NonNegativeIntSchema,
+  sequence: NonNegativeIntSchema.optional(),
+});
+
+export const CanonicalArtifactIntegritySchema = z.strictObject({
+  applied_canonical_paths_exist: z.boolean(),
+  missing_canonical_paths: z.array(CanonicalArtifactIntegrityMissingPathSchema),
+});
+
 export const StatusCommandOutputSchema = z.strictObject({
   total_items: NonNegativeIntSchema,
   last_refresh_at: z.nullable(IsoUtcTimestampSchema),
@@ -295,6 +317,7 @@ export const StatusCommandOutputSchema = z.strictObject({
   needs_attention_count: NonNegativeIntSchema,
   ready_for_next_step_count: NonNegativeIntSchema,
   open_todo_count: NonNegativeIntSchema,
+  artifact_integrity: CanonicalArtifactIntegritySchema,
 });
 
 export const ReportCommandInputSchema = z.strictObject({});

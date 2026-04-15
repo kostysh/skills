@@ -740,7 +740,7 @@ void test('default ensureQueryState fails fast on duplicate patch sequence in ap
     applied.patches.push({
       patch_id: '2026-04-03-002-auth-progress',
       apply_index: 3,
-      canonical_path: 'patches/222c4f042c00--auth-module.patch-item.json',
+      canonical_path: 'patches/111c4f042c00--auth-module.patch-item.json',
       content_hash: '2'.repeat(64),
       sequence: 1,
       applied_at: '2026-04-03T12:25:00Z',
@@ -1179,7 +1179,8 @@ void test('runtime rebuildState with in-memory adapters fails fast for broken re
         error instanceof BacklogError &&
         (error.code === 'BE_INTERNAL_STATE_CORRUPT' ||
           error.code === 'BE_PATCH_SEQUENCE_CONFLICT' ||
-          error.code === 'BE_REBUILD_REPLAY_FAILED'),
+          error.code === 'BE_REBUILD_REPLAY_FAILED' ||
+          error.code === 'BE_CANONICAL_ARTIFACT_MISSING'),
       fixtureDirName,
     );
   }
@@ -1333,7 +1334,19 @@ void test('ensureMutationState with in-memory adapters fails fast on missing can
   const context = await runtime.createContext('patch-item', backlogRoot);
   await assert.rejects(
     () => context.ensureMutationState(),
-    (error: unknown) => error instanceof BacklogError && error.code === 'BE_REBUILD_REPLAY_FAILED',
+    (error: unknown) => {
+      assert.ok(error instanceof BacklogError);
+      assert.equal(error.code, 'BE_CANONICAL_ARTIFACT_MISSING');
+      assert.equal(error.details?.artifact_kind, 'patch');
+      assert.equal(
+        error.details?.canonical_path,
+        'patches/111c4f042c00--auth-module.patch-item.json',
+      );
+      assert.equal(error.details?.patch_id, '2026-04-03-001-auth-progress');
+      assert.equal(error.details?.apply_index, 2);
+      assert.equal(error.details?.sequence, 1);
+      return true;
+    },
   );
 });
 
