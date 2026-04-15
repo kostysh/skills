@@ -152,6 +152,14 @@ After the metadata block, keep a short narrative structure:
 
 The narrative is still useful. The metadata block does not replace it.
 
+Inside `Decisions / reclassifications`, always include these subheadings:
+
+- `Spec gap decisions`
+- `Implementation freedom decisions`
+- `Temporary assumptions`
+
+If a class has no entries, write `none` under that subheading instead of omitting it.
+
 Keep these sections concise. Do not copy Feature Dossier truth, full AC text, slice text, task text, or full review reports into the log.
 
 ## Review orchestration telemetry
@@ -225,7 +233,7 @@ Capture:
 
 Do not mix all decisions outside the current model into one bucket.
 
-Use these classes when relevant:
+Use these classes for every required stage log:
 
 ### Spec gap decisions
 

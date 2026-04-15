@@ -340,6 +340,9 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     'Spec gap decisions',
     'Implementation freedom decisions',
     'Temporary assumptions',
+    'Inside `Decisions / reclassifications`, always include these subheadings:',
+    'If a class has no entries, write `none` under that subheading instead of omitting it.',
+    'Use these classes for every required stage log:',
   ]);
 });
 
@@ -405,6 +408,9 @@ void test('active dossier instructions use the unified workflow-stage logging re
     '`implementation`',
     'It does not apply to `CLI command: feature-intake`',
     '[feature-intake-logging.md](feature-intake-logging.md)',
+    'Inside `Decisions / reclassifications`, always include these subheadings:',
+    'If a class has no entries, write `none` under that subheading instead of omitting it.',
+    'Use these classes for every required stage log:',
   ]);
   assertContainsTerms(intakeLogging, [
     '.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md',
