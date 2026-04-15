@@ -1,19 +1,8 @@
 import fs from 'node:fs';
-import path from 'node:path';
 
 import { parseStageLog } from '../parsers/stage-log.ts';
 import { stringFromUnknown } from './shared.ts';
 import type { LogMetrics, LogsSummary, ParsedStageLog } from './types.ts';
-
-function isWithinLogsDir(filePath: string, logsDir: string): boolean {
-  const normalizedDir = path.resolve(logsDir);
-  const normalizedFile = path.resolve(filePath);
-  return (
-    normalizedFile === normalizedDir ||
-    normalizedFile.startsWith(`${normalizedDir}${path.sep}`) ||
-    normalizedFile.startsWith(`${normalizedDir}/`)
-  );
-}
 
 function createEmptyMetrics(): LogMetrics {
   return {
@@ -65,7 +54,20 @@ export function summarizeLogs(
   logsDir?: string,
   allowedFilePaths?: readonly string[],
 ): LogsSummary {
+  const files =
+    allowedFilePaths === undefined
+      ? []
+      : Array.from(
+          new Set(
+            allowedFilePaths.filter((filePath) => filePath.endsWith('.md') && fs.existsSync(filePath)),
+          ),
+        );
+
   if (!logsDir || !fs.existsSync(logsDir)) {
+    if (files.length > 0) {
+      return summarizeParsedLogs(files.map((filePath) => parseStageLog(filePath)));
+    }
+
     return {
       exists: false,
       logs: [],
@@ -73,19 +75,6 @@ export function summarizeLogs(
     };
   }
 
-  const files =
-    allowedFilePaths === undefined
-      ? []
-      : Array.from(
-          new Set(
-            allowedFilePaths.filter(
-              (filePath) =>
-                filePath.endsWith('.md') &&
-                fs.existsSync(filePath) &&
-                isWithinLogsDir(filePath, logsDir),
-            ),
-          ),
-        );
   const logs = files.map((filePath) => parseStageLog(filePath));
 
   return summarizeParsedLogs(logs);

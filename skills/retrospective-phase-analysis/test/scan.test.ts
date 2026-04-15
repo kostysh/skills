@@ -6,6 +6,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { buildScanSummary } from '../src/core/build-scan-summary.ts';
+import { buildReportMarkdown } from '../src/render/report-markdown.ts';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURES_DIR = path.join(TEST_DIR, 'fixtures');
@@ -41,15 +42,23 @@ void test('buildScanSummary keeps stage-log scope empty when the trace does not 
     summary.scope.touched_paths.some((entry) => entry.endsWith('docs/features/F-0016-retro.md')),
     true,
   );
+  assert.deepEqual(summary.scope.candidate_review_artifacts, []);
+  assert.deepEqual(summary.scope.candidate_verification_artifacts, []);
   assert.equal(
-    summary.scope.candidate_review_artifacts.some((entry) =>
-      entry.endsWith('.dossier/reviews/F-0016-review.md'),
+    summary.scope.review_artifact_candidates.some(
+      (entry) =>
+        entry.path.endsWith('.dossier/reviews/F-0016-review.md') &&
+        entry.evidence_kind === 'referenced_only' &&
+        entry.included === false,
     ),
     true,
   );
   assert.equal(
-    summary.scope.candidate_verification_artifacts.some((entry) =>
-      entry.endsWith('.dossier/verification/F-0016-verification.md'),
+    summary.scope.verification_artifact_candidates.some(
+      (entry) =>
+        entry.path.endsWith('.dossier/verification/F-0016-verification.md') &&
+        entry.evidence_kind === 'referenced_only' &&
+        entry.included === false,
     ),
     true,
   );
@@ -96,6 +105,8 @@ void test('buildScanSummary scopes stage logs to the log paths explicitly mentio
   assert.deepEqual(summary.scope.candidate_stage_logs, [
     fixturePath('artifacts', '.dossier', 'logs', 'implementation.md'),
   ]);
+  assert.equal(summary.scope.stage_log_candidates[0]?.evidence_kind, 'trace_patch_target');
+  assert.equal(summary.scope.stage_log_candidates[0]?.inclusion_source, 'auto_included');
   assert.equal(summary.stageLogs.metrics.reviewRoundsTotal, 2);
   assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 3);
   assert.equal(summary.stageLogs.metrics.processMissesTotal, 1);
@@ -233,6 +244,55 @@ void test('buildScanSummary does not scope stage logs from read-only or prose-on
     ),
     true,
   );
+});
+
+void test('buildScanSummary keeps read-only successful tool output paths out of analyzed stage logs', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b8', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.exec_command',
+          command: "sed -n '1,200p' .dossier/logs/implementation.md",
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.exec_command',
+          status: 'ok',
+          notes: 'Read .dossier/logs/implementation.md for context.',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+    });
+
+    assert.deepEqual(summary.scope.candidate_stage_logs, []);
+    assert.equal(summary.stageLogs.count, 0);
+    assert.equal(summary.scope.stage_log_candidates[0]?.evidence_kind, 'tool_output_path');
+    assert.equal(summary.scope.stage_log_candidates[0]?.included, false);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
 });
 
 void test('buildScanSummary does not scope stage logs when a shell write targets another file', () => {
@@ -390,6 +450,7 @@ void test('buildScanSummary reads command-bearing exec_command_end payloads as d
     assert.deepEqual(summary.scope.candidate_stage_logs, [
       path.join(projectRoot, '.dossier', 'logs', 'implementation.md'),
     ]);
+    assert.equal(summary.scope.stage_log_candidates[0]?.evidence_kind, 'trace_shell_write');
     assert.equal(summary.stageLogs.count, 1);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
@@ -573,17 +634,433 @@ void test('buildScanSummary does not auto-link review or verification artifacts 
     assert.deepEqual(summary.scope.candidate_review_artifacts, []);
     assert.deepEqual(summary.scope.candidate_verification_artifacts, []);
     assert.equal(
-      summary.scope.scope_ambiguities.some((entry) =>
-        entry.includes('did not directly reference any review artifacts'),
+    summary.scope.scope_ambiguities.some((entry) =>
+        entry.includes('did not directly confirm any review artifacts'),
       ),
       true,
     );
     assert.equal(
       summary.scope.scope_ambiguities.some((entry) =>
-        entry.includes('did not directly reference any verification artifacts'),
+        entry.includes('did not directly confirm any verification artifacts'),
       ),
       true,
     );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary applies an active-session timestamp boundary before scope extraction', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'retrospective.md'),
+      ['```yaml', 'stage: retrospective', 'skill: retrospective-phase-analysis', '```'].join(
+        '\n',
+      ),
+      'utf8',
+    );
+
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b5', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:20:00Z',
+          type: 'assistant',
+          content: 'Now run retrospective extraction for F-0099.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:21:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/retrospective.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:22:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      untilTs: '2026-04-10T10:06:00Z',
+    });
+
+    assert.equal(summary.phase_boundary.mode, 'until_ts');
+    assert.equal(summary.phase_boundary.excluded_events_count, 3);
+    assert.equal(summary.session.eventCount, 4);
+    assert.deepEqual(summary.scope.mentioned_features, ['F-0016']);
+    assert.deepEqual(summary.scope.candidate_stage_logs, [
+      path.join(projectRoot, '.dossier', 'logs', 'implementation.md'),
+    ]);
+    assert.equal(summary.stageLogs.count, 1);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary applies an active-session line boundary deterministically', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b6', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:20:00Z',
+          type: 'assistant',
+          content: 'Retrospective-only follow-up for F-0099.',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      untilLine: 4,
+    });
+
+    assert.equal(summary.phase_boundary.mode, 'until_line');
+    assert.equal(summary.phase_boundary.excluded_events_count, 1);
+    assert.equal(summary.session.eventCount, 4);
+    assert.deepEqual(summary.scope.mentioned_features, ['F-0016']);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary requires evidence for manual artifact overrides', () => {
+  assert.throws(
+    () =>
+      buildScanSummary({
+        session: fixturePath('sessions', 'phase-session.jsonl'),
+        artifactsDir: fixturePath('artifacts'),
+        stageLogs: [fixturePath('artifacts', '.dossier', 'logs', 'implementation.md')],
+      }),
+    /Manual artifact overrides require artifactEvidence/u,
+  );
+  assert.throws(
+    () =>
+      buildScanSummary({
+        session: fixturePath('sessions', 'phase-session.jsonl'),
+        artifactsDir: fixturePath('artifacts'),
+        reviewArtifacts: [fixturePath('artifacts', '.dossier', 'reviews', 'F-0016-review.md')],
+      }),
+    /Manual artifact overrides require artifactEvidence/u,
+  );
+  assert.throws(
+    () =>
+      buildScanSummary({
+        session: fixturePath('sessions', 'phase-session.jsonl'),
+        artifactsDir: fixturePath('artifacts'),
+        verificationArtifacts: [
+          fixturePath('artifacts', '.dossier', 'verification', 'F-0016-verification.md'),
+        ],
+      }),
+    /Manual artifact overrides require artifactEvidence/u,
+  );
+});
+
+void test('buildScanSummary marks manual stage, review, and verification artifacts per kind', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const reviewsDir = path.join(projectRoot, '.dossier', 'reviews');
+  const verificationDir = path.join(projectRoot, '.dossier', 'verification');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const reviewPath = path.join(reviewsDir, 'F-0016-review.md');
+  const verificationPath = path.join(verificationDir, 'F-0016-verification.md');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+    await mkdir(reviewsDir, { recursive: true });
+    await mkdir(verificationDir, { recursive: true });
+    await writeFile(reviewPath, '# review\n', 'utf8');
+    await writeFile(verificationPath, '# verification\n', 'utf8');
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b7', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      stageLogs: [path.join(logsDir, 'implementation.md')],
+      reviewArtifacts: [reviewPath],
+      verificationArtifacts: [verificationPath],
+      artifactEvidence: 'Operator supplied closure artifact list.',
+    });
+
+    assert.equal(summary.stageLogs.count, 1);
+    assert.equal(summary.scope.stage_log_candidates[0]?.inclusion_source, 'manual_included');
+    assert.equal(summary.scope.review_artifact_candidates[0]?.inclusion_source, 'manual_included');
+    assert.equal(
+      summary.scope.verification_artifact_candidates[0]?.inclusion_source,
+      'manual_included',
+    );
+    assert.deepEqual(summary.scope.candidate_review_artifacts, [reviewPath]);
+    assert.deepEqual(summary.scope.candidate_verification_artifacts, [verificationPath]);
+    assert.equal(summary.reportStatus.status, 'draft_requires_agent_validation');
+    assert.equal(
+      summary.reportStatus.reasons.some((entry) => entry.includes('Manual artifact overrides')),
+      true,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary parses manual stage logs when no logs directory is discoverable', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const manualLogPath = path.join(tempDir, 'manual-stage-log.md');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(projectRoot, { recursive: true });
+    await writeFile(
+      manualLogPath,
+      [
+        '```yaml',
+        'stage: implementation',
+        'skill: retrospective-phase-analysis',
+        'review_rounds_total: 1',
+        'review_findings_total: 2',
+        '```',
+        '',
+        '# Manual stage log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7b9', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      stageLogs: [manualLogPath],
+      artifactEvidence: 'Operator supplied external stage log path.',
+    });
+
+    assert.equal(summary.dataQuality.logsPresent, true);
+    assert.equal(summary.stageLogs.count, 1);
+    assert.equal(summary.stageLogs.metrics.reviewRoundsTotal, 1);
+    assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 2);
+    assert.equal(summary.scope.stage_log_candidates[0]?.inclusion_source, 'manual_included');
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary parses manual stage logs outside a discoverable logs directory', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const manualLogPath = path.join(tempDir, 'external-stage-log.md');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.dirname(logsDir), { recursive: true });
+    await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
+    await writeFile(
+      manualLogPath,
+      [
+        '```yaml',
+        'stage: review',
+        'skill: retrospective-phase-analysis',
+        'review_rounds_total: 2',
+        'review_findings_total: 3',
+        '```',
+        '',
+        '# External stage log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7ba', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      stageLogs: [manualLogPath],
+      artifactEvidence: 'Operator supplied external stage log path.',
+    });
+
+    assert.equal(summary.resolved.logsDir, logsDir);
+    assert.equal(summary.stageLogs.count, 1);
+    assert.equal(summary.stageLogs.files[0]?.filePath, manualLogPath);
+    assert.equal(summary.stageLogs.metrics.reviewRoundsTotal, 2);
+    assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 3);
+    assert.equal(summary.scope.stage_log_candidates[0]?.inclusion_source, 'manual_included');
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary marks clean evidence as ready for agent finalization', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'skill: retrospective-phase-analysis',
+        'review_rounds_total: 0',
+        'review_findings_total: 0',
+        'process_misses_total: 0',
+        'backlog_actualized: true',
+        '```',
+        '',
+        '# Clean implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7bb', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      skillsDir: fixturePath('skills'),
+    });
+    const markdown = buildReportMarkdown(summary, { phase: 'implementation' });
+
+    assert.equal(summary.reportStatus.status, 'ready_for_agent_finalization');
+    assert.deepEqual(summary.reportStatus.reasons, []);
+    assert.match(markdown, /Status: ready for agent finalization/u);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }

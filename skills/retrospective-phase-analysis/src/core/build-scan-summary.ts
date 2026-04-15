@@ -5,25 +5,135 @@ import { inferProjectRootFromLogsDir, resolveRetroOutputLayout } from './shared.
 import { summarizeLogs } from './summarize-logs.ts';
 import { summarizeSession } from './summarize-session.ts';
 import { summarizeSkills } from './summarize-skills.ts';
-import type { ScanSourceOptions, ScanSummary } from './types.ts';
+import type { ArtifactCandidate, ScanSourceOptions, ScanSummary } from './types.ts';
+
+function hasManualOverrides(args: ScanSourceOptions): boolean {
+  return (
+    (args.stageLogs?.length ?? 0) > 0 ||
+    (args.reviewArtifacts?.length ?? 0) > 0 ||
+    (args.verificationArtifacts?.length ?? 0) > 0
+  );
+}
+
+function assertManualOverridesHaveEvidence(args: ScanSourceOptions): void {
+  if (hasManualOverrides(args) && !args.artifactEvidence?.trim()) {
+    throw new Error(
+      'Manual artifact overrides require artifactEvidence with a short justification',
+    );
+  }
+}
+
+function supportsMarkdownScaffold(language: string): boolean {
+  const normalized = language.toLowerCase();
+  return (
+    normalized === 'en' ||
+    normalized.startsWith('en-') ||
+    normalized === 'ru' ||
+    normalized.startsWith('ru-')
+  );
+}
+
+function hasManualCandidates(candidates: readonly ArtifactCandidate[]): boolean {
+  return candidates.some((candidate) => candidate.inclusion_source === 'manual_included');
+}
+
+function buildReportStatus(input: {
+  reportLanguage: string;
+  sessionSummary: ReturnType<typeof summarizeSession>;
+  logSummary: ReturnType<typeof summarizeLogs>;
+  skillsSummary: ReturnType<typeof summarizeSkills>;
+  scope: ReturnType<typeof extractTraceScope>;
+}): ScanSummary['reportStatus'] {
+  const reasons: string[] = [];
+  const { reportLanguage, sessionSummary, logSummary, skillsSummary, scope } = input;
+
+  if (!sessionSummary.exists) {
+    reasons.push('Session trace is missing.');
+  }
+  if (sessionSummary.parseErrors.length > 0) {
+    reasons.push(`Session trace has ${sessionSummary.parseErrors.length} parse error(s).`);
+  }
+  if (!logSummary.exists) {
+    reasons.push('Stage-log directory is missing or unresolved.');
+  }
+  if (!skillsSummary.exists) {
+    reasons.push('Skill catalog is missing or unresolved.');
+  }
+  if (
+    logSummary.metrics.logsTotal === 0 &&
+    scope.referenced_artifacts.some((artifactPath) => artifactPath.includes('.dossier'))
+  ) {
+    reasons.push('Trace indicates dossier activity, but no stage logs were analyzed.');
+  }
+  if (scope.scope_ambiguities.length > 0) {
+    reasons.push('Unresolved scope ambiguities remain.');
+  }
+  if (
+    hasManualCandidates(scope.stage_log_candidates) ||
+    hasManualCandidates(scope.review_artifact_candidates) ||
+    hasManualCandidates(scope.verification_artifact_candidates)
+  ) {
+    reasons.push('Manual artifact overrides were used.');
+  }
+  if (!supportsMarkdownScaffold(reportLanguage)) {
+    reasons.push('No deterministic Markdown scaffold exists for the requested report language.');
+  }
+
+  return {
+    status:
+      reasons.length > 0
+        ? 'draft_requires_agent_validation'
+        : 'ready_for_agent_finalization',
+    reasons,
+  };
+}
 
 export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
+  assertManualOverridesHaveEvidence(args);
+
   const operatorLanguage = args.language ?? 'und';
   const reportLanguage = args.language ?? 'en';
-  const sessionSummary = summarizeSession(args.session);
+  const sessionBoundaryOptions: { untilLine?: number; untilTs?: string } = {};
+  if (args.untilLine !== undefined) {
+    sessionBoundaryOptions.untilLine = args.untilLine;
+  }
+  if (args.untilTs !== undefined) {
+    sessionBoundaryOptions.untilTs = args.untilTs;
+  }
+  const sessionSummary = summarizeSession(args.session, sessionBoundaryOptions);
   const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
   const resolvedLogsDir =
     args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, '.dossier/logs');
   const resolvedArtifactsDir =
     args.artifactsDir ?? inferProjectRootFromLogsDir(resolvedLogsDir ?? null) ?? undefined;
   const skillsSummary = summarizeSkills(args.skillsDir);
-  const scope = extractTraceScope({
+  const scopeOptions: Parameters<typeof extractTraceScope>[0] = {
     sessionSummary,
     projectRoot: resolvedProjectRoot,
-  });
+  };
+  if (args.stageLogs) {
+    scopeOptions.manualStageLogs = args.stageLogs;
+  }
+  if (args.reviewArtifacts) {
+    scopeOptions.manualReviewArtifacts = args.reviewArtifacts;
+  }
+  if (args.verificationArtifacts) {
+    scopeOptions.manualVerificationArtifacts = args.verificationArtifacts;
+  }
+  if (args.artifactEvidence) {
+    scopeOptions.artifactEvidence = args.artifactEvidence;
+  }
+  const scope = extractTraceScope(scopeOptions);
   const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
 
   const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
+  const reportStatus = buildReportStatus({
+    reportLanguage,
+    sessionSummary,
+    logSummary,
+    skillsSummary,
+    scope,
+  });
 
   const summaryBase: Omit<ScanSummary, 'recommendedOutput' | 'run_dir'> = {
     generatedAt: new Date().toISOString(),
@@ -38,6 +148,12 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
       runDir: args.runDir ?? null,
       language: args.language ?? null,
       draft: args.draft ?? false,
+      untilLine: args.untilLine ?? null,
+      untilTs: args.untilTs ?? null,
+      stageLogs: args.stageLogs ?? [],
+      reviewArtifacts: args.reviewArtifacts ?? [],
+      verificationArtifacts: args.verificationArtifacts ?? [],
+      artifactEvidence: args.artifactEvidence ?? null,
     },
     resolved: {
       session: args.session ?? null,
@@ -51,6 +167,7 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
       skillCatalogPresent: skillsSummary.exists,
       sessionParseErrors: sessionSummary.parseErrors.length,
     },
+    phase_boundary: sessionSummary.phaseBoundary,
     session: {
       filePath: sessionSummary.filePath,
       sessionId: sessionSummary.sessionId,
@@ -75,6 +192,7 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
       })),
     },
     scope,
+    reportStatus,
     skills: skillsSummary.skills,
     artifacts: {
       scannedCount: scope.referenced_artifacts.length,

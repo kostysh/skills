@@ -2,6 +2,35 @@ export type LooseRecord = Record<string, unknown>;
 
 export type IncidentSeverity = 'high' | 'medium' | 'low';
 export type ScopeConfidence = 'high' | 'medium' | 'low';
+export type PhaseBoundaryMode = 'full_trace' | 'until_line' | 'until_ts';
+export type ArtifactEvidenceKind =
+  | 'trace_write'
+  | 'trace_patch_target'
+  | 'trace_shell_write'
+  | 'tool_output_path'
+  | 'referenced_only'
+  | 'manual_override';
+export type ArtifactInclusion = 'auto_included' | 'manual_included' | 'not_included';
+export type ReportStatus =
+  | 'draft_requires_agent_validation'
+  | 'ready_for_agent_finalization';
+
+export interface PhaseBoundary {
+  mode: PhaseBoundaryMode;
+  until_line: number | null;
+  until_ts: string | null;
+  reason: string;
+  excluded_events_count: number;
+}
+
+export interface ArtifactCandidate {
+  path: string;
+  evidence_kind: ArtifactEvidenceKind;
+  event_ref: string | null;
+  included: boolean;
+  inclusion_source: ArtifactInclusion;
+  reason: string;
+}
 
 export interface ReviewEvent {
   raw: string;
@@ -25,6 +54,7 @@ export interface SessionSummary {
   sessionId: string | null;
   projectRoot: string | null;
   exists: boolean;
+  phaseBoundary: PhaseBoundary;
   eventCount: number;
   parseErrors: Array<{ line: number; message: string }>;
   firstTimestamp: string | null;
@@ -82,6 +112,12 @@ export interface ScanSourceOptions {
   runDir?: string;
   language?: string;
   draft?: boolean;
+  untilLine?: number;
+  untilTs?: string;
+  stageLogs?: string[];
+  reviewArtifacts?: string[];
+  verificationArtifacts?: string[];
+  artifactEvidence?: string;
 }
 
 export type RetroOutputMode = 'dossier-default' | 'fallback-default' | 'root-override' | 'run-dir' | 'draft';
@@ -115,6 +151,12 @@ export interface ScanSummary {
     runDir: string | null;
     language: string | null;
     draft: boolean;
+    untilLine: number | null;
+    untilTs: string | null;
+    stageLogs: string[];
+    reviewArtifacts: string[];
+    verificationArtifacts: string[];
+    artifactEvidence: string | null;
   };
   resolved: {
     session: string | null;
@@ -128,6 +170,7 @@ export interface ScanSummary {
     skillCatalogPresent: boolean;
     sessionParseErrors: number;
   };
+  phase_boundary: PhaseBoundary;
   session: {
     filePath: string | undefined;
     sessionId: string | null;
@@ -160,8 +203,15 @@ export interface ScanSummary {
     candidate_stage_logs: string[];
     candidate_review_artifacts: string[];
     candidate_verification_artifacts: string[];
+    stage_log_candidates: ArtifactCandidate[];
+    review_artifact_candidates: ArtifactCandidate[];
+    verification_artifact_candidates: ArtifactCandidate[];
     scope_confidence: ScopeConfidence;
     scope_ambiguities: string[];
+  };
+  reportStatus: {
+    status: ReportStatus;
+    reasons: string[];
   };
   skills: SkillSummary[];
   artifacts: {

@@ -40,6 +40,7 @@ void test('report markdown includes core retrospective sections and inferred sig
   });
 
   assert.match(markdown, /^# Retrospective: implementation/mu);
+  assert.match(markdown, /Status: draft, requires agent validation/u);
   assert.match(markdown, /^## Evidence manifest$/mu);
   assert.match(markdown, /^## Candidate incidents$/mu);
   assert.match(markdown, /Backlog actualization deferred/mu);
@@ -50,6 +51,7 @@ void test('skill audit markdown keeps manual review prompts explicit', () => {
   const markdown = buildSkillAuditMarkdown(buildFixtureSummary());
 
   assert.match(markdown, /^# Skill audit draft$/mu);
+  assert.match(markdown, /Status: draft, requires agent validation/u);
   assert.match(markdown, /### Skill: dossier-engineer/mu);
   assert.match(markdown, /Were mandatory review steps explicit\?/mu);
   assert.match(markdown, /Cross-skill patterns to investigate/mu);
@@ -59,6 +61,7 @@ void test('logging review markdown highlights missing artifact links and automat
   const markdown = buildLoggingReviewMarkdown(buildLinkedFixtureSummary());
 
   assert.match(markdown, /^# Logging review draft$/mu);
+  assert.match(markdown, /Status: draft, requires agent validation/u);
   assert.match(markdown, /Missing review artifacts: 0/mu);
   assert.match(markdown, /Missing verification artifacts: 0/mu);
   assert.match(markdown, /Add machine-readable trace anchors to each stage log/mu);

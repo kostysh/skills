@@ -127,6 +127,13 @@ Use trace-driven scoping:
 - expand beyond the trace only when a trace-derived id or path links you to the next artifact.
 - for `.dossier/logs`, include only the stage-log paths that the trace itself shows as created or changed in the analyzed session.
 
+Active-session boundary rule:
+
+- If the retrospective request is made inside the same active session as the analyzed work, establish the phase boundary before any substantive scan.
+- Events after the boundary are excluded from the primary retrospective scope.
+- Use `--until-line <n>` or `--until-ts <iso>` when the analyzed phase is a prefix of the trace.
+- If the boundary cannot be determined reliably, stop and ask the operator for the boundary instead of scanning the whole active session.
+
 Record the phase boundary explicitly:
 
 - start trigger;
@@ -167,6 +174,13 @@ Treat `--run-dir <dir>` as the exact canonical run directory to reuse for follow
 Treat `--draft` as an explicitly temporary bundle mode.
 Treat auto-discovered paths from `session_meta.cwd` and explicit evidence hints such as `--artifacts-dir` or `--logs-dir` only as read-side inputs; they must not silently redefine the retrospective root.
 Treat `--artifacts-dir` only as an evidence hint; it must not silently redefine the retrospective root.
+
+Manual evidence overrides are controlled exceptions:
+
+- Use `--stage-log <path>`, `--review-artifact <path>`, or `--verification-artifact <path>` only when the trace lacks reliable machine-readable write/change evidence but the operator can justify inclusion.
+- Every manual override requires `--artifact-evidence <text>`.
+- Manual overrides must be recorded as manual inclusion in `scan-summary.json`; they reduce confidence until the agent validates them.
+- Do not use manual overrides to widen into repo-wide reading.
 
 ### Output path privacy
 
@@ -368,6 +382,8 @@ A findings-first draft is acceptable before full template expansion. Do not forc
 
 Write final Markdown reports in the operator language. Keep English only for direct quotes, commands, paths, identifiers, JSON keys, and tool or skill names. When using the CLI, pass `--language <language>` to the first `scan`; follow-up commands with `--run-dir` inherit the report language from `scan-summary.json`. The operator language is not limited to a fixed list. If no deterministic Markdown scaffold exists for that language, the CLI must not silently write a report in another language; author the Markdown manually in the operator language or add a renderer before rerunning the generator command.
 
+Generated Markdown is a scaffold, not the final retrospective. The final report is the agent's responsibility after reading and validating the cited evidence. When the CLI marks output as `Status: draft, requires agent validation`, do not present it as final; resolve the listed status reasons first or explicitly document the residual limits.
+
 ## Recommended workflow with the CLI
 
 Minimum viable workflow:
@@ -382,6 +398,8 @@ Minimum viable workflow:
 When Node.js is available, use:
 
 - `scripts/retro-cli.mjs scan --session <file> --language <language>` to inventory evidence and create the canonical retrospective bundle;
+- add `--until-line <n>` or `--until-ts <iso>` when active-session retrospective events must be excluded from the analyzed phase;
+- add controlled manual artifact overrides only with `--artifact-evidence <text>`;
 - read the exact `run_dir` from stdout after `scan`; treat `scan-summary.json` paths as display-safe report content, not as command input;
 - `scripts/retro-cli.mjs report --run-dir <run_dir> ...` to add `retrospective-report.md` to that same bundle;
 - `scripts/retro-cli.mjs logging-review --run-dir <run_dir>` to add `logging-review.md`;

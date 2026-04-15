@@ -9,14 +9,113 @@ import {
   extractToolNames,
   tryParseDate,
 } from './shared.ts';
+import type { PhaseBoundary } from './types.ts';
 
-export function summarizeSession(filePath?: string): SessionSummary {
+interface SessionBoundaryOptions {
+  untilLine?: number;
+  untilTs?: string;
+}
+
+function createFullTraceBoundary(): PhaseBoundary {
+  return {
+    mode: 'full_trace',
+    until_line: null,
+    until_ts: null,
+    reason: 'No explicit phase boundary was provided; the full trace was analyzed.',
+    excluded_events_count: 0,
+  };
+}
+
+function applyBoundary(
+  events: unknown[],
+  eventLines: number[],
+  parseErrors: Array<{ line: number; message: string }>,
+  sourceLineCount: number,
+  options: SessionBoundaryOptions,
+): {
+  events: unknown[];
+  parseErrors: Array<{ line: number; message: string }>;
+  phaseBoundary: PhaseBoundary;
+} {
+  if (options.untilLine !== undefined) {
+    const untilLine = options.untilLine;
+    if (!Number.isInteger(untilLine) || untilLine < 1) {
+      throw new Error('--until-line must be a positive integer');
+    }
+    if (untilLine > sourceLineCount) {
+      throw new Error(
+        `--until-line ${untilLine} exceeds the session trace length of ${sourceLineCount} line(s)`,
+      );
+    }
+
+    const boundedEvents = events.filter((_, index) => (eventLines[index] ?? 0) <= untilLine);
+    return {
+      events: boundedEvents,
+      parseErrors: parseErrors.filter((error) => error.line <= untilLine),
+      phaseBoundary: {
+        mode: 'until_line',
+        until_line: untilLine,
+        until_ts: null,
+        reason: 'Operator supplied --until-line to exclude later events from the analyzed phase.',
+        excluded_events_count: events.length - boundedEvents.length,
+      },
+    };
+  }
+
+  if (options.untilTs !== undefined) {
+    const boundaryDate = tryParseDate(options.untilTs);
+    if (!boundaryDate) {
+      throw new Error('--until-ts must be a valid ISO-like timestamp');
+    }
+
+    const boundedEvents: unknown[] = [];
+    let boundaryReached = false;
+    for (const event of events) {
+      if (boundaryReached) {
+        continue;
+      }
+
+      const timestamp = extractTimestamp(event);
+      const eventDate = timestamp ? tryParseDate(timestamp) : null;
+      if (eventDate && eventDate.valueOf() > boundaryDate.valueOf()) {
+        boundaryReached = true;
+        continue;
+      }
+
+      boundedEvents.push(event);
+    }
+
+    return {
+      events: boundedEvents,
+      parseErrors,
+      phaseBoundary: {
+        mode: 'until_ts',
+        until_line: null,
+        until_ts: boundaryDate.toISOString(),
+        reason: 'Operator supplied --until-ts to exclude later events from the analyzed phase.',
+        excluded_events_count: events.length - boundedEvents.length,
+      },
+    };
+  }
+
+  return {
+    events,
+    parseErrors,
+    phaseBoundary: createFullTraceBoundary(),
+  };
+}
+
+export function summarizeSession(
+  filePath?: string,
+  options: SessionBoundaryOptions = {},
+): SessionSummary {
   if (!filePath || !fs.existsSync(filePath)) {
     return {
       filePath,
       sessionId: null,
       projectRoot: null,
       exists: false,
+      phaseBoundary: createFullTraceBoundary(),
       eventCount: 0,
       parseErrors: [],
       firstTimestamp: null,
@@ -30,7 +129,16 @@ export function summarizeSession(filePath?: string): SessionSummary {
     };
   }
 
-  const { events, errors } = parseJsonl(filePath);
+  if (options.untilLine !== undefined && options.untilTs !== undefined) {
+    throw new Error('Use either --until-line or --until-ts, not both');
+  }
+
+  const { events: parsedEvents, eventLines, errors, sourceLineCount } = parseJsonl(filePath);
+  const {
+    events,
+    parseErrors,
+    phaseBoundary,
+  } = applyBoundary(parsedEvents, eventLines, errors, sourceLineCount, options);
   const toolCounts = new Map<string, number>();
   let sessionId: string | null = null;
   let projectRoot: string | null = null;
@@ -96,8 +204,9 @@ export function summarizeSession(filePath?: string): SessionSummary {
     sessionId,
     projectRoot,
     exists: true,
+    phaseBoundary,
     eventCount: events.length,
-    parseErrors: errors,
+    parseErrors,
     firstTimestamp,
     lastTimestamp,
     durationMinutes:

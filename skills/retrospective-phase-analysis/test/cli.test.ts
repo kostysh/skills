@@ -151,7 +151,10 @@ void test('global help and command help are available on the built CLI', () => {
   assert.match(scanHelp.stdout, /^ {2}node scripts\/retro-cli\.mjs scan --session <file>$/mu);
   assert.match(scanHelp.stdout, /scan --session <file> --out-root <dir> --pretty/u);
   assert.match(scanHelp.stdout, /scan --session <file> --run-dir <dir> --language ru/u);
+  assert.match(scanHelp.stdout, /scan --session <file> --until-ts <iso>/u);
   assert.match(scanHelp.stdout, /scan --session <file> --out <file> --pretty/u);
+  assert.match(scanHelp.stdout, /--until-line <n>/u);
+  assert.match(scanHelp.stdout, /--stage-log <path>/u);
   assert.doesNotMatch(
     scanHelp.stdout,
     /scan --logs-dir <dir> --artifacts-dir <dir> --out <file> --pretty/u,
@@ -266,6 +269,63 @@ void test('scan returns a usage error when --session is omitted', async () => {
 
     assert.equal(result.status, 1);
     assert.match(result.stderr, /scan requires --session/u);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('scan returns usage errors for invalid phase boundary and manual override inputs', async () => {
+  const tempDir = await createTempDir();
+  const outputPath = path.join(tempDir, 'scan-summary.json');
+
+  try {
+    const invalidLine = runBuiltCli([
+      'scan',
+      '--session',
+      fixturePath('sessions', 'phase-session.jsonl'),
+      '--until-line',
+      '0',
+      '--out',
+      outputPath,
+    ]);
+    assert.equal(invalidLine.status, 1);
+    assert.match(invalidLine.stderr, /--until-line must be a positive integer/u);
+
+    const lineBeyondTrace = runBuiltCli([
+      'scan',
+      '--session',
+      fixturePath('sessions', 'phase-session.jsonl'),
+      '--until-line',
+      '1000',
+      '--out',
+      outputPath,
+    ]);
+    assert.equal(lineBeyondTrace.status, 1);
+    assert.match(lineBeyondTrace.stderr, /exceeds the session trace length/u);
+
+    const invalidTimestamp = runBuiltCli([
+      'scan',
+      '--session',
+      fixturePath('sessions', 'phase-session.jsonl'),
+      '--until-ts',
+      'not-a-timestamp',
+      '--out',
+      outputPath,
+    ]);
+    assert.equal(invalidTimestamp.status, 1);
+    assert.match(invalidTimestamp.stderr, /--until-ts must be a valid ISO-like timestamp/u);
+
+    const missingManualEvidence = runBuiltCli([
+      'scan',
+      '--session',
+      fixturePath('sessions', 'phase-session.jsonl'),
+      '--stage-log',
+      fixturePath('artifacts', '.dossier', 'logs', 'implementation.md'),
+      '--out',
+      outputPath,
+    ]);
+    assert.equal(missingManualEvidence.status, 1);
+    assert.match(missingManualEvidence.stderr, /Manual artifact overrides require/u);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }

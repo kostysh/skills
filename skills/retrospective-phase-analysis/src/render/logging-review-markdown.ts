@@ -1,5 +1,11 @@
 import type { ScanSummary } from '../core/types.ts';
 
+function statusLine(scan: ScanSummary): string {
+  return scan.reportStatus.status === 'draft_requires_agent_validation'
+    ? 'Status: draft, requires agent validation'
+    : 'Status: ready for agent finalization';
+}
+
 export function buildLoggingReviewMarkdown(scan: ScanSummary): string {
   const missingReviewArtifacts = scan.stageLogs.files.filter(
     (entry) => !entry.metadata.review_artifact,
@@ -19,6 +25,8 @@ export function buildLoggingReviewMarkdown(scan: ScanSummary): string {
 
   if (scan.report_language.toLowerCase().startsWith('ru')) {
     return `# Черновик анализа качества логирования
+
+${statusLine(scan)}
 
 ## Резюме
 
@@ -81,6 +89,8 @@ export function buildLoggingReviewMarkdown(scan: ScanSummary): string {
   }
 
   return `# Logging review draft
+
+${statusLine(scan)}
 
 ## Summary
 

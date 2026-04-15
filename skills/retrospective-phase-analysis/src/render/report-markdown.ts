@@ -6,6 +6,18 @@ export interface ReportRenderOptions {
   title?: string;
 }
 
+function statusLine(scan: ScanSummary): string {
+  return scan.reportStatus.status === 'draft_requires_agent_validation'
+    ? 'Status: draft, requires agent validation'
+    : 'Status: ready for agent finalization';
+}
+
+function statusReasons(scan: ScanSummary): string {
+  return scan.reportStatus.reasons.length > 0
+    ? formatList(scan.reportStatus.reasons)
+    : '- Evidence quality passed automated scaffold checks.';
+}
+
 export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOptions): string {
   if (scan.report_language.toLowerCase().startsWith('ru')) {
     return buildRussianReportMarkdown(scan, options);
@@ -38,6 +50,8 @@ export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOpti
 
   return `# ${title}
 
+${statusLine(scan)}
+
 ## Executive summary
 
 - Phase: ${options.phase ?? 'unspecified'}
@@ -47,6 +61,7 @@ export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOpti
 - Candidate incidents: ${scan.candidateIncidents.length}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
 - Scope confidence: ${scan.scope.scope_confidence}
+- Report scaffold status: ${scan.reportStatus.status}
 - Data-quality note: ${
     scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent
       ? 'Both session trace and stage logs were available.'
@@ -119,6 +134,10 @@ ${formatList(
 
 ${scopeAmbiguities}
 
+## Report status reasons
+
+${statusReasons(scan)}
+
 ## Recommended next manual checks
 
 - Confirm each inferred incident against the actual stage log and trace excerpts.
@@ -166,6 +185,8 @@ function buildRussianReportMarkdown(scan: ScanSummary, options: ReportRenderOpti
 
   return `# ${title}
 
+${statusLine(scan)}
+
 ## Краткое резюме
 
 - Этап: ${options.phase ?? 'не указан'}
@@ -175,6 +196,7 @@ function buildRussianReportMarkdown(scan: ScanSummary, options: ReportRenderOpti
 - Кандидатных инцидентов: ${scan.candidateIncidents.length}
 - Уникальных tools: ${Object.keys(scan.session.tools).length}
 - Уверенность scope: ${scan.scope.scope_confidence}
+- Статус scaffold отчета: ${scan.reportStatus.status}
 - Примечание по качеству данных: ${
     scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent
       ? 'Trace сессии и stage logs доступны.'
@@ -246,6 +268,10 @@ ${formatList(
 ## Неоднозначности scope
 
 ${scopeAmbiguities}
+
+## Причины статуса отчета
+
+${statusReasons(scan)}
 
 ## Рекомендуемые ручные проверки
 

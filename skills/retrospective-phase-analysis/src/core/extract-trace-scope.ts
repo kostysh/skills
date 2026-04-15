@@ -2,11 +2,20 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { sortUnique } from './shared.ts';
-import type { ScopeConfidence, SessionSummary } from './types.ts';
+import type {
+  ArtifactCandidate,
+  ArtifactEvidenceKind,
+  ScopeConfidence,
+  SessionSummary,
+} from './types.ts';
 
 interface TraceScopeInputs {
   sessionSummary: SessionSummary;
   projectRoot: string | null;
+  manualStageLogs?: string[];
+  manualReviewArtifacts?: string[];
+  manualVerificationArtifacts?: string[];
+  artifactEvidence?: string;
 }
 
 interface TraceScopeSummary {
@@ -18,6 +27,9 @@ interface TraceScopeSummary {
   candidate_stage_logs: string[];
   candidate_review_artifacts: string[];
   candidate_verification_artifacts: string[];
+  stage_log_candidates: ArtifactCandidate[];
+  review_artifact_candidates: ArtifactCandidate[];
+  verification_artifact_candidates: ArtifactCandidate[];
   scope_confidence: ScopeConfidence;
   scope_ambiguities: string[];
 }
@@ -192,6 +204,38 @@ function isStageLogArtifact(value: string, projectRoot: string | null): boolean 
   return (
     relative.startsWith('.dossier/logs/') ||
     relative.startsWith(`.dossier${path.sep}logs${path.sep}`)
+  );
+}
+
+function isReviewArtifact(value: string, projectRoot: string | null): boolean {
+  if (!projectRoot) {
+    return false;
+  }
+
+  const relative = path.relative(projectRoot, value);
+  if (relative.startsWith('..')) {
+    return false;
+  }
+
+  return (
+    relative.startsWith('.dossier/reviews/') ||
+    relative.startsWith(`.dossier${path.sep}reviews${path.sep}`)
+  );
+}
+
+function isVerificationArtifact(value: string, projectRoot: string | null): boolean {
+  if (!projectRoot) {
+    return false;
+  }
+
+  const relative = path.relative(projectRoot, value);
+  if (relative.startsWith('..')) {
+    return false;
+  }
+
+  return (
+    relative.startsWith('.dossier/verification/') ||
+    relative.startsWith(`.dossier${path.sep}verification${path.sep}`)
   );
 }
 
@@ -391,15 +435,15 @@ function isToolResultEvent(record: Record<string, unknown>): boolean {
   return typeof eventType === 'string' && /tool_result/u.test(eventType);
 }
 
-function eventRequestsStageLogWrite(
+function classifyArtifactWriteEvidence(
   record: Record<string, unknown>,
-  stageLogPaths: readonly string[],
+  artifactPath: string,
   projectRoot: string | null,
-): boolean {
+): ArtifactEvidenceKind | null {
   const toolName = extractEventToolName(record)?.toLowerCase() ?? '';
   if (toolName.includes('apply_patch')) {
     const patchBlob = [record.patch, record.diff, record.command]
-      .filter((value): value is string => typeof value === 'string')
+      .flatMap((value) => collectNestedStrings(value))
       .join('\n');
     const patchTargets = sortUnique(
       patchBlob.split(/\r?\n/u).flatMap((line) => {
@@ -414,14 +458,14 @@ function eventRequestsStageLogWrite(
         return [normalized];
       }),
     );
-    return stageLogPaths.some((filePath) => patchTargets.includes(filePath));
+    return patchTargets.includes(artifactPath) ? 'trace_patch_target' : null;
   }
 
   const commandBlob = [record.command, record.body, record.patch, record.diff]
     .flatMap((value) => collectNestedStrings(value))
     .join('\n');
 
-  return stageLogPaths.some((filePath) => {
+  const shellWritesArtifact = [artifactPath].some((filePath) => {
     const relativePath =
       projectRoot && isProjectScopedPath(filePath, projectRoot)
         ? path.relative(projectRoot, filePath)
@@ -441,6 +485,17 @@ function eventRequestsStageLogWrite(
       return destinationPatterns.some((pattern) => pattern.test(commandBlob));
     });
   });
+
+  if (shellWritesArtifact) {
+    return 'trace_shell_write';
+  }
+
+  const eventType = extractEventType(record)?.toLowerCase() ?? '';
+  if (/\b(?:write|patch|edit|update)\b/u.test(eventType)) {
+    return 'trace_write';
+  }
+
+  return null;
 }
 
 function isSuccessfulToolResult(record: Record<string, unknown>): boolean {
@@ -498,11 +553,77 @@ function hasConfirmedToolResult(
   return false;
 }
 
-function extractChangedStageLogPaths(
+function eventRef(index: number): string {
+  return `event:${index + 1}`;
+}
+
+function mergeCandidates(candidates: ArtifactCandidate[]): ArtifactCandidate[] {
+  const byPath = new Map<string, ArtifactCandidate>();
+
+  function priority(candidate: ArtifactCandidate): number {
+    if (candidate.inclusion_source === 'manual_included') {
+      return 4;
+    }
+    if (candidate.included) {
+      return 3;
+    }
+    if (candidate.evidence_kind === 'tool_output_path') {
+      return 2;
+    }
+    return 1;
+  }
+
+  for (const candidate of candidates) {
+    const existing = byPath.get(candidate.path);
+    if (!existing) {
+      byPath.set(candidate.path, candidate);
+      continue;
+    }
+
+    if (priority(candidate) > priority(existing)) {
+      byPath.set(candidate.path, candidate);
+    }
+  }
+
+  return Array.from(byPath.values()).sort((left, right) => left.path.localeCompare(right.path));
+}
+
+function extractReferencedArtifactsByEvent(
   events: readonly unknown[],
   projectRoot: string | null,
-): string[] {
-  const out: string[] = [];
+): Array<{ path: string; event_ref: string; evidence_kind: ArtifactEvidenceKind }> {
+  const out: Array<{ path: string; event_ref: string; evidence_kind: ArtifactEvidenceKind }> = [];
+
+  for (const [index, event] of events.entries()) {
+    const eventTexts = collectEventTextsByKeys(event, PATH_TEXT_KEYS).flatMap((value) =>
+      extractPathAnchorTexts(value),
+    );
+    const paths = extractTouchedPaths(eventTexts, projectRoot).filter((filePath) =>
+      isReferencedArtifact(filePath, projectRoot),
+    );
+    for (const filePath of paths) {
+      out.push({
+        path: filePath,
+        event_ref: eventRef(index),
+        evidence_kind:
+          event &&
+          typeof event === 'object' &&
+          isToolResultEvent(event as Record<string, unknown>) &&
+          isSuccessfulToolResult(event as Record<string, unknown>)
+            ? 'tool_output_path'
+            : 'referenced_only',
+      });
+    }
+  }
+
+  return out;
+}
+
+function extractAutoIncludedArtifactCandidates(
+  events: readonly unknown[],
+  projectRoot: string | null,
+): ArtifactCandidate[] {
+  const out: ArtifactCandidate[] = [];
 
   for (const [index, event] of events.entries()) {
     const record = unwrapToolExecutionRecord(event);
@@ -514,13 +635,10 @@ function extractChangedStageLogPaths(
     }
 
     const eventTexts = collectEventTextsByKeys(event, PATH_TEXT_KEYS);
-    const eventStageLogPaths = extractTouchedPaths(eventTexts, projectRoot).filter((filePath) =>
-      isStageLogArtifact(filePath, projectRoot),
+    const eventArtifactPaths = extractTouchedPaths(eventTexts, projectRoot).filter((filePath) =>
+      isReferencedArtifact(filePath, projectRoot),
     );
-    if (eventStageLogPaths.length === 0) {
-      continue;
-    }
-    if (!eventRequestsStageLogWrite(record, eventStageLogPaths, projectRoot)) {
+    if (eventArtifactPaths.length === 0) {
       continue;
     }
     const inlineSuccessfulExecution =
@@ -532,10 +650,74 @@ function extractChangedStageLogPaths(
       continue;
     }
 
-    out.push(...eventStageLogPaths);
+    for (const filePath of eventArtifactPaths) {
+      const evidenceKind = classifyArtifactWriteEvidence(record, filePath, projectRoot);
+      if (!evidenceKind) {
+        continue;
+      }
+
+      out.push({
+        path: filePath,
+        evidence_kind: evidenceKind,
+        event_ref: eventRef(index),
+        included: true,
+        inclusion_source: 'auto_included',
+        reason: `Trace-confirmed ${evidenceKind} evidence in ${eventRef(index)}.`,
+      });
+    }
   }
 
-  return sortUnique(out);
+  return mergeCandidates(out);
+}
+
+function normalizeManualOverridePath(value: string, projectRoot: string | null): string {
+  const normalized = normalizePathCandidate(value, projectRoot);
+  if (normalized) {
+    return normalized;
+  }
+
+  return path.resolve(value);
+}
+
+function manualCandidates(
+  values: readonly string[] | undefined,
+  projectRoot: string | null,
+  artifactEvidence: string | undefined,
+): ArtifactCandidate[] {
+  return (values ?? []).map((value) => ({
+    path: normalizeManualOverridePath(value, projectRoot),
+    evidence_kind: 'manual_override',
+    event_ref: null,
+    included: true,
+    inclusion_source: 'manual_included',
+    reason: `Manual override supplied by the operator: ${artifactEvidence ?? 'no evidence'}`,
+  }));
+}
+
+function referencedOnlyCandidates(
+  references: readonly { path: string; event_ref: string; evidence_kind: ArtifactEvidenceKind }[],
+  included: readonly ArtifactCandidate[],
+): ArtifactCandidate[] {
+  const includedPaths = new Set(included.map((candidate) => candidate.path));
+
+  return references
+    .filter((reference) => !includedPaths.has(reference.path))
+    .map((reference) => ({
+      path: reference.path,
+      evidence_kind: reference.evidence_kind,
+      event_ref: reference.event_ref,
+      included: false,
+      inclusion_source: 'not_included' as const,
+      reason: 'Referenced in the trace, but not confirmed as created or changed in scope.',
+    }));
+}
+
+function includedPaths(candidates: readonly ArtifactCandidate[]): string[] {
+  return sortUnique(
+    candidates
+      .filter((candidate) => candidate.included)
+      .map((candidate) => candidate.path),
+  );
 }
 
 function scoreScopeConfidence(
@@ -562,6 +744,10 @@ function scoreScopeConfidence(
 export function extractTraceScope({
   sessionSummary,
   projectRoot,
+  manualStageLogs,
+  manualReviewArtifacts,
+  manualVerificationArtifacts,
+  artifactEvidence,
 }: TraceScopeInputs): TraceScopeSummary {
   const idTexts = sessionSummary.events
     .flatMap((event) => collectEventTextsByKeys(event, ID_TEXT_KEYS))
@@ -570,7 +756,6 @@ export function extractTraceScope({
     .flatMap((event) => collectEventTextsByKeys(event, PATH_TEXT_KEYS))
     .flatMap((value) => extractPathAnchorTexts(value));
   const touchedPaths = extractTouchedPaths(pathTexts, projectRoot);
-  const touchedStageLogs = extractChangedStageLogPaths(sessionSummary.events, projectRoot);
   const mentionedBacklogItems = extractCanonicalBacklogItems(idTexts);
   const mentionedFeatures = sortUnique([
     ...extractCanonicalFeatureIds(idTexts),
@@ -580,17 +765,58 @@ export function extractTraceScope({
     touchedPaths.filter((filePath) => isReferencedArtifact(filePath, projectRoot)),
   );
 
-  const candidateReviewArtifacts = sortUnique(
-    referencedArtifacts.filter((filePath) =>
-      filePath.includes(`${path.sep}.dossier${path.sep}reviews${path.sep}`),
-    ),
+  const referencedByEvent = extractReferencedArtifactsByEvent(sessionSummary.events, projectRoot);
+  const autoIncludedCandidates = extractAutoIncludedArtifactCandidates(
+    sessionSummary.events,
+    projectRoot,
   );
-  const candidateVerificationArtifacts = sortUnique(
-    referencedArtifacts.filter((filePath) =>
-      filePath.includes(`${path.sep}.dossier${path.sep}verification${path.sep}`),
-    ),
+  const manualStageLogCandidates = manualCandidates(
+    manualStageLogs,
+    projectRoot,
+    artifactEvidence,
   );
-  const candidateStageLogs = touchedStageLogs;
+  const manualReviewCandidates = manualCandidates(
+    manualReviewArtifacts,
+    projectRoot,
+    artifactEvidence,
+  );
+  const manualVerificationCandidates = manualCandidates(
+    manualVerificationArtifacts,
+    projectRoot,
+    artifactEvidence,
+  );
+
+  const stageLogCandidates = mergeCandidates([
+    ...autoIncludedCandidates.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
+    ...referencedOnlyCandidates(
+      referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
+      autoIncludedCandidates,
+    ),
+    ...manualStageLogCandidates,
+  ]);
+  const reviewArtifactCandidates = mergeCandidates([
+    ...autoIncludedCandidates.filter((candidate) => isReviewArtifact(candidate.path, projectRoot)),
+    ...referencedOnlyCandidates(
+      referencedByEvent.filter((candidate) => isReviewArtifact(candidate.path, projectRoot)),
+      autoIncludedCandidates,
+    ),
+    ...manualReviewCandidates,
+  ]);
+  const verificationArtifactCandidates = mergeCandidates([
+    ...autoIncludedCandidates.filter((candidate) =>
+      isVerificationArtifact(candidate.path, projectRoot),
+    ),
+    ...referencedOnlyCandidates(
+      referencedByEvent.filter((candidate) =>
+        isVerificationArtifact(candidate.path, projectRoot),
+      ),
+      autoIncludedCandidates,
+    ),
+    ...manualVerificationCandidates,
+  ]);
+  const candidateStageLogs = includedPaths(stageLogCandidates);
+  const candidateReviewArtifacts = includedPaths(reviewArtifactCandidates);
+  const candidateVerificationArtifacts = includedPaths(verificationArtifactCandidates);
 
   const scopeAmbiguities: string[] = [];
   if (
@@ -620,12 +846,23 @@ export function extractTraceScope({
   }
   if (mentionedFeatures.length > 0 && candidateReviewArtifacts.length === 0) {
     scopeAmbiguities.push(
-      `The trace did not directly reference any review artifacts for extracted feature ids ${mentionedFeatures.join(', ')}.`,
+      `The trace did not directly confirm any review artifacts for extracted feature ids ${mentionedFeatures.join(', ')}.`,
     );
   }
   if (mentionedFeatures.length > 0 && candidateVerificationArtifacts.length === 0) {
     scopeAmbiguities.push(
-      `The trace did not directly reference any verification artifacts for extracted feature ids ${mentionedFeatures.join(', ')}.`,
+      `The trace did not directly confirm any verification artifacts for extracted feature ids ${mentionedFeatures.join(', ')}.`,
+    );
+  }
+  if (manualStageLogCandidates.length > 0) {
+    scopeAmbiguities.push('Manual stage-log overrides were included; validate their scope.');
+  }
+  if (manualReviewCandidates.length > 0) {
+    scopeAmbiguities.push('Manual review-artifact overrides were included; validate their scope.');
+  }
+  if (manualVerificationCandidates.length > 0) {
+    scopeAmbiguities.push(
+      'Manual verification-artifact overrides were included; validate their scope.',
     );
   }
 
@@ -638,6 +875,9 @@ export function extractTraceScope({
     candidate_stage_logs: candidateStageLogs,
     candidate_review_artifacts: candidateReviewArtifacts,
     candidate_verification_artifacts: candidateVerificationArtifacts,
+    stage_log_candidates: stageLogCandidates,
+    review_artifact_candidates: reviewArtifactCandidates,
+    verification_artifact_candidates: verificationArtifactCandidates,
     scope_confidence: scoreScopeConfidence(
       sessionSummary.exists,
       mentionedBacklogItems,

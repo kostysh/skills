@@ -45,6 +45,9 @@ void test('SKILL.md keeps explicit selection, interop, and runtime-reference sec
     'The first `scan` that writes a bundle establishes the canonical run directory.',
     'pass `--language <language>` to the first `scan`',
     'follow-up commands with `--run-dir` inherit the report language from `scan-summary.json`',
+    'Use `--until-line <n>` or `--until-ts <iso>`',
+    'Every manual override requires `--artifact-evidence <text>`',
+    'Generated Markdown is a scaffold, not the final retrospective.',
   ]);
 });
 
@@ -62,6 +65,11 @@ void test('CLI reference documents global help, version, and the four command su
     'run_dir',
     'operator_language',
     'report_language',
+    'phase_boundary',
+    'stage_log_candidates',
+    'reportStatus',
+    '--until-ts <iso>',
+    '--artifact-evidence <text>',
     'The first `scan` that writes a bundle establishes the canonical run directory.',
     'scan',
     'report',

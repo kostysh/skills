@@ -1,6 +1,12 @@
 import { stringFromUnknown } from '../core/shared.ts';
 import type { ScanSummary, SkillSummary } from '../core/types.ts';
 
+function statusLine(scan: ScanSummary): string {
+  return scan.reportStatus.status === 'draft_requires_agent_validation'
+    ? 'Status: draft, requires agent validation'
+    : 'Status: ready for agent finalization';
+}
+
 export function buildSkillAuditMarkdown(scan: ScanSummary): string {
   const skills: SkillSummary[] =
     scan.skills.length > 0
@@ -47,6 +53,8 @@ export function buildSkillAuditMarkdown(scan: ScanSummary): string {
     .join('\n');
 
   return `# Skill audit draft
+
+${statusLine(scan)}
 
 ## Summary
 
@@ -107,6 +115,8 @@ function buildRussianSkillAuditMarkdown(scan: ScanSummary, skills: SkillSummary[
     .join('\n');
 
   return `# Черновик аудита инструкций агентов
+
+${statusLine(scan)}
 
 ## Резюме
 

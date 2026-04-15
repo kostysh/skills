@@ -10,7 +10,13 @@
     "outRoot": null,
     "runDir": null,
     "language": null,
-    "draft": false
+    "draft": false,
+    "untilLine": null,
+    "untilTs": null,
+    "stageLogs": [],
+    "reviewArtifacts": [],
+    "verificationArtifacts": [],
+    "artifactEvidence": null
   },
   "resolved": {
     "session": "/abs/fixtures/sessions/phase-session.jsonl",
@@ -23,6 +29,13 @@
     "logsPresent": true,
     "skillCatalogPresent": true,
     "sessionParseErrors": 0
+  },
+  "phase_boundary": {
+    "mode": "full_trace",
+    "until_line": null,
+    "until_ts": null,
+    "reason": "No explicit phase boundary was provided; the full trace was analyzed.",
+    "excluded_events_count": 0
   },
   "session": {
     "filePath": "/abs/fixtures/sessions/phase-session.jsonl",
@@ -82,15 +95,41 @@
       "/abs/fixtures/artifacts/docs/features/F-0016-retro.md"
     ],
     "candidate_stage_logs": [],
-    "candidate_review_artifacts": [
-      "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md"
+    "candidate_review_artifacts": [],
+    "candidate_verification_artifacts": [],
+    "stage_log_candidates": [],
+    "review_artifact_candidates": [
+      {
+        "path": "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md",
+        "evidence_kind": "referenced_only",
+        "event_ref": "event:4",
+        "included": false,
+        "inclusion_source": "not_included",
+        "reason": "Referenced in the trace, but not confirmed as created or changed in scope."
+      }
     ],
-    "candidate_verification_artifacts": [
-      "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md"
+    "verification_artifact_candidates": [
+      {
+        "path": "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md",
+        "evidence_kind": "referenced_only",
+        "event_ref": "event:4",
+        "included": false,
+        "inclusion_source": "not_included",
+        "reason": "Referenced in the trace, but not confirmed as created or changed in scope."
+      }
     ],
     "scope_confidence": "medium",
     "scope_ambiguities": [
-      "The session trace did not confirm any stage-log path created or changed in this session."
+      "The session trace did not confirm any stage-log path created or changed in this session.",
+      "The trace did not directly confirm any review artifacts for extracted feature ids F-0016.",
+      "The trace did not directly confirm any verification artifacts for extracted feature ids F-0016."
+    ]
+  },
+  "reportStatus": {
+    "status": "draft_requires_agent_validation",
+    "reasons": [
+      "Trace indicates dossier activity, but no stage logs were analyzed.",
+      "Unresolved scope ambiguities remain."
     ]
   },
   "skills": [

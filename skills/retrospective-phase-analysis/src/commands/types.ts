@@ -7,6 +7,7 @@ export interface OptionSpec {
   name: string;
   type: 'string' | 'boolean';
   aliases?: string[];
+  repeatable?: boolean;
   valueLabel?: string;
   description: string;
   required?: boolean;
@@ -38,6 +39,12 @@ export interface CommonCommandInput {
 export interface ScanCommandInput extends CommonCommandInput {
   out?: string;
   pretty: boolean;
+  untilLine?: number;
+  untilTs?: string;
+  stageLogs?: string[];
+  reviewArtifacts?: string[];
+  verificationArtifacts?: string[];
+  artifactEvidence?: string;
 }
 
 export interface ReportCommandInput extends CommonCommandInput {

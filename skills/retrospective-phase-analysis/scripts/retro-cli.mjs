@@ -438,6 +438,18 @@ function isStageLogArtifact(value, projectRoot) {
 	if (relative.startsWith("..")) return false;
 	return relative.startsWith(".dossier/logs/") || relative.startsWith(`.dossier${path.sep}logs${path.sep}`);
 }
+function isReviewArtifact(value, projectRoot) {
+	if (!projectRoot) return false;
+	const relative = path.relative(projectRoot, value);
+	if (relative.startsWith("..")) return false;
+	return relative.startsWith(".dossier/reviews/") || relative.startsWith(`.dossier${path.sep}reviews${path.sep}`);
+}
+function isVerificationArtifact(value, projectRoot) {
+	if (!projectRoot) return false;
+	const relative = path.relative(projectRoot, value);
+	if (relative.startsWith("..")) return false;
+	return relative.startsWith(".dossier/verification/") || relative.startsWith(`.dossier${path.sep}verification${path.sep}`);
+}
 function collectNestedStrings(input, depth = 0) {
 	if (depth > 8 || input === null || input === void 0) return [];
 	if (typeof input === "string") return [input];
@@ -537,28 +549,25 @@ function isToolResultEvent(record) {
 	const eventType = extractEventType(record);
 	return typeof eventType === "string" && /tool_result/u.test(eventType);
 }
-function eventRequestsStageLogWrite(record, stageLogPaths, projectRoot) {
-	if ((extractEventToolName(record)?.toLowerCase() ?? "").includes("apply_patch")) {
-		const patchTargets = sortUnique([
-			record.patch,
-			record.diff,
-			record.command
-		].filter((value) => typeof value === "string").join("\n").split(/\r?\n/u).flatMap((line) => {
-			const match = line.match(/^\*\*\* (?:Update File|Add File|Move to): (.+)$/u);
-			if (!match?.[1]) return [];
-			const normalized = normalizePathCandidate(match[1], projectRoot);
-			if (!normalized || !isProjectScopedPath(normalized, projectRoot)) return [];
-			return [normalized];
-		}));
-		return stageLogPaths.some((filePath) => patchTargets.includes(filePath));
-	}
+function classifyArtifactWriteEvidence(record, artifactPath, projectRoot) {
+	if ((extractEventToolName(record)?.toLowerCase() ?? "").includes("apply_patch")) return sortUnique([
+		record.patch,
+		record.diff,
+		record.command
+	].flatMap((value) => collectNestedStrings(value)).join("\n").split(/\r?\n/u).flatMap((line) => {
+		const match = line.match(/^\*\*\* (?:Update File|Add File|Move to): (.+)$/u);
+		if (!match?.[1]) return [];
+		const normalized = normalizePathCandidate(match[1], projectRoot);
+		if (!normalized || !isProjectScopedPath(normalized, projectRoot)) return [];
+		return [normalized];
+	})).includes(artifactPath) ? "trace_patch_target" : null;
 	const commandBlob = [
 		record.command,
 		record.body,
 		record.patch,
 		record.diff
 	].flatMap((value) => collectNestedStrings(value)).join("\n");
-	return stageLogPaths.some((filePath) => {
+	if ([artifactPath].some((filePath) => {
 		return [filePath, projectRoot && isProjectScopedPath(filePath, projectRoot) ? path.relative(projectRoot, filePath) : null].filter((value) => value !== null).some((candidate) => {
 			const escaped = escapeForRegex(candidate);
 			return [
@@ -570,7 +579,10 @@ function eventRequestsStageLogWrite(record, stageLogPaths, projectRoot) {
 				new RegExp(`\\b(?:cp|mv)\\b(?:\\s+[^\\s]+)+\\s+['"]?${escaped}['"]?(?:\\s|$)`, "iu")
 			].some((pattern) => pattern.test(commandBlob));
 		});
-	});
+	})) return "trace_shell_write";
+	const eventType = extractEventType(record)?.toLowerCase() ?? "";
+	if (/\b(?:write|patch|edit|update)\b/u.test(eventType)) return "trace_write";
+	return null;
 }
 function isSuccessfulToolResult(record) {
 	if (record.aborted === true) return false;
@@ -593,42 +605,136 @@ function hasConfirmedToolResult(events, startIndex, expectedToolName) {
 	}
 	return false;
 }
-function extractChangedStageLogPaths(events, projectRoot) {
+function eventRef(index) {
+	return `event:${index + 1}`;
+}
+function mergeCandidates(candidates) {
+	const byPath = /* @__PURE__ */ new Map();
+	function priority(candidate) {
+		if (candidate.inclusion_source === "manual_included") return 4;
+		if (candidate.included) return 3;
+		if (candidate.evidence_kind === "tool_output_path") return 2;
+		return 1;
+	}
+	for (const candidate of candidates) {
+		const existing = byPath.get(candidate.path);
+		if (!existing) {
+			byPath.set(candidate.path, candidate);
+			continue;
+		}
+		if (priority(candidate) > priority(existing)) byPath.set(candidate.path, candidate);
+	}
+	return Array.from(byPath.values()).sort((left, right) => left.path.localeCompare(right.path));
+}
+function extractReferencedArtifactsByEvent(events, projectRoot) {
+	const out = [];
+	for (const [index, event] of events.entries()) {
+		const paths = extractTouchedPaths(collectEventTextsByKeys(event, PATH_TEXT_KEYS).flatMap((value) => extractPathAnchorTexts(value)), projectRoot).filter((filePath) => isReferencedArtifact(filePath, projectRoot));
+		for (const filePath of paths) out.push({
+			path: filePath,
+			event_ref: eventRef(index),
+			evidence_kind: event && typeof event === "object" && isToolResultEvent(event) && isSuccessfulToolResult(event) ? "tool_output_path" : "referenced_only"
+		});
+	}
+	return out;
+}
+function extractAutoIncludedArtifactCandidates(events, projectRoot) {
 	const out = [];
 	for (const [index, event] of events.entries()) {
 		const record = unwrapToolExecutionRecord(event);
 		if (!record) continue;
 		if (!isToolCallEvent(record)) continue;
-		const eventStageLogPaths = extractTouchedPaths(collectEventTextsByKeys(event, PATH_TEXT_KEYS), projectRoot).filter((filePath) => isStageLogArtifact(filePath, projectRoot));
-		if (eventStageLogPaths.length === 0) continue;
-		if (!eventRequestsStageLogWrite(record, eventStageLogPaths, projectRoot)) continue;
+		const eventArtifactPaths = extractTouchedPaths(collectEventTextsByKeys(event, PATH_TEXT_KEYS), projectRoot).filter((filePath) => isReferencedArtifact(filePath, projectRoot));
+		if (eventArtifactPaths.length === 0) continue;
 		if (!(extractEventType(record) === "exec_command_end" && isSuccessfulToolResult(record)) && !hasConfirmedToolResult(events, index, extractEventToolName(record)?.toLowerCase() ?? null)) continue;
-		out.push(...eventStageLogPaths);
+		for (const filePath of eventArtifactPaths) {
+			const evidenceKind = classifyArtifactWriteEvidence(record, filePath, projectRoot);
+			if (!evidenceKind) continue;
+			out.push({
+				path: filePath,
+				evidence_kind: evidenceKind,
+				event_ref: eventRef(index),
+				included: true,
+				inclusion_source: "auto_included",
+				reason: `Trace-confirmed ${evidenceKind} evidence in ${eventRef(index)}.`
+			});
+		}
 	}
-	return sortUnique(out);
+	return mergeCandidates(out);
+}
+function normalizeManualOverridePath(value, projectRoot) {
+	const normalized = normalizePathCandidate(value, projectRoot);
+	if (normalized) return normalized;
+	return path.resolve(value);
+}
+function manualCandidates(values, projectRoot, artifactEvidence) {
+	return (values ?? []).map((value) => ({
+		path: normalizeManualOverridePath(value, projectRoot),
+		evidence_kind: "manual_override",
+		event_ref: null,
+		included: true,
+		inclusion_source: "manual_included",
+		reason: `Manual override supplied by the operator: ${artifactEvidence ?? "no evidence"}`
+	}));
+}
+function referencedOnlyCandidates(references, included) {
+	const includedPaths = new Set(included.map((candidate) => candidate.path));
+	return references.filter((reference) => !includedPaths.has(reference.path)).map((reference) => ({
+		path: reference.path,
+		evidence_kind: reference.evidence_kind,
+		event_ref: reference.event_ref,
+		included: false,
+		inclusion_source: "not_included",
+		reason: "Referenced in the trace, but not confirmed as created or changed in scope."
+	}));
+}
+function includedPaths(candidates) {
+	return sortUnique(candidates.filter((candidate) => candidate.included).map((candidate) => candidate.path));
 }
 function scoreScopeConfidence(sessionPresent, backlogItems, featureIds, touchedPaths, referencedArtifacts, ambiguities) {
 	if (!sessionPresent) return "low";
 	if (backlogItems.length + featureIds.length + touchedPaths.length + referencedArtifacts.length === 0) return "low";
 	return ambiguities.length > 0 ? "medium" : "high";
 }
-function extractTraceScope({ sessionSummary, projectRoot }) {
+function extractTraceScope({ sessionSummary, projectRoot, manualStageLogs, manualReviewArtifacts, manualVerificationArtifacts, artifactEvidence }) {
 	const idTexts = sessionSummary.events.flatMap((event) => collectEventTextsByKeys(event, ID_TEXT_KEYS)).filter(isHighSignalAnchorText);
 	const touchedPaths = extractTouchedPaths(sessionSummary.events.flatMap((event) => collectEventTextsByKeys(event, PATH_TEXT_KEYS)).flatMap((value) => extractPathAnchorTexts(value)), projectRoot);
-	const touchedStageLogs = extractChangedStageLogPaths(sessionSummary.events, projectRoot);
 	const mentionedBacklogItems = extractCanonicalBacklogItems(idTexts);
 	const mentionedFeatures = sortUnique([...extractCanonicalFeatureIds(idTexts), ...extractFeatureIdsFromPaths(touchedPaths, projectRoot)]);
 	const referencedArtifacts = sortUnique(touchedPaths.filter((filePath) => isReferencedArtifact(filePath, projectRoot)));
-	const candidateReviewArtifacts = sortUnique(referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}reviews${path.sep}`)));
-	const candidateVerificationArtifacts = sortUnique(referencedArtifacts.filter((filePath) => filePath.includes(`${path.sep}.dossier${path.sep}verification${path.sep}`)));
-	const candidateStageLogs = touchedStageLogs;
+	const referencedByEvent = extractReferencedArtifactsByEvent(sessionSummary.events, projectRoot);
+	const autoIncludedCandidates = extractAutoIncludedArtifactCandidates(sessionSummary.events, projectRoot);
+	const manualStageLogCandidates = manualCandidates(manualStageLogs, projectRoot, artifactEvidence);
+	const manualReviewCandidates = manualCandidates(manualReviewArtifacts, projectRoot, artifactEvidence);
+	const manualVerificationCandidates = manualCandidates(manualVerificationArtifacts, projectRoot, artifactEvidence);
+	const stageLogCandidates = mergeCandidates([
+		...autoIncludedCandidates.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
+		...referencedOnlyCandidates(referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)), autoIncludedCandidates),
+		...manualStageLogCandidates
+	]);
+	const reviewArtifactCandidates = mergeCandidates([
+		...autoIncludedCandidates.filter((candidate) => isReviewArtifact(candidate.path, projectRoot)),
+		...referencedOnlyCandidates(referencedByEvent.filter((candidate) => isReviewArtifact(candidate.path, projectRoot)), autoIncludedCandidates),
+		...manualReviewCandidates
+	]);
+	const verificationArtifactCandidates = mergeCandidates([
+		...autoIncludedCandidates.filter((candidate) => isVerificationArtifact(candidate.path, projectRoot)),
+		...referencedOnlyCandidates(referencedByEvent.filter((candidate) => isVerificationArtifact(candidate.path, projectRoot)), autoIncludedCandidates),
+		...manualVerificationCandidates
+	]);
+	const candidateStageLogs = includedPaths(stageLogCandidates);
+	const candidateReviewArtifacts = includedPaths(reviewArtifactCandidates);
+	const candidateVerificationArtifacts = includedPaths(verificationArtifactCandidates);
 	const scopeAmbiguities = [];
 	if (mentionedBacklogItems.length === 0 && mentionedFeatures.length === 0 && touchedPaths.length === 0 && referencedArtifacts.length === 0) scopeAmbiguities.push("No trace-derived backlog items, feature ids, or touched project paths were found.");
 	if (mentionedBacklogItems.length > 1) scopeAmbiguities.push(`Multiple backlog items were mentioned in one trace: ${mentionedBacklogItems.join(", ")}.`);
 	if (mentionedFeatures.length > 1) scopeAmbiguities.push(`Multiple feature ids were mentioned in one trace: ${mentionedFeatures.join(", ")}.`);
 	if (candidateStageLogs.length === 0) scopeAmbiguities.push("The session trace did not confirm any stage-log path created or changed in this session.");
-	if (mentionedFeatures.length > 0 && candidateReviewArtifacts.length === 0) scopeAmbiguities.push(`The trace did not directly reference any review artifacts for extracted feature ids ${mentionedFeatures.join(", ")}.`);
-	if (mentionedFeatures.length > 0 && candidateVerificationArtifacts.length === 0) scopeAmbiguities.push(`The trace did not directly reference any verification artifacts for extracted feature ids ${mentionedFeatures.join(", ")}.`);
+	if (mentionedFeatures.length > 0 && candidateReviewArtifacts.length === 0) scopeAmbiguities.push(`The trace did not directly confirm any review artifacts for extracted feature ids ${mentionedFeatures.join(", ")}.`);
+	if (mentionedFeatures.length > 0 && candidateVerificationArtifacts.length === 0) scopeAmbiguities.push(`The trace did not directly confirm any verification artifacts for extracted feature ids ${mentionedFeatures.join(", ")}.`);
+	if (manualStageLogCandidates.length > 0) scopeAmbiguities.push("Manual stage-log overrides were included; validate their scope.");
+	if (manualReviewCandidates.length > 0) scopeAmbiguities.push("Manual review-artifact overrides were included; validate their scope.");
+	if (manualVerificationCandidates.length > 0) scopeAmbiguities.push("Manual verification-artifact overrides were included; validate their scope.");
 	return {
 		project_root: projectRoot,
 		mentioned_backlog_items: mentionedBacklogItems,
@@ -638,6 +744,9 @@ function extractTraceScope({ sessionSummary, projectRoot }) {
 		candidate_stage_logs: candidateStageLogs,
 		candidate_review_artifacts: candidateReviewArtifacts,
 		candidate_verification_artifacts: candidateVerificationArtifacts,
+		stage_log_candidates: stageLogCandidates,
+		review_artifact_candidates: reviewArtifactCandidates,
+		verification_artifact_candidates: verificationArtifactCandidates,
 		scope_confidence: scoreScopeConfidence(sessionSummary.exists, mentionedBacklogItems, mentionedFeatures, touchedPaths, referencedArtifacts, scopeAmbiguities),
 		scope_ambiguities: scopeAmbiguities
 	};
@@ -841,11 +950,6 @@ function parseStageLog(filePath) {
 }
 //#endregion
 //#region src/core/summarize-logs.ts
-function isWithinLogsDir(filePath, logsDir) {
-	const normalizedDir = path.resolve(logsDir);
-	const normalizedFile = path.resolve(filePath);
-	return normalizedFile === normalizedDir || normalizedFile.startsWith(`${normalizedDir}${path.sep}`) || normalizedFile.startsWith(`${normalizedDir}/`);
-}
 function createEmptyMetrics() {
 	return {
 		logsTotal: 0,
@@ -883,44 +987,115 @@ function summarizeParsedLogs(logs) {
 	};
 }
 function summarizeLogs(logsDir, allowedFilePaths) {
-	if (!logsDir || !fs.existsSync(logsDir)) return {
-		exists: false,
-		logs: [],
-		metrics: createEmptyMetrics()
-	};
-	return summarizeParsedLogs((allowedFilePaths === void 0 ? [] : Array.from(new Set(allowedFilePaths.filter((filePath) => filePath.endsWith(".md") && fs.existsSync(filePath) && isWithinLogsDir(filePath, logsDir))))).map((filePath) => parseStageLog(filePath)));
+	const files = allowedFilePaths === void 0 ? [] : Array.from(new Set(allowedFilePaths.filter((filePath) => filePath.endsWith(".md") && fs.existsSync(filePath))));
+	if (!logsDir || !fs.existsSync(logsDir)) {
+		if (files.length > 0) return summarizeParsedLogs(files.map((filePath) => parseStageLog(filePath)));
+		return {
+			exists: false,
+			logs: [],
+			metrics: createEmptyMetrics()
+		};
+	}
+	return summarizeParsedLogs(files.map((filePath) => parseStageLog(filePath)));
 }
 //#endregion
 //#region src/parsers/jsonl.ts
 function parseJsonl(filePath) {
-	const lines = readText(filePath).split(/\r?\n/).filter((line) => line.trim().length > 0);
+	const lines = readText(filePath).split(/\r?\n/);
+	const sourceLineCount = lines.at(-1)?.trim() === "" ? Math.max(lines.length - 1, 0) : lines.length;
 	const events = [];
+	const eventLines = [];
 	const errors = [];
 	for (let index = 0; index < lines.length; index += 1) {
 		const line = lines[index];
-		if (!line) continue;
+		const lineNumber = index + 1;
+		if (!line || line.trim().length === 0) continue;
 		try {
 			events.push(JSON.parse(line));
+			eventLines.push(lineNumber);
 		} catch (error) {
 			errors.push({
-				line: index + 1,
+				line: lineNumber,
 				message: error instanceof Error ? error.message : String(error)
 			});
 		}
 	}
 	return {
 		events,
-		errors
+		eventLines,
+		errors,
+		sourceLineCount
 	};
 }
 //#endregion
 //#region src/core/summarize-session.ts
-function summarizeSession(filePath) {
+function createFullTraceBoundary() {
+	return {
+		mode: "full_trace",
+		until_line: null,
+		until_ts: null,
+		reason: "No explicit phase boundary was provided; the full trace was analyzed.",
+		excluded_events_count: 0
+	};
+}
+function applyBoundary(events, eventLines, parseErrors, sourceLineCount, options) {
+	if (options.untilLine !== void 0) {
+		const untilLine = options.untilLine;
+		if (!Number.isInteger(untilLine) || untilLine < 1) throw new Error("--until-line must be a positive integer");
+		if (untilLine > sourceLineCount) throw new Error(`--until-line ${untilLine} exceeds the session trace length of ${sourceLineCount} line(s)`);
+		const boundedEvents = events.filter((_, index) => (eventLines[index] ?? 0) <= untilLine);
+		return {
+			events: boundedEvents,
+			parseErrors: parseErrors.filter((error) => error.line <= untilLine),
+			phaseBoundary: {
+				mode: "until_line",
+				until_line: untilLine,
+				until_ts: null,
+				reason: "Operator supplied --until-line to exclude later events from the analyzed phase.",
+				excluded_events_count: events.length - boundedEvents.length
+			}
+		};
+	}
+	if (options.untilTs !== void 0) {
+		const boundaryDate = tryParseDate(options.untilTs);
+		if (!boundaryDate) throw new Error("--until-ts must be a valid ISO-like timestamp");
+		const boundedEvents = [];
+		let boundaryReached = false;
+		for (const event of events) {
+			if (boundaryReached) continue;
+			const timestamp = extractTimestamp(event);
+			const eventDate = timestamp ? tryParseDate(timestamp) : null;
+			if (eventDate && eventDate.valueOf() > boundaryDate.valueOf()) {
+				boundaryReached = true;
+				continue;
+			}
+			boundedEvents.push(event);
+		}
+		return {
+			events: boundedEvents,
+			parseErrors,
+			phaseBoundary: {
+				mode: "until_ts",
+				until_line: null,
+				until_ts: boundaryDate.toISOString(),
+				reason: "Operator supplied --until-ts to exclude later events from the analyzed phase.",
+				excluded_events_count: events.length - boundedEvents.length
+			}
+		};
+	}
+	return {
+		events,
+		parseErrors,
+		phaseBoundary: createFullTraceBoundary()
+	};
+}
+function summarizeSession(filePath, options = {}) {
 	if (!filePath || !fs.existsSync(filePath)) return {
 		filePath,
 		sessionId: null,
 		projectRoot: null,
 		exists: false,
+		phaseBoundary: createFullTraceBoundary(),
 		eventCount: 0,
 		parseErrors: [],
 		firstTimestamp: null,
@@ -932,7 +1107,9 @@ function summarizeSession(filePath) {
 		sampleEventTypes: [],
 		events: []
 	};
-	const { events, errors } = parseJsonl(filePath);
+	if (options.untilLine !== void 0 && options.untilTs !== void 0) throw new Error("Use either --until-line or --until-ts, not both");
+	const { events: parsedEvents, eventLines, errors, sourceLineCount } = parseJsonl(filePath);
+	const { events, parseErrors, phaseBoundary } = applyBoundary(parsedEvents, eventLines, errors, sourceLineCount, options);
 	const toolCounts = /* @__PURE__ */ new Map();
 	let sessionId = null;
 	let projectRoot = null;
@@ -971,8 +1148,9 @@ function summarizeSession(filePath) {
 		sessionId,
 		projectRoot,
 		exists: true,
+		phaseBoundary,
 		eventCount: events.length,
-		parseErrors: errors,
+		parseErrors,
 		firstTimestamp,
 		lastTimestamp,
 		durationMinutes: firstTimestamp && lastTimestamp ? diffMinutes(firstTimestamp, lastTimestamp) : null,
@@ -1005,20 +1183,65 @@ function summarizeSkills(skillsDir) {
 }
 //#endregion
 //#region src/core/build-scan-summary.ts
+function hasManualOverrides(args) {
+	return (args.stageLogs?.length ?? 0) > 0 || (args.reviewArtifacts?.length ?? 0) > 0 || (args.verificationArtifacts?.length ?? 0) > 0;
+}
+function assertManualOverridesHaveEvidence(args) {
+	if (hasManualOverrides(args) && !args.artifactEvidence?.trim()) throw new Error("Manual artifact overrides require artifactEvidence with a short justification");
+}
+function supportsMarkdownScaffold(language) {
+	const normalized = language.toLowerCase();
+	return normalized === "en" || normalized.startsWith("en-") || normalized === "ru" || normalized.startsWith("ru-");
+}
+function hasManualCandidates(candidates) {
+	return candidates.some((candidate) => candidate.inclusion_source === "manual_included");
+}
+function buildReportStatus(input) {
+	const reasons = [];
+	const { reportLanguage, sessionSummary, logSummary, skillsSummary, scope } = input;
+	if (!sessionSummary.exists) reasons.push("Session trace is missing.");
+	if (sessionSummary.parseErrors.length > 0) reasons.push(`Session trace has ${sessionSummary.parseErrors.length} parse error(s).`);
+	if (!logSummary.exists) reasons.push("Stage-log directory is missing or unresolved.");
+	if (!skillsSummary.exists) reasons.push("Skill catalog is missing or unresolved.");
+	if (logSummary.metrics.logsTotal === 0 && scope.referenced_artifacts.some((artifactPath) => artifactPath.includes(".dossier"))) reasons.push("Trace indicates dossier activity, but no stage logs were analyzed.");
+	if (scope.scope_ambiguities.length > 0) reasons.push("Unresolved scope ambiguities remain.");
+	if (hasManualCandidates(scope.stage_log_candidates) || hasManualCandidates(scope.review_artifact_candidates) || hasManualCandidates(scope.verification_artifact_candidates)) reasons.push("Manual artifact overrides were used.");
+	if (!supportsMarkdownScaffold(reportLanguage)) reasons.push("No deterministic Markdown scaffold exists for the requested report language.");
+	return {
+		status: reasons.length > 0 ? "draft_requires_agent_validation" : "ready_for_agent_finalization",
+		reasons
+	};
+}
 function buildScanSummary(args) {
+	assertManualOverridesHaveEvidence(args);
 	const operatorLanguage = args.language ?? "und";
 	const reportLanguage = args.language ?? "en";
-	const sessionSummary = summarizeSession(args.session);
+	const sessionBoundaryOptions = {};
+	if (args.untilLine !== void 0) sessionBoundaryOptions.untilLine = args.untilLine;
+	if (args.untilTs !== void 0) sessionBoundaryOptions.untilTs = args.untilTs;
+	const sessionSummary = summarizeSession(args.session, sessionBoundaryOptions);
 	const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
 	const resolvedLogsDir = args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, ".dossier/logs");
 	const resolvedArtifactsDir = args.artifactsDir ?? inferProjectRootFromLogsDir(resolvedLogsDir ?? null) ?? void 0;
 	const skillsSummary = summarizeSkills(args.skillsDir);
-	const scope = extractTraceScope({
+	const scopeOptions = {
 		sessionSummary,
 		projectRoot: resolvedProjectRoot
-	});
+	};
+	if (args.stageLogs) scopeOptions.manualStageLogs = args.stageLogs;
+	if (args.reviewArtifacts) scopeOptions.manualReviewArtifacts = args.reviewArtifacts;
+	if (args.verificationArtifacts) scopeOptions.manualVerificationArtifacts = args.verificationArtifacts;
+	if (args.artifactEvidence) scopeOptions.artifactEvidence = args.artifactEvidence;
+	const scope = extractTraceScope(scopeOptions);
 	const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
 	const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
+	const reportStatus = buildReportStatus({
+		reportLanguage,
+		sessionSummary,
+		logSummary,
+		skillsSummary,
+		scope
+	});
 	const summaryBase = {
 		generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
 		operator_language: operatorLanguage,
@@ -1031,7 +1254,13 @@ function buildScanSummary(args) {
 			outRoot: args.outRoot ?? null,
 			runDir: args.runDir ?? null,
 			language: args.language ?? null,
-			draft: args.draft ?? false
+			draft: args.draft ?? false,
+			untilLine: args.untilLine ?? null,
+			untilTs: args.untilTs ?? null,
+			stageLogs: args.stageLogs ?? [],
+			reviewArtifacts: args.reviewArtifacts ?? [],
+			verificationArtifacts: args.verificationArtifacts ?? [],
+			artifactEvidence: args.artifactEvidence ?? null
 		},
 		resolved: {
 			session: args.session ?? null,
@@ -1045,6 +1274,7 @@ function buildScanSummary(args) {
 			skillCatalogPresent: skillsSummary.exists,
 			sessionParseErrors: sessionSummary.parseErrors.length
 		},
+		phase_boundary: sessionSummary.phaseBoundary,
 		session: {
 			filePath: sessionSummary.filePath,
 			sessionId: sessionSummary.sessionId,
@@ -1069,6 +1299,7 @@ function buildScanSummary(args) {
 			}))
 		},
 		scope,
+		reportStatus,
 		skills: skillsSummary.skills,
 		artifacts: {
 			scannedCount: scope.referenced_artifacts.length,
@@ -1089,12 +1320,17 @@ function buildScanSummary(args) {
 }
 //#endregion
 //#region src/render/logging-review-markdown.ts
+function statusLine$2(scan) {
+	return scan.reportStatus.status === "draft_requires_agent_validation" ? "Status: draft, requires agent validation" : "Status: ready for agent finalization";
+}
 function buildLoggingReviewMarkdown(scan) {
 	const missingReviewArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.review_artifact).length;
 	const missingStepArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.step_artifact).length;
 	const missingVerificationArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.verification_artifact).length;
 	const approximateDurations = scan.stageLogs.files.filter((entry) => entry.metadata.log_quality && typeof entry.metadata.log_quality === "object" && entry.metadata.log_quality.duration_exact === false).length;
 	if (scan.report_language.toLowerCase().startsWith("ru")) return `# Черновик анализа качества логирования
+
+${statusLine$2(scan)}
 
 ## Резюме
 
@@ -1155,6 +1391,8 @@ function buildLoggingReviewMarkdown(scan) {
 - Warn, если log фиксирует process miss, но remediation note отсутствует.
 `;
 	return `# Logging review draft
+
+${statusLine$2(scan)}
 
 ## Summary
 
@@ -1305,7 +1543,10 @@ function parseOptions(argv, specs) {
 		}
 		const value = argv[index + 1];
 		if (!value || value.startsWith("-")) throw createUsageError(`Missing value for --${spec.name}`);
-		parsed[spec.name] = value;
+		if (spec.repeatable) {
+			const existing = parsed[spec.name];
+			parsed[spec.name] = Array.isArray(existing) ? [...existing, value] : [value];
+		} else parsed[spec.name] = value;
 		index += 1;
 	}
 	for (const spec of specs) if (spec.required && parsed[spec.name] === void 0) throw createUsageError(`Missing required option --${spec.name}`);
@@ -1342,6 +1583,11 @@ function toRequiredString(value, message) {
 }
 function toOptionalString(value) {
 	return typeof value === "string" && value.length > 0 ? value : void 0;
+}
+function toStringList(value) {
+	if (typeof value === "string" && value.length > 0) return [value];
+	if (Array.isArray(value)) return value.filter((item) => item.length > 0);
+	return [];
 }
 function toOptionalLanguage(value) {
 	const language = toOptionalString(value)?.trim();
@@ -1415,6 +1661,12 @@ var LOGGING_REVIEW_COMMAND = {
 };
 //#endregion
 //#region src/render/report-markdown.ts
+function statusLine$1(scan) {
+	return scan.reportStatus.status === "draft_requires_agent_validation" ? "Status: draft, requires agent validation" : "Status: ready for agent finalization";
+}
+function statusReasons(scan) {
+	return scan.reportStatus.reasons.length > 0 ? formatList(scan.reportStatus.reasons) : "- Evidence quality passed automated scaffold checks.";
+}
 function buildReportMarkdown(scan, options) {
 	if (scan.report_language.toLowerCase().startsWith("ru")) return buildRussianReportMarkdown(scan, options);
 	const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ""}`;
@@ -1434,6 +1686,8 @@ function buildReportMarkdown(scan, options) {
 	const scopeAmbiguities = scan.scope.scope_ambiguities.map((entry) => `- ${entry}`).join("\n") || "- none";
 	return `# ${title}
 
+${statusLine$1(scan)}
+
 ## Executive summary
 
 - Phase: ${options.phase ?? "unspecified"}
@@ -1443,6 +1697,7 @@ function buildReportMarkdown(scan, options) {
 - Candidate incidents: ${scan.candidateIncidents.length}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
 - Scope confidence: ${scan.scope.scope_confidence}
+- Report scaffold status: ${scan.reportStatus.status}
 - Data-quality note: ${scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent ? "Both session trace and stage logs were available." : "One or more core evidence sources were missing; confidence is reduced."}
 
 ## Evidence manifest
@@ -1503,6 +1758,10 @@ ${formatList(topEntries(scan.stageLogs.metrics.skillsReferenced, 20).map(([skill
 
 ${scopeAmbiguities}
 
+## Report status reasons
+
+${statusReasons(scan)}
+
 ## Recommended next manual checks
 
 - Confirm each inferred incident against the actual stage log and trace excerpts.
@@ -1539,6 +1798,8 @@ function buildRussianReportMarkdown(scan, options) {
 	const scopeAmbiguities = scan.scope.scope_ambiguities.map((entry) => `- ${entry}`).join("\n") || "- none";
 	return `# ${title}
 
+${statusLine$1(scan)}
+
 ## Краткое резюме
 
 - Этап: ${options.phase ?? "не указан"}
@@ -1548,6 +1809,7 @@ function buildRussianReportMarkdown(scan, options) {
 - Кандидатных инцидентов: ${scan.candidateIncidents.length}
 - Уникальных tools: ${Object.keys(scan.session.tools).length}
 - Уверенность scope: ${scan.scope.scope_confidence}
+- Статус scaffold отчета: ${scan.reportStatus.status}
 - Примечание по качеству данных: ${scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent ? "Trace сессии и stage logs доступны." : "Один или несколько ключевых источников отсутствуют; уверенность снижена."}
 
 ## Манифест доказательств
@@ -1607,6 +1869,10 @@ ${formatList(topEntries(scan.stageLogs.metrics.skillsReferenced, 20).map(([skill
 ## Неоднозначности scope
 
 ${scopeAmbiguities}
+
+## Причины статуса отчета
+
+${statusReasons(scan)}
 
 ## Рекомендуемые ручные проверки
 
@@ -1679,6 +1945,29 @@ var REPORT_COMMAND = {
 };
 //#endregion
 //#region src/commands/scan.ts
+function parsePositiveInteger(value, optionName) {
+	if (value === void 0) return;
+	const parsed = Number(value);
+	if (!Number.isInteger(parsed) || parsed < 1) throw createUsageError(`${optionName} must be a positive integer`);
+	return parsed;
+}
+function parseIsoTimestamp(value) {
+	if (value === void 0) return;
+	const date = new Date(value);
+	if (Number.isNaN(date.valueOf())) throw createUsageError("--until-ts must be a valid ISO-like timestamp");
+	return value;
+}
+function toScanUsageError(error) {
+	if (error instanceof Error) {
+		if ([
+			"--until-line",
+			"--until-ts",
+			"Use either --until-line or --until-ts",
+			"Manual artifact overrides require"
+		].some((message) => error.message.startsWith(message))) throw createUsageError(error.message);
+	}
+	throw error;
+}
 var SCAN_COMMAND = {
 	name: "scan",
 	summary: "Build a JSON summary from a session trace and stage logs.",
@@ -1686,6 +1975,7 @@ var SCAN_COMMAND = {
 		"node scripts/retro-cli.mjs scan --session <file>",
 		"node scripts/retro-cli.mjs scan --session <file> --out-root <dir> --pretty",
 		"node scripts/retro-cli.mjs scan --session <file> --run-dir <dir> --language ru",
+		"node scripts/retro-cli.mjs scan --session <file> --until-ts <iso>",
 		"node scripts/retro-cli.mjs scan --session <file> --out <file> --pretty"
 	],
 	options: [
@@ -1700,11 +1990,52 @@ var SCAN_COMMAND = {
 			name: "pretty",
 			type: "boolean",
 			description: "Pretty-print JSON output."
+		},
+		{
+			name: "until-line",
+			type: "string",
+			valueLabel: "<n>",
+			description: "Analyze only session events at or before this JSONL line."
+		},
+		{
+			name: "until-ts",
+			type: "string",
+			valueLabel: "<iso>",
+			description: "Analyze only session events at or before this timestamp."
+		},
+		{
+			name: "stage-log",
+			type: "string",
+			repeatable: true,
+			valueLabel: "<path>",
+			description: "Manually include a stage log; requires --artifact-evidence."
+		},
+		{
+			name: "review-artifact",
+			type: "string",
+			repeatable: true,
+			valueLabel: "<path>",
+			description: "Manually include a review artifact; requires --artifact-evidence."
+		},
+		{
+			name: "verification-artifact",
+			type: "string",
+			repeatable: true,
+			valueLabel: "<path>",
+			description: "Manually include a verification artifact; requires --artifact-evidence."
+		},
+		{
+			name: "artifact-evidence",
+			type: "string",
+			valueLabel: "<text>",
+			description: "Required justification for manual artifact inclusion."
 		}
 	],
 	notes: [
 		"The agent must resolve the target session and pass the canonical trace file via --session.",
 		"The JSON summary is heuristic and should be validated against the cited artifacts.",
+		"Use --until-line or --until-ts only when the analyzed phase is a prefix of the trace.",
+		"Manual artifact paths are controlled overrides and must include --artifact-evidence.",
 		"If logs or artifacts directories are omitted, the command tries standard project directories derived from session_meta.cwd.",
 		"Without --out, the command writes to a durable run directory under .dossier/retro when a dossier-managed project root is available."
 	],
@@ -1715,13 +2046,32 @@ var SCAN_COMMAND = {
 			session: toRequiredString(options.session, "scan requires --session"),
 			pretty: toBoolean(options.pretty)
 		};
+		const untilLine = parsePositiveInteger(toOptionalString(options["until-line"]), "--until-line");
+		const untilTs = parseIsoTimestamp(toOptionalString(options["until-ts"]));
+		if (untilLine !== void 0 && untilTs !== void 0) throw createUsageError("Use either --until-line or --until-ts, not both");
+		if (untilLine !== void 0) input.untilLine = untilLine;
+		if (untilTs !== void 0) input.untilTs = untilTs;
+		const stageLogs = toStringList(options["stage-log"]);
+		const reviewArtifacts = toStringList(options["review-artifact"]);
+		const verificationArtifacts = toStringList(options["verification-artifact"]);
+		const artifactEvidence = toOptionalString(options["artifact-evidence"]);
+		if (stageLogs.length > 0) input.stageLogs = stageLogs;
+		if (reviewArtifacts.length > 0) input.reviewArtifacts = reviewArtifacts;
+		if (verificationArtifacts.length > 0) input.verificationArtifacts = verificationArtifacts;
+		if (artifactEvidence) input.artifactEvidence = artifactEvidence;
+		if ((stageLogs.length > 0 || reviewArtifacts.length > 0 || verificationArtifacts.length > 0) && !artifactEvidence) throw createUsageError("Manual artifact overrides require --artifact-evidence with a short justification");
 		const out = toOptionalString(options.out);
 		if (out) input.out = out;
 		assertOutputOverrideIsExclusive(input);
 		return input;
 	},
 	run(input) {
-		const summary = buildScanSummary(input);
+		let summary;
+		try {
+			summary = buildScanSummary(input);
+		} catch (error) {
+			toScanUsageError(error);
+		}
 		const outputPath = resolveCommandOutputPath(summary, input, "scan");
 		writeJson(outputPath, redactScanSummaryForPublicArtifact(summary), input.pretty);
 		return JSON.stringify({
@@ -1733,6 +2083,9 @@ var SCAN_COMMAND = {
 };
 //#endregion
 //#region src/render/skill-audit-markdown.ts
+function statusLine(scan) {
+	return scan.reportStatus.status === "draft_requires_agent_validation" ? "Status: draft, requires agent validation" : "Status: ready for agent finalization";
+}
 function buildSkillAuditMarkdown(scan) {
 	const skills = scan.skills.length > 0 ? scan.skills : Object.keys(scan.stageLogs.metrics.skillsReferenced).map((name) => ({
 		name,
@@ -1759,6 +2112,8 @@ function buildSkillAuditMarkdown(scan) {
 `;
 	}).join("\n");
 	return `# Skill audit draft
+
+${statusLine(scan)}
 
 ## Summary
 
@@ -1805,6 +2160,8 @@ function buildRussianSkillAuditMarkdown(scan, skills) {
 `;
 	}).join("\n");
 	return `# Черновик аудита инструкций агентов
+
+${statusLine(scan)}
 
 ## Резюме
 

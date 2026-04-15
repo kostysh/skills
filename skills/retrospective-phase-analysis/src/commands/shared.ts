@@ -7,7 +7,8 @@ import type { CommonCommandInput, OptionSpec, ReportLanguage } from './types.ts'
 import type { ScanSummary } from '../core/types.ts';
 import type { RetroOutputCommandName } from '../core/shared.ts';
 
-type ParsedOptions = Record<string, string | boolean>;
+type ParsedOptionValue = string | boolean | string[];
+type ParsedOptions = Record<string, ParsedOptionValue>;
 
 export const COMMON_OPTION_SPECS: OptionSpec[] = [
   {
@@ -93,7 +94,12 @@ export function parseOptions(argv: string[], specs: readonly OptionSpec[]): Pars
       throw createUsageError(`Missing value for --${spec.name}`);
     }
 
-    parsed[spec.name] = value;
+    if (spec.repeatable) {
+      const existing = parsed[spec.name];
+      parsed[spec.name] = Array.isArray(existing) ? [...existing, value] : [value];
+    } else {
+      parsed[spec.name] = value;
+    }
     index += 1;
   }
 
@@ -159,23 +165,35 @@ export function toCommonCommandInput(options: ParsedOptions): CommonCommandInput
   return input;
 }
 
-export function toRequiredString(value: string | boolean | undefined, message: string): string {
+export function toRequiredString(value: ParsedOptionValue | undefined, message: string): string {
   if (typeof value === 'string' && value.length > 0) {
     return value;
   }
   throw createUsageError(message);
 }
 
-export function toOptionalString(value: string | boolean | undefined): string | undefined {
+export function toOptionalString(value: ParsedOptionValue | undefined): string | undefined {
   return typeof value === 'string' && value.length > 0 ? value : undefined;
 }
 
-export function toOptionalLanguage(value: string | boolean | undefined): ReportLanguage | undefined {
+export function toStringList(value: ParsedOptionValue | undefined): string[] {
+  if (typeof value === 'string' && value.length > 0) {
+    return [value];
+  }
+
+  if (Array.isArray(value)) {
+    return value.filter((item) => item.length > 0);
+  }
+
+  return [];
+}
+
+export function toOptionalLanguage(value: ParsedOptionValue | undefined): ReportLanguage | undefined {
   const language = toOptionalString(value)?.trim();
   return language && language.length > 0 ? language : undefined;
 }
 
-export function toBoolean(value: string | boolean | undefined): boolean {
+export function toBoolean(value: ParsedOptionValue | undefined): boolean {
   return value === true;
 }
 

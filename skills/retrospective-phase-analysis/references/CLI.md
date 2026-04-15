@@ -31,6 +31,15 @@ node scripts/retro-cli.mjs scan \
   --session /path/to/rollout.jsonl \
   --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3 \
   --language ru
+
+node scripts/retro-cli.mjs scan \
+  --session /path/to/active-session.jsonl \
+  --until-ts 2026-04-10T10:06:00Z
+
+node scripts/retro-cli.mjs scan \
+  --session /path/to/rollout.jsonl \
+  --stage-log .dossier/logs/implementation.md \
+  --artifact-evidence "operator supplied closure artifact list"
 ```
 
 Outputs:
@@ -45,6 +54,9 @@ Outputs:
 - process-miss metrics
 - candidate incidents scoped to the analyzed trace and linked stage logs
 - data-quality notes
+- `phase_boundary`
+- structured `stage_log_candidates`, `review_artifact_candidates`, and `verification_artifact_candidates`
+- `reportStatus`
 - `run_dir`, `operator_language`, and `report_language`
 
 `scan` also prints a compact JSON line to stdout with `run_dir`, `scan_summary`, and `report_language`.
@@ -70,6 +82,29 @@ Output modes:
 For a retrospective of one session trace, the default scope is `session-<short-session-id>`. A feature semantic scope should be used only when the operator explicitly asks for a feature-scoped retrospective or when one analysis combines multiple session traces for one feature.
 
 The first `scan` that writes a bundle establishes the canonical run directory. Do not create a second bundle after that scan unless the operator explicitly requested a new run.
+
+Phase boundary:
+
+- Use `--until-line <n>` or `--until-ts <iso>` only when the analyzed phase is a prefix of the trace.
+- This is required for active-session retrospectives where later events belong to the retrospective itself.
+- The boundary is applied before scope extraction and metrics.
+- `scan-summary.json` records `phase_boundary.mode`, `phase_boundary.until_line`, `phase_boundary.until_ts`, `phase_boundary.reason`, and `phase_boundary.excluded_events_count`.
+
+Artifact candidates:
+
+- `referenced_only` paths remain candidates but are not analyzed by default.
+- `trace_patch_target`, `trace_shell_write`, `trace_write`, and `tool_output_path` candidates can be auto-included when the trace confirms write/change evidence.
+- Legacy arrays such as `candidate_stage_logs` are derived from included candidates only.
+- Feature-id matching alone does not include review or verification artifacts.
+
+Manual overrides:
+
+- `--stage-log <path>` manually includes a stage log.
+- `--review-artifact <path>` manually includes a review artifact.
+- `--verification-artifact <path>` manually includes a verification artifact.
+- These flags are repeatable.
+- Any manual override requires `--artifact-evidence <text>`.
+- Manual inclusion is recorded per artifact kind and marks the report scaffold as draft until the agent validates the evidence.
 
 ### `report`
 
@@ -116,6 +151,12 @@ node scripts/retro-cli.mjs logging-review \
 - `--out-root <dir>`: root where the CLI chooses the canonical retrospective run directory
 - `--run-dir <dir>`: exact canonical retrospective run directory to reuse
 - `--language <language>`: operator language tag or name for report metadata and generated Markdown scaffolds
+- `--until-line <n>`: analyze only session events at or before this JSONL line
+- `--until-ts <iso>`: analyze only session events at or before this timestamp
+- `--stage-log <path>`: manually include a stage log; repeatable; requires `--artifact-evidence`
+- `--review-artifact <path>`: manually include a review artifact; repeatable; requires `--artifact-evidence`
+- `--verification-artifact <path>`: manually include a verification artifact; repeatable; requires `--artifact-evidence`
+- `--artifact-evidence <text>`: required justification for manual artifact inclusion
 - `--draft`: write an explicitly temporary draft bundle
 - `--pretty`: pretty-print JSON for `scan`
 - `--help`: show command help
@@ -127,6 +168,13 @@ Language rule:
 - `report`, `skill-audit`, and `logging-review` inherit language from `scan-summary.json` when invoked with `--run-dir`.
 - Markdown reports should be in the operator language; English is acceptable for direct quotes, commands, paths, identifiers, JSON keys, and tool or skill names.
 - The CLI can only provide deterministic scaffolds. If no scaffold exists for the requested operator language, generator commands must fail instead of silently writing Markdown in another language. In that case, use `scan-summary.json` and author the final Markdown manually in the operator language, or add a renderer before rerunning the command.
+
+Report status rule:
+
+- Generated Markdown is a scaffold. The final report is the agent's responsibility after evidence validation.
+- `draft_requires_agent_validation` is used when evidence quality is degraded, no stage logs were analyzed despite dossier activity, unresolved ambiguities exist, manual overrides were used, or no deterministic language scaffold exists.
+- Draft Markdown includes `Status: draft, requires agent validation`.
+- `ready_for_agent_finalization` means the automated checks found no draft trigger, but the agent still owns final conclusions.
 
 ## Heuristics used by the CLI
 
@@ -150,6 +198,8 @@ The CLI tries to infer:
 - `scan` only treats `.dossier/logs` as in-scope when the trace shows those log paths as created or changed in the analyzed session.
 - `scan` does not treat malformed ids such as `CF-012.delivery_state`, `CF-018-backed`, `CF-0`, or `CF-XXX` as canonical backlog items.
 - `scan` does not widen review or verification scope by feature-id fan-out alone; those artifacts must be directly referenced in the trace.
+- direct references without write/change evidence are `referenced_only` candidates, not analyzed artifacts.
+- manual overrides require explicit evidence and reduce confidence until validated.
 - `scan` does not replace manual scope review when the trace contains multiple tasks or multiple features.
 - The generated report is a draft. The agent should read the cited artifacts before finalizing findings.
 
