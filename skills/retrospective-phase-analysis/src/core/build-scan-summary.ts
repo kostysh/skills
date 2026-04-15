@@ -194,10 +194,6 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
     scope,
     reportStatus,
     skills: skillsSummary.skills,
-    artifacts: {
-      scannedCount: scope.referenced_artifacts.length,
-      sample: scope.referenced_artifacts.slice(0, 50),
-    },
     candidateIncidents,
   };
 

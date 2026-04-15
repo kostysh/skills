@@ -68,6 +68,7 @@ void test('CLI reference documents global help, version, and the four command su
     'phase_boundary',
     'stage_log_candidates',
     'reportStatus',
+    'mandatory bundle checkpoints',
     '--until-ts <iso>',
     '--artifact-evidence <text>',
     'The first `scan` that writes a bundle establishes the canonical run directory.',

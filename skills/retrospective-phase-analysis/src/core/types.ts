@@ -214,10 +214,6 @@ export interface ScanSummary {
     reasons: string[];
   };
   skills: SkillSummary[];
-  artifacts: {
-    scannedCount: number;
-    sample: string[];
-  };
   recommendedOutput: RetroOutputLayout;
   candidateIncidents: CandidateIncident[];
 }

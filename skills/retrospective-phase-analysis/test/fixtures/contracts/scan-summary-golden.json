@@ -144,15 +144,6 @@
       "description": "Lean docs-as-code workflow with feature dossiers and machine-checkable closure artifacts."
     }
   ],
-  "artifacts": {
-    "scannedCount": 4,
-    "sample": [
-      "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md",
-      "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md",
-      "/abs/fixtures/artifacts/docs/adr/ADR-0016-observability.md",
-      "/abs/fixtures/artifacts/docs/features/F-0016-retro.md"
-    ]
-  },
   "candidateIncidents": [
     {
       "title": "Aborted or restarted turns detected",

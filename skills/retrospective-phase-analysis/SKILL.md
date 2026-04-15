@@ -393,7 +393,8 @@ Minimum viable workflow:
 3. Run `scan` to build the first evidence summary and trace-derived scope.
 4. Check the candidate incidents and scope ambiguities.
 5. Read only the highest-ranked linked evidence.
-6. Decide whether `report`, `skill-audit`, or `logging-review` are needed.
+6. Generate `report`, `skill-audit`, and `logging-review` into the same run directory.
+7. Validate all three Markdown scaffolds against the cited evidence before finalizing conclusions.
 
 When Node.js is available, use:
 
@@ -474,4 +475,6 @@ Read these files on demand:
 - [Main report template](references/REPORT-TEMPLATE.md)
 - [Skill audit template](references/SKILL-AUDIT-TEMPLATE.md)
 - [Logging improvements template](references/LOGGING-IMPROVEMENTS-TEMPLATE.md)
-- [Metric definitions](assets/metrics-schema.json)
+- [Metric vocabulary](assets/metrics-schema.json)
+
+The metric vocabulary is an aspirational reference for manual analysis and future structured logs. Do not treat every listed metric as emitted by the CLI unless it appears in `scan-summary.json`.

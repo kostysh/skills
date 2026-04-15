@@ -15,15 +15,6 @@ function fixturePath(...segments: string[]): string {
   return path.join(FIXTURES_DIR, ...segments);
 }
 
-function buildFixtureSummary() {
-  return buildScanSummary({
-    session: fixturePath('sessions', 'phase-session.jsonl'),
-    logsDir: fixturePath('logs'),
-    artifactsDir: fixturePath('artifacts'),
-    skillsDir: fixturePath('skills'),
-  });
-}
-
 function buildLinkedFixtureSummary() {
   return buildScanSummary({
     session: fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
@@ -48,13 +39,29 @@ void test('report markdown includes core retrospective sections and inferred sig
 });
 
 void test('skill audit markdown keeps manual review prompts explicit', () => {
-  const markdown = buildSkillAuditMarkdown(buildFixtureSummary());
+  const markdown = buildSkillAuditMarkdown(buildLinkedFixtureSummary());
 
   assert.match(markdown, /^# Skill audit draft$/mu);
   assert.match(markdown, /Status: draft, requires agent validation/u);
   assert.match(markdown, /### Skill: dossier-engineer/mu);
+  assert.doesNotMatch(markdown, /### Skill: backlog-engineer/mu);
+  assert.match(markdown, /^## Implicitly relevant skills$/mu);
+  assert.match(markdown, /backlog-engineer/mu);
   assert.match(markdown, /Were mandatory review steps explicit\?/mu);
   assert.match(markdown, /Cross-skill patterns to investigate/mu);
+});
+
+void test('skill audit markdown includes probably used skills in detailed findings', () => {
+  const summary = buildLinkedFixtureSummary();
+  const backlogSkill = summary.skills.find((skill) => skill.name === 'backlog-engineer');
+  assert.ok(backlogSkill);
+  summary.scope.touched_paths.push(backlogSkill.skillFile);
+
+  const markdown = buildSkillAuditMarkdown(summary);
+
+  assert.match(markdown, /### Skill: backlog-engineer/mu);
+  assert.match(markdown, /Confidence: probably_used/mu);
+  assert.doesNotMatch(markdown, /- backlog-engineer: .*SKILL\.md/mu);
 });
 
 void test('logging review markdown highlights missing artifact links and automation ideas', () => {

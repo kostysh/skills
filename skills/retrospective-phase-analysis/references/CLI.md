@@ -61,6 +61,14 @@ Outputs:
 
 `scan` also prints a compact JSON line to stdout with `run_dir`, `scan_summary`, and `report_language`.
 
+After `scan`, generate all three Markdown scaffolds into the same `run_dir`:
+
+- `report --run-dir <run_dir>`
+- `skill-audit --run-dir <run_dir>`
+- `logging-review --run-dir <run_dir>`
+
+These files are mandatory bundle checkpoints, but they remain scaffolds until the agent validates them against the cited evidence.
+
 Persisted output privacy:
 
 - `scan-summary.json` and generated Markdown reports redact absolute local runtime paths.
