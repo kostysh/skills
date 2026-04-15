@@ -79,9 +79,12 @@ export interface ScanSourceOptions {
   artifactsDir?: string;
   skillsDir?: string;
   outRoot?: string;
+  runDir?: string;
+  language?: string;
+  draft?: boolean;
 }
 
-export type RetroOutputMode = 'dossier-default' | 'fallback-default' | 'root-override';
+export type RetroOutputMode = 'dossier-default' | 'fallback-default' | 'root-override' | 'run-dir' | 'draft';
 
 export interface RetroOutputLayout {
   mode: RetroOutputMode;
@@ -100,12 +103,18 @@ export interface RetroOutputLayout {
 
 export interface ScanSummary {
   generatedAt: string;
+  run_dir: string;
+  operator_language: string;
+  report_language: string;
   inputs: {
     session: string | null;
     logsDir: string | null;
     artifactsDir: string | null;
     skillsDir: string | null;
     outRoot: string | null;
+    runDir: string | null;
+    language: string | null;
+    draft: boolean;
   };
   resolved: {
     session: string | null;

@@ -147,6 +147,59 @@ function topEntries(obj, limit = 10) {
 function formatList(items) {
 	return items.length > 0 ? items.map((item) => `- ${item}`).join("\n") : "- none";
 }
+var POSIX_ABSOLUTE_PATH_PATTERN = /(^|[\s`"'([{<])\/[A-Za-z0-9._@+\-/]+/gu;
+var WINDOWS_ABSOLUTE_PATH_PATTERN = /[A-Za-z]:\\[^\s`"')\]}<>]+/gu;
+function shortRedactionSessionId(sessionId) {
+	const firstSegment = sessionId?.split("-")[0];
+	return firstSegment && firstSegment.length > 0 ? firstSegment : "unknown";
+}
+function isPathInside(root, candidate) {
+	const relative = path.relative(root, candidate);
+	return relative === "" || !relative.startsWith("..") && !path.isAbsolute(relative);
+}
+function toPosixPath(value) {
+	return value.split(path.sep).join("/");
+}
+function redactSkillPath(candidate) {
+	const parts = path.resolve(candidate).split(path.sep);
+	const lastSkillsIndex = parts.lastIndexOf("skills");
+	if (lastSkillsIndex === -1 || lastSkillsIndex + 1 >= parts.length) return null;
+	return `<skills-root>/${parts.slice(lastSkillsIndex + 1).join("/")}`;
+}
+function redactAbsolutePath(candidate, context) {
+	const normalized = path.resolve(candidate);
+	const projectRoot = context.projectRoot ? path.resolve(context.projectRoot) : null;
+	const sessionPath = context.sessionPath ? path.resolve(context.sessionPath) : null;
+	if (sessionPath && normalized === sessionPath) return `<session-trace:${shortRedactionSessionId(context.sessionId)}>`;
+	if (context.sessionId && normalized.includes(context.sessionId) && normalized.includes(`${path.sep}sessions${path.sep}`)) return `<session-trace:${shortRedactionSessionId(context.sessionId)}>`;
+	if (projectRoot && isPathInside(projectRoot, normalized)) {
+		const relative = path.relative(projectRoot, normalized);
+		return relative.length > 0 ? `<project-root>/${toPosixPath(relative)}` : "<project-root>";
+	}
+	const skillPath = redactSkillPath(normalized);
+	if (skillPath) return skillPath;
+	const basename = path.basename(normalized);
+	return basename.length > 0 ? `<absolute-path:redacted>/${basename}` : "<absolute-path:redacted>";
+}
+function redactSensitiveRuntimePath(value, context) {
+	if (path.isAbsolute(value)) return redactAbsolutePath(value, context);
+	return value.replace(POSIX_ABSOLUTE_PATH_PATTERN, (match, prefix) => {
+		return `${prefix}${redactAbsolutePath(match.slice(prefix.length), context)}`;
+	}).replace(WINDOWS_ABSOLUTE_PATH_PATTERN, "<absolute-path:redacted>");
+}
+function redactValueForPublicArtifact(value, context) {
+	if (typeof value === "string") return redactSensitiveRuntimePath(value, context);
+	if (Array.isArray(value)) return value.map((item) => redactValueForPublicArtifact(item, context));
+	if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, redactValueForPublicArtifact(entry, context)]));
+	return value;
+}
+function redactScanSummaryForPublicArtifact(summary) {
+	return redactValueForPublicArtifact(summary, {
+		projectRoot: summary.scope.project_root ?? summary.session.projectRoot,
+		sessionPath: summary.resolved.session ?? summary.session.filePath ?? null,
+		sessionId: summary.session.sessionId
+	});
+}
 function stringFromUnknown(value, fallback) {
 	return typeof value === "string" && value.length > 0 ? value : fallback;
 }
@@ -204,7 +257,12 @@ function findDossierManagedAncestor(startDir) {
 		current = parent;
 	}
 }
-function resolveRetroRoot(_summary, explicitRoot) {
+function resolveRetroRoot(_summary, options) {
+	if (options.draft) return {
+		mode: "draft",
+		root: path.join(path.resolve("."), "out", "retro-drafts")
+	};
+	const explicitRoot = options.explicitRoot;
 	if (explicitRoot) return {
 		mode: "root-override",
 		root: path.resolve(explicitRoot)
@@ -221,10 +279,11 @@ function resolveRetroRoot(_summary, explicitRoot) {
 	};
 }
 function resolveScopeSlug(summary) {
+	const sessionSlug = shortSessionId(summary.session.sessionId);
+	if (sessionSlug) return `session-${sessionSlug}`;
 	if (summary.scope.mentioned_backlog_items.length === 1) return slugifyOutputPart(summary.scope.mentioned_backlog_items[0] ?? "session-unknown");
 	if (summary.scope.mentioned_features.length === 1) return slugifyOutputPart(summary.scope.mentioned_features[0] ?? "session-unknown");
-	const sessionSlug = shortSessionId(summary.session.sessionId);
-	return sessionSlug ? `session-${sessionSlug}` : "session-unknown";
+	return "session-unknown";
 }
 function resolveBaseRunSlug(summary) {
 	return [
@@ -248,7 +307,28 @@ function resolveRunLocation(root, scopeSlug, baseRunSlug, targetFileName) {
 }
 function resolveRetroOutputLayout(summary, options) {
 	const targetFileName = RETRO_OUTPUT_FILE_NAMES[options.commandName];
-	const rootInfo = resolveRetroRoot(summary, options.outRoot);
+	if (options.runDir) {
+		const runDir = path.resolve(options.runDir);
+		const scopeDir = path.dirname(runDir);
+		return {
+			mode: "run-dir",
+			root: path.dirname(scopeDir),
+			scopeSlug: path.basename(scopeDir),
+			runSlug: path.basename(runDir),
+			runDir,
+			filePath: path.join(runDir, targetFileName),
+			files: {
+				scanSummary: path.join(runDir, RETRO_OUTPUT_FILE_NAMES.scan),
+				retrospectiveReport: path.join(runDir, RETRO_OUTPUT_FILE_NAMES.report),
+				skillAudit: path.join(runDir, RETRO_OUTPUT_FILE_NAMES["skill-audit"]),
+				loggingReview: path.join(runDir, RETRO_OUTPUT_FILE_NAMES["logging-review"])
+			}
+		};
+	}
+	const rootInfo = resolveRetroRoot(summary, {
+		explicitRoot: options.outRoot,
+		draft: options.draft
+	});
 	const scopeSlug = resolveScopeSlug(summary);
 	const baseRunSlug = resolveBaseRunSlug(summary);
 	const runInfo = resolveRunLocation(rootInfo.root, scopeSlug, baseRunSlug, targetFileName);
@@ -926,6 +1006,8 @@ function summarizeSkills(skillsDir) {
 //#endregion
 //#region src/core/build-scan-summary.ts
 function buildScanSummary(args) {
+	const operatorLanguage = args.language ?? "und";
+	const reportLanguage = args.language ?? "en";
 	const sessionSummary = summarizeSession(args.session);
 	const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
 	const resolvedLogsDir = args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, ".dossier/logs");
@@ -939,12 +1021,17 @@ function buildScanSummary(args) {
 	const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
 	const summaryBase = {
 		generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
+		operator_language: operatorLanguage,
+		report_language: reportLanguage,
 		inputs: {
 			session: args.session ?? null,
 			logsDir: args.logsDir ?? null,
 			artifactsDir: args.artifactsDir ?? null,
 			skillsDir: args.skillsDir ?? null,
-			outRoot: args.outRoot ?? null
+			outRoot: args.outRoot ?? null,
+			runDir: args.runDir ?? null,
+			language: args.language ?? null,
+			draft: args.draft ?? false
 		},
 		resolved: {
 			session: args.session ?? null,
@@ -991,9 +1078,13 @@ function buildScanSummary(args) {
 	};
 	const outputOptions = { commandName: "scan" };
 	if (args.outRoot) outputOptions.outRoot = args.outRoot;
+	if (args.runDir) outputOptions.runDir = args.runDir;
+	if (args.draft) outputOptions.draft = args.draft;
+	const recommendedOutput = resolveRetroOutputLayout(summaryBase, outputOptions);
 	return {
 		...summaryBase,
-		recommendedOutput: resolveRetroOutputLayout(summaryBase, outputOptions)
+		run_dir: recommendedOutput.runDir,
+		recommendedOutput
 	};
 }
 //#endregion
@@ -1003,6 +1094,66 @@ function buildLoggingReviewMarkdown(scan) {
 	const missingStepArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.step_artifact).length;
 	const missingVerificationArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.verification_artifact).length;
 	const approximateDurations = scan.stageLogs.files.filter((entry) => entry.metadata.log_quality && typeof entry.metadata.log_quality === "object" && entry.metadata.log_quality.duration_exact === false).length;
+	if (scan.report_language.toLowerCase().startsWith("ru")) return `# Черновик анализа качества логирования
+
+## Резюме
+
+- Проанализировано логов: ${scan.stageLogs.count}
+- Зафиксировано process misses: ${scan.stageLogs.metrics.processMissesTotal}
+- Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
+- Missing review artifacts: ${missingReviewArtifacts}
+- Missing verification artifacts: ${missingVerificationArtifacts}
+- Missing step artifacts: ${missingStepArtifacts}
+- Логи только с approximate duration: ${approximateDurations}
+
+## Наблюдаемые сильные стороны
+
+- Structured metadata blocks позволяют автоматическое извлечение данных.
+- Review rounds и findings часто записываются.
+- Backlog actualization state моделируется явно.
+
+## Наблюдаемые gaps
+
+- Не все logs содержат полный набор closure artifacts.
+- Duration accuracy не всегда exact.
+- Skill usage не всегда фиксируется machine-readable способом.
+- Session-trace anchors не записываются напрямую в stage logs.
+- Tool-level summaries обычно отсутствуют.
+
+## Рекомендованные улучшения
+
+1. Добавить machine-readable trace anchors в каждый stage log:
+   - first relevant event id
+   - review request event ids
+   - final pass event id
+   - commit event id
+
+2. Добавить structured skill-usage fields:
+   - skills_used
+   - skill_issues
+   - skill_followups
+
+3. Добавить компактный tool summary:
+   - tools_called_total
+   - distinct_tools_used
+   - notable_failures
+   - retries_total
+
+4. Добавить time breakdown fields:
+   - active_work_minutes
+   - waiting_for_review_minutes
+   - reround_minutes
+   - closure_minutes
+
+5. Добавить явные incident ids и categories в сам log.
+
+## Validation ideas
+
+- Fail closure, если required stage log не содержит mandatory artifact links.
+- Warn, если review findings есть, но follow-up или reround не залогирован.
+- Warn, если backlog truth changed, но actualization evidence отсутствует.
+- Warn, если log фиксирует process miss, но remediation note отсутствует.
+`;
 	return `# Logging review draft
 
 ## Summary
@@ -1113,7 +1264,24 @@ var COMMON_OPTION_SPECS = [
 		name: "out-root",
 		type: "string",
 		valueLabel: "<dir>",
-		description: "Root directory for durable retrospective outputs."
+		description: "Root directory where the CLI chooses the canonical retrospective run directory."
+	},
+	{
+		name: "run-dir",
+		type: "string",
+		valueLabel: "<dir>",
+		description: "Exact canonical retrospective run directory to reuse."
+	},
+	{
+		name: "language",
+		type: "string",
+		valueLabel: "<language>",
+		description: "Operator language tag or name for report metadata and generated Markdown scaffolds."
+	},
+	{
+		name: "draft",
+		type: "boolean",
+		description: "Write an explicitly temporary draft bundle under out/retro-drafts."
 	}
 ];
 function parseOptions(argv, specs) {
@@ -1153,11 +1321,19 @@ function toCommonCommandInput(options) {
 	const artifactsDir = toOptionalString(options["artifacts-dir"]);
 	const skillsDir = toOptionalString(options["skills-dir"]);
 	const outRoot = toOptionalString(options["out-root"]);
+	const runDir = toOptionalString(options["run-dir"]);
+	const language = toOptionalLanguage(options.language);
+	const draft = toBoolean(options.draft);
+	if (runDir && outRoot) throw createUsageError("Use either --run-dir or --out-root, not both");
+	if (draft && (runDir || outRoot)) throw createUsageError("Use --draft only without --run-dir or --out-root");
 	if (session) input.session = session;
 	if (logsDir) input.logsDir = logsDir;
 	if (artifactsDir) input.artifactsDir = artifactsDir;
 	if (skillsDir) input.skillsDir = skillsDir;
 	if (outRoot) input.outRoot = outRoot;
+	if (runDir) input.runDir = runDir;
+	if (language) input.language = language;
+	if (draft) input.draft = draft;
 	return input;
 }
 function toRequiredString(value, message) {
@@ -1166,6 +1342,10 @@ function toRequiredString(value, message) {
 }
 function toOptionalString(value) {
 	return typeof value === "string" && value.length > 0 ? value : void 0;
+}
+function toOptionalLanguage(value) {
+	const language = toOptionalString(value)?.trim();
+	return language && language.length > 0 ? language : void 0;
 }
 function toBoolean(value) {
 	return value === true;
@@ -1183,7 +1363,23 @@ function resolveCommandOutputPath(summary, input, commandName) {
 	if (typeof explicitOut === "string" && explicitOut.length > 0) return explicitOut;
 	const layoutOptions = { commandName };
 	if (input.outRoot) layoutOptions.outRoot = input.outRoot;
+	if (input.runDir) layoutOptions.runDir = input.runDir;
+	if (input.draft) layoutOptions.draft = input.draft;
 	return resolveRetroOutputLayout(summary, layoutOptions).filePath;
+}
+function assertOutputOverrideIsExclusive(input) {
+	if (input.out && (input.runDir || input.outRoot || input.draft)) throw createUsageError("Use --out only as a low-level single-file override; do not combine it with --run-dir, --out-root, or --draft");
+}
+function assertMarkdownScaffoldLanguage(scan) {
+	const language = scan.report_language || "en";
+	const normalized = language.toLowerCase();
+	if (normalized === "en" || normalized.startsWith("en-") || normalized === "ru" || normalized.startsWith("ru-")) return;
+	throw createUsageError(`No deterministic Markdown scaffold is available for report_language "${language}". Use scan-summary.json and author the Markdown manually in the operator language, or add a renderer before running this command.`);
+}
+function loadScanSummaryFromRunDir(runDir) {
+	const scanSummaryPath = path.join(path.resolve(runDir), "scan-summary.json");
+	if (!fs.existsSync(scanSummaryPath)) throw createUsageError(`--run-dir requires an existing scan-summary.json: ${scanSummaryPath}`);
+	return JSON.parse(fs.readFileSync(scanSummaryPath, "utf8"));
 }
 //#endregion
 //#region src/commands/logging-review.ts
@@ -1192,6 +1388,7 @@ var LOGGING_REVIEW_COMMAND = {
 	summary: "Generate a logging-quality and improvement draft.",
 	usage: [
 		"node scripts/retro-cli.mjs logging-review --session <file>",
+		"node scripts/retro-cli.mjs logging-review --run-dir <dir>",
 		"node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out-root <dir>",
 		"node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out <file>"
 	],
@@ -1207,16 +1404,19 @@ var LOGGING_REVIEW_COMMAND = {
 		const input = { ...toCommonCommandInput(options) };
 		const out = toOptionalString(options.out);
 		if (out) input.out = out;
+		assertOutputOverrideIsExclusive(input);
 		return input;
 	},
 	run(input) {
-		const scan = buildScanSummary(input);
-		writeText(resolveCommandOutputPath(scan, input, "logging-review"), buildLoggingReviewMarkdown(scan));
+		const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
+		assertMarkdownScaffoldLanguage(scan);
+		writeText(resolveCommandOutputPath(scan, input, "logging-review"), buildLoggingReviewMarkdown(redactScanSummaryForPublicArtifact(scan)));
 	}
 };
 //#endregion
 //#region src/render/report-markdown.ts
 function buildReportMarkdown(scan, options) {
+	if (scan.report_language.toLowerCase().startsWith("ru")) return buildRussianReportMarkdown(scan, options);
 	const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ""}`;
 	const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
 	const incidentSections = scan.candidateIncidents.map((incident, index) => [
@@ -1321,6 +1521,111 @@ ${scopeAmbiguities}
 - This draft is heuristic and should be refined by reading the cited artifacts.
 `;
 }
+function buildRussianReportMarkdown(scan, options) {
+	const title = options.title ?? `Ретроанализ${options.phase ? `: ${options.phase}` : ""}`;
+	const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
+	const incidentSections = scan.candidateIncidents.map((incident, index) => [
+		`### R-${String(index + 1).padStart(2, "0")} - ${incident.title}`,
+		`- Серьезность: ${incident.severity}`,
+		`- Этап: ${incident.stage}`,
+		`- Доказательство: ${incident.evidence}`,
+		`- Наблюдение: ${incident.reason}`,
+		""
+	].join("\n")).join("\n");
+	const logFiles = scan.stageLogs.files.map((entry) => `- ${entry.filePath}`).join("\n") || "- none";
+	const skillFiles = scan.skills.map((skill) => `- ${skill.name}: ${skill.skillFile}`).join("\n") || "- none";
+	const scopePaths = scan.scope.touched_paths.map((entry) => `- ${entry}`).join("\n") || "- none";
+	const scopeArtifacts = scan.scope.referenced_artifacts.map((entry) => `- ${entry}`).join("\n") || "- none";
+	const scopeAmbiguities = scan.scope.scope_ambiguities.map((entry) => `- ${entry}`).join("\n") || "- none";
+	return `# ${title}
+
+## Краткое резюме
+
+- Этап: ${options.phase ?? "не указан"}
+- Trace сессии: ${scan.resolved.session ?? "не указан"}
+- Session id: ${scan.session.sessionId ?? "не указан"}
+- Проанализировано stage logs: ${scan.stageLogs.count}
+- Кандидатных инцидентов: ${scan.candidateIncidents.length}
+- Уникальных tools: ${Object.keys(scan.session.tools).length}
+- Уверенность scope: ${scan.scope.scope_confidence}
+- Примечание по качеству данных: ${scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent ? "Trace сессии и stage logs доступны." : "Один или несколько ключевых источников отсутствуют; уверенность снижена."}
+
+## Манифест доказательств
+
+### Логи этапов
+${logFiles}
+
+### Инструкции агентов
+${skillFiles}
+
+### Trace сессии
+- ${scan.resolved.session ?? "не указан"}
+
+### Scope, полученный из trace
+- Project root: ${scan.scope.project_root ?? "unknown"}
+- Backlog items: ${scan.scope.mentioned_backlog_items.join(", ") || "none"}
+- Features: ${scan.scope.mentioned_features.join(", ") || "none"}
+
+### Затронутые пути
+${scopePaths}
+
+### Упомянутые артефакты
+${scopeArtifacts}
+
+## Сводка timeline
+
+- Начало: ${scan.session.firstTimestamp ?? "unknown"}
+- Конец: ${scan.session.lastTimestamp ?? "unknown"}
+- Длительность, минут: ${scan.session.durationMinutes ?? "unknown"}
+- Прерванные или перезапущенные turns: ${scan.session.abortedTurns}
+- Длинные паузы: ${scan.session.longGaps}
+
+## Основные tools
+
+${formatList(topTools)}
+
+## Кандидатные инциденты
+
+${incidentSections || "Автоматически кандидатные инциденты не найдены."}
+
+## Метрики stage logs
+
+- Всего review rounds: ${scan.stageLogs.metrics.reviewRoundsTotal}
+- Всего review findings: ${scan.stageLogs.metrics.reviewFindingsTotal}
+- Всего process misses: ${scan.stageLogs.metrics.processMissesTotal}
+- Циклов с backlog actualization: ${scan.stageLogs.metrics.backlogActualizedCount}
+- Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
+
+## Предварительный анализ этапов
+
+${formatList(topEntries(scan.stageLogs.metrics.stages, 20).map(([stage, count]) => `${stage}: ${count} лог(ов)`))}
+
+## Предварительный анализ skills
+
+${formatList(topEntries(scan.stageLogs.metrics.skillsReferenced, 20).map(([skill, count]) => `${skill}: упомянут в ${count} лог(ах)`))}
+
+## Неоднозначности scope
+
+${scopeAmbiguities}
+
+## Рекомендуемые ручные проверки
+
+- Подтвердить каждый inferred incident по trace и stage log.
+- Остановить расширение scope, если неоднозначности выше не снимаются связанными артефактами.
+- Проверить rerounds и non-pass reviews на устранимые причины.
+- Проверить skill files, упомянутые в логах, на недостающие decision rules, устаревшие допущения и неоднозначность.
+- Проверить, влияла ли поздняя или отсутствующая backlog actualization на качество closure.
+- Отделить необходимую сложность от устранимого трения перед финализацией рекомендаций.
+
+## Ограничения качества данных
+
+- Session parse errors: ${scan.dataQuality.sessionParseErrors}
+- Trace сессии доступен: ${scan.dataQuality.sessionPresent}
+- Логи этапов доступны: ${scan.dataQuality.logsPresent}
+- Каталог инструкций агентов доступен: ${scan.dataQuality.skillCatalogPresent}
+- Этот draft эвристический; перед финализацией выводов нужно проверить цитируемые артефакты.
+`;
+}
 //#endregion
 //#region src/commands/report.ts
 var REPORT_COMMAND = {
@@ -1329,6 +1634,7 @@ var REPORT_COMMAND = {
 	usage: [
 		"node scripts/retro-cli.mjs report --session <file> --phase <name>",
 		"node scripts/retro-cli.mjs report --session <file> --out-root <dir>",
+		"node scripts/retro-cli.mjs report --run-dir <dir>",
 		"node scripts/retro-cli.mjs report --phase <name> --title <text> --out <file>"
 	],
 	options: [
@@ -1362,11 +1668,13 @@ var REPORT_COMMAND = {
 		const title = toOptionalString(options.title);
 		if (phase) input.phase = phase;
 		if (title) input.title = title;
+		assertOutputOverrideIsExclusive(input);
 		return input;
 	},
 	run(input) {
-		const scan = buildScanSummary(input);
-		writeText(resolveCommandOutputPath(scan, input, "report"), buildReportMarkdown(scan, input));
+		const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
+		assertMarkdownScaffoldLanguage(scan);
+		writeText(resolveCommandOutputPath(scan, input, "report"), buildReportMarkdown(redactScanSummaryForPublicArtifact(scan), input));
 	}
 };
 //#endregion
@@ -1377,6 +1685,7 @@ var SCAN_COMMAND = {
 	usage: [
 		"node scripts/retro-cli.mjs scan --session <file>",
 		"node scripts/retro-cli.mjs scan --session <file> --out-root <dir> --pretty",
+		"node scripts/retro-cli.mjs scan --session <file> --run-dir <dir> --language ru",
 		"node scripts/retro-cli.mjs scan --session <file> --out <file> --pretty"
 	],
 	options: [
@@ -1408,11 +1717,18 @@ var SCAN_COMMAND = {
 		};
 		const out = toOptionalString(options.out);
 		if (out) input.out = out;
+		assertOutputOverrideIsExclusive(input);
 		return input;
 	},
 	run(input) {
 		const summary = buildScanSummary(input);
-		writeJson(resolveCommandOutputPath(summary, input, "scan"), summary, input.pretty);
+		const outputPath = resolveCommandOutputPath(summary, input, "scan");
+		writeJson(outputPath, redactScanSummaryForPublicArtifact(summary), input.pretty);
+		return JSON.stringify({
+			run_dir: summary.run_dir,
+			scan_summary: outputPath,
+			report_language: summary.report_language
+		});
 	}
 };
 //#endregion
@@ -1423,6 +1739,7 @@ function buildSkillAuditMarkdown(scan) {
 		skillFile: "referenced via logs only",
 		description: ""
 	}));
+	if (scan.report_language.toLowerCase().startsWith("ru")) return buildRussianSkillAuditMarkdown(scan, skills);
 	const rows = skills.map((skill) => {
 		const references = scan.stageLogs.files.filter((entry) => stringFromUnknown(entry.metadata.skill, "") === skill.name).length;
 		const confidence = references > 0 ? "confirmed_used" : scan.scope.touched_paths.includes(skill.skillFile) ? "probably_used" : "implicitly_relevant";
@@ -1468,6 +1785,52 @@ ${rows}
 - Separate operator-specific constraints from actual skill defects.
 `;
 }
+function buildRussianSkillAuditMarkdown(scan, skills) {
+	const rows = skills.map((skill) => {
+		const references = scan.stageLogs.files.filter((entry) => stringFromUnknown(entry.metadata.skill, "") === skill.name).length;
+		const confidence = references > 0 ? "confirmed_used" : scan.scope.touched_paths.includes(skill.skillFile) ? "probably_used" : "implicitly_relevant";
+		const issueCount = scan.candidateIncidents.filter((incident) => incident.evidence.includes(".md")).length;
+		return `### Skill: ${skill.name}
+
+- Skill file: ${skill.skillFile}
+- Описание: ${skill.description || "n/a"}
+- Уверенность: ${confidence}
+- Прямые ссылки из логов: ${references}
+- Потенциальные friction signals: ${issueCount > 0 ? issueCount : "none automatically inferred"}
+- Ручные проверки:
+  - Были ли обязательные review steps явными?
+  - Были ли entry/exit criteria явными?
+  - Были ли неоднозначные исключения обработаны?
+  - Заставлял ли skill интерпретировать правила из разрозненных references?
+`;
+	}).join("\n");
+	return `# Черновик аудита инструкций агентов
+
+## Резюме
+
+- Проверено skills: ${skills.length}
+- Trace сессии доступен: ${scan.dataQuality.sessionPresent}
+- Логи этапов доступны: ${scan.dataQuality.logsPresent}
+
+## Находки по инструкциям
+
+${rows}
+
+## Cross-skill patterns для проверки
+
+- Неоднозначный review policy или review order
+- Недостающие decision tables для exceptions и edge cases
+- Недостающие examples для reround handling
+- Недостающие или слабые logging expectations
+- Устаревшие assumptions о tools, verification или closure
+
+## Следующие ручные проверки
+
+- Прочитать каждый skill file, который существенно влиял на phase.
+- Сопоставить rerounds и process misses с соответствующими skill steps.
+- Отделить operator-specific constraints от реальных skill defects.
+`;
+}
 //#endregion
 //#region src/commands/skill-audit.ts
 var SKILL_AUDIT_COMMAND = {
@@ -1475,6 +1838,7 @@ var SKILL_AUDIT_COMMAND = {
 	summary: "Generate a skill-focused Markdown draft.",
 	usage: [
 		"node scripts/retro-cli.mjs skill-audit --session <file> --skills-dir <dir>",
+		"node scripts/retro-cli.mjs skill-audit --run-dir <dir>",
 		"node scripts/retro-cli.mjs skill-audit --skills-dir <dir> --out-root <dir>",
 		"node scripts/retro-cli.mjs skill-audit --logs-dir <dir> --skills-dir <dir> --out <file>"
 	],
@@ -1490,11 +1854,13 @@ var SKILL_AUDIT_COMMAND = {
 		const input = { ...toCommonCommandInput(options) };
 		const out = toOptionalString(options.out);
 		if (out) input.out = out;
+		assertOutputOverrideIsExclusive(input);
 		return input;
 	},
 	run(input) {
-		const scan = buildScanSummary(input);
-		writeText(resolveCommandOutputPath(scan, input, "skill-audit"), buildSkillAuditMarkdown(scan));
+		const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
+		assertMarkdownScaffoldLanguage(scan);
+		writeText(resolveCommandOutputPath(scan, input, "skill-audit"), buildSkillAuditMarkdown(redactScanSummaryForPublicArtifact(scan)));
 	}
 };
 //#endregion
@@ -1524,7 +1890,7 @@ ${COMMANDS.map((command) => `  ${command.name.padEnd(15)}${command.summary}`).jo
 
 Notes:
   Generated reports are drafts; validate them against the cited artifacts.
-  Commands write output files and stay quiet on stdout unless help or version is requested.
+  scan prints the canonical run_dir on stdout; other commands write output files and stay quiet unless help or version is requested.
 `;
 }
 function buildCommandHelpOutput(command) {
@@ -1615,7 +1981,8 @@ async function runCli(argv, cliIo, version, dependencies = {}) {
 			return 0;
 		}
 		const input = command.parseArgs(intent.args);
-		await command.run(input);
+		const output = await command.run(input);
+		if (typeof output === "string" && output.length > 0) writeLine(cliIo.stdout, output);
 		return 0;
 	} catch (error) {
 		const normalized = normalizeCliError(error);

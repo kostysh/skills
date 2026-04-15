@@ -1,8 +1,9 @@
 import fs from 'node:fs';
+import path from 'node:path';
 
 import { resolveRetroOutputLayout, safeMkdirForFile } from '../core/shared.ts';
 import { createUsageError } from '../cli/errors.ts';
-import type { CommonCommandInput, OptionSpec } from './types.ts';
+import type { CommonCommandInput, OptionSpec, ReportLanguage } from './types.ts';
 import type { ScanSummary } from '../core/types.ts';
 import type { RetroOutputCommandName } from '../core/shared.ts';
 
@@ -37,7 +38,24 @@ export const COMMON_OPTION_SPECS: OptionSpec[] = [
     name: 'out-root',
     type: 'string',
     valueLabel: '<dir>',
-    description: 'Root directory for durable retrospective outputs.',
+    description: 'Root directory where the CLI chooses the canonical retrospective run directory.',
+  },
+  {
+    name: 'run-dir',
+    type: 'string',
+    valueLabel: '<dir>',
+    description: 'Exact canonical retrospective run directory to reuse.',
+  },
+  {
+    name: 'language',
+    type: 'string',
+    valueLabel: '<language>',
+    description: 'Operator language tag or name for report metadata and generated Markdown scaffolds.',
+  },
+  {
+    name: 'draft',
+    type: 'boolean',
+    description: 'Write an explicitly temporary draft bundle under out/retro-drafts.',
   },
 ];
 
@@ -102,6 +120,16 @@ export function toCommonCommandInput(options: ParsedOptions): CommonCommandInput
   const artifactsDir = toOptionalString(options['artifacts-dir']);
   const skillsDir = toOptionalString(options['skills-dir']);
   const outRoot = toOptionalString(options['out-root']);
+  const runDir = toOptionalString(options['run-dir']);
+  const language = toOptionalLanguage(options.language);
+  const draft = toBoolean(options.draft);
+
+  if (runDir && outRoot) {
+    throw createUsageError('Use either --run-dir or --out-root, not both');
+  }
+  if (draft && (runDir || outRoot)) {
+    throw createUsageError('Use --draft only without --run-dir or --out-root');
+  }
 
   if (session) {
     input.session = session;
@@ -118,6 +146,15 @@ export function toCommonCommandInput(options: ParsedOptions): CommonCommandInput
   if (outRoot) {
     input.outRoot = outRoot;
   }
+  if (runDir) {
+    input.runDir = runDir;
+  }
+  if (language) {
+    input.language = language;
+  }
+  if (draft) {
+    input.draft = draft;
+  }
 
   return input;
 }
@@ -131,6 +168,11 @@ export function toRequiredString(value: string | boolean | undefined, message: s
 
 export function toOptionalString(value: string | boolean | undefined): string | undefined {
   return typeof value === 'string' && value.length > 0 ? value : undefined;
+}
+
+export function toOptionalLanguage(value: string | boolean | undefined): ReportLanguage | undefined {
+  const language = toOptionalString(value)?.trim();
+  return language && language.length > 0 ? language : undefined;
 }
 
 export function toBoolean(value: string | boolean | undefined): boolean {
@@ -157,12 +199,55 @@ export function resolveCommandOutputPath(
     return explicitOut;
   }
 
-  const layoutOptions: { commandName: RetroOutputCommandName; outRoot?: string } = {
+  const layoutOptions: {
+    commandName: RetroOutputCommandName;
+    outRoot?: string;
+    runDir?: string;
+    draft?: boolean;
+  } = {
     commandName,
   };
   if (input.outRoot) {
     layoutOptions.outRoot = input.outRoot;
   }
+  if (input.runDir) {
+    layoutOptions.runDir = input.runDir;
+  }
+  if (input.draft) {
+    layoutOptions.draft = input.draft;
+  }
 
   return resolveRetroOutputLayout(summary, layoutOptions).filePath;
+}
+
+export function assertOutputOverrideIsExclusive(input: CommonCommandInput & { out?: string }): void {
+  if (input.out && (input.runDir || input.outRoot || input.draft)) {
+    throw createUsageError('Use --out only as a low-level single-file override; do not combine it with --run-dir, --out-root, or --draft');
+  }
+}
+
+export function assertMarkdownScaffoldLanguage(scan: ScanSummary): void {
+  const language = scan.report_language || 'en';
+  const normalized = language.toLowerCase();
+  if (
+    normalized === 'en' ||
+    normalized.startsWith('en-') ||
+    normalized === 'ru' ||
+    normalized.startsWith('ru-')
+  ) {
+    return;
+  }
+
+  throw createUsageError(
+    `No deterministic Markdown scaffold is available for report_language "${language}". Use scan-summary.json and author the Markdown manually in the operator language, or add a renderer before running this command.`,
+  );
+}
+
+export function loadScanSummaryFromRunDir(runDir: string): ScanSummary {
+  const scanSummaryPath = path.join(path.resolve(runDir), 'scan-summary.json');
+  if (!fs.existsSync(scanSummaryPath)) {
+    throw createUsageError(`--run-dir requires an existing scan-summary.json: ${scanSummaryPath}`);
+  }
+
+  return JSON.parse(fs.readFileSync(scanSummaryPath, 'utf8')) as ScanSummary;
 }

@@ -8,6 +8,8 @@ import { summarizeSkills } from './summarize-skills.ts';
 import type { ScanSourceOptions, ScanSummary } from './types.ts';
 
 export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
+  const operatorLanguage = args.language ?? 'und';
+  const reportLanguage = args.language ?? 'en';
   const sessionSummary = summarizeSession(args.session);
   const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
   const resolvedLogsDir =
@@ -23,14 +25,19 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
 
   const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
 
-  const summaryBase: Omit<ScanSummary, 'recommendedOutput'> = {
+  const summaryBase: Omit<ScanSummary, 'recommendedOutput' | 'run_dir'> = {
     generatedAt: new Date().toISOString(),
+    operator_language: operatorLanguage,
+    report_language: reportLanguage,
     inputs: {
       session: args.session ?? null,
       logsDir: args.logsDir ?? null,
       artifactsDir: args.artifactsDir ?? null,
       skillsDir: args.skillsDir ?? null,
       outRoot: args.outRoot ?? null,
+      runDir: args.runDir ?? null,
+      language: args.language ?? null,
+      draft: args.draft ?? false,
     },
     resolved: {
       session: args.session ?? null,
@@ -76,15 +83,24 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
     candidateIncidents,
   };
 
-  const outputOptions: { commandName: 'scan'; outRoot?: string } = {
+  const outputOptions: { commandName: 'scan'; outRoot?: string; runDir?: string; draft?: boolean } = {
     commandName: 'scan',
   };
   if (args.outRoot) {
     outputOptions.outRoot = args.outRoot;
   }
+  if (args.runDir) {
+    outputOptions.runDir = args.runDir;
+  }
+  if (args.draft) {
+    outputOptions.draft = args.draft;
+  }
+
+  const recommendedOutput = resolveRetroOutputLayout(summaryBase as ScanSummary, outputOptions);
 
   return {
     ...summaryBase,
-    recommendedOutput: resolveRetroOutputLayout(summaryBase as ScanSummary, outputOptions),
+    run_dir: recommendedOutput.runDir,
+    recommendedOutput,
   };
 }

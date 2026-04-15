@@ -1,7 +1,11 @@
 import { buildScanSummary } from '../core/build-scan-summary.ts';
+import { redactScanSummaryForPublicArtifact } from '../core/shared.ts';
 import { buildReportMarkdown } from '../render/report-markdown.ts';
 import {
   COMMON_OPTION_SPECS,
+  assertMarkdownScaffoldLanguage,
+  assertOutputOverrideIsExclusive,
+  loadScanSummaryFromRunDir,
   parseOptions,
   resolveCommandOutputPath,
   toCommonCommandInput,
@@ -16,6 +20,7 @@ export const REPORT_COMMAND: CommandDefinition<ReportCommandInput> = {
   usage: [
     'node scripts/retro-cli.mjs report --session <file> --phase <name>',
     'node scripts/retro-cli.mjs report --session <file> --out-root <dir>',
+    'node scripts/retro-cli.mjs report --run-dir <dir>',
     'node scripts/retro-cli.mjs report --phase <name> --title <text> --out <file>',
   ],
   options: [
@@ -60,11 +65,15 @@ export const REPORT_COMMAND: CommandDefinition<ReportCommandInput> = {
     if (title) {
       input.title = title;
     }
+    assertOutputOverrideIsExclusive(input);
     return input;
   },
   run(input) {
-    const scan = buildScanSummary(input);
+    const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
+    assertMarkdownScaffoldLanguage(scan);
     const outputPath = resolveCommandOutputPath(scan, input, 'report');
-    writeText(outputPath, buildReportMarkdown(scan, input));
+    const publicScan = redactScanSummaryForPublicArtifact(scan);
+    writeText(outputPath, buildReportMarkdown(publicScan, input));
+    return undefined;
   },
 };

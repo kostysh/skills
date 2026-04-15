@@ -157,9 +157,22 @@ Within the root, keep every analysis under `<scope-slug>/<run-slug>/` so old and
 - `skill-audit.md`
 - `logging-review.md`
 
+For a retrospective of one session trace, the default `<scope-slug>` is `session-<short-session-id>`. Use a feature semantic slug only when the operator explicitly asks for a feature-scoped retrospective or when one analysis intentionally combines multiple session traces for one feature.
+
+The first `scan` that writes a bundle establishes the canonical run directory. Do not create a second semantic bundle after that scan unless the operator explicitly requested a new run.
+
 Treat `--out <file>` as a low-level override, not the normal workflow.
+Treat `--out-root <dir>` as a root only: the CLI chooses and reports the canonical run directory under it.
+Treat `--run-dir <dir>` as the exact canonical run directory to reuse for follow-up commands.
+Treat `--draft` as an explicitly temporary bundle mode.
 Treat auto-discovered paths from `session_meta.cwd` and explicit evidence hints such as `--artifacts-dir` or `--logs-dir` only as read-side inputs; they must not silently redefine the retrospective root.
 Treat `--artifacts-dir` only as an evidence hint; it must not silently redefine the retrospective root.
+
+### Output path privacy
+
+Do not persist absolute local runtime paths in durable retrospective artifacts. Final Markdown reports and committed `scan-summary.json` files must use display paths such as `<project-root>/...`, `<skills-root>/...`, `<session-trace:<short-session-id>>`, or `<absolute-path:redacted>/...`.
+
+The CLI may print exact operational paths to stdout so the agent can immediately pass `--run-dir` to follow-up commands. Do not copy that raw stdout into committed reports.
 
 ### 2) Build the evidence manifest
 
@@ -353,6 +366,8 @@ Use the report templates in:
 
 A findings-first draft is acceptable before full template expansion. Do not force the full template before the scope is confirmed.
 
+Write final Markdown reports in the operator language. Keep English only for direct quotes, commands, paths, identifiers, JSON keys, and tool or skill names. When using the CLI, pass `--language <language>` to the first `scan`; follow-up commands with `--run-dir` inherit the report language from `scan-summary.json`. The operator language is not limited to a fixed list. If no deterministic Markdown scaffold exists for that language, the CLI must not silently write a report in another language; author the Markdown manually in the operator language or add a renderer before rerunning the generator command.
+
 ## Recommended workflow with the CLI
 
 Minimum viable workflow:
@@ -366,10 +381,11 @@ Minimum viable workflow:
 
 When Node.js is available, use:
 
-- `scripts/retro-cli.mjs scan --session <file>` to inventory evidence and create or extend the current retrospective bundle;
-- `scripts/retro-cli.mjs report --session <file> ...` to add `retrospective-report.md` to that bundle;
-- `scripts/retro-cli.mjs logging-review --session <file> ...` to add `logging-review.md`;
-- `scripts/retro-cli.mjs skill-audit --session <file> ...` to add `skill-audit.md`.
+- `scripts/retro-cli.mjs scan --session <file> --language <language>` to inventory evidence and create the canonical retrospective bundle;
+- read the exact `run_dir` from stdout after `scan`; treat `scan-summary.json` paths as display-safe report content, not as command input;
+- `scripts/retro-cli.mjs report --run-dir <run_dir> ...` to add `retrospective-report.md` to that same bundle;
+- `scripts/retro-cli.mjs logging-review --run-dir <run_dir>` to add `logging-review.md`;
+- `scripts/retro-cli.mjs skill-audit --run-dir <run_dir>` to add `skill-audit.md`.
 
 Read the CLI reference first:
 

@@ -42,7 +42,7 @@ ${commandLines}
 
 Notes:
   Generated reports are drafts; validate them against the cited artifacts.
-  Commands write output files and stay quiet on stdout unless help or version is requested.
+  scan prints the canonical run_dir on stdout; other commands write output files and stay quiet unless help or version is requested.
 `;
 }
 

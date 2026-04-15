@@ -32,6 +32,22 @@ function runBuiltCli(
   return result;
 }
 
+function parseScanStdout(stdout: string): {
+  run_dir: string;
+  scan_summary: string;
+  report_language: string;
+} {
+  return JSON.parse(stdout) as {
+    run_dir: string;
+    scan_summary: string;
+    report_language: string;
+  };
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+}
+
 async function createTempDir(): Promise<string> {
   return mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
 }
@@ -134,6 +150,7 @@ void test('global help and command help are available on the built CLI', () => {
   assert.equal(scanHelp.stderr, '');
   assert.match(scanHelp.stdout, /^ {2}node scripts\/retro-cli\.mjs scan --session <file>$/mu);
   assert.match(scanHelp.stdout, /scan --session <file> --out-root <dir> --pretty/u);
+  assert.match(scanHelp.stdout, /scan --session <file> --run-dir <dir> --language ru/u);
   assert.match(scanHelp.stdout, /scan --session <file> --out <file> --pretty/u);
   assert.doesNotMatch(
     scanHelp.stdout,
@@ -162,15 +179,71 @@ void test('scan writes a JSON summary file from fixture inputs', async () => {
     ]);
 
     assert.equal(result.status, 0);
-    assert.equal(result.stdout, '');
+    const scanOutput = parseScanStdout(result.stdout);
+    assert.equal(scanOutput.scan_summary, outputPath);
+    assert.equal(scanOutput.report_language, 'en');
     assert.equal(result.stderr, '');
 
-    const parsed = JSON.parse(await readFile(outputPath, 'utf8')) as {
+    const rawSummary = await readFile(outputPath, 'utf8');
+    assert.doesNotMatch(rawSummary, new RegExp(escapeRegExp(FIXTURES_DIR), 'u'));
+    assert.match(rawSummary, /<session-trace:019d7490>/u);
+    assert.match(rawSummary, /<project-root>/u);
+
+    const parsed = JSON.parse(rawSummary) as {
       stageLogs: { count: number };
       candidateIncidents: unknown[];
     };
     assert.equal(parsed.stageLogs.count, 1);
     assert.equal(parsed.candidateIncidents.length > 0, true);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('scan accepts arbitrary operator language labels', async () => {
+  const tempDir = await createTempDir();
+  const outputPath = path.join(tempDir, 'scan-summary.json');
+
+  try {
+    const result = runBuiltCli([
+      'scan',
+      '--session',
+      fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
+      '--logs-dir',
+      fixturePath('artifacts', '.dossier', 'logs'),
+      '--artifacts-dir',
+      fixturePath('artifacts'),
+      '--out',
+      outputPath,
+      '--language',
+      'italiano',
+    ]);
+
+    assert.equal(result.status, 0);
+    const scanOutput = parseScanStdout(result.stdout);
+    assert.equal(scanOutput.report_language, 'italiano');
+
+    const parsed = JSON.parse(await readFile(outputPath, 'utf8')) as {
+      operator_language: string;
+      report_language: string;
+    };
+    assert.equal(parsed.operator_language, 'italiano');
+    assert.equal(parsed.report_language, 'italiano');
+
+    const reportResult = runBuiltCli([
+      'report',
+      '--session',
+      fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
+      '--language',
+      'italiano',
+      '--out',
+      path.join(tempDir, 'retrospective-report.md'),
+    ]);
+    assert.notEqual(reportResult.status, 0);
+    assert.match(
+      reportResult.stderr,
+      /No deterministic Markdown scaffold is available for report_language "italiano"/u,
+    );
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
@@ -199,14 +272,15 @@ void test('scan returns a usage error when --session is omitted', async () => {
 });
 
 void test('scan discovers standard evidence directories from session_meta.cwd after the agent supplies the trace file', async () => {
-  const { tempDir, projectRoot, sessionPath } = await createDiscoveryFixture();
+  const { tempDir, sessionPath } = await createDiscoveryFixture();
   const outputPath = path.join(tempDir, 'scan-summary.json');
 
   try {
     const result = runBuiltCli(['scan', '--session', sessionPath, '--out', outputPath, '--pretty']);
 
     assert.equal(result.status, 0);
-    assert.equal(result.stdout, '');
+    const scanOutput = parseScanStdout(result.stdout);
+    assert.equal(scanOutput.scan_summary, outputPath);
     assert.equal(result.stderr, '');
 
     const parsed = JSON.parse(await readFile(outputPath, 'utf8')) as {
@@ -220,14 +294,14 @@ void test('scan discovers standard evidence directories from session_meta.cwd af
       };
     };
 
-    assert.equal(parsed.resolved.session, sessionPath);
-    assert.equal(parsed.resolved.logsDir, path.join(projectRoot, '.dossier', 'logs'));
-    assert.equal(parsed.scope.project_root, projectRoot);
+    assert.equal(parsed.resolved.session, '<session-trace:019d7490>');
+    assert.equal(parsed.resolved.logsDir, '<project-root>/.dossier/logs');
+    assert.equal(parsed.scope.project_root, '<project-root>');
     assert.deepEqual(parsed.scope.mentioned_backlog_items, ['CF-0016']);
     assert.deepEqual(parsed.scope.mentioned_features, ['F-0016']);
     assert.equal(parsed.stageLogs.count, 1);
     assert.deepEqual(parsed.scope.candidate_stage_logs, [
-      path.join(projectRoot, '.dossier', 'logs', 'implementation.md'),
+      '<project-root>/.dossier/logs/implementation.md',
     ]);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
@@ -265,6 +339,8 @@ void test('report writes a markdown draft from fixture inputs', async () => {
     assert.match(markdown, /^# Retrospective: implementation/mu);
     assert.match(markdown, /^## Candidate incidents$/mu);
     assert.match(markdown, /Backlog actualization deferred/mu);
+    assert.doesNotMatch(markdown, new RegExp(escapeRegExp(FIXTURES_DIR), 'u'));
+    assert.match(markdown, /<project-root>/u);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
@@ -277,7 +353,7 @@ void test('scan and report reuse the same durable retrospective run directory fr
     projectRoot,
     '.dossier',
     'retro',
-    'cf-0016',
+    'session-019d7490',
     'retrospective-20260410-095900-019d7490',
   );
   const rerunDir = `${baseRunDir}-r2`;
@@ -285,6 +361,7 @@ void test('scan and report reuse the same durable retrospective run directory fr
   try {
     const firstScan = runBuiltCli(['scan', '--session', sessionPath], { cwd: nestedWorkdir });
     assert.equal(firstScan.status, 0);
+    assert.equal(parseScanStdout(firstScan.stdout).run_dir, baseRunDir);
 
     const firstScanOutput = path.join(baseRunDir, 'scan-summary.json');
     await readFile(firstScanOutput, 'utf8');
@@ -301,6 +378,7 @@ void test('scan and report reuse the same durable retrospective run directory fr
 
     const secondScan = runBuiltCli(['scan', '--session', sessionPath], { cwd: nestedWorkdir });
     assert.equal(secondScan.status, 0);
+    assert.equal(parseScanStdout(secondScan.stdout).run_dir, rerunDir);
     await readFile(path.join(rerunDir, 'scan-summary.json'), 'utf8');
 
     const secondReport = runBuiltCli(
@@ -309,6 +387,67 @@ void test('scan and report reuse the same durable retrospective run directory fr
     );
     assert.equal(secondReport.status, 0);
     await readFile(path.join(rerunDir, 'retrospective-report.md'), 'utf8');
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('run-dir keeps all retrospective bundle files in one canonical directory', async () => {
+  const { tempDir, projectRoot, sessionPath } = await createDiscoveryFixture();
+  const nestedWorkdir = path.join(projectRoot, 'src');
+  const runDir = path.join(projectRoot, '.dossier', 'retro', 'session-019d7490', 'manual-run');
+
+  try {
+    const scan = runBuiltCli(
+      ['scan', '--session', sessionPath, '--run-dir', runDir, '--language', 'ru', '--pretty'],
+      { cwd: nestedWorkdir },
+    );
+    assert.equal(scan.status, 0);
+    assert.equal(parseScanStdout(scan.stdout).run_dir, runDir);
+
+    const scanSummary = JSON.parse(
+      await readFile(path.join(runDir, 'scan-summary.json'), 'utf8'),
+    ) as {
+      run_dir: string;
+      operator_language: string;
+      report_language: string;
+    };
+    assert.equal(scanSummary.run_dir, '<project-root>/.dossier/retro/session-019d7490/manual-run');
+    assert.equal(scanSummary.operator_language, 'ru');
+    assert.equal(scanSummary.report_language, 'ru');
+
+    const report = runBuiltCli(['report', '--run-dir', runDir, '--phase', 'implementation'], {
+      cwd: nestedWorkdir,
+    });
+    assert.equal(report.status, 0);
+    assert.equal(report.stdout, '');
+
+    const skillAudit = runBuiltCli(['skill-audit', '--run-dir', runDir], { cwd: nestedWorkdir });
+    assert.equal(skillAudit.status, 0);
+
+    const loggingReview = runBuiltCli(['logging-review', '--run-dir', runDir], {
+      cwd: nestedWorkdir,
+    });
+    assert.equal(loggingReview.status, 0);
+
+    const markdown = await readFile(path.join(runDir, 'retrospective-report.md'), 'utf8');
+    assert.match(markdown, /^# Ретроанализ/mu);
+    await readFile(path.join(runDir, 'skill-audit.md'), 'utf8');
+    await readFile(path.join(runDir, 'logging-review.md'), 'utf8');
+
+    await assert.rejects(
+      readFile(
+        path.join(
+          projectRoot,
+          '.dossier',
+          'retro',
+          'session-019d7490',
+          'manual-run-r2',
+          'scan-summary.json',
+        ),
+        'utf8',
+      ),
+    );
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
@@ -325,7 +464,7 @@ void test('scan falls back to out/retro when the project root is not dossier-man
       projectRoot,
       'out',
       'retro',
-      'cf-0016',
+      'session-019d7490',
       'retrospective-20260410-095900-019d7490',
       'scan-summary.json',
     );
@@ -333,7 +472,7 @@ void test('scan falls back to out/retro when the project root is not dossier-man
       recommendedOutput: { mode: string; root: string };
     };
     assert.equal(parsed.recommendedOutput.mode, 'fallback-default');
-    assert.equal(parsed.recommendedOutput.root, path.join(projectRoot, 'out', 'retro'));
+    assert.equal(parsed.recommendedOutput.root, '<project-root>/out/retro');
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
@@ -345,7 +484,7 @@ void test('scan does not derive fallback out/retro from session_meta.cwd when no
     SKILL_DIR,
     'out',
     'retro',
-    'cf-0016',
+    'session-019d7490',
     'retrospective-20260410-095900-019d7490',
     'scan-summary.json',
   );
@@ -360,7 +499,10 @@ void test('scan does not derive fallback out/retro from session_meta.cwd when no
       recommendedOutput: { mode: string; root: string };
     };
     assert.equal(parsed.recommendedOutput.mode, 'fallback-default');
-    assert.equal(parsed.recommendedOutput.root, path.join(SKILL_DIR, 'out', 'retro'));
+    assert.equal(
+      parsed.recommendedOutput.root,
+      '<skills-root>/retrospective-phase-analysis/out/retro',
+    );
 
     await assert.rejects(
       readFile(
@@ -368,7 +510,7 @@ void test('scan does not derive fallback out/retro from session_meta.cwd when no
           projectRoot,
           'out',
           'retro',
-          'cf-0016',
+          'session-019d7490',
           'retrospective-20260410-095900-019d7490',
           'scan-summary.json',
         ),

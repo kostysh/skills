@@ -1,6 +1,8 @@
 import { buildScanSummary } from '../core/build-scan-summary.ts';
+import { redactScanSummaryForPublicArtifact } from '../core/shared.ts';
 import {
   COMMON_OPTION_SPECS,
+  assertOutputOverrideIsExclusive,
   parseOptions,
   resolveCommandOutputPath,
   toBoolean,
@@ -17,6 +19,7 @@ export const SCAN_COMMAND: CommandDefinition<ScanCommandInput> = {
   usage: [
     'node scripts/retro-cli.mjs scan --session <file>',
     'node scripts/retro-cli.mjs scan --session <file> --out-root <dir> --pretty',
+    'node scripts/retro-cli.mjs scan --session <file> --run-dir <dir> --language ru',
     'node scripts/retro-cli.mjs scan --session <file> --out <file> --pretty',
   ],
   options: [
@@ -50,11 +53,18 @@ export const SCAN_COMMAND: CommandDefinition<ScanCommandInput> = {
     if (out) {
       input.out = out;
     }
+    assertOutputOverrideIsExclusive(input);
     return input;
   },
   run(input) {
     const summary = buildScanSummary(input);
     const outputPath = resolveCommandOutputPath(summary, input, 'scan');
-    writeJson(outputPath, summary, input.pretty);
+    const publicSummary = redactScanSummaryForPublicArtifact(summary);
+    writeJson(outputPath, publicSummary, input.pretty);
+    return JSON.stringify({
+      run_dir: summary.run_dir,
+      scan_summary: outputPath,
+      report_language: summary.report_language,
+    });
   },
 };

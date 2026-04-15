@@ -1,7 +1,11 @@
 import { buildScanSummary } from '../core/build-scan-summary.ts';
+import { redactScanSummaryForPublicArtifact } from '../core/shared.ts';
 import { buildLoggingReviewMarkdown } from '../render/logging-review-markdown.ts';
 import {
   COMMON_OPTION_SPECS,
+  assertMarkdownScaffoldLanguage,
+  assertOutputOverrideIsExclusive,
+  loadScanSummaryFromRunDir,
   parseOptions,
   resolveCommandOutputPath,
   toCommonCommandInput,
@@ -15,6 +19,7 @@ export const LOGGING_REVIEW_COMMAND: CommandDefinition<LoggingReviewCommandInput
   summary: 'Generate a logging-quality and improvement draft.',
   usage: [
     'node scripts/retro-cli.mjs logging-review --session <file>',
+    'node scripts/retro-cli.mjs logging-review --run-dir <dir>',
     'node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out-root <dir>',
     'node scripts/retro-cli.mjs logging-review --logs-dir <dir> --out <file>',
   ],
@@ -40,11 +45,15 @@ export const LOGGING_REVIEW_COMMAND: CommandDefinition<LoggingReviewCommandInput
     if (out) {
       input.out = out;
     }
+    assertOutputOverrideIsExclusive(input);
     return input;
   },
   run(input) {
-    const scan = buildScanSummary(input);
+    const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
+    assertMarkdownScaffoldLanguage(scan);
     const outputPath = resolveCommandOutputPath(scan, input, 'logging-review');
-    writeText(outputPath, buildLoggingReviewMarkdown(scan));
+    const publicScan = redactScanSummaryForPublicArtifact(scan);
+    writeText(outputPath, buildLoggingReviewMarkdown(publicScan));
+    return undefined;
   },
 };

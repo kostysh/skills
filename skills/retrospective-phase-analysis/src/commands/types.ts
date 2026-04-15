@@ -19,7 +19,7 @@ export interface CommandDefinition<TInput> {
   options: OptionSpec[];
   notes?: string[];
   parseArgs(argv: string[]): TInput;
-  run(input: TInput): Promise<void> | void;
+  run(input: TInput): Promise<string | undefined> | string | undefined;
 }
 
 export type AnyCommandDefinition = CommandDefinition<unknown>;
@@ -30,6 +30,9 @@ export interface CommonCommandInput {
   artifactsDir?: string;
   skillsDir?: string;
   outRoot?: string;
+  runDir?: string;
+  language?: ReportLanguage;
+  draft?: boolean;
 }
 
 export interface ScanCommandInput extends CommonCommandInput {
@@ -50,3 +53,5 @@ export interface SkillAuditCommandInput extends CommonCommandInput {
 export interface LoggingReviewCommandInput extends CommonCommandInput {
   out?: string;
 }
+
+export type ReportLanguage = string;

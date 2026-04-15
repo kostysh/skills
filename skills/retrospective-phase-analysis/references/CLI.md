@@ -26,6 +26,11 @@ node scripts/retro-cli.mjs scan \
   --session /path/to/rollout.jsonl \
   --out-root /path/to/analysis-root \
   --pretty
+
+node scripts/retro-cli.mjs scan \
+  --session /path/to/rollout.jsonl \
+  --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3 \
+  --language ru
 ```
 
 Outputs:
@@ -40,11 +45,31 @@ Outputs:
 - process-miss metrics
 - candidate incidents scoped to the analyzed trace and linked stage logs
 - data-quality notes
+- `run_dir`, `operator_language`, and `report_language`
+
+`scan` also prints a compact JSON line to stdout with `run_dir`, `scan_summary`, and `report_language`.
+
+Persisted output privacy:
+
+- `scan-summary.json` and generated Markdown reports redact absolute local runtime paths.
+- Expected display forms are `<project-root>/...`, `<skills-root>/...`, `<session-trace:<short-session-id>>`, and `<absolute-path:redacted>/...`.
+- The compact stdout line may contain exact operational paths for immediate follow-up commands; do not copy raw stdout into committed retrospective artifacts.
 
 The agent must resolve `session_id` and find the canonical trace file before calling the CLI. If `--logs-dir` or `--artifacts-dir` is omitted, `scan` tries the standard directories derived from `session_meta.cwd` after the trace file is provided.
 If `session_meta.cwd` is missing or unreliable, resolve a confirmed `project root` first. Do not pass guessed `--logs-dir` or `--artifacts-dir` values just to make the command run.
 Auto-discovered directories from `session_meta.cwd` are read-side hints only. Explicit `--artifacts-dir` and `--logs-dir` are also read-side hints. None of them redefine the durable output root.
 Without `--out`, commands write into a durable bundle under `.dossier/retro/<scope>/<run>/` when the current working directory or one of its ancestors is dossier-managed. Otherwise they fall back to `out/retro/<scope>/<run>/` relative to the current working directory.
+
+Output modes:
+
+- `--out-root <dir>`: the CLI chooses the canonical run directory under this root and reports it as `run_dir`.
+- `--run-dir <dir>`: the caller provides the exact canonical run directory; follow-up commands write into this directory and do not create sibling bundles.
+- `--out <file>`: low-level one-file override; do not use for the normal bundle workflow.
+- `--draft`: explicitly temporary auto draft under `out/retro-drafts`.
+
+For a retrospective of one session trace, the default scope is `session-<short-session-id>`. A feature semantic scope should be used only when the operator explicitly asks for a feature-scoped retrospective or when one analysis combines multiple session traces for one feature.
+
+The first `scan` that writes a bundle establishes the canonical run directory. Do not create a second bundle after that scan unless the operator explicitly requested a new run.
 
 ### `report`
 
@@ -57,8 +82,7 @@ node scripts/retro-cli.mjs report \
   --title "Retrospective: F-0016 implementation"
 
 node scripts/retro-cli.mjs report \
-  --session /path/to/rollout.jsonl \
-  --out /path/to/retrospective-report.md
+  --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3
 ```
 
 ### `skill-audit`
@@ -67,7 +91,7 @@ Generate a skill-focused Markdown draft.
 
 ```bash
 node scripts/retro-cli.mjs skill-audit \
-  --session /path/to/rollout.jsonl \
+  --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3 \
   --skills-dir /path/to/skills
 ```
 
@@ -77,7 +101,7 @@ Generate a logging-quality and improvement draft.
 
 ```bash
 node scripts/retro-cli.mjs logging-review \
-  --session /path/to/rollout.jsonl
+  --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3
 ```
 
 ## Supported options
@@ -89,9 +113,20 @@ node scripts/retro-cli.mjs logging-review \
 - `--phase <name>`: optional phase label for the report
 - `--title <text>`: title override
 - `--out <file>`: exact output file override
-- `--out-root <dir>`: override the retrospective root directory
+- `--out-root <dir>`: root where the CLI chooses the canonical retrospective run directory
+- `--run-dir <dir>`: exact canonical retrospective run directory to reuse
+- `--language <language>`: operator language tag or name for report metadata and generated Markdown scaffolds
+- `--draft`: write an explicitly temporary draft bundle
 - `--pretty`: pretty-print JSON for `scan`
 - `--help`: show command help
+
+Language rule:
+
+- Pass the operator language to `scan`, for example `--language ru`, `--language it`, or `--language "Italian"`.
+- `scan-summary.json` records `operator_language` and `report_language`.
+- `report`, `skill-audit`, and `logging-review` inherit language from `scan-summary.json` when invoked with `--run-dir`.
+- Markdown reports should be in the operator language; English is acceptable for direct quotes, commands, paths, identifiers, JSON keys, and tool or skill names.
+- The CLI can only provide deterministic scaffolds. If no scaffold exists for the requested operator language, generator commands must fail instead of silently writing Markdown in another language. In that case, use `scan-summary.json` and author the final Markdown manually in the operator language, or add a renderer before rerunning the command.
 
 ## Heuristics used by the CLI
 

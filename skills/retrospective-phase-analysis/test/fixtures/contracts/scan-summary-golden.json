@@ -1,11 +1,16 @@
 {
   "generatedAt": "<generated>",
+  "operator_language": "und",
+  "report_language": "en",
   "inputs": {
     "session": "/abs/fixtures/sessions/phase-session.jsonl",
     "logsDir": "/abs/fixtures/logs",
     "artifactsDir": "/abs/fixtures/artifacts",
     "skillsDir": "/abs/fixtures/skills",
-    "outRoot": null
+    "outRoot": null,
+    "runDir": null,
+    "language": null,
+    "draft": false
   },
   "resolved": {
     "session": "/abs/fixtures/sessions/phase-session.jsonl",
@@ -118,18 +123,19 @@
       "reason": "1 aborted/restarted turn(s) detected in the session trace."
     }
   ],
+  "run_dir": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490",
   "recommendedOutput": {
     "mode": "fallback-default",
     "root": "/abs/cwd/out/retro",
-    "scopeSlug": "cf-0016",
+    "scopeSlug": "session-019d7490",
     "runSlug": "retrospective-20260410-095900-019d7490",
-    "runDir": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490",
-    "filePath": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/scan-summary.json",
+    "runDir": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490",
+    "filePath": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/scan-summary.json",
     "files": {
-      "scanSummary": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/scan-summary.json",
-      "retrospectiveReport": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/retrospective-report.md",
-      "skillAudit": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/skill-audit.md",
-      "loggingReview": "/abs/cwd/out/retro/cf-0016/retrospective-20260410-095900-019d7490/logging-review.md"
+      "scanSummary": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/scan-summary.json",
+      "retrospectiveReport": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/retrospective-report.md",
+      "skillAudit": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/skill-audit.md",
+      "loggingReview": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/logging-review.md"
     }
   }
 }

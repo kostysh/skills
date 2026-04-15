@@ -185,6 +185,121 @@ export function formatList(items: string[]): string {
   return items.length > 0 ? items.map((item) => `- ${item}`).join('\n') : '- none';
 }
 
+interface PublicArtifactRedactionContext {
+  projectRoot: string | null;
+  sessionPath: string | null;
+  sessionId: string | null;
+}
+
+const POSIX_ABSOLUTE_PATH_PATTERN = /(^|[\s`"'([{<])\/[A-Za-z0-9._@+\-/]+/gu;
+const WINDOWS_ABSOLUTE_PATH_PATTERN = /[A-Za-z]:\\[^\s`"')\]}<>]+/gu;
+
+function shortRedactionSessionId(sessionId: string | null): string {
+  const firstSegment = sessionId?.split('-')[0];
+  return firstSegment && firstSegment.length > 0 ? firstSegment : 'unknown';
+}
+
+function isPathInside(root: string, candidate: string): boolean {
+  const relative = path.relative(root, candidate);
+  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+}
+
+function toPosixPath(value: string): string {
+  return value.split(path.sep).join('/');
+}
+
+function redactSkillPath(candidate: string): string | null {
+  const normalized = path.resolve(candidate);
+  const parts = normalized.split(path.sep);
+  const lastSkillsIndex = parts.lastIndexOf('skills');
+  if (lastSkillsIndex === -1 || lastSkillsIndex + 1 >= parts.length) {
+    return null;
+  }
+
+  return `<skills-root>/${parts.slice(lastSkillsIndex + 1).join('/')}`;
+}
+
+function redactAbsolutePath(candidate: string, context: PublicArtifactRedactionContext): string {
+  const normalized = path.resolve(candidate);
+  const projectRoot = context.projectRoot ? path.resolve(context.projectRoot) : null;
+  const sessionPath = context.sessionPath ? path.resolve(context.sessionPath) : null;
+
+  if (sessionPath && normalized === sessionPath) {
+    return `<session-trace:${shortRedactionSessionId(context.sessionId)}>`;
+  }
+
+  if (
+    context.sessionId &&
+    normalized.includes(context.sessionId) &&
+    normalized.includes(`${path.sep}sessions${path.sep}`)
+  ) {
+    return `<session-trace:${shortRedactionSessionId(context.sessionId)}>`;
+  }
+
+  if (projectRoot && isPathInside(projectRoot, normalized)) {
+    const relative = path.relative(projectRoot, normalized);
+    return relative.length > 0 ? `<project-root>/${toPosixPath(relative)}` : '<project-root>';
+  }
+
+  const skillPath = redactSkillPath(normalized);
+  if (skillPath) {
+    return skillPath;
+  }
+
+  const basename = path.basename(normalized);
+  return basename.length > 0 ? `<absolute-path:redacted>/${basename}` : '<absolute-path:redacted>';
+}
+
+function redactSensitiveRuntimePath(
+  value: string,
+  context: PublicArtifactRedactionContext,
+): string {
+  if (path.isAbsolute(value)) {
+    return redactAbsolutePath(value, context);
+  }
+
+  return value
+    .replace(POSIX_ABSOLUTE_PATH_PATTERN, (match, prefix: string) => {
+      const candidate = match.slice(prefix.length);
+      return `${prefix}${redactAbsolutePath(candidate, context)}`;
+    })
+    .replace(WINDOWS_ABSOLUTE_PATH_PATTERN, '<absolute-path:redacted>');
+}
+
+function redactValueForPublicArtifact(
+  value: unknown,
+  context: PublicArtifactRedactionContext,
+): unknown {
+  if (typeof value === 'string') {
+    return redactSensitiveRuntimePath(value, context);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => redactValueForPublicArtifact(item, context));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entry]) => [
+        key,
+        redactValueForPublicArtifact(entry, context),
+      ]),
+    );
+  }
+
+  return value;
+}
+
+export function redactScanSummaryForPublicArtifact(summary: ScanSummary): ScanSummary {
+  const context: PublicArtifactRedactionContext = {
+    projectRoot: summary.scope.project_root ?? summary.session.projectRoot,
+    sessionPath: summary.resolved.session ?? summary.session.filePath ?? null,
+    sessionId: summary.session.sessionId,
+  };
+
+  return redactValueForPublicArtifact(summary, context) as ScanSummary;
+}
+
 export function stringFromUnknown(value: unknown, fallback: string): string {
   return typeof value === 'string' && value.length > 0 ? value : fallback;
 }
@@ -237,7 +352,7 @@ function formatCompactTimestamp(value: string | null): string | null {
   const hours = String(date.getUTCHours()).padStart(2, '0');
   const minutes = String(date.getUTCMinutes()).padStart(2, '0');
   const seconds = String(date.getUTCSeconds()).padStart(2, '0');
-  return [year, month, day].join('') + "-" + [hours, minutes, seconds].join('');
+  return [year, month, day].join('') + '-' + [hours, minutes, seconds].join('');
 }
 
 export function inferProjectRootFromLogsDir(logsDir: string | null): string | null {
@@ -270,7 +385,18 @@ function findDossierManagedAncestor(startDir: string): string | null {
   }
 }
 
-function resolveRetroRoot(_summary: ScanSummary, explicitRoot?: string): Pick<RetroOutputLayout, 'mode' | 'root'> {
+function resolveRetroRoot(
+  _summary: ScanSummary,
+  options: { explicitRoot?: string | undefined; draft?: boolean | undefined },
+): Pick<RetroOutputLayout, 'mode' | 'root'> {
+  if (options.draft) {
+    return {
+      mode: 'draft',
+      root: path.join(path.resolve('.'), 'out', 'retro-drafts'),
+    };
+  }
+
+  const explicitRoot = options.explicitRoot;
   if (explicitRoot) {
     return {
       mode: 'root-override',
@@ -295,6 +421,11 @@ function resolveRetroRoot(_summary: ScanSummary, explicitRoot?: string): Pick<Re
 }
 
 function resolveScopeSlug(summary: ScanSummary): string {
+  const sessionSlug = shortSessionId(summary.session.sessionId);
+  if (sessionSlug) {
+    return `session-${sessionSlug}`;
+  }
+
   if (summary.scope.mentioned_backlog_items.length === 1) {
     return slugifyOutputPart(summary.scope.mentioned_backlog_items[0] ?? 'session-unknown');
   }
@@ -303,8 +434,7 @@ function resolveScopeSlug(summary: ScanSummary): string {
     return slugifyOutputPart(summary.scope.mentioned_features[0] ?? 'session-unknown');
   }
 
-  const sessionSlug = shortSessionId(summary.session.sessionId);
-  return sessionSlug ? `session-${sessionSlug}` : 'session-unknown';
+  return 'session-unknown';
 }
 
 function resolveBaseRunSlug(summary: ScanSummary): string {
@@ -338,10 +468,37 @@ function resolveRunLocation(
 
 export function resolveRetroOutputLayout(
   summary: ScanSummary,
-  options: { commandName: RetroOutputCommandName; outRoot?: string },
+  options: {
+    commandName: RetroOutputCommandName;
+    outRoot?: string;
+    runDir?: string;
+    draft?: boolean;
+  },
 ): RetroOutputLayout {
   const targetFileName = RETRO_OUTPUT_FILE_NAMES[options.commandName];
-  const rootInfo = resolveRetroRoot(summary, options.outRoot);
+  if (options.runDir) {
+    const runDir = path.resolve(options.runDir);
+    const scopeDir = path.dirname(runDir);
+    return {
+      mode: 'run-dir',
+      root: path.dirname(scopeDir),
+      scopeSlug: path.basename(scopeDir),
+      runSlug: path.basename(runDir),
+      runDir,
+      filePath: path.join(runDir, targetFileName),
+      files: {
+        scanSummary: path.join(runDir, RETRO_OUTPUT_FILE_NAMES.scan),
+        retrospectiveReport: path.join(runDir, RETRO_OUTPUT_FILE_NAMES.report),
+        skillAudit: path.join(runDir, RETRO_OUTPUT_FILE_NAMES['skill-audit']),
+        loggingReview: path.join(runDir, RETRO_OUTPUT_FILE_NAMES['logging-review']),
+      },
+    };
+  }
+
+  const rootInfo = resolveRetroRoot(summary, {
+    explicitRoot: options.outRoot,
+    draft: options.draft,
+  });
   const scopeSlug = resolveScopeSlug(summary);
   const baseRunSlug = resolveBaseRunSlug(summary);
   const runInfo = resolveRunLocation(rootInfo.root, scopeSlug, baseRunSlug, targetFileName);

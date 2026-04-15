@@ -59,7 +59,10 @@ export async function runCli(
     }
 
     const input = command.parseArgs(intent.args);
-    await command.run(input);
+    const output = await command.run(input);
+    if (typeof output === 'string' && output.length > 0) {
+      writeLine(cliIo.stdout, output);
+    }
     return 0;
   } catch (error) {
     const normalized = normalizeCliError(error);
