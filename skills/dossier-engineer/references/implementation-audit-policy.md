@@ -77,6 +77,20 @@ When the process requires an external audit:
 
 If the environment requires explicit operator approval before spawning an audit agent, request it as a standalone line, then stop and wait: `Please authorize spawning the required external audit/review agents for this phase.`
 
+## Operational launch guardrails
+
+For every external audit/review agent:
+
+- launch with `fork_context: false` by default;
+- use a standalone, scope-limited brief that includes the review role, required skill, normative basis, changed files, exclusions, and review question;
+- make the brief read-only: the reviewer must not edit files, stage files, or create commits;
+- capture the pre-review repo state with `git status --short` and `git rev-parse HEAD`;
+- before accepting the verdict, run the same repo-state checks again;
+- if a read-only reviewer changed files or `HEAD`, treat the audit as invalid, neutralize the unauthorized mutation, and rerun the audit with a fresh reviewer;
+- when workflow-stage logging is required, record `fork_context`, read-only expectation, mutation-check result, and invalidation details in the review event.
+
+Only use `fork_context: true` when the operator explicitly requested it or the audit cannot be made self-contained without it. Treat that as an exception and record the reason when logging is required.
+
 ## Review brief template
 
 Every audit request should contain these fields:

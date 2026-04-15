@@ -302,6 +302,14 @@ Default contract:
 8. If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 9. Do not silently substitute self-review or `emulated-independent-review` for a required independent review.
 
+Operational guardrails for reviewer agents:
+
+- Launch audit/review agents with `fork_context: false` by default. Use a forked context only when the operator explicitly asks for it or when the review cannot be made self-contained without it; record that exception in the stage log when logging is required.
+- Make the review brief self-contained and scope-limited instead of handing the reviewer the authoring session context.
+- State that the reviewer is read-only: no file edits, no `git add`, and no commits.
+- Before accepting a reviewer verdict, compare pre-review and post-review repo state with at least `git status --short` and `git rev-parse HEAD`.
+- If a read-only reviewer edits files or changes `HEAD`, invalidate that review, neutralize the unauthorized mutation, start a fresh reviewer, and record the invalidation when logging is required.
+
 ## Review checklist design rules
 
 Every command-specific checklist below follows the same review philosophy:

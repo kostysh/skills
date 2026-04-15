@@ -134,6 +134,11 @@ review_events:
     verdict: pass | findings | blocked
     rerun_reason: none | review_findings | transport_runtime_instability
     scope: short scope description
+    fork_context: false
+    read_only_expected: true
+    mutation_check: clean | dirty_worktree | head_changed | not_checked
+    invalidated: false
+    invalidated_reason: none | reviewer_mutation | forked_context_exception | wrong_model | scope_drift | not_applicable
 verification_artifact: .dossier/verification/...
 review_artifact: .dossier/reviews/...
 step_artifact: .dossier/steps/...
@@ -216,7 +221,7 @@ Trace anchors:
 
 - `operator_command_refs` records the operator commands that materially shaped this stage.
 - `process_miss_refs` records `miss_id`, `severity`, `operator_command_ref`, `stage_log_ref`, `decision_ref`, and `resolution_ref` for each process miss.
-- `review_events` records `agent_id`, `role`, `model`, `requested_ts`, `verdict_ts`, `verdict`, `rerun_reason`, and `scope` for each external review event.
+- `review_events` records `agent_id`, `role`, `model`, `requested_ts`, `verdict_ts`, `verdict`, `rerun_reason`, `scope`, `fork_context`, `read_only_expected`, `mutation_check`, `invalidated`, and `invalidated_reason` for each external review event.
 
 These fields are required only when the corresponding events actually happened.
 

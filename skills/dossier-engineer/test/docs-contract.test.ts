@@ -339,6 +339,10 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     'operator_command_refs',
     'process_miss_refs',
     'review_events',
+    'fork_context',
+    'read_only_expected',
+    'mutation_check',
+    'invalidated_reason',
     '## Completion, freshness, and trace anchors',
     '## Required narrative sections',
     '## Stage-specific sections',
@@ -434,6 +438,10 @@ void test('active dossier instructions use the unified workflow-stage logging re
     'log_required_reason',
     'review_requested_ts',
     'rerun_reasons',
+    'fork_context',
+    'read_only_expected',
+    'mutation_check',
+    'invalidated_reason',
     'transport_runtime_instability',
     '`spec-compact`',
     '`plan-slice`',
@@ -549,6 +557,9 @@ void test('skill-wide review sections stay distinct from implementation-specific
     'For `Workflow stage: implementation`, the audit stack, review brief, and classifier-based re-audit rules live in [Implementation audit policy](references/implementation-audit-policy.md).',
     'request it as a standalone line before continuing',
     'Please authorize spawning the required external audit/review agents for this phase.',
+    'Launch audit/review agents with `fork_context: false` by default.',
+    'State that the reviewer is read-only: no file edits, no `git add`, and no commits.',
+    'If a read-only reviewer edits files or changes `HEAD`, invalidate that review',
   ]);
   assertContainsTerms(reviewChecklistRules, [
     'When a stage has a dedicated audit policy, use it instead of inventing a local audit stack.',
@@ -557,6 +568,17 @@ void test('skill-wide review sections stay distinct from implementation-specific
   assertContainsTerms(spawnedAgentsOnly, [
     'request it as a standalone line, then stop and wait',
     'Please authorize spawning the required external audit/review agents for this phase.',
+  ]);
+  const operationalLaunchGuardrails = extractSection(
+    implementationAuditPolicy,
+    '## Operational launch guardrails',
+  );
+  assertContainsTerms(operationalLaunchGuardrails, [
+    'launch with `fork_context: false` by default',
+    'make the brief read-only',
+    'capture the pre-review repo state with `git status --short` and `git rev-parse HEAD`',
+    'if a read-only reviewer changed files or `HEAD`, treat the audit as invalid',
+    'record `fork_context`, read-only expectation, mutation-check result, and invalidation details',
   ]);
 });
 
