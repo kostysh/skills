@@ -33,7 +33,7 @@ export const COMMON_OPTION_SPECS: OptionSpec[] = [
     name: 'skills-dir',
     type: 'string',
     valueLabel: '<dir>',
-    description: 'Directory containing skill folders.',
+    description: 'Optional directory containing skill folders for referenced-skill enrichment.',
   },
   {
     name: 'out-root',
@@ -51,7 +51,8 @@ export const COMMON_OPTION_SPECS: OptionSpec[] = [
     name: 'language',
     type: 'string',
     valueLabel: '<language>',
-    description: 'Operator language tag or name for report metadata and generated Markdown scaffolds.',
+    description:
+      'Operator language tag or name for report metadata and generated Markdown scaffolds.',
   },
   {
     name: 'draft',
@@ -188,7 +189,9 @@ export function toStringList(value: ParsedOptionValue | undefined): string[] {
   return [];
 }
 
-export function toOptionalLanguage(value: ParsedOptionValue | undefined): ReportLanguage | undefined {
+export function toOptionalLanguage(
+  value: ParsedOptionValue | undefined,
+): ReportLanguage | undefined {
   const language = toOptionalString(value)?.trim();
   return language && language.length > 0 ? language : undefined;
 }
@@ -238,27 +241,14 @@ export function resolveCommandOutputPath(
   return resolveRetroOutputLayout(summary, layoutOptions).filePath;
 }
 
-export function assertOutputOverrideIsExclusive(input: CommonCommandInput & { out?: string }): void {
+export function assertOutputOverrideIsExclusive(
+  input: CommonCommandInput & { out?: string },
+): void {
   if (input.out && (input.runDir || input.outRoot || input.draft)) {
-    throw createUsageError('Use --out only as a low-level single-file override; do not combine it with --run-dir, --out-root, or --draft');
+    throw createUsageError(
+      'Use --out only as a low-level single-file override; do not combine it with --run-dir, --out-root, or --draft',
+    );
   }
-}
-
-export function assertMarkdownScaffoldLanguage(scan: ScanSummary): void {
-  const language = scan.report_language || 'en';
-  const normalized = language.toLowerCase();
-  if (
-    normalized === 'en' ||
-    normalized.startsWith('en-') ||
-    normalized === 'ru' ||
-    normalized.startsWith('ru-')
-  ) {
-    return;
-  }
-
-  throw createUsageError(
-    `No deterministic Markdown scaffold is available for report_language "${language}". Use scan-summary.json and author the Markdown manually in the operator language, or add a renderer before running this command.`,
-  );
 }
 
 export function loadScanSummaryFromRunDir(runDir: string): ScanSummary {

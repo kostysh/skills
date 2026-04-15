@@ -34,6 +34,7 @@ function applyBoundary(
   options: SessionBoundaryOptions,
 ): {
   events: unknown[];
+  eventLines: number[];
   parseErrors: Array<{ line: number; message: string }>;
   phaseBoundary: PhaseBoundary;
 } {
@@ -49,8 +50,10 @@ function applyBoundary(
     }
 
     const boundedEvents = events.filter((_, index) => (eventLines[index] ?? 0) <= untilLine);
+    const boundedEventLines = eventLines.filter((line) => line <= untilLine);
     return {
       events: boundedEvents,
+      eventLines: boundedEventLines,
       parseErrors: parseErrors.filter((error) => error.line <= untilLine),
       phaseBoundary: {
         mode: 'until_line',
@@ -69,8 +72,9 @@ function applyBoundary(
     }
 
     const boundedEvents: unknown[] = [];
+    const boundedEventLines: number[] = [];
     let boundaryReached = false;
-    for (const event of events) {
+    for (const [index, event] of events.entries()) {
       if (boundaryReached) {
         continue;
       }
@@ -83,10 +87,12 @@ function applyBoundary(
       }
 
       boundedEvents.push(event);
+      boundedEventLines.push(eventLines[index] ?? 0);
     }
 
     return {
       events: boundedEvents,
+      eventLines: boundedEventLines,
       parseErrors,
       phaseBoundary: {
         mode: 'until_ts',
@@ -100,6 +106,7 @@ function applyBoundary(
 
   return {
     events,
+    eventLines,
     parseErrors,
     phaseBoundary: createFullTraceBoundary(),
   };
@@ -126,6 +133,7 @@ export function summarizeSession(
       tools: {},
       sampleEventTypes: [],
       events: [],
+      eventLines: [],
     };
   }
 
@@ -136,6 +144,7 @@ export function summarizeSession(
   const { events: parsedEvents, eventLines, errors, sourceLineCount } = parseJsonl(filePath);
   const {
     events,
+    eventLines: boundedEventLines,
     parseErrors,
     phaseBoundary,
   } = applyBoundary(parsedEvents, eventLines, errors, sourceLineCount, options);
@@ -221,5 +230,6 @@ export function summarizeSession(
       25,
     ),
     events,
+    eventLines: boundedEventLines,
   };
 }

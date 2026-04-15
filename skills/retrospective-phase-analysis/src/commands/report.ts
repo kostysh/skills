@@ -3,7 +3,6 @@ import { redactScanSummaryForPublicArtifact } from '../core/shared.ts';
 import { buildReportMarkdown } from '../render/report-markdown.ts';
 import {
   COMMON_OPTION_SPECS,
-  assertMarkdownScaffoldLanguage,
   assertOutputOverrideIsExclusive,
   loadScanSummaryFromRunDir,
   parseOptions,
@@ -70,7 +69,6 @@ export const REPORT_COMMAND: CommandDefinition<ReportCommandInput> = {
   },
   run(input) {
     const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
-    assertMarkdownScaffoldLanguage(scan);
     const outputPath = resolveCommandOutputPath(scan, input, 'report');
     const publicScan = redactScanSummaryForPublicArtifact(scan);
     writeText(outputPath, buildReportMarkdown(publicScan, input));

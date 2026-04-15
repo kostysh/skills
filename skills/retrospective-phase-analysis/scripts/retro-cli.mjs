@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import fs from "node:fs";
 import path from "node:path";
+import fs from "node:fs";
 //#region package.json
 var name = "@kostysh/retrospective-phase-analysis-cli";
 var version = "0.1.0";
@@ -345,6 +345,267 @@ function resolveRetroOutputLayout(summary, options) {
 			skillAudit: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES["skill-audit"]),
 			loggingReview: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES["logging-review"])
 		}
+	};
+}
+//#endregion
+//#region src/core/extract-skill-scope.ts
+function collectStrings(input, depth = 0) {
+	if (depth > 8 || input === null || input === void 0) return [];
+	if (typeof input === "string") return [input];
+	if (Array.isArray(input)) return input.flatMap((item) => collectStrings(item, depth + 1));
+	if (typeof input !== "object") return [];
+	return Object.values(input).flatMap((value) => collectStrings(value, depth + 1));
+}
+function fieldValue(input, field) {
+	if (!input || typeof input !== "object") return;
+	return input[field];
+}
+function objectValue(input) {
+	return input && typeof input === "object" ? input : null;
+}
+function compactExcerpt(value) {
+	const compacted = value.trim().replaceAll(/\s+/gu, " ");
+	return compacted.length > 220 ? `${compacted.slice(0, 217)}...` : compacted;
+}
+function pathNameFromSkillFile(skillFile) {
+	if (!skillFile) return null;
+	if (path.basename(skillFile) !== "SKILL.md") return null;
+	const parent = path.basename(path.dirname(skillFile));
+	return parent.length > 0 ? parent : null;
+}
+function normalizeAliases(values) {
+	return sortUnique(values.map((value) => value.trim()).filter((value) => value.length > 0));
+}
+function localSkillIndex(skills) {
+	const index = /* @__PURE__ */ new Map();
+	for (const skill of skills) {
+		index.set(skill.name.toLowerCase(), skill);
+		index.set(path.basename(path.dirname(skill.skillFile)).toLowerCase(), skill);
+	}
+	return index;
+}
+function parseAvailableSkillsFromText(text) {
+	const markerIndex = text.indexOf("### Available skills");
+	if (markerIndex === -1) return [];
+	const lines = text.slice(markerIndex).split(/\r?\n/u).slice(1);
+	const entries = [];
+	for (const line of lines) {
+		if (/^###\s+/u.test(line)) break;
+		const match = line.match(/^-\s+([^:\n]+):\s*(.*)$/u);
+		if (!match?.[1]) continue;
+		const displayName = match[1].trim();
+		const rawDescription = match[2] ?? "";
+		const skillFile = rawDescription.match(/\(file:\s*([^)]+?SKILL\.md)\)/u)?.[1]?.trim() ?? null;
+		const pathName = pathNameFromSkillFile(skillFile);
+		const name = pathName ?? displayName;
+		const description = rawDescription.replace(/\s*\(file:\s*[^)]+?SKILL\.md\)\s*$/u, "").trim();
+		entries.push({
+			name,
+			display_name: displayName,
+			path_name: pathName,
+			aliases: normalizeAliases([
+				name,
+				displayName,
+				pathName ?? ""
+			]),
+			skillFile,
+			description
+		});
+	}
+	return entries;
+}
+function mergeCatalogEntries(entries, localSkills) {
+	const localIndex = localSkillIndex(localSkills);
+	const byName = /* @__PURE__ */ new Map();
+	for (const entry of entries) {
+		const localSkill = entry.aliases.map((alias) => localIndex.get(alias.toLowerCase())).find((candidate) => candidate !== void 0);
+		const skillFile = entry.skillFile ?? localSkill?.skillFile ?? null;
+		const pathName = entry.path_name ?? pathNameFromSkillFile(skillFile);
+		const name = pathName ?? entry.name;
+		const aliases = normalizeAliases([
+			...entry.aliases,
+			entry.name,
+			entry.display_name,
+			pathName ?? "",
+			localSkill?.name ?? ""
+		]);
+		const next = {
+			name,
+			display_name: entry.display_name,
+			path_name: pathName,
+			aliases,
+			skillFile,
+			description: entry.description || localSkill?.description || ""
+		};
+		byName.set(name, next);
+	}
+	return Array.from(byName.values()).sort((left, right) => left.name.localeCompare(right.name));
+}
+function extractAvailableSkillCatalog(sessionSummary, localSkills) {
+	return mergeCatalogEntries(sessionSummary.events.flatMap((event) => collectStrings(event).flatMap((text) => parseAvailableSkillsFromText(text))), localSkills.skills);
+}
+function addFragment(out, input) {
+	for (const text of collectStrings(input.value)) if (text.trim().length > 0) out.push({
+		line: input.line,
+		eventType: input.eventType,
+		field: input.field,
+		text
+	});
+}
+function collectParsedCommandFragments(out, input) {
+	if (!Array.isArray(input.parsedCommands)) return;
+	for (const [index, command] of input.parsedCommands.entries()) {
+		const record = objectValue(command);
+		if (!record) continue;
+		addFragment(out, {
+			line: input.line,
+			eventType: input.eventType,
+			field: `event_msg.payload.parsed_cmd[${index}].path`,
+			value: record.path
+		});
+		addFragment(out, {
+			line: input.line,
+			eventType: input.eventType,
+			field: `event_msg.payload.parsed_cmd[${index}].cmd`,
+			value: record.cmd
+		});
+	}
+}
+function operationalFragments(sessionSummary) {
+	const out = [];
+	for (const [index, event] of sessionSummary.events.entries()) {
+		const record = objectValue(event);
+		if (!record) continue;
+		const line = sessionSummary.eventLines[index] ?? index + 1;
+		const eventType = extractEventType$1(event);
+		if (eventType === "session_meta" || eventType === "turn_context" || eventType === "compacted") continue;
+		const payload = objectValue(record.payload);
+		const payloadType = stringFromUnknown(payload?.type, "");
+		if (eventType === "response_item") {
+			if (payloadType === "message") {
+				const role = stringFromUnknown(payload?.role, "");
+				if (role === "user" || role === "assistant") addFragment(out, {
+					line,
+					eventType,
+					field: "response_item.payload.content",
+					value: payload?.content
+				});
+				continue;
+			}
+			if (payloadType === "function_call") {
+				addFragment(out, {
+					line,
+					eventType,
+					field: "response_item.payload.arguments",
+					value: payload?.arguments
+				});
+				continue;
+			}
+			continue;
+		}
+		if (eventType === "event_msg" && payload) {
+			if (payloadType === "user_message" || payloadType === "agent_message") {
+				addFragment(out, {
+					line,
+					eventType,
+					field: "event_msg.payload.message",
+					value: payload.message
+				});
+				continue;
+			}
+			if (payloadType === "exec_command_end") {
+				addFragment(out, {
+					line,
+					eventType,
+					field: "event_msg.payload.command",
+					value: payload.command
+				});
+				collectParsedCommandFragments(out, {
+					line,
+					eventType,
+					parsedCommands: payload.parsed_cmd
+				});
+				continue;
+			}
+			continue;
+		}
+		if (eventType === "assistant" || eventType === "user") {
+			addFragment(out, {
+				line,
+				eventType,
+				field: `${eventType}.content`,
+				value: fieldValue(record, "content") ?? fieldValue(record, "message")
+			});
+			continue;
+		}
+		if (eventType === "tool_call") {
+			addFragment(out, {
+				line,
+				eventType,
+				field: "tool_call.command",
+				value: fieldValue(record, "command")
+			});
+			addFragment(out, {
+				line,
+				eventType,
+				field: "tool_call.patch",
+				value: fieldValue(record, "patch")
+			});
+			continue;
+		}
+		if (eventType === "tool_result") addFragment(out, {
+			line,
+			eventType,
+			field: "tool_result.notes",
+			value: fieldValue(record, "notes")
+		});
+	}
+	return out;
+}
+function aliasPattern(alias) {
+	const escaped = alias.trim().split(/\s+/u).map((part) => part.replaceAll(/[.*+?^${}()|[\]\\]/gu, "\\$&")).join("\\s+");
+	return new RegExp(`(^|[^A-Za-z0-9_-])(${escaped})(?![A-Za-z0-9_-])`, "iu");
+}
+function findSkillEvidence(skill, fragments) {
+	const evidence = [];
+	for (const fragment of fragments) for (const alias of skill.aliases) {
+		if (!aliasPattern(alias).test(fragment.text)) continue;
+		evidence.push({
+			line: fragment.line,
+			event_type: fragment.eventType,
+			field: fragment.field,
+			excerpt: compactExcerpt(fragment.text),
+			matched_alias: alias
+		});
+		break;
+	}
+	return evidence;
+}
+function logMetricFragments(logMetrics) {
+	return Object.keys(logMetrics.skillsReferenced).map((skill) => ({
+		line: 0,
+		eventType: "stage_log",
+		field: "stageLogs.metrics.skillsReferenced",
+		text: skill
+	}));
+}
+function extractSkillTraceSummary({ sessionSummary, localSkills, logMetrics }) {
+	const available = extractAvailableSkillCatalog(sessionSummary, localSkills);
+	if (available.length === 0) return {
+		available: [],
+		referenced: [],
+		unreferenced_count: 0
+	};
+	const fragments = [...operationalFragments(sessionSummary), ...logMetricFragments(logMetrics)];
+	const referenced = available.map((skill) => ({
+		...skill,
+		evidence: findSkillEvidence(skill, fragments)
+	})).filter((skill) => skill.evidence.length > 0);
+	const referencedNames = new Set(referenced.map((skill) => skill.name));
+	return {
+		available,
+		referenced,
+		unreferenced_count: available.filter((skill) => !referencedNames.has(skill.name)).length
 	};
 }
 //#endregion
@@ -1046,6 +1307,7 @@ function applyBoundary(events, eventLines, parseErrors, sourceLineCount, options
 		const boundedEvents = events.filter((_, index) => (eventLines[index] ?? 0) <= untilLine);
 		return {
 			events: boundedEvents,
+			eventLines: eventLines.filter((line) => line <= untilLine),
 			parseErrors: parseErrors.filter((error) => error.line <= untilLine),
 			phaseBoundary: {
 				mode: "until_line",
@@ -1060,8 +1322,9 @@ function applyBoundary(events, eventLines, parseErrors, sourceLineCount, options
 		const boundaryDate = tryParseDate(options.untilTs);
 		if (!boundaryDate) throw new Error("--until-ts must be a valid ISO-like timestamp");
 		const boundedEvents = [];
+		const boundedEventLines = [];
 		let boundaryReached = false;
-		for (const event of events) {
+		for (const [index, event] of events.entries()) {
 			if (boundaryReached) continue;
 			const timestamp = extractTimestamp(event);
 			const eventDate = timestamp ? tryParseDate(timestamp) : null;
@@ -1070,9 +1333,11 @@ function applyBoundary(events, eventLines, parseErrors, sourceLineCount, options
 				continue;
 			}
 			boundedEvents.push(event);
+			boundedEventLines.push(eventLines[index] ?? 0);
 		}
 		return {
 			events: boundedEvents,
+			eventLines: boundedEventLines,
 			parseErrors,
 			phaseBoundary: {
 				mode: "until_ts",
@@ -1085,6 +1350,7 @@ function applyBoundary(events, eventLines, parseErrors, sourceLineCount, options
 	}
 	return {
 		events,
+		eventLines,
 		parseErrors,
 		phaseBoundary: createFullTraceBoundary()
 	};
@@ -1105,11 +1371,12 @@ function summarizeSession(filePath, options = {}) {
 		longGaps: 0,
 		tools: {},
 		sampleEventTypes: [],
-		events: []
+		events: [],
+		eventLines: []
 	};
 	if (options.untilLine !== void 0 && options.untilTs !== void 0) throw new Error("Use either --until-line or --until-ts, not both");
 	const { events: parsedEvents, eventLines, errors, sourceLineCount } = parseJsonl(filePath);
-	const { events, parseErrors, phaseBoundary } = applyBoundary(parsedEvents, eventLines, errors, sourceLineCount, options);
+	const { events, eventLines: boundedEventLines, parseErrors, phaseBoundary } = applyBoundary(parsedEvents, eventLines, errors, sourceLineCount, options);
 	const toolCounts = /* @__PURE__ */ new Map();
 	let sessionId = null;
 	let projectRoot = null;
@@ -1158,7 +1425,8 @@ function summarizeSession(filePath, options = {}) {
 		longGaps,
 		tools: Object.fromEntries(Array.from(toolCounts.entries()).sort((left, right) => right[1] - left[1])),
 		sampleEventTypes: Array.from(new Set(events.map((event) => extractEventType$1(event)))).slice(0, 25),
-		events
+		events,
+		eventLines: boundedEventLines
 	};
 }
 //#endregion
@@ -1189,24 +1457,19 @@ function hasManualOverrides(args) {
 function assertManualOverridesHaveEvidence(args) {
 	if (hasManualOverrides(args) && !args.artifactEvidence?.trim()) throw new Error("Manual artifact overrides require artifactEvidence with a short justification");
 }
-function supportsMarkdownScaffold(language) {
-	const normalized = language.toLowerCase();
-	return normalized === "en" || normalized.startsWith("en-") || normalized === "ru" || normalized.startsWith("ru-");
-}
 function hasManualCandidates(candidates) {
 	return candidates.some((candidate) => candidate.inclusion_source === "manual_included");
 }
 function buildReportStatus(input) {
 	const reasons = [];
-	const { reportLanguage, sessionSummary, logSummary, skillsSummary, scope } = input;
+	const { sessionSummary, logSummary, skillTraceSummary, scope } = input;
 	if (!sessionSummary.exists) reasons.push("Session trace is missing.");
 	if (sessionSummary.parseErrors.length > 0) reasons.push(`Session trace has ${sessionSummary.parseErrors.length} parse error(s).`);
 	if (!logSummary.exists) reasons.push("Stage-log directory is missing or unresolved.");
-	if (!skillsSummary.exists) reasons.push("Skill catalog is missing or unresolved.");
+	if (skillTraceSummary.available.length === 0) reasons.push("Injected Available skills catalog is missing or unresolved.");
 	if (logSummary.metrics.logsTotal === 0 && scope.referenced_artifacts.some((artifactPath) => artifactPath.includes(".dossier"))) reasons.push("Trace indicates dossier activity, but no stage logs were analyzed.");
 	if (scope.scope_ambiguities.length > 0) reasons.push("Unresolved scope ambiguities remain.");
 	if (hasManualCandidates(scope.stage_log_candidates) || hasManualCandidates(scope.review_artifact_candidates) || hasManualCandidates(scope.verification_artifact_candidates)) reasons.push("Manual artifact overrides were used.");
-	if (!supportsMarkdownScaffold(reportLanguage)) reasons.push("No deterministic Markdown scaffold exists for the requested report language.");
 	return {
 		status: reasons.length > 0 ? "draft_requires_agent_validation" : "ready_for_agent_finalization",
 		reasons
@@ -1234,12 +1497,16 @@ function buildScanSummary(args) {
 	if (args.artifactEvidence) scopeOptions.artifactEvidence = args.artifactEvidence;
 	const scope = extractTraceScope(scopeOptions);
 	const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
+	const skillTraceSummary = extractSkillTraceSummary({
+		sessionSummary,
+		localSkills: skillsSummary,
+		logMetrics: logSummary.metrics
+	});
 	const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
 	const reportStatus = buildReportStatus({
-		reportLanguage,
 		sessionSummary,
 		logSummary,
-		skillsSummary,
+		skillTraceSummary,
 		scope
 	});
 	const summaryBase = {
@@ -1271,7 +1538,7 @@ function buildScanSummary(args) {
 		dataQuality: {
 			sessionPresent: sessionSummary.exists,
 			logsPresent: logSummary.exists,
-			skillCatalogPresent: skillsSummary.exists,
+			skillCatalogPresent: skillTraceSummary.available.length > 0,
 			sessionParseErrors: sessionSummary.parseErrors.length
 		},
 		phase_boundary: sessionSummary.phaseBoundary,
@@ -1300,7 +1567,7 @@ function buildScanSummary(args) {
 		},
 		scope,
 		reportStatus,
-		skills: skillsSummary.skills,
+		skills: skillTraceSummary,
 		candidateIncidents
 	};
 	const outputOptions = { commandName: "scan" };
@@ -1319,73 +1586,20 @@ function buildScanSummary(args) {
 function statusLine$2(scan) {
 	return scan.reportStatus.status === "draft_requires_agent_validation" ? "Status: draft, requires agent validation" : "Status: ready for agent finalization";
 }
+function formatObservedGaps(input) {
+	const gaps = [];
+	const missingClosureArtifacts = input.missingReviewArtifacts + input.missingVerificationArtifacts + input.missingStepArtifacts;
+	if (missingClosureArtifacts > 0) gaps.push(`Not all logs include the full closure artifact set (${missingClosureArtifacts} missing link(s)).`);
+	if (input.approximateDurations > 0) gaps.push(`Duration accuracy is not always exact (${input.approximateDurations} log(s)).`);
+	if (input.missingSkillCatalog) gaps.push("The injected Available skills catalog was missing or unresolved.");
+	if (gaps.length === 0) return "- No automated logging gaps were inferred from the available counters.";
+	return gaps.map((gap) => `- ${gap}`).join("\n");
+}
 function buildLoggingReviewMarkdown(scan) {
 	const missingReviewArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.review_artifact).length;
 	const missingStepArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.step_artifact).length;
 	const missingVerificationArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.verification_artifact).length;
 	const approximateDurations = scan.stageLogs.files.filter((entry) => entry.metadata.log_quality && typeof entry.metadata.log_quality === "object" && entry.metadata.log_quality.duration_exact === false).length;
-	if (scan.report_language.toLowerCase().startsWith("ru")) return `# Черновик анализа качества логирования
-
-${statusLine$2(scan)}
-
-## Резюме
-
-- Проанализировано логов: ${scan.stageLogs.count}
-- Зафиксировано process misses: ${scan.stageLogs.metrics.processMissesTotal}
-- Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
-- Missing review artifacts: ${missingReviewArtifacts}
-- Missing verification artifacts: ${missingVerificationArtifacts}
-- Missing step artifacts: ${missingStepArtifacts}
-- Логи только с approximate duration: ${approximateDurations}
-
-## Наблюдаемые сильные стороны
-
-- Structured metadata blocks позволяют автоматическое извлечение данных.
-- Review rounds и findings часто записываются.
-- Backlog actualization state моделируется явно.
-
-## Наблюдаемые gaps
-
-- Не все logs содержат полный набор closure artifacts.
-- Duration accuracy не всегда exact.
-- Skill usage не всегда фиксируется machine-readable способом.
-- Session-trace anchors не записываются напрямую в stage logs.
-- Tool-level summaries обычно отсутствуют.
-
-## Рекомендованные улучшения
-
-1. Добавить machine-readable trace anchors в каждый stage log:
-   - first relevant event id
-   - review request event ids
-   - final pass event id
-   - commit event id
-
-2. Добавить structured skill-usage fields:
-   - skills_used
-   - skill_issues
-   - skill_followups
-
-3. Добавить компактный tool summary:
-   - tools_called_total
-   - distinct_tools_used
-   - notable_failures
-   - retries_total
-
-4. Добавить time breakdown fields:
-   - active_work_minutes
-   - waiting_for_review_minutes
-   - reround_minutes
-   - closure_minutes
-
-5. Добавить явные incident ids и categories в сам log.
-
-## Validation ideas
-
-- Fail closure, если required stage log не содержит mandatory artifact links.
-- Warn, если review findings есть, но follow-up или reround не залогирован.
-- Warn, если backlog truth changed, но actualization evidence отсутствует.
-- Warn, если log фиксирует process miss, но remediation note отсутствует.
-`;
 	return `# Logging review draft
 
 ${statusLine$2(scan)}
@@ -1408,11 +1622,13 @@ ${statusLine$2(scan)}
 
 ## Observed gaps
 
-- Not all logs include the full closure artifact set.
-- Duration accuracy is not always exact.
-- Skill usage is not consistently captured in a machine-readable way.
-- Session-trace anchors are not recorded directly in stage logs.
-- Tool-level summaries are typically absent.
+${formatObservedGaps({
+		missingReviewArtifacts,
+		missingVerificationArtifacts,
+		missingStepArtifacts,
+		approximateDurations,
+		missingSkillCatalog: !scan.dataQuality.skillCatalogPresent
+	})}
 
 ## Suggested improvements
 
@@ -1492,7 +1708,7 @@ var COMMON_OPTION_SPECS = [
 		name: "skills-dir",
 		type: "string",
 		valueLabel: "<dir>",
-		description: "Directory containing skill folders."
+		description: "Optional directory containing skill folders for referenced-skill enrichment."
 	},
 	{
 		name: "out-root",
@@ -1612,12 +1828,6 @@ function resolveCommandOutputPath(summary, input, commandName) {
 function assertOutputOverrideIsExclusive(input) {
 	if (input.out && (input.runDir || input.outRoot || input.draft)) throw createUsageError("Use --out only as a low-level single-file override; do not combine it with --run-dir, --out-root, or --draft");
 }
-function assertMarkdownScaffoldLanguage(scan) {
-	const language = scan.report_language || "en";
-	const normalized = language.toLowerCase();
-	if (normalized === "en" || normalized.startsWith("en-") || normalized === "ru" || normalized.startsWith("ru-")) return;
-	throw createUsageError(`No deterministic Markdown scaffold is available for report_language "${language}". Use scan-summary.json and author the Markdown manually in the operator language, or add a renderer before running this command.`);
-}
 function loadScanSummaryFromRunDir(runDir) {
 	const scanSummaryPath = path.join(path.resolve(runDir), "scan-summary.json");
 	if (!fs.existsSync(scanSummaryPath)) throw createUsageError(`--run-dir requires an existing scan-summary.json: ${scanSummaryPath}`);
@@ -1651,7 +1861,6 @@ var LOGGING_REVIEW_COMMAND = {
 	},
 	run(input) {
 		const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
-		assertMarkdownScaffoldLanguage(scan);
 		writeText(resolveCommandOutputPath(scan, input, "logging-review"), buildLoggingReviewMarkdown(redactScanSummaryForPublicArtifact(scan)));
 	}
 };
@@ -1663,8 +1872,13 @@ function statusLine$1(scan) {
 function statusReasons(scan) {
 	return scan.reportStatus.reasons.length > 0 ? formatList(scan.reportStatus.reasons) : "- Evidence quality passed automated scaffold checks.";
 }
+function formatSkillManifest(scan) {
+	return scan.skills.referenced.map((skill) => {
+		const source = skill.skillFile ?? "skill file not resolved";
+		return `- ${skill.name}: ${source}`;
+	}).join("\n") || "- none";
+}
 function buildReportMarkdown(scan, options) {
-	if (scan.report_language.toLowerCase().startsWith("ru")) return buildRussianReportMarkdown(scan, options);
 	const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ""}`;
 	const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
 	const incidentSections = scan.candidateIncidents.map((incident, index) => [
@@ -1676,7 +1890,7 @@ function buildReportMarkdown(scan, options) {
 		""
 	].join("\n")).join("\n");
 	const logFiles = scan.stageLogs.files.map((entry) => `- ${entry.filePath}`).join("\n") || "- none";
-	const skillFiles = scan.skills.map((skill) => `- ${skill.name}: ${skill.skillFile}`).join("\n") || "- none";
+	const skillFiles = formatSkillManifest(scan);
 	const scopePaths = scan.scope.touched_paths.map((entry) => `- ${entry}`).join("\n") || "- none";
 	const scopeArtifacts = scan.scope.referenced_artifacts.map((entry) => `- ${entry}`).join("\n") || "- none";
 	const scopeAmbiguities = scan.scope.scope_ambiguities.map((entry) => `- ${entry}`).join("\n") || "- none";
@@ -1776,118 +1990,6 @@ ${statusReasons(scan)}
 - This draft is heuristic and should be refined by reading the cited artifacts.
 `;
 }
-function buildRussianReportMarkdown(scan, options) {
-	const title = options.title ?? `Ретроанализ${options.phase ? `: ${options.phase}` : ""}`;
-	const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
-	const incidentSections = scan.candidateIncidents.map((incident, index) => [
-		`### R-${String(index + 1).padStart(2, "0")} - ${incident.title}`,
-		`- Серьезность: ${incident.severity}`,
-		`- Этап: ${incident.stage}`,
-		`- Доказательство: ${incident.evidence}`,
-		`- Наблюдение: ${incident.reason}`,
-		""
-	].join("\n")).join("\n");
-	const logFiles = scan.stageLogs.files.map((entry) => `- ${entry.filePath}`).join("\n") || "- none";
-	const skillFiles = scan.skills.map((skill) => `- ${skill.name}: ${skill.skillFile}`).join("\n") || "- none";
-	const scopePaths = scan.scope.touched_paths.map((entry) => `- ${entry}`).join("\n") || "- none";
-	const scopeArtifacts = scan.scope.referenced_artifacts.map((entry) => `- ${entry}`).join("\n") || "- none";
-	const scopeAmbiguities = scan.scope.scope_ambiguities.map((entry) => `- ${entry}`).join("\n") || "- none";
-	return `# ${title}
-
-${statusLine$1(scan)}
-
-## Краткое резюме
-
-- Этап: ${options.phase ?? "не указан"}
-- Trace сессии: ${scan.resolved.session ?? "не указан"}
-- Session id: ${scan.session.sessionId ?? "не указан"}
-- Проанализировано stage logs: ${scan.stageLogs.count}
-- Кандидатных инцидентов: ${scan.candidateIncidents.length}
-- Уникальных tools: ${Object.keys(scan.session.tools).length}
-- Уверенность scope: ${scan.scope.scope_confidence}
-- Статус scaffold отчета: ${scan.reportStatus.status}
-- Примечание по качеству данных: ${scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent ? "Trace сессии и stage logs доступны." : "Один или несколько ключевых источников отсутствуют; уверенность снижена."}
-
-## Манифест доказательств
-
-### Логи этапов
-${logFiles}
-
-### Инструкции агентов
-${skillFiles}
-
-### Trace сессии
-- ${scan.resolved.session ?? "не указан"}
-
-### Scope, полученный из trace
-- Project root: ${scan.scope.project_root ?? "unknown"}
-- Backlog items: ${scan.scope.mentioned_backlog_items.join(", ") || "none"}
-- Features: ${scan.scope.mentioned_features.join(", ") || "none"}
-
-### Затронутые пути
-${scopePaths}
-
-### Упомянутые артефакты
-${scopeArtifacts}
-
-## Сводка timeline
-
-- Начало: ${scan.session.firstTimestamp ?? "unknown"}
-- Конец: ${scan.session.lastTimestamp ?? "unknown"}
-- Длительность, минут: ${scan.session.durationMinutes ?? "unknown"}
-- Прерванные или перезапущенные turns: ${scan.session.abortedTurns}
-- Длинные паузы: ${scan.session.longGaps}
-
-## Основные tools
-
-${formatList(topTools)}
-
-## Кандидатные инциденты
-
-${incidentSections || "Автоматически кандидатные инциденты не найдены."}
-
-## Метрики stage logs
-
-- Всего review rounds: ${scan.stageLogs.metrics.reviewRoundsTotal}
-- Всего review findings: ${scan.stageLogs.metrics.reviewFindingsTotal}
-- Всего process misses: ${scan.stageLogs.metrics.processMissesTotal}
-- Циклов с backlog actualization: ${scan.stageLogs.metrics.backlogActualizedCount}
-- Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
-
-## Предварительный анализ этапов
-
-${formatList(topEntries(scan.stageLogs.metrics.stages, 20).map(([stage, count]) => `${stage}: ${count} лог(ов)`))}
-
-## Предварительный анализ skills
-
-${formatList(topEntries(scan.stageLogs.metrics.skillsReferenced, 20).map(([skill, count]) => `${skill}: упомянут в ${count} лог(ах)`))}
-
-## Неоднозначности scope
-
-${scopeAmbiguities}
-
-## Причины статуса отчета
-
-${statusReasons(scan)}
-
-## Рекомендуемые ручные проверки
-
-- Подтвердить каждый inferred incident по trace и stage log.
-- Остановить расширение scope, если неоднозначности выше не снимаются связанными артефактами.
-- Проверить rerounds и non-pass reviews на устранимые причины.
-- Проверить skill files, упомянутые в логах, на недостающие decision rules, устаревшие допущения и неоднозначность.
-- Проверить, влияла ли поздняя или отсутствующая backlog actualization на качество closure.
-- Отделить необходимую сложность от устранимого трения перед финализацией рекомендаций.
-
-## Ограничения качества данных
-
-- Session parse errors: ${scan.dataQuality.sessionParseErrors}
-- Trace сессии доступен: ${scan.dataQuality.sessionPresent}
-- Логи этапов доступны: ${scan.dataQuality.logsPresent}
-- Каталог инструкций агентов доступен: ${scan.dataQuality.skillCatalogPresent}
-- Этот draft эвристический; перед финализацией выводов нужно проверить цитируемые артефакты.
-`;
-}
 //#endregion
 //#region src/commands/report.ts
 var REPORT_COMMAND = {
@@ -1935,7 +2037,6 @@ var REPORT_COMMAND = {
 	},
 	run(input) {
 		const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
-		assertMarkdownScaffoldLanguage(scan);
 		writeText(resolveCommandOutputPath(scan, input, "report"), buildReportMarkdown(redactScanSummaryForPublicArtifact(scan), input));
 	}
 };
@@ -2082,86 +2183,54 @@ var SCAN_COMMAND = {
 function statusLine(scan) {
 	return scan.reportStatus.status === "draft_requires_agent_validation" ? "Status: draft, requires agent validation" : "Status: ready for agent finalization";
 }
-function skillCandidates(scan) {
-	return scan.skills.length > 0 ? scan.skills : Object.keys(scan.stageLogs.metrics.skillsReferenced).map((name) => ({
-		name,
-		skillFile: "referenced via logs only",
-		description: ""
-	}));
+function formatEvidence(evidence) {
+	if (evidence.length === 0) return "- none";
+	return evidence.map((entry) => {
+		return `- ${entry.line > 0 ? `line ${entry.line}` : entry.event_type}, ${entry.field}, matched \`${entry.matched_alias}\`: ${entry.excerpt}`;
+	}).join("\n");
 }
-function classifySkill(scan, skill) {
-	const references = scan.stageLogs.files.filter((entry) => stringFromUnknown(entry.metadata.skill, "") === skill.name).length;
-	const confidence = references > 0 ? "confirmed_used" : scan.scope.touched_paths.includes(skill.skillFile) ? "probably_used" : "implicitly_relevant";
-	const issueCount = scan.candidateIncidents.filter((incident) => incident.evidence.includes(".md")).length;
-	return {
-		...skill,
-		confidence,
-		issueCount,
-		references
-	};
+function skillFileLine(skill) {
+	if (skill.skillFile) return skill.skillFile;
+	return "not resolved; local skill body was not inspected";
 }
-function formatImplicitSkills(skills) {
-	const implicit = skills.filter((skill) => skill.confidence === "implicitly_relevant");
-	if (implicit.length === 0) return "- none";
-	const visible = implicit.slice(0, 10).map((skill) => `- ${skill.name}: ${skill.skillFile}`);
-	const hiddenCount = implicit.length - visible.length;
-	if (hiddenCount > 0) visible.push(`- ${hiddenCount} additional implicitly relevant skill(s) omitted.`);
-	return visible.join("\n");
-}
-function formatMaterialSkillRows(skills, language) {
-	const material = skills.filter((skill) => skill.confidence !== "implicitly_relevant");
-	if (material.length === 0) return language === "ru" ? "Автоматически не найдено skills с уверенностью `confirmed_used` или `probably_used`." : "No skills reached `confirmed_used` or `probably_used` automatically.";
-	return material.map((skill) => {
-		if (language === "ru") return `### Skill: ${skill.name}
-
-- Skill file: ${skill.skillFile}
-- Описание: ${skill.description || "n/a"}
-- Уверенность: ${skill.confidence}
-- Прямые ссылки из логов: ${skill.references}
-- Потенциальные friction signals: ${skill.issueCount > 0 ? skill.issueCount : "none automatically inferred"}
-- Ручные проверки:
-  - Были ли обязательные review steps явными?
-  - Были ли entry/exit criteria явными?
-  - Были ли неоднозначные исключения обработаны?
-  - Заставлял ли skill интерпретировать правила из разрозненных references?
-`;
+function formatSkillSections(skills) {
+	if (skills.length === 0) return "The operational trace did not reference any skills from the injected `Available skills` catalog.";
+	return skills.map((skill) => {
 		return `### Skill: ${skill.name}
 
-- Skill file: ${skill.skillFile}
+- Display name: ${skill.display_name}
+- Skill file: ${skillFileLine(skill)}
 - Description: ${skill.description || "n/a"}
-- Confidence: ${skill.confidence}
-- Direct log references: ${skill.references}
-- Potential friction signals: ${skill.issueCount > 0 ? skill.issueCount : "none automatically inferred"}
-- Manual review prompts:
-  - Were mandatory review steps explicit?
-  - Were entry/exit criteria explicit?
-  - Were ambiguous exceptions handled?
-  - Did the skill force extra interpretation from scattered references?
+- Evidence count: ${skill.evidence.length}
+
+#### Evidence
+${formatEvidence(skill.evidence)}
+
+#### Manual review prompts
+- Were mandatory review steps explicit?
+- Were entry/exit criteria explicit?
+- Were ambiguous exceptions handled?
+- Did the skill force extra interpretation from scattered references?
 `;
 	}).join("\n");
 }
 function buildSkillAuditMarkdown(scan) {
-	const classifiedSkills = skillCandidates(scan).map((skill) => classifySkill(scan, skill));
-	if (scan.report_language.toLowerCase().startsWith("ru")) return buildRussianSkillAuditMarkdown(scan, classifiedSkills);
-	const materialSkills = classifiedSkills.filter((skill) => skill.confidence !== "implicitly_relevant");
 	return `# Skill audit draft
 
 ${statusLine(scan)}
 
 ## Summary
 
-- Skills inspected: ${materialSkills.length}
-- Implicitly relevant skills listed separately: ${classifiedSkills.length - materialSkills.length}
+- Available skills in injected catalog: ${scan.skills.available.length}
+- Referenced skills in operational trace: ${scan.skills.referenced.length}
+- Unreferenced catalog skills: ${scan.skills.unreferenced_count}
 - Session trace available: ${scan.dataQuality.sessionPresent}
 - Stage logs available: ${scan.dataQuality.logsPresent}
+- Skill catalog available: ${scan.dataQuality.skillCatalogPresent}
 
 ## Findings by skill
 
-${formatMaterialSkillRows(classifiedSkills, "en")}
-
-## Implicitly relevant skills
-
-${formatImplicitSkills(classifiedSkills)}
+${formatSkillSections(scan.skills.referenced)}
 
 ## Cross-skill patterns to investigate
 
@@ -2173,45 +2242,9 @@ ${formatImplicitSkills(classifiedSkills)}
 
 ## Next manual checks
 
-- Read each skill file that materially influenced the phase.
+- Read each referenced skill file when the local body is available.
 - Correlate rerounds and process misses with the relevant skill steps.
 - Separate operator-specific constraints from actual skill defects.
-`;
-}
-function buildRussianSkillAuditMarkdown(scan, skills) {
-	const materialSkills = skills.filter((skill) => skill.confidence !== "implicitly_relevant");
-	return `# Черновик аудита инструкций агентов
-
-${statusLine(scan)}
-
-## Резюме
-
-- Проверено skills: ${materialSkills.length}
-- Отдельно перечислено implicitly relevant skills: ${skills.length - materialSkills.length}
-- Trace сессии доступен: ${scan.dataQuality.sessionPresent}
-- Логи этапов доступны: ${scan.dataQuality.logsPresent}
-
-## Находки по инструкциям
-
-${formatMaterialSkillRows(skills, "ru")}
-
-## Implicitly relevant skills
-
-${formatImplicitSkills(skills)}
-
-## Cross-skill patterns для проверки
-
-- Неоднозначный review policy или review order
-- Недостающие decision tables для exceptions и edge cases
-- Недостающие examples для reround handling
-- Недостающие или слабые logging expectations
-- Устаревшие assumptions о tools, verification или closure
-
-## Следующие ручные проверки
-
-- Прочитать каждый skill file, который существенно влиял на phase.
-- Сопоставить rerounds и process misses с соответствующими skill steps.
-- Отделить operator-specific constraints от реальных skill defects.
 `;
 }
 //#endregion
@@ -2220,10 +2253,10 @@ var SKILL_AUDIT_COMMAND = {
 	name: "skill-audit",
 	summary: "Generate a skill-focused Markdown draft.",
 	usage: [
-		"node scripts/retro-cli.mjs skill-audit --session <file> --skills-dir <dir>",
+		"node scripts/retro-cli.mjs skill-audit --session <file>",
 		"node scripts/retro-cli.mjs skill-audit --run-dir <dir>",
-		"node scripts/retro-cli.mjs skill-audit --skills-dir <dir> --out-root <dir>",
-		"node scripts/retro-cli.mjs skill-audit --logs-dir <dir> --skills-dir <dir> --out <file>"
+		"node scripts/retro-cli.mjs skill-audit --session <file> --skills-dir <dir> --out-root <dir>",
+		"node scripts/retro-cli.mjs skill-audit --logs-dir <dir> --out <file>"
 	],
 	options: [...COMMON_OPTION_SPECS, {
 		name: "out",
@@ -2231,7 +2264,11 @@ var SKILL_AUDIT_COMMAND = {
 		valueLabel: "<file>",
 		description: "Output Markdown path override."
 	}],
-	notes: ["Use this draft as a triage aid before editing skill instructions or process policy.", "Without --out, the command writes skill-audit.md into the durable run directory selected for this retrospective scope."],
+	notes: [
+		"Use this draft as a triage aid before editing skill instructions or process policy.",
+		"--skills-dir enriches referenced skills only; it does not discover the audit scope.",
+		"Without --out, the command writes skill-audit.md into the durable run directory selected for this retrospective scope."
+	],
 	parseArgs(argv) {
 		const options = parseOptions(argv, this.options);
 		const input = { ...toCommonCommandInput(options) };
@@ -2242,7 +2279,6 @@ var SKILL_AUDIT_COMMAND = {
 	},
 	run(input) {
 		const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
-		assertMarkdownScaffoldLanguage(scan);
 		writeText(resolveCommandOutputPath(scan, input, "skill-audit"), buildSkillAuditMarkdown(redactScanSummaryForPublicArtifact(scan)));
 	}
 };

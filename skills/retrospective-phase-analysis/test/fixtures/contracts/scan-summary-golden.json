@@ -27,7 +27,7 @@
   "dataQuality": {
     "sessionPresent": true,
     "logsPresent": true,
-    "skillCatalogPresent": true,
+    "skillCatalogPresent": false,
     "sessionParseErrors": 0
   },
   "phase_boundary": {
@@ -51,12 +51,7 @@
       "functions.exec_command": 2,
       "functions.update_plan": 1
     },
-    "sampleEventTypes": [
-      "session_meta",
-      "assistant",
-      "tool_call",
-      "tool_result"
-    ]
+    "sampleEventTypes": ["session_meta", "assistant", "tool_call", "tool_result"]
   },
   "stageLogs": {
     "count": 0,
@@ -74,12 +69,8 @@
   },
   "scope": {
     "project_root": "/abs/fixtures/artifacts",
-    "mentioned_backlog_items": [
-      "CF-0016"
-    ],
-    "mentioned_features": [
-      "F-0016"
-    ],
+    "mentioned_backlog_items": ["CF-0016"],
+    "mentioned_features": ["F-0016"],
     "touched_paths": [
       "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md",
       "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md",
@@ -128,22 +119,16 @@
   "reportStatus": {
     "status": "draft_requires_agent_validation",
     "reasons": [
+      "Injected Available skills catalog is missing or unresolved.",
       "Trace indicates dossier activity, but no stage logs were analyzed.",
       "Unresolved scope ambiguities remain."
     ]
   },
-  "skills": [
-    {
-      "skillFile": "/abs/fixtures/skills/backlog-engineer/SKILL.md",
-      "name": "backlog-engineer",
-      "description": "Build and synchronize backlog graphs from architecture and decision documents."
-    },
-    {
-      "skillFile": "/abs/fixtures/skills/dossier-engineer/SKILL.md",
-      "name": "dossier-engineer",
-      "description": "Lean docs-as-code workflow with feature dossiers and machine-checkable closure artifacts."
-    }
-  ],
+  "skills": {
+    "available": [],
+    "referenced": [],
+    "unreferenced_count": 0
+  },
   "candidateIncidents": [
     {
       "title": "Aborted or restarted turns detected",

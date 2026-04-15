@@ -3,7 +3,6 @@ import { redactScanSummaryForPublicArtifact } from '../core/shared.ts';
 import { buildLoggingReviewMarkdown } from '../render/logging-review-markdown.ts';
 import {
   COMMON_OPTION_SPECS,
-  assertMarkdownScaffoldLanguage,
   assertOutputOverrideIsExclusive,
   loadScanSummaryFromRunDir,
   parseOptions,
@@ -50,7 +49,6 @@ export const LOGGING_REVIEW_COMMAND: CommandDefinition<LoggingReviewCommandInput
   },
   run(input) {
     const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
-    assertMarkdownScaffoldLanguage(scan);
     const outputPath = resolveCommandOutputPath(scan, input, 'logging-review');
     const publicScan = redactScanSummaryForPublicArtifact(scan);
     writeText(outputPath, buildLoggingReviewMarkdown(publicScan));

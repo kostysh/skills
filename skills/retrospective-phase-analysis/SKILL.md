@@ -253,13 +253,14 @@ Classify incidents at least into:
 
 ### 5) Run the skill audit
 
-Use these confidence levels:
+Derive the skill-audit scope from the injected `Available skills` catalog in the session trace and the bounded operational trace:
 
-- `confirmed_used`: direct trace or stage-log evidence shows the skill was used;
-- `probably_used`: the trace strongly suggests the skill influenced execution, but the linkage is indirect;
-- `implicitly_relevant`: the skill is contextually relevant, but usage is not evidenced directly.
+- collect skill names and aliases from `Available skills`;
+- search those aliases in operational user/assistant messages, tool calls, commands, patch metadata, and structured stage-log skill metrics;
+- ignore names that appear only in non-operational summaries, compacted context, or tool-output blobs;
+- do not scan every skill folder to discover audit scope.
 
-For every skill that reaches at least `probably_used`:
+For every referenced skill:
 
 - identify where it influenced decisions or execution;
 - inspect whether the skill instructions were complete enough for the task;
@@ -380,7 +381,7 @@ Use the report templates in:
 
 A findings-first draft is acceptable before full template expansion. Do not force the full template before the scope is confirmed.
 
-Write final Markdown reports in the operator language. Keep English only for direct quotes, commands, paths, identifiers, JSON keys, and tool or skill names. When using the CLI, pass `--language <language>` to the first `scan`; follow-up commands with `--run-dir` inherit the report language from `scan-summary.json`. The operator language is not limited to a fixed list. If no deterministic Markdown scaffold exists for that language, the CLI must not silently write a report in another language; author the Markdown manually in the operator language or add a renderer before rerunning the generator command.
+Write final Markdown analysis content in the operator language. Generated CLI scaffold headings and structural labels are always English. Keep English for direct quotes, commands, paths, identifiers, JSON keys, tool names, skill names, and generated scaffold labels. When using the CLI, pass `--language <language>` to the first `scan`; follow-up commands with `--run-dir` inherit the report language from `scan-summary.json` as metadata. The operator language is not limited to a fixed list.
 
 Generated Markdown is a scaffold, not the final retrospective. The final report is the agent's responsibility after reading and validating the cited evidence. When the CLI marks output as `Status: draft, requires agent validation`, do not present it as final; resolve the listed status reasons first or explicitly document the residual limits.
 
@@ -461,9 +462,9 @@ Partition the evidence in this order:
 
 If ambiguity remains after this order, keep the ambiguity explicit in the report instead of collapsing multiple scopes into one invented narrative.
 
-### Skill usage is implicit
+### Skill usage is evidence-bound
 
-Use `implicitly_relevant` only when you cannot connect the behavior to the relevant skill file, stage artifact, or repeated action pattern. Do not promote implicit relevance to a stronger claim without direct evidence.
+Do not infer skill usage from topical relevance alone. If the skill name from `Available skills` is not present in the bounded operational trace or structured stage-log skill metrics, leave it out of the skill audit.
 
 ## File usage guidance
 

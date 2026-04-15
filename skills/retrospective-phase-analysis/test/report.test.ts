@@ -24,6 +24,13 @@ function buildLinkedFixtureSummary() {
   });
 }
 
+function buildSkillScopeFixtureSummary() {
+  return buildScanSummary({
+    session: fixturePath('contracts', 'session-skills-trace.jsonl'),
+    skillsDir: fixturePath('skills'),
+  });
+}
+
 void test('report markdown includes core retrospective sections and inferred signals', () => {
   const markdown = buildReportMarkdown(buildLinkedFixtureSummary(), {
     phase: 'implementation',
@@ -39,29 +46,29 @@ void test('report markdown includes core retrospective sections and inferred sig
 });
 
 void test('skill audit markdown keeps manual review prompts explicit', () => {
-  const markdown = buildSkillAuditMarkdown(buildLinkedFixtureSummary());
+  const markdown = buildSkillAuditMarkdown(buildSkillScopeFixtureSummary());
 
   assert.match(markdown, /^# Skill audit draft$/mu);
   assert.match(markdown, /Status: draft, requires agent validation/u);
-  assert.match(markdown, /### Skill: dossier-engineer/mu);
+  assert.match(markdown, /### Skill: hono-engineer/mu);
+  assert.match(markdown, /### Skill: retrospective-phase-analysis/mu);
   assert.doesNotMatch(markdown, /### Skill: backlog-engineer/mu);
-  assert.match(markdown, /^## Implicitly relevant skills$/mu);
-  assert.match(markdown, /backlog-engineer/mu);
+  assert.match(markdown, /Referenced skills in operational trace: 2/mu);
+  assert.match(markdown, /line 3, event_msg\.payload\.message, matched `HONO engineer`/mu);
   assert.match(markdown, /Were mandatory review steps explicit\?/mu);
   assert.match(markdown, /Cross-skill patterns to investigate/mu);
 });
 
-void test('skill audit markdown includes probably used skills in detailed findings', () => {
-  const summary = buildLinkedFixtureSummary();
-  const backlogSkill = summary.skills.find((skill) => skill.name === 'backlog-engineer');
-  assert.ok(backlogSkill);
-  summary.scope.touched_paths.push(backlogSkill.skillFile);
+void test('skill audit markdown renders an empty scaffold when no Available skills catalog exists', () => {
+  const markdown = buildSkillAuditMarkdown(buildLinkedFixtureSummary());
 
-  const markdown = buildSkillAuditMarkdown(summary);
-
-  assert.match(markdown, /### Skill: backlog-engineer/mu);
-  assert.match(markdown, /Confidence: probably_used/mu);
-  assert.doesNotMatch(markdown, /- backlog-engineer: .*SKILL\.md/mu);
+  assert.match(markdown, /Available skills in injected catalog: 0/mu);
+  assert.match(markdown, /Referenced skills in operational trace: 0/mu);
+  assert.match(
+    markdown,
+    /The operational trace did not reference any skills from the injected `Available skills` catalog/u,
+  );
+  assert.doesNotMatch(markdown, /### Skill:/mu);
 });
 
 void test('logging review markdown highlights missing artifact links and automation ideas', () => {

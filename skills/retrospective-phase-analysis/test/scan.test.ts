@@ -6,6 +6,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { buildScanSummary } from '../src/core/build-scan-summary.ts';
+import { redactScanSummaryForPublicArtifact } from '../src/core/shared.ts';
 import { buildReportMarkdown } from '../src/render/report-markdown.ts';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -64,8 +65,8 @@ void test('buildScanSummary keeps stage-log scope empty when the trace does not 
   );
   assert.equal(summary.session.tools['functions.exec_command'], 2);
   assert.equal(
-    summary.skills.some((skill) => skill.name === 'dossier-engineer'),
-    true,
+    summary.skills.referenced.some((skill) => skill.name === 'dossier-engineer'),
+    false,
   );
   assert.equal(summary.candidateIncidents.length, 1);
   assert.equal(
@@ -74,6 +75,77 @@ void test('buildScanSummary keeps stage-log scope empty when the trace does not 
     ),
     true,
   );
+});
+
+void test('buildScanSummary derives skill audit scope from Available skills and operational trace', () => {
+  const summary = buildScanSummary({
+    session: fixturePath('contracts', 'session-skills-trace.jsonl'),
+    skillsDir: fixturePath('skills'),
+  });
+
+  assert.deepEqual(
+    summary.skills.available.map((skill) => skill.name),
+    [
+      'backlog-engineer',
+      'git-engineer',
+      'hono-engineer',
+      'retrospective-phase-analysis',
+      'typescript-engineer',
+    ],
+  );
+  assert.deepEqual(
+    summary.skills.referenced.map((skill) => skill.name),
+    ['hono-engineer', 'retrospective-phase-analysis'],
+  );
+  assert.equal(summary.skills.unreferenced_count, 3);
+  assert.equal(summary.dataQuality.skillCatalogPresent, true);
+
+  const hono = summary.skills.referenced.find((skill) => skill.name === 'hono-engineer');
+  assert.ok(hono);
+  assert.deepEqual(hono.aliases, ['HONO engineer', 'hono-engineer']);
+  assert.equal(
+    hono.evidence.some(
+      (entry) =>
+        entry.matched_alias === 'HONO engineer' && entry.field === 'event_msg.payload.message',
+    ),
+    true,
+  );
+  assert.equal(
+    hono.evidence.some(
+      (entry) =>
+        entry.matched_alias === 'hono-engineer' &&
+        entry.field === 'event_msg.payload.parsed_cmd[0].path',
+    ),
+    true,
+  );
+
+  assert.equal(
+    summary.skills.referenced.some((skill) => skill.name === 'git-engineer'),
+    false,
+  );
+  assert.equal(
+    summary.skills.referenced.some((skill) => skill.name === 'typescript-engineer'),
+    false,
+  );
+
+  const publicSummary = redactScanSummaryForPublicArtifact(summary);
+  const serialized = JSON.stringify(publicSummary.skills);
+  assert.doesNotMatch(serialized, /\/synthetic-runtime\//u);
+  assert.match(serialized, /<skills-root>\/hono-engineer\/SKILL\.md/u);
+});
+
+void test('buildScanSummary does not fan out through skills-dir when Available skills catalog is missing', () => {
+  const summary = buildScanSummary({
+    session: fixturePath('sessions', 'phase-session.jsonl'),
+    logsDir: fixturePath('logs'),
+    artifactsDir: fixturePath('artifacts'),
+    skillsDir: fixturePath('skills'),
+  });
+
+  assert.equal(summary.dataQuality.skillCatalogPresent, false);
+  assert.deepEqual(summary.skills.available, []);
+  assert.deepEqual(summary.skills.referenced, []);
+  assert.equal(summary.skills.unreferenced_count, 0);
 });
 
 void test('buildScanSummary downgrades data quality when the session trace is missing', () => {
@@ -148,6 +220,23 @@ void test('buildScanSummary only parses trace-confirmed stage logs instead of re
       sessionPath,
       [
         JSON.stringify({
+          timestamp: '2026-04-10T09:58:00Z',
+          type: 'response_item',
+          payload: {
+            type: 'message',
+            role: 'developer',
+            content: [
+              {
+                type: 'input_text',
+                text: [
+                  '### Available skills',
+                  '- retrospective-phase-analysis: Perform retrospective analysis. (file: /synthetic-runtime/codex/skills/custom/skills/retrospective-phase-analysis/SKILL.md)',
+                ].join('\n'),
+              },
+            ],
+          },
+        }),
+        JSON.stringify({
           timestamp: '2026-04-10T09:59:00Z',
           type: 'session_meta',
           payload: { id: '019d7490-46d0-7811-b43f-056bb617a7ad', cwd: projectRoot },
@@ -199,6 +288,23 @@ void test('buildScanSummary keeps the durable output root tied to the current wo
     await writeFile(
       sessionPath,
       [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:58:00Z',
+          type: 'response_item',
+          payload: {
+            type: 'message',
+            role: 'developer',
+            content: [
+              {
+                type: 'input_text',
+                text: [
+                  '### Available skills',
+                  '- retrospective-phase-analysis: Perform retrospective analysis. (file: /synthetic-runtime/codex/skills/custom/skills/retrospective-phase-analysis/SKILL.md)',
+                ].join('\n'),
+              },
+            ],
+          },
+        }),
         JSON.stringify({
           timestamp: '2026-04-10T09:59:00Z',
           type: 'session_meta',
@@ -259,6 +365,23 @@ void test('buildScanSummary keeps read-only successful tool output paths out of 
     await writeFile(
       sessionPath,
       [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:58:00Z',
+          type: 'response_item',
+          payload: {
+            type: 'message',
+            role: 'developer',
+            content: [
+              {
+                type: 'input_text',
+                text: [
+                  '### Available skills',
+                  '- retrospective-phase-analysis: Perform retrospective analysis. (file: /synthetic-runtime/codex/skills/custom/skills/retrospective-phase-analysis/SKILL.md)',
+                ].join('\n'),
+              },
+            ],
+          },
+        }),
         JSON.stringify({
           timestamp: '2026-04-10T09:59:00Z',
           type: 'session_meta',
@@ -600,7 +723,11 @@ void test('buildScanSummary does not auto-link review or verification artifacts 
     await mkdir(reviewsDir, { recursive: true });
     await mkdir(verificationDir, { recursive: true });
     await writeFile(path.join(reviewsDir, 'F-0016-review.md'), '# review\n', 'utf8');
-    await writeFile(path.join(verificationDir, 'F-0016-verification.md'), '# verification\n', 'utf8');
+    await writeFile(
+      path.join(verificationDir, 'F-0016-verification.md'),
+      '# verification\n',
+      'utf8',
+    );
 
     await writeFile(
       sessionPath,
@@ -634,7 +761,7 @@ void test('buildScanSummary does not auto-link review or verification artifacts 
     assert.deepEqual(summary.scope.candidate_review_artifacts, []);
     assert.deepEqual(summary.scope.candidate_verification_artifacts, []);
     assert.equal(
-    summary.scope.scope_ambiguities.some((entry) =>
+      summary.scope.scope_ambiguities.some((entry) =>
         entry.includes('did not directly confirm any review artifacts'),
       ),
       true,
@@ -661,9 +788,7 @@ void test('buildScanSummary applies an active-session timestamp boundary before 
     await cp(fixturePath('artifacts', '.dossier', 'logs'), logsDir, { recursive: true });
     await writeFile(
       path.join(logsDir, 'retrospective.md'),
-      ['```yaml', 'stage: retrospective', 'skill: retrospective-phase-analysis', '```'].join(
-        '\n',
-      ),
+      ['```yaml', 'stage: retrospective', 'skill: retrospective-phase-analysis', '```'].join('\n'),
       'utf8',
     );
 
@@ -1025,6 +1150,23 @@ void test('buildScanSummary marks clean evidence as ready for agent finalization
     await writeFile(
       sessionPath,
       [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:58:00Z',
+          type: 'response_item',
+          payload: {
+            type: 'message',
+            role: 'developer',
+            content: [
+              {
+                type: 'input_text',
+                text: [
+                  '### Available skills',
+                  '- retrospective-phase-analysis: Perform retrospective analysis. (file: /synthetic-runtime/codex/skills/custom/skills/retrospective-phase-analysis/SKILL.md)',
+                ].join('\n'),
+              },
+            ],
+          },
+        }),
         JSON.stringify({
           timestamp: '2026-04-10T09:59:00Z',
           type: 'session_meta',

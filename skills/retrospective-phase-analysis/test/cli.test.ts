@@ -203,6 +203,41 @@ void test('scan writes a JSON summary file from fixture inputs', async () => {
   }
 });
 
+void test('scan writes display-safe skill evidence paths to persisted summary', async () => {
+  const tempDir = await createTempDir();
+  const outputPath = path.join(tempDir, 'scan-summary.json');
+
+  try {
+    const result = runBuiltCli([
+      'scan',
+      '--session',
+      fixturePath('contracts', 'session-skills-trace.jsonl'),
+      '--skills-dir',
+      fixturePath('skills'),
+      '--out',
+      outputPath,
+      '--pretty',
+    ]);
+
+    assert.equal(result.status, 0);
+    const rawSummary = await readFile(outputPath, 'utf8');
+    assert.doesNotMatch(rawSummary, /\/synthetic-runtime\//u);
+    assert.match(rawSummary, /<skills-root>\/hono-engineer\/SKILL\.md/u);
+
+    const parsed = JSON.parse(rawSummary) as {
+      skills: {
+        referenced: Array<{ name: string; evidence: Array<{ excerpt: string }> }>;
+      };
+    };
+    assert.deepEqual(
+      parsed.skills.referenced.map((skill) => skill.name),
+      ['hono-engineer', 'retrospective-phase-analysis'],
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 void test('scan accepts arbitrary operator language labels', async () => {
   const tempDir = await createTempDir();
   const outputPath = path.join(tempDir, 'scan-summary.json');
@@ -242,11 +277,12 @@ void test('scan accepts arbitrary operator language labels', async () => {
       '--out',
       path.join(tempDir, 'retrospective-report.md'),
     ]);
-    assert.notEqual(reportResult.status, 0);
-    assert.match(
-      reportResult.stderr,
-      /No deterministic Markdown scaffold is available for report_language "italiano"/u,
-    );
+    assert.equal(reportResult.status, 0);
+    assert.equal(reportResult.stderr, '');
+
+    const markdown = await readFile(path.join(tempDir, 'retrospective-report.md'), 'utf8');
+    assert.match(markdown, /^# Retrospective$/mu);
+    assert.doesNotMatch(markdown, /^# Ретроанализ/mu);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
@@ -491,7 +527,8 @@ void test('run-dir keeps all retrospective bundle files in one canonical directo
     assert.equal(loggingReview.status, 0);
 
     const markdown = await readFile(path.join(runDir, 'retrospective-report.md'), 'utf8');
-    assert.match(markdown, /^# Ретроанализ/mu);
+    assert.match(markdown, /^# Retrospective:/mu);
+    assert.doesNotMatch(markdown, /^# Ретроанализ/mu);
     await readFile(path.join(runDir, 'skill-audit.md'), 'utf8');
     await readFile(path.join(runDir, 'logging-review.md'), 'utf8');
 

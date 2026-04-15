@@ -18,11 +18,18 @@ function statusReasons(scan: ScanSummary): string {
     : '- Evidence quality passed automated scaffold checks.';
 }
 
-export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOptions): string {
-  if (scan.report_language.toLowerCase().startsWith('ru')) {
-    return buildRussianReportMarkdown(scan, options);
-  }
+function formatSkillManifest(scan: ScanSummary): string {
+  return (
+    scan.skills.referenced
+      .map((skill) => {
+        const source = skill.skillFile ?? 'skill file not resolved';
+        return `- ${skill.name}: ${source}`;
+      })
+      .join('\n') || '- none'
+  );
+}
 
+export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOptions): string {
   const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ''}`;
   const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
   const incidentSections = scan.candidateIncidents
@@ -40,8 +47,7 @@ export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOpti
 
   const logFiles =
     scan.stageLogs.files.map((entry) => `- ${entry.filePath}`).join('\n') || '- none';
-  const skillFiles =
-    scan.skills.map((skill) => `- ${skill.name}: ${skill.skillFile}`).join('\n') || '- none';
+  const skillFiles = formatSkillManifest(scan);
   const scopePaths = scan.scope.touched_paths.map((entry) => `- ${entry}`).join('\n') || '- none';
   const scopeArtifacts =
     scan.scope.referenced_artifacts.map((entry) => `- ${entry}`).join('\n') || '- none';
@@ -154,140 +160,5 @@ ${statusReasons(scan)}
 - Stage logs available: ${scan.dataQuality.logsPresent}
 - Skill catalog available: ${scan.dataQuality.skillCatalogPresent}
 - This draft is heuristic and should be refined by reading the cited artifacts.
-`;
-}
-
-function buildRussianReportMarkdown(scan: ScanSummary, options: ReportRenderOptions): string {
-  const title = options.title ?? `Ретроанализ${options.phase ? `: ${options.phase}` : ''}`;
-  const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
-  const incidentSections = scan.candidateIncidents
-    .map((incident, index) =>
-      [
-        `### R-${String(index + 1).padStart(2, '0')} - ${incident.title}`,
-        `- Серьезность: ${incident.severity}`,
-        `- Этап: ${incident.stage}`,
-        `- Доказательство: ${incident.evidence}`,
-        `- Наблюдение: ${incident.reason}`,
-        '',
-      ].join('\n'),
-    )
-    .join('\n');
-
-  const logFiles =
-    scan.stageLogs.files.map((entry) => `- ${entry.filePath}`).join('\n') || '- none';
-  const skillFiles =
-    scan.skills.map((skill) => `- ${skill.name}: ${skill.skillFile}`).join('\n') || '- none';
-  const scopePaths = scan.scope.touched_paths.map((entry) => `- ${entry}`).join('\n') || '- none';
-  const scopeArtifacts =
-    scan.scope.referenced_artifacts.map((entry) => `- ${entry}`).join('\n') || '- none';
-  const scopeAmbiguities =
-    scan.scope.scope_ambiguities.map((entry) => `- ${entry}`).join('\n') || '- none';
-
-  return `# ${title}
-
-${statusLine(scan)}
-
-## Краткое резюме
-
-- Этап: ${options.phase ?? 'не указан'}
-- Trace сессии: ${scan.resolved.session ?? 'не указан'}
-- Session id: ${scan.session.sessionId ?? 'не указан'}
-- Проанализировано stage logs: ${scan.stageLogs.count}
-- Кандидатных инцидентов: ${scan.candidateIncidents.length}
-- Уникальных tools: ${Object.keys(scan.session.tools).length}
-- Уверенность scope: ${scan.scope.scope_confidence}
-- Статус scaffold отчета: ${scan.reportStatus.status}
-- Примечание по качеству данных: ${
-    scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent
-      ? 'Trace сессии и stage logs доступны.'
-      : 'Один или несколько ключевых источников отсутствуют; уверенность снижена.'
-  }
-
-## Манифест доказательств
-
-### Логи этапов
-${logFiles}
-
-### Инструкции агентов
-${skillFiles}
-
-### Trace сессии
-- ${scan.resolved.session ?? 'не указан'}
-
-### Scope, полученный из trace
-- Project root: ${scan.scope.project_root ?? 'unknown'}
-- Backlog items: ${scan.scope.mentioned_backlog_items.join(', ') || 'none'}
-- Features: ${scan.scope.mentioned_features.join(', ') || 'none'}
-
-### Затронутые пути
-${scopePaths}
-
-### Упомянутые артефакты
-${scopeArtifacts}
-
-## Сводка timeline
-
-- Начало: ${scan.session.firstTimestamp ?? 'unknown'}
-- Конец: ${scan.session.lastTimestamp ?? 'unknown'}
-- Длительность, минут: ${scan.session.durationMinutes ?? 'unknown'}
-- Прерванные или перезапущенные turns: ${scan.session.abortedTurns}
-- Длинные паузы: ${scan.session.longGaps}
-
-## Основные tools
-
-${formatList(topTools)}
-
-## Кандидатные инциденты
-
-${incidentSections || 'Автоматически кандидатные инциденты не найдены.'}
-
-## Метрики stage logs
-
-- Всего review rounds: ${scan.stageLogs.metrics.reviewRoundsTotal}
-- Всего review findings: ${scan.stageLogs.metrics.reviewFindingsTotal}
-- Всего process misses: ${scan.stageLogs.metrics.processMissesTotal}
-- Циклов с backlog actualization: ${scan.stageLogs.metrics.backlogActualizedCount}
-- Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
-
-## Предварительный анализ этапов
-
-${formatList(
-  topEntries(scan.stageLogs.metrics.stages, 20).map(
-    ([stage, count]) => `${stage}: ${count} лог(ов)`,
-  ),
-)}
-
-## Предварительный анализ skills
-
-${formatList(
-  topEntries(scan.stageLogs.metrics.skillsReferenced, 20).map(
-    ([skill, count]) => `${skill}: упомянут в ${count} лог(ах)`,
-  ),
-)}
-
-## Неоднозначности scope
-
-${scopeAmbiguities}
-
-## Причины статуса отчета
-
-${statusReasons(scan)}
-
-## Рекомендуемые ручные проверки
-
-- Подтвердить каждый inferred incident по trace и stage log.
-- Остановить расширение scope, если неоднозначности выше не снимаются связанными артефактами.
-- Проверить rerounds и non-pass reviews на устранимые причины.
-- Проверить skill files, упомянутые в логах, на недостающие decision rules, устаревшие допущения и неоднозначность.
-- Проверить, влияла ли поздняя или отсутствующая backlog actualization на качество closure.
-- Отделить необходимую сложность от устранимого трения перед финализацией рекомендаций.
-
-## Ограничения качества данных
-
-- Session parse errors: ${scan.dataQuality.sessionParseErrors}
-- Trace сессии доступен: ${scan.dataQuality.sessionPresent}
-- Логи этапов доступны: ${scan.dataQuality.logsPresent}
-- Каталог инструкций агентов доступен: ${scan.dataQuality.skillCatalogPresent}
-- Этот draft эвристический; перед финализацией выводов нужно проверить цитируемые артефакты.
 `;
 }

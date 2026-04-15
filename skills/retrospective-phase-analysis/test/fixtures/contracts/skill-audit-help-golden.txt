@@ -1,10 +1,10 @@
-report - Generate a Markdown retrospective draft.
+skill-audit - Generate a skill-focused Markdown draft.
 
 Usage:
-  node scripts/retro-cli.mjs report --session <file> --phase <name>
-  node scripts/retro-cli.mjs report --session <file> --out-root <dir>
-  node scripts/retro-cli.mjs report --run-dir <dir>
-  node scripts/retro-cli.mjs report --phase <name> --title <text> --out <file>
+  node scripts/retro-cli.mjs skill-audit --session <file>
+  node scripts/retro-cli.mjs skill-audit --run-dir <dir>
+  node scripts/retro-cli.mjs skill-audit --session <file> --skills-dir <dir> --out-root <dir>
+  node scripts/retro-cli.mjs skill-audit --logs-dir <dir> --out <file>
 
 Options:
   -h, --help                  Show command help.
@@ -16,10 +16,9 @@ Options:
   --run-dir <dir>             Exact canonical retrospective run directory to reuse.
   --language <language>       Operator language tag or name for report metadata and generated Markdown scaffolds.
   --draft                     Write an explicitly temporary draft bundle under out/retro-drafts.
-  --phase <name>              Optional phase label for the report.
-  --title <text>              Title override.
   --out <file>                Output Markdown path override.
 
 Notes:
-  - The generated report is a draft; read the cited artifacts before finalizing conclusions.
-  - Without --out, the command writes retrospective-report.md into the durable run directory selected for this retrospective scope.
+  - Use this draft as a triage aid before editing skill instructions or process policy.
+  - --skills-dir enriches referenced skills only; it does not discover the audit scope.
+  - Without --out, the command writes skill-audit.md into the durable run directory selected for this retrospective scope.

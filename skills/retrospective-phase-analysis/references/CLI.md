@@ -57,6 +57,7 @@ Outputs:
 - `phase_boundary`
 - structured `stage_log_candidates`, `review_artifact_candidates`, and `verification_artifact_candidates`
 - `reportStatus`
+- `skills.available`, `skills.referenced`, and `skills.unreferenced_count`
 - `run_dir`, `operator_language`, and `report_language`
 
 `scan` also prints a compact JSON line to stdout with `run_dir`, `scan_summary`, and `report_language`.
@@ -138,6 +139,8 @@ node scripts/retro-cli.mjs skill-audit \
   --skills-dir /path/to/skills
 ```
 
+`skill-audit` uses the injected `Available skills` catalog in the session trace as its scope. `--skills-dir` is optional enrichment for referenced skills only; it does not discover additional skills.
+
 ### `logging-review`
 
 Generate a logging-quality and improvement draft.
@@ -152,7 +155,7 @@ node scripts/retro-cli.mjs logging-review \
 - `--session <file>`: rollout or session JSONL file
 - `--logs-dir <dir>`: directory containing stage logs
 - `--artifacts-dir <dir>`: project root or evidence root
-- `--skills-dir <dir>`: directory containing skill folders
+- `--skills-dir <dir>`: optional directory containing skill folders for referenced-skill enrichment
 - `--phase <name>`: optional phase label for the report
 - `--title <text>`: title override
 - `--out <file>`: exact output file override
@@ -174,13 +177,14 @@ Language rule:
 - Pass the operator language to `scan`, for example `--language ru`, `--language it`, or `--language "Italian"`.
 - `scan-summary.json` records `operator_language` and `report_language`.
 - `report`, `skill-audit`, and `logging-review` inherit language from `scan-summary.json` when invoked with `--run-dir`.
-- Markdown reports should be in the operator language; English is acceptable for direct quotes, commands, paths, identifiers, JSON keys, and tool or skill names.
-- The CLI can only provide deterministic scaffolds. If no scaffold exists for the requested operator language, generator commands must fail instead of silently writing Markdown in another language. In that case, use `scan-summary.json` and author the final Markdown manually in the operator language, or add a renderer before rerunning the command.
+- Generated Markdown scaffold headings and structural labels are always English.
+- The operator language is metadata for agent-authored analysis content and final conclusions, not a template-localization selector.
+- English is acceptable for direct quotes, commands, paths, identifiers, JSON keys, tool names, skill names, and generated scaffold labels.
 
 Report status rule:
 
 - Generated Markdown is a scaffold. The final report is the agent's responsibility after evidence validation.
-- `draft_requires_agent_validation` is used when evidence quality is degraded, no stage logs were analyzed despite dossier activity, unresolved ambiguities exist, manual overrides were used, or no deterministic language scaffold exists.
+- `draft_requires_agent_validation` is used when evidence quality is degraded, no stage logs were analyzed despite dossier activity, unresolved ambiguities exist, manual overrides were used, or the injected `Available skills` catalog is missing.
 - Draft Markdown includes `Status: draft, requires agent validation`.
 - `ready_for_agent_finalization` means the automated checks found no draft trigger, but the agent still owns final conclusions.
 
@@ -194,7 +198,8 @@ The CLI tries to infer:
 - canonical backlog items, canonical feature ids, touched paths, and referenced artifacts from high-confidence trace anchors;
 - review findings from stage-log metadata and review-event text;
 - process misses from stage-log sections and metadata;
-- skill references from metadata `skill:` lines and file paths.
+- possible skills from the injected `Available skills` catalog;
+- referenced skills from operational user/assistant messages, commands, tool-call metadata, patch metadata, and structured stage-log skill metrics.
 
 ## Important limitations
 

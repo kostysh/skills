@@ -88,10 +88,11 @@ Possible remediations:
 - encode review policy explicitly;
 - add machine-readable sidecar assets.
 
-Confidence levels for skill audit:
-- **confirmed_used**: direct trace or stage-log evidence shows the skill was used.
-- **probably_used**: the trace strongly suggests usage, but the linkage is indirect.
-- **implicitly_relevant**: the skill is contextually relevant, but usage is not evidenced directly.
+Skill audit scope:
+- use the injected `Available skills` catalog as the authoritative list of possible skills for the current runtime;
+- match those skill names and aliases against bounded operational trace evidence and structured stage-log skill metrics;
+- include only referenced skills in `skill-audit.md`;
+- do not include skills solely because they are topically relevant.
 
 ## 6. Stage weakness questions
 

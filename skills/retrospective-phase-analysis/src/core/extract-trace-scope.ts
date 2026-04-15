@@ -355,7 +355,10 @@ function extractCanonicalFeatureIds(values: readonly string[]): string[] {
   return extractMatches(values, CANONICAL_FEATURE_ID_PATTERN);
 }
 
-function extractFeatureIdsFromPaths(values: readonly string[], projectRoot: string | null): string[] {
+function extractFeatureIdsFromPaths(
+  values: readonly string[],
+  projectRoot: string | null,
+): string[] {
   if (!projectRoot) {
     return [];
   }
@@ -714,9 +717,7 @@ function referencedOnlyCandidates(
 
 function includedPaths(candidates: readonly ArtifactCandidate[]): string[] {
   return sortUnique(
-    candidates
-      .filter((candidate) => candidate.included)
-      .map((candidate) => candidate.path),
+    candidates.filter((candidate) => candidate.included).map((candidate) => candidate.path),
   );
 }
 
@@ -770,11 +771,7 @@ export function extractTraceScope({
     sessionSummary.events,
     projectRoot,
   );
-  const manualStageLogCandidates = manualCandidates(
-    manualStageLogs,
-    projectRoot,
-    artifactEvidence,
-  );
+  const manualStageLogCandidates = manualCandidates(manualStageLogs, projectRoot, artifactEvidence);
   const manualReviewCandidates = manualCandidates(
     manualReviewArtifacts,
     projectRoot,
@@ -787,7 +784,9 @@ export function extractTraceScope({
   );
 
   const stageLogCandidates = mergeCandidates([
-    ...autoIncludedCandidates.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
+    ...autoIncludedCandidates.filter((candidate) =>
+      isStageLogArtifact(candidate.path, projectRoot),
+    ),
     ...referencedOnlyCandidates(
       referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
       autoIncludedCandidates,
@@ -807,9 +806,7 @@ export function extractTraceScope({
       isVerificationArtifact(candidate.path, projectRoot),
     ),
     ...referencedOnlyCandidates(
-      referencedByEvent.filter((candidate) =>
-        isVerificationArtifact(candidate.path, projectRoot),
-      ),
+      referencedByEvent.filter((candidate) => isVerificationArtifact(candidate.path, projectRoot)),
       autoIncludedCandidates,
     ),
     ...manualVerificationCandidates,

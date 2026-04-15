@@ -11,9 +11,7 @@ export type ArtifactEvidenceKind =
   | 'referenced_only'
   | 'manual_override';
 export type ArtifactInclusion = 'auto_included' | 'manual_included' | 'not_included';
-export type ReportStatus =
-  | 'draft_requires_agent_validation'
-  | 'ready_for_agent_finalization';
+export type ReportStatus = 'draft_requires_agent_validation' | 'ready_for_agent_finalization';
 
 export interface PhaseBoundary {
   mode: PhaseBoundaryMode;
@@ -65,6 +63,7 @@ export interface SessionSummary {
   tools: Record<string, number>;
   sampleEventTypes: string[];
   events: unknown[];
+  eventLines: number[];
 }
 
 export interface LogMetrics {
@@ -95,6 +94,33 @@ export interface SkillsSummary {
   skills: SkillSummary[];
 }
 
+export interface SkillCatalogEntry {
+  name: string;
+  display_name: string;
+  path_name: string | null;
+  aliases: string[];
+  skillFile: string | null;
+  description: string;
+}
+
+export interface SkillEvidence {
+  line: number;
+  event_type: string;
+  field: string;
+  excerpt: string;
+  matched_alias: string;
+}
+
+export interface ReferencedSkill extends SkillCatalogEntry {
+  evidence: SkillEvidence[];
+}
+
+export interface SkillTraceSummary {
+  available: SkillCatalogEntry[];
+  referenced: ReferencedSkill[];
+  unreferenced_count: number;
+}
+
 export interface CandidateIncident {
   title: string;
   severity: IncidentSeverity;
@@ -120,7 +146,12 @@ export interface ScanSourceOptions {
   artifactEvidence?: string;
 }
 
-export type RetroOutputMode = 'dossier-default' | 'fallback-default' | 'root-override' | 'run-dir' | 'draft';
+export type RetroOutputMode =
+  | 'dossier-default'
+  | 'fallback-default'
+  | 'root-override'
+  | 'run-dir'
+  | 'draft';
 
 export interface RetroOutputLayout {
   mode: RetroOutputMode;
@@ -213,7 +244,7 @@ export interface ScanSummary {
     status: ReportStatus;
     reasons: string[];
   };
-  skills: SkillSummary[];
+  skills: SkillTraceSummary;
   recommendedOutput: RetroOutputLayout;
   candidateIncidents: CandidateIncident[];
 }

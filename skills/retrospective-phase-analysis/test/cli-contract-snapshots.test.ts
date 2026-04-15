@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { buildCommandHelpOutput, buildGlobalHelpOutput } from '../src/cli/command-registry.ts';
 import { REPORT_COMMAND } from '../src/commands/report.ts';
+import { SKILL_AUDIT_COMMAND } from '../src/commands/skill-audit.ts';
 import { buildScanSummary } from '../src/core/build-scan-summary.ts';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -32,9 +33,11 @@ function normalizeScanSummary(summary: unknown): unknown {
 void test('help output snapshots stay stable for the public CLI surface', async () => {
   const globalHelp = buildGlobalHelpOutput('0.1.0');
   const reportHelp = buildCommandHelpOutput(REPORT_COMMAND);
+  const skillAuditHelp = buildCommandHelpOutput(SKILL_AUDIT_COMMAND);
 
   assert.equal(globalHelp, await readContract('help-output-golden.txt'));
   assert.equal(reportHelp, await readContract('report-help-golden.txt'));
+  assert.equal(skillAuditHelp, await readContract('skill-audit-help-golden.txt'));
 });
 
 void test('scan summary snapshot stays stable for the maintainer fixture contract', async () => {

@@ -50,16 +50,15 @@ function summarizeParsedLogs(logs: ParsedStageLog[]): LogsSummary {
   };
 }
 
-export function summarizeLogs(
-  logsDir?: string,
-  allowedFilePaths?: readonly string[],
-): LogsSummary {
+export function summarizeLogs(logsDir?: string, allowedFilePaths?: readonly string[]): LogsSummary {
   const files =
     allowedFilePaths === undefined
       ? []
       : Array.from(
           new Set(
-            allowedFilePaths.filter((filePath) => filePath.endsWith('.md') && fs.existsSync(filePath)),
+            allowedFilePaths.filter(
+              (filePath) => filePath.endsWith('.md') && fs.existsSync(filePath),
+            ),
           ),
         );
 

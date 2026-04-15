@@ -1,3 +1,4 @@
+import { extractSkillTraceSummary } from './extract-skill-scope.ts';
 import { extractTraceScope } from './extract-trace-scope.ts';
 import { inferCandidateIncidents } from './infer-candidate-incidents.ts';
 import { resolveStandardEvidenceDir } from './resolve-evidence-roots.ts';
@@ -23,29 +24,18 @@ function assertManualOverridesHaveEvidence(args: ScanSourceOptions): void {
   }
 }
 
-function supportsMarkdownScaffold(language: string): boolean {
-  const normalized = language.toLowerCase();
-  return (
-    normalized === 'en' ||
-    normalized.startsWith('en-') ||
-    normalized === 'ru' ||
-    normalized.startsWith('ru-')
-  );
-}
-
 function hasManualCandidates(candidates: readonly ArtifactCandidate[]): boolean {
   return candidates.some((candidate) => candidate.inclusion_source === 'manual_included');
 }
 
 function buildReportStatus(input: {
-  reportLanguage: string;
   sessionSummary: ReturnType<typeof summarizeSession>;
   logSummary: ReturnType<typeof summarizeLogs>;
-  skillsSummary: ReturnType<typeof summarizeSkills>;
+  skillTraceSummary: ReturnType<typeof extractSkillTraceSummary>;
   scope: ReturnType<typeof extractTraceScope>;
 }): ScanSummary['reportStatus'] {
   const reasons: string[] = [];
-  const { reportLanguage, sessionSummary, logSummary, skillsSummary, scope } = input;
+  const { sessionSummary, logSummary, skillTraceSummary, scope } = input;
 
   if (!sessionSummary.exists) {
     reasons.push('Session trace is missing.');
@@ -56,8 +46,8 @@ function buildReportStatus(input: {
   if (!logSummary.exists) {
     reasons.push('Stage-log directory is missing or unresolved.');
   }
-  if (!skillsSummary.exists) {
-    reasons.push('Skill catalog is missing or unresolved.');
+  if (skillTraceSummary.available.length === 0) {
+    reasons.push('Injected Available skills catalog is missing or unresolved.');
   }
   if (
     logSummary.metrics.logsTotal === 0 &&
@@ -75,15 +65,8 @@ function buildReportStatus(input: {
   ) {
     reasons.push('Manual artifact overrides were used.');
   }
-  if (!supportsMarkdownScaffold(reportLanguage)) {
-    reasons.push('No deterministic Markdown scaffold exists for the requested report language.');
-  }
-
   return {
-    status:
-      reasons.length > 0
-        ? 'draft_requires_agent_validation'
-        : 'ready_for_agent_finalization',
+    status: reasons.length > 0 ? 'draft_requires_agent_validation' : 'ready_for_agent_finalization',
     reasons,
   };
 }
@@ -125,13 +108,17 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
   }
   const scope = extractTraceScope(scopeOptions);
   const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
+  const skillTraceSummary = extractSkillTraceSummary({
+    sessionSummary,
+    localSkills: skillsSummary,
+    logMetrics: logSummary.metrics,
+  });
 
   const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
   const reportStatus = buildReportStatus({
-    reportLanguage,
     sessionSummary,
     logSummary,
-    skillsSummary,
+    skillTraceSummary,
     scope,
   });
 
@@ -164,7 +151,7 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
     dataQuality: {
       sessionPresent: sessionSummary.exists,
       logsPresent: logSummary.exists,
-      skillCatalogPresent: skillsSummary.exists,
+      skillCatalogPresent: skillTraceSummary.available.length > 0,
       sessionParseErrors: sessionSummary.parseErrors.length,
     },
     phase_boundary: sessionSummary.phaseBoundary,
@@ -193,13 +180,14 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
     },
     scope,
     reportStatus,
-    skills: skillsSummary.skills,
+    skills: skillTraceSummary,
     candidateIncidents,
   };
 
-  const outputOptions: { commandName: 'scan'; outRoot?: string; runDir?: string; draft?: boolean } = {
-    commandName: 'scan',
-  };
+  const outputOptions: { commandName: 'scan'; outRoot?: string; runDir?: string; draft?: boolean } =
+    {
+      commandName: 'scan',
+    };
   if (args.outRoot) {
     outputOptions.outRoot = args.outRoot;
   }
