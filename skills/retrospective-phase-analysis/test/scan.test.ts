@@ -134,6 +134,70 @@ void test('buildScanSummary derives skill audit scope from Available skills and 
   assert.match(serialized, /<skills-root>\/hono-engineer\/SKILL\.md/u);
 });
 
+void test('buildScanSummary enriches only referenced skills from skills-dir', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const skillsDir = path.join(tempDir, 'skills');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(path.join(skillsDir, 'hono-engineer'), { recursive: true });
+    await mkdir(path.join(skillsDir, 'unused-skill', 'SKILL.md'), { recursive: true });
+    await writeFile(
+      path.join(skillsDir, 'hono-engineer', 'SKILL.md'),
+      [
+        '---',
+        'name: hono-engineer',
+        'description: Local Hono guidance.',
+        '---',
+        '',
+        '# Hono Engineer',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-15T10:00:00Z',
+          type: 'response_item',
+          payload: {
+            type: 'message',
+            role: 'developer',
+            content: [
+              {
+                type: 'input_text',
+                text: [
+                  '### Available skills',
+                  '- HONO engineer: Build and maintain Hono services. (file: /synthetic-runtime/codex/skills/custom/skills/hono-engineer/SKILL.md)',
+                  '- unused-skill: Deliberately unreadable local skill. (file: /synthetic-runtime/codex/skills/custom/skills/unused-skill/SKILL.md)',
+                ].join('\n'),
+              },
+            ],
+          },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-15T10:01:00Z',
+          type: 'event_msg',
+          payload: {
+            type: 'user_message',
+            message: 'Please inspect HONO engineer guidance for this phase.',
+          },
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, skillsDir });
+    assert.equal(summary.skills.referenced.length, 1);
+    assert.equal(
+      summary.skills.referenced[0]?.skillFile,
+      path.join(skillsDir, 'hono-engineer', 'SKILL.md'),
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 void test('buildScanSummary does not fan out through skills-dir when Available skills catalog is missing', () => {
   const summary = buildScanSummary({
     session: fixturePath('sessions', 'phase-session.jsonl'),
@@ -146,6 +210,45 @@ void test('buildScanSummary does not fan out through skills-dir when Available s
   assert.deepEqual(summary.skills.available, []);
   assert.deepEqual(summary.skills.referenced, []);
   assert.equal(summary.skills.unreferenced_count, 0);
+});
+
+void test('buildScanSummary ignores Available skills blocks in operational messages', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-15T10:00:00Z',
+          type: 'session_meta',
+          payload: { id: '019d9000-0000-7000-8000-000000000002', cwd: tempDir },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-15T10:01:00Z',
+          type: 'event_msg',
+          payload: {
+            type: 'user_message',
+            message: [
+              'Here is copied context, not injected runtime policy:',
+              '### Available skills',
+              '- git-engineer: Enforce Conventional Commits. (file: /synthetic-runtime/codex/skills/custom/skills/git-engineer/SKILL.md)',
+              'Please inspect git-engineer.',
+            ].join('\n'),
+          },
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath });
+    assert.equal(summary.dataQuality.skillCatalogPresent, false);
+    assert.deepEqual(summary.skills.available, []);
+    assert.deepEqual(summary.skills.referenced, []);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
 });
 
 void test('buildScanSummary downgrades data quality when the session trace is missing', () => {

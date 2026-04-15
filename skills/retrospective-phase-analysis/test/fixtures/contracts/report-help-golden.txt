@@ -14,7 +14,7 @@ Options:
   --skills-dir <dir>          Optional directory containing skill folders for referenced-skill enrichment.
   --out-root <dir>            Root directory where the CLI chooses the canonical retrospective run directory.
   --run-dir <dir>             Exact canonical retrospective run directory to reuse.
-  --language <language>       Operator language tag or name for report metadata and generated Markdown scaffolds.
+  --language <language>       Operator language tag or name for report metadata and final analysis content.
   --draft                     Write an explicitly temporary draft bundle under out/retro-drafts.
   --phase <name>              Optional phase label for the report.
   --title <text>              Title override.

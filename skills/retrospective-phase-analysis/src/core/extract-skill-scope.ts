@@ -1,5 +1,7 @@
+import fs from 'node:fs';
 import path from 'node:path';
 
+import { parseLooseYaml } from '../parsers/loose-yaml.ts';
 import { extractEventType, sortUnique, stringFromUnknown } from './shared.ts';
 import type {
   LogMetrics,
@@ -8,7 +10,6 @@ import type {
   SkillEvidence,
   SkillSummary,
   SkillTraceSummary,
-  SkillsSummary,
 } from './types.ts';
 
 interface OperationalFragment {
@@ -20,7 +21,7 @@ interface OperationalFragment {
 
 interface SkillScopeInputs {
   sessionSummary: SessionSummary;
-  localSkills: SkillsSummary;
+  skillsDir?: string;
   logMetrics: LogMetrics;
 }
 
@@ -78,15 +79,6 @@ function normalizeAliases(values: string[]): string[] {
   return sortUnique(values.map((value) => value.trim()).filter((value) => value.length > 0));
 }
 
-function localSkillIndex(skills: readonly SkillSummary[]): Map<string, SkillSummary> {
-  const index = new Map<string, SkillSummary>();
-  for (const skill of skills) {
-    index.set(skill.name.toLowerCase(), skill);
-    index.set(path.basename(path.dirname(skill.skillFile)).toLowerCase(), skill);
-  }
-  return index;
-}
-
 function parseAvailableSkillsFromText(text: string): SkillCatalogEntry[] {
   const markerIndex = text.indexOf('### Available skills');
   if (markerIndex === -1) {
@@ -126,34 +118,28 @@ function parseAvailableSkillsFromText(text: string): SkillCatalogEntry[] {
   return entries;
 }
 
-function mergeCatalogEntries(
-  entries: readonly SkillCatalogEntry[],
-  localSkills: readonly SkillSummary[],
-): SkillCatalogEntry[] {
-  const localIndex = localSkillIndex(localSkills);
+function mergeCatalogEntries(entries: readonly SkillCatalogEntry[]): SkillCatalogEntry[] {
   const byName = new Map<string, SkillCatalogEntry>();
 
   for (const entry of entries) {
-    const localSkill = entry.aliases
-      .map((alias) => localIndex.get(alias.toLowerCase()))
-      .find((candidate): candidate is SkillSummary => candidate !== undefined);
-    const skillFile = entry.skillFile ?? localSkill?.skillFile ?? null;
-    const pathName = entry.path_name ?? pathNameFromSkillFile(skillFile);
+    const existing = byName.get(entry.name);
+    const skillFile = existing?.skillFile ?? entry.skillFile;
+    const pathName = existing?.path_name ?? entry.path_name ?? pathNameFromSkillFile(skillFile);
     const name = pathName ?? entry.name;
     const aliases = normalizeAliases([
+      ...(existing?.aliases ?? []),
       ...entry.aliases,
       entry.name,
       entry.display_name,
       pathName ?? '',
-      localSkill?.name ?? '',
     ]);
     const next: SkillCatalogEntry = {
       name,
-      display_name: entry.display_name,
+      display_name: existing?.display_name ?? entry.display_name,
       path_name: pathName,
       aliases,
       skillFile,
-      description: entry.description || localSkill?.description || '',
+      description: existing?.description || entry.description,
     };
     byName.set(name, next);
   }
@@ -161,14 +147,29 @@ function mergeCatalogEntries(
   return Array.from(byName.values()).sort((left, right) => left.name.localeCompare(right.name));
 }
 
-function extractAvailableSkillCatalog(
-  sessionSummary: SessionSummary,
-  localSkills: SkillsSummary,
-): SkillCatalogEntry[] {
+function bootstrapCatalogStrings(event: unknown): string[] {
+  const record = objectValue(event);
+  if (!record) {
+    return [];
+  }
+
+  const eventType = extractEventType(event);
+  const payload = objectValue(record.payload);
+  const payloadType = stringFromUnknown(payload?.type, '');
+
+  if (eventType === 'response_item' && payloadType === 'message') {
+    const role = stringFromUnknown(payload?.role, '');
+    return role === 'developer' || role === 'system' ? collectStrings(payload?.content) : [];
+  }
+
+  return eventType === 'turn_context' ? collectStrings(event) : [];
+}
+
+function extractAvailableSkillCatalog(sessionSummary: SessionSummary): SkillCatalogEntry[] {
   const rawEntries = sessionSummary.events.flatMap((event) =>
-    collectStrings(event).flatMap((text) => parseAvailableSkillsFromText(text)),
+    bootstrapCatalogStrings(event).flatMap((text) => parseAvailableSkillsFromText(text)),
   );
-  return mergeCatalogEntries(rawEntries, localSkills.skills);
+  return mergeCatalogEntries(rawEntries);
 }
 
 function addFragment(
@@ -378,24 +379,81 @@ function logMetricFragments(logMetrics: LogMetrics): OperationalFragment[] {
   }));
 }
 
+function safeSkillDirectoryName(value: string): boolean {
+  return /^[A-Za-z0-9._-]+$/u.test(value) && value !== '.' && value !== '..';
+}
+
+function readLocalSkillSummary(skillFile: string): SkillSummary | null {
+  if (!fs.existsSync(skillFile)) {
+    return null;
+  }
+
+  const content = fs.readFileSync(skillFile, 'utf8');
+  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/u);
+  const frontmatter = frontmatterMatch ? parseLooseYaml(frontmatterMatch[1] ?? '') : {};
+
+  return {
+    skillFile,
+    name:
+      typeof frontmatter.name === 'string'
+        ? frontmatter.name
+        : path.basename(path.dirname(skillFile)),
+    description: typeof frontmatter.description === 'string' ? frontmatter.description : '',
+  };
+}
+
+function candidateLocalSkillFiles(skillsDir: string, skill: SkillCatalogEntry): string[] {
+  return normalizeAliases([skill.name, skill.path_name ?? '', ...skill.aliases])
+    .filter(safeSkillDirectoryName)
+    .map((alias) => path.join(skillsDir, alias, 'SKILL.md'));
+}
+
+function enrichReferencedSkill(skill: SkillCatalogEntry, skillsDir?: string): SkillCatalogEntry {
+  if (!skillsDir || !fs.existsSync(skillsDir)) {
+    return skill;
+  }
+
+  const localSkill = candidateLocalSkillFiles(skillsDir, skill)
+    .map((skillFile) => readLocalSkillSummary(skillFile))
+    .find((candidate): candidate is SkillSummary => candidate !== null);
+
+  if (!localSkill) {
+    return skill;
+  }
+
+  const pathName = skill.path_name ?? pathNameFromSkillFile(localSkill.skillFile);
+  return {
+    ...skill,
+    name: pathName ?? skill.name,
+    path_name: pathName,
+    aliases: normalizeAliases([...skill.aliases, localSkill.name, pathName ?? '']),
+    skillFile: localSkill.skillFile,
+    description: skill.description || localSkill.description,
+  };
+}
+
 export function extractSkillTraceSummary({
   sessionSummary,
-  localSkills,
+  skillsDir,
   logMetrics,
 }: SkillScopeInputs): SkillTraceSummary {
-  const available = extractAvailableSkillCatalog(sessionSummary, localSkills);
+  const available = extractAvailableSkillCatalog(sessionSummary);
   if (available.length === 0) {
     return { available: [], referenced: [], unreferenced_count: 0 };
   }
 
   const fragments = [...operationalFragments(sessionSummary), ...logMetricFragments(logMetrics)];
-  const referenced = available
+  const referencedEntries = available
     .map((skill) => ({
-      ...skill,
+      skill,
       evidence: findSkillEvidence(skill, fragments),
     }))
-    .filter((skill) => skill.evidence.length > 0);
-  const referencedNames = new Set(referenced.map((skill) => skill.name));
+    .filter((entry) => entry.evidence.length > 0);
+  const referencedNames = new Set(referencedEntries.map(({ skill }) => skill.name));
+  const referenced = referencedEntries.map(({ skill, evidence }) => ({
+    ...enrichReferencedSkill(skill, skillsDir),
+    evidence,
+  }));
 
   return {
     available,

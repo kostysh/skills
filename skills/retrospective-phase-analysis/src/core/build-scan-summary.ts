@@ -5,7 +5,6 @@ import { resolveStandardEvidenceDir } from './resolve-evidence-roots.ts';
 import { inferProjectRootFromLogsDir, resolveRetroOutputLayout } from './shared.ts';
 import { summarizeLogs } from './summarize-logs.ts';
 import { summarizeSession } from './summarize-session.ts';
-import { summarizeSkills } from './summarize-skills.ts';
 import type { ArtifactCandidate, ScanSourceOptions, ScanSummary } from './types.ts';
 
 function hasManualOverrides(args: ScanSourceOptions): boolean {
@@ -89,7 +88,6 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
     args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, '.dossier/logs');
   const resolvedArtifactsDir =
     args.artifactsDir ?? inferProjectRootFromLogsDir(resolvedLogsDir ?? null) ?? undefined;
-  const skillsSummary = summarizeSkills(args.skillsDir);
   const scopeOptions: Parameters<typeof extractTraceScope>[0] = {
     sessionSummary,
     projectRoot: resolvedProjectRoot,
@@ -108,11 +106,14 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
   }
   const scope = extractTraceScope(scopeOptions);
   const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
-  const skillTraceSummary = extractSkillTraceSummary({
+  const skillScopeOptions: Parameters<typeof extractSkillTraceSummary>[0] = {
     sessionSummary,
-    localSkills: skillsSummary,
     logMetrics: logSummary.metrics,
-  });
+  };
+  if (args.skillsDir) {
+    skillScopeOptions.skillsDir = args.skillsDir;
+  }
+  const skillTraceSummary = extractSkillTraceSummary(skillScopeOptions);
 
   const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
   const reportStatus = buildReportStatus({

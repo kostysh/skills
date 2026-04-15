@@ -89,11 +89,6 @@ export interface SkillSummary {
   description: string;
 }
 
-export interface SkillsSummary {
-  exists: boolean;
-  skills: SkillSummary[];
-}
-
 export interface SkillCatalogEntry {
   name: string;
   display_name: string;

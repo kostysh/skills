@@ -51,8 +51,7 @@ export const COMMON_OPTION_SPECS: OptionSpec[] = [
     name: 'language',
     type: 'string',
     valueLabel: '<language>',
-    description:
-      'Operator language tag or name for report metadata and generated Markdown scaffolds.',
+    description: 'Operator language tag or name for report metadata and final analysis content.',
   },
   {
     name: 'draft',

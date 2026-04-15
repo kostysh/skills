@@ -135,11 +135,10 @@ Generate a skill-focused Markdown draft.
 
 ```bash
 node scripts/retro-cli.mjs skill-audit \
-  --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3 \
-  --skills-dir /path/to/skills
+  --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3
 ```
 
-`skill-audit` uses the injected `Available skills` catalog in the session trace as its scope. `--skills-dir` is optional enrichment for referenced skills only; it does not discover additional skills.
+`skill-audit` uses the injected `Available skills` catalog in the session trace as its scope. `--skills-dir` is optional enrichment for referenced skills only; it does not discover additional skills. When using `--run-dir`, pass `--skills-dir` to the initial `scan`; follow-up commands reuse the persisted `scan-summary.json`.
 
 ### `logging-review`
 
@@ -161,7 +160,7 @@ node scripts/retro-cli.mjs logging-review \
 - `--out <file>`: exact output file override
 - `--out-root <dir>`: root where the CLI chooses the canonical retrospective run directory
 - `--run-dir <dir>`: exact canonical retrospective run directory to reuse
-- `--language <language>`: operator language tag or name for report metadata and generated Markdown scaffolds
+- `--language <language>`: operator language tag or name for report metadata and final analysis content
 - `--until-line <n>`: analyze only session events at or before this JSONL line
 - `--until-ts <iso>`: analyze only session events at or before this timestamp
 - `--stage-log <path>`: manually include a stage log; repeatable; requires `--artifact-evidence`

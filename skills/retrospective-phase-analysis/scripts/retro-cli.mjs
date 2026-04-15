@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import path from "node:path";
 import fs from "node:fs";
+import path from "node:path";
 //#region package.json
 var name = "@kostysh/retrospective-phase-analysis-cli";
 var version = "0.1.0";
@@ -41,22 +41,73 @@ var package_default = {
 	devDependencies
 };
 //#endregion
+//#region src/parsers/loose-yaml.ts
+function parseScalar(value) {
+	if (value === "true") return true;
+	if (value === "false") return false;
+	if (value === "null") return null;
+	if (/^-?\d+(\.\d+)?$/.test(value)) return Number(value);
+	if (value.startsWith("\"") && value.endsWith("\"") || value.startsWith("'") && value.endsWith("'")) return value.slice(1, -1);
+	return value;
+}
+function parseLooseYaml(source) {
+	const result = {};
+	const stack = [{
+		indent: -1,
+		target: result
+	}];
+	const lines = source.split(/\r?\n/);
+	for (const rawLine of lines) {
+		if (!rawLine.trim() || rawLine.trim().startsWith("#")) continue;
+		const indent = rawLine.match(/^\s*/)?.[0].length ?? 0;
+		const line = rawLine.trim();
+		while (stack.length > 1) {
+			const current = stack[stack.length - 1];
+			if (!current || indent > current.indent) break;
+			stack.pop();
+		}
+		const current = stack[stack.length - 1]?.target;
+		if (!current) continue;
+		if (line.startsWith("- ")) {
+			current.__list__ ??= [];
+			current.__list__.push(parseScalar(line.slice(2).trim()));
+			continue;
+		}
+		const colonIndex = line.indexOf(":");
+		if (colonIndex === -1) continue;
+		const key = line.slice(0, colonIndex).trim();
+		const rawValue = line.slice(colonIndex + 1).trim();
+		if (!rawValue) {
+			const child = {};
+			current[key] = child;
+			stack.push({
+				indent,
+				target: child
+			});
+			continue;
+		}
+		current[key] = parseScalar(rawValue);
+	}
+	function normalizeLists(input) {
+		if (Array.isArray(input)) return input.map(normalizeLists);
+		if (input && typeof input === "object") {
+			const record = input;
+			if (Array.isArray(record.__list__)) return record.__list__.map(normalizeLists);
+			const out = {};
+			for (const [key, value] of Object.entries(record)) {
+				if (key === "__list__") continue;
+				out[key] = normalizeLists(value);
+			}
+			return out;
+		}
+		return input;
+	}
+	return normalizeLists(result);
+}
+//#endregion
 //#region src/core/shared.ts
 function readText(filePath) {
 	return fs.readFileSync(filePath, "utf8");
-}
-function listFilesRecursive(targetDir) {
-	const out = [];
-	function walk(current) {
-		const entries = fs.readdirSync(current, { withFileTypes: true });
-		for (const entry of entries) {
-			const nextPath = path.join(current, entry.name);
-			if (entry.isDirectory()) walk(nextPath);
-			else out.push(nextPath);
-		}
-	}
-	walk(targetDir);
-	return out;
 }
 function safeMkdirForFile(filePath) {
 	fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -376,14 +427,6 @@ function pathNameFromSkillFile(skillFile) {
 function normalizeAliases(values) {
 	return sortUnique(values.map((value) => value.trim()).filter((value) => value.length > 0));
 }
-function localSkillIndex(skills) {
-	const index = /* @__PURE__ */ new Map();
-	for (const skill of skills) {
-		index.set(skill.name.toLowerCase(), skill);
-		index.set(path.basename(path.dirname(skill.skillFile)).toLowerCase(), skill);
-	}
-	return index;
-}
 function parseAvailableSkillsFromText(text) {
 	const markerIndex = text.indexOf("### Available skills");
 	if (markerIndex === -1) return [];
@@ -414,35 +457,46 @@ function parseAvailableSkillsFromText(text) {
 	}
 	return entries;
 }
-function mergeCatalogEntries(entries, localSkills) {
-	const localIndex = localSkillIndex(localSkills);
+function mergeCatalogEntries(entries) {
 	const byName = /* @__PURE__ */ new Map();
 	for (const entry of entries) {
-		const localSkill = entry.aliases.map((alias) => localIndex.get(alias.toLowerCase())).find((candidate) => candidate !== void 0);
-		const skillFile = entry.skillFile ?? localSkill?.skillFile ?? null;
-		const pathName = entry.path_name ?? pathNameFromSkillFile(skillFile);
+		const existing = byName.get(entry.name);
+		const skillFile = existing?.skillFile ?? entry.skillFile;
+		const pathName = existing?.path_name ?? entry.path_name ?? pathNameFromSkillFile(skillFile);
 		const name = pathName ?? entry.name;
 		const aliases = normalizeAliases([
+			...existing?.aliases ?? [],
 			...entry.aliases,
 			entry.name,
 			entry.display_name,
-			pathName ?? "",
-			localSkill?.name ?? ""
+			pathName ?? ""
 		]);
 		const next = {
 			name,
-			display_name: entry.display_name,
+			display_name: existing?.display_name ?? entry.display_name,
 			path_name: pathName,
 			aliases,
 			skillFile,
-			description: entry.description || localSkill?.description || ""
+			description: existing?.description || entry.description
 		};
 		byName.set(name, next);
 	}
 	return Array.from(byName.values()).sort((left, right) => left.name.localeCompare(right.name));
 }
-function extractAvailableSkillCatalog(sessionSummary, localSkills) {
-	return mergeCatalogEntries(sessionSummary.events.flatMap((event) => collectStrings(event).flatMap((text) => parseAvailableSkillsFromText(text))), localSkills.skills);
+function bootstrapCatalogStrings(event) {
+	const record = objectValue(event);
+	if (!record) return [];
+	const eventType = extractEventType$1(event);
+	const payload = objectValue(record.payload);
+	const payloadType = stringFromUnknown(payload?.type, "");
+	if (eventType === "response_item" && payloadType === "message") {
+		const role = stringFromUnknown(payload?.role, "");
+		return role === "developer" || role === "system" ? collectStrings(payload?.content) : [];
+	}
+	return eventType === "turn_context" ? collectStrings(event) : [];
+}
+function extractAvailableSkillCatalog(sessionSummary) {
+	return mergeCatalogEntries(sessionSummary.events.flatMap((event) => bootstrapCatalogStrings(event).flatMap((text) => parseAvailableSkillsFromText(text))));
 }
 function addFragment(out, input) {
 	for (const text of collectStrings(input.value)) if (text.trim().length > 0) out.push({
@@ -589,22 +643,63 @@ function logMetricFragments(logMetrics) {
 		text: skill
 	}));
 }
-function extractSkillTraceSummary({ sessionSummary, localSkills, logMetrics }) {
-	const available = extractAvailableSkillCatalog(sessionSummary, localSkills);
+function safeSkillDirectoryName(value) {
+	return /^[A-Za-z0-9._-]+$/u.test(value) && value !== "." && value !== "..";
+}
+function readLocalSkillSummary(skillFile) {
+	if (!fs.existsSync(skillFile)) return null;
+	const frontmatterMatch = fs.readFileSync(skillFile, "utf8").match(/^---\n([\s\S]*?)\n---/u);
+	const frontmatter = frontmatterMatch ? parseLooseYaml(frontmatterMatch[1] ?? "") : {};
+	return {
+		skillFile,
+		name: typeof frontmatter.name === "string" ? frontmatter.name : path.basename(path.dirname(skillFile)),
+		description: typeof frontmatter.description === "string" ? frontmatter.description : ""
+	};
+}
+function candidateLocalSkillFiles(skillsDir, skill) {
+	return normalizeAliases([
+		skill.name,
+		skill.path_name ?? "",
+		...skill.aliases
+	]).filter(safeSkillDirectoryName).map((alias) => path.join(skillsDir, alias, "SKILL.md"));
+}
+function enrichReferencedSkill(skill, skillsDir) {
+	if (!skillsDir || !fs.existsSync(skillsDir)) return skill;
+	const localSkill = candidateLocalSkillFiles(skillsDir, skill).map((skillFile) => readLocalSkillSummary(skillFile)).find((candidate) => candidate !== null);
+	if (!localSkill) return skill;
+	const pathName = skill.path_name ?? pathNameFromSkillFile(localSkill.skillFile);
+	return {
+		...skill,
+		name: pathName ?? skill.name,
+		path_name: pathName,
+		aliases: normalizeAliases([
+			...skill.aliases,
+			localSkill.name,
+			pathName ?? ""
+		]),
+		skillFile: localSkill.skillFile,
+		description: skill.description || localSkill.description
+	};
+}
+function extractSkillTraceSummary({ sessionSummary, skillsDir, logMetrics }) {
+	const available = extractAvailableSkillCatalog(sessionSummary);
 	if (available.length === 0) return {
 		available: [],
 		referenced: [],
 		unreferenced_count: 0
 	};
 	const fragments = [...operationalFragments(sessionSummary), ...logMetricFragments(logMetrics)];
-	const referenced = available.map((skill) => ({
-		...skill,
+	const referencedEntries = available.map((skill) => ({
+		skill,
 		evidence: findSkillEvidence(skill, fragments)
-	})).filter((skill) => skill.evidence.length > 0);
-	const referencedNames = new Set(referenced.map((skill) => skill.name));
+	})).filter((entry) => entry.evidence.length > 0);
+	const referencedNames = new Set(referencedEntries.map(({ skill }) => skill.name));
 	return {
 		available,
-		referenced,
+		referenced: referencedEntries.map(({ skill, evidence }) => ({
+			...enrichReferencedSkill(skill, skillsDir),
+			evidence
+		})),
 		unreferenced_count: available.filter((skill) => !referencedNames.has(skill.name)).length
 	};
 }
@@ -1068,70 +1163,6 @@ function resolveStandardEvidenceDir(projectRoot, relativeDir) {
 	return fs.existsSync(absoluteDir) ? absoluteDir : void 0;
 }
 //#endregion
-//#region src/parsers/loose-yaml.ts
-function parseScalar(value) {
-	if (value === "true") return true;
-	if (value === "false") return false;
-	if (value === "null") return null;
-	if (/^-?\d+(\.\d+)?$/.test(value)) return Number(value);
-	if (value.startsWith("\"") && value.endsWith("\"") || value.startsWith("'") && value.endsWith("'")) return value.slice(1, -1);
-	return value;
-}
-function parseLooseYaml(source) {
-	const result = {};
-	const stack = [{
-		indent: -1,
-		target: result
-	}];
-	const lines = source.split(/\r?\n/);
-	for (const rawLine of lines) {
-		if (!rawLine.trim() || rawLine.trim().startsWith("#")) continue;
-		const indent = rawLine.match(/^\s*/)?.[0].length ?? 0;
-		const line = rawLine.trim();
-		while (stack.length > 1) {
-			const current = stack[stack.length - 1];
-			if (!current || indent > current.indent) break;
-			stack.pop();
-		}
-		const current = stack[stack.length - 1]?.target;
-		if (!current) continue;
-		if (line.startsWith("- ")) {
-			current.__list__ ??= [];
-			current.__list__.push(parseScalar(line.slice(2).trim()));
-			continue;
-		}
-		const colonIndex = line.indexOf(":");
-		if (colonIndex === -1) continue;
-		const key = line.slice(0, colonIndex).trim();
-		const rawValue = line.slice(colonIndex + 1).trim();
-		if (!rawValue) {
-			const child = {};
-			current[key] = child;
-			stack.push({
-				indent,
-				target: child
-			});
-			continue;
-		}
-		current[key] = parseScalar(rawValue);
-	}
-	function normalizeLists(input) {
-		if (Array.isArray(input)) return input.map(normalizeLists);
-		if (input && typeof input === "object") {
-			const record = input;
-			if (Array.isArray(record.__list__)) return record.__list__.map(normalizeLists);
-			const out = {};
-			for (const [key, value] of Object.entries(record)) {
-				if (key === "__list__") continue;
-				out[key] = normalizeLists(value);
-			}
-			return out;
-		}
-		return input;
-	}
-	return normalizeLists(result);
-}
-//#endregion
 //#region src/parsers/markdown.ts
 function parseMarkdownSections(body) {
 	const lines = body.split(/\r?\n/);
@@ -1430,26 +1461,6 @@ function summarizeSession(filePath, options = {}) {
 	};
 }
 //#endregion
-//#region src/core/summarize-skills.ts
-function summarizeSkills(skillsDir) {
-	if (!skillsDir || !fs.existsSync(skillsDir)) return {
-		exists: false,
-		skills: []
-	};
-	return {
-		exists: true,
-		skills: listFilesRecursive(skillsDir).filter((filePath) => path.basename(filePath) === "SKILL.md").map((skillFile) => {
-			const frontmatterMatch = readText(skillFile).match(/^---\n([\s\S]*?)\n---/u);
-			const frontmatter = frontmatterMatch ? parseLooseYaml(frontmatterMatch[1] ?? "") : {};
-			return {
-				skillFile,
-				name: typeof frontmatter.name === "string" ? frontmatter.name : path.basename(path.dirname(skillFile)),
-				description: typeof frontmatter.description === "string" ? frontmatter.description : ""
-			};
-		})
-	};
-}
-//#endregion
 //#region src/core/build-scan-summary.ts
 function hasManualOverrides(args) {
 	return (args.stageLogs?.length ?? 0) > 0 || (args.reviewArtifacts?.length ?? 0) > 0 || (args.verificationArtifacts?.length ?? 0) > 0;
@@ -1486,7 +1497,6 @@ function buildScanSummary(args) {
 	const resolvedProjectRoot = args.artifactsDir ?? sessionSummary.projectRoot;
 	const resolvedLogsDir = args.logsDir ?? resolveStandardEvidenceDir(resolvedProjectRoot, ".dossier/logs");
 	const resolvedArtifactsDir = args.artifactsDir ?? inferProjectRootFromLogsDir(resolvedLogsDir ?? null) ?? void 0;
-	const skillsSummary = summarizeSkills(args.skillsDir);
 	const scopeOptions = {
 		sessionSummary,
 		projectRoot: resolvedProjectRoot
@@ -1497,11 +1507,12 @@ function buildScanSummary(args) {
 	if (args.artifactEvidence) scopeOptions.artifactEvidence = args.artifactEvidence;
 	const scope = extractTraceScope(scopeOptions);
 	const logSummary = summarizeLogs(resolvedLogsDir, scope.candidate_stage_logs);
-	const skillTraceSummary = extractSkillTraceSummary({
+	const skillScopeOptions = {
 		sessionSummary,
-		localSkills: skillsSummary,
 		logMetrics: logSummary.metrics
-	});
+	};
+	if (args.skillsDir) skillScopeOptions.skillsDir = args.skillsDir;
+	const skillTraceSummary = extractSkillTraceSummary(skillScopeOptions);
 	const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
 	const reportStatus = buildReportStatus({
 		sessionSummary,
@@ -1726,7 +1737,7 @@ var COMMON_OPTION_SPECS = [
 		name: "language",
 		type: "string",
 		valueLabel: "<language>",
-		description: "Operator language tag or name for report metadata and generated Markdown scaffolds."
+		description: "Operator language tag or name for report metadata and final analysis content."
 	},
 	{
 		name: "draft",
