@@ -32,8 +32,9 @@
 - Не делать `--skills-dir` обязательным для определения skill scope.
 - Не включать все skills из injected catalog в `skill-audit.md`.
 - Не считать `session_meta` / `turn_context` evidence использования.
-- Не считать `compacted` summaries primary evidence, если исходные события доступны.
+- Не считать `compacted` summaries evidence для skill-audit scope.
 - Не hardcode-ить Codex-specific absolute session-store layout в CLI.
+- Не сохранять абсолютные локальные runtime paths в emitted `skills.available`, `skills.referenced` evidence, `scan-summary.json` или Markdown.
 - Не превращать `docs/issues/*` в active normative surface без отдельного promotion.
 
 ## Package 0. Зафиксировать fixture реального формата session trace
@@ -62,11 +63,13 @@
 5. Добавить ложный случай: skill name встречается только в bootstrap catalog.
 6. Добавить ложный случай: skill name встречается только внутри full `function_call_output.output` от чтения другого файла.
 7. Добавить ложный случай: skill name встречается только в `compacted` summary.
+8. Добавить пример absolute path в evidence-bearing field, чтобы проверить display-safe serialization.
 
 ### Acceptance
 
 - Fixture воспроизводит главный риск: naive raw JSONL search нашел бы все skills.
 - Fixture воспроизводит alias риск: display label and path-derived name both resolve to one skill entry.
+- Fixture воспроизводит privacy риск: raw evidence may contain absolute paths, but persisted output must redact them.
 - Contract test сначала должен выразить ожидаемый новый behavior, даже если implementation еще не готов.
 
 ## Package 1. Извлечь `Available skills` как canonical catalog
@@ -139,7 +142,7 @@ CLI должен уметь получить список допустимых s
 1. Исключить из operational stream:
    - `session_meta`;
    - `turn_context`;
-   - `compacted` summaries by default, unless there is no source trace available and the summary is explicitly accepted as degraded evidence;
+   - `compacted` summaries;
    - full injected instruction blocks;
    - full `function_call_output.output` by default;
    - duplicate completion wrappers when the same text already appears as an agent message.
@@ -160,7 +163,7 @@ CLI должен уметь получить список допустимых s
 ### Acceptance
 
 - Test: skill name only in `session_meta` / `turn_context` is ignored.
-- Test: skill name only in `compacted` summary is ignored when source events are present.
+- Test: skill name only in `compacted` summary is ignored.
 - Test: skill name in `event_msg.payload.message` is considered evidence.
 - Test: skill name in `exec_command_end.payload.parsed_cmd[].path` is considered evidence.
 - Test: skill name only in full `function_call_output.output` is ignored.
@@ -193,6 +196,7 @@ CLI должен уметь получить список допустимых s
    - path ending `<path_name>/SKILL.md`.
 4. Match не должен срабатывать на substring inside larger identifiers.
 5. Summary должен хранить evidence list for every referenced skill and preserve which alias matched.
+6. Evidence excerpts and catalog metadata persisted to `scan-summary.json` must use display-safe paths and must not serialize local absolute runtime paths.
 
 ### Acceptance
 
@@ -200,6 +204,7 @@ CLI должен уметь получить список допустимых s
 - Test: path evidence `skills/git-engineer/SKILL.md` references `git-engineer`.
 - Test: path evidence `skills/hono-engineer/SKILL.md` references catalog entry with display label `HONO engineer`.
 - Test: `typescript-engineer` does not match `typescript-engineer-extra`.
+- Test: persisted `skills.available` and `skills.referenced[*].evidence` do not contain raw local absolute path prefixes.
 - Golden fixture обновлен под новый `skills` shape.
 
 ## Package 4. Перестроить `skill-audit.md` renderer
@@ -226,12 +231,14 @@ CLI должен уметь получить список допустимых s
    - skill name;
    - evidence excerpts;
    - explicit note that local skill body was not inspected.
+6. Markdown evidence excerpts must inherit the same display-safe path redaction as `scan-summary.json`.
 
 ### Acceptance
 
 - Test: `skill-audit.md` contains sections only for referenced skills.
 - Test: no heading or list for unreferenced catalog skills.
 - Test: missing `--skills-dir` still produces a scaffold with data-quality note.
+- Test: `skill-audit.md` does not expose local absolute runtime paths in evidence excerpts.
 - Test: docs mention `--skills-dir` as optional enrichment, not primary discovery.
 
 ## Package 5. Docs/runtime/test parity and migration cleanup
@@ -271,6 +278,7 @@ CLI должен уметь получить список допустимых s
 - `git diff --check`
 - Search active surface for removed taxonomy terms.
 - Search changed active files for absolute local paths.
+- Contract test persisted `scan-summary.json` and generated Markdown for absolute local path leakage in new skill evidence fields.
 
 ## Rollout notes
 
