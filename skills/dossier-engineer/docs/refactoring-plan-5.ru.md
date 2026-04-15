@@ -31,7 +31,7 @@
 Дополнительные аналитические источники:
 
 - внешний отчёт по логам implementation:
-  `/code/projects/research/reports/backlog-dossier-log-analysis-2026-04-08.ru.md`
+  `<external-research-report>/backlog-dossier-log-analysis-2026-04-08.ru.md`
 - локальные harmonization/process rules:
   [AGENTS.md](AGENTS.md)
 - текущие logs и previous refactoring plans in `docs/`
@@ -41,7 +41,7 @@
 Этот план не висит в воздухе. Он строится на двух слоях evidence:
 
 1. Аналитика по implementation logs и corrective cycles:
-   - `/code/projects/research/reports/backlog-dossier-log-analysis-2026-04-08.ru.md`
+   - `<external-research-report>/backlog-dossier-log-analysis-2026-04-08.ru.md`
 2. Текущее состояние самого `dossier-engineer` skill contract:
    - [../SKILL.md](../SKILL.md)
    - [../references/workflow.md](../references/workflow.md)

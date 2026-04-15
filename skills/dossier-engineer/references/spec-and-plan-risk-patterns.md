@@ -7,6 +7,55 @@ Use this reference during:
 
 Its purpose is to kill contract-risk earlier, before expensive corrective cycles appear during implementation or after real usage.
 
+## Adversarial proof obligations
+
+Use this section when a feature touches side effects, durable state, lifecycle transitions, idempotency, retries, shutdown/startup, queues/jobs, transactions, audit evidence, a canonical writer/read-only consumer boundary, or a trust boundary.
+
+Do not treat a broad phrase such as `idempotency tests`, `race tests`, `shutdown tests`, `boundary tests`, `failure tests`, `integration tests`, `coverage for edge cases`, or `adversarial tests` as a sufficient proof. These labels are acceptable only when paired with concrete proof details.
+
+During `spec-compact`, classify each relevant case as `specified` or explicit `N/A`:
+
+- sequential success;
+- invalid input;
+- dependency failure / timeout;
+- duplicate or replay after completion;
+- concurrent duplicate or racing request;
+- concurrent conflicting request;
+- partial side effect / crash / restart;
+- stale read / stale snapshot / late completion.
+
+For every `specified` case, name:
+
+- participating operation(s);
+- race window or ordering boundary;
+- expected winner/loser result when there is competition;
+- durable invariant;
+- externally observable result or error;
+- required proof type.
+
+For every `N/A` case, write a compact `N/A rationale`. If a case cannot be classified yet, record it as a blocking `Open question` with `needed_by: before_planned`.
+
+Keep these distinctions explicit:
+
+- sequential replay is not the same proof as concurrent replay when concurrency is possible;
+- duplicate same-payload replay is not the same proof as conflicting replay;
+- closed admission is not the same shutdown/startup proof as an already-started in-flight operation;
+- stale snapshot behavior must prove what can and cannot be reported before the canonical writer state is durable.
+
+During `plan-slice`, map every non-`N/A` adversarial semantics entry into a named proof obligation. The mapping may be a table or compact list, but it must contain:
+
+| Risk / edge case | Spec source | Required proof | Slice | Verification artifact | N/A rationale |
+|---|---|---|---|---|---|
+
+proof specificity smell pass: flag any generic verification label that does not name the operation pair or participating operation(s), race window or ordering boundary, expected observable result/error, and durable invariant.
+
+Examples of sufficient proof obligations:
+
+- concurrent same-key same-payload lifecycle requests converge to one durable record;
+- concurrent same-key different-payload lifecycle requests return one success and one conflict without duplicate records;
+- shutdown waits for already-started admission write before emitting evidence snapshot;
+- stale snapshot cannot report completion before in-flight canonical writer state is durable.
+
 ## During `spec-compact`
 
 ### 1. Operator/agent contract
@@ -39,7 +88,15 @@ Capture what is relevant:
 
 This is the right place to turn recurring implementation decisions into explicit contract.
 
-### 3. Unresolved-decision triage
+### 3. Adversarial semantics
+
+When the trigger in [Adversarial proof obligations](#adversarial-proof-obligations) applies, add compact adversarial semantics before planning.
+
+Each triggered case must be `specified` with the required proof fields or explicit `N/A` with rationale. Do not leave `idempotency`, `shutdown`, `failure handling`, or `boundary behavior` as broad labels.
+
+Use the side-effecting implementation checklist as upstream trigger vocabulary: timeout budget, late completion, abort/cancellation, partial side effects, idempotency / duplicate delivery, logging/audit append failures, and crash/restart boundaries.
+
+### 4. Unresolved-decision triage
 
 Do not leave all unresolved points as undifferentiated open items.
 
@@ -72,7 +129,15 @@ Typical risk axes:
 
 If the feature has no meaningful exposure on one axis, say so briefly and move on.
 
-### 2. Drift-guard work
+### 2. Risk-to-proof mapping
+
+Before closing planning, every non-`N/A` adversarial semantics entry must have a named proof obligation in a slice.
+
+The proof must name the competing or participating operation(s), race window or ordering boundary, expected observable result/error, and durable invariant. If a proof is intentionally unnecessary, the plan must carry an explicit `N/A rationale`; silence is not coverage.
+
+Run the proof specificity smell pass before implementation. Generic labels such as `idempotency tests`, `shutdown tests`, or `integration tests` need concrete proof details beside them.
+
+### 3. Drift-guard work
 
 Plan explicit drift-guard work when the feature spans multiple normative layers.
 
@@ -86,7 +151,7 @@ Typical layers:
 
 If drift between these layers would be expensive, add a guard task instead of waiting for later corrective work.
 
-### 3. Real usage audit
+### 4. Real usage audit
 
 If the feature has agent-facing, operator-facing, or machine-facing behavior, plan a real usage audit after the main implementation flow.
 
@@ -98,7 +163,7 @@ The goal is not more theory. The goal is to expose:
 - command interpretation drift;
 - cross-skill handoff confusion.
 
-### 4. Corrective backlog categories
+### 5. Corrective backlog categories
 
 When planning a real usage audit, predefine the corrective categories:
 

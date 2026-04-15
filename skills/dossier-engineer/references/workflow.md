@@ -110,7 +110,9 @@ Keep stage-local facts in stage logs; the session-level ops log records only the
 Use [spec-and-plan-risk-patterns.md](spec-and-plan-risk-patterns.md) when:
 
 - `spec-compact` needs explicit operator/agent contract or safety semantics;
+- `spec-compact` must classify adversarial semantics for stateful, side-effecting, lifecycle, retry/replay, shutdown/startup, durable-evidence, or boundary behavior;
 - unresolved design decisions need triage as `normative now`, `implementation freedom`, or `temporary assumption`;
+- `plan-slice` must map high-risk adversarial semantics into risk-to-proof obligations before implementation;
 - `plan-slice` must explicitly plan contract-risk cleanup, drift-guard work, or a real usage audit after implementation.
 
 ## Backlog actualization rule

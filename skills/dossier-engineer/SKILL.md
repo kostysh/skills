@@ -405,6 +405,7 @@ Trigger summary:
 - If a rule has 2+ independent conditions, add a decision table or decision list.
 - If the feature has named states, transitions, or guards, add a compact state list or state table.
 - If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note.
+- If the feature is stateful, side-effecting, lifecycle-sensitive, retry/replay-sensitive, shutdown/startup-sensitive, durable-evidence-sensitive, or boundary-facing, classify adversarial semantics before planning.
 
 Steps:
 
@@ -421,9 +422,13 @@ Spec quality:
 - [ ] Open questions carry owner/date, a `needed_by` marker, and a next decision path.
 - [ ] Operator/agent contract was captured explicitly when the feature has meaningful operator-facing, agent-facing, or machine-facing behavior.
 - [ ] Safety and boundary semantics were captured when the feature touches trust boundaries or failure-prone surfaces.
+- [ ] High-risk adversarial semantics were classified as `specified` with required proof fields or explicit `N/A` with rationale; they were not left as broad labels.
+- [ ] Sequential replay and concurrent replay were separated when concurrency is possible.
+- [ ] Shutdown/startup/order semantics distinguish closed admission from already-started in-flight operation handling when relevant.
 - [ ] NFRs are compact, normative-only, and measurable via a metric, budget, threshold, or observable signal.
 - [ ] A quick wording pass removed vague wording, compound ACs, and raw `TBD`.
 - [ ] Unresolved implementation-shaping decisions were triaged as `normative now`, `implementation freedom`, or `temporary assumption` instead of being left in one vague bucket.
+- [ ] Unresolved adversarial cases are blocking `Open question` entries with `needed_by: before_planned` and prevent stage exit.
 
 Trigger-based additions:
 - [ ] Boundary I/O changes include a contract/schema pointer or compact contract sketch, plus error model and retry/idempotency notes when relevant.
@@ -458,6 +463,8 @@ Trigger summary:
 - Treat slices and tasks as forecast by default; commitment stays in ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints.
 - If a slice depends on another dossier, an external team, or a shared subsystem, add `Depends on:` with owner and unblock condition.
 - If a slice relies on a high-risk assumption, add `Assumes:` and `Fallback:` notes.
+- If the spec has non-`N/A` adversarial semantics, map each one to a named proof obligation or explicit `N/A rationale` before implementation.
+- Generic verification labels such as `idempotency tests`, `shutdown tests`, or `integration tests` are insufficient unless paired with concrete proof details.
 - If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note.
 - If the plan is multi-slice or package-based, define `allowed_stop_points` before implementation starts.
 - If a slice touches a shared runtime, contract, migration path, or other cross-cutting surface, name the approval path.
@@ -474,6 +481,9 @@ Stage exit checklist:
 - [ ] Every slice is small enough to verify and review as one coherent increment.
 - [ ] Every slice states a concrete deliverable, cites AC IDs, and names the verification artifact(s) that prove it.
 - [ ] Relevant contract risks were identified explicitly instead of being left for late corrective work.
+- [ ] Every high-risk edge case has a named proof obligation or explicit `N/A rationale`.
+- [ ] Generic verification labels were refined or paired with concrete proof details: operation pair or participating operation(s), race/order boundary, expected observable result/error, and durable invariant.
+- [ ] The implementation adversarial checklist was translated into spec-level semantics or explicit `N/A` entries before implementation.
 - [ ] `Depends on:` with owner/unblock condition is present when slice-level external dependencies exist.
 - [ ] `Assumes:` and `Fallback:` notes are present when slice-level high-risk assumptions exist.
 - [ ] A rollout / activation note exists when migration, feature flags, cutover, backfill, or irreversible side effects make release order matter.
