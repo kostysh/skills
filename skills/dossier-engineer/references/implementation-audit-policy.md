@@ -75,7 +75,7 @@ When the process requires an external audit:
 - define the review scope narrowly;
 - close the review agent immediately after PASS if it is no longer needed.
 
-If the environment requires explicit operator approval before spawning an audit agent, ask, stop, and wait.
+If the environment requires explicit operator approval before spawning an audit agent, request it as a standalone line, then stop and wait: `Please authorize spawning the required external audit/review agents for this phase.`
 
 ## Review brief template
 

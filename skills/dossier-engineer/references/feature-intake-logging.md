@@ -61,7 +61,7 @@ Cycle rule:
 Open or update an intake log when any objective trigger fires:
 
 - intake requires backlog actualization through `backlog-engineer`;
-- operator feedback arrives after dossier creation or after the backlog handoff block was written and forces a correction in the same intake cycle;
+- operator, reviewer, or external-audit feedback arrives after dossier creation or after the backlog handoff block was written and forces any correction in the same intake cycle;
 - `index-refresh` returns `partial_success`;
 - `index-refresh` fails;
 - `index-refresh` for the current cycle is rerun after an earlier non-success result or after operator correction;
@@ -77,6 +77,8 @@ Use only these canonical `log_required_reason` values:
 - `index_refresh_rerun`
 - `process_miss`
 - `retrospective_requested`
+
+For the feedback trigger above, use `operator_reround_after_dossier_creation` for operator, reviewer, or external-audit feedback that forces correction in the same intake cycle. Do not add a separate reason for those feedback sources.
 
 For `feature-intake`, treat only these cases as `process_miss`:
 

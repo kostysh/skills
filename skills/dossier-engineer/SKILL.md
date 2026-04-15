@@ -177,7 +177,7 @@ Applies to the working tree only:
     Before `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, `dossier-verify`, and `next-step`, read repo-root `AGENTS.md` and any referenced repo-level ADRs that constrain the work.
 
 13. **Independent review should be truly independent and fail closed.**
-    Spawn a separate reviewer agent that did not author the changes or the close-out summary whenever the `spawn_agent` tool exists. If platform policy requires explicit user authorization before spawning, ask for that authorization instead of downgrading the review. If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode. Do not silently substitute self-review or `emulated-independent-review`.
+    Spawn a separate reviewer agent that did not author the changes or the close-out summary whenever the `spawn_agent` tool exists. If platform policy requires explicit user authorization before spawning, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.` If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode. Do not silently substitute self-review or `emulated-independent-review`.
 
 ## Repo overlay ingestion
 
@@ -245,7 +245,7 @@ For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-sl
 4. Run `node scripts/dossier.mjs debt-audit --changed-only`.
 5. Re-check dependencies, adjacent seams, delivered dossiers, architecture, and repo ADRs.
 6. Run `node scripts/dossier.mjs dossier-verify ...` for the relevant scope.
-7. Run an independent review with a separate reviewer agent. If spawning requires explicit user authorization, ask for it. If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+7. Run an independent review with a separate reviewer agent. If spawning requires explicit user authorization, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.` If a separate reviewer agent cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`. This command records an already obtained independent review result; it does not perform the review itself.
 9. If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.
 10. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
@@ -298,7 +298,7 @@ Default contract:
 4. For mutating steps, persist the reviewer’s verdict with `review-artifact` and use it for step closure.
 5. For read-only or report-producing commands, the reviewer still checks output fidelity even when no step-close artifact is required.
 6. Resolve every `must-fix` finding, rerun affected checks, and rerun review when the fixes were material.
-7. If the current platform policy requires explicit user authorization before spawning, request that authorization rather than downgrading review.
+7. If the current platform policy requires explicit user authorization before spawning, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.`
 8. If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 9. Do not silently substitute self-review or `emulated-independent-review` for a required independent review.
 

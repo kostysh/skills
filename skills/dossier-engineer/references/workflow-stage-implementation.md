@@ -24,7 +24,7 @@
    - `code-reviewer` for correctness, maintainability, contracts, lifecycle, and merge-risk findings;
    - `security-reviewer` for auth/authz, trust boundaries, input handling, secret exposure, and exploitability findings.
    These nested passes do not need standalone report artifacts, but all findings must be reported by the reviewing agent.
-15. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, ask for it, and if a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
+15. Run independent review and persist it. Use a separate reviewer agent; if spawning requires explicit user authorization, request it as a standalone line before continuing: `Please authorize spawning the required external audit/review agents for this phase.` If a separate reviewer agent still cannot be used, treat the step as blocked unless the user explicitly approves degraded review mode.
 16. Persist only the independent reviewer verdict with `review-artifact`; nested `code-reviewer` and `security-reviewer` passes still feed that review, but `review-artifact` itself is not the review step.
 17. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
     The implementation stage is not complete until this required backlog actualization is done and backlog artifact integrity is clean when backlog truth changed.

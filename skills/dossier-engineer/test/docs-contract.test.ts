@@ -285,6 +285,8 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     'Apply the [No-technical-debt policy](workflow.md#no-technical-debt-policy)',
     'Run `spec-conformance` review first',
     'run the early security seam checkpoint',
+    'request it as a standalone line before continuing',
+    'Please authorize spawning the required external audit/review agents for this phase.',
     'Establish the intended final tree before closure',
     'Use this closure sequence: intended final tree -> verification -> external audits -> review / verification / step-close artifacts -> commit -> trace-only metadata backfill when needed.',
     'Persist only the independent reviewer verdict with `review-artifact`',
@@ -512,6 +514,10 @@ void test('feature-intake logging stays explicit, command-level, and distinct fr
     'Use only these canonical `log_required_reason` values:',
     'backlog_actualization_required',
     'operator_reround_after_dossier_creation',
+    'operator, reviewer, or external-audit feedback arrives after dossier creation',
+    'forces any correction in the same intake cycle',
+    'use `operator_reround_after_dossier_creation` for operator, reviewer, or external-audit feedback',
+    'Do not add a separate reason for those feedback sources.',
     'For `feature-intake`, treat only these cases as `process_miss`:',
     'the intake log had to be renamed or moved because `feature_id`, `cycle_id`, or the filename suffix was wrong;',
     'attempted truthful closure while a required intake log update',
@@ -529,18 +535,28 @@ void test('feature-intake logging stays explicit, command-level, and distinct fr
 });
 
 void test('skill-wide review sections stay distinct from implementation-specific audit policy', async () => {
-  const skill = await readFile(SKILL_PATH, 'utf8');
+  const [skill, implementationAuditPolicy] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(IMPLEMENTATION_AUDIT_POLICY_PATH, 'utf8'),
+  ]);
 
   const independentReview = extractSection(skill, '## Independent review execution model');
   const reviewChecklistRules = extractSection(skill, '## Review checklist design rules');
+  const spawnedAgentsOnly = extractSection(implementationAuditPolicy, '## Spawned agents only');
 
   assertContainsTerms(independentReview, [
     'This section defines the skill-wide independence rule.',
     'For `Workflow stage: implementation`, the audit stack, review brief, and classifier-based re-audit rules live in [Implementation audit policy](references/implementation-audit-policy.md).',
+    'request it as a standalone line before continuing',
+    'Please authorize spawning the required external audit/review agents for this phase.',
   ]);
   assertContainsTerms(reviewChecklistRules, [
     'When a stage has a dedicated audit policy, use it instead of inventing a local audit stack.',
     'For `Workflow stage: implementation`, use [Implementation audit policy](references/implementation-audit-policy.md) for audit order, brief shape, and classifier-based re-audit rules.',
+  ]);
+  assertContainsTerms(spawnedAgentsOnly, [
+    'request it as a standalone line, then stop and wait',
+    'Please authorize spawning the required external audit/review agents for this phase.',
   ]);
 });
 
