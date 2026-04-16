@@ -36,7 +36,12 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [refactoring-plan-6.ru.md](refactoring-plan-6.ru.md) | Dossier-side implementation plan for `change-proposal` cross-skill hardening: explicit backlog-impact classifier, stage-level handoff, and optional runtime hints without new commands or artifacts. This document is written in Russian. | Read when planning the dossier-side half of the `change-proposal` harmonization cycle. |
 | [implementation-log-7.ru.md](implementation-log-7.ru.md) | Incremental log for the dossier-side `change-proposal` hardening cycle: explicit backlog-impact verdict, closure semantics, and runtime-boundary decisions for `contract-drift-audit`. This document is written in Russian. | Read when you need the package-by-package record for the dossier-side half of `change-proposal` harmonization. |
 | [refactoring-plan-7.ru.md](refactoring-plan-7.ru.md) | Plan for unifying workflow-stage logging across `spec-compact`, `plan-slice`, and `implementation`. This document is written in Russian. | Read when updating process telemetry rules for dossier workflow stages. |
+| [refactoring-plan-8.ru.md](refactoring-plan-8.ru.md) | Plan for giving `feature-intake` its own command-level process logging contract and active-reference protection. This document is written in Russian. | Read when hardening intake-specific process telemetry and docs-contract coverage. |
 | [implementation-log-8.ru.md](implementation-log-8.ru.md) | Incremental log for the workflow-stage logging policy implementation cycle. This document is written in Russian. | Read when you need the package record for the stage-logging policy cycle. |
+| [refactoring-plan-9.ru.md](refactoring-plan-9.ru.md) | Plan for implementation completion guard, early security seam checkpoint, and freshness-aware closure artifacts. This document is written in Russian. | Read when tightening implementation close-out semantics and early security review triggers. |
+| [refactoring-plan-10.ru.md](refactoring-plan-10.ru.md) | Plan for adversarial proof obligations across `spec-compact` and `plan-slice`. This document is written in Russian. | Read when hardening risk-to-proof discipline before implementation starts. |
+| [refactoring-plan-11.ru.md](refactoring-plan-11.ru.md) | Plan for a fail-closed audit launch gate before blocking external audits. This document is written in Russian. | Read when tightening model/reasoning policy for spawned audit and review agents. |
+| [refactoring-plan-12.ru.md](refactoring-plan-12.ru.md) | Plan for fail-closed canonical backlog reads in the cross-skill backlog/dossier workflow. This document is written in Russian. | Read when hardening canonical backlog access and preventing `.backlog/*` shortcut reads. |
 
 ## Related Materials
 
@@ -131,6 +136,16 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 6. [AGENTS.md](AGENTS.md)
 7. [../SKILL.md](../SKILL.md)
 8. [../references/workflow.md](../references/workflow.md)
+
+### If you are hardening canonical backlog access
+
+1. [cross-skill-process-model.ru.md](cross-skill-process-model.ru.md)
+2. [backlog-process-gap-analysis.ru.md](backlog-process-gap-analysis.ru.md)
+3. [refactoring-plan-12.ru.md](refactoring-plan-12.ru.md)
+4. [../SKILL.md](../SKILL.md)
+5. [../references/workflow.md](../references/workflow.md)
+6. [../../backlog-engineer/SKILL.md](../../backlog-engineer/SKILL.md)
+7. [../../backlog-engineer/references/command-reference.md](../../backlog-engineer/references/command-reference.md)
 
 ## Scope of This Folder
 
