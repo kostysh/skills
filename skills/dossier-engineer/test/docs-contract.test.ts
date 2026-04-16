@@ -228,6 +228,60 @@ void test('dossier docs keep backlog actualization and handoff boundaries litera
   ]);
 });
 
+void test('dossier docs keep canonical backlog access fail-closed and downstream-only', async () => {
+  const [skill, workflow, processModel, template, example] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(PROCESS_MODEL_PATH, 'utf8'),
+    readFile(REPO_AGENTS_TEMPLATE_PATH, 'utf8'),
+    readFile(EXAMPLE_REPO_AGENTS_PATH, 'utf8'),
+  ]);
+
+  const canonicalAccess = extractSection(skill, '## Canonical backlog access');
+  const workflowRole = extractSection(workflow, '## Role in the cross-skill process');
+  const backlogQuestion = extractSection(processModel, '### Вопрос 1. Что делать дальше по проекту?');
+  const nextStepModel = extractSection(processModel, '## Как понимать `next-step` в новой модели');
+
+  assertContainsTerms(canonicalAccess, [
+    'Current backlog truth must be read only through canonical `backlog-engineer` read commands.',
+    'use `queue` to answer "what can be taken next";',
+    'if fields beyond chain structure are needed after `queue`, call `items --item-keys ...`;',
+    'if the operator explicitly wants a file on disk, `report` remains a valid backlog-side file-output path.',
+    'do not answer backlog status, queue, attention, blocker, or readiness questions by reading `.backlog/*`, packet files, patch files, or drafts;',
+    'those artifacts are raw utility state, not operator-facing source of truth.',
+    'raw artifact inspection is still acceptable when debugging the backlog utility itself or when the operator explicitly asks for raw backlog artifacts.',
+    'if canonical command output is insufficient, say so explicitly instead of compensating with repo file inspection or raw backlog artifact parsing.',
+  ]);
+  assertContainsTerms(workflowRole, [
+    'Canonical backlog access:',
+    'read current backlog truth only through canonical `backlog-engineer` commands;',
+    'use `queue` for "what can be taken next";',
+    'if full task cards or fields beyond chain structure are needed after `queue`, call `items --item-keys ...`;',
+    'do not substitute `.backlog/*`, packet files, patch files, or drafts for canonical command output;',
+    'this prohibition is about operator-facing backlog-truth answers, not backlog-utility debugging or explicit raw-artifact inspection requested by the operator;',
+    'if canonical output is insufficient, surface that limitation instead of parsing raw backlog artifacts.',
+  ]);
+  assertContainsTerms(backlogQuestion, [
+    'если после `queue` нужны full task cards или поля beyond chain structure, используется `items --item-keys ...`;',
+    '`.backlog/*`, packet/patch files и drafts не являются operator-facing source of truth;',
+    'это ограничение относится к operator-facing backlog-truth answers, а не к debugging backlog utility или случаю, когда оператор прямо просит raw artifacts;',
+    'если canonical output недостаточен, это нужно явно сказать, а не читать raw utility artifacts.',
+  ]);
+  assertContainsTerms(nextStepModel, [
+    '`dossier-engineer next-step` читает только structured dossier state и durable artifacts; CLI никогда не интерпретирует prose из dossier body.',
+    '`backlog-engineer` determines whether work can move;',
+    '`dossier-engineer next-step` determines how the selected work should move locally.',
+  ]);
+
+  for (const text of [template, example]) {
+    assertContainsTerms(text, [
+      'Read current backlog truth only through canonical `backlog-engineer` commands.',
+      'Utility-owned internal backlog files are not an operator-facing source of truth.',
+      'Use `queue -> items --item-keys ...` when full task cards are needed after `queue`.',
+    ]);
+  }
+});
+
 void test('historical backlog gap analysis is marked non-normative after stage 2', async () => {
   const gapAnalysis = await readFile(BACKLOG_GAP_ANALYSIS_PATH, 'utf8');
 
@@ -797,6 +851,9 @@ void test('repo AGENTS template reinforces current common-command and audit-stac
       'node scripts/dossier.mjs index-refresh',
       'node scripts/dossier.mjs lint-dossiers',
       'node scripts/dossier.mjs debt-audit',
+      'Read current backlog truth only through canonical `backlog-engineer` commands.',
+      'Utility-owned internal backlog files are not an operator-facing source of truth.',
+      'Use `queue -> items --item-keys ...` when full task cards are needed after `queue`.',
       '`spec-conformance` first;',
       '`code-reviewer` and `security-reviewer` when the changed scope includes code;',
     ]);

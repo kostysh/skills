@@ -10,6 +10,9 @@ This file contains repo-specific overlays only.
 
 ## Backlog workflow
 - Backlog shaping, task selection, readiness checks, gaps, attention, and lifecycle actualization use `backlog-engineer`.
+- Read current backlog truth only through canonical `backlog-engineer` commands.
+- Utility-owned internal backlog files are not an operator-facing source of truth.
+- Use `queue -> items --item-keys ...` when full task cards are needed after `queue`.
 
 ## Repo-level engineering contracts
 - Canonical toolchain and runtime notes: `README.md`

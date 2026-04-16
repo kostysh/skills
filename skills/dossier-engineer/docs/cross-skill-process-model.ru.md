@@ -156,12 +156,15 @@ Owned by dossier process:
 - читает `queue` для runnable chains;
 - читает `gaps`, если нужны blockers;
 - читает `attention`, если нужен review-oriented subset;
-- при необходимости использует `items` и `search` для точного просмотра конкретной области.
+- если после `queue` нужны full task cards или поля beyond chain structure, вызывает `items --item-keys ...`;
+- если ключи ещё неясны или нужен filtering, использует `search`;
+- не подменяет этот read path чтением `.backlog/*`, packet/patch files или drafts.
 
 Результат:
 
 - выбрана конкретная backlog work item или короткая цепочка work items;
 - решение основано на backlog graph, а не на отдельном candidate backlog.
+- если canonical command output недостаточен, это явно признаётся как limitation, а не компенсируется raw artifact inspection.
 
 ## 3a. Правило явной актуализации backlog статуса
 
@@ -414,6 +417,15 @@ Backlog должен узнавать о:
 - `gaps`
 - `attention`
 - `items`
+
+Правило:
+
+- current backlog truth читается только через canonical `backlog-engineer` commands;
+- `queue` отвечает на "что брать следующим";
+- если после `queue` нужны full task cards или поля beyond chain structure, используется `items --item-keys ...`;
+- `.backlog/*`, packet/patch files и drafts не являются operator-facing source of truth;
+- это ограничение относится к operator-facing backlog-truth answers, а не к debugging backlog utility или случаю, когда оператор прямо просит raw artifacts;
+- если canonical output недостаточен, это нужно явно сказать, а не читать raw utility artifacts.
 
 ### Вопрос 2. Что делать дальше внутри выбранной работы?
 

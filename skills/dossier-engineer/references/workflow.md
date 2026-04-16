@@ -13,6 +13,15 @@ Use `backlog-engineer` first to:
 - confirm backlog readiness and blockers;
 - actualize backlog state after dossier-side lifecycle changes.
 
+Canonical backlog access:
+
+- read current backlog truth only through canonical `backlog-engineer` commands;
+- use `queue` for "what can be taken next";
+- if full task cards or fields beyond chain structure are needed after `queue`, call `items --item-keys ...`;
+- do not substitute `.backlog/*`, packet files, patch files, or drafts for canonical command output;
+- this prohibition is about operator-facing backlog-truth answers, not backlog-utility debugging or explicit raw-artifact inspection requested by the operator;
+- if canonical output is insufficient, surface that limitation instead of parsing raw backlog artifacts.
+
 Use `dossier-engineer` after work has already been selected.
 
 ## Workflow stage: repository bootstrap (`init`)
@@ -162,6 +171,7 @@ Important:
 - if more than one dossier exists in the repo, pass `--dossier` explicitly;
 - `next-step` reads only structured dossier state and durable artifacts; CLI never interprets dossier body prose;
 - `next-step` output is dossier-local and does not replace repo overlay ingestion before acting;
+- `next-step` output does not replace canonical backlog reads when backlog truth or readiness must be re-checked;
 - `workflow_stage_next` is either a real workflow stage name or `null`; it never uses shipped CLI command names or prose-derived labels.
 
 ## No-technical-debt policy

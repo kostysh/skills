@@ -203,6 +203,26 @@ Overlay hygiene rule:
 - Repo-root `AGENTS.md` should contain repo-specific overlays only.
 - Do not duplicate the default dossier workflow, review model, or closure protocol in `AGENTS.md` unless the repository is intentionally tightening or overriding them.
 
+## Canonical backlog access
+
+Current backlog truth must be read only through canonical `backlog-engineer` read commands.
+
+Interop rules:
+
+- use `queue` to answer "what can be taken next";
+- if fields beyond chain structure are needed after `queue`, call `items --item-keys ...`;
+- if the operator explicitly wants a file on disk, `report` remains a valid backlog-side file-output path.
+
+Negative rule:
+
+- do not answer backlog status, queue, attention, blocker, or readiness questions by reading `.backlog/*`, packet files, patch files, or drafts;
+- those artifacts are raw utility state, not operator-facing source of truth.
+- raw artifact inspection is still acceptable when debugging the backlog utility itself or when the operator explicitly asks for raw backlog artifacts.
+
+Fail-closed rule:
+
+- if canonical command output is insufficient, say so explicitly instead of compensating with repo file inspection or raw backlog artifact parsing.
+
 ## Backlog actualization rules
 
 Operational summary:
