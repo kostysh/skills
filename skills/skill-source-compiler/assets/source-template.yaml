@@ -1,0 +1,48 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: example-skill
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: >-
+    Describe what the skill does and when to use it.
+
+fragments: {}
+references: []
+assets: []
+copies: []
+supporting: []
+
+surfaces:
+  active:
+    requiredReferences: []
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+
+sections:
+  startHere:
+    - Add a short activation checklist.
+  whenToUse:
+    - Describe the trigger conditions.
+  whenNotToUse:
+    - Describe the non-applicable cases.
+  workflow:
+    - id: stage-example
+      title: Example workflow stage
+      goal: Explain the objective.
+      steps:
+        - Add the ordered steps.
+      validation:
+        - Add validation gates.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not emit absolute paths.
+    checklist:
+      - Confirm the skill works in isolation.

@@ -1,0 +1,256 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: skill-source-compiler
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: >-
+    Compile structured skill source bundles into portable Agent Skills folders.
+    Use when authoring, normalizing, or regenerating complex multi-file skills
+    that need explicit active references, supporting docs, and portability rules.
+  license: Apache-2.0
+  compatibility: >-
+    Designed for skills-compatible agents that can read Markdown files and copy
+    local files inside the skill folder. The packaged CLI at
+    scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
+
+fragments:
+  overview: fragments/overview.md
+  finalChecks: fragments/final-checks.md
+
+references:
+  - id: ref-source-language
+    title: Source language
+    source: references/source-language.md
+    target: references/source-language.md
+    required: true
+    trigger: Read this before mapping source bundle fields into generated sections.
+  - id: ref-conflict-resolution
+    title: Conflict resolution
+    source: references/conflict-resolution.md
+    target: references/conflict-resolution.md
+    required: true
+    trigger: Read this when duplicate or overlapping guidance appears in the source bundle.
+  - id: ref-maintenance
+    title: Maintenance
+    source: references/maintenance.md
+    target: references/maintenance.md
+    required: true
+    trigger: Read this when creating, versioning, compiling, or releasing a code-backed generated skill.
+  - id: ref-authoring-guidelines
+    title: Authoring guidelines
+    source: references/authoring-guidelines.md
+    target: references/authoring-guidelines.md
+    required: false
+    trigger: Read this when refining SKILL.md scope, progressive disclosure, or description quality.
+  - id: ref-output-structure
+    title: Output structure
+    source: references/output-structure.md
+    target: references/output-structure.md
+    required: false
+    trigger: Read this when you need the canonical generated folder layout and section order.
+
+assets:
+  - id: asset-source-template
+    source: assets/source-template.yaml
+    target: assets/source-template.yaml
+    description: Minimal template for a new skill source bundle.
+
+copies:
+  - id: copy-runtime-script
+    source: scripts/skill-source-compiler.mjs
+    target: scripts/skill-source-compiler.mjs
+    description: Packaged CLI runtime for the skill.
+  - id: copy-cli-smoke-test
+    source: test/cli.test.ts
+    target: test/cli.test.ts
+    description: Built-CLI smoke test for the shipped command surface.
+
+supporting:
+  - id: supporting-design-notes
+    source: docs/issues/design-notes.md
+    target: docs/issues/design-notes.md
+    description: Historical design notes for this generated example.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-source-language
+      - ref-conflict-resolution
+      - ref-maintenance
+    optionalReferences:
+      - ref-authoring-guidelines
+      - ref-output-structure
+  supportingGlobs:
+    - docs/*
+    - docs/issues/*
+
+sections:
+  startHere:
+    - Confirm the task actually requires skill compilation or structural regeneration.
+    - Read every required active reference before rewriting the target skill.
+    - If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
+    - Keep active normative guidance separate from supporting or historical documents.
+    - Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
+  whenToUse:
+    - Compile or regenerate a multi-file skill from a structured source bundle.
+    - Normalize a skill that accumulated duplicated or contradictory instructions.
+    - Rebuild a portable skill after source edits, reviews, or policy updates.
+  whenNotToUse:
+    - The task is a tiny direct edit to a simple prose-only skill.
+    - Required source files are missing and the source bundle cannot be resolved confidently.
+    - A supporting document should remain historical instead of being promoted into the active workflow.
+  workflow:
+    - id: stage-analyze-source
+      title: Analyze the source bundle
+      goal: Build a complete source inventory before generating any output.
+      steps:
+        - Read skill.yaml and list every fragment, reference, asset, runtime file, and supporting file.
+        - Verify that required references exist and are marked as active in the source surface.
+        - Identify whether the target skill is documentation-only or code-backed.
+      validation:
+        - No required reference is orphaned.
+        - No file is assigned to both active and supporting surfaces.
+    - id: stage-resolve-conflicts
+      title: Resolve conflicts and duplication
+      goal: Convert competing guidance into a single deterministic instruction set.
+      steps:
+        - Merge semantically equivalent guidance instead of repeating it across sections.
+        - Apply explicit precedence rules when two instructions overlap.
+        - Fail the compile if the source bundle lacks a deterministic conflict policy.
+      validation:
+        - Every conflict is resolved by an explicit rule or becomes a compile error.
+    - id: stage-render-output
+      title: Render the target skill
+      goal: Produce a standard Agent Skills folder with progressive disclosure.
+      steps:
+        - Generate SKILL.md with Start here, applicability, workflow, references, gotchas, and portability sections.
+        - Copy active references, assets, runtime files, and supporting docs into their emitted paths.
+        - Emit a non-normative compile report under docs/ for traceability.
+      validation:
+        - SKILL.md links every required reference.
+        - No emitted file contains absolute local paths.
+  interop:
+    - id: interop-language-toolchain
+      domain: language and toolchain matters
+      winner: the language or toolchain skill
+      rationale: Language semantics, packaging, linting, and testing conventions belong to language and toolchain skills.
+    - id: interop-framework
+      domain: framework APIs and framework idioms
+      winner: the framework skill
+      rationale: Framework-specific APIs, lifecycle rules, and integration patterns belong to framework skills.
+  commands:
+    - id: command-help
+      command: help
+      summary: Show the shipped command surface, command-local usage, and exit-code contract.
+      when: You need to confirm the public CLI contract before invoking another command.
+      script: scripts/skill-source-compiler.mjs
+      inputs:
+        - Optional command name.
+      outputs:
+        - Human-readable help text on stdout.
+        - Exit code 0 on success.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/skill-source-compiler.mjs --help
+        - node scripts/skill-source-compiler.mjs help compile
+    - id: command-lint
+      command: lint
+      summary: Validate a source bundle without writing emitted output.
+      when: Before compile, after source edits, or when reviewing source-surface changes.
+      script: scripts/skill-source-compiler.mjs
+      inputs:
+        - Source bundle directory path.
+      outputs:
+        - OK or FAIL status on stdout.
+        - Structured diagnostic lines on stdout.
+        - Exit code 1 when validation errors are found.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/skill-source-compiler.mjs lint <source-dir>
+    - id: command-compile
+      command: compile
+      summary: Compile one source bundle into a generated skill folder.
+      when: You need to regenerate one skill after source-bundle changes.
+      script: scripts/skill-source-compiler.mjs
+      inputs:
+        - Source bundle directory path.
+        - --out-dir <skills-dir>.
+      outputs:
+        - Compiled output path on stdout.
+        - Warning lines on stdout when lint emits warnings.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/skill-source-compiler.mjs compile <source-dir> --out-dir <skills-dir>
+    - id: command-compile-all
+      command: compile-all
+      summary: Compile every direct child source bundle under a sources root.
+      when: You need to rebuild a batch of skill source bundles with one command.
+      script: scripts/skill-source-compiler.mjs
+      inputs:
+        - Sources root directory path.
+        - --out-dir <skills-dir>.
+      outputs:
+        - Count of compiled source bundles on stdout.
+        - One emitted output path per compiled bundle on stdout.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/skill-source-compiler.mjs compile-all <sources-root> --out-dir <skills-dir>
+    - id: command-check
+      command: check
+      summary: Verify a compiled skill folder against frontmatter, headings, links, and portability invariants.
+      when: After compile or when auditing a generated skill for drift.
+      script: scripts/skill-source-compiler.mjs
+      inputs:
+        - Compiled skill directory path.
+      outputs:
+        - OK or FAIL status on stdout.
+        - Diagnostic lines on stdout.
+        - Exit code 1 when invariants fail.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/skill-source-compiler.mjs check <compiled-skill-dir>
+  gotchas:
+    - id: gotcha-local-runtime-path
+      priority: high
+      text: When a skill ships a utility, look for it under <skill-root>/scripts and invoke it relative to the skill root instead of assuming a global executable is installed.
+    - id: gotcha-docs-surface
+      priority: high
+      text: Never promote docs/* into active guidance unless the source bundle explicitly marks that content as active.
+    - id: gotcha-repo-deps
+      priority: high
+      text: Do not require repository files outside the emitted skill folder to understand or execute the skill.
+    - id: gotcha-guessing
+      priority: medium
+      text: Do not silently guess through unresolved conflicts; emit a compile error instead.
+    - id: gotcha-stage-command-drift
+      priority: medium
+      text: Never present a workflow stage as a runnable command unless the packaged CLI help surface actually exposes it.
+  policies:
+    - id: policy-active-surface
+      title: Active normative surface
+      text: The generated SKILL.md and required references are the only active default instruction surface unless SKILL.md explicitly promotes more files.
+    - id: policy-supporting-surface
+      title: Supporting and historical surface
+      text: docs/*, docs/issues/*, analyses, and investigations are supporting material only and must not override active guidance.
+    - id: policy-workflow-vs-cli
+      title: Workflow stages vs shipped CLI
+      text: A workflow stage is not a runnable command unless the packaged CLI help surface exposes it. Keep workflow stages and CLI commands separate in both the source manifest and the generated SKILL.md.
+  portability:
+    required: true
+    rules:
+      - Do not emit absolute paths or machine-specific environment assumptions.
+      - Do not require external local files outside the skill folder.
+      - Keep all mandatory templates, scripts, and references inside the emitted skill directory.
+      - Use only relative links inside the generated skill bundle.
+    checklist:
+      - Search the emitted skill for absolute paths and remove them.
+      - Confirm every required reference exists inside the emitted skill folder.
+      - Confirm the copied skill remains understandable in isolation.
+      - Keep docs/* clearly non-normative unless promoted explicitly by SKILL.md.
