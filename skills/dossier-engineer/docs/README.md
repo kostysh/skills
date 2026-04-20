@@ -42,6 +42,9 @@ This folder contains supporting documentation for the `dossier-engineer` skill a
 | [refactoring-plan-10.ru.md](refactoring-plan-10.ru.md) | Plan for adversarial proof obligations across `spec-compact` and `plan-slice`. This document is written in Russian. | Read when hardening risk-to-proof discipline before implementation starts. |
 | [refactoring-plan-11.ru.md](refactoring-plan-11.ru.md) | Plan for a fail-closed audit launch gate before blocking external audits. This document is written in Russian. | Read when tightening model/reasoning policy for spawned audit and review agents. |
 | [refactoring-plan-12.ru.md](refactoring-plan-12.ru.md) | Plan for fail-closed canonical backlog reads in the cross-skill backlog/dossier workflow. This document is written in Russian. | Read when hardening canonical backlog access and preventing `.backlog/*` shortcut reads. |
+| [refactoring-plan-13.ru.md](refactoring-plan-13.ru.md) | Plan for an explicit pre-close / DoD readiness gate before the final implementation review stack. This document is written in Russian. | Read when hardening truthful implementation close-out and separating closure-readiness failures from product/risk findings. |
+| [refactoring-plan-14.ru.md](refactoring-plan-14.ru.md) | Plan for heavy-runtime discipline: trigger-based runtime envelope upfront, verification ladder, and smoke only as a final gate. This document is written in Russian. | Read when hardening expensive-runtime features so debugging does not collapse into repeated heavy smoke reruns. |
+| [refactoring-plan-15.ru.md](refactoring-plan-15.ru.md) | Plan for mandatory lifecycle logging, metric contract, lifecycle snapshot artifacts, and repo-local session discoverability. This document is written in Russian. | Read when redesigning dossier telemetry so retrospective can drive continuous process improvement from objective signals. |
 
 ## Related Materials
 
