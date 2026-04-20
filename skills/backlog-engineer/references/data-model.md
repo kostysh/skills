@@ -414,7 +414,7 @@ The utility concept expects patch metadata plus one or more operations.
 | `patch_id` | stable patch identifier | keep unique inside one backlog |
 | `created_at` | creation timestamp | use ISO 8601 UTC |
 | `sequence` | deterministic ordering field | keep monotonic within the backlog |
-| `target_item_keys` | tasks this patch is intended to touch | list all directly targeted tasks |
+| `target_item_keys` | tasks this patch is intended to touch | list all directly targeted tasks and resolve them before patch authoring whenever scope is already knowable |
 
 ### Patch operations
 
@@ -429,6 +429,8 @@ Recommended starter operations:
 - `remove_item`
 
 `remove_todo` is for mutation-managed todo only. Refresh-managed review todo are utility runtime signals and are cleared by scoped `refresh` when their observed cause is gone.
+
+If the discovered change is not an update to an existing item but a truly separate delta, do not force it into patch shape; return to `template packet` -> `packet` for the new backlog item branch.
 
 Example update operation:
 

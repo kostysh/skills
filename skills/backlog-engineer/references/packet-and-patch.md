@@ -67,6 +67,7 @@ Patch rules:
 - may remove existing tasks through the remove flow;
 - may close open mutation-managed `todo` items;
 - never acts as a second kind of packet for adding new tasks.
+- for dossier-side actualization, start from `template patch` by default instead of freehand patch authoring.
 
 Start from `template patch` whenever possible.
 
@@ -92,6 +93,8 @@ Utility-owned `todo` follows these rules:
 - `patch-item remove_todo` may remove only `managed_by = mutation` todo.
 - `managed_by = refresh` review todo are cleared by scoped `refresh` when their source/dependency cause is no longer observed.
 
+If a dossier-side change creates truly new backlog work instead of changing an existing item, leave patch workflows and return to `template packet` -> `packet`.
+
 Do not author `todo` in packets or patches.
 
 ## Dry-run rule
@@ -101,5 +104,7 @@ Use `--dry-run` before risky or large mutations:
 - `packet --dry-run`
 - `patch-item --dry-run`
 - `remove-item --dry-run`
+
+For dossier-side actualization patches, `patch-item --dry-run` is the required pre-apply step.
 
 The preview must run on temporary in-memory state and must not write to disk.

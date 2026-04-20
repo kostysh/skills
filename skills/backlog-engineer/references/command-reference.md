@@ -258,6 +258,12 @@ For one end-to-end first-run flow, use [First Backlog Walkthrough](first-backlog
 - if that draft file already exists, the utility should choose a unique suffixed basename instead of overwriting it.
 - machine-facing `output_path` is absolute.
 
+Cross-skill note:
+
+- for dossier-side actualization, `template patch` is the required default starting point before patch authoring;
+- resolve `target_item_keys` through `items` when keys are already known, or through `search` with shipped structural filters and then `items` when keys are not yet known;
+- if source-driven changes make scope knowable only after recalculation, run the scoped `refresh` phase first, then return to `template patch`.
+
 ## `packet`
 
 Use only for new tasks.
@@ -338,9 +344,11 @@ Cross-skill note:
 
 - `patch-item` is the normal backlog mutation after dossier shaping / planning / implementation when the affected backlog items are already known;
 - use it to actualize `delivery_state`, blockers, dependencies, and context facts that dossier work made explicit;
+- for dossier-side actualization, the default branch-preparation sequence is `items` when keys are already known, or `search` with shipped structural filters and then `items` when keys are not yet known -> `template patch` -> `patch-item --dry-run` -> real `patch-item`;
 - use `remove_todo` only for mutation-managed todo; refresh-managed review todo are cleared by scoped `refresh` after the source/dependency cause is gone;
 - for truth-changing dossier stages, `patch-item`-driven actualization belongs to the closure contract of that stage, not to an optional later cleanup pass.
-- after actualization, confirm backlog state and artifact integrity before treating the dossier stage as cleanly closed.
+- after actualization, confirm scoped truth with `items` whenever item-card truth changed, then confirm artifact integrity with `status` before treating the dossier stage as cleanly closed;
+- use `status --refresh` only when a wider global integrity sweep is explicitly needed and the broader mutating scope is acceptable.
 - after dossier workflow stage `change-proposal`, `patch-item` is the branch for `patch existing item` and the dependent-item update step after `source update`.
 
 ## `remove-item`
@@ -403,9 +411,11 @@ Cross-skill note:
 
 - use scoped `refresh` after dossier work when updated source documents may have changed backlog-derived state;
 - dossier artifacts may support the decision to refresh or patch, but they do not replace architecture or ADR sources as canonical upstream truth;
+- lifecycle `refresh + patch` is a literal two-phase branch: first scoped `refresh`, then scope resolution, then `template patch` -> `patch-item --dry-run` -> real `patch-item` when explicit backlog truth still changed;
 - `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch on already known backlog items.
 - after dossier workflow stage `change-proposal`, `source update` always refreshes a changed registered source before dependent-item patching;
 - for shared-source or multi-item impact, do not stop at partial sync after `refresh`: patch all known impacted items or split them into new backlog work before dossier stage closure.
+- stale refresh-managed review todo are cleared through scoped `refresh`, not through `patch-item remove_todo`.
 
 ## `status`
 
@@ -431,7 +441,9 @@ Expected fields:
 Cross-skill note:
 
 - use `status` before dossier intake when the operator wants the current backlog picture;
-- use `status` again after dossier-side lifecycle changes when you need to confirm the updated backlog state after actualization;
+- use `status` again after dossier-side lifecycle changes as the required artifact-integrity confirmation surface after actualization;
+- reserve `status --refresh` for cases where a fresh global integrity sweep is explicitly needed and the broader mutating scope is acceptable;
+- `status` or `status --refresh` does not replace `items` when scoped item-card truth changed; use both surfaces only when that broader sweep is actually intended;
 - if `status` or `status --refresh` fails with `BE_CANONICAL_ARTIFACT_MISSING`, dossier closure is blocked until the referenced canonical artifact is restored or the bad registry reference is corrected through the documented backlog workflow.
 
 ## `report`
@@ -476,6 +488,7 @@ Each item card should include:
 Cross-skill note:
 
 - use `items` to inspect the selected backlog work before dossier intake or after backlog actualization;
+- use `items` as the required scoped truth read whenever dossier-side actualization changed `delivery_state`, blockers, dependencies, or context facts on known items;
 - do not treat dossier-local state as a substitute for the canonical item card in the backlog utility.
 
 ## `queue`
@@ -507,6 +520,18 @@ Cross-skill note:
 Use when keys are not yet known or filtering is needed.
 
 Return compact candidate summaries, not full cards.
+
+Supported filters are structural, not freeform text search:
+
+- `--source-ids`
+- `--delivery-state`
+- `--needs-attention`
+- `--ready-for-next-step`
+- `--claim-keys`
+- `--contract-keys`
+- `--data-domain-keys`
+- `--quality-attribute-keys`
+- `--policy-decision-keys`
 
 At minimum, each result should include:
 

@@ -30,9 +30,12 @@ const FIRST_BACKLOG_WALKTHROUGH_PATH = path.join(
   'first-backlog-walkthrough.md',
 );
 const OPERATOR_WORKFLOWS_PATH = path.join(SKILL_DIR, 'references', 'operator-workflows.md');
+const PACKET_AND_PATCH_PATH = path.join(SKILL_DIR, 'references', 'packet-and-patch.md');
+const DATA_MODEL_PATH = path.join(SKILL_DIR, 'references', 'data-model.md');
+const EXAMPLES_AND_TEMPLATES_PATH = path.join(SKILL_DIR, 'references', 'examples-and-templates.md');
 const PROCESS_CLI_PATH = path.join(SKILL_DIR, 'docs', 'process-cli.ru.md');
 const UTILITY_SPEC_PATH = path.join(SKILL_DIR, 'docs', 'utility-spec.ru.md');
-const IMPLEMENTATION_PLAN_PATH = path.join(SKILL_DIR, 'docs', 'refactoring-plan-1.ru.md');
+const IMPLEMENTATION_PLAN_PATH = path.join(SKILL_DIR, 'docs', 'refactoring-plan-9.ru.md');
 
 function extractSection(text: string, heading: string): string {
   const headingIndex = text.indexOf(heading);
@@ -237,14 +240,15 @@ void test('command reference lock and packet output notes stay aligned with expo
   assert.match(renderManagedGitignoreContent(''), /\/\.backlog\/mutation\.lock/u);
 });
 
-void test('implementation plan keeps the doc-sync checklist explicit', async () => {
+void test('current implementation plan keeps the doc-sync checklist explicit', async () => {
   const plan = await readFile(IMPLEMENTATION_PLAN_PATH, 'utf8');
 
   assertContainsTerms(plan, [
-    'doc-sync checklist',
+    'docs-contract tests',
     '`SKILL.md`',
-    'релевантные `references/*`',
-    'runtime-backed invariants',
+    '`references/operator-workflows.md`',
+    'targeted runtime tests',
+    'active dossier contract',
   ]);
 });
 
@@ -347,6 +351,14 @@ void test('normative backlog docs keep cross-skill handoff and actualization lit
   const actualizationSection = extractSection(skill, '## Backlog actualization after dossier work');
 
   assertContainsTerms(actualizationSection, [
+    'two truthful closure branches',
+    '`refresh + patch`',
+    '`template patch`',
+    '`patch-item --dry-run`',
+    'confirm scoped truth with `items`',
+    'confirm canonical artifact integrity with `status`',
+    'use `status` as the required artifact-integrity confirmation surface',
+    'use `status --refresh` only when a wider global integrity sweep is explicitly needed',
     'backlog actualization is part of that stage closure contract',
     'do not treat the dossier stage as complete until required backlog actualization is finished',
     'use `patch-item` for `delivery_state` changes',
@@ -354,8 +366,14 @@ void test('normative backlog docs keep cross-skill handoff and actualization lit
     '`refresh` alone does not actualize `delivery_state`',
     'dossier-side `backlog impact verdict`',
     '`no-op` means no backlog mutation',
-    '`patch existing item` means patch already known backlog items',
-    '`source update` means: if the canonical source is new, `register-source` first',
+    '`patch existing item` means:',
+    'resolve the already known impacted items',
+    '`source update` means:',
+    'if the canonical source is new, `register-source` first',
+    '`update-source-path`',
+    '`remove-source`',
+    '`template packet` -> `packet`',
+    'stale refresh-managed review todo are cleared only through scoped `refresh`',
     '`new backlog item` means keep existing item history honest',
     'an already `implemented` item stays `implemented`',
     'partial sync is not an allowed closure outcome',
@@ -367,23 +385,36 @@ void test('normative backlog docs keep cross-skill handoff and actualization lit
     'workflow stage `plan-slice`',
     'before `dossier-step-close`',
     'before that stage is treated as complete',
+    '`patch-item --dry-run`',
+    '`items` -> `status`',
     '`refresh` alone does not actualize `delivery_state`',
     'part of stage closure',
     'Update backlog after dossier `change-proposal`',
     'read the dossier-side `backlog impact verdict`',
+    'confirm clean state through `items` and `status`',
+    '`update-source-path`',
+    '`remove-source`',
     'primary branch = `source update`',
     'partial sync is not an allowed closure outcome',
     'an already `implemented` item does not silently downgrade',
   ]);
 
   assertContainsTerms(commandReference, [
+    '`template patch` is the required default starting point',
+    '`search` with shipped structural filters',
+    'confirm scoped truth with `items` whenever item-card truth changed',
+    'reserve `status --refresh` for cases where a fresh global integrity sweep is explicitly needed',
+    'lifecycle `refresh + patch` is a literal two-phase branch',
+    'stale refresh-managed review todo are cleared through scoped `refresh`',
     '`patch-item`-driven actualization belongs to the closure contract',
     '`refresh` alone does not actualize `delivery_state`',
     'creates a new ADR or other canonical source',
     'use `packet` only for the `new backlog item` branch',
     '`patch existing item` and the dependent-item update step after `source update`',
     'do not stop at partial sync after `refresh`',
-    'confirm backlog state and artifact integrity before treating the dossier stage as cleanly closed',
+    'confirm scoped truth with `items` whenever item-card truth changed',
+    'confirm artifact integrity with `status` before treating the dossier stage as cleanly closed',
+    'use `status --refresh` only when a wider global integrity sweep is explicitly needed',
   ]);
 
   assertContainsTerms(utilitySpec, [
@@ -394,4 +425,45 @@ void test('normative backlog docs keep cross-skill handoff and actualization lit
     'already `implemented` item stays `implemented`',
     'partial sync',
   ]);
+});
+
+void test('active authoring docs keep deterministic dossier-side actualization and clean confirmation explicit', async () => {
+  const [packetAndPatch, dataModel, examples] = await Promise.all([
+    readFile(PACKET_AND_PATCH_PATH, 'utf8'),
+    readFile(DATA_MODEL_PATH, 'utf8'),
+    readFile(EXAMPLES_AND_TEMPLATES_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(packetAndPatch, [
+    'for dossier-side actualization, start from `template patch` by default',
+    'truly new backlog work',
+    '`template packet` -> `packet`',
+    '`patch-item --dry-run` is the required pre-apply step',
+  ]);
+
+  assertContainsTerms(dataModel, [
+    'resolve them before patch authoring whenever scope is already knowable',
+    'truly separate delta',
+    '`template packet` -> `packet`',
+    'Refresh-managed review todo',
+  ]);
+
+  assertContainsTerms(examples, [
+    'Canonical lifecycle `patch-item` branch',
+    'Canonical lifecycle `refresh + patch` branch',
+    'search --claim-keys "auth-session-timeout"',
+    'confirm scoped truth with `items`',
+    'confirm artifact integrity with `status`',
+    'use `status --refresh` only when a wider global integrity sweep is explicitly needed',
+    'Source moved during `change-proposal`',
+    '`update-source-path`',
+    'Source deleted during `change-proposal`',
+    '`remove-source`',
+    'New delta item during `change-proposal`',
+    '`template packet` -> `packet`',
+    'Stale refresh-managed review todo after evidence changed',
+    'Do not close refresh-managed review todo through `patch-item remove_todo`',
+  ]);
+
+  assert.doesNotMatch(examples, /search --text/u);
 });

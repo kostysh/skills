@@ -185,6 +185,47 @@ This patch updates existing tasks and closes one open mutation-managed todo.
 
 Use these examples when backlog truth changes after dossier-side work.
 
+### Canonical lifecycle `patch-item` branch
+
+Use this when the affected backlog items are already known and source-derived state does not need recalculation first.
+
+```bash
+backlog-engineer items --item-keys "auth-session-timeout-enforcement"
+backlog-engineer template patch --item-keys "auth-session-timeout-enforcement" --out patches/2026-04-08-003-auth-session-timeout-implemented.patch.template.json
+backlog-engineer patch-item --patch patches/2026-04-08-003-auth-session-timeout-implemented.patch.template.json --dry-run
+backlog-engineer patch-item --patch patches/2026-04-08-003-auth-session-timeout-implemented.patch.template.json
+backlog-engineer items --item-keys "auth-session-timeout-enforcement"
+backlog-engineer status
+```
+
+Clean closure rule:
+
+- do not stop at `patch-item` success;
+- confirm scoped truth with `items`;
+- confirm artifact integrity with `status`;
+- use `status --refresh` only when a wider global integrity sweep is explicitly needed.
+
+### Canonical lifecycle `refresh + patch` branch
+
+Use this when updated source documents may have changed source-derived backlog state before explicit item truth can be patched cleanly.
+
+```bash
+backlog-engineer refresh --source-path docs/adr/session-timeout.md
+backlog-engineer search --claim-keys "auth-session-timeout"
+backlog-engineer template patch --item-keys "auth-session-timeout-enforcement,auth-session-timeout-audit" --out patches/2026-04-08-004-auth-session-timeout-source-update.patch.template.json
+backlog-engineer patch-item --patch patches/2026-04-08-004-auth-session-timeout-source-update.patch.template.json --dry-run
+backlog-engineer patch-item --patch patches/2026-04-08-004-auth-session-timeout-source-update.patch.template.json
+backlog-engineer items --item-keys "auth-session-timeout-enforcement,auth-session-timeout-audit"
+backlog-engineer status
+```
+
+Two-phase rule:
+
+- scoped `refresh` is the recalculation phase, not the clean closure;
+- if explicit `delivery_state`, blockers, dependencies, or context facts still changed, patch them after refresh;
+- do not stop at partial sync for shared-source or multi-item impact.
+- finish the scoped branch on `status`; reserve `status --refresh` for an explicit broader sweep.
+
 ### After dossier shaping/specification -> `specified`
 
 ```json
@@ -279,6 +320,17 @@ Use these examples when backlog truth changes after dossier-side work.
 }
 ```
 
+Typical command flow:
+
+```bash
+backlog-engineer items --item-keys "auth-session-timeout-audit"
+backlog-engineer template patch --item-keys "auth-session-timeout-audit" --out patches/2026-04-08-004-auth-session-timeout-dependency.patch.template.json
+backlog-engineer patch-item --patch patches/2026-04-08-004-auth-session-timeout-dependency.patch.template.json --dry-run
+backlog-engineer patch-item --patch patches/2026-04-08-004-auth-session-timeout-dependency.patch.template.json
+backlog-engineer items --item-keys "auth-session-timeout-audit"
+backlog-engineer status
+```
+
 ### Dossier discovered context fact
 
 ```json
@@ -304,6 +356,55 @@ Use this pattern only when dossier work makes an already existing backlog contex
 
 These examples assume dossier-side work made the new backlog fact explicit.
 Use them as backlog actualization patterns, not as dossier-local workflow steps.
+
+### Source moved during `change-proposal`
+
+Use `update-source-path` when the same canonical source moved but remains the same logical source.
+
+```bash
+backlog-engineer update-source-path --source-path docs/adr/session-timeout.md --new-path docs/adr/security/session-timeout.md
+backlog-engineer search --claim-keys "auth-session-timeout"
+backlog-engineer items --item-keys "auth-session-timeout-enforcement"
+backlog-engineer status
+```
+
+If item-card truth still changed after the move, continue with `template patch` -> `patch-item --dry-run` -> `patch-item` before final confirmation.
+
+### Source deleted during `change-proposal`
+
+Use `remove-source` when a registered canonical source was deleted and backlog truth must be cleaned before closure.
+
+```bash
+backlog-engineer remove-source --source-path docs/adr/legacy-timeout.md
+backlog-engineer attention
+backlog-engineer items --item-keys "auth-session-timeout-enforcement"
+backlog-engineer status
+```
+
+If `remove-source` surfaces dependent-item changes, patch those known items before treating the dossier stage as cleanly closed.
+
+### New delta item during `change-proposal`
+
+Keep existing implemented history honest and create new work through packet flow, not through patch shape.
+Use `template packet` -> `packet`, then confirm the resulting clean state.
+
+```bash
+backlog-engineer template packet --out packets/session-timeout-follow-up.packet.template.json
+backlog-engineer packet --packet packets/session-timeout-follow-up.packet.template.json
+backlog-engineer items --item-keys "auth-session-timeout-enforcement,auth-session-timeout-follow-up"
+backlog-engineer status
+```
+
+### Stale refresh-managed review todo after evidence changed
+
+Do not close refresh-managed review todo through `patch-item remove_todo`.
+Rerun scoped `refresh` so the utility can clear stale review state when the observed cause is gone.
+
+```bash
+backlog-engineer refresh --item-key auth-session-timeout-enforcement
+backlog-engineer attention
+backlog-engineer status
+```
 
 ## Example removal patch
 

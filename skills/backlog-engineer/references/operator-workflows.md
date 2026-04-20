@@ -14,12 +14,12 @@ Cross-skill wording rule:
 | --- | --- |
 | Create backlog from architecture | preflight on system state -> source-set gate -> `init` -> `register-source` for all relevant sources -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` -> `status` |
 | Add a new module or source | `list-sources` -> `register-source` -> `template packet` -> author packet -> if risky `packet --dry-run` -> `packet` |
-| Update backlog after document changes | Prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
+| Update backlog after document changes | If a source moved, use `update-source-path`; if a source was deleted, use `remove-source`; otherwise prefer scoped `refresh`; then `search`; add new tasks through `template packet` -> `packet`; change existing tasks through `template patch` -> `patch-item`; remove obsolete tasks through `remove-item`; use `--dry-run` before risky mutations |
 | Choose the next work and hand off to dossier | `queue` or scoped `status`/`items` -> read current `delivery_state`, blockers, dependencies, and source traceability -> hand off the selected backlog work to `dossier-engineer feature-intake` |
-| Update backlog after dossier shaping/specification | after dossier workflow stage `spec-compact`, and before that stage is treated as complete, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `specified` and record any new blockers, dependencies, or context facts |
-| Update backlog after dossier planning | after dossier workflow stage `plan-slice`, and before that stage is treated as complete, use `patch-item` or scoped `refresh` plus patch workflow to actualize the selected backlog work to `planned` and record any newly explicit dependencies or sequencing constraints |
-| Update backlog after dossier implementation/closure | after dossier workflow stage `implementation`, then `dossier-verify` and `review-artifact`, actualize backlog truth before `dossier-step-close`; only then close the dossier stage and confirm the selected backlog work as `implemented` or record any new follow-up backlog facts |
-| Update backlog after dossier `change-proposal` | read the dossier-side `backlog impact verdict`; `no-op` -> confirm no backlog mutation; `patch existing item` -> `template patch` -> `patch-item`; `source update` -> if source is new, `register-source` first; if source is already registered and changed, scoped `refresh` first -> patch every known impacted item -> create new work only if the refreshed source still implies separate delta work; `new backlog item` -> `template packet` -> `packet`, while keeping old item history honest |
+| Update backlog after dossier shaping/specification | after dossier workflow stage `spec-compact`, and before that stage is treated as complete, choose `patch-item` or `refresh + patch`; `patch-item` branch = resolve scope -> `template patch` -> `patch-item --dry-run` -> `patch-item` -> `items` -> `status`; `refresh + patch` branch = scoped `refresh` -> resolve scope -> `template patch` -> `patch-item --dry-run` -> `patch-item` -> `items` -> `status` |
+| Update backlog after dossier planning | after dossier workflow stage `plan-slice`, and before that stage is treated as complete, choose `patch-item` or `refresh + patch`; record newly explicit dependencies or sequencing constraints; finish on `items` plus `status`, not on patch success alone |
+| Update backlog after dossier implementation/closure | after dossier workflow stage `implementation`, then `dossier-verify` and `review-artifact`, actualize backlog truth before `dossier-step-close`; use the same lifecycle `patch-item` or `refresh + patch` recipe, then confirm the selected backlog work as `implemented` or record follow-up backlog facts through `items` plus `status` |
+| Update backlog after dossier `change-proposal` | read the dossier-side `backlog impact verdict`; `no-op` -> confirm no backlog mutation; `patch existing item` -> resolve scope -> `template patch` -> `patch-item --dry-run` -> `patch-item` -> `items` -> `status`; `source update` -> if source is new, `register-source`; if the same source moved, `update-source-path`; if the source was deleted, `remove-source`; if a registered source changed, scoped `refresh`; then patch every known impacted item through `template patch` -> `patch-item --dry-run` -> `patch-item`; create new work only if the refreshed source still implies separate delta work; finish on `items` -> `status`; `new backlog item` -> `template packet` -> `packet` -> `items` -> `status`, while keeping old item history honest |
 | Show overall state | `status`; if operator asks for current state right now use `status --refresh`; if operator asks for a document use `report` |
 | Show what changed after the last action | Use the compact response of the last mutating command; only then fetch `items` if details are needed |
 | Show what needs attention | `attention` -> `items` only for selected tasks |
@@ -105,20 +105,30 @@ Never run these in parallel for the same root:
 
 When dossier work changes backlog truth:
 
-- use `patch-item` when the affected backlog items are already known;
-- use scoped `refresh` first when the dossier-side change came from updated source documents;
-- use `patch-item` after that refresh when `delivery_state`, blockers, dependencies, or context facts still need explicit actualization on already known backlog items;
+- lifecycle actualization after `spec-compact`, `plan-slice`, and `implementation` has only two truthful closure branches:
+  - `patch-item`
+  - `refresh + patch`
+- use the lifecycle `patch-item` branch only when the affected backlog items are already known and source-derived state does not need recalculation first;
+- for that branch, use `items` when keys are already known, or `search` with shipped structural filters and then `items` when keys are not yet known -> `template patch` -> `patch-item --dry-run` -> `patch-item`;
+- use scoped `refresh` first only when the dossier-side change came from updated source documents and source-derived state may have changed;
+- after that refresh, resolve the now-known scope, then run `template patch` -> `patch-item --dry-run` -> `patch-item` when `delivery_state`, blockers, dependencies, or context facts still need explicit actualization on already known backlog items;
 - `refresh` alone does not actualize `delivery_state` or dossier-discovered blockers, dependencies, or context facts that require an explicit patch;
 - keep the mutation scoped to the selected work and the newly discovered linked facts whenever possible;
 - if dossier work surfaced a new blocker, dependency, or context fact, patch backlog before continuing dossier-local workflow.
 - for truth-changing dossier stages, backlog actualization is part of stage closure, not an optional follow-up after closure.
+- for dossier-side actualization patches, `template patch` is the required default starting point and `patch-item --dry-run` is the required pre-apply step.
+- finish dossier-side actualization only after clean confirmation:
+  - use `items` as the required scoped truth read whenever item-card truth changed;
+  - use `status` as the required artifact-integrity confirmation surface;
+  - use `status --refresh` only when a wider global integrity sweep is explicitly needed and the broader scope is acceptable;
+  - mutation success alone is not a clean closure.
 
 For dossier workflow stage `change-proposal`, use the dossier-side `backlog impact verdict` literally:
 
 - `no-op` -> no backlog mutation and no backlog rediscovery;
-- `patch existing item` -> patch already known impacted items only;
-- `source update` -> if the source is new, `register-source` first; if the source is already registered and changed, scoped `refresh` first; then patch all known impacted items; then create new work only if the refreshed source still implies separate delta work;
-- `new backlog item` -> create a separate delta item and keep existing implemented history honest.
+- `patch existing item` -> patch already known impacted items only through `template patch` -> `patch-item --dry-run` -> `patch-item`, then confirm clean state through `items` and `status`;
+- `source update` -> if the source is new, `register-source` first; if the same source moved, `update-source-path`; if the source was deleted, `remove-source`; if the source is already registered and changed, scoped `refresh` first; then patch all known impacted items; then create new work only if the refreshed source still implies separate delta work; finish on clean confirmation through `items` and `status`;
+- `new backlog item` -> create a separate delta item through `template packet` -> `packet`, then confirm clean state with `items` and `status` while keeping existing implemented history honest.
 
 Special guards:
 
@@ -126,6 +136,7 @@ Special guards:
 - if changed source and changed work truth appear together, primary branch = `source update`;
 - for shared-source or multi-item impact, partial sync is not an allowed closure outcome;
 - an already `implemented` item does not silently downgrade just because later delta work was discovered; later delta work becomes a new backlog item.
+- stale refresh-managed review todo are cleared only through scoped `refresh`; do not close them through `patch-item remove_todo`.
 
 ## Agent accents
 
