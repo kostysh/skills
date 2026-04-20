@@ -36,6 +36,11 @@ Responsibilities:
 
 This layer owns the accounting truth for feature execution.
 
+For detailed workflow and telemetry rules, also read:
+
+- [Delivery workflow layer](delivery-workflow-layer.md)
+- [Telemetry and closure](telemetry-and-closure.md)
+
 ## Artifact split
 
 Accounting and process artifacts:
@@ -53,3 +58,4 @@ Project SSOT artifacts:
 - one feature dossier maps to exactly one backlog item
 - backlog truth and delivery state must not collapse into a single flat status enum
 - the merged runtime must stay mechanical; semantic interpretation remains agent-owned
+- telemetry and closure truth must remain explicit and step-close-backed

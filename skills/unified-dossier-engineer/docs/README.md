@@ -22,6 +22,7 @@ Current status:
 | [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md) | Initial implementation plan for building the merged skill from the concept. | Read before planning or executing implementation work. |
 | [implementation-log-1.ru.md](implementation-log-1.ru.md) | Log for `Package 1`: generated-skill scaffold, active surface boundaries, compiler-first maintenance model, and emitted `SKILL.md` stabilization. | Read when verifying or reconstructing the first implementation wave. |
 | [implementation-log-2.ru.md](implementation-log-2.ru.md) | Log for grouped wave `Package 2 + Package 3 + Package 5`: unified `.dossier` topology, backlog truth layer, and source-review redesign as active references. | Read when verifying the first merged-domain modeling wave after the initial scaffold. |
+| [implementation-log-3.ru.md](implementation-log-3.ru.md) | Log for grouped wave `Package 4 + Package 6`: delivery workflow layer, telemetry/closure model, and preserved closure discipline as active references. | Read when verifying the second merged-domain modeling wave before utility-spec/runtime work starts. |
 
 ## Scope of This Folder
 

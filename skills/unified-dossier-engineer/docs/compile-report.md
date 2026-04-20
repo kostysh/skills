@@ -11,9 +11,11 @@ Generated from `skill.yaml`.
 - `fragments/overview.md`
 - `package.json`
 - `references/backlog-truth-layer.md`
+- `references/delivery-workflow-layer.md`
 - `references/source-bundle-governance.md`
 - `references/source-review-contract.md`
 - `references/status-and-scope.md`
+- `references/telemetry-and-closure.md`
 - `references/unified-architecture.md`
 - `references/unified-artifact-topology.md`
 - `skill.yaml`
@@ -25,6 +27,8 @@ Generated from `skill.yaml`.
 - `references/unified-artifact-topology.md`
 - `references/backlog-truth-layer.md`
 - `references/source-review-contract.md`
+- `references/delivery-workflow-layer.md`
+- `references/telemetry-and-closure.md`
 
 ## Warnings
 - none

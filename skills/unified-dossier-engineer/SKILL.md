@@ -9,7 +9,7 @@ compatibility: Planning-stage generated skill. The source bundle is maintained
   with skill-source-compiler. No unified runtime or CLI contract is shipped yet.
 metadata:
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9b4c5691cf3151361cc26e21ed0bc3aa143738fa03cdf42a1b4c14501021c6a4
+  skillforge-source-hash: dc35bc9b1dff8aae6e88cd671bac1c4f850094e0fcc649e4b9f665ce74b4e194
 ---
 
 # unified-dossier-engineer
@@ -67,11 +67,13 @@ Keep the merged architecture deterministic and non-destructive.
 1. Preserve the accounting versus project-SSOT artifact split.
 2. Preserve the invariant `one feature = one backlog item`.
 3. Keep `change-proposal`, `contract-drift-audit`, `backlog impact verdict`, `coverage_gate`, and strict closure semantics in scope.
+4. Keep delivery workflow, telemetry identity, and closure truth explicit rather than collapsing them into backlog-only state or speculative command prose.
 
 Validation:
 
 - No tracked feature from either original skill disappears from the merged target model.
 - `.dossier` and `docs/ssot` remain semantically distinct.
+- Delivery state, `coverage_gate`, freshness, and closure remain separate axes.
 
 ### Workflow stage: Regenerate the generated skill
 
@@ -96,6 +98,8 @@ Validation:
 - **high** — The merged skill will be large; keep `SKILL.md` small and push detail into `references/*` or compile will eventually drift beyond the recommended size ceiling.
 - **high** — `.dossier` is for accounting and process artifacts, while `docs/ssot` remains the human-facing project SSOT.
 - **high** — Source hash changes must open a source-review record first; they must not immediately flood linked items with `needs_attention`.
+- **high** — Do not collapse backlog lifecycle, dossier maturity, `coverage_gate`, review freshness, and closure state into one flat status enum.
+- **high** — Delivery closure remains step-close-backed and telemetry-backed; commit history or chat summaries are never enough.
 
 ## Policies
 
@@ -115,6 +119,8 @@ Refresh-driven source changes open source-review records and block linked-item r
 - [Unified artifact topology](references/unified-artifact-topology.md) — Read this when designing or validating `.dossier` layout, root discovery, or `docs/ssot` boundaries.
 - [Backlog truth layer](references/backlog-truth-layer.md) — Read this when working on backlog graph truth, read models, actualization, or source-maintenance semantics in the merged skill.
 - [Source-review contract](references/source-review-contract.md) — Read this when designing refresh/attention behavior or source-change review semantics.
+- [Delivery workflow layer](references/delivery-workflow-layer.md) — Read this when designing feature intake, spec/planning/implementation flow, mature change path, coverage gate, or closure readiness in the merged skill.
+- [Telemetry and closure](references/telemetry-and-closure.md) — Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
 
 ## Bundled assets
 
