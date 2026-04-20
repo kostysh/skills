@@ -60,6 +60,28 @@
 - `todo-dedup-backlog`
 - `context-linked-cleanup-backlog`
 
+### Важно
+
+Фикстуры из `backlogs/` считаются immutable snapshot fixtures.
+
+Правила:
+
+- не запускайте mutating backlog commands прямо внутри `test/fixtures/backlogs/*`;
+- для ручных экспериментов всегда сначала копируйте fixture во временную директорию;
+- tracked snapshot files внутри `.backlog/` не должны получать incidental timestamp updates от локальных прогонов CLI.
+
+Для безопасного ручного запуска используйте helper:
+
+```bash
+skills/backlog-engineer/scripts/run-fixture-scratch.sh refreshable-backlog -- refresh --source-path ./sources/docs/modules/auth.md
+```
+
+Helper:
+
+- копирует выбранную fixture во временную директорию;
+- запускает built CLI внутри этой копии;
+- печатает путь к scratch directory, чтобы можно было inspect-ить результат без загрязнения tracked fixtures.
+
 ## Path equivalence cases
 
 Для source-path normalization tests использовать `sources/docs/modules/auth.v1.md` с такими эквивалентными CLI inputs:
