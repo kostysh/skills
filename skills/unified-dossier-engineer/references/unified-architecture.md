@@ -10,9 +10,6 @@ Responsibilities:
 - backlog items and dependency graph
 - packet and patch workflows
 - source-review records
-- `change-proposal`
-- `contract-drift-audit`
-- backlog impact verdicts
 
 This layer owns the accounting truth for backlog state and source-driven follow-up.
 
@@ -24,6 +21,9 @@ Responsibilities:
 - `spec-compact`
 - `plan-slice`
 - `implementation`
+- `change-proposal`
+- `contract-drift-audit`
+- backlog impact verdicts
 - `coverage_gate`
 - review and verification freshness
 - step closure and lifecycle telemetry

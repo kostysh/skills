@@ -59,7 +59,7 @@ sections:
     - Confirm the task is about planning, scaffolding, or implementing the future merged dossier/backlog skill.
     - Read every required active reference before changing the source bundle.
     - Treat this skill as planning-stage only until the merged runtime and CLI contract are actually shipped.
-    - Regenerate `SKILL.md` and `docs/compile-report.md` through `skill-source-compiler` after source-bundle edits.
+    - Regenerate the emitted skill through `skill-source-compiler` after source-bundle edits.
     - Keep the root `SKILL.md` intentionally lean and move bulky active guidance into `references/*` or `assets/*`, not `docs/*`.
   whenToUse:
     - Define or refine the merged architecture that combines backlog truth and dossier delivery workflow.
@@ -99,7 +99,6 @@ sections:
         - Review compile warnings, especially `SKILL.md` size warnings, before finishing.
       validation:
         - "`SKILL.md` links every required active reference."
-        - "`docs/compile-report.md` reflects the current source bundle."
   interop:
     - id: interop-current-runtime
       domain: current shipped backlog and dossier runtime behavior

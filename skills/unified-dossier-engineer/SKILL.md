@@ -9,7 +9,7 @@ compatibility: Planning-stage generated skill. The source bundle is maintained
   with skill-source-compiler. No unified runtime or CLI contract is shipped yet.
 metadata:
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 91d38ae6899c473d20580e806c092bdb1be685501fec54c9ef2f626ec26428b5
+  skillforge-source-hash: ce380110f9cb56dd75562ba8a46d6814ef59e57e595bc7f8d44169729ce50da5
 ---
 
 # unified-dossier-engineer
@@ -19,7 +19,7 @@ metadata:
 1. Confirm the task is about planning, scaffolding, or implementing the future merged dossier/backlog skill.
 2. Read every required active reference before changing the source bundle.
 3. Treat this skill as planning-stage only until the merged runtime and CLI contract are actually shipped.
-4. Regenerate `SKILL.md` and `docs/compile-report.md` through `skill-source-compiler` after source-bundle edits.
+4. Regenerate the emitted skill through `skill-source-compiler` after source-bundle edits.
 5. Keep the root `SKILL.md` intentionally lean and move bulky active guidance into `references/*` or `assets/*`, not `docs/*`.
 
 ## When to use this skill
@@ -84,7 +84,6 @@ Keep source bundle and generated skill aligned.
 Validation:
 
 - `SKILL.md` links every required active reference.
-- `docs/compile-report.md` reflects the current source bundle.
 
 ## Interop priority
 
