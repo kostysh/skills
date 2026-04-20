@@ -43,7 +43,7 @@ Expected output:
 
 Use `feature-intake` only after `backlog-engineer` has already selected the work item.
 
-Use [feature-intake-logging.md](feature-intake-logging.md) when intake logging triggers fire.
+Use [feature-intake-logging.md](feature-intake-logging.md) and [lifecycle-telemetry.md](lifecycle-telemetry.md) for the intake telemetry contract.
 
 Rules:
 
@@ -58,7 +58,7 @@ Rules:
 - If intake discovers new blockers, missing dependencies, missing context, or lifecycle-changing facts, return to `backlog-engineer` and actualize backlog state before continuing.
 - `index-refresh` is the canonical full refresh path after intake. Use `sync-index` only when you intentionally want table/graph refresh without a Red flags update.
 - If `feature-intake --json` returns `partial_success: true`, the dossier was created but `index-refresh` failed; fix that before continuing.
-- If an objective intake logging trigger fired, the required intake log is part of truthful command closure; do not treat intake as process-complete until the log is current, `index-refresh` is settled, and required backlog actualization is done.
+- The intake log is always part of truthful command closure; do not treat intake as process-complete until the log is current, `index-refresh` is settled, required backlog actualization is done, and `intake_process_complete_ts` is backfilled truthfully.
 - Keep the same intake-log cycle for operator rerounds, `index-refresh` reruns, and backlog actualization follow-ups while the literal closure target is unchanged.
 - Open a new intake-log cycle only when the closure target changes literally: another backlog item, another canonical dossier target, or a new independent intake attempt. Use the next free `cNN` and keep the filename suffix equal to `cycle_id`.
 - Ordinary intake stays in the intake log only. If intake turns into a cross-skill migration, repair, or backlog-recovery episode, keep the intake log as the primary command record and open a companion session-level ops log for the cross-skill boundary.
@@ -84,9 +84,13 @@ Backlog lifecycle state remains outside this skill and belongs to `backlog-engin
 
 `spec-compact`, `plan-slice`, and `implementation` are workflow stages, not shipped `dossier.mjs` subcommands.
 
+Lifecycle telemetry runs across the same flow:
+
+`feature-intake / stage logs -> lifecycle-refresh -> .dossier/metrics/<feature-id>/<feature_cycle_id>.json`
+
 Each mutating step then closes through:
 
-`dossier-verify -> review-artifact -> dossier-step-close`
+`dossier-verify -> review-artifact -> dossier-step-close -> lifecycle-refresh`
 
 Requirement changes on mature work use:
 
@@ -203,6 +207,17 @@ Important:
 - `next-step` output does not replace canonical backlog reads when backlog truth or readiness must be re-checked;
 - `workflow_stage_next` is either a real workflow stage name or `null`; it never uses shipped CLI command names or prose-derived labels.
 
+## CLI command: `lifecycle-refresh`
+
+`lifecycle-refresh` is the explicit mechanical helper for lifecycle telemetry aggregation.
+
+It:
+
+- reads structured intake/stage logs and durable JSON artifacts;
+- refreshes `.dossier/metrics/<feature-id>/<feature_cycle_id>.json`;
+- refreshes `.dossier/retro/session-index.jsonl`;
+- never interprets narrative prose or invents missing telemetry.
+
 ## No-technical-debt policy
 
 Apply this policy during `Workflow stage: implementation`, after the dossier was updated and before verification and step close-out.
@@ -247,4 +262,5 @@ If a PR references `F-XXXX`, it must:
 - `node scripts/dossier.mjs dossier-verify --step implementation --changed-only --base origin/main` for repo-scope audit of the current change set
 - `node scripts/dossier.mjs review-artifact --dossier docs/features/F-0001-foo.md --step implementation --reviewer independent-reviewer --verdict PASS`
 - `node scripts/dossier.mjs dossier-step-close --dossier docs/features/F-0001-foo.md --step implementation --verify-artifact ... --review-artifact ...`
+- `node scripts/dossier.mjs lifecycle-refresh --feature-id F-0001 --feature-cycle-id fc01`
 - `node scripts/dossier.mjs next-step --dossier docs/features/F-0001-foo.md`

@@ -2,32 +2,29 @@
 
 ## Applies to
 
-This reference defines the logging contract for one command only:
+This reference defines the intake telemetry contract for one command only:
 
 - `CLI command: feature-intake`
 
 It does not apply to workflow stages such as `spec-compact`, `plan-slice`, or `implementation`.
+For those stages, use [workflow-stage-logging.md](workflow-stage-logging.md).
 
-For those workflow stages, use [workflow-stage-logging.md](workflow-stage-logging.md).
+Use it together with [lifecycle-telemetry.md](lifecycle-telemetry.md).
 
 ## Purpose
 
-An intake log is command-level process telemetry.
-
-It answers: how did the selected backlog work become this concrete dossier handoff?
+An intake log is command-level lifecycle telemetry.
 
 It records:
 
-- the selected backlog work that entered intake;
-- the dossier id and dossier path that intake created;
+- which backlog item entered intake;
+- which dossier id/path intake created;
 - intake-time blockers, dependencies, and missing context;
-- operator rerounds that changed intake direction;
 - `index-refresh` outcome;
-- backlog actualization outcome when intake discovered backlog-relevant truth.
+- backlog actualization outcome when intake discovered backlog-relevant truth;
+- bounded operator/backlog/process-miss events for the intake cycle.
 
-It does not replace the Feature Dossier. The Feature Dossier remains the feature SSoT for current requirements, design, planning, coverage, links, and progress.
-
-It also does not replace session-level ops logs, verification artifacts, review artifacts, or backlog actualization through `backlog-engineer`.
+It does not replace the Feature Dossier.
 
 ## Storage path
 
@@ -39,138 +36,86 @@ Use:
 
 Rules:
 
-- `<feature-id>` must match the dossier feature id `F-XXXX`.
-- `<cycle-id>` must use the canonical format `cNN` where `NN` is a two-digit decimal counter starting at `01`.
-- The filename suffix must match the `cycle_id` value in the metadata block exactly.
-- One intake log equals one literal intake closure target.
+- `<feature-id>` must match the dossier feature id `F-XXXX`;
+- `<cycle-id>` must use the canonical format `cNN`;
+- the filename suffix must match the `cycle_id` value inside the frontmatter exactly;
+- one intake log equals one literal intake closure target.
 
-Cycle rule:
+## Always-on rule
 
-- Keep the same cycle when the literal closure target is unchanged:
-  - the same selected backlog item;
-  - the same future dossier;
-  - the same intake attempt, even if operator rerounds, `index-refresh` reruns, or backlog actualization follow-ups happened.
-- Open a new cycle only when the closure target changes literally:
-  - intake stops and is replaced by intake for another backlog item;
-  - the agent abandons the original dossier target and creates a different dossier as the new canonical target;
-  - the previous intake cycle was closed or abandoned and a new independent intake attempt starts.
-- For a new cycle under the same `feature_id`, use the next free `cNN`.
+`feature-intake` always leaves an intake log for the owned lifecycle.
 
-## When logging is required
+Low overhead comes from a thin record:
 
-Open or update an intake log when any objective trigger fires:
+- YAML frontmatter fenced by `---`;
+- concise narrative sections;
+- empty arrays when an event class did not occur;
+- `none` for empty narrative sections instead of long prose.
 
-- intake requires backlog actualization through `backlog-engineer`;
-- operator, reviewer, or external-audit feedback arrives after dossier creation or after the backlog handoff block was written and forces any correction in the same intake cycle;
-- `index-refresh` returns `partial_success`;
-- `index-refresh` fails;
-- `index-refresh` for the current cycle is rerun after an earlier non-success result or after operator correction;
-- a process miss occurs, including late log start;
-- operator explicitly requested retrospective telemetry for this intake cycle.
-
-Use only these canonical `log_required_reason` values:
-
-- `backlog_actualization_required`
-- `operator_reround_after_dossier_creation`
-- `index_refresh_partial_success`
-- `index_refresh_failed`
-- `index_refresh_rerun`
-- `process_miss`
-- `retrospective_requested`
-
-For the feedback trigger above, use `operator_reround_after_dossier_creation` for operator, reviewer, or external-audit feedback that forces correction in the same intake cycle. Do not add a separate reason for those feedback sources.
-
-For `feature-intake`, treat only these cases as `process_miss`:
-
-- `late_start: true`;
-- the intake log had to be renamed or moved because `feature_id`, `cycle_id`, or the filename suffix was wrong;
-- the agent attempted truthful closure while a required intake log update, a required backlog actualization, or the current cycle `index-refresh` outcome was still unresolved.
-
-Do not invent additional `process_miss` categories locally. If an event does not match one of the cases above, record it in narrative prose instead of using `process_miss` as a machine-facing trigger.
-
-## Low-overhead skip path
-
-An intake log may be skipped only when none of the objective triggers above fired for the current intake cycle.
-
-If skipped, state the reason in the final summary. Example:
-
-```text
-intake log skipped: no objective intake logging trigger fired
-```
+Absence of an intake log is no longer the valid low-overhead path.
 
 ## Timing rule
 
-- If an objective trigger is already known before dossier creation, open the log before creating `docs/features/F-XXXX-<slug>.md`.
-- If an objective trigger appears after dossier creation, after the backlog handoff block was written, or after dossier body edits started, open the log immediately.
-- Mark `late_start: true` only when the trigger was already known before dossier creation but the log was opened later.
-- Record a process miss note whenever `late_start: true`.
-- Keep the log current through `feature-intake`, `index-refresh`, backlog actualization, and the final close-out summary.
+- open the intake log before dossier creation;
+- keep it current through dossier creation, `index-refresh`, backlog actualization, and intake close-out;
+- if the log was opened late, record that as a `process_miss_events[]` entry instead of treating late logging as harmless.
 
 ## Closure blocking rule
 
-If an objective intake logging trigger fired, `feature-intake` cannot be treated as truthfully `process_complete: true` until the required intake log was opened or updated to the final state of that intake cycle.
+`feature-intake` is not truthfully complete until all are true:
 
-Treat these as blocking:
+- the intake log exists and is current for the same closure target;
+- `index-refresh` is settled;
+- required backlog actualization is settled;
+- `intake_process_complete_ts` is backfilled truthfully.
 
-- required intake log missing;
-- required intake log missing the latest `index-refresh` outcome, the latest backlog actualization outcome, or the latest operator reround outcome for the current cycle;
-- `partial_success` still unresolved;
-- required backlog actualization still incomplete.
+## Required frontmatter
 
-## Mandatory metadata block
+Every intake log must start with YAML frontmatter fenced by `---`.
 
-Every required intake log must start with a machine-friendly metadata block.
-
-Open-time minimum fields:
+Minimum fields:
 
 ```yaml
+---
 feature_id: F-XXXX
+feature_cycle_id: fc01
 backlog_item_key: CF-XXX
 command: feature-intake
 cycle_id: c01
-late_start: false
-session_id: 019d... # omit if runtime does not expose a reliable value
-start_ts: 2026-04-14T10:00:00+02:00
+session_id: 019d...
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:00:00+02:00
 source_inputs:
   - docs/ssot/index.md
 repo_overlays:
   - AGENTS.md
-log_required: true
-log_required_reason:
-  - backlog_actualization_required
-  - operator_reround_after_dossier_creation
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
 ```
 
-Close-out fields to add or backfill before truthful command closure:
+Close-out fields to add before truthful intake completion:
 
 ```yaml
-index_refresh_ts: 2026-04-14T10:05:00+02:00
+intake_process_complete_ts: 2026-04-20T09:22:00+02:00
+index_refresh_ts: 2026-04-20T09:18:00+02:00
 index_refresh_status: success | partial_success | failed
 backlog_actualized: true | false
-handoff_block_written: true
 dossier_path: docs/features/F-XXXX-foo.md
 ```
 
-Rule:
+Rules:
 
-- open the log early with the open-time minimum fields;
-- omit fields that are not yet knowable;
-- backfill close-out fields before the command is treated as truthfully complete;
-- never invent placeholders for unknown values.
-- if `late_start` becomes true, update the open-time metadata block instead of recording it only in narrative prose.
-- always backfill `backlog_actualized` as an explicit boolean: use `true` only when backlog actualization actually ran and completed for this intake cycle; otherwise write `false`.
-
-## `session_id`
-
-Record `session_id` only when the runtime exposes a reliable value.
-
-In Codex, use `CODEX_THREAD_ID` when it is present.
-
-If no reliable runtime signal exists, omit `session_id` instead of inventing a placeholder string.
+- `feature_cycle_id` must stay stable across the full feature lifecycle;
+- `cycle_id` stays stable while the literal intake closure target is unchanged;
+- in runtimes with reliable session identity, omitting `session_id` is a process miss;
+- do not use `log_required` or `log_required_reason`; the log already exists unconditionally in the always-on model.
 
 ## Required narrative sections
 
-After the metadata block, keep a short narrative structure:
+After the frontmatter, keep these sections:
 
 - `Scope`
 - `Inputs actually used`
@@ -182,29 +127,36 @@ After the metadata block, keep a short narrative structure:
 - `Process misses`
 - `Close-out`
 
-Keep the sections concise. Do not duplicate the dossier body or copy the full backlog packet.
+If a section has no notable content, write `none`.
 
-## Intake-specific facts that must be preserved
+## Intake facts that must remain explicit
 
-When logging is required, preserve these intake facts explicitly:
+Preserve these facts explicitly:
 
 - which backlog item entered intake;
 - which `F-XXXX` was assigned;
 - which dossier path was created;
-- whether the backlog handoff block was written immediately or corrected later;
-- which blockers, dependencies, or missing-context facts appeared during intake;
-- whether backlog actualization was required and what happened;
+- whether intake surfaced blockers, dependencies, or missing context;
+- whether backlog actualization was required and how it ended;
 - how `index-refresh` ended;
-- whether intake was process-complete or remained partially complete.
+- whether truthful intake completion was reached.
+
+## Event classes that matter for intake
+
+The intake log should normally use:
+
+- `backlog_events[]`
+- `operator_interventions[]`
+- `process_miss_events[]`
+
+Do not invent review or verification arrays for intake unless the workflow truly produced those events.
 
 ## Interaction with session-level ops log
 
 Ordinary intake stays in the intake log only.
 
-If a normal intake turns mid-command into a cross-skill migration, repair, or backlog-recovery episode:
+If intake turns into a cross-skill migration, repair, or backlog-recovery episode:
 
-- the intake log remains the primary record of the `feature-intake` command flow;
-- open a companion session-level ops log only for the cross-skill episode boundary;
+- keep the intake log as the primary record of the `feature-intake` command flow;
+- open a companion session-level ops log only for the cross-skill boundary;
 - cross-link the two artifacts instead of letting one replace the other.
-
-Use [session-ops-log.md](session-ops-log.md) for the companion cross-skill episode when needed.

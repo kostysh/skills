@@ -46,6 +46,8 @@ Canonical process artifacts:
 
 - `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` — command-level process telemetry for `feature-intake`.
 - `.dossier/logs/<feature>/<stage>-<cycle>.md` — workflow-stage process telemetry for `spec-compact`, `plan-slice`, and `implementation`.
+- `.dossier/metrics/<feature-id>/<feature_cycle_id>.json` — mechanical lifecycle snapshot built from structured telemetry.
+- `.dossier/retro/session-index.jsonl` — repo-local session anchor surface for retrospective lookup.
 - `.dossier/ops/<session>/<episode>.md` — session-level ops telemetry for cross-skill migration, repair, or audit-infrastructure episodes that do not fit one dossier stage.
 - `.dossier/verification/<feature>/<step>-<event>.json` — verification bundle result from `dossier-verify`.
 - `.dossier/reviews/<feature>/<step>-<event>.json` — independent review result from `review-artifact`.
@@ -295,7 +297,7 @@ For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-sl
 
 1. Finish the command’s local work.
 2. Run the command-specific checks.
-   For `feature-intake`, if an objective intake logging trigger fired, the required intake log must be open and current according to [Feature intake logging](references/feature-intake-logging.md).
+   For `feature-intake`, the intake log must be open and current according to [Feature intake logging](references/feature-intake-logging.md).
 3. Perform manual debt review on the changed scope.
 4. Run `node scripts/dossier.mjs debt-audit --changed-only`.
 5. Re-check dependencies, adjacent seams, delivered dossiers, architecture, and repo ADRs.
@@ -304,9 +306,10 @@ For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-sl
 8. Persist the verdict with `node scripts/dossier.mjs review-artifact ...`. This command records an already obtained independent review result; it does not perform the review itself.
 9. If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.
 10. Close the step with `node scripts/dossier.mjs dossier-step-close ...`.
-11. Only after `process_complete: true` and required backlog actualization may the agent say the step is complete.
+11. Refresh lifecycle telemetry with `node scripts/dossier.mjs lifecycle-refresh ...` once the lifecycle log and durable closure artifacts are current for that closure target.
+12. Only after `process_complete: true`, refreshed lifecycle telemetry, and required backlog actualization may the agent say the step is complete.
 
-For `feature-intake`, process telemetry is command-level and lives in the intake log, not in workflow-stage logging. If a required intake log is missing or stale, `process_complete` is not truthful.
+For `feature-intake`, process telemetry is command-level and lives in the intake log, not in workflow-stage logging. If the intake log is missing or stale, `process_complete` is not truthful.
 
 ### Final step summary contract
 
@@ -391,6 +394,7 @@ Every command-specific checklist below follows the same review philosophy:
 Compact operational summary:
 
 - [Workflow guide](references/workflow.md)
+- [Lifecycle telemetry](references/lifecycle-telemetry.md)
 
 Two layers exist in this skill:
 
@@ -415,6 +419,7 @@ Shipped CLI commands in the current runtime:
 - `dossier-step-close`
 - `dossier-verify`
 - `next-step`
+- `lifecycle-refresh`
 
 Checklist meaning in this section:
 
@@ -465,6 +470,7 @@ Use this reference when the feature has meaningful operator/agent/machine-facing
 
 - [Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)
 - [Workflow stage logging](references/workflow-stage-logging.md)
+- [Lifecycle telemetry](references/lifecycle-telemetry.md)
 - [Detailed stage steps](references/workflow-stage-spec-compact.md)
 
 Trigger summary:
@@ -511,7 +517,7 @@ Trigger-based additions:
 
 Process integrity:
 - [ ] Repo overlays and repo ADRs were ingested before finalizing the spec.
-- [ ] If a workflow-stage logging trigger fired, the stage log was opened or updated.
+- [ ] The stage log was opened or updated before the first substantive mutation and stayed current through closure.
 - [ ] The stage log records inputs, decisions/reclassifications, operator/review cycles, process misses, and backlog actualization outcome.
 - [ ] The stage log does not duplicate AC text or dossier truth.
 - [ ] Any cross-cutting decision was externalized instead of being left hidden inside one dossier.
@@ -527,6 +533,7 @@ Use this reference when the feature needs explicit contract-risk planning or pos
 
 - [Spec and plan risk patterns](references/spec-and-plan-risk-patterns.md)
 - [Workflow stage logging](references/workflow-stage-logging.md)
+- [Lifecycle telemetry](references/lifecycle-telemetry.md)
 - [Detailed stage steps](references/workflow-stage-plan-slice.md)
 
 Trigger summary:
@@ -570,7 +577,7 @@ Stage exit checklist:
 - [ ] Tasks reference Slice IDs or AC IDs and do not restate AC text.
 - [ ] Any required realignment of existing delivered work is explicit.
 - [ ] The plan treats slices/tasks as forecast, while ACs, Definition of Done, verification/coverage gates, and explicit rollout constraints carry the commitment signal.
-- [ ] If a workflow-stage logging trigger fired, the stage log was opened or updated.
+- [ ] The stage log was opened or updated before the first substantive planning mutation and stayed current through closure.
 - [ ] The stage log records slice boundary decisions, planning assumptions/fallbacks, review cycles, process misses, and backlog actualization outcome.
 - [ ] The stage log does not duplicate slice or task text from the dossier.
 - [ ] `status: planned` is used for planning maturity, while `coverage_gate` independently captures coverage strictness.
@@ -585,6 +592,7 @@ Use these references together with this stage:
 
 - [Implementation audit policy](references/implementation-audit-policy.md)
 - [Workflow stage logging](references/workflow-stage-logging.md)
+- [Lifecycle telemetry](references/lifecycle-telemetry.md)
 - [Workflow guide](references/workflow.md#no-technical-debt-policy)
 - [Detailed stage steps](references/workflow-stage-implementation.md)
 
@@ -702,7 +710,7 @@ Output:
 
 - Keep it brief and practical.
 - Summarize the default flow as:
-  `selected backlog work -> feature-intake -> spec-compact -> plan-slice -> implementation -> dossier-verify -> review-artifact -> dossier-step-close`
+  `selected backlog work -> feature-intake -> spec-compact -> plan-slice -> implementation -> dossier-verify -> review-artifact -> dossier-step-close -> lifecycle-refresh`
 - Mention that backlog creation, backlog selection, readiness, gaps, and lifecycle actualization belong to `backlog-engineer`.
 - Mention that `change-proposal` + `contract-drift-audit` is the side path for requirement changes on mature work.
 - Remind the user:
@@ -727,14 +735,14 @@ Operational summary:
 
 - [Workflow guide: feature-intake](references/workflow.md#cli-command-feature-intake)
 - [Feature intake logging](references/feature-intake-logging.md)
+- [Lifecycle telemetry](references/lifecycle-telemetry.md)
 
 Steps:
 
 1. Confirm that backlog work has already been selected through `backlog-engineer`.
 2. Determine the next free `F-XXXX`.
 3. Re-read architecture, ADR, and backlog context for the selected work.
-4. Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).
-   If an objective trigger is already known, open `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` before creating `docs/features/F-XXXX-<slug>.md`.
+4. Open `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` according to [Feature intake logging](references/feature-intake-logging.md) before creating `docs/features/F-XXXX-<slug>.md`.
 5. Create `docs/features/F-XXXX-<slug>.md` from the dossier template.
 6. Fill frontmatter with:
    - `id`
@@ -755,15 +763,15 @@ Steps:
 8. Treat that backlog handoff block as human-facing continuity and traceability only.
    CLI commands such as `next-step` do not parse dossier prose or use that block as machine-readable state.
 9. Capture the selected backlog context, delivered prerequisites, runtime assumptions, and dependency seams in the dossier body.
-10. If an objective intake logging trigger appears after dossier creation or after dossier edits started, open the intake log immediately.
-    Mark `late_start: true` only when that trigger had already been known before dossier creation.
+10. If the intake log started late or intake telemetry became stale, record that in `process_miss_events[]` and bring the log current immediately.
 11. Use `node scripts/dossier.mjs index-refresh` as the canonical full refresh path after intake.
    Use `sync-index` only when you intentionally need table/graph refresh without a Red flags update.
 12. If `feature-intake --json` returns `partial_success: true`, treat intake as incomplete until the reported `index-refresh` failure is resolved.
 13. If intake reveals new blockers, missing dependencies, missing context, or lifecycle-changing facts, update backlog state through `backlog-engineer` before moving forward.
-14. If intake logging was required, backfill the intake log with close-out fields before claiming truthful command closure.
+14. Backfill the intake log with truthful close-out fields before claiming command closure.
 15. Operator rerounds, `index-refresh` reruns, and backlog actualization follow-ups stay in the same intake-log cycle while the literal closure target is unchanged.
 16. If a normal intake turns into a cross-skill migration, repair, or backlog-recovery episode, keep the intake log as the primary command record and open a companion session-level ops log for the cross-skill boundary.
+17. Refresh lifecycle telemetry with `node scripts/dossier.mjs lifecycle-refresh --feature-id F-XXXX --feature-cycle-id fcNN` after the intake log is current and truthful.
 
 Command correctness checklist:
 
@@ -776,10 +784,11 @@ Command correctness checklist:
 - [ ] `depends_on` contains only real delivered prerequisites.
 - [ ] Intake-side blockers or missing dependencies were returned to `backlog-engineer` before the next downstream stage.
 - [ ] `docs/ssot/index.md` contains exactly one row for the new dossier.
-- [ ] If an objective intake logging trigger fired, the intake log was opened or updated and reflects the final state of the intake cycle.
-- [ ] If intake logging was skipped, the final summary states that no objective intake logging trigger fired.
+- [ ] The intake log was opened before dossier creation or, if late, the late start was recorded as a process miss and repaired.
+- [ ] The intake log reflects the final truthful state of the intake cycle and includes `intake_process_complete_ts`.
 - [ ] If the intake required `index-refresh` reruns, backlog actualization, or operator rerounds, those events remain in the same intake-log cycle while the literal closure target is unchanged.
 - [ ] If intake turned into a cross-skill recovery episode, the intake log stayed primary and the companion session-level ops log was cross-linked instead of replacing it.
+- [ ] `lifecycle-refresh` ran after truthful intake closure and refreshed the lifecycle snapshot/session index for the same feature cycle.
 
 #### CLI command: `coverage-audit`
 
@@ -1060,6 +1069,35 @@ Command correctness checklist:
 - [ ] Review freshness is reported from durable review state and material-scope policy, not from current commit SHA.
 - [ ] Repo overlays and repo ADRs were ingested before acting on the result; `next-step` output does not replace overlay ingestion.
 - [ ] The final answer tells the user to return to `backlog-engineer` when backlog blockers or lifecycle updates must be resolved.
+
+#### CLI command: `lifecycle-refresh`
+
+Rebuild lifecycle snapshot and repo-local session anchors from structured lifecycle telemetry.
+
+Operational summary:
+
+- [Lifecycle telemetry](references/lifecycle-telemetry.md)
+
+Purpose:
+
+- Refresh `.dossier/metrics/<feature-id>/<feature_cycle_id>.json` from structured intake/stage logs and durable JSON artifacts.
+- Refresh `.dossier/retro/session-index.jsonl` without storing absolute local trace paths.
+- Keep lifecycle aggregation mechanical and explicit instead of hiding it inside ad hoc close-out prose.
+
+Run examples:
+
+- `node scripts/dossier.mjs lifecycle-refresh --feature-id F-0001`
+- `node scripts/dossier.mjs lifecycle-refresh --feature-id F-0001 --feature-cycle-id fc01 --json`
+- `node scripts/dossier.mjs lifecycle-refresh --dossier docs/features/F-0001-foo.md --feature-cycle-id fc01`
+
+Command correctness checklist:
+
+- [ ] The command reads structured intake/stage logs and durable JSON artifacts only.
+- [ ] The command does not interpret dossier prose or free-form narrative sections.
+- [ ] `feature_cycle_id` is explicit when the feature has multiple lifecycle runs.
+- [ ] The refreshed snapshot uses `implementation.process_complete_ts` only when linked successful `dossier-step-close` evidence exists for the same closure target.
+- [ ] Session-index records store stable ids, relative artifact paths, and trace-locator hints, never absolute local trace-file paths.
+- [ ] The final answer reports the refreshed metrics artifact and session-index path accurately.
 
 ## Examples
 

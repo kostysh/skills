@@ -1,8 +1,7 @@
 # Workflow stage steps: `spec-compact`
 
 1. Re-read repo overlays from `AGENTS.md` and relevant repo ADRs.
-2. Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).
-   If logging is required, open `.dossier/logs/...` before the first substantive spec mutation.
+2. Open or update the stage log according to [workflow-stage-logging.md](workflow-stage-logging.md) before the first substantive spec mutation.
 3. Map the user-visible and boundary-facing behavior before editing the spec:
    - list each user-visible or boundary operation;
    - for each operation, note success behavior plus invalid input, dependency failure/timeout, and duplicate/retry behavior when relevant.
@@ -62,6 +61,6 @@
 17. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
 18. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
 19. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
-20. If logging was required, update the stage log with review events, decisions/reclassifications, process misses, and the planned backlog actualization outcome before closure.
+20. Update the stage log with review events, decisions/reclassifications, process misses, and the planned backlog actualization outcome before closure.
 21. Before moving to planning, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = specified`, or when shaping exposed new blockers, dependencies, or context facts.
-22. If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.
+22. Update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.

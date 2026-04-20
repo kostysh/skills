@@ -31,6 +31,11 @@ const WORKFLOW_STAGE_IMPLEMENTATION_PATH = path.join(
 );
 const DOSSIER_TEMPLATE_PATH = path.join(SKILL_DIR, 'references', 'DOSSIER_TEMPLATE.md');
 const FEATURE_INTAKE_LOGGING_PATH = path.join(SKILL_DIR, 'references', 'feature-intake-logging.md');
+const LIFECYCLE_TELEMETRY_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'lifecycle-telemetry.md',
+);
 const WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -122,6 +127,7 @@ void test('dossier docs keep workflow-stage vs shipped-command boundaries explic
     '#### CLI command: `dependency-graph`',
     '#### CLI command: `dossier-verify`',
     '#### CLI command: `next-step`',
+    '#### CLI command: `lifecycle-refresh`',
   ]);
   assertContainsTerms(bootstrap, [
     'This is a workflow stage, not a shipped `dossier.mjs` subcommand.',
@@ -199,8 +205,8 @@ void test('dossier docs keep backlog actualization and handoff boundaries litera
   ]);
   assertContainsTerms(closure, [
     'If the step changed backlog truth, actualize backlog state through `backlog-engineer` before step closure.',
-    'Only after `process_complete: true` and required backlog actualization may the agent say the step is complete.',
-    'If a required intake log is missing or stale, `process_complete` is not truthful.',
+    'Only after `process_complete: true`, refreshed lifecycle telemetry, and required backlog actualization may the agent say the step is complete.',
+    'If the intake log is missing or stale, `process_complete` is not truthful.',
   ]);
   assertContainsTerms(intake, [
     'human-facing continuity and traceability only',
@@ -223,9 +229,9 @@ void test('dossier docs keep backlog actualization and handoff boundaries litera
     'Пройти workflow stage `implementation`',
   ]);
   assertContainsTerms(intakeLogging, [
-    'If an objective intake logging trigger fired, `feature-intake` cannot be treated as truthfully `process_complete: true`',
-    'required backlog actualization still incomplete',
-    'which blockers, dependencies, or missing-context facts appeared during intake',
+    '`feature-intake` is not truthfully complete until all are true:',
+    'required backlog actualization is settled',
+    'whether intake surfaced blockers, dependencies, or missing context',
   ]);
 });
 
@@ -316,12 +322,13 @@ void test('contract-drift-audit stays a support signal rather than the authorita
 });
 
 void test('implementation stage points to audit and workflow-stage logging refs with explicit spec-first audit semantics', async () => {
-  const [skill, workflow, implementationSteps, auditPolicy, loggingPolicy] = await Promise.all([
+  const [skill, workflow, implementationSteps, auditPolicy, loggingPolicy, lifecycleTelemetry] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
     readFile(WORKFLOW_PATH, 'utf8'),
     readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
     readFile(IMPLEMENTATION_AUDIT_POLICY_PATH, 'utf8'),
     readFile(WORKFLOW_STAGE_LOGGING_PATH, 'utf8'),
+    readFile(LIFECYCLE_TELEMETRY_PATH, 'utf8'),
   ]);
 
   const implementation = extractSection(skill, '#### Workflow stage: `implementation`');
@@ -330,14 +337,14 @@ void test('implementation stage points to audit and workflow-stage logging refs 
   assertContainsTerms(implementation, [
     '[Implementation audit policy](references/implementation-audit-policy.md)',
     '[Workflow stage logging](references/workflow-stage-logging.md)',
+    '[Lifecycle telemetry](references/lifecycle-telemetry.md)',
     '[Workflow guide](references/workflow.md#no-technical-debt-policy)',
     '[Detailed stage steps](references/workflow-stage-implementation.md)',
     'Every blocking external audit launch declared model, reasoning effort, required skill, scope, and allowed-model verdict before spawning.',
     'No blocking audit verdict from a weak/mini model was accepted as review evidence.',
   ]);
   assertContainsTerms(implementationSteps, [
-    'Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).',
-    'open or update the stage log before the first mutating edit',
+    'Open or update the stage log according to [workflow-stage-logging.md](workflow-stage-logging.md) before the first mutating edit.',
     'Before treating the first green increment as closure',
     'Apply the [No-technical-debt policy](workflow.md#no-technical-debt-policy)',
     'run the `Audit launch gate` from [Implementation audit policy](implementation-audit-policy.md) for `early-security-checkpoint`; do not spawn if the gate fails.',
@@ -350,10 +357,11 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     'request it as a standalone line before continuing',
     'Please authorize spawning the required external audit/review agents for this phase.',
     'Establish the intended final tree before closure',
-    'Use this closure sequence: intended final tree -> verification -> external audits -> review / verification / step-close artifacts -> commit -> trace-only metadata backfill when needed.',
+    'Use this closure sequence: intended final tree -> verification -> external audits -> review / verification / step-close artifacts -> lifecycle-refresh -> commit -> trace-only metadata backfill when needed.',
     'Persist only the independent reviewer verdict with `review-artifact`',
     'Close the step with `dossier-step-close` only after the required backlog actualization and artifact-integrity confirmation are done.',
-    'If logging was required, update the stage log with slice status, completion decision, review events, debt review result, process misses, backlog actualization and artifact-integrity result, freshness fields, commit metadata when available, and links to applicable verification, review, and step-close artifacts.',
+    'Update the stage log with slice status, completion decision, review events, debt review result, process misses, backlog actualization and artifact-integrity result, freshness fields, commit metadata when available, and links to applicable verification, review, and step-close artifacts.',
+    'Run `node scripts/dossier.mjs lifecycle-refresh --feature-id F-XXXX --feature-cycle-id fcNN`',
     'A final implementation close-out is allowed only when one of these conditions is true:',
   ]);
   assertContainsTerms(debtPolicy, [
@@ -411,66 +419,45 @@ void test('implementation stage points to audit and workflow-stage logging refs 
     'Workflow stage: plan-slice',
     'Workflow stage: implementation',
     '.dossier/logs/<feature>/<stage>-<cycle>.md',
-    '## Low-overhead skip path',
-    '## Mandatory metadata block',
+    '## Required frontmatter',
+    'feature_cycle_id',
+    'trace_runtime',
+    'trace_locator_kind',
     'session_id',
-    'planned_slices',
-    'slice_status',
-    'current_checkpoint',
-    'completion_decision',
-    'canonical_for_commit',
-    'freshness_basis',
-    'operator_command_refs',
-    'process_miss_refs',
+    'process_complete_ts',
+    'step_close_ts',
     'review_events',
-    'audit_launch_gate_checked',
-    'audit_class',
-    'required_skill',
-    'reasoning_effort',
-    'allowed_by_policy',
-    'disallowed_reason',
-    'fork_context',
-    'read_only_expected',
-    'mutation_check',
-    'invalidated',
-    'invalidated_reason',
-    'operator_intervention_required',
-    'operator_intervention_ref',
-    'replacement_event_ref',
-    'Invalidated attempts:',
-    'do not count as review evidence',
-    'must not be represented as PASS/FAIL review verdicts',
-    'still count as orchestration cost/process miss',
-    '## Completion, freshness, and trace anchors',
+    'verification_events',
+    'backlog_events',
+    'operator_interventions',
+    'process_miss_events',
     '## Required narrative sections',
-    '## Stage-specific sections',
-    '## Review event log',
-    '## Review orchestration telemetry',
-    '## Backlog actualization',
-    '## Process misses',
-    '## Metrics to capture',
-    'review policy',
-    'debt review',
-    'early security seam checkpoint event when triggered',
-    'freshness fields for implementation closure / step-close artifacts when applicable',
-    'backlog artifact-integrity result',
-    'commit metadata',
+    'Event arrays are the primary metric source.',
+    'attempts with `invalidated: true` do not count as review evidence',
+    'attempts with `allowed_by_policy: false` do not count as review evidence',
+    'heavy-runtime misuse as an explicit `process_miss_events[]` entry',
     'Feature Dossier',
-    'process telemetry',
-    'review_requested_ts',
-    'first_review_agent_started_ts',
-    'review_models',
-    'review_retry_count',
-    'review_wait_minutes',
-    'transport_failures_total',
-    'rerun_reasons',
-    'operator_review_interventions_total',
+    'lifecycle telemetry for one stage closure target',
     'Spec gap decisions',
     'Implementation freedom decisions',
     'Temporary assumptions',
-    'Inside `Decisions / reclassifications`, always include these subheadings:',
-    'If a class has no entries, write `none` under that subheading instead of omitting it.',
-    'Use these classes for every required stage log:',
+    'Inside `Decisions / reclassifications`, always keep these subheadings:',
+    'If a section or subheading has nothing notable, write `none`.',
+    '`node scripts/dossier.mjs lifecycle-refresh` may read these stage logs',
+  ]);
+  assertContainsTerms(lifecycleTelemetry, [
+    '## Applies to',
+    '`CLI command: lifecycle-refresh`',
+    'feature_cycle_id',
+    'cycle_id',
+    'session_id',
+    'trace_runtime',
+    'trace_locator_kind',
+    '## Core metrics v1',
+    '.dossier/metrics/<feature-id>/<feature_cycle_id>.json',
+    '.dossier/retro/session-index.jsonl',
+    'The shipped helper is:',
+    '`node scripts/dossier.mjs lifecycle-refresh --feature-id F-XXXX [--feature-cycle-id fcNN]`',
   ]);
 });
 
@@ -482,6 +469,7 @@ void test('active dossier instructions use the unified workflow-stage logging re
     implementationSteps,
     loggingPolicy,
     intakeLogging,
+    lifecycleTelemetry,
   ] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
     readFile(WORKFLOW_STAGE_SPEC_COMPACT_PATH, 'utf8'),
@@ -489,6 +477,7 @@ void test('active dossier instructions use the unified workflow-stage logging re
     readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
     readFile(WORKFLOW_STAGE_LOGGING_PATH, 'utf8'),
     readFile(FEATURE_INTAKE_LOGGING_PATH, 'utf8'),
+    readFile(LIFECYCLE_TELEMETRY_PATH, 'utf8'),
   ]);
 
   const specCompact = extractSection(skill, '#### Workflow stage: `spec-compact`');
@@ -499,61 +488,68 @@ void test('active dossier instructions use the unified workflow-stage logging re
   assertContainsTerms(coreArtifacts, [
     '.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md',
     '.dossier/logs/<feature>/<stage>-<cycle>.md',
+    '.dossier/metrics/<feature-id>/<feature_cycle_id>.json',
+    '.dossier/retro/session-index.jsonl',
     '.dossier/ops/<session>/<episode>.md',
   ]);
   assertContainsTerms(specCompact, [
     '[Workflow stage logging](references/workflow-stage-logging.md)',
-    'If a workflow-stage logging trigger fired, the stage log was opened or updated.',
+    '[Lifecycle telemetry](references/lifecycle-telemetry.md)',
+    'The stage log was opened or updated before the first substantive mutation and stayed current through closure.',
     'The stage log records inputs, decisions/reclassifications, operator/review cycles, process misses, and backlog actualization outcome.',
     'The stage log does not duplicate AC text or dossier truth.',
   ]);
   assertContainsTerms(planSlice, [
     '[Workflow stage logging](references/workflow-stage-logging.md)',
-    'If a workflow-stage logging trigger fired, the stage log was opened or updated.',
+    '[Lifecycle telemetry](references/lifecycle-telemetry.md)',
+    'The stage log was opened or updated before the first substantive planning mutation and stayed current through closure.',
     'The stage log records slice boundary decisions, planning assumptions/fallbacks, review cycles, process misses, and backlog actualization outcome.',
     'The stage log does not duplicate slice or task text from the dossier.',
   ]);
   assertContainsTerms(implementation, [
     '[Workflow stage logging](references/workflow-stage-logging.md)',
+    '[Lifecycle telemetry](references/lifecycle-telemetry.md)',
     'For multi-step or package-based work, the stage log was opened before the first mutating edit and kept current through close-out.',
   ]);
   assertContainsTerms(specCompactSteps, [
-    'Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).',
-    'If logging is required, open `.dossier/logs/...` before the first substantive spec mutation.',
-    'If logging was required, update the stage log with review events, decisions/reclassifications, process misses, and the planned backlog actualization outcome before closure.',
-    'If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.',
+    'Open or update the stage log according to [workflow-stage-logging.md](workflow-stage-logging.md) before the first substantive spec mutation.',
+    'Update the stage log with review events, decisions/reclassifications, process misses, and the planned backlog actualization outcome before closure.',
+    'Update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.',
   ]);
   assertContainsTerms(planSliceSteps, [
-    'Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).',
-    'If logging is required, open `.dossier/logs/...` before the first substantive planning mutation.',
-    'If logging was required, update the stage log with slice boundary decisions, assumptions/fallbacks, review events, process misses, and the planned backlog actualization outcome before closure.',
-    'If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.',
+    'Open or update the stage log according to [workflow-stage-logging.md](workflow-stage-logging.md) before the first substantive planning mutation.',
+    'Update the stage log with slice boundary decisions, assumptions/fallbacks, review events, process misses, and the planned backlog actualization outcome before closure.',
+    'Update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.',
   ]);
   assertContainsTerms(loggingPolicy, [
-    'A stage log is process telemetry.',
+    'A stage log is lifecycle telemetry for one stage closure target.',
     'It does not replace the Feature Dossier.',
     'stage: spec-compact | plan-slice | implementation',
-    'log_required_reason',
-    'review_requested_ts',
-    'rerun_reasons',
-    'fork_context',
-    'read_only_expected',
-    'mutation_check',
-    'invalidated_reason',
-    'transport_runtime_instability',
+    'feature_cycle_id',
+    'trace_runtime',
+    'trace_locator_kind',
     '`spec-compact`',
     '`plan-slice`',
     '`implementation`',
     'It does not apply to `CLI command: feature-intake`',
     '[feature-intake-logging.md](feature-intake-logging.md)',
-    'Inside `Decisions / reclassifications`, always include these subheadings:',
-    'If a class has no entries, write `none` under that subheading instead of omitting it.',
-    'Use these classes for every required stage log:',
+    '[lifecycle-telemetry.md](lifecycle-telemetry.md)',
+    'Inside `Decisions / reclassifications`, always keep these subheadings:',
+    'If a section or subheading has nothing notable, write `none`.',
+    'Event arrays are the primary metric source.',
+    'process_miss_events',
+    'operator_interventions',
   ]);
   assertContainsTerms(intakeLogging, [
     '.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md',
     'Ordinary intake stays in the intake log only.',
-    'the intake log remains the primary record of the `feature-intake` command flow',
+    'keep the intake log as the primary record of the `feature-intake` command flow',
+    'feature_cycle_id',
+    'YAML frontmatter fenced by `---`',
+  ]);
+  assertContainsTerms(lifecycleTelemetry, [
+    '.dossier/metrics/<feature-id>/<feature_cycle_id>.json',
+    '.dossier/retro/session-index.jsonl',
   ]);
 
   for (const activeText of [
@@ -569,10 +565,11 @@ void test('active dossier instructions use the unified workflow-stage logging re
 });
 
 void test('feature-intake logging stays explicit, command-level, and distinct from stage logging', async () => {
-  const [skill, workflow, intakeLogging] = await Promise.all([
+  const [skill, workflow, intakeLogging, lifecycleTelemetry] = await Promise.all([
     readFile(SKILL_PATH, 'utf8'),
     readFile(WORKFLOW_PATH, 'utf8'),
     readFile(FEATURE_INTAKE_LOGGING_PATH, 'utf8'),
+    readFile(LIFECYCLE_TELEMETRY_PATH, 'utf8'),
   ]);
 
   const intake = extractSection(skill, '#### CLI command: `feature-intake`');
@@ -586,57 +583,57 @@ void test('feature-intake logging stays explicit, command-level, and distinct fr
   ]);
   assertContainsTerms(intake, [
     '[Feature intake logging](references/feature-intake-logging.md)',
-    'Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).',
-    'If an objective trigger is already known, open `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` before creating `docs/features/F-XXXX-<slug>.md`.',
-    'If an objective intake logging trigger appears after dossier creation or after dossier edits started, open the intake log immediately.',
-    'Mark `late_start: true` only when that trigger had already been known before dossier creation.',
+    '[Lifecycle telemetry](references/lifecycle-telemetry.md)',
+    'Open `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` according to [Feature intake logging](references/feature-intake-logging.md) before creating `docs/features/F-XXXX-<slug>.md`.',
+    'If the intake log started late or intake telemetry became stale, record that in `process_miss_events[]` and bring the log current immediately.',
+    'Backfill the intake log with truthful close-out fields before claiming command closure.',
+    'Refresh lifecycle telemetry with `node scripts/dossier.mjs lifecycle-refresh --feature-id F-XXXX --feature-cycle-id fcNN`',
     'If a normal intake turns into a cross-skill migration, repair, or backlog-recovery episode',
   ]);
   assertContainsTerms(closure, [
     'For `feature-intake`, process telemetry is command-level and lives in the intake log',
-    'If a required intake log is missing or stale, `process_complete` is not truthful.',
+    'If the intake log is missing or stale, `process_complete` is not truthful.',
   ]);
   assertContainsTerms(workflowIntake, [
     '[feature-intake-logging.md](feature-intake-logging.md)',
-    'If an objective intake logging trigger fired, the required intake log is part of truthful command closure',
+    '[lifecycle-telemetry.md](lifecycle-telemetry.md)',
+    'The intake log is always part of truthful command closure',
     'Use the next free `cNN` and keep the filename suffix equal to `cycle_id`',
     'open a companion session-level ops log for the cross-skill boundary',
   ]);
   assertContainsTerms(intakeLogging, [
     '## Closure blocking rule',
     '## Interaction with session-level ops log',
-    'One intake log equals one literal intake closure target.',
-    '`<feature-id>` must match the dossier feature id `F-XXXX`.',
+    'one intake log equals one literal intake closure target.',
+    '`<feature-id>` must match the dossier feature id `F-XXXX`;',
     '`<cycle-id>` must use the canonical format `cNN`',
-    'The filename suffix must match the `cycle_id` value in the metadata block exactly.',
-    'Open-time minimum fields:',
-    'Close-out fields to add or backfill before truthful command closure:',
-    'omit fields that are not yet knowable',
-    'late_start: false',
-    'if `late_start` becomes true, update the open-time metadata block',
-    'Keep the same cycle when the literal closure target is unchanged',
-    'Open a new cycle only when the closure target changes literally',
+    'the filename suffix must match the `cycle_id` value inside the frontmatter exactly;',
+    'Every intake log must start with YAML frontmatter fenced by `---`.',
+    'feature_cycle_id',
+    'command: feature-intake',
+    'trace_runtime: codex',
+    'trace_locator_kind: session_id',
+    'Close-out fields to add before truthful intake completion:',
+    '`cycle_id` stays stable while the literal intake closure target is unchanged;',
     'Ordinary intake stays in the intake log only.',
-    'Use only these canonical `log_required_reason` values:',
-    'backlog_actualization_required',
-    'operator_reround_after_dossier_creation',
-    'operator, reviewer, or external-audit feedback arrives after dossier creation',
-    'forces any correction in the same intake cycle',
-    'use `operator_reround_after_dossier_creation` for operator, reviewer, or external-audit feedback',
-    'Do not add a separate reason for those feedback sources.',
-    'For `feature-intake`, treat only these cases as `process_miss`:',
-    'the intake log had to be renamed or moved because `feature_id`, `cycle_id`, or the filename suffix was wrong;',
-    'attempted truthful closure while a required intake log update',
-    'An intake log may be skipped only when none of the objective triggers above fired',
+    'Absence of an intake log is no longer the valid low-overhead path.',
+    '`feature-intake` is not truthfully complete until all are true:',
     'backlog_actualized: true | false',
-    'always backfill `backlog_actualized` as an explicit boolean',
+    'The intake log should normally use:',
+    '`backlog_events[]`',
+    '`operator_interventions[]`',
+    '`process_miss_events[]`',
+  ]);
+  assertContainsTerms(lifecycleTelemetry, [
+    'The shipped helper is:',
+    '`node scripts/dossier.mjs lifecycle-refresh --feature-id F-XXXX [--feature-cycle-id fcNN]`',
   ]);
 
   assert.ok(
     intake.indexOf(
-      'Evaluate intake logging triggers using [Feature intake logging](references/feature-intake-logging.md).',
+      'Open `.dossier/logs/<feature-id>/feature-intake-<cycle-id>.md` according to [Feature intake logging](references/feature-intake-logging.md) before creating `docs/features/F-XXXX-<slug>.md`.',
     ) < intake.indexOf('Create `docs/features/F-XXXX-<slug>.md` from the dossier template.'),
-    'feature-intake must evaluate logging triggers before dossier creation',
+    'feature-intake must open telemetry before dossier creation',
   );
 });
 
@@ -929,17 +926,14 @@ void test('heavy-runtime discipline stays trigger-based, laddered, and narrow in
     'a repo overlay explicitly requires smoke-first discipline;',
     'the operator explicitly chooses the expensive rerun as a conscious trade-off.',
     'Repeated heavy smoke, cold-start, cache-download, or multi-runtime bootstrap reruns should be treated as a retrospective process smell',
-    'heavy-runtime misuse is itself an implementation-specific process miss.',
+    'Heavy-runtime misuse is itself an implementation-specific process miss.',
   ]);
   assertContainsTerms(loggingPolicy, [
-    'the heavy-runtime trigger fired for this stage;',
-    'the heavy-runtime trigger did not fire for this stage;',
-    'whether the heavy-runtime trigger fired and where the runtime envelope lives when it did;',
-    'whether a heavy-runtime verification ladder was defined, and whether any only-observable-seam exception was used;',
-    'heavy-runtime proof path decisions: targeted probes used, final smoke scope, and explicit exception rationale',
-    '`heavy-runtime-misuse:` entries',
-    'use the existing structured `process_miss_refs` anchors',
-    'never substitutes for the process-miss signal itself.',
+    'whether the heavy-runtime trigger fired and where the runtime envelope lives;',
+    'whether a heavy-runtime verification ladder was defined;',
+    'whether the only-observable-seam exception was invoked;',
+    'heavy-runtime misuse as an explicit `process_miss_events[]` entry when it occurred.',
+    'repeated heavy smoke / repeated cold-start / repeated cache-download reruns are a process smell',
   ]);
   assertContainsTerms(template, [
     'When the heavy-runtime trigger fires, record a compact runtime envelope here:',

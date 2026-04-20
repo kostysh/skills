@@ -1,7 +1,6 @@
 # Workflow stage steps: `implementation`
 
-1. Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).
-   For multi-step or package-based work, open or update the stage log before the first mutating edit.
+1. Open or update the stage log according to [workflow-stage-logging.md](workflow-stage-logging.md) before the first mutating edit.
 2. Start from `docs/ssot/index.md`, then open the target dossier, dependent dossiers, relevant architecture sections, repo `AGENTS.md`, and repo ADRs.
 3. Deliver on the canonical stack, runtime, and deployment path from the first executable change.
 4. Before treating the first green increment as closure, identify the planned slices/packages and the allowed stop points recorded during `plan-slice`.
@@ -16,7 +15,7 @@
    - a repo overlay explicitly requires smoke-first discipline;
    - the operator explicitly chooses the expensive rerun as a conscious trade-off.
    Repeated heavy-runtime cost by itself is not proof of correctness; each expensive rerun needs a named proof purpose.
-   Repeated heavy smoke, cold-start, cache-download, or multi-runtime bootstrap reruns should be treated as a retrospective process smell unless one of the exceptions above is explicit. If logging is required, heavy-runtime misuse is itself an implementation-specific process miss.
+   Repeated heavy smoke, cold-start, cache-download, or multi-runtime bootstrap reruns should be treated as a retrospective process smell unless one of the exceptions above is explicit. Heavy-runtime misuse is itself an implementation-specific process miss.
 7. When the first working increment changes a security-sensitive seam, run the `Audit launch gate` from [Implementation audit policy](implementation-audit-policy.md) for `early-security-checkpoint`; do not spawn if the gate fails.
    After the gate passes, run the early security seam checkpoint before building more work around that seam.
    This checkpoint is narrow, uses `security-reviewer`, and does not replace the final security audit.
@@ -45,9 +44,10 @@
 18. Before claiming lifecycle progress, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = implemented`, or when implementation uncovered new blockers, dependencies, context facts, or architecture-significant follow-up work.
     The implementation stage is not complete until this required backlog actualization is done and backlog artifact integrity is clean when backlog truth changed.
 19. Close the step with `dossier-step-close` only after the required backlog actualization and artifact-integrity confirmation are done.
-20. If logging was required, update the stage log with slice status, completion decision, review events, debt review result, process misses, backlog actualization and artifact-integrity result, freshness fields, commit metadata when available, and links to applicable verification, review, and step-close artifacts.
-21. Use this closure sequence: intended final tree -> verification -> external audits -> review / verification / step-close artifacts -> commit -> trace-only metadata backfill when needed.
-    Post-commit metadata backfill may add trace links only; it must not change technical content, verification conclusions, review conclusions, or backlog truth.
+20. Update the stage log with slice status, completion decision, review events, debt review result, process misses, backlog actualization and artifact-integrity result, freshness fields, commit metadata when available, and links to applicable verification, review, and step-close artifacts.
+21. Run `node scripts/dossier.mjs lifecycle-refresh --feature-id F-XXXX --feature-cycle-id fcNN` after the lifecycle log and durable closure artifacts are current for the closure target.
+22. Use this closure sequence: intended final tree -> verification -> external audits -> review / verification / step-close artifacts -> lifecycle-refresh -> commit -> trace-only metadata backfill when needed.
+    Post-commit metadata backfill may add trace links only; it must not change technical content, verification conclusions, review conclusions, backlog truth, or lifecycle-telemetry semantics.
 
 
 ## Completion guard

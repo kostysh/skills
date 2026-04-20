@@ -1,8 +1,7 @@
 # Workflow stage steps: `plan-slice`
 
 1. Re-read repo overlays that constrain planning, then re-check open questions, assumptions, dependencies, and the latest change log.
-2. Evaluate workflow-stage logging triggers using [workflow-stage-logging.md](workflow-stage-logging.md).
-   If logging is required, open `.dossier/logs/...` before the first substantive planning mutation.
+2. Open or update the stage log according to [workflow-stage-logging.md](workflow-stage-logging.md) before the first substantive planning mutation.
 3. Do not move to `planned` while any unresolved `Open question` is marked `needed_by: before_planned`. Resolve it or explicitly reclassify it first.
 4. Identify the contract risks that must be killed before close-out. At minimum consider first-run behavior, machine-facing outputs, help/discoverability, path/root semantics, cross-skill handoff, docs/runtime parity, and operator ambiguity points when they are relevant.
 5. For every non-`N/A` adversarial semantics entry from the spec, add a risk-to-proof mapping before closing planning.
@@ -52,7 +51,7 @@
 25. Set or confirm `coverage_gate` explicitly.
    - Default: `deferred`
    - Tighten to `strict` only when the repo overlay requires it or planning is intentionally treated as a blocking verification gate.
-26. If logging was required, update the stage log with slice boundary decisions, assumptions/fallbacks, review events, process misses, and the planned backlog actualization outcome before closure.
+26. Update the stage log with slice boundary decisions, assumptions/fallbacks, review events, process misses, and the planned backlog actualization outcome before closure.
 27. Before moving to implementation, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = planned`, or when planning exposed new dependencies, rollout constraints, or context facts.
     The planning stage is not complete until this required backlog actualization is done.
-28. If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.
+28. Update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.

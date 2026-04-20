@@ -74,13 +74,16 @@ Feature Dossier — markdown-файл в `docs/features`, который:
 - review artifact
 - verification artifact
 - step-close artifact
+- lifecycle snapshot artifact
+- repo-local session-index artifact
 
 Все артефакты хранятся в `.dossier/` и сериализуются в JSON.
 
 Важно:
 
-- workflow-stage logs в `.dossier/logs/...` остаются process telemetry artifacts, но не создаются текущим CLI автоматически;
-- session-level ops logs в `.dossier/ops/...` тоже являются process telemetry artifacts skill workflow, но в текущем runtime не имеют собственного shipped subcommand и ведутся как markdown-артефакты процесса, а не utility-owned JSON.
+- workflow-stage logs и intake logs в `.dossier/logs/...` остаются process telemetry artifacts, они не создаются CLI автоматически и должны вестись агентом как markdown с YAML frontmatter;
+- session-level ops logs в `.dossier/ops/...` тоже являются process telemetry artifacts skill workflow, но не имеют собственного shipped subcommand и ведутся как markdown-артефакты процесса, а не utility-owned JSON;
+- `lifecycle-refresh` читает только structured frontmatter и JSON artifacts; CLI не анализирует narrative prose и не выполняет NLP.
 
 ## 4. Глобальный CLI-контракт
 
@@ -135,6 +138,8 @@ node scripts/dossier.mjs --version
 | Review artifacts | `.dossier/reviews/<feature-id>/...` |
 | Verification artifacts | `.dossier/verification/<feature-id>/...` |
 | Step artifacts | `.dossier/steps/<feature-id>/...` |
+| Lifecycle metrics | `.dossier/metrics/<feature-id>/<feature_cycle_id>.json` |
+| Session anchors | `.dossier/retro/session-index.jsonl` |
 
 Дополнительно skill workflow использует, но текущий CLI не генерирует автоматически:
 
@@ -239,6 +244,11 @@ node scripts/dossier.mjs --version
 - backlog delivery state
 - следующий dossier-local шаг (`spec-compact`)
 
+Дополнительно:
+
+- `feature-intake` не пишет intake log автоматически;
+- truthful lifecycle telemetry после завершения intake агрегируется отдельным `lifecycle-refresh`, который читает уже существующий intake log.
+
 ### Коды завершения
 
 - `0` при успешном intake
@@ -294,7 +304,50 @@ node scripts/dossier.mjs --version
 
 - может создать или переписать index-файл
 
-## 6.3 `index-refresh`
+## 6.3 `lifecycle-refresh`
+
+### Назначение
+
+Механически пересчитать lifecycle telemetry artifacts из уже существующих structured intake/stage logs и durable JSON artifacts.
+
+### Входы
+
+- `--root <path>`
+- `--feature-id <id>`; обязательный, если не передан `--dossier`
+- `--dossier <path>`; альтернативный способ вычислить `feature_id`
+- `--feature-cycle-id <id>`; обязателен, если по feature найдено больше одного lifecycle cycle
+- `--json`
+
+### Поведение
+
+Команда:
+
+1. читает `.dossier/logs/**` и выбирает lifecycle logs по `feature_id`
+2. использует `feature_cycle_id` как end-to-end grouping id
+3. читает only structured YAML frontmatter из intake/stage logs
+4. читает durable JSON artifacts (`.dossier/steps`, `.dossier/reviews`, `.dossier/verification`) when needed for deterministic closure checks
+5. пересчитывает `.dossier/metrics/<feature-id>/<feature_cycle_id>.json`
+6. пересчитывает или обновляет `.dossier/retro/session-index.jsonl`
+
+### Важные границы
+
+- команда не открывает и не редактирует lifecycle logs за агента;
+- команда не вытаскивает события из narrative sections;
+- команда не делает root-cause inference и не определяет skill-gap;
+- команда не хранит absolute local trace-file paths в durable artifacts.
+
+### Выход
+
+Без `--json` команда печатает:
+
+- `feature`
+- `feature_cycle_id`
+- путь к metrics artifact
+- путь к session-index artifact
+
+С `--json` команда возвращает structured payload с этими путями и текущим snapshot.
+
+## 6.4 `index-refresh`
 
 ### Назначение
 
@@ -312,7 +365,7 @@ node scripts/dossier.mjs --version
 
 - код завершения проксируется из `sync-index` или `lint-dossiers`
 
-## 6.4 `lint-dossiers`
+## 6.5 `lint-dossiers`
 
 ### Назначение
 
@@ -361,7 +414,7 @@ node scripts/dossier.mjs --version
 
 Предупреждения `warn` сами по себе не переводят команду в non-zero.
 
-## 6.5 `dependency-graph`
+## 6.6 `dependency-graph`
 
 ### Назначение
 
@@ -381,7 +434,7 @@ node scripts/dossier.mjs --version
 - `stdout`: fenced block ```mermaid ... graph TD ... ```
 - код `0`
 
-## 6.6 `coverage-audit`
+## 6.7 `coverage-audit`
 
 ### Назначение
 
@@ -448,7 +501,7 @@ AC считается покрытым, если literal AC id встречае�
 
 Informational missing для non-strict dossier не делают команду blocking.
 
-## 6.7 `debt-audit` / `marker-audit`
+## 6.8 `debt-audit` / `marker-audit`
 
 ### Назначение
 
@@ -507,7 +560,7 @@ Informational missing для non-strict dossier не делают команду
 | `2` | Найден хотя бы один marker или ошибка использования |
 | `1` | Фатальная ошибка |
 
-## 6.8 `contract-drift-audit`
+## 6.9 `contract-drift-audit`
 
 ### Назначение
 
@@ -618,7 +671,7 @@ Baseline берётся в порядке:
 | `2` | `requires_follow_up=true` или ошибка использования |
 | `1` | Фатальная ошибка |
 
-## 6.9 `review-artifact`
+## 6.10 `review-artifact`
 
 ### Назначение
 
@@ -681,7 +734,7 @@ Baseline берётся в порядке:
 - команда только фиксирует supplied verdict и reviewer provenance; она не выполняет review сама
 - код `0`
 
-## 6.10 `dossier-step-close`
+## 6.11 `dossier-step-close`
 
 ### Назначение
 
@@ -755,7 +808,7 @@ Baseline берётся в порядке:
 | `2` | Есть blockers или ошибка использования |
 | `1` | Фатальная ошибка |
 
-## 6.11 `dossier-verify`
+## 6.12 `dossier-verify`
 
 ### Назначение
 
@@ -842,7 +895,7 @@ Baseline берётся в порядке:
 | `2` | Хотя бы один check имеет `status=fail` или ошибка использования |
 | `1` | Фатальная ошибка |
 
-## 6.12 `next-step`
+## 6.13 `next-step`
 
 ### Назначение
 

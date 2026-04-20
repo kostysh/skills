@@ -28,6 +28,7 @@ import {
   runGit,
   toRepoRelativePath,
 } from './lib/git-utils.ts';
+import { refreshLifecycleArtifacts } from './lib/lifecycle-telemetry.ts';
 import { buildRedFlagsBlock, analyzeDossiers, renderLintSummary } from './core/lint-dossiers.ts';
 import { hasExecutableSectionChange, parseTopLevelSections } from './core/markdown.ts';
 import { defaultNextStep, normalizeWorkflowStage, statusToNextStep } from './core/workflow.ts';
@@ -2265,6 +2266,90 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
   return EXIT_SUCCESS;
 }
 
+function lifecycleRefreshHelp(): string {
+  return [
+    'Rebuild lifecycle metrics and repo-local session anchors from structured lifecycle telemetry.',
+    '',
+    'Usage:',
+    `  ${CLI_DISPLAY_NAME} lifecycle-refresh --feature-id <id> [options]`,
+    '',
+    'Options:',
+    '  --root <path>                Repository root. Defaults to cwd.',
+    '  --feature-id <id>            Feature id such as F-0001. Required unless --dossier is provided.',
+    '  --dossier <path>             Dossier path used to resolve feature id.',
+    '  --feature-cycle-id <id>      Lifecycle cycle id such as fc01. Required when more than one cycle exists for the feature.',
+    '  --json                       Emit JSON output.',
+    '  -h, --help                   Show help.',
+    '',
+    'Notes:',
+    '  - lifecycle-refresh reads structured lifecycle logs and JSON artifacts only.',
+    '  - It does not interpret prose and does not infer missing telemetry from narrative text.',
+    '  - It refreshes .dossier/metrics/<feature-id>/<feature_cycle_id>.json and .dossier/retro/session-index.jsonl.',
+  ].join('\n');
+}
+
+async function runLifecycleRefreshCommand(argv: string[], io: CliIo): Promise<number> {
+  const helpText = lifecycleRefreshHelp();
+  if (hasOption(argv, '--help', '-h')) {
+    writeLine(io.stdout, helpText);
+    return EXIT_SUCCESS;
+  }
+
+  const root = takeOption(argv, '--root', process.cwd()) ?? process.cwd();
+  const dossier = takeOption(argv, '--dossier', null);
+  let featureId = takeOption(argv, '--feature-id', null);
+  const featureCycleId = takeOption(argv, '--feature-cycle-id', null);
+  const json = hasOption(argv, '--json');
+  const absRoot = path.resolve(root);
+
+  if (dossier) {
+    const dossierRecord = await readDossierRecord(path.resolve(absRoot, dossier), { root: absRoot });
+    featureId =
+      featureId ??
+      frontmatterString(dossierRecord.frontmatter, 'id', path.basename(dossierRecord.absPath, '.md'));
+  }
+
+  featureId = ensureRequired(
+    featureId,
+    '--feature-id is required unless --dossier is provided.',
+    helpText,
+  );
+
+  const result = await refreshLifecycleArtifacts({
+    root: absRoot,
+    featureId,
+    featureCycleId,
+  });
+  const metricsPath = relativeToRoot(absRoot, result.metricsPath);
+  const sessionIndexPath = relativeToRoot(absRoot, result.sessionIndexPath);
+
+  if (json) {
+    writeLine(
+      io.stdout,
+      JSON.stringify(
+        {
+          feature_id: result.featureId,
+          feature_cycle_id: result.featureCycleId,
+          metrics_path: metricsPath,
+          session_index_path: sessionIndexPath,
+          snapshot: result.snapshot,
+        },
+        null,
+        2,
+      ),
+    );
+    return EXIT_SUCCESS;
+  }
+
+  writeLine(
+    io.stdout,
+    `[lifecycle-refresh] feature=${result.featureId} feature_cycle_id=${result.featureCycleId}`,
+  );
+  writeLine(io.stdout, `[lifecycle-refresh] metrics=${metricsPath}`);
+  writeLine(io.stdout, `[lifecycle-refresh] session_index=${sessionIndexPath}`);
+  return EXIT_SUCCESS;
+}
+
 export const COMMANDS: CommandDefinition[] = [
   {
     name: 'feature-intake',
@@ -2350,6 +2435,13 @@ export const COMMANDS: CommandDefinition[] = [
     description: 'Resolve the next dossier-local workflow stage from structured state.',
     helpText: nextStepHelp,
     run: runNextStepCommand,
+  },
+  {
+    name: 'lifecycle-refresh',
+    aliases: [],
+    description: 'Rebuild lifecycle metrics and session anchors from structured telemetry.',
+    helpText: lifecycleRefreshHelp,
+    run: runLifecycleRefreshCommand,
   },
 ];
 

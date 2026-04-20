@@ -124,6 +124,7 @@ void test('global help exposes unified commands and compatibility aliases', () =
   assert.match(result.stdout, /feature-intake/);
   assert.match(result.stdout, /sync-index/);
   assert.match(result.stdout, /dossier-verify/);
+  assert.match(result.stdout, /lifecycle-refresh/);
   assert.match(result.stdout, /marker-audit/);
   assert.doesNotMatch(result.stdout, /ops-log/);
   assert.doesNotMatch(result.stdout, /session-ops-log/);
@@ -319,6 +320,761 @@ void test('coverage-audit passes and next-step returns implementation for the ac
   assert.equal(summary.workflow_stage_next, 'implementation');
   assert.equal(summary.dossier_status, 'planned');
 });
+
+void test('lifecycle-refresh rebuilds lifecycle metrics and repo-local session anchors', (t) => {
+  const repoRoot = createRepoFixture(t);
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/feature-intake-c01.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+command: feature-intake
+cycle_id: c01
+session_id: 019d-intake
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:00:00+02:00
+intake_process_complete_ts: 2026-04-20T09:15:00+02:00
+backlog_events:
+  - event_class: patch_item
+    status: success
+    started_ts: 2026-04-20T09:10:00+02:00
+    finished_ts: 2026-04-20T09:12:00+02:00
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/spec-compact-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: spec-compact
+cycle_id: main
+session_id: 019d-spec
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:16:00+02:00
+process_complete_ts: 2026-04-20T09:40:00+02:00
+first_review_agent_started_ts: 2026-04-20T09:30:00+02:00
+final_pass_ts: 2026-04-20T09:38:00+02:00
+review_events:
+  - requested_ts: 2026-04-20T09:29:00+02:00
+    verdict_ts: 2026-04-20T09:38:00+02:00
+    role: spec-conformance
+    verdict: pass
+    allowed_by_policy: true
+    invalidated: false
+    rerun_reason: none
+verification_events:
+  - name: spec-lint
+    status: pass
+    started_ts: 2026-04-20T09:26:00+02:00
+    finished_ts: 2026-04-20T09:27:00+02:00
+    failure_class: none
+backlog_events:
+  - event_class: patch_item
+    status: success
+    started_ts: 2026-04-20T09:39:00+02:00
+    finished_ts: 2026-04-20T09:40:00+02:00
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/plan-slice-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: plan-slice
+cycle_id: main
+session_id: 019d-plan
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:45:00+02:00
+process_complete_ts: 2026-04-20T10:05:00+02:00
+review_events:
+  - requested_ts: 2026-04-20T09:58:00+02:00
+    verdict_ts: 2026-04-20T10:00:00+02:00
+    role: spec-conformance
+    verdict: pass
+    allowed_by_policy: true
+    invalidated: false
+    rerun_reason: none
+verification_events:
+  - name: plan-check
+    status: fail
+    started_ts: 2026-04-20T09:50:00+02:00
+    finished_ts: 2026-04-20T09:51:00+02:00
+    failure_class: missing-proof
+  - name: plan-check
+    status: pass
+    started_ts: 2026-04-20T09:54:00+02:00
+    finished_ts: 2026-04-20T09:55:00+02:00
+    failure_class: none
+backlog_events: []
+operator_interventions:
+  - intervention_class: clarification
+    ts: 2026-04-20T09:56:00+02:00
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/steps/F-0001/implementation.json',
+    JSON.stringify(
+      {
+        version: 1,
+        created_at: '2026-04-20T11:38:00+02:00',
+        feature_id: 'F-0001',
+        step: 'implementation',
+        process_complete: true,
+        blockers: [],
+      },
+      null,
+      2,
+    ),
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/implementation-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: implementation
+cycle_id: main
+session_id: 019d-impl
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T10:10:00+02:00
+local_gates_green_ts: 2026-04-20T11:20:00+02:00
+process_complete_ts: 2026-04-20T11:35:00+02:00
+step_close_ts: 2026-04-20T11:38:00+02:00
+step_artifact: .dossier/steps/F-0001/implementation.json
+first_review_agent_started_ts: 2026-04-20T11:00:00+02:00
+final_pass_ts: 2026-04-20T11:18:00+02:00
+review_events:
+  - requested_ts: 2026-04-20T10:58:00+02:00
+    verdict_ts: 2026-04-20T11:05:00+02:00
+    role: independent
+    verdict: findings
+    allowed_by_policy: true
+    invalidated: false
+    rerun_reason: review_findings
+  - requested_ts: 2026-04-20T11:10:00+02:00
+    verdict_ts: 2026-04-20T11:18:00+02:00
+    role: independent
+    verdict: pass
+    allowed_by_policy: true
+    invalidated: false
+    rerun_reason: none
+verification_events:
+  - name: dossier-verify
+    status: pass
+    started_ts: 2026-04-20T10:45:00+02:00
+    finished_ts: 2026-04-20T10:58:00+02:00
+    failure_class: none
+backlog_events:
+  - event_class: patch_item
+    status: blocked
+    started_ts: 2026-04-20T11:19:00+02:00
+    finished_ts: 2026-04-20T11:21:00+02:00
+operator_interventions:
+  - intervention_class: approval
+    ts: 2026-04-20T11:08:00+02:00
+process_miss_events:
+  - miss_id: PM-001
+    severity: medium
+    ts: 2026-04-20T10:30:00+02:00
+    class: heavy-runtime-misuse
+---
+
+## Scope
+
+none
+`,
+  );
+
+  const result = runCli([
+    'lifecycle-refresh',
+    '--root',
+    repoRoot,
+    '--feature-id',
+    'F-0001',
+    '--feature-cycle-id',
+    'fc01',
+    '--json',
+  ]);
+  assert.equal(result.status, 0, result.stderr);
+
+  const summary = JSON.parse(result.stdout) as {
+    feature_cycle_id: string;
+    feature_id: string;
+    metrics_path: string;
+    session_index_path: string;
+    snapshot: {
+      lifecycle: {
+        feature_cycle_time_ms: number | null;
+        stages: {
+          'spec-compact': {
+            process_complete_ts: string | null;
+          };
+          implementation: {
+            process_complete_ts: string | null;
+          };
+        };
+      };
+      metrics: {
+        backlog_actualization_failures_total: number;
+        closure_latency_ms: number | null;
+        first_pass_close: boolean | null;
+        operator_interventions_total: number;
+        phase_cycle_time_ms: Record<string, number | null>;
+        rerounds_per_feature: number;
+        review_loop_time_ms: number | null;
+        verification_failures_total: number;
+      };
+    };
+  };
+
+  assert.equal(summary.feature_id, 'F-0001');
+  assert.equal(summary.feature_cycle_id, 'fc01');
+  assert.equal(summary.snapshot.lifecycle.stages['spec-compact'].process_complete_ts, '2026-04-20T09:40:00+02:00');
+  assert.equal(summary.snapshot.lifecycle.stages.implementation.process_complete_ts, '2026-04-20T11:35:00+02:00');
+  assert.equal(summary.snapshot.metrics.verification_failures_total, 1);
+  assert.equal(summary.snapshot.metrics.backlog_actualization_failures_total, 1);
+  assert.equal(summary.snapshot.metrics.operator_interventions_total, 2);
+  assert.equal(summary.snapshot.metrics.rerounds_per_feature, 1);
+  assert.equal(summary.snapshot.metrics.first_pass_close, false);
+  assert.equal(summary.snapshot.metrics.closure_latency_ms, 18 * 60 * 1000);
+  assert.equal(summary.snapshot.metrics.phase_cycle_time_ms['spec-compact'], 24 * 60 * 1000);
+  assert.equal(summary.snapshot.metrics.review_loop_time_ms, 108 * 60 * 1000);
+  assert.equal(summary.snapshot.lifecycle.feature_cycle_time_ms, 155 * 60 * 1000);
+
+  const metricsArtifact = JSON.parse(
+    fs.readFileSync(path.join(repoRoot, summary.metrics_path), 'utf8'),
+  ) as { identity: { feature_cycle_id: string } };
+  assert.equal(metricsArtifact.identity.feature_cycle_id, 'fc01');
+
+  const sessionIndex = fs.readFileSync(path.join(repoRoot, summary.session_index_path), 'utf8');
+  assert.match(sessionIndex, /"feature_cycle_id":"fc01"/);
+  assert.match(sessionIndex, /"stage_log_path":"\.dossier\/logs\/F-0001\/implementation-main\.md"/);
+  assert.doesNotMatch(sessionIndex, new RegExp(escapeRegExp(repoRoot)));
+});
+
+void test('lifecycle-refresh rejects implementation end markers backed by mismatched step artifacts', (t) => {
+  const repoRoot = createRepoFixture(t);
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/feature-intake-c01.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+command: feature-intake
+cycle_id: c01
+session_id: 019d-intake
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:00:00+02:00
+intake_process_complete_ts: 2026-04-20T09:15:00+02:00
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/steps/F-0001/implementation.json',
+    JSON.stringify(
+      {
+        version: 1,
+        created_at: '2026-04-20T11:38:00+02:00',
+        feature_id: 'F-9999',
+        step: 'change-proposal',
+        process_complete: true,
+        blockers: [],
+      },
+      null,
+      2,
+    ),
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/implementation-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: implementation
+cycle_id: main
+session_id: 019d-impl
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T10:10:00+02:00
+local_gates_green_ts: 2026-04-20T11:20:00+02:00
+process_complete_ts: 2026-04-20T11:35:00+02:00
+step_close_ts: 2026-04-20T11:38:00+02:00
+step_artifact: .dossier/steps/F-0001/implementation.json
+review_events: []
+verification_events: []
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  const result = runCli([
+    'lifecycle-refresh',
+    '--root',
+    repoRoot,
+    '--feature-id',
+    'F-0001',
+    '--feature-cycle-id',
+    'fc01',
+    '--json',
+  ]);
+  assert.equal(result.status, 0, result.stderr);
+
+  const summary = JSON.parse(result.stdout) as {
+    session_index_path: string;
+    snapshot: {
+      lifecycle: {
+        feature_cycle_time_ms: number | null;
+        stages: {
+          implementation: {
+            process_complete_ts: string | null;
+          };
+        };
+      };
+      metrics: {
+        first_pass_close: boolean | null;
+      };
+    };
+  };
+
+  assert.equal(summary.snapshot.lifecycle.stages.implementation.process_complete_ts, null);
+  assert.equal(summary.snapshot.lifecycle.feature_cycle_time_ms, null);
+  assert.equal(summary.snapshot.metrics.first_pass_close, null);
+
+  const sessionIndex = fs.readFileSync(path.join(repoRoot, summary.session_index_path), 'utf8');
+  assert.match(sessionIndex, /"stage":"implementation"/);
+  assert.match(sessionIndex, /"end_ts":null/);
+});
+
+void test('lifecycle-refresh replaces stale session-index rows when the same stage log changes session_id', (t) => {
+  const repoRoot = createRepoFixture(t);
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/feature-intake-c01.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+command: feature-intake
+cycle_id: c01
+session_id: intake-s1
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:00:00+02:00
+intake_process_complete_ts: 2026-04-20T09:15:00+02:00
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/implementation-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: implementation
+cycle_id: main
+session_id: impl-s1
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T10:10:00+02:00
+process_complete_ts: 2026-04-20T11:35:00+02:00
+step_close_ts: 2026-04-20T11:38:00+02:00
+step_artifact: .dossier/steps/F-0001/implementation.json
+review_events: []
+verification_events: []
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/steps/F-0001/implementation.json',
+    JSON.stringify(
+      {
+        version: 1,
+        created_at: '2026-04-20T11:38:00+02:00',
+        feature_id: 'F-0001',
+        step: 'implementation',
+        process_complete: true,
+        blockers: [],
+      },
+      null,
+      2,
+    ),
+  );
+
+  let result = runCli([
+    'lifecycle-refresh',
+    '--root',
+    repoRoot,
+    '--feature-id',
+    'F-0001',
+    '--feature-cycle-id',
+    'fc01',
+    '--json',
+  ]);
+  assert.equal(result.status, 0, result.stderr);
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/implementation-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: implementation
+cycle_id: main
+session_id: impl-s2
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T10:10:00+02:00
+process_complete_ts: 2026-04-20T11:35:00+02:00
+step_close_ts: 2026-04-20T11:38:00+02:00
+step_artifact: .dossier/steps/F-0001/implementation.json
+review_events: []
+verification_events: []
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  result = runCli([
+    'lifecycle-refresh',
+    '--root',
+    repoRoot,
+    '--feature-id',
+    'F-0001',
+    '--feature-cycle-id',
+    'fc01',
+    '--json',
+  ]);
+  assert.equal(result.status, 0, result.stderr);
+
+  const summary = JSON.parse(result.stdout) as { session_index_path: string };
+  const sessionIndex = fs.readFileSync(path.join(repoRoot, summary.session_index_path), 'utf8');
+  assert.match(sessionIndex, /"session_id":"impl-s2"/);
+  assert.doesNotMatch(sessionIndex, /"session_id":"impl-s1"/);
+});
+
+void test('lifecycle-refresh computes review loop time by actual timestamps, not lexicographic offset order', (t) => {
+  const repoRoot = createRepoFixture(t);
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/feature-intake-c01.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+command: feature-intake
+cycle_id: c01
+session_id: intake-s1
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T07:00:00Z
+intake_process_complete_ts: 2026-04-20T07:10:00Z
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/spec-compact-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: spec-compact
+cycle_id: main
+session_id: spec-s1
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:00:00+02:00
+process_complete_ts: 2026-04-20T09:20:00+02:00
+first_review_agent_started_ts: 2026-04-20T09:30:00+02:00
+review_events: []
+verification_events: []
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/steps/F-0001/implementation.json',
+    JSON.stringify(
+      {
+        version: 1,
+        created_at: '2026-04-20T08:50:00+01:00',
+        feature_id: 'F-0001',
+        step: 'implementation',
+        process_complete: true,
+        blockers: [],
+      },
+      null,
+      2,
+    ),
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/implementation-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: implementation
+cycle_id: main
+session_id: impl-s1
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T08:35:00+01:00
+process_complete_ts: 2026-04-20T08:50:00+01:00
+step_close_ts: 2026-04-20T08:51:00+01:00
+step_artifact: .dossier/steps/F-0001/implementation.json
+final_pass_ts: 2026-04-20T08:45:00+01:00
+review_events: []
+verification_events: []
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  const result = runCli([
+    'lifecycle-refresh',
+    '--root',
+    repoRoot,
+    '--feature-id',
+    'F-0001',
+    '--feature-cycle-id',
+    'fc01',
+    '--json',
+  ]);
+  assert.equal(result.status, 0, result.stderr);
+
+  const summary = JSON.parse(result.stdout) as {
+    snapshot: {
+      metrics: {
+        review_loop_time_ms: number | null;
+      };
+    };
+  };
+  assert.equal(summary.snapshot.metrics.review_loop_time_ms, 15 * 60 * 1000);
+});
+
+void test('lifecycle-refresh keeps per-log end timestamps distinct inside the same stage', (t) => {
+  const repoRoot = createRepoFixture(t);
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/feature-intake-c01.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+command: feature-intake
+cycle_id: c01
+session_id: intake-s1
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:00:00+02:00
+intake_process_complete_ts: 2026-04-20T09:15:00+02:00
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/spec-compact-main.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: spec-compact
+cycle_id: main
+session_id: spec-s1
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:16:00+02:00
+process_complete_ts: 2026-04-20T09:40:00+02:00
+review_events: []
+verification_events: []
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  writeFile(
+    repoRoot,
+    '.dossier/logs/F-0001/spec-compact-reround.md',
+    `---
+feature_id: F-0001
+feature_cycle_id: fc01
+backlog_item_key: auth-password-reset
+stage: spec-compact
+cycle_id: reround
+session_id: spec-s2
+trace_runtime: codex
+trace_locator_kind: session_id
+start_ts: 2026-04-20T09:45:00+02:00
+process_complete_ts: 2026-04-20T10:05:00+02:00
+review_events: []
+verification_events: []
+backlog_events: []
+operator_interventions: []
+process_miss_events: []
+---
+
+## Scope
+
+none
+`,
+  );
+
+  const result = runCli([
+    'lifecycle-refresh',
+    '--root',
+    repoRoot,
+    '--feature-id',
+    'F-0001',
+    '--feature-cycle-id',
+    'fc01',
+    '--json',
+  ]);
+  assert.equal(result.status, 0, result.stderr);
+
+  const summary = JSON.parse(result.stdout) as { session_index_path: string };
+  const sessionIndex = fs
+    .readFileSync(path.join(repoRoot, summary.session_index_path), 'utf8')
+    .trim()
+    .split('\n')
+    .map((line) => JSON.parse(line) as { stage_log_path: string; end_ts: string | null });
+
+  const mainRecord = sessionIndex.find((record) =>
+    record.stage_log_path.endsWith('/spec-compact-main.md'),
+  );
+  const reroundRecord = sessionIndex.find((record) =>
+    record.stage_log_path.endsWith('/spec-compact-reround.md'),
+  );
+
+  assert.equal(mainRecord?.end_ts, '2026-04-20T09:40:00+02:00');
+  assert.equal(reroundRecord?.end_ts, '2026-04-20T10:05:00+02:00');
+});
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 void test('next-step requires --dossier when multiple dossiers exist', (t) => {
   const repoRoot = createRepoFixture(t);
