@@ -29,6 +29,7 @@ const WORKFLOW_STAGE_IMPLEMENTATION_PATH = path.join(
   'references',
   'workflow-stage-implementation.md',
 );
+const DOSSIER_TEMPLATE_PATH = path.join(SKILL_DIR, 'references', 'DOSSIER_TEMPLATE.md');
 const FEATURE_INTAKE_LOGGING_PATH = path.join(SKILL_DIR, 'references', 'feature-intake-logging.md');
 const WORKFLOW_STAGE_CHANGE_PROPOSAL_PATH = path.join(
   SKILL_DIR,
@@ -831,6 +832,127 @@ void test('spec-compact and plan-slice point to risk patterns and literal risk-k
     'Risk-to-proof mapping',
     'Real usage audit',
     'Corrective backlog categories',
+  ]);
+});
+
+void test('heavy-runtime discipline stays trigger-based, laddered, and narrow in logging', async () => {
+  const [
+    skill,
+    workflow,
+    specCompactSteps,
+    planSliceSteps,
+    implementationSteps,
+    loggingPolicy,
+    template,
+  ] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(WORKFLOW_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_SPEC_COMPACT_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_PLAN_SLICE_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_IMPLEMENTATION_PATH, 'utf8'),
+    readFile(WORKFLOW_STAGE_LOGGING_PATH, 'utf8'),
+    readFile(DOSSIER_TEMPLATE_PATH, 'utf8'),
+  ]);
+
+  const heavyRuntime = extractSection(skill, '## Heavy-runtime / expensive-runtime discipline');
+  const specCompact = extractSection(skill, '#### Workflow stage: `spec-compact`');
+  const planSlice = extractSection(skill, '#### Workflow stage: `plan-slice`');
+  const implementation = extractSection(skill, '#### Workflow stage: `implementation`');
+  const workflowHeavyRuntime = extractSection(workflow, '## Heavy-runtime discipline');
+
+  assertContainsTerms(heavyRuntime, [
+    'This branch is trigger-based, not universal-by-default.',
+    'expensive model or runtime startup;',
+    'large cache or download bootstrap;',
+    'warm/cold path divergence that materially changes proof strategy.',
+    '`runtime envelope` = a compact runtime-assumption contract',
+    '`targeted runtime probe` = the narrowest adequate runtime check',
+    '`final smoke gate` = an expensive real-path verification',
+    'If the trigger does not fire, ordinary verification guidance remains sufficient.',
+    'Repo overlays may tighten this trigger or require stronger proof discipline than the default skill.',
+    'CLI may persist structured fields, validate required sections, or compute deterministic fields',
+    'CLI does not infer that a feature is heavy-runtime from prose',
+    'Retrospective should be able to distinguish legitimate final verification cost from method failure caused by missing runtime envelope or missing verification ladder.',
+  ]);
+  assertContainsTerms(workflowHeavyRuntime, [
+    'Heavy-runtime / expensive-runtime discipline is trigger-based rather than universal.',
+    '`spec-compact` owns the compact `runtime envelope`',
+    '`plan-slice` owns the cheap-first verification ladder;',
+    '`implementation` owns the distinction between `targeted runtime probes` and the `final smoke gate`.',
+    'repeated heavy smoke, repeated cold-start reruns, repeated cache-download reruns, or repeated multi-runtime bootstrap loops are a process smell',
+    'repo overlays may tighten the trigger or require stronger proof discipline than the default skill floor;',
+    'CLI remains mechanical',
+  ]);
+  assertContainsTerms(specCompact, [
+    'If the heavy-runtime trigger fires, record a compact runtime envelope instead of leaving runtime assumptions implicit until implementation.',
+    'If the heavy-runtime trigger fired, the dossier records a compact runtime envelope with runtime instance shape, warm/cold assumptions, cache/download policy, timeout budget, retry posture, allowed resource / pressure class, and operator-visible constraints or risks when relevant.',
+    'The heavy-runtime runtime envelope stays compact and decision-oriented; it supplements adversarial semantics and failure-mode obligations instead of replacing them.',
+  ]);
+  assertContainsTerms(planSlice, [
+    'If the heavy-runtime trigger fired, the verification plan must be a ladder rather than one broad `smoke` or `runtime test` label.',
+    'If the heavy-runtime trigger fired, the verification plan is a cheap-first ladder: lightweight local checks, targeted runtime probes, integration checks when relevant, and a final smoke gate.',
+    'If the heavy-runtime trigger fired, broad labels such as `smoke`, `runtime test`, or `end-to-end verification` are not used without adjacent text that says what remains for the final smoke and what gets killed earlier by cheaper probes.',
+    'If the expensive smoke path is the only honest observable seam, the plan says so explicitly and explains why cheaper probes would not prove the behavior.',
+  ]);
+  assertContainsTerms(implementation, [
+    'Verification was added alongside code: AC-linked tests plus targeted runtime probes, integration checks, and final smoke/startup/container checks when relevant.',
+    'If the heavy-runtime trigger fired, heavy smoke was not used as the default debug loop; repeated expensive reruns had a named proof purpose or an explicit exception.',
+    'If the heavy-runtime trigger fired, the runtime envelope and verification ladder actually guided implementation instead of being deferred to close-out notes.',
+  ]);
+  assertContainsTerms(specCompactSteps, [
+    'activate the heavy-runtime branch and add a compact runtime envelope before planning is treated as shaped enough.',
+    'expected runtime instance shape;',
+    'warm/cold assumptions;',
+    'cache/download policy;',
+    'timeout budget;',
+    'retry budget or retry posture;',
+    'allowed resource / pressure class;',
+    'does not become a low-level deployment runbook',
+    'never replaces adversarial semantics, edge cases, or failure-mode obligations.',
+  ]);
+  assertContainsTerms(planSliceSteps, [
+    'express the verification plan as a ladder rather than one broad verification label.',
+    'lightweight local checks;',
+    'targeted runtime probes;',
+    'integration checks when relevant;',
+    'final smoke gate.',
+    'Each meaningful runtime hypothesis should map to the cheapest adequate proof',
+    'Treat broad labels such as `smoke`, `runtime test`, or `end-to-end verification` as insufficient',
+    'If the expensive smoke path is the only honest observable seam, state that explicitly',
+  ]);
+  assertContainsTerms(implementationSteps, [
+    'treat heavy smoke as a final gate or allowed-stop-point / closure-target confirmation, not as the default working loop for ordinary debugging.',
+    'localize the hypothesis;',
+    'choose the narrowest adequate probe or cheaper verification step;',
+    'rerun expensive smoke only when the remaining uncertainty actually lives on that path.',
+    'the smoke path is the only honest observable seam;',
+    'a repo overlay explicitly requires smoke-first discipline;',
+    'the operator explicitly chooses the expensive rerun as a conscious trade-off.',
+    'Repeated heavy smoke, cold-start, cache-download, or multi-runtime bootstrap reruns should be treated as a retrospective process smell',
+    'heavy-runtime misuse is itself an implementation-specific process miss.',
+  ]);
+  assertContainsTerms(loggingPolicy, [
+    'the heavy-runtime trigger fired for this stage;',
+    'the heavy-runtime trigger did not fire for this stage;',
+    'whether the heavy-runtime trigger fired and where the runtime envelope lives when it did;',
+    'whether a heavy-runtime verification ladder was defined, and whether any only-observable-seam exception was used;',
+    'heavy-runtime proof path decisions: targeted probes used, final smoke scope, and explicit exception rationale',
+    '`heavy-runtime-misuse:` entries',
+    'use the existing structured `process_miss_refs` anchors',
+    'never substitutes for the process-miss signal itself.',
+  ]);
+  assertContainsTerms(template, [
+    'When the heavy-runtime trigger fires, record a compact runtime envelope here:',
+    'expected runtime instance shape;',
+    'warm/cold assumptions;',
+    'cache/download policy;',
+    'timeout budget;',
+    'retry budget or retry posture;',
+    'allowed resource / pressure class;',
+    'It is not a low-level deployment runbook',
+    'When the heavy-runtime trigger fires, express verification as a ladder instead of one broad label:',
+    'Broad labels such as `smoke`, `runtime test`, or `end-to-end verification` are insufficient',
+    'If the expensive smoke path is the only honest observable seam, state that explicitly',
   ]);
 });
 

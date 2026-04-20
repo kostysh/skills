@@ -124,6 +124,35 @@ Use [spec-and-plan-risk-patterns.md](spec-and-plan-risk-patterns.md) when:
 - `plan-slice` must map high-risk adversarial semantics into risk-to-proof obligations before implementation;
 - `plan-slice` must explicitly plan contract-risk cleanup, drift-guard work, or a real usage audit after implementation.
 
+## Heavy-runtime discipline
+
+Heavy-runtime / expensive-runtime discipline is trigger-based rather than universal.
+
+Trigger it when the changed scope includes one or more of:
+
+- expensive model or runtime startup;
+- large cache or download bootstrap;
+- containerized or multi-process serving with meaningful startup/runtime pressure;
+- warm/cold path divergence that materially changes proof strategy.
+
+Method ownership:
+
+- `spec-compact` owns the compact `runtime envelope` for heavy-runtime features;
+- `plan-slice` owns the cheap-first verification ladder;
+- `implementation` owns the distinction between `targeted runtime probes` and the `final smoke gate`.
+
+Rules:
+
+- if the trigger does not fire, ordinary verification guidance remains sufficient;
+- if the trigger fires, planning and implementation are not well-shaped until runtime envelope and verification ladder are explicit;
+- repeated heavy smoke, repeated cold-start reruns, repeated cache-download reruns, or repeated multi-runtime bootstrap loops are a process smell unless the smoke path is the only honest observable seam, a repo overlay explicitly requires smoke-first discipline, or the operator explicitly chooses the expensive rerun as a conscious trade-off;
+- repo overlays may tighten the trigger or require stronger proof discipline than the default skill floor;
+- CLI remains mechanical: it may read/write artifacts, validate structure, or compute deterministic fields, but it does not infer heavy-runtime status from prose and does not judge whether a rerun was wise.
+
+Operator-facing outcome:
+
+- retrospective should be able to distinguish legitimate final verification cost from method failure caused by missing runtime envelope or missing verification ladder.
+
 ## Backlog actualization rule
 
 Return to `backlog-engineer` when dossier-side work changes backlog truth:

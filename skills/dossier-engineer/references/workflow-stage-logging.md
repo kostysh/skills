@@ -45,6 +45,7 @@ Rules:
 
 Open or update a stage log when any trigger fires:
 
+- the heavy-runtime trigger fired for this stage;
 - the stage changes backlog truth or requires backlog actualization;
 - operator feedback or clarification changes the stage direction;
 - external review returns findings or causes a reround;
@@ -60,6 +61,7 @@ Open or update a stage log when any trigger fires:
 A stage log may be skipped only when all conditions are true:
 
 - the change is trivial and one-step;
+- the heavy-runtime trigger did not fire for this stage;
 - backlog truth did not change;
 - no operator clarification changed the stage direction;
 - no external review reround occurred;
@@ -291,6 +293,7 @@ Capture:
 - open questions resolved, reclassified, or intentionally deferred;
 - `Terms & thresholds` trigger result;
 - contract, safety, and operator-agent contract decisions;
+- whether the heavy-runtime trigger fired and where the runtime envelope lives when it did;
 - backlog actualization outcome.
 
 Classify implementation-shaping decisions as:
@@ -307,6 +310,7 @@ Capture:
 - `allowed_stop_points` for multi-slice or package-based plans;
 - slices created, removed, or reshaped;
 - dependencies, assumptions, and fallbacks added during planning;
+- whether a heavy-runtime verification ladder was defined, and whether any only-observable-seam exception was used;
 - drift-guard planning;
 - real usage audit planning;
 - corrective categories when planned;
@@ -323,9 +327,10 @@ Capture:
 - `spec-conformance`, `code-reviewer`, and `security-reviewer` audit events when applicable;
 - early security seam checkpoint event when triggered;
 - debt review result;
+- heavy-runtime proof path decisions: targeted probes used, final smoke scope, and explicit exception rationale when a repeated expensive rerun was justified;
 - freshness fields for implementation closure / step-close artifacts when applicable;
 - commit metadata when committed;
-- implementation-specific process misses;
+- implementation-specific process misses, including `heavy-runtime-misuse:` entries when the heavy-runtime branch degraded into a default expensive debug loop;
 - backlog actualization outcome and backlog artifact-integrity result.
 
 ## Decision classes
@@ -396,8 +401,10 @@ Examples:
 - final commit metadata was backfilled late;
 - one cycle accidentally grew a second closure target;
 - backlog actualization was discovered after close-out had started.
+- `heavy-runtime-misuse:` repeated heavy smoke, cold-start, cache-download, or multi-runtime bootstrap reruns were used as the default debug loop without an explicit exception.
 
 Do not hide process misses inside general prose.
+For heavy-runtime misuse, keep the signal in the `Process misses` section, use the existing structured `process_miss_refs` anchors, and start the narrative entry with the fixed prefix `heavy-runtime-misuse:`. Related rationale or hypothesis changes may also appear in `Decisions / reclassifications`, but that section never substitutes for the process-miss signal itself.
 
 ## Metrics to capture
 

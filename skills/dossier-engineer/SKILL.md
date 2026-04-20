@@ -255,6 +255,40 @@ Open this log only when:
 Do not open it for ordinary stage-local rerounds, narrow review follow-ups, or trivial one-command fixes.
 Keep stage-local decisions in the relevant stage log; use the session ops log only for cross-skill or cross-stage process telemetry.
 
+## Heavy-runtime / expensive-runtime discipline
+
+This branch is trigger-based, not universal-by-default.
+
+The heavy-runtime trigger fires when the changed scope includes one or more of:
+
+- expensive model or runtime startup;
+- large cache or download bootstrap;
+- containerized or multi-process serving with meaningful startup/runtime pressure;
+- warm/cold path divergence that materially changes proof strategy.
+
+Shared vocabulary:
+
+- `runtime envelope` = a compact runtime-assumption contract that shapes implementation cost and proof strategy.
+- `targeted runtime probe` = the narrowest adequate runtime check for one hypothesis or seam.
+- `final smoke gate` = an expensive real-path verification used to confirm a closure target or an allowed stop point.
+- `warm path` = the proof path after expected bootstrap/caches already exist.
+- `cold path` = the proof path that includes real startup/bootstrap cost.
+- `resource / pressure class` = the coarse allowed runtime pressure for the current feature or proof path.
+
+Rules:
+
+- If the trigger does not fire, ordinary verification guidance remains sufficient.
+- If the trigger fires, `spec-compact` must make the runtime envelope explicit before implementation is treated as well-shaped.
+- If the trigger fires, `plan-slice` must define a cheap-first verification ladder before implementation starts.
+- If the trigger fires, `implementation` must distinguish targeted runtime probes from a final smoke gate.
+- Repeated heavy smoke, repeated cold-start reruns, repeated cache-download reruns, or repeated multi-runtime bootstrap loops are a process smell unless one of these exceptions is explicit:
+  - the smoke path is the only honest observable seam;
+  - a repo overlay explicitly requires smoke-first discipline;
+  - the operator explicitly chooses the expensive rerun as a conscious trade-off.
+- Repo overlays may tighten this trigger or require stronger proof discipline than the default skill.
+- CLI may persist structured fields, validate required sections, or compute deterministic fields when the runtime exposes them; CLI does not infer that a feature is heavy-runtime from prose and does not judge whether a smoke rerun was wise.
+- Retrospective should be able to distinguish legitimate final verification cost from method failure caused by missing runtime envelope or missing verification ladder.
+
 ## Step closure contract
 
 For every **mutating delivery step** (`feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`, or a user-approved implementation increment):
@@ -441,6 +475,7 @@ Trigger summary:
 - If the feature has named states, transitions, or guards, add a compact state list or state table.
 - If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note.
 - If the feature is stateful, side-effecting, lifecycle-sensitive, retry/replay-sensitive, shutdown/startup-sensitive, durable-evidence-sensitive, or boundary-facing, classify adversarial semantics before planning.
+- If the heavy-runtime trigger fires, record a compact runtime envelope instead of leaving runtime assumptions implicit until implementation.
 
 Steps:
 
@@ -468,6 +503,8 @@ Spec quality:
 Trigger-based additions:
 - [ ] Boundary I/O changes include a contract/schema pointer or compact contract sketch, plus error model and retry/idempotency notes when relevant.
 - [ ] Design covers API, runtime/deployment, data changes, invariants or migration notes, failure modes, and an initial verification plan when relevant.
+- [ ] If the heavy-runtime trigger fired, the dossier records a compact runtime envelope with runtime instance shape, warm/cold assumptions, cache/download policy, timeout budget, retry posture, allowed resource / pressure class, and operator-visible constraints or risks when relevant.
+- [ ] The heavy-runtime runtime envelope stays compact and decision-oriented; it supplements adversarial semantics and failure-mode obligations instead of replacing them.
 - [ ] Decision tables or state lists were added when rule complexity or statefulness crossed the trigger threshold.
 - [ ] Rollout / activation notes were added when migration, feature flags, cutover, backfill, or irreversible side effects make activation order matter.
 - [ ] Definition of Done and the initial coverage plan were recorded explicitly.
@@ -500,6 +537,7 @@ Trigger summary:
 - If a slice relies on a high-risk assumption, add `Assumes:` and `Fallback:` notes.
 - If the spec has non-`N/A` adversarial semantics, map each one to a named proof obligation or explicit `N/A rationale` before implementation.
 - Generic verification labels such as `idempotency tests`, `shutdown tests`, or `integration tests` are insufficient unless paired with concrete proof details.
+- If the heavy-runtime trigger fired, the verification plan must be a ladder rather than one broad `smoke` or `runtime test` label.
 - If activation order matters because of migration, feature flag, cutover, backfill, or irreversible side effects, add a compact rollout / activation note.
 - If the plan is multi-slice or package-based, define `allowed_stop_points` before implementation starts.
 - If a slice touches a shared runtime, contract, migration path, or other cross-cutting surface, name the approval path.
@@ -518,6 +556,9 @@ Stage exit checklist:
 - [ ] Relevant contract risks were identified explicitly instead of being left for late corrective work.
 - [ ] Every high-risk edge case has a named proof obligation or explicit `N/A rationale`.
 - [ ] Generic verification labels were refined or paired with concrete proof details: operation pair or participating operation(s), race/order boundary, expected observable result/error, and durable invariant.
+- [ ] If the heavy-runtime trigger fired, the verification plan is a cheap-first ladder: lightweight local checks, targeted runtime probes, integration checks when relevant, and a final smoke gate.
+- [ ] If the heavy-runtime trigger fired, broad labels such as `smoke`, `runtime test`, or `end-to-end verification` are not used without adjacent text that says what remains for the final smoke and what gets killed earlier by cheaper probes.
+- [ ] If the expensive smoke path is the only honest observable seam, the plan says so explicitly and explains why cheaper probes would not prove the behavior.
 - [ ] The implementation adversarial checklist was translated into spec-level semantics or explicit `N/A` entries before implementation.
 - [ ] `Depends on:` with owner/unblock condition is present when slice-level external dependencies exist.
 - [ ] `Assumes:` and `Fallback:` notes are present when slice-level high-risk assumptions exist.
@@ -576,7 +617,9 @@ Stage exit checklist:
 - [ ] If the changed scope includes executable code, runtime wiring, or trust-boundary changes, security review passed via `security-reviewer`: auth/authz, input validation, injection, secret handling, logging/redaction, trust boundaries, and data exposure risks were checked for the changed scope.
 - [ ] Findings from the nested `code-reviewer` and `security-reviewer` passes were explicitly reported by the reviewer, even though no separate nested review artifacts were created.
 - [ ] Follow-up fixes were re-audited according to the classifier-based narrow re-audit rules from [Implementation audit policy](references/implementation-audit-policy.md).
-- [ ] Verification was added alongside code: AC-linked tests plus smoke/startup/container checks when relevant.
+- [ ] Verification was added alongside code: AC-linked tests plus targeted runtime probes, integration checks, and final smoke/startup/container checks when relevant.
+- [ ] If the heavy-runtime trigger fired, heavy smoke was not used as the default debug loop; repeated expensive reruns had a named proof purpose or an explicit exception.
+- [ ] If the heavy-runtime trigger fired, the runtime envelope and verification ladder actually guided implementation instead of being deferred to close-out notes.
 - [ ] Newly discovered prerequisites or cross-cutting invariants were externalized promptly.
 - [ ] The target dossier was updated in the same workstream.
 - [ ] The no-technical-debt policy was applied and every debt item was either resolved or explicitly recorded in a canonical artifact.

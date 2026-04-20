@@ -28,7 +28,17 @@
    - `N/A` entries include compact `N/A rationale`;
    - unresolved adversarial cases become blocking `Open question` entries with `needed_by: before_planned` and do not count as completed adversarial semantics classification.
    Keep sequential replay distinct from concurrent replay when concurrency is possible, and keep closed admission distinct from already-started in-flight operation handling when shutdown/startup/order semantics matter.
-10. Add compact design with trigger-based representations:
+10. When the changed scope includes expensive model/runtime startup, large cache/download bootstrap, containerized or multi-process serving with meaningful startup/runtime pressure, or warm/cold path divergence that materially changes proof strategy, activate the heavy-runtime branch and add a compact runtime envelope before planning is treated as shaped enough.
+   At minimum capture:
+   - expected runtime instance shape;
+   - warm/cold assumptions;
+   - cache/download policy;
+   - timeout budget;
+   - retry budget or retry posture;
+   - allowed resource / pressure class;
+   - operator-visible constraints or risks when relevant.
+   Keep the runtime envelope compact and decision-oriented. It records implementation-shaping assumptions and proof-relevant budgets; it does not become a low-level deployment runbook and it never replaces adversarial semantics, edge cases, or failure-mode obligations.
+11. Add compact design with trigger-based representations:
    - If the feature adds or changes boundary I/O, include either an inline contract sketch or a link to the canonical schema/OpenAPI/protocol.
      Add the error model, and add retry/idempotency or duplicate-delivery semantics when the operation can be repeated.
    - runtime and deployment surface when relevant;
@@ -39,19 +49,19 @@
      - If a rule has 2+ independent conditions, add a decision table or decision list.
      - If the feature has named states, transitions, or guards, add a state list or compact state table.
      - If a DTO/event/request/response crosses a boundary, add a schema/contract pointer or compact structure block.
-11. Keep NFRs compact and normative only.
+12. Keep NFRs compact and normative only.
    - include only NFRs that can materially change implementation, verification, or feature closure;
    - every normative NFR needs a metric, budget/threshold, or explicit observable signal.
-12. Classify unresolved implementation-shaping decisions explicitly as `normative now`, `implementation freedom`, or `temporary assumption` instead of leaving them all in one undifferentiated bucket.
-13. Add Definition of Done, an initial coverage plan, and a compact rollout / activation note when activation order matters.
-14. Run a one-minute quick wording pass (`smell pass`):
+13. Classify unresolved implementation-shaping decisions explicitly as `normative now`, `implementation freedom`, or `temporary assumption` instead of leaving them all in one undifferentiated bucket.
+14. Add Definition of Done, an initial coverage plan, and a compact rollout / activation note when activation order matters.
+15. Run a one-minute quick wording pass (`smell pass`):
    - remove vague words such as `etc.`, `usually`, `as appropriate`, `fast`, or `user-friendly`;
    - split compound ACs;
    - do not leave raw `TBD`; convert it into an `Open question` with owner/date or next decision path.
-15. If an architectural fork exists, run `adr-log`.
-16. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
-17. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
-18. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
-19. If logging was required, update the stage log with review events, decisions/reclassifications, process misses, and the planned backlog actualization outcome before closure.
-20. Before moving to planning, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = specified`, or when shaping exposed new blockers, dependencies, or context facts.
-21. If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.
+16. If an architectural fork exists, run `adr-log`.
+17. If the spec introduces a cross-cutting decision, promote it to architecture or a repo ADR.
+18. Set dossier `status: shaped` unless a stricter repo overlay defines a different maturity rule.
+19. Keep `coverage_gate` explicit; default is still `deferred` unless repo rules say otherwise.
+20. If logging was required, update the stage log with review events, decisions/reclassifications, process misses, and the planned backlog actualization outcome before closure.
+21. Before moving to planning, return to `backlog-engineer` when the strongest available evidence now supports `delivery_state = specified`, or when shaping exposed new blockers, dependencies, or context facts.
+22. If logging was required, update the stage log with the backlog actualization result and links to applicable verification, review, and step-close artifacts.

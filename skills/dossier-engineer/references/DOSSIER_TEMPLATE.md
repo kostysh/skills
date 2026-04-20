@@ -106,6 +106,15 @@ Notes:
 
 ### 5.2 Runtime / deployment surface
 - Entrypoints, services, workers, jobs, containers, startup assumptions, env contract.
+- When the heavy-runtime trigger fires, record a compact runtime envelope here:
+  - expected runtime instance shape;
+  - warm/cold assumptions;
+  - cache/download policy;
+  - timeout budget;
+  - retry budget or retry posture;
+  - allowed resource / pressure class;
+  - operator-visible constraints or risks when relevant.
+- Keep the runtime envelope compact and decision-oriented. It is not a low-level deployment runbook and it does not replace edge cases, failure modes, or adversarial semantics that must still be recorded elsewhere in the dossier.
 
 ### 5.3 Data model changes
 - Tables/collections impacted; invariants and migration notes when relevant.
@@ -115,6 +124,13 @@ Notes:
 
 ### 5.5 Verification surface / initial verification plan
 - For each AC or AC group, name the proof type: unit, integration, smoke, manual/operator, or migration.
+- When the heavy-runtime trigger fires, express verification as a ladder instead of one broad label:
+  - lightweight local checks;
+  - targeted runtime probes;
+  - integration checks when relevant;
+  - final smoke gate.
+- Broad labels such as `smoke`, `runtime test`, or `end-to-end verification` are insufficient for heavy-runtime features unless the dossier says what remains for the final smoke gate and what gets killed earlier by cheaper probes.
+- If the expensive smoke path is the only honest observable seam, state that explicitly and explain why cheaper probes would not prove the behavior.
 
 ### 5.6 Representation upgrades (triggered only when needed)
 - Add a decision table/list when a rule has 2+ independent conditions.
