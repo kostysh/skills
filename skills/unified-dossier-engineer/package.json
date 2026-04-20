@@ -1,0 +1,7 @@
+{
+  "name": "@kostysh/unified-dossier-engineer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Planning-stage generated scaffold for the future merged dossier/backlog skill.",
+  "type": "module"
+}

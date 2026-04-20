@@ -1,0 +1,161 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: unified-dossier-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: >-
+    Plan, scaffold, and maintain the future merged dossier/backlog skill that
+    will replace the split between dossier-engineer and backlog-engineer. Use
+    when working on the unified architecture, source bundle, migration plan,
+    artifact model, or runtime convergence of that future skill.
+  compatibility: >-
+    Planning-stage generated skill. The source bundle is maintained with
+    skill-source-compiler. No unified runtime or CLI contract is shipped yet.
+
+fragments:
+  overview: fragments/overview.md
+  finalChecks: fragments/final-checks.md
+
+references:
+  - id: ref-status-scope
+    title: Status and scope
+    source: references/status-and-scope.md
+    target: references/status-and-scope.md
+    required: true
+    trigger: Read this first to understand what this skill currently is and is not.
+  - id: ref-unified-architecture
+    title: Unified architecture outline
+    source: references/unified-architecture.md
+    target: references/unified-architecture.md
+    required: true
+    trigger: Read this when modifying the merged artifact model, workflow model, or runtime boundaries.
+  - id: ref-source-bundle-governance
+    title: Source bundle governance
+    source: references/source-bundle-governance.md
+    target: references/source-bundle-governance.md
+    required: true
+    trigger: Read this when editing the scaffold, regenerating SKILL.md, or expanding the future runtime surface.
+
+assets:
+  - id: asset-readme
+    source: assets/README.md
+    target: assets/README.md
+    description: Placeholder for future bundled templates and static assets.
+
+copies: []
+
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Navigation for planning documents of the merged skill.
+  - id: supporting-concept
+    source: docs/issues/unified-dossier-engineer-concept-2026-04-20.md
+    target: docs/issues/unified-dossier-engineer-concept-2026-04-20.md
+    description: Concept document for the merged skill.
+  - id: supporting-plan
+    source: docs/refactoring-plan-1.ru.md
+    target: docs/refactoring-plan-1.ru.md
+    description: Initial development plan for the merged skill.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-status-scope
+      - ref-unified-architecture
+      - ref-source-bundle-governance
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+    - docs/issues/*
+
+sections:
+  startHere:
+    - Confirm the task is about planning, scaffolding, or implementing the future merged dossier/backlog skill.
+    - Read every required active reference before changing the source bundle.
+    - Treat this skill as planning-stage only until the merged runtime and CLI contract are actually shipped.
+    - Regenerate `SKILL.md` and `docs/compile-report.md` through `skill-source-compiler` after source-bundle edits.
+    - Keep the root `SKILL.md` intentionally lean and move bulky detail into active references or supporting docs.
+  whenToUse:
+    - Define or refine the merged architecture that combines backlog truth and dossier delivery workflow.
+    - Scaffold or maintain the generated source bundle for the future merged skill.
+    - Plan the migration from the split `backlog-engineer` + `dossier-engineer` model into one unified skill.
+  whenNotToUse:
+    - The task only changes the currently shipped `backlog-engineer` or `dossier-engineer` skill without touching the future merge.
+    - The task needs today's canonical runtime contract for backlog or dossier work; use the shipped skills directly.
+    - The task asks for a unified command surface that the merged runtime does not yet implement.
+  workflow:
+    - id: stage-confirm-status
+      title: Confirm planning-stage scope
+      goal: Prevent the scaffold from pretending the merged skill is already shipped.
+      steps:
+        - Verify whether the task changes planning documents, active references, source-bundle structure, or future runtime design.
+        - Refuse to document runnable commands unless a shipped runtime and tests exist in this skill.
+        - Keep the split-skill contract authoritative for current production behavior until the merge is implemented.
+      validation:
+        - No speculative CLI contract appears in `SKILL.md`.
+        - The scaffold remains honest about planning-stage status.
+    - id: stage-maintain-unified-model
+      title: Maintain the unified model
+      goal: Keep the merged architecture deterministic and non-destructive.
+      steps:
+        - Preserve the accounting versus project-SSOT artifact split.
+        - Preserve the invariant `one feature = one backlog item`.
+        - Keep `change-proposal`, `contract-drift-audit`, `backlog impact verdict`, `coverage_gate`, and strict closure semantics in scope.
+      validation:
+        - No tracked feature from either original skill disappears from the merged target model.
+        - "`.dossier` and `docs/ssot` remain semantically distinct."
+    - id: stage-regenerate-skill
+      title: Regenerate the generated skill
+      goal: Keep source bundle, generated skill, and supporting docs aligned.
+      steps:
+        - Edit `skill.yaml`, `fragments/*`, `references/*`, or supporting docs first.
+        - Run compiler lint, compile, and check from the skill root.
+        - Review compile warnings, especially `SKILL.md` size warnings, before finishing.
+      validation:
+        - "`SKILL.md` links every required active reference."
+        - "`docs/compile-report.md` reflects the current source bundle."
+  interop:
+    - id: interop-current-runtime
+      domain: current shipped backlog and dossier runtime behavior
+      winner: the existing `backlog-engineer` and `dossier-engineer` skills
+      rationale: Until the merged runtime is implemented, the split skills remain authoritative for active project work.
+    - id: interop-generated-maintenance
+      domain: generated-skill maintenance and source-bundle discipline
+      winner: "`skill-source-compiler`"
+      rationale: The merged skill must be maintained as a generated source bundle rather than hand-edited prose.
+  commands: []
+  gotchas:
+    - id: gotcha-no-speculative-cli
+      priority: high
+      text: Do not document runnable unified commands until the merged runtime and tests actually ship them.
+    - id: gotcha-root-size
+      priority: high
+      text: The merged skill will be large; keep `SKILL.md` small and push detail into `references/*` or compile will eventually drift beyond the recommended size ceiling.
+    - id: gotcha-ssot-split
+      priority: high
+      text: "`.dossier` is for accounting and process artifacts, while `docs/ssot` remains the human-facing project SSOT."
+  policies:
+    - id: policy-active-surface
+      title: Active normative surface
+      text: The generated `SKILL.md` and required references are the only active default instruction surface for this planning-stage skill.
+    - id: policy-supporting-surface
+      title: Supporting and historical surface
+      text: "`docs/*` and `docs/issues/*` remain supporting planning material unless promoted explicitly by `SKILL.md`."
+    - id: policy-no-function-loss
+      title: No functionality loss
+      text: The merge must retain every essential behavior of both original skills, including backlog source tracking, `change-proposal`, `contract-drift-audit`, `coverage_gate`, lifecycle telemetry, and strict closure truth.
+  portability:
+    required: true
+    rules:
+      - Do not emit absolute paths or machine-specific environment assumptions.
+      - Do not require repository files outside this skill folder to understand the merged design.
+      - Keep all mandatory guidance for the future merged skill inside this source bundle.
+      - Use only relative links inside the generated skill bundle.
+    checklist:
+      - Search the skill folder for absolute paths and remove them.
+      - Confirm every required reference exists inside this skill folder.
+      - Confirm the copied skill remains understandable in isolation.
+      - Keep `docs/*` clearly supporting unless promoted explicitly by `SKILL.md`.
