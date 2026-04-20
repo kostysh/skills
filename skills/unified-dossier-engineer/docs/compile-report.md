@@ -10,15 +10,21 @@ Generated from `skill.yaml`.
 - `fragments/final-checks.md`
 - `fragments/overview.md`
 - `package.json`
+- `references/backlog-truth-layer.md`
 - `references/source-bundle-governance.md`
+- `references/source-review-contract.md`
 - `references/status-and-scope.md`
 - `references/unified-architecture.md`
+- `references/unified-artifact-topology.md`
 - `skill.yaml`
 
 ## Required references
 - `references/status-and-scope.md`
 - `references/unified-architecture.md`
 - `references/source-bundle-governance.md`
+- `references/unified-artifact-topology.md`
+- `references/backlog-truth-layer.md`
+- `references/source-review-contract.md`
 
 ## Warnings
 - none

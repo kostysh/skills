@@ -13,6 +13,12 @@ Responsibilities:
 
 This layer owns the accounting truth for backlog state and source-driven follow-up.
 
+For detailed artifact and contract rules, also read:
+
+- [Unified artifact topology](unified-artifact-topology.md)
+- [Backlog truth layer](backlog-truth-layer.md)
+- [Source-review contract](source-review-contract.md)
+
 ## Delivery workflow layer
 
 Responsibilities:

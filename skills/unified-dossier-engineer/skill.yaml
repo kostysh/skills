@@ -37,6 +37,24 @@ references:
     target: references/source-bundle-governance.md
     required: true
     trigger: Read this when editing the scaffold, regenerating SKILL.md, or expanding the future runtime surface.
+  - id: ref-unified-artifact-topology
+    title: Unified artifact topology
+    source: references/unified-artifact-topology.md
+    target: references/unified-artifact-topology.md
+    required: true
+    trigger: Read this when designing or validating `.dossier` layout, root discovery, or `docs/ssot` boundaries.
+  - id: ref-backlog-truth-layer
+    title: Backlog truth layer
+    source: references/backlog-truth-layer.md
+    target: references/backlog-truth-layer.md
+    required: true
+    trigger: Read this when working on backlog graph truth, read models, actualization, or source-maintenance semantics in the merged skill.
+  - id: ref-source-review-contract
+    title: Source-review contract
+    source: references/source-review-contract.md
+    target: references/source-review-contract.md
+    required: true
+    trigger: Read this when designing refresh/attention behavior or source-change review semantics.
 
 assets:
   - id: asset-readme
@@ -52,6 +70,9 @@ surfaces:
       - ref-status-scope
       - ref-unified-architecture
       - ref-source-bundle-governance
+      - ref-unified-artifact-topology
+      - ref-backlog-truth-layer
+      - ref-source-review-contract
     optionalReferences: []
 
 sections:
@@ -119,6 +140,9 @@ sections:
     - id: gotcha-ssot-split
       priority: high
       text: "`.dossier` is for accounting and process artifacts, while `docs/ssot` remains the human-facing project SSOT."
+    - id: gotcha-source-review
+      priority: high
+      text: Source hash changes must open a source-review record first; they must not immediately flood linked items with `needs_attention`.
   policies:
     - id: policy-active-surface
       title: Active normative surface
@@ -126,6 +150,9 @@ sections:
     - id: policy-no-function-loss
       title: No functionality loss
       text: The merge must retain every essential behavior of both original skills, including backlog source tracking, `change-proposal`, `contract-drift-audit`, `coverage_gate`, lifecycle telemetry, and strict closure truth.
+    - id: policy-source-review-boundary
+      title: Source-review before item flood
+      text: Refresh-driven source changes open source-review records and block linked-item readiness until review resolves; item-level escalation happens only after confirmed backlog mutation work.
   portability:
     required: true
     rules:

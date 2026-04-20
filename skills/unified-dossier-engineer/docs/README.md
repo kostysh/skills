@@ -21,6 +21,7 @@ Current status:
 | [issues/unified-dossier-engineer-concept-2026-04-20.md](issues/unified-dossier-engineer-concept-2026-04-20.md) | Target concept for merging `backlog-engineer` and `dossier-engineer`, including artifact model, unified `.dossier`, telemetry, source-review, and compiler-first development rules. | Read first when validating or evolving the merged design. |
 | [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md) | Initial implementation plan for building the merged skill from the concept. | Read before planning or executing implementation work. |
 | [implementation-log-1.ru.md](implementation-log-1.ru.md) | Log for `Package 1`: generated-skill scaffold, active surface boundaries, compiler-first maintenance model, and emitted `SKILL.md` stabilization. | Read when verifying or reconstructing the first implementation wave. |
+| [implementation-log-2.ru.md](implementation-log-2.ru.md) | Log for grouped wave `Package 2 + Package 3 + Package 5`: unified `.dossier` topology, backlog truth layer, and source-review redesign as active references. | Read when verifying the first merged-domain modeling wave after the initial scaffold. |
 
 ## Scope of This Folder
 

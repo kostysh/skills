@@ -9,7 +9,7 @@ compatibility: Planning-stage generated skill. The source bundle is maintained
   with skill-source-compiler. No unified runtime or CLI contract is shipped yet.
 metadata:
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ce380110f9cb56dd75562ba8a46d6814ef59e57e595bc7f8d44169729ce50da5
+  skillforge-source-hash: 9b4c5691cf3151361cc26e21ed0bc3aa143738fa03cdf42a1b4c14501021c6a4
 ---
 
 # unified-dossier-engineer
@@ -95,6 +95,7 @@ Validation:
 - **high** — Do not document runnable unified commands until the merged runtime and tests actually ship them.
 - **high** — The merged skill will be large; keep `SKILL.md` small and push detail into `references/*` or compile will eventually drift beyond the recommended size ceiling.
 - **high** — `.dossier` is for accounting and process artifacts, while `docs/ssot` remains the human-facing project SSOT.
+- **high** — Source hash changes must open a source-review record first; they must not immediately flood linked items with `needs_attention`.
 
 ## Policies
 
@@ -104,10 +105,16 @@ The generated `SKILL.md` and required references are the only active default ins
 ### No functionality loss
 The merge must retain every essential behavior of both original skills, including backlog source tracking, `change-proposal`, `contract-drift-audit`, `coverage_gate`, lifecycle telemetry, and strict closure truth.
 
+### Source-review before item flood
+Refresh-driven source changes open source-review records and block linked-item readiness until review resolves; item-level escalation happens only after confirmed backlog mutation work.
+
 ## Required active references
 - [Status and scope](references/status-and-scope.md) — Read this first to understand what this skill currently is and is not.
 - [Unified architecture outline](references/unified-architecture.md) — Read this when modifying the merged artifact model, workflow model, or runtime boundaries.
 - [Source bundle governance](references/source-bundle-governance.md) — Read this when editing the scaffold, regenerating SKILL.md, or expanding the future runtime surface.
+- [Unified artifact topology](references/unified-artifact-topology.md) — Read this when designing or validating `.dossier` layout, root discovery, or `docs/ssot` boundaries.
+- [Backlog truth layer](references/backlog-truth-layer.md) — Read this when working on backlog graph truth, read models, actualization, or source-maintenance semantics in the merged skill.
+- [Source-review contract](references/source-review-contract.md) — Read this when designing refresh/attention behavior or source-change review semantics.
 
 ## Bundled assets
 
