@@ -7,9 +7,6 @@ Generated from `skill.yaml`.
 
 ## Source files
 - `assets/README.md`
-- `docs/README.md`
-- `docs/issues/unified-dossier-engineer-concept-2026-04-20.md`
-- `docs/refactoring-plan-1.ru.md`
 - `fragments/final-checks.md`
 - `fragments/overview.md`
 - `package.json`

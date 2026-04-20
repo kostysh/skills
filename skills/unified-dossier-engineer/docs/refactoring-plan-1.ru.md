@@ -19,6 +19,7 @@
 - merge не должен терять функционал `backlog-engineer` или `dossier-engineer`
 - `change-proposal`, `contract-drift-audit`, `backlog impact verdict`, `coverage_gate`, strict closure truth и lifecycle telemetry должны сохраниться
 - source-change review должен перейти от массового item-level flood к source-level review record model
+- merged runtime/CLI должен проектироваться только на основе отдельной utility specification, а не ad hoc по ходу реализации
 
 ## Главные ограничения
 
@@ -30,7 +31,8 @@
 
 - root `SKILL.md` должен оставаться thin orchestration surface
 - детальная методика должна жить в `references/*`
-- крупные объяснения, концепции, миграционные reasoning docs и issue papers должны жить в `docs/*`
+- тяжёлая active guidance должна жить в `references/*` и, если это шаблоны или bundled resources, в `assets/*`
+- `docs/*` остаётся служебной maintainer-only папкой репозитория skill-а и не должен линковаться из emitted `SKILL.md`
 - если compile начинает предупреждать про размер, сначала надо переразбить source bundle, а не повышать лимит
 
 ### 2. Нельзя проектировать speculative runtime contract
@@ -67,7 +69,7 @@ CLI нового skill-а не должен:
 
 - оформить canonical `skill.yaml`
 - определить минимальный набор active references
-- отделить active references от supporting planning docs
+- отделить active references and assets от maintainer-only `docs/*`
 - зафиксировать compiler-first maintenance model
 - установить explicit rule, что root `SKILL.md` содержит только activation, workflow, guardrails и navigation
 
@@ -194,11 +196,33 @@ CLI нового skill-а не должен:
 - `feature_cycle_id` и stage-local identity ties позволяют deterministically связать logs, steps и lifecycle snapshots
 - implementation closure truth опирается на step-close-backed evidence, а не на chat-only or speculative signals
 
-## Package 7. Спроектировать merged runtime and command boundary
+## Package 7. Разработать спецификацию объединённой утилиты
 
 ### Цель
 
-Собрать один будущий runtime surface without command ambiguity and without premature collapse.
+Сначала спроектировать unified utility contract как отдельный maintainer-facing specification artifact, и только после этого переходить к runtime/CLI.
+
+### Что входит
+
+- создать `docs/utility-spec.ru.md` как canonical maintainer-facing spec для будущей unified utility
+- определить command families, read models и mutating flows
+- определить artifact contracts, root discovery, path normalization и lock semantics
+- определить output contract, error contract и truthful closure/telemetry contract
+- определить, какие current backlog/dossier commands сохраняются literally, а какие merge/rename/deprecate
+- зафиксировать explicit boundary: utility mechanical only, no NLP or prose classification
+
+### Acceptance
+
+- существует единая utility specification, достаточная для runtime design без угадывания поведения “по ходу”
+- spec покрывает backlog truth, delivery workflow, source-review, telemetry и closure contracts
+- spec не обещает semantic automation beyond mechanical artifact work
+- implementation/runtime planning downstream ссылается на utility spec как на обязательный input
+
+## Package 8. Спроектировать merged runtime and command boundary
+
+### Цель
+
+Собрать один будущий runtime surface without command ambiguity and without premature collapse, опираясь на зафиксированную utility specification.
 
 ### Что входит
 
@@ -207,14 +231,16 @@ CLI нового skill-а не должен:
 - развести workflow stages и runnable commands
 - описать migration of old command entry points
 - определить deprecation strategy for split skills
+- отразить utility spec в runtime module boundaries и help surface contract
 
 ### Acceptance
 
 - merged runtime surface не теряет существующие capability families
 - никакая workflow stage не документируется как команда без shipped runtime
 - future command boundary остаётся deterministic и testable
+- runtime boundary derives from approved utility spec, not ad hoc implementation choices
 
-## Package 8. Реализовать validation, parity tests и migration rollout
+## Package 9. Реализовать validation, parity tests и migration rollout
 
 ### Цель
 
@@ -246,12 +272,14 @@ CLI нового skill-а не должен:
 6. Package 6
 7. Package 7
 8. Package 8
+9. Package 9
 
 Причина такого порядка:
 
 - сначала фиксируется generated-skill skeleton и size discipline
 - затем стабилизируется artifact topology
 - затем по отдельности переносятся backlog truth и delivery workflow truth
+- затем фиксируется utility specification как отдельный engineering contract
 - только после этого стоит собирать unified runtime boundary
 - migration rollout должен идти последним, когда contract уже стабилен
 

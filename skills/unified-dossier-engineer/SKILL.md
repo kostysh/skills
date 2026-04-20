@@ -9,7 +9,7 @@ compatibility: Planning-stage generated skill. The source bundle is maintained
   with skill-source-compiler. No unified runtime or CLI contract is shipped yet.
 metadata:
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 2a566399fa2b2b48128d91f760b79995efaf5173752c3bb2e46e99d1b467b767
+  skillforge-source-hash: 91d38ae6899c473d20580e806c092bdb1be685501fec54c9ef2f626ec26428b5
 ---
 
 # unified-dossier-engineer
@@ -20,7 +20,7 @@ metadata:
 2. Read every required active reference before changing the source bundle.
 3. Treat this skill as planning-stage only until the merged runtime and CLI contract are actually shipped.
 4. Regenerate `SKILL.md` and `docs/compile-report.md` through `skill-source-compiler` after source-bundle edits.
-5. Keep the root `SKILL.md` intentionally lean and move bulky detail into active references or supporting docs.
+5. Keep the root `SKILL.md` intentionally lean and move bulky active guidance into `references/*` or `assets/*`, not `docs/*`.
 
 ## When to use this skill
 
@@ -75,9 +75,9 @@ Validation:
 
 ### Workflow stage: Regenerate the generated skill
 
-Keep source bundle, generated skill, and supporting docs aligned.
+Keep source bundle and generated skill aligned.
 
-1. Edit `skill.yaml`, `fragments/*`, `references/*`, or supporting docs first.
+1. Edit `skill.yaml`, `fragments/*`, `references/*`, or `assets/*` first when changing the skill contract.
 2. Run compiler lint, compile, and check from the skill root.
 3. Review compile warnings, especially `SKILL.md` size warnings, before finishing.
 
@@ -101,9 +101,6 @@ Validation:
 
 ### Active normative surface
 The generated `SKILL.md` and required references are the only active default instruction surface for this planning-stage skill.
-
-### Supporting and historical surface
-`docs/*` and `docs/issues/*` remain supporting planning material unless promoted explicitly by `SKILL.md`.
 
 ### No functionality loss
 The merge must retain every essential behavior of both original skills, including backlog source tracking, `change-proposal`, `contract-drift-audit`, `coverage_gate`, lifecycle telemetry, and strict closure truth.
@@ -129,17 +126,13 @@ The merge must retain every essential behavior of both original skills, includin
 - Search the skill folder for absolute paths and remove them.
 - Confirm every required reference exists inside this skill folder.
 - Confirm the copied skill remains understandable in isolation.
-- Keep `docs/*` clearly supporting unless promoted explicitly by `SKILL.md`.
 
 ## Supporting and historical surface
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
-- Supporting glob: `docs/*`
-- Supporting glob: `docs/issues/*`
 
 ## Final checks
 
-1. Confirm the source bundle, generated `SKILL.md`, and supporting planning docs agree on current merged-skill status.
+1. Confirm the source bundle and generated `SKILL.md` agree on current merged-skill status.
 2. Confirm no active command surface is documented unless the merged runtime and tests actually ship it.
-3. Confirm the latest concept and implementation plan are present under `docs/issues/` and `docs/`.
-4. Confirm the root `SKILL.md` remains concise enough that adding more guidance should first prompt reference extraction, not root-file growth.
+3. Confirm the root `SKILL.md` remains concise enough that adding more guidance should first prompt reference extraction, not root-file growth.

@@ -46,20 +46,6 @@ assets:
 
 copies: []
 
-supporting:
-  - id: supporting-docs-readme
-    source: docs/README.md
-    target: docs/README.md
-    description: Navigation for planning documents of the merged skill.
-  - id: supporting-concept
-    source: docs/issues/unified-dossier-engineer-concept-2026-04-20.md
-    target: docs/issues/unified-dossier-engineer-concept-2026-04-20.md
-    description: Concept document for the merged skill.
-  - id: supporting-plan
-    source: docs/refactoring-plan-1.ru.md
-    target: docs/refactoring-plan-1.ru.md
-    description: Initial development plan for the merged skill.
-
 surfaces:
   active:
     requiredReferences:
@@ -67,9 +53,6 @@ surfaces:
       - ref-unified-architecture
       - ref-source-bundle-governance
     optionalReferences: []
-  supportingGlobs:
-    - docs/*
-    - docs/issues/*
 
 sections:
   startHere:
@@ -77,7 +60,7 @@ sections:
     - Read every required active reference before changing the source bundle.
     - Treat this skill as planning-stage only until the merged runtime and CLI contract are actually shipped.
     - Regenerate `SKILL.md` and `docs/compile-report.md` through `skill-source-compiler` after source-bundle edits.
-    - Keep the root `SKILL.md` intentionally lean and move bulky detail into active references or supporting docs.
+    - Keep the root `SKILL.md` intentionally lean and move bulky active guidance into `references/*` or `assets/*`, not `docs/*`.
   whenToUse:
     - Define or refine the merged architecture that combines backlog truth and dossier delivery workflow.
     - Scaffold or maintain the generated source bundle for the future merged skill.
@@ -109,9 +92,9 @@ sections:
         - "`.dossier` and `docs/ssot` remain semantically distinct."
     - id: stage-regenerate-skill
       title: Regenerate the generated skill
-      goal: Keep source bundle, generated skill, and supporting docs aligned.
+      goal: Keep source bundle and generated skill aligned.
       steps:
-        - Edit `skill.yaml`, `fragments/*`, `references/*`, or supporting docs first.
+        - Edit `skill.yaml`, `fragments/*`, `references/*`, or `assets/*` first when changing the skill contract.
         - Run compiler lint, compile, and check from the skill root.
         - Review compile warnings, especially `SKILL.md` size warnings, before finishing.
       validation:
@@ -141,9 +124,6 @@ sections:
     - id: policy-active-surface
       title: Active normative surface
       text: The generated `SKILL.md` and required references are the only active default instruction surface for this planning-stage skill.
-    - id: policy-supporting-surface
-      title: Supporting and historical surface
-      text: "`docs/*` and `docs/issues/*` remain supporting planning material unless promoted explicitly by `SKILL.md`."
     - id: policy-no-function-loss
       title: No functionality loss
       text: The merge must retain every essential behavior of both original skills, including backlog source tracking, `change-proposal`, `contract-drift-audit`, `coverage_gate`, lifecycle telemetry, and strict closure truth.
@@ -158,4 +138,3 @@ sections:
       - Search the skill folder for absolute paths and remove them.
       - Confirm every required reference exists inside this skill folder.
       - Confirm the copied skill remains understandable in isolation.
-      - Keep `docs/*` clearly supporting unless promoted explicitly by `SKILL.md`.

@@ -884,8 +884,9 @@ skills/dossier-engineer/
 
 3. `skill-source-compiler` вводит проверяемый recommended ceiling для размера `SKILL.md`, поэтому merged skill нужно с самого начала проектировать под progressive disclosure:
    - root `SKILL.md` только для activation / workflow / navigation
-   - bulk guidance выносится в `references/*`
-   - supporting analysis и migration docs живут в `docs/*`
+   - bulk active guidance выносится в `references/*`
+   - templates и bundled static resources выносятся в `assets/*`, если это действительно assets
+   - `docs/*` остаётся служебной maintainer-only папкой репозитория skill-а и не должен линковаться из emitted skill
    - compile warning по размеру — это сигнал к переразбиению source bundle, а не повод автоматически повышать лимит
 
 4. Если skill ships runtime utility, его public command surface должен описываться только через реально shipped runtime, а не через prose guesses.

@@ -47,7 +47,7 @@ Supporting planning surface:
 
 - Prefer using the `skill-source-compiler` skill when maintaining this skill.
 - Update the source bundle first and regenerate instead of hand-editing generated files.
-- Keep `SKILL.md` intentionally small; push bulky detail into `references/*` and supporting docs.
+- Keep `SKILL.md` intentionally small; push bulky active guidance into `references/*` and `assets/*`.
 - Do not document a unified CLI contract until the merged runtime actually ships it.
 - Keep the merged artifact split stable: accounting artifacts in `.dossier`, project SSOT in `docs/ssot`.
 - Preserve the invariant `one feature = one backlog item`.

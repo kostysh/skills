@@ -9,12 +9,13 @@ Edit these first:
 - `skill.yaml`
 - `fragments/*`
 - `references/*`
-- `docs/*`
+- `assets/*`
 - `src/*`
 - `test/*`
 - `package.json`
 
 Do not hand-edit generated `SKILL.md` as the authoritative source.
+`docs/*` remains a maintainer-only repository surface and must not become part of the emitted skill contract.
 
 ## Size rule
 
@@ -23,7 +24,7 @@ The merged skill is expected to accumulate a large amount of guidance. Because t
 Required behavior:
 
 - keep the root `SKILL.md` for activation, workflow, guardrails, and navigation only
-- move detailed architecture, migration reasoning, and long examples into `references/*` or supporting docs
+- move detailed active guidance, architecture, and long examples into `references/*` or `assets/*`
 - treat compile size warnings as a signal to refactor the source bundle, not as a casual reason to raise the size ceiling
 
 ## Regeneration workflow
