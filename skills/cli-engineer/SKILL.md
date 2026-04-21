@@ -43,6 +43,7 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 
 - Keep the CLI layer thin. Parsing, help, TTY detection, formatting, and exit codes belong in CLI code; business rules do not.
 - Design the utility as modular layers and modules with explicit boundaries so commands, use cases, formatters, and adapters stay independently testable.
+- For service-backed CLIs, prefer an explicit command family over vague catch-all verbs: health/setup (`doctor`, optional `init`), discovery, resolve/ID lookup, read/list/search, narrow write actions, and a clearly named raw escape hatch when one is justified.
 - Every interactive flow must have a non-interactive path through flags, args, stdin, config, or files.
 - Use `stdout` for primary output and machine-readable output; use `stderr` for diagnostics, prompts, and errors.
 - Treat `--help`, output shape, flag names, and exit codes as public API.
@@ -56,6 +57,7 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 - Run tests with Node's test runner and native type stripping; do not use the `tsx` runtime. A representative command is `node --experimental-strip-types --test test/*.test.ts`.
 - If the target repository does not already provide an equivalent quality gate, add and enforce one for at least typecheck, format, and lint before considering the CLI ready.
 - Prefer the current Active LTS Node baseline for new CLI work, but verify the current release state before locking version advice into code or docs.
+- If the CLI is meant to run outside its source repository, verify the installed command name early, publish a real install path, and smoke test from another working directory such as `/tmp`, not only through source-mode wrappers.
 
 ## When to Use This Skill
 
@@ -93,18 +95,20 @@ Do NOT use for:
 
 ## Quick Workflow
 
-1. Classify the CLI before choosing tools: tiny utility, standard multi-command CLI, plugin platform, or rich TUI.
+1. Classify the CLI before choosing tools: tiny utility, standard multi-command CLI, plugin platform, rich TUI, or service-backed operator CLI.
 2. Decide the automation contract first: human-only, human-first but scriptable, or machine-first with human affordances.
-3. Pick the thinnest framework that satisfies the real requirements.
-4. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
-5. Design non-interactive paths before prompts or TUI polish.
-6. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
-7. Ensure the repo has a quality gate for typecheck, format, and lint if one is not already established.
-8. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, and provenance where supported.
+3. For durable or installable CLIs, pin the binary name, source material, and first concrete jobs before coding; check whether the proposed command already exists with `command -v <tool-name>`.
+4. Pick the thinnest framework that satisfies the real requirements.
+5. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
+6. Design non-interactive paths before prompts or TUI polish.
+7. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
+8. Ensure the repo has a quality gate for typecheck, format, and lint if one is not already established.
+9. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, install-path verification, and provenance where supported.
 
 ## High-signal Triggers
 
 - **Need a baseline command contract or design review standard**: read `references/clig-baseline.md` first.
+- **Need a service-backed command surface that future agent threads can safely reuse**: read `references/service-backed-clis.md` for naming, `doctor --json`, discovery/resolve/read/write taxonomy, auth reporting, and installability checks.
 - **Need plugins or a true multi-team CLI platform**: read `references/framework-selection.md` and bias toward `oclif`.
 - **Need tiny dependency surface or frequent CI invocation**: read `references/framework-selection.md` and `references/architecture-and-layout.md` for `parseArgs` / `cac`.
 - **Need bundling guidance or executable artifact rules**: read `references/architecture-and-layout.md` and `references/testing-and-release.md` for the Vite baseline.
@@ -117,6 +121,7 @@ Do NOT use for:
 Read only the smallest relevant reference file:
 
 - [clig-baseline.md](references/clig-baseline.md) - adopted CLIG principles and how they map onto modern Node.js / TypeScript CLI work
+- [service-backed-clis.md](references/service-backed-clis.md) - command taxonomy, auth/reporting, install-path behavior, and smoke-test rules for CLIs that wrap external systems
 - [framework-selection.md](references/framework-selection.md) - how to choose frameworks and stacks for simple, complex, and interactive CLI work
 - [architecture-and-layout.md](references/architecture-and-layout.md) - package structure, command layering, config precedence, output model, and cross-platform design
 - [testing-and-release.md](references/testing-and-release.md) - test pyramid, process-level integration, TUI/non-TTY testing, packaging, publishing, and release workflow
@@ -125,6 +130,7 @@ Read only the smallest relevant reference file:
 Use `rg` if you only need one section:
 
 - `rg -n "Philosophy Baseline|Operational Rules|Node And TUI Adaptations" references/clig-baseline.md`
+- `rg -n "Preflight|Command Taxonomy|Auth And Config|Installability" references/service-backed-clis.md`
 - `rg -n "Decision Matrix|Framework Notes" references/framework-selection.md`
 - `rg -n "Simple CLI Blueprint|Complex CLI Blueprint|TUI Blueprint" references/architecture-and-layout.md`
 - `rg -n "Runner Selection|Integration Tests|Release Baseline" references/testing-and-release.md`

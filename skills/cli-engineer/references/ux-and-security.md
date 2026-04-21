@@ -81,6 +81,8 @@ Interactive UI is an enhancement layer, not the only product surface.
 - do not require secrets via argv when stdin, env, config files, or keychain integration is safer
 - for new designs, prefer files, stdin, keychain, secret managers, or other IPC over environment variables for secrets
 - if env-based secrets are required for ecosystem compatibility, document the leak surface explicitly
+- for service-backed CLIs, prefer env vars or documented user config for normal auth and reserve token flags for explicit one-off tests
+- when the CLI exposes `doctor --json` or equivalent health output, report whether auth is present and its source category without printing the secret value
 - never echo secrets back to the terminal
 - redact secrets from logs, error output, and debug traces
 

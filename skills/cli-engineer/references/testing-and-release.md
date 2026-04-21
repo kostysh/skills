@@ -38,6 +38,8 @@ Execute the CLI as a real process and assert on:
 
 Use temporary directories and isolated env vars. Prefer black-box assertions over internal mocking here.
 
+If the CLI is intended to be invoked as an installed command outside its source repository, include at least one smoke test from another working directory such as `/tmp` or an unrelated repo. Verify `command -v <tool-name>` and execute the real installed command rather than only package-manager wrappers.
+
 ### Contract tests
 
 Lock down public CLI surface:
@@ -185,7 +187,7 @@ Typical release flow:
 2. build CLI artifacts
 3. smoke test built package and optional standalone artifacts
 4. publish package
-5. verify install and command startup from a clean environment
+5. verify install, `command -v`, and command startup from a clean environment or unrelated working directory
 6. verify update path if the CLI has plugin or self-update behavior
 7. verify uninstall or clean removal instructions still work
 
