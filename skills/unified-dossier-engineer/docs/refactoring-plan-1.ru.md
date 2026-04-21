@@ -290,25 +290,77 @@ CLI нового skill-а не должен:
 - future command boundary остаётся deterministic и testable
 - runtime boundary derives from approved utility spec, not ad hoc implementation choices
 
-## Package 9. Реализовать validation, parity tests и migration rollout
+## Package 9. Реализовать merged runtime, help surface и compatibility launchers
 
 ### Цель
 
-Сделать merge безопасным и обратимо-проверяемым.
+Материализовать approved utility spec и runtime-boundary design в реальный code-backed runtime, не теряя planning-stage discipline до момента фактического runtime promotion.
+
+### Что входит
+
+- реализовать shared runtime skeleton under `src/*`
+- реализовать shipped launcher surface under `scripts/*`
+- реализовать command families, определённые в utility spec и runtime-boundary package
+- реализовать compatibility launchers / wrappers для split entry points, если они нужны для безопасного rollout
+- реализовать help surface, JSON envelopes, symbolic error codes и lock/root behavior
+- реализовать command behavior tests для shipped runtime
+- выполнить runtime promotion в source bundle:
+  - заполнить `skill.yaml` command surface только реально shipped commands
+  - выровнять generated `SKILL.md` с реальным help/runtime contract
+  - сохранить explicit separation между shipped commands и workflow prose
+
+### Acceptance
+
+- существует реальный merged runtime, а не только design package
+- shipped help surface соответствует utility spec и runtime-boundary package
+- command behavior защищён tests, а не только prose
+- compatibility launchers, если они нужны, остаются явно transitional и не образуют второй неявный public contract
+- generated skill перестаёт быть purely planning-stage там, где реально появился shipped runtime
+
+## Package 10. Реализовать migration tooling, parity validation и rollout
+
+### Цель
+
+Сделать merge безопасным, обратимо-проверяемым и выполнимым на реальных split artifacts/operators workflows.
 
 ### Что входит
 
 - docs/runtime/test parity suite
 - contract-style checks for generated `SKILL.md`
+- migration tooling для split backlog/dossier artifacts -> unified `.dossier`
 - migration fixtures for backlog and dossier artifacts
 - transitional compatibility checks
 - rollout criteria for switching operator guidance to merged skill
+- rollback / abort criteria, если migration или parity оказываются неполными
 
 ### Acceptance
 
 - merge не требует верить только prose reasoning
+- migration tooling позволяет реально перевести split artifacts в unified layout, а не только описывает это на словах
 - parity tests доказывают, что важные contracts сохранены
 - split skills не объявляются legacy, пока merged skill не покрывает equivalent behavior
+- rollout criteria опираются на реальные runtime/help/tests/migration results, а не только на design completeness
+
+## Package 11. Завершить replacement split skills и убрать legacy semantics
+
+### Цель
+
+После успешного rollout довести merge до реальной полной замены split-модели, а не оставить её в вечном transitional state.
+
+### Что входит
+
+- retire `backlog-engineer` как отдельный active skill после подтверждённого parity/rollout success
+- retire legacy split wording в unified skill и связанных maintainers docs
+- убрать old root-level backlog artifact assumptions, если migration tooling и rollout подтвердили переход на unified `.dossier`
+- сузить compatibility launchers до окончательного поддерживаемого набора или удалить их, если rollout criteria допускают removal
+- обновить operator guidance, чтобы unified `dossier-engineer` стал единственным canonical path
+
+### Acceptance
+
+- split-модель реально заменена, а не просто объявлена deprecated
+- ownership unified process model больше не размыт между тремя слоями: old backlog skill, old dossier skill, new merged skill
+- legacy wording и obsolete artifact assumptions убраны после подтверждённого rollout success
+- compatibility surface после cleanup остаётся минимальной и намеренной, а не случайно накопленной
 
 ## Порядок реализации
 
@@ -324,6 +376,8 @@ CLI нового skill-а не должен:
 8. Package 7
 9. Package 8
 10. Package 9
+11. Package 10
+12. Package 11
 
 Причина такого порядка:
 
@@ -332,8 +386,10 @@ CLI нового skill-а не должен:
 - затем по отдельности переносятся backlog truth и delivery workflow truth
 - затем отдельно фиксируется commandized stage-control model для delivery workflows
 - затем фиксируется utility specification как отдельный engineering contract
-- только после этого стоит собирать unified runtime boundary
-- migration rollout должен идти последним, когда contract уже стабилен
+- затем фиксируется runtime/help/module boundary
+- затем отдельно реализуется сам merged runtime, compatibility launchers и help surface
+- migration tooling, parity validation и rollout должны идти последними, когда runtime уже реально существует
+- только после подтверждённого rollout success можно retire-ить split skills и окончательно убрать legacy semantics
 
 ## Главные риски имплементации
 
@@ -358,6 +414,21 @@ Mitigation:
 
 - отдельный package на workflow and closure truth
 - explicit preservation of `coverage_gate`, readiness gates, and `dossier-step-close` style semantics
+
+### Риск 4. План останется design-heavy и пропустит реальную разработку утилиты
+
+Mitigation:
+
+- отдельный package на runtime implementation между runtime-boundary design и rollout
+- runtime promotion в `skill.yaml` только после появления реального code/help/tests surface
+- parity и migration не начинаются до появления working merged runtime
+
+### Риск 5. Merge зависнет в perpetual transitional mode
+
+Mitigation:
+
+- отдельный post-rollout package на retirement split skills и cleanup legacy semantics
+- compatibility launchers и old wording удаляются только после rollout success, но не оставляются бесконечно “на потом”
 
 ### Риск 4. Unified runtime начнёт обещать semantic automation
 
