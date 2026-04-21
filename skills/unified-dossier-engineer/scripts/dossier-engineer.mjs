@@ -28,6 +28,12 @@ var files = ["scripts"];
 var engines = { "node": ">=22.22.0" };
 var scripts = {
 	"build": "vite build && node -e \"const fs=require('node:fs');const path=require('node:path');for(const name of fs.readdirSync('scripts')){if(!name.endsWith('.mjs')) continue; const filePath=path.join('scripts', name); const source=fs.readFileSync(filePath, 'utf8'); fs.writeFileSync(filePath, source.replace(/[ \\t]+$/gm, ''));}\" && chmod +x scripts/*.mjs",
+	"format": "biome format --files-ignore-unknown=true --write src test package.json tsconfig.json vite.config.ts",
+	"format:check": "biome check --files-ignore-unknown=true --formatter-enabled=true --linter-enabled=false --assist-enabled=false src test package.json tsconfig.json vite.config.ts",
+	"lint:biome": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings src test package.json tsconfig.json vite.config.ts",
+	"lint:eslint": "eslint \"src/**/*.ts\" \"test/**/*.ts\" \"vite.config.ts\"",
+	"lint": "pnpm run lint:biome && pnpm run lint:eslint && pnpm run typecheck",
+	"lint:fix": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings --write src test package.json tsconfig.json vite.config.ts && eslint --fix \"src/**/*.ts\" \"test/**/*.ts\" \"vite.config.ts\" && pnpm run typecheck",
 	"pretest": "pnpm run build",
 	"test": "node --experimental-strip-types --test test/*.test.ts",
 	"typecheck": "tsc --noEmit"
@@ -21680,7 +21686,7 @@ function collectItemSourceIds(item) {
 		...item.test_source_ids
 	]);
 }
-async function resolveRefreshScope(payload) {
+function resolveRefreshScope(payload) {
 	const itemKey = takeOption$2(payload.args, "--item-key");
 	const sourceId = takeOption$2(payload.args, "--source-id");
 	const sourceLabel = takeOption$2(payload.args, "--source-label");
@@ -21695,24 +21701,27 @@ async function resolveRefreshScope(payload) {
 	if (itemKey) {
 		const item = payload.state.items.find((entry) => entry.item_key === itemKey);
 		if (!item) throw new Error(`Unknown item key: ${itemKey}`);
-		return { selectedSourceIds: [...collectItemSourceIds(item)].sort((left, right) => left.localeCompare(right)) };
+		return Promise.resolve({ selectedSourceIds: [...collectItemSourceIds(item)].sort((left, right) => left.localeCompare(right)) });
 	}
-	if (sourceId || sourceLabel || sourcePath) return { selectedSourceIds: payload.context.sources.resolveSourceScope({
-		backlogRoot: payload.context.backlogRoot,
-		state: payload.state,
-		registry: payload.registry,
-		selector: sourceId ? {
-			kind: "source_id",
-			source_id: sourceId
-		} : sourceLabel ? {
-			kind: "source_label",
-			source_label: sourceLabel
-		} : {
-			kind: "source_path",
-			source_path: payload.context.host.resolveCliPath(sourcePath ?? "")
-		}
-	}).sourceIds };
-	return { selectedSourceIds: payload.registry.sources.map((source) => source.source_id) };
+	if (sourceId || sourceLabel || sourcePath) {
+		const scope = payload.context.sources.resolveSourceScope({
+			backlogRoot: payload.context.backlogRoot,
+			state: payload.state,
+			registry: payload.registry,
+			selector: sourceId ? {
+				kind: "source_id",
+				source_id: sourceId
+			} : sourceLabel ? {
+				kind: "source_label",
+				source_label: sourceLabel
+			} : {
+				kind: "source_path",
+				source_path: payload.context.host.resolveCliPath(sourcePath ?? "")
+			}
+		});
+		return Promise.resolve({ selectedSourceIds: scope.sourceIds });
+	}
+	return Promise.resolve({ selectedSourceIds: payload.registry.sources.map((source) => source.source_id) });
 }
 function relatedItemKeysForSource(state, sourceId) {
 	return state.items.filter((item) => collectItemSourceIds(item).has(sourceId)).map((item) => item.item_key).sort((left, right) => left.localeCompare(right));
@@ -22148,7 +22157,7 @@ var BACKLOG_COMMANDS = [
 	createVendoredCommandWrapper(REGISTER_SOURCE_COMMAND, "backlog-source"),
 	createVendoredCommandWrapper(LIST_SOURCES_COMMAND, "backlog-source"),
 	createVendoredCommandWrapper(UPDATE_SOURCE_PATH_COMMAND, "backlog-source", async ({ context, output }) => {
-		if (!context.backlogRoot || !output?.source_id) return;
+		if (!context.backlogRoot || !output.source_id) return;
 		return { dataPatch: {
 			resolved_source_review_ids: (await maybeResolveSourceReviewsFromSourceId({
 				root: context.backlogRoot,
@@ -22160,7 +22169,7 @@ var BACKLOG_COMMANDS = [
 		} };
 	}),
 	createVendoredCommandWrapper(REMOVE_SOURCE_COMMAND, "backlog-source", async ({ context, output }) => {
-		if (!context.backlogRoot || !output?.source_id) return;
+		if (!context.backlogRoot || !output.source_id) return;
 		return { dataPatch: {
 			resolved_source_review_ids: (await maybeResolveSourceReviewsFromSourceId({
 				root: context.backlogRoot,
@@ -22275,7 +22284,7 @@ async function acquireDeliveryMutationLock(payload) {
 	const locksDir = path.join(payload.root, ".dossier", "ops", "locks");
 	const lockPath = path.join(locksDir, `${featureId}--${featureCycleId}.lock`);
 	await assertManagedWritePath(payload.root, locksDir, lockPath, "delivery mutation lock");
-	let handle;
+	let handle = null;
 	try {
 		handle = await promises.open(lockPath, "wx");
 		await handle.writeFile(`${JSON.stringify({
@@ -22294,7 +22303,7 @@ async function acquireDeliveryMutationLock(payload) {
 		if (released) return;
 		released = true;
 		try {
-			await handle.close();
+			await handle?.close();
 		} catch {}
 		await promises.rm(lockPath, { force: true });
 	};
@@ -22610,7 +22619,7 @@ function ensureAllowedStep(step, optionName) {
 	if (!ALLOWED_DOSSIER_STEPS.has(step)) throw new Error(`${optionName} must be one of: ${[...ALLOWED_DOSSIER_STEPS].sort().join(", ")}.`);
 	return step;
 }
-async function captureDossierCommandOutput(commandName, args, io, command) {
+async function captureDossierCommandOutput(commandName, args, command) {
 	const stderrBuffer = [];
 	const stdoutBuffer = [];
 	return {
@@ -22667,7 +22676,7 @@ function createDossierCommandWrapper(name, family) {
 					featureCycleId: "allocation",
 					command: "feature-intake",
 					run: async () => {
-						const { exitCode, stderr, stdout } = await captureDossierCommandOutput(name, argsWithJson, io, command);
+						const { exitCode, stderr, stdout } = await captureDossierCommandOutput(name, argsWithJson, command);
 						const summary = stdout.trim() ? JSON.parse(stdout) : null;
 						if (exitCode !== 0 && !summary) throw new Error(stderr.trim() || "feature-intake failed before creating a dossier.");
 						if (!summary) throw new Error("feature-intake did not return a JSON summary.");
@@ -22819,7 +22828,7 @@ function createDossierCommandWrapper(name, family) {
 					featureCycleId: stageLog.featureCycleId,
 					command: name,
 					run: async () => {
-						const { exitCode, stderr, stdout } = await captureDossierCommandOutput(name, args, io, command);
+						const { exitCode, stderr, stdout } = await captureDossierCommandOutput(name, args, command);
 						const stepArtifactPath = path.join(".dossier", "steps", featureId, `${normalizedStep}.json`);
 						const absStepArtifactPath = path.join(root, stepArtifactPath);
 						if (stdout) io.stdout.write(stdout);
@@ -23045,8 +23054,8 @@ function createDossierCommandWrapper(name, family) {
 					featureId,
 					featureCycleId,
 					command: name,
-					run: async () => captureDossierCommandOutput(name, args, io, command)
-				}) : await captureDossierCommandOutput(name, args, io, command);
+					run: async () => captureDossierCommandOutput(name, args, command)
+				}) : await captureDossierCommandOutput(name, args, command);
 				if (exitCode !== 0) throw new Error(stderr.trim() || "lifecycle-refresh failed.");
 				const summary = JSON.parse(stdout);
 				writeCliEnvelope(io.stdout, {

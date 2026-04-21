@@ -83,10 +83,9 @@ export async function upsertOpenSourceReview(payload: {
 }): Promise<{ created: boolean; record: SourceReviewRecord; updated: boolean }> {
   const sourceReviewId = createSourceReviewId(payload.sourceId);
   const targetPath = sourceReviewPath(payload.root, sourceReviewId);
-  const existing =
-    (await fileExists(targetPath))
-      ? (JSON.parse(await fs.readFile(targetPath, 'utf8')) as SourceReviewRecord)
-      : null;
+  const existing = (await fileExists(targetPath))
+    ? (JSON.parse(await fs.readFile(targetPath, 'utf8')) as SourceReviewRecord)
+    : null;
   const normalizedLinkedItemKeys = [...new Set(payload.linkedItemKeys)].sort((left, right) =>
     left.localeCompare(right),
   );
@@ -132,9 +131,7 @@ export async function upsertOpenSourceReview(payload: {
   return {
     record: nextRecord,
     created: existing === null,
-    updated:
-      existing !== null &&
-      JSON.stringify(existing) !== JSON.stringify(nextRecord),
+    updated: existing !== null && JSON.stringify(existing) !== JSON.stringify(nextRecord),
   };
 }
 

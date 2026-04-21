@@ -5,16 +5,10 @@ import path from 'node:path';
 import YAML from 'yaml';
 
 import { acquireDeliveryMutationLock } from '../shared/delivery-lock.ts';
-import {
-  resolveManagedDossierIdentity,
-  sanitizeFeatureId,
-} from '../shared/feature-identity.ts';
+import { resolveManagedDossierIdentity, sanitizeFeatureId } from '../shared/feature-identity.ts';
 import { featureDossiersDirPath, resolveProcessRoot } from '../shared/process-root.ts';
 import { assertManagedWritePath } from '../shared/path-guards.ts';
-import {
-  fileExists,
-  writeTextAtomic,
-} from '../vendor/dossier-engineer/lib/fs-utils.ts';
+import { fileExists, writeTextAtomic } from '../vendor/dossier-engineer/lib/fs-utils.ts';
 import {
   extractFeatureNumericId,
   listDossierFiles,
@@ -114,12 +108,19 @@ function nextCommandsForState(
     return [`dossier-engineer ${command} --feature-id <id>`];
   }
   if (stageState === 'ready_for_close') {
-    return ['dossier-engineer dossier-verify ...', 'dossier-engineer review-artifact ...', 'dossier-engineer dossier-step-close ...'];
+    return [
+      'dossier-engineer dossier-verify ...',
+      'dossier-engineer review-artifact ...',
+      'dossier-engineer dossier-step-close ...',
+    ];
   }
   return [`dossier-engineer ${command} --feature-id <id> --ready-for-close`];
 }
 
-function parseBacklogItemKey(dossier: { frontmatter: Record<string, unknown>; markdown: string }): string | null {
+function parseBacklogItemKey(dossier: {
+  frontmatter: Record<string, unknown>;
+  markdown: string;
+}): string | null {
   const fromFrontmatter = dossier.frontmatter.backlog_item_key;
   if (typeof fromFrontmatter === 'string' && fromFrontmatter.trim()) {
     return fromFrontmatter.trim();
@@ -292,7 +293,12 @@ export async function appendFeatureIntakeLog(payload: {
 }> {
   const now = new Date().toISOString();
   const cycleId = `intake-${crypto.randomUUID().slice(0, 8)}`;
-  const relPath = path.join('.dossier', 'logs', 'feature-intake', `${payload.featureId}--${payload.featureCycleId}.md`);
+  const relPath = path.join(
+    '.dossier',
+    'logs',
+    'feature-intake',
+    `${payload.featureId}--${payload.featureCycleId}.md`,
+  );
   const absPath = path.join(payload.root, relPath);
   const transitionEvents = [
     { kind: 'entered', at: now },
@@ -372,15 +378,17 @@ export async function runStageControllerCommand(
       };
   const backlogItemKey = parseBacklogItemKey(dossier);
   if (!backlogItemKey) {
-    throw new Error(
-      `Dossier ${featureId} is missing canonical frontmatter backlog_item_key.`,
-    );
+    throw new Error(`Dossier ${featureId} is missing canonical frontmatter backlog_item_key.`);
   }
   const latestForStage = await loadLatestStageLog(root, command, featureId, requestedCycleId);
   const latestFeatureIntake =
-    command === 'feature-intake' ? null : await loadLatestStageLog(root, 'feature-intake', featureId);
+    command === 'feature-intake'
+      ? null
+      : await loadLatestStageLog(root, 'feature-intake', featureId);
   const latestImplementation =
-    command === 'feature-intake' ? null : await loadLatestStageLog(root, 'implementation', featureId);
+    command === 'feature-intake'
+      ? null
+      : await loadLatestStageLog(root, 'implementation', featureId);
   const lifecycleAnchor = latestForStage ?? latestFeatureIntake ?? latestImplementation;
   const featureCycleId =
     toNullableString(lifecycleAnchor?.metadata.feature_cycle_id) ??
@@ -400,7 +408,9 @@ export async function runStageControllerCommand(
     );
   }
 
-  const cycleId = toNullableString(latestForStage?.metadata.cycle_id) ?? `${command}-${crypto.randomUUID().slice(0, 8)}`;
+  const cycleId =
+    toNullableString(latestForStage?.metadata.cycle_id) ??
+    `${command}-${crypto.randomUUID().slice(0, 8)}`;
   const enteredTs = toNullableString(latestForStage?.metadata.entered_ts) ?? now;
   const readyForCloseTs =
     action === 'ready_for_close'
@@ -442,7 +452,12 @@ export async function runStageControllerCommand(
     metadata.local_gates_green_ts = now;
   }
 
-  const relPath = path.join('.dossier', 'logs', command, `${featureId}--${featureCycleId}--${cycleId}.md`);
+  const relPath = path.join(
+    '.dossier',
+    'logs',
+    command,
+    `${featureId}--${featureCycleId}--${cycleId}.md`,
+  );
   const absPath = path.join(root, relPath);
   const releaseLock = await acquireDeliveryMutationLock({
     root,

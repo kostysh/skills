@@ -1,6 +1,10 @@
-import { executeCommand as executeDossierCommand, findCommand as findDossierCommand, type CliIo as DossierCliIo } from './vendor/dossier-engineer/commands.ts';
+import {
+  executeCommand as executeDossierCommand,
+  findCommand as findDossierCommand,
+  type CliIo as DossierCliIo,
+} from './vendor/dossier-engineer/commands.ts';
 
-import { BACKLOG_COMMANDS, type CliIo, type UnifiedBacklogCommand } from './backlog/commands.ts';
+import { BACKLOG_COMMANDS, type CliIo } from './backlog/commands.ts';
 import {
   appendFeatureIntakeLog,
   recordStepCloseOnStageLog,
@@ -10,21 +14,14 @@ import {
   type StageControllerCommand,
 } from './delivery/stage-control.ts';
 import { acquireDeliveryMutationLock } from './shared/delivery-lock.ts';
-import {
-  resolveManagedDossierIdentity,
-  sanitizeFeatureId,
-} from './shared/feature-identity.ts';
+import { resolveManagedDossierIdentity, sanitizeFeatureId } from './shared/feature-identity.ts';
 import { resolveProcessRoot } from './shared/process-root.ts';
-import {
-  assertManagedWritePath,
-  resolveManagedPath,
-  resolveManagedReadPath,
-} from './shared/path-guards.ts';
+import { assertManagedWritePath, resolveManagedReadPath } from './shared/path-guards.ts';
 import { writeCliEnvelope } from './shared/cli-envelope.ts';
 import path from 'node:path';
 import { promises as fs } from 'node:fs';
 
-export { type CliIo };
+export type { CliIo };
 
 type UnifiedCommand = {
   aliases?: string[];
@@ -88,22 +85,9 @@ function ensureAllowedStep(step: string, optionName: string): string {
   return step;
 }
 
-function createBacklogHelpLines(command: UnifiedBacklogCommand): string[] {
-  return [
-    command.summary,
-    '',
-    'Usage:',
-    ...command.usage.map((line) => `  ${line}`),
-    ...(command.options && command.options.length > 0
-      ? ['', 'Options:', ...command.options.map((line) => `  ${line}`)]
-      : []),
-  ];
-}
-
 async function captureDossierCommandOutput(
   commandName: string,
   args: string[],
-  io: CliIo,
   command: NonNullable<ReturnType<typeof findDossierCommand>>,
 ): Promise<{ exitCode: number; stderr: string; stdout: string }> {
   const stderrBuffer: string[] = [];
@@ -155,7 +139,10 @@ async function withDeliveryLock<T>(payload: {
   }
 }
 
-function createDossierCommandWrapper(name: string, family: UnifiedCommand['family']): UnifiedCommand {
+function createDossierCommandWrapper(
+  name: string,
+  family: UnifiedCommand['family'],
+): UnifiedCommand {
   const command = findDossierCommand(name);
   if (!command) {
     throw new Error(`Missing vendored dossier command: ${name}`);
@@ -172,7 +159,9 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
       family: 'delivery-stage',
       commandType: 'stage',
       summary: command.description,
-      usage: baseHelpLines.filter((line) => line.trim().startsWith('dossier-engineer feature-intake')),
+      usage: baseHelpLines.filter((line) =>
+        line.trim().startsWith('dossier-engineer feature-intake'),
+      ),
       helpLines: () =>
         baseHelpLines.map((line) =>
           line.replace(
@@ -205,7 +194,6 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
               const { exitCode, stderr, stdout } = await captureDossierCommandOutput(
                 name,
                 argsWithJson,
-                io,
                 command,
               );
               const summary = stdout.trim()
@@ -221,7 +209,9 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
                   })
                 : null;
               if (exitCode !== 0 && !summary) {
-                throw new Error(stderr.trim() || 'feature-intake failed before creating a dossier.');
+                throw new Error(
+                  stderr.trim() || 'feature-intake failed before creating a dossier.',
+                );
               }
               if (!summary) {
                 throw new Error('feature-intake did not return a JSON summary.');
@@ -289,7 +279,10 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
                 }
                 writeLine(io.stdout, `[feature-intake] Created ${summary.dossier}`);
                 writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
-                writeLine(io.stdout, `[feature-intake] backlog_item_key=${summary.backlog_item_key}`);
+                writeLine(
+                  io.stdout,
+                  `[feature-intake] backlog_item_key=${summary.backlog_item_key}`,
+                );
                 writeLine(
                   io.stdout,
                   `[feature-intake] backlog_delivery_state=${summary.backlog_delivery_state}`,
@@ -302,8 +295,7 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
                 writeLine(io.stdout, `[feature-intake] next_command=${nextCommand}`);
                 return 0;
               } catch (error) {
-                const warning =
-                  error instanceof Error ? error.message : String(error);
+                const warning = error instanceof Error ? error.message : String(error);
                 if (args.includes('--json')) {
                   writeCliEnvelope(io.stdout, {
                     command: 'feature-intake',
@@ -353,7 +345,9 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
       family,
       commandType: 'dossier',
       summary: command.description,
-      usage: baseHelpLines.filter((line) => line.trim().startsWith('dossier-engineer dossier-step-close')),
+      usage: baseHelpLines.filter((line) =>
+        line.trim().startsWith('dossier-engineer dossier-step-close'),
+      ),
       helpLines: () => baseHelpLines,
       async execute(args, io) {
         try {
@@ -368,7 +362,11 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
             root,
             dossierPath,
           });
-          const stageLog = await resolveStageLogContext(root, normalizedStep as StageControllerCommand, featureId);
+          const stageLog = await resolveStageLogContext(
+            root,
+            normalizedStep as StageControllerCommand,
+            featureId,
+          );
           if (!stageLog) {
             throw new Error(`No ${normalizedStep} stage log found for ${featureId}.`);
           }
@@ -382,9 +380,10 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
               path.join(root, '.dossier', 'verification', featureId),
               'verification artifact path',
             );
-            const verifyArtifact = JSON.parse(
-              await fs.readFile(absVerifyArtifactPath, 'utf8'),
-            ) as { feature_id?: string; step?: string };
+            const verifyArtifact = JSON.parse(await fs.readFile(absVerifyArtifactPath, 'utf8')) as {
+              feature_id?: string;
+              step?: string;
+            };
             if (verifyArtifact.feature_id !== featureId || verifyArtifact.step !== normalizedStep) {
               throw new Error(
                 `Verification artifact must match feature ${featureId} and step ${normalizedStep}.`,
@@ -398,9 +397,10 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
               path.join(root, '.dossier', 'reviews', featureId),
               'review artifact path',
             );
-            const reviewArtifact = JSON.parse(
-              await fs.readFile(absReviewArtifactPath, 'utf8'),
-            ) as { feature_id?: string; step?: string };
+            const reviewArtifact = JSON.parse(await fs.readFile(absReviewArtifactPath, 'utf8')) as {
+              feature_id?: string;
+              step?: string;
+            };
             if (reviewArtifact.feature_id !== featureId || reviewArtifact.step !== normalizedStep) {
               throw new Error(
                 `Review artifact must match feature ${featureId} and step ${normalizedStep}.`,
@@ -430,19 +430,24 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
               const { exitCode, stderr, stdout } = await captureDossierCommandOutput(
                 name,
                 args,
-                io,
                 command,
               );
-              const stepArtifactPath = path.join('.dossier', 'steps', featureId, `${normalizedStep}.json`);
+              const stepArtifactPath = path.join(
+                '.dossier',
+                'steps',
+                featureId,
+                `${normalizedStep}.json`,
+              );
               const absStepArtifactPath = path.join(root, stepArtifactPath);
               if (stdout) {
                 io.stdout.write(stdout);
               }
               try {
                 await fs.access(absStepArtifactPath);
-                const artifact = JSON.parse(
-                  await fs.readFile(absStepArtifactPath, 'utf8'),
-                ) as { blockers?: string[]; process_complete?: boolean };
+                const artifact = JSON.parse(await fs.readFile(absStepArtifactPath, 'utf8')) as {
+                  blockers?: string[];
+                  process_complete?: boolean;
+                };
                 await recordStepCloseOnStageLog({
                   root,
                   featureId,
@@ -503,7 +508,9 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
       family,
       commandType: 'dossier',
       summary: command.description,
-      usage: baseHelpLines.filter((line) => line.trim().startsWith('dossier-engineer review-artifact')),
+      usage: baseHelpLines.filter((line) =>
+        line.trim().startsWith('dossier-engineer review-artifact'),
+      ),
       helpLines: () => baseHelpLines,
       async execute(args, io) {
         try {
@@ -567,7 +574,9 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
       family,
       commandType: 'dossier',
       summary: command.description,
-      usage: baseHelpLines.filter((line) => line.trim().startsWith('dossier-engineer contract-drift-audit')),
+      usage: baseHelpLines.filter((line) =>
+        line.trim().startsWith('dossier-engineer contract-drift-audit'),
+      ),
       helpLines: () => baseHelpLines,
       async execute(args, io) {
         try {
@@ -621,7 +630,9 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
       family,
       commandType: 'dossier',
       summary: command.description,
-      usage: baseHelpLines.filter((line) => line.trim().startsWith('dossier-engineer dossier-verify')),
+      usage: baseHelpLines.filter((line) =>
+        line.trim().startsWith('dossier-engineer dossier-verify'),
+      ),
       helpLines: () => baseHelpLines,
       async execute(args, io) {
         try {
@@ -693,7 +704,8 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
       async execute(args, io) {
         try {
           const root = await resolveProcessRoot(process.cwd(), takeOption(args, '--root'));
-          const indexFile = takeOption(args, '--index-file') ?? path.join('docs', 'ssot', 'index.md');
+          const indexFile =
+            takeOption(args, '--index-file') ?? path.join('docs', 'ssot', 'index.md');
           await assertManagedWritePath(
             root,
             path.join(root, 'docs', 'ssot'),
@@ -732,7 +744,9 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
       family,
       commandType: 'dossier',
       summary: command.description,
-      usage: baseHelpLines.filter((line) => line.trim().startsWith('dossier-engineer lifecycle-refresh')),
+      usage: baseHelpLines.filter((line) =>
+        line.trim().startsWith('dossier-engineer lifecycle-refresh'),
+      ),
       helpLines: () => baseHelpLines,
       async execute(args, io) {
         try {
@@ -788,9 +802,9 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
                   featureId,
                   featureCycleId,
                   command: name,
-                  run: async () => captureDossierCommandOutput(name, args, io, command),
+                  run: async () => captureDossierCommandOutput(name, args, command),
                 })
-              : await captureDossierCommandOutput(name, args, io, command);
+              : await captureDossierCommandOutput(name, args, command);
           if (exitCode !== 0) {
             throw new Error(stderr.trim() || 'lifecycle-refresh failed.');
           }
@@ -827,7 +841,12 @@ function createDossierCommandWrapper(name: string, family: UnifiedCommand['famil
     family,
     commandType: 'dossier',
     summary: command.description,
-    usage: baseHelpLines.filter((line) => line.trim().startsWith('dossier-engineer ') || line.trim().startsWith('Usage:') === false).slice(0, 1),
+    usage: baseHelpLines
+      .filter(
+        (line) =>
+          line.trim().startsWith('dossier-engineer ') || line.trim().startsWith('Usage:') === false,
+      )
+      .slice(0, 1),
     helpLines: () => baseHelpLines,
     execute,
   };
@@ -905,11 +924,7 @@ const STAGE_COMMANDS: UnifiedCommand[] = [
   createStageControllerWrapper('change-proposal'),
 ];
 
-const COMMANDS: UnifiedCommand[] = [
-  ...BACKLOG_COMMANDS,
-  ...DOSSIER_COMMANDS,
-  ...STAGE_COMMANDS,
-];
+const COMMANDS: UnifiedCommand[] = [...BACKLOG_COMMANDS, ...DOSSIER_COMMANDS, ...STAGE_COMMANDS];
 
 const FAMILY_TITLES: Array<[UnifiedCommand['family'], string]> = [
   ['bootstrap', 'Bootstrap / root-management'],
@@ -941,7 +956,9 @@ function renderGlobalHelp(version: string): string {
   for (const [family, title] of FAMILY_TITLES) {
     lines.push(`${title}:`);
     if (family === 'bootstrap') {
-      lines.push('  help                   Show the shipped unified help surface or command-local help.');
+      lines.push(
+        '  help                   Show the shipped unified help surface or command-local help.',
+      );
     }
     for (const command of COMMANDS.filter((entry) => entry.family === family)) {
       const aliasSuffix =

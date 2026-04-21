@@ -8,7 +8,6 @@ import {
   PACKET_COMMAND,
   PATCH_ITEM_COMMAND,
   QUEUE_COMMAND,
-  REFRESH_COMMAND,
   REGISTER_SOURCE_COMMAND,
   REMOVE_ITEM_COMMAND,
   REMOVE_SOURCE_COMMAND,
@@ -17,9 +16,10 @@ import {
   STATUS_COMMAND,
   TEMPLATE_COMMAND,
   UPDATE_SOURCE_PATH_COMMAND,
+  type CommandDefinition,
 } from '../vendor/backlog-engineer/commands/index.ts';
 import { normalizeError, type BacklogError } from '../vendor/backlog-engineer/errors/index.ts';
-import { createRuntime, type CommandName as VendoredBacklogCommandName } from '../vendor/backlog-engineer/runtime/index.ts';
+import { createRuntime } from '../vendor/backlog-engineer/runtime/index.ts';
 import type {
   AttentionCommandOutput,
   ItemsCommandOutput,
@@ -60,9 +60,9 @@ export type UnifiedBacklogCommand = {
   usage: string[];
 };
 
-type BacklogCommandExecution = {
+type BacklogCommandExecution<TOutput = unknown> = {
   context: CommandExecutionContext;
-  output: unknown;
+  output: TOutput;
   releaseMutationLock?: () => Promise<void>;
 };
 
@@ -79,7 +79,14 @@ function writeJson(stream: Pick<NodeJS.WriteStream, 'write'>, payload: unknown):
 
 function buildScopeFromArgs(
   args: string[],
-  optionNames: string[] = ['--item-key', '--item-keys', '--source-id', '--source-label', '--source-path', '--path'],
+  optionNames: string[] = [
+    '--item-key',
+    '--item-keys',
+    '--source-id',
+    '--source-label',
+    '--source-path',
+    '--path',
+  ],
 ): Record<string, unknown> {
   const scope: Record<string, unknown> = {};
   for (const optionName of optionNames) {
@@ -111,7 +118,9 @@ function adaptUsage(usage: readonly string[]): string[] {
   return usage.map((entry) => entry.replaceAll('backlog-engineer', 'dossier-engineer'));
 }
 
-function adaptOptions(command: VendoredBacklogCommandShape): string[] {
+function adaptOptions<TInput, TOutput>(
+  command: Pick<CommandDefinition<TInput, TOutput>, 'options'>,
+): string[] {
   return command.options.map((option) => {
     const suffix = option.value_name ? ` ${option.value_name}` : '';
     return `${option.flags.join(', ')}${suffix} — ${option.description}`;
@@ -123,14 +132,14 @@ function writeBacklogError(io: CliIo, error: BacklogError): number {
   return error.exitCode;
 }
 
-async function runVendoredBacklogCommand(
-  command: VendoredBacklogCommandShape,
+async function runVendoredBacklogCommand<TInput, TOutput>(
+  command: CommandDefinition<TInput, TOutput>,
   args: string[],
   options: { deferMutationUnlock?: boolean } = {},
-): Promise<BacklogCommandExecution> {
+): Promise<BacklogCommandExecution<TOutput>> {
   const input = command.parseArgs(args);
   const runtime = createRuntime();
-  const commandName = command.name as VendoredBacklogCommandName;
+  const commandName = command.name;
   const context = await runtime.createContext(commandName, runtime.getProcessCwd());
   const vendoredReleaseMutationLock =
     context.backlogRoot && shouldAcquireMutationLock(command.name, args)
@@ -167,7 +176,7 @@ function collectItemSourceIds(item: StateFile['items'][number]): Set<SourceId> {
   ]);
 }
 
-async function resolveRefreshScope(payload: {
+function resolveRefreshScope(payload: {
   args: string[];
   context: CommandExecutionContext;
   registry: Awaited<ReturnType<CommandExecutionContext['artifacts']['readSourceRegistry']>>;
@@ -190,11 +199,11 @@ async function resolveRefreshScope(payload: {
     if (!item) {
       throw new Error(`Unknown item key: ${itemKey}`);
     }
-    return {
+    return Promise.resolve({
       selectedSourceIds: [...collectItemSourceIds(item)].sort((left, right) =>
         left.localeCompare(right),
       ),
-    };
+    });
   }
 
   if (sourceId || sourceLabel || sourcePath) {
@@ -211,14 +220,14 @@ async function resolveRefreshScope(payload: {
               source_path: payload.context.host.resolveCliPath(sourcePath ?? ''),
             },
     });
-    return {
+    return Promise.resolve({
       selectedSourceIds: scope.sourceIds,
-    };
+    });
   }
 
-  return {
+  return Promise.resolve({
     selectedSourceIds: payload.registry.sources.map((source) => source.source_id),
-  };
+  });
 }
 
 function relatedItemKeysForSource(state: StateFile, sourceId: string): string[] {
@@ -292,8 +301,9 @@ function overlayItemsWithSourceReviewBlock(
     ...card,
     computed_state: {
       ...card.computed_state,
-      ready_for_next_step:
-        blockedItemKeys.has(card.item.item_key) ? false : card.computed_state.ready_for_next_step,
+      ready_for_next_step: blockedItemKeys.has(card.item.item_key)
+        ? false
+        : card.computed_state.ready_for_next_step,
     },
     source_review_blocked: blockedItemKeys.has(card.item.item_key),
     open_source_review_ids: reviewIdsByItemKey.get(card.item.item_key) ?? [],
@@ -340,9 +350,7 @@ function buildAttentionOutput(payload: {
     next_commands: [
       'dossier-engineer attention',
       `dossier-engineer items --item-keys ${
-        review.linked_item_keys.length > 0
-          ? review.linked_item_keys.join(',')
-          : '<item-key>'
+        review.linked_item_keys.length > 0 ? review.linked_item_keys.join(',') : '<item-key>'
       }`,
       `dossier-engineer ack-source-review --source-review-id ${review.source_review_id}`,
     ],
@@ -444,7 +452,9 @@ async function runRefreshCommand(args: string[], io: CliIo): Promise<number> {
         registry,
         state,
       });
-      const changedBefore = new Map(registry.sources.map((source) => [source.source_id, source.hash]));
+      const changedBefore = new Map(
+        registry.sources.map((source) => [source.source_id, source.hash]),
+      );
       const refreshed = await context.sources.refreshSourceHashes({
         backlogRoot: context.backlogRoot,
         registry,
@@ -487,7 +497,12 @@ async function runRefreshCommand(args: string[], io: CliIo): Promise<number> {
 
       writeCliEnvelope(io.stdout, {
         command: 'refresh',
-        scope: buildScopeFromArgs(args, ['--item-key', '--source-id', '--source-label', '--source-path']),
+        scope: buildScopeFromArgs(args, [
+          '--item-key',
+          '--source-id',
+          '--source-label',
+          '--source-path',
+        ]),
         data: {
           changed_sources: refreshed.changedSources,
           source_reviews_created: createdIds.length,
@@ -501,8 +516,7 @@ async function runRefreshCommand(args: string[], io: CliIo): Promise<number> {
           ...reviewRecords
             .filter((review) => review.linked_item_keys.length > 0)
             .map(
-              (review) =>
-                `dossier-engineer items --item-keys ${review.linked_item_keys.join(',')}`,
+              (review) => `dossier-engineer items --item-keys ${review.linked_item_keys.join(',')}`,
             ),
         ],
       });
@@ -537,7 +551,12 @@ async function runStatusCommand(args: string[], io: CliIo): Promise<number> {
         return refreshExit;
       }
     }
-    const status = (await runVendoredBacklogCommand(STATUS_COMMAND, args.filter((arg) => arg !== '--refresh'))).output as Record<string, unknown>;
+    const status = (
+      await runVendoredBacklogCommand(
+        STATUS_COMMAND,
+        args.filter((arg) => arg !== '--refresh'),
+      )
+    ).output as Record<string, unknown>;
     const runtime = createRuntime();
     const context = await runtime.createContext('status', runtime.getProcessCwd());
     if (!context.backlogRoot) {
@@ -582,7 +601,7 @@ async function runAttentionCommand(_args: string[], io: CliIo): Promise<number> 
     writeCliEnvelope(io.stdout, {
       command: 'attention',
       data: buildAttentionOutput({
-        itemAttention: result.output as AttentionCommandOutput,
+        itemAttention: result.output,
         openReviews,
       }),
       nextCommands: ['dossier-engineer items --item-keys <item_key>'],
@@ -603,7 +622,7 @@ async function runItemsCommand(args: string[], io: CliIo): Promise<number> {
     writeCliEnvelope(io.stdout, {
       command: 'items',
       scope: buildScopeFromArgs(args, ['--item-keys']),
-      data: overlayItemsWithSourceReviewBlock(result.output as ItemsCommandOutput, openReviews),
+      data: overlayItemsWithSourceReviewBlock(result.output, openReviews),
     });
     return 0;
   } catch (error) {
@@ -620,7 +639,7 @@ async function runQueueCommand(args: string[], io: CliIo): Promise<number> {
     const openReviews = await loadOpenSourceReviews(result.context.backlogRoot);
     writeCliEnvelope(io.stdout, {
       command: 'queue',
-      data: overlayQueueWithSourceReviewBlock(result.output as QueueCommandOutput, openReviews),
+      data: overlayQueueWithSourceReviewBlock(result.output, openReviews),
     });
     return 0;
   } catch (error) {
@@ -637,7 +656,7 @@ async function runSearchCommand(args: string[], io: CliIo): Promise<number> {
     const openReviews = await loadOpenSourceReviews(result.context.backlogRoot);
     writeCliEnvelope(io.stdout, {
       command: 'search',
-      data: overlaySearchWithSourceReviewBlock(result.output as SearchCommandOutput, openReviews),
+      data: overlaySearchWithSourceReviewBlock(result.output, openReviews),
     });
     return 0;
   } catch (error) {
@@ -703,31 +722,13 @@ function isBacklogCommandError(error: unknown): boolean {
   return error instanceof Error;
 }
 
-type VendoredBacklogCommandShape = {
-  name: string;
-  summary: string;
-  usage: readonly string[];
-  options: ReadonlyArray<{
-    description: string;
-    flags: readonly string[];
-    required?: boolean | undefined;
-    repeatable?: boolean | undefined;
-    value_name?: string | undefined;
-  }>;
-  parseArgs: (args: string[]) => any;
-  outputSchema: {
-    parse: (value: unknown) => any;
-  };
-  execute: (input: any, context: CommandExecutionContext) => Promise<any> | any;
-};
-
-function createVendoredCommandWrapper(
-  command: VendoredBacklogCommandShape,
+function createVendoredCommandWrapper<TInput, TOutput>(
+  command: CommandDefinition<TInput, TOutput>,
   family: UnifiedBacklogCommand['family'],
   afterSuccess?: (payload: {
     context: CommandExecutionContext;
-    output: any;
-  }) => Promise<void | BacklogPostSuccessEffect>,
+    output: TOutput;
+  }) => Promise<undefined | BacklogPostSuccessEffect>,
 ): UnifiedBacklogCommand {
   return {
     name: command.name,
@@ -744,7 +745,7 @@ function createVendoredCommandWrapper(
             root,
             sourceReviewDir(root),
             path.join(sourceReviewDir(root), '.probe.json'),
-              'source-review artifact',
+            'source-review artifact',
           );
         }
         const result = await runVendoredBacklogCommand(command, args, {
@@ -753,7 +754,7 @@ function createVendoredCommandWrapper(
         const warnings: string[] = [];
         let nextCommands: string[] = [];
         let envelopeResult: CliJsonResult = 'ok';
-        let data = result.output;
+        let data: unknown = result.output;
         try {
           if (afterSuccess) {
             try {
@@ -830,40 +831,48 @@ export const BACKLOG_COMMANDS: UnifiedBacklogCommand[] = [
   },
   createVendoredCommandWrapper(REGISTER_SOURCE_COMMAND, 'backlog-source'),
   createVendoredCommandWrapper(LIST_SOURCES_COMMAND, 'backlog-source'),
-  createVendoredCommandWrapper(UPDATE_SOURCE_PATH_COMMAND, 'backlog-source', async ({ context, output }) => {
-    if (!context.backlogRoot || !(output?.source_id)) {
-      return;
-    }
-    const resolved = await maybeResolveSourceReviewsFromSourceId({
-      root: context.backlogRoot,
-      sourceId: output.source_id as string,
-      kind: 'update-source-path',
-      resolutionRef: `update-source-path:${String(output.path ?? '')}`,
-    });
-    return {
-      dataPatch: {
-        resolved_source_review_ids: resolved.map((review) => review.source_review_id),
-        resolution_kind: 'update-source-path',
-      },
-    };
-  }),
-  createVendoredCommandWrapper(REMOVE_SOURCE_COMMAND, 'backlog-source', async ({ context, output }) => {
-    if (!context.backlogRoot || !(output?.source_id)) {
-      return;
-    }
-    const resolved = await maybeResolveSourceReviewsFromSourceId({
-      root: context.backlogRoot,
-      sourceId: output.source_id as string,
-      kind: 'remove-source',
-      resolutionRef: `remove-source:${String(output.source_id)}`,
-    });
-    return {
-      dataPatch: {
-        resolved_source_review_ids: resolved.map((review) => review.source_review_id),
-        resolution_kind: 'remove-source',
-      },
-    };
-  }),
+  createVendoredCommandWrapper(
+    UPDATE_SOURCE_PATH_COMMAND,
+    'backlog-source',
+    async ({ context, output }) => {
+      if (!context.backlogRoot || !output.source_id) {
+        return;
+      }
+      const resolved = await maybeResolveSourceReviewsFromSourceId({
+        root: context.backlogRoot,
+        sourceId: output.source_id,
+        kind: 'update-source-path',
+        resolutionRef: `update-source-path:${String(output.path ?? '')}`,
+      });
+      return {
+        dataPatch: {
+          resolved_source_review_ids: resolved.map((review) => review.source_review_id),
+          resolution_kind: 'update-source-path',
+        },
+      };
+    },
+  ),
+  createVendoredCommandWrapper(
+    REMOVE_SOURCE_COMMAND,
+    'backlog-source',
+    async ({ context, output }) => {
+      if (!context.backlogRoot || !output.source_id) {
+        return;
+      }
+      const resolved = await maybeResolveSourceReviewsFromSourceId({
+        root: context.backlogRoot,
+        sourceId: output.source_id,
+        kind: 'remove-source',
+        resolutionRef: `remove-source:${String(output.source_id)}`,
+      });
+      return {
+        dataPatch: {
+          resolved_source_review_ids: resolved.map((review) => review.source_review_id),
+          resolution_kind: 'remove-source',
+        },
+      };
+    },
+  ),
   {
     name: 'refresh',
     commandType: 'backlog',
@@ -902,27 +911,37 @@ export const BACKLOG_COMMANDS: UnifiedBacklogCommand[] = [
   createVendoredCommandWrapper(TEMPLATE_COMMAND, 'backlog-authoring'),
   createVendoredCommandWrapper(PACKET_COMMAND, 'backlog-authoring', async ({ context, output }) => {
     if (!context.backlogRoot) {
-      return;
+      return undefined;
     }
     const itemKeys = [...(output.added ?? []), ...(output.removed ?? [])] as string[];
     await maybeResolveSourceReviewsFromItemKeys({
       root: context.backlogRoot,
       itemKeys,
       kind: 'packet',
-      resolutionRef: String(output.authored_packet_path ?? output.canonical_packet_path ?? 'packet'),
+      resolutionRef: String(
+        output.authored_packet_path ?? output.canonical_packet_path ?? 'packet',
+      ),
     });
+    return undefined;
   }),
-  createVendoredCommandWrapper(PATCH_ITEM_COMMAND, 'backlog-authoring', async ({ context, output }) => {
-    if (!context.backlogRoot) {
-      return;
-    }
-    await maybeResolveSourceReviewsFromItemKeys({
-      root: context.backlogRoot,
-      itemKeys: output.updated ?? [],
-      kind: 'patch-item',
-      resolutionRef: String(output.authored_patch_path ?? output.canonical_patch_path ?? 'patch-item'),
-    });
-  }),
+  createVendoredCommandWrapper(
+    PATCH_ITEM_COMMAND,
+    'backlog-authoring',
+    async ({ context, output }) => {
+      if (!context.backlogRoot) {
+        return undefined;
+      }
+      await maybeResolveSourceReviewsFromItemKeys({
+        root: context.backlogRoot,
+        itemKeys: output.updated ?? [],
+        kind: 'patch-item',
+        resolutionRef: String(
+          output.authored_patch_path ?? output.canonical_patch_path ?? 'patch-item',
+        ),
+      });
+      return undefined;
+    },
+  ),
   createVendoredCommandWrapper(REMOVE_ITEM_COMMAND, 'backlog-authoring'),
   {
     name: 'status',
@@ -949,7 +968,9 @@ export const BACKLOG_COMMANDS: UnifiedBacklogCommand[] = [
     family: 'backlog-read',
     summary: 'Search backlog items with source-review readiness overlay.',
     usage: ['dossier-engineer search [filters]'],
-    options: ['See `dossier-engineer help search` in the split backlog runtime for full filter surface.'],
+    options: [
+      'See `dossier-engineer help search` in the split backlog runtime for full filter surface.',
+    ],
     execute: runSearchCommand,
   },
   createVendoredCommandWrapper(GAPS_COMMAND, 'backlog-read'),

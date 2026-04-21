@@ -19,7 +19,7 @@ export async function acquireDeliveryMutationLock(payload: {
   const lockPath = path.join(locksDir, `${featureId}--${featureCycleId}.lock`);
   await assertManagedWritePath(payload.root, locksDir, lockPath, 'delivery mutation lock');
 
-  let handle;
+  let handle: Awaited<ReturnType<typeof fs.open>> | null = null;
   try {
     handle = await fs.open(lockPath, 'wx');
     await handle.writeFile(
@@ -34,9 +34,7 @@ export async function acquireDeliveryMutationLock(payload: {
   } catch (error) {
     const err = error as NodeJS.ErrnoException;
     if (err.code === 'EEXIST') {
-      throw new Error(
-        `Delivery mutation lock is already held for ${featureId}/${featureCycleId}.`,
-      );
+      throw new Error(`Delivery mutation lock is already held for ${featureId}/${featureCycleId}.`);
     }
     throw error;
   }
@@ -48,7 +46,7 @@ export async function acquireDeliveryMutationLock(payload: {
     }
     released = true;
     try {
-      await handle.close();
+      await handle?.close();
     } catch {
       // noop
     }

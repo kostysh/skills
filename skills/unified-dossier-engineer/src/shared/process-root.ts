@@ -1,7 +1,11 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-import { fileExists, writeJsonAtomic, writeTextAtomic } from '../vendor/dossier-engineer/lib/fs-utils.ts';
+import {
+  fileExists,
+  writeJsonAtomic,
+  writeTextAtomic,
+} from '../vendor/dossier-engineer/lib/fs-utils.ts';
 
 export const PROCESS_MANIFEST_RELATIVE_PATH = '.dossier/manifest.json';
 export const BACKLOG_MANIFEST_RELATIVE_PATH = '.dossier/backlog/manifest.json';

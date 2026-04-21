@@ -2300,10 +2300,16 @@ async function runLifecycleRefreshCommand(argv: string[], io: CliIo): Promise<nu
   const absRoot = path.resolve(root);
 
   if (dossier) {
-    const dossierRecord = await readDossierRecord(path.resolve(absRoot, dossier), { root: absRoot });
+    const dossierRecord = await readDossierRecord(path.resolve(absRoot, dossier), {
+      root: absRoot,
+    });
     featureId =
       featureId ??
-      frontmatterString(dossierRecord.frontmatter, 'id', path.basename(dossierRecord.absPath, '.md'));
+      frontmatterString(
+        dossierRecord.frontmatter,
+        'id',
+        path.basename(dossierRecord.absPath, '.md'),
+      );
   }
 
   featureId = ensureRequired(

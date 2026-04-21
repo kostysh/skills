@@ -1,10 +1,22 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { cp, mkdir, mkdtemp, readFile, readdir, rm, stat, symlink, writeFile } from 'node:fs/promises';
+import {
+  cp,
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  rm,
+  stat,
+  symlink,
+  writeFile,
+} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+
+/* eslint-disable @typescript-eslint/no-floating-promises -- node:test registrations are top-level by design. */
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
@@ -69,6 +81,7 @@ function parseEnvelope<T>(stdout: string): CliEnvelope<T> {
   return JSON.parse(stdout) as CliEnvelope<T>;
 }
 
+// eslint-disable-next-line @typescript-eslint/require-await -- helper stays async for readable test setup sequencing.
 async function initializeRepo(repo: string): Promise<void> {
   runCli(['init', '--path', repo]);
 }
@@ -125,7 +138,10 @@ test('init creates the unified process root and SSOT skeleton', async () => {
   const payload = initResult.data;
 
   assert.equal(payload.process_manifest_path, path.join(repo, '.dossier', 'manifest.json'));
-  assert.equal(payload.backlog_manifest_path, path.join(repo, '.dossier', 'backlog', 'manifest.json'));
+  assert.equal(
+    payload.backlog_manifest_path,
+    path.join(repo, '.dossier', 'backlog', 'manifest.json'),
+  );
   assert.equal(payload.index_path, path.join(repo, 'docs', 'ssot', 'index.md'));
   assert.equal(payload.dossiers_dir, path.join(repo, 'docs', 'ssot', 'features'));
   assert.equal(initResult.command, 'init');
@@ -177,7 +193,10 @@ test('command help smoke covers the shipped public surface', () => {
   }
 
   const globalHelp = runCli(['--help']);
-  assert.match(globalHelp.stdout, /The only public utility for the merged dossier\/backlog runtime\./);
+  assert.match(
+    globalHelp.stdout,
+    /The only public utility for the merged dossier\/backlog runtime\./,
+  );
   assert.doesNotMatch(globalHelp.stdout, /references\/workflow\.md/);
   assert.doesNotMatch(globalHelp.stdout, /\badr-log\b/);
   assert.doesNotMatch(globalHelp.stdout, /\bdependency-check\b/);
@@ -267,22 +286,36 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
   assert.match(intake.cycle_id, /^intake-/);
   assert.match(intake.entered_ts, /^\d{4}-\d{2}-\d{2}T/);
   assert.match(intake.ready_for_close_ts, /^\d{4}-\d{2}-\d{2}T/);
-  assert.equal(intake.log_path, `.dossier/logs/feature-intake/${intake.feature_id}--${intake.feature_cycle_id}.md`);
-  assert.deepEqual(intake.transition_events.map((event) => event.kind), ['entered', 'ready_for_close']);
+  assert.equal(
+    intake.log_path,
+    `.dossier/logs/feature-intake/${intake.feature_id}--${intake.feature_cycle_id}.md`,
+  );
+  assert.deepEqual(
+    intake.transition_events.map((event) => event.kind),
+    ['entered', 'ready_for_close'],
+  );
   assert.equal(intake.backlog_followup_required, false);
   assert.equal(intake.backlog_followup_kind, null);
   assert.equal(intake.backlog_followup_resolved, true);
-  assert.deepEqual(intakeEnvelope.next_commands, [`dossier-engineer spec-compact --feature-id ${intake.feature_id}`]);
+  assert.deepEqual(intakeEnvelope.next_commands, [
+    `dossier-engineer spec-compact --feature-id ${intake.feature_id}`,
+  ]);
   await stat(path.join(repo, intake.dossier));
-  await stat(path.join(repo, '.dossier', 'logs', 'feature-intake', `${intake.feature_id}--${intake.feature_cycle_id}.md`));
+  await stat(
+    path.join(
+      repo,
+      '.dossier',
+      'logs',
+      'feature-intake',
+      `${intake.feature_id}--${intake.feature_cycle_id}.md`,
+    ),
+  );
 
   const stageStartEnvelope = parseEnvelope<{
     cycle_id: string;
     feature_cycle_id: string;
     stage_state: string;
-  }>(
-    runCli(['spec-compact', '--feature-id', intake.feature_id], { cwd: repo }).stdout,
-  );
+  }>(runCli(['spec-compact', '--feature-id', intake.feature_id], { cwd: repo }).stdout);
   const stageStart = stageStartEnvelope.data;
   const stageReadyEnvelope = parseEnvelope<{
     cycle_id: string;
@@ -303,7 +336,14 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
     stage_state: string;
   }>(
     runCli(
-      ['spec-compact', '--feature-id', intake.feature_id, '--cycle-id', stageStart.cycle_id, '--ready-for-close'],
+      [
+        'spec-compact',
+        '--feature-id',
+        intake.feature_id,
+        '--cycle-id',
+        stageStart.cycle_id,
+        '--ready-for-close',
+      ],
       { cwd: repo },
     ).stdout,
   );
@@ -320,7 +360,9 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
   assert.match(stageReady.ready_for_close_ts, /^\d{4}-\d{2}-\d{2}T/);
   assert.match(
     stageReadyWithCycle.log_path,
-    new RegExp(`^\\.dossier/logs/spec-compact/${intake.feature_id}--${intake.feature_cycle_id}--${stageStart.cycle_id}\\.md$`),
+    new RegExp(
+      `^\\.dossier/logs/spec-compact/${intake.feature_id}--${intake.feature_cycle_id}--${stageStart.cycle_id}\\.md$`,
+    ),
   );
 });
 
@@ -366,12 +408,12 @@ test('dossier-verify artifacts use the canonical dossier-engineer command displa
     { cwd: repo, allowFailure: true },
   );
   assert.match(verifyResult.stdout, /\[dossier-verify\] artifact=/);
-  const artifactRelativePath = verifyResult.stdout.match(/\[dossier-verify\] artifact=(.+)/)?.[1]?.trim();
+  const artifactRelativePath = verifyResult.stdout
+    .match(/\[dossier-verify\] artifact=(.+)/)?.[1]
+    ?.trim();
   assert.ok(artifactRelativePath, 'verification artifact path not found in stdout');
 
-  const artifact = JSON.parse(
-    await readFile(path.join(repo, artifactRelativePath), 'utf8'),
-  ) as {
+  const artifact = JSON.parse(await readFile(path.join(repo, artifactRelativePath), 'utf8')) as {
     checks: Array<{ command: string }>;
   };
   for (const check of artifact.checks) {
@@ -592,10 +634,10 @@ test('stage controllers require canonical frontmatter backlog_item_key', async (
   const original = await readFile(dossierPath, 'utf8');
   await writeFile(dossierPath, original.replace(/^backlog_item_key: .+$/m, ''));
 
-  const result = runCli(
-    ['spec-compact', '--feature-id', intakeEnvelope.data.feature_id],
-    { cwd: repo, allowFailure: true },
-  );
+  const result = runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id], {
+    cwd: repo,
+    allowFailure: true,
+  });
 
   assert.equal(result.code, 1);
   const payload = JSON.parse(result.stderr) as { error: { code: string; message: string } };
@@ -617,7 +659,9 @@ test('refresh opens source-review records and overlays readiness-focused read mo
     source_reviews_created: number;
   }>(runCli(['refresh'], { cwd: repo }).stdout);
   const refresh = refreshEnvelope.data;
-  const attentionEnvelope = parseEnvelope<Array<Record<string, unknown>>>(runCli(['attention'], { cwd: repo }).stdout);
+  const attentionEnvelope = parseEnvelope<Array<Record<string, unknown>>>(
+    runCli(['attention'], { cwd: repo }).stdout,
+  );
   const attention = attentionEnvelope.data;
   const itemsEnvelope = parseEnvelope<
     Array<{
@@ -626,9 +670,7 @@ test('refresh opens source-review records and overlays readiness-focused read mo
       open_source_review_ids: string[];
       source_review_blocked: boolean;
     }>
-  >(
-    runCli(['items', '--item-keys', 'auth-core'], { cwd: repo }).stdout,
-  );
+  >(runCli(['items', '--item-keys', 'auth-core'], { cwd: repo }).stdout);
   const items = itemsEnvelope.data;
   const statusEnvelope = parseEnvelope<{
     open_source_review_count: number;
@@ -636,14 +678,19 @@ test('refresh opens source-review records and overlays readiness-focused read mo
     source_review_blocked_item_count: number;
   }>(runCli(['status'], { cwd: repo }).stdout);
   const status = statusEnvelope.data;
-  const queueEnvelope = parseEnvelope<Array<{ items: string[] }>>(runCli(['queue'], { cwd: repo }).stdout);
+  const queueEnvelope = parseEnvelope<Array<{ items: string[] }>>(
+    runCli(['queue'], { cwd: repo }).stdout,
+  );
   const queue = queueEnvelope.data;
 
   assert.equal(refreshEnvelope.command, 'refresh');
   assert.equal(refresh.source_reviews_created, 1);
   assert.deepEqual(refresh.source_review_ids, ['sr-11111111-1111-4111-8111-111111111111']);
   assert.equal(refreshEnvelope.next_commands[0], 'dossier-engineer attention');
-  assert.match(refreshEnvelope.next_commands[1] ?? '', /dossier-engineer items --item-keys .*auth-core/);
+  assert.match(
+    refreshEnvelope.next_commands[1] ?? '',
+    /dossier-engineer items --item-keys .*auth-core/,
+  );
   assert.equal(attention[0]?.entry_kind, 'source_review');
   assert.equal(attention[0]?.source_review_id, 'sr-11111111-1111-4111-8111-111111111111');
   assert.match(
@@ -687,7 +734,9 @@ test('ack-source-review closes source-review records and restores readiness coun
     source_review_blocked_item_count: number;
   }>(runCli(['status'], { cwd: repo }).stdout);
   const status = statusEnvelope.data;
-  const queueEnvelope = parseEnvelope<Array<{ items: string[] }>>(runCli(['queue'], { cwd: repo }).stdout);
+  const queueEnvelope = parseEnvelope<Array<{ items: string[] }>>(
+    runCli(['queue'], { cwd: repo }).stdout,
+  );
   const queue = queueEnvelope.data;
 
   assert.equal(ackEnvelope.command, 'ack-source-review');
@@ -808,13 +857,7 @@ test('stage controllers reject non-dossier paths even when feature id is valid',
 
   await writeFile(path.join(repo, 'misc.md'), '# not a dossier\n');
   const result = runCli(
-    [
-      'spec-compact',
-      '--feature-id',
-      intakeEnvelope.data.feature_id,
-      '--dossier',
-      'misc.md',
-    ],
+    ['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--dossier', 'misc.md'],
     { cwd: repo, allowFailure: true },
   );
 
@@ -914,10 +957,10 @@ test('lifecycle-refresh rejects dossiers with unsafe feature ids before deriving
   const original = await readFile(dossierPath, 'utf8');
   await writeFile(dossierPath, original.replace(/^id: .+$/m, 'id: ../../ude-escape'));
 
-  const result = runCli(
-    ['lifecycle-refresh', '--dossier', intakeEnvelope.data.dossier, '--json'],
-    { cwd: repo, allowFailure: true },
-  );
+  const result = runCli(['lifecycle-refresh', '--dossier', intakeEnvelope.data.dossier, '--json'], {
+    cwd: repo,
+    allowFailure: true,
+  });
 
   assert.equal(result.code, 1);
   const payload = JSON.parse(result.stderr) as { error: { code: string; message: string } };
@@ -957,15 +1000,9 @@ test('lifecycle-refresh rejects poisoned implementation step artifacts outside m
   );
 
   parseEnvelope<{ log_path: string }>(
-    runCli(
-      [
-        'implementation',
-        '--feature-id',
-        intakeEnvelope.data.feature_id,
-        '--json',
-      ],
-      { cwd: repo },
-    ).stdout,
+    runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
   );
 
   const implementationEnvelope = parseEnvelope<{ log_path: string }>(
@@ -1065,9 +1102,7 @@ test('lifecycle-refresh includes change-proposal stage telemetry', async () => {
   );
 
   assert.ok(refreshEnvelope.data.snapshot.lifecycle.stages['change-proposal']);
-  assert.ok(
-    refreshEnvelope.data.snapshot.lifecycle.stages['change-proposal'].cycle_ids.length > 0,
-  );
+  assert.ok(refreshEnvelope.data.snapshot.lifecycle.stages['change-proposal'].cycle_ids.length > 0);
 });
 
 test('index helpers reject symlinked default SSOT index paths', async () => {
@@ -1114,10 +1149,10 @@ test('review-artifact rejects unsupported steps before touching the vendored com
     ).stdout,
   ) as { dossier: string };
 
-  const result = runCli(
-    ['review-artifact', '--dossier', intake.dossier, '--step', 'bogus-step'],
-    { cwd: repo, allowFailure: true },
-  );
+  const result = runCli(['review-artifact', '--dossier', intake.dossier, '--step', 'bogus-step'], {
+    cwd: repo,
+    allowFailure: true,
+  });
   assert.equal(result.code, 1);
   const payload = JSON.parse(result.stderr) as { error: { code: string; message: string } };
   assert.equal(payload.error.code, 'UDE_REVIEW_ARTIFACT_FAILED');

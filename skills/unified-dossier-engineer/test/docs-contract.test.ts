@@ -11,11 +11,7 @@ const SKILL_PATH = path.join(SKILL_DIR, 'SKILL.md');
 const SKILL_YAML_PATH = path.join(SKILL_DIR, 'skill.yaml');
 const PACKAGE_JSON_PATH = path.join(SKILL_DIR, 'package.json');
 const STATUS_SCOPE_PATH = path.join(SKILL_DIR, 'references', 'status-and-scope.md');
-const RUNTIME_BOUNDARY_PATH = path.join(
-  SKILL_DIR,
-  'references',
-  'runtime-and-command-boundary.md',
-);
+const RUNTIME_BOUNDARY_PATH = path.join(SKILL_DIR, 'references', 'runtime-and-command-boundary.md');
 
 function assertContainsTerms(text: string, terms: readonly string[]): void {
   for (const term of terms) {

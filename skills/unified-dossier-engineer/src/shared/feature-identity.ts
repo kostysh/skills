@@ -60,7 +60,7 @@ export async function resolveManagedDossierIdentity(payload: {
   const discoveredFeatureId = sanitizeFeatureId(
     typeof dossier.frontmatter.id === 'string' && dossier.frontmatter.id.trim()
       ? dossier.frontmatter.id
-      : extractFeatureIdFromDossierPath(absPath) ?? '',
+      : (extractFeatureIdFromDossierPath(absPath) ?? ''),
     'dossier feature id',
   );
   if (!matchesFeatureFile(discoveredFeatureId, absPath)) {

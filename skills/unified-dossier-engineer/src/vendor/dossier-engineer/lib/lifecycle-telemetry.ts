@@ -152,7 +152,9 @@ function toEventRecords(value: unknown): EventRecord[] {
 }
 
 function toStringArray(values: Iterable<string | null | undefined>): string[] {
-  return [...new Set([...values].filter((value): value is string => Boolean(value)).map(String))].sort();
+  return [
+    ...new Set([...values].filter((value): value is string => Boolean(value)).map(String)),
+  ].sort();
 }
 
 function parseTimestamp(value: string | null): number | null {
@@ -209,7 +211,12 @@ async function readLifecycleLog(root: string, absPath: string): Promise<ParsedLi
       ? 'feature-intake'
       : toNullableString(metadata.stage);
 
-  if (!featureId || !featureCycleId || !stage || !LIFECYCLE_STAGES.includes(stage as LifecycleStage)) {
+  if (
+    !featureId ||
+    !featureCycleId ||
+    !stage ||
+    !LIFECYCLE_STAGES.includes(stage as LifecycleStage)
+  ) {
     return null;
   }
 
@@ -257,7 +264,10 @@ async function loadLifecycleLogs(root: string, featureId: string): Promise<Parse
   return logs;
 }
 
-function chooseFeatureCycleId(logs: ParsedLifecycleLog[], requested: string | null | undefined): string {
+function chooseFeatureCycleId(
+  logs: ParsedLifecycleLog[],
+  requested: string | null | undefined,
+): string {
   if (requested) {
     return requested;
   }
@@ -282,19 +292,22 @@ function aggregateStage(logs: ParsedLifecycleLog[]): StageAggregate {
     stepArtifacts: toStringArray(sorted.map((log) => log.stepArtifact)),
     startTs: sorted.find((log) => log.startTs)?.startTs ?? null,
     intakeProcessCompleteTs:
-      [...sorted].reverse().find((log) => log.intakeProcessCompleteTs)?.intakeProcessCompleteTs ?? null,
+      [...sorted].reverse().find((log) => log.intakeProcessCompleteTs)?.intakeProcessCompleteTs ??
+      null,
     localGatesGreenTs:
       [...sorted].reverse().find((log) => log.localGatesGreenTs)?.localGatesGreenTs ?? null,
-    processCompleteTs: [...sorted].reverse().find((log) => log.processCompleteTs)?.processCompleteTs ?? null,
-    stepCloseTs:
-      [...sorted].reverse().find((log) => log.stepCloseTs)?.stepCloseTs ?? null,
+    processCompleteTs:
+      [...sorted].reverse().find((log) => log.processCompleteTs)?.processCompleteTs ?? null,
+    stepCloseTs: [...sorted].reverse().find((log) => log.stepCloseTs)?.stepCloseTs ?? null,
     firstReviewAgentStartedTs:
       sorted.find((log) => log.firstReviewAgentStartedTs)?.firstReviewAgentStartedTs ?? null,
     finalPassTs: [...sorted].reverse().find((log) => log.finalPassTs)?.finalPassTs ?? null,
     reviewEvents: sorted.flatMap((log) => toEventRecords(log.metadata.review_events)),
     verificationEvents: sorted.flatMap((log) => toEventRecords(log.metadata.verification_events)),
     backlogEvents: sorted.flatMap((log) => toEventRecords(log.metadata.backlog_events)),
-    operatorInterventions: sorted.flatMap((log) => toEventRecords(log.metadata.operator_interventions)),
+    operatorInterventions: sorted.flatMap((log) =>
+      toEventRecords(log.metadata.operator_interventions),
+    ),
     processMissEvents: sorted.flatMap((log) => toEventRecords(log.metadata.process_miss_events)),
     hardIncidentEvents: sorted.flatMap((log) => toEventRecords(log.metadata.hard_incident_events)),
   };
@@ -392,17 +405,17 @@ async function buildSessionIndexRecords(
   const records: SessionIndexRecord[] = [];
   for (const log of logs) {
     records.push({
-    version: 1,
-    feature_cycle_id: featureCycleId,
-    feature_id: log.featureId,
-    backlog_item_key: log.backlogItemKey,
-    stage: log.stage,
-    session_id: log.sessionId,
-    trace_runtime: log.traceRuntime,
-    trace_locator_kind: log.traceLocatorKind,
-    stage_log_path: log.pathRel,
-    start_ts: log.startTs,
-    end_ts: await endTimestampForLog(root, log.featureId, log),
+      version: 1,
+      feature_cycle_id: featureCycleId,
+      feature_id: log.featureId,
+      backlog_item_key: log.backlogItemKey,
+      stage: log.stage,
+      session_id: log.sessionId,
+      trace_runtime: log.traceRuntime,
+      trace_locator_kind: log.traceLocatorKind,
+      stage_log_path: log.pathRel,
+      start_ts: log.startTs,
+      end_ts: await endTimestampForLog(root, log.featureId, log),
     });
   }
   return records;
@@ -418,7 +431,9 @@ async function writeSessionIndex(root: string, records: SessionIndexRecord[]): P
     .map((line) => JSON.parse(line) as SessionIndexRecord);
 
   const replacementKeys = new Set(
-    records.map((record) => `${record.feature_cycle_id}::${record.stage}::${record.stage_log_path}`),
+    records.map(
+      (record) => `${record.feature_cycle_id}::${record.stage}::${record.stage_log_path}`,
+    ),
   );
 
   const kept = existingRecords.filter((record) => {
@@ -462,10 +477,7 @@ export async function refreshLifecycleArtifacts(
 
   const grouped = new Map<LifecycleStage, ParsedLifecycleLog[]>();
   for (const stage of LIFECYCLE_STAGES) {
-    grouped.set(
-      stage,
-      cycleLogs.filter((log) => log.stage === stage).sort(compareByTimestamp),
-    );
+    grouped.set(stage, cycleLogs.filter((log) => log.stage === stage).sort(compareByTimestamp));
   }
 
   const intake = aggregateStage(grouped.get('feature-intake') ?? []);
@@ -478,9 +490,7 @@ export async function refreshLifecycleArtifacts(
     featureId,
     grouped.get('implementation') ?? [],
   );
-  const backlogItemKey =
-    cycleLogs.find((log) => log.backlogItemKey)?.backlogItemKey ??
-    null;
+  const backlogItemKey = cycleLogs.find((log) => log.backlogItemKey)?.backlogItemKey ?? null;
   const sessionIndexRecords = await buildSessionIndexRecords(root, cycleLogs, featureCycleId);
 
   const snapshot: LifecycleSnapshot = {
