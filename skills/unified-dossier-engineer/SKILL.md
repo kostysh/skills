@@ -1,6 +1,5 @@
 ---
 name: unified-dossier-engineer
-source-version: 0.2.0
 description: Build and maintain the merged dossier/backlog skill and its
   canonical unified CLI runtime. Use when working on the merged architecture,
   source bundle, artifact model, command surface, or canonical unified workflow.
@@ -8,6 +7,7 @@ compatibility: Canonical merged runtime shipped. The source bundle is maintained
   with skill-source-compiler. No split-model migration or compatibility surface
   is part of this skill.
 metadata:
+  source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
   skillforge-source-hash: 3a84c8a7ff30681ad0808093bf305b012d7d4d1bac8e870a654a6a7e2851bd40
 ---

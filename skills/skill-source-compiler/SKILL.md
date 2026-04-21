@@ -1,6 +1,5 @@
 ---
 name: skill-source-compiler
-source-version: 0.1.0
 description: Compile structured skill source bundles into portable Agent Skills
   folders. Use when authoring, normalizing, or regenerating complex multi-file
   skills that need explicit active references, supporting docs, and portability
@@ -10,6 +9,7 @@ compatibility: Designed for skills-compatible agents that can read Markdown
   files and copy local files inside the skill folder. The packaged CLI at
   scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 metadata:
+  source-version: 0.1.0
   skillforge-source-manifest: skill.yaml
   skillforge-source-hash: f72f8a8749cd9a241bb4332ccf9e62eb422fcad1345c42aae21da0b1a3d63f14
 ---

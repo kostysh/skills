@@ -1,6 +1,5 @@
 ---
 name: implementation-discipline
-source-version: 0.1.0
 description: Behavioral coding discipline for writing, modifying, and reviewing
   code with explicit assumptions, minimal complexity, surgical diffs, and
   verifiable success criteria.
@@ -8,6 +7,7 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
+  source-version: 0.1.0
   skillforge-source-manifest: skill.yaml
   skillforge-source-hash: aeded42eecb3d28c730bbf65c611eb67069c4448b1804ebbad8522657db85557
 ---
