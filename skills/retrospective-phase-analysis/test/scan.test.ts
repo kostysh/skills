@@ -65,7 +65,7 @@ void test('buildScanSummary keeps stage-log scope empty when the trace does not 
   );
   assert.equal(summary.session.tools['functions.exec_command'], 2);
   assert.equal(
-    summary.skills.referenced.some((skill) => skill.name === 'dossier-engineer'),
+    summary.skills.referenced.some((skill) => skill.name === 'unified-dossier-engineer'),
     false,
   );
   assert.equal(summary.candidateIncidents.length, 1);
@@ -86,11 +86,11 @@ void test('buildScanSummary derives skill audit scope from Available skills and 
   assert.deepEqual(
     summary.skills.available.map((skill) => skill.name),
     [
-      'backlog-engineer',
       'git-engineer',
       'hono-engineer',
       'retrospective-phase-analysis',
       'typescript-engineer',
+      'unified-dossier-engineer',
     ],
   );
   assert.deepEqual(

@@ -29,7 +29,7 @@ Do not use this skill for:
 ## Interop priority
 
 - This skill owns retrospective method, evidence hierarchy, incident classification, stage weakness analysis, skill-friction analysis, logging-gap analysis, and final report structure.
-- Treat `dossier-engineer`, `backlog-engineer`, review skills, and verification skills as evidence sources and workflow context, not as substitutes for retrospective method.
+- Treat `unified-dossier-engineer`, dossier workflow artifacts, review skills, and verification skills as evidence sources and workflow context, not as substitutes for retrospective method.
 - For packaged CLI authoring and maintenance, use `cli-engineer`; for tests and regression coverage, use `typescript-test-engineer`.
 
 This skill is optimized for agent-executed retrospectives. It assumes the agent can read:

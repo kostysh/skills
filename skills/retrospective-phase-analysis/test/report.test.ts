@@ -52,7 +52,7 @@ void test('skill audit markdown keeps manual review prompts explicit', () => {
   assert.match(markdown, /Status: draft, requires agent validation/u);
   assert.match(markdown, /### Skill: hono-engineer/mu);
   assert.match(markdown, /### Skill: retrospective-phase-analysis/mu);
-  assert.doesNotMatch(markdown, /### Skill: backlog-engineer/mu);
+  assert.doesNotMatch(markdown, /### Skill: unified-dossier-engineer/mu);
   assert.match(markdown, /Referenced skills in operational trace: 2/mu);
   assert.match(markdown, /line 3, event_msg\.payload\.message, matched `HONO engineer`/mu);
   assert.match(markdown, /Were mandatory review steps explicit\?/mu);
