@@ -73,6 +73,12 @@ references:
     target: references/commandized-stage-control.md
     required: true
     trigger: Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
+  - id: ref-runtime-command-boundary
+    title: Runtime and command boundary
+    source: references/runtime-and-command-boundary.md
+    target: references/runtime-and-command-boundary.md
+    required: true
+    trigger: Read this when designing future merged runtime modules, help surface, compatibility launchers, or command-family migration.
 
 assets:
   - id: asset-readme
@@ -94,6 +100,7 @@ surfaces:
       - ref-delivery-workflow-layer
       - ref-telemetry-and-closure
       - ref-commandized-stage-control
+      - ref-runtime-command-boundary
     optionalReferences: []
 
 sections:

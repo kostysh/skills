@@ -6,7 +6,8 @@ Current status:
 
 - planning-stage generated scaffold
 - source of truth rooted at `skill.yaml`
-- no authoritative unified CLI contract yet
+- no shipped authoritative unified CLI contract yet
+- future runtime boundary design may exist in active references before code lands
 - current production behavior still belongs to the shipped `backlog-engineer` and `dossier-engineer` skills
 
 Use this skill for:

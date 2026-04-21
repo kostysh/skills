@@ -9,7 +9,7 @@ compatibility: Planning-stage generated skill. The source bundle is maintained
   with skill-source-compiler. No unified runtime or CLI contract is shipped yet.
 metadata:
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8a7d469eb0bebf398a83a2c630b391ffbdd9c5cb559a4e5e4b6970648e3df8a4
+  skillforge-source-hash: 883655b8afd070f2530dd3453160cabc23c43b97652957506124b4ee09f7c7f8
 ---
 
 # unified-dossier-engineer
@@ -128,6 +128,7 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 - [Delivery workflow layer](references/delivery-workflow-layer.md) — Read this when designing feature intake, spec/planning/implementation flow, mature change path, coverage gate, or closure readiness in the merged skill.
 - [Telemetry and closure](references/telemetry-and-closure.md) — Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
 - [Commandized stage control](references/commandized-stage-control.md) — Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
+- [Runtime and command boundary](references/runtime-and-command-boundary.md) — Read this when designing future merged runtime modules, help surface, compatibility launchers, or command-family migration.
 
 ## Bundled assets
 

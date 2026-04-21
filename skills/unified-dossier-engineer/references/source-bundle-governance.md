@@ -42,3 +42,10 @@ Do not add command documentation to `skill.yaml` until:
 - runtime behavior exists under `src/` and emitted artifacts under `scripts/`
 - tests exist under `test/`
 - the help surface is stable enough to be contractual
+
+It is acceptable to keep future runtime/help/module design in active `references/*` before code ships.
+
+But:
+
+- those references must stay explicit about planning-stage status;
+- `skill.yaml` `commands` surface must remain empty until runtime behavior and tests actually exist.

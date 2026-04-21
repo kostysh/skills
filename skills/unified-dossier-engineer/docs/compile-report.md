@@ -13,6 +13,7 @@ Generated from `skill.yaml`.
 - `references/backlog-truth-layer.md`
 - `references/commandized-stage-control.md`
 - `references/delivery-workflow-layer.md`
+- `references/runtime-and-command-boundary.md`
 - `references/source-bundle-governance.md`
 - `references/source-review-contract.md`
 - `references/status-and-scope.md`
@@ -31,6 +32,7 @@ Generated from `skill.yaml`.
 - `references/delivery-workflow-layer.md`
 - `references/telemetry-and-closure.md`
 - `references/commandized-stage-control.md`
+- `references/runtime-and-command-boundary.md`
 
 ## Warnings
 - none

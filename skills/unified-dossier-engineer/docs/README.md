@@ -26,6 +26,7 @@ Current status:
 | [implementation-log-4.ru.md](implementation-log-4.ru.md) | Log for `Package 6.1`: commandized stage-control model for primary delivery workflows, with explicit separation from closure/helper commands. | Read when verifying the pre-utility-spec command/state/logging model. |
 | [utility-spec.ru.md](utility-spec.ru.md) | Canonical maintainer-facing specification for the future merged utility: command families, artifact contracts, root discovery, locking, output/error envelopes, and truthful closure boundaries. | Read before designing or reviewing merged runtime/CLI behavior. |
 | [implementation-log-5.ru.md](implementation-log-5.ru.md) | Log for `Package 7`: unified utility specification that turns the merged concept and package sequence into a concrete maintainer-facing contract for Package 8. | Read when validating the utility-spec wave and its handoff into runtime design. |
+| [implementation-log-6.ru.md](implementation-log-6.ru.md) | Log for `Package 8`: active runtime/help/module boundary for the future merged utility, including compatibility launchers and deprecation sequencing. | Read when validating runtime-surface design before any real CLI implementation begins. |
 
 ## Scope of This Folder
 

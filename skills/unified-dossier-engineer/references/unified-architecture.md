@@ -41,6 +41,7 @@ For detailed workflow and telemetry rules, also read:
 - [Delivery workflow layer](delivery-workflow-layer.md)
 - [Telemetry and closure](telemetry-and-closure.md)
 - [Commandized stage control](commandized-stage-control.md)
+- [Runtime and command boundary](runtime-and-command-boundary.md)
 
 ## Artifact split
 
