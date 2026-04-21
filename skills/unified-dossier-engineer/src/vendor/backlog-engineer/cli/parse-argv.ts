@@ -7,7 +7,7 @@ export type CliIntent =
   | { kind: 'command_run'; commandName: string; args: string[] };
 
 function usageHint(): string {
-  return 'Run `backlog-engineer --help` to inspect the available command surface.';
+  return 'Run `dossier-engineer --help` to inspect the available command surface.';
 }
 
 function assertNoExtraGlobalArgs(argv: string[], intent: 'global_help' | 'version'): void {

@@ -6,13 +6,13 @@ skill:
   source-version: 0.2.0
   recommended-skill-md-max-bytes: 26000
   description: >-
-    Build, maintain, and migrate the merged dossier/backlog skill and its
+    Build and maintain the merged dossier/backlog skill and its canonical
     unified CLI runtime. Use when working on the merged architecture, source
-    bundle, artifact model, command surface, or split-skill retirement path.
+    bundle, artifact model, command surface, or canonical unified workflow.
   compatibility: >-
-    First-wave merged runtime shipped. The source bundle is maintained with
-    skill-source-compiler. Migration tooling, parity hardening, and split-skill
-    retirement remain in progress.
+    Canonical merged runtime shipped. The source bundle is maintained with
+    skill-source-compiler. No split-model migration or compatibility surface is
+    part of this skill.
 
 fragments:
   overview: fragments/overview.md
@@ -78,7 +78,7 @@ references:
     source: references/runtime-and-command-boundary.md
     target: references/runtime-and-command-boundary.md
     required: true
-    trigger: Read this when designing future merged runtime modules, help surface, compatibility launchers, or command-family migration.
+    trigger: Read this when designing or maintaining merged runtime modules, help surface, or command-family boundaries.
 
 assets:
   - id: asset-readme
@@ -91,42 +91,34 @@ copies:
     source: scripts/dossier-engineer.mjs
     target: scripts/dossier-engineer.mjs
     description: Primary merged runtime launcher.
-  - id: copy-runtime-compat-dossier
-    source: scripts/dossier.mjs
-    target: scripts/dossier.mjs
-    description: Transitional dossier compatibility launcher.
-  - id: copy-runtime-compat-backlog
-    source: scripts/backlog-engineer.mjs
-    target: scripts/backlog-engineer.mjs
-    description: Transitional backlog compatibility launcher.
-  - id: copy-runtime-launcher-chunk
-    source: scripts/assets/launcher.js
-    target: scripts/assets/launcher.js
-    description: Shared bundled runtime chunk for the merged launchers.
   - id: copy-cli-test
     source: test/cli.test.ts
     target: test/cli.test.ts
     description: Command-behavior tests for the shipped merged runtime.
+  - id: copy-docs-contract-test
+    source: test/docs-contract.test.ts
+    target: test/docs-contract.test.ts
+    description: Docs/runtime/source-bundle parity checks for the generated skill.
   - id: copy-fixture-root-marker
     source: test/fixtures/refreshable-backlog/.backlog.json
     target: test/fixtures/refreshable-backlog/.backlog.json
-    description: Legacy fixture root marker used by migration-aware CLI tests.
+    description: Backlog fixture root marker used by runtime tests.
   - id: copy-fixture-applied
     source: test/fixtures/refreshable-backlog/.backlog/applied.json
     target: test/fixtures/refreshable-backlog/.backlog/applied.json
-    description: Legacy applied-registry fixture for merged runtime tests.
+    description: Applied-registry fixture for merged runtime tests.
   - id: copy-fixture-sources
     source: test/fixtures/refreshable-backlog/.backlog/sources.json
     target: test/fixtures/refreshable-backlog/.backlog/sources.json
-    description: Legacy source-registry fixture for merged runtime tests.
+    description: Source-registry fixture for merged runtime tests.
   - id: copy-fixture-state
     source: test/fixtures/refreshable-backlog/.backlog/state.json
     target: test/fixtures/refreshable-backlog/.backlog/state.json
-    description: Legacy state fixture for merged runtime tests.
+    description: State fixture for merged runtime tests.
   - id: copy-fixture-agents
     source: test/fixtures/refreshable-backlog/AGENTS.md
     target: test/fixtures/refreshable-backlog/AGENTS.md
-    description: Legacy fixture guidance file for migration-aware tests.
+    description: Fixture guidance file for runtime tests.
   - id: copy-fixture-packet-auth
     source: test/fixtures/refreshable-backlog/packets/2d764141a49f--auth-module.packet.json
     target: test/fixtures/refreshable-backlog/packets/2d764141a49f--auth-module.packet.json
@@ -151,7 +143,6 @@ copies:
     source: test/fixtures/refreshable-backlog/sources/docs/modules/session-ui.md
     target: test/fixtures/refreshable-backlog/sources/docs/modules/session-ui.md
     description: Session UI source fixture.
-
 surfaces:
   active:
     requiredReferences:
@@ -169,31 +160,29 @@ surfaces:
 
 sections:
   startHere:
-    - Confirm the task is about maintaining, extending, or migrating the merged dossier/backlog skill.
+    - Confirm the task is about maintaining or extending the canonical merged dossier/backlog skill.
     - Read every required active reference before changing the source bundle.
-    - Treat this skill as a shipped first-wave runtime; do not overclaim Packages 10-11 as already complete.
+    - Treat this skill as a shipped canonical runtime; do not reintroduce split-model compatibility promises.
     - Regenerate the emitted skill through `skill-source-compiler` after source-bundle edits.
     - Keep the root `SKILL.md` intentionally lean and move bulky active guidance into `references/*` or `assets/*`, not `docs/*`.
   whenToUse:
     - Define or refine the merged architecture that combines backlog truth and dossier delivery workflow.
-    - Maintain the generated source bundle and the shipped first-wave merged runtime.
-    - Implement or review unified CLI behavior, source-review flows, stage controllers, or compatibility launchers.
-    - Plan or execute migration from the split `backlog-engineer` + `dossier-engineer` model into one unified skill.
+    - Maintain the generated source bundle and the shipped canonical merged runtime.
+    - Implement or review unified CLI behavior, source-review flows, stage controllers, or canonical help/runtime contracts.
   whenNotToUse:
-    - The task only changes the split `backlog-engineer` or `dossier-engineer` skill without affecting merged runtime parity or migration.
-    - The task depends on split-skill-only behavior that is not yet migrated into this runtime; use the split skills as parity references.
-    - The task asks for Package 10-11 migration/retirement outcomes that are not shipped yet.
+    - The task only changes the split `backlog-engineer` or `dossier-engineer` skill without affecting the merged skill.
+    - The task depends on split roots, split launchers, or migration tooling; this skill does not support that surface.
   workflow:
     - id: stage-confirm-status
       title: Confirm shipped-runtime scope
       goal: Prevent the source bundle from overclaiming what the merged runtime actually ships today.
       steps:
-        - Verify whether the task changes runtime code, tests, active references, source-bundle structure, or migration documents.
+        - Verify whether the task changes runtime code, tests, active references, or source-bundle structure.
         - Refuse to document runnable commands unless a shipped runtime and tests exist in this skill.
-        - Keep split-skill-only semantics marked as parity references until Packages 10-11 retire them.
+        - Remove split-model compatibility promises instead of preserving them as transitional wording.
       validation:
         - No speculative CLI contract appears in `SKILL.md`.
-        - The source bundle remains honest about shipped first-wave scope versus pending migration work.
+        - The source bundle remains honest about canonical shipped scope.
     - id: stage-maintain-unified-model
       title: Maintain the unified model
       goal: Keep the merged architecture deterministic and non-destructive.
@@ -221,11 +210,7 @@ sections:
     - id: interop-merged-runtime
       domain: shipped merged runtime behavior
       winner: "`unified-dossier-engineer`"
-      rationale: Package 9 ships the first-wave merged runtime and owns its active command surface.
-    - id: interop-legacy-parity
-      domain: split-skill-only behavior and migration parity reference
-      winner: the existing `backlog-engineer` and `dossier-engineer` skills
-      rationale: Until Packages 10-11 complete, split skills remain parity references for unmigrated or not-yet-retired behavior.
+      rationale: The merged skill owns its active command surface and canonical unified artifact contract.
     - id: interop-generated-maintenance
       domain: generated-skill maintenance and source-bundle discipline
       winner: "`skill-source-compiler`"
@@ -475,15 +460,6 @@ sections:
         - test/cli.test.ts
       examples:
         - node scripts/dossier-engineer.mjs debt-audit --dossier <path>
-    - id: command-marker-audit
-      command: marker-audit
-      summary: Compatibility alias for `debt-audit`.
-      when: Legacy workflows still invoke the historic alias during the migration window.
-      script: scripts/dossier-engineer.mjs
-      tests:
-        - test/cli.test.ts
-      examples:
-        - node scripts/dossier-engineer.mjs marker-audit --dossier <path>
     - id: command-dependency-graph
       command: dependency-graph
       summary: Print the dossier dependency graph as Mermaid.
@@ -568,7 +544,7 @@ sections:
   gotchas:
     - id: gotcha-no-speculative-cli
       priority: high
-      text: Do not document commands, flags, output fields, or compatibility claims unless the merged runtime and tests actually ship them.
+      text: Do not document commands, flags, or output fields unless the merged runtime and tests actually ship them.
     - id: gotcha-root-size
       priority: high
       text: The merged skill will be large; keep `SKILL.md` small and push detail into `references/*` or compile will eventually drift beyond the recommended size ceiling.

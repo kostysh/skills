@@ -6,29 +6,28 @@ Use this reference when maintaining the shipped merged runtime surface for `unif
 
 `Package 7` fixed the maintainer-facing utility specification.
 `Package 8` turned that specification into a deterministic runtime/help/module boundary.
-`Package 9` now ships the first-wave merged runtime against that boundary.
+`Package 9` shipped the canonical merged runtime.
+`Package 10` hardens that runtime into a canonical-only public contract.
 
-This reference defines the active shipped boundary plus the migration-safe constraints for later packages.
+This reference defines the active shipped boundary.
 
 ## Primary runtime rule
 
-The merged runtime exposes **one semantic public utility contract**:
+The merged runtime exposes exactly one public utility contract:
 
 ```text
 dossier-engineer <command> [options]
 ```
 
-This is the primary public command form after the merge stabilizes.
-
 Important:
 
-- this is a semantic public boundary, not a promise that only one physical launcher must exist from day one;
-- the first merged runtime may still keep compatibility entry points while the public contract converges;
-- the design must not require one monolithic binary on day one if compatibility or rollout safety argue for wrappers.
+- this is both the semantic and physical public boundary;
+- no compatibility launchers or compatibility aliases are part of the shipped contract;
+- no migration or rollout command family is part of the shipped contract.
 
-## Future command families
+## Shipped command families
 
-The shipped merged help surface must group commands by family, even if commands stay top-level.
+The shipped merged help surface groups commands by family.
 
 ### Bootstrap / root-management
 
@@ -76,7 +75,6 @@ The shipped merged help surface must group commands by family, even if commands 
 - `contract-drift-audit`
 - `coverage-audit`
 - `debt-audit`
-- `marker-audit` as compatibility alias only
 - `dependency-graph`
 - `sync-index`
 - `index-refresh`
@@ -89,20 +87,15 @@ The shipped merged help surface must group commands by family, even if commands 
 
 ## Workflow stages versus runnable commands
 
-Merged runtime design must keep this rule explicit:
+Merged runtime design keeps this rule explicit:
 
 - a workflow stage is not a shipped command unless it appears in the real help surface;
 - stage names may stay active design vocabulary in references before code lands;
 - once a command ships, its help/runtime/tests become the authoritative boundary for that command.
 
-Implication for this skill:
-
-- active references may define future migration and retirement work around the command families and module boundaries;
-- generated `SKILL.md` may list shipped commands, but it must not overclaim Packages 10-11 as already complete.
-
 ## Runtime module boundary
 
-The merged runtime should stay mechanically unified but internally modular.
+The merged runtime stays mechanically unified but internally modular.
 
 Recommended module split:
 
@@ -151,7 +144,7 @@ Responsibilities:
 Suggested source boundary:
 
 ```text
-src/delivery/stages/
+src/delivery/
 ```
 
 ### Delivery helper / closure modules
@@ -164,11 +157,7 @@ Responsibilities:
 - step close
 - dossier-local querying
 
-Suggested source boundary:
-
-```text
-src/delivery/helpers/
-```
+Implemented through vendored dossier helper surface plus merged wrappers.
 
 ### Telemetry / indexing modules
 
@@ -179,114 +168,28 @@ Responsibilities:
 - index sync / refresh
 - closure-backed aggregation helpers
 
-Suggested source boundary:
-
-```text
-src/telemetry/
-```
-
-### Compatibility modules
-
-Responsibilities:
-
-- compatibility launchers
-- deprecation warnings
-- old entry-point forwarding
-
-Suggested source boundary:
-
-```text
-src/compat/
-```
+Implemented through the shipped lifecycle/closure surface without separate migration modules.
 
 ## Help surface contract
 
 Top-level help for the merged utility must:
 
-- identify `dossier-engineer` as the primary public utility;
+- identify `dossier-engineer` as the only public utility;
 - group commands by the families above;
 - distinguish stage-controller commands from helper/closure commands;
-- surface deprecated compatibility entry points and aliases as deprecated;
-- avoid presenting workflow prose terms that are not real commands.
+- avoid presenting workflow prose terms that are not real commands;
+- explicitly state that only canonical unified layout is supported.
 
 Command-local help must:
 
 - show only shipped options and output guarantees;
 - reflect the utility specification rather than inventing ad hoc wording;
-- make deprecation explicit when invoked through a compatibility launcher or alias.
-
-## Migration of old entry points
-
-The merged runtime must not break operators by collapsing every old entry point at once.
-
-### Backlog launcher migration
-
-During migration, `backlog-engineer` may remain as a compatibility launcher that forwards to the backlog truth family of the merged runtime.
-
-Rules:
-
-- the compatibility launcher must preserve machine-facing behavior for the delegated commands;
-- it must emit a deprecation warning pointing to the primary public form `dossier-engineer <command>`;
-- it must not invent commands outside the merged help surface.
-
-### Dossier helper migration
-
-Existing helper command names retained literally by the merged spec must continue to exist as shipped command names when the merged runtime lands:
-
-- `contract-drift-audit`
-- `dossier-verify`
-- `review-artifact`
-- `dossier-step-close`
-- `lifecycle-refresh`
-- `next-step`
-- `coverage-audit`
-- `debt-audit`
-- `dependency-graph`
-- `sync-index`
-- `index-refresh`
-- `lint-dossiers`
-
-### Stage-name migration
-
-Previously prose-only workflow names must not gain compatibility shims unless they become real shipped commands.
-
-Implication:
-
-- `spec-compact`, `plan-slice`, `implementation`, and `change-proposal` become runnable only when the merged runtime truly ships them;
-- before that point they remain design intent, not compatibility aliases.
-
-## Deprecation strategy
-
-The split skills and launchers do not become legacy by declaration alone.
-
-Required order:
-
-1. merged runtime implements equivalent command families and artifacts;
-2. help surface, runtime behavior, and tests prove the boundary;
-3. compatibility launchers warn but still work;
-4. only after parity and rollout criteria may the split launchers be removed.
-
-Specific first-wave deprecation rules:
-
-- `delete-backlog` stays deprecated from the merged runtime;
-- `marker-audit` may survive only as a compatibility alias;
-- no new destructive compatibility surface should be added just to mirror split history.
+- avoid compatibility or migration wording.
 
 ## Negative rules
 
-- do not require one monolithic CLI binary from the first merged release;
-- do not let compatibility wrappers become a second long-term public contract;
+- do not add compatibility wrappers as a second public contract;
 - do not promote commands or flags into `skill.yaml` if runtime code and tests do not ship them;
 - do not let top-level help blur backlog truth commands with delivery-stage commands;
-- do not let helper commands absorb stage-controller responsibilities or vice versa.
-
-## Package 9 handoff
-
-`Package 9` must validate this boundary through parity and rollout checks.
-
-Minimum downstream expectations:
-
-- the primary public utility is obvious in help output;
-- compatibility launchers/aliases are explicitly marked and tested;
-- command families from this reference are preserved in shipped help/runtime/tests;
-- split launchers are not retired before equivalent behavior is proven.
+- do not let helper commands absorb stage-controller responsibilities or vice versa;
+- do not imply support for split roots, migration flows, or rollout switching.

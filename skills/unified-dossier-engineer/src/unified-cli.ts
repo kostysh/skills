@@ -44,7 +44,6 @@ type UnifiedCommand = {
 };
 
 export type RunUnifiedCliOptions = {
-  invocation: 'compat-backlog' | 'compat-dossier' | 'primary';
   version: string;
 };
 
@@ -888,22 +887,6 @@ const DOSSIER_COMMANDS: UnifiedCommand[] = [
   createDossierCommandWrapper('contract-drift-audit', 'delivery-helper'),
   createDossierCommandWrapper('coverage-audit', 'delivery-helper'),
   createDossierCommandWrapper('debt-audit', 'delivery-helper'),
-  {
-    ...createDossierCommandWrapper('debt-audit', 'delivery-helper'),
-    name: 'marker-audit',
-    aliases: ['debt-audit'],
-    summary: 'Compatibility alias for debt-audit.',
-    helpLines: () => [
-      'Compatibility alias for debt-audit.',
-      '',
-      'Usage:',
-      '  dossier-engineer marker-audit [same options as debt-audit]',
-      '',
-      'Notes:',
-      '  - marker-audit is a deprecated compatibility alias.',
-      '  - Use dossier-engineer debt-audit for the canonical command name.',
-    ],
-  },
   createDossierCommandWrapper('dependency-graph', 'delivery-helper'),
   createDossierCommandWrapper('sync-index', 'delivery-helper'),
   createDossierCommandWrapper('index-refresh', 'delivery-helper'),
@@ -922,7 +905,11 @@ const STAGE_COMMANDS: UnifiedCommand[] = [
   createStageControllerWrapper('change-proposal'),
 ];
 
-const COMMANDS: UnifiedCommand[] = [...BACKLOG_COMMANDS, ...DOSSIER_COMMANDS, ...STAGE_COMMANDS];
+const COMMANDS: UnifiedCommand[] = [
+  ...BACKLOG_COMMANDS,
+  ...DOSSIER_COMMANDS,
+  ...STAGE_COMMANDS,
+];
 
 const FAMILY_TITLES: Array<[UnifiedCommand['family'], string]> = [
   ['bootstrap', 'Bootstrap / root-management'],
@@ -941,7 +928,7 @@ function renderGlobalHelp(version: string): string {
   const lines = [
     `dossier-engineer ${version}`,
     '',
-    'Primary public utility for the merged dossier/backlog runtime.',
+    'The only public utility for the merged dossier/backlog runtime.',
     '',
     'Usage:',
     '  dossier-engineer <command> [options]',
@@ -970,7 +957,8 @@ function renderGlobalHelp(version: string): string {
     'Notes:',
     '  - Stage-controller commands are mechanical progress controllers only.',
     '  - Authoritative closure remains `dossier-step-close` followed by `lifecycle-refresh` when telemetry refresh is needed.',
-    '  - Compatibility launchers `dossier` and `backlog-engineer` remain transitional.',
+    '  - This runtime only supports the canonical unified `.dossier` + `docs/ssot` layout.',
+    '  - No split-skill migration, rollout, or compatibility launchers are shipped here.',
   );
 
   return lines.join('\n');

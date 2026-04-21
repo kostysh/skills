@@ -121,11 +121,11 @@ Allowed values:
 
 Truthful stage closure is blocked while required backlog follow-up remains unresolved.
 
-## Closure and telemetry compatibility
+## Closure and telemetry alignment
 
 Commandized stage control must not weaken the already-established closure contract.
 
-Required compatibility:
+Required alignment:
 
 - `dossier-step-close` remains the authoritative closure artifact writer;
 - `lifecycle-refresh` remains the lifecycle aggregation helper when lifecycle snapshots or session indexes need refresh;
@@ -134,7 +134,7 @@ Required compatibility:
 
 ## Utility-spec handoff
 
-This reference remains an upstream design input for later utility-spec and migration work.
+This reference remains an upstream design input for utility-spec and later runtime hardening work.
 
 The utility specification must derive from this boundary and define:
 

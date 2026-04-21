@@ -118,7 +118,7 @@ export function createRuntime(options: CreateRuntimeOptions = {}): RuntimeModule
             cwd: dependencies.path.resolve(cwd),
             root_marker: ROOT_MARKER_BASENAME,
           },
-          hint: 'Run `backlog-engineer init --path <path>` inside a new backlog root or execute the command from an existing backlog directory.',
+          hint: 'Run `dossier-engineer init --path <path>` inside a new unified process root or execute the command from an existing managed directory.',
         });
       }
 

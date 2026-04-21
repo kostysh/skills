@@ -4,9 +4,9 @@ This folder contains supporting design, planning, and implementation documents f
 
 Current status:
 
-- first-wave merged runtime is shipped
+- canonical merged runtime is shipped
 - generated source bundle remains the source of truth
-- migration tooling and split-skill retirement are still pending
+- no legacy split-model support is shipped
 
 ## Start Here
 
@@ -26,8 +26,9 @@ Current status:
 | [implementation-log-4.ru.md](implementation-log-4.ru.md) | Log for `Package 6.1`: commandized stage-control model for primary delivery workflows, with explicit separation from closure/helper commands. | Read when verifying the pre-utility-spec command/state/logging model. |
 | [utility-spec.ru.md](utility-spec.ru.md) | Canonical maintainer-facing specification for the merged utility: command families, artifact contracts, root discovery, locking, output/error envelopes, and truthful closure boundaries. | Read before changing merged runtime/CLI behavior. |
 | [implementation-log-5.ru.md](implementation-log-5.ru.md) | Log for `Package 7`: unified utility specification that turns the merged concept and package sequence into a concrete maintainer-facing contract for Package 8. | Read when validating the utility-spec wave and its handoff into runtime design. |
-| [implementation-log-6.ru.md](implementation-log-6.ru.md) | Log for `Package 8`: active runtime/help/module boundary for the merged utility, including compatibility launchers and deprecation sequencing. | Read when validating runtime-surface design before CLI implementation changes. |
-| [implementation-log-7.ru.md](implementation-log-7.ru.md) | Log for `Package 9`: first-wave merged runtime implementation, stage controllers, source-review mechanics, compatibility launchers, and command-behavior tests. | Read when validating shipped Package 9 behavior before Package 10 migration tooling. |
+| [implementation-log-6.ru.md](implementation-log-6.ru.md) | Log for `Package 8`: active runtime/help/module boundary for the merged utility. | Read when validating runtime-surface design before CLI implementation changes. |
+| [implementation-log-7.ru.md](implementation-log-7.ru.md) | Log for `Package 9`: first-wave merged runtime implementation, stage controllers, source-review mechanics, and command-behavior tests. | Read when validating shipped Package 9 behavior before Package 10 hardening. |
+| [implementation-log-8.ru.md](implementation-log-8.ru.md) | Log for `Package 10`: canonical hardening, no-legacy cleanup, parity suites, and source-bundle/runtime alignment. | Read when validating the final canonical-only contract. |
 
 ## Scope of This Folder
 

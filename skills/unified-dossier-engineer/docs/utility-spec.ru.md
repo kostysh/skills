@@ -326,7 +326,6 @@ Rules:
 - `contract-drift-audit`
 - `coverage-audit`
 - `debt-audit`
-- `marker-audit` as compatibility alias only
 - `dependency-graph`
 - `sync-index`
 - `index-refresh`
@@ -361,7 +360,6 @@ Rules:
 | `next-step` | preserve literally | dossier-local query/read surface |
 | `coverage-audit` | preserve literally | delivery verification helper |
 | `debt-audit` | preserve literally | delivery debt helper |
-| `marker-audit` | keep as compatibility alias only | avoid unnecessary churn |
 | `dependency-graph` | preserve literally | dossier-side generated read helper |
 | `sync-index` | preserve literally | deterministic index helper |
 | `index-refresh` | preserve literally | single-writer orchestrated index refresh |

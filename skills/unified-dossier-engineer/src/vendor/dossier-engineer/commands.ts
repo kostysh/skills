@@ -33,8 +33,8 @@ import { buildRedFlagsBlock, analyzeDossiers, renderLintSummary } from './core/l
 import { hasExecutableSectionChange, parseTopLevelSections } from './core/markdown.ts';
 import { defaultNextStep, normalizeWorkflowStage, statusToNextStep } from './core/workflow.ts';
 
-export const CLI_NAME = 'dossier';
-export const CLI_DISPLAY_NAME = 'node scripts/dossier.mjs';
+export const CLI_NAME = 'dossier-engineer';
+export const CLI_DISPLAY_NAME = 'dossier-engineer';
 export const EXIT_SUCCESS = 0;
 export const EXIT_FAILURE = 1;
 export const EXIT_USAGE = 2;
@@ -211,7 +211,7 @@ function formatCli(parts: string[]): string {
 }
 
 function canonicalCli(commandName: string, args: string[] = []): string {
-  return formatCli(['node', 'scripts/dossier.mjs', commandName, ...args]);
+  return formatCli(['dossier-engineer', commandName, ...args]);
 }
 
 function slugify(value: string): string {
@@ -793,7 +793,7 @@ function featureIntakeHelp(): string {
     'Options:',
     '  --root <path>                Repository root. Defaults to cwd.',
     '  --title <text>               Dossier title. Required.',
-    '  --backlog-item-key <key>     Selected backlog item key from backlog-engineer. Required.',
+    '  --backlog-item-key <key>     Selected backlog item key from the unified backlog truth layer. Required.',
     '  --backlog-delivery-state <state>  Backlog delivery state at intake. Required.',
     '                               Allowed: defined, specified, planned, implemented.',
     '  --backlog-source <source>    Repeatable backlog source traceability entry. At least one required.',
@@ -1422,7 +1422,6 @@ function debtAuditHelp(): string {
     '',
     'Usage:',
     `  ${CLI_DISPLAY_NAME} debt-audit [options]`,
-    `  ${CLI_DISPLAY_NAME} marker-audit [options]`,
     '',
     'Options:',
     '  --root <path>                Repository root. Defaults to cwd.',
@@ -1490,10 +1489,7 @@ async function runDebtAuditCommand(argv: string[], io: CliIo): Promise<number> {
     }
   }
 
-  writeLine(
-    io.stdout,
-    `Marker audit (debt-audit compatibility): ${filesToScan.length} file(s) scanned.`,
-  );
+  writeLine(io.stdout, `Debt audit: ${filesToScan.length} file(s) scanned.`);
   writeLine(io.stdout, 'Scope: explicit debt markers only; manual debt review is still required.');
 
   if (findings.length === 0) {
@@ -2149,7 +2145,7 @@ function nextStepHelp(): string {
     '',
     'Notes:',
     '  - workflow_stage_next is a real workflow stage name or null; it never uses shipped CLI command names.',
-    '  - next-step stays dossier-local; use backlog-engineer for backlog selection, readiness, or lifecycle actualization.',
+    '  - next-step stays dossier-local; use dossier-engineer backlog commands for selection, readiness, or lifecycle actualization.',
   ].join('\n');
 }
 
@@ -2218,7 +2214,7 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
       : target
         ? []
         : [
-            'No active dossier found. Select backlog work with backlog-engineer and create a dossier via feature-intake before using next-step.',
+            'No active dossier found. Select backlog work with dossier-engineer backlog commands and create a dossier via feature-intake before using next-step.',
           ];
   const reviewFreshness = latestReviewArtifact
     ? latestReviewArtifact.verdict === 'PASS'
@@ -2397,7 +2393,7 @@ export const COMMANDS: CommandDefinition[] = [
   },
   {
     name: 'debt-audit',
-    aliases: ['marker-audit'],
+    aliases: [],
     description: 'Scan for explicit TODO/FIXME/HACK/XXX debt markers.',
     helpText: debtAuditHelp,
     run: runDebtAuditCommand,
@@ -2456,7 +2452,7 @@ export function globalHelp(): string {
   return [
     'Unified CLI for the dossier-engineer skill.',
     'Commands below are shipped CLI commands only.',
-    'Workflow stages such as init (repository bootstrap), spec-compact, plan-slice, implementation, change-proposal, adr-log, and dependency-check are documented in SKILL.md and references/workflow.md.',
+    'Workflow stages such as feature-intake, spec-compact, plan-slice, implementation, and change-proposal are documented in SKILL.md and active references.',
     '',
     'Usage:',
     `  ${CLI_DISPLAY_NAME} <command> [options]`,

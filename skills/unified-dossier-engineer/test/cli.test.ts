@@ -29,8 +29,8 @@ async function makeTempRepoPath(): Promise<string> {
   return path.join(await mkdtemp(path.join(os.tmpdir(), 'ude-cli-')), 'repo');
 }
 
-function scriptPath(name: 'backlog-engineer' | 'dossier' | 'dossier-engineer'): string {
-  return path.join(SKILL_DIR, 'scripts', `${name}.mjs`);
+function scriptPath(): string {
+  return path.join(SKILL_DIR, 'scripts', 'dossier-engineer.mjs');
 }
 
 function runCli(
@@ -38,10 +38,9 @@ function runCli(
   options: {
     allowFailure?: boolean;
     cwd?: string;
-    launcher?: 'backlog-engineer' | 'dossier' | 'dossier-engineer';
   } = {},
 ): CliResult {
-  const result = spawnSync(process.execPath, [scriptPath(options.launcher ?? 'dossier-engineer'), ...args], {
+  const result = spawnSync(process.execPath, [scriptPath(), ...args], {
     cwd: options.cwd ?? SKILL_DIR,
     encoding: 'utf8',
   });
@@ -136,25 +135,6 @@ test('init creates the unified process root and SSOT skeleton', async () => {
   await stat(path.join(repo, 'docs', 'ssot', 'features', '.gitkeep'));
 });
 
-test('compat backlog launcher warns and delegates to unified help surface', () => {
-  const result = runCli(['help'], {
-    launcher: 'backlog-engineer',
-  });
-
-  assert.match(result.stderr, /\[compat\] backlog-engineer is transitional/);
-  assert.match(result.stdout, /Primary public utility for the merged dossier\/backlog runtime/);
-  assert.match(result.stdout, /Backlog truth \/ source registry:/);
-});
-
-test('compat dossier launcher warns and delegates to unified help surface', () => {
-  const result = runCli(['help'], {
-    launcher: 'dossier',
-  });
-
-  assert.match(result.stderr, /\[compat\] dossier is transitional/);
-  assert.match(result.stdout, /Delivery stage controllers:/);
-});
-
 test('command help smoke covers the shipped public surface', () => {
   const commands = [
     'help',
@@ -176,7 +156,6 @@ test('command help smoke covers the shipped public surface', () => {
     'contract-drift-audit',
     'coverage-audit',
     'debt-audit',
-    'marker-audit',
     'dependency-graph',
     'sync-index',
     'index-refresh',
@@ -196,6 +175,40 @@ test('command help smoke covers the shipped public surface', () => {
       assert.doesNotMatch(result.stdout, /not shipped CLI subcommands/);
     }
   }
+
+  const globalHelp = runCli(['--help']);
+  assert.match(globalHelp.stdout, /The only public utility for the merged dossier\/backlog runtime\./);
+  assert.doesNotMatch(globalHelp.stdout, /references\/workflow\.md/);
+  assert.doesNotMatch(globalHelp.stdout, /\badr-log\b/);
+  assert.doesNotMatch(globalHelp.stdout, /\bdependency-check\b/);
+});
+
+test('legacy commands are not part of the shipped public surface', () => {
+  const help = runCli(['--help']);
+  assert.doesNotMatch(help.stdout, /marker-audit/);
+  assert.doesNotMatch(help.stdout, /migrate-split-artifacts/);
+  assert.doesNotMatch(help.stdout, /rollout-readiness/);
+  assert.doesNotMatch(help.stdout, /backlog-engineer is transitional/);
+
+  for (const command of ['marker-audit', 'migrate-split-artifacts', 'rollout-readiness'] as const) {
+    const result = runCli([command], { allowFailure: true });
+    assert.equal(result.code, 2);
+    assert.match(result.stderr, new RegExp(`Unknown command: ${command}`));
+  }
+});
+
+test('backlog root discovery errors point to dossier-engineer init', async () => {
+  const repo = await makeTempRepoPath();
+  await mkdir(repo, { recursive: true });
+
+  const result = runCli(
+    ['register-source', '--path', 'docs/source.md', '--kind', 'spec', '--authority', 'repo'],
+    { cwd: repo, allowFailure: true },
+  );
+
+  assert.equal(result.code, 5);
+  assert.match(result.stderr, /dossier-engineer init --path <path>/);
+  assert.doesNotMatch(result.stderr, /backlog-engineer init/);
 });
 
 test('feature-intake and stage controllers produce unified dossiers and stage logs', async () => {
@@ -309,6 +322,125 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
     stageReadyWithCycle.log_path,
     new RegExp(`^\\.dossier/logs/spec-compact/${intake.feature_id}--${intake.feature_cycle_id}--${stageStart.cycle_id}\\.md$`),
   );
+});
+
+test('dossier-verify artifacts use the canonical dossier-engineer command display', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Verification Command Display',
+        '--backlog-item-key',
+        'verification-command-display',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'verification.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const verifyResult = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--skip-index-refresh',
+      '--skip-diff-check',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.match(verifyResult.stdout, /\[dossier-verify\] artifact=/);
+  const artifactRelativePath = verifyResult.stdout.match(/\[dossier-verify\] artifact=(.+)/)?.[1]?.trim();
+  assert.ok(artifactRelativePath, 'verification artifact path not found in stdout');
+
+  const artifact = JSON.parse(
+    await readFile(path.join(repo, artifactRelativePath), 'utf8'),
+  ) as {
+    checks: Array<{ command: string }>;
+  };
+  for (const check of artifact.checks) {
+    assert.match(check.command, /\bdossier-engineer\b/);
+    assert.doesNotMatch(check.command, /node scripts\/dossier\.mjs/);
+  }
+});
+
+test('next-step ignores non-canonical workflow stages from stale step artifacts', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Next Step Canonical Guard',
+        '--backlog-item-key',
+        'next-step-canonical-guard',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'next-step.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const featureId = intakeEnvelope.data.feature_id;
+  const stepDir = path.join(repo, '.dossier', 'steps', featureId);
+  await mkdir(stepDir, { recursive: true });
+  await writeFile(
+    path.join(stepDir, 'implementation.json'),
+    `${JSON.stringify(
+      {
+        version: 1,
+        created_at: new Date().toISOString(),
+        feature_id: featureId,
+        dossier: intakeEnvelope.data.dossier,
+        step: 'implementation',
+        process_complete: false,
+        next_step: 'adr-log',
+        blockers: [],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const nextStep = JSON.parse(
+    runCli(['next-step', '--dossier', intakeEnvelope.data.dossier, '--json'], { cwd: repo }).stdout,
+  ) as {
+    blocking_gate: string[];
+    workflow_stage_next: string | null;
+  };
+
+  assert.equal(nextStep.workflow_stage_next, null);
+  assert.ok(Array.isArray(nextStep.blocking_gate));
 });
 
 test('feature-intake rejects invalid log roots before creating a dossier', async () => {

@@ -20,12 +20,10 @@ Generated from `skill.yaml`.
 - `references/telemetry-and-closure.md`
 - `references/unified-architecture.md`
 - `references/unified-artifact-topology.md`
-- `scripts/assets/launcher.js`
-- `scripts/backlog-engineer.mjs`
 - `scripts/dossier-engineer.mjs`
-- `scripts/dossier.mjs`
 - `skill.yaml`
 - `test/cli.test.ts`
+- `test/docs-contract.test.ts`
 - `test/fixtures/refreshable-backlog/.backlog.json`
 - `test/fixtures/refreshable-backlog/.backlog/applied.json`
 - `test/fixtures/refreshable-backlog/.backlog/sources.json`

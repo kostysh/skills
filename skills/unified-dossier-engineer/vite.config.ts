@@ -16,8 +16,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         'dossier-engineer': 'src/entrypoints/dossier-engineer.ts',
-        dossier: 'src/entrypoints/dossier.ts',
-        'backlog-engineer': 'src/entrypoints/backlog-engineer.ts',
       },
       external: BUILTIN_EXTERNALS,
       output: {

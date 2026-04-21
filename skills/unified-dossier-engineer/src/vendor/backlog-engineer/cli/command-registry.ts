@@ -28,7 +28,7 @@ import {
   type VersionOutput,
 } from '../schemas/index.ts';
 
-export const CLI_DISPLAY_NAME = 'backlog-engineer';
+export const CLI_DISPLAY_NAME = 'dossier-engineer';
 
 const TYPED_COMMANDS = [
   INIT_COMMAND,
@@ -76,7 +76,7 @@ export function buildGlobalHelpOutput(version: string): GlobalHelpOutput {
       summary: command.summary,
     })),
     notes: [
-      'Most commands are backlog-scoped and auto-discover `.backlog.json` from the current working directory or its parent directories.',
+      'Most commands are backlog-scoped and auto-discover `.dossier/manifest.json` from the current working directory or its parent directories.',
       'For one backlog root, run mutating commands strictly one at a time.',
       'Help shows strictly validated values and command semantics that change the mental model; use the reference docs for full field-level contracts.',
     ],

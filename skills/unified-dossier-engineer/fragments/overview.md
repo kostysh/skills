@@ -1,4 +1,6 @@
-This skill is the code-backed home of the merged `dossier-engineer`. Its job is to maintain the unified architecture, artifact model, runtime boundary, and migration path while the split skills are still being phased out.
+This skill is the code-backed home of the merged `dossier-engineer`. Its job is to maintain the unified architecture, artifact model, runtime boundary, and canonical unified CLI for the merged skill.
+
+The shipped runtime serves only the canonical unified model: `.dossier` for accounting/process truth and `docs/ssot` for project-facing SSOT. It does not ship split-model migration, rollout checks, or compatibility launchers.
 
 The merged target must preserve two distinct semantic layers inside one skill:
 

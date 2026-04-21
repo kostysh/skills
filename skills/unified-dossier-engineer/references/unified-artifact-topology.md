@@ -67,7 +67,7 @@ docs/
 ## Boundary rules
 
 - `docs/ssot/index.md` is the canonical global project index
-- `docs/ssot/features/F-*.md` is the canonical feature dossier target after migration completes
+- `docs/ssot/features/F-*.md` is the canonical feature dossier target
 - `.dossier` never becomes the canonical home of project-facing feature dossiers
 - repo-root `AGENTS.md` stays human-governed; utility-owned reinforcement may exist only inside `.dossier/backlog/AGENTS.md`
 - backlog-local ignore contract lives in `.dossier/backlog/.gitignore`
@@ -80,17 +80,15 @@ docs/
 - source paths are stored as normalized POSIX paths relative to repo process root
 - sources outside repo root may use `..` segments but remain anchored to the process root
 
-## Feature dossier migration rule
+## Feature dossier canonical rule
 
-During transition there must be exactly one canonical feature dossier path at any moment.
+There is exactly one canonical feature dossier path:
 
-Allowed transitional states:
+- `docs/ssot/features/F-*.md`
 
-- current canonical path remains `docs/features/F-*.md` until controlled migration starts
-- or canonical path becomes `docs/ssot/features/F-*.md` after explicit migration
+Forbidden states:
 
-Forbidden state:
-
+- `docs/features/F-*.md` treated as supported path by this skill
 - both paths treated as canonical at the same time
 
 ## Negative rules

@@ -50,6 +50,24 @@
 - одна сквозная process architecture;
 - две чётко разделённые внутренние модели внутри одного skill-а.
 
+## Жёсткое решение по legacy
+
+Это решение считается принятым и supersedes earlier migration-oriented drafts этого документа.
+
+- новый `dossier-engineer` поддерживает только canonical unified layout
+- никакой legacy split-model support в новом skill-е не допускается
+- новый skill не должен ship-ить migration tooling для старых split artifacts
+- новый skill не должен ship-ить rollout-readiness для перехода со split-model
+- новый skill не должен ship-ить compatibility launchers или compatibility aliases ради старых entry points
+- split repos и split workflows не являются responsibility нового skill-а
+
+Практический смысл:
+
+- canonical accounting/process root для нового skill-а: `.dossier`
+- canonical project-facing SSOT root: `docs/ssot`
+- если репозиторий не находится в этой модели, новый skill не обязан его адаптировать
+- старые split skills могут существовать отдельно как historical tools, но merged skill не несёт на себе их поддержку
+
 ## Почему текущее разделение создаёт системное трение
 
 Текущая split model логична архитектурно, но дорога в сопровождении.
@@ -607,22 +625,21 @@ docs/
    Они остаются внешними source documents.
    `.dossier` хранит учётную/process truth и derived artifacts.
 
-### Migration rule for project SSOT
+### Canonical rule for project SSOT
 
-Так как текущий active contract использует `docs/features/F-*.md` и `docs/ssot/index.md`, merged concept должен избегать mixed truth.
+Merged concept должен избегать mixed truth.
 
 Steady-state target model выбирается явно:
 
 - canonical feature dossier path после merge должен быть `docs/ssot/features/F-*.md`;
 - canonical global index должен быть `docs/ssot/index.md`.
 
-Правило миграции должно быть таким:
+Правило должно быть таким:
 
-- либо на переходной фазе canonical feature dossier остаётся в `docs/features/F-*.md`, пока не выполнен controlled migration;
-- либо выполняется явный migration to `docs/ssot/features/F-*.md`, и только после этого старый путь перестаёт быть canonical;
 - в любой момент времени должен существовать только один canonical path for feature dossier truth;
 - `feature-intake`, PR update rules и navigation contract должны ссылаться именно на этот один canonical path;
-- после завершения migration boundary `docs/features/F-*.md` больше не считается canonical target contract.
+- canonical target contract сразу задаётся как `docs/ssot/features/F-*.md`;
+- `docs/features/F-*.md` не рассматривается как supported path для нового skill-а.
 
 ### Replacement backlog root contract
 
@@ -1068,7 +1085,7 @@ skills/dossier-engineer/
 - merged `dossier-engineer` должен быть создан как generated skill, а не как manual rewrite текущих файлов;
 - merge backlog + dossier references должен происходить на уровне source bundle semantics и conflict policy;
 - compile report должен использоваться как traceability artifact при регенерации;
-- если в source bundle остаются unresolved conflicts между legacy backlog и dossier guidance, compile должен fail-closed, а не silently guess.
+- если в source bundle остаются unresolved conflicts между backlog и dossier guidance, compile должен fail-closed, а не silently guess.
 
 ## Что объединение даст оператору
 
@@ -1136,9 +1153,9 @@ skills/dossier-engineer/
 - no NLP contract in utility;
 - semantic conclusions always agent-authored.
 
-## Рекомендуемая стратегия миграции
+## Рекомендуемая стратегия реализации
 
-Я бы не делал объединение одним резким шагом.
+Я бы не делал объединение одним резким шагом, но и не проектировал новый skill как migration layer для старой split-модели.
 
 ### Фаза 1. Объединить skill-level governance
 
@@ -1146,11 +1163,10 @@ skills/dossier-engineer/
 
 - один skill `dossier-engineer`;
 - backlog references переносятся внутрь него;
-- current `backlog-engineer` становится deprecated source, а не long-term peer skill;
 - процесс описывается как единая сквозная модель;
 - source-change review contract сразу меняется на source-level review records вместо automatic item-level attention flood.
 
-На этом этапе runtime может ещё оставаться из двух механических surfaces.
+На этом этапе runtime уже должен проектироваться только как canonical merged runtime, без compatibility layer.
 
 ### Фаза 2. Перенести artifact topology под `.dossier`
 
@@ -1165,16 +1181,8 @@ skills/dossier-engineer/
 
 После этого:
 
-- можно решать, нужен ли один бинарь с namespaces или достаточно одного skill-а с несколькими runtime surfaces;
 - можно унифицировать discoverability, help surface, reports and operator workflows.
-
-### Фаза 4. Удалить legacy split semantics
-
-Только после успешной стабилизации:
-
-- retire `backlog-engineer` как отдельный skill;
-- retire old root-level backlog artifact assumptions;
-- убрать legacy wording, где dossier workflow живёт как будто отдельно от backlog truth.
+- любые обнаруженные legacy assumptions удаляются из merged skill сразу, а не поддерживаются как transitional contract.
 
 ## Мой вывод и рекомендация
 
@@ -1203,6 +1211,7 @@ skills/dossier-engineer/
 - backlog graph остаётся canonical planning truth;
 - feature dossier остаётся canonical delivery truth и живёт как project SSOT;
 - source tracking остаётся, но работает через source-level review, а не через массовое auto-raising `needs_attention`;
+- новый skill не пытается адаптировать split roots, не ship-ит compatibility launchers и не несёт migration burden старой модели.
 - actualization перестаёт быть cross-skill handoff и становится internal branch одного skill-а.
 
 Если коротко, правильная цель выглядит так:

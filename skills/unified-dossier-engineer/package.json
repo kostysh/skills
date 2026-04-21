@@ -5,9 +5,7 @@
   "description": "Unified CLI runtime for the merged dossier/backlog skill.",
   "type": "module",
   "bin": {
-    "dossier-engineer": "scripts/dossier-engineer.mjs",
-    "dossier": "scripts/dossier.mjs",
-    "backlog-engineer": "scripts/backlog-engineer.mjs"
+    "dossier-engineer": "scripts/dossier-engineer.mjs"
   },
   "exports": {
     ".": "./scripts/dossier-engineer.mjs"
@@ -19,7 +17,7 @@
     "node": ">=22.22.0"
   },
   "scripts": {
-    "build": "vite build && chmod +x scripts/*.mjs",
+    "build": "vite build && node -e \"const fs=require('node:fs');const path=require('node:path');for(const name of fs.readdirSync('scripts')){if(!name.endsWith('.mjs')) continue; const filePath=path.join('scripts', name); const source=fs.readFileSync(filePath, 'utf8'); fs.writeFileSync(filePath, source.replace(/[ \\t]+$/gm, ''));}\" && chmod +x scripts/*.mjs",
     "pretest": "pnpm run build",
     "test": "node --experimental-strip-types --test test/*.test.ts",
     "typecheck": "tsc --noEmit"

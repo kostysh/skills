@@ -1,43 +1,43 @@
 ---
 name: unified-dossier-engineer
 source-version: 0.2.0
-description: Build, maintain, and migrate the merged dossier/backlog skill and
-  its unified CLI runtime. Use when working on the merged architecture, source
-  bundle, artifact model, command surface, or split-skill retirement path.
-compatibility: First-wave merged runtime shipped. The source bundle is
-  maintained with skill-source-compiler. Migration tooling, parity hardening,
-  and split-skill retirement remain in progress.
+description: Build and maintain the merged dossier/backlog skill and its
+  canonical unified CLI runtime. Use when working on the merged architecture,
+  source bundle, artifact model, command surface, or canonical unified workflow.
+compatibility: Canonical merged runtime shipped. The source bundle is maintained
+  with skill-source-compiler. No split-model migration or compatibility surface
+  is part of this skill.
 metadata:
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 601dca766e23f194643b92c0f5d4f633d0155cb3b098ccae2f298b48bdf92c7b
+  skillforge-source-hash: 9eff1cfc8d92da916764aeae53cd55f46090887f4f9ac29e06c9a49c471feef8
 ---
 
 # unified-dossier-engineer
 
 ## Start here
 
-1. Confirm the task is about maintaining, extending, or migrating the merged dossier/backlog skill.
+1. Confirm the task is about maintaining or extending the canonical merged dossier/backlog skill.
 2. Read every required active reference before changing the source bundle.
-3. Treat this skill as a shipped first-wave runtime; do not overclaim Packages 10-11 as already complete.
+3. Treat this skill as a shipped canonical runtime; do not reintroduce split-model compatibility promises.
 4. Regenerate the emitted skill through `skill-source-compiler` after source-bundle edits.
 5. Keep the root `SKILL.md` intentionally lean and move bulky active guidance into `references/*` or `assets/*`, not `docs/*`.
 
 ## When to use this skill
 
 - Define or refine the merged architecture that combines backlog truth and dossier delivery workflow.
-- Maintain the generated source bundle and the shipped first-wave merged runtime.
-- Implement or review unified CLI behavior, source-review flows, stage controllers, or compatibility launchers.
-- Plan or execute migration from the split `backlog-engineer` + `dossier-engineer` model into one unified skill.
+- Maintain the generated source bundle and the shipped canonical merged runtime.
+- Implement or review unified CLI behavior, source-review flows, stage controllers, or canonical help/runtime contracts.
 
 ## When NOT to use this skill
 
-- The task only changes the split `backlog-engineer` or `dossier-engineer` skill without affecting merged runtime parity or migration.
-- The task depends on split-skill-only behavior that is not yet migrated into this runtime; use the split skills as parity references.
-- The task asks for Package 10-11 migration/retirement outcomes that are not shipped yet.
+- The task only changes the split `backlog-engineer` or `dossier-engineer` skill without affecting the merged skill.
+- The task depends on split roots, split launchers, or migration tooling; this skill does not support that surface.
 
 ## Overview
 
-This skill is the code-backed home of the merged `dossier-engineer`. Its job is to maintain the unified architecture, artifact model, runtime boundary, and migration path while the split skills are still being phased out.
+This skill is the code-backed home of the merged `dossier-engineer`. Its job is to maintain the unified architecture, artifact model, runtime boundary, and canonical unified CLI for the merged skill.
+
+The shipped runtime serves only the canonical unified model: `.dossier` for accounting/process truth and `docs/ssot` for project-facing SSOT. It does not ship split-model migration, rollout checks, or compatibility launchers.
 
 The merged target must preserve two distinct semantic layers inside one skill:
 
@@ -52,14 +52,14 @@ The generated instruction surface should stay intentionally small. The merged sk
 
 Prevent the source bundle from overclaiming what the merged runtime actually ships today.
 
-1. Verify whether the task changes runtime code, tests, active references, source-bundle structure, or migration documents.
+1. Verify whether the task changes runtime code, tests, active references, or source-bundle structure.
 2. Refuse to document runnable commands unless a shipped runtime and tests exist in this skill.
-3. Keep split-skill-only semantics marked as parity references until Packages 10-11 retire them.
+3. Remove split-model compatibility promises instead of preserving them as transitional wording.
 
 Validation:
 
 - No speculative CLI contract appears in `SKILL.md`.
-- The source bundle remains honest about shipped first-wave scope versus pending migration work.
+- The source bundle remains honest about canonical shipped scope.
 
 ### Workflow stage: Maintain the unified model
 
@@ -92,8 +92,7 @@ Validation:
 
 ## Interop priority
 
-- **shipped merged runtime behavior:** `unified-dossier-engineer`. Package 9 ships the first-wave merged runtime and owns its active command surface.
-- **split-skill-only behavior and migration parity reference:** the existing `backlog-engineer` and `dossier-engineer` skills. Until Packages 10-11 complete, split skills remain parity references for unmigrated or not-yet-retired behavior.
+- **shipped merged runtime behavior:** `unified-dossier-engineer`. The merged skill owns its active command surface and canonical unified artifact contract.
 - **generated-skill maintenance and source-bundle discipline:** `skill-source-compiler`. The merged skill must be maintained as a generated source bundle rather than hand-edited prose.
 
 ## Runnable commands
@@ -394,17 +393,6 @@ Validation:
 
 **Examples:** node scripts/dossier-engineer.mjs debt-audit --dossier <path>
 
-### CLI command: `marker-audit`
-**Use when:** Legacy workflows still invoke the historic alias during the migration window.
-
-**Summary:** Compatibility alias for `debt-audit`.
-
-**Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
-
-**Examples:** node scripts/dossier-engineer.mjs marker-audit --dossier <path>
-
 ### CLI command: `dependency-graph`
 **Use when:** You need a machine-generated view of dossier dependencies.
 
@@ -506,7 +494,7 @@ Validation:
 
 ## Gotchas
 
-- **high** — Do not document commands, flags, output fields, or compatibility claims unless the merged runtime and tests actually ship them.
+- **high** — Do not document commands, flags, or output fields unless the merged runtime and tests actually ship them.
 - **high** — The merged skill will be large; keep `SKILL.md` small and push detail into `references/*` or compile will eventually drift beyond the recommended size ceiling.
 - **high** — `.dossier` is for accounting and process artifacts, while `docs/ssot` remains the human-facing project SSOT.
 - **high** — Source hash changes must open a source-review record first; they must not immediately flood linked items with `needs_attention`.
@@ -538,7 +526,7 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 - [Delivery workflow layer](references/delivery-workflow-layer.md) — Read this when designing feature intake, spec/planning/implementation flow, mature change path, coverage gate, or closure readiness in the merged skill.
 - [Telemetry and closure](references/telemetry-and-closure.md) — Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
 - [Commandized stage control](references/commandized-stage-control.md) — Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
-- [Runtime and command boundary](references/runtime-and-command-boundary.md) — Read this when designing future merged runtime modules, help surface, compatibility launchers, or command-family migration.
+- [Runtime and command boundary](references/runtime-and-command-boundary.md) — Read this when designing or maintaining merged runtime modules, help surface, or command-family boundaries.
 
 ## Bundled assets
 

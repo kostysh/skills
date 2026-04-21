@@ -20,6 +20,8 @@
 - `change-proposal`, `contract-drift-audit`, `backlog impact verdict`, `coverage_gate`, strict closure truth и lifecycle telemetry должны сохраниться
 - source-change review должен перейти от массового item-level flood к source-level review record model
 - merged runtime/CLI должен проектироваться только на основе отдельной utility specification, а не ad hoc по ходу реализации
+- новый skill поддерживает только canonical unified layout и не несёт на себе legacy split support
+- новый skill не ship-ит migration tooling, rollout-readiness или compatibility launchers ради split-модели
 
 ## Главные ограничения
 
@@ -91,7 +93,7 @@ CLI нового skill-а не должен:
 - определить canonical tree `.dossier/backlog/*`
 - определить canonical accounting/process zones `.dossier/logs/*`, `.dossier/reviews/*`, `.dossier/verification/*`, `.dossier/steps/*`, `.dossier/metrics/*`, `.dossier/retro/*`, `.dossier/ops/*`, `.dossier/drift/*`
 - зафиксировать marker/discovery/root contract merged utility
-- определить migration path from `.backlog/*` and current dossier-owned artifacts
+- определить canonical replacement split roots внутри unified `.dossier` model без legacy adapter layer
 - сохранить `docs/ssot/index.md` и `docs/ssot/features/F-*.md` как canonical human-facing project SSOT layer
 
 ### Acceptance
@@ -268,19 +270,18 @@ CLI нового skill-а не должен:
 - spec не обещает semantic automation beyond mechanical artifact work
 - implementation/runtime planning downstream ссылается на utility spec как на обязательный input
 
-## Package 8. Спроектировать merged runtime and command boundary
+## Package 8. Спроектировать canonical merged runtime and command boundary
 
 ### Цель
 
-Собрать один будущий runtime surface without command ambiguity and without premature collapse, опираясь на зафиксированную utility specification.
+Собрать один будущий canonical runtime surface without command ambiguity и без legacy compatibility burden, опираясь на зафиксированную utility specification.
 
 ### Что входит
 
 - определить future command families
 - определить, что сохраняется literally, что renames, что merges
 - развести workflow stages и runnable commands
-- описать migration of old command entry points
-- определить deprecation strategy for split skills
+- определить canonical launcher set и entrypoint naming для нового skill-а
 - отразить utility spec в runtime module boundaries и help surface contract
 
 ### Acceptance
@@ -289,8 +290,9 @@ CLI нового skill-а не должен:
 - никакая workflow stage не документируется как команда без shipped runtime
 - future command boundary остаётся deterministic и testable
 - runtime boundary derives from approved utility spec, not ad hoc implementation choices
+- runtime boundary не содержит split-compatibility surface и не обещает legacy adapters
 
-## Package 9. Реализовать merged runtime, help surface и compatibility launchers
+## Package 9. Реализовать canonical merged runtime и help surface
 
 ### Цель
 
@@ -301,7 +303,6 @@ CLI нового skill-а не должен:
 - реализовать shared runtime skeleton under `src/*`
 - реализовать shipped launcher surface under `scripts/*`
 - реализовать command families, определённые в utility spec и runtime-boundary package
-- реализовать compatibility launchers / wrappers для split entry points, если они нужны для безопасного rollout
 - реализовать help surface, JSON envelopes, symbolic error codes и lock/root behavior
 - реализовать command behavior tests для shipped runtime
 - выполнить runtime promotion в source bundle:
@@ -314,53 +315,30 @@ CLI нового skill-а не должен:
 - существует реальный merged runtime, а не только design package
 - shipped help surface соответствует utility spec и runtime-boundary package
 - command behavior защищён tests, а не только prose
-- compatibility launchers, если они нужны, остаются явно transitional и не образуют второй неявный public contract
 - generated skill перестаёт быть purely planning-stage там, где реально появился shipped runtime
+- shipped runtime обслуживает только canonical unified layout и не обещает legacy split support
 
-## Package 10. Реализовать migration tooling, parity validation и rollout
+## Package 10. Завершить canonical hardening, parity validation и cleanup
 
 ### Цель
 
-Сделать merge безопасным, обратимо-проверяемым и выполнимым на реальных split artifacts/operators workflows.
+Довести merged skill до внутренне консистентного canonical-only состояния и закрыть оставшиеся design/runtime/test/doc gaps без возврата к split-compatibility.
 
 ### Что входит
 
 - docs/runtime/test parity suite
 - contract-style checks for generated `SKILL.md`
-- migration tooling для split backlog/dossier artifacts -> unified `.dossier`
-- migration fixtures for backlog and dossier artifacts
-- transitional compatibility checks
-- rollout criteria for switching operator guidance to merged skill
-- rollback / abort criteria, если migration или parity оказываются неполными
+- no-legacy invariant checks для docs, runtime help surface и tests
+- cleanup obsolete split-root assumptions в active references, runtime help и maintainer docs
+- canonical root/layout validation для `.dossier` + `docs/ssot`
+- финальная сверка command families, readiness/closure semantics и source-review contract против концепции и utility spec
 
 ### Acceptance
 
 - merge не требует верить только prose reasoning
-- migration tooling позволяет реально перевести split artifacts в unified layout, а не только описывает это на словах
 - parity tests доказывают, что важные contracts сохранены
-- split skills не объявляются legacy, пока merged skill не покрывает equivalent behavior
-- rollout criteria опираются на реальные runtime/help/tests/migration results, а не только на design completeness
-
-## Package 11. Завершить replacement split skills и убрать legacy semantics
-
-### Цель
-
-После успешного rollout довести merge до реальной полной замены split-модели, а не оставить её в вечном transitional state.
-
-### Что входит
-
-- retire `backlog-engineer` как отдельный active skill после подтверждённого parity/rollout success
-- retire legacy split wording в unified skill и связанных maintainers docs
-- убрать old root-level backlog artifact assumptions, если migration tooling и rollout подтвердили переход на unified `.dossier`
-- сузить compatibility launchers до окончательного поддерживаемого набора или удалить их, если rollout criteria допускают removal
-- обновить operator guidance, чтобы unified `dossier-engineer` стал единственным canonical path
-
-### Acceptance
-
-- split-модель реально заменена, а не просто объявлена deprecated
-- ownership unified process model больше не размыт между тремя слоями: old backlog skill, old dossier skill, new merged skill
-- legacy wording и obsolete artifact assumptions убраны после подтверждённого rollout success
-- compatibility surface после cleanup остаётся минимальной и намеренной, а не случайно накопленной
+- runtime/docs/tests не содержат migration/rollout/compatibility promises
+- canonical-only contract зафиксирован и защищён checks, а не держится на устной договорённости
 
 ## Порядок реализации
 
@@ -377,7 +355,6 @@ CLI нового skill-а не должен:
 9. Package 8
 10. Package 9
 11. Package 10
-12. Package 11
 
 Причина такого порядка:
 
@@ -387,9 +364,8 @@ CLI нового skill-а не должен:
 - затем отдельно фиксируется commandized stage-control model для delivery workflows
 - затем фиксируется utility specification как отдельный engineering contract
 - затем фиксируется runtime/help/module boundary
-- затем отдельно реализуется сам merged runtime, compatibility launchers и help surface
-- migration tooling, parity validation и rollout должны идти последними, когда runtime уже реально существует
-- только после подтверждённого rollout success можно retire-ить split skills и окончательно убрать legacy semantics
+- затем отдельно реализуется сам canonical merged runtime и help surface
+- final hardening/parity cleanup идёт последним, когда runtime уже реально существует и можно зафиксировать no-legacy invariants
 
 ## Главные риски имплементации
 
@@ -419,25 +395,25 @@ Mitigation:
 
 Mitigation:
 
-- отдельный package на runtime implementation между runtime-boundary design и rollout
+- отдельный package на runtime implementation между runtime-boundary design и final hardening
 - runtime promotion в `skill.yaml` только после появления реального code/help/tests surface
-- parity и migration не начинаются до появления working merged runtime
+- parity hardening не начинается до появления working merged runtime
 
-### Риск 5. Merge зависнет в perpetual transitional mode
+### Риск 5. В merged skill останутся неявные legacy assumptions
 
 Mitigation:
 
-- отдельный post-rollout package на retirement split skills и cleanup legacy semantics
-- compatibility launchers и old wording удаляются только после rollout success, но не оставляются бесконечно “на потом”
+- canonical-only решение зафиксировано как fixed decision, а не как deferred cleanup preference
+- отдельный hardening package удаляет legacy wording, split-root assumptions и compatibility promises до завершения работы
 
-### Риск 4. Unified runtime начнёт обещать semantic automation
+### Риск 6. Unified runtime начнёт обещать semantic automation
 
 Mitigation:
 
 - CLI/agent boundary фиксируется отдельно
 - source-review redesign explicitly forbids prose classification by utility
 
-### Риск 5. Merge сохранит старую путаницу между workflow stage и command
+### Риск 7. Merge сохранит старую путаницу между workflow stage и command
 
 Mitigation:
 

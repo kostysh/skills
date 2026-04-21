@@ -136,12 +136,9 @@ Important:
 
 This skill now ships first-wave merged commands, but workflow semantics still stay broader than the currently automated surface.
 
-Use names such as `feature-intake`, `change-proposal`, `contract-drift-audit`, and `backlog impact verdict` as semantic anchors for both:
+Use names such as `feature-intake`, `change-proposal`, `contract-drift-audit`, and `backlog impact verdict` as semantic anchors for the shipped runtime and active methodology.
 
-- the shipped first-wave runtime; and
-- the remaining migration work in Packages 10-11.
-
-The stage-controller command boundary is defined separately in [Commandized stage control](commandized-stage-control.md). That boundary is now active shipped behavior for first-wave stage controllers and remains the upstream rule for later migration work.
+The stage-controller command boundary is defined separately in [Commandized stage control](commandized-stage-control.md). That boundary is now active shipped behavior and remains the upstream rule for future hardening work.
 
 ## Negative rules
 

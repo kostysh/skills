@@ -46,5 +46,5 @@ Command documentation in `skill.yaml` is allowed only when all of the following 
 Once runtime promotion happened:
 
 - `skill.yaml` command entries must stay aligned with the shipped launchers and help surface
-- command additions, removals, renamed flags, output-field changes, and compatibility warnings must update runtime, tests, and source bundle in the same change set
-- active references may still describe future Packages 10-11 work, but they must distinguish shipped first-wave behavior from planned migration or retirement work
+- command additions, removals, renamed flags, and output-field changes must update runtime, tests, and source bundle in the same change set
+- active references may describe future hardening work, but they must not imply split-model compatibility, migration tooling, or rollout support unless runtime and tests actually ship it

@@ -5,7 +5,7 @@ import { createUsageError } from '../errors/index.ts';
 import type { JsonObject } from '../schemas/index.ts';
 
 function helpHint(commandName: string): string {
-  return `Run \`backlog-engineer help ${commandName}\` to inspect the command contract.`;
+  return `Run \`dossier-engineer help ${commandName}\` to inspect the command contract.`;
 }
 
 function serializeSchemaIssues(error: { issues: unknown }): JsonObject['issues'] {

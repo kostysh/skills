@@ -20,7 +20,7 @@ export function buildSourceSelectorFromFlags(payload: {
         command: payload.commandName,
         selectors,
       },
-      `Use exactly one source selector: --source-id, --source-label, or --source-path. Run \`backlog-engineer help ${payload.commandName}\` to inspect the command contract.`,
+      `Use exactly one source selector: --source-id, --source-label, or --source-path. Run \`dossier-engineer help ${payload.commandName}\` to inspect the command contract.`,
     );
   }
 

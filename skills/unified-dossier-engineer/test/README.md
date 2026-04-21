@@ -1,5 +1,10 @@
-# Test placeholder
+# Tests
 
-The merged runtime is not implemented yet.
+This directory contains runtime and docs-contract tests for the shipped merged `unified-dossier-engineer` skill.
 
-When runtime work starts, place contract and behavior tests here so command documentation and emitted runtime stay aligned.
+Current test families:
+
+- `cli.test.ts` for command behavior, canonical launcher surface, source-review flows, stage controllers, and closure/telemetry helpers
+- `docs-contract.test.ts` for generated `SKILL.md`, active references, utility spec, plan parity, and no-legacy invariants
+
+Fixtures under `test/fixtures/` are runtime snapshots used to seed canonical unified repos during tests.

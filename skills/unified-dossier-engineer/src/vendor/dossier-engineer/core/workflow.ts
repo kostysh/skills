@@ -3,8 +3,6 @@ const WORKFLOW_STAGES = new Set([
   'plan-slice',
   'implementation',
   'change-proposal',
-  'adr-log',
-  'dependency-check',
 ]);
 
 export function normalizeWorkflowStage(value: unknown): string | null {
