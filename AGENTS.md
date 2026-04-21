@@ -79,6 +79,16 @@ Skills can reference each other for layered capabilities:
 
 When conflict exists: language/toolchain skill wins for language matters, framework skill wins for framework APIs.
 
+## Repository-wide implementation discipline
+
+When the task involves writing, modifying, refactoring, or reviewing code, also apply the `implementation-discipline` skill.
+
+Default expectations:
+- make assumptions explicit before coding;
+- prefer the simplest sufficient design;
+- keep diffs surgical and directly traceable to the request;
+- define and run concrete verification where possible.
+
 ## Writing Skills
 
 When creating or modifying skills:

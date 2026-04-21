@@ -9,7 +9,7 @@ compatibility: Canonical merged runtime shipped. The source bundle is maintained
   is part of this skill.
 metadata:
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 73e6d7fd18438725cad46abb7065f21d6160cf7a4de38c670204d54be8b3a36b
+  skillforge-source-hash: 3a84c8a7ff30681ad0808093bf305b012d7d4d1bac8e870a654a6a7e2851bd40
 ---
 
 # unified-dossier-engineer
@@ -90,10 +90,24 @@ Validation:
 
 - `SKILL.md` links every required active reference.
 
+### Workflow stage: Apply implementation discipline to runtime changes
+
+Keep merged runtime changes simple, local, and explicitly verified.
+
+1. When the task changes runtime code or code-backed tests, also use the `implementation-discipline` skill.
+2. Prefer the smallest runtime change that satisfies the requirement instead of adding speculative abstractions.
+3. Keep the diff surgical and tie validation to concrete command behavior, type checks, or docs-contract checks.
+
+Validation:
+
+- Runtime/code changes stay narrowly scoped and explicitly verified.
+- Implementation or review work does not silently bypass `implementation-discipline`.
+
 ## Interop priority
 
 - **shipped merged runtime behavior:** `unified-dossier-engineer`. The merged skill owns its active command surface and canonical unified artifact contract.
 - **generated-skill maintenance and source-bundle discipline:** `skill-source-compiler`. The merged skill must be maintained as a generated source bundle rather than hand-edited prose.
+- **implementation behavior and code-review hygiene for merged runtime work:** `implementation-discipline`. Use it together with this skill whenever runtime code or code-backed tests change so merged-runtime work stays simple, surgical, and explicitly verified.
 
 ## Runnable commands
 ### CLI command: `help`

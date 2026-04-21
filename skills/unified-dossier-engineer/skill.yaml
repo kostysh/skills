@@ -202,6 +202,16 @@ sections:
         - Review compile warnings, especially `SKILL.md` size warnings, before finishing.
       validation:
         - "`SKILL.md` links every required active reference."
+    - id: stage-apply-implementation-discipline
+      title: Apply implementation discipline to runtime changes
+      goal: Keep merged runtime changes simple, local, and explicitly verified.
+      steps:
+        - When the task changes runtime code or code-backed tests, also use the `implementation-discipline` skill.
+        - Prefer the smallest runtime change that satisfies the requirement instead of adding speculative abstractions.
+        - Keep the diff surgical and tie validation to concrete command behavior, type checks, or docs-contract checks.
+      validation:
+        - Runtime/code changes stay narrowly scoped and explicitly verified.
+        - Implementation or review work does not silently bypass `implementation-discipline`.
   interop:
     - id: interop-merged-runtime
       domain: shipped merged runtime behavior
@@ -211,6 +221,10 @@ sections:
       domain: generated-skill maintenance and source-bundle discipline
       winner: "`skill-source-compiler`"
       rationale: The merged skill must be maintained as a generated source bundle rather than hand-edited prose.
+    - id: interop-implementation-discipline
+      domain: implementation behavior and code-review hygiene for merged runtime work
+      winner: "`implementation-discipline`"
+      rationale: Use it together with this skill whenever runtime code or code-backed tests change so merged-runtime work stays simple, surgical, and explicitly verified.
   commands:
     - id: command-help
       command: help

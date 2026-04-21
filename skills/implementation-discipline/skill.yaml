@@ -1,0 +1,139 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: implementation-discipline
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 18000
+  description: >-
+    Behavioral coding discipline for writing, modifying, and reviewing code
+    with explicit assumptions, minimal complexity, surgical diffs, and
+    verifiable success criteria.
+  compatibility: >-
+    Portable documentation-only skill. Use alongside language, framework, and
+    review skills; it does not replace domain-specific engineering guidance.
+
+references:
+  - id: ref-core-principles
+    title: Core principles
+    source: references/core-principles.md
+    target: references/core-principles.md
+    required: true
+    trigger: Read this first when the task involves writing, changing, or reviewing code.
+  - id: ref-verification-loop
+    title: Verification loop
+    source: references/verification-loop.md
+    target: references/verification-loop.md
+    required: true
+    trigger: Read this before implementing multi-step changes or deciding how to verify success.
+
+assets: []
+copies: []
+supporting: []
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-core-principles
+      - ref-verification-loop
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+
+sections:
+  startHere:
+    - Confirm the task actually includes code changes, refactoring, or code review.
+    - State assumptions, constraints, and any ambiguity before changing code.
+    - Prefer the simplest sufficient design and define the verification target before implementing.
+    - Use this skill together with the relevant language, framework, or review skill; it does not replace them.
+  whenToUse:
+    - Implement new code with minimal complexity and explicit verification.
+    - Modify existing code where overreach or speculative refactoring is a risk.
+    - Review code when you need to check for unnecessary complexity or weak success criteria.
+  whenNotToUse:
+    - The task is purely non-code documentation or analysis.
+    - The task depends entirely on domain rules owned by another skill and no code is being changed.
+    - The requested change is intentionally exploratory architecture work rather than implementation.
+  workflow:
+    - id: stage-clarify
+      title: Clarify the task and the target
+      goal: Make the implementation target explicit before touching code.
+      steps:
+        - State assumptions that the change relies on.
+        - Surface ambiguity instead of silently choosing an interpretation.
+        - Define what successful completion will look like in observable terms.
+      validation:
+        - The chosen interpretation is explicit.
+        - Success can be checked without vague phrases like "should work now".
+    - id: stage-design-minimal
+      title: Design the smallest sufficient change
+      goal: Prevent speculative abstractions and unnecessary surface area.
+      steps:
+        - Choose the smallest design that satisfies the request.
+        - Reject flexibility, configurability, or abstractions that are not demanded by the task.
+        - Prefer adapting existing code over introducing a new layer for one use.
+      validation:
+        - Every new concept in the diff is required by the request.
+        - A simpler design was considered and rejected for a concrete reason.
+    - id: stage-implement-surgically
+      title: Implement surgically
+      goal: Keep the diff local, traceable, and easy to review.
+      steps:
+        - Change only the code needed for the request.
+        - Match existing local style and structure unless the task explicitly requires broader cleanup.
+        - Remove only the dead code or imports created by your own change.
+      validation:
+        - Each changed hunk traces directly to the requested outcome.
+        - Unrelated cleanup or refactoring is absent from the diff.
+    - id: stage-verify
+      title: Verify and report with evidence
+      goal: Close the loop with concrete checks instead of intuition.
+      steps:
+        - Run the narrowest meaningful checks that prove the change.
+        - If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
+        - Report what was verified and what was not verified.
+      validation:
+        - The final report names the checks that passed.
+        - Any unverified risk is called out explicitly.
+  interop:
+    - id: interop-language-framework
+      domain: language, framework, and platform specifics
+      winner: The relevant domain skill
+      rationale: This skill governs behavioral discipline, not APIs or platform rules.
+    - id: interop-code-review
+      domain: formal review workflow, severity, and evidence format
+      winner: code-reviewer
+      rationale: This skill helps shape implementation quality, while code-reviewer owns review process and findings output.
+  commands: []
+  gotchas:
+    - id: gotcha-surface-ambiguity
+      priority: high
+      text: Do not hide uncertainty behind implementation; surface assumptions and ambiguities before coding.
+    - id: gotcha-no-speculative-abstractions
+      priority: high
+      text: Do not add speculative abstractions, configuration, or error handling that the task did not require.
+    - id: gotcha-no-broadened-diff
+      priority: high
+      text: Do not broaden the diff with unrelated cleanup or refactoring.
+    - id: gotcha-verify-or-say-so
+      priority: medium
+      text: If you cannot verify the intended outcome, say so explicitly instead of implying confidence.
+  policies:
+    - id: policy-simplicity-first
+      title: Simplicity-first policy
+      text: Default to the smallest implementation that satisfies the request. Extra flexibility is a cost, not a virtue.
+    - id: policy-surgical-diff
+      title: Surgical-diff policy
+      text: Every changed line should trace directly to the task; unrelated cleanup belongs in a different change set.
+    - id: policy-evidence-over-intuition
+      title: Evidence-over-intuition policy
+      text: Completion requires naming the checks that prove success or the exact gap that remains.
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific paths or external repository state.
+      - Keep all required implementation-discipline guidance inside this skill folder.
+      - Treat examples as behavioral patterns, not as framework-specific rules.
+    checklist:
+      - Confirm the generated SKILL links both required references.
+      - Confirm no absolute paths appear in the emitted skill.
