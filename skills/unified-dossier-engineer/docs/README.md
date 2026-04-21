@@ -19,6 +19,7 @@ Current status:
 | File | Purpose | When to read |
 | --- | --- | --- |
 | [issues/unified-dossier-engineer-concept-2026-04-20.md](issues/unified-dossier-engineer-concept-2026-04-20.md) | Target concept for merging `backlog-engineer` and `dossier-engineer`, including artifact model, unified `.dossier`, telemetry, source-review, and compiler-first development rules. | Read first when validating or evolving the merged design. |
+| [issues/improvement-proposal-20260421-1.md](issues/improvement-proposal-20260421-1.md) | Proposal to restore operator-facing stage-log value after the merged contract over-shifted toward thin telemetry and mechanical transitions. | Read when evolving the merged log contract or evaluating whether current stage logs preserve enough process evidence. |
 | [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md) | Initial implementation plan for building the merged skill from the concept. | Read before planning or executing implementation work. |
 | [legacy-repo-migration.ru.md](legacy-repo-migration.ru.md) | One-shot manual migration guide for moving a legacy split repository onto the canonical unified runtime layout. | Read when converting an existing split repo such as `yaagi` to the new skill/runtime. |
 | [implementation-log-1.ru.md](implementation-log-1.ru.md) | Log for `Package 1`: generated-skill scaffold, active surface boundaries, compiler-first maintenance model, and emitted `SKILL.md` stabilization. | Read when verifying or reconstructing the first implementation wave. |
