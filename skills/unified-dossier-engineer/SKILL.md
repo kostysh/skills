@@ -9,7 +9,7 @@ compatibility: Canonical merged runtime shipped. The source bundle is maintained
   is part of this skill.
 metadata:
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9eff1cfc8d92da916764aeae53cd55f46090887f4f9ac29e06c9a49c471feef8
+  skillforge-source-hash: 73e6d7fd18438725cad46abb7065f21d6160cf7a4de38c670204d54be8b3a36b
 ---
 
 # unified-dossier-engineer

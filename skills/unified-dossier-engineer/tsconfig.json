@@ -17,9 +17,5 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "vite.config.ts"],
-  "exclude": [
-    "src/vendor/backlog-engineer/cli.ts",
-    "src/vendor/dossier-engineer/cli.ts"
-  ]
+  "include": ["src/**/*.ts", "test/**/*.ts", "vite.config.ts"]
 }

@@ -28,7 +28,6 @@ Generated from `skill.yaml`.
 - `test/fixtures/refreshable-backlog/.backlog/applied.json`
 - `test/fixtures/refreshable-backlog/.backlog/sources.json`
 - `test/fixtures/refreshable-backlog/.backlog/state.json`
-- `test/fixtures/refreshable-backlog/AGENTS.md`
 - `test/fixtures/refreshable-backlog/packets/2d764141a49f--auth-module.packet.json`
 - `test/fixtures/refreshable-backlog/packets/38806441393a--session-ui.packet.json`
 - `test/fixtures/refreshable-backlog/patches/111c4f042c00--auth-module.patch-item.json`

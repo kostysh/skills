@@ -115,10 +115,6 @@ copies:
     source: test/fixtures/refreshable-backlog/.backlog/state.json
     target: test/fixtures/refreshable-backlog/.backlog/state.json
     description: State fixture for merged runtime tests.
-  - id: copy-fixture-agents
-    source: test/fixtures/refreshable-backlog/AGENTS.md
-    target: test/fixtures/refreshable-backlog/AGENTS.md
-    description: Fixture guidance file for runtime tests.
   - id: copy-fixture-packet-auth
     source: test/fixtures/refreshable-backlog/packets/2d764141a49f--auth-module.packet.json
     target: test/fixtures/refreshable-backlog/packets/2d764141a49f--auth-module.packet.json
