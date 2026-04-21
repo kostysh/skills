@@ -22346,7 +22346,6 @@ var PRIMARY_STAGE_SECTION_TITLES = [
 	"Close-out"
 ];
 var NOTES_SECTION_TITLE = "Notes";
-var SUMMARY_SECTION_TITLE = "Summary";
 var TRANSITION_SECTION_TITLE = "Transition events";
 function bodyAfterFrontmatter(content) {
 	if (!content.startsWith("---\n")) return content;
@@ -22392,16 +22391,22 @@ function normalizeSectionBody(body) {
 function sectionMap(sections) {
 	return new Map(sections.map((section) => [section.title, section.body]));
 }
-function mergeNotes(existingBody, newNotes) {
-	const existing = existingBody?.split(/\r?\n/u).map((line) => line.trim()).filter((line) => line.startsWith("- ")).map((line) => line.slice(2).trim()).filter(Boolean) ?? [];
-	return [...new Set([...existing, ...newNotes])];
+function extractBulletNotes(body) {
+	return body.split(/\r?\n/u).map((line) => line.trim()).filter((line) => line.startsWith("- ")).map((line) => line.slice(2).trim()).filter(Boolean);
 }
-function renderNotesSection(notes) {
-	if (notes.length === 0) return null;
+function mergeNotesBody(existingBody, newNotes) {
+	const trimmed = existingBody?.trim() ?? "";
+	const additionalNotes = newNotes.filter((note) => !extractBulletNotes(trimmed).includes(note));
+	if (!trimmed) return additionalNotes.length > 0 ? additionalNotes.map((note) => `- ${note}`).join("\n") : null;
+	if (additionalNotes.length === 0) return trimmed;
+	return `${trimmed}\n\n${additionalNotes.map((note) => `- ${note}`).join("\n")}`;
+}
+function renderNotesSection(body) {
+	if (!body?.trim()) return null;
 	return [
 		"## " + NOTES_SECTION_TITLE,
 		"",
-		...notes.map((note) => `- ${note}`)
+		...body.trim().split(/\r?\n/u)
 	];
 }
 function renderDecisionsSection(existingBody) {
@@ -22410,8 +22415,8 @@ function renderDecisionsSection(existingBody) {
 	const subsectionMap = sectionMap(subsections);
 	const preface = subsections.length === 0 ? normalizedExisting : normalizedExisting.slice(0, normalizedExisting.indexOf("### ")).trim();
 	const extraSubsections = subsections.filter((section) => !DECISION_SUBSECTION_TITLES.includes(section.title));
-	if (preface && !subsectionMap.has(DECISION_SUBSECTION_TITLES[0])) subsectionMap.set(DECISION_SUBSECTION_TITLES[0], preface);
 	const lines = ["## Decisions / reclassifications", ""];
+	if (preface) lines.push(...preface.split(/\r?\n/u), "");
 	for (const title of DECISION_SUBSECTION_TITLES) lines.push(`### ${title}`, "", ...normalizeSectionBody(subsectionMap.get(title)) ?? ["none"], "");
 	for (const section of extraSubsections) lines.push(`### ${section.title}`, "", ...normalizeSectionBody(section.body) ?? ["none"], "");
 	while (lines.at(-1) === "") lines.pop();
@@ -22430,7 +22435,7 @@ function canonicalSectionTitles(metadata) {
 function renderStageLog(metadata, options = {}) {
 	const transitionEvents = Array.isArray(metadata.transition_events) ? metadata.transition_events : [];
 	const existingSections = sectionMap(parseMarkdownSections(bodyAfterFrontmatter(options.existingContent ?? ""), "## "));
-	const notes = mergeNotes(existingSections.get(NOTES_SECTION_TITLE), options.notes ?? []);
+	const notesBody = mergeNotesBody(existingSections.get(NOTES_SECTION_TITLE), options.notes ?? []);
 	const sectionLines = [];
 	for (const title of canonicalSectionTitles(metadata)) {
 		if (title === TRANSITION_SECTION_TITLE) {
@@ -22443,9 +22448,9 @@ function renderStageLog(metadata, options = {}) {
 		}
 		sectionLines.push(...renderSection(title, existingSections.get(title) ?? ""), "");
 	}
-	const notesSection = renderNotesSection(notes);
+	const notesSection = renderNotesSection(notesBody);
 	if (notesSection) sectionLines.push(...notesSection, "");
-	const extraSections = parseMarkdownSections(bodyAfterFrontmatter(options.existingContent ?? ""), "## ").filter((section) => !canonicalSectionTitles(metadata).includes(section.title) && section.title !== NOTES_SECTION_TITLE && section.title !== SUMMARY_SECTION_TITLE).map((section) => renderSection(section.title, section.body));
+	const extraSections = parseMarkdownSections(bodyAfterFrontmatter(options.existingContent ?? ""), "## ").filter((section) => !canonicalSectionTitles(metadata).includes(section.title) && section.title !== NOTES_SECTION_TITLE).map((section) => renderSection(section.title, section.body));
 	for (const section of extraSections) sectionLines.push(...section, "");
 	while (sectionLines.at(-1) === "") sectionLines.pop();
 	return [

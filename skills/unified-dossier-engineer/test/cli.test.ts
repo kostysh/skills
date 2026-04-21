@@ -442,6 +442,115 @@ test('stage-controller reruns preserve authored narrative sections', async () =>
   assert.match(rerendered, /## Transition events\n\n- .*: entered\n- .*: ready_for_close/u);
 });
 
+test('stage-controller reruns preserve legacy summary and prose notes sections', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Legacy Section Preservation',
+        '--backlog-item-key',
+        'legacy-section-preservation',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'legacy-sections.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const stageEnvelope = parseEnvelope<{ log_path: string }>(
+    runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+  const stageLogPath = path.join(repo, stageEnvelope.data.log_path);
+  const authored = `${(await readFile(stageLogPath, 'utf8')).trimEnd()}\n\n## Summary\n\nLegacy operator summary.\n\n## Notes\n\nParagraph note preserved across rewrite.\n- Existing bullet note.\n`;
+  await writeFile(stageLogPath, authored);
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'], {
+    cwd: repo,
+  });
+
+  const rerendered = await readFile(stageLogPath, 'utf8');
+  assert.match(rerendered, /## Summary\n\nLegacy operator summary\./u);
+  assert.match(
+    rerendered,
+    /## Notes\n\nParagraph note preserved across rewrite\.\n- Existing bullet note\./u,
+  );
+});
+
+test('stage-controller reruns preserve decision intro prose before canonical subsections', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Decision Preface Preservation',
+        '--backlog-item-key',
+        'decision-preface-preservation',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'decision-preface.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const stageEnvelope = parseEnvelope<{ log_path: string }>(
+    runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+  const stageLogPath = path.join(repo, stageEnvelope.data.log_path);
+  const authored = (await readFile(stageLogPath, 'utf8')).replace(
+    '## Decisions / reclassifications\n\n### Spec gap decisions\n\nnone',
+    [
+      '## Decisions / reclassifications',
+      '',
+      'Operator overview before subsections.',
+      '',
+      '### Spec gap decisions',
+      '',
+      'Resolved missing acceptance boundary.',
+    ].join('\n'),
+  );
+  await writeFile(stageLogPath, authored);
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'], {
+    cwd: repo,
+  });
+
+  const rerendered = await readFile(stageLogPath, 'utf8');
+  assert.match(
+    rerendered,
+    /## Decisions \/ reclassifications\n\nOperator overview before subsections\./u,
+  );
+  assert.match(rerendered, /### Spec gap decisions\n\nResolved missing acceptance boundary\./u);
+});
+
 test('dossier-verify artifacts use the canonical dossier-engineer command display', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);

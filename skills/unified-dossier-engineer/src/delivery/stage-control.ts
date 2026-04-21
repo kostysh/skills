@@ -86,7 +86,6 @@ const PRIMARY_STAGE_SECTION_TITLES = [
 ] as const;
 
 const NOTES_SECTION_TITLE = 'Notes';
-const SUMMARY_SECTION_TITLE = 'Summary';
 const TRANSITION_SECTION_TITLE = 'Transition events';
 
 function bodyAfterFrontmatter(content: string): string {
@@ -146,22 +145,34 @@ function sectionMap(sections: Section[]): Map<string, string> {
   return new Map(sections.map((section) => [section.title, section.body]));
 }
 
-function mergeNotes(existingBody: string | undefined, newNotes: string[]): string[] {
-  const existing =
-    existingBody
-      ?.split(/\r?\n/u)
-      .map((line) => line.trim())
-      .filter((line) => line.startsWith('- '))
-      .map((line) => line.slice(2).trim())
-      .filter(Boolean) ?? [];
-  return [...new Set([...existing, ...newNotes])];
+function extractBulletNotes(body: string): string[] {
+  return body
+    .split(/\r?\n/u)
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith('- '))
+    .map((line) => line.slice(2).trim())
+    .filter(Boolean);
 }
 
-function renderNotesSection(notes: string[]): string[] | null {
-  if (notes.length === 0) {
+function mergeNotesBody(existingBody: string | undefined, newNotes: string[]): string | null {
+  const trimmed = existingBody?.trim() ?? '';
+  const additionalNotes = newNotes.filter((note) => !extractBulletNotes(trimmed).includes(note));
+  if (!trimmed) {
+    return additionalNotes.length > 0
+      ? additionalNotes.map((note) => `- ${note}`).join('\n')
+      : null;
+  }
+  if (additionalNotes.length === 0) {
+    return trimmed;
+  }
+  return `${trimmed}\n\n${additionalNotes.map((note) => `- ${note}`).join('\n')}`;
+}
+
+function renderNotesSection(body: string | null): string[] | null {
+  if (!body?.trim()) {
     return null;
   }
-  return ['## ' + NOTES_SECTION_TITLE, '', ...notes.map((note) => `- ${note}`)];
+  return ['## ' + NOTES_SECTION_TITLE, '', ...body.trim().split(/\r?\n/u)];
 }
 
 function renderDecisionsSection(existingBody: string | undefined): string[] {
@@ -178,10 +189,10 @@ function renderDecisionsSection(existingBody: string | undefined): string[] {
         section.title as (typeof DECISION_SUBSECTION_TITLES)[number],
       ),
   );
-  if (preface && !subsectionMap.has(DECISION_SUBSECTION_TITLES[0])) {
-    subsectionMap.set(DECISION_SUBSECTION_TITLES[0], preface);
-  }
   const lines = ['## Decisions / reclassifications', ''];
+  if (preface) {
+    lines.push(...preface.split(/\r?\n/u), '');
+  }
   for (const title of DECISION_SUBSECTION_TITLES) {
     lines.push(
       `### ${title}`,
@@ -228,7 +239,7 @@ function renderStageLog(
   const existingSections = sectionMap(
     parseMarkdownSections(bodyAfterFrontmatter(options.existingContent ?? ''), '## '),
   );
-  const notes = mergeNotes(existingSections.get(NOTES_SECTION_TITLE), options.notes ?? []);
+  const notesBody = mergeNotesBody(existingSections.get(NOTES_SECTION_TITLE), options.notes ?? []);
   const sectionLines: string[] = [];
   for (const title of canonicalSectionTitles(metadata)) {
     if (title === TRANSITION_SECTION_TITLE) {
@@ -241,7 +252,7 @@ function renderStageLog(
     }
     sectionLines.push(...renderSection(title, existingSections.get(title) ?? ''), '');
   }
-  const notesSection = renderNotesSection(notes);
+  const notesSection = renderNotesSection(notesBody);
   if (notesSection) {
     sectionLines.push(...notesSection, '');
   }
@@ -252,8 +263,7 @@ function renderStageLog(
     .filter(
       (section) =>
         !canonicalSectionTitles(metadata).includes(section.title) &&
-        section.title !== NOTES_SECTION_TITLE &&
-        section.title !== SUMMARY_SECTION_TITLE,
+        section.title !== NOTES_SECTION_TITLE,
     )
     .map((section) => renderSection(section.title, section.body));
   for (const section of extraSections) {
