@@ -1,10 +1,10 @@
 # Commandized stage control
 
-Use this reference when designing the future command model for primary delivery workflows in the merged skill.
+Use this reference when maintaining the shipped stage-controller model for primary delivery workflows in the merged skill.
 
 ## Purpose
 
-The merged skill should remove the old ambiguity where some delivery steps were real commands and others were prose-only workflow stages.
+The merged skill removes the old ambiguity where some delivery steps were real commands and others were prose-only workflow stages.
 
 Target model:
 
@@ -12,11 +12,11 @@ Target model:
 - helper commands remain a separate family;
 - semantic work stays agent-owned.
 
-This reference defines the boundary. It does not claim that the merged runtime already ships these commands.
+This reference defines the active boundary for the shipped first-wave stage-controller commands.
 
 ## Primary delivery stage-controller set
 
-The future merged utility should treat these stages as first-class stage-controller commands:
+The merged utility treats these stages as first-class stage-controller commands:
 
 - `feature-intake`
 - `spec-compact`
@@ -134,7 +134,7 @@ Required compatibility:
 
 ## Utility-spec handoff
 
-This reference is an upstream design input for the future utility specification.
+This reference remains an upstream design input for later utility-spec and migration work.
 
 The utility specification must derive from this boundary and define:
 
@@ -143,11 +143,11 @@ The utility specification must derive from this boundary and define:
 - exact transition event schema;
 - exact backlog follow-up field names and allowed values.
 
-Until the utility specification and runtime packages land, this document stays normative for design intent only, not for shipped CLI examples.
+The utility specification and runtime packages now ship this boundary in first-wave form. Later packages may harden or extend it, but they must not weaken the authority split defined here.
 
 ## Negative rules
 
-- do not present these future stage-controller names as already shipped commands
+- do not document flags or output fields for stage-controller commands that the shipped runtime does not actually expose
 - do not let stage controllers absorb `dossier-step-close`, `lifecycle-refresh`, or `next-step`
 - do not make stage-controller commands semantic automation
 - do not let commandized stage control blur the boundary between delivery progress and backlog truth mutation

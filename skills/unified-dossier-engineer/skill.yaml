@@ -3,16 +3,16 @@ kind: SkillSource
 
 skill:
   name: unified-dossier-engineer
-  source-version: 0.1.0
-  recommended-skill-md-max-bytes: 20000
+  source-version: 0.2.0
+  recommended-skill-md-max-bytes: 26000
   description: >-
-    Plan, scaffold, and maintain the future merged dossier/backlog skill that
-    will replace the split between dossier-engineer and backlog-engineer. Use
-    when working on the unified architecture, source bundle, migration plan,
-    artifact model, or runtime convergence of that future skill.
+    Build, maintain, and migrate the merged dossier/backlog skill and its
+    unified CLI runtime. Use when working on the merged architecture, source
+    bundle, artifact model, command surface, or split-skill retirement path.
   compatibility: >-
-    Planning-stage generated skill. The source bundle is maintained with
-    skill-source-compiler. No unified runtime or CLI contract is shipped yet.
+    First-wave merged runtime shipped. The source bundle is maintained with
+    skill-source-compiler. Migration tooling, parity hardening, and split-skill
+    retirement remain in progress.
 
 fragments:
   overview: fragments/overview.md
@@ -86,7 +86,71 @@ assets:
     target: assets/README.md
     description: Placeholder for future bundled templates and static assets.
 
-copies: []
+copies:
+  - id: copy-runtime-primary
+    source: scripts/dossier-engineer.mjs
+    target: scripts/dossier-engineer.mjs
+    description: Primary merged runtime launcher.
+  - id: copy-runtime-compat-dossier
+    source: scripts/dossier.mjs
+    target: scripts/dossier.mjs
+    description: Transitional dossier compatibility launcher.
+  - id: copy-runtime-compat-backlog
+    source: scripts/backlog-engineer.mjs
+    target: scripts/backlog-engineer.mjs
+    description: Transitional backlog compatibility launcher.
+  - id: copy-runtime-launcher-chunk
+    source: scripts/assets/launcher.js
+    target: scripts/assets/launcher.js
+    description: Shared bundled runtime chunk for the merged launchers.
+  - id: copy-cli-test
+    source: test/cli.test.ts
+    target: test/cli.test.ts
+    description: Command-behavior tests for the shipped merged runtime.
+  - id: copy-fixture-root-marker
+    source: test/fixtures/refreshable-backlog/.backlog.json
+    target: test/fixtures/refreshable-backlog/.backlog.json
+    description: Legacy fixture root marker used by migration-aware CLI tests.
+  - id: copy-fixture-applied
+    source: test/fixtures/refreshable-backlog/.backlog/applied.json
+    target: test/fixtures/refreshable-backlog/.backlog/applied.json
+    description: Legacy applied-registry fixture for merged runtime tests.
+  - id: copy-fixture-sources
+    source: test/fixtures/refreshable-backlog/.backlog/sources.json
+    target: test/fixtures/refreshable-backlog/.backlog/sources.json
+    description: Legacy source-registry fixture for merged runtime tests.
+  - id: copy-fixture-state
+    source: test/fixtures/refreshable-backlog/.backlog/state.json
+    target: test/fixtures/refreshable-backlog/.backlog/state.json
+    description: Legacy state fixture for merged runtime tests.
+  - id: copy-fixture-agents
+    source: test/fixtures/refreshable-backlog/AGENTS.md
+    target: test/fixtures/refreshable-backlog/AGENTS.md
+    description: Legacy fixture guidance file for migration-aware tests.
+  - id: copy-fixture-packet-auth
+    source: test/fixtures/refreshable-backlog/packets/2d764141a49f--auth-module.packet.json
+    target: test/fixtures/refreshable-backlog/packets/2d764141a49f--auth-module.packet.json
+    description: Auth module packet fixture.
+  - id: copy-fixture-packet-ui
+    source: test/fixtures/refreshable-backlog/packets/38806441393a--session-ui.packet.json
+    target: test/fixtures/refreshable-backlog/packets/38806441393a--session-ui.packet.json
+    description: Session UI packet fixture.
+  - id: copy-fixture-patch
+    source: test/fixtures/refreshable-backlog/patches/111c4f042c00--auth-module.patch-item.json
+    target: test/fixtures/refreshable-backlog/patches/111c4f042c00--auth-module.patch-item.json
+    description: Auth module patch fixture.
+  - id: copy-fixture-auth-v1
+    source: test/fixtures/refreshable-backlog/sources/docs/modules/auth.md
+    target: test/fixtures/refreshable-backlog/sources/docs/modules/auth.md
+    description: Auth source fixture.
+  - id: copy-fixture-auth-v2
+    source: test/fixtures/refreshable-backlog/sources/docs/modules/auth.v2.md
+    target: test/fixtures/refreshable-backlog/sources/docs/modules/auth.v2.md
+    description: Alternate auth source fixture.
+  - id: copy-fixture-session-ui
+    source: test/fixtures/refreshable-backlog/sources/docs/modules/session-ui.md
+    target: test/fixtures/refreshable-backlog/sources/docs/modules/session-ui.md
+    description: Session UI source fixture.
 
 surfaces:
   active:
@@ -105,30 +169,31 @@ surfaces:
 
 sections:
   startHere:
-    - Confirm the task is about planning, scaffolding, or implementing the future merged dossier/backlog skill.
+    - Confirm the task is about maintaining, extending, or migrating the merged dossier/backlog skill.
     - Read every required active reference before changing the source bundle.
-    - Treat this skill as planning-stage only until the merged runtime and CLI contract are actually shipped.
+    - Treat this skill as a shipped first-wave runtime; do not overclaim Packages 10-11 as already complete.
     - Regenerate the emitted skill through `skill-source-compiler` after source-bundle edits.
     - Keep the root `SKILL.md` intentionally lean and move bulky active guidance into `references/*` or `assets/*`, not `docs/*`.
   whenToUse:
     - Define or refine the merged architecture that combines backlog truth and dossier delivery workflow.
-    - Scaffold or maintain the generated source bundle for the future merged skill.
-    - Plan the migration from the split `backlog-engineer` + `dossier-engineer` model into one unified skill.
+    - Maintain the generated source bundle and the shipped first-wave merged runtime.
+    - Implement or review unified CLI behavior, source-review flows, stage controllers, or compatibility launchers.
+    - Plan or execute migration from the split `backlog-engineer` + `dossier-engineer` model into one unified skill.
   whenNotToUse:
-    - The task only changes the currently shipped `backlog-engineer` or `dossier-engineer` skill without touching the future merge.
-    - The task needs today's canonical runtime contract for backlog or dossier work; use the shipped skills directly.
-    - The task asks for a unified command surface that the merged runtime does not yet implement.
+    - The task only changes the split `backlog-engineer` or `dossier-engineer` skill without affecting merged runtime parity or migration.
+    - The task depends on split-skill-only behavior that is not yet migrated into this runtime; use the split skills as parity references.
+    - The task asks for Package 10-11 migration/retirement outcomes that are not shipped yet.
   workflow:
     - id: stage-confirm-status
-      title: Confirm planning-stage scope
-      goal: Prevent the scaffold from pretending the merged skill is already shipped.
+      title: Confirm shipped-runtime scope
+      goal: Prevent the source bundle from overclaiming what the merged runtime actually ships today.
       steps:
-        - Verify whether the task changes planning documents, active references, source-bundle structure, or future runtime design.
+        - Verify whether the task changes runtime code, tests, active references, source-bundle structure, or migration documents.
         - Refuse to document runnable commands unless a shipped runtime and tests exist in this skill.
-        - Keep the split-skill contract authoritative for current production behavior until the merge is implemented.
+        - Keep split-skill-only semantics marked as parity references until Packages 10-11 retire them.
       validation:
         - No speculative CLI contract appears in `SKILL.md`.
-        - The scaffold remains honest about planning-stage status.
+        - The source bundle remains honest about shipped first-wave scope versus pending migration work.
     - id: stage-maintain-unified-model
       title: Maintain the unified model
       goal: Keep the merged architecture deterministic and non-destructive.
@@ -153,19 +218,357 @@ sections:
       validation:
         - "`SKILL.md` links every required active reference."
   interop:
-    - id: interop-current-runtime
-      domain: current shipped backlog and dossier runtime behavior
+    - id: interop-merged-runtime
+      domain: shipped merged runtime behavior
+      winner: "`unified-dossier-engineer`"
+      rationale: Package 9 ships the first-wave merged runtime and owns its active command surface.
+    - id: interop-legacy-parity
+      domain: split-skill-only behavior and migration parity reference
       winner: the existing `backlog-engineer` and `dossier-engineer` skills
-      rationale: Until the merged runtime is implemented, the split skills remain authoritative for active project work.
+      rationale: Until Packages 10-11 complete, split skills remain parity references for unmigrated or not-yet-retired behavior.
     - id: interop-generated-maintenance
       domain: generated-skill maintenance and source-bundle discipline
       winner: "`skill-source-compiler`"
       rationale: The merged skill must be maintained as a generated source bundle rather than hand-edited prose.
-  commands: []
+  commands:
+    - id: command-help
+      command: help
+      summary: Show the shipped unified help surface or command-local help.
+      when: Confirm the public merged CLI contract before invoking or documenting another command.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs help
+        - node scripts/dossier-engineer.mjs help feature-intake
+    - id: command-init
+      command: init
+      summary: Initialize the unified process root, backlog subroot, and SSOT skeleton.
+      when: Bootstrap a repository for the merged runtime.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs init --path <repo>
+    - id: command-register-source
+      command: register-source
+      summary: Register a source document and obtain a source ID.
+      when: New durable source material must enter the backlog truth layer.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs register-source --path <path> --kind spec --authority repo
+    - id: command-list-sources
+      command: list-sources
+      summary: List registered sources and source metadata.
+      when: You need the canonical registry view before refresh, source maintenance, or source-linked patching.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs list-sources
+    - id: command-update-source-path
+      command: update-source-path
+      summary: Update the registered path of an existing source.
+      when: A source file moved and the registry must be kept truthful.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs update-source-path --source-id <source_id> --new-path <path>
+    - id: command-remove-source
+      command: remove-source
+      summary: Remove a source after durable cleanup of backlog references.
+      when: A source is retired and its registry entry must be removed cleanly.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs remove-source --source-id <source_id>
+    - id: command-refresh
+      command: refresh
+      summary: Refresh source hashes and open or update source-review records.
+      when: Registered source documents may have changed and source-review truth must be refreshed.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs refresh
+    - id: command-ack-source-review
+      command: ack-source-review
+      summary: Close an open source-review record as an explicit no-op.
+      when: A changed source was reviewed and no backlog mutation is required.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs ack-source-review --source-id <source_id>
+    - id: command-status
+      command: status
+      summary: Show merged backlog readiness signals including source-review blocking counts.
+      when: You need a compact readiness summary for the current process root.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs status
+    - id: command-items
+      command: items
+      summary: Return backlog item cards with source-review readiness overlays.
+      when: Specific backlog items are already known and full item cards are needed.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs items --item-keys <item_key_1>,<item_key_2>
+    - id: command-search
+      command: search
+      summary: Search backlog items with source-review readiness overlays.
+      when: You need filtered backlog discovery while preserving source-review blocking signals.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs search --status defined
+    - id: command-queue
+      command: queue
+      summary: Return queue chains after excluding source-review blocked items.
+      when: You need execution-ready chains rather than a flat item list.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs queue
+    - id: command-gaps
+      command: gaps
+      summary: List explicit blockers and unresolved backlog gaps.
+      when: You need a deterministic view of declared blockers before starting work.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs gaps
+    - id: command-attention
+      command: attention
+      summary: Surface open source-review records before generic item-level attention entries.
+      when: You need the next deterministic review targets after refresh or mutation work.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs attention
+    - id: command-template
+      command: template
+      summary: Generate packet or patch templates.
+      when: New backlog-authoring work needs a canonical template instead of ad hoc JSON.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs template packet --out <path>
+    - id: command-packet
+      command: packet
+      summary: Apply a packet that adds new backlog tasks.
+      when: Source review or planned delivery work requires new backlog items.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs packet --path <packet.json>
+    - id: command-patch-item
+      command: patch-item
+      summary: Apply a patch that updates existing backlog tasks.
+      when: Existing backlog truth must be corrected without creating a new packet.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs patch-item --patch <patch.json>
+    - id: command-remove-item
+      command: remove-item
+      summary: Apply a patch that removes obsolete backlog tasks.
+      when: Confirmed obsolete work must be removed from backlog truth.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs remove-item --patch <patch.json>
+    - id: command-report
+      command: report
+      summary: Generate a human-readable backlog report on disk.
+      when: Operator-facing backlog reporting is needed without manually reading JSON read models.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs report
+    - id: command-feature-intake
+      command: feature-intake
+      summary: Create a new feature dossier and open a feature lifecycle.
+      when: Selected backlog work is being turned into a new dossier-controlled feature.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs feature-intake --title <title> --backlog-item-key <key> --backlog-delivery-state <state> --backlog-source <source> --area <area> --owner <owner> --impact <impact>
+    - id: command-spec-compact
+      command: spec-compact
+      summary: Mechanical controller for the spec-compact stage.
+      when: The feature moves into or through compact specification work.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs spec-compact --feature-id <id>
+    - id: command-plan-slice
+      command: plan-slice
+      summary: Mechanical controller for the plan-slice stage.
+      when: The feature moves into or through planning work.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs plan-slice --feature-id <id>
+    - id: command-implementation
+      command: implementation
+      summary: Mechanical controller for the implementation stage.
+      when: The feature moves into or through implementation work.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs implementation --feature-id <id>
+    - id: command-change-proposal
+      command: change-proposal
+      summary: Mechanical controller for the mature change path.
+      when: The feature enters an explicit change-proposal branch that may affect backlog truth.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs change-proposal --feature-id <id>
+    - id: command-contract-drift-audit
+      command: contract-drift-audit
+      summary: Detect executable contract drift without follow-up changes.
+      when: Mature change work needs a deterministic contract-drift check.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs contract-drift-audit --dossier <path>
+    - id: command-coverage-audit
+      command: coverage-audit
+      summary: Check AC references in tests and report orphans.
+      when: Coverage-gate evidence must be refreshed against current dossier state.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs coverage-audit --dossier <path>
+    - id: command-debt-audit
+      command: debt-audit
+      summary: Scan for explicit TODO/FIXME/HACK/XXX debt markers.
+      when: Closure readiness requires a deterministic debt pass.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs debt-audit --dossier <path>
+    - id: command-marker-audit
+      command: marker-audit
+      summary: Compatibility alias for `debt-audit`.
+      when: Legacy workflows still invoke the historic alias during the migration window.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs marker-audit --dossier <path>
+    - id: command-dependency-graph
+      command: dependency-graph
+      summary: Print the dossier dependency graph as Mermaid.
+      when: You need a machine-generated view of dossier dependencies.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs dependency-graph --dossier <path>
+    - id: command-sync-index
+      command: sync-index
+      summary: Refresh generated dossier table and graph blocks only.
+      when: The global SSOT index needs deterministic block refresh without broader red-flag recomputation.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs sync-index --root <repo>
+    - id: command-index-refresh
+      command: index-refresh
+      summary: Run sync-index and refresh the generated Red flags block.
+      when: The global SSOT index needs a full generated refresh.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs index-refresh --root <repo>
+    - id: command-lint-dossiers
+      command: lint-dossiers
+      summary: Validate feature dossiers and optionally update Red flags.
+      when: Dossier integrity must be checked across the current process root.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs lint-dossiers --root <repo>
+    - id: command-dossier-verify
+      command: dossier-verify
+      summary: Run the canonical verification bundle and persist its artifact.
+      when: Local gates are green and deterministic verification evidence must be materialized.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs dossier-verify --dossier <path>
+    - id: command-review-artifact
+      command: review-artifact
+      summary: Persist an already obtained independent review artifact.
+      when: Independent review evidence already exists and must be recorded durably.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs review-artifact --dossier <path> --step implementation --verdict PASS --reviewer independent
+    - id: command-dossier-step-close
+      command: dossier-step-close
+      summary: Persist the authoritative step-close artifact and update stage-log closure truth.
+      when: Verification and review evidence are complete and the step is ready to close.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs dossier-step-close --dossier <path> --step <step>
+    - id: command-next-step
+      command: next-step
+      summary: Resolve the dossier-local next workflow stage from structured state.
+      when: You need the deterministic next step for one dossier without inference from chat prose.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs next-step --dossier <path>
+    - id: command-lifecycle-refresh
+      command: lifecycle-refresh
+      summary: Rebuild lifecycle metrics and session anchors from structured telemetry.
+      when: Step-close or lifecycle telemetry changed and lifecycle snapshots must be refreshed.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs lifecycle-refresh --feature-id <id>
   gotchas:
     - id: gotcha-no-speculative-cli
       priority: high
-      text: Do not document runnable unified commands until the merged runtime and tests actually ship them.
+      text: Do not document commands, flags, output fields, or compatibility claims unless the merged runtime and tests actually ship them.
     - id: gotcha-root-size
       priority: high
       text: The merged skill will be large; keep `SKILL.md` small and push detail into `references/*` or compile will eventually drift beyond the recommended size ceiling.
@@ -183,11 +586,11 @@ sections:
       text: Delivery closure remains step-close-backed and telemetry-backed; commit history or chat summaries are never enough.
     - id: gotcha-stage-control
       priority: high
-      text: Future stage-controller commands are mechanical progress controllers only; they must stop at `ready_for_close` and must not duplicate `dossier-step-close` or `lifecycle-refresh`.
+      text: Stage-controller commands are mechanical progress controllers only; they must stop at `ready_for_close` and must not duplicate `dossier-step-close` or `lifecycle-refresh`.
   policies:
     - id: policy-active-surface
       title: Active normative surface
-      text: The generated `SKILL.md` and required references are the only active default instruction surface for this planning-stage skill.
+      text: The generated `SKILL.md`, required references, and shipped runtime/help/tests are the active default instruction surface for this merged skill.
     - id: policy-no-function-loss
       title: No functionality loss
       text: The merge must retain every essential behavior of both original skills, including backlog source tracking, `change-proposal`, `contract-drift-audit`, `coverage_gate`, lifecycle telemetry, and strict closure truth.

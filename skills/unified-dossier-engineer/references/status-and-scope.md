@@ -1,23 +1,23 @@
 # Status and scope
 
-This skill is not the shipped merged runtime yet.
+This skill ships the first-wave merged runtime.
 
 Current status:
 
-- planning-stage generated scaffold
+- code-backed generated skill
 - source of truth rooted at `skill.yaml`
-- no shipped authoritative unified CLI contract yet
-- future runtime boundary design may exist in active references before code lands
-- current production behavior still belongs to the shipped `backlog-engineer` and `dossier-engineer` skills
+- first-wave authoritative unified CLI contract exists under `scripts/`
+- migration tooling, split-skill parity hardening, and retirement are still pending
+- split `backlog-engineer` and `dossier-engineer` remain parity references until Packages 10-11 complete
 
 Use this skill for:
 
 - merged architecture decisions
 - source-bundle maintenance
-- planning and migration work
-- future runtime convergence design
+- runtime/CLI maintenance inside the merged skill
+- migration and retirement planning work
 
-Do not use this skill as proof that a merged runtime already exists.
+Do not use this skill as proof that split-skill migration or retirement is already complete.
 
 ## Non-negotiable scope invariants
 

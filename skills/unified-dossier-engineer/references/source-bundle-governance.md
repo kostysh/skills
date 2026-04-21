@@ -35,17 +35,16 @@ Required behavior:
 4. run compiler `check`
 5. inspect `docs/compile-report.md`
 
-## Runtime promotion rule
+## Runtime promotion and maintenance rule
 
-Do not add command documentation to `skill.yaml` until:
+Command documentation in `skill.yaml` is allowed only when all of the following remain true:
 
 - runtime behavior exists under `src/` and emitted artifacts under `scripts/`
 - tests exist under `test/`
 - the help surface is stable enough to be contractual
 
-It is acceptable to keep future runtime/help/module design in active `references/*` before code ships.
+Once runtime promotion happened:
 
-But:
-
-- those references must stay explicit about planning-stage status;
-- `skill.yaml` `commands` surface must remain empty until runtime behavior and tests actually exist.
+- `skill.yaml` command entries must stay aligned with the shipped launchers and help surface
+- command additions, removals, renamed flags, output-field changes, and compatibility warnings must update runtime, tests, and source bundle in the same change set
+- active references may still describe future Packages 10-11 work, but they must distinguish shipped first-wave behavior from planned migration or retirement work

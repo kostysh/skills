@@ -1,0 +1,205 @@
+import type {
+  AttentionCommandOutput,
+  AttentionReasonCode,
+  CommandSuggestion,
+  GapsCommandInput,
+  GapsCommandOutput,
+  ItemsCommandOutput,
+  ItemKey,
+  PacketFile,
+  PacketId,
+  PacketMutationCounts,
+  PatchFile,
+  PatchItemCommandOutput,
+  RefreshCommandInput,
+  RefreshCommandOutput,
+  RemoveItemCommandOutput,
+  SearchCommandInput,
+  SearchCommandOutput,
+  SourceId,
+  SourceRegistryFile,
+  SourceSummary,
+  StateFile,
+  Todo,
+  TodoId,
+  TodoManagedBy,
+} from '../schemas/index.ts';
+
+export interface GraphService {
+  assertPacketAddsOnlyNewItems(payload: { state: StateFile; packet: PacketFile }): void;
+  applyPacketItems(payload: { state: StateFile; packet: PacketFile }): {
+    state: StateFile;
+    addedItemKeys: ItemKey[];
+  };
+  applyPatchOperations(payload: { state: StateFile; patch: PatchFile }): {
+    state: StateFile;
+    updatedItemKeys: ItemKey[];
+    removedItemKeys: ItemKey[];
+    removedTodoIds: TodoId[];
+  };
+  buildDependencyIndex(state: StateFile): Map<ItemKey, ItemKey[]>;
+  buildReverseDependencyIndex(state: StateFile): Map<ItemKey, ItemKey[]>;
+  resolveItemSubgraph(payload: { state: StateFile; rootItemKeys: ItemKey[] }): ItemKey[];
+  cleanupRemovedItemReferences(payload: {
+    state: StateFile;
+    removedItemKeys: ItemKey[];
+  }): StateFile;
+}
+
+export interface ContextService {
+  mergePacketContext(payload: { state: StateFile; packet: PacketFile }): {
+    state: StateFile;
+    changedContextKeys: string[];
+  };
+  assertNoGlossaryConflicts(payload: { state: StateFile; packet: PacketFile }): void;
+  assertImmutableContextEntities(payload: { state: StateFile; packet: PacketFile }): void;
+}
+
+export interface TodoService {
+  createOrMergeTodos(payload: { state: StateFile; todos: Todo[] }): {
+    state: StateFile;
+    createdTodoIds: TodoId[];
+    updatedTodoIds: TodoId[];
+  };
+  removeTodos(payload: { state: StateFile; todoIds: TodoId[] }): {
+    state: StateFile;
+    removedTodoIds: TodoId[];
+  };
+  generateTodosForSourceChange(payload: {
+    state: StateFile;
+    registry: SourceRegistryFile;
+    sourceIds: SourceId[];
+    affectedItemKeys: ItemKey[];
+    requireDirectSourceLink?: boolean;
+    managedBy?: TodoManagedBy;
+  }): Todo[];
+  generateTodosForSourceRemoval(payload: {
+    state: StateFile;
+    registry: SourceRegistryFile;
+    sourceIds: SourceId[];
+    affectedItemKeys: ItemKey[];
+    managedBy?: TodoManagedBy;
+  }): Todo[];
+  generateTodosForDependencyChange(payload: {
+    state: StateFile;
+    changedItemKeys: ItemKey[];
+    dependentItemKeys: ItemKey[];
+    managedBy?: TodoManagedBy;
+    relatedSources?: SourceSummary[];
+  }): Todo[];
+  generateTodosForContextChange(payload: {
+    state: StateFile;
+    changedItemKeys: ItemKey[];
+    affectedItemKeys?: ItemKey[];
+    managedBy?: TodoManagedBy;
+  }): Todo[];
+}
+
+export interface DerivedStateService {
+  recomputeAll(state: StateFile): StateFile;
+  recomputeItems(payload: { state: StateFile; itemKeys: ItemKey[] }): StateFile;
+  computeItemState(payload: { state: StateFile; itemKey: ItemKey }): {
+    needs_attention: boolean;
+    attention_reason_codes: AttentionReasonCode[];
+    attention_reasons: string[];
+    ready_for_next_step: boolean;
+  };
+}
+
+export interface SearchService {
+  search(payload: {
+    state: StateFile;
+    filters: SearchCommandInput;
+    registry: SourceRegistryFile;
+  }): SearchCommandOutput;
+}
+
+export interface ItemsService {
+  getItems(payload: {
+    state: StateFile;
+    itemKeys: ItemKey[];
+    registry: SourceRegistryFile;
+  }): ItemsCommandOutput;
+}
+
+export interface QueueService {
+  buildQueueChains(payload: { state: StateFile }): import('../schemas/index.ts').QueueCommandOutput;
+}
+
+export interface AttentionService {
+  buildAttentionList(payload: {
+    state: StateFile;
+    registry: SourceRegistryFile;
+  }): AttentionCommandOutput;
+}
+
+export interface PacketMutationSummary {
+  dry_run: boolean;
+  counts: PacketMutationCounts;
+  added: ItemKey[];
+  removed: ItemKey[];
+  todo_created: ItemKey[];
+  todo_updated: ItemKey[];
+  next_commands: CommandSuggestion[];
+}
+
+export interface RemoveSourceMaintenanceSummary {
+  state: StateFile;
+  counts: {
+    updated: number;
+    todo_created: number;
+    todo_updated: number;
+    todo_removed: number;
+  };
+  updated_item_keys: ItemKey[];
+  todo_created: ItemKey[];
+  todo_updated: ItemKey[];
+  todo_removed: ItemKey[];
+  next_commands: CommandSuggestion[];
+}
+
+export interface MutationService {
+  applyPacket(payload: {
+    state: StateFile;
+    packet: PacketFile;
+    sourceRegistry: SourceRegistryFile;
+    packetId: PacketId;
+    dryRun: boolean;
+  }): Promise<PacketMutationSummary & { state: StateFile }>;
+  applyPatch(payload: {
+    state: StateFile;
+    patch: PatchFile;
+    sourceRegistry: SourceRegistryFile;
+    dryRun: boolean;
+  }): Promise<
+    | (PatchItemCommandOutput & { state: StateFile })
+    | (RemoveItemCommandOutput & { state: StateFile })
+  >;
+  refresh(payload: {
+    state: StateFile;
+    sourceRegistry: SourceRegistryFile;
+    changedSourceIds: SourceId[];
+    scope: RefreshCommandInput;
+  }): Promise<RefreshCommandOutput & { state: StateFile; registry: SourceRegistryFile }>;
+  removeSourceReferences(payload: {
+    state: StateFile;
+    patch: PatchFile;
+    sourceRegistry: SourceRegistryFile;
+    sourceId: SourceId;
+    affectedItemKeys: ItemKey[];
+    updatedItemKeys: ItemKey[];
+  }): Promise<RemoveSourceMaintenanceSummary>;
+  getGaps(payload: { state: StateFile; filters: GapsCommandInput }): GapsCommandOutput;
+}
+
+export interface CoreModule {
+  graph: GraphService;
+  context: ContextService;
+  todo: TodoService;
+  derivedState: DerivedStateService;
+  search: SearchService;
+  items: ItemsService;
+  queue: QueueService;
+  attention: AttentionService;
+  mutation: MutationService;
+}

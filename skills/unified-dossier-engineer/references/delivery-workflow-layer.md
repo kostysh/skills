@@ -134,11 +134,14 @@ Important:
 
 ## Semantic heritage versus shipped runtime
 
-This planning-stage skill preserves workflow semantics before it ships merged commands.
+This skill now ships first-wave merged commands, but workflow semantics still stay broader than the currently automated surface.
 
-Use current names such as `feature-intake`, `change-proposal`, `contract-drift-audit`, and `backlog impact verdict` as semantic anchors for the future merged design. Do not treat those names as proof that the merged runtime already exposes a finalized help surface.
+Use names such as `feature-intake`, `change-proposal`, `contract-drift-audit`, and `backlog impact verdict` as semantic anchors for both:
 
-The future command model for primary delivery stages is defined separately in [Commandized stage control](commandized-stage-control.md). That boundary is upstream design intent, not current shipped runtime.
+- the shipped first-wave runtime; and
+- the remaining migration work in Packages 10-11.
+
+The stage-controller command boundary is defined separately in [Commandized stage control](commandized-stage-control.md). That boundary is now active shipped behavior for first-wave stage controllers and remains the upstream rule for later migration work.
 
 ## Negative rules
 

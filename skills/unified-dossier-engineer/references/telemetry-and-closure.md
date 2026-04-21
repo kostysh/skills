@@ -98,13 +98,13 @@ Required rules:
 
 - blocked, open, and closed remain truthful durable states
 - implementation closure truth requires authoritative step-close evidence
-- a future lifecycle aggregation helper may refresh lifecycle snapshots after step closure, but naming/help surface stays provisional until the utility specification and runtime packages land
+- `lifecycle-refresh` remains the shipped lifecycle aggregation helper for lifecycle snapshots and session-index refresh
 - lifecycle timestamps must never materialize from chat-only or commit-only signals
 
 Semantic heritage rule:
 
 - the merged design preserves the current `dossier-step-close` and `lifecycle-refresh` semantics as authoritative closure and lifecycle-aggregation anchors
-- those names are planning-stage semantic anchors here, not proof of already shipped merged commands
+- those names are now shipped merged commands and remain the authoritative semantic anchors for closure and lifecycle aggregation
 
 ## Metrics contract
 
@@ -121,19 +121,19 @@ The telemetry layer must make these signals computable from deterministic artifa
 - operator intervention counts
 - telemetry completeness
 
-This does not mean the planning-stage skill already ships all metric fields. It means the merged artifact model must preserve enough identity, timestamps, and bounded events for future mechanical aggregation.
+This does not mean the first-wave runtime already materializes every desired metric field. It means the merged artifact model already preserves enough identity, timestamps, and bounded events for later mechanical aggregation.
 
 ## CLI boundary
 
 The merged telemetry layer stays mechanical.
 
-Allowed future utility behavior:
+Allowed utility behavior:
 
 - read/write lifecycle artifacts
 - validate schema and invariants
 - aggregate deterministic snapshots
 
-Forbidden future utility behavior:
+Forbidden utility behavior:
 
 - interpret prose to infer missing closure truth
 - classify source changes semantically

@@ -2,8 +2,8 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.0`
-- CLI package version: `0.1.0`
+- Skill source version: `0.2.0`
+- CLI package version: `0.2.0`
 
 ## Source files
 - `assets/README.md`
@@ -20,7 +20,23 @@ Generated from `skill.yaml`.
 - `references/telemetry-and-closure.md`
 - `references/unified-architecture.md`
 - `references/unified-artifact-topology.md`
+- `scripts/assets/launcher.js`
+- `scripts/backlog-engineer.mjs`
+- `scripts/dossier-engineer.mjs`
+- `scripts/dossier.mjs`
 - `skill.yaml`
+- `test/cli.test.ts`
+- `test/fixtures/refreshable-backlog/.backlog.json`
+- `test/fixtures/refreshable-backlog/.backlog/applied.json`
+- `test/fixtures/refreshable-backlog/.backlog/sources.json`
+- `test/fixtures/refreshable-backlog/.backlog/state.json`
+- `test/fixtures/refreshable-backlog/AGENTS.md`
+- `test/fixtures/refreshable-backlog/packets/2d764141a49f--auth-module.packet.json`
+- `test/fixtures/refreshable-backlog/packets/38806441393a--session-ui.packet.json`
+- `test/fixtures/refreshable-backlog/patches/111c4f042c00--auth-module.patch-item.json`
+- `test/fixtures/refreshable-backlog/sources/docs/modules/auth.md`
+- `test/fixtures/refreshable-backlog/sources/docs/modules/auth.v2.md`
+- `test/fixtures/refreshable-backlog/sources/docs/modules/session-ui.md`
 
 ## Required references
 - `references/status-and-scope.md`

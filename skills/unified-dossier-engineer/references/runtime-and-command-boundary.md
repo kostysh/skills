@@ -1,18 +1,18 @@
 # Runtime and command boundary
 
-Use this reference when designing the future merged runtime surface for `unified-dossier-engineer`.
+Use this reference when maintaining the shipped merged runtime surface for `unified-dossier-engineer`.
 
 ## Purpose
 
 `Package 7` fixed the maintainer-facing utility specification.
-`Package 8` turns that specification into a deterministic runtime/help/module boundary for the future shipped utility.
+`Package 8` turned that specification into a deterministic runtime/help/module boundary.
+`Package 9` now ships the first-wave merged runtime against that boundary.
 
-This reference defines that boundary.
-It does **not** claim that the merged runtime already ships these commands.
+This reference defines the active shipped boundary plus the migration-safe constraints for later packages.
 
 ## Primary runtime rule
 
-The future merged runtime must expose **one semantic public utility contract**:
+The merged runtime exposes **one semantic public utility contract**:
 
 ```text
 dossier-engineer <command> [options]
@@ -95,14 +95,14 @@ Merged runtime design must keep this rule explicit:
 - stage names may stay active design vocabulary in references before code lands;
 - once a command ships, its help/runtime/tests become the authoritative boundary for that command.
 
-Implication for this planning-stage skill:
+Implication for this skill:
 
-- active references may define future command families and module boundaries;
-- generated `SKILL.md` must still avoid presenting those commands as already runnable in this skill package.
+- active references may define future migration and retirement work around the command families and module boundaries;
+- generated `SKILL.md` may list shipped commands, but it must not overclaim Packages 10-11 as already complete.
 
 ## Runtime module boundary
 
-The future merged runtime should stay mechanically unified but internally modular.
+The merged runtime should stay mechanically unified but internally modular.
 
 Recommended module split:
 
@@ -201,7 +201,7 @@ src/compat/
 
 ## Help surface contract
 
-Top-level help for the future merged utility must:
+Top-level help for the merged utility must:
 
 - identify `dossier-engineer` as the primary public utility;
 - group commands by the families above;
@@ -276,7 +276,7 @@ Specific first-wave deprecation rules:
 
 - do not require one monolithic CLI binary from the first merged release;
 - do not let compatibility wrappers become a second long-term public contract;
-- do not promote future commands into `skill.yaml` command listings before runtime code and tests ship them;
+- do not promote commands or flags into `skill.yaml` if runtime code and tests do not ship them;
 - do not let top-level help blur backlog truth commands with delivery-stage commands;
 - do not let helper commands absorb stage-controller responsibilities or vice versa.
 

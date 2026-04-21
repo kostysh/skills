@@ -1,7 +1,36 @@
 {
   "name": "@kostysh/unified-dossier-engineer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Planning-stage generated scaffold for the future merged dossier/backlog skill.",
-  "type": "module"
+  "description": "Unified CLI runtime for the merged dossier/backlog skill.",
+  "type": "module",
+  "bin": {
+    "dossier-engineer": "scripts/dossier-engineer.mjs",
+    "dossier": "scripts/dossier.mjs",
+    "backlog-engineer": "scripts/backlog-engineer.mjs"
+  },
+  "exports": {
+    ".": "./scripts/dossier-engineer.mjs"
+  },
+  "files": [
+    "scripts"
+  ],
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "build": "vite build && chmod +x scripts/*.mjs",
+    "pretest": "pnpm run build",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "yaml": "^2.8.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.3"
+  }
 }
