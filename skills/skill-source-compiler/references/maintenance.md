@@ -41,6 +41,10 @@ Versioning rules:
 - bump `package.json` `version` when shipped runtime behavior, CLI help, runtime dependencies, or package release surface changes
 - bump both when both the instruction surface and the runtime surface change
 
+Rendering note:
+
+- the generated `SKILL.md` must place `skill.source-version` under frontmatter `metadata`, not at the top level
+
 ## Optimizing SKILL.md size
 
 The generated `SKILL.md` should stay focused on:

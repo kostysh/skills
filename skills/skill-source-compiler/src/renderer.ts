@@ -13,11 +13,11 @@ const renderFrontmatter = (loaded: LoadedSourceBundle): string => {
   const { source } = loaded;
   const frontmatter = {
     name: source.skill.name,
-    "source-version": source.skill["source-version"],
     description: source.skill.description,
     ...(source.skill.license === undefined ? {} : { license: source.skill.license }),
     ...(source.skill.compatibility === undefined ? {} : { compatibility: source.skill.compatibility }),
     metadata: {
+      "source-version": source.skill["source-version"],
       ...source.skill.metadata,
       "skillforge-source-manifest": "skill.yaml",
       "skillforge-source-hash": sha256(JSON.stringify(source)),

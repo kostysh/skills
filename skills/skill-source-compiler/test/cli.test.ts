@@ -64,7 +64,7 @@ void test("built CLI lint, compile, and check succeed for the self-hosted bundle
     const compiledDir = path.join(tempRoot, "skill-source-compiler");
     const compiledSkill = await readFile(path.join(compiledDir, "SKILL.md"), "utf8");
     assert.match(compiledSkill, /## Runnable commands/u);
-    assert.match(compiledSkill, /source-version: 0\.1\.0/u);
+    assert.match(compiledSkill, /metadata:\n(?:.+\n)*\s+source-version: 0\.1\.0/u);
     assert.match(compiledSkill, /test\/cli\.test\.ts/u);
     assert.match(compiledSkill, /references\/maintenance\.md/u);
     assert.match(compiledSkill, /references\/authoring-guidelines\.md/u);

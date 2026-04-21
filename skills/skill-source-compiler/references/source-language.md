@@ -47,3 +47,8 @@ When the skill ships a CLI or other runtime artifact, prefer rooting `skill.yaml
 ## Rendering model
 
 The compiler renders `SKILL.md` from structured sections, then copies the declared files into their emitted targets.
+
+Frontmatter placement rule:
+
+- `skill.source-version` belongs under frontmatter `metadata`
+- it must not be emitted as a top-level frontmatter field

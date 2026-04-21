@@ -34,5 +34,5 @@ skill-name/
 
 ## Generated metadata
 
-- `SKILL.md` frontmatter should carry the skill content version from `skill.source-version`
+- `SKILL.md` frontmatter `metadata` should carry the skill content version from `skill.source-version`
 - `docs/compile-report.md` should report the skill content version and, when present, the CLI/package version from `package.json`

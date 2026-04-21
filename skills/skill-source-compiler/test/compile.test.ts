@@ -20,7 +20,7 @@ void test("compileSourceBundle generates a valid skill bundle", async () => {
   const skillMarkdown = await readFile(join(result.outputDir, "SKILL.md"), "utf8");
   assert.match(skillMarkdown, /## Start here/u);
   assert.match(skillMarkdown, /## Runnable commands/u);
-  assert.match(skillMarkdown, /source-version: 0\.1\.0/u);
+  assert.match(skillMarkdown, /metadata:\n(?:.+\n)*\s+source-version: 0\.1\.0/u);
   assert.match(skillMarkdown, /references\/source-language\.md/u);
   assert.match(skillMarkdown, /references\/maintenance\.md/u);
   assert.match(skillMarkdown, /references\/authoring-guidelines\.md/u);

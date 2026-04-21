@@ -10157,11 +10157,14 @@ var skillSourceSchema = object({
 });
 var compiledFrontmatterSchema = object({
 	name: skillName,
-	"source-version": versionString,
 	description: descriptionString,
 	license: nonEmptyString.optional(),
 	compatibility: nonEmptyString.max(500).optional(),
-	metadata: record(string(), string()).default({}),
+	metadata: object({
+		"source-version": versionString,
+		"skillforge-source-manifest": nonEmptyString.optional(),
+		"skillforge-source-hash": nonEmptyString.optional()
+	}).catchall(string()),
 	"allowed-tools": nonEmptyString.optional()
 });
 //#endregion
@@ -10489,11 +10492,11 @@ var renderFrontmatter = (loaded) => {
 	const { source } = loaded;
 	const frontmatter = {
 		name: source.skill.name,
-		"source-version": source.skill["source-version"],
 		description: source.skill.description,
 		...source.skill.license === void 0 ? {} : { license: source.skill.license },
 		...source.skill.compatibility === void 0 ? {} : { compatibility: source.skill.compatibility },
 		metadata: {
+			"source-version": source.skill["source-version"],
 			...source.skill.metadata,
 			"skillforge-source-manifest": "skill.yaml",
 			"skillforge-source-hash": sha256(JSON.stringify(source))

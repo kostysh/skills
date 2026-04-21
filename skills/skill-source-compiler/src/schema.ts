@@ -136,11 +136,16 @@ export type WorkflowStage = z.infer<typeof workflowStageSchema>;
 
 export const compiledFrontmatterSchema = z.object({
   name: skillName,
-  "source-version": versionString,
   description: descriptionString,
   license: nonEmptyString.optional(),
   compatibility: nonEmptyString.max(500).optional(),
-  metadata: z.record(z.string(), z.string()).default({}),
+  metadata: z
+    .object({
+      "source-version": versionString,
+      "skillforge-source-manifest": nonEmptyString.optional(),
+      "skillforge-source-hash": nonEmptyString.optional(),
+    })
+    .catchall(z.string()),
   "allowed-tools": nonEmptyString.optional(),
 });
 
