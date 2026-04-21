@@ -109,7 +109,7 @@
 
 ### Цель
 
-Не допустить, чтобы stage-controller reruns затирали agent-authored narrative sections.
+Не допустить, чтобы и stage-controller reruns, и helper-owned closure updates затирали agent-authored narrative sections.
 
 ### Что входит
 
@@ -119,6 +119,9 @@
   - frontmatter
   - transition section
   - deterministic helper-owned fields
+- явно включить в scope helper-owned rewrite path:
+  - `dossier-step-close`
+  - `recordStepCloseOnStageLog()`
 - не уничтожать уже написанные:
   - `Decisions / reclassifications`
   - `Operator feedback`
@@ -128,6 +131,7 @@
 ### Acceptance
 
 - rerun `spec-compact` / `plan-slice` / `implementation` / `change-proposal` / `feature-intake` не стирает authored narrative sections
+- `dossier-step-close` / `recordStepCloseOnStageLog()` тоже не стирают authored narrative sections при helper-owned closure update
 - helper-owned updates и agent-authored narrative coexist deterministically
 - contract не требует от агента переписывать log после каждого mechanical transition
 
@@ -143,15 +147,20 @@
   - bootstrap log contains required sections
   - rerender preserves authored narrative content
   - transition updates remain truthful
-- при необходимости добавить docs-contract checks на active references, чтобы они явно требовали operator-facing narrative minimum
+- добавить обязательные docs-contract checks для protected parity surface:
+  - `references/telemetry-and-closure.md`
+  - `references/commandized-stage-control.md`
+  - `docs/utility-spec.ru.md`
+- добавить runtime tests, которые отдельно покрывают helper-owned closure rewrite path, а не только stage-controller reruns
 - регенерировать emitted `SKILL.md`
 - обновить `docs/README.md` и implementation log после выполнения работы
 
 ### Acceptance
 
 - tests падают, если runtime снова начинает materialize-ить almost-frontmatter-only logs
+- tests падают, если helper-owned closure update стирает authored narrative scaffold
 - generated `SKILL.md` и active references согласованы с new log contract
-- docs/runtime/tests parity восстановлена
+- docs/runtime/tests parity восстановлена для active refs и maintainer-facing utility spec, а не только для emitted `SKILL.md`
 
 ## Порядок реализации
 
@@ -213,5 +222,6 @@
 - required section scaffold зафиксирован для intake/stage logs;
 - shipped runtime materialize-ит этот scaffold из коробки;
 - reruns не стирают authored narrative content;
-- tests защищают и bootstrap shape, и preservation semantics;
+- tests защищают и bootstrap shape, и preservation semantics, и helper-owned closure rewrite path;
+- docs-contract или эквивалентный enforced parity layer защищает `telemetry-and-closure.md`, `commandized-stage-control.md` и `utility-spec.ru.md`;
 - generated `SKILL.md` не противоречит active log contract.
