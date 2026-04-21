@@ -123,7 +123,9 @@ Minimum required quality checks before a CLI is considered ready:
 7. build
 8. artifact smoke test
 
-Repository scripts should expose these checks clearly. Typical script names are:
+Repository scripts should expose these checks clearly and should be the commands the agent actually runs before calling the work ready.
+
+Minimum package-level script surface:
 
 - `typecheck`
 - `format`
@@ -131,6 +133,17 @@ Repository scripts should expose these checks clearly. Typical script names are:
 - `lint`
 - `lint:fix`
 - `test`
+
+If the repository uses split tooling, expose the narrower scripts too. In this repository's standard that normally means:
+
+- `lint:biome`
+- `lint:eslint`
+
+Recommended usage pattern:
+
+1. run `format` or `lint:fix` while iterating
+2. run `lint` before handing the CLI over for review
+3. run `test` before declaring the package ready
 
 The exact formatter or linter may vary by repo, but the gate itself should not be omitted just because the repository started without one.
 

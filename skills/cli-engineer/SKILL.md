@@ -55,7 +55,8 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 - Unit tests are mandatory. Do not treat integration or smoke coverage as a substitute for unit coverage of core behavior.
 - Use TypeScript for both utility code and tests.
 - Run tests with Node's test runner and native type stripping; do not use the `tsx` runtime. A representative command is `node --experimental-strip-types --test test/*.test.ts`.
-- If the target repository does not already provide an equivalent quality gate, add and enforce one for at least typecheck, format, and lint before considering the CLI ready.
+- If the target repository does not already provide an equivalent quality gate, add and enforce one before considering the CLI ready. At minimum the package must expose and use `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`; when the repo uses split formatter/linter tooling, also expose the narrower scripts such as `lint:biome` and `lint:eslint`.
+- Before declaring a CLI task ready, run the gate rather than only isolated commands: use `format` or `lint:fix` while iterating, then finish with the package-level `lint` and `test` scripts.
 - Prefer the current Active LTS Node baseline for new CLI work, but verify the current release state before locking version advice into code or docs.
 - If the CLI is meant to run outside its source repository, verify the installed command name early, publish a real install path, and smoke test from another working directory such as `/tmp`, not only through source-mode wrappers.
 
@@ -102,7 +103,7 @@ Do NOT use for:
 5. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
 6. Design non-interactive paths before prompts or TUI polish.
 7. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
-8. Ensure the repo has a quality gate for typecheck, format, and lint if one is not already established.
+8. Ensure the repo has a package-level quality gate with explicit scripts for `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`; if the repo splits formatter and linter, expose the narrower scripts too.
 9. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, install-path verification, and provenance where supported.
 
 ## High-signal Triggers
