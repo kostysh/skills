@@ -356,6 +356,161 @@ Readiness rule:
 - до delivered implementation
 - и до post-change backlog truth.
 
+## Commandized delivery workflows
+
+Одно из важных целевых изменений после merge:
+
+primary delivery workflows больше не должны существовать только как prose-only workflow names.
+
+Нужна явная модель:
+
+- каждый primary delivery workflow stage получает свой собственный mechanical stage-controller command;
+- helper commands остаются отдельным семейством и не смешиваются с stage controllers.
+
+### Какие workflow stages должны стать first-class commands
+
+Минимальный целевой набор:
+
+- `feature-intake`
+- `spec-compact`
+- `plan-slice`
+- `implementation`
+- `change-proposal`
+
+Это означает:
+
+- у агента больше не должно быть двусмысленности, является ли stage runnable command boundary или только названием методики;
+- utility сможет честно фиксировать stage transitions и stage-local state без попытки выводить их из prose.
+
+### Какие команды НЕ нужно смешивать с stage controllers
+
+Это остаётся отдельным helper family:
+
+- `contract-drift-audit`
+- `dossier-verify`
+- `review-artifact`
+- `dossier-step-close`
+- `lifecycle-refresh`
+- `next-step`
+
+То есть target model не “каждый шаг процесса превращается в свою команду”.
+
+Target model такой:
+
+- primary delivery stages получают свои commands;
+- supporting verification / review / closure / query helpers остаются отдельными commands;
+- semantic work по-прежнему делает агент, а не utility.
+
+### Что должны делать stage-controller commands
+
+Они должны выполнять только mechanical работу:
+
+- открывать stage cycle;
+- продолжать stage cycle;
+- фиксировать blocked / resumed / ready-for-close transitions;
+- создавать или обновлять stage log;
+- валидировать наличие required structured prerequisites;
+- materialize-ить machine-readable readiness and follow-up signals.
+
+Их верхняя граница authority:
+
+- они могут доводить stage только до truthful pre-close / `ready_for_close` boundary;
+- они не должны сами materialize-ить authoritative `closed` state;
+- они не должны писать closure timestamps как окончательную truth of record.
+
+Они не должны:
+
+- писать спецификацию вместо агента;
+- писать план вместо агента;
+- принимать semantic product decisions;
+- анализировать prose как NLP engine.
+
+### Как stage-controller commands должны участвовать в логировании
+
+Это один из главных аргументов в пользу commandization.
+
+С их появлением telemetry может опираться не только на “агент помнит, что он уже вошёл в stage”, а на явные command-level transitions.
+
+Нужно зафиксировать:
+
+- каждый stage-controller command становится canonical writer для stage entry/resume/block/ready transitions;
+- stage log по-прежнему остаётся `.md` artifact с YAML frontmatter и narrative sections;
+- но machine-readable часть stage log должна теперь дополнительно содержать bounded transition surface;
+- `feature_cycle_id` остаётся общим identity key;
+- stage-local `cycle_id` остаётся identity конкретного stage closure target.
+
+Минимально needed machine-readable additions для target model:
+
+- `stage_state`
+- `entered_ts`
+- `ready_for_close_ts`
+- `transition_events[]`
+
+Для `blocked` / `resumed` transitions authoritative event history должна жить в `transition_events[]`.
+
+Если позже понадобятся summary fields, они должны быть явно derived и недвусмысленны, например `first_entered_ts` или `last_blocked_ts`.
+Но target model не должен вводить ambiguous singleton fields вроде `blocked_ts` или `resumed_ts` без строго определённой semantics.
+
+Эти поля не заменяют existing timestamps и bounded event arrays.
+Они дают deterministic stage-transition evidence.
+
+### Как stage-controller commands должны влиять на backlog truth
+
+Здесь merge не должен размыть current truth boundary.
+
+Stage-controller commands не должны мутировать backlog truth напрямую.
+
+Вместо этого они должны:
+
+- выставлять explicit machine-readable signal, что backlog follow-up required;
+- фиксировать, какого типа follow-up ожидается;
+- блокировать truthful stage closure, пока required backlog actualization не завершён.
+
+Минимальный target surface:
+
+- `backlog_followup_required: true|false`
+- `backlog_followup_kind`
+- `backlog_followup_resolved: true|false`
+
+Для ordinary truth-changing stages expected kinds будут такими:
+
+- `patch-item`
+- `refresh+patch`
+
+Для mature change path explicit truth selector остаётся stronger surface:
+
+- `backlog impact verdict`
+
+Allowed values:
+
+- `no-op`
+- `patch existing item`
+- `source update`
+- `new backlog item`
+
+То есть после merge логика становится более ясной:
+
+- workflow stage command materialize-ит deterministic signal;
+- backlog mutation по-прежнему происходит через backlog truth layer;
+- truthful stage closure невозможен, пока required backlog follow-up не закрыт.
+
+Важно:
+
+- это не создаёт второй closure authority surface;
+- stage-controller command может only signal `ready_for_close`;
+- authoritative `closed` state, closure timestamps и lifecycle truth остаются у `dossier-step-close` и последующего `lifecycle-refresh`.
+
+### Почему это лучше текущей split-модели
+
+Текущая проблема была в том, что часть delivery lifecycle уже имела commands, а часть была workflow-only surface.
+
+Это создавало два recurring failure modes:
+
+- агент путал runnable command и workflow stage;
+- telemetry приходилось partially reconstruct-ить из narrative reasoning вместо явных transition anchors.
+
+Commandized workflow boundary снимает обе проблемы, если его сделать механическим, а не “магическим”.
+
 ## Unified artifact model под `.dossier`
 
 Это центральная часть концепции.

@@ -196,6 +196,55 @@ CLI нового skill-а не должен:
 - `feature_cycle_id` и stage-local identity ties позволяют deterministically связать logs, steps и lifecycle snapshots
 - implementation closure truth опирается на step-close-backed evidence, а не на chat-only or speculative signals
 
+## Package 6.1. Зафиксировать commandized delivery workflow model
+
+### Цель
+
+До utility specification явно определить, что primary delivery workflows будущего merged skill-а получают собственные mechanical stage-controller commands.
+
+### Что входит
+
+- определить canonical delivery-stage command set:
+  - `feature-intake`
+  - `spec-compact`
+  - `plan-slice`
+  - `implementation`
+  - `change-proposal`
+- явно развести stage-controller commands и helper commands:
+  - `contract-drift-audit`
+  - `dossier-verify`
+  - `review-artifact`
+  - `dossier-step-close`
+  - `lifecycle-refresh`
+  - `next-step`
+- определить mechanical role stage-controller command:
+  - open / resume / block / ready-for-close transition control
+  - stage-log bootstrap/update
+  - prerequisite validation
+  - machine-readable readiness/follow-up signals
+  - explicit limit: stage-controller command authority ends at `ready_for_close`, not at authoritative `closed`
+- определить minimal command-driven transition surface for logging:
+  - `stage_state`
+  - `entered_ts`
+  - `ready_for_close_ts`
+  - `transition_events[]`
+  - with block/resume history kept authoritatively in `transition_events[]`, not in ambiguous singleton timestamps
+- определить backlog interaction rule:
+  - stage-controller commands не мутируют backlog truth напрямую
+  - они materialize-ят explicit backlog follow-up requirement
+  - truthful stage closure блокируется, пока required backlog actualization не завершён
+
+### Acceptance
+
+- не остаётся двусмысленности, какие primary delivery workflows являются first-class commands, а какие остаются helper surface
+- stage-controller commands описаны как mechanical controllers, а не как semantic automation
+- logging model получает deterministic transition anchors от command invocations, а не только из narrative reconstruction
+- backlog effects explicit и fail-closed:
+  - ordinary truth-changing stages materialize-ят backlog follow-up requirement
+  - mature change path сохраняет explicit `backlog impact verdict`
+- `dossier-step-close` и `lifecycle-refresh` не заменяются stage commands и остаются отдельными truthful closure / telemetry helpers
+- authoritative `closed` state и lifecycle closure timestamps не дублируются на уровне stage-controller commands
+
 ## Package 7. Разработать спецификацию объединённой утилиты
 
 ### Цель
@@ -205,6 +254,7 @@ CLI нового skill-а не должен:
 ### Что входит
 
 - создать `docs/utility-spec.ru.md` как canonical maintainer-facing spec для будущей unified utility
+- использовать Package 6.1 как обязательный upstream input для command/state/logging model
 - определить command families, read models и mutating flows
 - определить artifact contracts, root discovery, path normalization и lock semantics
 - определить output contract, error contract и truthful closure/telemetry contract
@@ -214,7 +264,7 @@ CLI нового skill-а не должен:
 ### Acceptance
 
 - существует единая utility specification, достаточная для runtime design без угадывания поведения “по ходу”
-- spec покрывает backlog truth, delivery workflow, source-review, telemetry и closure contracts
+- spec покрывает backlog truth, delivery workflow, source-review, telemetry, closure contracts и commandized stage-control model
 - spec не обещает semantic automation beyond mechanical artifact work
 - implementation/runtime planning downstream ссылается на utility spec как на обязательный input
 
@@ -270,15 +320,17 @@ CLI нового skill-а не должен:
 4. Package 4
 5. Package 5
 6. Package 6
-7. Package 7
-8. Package 8
-9. Package 9
+7. Package 6.1
+8. Package 7
+9. Package 8
+10. Package 9
 
 Причина такого порядка:
 
 - сначала фиксируется generated-skill skeleton и size discipline
 - затем стабилизируется artifact topology
 - затем по отдельности переносятся backlog truth и delivery workflow truth
+- затем отдельно фиксируется commandized stage-control model для delivery workflows
 - затем фиксируется utility specification как отдельный engineering contract
 - только после этого стоит собирать unified runtime boundary
 - migration rollout должен идти последним, когда contract уже стабилен
@@ -314,6 +366,14 @@ Mitigation:
 - CLI/agent boundary фиксируется отдельно
 - source-review redesign explicitly forbids prose classification by utility
 
+### Риск 5. Merge сохранит старую путаницу между workflow stage и command
+
+Mitigation:
+
+- primary delivery workflows получают explicit stage-controller commands отдельным package до utility spec
+- helper commands остаются отдельным explicit family
+- logging contract опирается на command-driven transition anchors, а не на implicit prose reconstruction
+
 ## Validation before implementation start
 
 Перед началом реальной имплементации merged skill должно быть истинно следующее:
@@ -323,6 +383,7 @@ Mitigation:
 - source bundle scaffold compiles cleanly
 - no contradictory assumption remains about `.dossier` vs `docs/ssot`
 - no contradictory assumption remains about `one feature = one backlog item`
+- no contradictory assumption remains about which delivery stages become first-class commands and how they interact with closure/logging/backlog follow-up
 
 ## Audit status
 
@@ -335,3 +396,4 @@ Accepted audit focus:
 - compiler-first development model and `SKILL.md` size discipline
 - no speculative runtime/CLI promises
 - strict preservation of SSOT split, `one feature = one backlog item`, source-review redesign, `coverage_gate`, closure truth, and telemetry realism
+- explicit design of commandized delivery stages before utility-spec/runtime work
