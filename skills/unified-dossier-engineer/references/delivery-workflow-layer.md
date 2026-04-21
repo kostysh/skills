@@ -2,6 +2,11 @@
 
 Use this reference when preserving or designing dossier-side execution workflow inside the merged skill.
 
+Use it together with:
+
+- [Commandized stage control](commandized-stage-control.md)
+- [Telemetry and closure](telemetry-and-closure.md)
+
 ## What this layer owns
 
 The delivery workflow layer owns:
@@ -132,6 +137,8 @@ Important:
 This planning-stage skill preserves workflow semantics before it ships merged commands.
 
 Use current names such as `feature-intake`, `change-proposal`, `contract-drift-audit`, and `backlog impact verdict` as semantic anchors for the future merged design. Do not treat those names as proof that the merged runtime already exposes a finalized help surface.
+
+The future command model for primary delivery stages is defined separately in [Commandized stage control](commandized-stage-control.md). That boundary is upstream design intent, not current shipped runtime.
 
 ## Negative rules
 

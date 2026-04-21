@@ -23,6 +23,7 @@ Current status:
 | [implementation-log-1.ru.md](implementation-log-1.ru.md) | Log for `Package 1`: generated-skill scaffold, active surface boundaries, compiler-first maintenance model, and emitted `SKILL.md` stabilization. | Read when verifying or reconstructing the first implementation wave. |
 | [implementation-log-2.ru.md](implementation-log-2.ru.md) | Log for grouped wave `Package 2 + Package 3 + Package 5`: unified `.dossier` topology, backlog truth layer, and source-review redesign as active references. | Read when verifying the first merged-domain modeling wave after the initial scaffold. |
 | [implementation-log-3.ru.md](implementation-log-3.ru.md) | Log for grouped wave `Package 4 + Package 6`: delivery workflow layer, telemetry/closure model, and preserved closure discipline as active references. | Read when verifying the second merged-domain modeling wave before utility-spec/runtime work starts. |
+| [implementation-log-4.ru.md](implementation-log-4.ru.md) | Log for `Package 6.1`: commandized stage-control model for primary delivery workflows, with explicit separation from closure/helper commands. | Read when verifying the pre-utility-spec command/state/logging model. |
 
 ## Scope of This Folder
 

@@ -2,6 +2,11 @@
 
 Use this reference when designing lifecycle identity, logs, closure artifacts, or retrospective support in the merged skill.
 
+Use it together with:
+
+- [Delivery workflow layer](delivery-workflow-layer.md)
+- [Commandized stage control](commandized-stage-control.md)
+
 ## Purpose
 
 The merged skill must stay observable without inventing magical runtime behavior.
@@ -57,6 +62,12 @@ Minimum machine-readable fields stay explicit:
 - canonical timestamps
 - bounded event arrays where applicable
 - linked durable artifact references where such artifacts truly exist
+
+If future stage-controller commands add progress-transition fields, they must remain subordinate to this telemetry model:
+
+- progress transitions may add deterministic stage-progress evidence;
+- they must not replace helper-owned closure truth;
+- repeated block/resume history should live in bounded transition events rather than ambiguous singleton summary timestamps.
 
 ## Session anchors
 

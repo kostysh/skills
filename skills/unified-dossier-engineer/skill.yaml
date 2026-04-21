@@ -67,6 +67,12 @@ references:
     target: references/telemetry-and-closure.md
     required: true
     trigger: Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
+  - id: ref-commandized-stage-control
+    title: Commandized stage control
+    source: references/commandized-stage-control.md
+    target: references/commandized-stage-control.md
+    required: true
+    trigger: Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
 
 assets:
   - id: asset-readme
@@ -87,6 +93,7 @@ surfaces:
       - ref-source-review-contract
       - ref-delivery-workflow-layer
       - ref-telemetry-and-closure
+      - ref-commandized-stage-control
     optionalReferences: []
 
 sections:
@@ -123,10 +130,12 @@ sections:
         - Preserve the invariant `one feature = one backlog item`.
         - Keep `change-proposal`, `contract-drift-audit`, `backlog impact verdict`, `coverage_gate`, and strict closure semantics in scope.
         - Keep delivery workflow, telemetry identity, and closure truth explicit rather than collapsing them into backlog-only state or speculative command prose.
+        - "Preserve the commandized stage-control model: primary delivery stages become mechanical controllers, while closure and helper commands stay separate."
       validation:
         - No tracked feature from either original skill disappears from the merged target model.
         - "`.dossier` and `docs/ssot` remain semantically distinct."
         - Delivery state, `coverage_gate`, freshness, and closure remain separate axes.
+        - Stage-controller boundaries stop at `ready_for_close`; authoritative closure remains helper-driven.
     - id: stage-regenerate-skill
       title: Regenerate the generated skill
       goal: Keep source bundle and generated skill aligned.
@@ -165,6 +174,9 @@ sections:
     - id: gotcha-closure-truth
       priority: high
       text: Delivery closure remains step-close-backed and telemetry-backed; commit history or chat summaries are never enough.
+    - id: gotcha-stage-control
+      priority: high
+      text: Future stage-controller commands are mechanical progress controllers only; they must stop at `ready_for_close` and must not duplicate `dossier-step-close` or `lifecycle-refresh`.
   policies:
     - id: policy-active-surface
       title: Active normative surface
@@ -175,6 +187,9 @@ sections:
     - id: policy-source-review-boundary
       title: Source-review before item flood
       text: Refresh-driven source changes open source-review records and block linked-item readiness until review resolves; item-level escalation happens only after confirmed backlog mutation work.
+    - id: policy-stage-command-boundary
+      title: Stage controllers versus helper commands
+      text: Primary delivery stages may gain first-class commands, but closure truth, review persistence, verification artifacts, lifecycle aggregation, and dossier-local querying remain separate helper command families.
   portability:
     required: true
     rules:

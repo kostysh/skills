@@ -40,6 +40,7 @@ For detailed workflow and telemetry rules, also read:
 
 - [Delivery workflow layer](delivery-workflow-layer.md)
 - [Telemetry and closure](telemetry-and-closure.md)
+- [Commandized stage control](commandized-stage-control.md)
 
 ## Artifact split
 
@@ -59,3 +60,4 @@ Project SSOT artifacts:
 - backlog truth and delivery state must not collapse into a single flat status enum
 - the merged runtime must stay mechanical; semantic interpretation remains agent-owned
 - telemetry and closure truth must remain explicit and step-close-backed
+- primary delivery stages may become first-class commands, but helper-owned closure and query boundaries must stay separate
