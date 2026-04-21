@@ -16,6 +16,7 @@ Telemetry must support:
 - deterministic lifecycle reconstruction
 - truthful blocked/open/closed closure state
 - retrospective-ready objective signals
+- operator-facing evidence for process-improvement decisions
 - clear separation between mechanical aggregation and agent-owned semantic analysis
 
 ## Artifact families
@@ -54,7 +55,7 @@ Merged telemetry must preserve the current useful shape:
 - intake and stage logs remain human-readable Markdown artifacts
 - those logs start with YAML frontmatter
 - machine-readable fields live in bounded structured fields, not in CLI inference from prose
-- narrative sections remain allowed for human context
+- narrative sections remain required for operator-facing human context on non-trivial stages
 
 Minimum machine-readable fields stay explicit:
 
@@ -63,11 +64,51 @@ Minimum machine-readable fields stay explicit:
 - bounded event arrays where applicable
 - linked durable artifact references where such artifacts truly exist
 
+Purpose rule:
+
+- logs exist not only for lifecycle reconstruction;
+- logs also exist to support operator judgment about process, skills, and methods;
+- frontmatter plus a mechanical transition list is not sufficient for a non-trivial stage.
+
+Required scaffold for `feature-intake` logs:
+
+- `Scope`
+- `Inputs actually used`
+- `Backlog handoff decisions`
+- `Intake findings`
+- `Operator feedback`
+- `Index refresh`
+- `Backlog follow-up`
+- `Process misses`
+- helper-owned `Transition events`
+- `Close-out`
+
+Required scaffold for stage logs (`spec-compact`, `plan-slice`, `implementation`, `change-proposal`):
+
+- `Scope`
+- `Inputs actually used`
+- `Decisions / reclassifications`
+- `Operator feedback`
+- `Review events`
+- `Backlog follow-up`
+- `Process misses`
+- helper-owned `Transition events`
+- `Close-out`
+
+Inside `Decisions / reclassifications`, keep these subheadings:
+
+- `Spec gap decisions`
+- `Implementation freedom decisions`
+- `Temporary assumptions`
+
+If a required section has no notable content, write `none` instead of deleting it.
+
 If future stage-controller commands add progress-transition fields, they must remain subordinate to this telemetry model:
 
 - progress transitions may add deterministic stage-progress evidence;
 - they must not replace helper-owned closure truth;
 - repeated block/resume history should live in bounded transition events rather than ambiguous singleton summary timestamps.
+- helper-owned closure updates must preserve authored narrative sections instead of collapsing the log back to a mechanical body.
 
 ## Session anchors
 

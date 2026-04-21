@@ -32,6 +32,7 @@ Current status:
 | [implementation-log-6.ru.md](implementation-log-6.ru.md) | Log for `Package 8`: active runtime/help/module boundary for the merged utility. | Read when validating runtime-surface design before CLI implementation changes. |
 | [implementation-log-7.ru.md](implementation-log-7.ru.md) | Log for `Package 9`: first-wave merged runtime implementation, stage controllers, source-review mechanics, and command-behavior tests. | Read when validating shipped Package 9 behavior before Package 10 hardening. |
 | [implementation-log-8.ru.md](implementation-log-8.ru.md) | Log for `Package 10`: canonical hardening, no-legacy cleanup, parity suites, and source-bundle/runtime alignment. | Read when validating the final canonical-only contract. |
+| [implementation-log-9.ru.md](implementation-log-9.ru.md) | Log for post-plan hardening that restores operator-facing stage-log value while preserving deterministic telemetry and closure truth. | Read when validating the restored stage-log contract and its runtime/test parity. |
 
 ## Scope of This Folder
 

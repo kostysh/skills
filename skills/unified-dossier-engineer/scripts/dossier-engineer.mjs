@@ -22317,6 +22317,146 @@ var STAGE_CONTROLLER_COMMANDS = [
 	"implementation",
 	"change-proposal"
 ];
+var DECISION_SUBSECTION_TITLES = [
+	"Spec gap decisions",
+	"Implementation freedom decisions",
+	"Temporary assumptions"
+];
+var FEATURE_INTAKE_SECTION_TITLES = [
+	"Scope",
+	"Inputs actually used",
+	"Backlog handoff decisions",
+	"Intake findings",
+	"Operator feedback",
+	"Index refresh",
+	"Backlog follow-up",
+	"Process misses",
+	"Transition events",
+	"Close-out"
+];
+var PRIMARY_STAGE_SECTION_TITLES = [
+	"Scope",
+	"Inputs actually used",
+	"Decisions / reclassifications",
+	"Operator feedback",
+	"Review events",
+	"Backlog follow-up",
+	"Process misses",
+	"Transition events",
+	"Close-out"
+];
+var NOTES_SECTION_TITLE = "Notes";
+var SUMMARY_SECTION_TITLE = "Summary";
+var TRANSITION_SECTION_TITLE = "Transition events";
+function bodyAfterFrontmatter(content) {
+	if (!content.startsWith("---\n")) return content;
+	const end = content.indexOf("\n---\n", 4);
+	if (end === -1) return content;
+	return content.slice(end + 5);
+}
+function parseMarkdownSections(content, headingPrefix) {
+	const lines = content.split(/\r?\n/u);
+	const sections = [];
+	let currentTitle = null;
+	let currentBody = [];
+	for (const line of lines) {
+		if (line.startsWith(headingPrefix)) {
+			if (currentTitle !== null) sections.push({
+				title: currentTitle,
+				body: currentBody.join("\n").trim()
+			});
+			currentTitle = line.slice(headingPrefix.length).trim();
+			currentBody = [];
+			continue;
+		}
+		if (currentTitle !== null) currentBody.push(line);
+	}
+	if (currentTitle !== null) sections.push({
+		title: currentTitle,
+		body: currentBody.join("\n").trim()
+	});
+	return sections;
+}
+function renderSection(title, body) {
+	return [
+		"## " + title,
+		"",
+		...normalizeSectionBody(body) ?? ["none"]
+	];
+}
+function normalizeSectionBody(body) {
+	const trimmed = body?.trim() ?? "";
+	if (!trimmed) return null;
+	return trimmed.split(/\r?\n/u);
+}
+function sectionMap(sections) {
+	return new Map(sections.map((section) => [section.title, section.body]));
+}
+function mergeNotes(existingBody, newNotes) {
+	const existing = existingBody?.split(/\r?\n/u).map((line) => line.trim()).filter((line) => line.startsWith("- ")).map((line) => line.slice(2).trim()).filter(Boolean) ?? [];
+	return [...new Set([...existing, ...newNotes])];
+}
+function renderNotesSection(notes) {
+	if (notes.length === 0) return null;
+	return [
+		"## " + NOTES_SECTION_TITLE,
+		"",
+		...notes.map((note) => `- ${note}`)
+	];
+}
+function renderDecisionsSection(existingBody) {
+	const normalizedExisting = existingBody?.trim() ?? "";
+	const subsections = parseMarkdownSections(normalizedExisting, "### ");
+	const subsectionMap = sectionMap(subsections);
+	const preface = subsections.length === 0 ? normalizedExisting : normalizedExisting.slice(0, normalizedExisting.indexOf("### ")).trim();
+	const extraSubsections = subsections.filter((section) => !DECISION_SUBSECTION_TITLES.includes(section.title));
+	if (preface && !subsectionMap.has(DECISION_SUBSECTION_TITLES[0])) subsectionMap.set(DECISION_SUBSECTION_TITLES[0], preface);
+	const lines = ["## Decisions / reclassifications", ""];
+	for (const title of DECISION_SUBSECTION_TITLES) lines.push(`### ${title}`, "", ...normalizeSectionBody(subsectionMap.get(title)) ?? ["none"], "");
+	for (const section of extraSubsections) lines.push(`### ${section.title}`, "", ...normalizeSectionBody(section.body) ?? ["none"], "");
+	while (lines.at(-1) === "") lines.pop();
+	return lines;
+}
+function renderTransitionEventsSection(transitionEvents) {
+	return [
+		"## " + TRANSITION_SECTION_TITLE,
+		"",
+		...transitionEvents.length > 0 ? transitionEvents.map((event) => `- ${String(event.at)}: ${String(event.kind)}`) : ["none"]
+	];
+}
+function canonicalSectionTitles(metadata) {
+	return toNullableString(metadata.stage) === "feature-intake" ? FEATURE_INTAKE_SECTION_TITLES : PRIMARY_STAGE_SECTION_TITLES;
+}
+function renderStageLog(metadata, options = {}) {
+	const transitionEvents = Array.isArray(metadata.transition_events) ? metadata.transition_events : [];
+	const existingSections = sectionMap(parseMarkdownSections(bodyAfterFrontmatter(options.existingContent ?? ""), "## "));
+	const notes = mergeNotes(existingSections.get(NOTES_SECTION_TITLE), options.notes ?? []);
+	const sectionLines = [];
+	for (const title of canonicalSectionTitles(metadata)) {
+		if (title === TRANSITION_SECTION_TITLE) {
+			sectionLines.push(...renderTransitionEventsSection(transitionEvents), "");
+			continue;
+		}
+		if (title === "Decisions / reclassifications") {
+			sectionLines.push(...renderDecisionsSection(existingSections.get(title)), "");
+			continue;
+		}
+		sectionLines.push(...renderSection(title, existingSections.get(title) ?? ""), "");
+	}
+	const notesSection = renderNotesSection(notes);
+	if (notesSection) sectionLines.push(...notesSection, "");
+	const extraSections = parseMarkdownSections(bodyAfterFrontmatter(options.existingContent ?? ""), "## ").filter((section) => !canonicalSectionTitles(metadata).includes(section.title) && section.title !== NOTES_SECTION_TITLE && section.title !== SUMMARY_SECTION_TITLE).map((section) => renderSection(section.title, section.body));
+	for (const section of extraSections) sectionLines.push(...section, "");
+	while (sectionLines.at(-1) === "") sectionLines.pop();
+	return [
+		"---",
+		browser_default.stringify(metadata).trimEnd(),
+		"---",
+		"",
+		...sectionLines,
+		""
+	].join("\n");
+}
 function toNullableString(value) {
 	return typeof value === "string" && value.trim() ? value : null;
 }
@@ -22424,30 +22564,6 @@ async function resolveLatestFeatureCycleId(root, featureId, preferredStage) {
 		return (Date.parse(toNullableString(left.metadata.entered_ts) ?? "") || 0) - (Date.parse(toNullableString(right.metadata.entered_ts) ?? "") || 0);
 	}).at(-1)?.metadata.feature_cycle_id);
 }
-function renderStageLog(metadata, notes) {
-	const transitionEvents = Array.isArray(metadata.transition_events) ? metadata.transition_events : [];
-	const lines = [
-		"---",
-		browser_default.stringify(metadata).trimEnd(),
-		"---",
-		"",
-		"## Summary",
-		"",
-		"Mechanical stage-controller log.",
-		"",
-		"## Transition events",
-		"",
-		...transitionEvents.map((event) => `- ${String(event.at)}: ${String(event.kind)}`)
-	];
-	if (notes.length > 0) lines.push("", "## Notes", "", ...notes.map((note) => `- ${note}`));
-	lines.push("");
-	return lines.join("\n");
-}
-function extractNotes(content) {
-	const start = content.indexOf("\n## Notes\n");
-	if (start === -1) return [];
-	return content.slice(start + 10).split(/\r?\n/).map((line) => line.trim()).filter((line) => line.startsWith("- ")).map((line) => line.slice(2).trim()).filter(Boolean);
-}
 async function appendFeatureIntakeLog(payload) {
 	const now = (/* @__PURE__ */ new Date()).toISOString();
 	const cycleId = `intake-${crypto.randomUUID().slice(0, 8)}`;
@@ -22482,7 +22598,7 @@ async function appendFeatureIntakeLog(payload) {
 		trace_locator_kind: "session_id"
 	};
 	await assertManagedWritePath(payload.root, path.join(payload.root, ".dossier", "logs", "feature-intake"), absPath, "feature-intake log");
-	await writeTextAtomic(absPath, renderStageLog(metadata, ["Feature cycle opened by feature-intake."]));
+	await writeTextAtomic(absPath, renderStageLog(metadata, { notes: ["Feature cycle opened by feature-intake."] }));
 	return {
 		cycleId,
 		enteredTs: now,
@@ -22554,7 +22670,10 @@ async function runStageControllerCommand(command, args) {
 	});
 	try {
 		await assertManagedWritePath(root, path.join(root, ".dossier", "logs", command), absPath, `${command} stage log`);
-		await writeTextAtomic(absPath, renderStageLog(metadata, noteValues));
+		await writeTextAtomic(absPath, renderStageLog(metadata, {
+			existingContent: latestForStage?.content ?? null,
+			notes: noteValues
+		}));
 	} finally {
 		await releaseLock();
 	}
@@ -22587,7 +22706,7 @@ async function recordStepCloseOnStageLog(payload) {
 		...payload.processComplete ? { process_complete_ts: now } : {}
 	};
 	await assertManagedWritePath(payload.root, path.join(payload.root, ".dossier", "logs", stageName), latest.absPath, `${stageName} stage log`);
-	await writeTextAtomic(latest.absPath, renderStageLog(metadata, extractNotes(latest.content)));
+	await writeTextAtomic(latest.absPath, renderStageLog(metadata, { existingContent: latest.content }));
 }
 //#endregion
 //#region src/unified-cli.ts

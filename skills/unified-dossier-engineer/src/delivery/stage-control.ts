@@ -49,6 +49,222 @@ type ParsedStageLog = {
   metadata: Record<string, unknown>;
 };
 
+type Section = {
+  body: string;
+  title: string;
+};
+
+const DECISION_SUBSECTION_TITLES = [
+  'Spec gap decisions',
+  'Implementation freedom decisions',
+  'Temporary assumptions',
+] as const;
+
+const FEATURE_INTAKE_SECTION_TITLES = [
+  'Scope',
+  'Inputs actually used',
+  'Backlog handoff decisions',
+  'Intake findings',
+  'Operator feedback',
+  'Index refresh',
+  'Backlog follow-up',
+  'Process misses',
+  'Transition events',
+  'Close-out',
+] as const;
+
+const PRIMARY_STAGE_SECTION_TITLES = [
+  'Scope',
+  'Inputs actually used',
+  'Decisions / reclassifications',
+  'Operator feedback',
+  'Review events',
+  'Backlog follow-up',
+  'Process misses',
+  'Transition events',
+  'Close-out',
+] as const;
+
+const NOTES_SECTION_TITLE = 'Notes';
+const SUMMARY_SECTION_TITLE = 'Summary';
+const TRANSITION_SECTION_TITLE = 'Transition events';
+
+function bodyAfterFrontmatter(content: string): string {
+  if (!content.startsWith('---\n')) {
+    return content;
+  }
+  const end = content.indexOf('\n---\n', 4);
+  if (end === -1) {
+    return content;
+  }
+  return content.slice(end + '\n---\n'.length);
+}
+
+function parseMarkdownSections(content: string, headingPrefix: '## ' | '### '): Section[] {
+  const lines = content.split(/\r?\n/u);
+  const sections: Section[] = [];
+  let currentTitle: string | null = null;
+  let currentBody: string[] = [];
+  for (const line of lines) {
+    if (line.startsWith(headingPrefix)) {
+      if (currentTitle !== null) {
+        sections.push({
+          title: currentTitle,
+          body: currentBody.join('\n').trim(),
+        });
+      }
+      currentTitle = line.slice(headingPrefix.length).trim();
+      currentBody = [];
+      continue;
+    }
+    if (currentTitle !== null) {
+      currentBody.push(line);
+    }
+  }
+  if (currentTitle !== null) {
+    sections.push({
+      title: currentTitle,
+      body: currentBody.join('\n').trim(),
+    });
+  }
+  return sections;
+}
+
+function renderSection(title: string, body: string): string[] {
+  return ['## ' + title, '', ...(normalizeSectionBody(body) ?? ['none'])];
+}
+
+function normalizeSectionBody(body: string | null | undefined): string[] | null {
+  const trimmed = body?.trim() ?? '';
+  if (!trimmed) {
+    return null;
+  }
+  return trimmed.split(/\r?\n/u);
+}
+
+function sectionMap(sections: Section[]): Map<string, string> {
+  return new Map(sections.map((section) => [section.title, section.body]));
+}
+
+function mergeNotes(existingBody: string | undefined, newNotes: string[]): string[] {
+  const existing =
+    existingBody
+      ?.split(/\r?\n/u)
+      .map((line) => line.trim())
+      .filter((line) => line.startsWith('- '))
+      .map((line) => line.slice(2).trim())
+      .filter(Boolean) ?? [];
+  return [...new Set([...existing, ...newNotes])];
+}
+
+function renderNotesSection(notes: string[]): string[] | null {
+  if (notes.length === 0) {
+    return null;
+  }
+  return ['## ' + NOTES_SECTION_TITLE, '', ...notes.map((note) => `- ${note}`)];
+}
+
+function renderDecisionsSection(existingBody: string | undefined): string[] {
+  const normalizedExisting = existingBody?.trim() ?? '';
+  const subsections = parseMarkdownSections(normalizedExisting, '### ');
+  const subsectionMap = sectionMap(subsections);
+  const preface =
+    subsections.length === 0
+      ? normalizedExisting
+      : normalizedExisting.slice(0, normalizedExisting.indexOf('### ')).trim();
+  const extraSubsections = subsections.filter(
+    (section) =>
+      !DECISION_SUBSECTION_TITLES.includes(
+        section.title as (typeof DECISION_SUBSECTION_TITLES)[number],
+      ),
+  );
+  if (preface && !subsectionMap.has(DECISION_SUBSECTION_TITLES[0])) {
+    subsectionMap.set(DECISION_SUBSECTION_TITLES[0], preface);
+  }
+  const lines = ['## Decisions / reclassifications', ''];
+  for (const title of DECISION_SUBSECTION_TITLES) {
+    lines.push(
+      `### ${title}`,
+      '',
+      ...(normalizeSectionBody(subsectionMap.get(title)) ?? ['none']),
+      '',
+    );
+  }
+  for (const section of extraSubsections) {
+    lines.push(`### ${section.title}`, '', ...(normalizeSectionBody(section.body) ?? ['none']), '');
+  }
+  while (lines.at(-1) === '') {
+    lines.pop();
+  }
+  return lines;
+}
+
+function renderTransitionEventsSection(transitionEvents: Array<Record<string, unknown>>): string[] {
+  return [
+    '## ' + TRANSITION_SECTION_TITLE,
+    '',
+    ...(transitionEvents.length > 0
+      ? transitionEvents.map((event) => `- ${String(event.at)}: ${String(event.kind)}`)
+      : ['none']),
+  ];
+}
+
+function canonicalSectionTitles(metadata: Record<string, unknown>): readonly string[] {
+  return toNullableString(metadata.stage) === 'feature-intake'
+    ? FEATURE_INTAKE_SECTION_TITLES
+    : PRIMARY_STAGE_SECTION_TITLES;
+}
+
+function renderStageLog(
+  metadata: Record<string, unknown>,
+  options: {
+    existingContent?: string | null;
+    notes?: string[];
+  } = {},
+): string {
+  const transitionEvents = Array.isArray(metadata.transition_events)
+    ? (metadata.transition_events as Array<Record<string, unknown>>)
+    : [];
+  const existingSections = sectionMap(
+    parseMarkdownSections(bodyAfterFrontmatter(options.existingContent ?? ''), '## '),
+  );
+  const notes = mergeNotes(existingSections.get(NOTES_SECTION_TITLE), options.notes ?? []);
+  const sectionLines: string[] = [];
+  for (const title of canonicalSectionTitles(metadata)) {
+    if (title === TRANSITION_SECTION_TITLE) {
+      sectionLines.push(...renderTransitionEventsSection(transitionEvents), '');
+      continue;
+    }
+    if (title === 'Decisions / reclassifications') {
+      sectionLines.push(...renderDecisionsSection(existingSections.get(title)), '');
+      continue;
+    }
+    sectionLines.push(...renderSection(title, existingSections.get(title) ?? ''), '');
+  }
+  const notesSection = renderNotesSection(notes);
+  if (notesSection) {
+    sectionLines.push(...notesSection, '');
+  }
+  const extraSections = parseMarkdownSections(
+    bodyAfterFrontmatter(options.existingContent ?? ''),
+    '## ',
+  )
+    .filter(
+      (section) =>
+        !canonicalSectionTitles(metadata).includes(section.title) &&
+        section.title !== NOTES_SECTION_TITLE &&
+        section.title !== SUMMARY_SECTION_TITLE,
+    )
+    .map((section) => renderSection(section.title, section.body));
+  for (const section of extraSections) {
+    sectionLines.push(...section, '');
+  }
+  while (sectionLines.at(-1) === '') {
+    sectionLines.pop();
+  }
+  return ['---', YAML.stringify(metadata).trimEnd(), '---', '', ...sectionLines, ''].join('\n');
+}
+
 function toNullableString(value: unknown): string | null {
   return typeof value === 'string' && value.trim() ? value : null;
 }
@@ -240,45 +456,6 @@ export async function resolveLatestFeatureCycleId(
   return toNullableString(latest?.metadata.feature_cycle_id);
 }
 
-function renderStageLog(metadata: Record<string, unknown>, notes: string[]): string {
-  const transitionEvents = Array.isArray(metadata.transition_events)
-    ? (metadata.transition_events as Array<Record<string, unknown>>)
-    : [];
-  const lines = [
-    '---',
-    YAML.stringify(metadata).trimEnd(),
-    '---',
-    '',
-    '## Summary',
-    '',
-    'Mechanical stage-controller log.',
-    '',
-    '## Transition events',
-    '',
-    ...transitionEvents.map((event) => `- ${String(event.at)}: ${String(event.kind)}`),
-  ];
-  if (notes.length > 0) {
-    lines.push('', '## Notes', '', ...notes.map((note) => `- ${note}`));
-  }
-  lines.push('');
-  return lines.join('\n');
-}
-
-function extractNotes(content: string): string[] {
-  const marker = '\n## Notes\n';
-  const start = content.indexOf(marker);
-  if (start === -1) {
-    return [];
-  }
-  return content
-    .slice(start + marker.length)
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter((line) => line.startsWith('- '))
-    .map((line) => line.slice(2).trim())
-    .filter(Boolean);
-}
-
 export async function appendFeatureIntakeLog(payload: {
   backlogItemKey: string;
   featureCycleId: string;
@@ -333,7 +510,9 @@ export async function appendFeatureIntakeLog(payload: {
   );
   await writeTextAtomic(
     absPath,
-    renderStageLog(metadata, ['Feature cycle opened by feature-intake.']),
+    renderStageLog(metadata, {
+      notes: ['Feature cycle opened by feature-intake.'],
+    }),
   );
   return {
     cycleId,
@@ -472,7 +651,13 @@ export async function runStageControllerCommand(
       absPath,
       `${command} stage log`,
     );
-    await writeTextAtomic(absPath, renderStageLog(metadata, noteValues));
+    await writeTextAtomic(
+      absPath,
+      renderStageLog(metadata, {
+        existingContent: latestForStage?.content ?? null,
+        notes: noteValues,
+      }),
+    );
   } finally {
     await releaseLock();
   }
@@ -527,5 +712,10 @@ export async function recordStepCloseOnStageLog(payload: {
     latest.absPath,
     `${stageName} stage log`,
   );
-  await writeTextAtomic(latest.absPath, renderStageLog(metadata, extractNotes(latest.content)));
+  await writeTextAtomic(
+    latest.absPath,
+    renderStageLog(metadata, {
+      existingContent: latest.content,
+    }),
+  );
 }

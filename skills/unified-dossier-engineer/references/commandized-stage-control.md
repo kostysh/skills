@@ -89,9 +89,11 @@ Minimum mechanical transition surface:
 Rules:
 
 - stage logs remain Markdown artifacts with YAML frontmatter and narrative sections;
+- required section scaffold must stay present for both `feature-intake` and primary stage logs rather than collapsing into an almost-frontmatter-only body;
 - event history for repeated block/resume cycles lives authoritatively in `transition_events[]`;
 - do not introduce ambiguous singleton timestamps such as `blocked_ts` or `resumed_ts` without explicit derived semantics like `first_*` or `last_*`;
 - transition surfaces complement existing telemetry; they do not replace bounded event arrays or closure artifacts.
+- stage-controller reruns and helper-owned closure updates must preserve authored narrative sections while updating helper-owned structured fields and transition evidence.
 
 ## Backlog interaction rule
 
@@ -131,6 +133,7 @@ Required alignment:
 - `lifecycle-refresh` remains the lifecycle aggregation helper when lifecycle snapshots or session indexes need refresh;
 - stage-controller commands must not duplicate helper-owned closure truth;
 - commandized transitions should improve telemetry determinism, not create a second closure authority surface.
+- helper-owned closure writes must not erase authored narrative sections from the stage log.
 
 ## Utility-spec handoff
 

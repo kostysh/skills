@@ -12,6 +12,9 @@ const SKILL_YAML_PATH = path.join(SKILL_DIR, 'skill.yaml');
 const PACKAGE_JSON_PATH = path.join(SKILL_DIR, 'package.json');
 const STATUS_SCOPE_PATH = path.join(SKILL_DIR, 'references', 'status-and-scope.md');
 const RUNTIME_BOUNDARY_PATH = path.join(SKILL_DIR, 'references', 'runtime-and-command-boundary.md');
+const TELEMETRY_CLOSURE_PATH = path.join(SKILL_DIR, 'references', 'telemetry-and-closure.md');
+const STAGE_CONTROL_PATH = path.join(SKILL_DIR, 'references', 'commandized-stage-control.md');
+const UTILITY_SPEC_PATH = path.join(SKILL_DIR, 'docs', 'utility-spec.ru.md');
 
 function assertContainsTerms(text: string, terms: readonly string[]): void {
   for (const term of terms) {
@@ -91,4 +94,30 @@ void test('source bundle and package manifest expose only the canonical launcher
   ]);
   assertContainsTerms(packageJson, ['"dossier-engineer": "scripts/dossier-engineer.mjs"']);
   assertNotContainsTerms(packageJson, ['"dossier":', '"backlog-engineer":']);
+});
+
+void test('active log contract keeps operator-facing narrative minimum aligned across refs and utility spec', async () => {
+  const [telemetryClosure, stageControl, utilitySpec] = await Promise.all([
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(telemetryClosure, [
+    'operator-facing evidence for process-improvement decisions',
+    'frontmatter plus a mechanical transition list is not sufficient for a non-trivial stage',
+    'Spec gap decisions',
+    'Implementation freedom decisions',
+    'Temporary assumptions',
+    'helper-owned closure updates must preserve authored narrative sections',
+  ]);
+  assertContainsTerms(stageControl, [
+    'required section scaffold must stay present',
+    'stage-controller reruns and helper-owned closure updates must preserve authored narrative sections',
+    'helper-owned closure writes must not erase authored narrative sections from the stage log',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'stage-log bootstrap/update must materialize and preserve the canonical narrative scaffold required by the active log contract',
+    'helper-owned closure writes preserve authored narrative sections while updating helper-owned closure fields',
+  ]);
 });

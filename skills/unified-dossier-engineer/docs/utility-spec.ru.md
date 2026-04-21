@@ -320,6 +320,8 @@ Rules:
 - repeated block/resume history lives in `transition_events[]`;
 - ambiguous singleton fields such as `blocked_ts` / `resumed_ts` are forbidden unless explicitly marked as derived (`first_*`, `last_*`);
 - `stage_state` may reach `ready_for_close`, but not authoritative `closed`.
+- stage-log bootstrap/update must materialize and preserve the canonical narrative scaffold required by the active log contract;
+- stage-controller commands may update helper-owned structured fields and transition sections, but must not collapse a non-trivial log into a mechanical summary plus transition list.
 
 ## 6.4 Delivery helper / closure / integrity commands
 
@@ -588,6 +590,8 @@ Required utility-level rules:
 - lifecycle aggregation happens only through `lifecycle-refresh`;
 - implementation lifecycle end markers cannot materialize without step-close-backed evidence;
 - logs remain `.md` with YAML frontmatter;
+- logs preserve the canonical narrative scaffold required by the active log contract for both `feature-intake` and primary stages;
+- helper-owned closure writes preserve authored narrative sections while updating helper-owned closure fields;
 - lifecycle snapshots and session index remain structured machine artifacts;
 - no command may infer missing truth from prose.
 

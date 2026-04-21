@@ -310,6 +310,20 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
       `${intake.feature_id}--${intake.feature_cycle_id}.md`,
     ),
   );
+  const intakeLog = await readFile(
+    path.join(
+      repo,
+      '.dossier',
+      'logs',
+      'feature-intake',
+      `${intake.feature_id}--${intake.feature_cycle_id}.md`,
+    ),
+    'utf8',
+  );
+  assert.match(intakeLog, /## Scope\n\nnone/u);
+  assert.match(intakeLog, /## Backlog handoff decisions\n\nnone/u);
+  assert.match(intakeLog, /## Close-out\n\nnone/u);
+  assert.match(intakeLog, /## Transition events\n\n- .*: entered/u);
 
   const stageStartEnvelope = parseEnvelope<{
     cycle_id: string;
@@ -364,6 +378,68 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
       `^\\.dossier/logs/spec-compact/${intake.feature_id}--${intake.feature_cycle_id}--${stageStart.cycle_id}\\.md$`,
     ),
   );
+  const stageLog = await readFile(path.join(repo, stageReadyWithCycle.log_path), 'utf8');
+  assert.match(stageLog, /## Scope\n\nnone/u);
+  assert.match(stageLog, /## Decisions \/ reclassifications/u);
+  assert.match(stageLog, /### Spec gap decisions\n\nnone/u);
+  assert.match(stageLog, /## Transition events\n\n- .*: entered/u);
+  assert.match(stageLog, /## Close-out\n\nnone/u);
+});
+
+test('stage-controller reruns preserve authored narrative sections', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Narrative Preservation',
+        '--backlog-item-key',
+        'narrative-preservation',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'narrative.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const stageEnvelope = parseEnvelope<{ log_path: string }>(
+    runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+  const stageLogPath = path.join(repo, stageEnvelope.data.log_path);
+  const authored = (await readFile(stageLogPath, 'utf8'))
+    .replace('## Scope\n\nnone', '## Scope\n\nScoped by operator clarification.')
+    .replace(
+      '### Spec gap decisions\n\nnone',
+      '### Spec gap decisions\n\nResolved missing acceptance boundary.',
+    )
+    .replace('## Process misses\n\nnone', '## Process misses\n\nOne rerun was required.');
+  await writeFile(stageLogPath, authored);
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'], {
+    cwd: repo,
+  });
+
+  const rerendered = await readFile(stageLogPath, 'utf8');
+  assert.match(rerendered, /## Scope\n\nScoped by operator clarification\./u);
+  assert.match(rerendered, /### Spec gap decisions\n\nResolved missing acceptance boundary\./u);
+  assert.match(rerendered, /## Process misses\n\nOne rerun was required\./u);
+  assert.match(rerendered, /## Transition events\n\n- .*: entered\n- .*: ready_for_close/u);
 });
 
 test('dossier-verify artifacts use the canonical dossier-engineer command display', async () => {
@@ -1021,8 +1097,8 @@ test('lifecycle-refresh rejects poisoned implementation step artifacts outside m
   const implementationLogPath = path.join(repo, implementationEnvelope.data.log_path);
   const original = await readFile(implementationLogPath, 'utf8');
   const poisoned = original.replace(
-    '\n---\n\n## Summary\n',
-    '\nprocess_complete_ts: 2026-04-21T10:00:00.000Z\nstep_artifact: ../outside/implementation.json\n---\n\n## Summary\n',
+    '\n---\n\n## Scope\n',
+    '\nprocess_complete_ts: 2026-04-21T10:00:00.000Z\nstep_artifact: ../outside/implementation.json\n---\n\n## Scope\n',
   );
   await writeFile(implementationLogPath, poisoned);
 
@@ -1449,4 +1525,123 @@ test('dossier-step-close rejects invalid stage log paths before writing step art
     () => assert.fail('step artifact directory should not be created'),
     () => undefined,
   );
+});
+
+test('dossier-step-close preserves authored intake narrative sections', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+    feature_cycle_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Closeout Narrative Preservation',
+        '--backlog-item-key',
+        'closeout-narrative-preservation',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'closeout-preservation.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const intakeLogPath = path.join(
+    repo,
+    '.dossier',
+    'logs',
+    'feature-intake',
+    `${intakeEnvelope.data.feature_id}--${intakeEnvelope.data.feature_cycle_id}.md`,
+  );
+  const authored = (await readFile(intakeLogPath, 'utf8'))
+    .replace('## Scope\n\nnone', '## Scope\n\nOperator asked for a minimal intake pass.')
+    .replace(
+      '## Backlog handoff decisions\n\nnone',
+      '## Backlog handoff decisions\n\nConfirmed backlog item remains the single feature source.',
+    )
+    .replace('## Close-out\n\nnone', '## Close-out\n\nReady for truthful closeout.');
+  await writeFile(intakeLogPath, authored);
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  const reviewArtifact = path.join(
+    repo,
+    '.dossier',
+    'reviews',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  await mkdir(path.dirname(verifyArtifact), { recursive: true });
+  await mkdir(path.dirname(reviewArtifact), { recursive: true });
+  await writeFile(
+    verifyArtifact,
+    `${JSON.stringify(
+      {
+        feature_id: intakeEnvelope.data.feature_id,
+        step: 'feature-intake',
+        status: 'pass',
+        event_commit: null,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  await writeFile(
+    reviewArtifact,
+    `${JSON.stringify(
+      {
+        feature_id: intakeEnvelope.data.feature_id,
+        step: 'feature-intake',
+        verdict: 'PASS',
+        reviewer: 'test-reviewer',
+        findings: { must_fix: [] },
+        event_commit: null,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      reviewArtifact,
+    ],
+    { cwd: repo },
+  );
+
+  const closedLog = await readFile(intakeLogPath, 'utf8');
+  assert.match(closedLog, /## Scope\n\nOperator asked for a minimal intake pass\./u);
+  assert.match(
+    closedLog,
+    /## Backlog handoff decisions\n\nConfirmed backlog item remains the single feature source\./u,
+  );
+  assert.match(closedLog, /## Close-out\n\nReady for truthful closeout\./u);
+  assert.match(closedLog, /step_close_ts:/u);
+  assert.match(closedLog, /step_artifact:/u);
 });
