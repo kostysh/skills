@@ -1,9 +1,0 @@
-{
-  "metadata": {
-    "patch_id": "<patch_id>",
-    "created_at": "<iso8601>",
-    "sequence": "<monotonic_sequence>",
-    "target_item_keys": ["<item_key>"]
-  },
-  "operations": []
-}
