@@ -85,6 +85,13 @@ The shipped merged help surface groups commands by family.
 - `next-step`
 - `lifecycle-refresh`
 
+Audit-policy rule for this family:
+
+- `review-artifact` persists one already obtained audit result for one audit class;
+- `dossier-step-close` validates the policy-required audit bundle for the stage being closed;
+- both helpers read and update the helper-managed stage state under `.dossier/stages/*` for current-cycle review-bundle coordination and validation;
+- neither helper performs the audit itself.
+
 ## Workflow stages versus runnable commands
 
 Merged runtime design keeps this rule explicit:

@@ -4,6 +4,7 @@ import { parseFrontmatter } from './frontmatter.ts';
 import { fileExists, readText, walk, writeJsonAtomic, writeTextAtomic } from './fs-utils.ts';
 import { assertManagedWritePath, resolveManagedReadPath } from '../../../shared/path-guards.ts';
 import { sanitizeFeatureId } from '../../../shared/feature-identity.ts';
+import { readStageState } from '../../../shared/stage-state.ts';
 
 export const LIFECYCLE_STAGES = [
   'feature-intake',
@@ -12,6 +13,7 @@ export const LIFECYCLE_STAGES = [
   'implementation',
   'change-proposal',
 ] as const;
+const AUDIT_CLASSES = ['spec-conformance-reviewer', 'code-reviewer', 'security-reviewer'] as const;
 
 export type LifecycleStage = (typeof LIFECYCLE_STAGES)[number];
 
@@ -54,19 +56,31 @@ export interface LifecycleRefreshResult {
 interface ParsedLifecycleLog {
   backlogItemKey: string | null;
   cycleId: string | null;
+  degradedReviewPresent: boolean | null;
+  executedAuditClasses: string[];
   featureCycleId: string;
   featureId: string;
   finalPassTs: string | null;
   firstReviewAgentStartedTs: string | null;
+  implementationReviewScope: string | null;
+  invalidatedReviewPresent: boolean | null;
   intakeProcessCompleteTs: string | null;
   localGatesGreenTs: string | null;
   metadata: Record<string, unknown>;
   path: string;
   pathRel: string;
   processCompleteTs: string | null;
+  requiredAuditClasses: string[];
+  requiredExternalReviewPending: boolean | null;
+  requiredSecurityReview: boolean | null;
+  reviewTraceCommits: string[];
+  reviewerAgentIds: string[];
+  reviewerSkills: string[];
   sessionId: string | null;
+  securityTriggerReasons: string[];
   stage: LifecycleStage;
   startTs: string | null;
+  staleReviewPresent: boolean | null;
   stepArtifact: string | null;
   stepCloseTs: string | null;
   traceLocatorKind: string;
@@ -76,18 +90,30 @@ interface ParsedLifecycleLog {
 interface StageAggregate {
   backlogEvents: EventRecord[];
   cycleIds: string[];
+  degradedReviewPresent: boolean | null;
+  executedAuditClasses: string[];
   finalPassTs: string | null;
   firstReviewAgentStartedTs: string | null;
   hardIncidentEvents: EventRecord[];
+  implementationReviewScope: string | null;
+  invalidatedReviewPresent: boolean | null;
   intakeProcessCompleteTs: string | null;
   localGatesGreenTs: string | null;
   logPaths: string[];
   operatorInterventions: EventRecord[];
   processCompleteTs: string | null;
   processMissEvents: EventRecord[];
+  requiredAuditClasses: string[];
+  requiredExternalReviewPending: boolean | null;
+  requiredSecurityReview: boolean | null;
   reviewEvents: EventRecord[];
+  reviewTraceCommits: string[];
+  reviewerAgentIds: string[];
+  reviewerSkills: string[];
   sessionIds: string[];
+  securityTriggerReasons: string[];
   startTs: string | null;
+  staleReviewPresent: boolean | null;
   stepArtifacts: string[];
   stepCloseTs: string | null;
   verificationEvents: EventRecord[];
@@ -108,6 +134,20 @@ interface LifecycleSnapshot {
       cycle_ids: string[];
       intake_process_complete_ts: string | null;
       log_paths: string[];
+      review_policy: {
+        degraded_review_present: boolean | null;
+        executed_audit_classes: string[];
+        implementation_review_scope: string | null;
+        invalidated_review_present: boolean | null;
+        required_audit_classes: string[];
+        required_external_review_pending: boolean | null;
+        required_security_review: boolean | null;
+        review_trace_commits: string[];
+        reviewer_agent_ids: string[];
+        reviewer_skills: string[];
+        security_trigger_reasons: string[];
+        stale_review_present: boolean | null;
+      };
       session_ids: string[];
       start_ts: string | null;
     };
@@ -120,6 +160,20 @@ interface LifecycleSnapshot {
         local_gates_green_ts: string | null;
         log_paths: string[];
         process_complete_ts: string | null;
+        review_policy: {
+          degraded_review_present: boolean | null;
+          executed_audit_classes: string[];
+          implementation_review_scope: string | null;
+          invalidated_review_present: boolean | null;
+          required_audit_classes: string[];
+          required_external_review_pending: boolean | null;
+          required_security_review: boolean | null;
+          review_trace_commits: string[];
+          reviewer_agent_ids: string[];
+          reviewer_skills: string[];
+          security_trigger_reasons: string[];
+          stale_review_present: boolean | null;
+        };
         session_ids: string[];
         start_ts: string | null;
         step_artifacts: string[];
@@ -155,6 +209,20 @@ function toStringArray(values: Iterable<string | null | undefined>): string[] {
   return [
     ...new Set([...values].filter((value): value is string => Boolean(value)).map(String)),
   ].sort();
+}
+
+function sortAuditClasses(values: Iterable<string | null | undefined>): string[] {
+  const unique = toStringArray(values);
+  return [
+    ...AUDIT_CLASSES.filter((value) => unique.includes(value)),
+    ...unique.filter((value) => !AUDIT_CLASSES.includes(value as (typeof AUDIT_CLASSES)[number])),
+  ];
+}
+
+function toMetadataStringArray(value: unknown): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+    : [];
 }
 
 function parseTimestamp(value: string | null): number | null {
@@ -220,6 +288,13 @@ async function readLifecycleLog(root: string, absPath: string): Promise<ParsedLi
     return null;
   }
 
+  const cycleId = toNullableString(metadata.cycle_id);
+  const stageState = await readStageState(root, stage as LifecycleStage, featureId);
+  const useStageState =
+    stageState &&
+    stageState.cycle_id === cycleId &&
+    stageState.log_path === path.relative(root, absPath).split(path.sep).join('/');
+
   return {
     path: absPath,
     pathRel: path.relative(root, absPath).split(path.sep).join('/'),
@@ -227,7 +302,7 @@ async function readLifecycleLog(root: string, absPath: string): Promise<ParsedLi
     featureId,
     featureCycleId,
     stage: stage as LifecycleStage,
-    cycleId: toNullableString(metadata.cycle_id),
+    cycleId,
     backlogItemKey: toNullableString(metadata.backlog_item_key),
     sessionId: toNullableString(metadata.session_id),
     traceRuntime: toNullableString(metadata.trace_runtime) ?? 'codex',
@@ -235,11 +310,63 @@ async function readLifecycleLog(root: string, absPath: string): Promise<ParsedLi
     startTs: toNullableString(metadata.start_ts),
     intakeProcessCompleteTs: toNullableString(metadata.intake_process_complete_ts),
     localGatesGreenTs: toNullableString(metadata.local_gates_green_ts),
-    processCompleteTs: toNullableString(metadata.process_complete_ts),
-    stepCloseTs: toNullableString(metadata.step_close_ts),
-    stepArtifact: toNullableString(metadata.step_artifact),
+    processCompleteTs: useStageState
+      ? stageState.process_complete_ts
+      : toNullableString(metadata.process_complete_ts),
+    stepCloseTs: useStageState
+      ? stageState.step_close_ts
+      : toNullableString(metadata.step_close_ts),
+    stepArtifact: useStageState
+      ? stageState.step_artifact
+      : toNullableString(metadata.step_artifact),
     firstReviewAgentStartedTs: toNullableString(metadata.first_review_agent_started_ts),
     finalPassTs: toNullableString(metadata.final_pass_ts),
+    requiredAuditClasses: useStageState
+      ? sortAuditClasses(stageState.required_audit_classes)
+      : toMetadataStringArray(metadata.required_audit_classes),
+    executedAuditClasses: useStageState
+      ? sortAuditClasses(stageState.executed_audit_classes)
+      : toMetadataStringArray(metadata.executed_audit_classes),
+    requiredExternalReviewPending: useStageState
+      ? stageState.required_external_review_pending
+      : typeof metadata.required_external_review_pending === 'boolean'
+        ? metadata.required_external_review_pending
+        : null,
+    implementationReviewScope: useStageState
+      ? stageState.implementation_review_scope
+      : toNullableString(metadata.implementation_review_scope),
+    requiredSecurityReview: useStageState
+      ? stageState.required_security_review
+      : typeof metadata.required_security_review === 'boolean'
+        ? metadata.required_security_review
+        : null,
+    degradedReviewPresent: useStageState
+      ? stageState.degraded_review_present
+      : typeof metadata.degraded_review_present === 'boolean'
+        ? metadata.degraded_review_present
+        : null,
+    invalidatedReviewPresent: useStageState
+      ? stageState.invalidated_review_present
+      : typeof metadata.invalidated_review_present === 'boolean'
+        ? metadata.invalidated_review_present
+        : null,
+    staleReviewPresent: useStageState
+      ? stageState.stale_review_present
+      : typeof metadata.stale_review_present === 'boolean'
+        ? metadata.stale_review_present
+        : null,
+    reviewerSkills: useStageState
+      ? stageState.reviewer_skills
+      : toMetadataStringArray(metadata.reviewer_skills),
+    reviewerAgentIds: useStageState
+      ? stageState.reviewer_agent_ids
+      : toMetadataStringArray(metadata.reviewer_agent_ids),
+    reviewTraceCommits: useStageState
+      ? stageState.review_trace_commits
+      : toMetadataStringArray(metadata.review_trace_commits),
+    securityTriggerReasons: useStageState
+      ? stageState.security_trigger_reasons
+      : toMetadataStringArray(metadata.security_trigger_reasons),
   };
 }
 
@@ -302,6 +429,34 @@ function aggregateStage(logs: ParsedLifecycleLog[]): StageAggregate {
     firstReviewAgentStartedTs:
       sorted.find((log) => log.firstReviewAgentStartedTs)?.firstReviewAgentStartedTs ?? null,
     finalPassTs: [...sorted].reverse().find((log) => log.finalPassTs)?.finalPassTs ?? null,
+    requiredAuditClasses: sortAuditClasses(
+      [...sorted].reverse().flatMap((log) => log.requiredAuditClasses),
+    ),
+    executedAuditClasses: sortAuditClasses(
+      [...sorted].reverse().flatMap((log) => log.executedAuditClasses),
+    ),
+    requiredExternalReviewPending:
+      [...sorted].reverse().find((log) => log.requiredExternalReviewPending !== null)
+        ?.requiredExternalReviewPending ?? null,
+    implementationReviewScope:
+      [...sorted].reverse().find((log) => log.implementationReviewScope)
+        ?.implementationReviewScope ?? null,
+    requiredSecurityReview:
+      [...sorted].reverse().find((log) => log.requiredSecurityReview !== null)
+        ?.requiredSecurityReview ?? null,
+    degradedReviewPresent:
+      [...sorted].reverse().find((log) => log.degradedReviewPresent !== null)
+        ?.degradedReviewPresent ?? null,
+    invalidatedReviewPresent:
+      [...sorted].reverse().find((log) => log.invalidatedReviewPresent !== null)
+        ?.invalidatedReviewPresent ?? null,
+    staleReviewPresent:
+      [...sorted].reverse().find((log) => log.staleReviewPresent !== null)?.staleReviewPresent ??
+      null,
+    reviewerSkills: toStringArray(sorted.flatMap((log) => log.reviewerSkills)),
+    reviewerAgentIds: toStringArray(sorted.flatMap((log) => log.reviewerAgentIds)),
+    reviewTraceCommits: toStringArray(sorted.flatMap((log) => log.reviewTraceCommits)),
+    securityTriggerReasons: toStringArray(sorted.flatMap((log) => log.securityTriggerReasons)),
     reviewEvents: sorted.flatMap((log) => toEventRecords(log.metadata.review_events)),
     verificationEvents: sorted.flatMap((log) => toEventRecords(log.metadata.verification_events)),
     backlogEvents: sorted.flatMap((log) => toEventRecords(log.metadata.backlog_events)),
@@ -380,7 +535,32 @@ function countRerounds(aggregate: StageAggregate): number {
   const validEvents = aggregate.reviewEvents.filter(
     (event) => event.invalidated !== true && event.allowed_by_policy !== false,
   );
-  return Math.max(validEvents.length - 1, 0);
+  const reviewRounds = toStringArray(
+    validEvents.map((event) => toNullableString(event.event_commit)),
+  ).length;
+  if (reviewRounds > 0) {
+    return Math.max(reviewRounds - 1, 0);
+  }
+  return 0;
+}
+
+function reviewPolicySnapshot(
+  aggregate: StageAggregate,
+): LifecycleSnapshot['lifecycle']['stages'][string]['review_policy'] {
+  return {
+    required_audit_classes: aggregate.requiredAuditClasses,
+    executed_audit_classes: aggregate.executedAuditClasses,
+    required_external_review_pending: aggregate.requiredExternalReviewPending,
+    implementation_review_scope: aggregate.implementationReviewScope,
+    required_security_review: aggregate.requiredSecurityReview,
+    degraded_review_present: aggregate.degradedReviewPresent,
+    invalidated_review_present: aggregate.invalidatedReviewPresent,
+    stale_review_present: aggregate.staleReviewPresent,
+    reviewer_skills: aggregate.reviewerSkills,
+    reviewer_agent_ids: aggregate.reviewerAgentIds,
+    review_trace_commits: aggregate.reviewTraceCommits,
+    security_trigger_reasons: aggregate.securityTriggerReasons,
+  };
 }
 
 async function endTimestampForLog(
@@ -511,6 +691,7 @@ export async function refreshLifecycleArtifacts(
         session_ids: intake.sessionIds,
         start_ts: intake.startTs,
         intake_process_complete_ts: intake.intakeProcessCompleteTs,
+        review_policy: reviewPolicySnapshot(intake),
       },
       stages: {
         'spec-compact': {
@@ -524,6 +705,7 @@ export async function refreshLifecycleArtifacts(
           step_artifacts: specCompact.stepArtifacts,
           first_review_agent_started_ts: specCompact.firstReviewAgentStartedTs,
           final_pass_ts: specCompact.finalPassTs,
+          review_policy: reviewPolicySnapshot(specCompact),
         },
         'plan-slice': {
           cycle_ids: planSlice.cycleIds,
@@ -536,6 +718,7 @@ export async function refreshLifecycleArtifacts(
           step_artifacts: planSlice.stepArtifacts,
           first_review_agent_started_ts: planSlice.firstReviewAgentStartedTs,
           final_pass_ts: planSlice.finalPassTs,
+          review_policy: reviewPolicySnapshot(planSlice),
         },
         implementation: {
           cycle_ids: implementation.cycleIds,
@@ -548,6 +731,7 @@ export async function refreshLifecycleArtifacts(
           step_artifacts: implementation.stepArtifacts,
           first_review_agent_started_ts: implementation.firstReviewAgentStartedTs,
           final_pass_ts: implementation.finalPassTs,
+          review_policy: reviewPolicySnapshot(implementation),
         },
         'change-proposal': {
           cycle_ids: changeProposal.cycleIds,
@@ -560,6 +744,7 @@ export async function refreshLifecycleArtifacts(
           step_artifacts: changeProposal.stepArtifacts,
           first_review_agent_started_ts: changeProposal.firstReviewAgentStartedTs,
           final_pass_ts: changeProposal.finalPassTs,
+          review_policy: reviewPolicySnapshot(changeProposal),
         },
       },
     },

@@ -3,10 +3,12 @@ import {
   findCommand as findDossierCommand,
   type CliIo as DossierCliIo,
 } from './vendor/dossier-engineer/commands.ts';
+import { spawnSync } from 'node:child_process';
 
 import { BACKLOG_COMMANDS, type CliIo } from './backlog/commands.ts';
 import {
   appendFeatureIntakeLog,
+  recordReviewArtifactOnStageLog,
   recordStepCloseOnStageLog,
   resolveLatestFeatureCycleId,
   resolveStageLogContext,
@@ -56,6 +58,14 @@ function writeLine(stream: Pick<NodeJS.WriteStream, 'write'>, line = ''): void {
   stream.write(`${line}\n`);
 }
 
+function currentGitHead(root: string): string | null {
+  const result = spawnSync('git', ['rev-parse', 'HEAD'], {
+    cwd: root,
+    encoding: 'utf8',
+  });
+  return result.status === 0 ? result.stdout.trim() || null : null;
+}
+
 function takeOption(argv: string[], name: string, fallback: string | null = null): string | null {
   const exact = argv.indexOf(name);
   if (exact !== -1) {
@@ -68,6 +78,25 @@ function takeOption(argv: string[], name: string, fallback: string | null = null
   const prefix = `${name}=`;
   const inline = argv.find((arg) => arg.startsWith(prefix));
   return inline ? inline.slice(prefix.length) : fallback;
+}
+
+function takeManyOptions(argv: string[], name: string): string[] {
+  const values: string[] = [];
+  const prefix = `${name}=`;
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === name) {
+      const value = argv[index + 1];
+      if (value && !value.startsWith('--')) {
+        values.push(value);
+      }
+      continue;
+    }
+    if (arg?.startsWith(prefix)) {
+      values.push(arg.slice(prefix.length));
+    }
+  }
+  return values;
 }
 
 function replaceCliNames(value: string): string {
@@ -364,14 +393,14 @@ function createDossierCommandWrapper(
           });
           const stageLog = await resolveStageLogContext(
             root,
-            normalizedStep as StageControllerCommand,
+            normalizedStep as Parameters<typeof resolveStageLogContext>[1],
             featureId,
           );
           if (!stageLog) {
             throw new Error(`No ${normalizedStep} stage log found for ${featureId}.`);
           }
           const verifyArtifactPath = takeOption(args, '--verify-artifact');
-          const reviewArtifactPath = takeOption(args, '--review-artifact');
+          const reviewArtifactPaths = takeManyOptions(args, '--review-artifact');
           const outputPath = takeOption(args, '--output');
           if (verifyArtifactPath) {
             const absVerifyArtifactPath = await resolveManagedReadPath(
@@ -390,21 +419,28 @@ function createDossierCommandWrapper(
               );
             }
           }
-          if (reviewArtifactPath) {
-            const absReviewArtifactPath = await resolveManagedReadPath(
-              root,
-              reviewArtifactPath,
-              path.join(root, '.dossier', 'reviews', featureId),
-              'review artifact path',
-            );
-            const reviewArtifact = JSON.parse(await fs.readFile(absReviewArtifactPath, 'utf8')) as {
-              feature_id?: string;
-              step?: string;
-            };
-            if (reviewArtifact.feature_id !== featureId || reviewArtifact.step !== normalizedStep) {
-              throw new Error(
-                `Review artifact must match feature ${featureId} and step ${normalizedStep}.`,
+          for (const reviewArtifactPath of reviewArtifactPaths) {
+            if (reviewArtifactPath) {
+              const absReviewArtifactPath = await resolveManagedReadPath(
+                root,
+                reviewArtifactPath,
+                path.join(root, '.dossier', 'reviews', featureId),
+                'review artifact path',
               );
+              const reviewArtifact = JSON.parse(
+                await fs.readFile(absReviewArtifactPath, 'utf8'),
+              ) as {
+                feature_id?: string;
+                step?: string;
+              };
+              if (
+                reviewArtifact.feature_id !== featureId ||
+                reviewArtifact.step !== normalizedStep
+              ) {
+                throw new Error(
+                  `Review artifact must match feature ${featureId} and step ${normalizedStep}.`,
+                );
+              }
             }
           }
           if (outputPath) {
@@ -446,7 +482,19 @@ function createDossierCommandWrapper(
                 await fs.access(absStepArtifactPath);
                 const artifact = JSON.parse(await fs.readFile(absStepArtifactPath, 'utf8')) as {
                   blockers?: string[];
+                  degraded_review_present?: boolean;
+                  executed_audit_classes?: string[];
+                  implementation_review_scope?: 'code-bearing' | 'non-code' | null;
+                  invalidated_review_present?: boolean;
                   process_complete?: boolean;
+                  required_audit_classes?: string[];
+                  required_external_review_pending?: boolean;
+                  required_security_review?: boolean | null;
+                  review_trace_commits?: string[];
+                  reviewer_agent_ids?: string[];
+                  reviewer_skills?: string[];
+                  security_trigger_reasons?: string[];
+                  stale_review_present?: boolean;
                 };
                 await recordStepCloseOnStageLog({
                   root,
@@ -454,6 +502,40 @@ function createDossierCommandWrapper(
                   step: normalizedStep,
                   stepArtifactPath,
                   processComplete: artifact.process_complete === true,
+                  auditSummary: {
+                    degradedReviewPresent: artifact.degraded_review_present === true,
+                    executedAuditClasses: Array.isArray(artifact.executed_audit_classes)
+                      ? artifact.executed_audit_classes
+                      : [],
+                    implementationReviewScope:
+                      artifact.implementation_review_scope === 'code-bearing' ||
+                      artifact.implementation_review_scope === 'non-code'
+                        ? artifact.implementation_review_scope
+                        : null,
+                    invalidatedReviewPresent: artifact.invalidated_review_present === true,
+                    requiredAuditClasses: Array.isArray(artifact.required_audit_classes)
+                      ? artifact.required_audit_classes
+                      : [],
+                    requiredExternalReviewPending:
+                      artifact.required_external_review_pending !== false,
+                    requiredSecurityReview:
+                      typeof artifact.required_security_review === 'boolean'
+                        ? artifact.required_security_review
+                        : null,
+                    reviewTraceCommits: Array.isArray(artifact.review_trace_commits)
+                      ? artifact.review_trace_commits
+                      : [],
+                    reviewerAgentIds: Array.isArray(artifact.reviewer_agent_ids)
+                      ? artifact.reviewer_agent_ids
+                      : [],
+                    reviewerSkills: Array.isArray(artifact.reviewer_skills)
+                      ? artifact.reviewer_skills
+                      : [],
+                    securityTriggerReasons: Array.isArray(artifact.security_trigger_reasons)
+                      ? artifact.security_trigger_reasons
+                      : [],
+                    staleReviewPresent: artifact.stale_review_present === true,
+                  },
                 });
                 if (exitCode === 2) {
                   io.stderr.write(
@@ -472,7 +554,7 @@ function createDossierCommandWrapper(
                 if ((error as NodeJS.ErrnoException | undefined)?.code !== 'ENOENT') {
                   writeLine(
                     io.stderr,
-                    `[dossier-step-close] WARNING: step artifact was created, but stage log refresh failed: ${
+                    `[dossier-step-close] WARNING: step artifact was created, but stage log/state refresh failed: ${
                       error instanceof Error ? error.message : String(error)
                     }`,
                   );
@@ -550,8 +632,105 @@ function createDossierCommandWrapper(
             featureId,
             featureCycleId,
             command: name,
-            run: async () =>
-              executeDossierCommand(command, normalizedArgs, io as DossierCliIo, name),
+            run: async () => {
+              const { exitCode, stderr, stdout } = await captureDossierCommandOutput(
+                name,
+                normalizedArgs,
+                command,
+              );
+              if (stdout) {
+                io.stdout.write(stdout);
+              }
+              if (stderr) {
+                io.stderr.write(stderr);
+              }
+              if (exitCode !== 0) {
+                return exitCode;
+              }
+
+              try {
+                const outputMatch = stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u);
+                if (!outputMatch?.[1]) {
+                  throw new Error('review-artifact did not report its output path.');
+                }
+                const artifactPath = outputMatch[1].trim();
+                const absArtifactPath = await resolveManagedReadPath(
+                  root,
+                  artifactPath,
+                  path.join(root, '.dossier', 'reviews', featureId),
+                  'review-artifact output path',
+                );
+                const artifact = JSON.parse(await fs.readFile(absArtifactPath, 'utf8')) as {
+                  allowed_by_policy?: boolean;
+                  audit_class?: 'code-reviewer' | 'security-reviewer' | 'spec-conformance-reviewer';
+                  event_commit?: string | null;
+                  feature_id?: string;
+                  findings?: { must_fix?: unknown };
+                  implementation_scope?: 'code-bearing' | 'non-code' | null;
+                  invalidated?: boolean;
+                  review_mode?: 'degraded' | 'external' | 'self-review';
+                  reviewer?: string;
+                  reviewer_agent_id?: string | null;
+                  reviewer_skill?: string | null;
+                  reviewer_thread_id?: string | null;
+                  security_trigger_reason?: string | null;
+                  step?: string;
+                  verdict?: 'FAIL' | 'PASS';
+                };
+                if (
+                  artifact.feature_id === featureId &&
+                  artifact.step === normalizedStep &&
+                  artifact.audit_class &&
+                  artifact.verdict
+                ) {
+                  const gitHead = currentGitHead(root);
+                  const reviewerThreadId =
+                    typeof artifact.reviewer_thread_id === 'string' &&
+                    artifact.reviewer_thread_id.trim().length > 0
+                      ? artifact.reviewer_thread_id
+                      : null;
+                  const stale =
+                    gitHead !== null &&
+                    (!artifact.event_commit?.trim() || artifact.event_commit !== gitHead);
+                  await recordReviewArtifactOnStageLog({
+                    root,
+                    featureId,
+                    stage: normalizedStep as Parameters<
+                      typeof recordReviewArtifactOnStageLog
+                    >[0]['stage'],
+                    artifactPath,
+                    auditClass: artifact.audit_class,
+                    eventCommit: artifact.event_commit ?? null,
+                    implementationScope:
+                      artifact.implementation_scope === 'code-bearing' ||
+                      artifact.implementation_scope === 'non-code'
+                        ? artifact.implementation_scope
+                        : null,
+                    invalidated: artifact.invalidated === true,
+                    mustFixCount: Array.isArray(artifact.findings?.must_fix)
+                      ? artifact.findings.must_fix.length
+                      : 0,
+                    reviewMode: artifact.review_mode ?? 'external',
+                    reviewer: artifact.reviewer ?? 'unknown-reviewer',
+                    reviewerAgentId: artifact.reviewer_agent_id ?? null,
+                    reviewerSkill: artifact.reviewer_skill ?? null,
+                    reviewerThreadId,
+                    securityTriggerReason: artifact.security_trigger_reason ?? null,
+                    stale,
+                    verdict: artifact.verdict,
+                    allowedByPolicy: artifact.allowed_by_policy !== false && !stale,
+                  });
+                }
+              } catch (error) {
+                writeLine(
+                  io.stderr,
+                  `[review-artifact] WARNING: stage log/state refresh failed after artifact write: ${
+                    error instanceof Error ? error.message : String(error)
+                  }`,
+                );
+              }
+              return exitCode;
+            },
           });
         } catch (error) {
           io.stderr.write(

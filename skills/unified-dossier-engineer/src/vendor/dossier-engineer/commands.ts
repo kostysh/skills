@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
@@ -17,6 +18,7 @@ import {
 import { fileExists, readText, walk, writeJsonAtomic, writeTextAtomic } from './lib/fs-utils.ts';
 import {
   getChangedFiles,
+  getChangedFilesBetween,
   getCurrentCommit,
   getDirtyPaths,
   getHeadRef,
@@ -32,6 +34,7 @@ import { refreshLifecycleArtifacts } from './lib/lifecycle-telemetry.ts';
 import { buildRedFlagsBlock, analyzeDossiers, renderLintSummary } from './core/lint-dossiers.ts';
 import { hasExecutableSectionChange, parseTopLevelSections } from './core/markdown.ts';
 import { defaultNextStep, normalizeWorkflowStage, statusToNextStep } from './core/workflow.ts';
+import { readStageState } from '../../shared/stage-state.ts';
 
 export const CLI_NAME = 'dossier-engineer';
 export const CLI_DISPLAY_NAME = 'dossier-engineer';
@@ -76,20 +79,41 @@ interface VerificationCheck {
 }
 
 interface ReviewArtifactShape {
+  allowed_by_policy?: boolean;
+  audit_class?: string;
   event_commit?: string | null;
   feature_id?: string;
   findings?: {
     must_fix?: unknown;
   };
+  implementation_scope?: string | null;
+  invalidated?: boolean;
+  review_mode?: string;
+  reviewer_agent_id?: string | null;
+  reviewer_skill?: string | null;
+  reviewer_thread_id?: string | null;
   reviewer?: string;
+  security_trigger_reason?: string | null;
   step?: string;
   verdict?: string;
 }
 
 interface StepArtifactShape {
   blockers?: unknown;
+  degraded_review_present?: boolean;
+  executed_audit_classes?: unknown;
+  implementation_review_scope?: string | null;
+  invalidated_review_present?: boolean;
   next_step?: string;
   process_complete?: boolean;
+  required_audit_classes?: unknown;
+  required_external_review_pending?: boolean;
+  required_security_review?: boolean | null;
+  review_artifacts?: unknown;
+  review_trace_commits?: unknown;
+  reviewer_agent_ids?: unknown;
+  reviewer_skills?: unknown;
+  stale_review_present?: boolean;
 }
 
 interface VerifyArtifactShape {
@@ -98,6 +122,25 @@ interface VerifyArtifactShape {
   status?: string;
   step?: string;
 }
+
+const AUDIT_CLASSES = ['spec-conformance-reviewer', 'code-reviewer', 'security-reviewer'] as const;
+
+const REVIEW_MODES = ['external', 'degraded', 'self-review'] as const;
+
+const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
+const NON_CODE_FILE_EXTENSIONS = new Set([
+  '.adoc',
+  '.gif',
+  '.jpeg',
+  '.jpg',
+  '.md',
+  '.mdx',
+  '.png',
+  '.rst',
+  '.svg',
+  '.txt',
+  '.webp',
+]);
 
 export class UsageError extends Error {
   readonly helpText: string | undefined;
@@ -111,6 +154,14 @@ export class UsageError extends Error {
 
 function writeLine(stream: Pick<NodeJS.WriteStream, 'write'>, line = ''): void {
   stream.write(`${line}\n`);
+}
+
+function runtimeThreadId(): string | null {
+  const processLike = Reflect.get(globalThis, 'process');
+  const env =
+    processLike && typeof processLike === 'object' ? Reflect.get(processLike, 'env') : undefined;
+  const value = env && typeof env === 'object' ? Reflect.get(env, 'CODEX_THREAD_ID') : undefined;
+  return typeof value === 'string' && value.trim().length > 0 ? value : null;
 }
 
 function hasOption(argv: string[], ...names: string[]): boolean {
@@ -186,8 +237,124 @@ function toStringArray(value: unknown): string[] {
     : [];
 }
 
+function uniqueStrings(values: Iterable<string | null | undefined>): string[] {
+  return [
+    ...new Set(
+      [...values].map((value) => (typeof value === 'string' ? value.trim() : '')).filter(Boolean),
+    ),
+  ];
+}
+
+function sortAuditClasses(values: Iterable<string | null | undefined>): string[] {
+  const unique = uniqueStrings(values);
+  return [
+    ...AUDIT_CLASSES.filter((value) => unique.includes(value)),
+    ...unique
+      .filter((value) => !AUDIT_CLASSES.includes(value as (typeof AUDIT_CLASSES)[number]))
+      .sort(),
+  ];
+}
+
+function requiredAuditClassesForStep(
+  step: string,
+  implementationScope: (typeof IMPLEMENTATION_REVIEW_SCOPES)[number] | null,
+): string[] {
+  if (step === 'implementation' && implementationScope === 'code-bearing') {
+    return [...AUDIT_CLASSES];
+  }
+  return ['spec-conformance-reviewer'];
+}
+
 function stringOrFallback(value: unknown, fallback = ''): string {
   return typeof value === 'string' ? value : fallback;
+}
+
+function toNullableString(value: unknown): string | null {
+  return typeof value === 'string' && value.trim() ? value : null;
+}
+
+function normalizeImplementationReviewScope(
+  value: unknown,
+): (typeof IMPLEMENTATION_REVIEW_SCOPES)[number] | null {
+  return IMPLEMENTATION_REVIEW_SCOPES.includes(
+    value as (typeof IMPLEMENTATION_REVIEW_SCOPES)[number],
+  )
+    ? (value as (typeof IMPLEMENTATION_REVIEW_SCOPES)[number])
+    : null;
+}
+
+function isManagedDossierPath(filePath: string): boolean {
+  const normalized = String(filePath)
+    .trim()
+    .replace(/^["']|["']$/gu, '')
+    .replace(/^\.\//u, '')
+    .split(path.sep)
+    .join('/');
+  return (
+    normalized === '.dossier' ||
+    normalized.startsWith('.dossier/') ||
+    normalized === 'dossier' ||
+    normalized.startsWith('dossier/')
+  );
+}
+
+function isAuditFreshnessExemptPath(filePath: string): boolean {
+  const normalized = String(filePath)
+    .trim()
+    .replace(/^["']|["']$/gu, '')
+    .replace(/^\.\//u, '')
+    .split(path.sep)
+    .join('/');
+  const canonical = normalized.startsWith('dossier/') ? `.${normalized}` : normalized;
+  return (
+    canonical === '.dossier' ||
+    canonical === '.dossier/manifest.json' ||
+    canonical === '.dossier/backlog/manifest.json' ||
+    canonical === '.dossier/backlog/mutation.lock' ||
+    canonical === '.dossier/backlog/.gitignore' ||
+    canonical === '.dossier/backlog/AGENTS.md' ||
+    canonical.startsWith('.dossier/backlog/reports/') ||
+    canonical.startsWith('.dossier/logs/') ||
+    canonical.startsWith('.dossier/stages/') ||
+    canonical.startsWith('.dossier/reviews/') ||
+    canonical.startsWith('.dossier/verification/') ||
+    canonical.startsWith('.dossier/steps/') ||
+    canonical.startsWith('.dossier/metrics/') ||
+    canonical.startsWith('.dossier/retro/') ||
+    canonical.startsWith('.dossier/ops/') ||
+    canonical.startsWith('.dossier/drift/')
+  );
+}
+
+function isDocumentationOnlyPath(filePath: string): boolean {
+  if (isManagedDossierPath(filePath)) {
+    return true;
+  }
+  return NON_CODE_FILE_EXTENSIONS.has(path.extname(filePath).toLowerCase());
+}
+
+async function resolveImplementationReviewScope(
+  root: string,
+  featureId: string,
+): Promise<(typeof IMPLEMENTATION_REVIEW_SCOPES)[number] | null> {
+  const state = await readStageState(root, 'implementation', featureId);
+  const declaredScope = normalizeImplementationReviewScope(state?.implementation_review_scope);
+  if (!declaredScope) {
+    return null;
+  }
+  if (declaredScope === 'code-bearing') {
+    return 'code-bearing';
+  }
+  const entryCommit = toNullableString(state?.stage_entry_commit);
+  if (!inGitRepo(root) || !entryCommit || !getCurrentCommit(root)) {
+    return 'code-bearing';
+  }
+  const changedFiles = getChangedFilesBetween(root, entryCommit, 'HEAD').filter(
+    (filePath) => !isManagedDossierPath(filePath),
+  );
+  const dirtyPaths = getDirtyPaths(root).filter((filePath) => !isManagedDossierPath(filePath));
+  const allPaths = [...new Set([...changedFiles, ...dirtyPaths])];
+  return allPaths.every(isDocumentationOnlyPath) ? 'non-code' : 'code-bearing';
 }
 
 function frontmatterString(
@@ -1671,18 +1838,25 @@ async function runContractDriftAuditCommand(argv: string[], io: CliIo): Promise<
 
 function reviewArtifactHelp(): string {
   return [
-    'Persist an already obtained independent review result as a durable artifact.',
+    'Persist one already obtained audit result for one audit class as a durable artifact.',
     '',
     'Usage:',
-    `  ${CLI_DISPLAY_NAME} review-artifact --dossier <path> --step <name> --verdict PASS|FAIL [options]`,
+    `  ${CLI_DISPLAY_NAME} review-artifact --dossier <path> --step <name> --audit-class <name> --verdict PASS|FAIL [options]`,
     '',
     'Options:',
     '  --root <path>                Repository root. Defaults to cwd.',
     '  --dossier <path>             Dossier under review.',
     '  --step <name>                Workflow step under review.',
+    `  --audit-class <name>         Audit class. One of: ${AUDIT_CLASSES.join(', ')}.`,
     '  --verdict <PASS|FAIL>        Review verdict.',
     '  --reviewer <name>            Reviewer identifier. Required.',
-    '  --event-commit <sha>         Trace commit SHA for event provenance. Defaults to current HEAD when available.',
+    `  --review-mode <mode>         Review mode. One of: ${REVIEW_MODES.join(', ')}. Defaults to external.`,
+    '  --reviewer-skill <name>      Reviewer skill name when available.',
+    '  --reviewer-agent-id <id>     Reviewer agent identifier when available.',
+    '  --implementation-scope <scope> Deprecated here; implementation scope must be recorded on the current implementation stage state via implementation --ready-for-close.',
+    '  --security-trigger-reason <text> Security trigger reason for applicable implementation security audits.',
+    '  --invalidated                Mark this audit artifact as invalidated by later material change.',
+    '  --rerun-reason <text>        Optional rerun or invalidation reason.',
     '  --notes <text>               Free-form reviewer notes.',
     '  --output <path>              Artifact output path.',
     '  --must-fix <text>            Repeatable must-fix finding.',
@@ -1691,8 +1865,10 @@ function reviewArtifactHelp(): string {
     '  -h, --help                   Show help.',
     '',
     'Notes:',
-    '  - review-artifact does not perform the review itself; it records a verdict produced elsewhere.',
+    '  - review-artifact does not perform the review itself; it records one already obtained audit result for one audit class.',
     '  - --reviewer should name the separate reviewer agent or review skill that produced the verdict.',
+    '  - reviewer_thread_id is stamped from the current runtime when available and is used for same-thread external-review rejection.',
+    '  - review-artifact never replaces the required audit bundle enforced by dossier-step-close.',
   ].join('\n');
 }
 
@@ -1710,6 +1886,12 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     helpText,
   );
   const step = ensureRequired(takeOption(argv, '--step', null), '--step is required.', helpText);
+  const auditClass = ensureEnumValue(
+    ensureRequired(takeOption(argv, '--audit-class', null), '--audit-class is required.', helpText),
+    AUDIT_CLASSES,
+    '--audit-class',
+    helpText,
+  );
   const verdict = ensureRequired(
     takeOption(argv, '--verdict', null),
     '--verdict is required.',
@@ -1720,7 +1902,18 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     '--reviewer is required.',
     helpText,
   );
-  const eventCommit = takeOption(argv, '--event-commit', null);
+  const reviewMode = ensureEnumValue(
+    takeOption(argv, '--review-mode', 'external') ?? 'external',
+    REVIEW_MODES,
+    '--review-mode',
+    helpText,
+  );
+  const reviewerSkill = takeOption(argv, '--reviewer-skill', null);
+  const reviewerAgentId = takeOption(argv, '--reviewer-agent-id', null);
+  const implementationScopeRaw = takeOption(argv, '--implementation-scope', null);
+  const securityTriggerReason = takeOption(argv, '--security-trigger-reason', null);
+  const invalidated = hasOption(argv, '--invalidated');
+  const rerunReason = takeOption(argv, '--rerun-reason', null);
   const notes = takeOption(argv, '--notes', '') ?? '';
   const output = takeOption(argv, '--output', null);
   const mustFix = takeManyOptions(argv, '--must-fix');
@@ -1742,16 +1935,67 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     'id',
     path.basename(absDossier, '.md'),
   );
-  const commit = eventCommit || (inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null);
+  const inRepo = inGitRepo(absRoot);
+  if (takeOption(argv, '--event-commit', null)) {
+    throw new UsageError(
+      '--event-commit is not supported; review-artifact stamps current HEAD when available.',
+      helpText,
+    );
+  }
+  if (implementationScopeRaw) {
+    throw new UsageError(
+      '--implementation-scope must be recorded on implementation --ready-for-close, not passed to review-artifact.',
+      helpText,
+    );
+  }
+  const implementationScope =
+    step === 'implementation' ? await resolveImplementationReviewScope(absRoot, featureId) : null;
+  if (step === 'implementation') {
+    if (!implementationScope) {
+      throw new UsageError(
+        'Implementation review scope is missing from the current implementation stage state. Record it via implementation --ready-for-close --implementation-scope <scope> before review-artifact.',
+        helpText,
+      );
+    }
+    if (auditClass === 'security-reviewer' && !securityTriggerReason) {
+      throw new UsageError(
+        '--security-trigger-reason is required for implementation security audits.',
+        helpText,
+      );
+    }
+  } else if (implementationScope) {
+    throw new UsageError(
+      '--implementation-scope is only allowed when --step=implementation.',
+      helpText,
+    );
+  }
+  if (securityTriggerReason && !(step === 'implementation' && auditClass === 'security-reviewer')) {
+    throw new UsageError(
+      '--security-trigger-reason is only allowed for implementation security audits.',
+      helpText,
+    );
+  }
+  const reviewerThreadId = runtimeThreadId();
+  const commit = inRepo ? getCurrentCommit(absRoot) : null;
 
   const artifact = {
     version: 1,
     created_at: new Date().toISOString(),
+    audit_class: auditClass,
+    review_mode: reviewMode,
     reviewer,
+    reviewer_skill: reviewerSkill,
+    reviewer_agent_id: reviewerAgentId,
+    reviewer_thread_id: reviewerThreadId,
     step,
     dossier: dossierRecord.relPath,
     feature_id: featureId,
     event_commit: commit,
+    implementation_scope: implementationScope,
+    security_trigger_reason: securityTriggerReason,
+    invalidated,
+    rerun_reason: rerunReason,
+    allowed_by_policy: reviewMode === 'external' && invalidated !== true,
     verdict,
     findings: {
       must_fix: mustFix,
@@ -1766,7 +2010,7 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     '.dossier',
     'reviews',
     featureId,
-    `${step}-${commit ? commit.slice(0, 12) : Date.now()}.json`,
+    `${step}--${auditClass}--${commit ? commit.slice(0, 12) : 'no-commit'}--${Date.now()}-${crypto.randomUUID().slice(0, 8)}.json`,
   );
   const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
   await writeJsonAtomic(outputPath, artifact);
@@ -1774,7 +2018,7 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
   writeLine(io.stdout, `[review-artifact] Wrote ${relativeToRoot(absRoot, outputPath)}`);
   writeLine(
     io.stdout,
-    `[review-artifact] verdict=${verdict} step=${step} feature=${featureId} event_commit=${commit ?? 'none'}`,
+    `[review-artifact] audit_class=${auditClass} verdict=${verdict} step=${step} feature=${featureId} event_commit=${commit ?? 'none'}`,
   );
   return EXIT_SUCCESS;
 }
@@ -1784,17 +2028,18 @@ function dossierStepCloseHelp(): string {
     'Machine-checkable closure gate for a mutating dossier step.',
     '',
     'Usage:',
-    `  ${CLI_DISPLAY_NAME} dossier-step-close --dossier <path> --step <name> --verify-artifact <path> --review-artifact <path> [options]`,
+    `  ${CLI_DISPLAY_NAME} dossier-step-close --dossier <path> --step <name> --verify-artifact <path> --review-artifact <path> [--review-artifact <path> ...] [options]`,
     '',
     'Options:',
     '  --root <path>                Repository root. Defaults to cwd.',
     '  --dossier <path>             Dossier being closed.',
     '  --step <name>                Workflow step being closed.',
     '  --verify-artifact <path>     Verification artifact path.',
-    '  --review-artifact <path>     Review artifact path.',
+    '  --review-artifact <path>     Review artifact path. Repeat for multi-audit bundles.',
+    `  --implementation-scope <scope> Optional cross-check only. Implementation scope is read from the current implementation stage state and must match if provided.`,
     '  --next-step <name>           Override computed next step.',
     '  --output <path>              Step artifact output path.',
-    '  --allow-dirty                Skip clean-worktree enforcement.',
+    '  --allow-dirty                Skip the clean-worktree blocker only; review freshness invalidation still applies.',
     '  -h, --help                   Show help.',
   ].join('\n');
 }
@@ -1818,11 +2063,26 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     '--verify-artifact is required.',
     helpText,
   );
-  const reviewArtifact = ensureRequired(
-    takeOption(argv, '--review-artifact', null),
+  const reviewArtifacts = ensureNonEmpty(
+    takeManyOptions(argv, '--review-artifact'),
     '--review-artifact is required.',
     helpText,
   );
+  const implementationScopeRaw = takeOption(argv, '--implementation-scope', null);
+  const requestedImplementationScope = implementationScopeRaw
+    ? ensureEnumValue(
+        implementationScopeRaw,
+        IMPLEMENTATION_REVIEW_SCOPES,
+        '--implementation-scope',
+        helpText,
+      )
+    : null;
+  if (step !== 'implementation' && implementationScopeRaw) {
+    throw new UsageError(
+      '--implementation-scope is only allowed when --step=implementation.',
+      helpText,
+    );
+  }
   const nextStep = takeOption(argv, '--next-step', null);
   const output = takeOption(argv, '--output', null);
   const allowDirty = hasOption(argv, '--allow-dirty');
@@ -1835,7 +2095,35 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     'id',
     path.basename(absDossier, '.md'),
   );
+  const implementationScope =
+    step === 'implementation' ? await resolveImplementationReviewScope(absRoot, featureId) : null;
+  if (step === 'implementation' && !implementationScope) {
+    throw new UsageError(
+      'Implementation review scope is missing from the current implementation stage state. Record it via implementation --ready-for-close --implementation-scope <scope> before dossier-step-close.',
+      helpText,
+    );
+  }
+  if (
+    step === 'implementation' &&
+    requestedImplementationScope &&
+    requestedImplementationScope !== implementationScope
+  ) {
+    throw new UsageError(
+      `--implementation-scope (${requestedImplementationScope}) does not match the current implementation stage state scope (${implementationScope}).`,
+      helpText,
+    );
+  }
   const blockers: string[] = [];
+  const stageState = await readStageState(
+    absRoot,
+    step as Parameters<typeof readStageState>[1],
+    featureId,
+  );
+  if (!stageState) {
+    blockers.push(
+      `No helper-managed ${step} stage state found for ${featureId}. Re-run the stage controller before dossier-step-close.`,
+    );
+  }
 
   let verify: VerifyArtifactShape | null = null;
   try {
@@ -1846,17 +2134,56 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     );
   }
 
-  let review: ReviewArtifactShape | null = null;
-  try {
-    review = await readJsonArtifact<ReviewArtifactShape>(absRoot, reviewArtifact);
-  } catch (error) {
-    blockers.push(
-      `Could not read review artifact ${relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact))} (${error instanceof Error ? error.message : String(error)}).`,
-    );
+  const reviewArtifactPaths: string[] = [];
+  const reviewsByAuditClass = new Map<string, ReviewArtifactShape>();
+  for (const reviewArtifact of reviewArtifacts) {
+    try {
+      const review = await readJsonArtifact<ReviewArtifactShape>(absRoot, reviewArtifact);
+      const auditClass = ensureEnumValue(
+        stringOrFallback(review.audit_class),
+        AUDIT_CLASSES,
+        'review artifact audit_class',
+        helpText,
+      );
+      if (reviewsByAuditClass.has(auditClass)) {
+        blockers.push(`Duplicate review artifact for audit class ${auditClass}.`);
+        continue;
+      }
+      reviewsByAuditClass.set(auditClass, review);
+      reviewArtifactPaths.push(relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact)));
+    } catch (error) {
+      blockers.push(
+        `Could not read review artifact ${relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact))} (${error instanceof Error ? error.message : String(error)}).`,
+      );
+    }
   }
 
   const eventCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
-
+  const currentThreadId = runtimeThreadId();
+  const recordedReviewEvents = stageState?.review_events ?? [];
+  const recordedReviewPaths = new Map(
+    recordedReviewEvents
+      .map(
+        (event, index) =>
+          [
+            toNullableString(event.artifact_path),
+            {
+              ...event,
+              order_index: index,
+            },
+          ] as const,
+      )
+      .filter(
+        (
+          entry,
+        ): entry is [
+          string,
+          (typeof recordedReviewEvents)[number] & {
+            order_index: number;
+          },
+        ] => entry[0] !== null,
+      ),
+  );
   if (verify && verify.status !== 'pass') {
     blockers.push(
       `Verification artifact does not report status=pass (got ${String(verify.status)}).`,
@@ -1873,34 +2200,167 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     );
   }
 
-  if (review && review.verdict !== 'PASS') {
-    blockers.push(`Review artifact verdict is ${String(review.verdict)}, expected PASS.`);
-  }
-  if (review && (!review.reviewer || !String(review.reviewer).trim())) {
-    blockers.push('Review artifact is missing reviewer provenance.');
-  }
-  if (review && review.step !== step) {
-    blockers.push(`Review artifact step mismatch: expected ${step}, got ${String(review.step)}.`);
-  }
-  if (review?.feature_id && review.feature_id !== featureId) {
-    blockers.push(
-      `Review artifact feature mismatch: expected ${featureId}, got ${review.feature_id}.`,
-    );
-  }
-  if (Array.isArray(review?.findings?.must_fix) && review.findings.must_fix.length > 0) {
-    blockers.push('Review artifact still contains must-fix findings.');
+  const requiredAuditClasses = requiredAuditClassesForStep(step, implementationScope);
+  let staleReviewPresent = false;
+  const reviewSatisfiesPolicy = new Map<string, boolean>();
+  const reviewOrderIndices = new Map<string, number>();
+  for (const auditClass of requiredAuditClasses) {
+    const review = reviewsByAuditClass.get(auditClass);
+    if (!review) {
+      blockers.push(`Missing required review artifact for audit class ${auditClass}.`);
+      reviewSatisfiesPolicy.set(auditClass, false);
+      continue;
+    }
+    let reviewIsValid = true;
+    const reviewArtifactPath = reviewArtifactPaths.find((artifactPath) => {
+      const recorded = recordedReviewPaths.get(artifactPath);
+      return recorded && toNullableString(recorded.audit_class) === auditClass;
+    });
+    if (!reviewArtifactPath) {
+      blockers.push(
+        `Review artifact for ${auditClass} was not recorded in the current helper-managed ${step} stage state via review-artifact.`,
+      );
+      reviewIsValid = false;
+    } else {
+      const recorded = recordedReviewPaths.get(reviewArtifactPath);
+      if (recorded) {
+        reviewOrderIndices.set(auditClass, recorded.order_index);
+      }
+    }
+    if (review.verdict !== 'PASS') {
+      blockers.push(
+        `Review artifact verdict for ${auditClass} is ${String(review.verdict)}, expected PASS.`,
+      );
+      reviewIsValid = false;
+    }
+    if (!review.reviewer || !String(review.reviewer).trim()) {
+      blockers.push(`Review artifact for ${auditClass} is missing reviewer provenance.`);
+      reviewIsValid = false;
+    }
+    if (review.step !== step) {
+      blockers.push(
+        `Review artifact step mismatch for ${auditClass}: expected ${step}, got ${String(review.step)}.`,
+      );
+      reviewIsValid = false;
+    }
+    if (review.feature_id && review.feature_id !== featureId) {
+      blockers.push(
+        `Review artifact feature mismatch for ${auditClass}: expected ${featureId}, got ${review.feature_id}.`,
+      );
+      reviewIsValid = false;
+    }
+    if (Array.isArray(review.findings?.must_fix) && review.findings.must_fix.length > 0) {
+      blockers.push(`Review artifact for ${auditClass} still contains must-fix findings.`);
+      reviewIsValid = false;
+    }
+    if ((review.review_mode ?? 'external') !== 'external') {
+      blockers.push(`Review artifact for ${auditClass} is not an external audit.`);
+      reviewIsValid = false;
+    }
+    if (review.invalidated === true) {
+      blockers.push(`Review artifact for ${auditClass} is marked invalidated.`);
+      reviewIsValid = false;
+    }
+    if (review.allowed_by_policy === false) {
+      blockers.push(`Review artifact for ${auditClass} is not allowed by policy.`);
+      reviewIsValid = false;
+    }
+    if (inGitRepo(absRoot) && !toNullableString(review.event_commit)) {
+      staleReviewPresent = true;
+      blockers.push(`Review artifact for ${auditClass} is missing event_commit in a git repo.`);
+      reviewIsValid = false;
+    }
+    if (
+      eventCommit &&
+      review.event_commit &&
+      String(review.event_commit).trim() &&
+      review.event_commit !== eventCommit
+    ) {
+      staleReviewPresent = true;
+      blockers.push(
+        `Review artifact for ${auditClass} is stale: event commit ${review.event_commit} does not match current HEAD ${eventCommit}.`,
+      );
+      reviewIsValid = false;
+    }
+    const reviewerThreadId = toNullableString(review.reviewer_thread_id);
+    if (currentThreadId && reviewerThreadId && reviewerThreadId === currentThreadId) {
+      blockers.push(
+        `Review artifact for ${auditClass} was produced by the current thread and is not an independent external audit.`,
+      );
+      reviewIsValid = false;
+    }
+    if (step === 'implementation') {
+      if (review.implementation_scope !== implementationScope) {
+        blockers.push(
+          `Review artifact implementation_scope mismatch for ${auditClass}: expected ${implementationScope}, got ${String(review.implementation_scope)}.`,
+        );
+        reviewIsValid = false;
+      }
+      if (
+        auditClass === 'security-reviewer' &&
+        implementationScope === 'code-bearing' &&
+        !toNullableString(review.security_trigger_reason)
+      ) {
+        blockers.push('Security review artifact is missing security_trigger_reason.');
+        reviewIsValid = false;
+      }
+    }
+    reviewSatisfiesPolicy.set(auditClass, reviewIsValid);
   }
 
-  if (inGitRepo(absRoot) && !allowDirty) {
+  if (step === 'implementation' && implementationScope === 'code-bearing') {
+    const specOrder = reviewOrderIndices.get('spec-conformance-reviewer');
+    const codeOrder = reviewOrderIndices.get('code-reviewer');
+    const securityOrder = reviewOrderIndices.get('security-reviewer');
+    if (
+      typeof specOrder === 'number' &&
+      typeof codeOrder === 'number' &&
+      typeof securityOrder === 'number' &&
+      !(specOrder < codeOrder && codeOrder < securityOrder)
+    ) {
+      blockers.push(
+        'Implementation audit bundle order is invalid: expected spec-conformance-reviewer before code-reviewer before security-reviewer.',
+      );
+      reviewSatisfiesPolicy.set('spec-conformance-reviewer', false);
+      reviewSatisfiesPolicy.set('code-reviewer', false);
+      reviewSatisfiesPolicy.set('security-reviewer', false);
+    }
+  }
+
+  if (inGitRepo(absRoot)) {
     const dirtyPaths = getDirtyPaths(absRoot).filter(
-      (filePath) => !filePath.startsWith('.dossier/'),
+      (filePath) => !isAuditFreshnessExemptPath(filePath),
     );
     if (dirtyPaths.length > 0) {
-      blockers.push(`Worktree is dirty outside .dossier/: ${dirtyPaths.join(', ')}`);
+      staleReviewPresent = true;
+      for (const auditClass of requiredAuditClasses) {
+        reviewSatisfiesPolicy.set(auditClass, false);
+      }
+      blockers.push(
+        `Required audits are stale against uncommitted material changes: ${dirtyPaths.join(', ')}`,
+      );
+    }
+    if (!allowDirty && dirtyPaths.length > 0) {
+      blockers.push(`Worktree is dirty in material paths: ${dirtyPaths.join(', ')}`);
     }
   }
 
   const processComplete = blockers.length === 0;
+  const requiredExternalReviewPending = requiredAuditClasses.some(
+    (auditClass) => reviewSatisfiesPolicy.get(auditClass) !== true,
+  );
+  const reviewTraceCommits = uniqueStrings(
+    [...reviewsByAuditClass.values()].map((review) => review.event_commit ?? null),
+  );
+  const reviewerSkills = uniqueStrings(
+    [...reviewsByAuditClass.values()].map((review) => review.reviewer_skill ?? null),
+  );
+  const reviewerAgentIds = uniqueStrings(
+    [...reviewsByAuditClass.values()].map((review) => review.reviewer_agent_id ?? null),
+  );
+  const securityTriggerReasons = uniqueStrings(
+    [...reviewsByAuditClass.values()].map((review) => review.security_trigger_reason ?? null),
+  );
   const artifact = {
     version: 1,
     created_at: new Date().toISOString(),
@@ -1909,12 +2369,34 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
     step,
     dossier_status: dossierRecord.frontmatter.status ?? null,
     event_commit: eventCommit,
-    review_trace_commit: review?.event_commit ?? null,
+    review_trace_commit: reviewTraceCommits.at(-1) ?? null,
+    review_trace_commits: reviewTraceCommits,
     verification_trace_commit: verify?.event_commit ?? null,
     verification_artifact: relativeToRoot(absRoot, path.resolve(absRoot, verifyArtifact)),
-    review_artifact: relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact)),
-    review_freshness:
-      review?.verdict === 'PASS' ? 'pass' : review?.verdict === 'FAIL' ? 'fail' : 'unknown',
+    review_artifacts: reviewArtifactPaths,
+    review_freshness: blockers.some((blocker) => blocker.includes('stale'))
+      ? 'stale'
+      : processComplete
+        ? 'pass'
+        : reviewsByAuditClass.size > 0
+          ? 'fail'
+          : 'missing',
+    required_audit_classes: requiredAuditClasses,
+    executed_audit_classes: sortAuditClasses(reviewsByAuditClass.keys()),
+    required_external_review_pending: requiredExternalReviewPending,
+    implementation_review_scope: implementationScope,
+    required_security_review:
+      step === 'implementation' ? implementationScope === 'code-bearing' : false,
+    degraded_review_present: [...reviewsByAuditClass.values()].some(
+      (review) => review.review_mode === 'degraded',
+    ),
+    invalidated_review_present: [...reviewsByAuditClass.values()].some(
+      (review) => review.invalidated === true,
+    ),
+    stale_review_present: staleReviewPresent,
+    reviewer_skills: reviewerSkills,
+    reviewer_agent_ids: reviewerAgentIds,
+    security_trigger_reasons: securityTriggerReasons,
     process_complete: processComplete,
     blockers,
     next_step: nextStep || defaultNextStep(dossierRecord.frontmatter.status, step) || undefined,

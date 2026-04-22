@@ -4,6 +4,7 @@ Use this reference when designing lifecycle identity, logs, closure artifacts, o
 
 Use it together with:
 
+- [Audit policy](audit-policy.md)
 - [Delivery workflow layer](delivery-workflow-layer.md)
 - [Commandized stage control](commandized-stage-control.md)
 
@@ -24,6 +25,7 @@ Telemetry must support:
 The merged design keeps telemetry and closure artifacts in separate accounting families under `.dossier`:
 
 - logs under `.dossier/logs/*`
+- helper-managed stage state under `.dossier/stages/*`
 - review artifacts under `.dossier/reviews/*`
 - verification artifacts under `.dossier/verification/*`
 - step-close artifacts under `.dossier/steps/*`
@@ -31,6 +33,14 @@ The merged design keeps telemetry and closure artifacts in separate accounting f
 - session discoverability under `.dossier/retro/session-index.jsonl`
 
 Do not collapse these into one prose log or one generic journal file.
+
+Review artifacts must remain capable of carrying policy-visible audit-bundle truth:
+
+- `audit_class`
+- external-versus-degraded review mode
+- reviewer provenance
+- freshness / invalidation state
+- implementation review-scope and security-trigger data where applicable
 
 ## Identity contract
 
@@ -53,6 +63,7 @@ Rules:
 Merged telemetry must preserve the current useful shape:
 
 - intake and stage logs remain human-readable Markdown artifacts
+- helper-managed stage state remains the structured coordination surface for stage scope, current-cycle audit-bundle membership, and close-out validation
 - those logs start with YAML frontmatter
 - machine-readable fields live in bounded structured fields, not in CLI inference from prose
 - narrative sections remain required for operator-facing human context on non-trivial stages
@@ -63,6 +74,10 @@ Minimum machine-readable fields stay explicit:
 - canonical timestamps
 - bounded event arrays where applicable
 - linked durable artifact references where such artifacts truly exist
+- required versus executed audit classes for mutating-stage close-out
+- reviewer provenance / reviewer skill / reviewer agent identity when available
+- review freshness or invalidation markers
+- pending or blocked required external review signals
 
 Purpose rule:
 
@@ -110,6 +125,12 @@ If future stage-controller commands add progress-transition fields, they must re
 - repeated block/resume history should live in bounded transition events rather than ambiguous singleton summary timestamps.
 - helper-owned closure updates must preserve authored narrative sections instead of collapsing the log back to a mechanical body.
 
+When helper-owned closure updates materialize audit policy state, stage logs and/or review artifacts must stay able to show:
+
+- which mutating-stage audit classes were required;
+- which audit classes were actually executed;
+- whether closure is blocked by missing, stale, invalidated, or degraded review evidence.
+
 ## Session anchors
 
 Retrospective discoverability must stay deterministic.
@@ -141,6 +162,7 @@ Required rules:
 - implementation closure truth requires authoritative step-close evidence
 - `lifecycle-refresh` remains the shipped lifecycle aggregation helper for lifecycle snapshots and session-index refresh
 - lifecycle timestamps must never materialize from chat-only or commit-only signals
+- required mutating-stage external review must remain mechanically visible in durable artifacts rather than inferred from prose
 
 Semantic heritage rule:
 
@@ -163,6 +185,28 @@ The telemetry layer must make these signals computable from deterministic artifa
 - telemetry completeness
 
 This does not mean the first-wave runtime already materializes every desired metric field. It means the merged artifact model already preserves enough identity, timestamps, and bounded events for later mechanical aggregation.
+
+Required review-policy observability now includes:
+
+- required audit classes by mutating stage
+- executed audit classes by mutating stage
+- reviewer provenance / reviewer skill / reviewer agent identity where provided
+- stale or invalidated audit evidence
+- implementation review-scope and required-security-review signals
+
+Canonical persisted field names for that observability are:
+
+- `required_audit_classes`
+- `executed_audit_classes`
+- `required_external_review_pending`
+- `implementation_review_scope`
+- `required_security_review`
+- `reviewer_skills`
+- `reviewer_agent_ids`
+- `review_trace_commits`
+- `invalidated_review_present`
+- `stale_review_present`
+- `security_trigger_reasons`
 
 ## CLI boundary
 

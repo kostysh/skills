@@ -7,8 +7,14 @@ import YAML from 'yaml';
 import { acquireDeliveryMutationLock } from '../shared/delivery-lock.ts';
 import { resolveManagedDossierIdentity, sanitizeFeatureId } from '../shared/feature-identity.ts';
 import { featureDossiersDirPath, resolveProcessRoot } from '../shared/process-root.ts';
+import {
+  readStageState,
+  syncStageStateFromMetadata,
+  type StageStateRecord,
+} from '../shared/stage-state.ts';
 import { assertManagedWritePath } from '../shared/path-guards.ts';
 import { fileExists, writeTextAtomic } from '../vendor/dossier-engineer/lib/fs-utils.ts';
+import { getCurrentCommit } from '../vendor/dossier-engineer/lib/git-utils.ts';
 import {
   extractFeatureNumericId,
   listDossierFiles,
@@ -26,6 +32,15 @@ export const STAGE_CONTROLLER_COMMANDS = [
 
 export type StageControllerCommand = (typeof STAGE_CONTROLLER_COMMANDS)[number];
 type LoggedStage = StageControllerCommand | 'feature-intake';
+
+const AUDIT_CLASSES = ['spec-conformance-reviewer', 'code-reviewer', 'security-reviewer'] as const;
+type AuditClass = (typeof AUDIT_CLASSES)[number];
+
+type ReviewMode = 'degraded' | 'external' | 'self-review';
+const REVIEW_MODES = ['degraded', 'external', 'self-review'] as const;
+
+const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
+type ImplementationReviewScope = (typeof IMPLEMENTATION_REVIEW_SCOPES)[number];
 
 export interface StageControllerResult {
   backlog_followup_kind: string | null;
@@ -52,6 +67,40 @@ type ParsedStageLog = {
 type Section = {
   body: string;
   title: string;
+};
+
+type ReviewEventPayload = {
+  allowed_by_policy: boolean;
+  artifact_path: string;
+  audit_class: AuditClass;
+  event_commit: string | null;
+  implementation_scope: ImplementationReviewScope | null;
+  invalidated: boolean;
+  must_fix_count: number;
+  recorded_at: string;
+  review_mode: ReviewMode;
+  reviewer: string;
+  reviewer_agent_id: string | null;
+  reviewer_skill: string | null;
+  reviewer_thread_id: string | null;
+  security_trigger_reason: string | null;
+  stale?: boolean;
+  verdict: 'FAIL' | 'PASS';
+};
+
+type AuditSummaryPayload = {
+  degradedReviewPresent: boolean;
+  executedAuditClasses: string[];
+  implementationReviewScope: ImplementationReviewScope | null;
+  invalidatedReviewPresent: boolean;
+  requiredAuditClasses: string[];
+  requiredExternalReviewPending: boolean;
+  requiredSecurityReview: boolean | null;
+  reviewTraceCommits: string[];
+  reviewerAgentIds: string[];
+  reviewerSkills: string[];
+  securityTriggerReasons: string[];
+  staleReviewPresent: boolean;
 };
 
 const DECISION_SUBSECTION_TITLES = [
@@ -279,6 +328,189 @@ function toNullableString(value: unknown): string | null {
   return typeof value === 'string' && value.trim() ? value : null;
 }
 
+function toBoolean(value: unknown): boolean | null {
+  return typeof value === 'boolean' ? value : null;
+}
+
+function uniqueStrings(values: Iterable<string | null | undefined>): string[] {
+  return [
+    ...new Set(
+      [...values].map((value) => (typeof value === 'string' ? value.trim() : '')).filter(Boolean),
+    ),
+  ];
+}
+
+function sortAuditClasses(values: Iterable<string | null | undefined>): string[] {
+  const unique = uniqueStrings(values);
+  return [
+    ...AUDIT_CLASSES.filter((value) => unique.includes(value)),
+    ...unique.filter((value) => !AUDIT_CLASSES.includes(value as AuditClass)).sort(),
+  ];
+}
+
+function normalizeImplementationReviewScope(value: unknown): ImplementationReviewScope | null {
+  return IMPLEMENTATION_REVIEW_SCOPES.includes(value as ImplementationReviewScope)
+    ? (value as ImplementationReviewScope)
+    : null;
+}
+
+function requiredAuditClassesForStage(
+  stage: LoggedStage,
+  implementationScope: ImplementationReviewScope | null,
+): AuditClass[] {
+  if (stage === 'implementation' && implementationScope === 'code-bearing') {
+    return [...AUDIT_CLASSES];
+  }
+  return ['spec-conformance-reviewer'];
+}
+
+function extractReviewEvents(metadata: Record<string, unknown>): ReviewEventPayload[] {
+  return Array.isArray(metadata.review_events)
+    ? metadata.review_events.filter(
+        (item): item is ReviewEventPayload => item !== null && typeof item === 'object',
+      )
+    : [];
+}
+
+function summarizeReviewPolicy(
+  stage: LoggedStage,
+  reviewEvents: ReviewEventPayload[],
+  implementationScope: ImplementationReviewScope | null,
+  staleReviewPresent = false,
+): AuditSummaryPayload {
+  const requiredAuditClasses = requiredAuditClassesForStage(stage, implementationScope);
+  const executedAuditClasses = sortAuditClasses(reviewEvents.map((event) => event.audit_class));
+  const anyStaleReviewPresent =
+    staleReviewPresent || reviewEvents.some((event) => event.stale === true);
+  const latestByAuditClass = new Map<AuditClass, ReviewEventPayload>();
+  for (const event of reviewEvents) {
+    latestByAuditClass.set(event.audit_class, event);
+  }
+  const validAuditClasses = new Set(
+    [...latestByAuditClass.values()]
+      .filter(
+        (event) =>
+          event.verdict === 'PASS' &&
+          event.review_mode === 'external' &&
+          event.invalidated !== true &&
+          event.stale !== true &&
+          event.allowed_by_policy !== false &&
+          event.must_fix_count === 0,
+      )
+      .map((event) => event.audit_class),
+  );
+  const requiredExternalReviewPending = requiredAuditClasses.some(
+    (auditClass) => !validAuditClasses.has(auditClass),
+  );
+
+  return {
+    requiredAuditClasses,
+    executedAuditClasses,
+    requiredExternalReviewPending,
+    implementationReviewScope: stage === 'implementation' ? implementationScope : null,
+    requiredSecurityReview:
+      stage === 'implementation' ? implementationScope === 'code-bearing' : false,
+    degradedReviewPresent: reviewEvents.some((event) => event.review_mode === 'degraded'),
+    invalidatedReviewPresent: reviewEvents.some((event) => event.invalidated === true),
+    staleReviewPresent: anyStaleReviewPresent,
+    reviewerSkills: uniqueStrings(reviewEvents.map((event) => event.reviewer_skill)),
+    reviewerAgentIds: uniqueStrings(reviewEvents.map((event) => event.reviewer_agent_id)),
+    reviewTraceCommits: uniqueStrings(reviewEvents.map((event) => event.event_commit)),
+    securityTriggerReasons: uniqueStrings(
+      reviewEvents.map((event) => event.security_trigger_reason),
+    ),
+  };
+}
+
+function machineMetadataFromStageState(state: StageStateRecord): Record<string, unknown> {
+  return {
+    version: state.version,
+    stage: state.stage,
+    feature_id: state.feature_id,
+    feature_cycle_id: state.feature_cycle_id,
+    cycle_id: state.cycle_id,
+    backlog_item_key: state.backlog_item_key,
+    stage_state: state.stage_state,
+    start_ts: state.start_ts,
+    entered_ts: state.entered_ts,
+    ready_for_close_ts: state.ready_for_close_ts,
+    transition_events: state.transition_events,
+    required_audit_classes: state.required_audit_classes,
+    executed_audit_classes: state.executed_audit_classes,
+    required_external_review_pending: state.required_external_review_pending,
+    review_events: state.review_events,
+    reviewer_skills: state.reviewer_skills,
+    reviewer_agent_ids: state.reviewer_agent_ids,
+    review_trace_commits: state.review_trace_commits,
+    degraded_review_present: state.degraded_review_present,
+    invalidated_review_present: state.invalidated_review_present,
+    stale_review_present: state.stale_review_present,
+    session_id: state.session_id,
+    trace_runtime: state.trace_runtime,
+    trace_locator_kind: state.trace_locator_kind,
+    stage_entry_commit: state.stage_entry_commit,
+    implementation_review_scope: state.implementation_review_scope,
+    required_security_review: state.required_security_review,
+    security_trigger_reasons: state.security_trigger_reasons,
+    step_close_ts: state.step_close_ts,
+    step_artifact: state.step_artifact,
+    process_complete_ts: state.process_complete_ts,
+    intake_process_complete_ts: state.intake_process_complete_ts,
+    local_gates_green_ts: state.local_gates_green_ts,
+    first_review_agent_started_ts: state.first_review_agent_started_ts,
+    final_pass_ts: state.final_pass_ts,
+  };
+}
+
+function reviewEventsFromStageState(state: StageStateRecord | null): ReviewEventPayload[] {
+  if (!state) {
+    return [];
+  }
+  return state.review_events
+    .filter(
+      (
+        event,
+      ): event is typeof event & {
+        allowed_by_policy: boolean;
+        artifact_path: string;
+        audit_class: AuditClass;
+        implementation_scope: ImplementationReviewScope | null;
+        recorded_at: string;
+        review_mode: ReviewMode;
+        reviewer: string;
+        reviewer_thread_id: string | null;
+        verdict: 'FAIL' | 'PASS';
+      } =>
+        typeof event.allowed_by_policy === 'boolean' &&
+        typeof event.artifact_path === 'string' &&
+        AUDIT_CLASSES.includes(event.audit_class as AuditClass) &&
+        (event.implementation_scope === null ||
+          IMPLEMENTATION_REVIEW_SCOPES.includes(event.implementation_scope)) &&
+        typeof event.recorded_at === 'string' &&
+        REVIEW_MODES.includes(event.review_mode as ReviewMode) &&
+        typeof event.reviewer === 'string' &&
+        (event.verdict === 'FAIL' || event.verdict === 'PASS'),
+    )
+    .map((event) => ({
+      allowed_by_policy: event.allowed_by_policy,
+      artifact_path: event.artifact_path,
+      audit_class: event.audit_class,
+      event_commit: event.event_commit,
+      implementation_scope: event.implementation_scope,
+      invalidated: event.invalidated,
+      must_fix_count: event.must_fix_count ?? 0,
+      recorded_at: event.recorded_at,
+      review_mode: event.review_mode,
+      reviewer: event.reviewer,
+      reviewer_agent_id: event.reviewer_agent_id,
+      reviewer_skill: event.reviewer_skill,
+      reviewer_thread_id: event.reviewer_thread_id,
+      security_trigger_reason: event.security_trigger_reason,
+      stale: event.stale,
+      verdict: event.verdict,
+    }));
+}
+
 function takeOption(args: string[], name: string): string | null {
   const exact = args.indexOf(name);
   if (exact !== -1) {
@@ -312,6 +544,17 @@ function takeManyOptions(args: string[], name: string): string[] {
   return values;
 }
 
+function ensureEnumValue<T extends readonly string[]>(
+  value: string,
+  allowed: T,
+  optionName: string,
+): T[number] {
+  if (!allowed.includes(value as T[number])) {
+    throw new Error(`${optionName} must be one of: ${allowed.join(', ')}`);
+  }
+  return value as T[number];
+}
+
 function ensureRequired(value: string | null, message: string): string {
   if (!value) {
     throw new Error(message);
@@ -320,8 +563,12 @@ function ensureRequired(value: string | null, message: string): string {
 }
 
 function commandUsage(command: StageControllerCommand): string {
+  const implementationScopeSuffix =
+    command === 'implementation'
+      ? ' [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close'
+      : '';
   return [
-    `${command} --feature-id <id> [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
+    `${command} --feature-id <id> [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}`,
     `${command} --feature-id <id> --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
   ].join('\n');
 }
@@ -506,7 +753,16 @@ export async function appendFeatureIntakeLog(payload: {
     backlog_followup_required: false,
     backlog_followup_kind: null,
     backlog_followup_resolved: true,
-    intake_process_complete_ts: now,
+    required_audit_classes: ['spec-conformance-reviewer'],
+    executed_audit_classes: [],
+    required_external_review_pending: true,
+    review_events: [],
+    reviewer_skills: [],
+    reviewer_agent_ids: [],
+    review_trace_commits: [],
+    degraded_review_present: false,
+    invalidated_review_present: false,
+    stale_review_present: false,
     transition_events: transitionEvents,
     session_id: process.env.CODEX_SESSION_ID ?? null,
     trace_runtime: 'codex',
@@ -524,6 +780,12 @@ export async function appendFeatureIntakeLog(payload: {
       notes: ['Feature cycle opened by feature-intake.'],
     }),
   );
+  await syncStageStateFromMetadata({
+    root: payload.root,
+    featureId: payload.featureId,
+    metadata,
+    logPath: relPath,
+  });
   return {
     cycleId,
     enteredTs: now,
@@ -552,6 +814,7 @@ export async function runStageControllerCommand(
     args.includes('--backlog-followup-required') || backlogFollowupKind !== null;
   const backlogFollowupResolved = args.includes('--backlog-followup-resolved');
   const requestedCycleId = takeOption(args, '--cycle-id');
+  const implementationScopeRaw = takeOption(args, '--implementation-scope');
   const noteValues = takeManyOptions(args, '--note');
   const requestedDossier = takeOption(args, '--dossier');
   const { dossier } = requestedDossier
@@ -578,6 +841,8 @@ export async function runStageControllerCommand(
     command === 'feature-intake'
       ? null
       : await loadLatestStageLog(root, 'implementation', featureId);
+  const currentStageState =
+    command === 'feature-intake' ? null : await readStageState(root, command, featureId);
   const lifecycleAnchor = latestForStage ?? latestFeatureIntake ?? latestImplementation;
   const featureCycleId =
     toNullableString(lifecycleAnchor?.metadata.feature_cycle_id) ??
@@ -591,23 +856,30 @@ export async function runStageControllerCommand(
         ? 'resumed'
         : 'entered';
 
+  if (command !== 'implementation' && implementationScopeRaw) {
+    throw new Error('--implementation-scope is only allowed for implementation.');
+  }
+  if (command === 'implementation' && implementationScopeRaw && action !== 'ready_for_close') {
+    throw new Error(
+      '--implementation-scope is only allowed with implementation --ready-for-close.',
+    );
+  }
+
   if (!latestForStage && action !== 'entered') {
     throw new Error(
       `No existing ${command} stage cycle found for ${featureId}. Start the stage before using ${action}.`,
     );
   }
 
-  const cycleId =
-    toNullableString(latestForStage?.metadata.cycle_id) ??
-    `${command}-${crypto.randomUUID().slice(0, 8)}`;
-  const enteredTs = toNullableString(latestForStage?.metadata.entered_ts) ?? now;
+  const cycleId = currentStageState?.cycle_id ?? `${command}-${crypto.randomUUID().slice(0, 8)}`;
+  const enteredTs = currentStageState?.entered_ts ?? now;
   const readyForCloseTs =
-    action === 'ready_for_close'
-      ? now
-      : toNullableString(latestForStage?.metadata.ready_for_close_ts);
-  const existingEvents = Array.isArray(latestForStage?.metadata.transition_events)
-    ? [...(latestForStage?.metadata.transition_events as Array<Record<string, unknown>>)]
-    : [];
+    action === 'ready_for_close' ? now : currentStageState?.ready_for_close_ts;
+  const existingEvents = currentStageState
+    ? [...currentStageState.transition_events]
+    : Array.isArray(latestForStage?.metadata.transition_events)
+      ? [...(latestForStage?.metadata.transition_events as Array<Record<string, unknown>>)]
+      : [];
   existingEvents.push({
     kind: action,
     at: now,
@@ -618,6 +890,30 @@ export async function runStageControllerCommand(
       : action === 'ready_for_close'
         ? 'ready_for_close'
         : 'in_progress';
+  const resetImplementationEntry =
+    command === 'implementation' &&
+    action !== 'ready_for_close' &&
+    (currentStageState?.step_close_ts !== null || currentStageState?.process_complete_ts !== null);
+  const carryReviewState = action === 'ready_for_close';
+  const implementationReviewScope =
+    command === 'implementation'
+      ? action === 'ready_for_close'
+        ? ensureEnumValue(
+            implementationScopeRaw ??
+              currentStageState?.implementation_review_scope ??
+              'code-bearing',
+            IMPLEMENTATION_REVIEW_SCOPES,
+            '--implementation-scope',
+          )
+        : (currentStageState?.implementation_review_scope ?? null)
+      : null;
+  const stageEntryCommit =
+    command === 'implementation'
+      ? resetImplementationEntry
+        ? getCurrentCommit(root)
+        : (currentStageState?.stage_entry_commit ?? getCurrentCommit(root))
+      : null;
+  const requiredAuditClasses = requiredAuditClassesForStage(command, implementationReviewScope);
   const metadata: Record<string, unknown> = {
     version: 1,
     stage: command,
@@ -628,15 +924,42 @@ export async function runStageControllerCommand(
     stage_state: stageState,
     start_ts: enteredTs,
     entered_ts: enteredTs,
-    ready_for_close_ts: readyForCloseTs,
+    ready_for_close_ts: readyForCloseTs ?? null,
     transition_events: existingEvents,
     backlog_followup_required: backlogFollowupRequired,
     backlog_followup_kind: backlogFollowupKind,
     backlog_followup_resolved: backlogFollowupResolved,
+    required_audit_classes: requiredAuditClasses,
+    executed_audit_classes: carryReviewState
+      ? (currentStageState?.executed_audit_classes ?? [])
+      : [],
+    required_external_review_pending: carryReviewState
+      ? (currentStageState?.required_external_review_pending ?? true)
+      : true,
+    review_events: carryReviewState ? (currentStageState?.review_events ?? []) : [],
+    reviewer_skills: carryReviewState ? (currentStageState?.reviewer_skills ?? []) : [],
+    reviewer_agent_ids: carryReviewState ? (currentStageState?.reviewer_agent_ids ?? []) : [],
+    review_trace_commits: carryReviewState ? (currentStageState?.review_trace_commits ?? []) : [],
+    degraded_review_present: carryReviewState
+      ? (currentStageState?.degraded_review_present ?? false)
+      : false,
+    invalidated_review_present: carryReviewState
+      ? (currentStageState?.invalidated_review_present ?? false)
+      : false,
+    stale_review_present: carryReviewState
+      ? (currentStageState?.stale_review_present ?? false)
+      : false,
     session_id: process.env.CODEX_SESSION_ID ?? null,
     trace_runtime: 'codex',
     trace_locator_kind: 'session_id',
   };
+  if (command === 'implementation') {
+    metadata.implementation_review_scope = implementationReviewScope;
+    metadata.stage_entry_commit = stageEntryCommit;
+    metadata.required_security_review = implementationReviewScope === 'code-bearing';
+    metadata.security_trigger_reasons =
+      stageState === 'ready_for_close' ? (currentStageState?.security_trigger_reasons ?? []) : [];
+  }
   if (command === 'implementation' && stageState === 'ready_for_close') {
     metadata.local_gates_green_ts = now;
   }
@@ -668,6 +991,12 @@ export async function runStageControllerCommand(
         notes: noteValues,
       }),
     );
+    await syncStageStateFromMetadata({
+      root,
+      featureId,
+      metadata,
+      logPath: relPath,
+    });
   } finally {
     await releaseLock();
   }
@@ -679,7 +1008,7 @@ export async function runStageControllerCommand(
     cycle_id: cycleId,
     stage_state: stageState,
     entered_ts: enteredTs,
-    ready_for_close_ts: readyForCloseTs,
+    ready_for_close_ts: readyForCloseTs ?? null,
     transition_events: existingEvents,
     backlog_followup_required: backlogFollowupRequired,
     backlog_followup_kind: backlogFollowupKind,
@@ -690,14 +1019,15 @@ export async function runStageControllerCommand(
 }
 
 export async function recordStepCloseOnStageLog(payload: {
+  auditSummary?: AuditSummaryPayload;
   featureId: string;
   processComplete: boolean;
   root: string;
   step: string;
   stepArtifactPath: string;
 }): Promise<void> {
-  const stageName = payload.step as StageControllerCommand;
-  if (!STAGE_CONTROLLER_COMMANDS.includes(stageName)) {
+  const stageName = payload.step as LoggedStage;
+  if (stageName !== 'feature-intake' && !STAGE_CONTROLLER_COMMANDS.includes(stageName)) {
     return;
   }
   const latest = await loadLatestStageLog(
@@ -705,6 +1035,7 @@ export async function recordStepCloseOnStageLog(payload: {
     stageName,
     sanitizeFeatureId(payload.featureId, 'feature id'),
   );
+  const currentStageState = await readStageState(payload.root, stageName, payload.featureId);
   if (!latest) {
     return;
   }
@@ -712,9 +1043,29 @@ export async function recordStepCloseOnStageLog(payload: {
   const now = new Date().toISOString();
   const metadata = {
     ...latest.metadata,
+    ...(currentStageState ? machineMetadataFromStageState(currentStageState) : {}),
     step_close_ts: now,
     step_artifact: payload.stepArtifactPath,
+    ...(payload.auditSummary
+      ? {
+          required_audit_classes: payload.auditSummary.requiredAuditClasses,
+          executed_audit_classes: payload.auditSummary.executedAuditClasses,
+          required_external_review_pending: payload.auditSummary.requiredExternalReviewPending,
+          reviewer_skills: payload.auditSummary.reviewerSkills,
+          reviewer_agent_ids: payload.auditSummary.reviewerAgentIds,
+          review_trace_commits: payload.auditSummary.reviewTraceCommits,
+          degraded_review_present: payload.auditSummary.degradedReviewPresent,
+          invalidated_review_present: payload.auditSummary.invalidatedReviewPresent,
+          stale_review_present: payload.auditSummary.staleReviewPresent,
+          required_security_review: payload.auditSummary.requiredSecurityReview,
+          implementation_review_scope: payload.auditSummary.implementationReviewScope,
+          security_trigger_reasons: payload.auditSummary.securityTriggerReasons,
+        }
+      : {}),
     ...(payload.processComplete ? { process_complete_ts: now } : {}),
+    ...(payload.processComplete && stageName === 'feature-intake'
+      ? { intake_process_complete_ts: now }
+      : {}),
   };
   await assertManagedWritePath(
     payload.root,
@@ -728,4 +1079,120 @@ export async function recordStepCloseOnStageLog(payload: {
       existingContent: latest.content,
     }),
   );
+  await syncStageStateFromMetadata({
+    root: payload.root,
+    featureId: payload.featureId,
+    metadata,
+    logPath: path.relative(payload.root, latest.absPath),
+  });
+}
+
+export async function recordReviewArtifactOnStageLog(payload: {
+  allowedByPolicy: boolean;
+  artifactPath: string;
+  eventCommit: string | null;
+  featureId: string;
+  implementationScope: ImplementationReviewScope | null;
+  invalidated: boolean;
+  mustFixCount: number;
+  reviewMode: ReviewMode;
+  reviewer: string;
+  reviewerAgentId: string | null;
+  reviewerSkill: string | null;
+  reviewerThreadId: string | null;
+  root: string;
+  securityTriggerReason: string | null;
+  stage: LoggedStage;
+  stale: boolean;
+  verdict: 'FAIL' | 'PASS';
+  auditClass: AuditClass;
+}): Promise<void> {
+  const latest = await loadLatestStageLog(
+    payload.root,
+    payload.stage,
+    sanitizeFeatureId(payload.featureId, 'feature id'),
+  );
+  const currentStageState = await readStageState(payload.root, payload.stage, payload.featureId);
+  if (!latest) {
+    return;
+  }
+
+  const recordedAt = new Date().toISOString();
+  const reviewEvents = currentStageState
+    ? reviewEventsFromStageState(currentStageState)
+    : extractReviewEvents(latest.metadata);
+  reviewEvents.push({
+    artifact_path: payload.artifactPath,
+    at: recordedAt,
+    audit_class: payload.auditClass,
+    allowed_by_policy: payload.allowedByPolicy,
+    event_commit: payload.eventCommit,
+    implementation_scope: payload.implementationScope,
+    invalidated: payload.invalidated,
+    must_fix_count: payload.mustFixCount,
+    recorded_at: recordedAt,
+    review_mode: payload.reviewMode,
+    reviewer: payload.reviewer,
+    reviewer_agent_id: payload.reviewerAgentId,
+    reviewer_skill: payload.reviewerSkill,
+    reviewer_thread_id: payload.reviewerThreadId,
+    security_trigger_reason: payload.securityTriggerReason,
+    stale: payload.stale,
+    verdict: payload.verdict,
+  } as ReviewEventPayload & { at: string });
+
+  const implementationScope =
+    payload.stage === 'implementation'
+      ? (payload.implementationScope ??
+        currentStageState?.implementation_review_scope ??
+        normalizeImplementationReviewScope(latest.metadata.implementation_review_scope))
+      : null;
+  const staleReviewPresent =
+    currentStageState?.stale_review_present ??
+    toBoolean(latest.metadata.stale_review_present) ??
+    false;
+  const summary = summarizeReviewPolicy(
+    payload.stage,
+    reviewEvents,
+    implementationScope,
+    staleReviewPresent,
+  );
+  const metadata = {
+    ...latest.metadata,
+    ...(currentStageState ? machineMetadataFromStageState(currentStageState) : {}),
+    review_events: reviewEvents,
+    required_audit_classes: summary.requiredAuditClasses,
+    executed_audit_classes: summary.executedAuditClasses,
+    required_external_review_pending: summary.requiredExternalReviewPending,
+    reviewer_skills: summary.reviewerSkills,
+    reviewer_agent_ids: summary.reviewerAgentIds,
+    review_trace_commits: summary.reviewTraceCommits,
+    degraded_review_present: summary.degradedReviewPresent,
+    invalidated_review_present: summary.invalidatedReviewPresent,
+    stale_review_present: summary.staleReviewPresent,
+    required_security_review: summary.requiredSecurityReview,
+    implementation_review_scope: summary.implementationReviewScope,
+    security_trigger_reasons: summary.securityTriggerReasons,
+    first_review_agent_started_ts:
+      toNullableString(latest.metadata.first_review_agent_started_ts) ?? recordedAt,
+    final_pass_ts: summary.requiredExternalReviewPending ? null : recordedAt,
+  };
+  await assertManagedWritePath(
+    payload.root,
+    path.join(payload.root, '.dossier', 'logs', payload.stage),
+    latest.absPath,
+    `${payload.stage} stage log`,
+  );
+  await writeTextAtomic(
+    latest.absPath,
+    renderStageLog(metadata, {
+      existingContent: latest.content,
+    }),
+  );
+  await syncStageStateFromMetadata({
+    root: payload.root,
+    featureId: payload.featureId,
+    metadata,
+    logPath: path.relative(payload.root, latest.absPath),
+  });
 }

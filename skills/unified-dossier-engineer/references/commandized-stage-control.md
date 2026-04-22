@@ -58,6 +58,7 @@ They may:
 - mark a stage blocked;
 - mark a stage ready for close;
 - bootstrap or update the stage log;
+- bootstrap or update the helper-managed stage state for the same stage cycle;
 - validate structured prerequisites and state invariants;
 - expose machine-readable follow-up signals.
 
@@ -89,6 +90,7 @@ Minimum mechanical transition surface:
 Rules:
 
 - stage logs remain Markdown artifacts with YAML frontmatter and narrative sections;
+- helper-managed stage state under `.dossier/stages/*` carries the structured current-cycle stage data for scope, review-bundle membership, and close-out validation;
 - required section scaffold must stay present for both `feature-intake` and primary stage logs rather than collapsing into an almost-frontmatter-only body;
 - event history for repeated block/resume cycles lives authoritatively in `transition_events[]`;
 - do not introduce ambiguous singleton timestamps such as `blocked_ts` or `resumed_ts` without explicit derived semantics like `first_*` or `last_*`;
@@ -134,6 +136,8 @@ Required alignment:
 - stage-controller commands must not duplicate helper-owned closure truth;
 - commandized transitions should improve telemetry determinism, not create a second closure authority surface.
 - helper-owned closure writes must not erase authored narrative sections from the stage log.
+- `ready_for_close` means the stage is ready to enter audit-policy-governed verification, external review, and helper-owned closure; it never means truthfully closed.
+- for every mutating stage, helper-owned close-out must enforce the required external audit bundle defined in [Audit policy](audit-policy.md).
 
 ## Utility-spec handoff
 

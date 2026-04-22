@@ -50,11 +50,17 @@ function runCli(
   options: {
     allowFailure?: boolean;
     cwd?: string;
+    env?: NodeJS.ProcessEnv;
   } = {},
 ): CliResult {
   const result = spawnSync(process.execPath, [scriptPath(), ...args], {
     cwd: options.cwd ?? SKILL_DIR,
     encoding: 'utf8',
+    env: {
+      ...process.env,
+      CODEX_THREAD_ID: 'author-thread-default',
+      ...options.env,
+    },
   });
 
   const code = result.status ?? 1;
@@ -75,6 +81,35 @@ function runCli(
     stdout: result.stdout ?? '',
     stderr: result.stderr ?? '',
   };
+}
+
+function runGit(repo: string, args: string[]): string {
+  const result = spawnSync('git', args, {
+    cwd: repo,
+    encoding: 'utf8',
+  });
+  assert.equal(
+    result.status ?? 1,
+    0,
+    [
+      `git ${args.join(' ')} failed`,
+      `stdout:\n${result.stdout ?? ''}`,
+      `stderr:\n${result.stderr ?? ''}`,
+    ].join('\n\n'),
+  );
+  return result.stdout ?? '';
+}
+
+function initializeGitRepo(repo: string): void {
+  runGit(repo, ['init']);
+  runGit(repo, ['config', 'user.name', 'Unified Dossier Tests']);
+  runGit(repo, ['config', 'user.email', 'unified-dossier-tests@example.test']);
+}
+
+function commitRepoState(repo: string, message: string): string {
+  runGit(repo, ['add', '.']);
+  runGit(repo, ['commit', '-m', message]);
+  return runGit(repo, ['rev-parse', 'HEAD']).trim();
 }
 
 function parseEnvelope<T>(stdout: string): CliEnvelope<T> {
@@ -123,6 +158,76 @@ async function seedRefreshableBacklog(repo: string): Promise<void> {
     canonical_path: `.dossier/backlog/${entry.canonical_path}`,
   }));
   await writeFile(appliedPath, `${JSON.stringify(applied, null, 2)}\n`);
+}
+
+async function writeVerifyArtifactFile(payload: {
+  eventCommit?: string | null;
+  featureId: string;
+  path: string;
+  status?: 'fail' | 'pass';
+  step: string;
+}): Promise<void> {
+  await mkdir(path.dirname(payload.path), { recursive: true });
+  await writeFile(
+    payload.path,
+    `${JSON.stringify(
+      {
+        feature_id: payload.featureId,
+        step: payload.step,
+        status: payload.status ?? 'pass',
+        event_commit: payload.eventCommit ?? null,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+}
+
+async function writeReviewArtifactFile(payload: {
+  allowedByPolicy?: boolean;
+  auditClass?: 'code-reviewer' | 'security-reviewer' | 'spec-conformance-reviewer';
+  eventCommit?: string | null;
+  featureId: string;
+  implementationScope?: 'code-bearing' | 'non-code' | null;
+  invalidated?: boolean;
+  mustFix?: string[];
+  path: string;
+  reviewMode?: 'degraded' | 'external' | 'self-review';
+  reviewer?: string;
+  reviewerAgentId?: string | null;
+  reviewerSkill?: string | null;
+  reviewerThreadId?: string | null;
+  securityTriggerReason?: string | null;
+  step: string;
+  verdict?: 'FAIL' | 'PASS';
+}): Promise<void> {
+  await mkdir(path.dirname(payload.path), { recursive: true });
+  await writeFile(
+    payload.path,
+    `${JSON.stringify(
+      {
+        feature_id: payload.featureId,
+        step: payload.step,
+        audit_class: payload.auditClass ?? 'spec-conformance-reviewer',
+        verdict: payload.verdict ?? 'PASS',
+        reviewer: payload.reviewer ?? 'test-reviewer',
+        reviewer_skill: payload.reviewerSkill ?? 'spec-conformance-reviewer',
+        reviewer_agent_id: payload.reviewerAgentId ?? 'agent-reviewer-1',
+        reviewer_thread_id: payload.reviewerThreadId ?? 'external-review-thread',
+        review_mode: payload.reviewMode ?? 'external',
+        implementation_scope: payload.implementationScope ?? null,
+        security_trigger_reason: payload.securityTriggerReason ?? null,
+        invalidated: payload.invalidated === true,
+        allowed_by_policy:
+          payload.allowedByPolicy ??
+          ((payload.reviewMode ?? 'external') === 'external' && payload.invalidated !== true),
+        findings: { must_fix: payload.mustFix ?? [] },
+        event_commit: payload.eventCommit ?? null,
+      },
+      null,
+      2,
+    )}\n`,
+  );
 }
 
 test('init creates the unified process root and SSOT skeleton', async () => {
@@ -177,6 +282,7 @@ test('command help smoke covers the shipped public surface', () => {
     'index-refresh',
     'lint-dossiers',
     'dossier-verify',
+    'review-artifact',
     'dossier-step-close',
     'next-step',
     'lifecycle-refresh',
@@ -189,6 +295,21 @@ test('command help smoke covers the shipped public surface', () => {
     if (command === 'feature-intake') {
       assert.match(result.stdout, /canonical stage-controller commands/);
       assert.doesNotMatch(result.stdout, /not shipped CLI subcommands/);
+    }
+    if (command === 'review-artifact') {
+      assert.match(result.stdout, /Persist one already obtained audit result for one audit class/u);
+      assert.match(result.stdout, /does not perform the review itself/u);
+      assert.match(
+        result.stdout,
+        /never replaces the required audit bundle enforced by dossier-step-close/u,
+      );
+    }
+    if (command === 'dossier-step-close') {
+      assert.match(result.stdout, /Repeat for multi-audit bundles/u);
+      assert.match(
+        result.stdout,
+        /Skip the clean-worktree blocker only; review freshness invalidation still applies/u,
+      );
     }
   }
 
@@ -324,6 +445,7 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
   assert.match(intakeLog, /## Backlog handoff decisions\n\nnone/u);
   assert.match(intakeLog, /## Close-out\n\nnone/u);
   assert.match(intakeLog, /## Transition events\n\n- .*: entered/u);
+  assert.doesNotMatch(intakeLog, /intake_process_complete_ts:/u);
 
   const stageStartEnvelope = parseEnvelope<{
     cycle_id: string;
@@ -1190,7 +1312,7 @@ test('lifecycle-refresh rejects poisoned implementation step artifacts outside m
     }).stdout,
   );
 
-  const implementationEnvelope = parseEnvelope<{ log_path: string }>(
+  parseEnvelope<{ log_path: string }>(
     runCli(
       [
         'implementation',
@@ -1203,13 +1325,20 @@ test('lifecycle-refresh rejects poisoned implementation step artifacts outside m
     ).stdout,
   );
 
-  const implementationLogPath = path.join(repo, implementationEnvelope.data.log_path);
-  const original = await readFile(implementationLogPath, 'utf8');
-  const poisoned = original.replace(
-    '\n---\n\n## Scope\n',
-    '\nprocess_complete_ts: 2026-04-21T10:00:00.000Z\nstep_artifact: ../outside/implementation.json\n---\n\n## Scope\n',
+  const implementationStatePath = path.join(
+    repo,
+    '.dossier',
+    'stages',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
   );
-  await writeFile(implementationLogPath, poisoned);
+  const implementationState = JSON.parse(await readFile(implementationStatePath, 'utf8')) as {
+    process_complete_ts: string | null;
+    step_artifact: string | null;
+  };
+  implementationState.process_complete_ts = '2026-04-21T10:00:00.000Z';
+  implementationState.step_artifact = '../outside/implementation.json';
+  await writeFile(implementationStatePath, `${JSON.stringify(implementationState, null, 2)}\n`);
 
   const result = runCli(
     [
@@ -1405,20 +1534,11 @@ test('dossier-step-close rejects symlinked verification artifacts before vendore
     )}\n`,
   );
   await symlink(path.join(outside, 'verify.json'), verifyArtifact);
-  await writeFile(
-    reviewArtifact,
-    `${JSON.stringify(
-      {
-        feature_id: intakeEnvelope.data.feature_id,
-        step: 'feature-intake',
-        verdict: 'PASS',
-        reviewer: 'test-reviewer',
-        findings: { must_fix: [] },
-      },
-      null,
-      2,
-    )}\n`,
-  );
+  await writeReviewArtifactFile({
+    path: reviewArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
 
   const result = runCli(
     [
@@ -1528,34 +1648,18 @@ test('dossier-step-close maps truthful blocked outcomes to exit code 3 with symb
   );
   await mkdir(path.dirname(verifyArtifact), { recursive: true });
   await mkdir(path.dirname(reviewArtifact), { recursive: true });
-  await writeFile(
-    verifyArtifact,
-    `${JSON.stringify(
-      {
-        feature_id: intakeEnvelope.data.feature_id,
-        step: 'feature-intake',
-        status: 'pass',
-        event_commit: null,
-      },
-      null,
-      2,
-    )}\n`,
-  );
-  await writeFile(
-    reviewArtifact,
-    `${JSON.stringify(
-      {
-        feature_id: intakeEnvelope.data.feature_id,
-        step: 'feature-intake',
-        verdict: 'FAIL',
-        reviewer: 'test-reviewer',
-        findings: { must_fix: ['Closeout remains blocked.'] },
-        event_commit: null,
-      },
-      null,
-      2,
-    )}\n`,
-  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
+  await writeReviewArtifactFile({
+    path: reviewArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+    verdict: 'FAIL',
+    mustFix: ['Closeout remains blocked.'],
+  });
 
   const result = runCli(
     [
@@ -1691,43 +1795,33 @@ test('dossier-step-close preserves authored intake narrative sections', async ()
     intakeEnvelope.data.feature_id,
     'feature-intake.json',
   );
-  const reviewArtifact = path.join(
-    repo,
-    '.dossier',
-    'reviews',
-    intakeEnvelope.data.feature_id,
-    'feature-intake.json',
-  );
   await mkdir(path.dirname(verifyArtifact), { recursive: true });
-  await mkdir(path.dirname(reviewArtifact), { recursive: true });
-  await writeFile(
-    verifyArtifact,
-    `${JSON.stringify(
-      {
-        feature_id: intakeEnvelope.data.feature_id,
-        step: 'feature-intake',
-        status: 'pass',
-        event_commit: null,
-      },
-      null,
-      2,
-    )}\n`,
-  );
-  await writeFile(
-    reviewArtifact,
-    `${JSON.stringify(
-      {
-        feature_id: intakeEnvelope.data.feature_id,
-        step: 'feature-intake',
-        verdict: 'PASS',
-        reviewer: 'test-reviewer',
-        findings: { must_fix: [] },
-        event_commit: null,
-      },
-      null,
-      2,
-    )}\n`,
-  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
+  const reviewArtifact = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'intake-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-intake',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-intake-preserve' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(reviewArtifact);
 
   runCli(
     [
@@ -1741,7 +1835,7 @@ test('dossier-step-close preserves authored intake narrative sections', async ()
       '--review-artifact',
       reviewArtifact,
     ],
-    { cwd: repo },
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
   );
 
   const closedLog = await readFile(intakeLogPath, 'utf8');
@@ -1751,6 +1845,2387 @@ test('dossier-step-close preserves authored intake narrative sections', async ()
     /## Backlog handoff decisions\n\nConfirmed backlog item remains the single feature source\./u,
   );
   assert.match(closedLog, /## Close-out\n\nReady for truthful closeout\./u);
+  assert.match(closedLog, /intake_process_complete_ts:/u);
   assert.match(closedLog, /step_close_ts:/u);
   assert.match(closedLog, /step_artifact:/u);
+});
+
+test('review-artifact persists audit-class metadata and updates stage-log review summary', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Review Artifact Summary',
+        '--backlog-item-key',
+        'review-artifact-summary',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'review-artifact-summary.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const stageEnvelope = parseEnvelope<{ log_path: string }>(
+    runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+
+  const reviewResult = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-7',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-spec-1' } },
+  );
+
+  assert.match(reviewResult.stdout, /\[review-artifact\] audit_class=spec-conformance-reviewer/u);
+  const stageLog = await readFile(path.join(repo, stageEnvelope.data.log_path), 'utf8');
+  assert.match(stageLog, /required_audit_classes:\n {2}- spec-conformance-reviewer/u);
+  assert.match(stageLog, /executed_audit_classes:\n {2}- spec-conformance-reviewer/u);
+  assert.match(stageLog, /required_external_review_pending: false/u);
+  assert.match(stageLog, /reviewer_skills:\n {2}- spec-conformance-reviewer/u);
+  assert.match(stageLog, /reviewer_agent_ids:\n {2}- audit-agent-7/u);
+  assert.match(stageLog, /first_review_agent_started_ts:/u);
+});
+
+test('review-artifact marks stale git-backed reviews as pending in stage telemetry', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_cycle_id: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Stale Review Telemetry',
+        '--backlog-item-key',
+        'stale-review-telemetry',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'stale-review.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const stageEnvelope = parseEnvelope<{ log_path: string }>(
+    runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+  commitRepoState(repo, 'stage setup');
+
+  const reviewResult = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-7',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-spec-2' } },
+  );
+  const reviewArtifactMatch = reviewResult.stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u);
+  assert.ok(reviewArtifactMatch?.[1]);
+
+  await writeFile(path.join(repo, 'post-review-change.txt'), 'material change\n');
+  commitRepoState(repo, 'post review mutation');
+
+  const stageLogBeforeClose = await readFile(path.join(repo, stageEnvelope.data.log_path), 'utf8');
+  assert.match(stageLogBeforeClose, /required_external_review_pending: false/u);
+  assert.match(stageLogBeforeClose, /stale_review_present: false/u);
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'spec-compact.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'spec-compact',
+  });
+
+  const closeResult = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      reviewArtifactMatch[1].trim(),
+    ],
+    { cwd: repo, allowFailure: true, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  assert.equal(closeResult.code, 3);
+  const blockedPayload = JSON.parse(closeResult.stderr) as {
+    error: { blockers: string[]; code: string };
+  };
+  assert.equal(blockedPayload.error.code, 'UDE_CLOSURE_BLOCKED');
+  assert.ok(
+    blockedPayload.error.blockers.some((blocker) => blocker.includes('is stale: event commit')),
+  );
+
+  const stageLogAfterClose = await readFile(path.join(repo, stageEnvelope.data.log_path), 'utf8');
+  assert.match(stageLogAfterClose, /required_external_review_pending: true/u);
+  assert.match(stageLogAfterClose, /stale_review_present: true/u);
+
+  const refreshEnvelope = parseEnvelope<{
+    snapshot: {
+      lifecycle: {
+        stages: Record<
+          string,
+          {
+            review_policy: {
+              required_external_review_pending: boolean | null;
+              stale_review_present: boolean | null;
+            };
+          }
+        >;
+      };
+    };
+  }>(
+    runCli(
+      [
+        'lifecycle-refresh',
+        '--feature-id',
+        intakeEnvelope.data.feature_id,
+        '--feature-cycle-id',
+        intakeEnvelope.data.feature_cycle_id,
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  const specCompactStage = refreshEnvelope.data.snapshot.lifecycle.stages['spec-compact'];
+  assert.ok(specCompactStage);
+  assert.equal(specCompactStage.review_policy.required_external_review_pending, true);
+  assert.equal(specCompactStage.review_policy.stale_review_present, true);
+});
+
+test('latest invalidated audit event reopens the required review pending signal', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string; log_path: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Invalidated Review Pending',
+        '--backlog-item-key',
+        'invalidated-review-pending',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'invalidated-review-pending.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-pass',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-pass' } },
+  );
+  runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'FAIL',
+      '--invalidated',
+      '--reviewer',
+      'external-spec-review-rerun',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-invalidated',
+      '--must-fix',
+      'rerun required after material change',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-invalidated' } },
+  );
+
+  const stageLog = await readFile(path.join(repo, intakeEnvelope.data.log_path), 'utf8');
+  assert.match(stageLog, /required_external_review_pending: true/u);
+  assert.match(stageLog, /invalidated_review_present: true/u);
+  assert.match(stageLog, /final_pass_ts: null/u);
+});
+
+test('dossier-step-close rejects self-review as a substitute for the required external baseline audit', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Self Review Block',
+        '--backlog-item-key',
+        'self-review-block',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'self-review.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  const reviewArtifact = path.join(
+    repo,
+    '.dossier',
+    'reviews',
+    intakeEnvelope.data.feature_id,
+    'feature-intake--spec.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
+  await writeReviewArtifactFile({
+    path: reviewArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+    reviewMode: 'self-review',
+    allowedByPolicy: false,
+  });
+
+  const result = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      reviewArtifact,
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+
+  assert.equal(result.code, 3);
+  const payload = JSON.parse(result.stderr) as {
+    error: { blockers: string[]; code: string };
+  };
+  assert.equal(payload.error.code, 'UDE_CLOSURE_BLOCKED');
+  assert.ok(payload.error.blockers.some((blocker) => blocker.includes('not an external audit')));
+});
+
+test('dossier-step-close rejects same-thread review artifacts as non-independent external audits', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Same Thread Review Block',
+        '--backlog-item-key',
+        'same-thread-review-block',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'same-thread-review.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
+
+  const reviewerEnv = { CODEX_THREAD_ID: 'author-thread-1' };
+  const reviewResult = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'independent-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-1',
+    ],
+    { cwd: repo, env: reviewerEnv },
+  );
+  const reviewArtifactMatch = reviewResult.stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u);
+  assert.ok(reviewArtifactMatch?.[1]);
+
+  const result = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--allow-dirty',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      reviewArtifactMatch[1].trim(),
+    ],
+    { cwd: repo, allowFailure: true, env: reviewerEnv },
+  );
+
+  assert.equal(result.code, 3);
+  const payload = JSON.parse(result.stderr) as {
+    error: { blockers: string[]; code: string };
+  };
+  assert.equal(payload.error.code, 'UDE_CLOSURE_BLOCKED');
+  assert.ok(
+    payload.error.blockers.some((blocker) =>
+      blocker.includes('was produced by the current thread'),
+    ),
+  );
+});
+
+test('stage re-entry clears carried review summary and reopens the external-review requirement', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Stage Reentry Clears Review',
+        '--backlog-item-key',
+        'stage-reentry-clears-review',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'stage-reentry-clears-review.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const stageStart = parseEnvelope<{ log_path: string }>(
+    runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'], {
+    cwd: repo,
+  });
+  runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-pass',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-stage-pass' } },
+  );
+
+  const readyLog = await readFile(path.join(repo, stageStart.data.log_path), 'utf8');
+  assert.match(readyLog, /required_external_review_pending: false/u);
+  assert.match(readyLog, /executed_audit_classes:\n {2}- spec-conformance-reviewer/u);
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+    cwd: repo,
+  });
+
+  const resumedLog = await readFile(path.join(repo, stageStart.data.log_path), 'utf8');
+  assert.match(resumedLog, /required_external_review_pending: true/u);
+  assert.match(resumedLog, /executed_audit_classes: \[\]/u);
+  assert.match(resumedLog, /review_events: \[\]/u);
+  assert.match(resumedLog, /stage_state: in_progress/u);
+});
+
+test('implementation reopen resets the stage-entry anchor for later non-code classification', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Implementation Reopen Entry Reset',
+        '--backlog-item-key',
+        'implementation-reopen-entry-reset',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'implementation-reopen-entry-reset.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  await mkdir(path.join(repo, 'src'), { recursive: true });
+  await writeFile(path.join(repo, 'src', 'feature.ts'), 'export const feature = true;\n');
+  commitRepoState(repo, 'add code-bearing implementation');
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    { cwd: repo },
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+    eventCommit: runGit(repo, ['rev-parse', 'HEAD']).trim(),
+  });
+
+  const firstPassArtifacts = (
+    [
+      ['spec-conformance-reviewer', 'spec-reviewer'],
+      ['code-reviewer', 'code-reviewer'],
+      ['security-reviewer', 'security-reviewer'],
+    ] as const
+  ).map(([auditClass, reviewer], index) => {
+    const match = runCli(
+      [
+        'review-artifact',
+        '--dossier',
+        intakeEnvelope.data.dossier,
+        '--step',
+        'implementation',
+        '--audit-class',
+        auditClass,
+        '--verdict',
+        'PASS',
+        '--reviewer',
+        reviewer,
+        '--reviewer-skill',
+        auditClass,
+        '--reviewer-agent-id',
+        `audit-agent-reopen-${index + 1}`,
+        ...(auditClass === 'security-reviewer'
+          ? ['--security-trigger-reason', 'initial code-bearing seam']
+          : []),
+      ],
+      { cwd: repo, env: { CODEX_THREAD_ID: `review-thread-reopen-${index + 1}` } },
+    ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u);
+    assert.ok(match?.[1]);
+    return match[1].trim();
+  });
+  const [specArtifact, codeArtifact, securityArtifact] = firstPassArtifacts;
+  assert.ok(specArtifact);
+  assert.ok(codeArtifact);
+  assert.ok(securityArtifact);
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specArtifact,
+      '--review-artifact',
+      codeArtifact,
+      '--review-artifact',
+      securityArtifact,
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  await writeFile(path.join(repo, 'docs-only.md'), '# docs only change\n');
+  commitRepoState(repo, 'docs-only reopen change');
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'non-code',
+    ],
+    { cwd: repo },
+  );
+
+  const reopenSpecReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'reopen-spec-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-reopen-spec-only',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-reopen-spec' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(reopenSpecReview);
+
+  const reopenReviewArtifact = JSON.parse(
+    await readFile(path.join(repo, reopenSpecReview), 'utf8'),
+  ) as { implementation_scope: string | null };
+  assert.equal(reopenReviewArtifact.implementation_scope, 'non-code');
+});
+
+test('non-implementation mutating stages keep the required external baseline at close-out', async () => {
+  const cases = [
+    { stage: 'spec-compact', title: 'Spec Compact Baseline' },
+    { stage: 'plan-slice', title: 'Plan Slice Baseline' },
+    { stage: 'change-proposal', title: 'Change Proposal Baseline' },
+  ] as const;
+
+  for (const { stage, title } of cases) {
+    const repo = await makeTempRepoPath();
+    await initializeRepo(repo);
+
+    const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+      runCli(
+        [
+          'feature-intake',
+          '--title',
+          title,
+          '--backlog-item-key',
+          `${stage}-baseline`,
+          '--backlog-delivery-state',
+          'defined',
+          '--backlog-source',
+          `${stage}.md`,
+          '--area',
+          'docs',
+          '--owner',
+          'platform',
+          '--impact',
+          'docs',
+          '--json',
+        ],
+        { cwd: repo },
+      ).stdout,
+    );
+
+    runCli([stage, '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+    runCli([stage, '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'], {
+      cwd: repo,
+    });
+
+    const verifyArtifact = path.join(
+      repo,
+      '.dossier',
+      'verification',
+      intakeEnvelope.data.feature_id,
+      `${stage}.json`,
+    );
+    const reviewArtifact = path.join(
+      repo,
+      '.dossier',
+      'reviews',
+      intakeEnvelope.data.feature_id,
+      `${stage}--spec.json`,
+    );
+    await writeVerifyArtifactFile({
+      path: verifyArtifact,
+      featureId: intakeEnvelope.data.feature_id,
+      step: stage,
+    });
+    await writeReviewArtifactFile({
+      path: reviewArtifact,
+      featureId: intakeEnvelope.data.feature_id,
+      step: stage,
+      reviewMode: 'self-review',
+      allowedByPolicy: false,
+    });
+
+    const result = runCli(
+      [
+        'dossier-step-close',
+        '--dossier',
+        intakeEnvelope.data.dossier,
+        '--step',
+        stage,
+        '--verify-artifact',
+        verifyArtifact,
+        '--review-artifact',
+        reviewArtifact,
+      ],
+      { cwd: repo, allowFailure: true },
+    );
+
+    assert.equal(result.code, 3, `${stage} must block without an external baseline review`);
+    const payload = JSON.parse(result.stderr) as {
+      error: { blockers: string[]; code: string };
+    };
+    assert.equal(payload.error.code, 'UDE_CLOSURE_BLOCKED');
+    assert.ok(
+      payload.error.blockers.some((blocker) => blocker.includes('not an external audit')),
+      `${stage} must report the missing external baseline`,
+    );
+  }
+});
+
+test('implementation close-out blocks code-bearing scope when the security audit is missing', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Missing Security Audit',
+        '--backlog-item-key',
+        'missing-security-audit',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'missing-security.md',
+        '--area',
+        'backend',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    {
+      cwd: repo,
+    },
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+  });
+  const specReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'spec-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-spec',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-spec-missing-security' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  const codeReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'code-reviewer',
+      '--reviewer-skill',
+      'code-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-code',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-code-missing-security' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(specReview);
+  assert.ok(codeReview);
+
+  const result = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+    ],
+    { cwd: repo, allowFailure: true, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  assert.equal(result.code, 3);
+  const payload = JSON.parse(result.stderr) as {
+    error: { blockers: string[]; code: string; step_artifact: string };
+  };
+  assert.equal(payload.error.code, 'UDE_CLOSURE_BLOCKED');
+  assert.ok(
+    payload.error.blockers.some((blocker) =>
+      blocker.includes('Missing required review artifact for audit class security-reviewer'),
+    ),
+  );
+  const stepArtifact = JSON.parse(
+    await readFile(path.join(repo, payload.error.step_artifact), 'utf8'),
+  ) as {
+    required_audit_classes: string[];
+    required_external_review_pending: boolean;
+  };
+  assert.deepEqual(stepArtifact.required_audit_classes, [
+    'spec-conformance-reviewer',
+    'code-reviewer',
+    'security-reviewer',
+  ]);
+  assert.equal(stepArtifact.required_external_review_pending, true);
+});
+
+test('implementation close-out accepts the full code-bearing audit bundle and records audit observability', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Full Code Bearing Bundle',
+        '--backlog-item-key',
+        'full-code-bearing-bundle',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'full-code-bearing.md',
+        '--area',
+        'backend',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const implementationStart = parseEnvelope<{ log_path: string }>(
+    runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    {
+      cwd: repo,
+    },
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+  });
+  const specReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'spec-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-spec',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-spec-success' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  const codeReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'code-reviewer',
+      '--reviewer-skill',
+      'code-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-code',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-code-success' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  const securityReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'security-reviewer',
+      '--security-trigger-reason',
+      'runtime-wiring-changed',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'security-reviewer',
+      '--reviewer-skill',
+      'security-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-security',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-security-success' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(specReview);
+  assert.ok(codeReview);
+  assert.ok(securityReview);
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  const stepArtifact = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    executed_audit_classes: string[];
+    process_complete: boolean;
+    required_audit_classes: string[];
+    required_external_review_pending: boolean;
+    required_security_review: boolean;
+    reviewer_agent_ids: string[];
+    reviewer_skills: string[];
+    security_trigger_reasons: string[];
+  };
+  assert.equal(stepArtifact.process_complete, true);
+  assert.deepEqual(stepArtifact.required_audit_classes, [
+    'spec-conformance-reviewer',
+    'code-reviewer',
+    'security-reviewer',
+  ]);
+  assert.deepEqual(stepArtifact.executed_audit_classes, [
+    'spec-conformance-reviewer',
+    'code-reviewer',
+    'security-reviewer',
+  ]);
+  assert.equal(stepArtifact.required_external_review_pending, false);
+  assert.equal(stepArtifact.required_security_review, true);
+  assert.deepEqual(stepArtifact.reviewer_agent_ids, [
+    'audit-agent-spec',
+    'audit-agent-code',
+    'audit-agent-security',
+  ]);
+  assert.deepEqual(stepArtifact.reviewer_skills, [
+    'spec-conformance-reviewer',
+    'code-reviewer',
+    'security-reviewer',
+  ]);
+  assert.deepEqual(stepArtifact.security_trigger_reasons, ['runtime-wiring-changed']);
+
+  const stageLog = await readFile(path.join(repo, implementationStart.data.log_path), 'utf8');
+  assert.match(
+    stageLog,
+    /required_audit_classes:\n {2}- spec-conformance-reviewer\n {2}- code-reviewer\n {2}- security-reviewer/u,
+  );
+  assert.match(stageLog, /required_external_review_pending: false/u);
+  assert.match(stageLog, /required_security_review: true/u);
+});
+
+test('implementation close-out rejects out-of-order required audits', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Out Of Order Implementation Audits',
+        '--backlog-item-key',
+        'out-of-order-implementation-audits',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'out-of-order-implementation-audits.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  await mkdir(path.join(repo, 'src'), { recursive: true });
+  await writeFile(path.join(repo, 'src', 'order.ts'), 'export const ordered = true;\n');
+  commitRepoState(repo, 'code-bearing change');
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    { cwd: repo },
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+    eventCommit: runGit(repo, ['rev-parse', 'HEAD']).trim(),
+  });
+
+  const codeReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'code-reviewer',
+      '--reviewer-skill',
+      'code-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-order-code',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-order-code' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  const specReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'spec-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-order-spec',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-order-spec' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  const securityReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'security-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'security-reviewer',
+      '--reviewer-skill',
+      'security-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-order-security',
+      '--security-trigger-reason',
+      'code-bearing implementation path',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-order-security' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+
+  assert.ok(codeReview);
+  assert.ok(specReview);
+  assert.ok(securityReview);
+
+  const result = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+    ],
+    { cwd: repo, allowFailure: true, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  assert.equal(result.code, 3);
+  const payload = JSON.parse(result.stderr) as {
+    error: { blockers: string[]; code: string };
+  };
+  assert.equal(payload.error.code, 'UDE_CLOSURE_BLOCKED');
+  assert.ok(
+    payload.error.blockers.some((blocker) =>
+      blocker.includes('Implementation audit bundle order is invalid'),
+    ),
+  );
+});
+
+test('lifecycle-refresh treats a first-pass code-bearing audit bundle as zero rerounds', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_cycle_id: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Lifecycle First Pass Bundle',
+        '--backlog-item-key',
+        'lifecycle-first-pass-bundle',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'lifecycle-first-pass.md',
+        '--area',
+        'backend',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    {
+      cwd: repo,
+    },
+  );
+  commitRepoState(repo, 'implementation ready for review');
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+  });
+
+  const specReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'spec-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-spec',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-spec-first-pass' } },
+  );
+  const codeReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'code-reviewer',
+      '--reviewer-skill',
+      'code-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-code',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-code-first-pass' } },
+  );
+  const securityReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'security-reviewer',
+      '--security-trigger-reason',
+      'runtime-wiring-changed',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'security-reviewer',
+      '--reviewer-skill',
+      'security-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-security',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-security-first-pass' } },
+  );
+
+  const reviewArtifacts = [specReview, codeReview, securityReview].map((result) => {
+    const match = result.stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u);
+    assert.ok(match?.[1]);
+    return match[1].trim();
+  });
+  const [specReviewArtifact, codeReviewArtifact, securityReviewArtifact] = reviewArtifacts;
+  assert.ok(specReviewArtifact);
+  assert.ok(codeReviewArtifact);
+  assert.ok(securityReviewArtifact);
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--allow-dirty',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReviewArtifact,
+      '--review-artifact',
+      codeReviewArtifact,
+      '--review-artifact',
+      securityReviewArtifact,
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  const refreshEnvelope = parseEnvelope<{
+    snapshot: {
+      lifecycle: {
+        intake: {
+          review_policy: {
+            required_audit_classes: string[];
+            required_external_review_pending: boolean | null;
+          };
+        };
+        stages: Record<
+          string,
+          {
+            review_policy: {
+              executed_audit_classes: string[];
+            };
+          }
+        >;
+      };
+      metrics: {
+        first_pass_close: boolean | null;
+        rerounds_per_feature: number;
+      };
+    };
+  }>(
+    runCli(
+      [
+        'lifecycle-refresh',
+        '--feature-id',
+        intakeEnvelope.data.feature_id,
+        '--feature-cycle-id',
+        intakeEnvelope.data.feature_cycle_id,
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  const implementationStage = refreshEnvelope.data.snapshot.lifecycle.stages.implementation;
+  assert.ok(implementationStage);
+
+  assert.deepEqual(
+    refreshEnvelope.data.snapshot.lifecycle.intake.review_policy.required_audit_classes,
+    ['spec-conformance-reviewer'],
+  );
+  assert.equal(
+    refreshEnvelope.data.snapshot.lifecycle.intake.review_policy.required_external_review_pending,
+    true,
+  );
+  assert.deepEqual(implementationStage.review_policy.executed_audit_classes, [
+    'spec-conformance-reviewer',
+    'code-reviewer',
+    'security-reviewer',
+  ]);
+  assert.equal(refreshEnvelope.data.snapshot.metrics.rerounds_per_feature, 0);
+  assert.equal(refreshEnvelope.data.snapshot.metrics.first_pass_close, true);
+});
+
+test('implementation close-out allows the explicit non-code baseline with only spec-conformance review', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Implementation Non Code',
+        '--backlog-item-key',
+        'implementation-non-code',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'implementation-non-code.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'non-code',
+    ],
+    {
+      cwd: repo,
+    },
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+  });
+  const specReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'non-code-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-non-code',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-non-code' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(specReview);
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  const stepArtifact = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    implementation_review_scope: string | null;
+    process_complete: boolean;
+    required_audit_classes: string[];
+    required_security_review: boolean;
+  };
+  assert.equal(stepArtifact.process_complete, true);
+  assert.equal(stepArtifact.implementation_review_scope, 'non-code');
+  assert.deepEqual(stepArtifact.required_audit_classes, ['spec-conformance-reviewer']);
+  assert.equal(stepArtifact.required_security_review, false);
+});
+
+test('review-artifact records null reviewer_thread_id when runtime provenance is unavailable', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'No Thread Provenance',
+        '--backlog-item-key',
+        'no-thread-provenance',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'no-thread-provenance.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const result = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-no-thread',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: '' } },
+  );
+
+  assert.equal(result.code, 0);
+  const reviewArtifactPath = result.stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(reviewArtifactPath);
+  const reviewArtifact = JSON.parse(
+    await readFile(path.join(repo, reviewArtifactPath), 'utf8'),
+  ) as { reviewer_thread_id: string | null };
+  assert.equal(reviewArtifact.reviewer_thread_id, null);
+});
+
+test('implementation non-code close-out ignores tampered stage-log scope and uses machine stage state', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Machine Stage State Scope',
+        '--backlog-item-key',
+        'machine-stage-state-scope',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'machine-stage-state-scope.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  const readyEnvelope = parseEnvelope<{ log_path: string }>(
+    runCli(
+      [
+        'implementation',
+        '--feature-id',
+        intakeEnvelope.data.feature_id,
+        '--ready-for-close',
+        '--implementation-scope',
+        'non-code',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const implementationLogPath = path.join(repo, readyEnvelope.data.log_path);
+  const tamperedLog = (await readFile(implementationLogPath, 'utf8')).replace(
+    'implementation_review_scope: non-code',
+    'implementation_review_scope: code-bearing',
+  );
+  await writeFile(implementationLogPath, tamperedLog);
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+  });
+
+  const specReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'machine-state-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-machine-state',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-machine-state' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(specReview);
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  const reviewArtifact = JSON.parse(await readFile(path.join(repo, specReview), 'utf8')) as {
+    implementation_scope: string | null;
+  };
+  assert.equal(reviewArtifact.implementation_scope, 'non-code');
+
+  const stepArtifact = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    implementation_review_scope: string | null;
+    process_complete: boolean;
+    required_audit_classes: string[];
+  };
+  assert.equal(stepArtifact.process_complete, true);
+  assert.equal(stepArtifact.implementation_review_scope, 'non-code');
+  assert.deepEqual(stepArtifact.required_audit_classes, ['spec-conformance-reviewer']);
+});
+
+test('dirty code forces implementation close-out back to code-bearing scope even with --allow-dirty', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Dirty Code Reclassifies Scope',
+        '--backlog-item-key',
+        'dirty-code-reclassifies-scope',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'dirty-code-reclassifies-scope.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'non-code',
+    ],
+    { cwd: repo },
+  );
+
+  await mkdir(path.join(repo, 'src'), { recursive: true });
+  await writeFile(path.join(repo, 'src', 'runtime.ts'), 'export const runtime = true;\n');
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+  });
+  const specReview = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'dirty-code-reviewer',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-dirty-code',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-dirty-code' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(specReview);
+
+  const result = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--allow-dirty',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+    ],
+    { cwd: repo, allowFailure: true, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  assert.equal(result.code, 3);
+  const payload = JSON.parse(result.stderr) as {
+    error: { blockers: string[]; code: string; step_artifact: string };
+  };
+  assert.equal(payload.error.code, 'UDE_CLOSURE_BLOCKED');
+  assert.ok(
+    payload.error.blockers.some((blocker) =>
+      blocker.includes('Missing required review artifact for audit class code-reviewer.'),
+    ),
+  );
+
+  const stepArtifact = JSON.parse(
+    await readFile(path.join(repo, payload.error.step_artifact), 'utf8'),
+  ) as {
+    implementation_review_scope: string | null;
+    process_complete: boolean;
+    required_audit_classes: string[];
+    required_external_review_pending: boolean;
+    required_security_review: boolean;
+  };
+  assert.equal(stepArtifact.process_complete, false);
+  assert.equal(stepArtifact.implementation_review_scope, 'code-bearing');
+  assert.deepEqual(stepArtifact.required_audit_classes, [
+    'spec-conformance-reviewer',
+    'code-reviewer',
+    'security-reviewer',
+  ]);
+  assert.equal(stepArtifact.required_security_review, true);
+  assert.equal(stepArtifact.required_external_review_pending, true);
+});
+
+test('process-trust close-out accepts review artifacts without reviewer_thread_id', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Process Trust Review Pending',
+        '--backlog-item-key',
+        'process-trust-review-pending',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'process-trust-review-pending.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
+
+  const reviewArtifactPath = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-process-trust',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: '' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(reviewArtifactPath);
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      reviewArtifactPath,
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  const stepArtifact = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id, 'feature-intake.json'),
+      'utf8',
+    ),
+  ) as {
+    process_complete: boolean;
+    required_external_review_pending: boolean;
+  };
+  assert.equal(stepArtifact.process_complete, true);
+  assert.equal(stepArtifact.required_external_review_pending, false);
+});
+
+test('allow-dirty does not bypass audit freshness invalidation for uncommitted changes', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Allow Dirty Still Invalidates Audits',
+        '--backlog-item-key',
+        'allow-dirty-still-invalidates-audits',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'allow-dirty-still-invalidates-audits.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+    eventCommit: runGit(repo, ['rev-parse', 'HEAD']).trim(),
+  });
+
+  const reviewArtifactPath = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-allow-dirty',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-allow-dirty' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(reviewArtifactPath);
+
+  const backlogStatePath = path.join(repo, '.dossier', 'backlog', 'state.json');
+  const backlogState = JSON.parse(await readFile(backlogStatePath, 'utf8')) as {
+    last_refresh_at: string | null;
+  };
+  backlogState.last_refresh_at = '2026-04-22T12:00:00.000Z';
+  await writeFile(backlogStatePath, `${JSON.stringify(backlogState, null, 2)}\n`);
+
+  const result = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--allow-dirty',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      reviewArtifactPath,
+    ],
+    { cwd: repo, allowFailure: true, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  assert.equal(result.code, 3);
+  const payload = JSON.parse(result.stderr) as {
+    error: { blockers: string[]; code: string; step_artifact: string };
+  };
+  assert.equal(payload.error.code, 'UDE_CLOSURE_BLOCKED');
+  assert.ok(
+    payload.error.blockers.some((blocker) =>
+      blocker.includes('Required audits are stale against uncommitted material changes:'),
+    ),
+  );
+
+  const stepArtifact = JSON.parse(
+    await readFile(path.join(repo, payload.error.step_artifact), 'utf8'),
+  ) as {
+    process_complete: boolean;
+    required_external_review_pending: boolean;
+    review_freshness: string;
+  };
+  assert.equal(stepArtifact.process_complete, false);
+  assert.equal(stepArtifact.required_external_review_pending, true);
+  assert.equal(stepArtifact.review_freshness, 'stale');
+});
+
+test('allow-dirty still permits helper-owned backlog support files that are freshness-exempt', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  commitRepoState(repo, 'baseline');
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Helper-Owned Backlog Support Files Stay Exempt',
+        '--backlog-item-key',
+        'helper-owned-backlog-support-files-stay-exempt',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'helper-owned-backlog-support-files-stay-exempt.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+    eventCommit: runGit(repo, ['rev-parse', 'HEAD']).trim(),
+  });
+
+  const reviewArtifactPath = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-helper-support-files',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-helper-support-files' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(reviewArtifactPath);
+
+  await writeFile(path.join(repo, '.dossier', 'backlog', '.gitignore'), 'mutation.lock\n');
+  await writeFile(path.join(repo, '.dossier', 'backlog', 'AGENTS.md'), 'helper-owned guidance\n');
+  await mkdir(path.join(repo, '.dossier', 'backlog', 'reports'), { recursive: true });
+  await writeFile(
+    path.join(repo, '.dossier', 'backlog', 'reports', 'backlog-report.md'),
+    '# report\n',
+  );
+  await writeFile(path.join(repo, '.dossier', 'backlog', 'mutation.lock'), 'locked\n');
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--allow-dirty',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      reviewArtifactPath,
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  const stepArtifact = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id, 'feature-intake.json'),
+      'utf8',
+    ),
+  ) as {
+    process_complete: boolean;
+    required_external_review_pending: boolean;
+    review_freshness: string;
+  };
+  assert.equal(stepArtifact.process_complete, true);
+  assert.equal(stepArtifact.required_external_review_pending, false);
+  assert.equal(stepArtifact.review_freshness, 'pass');
+});
+
+test('review-artifact uses unique output paths for repeated same-commit same-class writes', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Unique Review Artifact Paths',
+        '--backlog-item-key',
+        'unique-review-artifact-paths',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'unique-review-artifact-paths.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  commitRepoState(repo, 'feature intake ready');
+
+  const first = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-1',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-unique-1' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  const second = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-2',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-unique-2' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+
+  assert.ok(first);
+  assert.ok(second);
+  assert.notEqual(first, second);
+});
+
+test('dossier-step-close rejects invalidated required audits', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Invalidated Audit',
+        '--backlog-item-key',
+        'invalidated-audit',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'invalidated-audit.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  const reviewArtifact = path.join(
+    repo,
+    '.dossier',
+    'reviews',
+    intakeEnvelope.data.feature_id,
+    'feature-intake--spec.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
+  await writeReviewArtifactFile({
+    path: reviewArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+    invalidated: true,
+  });
+
+  const result = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      reviewArtifact,
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+
+  assert.equal(result.code, 3);
+  const payload = JSON.parse(result.stderr) as {
+    error: { blockers: string[]; code: string };
+  };
+  assert.equal(payload.error.code, 'UDE_CLOSURE_BLOCKED');
+  assert.ok(payload.error.blockers.some((blocker) => blocker.includes('marked invalidated')));
 });

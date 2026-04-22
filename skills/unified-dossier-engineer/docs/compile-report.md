@@ -10,6 +10,7 @@ Generated from `skill.yaml`.
 - `fragments/final-checks.md`
 - `fragments/overview.md`
 - `package.json`
+- `references/audit-policy.md`
 - `references/backlog-truth-layer.md`
 - `references/commandized-stage-control.md`
 - `references/delivery-workflow-layer.md`
@@ -43,6 +44,7 @@ Generated from `skill.yaml`.
 - `references/backlog-truth-layer.md`
 - `references/source-review-contract.md`
 - `references/delivery-workflow-layer.md`
+- `references/audit-policy.md`
 - `references/telemetry-and-closure.md`
 - `references/commandized-stage-control.md`
 - `references/runtime-and-command-boundary.md`

@@ -9,7 +9,7 @@ compatibility: Canonical merged runtime shipped. The source bundle is maintained
 metadata:
   source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3a84c8a7ff30681ad0808093bf305b012d7d4d1bac8e870a654a6a7e2851bd40
+  skillforge-source-hash: 86dd20193526b43a5396f18cf8b9d94218c8eb29daa7019fc68a4bc6aa0fa15b
 ---
 
 # unified-dossier-engineer
@@ -38,6 +38,8 @@ metadata:
 This skill is the code-backed home of the merged `dossier-engineer`. Its job is to maintain the unified architecture, artifact model, runtime boundary, and canonical unified CLI for the merged skill.
 
 The shipped runtime serves only the canonical unified model: `.dossier` for accounting/process truth and `docs/ssot` for project-facing SSOT. It does not ship split-model migration, rollout checks, or compatibility launchers.
+
+Every mutating dossier stage requires external review before truthful closure. `review-artifact` records one already obtained audit result for one audit class. `dossier-step-close` validates the policy-required audit bundle before truthful closure.
 
 The merged target must preserve two distinct semantic layers inside one skill:
 
@@ -463,26 +465,26 @@ Validation:
 **Examples:** node scripts/dossier-engineer.mjs dossier-verify --dossier <path>
 
 ### CLI command: `review-artifact`
-**Use when:** Independent review evidence already exists and must be recorded durably.
+**Use when:** Required external audit evidence already exists and one audit-class result must be recorded durably.
 
-**Summary:** Persist an already obtained independent review artifact.
+**Summary:** Persist one already obtained audit result for one audit class.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
 **Tests:** `test/cli.test.ts`
 
-**Examples:** node scripts/dossier-engineer.mjs review-artifact --dossier <path> --step implementation --verdict PASS --reviewer independent
+**Examples:** node scripts/dossier-engineer.mjs review-artifact --dossier <path> --step implementation --audit-class spec-conformance-reviewer --verdict PASS --reviewer independent
 
 ### CLI command: `dossier-step-close`
-**Use when:** Verification and review evidence are complete and the step is ready to close.
+**Use when:** Verification is complete and the policy-required external audit bundle for the stage is ready for truthful close-out.
 
-**Summary:** Persist the authoritative step-close artifact and update stage-log closure truth.
+**Summary:** Persist the authoritative step-close artifact after validating the required audit bundle.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
 **Tests:** `test/cli.test.ts`
 
-**Examples:** node scripts/dossier-engineer.mjs dossier-step-close --dossier <path> --step <step>
+**Examples:** node scripts/dossier-engineer.mjs dossier-step-close --dossier <path> --step implementation --verify-artifact <path> --review-artifact <spec.json> --review-artifact <code.json> --review-artifact <security.json>
 
 ### CLI command: `next-step`
 **Use when:** You need the deterministic next step for one dossier without inference from chat prose.
@@ -538,6 +540,7 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 - [Backlog truth layer](references/backlog-truth-layer.md) — Read this when working on backlog graph truth, read models, actualization, or source-maintenance semantics in the merged skill.
 - [Source-review contract](references/source-review-contract.md) — Read this when designing refresh/attention behavior or source-change review semantics.
 - [Delivery workflow layer](references/delivery-workflow-layer.md) — Read this when designing feature intake, spec/planning/implementation flow, mature change path, coverage gate, or closure readiness in the merged skill.
+- [Audit policy](references/audit-policy.md) — Read this when changing mutating-stage review policy, review bundles, review freshness, or truthful close-out rules.
 - [Telemetry and closure](references/telemetry-and-closure.md) — Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
 - [Commandized stage control](references/commandized-stage-control.md) — Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
 - [Runtime and command boundary](references/runtime-and-command-boundary.md) — Read this when designing or maintaining merged runtime modules, help surface, or command-family boundaries.

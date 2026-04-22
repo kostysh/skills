@@ -4,6 +4,7 @@ Use this reference when preserving or designing dossier-side execution workflow 
 
 Use it together with:
 
+- [Audit policy](audit-policy.md)
 - [Commandized stage control](commandized-stage-control.md)
 - [Telemetry and closure](telemetry-and-closure.md)
 
@@ -78,9 +79,28 @@ The merged workflow must preserve:
 - dossier-local implementation execution
 - local verification artifacts
 - debt review
-- independent review in fail-closed mode
+- required external audits in fail-closed mode
 - review freshness control
 - authoritative close-out only after readiness is truthful
+
+## Required mutating-stage audit baseline
+
+Every mutating dossier stage requires external review before truthful closure:
+
+- `feature-intake`
+- `spec-compact`
+- `plan-slice`
+- `implementation`
+- `change-proposal`
+
+Baseline mapping for non-code stages is defined in [Audit policy](audit-policy.md).
+
+Important:
+
+- self-review is not a valid substitute;
+- `review-artifact` persists already obtained audit evidence and does not replace the audit itself;
+- `dossier-step-close` is not truthful while required audits are missing, stale, or invalidated.
+- helper validation must use the helper-managed stage state for current-cycle review coordination and implementation scope rather than human-authored stage-log frontmatter.
 
 ## Backlog actualization inside one skill
 
@@ -120,11 +140,17 @@ Required gates:
 
 - local verification artifacts before final closure claim
 - debt review
-- independent review in fail-closed mode
+- required external audit bundle in fail-closed mode
 - review freshness validation
 - explicit pre-close / DoD readiness
 - authoritative step-close artifact
 - truthful blocked close branch
+
+For `implementation`, the stronger bundle policy from [Audit policy](audit-policy.md) applies:
+
+- `spec-conformance-reviewer` is first;
+- code-bearing scope also requires `code-reviewer` and `security-reviewer`;
+- truthful closure is blocked until that required bundle is fully satisfied.
 
 Important:
 

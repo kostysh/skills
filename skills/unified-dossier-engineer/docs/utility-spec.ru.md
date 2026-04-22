@@ -135,6 +135,7 @@ Unified utility должна считать canonical такими семейс�
 │   ├── reports/
 │   └── mutation.lock
 ├── logs/
+├── stages/
 ├── reviews/
 ├── verification/
 ├── steps/
@@ -288,6 +289,7 @@ Future first-class stage-controller set:
 
 - open / resume / block / ready-for-close the stage;
 - bootstrap/update stage log;
+- bootstrap/update helper-managed stage state;
 - validate structured prerequisites;
 - emit machine-readable transition state;
 - emit explicit backlog follow-up signals.
@@ -344,6 +346,60 @@ Rules:
 - `lifecycle-refresh` remains the lifecycle aggregation helper for metrics/session-index refresh;
 - `next-step` remains dossier-local query surface;
 - `contract-drift-audit` remains mature-change helper, not a primary stage controller.
+- `review-artifact` persists one already obtained audit result for one audit class and does not perform the audit.
+
+### Audit-bundle contract
+
+Every mutating dossier stage must truthfully close only after the audit bundle required by active audit policy is satisfied.
+
+Baseline required audit for non-code mutating stages:
+
+- `feature-intake` -> `spec-conformance-reviewer`
+- `spec-compact` -> `spec-conformance-reviewer`
+- `plan-slice` -> `spec-conformance-reviewer`
+- `change-proposal` -> `spec-conformance-reviewer`
+
+Implementation review scope remains explicit mechanical input, but it is recorded on the current helper-managed implementation stage state by `implementation --ready-for-close` and then consumed by helper commands:
+
+- `non-code` -> required audit bundle is `spec-conformance-reviewer`
+- `code-bearing` -> required audit bundle is `spec-conformance-reviewer`, `code-reviewer`, `security-reviewer`
+
+Fail-closed runtime rule:
+
+- recorded `non-code` scope is accepted only when the runtime can mechanically confirm a documentation-only change set since implementation stage entry;
+- if that confirmation is unavailable or fails, helper commands must enforce the `code-bearing` bundle instead.
+
+`review-artifact` must persist at minimum:
+
+- `stage`
+- `audit_class`
+- reviewer provenance
+- external-versus-degraded review mode
+- freshness / invalidation state
+- implementation review scope from the current helper-managed implementation stage state where applicable
+- helper-managed stage-state membership for the current stage cycle
+- security-trigger reason where applicable
+
+The canonical runtime mechanically enforces only the durable subset of audit-policy launch evidence:
+
+- external-versus-degraded review mode
+- reviewer provenance and reviewer skill
+- commit freshness / invalidation
+- reviewer thread provenance stamped by the current runtime when available, for same-thread rejection
+
+This remains a process-trust contract, not a tamper-resistant attestation system. Repo-local helper-managed stage state and review artifacts coordinate the managed workflow, but they are not presented as cryptographic proof against hostile manual tampering.
+
+Helper-owned accounting artifacts such as `.dossier/logs/*`, `.dossier/stages/*`, `.dossier/reviews/*`, `.dossier/verification/*`, `.dossier/steps/*`, `.dossier/metrics/*`, `.dossier/retro/*`, `.dossier/ops/*`, backlog reports/locks, and support files like `.dossier/backlog/.gitignore` or `.dossier/backlog/AGENTS.md` do not invalidate audits by themselves. Canonical backlog truth artifacts under `.dossier/backlog/` such as `state.json`, `sources.json`, `applied.json`, `source-review/*`, `packets/*`, and `patches/*` remain material freshness invalidators.
+
+Audit-launch rules such as `fork_context: false`, read-only reviewer prompts, and non-mini blocking models remain active policy requirements, but they are not inferred mechanically from prose or silently assumed by the runtime.
+
+`dossier-step-close` must reject truthful closure when:
+
+- a required audit class is missing;
+- a required audit is not external;
+- a required audit is stale or invalidated;
+- a required audit still carries blocking findings.
+- current helper validation cannot confirm the required bundle from the helper-managed stage state.
 
 ## 7. Preservation / rename / deprecation matrix
 
@@ -462,7 +518,7 @@ While a source-review record is open:
 ## 8.3 Ordinary selected-work delivery
 
 ```text
-queue -> items -> feature-intake -> spec-compact -> plan-slice -> implementation -> dossier-verify -> review-artifact -> dossier-step-close -> lifecycle-refresh
+queue -> items -> feature-intake -> spec-compact -> plan-slice -> implementation -> dossier-verify -> review-artifact* -> dossier-step-close -> lifecycle-refresh
 ```
 
 If backlog truth changed during any delivery stage:
@@ -474,7 +530,7 @@ If backlog truth changed during any delivery stage:
 ## 8.4 Mature change path
 
 ```text
-change-proposal -> contract-drift-audit -> explicit backlog impact verdict -> no-op | patch-item | source update | packet -> dossier-verify/review-artifact/dossier-step-close -> lifecycle-refresh
+change-proposal -> contract-drift-audit -> explicit backlog impact verdict -> no-op | patch-item | source update | packet -> dossier-verify/review-artifact* -> dossier-step-close -> lifecycle-refresh
 ```
 
 ## 9. Output contract

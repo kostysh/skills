@@ -2,6 +2,8 @@ This skill is the code-backed home of the merged `dossier-engineer`. Its job is 
 
 The shipped runtime serves only the canonical unified model: `.dossier` for accounting/process truth and `docs/ssot` for project-facing SSOT. It does not ship split-model migration, rollout checks, or compatibility launchers.
 
+Every mutating dossier stage requires external review before truthful closure. `review-artifact` records one already obtained audit result for one audit class. `dossier-step-close` validates the policy-required audit bundle before truthful closure.
+
 The merged target must preserve two distinct semantic layers inside one skill:
 
 - `backlog truth layer` for backlog graph, source registry, packets, patches, and source-review discipline
