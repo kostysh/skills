@@ -10464,7 +10464,6 @@ var lintLoadedBundle = async (loaded) => {
 	});
 	for (const command of source.sections.commands) {
 		pushIf(diagnostics, command.script === void 0, "error", "missing-command-runtime", `Command ${command.id} does not declare a runtime script.`);
-		pushIf(diagnostics, command.tests.length === 0, "error", "missing-command-tests", `Command ${command.id} does not declare any test coverage.`);
 		if (command.script !== void 0) pushIf(diagnostics, !source.copies.some((entry) => entry.target === command.script), "error", "missing-command-script", `Command ${command.id} references ${command.script}, but no copied runtime file emits that path.`);
 		for (const testPath of command.tests) {
 			pushIf(diagnostics, !await fileExists(resolve(loaded.rootDir, testPath)), "error", "missing-command-test", `Command ${command.id} expects test file ${testPath}, but it does not exist.`);

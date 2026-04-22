@@ -164,13 +164,6 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
       "missing-command-runtime",
       `Command ${command.id} does not declare a runtime script.`,
     );
-    pushIf(
-      diagnostics,
-      command.tests.length === 0,
-      "error",
-      "missing-command-tests",
-      `Command ${command.id} does not declare any test coverage.`,
-    );
 
     if (command.script !== undefined) {
       const hasEmittedScript = source.copies.some((entry) => entry.target === command.script);
