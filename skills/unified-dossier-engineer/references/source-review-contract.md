@@ -1,10 +1,10 @@
 # Source-review contract
 
-Use this reference when designing source-change handling in the merged skill.
+Use this reference when designing source-change handling in this skill.
 
 ## Purpose
 
-The merged skill must remove the current behavior where a source hash change can immediately flood many linked items with item-level `needs_attention`.
+This skill must remove the current behavior where a source hash change can immediately flood many linked items with item-level `needs_attention`.
 
 The replacement model is source-first review.
 

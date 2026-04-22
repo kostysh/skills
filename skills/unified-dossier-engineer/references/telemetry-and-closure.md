@@ -1,6 +1,6 @@
 # Telemetry and closure
 
-Use this reference when designing lifecycle identity, logs, closure artifacts, or retrospective support in the merged skill.
+Use this reference when designing lifecycle identity, logs, closure artifacts, or retrospective support in this skill.
 
 Use it together with:
 
@@ -10,7 +10,7 @@ Use it together with:
 
 ## Purpose
 
-The merged skill must stay observable without inventing magical runtime behavior.
+This skill must stay observable without inventing magical runtime behavior.
 
 Telemetry must support:
 
@@ -22,7 +22,7 @@ Telemetry must support:
 
 ## Artifact families
 
-The merged design keeps telemetry and closure artifacts in separate accounting families under `.dossier`:
+This design keeps telemetry and closure artifacts in separate accounting families under `.dossier`:
 
 - logs under `.dossier/logs/*`
 - helper-managed stage state under `.dossier/stages/*`
@@ -44,7 +44,7 @@ Review artifacts must remain capable of carrying policy-visible audit-bundle tru
 
 ## Identity contract
 
-The merged telemetry layer must preserve these stable identities:
+The telemetry layer must preserve these stable identities:
 
 - `feature_id`
 - `backlog_item_key`
@@ -60,7 +60,7 @@ Rules:
 
 ## Log contract
 
-Merged telemetry must preserve the current useful shape:
+Telemetry must preserve the current useful shape:
 
 - intake and stage logs remain human-readable Markdown artifacts
 - helper-managed stage state remains the structured coordination surface for stage scope, current-cycle audit-bundle membership, and close-out validation
@@ -154,7 +154,7 @@ Those signals belong to deterministic readiness reporting. They do not require p
 
 ## Closure truth
 
-The merged design must keep closure strict.
+The design must keep closure strict.
 
 Required rules:
 
@@ -166,8 +166,8 @@ Required rules:
 
 Semantic heritage rule:
 
-- the merged design preserves the current `dossier-step-close` and `lifecycle-refresh` semantics as authoritative closure and lifecycle-aggregation anchors
-- those names are now shipped merged commands and remain the authoritative semantic anchors for closure and lifecycle aggregation
+- the design preserves the current `dossier-step-close` and `lifecycle-refresh` semantics as authoritative closure and lifecycle-aggregation anchors
+- those names remain the authoritative semantic anchors for closure and lifecycle aggregation
 
 ## Metrics contract
 
@@ -184,7 +184,7 @@ The telemetry layer must make these signals computable from deterministic artifa
 - operator intervention counts
 - telemetry completeness
 
-This does not mean the first-wave runtime already materializes every desired metric field. It means the merged artifact model already preserves enough identity, timestamps, and bounded events for later mechanical aggregation.
+This does not mean the first-wave runtime already materializes every desired metric field. It means the artifact model already preserves enough identity, timestamps, and bounded events for later mechanical aggregation.
 
 Required review-policy observability now includes:
 
@@ -210,7 +210,7 @@ Canonical persisted field names for that observability are:
 
 ## CLI boundary
 
-The merged telemetry layer stays mechanical.
+The telemetry layer stays mechanical.
 
 Allowed utility behavior:
 
@@ -231,4 +231,4 @@ Those remain agent responsibilities.
 - do not collapse logs, reviews, verification, steps, and metrics into one artifact family
 - do not let closure truth depend on commit presence, chat summaries, or informal review pass
 - do not store absolute runtime-only trace paths as canonical repo truth
-- do not promise merged telemetry commands before utility specification and runtime packages define them
+- do not promise telemetry commands before utility specification and runtime packages define them

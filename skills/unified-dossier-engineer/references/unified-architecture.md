@@ -1,6 +1,6 @@
 # Unified architecture outline
 
-The future merged `dossier-engineer` combines two internal subsystems:
+The canonical `unified-dossier-engineer` skill combines two internal subsystems:
 
 ## Backlog truth layer
 
@@ -55,10 +55,10 @@ Project SSOT artifacts:
 - live under `docs/ssot`
 - remain human-facing project truth for operators and future readers
 
-## Merge safety rules
+## Coordination safety rules
 
 - one feature dossier maps to exactly one backlog item
 - backlog truth and delivery state must not collapse into a single flat status enum
-- the merged runtime must stay mechanical; semantic interpretation remains agent-owned
+- the runtime must stay mechanical; semantic interpretation remains agent-owned
 - telemetry and closure truth must remain explicit and step-close-backed
 - primary delivery stages may become first-class commands, but helper-owned closure and query boundaries must stay separate

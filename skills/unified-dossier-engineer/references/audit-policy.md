@@ -1,6 +1,6 @@
 # Audit policy
 
-Use this reference when maintaining required dossier-stage audits, audit bundles, or truthful close-out semantics in the merged skill.
+Use this reference when maintaining required dossier-stage audits, audit bundles, or truthful close-out semantics in this skill.
 
 Use it together with:
 
@@ -10,7 +10,7 @@ Use it together with:
 
 ## Purpose
 
-The merged skill keeps one canonical audit policy for all mutating dossier stages.
+This skill keeps one canonical audit policy for all mutating dossier stages.
 
 This policy defines:
 
@@ -22,7 +22,7 @@ This policy defines:
 
 ## Audit classes
 
-The merged skill recognizes exactly three blocking audit classes:
+This skill recognizes exactly three blocking audit classes:
 
 - `spec-conformance-reviewer`
 - `code-reviewer`

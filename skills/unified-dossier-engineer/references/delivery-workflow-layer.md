@@ -1,6 +1,6 @@
 # Delivery workflow layer
 
-Use this reference when preserving or designing dossier-side execution workflow inside the merged skill.
+Use this reference when preserving or designing dossier-side execution workflow inside this skill.
 
 Use it together with:
 
@@ -27,7 +27,7 @@ It does not own backlog graph truth, source registry mutation, or backlog read-m
 
 ## One feature equals one backlog item
 
-This invariant stays strict after the merge:
+This invariant stays strict:
 
 - one feature cycle maps to exactly one selected backlog item
 - one canonical feature dossier maps to exactly one backlog item
@@ -37,11 +37,11 @@ If work later fans out, that becomes explicit backlog actualization work rather 
 
 ## Canonical flow
 
-The merged design must preserve this default lifecycle:
+The workflow must preserve this default lifecycle:
 
 `selected backlog work -> feature-intake -> spec-compact -> plan-slice -> implementation -> authoritative step close`
 
-The merged design must also preserve the mature change branch as first-class workflow, not as a side note:
+The workflow must also preserve the mature change branch as first-class workflow, not as a side note:
 
 `change-proposal -> contract-drift-audit -> explicit backlog impact verdict -> backlog actualization when verdict is not no-op`
 
@@ -49,7 +49,7 @@ The merged design must also preserve the mature change branch as first-class wor
 
 ### `feature-intake`
 
-The merged workflow must preserve:
+The workflow must preserve:
 
 - one durable handoff from selected backlog item into feature workflow
 - backlog item key, source traceability, blockers, and dependencies captured at intake
@@ -57,7 +57,7 @@ The merged workflow must preserve:
 
 ### `spec-compact`
 
-The merged workflow must preserve:
+The workflow must preserve:
 
 - explicit requirements and acceptance framing for the selected backlog item
 - adversarial / edge-case / boundary shaping where the changed scope needs it
@@ -65,7 +65,7 @@ The merged workflow must preserve:
 
 ### `plan-slice`
 
-The merged workflow must preserve:
+The workflow must preserve:
 
 - explicit implementation plan for the selected backlog item
 - proof obligations for verification
@@ -74,7 +74,7 @@ The merged workflow must preserve:
 
 ### `implementation`
 
-The merged workflow must preserve:
+The workflow must preserve:
 
 - dossier-local implementation execution
 - local verification artifacts
@@ -104,11 +104,11 @@ Important:
 
 ## Backlog actualization inside one skill
 
-Merge removes the cross-skill handoff, but not the truth boundary.
+One skill removes the cross-skill handoff, but not the truth boundary.
 
 Rules:
 
-- if dossier-side work changes backlog truth, the agent stays inside the same merged skill and moves into the backlog actualization branch
+- if dossier-side work changes backlog truth, the agent stays inside this skill and moves into the backlog actualization branch
 - delivery closure is not truthful while required backlog actualization remains unresolved
 - mature change path must always end with one explicit backlog impact verdict:
   - `no-op`
@@ -118,7 +118,7 @@ Rules:
 
 ## Required state axes
 
-The merged workflow must keep these axes separate:
+The workflow must keep these axes separate:
 
 - backlog item lifecycle
 - feature dossier maturity
@@ -134,7 +134,7 @@ Required consequence:
 
 ## Closure discipline
 
-The merged delivery workflow must preserve all hard gates from the current dossier model.
+The delivery workflow must preserve all hard gates from the current dossier model.
 
 Required gates:
 
@@ -160,7 +160,7 @@ Important:
 
 ## Semantic heritage versus shipped runtime
 
-This skill now ships first-wave merged commands, but workflow semantics still stay broader than the currently automated surface.
+This skill now ships first-wave commands, but workflow semantics still stay broader than the currently automated surface.
 
 Use names such as `feature-intake`, `change-proposal`, `contract-drift-audit`, and `backlog impact verdict` as semantic anchors for the shipped runtime and active methodology.
 

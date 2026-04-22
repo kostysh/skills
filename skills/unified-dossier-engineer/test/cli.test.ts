@@ -254,6 +254,11 @@ test('init creates the unified process root and SSOT skeleton', async () => {
   await stat(path.join(repo, '.dossier', 'backlog', 'state.json'));
   await stat(path.join(repo, '.dossier', 'logs', 'feature-intake'));
   await stat(path.join(repo, 'docs', 'ssot', 'features', '.gitkeep'));
+  const backlogAgents = await readFile(path.join(repo, '.dossier', 'backlog', 'AGENTS.md'), 'utf8');
+  assert.match(backlogAgents, /utility-owned backlog artifacts for the dossier-engineer runtime/);
+  assert.doesNotMatch(backlogAgents, /split backlog runtime/);
+  assert.doesNotMatch(backlogAgents, /merged runtime/);
+  assert.doesNotMatch(backlogAgents, /unified runtime/);
 });
 
 test('command help smoke covers the shipped public surface', () => {
@@ -292,6 +297,12 @@ test('command help smoke covers the shipped public surface', () => {
     const result = command === 'help' ? runCli(['--help']) : runCli(['help', command]);
     assert.match(result.stdout, /Usage:/, `missing Usage block for ${command}`);
     assert.match(result.stdout, new RegExp(command.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.doesNotMatch(result.stdout, /merged runtime/);
+    assert.doesNotMatch(result.stdout, /unified runtime/);
+    assert.doesNotMatch(result.stdout, /merged skill/);
+    assert.doesNotMatch(result.stdout, /split backlog runtime/);
+    assert.doesNotMatch(result.stdout, /split-skill migration/);
+    assert.doesNotMatch(result.stdout, /compatibility launchers/);
     if (command === 'feature-intake') {
       assert.match(result.stdout, /canonical stage-controller commands/);
       assert.doesNotMatch(result.stdout, /not shipped CLI subcommands/);
@@ -314,10 +325,12 @@ test('command help smoke covers the shipped public surface', () => {
   }
 
   const globalHelp = runCli(['--help']);
-  assert.match(
-    globalHelp.stdout,
-    /The only public utility for the merged dossier\/backlog runtime\./,
-  );
+  assert.match(globalHelp.stdout, /The only public utility for the dossier\/backlog runtime\./);
+  assert.doesNotMatch(globalHelp.stdout, /merged runtime/);
+  assert.doesNotMatch(globalHelp.stdout, /unified runtime/);
+  assert.doesNotMatch(globalHelp.stdout, /merged skill/);
+  assert.doesNotMatch(globalHelp.stdout, /split-skill migration/);
+  assert.doesNotMatch(globalHelp.stdout, /compatibility launchers/);
   assert.doesNotMatch(globalHelp.stdout, /references\/workflow\.md/);
   assert.doesNotMatch(globalHelp.stdout, /\badr-log\b/);
   assert.doesNotMatch(globalHelp.stdout, /\bdependency-check\b/);

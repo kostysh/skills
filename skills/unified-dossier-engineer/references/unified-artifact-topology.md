@@ -1,10 +1,10 @@
 # Unified artifact topology
 
-Use this reference when designing or validating the merged accounting root and the project-facing SSOT boundary.
+Use this reference when designing or validating the canonical accounting root and the project-facing SSOT boundary.
 
 ## Core split
 
-The merged skill uses two different artifact families:
+This skill uses two different artifact families:
 
 - accounting and process artifacts under `.dossier`
 - human-facing project SSOT under `docs/ssot`
@@ -13,7 +13,7 @@ These families must not be collapsed into one root.
 
 ## Canonical `.dossier` layout
 
-The merged accounting/process root is discovered by `.dossier/manifest.json`.
+The accounting/process root is discovered by `.dossier/manifest.json`.
 
 The backlog subroot is discovered by `.dossier/backlog/manifest.json`.
 

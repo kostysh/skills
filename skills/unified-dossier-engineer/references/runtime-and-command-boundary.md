@@ -1,19 +1,15 @@
 # Runtime and command boundary
 
-Use this reference when maintaining the shipped merged runtime surface for `unified-dossier-engineer`.
+Use this reference when maintaining the shipped runtime surface for this skill.
 
 ## Purpose
 
-`Package 7` fixed the maintainer-facing utility specification.
-`Package 8` turned that specification into a deterministic runtime/help/module boundary.
-`Package 9` shipped the canonical merged runtime.
-`Package 10` hardens that runtime into a canonical-only public contract.
-
+This runtime ships one canonical public contract.
 This reference defines the active shipped boundary.
 
 ## Primary runtime rule
 
-The merged runtime exposes exactly one public utility contract:
+The runtime exposes exactly one public utility contract:
 
 ```text
 dossier-engineer <command> [options]
@@ -27,7 +23,7 @@ Important:
 
 ## Shipped command families
 
-The shipped merged help surface groups commands by family.
+The shipped help surface groups commands by family.
 
 ### Bootstrap / root-management
 
@@ -94,7 +90,7 @@ Audit-policy rule for this family:
 
 ## Workflow stages versus runnable commands
 
-Merged runtime design keeps this rule explicit:
+Runtime design keeps this rule explicit:
 
 - a workflow stage is not a shipped command unless it appears in the real help surface;
 - stage names may stay active design vocabulary in references before code lands;
@@ -102,7 +98,7 @@ Merged runtime design keeps this rule explicit:
 
 ## Runtime module boundary
 
-The merged runtime stays mechanically unified but internally modular.
+The runtime stays mechanically unified but internally modular.
 
 Recommended module split:
 
@@ -164,7 +160,7 @@ Responsibilities:
 - step close
 - dossier-local querying
 
-Implemented through vendored dossier helper surface plus merged wrappers.
+Implemented through vendored dossier helper surface plus runtime wrappers.
 
 ### Telemetry / indexing modules
 
@@ -179,18 +175,18 @@ Implemented through the shipped lifecycle/closure surface without separate migra
 
 ## Help surface contract
 
-Top-level help for the merged utility must:
+Top-level help for the utility must:
 
 - identify `dossier-engineer` as the only public utility;
 - group commands by the families above;
 - distinguish stage-controller commands from helper/closure commands;
 - avoid presenting workflow prose terms that are not real commands;
-- explicitly state that only canonical unified layout is supported.
+- explicitly state that only the canonical `.dossier` + `docs/ssot` layout is supported.
 
 Command-local help must:
 
 - show only shipped options and output guarantees;
-- reflect the utility specification rather than inventing ad hoc wording;
+- reflect the shipped command contract rather than inventing ad hoc wording;
 - avoid compatibility or migration wording.
 
 ## Negative rules
@@ -199,4 +195,4 @@ Command-local help must:
 - do not promote commands or flags into `skill.yaml` if runtime code and tests do not ship them;
 - do not let top-level help blur backlog truth commands with delivery-stage commands;
 - do not let helper commands absorb stage-controller responsibilities or vice versa;
-- do not imply support for split roots, migration flows, or rollout switching.
+- do not imply support for alternate roots, extra launchers, or unshipped adaptation flows.

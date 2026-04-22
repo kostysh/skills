@@ -7,7 +7,6 @@ Generated from `skill.yaml`.
 
 ## Source files
 - `assets/README.md`
-- `fragments/final-checks.md`
 - `fragments/overview.md`
 - `package.json`
 - `references/audit-policy.md`
@@ -15,7 +14,6 @@ Generated from `skill.yaml`.
 - `references/commandized-stage-control.md`
 - `references/delivery-workflow-layer.md`
 - `references/runtime-and-command-boundary.md`
-- `references/source-bundle-governance.md`
 - `references/source-review-contract.md`
 - `references/status-and-scope.md`
 - `references/telemetry-and-closure.md`
@@ -39,7 +37,6 @@ Generated from `skill.yaml`.
 ## Required references
 - `references/status-and-scope.md`
 - `references/unified-architecture.md`
-- `references/source-bundle-governance.md`
 - `references/unified-artifact-topology.md`
 - `references/backlog-truth-layer.md`
 - `references/source-review-contract.md`

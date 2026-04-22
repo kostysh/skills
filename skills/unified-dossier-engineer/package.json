@@ -2,7 +2,7 @@
   "name": "@kostysh/unified-dossier-engineer",
   "version": "0.2.0",
   "private": true,
-  "description": "Unified CLI runtime for the merged dossier/backlog skill.",
+  "description": "CLI runtime for the canonical dossier/backlog skill.",
   "type": "module",
   "bin": {
     "dossier-engineer": "scripts/dossier-engineer.mjs"

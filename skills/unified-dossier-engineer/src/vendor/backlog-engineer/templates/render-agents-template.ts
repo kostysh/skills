@@ -1,6 +1,6 @@
 const BACKLOG_AGENTS_TEMPLATE = `# AGENTS.md
 
-This directory is the unified backlog subroot managed by \`dossier-engineer\`.
+This directory contains utility-owned backlog artifacts managed by \`dossier-engineer\`.
 
 ## Core rules
 
@@ -29,7 +29,7 @@ This directory is the unified backlog subroot managed by \`dossier-engineer\`.
 
 - Read source documents first.
 - Register sources through the utility before relying on them in packets.
-- If multiple sources are needed for one unified process root, register them strictly one by one.
+- If multiple sources are needed for one process root, register them strictly one by one.
 - Use utility lookups such as \`list-sources\` instead of rebuilding source mappings from packet files.
 
 ## Drafts vs canonical copies

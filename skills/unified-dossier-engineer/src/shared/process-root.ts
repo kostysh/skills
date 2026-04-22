@@ -166,7 +166,7 @@ export async function initializeProcessRoot(root: string): Promise<{
     [
       '# Unified Backlog Accounting Surface',
       '',
-      'This directory contains utility-owned backlog artifacts for the merged dossier-engineer runtime.',
+      'This directory contains utility-owned backlog artifacts for the dossier-engineer runtime.',
       'Do not hand-edit generated machine artifacts unless the workflow explicitly requires it.',
       '',
     ].join('\n'),

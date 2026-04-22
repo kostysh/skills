@@ -26,12 +26,12 @@ const OPTIONS = [
 
 export const INIT_COMMAND: CommandDefinition<InitCommandInput, InitCommandOutput> = {
   name: 'init',
-  summary: 'Initialize a unified process root and utility-owned artifacts.',
+  summary: 'Initialize a process root and utility-owned artifacts.',
   usage: ['dossier-engineer init --path <path>'],
   options: OPTIONS,
   notes: [
     '`--path` resolves from the current working directory.',
-    'The target directory becomes a unified process root and receives `.dossier/`, `docs/ssot/`, and the standard managed artifact directories.',
+    'The target directory becomes a process root and receives `.dossier/`, `docs/ssot/`, and the standard managed artifact directories.',
     ABSOLUTE_OUTPUT_NOTE,
   ],
   inputSchema: InitCommandInputSchema,

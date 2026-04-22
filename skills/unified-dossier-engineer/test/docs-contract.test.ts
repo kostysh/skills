@@ -17,6 +17,31 @@ const DELIVERY_WORKFLOW_PATH = path.join(SKILL_DIR, 'references', 'delivery-work
 const TELEMETRY_CLOSURE_PATH = path.join(SKILL_DIR, 'references', 'telemetry-and-closure.md');
 const STAGE_CONTROL_PATH = path.join(SKILL_DIR, 'references', 'commandized-stage-control.md');
 const UTILITY_SPEC_PATH = path.join(SKILL_DIR, 'docs', 'utility-spec.ru.md');
+const UNIFIED_ARCHITECTURE_PATH = path.join(SKILL_DIR, 'references', 'unified-architecture.md');
+const UNIFIED_ARTIFACT_TOPOLOGY_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'unified-artifact-topology.md',
+);
+const BACKLOG_TRUTH_LAYER_PATH = path.join(SKILL_DIR, 'references', 'backlog-truth-layer.md');
+const SOURCE_REVIEW_CONTRACT_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'source-review-contract.md',
+);
+
+const ACTIVE_REFERENCE_PATHS = [
+  STATUS_SCOPE_PATH,
+  UNIFIED_ARCHITECTURE_PATH,
+  UNIFIED_ARTIFACT_TOPOLOGY_PATH,
+  BACKLOG_TRUTH_LAYER_PATH,
+  SOURCE_REVIEW_CONTRACT_PATH,
+  DELIVERY_WORKFLOW_PATH,
+  AUDIT_POLICY_PATH,
+  TELEMETRY_CLOSURE_PATH,
+  STAGE_CONTROL_PATH,
+  RUNTIME_BOUNDARY_PATH,
+] as const;
 
 function assertContainsTerms(text: string, terms: readonly string[]): void {
   for (const term of terms) {
@@ -39,14 +64,15 @@ function assertContainsInOrder(text: string, fragments: readonly string[]): void
   }
 }
 
-void test('generated skill exposes only the canonical unified runtime surface', async () => {
+void test('generated skill exposes only the canonical runtime surface', async () => {
   const skill = await readFile(SKILL_PATH, 'utf8');
   const frontmatter = skill.slice(0, skill.indexOf('\n---', 4));
 
   assertContainsTerms(frontmatter, [
-    'Canonical merged runtime shipped',
-    'No split-model migration or compatibility surface',
-    'is part of this skill.',
+    'Canonical runtime shipped',
+    'Only the canonical `.dossier` +',
+    '`docs/ssot` layout',
+    'the `dossier-engineer` launcher are part of this skill.',
   ]);
   assertContainsTerms(skill, [
     '### CLI command: `feature-intake`',
@@ -59,21 +85,38 @@ void test('generated skill exposes only the canonical unified runtime surface', 
     '### CLI command: `migrate-split-artifacts`',
     '### CLI command: `rollout-readiness`',
     'split-skill retirement',
+    'merged skill',
+    'merged runtime',
+    'unified runtime',
+    'split `backlog-engineer`',
+    'split `dossier-engineer`',
+    'Final checks',
+    'source-bundle-governance',
+    'skill-source-compiler',
+    'generated instruction surface',
+    'generated `SKILL.md`',
+    'source bundle',
+    'generated skill bundle',
+    'maintainer-facing utility specification',
   ]);
 });
 
 void test('active references enforce the no-legacy contract', async () => {
-  const [statusScope, runtimeBoundary] = await Promise.all([
+  const [statusScope, runtimeBoundary, ...otherActiveRefs] = await Promise.all([
     readFile(STATUS_SCOPE_PATH, 'utf8'),
     readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    ...ACTIVE_REFERENCE_PATHS.filter(
+      (referencePath) => referencePath !== STATUS_SCOPE_PATH && referencePath !== RUNTIME_BOUNDARY_PATH,
+    ).map((referencePath) => readFile(referencePath, 'utf8')),
   ]);
+  const activeReferenceCorpus = [statusScope, runtimeBoundary, ...otherActiveRefs].join('\n\n');
 
   assertContainsTerms(statusScope, [
-    'only the canonical unified layout is supported',
-    'no split-model migration tooling, rollout-readiness checks, or compatibility launchers are shipped',
+    'only the canonical `.dossier` + `docs/ssot` layout is supported',
+    'only the `dossier-engineer` launcher is shipped',
   ]);
   assertContainsTerms(runtimeBoundary, [
-    'The merged runtime exposes exactly one public utility contract:',
+    'The runtime exposes exactly one public utility contract:',
     'dossier-engineer <command> [options]',
   ]);
   assertNotContainsTerms(runtimeBoundary, [
@@ -81,6 +124,26 @@ void test('active references enforce the no-legacy contract', async () => {
     'rollout-readiness',
     'src/compat/',
     'src/migration/',
+    'merged runtime',
+    'unified runtime',
+    'split roots',
+    'split launchers',
+  ]);
+  assertNotContainsTerms(activeReferenceCorpus, [
+    'merged skill',
+    'merged runtime',
+    'merged architecture',
+    'merged target',
+    'merged workflow',
+    'first-wave merged commands',
+    'merged wrappers',
+    'merged artifact model',
+    'merged telemetry commands',
+    'split `backlog-engineer`',
+    'split `dossier-engineer`',
+    'source bundle',
+    'generated skill bundle',
+    'maintainer-facing utility specification',
   ]);
 });
 
@@ -92,17 +155,26 @@ void test('source bundle and package manifest expose only the canonical launcher
 
   assertContainsTerms(skillYaml, [
     'scripts/dossier-engineer.mjs',
-    'Canonical merged runtime shipped',
+    'Canonical runtime shipped',
     'references/audit-policy.md',
   ]);
   assertNotContainsTerms(skillYaml, [
     'references/migration-and-rollout.md',
+    'references/source-bundle-governance.md',
     'scripts/dossier.mjs',
     'scripts/backlog-engineer.mjs',
     'legacy-dossier',
     'command-marker-audit',
     'command-migrate-split-artifacts',
     'command-rollout-readiness',
+    'merged skill',
+    'merged runtime',
+    'unified runtime',
+    'split `backlog-engineer`',
+    'split `dossier-engineer`',
+    'policy-active-surface',
+    'gotcha-root-size',
+    'finalChecks:',
   ]);
   assertContainsTerms(packageJson, ['"dossier-engineer": "scripts/dossier-engineer.mjs"']);
   assertNotContainsTerms(packageJson, ['"dossier":', '"backlog-engineer":']);

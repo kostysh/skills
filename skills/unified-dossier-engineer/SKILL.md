@@ -1,71 +1,66 @@
 ---
 name: unified-dossier-engineer
-description: Build and maintain the merged dossier/backlog skill and its
-  canonical unified CLI runtime. Use when working on the merged architecture,
-  source bundle, artifact model, command surface, or canonical unified workflow.
-compatibility: Canonical merged runtime shipped. The source bundle is maintained
-  with skill-source-compiler. No split-model migration or compatibility surface
-  is part of this skill.
+description: Build and maintain the canonical dossier/backlog skill and its CLI
+  runtime. Use when working on the architecture, artifact model, command
+  surface, or canonical workflow.
+compatibility: Canonical runtime shipped. Only the canonical `.dossier` +
+  `docs/ssot` layout and the `dossier-engineer` launcher are part of this skill.
 metadata:
   source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 86dd20193526b43a5396f18cf8b9d94218c8eb29daa7019fc68a4bc6aa0fa15b
+  skillforge-source-hash: 22744ae8f61e79ebc0740c0b68198500d5e189f59acf6f20fe4f2616a9039511
 ---
 
 # unified-dossier-engineer
 
 ## Start here
 
-1. Confirm the task is about maintaining or extending the canonical merged dossier/backlog skill.
-2. Read every required active reference before changing the source bundle.
-3. Treat this skill as a shipped canonical runtime; do not reintroduce split-model compatibility promises.
-4. Regenerate the emitted skill through `skill-source-compiler` after source-bundle edits.
-5. Keep the root `SKILL.md` intentionally lean and move bulky active guidance into `references/*` or `assets/*`, not `docs/*`.
+1. Confirm the task is about maintaining or extending this dossier/backlog skill.
+2. Read the required active references relevant to the contract you are changing.
+3. Treat this skill as a shipped runtime with one supported `.dossier` + `docs/ssot` layout and one supported launcher.
 
 ## When to use this skill
 
-- Define or refine the merged architecture that combines backlog truth and dossier delivery workflow.
-- Maintain the generated source bundle and the shipped canonical merged runtime.
-- Implement or review unified CLI behavior, source-review flows, stage controllers, or canonical help/runtime contracts.
+- Define or refine the architecture that combines backlog truth and dossier delivery workflow.
+- Maintain the skill artifact model, command surface, or runtime behavior.
+- Implement or review CLI behavior, source-review flows, stage controllers, or help/runtime contracts.
 
 ## When NOT to use this skill
 
-- The task only changes the split `backlog-engineer` or `dossier-engineer` skill without affecting the merged skill.
-- The task depends on split roots, split launchers, or migration tooling; this skill does not support that surface.
+- The task belongs only to a different skill and does not affect this skill or its runtime.
+- The task depends on an unsupported repository layout or launcher outside the canonical `.dossier` + `docs/ssot` model.
 
 ## Overview
 
-This skill is the code-backed home of the merged `dossier-engineer`. Its job is to maintain the unified architecture, artifact model, runtime boundary, and canonical unified CLI for the merged skill.
+This skill is the code-backed home of the canonical dossier/backlog runtime. Its job is to maintain the architecture, artifact model, runtime boundary, and canonical CLI.
 
-The shipped runtime serves only the canonical unified model: `.dossier` for accounting/process truth and `docs/ssot` for project-facing SSOT. It does not ship split-model migration, rollout checks, or compatibility launchers.
+The shipped runtime serves one canonical model: `.dossier` for accounting/process truth and `docs/ssot` for project-facing SSOT. Only that layout and the `dossier-engineer` launcher are supported.
 
 Every mutating dossier stage requires external review before truthful closure. `review-artifact` records one already obtained audit result for one audit class. `dossier-step-close` validates the policy-required audit bundle before truthful closure.
 
-The merged target must preserve two distinct semantic layers inside one skill:
+This skill preserves two distinct semantic layers inside one runtime:
 
 - `backlog truth layer` for backlog graph, source registry, packets, patches, and source-review discipline
 - `delivery workflow layer` for intake, spec, planning, implementation, coverage, review, closure, and telemetry
-
-The generated instruction surface should stay intentionally small. The merged skill is broad and will keep growing, so the source bundle must enforce progressive disclosure and command-surface honesty.
 
 ## Workflow stages
 
 ### Workflow stage: Confirm shipped-runtime scope
 
-Prevent the source bundle from overclaiming what the merged runtime actually ships today.
+Prevent the active instructions from overclaiming what the shipped runtime actually supports today.
 
-1. Verify whether the task changes runtime code, tests, active references, or source-bundle structure.
+1. Verify whether the task changes runtime code, tests, active references, or other skill files.
 2. Refuse to document runnable commands unless a shipped runtime and tests exist in this skill.
-3. Remove split-model compatibility promises instead of preserving them as transitional wording.
+3. Remove unsupported layout or launcher claims instead of preserving transition-era wording.
 
 Validation:
 
-- No speculative CLI contract appears in `SKILL.md`.
-- The source bundle remains honest about canonical shipped scope.
+- No speculative CLI contract appears in the active instructions.
+- The active instructions remain honest about canonical shipped scope.
 
-### Workflow stage: Maintain the unified model
+### Workflow stage: Maintain the model
 
-Keep the merged architecture deterministic and non-destructive.
+Keep the architecture deterministic and non-destructive.
 
 1. Preserve the accounting versus project-SSOT artifact split.
 2. Preserve the invariant `one feature = one backlog item`.
@@ -75,26 +70,14 @@ Keep the merged architecture deterministic and non-destructive.
 
 Validation:
 
-- No tracked feature from either original skill disappears from the merged target model.
+- No tracked feature disappears from the current canonical model.
 - `.dossier` and `docs/ssot` remain semantically distinct.
 - Delivery state, `coverage_gate`, freshness, and closure remain separate axes.
 - Stage-controller boundaries stop at `ready_for_close`; authoritative closure remains helper-driven.
 
-### Workflow stage: Regenerate the generated skill
-
-Keep source bundle and generated skill aligned.
-
-1. Edit `skill.yaml`, `fragments/*`, `references/*`, or `assets/*` first when changing the skill contract.
-2. Run compiler lint, compile, and check from the skill root.
-3. Review compile warnings, especially `SKILL.md` size warnings, before finishing.
-
-Validation:
-
-- `SKILL.md` links every required active reference.
-
 ### Workflow stage: Apply implementation discipline to runtime changes
 
-Keep merged runtime changes simple, local, and explicitly verified.
+Keep runtime changes simple, local, and explicitly verified.
 
 1. When the task changes runtime code or code-backed tests, also use the `implementation-discipline` skill.
 2. Prefer the smallest runtime change that satisfies the requirement instead of adding speculative abstractions.
@@ -107,30 +90,25 @@ Validation:
 
 ## Interop priority
 
-- **shipped merged runtime behavior:** `unified-dossier-engineer`. The merged skill owns its active command surface and canonical unified artifact contract.
-- **generated-skill maintenance and source-bundle discipline:** `skill-source-compiler`. The merged skill must be maintained as a generated source bundle rather than hand-edited prose.
-- **implementation behavior and code-review hygiene for merged runtime work:** `implementation-discipline`. Use it together with this skill whenever runtime code or code-backed tests change so merged-runtime work stays simple, surgical, and explicitly verified.
+- **shipped runtime behavior:** `unified-dossier-engineer`. This skill owns its active command surface and canonical artifact contract.
+- **implementation behavior and code-review hygiene for runtime work:** `implementation-discipline`. Use it together with this skill whenever runtime code or code-backed tests change so runtime work stays simple, surgical, and explicitly verified.
 
 ## Runnable commands
 ### CLI command: `help`
-**Use when:** Confirm the public merged CLI contract before invoking or documenting another command.
+**Use when:** Confirm the public CLI contract before invoking or documenting another command.
 
-**Summary:** Show the shipped unified help surface or command-local help.
+**Summary:** Show the shipped help surface or command-local help.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs help; node scripts/dossier-engineer.mjs help feature-intake
 
 ### CLI command: `init`
-**Use when:** Bootstrap a repository for the merged runtime.
+**Use when:** Bootstrap a repository for the runtime.
 
-**Summary:** Initialize the unified process root, backlog subroot, and SSOT skeleton.
+**Summary:** Initialize the process root, backlog subroot, and SSOT skeleton.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs init --path <repo>
 
@@ -141,8 +119,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs register-source --path <path> --kind spec --authority repo
 
 ### CLI command: `list-sources`
@@ -151,8 +127,6 @@ Validation:
 **Summary:** List registered sources and source metadata.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs list-sources
 
@@ -163,8 +137,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs update-source-path --source-id <source_id> --new-path <path>
 
 ### CLI command: `remove-source`
@@ -173,8 +145,6 @@ Validation:
 **Summary:** Remove a source after durable cleanup of backlog references.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs remove-source --source-id <source_id>
 
@@ -185,8 +155,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs refresh
 
 ### CLI command: `ack-source-review`
@@ -196,18 +164,14 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs ack-source-review --source-id <source_id>
 
 ### CLI command: `status`
 **Use when:** You need a compact readiness summary for the current process root.
 
-**Summary:** Show merged backlog readiness signals including source-review blocking counts.
+**Summary:** Show backlog readiness signals including source-review blocking counts.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs status
 
@@ -218,8 +182,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs items --item-keys <item_key_1>,<item_key_2>
 
 ### CLI command: `search`
@@ -228,8 +190,6 @@ Validation:
 **Summary:** Search backlog items with source-review readiness overlays.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs search --status defined
 
@@ -240,8 +200,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs queue
 
 ### CLI command: `gaps`
@@ -250,8 +208,6 @@ Validation:
 **Summary:** List explicit blockers and unresolved backlog gaps.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs gaps
 
@@ -262,8 +218,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs attention
 
 ### CLI command: `template`
@@ -272,8 +226,6 @@ Validation:
 **Summary:** Generate packet or patch templates.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs template packet --out <path>
 
@@ -284,8 +236,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs packet --path <packet.json>
 
 ### CLI command: `patch-item`
@@ -294,8 +244,6 @@ Validation:
 **Summary:** Apply a patch that updates existing backlog tasks.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs patch-item --patch <patch.json>
 
@@ -306,8 +254,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs remove-item --patch <patch.json>
 
 ### CLI command: `report`
@@ -316,8 +262,6 @@ Validation:
 **Summary:** Generate a human-readable backlog report on disk.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs report
 
@@ -328,8 +272,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs feature-intake --title <title> --backlog-item-key <key> --backlog-delivery-state <state> --backlog-source <source> --area <area> --owner <owner> --impact <impact>
 
 ### CLI command: `spec-compact`
@@ -338,8 +280,6 @@ Validation:
 **Summary:** Mechanical controller for the spec-compact stage.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs spec-compact --feature-id <id>
 
@@ -350,8 +290,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs plan-slice --feature-id <id>
 
 ### CLI command: `implementation`
@@ -360,8 +298,6 @@ Validation:
 **Summary:** Mechanical controller for the implementation stage.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs implementation --feature-id <id>
 
@@ -372,8 +308,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs change-proposal --feature-id <id>
 
 ### CLI command: `contract-drift-audit`
@@ -382,8 +316,6 @@ Validation:
 **Summary:** Detect executable contract drift without follow-up changes.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs contract-drift-audit --dossier <path>
 
@@ -394,8 +326,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs coverage-audit --dossier <path>
 
 ### CLI command: `debt-audit`
@@ -404,8 +334,6 @@ Validation:
 **Summary:** Scan for explicit TODO/FIXME/HACK/XXX debt markers.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs debt-audit --dossier <path>
 
@@ -416,8 +344,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs dependency-graph --dossier <path>
 
 ### CLI command: `sync-index`
@@ -426,8 +352,6 @@ Validation:
 **Summary:** Refresh generated dossier table and graph blocks only.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs sync-index --root <repo>
 
@@ -438,8 +362,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs index-refresh --root <repo>
 
 ### CLI command: `lint-dossiers`
@@ -448,8 +370,6 @@ Validation:
 **Summary:** Validate feature dossiers and optionally update Red flags.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs lint-dossiers --root <repo>
 
@@ -460,8 +380,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs dossier-verify --dossier <path>
 
 ### CLI command: `review-artifact`
@@ -470,8 +388,6 @@ Validation:
 **Summary:** Persist one already obtained audit result for one audit class.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs review-artifact --dossier <path> --step implementation --audit-class spec-conformance-reviewer --verdict PASS --reviewer independent
 
@@ -482,8 +398,6 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs dossier-step-close --dossier <path> --step implementation --verify-artifact <path> --review-artifact <spec.json> --review-artifact <code.json> --review-artifact <security.json>
 
 ### CLI command: `next-step`
@@ -492,8 +406,6 @@ Validation:
 **Summary:** Resolve the dossier-local next workflow stage from structured state.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
-
-**Tests:** `test/cli.test.ts`
 
 **Examples:** node scripts/dossier-engineer.mjs next-step --dossier <path>
 
@@ -504,14 +416,11 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Tests:** `test/cli.test.ts`
-
 **Examples:** node scripts/dossier-engineer.mjs lifecycle-refresh --feature-id <id>
 
 ## Gotchas
 
-- **high** — Do not document commands, flags, or output fields unless the merged runtime and tests actually ship them.
-- **high** — The merged skill will be large; keep `SKILL.md` small and push detail into `references/*` or compile will eventually drift beyond the recommended size ceiling.
+- **high** — Do not document commands, flags, or output fields unless the runtime and tests actually ship them.
 - **high** — `.dossier` is for accounting and process artifacts, while `docs/ssot` remains the human-facing project SSOT.
 - **high** — Source hash changes must open a source-review record first; they must not immediately flood linked items with `needs_attention`.
 - **high** — Do not collapse backlog lifecycle, dossier maturity, `coverage_gate`, review freshness, and closure state into one flat status enum.
@@ -520,11 +429,8 @@ Validation:
 
 ## Policies
 
-### Active normative surface
-The generated `SKILL.md`, required references, and shipped runtime/help/tests are the active default instruction surface for this merged skill.
-
 ### No functionality loss
-The merge must retain every essential behavior of both original skills, including backlog source tracking, `change-proposal`, `contract-drift-audit`, `coverage_gate`, lifecycle telemetry, and strict closure truth.
+This skill must retain every essential behavior in its canonical scope, including backlog source tracking, `change-proposal`, `contract-drift-audit`, `coverage_gate`, lifecycle telemetry, and strict closure truth.
 
 ### Source-review before item flood
 Refresh-driven source changes open source-review records and block linked-item readiness until review resolves; item-level escalation happens only after confirmed backlog mutation work.
@@ -534,16 +440,15 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 
 ## Required active references
 - [Status and scope](references/status-and-scope.md) — Read this first to understand what this skill currently is and is not.
-- [Unified architecture outline](references/unified-architecture.md) — Read this when modifying the merged artifact model, workflow model, or runtime boundaries.
-- [Source bundle governance](references/source-bundle-governance.md) — Read this when editing the scaffold, regenerating SKILL.md, or expanding the future runtime surface.
+- [Unified architecture outline](references/unified-architecture.md) — Read this when modifying the unified artifact model, workflow model, or runtime boundaries.
 - [Unified artifact topology](references/unified-artifact-topology.md) — Read this when designing or validating `.dossier` layout, root discovery, or `docs/ssot` boundaries.
-- [Backlog truth layer](references/backlog-truth-layer.md) — Read this when working on backlog graph truth, read models, actualization, or source-maintenance semantics in the merged skill.
+- [Backlog truth layer](references/backlog-truth-layer.md) — Read this when working on backlog graph truth, read models, actualization, or source-maintenance semantics in this skill.
 - [Source-review contract](references/source-review-contract.md) — Read this when designing refresh/attention behavior or source-change review semantics.
-- [Delivery workflow layer](references/delivery-workflow-layer.md) — Read this when designing feature intake, spec/planning/implementation flow, mature change path, coverage gate, or closure readiness in the merged skill.
+- [Delivery workflow layer](references/delivery-workflow-layer.md) — Read this when designing feature intake, spec/planning/implementation flow, mature change path, coverage gate, or closure readiness in this skill.
 - [Audit policy](references/audit-policy.md) — Read this when changing mutating-stage review policy, review bundles, review freshness, or truthful close-out rules.
 - [Telemetry and closure](references/telemetry-and-closure.md) — Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
 - [Commandized stage control](references/commandized-stage-control.md) — Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
-- [Runtime and command boundary](references/runtime-and-command-boundary.md) — Read this when designing or maintaining merged runtime modules, help surface, or command-family boundaries.
+- [Runtime and command boundary](references/runtime-and-command-boundary.md) — Read this when designing or maintaining canonical runtime modules, help surface, or command-family boundaries.
 
 ## Bundled assets
 
@@ -552,9 +457,9 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 ## Portability rules
 
 - Do not emit absolute paths or machine-specific environment assumptions.
-- Do not require repository files outside this skill folder to understand the merged design.
-- Keep all mandatory guidance for the future merged skill inside this source bundle.
-- Use only relative links inside the generated skill bundle.
+- Do not require repository files outside this skill folder to understand this design.
+- Keep all mandatory guidance for this skill inside this skill folder.
+- Use only relative links inside the skill bundle.
 
 ## Portability checklist before finishing
 
@@ -565,9 +470,3 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 ## Supporting and historical surface
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
-
-## Final checks
-
-1. Confirm the source bundle and generated `SKILL.md` agree on current merged-skill status.
-2. Confirm no active command surface is documented unless the merged runtime and tests actually ship it.
-3. Confirm the root `SKILL.md` remains concise enough that adding more guidance should first prompt reference extraction, not root-file growth.

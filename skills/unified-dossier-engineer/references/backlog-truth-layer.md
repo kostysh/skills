@@ -1,6 +1,6 @@
 # Backlog truth layer
 
-Use this reference when preserving or designing backlog-side capabilities inside the merged skill.
+Use this reference when preserving or designing backlog-side capabilities inside this skill.
 
 ## What this layer owns
 
@@ -18,7 +18,7 @@ It does not own dossier-local execution workflow for an already selected feature
 
 ## Required read-model family
 
-The merged skill must preserve these backlog read surfaces:
+This skill must preserve these backlog read surfaces:
 
 - `queue`
 - `status`
@@ -76,7 +76,7 @@ Default clean confirmation:
 
 ## Source maintenance and traceability
 
-The merged skill must preserve:
+This skill must preserve:
 
 - stable `source_id` identity across path moves via `update-source-path`
 - explicit deletion path via `remove-source`

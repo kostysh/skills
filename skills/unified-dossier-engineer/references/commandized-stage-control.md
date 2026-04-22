@@ -1,10 +1,10 @@
 # Commandized stage control
 
-Use this reference when maintaining the shipped stage-controller model for primary delivery workflows in the merged skill.
+Use this reference when maintaining the shipped stage-controller model for primary delivery workflows in this skill.
 
 ## Purpose
 
-The merged skill removes the old ambiguity where some delivery steps were real commands and others were prose-only workflow stages.
+This skill removes the old ambiguity where some delivery steps were real commands and others were prose-only workflow stages.
 
 Target model:
 
@@ -16,7 +16,7 @@ This reference defines the active boundary for the shipped first-wave stage-cont
 
 ## Primary delivery stage-controller set
 
-The merged utility treats these stages as first-class stage-controller commands:
+The utility treats these stages as first-class stage-controller commands:
 
 - `feature-intake`
 - `spec-compact`

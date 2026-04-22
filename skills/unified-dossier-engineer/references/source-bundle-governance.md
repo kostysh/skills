@@ -19,7 +19,7 @@ Do not hand-edit generated `SKILL.md` as the authoritative source.
 
 ## Size rule
 
-The merged skill is expected to accumulate a large amount of guidance. Because the compiler enforces a recommended maximum size for `SKILL.md`, the source bundle must be designed for progressive disclosure from the start.
+This skill is expected to accumulate a large amount of guidance. Because the compiler enforces a recommended maximum size for `SKILL.md`, the source bundle must be designed for progressive disclosure from the start.
 
 Required behavior:
 
@@ -47,4 +47,4 @@ Once runtime promotion happened:
 
 - `skill.yaml` command entries must stay aligned with the shipped launchers and help surface
 - command additions, removals, renamed flags, and output-field changes must update runtime, tests, and source bundle in the same change set
-- active references may describe future hardening work, but they must not imply split-model compatibility, migration tooling, or rollout support unless runtime and tests actually ship it
+- active references may describe future hardening work, but they must not imply unsupported layouts, extra launcher surfaces, or unshipped adaptation flows unless runtime and tests actually ship them

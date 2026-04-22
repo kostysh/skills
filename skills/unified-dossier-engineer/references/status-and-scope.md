@@ -1,31 +1,29 @@
 # Status and scope
 
-This skill ships the canonical merged runtime for `unified-dossier-engineer`.
+This skill ships the canonical dossier/backlog runtime.
 
 Current status:
 
-- code-backed generated skill
-- source of truth rooted at `skill.yaml`
-- authoritative unified CLI contract exists under `scripts/dossier-engineer.mjs`
-- only the canonical unified layout is supported
-- no split-model migration tooling, rollout-readiness checks, or compatibility launchers are shipped
+- code-backed skill
+- authoritative CLI contract exists under `scripts/dossier-engineer.mjs`
+- only the canonical `.dossier` + `docs/ssot` layout is supported
+- only the `dossier-engineer` launcher is shipped
 
 Use this skill for:
 
-- merged architecture decisions
-- source-bundle maintenance
-- runtime/CLI maintenance inside the merged skill
-- canonical unified `.dossier` + `docs/ssot` behavior
+- architecture decisions
+- runtime/CLI maintenance inside this skill
+- canonical `.dossier` + `docs/ssot` behavior
 
 Do not use this skill:
 
-- as proof that split repositories can be migrated automatically
-- as a compatibility layer for old `backlog-engineer` or `dossier` launchers
-- for legacy split-root operations outside the canonical unified layout
+- as proof that unsupported repository layouts can be adapted automatically
+- as a compatibility layer for unsupported launchers or alternate root conventions
+- for repository operations outside the canonical `.dossier` + `docs/ssot` layout
 
 ## Non-negotiable scope invariants
 
-- do not lose existing merged functionality while removing legacy support
+- do not lose existing unified functionality while keeping the canonical model strict
 - keep `.dossier` for accounting and process artifacts
 - keep `docs/ssot` for human-facing project SSOT
 - keep `one feature = one backlog item`

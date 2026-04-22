@@ -250,7 +250,7 @@ function createDossierCommandWrapper(
               const nextCommand = `dossier-engineer spec-compact --feature-id ${featureId}`;
               if (exitCode !== 0) {
                 const warnings = [
-                  `feature-intake created ${summary.dossier}, but vendored closeout failed before merged telemetry append.`,
+                  `feature-intake created ${summary.dossier}, but vendored closeout failed before telemetry append.`,
                   ...(summary.refresh_stderr ? [summary.refresh_stderr] : []),
                 ];
                 if (args.includes('--json')) {
@@ -1122,7 +1122,7 @@ function renderGlobalHelp(version: string): string {
   const lines = [
     `dossier-engineer ${version}`,
     '',
-    'The only public utility for the merged dossier/backlog runtime.',
+    'The only public utility for the dossier/backlog runtime.',
     '',
     'Usage:',
     '  dossier-engineer <command> [options]',
@@ -1135,9 +1135,7 @@ function renderGlobalHelp(version: string): string {
   for (const [family, title] of FAMILY_TITLES) {
     lines.push(`${title}:`);
     if (family === 'bootstrap') {
-      lines.push(
-        '  help                   Show the shipped unified help surface or command-local help.',
-      );
+      lines.push('  help                   Show the shipped help surface or command-local help.');
     }
     for (const command of COMMANDS.filter((entry) => entry.family === family)) {
       const aliasSuffix =
@@ -1153,8 +1151,7 @@ function renderGlobalHelp(version: string): string {
     'Notes:',
     '  - Stage-controller commands are mechanical progress controllers only.',
     '  - Authoritative closure remains `dossier-step-close` followed by `lifecycle-refresh` when telemetry refresh is needed.',
-    '  - This runtime only supports the canonical unified `.dossier` + `docs/ssot` layout.',
-    '  - No split-skill migration, rollout, or compatibility launchers are shipped here.',
+    '  - This runtime only supports the canonical `.dossier` + `docs/ssot` layout.',
   );
 
   return lines.join('\n');

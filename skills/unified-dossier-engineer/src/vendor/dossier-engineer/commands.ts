@@ -960,7 +960,7 @@ function featureIntakeHelp(): string {
     'Options:',
     '  --root <path>                Repository root. Defaults to cwd.',
     '  --title <text>               Dossier title. Required.',
-    '  --backlog-item-key <key>     Selected backlog item key from the unified backlog truth layer. Required.',
+    '  --backlog-item-key <key>     Selected backlog item key from the backlog truth layer. Required.',
     '  --backlog-delivery-state <state>  Backlog delivery state at intake. Required.',
     '                               Allowed: defined, specified, planned, implemented.',
     '  --backlog-source <source>    Repeatable backlog source traceability entry. At least one required.',

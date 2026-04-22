@@ -20,7 +20,7 @@ var __exportAll = (all, no_symbols) => {
 //#region package.json
 var name = "@kostysh/unified-dossier-engineer";
 var version$1 = "0.2.0";
-var description = "Unified CLI runtime for the merged dossier/backlog skill.";
+var description = "CLI runtime for the canonical dossier/backlog skill.";
 var type = "module";
 var bin = { "dossier-engineer": "scripts/dossier-engineer.mjs" };
 var exports = { ".": "./scripts/dossier-engineer.mjs" };
@@ -6753,7 +6753,7 @@ async function initializeProcessRoot(root) {
 	await writeTextAtomic(path.join(root, ".dossier/backlog/AGENTS.md"), [
 		"# Unified Backlog Accounting Surface",
 		"",
-		"This directory contains utility-owned backlog artifacts for the merged dossier-engineer runtime.",
+		"This directory contains utility-owned backlog artifacts for the dossier-engineer runtime.",
 		"Do not hand-edit generated machine artifacts unless the workflow explicitly requires it.",
 		""
 	].join("\n"));
@@ -8267,7 +8267,7 @@ function featureIntakeHelp() {
 		"Options:",
 		"  --root <path>                Repository root. Defaults to cwd.",
 		"  --title <text>               Dossier title. Required.",
-		"  --backlog-item-key <key>     Selected backlog item key from the unified backlog truth layer. Required.",
+		"  --backlog-item-key <key>     Selected backlog item key from the backlog truth layer. Required.",
 		"  --backlog-delivery-state <state>  Backlog delivery state at intake. Required.",
 		"                               Allowed: defined, specified, planned, implemented.",
 		"  --backlog-source <source>    Repeatable backlog source traceability entry. At least one required.",
@@ -20926,7 +20926,7 @@ function createReportsModule(payload) {
 //#region src/vendor/backlog-engineer/templates/render-agents-template.ts
 var BACKLOG_AGENTS_TEMPLATE = `# AGENTS.md
 
-This directory is the unified backlog subroot managed by \`dossier-engineer\`.
+This directory contains utility-owned backlog artifacts managed by \`dossier-engineer\`.
 
 ## Core rules
 
@@ -20955,7 +20955,7 @@ This directory is the unified backlog subroot managed by \`dossier-engineer\`.
 
 - Read source documents first.
 - Register sources through the utility before relying on them in packets.
-- If multiple sources are needed for one unified process root, register them strictly one by one.
+- If multiple sources are needed for one process root, register them strictly one by one.
 - Use utility lookups such as \`list-sources\` instead of rebuilding source mappings from packet files.
 
 ## Drafts vs canonical copies
@@ -21797,7 +21797,7 @@ function createRuntime(options = {}) {
 					cwd: dependencies.path.resolve(cwd),
 					root_marker: ROOT_MARKER_BASENAME
 				},
-				hint: "Run `dossier-engineer init --path <path>` inside a new unified process root or execute the command from an existing managed directory."
+				hint: "Run `dossier-engineer init --path <path>` inside a new process root or execute the command from an existing managed directory."
 			});
 			const coordinatorPayload = backlogRoot === void 0 ? void 0 : {
 				backlogRoot,
@@ -22603,7 +22603,7 @@ var BACKLOG_COMMANDS = [
 		name: "init",
 		commandType: "backlog",
 		family: "bootstrap",
-		summary: "Initialize the unified process root, backlog subroot, and SSOT skeleton.",
+		summary: "Initialize the process root, backlog subroot, and SSOT skeleton.",
 		usage: ["dossier-engineer init --path <path>"],
 		options: ["--path <path> — Process root directory to initialize."],
 		execute: runInitCommand
@@ -22709,7 +22709,7 @@ var BACKLOG_COMMANDS = [
 		family: "backlog-read",
 		summary: "Search backlog items with source-review readiness overlay.",
 		usage: ["dossier-engineer search [filters]"],
-		options: ["See `dossier-engineer help search` in the split backlog runtime for full filter surface."],
+		options: ["See `dossier-engineer help search` for the full filter surface."],
 		execute: runSearchCommand
 	},
 	createVendoredCommandWrapper(GAPS_COMMAND, "backlog-read"),
@@ -23525,7 +23525,7 @@ function createDossierCommandWrapper(name, family) {
 						const featureCycleId = `fc-${featureId}-${Date.now().toString(36)}`;
 						const nextCommand = `dossier-engineer spec-compact --feature-id ${featureId}`;
 						if (exitCode !== 0) {
-							const warnings = [`feature-intake created ${summary.dossier}, but vendored closeout failed before merged telemetry append.`, ...summary.refresh_stderr ? [summary.refresh_stderr] : []];
+							const warnings = [`feature-intake created ${summary.dossier}, but vendored closeout failed before telemetry append.`, ...summary.refresh_stderr ? [summary.refresh_stderr] : []];
 							if (args.includes("--json")) {
 								writeCliEnvelope(io.stdout, {
 									command: "feature-intake",
@@ -24068,7 +24068,7 @@ function renderGlobalHelp(version) {
 	const lines = [
 		`dossier-engineer ${version}`,
 		"",
-		"The only public utility for the merged dossier/backlog runtime.",
+		"The only public utility for the dossier/backlog runtime.",
 		"",
 		"Usage:",
 		"  dossier-engineer <command> [options]",
@@ -24079,14 +24079,14 @@ function renderGlobalHelp(version) {
 	];
 	for (const [family, title] of FAMILY_TITLES) {
 		lines.push(`${title}:`);
-		if (family === "bootstrap") lines.push("  help                   Show the shipped unified help surface or command-local help.");
+		if (family === "bootstrap") lines.push("  help                   Show the shipped help surface or command-local help.");
 		for (const command of COMMANDS.filter((entry) => entry.family === family)) {
 			const aliasSuffix = command.aliases && command.aliases.length > 0 ? ` (aliases: ${command.aliases.join(", ")})` : "";
 			lines.push(`  ${command.name.padEnd(22)} ${command.summary}${aliasSuffix}`);
 		}
 		lines.push("");
 	}
-	lines.push("Notes:", "  - Stage-controller commands are mechanical progress controllers only.", "  - Authoritative closure remains `dossier-step-close` followed by `lifecycle-refresh` when telemetry refresh is needed.", "  - This runtime only supports the canonical unified `.dossier` + `docs/ssot` layout.", "  - No split-skill migration, rollout, or compatibility launchers are shipped here.");
+	lines.push("Notes:", "  - Stage-controller commands are mechanical progress controllers only.", "  - Authoritative closure remains `dossier-step-close` followed by `lifecycle-refresh` when telemetry refresh is needed.", "  - This runtime only supports the canonical `.dossier` + `docs/ssot` layout.");
 	return lines.join("\n");
 }
 async function runUnifiedCli(argv, io, options) {

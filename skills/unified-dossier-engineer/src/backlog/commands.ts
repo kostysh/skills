@@ -824,7 +824,7 @@ export const BACKLOG_COMMANDS: UnifiedBacklogCommand[] = [
     name: 'init',
     commandType: 'backlog',
     family: 'bootstrap',
-    summary: 'Initialize the unified process root, backlog subroot, and SSOT skeleton.',
+    summary: 'Initialize the process root, backlog subroot, and SSOT skeleton.',
     usage: ['dossier-engineer init --path <path>'],
     options: ['--path <path> — Process root directory to initialize.'],
     execute: runInitCommand,
@@ -969,7 +969,7 @@ export const BACKLOG_COMMANDS: UnifiedBacklogCommand[] = [
     summary: 'Search backlog items with source-review readiness overlay.',
     usage: ['dossier-engineer search [filters]'],
     options: [
-      'See `dossier-engineer help search` in the split backlog runtime for full filter surface.',
+      'See `dossier-engineer help search` for the full filter surface.',
     ],
     execute: runSearchCommand,
   },
