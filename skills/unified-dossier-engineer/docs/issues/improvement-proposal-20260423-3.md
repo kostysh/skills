@@ -128,3 +128,60 @@ Issue считается исправленным только когда:
 - Не добавлять runtime session-trace scraping или скрытые heuristics для “доказательства” reviewer independence.
 - Не redesign-ить storage review artifacts больше, чем требуется для корректного документирования правила.
 - Не смешивать с этим issue улучшения stage-log schema или retrospective parser.
+
+## План имплементации
+
+Status: draft
+
+Source row: `ISS-01` / `UDE-01`
+
+### Рабочие допущения
+
+- Это изменение чинит именно ambiguous external-audit execution rule, а не весь audit lifecycle.
+- Runtime может валидировать только durable provenance subset; launch-mode constraints остаются process rules, которые агент обязан соблюдать при запуске reviewer.
+- План должен устранить исходную ошибку запуска reviewer с forked/full-history context, а не только уточнить wording про artifact provenance.
+
+### Шаги
+
+1. Обновить active guidance, из которого агент принимает решение о запуске blocking reviewer:
+   - в `SKILL.md` добавить короткое launch-time правило для required external audits: запускать отдельного reviewer без forked/full-history context, держать prompt read-only, rerun при ошибочном fork/full-history launch;
+   - в `references/audit-policy.md` сделать запрет forked/full-history delegation явным acceptance-level rule, сохранив формулировку process-trust policy;
+   - в `references/delivery-workflow-layer.md` уточнить, что invalid review launch method блокирует truthful closure и требует rerun;
+   - в `references/commandized-stage-control.md` уточнить, что `ready_for_close` только вводит стадию в non-forked external-review flow и не является доказательством корректного launch mode.
+2. Обновить runtime-facing contract без overclaim:
+   - в `references/runtime-and-command-boundary.md`, `references/telemetry-and-closure.md` и `docs/utility-spec.ru.md` явно сказать, что `review-artifact` и `dossier-step-close` записывают/проверяют observable provenance, но не доказывают `fork_context`;
+   - при необходимости добавить короткие help notes в `review-artifact` / `dossier-step-close`, не меняя их роль persistence/closure helpers.
+3. Защитить contract tests:
+   - расширить `test/docs-contract.test.ts` проверками на `fork_context: false`, запрет fork/full-history substitute, rerun при invalid launch method и отсутствие runtime promise “prove independence”;
+   - если меняется help text, обновить CLI/help assertions в `test/cli.test.ts`.
+4. Синхронизировать generated/shipped surfaces:
+   - если правка затрагивает source-driven help или runtime text, обновить `src/**`, пересобрать `scripts/dossier-engineer.mjs`;
+   - держать `skill.yaml`, `SKILL.md`, active references и utility spec семантически aligned.
+
+### Проверки
+
+- `pnpm --filter @kostysh/unified-dossier-engineer test`
+- `pnpm --filter @kostysh/unified-dossier-engineer typecheck`
+- Точечная проверка help output, если менялись runtime/help notes.
+
+### Scope guards
+
+- Не добавлять session trace scraping, hidden heuristics или runtime detection `fork_context`.
+- Не менять required audit bundle mapping.
+- Не расширять review artifact schema сверх observable provenance wording, если для этого не нужен отдельный issue.
+
+## Внешний Spec-Conformance Review плана
+
+Status: reviewed
+
+Reviewer: `spec-conformance-reviewer`
+
+Model: top-tier, reasoning `high`, non-forked external review
+
+Verdict: `PASS`
+
+Ключевой результат review:
+
+- план покрывает исходную ошибку `fork_context: true` / full-history inheritance;
+- launch-time rule, rerun при invalid review method и honest runtime/provenance boundary признаны достаточными;
+- избыточного выхода за mandatory boundaries не найдено.

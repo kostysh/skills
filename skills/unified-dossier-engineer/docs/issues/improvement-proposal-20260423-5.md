@@ -154,3 +154,86 @@ Issue считается исправленным только когда:
 - Не redesign-ить всю lifecycle telemetry model.
 - Не добавлять generic trace scraping как substitute для explicit stage metadata.
 - Не смешивать с этим issue session provenance changes из `ISS-02`, кроме мест, где shared schema должна аккуратно сосуществовать.
+
+## План имплементации
+
+Status: draft
+
+Source row: `ISS-03` / `UDE-02`, `UDE-04`, `UDE-05`, `UDE-06`, `UDE-07`
+
+### Рабочие допущения
+
+- Helper-managed `.dossier/stages/*` остается authoritative structured coordination/validation surface.
+- Stage log frontmatter является bounded mirror structured state; narrative sections остаются human-readable.
+- Все новые annotations являются agent-supplied inputs. Automatic skill scraping или process-miss inference не входит в scope.
+
+### Шаги
+
+1. Сначала зафиксировать schema contract в active docs:
+   - обновить `references/telemetry-and-closure.md`, `references/commandized-stage-control.md`, `references/unified-artifact-topology.md`, `references/delivery-workflow-layer.md` и `docs/utility-spec.ru.md`;
+   - явно перечислить parity-protected machine fields: existing `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved`, плюс new fields `review_artifacts`, `verification_artifacts`, `step_artifact`, `final_delivery_commit`, `final_closure_commit`, `skills_used`, `skill_issues`, `skill_followups`, `process_misses`, `primary_feature_id`, `primary_backlog_item_key`, `phase_scope`;
+   - зафиксировать authority rule: `.dossier/stages/*` authoritative, stage log frontmatter mirrors it for the fields in this issue.
+2. Расширить stage-state model:
+   - в `src/shared/stage-state.ts` добавить/нормализовать typed fields для `backlog_followup_*` parity и new arrays/objects;
+   - обновить `syncStageStateFromMetadata` и `machineMetadataFromStageState`, чтобы новые fields round-trip без потери parity;
+   - сохранить backward-compatible defaults: missing arrays become `[]`, missing optional anchors become `null`.
+3. Добавить minimal agent-supplied CLI inputs:
+   - repeatable `--skill-used <skill-name>`;
+   - repeatable `--skill-issue <code-or-summary>`;
+   - repeatable `--skill-followup <code-or-summary>`;
+   - repeatable `--process-miss <dsl>`.
+4. Зафиксировать простой repeatable DSL для process misses:
+   - format: `id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>`;
+   - parser должен reject malformed entries до записи artifact;
+   - no input означает `process_misses: []`, а rendered `Process misses` показывает `none`;
+   - structured `process_misses` является source of truth, prose section только rendered mirror.
+5. Материализовать artifact linkage:
+   - `review-artifact` wrapper обновляет `review_artifacts[]` и `review_events[]` в stage state/log;
+   - `dossier-verify` wrapper после успешной записи verification artifact обновляет `verification_artifacts[]`;
+   - `dossier-step-close` записывает `step_artifact`, сохраняет `review_artifacts[]` / `verification_artifacts[]` и добавляет `final_closure_commit` when observable;
+   - stage-controller `--ready-for-close` может записывать `final_delivery_commit` when observable, но этот commit остается optional trace link, not closure evidence.
+6. Добавить explicit scope identity:
+   - stage-controller metadata пишет `primary_feature_id` из canonical feature id;
+   - `primary_backlog_item_key` mirror-ит resolved backlog item key;
+   - `phase_scope` задается optional explicit input, когда простой feature/stage scope недостаточен.
+7. Добавить validation/parity enforcement:
+   - central helper сравнивает fields этого issue между metadata перед render и stage-state record;
+   - `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved` входят в тот же parity set и покрывают source problem `UDE-02`;
+   - write paths fail before/at write boundary при malformed structured inputs;
+   - helper-owned updates preserve authored narrative while refreshing structured mirror.
+8. Защитить tests:
+   - CLI tests для round-trip stage log + stage-state parity;
+   - отдельный regression test, что `backlog_followup_*` одинаково отражены в stage log frontmatter и `.dossier/stages/*`;
+   - tests для malformed `--process-miss`;
+   - tests для review/verification/step-close linkage updates;
+   - docs-contract tests, что commit anchors optional trace links и skill/process fields agent-supplied, not trace-scraped.
+9. Пересобрать shipped runtime после changes в `src`.
+
+### Проверки
+
+- `pnpm --filter @kostysh/unified-dossier-engineer test`
+- `pnpm --filter @kostysh/unified-dossier-engineer typecheck`
+- Targeted fixture smoke: stage-controller -> dossier-verify -> review-artifact -> dossier-step-close produces parity for fields of this issue.
+
+### Scope guards
+
+- Не добавлять retrospective discovery logic.
+- Не добавлять automatic skill extraction или process-miss inference.
+- Не делать commit anchors required closure evidence.
+- Не включать session provenance migration из `ISS-02`, кроме совместимого хранения shared metadata.
+
+## Внешний Spec-Conformance Review плана
+
+Status: reviewed
+
+Reviewer: `spec-conformance-reviewer`
+
+Model: top-tier, reasoning `high`, non-forked external review
+
+Verdict: `PASS`
+
+Ключевой результат review:
+
+- initial review нашел обязательный пропуск: `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved` не входили в explicit schema/parity scope;
+- план доработан: `backlog_followup_*` включены в parity-protected field set, stage-state normalization, parity enforcement и regression tests;
+- повторный review подтвердил, что план покрывает `UDE-02`, `UDE-04`, `UDE-05`, `UDE-06`, `UDE-07` без выхода в excluded trace scraping или retrospective discovery.

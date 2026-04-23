@@ -125,3 +125,68 @@ Issue считается исправленным только когда:
 - Не реализовывать automatic lookup session ids из Codex-local session store.
 - Не привязывать skill к private file layout или env contract одного runtime.
 - Не смешивать с этим issue general stage-log schema expansion.
+
+## План имплементации
+
+Status: draft
+
+Source row: `ISS-02` / `UDE-03`
+
+### Рабочие допущения
+
+- Canonical contract: session provenance определяет агент и явно передает в CLI.
+- Runtime-specific env values могут быть упомянуты только как пример того, как агент нашел значение до вызова CLI; runtime не должен сам искать или silently trust env fallback.
+- Scope ограничен stage-controller writes и минимальной compatibility для readers, которые уже потребляют `session_id`.
+
+### Шаги
+
+1. Обновить active docs и utility contract:
+   - в `references/commandized-stage-control.md`, `references/runtime-and-command-boundary.md`, `references/telemetry-and-closure.md` и `references/unified-artifact-topology.md` зафиксировать explicit `--session-id` input contract;
+   - в `SKILL.md` и `docs/utility-spec.ru.md` показать agent-owned resolution flow: агент определяет session id, затем передает `--session-id`;
+   - убрать или переформулировать любые wording, где `CODEX_SESSION_ID` выглядит canonical runtime contract.
+2. Реализовать explicit input в shipped stage-controller surface:
+   - в `src/delivery/stage-control.ts` добавить обязательный `--session-id <id>` для всех stage-controller writes: `feature-intake`, `spec-compact`, `plan-slice`, `implementation`, `change-proposal`;
+   - применить одно правило к bootstrap и update paths, включая отдельный `writeFeatureIntakeLog` path;
+   - записывать `session_id` только из explicit input, а `trace_locator_kind: session_id` ставить только когда id передан;
+   - удалить silent fallback `process.env.CODEX_SESSION_ID ?? null` из stage-controller metadata writes;
+   - при отсутствии required `--session-id` возвращать usage/error до записи log/state.
+3. Сохранить portable extension points:
+   - если нужен `trace_runtime`, сделать его optional explicit input или nullable metadata, но не Codex-specific default;
+   - не добавлять lookup в Codex session store и не читать runtime-private paths.
+4. Проверить readers:
+   - убедиться, что `src/shared/stage-state.ts` и lifecycle/session-index aggregation корректно читают новый non-null session id;
+   - сохранить backward-compatible parsing старых artifacts с `session_id: null`, но не генерировать новые contradictory artifacts.
+5. Защитить tests:
+   - добавить CLI tests, что каждый stage-controller command без `--session-id` fail-closed и не пишет artifact;
+   - добавить tests, что metadata stage log и `.dossier/stages/*` получают одинаковый explicit `session_id`;
+   - добавить docs-contract tests для portable explicit-input model и optional/non-canonical runtime examples.
+6. Пересобрать shipped runtime:
+   - обновить `scripts/dossier-engineer.mjs` через package build после changes в `src`.
+
+### Проверки
+
+- `pnpm --filter @kostysh/unified-dossier-engineer test`
+- `pnpm --filter @kostysh/unified-dossier-engineer typecheck`
+- Точечный negative smoke: stage-controller command без `--session-id` завершается ошибкой и не создает log/state.
+
+### Scope guards
+
+- Не реализовывать auto-discovery session id.
+- Не добавлять Codex-only env contract как primary behavior.
+- Не смешивать с schema expansion из `ISS-03`, кроме аккуратного coexistence existing fields.
+
+## Внешний Spec-Conformance Review плана
+
+Status: reviewed
+
+Reviewer: `spec-conformance-reviewer`
+
+Model: top-tier, reasoning `high`, non-forked external review
+
+Verdict: `PASS`
+
+Ключевой результат review:
+
+- план достаточно покрывает explicit `--session-id`, все shipped stage-controller write paths и fail-closed no-session branch;
+- запрет silent `CODEX_SESSION_ID` fallback и portable agent-owned resolution признаны достаточными;
+- reader compatibility ограничена truthful handling исправленного provenance contract и не расширяет scope.

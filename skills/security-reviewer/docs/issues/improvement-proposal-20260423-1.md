@@ -136,3 +136,66 @@ Issue считается исправленным только когда:
 - Не превращать `security-reviewer` в generic planning skill.
 - Не дублировать полную Hono architecture или testing methodology в рамках этого issue.
 - Не требовать, чтобы каждое изменение tests в skill несло новые metadata за пределами bounded replay/rate-limit regression cue, описанного здесь.
+
+## План имплементации
+
+Status: draft
+
+Source row: `ISS-05` / `HONO-01`, `SEC-01`, `TTE-01`
+
+### Рабочие допущения
+
+- Это docs/contract change для трех skills, не security-framework rewrite.
+- Новая guidance должна быть видна в early-use workflow surfaces, а детали могут жить в существующих references.
+- Каждый skill сохраняет ownership: `security-reviewer` threat timing, `HONO engineer` route-admission framing, `typescript-test-engineer` regression-test adequacy cue.
+
+### Шаги
+
+1. Обновить `security-reviewer`:
+   - в `SKILL.md` добавить короткий early auth-admission checkpoint в fast workflow / operating guidance;
+   - checkpoint должен срабатывать для protected route admission, replay/idempotency controls, pre-auth resource consumption и closely related authorization-boundary handling;
+   - в `references/api-auth-input.md` добавить компактный checklist: route trust boundary, pre-auth vs post-auth resource consumption, replay/idempotency expectations, bounded body handling, quota isolation;
+   - в `references/domain-handoffs.md` уточнить, что Hono-specific body limits/middleware/admission-boundary facts нужно решать через `HONO engineer`.
+2. Обновить `HONO engineer`:
+   - в `SKILL.md` добавить early route-admission cue в `Workflow for adding endpoints` или ближайший early-use раздел;
+   - guidance должна покрывать только bounded body reads, quota isolation, replay behavior и preservation of touched route admission boundary;
+   - при необходимости добавить короткие supporting bullets в `references/auth.md`, `references/rate-limiting.md` и `references/perf-security.md`, без копирования security-reviewer methodology.
+3. Обновить `typescript-test-engineer`:
+   - в `SKILL.md` добавить narrow rule для replay/rate-limit regression tests: тест должен назвать targeted risk/failure mode и реально exercise/assert этот риск;
+   - в `references/testing.md` добавить пример/anti-near-miss cue для случаев, где test label говорит про replay/rate-limit, но assertions проверяют nearby behavior.
+4. Добавить docs-contract coverage where applicable:
+   - если у affected docs-only skill еще нет package-local test harness, добавить минимальный package-local `node:test` docs-contract только для собственного active surface каждого skill;
+   - tests должны проверять presence early-use guidance и отсутствие broad framework rewrite wording;
+   - не добавлять cross-skill tests, которые делают отдельный skill folder непереносимым.
+5. Проверить portability:
+   - не добавлять absolute paths;
+   - не ссылаться на repo-external required docs;
+   - cross-skill references использовать только по имени skill.
+
+### Проверки
+
+- `pnpm test` или targeted package-local docs-contract tests для affected skills, если harness добавлен.
+- Manual grep portability check по affected skill folders на absolute local paths.
+
+### Scope guards
+
+- Не превращать `security-reviewer` в planning skill.
+- Не дублировать полные Hono/testing методологии между skills.
+- Не расширять checklist на unrelated auth/webhook/CI/general testing topics.
+- Не требовать metadata для всех tests; только bounded replay/rate-limit regression cue.
+
+## Внешний Spec-Conformance Review плана
+
+Status: reviewed
+
+Reviewer: `spec-conformance-reviewer`
+
+Model: top-tier, reasoning `high`, non-forked external review
+
+Verdict: `PASS`
+
+Ключевой результат review:
+
+- plan coverage для `HONO-01`, `SEC-01`, `TTE-01` признан достаточным;
+- early-use placement для `security-reviewer`, `HONO engineer` и `typescript-test-engineer` соответствует issue;
+- docs-contract coverage запланирован минимально и portable, без cross-skill coupling или full framework rewrite.

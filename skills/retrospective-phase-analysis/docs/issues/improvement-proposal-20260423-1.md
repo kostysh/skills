@@ -115,3 +115,82 @@ Issue считается исправленным только когда:
 - Не переносить `session_id` resolution внутрь CLI.
 - Не добавлять Codex-specific session-store scraping в этот skill.
 - Не redesign-ить full report style или narrative templates больше, чем это нужно для устранения перечисленных automation weaknesses.
+
+## План имплементации
+
+Status: draft
+
+Source row: `ISS-04` / `RPA-01`, `RPA-02`, `RPA-03`, `RPA-04`
+
+### Рабочие допущения
+
+- Агент по-прежнему resolve-ит `session_id` и передает canonical trace path через `--session`.
+- Retrospective CLI может читать только artifacts, найденные из trace, explicit operator inputs или strong artifact links.
+- Stage artifact schema из `unified-dossier-engineer` может быть не полностью развернута, поэтому implementation должен поддержать structured-first behavior с legacy fallback.
+
+### Шаги
+
+1. Ввести artifact metadata reader:
+   - читать stage log frontmatter и, когда path доступен через trace, explicit operator input или strong artifact link, helper-managed `.dossier/stages/*`;
+   - распознавать explicit fields: `review_artifacts`, `verification_artifacts`, `step_artifact`, `primary_feature_id`, `primary_backlog_item_key`, `phase_scope`, `process_misses`, `skills_used`;
+   - считать эти fields strong evidence только когда path существует и metadata scope совпадает.
+   - не добавлять broad directory scan новых evidence roots вроде `.dossier/stages/*`; helper/stage artifacts можно читать только по bounded paths, полученным из trace, explicit input или strong artifact linkage.
+2. Перестроить discovery flow в `buildScanSummary`:
+   - сначала сделать trace pre-scan для project root и high-confidence stage-log candidates;
+   - затем enrich scope через explicit artifact links из stage artifacts;
+   - review/verification/step artifacts без explicit linkage оставлять candidates, а не auto-include по одному feature-id matching;
+   - manual overrides оставить controlled exception с `--artifact-evidence`.
+3. Ужесточить phase boundary handling:
+   - если full trace already unambiguous, сохранить `full_trace`;
+   - если analyzed phase является prefix и оператор дал `--until-line` или `--until-ts`, сохранить текущее поведение;
+   - если same-session scope можно вывести из strong stage artifact timestamps / close-out evidence, добавить artifact-derived boundary mode и применить его before final scope/metrics extraction;
+   - если same-session boundary остается ambiguous, fail-closed: вернуть usage/error с требованием explicit operator boundary (`--until-line`, `--until-ts` или будущий явно boundary-specific input), вместо heuristic widening;
+   - manual artifact override может включить evidence artifact, но не является заменой boundary resolution.
+4. Сделать scope narrowing conservative:
+   - explicit artifact identity (`primary_feature_id`, `primary_backlog_item_key`, `phase_scope`) имеет приоритет над broad trace mentions;
+   - multiple feature/backlog mentions без strong artifact identity сохраняются ambiguity и не расширяют included artifacts;
+   - reportStatus должен явно объяснять unresolved ambiguity.
+5. Перевести metrics на structured-first:
+   - `summarizeLogs` считает `processMissesTotal` из structured `process_misses` when present;
+   - prose `Process misses` используется только если structured field отсутствует;
+   - `skillsReferenced` использует structured `skills_used` when present, иначе legacy skill field/trace summary;
+   - `inferCandidateIncidents` не double-count structured и prose evidence.
+   - `scan-summary` должен различать metrics source/quality: structured, validated fallback и unresolved/unvalidated fallback;
+   - unvalidated fallback-derived metrics не должны делать reportStatus misleading `ready_for_agent_finalization`; они должны добавлять reason для agent validation.
+6. Обновить rendering ровно в нужных местах:
+   - в `report-markdown` и `logging-review-markdown` показывать source/quality для structured vs fallback metrics;
+   - не менять общий narrative template вне ambiguity/metrics explanation.
+7. Защитить docs/tests:
+   - обновить `references/CLI.md`, `REFERENCE.md`, `PROJECT-ADAPTATION.md` и `SKILL.md` с conservative artifact-gating rules;
+   - добавить/обновить fixtures для artifact-linked discovery, weak candidate gating, ambiguous same-session fail-closed, structured-over-prose metrics precedence;
+   - добавить fixtures/assertions, что manual artifact override не разрешает ambiguous phase boundary и что unvalidated fallback metrics держат отчет в validation-required состоянии;
+   - обновить CLI/help snapshots только при изменении public help.
+
+### Проверки
+
+- `pnpm --filter @kostysh/retrospective-phase-analysis-cli test`
+- `pnpm --filter @kostysh/retrospective-phase-analysis-cli typecheck`
+- Targeted fixtures: one routine artifact-linked scan without manual overrides, one ambiguous same-session scan that fails closed.
+
+### Scope guards
+
+- Не переносить session lookup внутрь CLI.
+- Не добавлять Codex-specific session-store scraping.
+- Не расширять UDE stage schema в этом skill; missing upstream fields фиксировать как dependency/follow-up.
+- Не redesign-ить full report style.
+
+## Внешний Spec-Conformance Review плана
+
+Status: reviewed
+
+Reviewer: `spec-conformance-reviewer`
+
+Model: top-tier, reasoning `high`, non-forked external review
+
+Verdict: `PASS`
+
+Ключевой результат review:
+
+- initial review нашел три обязательных пропуска: manual artifact override не должен заменять boundary resolution, `.dossier/stages/*` нельзя читать broad scan-ом, fallback-derived metrics нельзя публиковать как reliable без validation;
+- план доработан: boundary ambiguity теперь требует explicit operator boundary или fail-closed, helper/stage artifacts читаются только по bounded paths, fallback metrics получают source/quality и validation-required status;
+- повторный review подтвердил достаточность покрытия `RPA-01`, `RPA-02`, `RPA-03`, `RPA-04`.
