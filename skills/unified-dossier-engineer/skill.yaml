@@ -481,6 +481,9 @@ sections:
     - id: gotcha-stage-control
       priority: high
       text: Stage-controller commands are mechanical progress controllers only; they must stop at `ready_for_close` and must not duplicate `dossier-step-close` or `lifecycle-refresh`.
+    - id: gotcha-external-audit-launch
+      priority: high
+      text: Blocking external audits must be launched without forked/full-history authoring context; `review-artifact` and `dossier-step-close` record observable provenance but do not prove launch-mode independence.
   policies:
     - id: policy-no-function-loss
       title: No functionality loss

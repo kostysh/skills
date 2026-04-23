@@ -310,6 +310,9 @@ test('command help smoke covers the shipped public surface', () => {
     if (command === 'review-artifact') {
       assert.match(result.stdout, /Persist one already obtained audit result for one audit class/u);
       assert.match(result.stdout, /does not perform the review itself/u);
+      assert.match(result.stdout, /records observable provenance only/u);
+      assert.match(result.stdout, /does not prove fork_context, full-history inheritance/u);
+      assert.match(result.stdout, /forked\/full-history authoring context do not satisfy/u);
       assert.match(
         result.stdout,
         /never replaces the required audit bundle enforced by dossier-step-close/u,
@@ -321,6 +324,9 @@ test('command help smoke covers the shipped public surface', () => {
         result.stdout,
         /Skip the clean-worktree blocker only; review freshness invalidation still applies/u,
       );
+      assert.match(result.stdout, /validates the observable durable review bundle/u);
+      assert.match(result.stdout, /does not prove reviewer launch-mode independence/u);
+      assert.match(result.stdout, /forked\/full-history authoring context must be rerun/u);
     }
   }
 

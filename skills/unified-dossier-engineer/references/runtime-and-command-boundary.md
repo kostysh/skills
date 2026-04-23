@@ -86,6 +86,7 @@ Audit-policy rule for this family:
 - `review-artifact` persists one already obtained audit result for one audit class;
 - `dossier-step-close` validates the policy-required audit bundle for the stage being closed;
 - both helpers read and update the helper-managed stage state under `.dossier/stages/*` for current-cycle review-bundle coordination and validation;
+- both helpers validate only observable durable provenance and must not claim to prove launch-mode facts such as `fork_context`, full-history inheritance, prompt mutability, or model tier;
 - neither helper performs the audit itself.
 
 ## Workflow stages versus runnable commands

@@ -198,8 +198,12 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
 
   assertContainsTerms(skill, [
     'Every mutating dossier stage requires external review before truthful closure.',
+    'without forked/full-history authoring context',
+    '`fork_context: false`',
+    'discard it and rerun it correctly',
     '`review-artifact` records one already obtained audit result for one audit class.',
     '`dossier-step-close` validates the policy-required audit bundle before truthful closure.',
+    'do not prove reviewer launch-mode independence',
   ]);
   assertContainsTerms(auditPolicy, [
     'feature-intake',
@@ -217,6 +221,11 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     'helper-managed implementation stage state',
     'reviewer thread provenance from the current runtime when available',
     'process-trust policy',
+    "must not inherit the authoring agent's full working context or full conversation history",
+    '`fork_context: false`',
+    'reviewer delegation with forked context or full-history inheritance does not satisfy external independent audit requirements',
+    'invalidate that audit and rerun it with a valid external execution mode',
+    'must not claim to prove launch-mode independence beyond the observable provenance',
     'backlog support files like `.dossier/backlog/.gitignore` or `.dossier/backlog/AGENTS.md` do not invalidate audits by themselves',
     'Canonical backlog truth artifacts under `.dossier/backlog/` such as `state.json`, `sources.json`, `applied.json`, `source-review/*`, `packets/*`, and `patches/*` remain material',
   ]);
@@ -228,6 +237,9 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
   assertContainsTerms(deliveryWorkflow, [
     'Every mutating dossier stage requires external review before truthful closure',
     'self-review is not a valid substitute',
+    'forked context or full-history inheritance is not a valid substitute',
+    'invalid review launch method is discovered',
+    'cannot be accepted as a quiet PASS',
     'code-bearing scope also requires `code-reviewer` and `security-reviewer`',
     'helper-managed stage state',
   ]);
@@ -235,9 +247,13 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     '`review-artifact` persists one already obtained audit result for one audit class',
     '`dossier-step-close` validates the policy-required audit bundle',
     'helper-managed stage state under `.dossier/stages/*`',
+    'must not claim to prove launch-mode facts such as `fork_context`, full-history inheritance, prompt mutability, or model tier',
   ]);
   assertContainsTerms(telemetryClosure, [
     'helper-managed stage state under `.dossier/stages/*`',
+    'observable workflow evidence',
+    'must not be presented as proof of launch-mode independence',
+    'whether recorded review evidence is limited to observable provenance rather than proof of reviewer launch-mode independence',
     'required_audit_classes',
     'executed_audit_classes',
     'required_external_review_pending',
@@ -250,11 +266,16 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     'helper-managed implementation stage state',
     'reviewer thread provenance stamped by the current runtime when available',
     'process-trust contract',
+    'no forked/full-history inheritance',
+    'Reviewer delegation with forked context or full-history inheritance does not satisfy `external independent audit`',
+    'must not claim automatic proof of launch-mode independence beyond the recorded provenance signals available to the runtime',
     'required audit bundle is `spec-conformance-reviewer`, `code-reviewer`, `security-reviewer`',
     'support files like `.dossier/backlog/.gitignore` or `.dossier/backlog/AGENTS.md` do not invalidate audits by themselves',
     'Canonical backlog truth artifacts under `.dossier/backlog/` such as `state.json`, `sources.json`, `applied.json`, `source-review/*`, `packets/*`, and `patches/*` remain material freshness invalidators',
   ]);
   assertContainsTerms(stageControl, [
+    'non-forked/no-full-history external review',
+    'does not prove the reviewer launch mode',
     'helper-owned close-out must enforce the required external audit bundle defined in [Audit policy](audit-policy.md).',
   ]);
 });

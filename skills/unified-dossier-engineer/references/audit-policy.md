@@ -117,9 +117,12 @@ Every required audit must be executed as a separate independent external audit.
 Rules:
 
 - blocking audits use spawned external reviewer agents;
-- `fork_context: false` is the default;
+- blocking audits must not inherit the authoring agent's full working context or full conversation history;
+- in Codex, blocking audits must use `fork_context: false`; in another runtime, use the equivalent execution mode that does not fork or inherit full authoring context;
+- reviewer delegation with forked context or full-history inheritance does not satisfy external independent audit requirements;
 - weak or mini models do not satisfy blocking audit requirements;
 - reviewer prompts must remain read-only;
+- if an audit was launched with forked/full-history context, invalidate that audit and rerun it with a valid external execution mode;
 - if a reviewer mutates files or changes `HEAD`, invalidate that audit and rerun it.
 
 Those launch constraints are active process rules. The canonical runtime mechanically enforces only the durable subset it can validate from review artifacts and helper-managed stage telemetry:
@@ -132,7 +135,7 @@ Those launch constraints are active process rules. The canonical runtime mechani
 
 This is a process-trust policy, not a tamper-resistant attestation system. Repo-local stage state and review artifacts are used to coordinate and validate the managed workflow, not to provide cryptographic proof against hostile manual tampering.
 
-Launch-mode details such as `fork_context`, prompt mutability, and model tier must still be honored during audit execution, but they are not inferred from prose and are not treated as silently self-validating runtime facts.
+Launch-mode details such as `fork_context`, prompt mutability, and model tier must still be honored during audit execution, but they are not inferred from prose and are not treated as silently self-validating runtime facts. Runtime and artifact state must not claim to prove launch-mode independence beyond the observable provenance they actually record.
 
 ## Review freshness and invalidation
 

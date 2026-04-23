@@ -8864,6 +8864,8 @@ function reviewArtifactHelp() {
 		"  - review-artifact does not perform the review itself; it records one already obtained audit result for one audit class.",
 		"  - --reviewer should name the separate reviewer agent or review skill that produced the verdict.",
 		"  - reviewer_thread_id is stamped from the current runtime when available and is used for same-thread external-review rejection.",
+		"  - review-artifact records observable provenance only; it does not prove fork_context, full-history inheritance, prompt mutability, or model tier.",
+		"  - Audits launched with forked/full-history authoring context do not satisfy external independent audit policy and must be rerun.",
 		"  - review-artifact never replaces the required audit bundle enforced by dossier-step-close."
 	].join("\n");
 }
@@ -8958,7 +8960,11 @@ function dossierStepCloseHelp() {
 		"  --next-step <name>           Override computed next step.",
 		"  --output <path>              Step artifact output path.",
 		"  --allow-dirty                Skip the clean-worktree blocker only; review freshness invalidation still applies.",
-		"  -h, --help                   Show help."
+		"  -h, --help                   Show help.",
+		"",
+		"Notes:",
+		"  - dossier-step-close validates the observable durable review bundle; it does not prove reviewer launch-mode independence.",
+		"  - Audits launched with forked/full-history authoring context must be rerun before truthful closure."
 	].join("\n");
 }
 async function runDossierStepCloseCommand(argv, io) {

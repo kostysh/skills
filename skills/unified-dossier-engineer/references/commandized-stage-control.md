@@ -137,7 +137,7 @@ Required alignment:
 - stage-controller commands must not duplicate helper-owned closure truth;
 - commandized transitions should improve telemetry determinism, not create a second closure authority surface.
 - helper-owned closure writes must not erase authored narrative sections from the stage log.
-- `ready_for_close` means the stage is ready to enter audit-policy-governed verification, external review, and helper-owned closure; it never means truthfully closed.
+- `ready_for_close` means the stage is ready to enter audit-policy-governed verification, non-forked/no-full-history external review, and helper-owned closure; it never means truthfully closed and does not prove the reviewer launch mode.
 - for `plan-slice`, `ready_for_close` also presumes agent-owned semantic readiness: the plan has an explicit execution target, completion recognition, and implementation boundaries. The stage controller does not author or validate that semantic content.
 - for every mutating stage, helper-owned close-out must enforce the required external audit bundle defined in [Audit policy](audit-policy.md).
 

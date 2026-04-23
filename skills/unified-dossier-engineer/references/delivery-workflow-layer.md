@@ -104,6 +104,8 @@ Baseline mapping for non-code stages is defined in [Audit policy](audit-policy.m
 Important:
 
 - self-review is not a valid substitute;
+- reviewer delegation with forked context or full-history inheritance is not a valid substitute for an external independent audit;
+- if an invalid review launch method is discovered, that audit must be rerun and cannot be accepted as a quiet PASS;
 - `review-artifact` persists already obtained audit evidence and does not replace the audit itself;
 - `dossier-step-close` is not truthful while required audits are missing, stale, or invalidated.
 - helper validation must use the helper-managed stage state for current-cycle review coordination and implementation scope rather than human-authored stage-log frontmatter.
@@ -163,6 +165,7 @@ Important:
 - commit history is trace metadata only
 - chat summaries are never closure truth
 - informal “looks good” signals never replace durable closure evidence
+- an external-looking reviewer run does not satisfy closure policy if it inherited the authoring agent's forked/full-history context
 
 ## Semantic heritage versus shipped runtime
 

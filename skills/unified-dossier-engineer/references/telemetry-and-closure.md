@@ -42,6 +42,8 @@ Review artifacts must remain capable of carrying policy-visible audit-bundle tru
 - freshness / invalidation state
 - implementation review-scope and security-trigger data where applicable
 
+Review artifacts and helper-managed stage state are observable workflow evidence. They may record declared review mode, reviewer identity, reviewer skill, reviewer agent identity, reviewer thread provenance, freshness, and invalidation state, but they must not be presented as proof of launch-mode independence such as `fork_context`, full-history inheritance, prompt mutability, or model tier.
+
 ## Identity contract
 
 The telemetry layer must preserve these stable identities:
@@ -143,6 +145,7 @@ When helper-owned closure updates materialize audit policy state, stage logs and
 - which mutating-stage audit classes were required;
 - which audit classes were actually executed;
 - whether closure is blocked by missing, stale, invalidated, or degraded review evidence.
+- whether recorded review evidence is limited to observable provenance rather than proof of reviewer launch-mode independence.
 
 ## Session anchors
 

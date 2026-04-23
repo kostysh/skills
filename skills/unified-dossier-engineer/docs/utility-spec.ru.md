@@ -394,7 +394,9 @@ This remains a process-trust contract, not a tamper-resistant attestation system
 
 Helper-owned accounting artifacts such as `.dossier/logs/*`, `.dossier/stages/*`, `.dossier/reviews/*`, `.dossier/verification/*`, `.dossier/steps/*`, `.dossier/metrics/*`, `.dossier/retro/*`, `.dossier/ops/*`, backlog reports/locks, and support files like `.dossier/backlog/.gitignore` or `.dossier/backlog/AGENTS.md` do not invalidate audits by themselves. Canonical backlog truth artifacts under `.dossier/backlog/` such as `state.json`, `sources.json`, `applied.json`, `source-review/*`, `packets/*`, and `patches/*` remain material freshness invalidators.
 
-Audit-launch rules such as `fork_context: false`, read-only reviewer prompts, and non-mini blocking models remain active policy requirements, but they are not inferred mechanically from prose or silently assumed by the runtime.
+Audit-launch rules such as `fork_context: false`, no forked/full-history inheritance, read-only reviewer prompts, and non-mini blocking models remain active policy requirements, but they are not inferred mechanically from prose or silently assumed by the runtime. Reviewer delegation with forked context or full-history inheritance does not satisfy `external independent audit`; if discovered, the audit must be invalidated and rerun with a valid external execution mode.
+
+`review-artifact` and `dossier-step-close` record and validate observable durable provenance only. They must not claim automatic proof of launch-mode independence beyond the recorded provenance signals available to the runtime.
 
 `dossier-step-close` must reject truthful closure when:
 
