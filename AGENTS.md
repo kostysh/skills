@@ -133,6 +133,7 @@ Rules:
 - For every implementation, keep a log under the skill's `docs/logs/` directory using `docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md`. Name log files as `implementation-log-<YYYYMMDD>-<N>.md`.
 - Maintain a `docs/README.md` file in each skill with navigation to its issues and each issue's implementation status. Update this README when creating or changing issues, plans, or implementation logs.
 - Create issues, plans, and implementation logs in the operator's language.
+- If a workflow requires spawning or delegating to an agent, but the operator has not explicitly allowed spawned agents for the current task, ask the operator for that permission and stop until the operator answers. Do not substitute an opaque external process when the workflow intent is an agent-level independent review.
 
 ## Workflow Stages vs Shipped CLI
 
