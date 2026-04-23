@@ -124,6 +124,15 @@ Rules:
 - Historical or analytical documents may inform a change, but they do not override the skill unless `SKILL.md` explicitly promotes them into the active workflow.
 - When a skill has both active references and historical docs, the distinction should be obvious from `SKILL.md`.
 
+## Skill Issues, Plans, and Implementation Logs
+
+- Create skill issues under the skill's `docs/issues/` directory using `docs/templates/ISSUE_TEMPLATE.md`. Name issue files as `issue-<YYYYMMDD>-<N>.md`.
+- Every created issue must receive an external independent audit for problem completeness, sufficiency of proposed resolutions, and destructive side effects. If the audit finds problems, fix the issue and repeat the audit until the result is `PASS`.
+- When the operator requests a plan for an issue, create it under the skill's `docs/issues/` directory using `docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md`. The file name must correspond to the issue ID and follow `implementation-plan-<YYYYMMDD>-<N>.md`.
+- Every created plan must receive an external independent audit against the issue and the source artifacts that describe the problem. If the audit finds problems, fix the plan and repeat the audit until the result is `PASS`.
+- For every implementation, keep a log under the skill's `docs/logs/` directory using `docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md`. Name log files as `implementation-log-<YYYYMMDD>-<N>.md`.
+- Create issues, plans, and implementation logs in the operator's language.
+
 ## Workflow Stages vs Shipped CLI
 
 Some skills define workflow stages, CLI commands, or both.
