@@ -1,4 +1,4 @@
-# Improvement Proposal: move auth-admission security concerns earlier in the skill stack
+# Improvement Proposal: сдвинуть security concerns для auth-admission раньше в skill stack
 
 Issue ID: `ISS-05`
 
@@ -10,77 +10,77 @@ Affected skills:
 - `security-reviewer`
 - `typescript-test-engineer`
 
-## Problem
+## Проблема
 
-For auth-admission work, important security concerns were discovered too late in the cycle.
+Для auth-admission work важные security concerns проявлялись слишком поздно в cycle.
 
-The grouped problems are intentionally one cross-skill issue:
+Сгруппированные проблемы намеренно объединены в один cross-skill issue:
 
-- `HONO engineer` does not surface a compact enough route-admission checklist early enough;
-- `security-reviewer` guidance is strong at review time, but it does not push enough of its threat model into planning or early implementation prompts for auth-admission slices;
-- `typescript-test-engineer` does not require a clear statement of which replay/rate-limit risk a regression test is supposed to lock down.
+- `HONO engineer` недостаточно рано поднимает компактный route-admission checklist;
+- guidance `security-reviewer` сильна на этапе review, но недостаточно рано проталкивает свой threat model в planning или early implementation prompts для auth-admission slices;
+- `typescript-test-engineer` не требует явного указания, какой именно replay/rate-limit risk должен lock down соответствующий regression test.
 
-Together, these gaps allow late discovery of:
+Вместе эти пробелы допускают позднее обнаружение:
 
 - bounded body-read issues;
 - quota-isolation issues;
 - replay/availability semantics;
-- tests that cover something nearby but not the intended failure mode.
+- тестов, которые покрывают что-то рядом, но не фиксируют нужный failure mode.
 
-## Why This Matters
+## Почему это важно
 
-This is not a request for a broad new security framework.
+Это не запрос на построение большого security framework.
 
-The issue is narrower:
+Проблема уже:
 
-- auth-admission slices are high-risk enough that missing a small checklist early creates review churn later;
-- late discovery of these concerns increases rerounds close to `ready_for_close`;
-- test coverage can look present while still missing the exact risk that needed to be fixed.
+- auth-admission slices достаточно рискованные, чтобы отсутствие маленького checklist на раннем этапе создавало review churn позже;
+- позднее обнаружение этих concerns увеличивает число rerounds рядом с `ready_for_close`;
+- test coverage может выглядеть существующей, но все равно не фиксировать именно тот риск, который нужно было закрыть.
 
-## Current Active Surface
+## Текущая активная поверхность
 
-Relevant active references inside `security-reviewer`:
+Релевантные active references внутри `security-reviewer`:
 
 - [Methodology](../../references/methodology.md)
 - [API auth input](../../references/api-auth-input.md)
 - [Domain handoffs](../../references/domain-handoffs.md)
 
-This issue also requires aligned changes in the affected companion skills named above. Those skill-specific changes should remain bounded to the auth-admission concern family described here.
+Этот issue также требует согласованных изменений в companion skills, перечисленных выше. Изменения в этих skill должны оставаться ограниченными auth-admission concern family, описанным здесь.
 
-## Required Correction
+## Требуемое исправление
 
-Add a small, explicit early-stage checklist stack for auth-admission work.
+Добавить небольшой, явный early-stage checklist stack для auth-admission work.
 
-The solution should remain narrow and role-aligned:
+Решение должно оставаться узким и role-aligned:
 
-- `security-reviewer` owns the early threat checklist and timing guidance;
-- `HONO engineer` owns the Hono route-admission/domain framing cues needed by implementation agents;
-- `typescript-test-engineer` owns the test-design cue that makes replay/rate-limit regressions name the exact risk they are locking down.
+- `security-reviewer` владеет early threat checklist и timing guidance;
+- `HONO engineer` владеет Hono route-admission/domain framing cues, нужными implementation agents;
+- `typescript-test-engineer` владеет test-design cue, которая заставляет replay/rate-limit regression tests привязываться к конкретному риску.
 
-For this issue, `auth-admission` means slices that change protected route admission, replay/idempotency controls, pre-auth resource consumption, or closely related authorization-boundary handling for those routes.
+Для границ этого issue `auth-admission` означает slices, которые меняют protected route admission, replay/idempotency controls, pre-auth resource consumption или closely related authorization-boundary handling для этих route.
 
-## What Must Change
+## Что должно измениться
 
 ### 1. `security-reviewer`
 
-Add explicit guidance that auth-admission slices should surface the core threat checklist before late review loops.
+Добавить explicit guidance, что auth-admission slices должны поднимать core threat checklist до поздних review loops.
 
-The rule must appear in the skill's early-use workflow surface, not only in a deep reference section.
+Это правило должно находиться в early-use workflow surface skill, а не только в глубокой reference section.
 
-That checklist should cover, at minimum:
+Checklist как минимум должен покрывать:
 
-- trust boundary of the route;
+- trust boundary route;
 - pre-auth versus post-auth resource consumption;
-- replay and idempotency expectations when relevant;
-- bounded request-body handling on high-risk routes.
+- replay и idempotency expectations, когда они релевантны;
+- bounded request-body handling на high-risk routes.
 
 ### 2. `HONO engineer`
 
-Add a compact route-admission checklist or guardrail language for Hono-backed auth/admission work.
+Добавить компактный route-admission checklist или guardrail language для Hono-backed auth/admission work.
 
-The rule must appear in the skill's early-use guidance, not only as low-visibility optional detail.
+Это правило должно находиться в early-use guidance skill, а не только в малозаметной optional detail.
 
-The guidance should remain concise and focused on the identified concerns:
+Guidance должна оставаться краткой и сфокусированной на выявленном семействе concerns:
 
 - bounded body reads;
 - quota isolation;
@@ -89,50 +89,50 @@ The guidance should remain concise and focused on the identified concerns:
 
 ### 3. `typescript-test-engineer`
 
-Add a narrow regression-test rule for replay/rate-limit style fixes:
+Добавить узкое regression-test rule для replay/rate-limit style fixes:
 
-- the test change must make clear which concrete risk or failure mode it is intended to lock down;
-- the exercised scenario or assertions must actually reflect that named risk or failure mode, not only a nearby behavior or prose label.
+- изменение теста должно явно показывать, какой конкретный риск или failure mode оно фиксирует;
+- exercised scenario или assertions должны реально отражать этот named risk или failure mode, а не только nearby behavior или prose label.
 
-This does not require a new general test taxonomy. It only needs enough guidance to stop near-miss coverage from passing as adequate.
+Это не требует новой общей taxonomy для tests. Нужен только достаточный cue, чтобы near-miss coverage перестала считаться достаточной.
 
-## External Spec-Conformance Review
+## Внешний Spec-Conformance Review
 
 Status: reviewed
 
 Verdict on initial draft: `mixed`
 
-Key review outcome:
+Ключевой результат review:
 
-- the cross-skill ownership split was accepted as bounded and mostly non-excessive;
-- the draft needed stronger timing/placement requirements so the checklist appears in early-use workflow surfaces;
-- the test rule needed to bind the named replay/rate-limit risk to exercised scenarios or assertions, not only to prose;
-- the Hono wording needed narrowing so it stays on admission-boundary preservation rather than broad generic authorization scope.
+- cross-skill ownership split принят как bounded и в основном не избыточный;
+- draft требовал более жестких timing/placement requirements, чтобы checklist появлялся в early-use workflow surfaces;
+- test rule требовал связать named replay/rate-limit risk с exercised scenarios или assertions, а не только с prose;
+- wording для Hono требовало narrowing, чтобы оставаться в рамках admission-boundary preservation, а не broad generic authorization scope.
 
 ## Acceptance Criteria
 
-This issue is fixed only when:
+Issue считается исправленным только когда:
 
-- `security-reviewer` explicitly instructs earlier auth-admission threat surfacing for the bounded concern set described here, and places that rule in an early-use workflow surface;
-- `HONO engineer` adds compact auth-admission guidance for bounded body reads, quota isolation, replay behavior, and preservation of the touched route's admission boundary, with that guidance visible in an early-use workflow surface;
-- `typescript-test-engineer` adds a narrow rule that replay/rate-limit regression tests must state the targeted risk or failure mode and reflect that target in the exercised scenario or assertions;
-- the changes remain concise and role-aligned rather than duplicating entire frameworks across all three skills;
-- docs-contract coverage protects the new guidance where applicable.
+- `security-reviewer` явно требует более раннего surfacing auth-admission threats для ограниченного набора concerns этого issue и помещает это правило в early-use workflow surface;
+- `HONO engineer` добавляет компактную auth-admission guidance для bounded body reads, quota isolation, replay behavior и preservation of the touched route's admission boundary, причем эта guidance видима в early-use workflow surface;
+- `typescript-test-engineer` добавляет узкое правило, что replay/rate-limit regression tests должны указывать targeted risk или failure mode и отражать эту цель в exercised scenario или assertions;
+- изменения остаются короткими и role-aligned, а не дублируют целые frameworks между тремя skills;
+- docs-contract coverage защищает новую guidance там, где это применимо.
 
-## Mandatory Planning And Implementation Constraint
+## Обязательное ограничение для последующего planning и implementation
 
-Any future planning or implementation for this issue must stay tightly scoped to the auth-admission concern family described here.
+Любой будущий planning или implementation по этому issue должен оставаться строго в границах auth-admission concern family, описанного здесь.
 
-Mandatory boundaries:
+Обязательные границы:
 
-- make only the smallest documentation and test-contract changes needed to introduce this early checklist stack;
-- do not broaden the issue into a full security rewrite of the affected skills;
-- do not duplicate large sections of one skill inside another;
-- do not add unrelated auth, webhook, CI, or general testing methodology improvements under this issue;
-- if implementation reveals a separate concern outside this bounded checklist family, record a new follow-up instead of extending this issue.
+- вносить только минимальные documentation и test-contract changes, нужные для введения этого early checklist stack;
+- не расширять issue до full security rewrite затронутых skills;
+- не дублировать большие sections одного skill внутри другого;
+- не добавлять unrelated auth, webhook, CI или general testing methodology improvements в рамках этого issue;
+- если implementation выявит отдельный concern вне этого bounded checklist family, заводить новый follow-up вместо расширения текущего issue.
 
 ## Non-Goals
 
-- Do not turn `security-reviewer` into a generic planning skill.
-- Do not duplicate full Hono architecture or testing methodology inside this issue.
-- Do not require every test change in the skill to carry new metadata beyond the bounded replay/rate-limit regression cue described here.
+- Не превращать `security-reviewer` в generic planning skill.
+- Не дублировать полную Hono architecture или testing methodology в рамках этого issue.
+- Не требовать, чтобы каждое изменение tests в skill несло новые metadata за пределами bounded replay/rate-limit regression cue, описанного здесь.

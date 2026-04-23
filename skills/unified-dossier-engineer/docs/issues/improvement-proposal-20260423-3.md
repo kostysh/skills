@@ -1,117 +1,130 @@
-# Improvement Proposal: make external independent audit execution rules explicit
+# Improvement Proposal: явно зафиксировать правила исполнения внешнего независимого аудита
 
 Issue ID: `ISS-01`
 
 Primary owner skill: `unified-dossier-engineer`
 
-## Problem
+## Проблема
 
-The active `unified-dossier-engineer` workflow requires external review before truthful stage closure, but it does not state operationally enough what counts as an actually independent external audit.
+Активный workflow `unified-dossier-engineer` требует внешний review перед truthful closure стадии, но недостаточно операционно определяет, что именно считается действительно независимым внешним аудитом.
 
-The current contract preserves:
+Текущий контракт сохраняет:
 
-- mandatory external review before closure;
-- persisted review artifacts and review-policy checks;
-- separation between stage-controller progress and truthful closure.
+- обязательный внешний review перед closure;
+- persist review artifacts и проверки review policy;
+- разделение между прогрессом stage-controller и truthful closure.
 
-But it does not make explicit enough:
+Но он недостаточно явно фиксирует:
 
-- that forked-context or full-history reviewer delegation is not an acceptable substitute for external independent review;
-- that the runtime must not imply stronger independence guarantees than it can actually prove from recorded provenance;
-- what exact execution pattern the agent must use when the workflow says `external independent audit`.
+- что reviewer delegation с forked context или full-history не является допустимой заменой внешнего независимого аудита;
+- что runtime не должен создавать более сильное впечатление независимости, чем он реально может доказать по записанному provenance;
+- какой именно execution pattern агент обязан использовать, когда workflow требует `external independent audit`.
 
-That ambiguity allowed a review cycle to start with a method that was later treated as invalid and had to be rerun.
+Эта неоднозначность уже позволила стартовать review cycle методом, который позже пришлось признать некорректным и перезапустить.
 
-## Why This Matters
+## Почему это важно
 
-This is not only a wording problem. If the method of independence is ambiguous:
+Это не только проблема формулировки. Если метод независимости описан неоднозначно:
 
-- the workflow can produce a false sense of audit independence;
-- blocking reviews may need reruns late in the cycle;
-- retrospective analysis cannot tell whether the review method matched the declared policy;
-- future agents may repeat the same mistake because the contract remains underspecified.
+- workflow может создавать ложное ощущение audit independence;
+- blocking reviews могут требовать поздних rerun;
+- retrospective analysis не сможет понять, соответствовал ли фактический метод declared policy;
+- будущие агенты могут повторять ту же ошибку, потому что контракт остается недоопределенным.
 
-## Current Active Surface
+## Текущая активная поверхность
 
-Relevant active references:
+Релевантные active references:
 
 - [Audit policy](../../references/audit-policy.md)
 - [Delivery workflow layer](../../references/delivery-workflow-layer.md)
 - [Commandized stage control](../../references/commandized-stage-control.md)
 - [Telemetry and closure](../../references/telemetry-and-closure.md)
 
-## Required Correction
+## Требуемое исправление
 
-Add an explicit execution rule for `external independent audit`.
+Добавить явное execution rule для `external independent audit`.
 
-The active contract should state, in effect:
+Активный контракт должен по сути фиксировать следующее:
 
-- `external independent audit` requires a reviewer execution mode that does not inherit the authoring agent's full working context;
-- forked-context or full-history reviewer delegation does not satisfy that requirement;
-- provenance recorded by the runtime is evidence only for what it knows, not proof of deeper independence properties it cannot observe.
+- `external independent audit` требует reviewer execution mode, который не наследует полный рабочий контекст authoring agent;
+- reviewer delegation с forked context или full-history не удовлетворяет этому требованию;
+- provenance, записанный runtime, является доказательством только того, что runtime реально наблюдает, а не доказательством более глубокой независимости, которую он не может установить.
 
-## What Must Change
+## Что должно измениться
 
-### 1. Policy wording
+### 1. Формулировка policy
 
-Update the active review-policy guidance so that the required method of independence is operationally explicit, not left to inference.
+Обновить active review-policy guidance так, чтобы требуемый метод независимости был операционно явным, а не выводился по косвенным признакам.
 
-The policy should distinguish:
+Policy должна различать:
 
-- `external review` as a required workflow class;
-- acceptable execution method for satisfying that class;
-- unacceptable substitutes that look external but preserve authoring context too strongly.
+- `external review` как обязательный workflow class;
+- допустимый execution method для удовлетворения этого класса;
+- недопустимые substitute-паттерны, которые выглядят внешними, но слишком сильно сохраняют авторский контекст.
 
-### 2. Workflow wording
+### 2. Формулировка workflow
 
-Update delivery workflow guidance so stage closure language cannot be read as "any external-looking reviewer run is sufficient".
+Обновить guidance по delivery workflow так, чтобы stage closure нельзя было прочитать как “любой внешне выглядящий reviewer run достаточен”.
 
-The workflow should make clear:
+Workflow должен явно описывать:
 
-- when a rerun is required because the method was invalid;
-- that late discovery of an invalid review method is a process miss, not a valid pass.
+- когда требуется rerun из-за недопустимого метода review;
+- что позднее обнаружение некорректного review method считается process miss, а не валидным PASS.
 
-### 3. Runtime and artifact boundary wording
+### 3. Agent launch guidance
 
-Keep the runtime boundary honest.
+Обновить active guidance в месте, где агент фактически инициирует внешний reviewer run.
 
-The runtime and artifact contract may record review provenance that is actually observable, but it must not claim to algorithmically prove independence if that proof is outside the available signals.
+Guidance должен прямо фиксировать:
 
-## External Spec-Conformance Review
+- blocking external reviewer нельзя запускать с forked/full-history context authoring agent;
+- reviewer launch должен использовать execution mode без наследования полного рабочего контекста authoring agent;
+- если audit уже получен через forked/full-history launch, он не удовлетворяет policy и должен быть rerun корректным способом.
+
+Эта часть обязательна: иначе implementation может ограничиться описанием provenance/runtime boundary и не устранить исходную ошибку запуска reviewer с форком истории сессии.
+
+### 4. Формулировка runtime и artifact boundary
+
+Сохранить честную границу runtime.
+
+Runtime и artifact contract могут записывать только тот review provenance, который действительно наблюдаем, но не должны утверждать, что алгоритмически доказывают независимость, если это выходит за пределы доступных сигналов.
+
+## Внешний Spec-Conformance Review
 
 Status: reviewed
 
 Verdict on initial draft: `sufficient`
 
-Key review outcome:
+Ключевой результат review:
 
-- no material overreach was found;
-- the only tightening requested was to bind the clarified rule to existing durable review-mode and closure-evidence surfaces, not only to generic docs coverage.
+- существенного overreach не обнаружено;
+- единственное requested tightening: привязать уточненное правило к существующим durable surfaces review mode и closure evidence, а не только к общей docs coverage.
 
 ## Acceptance Criteria
 
-This issue is fixed only when:
+Issue считается исправленным только когда:
 
-- the active review contract explicitly defines what satisfies `external independent audit`;
-- the active guidance explicitly rejects forked/full-history reviewer delegation as a substitute for that requirement;
-- workflow guidance explains that an invalid review method requires rerun rather than silent acceptance;
-- runtime-facing wording does not promise automatic proof of reviewer independence beyond recorded provenance;
-- the clarified rule is reflected in the durable review-mode / closure-evidence contract surfaces that govern truthful closure;
-- docs-contract coverage protects those operative rule surfaces.
+- активный review contract явно определяет, что удовлетворяет `external independent audit`;
+- active guidance явно запрещает reviewer delegation с forked/full-history как замену этому требованию;
+- active guidance содержит launch-time правило для агента: blocking external reviewer запускается без forked/full-history context, а audit, полученный через такой запуск, требует rerun;
+- workflow guidance объясняет, что некорректный review method требует rerun, а не тихого принятия;
+- runtime-facing wording не обещает automatic proof of reviewer independence beyond recorded provenance;
+- уточненное правило отражено в durable contract surfaces review mode / closure evidence, которые управляют truthful closure;
+- docs-contract coverage защищает эти operative rule surfaces.
 
-## Mandatory Planning And Implementation Constraint
+## Обязательное ограничение для последующего planning и implementation
 
-Any future planning or implementation for this issue must stay tightly scoped to the independence-rule ambiguity described here.
+Любой будущий planning или implementation по этому issue должен оставаться строго в границах неоднозначности independence rule, описанной здесь.
 
-Mandatory boundaries:
+Обязательные границы:
 
-- make only the smallest documentation, contract, runtime-help, and test changes required to define and protect this rule;
-- do not redesign the broader audit lifecycle;
-- do not add unrelated review telemetry, artifact-schema expansion, or retrospective improvements under this issue;
-- if implementation exposes a separate problem, record a new follow-up issue instead of widening this one.
+- вносить только минимальные documentation, contract, runtime-help и test changes, которые нужны, чтобы определить и защитить это правило;
+- не redesign-ить broader audit lifecycle;
+- не добавлять unrelated review telemetry, artifact-schema expansion или retrospective improvements в рамках этого issue;
+- если implementation вскрывает отдельную проблему, завести новый follow-up issue вместо расширения текущего.
 
 ## Non-Goals
 
-- Do not add runtime session-trace scraping or hidden heuristics to prove reviewer independence.
-- Do not redesign review artifact storage beyond what is required to document the rule correctly.
-- Do not fold stage-log schema improvements or retrospective parser changes into this issue.
+- Не добавлять runtime session-trace scraping или скрытые heuristics для “доказательства” reviewer independence.
+- Не redesign-ить storage review artifacts больше, чем требуется для корректного документирования правила.
+- Не смешивать с этим issue улучшения stage-log schema или retrospective parser.

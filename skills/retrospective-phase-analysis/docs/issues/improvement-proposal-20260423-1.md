@@ -1,117 +1,117 @@
-# Improvement Proposal: harden retrospective automation around artifact-driven evidence
+# Improvement Proposal: усилить retrospective automation вокруг artifact-driven evidence
 
 Issue ID: `ISS-04`
 
 Primary owner skill: `retrospective-phase-analysis`
 
-## Problem
+## Проблема
 
-The current retrospective tooling produces useful human analysis, but it still depends too much on manual overrides and weak fallbacks when evidence linkage is incomplete.
+Текущее retrospective tooling дает полезный human analysis, но все еще слишком сильно зависит от manual overrides и слабых fallback-механизмов, когда evidence linkage неполный.
 
-The grouped problems are one automation-hardening issue:
+Сгруппированные проблемы образуют один automation-hardening issue:
 
-- artifact discovery still needs manual `--stage-log`, `--review-artifact`, and `--verification-artifact` overrides in cases that should be routine;
-- same-session phase boundaries may require manual line cutoffs;
-- scope narrowing is too noisy and can pull unrelated features or backlog items;
-- parser metrics still fall back to brittle prose heuristics and can overcount or misclassify incidents.
+- artifact discovery все еще требует ручных `--stage-log`, `--review-artifact` и `--verification-artifact` overrides в кейсах, которые должны быть рутинными;
+- phase boundaries в рамках той же session могут требовать ручных line cutoffs;
+- scope narrowing слишком шумный и может подтягивать unrelated features или backlog items;
+- parser metrics все еще откатываются к brittle prose heuristics и могут завышать или неверно классифицировать инциденты.
 
-## Why This Matters
+## Почему это важно
 
-The skill already states that the agent resolves `session_id` and canonical trace lookup before invoking the CLI. That boundary is good and should stay intact.
+Skill уже фиксирует, что агент сам resolve-ит `session_id` и canonical trace lookup перед вызовом CLI. Эта граница хорошая и должна сохраниться.
 
-The remaining problem is inside retrospective automation itself:
+Оставшаяся проблема находится внутри retrospective automation:
 
-- even with the right trace, the scan path is not low-friction enough;
-- output quality still depends on operator cleanup;
-- generated drafts can contain noisy scope or misleading metrics;
-- the tool cannot yet rely on declared artifact state as strongly as it should.
+- даже при правильном trace scan path недостаточно low-friction;
+- качество output все еще зависит от ручной чистки оператором;
+- generated drafts могут содержать шумный scope или misleading metrics;
+- tool еще не умеет опираться на declared artifact state настолько сильно, насколько должен.
 
-## Current Active Surface
+## Текущая активная поверхность
 
-Relevant active references:
+Релевантные active references:
 
 - [CLI](../../references/CLI.md)
 - [PROJECT-ADAPTATION](../../references/PROJECT-ADAPTATION.md)
 - [REFERENCE](../../references/REFERENCE.md)
 - [SKILL-AUDIT-TEMPLATE](../../references/SKILL-AUDIT-TEMPLATE.md)
 
-## Required Correction
+## Требуемое исправление
 
-Improve retrospective automation so that it prefers artifact-linked evidence, narrows scope conservatively, and treats legacy prose parsing as a fallback instead of a primary signal.
+Улучшить retrospective automation так, чтобы она предпочитала artifact-linked evidence, сужала scope консервативно и использовала legacy prose parsing только как fallback, а не как primary signal.
 
-This issue should become the retrospective-side counterpart of stronger stage-artifact contracts, without breaking the explicit boundary that the agent owns session resolution.
+Этот issue должен стать retrospective-side counterpart к более сильным contracts stage artifacts, не нарушая явную границу, что `session_id` разрешает агент, а не CLI.
 
-## What Must Change
+## Что должно измениться
 
 ### 1. Artifact-driven discovery
 
-When machine-complete stage artifacts are available, the retrospective workflow should find the relevant stage/review/verification/close-out bundle without routine manual overrides.
+Когда machine-complete stage artifacts доступны, retrospective workflow должен находить релевантный bundle stage/review/verification/close-out без routine manual overrides.
 
-The discovery contract must stay conservative:
+Discovery contract должен оставаться консервативным:
 
-- weakly linked artifacts remain candidates until stronger evidence or explicit operator input resolves them;
-- feature-id matching alone must not auto-include review or verification artifacts;
-- manual overrides remain evidence-justified exceptions, not a sign that broad auto-inclusion is acceptable.
+- слабо связанные artifacts остаются candidates, пока более сильное evidence или explicit operator input не разрешит неоднозначность;
+- одного feature-id matching недостаточно, чтобы auto-include review или verification artifacts;
+- manual overrides остаются evidence-justified exceptions, а не сигналом, что broad auto-inclusion допустим.
 
-### 2. Better phase boundaries
+### 2. Более надежные phase boundaries
 
-Same-session retrospectives should stop depending on arbitrary manual line cutoffs when stronger phase evidence is available.
+Retrospective внутри той же session должна перестать зависеть от произвольных ручных line cutoffs, когда доступно более сильное phase evidence.
 
-The solution should remain evidence-driven and bounded. It must not depend on runtime-specific session-store discovery that belongs to the agent side.
+Решение должно оставаться evidence-driven и bounded. Оно не должно зависеть от runtime-specific session-store discovery, которая принадлежит agent side.
 
-If same-session boundaries remain ambiguous after available evidence is evaluated, the workflow must fail closed by requiring an explicit operator boundary or by stopping with a clear ambiguity note. It must not widen scope heuristically.
+Если boundaries внутри той же session остаются ambiguous после анализа доступного evidence, workflow должен fail-closed: требовать explicit operator boundary или завершаться с явной ambiguity note. Heuristic widening scope здесь недопустим.
 
-### 3. Conservative scope narrowing
+### 3. Консервативное scope narrowing
 
-Scope construction should prefer explicit artifact-linked identity over broad trace mention extraction.
+Построение scope должно предпочитать explicit artifact-linked identity вместо broad trace mention extraction.
 
-If scope remains ambiguous, the scan should degrade conservatively instead of widening into unrelated work.
+Если scope остается ambiguous, scan должен деградировать консервативно, а не расширяться на unrelated work.
 
 ### 4. Structured metrics first
 
-Metrics and incident inference should prefer structured fields from artifacts.
+Метрики и incident inference должны предпочитать structured fields из artifacts.
 
-Legacy prose parsing may remain as fallback compatibility, but structured values must win on conflict and prose fallback must not inflate totals or duplicate incidents when structured evidence exists.
+Legacy prose parsing может сохраниться как fallback compatibility, но structured values должны выигрывать при конфликте, а prose fallback не должен раздувать totals или дублировать incidents, когда structured evidence уже существует.
 
-## External Spec-Conformance Review
+## Внешний Spec-Conformance Review
 
 Status: reviewed
 
 Verdict on initial draft: `mixed`
 
-Key review outcome:
+Ключевой результат review:
 
-- the overall direction was accepted;
-- the draft needed explicit conservative fallback for unresolved phase ambiguity;
-- the discovery section needed stronger artifact-gating rules so manual overrides are reduced by better linkage, not by widening;
-- structured metrics needed explicit precedence over prose when both exist.
+- общее направление принято;
+- draft требовал явного conservative fallback для unresolved phase ambiguity;
+- раздел discovery требовал более жестких artifact-gating rules, чтобы manual overrides уменьшались за счет лучшего linkage, а не за счет widening;
+- structured metrics требовали явного precedence над prose, когда доступны оба источника.
 
 ## Acceptance Criteria
 
-This issue is fixed only when:
+Issue считается исправленным только когда:
 
-- retrospective scan can use artifact-linked discovery for the routine case without mandatory manual artifact overrides;
-- weakly linked artifacts remain candidates only until stronger evidence or explicit operator input resolves them;
-- same-session boundaries no longer rely on arbitrary line cutoffs when stronger evidence exists;
-- if same-session boundary evidence remains ambiguous, the workflow requires an explicit operator boundary or stops with a clear ambiguity result instead of widening heuristically;
-- scope narrowing prefers explicit artifact identity and degrades conservatively when still ambiguous;
-- metrics and candidate incidents prefer structured artifact fields over prose heuristics when structured fields are present, with structured values winning on conflict and no prose-driven double counting;
-- active docs and tests protect artifact-link gating, conservative ambiguity handling, structured-over-prose precedence, and the explicit boundary that session resolution remains agent-owned.
+- retrospective scan использует artifact-linked discovery для рутинного случая без обязательных manual artifact overrides;
+- слабо связанные artifacts остаются только candidates до тех пор, пока более сильное evidence или explicit operator input не разрешит их;
+- same-session boundaries больше не зависят от произвольных line cutoffs, когда доступно более сильное evidence;
+- если evidence для same-session boundary остается ambiguous, workflow требует explicit operator boundary или останавливается с явным ambiguity result вместо heuristic widening;
+- scope narrowing предпочитает explicit artifact identity и деградирует консервативно, если ambiguity сохраняется;
+- metrics и candidate incidents предпочитают structured artifact fields вместо prose heuristics при наличии structured fields, причем structured values выигрывают при конфликте и не допускается prose-driven double counting;
+- active docs и tests защищают artifact-link gating, conservative ambiguity handling, structured-over-prose precedence и явную границу, что session resolution остается agent-owned.
 
-## Mandatory Planning And Implementation Constraint
+## Обязательное ограничение для последующего planning и implementation
 
-Any future planning or implementation for this issue must stay tightly scoped to retrospective automation quality for the declared problems above.
+Любой будущий planning или implementation по этому issue должен оставаться строго в границах качества retrospective automation для перечисленных выше проблем.
 
-Mandatory boundaries:
+Обязательные границы:
 
-- change only the discovery, boundary, scope, metrics, rendering, and tests needed to solve these retrospective-tooling weaknesses;
-- allow rendering changes only when they are strictly incidental to discovery, ambiguity handling, or metrics correctness for this issue;
-- preserve the explicit contract that the agent resolves `session_id` before CLI execution;
-- do not widen this issue into stage-controller schema work that belongs to `unified-dossier-engineer`;
-- if solving this issue reveals a missing stage-artifact field, record that as a separate dependency or follow-up instead of silently extending this issue.
+- менять только discovery, boundary, scope, metrics, rendering и tests, которые нужны, чтобы решить эти слабости retrospective tooling;
+- разрешать rendering changes только если они строго incidental к discovery, ambiguity handling или metrics correctness этого issue;
+- сохранять explicit contract, что агент resolve-ит `session_id` до вызова CLI;
+- не расширять этот issue до stage-controller schema work, которая принадлежит `unified-dossier-engineer`;
+- если при решении issue обнаружится недостающее поле stage artifact, фиксировать это как отдельную dependency или follow-up, а не тихо расширять текущий issue.
 
 ## Non-Goals
 
-- Do not move `session_id` resolution into the CLI.
-- Do not add Codex-specific session-store scraping to this skill.
-- Do not redesign the full report style or narrative templates beyond what is required to remove the identified automation weaknesses.
+- Не переносить `session_id` resolution внутрь CLI.
+- Не добавлять Codex-specific session-store scraping в этот skill.
+- Не redesign-ить full report style или narrative templates больше, чем это нужно для устранения перечисленных automation weaknesses.

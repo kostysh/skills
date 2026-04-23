@@ -1,95 +1,95 @@
-# Improvement Proposal: make stage artifacts schema-consistent and machine-complete
+# Improvement Proposal: сделать схему stage artifacts согласованной и machine-complete
 
 Issue ID: `ISS-03`
 
 Primary owner skill: `unified-dossier-engineer`
 
-## Problem
+## Проблема
 
-The current stage-artifact model is usable for human review, but it is not machine-complete enough for reliable downstream tooling.
+Текущая модель stage artifacts пригодна для человеческого review, но недостаточно machine-complete для надежного downstream tooling.
 
-The grouped problems are related and should be solved as one schema issue:
+Сгруппированные проблемы образуют один schema issue:
 
-- stage log and stage-state can drift on shared fields;
-- artifact linkage is incomplete for reviews, verification, and close-out outputs;
-- skill usage is not explicitly recorded as agent-supplied stage context;
-- `Process misses` remains prose-first instead of structured machine state;
-- scope identity is incomplete, so downstream consumers fall back to noisy trace-derived inference.
+- stage log и stage-state могут расходиться по общим полям;
+- artifact linkage неполный для review, verification и close-out outputs;
+- usage skill не записывается явно как agent-supplied stage context;
+- `Process misses` остается prose-first вместо structured machine state;
+- scope identity неполный, из-за чего downstream consumers откатываются к шумному trace-derived inference.
 
-These are separate symptoms of one root issue: the stage-artifact schema still depends too much on prose and reconstruction.
+Это отдельные симптомы одной корневой проблемы: schema stage artifacts все еще слишком сильно зависит от prose и последующей реконструкции.
 
-## Why This Matters
+## Почему это важно
 
-Without a machine-complete stage schema:
+Без machine-complete schema stages:
 
-- retrospective tooling must guess from logs instead of reading declared state;
-- parity bugs can exist between stage log and stage-state;
-- process metrics are noisy because prose is treated as telemetry;
-- skill usage and scope boundaries are reconstructed from trace fragments instead of being explicitly supplied by the agent;
-- future workflow automation remains fragile even when the human-readable log looks fine.
+- retrospective tooling вынужден угадывать по логам вместо чтения явно declared state;
+- parity bugs могут существовать между stage log и stage-state;
+- process metrics становятся шумными, потому что prose интерпретируется как telemetry;
+- usage skills и scope boundaries восстанавливаются по fragments trace вместо того, чтобы быть явно supplied агентом;
+- будущая workflow automation остается хрупкой, даже если human-readable log выглядит нормально.
 
-## Current Active Surface
+## Текущая активная поверхность
 
-Relevant active references:
+Релевантные active references:
 
 - [Unified artifact topology](../../references/unified-artifact-topology.md)
 - [Telemetry and closure](../../references/telemetry-and-closure.md)
 - [Commandized stage control](../../references/commandized-stage-control.md)
 - [Delivery workflow layer](../../references/delivery-workflow-layer.md)
 
-## Required Correction
+## Требуемое исправление
 
-Extend the stage-artifact contract so that the machine-facing state needed by downstream consumers is stored explicitly in stage metadata and mirrored faithfully into stage-state.
+Расширить contract stage artifacts так, чтобы machine-facing state, нужный downstream consumers, хранился явно в metadata stage и правдиво отражался в stage-state.
 
-This issue intentionally covers one bounded schema family:
+Этот issue сознательно охватывает один ограниченный schema family:
 
-1. parity between stage log and stage-state;
-2. explicit artifact link arrays and commit anchors;
+1. parity между stage log и stage-state;
+2. explicit artifact link arrays и commit anchors;
 3. explicit operator-supplied skill annotations;
 4. structured `process_misses`;
 5. explicit scope identity fields.
 
-## What Must Change
+## Что должно измениться
 
-### 1. Shared-field parity
+### 1. Parity общих полей
 
-Define and protect the shared machine fields that must never drift between stage log metadata and stage-state.
+Определить и защитить shared machine fields, которые не должны расходиться между metadata stage log и stage-state.
 
-At minimum, the contract must cover the shared fields introduced or tightened by this issue, not only the existing base fields.
+Как минимум контракт должен охватывать shared fields, которые вводятся или ужесточаются этим issue, а не только уже существующую базу.
 
-For this issue, helper-managed `stage-state` should remain the authoritative structured coordination and validation surface, while stage-log metadata is the bounded human-readable mirror of that structured state.
+Для границ этого issue helper-managed `stage-state` должен оставаться authoritative structured coordination and validation surface, а metadata stage log должны быть bounded human-readable mirror этого structured state.
 
 ### 2. Artifact linkage
 
-Add machine-complete linkage for:
+Добавить machine-complete linkage для:
 
 - review artifacts;
 - verification artifacts;
 - step-close artifact;
-- optional final commit anchors only as trace links when the runtime already records them.
+- optional final commit anchors только как trace links, если runtime уже записывает их.
 
-The goal is explicit linkage, not heuristic recovery.
-Commit anchors must not become required truthful closure evidence under this issue.
+Цель здесь — explicit linkage, а не heuristic recovery.
+Commit anchors не должны становиться required truthful closure evidence в рамках этого issue.
 
 ### 3. Skill annotations
 
-Add explicit stage-level skill annotations as agent-supplied inputs rather than trace-derived guesses.
+Добавить explicit stage-level skill annotations как agent-supplied inputs, а не trace-derived guesses.
 
-Recommended shape:
+Рекомендуемая форма:
 
 - `skills_used`
 - `skill_issues`
 - `skill_followups`
 
-These fields should reflect deliberate operator/agent annotations for the stage, not automatic skill scraping from conversation trace.
+Эти поля должны отражать осознанные annotations оператора/агента по стадии, а не automatic skill scraping из conversation trace.
 
 ### 4. Structured process misses
 
-Replace prose-only process-miss telemetry with structured machine state while preserving human-readable rendering.
+Заменить prose-only telemetry для process misses на structured machine state, сохранив при этом human-readable rendering.
 
-The preferred direction is a simple repeatable DSL that the agent passes explicitly to stage-control and that is stored as structured metadata/state.
+Предпочтительное направление — простой repeatable DSL, который агент явно передает в stage-control, а затем тот сохраняет как structured metadata/state.
 
-Expected shape should remain minimal and bounded, for example:
+Ожидаемая форма должна оставаться минимальной и bounded, например:
 
 - `id`
 - `category`
@@ -97,60 +97,60 @@ Expected shape should remain minimal and bounded, for example:
 - `resolved`
 - `summary`
 
-Human-readable `Process misses` narrative may remain as a rendered mirror, but it must stop being the only source of truth.
+Human-readable narrative `Process misses` может сохраниться как rendered mirror, но не должен оставаться единственным source of truth.
 
-### 5. Explicit scope identity
+### 5. Явная scope identity
 
-Add explicit scope identity fields so downstream consumers do not need broad trace-derived guessing.
+Добавить explicit scope identity fields, чтобы downstream consumers не были вынуждены делать broad trace-derived guessing.
 
-At minimum, the contract should cover:
+Как минимум контракт должен покрывать:
 
-- `primary_feature_id` when needed distinct from local stage context;
-- `primary_backlog_item_key` or equivalent explicit backlog scope identity;
-- `phase_scope` or equivalent explicit boundary descriptor.
+- `primary_feature_id`, когда он нужен отдельно от локального stage context;
+- `primary_backlog_item_key` или эквивалентную explicit backlog scope identity;
+- `phase_scope` или эквивалентный explicit boundary descriptor.
 
-## External Spec-Conformance Review
+## Внешний Spec-Conformance Review
 
 Status: reviewed
 
 Verdict on initial draft: `insufficient`
 
-Key review outcome:
+Ключевой результат review:
 
-- the grouped schema issue was accepted as the right bounded problem;
-- the draft needed one missing authority rule so parity does not leave two competing sources of truth;
-- the commit-anchor wording needed tightening so optional trace links do not drift into required closure truth;
-- acceptance needed to require runtime-enforced write/validation parity, not only docs and tests.
+- grouped schema issue принят как правильная bounded problem;
+- draft требовал одного недостающего authority rule, чтобы parity не оставляла две competing sources of truth;
+- wording про commit anchors требовало tightening, чтобы optional trace links не дрейфовали в required closure truth;
+- acceptance требовал явного runtime-enforced write/validation parity, а не только docs и tests.
 
 ## Acceptance Criteria
 
-This issue is fixed only when:
+Issue считается исправленным только когда:
 
-- the stage-artifact contract defines the new machine-facing fields explicitly;
-- helper-managed `stage-state` remains the authoritative structured coordination/validation surface for the fields owned by this issue, with stage-log metadata as the bounded mirror;
-- stage log metadata and stage-state preserve parity for the fields owned by this issue;
-- review/verification/close-out linkage is explicit rather than heuristic;
-- any commit anchors introduced or preserved by this issue remain optional trace links and are not required truthful closure evidence;
-- skill annotations are agent-supplied and structured rather than trace-scraped;
-- `process_misses` has a structured source of truth and no longer relies only on prose parsing;
-- explicit scope identity fields reduce the need for trace-derived scope guessing;
-- shipped writers and validators across stage-control, review, verification, and step-close paths materialize and enforce the schema/parity expectations;
-- docs and tests protect the schema additions and enforcement expectations.
+- contract stage artifacts явно определяет новые machine-facing fields;
+- helper-managed `stage-state` остается authoritative structured coordination/validation surface для полей этого issue, а metadata stage log — bounded mirror;
+- metadata stage log и stage-state сохраняют parity для полей этого issue;
+- linkage review/verification/close-out является explicit, а не heuristic;
+- любые commit anchors, введенные или сохраненные этим issue, остаются optional trace links и не становятся required truthful closure evidence;
+- skill annotations являются agent-supplied и structured, а не trace-scraped;
+- `process_misses` имеет structured source of truth и больше не зависит только от prose parsing;
+- explicit scope identity fields уменьшают необходимость в trace-derived scope guessing;
+- shipped writers и validators в stage-control, review, verification и step-close paths материализуют и enforce schema/parity expectations;
+- docs и tests защищают additions schema и expectations enforcement.
 
-## Mandatory Planning And Implementation Constraint
+## Обязательное ограничение для последующего planning и implementation
 
-Any future planning or implementation for this issue must stay tightly scoped to the specific schema gaps enumerated here.
+Любой будущий planning или implementation по этому issue должен оставаться строго в границах конкретных schema gaps, перечисленных здесь.
 
-Mandatory boundaries:
+Обязательные границы:
 
-- implement only the fields, inputs, rendering, and tests needed for parity, linkage, skill annotations, structured `process_misses`, and scope identity;
-- prefer the smallest sufficient schema change set and the simplest repeatable DSL that satisfies the contract;
-- do not widen this issue into retrospective-tool discovery logic, report rendering strategy, or unrelated workflow redesign;
-- do not add automatic skill extraction or automatic process-miss inference from trace or prose under this issue;
-- if another telemetry need appears outside these fields, record a new follow-up instead of extending this issue.
+- реализовывать только те fields, inputs, rendering и tests, которые нужны для parity, linkage, skill annotations, structured `process_misses` и scope identity;
+- предпочитать минимально достаточный schema change set и самый простой repeatable DSL, который удовлетворяет контракту;
+- не расширять этот issue до retrospective-tool discovery logic, report rendering strategy или unrelated workflow redesign;
+- не добавлять automatic skill extraction и automatic process-miss inference из trace или prose в рамках этого issue;
+- если появится другая telemetry need вне этих полей, заводить новый follow-up вместо расширения текущего issue.
 
 ## Non-Goals
 
-- Do not redesign the full lifecycle telemetry model.
-- Do not add generic trace scraping as a substitute for explicit stage metadata.
-- Do not mix session provenance changes from `ISS-02` into this issue except where the shared schema must coexist cleanly.
+- Не redesign-ить всю lifecycle telemetry model.
+- Не добавлять generic trace scraping как substitute для explicit stage metadata.
+- Не смешивать с этим issue session provenance changes из `ISS-02`, кроме мест, где shared schema должна аккуратно сосуществовать.
