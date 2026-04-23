@@ -20,6 +20,7 @@ When the finding depends on:
 
 - middleware order
 - request body limits
+- route admission-boundary preservation
 - auth middleware shape
 - Hono error mapping
 - edge runtime request handling details
@@ -28,7 +29,8 @@ Security questions to resolve:
 
 - where request size, parser behavior, and middleware order are enforced
 - whether trusted proxy or edge behavior changes attacker control
-- whether auth context is attached before privileged handlers run
+- whether auth context and route-specific body limits are attached before privileged handlers or expensive pre-auth work run
+- whether a Hono route-admission change preserves the touched route's existing public/user/admin/webhook/service/operator boundary
 
 ## Load `supabase-engineer`
 

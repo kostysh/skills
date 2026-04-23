@@ -23,14 +23,15 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 2. Confirm runner and TypeScript execution path (node:test + strip/build, or existing toolchain). For React, prefer Vitest + Testing Library.
 3. For changed behavior, enumerate touched files and behaviors first; verify what existing tests cover and where coverage is missing.
 4. Design fixtures/mocks for isolation and determinism; when broader synthetic datasets are needed, prefer seeded `@faker-js/faker`.
-5. Implement tests with clear Arrange-Act-Assert.
-6. When reviewing test quality, flag removed tests, weakened assertions, and behavior changes without matching coverage.
-7. Run relevant tests and inspect output for warnings (including stderr), not only failures.
-8. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
-9. Run coverage checkpoints according to stage/task cadence.
-10. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
-11. After any GitHub Actions workflow or CI YAML change, validate the touched YAML files locally before claiming completion (at minimum parse/syntax validation, and repo-standard workflow lint if available).
-12. If the CI change also alters permissions, secret handling, or untrusted inputs, pair the task with `security-reviewer`.
+5. For replay/rate-limit regression tests, name the targeted risk or failure mode and make the exercised scenario or assertions prove that exact risk; a prose label alone is not coverage.
+6. Implement tests with clear Arrange-Act-Assert.
+7. When reviewing test quality, flag removed tests, weakened assertions, and behavior changes without matching coverage.
+8. Run relevant tests and inspect output for warnings (including stderr), not only failures.
+9. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
+10. Run coverage checkpoints according to stage/task cadence.
+11. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
+12. After any GitHub Actions workflow or CI YAML change, validate the touched YAML files locally before claiming completion (at minimum parse/syntax validation, and repo-standard workflow lint if available).
+13. If the CI change also alters permissions, secret handling, or untrusted inputs, pair the task with `security-reviewer`.
 
 ## Multi-contour confidence model (default)
 

@@ -86,6 +86,20 @@ What to verify before reporting:
 - whether the route is browser-reachable or only for trusted machine clients
 - whether upstream rate limiting, CSRF protection, or replay protection exists outside the reviewed file
 
+## Auth-Admission Early Checklist
+
+Use this checklist early when a slice changes protected route admission, replay/idempotency controls, pre-auth resource consumption, or closely related authorization-boundary handling.
+
+Check:
+
+- route trust boundary: public, user, admin, webhook, service, or operator route class; which middleware admits the request before the handler
+- pre-auth versus post-auth resource consumption: body reads, JSON/form parsing, signature verification, expensive lookups, and queue fan-out
+- quota isolation: invalid or unknown credentials, tenants, clients, or tokens must not drain the same quota used by a valid principal or operator
+- replay/idempotency expectations: whether duplicate, retried, or reordered requests are rejected, deduped, or safely accepted
+- bounded body handling: high-risk routes must bound request bodies before untrusted JSON, form, multipart, or raw body reads
+
+Keep the checklist narrow. If exploitability depends on Hono-specific body limits, middleware order, or admission-boundary preservation, resolve that fact through `HONO engineer` rather than duplicating framework guidance here.
+
 ## Safe-by-Default Patterns
 
 Usually safe unless protections are bypassed:

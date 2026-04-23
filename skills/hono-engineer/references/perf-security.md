@@ -4,6 +4,8 @@
 - Enforce body size and request timeout via config/env.
 - For upstream calls, implement per-request timeouts (AbortController).
 - Bun runtime note: Bun has its own `maxRequestBodySize`; set it if you rely on bodyLimit.
+- For high-risk auth-admission routes, apply bounded body reads before untrusted `json()`, form, multipart, or raw body parsing.
+- Keep route-specific body-limit increases local to the route group that needs them; do not widen a protected admission boundary as a side effect of accepting a larger body.
 
 Minimal example (Bun):
 ```ts

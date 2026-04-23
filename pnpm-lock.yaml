@@ -65,6 +65,8 @@ importers:
         specifier: ^8.0.3
         version: 8.0.3(@types/node@25.5.0)(esbuild@0.27.7)(tsx@4.21.0)(yaml@2.8.3)
 
+  skills/hono-engineer: {}
+
   skills/retrospective-phase-analysis:
     devDependencies:
       '@types/node':
@@ -76,6 +78,8 @@ importers:
       vite:
         specifier: ^8.0.3
         version: 8.0.3(@types/node@25.5.0)(esbuild@0.27.7)(tsx@4.21.0)(yaml@2.8.3)
+
+  skills/security-reviewer: {}
 
   skills/skill-source-compiler:
     dependencies:
@@ -95,6 +99,8 @@ importers:
       vite:
         specifier: ^8.0.3
         version: 8.0.3(@types/node@25.5.0)(esbuild@0.27.7)(tsx@4.21.0)(yaml@2.8.3)
+
+  skills/typescript-test-engineer: {}
 
   skills/unified-dossier-engineer:
     dependencies:

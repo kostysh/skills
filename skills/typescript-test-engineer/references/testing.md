@@ -35,6 +35,23 @@ Specific findings to look for:
 - mocks that bypass the real edge the change was supposed to exercise;
 - CI or workflow changes that reduce which tests actually run.
 
+## Replay and rate-limit regression tests
+
+Use this only for replay, idempotency, quota, or rate-limit fixes.
+
+Required cue:
+- name the targeted risk or failure mode the test locks down;
+- make the exercised scenario or assertions reflect that named risk;
+- do not count a test name, comment, or nearby behavior as coverage when the scenario does not trigger the replay or rate-limit failure mode.
+
+Good examples:
+- a replay test sends the same idempotency key or event twice and asserts the second request is rejected, deduped, or produces the documented idempotent result;
+- a quota-isolation test sends invalid credentials until the pre-auth limit is hit, then verifies a valid principal, client, tenant, or operator is not blocked by the invalid traffic's bucket;
+- a rate-limit key test proves two tenants, clients, or principals do not share the bucket when the fix is about isolation.
+
+Near miss:
+- renaming a generic 429 test to mention replay or quota without changing the request sequence, key choice, or assertions that represent the risk.
+
 ## Runner
 - Use `node:test` and a lightweight TS strip/transform (`node --experimental-strip-types` or similar).
 - No ts-node.

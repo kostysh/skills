@@ -59,6 +59,8 @@ app.use('*', csrf())
 ## Authorization policies
 - Keep policy checks in pure functions (`can(principal, action, resource)`), called by middleware or routes.
 - Enforce tenant boundaries explicitly (do not rely on incidental filters).
+- For auth-admission route changes, preserve the touched route's current public, user, admin, webhook, service, or operator admission boundary before changing handler behavior.
+- If the route has owner or tenant gate semantics, keep the gate explicit and covered by integration tests rather than relying on route naming or UI-only checks.
 
 ## Middleware composition (complex auth flows)
 - Use `combine` helpers: `some()` (any pass), `every()` (all pass), `except()` (skip for matched paths).

@@ -81,7 +81,13 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - CI, release automation, and supply chain paths
    - storage, data plane, and database privilege boundaries
    - inbound and outbound integrations such as webhooks and URL fetchers
-2. Classify the review scope and load only the needed references:
+2. Apply the auth-admission early checkpoint during planning, early implementation framing, or the first review pass when a slice changes protected route admission, replay/idempotency controls, pre-auth resource consumption, or closely related authorization-boundary handling:
+   - identify the route trust boundary and the admission middleware that protects it
+   - compare pre-auth versus post-auth resource consumption, including body parsing and expensive lookups
+   - state replay/idempotency expectations and quota/key isolation when they are relevant
+   - require bounded request-body handling on high-risk routes before untrusted body reads
+   - keep this checkpoint bounded to route admission; do not turn it into a generic security planning framework
+3. Classify the review scope and load only the needed references:
    - general methodology
    - API/auth/input
    - GitHub Actions
@@ -89,24 +95,24 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - webhooks
    - secrets/config
    - domain handoffs when stack-specific behavior changes exploitability
-3. Map trust boundaries:
+4. Map trust boundaries:
    - inputs
    - identities and roles
    - secrets and credentials
    - privileged actions
    - sensitive sinks
-4. Trace the attack path:
+5. Trace the attack path:
    - entry point
    - attacker-controlled value
    - execution or authorization mechanism
    - impact
-5. Verify mitigations:
+6. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
    - access controls
    - environment or deployment constraints
-6. Classify confidence and severity.
-7. Choose the output mode:
+7. Classify confidence and severity.
+8. Choose the output mode:
    - targeted findings in chat
    - formal audit sections with stable IDs
    - remediation of one confirmed finding at a time

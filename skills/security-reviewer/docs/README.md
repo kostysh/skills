@@ -1,0 +1,15 @@
+# Документация `security-reviewer`
+
+Эта папка содержит supporting и historical surface. Активные инструкции остаются в `SKILL.md` и явно подключенных `references/*`.
+
+## Issues
+
+| Issue | Status | Notes |
+| --- | --- | --- |
+| [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | Implemented | Bounded auth-admission early checklist stack для `security-reviewer`, `HONO engineer` и `typescript-test-engineer`. |
+
+## Implementation Logs
+
+| Log | Related issue | Status |
+| --- | --- | --- |
+| [logs/implementation-log-20260423-1.md](logs/implementation-log-20260423-1.md) | [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | PASS |

@@ -47,10 +47,11 @@ Design to work both for a greenfield project and for incremental adoption in an 
 
 ## Workflow for adding endpoints
 1. Decide endpoint class (public, user, admin, webhook) and choose the middleware chain (see `references/pipelines.md` when needed).
-2. Add route module under `src/routes/` and mount with `app.route()`.
-3. Keep routes thin: parse/validate inputs, call domain/service logic, return response.
-4. Convert validation and controlled errors to Problem Details. Do not expose secrets.
-5. Add tests at the right level (unit/integration/e2e).
+2. For auth-admission work, run a short route-admission checkpoint before implementation: bound body reads before parsing, keep pre-auth and post-auth quota isolation distinct, state replay behavior, and preserve the touched route's admission boundary or owner-gate semantics.
+3. Add route module under `src/routes/` and mount with `app.route()`.
+4. Keep routes thin: parse/validate inputs, call domain/service logic, return response.
+5. Convert validation and controlled errors to Problem Details. Do not expose secrets.
+6. Add tests at the right level (unit/integration/e2e).
 
 ## Platform constraints
 If using Cloudflare Workers or another edge runtime, review `references/workers-platform.md` and `references/wrangler.md` and adjust for platform limits, binding typing, caching semantics, and async work handling. For Workers-specific APIs or config fields that may have changed, prefer current docs or the local Wrangler schema over memory.
