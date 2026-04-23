@@ -68,9 +68,15 @@ The workflow must preserve:
 The workflow must preserve:
 
 - explicit implementation plan for the selected backlog item
+- explicit execution target: the concrete outcome the implementation agent must reach
+- completion recognition that links the target outcome to acceptance criteria, Definition of Done, or verification obligations
+- explicit non-goals or boundaries for the implementation pass; if no extra boundaries exist beyond acceptance criteria, DoD, or rollout constraints, say so explicitly
 - proof obligations for verification
 - explicit handling of heavy-runtime planning when the trigger fires
 - return to backlog truth layer when planning changes backlog truth
+
+`plan-slice` is not implementation-ready when the implementation objective is ambiguous.
+If a future implementation agent would need to rediscover the goal from prior chat or backlog prose, the stage must remain open or blocked rather than handing off a task list.
 
 ### `implementation`
 

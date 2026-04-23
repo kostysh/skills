@@ -118,6 +118,9 @@ Inside `Decisions / reclassifications`, keep these subheadings:
 
 If a required section has no notable content, write `none` instead of deleting it.
 
+For `plan-slice`, material target clarification, goal reclassification, or ambiguity resolution belongs in `Decisions / reclassifications`.
+If the implementation objective remains ambiguous, record the blocker in `Process misses` or `Close-out` as appropriate instead of hiding it behind a mechanical transition.
+
 If future stage-controller commands add progress-transition fields, they must remain subordinate to this telemetry model:
 
 - progress transitions may add deterministic stage-progress evidence;

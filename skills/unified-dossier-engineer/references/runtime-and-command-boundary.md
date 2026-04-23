@@ -195,4 +195,5 @@ Command-local help must:
 - do not promote commands or flags into `skill.yaml` if runtime code and tests do not ship them;
 - do not let top-level help blur backlog truth commands with delivery-stage commands;
 - do not let helper commands absorb stage-controller responsibilities or vice versa;
+- do not imply that stage-controller commands author or validate semantic `plan-slice` execution-target content;
 - do not imply support for alternate roots, extra launchers, or unshipped adaptation flows.

@@ -324,6 +324,7 @@ Rules:
 - `stage_state` may reach `ready_for_close`, but not authoritative `closed`.
 - stage-log bootstrap/update must materialize and preserve the canonical narrative scaffold required by the active log contract;
 - stage-controller commands may update helper-owned structured fields and transition sections, but must not collapse a non-trivial log into a mechanical summary plus transition list.
+- stage-controller commands do not author or validate semantic `plan-slice` content; active methodology owns the requirement that `plan-slice` have an explicit execution target, completion recognition, and implementation boundaries before the agent treats it as ready for implementation.
 
 ## 6.4 Delivery helper / closure / integrity commands
 
@@ -650,6 +651,7 @@ Required utility-level rules:
 - helper-owned closure writes preserve authored narrative sections while updating helper-owned closure fields;
 - lifecycle snapshots and session index remain structured machine artifacts;
 - no command may infer missing truth from prose.
+- no command may treat a mechanical `plan-slice --ready-for-close` transition as automatic proof that the implementation objective is clear; that semantic readiness remains agent-owned unless a future runtime explicitly implements and tests such validation.
 
 ## 12. Non-goals for first merged runtime
 

@@ -24,11 +24,7 @@ const UNIFIED_ARTIFACT_TOPOLOGY_PATH = path.join(
   'unified-artifact-topology.md',
 );
 const BACKLOG_TRUTH_LAYER_PATH = path.join(SKILL_DIR, 'references', 'backlog-truth-layer.md');
-const SOURCE_REVIEW_CONTRACT_PATH = path.join(
-  SKILL_DIR,
-  'references',
-  'source-review-contract.md',
-);
+const SOURCE_REVIEW_CONTRACT_PATH = path.join(SKILL_DIR, 'references', 'source-review-contract.md');
 
 const ACTIVE_REFERENCE_PATHS = [
   STATUS_SCOPE_PATH,
@@ -106,7 +102,8 @@ void test('active references enforce the no-legacy contract', async () => {
     readFile(STATUS_SCOPE_PATH, 'utf8'),
     readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
     ...ACTIVE_REFERENCE_PATHS.filter(
-      (referencePath) => referencePath !== STATUS_SCOPE_PATH && referencePath !== RUNTIME_BOUNDARY_PATH,
+      (referencePath) =>
+        referencePath !== STATUS_SCOPE_PATH && referencePath !== RUNTIME_BOUNDARY_PATH,
     ).map((referencePath) => readFile(referencePath, 'utf8')),
   ]);
   const activeReferenceCorpus = [statusScope, runtimeBoundary, ...otherActiveRefs].join('\n\n');
@@ -285,5 +282,43 @@ void test('active log contract keeps operator-facing narrative minimum aligned a
   assertContainsTerms(utilitySpec, [
     'stage-log bootstrap/update must materialize and preserve the canonical narrative scaffold required by the active log contract',
     'helper-owned closure writes preserve authored narrative sections while updating helper-owned closure fields',
+  ]);
+});
+
+void test('plan-slice contract preserves goal-oriented implementation handoff without runtime semantic automation', async () => {
+  const [deliveryWorkflow, stageControl, telemetryClosure, runtimeBoundary, utilitySpec] =
+    await Promise.all([
+      readFile(DELIVERY_WORKFLOW_PATH, 'utf8'),
+      readFile(STAGE_CONTROL_PATH, 'utf8'),
+      readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+      readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+      readFile(UTILITY_SPEC_PATH, 'utf8'),
+    ]);
+
+  assertContainsTerms(deliveryWorkflow, [
+    'explicit execution target',
+    'concrete outcome the implementation agent must reach',
+    'completion recognition',
+    'acceptance criteria, Definition of Done, or verification obligations',
+    'explicit non-goals or boundaries',
+    'If a future implementation agent would need to rediscover the goal',
+    'the stage must remain open or blocked',
+  ]);
+  assertContainsTerms(stageControl, [
+    'the plan has an explicit execution target, completion recognition, and implementation boundaries',
+    'The stage controller does not author or validate that semantic content.',
+    'do not treat a mechanical `ready_for_close` transition as a substitute for agent-owned `plan-slice` execution-target clarity',
+  ]);
+  assertContainsTerms(telemetryClosure, [
+    'target clarification, goal reclassification, or ambiguity resolution',
+    'If the implementation objective remains ambiguous',
+  ]);
+  assertContainsTerms(runtimeBoundary, [
+    'do not imply that stage-controller commands author or validate semantic `plan-slice` execution-target content',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'stage-controller commands do not author or validate semantic `plan-slice` content',
+    'explicit execution target, completion recognition, and implementation boundaries',
+    'no command may treat a mechanical `plan-slice --ready-for-close` transition as automatic proof',
   ]);
 });
