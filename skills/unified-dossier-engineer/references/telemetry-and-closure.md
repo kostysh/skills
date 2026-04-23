@@ -85,6 +85,16 @@ Purpose rule:
 - logs also exist to support operator judgment about process, skills, and methods;
 - frontmatter plus a mechanical transition list is not sufficient for a non-trivial stage.
 
+Operator-language rule:
+
+- Agent-authored narrative content in dossier logs follows the operator language by default.
+- An explicit operator language preference wins over the language inferred from the current request.
+- In multilingual or ambiguous sessions, use the language of the current operator request unless an explicit operator language preference says otherwise.
+- Generated scaffold headings may remain stable English labels unless this skill introduces a separate localization policy.
+- Machine-readable fields stay schema-shaped and are not localized.
+- Commands, paths, identifiers, JSON keys, YAML frontmatter keys, tool names, skill names, and direct quotes must remain exact and must not be translated.
+- Historical logs are not rewritten only for language normalization.
+
 Required scaffold for `feature-intake` logs:
 
 - `Scope`

@@ -323,7 +323,9 @@ Rules:
 - ambiguous singleton fields such as `blocked_ts` / `resumed_ts` are forbidden unless explicitly marked as derived (`first_*`, `last_*`);
 - `stage_state` may reach `ready_for_close`, but not authoritative `closed`.
 - stage-log bootstrap/update must materialize and preserve the canonical narrative scaffold required by the active log contract;
+- generated scaffold headings may remain stable labels, while authored narrative body is agent-owned and follows the active operator-language policy;
 - stage-controller commands may update helper-owned structured fields and transition sections, but must not collapse a non-trivial log into a mechanical summary plus transition list.
+- helper-owned updates preserve authored content without translation or normalization;
 - stage-controller commands do not author or validate semantic `plan-slice` content; active methodology owns the requirement that `plan-slice` have an explicit execution target, completion recognition, and implementation boundaries before the agent treats it as ready for implementation.
 
 ## 6.4 Delivery helper / closure / integrity commands
@@ -648,10 +650,11 @@ Required utility-level rules:
 - implementation lifecycle end markers cannot materialize without step-close-backed evidence;
 - logs remain `.md` with YAML frontmatter;
 - logs preserve the canonical narrative scaffold required by the active log contract for both `feature-intake` and primary stages;
-- helper-owned closure writes preserve authored narrative sections while updating helper-owned closure fields;
+- helper-owned closure writes preserve authored narrative sections without translation or normalization while updating helper-owned closure fields;
 - lifecycle snapshots and session index remain structured machine artifacts;
 - no command may infer missing truth from prose.
 - no command may treat a mechanical `plan-slice --ready-for-close` transition as automatic proof that the implementation objective is clear; that semantic readiness remains agent-owned unless a future runtime explicitly implements and tests such validation.
+- no automatic language detection or translation is part of the shipped runtime unless a future change implements and tests it explicitly.
 
 ## 12. Non-goals for first merged runtime
 

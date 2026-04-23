@@ -196,4 +196,5 @@ Command-local help must:
 - do not let top-level help blur backlog truth commands with delivery-stage commands;
 - do not let helper commands absorb stage-controller responsibilities or vice versa;
 - do not imply that stage-controller commands author or validate semantic `plan-slice` execution-target content;
+- do not imply runtime support for automatic operator-language detection, translation, or localization unless shipped runtime code and tests explicitly implement that behavior;
 - do not imply support for alternate roots, extra launchers, or unshipped adaptation flows.

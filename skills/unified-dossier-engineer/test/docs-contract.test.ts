@@ -281,7 +281,43 @@ void test('active log contract keeps operator-facing narrative minimum aligned a
   ]);
   assertContainsTerms(utilitySpec, [
     'stage-log bootstrap/update must materialize and preserve the canonical narrative scaffold required by the active log contract',
-    'helper-owned closure writes preserve authored narrative sections while updating helper-owned closure fields',
+    'helper-owned closure writes preserve authored narrative sections without translation or normalization while updating helper-owned closure fields',
+  ]);
+});
+
+void test('active log contract preserves operator-language narrative without runtime translation promises', async () => {
+  const [telemetryClosure, stageControl, runtimeBoundary, utilitySpec] = await Promise.all([
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(telemetryClosure, [
+    'operator language',
+    'Agent-authored narrative content in dossier logs follows the operator language by default.',
+    'explicit operator language preference',
+    'multilingual or ambiguous sessions',
+    'current operator request',
+    'Generated scaffold headings',
+    'Machine-readable fields stay schema-shaped and are not localized.',
+    'Commands, paths, identifiers, JSON keys',
+    'YAML frontmatter keys',
+    'tool names, skill names, and direct quotes',
+    'Historical logs are not rewritten only for language normalization.',
+  ]);
+  assertContainsTerms(stageControl, [
+    'mechanical scaffold generation does not determine the language of authored narrative',
+    'without translation or normalization',
+  ]);
+  assertContainsTerms(runtimeBoundary, [
+    'do not imply runtime support for automatic operator-language detection, translation, or localization',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'generated scaffold headings may remain stable labels',
+    'authored narrative body is agent-owned and follows the active operator-language policy',
+    'helper-owned updates preserve authored content without translation or normalization',
+    'no automatic language detection or translation is part of the shipped runtime',
   ]);
 });
 

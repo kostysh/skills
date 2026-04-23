@@ -92,10 +92,11 @@ Rules:
 - stage logs remain Markdown artifacts with YAML frontmatter and narrative sections;
 - helper-managed stage state under `.dossier/stages/*` carries the structured current-cycle stage data for scope, review-bundle membership, and close-out validation;
 - required section scaffold must stay present for both `feature-intake` and primary stage logs rather than collapsing into an almost-frontmatter-only body;
+- Generated scaffold headings may be materialized as stable labels; mechanical scaffold generation does not determine the language of authored narrative.
 - event history for repeated block/resume cycles lives authoritatively in `transition_events[]`;
 - do not introduce ambiguous singleton timestamps such as `blocked_ts` or `resumed_ts` without explicit derived semantics like `first_*` or `last_*`;
 - transition surfaces complement existing telemetry; they do not replace bounded event arrays or closure artifacts.
-- stage-controller reruns and helper-owned closure updates must preserve authored narrative sections while updating helper-owned structured fields and transition evidence.
+- stage-controller reruns and helper-owned closure updates must preserve authored narrative sections without translation or normalization while updating helper-owned structured fields and transition evidence.
 
 ## Backlog interaction rule
 
