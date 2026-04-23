@@ -7,6 +7,10 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# Skill implementation logs are curated docs artifacts, not runtime logs.
+!skills/*/docs/logs/
+!skills/*/docs/logs/**
+
 # Tracked test fixtures that intentionally model stage-log directories
 !skills/retrospective-phase-analysis/test/fixtures/logs/
 !skills/retrospective-phase-analysis/test/fixtures/logs/**
