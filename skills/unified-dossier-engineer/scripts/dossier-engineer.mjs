@@ -7028,8 +7028,8 @@ async function readLifecycleLog(root, absPath) {
 		cycleId,
 		backlogItemKey: toNullableString$2(metadata.backlog_item_key),
 		sessionId: toNullableString$2(metadata.session_id),
-		traceRuntime: toNullableString$2(metadata.trace_runtime) ?? "codex",
-		traceLocatorKind: toNullableString$2(metadata.trace_locator_kind) ?? "session_id",
+		traceRuntime: toNullableString$2(metadata.trace_runtime),
+		traceLocatorKind: toNullableString$2(metadata.trace_locator_kind),
 		startTs: toNullableString$2(metadata.start_ts),
 		intakeProcessCompleteTs: toNullableString$2(metadata.intake_process_complete_ts),
 		localGatesGreenTs: toNullableString$2(metadata.local_gates_green_ts),
@@ -23071,17 +23071,31 @@ function ensureRequired(value, message) {
 	if (!value) throw new Error(message);
 	return value;
 }
+function normalizeSingleLineOption(value, optionName) {
+	const normalized = value?.trim() ?? "";
+	if (!normalized) return null;
+	if (/[\r\n]/u.test(normalized)) throw new Error(`${optionName} must be a single-line value.`);
+	return normalized;
+}
+function parseStageProvenanceInput(args) {
+	const sessionId = normalizeSingleLineOption(takeOption$1(args, "--session-id"), "--session-id");
+	if (!sessionId) throw new Error("--session-id is required for stage-controller writes.");
+	return {
+		sessionId,
+		traceRuntime: normalizeSingleLineOption(takeOption$1(args, "--trace-runtime"), "--trace-runtime")
+	};
+}
 function commandUsage(command) {
-	return [`${command} --feature-id <id> [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${command === "implementation" ? " [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close" : ""}`, `${command} --feature-id <id> --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`].join("\n");
+	return [`${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${command === "implementation" ? " [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close" : ""}`, `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`].join("\n");
 }
 function nextCommandsForState(command, stageState) {
-	if (stageState === "blocked") return [`dossier-engineer ${command} --feature-id <id>`];
+	if (stageState === "blocked") return [`dossier-engineer ${command} --feature-id <id> --session-id <id>`];
 	if (stageState === "ready_for_close") return [
 		"dossier-engineer dossier-verify ...",
 		"dossier-engineer review-artifact ...",
 		"dossier-engineer dossier-step-close ..."
 	];
-	return [`dossier-engineer ${command} --feature-id <id> --ready-for-close`];
+	return [`dossier-engineer ${command} --feature-id <id> --session-id <id> --ready-for-close`];
 }
 function parseBacklogItemKey(dossier) {
 	const fromFrontmatter = dossier.frontmatter.backlog_item_key;
@@ -23184,8 +23198,8 @@ async function appendFeatureIntakeLog(payload) {
 		invalidated_review_present: false,
 		stale_review_present: false,
 		transition_events: transitionEvents,
-		session_id: {}.CODEX_SESSION_ID ?? null,
-		trace_runtime: "codex",
+		session_id: payload.sessionId,
+		trace_runtime: payload.traceRuntime,
 		trace_locator_kind: "session_id"
 	};
 	await assertManagedWritePath(payload.root, path.join(payload.root, ".dossier", "logs", "feature-intake"), absPath, "feature-intake log");
@@ -23206,6 +23220,7 @@ async function appendFeatureIntakeLog(payload) {
 }
 async function runStageControllerCommand(command, args) {
 	if (args.includes("--help") || args.includes("-h")) throw new Error(commandUsage(command));
+	const provenance = parseStageProvenanceInput(args);
 	const root = await resolveProcessRoot(process.cwd(), takeOption$1(args, "--root"));
 	const featureId = sanitizeFeatureId(ensureRequired(takeOption$1(args, "--feature-id"), "--feature-id is required."), "--feature-id");
 	const backlogFollowupKind = takeOption$1(args, "--backlog-followup-kind");
@@ -23271,8 +23286,8 @@ async function runStageControllerCommand(command, args) {
 		degraded_review_present: carryReviewState ? currentStageState?.degraded_review_present ?? false : false,
 		invalidated_review_present: carryReviewState ? currentStageState?.invalidated_review_present ?? false : false,
 		stale_review_present: carryReviewState ? currentStageState?.stale_review_present ?? false : false,
-		session_id: {}.CODEX_SESSION_ID ?? null,
-		trace_runtime: "codex",
+		session_id: provenance.sessionId,
+		trace_runtime: provenance.traceRuntime,
 		trace_locator_kind: "session_id"
 	};
 	if (command === "implementation") {
@@ -23504,136 +23519,154 @@ function createDossierCommandWrapper(name, family) {
 	const execute = async (args, io) => {
 		return executeCommand(command, args, io, name);
 	};
-	if (name === "feature-intake") return {
-		name,
-		family: "delivery-stage",
-		commandType: "stage",
-		summary: command.description,
-		usage: baseHelpLines.filter((line) => line.trim().startsWith("dossier-engineer feature-intake")),
-		helpLines: () => baseHelpLines.map((line) => line.replace("workflow_stage_next values name workflow stages, not shipped CLI subcommands.", "workflow_stage_next values name canonical stage-controller commands; use spec-compact, plan-slice, implementation, or change-proposal as shipped subcommands.")),
-		async execute(args, io) {
-			try {
-				const root = await resolveProcessRoot(process.cwd(), takeOption(args, "--root"));
-				await assertManagedWritePath(root, path.join(root, ".dossier", "logs", "feature-intake"), path.join(root, ".dossier", "logs", "feature-intake", ".probe.md"), "feature-intake log");
-				await assertManagedWritePath(root, path.join(root, "docs", "ssot"), path.join(root, "docs", "ssot", "index.md"), "feature-intake index file");
-				const argsWithJson = args.includes("--json") ? args : [...args, "--json"];
-				return await withDeliveryLock({
-					root,
-					featureId: "feature-intake",
-					featureCycleId: "allocation",
-					command: "feature-intake",
-					run: async () => {
-						const { exitCode, stderr, stdout } = await captureDossierCommandOutput(name, argsWithJson, command);
-						const summary = stdout.trim() ? JSON.parse(stdout) : null;
-						if (exitCode !== 0 && !summary) throw new Error(stderr.trim() || "feature-intake failed before creating a dossier.");
-						if (!summary) throw new Error("feature-intake did not return a JSON summary.");
-						const featureId = sanitizeFeatureId(summary.feature_id, "feature-intake feature id");
-						const featureCycleId = `fc-${featureId}-${Date.now().toString(36)}`;
-						const nextCommand = `dossier-engineer spec-compact --feature-id ${featureId}`;
-						if (exitCode !== 0) {
-							const warnings = [`feature-intake created ${summary.dossier}, but vendored closeout failed before telemetry append.`, ...summary.refresh_stderr ? [summary.refresh_stderr] : []];
-							if (args.includes("--json")) {
-								writeCliEnvelope(io.stdout, {
-									command: "feature-intake",
-									scope: { feature_id: featureId },
-									data: {
-										...summary,
-										feature_cycle_id: null,
-										log_path: null,
-										stage: "feature-intake"
-									},
-									nextCommands: ["dossier-engineer index-refresh", nextCommand],
-									result: "partial_success",
-									warnings
-								});
+	if (name === "feature-intake") {
+		const featureIntakeHelpLines = () => baseHelpLines.flatMap((line) => {
+			const replaced = line.replace("workflow_stage_next values name workflow stages, not shipped CLI subcommands.", "workflow_stage_next values name canonical stage-controller commands; use spec-compact, plan-slice, implementation, or change-proposal as shipped subcommands.");
+			if (replaced.trim() === "Options:") return [
+				replaced,
+				"  --session-id <id>          Required explicit session provenance for stage artifacts.",
+				"  --trace-runtime <name>     Optional explicit runtime label recorded with the session id."
+			];
+			return replaced.replace(" [options]", " --session-id <id> [options]");
+		});
+		return {
+			name,
+			family: "delivery-stage",
+			commandType: "stage",
+			summary: command.description,
+			usage: baseHelpLines.filter((line) => line.trim().startsWith("dossier-engineer feature-intake")).map((line) => line.replace(" [options]", " --session-id <id> [options]")),
+			helpLines: featureIntakeHelpLines,
+			async execute(args, io) {
+				try {
+					if (args.includes("--help") || args.includes("-h")) {
+						writeLine(io.stdout, featureIntakeHelpLines().join("\n"));
+						return 0;
+					}
+					const provenance = parseStageProvenanceInput(args);
+					const root = await resolveProcessRoot(process.cwd(), takeOption(args, "--root"));
+					await assertManagedWritePath(root, path.join(root, ".dossier", "logs", "feature-intake"), path.join(root, ".dossier", "logs", "feature-intake", ".probe.md"), "feature-intake log");
+					await assertManagedWritePath(root, path.join(root, "docs", "ssot"), path.join(root, "docs", "ssot", "index.md"), "feature-intake index file");
+					const argsWithJson = args.includes("--json") ? args : [...args, "--json"];
+					return await withDeliveryLock({
+						root,
+						featureId: "feature-intake",
+						featureCycleId: "allocation",
+						command: "feature-intake",
+						run: async () => {
+							const { exitCode, stderr, stdout } = await captureDossierCommandOutput(name, argsWithJson, command);
+							const summary = stdout.trim() ? JSON.parse(stdout) : null;
+							if (exitCode !== 0 && !summary) throw new Error(stderr.trim() || "feature-intake failed before creating a dossier.");
+							if (!summary) throw new Error("feature-intake did not return a JSON summary.");
+							const featureId = sanitizeFeatureId(summary.feature_id, "feature-intake feature id");
+							const featureCycleId = `fc-${featureId}-${Date.now().toString(36)}`;
+							const nextCommand = `dossier-engineer spec-compact --feature-id ${featureId} --session-id <id>`;
+							if (exitCode !== 0) {
+								const warnings = [`feature-intake created ${summary.dossier}, but vendored closeout failed before telemetry append.`, ...summary.refresh_stderr ? [summary.refresh_stderr] : []];
+								if (args.includes("--json")) {
+									writeCliEnvelope(io.stdout, {
+										command: "feature-intake",
+										scope: { feature_id: featureId },
+										data: {
+											...summary,
+											feature_cycle_id: null,
+											log_path: null,
+											stage: "feature-intake"
+										},
+										nextCommands: ["dossier-engineer index-refresh", nextCommand],
+										result: "partial_success",
+										warnings
+									});
+									return exitCode;
+								}
+								writeLine(io.stdout, `[feature-intake] Created ${summary.dossier}`);
+								writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
+								for (const warning of warnings) writeLine(io.stderr, `[feature-intake] WARNING: ${warning}`);
 								return exitCode;
 							}
-							writeLine(io.stdout, `[feature-intake] Created ${summary.dossier}`);
-							writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
-							for (const warning of warnings) writeLine(io.stderr, `[feature-intake] WARNING: ${warning}`);
-							return exitCode;
-						}
-						try {
-							const intakeLog = await appendFeatureIntakeLog({
-								root,
-								featureId,
-								featureCycleId,
-								backlogItemKey: summary.backlog_item_key
-							});
-							const stageData = {
-								...summary,
-								stage: "feature-intake",
-								cycle_id: intakeLog.cycleId,
-								feature_cycle_id: featureCycleId,
-								stage_state: "ready_for_close",
-								entered_ts: intakeLog.enteredTs,
-								ready_for_close_ts: intakeLog.readyForCloseTs,
-								transition_events: intakeLog.transitionEvents,
-								backlog_followup_required: false,
-								backlog_followup_kind: null,
-								backlog_followup_resolved: true,
-								log_path: intakeLog.logPath
-							};
-							if (args.includes("--json")) {
-								writeCliEnvelope(io.stdout, {
-									command: "feature-intake",
-									scope: {
-										feature_id: featureId,
-										feature_cycle_id: featureCycleId
-									},
-									data: stageData,
-									nextCommands: [nextCommand]
+							try {
+								const intakeLog = await appendFeatureIntakeLog({
+									root,
+									featureId,
+									featureCycleId,
+									backlogItemKey: summary.backlog_item_key,
+									sessionId: provenance.sessionId,
+									traceRuntime: provenance.traceRuntime
 								});
+								const stageData = {
+									...summary,
+									stage: "feature-intake",
+									cycle_id: intakeLog.cycleId,
+									feature_cycle_id: featureCycleId,
+									stage_state: "ready_for_close",
+									entered_ts: intakeLog.enteredTs,
+									ready_for_close_ts: intakeLog.readyForCloseTs,
+									transition_events: intakeLog.transitionEvents,
+									backlog_followup_required: false,
+									backlog_followup_kind: null,
+									backlog_followup_resolved: true,
+									log_path: intakeLog.logPath
+								};
+								if (args.includes("--json")) {
+									writeCliEnvelope(io.stdout, {
+										command: "feature-intake",
+										scope: {
+											feature_id: featureId,
+											feature_cycle_id: featureCycleId
+										},
+										data: stageData,
+										nextCommands: [nextCommand]
+									});
+									return 0;
+								}
+								writeLine(io.stdout, `[feature-intake] Created ${summary.dossier}`);
+								writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
+								writeLine(io.stdout, `[feature-intake] backlog_item_key=${summary.backlog_item_key}`);
+								writeLine(io.stdout, `[feature-intake] backlog_delivery_state=${summary.backlog_delivery_state}`);
+								writeLine(io.stdout, `[feature-intake] feature_cycle_id=${featureCycleId}`);
+								writeLine(io.stdout, `[feature-intake] cycle_id=${intakeLog.cycleId}`);
+								writeLine(io.stdout, "[feature-intake] stage_state=ready_for_close");
+								writeLine(io.stdout, `[feature-intake] log_path=${intakeLog.logPath}`);
+								writeLine(io.stdout, "[feature-intake] next_stage_controller=spec-compact");
+								writeLine(io.stdout, `[feature-intake] next_command=${nextCommand}`);
+								return 0;
+							} catch (error) {
+								const warning = error instanceof Error ? error.message : String(error);
+								if (args.includes("--json")) {
+									writeCliEnvelope(io.stdout, {
+										command: "feature-intake",
+										scope: {
+											feature_id: featureId,
+											feature_cycle_id: featureCycleId
+										},
+										data: {
+											...summary,
+											feature_cycle_id: featureCycleId,
+											log_path: null,
+											stage: "feature-intake"
+										},
+										nextCommands: [nextCommand],
+										result: "partial_success",
+										warnings: [`Feature dossier was created, but feature-intake log append failed: ${warning}`]
+									});
+									return 0;
+								}
+								writeLine(io.stdout, `[feature-intake] Created ${summary.dossier}`);
+								writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
+								writeLine(io.stderr, `[feature-intake] WARNING: feature-intake log append failed after dossier creation: ${warning}`);
 								return 0;
 							}
-							writeLine(io.stdout, `[feature-intake] Created ${summary.dossier}`);
-							writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
-							writeLine(io.stdout, `[feature-intake] backlog_item_key=${summary.backlog_item_key}`);
-							writeLine(io.stdout, `[feature-intake] backlog_delivery_state=${summary.backlog_delivery_state}`);
-							writeLine(io.stdout, `[feature-intake] feature_cycle_id=${featureCycleId}`);
-							writeLine(io.stdout, `[feature-intake] cycle_id=${intakeLog.cycleId}`);
-							writeLine(io.stdout, "[feature-intake] stage_state=ready_for_close");
-							writeLine(io.stdout, `[feature-intake] log_path=${intakeLog.logPath}`);
-							writeLine(io.stdout, "[feature-intake] next_stage_controller=spec-compact");
-							writeLine(io.stdout, `[feature-intake] next_command=${nextCommand}`);
-							return 0;
-						} catch (error) {
-							const warning = error instanceof Error ? error.message : String(error);
-							if (args.includes("--json")) {
-								writeCliEnvelope(io.stdout, {
-									command: "feature-intake",
-									scope: {
-										feature_id: featureId,
-										feature_cycle_id: featureCycleId
-									},
-									data: {
-										...summary,
-										feature_cycle_id: featureCycleId,
-										log_path: null,
-										stage: "feature-intake"
-									},
-									nextCommands: [nextCommand],
-									result: "partial_success",
-									warnings: [`Feature dossier was created, but feature-intake log append failed: ${warning}`]
-								});
-								return 0;
-							}
-							writeLine(io.stdout, `[feature-intake] Created ${summary.dossier}`);
-							writeLine(io.stdout, `[feature-intake] feature=${featureId}`);
-							writeLine(io.stderr, `[feature-intake] WARNING: feature-intake log append failed after dossier creation: ${warning}`);
-							return 0;
 						}
-					}
-				});
-			} catch (error) {
-				io.stderr.write(`${JSON.stringify({ error: {
-					code: "UDE_FEATURE_INTAKE_FAILED",
-					message: error instanceof Error ? error.message : String(error)
-				} })}\n`);
-				return 1;
+					});
+				} catch (error) {
+					io.stderr.write(`${JSON.stringify({ error: {
+						code: "UDE_FEATURE_INTAKE_FAILED",
+						message: error instanceof Error ? error.message : String(error)
+					} })}\n`);
+					return 1;
+				}
 			}
-		}
-	};
+		};
+	}
 	if (name === "dossier-step-close") return {
 		name,
 		family,
@@ -23994,18 +24027,20 @@ function createStageControllerWrapper(command) {
 		commandType: "stage",
 		summary: `Mechanical controller for the ${command} delivery stage.`,
 		usage: [
-			`dossier-engineer ${command} --feature-id <id>`,
-			`dossier-engineer ${command} --feature-id <id> --block`,
-			`dossier-engineer ${command} --feature-id <id> --ready-for-close`
+			`dossier-engineer ${command} --feature-id <id> --session-id <id>`,
+			`dossier-engineer ${command} --feature-id <id> --session-id <id> --block`,
+			`dossier-engineer ${command} --feature-id <id> --session-id <id> --ready-for-close`
 		],
 		helpLines: () => [
 			`Mechanical controller for the ${command} delivery stage.`,
 			"",
 			"Usage:",
-			`  dossier-engineer ${command} --feature-id <id> [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
-			`  dossier-engineer ${command} --feature-id <id> --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
+			`  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
+			`  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
 			"",
 			"Rules:",
+			"  - --session-id is required and must be supplied by the agent; the runtime does not discover it",
+			"  - --trace-runtime is optional explicit metadata, not a runtime-specific default",
 			"  - stage controllers stop at ready_for_close",
 			"  - authoritative closure remains dossier-step-close + lifecycle-refresh",
 			"  - backlog truth is not mutated directly by the stage controller"

@@ -46,6 +46,7 @@ Current status:
 | [implementation-log-12.ru.md](implementation-log-12.ru.md) | Log for goal-oriented `plan-slice` handoff: execution target, completion recognition, implementation boundaries, and runtime non-automation guardrails. | Read when validating the implementation of `refactoring-plan-5.ru.md`. |
 | [implementation-log-13.ru.md](implementation-log-13.ru.md) | Log for operator-language dossier log policy: authored narrative language, exact machine-facing strings, scaffold boundary, and runtime non-translation guardrails. | Read when validating the implementation of `refactoring-plan-6.ru.md`. |
 | [implementation-log-14.ru.md](implementation-log-14.ru.md) | Log for external independent audit launch contract: non-forked/no-full-history reviewer launch, rerun on invalid launch method, and runtime non-proof guardrails. | Read when validating the implementation of `issues/improvement-proposal-20260423-3.md`. |
+| [implementation-log-15.ru.md](implementation-log-15.ru.md) | Log for explicit stage session provenance: required `--session-id`, fail-closed stage writes, and non-canonical runtime env/session-store discovery. | Read when validating the implementation of `issues/improvement-proposal-20260423-4.md`. |
 
 ## Scope of This Folder
 

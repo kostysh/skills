@@ -45,6 +45,8 @@ This skill preserves two distinct semantic layers inside one runtime:
 - `backlog truth layer` for backlog graph, source registry, packets, patches, and source-review discipline
 - `delivery workflow layer` for intake, spec, planning, implementation, coverage, review, closure, and telemetry
 
+For stage-controller writes, session provenance is agent-owned explicit input. The agent determines the session id before invoking the runtime and passes it with `--session-id`; the runtime must not discover session ids from runtime-private stores or silently fall back to environment variables.
+
 ## Workflow stages
 
 ### Workflow stage: Confirm shipped-runtime scope
@@ -274,7 +276,7 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Examples:** node scripts/dossier-engineer.mjs feature-intake --title <title> --backlog-item-key <key> --backlog-delivery-state <state> --backlog-source <source> --area <area> --owner <owner> --impact <impact>
+**Examples:** node scripts/dossier-engineer.mjs feature-intake --title <title> --backlog-item-key <key> --backlog-delivery-state <state> --backlog-source <source> --area <area> --owner <owner> --impact <impact> --session-id <id>
 
 ### CLI command: `spec-compact`
 **Use when:** The feature moves into or through compact specification work.
@@ -283,7 +285,7 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Examples:** node scripts/dossier-engineer.mjs spec-compact --feature-id <id>
+**Examples:** node scripts/dossier-engineer.mjs spec-compact --feature-id <id> --session-id <id>
 
 ### CLI command: `plan-slice`
 **Use when:** The feature moves into or through planning work.
@@ -292,7 +294,7 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Examples:** node scripts/dossier-engineer.mjs plan-slice --feature-id <id>
+**Examples:** node scripts/dossier-engineer.mjs plan-slice --feature-id <id> --session-id <id>
 
 ### CLI command: `implementation`
 **Use when:** The feature moves into or through implementation work.
@@ -301,7 +303,7 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Examples:** node scripts/dossier-engineer.mjs implementation --feature-id <id>
+**Examples:** node scripts/dossier-engineer.mjs implementation --feature-id <id> --session-id <id>
 
 ### CLI command: `change-proposal`
 **Use when:** The feature enters an explicit change-proposal branch that may affect backlog truth.
@@ -310,7 +312,7 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Examples:** node scripts/dossier-engineer.mjs change-proposal --feature-id <id>
+**Examples:** node scripts/dossier-engineer.mjs change-proposal --feature-id <id> --session-id <id>
 
 ### CLI command: `contract-drift-audit`
 **Use when:** Mature change work needs a deterministic contract-drift check.

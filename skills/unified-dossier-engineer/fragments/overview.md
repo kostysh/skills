@@ -10,3 +10,5 @@ This skill preserves two distinct semantic layers inside one runtime:
 
 - `backlog truth layer` for backlog graph, source registry, packets, patches, and source-review discipline
 - `delivery workflow layer` for intake, spec, planning, implementation, coverage, review, closure, and telemetry
+
+For stage-controller writes, session provenance is agent-owned explicit input. The agent determines the session id before invoking the runtime and passes it with `--session-id`; the runtime must not discover session ids from runtime-private stores or silently fall back to environment variables.

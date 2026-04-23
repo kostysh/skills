@@ -37,6 +37,16 @@ type CliEnvelope<T> = {
   warnings: string[];
 };
 
+const DEFAULT_STAGE_SESSION_ID = 'test-session-0001';
+const DEFAULT_TRACE_RUNTIME = 'test-agent';
+const STAGE_CONTROLLER_COMMANDS_REQUIRING_SESSION = new Set([
+  'feature-intake',
+  'spec-compact',
+  'plan-slice',
+  'implementation',
+  'change-proposal',
+]);
+
 async function makeTempRepoPath(): Promise<string> {
   return path.join(await mkdtemp(path.join(os.tmpdir(), 'ude-cli-')), 'repo');
 }
@@ -51,9 +61,25 @@ function runCli(
     allowFailure?: boolean;
     cwd?: string;
     env?: NodeJS.ProcessEnv;
+    stageSession?: false | { sessionId?: string; traceRuntime?: string | null };
   } = {},
 ): CliResult {
-  const result = spawnSync(process.execPath, [scriptPath(), ...args], {
+  const cliArgs =
+    options.stageSession === false ||
+    args.includes('--session-id') ||
+    args.includes('--help') ||
+    args.includes('-h') ||
+    !STAGE_CONTROLLER_COMMANDS_REQUIRING_SESSION.has(args[0] ?? '')
+      ? args
+      : [
+          ...args,
+          '--session-id',
+          options.stageSession?.sessionId ?? DEFAULT_STAGE_SESSION_ID,
+          ...(options.stageSession?.traceRuntime === null
+            ? []
+            : ['--trace-runtime', options.stageSession?.traceRuntime ?? DEFAULT_TRACE_RUNTIME]),
+        ];
+  const result = spawnSync(process.execPath, [scriptPath(), ...cliArgs], {
     cwd: options.cwd ?? SKILL_DIR,
     encoding: 'utf8',
     env: {
@@ -276,6 +302,7 @@ test('command help smoke covers the shipped public surface', () => {
     'patch-item',
     'remove-item',
     'report',
+    'spec-compact',
     'plan-slice',
     'implementation',
     'change-proposal',
@@ -306,6 +333,10 @@ test('command help smoke covers the shipped public surface', () => {
     if (command === 'feature-intake') {
       assert.match(result.stdout, /canonical stage-controller commands/);
       assert.doesNotMatch(result.stdout, /not shipped CLI subcommands/);
+    }
+    if (STAGE_CONTROLLER_COMMANDS_REQUIRING_SESSION.has(command)) {
+      assert.match(result.stdout, /--session-id <id>/u);
+      assert.match(result.stdout, /--trace-runtime <name>/u);
     }
     if (command === 'review-artifact') {
       assert.match(result.stdout, /Persist one already obtained audit result for one audit class/u);
@@ -368,6 +399,135 @@ test('backlog root discovery errors point to dossier-engineer init', async () =>
   assert.equal(result.code, 5);
   assert.match(result.stderr, /dossier-engineer init --path <path>/);
   assert.doesNotMatch(result.stderr, /backlog-engineer init/);
+});
+
+test('stage-controller writes fail closed without explicit session id', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeWithoutSession = runCli(
+    [
+      'feature-intake',
+      '--title',
+      'Missing Session Intake',
+      '--backlog-item-key',
+      'missing-session-intake',
+      '--backlog-delivery-state',
+      'defined',
+      '--backlog-source',
+      'missing-session.md',
+      '--area',
+      'ops',
+      '--owner',
+      'platform',
+      '--impact',
+      'backend',
+      '--json',
+    ],
+    {
+      allowFailure: true,
+      cwd: repo,
+      env: { CODEX_SESSION_ID: 'env-session-must-not-be-used' },
+      stageSession: false,
+    },
+  );
+
+  assert.equal(intakeWithoutSession.code, 1);
+  assert.match(intakeWithoutSession.stderr, /--session-id is required/u);
+  assert.deepEqual(
+    (await readdir(path.join(repo, 'docs', 'ssot', 'features'))).filter(
+      (entry) => entry !== '.gitkeep',
+    ),
+    [],
+  );
+  assert.deepEqual(await readdir(path.join(repo, '.dossier', 'logs', 'feature-intake')), []);
+
+  const intakeEnvelope = parseEnvelope<{ feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Session Guard Baseline',
+        '--backlog-item-key',
+        'session-guard-baseline',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'session-guard.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  for (const command of ['spec-compact', 'plan-slice', 'implementation', 'change-proposal']) {
+    const result = runCli([command, '--feature-id', intakeEnvelope.data.feature_id], {
+      allowFailure: true,
+      cwd: repo,
+      env: { CODEX_SESSION_ID: 'env-session-must-not-be-used' },
+      stageSession: false,
+    });
+    assert.equal(result.code, 1, command);
+    assert.match(result.stderr, /--session-id is required/u, command);
+    assert.deepEqual(await readdir(path.join(repo, '.dossier', 'logs', command)), [], command);
+  }
+});
+
+test('stage-controller update paths fail closed without explicit session id', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Session Update Guard',
+        '--backlog-item-key',
+        'session-update-guard',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'session-update.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const startEnvelope = parseEnvelope<{ log_path: string }>(
+    runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+  const stageLogPath = path.join(repo, startEnvelope.data.log_path);
+  const before = await readFile(stageLogPath, 'utf8');
+
+  const result = runCli(
+    ['spec-compact', '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'],
+    {
+      allowFailure: true,
+      cwd: repo,
+      env: { CODEX_SESSION_ID: 'env-session-must-not-be-used' },
+      stageSession: false,
+    },
+  );
+
+  assert.equal(result.code, 1);
+  assert.match(result.stderr, /--session-id is required/u);
+  assert.equal(await readFile(stageLogPath, 'utf8'), before);
 });
 
 test('feature-intake and stage controllers produce unified dossiers and stage logs', async () => {
@@ -438,7 +598,7 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
   assert.equal(intake.backlog_followup_kind, null);
   assert.equal(intake.backlog_followup_resolved, true);
   assert.deepEqual(intakeEnvelope.next_commands, [
-    `dossier-engineer spec-compact --feature-id ${intake.feature_id}`,
+    `dossier-engineer spec-compact --feature-id ${intake.feature_id} --session-id <id>`,
   ]);
   await stat(path.join(repo, intake.dossier));
   await stat(
@@ -464,7 +624,19 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
   assert.match(intakeLog, /## Backlog handoff decisions\n\nnone/u);
   assert.match(intakeLog, /## Close-out\n\nnone/u);
   assert.match(intakeLog, /## Transition events\n\n- .*: entered/u);
+  assert.match(intakeLog, new RegExp(`session_id: ${DEFAULT_STAGE_SESSION_ID}`, 'u'));
+  assert.match(intakeLog, new RegExp(`trace_runtime: ${DEFAULT_TRACE_RUNTIME}`, 'u'));
+  assert.match(intakeLog, /trace_locator_kind: session_id/u);
   assert.doesNotMatch(intakeLog, /intake_process_complete_ts:/u);
+  const intakeState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', intake.feature_id, 'feature-intake.json'),
+      'utf8',
+    ),
+  ) as { session_id: string; trace_locator_kind: string; trace_runtime: string };
+  assert.equal(intakeState.session_id, DEFAULT_STAGE_SESSION_ID);
+  assert.equal(intakeState.trace_runtime, DEFAULT_TRACE_RUNTIME);
+  assert.equal(intakeState.trace_locator_kind, 'session_id');
 
   const stageStartEnvelope = parseEnvelope<{
     cycle_id: string;
@@ -525,6 +697,18 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
   assert.match(stageLog, /### Spec gap decisions\n\nnone/u);
   assert.match(stageLog, /## Transition events\n\n- .*: entered/u);
   assert.match(stageLog, /## Close-out\n\nnone/u);
+  assert.match(stageLog, new RegExp(`session_id: ${DEFAULT_STAGE_SESSION_ID}`, 'u'));
+  assert.match(stageLog, new RegExp(`trace_runtime: ${DEFAULT_TRACE_RUNTIME}`, 'u'));
+  assert.match(stageLog, /trace_locator_kind: session_id/u);
+  const stageState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', intake.feature_id, 'spec-compact.json'),
+      'utf8',
+    ),
+  ) as { session_id: string; trace_locator_kind: string; trace_runtime: string };
+  assert.equal(stageState.session_id, DEFAULT_STAGE_SESSION_ID);
+  assert.equal(stageState.trace_runtime, DEFAULT_TRACE_RUNTIME);
+  assert.equal(stageState.trace_locator_kind, 'session_id');
 });
 
 test('stage-controller reruns preserve authored narrative sections', async () => {

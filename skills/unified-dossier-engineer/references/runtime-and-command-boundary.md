@@ -66,6 +66,13 @@ The shipped help surface groups commands by family.
 - `implementation`
 - `change-proposal`
 
+Contract for this family:
+
+- stage-controller write paths require `--session-id <id>` as explicit agent-owned provenance input;
+- optional `--trace-runtime <name>` is explicit metadata only, not a runtime-specific default;
+- missing required `--session-id` fails closed before stage log or helper-managed stage-state writes;
+- the runtime must not make Codex-local trace stores, private filesystem layouts, or environment variables the canonical way to resolve session provenance.
+
 ### Delivery helper / integrity / closure family
 
 - `contract-drift-audit`

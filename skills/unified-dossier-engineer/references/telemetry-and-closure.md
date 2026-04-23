@@ -156,6 +156,9 @@ Required rules:
 - session anchors are stored in repo artifacts only as stable lookup seams
 - `.dossier/retro/session-index.jsonl` stores session anchors, not absolute machine-local trace paths
 - session discoverability must remain runtime-aware without hardcoding one workstation layout as universal truth
+- stage logs and helper-managed stage state get `session_id` from explicit `--session-id` input supplied by the agent
+- stage-controller writes must fail closed rather than emit `trace_locator_kind: session_id` with `session_id: null`
+- runtime-specific environment variables may help the agent determine a session id before invocation, but they are optional convenience context and not the portable telemetry contract
 
 ## Source-review signals
 

@@ -8,6 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { BACKLOG_COMMANDS, type CliIo } from './backlog/commands.ts';
 import {
   appendFeatureIntakeLog,
+  parseStageProvenanceInput,
   recordReviewArtifactOnStageLog,
   recordStepCloseOnStageLog,
   resolveLatestFeatureCycleId,
@@ -183,6 +184,21 @@ function createDossierCommandWrapper(
   };
 
   if (name === 'feature-intake') {
+    const featureIntakeHelpLines = (): string[] =>
+      baseHelpLines.flatMap((line) => {
+        const replaced = line.replace(
+          'workflow_stage_next values name workflow stages, not shipped CLI subcommands.',
+          'workflow_stage_next values name canonical stage-controller commands; use spec-compact, plan-slice, implementation, or change-proposal as shipped subcommands.',
+        );
+        if (replaced.trim() === 'Options:') {
+          return [
+            replaced,
+            '  --session-id <id>          Required explicit session provenance for stage artifacts.',
+            '  --trace-runtime <name>     Optional explicit runtime label recorded with the session id.',
+          ];
+        }
+        return replaced.replace(' [options]', ' --session-id <id> [options]');
+      });
     return {
       name,
       family: 'delivery-stage',
@@ -190,16 +206,15 @@ function createDossierCommandWrapper(
       summary: command.description,
       usage: baseHelpLines.filter((line) =>
         line.trim().startsWith('dossier-engineer feature-intake'),
-      ),
-      helpLines: () =>
-        baseHelpLines.map((line) =>
-          line.replace(
-            'workflow_stage_next values name workflow stages, not shipped CLI subcommands.',
-            'workflow_stage_next values name canonical stage-controller commands; use spec-compact, plan-slice, implementation, or change-proposal as shipped subcommands.',
-          ),
-        ),
+      ).map((line) => line.replace(' [options]', ' --session-id <id> [options]')),
+      helpLines: featureIntakeHelpLines,
       async execute(args, io) {
         try {
+          if (args.includes('--help') || args.includes('-h')) {
+            writeLine(io.stdout, featureIntakeHelpLines().join('\n'));
+            return 0;
+          }
+          const provenance = parseStageProvenanceInput(args);
           const root = await resolveProcessRoot(process.cwd(), takeOption(args, '--root'));
           await assertManagedWritePath(
             root,
@@ -247,7 +262,7 @@ function createDossierCommandWrapper(
               }
               const featureId = sanitizeFeatureId(summary.feature_id, 'feature-intake feature id');
               const featureCycleId = `fc-${featureId}-${Date.now().toString(36)}`;
-              const nextCommand = `dossier-engineer spec-compact --feature-id ${featureId}`;
+              const nextCommand = `dossier-engineer spec-compact --feature-id ${featureId} --session-id <id>`;
               if (exitCode !== 0) {
                 const warnings = [
                   `feature-intake created ${summary.dossier}, but vendored closeout failed before telemetry append.`,
@@ -282,6 +297,8 @@ function createDossierCommandWrapper(
                   featureId,
                   featureCycleId,
                   backlogItemKey: summary.backlog_item_key,
+                  sessionId: provenance.sessionId,
+                  traceRuntime: provenance.traceRuntime,
                 });
                 const stageData = {
                   ...summary,
@@ -1038,19 +1055,21 @@ function createStageControllerWrapper(command: StageControllerCommand): UnifiedC
     commandType: 'stage',
     summary: `Mechanical controller for the ${command} delivery stage.`,
     usage: [
-      `dossier-engineer ${command} --feature-id <id>`,
-      `dossier-engineer ${command} --feature-id <id> --block`,
-      `dossier-engineer ${command} --feature-id <id> --ready-for-close`,
+      `dossier-engineer ${command} --feature-id <id> --session-id <id>`,
+      `dossier-engineer ${command} --feature-id <id> --session-id <id> --block`,
+      `dossier-engineer ${command} --feature-id <id> --session-id <id> --ready-for-close`,
     ],
     helpLines: () => [
       `Mechanical controller for the ${command} delivery stage.`,
       '',
       'Usage:',
-      `  dossier-engineer ${command} --feature-id <id> [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
+      `  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
       '  dossier-engineer ' +
-        `${command} --feature-id <id> --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
+        `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
       '',
       'Rules:',
+      '  - --session-id is required and must be supplied by the agent; the runtime does not discover it',
+      '  - --trace-runtime is optional explicit metadata, not a runtime-specific default',
       '  - stage controllers stop at ready_for_close',
       '  - authoritative closure remains dossier-step-close + lifecycle-refresh',
       '  - backlog truth is not mutated directly by the stage controller',

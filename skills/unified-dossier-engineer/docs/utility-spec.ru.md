@@ -294,6 +294,14 @@ Future first-class stage-controller set:
 - emit machine-readable transition state;
 - emit explicit backlog follow-up signals.
 
+Session provenance contract:
+
+- агент сам определяет session id до вызова utility;
+- все stage-controller write paths, которые bootstrap/update stage log или helper-managed stage state, требуют `--session-id <id>`;
+- `--trace-runtime <name>` является optional explicit metadata и не имеет Codex-specific default;
+- если `--session-id` отсутствует, write path fail-closed до записи stage artifacts;
+- runtime записывает только явно переданное значение и не делает auto-discovery из Codex-local session store, private filesystem layout или environment fallback.
+
 Они не:
 
 - materialize authoritative `closed`;
@@ -315,11 +323,15 @@ Minimum common fields:
 - `backlog_followup_required`
 - `backlog_followup_kind`
 - `backlog_followup_resolved`
+- `session_id`
+- `trace_locator_kind`
+- `trace_runtime`
 - `next_commands`
 
 Rules:
 
 - repeated block/resume history lives in `transition_events[]`;
+- `trace_locator_kind: session_id` must not be emitted with `session_id: null` by new stage-controller writes;
 - ambiguous singleton fields such as `blocked_ts` / `resumed_ts` are forbidden unless explicitly marked as derived (`first_*`, `last_*`);
 - `stage_state` may reach `ready_for_close`, but not authoritative `closed`.
 - stage-log bootstrap/update must materialize and preserve the canonical narrative scaffold required by the active log contract;

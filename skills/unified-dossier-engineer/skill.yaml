@@ -349,35 +349,35 @@ sections:
       when: Selected backlog work is being turned into a new dossier-controlled feature.
       script: scripts/dossier-engineer.mjs
       examples:
-        - node scripts/dossier-engineer.mjs feature-intake --title <title> --backlog-item-key <key> --backlog-delivery-state <state> --backlog-source <source> --area <area> --owner <owner> --impact <impact>
+        - node scripts/dossier-engineer.mjs feature-intake --title <title> --backlog-item-key <key> --backlog-delivery-state <state> --backlog-source <source> --area <area> --owner <owner> --impact <impact> --session-id <id>
     - id: command-spec-compact
       command: spec-compact
       summary: Mechanical controller for the spec-compact stage.
       when: The feature moves into or through compact specification work.
       script: scripts/dossier-engineer.mjs
       examples:
-        - node scripts/dossier-engineer.mjs spec-compact --feature-id <id>
+        - node scripts/dossier-engineer.mjs spec-compact --feature-id <id> --session-id <id>
     - id: command-plan-slice
       command: plan-slice
       summary: Mechanical controller for the plan-slice stage.
       when: The feature moves into or through planning work.
       script: scripts/dossier-engineer.mjs
       examples:
-        - node scripts/dossier-engineer.mjs plan-slice --feature-id <id>
+        - node scripts/dossier-engineer.mjs plan-slice --feature-id <id> --session-id <id>
     - id: command-implementation
       command: implementation
       summary: Mechanical controller for the implementation stage.
       when: The feature moves into or through implementation work.
       script: scripts/dossier-engineer.mjs
       examples:
-        - node scripts/dossier-engineer.mjs implementation --feature-id <id>
+        - node scripts/dossier-engineer.mjs implementation --feature-id <id> --session-id <id>
     - id: command-change-proposal
       command: change-proposal
       summary: Mechanical controller for the mature change path.
       when: The feature enters an explicit change-proposal branch that may affect backlog truth.
       script: scripts/dossier-engineer.mjs
       examples:
-        - node scripts/dossier-engineer.mjs change-proposal --feature-id <id>
+        - node scripts/dossier-engineer.mjs change-proposal --feature-id <id> --session-id <id>
     - id: command-contract-drift-audit
       command: contract-drift-audit
       summary: Detect executable contract drift without follow-up changes.

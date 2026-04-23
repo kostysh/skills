@@ -76,6 +76,20 @@ Upper authority limit:
 - authoritative `closed` state stays with `dossier-step-close`;
 - lifecycle truth after closure stays with `lifecycle-refresh` when lifecycle aggregation is required.
 
+## Session provenance input
+
+Stage-controller writes require explicit session provenance.
+
+Required contract:
+
+- the agent determines the current session id before invoking the runtime;
+- every stage-controller bootstrap/update path that writes a stage log or helper-managed stage state receives `--session-id <id>`;
+- optional `--trace-runtime <name>` may record an explicit runtime label, but it is not required and has no runtime-specific default;
+- when `--session-id` is missing, the command fails closed before writing stage artifacts;
+- the runtime records only the explicit input it received and must not auto-discover session ids from runtime-private stores or silently trust environment fallback values.
+
+Runtime-specific variables may be useful to the agent while it manually determines the id, but they are not the portable CLI contract.
+
 ## Logging role
 
 Stage-controller commands should become canonical writers for stage progress transitions.
@@ -86,6 +100,7 @@ Minimum mechanical transition surface:
 - `entered_ts`
 - `ready_for_close_ts`
 - `transition_events[]`
+- explicit session provenance from `--session-id`
 
 Rules:
 
@@ -157,6 +172,7 @@ The utility specification and runtime packages now ship this boundary in first-w
 ## Negative rules
 
 - do not document flags or output fields for stage-controller commands that the shipped runtime does not actually expose
+- do not make runtime-specific session discovery the canonical stage-controller provenance contract
 - do not let stage controllers absorb `dossier-step-close`, `lifecycle-refresh`, or `next-step`
 - do not make stage-controller commands semantic automation
 - do not treat a mechanical `ready_for_close` transition as a substitute for agent-owned `plan-slice` execution-target clarity

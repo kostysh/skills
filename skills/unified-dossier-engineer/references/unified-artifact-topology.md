@@ -71,6 +71,7 @@ docs/
 - `.dossier` never becomes the canonical home of project-facing feature dossiers
 - repo-root `AGENTS.md` stays human-governed; utility-owned reinforcement may exist only inside `.dossier/backlog/AGENTS.md`
 - backlog-local ignore contract lives in `.dossier/backlog/.gitignore`
+- stage artifacts under `.dossier/logs/*` and `.dossier/stages/*` may store session anchors only from explicit agent-supplied CLI input such as `--session-id`
 
 ## Root discovery and path rules
 
@@ -79,6 +80,7 @@ docs/
 - commands may run from repo root or any descendant directory as long as upward discovery finds `.dossier/manifest.json`
 - source paths are stored as normalized POSIX paths relative to repo process root
 - sources outside repo root may use `..` segments but remain anchored to the process root
+- runtime-private session stores and absolute machine-local trace paths are not part of root discovery or canonical artifact addressing
 
 ## Feature dossier canonical rule
 

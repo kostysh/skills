@@ -103,6 +103,11 @@ type AuditSummaryPayload = {
   staleReviewPresent: boolean;
 };
 
+export type StageProvenanceInput = {
+  sessionId: string;
+  traceRuntime: string | null;
+};
+
 const DECISION_SUBSECTION_TITLES = [
   'Spec gap decisions',
   'Implementation freedom decisions',
@@ -562,14 +567,36 @@ function ensureRequired(value: string | null, message: string): string {
   return value;
 }
 
+function normalizeSingleLineOption(value: string | null, optionName: string): string | null {
+  const normalized = value?.trim() ?? '';
+  if (!normalized) {
+    return null;
+  }
+  if (/[\r\n]/u.test(normalized)) {
+    throw new Error(`${optionName} must be a single-line value.`);
+  }
+  return normalized;
+}
+
+export function parseStageProvenanceInput(args: string[]): StageProvenanceInput {
+  const sessionId = normalizeSingleLineOption(takeOption(args, '--session-id'), '--session-id');
+  if (!sessionId) {
+    throw new Error('--session-id is required for stage-controller writes.');
+  }
+  return {
+    sessionId,
+    traceRuntime: normalizeSingleLineOption(takeOption(args, '--trace-runtime'), '--trace-runtime'),
+  };
+}
+
 function commandUsage(command: StageControllerCommand): string {
   const implementationScopeSuffix =
     command === 'implementation'
       ? ' [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close'
       : '';
   return [
-    `${command} --feature-id <id> [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}`,
-    `${command} --feature-id <id> --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
+    `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}`,
+    `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
   ].join('\n');
 }
 
@@ -578,7 +605,7 @@ function nextCommandsForState(
   stageState: StageControllerResult['stage_state'],
 ): string[] {
   if (stageState === 'blocked') {
-    return [`dossier-engineer ${command} --feature-id <id>`];
+    return [`dossier-engineer ${command} --feature-id <id> --session-id <id>`];
   }
   if (stageState === 'ready_for_close') {
     return [
@@ -587,7 +614,7 @@ function nextCommandsForState(
       'dossier-engineer dossier-step-close ...',
     ];
   }
-  return [`dossier-engineer ${command} --feature-id <id> --ready-for-close`];
+  return [`dossier-engineer ${command} --feature-id <id> --session-id <id> --ready-for-close`];
 }
 
 function parseBacklogItemKey(dossier: {
@@ -718,6 +745,8 @@ export async function appendFeatureIntakeLog(payload: {
   featureCycleId: string;
   featureId: string;
   root: string;
+  sessionId: string;
+  traceRuntime: string | null;
 }): Promise<{
   cycleId: string;
   enteredTs: string;
@@ -764,8 +793,8 @@ export async function appendFeatureIntakeLog(payload: {
     invalidated_review_present: false,
     stale_review_present: false,
     transition_events: transitionEvents,
-    session_id: process.env.CODEX_SESSION_ID ?? null,
-    trace_runtime: 'codex',
+    session_id: payload.sessionId,
+    trace_runtime: payload.traceRuntime,
     trace_locator_kind: 'session_id',
   };
   await assertManagedWritePath(
@@ -803,6 +832,7 @@ export async function runStageControllerCommand(
     throw new Error(commandUsage(command));
   }
 
+  const provenance = parseStageProvenanceInput(args);
   const cwd = process.cwd();
   const root = await resolveProcessRoot(cwd, takeOption(args, '--root'));
   const featureId = sanitizeFeatureId(
@@ -949,8 +979,8 @@ export async function runStageControllerCommand(
     stale_review_present: carryReviewState
       ? (currentStageState?.stale_review_present ?? false)
       : false,
-    session_id: process.env.CODEX_SESSION_ID ?? null,
-    trace_runtime: 'codex',
+    session_id: provenance.sessionId,
+    trace_runtime: provenance.traceRuntime,
     trace_locator_kind: 'session_id',
   };
   if (command === 'implementation') {

@@ -40,8 +40,8 @@ export interface SessionIndexRecord {
   stage: LifecycleStage;
   stage_log_path: string;
   start_ts: string | null;
-  trace_locator_kind: string;
-  trace_runtime: string;
+  trace_locator_kind: string | null;
+  trace_runtime: string | null;
   version: 1;
 }
 
@@ -83,8 +83,8 @@ interface ParsedLifecycleLog {
   staleReviewPresent: boolean | null;
   stepArtifact: string | null;
   stepCloseTs: string | null;
-  traceLocatorKind: string;
-  traceRuntime: string;
+  traceLocatorKind: string | null;
+  traceRuntime: string | null;
 }
 
 interface StageAggregate {
@@ -305,8 +305,8 @@ async function readLifecycleLog(root: string, absPath: string): Promise<ParsedLi
     cycleId,
     backlogItemKey: toNullableString(metadata.backlog_item_key),
     sessionId: toNullableString(metadata.session_id),
-    traceRuntime: toNullableString(metadata.trace_runtime) ?? 'codex',
-    traceLocatorKind: toNullableString(metadata.trace_locator_kind) ?? 'session_id',
+    traceRuntime: toNullableString(metadata.trace_runtime),
+    traceLocatorKind: toNullableString(metadata.trace_locator_kind),
     startTs: toNullableString(metadata.start_ts),
     intakeProcessCompleteTs: toNullableString(metadata.intake_process_complete_ts),
     localGatesGreenTs: toNullableString(metadata.local_gates_green_ts),

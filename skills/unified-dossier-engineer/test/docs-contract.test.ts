@@ -342,6 +342,46 @@ void test('active log contract preserves operator-language narrative without run
   ]);
 });
 
+void test('stage-controller provenance contract is explicit and portable', async () => {
+  const [skill, stageControl, runtimeBoundary, telemetryClosure, artifactTopology, utilitySpec] =
+    await Promise.all([
+      readFile(SKILL_PATH, 'utf8'),
+      readFile(STAGE_CONTROL_PATH, 'utf8'),
+      readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+      readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+      readFile(UNIFIED_ARTIFACT_TOPOLOGY_PATH, 'utf8'),
+      readFile(UTILITY_SPEC_PATH, 'utf8'),
+    ]);
+  const corpus = [
+    skill,
+    stageControl,
+    runtimeBoundary,
+    telemetryClosure,
+    artifactTopology,
+    utilitySpec,
+  ].join('\n\n');
+
+  assertContainsTerms(corpus, [
+    'session provenance is agent-owned explicit input',
+    '`--session-id`',
+    'the agent determines the current session id before invoking the runtime',
+    'fails closed before writing stage artifacts',
+    'must not auto-discover session ids',
+    'runtime-private stores',
+    'environment fallback',
+    'Runtime-specific variables may be useful to the agent while it manually determines the id, but they are not the portable CLI contract.',
+    '`trace_locator_kind: session_id` must not be emitted with `session_id: null` by new stage-controller writes',
+  ]);
+  assertContainsTerms(stageControl, [
+    'every stage-controller bootstrap/update path that writes a stage log or helper-managed stage state receives `--session-id <id>`',
+    'optional `--trace-runtime <name>` may record an explicit runtime label',
+  ]);
+  assertContainsTerms(runtimeBoundary, [
+    'stage-controller write paths require `--session-id <id>`',
+    'Codex-local trace stores, private filesystem layouts, or environment variables',
+  ]);
+});
+
 void test('plan-slice contract preserves goal-oriented implementation handoff without runtime semantic automation', async () => {
   const [deliveryWorkflow, stageControl, telemetryClosure, runtimeBoundary, utilitySpec] =
     await Promise.all([
