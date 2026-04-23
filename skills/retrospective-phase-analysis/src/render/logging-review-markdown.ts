@@ -36,6 +36,17 @@ function formatObservedGaps(input: {
   return gaps.map((gap) => `- ${gap}`).join('\n');
 }
 
+function formatMetricSource(
+  scan: ScanSummary,
+  key: keyof ScanSummary['stageLogs']['metrics']['sources'],
+): string {
+  const source = scan.stageLogs.metrics.sources?.[key] ?? {
+    quality: 'none',
+    reason: 'Metric source quality is unavailable in this legacy scan summary.',
+  };
+  return `${source.quality} — ${source.reason}`;
+}
+
 export function buildLoggingReviewMarkdown(scan: ScanSummary): string {
   const missingReviewArtifacts = scan.stageLogs.files.filter(
     (entry) => !entry.metadata.review_artifact,
@@ -66,6 +77,9 @@ ${statusLine(scan)}
 - Missing verification artifacts: ${missingVerificationArtifacts}
 - Missing step artifacts: ${missingStepArtifacts}
 - Logs with approximate duration only: ${approximateDurations}
+- Process-miss source quality: ${formatMetricSource(scan, 'process_misses')}
+- Skill-reference source quality: ${formatMetricSource(scan, 'skills_referenced')}
+- Candidate-incident source quality: ${formatMetricSource(scan, 'candidate_incidents')}
 
 ## Observed strengths
 

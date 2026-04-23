@@ -4,6 +4,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { buildScanSummary } from '../src/core/build-scan-summary.ts';
+import type { ScanSummary } from '../src/core/types.ts';
 import { buildLoggingReviewMarkdown } from '../src/render/logging-review-markdown.ts';
 import { buildReportMarkdown } from '../src/render/report-markdown.ts';
 import { buildSkillAuditMarkdown } from '../src/render/skill-audit-markdown.ts';
@@ -79,4 +80,23 @@ void test('logging review markdown highlights missing artifact links and automat
   assert.match(markdown, /Missing review artifacts: 0/mu);
   assert.match(markdown, /Missing verification artifacts: 0/mu);
   assert.match(markdown, /Add machine-readable trace anchors to each stage log/mu);
+});
+
+void test('markdown renderers tolerate legacy scan summaries without metric source fields', () => {
+  const legacySummary = structuredClone(buildLinkedFixtureSummary());
+  const metrics = legacySummary.stageLogs.metrics as Partial<ScanSummary['stageLogs']['metrics']>;
+  delete metrics.sources;
+
+  assert.doesNotThrow(() =>
+    buildReportMarkdown(legacySummary, {
+      phase: 'implementation',
+      title: 'Retrospective: implementation',
+    }),
+  );
+  assert.doesNotThrow(() => buildLoggingReviewMarkdown(legacySummary));
+  assert.match(
+    buildReportMarkdown(legacySummary, { phase: 'implementation' }),
+    /legacy scan summary/u,
+  );
+  assert.match(buildLoggingReviewMarkdown(legacySummary), /legacy scan summary/u);
 });

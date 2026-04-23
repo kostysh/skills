@@ -5,12 +5,13 @@
 Prefer evidence in this order:
 1. Session trace / rollout JSONL
 2. Structured stage logs
-3. Review artifacts
-4. Verification artifacts
-5. Produced project artifacts
-6. Skill files
-7. Commit metadata and diffs
-8. Final summary messages
+3. Explicit artifact identity and links declared by included stage artifacts
+4. Review artifacts
+5. Verification artifacts
+6. Produced project artifacts
+7. Skill files
+8. Commit metadata and diffs
+9. Final summary messages
 
 Higher-ranked evidence wins when sources disagree, unless the higher-ranked source is obviously incomplete.
 
@@ -24,16 +25,30 @@ Do not begin with broad repo-wide reading. Expand only through explicit linkage.
 
 For `.dossier/logs`, use the strictest linkage rule: include only stage-log paths that the trace shows as created or changed in the analyzed session.
 
+For review, verification, and step artifacts, use explicit links from included stage logs or bounded stage state before broad trace mentions. A feature id in a file name is not sufficient by itself for auto-inclusion.
+
+Do not broad-scan helper-managed `.dossier/stages/*` state. Read it only from a bounded path derived from an already included stage log.
+
 ## 1b. Scope partition order
 
 When one session mixes multiple work items, partition in this order:
-1. explicit canonical backlog item ids such as `CF-016` or `CF-0016`
-2. explicit canonical feature ids such as `F-0016`
-3. review, verification, or step-artifact linkage
-4. touched file paths
-5. time windows
+1. explicit artifact identity from included stage artifacts, such as `primary_feature_id`, `primary_backlog_item_key`, or `phase_scope`
+2. explicit canonical backlog item ids such as `CF-016` or `CF-0016`
+3. explicit canonical feature ids such as `F-0016`
+4. review, verification, or step-artifact linkage
+5. touched file paths
+6. time windows
 
 If ambiguity remains after this order, keep the ambiguity explicit instead of inventing a single merged narrative.
+
+## 1c. Metrics precedence
+
+Structured fields win over prose heuristics.
+
+- Count `process_misses` or `process_misses_total` before parsing prose `Process misses` sections.
+- Count `skills_used` before legacy `skill` metadata or trace-only skill hints.
+- Do not double-count prose evidence when structured evidence exists for the same log.
+- Record source quality for metrics; unvalidated prose fallback requires agent validation before final report finalization.
 
 ## 2. Finding taxonomy
 

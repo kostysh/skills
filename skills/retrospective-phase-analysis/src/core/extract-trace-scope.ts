@@ -6,7 +6,9 @@ import type {
   ArtifactCandidate,
   ArtifactEvidenceKind,
   ScopeConfidence,
+  ScopeArtifactIdentity,
   SessionSummary,
+  TraceScopeSummary,
 } from './types.ts';
 
 interface TraceScopeInputs {
@@ -16,22 +18,11 @@ interface TraceScopeInputs {
   manualReviewArtifacts?: string[];
   manualVerificationArtifacts?: string[];
   artifactEvidence?: string;
-}
-
-interface TraceScopeSummary {
-  project_root: string | null;
-  mentioned_backlog_items: string[];
-  mentioned_features: string[];
-  touched_paths: string[];
-  referenced_artifacts: string[];
-  candidate_stage_logs: string[];
-  candidate_review_artifacts: string[];
-  candidate_verification_artifacts: string[];
-  stage_log_candidates: ArtifactCandidate[];
-  review_artifact_candidates: ArtifactCandidate[];
-  verification_artifact_candidates: ArtifactCandidate[];
-  scope_confidence: ScopeConfidence;
-  scope_ambiguities: string[];
+  artifactIdentity?: ScopeArtifactIdentity;
+  artifactIdentityAmbiguities?: string[];
+  artifactLinkedReviewCandidates?: ArtifactCandidate[];
+  artifactLinkedVerificationCandidates?: ArtifactCandidate[];
+  artifactLinkedStepCandidates?: ArtifactCandidate[];
 }
 
 const SKIPPED_KEYS = new Set([
@@ -236,6 +227,22 @@ function isVerificationArtifact(value: string, projectRoot: string | null): bool
   return (
     relative.startsWith('.dossier/verification/') ||
     relative.startsWith(`.dossier${path.sep}verification${path.sep}`)
+  );
+}
+
+function isStepArtifact(value: string, projectRoot: string | null): boolean {
+  if (!projectRoot) {
+    return false;
+  }
+
+  const relative = path.relative(projectRoot, value);
+  if (relative.startsWith('..')) {
+    return false;
+  }
+
+  return (
+    relative.startsWith('.dossier/steps/') ||
+    relative.startsWith(`.dossier${path.sep}steps${path.sep}`)
   );
 }
 
@@ -749,6 +756,11 @@ export function extractTraceScope({
   manualReviewArtifacts,
   manualVerificationArtifacts,
   artifactEvidence,
+  artifactIdentity,
+  artifactIdentityAmbiguities,
+  artifactLinkedReviewCandidates,
+  artifactLinkedVerificationCandidates,
+  artifactLinkedStepCandidates,
 }: TraceScopeInputs): TraceScopeSummary {
   const idTexts = sessionSummary.events
     .flatMap((event) => collectEventTextsByKeys(event, ID_TEXT_KEYS))
@@ -757,11 +769,17 @@ export function extractTraceScope({
     .flatMap((event) => collectEventTextsByKeys(event, PATH_TEXT_KEYS))
     .flatMap((value) => extractPathAnchorTexts(value));
   const touchedPaths = extractTouchedPaths(pathTexts, projectRoot);
-  const mentionedBacklogItems = extractCanonicalBacklogItems(idTexts);
-  const mentionedFeatures = sortUnique([
+  const extractedBacklogItems = extractCanonicalBacklogItems(idTexts);
+  const extractedFeatures = sortUnique([
     ...extractCanonicalFeatureIds(idTexts),
     ...extractFeatureIdsFromPaths(touchedPaths, projectRoot),
   ]);
+  const mentionedBacklogItems = artifactIdentity?.primary_backlog_item_key
+    ? [artifactIdentity.primary_backlog_item_key]
+    : extractedBacklogItems;
+  const mentionedFeatures = artifactIdentity?.primary_feature_id
+    ? [artifactIdentity.primary_feature_id]
+    : extractedFeatures;
   const referencedArtifacts = sortUnique(
     touchedPaths.filter((filePath) => isReferencedArtifact(filePath, projectRoot)),
   );
@@ -795,6 +813,7 @@ export function extractTraceScope({
   ]);
   const reviewArtifactCandidates = mergeCandidates([
     ...autoIncludedCandidates.filter((candidate) => isReviewArtifact(candidate.path, projectRoot)),
+    ...(artifactLinkedReviewCandidates ?? []),
     ...referencedOnlyCandidates(
       referencedByEvent.filter((candidate) => isReviewArtifact(candidate.path, projectRoot)),
       autoIncludedCandidates,
@@ -805,17 +824,28 @@ export function extractTraceScope({
     ...autoIncludedCandidates.filter((candidate) =>
       isVerificationArtifact(candidate.path, projectRoot),
     ),
+    ...(artifactLinkedVerificationCandidates ?? []),
     ...referencedOnlyCandidates(
       referencedByEvent.filter((candidate) => isVerificationArtifact(candidate.path, projectRoot)),
       autoIncludedCandidates,
     ),
     ...manualVerificationCandidates,
   ]);
+  const stepArtifactCandidates = mergeCandidates([
+    ...autoIncludedCandidates.filter((candidate) => isStepArtifact(candidate.path, projectRoot)),
+    ...(artifactLinkedStepCandidates ?? []),
+    ...referencedOnlyCandidates(
+      referencedByEvent.filter((candidate) => isStepArtifact(candidate.path, projectRoot)),
+      autoIncludedCandidates,
+    ),
+  ]);
   const candidateStageLogs = includedPaths(stageLogCandidates);
   const candidateReviewArtifacts = includedPaths(reviewArtifactCandidates);
   const candidateVerificationArtifacts = includedPaths(verificationArtifactCandidates);
+  const candidateStepArtifacts = includedPaths(stepArtifactCandidates);
 
   const scopeAmbiguities: string[] = [];
+  scopeAmbiguities.push(...(artifactIdentityAmbiguities ?? []));
   if (
     mentionedBacklogItems.length === 0 &&
     mentionedFeatures.length === 0 &&
@@ -826,14 +856,14 @@ export function extractTraceScope({
       'No trace-derived backlog items, feature ids, or touched project paths were found.',
     );
   }
-  if (mentionedBacklogItems.length > 1) {
+  if (!artifactIdentity?.primary_backlog_item_key && extractedBacklogItems.length > 1) {
     scopeAmbiguities.push(
-      `Multiple backlog items were mentioned in one trace: ${mentionedBacklogItems.join(', ')}.`,
+      `Multiple backlog items were mentioned in one trace: ${extractedBacklogItems.join(', ')}.`,
     );
   }
-  if (mentionedFeatures.length > 1) {
+  if (!artifactIdentity?.primary_feature_id && extractedFeatures.length > 1) {
     scopeAmbiguities.push(
-      `Multiple feature ids were mentioned in one trace: ${mentionedFeatures.join(', ')}.`,
+      `Multiple feature ids were mentioned in one trace: ${extractedFeatures.join(', ')}.`,
     );
   }
   if (candidateStageLogs.length === 0) {
@@ -872,9 +902,17 @@ export function extractTraceScope({
     candidate_stage_logs: candidateStageLogs,
     candidate_review_artifacts: candidateReviewArtifacts,
     candidate_verification_artifacts: candidateVerificationArtifacts,
+    candidate_step_artifacts: candidateStepArtifacts,
+    artifact_identity: artifactIdentity ?? {
+      phase_scope: null,
+      primary_backlog_item_key: null,
+      primary_feature_id: null,
+      source: null,
+    },
     stage_log_candidates: stageLogCandidates,
     review_artifact_candidates: reviewArtifactCandidates,
     verification_artifact_candidates: verificationArtifactCandidates,
+    step_artifact_candidates: stepArtifactCandidates,
     scope_confidence: scoreScopeConfidence(
       sessionSummary.exists,
       mentionedBacklogItems,

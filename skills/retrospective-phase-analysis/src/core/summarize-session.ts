@@ -12,6 +12,7 @@ import {
 import type { PhaseBoundary } from './types.ts';
 
 interface SessionBoundaryOptions {
+  artifactUntilTs?: string;
   untilLine?: number;
   untilTs?: string;
 }
@@ -104,6 +105,46 @@ function applyBoundary(
     };
   }
 
+  if (options.artifactUntilTs !== undefined) {
+    const boundaryDate = tryParseDate(options.artifactUntilTs);
+    if (!boundaryDate) {
+      throw new Error('artifact-derived phase boundary must be a valid ISO-like timestamp');
+    }
+
+    const boundedEvents: unknown[] = [];
+    const boundedEventLines: number[] = [];
+    let boundaryReached = false;
+    for (const [index, event] of events.entries()) {
+      if (boundaryReached) {
+        continue;
+      }
+
+      const timestamp = extractTimestamp(event);
+      const eventDate = timestamp ? tryParseDate(timestamp) : null;
+      if (eventDate && eventDate.valueOf() > boundaryDate.valueOf()) {
+        boundaryReached = true;
+        continue;
+      }
+
+      boundedEvents.push(event);
+      boundedEventLines.push(eventLines[index] ?? 0);
+    }
+
+    return {
+      events: boundedEvents,
+      eventLines: boundedEventLines,
+      parseErrors,
+      phaseBoundary: {
+        mode: 'artifact_derived',
+        until_line: null,
+        until_ts: boundaryDate.toISOString(),
+        reason:
+          'Derived from linked stage/closure artifact timestamps to exclude later same-session work.',
+        excluded_events_count: events.length - boundedEvents.length,
+      },
+    };
+  }
+
   return {
     events,
     eventLines,
@@ -137,8 +178,12 @@ export function summarizeSession(
     };
   }
 
-  if (options.untilLine !== undefined && options.untilTs !== undefined) {
-    throw new Error('Use either --until-line or --until-ts, not both');
+  if (
+    [options.untilLine, options.untilTs, options.artifactUntilTs].filter(
+      (value) => value !== undefined,
+    ).length > 1
+  ) {
+    throw new Error('Use only one phase boundary source');
   }
 
   const { events: parsedEvents, eventLines, errors, sourceLineCount } = parseJsonl(filePath);

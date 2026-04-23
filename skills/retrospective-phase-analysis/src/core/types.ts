@@ -2,8 +2,9 @@ export type LooseRecord = Record<string, unknown>;
 
 export type IncidentSeverity = 'high' | 'medium' | 'low';
 export type ScopeConfidence = 'high' | 'medium' | 'low';
-export type PhaseBoundaryMode = 'full_trace' | 'until_line' | 'until_ts';
+export type PhaseBoundaryMode = 'artifact_derived' | 'full_trace' | 'until_line' | 'until_ts';
 export type ArtifactEvidenceKind =
+  | 'stage_artifact_link'
   | 'trace_write'
   | 'trace_patch_target'
   | 'trace_shell_write'
@@ -12,6 +13,16 @@ export type ArtifactEvidenceKind =
   | 'manual_override';
 export type ArtifactInclusion = 'auto_included' | 'manual_included' | 'not_included';
 export type ReportStatus = 'draft_requires_agent_validation' | 'ready_for_agent_finalization';
+export type MetricEvidenceQuality =
+  | 'none'
+  | 'structured'
+  | 'unvalidated_fallback'
+  | 'validated_fallback';
+
+export interface MetricSourceQuality {
+  quality: MetricEvidenceQuality;
+  reason: string;
+}
 
 export interface PhaseBoundary {
   mode: PhaseBoundaryMode;
@@ -75,6 +86,11 @@ export interface LogMetrics {
   stages: Record<string, number>;
   skillsReferenced: Record<string, number>;
   lateLogStartCount: number;
+  sources: {
+    candidate_incidents: MetricSourceQuality;
+    process_misses: MetricSourceQuality;
+    skills_referenced: MetricSourceQuality;
+  };
 }
 
 export interface LogsSummary {
@@ -139,6 +155,32 @@ export interface ScanSourceOptions {
   reviewArtifacts?: string[];
   verificationArtifacts?: string[];
   artifactEvidence?: string;
+}
+
+export interface ScopeArtifactIdentity {
+  phase_scope: string | null;
+  primary_backlog_item_key: string | null;
+  primary_feature_id: string | null;
+  source: string | null;
+}
+
+export interface TraceScopeSummary {
+  project_root: string | null;
+  mentioned_backlog_items: string[];
+  mentioned_features: string[];
+  touched_paths: string[];
+  referenced_artifacts: string[];
+  candidate_stage_logs: string[];
+  candidate_review_artifacts: string[];
+  candidate_verification_artifacts: string[];
+  candidate_step_artifacts: string[];
+  artifact_identity: ScopeArtifactIdentity;
+  stage_log_candidates: ArtifactCandidate[];
+  review_artifact_candidates: ArtifactCandidate[];
+  verification_artifact_candidates: ArtifactCandidate[];
+  step_artifact_candidates: ArtifactCandidate[];
+  scope_confidence: ScopeConfidence;
+  scope_ambiguities: string[];
 }
 
 export type RetroOutputMode =
@@ -229,9 +271,12 @@ export interface ScanSummary {
     candidate_stage_logs: string[];
     candidate_review_artifacts: string[];
     candidate_verification_artifacts: string[];
+    candidate_step_artifacts: string[];
+    artifact_identity: ScopeArtifactIdentity;
     stage_log_candidates: ArtifactCandidate[];
     review_artifact_candidates: ArtifactCandidate[];
     verification_artifact_candidates: ArtifactCandidate[];
+    step_artifact_candidates: ArtifactCandidate[];
     scope_confidence: ScopeConfidence;
     scope_ambiguities: string[];
   };

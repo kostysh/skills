@@ -63,7 +63,21 @@
       "backlogActualizedCount": 0,
       "stages": {},
       "skillsReferenced": {},
-      "lateLogStartCount": 0
+      "lateLogStartCount": 0,
+      "sources": {
+        "candidate_incidents": {
+          "quality": "none",
+          "reason": "Candidate incident inference uses structured evidence where available."
+        },
+        "process_misses": {
+          "quality": "none",
+          "reason": "process_misses had no usable evidence in analyzed logs."
+        },
+        "skills_referenced": {
+          "quality": "none",
+          "reason": "skills_referenced had no usable evidence in analyzed logs."
+        }
+      }
     },
     "files": []
   },
@@ -88,6 +102,13 @@
     "candidate_stage_logs": [],
     "candidate_review_artifacts": [],
     "candidate_verification_artifacts": [],
+    "candidate_step_artifacts": [],
+    "artifact_identity": {
+      "phase_scope": null,
+      "primary_backlog_item_key": null,
+      "primary_feature_id": null,
+      "source": null
+    },
     "stage_log_candidates": [],
     "review_artifact_candidates": [
       {
@@ -109,6 +130,7 @@
         "reason": "Referenced in the trace, but not confirmed as created or changed in scope."
       }
     ],
+    "step_artifact_candidates": [],
     "scope_confidence": "medium",
     "scope_ambiguities": [
       "The session trace did not confirm any stage-log path created or changed in this session.",

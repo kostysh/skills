@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { chmod, cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { chmod, cp, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -873,6 +873,901 @@ void test('buildScanSummary does not auto-link review or verification artifacts 
       summary.scope.scope_ambiguities.some((entry) =>
         entry.includes('did not directly confirm any verification artifacts'),
       ),
+      true,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary auto-includes review and verification artifacts from stage artifact links', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const reviewPath = path.join(projectRoot, '.dossier', 'reviews', 'F-0016-review.md');
+  const verificationPath = path.join(
+    projectRoot,
+    '.dossier',
+    'verification',
+    'F-0016-verification.md',
+  );
+
+  try {
+    await cp(fixturePath('artifacts'), projectRoot, { recursive: true });
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7bc', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      skillsDir: fixturePath('skills'),
+    });
+
+    assert.deepEqual(summary.scope.candidate_review_artifacts, [reviewPath]);
+    assert.deepEqual(summary.scope.candidate_verification_artifacts, [verificationPath]);
+    assert.equal(summary.scope.review_artifact_candidates[0]?.evidence_kind, 'stage_artifact_link');
+    assert.equal(
+      summary.scope.verification_artifact_candidates[0]?.evidence_kind,
+      'stage_artifact_link',
+    );
+    assert.equal(summary.scope.artifact_identity.primary_feature_id, 'F-0016');
+    assert.equal(
+      summary.scope.scope_ambiguities.some((entry) =>
+        entry.includes('did not directly confirm any review artifacts'),
+      ),
+      false,
+    );
+    assert.equal(
+      summary.scope.scope_ambiguities.some((entry) =>
+        entry.includes('did not directly confirm any verification artifacts'),
+      ),
+      false,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary rejects mismatched bounded stage state before artifact-link enrichment', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const stateDir = path.join(projectRoot, '.dossier', 'stages', 'F-0016');
+  const reviewsDir = path.join(projectRoot, '.dossier', 'reviews');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const wrongReviewPath = path.join(reviewsDir, 'F-0099-review.md');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await mkdir(stateDir, { recursive: true });
+    await mkdir(reviewsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '# Implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(stateDir, 'implementation.json'),
+      JSON.stringify({
+        stage: 'implementation',
+        primary_feature_id: 'F-0099',
+        review_artifacts: ['.dossier/reviews/F-0099-review.md'],
+      }),
+      'utf8',
+    );
+    await writeFile(wrongReviewPath, '# Review for F-0099\n', 'utf8');
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7c2', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+
+    assert.equal(summary.scope.artifact_identity.primary_feature_id, 'F-0016');
+    assert.deepEqual(summary.scope.candidate_review_artifacts, []);
+    assert.equal(
+      summary.scope.scope_ambiguities.some((entry) =>
+        entry.includes('Rejected mismatched stage state artifact'),
+      ),
+      true,
+    );
+    assert.equal(JSON.stringify(summary).includes('F-0099-review.md'), false);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary rejects symlinked stage state instead of merging external JSON', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const stateDir = path.join(projectRoot, '.dossier', 'stages', 'F-0016');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const externalJsonPath = path.join(tempDir, 'external-secret.json');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await mkdir(stateDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '# Implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      externalJsonPath,
+      JSON.stringify({
+        primary_feature_id: 'F-0099',
+        secret_token: 'SHOULD_NOT_APPEAR',
+      }),
+      'utf8',
+    );
+    await symlink(externalJsonPath, path.join(stateDir, 'implementation.json'));
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7c3', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+    const serialized = JSON.stringify(summary);
+
+    assert.equal(summary.scope.artifact_identity.primary_feature_id, 'F-0016');
+    assert.equal(serialized.includes('SHOULD_NOT_APPEAR'), false);
+    assert.equal(serialized.includes('secret_token'), false);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary keeps symlinked linked artifacts as unsafe non-included candidates', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const reviewsDir = path.join(projectRoot, '.dossier', 'reviews');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const externalReviewPath = path.join(tempDir, 'external-review.md');
+  const linkedReviewPath = path.join(reviewsDir, 'F-0016-review.md');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await mkdir(reviewsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'review_artifact: .dossier/reviews/F-0016-review.md',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '# Implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(externalReviewPath, '# Review for F-0016 outside project\n', 'utf8');
+    await symlink(externalReviewPath, linkedReviewPath);
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7c4', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+
+    assert.deepEqual(summary.scope.candidate_review_artifacts, []);
+    assert.equal(summary.scope.review_artifact_candidates[0]?.path, linkedReviewPath);
+    assert.equal(summary.scope.review_artifact_candidates[0]?.included, false);
+    assert.match(
+      summary.scope.review_artifact_candidates[0]?.reason ?? '',
+      /missing or unsafe/u,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary narrows noisy trace ids through structured artifact identity', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await cp(fixturePath('artifacts'), projectRoot, { recursive: true });
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7bd', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content:
+            'Implementation phase for CF-0016 and F-0016; compare unrelated notes for CF-0099 and F-0099 without widening scope.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+      skillsDir: fixturePath('skills'),
+    });
+
+    assert.deepEqual(summary.scope.mentioned_features, ['F-0016']);
+    assert.equal(summary.scope.artifact_identity.primary_feature_id, 'F-0016');
+    assert.equal(
+      summary.scope.scope_ambiguities.some((entry) => entry.includes('Multiple feature ids')),
+      false,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary derives a same-session boundary from structured stage completion timestamps', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'skill: retrospective-phase-analysis',
+        'completed_at: 2026-04-10T10:06:00Z',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '# Implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7be', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:20:00Z',
+          type: 'assistant',
+          content: 'Now run retrospective extraction for F-0099.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:21:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch:
+            '*** Begin Patch\n*** Update File: .dossier/retro/session-019d/retrospective-report.md\n*** End Patch',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({
+      session: sessionPath,
+      artifactsDir: projectRoot,
+    });
+
+    assert.equal(summary.phase_boundary.mode, 'artifact_derived');
+    assert.equal(summary.phase_boundary.excluded_events_count, 2);
+    assert.deepEqual(summary.scope.mentioned_features, ['F-0016']);
+    assert.deepEqual(summary.scope.candidate_stage_logs, [
+      path.join(projectRoot, '.dossier', 'logs', 'implementation.md'),
+    ]);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary fails closed on ambiguous same-session follow-up without strong boundary evidence', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const reviewsDir = path.join(projectRoot, '.dossier', 'reviews');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const reviewPath = path.join(reviewsDir, 'F-0016-review.md');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await mkdir(reviewsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'skill: retrospective-phase-analysis',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '# Implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(reviewPath, '# Review for F-0016\n', 'utf8');
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7bf', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:20:00Z',
+          type: 'assistant',
+          content: 'Now run retrospective extraction for F-0099.',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    assert.throws(
+      () =>
+        buildScanSummary({
+          session: sessionPath,
+          artifactsDir: projectRoot,
+          reviewArtifacts: [reviewPath],
+          artifactEvidence: 'Operator supplied review artifact, not a phase boundary.',
+        }),
+      /Ambiguous same-session phase boundary/u,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary fails closed when later same-session work mentions a different feature without another stage log', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '# F-0016 implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7c7', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:20:00Z',
+          type: 'assistant',
+          content: 'Start ordinary implementation work for CF-0099 and F-0099.',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    assert.throws(
+      () => buildScanSummary({ session: sessionPath, artifactsDir: projectRoot }),
+      /Ambiguous same-session phase boundary/u,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary fails closed when one session trace-confirms stage logs for multiple feature scopes', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation-F-0016.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '# F-0016 implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(logsDir, 'implementation-F-0099.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0099',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '# F-0099 implementation log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7c5', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch:
+            '*** Begin Patch\n*** Update File: .dossier/logs/implementation-F-0016.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:20:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0099 and F-0099.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:25:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch:
+            '*** Begin Patch\n*** Update File: .dossier/logs/implementation-F-0099.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:26:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    assert.throws(
+      () => buildScanSummary({ session: sessionPath, artifactsDir: projectRoot }),
+      /Ambiguous same-session phase boundary/u,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary prefers structured process-miss metrics over prose fallback', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'skills_used:',
+        '  - retrospective-phase-analysis',
+        'process_misses:',
+        '  - structured miss only',
+        '```',
+        '',
+        '## Process misses',
+        '- prose miss one',
+        '- prose miss two',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7c0', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+    const processMissIncident = summary.candidateIncidents.find((incident) =>
+      incident.title.includes('Process misses'),
+    );
+
+    assert.equal(summary.stageLogs.metrics.processMissesTotal, 1);
+    assert.equal(summary.stageLogs.metrics.sources.process_misses.quality, 'structured');
+    assert.equal(summary.stageLogs.metrics.skillsReferenced['retrospective-phase-analysis'], 1);
+    assert.equal(
+      processMissIncident?.reason,
+      'Structured process_misses field indicates process misses.',
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary does not double-count prose review fallback when structured review findings exist', () => {
+  const summary = buildScanSummary({
+    session: fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
+    logsDir: fixturePath('artifacts', '.dossier', 'logs'),
+    artifactsDir: fixturePath('artifacts'),
+    skillsDir: fixturePath('skills'),
+  });
+
+  const reviewIncidents = summary.candidateIncidents.filter(
+    (incident) =>
+      incident.title.includes('Review findings') ||
+      incident.title.includes('Non-pass review cycle'),
+  );
+
+  assert.deepEqual(
+    reviewIncidents.map((incident) => incident.title),
+    ['Review findings in implementation.md'],
+  );
+  assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'structured');
+});
+
+void test('buildScanSummary marks prose review incident fallback as validation-required', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'process_misses_total: 0',
+        '```',
+        '',
+        '## Review events',
+        '- 2026-04-10T11:00:00Z FAIL review found one issue',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7c6', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+
+    assert.equal(
+      summary.candidateIncidents.some((incident) =>
+        incident.title.includes('Non-pass review cycle'),
+      ),
+      true,
+    );
+    assert.equal(
+      summary.stageLogs.metrics.sources.candidate_incidents.quality,
+      'unvalidated_fallback',
+    );
+    assert.equal(summary.reportStatus.status, 'draft_requires_agent_validation');
+    assert.equal(
+      summary.reportStatus.reasons.some((entry) =>
+        entry.includes('Unvalidated fallback metrics'),
+      ),
+      true,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary marks prose fallback metrics as validation-required', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '```yaml',
+        'stage: implementation',
+        'feature_id: F-0016',
+        'skill: retrospective-phase-analysis',
+        '```',
+        '',
+        '## Process misses',
+        '- prose-only miss',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-10T09:59:00Z',
+          type: 'session_meta',
+          payload: { id: '019d7490-46d0-7811-b43f-056bb617a7c1', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          ts: '2026-04-10T10:00:00Z',
+          type: 'assistant',
+          content: 'Implementation phase for CF-0016 and F-0016.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-10T10:05:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          time: '2026-04-10T10:06:00Z',
+          kind: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+
+    assert.equal(summary.stageLogs.metrics.sources.process_misses.quality, 'unvalidated_fallback');
+    assert.equal(summary.reportStatus.status, 'draft_requires_agent_validation');
+    assert.equal(
+      summary.reportStatus.reasons.some((entry) => entry.includes('Unvalidated fallback metrics')),
       true,
     );
   } finally {

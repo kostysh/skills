@@ -29,6 +29,17 @@ function formatSkillManifest(scan: ScanSummary): string {
   );
 }
 
+function formatMetricSource(
+  scan: ScanSummary,
+  key: keyof ScanSummary['stageLogs']['metrics']['sources'],
+): string {
+  const source = scan.stageLogs.metrics.sources?.[key] ?? {
+    quality: 'none',
+    reason: 'Metric source quality is unavailable in this legacy scan summary.',
+  };
+  return `${source.quality} — ${source.reason}`;
+}
+
 export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOptions): string {
   const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ''}`;
   const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
@@ -119,6 +130,9 @@ ${incidentSections || 'No candidate incidents were inferred automatically.'}
 - Process misses total: ${scan.stageLogs.metrics.processMissesTotal}
 - Backlog actualized cycles: ${scan.stageLogs.metrics.backlogActualizedCount}
 - Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
+- Process-miss source quality: ${formatMetricSource(scan, 'process_misses')}
+- Skill-reference source quality: ${formatMetricSource(scan, 'skills_referenced')}
+- Candidate-incident source quality: ${formatMetricSource(scan, 'candidate_incidents')}
 
 ## Preliminary stage analysis
 

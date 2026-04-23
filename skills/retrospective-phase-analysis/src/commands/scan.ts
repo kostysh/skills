@@ -47,6 +47,7 @@ function toScanUsageError(error: unknown): never {
       '--until-line',
       '--until-ts',
       'Use either --until-line or --until-ts',
+      'Ambiguous same-session phase boundary',
       'Manual artifact overrides require',
     ];
     if (usageMessages.some((message) => error.message.startsWith(message))) {

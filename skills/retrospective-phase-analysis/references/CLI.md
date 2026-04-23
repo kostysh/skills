@@ -55,7 +55,9 @@ Outputs:
 - candidate incidents scoped to the analyzed trace and linked stage logs
 - data-quality notes
 - `phase_boundary`
-- structured `stage_log_candidates`, `review_artifact_candidates`, and `verification_artifact_candidates`
+- structured `stage_log_candidates`, `review_artifact_candidates`, `verification_artifact_candidates`, and `step_artifact_candidates`
+- `artifact_identity` derived from included stage artifacts when available
+- metric `sources` and quality for structured versus fallback evidence
 - `reportStatus`
 - `skills.available`, `skills.referenced`, and `skills.unreferenced_count`
 - `run_dir`, `operator_language`, and `report_language`
@@ -96,6 +98,8 @@ Phase boundary:
 
 - Use `--until-line <n>` or `--until-ts <iso>` only when the analyzed phase is a prefix of the trace.
 - This is required for active-session retrospectives where later events belong to the retrospective itself.
+- If linked stage artifacts provide close/completion timestamps, `scan` may derive an `artifact_derived` boundary before final scope extraction.
+- If later same-session retrospective work appears after analyzed artifacts and no strong boundary exists, `scan` fails closed and asks for `--until-line` or `--until-ts`.
 - The boundary is applied before scope extraction and metrics.
 - `scan-summary.json` records `phase_boundary.mode`, `phase_boundary.until_line`, `phase_boundary.until_ts`, `phase_boundary.reason`, and `phase_boundary.excluded_events_count`.
 
@@ -103,8 +107,16 @@ Artifact candidates:
 
 - `referenced_only` paths remain candidates but are not analyzed by default.
 - `trace_patch_target`, `trace_shell_write`, `trace_write`, and `tool_output_path` candidates can be auto-included when the trace confirms write/change evidence.
+- `stage_artifact_link` candidates can be auto-included when an included stage log or bounded stage state explicitly links the artifact, the path exists inside the confirmed project root, and the artifact path or content matches the artifact scope.
 - Legacy arrays such as `candidate_stage_logs` are derived from included candidates only.
-- Feature-id matching alone does not include review or verification artifacts.
+- Feature-id matching alone does not include review, verification, or step artifacts.
+- Helper-managed `.dossier/stages/*` state is not broad-scanned; it is read only from bounded paths derived from already included stage logs.
+
+Metrics:
+
+- Structured fields such as `process_misses`, `process_misses_total`, and `skills_used` win over prose sections.
+- Prose fallback is counted only when the structured field is absent, and fallback source quality is recorded in `stageLogs.metrics.sources`.
+- Unvalidated prose fallback keeps `reportStatus.status` at `draft_requires_agent_validation`.
 
 Manual overrides:
 
@@ -114,6 +126,7 @@ Manual overrides:
 - These flags are repeatable.
 - Any manual override requires `--artifact-evidence <text>`.
 - Manual inclusion is recorded per artifact kind and marks the report scaffold as draft until the agent validates the evidence.
+- Manual inclusion does not resolve same-session phase-boundary ambiguity; provide `--until-line` or `--until-ts` when the boundary remains unclear.
 
 ### `report`
 

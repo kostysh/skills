@@ -126,13 +126,18 @@ Use trace-driven scoping:
 - do not start with repo-wide reading;
 - expand beyond the trace only when a trace-derived id or path links you to the next artifact.
 - for `.dossier/logs`, include only the stage-log paths that the trace itself shows as created or changed in the analyzed session.
+- when an included stage log or bounded stage state declares `review_artifact(s)`, `verification_artifact(s)`, or `step_artifact(s)`, treat those links as stronger evidence than broad trace mentions only if the target path exists inside the confirmed project root and matches the artifact scope.
+- do not auto-include review, verification, or step artifacts from feature-id matching alone.
+- do not broad-scan `.dossier/stages/*`; helper-managed stage state may be read only from bounded paths derived from an already included stage log.
 
 Active-session boundary rule:
 
 - If the retrospective request is made inside the same active session as the analyzed work, establish the phase boundary before any substantive scan.
 - Events after the boundary are excluded from the primary retrospective scope.
-- Use `--until-line <n>` or `--until-ts <iso>` when the analyzed phase is a prefix of the trace.
-- If the boundary cannot be determined reliably, stop and ask the operator for the boundary instead of scanning the whole active session.
+- Use artifact-derived close/completion timestamps when linked stage artifacts provide a stronger boundary than manual line cutoffs.
+- Use `--until-line <n>` or `--until-ts <iso>` when the analyzed phase is a prefix of the trace and artifact-derived boundary evidence is unavailable.
+- If the boundary cannot be determined reliably, fail closed and ask the operator for the boundary instead of scanning the whole active session.
+- Manual artifact overrides can include missing evidence artifacts, but they do not resolve phase-boundary ambiguity.
 
 Record the phase boundary explicitly:
 
@@ -143,11 +148,12 @@ Record the phase boundary explicitly:
 
 When one session mentions multiple work items, partition the scope in this order:
 
-1. explicit canonical backlog item ids such as `CF-016` or `CF-0016`;
-2. explicit canonical feature ids such as `F-0016`;
-3. linkage through review, verification, or step artifacts;
-4. touched file paths;
-5. time windows.
+1. explicit artifact identity from included stage artifacts, such as `primary_feature_id`, `primary_backlog_item_key`, or `phase_scope`;
+2. explicit canonical backlog item ids such as `CF-016` or `CF-0016`;
+3. explicit canonical feature ids such as `F-0016`;
+4. linkage through review, verification, or step artifacts;
+5. touched file paths;
+6. time windows.
 
 Stop expansion when the partition remains ambiguous after those checks. Record the ambiguity in the manifest instead of guessing.
 
@@ -181,6 +187,7 @@ Manual evidence overrides are controlled exceptions:
 - Every manual override requires `--artifact-evidence <text>`.
 - Manual overrides must be recorded as manual inclusion in `scan-summary.json`; they reduce confidence until the agent validates them.
 - Do not use manual overrides to widen into repo-wide reading.
+- Do not use manual overrides as a substitute for resolving same-session phase boundaries.
 
 ### Output path privacy
 
@@ -250,6 +257,13 @@ Classify incidents at least into:
 - tool or environment friction;
 - logging blind spot;
 - coordination or operator-clarification issue.
+
+Structured metrics come first:
+
+- prefer structured stage-log fields such as `process_misses`, `process_misses_total`, and `skills_used`;
+- use prose section parsing only when the structured field is absent;
+- do not add prose-derived counts on top of structured counts for the same log;
+- treat unvalidated prose fallback metrics as requiring agent validation before finalization.
 
 ### 5) Run the skill audit
 
@@ -454,11 +468,12 @@ Sample structure first, then run the CLI over the full file. Avoid loading every
 
 Partition the evidence in this order:
 
-1. `CF-*`
-2. `F-*`
-3. review/verification/step artifact linkage
-4. touched file paths
-5. time windows
+1. explicit artifact identity from included stage artifacts
+2. `CF-*`
+3. `F-*`
+4. review/verification/step artifact linkage
+5. touched file paths
+6. time windows
 
 If ambiguity remains after this order, keep the ambiguity explicit in the report instead of collapsing multiple scopes into one invented narrative.
 

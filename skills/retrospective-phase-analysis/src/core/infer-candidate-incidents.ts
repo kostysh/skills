@@ -3,6 +3,34 @@ import path from 'node:path';
 import { stringFromUnknown } from './shared.ts';
 import type { CandidateIncident, LogsSummary, SessionSummary } from './types.ts';
 
+function processMissEvidence(
+  metadata: Record<string, unknown>,
+  proseLines: readonly string[],
+): {
+  count: number;
+  reason: string;
+} {
+  if (Array.isArray(metadata.process_misses)) {
+    return {
+      count: metadata.process_misses.length,
+      reason: 'Structured process_misses field indicates process misses.',
+    };
+  }
+
+  const structuredTotal = Number(metadata.process_misses_total);
+  if (Number.isFinite(structuredTotal)) {
+    return {
+      count: structuredTotal,
+      reason: 'Structured process_misses_total field indicates process misses.',
+    };
+  }
+
+  return {
+    count: proseLines.length,
+    reason: proseLines.join('; '),
+  };
+}
+
 export function inferCandidateIncidents(
   sessionSummary: SessionSummary,
   logSummary: LogsSummary,
@@ -13,19 +41,18 @@ export function inferCandidateIncidents(
     const metadata = log.metadata;
     const stage = stringFromUnknown(metadata.stage, 'unknown');
 
-    const processMissTotal = Number(metadata.process_misses_total ?? 0);
-    const reviewFindingTotal = Number(metadata.review_findings_total ?? 0);
+    const processMisses = processMissEvidence(metadata, log.processMissLines);
+    const structuredReviewFindings = Number(metadata.review_findings_total);
+    const hasStructuredReviewFindings = Number.isFinite(structuredReviewFindings);
+    const reviewFindingTotal = hasStructuredReviewFindings ? structuredReviewFindings : 0;
 
-    if (processMissTotal > 0 || log.processMissLines.length > 0) {
+    if (processMisses.count > 0) {
       incidents.push({
         title: `Process misses in ${path.basename(log.filePath)}`,
-        severity:
-          Number(metadata.process_misses_total ?? log.processMissLines.length) >= 2
-            ? 'high'
-            : 'medium',
+        severity: processMisses.count >= 2 ? 'high' : 'medium',
         stage,
         evidence: log.filePath,
-        reason: log.processMissLines.join('; ') || 'Structured log indicates process misses.',
+        reason: processMisses.reason,
       });
     }
 
@@ -54,7 +81,10 @@ export function inferCandidateIncidents(
       log.sections['Review events'] ||
       ''
     ).toLowerCase();
-    if (reviewText.includes('fail') || reviewText.includes('non-compliant')) {
+    if (
+      !hasStructuredReviewFindings &&
+      (reviewText.includes('fail') || reviewText.includes('non-compliant'))
+    ) {
       incidents.push({
         title: `Non-pass review cycle in ${path.basename(log.filePath)}`,
         severity: 'medium',
