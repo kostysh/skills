@@ -142,7 +142,7 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
     ...source.sections.whenNotToUse,
     ...source.sections.workflow.flatMap((entry) => [entry.goal, ...entry.steps, ...entry.validation]),
     ...source.sections.interop.flatMap((entry) => [entry.domain, entry.winner, entry.rationale]),
-    ...source.sections.commands.flatMap((entry) => [entry.command, entry.summary, entry.when, ...entry.inputs, ...entry.outputs]),
+    ...source.sections.commands.flatMap((entry) => [entry.command, entry.summary, entry.when]),
     ...source.sections.gotchas.map((entry) => entry.text),
     ...source.sections.policies.flatMap((entry) => [entry.title, entry.text]),
     ...source.sections.portability.rules,

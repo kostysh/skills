@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.1.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
@@ -151,8 +151,6 @@ sections:
       outputs:
         - Human-readable help text on stdout.
         - Exit code 0 on success.
-      tests:
-        - test/cli.test.ts
       examples:
         - node scripts/skill-source-compiler.mjs --help
         - node scripts/skill-source-compiler.mjs help compile
@@ -167,59 +165,69 @@ sections:
         - OK or FAIL status on stdout.
         - Structured diagnostic lines on stdout.
         - Exit code 1 when validation errors are found.
-      tests:
-        - test/cli.test.ts
       examples:
         - node scripts/skill-source-compiler.mjs lint <source-dir>
     - id: command-compile
       command: compile
-      summary: Compile one source bundle into a generated skill folder.
-      when: You need to regenerate one skill after source-bundle changes.
+      summary: Compile one source bundle into an independent generated skill folder.
+      when: You need an out-of-place packaged copy of one source bundle.
       script: scripts/skill-source-compiler.mjs
       inputs:
         - Source bundle directory path.
-        - --out-dir <skills-dir>.
+        - --out-dir <independent-skills-dir>.
       outputs:
         - Compiled output path on stdout.
         - Warning lines on stdout when lint emits warnings.
-      tests:
-        - test/cli.test.ts
       examples:
-        - node scripts/skill-source-compiler.mjs compile <source-dir> --out-dir <skills-dir>
+        - node scripts/skill-source-compiler.mjs compile <source-dir> --out-dir <independent-skills-dir>
     - id: command-compile-all
       command: compile-all
-      summary: Compile every direct child source bundle under a sources root.
-      when: You need to rebuild a batch of skill source bundles with one command.
+      summary: Compile every direct child source bundle under a sources root into an independent output directory.
+      when: You need out-of-place packaged copies of multiple source bundles.
       script: scripts/skill-source-compiler.mjs
       inputs:
         - Sources root directory path.
-        - --out-dir <skills-dir>.
+        - --out-dir <independent-skills-dir>.
       outputs:
         - Count of compiled source bundles on stdout.
         - One emitted output path per compiled bundle on stdout.
-      tests:
-        - test/cli.test.ts
       examples:
-        - node scripts/skill-source-compiler.mjs compile-all <sources-root> --out-dir <skills-dir>
-    - id: command-check
-      command: check
-      summary: Verify a compiled skill folder against frontmatter, headings, links, and portability invariants.
-      when: After compile or when auditing a generated skill for drift.
+        - node scripts/skill-source-compiler.mjs compile-all <sources-root> --out-dir <independent-skills-dir>
+    - id: command-regenerate
+      command: regenerate
+      summary: Regenerate compiler-owned files inside a source bundle.
+      when: You need to refresh SKILL.md and docs/compile-report.md in the folder that contains skill.yaml.
       script: scripts/skill-source-compiler.mjs
       inputs:
-        - Compiled skill directory path.
+        - Source bundle directory path.
+      outputs:
+        - Regenerated source bundle path on stdout.
+        - Warning lines on stdout when lint emits warnings.
+      examples:
+        - node scripts/skill-source-compiler.mjs regenerate <source-dir>
+    - id: command-check
+      command: check
+      summary: Verify a compiled skill folder or generated source bundle against structural, drift, and portability invariants.
+      when: After compile, after regenerate, or when auditing a generated skill for drift.
+      script: scripts/skill-source-compiler.mjs
+      inputs:
+        - Skill directory path.
       outputs:
         - OK or FAIL status on stdout.
         - Diagnostic lines on stdout.
         - Exit code 1 when invariants fail.
-      tests:
-        - test/cli.test.ts
       examples:
-        - node scripts/skill-source-compiler.mjs check <compiled-skill-dir>
+        - node scripts/skill-source-compiler.mjs check <skill-dir>
   gotchas:
     - id: gotcha-local-runtime-path
       priority: high
       text: When a skill ships a utility, look for it under <skill-root>/scripts and invoke it relative to the skill root instead of assuming a global executable is installed.
+    - id: gotcha-regenerate-vs-compile
+      priority: high
+      text: Use regenerate for in-place source-bundle maintenance; use compile or compile-all only with independent output directories.
+    - id: gotcha-overlap-guard
+      priority: high
+      text: Never compile into an output directory that overlaps the source bundle; the runtime rejects overlap before destructive writes.
     - id: gotcha-docs-surface
       priority: high
       text: Never promote docs/* into active guidance unless the source bundle explicitly marks that content as active.
@@ -242,6 +250,9 @@ sections:
     - id: policy-workflow-vs-cli
       title: Workflow stages vs shipped CLI
       text: A workflow stage is not a runnable command unless the packaged CLI help surface exposes it. Keep workflow stages and CLI commands separate in both the source manifest and the generated SKILL.md.
+    - id: policy-in-place-regeneration
+      title: In-place regeneration
+      text: In-place regeneration writes only compiler-owned generated files. Manifest entries whose source and target resolve to the same path are validation-only; non-same-path in-place copies fail closed until ownership is explicit.
   portability:
     required: true
     rules:

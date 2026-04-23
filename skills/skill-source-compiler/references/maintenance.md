@@ -72,11 +72,22 @@ When maintaining a generated skill:
 1. edit the source files first: `skill.yaml`, `fragments/`, `references/`, `src/`, `test/`, `package.json`
 2. look for the shipped utility under `<skill-root>/scripts` and invoke it from the skill root; do not assume a global executable on `PATH`
 3. rebuild runtime artifacts into `scripts/`
-4. regenerate `SKILL.md` and `docs/compile-report.md`
+4. run `node scripts/skill-source-compiler.mjs regenerate .` from the skill root to refresh `SKILL.md` and `docs/compile-report.md`
 5. run lint, typecheck, and tests from the workspace root
 
 Do not hand-edit generated `SKILL.md` as the source of truth.
 If compile warns that `SKILL.md` exceeds the recommended size, reduce root-file prose first and move detail into active references before increasing the limit.
+
+Use `compile <source-dir> --out-dir <independent-skills-dir>` only when you need an out-of-place packaged copy. The output directory must not be the source bundle, a parent of the source bundle, or a child of the source bundle.
+
+Use `compile-all <sources-root> --out-dir <independent-skills-dir>` only when every child source bundle can be emitted into an independent output directory. The runtime preflights all child output paths before the first destructive write.
+
+In-place regeneration writes only compiler-owned generated files:
+
+- `SKILL.md`
+- `docs/compile-report.md`
+
+Manifest entries whose `source` and `target` resolve to the same path are validation-only in in-place mode. Manifest entries whose `source` and `target` resolve to different paths fail closed until the manifest language has an explicit ownership marker.
 
 ## Release checklist
 

@@ -6,13 +6,19 @@
 
 | Issue | Status | Notes |
 | --- | --- | --- |
-| [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Plan PASS | `compile` / `compile-all` destructive overlap; implementation plan audited and ready. |
+| [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented PASS | `compile` / `compile-all` destructive overlap fixed with safe `regenerate`, overlap guards, source-bundle `check`, and verified implementation. |
 
 ## Implementation Plans
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
-| [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | PASS |
+| [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented PASS |
+
+## Implementation Logs
+
+| Log | Related issue | Status |
+| --- | --- | --- |
+| [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | PASS |
 
 ## Supporting Docs
 

@@ -2,8 +2,8 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.0`
-- CLI package version: `0.1.0`
+- Skill source version: `0.2.1`
+- CLI package version: `0.2.0`
 
 ## Source files
 - `assets/source-template.yaml`
@@ -26,8 +26,7 @@ Generated from `skill.yaml`.
 - `references/maintenance.md`
 
 ## Warnings
-- Potential duplicate guidance detected: ok or fail status on stdout.
-- Potential duplicate guidance detected: source bundle directory path.
+- none
 
 ## Notes
 - This document is supporting output only.

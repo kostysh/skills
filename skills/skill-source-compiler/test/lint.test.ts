@@ -13,6 +13,7 @@ const fixtureRoot = join(TEST_DIR, "..");
 void test("lintSourceBundle accepts the example source bundle", async () => {
   const result = await lintSourceBundle(fixtureRoot);
   assert.equal(result.ok, true, result.diagnostics.map((entry) => entry.message).join("\n"));
+  assert.deepEqual(result.diagnostics, []);
 });
 
 void test("lintSourceBundle reports duplicate ids", async () => {

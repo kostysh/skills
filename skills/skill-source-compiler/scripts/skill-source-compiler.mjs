@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { parseArgs } from "node:util";
-import { dirname, join, resolve } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 //#region \0rolldown/runtime.js
@@ -17,7 +17,7 @@ var __exportAll = (all, no_symbols) => {
 //#endregion
 //#region package.json
 var name = "@kostysh/skill-source-compiler-cli";
-var version$1 = "0.1.0";
+var version$1 = "0.2.0";
 var description = "CLI utilities for the skill-source-compiler skill.";
 var type = "module";
 var bin = { "skill-source-compiler": "scripts/skill-source-compiler.mjs" };
@@ -6179,6 +6179,16 @@ var fileExists = async (path) => {
 		return false;
 	}
 };
+//#endregion
+//#region src/errors.ts
+var SkillforgeError = class extends Error {
+	code;
+	constructor(code, message) {
+		super(message);
+		this.code = code;
+		this.name = "SkillforgeError";
+	}
+};
 Object.freeze({ status: "aborted" });
 function $constructor(name, initializer, params) {
 	function init(inst, def) {
@@ -10168,128 +10178,6 @@ var compiledFrontmatterSchema = object({
 	"allowed-tools": nonEmptyString.optional()
 });
 //#endregion
-//#region src/text.ts
-/**
-* Normalizes text for duplicate detection.
-*/
-var normalizeText = (input) => input.toLowerCase().replace(/`+/g, "").replace(/\s+/g, " ").trim();
-/**
-* Computes a stable SHA-256 hash.
-*/
-var sha256 = (input) => createHash("sha256").update(input).digest("hex");
-/**
-* Detects whether a path-like string is an absolute filesystem path.
-*/
-var containsAbsolutePath = (input) => {
-	return /(^|[\s"'`(])\/(?:home|Users|var|opt|tmp|etc|code|workspace|mnt)\//u.test(input) || /(^|[\s"'`(])(?:[A-Za-z]:\\)/u.test(input);
-};
-//#endregion
-//#region src/check.ts
-var finalizeResult = (diagnostics) => ({
-	diagnostics,
-	ok: diagnostics.every((entry) => entry.level !== "error")
-});
-var extractFrontmatter = (markdown) => {
-	const match = markdown.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/u);
-	if (match === null) throw new Error("SKILL.md is missing YAML frontmatter.");
-	return {
-		body: match[2] ?? "",
-		frontmatter: browser_default.parse(match[1] ?? "")
-	};
-};
-/**
-* Checks a compiled skill folder for portability and structural invariants.
-*/
-var checkCompiledSkill = async (skillDir) => {
-	const diagnostics = [];
-	const normalizedDir = resolve(skillDir);
-	const skillMarkdownPath = resolve(normalizedDir, "SKILL.md");
-	const markdown = await readTextFile(skillMarkdownPath).catch((error) => {
-		diagnostics.push({
-			code: "missing-skill-markdown",
-			level: "error",
-			message: `Could not read ${skillMarkdownPath}: ${error instanceof Error ? error.message : String(error)}`
-		});
-		return null;
-	});
-	if (markdown === null) return finalizeResult(diagnostics);
-	let body = "";
-	let frontmatter = {};
-	try {
-		const extracted = extractFrontmatter(markdown);
-		body = extracted.body;
-		frontmatter = extracted.frontmatter;
-	} catch (error) {
-		diagnostics.push({
-			code: "missing-frontmatter",
-			level: "error",
-			message: error instanceof Error ? error.message : String(error)
-		});
-	}
-	const parsedFrontmatter = compiledFrontmatterSchema.safeParse(frontmatter);
-	if (!parsedFrontmatter.success) diagnostics.push({
-		code: "invalid-frontmatter",
-		level: "error",
-		message: parsedFrontmatter.error.message
-	});
-	else {
-		const folderName = normalizedDir.split(/[/\\]/u).at(-1);
-		if (parsedFrontmatter.data.name !== folderName) diagnostics.push({
-			code: "folder-name-mismatch",
-			level: "error",
-			message: `Frontmatter name ${parsedFrontmatter.data.name} does not match folder ${folderName}.`
-		});
-	}
-	for (const heading of [
-		"## Start here",
-		"## When to use this skill",
-		"## When NOT to use this skill",
-		"## Required active references",
-		"## Portability rules",
-		"## Supporting and historical surface"
-	]) if (!body.includes(heading)) diagnostics.push({
-		code: "missing-heading",
-		level: "error",
-		message: `Generated SKILL.md is missing heading: ${heading}`
-	});
-	if (containsAbsolutePath(markdown)) diagnostics.push({
-		code: "absolute-path-in-skill",
-		level: "error",
-		message: "Compiled SKILL.md contains an absolute path."
-	});
-	const relativeFiles = await walkFiles(normalizedDir);
-	for (const relativePath of relativeFiles) {
-		const content = await readTextFile(resolve(normalizedDir, relativePath)).catch(() => "");
-		if (content !== "" && containsAbsolutePath(content)) diagnostics.push({
-			code: "absolute-path-in-file",
-			level: "error",
-			message: `Compiled file contains an absolute path: ${relativePath}`
-		});
-	}
-	const requiredReferenceLinks = [...markdown.matchAll(/\[[^\]]+\]\((references\/[^)]+)\)/gu)].map((match) => match[1]).filter((value) => value !== void 0);
-	if (requiredReferenceLinks.length === 0) diagnostics.push({
-		code: "no-reference-links",
-		level: "error",
-		message: "Compiled SKILL.md does not link to any reference file."
-	});
-	for (const referencePath of requiredReferenceLinks) if (!relativeFiles.includes(referencePath)) diagnostics.push({
-		code: "missing-linked-reference",
-		level: "error",
-		message: `SKILL.md links to ${referencePath}, but the file is missing.`
-	});
-	return finalizeResult(diagnostics);
-};
-//#endregion
-//#region src/errors.ts
-var SkillforgeError = class extends Error {
-	code;
-	constructor(code, message) {
-		super(message);
-		this.code = code;
-		this.name = "SkillforgeError";
-	}
-};
-//#endregion
 //#region src/source-loader.ts
 var packageManifestSchema = object({ version: string().trim().min(1) });
 var collectReferencedPaths = (source) => {
@@ -10355,6 +10243,22 @@ var loadSourceBundle = async (rootDir) => {
 		rootDir: normalizedRootDir,
 		source
 	};
+};
+//#endregion
+//#region src/text.ts
+/**
+* Normalizes text for duplicate detection.
+*/
+var normalizeText = (input) => input.toLowerCase().replace(/`+/g, "").replace(/\s+/g, " ").trim();
+/**
+* Computes a stable SHA-256 hash.
+*/
+var sha256 = (input) => createHash("sha256").update(input).digest("hex");
+/**
+* Detects whether a path-like string is an absolute filesystem path.
+*/
+var containsAbsolutePath = (input) => {
+	return /(^|[\s"'`(])\/(?:home|Users|var|opt|tmp|etc|code|workspace|mnt)\//u.test(input) || /(^|[\s"'`(])(?:[A-Za-z]:\\)/u.test(input);
 };
 //#endregion
 //#region src/lint.ts
@@ -10448,9 +10352,7 @@ var lintLoadedBundle = async (loaded) => {
 		...source.sections.commands.flatMap((entry) => [
 			entry.command,
 			entry.summary,
-			entry.when,
-			...entry.inputs,
-			...entry.outputs
+			entry.when
 		]),
 		...source.sections.gotchas.map((entry) => entry.text),
 		...source.sections.policies.flatMap((entry) => [entry.title, entry.text]),
@@ -10611,29 +10513,86 @@ var renderCompileReport = (loaded, warnings) => {
 //#endregion
 //#region src/compiler.ts
 var buildSkillMarkdownSizeWarning = (currentSizeBytes, recommendedMaxBytes) => `Generated SKILL.md is ${currentSizeBytes} bytes, above the recommended maximum ${recommendedMaxBytes} bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.`;
+var isSameOrNestedPath = (firstPath, secondPath) => {
+	const relativePath = relative(firstPath, secondPath);
+	return relativePath === "" || !relativePath.startsWith("..") && !isAbsolute(relativePath);
+};
+var pathsOverlap = (firstPath, secondPath) => isSameOrNestedPath(firstPath, secondPath) || isSameOrNestedPath(secondPath, firstPath);
+var assertIndependentOutputDir = (sourceDir, outputDir) => {
+	const normalizedSourceDir = resolve(sourceDir);
+	const normalizedOutputDir = resolve(outputDir);
+	if (!pathsOverlap(normalizedSourceDir, normalizedOutputDir)) return;
+	throw new SkillforgeError("unsafe-output-overlap", `Output directory ${normalizedOutputDir} overlaps source bundle ${normalizedSourceDir}. Use an independent output directory for compile/compile-all, or use regenerate for in-place updates.`);
+};
+var collectCopyFiles = (loaded, outputDir) => {
+	return [
+		...loaded.source.references,
+		...loaded.source.assets,
+		...loaded.source.copies,
+		...loaded.source.supporting
+	].map((file) => ({
+		file,
+		sourcePath: resolve(loaded.rootDir, file.source),
+		targetPath: resolve(outputDir, file.target)
+	}));
+};
+var renderSourceBundle = async (sourceDir) => {
+	const lint = await lintSourceBundle(sourceDir);
+	if (!lint.ok) throw new SkillforgeError("lint-failed", `Cannot compile source bundle with lint errors:\n${lint.diagnostics.map((entry) => `[${entry.level}] ${entry.code}: ${entry.message}`).join("\n")}`);
+	const { loaded } = lint;
+	const skillMarkdown = renderSkillMarkdown(loaded);
+	const warnings = lint.diagnostics.filter((entry) => entry.level === "warning").map((entry) => entry.message);
+	const skillMarkdownSizeBytes = Buffer.byteLength(skillMarkdown, "utf8");
+	const recommendedMaxBytes = loaded.source.skill["recommended-skill-md-max-bytes"];
+	if (skillMarkdownSizeBytes > recommendedMaxBytes) warnings.push(buildSkillMarkdownSizeWarning(skillMarkdownSizeBytes, recommendedMaxBytes));
+	return {
+		compileReport: renderCompileReport(loaded, warnings),
+		loaded,
+		skillMarkdown,
+		warnings
+	};
+};
+var prepareCompile = async (sourceDir, options) => {
+	const rendered = await renderSourceBundle(sourceDir);
+	const outputDir = resolve(options.outDir, rendered.loaded.source.skill.name);
+	assertIndependentOutputDir(rendered.loaded.rootDir, outputDir);
+	return {
+		copiedFiles: collectCopyFiles(rendered.loaded, outputDir),
+		outputDir,
+		rendered
+	};
+};
+var writePreparedCompile = async (prepared, options) => {
+	if (options.clean ?? true) await removeDirectory(prepared.outputDir);
+	await writeTextFile(resolve(prepared.outputDir, "SKILL.md"), prepared.rendered.skillMarkdown);
+	await writeTextFile(resolve(prepared.outputDir, "docs/compile-report.md"), prepared.rendered.compileReport);
+	for (const file of prepared.copiedFiles) await copyFilePortable(file.sourcePath, file.targetPath);
+	return {
+		outputDir: prepared.outputDir,
+		warnings: prepared.rendered.warnings
+	};
+};
 /**
 * Compiles a source bundle into a standard skill folder.
 */
 var compileSourceBundle = async (sourceDir, options) => {
-	const lint = await lintSourceBundle(sourceDir);
-	if (!lint.ok) throw new SkillforgeError("lint-failed", `Cannot compile source bundle with lint errors:\n${lint.diagnostics.map((entry) => `[${entry.level}] ${entry.code}: ${entry.message}`).join("\n")}`);
-	const { loaded } = lint;
-	const outputDir = resolve(options.outDir, loaded.source.skill.name);
-	if (options.clean ?? true) await removeDirectory(outputDir);
-	const renderedSkillMarkdown = renderSkillMarkdown(loaded);
-	const warnings = lint.diagnostics.filter((entry) => entry.level === "warning").map((entry) => entry.message);
-	const skillMarkdownSizeBytes = Buffer.byteLength(renderedSkillMarkdown, "utf8");
-	const recommendedMaxBytes = loaded.source.skill["recommended-skill-md-max-bytes"];
-	if (skillMarkdownSizeBytes > recommendedMaxBytes) warnings.push(buildSkillMarkdownSizeWarning(skillMarkdownSizeBytes, recommendedMaxBytes));
-	await writeTextFile(resolve(outputDir, "SKILL.md"), renderedSkillMarkdown);
-	await writeTextFile(resolve(outputDir, "docs/compile-report.md"), renderCompileReport(loaded, warnings));
-	for (const file of loaded.source.references) await copyFilePortable(resolve(loaded.rootDir, file.source), resolve(outputDir, file.target));
-	for (const file of loaded.source.assets) await copyFilePortable(resolve(loaded.rootDir, file.source), resolve(outputDir, file.target));
-	for (const file of loaded.source.copies) await copyFilePortable(resolve(loaded.rootDir, file.source), resolve(outputDir, file.target));
-	for (const file of loaded.source.supporting) await copyFilePortable(resolve(loaded.rootDir, file.source), resolve(outputDir, file.target));
+	return writePreparedCompile(await prepareCompile(sourceDir, options), options);
+};
+/**
+* Regenerates compiler-owned output inside a source bundle folder.
+*/
+var regenerateSourceBundle = async (sourceDir) => {
+	const rendered = await renderSourceBundle(sourceDir);
+	const copiedFiles = collectCopyFiles(rendered.loaded, rendered.loaded.rootDir);
+	for (const file of copiedFiles) {
+		if (resolve(file.sourcePath) === resolve(file.targetPath)) continue;
+		throw new SkillforgeError("unsafe-in-place-target", `In-place regeneration cannot copy ${file.file.source} to ${file.file.target} without an explicit ownership marker.`);
+	}
+	await writeTextFile(resolve(rendered.loaded.rootDir, "SKILL.md"), rendered.skillMarkdown);
+	await writeTextFile(resolve(rendered.loaded.rootDir, "docs/compile-report.md"), rendered.compileReport);
 	return {
-		outputDir,
-		warnings
+		outputDir: rendered.loaded.rootDir,
+		warnings: rendered.warnings
 	};
 };
 /**
@@ -10642,12 +10601,164 @@ var compileSourceBundle = async (sourceDir, options) => {
 var compileAllSourceBundles = async (sourcesRoot, options) => {
 	const { readdir } = await import("node:fs/promises");
 	const entries = await readdir(sourcesRoot, { withFileTypes: true });
-	const results = [];
+	const prepared = [];
 	for (const entry of entries) {
 		if (!entry.isDirectory()) continue;
-		results.push(await compileSourceBundle(resolve(sourcesRoot, entry.name), options));
+		prepared.push(await prepareCompile(resolve(sourcesRoot, entry.name), options));
 	}
+	const results = [];
+	for (const entry of prepared) results.push(await writePreparedCompile(entry, options));
 	return results;
+};
+//#endregion
+//#region src/check.ts
+var finalizeResult = (diagnostics) => ({
+	diagnostics,
+	ok: diagnostics.every((entry) => entry.level !== "error")
+});
+var extractFrontmatter = (markdown) => {
+	const match = markdown.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/u);
+	if (match === null) throw new Error("SKILL.md is missing YAML frontmatter.");
+	return {
+		body: match[2] ?? "",
+		frontmatter: browser_default.parse(match[1] ?? "")
+	};
+};
+var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeFile, diagnostics) => {
+	let body = "";
+	let frontmatter = {};
+	try {
+		const extracted = extractFrontmatter(markdown);
+		body = extracted.body;
+		frontmatter = extracted.frontmatter;
+	} catch (error) {
+		diagnostics.push({
+			code: "missing-frontmatter",
+			level: "error",
+			message: error instanceof Error ? error.message : String(error)
+		});
+	}
+	const parsedFrontmatter = compiledFrontmatterSchema.safeParse(frontmatter);
+	if (!parsedFrontmatter.success) diagnostics.push({
+		code: "invalid-frontmatter",
+		level: "error",
+		message: parsedFrontmatter.error.message
+	});
+	else {
+		const folderName = resolve(skillDir).split(/[/\\]/u).at(-1);
+		if (parsedFrontmatter.data.name !== folderName) diagnostics.push({
+			code: "folder-name-mismatch",
+			level: "error",
+			message: `Frontmatter name ${parsedFrontmatter.data.name} does not match folder ${folderName}.`
+		});
+	}
+	for (const heading of [
+		"## Start here",
+		"## When to use this skill",
+		"## When NOT to use this skill",
+		"## Required active references",
+		"## Portability rules",
+		"## Supporting and historical surface"
+	]) if (!body.includes(heading)) diagnostics.push({
+		code: "missing-heading",
+		level: "error",
+		message: `Generated SKILL.md is missing heading: ${heading}`
+	});
+	if (containsAbsolutePath(markdown)) diagnostics.push({
+		code: "absolute-path-in-skill",
+		level: "error",
+		message: "Compiled SKILL.md contains an absolute path."
+	});
+	for (const relativePath of relativeFiles) {
+		const content = await readRelativeFile(relativePath).catch(() => "");
+		if (content !== "" && containsAbsolutePath(content)) diagnostics.push({
+			code: "absolute-path-in-file",
+			level: "error",
+			message: `Compiled file contains an absolute path: ${relativePath}`
+		});
+	}
+	const requiredReferenceLinks = [...markdown.matchAll(/\[[^\]]+\]\((references\/[^)]+)\)/gu)].map((match) => match[1]).filter((value) => value !== void 0);
+	if (requiredReferenceLinks.length === 0) diagnostics.push({
+		code: "no-reference-links",
+		level: "error",
+		message: "Compiled SKILL.md does not link to any reference file."
+	});
+	for (const referencePath of requiredReferenceLinks) if (!relativeFiles.includes(referencePath)) diagnostics.push({
+		code: "missing-linked-reference",
+		level: "error",
+		message: `SKILL.md links to ${referencePath}, but the file is missing.`
+	});
+};
+var collectEmittedRelativeFiles = (rendered) => {
+	const files = [
+		"SKILL.md",
+		"docs/compile-report.md",
+		...rendered.loaded.source.references.map((entry) => entry.target),
+		...rendered.loaded.source.assets.map((entry) => entry.target),
+		...rendered.loaded.source.copies.map((entry) => entry.target),
+		...rendered.loaded.source.supporting.map((entry) => entry.target)
+	];
+	return [...new Set(files)].sort();
+};
+var checkSourceBundle = async (skillDir) => {
+	const diagnostics = [];
+	const normalizedDir = resolve(skillDir);
+	const rendered = await renderSourceBundle(normalizedDir).catch((error) => {
+		diagnostics.push({
+			code: "source-render-failed",
+			level: "error",
+			message: error instanceof Error ? error.message : String(error)
+		});
+		return null;
+	});
+	if (rendered === null) return finalizeResult(diagnostics);
+	const existingSkillMarkdown = await readTextFile(resolve(normalizedDir, "SKILL.md")).catch(() => null);
+	if (existingSkillMarkdown !== null && existingSkillMarkdown !== rendered.skillMarkdown) diagnostics.push({
+		code: "generated-skill-drift",
+		level: "error",
+		message: "SKILL.md does not match the current source bundle render."
+	});
+	const existingCompileReport = await readTextFile(resolve(normalizedDir, "docs/compile-report.md")).catch(() => null);
+	if (existingCompileReport !== null && existingCompileReport !== rendered.compileReport) diagnostics.push({
+		code: "compile-report-drift",
+		level: "error",
+		message: "docs/compile-report.md does not match the current source bundle render."
+	});
+	const relativeFiles = collectEmittedRelativeFiles(rendered);
+	const sourceContentByTarget = /* @__PURE__ */ new Map();
+	sourceContentByTarget.set("SKILL.md", rendered.skillMarkdown);
+	sourceContentByTarget.set("docs/compile-report.md", rendered.compileReport);
+	for (const entry of [
+		...rendered.loaded.source.references,
+		...rendered.loaded.source.assets,
+		...rendered.loaded.source.copies,
+		...rendered.loaded.source.supporting
+	]) {
+		const sourceFile = rendered.loaded.files.get(entry.source);
+		if (sourceFile !== void 0) sourceContentByTarget.set(entry.target, sourceFile.content);
+	}
+	await checkSkillMarkdown(normalizedDir, rendered.skillMarkdown, relativeFiles, (relativePath) => Promise.resolve(sourceContentByTarget.get(relativePath) ?? ""), diagnostics);
+	return finalizeResult(diagnostics);
+};
+/**
+* Checks a compiled skill folder for portability and structural invariants.
+*/
+var checkCompiledSkill = async (skillDir) => {
+	const diagnostics = [];
+	const normalizedDir = resolve(skillDir);
+	if (await fileExists(resolve(normalizedDir, "skill.yaml"))) return checkSourceBundle(normalizedDir);
+	const skillMarkdownPath = resolve(normalizedDir, "SKILL.md");
+	const markdown = await readTextFile(skillMarkdownPath).catch((error) => {
+		diagnostics.push({
+			code: "missing-skill-markdown",
+			level: "error",
+			message: `Could not read ${skillMarkdownPath}: ${error instanceof Error ? error.message : String(error)}`
+		});
+		return null;
+	});
+	if (markdown === null) return finalizeResult(diagnostics);
+	await checkSkillMarkdown(normalizedDir, markdown, await walkFiles(normalizedDir), async (relativePath) => readTextFile(resolve(normalizedDir, relativePath)), diagnostics);
+	return finalizeResult(diagnostics);
 };
 //#endregion
 //#region src/run-cli.ts
@@ -10665,20 +10776,24 @@ var CliUsageError = class extends Error {
 };
 var COMMANDS = {
 	check: {
-		summary: "Validate a compiled skill folder for frontmatter, headings, links, and portability invariants.",
-		usage: [`node ${RUNTIME_SCRIPT} check <compiled-skill-dir>`]
+		summary: "Validate a compiled skill folder or generated source bundle.",
+		usage: [`node ${RUNTIME_SCRIPT} check <skill-dir>`]
 	},
 	compile: {
-		summary: "Compile one source bundle into a skill folder under the provided output directory.",
+		summary: "Compile one source bundle into an independent output directory.",
 		usage: [`node ${RUNTIME_SCRIPT} compile <source-dir> --out-dir <skills-dir>`]
 	},
 	"compile-all": {
-		summary: "Compile every source bundle found directly under the provided sources root.",
+		summary: "Compile every source bundle found directly under the provided sources root into an independent output directory.",
 		usage: [`node ${RUNTIME_SCRIPT} compile-all <sources-root> --out-dir <skills-dir>`]
 	},
 	lint: {
 		summary: "Validate a source bundle without writing output files.",
 		usage: [`node ${RUNTIME_SCRIPT} lint <source-dir>`]
+	},
+	regenerate: {
+		summary: "Regenerate compiler-owned files inside a source bundle.",
+		usage: [`node ${RUNTIME_SCRIPT} regenerate <source-dir>`]
 	}
 };
 var writeLine = (stream, value = "") => {
@@ -10693,7 +10808,8 @@ var renderGlobalHelp = (version) => [
 	`  lint <source-dir>                               ${COMMANDS.lint.summary}`,
 	`  compile <source-dir> --out-dir <skills-dir>    ${COMMANDS.compile.summary}`,
 	`  compile-all <sources-root> --out-dir <skills-dir> ${COMMANDS["compile-all"].summary}`,
-	`  check <compiled-skill-dir>                      ${COMMANDS.check.summary}`,
+	`  regenerate <source-dir>                         ${COMMANDS.regenerate.summary}`,
+	`  check <skill-dir>                               ${COMMANDS.check.summary}`,
 	"",
 	"Exit codes:",
 	"  0 success",
@@ -10723,7 +10839,7 @@ var renderCommandHelp = (command) => {
 		"",
 		"Exit codes:",
 		"  0 success",
-		command === "compile" || command === "compile-all" ? "  1 source validation or file-system failure" : "  1 command found validation issues",
+		command === "compile" || command === "compile-all" || command === "regenerate" ? "  1 source validation or file-system failure" : "  1 command found validation issues",
 		"  2 usage error",
 		"  3 unexpected internal failure"
 	].join("\n");
@@ -10744,7 +10860,7 @@ var parseOutDirArgs = (args) => {
 var isHelpFlag = (value) => value === "-h" || value === "--help";
 var resolveCommand = (rawCommand) => {
 	if (rawCommand === void 0 || rawCommand === "help") return "help";
-	if (rawCommand === "lint" || rawCommand === "compile" || rawCommand === "compile-all" || rawCommand === "check") return rawCommand;
+	if (rawCommand === "lint" || rawCommand === "compile" || rawCommand === "compile-all" || rawCommand === "check" || rawCommand === "regenerate") return rawCommand;
 	return null;
 };
 var ensureSinglePositional = (commandName, positionals, expected) => {
@@ -10818,12 +10934,25 @@ var runCli = async (args, io, version) => {
 				}
 				return EXIT_SUCCESS;
 			}
+			case "regenerate": {
+				if (isHelpFlag(rest[0])) {
+					writeLine(io.stdout, renderCommandHelp("regenerate"));
+					return EXIT_SUCCESS;
+				}
+				const result = await regenerateSourceBundle(ensureSinglePositional("regenerate", rest, "<source-dir>"));
+				writeLine(io.stdout, `Regenerated ${result.outputDir}`);
+				if (result.warnings.length > 0) {
+					writeLine(io.stdout, "Warnings:");
+					for (const warning of result.warnings) writeLine(io.stdout, `- ${warning}`);
+				}
+				return EXIT_SUCCESS;
+			}
 			case "check": {
 				if (isHelpFlag(rest[0])) {
 					writeLine(io.stdout, renderCommandHelp("check"));
 					return EXIT_SUCCESS;
 				}
-				const skillDir = ensureSinglePositional("check", rest, "<compiled-skill-dir>");
+				const skillDir = ensureSinglePositional("check", rest, "<skill-dir>");
 				const result = await checkCompiledSkill(skillDir);
 				writeLine(io.stdout, `${result.ok ? "OK" : "FAIL"} ${skillDir}`);
 				if (result.diagnostics.length > 0) writeLine(io.stdout, formatDiagnostics(result.diagnostics));

@@ -52,3 +52,20 @@ Frontmatter placement rule:
 
 - `skill.source-version` belongs under frontmatter `metadata`
 - it must not be emitted as a top-level frontmatter field
+
+## In-place regeneration model
+
+`regenerate <source-dir>` updates compiler-owned generated files inside the folder that contains `skill.yaml`.
+
+Current compiler-owned files:
+
+- `SKILL.md`
+- `docs/compile-report.md`
+
+For manifest file entries:
+
+- out-of-place `compile` copies declared `references`, `assets`, `copies`, and `supporting` files into an independent output directory
+- in-place `regenerate` treats entries whose resolved `source` and `target` paths are the same as validation-only
+- in-place `regenerate` fails closed when a declared entry would copy from one source-bundle path to a different target path
+
+This keeps hand-authored source files from being overwritten until the source language has an explicit ownership marker for generated in-place targets.

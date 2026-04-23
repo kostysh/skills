@@ -51,5 +51,11 @@ If a skill ships an executable utility, instruct the agent to look under `<skill
 Prefer explicit invocations from the skill root, for example:
 
 ```bash
-node scripts/skill-source-compiler.mjs compile . --out-dir ./out
+node scripts/skill-source-compiler.mjs regenerate .
+```
+
+Use out-of-place compile only for independent packaging targets:
+
+```bash
+node scripts/skill-source-compiler.mjs compile . --out-dir ../compiled-skills
 ```
