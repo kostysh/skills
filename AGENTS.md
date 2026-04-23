@@ -131,6 +131,7 @@ Rules:
 - When the operator requests a plan for an issue, create it under the skill's `docs/issues/` directory using `docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md`. The file name must correspond to the issue ID and follow `implementation-plan-<YYYYMMDD>-<N>.md`.
 - Every created plan must receive an external independent audit against the issue and the source artifacts that describe the problem. If the audit finds problems, fix the plan and repeat the audit until the result is `PASS`.
 - For every implementation, keep a log under the skill's `docs/logs/` directory using `docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md`. Name log files as `implementation-log-<YYYYMMDD>-<N>.md`.
+- Maintain a `docs/README.md` file in each skill with navigation to its issues and each issue's implementation status. Update this README when creating or changing issues, plans, or implementation logs.
 - Create issues, plans, and implementation logs in the operator's language.
 
 ## Workflow Stages vs Shipped CLI
