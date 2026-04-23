@@ -8,8 +8,10 @@ import { acquireDeliveryMutationLock } from '../shared/delivery-lock.ts';
 import { resolveManagedDossierIdentity, sanitizeFeatureId } from '../shared/feature-identity.ts';
 import { featureDossiersDirPath, resolveProcessRoot } from '../shared/process-root.ts';
 import {
+  normalizeMetadataForStageState,
   readStageState,
   syncStageStateFromMetadata,
+  type StageStateProcessMiss,
   type StageStateRecord,
 } from '../shared/stage-state.ts';
 import { assertManagedWritePath } from '../shared/path-guards.ts';
@@ -106,6 +108,14 @@ type AuditSummaryPayload = {
 export type StageProvenanceInput = {
   sessionId: string;
   traceRuntime: string | null;
+};
+
+type StageAnnotationsInput = {
+  phaseScope: string | null;
+  processMisses: StageStateProcessMiss[];
+  skillFollowups: string[];
+  skillIssues: string[];
+  skillsUsed: string[];
 };
 
 const DECISION_SUBSECTION_TITLES = [
@@ -274,6 +284,63 @@ function renderTransitionEventsSection(transitionEvents: Array<Record<string, un
   ];
 }
 
+function processMissesFromMetadata(metadata: Record<string, unknown>): StageStateProcessMiss[] {
+  return Array.isArray(metadata.process_misses)
+    ? metadata.process_misses.filter(
+        (miss): miss is StageStateProcessMiss =>
+          miss !== null &&
+          typeof miss === 'object' &&
+          typeof (miss as StageStateProcessMiss).id === 'string' &&
+          typeof (miss as StageStateProcessMiss).category === 'string' &&
+          typeof (miss as StageStateProcessMiss).summary === 'string' &&
+          typeof (miss as StageStateProcessMiss).resolved === 'boolean' &&
+          ['low', 'medium', 'high'].includes((miss as StageStateProcessMiss).severity),
+      )
+    : [];
+}
+
+function unstructuredProcessMissNotes(existingBody: string | undefined): string | null {
+  const trimmed = existingBody?.trim() ?? '';
+  if (!trimmed || trimmed === 'none') {
+    return null;
+  }
+  const marker = 'Unstructured notes:';
+  const markerIndex = trimmed.indexOf(marker);
+  if (markerIndex !== -1) {
+    const notes = trimmed.slice(markerIndex + marker.length).trim();
+    return notes || null;
+  }
+  if (/^- .+\[(low|medium|high)\/.+, (open|resolved)\]/u.test(trimmed)) {
+    return null;
+  }
+  return trimmed;
+}
+
+function renderProcessMissesSection(
+  metadata: Record<string, unknown>,
+  existingBody: string | undefined,
+): string[] {
+  const processMisses = processMissesFromMetadata(metadata);
+  const lines = ['## Process misses', ''];
+  if (processMisses.length === 0) {
+    lines.push('none');
+  } else {
+    lines.push(
+      ...processMisses.map(
+        (miss) =>
+          `- ${miss.id} [${miss.severity}/${miss.category}, ${
+            miss.resolved ? 'resolved' : 'open'
+          }] ${miss.summary}`,
+      ),
+    );
+  }
+  const notes = unstructuredProcessMissNotes(existingBody);
+  if (notes) {
+    lines.push('', 'Unstructured notes:', '', ...notes.split(/\r?\n/u));
+  }
+  return lines;
+}
+
 function canonicalSectionTitles(metadata: Record<string, unknown>): readonly string[] {
   return toNullableString(metadata.stage) === 'feature-intake'
     ? FEATURE_INTAKE_SECTION_TITLES
@@ -298,6 +365,10 @@ function renderStageLog(
   for (const title of canonicalSectionTitles(metadata)) {
     if (title === TRANSITION_SECTION_TITLE) {
       sectionLines.push(...renderTransitionEventsSection(transitionEvents), '');
+      continue;
+    }
+    if (title === 'Process misses') {
+      sectionLines.push(...renderProcessMissesSection(metadata, existingSections.get(title)), '');
       continue;
     }
     if (title === 'Decisions / reclassifications') {
@@ -435,14 +506,22 @@ function machineMetadataFromStageState(state: StageStateRecord): Record<string, 
     feature_cycle_id: state.feature_cycle_id,
     cycle_id: state.cycle_id,
     backlog_item_key: state.backlog_item_key,
+    primary_feature_id: state.primary_feature_id,
+    primary_backlog_item_key: state.primary_backlog_item_key,
+    phase_scope: state.phase_scope,
     stage_state: state.stage_state,
     start_ts: state.start_ts,
     entered_ts: state.entered_ts,
     ready_for_close_ts: state.ready_for_close_ts,
     transition_events: state.transition_events,
+    backlog_followup_required: state.backlog_followup_required,
+    backlog_followup_kind: state.backlog_followup_kind,
+    backlog_followup_resolved: state.backlog_followup_resolved,
     required_audit_classes: state.required_audit_classes,
     executed_audit_classes: state.executed_audit_classes,
     required_external_review_pending: state.required_external_review_pending,
+    review_artifacts: state.review_artifacts,
+    verification_artifacts: state.verification_artifacts,
     review_events: state.review_events,
     reviewer_skills: state.reviewer_skills,
     reviewer_agent_ids: state.reviewer_agent_ids,
@@ -450,10 +529,16 @@ function machineMetadataFromStageState(state: StageStateRecord): Record<string, 
     degraded_review_present: state.degraded_review_present,
     invalidated_review_present: state.invalidated_review_present,
     stale_review_present: state.stale_review_present,
+    skills_used: state.skills_used,
+    skill_issues: state.skill_issues,
+    skill_followups: state.skill_followups,
+    process_misses: state.process_misses,
     session_id: state.session_id,
     trace_runtime: state.trace_runtime,
     trace_locator_kind: state.trace_locator_kind,
     stage_entry_commit: state.stage_entry_commit,
+    final_delivery_commit: state.final_delivery_commit,
+    final_closure_commit: state.final_closure_commit,
     implementation_review_scope: state.implementation_review_scope,
     required_security_review: state.required_security_review,
     security_trigger_reasons: state.security_trigger_reasons,
@@ -578,6 +663,18 @@ function normalizeSingleLineOption(value: string | null, optionName: string): st
   return normalized;
 }
 
+function normalizeRepeatableSingleLineOptions(values: string[], optionName: string): string[] {
+  return uniqueStrings(
+    values.map((value) => {
+      const normalized = normalizeSingleLineOption(value, optionName);
+      if (!normalized) {
+        throw new Error(`${optionName} cannot be empty.`);
+      }
+      return normalized;
+    }),
+  );
+}
+
 export function parseStageProvenanceInput(args: string[]): StageProvenanceInput {
   const sessionId = normalizeSingleLineOption(takeOption(args, '--session-id'), '--session-id');
   if (!sessionId) {
@@ -589,13 +686,101 @@ export function parseStageProvenanceInput(args: string[]): StageProvenanceInput 
   };
 }
 
+function parseProcessMissDsl(value: string): StageStateProcessMiss {
+  const fields = new Map<string, string>();
+  for (const part of value.split(';')) {
+    const separator = part.indexOf('=');
+    if (separator === -1) {
+      throw new Error('--process-miss entries must use key=value pairs separated by semicolons.');
+    }
+    const key = part.slice(0, separator).trim();
+    const fieldValue = part.slice(separator + 1).trim();
+    if (!key || !fieldValue) {
+      throw new Error('--process-miss entries must not contain empty keys or values.');
+    }
+    if (fields.has(key)) {
+      throw new Error(`--process-miss contains duplicate key: ${key}.`);
+    }
+    fields.set(key, fieldValue);
+  }
+  const allowedKeys = new Set(['id', 'category', 'severity', 'resolved', 'summary']);
+  for (const key of fields.keys()) {
+    if (!allowedKeys.has(key)) {
+      throw new Error(`--process-miss contains unsupported key: ${key}.`);
+    }
+  }
+  const id = normalizeSingleLineOption(fields.get('id') ?? null, '--process-miss id');
+  const category = normalizeSingleLineOption(
+    fields.get('category') ?? null,
+    '--process-miss category',
+  );
+  const severity = normalizeSingleLineOption(
+    fields.get('severity') ?? null,
+    '--process-miss severity',
+  );
+  const resolved = normalizeSingleLineOption(
+    fields.get('resolved') ?? null,
+    '--process-miss resolved',
+  );
+  const summary = normalizeSingleLineOption(fields.get('summary') ?? null, '--process-miss summary');
+  if (!id || !category || !severity || !resolved || !summary) {
+    throw new Error(
+      '--process-miss must include id, category, severity, resolved, and summary.',
+    );
+  }
+  if (!['low', 'medium', 'high'].includes(severity)) {
+    throw new Error('--process-miss severity must be one of: low, medium, high.');
+  }
+  if (!['true', 'false'].includes(resolved)) {
+    throw new Error('--process-miss resolved must be true or false.');
+  }
+  return {
+    id,
+    category,
+    severity: severity as StageStateProcessMiss['severity'],
+    resolved: resolved === 'true',
+    summary,
+  };
+}
+
+export function parseStageAnnotationsInput(args: string[]): StageAnnotationsInput {
+  return {
+    skillsUsed: normalizeRepeatableSingleLineOptions(takeManyOptions(args, '--skill-used'), '--skill-used'),
+    skillIssues: normalizeRepeatableSingleLineOptions(
+      takeManyOptions(args, '--skill-issue'),
+      '--skill-issue',
+    ),
+    skillFollowups: normalizeRepeatableSingleLineOptions(
+      takeManyOptions(args, '--skill-followup'),
+      '--skill-followup',
+    ),
+    processMisses: takeManyOptions(args, '--process-miss').map(parseProcessMissDsl),
+    phaseScope: normalizeSingleLineOption(takeOption(args, '--phase-scope'), '--phase-scope'),
+  };
+}
+
+function mergeProcessMisses(
+  existing: StageStateProcessMiss[],
+  incoming: StageStateProcessMiss[],
+): StageStateProcessMiss[] {
+  return [...new Map([...existing, ...incoming].map((miss) => [miss.id, miss])).values()];
+}
+
+function stageSchemaMetadata(payload: {
+  featureId: string;
+  logPath: string;
+  metadata: Record<string, unknown>;
+}): Record<string, unknown> {
+  return normalizeMetadataForStageState(payload);
+}
+
 function commandUsage(command: StageControllerCommand): string {
   const implementationScopeSuffix =
     command === 'implementation'
       ? ' [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close'
       : '';
   return [
-    `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}`,
+    `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}`,
     `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
   ].join('\n');
 }
@@ -744,8 +929,13 @@ export async function appendFeatureIntakeLog(payload: {
   backlogItemKey: string;
   featureCycleId: string;
   featureId: string;
+  phaseScope: string | null;
+  processMisses: StageStateProcessMiss[];
   root: string;
   sessionId: string;
+  skillFollowups: string[];
+  skillIssues: string[];
+  skillsUsed: string[];
   traceRuntime: string | null;
 }): Promise<{
   cycleId: string;
@@ -775,6 +965,9 @@ export async function appendFeatureIntakeLog(payload: {
     feature_cycle_id: payload.featureCycleId,
     cycle_id: cycleId,
     backlog_item_key: payload.backlogItemKey,
+    primary_feature_id: payload.featureId,
+    primary_backlog_item_key: payload.backlogItemKey,
+    phase_scope: payload.phaseScope ?? 'feature-intake',
     start_ts: now,
     entered_ts: now,
     ready_for_close_ts: now,
@@ -782,6 +975,8 @@ export async function appendFeatureIntakeLog(payload: {
     backlog_followup_required: false,
     backlog_followup_kind: null,
     backlog_followup_resolved: true,
+    review_artifacts: [],
+    verification_artifacts: [],
     required_audit_classes: ['spec-conformance-reviewer'],
     executed_audit_classes: [],
     required_external_review_pending: true,
@@ -792,11 +987,22 @@ export async function appendFeatureIntakeLog(payload: {
     degraded_review_present: false,
     invalidated_review_present: false,
     stale_review_present: false,
+    skills_used: payload.skillsUsed,
+    skill_issues: payload.skillIssues,
+    skill_followups: payload.skillFollowups,
+    process_misses: payload.processMisses,
     transition_events: transitionEvents,
     session_id: payload.sessionId,
     trace_runtime: payload.traceRuntime,
     trace_locator_kind: 'session_id',
+    final_delivery_commit: getCurrentCommit(payload.root),
+    final_closure_commit: null,
   };
+  const normalizedMetadata = stageSchemaMetadata({
+    featureId: payload.featureId,
+    logPath: relPath,
+    metadata,
+  });
   await assertManagedWritePath(
     payload.root,
     path.join(payload.root, '.dossier', 'logs', 'feature-intake'),
@@ -805,14 +1011,14 @@ export async function appendFeatureIntakeLog(payload: {
   );
   await writeTextAtomic(
     absPath,
-    renderStageLog(metadata, {
+    renderStageLog(normalizedMetadata, {
       notes: ['Feature cycle opened by feature-intake.'],
     }),
   );
   await syncStageStateFromMetadata({
     root: payload.root,
     featureId: payload.featureId,
-    metadata,
+    metadata: normalizedMetadata,
     logPath: relPath,
   });
   return {
@@ -833,6 +1039,7 @@ export async function runStageControllerCommand(
   }
 
   const provenance = parseStageProvenanceInput(args);
+  const annotations = parseStageAnnotationsInput(args);
   const cwd = process.cwd();
   const root = await resolveProcessRoot(cwd, takeOption(args, '--root'));
   const featureId = sanitizeFeatureId(
@@ -924,7 +1131,7 @@ export async function runStageControllerCommand(
     command === 'implementation' &&
     action !== 'ready_for_close' &&
     (currentStageState?.step_close_ts !== null || currentStageState?.process_complete_ts !== null);
-  const carryReviewState = action === 'ready_for_close';
+  const carryStageEvidence = action === 'ready_for_close';
   const implementationReviewScope =
     command === 'implementation'
       ? action === 'ready_for_close'
@@ -951,6 +1158,9 @@ export async function runStageControllerCommand(
     feature_cycle_id: featureCycleId,
     cycle_id: cycleId,
     backlog_item_key: backlogItemKey,
+    primary_feature_id: featureId,
+    primary_backlog_item_key: backlogItemKey,
+    phase_scope: annotations.phaseScope ?? currentStageState?.phase_scope ?? command,
     stage_state: stageState,
     start_ts: enteredTs,
     entered_ts: enteredTs,
@@ -959,29 +1169,53 @@ export async function runStageControllerCommand(
     backlog_followup_required: backlogFollowupRequired,
     backlog_followup_kind: backlogFollowupKind,
     backlog_followup_resolved: backlogFollowupResolved,
+    review_artifacts: carryStageEvidence ? (currentStageState?.review_artifacts ?? []) : [],
+    verification_artifacts: carryStageEvidence
+      ? (currentStageState?.verification_artifacts ?? [])
+      : [],
     required_audit_classes: requiredAuditClasses,
-    executed_audit_classes: carryReviewState
+    executed_audit_classes: carryStageEvidence
       ? (currentStageState?.executed_audit_classes ?? [])
       : [],
-    required_external_review_pending: carryReviewState
+    required_external_review_pending: carryStageEvidence
       ? (currentStageState?.required_external_review_pending ?? true)
       : true,
-    review_events: carryReviewState ? (currentStageState?.review_events ?? []) : [],
-    reviewer_skills: carryReviewState ? (currentStageState?.reviewer_skills ?? []) : [],
-    reviewer_agent_ids: carryReviewState ? (currentStageState?.reviewer_agent_ids ?? []) : [],
-    review_trace_commits: carryReviewState ? (currentStageState?.review_trace_commits ?? []) : [],
-    degraded_review_present: carryReviewState
+    review_events: carryStageEvidence ? (currentStageState?.review_events ?? []) : [],
+    reviewer_skills: carryStageEvidence ? (currentStageState?.reviewer_skills ?? []) : [],
+    reviewer_agent_ids: carryStageEvidence ? (currentStageState?.reviewer_agent_ids ?? []) : [],
+    review_trace_commits: carryStageEvidence ? (currentStageState?.review_trace_commits ?? []) : [],
+    degraded_review_present: carryStageEvidence
       ? (currentStageState?.degraded_review_present ?? false)
       : false,
-    invalidated_review_present: carryReviewState
+    invalidated_review_present: carryStageEvidence
       ? (currentStageState?.invalidated_review_present ?? false)
       : false,
-    stale_review_present: carryReviewState
+    stale_review_present: carryStageEvidence
       ? (currentStageState?.stale_review_present ?? false)
       : false,
+    skills_used: uniqueStrings([...(currentStageState?.skills_used ?? []), ...annotations.skillsUsed]),
+    skill_issues: uniqueStrings([
+      ...(currentStageState?.skill_issues ?? []),
+      ...annotations.skillIssues,
+    ]),
+    skill_followups: uniqueStrings([
+      ...(currentStageState?.skill_followups ?? []),
+      ...annotations.skillFollowups,
+    ]),
+    process_misses: mergeProcessMisses(
+      currentStageState?.process_misses ?? [],
+      annotations.processMisses,
+    ),
     session_id: provenance.sessionId,
     trace_runtime: provenance.traceRuntime,
     trace_locator_kind: 'session_id',
+    final_delivery_commit:
+      action === 'ready_for_close'
+        ? getCurrentCommit(root)
+        : null,
+    final_closure_commit: carryStageEvidence
+      ? (currentStageState?.final_closure_commit ?? null)
+      : null,
   };
   if (command === 'implementation') {
     metadata.implementation_review_scope = implementationReviewScope;
@@ -1001,6 +1235,11 @@ export async function runStageControllerCommand(
     `${featureId}--${featureCycleId}--${cycleId}.md`,
   );
   const absPath = path.join(root, relPath);
+  const normalizedMetadata = stageSchemaMetadata({
+    featureId,
+    logPath: relPath,
+    metadata,
+  });
   const releaseLock = await acquireDeliveryMutationLock({
     root,
     featureId,
@@ -1016,7 +1255,7 @@ export async function runStageControllerCommand(
     );
     await writeTextAtomic(
       absPath,
-      renderStageLog(metadata, {
+      renderStageLog(normalizedMetadata, {
         existingContent: latestForStage?.content ?? null,
         notes: noteValues,
       }),
@@ -1024,7 +1263,7 @@ export async function runStageControllerCommand(
     await syncStageStateFromMetadata({
       root,
       featureId,
-      metadata,
+      metadata: normalizedMetadata,
       logPath: relPath,
     });
   } finally {
@@ -1050,11 +1289,14 @@ export async function runStageControllerCommand(
 
 export async function recordStepCloseOnStageLog(payload: {
   auditSummary?: AuditSummaryPayload;
+  finalClosureCommit: string | null;
   featureId: string;
   processComplete: boolean;
+  reviewArtifactPaths: string[];
   root: string;
   step: string;
   stepArtifactPath: string;
+  verificationArtifactPath: string | null;
 }): Promise<void> {
   const stageName = payload.step as LoggedStage;
   if (stageName !== 'feature-intake' && !STAGE_CONTROLLER_COMMANDS.includes(stageName)) {
@@ -1067,7 +1309,7 @@ export async function recordStepCloseOnStageLog(payload: {
   );
   const currentStageState = await readStageState(payload.root, stageName, payload.featureId);
   if (!latest) {
-    return;
+    throw new Error(`No ${stageName} stage log found for ${payload.featureId}.`);
   }
 
   const now = new Date().toISOString();
@@ -1076,6 +1318,15 @@ export async function recordStepCloseOnStageLog(payload: {
     ...(currentStageState ? machineMetadataFromStageState(currentStageState) : {}),
     step_close_ts: now,
     step_artifact: payload.stepArtifactPath,
+    review_artifacts: uniqueStrings([
+      ...(currentStageState?.review_artifacts ?? []),
+      ...payload.reviewArtifactPaths,
+    ]),
+    verification_artifacts: uniqueStrings([
+      ...(currentStageState?.verification_artifacts ?? []),
+      payload.verificationArtifactPath,
+    ]),
+    final_closure_commit: payload.finalClosureCommit,
     ...(payload.auditSummary
       ? {
           required_audit_classes: payload.auditSummary.requiredAuditClasses,
@@ -1097,6 +1348,11 @@ export async function recordStepCloseOnStageLog(payload: {
       ? { intake_process_complete_ts: now }
       : {}),
   };
+  const normalizedMetadata = stageSchemaMetadata({
+    featureId: payload.featureId,
+    logPath: path.relative(payload.root, latest.absPath),
+    metadata,
+  });
   await assertManagedWritePath(
     payload.root,
     path.join(payload.root, '.dossier', 'logs', stageName),
@@ -1105,14 +1361,14 @@ export async function recordStepCloseOnStageLog(payload: {
   );
   await writeTextAtomic(
     latest.absPath,
-    renderStageLog(metadata, {
+    renderStageLog(normalizedMetadata, {
       existingContent: latest.content,
     }),
   );
   await syncStageStateFromMetadata({
     root: payload.root,
     featureId: payload.featureId,
-    metadata,
+    metadata: normalizedMetadata,
     logPath: path.relative(payload.root, latest.absPath),
   });
 }
@@ -1144,7 +1400,7 @@ export async function recordReviewArtifactOnStageLog(payload: {
   );
   const currentStageState = await readStageState(payload.root, payload.stage, payload.featureId);
   if (!latest) {
-    return;
+    throw new Error(`No ${payload.stage} stage log found for ${payload.featureId}.`);
   }
 
   const recordedAt = new Date().toISOString();
@@ -1190,6 +1446,10 @@ export async function recordReviewArtifactOnStageLog(payload: {
   const metadata = {
     ...latest.metadata,
     ...(currentStageState ? machineMetadataFromStageState(currentStageState) : {}),
+    review_artifacts: uniqueStrings([
+      ...(currentStageState?.review_artifacts ?? []),
+      payload.artifactPath,
+    ]),
     review_events: reviewEvents,
     required_audit_classes: summary.requiredAuditClasses,
     executed_audit_classes: summary.executedAuditClasses,
@@ -1207,6 +1467,11 @@ export async function recordReviewArtifactOnStageLog(payload: {
       toNullableString(latest.metadata.first_review_agent_started_ts) ?? recordedAt,
     final_pass_ts: summary.requiredExternalReviewPending ? null : recordedAt,
   };
+  const normalizedMetadata = stageSchemaMetadata({
+    featureId: payload.featureId,
+    logPath: path.relative(payload.root, latest.absPath),
+    metadata,
+  });
   await assertManagedWritePath(
     payload.root,
     path.join(payload.root, '.dossier', 'logs', payload.stage),
@@ -1215,14 +1480,64 @@ export async function recordReviewArtifactOnStageLog(payload: {
   );
   await writeTextAtomic(
     latest.absPath,
-    renderStageLog(metadata, {
+    renderStageLog(normalizedMetadata, {
       existingContent: latest.content,
     }),
   );
   await syncStageStateFromMetadata({
     root: payload.root,
     featureId: payload.featureId,
+    metadata: normalizedMetadata,
+    logPath: path.relative(payload.root, latest.absPath),
+  });
+}
+
+export async function recordVerificationArtifactOnStageLog(payload: {
+  artifactPath: string;
+  eventCommit: string | null;
+  featureId: string;
+  root: string;
+  stage: LoggedStage;
+}): Promise<void> {
+  const latest = await loadLatestStageLog(
+    payload.root,
+    payload.stage,
+    sanitizeFeatureId(payload.featureId, 'feature id'),
+  );
+  const currentStageState = await readStageState(payload.root, payload.stage, payload.featureId);
+  if (!latest) {
+    throw new Error(`No ${payload.stage} stage log found for ${payload.featureId}.`);
+  }
+  const metadata = {
+    ...latest.metadata,
+    ...(currentStageState ? machineMetadataFromStageState(currentStageState) : {}),
+    verification_artifacts: uniqueStrings([
+      ...(currentStageState?.verification_artifacts ?? []),
+      payload.artifactPath,
+    ]),
+    verification_trace_commit: payload.eventCommit,
+  };
+  const normalizedMetadata = stageSchemaMetadata({
+    featureId: payload.featureId,
+    logPath: path.relative(payload.root, latest.absPath),
     metadata,
+  });
+  await assertManagedWritePath(
+    payload.root,
+    path.join(payload.root, '.dossier', 'logs', payload.stage),
+    latest.absPath,
+    `${payload.stage} stage log`,
+  );
+  await writeTextAtomic(
+    latest.absPath,
+    renderStageLog(normalizedMetadata, {
+      existingContent: latest.content,
+    }),
+  );
+  await syncStageStateFromMetadata({
+    root: payload.root,
+    featureId: payload.featureId,
+    metadata: normalizedMetadata,
     logPath: path.relative(payload.root, latest.absPath),
   });
 }

@@ -49,6 +49,13 @@ Target layout:
 └── drift/
 ```
 
+Stage schema topology:
+
+- `.dossier/stages/<feature_id>/<stage>.json` is the authoritative structured coordination and validation record for parity-protected stage fields;
+- `.dossier/logs/<stage>/*.md` remains the human-readable stage log, with YAML frontmatter mirroring the bounded structured fields from stage state;
+- `.dossier/reviews/<feature_id>/*.json`, `.dossier/verification/<feature_id>/*.json`, and `.dossier/steps/<feature_id>/*.json` must be linked explicitly from stage state/log metadata when they are produced or consumed;
+- optional commit anchors in stage metadata are repo trace links only, not required closure proof.
+
 ## Canonical project SSOT layout
 
 Human-facing project truth remains outside `.dossier`.
@@ -72,6 +79,7 @@ docs/
 - repo-root `AGENTS.md` stays human-governed; utility-owned reinforcement may exist only inside `.dossier/backlog/AGENTS.md`
 - backlog-local ignore contract lives in `.dossier/backlog/.gitignore`
 - stage artifacts under `.dossier/logs/*` and `.dossier/stages/*` may store session anchors only from explicit agent-supplied CLI input such as `--session-id`
+- stage artifacts store skill annotations and process misses only from explicit agent-supplied inputs, not trace scraping
 
 ## Root discovery and path rules
 

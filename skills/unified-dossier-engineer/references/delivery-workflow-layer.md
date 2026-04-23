@@ -110,6 +110,13 @@ Important:
 - `dossier-step-close` is not truthful while required audits are missing, stale, or invalidated.
 - helper validation must use the helper-managed stage state for current-cycle review coordination and implementation scope rather than human-authored stage-log frontmatter.
 
+Stage schema rule:
+
+- helper-managed stage state is authoritative for parity-protected machine fields such as backlog follow-up state, artifact links, skill annotations, structured `process_misses`, and scope identity;
+- stage log frontmatter mirrors those fields for human-readable context;
+- agents supply skill annotations and process misses explicitly via stage-controller inputs;
+- delivery workflow must not recover these fields by scraping traces or prose.
+
 ## Backlog actualization inside one skill
 
 One skill removes the cross-skill handoff, but not the truth boundary.

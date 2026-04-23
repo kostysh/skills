@@ -382,6 +382,55 @@ void test('stage-controller provenance contract is explicit and portable', async
   ]);
 });
 
+void test('stage artifact schema is machine-complete and trace-scraping-free', async () => {
+  const [skill, stageControl, telemetryClosure, artifactTopology, deliveryWorkflow, utilitySpec] =
+    await Promise.all([
+      readFile(SKILL_PATH, 'utf8'),
+      readFile(STAGE_CONTROL_PATH, 'utf8'),
+      readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+      readFile(UNIFIED_ARTIFACT_TOPOLOGY_PATH, 'utf8'),
+      readFile(DELIVERY_WORKFLOW_PATH, 'utf8'),
+      readFile(UTILITY_SPEC_PATH, 'utf8'),
+    ]);
+  const corpus = [
+    skill,
+    stageControl,
+    telemetryClosure,
+    artifactTopology,
+    deliveryWorkflow,
+    utilitySpec,
+  ].join('\n\n');
+
+  assertContainsTerms(corpus, [
+    'helper-managed `.dossier/stages/*` is the authoritative structured coordination and validation surface',
+    'Stage log frontmatter mirrors bounded machine fields',
+    'backlog_followup_required',
+    'backlog_followup_kind',
+    'backlog_followup_resolved',
+    'review_artifacts',
+    'verification_artifacts',
+    'step_artifact',
+    'final_delivery_commit',
+    'final_closure_commit',
+    'skills_used',
+    'skill_issues',
+    'skill_followups',
+    'process_misses',
+    'primary_feature_id',
+    'primary_backlog_item_key',
+    'phase_scope',
+    'id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>',
+    'Malformed entries fail before stage artifacts are written.',
+    'commit anchors are optional trace links only and must not become required closure evidence',
+    'not automatic skill extraction from conversation traces',
+    'must not recover these fields by scraping traces or prose',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'shipped writers must normalize and enforce parity',
+    'skill annotations are not scraped from trace or prose',
+  ]);
+});
+
 void test('plan-slice contract preserves goal-oriented implementation handoff without runtime semantic automation', async () => {
   const [deliveryWorkflow, stageControl, telemetryClosure, runtimeBoundary, utilitySpec] =
     await Promise.all([

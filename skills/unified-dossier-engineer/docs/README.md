@@ -47,6 +47,7 @@ Current status:
 | [implementation-log-13.ru.md](implementation-log-13.ru.md) | Log for operator-language dossier log policy: authored narrative language, exact machine-facing strings, scaffold boundary, and runtime non-translation guardrails. | Read when validating the implementation of `refactoring-plan-6.ru.md`. |
 | [implementation-log-14.ru.md](implementation-log-14.ru.md) | Log for external independent audit launch contract: non-forked/no-full-history reviewer launch, rerun on invalid launch method, and runtime non-proof guardrails. | Read when validating the implementation of `issues/improvement-proposal-20260423-3.md`. |
 | [implementation-log-15.ru.md](implementation-log-15.ru.md) | Log for explicit stage session provenance: required `--session-id`, fail-closed stage writes, and non-canonical runtime env/session-store discovery. | Read when validating the implementation of `issues/improvement-proposal-20260423-4.md`. |
+| [implementation-log-16.ru.md](implementation-log-16.ru.md) | Log for machine-complete stage artifact schema: parity-protected stage fields, explicit artifact links, agent-supplied skill annotations, structured `process_misses`, and scope identity. | Read when validating the implementation of `issues/improvement-proposal-20260423-5.md`. |
 
 ## Scope of This Folder
 

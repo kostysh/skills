@@ -15,6 +15,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import YAML from 'yaml';
 
 /* eslint-disable @typescript-eslint/no-floating-promises -- node:test registrations are top-level by design. */
 
@@ -140,6 +141,12 @@ function commitRepoState(repo: string, message: string): string {
 
 function parseEnvelope<T>(stdout: string): CliEnvelope<T> {
   return JSON.parse(stdout) as CliEnvelope<T>;
+}
+
+function parseStageLogMetadata(content: string): Record<string, unknown> {
+  const match = content.match(/^---\n([\s\S]*?)\n---/u);
+  assert.ok(match?.[1], 'stage log frontmatter not found');
+  return YAML.parse(match[1]) as Record<string, unknown>;
 }
 
 // eslint-disable-next-line @typescript-eslint/require-await -- helper stays async for readable test setup sequencing.
@@ -530,6 +537,151 @@ test('stage-controller update paths fail closed without explicit session id', as
   assert.equal(await readFile(stageLogPath, 'utf8'), before);
 });
 
+test('stage-controller schema annotations and process misses mirror into stage state', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Schema Annotation Mirror',
+        '--backlog-item-key',
+        'schema-annotation-mirror',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'schema-annotation.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const stageEnvelope = parseEnvelope<{ log_path: string }>(
+    runCli(
+      [
+        'spec-compact',
+        '--feature-id',
+        intakeEnvelope.data.feature_id,
+        '--backlog-followup-kind',
+        'source-update',
+        '--skill-used',
+        'unified-dossier-engineer',
+        '--skill-issue',
+        'UDE-05',
+        '--skill-followup',
+        'clarify-stage-schema',
+        '--process-miss',
+        'id=pm-1;category=planning;severity=medium;resolved=false;summary=Plan lacked explicit target',
+        '--phase-scope',
+        'schema-hardening',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const stageLog = await readFile(path.join(repo, stageEnvelope.data.log_path), 'utf8');
+  const metadata = parseStageLogMetadata(stageLog);
+  const state = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', intakeEnvelope.data.feature_id, 'spec-compact.json'),
+      'utf8',
+    ),
+  ) as Record<string, unknown>;
+
+  for (const field of [
+    'backlog_followup_required',
+    'backlog_followup_kind',
+    'backlog_followup_resolved',
+    'review_artifacts',
+    'verification_artifacts',
+    'skills_used',
+    'skill_issues',
+    'skill_followups',
+    'process_misses',
+    'primary_feature_id',
+    'primary_backlog_item_key',
+    'phase_scope',
+  ]) {
+    assert.deepEqual(metadata[field], state[field], `schema field parity failed for ${field}`);
+  }
+  assert.equal(state.backlog_followup_required, true);
+  assert.equal(state.backlog_followup_kind, 'source-update');
+  assert.equal(state.backlog_followup_resolved, false);
+  assert.deepEqual(state.skills_used, ['unified-dossier-engineer']);
+  assert.deepEqual(state.skill_issues, ['UDE-05']);
+  assert.deepEqual(state.skill_followups, ['clarify-stage-schema']);
+  assert.deepEqual(state.process_misses, [
+    {
+      id: 'pm-1',
+      category: 'planning',
+      severity: 'medium',
+      resolved: false,
+      summary: 'Plan lacked explicit target',
+    },
+  ]);
+  assert.equal(state.primary_feature_id, intakeEnvelope.data.feature_id);
+  assert.equal(state.primary_backlog_item_key, 'schema-annotation-mirror');
+  assert.equal(state.phase_scope, 'schema-hardening');
+  assert.match(
+    stageLog,
+    /## Process misses\n\n- pm-1 \[medium\/planning, open\] Plan lacked explicit target/u,
+  );
+});
+
+test('stage-controller rejects malformed process-miss DSL before writing stage artifacts', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Malformed Process Miss',
+        '--backlog-item-key',
+        'malformed-process-miss',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'malformed-process-miss.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const result = runCli(
+    [
+      'spec-compact',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--process-miss',
+      'id=pm-1;category=planning;severity=urgent;resolved=false;summary=bad severity',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+
+  assert.equal(result.code, 1);
+  assert.match(result.stderr, /severity must be one of: low, medium, high/u);
+  assert.deepEqual(await readdir(path.join(repo, '.dossier', 'logs', 'spec-compact')), []);
+});
+
 test('feature-intake and stage controllers produce unified dossiers and stage logs', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
@@ -763,7 +915,10 @@ test('stage-controller reruns preserve authored narrative sections', async () =>
   const rerendered = await readFile(stageLogPath, 'utf8');
   assert.match(rerendered, /## Scope\n\nScoped by operator clarification\./u);
   assert.match(rerendered, /### Spec gap decisions\n\nResolved missing acceptance boundary\./u);
-  assert.match(rerendered, /## Process misses\n\nOne rerun was required\./u);
+  assert.match(
+    rerendered,
+    /## Process misses\n\nnone\n\nUnstructured notes:\n\nOne rerun was required\./u,
+  );
   assert.match(rerendered, /## Transition events\n\n- .*: entered\n- .*: ready_for_close/u);
 });
 
@@ -930,6 +1085,215 @@ test('dossier-verify artifacts use the canonical dossier-engineer command displa
     assert.match(check.command, /\bdossier-engineer\b/);
     assert.doesNotMatch(check.command, /node scripts\/dossier\.mjs/);
   }
+});
+
+test('dossier-verify links verification artifacts into stage log and stage state', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Verification Linkage',
+        '--backlog-item-key',
+        'verification-linkage',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'verification-linkage.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  const verifyResult = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  const artifactRelativePath = verifyResult.stdout
+    .match(/\[dossier-verify\] artifact=(.+)/)?.[1]
+    ?.trim();
+  assert.ok(artifactRelativePath, 'verification artifact path not found in stdout');
+
+  const state = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', intakeEnvelope.data.feature_id, 'spec-compact.json'),
+      'utf8',
+    ),
+  ) as { log_path: string; verification_artifacts: string[] };
+  assert.deepEqual(state.verification_artifacts, [artifactRelativePath]);
+
+  const stageMetadata = parseStageLogMetadata(await readFile(path.join(repo, state.log_path), 'utf8'));
+  assert.deepEqual(stageMetadata.verification_artifacts, state.verification_artifacts);
+});
+
+test('stage re-entry clears stale verification artifacts and commit anchors', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Reentry Clears Evidence',
+        '--backlog-item-key',
+        'reentry-clears-evidence',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'reentry-clears-evidence.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  const verifyResult = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  const artifactRelativePath = verifyResult.stdout
+    .match(/\[dossier-verify\] artifact=(.+)/)?.[1]
+    ?.trim();
+  assert.ok(artifactRelativePath, 'verification artifact path not found in stdout');
+
+  const statePath = path.join(
+    repo,
+    '.dossier',
+    'stages',
+    intakeEnvelope.data.feature_id,
+    'spec-compact.json',
+  );
+  const state = JSON.parse(await readFile(statePath, 'utf8')) as Record<string, unknown>;
+  assert.deepEqual(state.verification_artifacts, [artifactRelativePath]);
+  state.final_delivery_commit = 'stale-delivery-commit';
+  state.final_closure_commit = 'stale-closure-commit';
+  await writeFile(statePath, `${JSON.stringify(state, null, 2)}\n`);
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+
+  const reopenedState = JSON.parse(await readFile(statePath, 'utf8')) as {
+    final_closure_commit: string | null;
+    final_delivery_commit: string | null;
+    log_path: string;
+    verification_artifacts: string[];
+  };
+  assert.deepEqual(reopenedState.verification_artifacts, []);
+  assert.equal(reopenedState.final_delivery_commit, null);
+  assert.equal(reopenedState.final_closure_commit, null);
+
+  const stageMetadata = parseStageLogMetadata(
+    await readFile(path.join(repo, reopenedState.log_path), 'utf8'),
+  );
+  assert.deepEqual(stageMetadata.verification_artifacts, []);
+  assert.equal(stageMetadata.final_delivery_commit, null);
+  assert.equal(stageMetadata.final_closure_commit, null);
+});
+
+test('dossier-verify fails closed when verification linkage cannot update stage state', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Verification Linkage Failure',
+        '--backlog-item-key',
+        'verification-linkage-failure',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'verification-linkage-failure.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  const statePath = path.join(
+    repo,
+    '.dossier',
+    'stages',
+    intakeEnvelope.data.feature_id,
+    'spec-compact.json',
+  );
+  await rm(statePath);
+  await mkdir(statePath);
+
+  const result = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+
+  assert.equal(result.code, 1);
+  assert.match(result.stdout, /\[dossier-verify\] artifact=/);
+  const payload = JSON.parse(result.stderr) as {
+    error: { artifact_path: string; code: string; command: string; step: string };
+  };
+  assert.equal(payload.error.code, 'UDE_STAGE_LINKAGE_FAILED');
+  assert.equal(payload.error.command, 'dossier-verify');
+  assert.equal(payload.error.step, 'spec-compact');
+  assert.match(payload.error.artifact_path, /^\.dossier\/verification\/F-\d{4}\//u);
 });
 
 test('next-step ignores non-canonical workflow stages from stale step artifacts', async () => {
@@ -2118,6 +2482,81 @@ test('review-artifact persists audit-class metadata and updates stage-log review
   assert.match(stageLog, /first_review_agent_started_ts:/u);
 });
 
+test('review-artifact fails closed when review linkage cannot update stage state', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Review Linkage Failure',
+        '--backlog-item-key',
+        'review-linkage-failure',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'review-linkage-failure.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  const statePath = path.join(
+    repo,
+    '.dossier',
+    'stages',
+    intakeEnvelope.data.feature_id,
+    'spec-compact.json',
+  );
+  await rm(statePath);
+  await mkdir(statePath);
+
+  const result = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-spec-review',
+      '--reviewer-skill',
+      'spec-conformance-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-linkage-fail',
+    ],
+    {
+      cwd: repo,
+      allowFailure: true,
+      env: { CODEX_THREAD_ID: 'review-thread-linkage-fail' },
+    },
+  );
+
+  assert.equal(result.code, 1);
+  assert.match(result.stdout, /\[review-artifact\] Wrote /u);
+  const payload = JSON.parse(result.stderr) as {
+    error: { artifact_path: string; code: string; command: string; step: string };
+  };
+  assert.equal(payload.error.code, 'UDE_STAGE_LINKAGE_FAILED');
+  assert.equal(payload.error.command, 'review-artifact');
+  assert.equal(payload.error.step, 'spec-compact');
+  assert.match(payload.error.artifact_path, /^\.dossier\/reviews\/F-\d{4}\//u);
+});
+
 test('review-artifact marks stale git-backed reviews as pending in stage telemetry', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
@@ -3138,9 +3577,11 @@ test('implementation close-out accepts the full code-bearing audit bundle and re
     required_audit_classes: string[];
     required_external_review_pending: boolean;
     required_security_review: boolean;
+    review_artifacts: string[];
     reviewer_agent_ids: string[];
     reviewer_skills: string[];
     security_trigger_reasons: string[];
+    verification_artifact: string;
   };
   assert.equal(stepArtifact.process_complete, true);
   assert.deepEqual(stepArtifact.required_audit_classes, [
@@ -3166,6 +3607,7 @@ test('implementation close-out accepts the full code-bearing audit bundle and re
     'security-reviewer',
   ]);
   assert.deepEqual(stepArtifact.security_trigger_reasons, ['runtime-wiring-changed']);
+  assert.deepEqual(stepArtifact.review_artifacts, [specReview, codeReview, securityReview]);
 
   const stageLog = await readFile(path.join(repo, implementationStart.data.log_path), 'utf8');
   assert.match(
@@ -3174,6 +3616,26 @@ test('implementation close-out accepts the full code-bearing audit bundle and re
   );
   assert.match(stageLog, /required_external_review_pending: false/u);
   assert.match(stageLog, /required_security_review: true/u);
+  const stageMetadata = parseStageLogMetadata(stageLog);
+  const stageState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', intakeEnvelope.data.feature_id, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    review_artifacts: string[];
+    step_artifact: string;
+    verification_artifacts: string[];
+  };
+  assert.deepEqual(stageState.review_artifacts, [specReview, codeReview, securityReview]);
+  assert.deepEqual(stageState.verification_artifacts, [stepArtifact.verification_artifact]);
+  assert.equal(
+    stageState.step_artifact,
+    `.dossier/steps/${intakeEnvelope.data.feature_id}/implementation.json`,
+  );
+  assert.deepEqual(stageMetadata.review_artifacts, stageState.review_artifacts);
+  assert.deepEqual(stageMetadata.verification_artifacts, stageState.verification_artifacts);
+  assert.equal(stageMetadata.step_artifact, stageState.step_artifact);
 });
 
 test('implementation close-out rejects out-of-order required audits', async () => {

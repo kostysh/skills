@@ -8,7 +8,9 @@ import { spawnSync } from 'node:child_process';
 import { BACKLOG_COMMANDS, type CliIo } from './backlog/commands.ts';
 import {
   appendFeatureIntakeLog,
+  parseStageAnnotationsInput,
   parseStageProvenanceInput,
+  recordVerificationArtifactOnStageLog,
   recordReviewArtifactOnStageLog,
   recordStepCloseOnStageLog,
   resolveLatestFeatureCycleId,
@@ -149,6 +151,40 @@ async function captureDossierCommandOutput(
   };
 }
 
+async function pathExists(filePath: string): Promise<boolean> {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function writeStageLinkageError(
+  io: CliIo,
+  payload: {
+    artifactPath?: string | null;
+    command: string;
+    featureId: string;
+    message: string;
+    step: string;
+  },
+): number {
+  io.stderr.write(
+    `${JSON.stringify({
+      error: {
+        artifact_path: payload.artifactPath ?? null,
+        code: 'UDE_STAGE_LINKAGE_FAILED',
+        command: payload.command,
+        feature_id: payload.featureId,
+        message: payload.message,
+        step: payload.step,
+      },
+    })}\n`,
+  );
+  return 1;
+}
+
 async function withDeliveryLock<T>(payload: {
   command: string;
   featureCycleId: string;
@@ -195,6 +231,11 @@ function createDossierCommandWrapper(
             replaced,
             '  --session-id <id>          Required explicit session provenance for stage artifacts.',
             '  --trace-runtime <name>     Optional explicit runtime label recorded with the session id.',
+            '  --skill-used <name>        Repeatable agent-supplied skill annotation for this stage.',
+            '  --skill-issue <text>       Repeatable agent-supplied skill issue annotation.',
+            '  --skill-followup <text>    Repeatable agent-supplied skill follow-up annotation.',
+            '  --process-miss <dsl>       Repeatable structured process miss DSL.',
+            '  --phase-scope <text>       Optional explicit phase/scope descriptor.',
           ];
         }
         return replaced.replace(' [options]', ' --session-id <id> [options]');
@@ -215,6 +256,7 @@ function createDossierCommandWrapper(
             return 0;
           }
           const provenance = parseStageProvenanceInput(args);
+          const annotations = parseStageAnnotationsInput(args);
           const root = await resolveProcessRoot(process.cwd(), takeOption(args, '--root'));
           await assertManagedWritePath(
             root,
@@ -297,7 +339,12 @@ function createDossierCommandWrapper(
                   featureId,
                   featureCycleId,
                   backlogItemKey: summary.backlog_item_key,
+                  phaseScope: annotations.phaseScope,
+                  processMisses: annotations.processMisses,
                   sessionId: provenance.sessionId,
+                  skillFollowups: annotations.skillFollowups,
+                  skillIssues: annotations.skillIssues,
+                  skillsUsed: annotations.skillsUsed,
                   traceRuntime: provenance.traceRuntime,
                 });
                 const stageData = {
@@ -485,96 +532,122 @@ function createDossierCommandWrapper(
                 args,
                 command,
               );
-              const stepArtifactPath = path.join(
-                '.dossier',
-                'steps',
-                featureId,
-                `${normalizedStep}.json`,
-              );
-              const absStepArtifactPath = path.join(root, stepArtifactPath);
+              const stepArtifactPath = outputPath
+                ? path.relative(root, path.resolve(root, outputPath)).split(path.sep).join('/')
+                : path
+                    .join('.dossier', 'steps', featureId, `${normalizedStep}.json`)
+                    .split(path.sep)
+                    .join('/');
+              const absStepArtifactPath = path.resolve(root, stepArtifactPath);
               if (stdout) {
                 io.stdout.write(stdout);
               }
-              try {
-                await fs.access(absStepArtifactPath);
-                const artifact = JSON.parse(await fs.readFile(absStepArtifactPath, 'utf8')) as {
-                  blockers?: string[];
-                  degraded_review_present?: boolean;
-                  executed_audit_classes?: string[];
-                  implementation_review_scope?: 'code-bearing' | 'non-code' | null;
-                  invalidated_review_present?: boolean;
-                  process_complete?: boolean;
-                  required_audit_classes?: string[];
-                  required_external_review_pending?: boolean;
-                  required_security_review?: boolean | null;
-                  review_trace_commits?: string[];
-                  reviewer_agent_ids?: string[];
-                  reviewer_skills?: string[];
-                  security_trigger_reasons?: string[];
-                  stale_review_present?: boolean;
-                };
-                await recordStepCloseOnStageLog({
-                  root,
-                  featureId,
-                  step: normalizedStep,
-                  stepArtifactPath,
-                  processComplete: artifact.process_complete === true,
-                  auditSummary: {
-                    degradedReviewPresent: artifact.degraded_review_present === true,
-                    executedAuditClasses: Array.isArray(artifact.executed_audit_classes)
-                      ? artifact.executed_audit_classes
-                      : [],
-                    implementationReviewScope:
-                      artifact.implementation_review_scope === 'code-bearing' ||
-                      artifact.implementation_review_scope === 'non-code'
-                        ? artifact.implementation_review_scope
-                        : null,
-                    invalidatedReviewPresent: artifact.invalidated_review_present === true,
-                    requiredAuditClasses: Array.isArray(artifact.required_audit_classes)
-                      ? artifact.required_audit_classes
-                      : [],
-                    requiredExternalReviewPending:
-                      artifact.required_external_review_pending !== false,
-                    requiredSecurityReview:
-                      typeof artifact.required_security_review === 'boolean'
-                        ? artifact.required_security_review
-                        : null,
-                    reviewTraceCommits: Array.isArray(artifact.review_trace_commits)
-                      ? artifact.review_trace_commits
-                      : [],
-                    reviewerAgentIds: Array.isArray(artifact.reviewer_agent_ids)
-                      ? artifact.reviewer_agent_ids
-                      : [],
-                    reviewerSkills: Array.isArray(artifact.reviewer_skills)
-                      ? artifact.reviewer_skills
-                      : [],
-                    securityTriggerReasons: Array.isArray(artifact.security_trigger_reasons)
-                      ? artifact.security_trigger_reasons
-                      : [],
-                    staleReviewPresent: artifact.stale_review_present === true,
-                  },
-                });
-                if (exitCode === 2) {
-                  io.stderr.write(
-                    `${JSON.stringify({
-                      error: {
-                        blockers: artifact.blockers ?? [],
-                        code: 'UDE_CLOSURE_BLOCKED',
-                        message: `dossier-step-close is blocked for ${featureId}/${normalizedStep}.`,
-                        step_artifact: stepArtifactPath,
-                      },
-                    })}\n`,
-                  );
-                  return 3;
-                }
-              } catch (error) {
-                if ((error as NodeJS.ErrnoException | undefined)?.code !== 'ENOENT') {
-                  writeLine(
-                    io.stderr,
-                    `[dossier-step-close] WARNING: step artifact was created, but stage log/state refresh failed: ${
-                      error instanceof Error ? error.message : String(error)
-                    }`,
-                  );
+              const shouldLinkStage =
+                exitCode === 0 || exitCode === 2 || (await pathExists(absStepArtifactPath));
+              if (shouldLinkStage) {
+                try {
+                  await fs.access(absStepArtifactPath);
+                  const artifact = JSON.parse(await fs.readFile(absStepArtifactPath, 'utf8')) as {
+                    blockers?: string[];
+                    degraded_review_present?: boolean;
+                    executed_audit_classes?: string[];
+                    feature_id?: string;
+                    implementation_review_scope?: 'code-bearing' | 'non-code' | null;
+                    invalidated_review_present?: boolean;
+                    process_complete?: boolean;
+                    required_audit_classes?: string[];
+                    required_external_review_pending?: boolean;
+                    required_security_review?: boolean | null;
+                    review_trace_commits?: string[];
+                    reviewer_agent_ids?: string[];
+                    reviewer_skills?: string[];
+                    security_trigger_reasons?: string[];
+                    step?: string;
+                    stale_review_present?: boolean;
+                  };
+                  if (artifact.feature_id !== featureId || artifact.step !== normalizedStep) {
+                    throw new Error(
+                      `Step artifact must match feature ${featureId} and step ${normalizedStep}.`,
+                    );
+                  }
+                  await recordStepCloseOnStageLog({
+                    root,
+                    featureId,
+                    step: normalizedStep,
+                    stepArtifactPath,
+                    verificationArtifactPath: verifyArtifactPath
+                      ? path
+                          .relative(root, path.resolve(root, verifyArtifactPath))
+                          .split(path.sep)
+                          .join('/')
+                      : null,
+                    reviewArtifactPaths: reviewArtifactPaths.map((artifactPath) =>
+                      path
+                        .relative(root, path.resolve(root, artifactPath))
+                        .split(path.sep)
+                        .join('/'),
+                    ),
+                    finalClosureCommit: currentGitHead(root),
+                    processComplete: artifact.process_complete === true,
+                    auditSummary: {
+                      degradedReviewPresent: artifact.degraded_review_present === true,
+                      executedAuditClasses: Array.isArray(artifact.executed_audit_classes)
+                        ? artifact.executed_audit_classes
+                        : [],
+                      implementationReviewScope:
+                        artifact.implementation_review_scope === 'code-bearing' ||
+                        artifact.implementation_review_scope === 'non-code'
+                          ? artifact.implementation_review_scope
+                          : null,
+                      invalidatedReviewPresent: artifact.invalidated_review_present === true,
+                      requiredAuditClasses: Array.isArray(artifact.required_audit_classes)
+                        ? artifact.required_audit_classes
+                        : [],
+                      requiredExternalReviewPending:
+                        artifact.required_external_review_pending !== false,
+                      requiredSecurityReview:
+                        typeof artifact.required_security_review === 'boolean'
+                          ? artifact.required_security_review
+                          : null,
+                      reviewTraceCommits: Array.isArray(artifact.review_trace_commits)
+                        ? artifact.review_trace_commits
+                        : [],
+                      reviewerAgentIds: Array.isArray(artifact.reviewer_agent_ids)
+                        ? artifact.reviewer_agent_ids
+                        : [],
+                      reviewerSkills: Array.isArray(artifact.reviewer_skills)
+                        ? artifact.reviewer_skills
+                        : [],
+                      securityTriggerReasons: Array.isArray(artifact.security_trigger_reasons)
+                        ? artifact.security_trigger_reasons
+                        : [],
+                      staleReviewPresent: artifact.stale_review_present === true,
+                    },
+                  });
+                  if (exitCode === 2) {
+                    io.stderr.write(
+                      `${JSON.stringify({
+                        error: {
+                          blockers: artifact.blockers ?? [],
+                          code: 'UDE_CLOSURE_BLOCKED',
+                          message: `dossier-step-close is blocked for ${featureId}/${normalizedStep}.`,
+                          step_artifact: stepArtifactPath,
+                        },
+                      })}\n`,
+                    );
+                    return 3;
+                  }
+                } catch (error) {
+                  if (stderr) {
+                    io.stderr.write(stderr);
+                  }
+                  return writeStageLinkageError(io, {
+                    artifactPath: stepArtifactPath,
+                    command: name,
+                    featureId,
+                    message: error instanceof Error ? error.message : String(error),
+                    step: normalizedStep,
+                  });
                 }
               }
               if (stderr && exitCode !== 2) {
@@ -665,12 +738,13 @@ function createDossierCommandWrapper(
                 return exitCode;
               }
 
+              let artifactPath: string | null = null;
               try {
                 const outputMatch = stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u);
                 if (!outputMatch?.[1]) {
                   throw new Error('review-artifact did not report its output path.');
                 }
-                const artifactPath = outputMatch[1].trim();
+                artifactPath = outputMatch[1].trim();
                 const absArtifactPath = await resolveManagedReadPath(
                   root,
                   artifactPath,
@@ -694,57 +768,59 @@ function createDossierCommandWrapper(
                   step?: string;
                   verdict?: 'FAIL' | 'PASS';
                 };
-                if (
-                  artifact.feature_id === featureId &&
-                  artifact.step === normalizedStep &&
-                  artifact.audit_class &&
-                  artifact.verdict
-                ) {
-                  const gitHead = currentGitHead(root);
-                  const reviewerThreadId =
-                    typeof artifact.reviewer_thread_id === 'string' &&
-                    artifact.reviewer_thread_id.trim().length > 0
-                      ? artifact.reviewer_thread_id
-                      : null;
-                  const stale =
-                    gitHead !== null &&
-                    (!artifact.event_commit?.trim() || artifact.event_commit !== gitHead);
-                  await recordReviewArtifactOnStageLog({
-                    root,
-                    featureId,
-                    stage: normalizedStep as Parameters<
-                      typeof recordReviewArtifactOnStageLog
-                    >[0]['stage'],
-                    artifactPath,
-                    auditClass: artifact.audit_class,
-                    eventCommit: artifact.event_commit ?? null,
-                    implementationScope:
-                      artifact.implementation_scope === 'code-bearing' ||
-                      artifact.implementation_scope === 'non-code'
-                        ? artifact.implementation_scope
-                        : null,
-                    invalidated: artifact.invalidated === true,
-                    mustFixCount: Array.isArray(artifact.findings?.must_fix)
-                      ? artifact.findings.must_fix.length
-                      : 0,
-                    reviewMode: artifact.review_mode ?? 'external',
-                    reviewer: artifact.reviewer ?? 'unknown-reviewer',
-                    reviewerAgentId: artifact.reviewer_agent_id ?? null,
-                    reviewerSkill: artifact.reviewer_skill ?? null,
-                    reviewerThreadId,
-                    securityTriggerReason: artifact.security_trigger_reason ?? null,
-                    stale,
-                    verdict: artifact.verdict,
-                    allowedByPolicy: artifact.allowed_by_policy !== false && !stale,
-                  });
+                if (artifact.feature_id !== featureId || artifact.step !== normalizedStep) {
+                  throw new Error(
+                    `Review artifact must match feature ${featureId} and step ${normalizedStep}.`,
+                  );
                 }
+                if (!artifact.audit_class || !artifact.verdict) {
+                  throw new Error('Review artifact is missing audit_class or verdict.');
+                }
+                const gitHead = currentGitHead(root);
+                const reviewerThreadId =
+                  typeof artifact.reviewer_thread_id === 'string' &&
+                  artifact.reviewer_thread_id.trim().length > 0
+                    ? artifact.reviewer_thread_id
+                    : null;
+                const stale =
+                  gitHead !== null &&
+                  (!artifact.event_commit?.trim() || artifact.event_commit !== gitHead);
+                await recordReviewArtifactOnStageLog({
+                  root,
+                  featureId,
+                  stage: normalizedStep as Parameters<
+                    typeof recordReviewArtifactOnStageLog
+                  >[0]['stage'],
+                  artifactPath,
+                  auditClass: artifact.audit_class,
+                  eventCommit: artifact.event_commit ?? null,
+                  implementationScope:
+                    artifact.implementation_scope === 'code-bearing' ||
+                    artifact.implementation_scope === 'non-code'
+                      ? artifact.implementation_scope
+                      : null,
+                  invalidated: artifact.invalidated === true,
+                  mustFixCount: Array.isArray(artifact.findings?.must_fix)
+                    ? artifact.findings.must_fix.length
+                    : 0,
+                  reviewMode: artifact.review_mode ?? 'external',
+                  reviewer: artifact.reviewer ?? 'unknown-reviewer',
+                  reviewerAgentId: artifact.reviewer_agent_id ?? null,
+                  reviewerSkill: artifact.reviewer_skill ?? null,
+                  reviewerThreadId,
+                  securityTriggerReason: artifact.security_trigger_reason ?? null,
+                  stale,
+                  verdict: artifact.verdict,
+                  allowedByPolicy: artifact.allowed_by_policy !== false && !stale,
+                });
               } catch (error) {
-                writeLine(
-                  io.stderr,
-                  `[review-artifact] WARNING: stage log/state refresh failed after artifact write: ${
-                    error instanceof Error ? error.message : String(error)
-                  }`,
-                );
+                return writeStageLinkageError(io, {
+                  artifactPath,
+                  command: name,
+                  featureId,
+                  message: error instanceof Error ? error.message : String(error),
+                  step: normalizedStep,
+                });
               }
               return exitCode;
             },
@@ -857,10 +933,11 @@ function createDossierCommandWrapper(
             ensureAllowedStep(step, '--step');
           }
           if (featureId) {
+            const normalizedStep = step ? ensureAllowedStep(step, '--step') : 'implementation';
             const featureCycleId = await resolveLatestFeatureCycleId(
               root,
               featureId,
-              step ? (step as StageControllerCommand) : undefined,
+              normalizedStep as StageControllerCommand,
             );
             if (!featureCycleId) {
               throw new Error(`No feature cycle found for ${featureId}.`);
@@ -870,7 +947,63 @@ function createDossierCommandWrapper(
               featureId,
               featureCycleId,
               command: name,
-              run: async () => executeDossierCommand(command, args, io as DossierCliIo, name),
+              run: async () => {
+                const { exitCode, stderr, stdout } = await captureDossierCommandOutput(
+                  name,
+                  args,
+                  command,
+                );
+                if (stdout) {
+                  io.stdout.write(stdout);
+                }
+                if (stderr) {
+                  io.stderr.write(stderr);
+                }
+                const artifactPath =
+                  stdout.match(/\[dossier-verify\] artifact=([^\n]+)/u)?.[1]?.trim() ?? null;
+                const shouldLinkStage = exitCode === 0 || exitCode === 2 || artifactPath !== null;
+                if (shouldLinkStage) {
+                  try {
+                    if (!artifactPath) {
+                      throw new Error('dossier-verify did not report its artifact path.');
+                    }
+                    const absArtifactPath = await resolveManagedReadPath(
+                      root,
+                      artifactPath,
+                      path.join(root, '.dossier', 'verification', featureId),
+                      'dossier-verify artifact path',
+                    );
+                    const artifact = JSON.parse(await fs.readFile(absArtifactPath, 'utf8')) as {
+                      event_commit?: string | null;
+                      feature_id?: string;
+                      step?: string;
+                    };
+                    if (artifact.feature_id !== featureId || artifact.step !== normalizedStep) {
+                      throw new Error(
+                        `Verification artifact must match feature ${featureId} and step ${normalizedStep}.`,
+                      );
+                    }
+                    await recordVerificationArtifactOnStageLog({
+                      root,
+                      featureId,
+                      stage: normalizedStep as Parameters<
+                        typeof recordVerificationArtifactOnStageLog
+                      >[0]['stage'],
+                      artifactPath,
+                      eventCommit: artifact.event_commit ?? null,
+                    });
+                  } catch (error) {
+                    return writeStageLinkageError(io, {
+                      artifactPath,
+                      command: name,
+                      featureId,
+                      message: error instanceof Error ? error.message : String(error),
+                      step: normalizedStep,
+                    });
+                  }
+                }
+                return exitCode;
+              },
             });
           }
           return executeDossierCommand(command, args, io as DossierCliIo, name);
@@ -1063,13 +1196,15 @@ function createStageControllerWrapper(command: StageControllerCommand): UnifiedC
       `Mechanical controller for the ${command} delivery stage.`,
       '',
       'Usage:',
-      `  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
+      `  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
       '  dossier-engineer ' +
         `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
       '',
       'Rules:',
       '  - --session-id is required and must be supplied by the agent; the runtime does not discover it',
       '  - --trace-runtime is optional explicit metadata, not a runtime-specific default',
+      '  - --skill-used, --skill-issue, --skill-followup, and --process-miss are explicit agent-supplied annotations',
+      '  - --process-miss uses id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>',
       '  - stage controllers stop at ready_for_close',
       '  - authoritative closure remains dossier-step-close + lifecycle-refresh',
       '  - backlog truth is not mutated directly by the stage controller',

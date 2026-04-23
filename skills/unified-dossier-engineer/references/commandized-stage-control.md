@@ -90,6 +90,44 @@ Required contract:
 
 Runtime-specific variables may be useful to the agent while it manually determines the id, but they are not the portable CLI contract.
 
+## Machine-complete stage schema
+
+Helper-managed stage state under `.dossier/stages/*` is the authoritative structured coordination and validation surface for stage schema fields. Stage log YAML frontmatter is a bounded human-readable mirror of that structured state.
+
+Parity-protected fields:
+
+- `backlog_followup_required`
+- `backlog_followup_kind`
+- `backlog_followup_resolved`
+- `review_artifacts`
+- `verification_artifacts`
+- `step_artifact`
+- `final_delivery_commit`
+- `final_closure_commit`
+- `skills_used`
+- `skill_issues`
+- `skill_followups`
+- `process_misses`
+- `primary_feature_id`
+- `primary_backlog_item_key`
+- `phase_scope`
+
+Rules:
+
+- review, verification, and close-out artifact links must be stored as explicit repo-relative arrays or fields, not recovered heuristically from prose;
+- `final_delivery_commit` and `final_closure_commit` are optional trace links only and must not become required closure evidence;
+- `skills_used`, `skill_issues`, and `skill_followups` are agent-supplied annotations, not automatic skill extraction from conversation traces;
+- `process_misses` is the structured source of truth for process misses, while the `Process misses` Markdown section is a rendered mirror plus preserved human notes;
+- stage-controller writes accept `--skill-used`, `--skill-issue`, `--skill-followup`, `--process-miss`, and `--phase-scope` as explicit machine-facing stage context.
+
+Repeatable `--process-miss` DSL:
+
+```text
+id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>
+```
+
+Malformed entries fail before stage artifacts are written.
+
 ## Logging role
 
 Stage-controller commands should become canonical writers for stage progress transitions.
@@ -101,11 +139,13 @@ Minimum mechanical transition surface:
 - `ready_for_close_ts`
 - `transition_events[]`
 - explicit session provenance from `--session-id`
+- parity-protected schema fields mirrored from `.dossier/stages/*`
 
 Rules:
 
 - stage logs remain Markdown artifacts with YAML frontmatter and narrative sections;
 - helper-managed stage state under `.dossier/stages/*` carries the structured current-cycle stage data for scope, review-bundle membership, and close-out validation;
+- for parity-protected fields, `.dossier/stages/*` is authoritative and stage log frontmatter mirrors it;
 - required section scaffold must stay present for both `feature-intake` and primary stage logs rather than collapsing into an almost-frontmatter-only body;
 - Generated scaffold headings may be materialized as stable labels; mechanical scaffold generation does not determine the language of authored narrative.
 - event history for repeated block/resume cycles lives authoritatively in `transition_events[]`;
@@ -173,6 +213,8 @@ The utility specification and runtime packages now ship this boundary in first-w
 
 - do not document flags or output fields for stage-controller commands that the shipped runtime does not actually expose
 - do not make runtime-specific session discovery the canonical stage-controller provenance contract
+- do not infer skill usage or process misses from traces or prose when explicit schema fields are required
+- do not make optional commit anchors a required proof for truthful closure
 - do not let stage controllers absorb `dossier-step-close`, `lifecycle-refresh`, or `next-step`
 - do not make stage-controller commands semantic automation
 - do not treat a mechanical `ready_for_close` transition as a substitute for agent-owned `plan-slice` execution-target clarity

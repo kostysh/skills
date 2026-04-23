@@ -12,3 +12,5 @@ This skill preserves two distinct semantic layers inside one runtime:
 - `delivery workflow layer` for intake, spec, planning, implementation, coverage, review, closure, and telemetry
 
 For stage-controller writes, session provenance is agent-owned explicit input. The agent determines the session id before invoking the runtime and passes it with `--session-id`; the runtime must not discover session ids from runtime-private stores or silently fall back to environment variables.
+
+For machine-complete stage artifacts, helper-managed `.dossier/stages/*` is the authoritative structured coordination and validation surface. Stage log frontmatter mirrors bounded machine fields such as artifact links, backlog follow-up state, explicit skill annotations, structured `process_misses`, scope identity, and optional commit trace links.

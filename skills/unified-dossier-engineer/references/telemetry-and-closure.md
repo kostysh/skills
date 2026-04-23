@@ -81,6 +81,16 @@ Minimum machine-readable fields stay explicit:
 - review freshness or invalidation markers
 - pending or blocked required external review signals
 
+Machine-complete stage schema fields:
+
+- `.dossier/stages/*` is authoritative for structured coordination/validation fields introduced for parity, linkage, skill annotations, structured process misses, and scope identity;
+- stage log YAML frontmatter mirrors these fields as a bounded human-readable view;
+- parity-protected fields include `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved`, `review_artifacts`, `verification_artifacts`, `step_artifact`, `final_delivery_commit`, `final_closure_commit`, `skills_used`, `skill_issues`, `skill_followups`, `process_misses`, `primary_feature_id`, `primary_backlog_item_key`, and `phase_scope`;
+- review/verification/close-out artifact linkage is explicit in machine fields and must not require heuristic recovery from prose;
+- commit anchors are optional trace links only and must not become required closure evidence;
+- skill annotations are explicit agent-supplied state and must not be scraped from conversation traces;
+- `process_misses` is structured state with `id`, `category`, `severity`, `resolved`, and `summary`; prose rendering is not the source of truth.
+
 Purpose rule:
 
 - logs exist not only for lifecycle reconstruction;
@@ -131,7 +141,7 @@ Inside `Decisions / reclassifications`, keep these subheadings:
 If a required section has no notable content, write `none` instead of deleting it.
 
 For `plan-slice`, material target clarification, goal reclassification, or ambiguity resolution belongs in `Decisions / reclassifications`.
-If the implementation objective remains ambiguous, record the blocker in `Process misses` or `Close-out` as appropriate instead of hiding it behind a mechanical transition.
+If the implementation objective remains ambiguous, record the blocker in structured `process_misses` or `Close-out` as appropriate instead of hiding it behind a mechanical transition.
 
 If future stage-controller commands add progress-transition fields, they must remain subordinate to this telemetry model:
 

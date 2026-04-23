@@ -302,6 +302,52 @@ Session provenance contract:
 - если `--session-id` отсутствует, write path fail-closed до записи stage artifacts;
 - runtime записывает только явно переданное значение и не делает auto-discovery из Codex-local session store, private filesystem layout или environment fallback.
 
+Schema authority contract:
+
+- `.dossier/stages/*` is the authoritative structured coordination/validation surface for parity-protected stage fields;
+- stage log YAML frontmatter is a bounded mirror of those fields;
+- shipped writers must normalize and enforce parity for fields introduced or tightened by this schema contract.
+
+Parity-protected machine fields:
+
+- `backlog_followup_required`
+- `backlog_followup_kind`
+- `backlog_followup_resolved`
+- `review_artifacts`
+- `verification_artifacts`
+- `step_artifact`
+- `final_delivery_commit`
+- `final_closure_commit`
+- `skills_used`
+- `skill_issues`
+- `skill_followups`
+- `process_misses`
+- `primary_feature_id`
+- `primary_backlog_item_key`
+- `phase_scope`
+
+Agent-supplied schema inputs:
+
+- repeatable `--skill-used <skill-name>`;
+- repeatable `--skill-issue <code-or-summary>`;
+- repeatable `--skill-followup <code-or-summary>`;
+- repeatable `--process-miss <dsl>`;
+- optional `--phase-scope <text>`.
+
+`--process-miss` DSL:
+
+```text
+id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>
+```
+
+Rules:
+
+- malformed `--process-miss` entries fail before stage artifacts are written;
+- `process_misses` is structured source of truth; `Process misses` prose is rendered mirror plus preserved human notes;
+- `review_artifacts`, `verification_artifacts`, and `step_artifact` are explicit artifact links, not heuristic recovery;
+- `final_delivery_commit` and `final_closure_commit` are optional trace links only and never required closure evidence;
+- skill annotations are not scraped from trace or prose.
+
 Они не:
 
 - materialize authoritative `closed`;
@@ -323,6 +369,18 @@ Minimum common fields:
 - `backlog_followup_required`
 - `backlog_followup_kind`
 - `backlog_followup_resolved`
+- `review_artifacts`
+- `verification_artifacts`
+- `step_artifact`
+- `final_delivery_commit`
+- `final_closure_commit`
+- `skills_used`
+- `skill_issues`
+- `skill_followups`
+- `process_misses`
+- `primary_feature_id`
+- `primary_backlog_item_key`
+- `phase_scope`
 - `session_id`
 - `trace_locator_kind`
 - `trace_runtime`
