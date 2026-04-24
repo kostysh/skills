@@ -1,0 +1,119 @@
+apiVersion: "skillforge/v1alpha1"
+kind: "SkillSource"
+skill:
+  name: "typescript-test-engineer"
+  source-version: "0.1.0"
+  recommended-skill-md-max-bytes: 46000
+  description: "Design, implement, and maintain robust tests for TypeScript projects (Node/React/edge) with focus on node:test, Vitest, mocking, determinism, and coverage."
+fragments:
+  overview: "fragments/overview.md"
+references:
+  - id: "ref-agent-browser"
+    title: "Agent Browser"
+    source: "references/agent-browser.md"
+    target: "references/agent-browser.md"
+    required: true
+    trigger: "Read this when working with agent browser."
+  - id: "ref-react-vitest"
+    title: "React Vitest"
+    source: "references/react-vitest.md"
+    target: "references/react-vitest.md"
+    required: true
+    trigger: "Read this when you need React testing with Vitest + Testing Library (jsdom/happy-dom, setup, and patterns)."
+  - id: "ref-tdd"
+    title: "Tdd"
+    source: "references/tdd.md"
+    target: "references/tdd.md"
+    required: true
+    trigger: "Read this when you need full TDD workflow and rationale (only when explicitly requested)."
+  - id: "ref-testing-anti-patterns"
+    title: "Testing Anti Patterns"
+    source: "references/testing-anti-patterns.md"
+    target: "references/testing-anti-patterns.md"
+    required: true
+    trigger: "Read this when you need detailed anti-patterns and mock guardrails."
+  - id: "ref-testing"
+    title: "Testing"
+    source: "references/testing.md"
+    target: "references/testing.md"
+    required: true
+    trigger: "Read this when you need patterns, examples, mocking, data handling, and coverage."
+assets: []
+copies:
+  - id: "copy-agents-openai-yaml"
+    source: "agents/openai.yaml"
+    target: "agents/openai.yaml"
+    description: "Portable copy of agents/openai.yaml."
+  - id: "copy-package-json"
+    source: "package.json"
+    target: "package.json"
+    description: "Portable copy of package.json."
+  - id: "copy-test-docs-contract-test-mjs"
+    source: "test/docs-contract.test.mjs"
+    target: "test/docs-contract.test.mjs"
+    description: "Portable copy of test/docs-contract.test.mjs."
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - "ref-agent-browser"
+      - "ref-react-vitest"
+      - "ref-tdd"
+      - "ref-testing-anti-patterns"
+      - "ref-testing"
+    optionalReferences: []
+  supportingGlobs:
+    - "docs/*"
+sections:
+  startHere:
+    - "Confirm the task is about TypeScript test design, implementation, maintenance, review, CI test behavior, or coverage."
+    - "Follow the repository test runner and existing conventions before applying defaults."
+    - "Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean."
+    - "Run the relevant tests and inspect warnings, stderr, hangs, and coverage expectations before claiming completion."
+  whenToUse:
+    - "Designing, writing, reviewing, or fixing tests in TypeScript Node, edge, or React projects."
+    - "Debugging node:test, Vitest, mocks, hanging tests, open handles, deprecations, coverage, or CI test behavior."
+    - "Applying explicit TDD only when the user asks for it."
+  whenNotToUse:
+    - "The task is pure TypeScript language work without test design or runner behavior."
+    - "The task is browser interaction automation rather than test strategy; use agent-browser for that workflow."
+    - "The task is security-sensitive CI permission or secret handling without a testing focus; pair with security-reviewer."
+  workflow:
+    - id: "stage-test-workflow"
+      title: "Run the testing workflow"
+      goal: "Produce deterministic, behavior-focused tests and verify them through the relevant runner and coverage gates."
+      steps:
+        - "Identify test level, runner, TypeScript execution path, touched files, and changed behaviors."
+        - "Design isolated fixtures, mocks, and assertions that prove the named risk or behavior."
+        - "Implement tests with clear Arrange-Act-Assert and event listeners registered before actions that emit events."
+        - "Run relevant tests, inspect output and warnings, resolve introduced deprecations, and run coverage checkpoints when required."
+        - "For CI workflow changes, validate touched YAML and pair with security-reviewer when permissions, secrets, or untrusted inputs change."
+      validation:
+        - "Tests assert observable behavior and do not rely on shared mutable global state or real network calls."
+        - "Relevant tests pass, warnings are resolved or documented, and coverage policy is followed."
+  interop:
+    - id: "interop-typescript"
+      domain: "TypeScript language and type-system rules"
+      winner: "typescript-engineer"
+      rationale: "This skill owns testing strategy and runner behavior, while TypeScript language semantics belong to typescript-engineer."
+    - id: "interop-browser"
+      domain: "browser interaction and UI E2E automation workflow"
+      winner: "agent-browser"
+      rationale: "Use agent-browser for browser sessions, snapshots, and debugging workflows."
+    - id: "interop-security-ci"
+      domain: "CI permissions, secrets, and untrusted inputs"
+      winner: "security-reviewer"
+      rationale: "Pair CI security-sensitive testing changes with security-reviewer."
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - "Do not reference machine-specific absolute paths or local files outside this skill folder."
+      - "Keep all mandatory typescript-test-engineer guidance inside this skill folder."
+      - "Use relative links for local references, assets, scripts, tests, and supporting docs."
+    checklist:
+      - "Run the skill-source-compiler check command after regeneration."
+      - "Search the skill folder for absolute local paths before finishing."
+      - "Confirm every required reference listed by SKILL.md exists inside this skill folder."
