@@ -1,0 +1,103 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: financial-calculations-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: Design and implement deterministic EUR financial calculations across PostgreSQL, backend, and browser layers. Use when building or reviewing VAT/IVA, discounts, rates, allocations, parsing/formatting, scorporo, ledger postings, and cross-layer parity tests. Enforce correct usage of the local money library (`packages/money`) instead of ad-hoc arithmetic.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-browser
+    title: Browser
+    source: references/browser.md
+    target: references/browser.md
+    required: true
+    trigger: Read this when you need input/commit/formatting patterns for UI.
+  - id: ref-references-database-sql
+    title: Database Sql
+    source: references/database-sql.md
+    target: references/database-sql.md
+    required: true
+    trigger: Read this when you need PostgreSQL storage and deterministic SQL formulas.
+  - id: ref-references-money-library-usage
+    title: Money Library Usage
+    source: references/money-library-usage.md
+    target: references/money-library-usage.md
+    required: true
+    trigger: Read this when you need API mapping and anti-patterns.
+  - id: ref-references-parity-testing
+    title: Parity Testing
+    source: references/parity-testing.md
+    target: references/parity-testing.md
+    required: true
+    trigger: Read this when you need golden tests for SQL/backend/browser parity.
+  - id: ref-references-server-backend
+    title: Server Backend
+    source: references/server-backend.md
+    target: references/server-backend.md
+    required: true
+    trigger: Read this when you need backend/domain patterns and JSON boundaries.
+  - id: ref-references-vat-iva
+    title: Vat Iva
+    source: references/vat-iva.md
+    target: references/vat-iva.md
+    required: true
+    trigger: Read this when you need forward/reverse VAT formulas and 0.01 scorporo caveat.
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-browser
+      - ref-references-database-sql
+      - ref-references-money-library-usage
+      - ref-references-parity-testing
+      - ref-references-server-backend
+      - ref-references-vat-iva
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches financial-calculations-engineer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Building or reviewing deterministic EUR money calculations, VAT/IVA, discounts, rates, allocations, scorporo, ledger postings, parsing, or formatting.
+    - Implementing cross-layer SQL, backend, and browser parity for financial formulas.
+    - Enforcing correct use of the local money library instead of ad-hoc arithmetic.
+  whenNotToUse:
+    - The work has no monetary, tax, rate, allocation, or accounting calculation surface.
+    - The task is purely UI, framework, database, or TypeScript work without financial invariants.
+  workflow:
+    - id: stage-apply-financial-calculations-engineer
+      title: Apply financial-calculations-engineer guidance
+      goal: Apply the preserved financial-calculations-engineer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory financial-calculations-engineer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.

@@ -1,9 +1,37 @@
 ---
 name: financial-calculations-engineer
-description: Design and implement deterministic EUR financial calculations across PostgreSQL, backend, and browser layers. Use when building or reviewing VAT/IVA, discounts, rates, allocations, parsing/formatting, scorporo, ledger postings, and cross-layer parity tests. Enforce correct usage of the local money library (`packages/money`) instead of ad-hoc arithmetic.
+description: Design and implement deterministic EUR financial calculations
+  across PostgreSQL, backend, and browser layers. Use when building or reviewing
+  VAT/IVA, discounts, rates, allocations, parsing/formatting, scorporo, ledger
+  postings, and cross-layer parity tests. Enforce correct usage of the local
+  money library (`packages/money`) instead of ad-hoc arithmetic.
+metadata:
+  source-version: 0.1.0
+  skillforge-source-manifest: skill.yaml
+  skillforge-source-hash: 3150d0f8b80f2c65cbc2b24a92a091197b578c4df8d736cce251c5b70b8c062a
 ---
 
-# Financial Calculations Engineer
+# financial-calculations-engineer
+
+## Start here
+
+1. Confirm the task matches financial-calculations-engineer's applicability criteria.
+2. Use the preserved overview guidance as the normative workflow for this skill.
+3. Load only the active references that match the current task.
+4. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+
+## When to use this skill
+
+- Building or reviewing deterministic EUR money calculations, VAT/IVA, discounts, rates, allocations, scorporo, ledger postings, parsing, or formatting.
+- Implementing cross-layer SQL, backend, and browser parity for financial formulas.
+- Enforcing correct use of the local money library instead of ad-hoc arithmetic.
+
+## When NOT to use this skill
+
+- The work has no monetary, tax, rate, allocation, or accounting calculation surface.
+- The task is purely UI, framework, database, or TypeScript work without financial invariants.
+
+## Overview
 
 Build finance-oriented features with reproducible money math that matches accounting expectations across all layers.
 
@@ -57,3 +85,43 @@ For targeted guidance, read only the needed reference:
 - Use `typescript-engineer` for advanced TypeScript design.
 - Use `typescript-test-engineer` for broader testing methodology.
 - Use framework skills (`hono-engineer`, `supabase-engineer`, etc.) for transport/integration concerns.
+
+## Workflow stages
+
+### Workflow stage: Apply financial-calculations-engineer guidance
+
+Apply the preserved financial-calculations-engineer guidance without changing its domain behavior.
+
+1. Match the request to the applicability criteria.
+2. Follow the preserved overview sections for the concrete work.
+3. Read the smallest relevant active reference before using detailed guidance from it.
+4. Run the relevant verification from the overview or report why it could not be run.
+
+Validation:
+
+- The outcome follows the preserved skill guidance and any loaded reference constraints.
+
+## Required active references
+- [Browser](references/browser.md) — Read this when you need input/commit/formatting patterns for UI.
+- [Database Sql](references/database-sql.md) — Read this when you need PostgreSQL storage and deterministic SQL formulas.
+- [Money Library Usage](references/money-library-usage.md) — Read this when you need API mapping and anti-patterns.
+- [Parity Testing](references/parity-testing.md) — Read this when you need golden tests for SQL/backend/browser parity.
+- [Server Backend](references/server-backend.md) — Read this when you need backend/domain patterns and JSON boundaries.
+- [Vat Iva](references/vat-iva.md) — Read this when you need forward/reverse VAT formulas and 0.01 scorporo caveat.
+
+## Portability rules
+
+- Do not reference machine-specific absolute paths or local files outside this skill folder.
+- Keep all mandatory financial-calculations-engineer guidance inside this skill folder.
+- Use relative links for local references, assets, scripts, tests, and supporting docs.
+
+## Portability checklist before finishing
+
+- Run the skill-source-compiler check command after regeneration.
+- Search the skill folder for absolute local paths before finishing.
+- Confirm every required reference listed by SKILL.md exists inside this skill folder.
+
+## Supporting and historical surface
+
+- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
+- Supporting glob: `docs/*`
