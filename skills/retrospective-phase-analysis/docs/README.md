@@ -1,0 +1,19 @@
+# Документация `retrospective-phase-analysis`
+
+Эта папка содержит supporting и historical surface. Активные инструкции остаются в `SKILL.md` и явно подключенных `references/*`.
+
+## Issues
+
+| Issue | Status | Notes |
+| --- | --- | --- |
+| [issues/improvement-proposal-20260414-1.md](issues/improvement-proposal-20260414-1.md) | Historical | Раннее предложение по улучшению retrospective automation. |
+| [issues/improvement-proposal-20260415-1.md](issues/improvement-proposal-20260415-1.md) | Historical | Улучшения active-session boundary и извлечения trace-confirmed stage logs. |
+| [issues/improvement-proposal-20260415-2.md](issues/improvement-proposal-20260415-2.md) | Historical | Качество источников skill-audit и снижение шума от catalog/name-match. |
+| [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | Audited | Artifact-driven discovery, conservative boundaries и structured-first metrics. |
+| [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited | Regression case для `referenced_only` stage logs, validation-required reports и false positives в skill-audit. |
+
+## Implementation Logs
+
+| Log | Related issue | Status |
+| --- | --- | --- |
+| [implementation-log-1.ru.md](implementation-log-1.ru.md) | Первичная implementation | Implemented |
