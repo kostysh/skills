@@ -1,0 +1,82 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: spec-conformance-reviewer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Review code against normative requirements from specs, contracts, ADRs, tickets, and acceptance
+    criteria. Use when asked whether an implementation matches a specification, API contract, PRD,
+    RFC, or migration requirement, produce a requirement-to-code traceability matrix, identify
+    compliance gaps or ambiguities, or issue an implementation-versus-spec verdict.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-methodology
+    title: Methodology
+    source: references/methodology.md
+    target: references/methodology.md
+    required: true
+    trigger: Read this when you need source priority, scope rules, extraction workflow, traceability, evidence, and ambiguity handling.
+  - id: ref-references-reporting
+    title: Reporting
+    source: references/reporting.md
+    target: references/reporting.md
+    required: true
+    trigger: Read this when you need statuses, severities, verdicts, report template, and wording rules.
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-methodology
+      - ref-references-reporting
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches spec-conformance-reviewer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - '"implementation vs spec", "spec compliance review", or "does this match the spec"'
+    - Verifying a PR, module, or behavior against a feature spec, ADR, RFC, OpenAPI contract, schema, or acceptance criteria
+    - Producing a requirement extraction table, traceability matrix, verification gaps list, or compliance verdict
+    - Separating confirmed non-compliance from ambiguity, missing evidence, or pre-existing issues
+  whenNotToUse:
+    - "General merge-risk or bug-hunting review without normative sources: use `code-reviewer`"
+    - "Security-first review: use `security-reviewer`"
+    - Architecture, performance, or style review unless those concerns are explicit in the normative sources
+    - Authoring or refining a spec instead of checking implementation against it
+  workflow:
+    - id: stage-apply-spec-conformance-reviewer
+      title: Apply spec-conformance-reviewer guidance
+      goal: Apply the preserved spec-conformance-reviewer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory spec-conformance-reviewer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
