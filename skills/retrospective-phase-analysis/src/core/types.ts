@@ -39,6 +39,7 @@ export interface ArtifactCandidate {
   included: boolean;
   inclusion_source: ArtifactInclusion;
   reason: string;
+  next_action?: string;
 }
 
 export interface ReviewEvent {
@@ -46,6 +47,7 @@ export interface ReviewEvent {
   details: string[];
   timestamp: string | null;
   verdict: string | null;
+  source?: 'prose' | 'structured';
 }
 
 export interface ParsedStageLog {

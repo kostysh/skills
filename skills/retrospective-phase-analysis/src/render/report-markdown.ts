@@ -40,6 +40,47 @@ function formatMetricSource(
   return `${source.quality} — ${source.reason}`;
 }
 
+function excludedStageLogCandidates(
+  scan: ScanSummary,
+): ScanSummary['scope']['stage_log_candidates'] {
+  return scan.scope.stage_log_candidates.filter((candidate) => !candidate.included);
+}
+
+function hasIncompleteZeroStageLogMetrics(scan: ScanSummary): boolean {
+  return scan.stageLogs.count === 0 && excludedStageLogCandidates(scan).length > 0;
+}
+
+function candidateIncidentsSummary(scan: ScanSummary): string {
+  if (hasIncompleteZeroStageLogMetrics(scan)) {
+    return `incomplete until excluded stage-log candidates are validated (${scan.candidateIncidents.length} inferred automatically)`;
+  }
+
+  return String(scan.candidateIncidents.length);
+}
+
+function candidateIncidentSection(scan: ScanSummary, incidentSections: string): string {
+  if (incidentSections) {
+    return incidentSections;
+  }
+  if (hasIncompleteZeroStageLogMetrics(scan)) {
+    return 'No candidate incidents were inferred automatically because no stage logs were analyzed; excluded stage-log candidates require validation first.';
+  }
+
+  return 'No candidate incidents were inferred automatically.';
+}
+
+function formatExcludedStageLogCandidates(scan: ScanSummary): string {
+  const candidates = excludedStageLogCandidates(scan);
+  return candidates.length > 0
+    ? formatList(
+        candidates.map(
+          (candidate) =>
+            `${candidate.path} (${candidate.evidence_kind}; ${candidate.next_action ?? candidate.reason})`,
+        ),
+      )
+    : '- none';
+}
+
 export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOptions): string {
   const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ''}`;
   const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
@@ -75,7 +116,7 @@ ${statusLine(scan)}
 - Session trace: ${scan.resolved.session ?? 'not provided'}
 - Session id: ${scan.session.sessionId ?? 'not provided'}
 - Stage logs analyzed: ${scan.stageLogs.count}
-- Candidate incidents: ${scan.candidateIncidents.length}
+- Candidate incidents: ${candidateIncidentsSummary(scan)}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
 - Scope confidence: ${scan.scope.scope_confidence}
 - Report scaffold status: ${scan.reportStatus.status}
@@ -121,10 +162,15 @@ ${formatList(topTools)}
 
 ## Candidate incidents
 
-${incidentSections || 'No candidate incidents were inferred automatically.'}
+${candidateIncidentSection(scan, incidentSections)}
 
 ## Stage-log metrics
 
+- Reliability: ${
+    hasIncompleteZeroStageLogMetrics(scan)
+      ? 'incomplete until excluded stage-log candidates are validated.'
+      : 'based on included stage logs.'
+  }
 - Review rounds total: ${scan.stageLogs.metrics.reviewRoundsTotal}
 - Review findings total: ${scan.stageLogs.metrics.reviewFindingsTotal}
 - Process misses total: ${scan.stageLogs.metrics.processMissesTotal}
@@ -153,6 +199,10 @@ ${formatList(
 ## Scope ambiguities
 
 ${scopeAmbiguities}
+
+## Excluded stage-log candidates
+
+${formatExcludedStageLogCandidates(scan)}
 
 ## Report status reasons
 

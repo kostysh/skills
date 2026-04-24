@@ -2,8 +2,8 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.0`
-- CLI package version: `0.1.0`
+- Skill source version: `0.1.1`
+- CLI package version: `0.1.1`
 
 ## Source files
 - `agents/openai.yaml`
@@ -69,6 +69,14 @@ Generated from `skill.yaml`.
 - `test/fixtures/contracts/skill-audit-help-golden.txt`
 - `test/fixtures/logs/closure.md`
 - `test/fixtures/logs/implementation.md`
+- `test/fixtures/rpa-05/final-pass-review.md`
+- `test/fixtures/rpa-05/project/docs/features/F-0050-retro.md`
+- `test/fixtures/rpa-05/session-referenced-only-stage-log.jsonl`
+- `test/fixtures/rpa-05/session-skill-catalog-noise.jsonl`
+- `test/fixtures/rpa-05/session-structured-review-fail.jsonl`
+- `test/fixtures/rpa-05/stage-log-referenced-only.md`
+- `test/fixtures/rpa-05/stage-log-structured-review.md`
+- `test/fixtures/rpa-05/structured-stage-state.json`
 - `test/fixtures/sessions/multi-feature-session.jsonl`
 - `test/fixtures/sessions/phase-session-with-apply-patch-body-mention.jsonl`
 - `test/fixtures/sessions/phase-session-with-log-link.jsonl`

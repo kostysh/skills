@@ -47,6 +47,7 @@ Structured fields win over prose heuristics.
 
 - Count `process_misses` or `process_misses_total` before parsing prose `Process misses` sections.
 - Count `skills_used` before legacy `skill` metadata or trace-only skill hints.
+- Treat structured `review_events` with `FAIL` or `non-compliant` verdicts as candidate-incident evidence before a final PASS artifact.
 - Do not double-count prose evidence when structured evidence exists for the same log.
 - Record source quality for metrics; unvalidated prose fallback requires agent validation before final report finalization.
 
@@ -106,6 +107,8 @@ Possible remediations:
 Skill audit scope:
 - use the injected `Available skills` catalog as the authoritative list of possible skills for the current runtime;
 - match those skill names and aliases against bounded operational trace evidence and structured stage-log skill metrics;
+- ignore copied `Available skills` catalogs, large copied text blobs, compacted summaries, and tool-output blobs as active usage evidence;
+- prefer explicit skill file opens, command/path fields, concise operational messages, and included stage-log `skills_used` metrics;
 - include only referenced skills in `skill-audit.md`;
 - do not include skills solely because they are topically relevant.
 

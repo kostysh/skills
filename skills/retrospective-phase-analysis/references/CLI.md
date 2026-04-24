@@ -106,6 +106,7 @@ Phase boundary:
 Artifact candidates:
 
 - `referenced_only` paths remain candidates but are not analyzed by default.
+- Excluded stage-log candidates include a precise `reason` and `next_action`; when all stage-log candidates are excluded, the report is validation-required instead of incident-free.
 - `trace_patch_target`, `trace_shell_write`, `trace_write`, and `tool_output_path` candidates can be auto-included when the trace confirms write/change evidence.
 - `stage_artifact_link` candidates can be auto-included when an included stage log or bounded stage state explicitly links the artifact, the path exists inside the confirmed project root, and the artifact path or content matches the artifact scope.
 - Legacy arrays such as `candidate_stage_logs` are derived from included candidates only.
@@ -115,6 +116,7 @@ Artifact candidates:
 Metrics:
 
 - Structured fields such as `process_misses`, `process_misses_total`, and `skills_used` win over prose sections.
+- Structured `review_events` with `FAIL` or `non-compliant` verdicts produce candidate incidents even when a linked final review artifact is `PASS`.
 - Prose fallback is counted only when the structured field is absent, and fallback source quality is recorded in `stageLogs.metrics.sources`.
 - Unvalidated prose fallback keeps `reportStatus.status` at `draft_requires_agent_validation`.
 
@@ -197,6 +199,7 @@ Report status rule:
 
 - Generated Markdown is a scaffold. The final report is the agent's responsibility after evidence validation.
 - `draft_requires_agent_validation` is used when evidence quality is degraded, no stage logs were analyzed despite dossier activity, unresolved ambiguities exist, manual overrides were used, or the injected `Available skills` catalog is missing.
+- Excluded stage-log candidates are stronger than generic missing logs: `reportStatus.reasons` names the excluded candidates and generated Markdown marks log-derived metrics as incomplete.
 - Draft Markdown includes `Status: draft, requires agent validation`.
 - `ready_for_agent_finalization` means the automated checks found no draft trigger, but the agent still owns final conclusions.
 
@@ -211,7 +214,7 @@ The CLI tries to infer:
 - review findings from stage-log metadata and review-event text;
 - process misses from stage-log sections and metadata;
 - possible skills from the injected `Available skills` catalog;
-- referenced skills from operational user/assistant messages, commands, tool-call metadata, patch metadata, and structured stage-log skill metrics.
+- referenced skills from operational user/assistant messages, commands, tool-call metadata, patch metadata, explicit skill file reads, and structured stage-log skill metrics.
 
 ## Important limitations
 
@@ -224,6 +227,7 @@ The CLI tries to infer:
 - `scan` does not treat malformed ids such as `CF-012.delivery_state`, `CF-018-backed`, `CF-0`, or `CF-XXX` as canonical backlog items.
 - `scan` does not widen review or verification scope by feature-id fan-out alone; those artifacts must be directly referenced in the trace.
 - direct references without write/change evidence are `referenced_only` candidates, not analyzed artifacts.
+- copied `Available skills` catalogs, large copied text blobs, compacted context, and tool-output blobs are not active skill-usage evidence.
 - manual overrides require explicit evidence and reduce confidence until validated.
 - `scan` does not replace manual scope review when the trace contains multiple tasks or multiple features.
 - The generated report is a draft. The agent should read the cited artifacts before finalizing findings.

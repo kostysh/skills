@@ -722,6 +722,23 @@ function referencedOnlyCandidates(
     }));
 }
 
+function withExcludedStageLogValidationActions(
+  candidates: readonly ArtifactCandidate[],
+): ArtifactCandidate[] {
+  return candidates.map((candidate) => {
+    if (candidate.included) {
+      return candidate;
+    }
+
+    return {
+      ...candidate,
+      reason: `Referenced in ${candidate.event_ref ?? 'the trace'}, but not confirmed as created or changed in scope.`,
+      next_action:
+        'Validate same-session stage-log evidence before manual inclusion; otherwise keep this candidate excluded.',
+    };
+  });
+}
+
 function includedPaths(candidates: readonly ArtifactCandidate[]): string[] {
   return sortUnique(
     candidates.filter((candidate) => candidate.included).map((candidate) => candidate.path),
@@ -801,16 +818,18 @@ export function extractTraceScope({
     artifactEvidence,
   );
 
-  const stageLogCandidates = mergeCandidates([
-    ...autoIncludedCandidates.filter((candidate) =>
-      isStageLogArtifact(candidate.path, projectRoot),
-    ),
-    ...referencedOnlyCandidates(
-      referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
-      autoIncludedCandidates,
-    ),
-    ...manualStageLogCandidates,
-  ]);
+  const stageLogCandidates = withExcludedStageLogValidationActions(
+    mergeCandidates([
+      ...autoIncludedCandidates.filter((candidate) =>
+        isStageLogArtifact(candidate.path, projectRoot),
+      ),
+      ...referencedOnlyCandidates(
+        referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
+        autoIncludedCandidates,
+      ),
+      ...manualStageLogCandidates,
+    ]),
+  );
   const reviewArtifactCandidates = mergeCandidates([
     ...autoIncludedCandidates.filter((candidate) => isReviewArtifact(candidate.path, projectRoot)),
     ...(artifactLinkedReviewCandidates ?? []),

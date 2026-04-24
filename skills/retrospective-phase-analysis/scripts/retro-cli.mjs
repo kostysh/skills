@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 //#region package.json
 var name = "@kostysh/retrospective-phase-analysis-cli";
-var version = "0.1.0";
+var version = "0.1.1";
 var description = "CLI utilities for the retrospective-phase-analysis skill.";
 var type = "module";
 var bin = { "retrospective-phase-analysis": "scripts/retro-cli.mjs" };
@@ -606,6 +606,18 @@ function compactExcerpt(value) {
 	const compacted = value.trim().replaceAll(/\s+/gu, " ");
 	return compacted.length > 220 ? `${compacted.slice(0, 217)}...` : compacted;
 }
+function isCatalogLikeText(value) {
+	return value.includes("### Available skills") || value.includes("<skills_instructions>") || /^-\s+[^:\n]+:\s+.*\(file:\s*[^)]+?SKILL\.md\)/imu.test(value);
+}
+function isLargeCopiedText(field, value) {
+	if (field.includes("parsed_cmd") || field.endsWith(".path") || field.endsWith(".cmd") || field.endsWith(".command") || field.endsWith(".patch")) return false;
+	return value.length > 4e3 || value.split(/\r?\n/u).length > 40;
+}
+function isOperationalSkillEvidenceText(field, value) {
+	const trimmed = value.trim();
+	if (trimmed.length === 0 || isCatalogLikeText(trimmed)) return false;
+	return !isLargeCopiedText(field, trimmed);
+}
 function pathNameFromSkillFile(skillFile) {
 	if (!skillFile) return null;
 	if (path.basename(skillFile) !== "SKILL.md") return null;
@@ -687,7 +699,7 @@ function extractAvailableSkillCatalog(sessionSummary) {
 	return mergeCatalogEntries(sessionSummary.events.flatMap((event) => bootstrapCatalogStrings(event).flatMap((text) => parseAvailableSkillsFromText(text))));
 }
 function addFragment(out, input) {
-	for (const text of collectStrings(input.value)) if (text.trim().length > 0) out.push({
+	for (const text of collectStrings(input.value)) if (isOperationalSkillEvidenceText(input.field, text)) out.push({
 		line: input.line,
 		eventType: input.eventType,
 		field: input.field,
@@ -1238,6 +1250,16 @@ function referencedOnlyCandidates(references, included) {
 		reason: "Referenced in the trace, but not confirmed as created or changed in scope."
 	}));
 }
+function withExcludedStageLogValidationActions(candidates) {
+	return candidates.map((candidate) => {
+		if (candidate.included) return candidate;
+		return {
+			...candidate,
+			reason: `Referenced in ${candidate.event_ref ?? "the trace"}, but not confirmed as created or changed in scope.`,
+			next_action: "Validate same-session stage-log evidence before manual inclusion; otherwise keep this candidate excluded."
+		};
+	});
+}
 function includedPaths(candidates) {
 	return sortUnique(candidates.filter((candidate) => candidate.included).map((candidate) => candidate.path));
 }
@@ -1259,11 +1281,11 @@ function extractTraceScope({ sessionSummary, projectRoot, manualStageLogs, manua
 	const manualStageLogCandidates = manualCandidates(manualStageLogs, projectRoot, artifactEvidence);
 	const manualReviewCandidates = manualCandidates(manualReviewArtifacts, projectRoot, artifactEvidence);
 	const manualVerificationCandidates = manualCandidates(manualVerificationArtifacts, projectRoot, artifactEvidence);
-	const stageLogCandidates = mergeCandidates([
+	const stageLogCandidates = withExcludedStageLogValidationActions(mergeCandidates([
 		...autoIncludedCandidates.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
 		...referencedOnlyCandidates(referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)), autoIncludedCandidates),
 		...manualStageLogCandidates
-	]);
+	]));
 	const reviewArtifactCandidates = mergeCandidates([
 		...autoIncludedCandidates.filter((candidate) => isReviewArtifact(candidate.path, projectRoot)),
 		...artifactLinkedReviewCandidates ?? [],
@@ -1321,78 +1343,6 @@ function extractTraceScope({ sessionSummary, projectRoot, manualStageLogs, manua
 	};
 }
 //#endregion
-//#region src/core/infer-candidate-incidents.ts
-function processMissEvidence(metadata, proseLines) {
-	if (Array.isArray(metadata.process_misses)) return {
-		count: metadata.process_misses.length,
-		reason: "Structured process_misses field indicates process misses."
-	};
-	const structuredTotal = Number(metadata.process_misses_total);
-	if (Number.isFinite(structuredTotal)) return {
-		count: structuredTotal,
-		reason: "Structured process_misses_total field indicates process misses."
-	};
-	return {
-		count: proseLines.length,
-		reason: proseLines.join("; ")
-	};
-}
-function inferCandidateIncidents(sessionSummary, logSummary) {
-	const incidents = [];
-	for (const log of logSummary.logs) {
-		const metadata = log.metadata;
-		const stage = stringFromUnknown(metadata.stage, "unknown");
-		const processMisses = processMissEvidence(metadata, log.processMissLines);
-		const structuredReviewFindings = Number(metadata.review_findings_total);
-		const hasStructuredReviewFindings = Number.isFinite(structuredReviewFindings);
-		const reviewFindingTotal = hasStructuredReviewFindings ? structuredReviewFindings : 0;
-		if (processMisses.count > 0) incidents.push({
-			title: `Process misses in ${path.basename(log.filePath)}`,
-			severity: processMisses.count >= 2 ? "high" : "medium",
-			stage,
-			evidence: log.filePath,
-			reason: processMisses.reason
-		});
-		if (reviewFindingTotal > 0) incidents.push({
-			title: `Review findings in ${path.basename(log.filePath)}`,
-			severity: reviewFindingTotal >= 3 ? "high" : "medium",
-			stage,
-			evidence: log.filePath,
-			reason: `${reviewFindingTotal} review finding(s) recorded.`
-		});
-		if (metadata.backlog_actualized === false && /backlog/iu.test(log.raw)) incidents.push({
-			title: `Backlog actualization deferred in ${path.basename(log.filePath)}`,
-			severity: "low",
-			stage,
-			evidence: log.filePath,
-			reason: "The log references backlog actualization but marks it incomplete or deferred."
-		});
-		const reviewText = (log.sections["События ревью"] || log.sections["Review events"] || "").toLowerCase();
-		if (!hasStructuredReviewFindings && (reviewText.includes("fail") || reviewText.includes("non-compliant"))) incidents.push({
-			title: `Non-pass review cycle in ${path.basename(log.filePath)}`,
-			severity: "medium",
-			stage,
-			evidence: log.filePath,
-			reason: "At least one review event returned FAIL or non-compliant before final pass."
-		});
-	}
-	if (sessionSummary.abortedTurns > 0 && sessionSummary.filePath) incidents.push({
-		title: "Aborted or restarted turns detected",
-		severity: sessionSummary.abortedTurns >= 3 ? "high" : "medium",
-		stage: "session",
-		evidence: sessionSummary.filePath,
-		reason: `${sessionSummary.abortedTurns} aborted/restarted turn(s) detected in the session trace.`
-	});
-	return incidents;
-}
-//#endregion
-//#region src/core/resolve-evidence-roots.ts
-function resolveStandardEvidenceDir(projectRoot, relativeDir) {
-	if (!projectRoot) return;
-	const absoluteDir = path.join(projectRoot, relativeDir);
-	return fs.existsSync(absoluteDir) ? absoluteDir : void 0;
-}
-//#endregion
 //#region src/parsers/markdown.ts
 function parseMarkdownSections(body) {
 	const lines = body.split(/\r?\n/);
@@ -1415,6 +1365,24 @@ function splitBulletish(text) {
 }
 //#endregion
 //#region src/parsers/stage-log.ts
+function extractReviewTimestamp(input) {
+	const value = input.timestamp ?? input.ts ?? input.created_at ?? input.time ?? input.occurred_at ?? null;
+	return typeof value === "string" && value.length > 0 ? value : null;
+}
+function normalizeReviewVerdict(value) {
+	if (typeof value !== "string") return null;
+	const normalized = value.trim().toLowerCase().replaceAll("_", "-");
+	if (!normalized) return null;
+	if (/\b(pass|passed|success)\b/u.test(normalized)) return "pass";
+	if (/\b(fail|failed|non-compliant|noncompliant|changes-requested|request-changes)\b/u.test(normalized)) return normalized.includes("non") ? "non-compliant" : "fail";
+	return normalized;
+}
+function inferReviewVerdictFromText(value) {
+	return normalizeReviewVerdict(value.match(/\b(PASS|passed|FAIL|failed|non-compliant|noncompliant|changes_requested|changes-requested|request_changes|request-changes)\b/iu)?.[1] ?? "");
+}
+function detailArray(value) {
+	return Array.isArray(value) ? value.filter((entry) => typeof entry === "string" && entry.trim() !== "") : [];
+}
 function parseReviewEvents(text) {
 	const lines = text.split(/\r?\n/);
 	const events = [];
@@ -1431,7 +1399,8 @@ function parseReviewEvents(text) {
 				raw,
 				details: [],
 				timestamp: timestampMatch?.[1] ?? null,
-				verdict: verdictMatch?.[1]?.toLowerCase() ?? null
+				verdict: normalizeReviewVerdict(verdictMatch?.[1] ?? ""),
+				source: "prose"
 			};
 			continue;
 		}
@@ -1439,6 +1408,38 @@ function parseReviewEvents(text) {
 	}
 	if (current) events.push(current);
 	return events;
+}
+function structuredReviewEvent(entry) {
+	if (typeof entry === "string") {
+		const raw = entry.trim();
+		return raw.length > 0 ? {
+			raw,
+			details: [],
+			timestamp: null,
+			verdict: inferReviewVerdictFromText(raw),
+			source: "structured"
+		} : null;
+	}
+	if (!entry || typeof entry !== "object") return null;
+	const record = entry;
+	const raw = stringFromUnknown(record.raw, "") || stringFromUnknown(record.summary, "") || stringFromUnknown(record.message, "") || stringFromUnknown(record.title, "") || stringFromUnknown(record.notes, "") || JSON.stringify(record);
+	const verdict = normalizeReviewVerdict(record.verdict ?? record.status ?? record.result ?? record.outcome ?? record.review_status) ?? inferReviewVerdictFromText(raw);
+	return {
+		raw,
+		details: detailArray(record.details),
+		timestamp: extractReviewTimestamp(record),
+		verdict,
+		source: "structured"
+	};
+}
+function structuredReviewEventsFromMetadata(metadata) {
+	const value = metadata.review_events ?? metadata.structured_review_events ?? metadata.reviewEvents ?? null;
+	if (!Array.isArray(value)) return [];
+	return value.map((entry) => structuredReviewEvent(entry)).filter((entry) => entry !== null);
+}
+function isNonPassReviewEvent(event) {
+	const verdict = normalizeReviewVerdict(event.verdict ?? "") ?? "";
+	return verdict === "fail" || verdict === "non-compliant" || /\b(fail|failed|non-compliant|noncompliant|changes[-_]requested|request[-_]changes)\b/iu.test(event.raw);
 }
 function parseStageLog(filePath) {
 	const raw = readText(filePath);
@@ -1465,10 +1466,90 @@ function parseStageLog(filePath) {
 		raw,
 		metadata,
 		sections,
-		reviewEvents: parseReviewEvents(reviewText),
+		reviewEvents: [...parseReviewEvents(reviewText), ...structuredReviewEventsFromMetadata(metadata)],
 		processMissLines: splitBulletish(processMissesText),
 		closeOutLines: splitBulletish(closeOutText)
 	};
+}
+//#endregion
+//#region src/core/infer-candidate-incidents.ts
+function processMissEvidence(metadata, proseLines) {
+	if (Array.isArray(metadata.process_misses)) return {
+		count: metadata.process_misses.length,
+		reason: "Structured process_misses field indicates process misses."
+	};
+	const structuredTotal = Number(metadata.process_misses_total);
+	if (Number.isFinite(structuredTotal)) return {
+		count: structuredTotal,
+		reason: "Structured process_misses_total field indicates process misses."
+	};
+	return {
+		count: proseLines.length,
+		reason: proseLines.join("; ")
+	};
+}
+function inferCandidateIncidents(sessionSummary, logSummary) {
+	const incidents = [];
+	for (const log of logSummary.logs) {
+		const metadata = log.metadata;
+		const stage = stringFromUnknown(metadata.stage, "unknown");
+		const processMisses = processMissEvidence(metadata, log.processMissLines);
+		const structuredReviewFindings = Number(metadata.review_findings_total);
+		const hasStructuredReviewFindings = Number.isFinite(structuredReviewFindings);
+		const reviewFindingTotal = hasStructuredReviewFindings ? structuredReviewFindings : 0;
+		const hasStructuredNonPassReview = structuredReviewEventsFromMetadata(metadata).some(isNonPassReviewEvent);
+		if (processMisses.count > 0) incidents.push({
+			title: `Process misses in ${path.basename(log.filePath)}`,
+			severity: processMisses.count >= 2 ? "high" : "medium",
+			stage,
+			evidence: log.filePath,
+			reason: processMisses.reason
+		});
+		if (reviewFindingTotal > 0) incidents.push({
+			title: `Review findings in ${path.basename(log.filePath)}`,
+			severity: reviewFindingTotal >= 3 ? "high" : "medium",
+			stage,
+			evidence: log.filePath,
+			reason: `${reviewFindingTotal} review finding(s) recorded.`
+		});
+		else if (hasStructuredNonPassReview) incidents.push({
+			title: `Non-pass review cycle in ${path.basename(log.filePath)}`,
+			severity: "medium",
+			stage,
+			evidence: log.filePath,
+			reason: "Structured review_events recorded FAIL or non-compliant review state before final pass."
+		});
+		if (metadata.backlog_actualized === false && /backlog/iu.test(log.raw)) incidents.push({
+			title: `Backlog actualization deferred in ${path.basename(log.filePath)}`,
+			severity: "low",
+			stage,
+			evidence: log.filePath,
+			reason: "The log references backlog actualization but marks it incomplete or deferred."
+		});
+		const reviewText = (log.sections["События ревью"] || log.sections["Review events"] || "").toLowerCase();
+		if (!hasStructuredReviewFindings && !hasStructuredNonPassReview && (reviewText.includes("fail") || reviewText.includes("non-compliant"))) incidents.push({
+			title: `Non-pass review cycle in ${path.basename(log.filePath)}`,
+			severity: "medium",
+			stage,
+			evidence: log.filePath,
+			reason: "At least one review event returned FAIL or non-compliant before final pass."
+		});
+	}
+	if (sessionSummary.abortedTurns > 0 && sessionSummary.filePath) incidents.push({
+		title: "Aborted or restarted turns detected",
+		severity: sessionSummary.abortedTurns >= 3 ? "high" : "medium",
+		stage: "session",
+		evidence: sessionSummary.filePath,
+		reason: `${sessionSummary.abortedTurns} aborted/restarted turn(s) detected in the session trace.`
+	});
+	return incidents;
+}
+//#endregion
+//#region src/core/resolve-evidence-roots.ts
+function resolveStandardEvidenceDir(projectRoot, relativeDir) {
+	if (!projectRoot) return;
+	const absoluteDir = path.join(projectRoot, relativeDir);
+	return fs.existsSync(absoluteDir) ? absoluteDir : void 0;
 }
 //#endregion
 //#region src/core/summarize-logs.ts
@@ -1547,6 +1628,7 @@ function skillNames(log) {
 	};
 }
 function reviewIncidentQuality(log) {
+	if (structuredReviewEventsFromMetadata(log.metadata).some(isNonPassReviewEvent)) return "structured";
 	const structuredFindings = Number(log.metadata.review_findings_total);
 	if (Number.isFinite(structuredFindings)) return "structured";
 	const reviewText = (log.sections["События ревью"] || log.sections["Review events"] || "").toLowerCase();
@@ -1598,6 +1680,7 @@ var STAGE_STATE_ALLOWED_FIELDS = new Set([
 	"review_artifact",
 	"review_artifacts",
 	"review_findings_total",
+	"review_events",
 	"review_passed_at",
 	"review_rounds",
 	"review_rounds_total",
@@ -1934,6 +2017,13 @@ function assertManualOverridesHaveEvidence(args) {
 function hasManualCandidates(candidates) {
 	return candidates.some((candidate) => candidate.inclusion_source === "manual_included");
 }
+function excludedStageLogCandidates$1(scope) {
+	return scope.stage_log_candidates.filter((candidate) => !candidate.included);
+}
+function formatStageLogCandidate(candidate) {
+	const eventRef = candidate.event_ref ? ` at ${candidate.event_ref}` : "";
+	return `${candidate.path} (${candidate.evidence_kind}${eventRef})`;
+}
 function buildReportStatus(input) {
 	const reasons = [];
 	const { sessionSummary, logSummary, skillTraceSummary, scope } = input;
@@ -1941,7 +2031,9 @@ function buildReportStatus(input) {
 	if (sessionSummary.parseErrors.length > 0) reasons.push(`Session trace has ${sessionSummary.parseErrors.length} parse error(s).`);
 	if (!logSummary.exists) reasons.push("Stage-log directory is missing or unresolved.");
 	if (skillTraceSummary.available.length === 0) reasons.push("Injected Available skills catalog is missing or unresolved.");
-	if (logSummary.metrics.logsTotal === 0 && scope.referenced_artifacts.some((artifactPath) => artifactPath.includes(".dossier"))) reasons.push("Trace indicates dossier activity, but no stage logs were analyzed.");
+	const excludedStageLogs = excludedStageLogCandidates$1(scope);
+	if (logSummary.metrics.logsTotal === 0 && excludedStageLogs.length > 0) reasons.push(`Excluded stage-log candidate(s) require validation before final report: ${excludedStageLogs.map(formatStageLogCandidate).join(", ")}.`);
+	else if (logSummary.metrics.logsTotal === 0 && scope.referenced_artifacts.some((artifactPath) => artifactPath.includes(".dossier"))) reasons.push("Trace indicates dossier activity, but no stage logs were analyzed.");
 	if (scope.scope_ambiguities.length > 0) reasons.push("Unresolved scope ambiguities remain.");
 	if (hasManualCandidates(scope.stage_log_candidates) || hasManualCandidates(scope.review_artifact_candidates) || hasManualCandidates(scope.verification_artifact_candidates)) reasons.push("Manual artifact overrides were used.");
 	if (hasUnvalidatedFallbackMetrics(logSummary.metrics.sources)) reasons.push("Unvalidated fallback metrics require agent validation.");
@@ -2176,6 +2268,7 @@ function formatObservedGaps(input) {
 	if (missingClosureArtifacts > 0) gaps.push(`Not all logs include the full closure artifact set (${missingClosureArtifacts} missing link(s)).`);
 	if (input.approximateDurations > 0) gaps.push(`Duration accuracy is not always exact (${input.approximateDurations} log(s)).`);
 	if (input.missingSkillCatalog) gaps.push("The injected Available skills catalog was missing or unresolved.");
+	if (input.excludedStageLogCandidates.length > 0) gaps.push(`Excluded stage-log candidates require validation: ${input.excludedStageLogCandidates.join(", ")}.`);
 	if (gaps.length === 0) return "- No automated logging gaps were inferred from the available counters.";
 	return gaps.map((gap) => `- ${gap}`).join("\n");
 }
@@ -2186,11 +2279,16 @@ function formatMetricSource$1(scan, key) {
 	};
 	return `${source.quality} — ${source.reason}`;
 }
+function excludedStageLogCandidateLabels(scan) {
+	return scan.scope.stage_log_candidates.filter((candidate) => !candidate.included).map((candidate) => `${candidate.path} (${candidate.evidence_kind}; ${candidate.next_action ?? candidate.reason})`);
+}
 function buildLoggingReviewMarkdown(scan) {
 	const missingReviewArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.review_artifact).length;
 	const missingStepArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.step_artifact).length;
 	const missingVerificationArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.verification_artifact).length;
 	const approximateDurations = scan.stageLogs.files.filter((entry) => entry.metadata.log_quality && typeof entry.metadata.log_quality === "object" && entry.metadata.log_quality.duration_exact === false).length;
+	const excludedStageLogs = excludedStageLogCandidateLabels(scan);
+	const logDerivedMetricsStatus = scan.stageLogs.count === 0 && excludedStageLogs.length > 0 ? "incomplete; excluded stage-log candidates require validation." : "based on included stage logs.";
 	return `# Logging review draft
 
 ${statusLine$2(scan)}
@@ -2198,6 +2296,8 @@ ${statusLine$2(scan)}
 ## Summary
 
 - Logs analyzed: ${scan.stageLogs.count}
+- Log-derived metrics: ${logDerivedMetricsStatus}
+- Excluded stage-log candidates require validation: ${excludedStageLogs.join(", ") || "none"}
 - Process misses recorded: ${scan.stageLogs.metrics.processMissesTotal}
 - Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
 - Missing review artifacts: ${missingReviewArtifacts}
@@ -2221,7 +2321,8 @@ ${formatObservedGaps({
 		missingVerificationArtifacts,
 		missingStepArtifacts,
 		approximateDurations,
-		missingSkillCatalog: !scan.dataQuality.skillCatalogPresent
+		missingSkillCatalog: !scan.dataQuality.skillCatalogPresent,
+		excludedStageLogCandidates: excludedStageLogs
 	})}
 
 ## Suggested improvements
@@ -2479,6 +2580,25 @@ function formatMetricSource(scan, key) {
 	};
 	return `${source.quality} — ${source.reason}`;
 }
+function excludedStageLogCandidates(scan) {
+	return scan.scope.stage_log_candidates.filter((candidate) => !candidate.included);
+}
+function hasIncompleteZeroStageLogMetrics(scan) {
+	return scan.stageLogs.count === 0 && excludedStageLogCandidates(scan).length > 0;
+}
+function candidateIncidentsSummary(scan) {
+	if (hasIncompleteZeroStageLogMetrics(scan)) return `incomplete until excluded stage-log candidates are validated (${scan.candidateIncidents.length} inferred automatically)`;
+	return String(scan.candidateIncidents.length);
+}
+function candidateIncidentSection(scan, incidentSections) {
+	if (incidentSections) return incidentSections;
+	if (hasIncompleteZeroStageLogMetrics(scan)) return "No candidate incidents were inferred automatically because no stage logs were analyzed; excluded stage-log candidates require validation first.";
+	return "No candidate incidents were inferred automatically.";
+}
+function formatExcludedStageLogCandidates(scan) {
+	const candidates = excludedStageLogCandidates(scan);
+	return candidates.length > 0 ? formatList(candidates.map((candidate) => `${candidate.path} (${candidate.evidence_kind}; ${candidate.next_action ?? candidate.reason})`)) : "- none";
+}
 function buildReportMarkdown(scan, options) {
 	const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ""}`;
 	const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
@@ -2505,7 +2625,7 @@ ${statusLine$1(scan)}
 - Session trace: ${scan.resolved.session ?? "not provided"}
 - Session id: ${scan.session.sessionId ?? "not provided"}
 - Stage logs analyzed: ${scan.stageLogs.count}
-- Candidate incidents: ${scan.candidateIncidents.length}
+- Candidate incidents: ${candidateIncidentsSummary(scan)}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
 - Scope confidence: ${scan.scope.scope_confidence}
 - Report scaffold status: ${scan.reportStatus.status}
@@ -2547,10 +2667,11 @@ ${formatList(topTools)}
 
 ## Candidate incidents
 
-${incidentSections || "No candidate incidents were inferred automatically."}
+${candidateIncidentSection(scan, incidentSections)}
 
 ## Stage-log metrics
 
+- Reliability: ${hasIncompleteZeroStageLogMetrics(scan) ? "incomplete until excluded stage-log candidates are validated." : "based on included stage logs."}
 - Review rounds total: ${scan.stageLogs.metrics.reviewRoundsTotal}
 - Review findings total: ${scan.stageLogs.metrics.reviewFindingsTotal}
 - Process misses total: ${scan.stageLogs.metrics.processMissesTotal}
@@ -2571,6 +2692,10 @@ ${formatList(topEntries(scan.stageLogs.metrics.skillsReferenced, 20).map(([skill
 ## Scope ambiguities
 
 ${scopeAmbiguities}
+
+## Excluded stage-log candidates
+
+${formatExcludedStageLogCandidates(scan)}
 
 ## Report status reasons
 

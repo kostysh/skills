@@ -521,6 +521,74 @@ void test('buildScanSummary keeps read-only successful tool output paths out of 
   }
 });
 
+void test('buildScanSummary blocks finalization when same-session stage-log candidates are referenced only', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const stageLogPath = path.join(logsDir, 'implementation.md');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await cp(fixturePath('rpa-05', 'stage-log-referenced-only.md'), stageLogPath);
+    await cp(fixturePath('rpa-05', 'project', 'docs'), path.join(projectRoot, 'docs'), {
+      recursive: true,
+    });
+
+    const summary = buildScanSummary({
+      session: fixturePath('rpa-05', 'session-referenced-only-stage-log.jsonl'),
+      logsDir,
+      artifactsDir: projectRoot,
+      untilTs: '2026-04-24T09:03:00Z',
+    });
+
+    assert.equal(summary.stageLogs.count, 0);
+    assert.deepEqual(summary.scope.candidate_stage_logs, []);
+    assert.equal(summary.scope.stage_log_candidates.length, 1);
+    assert.equal(summary.scope.stage_log_candidates[0]?.path, stageLogPath);
+    assert.equal(summary.scope.stage_log_candidates[0]?.evidence_kind, 'referenced_only');
+    assert.equal(summary.scope.stage_log_candidates[0]?.included, false);
+    assert.match(summary.scope.stage_log_candidates[0]?.reason ?? '', /event:3/u);
+    assert.match(
+      summary.scope.stage_log_candidates[0]?.next_action ?? '',
+      /Validate same-session/u,
+    );
+    assert.equal(summary.reportStatus.status, 'draft_requires_agent_validation');
+    assert.equal(
+      summary.reportStatus.reasons.some(
+        (reason) =>
+          reason.includes('Excluded stage-log candidate(s) require validation') &&
+          reason.includes('implementation.md'),
+      ),
+      true,
+    );
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary ignores copied skill catalogs while keeping active skill-use evidence', () => {
+  const summary = buildScanSummary({
+    session: fixturePath('rpa-05', 'session-skill-catalog-noise.jsonl'),
+  });
+
+  assert.deepEqual(
+    summary.skills.available.map((skill) => skill.name),
+    ['git-engineer', 'hono-engineer', 'retrospective-phase-analysis', 'typescript-engineer'],
+  );
+  assert.deepEqual(
+    summary.skills.referenced.map((skill) => skill.name),
+    ['hono-engineer', 'retrospective-phase-analysis'],
+  );
+  assert.equal(
+    summary.skills.referenced.some((skill) => skill.name === 'git-engineer'),
+    false,
+  );
+  assert.equal(
+    summary.skills.referenced.some((skill) => skill.name === 'typescript-engineer'),
+    false,
+  );
+});
+
 void test('buildScanSummary does not scope stage logs when a shell write targets another file', () => {
   const summary = buildScanSummary({
     session: fixturePath('sessions', 'phase-session-with-other-write.jsonl'),
@@ -1170,10 +1238,7 @@ void test('buildScanSummary keeps symlinked linked artifacts as unsafe non-inclu
     assert.deepEqual(summary.scope.candidate_review_artifacts, []);
     assert.equal(summary.scope.review_artifact_candidates[0]?.path, linkedReviewPath);
     assert.equal(summary.scope.review_artifact_candidates[0]?.included, false);
-    assert.match(
-      summary.scope.review_artifact_candidates[0]?.reason ?? '',
-      /missing or unsafe/u,
-    );
+    assert.match(summary.scope.review_artifact_candidates[0]?.reason ?? '', /missing or unsafe/u);
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
@@ -1636,6 +1701,54 @@ void test('buildScanSummary does not double-count prose review fallback when str
   assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'structured');
 });
 
+void test('buildScanSummary infers structured non-pass review incidents before a final PASS artifact', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const stateDir = path.join(projectRoot, '.dossier', 'stages', 'F-0051');
+  const reviewsDir = path.join(projectRoot, '.dossier', 'reviews');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await mkdir(stateDir, { recursive: true });
+    await mkdir(reviewsDir, { recursive: true });
+    await cp(
+      fixturePath('rpa-05', 'stage-log-structured-review.md'),
+      path.join(logsDir, 'implementation.md'),
+    );
+    await cp(
+      fixturePath('rpa-05', 'structured-stage-state.json'),
+      path.join(stateDir, 'implementation.json'),
+    );
+    await cp(
+      fixturePath('rpa-05', 'final-pass-review.md'),
+      path.join(reviewsDir, 'F-0051-review.md'),
+    );
+
+    const summary = buildScanSummary({
+      session: fixturePath('rpa-05', 'session-structured-review-fail.jsonl'),
+      artifactsDir: projectRoot,
+    });
+
+    const reviewIncidents = summary.candidateIncidents.filter(
+      (incident) =>
+        incident.title.includes('Review findings') ||
+        incident.title.includes('Non-pass review cycle'),
+    );
+
+    assert.equal(summary.stageLogs.count, 1);
+    assert.deepEqual(
+      reviewIncidents.map((incident) => incident.title),
+      ['Non-pass review cycle in implementation.md'],
+    );
+    assert.match(reviewIncidents[0]?.reason ?? '', /Structured review_events/u);
+    assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 0);
+    assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'structured');
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 void test('buildScanSummary marks prose review incident fallback as validation-required', async () => {
   const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
   const projectRoot = path.join(tempDir, 'project');
@@ -1701,9 +1814,7 @@ void test('buildScanSummary marks prose review incident fallback as validation-r
     );
     assert.equal(summary.reportStatus.status, 'draft_requires_agent_validation');
     assert.equal(
-      summary.reportStatus.reasons.some((entry) =>
-        entry.includes('Unvalidated fallback metrics'),
-      ),
+      summary.reportStatus.reasons.some((entry) => entry.includes('Unvalidated fallback metrics')),
       true,
     );
   } finally {

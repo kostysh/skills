@@ -39,6 +39,15 @@ function hasManualCandidates(candidates: readonly ArtifactCandidate[]): boolean 
   return candidates.some((candidate) => candidate.inclusion_source === 'manual_included');
 }
 
+function excludedStageLogCandidates(scope: TraceScopeSummary): ArtifactCandidate[] {
+  return scope.stage_log_candidates.filter((candidate) => !candidate.included);
+}
+
+function formatStageLogCandidate(candidate: ArtifactCandidate): string {
+  const eventRef = candidate.event_ref ? ` at ${candidate.event_ref}` : '';
+  return `${candidate.path} (${candidate.evidence_kind}${eventRef})`;
+}
+
 function buildReportStatus(input: {
   sessionSummary: ReturnType<typeof summarizeSession>;
   logSummary: ReturnType<typeof summarizeLogs>;
@@ -60,7 +69,14 @@ function buildReportStatus(input: {
   if (skillTraceSummary.available.length === 0) {
     reasons.push('Injected Available skills catalog is missing or unresolved.');
   }
-  if (
+  const excludedStageLogs = excludedStageLogCandidates(scope);
+  if (logSummary.metrics.logsTotal === 0 && excludedStageLogs.length > 0) {
+    reasons.push(
+      `Excluded stage-log candidate(s) require validation before final report: ${excludedStageLogs
+        .map(formatStageLogCandidate)
+        .join(', ')}.`,
+    );
+  } else if (
     logSummary.metrics.logsTotal === 0 &&
     scope.referenced_artifacts.some((artifactPath) => artifactPath.includes('.dossier'))
   ) {
@@ -237,10 +253,7 @@ function extractCanonicalIdsFromEvent(event: unknown): {
   };
 }
 
-function hasDifferentLaterWorkItem(input: {
-  event: unknown;
-  scope: TraceScopeSummary;
-}): boolean {
+function hasDifferentLaterWorkItem(input: { event: unknown; scope: TraceScopeSummary }): boolean {
   const ids = extractCanonicalIdsFromEvent(input.event);
   const allowedBacklogItems = new Set(
     input.scope.artifact_identity.primary_backlog_item_key
@@ -256,8 +269,7 @@ function hasDifferentLaterWorkItem(input: {
   return (
     ids.backlogItems.some(
       (backlogItem) => allowedBacklogItems.size > 0 && !allowedBacklogItems.has(backlogItem),
-    ) ||
-    ids.features.some((feature) => allowedFeatures.size > 0 && !allowedFeatures.has(feature))
+    ) || ids.features.some((feature) => allowedFeatures.size > 0 && !allowedFeatures.has(feature))
   );
 }
 
@@ -295,8 +307,7 @@ function hasAmbiguousSameSessionBoundary(input: {
 
 function hasTraceConfirmedStageScopeAmbiguity(scope: TraceScopeSummary): boolean {
   const autoIncludedStageLogCount = scope.stage_log_candidates.filter(
-    (candidate) =>
-      candidate.included && candidate.inclusion_source === 'auto_included',
+    (candidate) => candidate.included && candidate.inclusion_source === 'auto_included',
   ).length;
   if (autoIncludedStageLogCount < 2) {
     return false;

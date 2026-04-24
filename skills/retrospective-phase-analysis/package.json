@@ -1,6 +1,6 @@
 {
   "name": "@kostysh/retrospective-phase-analysis-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "CLI utilities for the retrospective-phase-analysis skill.",
   "type": "module",

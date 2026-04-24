@@ -11,9 +11,9 @@ compatibility: Requires access to the project workspace, session trace files,
   stage logs, and Node.js >= 22.22.0 to run scripts/retro-cli.mjs. Works best
   when stage logs follow a structured logging contract.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b44445ff08ea4f479c664a157a732caff3f5f9fa5e5e36b0b14c0223e0659e70
+  skillforge-source-hash: d683c560dd8e4c9933a7f25d816445ffd4cd017d97ac7a4588c4cf31e7aaa7ec
 ---
 
 # retrospective-phase-analysis
@@ -294,6 +294,7 @@ Classify incidents at least into:
 Structured metrics come first:
 
 - prefer structured stage-log fields such as `process_misses`, `process_misses_total`, and `skills_used`;
+- infer candidate incidents from structured `review_events` that record FAIL or non-compliant review states before final PASS;
 - use prose section parsing only when the structured field is absent;
 - do not add prose-derived counts on top of structured counts for the same log;
 - treat unvalidated prose fallback metrics as requiring agent validation before finalization.
@@ -303,8 +304,8 @@ Structured metrics come first:
 Derive the skill-audit scope from the injected `Available skills` catalog in the session trace and the bounded operational trace:
 
 - collect skill names and aliases from `Available skills`;
-- search those aliases in operational user/assistant messages, tool calls, commands, patch metadata, and structured stage-log skill metrics;
-- ignore names that appear only in non-operational summaries, compacted context, or tool-output blobs;
+- search those aliases in concise operational user/assistant messages, tool calls, commands, patch metadata, explicit skill file reads, and structured stage-log skill metrics;
+- ignore names that appear only in copied `Available skills` catalogs, large copied text blobs, non-operational summaries, compacted context, or tool-output blobs;
 - do not scan every skill folder to discover audit scope.
 
 For every referenced skill:
@@ -512,7 +513,7 @@ If ambiguity remains after this order, keep the ambiguity explicit in the report
 
 ### Skill usage is evidence-bound
 
-Do not infer skill usage from topical relevance alone. If the skill name from `Available skills` is not present in the bounded operational trace or structured stage-log skill metrics, leave it out of the skill audit.
+Do not infer skill usage from topical relevance alone. If the skill name from `Available skills` is not present in bounded operational evidence, explicit skill file opens, or structured stage-log skill metrics, leave it out of the skill audit. Copied catalogs and broad copied text do not count.
 
 ## File usage guidance
 

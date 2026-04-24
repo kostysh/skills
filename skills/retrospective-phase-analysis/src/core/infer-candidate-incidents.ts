@@ -1,5 +1,6 @@
 import path from 'node:path';
 
+import { isNonPassReviewEvent, structuredReviewEventsFromMetadata } from '../parsers/stage-log.ts';
 import { stringFromUnknown } from './shared.ts';
 import type { CandidateIncident, LogsSummary, SessionSummary } from './types.ts';
 
@@ -45,6 +46,8 @@ export function inferCandidateIncidents(
     const structuredReviewFindings = Number(metadata.review_findings_total);
     const hasStructuredReviewFindings = Number.isFinite(structuredReviewFindings);
     const reviewFindingTotal = hasStructuredReviewFindings ? structuredReviewFindings : 0;
+    const hasStructuredNonPassReview =
+      structuredReviewEventsFromMetadata(metadata).some(isNonPassReviewEvent);
 
     if (processMisses.count > 0) {
       incidents.push({
@@ -63,6 +66,15 @@ export function inferCandidateIncidents(
         stage,
         evidence: log.filePath,
         reason: `${reviewFindingTotal} review finding(s) recorded.`,
+      });
+    } else if (hasStructuredNonPassReview) {
+      incidents.push({
+        title: `Non-pass review cycle in ${path.basename(log.filePath)}`,
+        severity: 'medium',
+        stage,
+        evidence: log.filePath,
+        reason:
+          'Structured review_events recorded FAIL or non-compliant review state before final pass.',
       });
     }
 
@@ -83,6 +95,7 @@ export function inferCandidateIncidents(
     ).toLowerCase();
     if (
       !hasStructuredReviewFindings &&
+      !hasStructuredNonPassReview &&
       (reviewText.includes('fail') || reviewText.includes('non-compliant'))
     ) {
       incidents.push({

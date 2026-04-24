@@ -61,6 +61,37 @@ function compactExcerpt(value: string): string {
   return compacted.length > 220 ? `${compacted.slice(0, 217)}...` : compacted;
 }
 
+function isCatalogLikeText(value: string): boolean {
+  return (
+    value.includes('### Available skills') ||
+    value.includes('<skills_instructions>') ||
+    /^-\s+[^:\n]+:\s+.*\(file:\s*[^)]+?SKILL\.md\)/imu.test(value)
+  );
+}
+
+function isLargeCopiedText(field: string, value: string): boolean {
+  if (
+    field.includes('parsed_cmd') ||
+    field.endsWith('.path') ||
+    field.endsWith('.cmd') ||
+    field.endsWith('.command') ||
+    field.endsWith('.patch')
+  ) {
+    return false;
+  }
+
+  return value.length > 4000 || value.split(/\r?\n/u).length > 40;
+}
+
+function isOperationalSkillEvidenceText(field: string, value: string): boolean {
+  const trimmed = value.trim();
+  if (trimmed.length === 0 || isCatalogLikeText(trimmed)) {
+    return false;
+  }
+
+  return !isLargeCopiedText(field, trimmed);
+}
+
 function pathNameFromSkillFile(skillFile: string | null): string | null {
   if (!skillFile) {
     return null;
@@ -182,7 +213,7 @@ function addFragment(
   },
 ): void {
   for (const text of collectStrings(input.value)) {
-    if (text.trim().length > 0) {
+    if (isOperationalSkillEvidenceText(input.field, text)) {
       out.push({
         line: input.line,
         eventType: input.eventType,

@@ -1,7 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { parseStageLog } from '../parsers/stage-log.ts';
+import {
+  isNonPassReviewEvent,
+  parseStageLog,
+  structuredReviewEventsFromMetadata,
+} from '../parsers/stage-log.ts';
 import { stringFromUnknown } from './shared.ts';
 import type { LogMetrics, LogsSummary, MetricEvidenceQuality, ParsedStageLog } from './types.ts';
 
@@ -96,6 +100,13 @@ function skillNames(log: ParsedStageLog): {
 }
 
 function reviewIncidentQuality(log: ParsedStageLog): MetricEvidenceQuality {
+  const hasStructuredNonPassReview = structuredReviewEventsFromMetadata(log.metadata).some(
+    isNonPassReviewEvent,
+  );
+  if (hasStructuredNonPassReview) {
+    return 'structured';
+  }
+
   const structuredFindings = Number(log.metadata.review_findings_total);
   if (Number.isFinite(structuredFindings)) {
     return 'structured';
@@ -168,6 +179,7 @@ const STAGE_STATE_ALLOWED_FIELDS = new Set([
   'review_artifact',
   'review_artifacts',
   'review_findings_total',
+  'review_events',
   'review_passed_at',
   'review_rounds',
   'review_rounds_total',
@@ -201,10 +213,7 @@ function matchingOptionalField(left: string, right: string): boolean {
   return !left || !right || left === right;
 }
 
-function stageStateScopeMatches(
-  state: Record<string, unknown>,
-  log: ParsedStageLog,
-): boolean {
+function stageStateScopeMatches(state: Record<string, unknown>, log: ParsedStageLog): boolean {
   const logFeatureId = firstString(log.metadata.primary_feature_id, log.metadata.feature_id);
   const stateFeatureId = firstString(state.primary_feature_id, state.feature_id);
   const logBacklogItem = firstString(
@@ -239,8 +248,7 @@ function enrichLogWithStageState(log: ParsedStageLog, projectRoot: string | null
         metadata: {
           ...log.metadata,
           stage_state_artifact_rejected: statePath,
-          stage_state_rejection_reason:
-            'Stage state scope did not match the included stage log.',
+          stage_state_rejection_reason: 'Stage state scope did not match the included stage log.',
         },
       };
     }

@@ -32,6 +32,16 @@ function buildSkillScopeFixtureSummary() {
   });
 }
 
+function buildReferencedOnlyStageLogSummary() {
+  const projectRoot = fixturePath('rpa-05', 'project');
+  return buildScanSummary({
+    session: fixturePath('rpa-05', 'session-referenced-only-stage-log.jsonl'),
+    logsDir: path.join(projectRoot, '.dossier', 'logs'),
+    artifactsDir: projectRoot,
+    untilTs: '2026-04-24T09:03:00Z',
+  });
+}
+
 void test('report markdown includes core retrospective sections and inferred signals', () => {
   const markdown = buildReportMarkdown(buildLinkedFixtureSummary(), {
     phase: 'implementation',
@@ -80,6 +90,30 @@ void test('logging review markdown highlights missing artifact links and automat
   assert.match(markdown, /Missing review artifacts: 0/mu);
   assert.match(markdown, /Missing verification artifacts: 0/mu);
   assert.match(markdown, /Add machine-readable trace anchors to each stage log/mu);
+});
+
+void test('markdown renderers mark zero included logs with excluded candidates as incomplete', () => {
+  const summary = buildReferencedOnlyStageLogSummary();
+  const report = buildReportMarkdown(summary, {
+    phase: 'implementation',
+    title: 'Retrospective: implementation',
+  });
+  const loggingReview = buildLoggingReviewMarkdown(summary);
+
+  assert.match(
+    report,
+    /Candidate incidents: incomplete until excluded stage-log candidates are validated \(0 inferred automatically\)/u,
+  );
+  assert.match(
+    report,
+    /No candidate incidents were inferred automatically because no stage logs were analyzed; excluded stage-log candidates require validation first\./u,
+  );
+  assert.match(report, /implementation\.md/u);
+  assert.match(loggingReview, /Log-derived metrics: incomplete/u);
+  assert.match(
+    loggingReview,
+    /Excluded stage-log candidates require validation: .*implementation\.md/u,
+  );
 });
 
 void test('markdown renderers tolerate legacy scan summaries without metric source fields', () => {

@@ -12,6 +12,7 @@ function formatObservedGaps(input: {
   missingStepArtifacts: number;
   approximateDurations: number;
   missingSkillCatalog: boolean;
+  excludedStageLogCandidates: string[];
 }): string {
   const gaps: string[] = [];
   const missingClosureArtifacts =
@@ -27,6 +28,11 @@ function formatObservedGaps(input: {
   }
   if (input.missingSkillCatalog) {
     gaps.push('The injected Available skills catalog was missing or unresolved.');
+  }
+  if (input.excludedStageLogCandidates.length > 0) {
+    gaps.push(
+      `Excluded stage-log candidates require validation: ${input.excludedStageLogCandidates.join(', ')}.`,
+    );
   }
 
   if (gaps.length === 0) {
@@ -47,6 +53,15 @@ function formatMetricSource(
   return `${source.quality} — ${source.reason}`;
 }
 
+function excludedStageLogCandidateLabels(scan: ScanSummary): string[] {
+  return scan.scope.stage_log_candidates
+    .filter((candidate) => !candidate.included)
+    .map(
+      (candidate) =>
+        `${candidate.path} (${candidate.evidence_kind}; ${candidate.next_action ?? candidate.reason})`,
+    );
+}
+
 export function buildLoggingReviewMarkdown(scan: ScanSummary): string {
   const missingReviewArtifacts = scan.stageLogs.files.filter(
     (entry) => !entry.metadata.review_artifact,
@@ -63,6 +78,11 @@ export function buildLoggingReviewMarkdown(scan: ScanSummary): string {
       typeof entry.metadata.log_quality === 'object' &&
       (entry.metadata.log_quality as Record<string, unknown>).duration_exact === false,
   ).length;
+  const excludedStageLogs = excludedStageLogCandidateLabels(scan);
+  const logDerivedMetricsStatus =
+    scan.stageLogs.count === 0 && excludedStageLogs.length > 0
+      ? 'incomplete; excluded stage-log candidates require validation.'
+      : 'based on included stage logs.';
 
   return `# Logging review draft
 
@@ -71,6 +91,8 @@ ${statusLine(scan)}
 ## Summary
 
 - Logs analyzed: ${scan.stageLogs.count}
+- Log-derived metrics: ${logDerivedMetricsStatus}
+- Excluded stage-log candidates require validation: ${excludedStageLogs.join(', ') || 'none'}
 - Process misses recorded: ${scan.stageLogs.metrics.processMissesTotal}
 - Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
 - Missing review artifacts: ${missingReviewArtifacts}
@@ -95,6 +117,7 @@ ${formatObservedGaps({
   missingStepArtifacts,
   approximateDurations,
   missingSkillCatalog: !scan.dataQuality.skillCatalogPresent,
+  excludedStageLogCandidates: excludedStageLogs,
 })}
 
 ## Suggested improvements
