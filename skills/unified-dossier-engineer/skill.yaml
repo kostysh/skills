@@ -71,6 +71,12 @@ references:
     target: references/commandized-stage-control.md
     required: true
     trigger: Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
+  - id: ref-implementation-pre-review-checklists
+    title: Implementation pre-review checklists
+    source: references/implementation-pre-review-checklists.md
+    target: references/implementation-pre-review-checklists.md
+    required: true
+    trigger: Read this when designing implementation pre-review checklist evidence, risk-family declarations, or readiness gates before external review.
   - id: ref-runtime-command-boundary
     title: Runtime and command boundary
     source: references/runtime-and-command-boundary.md
@@ -149,6 +155,7 @@ surfaces:
       - ref-audit-policy
       - ref-telemetry-and-closure
       - ref-commandized-stage-control
+      - ref-implementation-pre-review-checklists
       - ref-runtime-command-boundary
     optionalReferences: []
 
@@ -436,7 +443,7 @@ sections:
         - node scripts/dossier-engineer.mjs dossier-verify --dossier <path>
     - id: command-review-artifact
       command: review-artifact
-      summary: Persist one already obtained audit result for one audit class.
+      summary: Persist one immutable already obtained audit attempt for one audit class.
       when: Required external audit evidence already exists and one audit-class result must be recorded durably.
       script: scripts/dossier-engineer.mjs
       examples:

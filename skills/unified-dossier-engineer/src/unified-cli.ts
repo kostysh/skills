@@ -586,6 +586,7 @@ function createDossierCommandWrapper(
                     required_audit_classes?: string[];
                     required_external_review_pending?: boolean;
                     required_security_review?: boolean | null;
+                    review_artifacts?: string[];
                     review_trace_commits?: string[];
                     reviewer_agent_ids?: string[];
                     reviewer_skills?: string[];
@@ -598,6 +599,17 @@ function createDossierCommandWrapper(
                       `Step artifact must match feature ${featureId} and step ${normalizedStep}.`,
                     );
                   }
+                  const selectedReviewArtifactPaths = Array.isArray(artifact.review_artifacts)
+                    ? artifact.review_artifacts.filter(
+                        (artifactPath): artifactPath is string =>
+                          typeof artifactPath === 'string' && artifactPath.trim().length > 0,
+                      )
+                    : reviewArtifactPaths.map((artifactPath) =>
+                        path
+                          .relative(root, path.resolve(root, artifactPath))
+                          .split(path.sep)
+                          .join('/'),
+                      );
                   await recordStepCloseOnStageLog({
                     root,
                     featureId,
@@ -609,12 +621,7 @@ function createDossierCommandWrapper(
                           .split(path.sep)
                           .join('/')
                       : null,
-                    reviewArtifactPaths: reviewArtifactPaths.map((artifactPath) =>
-                      path
-                        .relative(root, path.resolve(root, artifactPath))
-                        .split(path.sep)
-                        .join('/'),
-                    ),
+                    reviewArtifactPaths: selectedReviewArtifactPaths,
                     finalClosureCommit: currentGitHead(root),
                     processComplete: artifact.process_complete === true,
                     auditSummary: {
@@ -805,7 +812,11 @@ function createDossierCommandWrapper(
                   findings?: { must_fix?: unknown };
                   implementation_scope?: 'code-bearing' | 'non-code' | null;
                   invalidated?: boolean;
+                  latest_copy_path?: string | null;
                   review_mode?: 'degraded' | 'external' | 'self-review';
+                  review_attempt_id?: string | null;
+                  review_round_id?: string | null;
+                  review_round_number?: number | null;
                   reviewer?: string;
                   reviewer_agent_id?: string | null;
                   reviewer_skill?: string | null;
@@ -846,10 +857,31 @@ function createDossierCommandWrapper(
                       ? artifact.implementation_scope
                       : null,
                   invalidated: artifact.invalidated === true,
+                  latestCopyPath:
+                    typeof artifact.latest_copy_path === 'string' &&
+                    artifact.latest_copy_path.trim().length > 0
+                      ? artifact.latest_copy_path
+                      : null,
                   mustFixCount: Array.isArray(artifact.findings?.must_fix)
                     ? artifact.findings.must_fix.length
                     : 0,
                   reviewMode: artifact.review_mode ?? 'external',
+                  reviewAttemptId:
+                    typeof artifact.review_attempt_id === 'string' &&
+                    artifact.review_attempt_id.trim().length > 0
+                      ? artifact.review_attempt_id
+                      : null,
+                  reviewRoundId:
+                    typeof artifact.review_round_id === 'string' &&
+                    artifact.review_round_id.trim().length > 0
+                      ? artifact.review_round_id
+                      : null,
+                  reviewRoundNumber:
+                    typeof artifact.review_round_number === 'number' &&
+                    Number.isInteger(artifact.review_round_number) &&
+                    artifact.review_round_number > 0
+                      ? artifact.review_round_number
+                      : null,
                   reviewer: artifact.reviewer ?? 'unknown-reviewer',
                   reviewerAgentId: artifact.reviewer_agent_id ?? null,
                   reviewerSkill: artifact.reviewer_skill ?? null,
@@ -1228,6 +1260,19 @@ function createDossierCommandWrapper(
 }
 
 function createStageControllerWrapper(command: StageControllerCommand): UnifiedCommand {
+  const implementationUsageSuffix =
+    command === 'implementation'
+      ? ' [--implementation-scope <non-code|code-bearing>] [--risk-family <id>] [--pre-review-check <dsl>]'
+      : '';
+  const implementationHelpLines =
+    command === 'implementation'
+      ? [
+          '  - --implementation-scope is accepted only with implementation --ready-for-close',
+          '  - --risk-family declares an explicit bounded implementation pre-review risk family',
+          '  - --pre-review-check uses risk_family=<id>;id=<id>;status=<pass|not_applicable|blocked>;summary=<text>;evidence=<text>;test_refs=<comma-list>',
+          '  - declared risk families require complete non-blocked pre-review checklist evidence before implementation can reach ready_for_close',
+        ]
+      : [];
   return {
     name: command,
     family: 'delivery-stage',
@@ -1242,7 +1287,7 @@ function createStageControllerWrapper(command: StageControllerCommand): UnifiedC
       `Mechanical controller for the ${command} delivery stage.`,
       '',
       'Usage:',
-      `  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
+      `  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationUsageSuffix}`,
       '  dossier-engineer ' +
         `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
       '',
@@ -1251,6 +1296,7 @@ function createStageControllerWrapper(command: StageControllerCommand): UnifiedC
       '  - --trace-runtime is optional explicit metadata, not a runtime-specific default',
       '  - --skill-used, --skill-issue, --skill-followup, and --process-miss are explicit agent-supplied annotations',
       '  - --process-miss uses id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>',
+      ...implementationHelpLines,
       '  - stage controllers stop at ready_for_close',
       '  - authoritative closure remains dossier-step-close + lifecycle-refresh',
       '  - backlog truth is not mutated directly by the stage controller',

@@ -6,6 +6,7 @@ Use it together with:
 
 - [Delivery workflow layer](delivery-workflow-layer.md)
 - [Commandized stage control](commandized-stage-control.md)
+- [Implementation pre-review checklists](implementation-pre-review-checklists.md)
 - [Telemetry and closure](telemetry-and-closure.md)
 
 ## Purpose
@@ -158,11 +159,14 @@ Stale or invalidated audits do not satisfy closure policy.
 
 Helper command roles stay narrow:
 
-- `review-artifact` persists one already obtained audit result for one audit class;
+- `review-artifact` persists one immutable already obtained audit attempt for one audit class;
+- later attempts supersede earlier attempts for closure only through policy validation, never by overwriting earlier evidence;
 - `dossier-step-close` validates that the required audit bundle exists and is still valid;
 - neither helper performs the audit itself.
 
 Truthful close-out requires the policy-defined audit bundle for the stage and scope being closed.
+
+Implementation pre-review checklist evidence is reviewer context and author-side readiness evidence only. It is not audit evidence, not correctness proof, not reviewer launch-mode proof, and not a substitute for required `spec-conformance-reviewer`, `code-reviewer`, or `security-reviewer` audits.
 
 ## Minimum persisted audit evidence
 
@@ -175,6 +179,8 @@ Durable review evidence must preserve enough structure to answer:
 - which reviewer skill / agent identity produced it when available;
 - which reviewer thread provenance was stamped by the runtime when available;
 - whether the audit is invalidated or degraded;
+- the review attempt identity: `review_attempt_id`, `review_round_id`, `review_round_number`, and immutable `artifact_path`;
+- any compatibility latest copy path as a convenience pointer, not as the sole evidence;
 - which audit classes were required versus executed;
 - which helper-managed stage state recorded the audit bundle for the current stage cycle;
 - for implementation, whether security review was required and why.

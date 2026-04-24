@@ -8,7 +8,7 @@ compatibility: Canonical runtime shipped. Only the canonical `.dossier` +
 metadata:
   source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 22744ae8f61e79ebc0740c0b68198500d5e189f59acf6f20fe4f2616a9039511
+  skillforge-source-hash: cf050ef8af677aadc7077612f97ff06b24219f34d5a05748ffb42085b831c4f3
 ---
 
 # unified-dossier-engineer
@@ -38,7 +38,9 @@ The shipped runtime serves one canonical model: `.dossier` for accounting/proces
 
 Every mutating dossier stage requires external review before truthful closure. Blocking external reviews must be launched as separate reviewer executions without forked/full-history authoring context. In Codex this means `fork_context: false`; in other runtimes use the equivalent no-full-context-inheritance mode. If an audit was launched with forked/full-history context, discard it and rerun it correctly.
 
-`review-artifact` records one already obtained audit result for one audit class. `dossier-step-close` validates the policy-required audit bundle before truthful closure. These helpers record and validate only observable durable provenance; they do not prove reviewer launch-mode independence.
+`review-artifact` records one immutable already obtained audit attempt for one audit class. Stable/latest review copies are compatibility conveniences, not the sole evidence. `dossier-step-close` validates the policy-required audit bundle before truthful closure and records selected immutable PASS attempt paths. These helpers record and validate only observable durable provenance; they do not prove reviewer launch-mode independence.
+
+Implementation pre-review checklists are author-side readiness evidence for explicitly declared risk families before external review handoff. They are not correctness proof and never replace required external audits.
 
 This skill preserves two distinct semantic layers inside one runtime:
 
@@ -47,7 +49,7 @@ This skill preserves two distinct semantic layers inside one runtime:
 
 For stage-controller writes, session provenance is agent-owned explicit input. The agent determines the session id before invoking the runtime and passes it with `--session-id`; the runtime must not discover session ids from runtime-private stores or silently fall back to environment variables.
 
-For machine-complete stage artifacts, helper-managed `.dossier/stages/*` is the authoritative structured coordination and validation surface. Stage log frontmatter mirrors bounded machine fields such as artifact links, backlog follow-up state, explicit skill annotations, structured `process_misses`, scope identity, and optional commit trace links.
+For machine-complete stage artifacts, helper-managed `.dossier/stages/*` is the authoritative structured coordination and validation surface. Stage log frontmatter mirrors bounded machine fields such as artifact links, review attempt events, backlog follow-up state, explicit skill annotations, structured `process_misses`, scope identity, and optional commit trace links.
 
 ## Workflow stages
 
@@ -391,7 +393,7 @@ Validation:
 ### CLI command: `review-artifact`
 **Use when:** Required external audit evidence already exists and one audit-class result must be recorded durably.
 
-**Summary:** Persist one already obtained audit result for one audit class.
+**Summary:** Persist one immutable already obtained audit attempt for one audit class.
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
@@ -432,6 +434,7 @@ Validation:
 - **high** — Do not collapse backlog lifecycle, dossier maturity, `coverage_gate`, review freshness, and closure state into one flat status enum.
 - **high** — Delivery closure remains step-close-backed and telemetry-backed; commit history or chat summaries are never enough.
 - **high** — Stage-controller commands are mechanical progress controllers only; they must stop at `ready_for_close` and must not duplicate `dossier-step-close` or `lifecycle-refresh`.
+- **high** — Blocking external audits must be launched without forked/full-history authoring context; `review-artifact` and `dossier-step-close` record observable provenance but do not prove launch-mode independence.
 
 ## Policies
 
@@ -454,6 +457,7 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 - [Audit policy](references/audit-policy.md) — Read this when changing mutating-stage review policy, review bundles, review freshness, or truthful close-out rules.
 - [Telemetry and closure](references/telemetry-and-closure.md) — Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
 - [Commandized stage control](references/commandized-stage-control.md) — Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
+- [Implementation pre-review checklists](references/implementation-pre-review-checklists.md) — Read this when designing implementation pre-review checklist evidence, risk-family declarations, or readiness gates before external review.
 - [Runtime and command boundary](references/runtime-and-command-boundary.md) — Read this when designing or maintaining canonical runtime modules, help surface, or command-family boundaries.
 
 ## Bundled assets

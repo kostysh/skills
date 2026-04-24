@@ -4,7 +4,9 @@ The shipped runtime serves one canonical model: `.dossier` for accounting/proces
 
 Every mutating dossier stage requires external review before truthful closure. Blocking external reviews must be launched as separate reviewer executions without forked/full-history authoring context. In Codex this means `fork_context: false`; in other runtimes use the equivalent no-full-context-inheritance mode. If an audit was launched with forked/full-history context, discard it and rerun it correctly.
 
-`review-artifact` records one already obtained audit result for one audit class. `dossier-step-close` validates the policy-required audit bundle before truthful closure. These helpers record and validate only observable durable provenance; they do not prove reviewer launch-mode independence.
+`review-artifact` records one immutable already obtained audit attempt for one audit class. Stable/latest review copies are compatibility conveniences, not the sole evidence. `dossier-step-close` validates the policy-required audit bundle before truthful closure and records selected immutable PASS attempt paths. These helpers record and validate only observable durable provenance; they do not prove reviewer launch-mode independence.
+
+Implementation pre-review checklists are author-side readiness evidence for explicitly declared risk families before external review handoff. They are not correctness proof and never replace required external audits.
 
 This skill preserves two distinct semantic layers inside one runtime:
 
@@ -13,4 +15,4 @@ This skill preserves two distinct semantic layers inside one runtime:
 
 For stage-controller writes, session provenance is agent-owned explicit input. The agent determines the session id before invoking the runtime and passes it with `--session-id`; the runtime must not discover session ids from runtime-private stores or silently fall back to environment variables.
 
-For machine-complete stage artifacts, helper-managed `.dossier/stages/*` is the authoritative structured coordination and validation surface. Stage log frontmatter mirrors bounded machine fields such as artifact links, backlog follow-up state, explicit skill annotations, structured `process_misses`, scope identity, and optional commit trace links.
+For machine-complete stage artifacts, helper-managed `.dossier/stages/*` is the authoritative structured coordination and validation surface. Stage log frontmatter mirrors bounded machine fields such as artifact links, review attempt events, backlog follow-up state, explicit skill annotations, structured `process_misses`, scope identity, and optional commit trace links.

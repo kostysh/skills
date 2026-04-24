@@ -319,6 +319,7 @@ Parity-protected machine fields:
 - `backlog_actualization_artifacts`
 - `backlog_actualization_verdict`
 - `review_artifacts`
+- `review_events`
 - `verification_artifacts`
 - `step_artifact`
 - `final_delivery_commit`
@@ -330,6 +331,10 @@ Parity-protected machine fields:
 - `primary_feature_id`
 - `primary_backlog_item_key`
 - `phase_scope`
+- implementation-only `pre_review_risk_families`
+- implementation-only `pre_review_checklists`
+- implementation-only `pre_review_checklist_status`
+- implementation-only `pre_review_checklist_blockers`
 
 Agent-supplied schema inputs:
 
@@ -338,6 +343,8 @@ Agent-supplied schema inputs:
 - repeatable `--skill-followup <code-or-summary>`;
 - repeatable `--process-miss <dsl>`;
 - optional `--phase-scope <text>`.
+- `implementation` only: repeatable `--risk-family <id>`;
+- `implementation` only: repeatable `--pre-review-check <dsl>`.
 
 `--process-miss` DSL:
 
@@ -345,12 +352,26 @@ Agent-supplied schema inputs:
 id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>
 ```
 
+`--pre-review-check` DSL:
+
+```text
+risk_family=<id>;id=<id>;status=<pass|not_applicable|blocked>;summary=<text>;evidence=<text>;test_refs=<comma-list>
+```
+
 Rules:
 
 - selected-feature lifecycle reconciliation is explicit machine state, not inferred from prose, commits, or `docs/ssot/index.md`;
 - malformed `--process-miss` entries fail before stage artifacts are written;
+- malformed `--pre-review-check` entries fail before stage artifacts are written;
+- `--risk-family` and `--pre-review-check` are accepted only by `implementation`;
+- implementation risk-family declarations are explicit and must not be inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
+- `implementation --ready-for-close` fails before writing `stage_state: ready_for_close` when declared pre-review checklist evidence is `missing` or `blocked`;
+- built-in `policy-admission-governance` requires `explicit-allow-deny`, `deny-or-failed-admission-no-invocation`, `conflicting-request-replay-fail-closed`, `ambiguous-stale-unsupported-evidence`, `freshness-timestamp-required`, `active-scope-concurrency-model`, `append-only-decision-audit-facts`, and `regression-test-paths`;
+- custom risk families require at least one `pass` or `not_applicable` checklist entry and no `blocked` entries, without core runtime domain changes;
 - `process_misses` is structured source of truth; `Process misses` prose is rendered mirror plus preserved human notes;
-- `review_artifacts`, `verification_artifacts`, and `step_artifact` are explicit artifact links, not heuristic recovery;
+- `review_artifacts`, `review_events`, `verification_artifacts`, and `step_artifact` are explicit artifact links, not heuristic recovery;
+- `review_events[]` links every review attempt to attempt id, round id, round number, immutable artifact path, optional latest copy path, audit class, verdict, reviewer provenance, freshness, and invalidation state;
+- `review_artifacts` is an ordered unique list of immutable attempt artifact paths, including failed and passing attempts;
 - `final_delivery_commit` and `final_closure_commit` are optional trace links only and never required closure evidence;
 - skill annotations are not scraped from trace or prose.
 
@@ -381,6 +402,7 @@ Minimum common fields:
 - `backlog_actualization_artifacts`
 - `backlog_actualization_verdict`
 - `review_artifacts`
+- `review_events`
 - `verification_artifacts`
 - `step_artifact`
 - `final_delivery_commit`
@@ -431,7 +453,7 @@ Rules:
 - `lifecycle-refresh` remains the lifecycle aggregation helper for metrics/session-index refresh;
 - `next-step` remains dossier-local query surface;
 - `contract-drift-audit` remains mature-change helper, not a primary stage controller.
-- `review-artifact` persists one already obtained audit result for one audit class and does not perform the audit.
+- `review-artifact` persists one immutable already obtained audit attempt for one audit class and does not perform the audit.
 
 ### Audit-bundle contract
 
@@ -458,12 +480,22 @@ Fail-closed runtime rule:
 
 - `stage`
 - `audit_class`
+- `review_attempt_id`
+- `review_round_id`
+- `review_round_number`
+- `artifact_role: "immutable_attempt"` for the authoritative per-round artifact
+- immutable artifact path linkage in helper-managed `review_events[]`
+- optional `latest_copy_path` when a stable/latest compatibility copy is written
 - reviewer provenance
 - external-versus-degraded review mode
 - freshness / invalidation state
 - implementation review scope from the current helper-managed implementation stage state where applicable
 - helper-managed stage-state membership for the current stage cycle
 - security-trigger reason where applicable
+
+Default review artifact filenames are bounded immutable attempt files under `.dossier/reviews/<feature>/`, for example `<step>--<audit_class>--rNN--<verdict>--<commit-or-no-commit>.json`.
+
+Stable/latest review references are backward-compatible full artifact JSON copies. They preserve ordinary review artifact fields such as `audit_class`, `verdict`, `findings`, reviewer provenance, `stage`, `feature_id`, and freshness fields, but they must also stamp `artifact_role: "latest_copy"` and `immutable_artifact_path`. Latest copies are convenience references only; retrospective reconstruction and closure outputs must use immutable attempt artifacts as authoritative evidence.
 
 The canonical runtime mechanically enforces only the durable subset of audit-policy launch evidence:
 
@@ -480,6 +512,8 @@ Audit-launch rules such as `fork_context: false`, no forked/full-history inherit
 
 `review-artifact` and `dossier-step-close` record and validate observable durable provenance only. They must not claim automatic proof of launch-mode independence beyond the recorded provenance signals available to the runtime.
 
+Implementation pre-review checklist evidence is reviewer context and author-side readiness evidence only. It is not audit evidence, not correctness proof, and not a replacement for `spec-conformance-reviewer`, `code-reviewer`, or `security-reviewer`.
+
 `dossier-step-close` must reject truthful closure when:
 
 - a required audit class is missing;
@@ -488,6 +522,8 @@ Audit-launch rules such as `fork_context: false`, no forked/full-history inherit
 - a required audit still carries blocking findings.
 - current helper validation cannot confirm the required bundle from the helper-managed stage state.
 - selected backlog item current delivery state is below the lifecycle target for `spec-compact`, `plan-slice`, or `implementation`.
+
+When `--review-artifact` points at a latest copy, `dossier-step-close` resolves and validates its `immutable_artifact_path` inside `.dossier/reviews/<feature>/`. If that path is missing, unmanaged, or does not contain `artifact_role: "immutable_attempt"`, close-out fails closed. Step-close artifacts record the selected final PASS bundle as immutable attempt paths, while helper-managed stage state preserves the full review history.
 
 ## 7. Preservation / rename / deprecation matrix
 

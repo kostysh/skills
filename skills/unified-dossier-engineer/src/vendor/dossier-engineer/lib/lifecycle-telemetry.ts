@@ -535,13 +535,28 @@ function countRerounds(aggregate: StageAggregate): number {
   const validEvents = aggregate.reviewEvents.filter(
     (event) => event.invalidated !== true && event.allowed_by_policy !== false,
   );
-  const reviewRounds = toStringArray(
-    validEvents.map((event) => toNullableString(event.event_commit)),
-  ).length;
-  if (reviewRounds > 0) {
-    return Math.max(reviewRounds - 1, 0);
+  const roundsByAuditClass = new Map<string, Set<string>>();
+  for (const event of validEvents) {
+    const auditClass = toNullableString(event.audit_class) ?? 'unknown';
+    const roundNumber =
+      typeof event.review_round_number === 'number' &&
+      Number.isInteger(event.review_round_number) &&
+      event.review_round_number > 0
+        ? String(event.review_round_number)
+        : null;
+    const roundId = roundNumber ?? toNullableString(event.review_round_id);
+    const fallbackRound = roundId ?? toNullableString(event.event_commit);
+    if (!fallbackRound) {
+      continue;
+    }
+    const rounds = roundsByAuditClass.get(auditClass) ?? new Set<string>();
+    rounds.add(fallbackRound);
+    roundsByAuditClass.set(auditClass, rounds);
   }
-  return 0;
+  return [...roundsByAuditClass.values()].reduce(
+    (total, rounds) => total + Math.max(rounds.size - 1, 0),
+    0,
+  );
 }
 
 function reviewPolicySnapshot(

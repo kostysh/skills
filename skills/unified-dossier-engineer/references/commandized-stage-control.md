@@ -2,6 +2,8 @@
 
 Use this reference when maintaining the shipped stage-controller model for primary delivery workflows in this skill.
 
+Use it together with [Implementation pre-review checklists](implementation-pre-review-checklists.md) when changing implementation risk-family inputs or pre-review readiness gates.
+
 ## Purpose
 
 This skill removes the old ambiguity where some delivery steps were real commands and others were prose-only workflow stages.
@@ -105,6 +107,7 @@ Parity-protected fields:
 - `backlog_actualization_artifacts`
 - `backlog_actualization_verdict`
 - `review_artifacts`
+- `review_events`
 - `verification_artifacts`
 - `step_artifact`
 - `final_delivery_commit`
@@ -116,15 +119,22 @@ Parity-protected fields:
 - `primary_feature_id`
 - `primary_backlog_item_key`
 - `phase_scope`
+- implementation-only `pre_review_risk_families`
+- implementation-only `pre_review_checklists`
+- implementation-only `pre_review_checklist_status`
+- implementation-only `pre_review_checklist_blockers`
 
 Rules:
 
 - selected-feature lifecycle reconciliation fields are explicit machine state and are not inferred from prose;
 - review, verification, and close-out artifact links must be stored as explicit repo-relative arrays or fields, not recovered heuristically from prose;
+- review attempt linkage in `review_events[]` must include attempt id, round id, round number, immutable artifact path, optional latest copy path, audit class, verdict, reviewer provenance, and freshness/invalidation state;
+- `review_artifacts` stores immutable attempt artifact paths, while latest copies remain compatibility conveniences rather than closure truth;
 - `final_delivery_commit` and `final_closure_commit` are optional trace links only and must not become required closure evidence;
 - `skills_used`, `skill_issues`, and `skill_followups` are agent-supplied annotations, not automatic skill extraction from conversation traces;
 - `process_misses` is the structured source of truth for process misses, while the `Process misses` Markdown section is a rendered mirror plus preserved human notes;
 - stage-controller writes accept `--skill-used`, `--skill-issue`, `--skill-followup`, `--process-miss`, and `--phase-scope` as explicit machine-facing stage context.
+- `implementation` also accepts repeatable `--risk-family <id>` and `--pre-review-check <dsl>` as explicit author-side readiness evidence; other stage controllers reject those flags before writing artifacts.
 
 Repeatable `--process-miss` DSL:
 
@@ -133,6 +143,20 @@ id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;sum
 ```
 
 Malformed entries fail before stage artifacts are written.
+
+Repeatable `--pre-review-check` DSL:
+
+```text
+risk_family=<id>;id=<id>;status=<pass|not_applicable|blocked>;summary=<text>;evidence=<text>;test_refs=<comma-list>
+```
+
+Readiness rules:
+
+- risk families are explicit declarations and must not be inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
+- checklist entries must reference a declared `--risk-family`;
+- `policy-admission-governance` requires the checklist ids listed in [Implementation pre-review checklists](implementation-pre-review-checklists.md);
+- custom risk families require at least one `pass` or `not_applicable` entry and no `blocked` entries;
+- `implementation --ready-for-close` fails before writing `stage_state: ready_for_close` when the declared checklist status is `missing` or `blocked`.
 
 ## Logging role
 
@@ -210,6 +234,7 @@ Required alignment:
 - `ready_for_close` means the stage is ready to enter audit-policy-governed verification, non-forked/no-full-history external review, and helper-owned closure; it never means truthfully closed and does not prove the reviewer launch mode.
 - for `plan-slice`, `ready_for_close` also presumes agent-owned semantic readiness: the plan has an explicit execution target, completion recognition, and implementation boundaries. The stage controller does not author or validate that semantic content.
 - for every mutating stage, helper-owned close-out must enforce the required external audit bundle defined in [Audit policy](audit-policy.md).
+- implementation pre-review checklist evidence is author-side readiness context only; it does not satisfy or weaken the external audit bundle.
 
 ## Utility-spec handoff
 
@@ -229,6 +254,7 @@ The utility specification and runtime packages now ship this boundary in first-w
 - do not document flags or output fields for stage-controller commands that the shipped runtime does not actually expose
 - do not make runtime-specific session discovery the canonical stage-controller provenance contract
 - do not infer skill usage or process misses from traces or prose when explicit schema fields are required
+- do not infer implementation risk-family declarations from traces, prose, keywords, filenames, or diffs
 - do not infer backlog lifecycle reconciliation from traces, prose, commit messages, or `docs/ssot/index.md`
 - do not make optional commit anchors a required proof for truthful closure
 - do not let stage controllers absorb `dossier-step-close`, `lifecycle-refresh`, or `next-step`

@@ -12,6 +12,7 @@ import {
   readStageState,
   syncStageStateFromMetadata,
   type StageStateProcessMiss,
+  type StageStatePreReviewChecklistEntry,
   type StageStateRecord,
 } from '../shared/stage-state.ts';
 import { assertManagedWritePath } from '../shared/path-guards.ts';
@@ -48,6 +49,21 @@ const REVIEW_MODES = ['degraded', 'external', 'self-review'] as const;
 
 const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
 type ImplementationReviewScope = (typeof IMPLEMENTATION_REVIEW_SCOPES)[number];
+const PRE_REVIEW_CHECKLIST_ENTRY_STATUSES = ['pass', 'not_applicable', 'blocked'] as const;
+const PRE_REVIEW_RISK_IDENTIFIER_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/u;
+const POLICY_ADMISSION_GOVERNANCE_CHECKLIST_IDS = [
+  'explicit-allow-deny',
+  'deny-or-failed-admission-no-invocation',
+  'conflicting-request-replay-fail-closed',
+  'ambiguous-stale-unsupported-evidence',
+  'freshness-timestamp-required',
+  'active-scope-concurrency-model',
+  'append-only-decision-audit-facts',
+  'regression-test-paths',
+] as const;
+const BUILT_IN_PRE_REVIEW_CHECKLIST_IDS = new Map<string, readonly string[]>([
+  ['policy-admission-governance', POLICY_ADMISSION_GOVERNANCE_CHECKLIST_IDS],
+]);
 
 export interface StageControllerResult {
   backlog_followup_kind: string | null;
@@ -59,6 +75,9 @@ export interface StageControllerResult {
   feature_id: string;
   log_path: string;
   next_commands: string[];
+  pre_review_checklist_blockers: string[];
+  pre_review_checklist_status: 'not_required' | 'missing' | 'blocked' | 'complete';
+  pre_review_risk_families: string[];
   ready_for_close_ts: string | null;
   stage: StageControllerCommand;
   stage_state: 'blocked' | 'in_progress' | 'ready_for_close';
@@ -83,9 +102,13 @@ type ReviewEventPayload = {
   event_commit: string | null;
   implementation_scope: ImplementationReviewScope | null;
   invalidated: boolean;
+  latest_copy_path: string | null;
   must_fix_count: number;
   recorded_at: string;
   review_mode: ReviewMode;
+  review_attempt_id: string | null;
+  review_round_id: string | null;
+  review_round_number: number | null;
   reviewer: string;
   reviewer_agent_id: string | null;
   reviewer_skill: string | null;
@@ -527,6 +550,14 @@ function machineMetadataFromStageState(state: StageStateRecord): Record<string, 
     backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
     backlog_actualization_artifacts: state.backlog_actualization_artifacts,
     backlog_actualization_verdict: state.backlog_actualization_verdict,
+    ...(state.stage === 'implementation'
+      ? {
+          pre_review_risk_families: state.pre_review_risk_families,
+          pre_review_checklists: state.pre_review_checklists,
+          pre_review_checklist_status: state.pre_review_checklist_status,
+          pre_review_checklist_blockers: state.pre_review_checklist_blockers,
+        }
+      : {}),
     required_audit_classes: state.required_audit_classes,
     executed_audit_classes: state.executed_audit_classes,
     required_external_review_pending: state.required_external_review_pending,
@@ -598,9 +629,13 @@ function reviewEventsFromStageState(state: StageStateRecord | null): ReviewEvent
       event_commit: event.event_commit,
       implementation_scope: event.implementation_scope,
       invalidated: event.invalidated,
+      latest_copy_path: event.latest_copy_path,
       must_fix_count: event.must_fix_count ?? 0,
       recorded_at: event.recorded_at,
       review_mode: event.review_mode,
+      review_attempt_id: event.review_attempt_id,
+      review_round_id: event.review_round_id,
+      review_round_number: event.review_round_number,
       reviewer: event.reviewer,
       reviewer_agent_id: event.reviewer_agent_id,
       reviewer_skill: event.reviewer_skill,
@@ -644,6 +679,31 @@ function takeManyOptions(args: string[], name: string): string[] {
   return values;
 }
 
+function takeManyOptionsStrict(args: string[], name: string): string[] {
+  const values: string[] = [];
+  const prefix = `${name}=`;
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg === name) {
+      const value = args[index + 1];
+      if (!value || value.startsWith('--')) {
+        throw new Error(`${name} requires a value.`);
+      }
+      values.push(value);
+      continue;
+    }
+    if (arg?.startsWith(prefix)) {
+      values.push(arg.slice(prefix.length));
+    }
+  }
+  return values;
+}
+
+function hasOption(args: string[], name: string): boolean {
+  const prefix = `${name}=`;
+  return args.some((arg) => arg === name || arg.startsWith(prefix));
+}
+
 function ensureEnumValue<T extends readonly string[]>(
   value: string,
   allowed: T,
@@ -685,6 +745,19 @@ function normalizeRepeatableSingleLineOptions(values: string[], optionName: stri
   );
 }
 
+function normalizePreReviewIdentifier(value: string | null, optionName: string): string {
+  const normalized = normalizeSingleLineOption(value, optionName);
+  if (!normalized) {
+    throw new Error(`${optionName} cannot be empty.`);
+  }
+  if (!PRE_REVIEW_RISK_IDENTIFIER_PATTERN.test(normalized)) {
+    throw new Error(
+      `${optionName} must be a stable lowercase identifier using letters, digits, and hyphens.`,
+    );
+  }
+  return normalized;
+}
+
 export function parseStageProvenanceInput(args: string[]): StageProvenanceInput {
   const sessionId = normalizeSingleLineOption(takeOption(args, '--session-id'), '--session-id');
   if (!sessionId) {
@@ -696,23 +769,28 @@ export function parseStageProvenanceInput(args: string[]): StageProvenanceInput 
   };
 }
 
-function parseProcessMissDsl(value: string): StageStateProcessMiss {
+function parseKeyValueDsl(value: string, optionName: string): Map<string, string> {
   const fields = new Map<string, string>();
   for (const part of value.split(';')) {
     const separator = part.indexOf('=');
     if (separator === -1) {
-      throw new Error('--process-miss entries must use key=value pairs separated by semicolons.');
+      throw new Error(`${optionName} entries must use key=value pairs separated by semicolons.`);
     }
     const key = part.slice(0, separator).trim();
     const fieldValue = part.slice(separator + 1).trim();
     if (!key || !fieldValue) {
-      throw new Error('--process-miss entries must not contain empty keys or values.');
+      throw new Error(`${optionName} entries must not contain empty keys or values.`);
     }
     if (fields.has(key)) {
-      throw new Error(`--process-miss contains duplicate key: ${key}.`);
+      throw new Error(`${optionName} contains duplicate key: ${key}.`);
     }
     fields.set(key, fieldValue);
   }
+  return fields;
+}
+
+function parseProcessMissDsl(value: string): StageStateProcessMiss {
+  const fields = parseKeyValueDsl(value, '--process-miss');
   const allowedKeys = new Set(['id', 'category', 'severity', 'resolved', 'summary']);
   for (const key of fields.keys()) {
     if (!allowedKeys.has(key)) {
@@ -754,6 +832,87 @@ function parseProcessMissDsl(value: string): StageStateProcessMiss {
   };
 }
 
+type PreReviewChecklistInput = {
+  checklistEntries: StageStatePreReviewChecklistEntry[];
+  riskFamilies: string[];
+};
+
+function parsePreReviewCheckDsl(value: string): StageStatePreReviewChecklistEntry {
+  const fields = parseKeyValueDsl(value, '--pre-review-check');
+  const allowedKeys = new Set(['risk_family', 'id', 'status', 'summary', 'evidence', 'test_refs']);
+  for (const key of fields.keys()) {
+    if (!allowedKeys.has(key)) {
+      throw new Error(`--pre-review-check contains unsupported key: ${key}.`);
+    }
+  }
+
+  const riskFamily = normalizePreReviewIdentifier(
+    fields.get('risk_family') ?? null,
+    '--pre-review-check risk_family',
+  );
+  const id = normalizePreReviewIdentifier(fields.get('id') ?? null, '--pre-review-check id');
+  const status = normalizeSingleLineOption(
+    fields.get('status') ?? null,
+    '--pre-review-check status',
+  );
+  const summary = normalizeSingleLineOption(
+    fields.get('summary') ?? null,
+    '--pre-review-check summary',
+  );
+  const evidence = normalizeSingleLineOption(
+    fields.get('evidence') ?? null,
+    '--pre-review-check evidence',
+  );
+  if (!status || !summary || !evidence) {
+    throw new Error(
+      '--pre-review-check must include risk_family, id, status, summary, and evidence.',
+    );
+  }
+  if (
+    !PRE_REVIEW_CHECKLIST_ENTRY_STATUSES.includes(
+      status as (typeof PRE_REVIEW_CHECKLIST_ENTRY_STATUSES)[number],
+    )
+  ) {
+    throw new Error('--pre-review-check status must be one of: pass, not_applicable, blocked.');
+  }
+  return {
+    risk_family: riskFamily,
+    id,
+    status: status as StageStatePreReviewChecklistEntry['status'],
+    summary,
+    evidence,
+    test_refs: fields.has('test_refs')
+      ? uniqueStrings(
+          (fields.get('test_refs') ?? '')
+            .split(',')
+            .map((value) => normalizeSingleLineOption(value, '--pre-review-check test_refs'))
+            .filter((value): value is string => value !== null),
+        )
+      : [],
+  };
+}
+
+function parsePreReviewChecklistInput(
+  command: StageControllerCommand,
+  args: string[],
+): PreReviewChecklistInput {
+  const hasRiskFamily = hasOption(args, '--risk-family');
+  const hasPreReviewCheck = hasOption(args, '--pre-review-check');
+  if (command !== 'implementation' && (hasRiskFamily || hasPreReviewCheck)) {
+    throw new Error('--risk-family and --pre-review-check are only allowed for implementation.');
+  }
+  if (!hasRiskFamily && !hasPreReviewCheck) {
+    return { riskFamilies: [], checklistEntries: [] };
+  }
+  return {
+    riskFamilies: normalizeRepeatableSingleLineOptions(
+      takeManyOptionsStrict(args, '--risk-family'),
+      '--risk-family',
+    ).map((riskFamily) => normalizePreReviewIdentifier(riskFamily, '--risk-family')),
+    checklistEntries: takeManyOptionsStrict(args, '--pre-review-check').map(parsePreReviewCheckDsl),
+  };
+}
+
 export function parseStageAnnotationsInput(args: string[]): StageAnnotationsInput {
   return {
     skillsUsed: normalizeRepeatableSingleLineOptions(
@@ -780,6 +939,88 @@ function mergeProcessMisses(
   return [...new Map([...existing, ...incoming].map((miss) => [miss.id, miss])).values()];
 }
 
+function mergePreReviewChecklists(
+  existing: StageStatePreReviewChecklistEntry[],
+  incoming: StageStatePreReviewChecklistEntry[],
+): StageStatePreReviewChecklistEntry[] {
+  return [
+    ...new Map(
+      [...existing, ...incoming].map((entry) => [`${entry.risk_family}\u0000${entry.id}`, entry]),
+    ).values(),
+  ];
+}
+
+function assertPreReviewChecklistDeclarations(payload: {
+  checklists: StageStatePreReviewChecklistEntry[];
+  riskFamilies: string[];
+}): void {
+  const declaredRiskFamilies = new Set(payload.riskFamilies);
+  const undeclared = uniqueStrings(
+    payload.checklists
+      .filter((entry) => !declaredRiskFamilies.has(entry.risk_family))
+      .map((entry) => entry.risk_family),
+  );
+  if (undeclared.length > 0) {
+    throw new Error(
+      `--pre-review-check entries must reference declared --risk-family values: ${undeclared.join(
+        ', ',
+      )}.`,
+    );
+  }
+}
+
+function evaluatePreReviewChecklist(payload: {
+  checklists: StageStatePreReviewChecklistEntry[];
+  riskFamilies: string[];
+}): {
+  blockers: string[];
+  status: StageControllerResult['pre_review_checklist_status'];
+} {
+  if (payload.riskFamilies.length === 0) {
+    return { status: 'not_required', blockers: [] };
+  }
+
+  const blockedEntries = payload.checklists.filter((entry) => entry.status === 'blocked');
+  if (blockedEntries.length > 0) {
+    return {
+      status: 'blocked',
+      blockers: blockedEntries.map(
+        (entry) => `${entry.risk_family}/${entry.id} blocked: ${entry.summary}`,
+      ),
+    };
+  }
+
+  const blockers: string[] = [];
+  for (const riskFamily of payload.riskFamilies) {
+    const entriesForFamily = payload.checklists.filter((entry) => entry.risk_family === riskFamily);
+    const requiredIds = BUILT_IN_PRE_REVIEW_CHECKLIST_IDS.get(riskFamily);
+    if (requiredIds) {
+      const presentNonBlockedIds = new Set(
+        entriesForFamily
+          .filter((entry) => entry.status === 'pass' || entry.status === 'not_applicable')
+          .map((entry) => entry.id),
+      );
+      const missingIds = requiredIds.filter((id) => !presentNonBlockedIds.has(id));
+      if (missingIds.length > 0) {
+        blockers.push(`${riskFamily} missing checklist entries: ${missingIds.join(', ')}`);
+      }
+      continue;
+    }
+    if (
+      !entriesForFamily.some(
+        (entry) => entry.status === 'pass' || entry.status === 'not_applicable',
+      )
+    ) {
+      blockers.push(`${riskFamily} requires at least one pass or not_applicable checklist entry`);
+    }
+  }
+
+  if (blockers.length > 0) {
+    return { status: 'missing', blockers };
+  }
+  return { status: 'complete', blockers: [] };
+}
+
 function stageSchemaMetadata(payload: {
   featureId: string;
   logPath: string;
@@ -793,8 +1034,10 @@ function commandUsage(command: StageControllerCommand): string {
     command === 'implementation'
       ? ' [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close'
       : '';
+  const implementationPreReviewSuffix =
+    command === 'implementation' ? ' [--risk-family <id>] [--pre-review-check <dsl>]' : '';
   return [
-    `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}`,
+    `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}${implementationPreReviewSuffix}`,
     `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
   ].join('\n');
 }
@@ -1054,6 +1297,7 @@ export async function runStageControllerCommand(
 
   const provenance = parseStageProvenanceInput(args);
   const annotations = parseStageAnnotationsInput(args);
+  const preReviewChecklistInput = parsePreReviewChecklistInput(command, args);
   const cwd = process.cwd();
   const root = await resolveProcessRoot(cwd, takeOption(args, '--root'));
   const featureId = sanitizeFeatureId(
@@ -1159,6 +1403,50 @@ export async function runStageControllerCommand(
     action !== 'ready_for_close' &&
     (currentStageState?.step_close_ts !== null || currentStageState?.process_complete_ts !== null);
   const carryStageEvidence = action === 'ready_for_close';
+  const existingPreReviewRiskFamilies =
+    command === 'implementation' && !resetImplementationEntry
+      ? (currentStageState?.pre_review_risk_families ?? [])
+      : [];
+  const existingPreReviewChecklists =
+    command === 'implementation' && !resetImplementationEntry
+      ? (currentStageState?.pre_review_checklists ?? [])
+      : [];
+  const preReviewRiskFamilies =
+    command === 'implementation'
+      ? uniqueStrings([...existingPreReviewRiskFamilies, ...preReviewChecklistInput.riskFamilies])
+      : [];
+  const preReviewChecklists =
+    command === 'implementation'
+      ? mergePreReviewChecklists(
+          existingPreReviewChecklists,
+          preReviewChecklistInput.checklistEntries,
+        )
+      : [];
+  if (command === 'implementation') {
+    assertPreReviewChecklistDeclarations({
+      riskFamilies: preReviewRiskFamilies,
+      checklists: preReviewChecklists,
+    });
+  }
+  const preReviewEvaluation =
+    command === 'implementation'
+      ? evaluatePreReviewChecklist({
+          riskFamilies: preReviewRiskFamilies,
+          checklists: preReviewChecklists,
+        })
+      : { status: 'not_required' as const, blockers: [] };
+  if (
+    command === 'implementation' &&
+    action === 'ready_for_close' &&
+    preReviewEvaluation.status !== 'not_required' &&
+    preReviewEvaluation.status !== 'complete'
+  ) {
+    throw new Error(
+      `implementation pre-review checklist is ${preReviewEvaluation.status}: ${preReviewEvaluation.blockers.join(
+        '; ',
+      )}`,
+    );
+  }
   const implementationReviewScope =
     command === 'implementation'
       ? action === 'ready_for_close'
@@ -1251,6 +1539,10 @@ export async function runStageControllerCommand(
     metadata.required_security_review = implementationReviewScope === 'code-bearing';
     metadata.security_trigger_reasons =
       stageState === 'ready_for_close' ? (currentStageState?.security_trigger_reasons ?? []) : [];
+    metadata.pre_review_risk_families = preReviewRiskFamilies;
+    metadata.pre_review_checklists = preReviewChecklists;
+    metadata.pre_review_checklist_status = preReviewEvaluation.status;
+    metadata.pre_review_checklist_blockers = preReviewEvaluation.blockers;
   }
   if (command === 'implementation' && stageState === 'ready_for_close') {
     metadata.local_gates_green_ts = now;
@@ -1310,6 +1602,9 @@ export async function runStageControllerCommand(
     backlog_followup_required: effectiveBacklogFollowupRequired,
     backlog_followup_kind: effectiveBacklogFollowupKind,
     backlog_followup_resolved: effectiveBacklogFollowupResolved,
+    pre_review_risk_families: preReviewRiskFamilies,
+    pre_review_checklist_status: preReviewEvaluation.status,
+    pre_review_checklist_blockers: preReviewEvaluation.blockers,
     log_path: relPath.split(path.sep).join('/'),
     next_commands: nextCommandsForState(command, stageState),
   };
@@ -1412,8 +1707,12 @@ export async function recordReviewArtifactOnStageLog(payload: {
   featureId: string;
   implementationScope: ImplementationReviewScope | null;
   invalidated: boolean;
+  latestCopyPath: string | null;
   mustFixCount: number;
   reviewMode: ReviewMode;
+  reviewAttemptId: string | null;
+  reviewRoundId: string | null;
+  reviewRoundNumber: number | null;
   reviewer: string;
   reviewerAgentId: string | null;
   reviewerSkill: string | null;
@@ -1447,9 +1746,13 @@ export async function recordReviewArtifactOnStageLog(payload: {
     event_commit: payload.eventCommit,
     implementation_scope: payload.implementationScope,
     invalidated: payload.invalidated,
+    latest_copy_path: payload.latestCopyPath,
     must_fix_count: payload.mustFixCount,
     recorded_at: recordedAt,
     review_mode: payload.reviewMode,
+    review_attempt_id: payload.reviewAttemptId,
+    review_round_id: payload.reviewRoundId,
+    review_round_number: payload.reviewRoundNumber,
     reviewer: payload.reviewer,
     reviewer_agent_id: payload.reviewerAgentId,
     reviewer_skill: payload.reviewerSkill,

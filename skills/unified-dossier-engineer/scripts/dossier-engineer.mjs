@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import crypto from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
 import { constants, promises } from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
+import crypto from "node:crypto";
 import fs from "node:fs/promises";
 //#region \0rolldown/runtime.js
 var __defProp = Object.defineProperty;
@@ -6821,6 +6821,17 @@ var PROCESS_MISS_SEVERITIES = [
 	"medium",
 	"high"
 ];
+var PRE_REVIEW_CHECKLIST_ENTRY_STATUSES$1 = [
+	"pass",
+	"not_applicable",
+	"blocked"
+];
+var PRE_REVIEW_CHECKLIST_STATUSES = [
+	"not_required",
+	"missing",
+	"blocked",
+	"complete"
+];
 var BACKLOG_ACTUALIZATION_VERDICTS = [
 	"actualization_required",
 	"actualized_by_backlog_artifact",
@@ -6855,9 +6866,13 @@ function toReviewEvents(value) {
 		event_commit: toNullableString$4(item.event_commit),
 		implementation_scope: normalizeImplementationReviewScope$2(item.implementation_scope),
 		invalidated: toBoolean$1(item.invalidated),
+		latest_copy_path: toNullableString$4(item.latest_copy_path),
 		must_fix_count: typeof item.must_fix_count === "number" && Number.isFinite(item.must_fix_count) ? item.must_fix_count : null,
 		recorded_at: toNullableString$4(item.recorded_at),
 		review_mode: toNullableString$4(item.review_mode),
+		review_attempt_id: toNullableString$4(item.review_attempt_id),
+		review_round_id: toNullableString$4(item.review_round_id),
+		review_round_number: typeof item.review_round_number === "number" && Number.isInteger(item.review_round_number) && item.review_round_number > 0 ? item.review_round_number : null,
 		reviewer: toNullableString$4(item.reviewer),
 		reviewer_agent_id: toNullableString$4(item.reviewer_agent_id),
 		reviewer_skill: toNullableString$4(item.reviewer_skill),
@@ -6870,6 +6885,12 @@ function toReviewEvents(value) {
 function normalizeProcessMissSeverity(value) {
 	return PROCESS_MISS_SEVERITIES.includes(value) ? value : "medium";
 }
+function normalizePreReviewChecklistEntryStatus(value) {
+	return PRE_REVIEW_CHECKLIST_ENTRY_STATUSES$1.includes(value) ? value : "blocked";
+}
+function normalizePreReviewChecklistStatus(value) {
+	return PRE_REVIEW_CHECKLIST_STATUSES.includes(value) ? value : "not_required";
+}
 function toProcessMisses(value) {
 	if (!Array.isArray(value)) return [];
 	const misses = value.filter((item) => item !== null && typeof item === "object").map((item) => ({
@@ -6880,6 +6901,18 @@ function toProcessMisses(value) {
 		summary: toNullableString$4(item.summary)
 	})).filter((item) => item.id !== null && item.category !== null && item.summary !== null);
 	return [...new Map(misses.map((miss) => [miss.id, miss])).values()];
+}
+function toPreReviewChecklistEntries(value) {
+	if (!Array.isArray(value)) return [];
+	const entries = value.filter((item) => item !== null && typeof item === "object").map((item) => ({
+		risk_family: toNullableString$4(item.risk_family),
+		id: toNullableString$4(item.id),
+		status: normalizePreReviewChecklistEntryStatus(item.status),
+		summary: toNullableString$4(item.summary),
+		evidence: toNullableString$4(item.evidence),
+		test_refs: toStringArray$3(item.test_refs)
+	})).filter((item) => item.risk_family !== null && item.id !== null && item.summary !== null && item.evidence !== null);
+	return [...new Map(entries.map((entry) => [`${entry.risk_family}\u0000${entry.id}`, entry])).values()];
 }
 function normalizeStage(value) {
 	return STAGE_STATE_STAGES.includes(value) ? value : null;
@@ -6909,6 +6942,10 @@ function buildStageStateRecord(payload) {
 		backlog_lifecycle_reconciled: toBoolean$1(payload.metadata.backlog_lifecycle_reconciled, true),
 		backlog_actualization_artifacts: toStringArray$3(payload.metadata.backlog_actualization_artifacts),
 		backlog_actualization_verdict: normalizeBacklogActualizationVerdict(payload.metadata.backlog_actualization_verdict),
+		pre_review_risk_families: toStringArray$3(payload.metadata.pre_review_risk_families),
+		pre_review_checklists: toPreReviewChecklistEntries(payload.metadata.pre_review_checklists),
+		pre_review_checklist_status: normalizePreReviewChecklistStatus(payload.metadata.pre_review_checklist_status),
+		pre_review_checklist_blockers: toStringArray$3(payload.metadata.pre_review_checklist_blockers),
 		backlog_followup_required: toBoolean$1(payload.metadata.backlog_followup_required),
 		backlog_followup_kind: toNullableString$4(payload.metadata.backlog_followup_kind),
 		backlog_followup_resolved: toBoolean$1(payload.metadata.backlog_followup_resolved),
@@ -6957,6 +6994,7 @@ function stageStateMirrorFields(state) {
 		backlog_followup_kind: state.backlog_followup_kind,
 		backlog_followup_resolved: state.backlog_followup_resolved,
 		review_artifacts: state.review_artifacts,
+		review_events: state.review_events,
 		verification_artifacts: state.verification_artifacts,
 		step_artifact: state.step_artifact,
 		final_delivery_commit: state.final_delivery_commit,
@@ -6972,7 +7010,13 @@ function stageStateMirrorFields(state) {
 		backlog_lifecycle_current: state.backlog_lifecycle_current,
 		backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
 		backlog_actualization_artifacts: state.backlog_actualization_artifacts,
-		backlog_actualization_verdict: state.backlog_actualization_verdict
+		backlog_actualization_verdict: state.backlog_actualization_verdict,
+		...state.stage === "implementation" ? {
+			pre_review_risk_families: state.pre_review_risk_families,
+			pre_review_checklists: state.pre_review_checklists,
+			pre_review_checklist_status: state.pre_review_checklist_status,
+			pre_review_checklist_blockers: state.pre_review_checklist_blockers
+		} : {}
 	};
 }
 function normalizeMetadataForStageState(payload) {
@@ -7008,6 +7052,10 @@ async function readStageState(root, stage, featureId) {
 		backlog_lifecycle_reconciled: toBoolean$1(parsed.backlog_lifecycle_reconciled, true),
 		backlog_actualization_artifacts: toStringArray$3(parsed.backlog_actualization_artifacts),
 		backlog_actualization_verdict: normalizeBacklogActualizationVerdict(parsed.backlog_actualization_verdict),
+		pre_review_risk_families: toStringArray$3(parsed.pre_review_risk_families),
+		pre_review_checklists: toPreReviewChecklistEntries(parsed.pre_review_checklists),
+		pre_review_checklist_status: normalizePreReviewChecklistStatus(parsed.pre_review_checklist_status),
+		pre_review_checklist_blockers: toStringArray$3(parsed.pre_review_checklist_blockers),
 		backlog_followup_required: toBoolean$1(parsed.backlog_followup_required),
 		backlog_followup_kind: toNullableString$4(parsed.backlog_followup_kind),
 		backlog_followup_resolved: toBoolean$1(parsed.backlog_followup_resolved),
@@ -7252,9 +7300,17 @@ function countOperatorInterventions(aggregate) {
 	return aggregate.operatorInterventions.length;
 }
 function countRerounds(aggregate) {
-	const reviewRounds = toStringArray$2(aggregate.reviewEvents.filter((event) => event.invalidated !== true && event.allowed_by_policy !== false).map((event) => toNullableString$3(event.event_commit))).length;
-	if (reviewRounds > 0) return Math.max(reviewRounds - 1, 0);
-	return 0;
+	const validEvents = aggregate.reviewEvents.filter((event) => event.invalidated !== true && event.allowed_by_policy !== false);
+	const roundsByAuditClass = /* @__PURE__ */ new Map();
+	for (const event of validEvents) {
+		const auditClass = toNullableString$3(event.audit_class) ?? "unknown";
+		const fallbackRound = (typeof event.review_round_number === "number" && Number.isInteger(event.review_round_number) && event.review_round_number > 0 ? String(event.review_round_number) : null) ?? toNullableString$3(event.review_round_id) ?? toNullableString$3(event.event_commit);
+		if (!fallbackRound) continue;
+		const rounds = roundsByAuditClass.get(auditClass) ?? /* @__PURE__ */ new Set();
+		rounds.add(fallbackRound);
+		roundsByAuditClass.set(auditClass, rounds);
+	}
+	return [...roundsByAuditClass.values()].reduce((total, rounds) => total + Math.max(rounds.size - 1, 0), 0);
 }
 function reviewPolicySnapshot(aggregate) {
 	return {
@@ -7887,7 +7943,7 @@ function runtimeThreadId() {
 	const value = env && typeof env === "object" ? Reflect.get(env, "CODEX_THREAD_ID") : void 0;
 	return typeof value === "string" && value.trim().length > 0 ? value : null;
 }
-function hasOption(argv, ...names) {
+function hasOption$1(argv, ...names) {
 	return names.some((name) => argv.includes(name));
 }
 function takeOption$3(argv, name, fallback = null) {
@@ -7979,6 +8035,72 @@ function frontmatterString(frontmatter, key, fallback = "") {
 }
 function relativeToRoot(root, targetPath) {
 	return path.relative(root, targetPath).split(path.sep).join("/");
+}
+function escapeRegExp(value) {
+	return value.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function reviewDirPath(root, featureId) {
+	return path.join(root, ".dossier", "reviews", featureId);
+}
+function reviewLatestPath(root, featureId, step, auditClass) {
+	return path.join(reviewDirPath(root, featureId), `${step}--${auditClass}--latest.json`);
+}
+function legacyReviewLatestPath(root, featureId, step, auditClass) {
+	const stableAuditName = auditClass.replace(/-reviewer$/u, "-review");
+	return path.join(reviewDirPath(root, featureId), `${step}-${stableAuditName}.json`);
+}
+async function existingReviewRoundNumbers(payload) {
+	const rounds = [];
+	const stage = payload.step === "feature-intake" ? "feature-intake" : normalizeWorkflowStage(payload.step);
+	if (stage === "feature-intake" || stage === "spec-compact" || stage === "plan-slice" || stage === "implementation" || stage === "change-proposal") {
+		const state = await readStageState(payload.root, stage, payload.featureId);
+		for (const event of state?.review_events ?? []) if (event.audit_class === payload.auditClass && typeof event.review_round_number === "number" && Number.isInteger(event.review_round_number) && event.review_round_number > 0) rounds.push(event.review_round_number);
+	}
+	const reviewsDir = reviewDirPath(payload.root, payload.featureId);
+	if (!await fileExists(reviewsDir)) return rounds;
+	const filenamePattern = new RegExp(`^${escapeRegExp(payload.step)}--${escapeRegExp(payload.auditClass)}--r(\\d{2,})--`, "u");
+	const entries = await promises.readdir(reviewsDir, { withFileTypes: true });
+	for (const entry of entries) {
+		if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
+		const match = entry.name.match(filenamePattern);
+		if (match?.[1]) {
+			rounds.push(Number.parseInt(match[1], 10));
+			continue;
+		}
+		try {
+			const parsed = JSON.parse(await readText(path.join(reviewsDir, entry.name)));
+			if (parsed.artifact_role !== "latest_copy" && parsed.step === payload.step && parsed.audit_class === payload.auditClass && typeof parsed.review_round_number === "number" && Number.isInteger(parsed.review_round_number) && parsed.review_round_number > 0) rounds.push(parsed.review_round_number);
+		} catch {}
+	}
+	return rounds;
+}
+async function nextReviewAttemptIdentity(payload) {
+	const existingRounds = await existingReviewRoundNumbers(payload);
+	const reviewRoundNumber = Math.max(0, ...existingRounds) + 1;
+	const reviewRoundId = `r${String(reviewRoundNumber).padStart(2, "0")}`;
+	return {
+		reviewAttemptId: `${payload.step}--${payload.auditClass}--${reviewRoundId}`,
+		reviewRoundId,
+		reviewRoundNumber
+	};
+}
+async function readReviewArtifactForClose(payload) {
+	const managedDir = reviewDirPath(payload.root, payload.featureId);
+	const absInputPath = await resolveManagedReadPath(payload.root, payload.inputPath, managedDir, "review artifact path");
+	const inputReview = JSON.parse(await readText(absInputPath));
+	if (inputReview.artifact_role !== "latest_copy") return {
+		path: relativeToRoot(payload.root, absInputPath),
+		review: inputReview
+	};
+	const immutableArtifactPath = toNullableString$2(inputReview.immutable_artifact_path);
+	if (!immutableArtifactPath) throw new Error("Latest review artifact copy is missing immutable_artifact_path.");
+	const absImmutablePath = await resolveManagedReadPath(payload.root, immutableArtifactPath, managedDir, "immutable review artifact path");
+	const immutableReview = JSON.parse(await readText(absImmutablePath));
+	if (immutableReview.artifact_role !== "immutable_attempt") throw new Error("Latest review artifact copy does not resolve to a managed immutable attempt artifact.");
+	return {
+		path: relativeToRoot(payload.root, absImmutablePath),
+		review: immutableReview
+	};
 }
 function quoteArg(value) {
 	return /^[A-Za-z0-9_./:=,@+-]+$/.test(value) ? value : JSON.stringify(value);
@@ -8405,7 +8527,7 @@ function featureIntakeHelp() {
 }
 async function runFeatureIntakeCommand(argv, io) {
 	const helpText = featureIntakeHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
@@ -8422,7 +8544,7 @@ async function runFeatureIntakeCommand(argv, io) {
 	const impacts = takeManyOptions$2(argv, "--impact");
 	const dependsOn = takeManyOptions$2(argv, "--depends-on");
 	const output = takeOption$3(argv, "--output", null);
-	const json = hasOption(argv, "--json");
+	const json = hasOption$1(argv, "--json");
 	const slug = takeOption$3(argv, "--slug", slugify$1(title)) ?? slugify$1(title);
 	if (owners.length === 0) throw new UsageError("At least one --owner is required.", helpText);
 	if (impacts.length === 0) throw new UsageError("At least one --impact is required.", helpText);
@@ -8515,7 +8637,7 @@ function syncIndexHelp() {
 }
 async function runSyncIndexCommand(argv, io) {
 	const helpText = syncIndexHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
@@ -8563,7 +8685,7 @@ function indexRefreshHelp() {
 }
 async function runIndexRefreshCommand(argv, io) {
 	const helpText = indexRefreshHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
@@ -8588,14 +8710,14 @@ function lintDossiersHelp() {
 }
 async function runLintDossiersCommand(argv, io) {
 	const helpText = lintDossiersHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
 	const dossiersDir = takeOption$3(argv, "--dossiers-dir", "docs/ssot/features") ?? "docs/ssot/features";
 	const indexFile = takeOption$3(argv, "--index-file", DEFAULT_INDEX_FILE) ?? DEFAULT_INDEX_FILE;
 	const root = takeOption$3(argv, "--root", process.cwd()) ?? process.cwd();
-	const updateIndex = hasOption(argv, "--update-index");
+	const updateIndex = hasOption$1(argv, "--update-index");
 	const absRoot = path.resolve(root);
 	const absIndex = path.resolve(absRoot, indexFile);
 	let dossiers = [];
@@ -8638,7 +8760,7 @@ function dependencyGraphHelp() {
 }
 async function runDependencyGraphCommand(argv, io) {
 	const helpText = dependencyGraphHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
@@ -8668,14 +8790,14 @@ function coverageAuditHelp() {
 }
 async function runCoverageAuditCommand(argv, io) {
 	const helpText = coverageAuditHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
 	const root = takeOption$3(argv, "--root", process.cwd()) ?? process.cwd();
 	const dossier = takeOption$3(argv, "--dossier", null);
 	const dossiersDir = takeOption$3(argv, "--dossiers-dir", "docs/ssot/features") ?? "docs/ssot/features";
-	const changedOnly = hasOption(argv, "--changed-only");
+	const changedOnly = hasOption$1(argv, "--changed-only");
 	const base = takeOption$3(argv, "--base", null);
 	const strictStatusesRaw = takeOption$3(argv, "--strict-statuses", null);
 	const strictStatuses = strictStatusesRaw ? new Set(strictStatusesRaw.split(",").map((value) => value.trim()).filter(Boolean)) : DEFAULT_STRICT_COVERAGE_STATUSES;
@@ -8795,12 +8917,12 @@ function debtAuditHelp() {
 }
 async function runDebtAuditCommand(argv, io) {
 	const helpText = debtAuditHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
 	const root = takeOption$3(argv, "--root", process.cwd()) ?? process.cwd();
-	const changedOnly = hasOption(argv, "--changed-only");
+	const changedOnly = hasOption$1(argv, "--changed-only");
 	const base = takeOption$3(argv, "--base", null);
 	const paths = (takeOption$3(argv, "--paths", "") ?? "").split(",").map((value) => value.trim()).filter(Boolean);
 	const absRoot = path.resolve(root);
@@ -8859,7 +8981,7 @@ function contractDriftAuditHelp() {
 }
 async function runContractDriftAuditCommand(argv, io) {
 	const helpText = contractDriftAuditHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
@@ -8949,7 +9071,7 @@ async function runContractDriftAuditCommand(argv, io) {
 }
 function reviewArtifactHelp() {
 	return [
-		"Persist one already obtained audit result for one audit class as a durable artifact.",
+		"Persist one immutable already obtained audit attempt for one audit class as a durable artifact.",
 		"",
 		"Usage:",
 		`  ${CLI_DISPLAY_NAME} review-artifact --dossier <path> --step <name> --audit-class <name> --verdict PASS|FAIL [options]`,
@@ -8976,7 +9098,8 @@ function reviewArtifactHelp() {
 		"  -h, --help                   Show help.",
 		"",
 		"Notes:",
-		"  - review-artifact does not perform the review itself; it records one already obtained audit result for one audit class.",
+		"  - review-artifact does not perform the review itself; it records one immutable already obtained audit attempt for one audit class.",
+		"  - stable/latest review copies are compatibility conveniences; immutable attempt artifacts remain authoritative evidence.",
 		"  - --reviewer should name the separate reviewer agent or review skill that produced the verdict.",
 		"  - reviewer_thread_id is stamped from the current runtime when available and is used for same-thread external-review rejection.",
 		"  - review-artifact records observable provenance only; it does not prove fork_context, full-history inheritance, prompt mutability, or model tier.",
@@ -8986,7 +9109,7 @@ function reviewArtifactHelp() {
 }
 async function runReviewArtifactCommand(argv, io) {
 	const helpText = reviewArtifactHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
@@ -9001,7 +9124,7 @@ async function runReviewArtifactCommand(argv, io) {
 	const reviewerAgentId = takeOption$3(argv, "--reviewer-agent-id", null);
 	const implementationScopeRaw = takeOption$3(argv, "--implementation-scope", null);
 	const securityTriggerReason = takeOption$3(argv, "--security-trigger-reason", null);
-	const invalidated = hasOption(argv, "--invalidated");
+	const invalidated = hasOption$1(argv, "--invalidated");
 	const rerunReason = takeOption$3(argv, "--rerun-reason", null);
 	const notes = takeOption$3(argv, "--notes", "") ?? "";
 	const output = takeOption$3(argv, "--output", null);
@@ -9025,15 +9148,28 @@ async function runReviewArtifactCommand(argv, io) {
 	if (securityTriggerReason && !(step === "implementation" && auditClass === "security-reviewer")) throw new UsageError("--security-trigger-reason is only allowed for implementation security audits.", helpText);
 	const reviewerThreadId = runtimeThreadId();
 	const commit = inRepo ? getCurrentCommit(absRoot) : null;
+	const attemptIdentity = await nextReviewAttemptIdentity({
+		root: absRoot,
+		featureId,
+		step,
+		auditClass
+	});
+	const latestOutputPath = reviewLatestPath(absRoot, featureId, step, auditClass);
+	const latestOutputRelPath = relativeToRoot(absRoot, latestOutputPath);
 	const artifact = {
 		version: 1,
 		created_at: (/* @__PURE__ */ new Date()).toISOString(),
 		audit_class: auditClass,
+		artifact_role: "immutable_attempt",
 		review_mode: reviewMode,
 		reviewer,
 		reviewer_skill: reviewerSkill,
 		reviewer_agent_id: reviewerAgentId,
 		reviewer_thread_id: reviewerThreadId,
+		review_attempt_id: attemptIdentity.reviewAttemptId,
+		review_round_id: attemptIdentity.reviewRoundId,
+		review_round_number: attemptIdentity.reviewRoundNumber,
+		latest_copy_path: latestOutputRelPath,
 		step,
 		dossier: dossierRecord.relPath,
 		feature_id: featureId,
@@ -9051,10 +9187,29 @@ async function runReviewArtifactCommand(argv, io) {
 		},
 		notes
 	};
-	const defaultOutput = path.join(absRoot, ".dossier", "reviews", featureId, `${step}--${auditClass}--${commit ? commit.slice(0, 12) : "no-commit"}--${Date.now()}-${crypto.randomUUID().slice(0, 8)}.json`);
+	const defaultOutput = path.join(reviewDirPath(absRoot, featureId), `${attemptIdentity.reviewAttemptId}--${verdict.toLowerCase()}--${commit ? commit.slice(0, 12) : "no-commit"}.json`);
 	const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
+	await assertManagedWritePath(absRoot, reviewDirPath(absRoot, featureId), outputPath, "review-artifact output path");
+	if (await fileExists(outputPath)) throw new UsageError(`Immutable review attempt artifact already exists: ${relativeToRoot(absRoot, outputPath)}.`, helpText);
+	await assertManagedWritePath(absRoot, reviewDirPath(absRoot, featureId), latestOutputPath, "review-artifact latest copy path");
 	await writeJsonAtomic(outputPath, artifact);
+	const immutableArtifactPath = relativeToRoot(absRoot, outputPath);
+	const latestArtifact = {
+		...artifact,
+		artifact_role: "latest_copy",
+		immutable_artifact_path: immutableArtifactPath
+	};
+	await writeJsonAtomic(latestOutputPath, latestArtifact);
+	const legacyLatestOutputPath = legacyReviewLatestPath(absRoot, featureId, step, auditClass);
+	if (legacyLatestOutputPath !== latestOutputPath) {
+		await assertManagedWritePath(absRoot, reviewDirPath(absRoot, featureId), legacyLatestOutputPath, "review-artifact legacy latest copy path");
+		await writeJsonAtomic(legacyLatestOutputPath, {
+			...latestArtifact,
+			latest_copy_path: relativeToRoot(absRoot, legacyLatestOutputPath)
+		});
+	}
 	writeLine$1(io.stdout, `[review-artifact] Wrote ${relativeToRoot(absRoot, outputPath)}`);
+	writeLine$1(io.stdout, `[review-artifact] latest_copy=${latestOutputRelPath}`);
 	writeLine$1(io.stdout, `[review-artifact] audit_class=${auditClass} verdict=${verdict} step=${step} feature=${featureId} event_commit=${commit ?? "none"}`);
 	return 0;
 }
@@ -9085,7 +9240,7 @@ function dossierStepCloseHelp() {
 }
 async function runDossierStepCloseCommand(argv, io) {
 	const helpText = dossierStepCloseHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
@@ -9099,7 +9254,7 @@ async function runDossierStepCloseCommand(argv, io) {
 	if (step !== "implementation" && implementationScopeRaw) throw new UsageError("--implementation-scope is only allowed when --step=implementation.", helpText);
 	const nextStep = takeOption$3(argv, "--next-step", null);
 	const output = takeOption$3(argv, "--output", null);
-	const allowDirty = hasOption(argv, "--allow-dirty");
+	const allowDirty = hasOption$1(argv, "--allow-dirty");
 	const absRoot = path.resolve(root);
 	const absDossier = path.resolve(absRoot, dossier);
 	const dossierRecord = await readDossierRecord(absDossier, { root: absRoot });
@@ -9119,14 +9274,18 @@ async function runDossierStepCloseCommand(argv, io) {
 	const reviewArtifactPaths = [];
 	const reviewsByAuditClass = /* @__PURE__ */ new Map();
 	for (const reviewArtifact of reviewArtifacts) try {
-		const review = await readJsonArtifact$1(absRoot, reviewArtifact);
+		const { path: resolvedReviewArtifactPath, review } = await readReviewArtifactForClose({
+			root: absRoot,
+			featureId,
+			inputPath: reviewArtifact
+		});
 		const auditClass = ensureEnumValue$1(stringOrFallback(review.audit_class), AUDIT_CLASSES$1, "review artifact audit_class", helpText);
 		if (reviewsByAuditClass.has(auditClass)) {
 			blockers.push(`Duplicate review artifact for audit class ${auditClass}.`);
 			continue;
 		}
 		reviewsByAuditClass.set(auditClass, review);
-		reviewArtifactPaths.push(relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact)));
+		reviewArtifactPaths.push(resolvedReviewArtifactPath);
 	} catch (error) {
 		blockers.push(`Could not read review artifact ${relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact))} (${error instanceof Error ? error.message : String(error)}).`);
 	}
@@ -9317,18 +9476,18 @@ function dossierVerifyHelp() {
 }
 async function runDossierVerifyCommand(argv, io) {
 	const helpText = dossierVerifyHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
 	const root = takeOption$3(argv, "--root", process.cwd()) ?? process.cwd();
 	const step = takeOption$3(argv, "--step", "implementation") ?? "implementation";
 	const dossier = takeOption$3(argv, "--dossier", null);
-	const changedOnly = hasOption(argv, "--changed-only");
+	const changedOnly = hasOption$1(argv, "--changed-only");
 	const base = takeOption$3(argv, "--base", null);
 	const output = takeOption$3(argv, "--output", null);
-	const skipIndexRefresh = hasOption(argv, "--skip-index-refresh");
-	const skipDiffCheck = hasOption(argv, "--skip-diff-check");
+	const skipIndexRefresh = hasOption$1(argv, "--skip-index-refresh");
+	const skipDiffCheck = hasOption$1(argv, "--skip-diff-check");
 	const coverageOrphansScope = takeOption$3(argv, "--coverage-orphans-scope", "auto") ?? "auto";
 	const extra = takeManyOptions$2(argv, "--extra");
 	const absRoot = path.resolve(root);
@@ -9455,13 +9614,13 @@ function nextStepHelp() {
 }
 async function runNextStepCommand(argv, io) {
 	const helpText = nextStepHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
 	const root = takeOption$3(argv, "--root", process.cwd()) ?? process.cwd();
 	const dossier = takeOption$3(argv, "--dossier", null);
-	const json = hasOption(argv, "--json");
+	const json = hasOption$1(argv, "--json");
 	const absRoot = path.resolve(root);
 	const dossiers = await fileExists(path.resolve(absRoot, "docs/ssot/features")) ? await readAllDossiers(absRoot, DEFAULT_DOSSIERS_DIR, { strictStatuses: DEFAULT_STRICT_COVERAGE_STATUSES }) : [];
 	if (!dossier && dossiers.length > 1) throw new UsageError("When more than one dossier exists, --dossier is required for next-step.", helpText);
@@ -9531,7 +9690,7 @@ function lifecycleRefreshHelp() {
 }
 async function runLifecycleRefreshCommand(argv, io) {
 	const helpText = lifecycleRefreshHelp();
-	if (hasOption(argv, "--help", "-h")) {
+	if (hasOption$1(argv, "--help", "-h")) {
 		writeLine$1(io.stdout, helpText);
 		return 0;
 	}
@@ -9539,7 +9698,7 @@ async function runLifecycleRefreshCommand(argv, io) {
 	const dossier = takeOption$3(argv, "--dossier", null);
 	let featureId = takeOption$3(argv, "--feature-id", null);
 	const featureCycleId = takeOption$3(argv, "--feature-cycle-id", null);
-	const json = hasOption(argv, "--json");
+	const json = hasOption$1(argv, "--json");
 	const absRoot = path.resolve(root);
 	if (dossier) {
 		const dossierRecord = await readDossierRecord(path.resolve(absRoot, dossier), { root: absRoot });
@@ -23116,6 +23275,22 @@ var REVIEW_MODES = [
 	"self-review"
 ];
 var IMPLEMENTATION_REVIEW_SCOPES = ["non-code", "code-bearing"];
+var PRE_REVIEW_CHECKLIST_ENTRY_STATUSES = [
+	"pass",
+	"not_applicable",
+	"blocked"
+];
+var PRE_REVIEW_RISK_IDENTIFIER_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/u;
+var BUILT_IN_PRE_REVIEW_CHECKLIST_IDS = new Map([["policy-admission-governance", [
+	"explicit-allow-deny",
+	"deny-or-failed-admission-no-invocation",
+	"conflicting-request-replay-fail-closed",
+	"ambiguous-stale-unsupported-evidence",
+	"freshness-timestamp-required",
+	"active-scope-concurrency-model",
+	"append-only-decision-audit-facts",
+	"regression-test-paths"
+]]]);
 var DECISION_SUBSECTION_TITLES = [
 	"Spec gap decisions",
 	"Implementation freedom decisions",
@@ -23358,6 +23533,12 @@ function machineMetadataFromStageState(state) {
 		backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
 		backlog_actualization_artifacts: state.backlog_actualization_artifacts,
 		backlog_actualization_verdict: state.backlog_actualization_verdict,
+		...state.stage === "implementation" ? {
+			pre_review_risk_families: state.pre_review_risk_families,
+			pre_review_checklists: state.pre_review_checklists,
+			pre_review_checklist_status: state.pre_review_checklist_status,
+			pre_review_checklist_blockers: state.pre_review_checklist_blockers
+		} : {},
 		required_audit_classes: state.required_audit_classes,
 		executed_audit_classes: state.executed_audit_classes,
 		required_external_review_pending: state.required_external_review_pending,
@@ -23401,9 +23582,13 @@ function reviewEventsFromStageState(state) {
 		event_commit: event.event_commit,
 		implementation_scope: event.implementation_scope,
 		invalidated: event.invalidated,
+		latest_copy_path: event.latest_copy_path,
 		must_fix_count: event.must_fix_count ?? 0,
 		recorded_at: event.recorded_at,
 		review_mode: event.review_mode,
+		review_attempt_id: event.review_attempt_id,
+		review_round_id: event.review_round_id,
+		review_round_number: event.review_round_number,
 		reviewer: event.reviewer,
 		reviewer_agent_id: event.reviewer_agent_id,
 		reviewer_skill: event.reviewer_skill,
@@ -23438,6 +23623,25 @@ function takeManyOptions$1(args, name) {
 	}
 	return values;
 }
+function takeManyOptionsStrict(args, name) {
+	const values = [];
+	const prefix = `${name}=`;
+	for (let index = 0; index < args.length; index += 1) {
+		const arg = args[index];
+		if (arg === name) {
+			const value = args[index + 1];
+			if (!value || value.startsWith("--")) throw new Error(`${name} requires a value.`);
+			values.push(value);
+			continue;
+		}
+		if (arg?.startsWith(prefix)) values.push(arg.slice(prefix.length));
+	}
+	return values;
+}
+function hasOption(args, name) {
+	const prefix = `${name}=`;
+	return args.some((arg) => arg === name || arg.startsWith(prefix));
+}
 function ensureEnumValue(value, allowed, optionName) {
 	if (!allowed.includes(value)) throw new Error(`${optionName} must be one of: ${allowed.join(", ")}`);
 	return value;
@@ -23459,6 +23663,12 @@ function normalizeRepeatableSingleLineOptions(values, optionName) {
 		return normalized;
 	}));
 }
+function normalizePreReviewIdentifier(value, optionName) {
+	const normalized = normalizeSingleLineOption(value, optionName);
+	if (!normalized) throw new Error(`${optionName} cannot be empty.`);
+	if (!PRE_REVIEW_RISK_IDENTIFIER_PATTERN.test(normalized)) throw new Error(`${optionName} must be a stable lowercase identifier using letters, digits, and hyphens.`);
+	return normalized;
+}
 function parseStageProvenanceInput(args) {
 	const sessionId = normalizeSingleLineOption(takeOption$1(args, "--session-id"), "--session-id");
 	if (!sessionId) throw new Error("--session-id is required for stage-controller writes.");
@@ -23467,17 +23677,21 @@ function parseStageProvenanceInput(args) {
 		traceRuntime: normalizeSingleLineOption(takeOption$1(args, "--trace-runtime"), "--trace-runtime")
 	};
 }
-function parseProcessMissDsl(value) {
+function parseKeyValueDsl(value, optionName) {
 	const fields = /* @__PURE__ */ new Map();
 	for (const part of value.split(";")) {
 		const separator = part.indexOf("=");
-		if (separator === -1) throw new Error("--process-miss entries must use key=value pairs separated by semicolons.");
+		if (separator === -1) throw new Error(`${optionName} entries must use key=value pairs separated by semicolons.`);
 		const key = part.slice(0, separator).trim();
 		const fieldValue = part.slice(separator + 1).trim();
-		if (!key || !fieldValue) throw new Error("--process-miss entries must not contain empty keys or values.");
-		if (fields.has(key)) throw new Error(`--process-miss contains duplicate key: ${key}.`);
+		if (!key || !fieldValue) throw new Error(`${optionName} entries must not contain empty keys or values.`);
+		if (fields.has(key)) throw new Error(`${optionName} contains duplicate key: ${key}.`);
 		fields.set(key, fieldValue);
 	}
+	return fields;
+}
+function parseProcessMissDsl(value) {
+	const fields = parseKeyValueDsl(value, "--process-miss");
 	const allowedKeys = new Set([
 		"id",
 		"category",
@@ -23506,6 +23720,46 @@ function parseProcessMissDsl(value) {
 		summary
 	};
 }
+function parsePreReviewCheckDsl(value) {
+	const fields = parseKeyValueDsl(value, "--pre-review-check");
+	const allowedKeys = new Set([
+		"risk_family",
+		"id",
+		"status",
+		"summary",
+		"evidence",
+		"test_refs"
+	]);
+	for (const key of fields.keys()) if (!allowedKeys.has(key)) throw new Error(`--pre-review-check contains unsupported key: ${key}.`);
+	const riskFamily = normalizePreReviewIdentifier(fields.get("risk_family") ?? null, "--pre-review-check risk_family");
+	const id = normalizePreReviewIdentifier(fields.get("id") ?? null, "--pre-review-check id");
+	const status = normalizeSingleLineOption(fields.get("status") ?? null, "--pre-review-check status");
+	const summary = normalizeSingleLineOption(fields.get("summary") ?? null, "--pre-review-check summary");
+	const evidence = normalizeSingleLineOption(fields.get("evidence") ?? null, "--pre-review-check evidence");
+	if (!status || !summary || !evidence) throw new Error("--pre-review-check must include risk_family, id, status, summary, and evidence.");
+	if (!PRE_REVIEW_CHECKLIST_ENTRY_STATUSES.includes(status)) throw new Error("--pre-review-check status must be one of: pass, not_applicable, blocked.");
+	return {
+		risk_family: riskFamily,
+		id,
+		status,
+		summary,
+		evidence,
+		test_refs: fields.has("test_refs") ? uniqueStrings((fields.get("test_refs") ?? "").split(",").map((value) => normalizeSingleLineOption(value, "--pre-review-check test_refs")).filter((value) => value !== null)) : []
+	};
+}
+function parsePreReviewChecklistInput(command, args) {
+	const hasRiskFamily = hasOption(args, "--risk-family");
+	const hasPreReviewCheck = hasOption(args, "--pre-review-check");
+	if (command !== "implementation" && (hasRiskFamily || hasPreReviewCheck)) throw new Error("--risk-family and --pre-review-check are only allowed for implementation.");
+	if (!hasRiskFamily && !hasPreReviewCheck) return {
+		riskFamilies: [],
+		checklistEntries: []
+	};
+	return {
+		riskFamilies: normalizeRepeatableSingleLineOptions(takeManyOptionsStrict(args, "--risk-family"), "--risk-family").map((riskFamily) => normalizePreReviewIdentifier(riskFamily, "--risk-family")),
+		checklistEntries: takeManyOptionsStrict(args, "--pre-review-check").map(parsePreReviewCheckDsl)
+	};
+}
 function parseStageAnnotationsInput(args) {
 	return {
 		skillsUsed: normalizeRepeatableSingleLineOptions(takeManyOptions$1(args, "--skill-used"), "--skill-used"),
@@ -23518,11 +23772,50 @@ function parseStageAnnotationsInput(args) {
 function mergeProcessMisses(existing, incoming) {
 	return [...new Map([...existing, ...incoming].map((miss) => [miss.id, miss])).values()];
 }
+function mergePreReviewChecklists(existing, incoming) {
+	return [...new Map([...existing, ...incoming].map((entry) => [`${entry.risk_family}\u0000${entry.id}`, entry])).values()];
+}
+function assertPreReviewChecklistDeclarations(payload) {
+	const declaredRiskFamilies = new Set(payload.riskFamilies);
+	const undeclared = uniqueStrings(payload.checklists.filter((entry) => !declaredRiskFamilies.has(entry.risk_family)).map((entry) => entry.risk_family));
+	if (undeclared.length > 0) throw new Error(`--pre-review-check entries must reference declared --risk-family values: ${undeclared.join(", ")}.`);
+}
+function evaluatePreReviewChecklist(payload) {
+	if (payload.riskFamilies.length === 0) return {
+		status: "not_required",
+		blockers: []
+	};
+	const blockedEntries = payload.checklists.filter((entry) => entry.status === "blocked");
+	if (blockedEntries.length > 0) return {
+		status: "blocked",
+		blockers: blockedEntries.map((entry) => `${entry.risk_family}/${entry.id} blocked: ${entry.summary}`)
+	};
+	const blockers = [];
+	for (const riskFamily of payload.riskFamilies) {
+		const entriesForFamily = payload.checklists.filter((entry) => entry.risk_family === riskFamily);
+		const requiredIds = BUILT_IN_PRE_REVIEW_CHECKLIST_IDS.get(riskFamily);
+		if (requiredIds) {
+			const presentNonBlockedIds = new Set(entriesForFamily.filter((entry) => entry.status === "pass" || entry.status === "not_applicable").map((entry) => entry.id));
+			const missingIds = requiredIds.filter((id) => !presentNonBlockedIds.has(id));
+			if (missingIds.length > 0) blockers.push(`${riskFamily} missing checklist entries: ${missingIds.join(", ")}`);
+			continue;
+		}
+		if (!entriesForFamily.some((entry) => entry.status === "pass" || entry.status === "not_applicable")) blockers.push(`${riskFamily} requires at least one pass or not_applicable checklist entry`);
+	}
+	if (blockers.length > 0) return {
+		status: "missing",
+		blockers
+	};
+	return {
+		status: "complete",
+		blockers: []
+	};
+}
 function stageSchemaMetadata(payload) {
 	return normalizeMetadataForStageState(payload);
 }
 function commandUsage(command) {
-	return [`${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${command === "implementation" ? " [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close" : ""}`, `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`].join("\n");
+	return [`${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${command === "implementation" ? " [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close" : ""}${command === "implementation" ? " [--risk-family <id>] [--pre-review-check <dsl>]" : ""}`, `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`].join("\n");
 }
 function nextCommandsForState(command, stageState) {
 	if (stageState === "blocked") return [`dossier-engineer ${command} --feature-id <id> --session-id <id>`];
@@ -23674,6 +23967,7 @@ async function runStageControllerCommand(command, args) {
 	if (args.includes("--help") || args.includes("-h")) throw new Error(commandUsage(command));
 	const provenance = parseStageProvenanceInput(args);
 	const annotations = parseStageAnnotationsInput(args);
+	const preReviewChecklistInput = parsePreReviewChecklistInput(command, args);
 	const root = await resolveProcessRoot(process.cwd(), takeOption$1(args, "--root"));
 	const featureId = sanitizeFeatureId(ensureRequired(takeOption$1(args, "--feature-id"), "--feature-id is required."), "--feature-id");
 	const backlogFollowupKind = takeOption$1(args, "--backlog-followup-kind");
@@ -23720,6 +24014,22 @@ async function runStageControllerCommand(command, args) {
 	const stageState = action === "blocked" ? "blocked" : action === "ready_for_close" ? "ready_for_close" : "in_progress";
 	const resetImplementationEntry = command === "implementation" && action !== "ready_for_close" && (currentStageState?.step_close_ts !== null || currentStageState?.process_complete_ts !== null);
 	const carryStageEvidence = action === "ready_for_close";
+	const existingPreReviewRiskFamilies = command === "implementation" && !resetImplementationEntry ? currentStageState?.pre_review_risk_families ?? [] : [];
+	const existingPreReviewChecklists = command === "implementation" && !resetImplementationEntry ? currentStageState?.pre_review_checklists ?? [] : [];
+	const preReviewRiskFamilies = command === "implementation" ? uniqueStrings([...existingPreReviewRiskFamilies, ...preReviewChecklistInput.riskFamilies]) : [];
+	const preReviewChecklists = command === "implementation" ? mergePreReviewChecklists(existingPreReviewChecklists, preReviewChecklistInput.checklistEntries) : [];
+	if (command === "implementation") assertPreReviewChecklistDeclarations({
+		riskFamilies: preReviewRiskFamilies,
+		checklists: preReviewChecklists
+	});
+	const preReviewEvaluation = command === "implementation" ? evaluatePreReviewChecklist({
+		riskFamilies: preReviewRiskFamilies,
+		checklists: preReviewChecklists
+	}) : {
+		status: "not_required",
+		blockers: []
+	};
+	if (command === "implementation" && action === "ready_for_close" && preReviewEvaluation.status !== "not_required" && preReviewEvaluation.status !== "complete") throw new Error(`implementation pre-review checklist is ${preReviewEvaluation.status}: ${preReviewEvaluation.blockers.join("; ")}`);
 	const implementationReviewScope = command === "implementation" ? action === "ready_for_close" ? ensureEnumValue(implementationScopeRaw ?? currentStageState?.implementation_review_scope ?? "code-bearing", IMPLEMENTATION_REVIEW_SCOPES, "--implementation-scope") : currentStageState?.implementation_review_scope ?? null : null;
 	const stageEntryCommit = command === "implementation" ? resetImplementationEntry ? getCurrentCommit(root) : currentStageState?.stage_entry_commit ?? getCurrentCommit(root) : null;
 	const requiredAuditClasses = requiredAuditClassesForStage(command, implementationReviewScope);
@@ -23769,6 +24079,10 @@ async function runStageControllerCommand(command, args) {
 		metadata.stage_entry_commit = stageEntryCommit;
 		metadata.required_security_review = implementationReviewScope === "code-bearing";
 		metadata.security_trigger_reasons = stageState === "ready_for_close" ? currentStageState?.security_trigger_reasons ?? [] : [];
+		metadata.pre_review_risk_families = preReviewRiskFamilies;
+		metadata.pre_review_checklists = preReviewChecklists;
+		metadata.pre_review_checklist_status = preReviewEvaluation.status;
+		metadata.pre_review_checklist_blockers = preReviewEvaluation.blockers;
 	}
 	if (command === "implementation" && stageState === "ready_for_close") metadata.local_gates_green_ts = now;
 	const relPath = path.join(".dossier", "logs", command, `${featureId}--${featureCycleId}--${cycleId}.md`);
@@ -23811,6 +24125,9 @@ async function runStageControllerCommand(command, args) {
 		backlog_followup_required: effectiveBacklogFollowupRequired,
 		backlog_followup_kind: effectiveBacklogFollowupKind,
 		backlog_followup_resolved: effectiveBacklogFollowupResolved,
+		pre_review_risk_families: preReviewRiskFamilies,
+		pre_review_checklist_status: preReviewEvaluation.status,
+		pre_review_checklist_blockers: preReviewEvaluation.blockers,
 		log_path: relPath.split(path.sep).join("/"),
 		next_commands: nextCommandsForState(command, stageState)
 	};
@@ -23876,9 +24193,13 @@ async function recordReviewArtifactOnStageLog(payload) {
 		event_commit: payload.eventCommit,
 		implementation_scope: payload.implementationScope,
 		invalidated: payload.invalidated,
+		latest_copy_path: payload.latestCopyPath,
 		must_fix_count: payload.mustFixCount,
 		recorded_at: recordedAt,
 		review_mode: payload.reviewMode,
+		review_attempt_id: payload.reviewAttemptId,
+		review_round_id: payload.reviewRoundId,
+		review_round_number: payload.reviewRoundNumber,
 		reviewer: payload.reviewer,
 		reviewer_agent_id: payload.reviewerAgentId,
 		reviewer_skill: payload.reviewerSkill,
@@ -24277,13 +24598,14 @@ function createDossierCommandWrapper(name, family) {
 							await promises.access(absStepArtifactPath);
 							const artifact = JSON.parse(await promises.readFile(absStepArtifactPath, "utf8"));
 							if (artifact.feature_id !== featureId || artifact.step !== normalizedStep) throw new Error(`Step artifact must match feature ${featureId} and step ${normalizedStep}.`);
+							const selectedReviewArtifactPaths = Array.isArray(artifact.review_artifacts) ? artifact.review_artifacts.filter((artifactPath) => typeof artifactPath === "string" && artifactPath.trim().length > 0) : reviewArtifactPaths.map((artifactPath) => path.relative(root, path.resolve(root, artifactPath)).split(path.sep).join("/"));
 							await recordStepCloseOnStageLog({
 								root,
 								featureId,
 								step: normalizedStep,
 								stepArtifactPath,
 								verificationArtifactPath: verifyArtifactPath ? path.relative(root, path.resolve(root, verifyArtifactPath)).split(path.sep).join("/") : null,
-								reviewArtifactPaths: reviewArtifactPaths.map((artifactPath) => path.relative(root, path.resolve(root, artifactPath)).split(path.sep).join("/")),
+								reviewArtifactPaths: selectedReviewArtifactPaths,
 								finalClosureCommit: currentGitHead(root),
 								processComplete: artifact.process_complete === true,
 								auditSummary: {
@@ -24402,8 +24724,12 @@ function createDossierCommandWrapper(name, family) {
 								eventCommit: artifact.event_commit ?? null,
 								implementationScope: artifact.implementation_scope === "code-bearing" || artifact.implementation_scope === "non-code" ? artifact.implementation_scope : null,
 								invalidated: artifact.invalidated === true,
+								latestCopyPath: typeof artifact.latest_copy_path === "string" && artifact.latest_copy_path.trim().length > 0 ? artifact.latest_copy_path : null,
 								mustFixCount: Array.isArray(artifact.findings?.must_fix) ? artifact.findings.must_fix.length : 0,
 								reviewMode: artifact.review_mode ?? "external",
+								reviewAttemptId: typeof artifact.review_attempt_id === "string" && artifact.review_attempt_id.trim().length > 0 ? artifact.review_attempt_id : null,
+								reviewRoundId: typeof artifact.review_round_id === "string" && artifact.review_round_id.trim().length > 0 ? artifact.review_round_id : null,
+								reviewRoundNumber: typeof artifact.review_round_number === "number" && Number.isInteger(artifact.review_round_number) && artifact.review_round_number > 0 ? artifact.review_round_number : null,
 								reviewer: artifact.reviewer ?? "unknown-reviewer",
 								reviewerAgentId: artifact.reviewer_agent_id ?? null,
 								reviewerSkill: artifact.reviewer_skill ?? null,
@@ -24642,6 +24968,13 @@ function createDossierCommandWrapper(name, family) {
 	};
 }
 function createStageControllerWrapper(command) {
+	const implementationUsageSuffix = command === "implementation" ? " [--implementation-scope <non-code|code-bearing>] [--risk-family <id>] [--pre-review-check <dsl>]" : "";
+	const implementationHelpLines = command === "implementation" ? [
+		"  - --implementation-scope is accepted only with implementation --ready-for-close",
+		"  - --risk-family declares an explicit bounded implementation pre-review risk family",
+		"  - --pre-review-check uses risk_family=<id>;id=<id>;status=<pass|not_applicable|blocked>;summary=<text>;evidence=<text>;test_refs=<comma-list>",
+		"  - declared risk families require complete non-blocked pre-review checklist evidence before implementation can reach ready_for_close"
+	] : [];
 	return {
 		name: command,
 		family: "delivery-stage",
@@ -24656,7 +24989,7 @@ function createStageControllerWrapper(command) {
 			`Mechanical controller for the ${command} delivery stage.`,
 			"",
 			"Usage:",
-			`  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]`,
+			`  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationUsageSuffix}`,
 			`  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
 			"",
 			"Rules:",
@@ -24664,6 +24997,7 @@ function createStageControllerWrapper(command) {
 			"  - --trace-runtime is optional explicit metadata, not a runtime-specific default",
 			"  - --skill-used, --skill-issue, --skill-followup, and --process-miss are explicit agent-supplied annotations",
 			"  - --process-miss uses id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>",
+			...implementationHelpLines,
 			"  - stage controllers stop at ready_for_close",
 			"  - authoritative closure remains dossier-step-close + lifecycle-refresh",
 			"  - backlog truth is not mutated directly by the stage controller"

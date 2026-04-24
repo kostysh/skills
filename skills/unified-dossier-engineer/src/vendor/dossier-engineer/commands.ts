@@ -1,4 +1,3 @@
-import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
@@ -35,6 +34,7 @@ import { buildRedFlagsBlock, analyzeDossiers, renderLintSummary } from './core/l
 import { hasExecutableSectionChange, parseTopLevelSections } from './core/markdown.ts';
 import { defaultNextStep, normalizeWorkflowStage, statusToNextStep } from './core/workflow.ts';
 import { readStageState } from '../../shared/stage-state.ts';
+import { assertManagedWritePath, resolveManagedReadPath } from '../../shared/path-guards.ts';
 
 export const CLI_NAME = 'dossier-engineer';
 export const CLI_DISPLAY_NAME = 'dossier-engineer';
@@ -80,15 +80,21 @@ interface VerificationCheck {
 
 interface ReviewArtifactShape {
   allowed_by_policy?: boolean;
+  artifact_role?: string;
   audit_class?: string;
   event_commit?: string | null;
   feature_id?: string;
   findings?: {
     must_fix?: unknown;
   };
+  immutable_artifact_path?: string | null;
   implementation_scope?: string | null;
   invalidated?: boolean;
+  latest_copy_path?: string | null;
   review_mode?: string;
+  review_attempt_id?: string | null;
+  review_round_id?: string | null;
+  review_round_number?: number | null;
   reviewer_agent_id?: string | null;
   reviewer_skill?: string | null;
   reviewer_thread_id?: string | null;
@@ -367,6 +373,160 @@ function frontmatterString(
 
 function relativeToRoot(root: string, targetPath: string): string {
   return path.relative(root, targetPath).split(path.sep).join('/');
+}
+
+function escapeRegExp(value: string): string {
+  return value.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function reviewDirPath(root: string, featureId: string): string {
+  return path.join(root, '.dossier', 'reviews', featureId);
+}
+
+function reviewLatestPath(
+  root: string,
+  featureId: string,
+  step: string,
+  auditClass: string,
+): string {
+  return path.join(reviewDirPath(root, featureId), `${step}--${auditClass}--latest.json`);
+}
+
+function legacyReviewLatestPath(
+  root: string,
+  featureId: string,
+  step: string,
+  auditClass: string,
+): string {
+  const stableAuditName = auditClass.replace(/-reviewer$/u, '-review');
+  return path.join(reviewDirPath(root, featureId), `${step}-${stableAuditName}.json`);
+}
+
+async function existingReviewRoundNumbers(payload: {
+  auditClass: string;
+  featureId: string;
+  root: string;
+  step: string;
+}): Promise<number[]> {
+  const rounds: number[] = [];
+  const stage =
+    payload.step === 'feature-intake' ? 'feature-intake' : normalizeWorkflowStage(payload.step);
+  if (
+    stage === 'feature-intake' ||
+    stage === 'spec-compact' ||
+    stage === 'plan-slice' ||
+    stage === 'implementation' ||
+    stage === 'change-proposal'
+  ) {
+    const state = await readStageState(payload.root, stage, payload.featureId);
+    for (const event of state?.review_events ?? []) {
+      if (
+        event.audit_class === payload.auditClass &&
+        typeof event.review_round_number === 'number' &&
+        Number.isInteger(event.review_round_number) &&
+        event.review_round_number > 0
+      ) {
+        rounds.push(event.review_round_number);
+      }
+    }
+  }
+
+  const reviewsDir = reviewDirPath(payload.root, payload.featureId);
+  if (!(await fileExists(reviewsDir))) {
+    return rounds;
+  }
+  const filenamePattern = new RegExp(
+    `^${escapeRegExp(payload.step)}--${escapeRegExp(payload.auditClass)}--r(\\d{2,})--`,
+    'u',
+  );
+  const entries = await fs.readdir(reviewsDir, { withFileTypes: true });
+  for (const entry of entries) {
+    if (!entry.isFile() || !entry.name.endsWith('.json')) {
+      continue;
+    }
+    const match = entry.name.match(filenamePattern);
+    if (match?.[1]) {
+      rounds.push(Number.parseInt(match[1], 10));
+      continue;
+    }
+    try {
+      const parsed = JSON.parse(await readText(path.join(reviewsDir, entry.name))) as {
+        artifact_role?: unknown;
+        audit_class?: unknown;
+        review_round_number?: unknown;
+        step?: unknown;
+      };
+      if (
+        parsed.artifact_role !== 'latest_copy' &&
+        parsed.step === payload.step &&
+        parsed.audit_class === payload.auditClass &&
+        typeof parsed.review_round_number === 'number' &&
+        Number.isInteger(parsed.review_round_number) &&
+        parsed.review_round_number > 0
+      ) {
+        rounds.push(parsed.review_round_number);
+      }
+    } catch {
+      // Filename parsing above is sufficient for managed attempt files.
+    }
+  }
+  return rounds;
+}
+
+async function nextReviewAttemptIdentity(payload: {
+  auditClass: string;
+  featureId: string;
+  root: string;
+  step: string;
+}): Promise<{
+  reviewAttemptId: string;
+  reviewRoundId: string;
+  reviewRoundNumber: number;
+}> {
+  const existingRounds = await existingReviewRoundNumbers(payload);
+  const reviewRoundNumber = Math.max(0, ...existingRounds) + 1;
+  const reviewRoundId = `r${String(reviewRoundNumber).padStart(2, '0')}`;
+  return {
+    reviewAttemptId: `${payload.step}--${payload.auditClass}--${reviewRoundId}`,
+    reviewRoundId,
+    reviewRoundNumber,
+  };
+}
+
+async function readReviewArtifactForClose(payload: {
+  featureId: string;
+  inputPath: string;
+  root: string;
+}): Promise<{ path: string; review: ReviewArtifactShape }> {
+  const managedDir = reviewDirPath(payload.root, payload.featureId);
+  const absInputPath = await resolveManagedReadPath(
+    payload.root,
+    payload.inputPath,
+    managedDir,
+    'review artifact path',
+  );
+  const inputReview = JSON.parse(await readText(absInputPath)) as ReviewArtifactShape;
+  if (inputReview.artifact_role !== 'latest_copy') {
+    return { path: relativeToRoot(payload.root, absInputPath), review: inputReview };
+  }
+
+  const immutableArtifactPath = toNullableString(inputReview.immutable_artifact_path);
+  if (!immutableArtifactPath) {
+    throw new Error('Latest review artifact copy is missing immutable_artifact_path.');
+  }
+  const absImmutablePath = await resolveManagedReadPath(
+    payload.root,
+    immutableArtifactPath,
+    managedDir,
+    'immutable review artifact path',
+  );
+  const immutableReview = JSON.parse(await readText(absImmutablePath)) as ReviewArtifactShape;
+  if (immutableReview.artifact_role !== 'immutable_attempt') {
+    throw new Error(
+      'Latest review artifact copy does not resolve to a managed immutable attempt artifact.',
+    );
+  }
+  return { path: relativeToRoot(payload.root, absImmutablePath), review: immutableReview };
 }
 
 function quoteArg(value: string): string {
@@ -1838,7 +1998,7 @@ async function runContractDriftAuditCommand(argv: string[], io: CliIo): Promise<
 
 function reviewArtifactHelp(): string {
   return [
-    'Persist one already obtained audit result for one audit class as a durable artifact.',
+    'Persist one immutable already obtained audit attempt for one audit class as a durable artifact.',
     '',
     'Usage:',
     `  ${CLI_DISPLAY_NAME} review-artifact --dossier <path> --step <name> --audit-class <name> --verdict PASS|FAIL [options]`,
@@ -1865,7 +2025,8 @@ function reviewArtifactHelp(): string {
     '  -h, --help                   Show help.',
     '',
     'Notes:',
-    '  - review-artifact does not perform the review itself; it records one already obtained audit result for one audit class.',
+    '  - review-artifact does not perform the review itself; it records one immutable already obtained audit attempt for one audit class.',
+    '  - stable/latest review copies are compatibility conveniences; immutable attempt artifacts remain authoritative evidence.',
     '  - --reviewer should name the separate reviewer agent or review skill that produced the verdict.',
     '  - reviewer_thread_id is stamped from the current runtime when available and is used for same-thread external-review rejection.',
     '  - review-artifact records observable provenance only; it does not prove fork_context, full-history inheritance, prompt mutability, or model tier.',
@@ -1979,16 +2140,29 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
   }
   const reviewerThreadId = runtimeThreadId();
   const commit = inRepo ? getCurrentCommit(absRoot) : null;
+  const attemptIdentity = await nextReviewAttemptIdentity({
+    root: absRoot,
+    featureId,
+    step,
+    auditClass,
+  });
+  const latestOutputPath = reviewLatestPath(absRoot, featureId, step, auditClass);
+  const latestOutputRelPath = relativeToRoot(absRoot, latestOutputPath);
 
   const artifact = {
     version: 1,
     created_at: new Date().toISOString(),
     audit_class: auditClass,
+    artifact_role: 'immutable_attempt',
     review_mode: reviewMode,
     reviewer,
     reviewer_skill: reviewerSkill,
     reviewer_agent_id: reviewerAgentId,
     reviewer_thread_id: reviewerThreadId,
+    review_attempt_id: attemptIdentity.reviewAttemptId,
+    review_round_id: attemptIdentity.reviewRoundId,
+    review_round_number: attemptIdentity.reviewRoundNumber,
+    latest_copy_path: latestOutputRelPath,
     step,
     dossier: dossierRecord.relPath,
     feature_id: featureId,
@@ -2008,16 +2182,53 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
   };
 
   const defaultOutput = path.join(
-    absRoot,
-    '.dossier',
-    'reviews',
-    featureId,
-    `${step}--${auditClass}--${commit ? commit.slice(0, 12) : 'no-commit'}--${Date.now()}-${crypto.randomUUID().slice(0, 8)}.json`,
+    reviewDirPath(absRoot, featureId),
+    `${attemptIdentity.reviewAttemptId}--${verdict.toLowerCase()}--${commit ? commit.slice(0, 12) : 'no-commit'}.json`,
   );
   const outputPath = output ? path.resolve(absRoot, output) : defaultOutput;
+  await assertManagedWritePath(
+    absRoot,
+    reviewDirPath(absRoot, featureId),
+    outputPath,
+    'review-artifact output path',
+  );
+  if (await fileExists(outputPath)) {
+    throw new UsageError(
+      `Immutable review attempt artifact already exists: ${relativeToRoot(absRoot, outputPath)}.`,
+      helpText,
+    );
+  }
+  await assertManagedWritePath(
+    absRoot,
+    reviewDirPath(absRoot, featureId),
+    latestOutputPath,
+    'review-artifact latest copy path',
+  );
   await writeJsonAtomic(outputPath, artifact);
+  const immutableArtifactPath = relativeToRoot(absRoot, outputPath);
+  const latestArtifact = {
+    ...artifact,
+    artifact_role: 'latest_copy',
+    immutable_artifact_path: immutableArtifactPath,
+  };
+  await writeJsonAtomic(latestOutputPath, latestArtifact);
+
+  const legacyLatestOutputPath = legacyReviewLatestPath(absRoot, featureId, step, auditClass);
+  if (legacyLatestOutputPath !== latestOutputPath) {
+    await assertManagedWritePath(
+      absRoot,
+      reviewDirPath(absRoot, featureId),
+      legacyLatestOutputPath,
+      'review-artifact legacy latest copy path',
+    );
+    await writeJsonAtomic(legacyLatestOutputPath, {
+      ...latestArtifact,
+      latest_copy_path: relativeToRoot(absRoot, legacyLatestOutputPath),
+    });
+  }
 
   writeLine(io.stdout, `[review-artifact] Wrote ${relativeToRoot(absRoot, outputPath)}`);
+  writeLine(io.stdout, `[review-artifact] latest_copy=${latestOutputRelPath}`);
   writeLine(
     io.stdout,
     `[review-artifact] audit_class=${auditClass} verdict=${verdict} step=${step} feature=${featureId} event_commit=${commit ?? 'none'}`,
@@ -2145,7 +2356,11 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
   const reviewsByAuditClass = new Map<string, ReviewArtifactShape>();
   for (const reviewArtifact of reviewArtifacts) {
     try {
-      const review = await readJsonArtifact<ReviewArtifactShape>(absRoot, reviewArtifact);
+      const { path: resolvedReviewArtifactPath, review } = await readReviewArtifactForClose({
+        root: absRoot,
+        featureId,
+        inputPath: reviewArtifact,
+      });
       const auditClass = ensureEnumValue(
         stringOrFallback(review.audit_class),
         AUDIT_CLASSES,
@@ -2157,7 +2372,7 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
         continue;
       }
       reviewsByAuditClass.set(auditClass, review);
-      reviewArtifactPaths.push(relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact)));
+      reviewArtifactPaths.push(resolvedReviewArtifactPath);
     } catch (error) {
       blockers.push(
         `Could not read review artifact ${relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact))} (${error instanceof Error ? error.message : String(error)}).`,

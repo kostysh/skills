@@ -6,6 +6,7 @@ Use it together with:
 
 - [Audit policy](audit-policy.md)
 - [Commandized stage control](commandized-stage-control.md)
+- [Implementation pre-review checklists](implementation-pre-review-checklists.md)
 - [Telemetry and closure](telemetry-and-closure.md)
 
 ## What this layer owns
@@ -84,10 +85,13 @@ The workflow must preserve:
 
 - dossier-local implementation execution
 - local verification artifacts
+- pre-review checklist completeness when explicit implementation risk families are declared
 - debt review
 - required external audits in fail-closed mode
 - review freshness control
 - authoritative close-out only after readiness is truthful
+
+Implementation pre-review checklist evidence is required only for declared risk families. The workflow must not infer those families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose.
 
 ## Required mutating-stage audit baseline
 
@@ -107,6 +111,7 @@ Important:
 - reviewer delegation with forked context or full-history inheritance is not a valid substitute for an external independent audit;
 - if an invalid review launch method is discovered, that audit must be rerun and cannot be accepted as a quiet PASS;
 - `review-artifact` persists already obtained audit evidence and does not replace the audit itself;
+- each `review-artifact` attempt preserves its own immutable artifact, so a failed review and the later passing rerun remain reconstructable without stage-log prose;
 - `dossier-step-close` is not truthful while required audits are missing, stale, or invalidated.
 - helper validation must use the helper-managed stage state for current-cycle review coordination and implementation scope rather than human-authored stage-log frontmatter.
 
@@ -164,6 +169,7 @@ Required gates:
 - required external audit bundle in fail-closed mode
 - selected backlog item lifecycle reconciliation for stages that advance backlog truth
 - review freshness validation
+- implementation pre-review checklist completeness only when explicit risk families are declared
 - explicit pre-close / DoD readiness
 - authoritative step-close artifact
 - truthful blocked close branch
@@ -173,6 +179,7 @@ For `implementation`, the stronger bundle policy from [Audit policy](audit-polic
 - `spec-conformance-reviewer` is first;
 - code-bearing scope also requires `code-reviewer` and `security-reviewer`;
 - truthful closure is blocked until that required bundle is fully satisfied.
+- implementation rerounds preserve earlier failed review evidence and close only from the final valid PASS bundle selected by `dossier-step-close`.
 
 Important:
 
@@ -193,6 +200,7 @@ The stage-controller command boundary is defined separately in [Commandized stag
 
 - do not degrade the mature change branch into a backlog appendix
 - do not let delivery closure bypass required backlog actualization
+- do not infer implementation risk families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose
 - do not let `dossier-step-close` mark `spec-compact`, `plan-slice`, or `implementation` complete while the selected backlog item is behind the stage lifecycle target
 - do not dissolve `coverage_gate` into generic maturity wording
 - do not equate backlog `planned|implemented` with dossier `planned|done`

@@ -7,6 +7,7 @@ Use it together with:
 - [Audit policy](audit-policy.md)
 - [Delivery workflow layer](delivery-workflow-layer.md)
 - [Commandized stage control](commandized-stage-control.md)
+- [Implementation pre-review checklists](implementation-pre-review-checklists.md)
 
 ## Purpose
 
@@ -37,10 +38,15 @@ Do not collapse these into one prose log or one generic journal file.
 Review artifacts must remain capable of carrying policy-visible audit-bundle truth:
 
 - `audit_class`
+- immutable attempt identity: `review_attempt_id`, `review_round_id`, and `review_round_number`
+- immutable attempt artifact role and path linkage
+- optional stable/latest copy path that points back to the immutable attempt
 - external-versus-degraded review mode
 - reviewer provenance
 - freshness / invalidation state
 - implementation review-scope and security-trigger data where applicable
+
+Stable/latest review artifact references are backward-compatible full artifact JSON copies. They may help old consumers find the latest attempt for `(feature_id, stage, audit_class)`, but they are not the authoritative evidence and must carry `immutable_artifact_path` so new consumers can resolve the immutable attempt.
 
 Review artifacts and helper-managed stage state are observable workflow evidence. They may record declared review mode, reviewer identity, reviewer skill, reviewer agent identity, reviewer thread provenance, freshness, and invalidation state, but they must not be presented as proof of launch-mode independence such as `fork_context`, full-history inheritance, prompt mutability, or model tier.
 
@@ -85,9 +91,12 @@ Machine-complete stage schema fields:
 
 - `.dossier/stages/*` is authoritative for structured coordination/validation fields introduced for parity, linkage, skill annotations, structured process misses, and scope identity;
 - stage log YAML frontmatter mirrors these fields as a bounded human-readable view;
-- parity-protected fields include `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved`, `review_artifacts`, `verification_artifacts`, `step_artifact`, `final_delivery_commit`, `final_closure_commit`, `skills_used`, `skill_issues`, `skill_followups`, `process_misses`, `primary_feature_id`, `primary_backlog_item_key`, and `phase_scope`;
+- parity-protected fields include `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved`, `review_artifacts`, `review_events`, `verification_artifacts`, `step_artifact`, `final_delivery_commit`, `final_closure_commit`, `skills_used`, `skill_issues`, `skill_followups`, `process_misses`, `primary_feature_id`, `primary_backlog_item_key`, and `phase_scope`;
 - selected-feature lifecycle reconciliation fields are also parity-protected: `backlog_lifecycle_target`, `backlog_lifecycle_current`, `backlog_lifecycle_reconciled`, `backlog_actualization_artifacts`, and `backlog_actualization_verdict`;
+- implementation pre-review checklist fields are parity-protected for the `implementation` stage: `pre_review_risk_families`, `pre_review_checklists`, `pre_review_checklist_status`, and `pre_review_checklist_blockers`;
 - review/verification/close-out artifact linkage is explicit in machine fields and must not require heuristic recovery from prose;
+- `review_events[]` links each attempt to `audit_class`, `verdict`, `review_attempt_id`, `review_round_id`, `review_round_number`, immutable `artifact_path`, optional `latest_copy_path`, reviewer provenance, freshness, and invalidation state;
+- `review_artifacts` is an ordered unique list of immutable attempt artifact paths, including FAIL and PASS attempts;
 - backlog actualization artifacts are trace links to accepted backlog mutations, while current backlog state remains the source of truth for lifecycle reconciliation;
 - commit anchors are optional trace links only and must not become required closure evidence;
 - skill annotations are explicit agent-supplied state and must not be scraped from conversation traces;
@@ -158,6 +167,7 @@ When helper-owned closure updates materialize audit policy state, stage logs and
 - which audit classes were actually executed;
 - whether closure is blocked by missing, stale, invalidated, or degraded review evidence.
 - whether recorded review evidence is limited to observable provenance rather than proof of reviewer launch-mode independence.
+- that implementation pre-review checklist evidence, when present, is author-side readiness context rather than correctness proof or audit evidence.
 
 ## Session anchors
 
@@ -219,6 +229,8 @@ The telemetry layer must make these signals computable from deterministic artifa
 - telemetry completeness
 
 This does not mean the first-wave runtime already materializes every desired metric field. It means the artifact model already preserves enough identity, timestamps, and bounded events for later mechanical aggregation.
+
+Reround metrics must be computable from structured `review_events[]`. For new artifacts, use `review_round_number` per audit class; do not infer rerounds only from latest review artifacts.
 
 Required review-policy observability now includes:
 

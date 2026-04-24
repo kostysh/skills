@@ -16,6 +16,11 @@ const RUNTIME_BOUNDARY_PATH = path.join(SKILL_DIR, 'references', 'runtime-and-co
 const DELIVERY_WORKFLOW_PATH = path.join(SKILL_DIR, 'references', 'delivery-workflow-layer.md');
 const TELEMETRY_CLOSURE_PATH = path.join(SKILL_DIR, 'references', 'telemetry-and-closure.md');
 const STAGE_CONTROL_PATH = path.join(SKILL_DIR, 'references', 'commandized-stage-control.md');
+const PRE_REVIEW_CHECKLISTS_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'implementation-pre-review-checklists.md',
+);
 const UTILITY_SPEC_PATH = path.join(SKILL_DIR, 'docs', 'utility-spec.ru.md');
 const UNIFIED_ARCHITECTURE_PATH = path.join(SKILL_DIR, 'references', 'unified-architecture.md');
 const UNIFIED_ARTIFACT_TOPOLOGY_PATH = path.join(
@@ -36,6 +41,7 @@ const ACTIVE_REFERENCE_PATHS = [
   AUDIT_POLICY_PATH,
   TELEMETRY_CLOSURE_PATH,
   STAGE_CONTROL_PATH,
+  PRE_REVIEW_CHECKLISTS_PATH,
   RUNTIME_BOUNDARY_PATH,
 ] as const;
 
@@ -154,6 +160,8 @@ void test('source bundle and package manifest expose only the canonical launcher
     'scripts/dossier-engineer.mjs',
     'Canonical runtime shipped',
     'references/audit-policy.md',
+    'references/implementation-pre-review-checklists.md',
+    'ref-implementation-pre-review-checklists',
   ]);
   assertNotContainsTerms(skillYaml, [
     'references/migration-and-rollout.md',
@@ -201,8 +209,9 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     'without forked/full-history authoring context',
     '`fork_context: false`',
     'discard it and rerun it correctly',
-    '`review-artifact` records one already obtained audit result for one audit class.',
-    '`dossier-step-close` validates the policy-required audit bundle before truthful closure.',
+    '`review-artifact` records one immutable already obtained audit attempt for one audit class.',
+    'Stable/latest review copies are compatibility conveniences, not the sole evidence.',
+    '`dossier-step-close` validates the policy-required audit bundle before truthful closure and records selected immutable PASS attempt paths.',
     'do not prove reviewer launch-mode independence',
   ]);
   assertContainsTerms(auditPolicy, [
@@ -215,7 +224,9 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     'code-reviewer',
     'security-reviewer',
     'self-review never satisfies a required audit',
-    'review-artifact` persists one already obtained audit result for one audit class',
+    'review-artifact` persists one immutable already obtained audit attempt for one audit class',
+    'later attempts supersede earlier attempts for closure only through policy validation, never by overwriting earlier evidence',
+    '`review_attempt_id`, `review_round_id`, `review_round_number`, and immutable `artifact_path`',
     '`dossier-step-close` must block truthful closure',
     'missing, stale, invalidated, or not external',
     'helper-managed implementation stage state',
@@ -242,10 +253,15 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     'cannot be accepted as a quiet PASS',
     'code-bearing scope also requires `code-reviewer` and `security-reviewer`',
     'helper-managed stage state',
+    'each `review-artifact` attempt preserves its own immutable artifact',
+    'close only from the final valid PASS bundle selected by `dossier-step-close`',
   ]);
   assertContainsTerms(runtimeBoundary, [
-    '`review-artifact` persists one already obtained audit result for one audit class',
+    '`review-artifact` persists one immutable already obtained audit attempt for one audit class',
+    'stable/latest review paths, when written, are backward-compatible full JSON copies',
+    'not the only durable evidence',
     '`dossier-step-close` validates the policy-required audit bundle',
+    'resolves latest-copy paths back to managed immutable attempts',
     'helper-managed stage state under `.dossier/stages/*`',
     'must not claim to prove launch-mode facts such as `fork_context`, full-history inheritance, prompt mutability, or model tier',
   ]);
@@ -277,6 +293,108 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     'non-forked/no-full-history external review',
     'does not prove the reviewer launch mode',
     'helper-owned close-out must enforce the required external audit bundle defined in [Audit policy](audit-policy.md).',
+  ]);
+});
+
+void test('implementation pre-review checklist contract is explicit readiness evidence only', async () => {
+  const [
+    skill,
+    skillYaml,
+    preReviewChecklists,
+    deliveryWorkflow,
+    auditPolicy,
+    telemetryClosure,
+    stageControl,
+    runtimeBoundary,
+    utilitySpec,
+  ] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(SKILL_YAML_PATH, 'utf8'),
+    readFile(PRE_REVIEW_CHECKLISTS_PATH, 'utf8'),
+    readFile(DELIVERY_WORKFLOW_PATH, 'utf8'),
+    readFile(AUDIT_POLICY_PATH, 'utf8'),
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(skill, [
+    'Implementation pre-review checklists are author-side readiness evidence',
+    'They are not correctness proof and never replace required external audits.',
+    'Implementation pre-review checklists',
+  ]);
+  assertContainsTerms(skillYaml, [
+    'ref-implementation-pre-review-checklists',
+    'references/implementation-pre-review-checklists.md',
+    'Read this when designing implementation pre-review checklist evidence',
+  ]);
+  assertContainsTerms(preReviewChecklists, [
+    'author-side readiness evidence',
+    'not correctness proof',
+    'not audit evidence',
+    'not a replacement for required external independent audits',
+    'Risk-family declarations are explicit agent input.',
+    'must not infer risk families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose',
+    'pre_review_risk_families',
+    'pre_review_checklists',
+    'pre_review_checklist_status',
+    'pre_review_checklist_blockers',
+    '--risk-family <id>',
+    '--pre-review-check <dsl>',
+    'risk_family=<id>;id=<id>;status=<pass|not_applicable|blocked>;summary=<text>;evidence=<text>;test_refs=<comma-list>',
+    'explicit-allow-deny',
+    'deny-or-failed-admission-no-invocation',
+    'conflicting-request-replay-fail-closed',
+    'ambiguous-stale-unsupported-evidence',
+    'freshness-timestamp-required',
+    'active-scope-concurrency-model',
+    'append-only-decision-audit-facts',
+    'regression-test-paths',
+    'Custom risk families are allowed without core runtime domain changes.',
+    '`implementation --ready-for-close` must fail before writing `stage_state: ready_for_close`',
+  ]);
+  assertContainsTerms(deliveryWorkflow, [
+    'pre-review checklist completeness when explicit implementation risk families are declared',
+    'required only for declared risk families',
+    'must not infer those families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose',
+  ]);
+  assertContainsTerms(auditPolicy, [
+    'Implementation pre-review checklist evidence is reviewer context and author-side readiness evidence only.',
+    'not audit evidence',
+    'not correctness proof',
+    'not reviewer launch-mode proof',
+    'not a substitute for required `spec-conformance-reviewer`, `code-reviewer`, or `security-reviewer` audits',
+  ]);
+  assertContainsTerms(telemetryClosure, [
+    'implementation pre-review checklist fields are parity-protected',
+    '`pre_review_risk_families`',
+    '`pre_review_checklists`',
+    '`pre_review_checklist_status`',
+    '`pre_review_checklist_blockers`',
+    'author-side readiness context rather than correctness proof or audit evidence',
+  ]);
+  assertContainsTerms(stageControl, [
+    '`implementation` also accepts repeatable `--risk-family <id>` and `--pre-review-check <dsl>`',
+    'other stage controllers reject those flags before writing artifacts',
+    '`policy-admission-governance` requires the checklist ids listed in [Implementation pre-review checklists](implementation-pre-review-checklists.md)',
+    'custom risk families require at least one `pass` or `not_applicable` entry',
+    'does not satisfy or weaken the external audit bundle',
+  ]);
+  assertContainsTerms(runtimeBoundary, [
+    'show `--risk-family` and `--pre-review-check` only for `implementation`',
+    'implementation pre-review checklist evidence is not an audit artifact',
+    'cannot satisfy or weaken the audit bundle validated by `dossier-step-close`',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'implementation-only `pre_review_risk_families`',
+    'implementation-only `pre_review_checklists`',
+    'implementation-only `pre_review_checklist_status`',
+    'implementation-only `pre_review_checklist_blockers`',
+    'implementation` only: repeatable `--risk-family <id>`',
+    'implementation` only: repeatable `--pre-review-check <dsl>`',
+    'custom risk families require at least one `pass` or `not_applicable` checklist entry and no `blocked` entries, without core runtime domain changes',
+    'It is not audit evidence, not correctness proof, and not a replacement for `spec-conformance-reviewer`, `code-reviewer`, or `security-reviewer`.',
   ]);
 });
 
@@ -413,6 +531,7 @@ void test('stage artifact schema is machine-complete and trace-scraping-free', a
     'backlog_actualization_artifacts',
     'backlog_actualization_verdict',
     'review_artifacts',
+    'review_events',
     'verification_artifacts',
     'step_artifact',
     'final_delivery_commit',
@@ -429,6 +548,8 @@ void test('stage artifact schema is machine-complete and trace-scraping-free', a
     'commit anchors are optional trace links only and must not become required closure evidence',
     'not automatic skill extraction from conversation traces',
     'must not recover these fields by scraping traces or prose',
+    'review_events[]` links every review attempt to attempt id, round id, round number, immutable artifact path, optional latest copy path',
+    '`review_artifacts` is an ordered unique list of immutable attempt artifact paths',
   ]);
   assertContainsTerms(utilitySpec, [
     'shipped writers must normalize and enforce parity',

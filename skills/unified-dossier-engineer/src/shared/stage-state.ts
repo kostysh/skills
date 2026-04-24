@@ -14,6 +14,8 @@ const STAGE_STATE_STAGES = [
 
 const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
 const PROCESS_MISS_SEVERITIES = ['low', 'medium', 'high'] as const;
+const PRE_REVIEW_CHECKLIST_ENTRY_STATUSES = ['pass', 'not_applicable', 'blocked'] as const;
+const PRE_REVIEW_CHECKLIST_STATUSES = ['not_required', 'missing', 'blocked', 'complete'] as const;
 const BACKLOG_ACTUALIZATION_VERDICTS = [
   'actualization_required',
   'actualized_by_backlog_artifact',
@@ -24,6 +26,8 @@ const BACKLOG_ACTUALIZATION_VERDICTS = [
 
 export type StageStateStage = (typeof STAGE_STATE_STAGES)[number];
 export type ProcessMissSeverity = (typeof PROCESS_MISS_SEVERITIES)[number];
+export type PreReviewChecklistEntryStatus = (typeof PRE_REVIEW_CHECKLIST_ENTRY_STATUSES)[number];
+export type PreReviewChecklistStatus = (typeof PRE_REVIEW_CHECKLIST_STATUSES)[number];
 
 export type StageStateProcessMiss = {
   category: string;
@@ -40,9 +44,13 @@ export type StageStateReviewEvent = {
   event_commit: string | null;
   implementation_scope: (typeof IMPLEMENTATION_REVIEW_SCOPES)[number] | null;
   invalidated: boolean;
+  latest_copy_path: string | null;
   must_fix_count: number | null;
   recorded_at: string | null;
   review_mode: string | null;
+  review_attempt_id: string | null;
+  review_round_id: string | null;
+  review_round_number: number | null;
   reviewer: string | null;
   reviewer_agent_id: string | null;
   reviewer_skill: string | null;
@@ -50,6 +58,15 @@ export type StageStateReviewEvent = {
   security_trigger_reason: string | null;
   stale: boolean;
   verdict: string | null;
+};
+
+export type StageStatePreReviewChecklistEntry = {
+  evidence: string;
+  id: string;
+  risk_family: string;
+  status: PreReviewChecklistEntryStatus;
+  summary: string;
+  test_refs: string[];
 };
 
 export interface StageStateRecord {
@@ -78,6 +95,10 @@ export interface StageStateRecord {
   local_gates_green_ts: string | null;
   log_path: string;
   phase_scope: string | null;
+  pre_review_checklist_blockers: string[];
+  pre_review_checklist_status: PreReviewChecklistStatus;
+  pre_review_checklists: StageStatePreReviewChecklistEntry[];
+  pre_review_risk_families: string[];
   primary_backlog_item_key: string | null;
   primary_feature_id: string | null;
   process_complete_ts: string | null;
@@ -170,12 +191,21 @@ function toReviewEvents(value: unknown): StageStateReviewEvent[] {
       event_commit: toNullableString(item.event_commit),
       implementation_scope: normalizeImplementationReviewScope(item.implementation_scope),
       invalidated: toBoolean(item.invalidated),
+      latest_copy_path: toNullableString(item.latest_copy_path),
       must_fix_count:
         typeof item.must_fix_count === 'number' && Number.isFinite(item.must_fix_count)
           ? item.must_fix_count
           : null,
       recorded_at: toNullableString(item.recorded_at),
       review_mode: toNullableString(item.review_mode),
+      review_attempt_id: toNullableString(item.review_attempt_id),
+      review_round_id: toNullableString(item.review_round_id),
+      review_round_number:
+        typeof item.review_round_number === 'number' &&
+        Number.isInteger(item.review_round_number) &&
+        item.review_round_number > 0
+          ? item.review_round_number
+          : null,
       reviewer: toNullableString(item.reviewer),
       reviewer_agent_id: toNullableString(item.reviewer_agent_id),
       reviewer_skill: toNullableString(item.reviewer_skill),
@@ -190,6 +220,18 @@ function normalizeProcessMissSeverity(value: unknown): ProcessMissSeverity {
   return PROCESS_MISS_SEVERITIES.includes(value as ProcessMissSeverity)
     ? (value as ProcessMissSeverity)
     : 'medium';
+}
+
+function normalizePreReviewChecklistEntryStatus(value: unknown): PreReviewChecklistEntryStatus {
+  return PRE_REVIEW_CHECKLIST_ENTRY_STATUSES.includes(value as PreReviewChecklistEntryStatus)
+    ? (value as PreReviewChecklistEntryStatus)
+    : 'blocked';
+}
+
+function normalizePreReviewChecklistStatus(value: unknown): PreReviewChecklistStatus {
+  return PRE_REVIEW_CHECKLIST_STATUSES.includes(value as PreReviewChecklistStatus)
+    ? (value as PreReviewChecklistStatus)
+    : 'not_required';
 }
 
 function toProcessMisses(value: unknown): StageStateProcessMiss[] {
@@ -217,6 +259,41 @@ function toProcessMisses(value: unknown): StageStateProcessMiss[] {
       } => item.id !== null && item.category !== null && item.summary !== null,
     );
   return [...new Map(misses.map((miss) => [miss.id, miss])).values()];
+}
+
+function toPreReviewChecklistEntries(value: unknown): StageStatePreReviewChecklistEntry[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  const entries = value
+    .filter((item): item is Record<string, unknown> => item !== null && typeof item === 'object')
+    .map((item) => ({
+      risk_family: toNullableString(item.risk_family),
+      id: toNullableString(item.id),
+      status: normalizePreReviewChecklistEntryStatus(item.status),
+      summary: toNullableString(item.summary),
+      evidence: toNullableString(item.evidence),
+      test_refs: toStringArray(item.test_refs),
+    }))
+    .filter(
+      (
+        item,
+      ): item is {
+        evidence: string;
+        id: string;
+        risk_family: string;
+        status: PreReviewChecklistEntryStatus;
+        summary: string;
+        test_refs: string[];
+      } =>
+        item.risk_family !== null &&
+        item.id !== null &&
+        item.summary !== null &&
+        item.evidence !== null,
+    );
+  return [
+    ...new Map(entries.map((entry) => [`${entry.risk_family}\u0000${entry.id}`, entry])).values(),
+  ];
 }
 
 function normalizeStage(value: unknown): StageStateStage | null {
@@ -260,6 +337,12 @@ function buildStageStateRecord(payload: {
     backlog_actualization_verdict: normalizeBacklogActualizationVerdict(
       payload.metadata.backlog_actualization_verdict,
     ),
+    pre_review_risk_families: toStringArray(payload.metadata.pre_review_risk_families),
+    pre_review_checklists: toPreReviewChecklistEntries(payload.metadata.pre_review_checklists),
+    pre_review_checklist_status: normalizePreReviewChecklistStatus(
+      payload.metadata.pre_review_checklist_status,
+    ),
+    pre_review_checklist_blockers: toStringArray(payload.metadata.pre_review_checklist_blockers),
     backlog_followup_required: toBoolean(payload.metadata.backlog_followup_required),
     backlog_followup_kind: toNullableString(payload.metadata.backlog_followup_kind),
     backlog_followup_resolved: toBoolean(payload.metadata.backlog_followup_resolved),
@@ -322,6 +405,7 @@ export function stageStateMirrorFields(state: StageStateRecord): Record<string, 
     backlog_followup_kind: state.backlog_followup_kind,
     backlog_followup_resolved: state.backlog_followup_resolved,
     review_artifacts: state.review_artifacts,
+    review_events: state.review_events,
     verification_artifacts: state.verification_artifacts,
     step_artifact: state.step_artifact,
     final_delivery_commit: state.final_delivery_commit,
@@ -338,6 +422,14 @@ export function stageStateMirrorFields(state: StageStateRecord): Record<string, 
     backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
     backlog_actualization_artifacts: state.backlog_actualization_artifacts,
     backlog_actualization_verdict: state.backlog_actualization_verdict,
+    ...(state.stage === 'implementation'
+      ? {
+          pre_review_risk_families: state.pre_review_risk_families,
+          pre_review_checklists: state.pre_review_checklists,
+          pre_review_checklist_status: state.pre_review_checklist_status,
+          pre_review_checklist_blockers: state.pre_review_checklist_blockers,
+        }
+      : {}),
   };
 }
 
@@ -406,6 +498,12 @@ export async function readStageState(
     backlog_actualization_verdict: normalizeBacklogActualizationVerdict(
       parsed.backlog_actualization_verdict,
     ),
+    pre_review_risk_families: toStringArray(parsed.pre_review_risk_families),
+    pre_review_checklists: toPreReviewChecklistEntries(parsed.pre_review_checklists),
+    pre_review_checklist_status: normalizePreReviewChecklistStatus(
+      parsed.pre_review_checklist_status,
+    ),
+    pre_review_checklist_blockers: toStringArray(parsed.pre_review_checklist_blockers),
     backlog_followup_required: toBoolean(parsed.backlog_followup_required),
     backlog_followup_kind: toNullableString(parsed.backlog_followup_kind),
     backlog_followup_resolved: toBoolean(parsed.backlog_followup_resolved),
