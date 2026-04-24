@@ -1,0 +1,70 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: documentation
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: "Create, review, restructure, and rewrite technical documentation using the Diataxis framework. Use when the task is to decide whether content should be a tutorial, how-to guide, reference, or explanation; split mixed documentation into the right forms; improve documentation architecture; or review docs for user-need fit, structure, and quality. Trigger terms include: Diataxis, tutorial vs how-to, reference vs explanation, documentation structure, reorganize docs, docs IA, technical writing, rewrite docs."
+  metadata:
+    tags: documentation, technical-writing, diataxis, tutorials, how-to, reference, explanation
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-diataxis-guide
+    title: Diataxis Guide
+    source: references/diataxis-guide.md
+    target: references/diataxis-guide.md
+    required: true
+    trigger: Read this when you need deeper guidance, rewrite patterns, or more detailed distinctions between the four forms.
+assets: []
+copies: []
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-diataxis-guide
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches documentation's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - write new technical documentation
+    - choose the right documentation form for a request
+    - review documentation quality and structure
+    - untangle mixed-purpose pages
+    - reorganize an existing documentation set around user needs
+  whenNotToUse:
+    - marketing copy, landing pages, or brand messaging
+    - product specs, ADRs, RFCs, or internal design proposals
+    - changelogs, release notes, or status updates
+    - purely technical correctness work where another domain skill should lead
+  workflow:
+    - id: stage-apply-documentation
+      title: Apply documentation guidance
+      goal: Apply the preserved documentation guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory documentation guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
