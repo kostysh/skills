@@ -7,7 +7,7 @@
 ### Setup
 
 ```bash
-pnpm add react-hook-form zod @hookform/resolvers
+pnpm add react-hook-form@latest zod@latest @hookform/resolvers@latest
 ```
 
 ---

@@ -1,8 +1,10 @@
 # Data Fetching in React SPA
 
-## TanStack Query v5 (React Query)
+## TanStack Query (React Query)
 
 **Rule: Use TanStack Query for all server state management in SPA.**
+
+**Version policy:** Use the current official TanStack Query React package and API unless the operator explicitly requests a different version.
 
 ### Setup
 
@@ -33,7 +35,7 @@ function App() {
 
 ## 1. Basic Queries - Object Syntax
 
-**Rule: Always use object syntax in v5 (no positional arguments).**
+**Rule: Use the current object options syntax; do not use legacy positional arguments.**
 
 ```tsx
 import { useQuery } from '@tanstack/react-query';
@@ -162,7 +164,7 @@ See [Persistence Architecture](persistence-architecture.md) for alignment rules 
 
 ## 3. gcTime (Garbage Collection Time)
 
-**Rule: gcTime replaces cacheTime in v5. Controls how long inactive data stays in cache.**
+**Rule: Use the current garbage-collection option (`gcTime`) instead of legacy `cacheTime`. It controls how long inactive data stays in cache.**
 
 ```tsx
 useQuery({
@@ -523,10 +525,10 @@ const { data, error, isError } = useQuery({
 
 ## Best Practices Summary
 
-1. **Always use object syntax** in v5
+1. **Always use current object options syntax**
 2. **Use hierarchical query keys** with factory pattern
 3. **isPending for initial load**, isLoading for any fetch
-4. **gcTime replaces cacheTime** - controls cache garbage collection
+4. **Use `gcTime`** - controls cache garbage collection
 5. **enabled option** for dependent queries
 6. **Prefetch on hover/route** for instant navigation
 7. **Optimistic updates** with onMutate/onError rollback

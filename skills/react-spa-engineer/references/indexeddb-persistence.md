@@ -2,7 +2,7 @@
 
 Client-side persistence layer for React SPA using IndexedDB via Dexie.
 
-**Stack**: Dexie 4.x | dexie-react-hooks | TypeScript
+**Stack**: Dexie | dexie-react-hooks | TypeScript
 
 ## Why IndexedDB for SPA
 
@@ -36,7 +36,7 @@ Server calls are executed via TanStack Query `queryFn` / `mutationFn`.
 ## Setup
 
 ```bash
-pnpm add dexie dexie-react-hooks
+pnpm add dexie@latest dexie-react-hooks@latest
 ```
 
 ---

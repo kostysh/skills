@@ -1,6 +1,6 @@
 Build production-ready React single-page applications with TypeScript, modern state management, and best practices.
 
-**Stack**: React 18-19 | TypeScript 5+ | Vite | TanStack Query v5 | Zustand | React Hook Form + Zod | React Router v7 | Dexie (IndexedDB)
+**Stack**: React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie (IndexedDB)
 
 ## Skill Interop (Priority)
 
@@ -18,7 +18,7 @@ Build production-ready React single-page applications with TypeScript, modern st
 ```bash
 pnpm create vite@latest my-app --template react-ts
 cd my-app && pnpm install
-pnpm add @tanstack/react-query zustand react-hook-form @hookform/resolvers zod react-router dexie dexie-react-hooks
+pnpm add @tanstack/react-query@latest zustand@latest react-hook-form@latest @hookform/resolvers@latest zod@latest react-router@latest dexie@latest dexie-react-hooks@latest
 ```
 
 ### Strict TypeScript Config
@@ -96,7 +96,7 @@ Avoid sync oscillation:
 
 See [Persistence Architecture](references/persistence-architecture.md) for full rules.
 
-### Data Fetching (TanStack Query v5)
+### Data Fetching (TanStack Query)
 
 Example: see [Data Fetching](references/data-fetching.md).
 
@@ -110,12 +110,12 @@ Example: see [Data Fetching](references/data-fetching.md).
   - UI hooks/components consuming Query.
 - All external API requests in SPA flows MUST run via TanStack Query (`useQuery`/`useMutation`/`queryClient`).
 
-**v5 Breaking Changes**:
-- Object syntax required: `useQuery({ queryKey, queryFn })`
-- `cacheTime` → `gcTime`
-- `isLoading` → `isPending` for initial load
-- `onSuccess/onError` removed from queries (use `useEffect`)
-- `initialPageParam` required for infinite queries
+**Current API expectations**:
+- Object options syntax required: `useQuery({ queryKey, queryFn })`
+- Use `gcTime` for inactive cache garbage collection
+- Use `isPending` for initial-load pending states
+- React to query data changes outside query options when the current API requires it
+- Define explicit initial page params for infinite queries when required by the current API
 
 ### Cookie-based Auth SPA Baseline
 
@@ -137,7 +137,7 @@ Example: see [Forms & Validation](references/forms-validation.md).
 - Server validation MUST NOT be skipped (security)
 - Use `field.id` as key in `useFieldArray` (not index)
 
-### Routing (React Router v7 Data Mode)
+### Routing (React Router Data APIs)
 
 Example: see [Routing](references/routing.md).
 
@@ -147,7 +147,7 @@ Example: see [Routing](references/routing.md).
 - `loader` → data before render
 - `useEffect` → client-only, user-interaction dependent
 - Default to `Component` in route objects; use `element` only for inline composition/props
-- Use `react-router` for v7; `react-router-dom` is compatibility re-export
+- Follow the current React Router package guidance; avoid mixing router packages unless the official docs require it
 - For link-reproducible state, `URL search params` are source of truth; UI derives and writes back to URL
 
 ### Performance
@@ -239,9 +239,9 @@ Detailed patterns and examples:
 - [Component Architecture](references/component-architecture.md) — Functional components, composition patterns
 - [State Management](references/state-management.md) — Zustand, Context API, persistence guidance
 - [Persistence Architecture](references/persistence-architecture.md) — URL/Zustand/Dexie/Query contracts, invalidation, context switches
-- [Data Fetching](references/data-fetching.md) — TanStack Query v5 patterns, caching, mutations
+- [Data Fetching](references/data-fetching.md) — TanStack Query patterns, caching, mutations
 - [Forms & Validation](references/forms-validation.md) — React Hook Form, Zod schemas
-- [Routing](references/routing.md) — React Router v7, loaders, protected routes
+- [Routing](references/routing.md) — React Router data APIs, loaders, protected routes
 - [TypeScript Patterns](references/typescript-patterns.md) — Type-safe React development
 - [Performance](references/performance.md) — Code splitting, optimization techniques
 - [IndexedDB Persistence](references/indexeddb-persistence.md) — Dexie, useLiveQuery, offline-first

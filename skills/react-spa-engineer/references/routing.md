@@ -1,10 +1,12 @@
 # Routing in React SPA
 
-## React Router v7 Data Mode
+## React Router Data APIs
 
 **Rule: Use createBrowserRouter with Data API for modern React SPA routing.**
 
-**Package note**: For React Router v7, prefer installing/importing from `react-router`. `react-router-dom` is a compatibility re-export; avoid mixing both.
+**Version policy:** Use the current official React Router package and API unless the operator explicitly requests a different version.
+
+**Package note**: Follow the current React Router package guidance for imports. Avoid mixing router packages unless the official docs require it.
 
 **Project policy**: Server reads/mutations must go through TanStack Query. In examples below, direct loader calls are conceptual shortcuts; production code should route IO through Query `queryFn` / `mutationFn` and `queryClient`.
 

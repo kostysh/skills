@@ -7,7 +7,7 @@
 ### Setup
 
 ```bash
-pnpm add -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
+pnpm add -D vitest@latest @testing-library/react@latest @testing-library/jest-dom@latest @testing-library/user-event@latest jsdom@latest
 ```
 
 ```ts
