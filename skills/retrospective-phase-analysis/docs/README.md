@@ -12,6 +12,12 @@
 | [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | Audited | Artifact-driven discovery, conservative boundaries и structured-first metrics. |
 | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited | Regression case для `referenced_only` stage logs, validation-required reports и false positives в skill-audit. |
 
+## Implementation Plans
+
+| Plan | Related issue | Status |
+| --- | --- | --- |
+| [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited |
+
 ## Implementation Logs
 
 | Log | Related issue | Status |
