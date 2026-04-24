@@ -75,32 +75,38 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - state replay/idempotency expectations and quota/key isolation when they are relevant
    - require bounded request-body handling on high-risk routes before untrusted body reads
    - keep this checkpoint bounded to route admission; do not turn it into a generic security planning framework
-3. Classify the review scope and load only the needed references:
+3. Apply the policy-governance admission checkpoint only when a slice gates external consultant/tool invocation, policy profile activation, active-scope selection, governance/audit persistence preconditions, fail-closed policy gates, or replay/idempotency controls around security-relevant decisions:
+   - keep this checkpoint distinct from route auth-admission; it covers policy/control-plane admission rather than HTTP route admission
+   - load `references/policy-governance-admission.md` for the bounded checklist
+   - check explicit deny/no-invocation, failed or conflicting persistence before side effects, stale allow replay, missing freshness evidence, activation races, and audit sufficiency
+   - report only HIGH-confidence findings with a confirmed attacker/control path or security-relevant operator/control-plane impact; route non-security merge risks to `code-reviewer`
+4. Classify the review scope and load only the needed references:
    - general methodology
    - API/auth/input
+   - policy-governance admission
    - GitHub Actions
    - Supabase RLS
    - webhooks
    - secrets/config
    - domain handoffs when stack-specific behavior changes exploitability
-4. Map trust boundaries:
+5. Map trust boundaries:
    - inputs
    - identities and roles
    - secrets and credentials
    - privileged actions
    - sensitive sinks
-5. Trace the attack path:
+6. Trace the attack path:
    - entry point
    - attacker-controlled value
    - execution or authorization mechanism
    - impact
-6. Verify mitigations:
+7. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
    - access controls
    - environment or deployment constraints
-7. Classify confidence and severity.
-8. Choose the output mode:
+8. Classify confidence and severity.
+9. Choose the output mode:
    - targeted findings in chat
    - formal audit sections with stable IDs
    - remediation of one confirmed finding at a time
@@ -180,6 +186,7 @@ Read only what you need:
 
 - `references/methodology.md` - confidence gating, surface discovery, audit order, uncertainty language, and report format
 - `references/api-auth-input.md` - input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints
+- `references/policy-governance-admission.md` - external invocation admission, policy activation, fail-closed governance gates, freshness, replay, and audit sufficiency checks
 - `references/github-actions.md` - GitHub Actions threat model, attack classes, detection hints, and safe patterns
 - `references/supabase-rls.md` - RLS, grants, privileged functions, RPC, and service-role review
 - `references/webhooks.md` - signature verification, replay windows, raw body handling, idempotency, and reporting checks

@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.0`
+- Skill source version: `0.1.1`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -13,6 +13,7 @@ Generated from `skill.yaml`.
 - `references/domain-handoffs.md`
 - `references/github-actions.md`
 - `references/methodology.md`
+- `references/policy-governance-admission.md`
 - `references/secrets-config.md`
 - `references/supabase-rls.md`
 - `references/webhooks.md`
@@ -24,6 +25,7 @@ Generated from `skill.yaml`.
 - `references/domain-handoffs.md`
 - `references/github-actions.md`
 - `references/methodology.md`
+- `references/policy-governance-admission.md`
 - `references/secrets-config.md`
 - `references/supabase-rls.md`
 - `references/webhooks.md`

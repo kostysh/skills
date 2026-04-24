@@ -100,6 +100,8 @@ Check:
 
 Keep the checklist narrow. If exploitability depends on Hono-specific body limits, middleware order, or admission-boundary preservation, resolve that fact through `HONO engineer` rather than duplicating framework guidance here.
 
+This auth-admission checklist is route-specific. For policy-governance admission before external invocation, policy activation, governance/audit persistence preconditions, fail-closed policy gates, or security-relevant replay/idempotency controls, use `references/policy-governance-admission.md` instead of expanding this route checklist.
+
 ## Safe-by-Default Patterns
 
 Usually safe unless protections are bypassed:

@@ -2,6 +2,8 @@
 
 This skill owns security review method. Stop and hand off framework detail when you hit implementation-specific questions.
 
+Policy-governance admission reportability stays with `security-reviewer`: decide whether external invocation, policy activation, active-scope selection, governance/audit persistence, fail-closed gates, or replay/idempotency behavior creates a security finding here. Hand off only the framework/runtime facts needed to prove exploitability or remediation.
+
 ## Stack Discovery
 
 Before loading a domain skill, identify all relevant stacks and surfaces:
@@ -31,6 +33,7 @@ Security questions to resolve:
 - whether trusted proxy or edge behavior changes attacker control
 - whether auth context and route-specific body limits are attached before privileged handlers or expensive pre-auth work run
 - whether a Hono route-admission change preserves the touched route's existing public/user/admin/webhook/service/operator boundary
+- whether the question is Hono route admission; non-route policy-governance admission belongs in `references/policy-governance-admission.md`
 
 ## Load `supabase-engineer`
 
@@ -80,3 +83,5 @@ Security questions to resolve:
 ## Handoff Rule
 
 If exploitability depends on a stack-specific fact that this skill cannot confirm, keep the item in `needs verification` until the relevant domain skill resolves it.
+
+Do not transfer non-route policy-governance security reportability to a domain skill. Domain skills can resolve transaction, runtime, middleware, queue, or framework facts, but `security-reviewer` owns the final HIGH-confidence security finding decision.

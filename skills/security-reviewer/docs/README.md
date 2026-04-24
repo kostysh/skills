@@ -7,10 +7,17 @@
 | Issue | Status | Notes |
 | --- | --- | --- |
 | [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | Implemented | Bounded auth-admission early checklist stack для `security-reviewer`, `HONO engineer` и `typescript-test-engineer`. |
-| [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited | Policy-governance admission checkpoint для external invocation, replay/freshness и activation race review. |
+| [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented | Policy-governance admission checkpoint для external invocation, replay/freshness и activation race review. Plan: [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md). Log: [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md). |
+
+## Implementation Plans
+
+| Plan | Related issue | Status |
+| --- | --- | --- |
+| [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented PASS |
 
 ## Implementation Logs
 
 | Log | Related issue | Status |
 | --- | --- | --- |
 | [logs/implementation-log-20260423-1.md](logs/implementation-log-20260423-1.md) | [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | PASS |
+| [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | PASS |
