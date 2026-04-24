@@ -1,0 +1,72 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: react-components-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Build and review bulletproof React components that remain correct across SSR, hydration, multiple instances, concurrent rendering, async/opaque children, portals/iframes, transitions, Activity visibility, server-client data boundaries, and future React runtime changes.
+    Use when designing or hardening reusable React components (React 18-19, including RSC-oriented code paths).
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-bulletproof-patterns
+    title: Bulletproof Patterns
+    source: references/bulletproof-patterns.md
+    target: references/bulletproof-patterns.md
+    required: true
+    trigger: Read this when you need Full guidance for all 10 hardening patterns, code templates, caveats, and review checks.
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-bulletproof-patterns
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches react-components-engineer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Creating or refactoring reusable React components/providers.
+    - Reviewing component robustness for SSR, hydration, RSC, portals, iframes, or pop-out windows.
+    - Hardening server/client boundaries and preventing accidental sensitive-data leaks.
+  whenNotToUse:
+    - "App-level SPA architecture (routing, data layer, forms): use `react-spa-engineer`."
+    - "TypeScript language/tooling decisions: use `typescript-engineer`."
+    - "Test framework strategy and mocking policy: use `typescript-test-engineer`."
+    - "Primarily visual styling or UI look-and-feel work: use `frontend-design`."
+  workflow:
+    - id: stage-apply-react-components-engineer
+      title: Apply react-components-engineer guidance
+      goal: Apply the preserved react-components-engineer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory react-components-engineer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
