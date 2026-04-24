@@ -1,0 +1,60 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: git-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 21000
+  description: Enforce Conventional Commits, Git hygiene, and worktree-based isolation. Use when making commits, crafting commit messages, splitting changes into multiple commits, deciding between merge/rebase/cherry-pick, or setting up git worktrees in any repo.
+fragments:
+  overview: fragments/overview.md
+references: []
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences: []
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches git-engineer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Making, splitting, or reviewing commits and commit messages.
+    - Choosing merge, rebase, cherry-pick, branch, PR, issue, or worktree workflows.
+    - Using GitHub CLI for issues, pull requests, CI status, labels, or merge operations.
+    - Setting up worktree-based isolation or enforcing Git hygiene.
+  whenNotToUse:
+    - The task does not involve Git history, commits, branches, worktrees, PRs, issues, or GitHub CLI workflow.
+    - The user explicitly asks not to commit or not to use Git operations.
+  workflow:
+    - id: stage-apply-git-engineer
+      title: Apply git-engineer guidance
+      goal: Apply the preserved git-engineer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory git-engineer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm the skill remains understandable without placeholder reference files.
