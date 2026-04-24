@@ -1,0 +1,187 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: supabase-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: Comprehensive Supabase engineering guidance for PostgreSQL schema design, RLS policies, auth, realtime, storage, Edge Functions, migrations/CLI, performance, observability, and troubleshooting. Use when building, refactoring, or debugging Supabase apps; designing schemas or policies; integrating auth/storage/realtime; writing Edge Functions; or setting up Supabase CI/ops workflows.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-architecture
+    title: Architecture
+    source: references/architecture.md
+    target: references/architecture.md
+    required: true
+    trigger: Read this when you need Architecture variants.
+  - id: ref-references-auth
+    title: Auth
+    source: references/auth.md
+    target: references/auth.md
+    required: true
+    trigger: Read this when you need Auth flows + protected routes.
+  - id: ref-references-client-setup
+    title: Client Setup
+    source: references/client-setup.md
+    target: references/client-setup.md
+    required: true
+    trigger: Read this when you need Client setup.
+  - id: ref-references-data-handling
+    title: Data Handling
+    source: references/data-handling.md
+    target: references/data-handling.md
+    required: true
+    trigger: Read this when you need PII, retention, redaction.
+  - id: ref-references-database
+    title: Database
+    source: references/database.md
+    target: references/database.md
+    required: true
+    trigger: Read this when you need Database CRUD, relationships, pagination.
+  - id: ref-references-db-functions
+    title: Db Functions
+    source: references/db-functions.md
+    target: references/db-functions.md
+    required: true
+    trigger: Read this when you need Database functions + triggers.
+  - id: ref-references-edge-functions
+    title: Edge Functions
+    source: references/edge-functions.md
+    target: references/edge-functions.md
+    required: true
+    trigger: Read this when you need Edge Functions (Deno).
+  - id: ref-references-migrations-cli
+    title: Migrations Cli
+    source: references/migrations-cli.md
+    target: references/migrations-cli.md
+    required: true
+    trigger: Read this when you need Migrations + CLI.
+  - id: ref-references-operations-observability
+    title: Operations Observability
+    source: references/operations-observability.md
+    target: references/operations-observability.md
+    required: true
+    trigger: Read this when you need Observability + debug bundles.
+  - id: ref-references-operations-release
+    title: Operations Release
+    source: references/operations-release.md
+    target: references/operations-release.md
+    required: true
+    trigger: Read this when you need CI, deploy, multi-env, upgrades, runbooks.
+  - id: ref-references-operations-reliability
+    title: Operations Reliability
+    source: references/operations-reliability.md
+    target: references/operations-reliability.md
+    required: true
+    trigger: Read this when you need Reliability, rate limits, performance.
+  - id: ref-references-realtime
+    title: Realtime
+    source: references/realtime.md
+    target: references/realtime.md
+    required: true
+    trigger: Read this when you need Realtime + presence.
+  - id: ref-references-rls
+    title: Rls
+    source: references/rls.md
+    target: references/rls.md
+    required: true
+    trigger: Read this when you need RLS policies + storage RLS.
+  - id: ref-references-security-privileges
+    title: Security Privileges
+    source: references/security-privileges.md
+    target: references/security-privileges.md
+    required: true
+    trigger: Read this when you need Grants, privileges, and permission modeling.
+  - id: ref-references-storage
+    title: Storage
+    source: references/storage.md
+    target: references/storage.md
+    required: true
+    trigger: Read this when you need Storage operations.
+  - id: ref-references-troubleshooting
+    title: Troubleshooting
+    source: references/troubleshooting.md
+    target: references/troubleshooting.md
+    required: true
+    trigger: Read this when you need Common errors + fixes.
+  - id: ref-references-vector
+    title: Vector
+    source: references/vector.md
+    target: references/vector.md
+    required: true
+    trigger: Read this when you need Vector embeddings (pgvector).
+  - id: ref-references-webhooks
+    title: Webhooks
+    source: references/webhooks.md
+    target: references/webhooks.md
+    required: true
+    trigger: Read this when you need Webhooks + signature verification.
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-architecture
+      - ref-references-auth
+      - ref-references-client-setup
+      - ref-references-data-handling
+      - ref-references-database
+      - ref-references-db-functions
+      - ref-references-edge-functions
+      - ref-references-migrations-cli
+      - ref-references-operations-observability
+      - ref-references-operations-release
+      - ref-references-operations-reliability
+      - ref-references-realtime
+      - ref-references-rls
+      - ref-references-security-privileges
+      - ref-references-storage
+      - ref-references-troubleshooting
+      - ref-references-vector
+      - ref-references-webhooks
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches supabase-engineer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Building, refactoring, reviewing, or debugging Supabase-backed applications.
+    - Designing PostgreSQL schemas, RLS policies, auth flows, storage, realtime, Edge Functions, migrations, performance, observability, or operations workflows.
+    - Using Supabase CLI, local development, MCP discovery, or cloud-safe Supabase inspection.
+  whenNotToUse:
+    - The task has no Supabase, PostgreSQL, RLS, auth, storage, realtime, Edge Function, or Supabase operations surface.
+    - The task is purely frontend, framework, or TypeScript work without Supabase-specific behavior.
+  workflow:
+    - id: stage-apply-supabase-engineer
+      title: Apply supabase-engineer guidance
+      goal: Apply the preserved supabase-engineer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory supabase-engineer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
