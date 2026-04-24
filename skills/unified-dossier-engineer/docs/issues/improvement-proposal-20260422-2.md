@@ -61,7 +61,7 @@ The active skill must describe only the current canonical truth:
 
 ### 1. Root generated skill wording
 
-Fix generated [SKILL.md](../SKILL.md) so it no longer says or implies:
+Fix generated [SKILL.md](../../SKILL.md) so it no longer says or implies:
 
 - that `unified-dossier-engineer` is the “merged `dossier-engineer`”;
 - that split `backlog-engineer` or split `dossier-engineer` still exist as live skill targets;
@@ -77,7 +77,7 @@ Replace this with canonical wording such as:
 
 Fix the source bundle, especially:
 
-- [skill.yaml](../skill.yaml)
+- [skill.yaml](../../skill.yaml)
 - source fragments that feed emitted `SKILL.md`
 - any active `references/*` that still describe the skill through deleted split-skill identities
 

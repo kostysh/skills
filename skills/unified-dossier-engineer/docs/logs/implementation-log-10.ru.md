@@ -2,7 +2,7 @@
 
 ## Что изменено
 
-- Добавлен новый active reference [references/audit-policy.md](../references/audit-policy.md) как единый canonical source of truth для dossier-stage audit policy.
+- Добавлен новый active reference [references/audit-policy.md](../../references/audit-policy.md) как единый canonical source of truth для dossier-stage audit policy.
 - Active refs и utility spec выровнены так, чтобы:
   - every mutating dossier stage required external review before truthful closure;
   - `implementation` имел explicit `non-code` vs `code-bearing` review scope;

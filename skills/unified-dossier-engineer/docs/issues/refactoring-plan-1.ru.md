@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Этот план переводит [концепцию объединённого skill-а](issues/unified-dossier-engineer-concept-2026-04-20.md) в исполнимую программу разработки нового `unified-dossier-engineer`.
+Этот план переводит [концепцию объединённого skill-а](unified-dossier-engineer-concept-2026-04-20.md) в исполнимую программу разработки нового `unified-dossier-engineer`.
 
 План намеренно проектирует **полную замену split-модели** `backlog-engineer` + `dossier-engineer`, а не мягкий interop layer поверх старых границ.
 

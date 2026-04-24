@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Этот план реализует [issue про goal-oriented handoff contract для `plan-slice`](issues/improvement-proposal-20260423-2.md).
+Этот план реализует [issue про goal-oriented handoff contract для `plan-slice`](improvement-proposal-20260423-2.md).
 
 Цель:
 

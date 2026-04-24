@@ -3,7 +3,7 @@
 ## Что изменено
 
 - Source bundle переведен на самодостаточное present-tense wording без описания текущего skill-а через deleted split skills или merge-era identity.
-- В [skill.yaml](../skill.yaml), source fragments и active references:
+- В [skill.yaml](../../skill.yaml), source fragments и active references:
   - удалены формулировки про `merged skill`, `merged runtime`, `merged target`;
   - удалены live references к split `backlog-engineer` / `dossier-engineer`;
   - active prose упрощена до текущей canonical модели: этот skill, этот runtime, canonical `.dossier` + `docs/ssot`, launcher `dossier-engineer`.
@@ -11,8 +11,8 @@
   - global help больше не говорит языком merge narrative;
   - init-materialized `.dossier/backlog/AGENTS.md` больше не содержит stale identity wording;
   - partial-success warning у `feature-intake` больше не использует stale merge wording.
-- Перегенерированы [SKILL.md](../SKILL.md) и [compile-report.md](compile-report.md).
-- Regression guards усилены в [test/docs-contract.test.ts](../test/docs-contract.test.ts) и [test/cli.test.ts](../test/cli.test.ts):
+- Перегенерированы [SKILL.md](../../SKILL.md) и [compile-report.md](../compile-report.md).
+- Regression guards усилены в [test/docs-contract.test.ts](../../test/docs-contract.test.ts) и [test/cli.test.ts](../../test/cli.test.ts):
   - generated skill больше не должен возвращаться к deleted split-skill wording;
   - help surface больше не должен возвращаться к merge-era identity phrasing.
 

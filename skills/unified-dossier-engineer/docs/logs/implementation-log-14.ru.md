@@ -2,7 +2,7 @@
 
 ## Scope
 
-Реализован [issues/improvement-proposal-20260423-3.md](issues/improvement-proposal-20260423-3.md).
+Реализован [issues/improvement-proposal-20260423-3.md](../issues/improvement-proposal-20260423-3.md).
 
 Цель изменения:
 
@@ -18,9 +18,9 @@
 
 Обновлены:
 
-- [../SKILL.md](../SKILL.md)
-- [../fragments/overview.md](../fragments/overview.md)
-- [../skill.yaml](../skill.yaml)
+- [../SKILL.md](../../SKILL.md)
+- [../fragments/overview.md](../../fragments/overview.md)
+- [../skill.yaml](../../skill.yaml)
 
 Решение:
 
@@ -30,7 +30,7 @@
 
 ### Audit policy
 
-Обновлен [references/audit-policy.md](../references/audit-policy.md):
+Обновлен [references/audit-policy.md](../../references/audit-policy.md):
 
 - blocking audits must not inherit authoring agent full working context or full conversation history;
 - Codex `fork_context: false` описан как runtime-specific realization общего правила;
@@ -42,8 +42,8 @@
 
 Обновлены:
 
-- [references/delivery-workflow-layer.md](../references/delivery-workflow-layer.md)
-- [references/commandized-stage-control.md](../references/commandized-stage-control.md)
+- [references/delivery-workflow-layer.md](../../references/delivery-workflow-layer.md)
+- [references/commandized-stage-control.md](../../references/commandized-stage-control.md)
 
 Решение:
 
@@ -54,9 +54,9 @@
 
 Обновлены:
 
-- [references/runtime-and-command-boundary.md](../references/runtime-and-command-boundary.md)
-- [references/telemetry-and-closure.md](../references/telemetry-and-closure.md)
-- [utility-spec.ru.md](utility-spec.ru.md)
+- [references/runtime-and-command-boundary.md](../../references/runtime-and-command-boundary.md)
+- [references/telemetry-and-closure.md](../../references/telemetry-and-closure.md)
+- [utility-spec.ru.md](../utility-spec.ru.md)
 
 Решение:
 
@@ -68,8 +68,8 @@
 
 Обновлены:
 
-- [../src/vendor/dossier-engineer/commands.ts](../src/vendor/dossier-engineer/commands.ts)
-- [../scripts/dossier-engineer.mjs](../scripts/dossier-engineer.mjs)
+- [../src/vendor/dossier-engineer/commands.ts](../../src/vendor/dossier-engineer/commands.ts)
+- [../scripts/dossier-engineer.mjs](../../scripts/dossier-engineer.mjs)
 
 Решение:
 
@@ -82,8 +82,8 @@ Runtime behavior, artifact schema и audit bundle mapping не менялись.
 
 Обновлены:
 
-- [../test/docs-contract.test.ts](../test/docs-contract.test.ts)
-- [../test/cli.test.ts](../test/cli.test.ts)
+- [../test/docs-contract.test.ts](../../test/docs-contract.test.ts)
+- [../test/cli.test.ts](../../test/cli.test.ts)
 
 Покрытие:
 

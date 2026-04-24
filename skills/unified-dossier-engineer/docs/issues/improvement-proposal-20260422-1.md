@@ -74,8 +74,8 @@ but it does **not** explicitly keep:
 
 Current active references that show the reduced contract:
 
-- [SKILL.md](../SKILL.md)
-- [references/delivery-workflow-layer.md](../references/delivery-workflow-layer.md)
+- [SKILL.md](../../SKILL.md)
+- [references/delivery-workflow-layer.md](../../references/delivery-workflow-layer.md)
 
 The current active surface says `independent review in fail-closed mode`, but it no longer says that implementation closure requires the full audit stack.
 
@@ -291,11 +291,11 @@ Restore one canonical active reference:
 
 Update active references so that:
 
-- [references/audit-policy.md](../references/audit-policy.md)
-- [references/delivery-workflow-layer.md](../references/delivery-workflow-layer.md)
-- [references/commandized-stage-control.md](../references/commandized-stage-control.md)
-- [references/telemetry-and-closure.md](../references/telemetry-and-closure.md)
-- [SKILL.md](../SKILL.md)
+- [references/audit-policy.md](../../references/audit-policy.md)
+- [references/delivery-workflow-layer.md](../../references/delivery-workflow-layer.md)
+- [references/commandized-stage-control.md](../../references/commandized-stage-control.md)
+- [references/telemetry-and-closure.md](../../references/telemetry-and-closure.md)
+- [SKILL.md](../../SKILL.md)
 
 all point consistently to:
 

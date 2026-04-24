@@ -2,7 +2,7 @@
 
 ## Scope
 
-Implement [refactoring-plan-2.ru.md](refactoring-plan-2.ru.md) to restore operator-facing value in intake/stage logs without weakening deterministic telemetry or closure truth.
+Implement [refactoring-plan-2.ru.md](../issues/refactoring-plan-2.ru.md) to restore operator-facing value in intake/stage logs without weakening deterministic telemetry or closure truth.
 
 ## Delivered changes
 

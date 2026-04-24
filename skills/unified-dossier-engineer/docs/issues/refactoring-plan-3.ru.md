@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Этот план реализует [issue про деградацию implementation review policy](issues/improvement-proposal-20260422-1.md).
+Этот план реализует [issue про деградацию implementation review policy](improvement-proposal-20260422-1.md).
 
 Цель:
 

@@ -2,7 +2,7 @@
 
 ## Область
 
-Этот лог фиксирует выполнение `Package 1` из [refactoring-plan-1.ru.md](refactoring-plan-1.ru.md).
+Этот лог фиксирует выполнение `Package 1` из [refactoring-plan-1.ru.md](../issues/refactoring-plan-1.ru.md).
 
 ## Цель пакета
 
@@ -11,22 +11,22 @@
 ## Что реализовано
 
 1. Создан canonical generated-skill scaffold:
-   - [AGENTS.md](../AGENTS.md)
-   - [skill.yaml](../skill.yaml)
-   - [fragments/](../fragments/)
-   - [references/](../references/)
-   - [assets/](../assets/)
-   - [src/](../src/)
-   - [test/](../test/)
-   - [scripts/](../scripts/)
-   - [package.json](../package.json)
+   - [AGENTS.md](../../AGENTS.md)
+   - [skill.yaml](../../skill.yaml)
+   - [fragments/](../../fragments/)
+   - [references/](../../references/)
+   - [assets/](../../assets/)
+   - [src/](../../src/)
+   - [test/](../../test/)
+   - [scripts/](../../scripts/)
+   - [package.json](../../package.json)
 
-2. Сгенерирован root [SKILL.md](../SKILL.md) через `skill-source-compiler`, без speculative runtime/CLI contract.
+2. Сгенерирован root [SKILL.md](../../SKILL.md) через `skill-source-compiler`, без speculative runtime/CLI contract.
 
 3. В active surface оставлены только required references:
-   - [references/status-and-scope.md](../references/status-and-scope.md)
-   - [references/unified-architecture.md](../references/unified-architecture.md)
-   - [references/source-bundle-governance.md](../references/source-bundle-governance.md)
+   - [references/status-and-scope.md](../../references/status-and-scope.md)
+   - [references/unified-architecture.md](../../references/unified-architecture.md)
+   - [references/source-bundle-governance.md](../../references/source-bundle-governance.md)
 
 4. Зафиксирована compiler-first maintenance model:
    - source of truth rooted at `skill.yaml`
@@ -36,11 +36,11 @@
 5. Отделены active references and assets от maintainer-only `docs/*`.
    `docs/*` остаётся служебной поверхностью для концепции, планов и implementation logs и не является частью emitted active contract.
 
-6. В [docs/issues/unified-dossier-engineer-concept-2026-04-20.md](issues/unified-dossier-engineer-concept-2026-04-20.md) зафиксировано compiler-driven ограничение на размер `SKILL.md` и необходимость progressive disclosure.
+6. В [docs/issues/unified-dossier-engineer-concept-2026-04-20.md](../issues/unified-dossier-engineer-concept-2026-04-20.md) зафиксировано compiler-driven ограничение на размер `SKILL.md` и необходимость progressive disclosure.
 
 7. После external spec-conformance review закрыты две corrective findings:
    - `docs/compile-report.md` убран из emitted active instructions; compile report остаётся maintainer-only output
-   - ownership `change-proposal` / `contract-drift-audit` / `backlog impact verdict` в active reference [references/unified-architecture.md](../references/unified-architecture.md) выровнен с концепцией в пользу delivery workflow layer
+   - ownership `change-proposal` / `contract-drift-audit` / `backlog impact verdict` в active reference [references/unified-architecture.md](../../references/unified-architecture.md) выровнен с концепцией в пользу delivery workflow layer
 
 ## Проверки
 

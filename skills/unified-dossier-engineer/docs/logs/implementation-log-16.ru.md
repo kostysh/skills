@@ -2,7 +2,7 @@
 
 ## Scope
 
-Реализован [issues/improvement-proposal-20260423-5.md](issues/improvement-proposal-20260423-5.md).
+Реализован [issues/improvement-proposal-20260423-5.md](../issues/improvement-proposal-20260423-5.md).
 
 Цель изменения:
 
@@ -18,10 +18,10 @@
 
 Обновлены:
 
-- [../src/shared/stage-state.ts](../src/shared/stage-state.ts)
-- [../src/delivery/stage-control.ts](../src/delivery/stage-control.ts)
-- [../src/unified-cli.ts](../src/unified-cli.ts)
-- [../scripts/dossier-engineer.mjs](../scripts/dossier-engineer.mjs)
+- [../src/shared/stage-state.ts](../../src/shared/stage-state.ts)
+- [../src/delivery/stage-control.ts](../../src/delivery/stage-control.ts)
+- [../src/unified-cli.ts](../../src/unified-cli.ts)
+- [../scripts/dossier-engineer.mjs](../../scripts/dossier-engineer.mjs)
 
 Решение:
 
@@ -37,13 +37,13 @@
 
 Обновлены:
 
-- [../SKILL.md](../SKILL.md)
-- [../fragments/overview.md](../fragments/overview.md)
-- [../references/commandized-stage-control.md](../references/commandized-stage-control.md)
-- [../references/delivery-workflow-layer.md](../references/delivery-workflow-layer.md)
-- [../references/telemetry-and-closure.md](../references/telemetry-and-closure.md)
-- [../references/unified-artifact-topology.md](../references/unified-artifact-topology.md)
-- [utility-spec.ru.md](utility-spec.ru.md)
+- [../SKILL.md](../../SKILL.md)
+- [../fragments/overview.md](../../fragments/overview.md)
+- [../references/commandized-stage-control.md](../../references/commandized-stage-control.md)
+- [../references/delivery-workflow-layer.md](../../references/delivery-workflow-layer.md)
+- [../references/telemetry-and-closure.md](../../references/telemetry-and-closure.md)
+- [../references/unified-artifact-topology.md](../../references/unified-artifact-topology.md)
+- [utility-spec.ru.md](../utility-spec.ru.md)
 
 Решение:
 
@@ -56,8 +56,8 @@
 
 Обновлены:
 
-- [../test/cli.test.ts](../test/cli.test.ts)
-- [../test/docs-contract.test.ts](../test/docs-contract.test.ts)
+- [../test/cli.test.ts](../../test/cli.test.ts)
+- [../test/docs-contract.test.ts](../../test/docs-contract.test.ts)
 
 Покрытие:
 

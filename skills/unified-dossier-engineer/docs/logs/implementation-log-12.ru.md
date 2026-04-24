@@ -2,7 +2,7 @@
 
 ## Scope
 
-Реализован [refactoring-plan-5.ru.md](refactoring-plan-5.ru.md) для [issues/improvement-proposal-20260423-2.md](issues/improvement-proposal-20260423-2.md).
+Реализован [refactoring-plan-5.ru.md](../issues/refactoring-plan-5.ru.md) для [issues/improvement-proposal-20260423-2.md](../issues/improvement-proposal-20260423-2.md).
 
 Цель изменения:
 
@@ -15,7 +15,7 @@
 
 ### Delivery workflow layer
 
-Обновлен [references/delivery-workflow-layer.md](../references/delivery-workflow-layer.md):
+Обновлен [references/delivery-workflow-layer.md](../../references/delivery-workflow-layer.md):
 
 - `plan-slice` теперь требует explicit execution target;
 - target outcome должен быть связан с acceptance criteria, Definition of Done или verification obligations;
@@ -24,7 +24,7 @@
 
 ### Commandized stage control
 
-Обновлен [references/commandized-stage-control.md](../references/commandized-stage-control.md):
+Обновлен [references/commandized-stage-control.md](../../references/commandized-stage-control.md):
 
 - `ready_for_close` для `plan-slice` теперь явно presumes agent-owned semantic readiness;
 - stage controller не author/validate semantic plan content;
@@ -32,7 +32,7 @@
 
 ### Telemetry and closure
 
-Обновлен [references/telemetry-and-closure.md](../references/telemetry-and-closure.md):
+Обновлен [references/telemetry-and-closure.md](../../references/telemetry-and-closure.md):
 
 - material target clarification, goal reclassification и ambiguity resolution для `plan-slice` получили явный log home в `Decisions / reclassifications`;
 - unresolved ambiguous objective должен быть видимым blocker, а не скрываться за mechanical transition.
@@ -41,8 +41,8 @@
 
 Обновлены:
 
-- [references/runtime-and-command-boundary.md](../references/runtime-and-command-boundary.md)
-- [docs/utility-spec.ru.md](utility-spec.ru.md)
+- [references/runtime-and-command-boundary.md](../../references/runtime-and-command-boundary.md)
+- [docs/utility-spec.ru.md](../utility-spec.ru.md)
 
 Решение:
 
@@ -52,7 +52,7 @@
 
 ## Tests
 
-Обновлен [test/docs-contract.test.ts](../test/docs-contract.test.ts):
+Обновлен [test/docs-contract.test.ts](../../test/docs-contract.test.ts):
 
 - добавлен regression guard для `plan-slice` execution-target policy;
 - тест защищает concrete outcome, completion recognition, boundaries, ambiguous objective fail-closed и runtime non-automation boundary.

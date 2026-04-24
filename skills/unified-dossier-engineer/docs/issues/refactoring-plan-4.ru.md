@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Этот план реализует [issue про stale split-skill / merge-era wording](issues/improvement-proposal-20260422-2.md).
+Этот план реализует [issue про stale split-skill / merge-era wording](improvement-proposal-20260422-2.md).
 
 Цель:
 

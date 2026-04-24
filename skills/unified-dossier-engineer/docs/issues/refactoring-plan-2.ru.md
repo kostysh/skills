@@ -2,7 +2,7 @@
 
 ## Назначение
 
-Этот план реализует [issue про деградацию stage-log contract](issues/improvement-proposal-20260421-1.md).
+Этот план реализует [issue про деградацию stage-log contract](improvement-proposal-20260421-1.md).
 
 Цель плана:
 

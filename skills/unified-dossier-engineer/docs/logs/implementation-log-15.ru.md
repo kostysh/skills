@@ -2,7 +2,7 @@
 
 ## Scope
 
-Реализован [issues/improvement-proposal-20260423-4.md](issues/improvement-proposal-20260423-4.md).
+Реализован [issues/improvement-proposal-20260423-4.md](../issues/improvement-proposal-20260423-4.md).
 
 Цель изменения:
 
@@ -16,9 +16,9 @@
 
 Обновлены:
 
-- [../src/delivery/stage-control.ts](../src/delivery/stage-control.ts)
-- [../src/unified-cli.ts](../src/unified-cli.ts)
-- [../scripts/dossier-engineer.mjs](../scripts/dossier-engineer.mjs)
+- [../src/delivery/stage-control.ts](../../src/delivery/stage-control.ts)
+- [../src/unified-cli.ts](../../src/unified-cli.ts)
+- [../scripts/dossier-engineer.mjs](../../scripts/dossier-engineer.mjs)
 
 Решение:
 
@@ -31,7 +31,7 @@
 
 ## Lifecycle/session-index compatibility
 
-Обновлен [../src/vendor/dossier-engineer/lib/lifecycle-telemetry.ts](../src/vendor/dossier-engineer/lib/lifecycle-telemetry.ts).
+Обновлен [../src/vendor/dossier-engineer/lib/lifecycle-telemetry.ts](../../src/vendor/dossier-engineer/lib/lifecycle-telemetry.ts).
 
 Решение:
 
@@ -43,14 +43,14 @@
 
 Обновлены:
 
-- [../SKILL.md](../SKILL.md)
-- [../fragments/overview.md](../fragments/overview.md)
-- [../skill.yaml](../skill.yaml)
-- [../references/commandized-stage-control.md](../references/commandized-stage-control.md)
-- [../references/runtime-and-command-boundary.md](../references/runtime-and-command-boundary.md)
-- [../references/telemetry-and-closure.md](../references/telemetry-and-closure.md)
-- [../references/unified-artifact-topology.md](../references/unified-artifact-topology.md)
-- [utility-spec.ru.md](utility-spec.ru.md)
+- [../SKILL.md](../../SKILL.md)
+- [../fragments/overview.md](../../fragments/overview.md)
+- [../skill.yaml](../../skill.yaml)
+- [../references/commandized-stage-control.md](../../references/commandized-stage-control.md)
+- [../references/runtime-and-command-boundary.md](../../references/runtime-and-command-boundary.md)
+- [../references/telemetry-and-closure.md](../../references/telemetry-and-closure.md)
+- [../references/unified-artifact-topology.md](../../references/unified-artifact-topology.md)
+- [utility-spec.ru.md](../utility-spec.ru.md)
 
 Решение:
 
@@ -63,8 +63,8 @@
 
 Обновлены:
 
-- [../test/cli.test.ts](../test/cli.test.ts)
-- [../test/docs-contract.test.ts](../test/docs-contract.test.ts)
+- [../test/cli.test.ts](../../test/cli.test.ts)
+- [../test/docs-contract.test.ts](../../test/docs-contract.test.ts)
 
 Покрытие:
 

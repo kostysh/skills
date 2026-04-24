@@ -2,7 +2,7 @@
 
 ## Scope
 
-Реализован [refactoring-plan-6.ru.md](refactoring-plan-6.ru.md) для [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md).
+Реализован [refactoring-plan-6.ru.md](../issues/refactoring-plan-6.ru.md) для [issues/improvement-proposal-20260423-1.md](../issues/improvement-proposal-20260423-1.md).
 
 Цель изменения:
 
@@ -16,7 +16,7 @@
 
 ### Telemetry and closure
 
-Обновлен [references/telemetry-and-closure.md](../references/telemetry-and-closure.md):
+Обновлен [references/telemetry-and-closure.md](../../references/telemetry-and-closure.md):
 
 - `Agent-authored narrative content` в dossier logs теперь follows the operator language by default;
 - explicit operator language preference wins;
@@ -27,7 +27,7 @@
 
 ### Commandized stage control
 
-Обновлен [references/commandized-stage-control.md](../references/commandized-stage-control.md):
+Обновлен [references/commandized-stage-control.md](../../references/commandized-stage-control.md):
 
 - mechanical scaffold generation не определяет language of authored narrative;
 - stage-controller reruns и helper-owned closure updates сохраняют authored narrative sections without translation or normalization;
@@ -37,8 +37,8 @@
 
 Обновлены:
 
-- [references/runtime-and-command-boundary.md](../references/runtime-and-command-boundary.md)
-- [docs/utility-spec.ru.md](utility-spec.ru.md)
+- [references/runtime-and-command-boundary.md](../../references/runtime-and-command-boundary.md)
+- [docs/utility-spec.ru.md](../utility-spec.ru.md)
 
 Решение:
 
@@ -49,7 +49,7 @@
 
 ## Tests
 
-Обновлен [test/docs-contract.test.ts](../test/docs-contract.test.ts):
+Обновлен [test/docs-contract.test.ts](../../test/docs-contract.test.ts):
 
 - добавлен regression guard для operator-language log policy;
 - тест защищает operator language, agent-authored narrative content, multilingual/ambiguous fallback, exact non-translated strings, generated scaffold headings и runtime non-translation boundary;

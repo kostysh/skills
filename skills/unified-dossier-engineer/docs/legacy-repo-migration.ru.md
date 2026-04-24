@@ -13,7 +13,7 @@
 - `.dossier/*` — учетные и process артефакты
 - `docs/ssot/*` — project-facing SSOT
 
-Пример legacy layout: `/code/projects/yaagi`.
+Пример legacy layout: `<repo-root>`.
 
 Важно:
 
