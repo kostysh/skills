@@ -20,9 +20,27 @@ Before writing findings:
    - background work
    - CI workflows
    - tests removed or weakened
+   - policy gates, admission flow, decision or audit persistence, active-scope activation, idempotency, replay, or freshness checks
 5. If a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
+6. If changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
 
 If any diff output is truncated, read the touched files directly until every changed hunk is seen.
+
+## Conditional Policy/admission Merge-risk Pass
+
+Use this pass only when the changed files or linked review intent touch policy gates, admission before external side effects, decision or audit persistence, active-scope activation, idempotency, replay, or freshness checks. For detailed probes, load `references/policy-admission-merge-risk.md`.
+
+Ask:
+
+- Do deny and refusal paths terminate before any external invocation or durable side effect?
+- Are duplicate request ids, persistence conflicts, replayed admissions, and stale audit rows resolved before side effects?
+- When an age limit such as `maxEvidenceAgeMs` exists, does missing or stale freshness metadata fail closed?
+- Can persistence failure, audit-write failure, or decision-write failure produce an allowed action?
+- Do active-scope or singleton decisions use a transaction, lock, or constraint model that matches the data model?
+- Do append-only fact tables avoid uniqueness shortcuts that hide conflicting facts?
+- Do tests exercise the actual policy/admission risk path instead of only a nearby happy path?
+
+Only report findings grounded in reachable changed behavior and surrounding code. If the concern is theoretical or the mitigation cannot be verified, move it to questions or omit it.
 
 ## Four Review Passes
 
