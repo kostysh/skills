@@ -352,6 +352,22 @@ async function applyBacklogLifecyclePatch(payload: {
 }): Promise<string> {
   const patchId = `test-${payload.itemKey}-${payload.deliveryState}`;
   const patchPath = path.join(payload.repo, 'test-backlog-patches', `${patchId}.json`);
+  const appliedPath = path.join(payload.repo, '.dossier', 'backlog', 'applied.json');
+  const sequence = await readFile(appliedPath, 'utf8')
+    .then((content) => {
+      const applied = JSON.parse(content) as {
+        patches?: Array<{ sequence?: unknown }>;
+      };
+      return (
+        Math.max(
+          0,
+          ...(applied.patches ?? [])
+            .map((entry) => entry.sequence)
+            .filter((value): value is number => typeof value === 'number'),
+        ) + 1
+      );
+    })
+    .catch(() => 1);
   await mkdir(path.dirname(patchPath), { recursive: true });
   await writeFile(
     patchPath,
@@ -360,7 +376,7 @@ async function applyBacklogLifecyclePatch(payload: {
         metadata: {
           patch_id: patchId,
           created_at: '2026-04-24T12:00:00.000Z',
-          sequence: 1,
+          sequence,
           target_item_keys: [payload.itemKey],
         },
         operations: [
@@ -486,6 +502,79 @@ function recordReviewArtifact(payload: {
   return match[1].trim();
 }
 
+async function closeImplementationWithSpecReview(payload: {
+  dossier: string;
+  featureId: string;
+  repo: string;
+}): Promise<void> {
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      payload.featureId,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    { cwd: payload.repo },
+  );
+  const verifyArtifact = path.join(
+    payload.repo,
+    '.dossier',
+    'verification',
+    payload.featureId,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: payload.featureId,
+    step: 'implementation',
+  });
+  const specReview = recordReviewArtifact({
+    repo: payload.repo,
+    dossier: payload.dossier,
+    step: 'implementation',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: `audit-agent-${payload.featureId}-post-close-spec`,
+    reviewerThreadId: `review-thread-${payload.featureId}-post-close-spec`,
+  });
+  const codeReview = recordReviewArtifact({
+    repo: payload.repo,
+    dossier: payload.dossier,
+    step: 'implementation',
+    auditClass: 'code-reviewer',
+    reviewerAgentId: `audit-agent-${payload.featureId}-post-close-code`,
+    reviewerThreadId: `review-thread-${payload.featureId}-post-close-code`,
+  });
+  const securityReview = recordReviewArtifact({
+    repo: payload.repo,
+    dossier: payload.dossier,
+    step: 'implementation',
+    auditClass: 'security-reviewer',
+    reviewerAgentId: `audit-agent-${payload.featureId}-post-close-security`,
+    reviewerThreadId: `review-thread-${payload.featureId}-post-close-security`,
+    securityTriggerReason: 'post-close-hygiene-test',
+  });
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      payload.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+    ],
+    { cwd: payload.repo },
+  );
+}
+
 test('init creates the unified process root and SSOT skeleton', async () => {
   const repo = await makeTempRepoPath();
 
@@ -546,6 +635,7 @@ test('command help smoke covers the shipped public surface', () => {
     'dossier-verify',
     'review-artifact',
     'dossier-step-close',
+    'post-close-hygiene',
     'next-step',
     'lifecycle-refresh',
   ] as const;
@@ -602,6 +692,11 @@ test('command help smoke covers the shipped public surface', () => {
       assert.match(result.stdout, /does not prove reviewer launch-mode independence/u);
       assert.match(result.stdout, /forked\/full-history authoring context must be rerun/u);
       assert.match(result.stdout, /--backlog-actualization-artifact <path>/u);
+    }
+    if (command === 'post-close-hygiene') {
+      assert.match(result.stdout, /refresh explicitly/u);
+      assert.match(result.stdout, /never auto-acks source-review records/u);
+      assert.match(result.stdout, /implementation-post-close-backlog-hygiene\.json/u);
     }
   }
 
@@ -3248,6 +3343,269 @@ test('dossier-step-close accepts already reconciled backlog lifecycle without an
   assert.equal(stageState.backlog_lifecycle_reconciled, true);
   assert.deepEqual(stageState.backlog_actualization_artifacts, []);
   assert.equal(stageState.backlog_actualization_verdict, 'current_state_satisfies_target');
+});
+
+test('implementation close marks post-close backlog hygiene missing without refreshing', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'post-close-hygiene-missing',
+    title: 'Post Close Hygiene Missing',
+  });
+
+  await closeImplementationWithSpecReview({
+    repo,
+    dossier: feature.dossier,
+    featureId: feature.featureId,
+  });
+
+  const stageState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', feature.featureId, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    post_close_backlog_hygiene_artifact: string | null;
+    post_close_backlog_hygiene_required: boolean;
+    post_close_backlog_hygiene_status: string;
+  };
+  const backlogState = JSON.parse(
+    await readFile(path.join(repo, '.dossier', 'backlog', 'state.json'), 'utf8'),
+  ) as { last_refresh_at: string | null };
+  const statusEnvelope = parseEnvelope<{
+    post_close_hygiene_missing_count: number;
+    post_close_hygiene_missing_feature_ids: string[];
+  }>(runCli(['status'], { cwd: repo }).stdout);
+  const queueEnvelope = parseEnvelope<unknown[]>(runCli(['queue'], { cwd: repo }).stdout);
+  const nextStep = JSON.parse(
+    runCli(['next-step', '--dossier', feature.dossier, '--json'], { cwd: repo }).stdout,
+  ) as {
+    post_close_backlog_hygiene_artifact: string | null;
+    post_close_backlog_hygiene_status: string;
+  };
+
+  assert.equal(stageState.post_close_backlog_hygiene_required, true);
+  assert.equal(stageState.post_close_backlog_hygiene_status, 'missing');
+  assert.equal(stageState.post_close_backlog_hygiene_artifact, null);
+  assert.equal(backlogState.last_refresh_at, null);
+  assert.equal(statusEnvelope.data.post_close_hygiene_missing_count, 1);
+  assert.deepEqual(statusEnvelope.data.post_close_hygiene_missing_feature_ids, [feature.featureId]);
+  assert.deepEqual(queueEnvelope.warnings, [
+    `Post-close backlog hygiene missing for implementation features: ${feature.featureId}`,
+  ]);
+  assert.equal(nextStep.post_close_backlog_hygiene_status, 'missing');
+  assert.equal(nextStep.post_close_backlog_hygiene_artifact, null);
+});
+
+test('post-close-hygiene writes clean evidence and detects later stale backlog truth', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'post-close-hygiene-clean',
+    title: 'Post Close Hygiene Clean',
+  });
+  await closeImplementationWithSpecReview({
+    repo,
+    dossier: feature.dossier,
+    featureId: feature.featureId,
+  });
+
+  const hygieneEnvelope = parseEnvelope<{
+    artifact_path: string;
+    backlog_clean: boolean;
+    open_source_review_count: number;
+    post_close_backlog_hygiene_status: string;
+  }>(
+    runCli(
+      ['post-close-hygiene', '--dossier', feature.dossier, '--step', 'implementation', '--json'],
+      {
+        cwd: repo,
+      },
+    ).stdout,
+  );
+  assert.equal(hygieneEnvelope.command, 'post-close-hygiene');
+  assert.equal(hygieneEnvelope.result, 'ok');
+  assert.equal(hygieneEnvelope.data.post_close_backlog_hygiene_status, 'clean');
+  assert.equal(hygieneEnvelope.data.backlog_clean, true);
+  assert.equal(hygieneEnvelope.data.open_source_review_count, 0);
+  await stat(path.join(repo, hygieneEnvelope.data.artifact_path));
+
+  const cleanStageState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', feature.featureId, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    post_close_backlog_hygiene_artifact: string | null;
+    post_close_backlog_hygiene_status: string;
+  };
+  assert.equal(cleanStageState.post_close_backlog_hygiene_status, 'clean');
+  assert.equal(
+    cleanStageState.post_close_backlog_hygiene_artifact,
+    hygieneEnvelope.data.artifact_path,
+  );
+
+  const cleanNextStep = JSON.parse(
+    runCli(['next-step', '--dossier', feature.dossier, '--json'], { cwd: repo }).stdout,
+  ) as { post_close_backlog_hygiene_status: string };
+  assert.equal(cleanNextStep.post_close_backlog_hygiene_status, 'clean');
+
+  const backlogStatePath = path.join(repo, '.dossier', 'backlog', 'state.json');
+  const backlogState = JSON.parse(await readFile(backlogStatePath, 'utf8')) as Record<
+    string,
+    unknown
+  >;
+  await writeFile(
+    backlogStatePath,
+    `${JSON.stringify({ ...backlogState, updated_at: '2999-01-01T00:00:00.000Z' }, null, 2)}\n`,
+  );
+  const staleStatus = parseEnvelope<{
+    post_close_hygiene_stale_count: number;
+    post_close_hygiene_stale_feature_ids: string[];
+  }>(runCli(['status'], { cwd: repo }).stdout);
+  const staleQueue = parseEnvelope<unknown[]>(runCli(['queue'], { cwd: repo }).stdout);
+
+  assert.equal(staleStatus.data.post_close_hygiene_stale_count, 1);
+  assert.deepEqual(staleStatus.data.post_close_hygiene_stale_feature_ids, [feature.featureId]);
+  assert.deepEqual(staleQueue.warnings, [
+    `Post-close backlog hygiene stale for implementation features: ${feature.featureId}`,
+  ]);
+});
+
+test('post-close-hygiene marks changed sources blocked without auto-ack', async () => {
+  const repo = await makeTempRepoPath();
+  await seedRefreshableBacklog(repo);
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Post Close Source Review Blocked',
+        '--backlog-item-key',
+        'auth-core',
+        '--backlog-delivery-state',
+        'specified',
+        '--backlog-source',
+        'sources/docs/modules/auth.md',
+        '--area',
+        'backend',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  await applyBacklogLifecyclePatch({
+    repo,
+    itemKey: 'auth-core',
+    deliveryState: 'implemented',
+  });
+  await closeImplementationWithSpecReview({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    featureId: intakeEnvelope.data.feature_id,
+  });
+  await writeFile(
+    path.join(repo, 'sources', 'docs', 'modules', 'auth.md'),
+    `${await readFile(path.join(repo, 'sources', 'docs', 'modules', 'auth.md'), 'utf8')}\npost-close change`,
+  );
+
+  const hygieneEnvelope = parseEnvelope<{
+    artifact_path: string;
+    backlog_clean: boolean;
+    open_source_review_count: number;
+    post_close_backlog_hygiene_status: string;
+    source_review_blocked_item_count: number;
+  }>(
+    runCli(
+      [
+        'post-close-hygiene',
+        '--feature-id',
+        intakeEnvelope.data.feature_id,
+        '--step',
+        'implementation',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  const statusEnvelope = parseEnvelope<{
+    open_source_review_count: number;
+    post_close_hygiene_blocked_count: number;
+    source_review_blocked_item_count: number;
+  }>(runCli(['status'], { cwd: repo }).stdout);
+  const sourceReview = JSON.parse(
+    await readFile(
+      path.join(
+        repo,
+        '.dossier',
+        'backlog',
+        'source-review',
+        'sr-11111111-1111-4111-8111-111111111111.json',
+      ),
+      'utf8',
+    ),
+  ) as { status: string };
+
+  assert.equal(hygieneEnvelope.result, 'blocked');
+  assert.equal(hygieneEnvelope.data.post_close_backlog_hygiene_status, 'blocked');
+  assert.equal(hygieneEnvelope.data.backlog_clean, false);
+  assert.equal(hygieneEnvelope.data.open_source_review_count, 1);
+  assert.equal(hygieneEnvelope.data.source_review_blocked_item_count, 3);
+  assert.equal(statusEnvelope.data.open_source_review_count, 1);
+  assert.equal(statusEnvelope.data.source_review_blocked_item_count, 3);
+  assert.equal(statusEnvelope.data.post_close_hygiene_blocked_count, 1);
+  assert.equal(sourceReview.status, 'open');
+});
+
+test('legacy implementation state without post-close required flag remains not_required', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'post-close-hygiene-legacy',
+    title: 'Post Close Hygiene Legacy',
+  });
+  await closeImplementationWithSpecReview({
+    repo,
+    dossier: feature.dossier,
+    featureId: feature.featureId,
+  });
+
+  const stageStatePath = path.join(
+    repo,
+    '.dossier',
+    'stages',
+    feature.featureId,
+    'implementation.json',
+  );
+  const stageState = JSON.parse(await readFile(stageStatePath, 'utf8')) as Record<string, unknown>;
+  for (const key of Object.keys(stageState)) {
+    if (key.startsWith('post_close_')) {
+      delete stageState[key];
+    }
+  }
+  await writeFile(stageStatePath, `${JSON.stringify(stageState, null, 2)}\n`);
+
+  const nextStep = JSON.parse(
+    runCli(['next-step', '--dossier', feature.dossier, '--json'], { cwd: repo }).stdout,
+  ) as { post_close_backlog_hygiene_status: string };
+  const statusEnvelope = parseEnvelope<{
+    post_close_hygiene_missing_count: number;
+    post_close_hygiene_stale_count: number;
+    post_close_hygiene_blocked_count: number;
+  }>(runCli(['status'], { cwd: repo }).stdout);
+
+  assert.equal(nextStep.post_close_backlog_hygiene_status, 'not_required');
+  assert.equal(statusEnvelope.data.post_close_hygiene_missing_count, 0);
+  assert.equal(statusEnvelope.data.post_close_hygiene_stale_count, 0);
+  assert.equal(statusEnvelope.data.post_close_hygiene_blocked_count, 0);
 });
 
 test('spec and plan close-out enforce their selected backlog lifecycle targets', async () => {

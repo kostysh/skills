@@ -556,6 +556,18 @@ function machineMetadataFromStageState(state: StageStateRecord): Record<string, 
           pre_review_checklists: state.pre_review_checklists,
           pre_review_checklist_status: state.pre_review_checklist_status,
           pre_review_checklist_blockers: state.pre_review_checklist_blockers,
+          post_close_backlog_hygiene_required: state.post_close_backlog_hygiene_required,
+          post_close_backlog_hygiene_status: state.post_close_backlog_hygiene_status,
+          post_close_backlog_hygiene_artifact: state.post_close_backlog_hygiene_artifact,
+          post_close_backlog_hygiene_checked_at: state.post_close_backlog_hygiene_checked_at,
+          post_close_backlog_hygiene_refresh_at: state.post_close_backlog_hygiene_refresh_at,
+          post_close_open_source_review_count: state.post_close_open_source_review_count,
+          post_close_source_review_blocked_item_count:
+            state.post_close_source_review_blocked_item_count,
+          post_close_lifecycle_reconciliation_drift_count:
+            state.post_close_lifecycle_reconciliation_drift_count,
+          post_close_unresolved_attention_present: state.post_close_unresolved_attention_present,
+          post_close_backlog_hygiene_blockers: state.post_close_backlog_hygiene_blockers,
         }
       : {}),
     required_audit_classes: state.required_audit_classes,
@@ -1674,6 +1686,20 @@ export async function recordStepCloseOnStageLog(payload: {
     ...(payload.processComplete && stageName === 'feature-intake'
       ? { intake_process_complete_ts: now }
       : {}),
+    ...(payload.processComplete && stageName === 'implementation'
+      ? {
+          post_close_backlog_hygiene_required: true,
+          post_close_backlog_hygiene_status: 'missing',
+          post_close_backlog_hygiene_artifact: null,
+          post_close_backlog_hygiene_checked_at: null,
+          post_close_backlog_hygiene_refresh_at: null,
+          post_close_open_source_review_count: null,
+          post_close_source_review_blocked_item_count: null,
+          post_close_lifecycle_reconciliation_drift_count: null,
+          post_close_unresolved_attention_present: null,
+          post_close_backlog_hygiene_blockers: [],
+        }
+      : {}),
   };
   const normalizedMetadata = stageSchemaMetadata({
     featureId: payload.featureId,
@@ -1695,6 +1721,68 @@ export async function recordStepCloseOnStageLog(payload: {
   await syncStageStateFromMetadata({
     root: payload.root,
     featureId: payload.featureId,
+    metadata: normalizedMetadata,
+    logPath: path.relative(payload.root, latest.absPath),
+  });
+}
+
+export async function recordPostCloseBacklogHygieneOnStageLog(payload: {
+  artifactPath: string;
+  blockers: string[];
+  checkedAt: string;
+  featureId: string;
+  lifecycleReconciliationDriftCount: number;
+  openSourceReviewCount: number;
+  refreshAt: string;
+  root: string;
+  sourceReviewBlockedItemCount: number;
+  status: 'blocked' | 'clean';
+  unresolvedAttentionPresent: boolean;
+}): Promise<void> {
+  const featureId = sanitizeFeatureId(payload.featureId, 'feature id');
+  const latest = await loadLatestStageLog(payload.root, 'implementation', featureId);
+  const currentStageState = await readStageState(payload.root, 'implementation', featureId);
+  if (!latest) {
+    throw new Error(`No implementation stage log found for ${featureId}.`);
+  }
+  if (!currentStageState?.process_complete_ts || !currentStageState.step_artifact) {
+    throw new Error(`Implementation stage for ${featureId} is not process-complete.`);
+  }
+
+  const metadata = {
+    ...latest.metadata,
+    ...machineMetadataFromStageState(currentStageState),
+    post_close_backlog_hygiene_required: true,
+    post_close_backlog_hygiene_status: payload.status,
+    post_close_backlog_hygiene_artifact: payload.artifactPath,
+    post_close_backlog_hygiene_checked_at: payload.checkedAt,
+    post_close_backlog_hygiene_refresh_at: payload.refreshAt,
+    post_close_open_source_review_count: payload.openSourceReviewCount,
+    post_close_source_review_blocked_item_count: payload.sourceReviewBlockedItemCount,
+    post_close_lifecycle_reconciliation_drift_count: payload.lifecycleReconciliationDriftCount,
+    post_close_unresolved_attention_present: payload.unresolvedAttentionPresent,
+    post_close_backlog_hygiene_blockers: payload.blockers,
+  };
+  const normalizedMetadata = stageSchemaMetadata({
+    featureId,
+    logPath: path.relative(payload.root, latest.absPath),
+    metadata,
+  });
+  await assertManagedWritePath(
+    payload.root,
+    path.join(payload.root, '.dossier', 'logs', 'implementation'),
+    latest.absPath,
+    'implementation stage log',
+  );
+  await writeTextAtomic(
+    latest.absPath,
+    renderStageLog(normalizedMetadata, {
+      existingContent: latest.content,
+    }),
+  );
+  await syncStageStateFromMetadata({
+    root: payload.root,
+    featureId,
     metadata: normalizedMetadata,
     logPath: path.relative(payload.root, latest.absPath),
   });

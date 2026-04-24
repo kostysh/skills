@@ -88,6 +88,7 @@ Contract for this family:
 - `dossier-verify`
 - `review-artifact`
 - `dossier-step-close`
+- `post-close-hygiene`
 - `next-step`
 - `lifecycle-refresh`
 
@@ -102,6 +103,8 @@ Audit-policy rule for this family:
 - both helpers validate only observable durable provenance and must not claim to prove launch-mode facts such as `fork_context`, full-history inheritance, prompt mutability, or model tier;
 - neither helper performs the audit itself.
 - implementation pre-review checklist evidence is not an audit artifact and cannot satisfy or weaken the audit bundle validated by `dossier-step-close`.
+- `post-close-hygiene` runs explicit refresh/status/attention/queue evidence after successful `implementation` closure, writes `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json`, and updates helper-managed implementation stage state;
+- `post-close-hygiene` never auto-acks source-review records and never applies backlog patches or packets on behalf of the operator.
 
 Lifecycle-reconciliation rule for this family:
 
@@ -109,6 +112,7 @@ Lifecycle-reconciliation rule for this family:
 - the helper reads current backlog truth through the canonical backlog state/read model;
 - backlog actualization artifacts are accepted only as managed trace links and must not bypass current-state validation;
 - backlog read surfaces expose deterministic lifecycle drift so a mapped done feature cannot silently reappear as ordinary queue work.
+- `status`, `queue`, and `next-step` expose missing, stale, or blocked post-close hygiene after implementation closure without changing queue ranking.
 
 ## Workflow stages versus runnable commands
 
@@ -209,6 +213,7 @@ Command-local help must:
 
 - show only shipped options and output guarantees;
 - show `--risk-family` and `--pre-review-check` only for `implementation`;
+- show `post-close-hygiene` only because the runtime, help, and tests ship it;
 - reflect the shipped command contract rather than inventing ad hoc wording;
 - avoid compatibility or migration wording.
 
@@ -220,4 +225,5 @@ Command-local help must:
 - do not let helper commands absorb stage-controller responsibilities or vice versa;
 - do not imply that stage-controller commands author or validate semantic `plan-slice` execution-target content;
 - do not imply runtime support for automatic operator-language detection, translation, or localization unless shipped runtime code and tests explicitly implement that behavior;
+- do not imply `dossier-step-close` auto-refreshes sources or auto-resolves source reviews;
 - do not imply support for alternate roots, extra launchers, or unshipped adaptation flows.

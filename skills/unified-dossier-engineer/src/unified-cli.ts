@@ -11,6 +11,7 @@ import {
   parseStageAnnotationsInput,
   parseStageProvenanceInput,
   recordVerificationArtifactOnStageLog,
+  recordPostCloseBacklogHygieneOnStageLog,
   recordReviewArtifactOnStageLog,
   recordStepCloseOnStageLog,
   resolveLatestFeatureCycleId,
@@ -19,7 +20,11 @@ import {
   type StageControllerCommand,
 } from './delivery/stage-control.ts';
 import { acquireDeliveryMutationLock } from './shared/delivery-lock.ts';
-import { resolveManagedDossierIdentity, sanitizeFeatureId } from './shared/feature-identity.ts';
+import {
+  resolveManagedDossierIdentity,
+  resolveManagedDossierIdentityByFeatureId,
+  sanitizeFeatureId,
+} from './shared/feature-identity.ts';
 import {
   BacklogActualizationRequiredError,
   evaluateBacklogLifecycleReconciliation,
@@ -27,8 +32,10 @@ import {
 } from './shared/lifecycle-reconciliation.ts';
 import { resolveProcessRoot } from './shared/process-root.ts';
 import { assertManagedWritePath, resolveManagedReadPath } from './shared/path-guards.ts';
-import type { StageStateStage } from './shared/stage-state.ts';
+import { readStageState, type StageStateStage } from './shared/stage-state.ts';
 import { writeCliEnvelope } from './shared/cli-envelope.ts';
+import { readBacklogTruthTimestamps } from './shared/post-close-hygiene.ts';
+import { writeJsonAtomic } from './vendor/dossier-engineer/lib/fs-utils.ts';
 import path from 'node:path';
 import { promises as fs } from 'node:fs';
 
@@ -157,6 +164,56 @@ async function captureDossierCommandOutput(
   };
 }
 
+async function withWorkingDirectory<T>(root: string, run: () => Promise<T>): Promise<T> {
+  const previous = process.cwd();
+  process.chdir(root);
+  try {
+    return await run();
+  } finally {
+    process.chdir(previous);
+  }
+}
+
+function findBacklogCommand(name: string): (typeof BACKLOG_COMMANDS)[number] {
+  const command = BACKLOG_COMMANDS.find(
+    (entry) => entry.name === name || entry.aliases?.includes(name),
+  );
+  if (!command) {
+    throw new Error(`Missing backlog command: ${name}`);
+  }
+  return command;
+}
+
+async function captureBacklogCommandOutput(
+  commandName: string,
+  args: string[],
+  root: string,
+): Promise<{ exitCode: number; stderr: string; stdout: string }> {
+  const command = findBacklogCommand(commandName);
+  const stderrBuffer: string[] = [];
+  const stdoutBuffer: string[] = [];
+  const captureIo: CliIo = {
+    stdout: {
+      write(chunk) {
+        stdoutBuffer.push(String(chunk));
+        return true;
+      },
+    },
+    stderr: {
+      write(chunk) {
+        stderrBuffer.push(String(chunk));
+        return true;
+      },
+    },
+  };
+  const exitCode = await withWorkingDirectory(root, async () => command.execute(args, captureIo));
+  return {
+    exitCode,
+    stderr: stderrBuffer.join(''),
+    stdout: stdoutBuffer.join(''),
+  };
+}
+
 async function pathExists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
@@ -209,6 +266,250 @@ async function withDeliveryLock<T>(payload: {
   } finally {
     await releaseLock();
   }
+}
+
+function parseCapturedEnvelope<T>(payload: {
+  commandName: string;
+  stderr: string;
+  stdout: string;
+}): {
+  data: T;
+  warnings: string[];
+} {
+  if (!payload.stdout.trim()) {
+    throw new Error(
+      `${payload.commandName} did not return JSON output${
+        payload.stderr.trim() ? ` (${payload.stderr.trim()})` : ''
+      }.`,
+    );
+  }
+  const parsed = JSON.parse(payload.stdout) as {
+    data?: T;
+    warnings?: unknown;
+  };
+  return {
+    data: parsed.data as T,
+    warnings: Array.isArray(parsed.warnings)
+      ? parsed.warnings.filter((warning): warning is string => typeof warning === 'string')
+      : [],
+  };
+}
+
+function numericField(record: Record<string, unknown>, key: string): number {
+  const value = record[key];
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+}
+
+function createPostCloseHygieneCommand(): UnifiedCommand {
+  const helpLines = [
+    'Run explicit post-close backlog hygiene evidence after implementation closure.',
+    '',
+    'Usage:',
+    '  dossier-engineer post-close-hygiene --dossier <path> --step implementation [--root <path>] [--json]',
+    '  dossier-engineer post-close-hygiene --feature-id <id> --step implementation [--root <path>] [--json]',
+    '',
+    'Rules:',
+    '  - runs refresh explicitly, then captures status, attention, and queue evidence',
+    '  - writes .dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json',
+    '  - updates helper-managed implementation stage state with clean or blocked hygiene status',
+    '  - never auto-acks source-review records and never patches backlog truth except refresh',
+  ];
+  return {
+    name: 'post-close-hygiene',
+    family: 'delivery-helper',
+    commandType: 'dossier',
+    summary: 'Run explicit refresh/status/attention/queue evidence after implementation close.',
+    usage: [
+      'dossier-engineer post-close-hygiene --dossier <path> --step implementation [--json]',
+      'dossier-engineer post-close-hygiene --feature-id <id> --step implementation [--json]',
+    ],
+    helpLines: () => helpLines,
+    async execute(args, io) {
+      try {
+        const root = await resolveProcessRoot(process.cwd(), takeOption(args, '--root'));
+        const step = takeOption(args, '--step') ?? 'implementation';
+        if (step !== 'implementation') {
+          throw new Error('--step must be implementation for post-close-hygiene.');
+        }
+        const dossierPath = takeOption(args, '--dossier');
+        const featureIdInput = takeOption(args, '--feature-id');
+        if ((dossierPath && featureIdInput) || (!dossierPath && !featureIdInput)) {
+          throw new Error('Exactly one of --dossier or --feature-id is required.');
+        }
+        const identity = dossierPath
+          ? await resolveManagedDossierIdentity({ root, dossierPath })
+          : await resolveManagedDossierIdentityByFeatureId({
+              root,
+              featureId: featureIdInput ?? '',
+            });
+        const featureId = identity.featureId;
+        const stageState = await readStageState(root, 'implementation', featureId);
+        if (!stageState) {
+          throw new Error(`No helper-managed implementation stage state found for ${featureId}.`);
+        }
+        if (!stageState.process_complete_ts || !stageState.step_artifact) {
+          throw new Error(`Implementation stage for ${featureId} is not process-complete.`);
+        }
+
+        return await withDeliveryLock({
+          root,
+          featureId,
+          featureCycleId: stageState.feature_cycle_id || 'post-close-hygiene',
+          command: 'post-close-hygiene',
+          run: async () => {
+            const refreshedState = await readStageState(root, 'implementation', featureId);
+            if (!refreshedState?.process_complete_ts || !refreshedState.step_artifact) {
+              throw new Error(`Implementation stage for ${featureId} is not process-complete.`);
+            }
+
+            const refreshResult = await captureBacklogCommandOutput('refresh', [], root);
+            if (refreshResult.exitCode !== 0) {
+              throw new Error(refreshResult.stderr.trim() || 'refresh failed.');
+            }
+            const refreshEnvelope = parseCapturedEnvelope<Record<string, unknown>>({
+              commandName: 'refresh',
+              stdout: refreshResult.stdout,
+              stderr: refreshResult.stderr,
+            });
+            const truth = await readBacklogTruthTimestamps(root);
+            const statusResult = await captureBacklogCommandOutput('status', [], root);
+            if (statusResult.exitCode !== 0) {
+              throw new Error(statusResult.stderr.trim() || 'status failed.');
+            }
+            const statusEnvelope = parseCapturedEnvelope<Record<string, unknown>>({
+              commandName: 'status',
+              stdout: statusResult.stdout,
+              stderr: statusResult.stderr,
+            });
+            const attentionResult = await captureBacklogCommandOutput('attention', [], root);
+            if (attentionResult.exitCode !== 0) {
+              throw new Error(attentionResult.stderr.trim() || 'attention failed.');
+            }
+            const attentionEnvelope = parseCapturedEnvelope<unknown[]>({
+              commandName: 'attention',
+              stdout: attentionResult.stdout,
+              stderr: attentionResult.stderr,
+            });
+            const queueResult = await captureBacklogCommandOutput('queue', [], root);
+            if (queueResult.exitCode !== 0) {
+              throw new Error(queueResult.stderr.trim() || 'queue failed.');
+            }
+            const queueEnvelope = parseCapturedEnvelope<unknown[]>({
+              commandName: 'queue',
+              stdout: queueResult.stdout,
+              stderr: queueResult.stderr,
+            });
+
+            const openSourceReviewCount = numericField(
+              statusEnvelope.data,
+              'open_source_review_count',
+            );
+            const sourceReviewBlockedItemCount = numericField(
+              statusEnvelope.data,
+              'source_review_blocked_item_count',
+            );
+            const lifecycleReconciliationDriftCount = numericField(
+              statusEnvelope.data,
+              'lifecycle_reconciliation_drift_count',
+            );
+            const unresolvedAttentionPresent = attentionEnvelope.data.length > 0;
+            const blockers = [
+              ...(openSourceReviewCount > 0
+                ? [`Open source reviews remain after refresh: ${openSourceReviewCount}.`]
+                : []),
+              ...(sourceReviewBlockedItemCount > 0
+                ? [`Source-review blocked backlog items remain: ${sourceReviewBlockedItemCount}.`]
+                : []),
+              ...(lifecycleReconciliationDriftCount > 0
+                ? [`Lifecycle reconciliation drift remains: ${lifecycleReconciliationDriftCount}.`]
+                : []),
+            ];
+            const hygieneStatus = blockers.length > 0 ? 'blocked' : 'clean';
+            const checkedAt = new Date().toISOString();
+            const artifactPath = path
+              .join(
+                '.dossier',
+                'verification',
+                featureId,
+                'implementation-post-close-backlog-hygiene.json',
+              )
+              .split(path.sep)
+              .join('/');
+            const absArtifactPath = path.join(root, artifactPath);
+            await assertManagedWritePath(
+              root,
+              path.join(root, '.dossier', 'verification', featureId),
+              absArtifactPath,
+              'post-close backlog hygiene artifact',
+            );
+            const artifact = {
+              version: 1,
+              created_at: checkedAt,
+              feature_id: featureId,
+              step: 'implementation',
+              dossier: path.relative(root, identity.absPath).split(path.sep).join('/'),
+              implementation_step_artifact: refreshedState.step_artifact,
+              implementation_process_complete_ts: refreshedState.process_complete_ts,
+              refresh_ran_at: truth.last_refresh_at ?? checkedAt,
+              backlog_last_refresh_at: truth.last_refresh_at,
+              refresh_summary: refreshEnvelope.data,
+              status_summary: statusEnvelope.data,
+              attention_summary: attentionEnvelope.data,
+              queue_summary: {
+                data: queueEnvelope.data,
+                warnings: queueEnvelope.warnings,
+              },
+              open_source_review_count: openSourceReviewCount,
+              source_review_blocked_item_count: sourceReviewBlockedItemCount,
+              lifecycle_reconciliation_drift_count: lifecycleReconciliationDriftCount,
+              unresolved_attention_present: unresolvedAttentionPresent,
+              backlog_clean: blockers.length === 0,
+              blockers,
+            };
+            await writeJsonAtomic(absArtifactPath, artifact);
+            await recordPostCloseBacklogHygieneOnStageLog({
+              root,
+              featureId,
+              artifactPath,
+              checkedAt,
+              refreshAt: truth.last_refresh_at ?? checkedAt,
+              status: hygieneStatus,
+              openSourceReviewCount,
+              sourceReviewBlockedItemCount,
+              lifecycleReconciliationDriftCount,
+              unresolvedAttentionPresent,
+              blockers,
+            });
+            writeCliEnvelope(io.stdout, {
+              command: 'post-close-hygiene',
+              scope: { feature_id: featureId, step: 'implementation' },
+              result: hygieneStatus === 'blocked' ? 'blocked' : 'ok',
+              data: {
+                artifact_path: artifactPath,
+                ...artifact,
+                post_close_backlog_hygiene_status: hygieneStatus,
+              },
+              nextCommands:
+                hygieneStatus === 'blocked'
+                  ? ['dossier-engineer attention']
+                  : [`dossier-engineer next-step --dossier ${artifact.dossier} --json`],
+            });
+            return 0;
+          },
+        });
+      } catch (error) {
+        io.stderr.write(
+          `${JSON.stringify({
+            error: {
+              code: 'UDE_POST_CLOSE_HYGIENE_FAILED',
+              message: error instanceof Error ? error.message : String(error),
+            },
+          })}\n`,
+        );
+        return 1;
+      }
+    },
+  };
 }
 
 function createDossierCommandWrapper(
@@ -1338,6 +1639,7 @@ const DOSSIER_COMMANDS: UnifiedCommand[] = [
   createDossierCommandWrapper('dossier-verify', 'delivery-helper'),
   createDossierCommandWrapper('review-artifact', 'delivery-helper'),
   createDossierCommandWrapper('dossier-step-close', 'delivery-helper'),
+  createPostCloseHygieneCommand(),
   createDossierCommandWrapper('next-step', 'delivery-helper'),
   createDossierCommandWrapper('lifecycle-refresh', 'delivery-helper'),
 ];

@@ -8,7 +8,7 @@ compatibility: Canonical runtime shipped. Only the canonical `.dossier` +
 metadata:
   source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: cf050ef8af677aadc7077612f97ff06b24219f34d5a05748ffb42085b831c4f3
+  skillforge-source-hash: 4987c6ce6ddaf85ed4a9a2f8e6594fa22e2f337b4aa1b4f0c0d02f61c286ef44
 ---
 
 # unified-dossier-engineer
@@ -73,8 +73,9 @@ Keep the architecture deterministic and non-destructive.
 1. Preserve the accounting versus project-SSOT artifact split.
 2. Preserve the invariant `one feature = one backlog item`.
 3. Keep `change-proposal`, `contract-drift-audit`, `backlog impact verdict`, `coverage_gate`, and strict closure semantics in scope.
-4. Keep delivery workflow, telemetry identity, and closure truth explicit rather than collapsing them into backlog-only state or speculative command prose.
-5. Preserve the commandized stage-control model: primary delivery stages become mechanical controllers, while closure and helper commands stay separate.
+4. Keep implementation post-close backlog hygiene evidence explicit after closure and before branch-complete reporting or next-intake recommendation.
+5. Keep delivery workflow, telemetry identity, and closure truth explicit rather than collapsing them into backlog-only state or speculative command prose.
+6. Preserve the commandized stage-control model: primary delivery stages become mechanical controllers, while closure and helper commands stay separate.
 
 Validation:
 
@@ -407,6 +408,15 @@ Validation:
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
 **Examples:** node scripts/dossier-engineer.mjs dossier-step-close --dossier <path> --step implementation --verify-artifact <path> --review-artifact <spec.json> --review-artifact <code.json> --review-artifact <security.json>
+
+### CLI command: `post-close-hygiene`
+**Use when:** A process-complete implementation needs post-close backlog hygiene evidence before branch-complete reporting or next-intake recommendation.
+
+**Summary:** Run explicit implementation post-close backlog hygiene evidence with refresh/status/attention/queue.
+
+**Runtime script:** `scripts/dossier-engineer.mjs`
+
+**Examples:** node scripts/dossier-engineer.mjs post-close-hygiene --dossier <path> --step implementation
 
 ### CLI command: `next-step`
 **Use when:** You need the deterministic next step for one dossier without inference from chat prose.

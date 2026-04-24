@@ -60,6 +60,7 @@ Open source review blocks readiness for linked items:
 - linked items do not count as cleanly ready while unresolved source review exists
 - `ready_for_next_step = false` for linked items while source review is open
 - item-level review escalation happens only after confirmed backlog mutation work
+- post-close backlog hygiene must surface open source reviews as blocked or unclean evidence; it must not hide them behind a clean branch-complete claim
 
 ## Truthful closure
 
@@ -97,8 +98,15 @@ Closing the record requires an explicit outcome:
    - `resolution_kind = ack`
 5. clean confirmation comes from `status`, not from chat-only reasoning
 
+## Post-close hygiene interaction
+
+After successful `implementation` closure, `post-close-hygiene` runs `refresh` and captures `status`, `attention`, and `queue` evidence. If refresh opens or updates source-review records, the hygiene result is `blocked` or not clean until those records are explicitly resolved through the canonical paths above.
+
+`post-close-hygiene` must not call `ack-source-review`, apply a backlog patch, author a packet, update source paths, or remove sources on the operator's behalf. No-op source-review outcomes stay operator/agent-authored and explicit.
+
 ## Negative rules
 
 - do not classify prose changes semantically inside the utility
 - do not use NLP-based change typing in the CLI contract
 - do not create item-level attention flood as the first automatic effect of a hash change
+- must not auto-resolve source-review records during post-close hygiene

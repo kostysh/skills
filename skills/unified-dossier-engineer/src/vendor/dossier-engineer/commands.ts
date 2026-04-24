@@ -35,6 +35,10 @@ import { hasExecutableSectionChange, parseTopLevelSections } from './core/markdo
 import { defaultNextStep, normalizeWorkflowStage, statusToNextStep } from './core/workflow.ts';
 import { readStageState } from '../../shared/stage-state.ts';
 import { assertManagedWritePath, resolveManagedReadPath } from '../../shared/path-guards.ts';
+import {
+  evaluatePostCloseBacklogHygiene,
+  readBacklogTruthTimestamps,
+} from '../../shared/post-close-hygiene.ts';
 
 export const CLI_NAME = 'dossier-engineer';
 export const CLI_DISPLAY_NAME = 'dossier-engineer';
@@ -2905,6 +2909,19 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
     )) as ReviewArtifactShape | null;
   }
 
+  const targetFeatureId = target
+    ? frontmatterString(target.frontmatter, 'id', path.basename(target.absPath, '.md'))
+    : null;
+  const postCloseBacklogHygiene = targetFeatureId
+    ? evaluatePostCloseBacklogHygiene({
+        state: await readStageState(absRoot, 'implementation', targetFeatureId),
+        truth: await readBacklogTruthTimestamps(absRoot),
+      })
+    : evaluatePostCloseBacklogHygiene({
+        state: null,
+        truth: { updated_at: null, last_refresh_at: null },
+      });
+
   const workflowNext =
     latestStepArtifact?.process_complete === false
       ? normalizeWorkflowStage(latestStepArtifact.next_step ?? null)
@@ -2939,6 +2956,9 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
     event_commit: eventCommit,
     review_trace_commit: latestReviewArtifact?.event_commit ?? null,
     process_complete: latestStepArtifact ? Boolean(latestStepArtifact.process_complete) : null,
+    post_close_backlog_hygiene_status: postCloseBacklogHygiene.status,
+    post_close_backlog_hygiene_artifact: postCloseBacklogHygiene.artifact,
+    post_close_backlog_hygiene_blockers: postCloseBacklogHygiene.blockers,
   };
 
   if (json) {
@@ -2963,6 +2983,19 @@ async function runNextStepCommand(argv: string[], io: CliIo): Promise<number> {
   writeLine(
     io.stdout,
     `Process-complete: ${summary.process_complete === null ? 'unknown' : summary.process_complete ? 'yes' : 'no'}`,
+  );
+  writeLine(io.stdout, `Post-close backlog hygiene: ${summary.post_close_backlog_hygiene_status}`);
+  writeLine(
+    io.stdout,
+    `Post-close hygiene artifact: ${summary.post_close_backlog_hygiene_artifact ?? 'none'}`,
+  );
+  writeLine(
+    io.stdout,
+    `Post-close hygiene blockers: ${
+      summary.post_close_backlog_hygiene_blockers.length > 0
+        ? summary.post_close_backlog_hygiene_blockers.join(' | ')
+        : 'none'
+    }`,
   );
   return EXIT_SUCCESS;
 }

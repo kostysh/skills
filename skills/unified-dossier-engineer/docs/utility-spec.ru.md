@@ -538,6 +538,7 @@ When `--review-artifact` points at a latest copy, `dossier-step-close` resolves 
 | `dossier-verify` | preserve literally | helper-owned verification artifact writer |
 | `review-artifact` | preserve literally | helper-owned review persistence |
 | `dossier-step-close` | preserve literally | authoritative closure artifact writer |
+| `post-close-hygiene` | add as explicit delivery helper | implementation post-close refresh/status/attention/queue evidence |
 | `lifecycle-refresh` | preserve literally | authoritative lifecycle aggregation helper |
 | `next-step` | preserve literally | dossier-local query/read surface |
 | `coverage-audit` | preserve literally | delivery verification helper |
@@ -645,6 +646,16 @@ While a source-review record is open:
 queue -> items -> feature-intake -> spec-compact -> plan-slice -> implementation -> dossier-verify -> review-artifact* -> dossier-step-close -> lifecycle-refresh
 ```
 
+After successful `implementation` close, final branch-complete reporting and next-intake recommendation require explicit post-close backlog hygiene evidence:
+
+```text
+dossier-step-close --step implementation -> post-close-hygiene --step implementation -> status / next-step
+```
+
+`dossier-step-close` must not auto-refresh sources. It only marks future implementation closures with `post_close_backlog_hygiene_required: true` and initial `post_close_backlog_hygiene_status: missing`. `post-close-hygiene` explicitly runs `refresh`, captures `status`, `attention`, and `queue`, writes `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json`, and updates the implementation stage state to `clean` or `blocked`.
+
+If `refresh` opens source-review records, the branch is not backlog-clean. The command must surface that state as blocked evidence and must not auto-ack source reviews or apply backlog patches/packets.
+
 If backlog truth changed during any delivery stage:
 
 ```text
@@ -730,8 +741,15 @@ If stage content itself still requires agent work, the command must say so via `
 Minimum direction:
 
 - `dossier-step-close` returns step artifact path, blockers, and authoritative `process_complete`;
+- `post-close-hygiene` returns the hygiene artifact path, `post_close_backlog_hygiene_status`, open source-review count, source-review blocked item count, lifecycle drift count, unresolved attention flag, `backlog_clean`, and blockers;
 - `lifecycle-refresh` returns lifecycle snapshot path and session-index path when refreshed;
 - `review-artifact` and `dossier-verify` return artifact paths and truthful pass/fail.
+
+`status` also reports deterministic post-close hygiene counts and compact affected feature ids: `post_close_hygiene_missing_count`, `post_close_hygiene_stale_count`, `post_close_hygiene_blocked_count`, `post_close_hygiene_missing_feature_ids`, `post_close_hygiene_stale_feature_ids`, and `post_close_hygiene_blocked_feature_ids`.
+
+`queue` may emit post-close hygiene warnings for missing, stale, or blocked implementation evidence, but this issue does not redesign queue ranking.
+
+`next-step --dossier <implementation dossier>` reports `post_close_backlog_hygiene_status`, `post_close_backlog_hygiene_artifact`, and `post_close_backlog_hygiene_blockers` when an implementation dossier is process-complete.
 
 ## 10. Error contract
 

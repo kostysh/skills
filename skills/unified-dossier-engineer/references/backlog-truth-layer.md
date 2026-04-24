@@ -81,6 +81,9 @@ Default clean confirmation:
 - use `items` as the scoped truth read whenever item-card truth changed
 - use `status` as the artifact-integrity confirmation surface
 - use `status --refresh` only when a broader global integrity sweep is explicitly needed
+- after successful `implementation` close, use `post-close-hygiene` for the explicit refresh/status/attention/queue evidence required before branch-complete reporting or next-intake recommendation
+
+Post-close hygiene may run the existing `refresh` behavior, but it must not auto-ack source reviews, apply patches, or silently mutate backlog truth beyond that explicit refresh. Open source-review records after the checkpoint remain blocking readiness signals until `ack-source-review`, `patch-item`, `packet`, `update-source-path`, or `remove-source` resolves them.
 
 ## Source maintenance and traceability
 
@@ -97,3 +100,4 @@ This skill must preserve:
 - do not let dossier-local prose mutate backlog truth directly
 - do not drop backlog read surfaces while preserving only mutation commands
 - do not treat a backlog actualization artifact as sufficient when current backlog state still fails the selected-feature lifecycle target
+- do not treat post-close hygiene evidence as source-review resolution; resolution remains an explicit backlog truth action

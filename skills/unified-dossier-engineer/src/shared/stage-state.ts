@@ -16,6 +16,13 @@ const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
 const PROCESS_MISS_SEVERITIES = ['low', 'medium', 'high'] as const;
 const PRE_REVIEW_CHECKLIST_ENTRY_STATUSES = ['pass', 'not_applicable', 'blocked'] as const;
 const PRE_REVIEW_CHECKLIST_STATUSES = ['not_required', 'missing', 'blocked', 'complete'] as const;
+const POST_CLOSE_BACKLOG_HYGIENE_STATUSES = [
+  'not_required',
+  'missing',
+  'stale',
+  'blocked',
+  'clean',
+] as const;
 const BACKLOG_ACTUALIZATION_VERDICTS = [
   'actualization_required',
   'actualized_by_backlog_artifact',
@@ -28,6 +35,7 @@ export type StageStateStage = (typeof STAGE_STATE_STAGES)[number];
 export type ProcessMissSeverity = (typeof PROCESS_MISS_SEVERITIES)[number];
 export type PreReviewChecklistEntryStatus = (typeof PRE_REVIEW_CHECKLIST_ENTRY_STATUSES)[number];
 export type PreReviewChecklistStatus = (typeof PRE_REVIEW_CHECKLIST_STATUSES)[number];
+export type PostCloseBacklogHygieneStatus = (typeof POST_CLOSE_BACKLOG_HYGIENE_STATUSES)[number];
 
 export type StageStateProcessMiss = {
   category: string;
@@ -95,6 +103,16 @@ export interface StageStateRecord {
   local_gates_green_ts: string | null;
   log_path: string;
   phase_scope: string | null;
+  post_close_backlog_hygiene_artifact: string | null;
+  post_close_backlog_hygiene_blockers: string[];
+  post_close_backlog_hygiene_checked_at: string | null;
+  post_close_backlog_hygiene_refresh_at: string | null;
+  post_close_backlog_hygiene_required: boolean;
+  post_close_backlog_hygiene_status: PostCloseBacklogHygieneStatus;
+  post_close_lifecycle_reconciliation_drift_count: number | null;
+  post_close_open_source_review_count: number | null;
+  post_close_source_review_blocked_item_count: number | null;
+  post_close_unresolved_attention_present: boolean | null;
   pre_review_checklist_blockers: string[];
   pre_review_checklist_status: PreReviewChecklistStatus;
   pre_review_checklists: StageStatePreReviewChecklistEntry[];
@@ -147,6 +165,10 @@ function toStringArray(value: unknown): string[] {
 
 function toBoolean(value: unknown, fallback = false): boolean {
   return typeof value === 'boolean' ? value : fallback;
+}
+
+function toNullableNumber(value: unknown): number | null {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
 function normalizeImplementationReviewScope(
@@ -234,6 +256,15 @@ function normalizePreReviewChecklistStatus(value: unknown): PreReviewChecklistSt
     : 'not_required';
 }
 
+function normalizePostCloseBacklogHygieneStatus(
+  value: unknown,
+  fallback: PostCloseBacklogHygieneStatus,
+): PostCloseBacklogHygieneStatus {
+  return POST_CLOSE_BACKLOG_HYGIENE_STATUSES.includes(value as PostCloseBacklogHygieneStatus)
+    ? (value as PostCloseBacklogHygieneStatus)
+    : fallback;
+}
+
 function toProcessMisses(value: unknown): StageStateProcessMiss[] {
   if (!Array.isArray(value)) {
     return [];
@@ -316,6 +347,8 @@ function buildStageStateRecord(payload: {
     return null;
   }
   const backlogItemKey = toNullableString(payload.metadata.backlog_item_key);
+  const postCloseBacklogHygieneRequired =
+    stage === 'implementation' && toBoolean(payload.metadata.post_close_backlog_hygiene_required);
   return {
     version: 1,
     stage,
@@ -336,6 +369,38 @@ function buildStageStateRecord(payload: {
     ),
     backlog_actualization_verdict: normalizeBacklogActualizationVerdict(
       payload.metadata.backlog_actualization_verdict,
+    ),
+    post_close_backlog_hygiene_required: postCloseBacklogHygieneRequired,
+    post_close_backlog_hygiene_status: postCloseBacklogHygieneRequired
+      ? normalizePostCloseBacklogHygieneStatus(
+          payload.metadata.post_close_backlog_hygiene_status,
+          'missing',
+        )
+      : 'not_required',
+    post_close_backlog_hygiene_artifact: toNullableString(
+      payload.metadata.post_close_backlog_hygiene_artifact,
+    ),
+    post_close_backlog_hygiene_checked_at: toNullableString(
+      payload.metadata.post_close_backlog_hygiene_checked_at,
+    ),
+    post_close_backlog_hygiene_refresh_at: toNullableString(
+      payload.metadata.post_close_backlog_hygiene_refresh_at,
+    ),
+    post_close_open_source_review_count: toNullableNumber(
+      payload.metadata.post_close_open_source_review_count,
+    ),
+    post_close_source_review_blocked_item_count: toNullableNumber(
+      payload.metadata.post_close_source_review_blocked_item_count,
+    ),
+    post_close_lifecycle_reconciliation_drift_count: toNullableNumber(
+      payload.metadata.post_close_lifecycle_reconciliation_drift_count,
+    ),
+    post_close_unresolved_attention_present:
+      typeof payload.metadata.post_close_unresolved_attention_present === 'boolean'
+        ? payload.metadata.post_close_unresolved_attention_present
+        : null,
+    post_close_backlog_hygiene_blockers: toStringArray(
+      payload.metadata.post_close_backlog_hygiene_blockers,
     ),
     pre_review_risk_families: toStringArray(payload.metadata.pre_review_risk_families),
     pre_review_checklists: toPreReviewChecklistEntries(payload.metadata.pre_review_checklists),
@@ -428,6 +493,18 @@ export function stageStateMirrorFields(state: StageStateRecord): Record<string, 
           pre_review_checklists: state.pre_review_checklists,
           pre_review_checklist_status: state.pre_review_checklist_status,
           pre_review_checklist_blockers: state.pre_review_checklist_blockers,
+          post_close_backlog_hygiene_required: state.post_close_backlog_hygiene_required,
+          post_close_backlog_hygiene_status: state.post_close_backlog_hygiene_status,
+          post_close_backlog_hygiene_artifact: state.post_close_backlog_hygiene_artifact,
+          post_close_backlog_hygiene_checked_at: state.post_close_backlog_hygiene_checked_at,
+          post_close_backlog_hygiene_refresh_at: state.post_close_backlog_hygiene_refresh_at,
+          post_close_open_source_review_count: state.post_close_open_source_review_count,
+          post_close_source_review_blocked_item_count:
+            state.post_close_source_review_blocked_item_count,
+          post_close_lifecycle_reconciliation_drift_count:
+            state.post_close_lifecycle_reconciliation_drift_count,
+          post_close_unresolved_attention_present: state.post_close_unresolved_attention_present,
+          post_close_backlog_hygiene_blockers: state.post_close_backlog_hygiene_blockers,
         }
       : {}),
   };
@@ -477,6 +554,8 @@ export async function readStageState(
   ) {
     return null;
   }
+  const postCloseBacklogHygieneRequired =
+    stage === 'implementation' && toBoolean(parsed.post_close_backlog_hygiene_required);
   return {
     version: 1,
     stage,
@@ -498,6 +577,33 @@ export async function readStageState(
     backlog_actualization_verdict: normalizeBacklogActualizationVerdict(
       parsed.backlog_actualization_verdict,
     ),
+    post_close_backlog_hygiene_required: postCloseBacklogHygieneRequired,
+    post_close_backlog_hygiene_status: postCloseBacklogHygieneRequired
+      ? normalizePostCloseBacklogHygieneStatus(parsed.post_close_backlog_hygiene_status, 'missing')
+      : 'not_required',
+    post_close_backlog_hygiene_artifact: toNullableString(
+      parsed.post_close_backlog_hygiene_artifact,
+    ),
+    post_close_backlog_hygiene_checked_at: toNullableString(
+      parsed.post_close_backlog_hygiene_checked_at,
+    ),
+    post_close_backlog_hygiene_refresh_at: toNullableString(
+      parsed.post_close_backlog_hygiene_refresh_at,
+    ),
+    post_close_open_source_review_count: toNullableNumber(
+      parsed.post_close_open_source_review_count,
+    ),
+    post_close_source_review_blocked_item_count: toNullableNumber(
+      parsed.post_close_source_review_blocked_item_count,
+    ),
+    post_close_lifecycle_reconciliation_drift_count: toNullableNumber(
+      parsed.post_close_lifecycle_reconciliation_drift_count,
+    ),
+    post_close_unresolved_attention_present:
+      typeof parsed.post_close_unresolved_attention_present === 'boolean'
+        ? parsed.post_close_unresolved_attention_present
+        : null,
+    post_close_backlog_hygiene_blockers: toStringArray(parsed.post_close_backlog_hygiene_blockers),
     pre_review_risk_families: toStringArray(parsed.pre_review_risk_families),
     pre_review_checklists: toPreReviewChecklistEntries(parsed.pre_review_checklists),
     pre_review_checklist_status: normalizePreReviewChecklistStatus(

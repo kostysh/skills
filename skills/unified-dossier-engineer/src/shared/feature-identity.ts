@@ -83,6 +83,32 @@ export async function resolveManagedDossierIdentity(payload: {
   };
 }
 
+export async function resolveManagedDossierIdentityByFeatureId(payload: {
+  featureId: string;
+  root: string;
+}): Promise<{
+  absPath: string;
+  dossier: DossierRecord;
+  featureId: string;
+}> {
+  const featureId = sanitizeFeatureId(payload.featureId, '--feature-id');
+  const dossiersDir = featureDossiersDirPath(payload.root);
+  const files = await listDossierFiles(dossiersDir);
+  const fileName = files.find(
+    (file) => file === `${featureId}.md` || file.startsWith(`${featureId}-`),
+  );
+  if (!fileName) {
+    throw new Error(
+      `Feature dossier for ${featureId} not found in ${path.relative(payload.root, dossiersDir)}.`,
+    );
+  }
+  return resolveManagedDossierIdentity({
+    root: payload.root,
+    dossierPath: path.join(dossiersDir, fileName),
+    expectedFeatureId: featureId,
+  });
+}
+
 export async function predictNextFeatureId(root: string): Promise<string> {
   const dossiersDir = featureDossiersDirPath(root);
   const files = await listDossierFiles(dossiersDir).catch(() => []);

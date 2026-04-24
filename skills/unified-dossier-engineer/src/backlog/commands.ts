@@ -48,6 +48,11 @@ import {
   lifecycleDriftBlockedItemKeys,
   type LifecycleDrift,
 } from '../shared/lifecycle-reconciliation.ts';
+import {
+  collectPostCloseBacklogHygieneSummary,
+  postCloseBacklogHygieneWarnings,
+  type PostCloseBacklogHygieneSummary,
+} from '../shared/post-close-hygiene.ts';
 
 export type CliIo = {
   stdout: Pick<NodeJS.WriteStream, 'write'>;
@@ -375,6 +380,7 @@ function buildStatusOutput(payload: {
   baseStatus: Record<string, unknown>;
   lifecycleDrifts: readonly LifecycleDrift[];
   openReviews: readonly SourceReviewRecord[];
+  postCloseHygieneSummary: PostCloseBacklogHygieneSummary;
 }): Record<string, unknown> {
   const blockedItemCount = collectBlockedItemKeys(payload.openReviews).size;
   return {
@@ -384,6 +390,12 @@ function buildStatusOutput(payload: {
     source_review_blocked_item_count: blockedItemCount,
     lifecycle_reconciliation_drift_count: payload.lifecycleDrifts.length,
     lifecycle_reconciliation_drifts: payload.lifecycleDrifts,
+    post_close_hygiene_missing_count: payload.postCloseHygieneSummary.missing_count,
+    post_close_hygiene_stale_count: payload.postCloseHygieneSummary.stale_count,
+    post_close_hygiene_blocked_count: payload.postCloseHygieneSummary.blocked_count,
+    post_close_hygiene_missing_feature_ids: payload.postCloseHygieneSummary.missing_feature_ids,
+    post_close_hygiene_stale_feature_ids: payload.postCloseHygieneSummary.stale_feature_ids,
+    post_close_hygiene_blocked_feature_ids: payload.postCloseHygieneSummary.blocked_feature_ids,
   };
 }
 
@@ -580,6 +592,9 @@ async function runStatusCommand(args: string[], io: CliIo): Promise<number> {
       root: context.backlogRoot,
       state,
     });
+    const postCloseHygieneSummary = await collectPostCloseBacklogHygieneSummary(
+      context.backlogRoot,
+    );
     const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(lifecycleDrifts);
     const adjustedReadyForNextStepCount = state.items.filter(
       (item) =>
@@ -594,6 +609,7 @@ async function runStatusCommand(args: string[], io: CliIo): Promise<number> {
         baseStatus: status,
         lifecycleDrifts,
         openReviews,
+        postCloseHygieneSummary,
       }),
     });
     return 0;
@@ -663,17 +679,23 @@ async function runQueueCommand(args: string[], io: CliIo): Promise<number> {
       state,
     });
     const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(lifecycleDrifts);
+    const postCloseHygieneSummary = await collectPostCloseBacklogHygieneSummary(
+      result.context.backlogRoot,
+    );
+    const warnings = [
+      ...(lifecycleBlockedItemKeys.size > 0
+        ? [
+            `Lifecycle reconciliation drift blocked queue items: ${[
+              ...lifecycleBlockedItemKeys,
+            ].join(', ')}`,
+          ]
+        : []),
+      ...postCloseBacklogHygieneWarnings(postCloseHygieneSummary),
+    ];
     writeCliEnvelope(io.stdout, {
       command: 'queue',
       data: overlayQueueWithSourceReviewBlock(result.output, openReviews, lifecycleBlockedItemKeys),
-      warnings:
-        lifecycleBlockedItemKeys.size > 0
-          ? [
-              `Lifecycle reconciliation drift blocked queue items: ${[
-                ...lifecycleBlockedItemKeys,
-              ].join(', ')}`,
-            ]
-          : [],
+      warnings,
     });
     return 0;
   } catch (error) {

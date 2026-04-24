@@ -94,6 +94,7 @@ Machine-complete stage schema fields:
 - parity-protected fields include `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved`, `review_artifacts`, `review_events`, `verification_artifacts`, `step_artifact`, `final_delivery_commit`, `final_closure_commit`, `skills_used`, `skill_issues`, `skill_followups`, `process_misses`, `primary_feature_id`, `primary_backlog_item_key`, and `phase_scope`;
 - selected-feature lifecycle reconciliation fields are also parity-protected: `backlog_lifecycle_target`, `backlog_lifecycle_current`, `backlog_lifecycle_reconciled`, `backlog_actualization_artifacts`, and `backlog_actualization_verdict`;
 - implementation pre-review checklist fields are parity-protected for the `implementation` stage: `pre_review_risk_families`, `pre_review_checklists`, `pre_review_checklist_status`, and `pre_review_checklist_blockers`;
+- implementation post-close backlog hygiene fields are parity-protected for the `implementation` stage: `post_close_backlog_hygiene_required`, `post_close_backlog_hygiene_status`, `post_close_backlog_hygiene_artifact`, `post_close_backlog_hygiene_checked_at`, `post_close_backlog_hygiene_refresh_at`, `post_close_open_source_review_count`, `post_close_source_review_blocked_item_count`, `post_close_lifecycle_reconciliation_drift_count`, `post_close_unresolved_attention_present`, and `post_close_backlog_hygiene_blockers`;
 - review/verification/close-out artifact linkage is explicit in machine fields and must not require heuristic recovery from prose;
 - `review_events[]` links each attempt to `audit_class`, `verdict`, `review_attempt_id`, `review_round_id`, `review_round_number`, immutable `artifact_path`, optional `latest_copy_path`, reviewer provenance, freshness, and invalidation state;
 - `review_artifacts` is an ordered unique list of immutable attempt artifact paths, including FAIL and PASS attempts;
@@ -168,6 +169,7 @@ When helper-owned closure updates materialize audit policy state, stage logs and
 - whether closure is blocked by missing, stale, invalidated, or degraded review evidence.
 - whether recorded review evidence is limited to observable provenance rather than proof of reviewer launch-mode independence.
 - that implementation pre-review checklist evidence, when present, is author-side readiness context rather than correctness proof or audit evidence.
+- that implementation post-close backlog hygiene evidence, when required, links to a durable refresh/status/attention/queue artifact before branch-complete reporting.
 
 ## Session anchors
 
@@ -190,6 +192,7 @@ Minimum required signals:
 
 - `open_source_review_count`
 - `source_review_blocked_item_count`
+- post-close backlog hygiene counts for `missing`, `stale`, and `blocked` implementation evidence
 
 Those signals belong to deterministic readiness reporting. They do not require prose analysis.
 
@@ -203,6 +206,9 @@ Required rules:
 - implementation closure truth requires authoritative step-close evidence
 - `dossier-step-close` must fail closed before writing a step artifact when `spec-compact`, `plan-slice`, or `implementation` lifecycle reconciliation is not satisfied by current backlog truth
 - successful helper-owned closure must update helper-managed stage state and mirrored frontmatter with `step_close_ts`, `step_artifact`, `process_complete_ts`, and lifecycle reconciliation fields
+- successful `implementation` closure must update helper-managed stage state and mirrored frontmatter with `post_close_backlog_hygiene_required: true` and initial `post_close_backlog_hygiene_status: missing`
+- `post-close-hygiene` must persist the durable `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json` artifact and update the implementation stage state with clean or blocked summary fields
+- stale hygiene is reported when the artifact predates implementation closure or current backlog truth timestamps such as `state.updated_at` or `last_refresh_at`
 - `lifecycle-refresh` remains the shipped lifecycle aggregation helper for lifecycle snapshots and session-index refresh
 - lifecycle timestamps must never materialize from chat-only or commit-only signals
 - required mutating-stage external review must remain mechanically visible in durable artifacts rather than inferred from prose

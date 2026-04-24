@@ -6806,6 +6806,17 @@ async function resolveManagedDossierIdentity(payload) {
 		featureId: discoveredFeatureId
 	};
 }
+async function resolveManagedDossierIdentityByFeatureId(payload) {
+	const featureId = sanitizeFeatureId(payload.featureId, "--feature-id");
+	const dossiersDir = featureDossiersDirPath(payload.root);
+	const fileName = (await listDossierFiles(dossiersDir)).find((file) => file === `${featureId}.md` || file.startsWith(`${featureId}-`));
+	if (!fileName) throw new Error(`Feature dossier for ${featureId} not found in ${path.relative(payload.root, dossiersDir)}.`);
+	return resolveManagedDossierIdentity({
+		root: payload.root,
+		dossierPath: path.join(dossiersDir, fileName),
+		expectedFeatureId: featureId
+	});
+}
 //#endregion
 //#region src/shared/stage-state.ts
 var STAGE_STATE_STAGES = [
@@ -6832,6 +6843,13 @@ var PRE_REVIEW_CHECKLIST_STATUSES = [
 	"blocked",
 	"complete"
 ];
+var POST_CLOSE_BACKLOG_HYGIENE_STATUSES = [
+	"not_required",
+	"missing",
+	"stale",
+	"blocked",
+	"clean"
+];
 var BACKLOG_ACTUALIZATION_VERDICTS = [
 	"actualization_required",
 	"actualized_by_backlog_artifact",
@@ -6839,7 +6857,7 @@ var BACKLOG_ACTUALIZATION_VERDICTS = [
 	"current_state_satisfies_target",
 	"no_lifecycle_target"
 ];
-function toNullableString$4(value) {
+function toNullableString$5(value) {
 	return typeof value === "string" && value.trim().length > 0 ? value : null;
 }
 function toStringArray$3(value) {
@@ -6847,6 +6865,9 @@ function toStringArray$3(value) {
 }
 function toBoolean$1(value, fallback = false) {
 	return typeof value === "boolean" ? value : fallback;
+}
+function toNullableNumber(value) {
+	return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 function normalizeImplementationReviewScope$2(value) {
 	return IMPLEMENTATION_REVIEW_SCOPES$2.includes(value) ? value : null;
@@ -6861,25 +6882,25 @@ function toReviewEvents(value) {
 	if (!Array.isArray(value)) return [];
 	return value.filter((item) => item !== null && typeof item === "object").map((item) => ({
 		allowed_by_policy: typeof item.allowed_by_policy === "boolean" ? item.allowed_by_policy : null,
-		artifact_path: toNullableString$4(item.artifact_path),
-		audit_class: toNullableString$4(item.audit_class),
-		event_commit: toNullableString$4(item.event_commit),
+		artifact_path: toNullableString$5(item.artifact_path),
+		audit_class: toNullableString$5(item.audit_class),
+		event_commit: toNullableString$5(item.event_commit),
 		implementation_scope: normalizeImplementationReviewScope$2(item.implementation_scope),
 		invalidated: toBoolean$1(item.invalidated),
-		latest_copy_path: toNullableString$4(item.latest_copy_path),
+		latest_copy_path: toNullableString$5(item.latest_copy_path),
 		must_fix_count: typeof item.must_fix_count === "number" && Number.isFinite(item.must_fix_count) ? item.must_fix_count : null,
-		recorded_at: toNullableString$4(item.recorded_at),
-		review_mode: toNullableString$4(item.review_mode),
-		review_attempt_id: toNullableString$4(item.review_attempt_id),
-		review_round_id: toNullableString$4(item.review_round_id),
+		recorded_at: toNullableString$5(item.recorded_at),
+		review_mode: toNullableString$5(item.review_mode),
+		review_attempt_id: toNullableString$5(item.review_attempt_id),
+		review_round_id: toNullableString$5(item.review_round_id),
 		review_round_number: typeof item.review_round_number === "number" && Number.isInteger(item.review_round_number) && item.review_round_number > 0 ? item.review_round_number : null,
-		reviewer: toNullableString$4(item.reviewer),
-		reviewer_agent_id: toNullableString$4(item.reviewer_agent_id),
-		reviewer_skill: toNullableString$4(item.reviewer_skill),
-		reviewer_thread_id: toNullableString$4(item.reviewer_thread_id),
-		security_trigger_reason: toNullableString$4(item.security_trigger_reason),
+		reviewer: toNullableString$5(item.reviewer),
+		reviewer_agent_id: toNullableString$5(item.reviewer_agent_id),
+		reviewer_skill: toNullableString$5(item.reviewer_skill),
+		reviewer_thread_id: toNullableString$5(item.reviewer_thread_id),
+		security_trigger_reason: toNullableString$5(item.security_trigger_reason),
 		stale: toBoolean$1(item.stale),
-		verdict: toNullableString$4(item.verdict)
+		verdict: toNullableString$5(item.verdict)
 	}));
 }
 function normalizeProcessMissSeverity(value) {
@@ -6891,25 +6912,28 @@ function normalizePreReviewChecklistEntryStatus(value) {
 function normalizePreReviewChecklistStatus(value) {
 	return PRE_REVIEW_CHECKLIST_STATUSES.includes(value) ? value : "not_required";
 }
+function normalizePostCloseBacklogHygieneStatus(value, fallback) {
+	return POST_CLOSE_BACKLOG_HYGIENE_STATUSES.includes(value) ? value : fallback;
+}
 function toProcessMisses(value) {
 	if (!Array.isArray(value)) return [];
 	const misses = value.filter((item) => item !== null && typeof item === "object").map((item) => ({
-		id: toNullableString$4(item.id),
-		category: toNullableString$4(item.category),
+		id: toNullableString$5(item.id),
+		category: toNullableString$5(item.category),
 		severity: normalizeProcessMissSeverity(item.severity),
 		resolved: toBoolean$1(item.resolved),
-		summary: toNullableString$4(item.summary)
+		summary: toNullableString$5(item.summary)
 	})).filter((item) => item.id !== null && item.category !== null && item.summary !== null);
 	return [...new Map(misses.map((miss) => [miss.id, miss])).values()];
 }
 function toPreReviewChecklistEntries(value) {
 	if (!Array.isArray(value)) return [];
 	const entries = value.filter((item) => item !== null && typeof item === "object").map((item) => ({
-		risk_family: toNullableString$4(item.risk_family),
-		id: toNullableString$4(item.id),
+		risk_family: toNullableString$5(item.risk_family),
+		id: toNullableString$5(item.id),
 		status: normalizePreReviewChecklistEntryStatus(item.status),
-		summary: toNullableString$4(item.summary),
-		evidence: toNullableString$4(item.evidence),
+		summary: toNullableString$5(item.summary),
+		evidence: toNullableString$5(item.evidence),
 		test_refs: toStringArray$3(item.test_refs)
 	})).filter((item) => item.risk_family !== null && item.id !== null && item.summary !== null && item.evidence !== null);
 	return [...new Map(entries.map((entry) => [`${entry.risk_family}\u0000${entry.id}`, entry])).values()];
@@ -6925,34 +6949,45 @@ function buildStageStateRecord(payload) {
 	const stage = normalizeStage(payload.metadata.stage);
 	const featureId = sanitizeFeatureId(payload.featureId, "feature id");
 	if (!stage) return null;
-	const backlogItemKey = toNullableString$4(payload.metadata.backlog_item_key);
+	const backlogItemKey = toNullableString$5(payload.metadata.backlog_item_key);
+	const postCloseBacklogHygieneRequired = stage === "implementation" && toBoolean$1(payload.metadata.post_close_backlog_hygiene_required);
 	return {
 		version: 1,
 		stage,
 		feature_id: featureId,
-		feature_cycle_id: toNullableString$4(payload.metadata.feature_cycle_id) ?? "",
-		cycle_id: toNullableString$4(payload.metadata.cycle_id) ?? "",
+		feature_cycle_id: toNullableString$5(payload.metadata.feature_cycle_id) ?? "",
+		cycle_id: toNullableString$5(payload.metadata.cycle_id) ?? "",
 		log_path: payload.logPath.split(path.sep).join("/"),
 		backlog_item_key: backlogItemKey,
-		primary_feature_id: toNullableString$4(payload.metadata.primary_feature_id) ?? featureId,
-		primary_backlog_item_key: toNullableString$4(payload.metadata.primary_backlog_item_key) ?? backlogItemKey,
-		phase_scope: toNullableString$4(payload.metadata.phase_scope) ?? stage,
-		backlog_lifecycle_target: toNullableString$4(payload.metadata.backlog_lifecycle_target),
-		backlog_lifecycle_current: toNullableString$4(payload.metadata.backlog_lifecycle_current),
+		primary_feature_id: toNullableString$5(payload.metadata.primary_feature_id) ?? featureId,
+		primary_backlog_item_key: toNullableString$5(payload.metadata.primary_backlog_item_key) ?? backlogItemKey,
+		phase_scope: toNullableString$5(payload.metadata.phase_scope) ?? stage,
+		backlog_lifecycle_target: toNullableString$5(payload.metadata.backlog_lifecycle_target),
+		backlog_lifecycle_current: toNullableString$5(payload.metadata.backlog_lifecycle_current),
 		backlog_lifecycle_reconciled: toBoolean$1(payload.metadata.backlog_lifecycle_reconciled, true),
 		backlog_actualization_artifacts: toStringArray$3(payload.metadata.backlog_actualization_artifacts),
 		backlog_actualization_verdict: normalizeBacklogActualizationVerdict(payload.metadata.backlog_actualization_verdict),
+		post_close_backlog_hygiene_required: postCloseBacklogHygieneRequired,
+		post_close_backlog_hygiene_status: postCloseBacklogHygieneRequired ? normalizePostCloseBacklogHygieneStatus(payload.metadata.post_close_backlog_hygiene_status, "missing") : "not_required",
+		post_close_backlog_hygiene_artifact: toNullableString$5(payload.metadata.post_close_backlog_hygiene_artifact),
+		post_close_backlog_hygiene_checked_at: toNullableString$5(payload.metadata.post_close_backlog_hygiene_checked_at),
+		post_close_backlog_hygiene_refresh_at: toNullableString$5(payload.metadata.post_close_backlog_hygiene_refresh_at),
+		post_close_open_source_review_count: toNullableNumber(payload.metadata.post_close_open_source_review_count),
+		post_close_source_review_blocked_item_count: toNullableNumber(payload.metadata.post_close_source_review_blocked_item_count),
+		post_close_lifecycle_reconciliation_drift_count: toNullableNumber(payload.metadata.post_close_lifecycle_reconciliation_drift_count),
+		post_close_unresolved_attention_present: typeof payload.metadata.post_close_unresolved_attention_present === "boolean" ? payload.metadata.post_close_unresolved_attention_present : null,
+		post_close_backlog_hygiene_blockers: toStringArray$3(payload.metadata.post_close_backlog_hygiene_blockers),
 		pre_review_risk_families: toStringArray$3(payload.metadata.pre_review_risk_families),
 		pre_review_checklists: toPreReviewChecklistEntries(payload.metadata.pre_review_checklists),
 		pre_review_checklist_status: normalizePreReviewChecklistStatus(payload.metadata.pre_review_checklist_status),
 		pre_review_checklist_blockers: toStringArray$3(payload.metadata.pre_review_checklist_blockers),
 		backlog_followup_required: toBoolean$1(payload.metadata.backlog_followup_required),
-		backlog_followup_kind: toNullableString$4(payload.metadata.backlog_followup_kind),
+		backlog_followup_kind: toNullableString$5(payload.metadata.backlog_followup_kind),
 		backlog_followup_resolved: toBoolean$1(payload.metadata.backlog_followup_resolved),
 		stage_state: payload.metadata.stage_state === "blocked" || payload.metadata.stage_state === "in_progress" || payload.metadata.stage_state === "ready_for_close" ? payload.metadata.stage_state : "in_progress",
-		start_ts: toNullableString$4(payload.metadata.start_ts),
-		entered_ts: toNullableString$4(payload.metadata.entered_ts),
-		ready_for_close_ts: toNullableString$4(payload.metadata.ready_for_close_ts),
+		start_ts: toNullableString$5(payload.metadata.start_ts),
+		entered_ts: toNullableString$5(payload.metadata.entered_ts),
+		ready_for_close_ts: toNullableString$5(payload.metadata.ready_for_close_ts),
 		transition_events: toTransitionEvents(payload.metadata.transition_events),
 		required_audit_classes: toStringArray$3(payload.metadata.required_audit_classes),
 		executed_audit_classes: toStringArray$3(payload.metadata.executed_audit_classes),
@@ -6970,22 +7005,22 @@ function buildStageStateRecord(payload) {
 		skill_issues: toStringArray$3(payload.metadata.skill_issues),
 		skill_followups: toStringArray$3(payload.metadata.skill_followups),
 		process_misses: toProcessMisses(payload.metadata.process_misses),
-		session_id: toNullableString$4(payload.metadata.session_id),
-		trace_runtime: toNullableString$4(payload.metadata.trace_runtime),
-		trace_locator_kind: toNullableString$4(payload.metadata.trace_locator_kind),
-		stage_entry_commit: toNullableString$4(payload.metadata.stage_entry_commit),
-		final_delivery_commit: toNullableString$4(payload.metadata.final_delivery_commit),
-		final_closure_commit: toNullableString$4(payload.metadata.final_closure_commit),
+		session_id: toNullableString$5(payload.metadata.session_id),
+		trace_runtime: toNullableString$5(payload.metadata.trace_runtime),
+		trace_locator_kind: toNullableString$5(payload.metadata.trace_locator_kind),
+		stage_entry_commit: toNullableString$5(payload.metadata.stage_entry_commit),
+		final_delivery_commit: toNullableString$5(payload.metadata.final_delivery_commit),
+		final_closure_commit: toNullableString$5(payload.metadata.final_closure_commit),
 		implementation_review_scope: normalizeImplementationReviewScope$2(payload.metadata.implementation_review_scope),
 		required_security_review: typeof payload.metadata.required_security_review === "boolean" ? payload.metadata.required_security_review : null,
 		security_trigger_reasons: toStringArray$3(payload.metadata.security_trigger_reasons),
-		step_close_ts: toNullableString$4(payload.metadata.step_close_ts),
-		step_artifact: toNullableString$4(payload.metadata.step_artifact),
-		process_complete_ts: toNullableString$4(payload.metadata.process_complete_ts),
-		intake_process_complete_ts: toNullableString$4(payload.metadata.intake_process_complete_ts),
-		local_gates_green_ts: toNullableString$4(payload.metadata.local_gates_green_ts),
-		first_review_agent_started_ts: toNullableString$4(payload.metadata.first_review_agent_started_ts),
-		final_pass_ts: toNullableString$4(payload.metadata.final_pass_ts)
+		step_close_ts: toNullableString$5(payload.metadata.step_close_ts),
+		step_artifact: toNullableString$5(payload.metadata.step_artifact),
+		process_complete_ts: toNullableString$5(payload.metadata.process_complete_ts),
+		intake_process_complete_ts: toNullableString$5(payload.metadata.intake_process_complete_ts),
+		local_gates_green_ts: toNullableString$5(payload.metadata.local_gates_green_ts),
+		first_review_agent_started_ts: toNullableString$5(payload.metadata.first_review_agent_started_ts),
+		final_pass_ts: toNullableString$5(payload.metadata.final_pass_ts)
 	};
 }
 function stageStateMirrorFields(state) {
@@ -7015,7 +7050,17 @@ function stageStateMirrorFields(state) {
 			pre_review_risk_families: state.pre_review_risk_families,
 			pre_review_checklists: state.pre_review_checklists,
 			pre_review_checklist_status: state.pre_review_checklist_status,
-			pre_review_checklist_blockers: state.pre_review_checklist_blockers
+			pre_review_checklist_blockers: state.pre_review_checklist_blockers,
+			post_close_backlog_hygiene_required: state.post_close_backlog_hygiene_required,
+			post_close_backlog_hygiene_status: state.post_close_backlog_hygiene_status,
+			post_close_backlog_hygiene_artifact: state.post_close_backlog_hygiene_artifact,
+			post_close_backlog_hygiene_checked_at: state.post_close_backlog_hygiene_checked_at,
+			post_close_backlog_hygiene_refresh_at: state.post_close_backlog_hygiene_refresh_at,
+			post_close_open_source_review_count: state.post_close_open_source_review_count,
+			post_close_source_review_blocked_item_count: state.post_close_source_review_blocked_item_count,
+			post_close_lifecycle_reconciliation_drift_count: state.post_close_lifecycle_reconciliation_drift_count,
+			post_close_unresolved_attention_present: state.post_close_unresolved_attention_present,
+			post_close_backlog_hygiene_blockers: state.post_close_backlog_hygiene_blockers
 		} : {}
 	};
 }
@@ -7035,34 +7080,45 @@ async function readStageState(root, stage, featureId) {
 	if (!await fileExists(absPath)) return null;
 	await assertManagedReadPath(root, path.join(root, ".dossier", "stages", sanitizeFeatureId(featureId, "feature id")), absPath, `${stage} stage state`);
 	const parsed = JSON.parse(await readText(absPath));
-	if (normalizeStage(parsed.stage) !== stage || sanitizeFeatureId(toNullableString$4(parsed.feature_id) ?? featureId, "feature id") !== sanitizeFeatureId(featureId, "feature id")) return null;
+	if (normalizeStage(parsed.stage) !== stage || sanitizeFeatureId(toNullableString$5(parsed.feature_id) ?? featureId, "feature id") !== sanitizeFeatureId(featureId, "feature id")) return null;
+	const postCloseBacklogHygieneRequired = stage === "implementation" && toBoolean$1(parsed.post_close_backlog_hygiene_required);
 	return {
 		version: 1,
 		stage,
 		feature_id: sanitizeFeatureId(featureId, "feature id"),
-		feature_cycle_id: toNullableString$4(parsed.feature_cycle_id) ?? "",
-		cycle_id: toNullableString$4(parsed.cycle_id) ?? "",
-		log_path: toNullableString$4(parsed.log_path) ?? "",
-		backlog_item_key: toNullableString$4(parsed.backlog_item_key),
-		primary_feature_id: toNullableString$4(parsed.primary_feature_id) ?? sanitizeFeatureId(featureId, "feature id"),
-		primary_backlog_item_key: toNullableString$4(parsed.primary_backlog_item_key) ?? toNullableString$4(parsed.backlog_item_key),
-		phase_scope: toNullableString$4(parsed.phase_scope) ?? stage,
-		backlog_lifecycle_target: toNullableString$4(parsed.backlog_lifecycle_target),
-		backlog_lifecycle_current: toNullableString$4(parsed.backlog_lifecycle_current),
+		feature_cycle_id: toNullableString$5(parsed.feature_cycle_id) ?? "",
+		cycle_id: toNullableString$5(parsed.cycle_id) ?? "",
+		log_path: toNullableString$5(parsed.log_path) ?? "",
+		backlog_item_key: toNullableString$5(parsed.backlog_item_key),
+		primary_feature_id: toNullableString$5(parsed.primary_feature_id) ?? sanitizeFeatureId(featureId, "feature id"),
+		primary_backlog_item_key: toNullableString$5(parsed.primary_backlog_item_key) ?? toNullableString$5(parsed.backlog_item_key),
+		phase_scope: toNullableString$5(parsed.phase_scope) ?? stage,
+		backlog_lifecycle_target: toNullableString$5(parsed.backlog_lifecycle_target),
+		backlog_lifecycle_current: toNullableString$5(parsed.backlog_lifecycle_current),
 		backlog_lifecycle_reconciled: toBoolean$1(parsed.backlog_lifecycle_reconciled, true),
 		backlog_actualization_artifacts: toStringArray$3(parsed.backlog_actualization_artifacts),
 		backlog_actualization_verdict: normalizeBacklogActualizationVerdict(parsed.backlog_actualization_verdict),
+		post_close_backlog_hygiene_required: postCloseBacklogHygieneRequired,
+		post_close_backlog_hygiene_status: postCloseBacklogHygieneRequired ? normalizePostCloseBacklogHygieneStatus(parsed.post_close_backlog_hygiene_status, "missing") : "not_required",
+		post_close_backlog_hygiene_artifact: toNullableString$5(parsed.post_close_backlog_hygiene_artifact),
+		post_close_backlog_hygiene_checked_at: toNullableString$5(parsed.post_close_backlog_hygiene_checked_at),
+		post_close_backlog_hygiene_refresh_at: toNullableString$5(parsed.post_close_backlog_hygiene_refresh_at),
+		post_close_open_source_review_count: toNullableNumber(parsed.post_close_open_source_review_count),
+		post_close_source_review_blocked_item_count: toNullableNumber(parsed.post_close_source_review_blocked_item_count),
+		post_close_lifecycle_reconciliation_drift_count: toNullableNumber(parsed.post_close_lifecycle_reconciliation_drift_count),
+		post_close_unresolved_attention_present: typeof parsed.post_close_unresolved_attention_present === "boolean" ? parsed.post_close_unresolved_attention_present : null,
+		post_close_backlog_hygiene_blockers: toStringArray$3(parsed.post_close_backlog_hygiene_blockers),
 		pre_review_risk_families: toStringArray$3(parsed.pre_review_risk_families),
 		pre_review_checklists: toPreReviewChecklistEntries(parsed.pre_review_checklists),
 		pre_review_checklist_status: normalizePreReviewChecklistStatus(parsed.pre_review_checklist_status),
 		pre_review_checklist_blockers: toStringArray$3(parsed.pre_review_checklist_blockers),
 		backlog_followup_required: toBoolean$1(parsed.backlog_followup_required),
-		backlog_followup_kind: toNullableString$4(parsed.backlog_followup_kind),
+		backlog_followup_kind: toNullableString$5(parsed.backlog_followup_kind),
 		backlog_followup_resolved: toBoolean$1(parsed.backlog_followup_resolved),
 		stage_state: parsed.stage_state === "blocked" || parsed.stage_state === "in_progress" || parsed.stage_state === "ready_for_close" ? parsed.stage_state : "in_progress",
-		start_ts: toNullableString$4(parsed.start_ts),
-		entered_ts: toNullableString$4(parsed.entered_ts),
-		ready_for_close_ts: toNullableString$4(parsed.ready_for_close_ts),
+		start_ts: toNullableString$5(parsed.start_ts),
+		entered_ts: toNullableString$5(parsed.entered_ts),
+		ready_for_close_ts: toNullableString$5(parsed.ready_for_close_ts),
 		transition_events: toTransitionEvents(parsed.transition_events),
 		required_audit_classes: toStringArray$3(parsed.required_audit_classes),
 		executed_audit_classes: toStringArray$3(parsed.executed_audit_classes),
@@ -7080,22 +7136,22 @@ async function readStageState(root, stage, featureId) {
 		skill_issues: toStringArray$3(parsed.skill_issues),
 		skill_followups: toStringArray$3(parsed.skill_followups),
 		process_misses: toProcessMisses(parsed.process_misses),
-		session_id: toNullableString$4(parsed.session_id),
-		trace_runtime: toNullableString$4(parsed.trace_runtime),
-		trace_locator_kind: toNullableString$4(parsed.trace_locator_kind),
-		stage_entry_commit: toNullableString$4(parsed.stage_entry_commit),
-		final_delivery_commit: toNullableString$4(parsed.final_delivery_commit),
-		final_closure_commit: toNullableString$4(parsed.final_closure_commit),
+		session_id: toNullableString$5(parsed.session_id),
+		trace_runtime: toNullableString$5(parsed.trace_runtime),
+		trace_locator_kind: toNullableString$5(parsed.trace_locator_kind),
+		stage_entry_commit: toNullableString$5(parsed.stage_entry_commit),
+		final_delivery_commit: toNullableString$5(parsed.final_delivery_commit),
+		final_closure_commit: toNullableString$5(parsed.final_closure_commit),
 		implementation_review_scope: normalizeImplementationReviewScope$2(parsed.implementation_review_scope),
 		required_security_review: typeof parsed.required_security_review === "boolean" ? parsed.required_security_review : null,
 		security_trigger_reasons: toStringArray$3(parsed.security_trigger_reasons),
-		step_close_ts: toNullableString$4(parsed.step_close_ts),
-		step_artifact: toNullableString$4(parsed.step_artifact),
-		process_complete_ts: toNullableString$4(parsed.process_complete_ts),
-		intake_process_complete_ts: toNullableString$4(parsed.intake_process_complete_ts),
-		local_gates_green_ts: toNullableString$4(parsed.local_gates_green_ts),
-		first_review_agent_started_ts: toNullableString$4(parsed.first_review_agent_started_ts),
-		final_pass_ts: toNullableString$4(parsed.final_pass_ts)
+		step_close_ts: toNullableString$5(parsed.step_close_ts),
+		step_artifact: toNullableString$5(parsed.step_artifact),
+		process_complete_ts: toNullableString$5(parsed.process_complete_ts),
+		intake_process_complete_ts: toNullableString$5(parsed.intake_process_complete_ts),
+		local_gates_green_ts: toNullableString$5(parsed.local_gates_green_ts),
+		first_review_agent_started_ts: toNullableString$5(parsed.first_review_agent_started_ts),
+		final_pass_ts: toNullableString$5(parsed.final_pass_ts)
 	};
 }
 async function syncStageStateFromMetadata(payload) {
@@ -7127,7 +7183,7 @@ var AUDIT_CLASSES$2 = [
 	"code-reviewer",
 	"security-reviewer"
 ];
-function toNullableString$3(value) {
+function toNullableString$4(value) {
 	return typeof value === "string" && value.trim() ? value : null;
 }
 function toEventRecords(value) {
@@ -7174,11 +7230,11 @@ function stableString(value) {
 async function readLifecycleLog(root, absPath) {
 	const metadata = parseFrontmatter(await readText(absPath));
 	if (!metadata) return null;
-	const featureId = toNullableString$3(metadata.feature_id);
-	const featureCycleId = toNullableString$3(metadata.feature_cycle_id);
-	const stage = toNullableString$3(metadata.command) === "feature-intake" ? "feature-intake" : toNullableString$3(metadata.stage);
+	const featureId = toNullableString$4(metadata.feature_id);
+	const featureCycleId = toNullableString$4(metadata.feature_cycle_id);
+	const stage = toNullableString$4(metadata.command) === "feature-intake" ? "feature-intake" : toNullableString$4(metadata.stage);
 	if (!featureId || !featureCycleId || !stage || !LIFECYCLE_STAGES.includes(stage)) return null;
-	const cycleId = toNullableString$3(metadata.cycle_id);
+	const cycleId = toNullableString$4(metadata.cycle_id);
 	const stageState = await readStageState(root, stage, featureId);
 	const useStageState = stageState && stageState.cycle_id === cycleId && stageState.log_path === path.relative(root, absPath).split(path.sep).join("/");
 	return {
@@ -7189,22 +7245,22 @@ async function readLifecycleLog(root, absPath) {
 		featureCycleId,
 		stage,
 		cycleId,
-		backlogItemKey: toNullableString$3(metadata.backlog_item_key),
-		sessionId: toNullableString$3(metadata.session_id),
-		traceRuntime: toNullableString$3(metadata.trace_runtime),
-		traceLocatorKind: toNullableString$3(metadata.trace_locator_kind),
-		startTs: toNullableString$3(metadata.start_ts),
-		intakeProcessCompleteTs: toNullableString$3(metadata.intake_process_complete_ts),
-		localGatesGreenTs: toNullableString$3(metadata.local_gates_green_ts),
-		processCompleteTs: useStageState ? stageState.process_complete_ts : toNullableString$3(metadata.process_complete_ts),
-		stepCloseTs: useStageState ? stageState.step_close_ts : toNullableString$3(metadata.step_close_ts),
-		stepArtifact: useStageState ? stageState.step_artifact : toNullableString$3(metadata.step_artifact),
-		firstReviewAgentStartedTs: toNullableString$3(metadata.first_review_agent_started_ts),
-		finalPassTs: toNullableString$3(metadata.final_pass_ts),
+		backlogItemKey: toNullableString$4(metadata.backlog_item_key),
+		sessionId: toNullableString$4(metadata.session_id),
+		traceRuntime: toNullableString$4(metadata.trace_runtime),
+		traceLocatorKind: toNullableString$4(metadata.trace_locator_kind),
+		startTs: toNullableString$4(metadata.start_ts),
+		intakeProcessCompleteTs: toNullableString$4(metadata.intake_process_complete_ts),
+		localGatesGreenTs: toNullableString$4(metadata.local_gates_green_ts),
+		processCompleteTs: useStageState ? stageState.process_complete_ts : toNullableString$4(metadata.process_complete_ts),
+		stepCloseTs: useStageState ? stageState.step_close_ts : toNullableString$4(metadata.step_close_ts),
+		stepArtifact: useStageState ? stageState.step_artifact : toNullableString$4(metadata.step_artifact),
+		firstReviewAgentStartedTs: toNullableString$4(metadata.first_review_agent_started_ts),
+		finalPassTs: toNullableString$4(metadata.final_pass_ts),
 		requiredAuditClasses: useStageState ? sortAuditClasses$2(stageState.required_audit_classes) : toMetadataStringArray(metadata.required_audit_classes),
 		executedAuditClasses: useStageState ? sortAuditClasses$2(stageState.executed_audit_classes) : toMetadataStringArray(metadata.executed_audit_classes),
 		requiredExternalReviewPending: useStageState ? stageState.required_external_review_pending : typeof metadata.required_external_review_pending === "boolean" ? metadata.required_external_review_pending : null,
-		implementationReviewScope: useStageState ? stageState.implementation_review_scope : toNullableString$3(metadata.implementation_review_scope),
+		implementationReviewScope: useStageState ? stageState.implementation_review_scope : toNullableString$4(metadata.implementation_review_scope),
 		requiredSecurityReview: useStageState ? stageState.required_security_review : typeof metadata.required_security_review === "boolean" ? metadata.required_security_review : null,
 		degradedReviewPresent: useStageState ? stageState.degraded_review_present : typeof metadata.degraded_review_present === "boolean" ? metadata.degraded_review_present : null,
 		invalidatedReviewPresent: useStageState ? stageState.invalidated_review_present : typeof metadata.invalidated_review_present === "boolean" ? metadata.invalidated_review_present : null,
@@ -7303,8 +7359,8 @@ function countRerounds(aggregate) {
 	const validEvents = aggregate.reviewEvents.filter((event) => event.invalidated !== true && event.allowed_by_policy !== false);
 	const roundsByAuditClass = /* @__PURE__ */ new Map();
 	for (const event of validEvents) {
-		const auditClass = toNullableString$3(event.audit_class) ?? "unknown";
-		const fallbackRound = (typeof event.review_round_number === "number" && Number.isInteger(event.review_round_number) && event.review_round_number > 0 ? String(event.review_round_number) : null) ?? toNullableString$3(event.review_round_id) ?? toNullableString$3(event.event_commit);
+		const auditClass = toNullableString$4(event.audit_class) ?? "unknown";
+		const fallbackRound = (typeof event.review_round_number === "number" && Number.isInteger(event.review_round_number) && event.review_round_number > 0 ? String(event.review_round_number) : null) ?? toNullableString$4(event.review_round_id) ?? toNullableString$4(event.event_commit);
 		if (!fallbackRound) continue;
 		const rounds = roundsByAuditClass.get(auditClass) ?? /* @__PURE__ */ new Set();
 		rounds.add(fallbackRound);
@@ -7891,6 +7947,152 @@ function defaultNextStep(status, step) {
 	if (step === "spec-compact") return "plan-slice";
 	if (step === "plan-slice") return "implementation";
 	return statusToNextStep(status);
+}
+//#endregion
+//#region src/shared/post-close-hygiene.ts
+function toNullableString$3(value) {
+	return typeof value === "string" && value.trim().length > 0 ? value : null;
+}
+function timestampValue(value) {
+	if (!value) return null;
+	const parsed = Date.parse(value);
+	return Number.isFinite(parsed) ? parsed : null;
+}
+function isBefore(left, right) {
+	const leftValue = timestampValue(left);
+	const rightValue = timestampValue(right);
+	return leftValue !== null && rightValue !== null && leftValue < rightValue;
+}
+async function readBacklogTruthTimestamps(root) {
+	const statePath = path.join(root, ".dossier", "backlog", "state.json");
+	if (!await fileExists(statePath)) return {
+		updated_at: null,
+		last_refresh_at: null
+	};
+	await assertManagedReadPath(root, path.join(root, ".dossier", "backlog"), statePath, "backlog state");
+	const parsed = JSON.parse(await readText(statePath));
+	return {
+		updated_at: toNullableString$3(parsed.updated_at),
+		last_refresh_at: toNullableString$3(parsed.last_refresh_at)
+	};
+}
+function evaluatePostCloseBacklogHygiene(payload) {
+	const state = payload.state;
+	if (!state || state.stage !== "implementation" || !state.post_close_backlog_hygiene_required) return {
+		artifact: null,
+		blockers: [],
+		checked_at: null,
+		feature_id: state?.feature_id ?? "",
+		refresh_at: null,
+		required: false,
+		status: "not_required"
+	};
+	const artifact = state.post_close_backlog_hygiene_artifact;
+	const checkedAt = state.post_close_backlog_hygiene_checked_at;
+	const refreshAt = state.post_close_backlog_hygiene_refresh_at;
+	if (!artifact || !checkedAt || !refreshAt) return {
+		artifact,
+		blockers: ["Post-close backlog hygiene evidence is missing."],
+		checked_at: checkedAt,
+		feature_id: state.feature_id,
+		refresh_at: refreshAt,
+		required: true,
+		status: "missing"
+	};
+	const staleBlockers = [];
+	if (isBefore(checkedAt, state.process_complete_ts)) staleBlockers.push("Post-close backlog hygiene evidence predates implementation closure.");
+	if (isBefore(checkedAt, payload.truth.updated_at)) staleBlockers.push("Post-close backlog hygiene evidence predates backlog state update.");
+	if (isBefore(checkedAt, payload.truth.last_refresh_at)) staleBlockers.push("Post-close backlog hygiene evidence predates backlog refresh.");
+	if (timestampValue(checkedAt) === null || timestampValue(refreshAt) === null) staleBlockers.push("Post-close backlog hygiene evidence has invalid timestamps.");
+	if (staleBlockers.length > 0) return {
+		artifact,
+		blockers: staleBlockers,
+		checked_at: checkedAt,
+		feature_id: state.feature_id,
+		refresh_at: refreshAt,
+		required: true,
+		status: "stale"
+	};
+	if (state.post_close_backlog_hygiene_status === "blocked") return {
+		artifact,
+		blockers: state.post_close_backlog_hygiene_blockers.length > 0 ? state.post_close_backlog_hygiene_blockers : ["Post-close backlog hygiene has unresolved blockers."],
+		checked_at: checkedAt,
+		feature_id: state.feature_id,
+		refresh_at: refreshAt,
+		required: true,
+		status: "blocked"
+	};
+	if (state.post_close_backlog_hygiene_status === "stale") return {
+		artifact,
+		blockers: state.post_close_backlog_hygiene_blockers.length > 0 ? state.post_close_backlog_hygiene_blockers : ["Post-close backlog hygiene evidence is stale."],
+		checked_at: checkedAt,
+		feature_id: state.feature_id,
+		refresh_at: refreshAt,
+		required: true,
+		status: "stale"
+	};
+	if (state.post_close_backlog_hygiene_status === "missing") return {
+		artifact,
+		blockers: state.post_close_backlog_hygiene_blockers.length > 0 ? state.post_close_backlog_hygiene_blockers : ["Post-close backlog hygiene evidence is missing."],
+		checked_at: checkedAt,
+		feature_id: state.feature_id,
+		refresh_at: refreshAt,
+		required: true,
+		status: "missing"
+	};
+	return {
+		artifact,
+		blockers: [],
+		checked_at: checkedAt,
+		feature_id: state.feature_id,
+		refresh_at: refreshAt,
+		required: true,
+		status: "clean"
+	};
+}
+async function collectPostCloseBacklogHygieneSummary(root) {
+	const stagesDir = path.join(root, ".dossier", "stages");
+	const summary = {
+		blocked_count: 0,
+		blocked_feature_ids: [],
+		missing_count: 0,
+		missing_feature_ids: [],
+		stale_count: 0,
+		stale_feature_ids: []
+	};
+	if (!await fileExists(stagesDir)) return summary;
+	const truth = await readBacklogTruthTimestamps(root);
+	const entries = await promises.readdir(stagesDir, { withFileTypes: true });
+	for (const entry of entries) {
+		if (!entry.isDirectory()) continue;
+		let featureId;
+		try {
+			featureId = sanitizeFeatureId(entry.name, "feature id");
+		} catch {
+			continue;
+		}
+		const hygiene = evaluatePostCloseBacklogHygiene({
+			state: await readStageState(root, "implementation", featureId),
+			truth
+		});
+		if (hygiene.status === "missing") summary.missing_feature_ids.push(featureId);
+		else if (hygiene.status === "stale") summary.stale_feature_ids.push(featureId);
+		else if (hygiene.status === "blocked") summary.blocked_feature_ids.push(featureId);
+	}
+	summary.missing_feature_ids.sort((left, right) => left.localeCompare(right));
+	summary.stale_feature_ids.sort((left, right) => left.localeCompare(right));
+	summary.blocked_feature_ids.sort((left, right) => left.localeCompare(right));
+	summary.missing_count = summary.missing_feature_ids.length;
+	summary.stale_count = summary.stale_feature_ids.length;
+	summary.blocked_count = summary.blocked_feature_ids.length;
+	return summary;
+}
+function postCloseBacklogHygieneWarnings(summary) {
+	const warnings = [];
+	if (summary.missing_feature_ids.length > 0) warnings.push(`Post-close backlog hygiene missing for implementation features: ${summary.missing_feature_ids.join(", ")}`);
+	if (summary.stale_feature_ids.length > 0) warnings.push(`Post-close backlog hygiene stale for implementation features: ${summary.stale_feature_ids.join(", ")}`);
+	if (summary.blocked_feature_ids.length > 0) warnings.push(`Post-close backlog hygiene blocked for implementation features: ${summary.blocked_feature_ids.join(", ")}`);
+	return warnings;
 }
 //#endregion
 //#region src/vendor/dossier-engineer/commands.ts
@@ -9638,6 +9840,17 @@ async function runNextStepCommand(argv, io) {
 		latestStepArtifact = await readLatestJsonFile(path.join(absRoot, ".dossier", "steps", featureId));
 		latestReviewArtifact = await readLatestJsonFile(path.join(absRoot, ".dossier", "reviews", featureId));
 	}
+	const targetFeatureId = target ? frontmatterString(target.frontmatter, "id", path.basename(target.absPath, ".md")) : null;
+	const postCloseBacklogHygiene = targetFeatureId ? evaluatePostCloseBacklogHygiene({
+		state: await readStageState(absRoot, "implementation", targetFeatureId),
+		truth: await readBacklogTruthTimestamps(absRoot)
+	}) : evaluatePostCloseBacklogHygiene({
+		state: null,
+		truth: {
+			updated_at: null,
+			last_refresh_at: null
+		}
+	});
 	const workflowNext = latestStepArtifact?.process_complete === false ? normalizeWorkflowStage(latestStepArtifact.next_step ?? null) : target ? normalizeWorkflowStage(statusToNextStep(target.frontmatter.status)) : null;
 	const blockers = latestStepArtifact?.process_complete === false && Array.isArray(latestStepArtifact.blockers) ? latestStepArtifact.blockers.filter((value) => typeof value === "string") : target ? [] : ["No active dossier found. Select backlog work with dossier-engineer backlog commands and create a dossier via feature-intake before using next-step."];
 	const reviewFreshness = latestReviewArtifact ? latestReviewArtifact.verdict === "PASS" ? "pass" : latestReviewArtifact.verdict === "FAIL" ? "fail" : "unknown" : "missing";
@@ -9650,7 +9863,10 @@ async function runNextStepCommand(argv, io) {
 		review_freshness: reviewFreshness,
 		event_commit: eventCommit,
 		review_trace_commit: latestReviewArtifact?.event_commit ?? null,
-		process_complete: latestStepArtifact ? Boolean(latestStepArtifact.process_complete) : null
+		process_complete: latestStepArtifact ? Boolean(latestStepArtifact.process_complete) : null,
+		post_close_backlog_hygiene_status: postCloseBacklogHygiene.status,
+		post_close_backlog_hygiene_artifact: postCloseBacklogHygiene.artifact,
+		post_close_backlog_hygiene_blockers: postCloseBacklogHygiene.blockers
 	};
 	if (json) {
 		writeLine$1(io.stdout, JSON.stringify(summary, null, 2));
@@ -9665,6 +9881,9 @@ async function runNextStepCommand(argv, io) {
 	writeLine$1(io.stdout, `Event commit: ${summary.event_commit ?? "none"}`);
 	writeLine$1(io.stdout, `Review trace commit: ${summary.review_trace_commit ?? "none"}`);
 	writeLine$1(io.stdout, `Process-complete: ${summary.process_complete === null ? "unknown" : summary.process_complete ? "yes" : "no"}`);
+	writeLine$1(io.stdout, `Post-close backlog hygiene: ${summary.post_close_backlog_hygiene_status}`);
+	writeLine$1(io.stdout, `Post-close hygiene artifact: ${summary.post_close_backlog_hygiene_artifact ?? "none"}`);
+	writeLine$1(io.stdout, `Post-close hygiene blockers: ${summary.post_close_backlog_hygiene_blockers.length > 0 ? summary.post_close_backlog_hygiene_blockers.join(" | ") : "none"}`);
 	return 0;
 }
 function lifecycleRefreshHelp() {
@@ -22747,7 +22966,13 @@ function buildStatusOutput(payload) {
 		open_source_review_count: payload.openReviews.length,
 		source_review_blocked_item_count: blockedItemCount,
 		lifecycle_reconciliation_drift_count: payload.lifecycleDrifts.length,
-		lifecycle_reconciliation_drifts: payload.lifecycleDrifts
+		lifecycle_reconciliation_drifts: payload.lifecycleDrifts,
+		post_close_hygiene_missing_count: payload.postCloseHygieneSummary.missing_count,
+		post_close_hygiene_stale_count: payload.postCloseHygieneSummary.stale_count,
+		post_close_hygiene_blocked_count: payload.postCloseHygieneSummary.blocked_count,
+		post_close_hygiene_missing_feature_ids: payload.postCloseHygieneSummary.missing_feature_ids,
+		post_close_hygiene_stale_feature_ids: payload.postCloseHygieneSummary.stale_feature_ids,
+		post_close_hygiene_blocked_feature_ids: payload.postCloseHygieneSummary.blocked_feature_ids
 	};
 }
 function takeOption$2(args, name) {
@@ -22894,6 +23119,7 @@ async function runStatusCommand(args, io) {
 			root: context.backlogRoot,
 			state
 		});
+		const postCloseHygieneSummary = await collectPostCloseBacklogHygieneSummary(context.backlogRoot);
 		const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(lifecycleDrifts);
 		const adjustedReadyForNextStepCount = state.items.filter((item) => item.ready_for_next_step && !blockedItemKeys.has(item.item_key) && !lifecycleBlockedItemKeys.has(item.item_key)).length;
 		writeCliEnvelope(io.stdout, {
@@ -22902,7 +23128,8 @@ async function runStatusCommand(args, io) {
 				adjustedReadyForNextStepCount,
 				baseStatus: status,
 				lifecycleDrifts,
-				openReviews
+				openReviews,
+				postCloseHygieneSummary
 			})
 		});
 		return 0;
@@ -22958,10 +23185,12 @@ async function runQueueCommand(args, io) {
 			root: result.context.backlogRoot,
 			state
 		}));
+		const postCloseHygieneSummary = await collectPostCloseBacklogHygieneSummary(result.context.backlogRoot);
+		const warnings = [...lifecycleBlockedItemKeys.size > 0 ? [`Lifecycle reconciliation drift blocked queue items: ${[...lifecycleBlockedItemKeys].join(", ")}`] : [], ...postCloseBacklogHygieneWarnings(postCloseHygieneSummary)];
 		writeCliEnvelope(io.stdout, {
 			command: "queue",
 			data: overlayQueueWithSourceReviewBlock(result.output, openReviews, lifecycleBlockedItemKeys),
-			warnings: lifecycleBlockedItemKeys.size > 0 ? [`Lifecycle reconciliation drift blocked queue items: ${[...lifecycleBlockedItemKeys].join(", ")}`] : []
+			warnings
 		});
 		return 0;
 	} catch (error) {
@@ -23537,7 +23766,17 @@ function machineMetadataFromStageState(state) {
 			pre_review_risk_families: state.pre_review_risk_families,
 			pre_review_checklists: state.pre_review_checklists,
 			pre_review_checklist_status: state.pre_review_checklist_status,
-			pre_review_checklist_blockers: state.pre_review_checklist_blockers
+			pre_review_checklist_blockers: state.pre_review_checklist_blockers,
+			post_close_backlog_hygiene_required: state.post_close_backlog_hygiene_required,
+			post_close_backlog_hygiene_status: state.post_close_backlog_hygiene_status,
+			post_close_backlog_hygiene_artifact: state.post_close_backlog_hygiene_artifact,
+			post_close_backlog_hygiene_checked_at: state.post_close_backlog_hygiene_checked_at,
+			post_close_backlog_hygiene_refresh_at: state.post_close_backlog_hygiene_refresh_at,
+			post_close_open_source_review_count: state.post_close_open_source_review_count,
+			post_close_source_review_blocked_item_count: state.post_close_source_review_blocked_item_count,
+			post_close_lifecycle_reconciliation_drift_count: state.post_close_lifecycle_reconciliation_drift_count,
+			post_close_unresolved_attention_present: state.post_close_unresolved_attention_present,
+			post_close_backlog_hygiene_blockers: state.post_close_backlog_hygiene_blockers
 		} : {},
 		required_audit_classes: state.required_audit_classes,
 		executed_audit_classes: state.executed_audit_classes,
@@ -24163,7 +24402,19 @@ async function recordStepCloseOnStageLog(payload) {
 			security_trigger_reasons: payload.auditSummary.securityTriggerReasons
 		} : {},
 		...payload.processComplete ? { process_complete_ts: now } : {},
-		...payload.processComplete && stageName === "feature-intake" ? { intake_process_complete_ts: now } : {}
+		...payload.processComplete && stageName === "feature-intake" ? { intake_process_complete_ts: now } : {},
+		...payload.processComplete && stageName === "implementation" ? {
+			post_close_backlog_hygiene_required: true,
+			post_close_backlog_hygiene_status: "missing",
+			post_close_backlog_hygiene_artifact: null,
+			post_close_backlog_hygiene_checked_at: null,
+			post_close_backlog_hygiene_refresh_at: null,
+			post_close_open_source_review_count: null,
+			post_close_source_review_blocked_item_count: null,
+			post_close_lifecycle_reconciliation_drift_count: null,
+			post_close_unresolved_attention_present: null,
+			post_close_backlog_hygiene_blockers: []
+		} : {}
 	};
 	const normalizedMetadata = stageSchemaMetadata({
 		featureId: payload.featureId,
@@ -24175,6 +24426,40 @@ async function recordStepCloseOnStageLog(payload) {
 	await syncStageStateFromMetadata({
 		root: payload.root,
 		featureId: payload.featureId,
+		metadata: normalizedMetadata,
+		logPath: path.relative(payload.root, latest.absPath)
+	});
+}
+async function recordPostCloseBacklogHygieneOnStageLog(payload) {
+	const featureId = sanitizeFeatureId(payload.featureId, "feature id");
+	const latest = await loadLatestStageLog(payload.root, "implementation", featureId);
+	const currentStageState = await readStageState(payload.root, "implementation", featureId);
+	if (!latest) throw new Error(`No implementation stage log found for ${featureId}.`);
+	if (!currentStageState?.process_complete_ts || !currentStageState.step_artifact) throw new Error(`Implementation stage for ${featureId} is not process-complete.`);
+	const metadata = {
+		...latest.metadata,
+		...machineMetadataFromStageState(currentStageState),
+		post_close_backlog_hygiene_required: true,
+		post_close_backlog_hygiene_status: payload.status,
+		post_close_backlog_hygiene_artifact: payload.artifactPath,
+		post_close_backlog_hygiene_checked_at: payload.checkedAt,
+		post_close_backlog_hygiene_refresh_at: payload.refreshAt,
+		post_close_open_source_review_count: payload.openSourceReviewCount,
+		post_close_source_review_blocked_item_count: payload.sourceReviewBlockedItemCount,
+		post_close_lifecycle_reconciliation_drift_count: payload.lifecycleReconciliationDriftCount,
+		post_close_unresolved_attention_present: payload.unresolvedAttentionPresent,
+		post_close_backlog_hygiene_blockers: payload.blockers
+	};
+	const normalizedMetadata = stageSchemaMetadata({
+		featureId,
+		logPath: path.relative(payload.root, latest.absPath),
+		metadata
+	});
+	await assertManagedWritePath(payload.root, path.join(payload.root, ".dossier", "logs", "implementation"), latest.absPath, "implementation stage log");
+	await writeTextAtomic(latest.absPath, renderStageLog(normalizedMetadata, { existingContent: latest.content }));
+	await syncStageStateFromMetadata({
+		root: payload.root,
+		featureId,
 		metadata: normalizedMetadata,
 		logPath: path.relative(payload.root, latest.absPath)
 	});
@@ -24338,6 +24623,40 @@ async function captureDossierCommandOutput(commandName, args, command) {
 		stdout: stdoutBuffer.join("")
 	};
 }
+async function withWorkingDirectory(root, run) {
+	const previous = process.cwd();
+	process.chdir(root);
+	try {
+		return await run();
+	} finally {
+		process.chdir(previous);
+	}
+}
+function findBacklogCommand(name) {
+	const command = BACKLOG_COMMANDS.find((entry) => entry.name === name || entry.aliases?.includes(name));
+	if (!command) throw new Error(`Missing backlog command: ${name}`);
+	return command;
+}
+async function captureBacklogCommandOutput(commandName, args, root) {
+	const command = findBacklogCommand(commandName);
+	const stderrBuffer = [];
+	const stdoutBuffer = [];
+	const captureIo = {
+		stdout: { write(chunk) {
+			stdoutBuffer.push(String(chunk));
+			return true;
+		} },
+		stderr: { write(chunk) {
+			stderrBuffer.push(String(chunk));
+			return true;
+		} }
+	};
+	return {
+		exitCode: await withWorkingDirectory(root, async () => command.execute(args, captureIo)),
+		stderr: stderrBuffer.join(""),
+		stdout: stdoutBuffer.join("")
+	};
+}
 async function pathExists(filePath) {
 	try {
 		await promises.access(filePath);
@@ -24369,6 +24688,173 @@ async function withDeliveryLock(payload) {
 	} finally {
 		await releaseLock();
 	}
+}
+function parseCapturedEnvelope(payload) {
+	if (!payload.stdout.trim()) throw new Error(`${payload.commandName} did not return JSON output${payload.stderr.trim() ? ` (${payload.stderr.trim()})` : ""}.`);
+	const parsed = JSON.parse(payload.stdout);
+	return {
+		data: parsed.data,
+		warnings: Array.isArray(parsed.warnings) ? parsed.warnings.filter((warning) => typeof warning === "string") : []
+	};
+}
+function numericField(record, key) {
+	const value = record[key];
+	return typeof value === "number" && Number.isFinite(value) ? value : 0;
+}
+function createPostCloseHygieneCommand() {
+	const helpLines = [
+		"Run explicit post-close backlog hygiene evidence after implementation closure.",
+		"",
+		"Usage:",
+		"  dossier-engineer post-close-hygiene --dossier <path> --step implementation [--root <path>] [--json]",
+		"  dossier-engineer post-close-hygiene --feature-id <id> --step implementation [--root <path>] [--json]",
+		"",
+		"Rules:",
+		"  - runs refresh explicitly, then captures status, attention, and queue evidence",
+		"  - writes .dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json",
+		"  - updates helper-managed implementation stage state with clean or blocked hygiene status",
+		"  - never auto-acks source-review records and never patches backlog truth except refresh"
+	];
+	return {
+		name: "post-close-hygiene",
+		family: "delivery-helper",
+		commandType: "dossier",
+		summary: "Run explicit refresh/status/attention/queue evidence after implementation close.",
+		usage: ["dossier-engineer post-close-hygiene --dossier <path> --step implementation [--json]", "dossier-engineer post-close-hygiene --feature-id <id> --step implementation [--json]"],
+		helpLines: () => helpLines,
+		async execute(args, io) {
+			try {
+				const root = await resolveProcessRoot(process.cwd(), takeOption(args, "--root"));
+				if ((takeOption(args, "--step") ?? "implementation") !== "implementation") throw new Error("--step must be implementation for post-close-hygiene.");
+				const dossierPath = takeOption(args, "--dossier");
+				const featureIdInput = takeOption(args, "--feature-id");
+				if (dossierPath && featureIdInput || !dossierPath && !featureIdInput) throw new Error("Exactly one of --dossier or --feature-id is required.");
+				const identity = dossierPath ? await resolveManagedDossierIdentity({
+					root,
+					dossierPath
+				}) : await resolveManagedDossierIdentityByFeatureId({
+					root,
+					featureId: featureIdInput ?? ""
+				});
+				const featureId = identity.featureId;
+				const stageState = await readStageState(root, "implementation", featureId);
+				if (!stageState) throw new Error(`No helper-managed implementation stage state found for ${featureId}.`);
+				if (!stageState.process_complete_ts || !stageState.step_artifact) throw new Error(`Implementation stage for ${featureId} is not process-complete.`);
+				return await withDeliveryLock({
+					root,
+					featureId,
+					featureCycleId: stageState.feature_cycle_id || "post-close-hygiene",
+					command: "post-close-hygiene",
+					run: async () => {
+						const refreshedState = await readStageState(root, "implementation", featureId);
+						if (!refreshedState?.process_complete_ts || !refreshedState.step_artifact) throw new Error(`Implementation stage for ${featureId} is not process-complete.`);
+						const refreshResult = await captureBacklogCommandOutput("refresh", [], root);
+						if (refreshResult.exitCode !== 0) throw new Error(refreshResult.stderr.trim() || "refresh failed.");
+						const refreshEnvelope = parseCapturedEnvelope({
+							commandName: "refresh",
+							stdout: refreshResult.stdout,
+							stderr: refreshResult.stderr
+						});
+						const truth = await readBacklogTruthTimestamps(root);
+						const statusResult = await captureBacklogCommandOutput("status", [], root);
+						if (statusResult.exitCode !== 0) throw new Error(statusResult.stderr.trim() || "status failed.");
+						const statusEnvelope = parseCapturedEnvelope({
+							commandName: "status",
+							stdout: statusResult.stdout,
+							stderr: statusResult.stderr
+						});
+						const attentionResult = await captureBacklogCommandOutput("attention", [], root);
+						if (attentionResult.exitCode !== 0) throw new Error(attentionResult.stderr.trim() || "attention failed.");
+						const attentionEnvelope = parseCapturedEnvelope({
+							commandName: "attention",
+							stdout: attentionResult.stdout,
+							stderr: attentionResult.stderr
+						});
+						const queueResult = await captureBacklogCommandOutput("queue", [], root);
+						if (queueResult.exitCode !== 0) throw new Error(queueResult.stderr.trim() || "queue failed.");
+						const queueEnvelope = parseCapturedEnvelope({
+							commandName: "queue",
+							stdout: queueResult.stdout,
+							stderr: queueResult.stderr
+						});
+						const openSourceReviewCount = numericField(statusEnvelope.data, "open_source_review_count");
+						const sourceReviewBlockedItemCount = numericField(statusEnvelope.data, "source_review_blocked_item_count");
+						const lifecycleReconciliationDriftCount = numericField(statusEnvelope.data, "lifecycle_reconciliation_drift_count");
+						const unresolvedAttentionPresent = attentionEnvelope.data.length > 0;
+						const blockers = [
+							...openSourceReviewCount > 0 ? [`Open source reviews remain after refresh: ${openSourceReviewCount}.`] : [],
+							...sourceReviewBlockedItemCount > 0 ? [`Source-review blocked backlog items remain: ${sourceReviewBlockedItemCount}.`] : [],
+							...lifecycleReconciliationDriftCount > 0 ? [`Lifecycle reconciliation drift remains: ${lifecycleReconciliationDriftCount}.`] : []
+						];
+						const hygieneStatus = blockers.length > 0 ? "blocked" : "clean";
+						const checkedAt = (/* @__PURE__ */ new Date()).toISOString();
+						const artifactPath = path.join(".dossier", "verification", featureId, "implementation-post-close-backlog-hygiene.json").split(path.sep).join("/");
+						const absArtifactPath = path.join(root, artifactPath);
+						await assertManagedWritePath(root, path.join(root, ".dossier", "verification", featureId), absArtifactPath, "post-close backlog hygiene artifact");
+						const artifact = {
+							version: 1,
+							created_at: checkedAt,
+							feature_id: featureId,
+							step: "implementation",
+							dossier: path.relative(root, identity.absPath).split(path.sep).join("/"),
+							implementation_step_artifact: refreshedState.step_artifact,
+							implementation_process_complete_ts: refreshedState.process_complete_ts,
+							refresh_ran_at: truth.last_refresh_at ?? checkedAt,
+							backlog_last_refresh_at: truth.last_refresh_at,
+							refresh_summary: refreshEnvelope.data,
+							status_summary: statusEnvelope.data,
+							attention_summary: attentionEnvelope.data,
+							queue_summary: {
+								data: queueEnvelope.data,
+								warnings: queueEnvelope.warnings
+							},
+							open_source_review_count: openSourceReviewCount,
+							source_review_blocked_item_count: sourceReviewBlockedItemCount,
+							lifecycle_reconciliation_drift_count: lifecycleReconciliationDriftCount,
+							unresolved_attention_present: unresolvedAttentionPresent,
+							backlog_clean: blockers.length === 0,
+							blockers
+						};
+						await writeJsonAtomic(absArtifactPath, artifact);
+						await recordPostCloseBacklogHygieneOnStageLog({
+							root,
+							featureId,
+							artifactPath,
+							checkedAt,
+							refreshAt: truth.last_refresh_at ?? checkedAt,
+							status: hygieneStatus,
+							openSourceReviewCount,
+							sourceReviewBlockedItemCount,
+							lifecycleReconciliationDriftCount,
+							unresolvedAttentionPresent,
+							blockers
+						});
+						writeCliEnvelope(io.stdout, {
+							command: "post-close-hygiene",
+							scope: {
+								feature_id: featureId,
+								step: "implementation"
+							},
+							result: hygieneStatus === "blocked" ? "blocked" : "ok",
+							data: {
+								artifact_path: artifactPath,
+								...artifact,
+								post_close_backlog_hygiene_status: hygieneStatus
+							},
+							nextCommands: hygieneStatus === "blocked" ? ["dossier-engineer attention"] : [`dossier-engineer next-step --dossier ${artifact.dossier} --json`]
+						});
+						return 0;
+					}
+				});
+			} catch (error) {
+				io.stderr.write(`${JSON.stringify({ error: {
+					code: "UDE_POST_CLOSE_HYGIENE_FAILED",
+					message: error instanceof Error ? error.message : String(error)
+				} })}\n`);
+				return 1;
+			}
+		}
+	};
 }
 function createDossierCommandWrapper(name, family) {
 	const command = findCommand(name);
@@ -25037,6 +25523,7 @@ var DOSSIER_COMMANDS = [
 	createDossierCommandWrapper("dossier-verify", "delivery-helper"),
 	createDossierCommandWrapper("review-artifact", "delivery-helper"),
 	createDossierCommandWrapper("dossier-step-close", "delivery-helper"),
+	createPostCloseHygieneCommand(),
 	createDossierCommandWrapper("next-step", "delivery-helper"),
 	createDossierCommandWrapper("lifecycle-refresh", "delivery-helper")
 ];

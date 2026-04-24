@@ -40,6 +40,7 @@ These remain separate helper commands rather than stage controllers:
 - `dossier-verify`
 - `review-artifact`
 - `dossier-step-close`
+- `post-close-hygiene`
 - `lifecycle-refresh`
 - `next-step`
 
@@ -123,6 +124,16 @@ Parity-protected fields:
 - implementation-only `pre_review_checklists`
 - implementation-only `pre_review_checklist_status`
 - implementation-only `pre_review_checklist_blockers`
+- implementation-only `post_close_backlog_hygiene_required`
+- implementation-only `post_close_backlog_hygiene_status`
+- implementation-only `post_close_backlog_hygiene_artifact`
+- implementation-only `post_close_backlog_hygiene_checked_at`
+- implementation-only `post_close_backlog_hygiene_refresh_at`
+- implementation-only `post_close_open_source_review_count`
+- implementation-only `post_close_source_review_blocked_item_count`
+- implementation-only `post_close_lifecycle_reconciliation_drift_count`
+- implementation-only `post_close_unresolved_attention_present`
+- implementation-only `post_close_backlog_hygiene_blockers`
 
 Rules:
 
@@ -227,6 +238,8 @@ Required alignment:
 
 - `dossier-step-close` remains the authoritative closure artifact writer;
 - `dossier-step-close` enforces selected backlog item lifecycle reconciliation before writing a step artifact for `spec-compact`, `plan-slice`, and `implementation`;
+- successful `implementation` closure marks post-close backlog hygiene required and missing, but does not run source refresh or block the step artifact on post-close hygiene;
+- `post-close-hygiene` is the explicit helper that runs refresh/status/attention/queue evidence after implementation close and records clean or blocked readiness state;
 - `lifecycle-refresh` remains the lifecycle aggregation helper when lifecycle snapshots or session indexes need refresh;
 - stage-controller commands must not duplicate helper-owned closure truth;
 - commandized transitions should improve telemetry determinism, not create a second closure authority surface.
@@ -235,6 +248,7 @@ Required alignment:
 - for `plan-slice`, `ready_for_close` also presumes agent-owned semantic readiness: the plan has an explicit execution target, completion recognition, and implementation boundaries. The stage controller does not author or validate that semantic content.
 - for every mutating stage, helper-owned close-out must enforce the required external audit bundle defined in [Audit policy](audit-policy.md).
 - implementation pre-review checklist evidence is author-side readiness context only; it does not satisfy or weaken the external audit bundle.
+- post-close backlog hygiene is branch/readiness evidence after closure; it does not replace `dossier-step-close` and must not auto-ack source-review records.
 
 ## Utility-spec handoff
 
@@ -246,6 +260,7 @@ The utility specification must derive from this boundary and define:
 - exact stage-state enums;
 - exact transition event schema;
 - exact backlog follow-up field names and allowed values.
+- exact post-close hygiene field names, statuses, artifact path, and readiness warning behavior.
 
 The utility specification and runtime packages now ship this boundary in first-wave form. Later packages may harden or extend it, but they must not weaken the authority split defined here.
 
@@ -258,6 +273,7 @@ The utility specification and runtime packages now ship this boundary in first-w
 - do not infer backlog lifecycle reconciliation from traces, prose, commit messages, or `docs/ssot/index.md`
 - do not make optional commit anchors a required proof for truthful closure
 - do not let stage controllers absorb `dossier-step-close`, `lifecycle-refresh`, or `next-step`
+- do not let `dossier-step-close` silently absorb the explicit `post-close-hygiene` checkpoint
 - do not make stage-controller commands semantic automation
 - do not treat a mechanical `ready_for_close` transition as a substitute for agent-owned `plan-slice` execution-target clarity
 - do not let commandized stage control blur the boundary between delivery progress and backlog truth mutation

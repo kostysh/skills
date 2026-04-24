@@ -189,6 +189,7 @@ sections:
         - Preserve the accounting versus project-SSOT artifact split.
         - Preserve the invariant `one feature = one backlog item`.
         - Keep `change-proposal`, `contract-drift-audit`, `backlog impact verdict`, `coverage_gate`, and strict closure semantics in scope.
+        - Keep implementation post-close backlog hygiene evidence explicit after closure and before branch-complete reporting or next-intake recommendation.
         - Keep delivery workflow, telemetry identity, and closure truth explicit rather than collapsing them into backlog-only state or speculative command prose.
         - "Preserve the commandized stage-control model: primary delivery stages become mechanical controllers, while closure and helper commands stay separate."
       validation:
@@ -455,6 +456,13 @@ sections:
       script: scripts/dossier-engineer.mjs
       examples:
         - node scripts/dossier-engineer.mjs dossier-step-close --dossier <path> --step implementation --verify-artifact <path> --review-artifact <spec.json> --review-artifact <code.json> --review-artifact <security.json>
+    - id: command-post-close-hygiene
+      command: post-close-hygiene
+      summary: Run explicit implementation post-close backlog hygiene evidence with refresh/status/attention/queue.
+      when: A process-complete implementation needs post-close backlog hygiene evidence before branch-complete reporting or next-intake recommendation.
+      script: scripts/dossier-engineer.mjs
+      examples:
+        - node scripts/dossier-engineer.mjs post-close-hygiene --dossier <path> --step implementation
     - id: command-next-step
       command: next-step
       summary: Resolve the dossier-local next workflow stage from structured state.

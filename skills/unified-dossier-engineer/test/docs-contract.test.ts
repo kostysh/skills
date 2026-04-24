@@ -81,6 +81,7 @@ void test('generated skill exposes only the canonical runtime surface', async ()
     '### CLI command: `spec-compact`',
     '### CLI command: `change-proposal`',
     '### CLI command: `ack-source-review`',
+    '### CLI command: `post-close-hygiene`',
   ]);
   assertNotContainsTerms(skill, [
     '### CLI command: `marker-audit`',
@@ -162,6 +163,7 @@ void test('source bundle and package manifest expose only the canonical launcher
     'references/audit-policy.md',
     'references/implementation-pre-review-checklists.md',
     'ref-implementation-pre-review-checklists',
+    'command-post-close-hygiene',
   ]);
   assertNotContainsTerms(skillYaml, [
     'references/migration-and-rollout.md',
@@ -550,6 +552,16 @@ void test('stage artifact schema is machine-complete and trace-scraping-free', a
     'must not recover these fields by scraping traces or prose',
     'review_events[]` links every review attempt to attempt id, round id, round number, immutable artifact path, optional latest copy path',
     '`review_artifacts` is an ordered unique list of immutable attempt artifact paths',
+    'post_close_backlog_hygiene_required',
+    'post_close_backlog_hygiene_status',
+    'post_close_backlog_hygiene_artifact',
+    'post_close_backlog_hygiene_checked_at',
+    'post_close_backlog_hygiene_refresh_at',
+    'post_close_open_source_review_count',
+    'post_close_source_review_blocked_item_count',
+    'post_close_lifecycle_reconciliation_drift_count',
+    'post_close_unresolved_attention_present',
+    'post_close_backlog_hygiene_blockers',
   ]);
   assertContainsTerms(utilitySpec, [
     'shipped writers must normalize and enforce parity',
@@ -610,6 +622,81 @@ void test('lifecycle reconciliation gate protects backlog truth before step clos
     'Selected-feature lifecycle close targets',
     'status` exposes lifecycle reconciliation drift count/details',
     '`queue` must not silently return a mapped done feature',
+  ]);
+});
+
+void test('post-close backlog hygiene contract is explicit and non-mutating beyond refresh', async () => {
+  const [
+    skill,
+    skillYaml,
+    deliveryWorkflow,
+    backlogTruth,
+    sourceReviewContract,
+    stageControl,
+    telemetryClosure,
+    runtimeBoundary,
+    utilitySpec,
+  ] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(SKILL_YAML_PATH, 'utf8'),
+    readFile(DELIVERY_WORKFLOW_PATH, 'utf8'),
+    readFile(BACKLOG_TRUTH_LAYER_PATH, 'utf8'),
+    readFile(SOURCE_REVIEW_CONTRACT_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+  const corpus = [
+    skill,
+    skillYaml,
+    deliveryWorkflow,
+    backlogTruth,
+    sourceReviewContract,
+    stageControl,
+    telemetryClosure,
+    runtimeBoundary,
+    utilitySpec,
+  ].join('\n\n');
+
+  assertContainsTerms(skill, [
+    'post-close backlog hygiene evidence',
+    'implementation post-close backlog hygiene',
+    '### CLI command: `post-close-hygiene`',
+  ]);
+  assertContainsTerms(skillYaml, [
+    'command-post-close-hygiene',
+    'post-close-hygiene',
+    'refresh/status/attention/queue',
+  ]);
+  assertContainsTerms(corpus, [
+    'final branch-complete reporting',
+    'next-intake recommendation',
+    'refresh/status/attention/queue',
+    'post_close_backlog_hygiene_required: true',
+    'post_close_backlog_hygiene_status: missing',
+    '.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json',
+    'post_close_hygiene_missing_count',
+    'post_close_hygiene_stale_count',
+    'post_close_hygiene_blocked_count',
+    'post_close_backlog_hygiene_blockers',
+    'stale hygiene',
+    '`next-step --dossier <implementation dossier>` reports',
+  ]);
+  assertContainsTerms(sourceReviewContract, [
+    'must not call `ack-source-review`',
+    'must not auto-resolve source-review records during post-close hygiene',
+  ]);
+  assertContainsTerms(runtimeBoundary, [
+    '`post-close-hygiene` runs explicit refresh/status/attention/queue evidence',
+    '`post-close-hygiene` never auto-acks source-review records',
+    '`dossier-step-close` auto-refreshes sources',
+  ]);
+  assertNotContainsTerms(corpus, [
+    'dossier-step-close automatically runs refresh',
+    'dossier-step-close auto-runs refresh',
+    'post-close-hygiene auto-acks',
+    'post-close-hygiene automatically acknowledges',
   ]);
 });
 

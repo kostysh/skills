@@ -90,8 +90,11 @@ The workflow must preserve:
 - required external audits in fail-closed mode
 - review freshness control
 - authoritative close-out only after readiness is truthful
+- post-close backlog hygiene evidence before final branch-complete reporting or recommending the next intake
 
 Implementation pre-review checklist evidence is required only for declared risk families. The workflow must not infer those families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose.
+
+After a successful `implementation` close, the workflow must run explicit post-close backlog hygiene before claiming the branch is backlog-clean or recommending a next intake. The required evidence is `refresh`, then `status`, `attention`, and `queue`, persisted through `post-close-hygiene`. This checkpoint is branch/readiness evidence after closure; it is not an extra `dossier-step-close` gate.
 
 ## Required mutating-stage audit baseline
 
@@ -172,6 +175,7 @@ Required gates:
 - implementation pre-review checklist completeness only when explicit risk families are declared
 - explicit pre-close / DoD readiness
 - authoritative step-close artifact
+- post-close backlog hygiene evidence after successful `implementation` close and before branch-complete reporting or next-intake recommendation
 - truthful blocked close branch
 
 For `implementation`, the stronger bundle policy from [Audit policy](audit-policy.md) applies:
@@ -180,6 +184,7 @@ For `implementation`, the stronger bundle policy from [Audit policy](audit-polic
 - code-bearing scope also requires `code-reviewer` and `security-reviewer`;
 - truthful closure is blocked until that required bundle is fully satisfied.
 - implementation rerounds preserve earlier failed review evidence and close only from the final valid PASS bundle selected by `dossier-step-close`.
+- successful `implementation` closure marks post-close backlog hygiene as required and initially `missing`; clean branch-complete reporting requires a fresh `post-close-hygiene` artifact.
 
 Important:
 
@@ -187,6 +192,7 @@ Important:
 - chat summaries are never closure truth
 - informal “looks good” signals never replace durable closure evidence
 - an external-looking reviewer run does not satisfy closure policy if it inherited the authoring agent's forked/full-history context
+- `dossier-step-close` must not auto-run source refresh or auto-ack source-review records; `post-close-hygiene` is the explicit helper for the post-close refresh/status/attention/queue checkpoint.
 
 ## Semantic heritage versus shipped runtime
 
@@ -202,5 +208,7 @@ The stage-controller command boundary is defined separately in [Commandized stag
 - do not let delivery closure bypass required backlog actualization
 - do not infer implementation risk families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose
 - do not let `dossier-step-close` mark `spec-compact`, `plan-slice`, or `implementation` complete while the selected backlog item is behind the stage lifecycle target
+- do not claim an implementation branch is backlog-clean before fresh post-close hygiene evidence exists
+- do not hide open source reviews after post-close refresh behind a clean final state
 - do not dissolve `coverage_gate` into generic maturity wording
 - do not equate backlog `planned|implemented` with dossier `planned|done`
