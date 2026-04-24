@@ -7,6 +7,7 @@
 | Issue | Status | Notes |
 | --- | --- | --- |
 | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented PASS | `compile` / `compile-all` destructive overlap fixed with safe `regenerate`, overlap guards, source-bundle `check`, and verified implementation. |
+| [issues/issue-20260424-2.md](issues/issue-20260424-2.md) | Audit PASS | Allow simple source bundles without artificial `references/*` files; make generated reference sections and checks conditional. |
 
 ## Implementation Plans
 
