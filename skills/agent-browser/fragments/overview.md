@@ -1,39 +1,3 @@
----
-name: agent-browser
-description: Automates browser interactions for web testing, form filling,
-  screenshots, and data extraction. Use when the user needs to navigate
-  websites, interact with web pages, fill forms, take screenshots, test web
-  applications, or extract information from web pages.
-metadata:
-  source-version: 0.1.0
-  skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 08621b20e84eab928450c96496619b7ea361d3c713cb4bd10e10058779a89f07
-allowed-tools: Bash(agent-browser:*)
----
-
-# agent-browser
-
-## Start here
-
-1. Confirm the task matches agent-browser's applicability criteria.
-2. Use the preserved overview guidance as the normative workflow for this skill.
-3. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
-
-## When to use this skill
-
-- Navigating websites or web applications from the terminal.
-- Interacting with pages, filling forms, taking screenshots, recording video, or exporting PDFs.
-- Testing web UI flows, inspecting accessibility snapshots, network requests, cookies, storage, tabs, frames, or dialogs.
-- Extracting information from rendered web pages with agent-browser commands.
-
-## When NOT to use this skill
-
-- The task can be completed with static source inspection or an HTTP client without a browser.
-- The environment lacks agent-browser or Playwright dependencies and they cannot be installed or fixed quickly.
-- The required verification is a formal project E2E suite rather than smoke or diagnostic browser automation.
-
-## Overview
-
 ## Preflight: verify tool + Playwright setup
 
 Before using this skill, verify the CLI and its Playwright dependencies are installed. If anything is missing, fix it or hand off to the developer.
@@ -335,34 +299,3 @@ agent-browser highlight @e1              # Highlight element
 agent-browser trace start                # Start recording trace
 agent-browser trace stop trace.zip       # Stop and save trace
 ```
-
-## Workflow stages
-
-### Workflow stage: Apply agent-browser guidance
-
-Apply the preserved agent-browser guidance without changing its domain behavior.
-
-1. Match the request to the applicability criteria.
-2. Follow the preserved overview sections for the concrete work.
-3. Run the relevant verification from the overview or report why it could not be run.
-
-Validation:
-
-- The outcome follows the preserved skill guidance and any loaded reference constraints.
-
-## Portability rules
-
-- Do not reference machine-specific absolute paths or local files outside this skill folder.
-- Keep all mandatory agent-browser guidance inside this skill folder.
-- Use relative links for local references, assets, scripts, tests, and supporting docs.
-
-## Portability checklist before finishing
-
-- Run the skill-source-compiler check command after regeneration.
-- Search the skill folder for absolute local paths before finishing.
-- Confirm the skill remains understandable without placeholder reference files.
-
-## Supporting and historical surface
-
-- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
-- Supporting glob: `docs/*`

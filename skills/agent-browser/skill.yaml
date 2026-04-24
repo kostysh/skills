@@ -1,0 +1,63 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: agent-browser
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages.
+  allowedTools:
+    - Bash(agent-browser:*)
+fragments:
+  overview: fragments/overview.md
+references: []
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences: []
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches agent-browser's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Navigating websites or web applications from the terminal.
+    - Interacting with pages, filling forms, taking screenshots, recording video, or exporting PDFs.
+    - Testing web UI flows, inspecting accessibility snapshots, network requests, cookies, storage, tabs, frames, or dialogs.
+    - Extracting information from rendered web pages with agent-browser commands.
+  whenNotToUse:
+    - The task can be completed with static source inspection or an HTTP client without a browser.
+    - The environment lacks agent-browser or Playwright dependencies and they cannot be installed or fixed quickly.
+    - The required verification is a formal project E2E suite rather than smoke or diagnostic browser automation.
+  workflow:
+    - id: stage-apply-agent-browser
+      title: Apply agent-browser guidance
+      goal: Apply the preserved agent-browser guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory agent-browser guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm the skill remains understandable without placeholder reference files.
