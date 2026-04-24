@@ -1,0 +1,115 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: cli-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Standardize and build production-grade TypeScript command-line tools on Node.js.
+    Use when designing or reviewing CLI/TUI utilities, choosing frameworks, structuring
+    packages, enforcing modular architecture, defining help/output/error contracts,
+    testing command behavior, setting up quality gates, handling prompts or terminal
+    UI, and packaging or releasing command-line apps.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-architecture-and-layout
+    title: architecture-and-layout.md
+    source: references/architecture-and-layout.md
+    target: references/architecture-and-layout.md
+    required: true
+    trigger: Read this when you need package structure, command layering, config precedence, output model, and cross-platform design.
+  - id: ref-references-clig-baseline
+    title: clig-baseline.md
+    source: references/clig-baseline.md
+    target: references/clig-baseline.md
+    required: true
+    trigger: Read this when you need adopted CLIG principles and how they map onto modern Node.js / TypeScript CLI work.
+  - id: ref-references-framework-selection
+    title: framework-selection.md
+    source: references/framework-selection.md
+    target: references/framework-selection.md
+    required: true
+    trigger: Read this when you need how to choose frameworks and stacks for simple, complex, and interactive CLI work.
+  - id: ref-references-service-backed-clis
+    title: service-backed-clis.md
+    source: references/service-backed-clis.md
+    target: references/service-backed-clis.md
+    required: true
+    trigger: Read this when you need command taxonomy, auth/reporting, install-path behavior, and smoke-test rules for CLIs that wrap external systems.
+  - id: ref-references-testing-and-release
+    title: testing-and-release.md
+    source: references/testing-and-release.md
+    target: references/testing-and-release.md
+    required: true
+    trigger: Read this when you need test pyramid, process-level integration, TUI/non-TTY testing, packaging, publishing, and release workflow.
+  - id: ref-references-ux-and-security
+    title: ux-and-security.md
+    source: references/ux-and-security.md
+    target: references/ux-and-security.md
+    required: true
+    trigger: Read this when you need help/output/error UX, prompts/TUI rules, secrets handling, command execution safety, telemetry, and anti-patterns.
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-architecture-and-layout
+      - ref-references-clig-baseline
+      - ref-references-framework-selection
+      - ref-references-service-backed-clis
+      - ref-references-testing-and-release
+      - ref-references-ux-and-security
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches cli-engineer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Designing a new CLI package or restructuring an existing one
+    - Choosing between `node:util.parseArgs`, `commander`, `oclif`, `cac`, `clipanion`, prompt libraries, or Ink
+    - Standardizing help text, errors, stdout/stderr behavior, `--json`, conditional `--plain`, and exit codes
+    - Building interactive prompts or a terminal UI while preserving automation-safe behavior
+    - Setting up CLI testing, release automation, packaging, npm publishing, provenance, or optional standalone distribution
+    - Requiring modular CLI architecture for better testability or adding a missing repo quality gate
+    - Standardizing Vite-based CLI bundling and `node:test` process-level verification
+    - Reviewing a CLI for UX, scripting composability, cross-platform behavior, or operational safety
+  whenNotToUse:
+    - General Node backend or service runtime work without a CLI surface; use `node-engineer`
+    - Type-level library API design that is not CLI-specific; use `typescript-engineer`
+    - Pure test-runner troubleshooting without CLI-specific behavior; use `typescript-test-engineer`
+    - Broad security review without CLI-specific attack surfaces; use `security-reviewer`
+  workflow:
+    - id: stage-apply-cli-engineer
+      title: Apply cli-engineer guidance
+      goal: Apply the preserved cli-engineer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory cli-engineer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
