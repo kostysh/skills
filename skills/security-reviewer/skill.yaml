@@ -1,0 +1,135 @@
+apiVersion: "skillforge/v1alpha1"
+kind: "SkillSource"
+skill:
+  name: "security-reviewer"
+  source-version: "0.1.0"
+  recommended-skill-md-max-bytes: 36000
+  description: "Systematic security code review skill for vulnerabilities in application code, CI workflows, permission models, webhooks, secrets, and configuration. Use when asked to security review, find vulnerabilities, audit auth or RLS, check GitHub Actions security, inspect webhook verification, or review code against OWASP-style risks. Owns threat modeling, confidence gating, exploitability checks, and evidence; pairs with domain skills for framework details."
+fragments:
+  overview: "fragments/overview.md"
+references:
+  - id: "ref-api-auth-input"
+    title: "Api Auth Input"
+    source: "references/api-auth-input.md"
+    target: "references/api-auth-input.md"
+    required: true
+    trigger: "Read this when you need input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints."
+  - id: "ref-domain-handoffs"
+    title: "Domain Handoffs"
+    source: "references/domain-handoffs.md"
+    target: "references/domain-handoffs.md"
+    required: true
+    trigger: "Read this when you need stack discovery and when to defer to domain skills for framework-specific detail."
+  - id: "ref-github-actions"
+    title: "Github Actions"
+    source: "references/github-actions.md"
+    target: "references/github-actions.md"
+    required: true
+    trigger: "Read this when you need GitHub Actions threat model, attack classes, detection hints, and safe patterns."
+  - id: "ref-methodology"
+    title: "Methodology"
+    source: "references/methodology.md"
+    target: "references/methodology.md"
+    required: true
+    trigger: "Read this when you need confidence gating, surface discovery, audit order, uncertainty language, and report format."
+  - id: "ref-secrets-config"
+    title: "Secrets Config"
+    source: "references/secrets-config.md"
+    target: "references/secrets-config.md"
+    required: true
+    trigger: "Read this when you need secrets, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance."
+  - id: "ref-supabase-rls"
+    title: "Supabase Rls"
+    source: "references/supabase-rls.md"
+    target: "references/supabase-rls.md"
+    required: true
+    trigger: "Read this when you need RLS, grants, privileged functions, RPC, and service-role review."
+  - id: "ref-webhooks"
+    title: "Webhooks"
+    source: "references/webhooks.md"
+    target: "references/webhooks.md"
+    required: true
+    trigger: "Read this when you need signature verification, replay windows, raw body handling, idempotency, and reporting checks."
+assets: []
+copies:
+  - id: "copy-agents-openai-yaml"
+    source: "agents/openai.yaml"
+    target: "agents/openai.yaml"
+    description: "Portable copy of agents/openai.yaml."
+  - id: "copy-package-json"
+    source: "package.json"
+    target: "package.json"
+    description: "Portable copy of package.json."
+  - id: "copy-test-docs-contract-test-mjs"
+    source: "test/docs-contract.test.mjs"
+    target: "test/docs-contract.test.mjs"
+    description: "Portable copy of test/docs-contract.test.mjs."
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - "ref-api-auth-input"
+      - "ref-domain-handoffs"
+      - "ref-github-actions"
+      - "ref-methodology"
+      - "ref-secrets-config"
+      - "ref-supabase-rls"
+      - "ref-webhooks"
+    optionalReferences: []
+  supportingGlobs:
+    - "docs/*"
+    - "docs/issues/*"
+    - "docs/logs/*"
+sections:
+  startHere:
+    - "Confirm the user is asking for a security review, vulnerability search, audit, or security-sensitive code inspection."
+    - "Use the default threat model unless the user or project gives a different one."
+    - "Research exploitability before reporting; do not flag findings from pattern matching alone."
+    - "Load only the references needed for the reviewed surface and keep findings evidence-backed."
+  whenToUse:
+    - "Security review, vulnerability finding, OWASP-style audit, or exploitability triage."
+    - "Authn, authz, sessions, tokens, secrets, permissions, webhooks, CI, Supabase RLS, or sensitive input-to-sink flows."
+    - "Formal security audit or report mode when the user explicitly asks for it."
+  whenNotToUse:
+    - "General non-security code quality review without a security objective."
+    - "Pure framework implementation guidance owned by a domain skill."
+    - "UI, accessibility, shell portability, or style review with no security angle."
+  workflow:
+    - id: "stage-security-review"
+      title: "Run the security review"
+      goal: "Find exploitable weaknesses with confidence gating and line-referenced evidence."
+      steps:
+        - "Identify reviewed surfaces, stack, trust boundaries, identities, secrets, privileged actions, and sensitive sinks."
+        - "Apply the bounded auth-admission checkpoint when route admission, replay, idempotency, or pre-auth resource use changes."
+        - "Trace attacker-controlled input or identity to a missing control or sensitive sink."
+        - "Check surrounding mitigations, framework defaults, and deployment constraints before reporting."
+        - "Classify confidence and severity, then choose targeted chat output or formal audit format."
+      validation:
+        - "Reported findings have confirmed attacker control, reachability, impact, evidence, and fix direction."
+        - "Low-confidence, theoretical, test-only, comment-only, or mitigated patterns are not reported by default."
+  interop:
+    - id: "interop-security"
+      domain: "security threat model, exploitability, confidence thresholds, and vulnerability reporting"
+      winner: "security-reviewer"
+      rationale: "This skill owns security findings and reporting discipline."
+    - id: "interop-domain-skills"
+      domain: "framework/runtime facts and remediation detail"
+      winner: "the relevant domain skill"
+      rationale: "Domain skills own framework behavior, while this skill decides whether the issue is exploitable and reportable."
+    - id: "interop-code-reviewer"
+      domain: "non-security review flow and general merge-risk findings"
+      winner: "code-reviewer"
+      rationale: "Move non-security findings to code-reviewer when both skills are active."
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - "Do not reference machine-specific absolute paths or local files outside this skill folder."
+      - "Keep all mandatory security-reviewer guidance inside this skill folder."
+      - "Use relative links for local references, assets, scripts, tests, and supporting docs."
+    checklist:
+      - "Run the skill-source-compiler check command after regeneration."
+      - "Search the skill folder for absolute local paths before finishing."
+      - "Confirm every required reference listed by SKILL.md exists inside this skill folder."
