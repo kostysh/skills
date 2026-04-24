@@ -6,16 +6,16 @@
 
 | Issue | Status | Notes |
 | --- | --- | --- |
-| [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited | Условная policy/admission edge-case matrix для normative allow/deny, refusal, freshness, replay и activation requirements. |
+| [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented | Условная policy/admission edge-case matrix для normative allow/deny, refusal, freshness, replay и activation requirements. Log: [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md). |
 
 ## Implementation Plans
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
-| [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited |
+| [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited PASS; implemented |
 
 ## Implementation Logs
 
 | Log | Related issue | Status |
 | --- | --- | --- |
-| none | none | none |
+| [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | PASS |

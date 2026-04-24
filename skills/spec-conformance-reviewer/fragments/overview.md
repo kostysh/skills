@@ -31,17 +31,19 @@ If sources conflict, do not silently choose one. Record the conflict, cite both 
   - code behavior to requirement basis
 - Treat tests as evidence, not as proof by existence.
 - Do not turn this into a general code-quality review unless the spec makes that dimension normative.
+- Build the conditional policy/admission matrix only when normative sources trigger it; every row needs requirement basis.
 - If critical inputs are missing or contradictory, limit the verdict instead of pretending certainty.
 
 ## Fast Workflow
 
 1. Fix the scope and normative sources. Use `references/methodology.md`.
 2. Extract atomic requirements with IDs, source, type, priority, and expected behavior.
-3. Map implementation surfaces across handlers, orchestration, domain logic, persistence, config, flags, serializers, and tests.
-4. Build a traceability matrix from requirements to code and tests.
-5. Classify findings, verification gaps, and unspecified behavior.
-6. Issue one final verdict using `references/reporting.md`.
-7. If the user wants a formal artifact, use the report template in `references/reporting.md`.
+3. If policy/admission triggers are present, build the bounded matrix from `references/policy-admission-matrix.md`.
+4. Map implementation surfaces across handlers, orchestration, domain logic, persistence, config, flags, serializers, and tests.
+5. Build a traceability matrix from requirements to code and tests.
+6. Classify findings, verification gaps, and unspecified behavior.
+7. Issue one final verdict using `references/reporting.md`.
+8. If the user wants a formal artifact, use the report template in `references/reporting.md`.
 
 ## What to Check
 
@@ -61,6 +63,7 @@ If sources conflict, do not silently choose one. Record the conflict, cite both 
 - defaults, fallback behavior, and silent coercion
 - tests that actually prove the required behavior
 - runtime-dependent areas that cannot be proven from the current evidence
+- admission allow, deny, refusal, freshness, downstream, replay, activation, and persistence rows when normative
 
 ## Default Brevity Mode
 
@@ -92,3 +95,4 @@ Read only what you need:
 
 - `references/methodology.md` - source priority, scope rules, extraction workflow, traceability, evidence, and ambiguity handling
 - `references/reporting.md` - statuses, severities, verdicts, report template, and wording rules
+- `references/policy-admission-matrix.md` - optional bounded matrix for policy/admission reviews with normative triggers

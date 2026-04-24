@@ -22,6 +22,19 @@ Use findings and verdicts that can be traced back to specific requirements.
 | `minor` | partial coverage, local inconsistency, missing edge-case handling, or limited contract mismatch |
 | `note` | non-blocking ambiguity, evidence gap, or risk that does not prove non-compliance on its own |
 
+## Policy/Admission Reporting
+
+Use these rules only for reviews that have a normative policy/admission trigger.
+
+- Missing explicit DENY, refusal, or no-invocation behavior is `not_fulfilled` only when the spec requires explicit admission/refusal semantics.
+- Missing implementation evidence for a required matrix row is `cannot_determine` when the evidence surface is incomplete, and `not_fulfilled` when the reviewed implementation visibly omits or contradicts the requirement.
+- Missing matrix coverage from an under-specified source is `ambiguous_spec`, `cannot_determine`, or a verification gap, not a spec violation.
+- Unsupported or unhealthy downstream, replay/idempotency, activation conflict, and persistence-failure rows are in scope only when tied to a requirement basis or contract.
+- Security exploitability findings belong to `security-reviewer` unless the normative source itself defines the security behavior being checked.
+- General merge-risk findings belong to `code-reviewer` unless they are direct evidence of spec non-compliance.
+
+Policy/admission findings should cite both a requirement ID and a matrix row. If the row is derived, state the derivation and confidence explicitly.
+
 ## Final Verdicts
 
 | Verdict | Use for |
@@ -109,5 +122,6 @@ Use the full structure when the user asks for a formal report or when the review
 - findings cite requirement basis and evidence
 - ambiguity and missing evidence separated from violations
 - edge cases and error paths checked when normative
+- policy/admission rows have normative basis before they affect the verdict
 - tests evaluated as proof, not counted superficially
 - verdict derived from requirement coverage, not from general impression

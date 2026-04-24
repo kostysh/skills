@@ -63,6 +63,32 @@ If two sources conflict:
 - limit the affected requirement to `ambiguous_spec` or a blocked verdict
 - do not invent a tie-breaker
 
+## Conditional Policy/Admission Matrix
+
+Build a policy/admission matrix only when the normative sources mention at least one trigger:
+
+- policy decisions or admission gates
+- external consultant or downstream invocation
+- fail-closed behavior
+- activation decisions
+- refusal or deny semantics
+
+This matrix is a requirement-extraction aid, not a universal checklist. Each row must cite a requirement basis before it can support a non-compliance finding.
+
+For triggered reviews, consider this bounded row catalog:
+
+- explicit allow
+- explicit deny, refusal, or no-invocation path
+- missing admission evidence
+- ambiguous admission evidence
+- stale evidence or missing freshness timestamp when age limits are normative
+- unsupported or unhealthy downstream path when dependency capability or health is normative
+- duplicate or conflicting request id when idempotency, replay, or persistence semantics are normative
+- activation conflict when single-active-scope behavior is normative
+- persistence failure when fail-closed auditability is normative
+
+If a row seems relevant but the source does not state or imply an expected behavior, classify it as `ambiguous_spec`, `cannot_determine`, a verification gap, or out of scope. Do not convert a plausible edge case into an invented obligation.
+
 ## Canonical Process
 
 ### 1. Fix Scope
@@ -115,6 +141,8 @@ Make vague requirements testable. Break compound statements into atomic checks b
 - error path
 - contract rule
 
+For policy/admission triggers, normalize the applicable matrix rows into atomic requirements before reading implementation details. Keep unsupported rows visible only as ambiguity, verification gaps, or out-of-scope notes.
+
 ### 4. Map the Implementation
 
 Find where the behavior actually lives:
@@ -161,6 +189,8 @@ Review the categories that apply to the normative sources:
 - backward compatibility and mixed-version safety
 - rollout, migrations, defaults, and feature flags
 - non-functional requirements only when they are normative
+
+For policy/admission reviews, evaluate the conditional matrix rows that have requirement basis. Use `references/policy-admission-matrix.md` when the trigger is present and the row decisions affect the verdict.
 
 ### 7. Evaluate Tests as Evidence
 

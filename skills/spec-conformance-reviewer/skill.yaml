@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: |-
     Review code against normative requirements from specs, contracts, ADRs, tickets, and acceptance
@@ -24,7 +24,17 @@ references:
     target: references/reporting.md
     required: true
     trigger: Read this when you need statuses, severities, verdicts, report template, and wording rules.
-assets: []
+  - id: ref-references-policy-admission-matrix
+    title: Policy/admission matrix
+    source: references/policy-admission-matrix.md
+    target: references/policy-admission-matrix.md
+    required: false
+    trigger: Read this when normative sources mention policy decisions, admission gates, external consultant invocation, fail-closed behavior, activation decisions, or refusal semantics.
+assets:
+  - id: asset-consultant-admission-policy-fixture
+    source: assets/fixtures/consultant-admission-policy.md
+    target: assets/fixtures/consultant-admission-policy.md
+    description: Portable review fixture for consultant admission policy matrix behavior.
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
@@ -36,7 +46,8 @@ surfaces:
     requiredReferences:
       - ref-references-methodology
       - ref-references-reporting
-    optionalReferences: []
+    optionalReferences:
+      - ref-references-policy-admission-matrix
   supportingGlobs:
     - docs/*
 sections:
