@@ -7,9 +7,9 @@ description: Manages shadcn components and projects — adding, searching, fixin
   file. Also triggers for "shadcn init", "create an app with --preset", or
   "switch to --preset".
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 07b3ce21423e2afea24c3d0028deb4cebfa448d1a9e52a46dcc12fa8c9ba80ad
+  skillforge-source-hash: 37e2a7430965f19a8416d824d302eb531250b5fa8162ac6dfbfe9814a94ab569
 ---
 
 # shadcn
@@ -38,6 +38,8 @@ metadata:
 A framework for building ui, components and design systems. Components are added as source code to the user's project via the CLI.
 
 > **IMPORTANT:** Run all CLI commands using the project's package runner: `npx shadcn@latest`, `pnpm dlx shadcn@latest`, or `bunx --bun shadcn@latest` — based on the project's `packageManager`. Examples below use `npx shadcn@latest` but substitute the correct runner for the project.
+
+Before install, update, or init workflows, check the current official shadcn CLI docs or help output and use the latest CLI unless the operator explicitly requests another version.
 
 ## Current Project Context
 
@@ -170,7 +172,7 @@ The injected project context contains these key fields:
 
 - **`aliases`** → use the actual alias prefix for imports (e.g. `@/`, `~/`), never hardcode.
 - **`isRSC`** → when `true`, components using `useState`, `useEffect`, event handlers, or browser APIs need `"use client"` at the top of the file. Always reference this field when advising on the directive.
-- **`tailwindVersion`** → `"v4"` uses `@theme inline` blocks; `"v3"` uses `tailwind.config.js`.
+- **`tailwindVersion`** → `"v4"` uses `@theme inline` blocks; `"v3"` uses `tailwind.config.js` (see help/docs).
 - **`tailwindCssFile`** → the global CSS file where custom CSS variables are defined. Always edit this file, never create a new one.
 - **`style`** → component visual treatment (e.g. `nova`, `vega`).
 - **`base`** → primitive library (`radix` or `base`). Affects component APIs and available props.
