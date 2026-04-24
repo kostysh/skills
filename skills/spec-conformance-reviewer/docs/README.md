@@ -8,6 +8,12 @@
 | --- | --- | --- |
 | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited | Условная policy/admission edge-case matrix для normative allow/deny, refusal, freshness, replay и activation requirements. |
 
+## Implementation Plans
+
+| Plan | Related issue | Status |
+| --- | --- | --- |
+| [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited |
+
 ## Implementation Logs
 
 | Log | Related issue | Status |
