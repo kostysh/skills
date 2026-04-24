@@ -174,7 +174,7 @@ export function ThemeListener() {
 
 ### Failure mode
 
-React 19 View Transition animation snaps because the update is urgent.
+Current React view transition animation snaps because the update is urgent.
 
 ### Required pattern
 

@@ -2,11 +2,11 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-components-engineer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: |-
     Build and review bulletproof React components that remain correct across SSR, hydration, multiple instances, concurrent rendering, async/opaque children, portals/iframes, transitions, Activity visibility, server-client data boundaries, and future React runtime changes.
-    Use when designing or hardening reusable React components (React 18-19, including RSC-oriented code paths).
+    Use when designing or hardening reusable React components, including RSC-oriented code paths.
 fragments:
   overview: fragments/overview.md
 references:

@@ -29,7 +29,7 @@ Build React components that survive real-world rendering contexts, not just happ
 | Concurrent-proof  | Duplicate server work                            | Wrap request-scoped async loaders in `cache()`                            |
 | Composition-proof | `cloneElement` breaks with async/opaque children | Use Context to pass data down                                             |
 | Portal-proof      | Wrong `window` in iframe/portal/popout           | Resolve `ownerDocument.defaultView` from component DOM node               |
-| Transition-proof  | View transition snaps in React 19                | Wrap state update in `startTransition()`                                  |
+| Transition-proof  | Current React view transition animation snaps    | Wrap state update in `startTransition()`                                  |
 | Activity-proof    | Hidden UI still applies global effects           | Explicitly enable/disable global side effects with cleanup                |
 | Leak-proof        | Sensitive data leaks to client                   | Use `experimental_taintUniqueValue` / `experimental_taintObjectReference` |
 | Future-proof      | Semantics rely on cache hints                    | Use `useState`/`useRef` when correctness needs persistence                |

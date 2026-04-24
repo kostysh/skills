@@ -6,12 +6,12 @@ description: >-
   portals/iframes, transitions, Activity visibility, server-client data
   boundaries, and future React runtime changes.
 
-  Use when designing or hardening reusable React components (React 18-19,
-  including RSC-oriented code paths).
+  Use when designing or hardening reusable React components, including
+  RSC-oriented code paths.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a6992cdf96796d2a4aa9a88d97ca0bb7f4930b3904bd617b39d7d4c198ad0656
+  skillforge-source-hash: 665e896fa4b5d0bef9ac70e0d304b31811ab65a68e19106f203e24df9a8dd62c
 ---
 
 # react-components-engineer
@@ -69,7 +69,7 @@ Build React components that survive real-world rendering contexts, not just happ
 | Concurrent-proof  | Duplicate server work                            | Wrap request-scoped async loaders in `cache()`                            |
 | Composition-proof | `cloneElement` breaks with async/opaque children | Use Context to pass data down                                             |
 | Portal-proof      | Wrong `window` in iframe/portal/popout           | Resolve `ownerDocument.defaultView` from component DOM node               |
-| Transition-proof  | View transition snaps in React 19                | Wrap state update in `startTransition()`                                  |
+| Transition-proof  | Current React view transition animation snaps    | Wrap state update in `startTransition()`                                  |
 | Activity-proof    | Hidden UI still applies global effects           | Explicitly enable/disable global side effects with cleanup                |
 | Leak-proof        | Sensitive data leaks to client                   | Use `experimental_taintUniqueValue` / `experimental_taintObjectReference` |
 | Future-proof      | Semantics rely on cache hints                    | Use `useState`/`useRef` when correctness needs persistence                |
