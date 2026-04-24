@@ -2,7 +2,7 @@
 
 ## Baseline
 
-- Docusaurus 3.x currently requires Node.js 20+.
+- Before bootstrapping, check the current official Docusaurus docs for Node.js and runtime requirements.
 - Default bootstrap command:
 
 ```bash

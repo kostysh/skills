@@ -13,11 +13,11 @@ description: >-
 
   OpenAPI docs.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   author: skills-etc
   version: 1.0.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 0ef40321e68b485220251d9b3f39a4d7878f1633ee77fb7fa69eaa9f139beb3c
+  skillforge-source-hash: 063b20e103fd97a6a875cd38522667a014baa5c0fd65912c4c88b729ff32e55f
 ---
 
 # docusaurus-repo

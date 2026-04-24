@@ -27,7 +27,7 @@ themeConfig: {
 Practical notes:
 
 - Contextual search is the default good choice.
-- Use the official Docusaurus v3 crawler configuration instead of inventing your own baseline.
+- Use the official current Docusaurus crawler configuration instead of inventing your own baseline.
 - If results are empty, suspect crawler or faceting configuration before suspecting Docusaurus.
 - Style DocSearch through `custom.css` using Infima variables instead of hard-forking the UI first.
 
@@ -76,7 +76,7 @@ themeConfig: {
 - the index is small enough to download into the browser
 - you want static hosting with no external search service
 
-One strong Docusaurus v3 option is `@cmfcmf/docusaurus-search-local`.
+One strong current Docusaurus-compatible option is `@cmfcmf/docusaurus-search-local`.
 
 Typical config:
 
