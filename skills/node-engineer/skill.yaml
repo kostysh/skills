@@ -1,0 +1,101 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: node-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Node.js runtime engineering skill for modern server-side JavaScript and TypeScript.
+    Use when designing or debugging Node-specific runtime concerns: built-in TypeScript
+    execution and type stripping, ESM/CJS and module resolution, streams and backpressure,
+    graceful shutdown, structured logging, profiling, dependency inspection, and process
+    hangs caused by open handles or leaked resources.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-debugging-profiling
+    title: Debugging Profiling
+    source: references/debugging-profiling.md
+    target: references/debugging-profiling.md
+    required: true
+    trigger: Read this when you need package inspection, module resolution, hang diagnosis, and performance workflow.
+  - id: ref-references-operations
+    title: Operations
+    source: references/operations.md
+    target: references/operations.md
+    required: true
+    trigger: Read this when you need graceful shutdown, logging defaults, redaction, and resource cleanup.
+  - id: ref-references-runtime-typescript
+    title: Runtime Typescript
+    source: references/runtime-typescript.md
+    target: references/runtime-typescript.md
+    required: true
+    trigger: Read this when you need built-in TypeScript execution, type stripping, import extensions, and safe config boundaries.
+  - id: ref-references-streams-caching
+    title: Streams Caching
+    source: references/streams-caching.md
+    target: references/streams-caching.md
+    required: true
+    trigger: Read this when you need `pipeline()`, async generators, backpressure, and cache selection.
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-debugging-profiling
+      - ref-references-operations
+      - ref-references-runtime-typescript
+      - ref-references-streams-caching
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches node-engineer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Running TypeScript directly in Node with built-in type stripping or `--experimental-transform-types`
+    - Resolving Node ESM/CJS issues, import extensions, or module resolution behavior
+    - Building or debugging stream pipelines, large-file processing, ETL, or backpressure
+    - Implementing graceful shutdown, signal handling, readiness/liveness behavior, or resource cleanup
+    - Standardizing structured logging, redaction, or debug namespaces in Node services
+    - Profiling CPU, heap, or HTTP throughput in a Node service
+    - Inspecting installed dependencies, exports, resolution paths, or package-manager-specific layout
+    - Debugging Node process hangs, leaked handles, or runtime resources outside the broader test-policy workflow
+  whenNotToUse:
+    - Type-level API design, inference issues, or general TypeScript correctness work; use `typescript-engineer`
+    - Test policy, coverage cadence, runner selection, or CI gating; use `typescript-test-engineer`
+    - Framework-specific routing, middleware, or service architecture; use the framework skill
+    - Browser or bundler-only module behavior; use the relevant frontend skill
+  workflow:
+    - id: stage-apply-node-engineer
+      title: Apply node-engineer guidance
+      goal: Apply the preserved node-engineer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory node-engineer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
