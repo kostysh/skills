@@ -1,0 +1,141 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: docusaurus-repo
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Create and manage a documentation repository built on Docusaurus. Use for repository
+    bootstrap, pnpm tooling, AGENTS.md, GitHub workflows, docs-only or hybrid docs/blog
+    sites, config, sidebars, MDX authoring, theme and UI customization, search,
+    versioning, i18n, deployment, and common ecosystem plugins such as Mermaid or
+    OpenAPI docs.
+  metadata:
+    author: skills-etc
+    version: 1.0.0
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-bootstrap-and-structure
+    title: Bootstrap And Structure
+    source: references/bootstrap-and-structure.md
+    target: references/bootstrap-and-structure.md
+    required: true
+    trigger: Read this when you need Bootstrap, project shape, and monorepo setup.
+  - id: ref-references-config-presets-and-routing
+    title: Config Presets And Routing
+    source: references/config-presets-and-routing.md
+    target: references/config-presets-and-routing.md
+    required: true
+    trigger: Read this when you need Config, presets, plugins, routing, and multi-instance docs.
+  - id: ref-references-content-authoring
+    title: Content Authoring
+    source: references/content-authoring.md
+    target: references/content-authoring.md
+    required: true
+    trigger: Read this when you need Authoring docs, sidebars, MDX, Mermaid, and live code blocks.
+  - id: ref-references-customization-and-ux
+    title: Customization And Ux
+    source: references/customization-and-ux.md
+    target: references/customization-and-ux.md
+    required: true
+    trigger: Read this when you need UI, UX, theme config, CSS, pages, and swizzling.
+  - id: ref-references-deployment-versioning-i18n
+    title: Deployment Versioning I18n
+    source: references/deployment-versioning-i18n.md
+    target: references/deployment-versioning-i18n.md
+    required: true
+    trigger: Read this when you need Deployment, versioning, and i18n.
+  - id: ref-references-doc-quality-tooling-and-agents
+    title: Doc Quality Tooling And Agents
+    source: references/doc-quality-tooling-and-agents.md
+    target: references/doc-quality-tooling-and-agents.md
+    required: true
+    trigger: Read this when you need Mandatory Prettier, markdownlint-cli2, AGENTS, and GitHub workflow bootstrap.
+  - id: ref-references-search-and-ecosystem
+    title: Search And Ecosystem
+    source: references/search-and-ecosystem.md
+    target: references/search-and-ecosystem.md
+    required: true
+    trigger: Read this when you need Search, local search, Typesense, Ask AI, and API docs plugins.
+assets:
+  - id: asset-assets-project-files-github-workflows-docs-quality
+    source: assets/project-files/.github/workflows/docs-quality.yml
+    target: assets/project-files/.github/workflows/docs-quality.yml
+    description: "Bundled asset: assets/project-files/.github/workflows/docs-quality.yml."
+  - id: asset-assets-project-files-markdownlint-cli2
+    source: assets/project-files/.markdownlint-cli2.jsonc
+    target: assets/project-files/.markdownlint-cli2.jsonc
+    description: "Bundled asset: assets/project-files/.markdownlint-cli2.jsonc."
+  - id: asset-assets-project-files
+    source: assets/project-files/.prettierignore
+    target: assets/project-files/.prettierignore
+    description: "Bundled asset: assets/project-files/.prettierignore."
+  - id: asset-assets-project-files-prettierrc
+    source: assets/project-files/.prettierrc.json
+    target: assets/project-files/.prettierrc.json
+    description: "Bundled asset: assets/project-files/.prettierrc.json."
+  - id: asset-assets-project-files-agents
+    source: assets/project-files/AGENTS.md
+    target: assets/project-files/AGENTS.md
+    description: "Bundled asset: assets/project-files/AGENTS.md."
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-bootstrap-and-structure
+      - ref-references-config-presets-and-routing
+      - ref-references-content-authoring
+      - ref-references-customization-and-ux
+      - ref-references-deployment-versioning-i18n
+      - ref-references-doc-quality-tooling-and-agents
+      - ref-references-search-and-ecosystem
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches docusaurus-repo's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - New Docusaurus documentation repository or migration of an existing docs repo to Docusaurus
+    - Docs-only, docs + blog/changelog, or docs + landing page
+    - Versioned docs, multi-instance docs, i18n, search, API reference docs
+    - Repository bootstrap, pnpm scripts, doc-quality tooling, AGENTS.md, GitHub workflows
+    - Custom theme work, navbar/footer/search UX, MDX components, swizzling
+  whenNotToUse:
+    - General-purpose marketing site with little documentation
+    - Pure content rewriting without site architecture work
+    - Non-Docusaurus stacks like VitePress, Starlight, MkDocs, Astro, or a Next.js app
+  workflow:
+    - id: stage-apply-docusaurus-repo
+      title: Apply docusaurus-repo guidance
+      goal: Apply the preserved docusaurus-repo guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory docusaurus-repo guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
