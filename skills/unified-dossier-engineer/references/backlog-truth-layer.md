@@ -64,6 +64,14 @@ Canonical actualization after dossier-side lifecycle work stays bounded:
 
 Truth-changing dossier stages do not close cleanly until backlog truth has been actualized.
 
+Selected-feature lifecycle targets:
+
+- `spec-compact` close requires the selected backlog item to be at least `specified`
+- `plan-slice` close requires the selected backlog item to be at least `planned`
+- `implementation` close requires the selected backlog item to be `implemented`
+
+These targets do not merge backlog lifecycle with dossier maturity. They only define the minimum backlog truth that must be observable before the corresponding dossier step can close truthfully.
+
 ## Clean confirmation
 
 Mutation success alone is not truthful closure.
@@ -88,3 +96,4 @@ This skill must preserve:
 - do not reconstruct current truth from packet or patch files after registration
 - do not let dossier-local prose mutate backlog truth directly
 - do not drop backlog read surfaces while preserving only mutation commands
+- do not treat a backlog actualization artifact as sufficient when current backlog state still fails the selected-feature lifecycle target

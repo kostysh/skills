@@ -86,7 +86,9 @@ Machine-complete stage schema fields:
 - `.dossier/stages/*` is authoritative for structured coordination/validation fields introduced for parity, linkage, skill annotations, structured process misses, and scope identity;
 - stage log YAML frontmatter mirrors these fields as a bounded human-readable view;
 - parity-protected fields include `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved`, `review_artifacts`, `verification_artifacts`, `step_artifact`, `final_delivery_commit`, `final_closure_commit`, `skills_used`, `skill_issues`, `skill_followups`, `process_misses`, `primary_feature_id`, `primary_backlog_item_key`, and `phase_scope`;
+- selected-feature lifecycle reconciliation fields are also parity-protected: `backlog_lifecycle_target`, `backlog_lifecycle_current`, `backlog_lifecycle_reconciled`, `backlog_actualization_artifacts`, and `backlog_actualization_verdict`;
 - review/verification/close-out artifact linkage is explicit in machine fields and must not require heuristic recovery from prose;
+- backlog actualization artifacts are trace links to accepted backlog mutations, while current backlog state remains the source of truth for lifecycle reconciliation;
 - commit anchors are optional trace links only and must not become required closure evidence;
 - skill annotations are explicit agent-supplied state and must not be scraped from conversation traces;
 - `process_misses` is structured state with `id`, `category`, `severity`, `resolved`, and `summary`; prose rendering is not the source of truth.
@@ -189,6 +191,8 @@ Required rules:
 
 - blocked, open, and closed remain truthful durable states
 - implementation closure truth requires authoritative step-close evidence
+- `dossier-step-close` must fail closed before writing a step artifact when `spec-compact`, `plan-slice`, or `implementation` lifecycle reconciliation is not satisfied by current backlog truth
+- successful helper-owned closure must update helper-managed stage state and mirrored frontmatter with `step_close_ts`, `step_artifact`, `process_complete_ts`, and lifecycle reconciliation fields
 - `lifecycle-refresh` remains the shipped lifecycle aggregation helper for lifecycle snapshots and session-index refresh
 - lifecycle timestamps must never materialize from chat-only or commit-only signals
 - required mutating-stage external review must remain mechanically visible in durable artifacts rather than inferred from prose
@@ -210,6 +214,7 @@ The telemetry layer must make these signals computable from deterministic artifa
 - closure latency
 - verification friction
 - backlog actualization friction
+- lifecycle reconciliation drift count
 - operator intervention counts
 - telemetry completeness
 

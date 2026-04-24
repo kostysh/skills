@@ -1966,7 +1966,7 @@ var intHex$1 = {
 };
 //#endregion
 //#region ../../node_modules/.pnpm/yaml@2.8.3/node_modules/yaml/browser/dist/schema/core/schema.js
-var schema$2 = [
+var schema$3 = [
 	map,
 	seq,
 	string$2,
@@ -2027,7 +2027,7 @@ var jsonScalars = [
 		stringify: stringifyJSON
 	}
 ];
-var schema$1 = [map, seq].concat(jsonScalars, {
+var schema$2 = [map, seq].concat(jsonScalars, {
 	default: true,
 	tag: "",
 	test: /^/,
@@ -2450,7 +2450,7 @@ var timestamp = {
 };
 //#endregion
 //#region ../../node_modules/.pnpm/yaml@2.8.3/node_modules/yaml/browser/dist/schema/yaml-1.1/schema.js
-var schema = [
+var schema$1 = [
 	map,
 	seq,
 	string$2,
@@ -2476,15 +2476,15 @@ var schema = [
 //#endregion
 //#region ../../node_modules/.pnpm/yaml@2.8.3/node_modules/yaml/browser/dist/schema/tags.js
 var schemas = new Map([
-	["core", schema$2],
+	["core", schema$3],
 	["failsafe", [
 		map,
 		seq,
 		string$2
 	]],
-	["json", schema$1],
-	["yaml11", schema],
-	["yaml-1.1", schema]
+	["json", schema$2],
+	["yaml11", schema$1],
+	["yaml-1.1", schema$1]
 ]);
 var tagsByName = {
 	binary,
@@ -6821,7 +6821,14 @@ var PROCESS_MISS_SEVERITIES = [
 	"medium",
 	"high"
 ];
-function toNullableString$3(value) {
+var BACKLOG_ACTUALIZATION_VERDICTS = [
+	"actualization_required",
+	"actualized_by_backlog_artifact",
+	"blocked_backlog_item_missing",
+	"current_state_satisfies_target",
+	"no_lifecycle_target"
+];
+function toNullableString$4(value) {
 	return typeof value === "string" && value.trim().length > 0 ? value : null;
 }
 function toStringArray$3(value) {
@@ -6833,6 +6840,9 @@ function toBoolean$1(value, fallback = false) {
 function normalizeImplementationReviewScope$2(value) {
 	return IMPLEMENTATION_REVIEW_SCOPES$2.includes(value) ? value : null;
 }
+function normalizeBacklogActualizationVerdict(value) {
+	return BACKLOG_ACTUALIZATION_VERDICTS.includes(value) ? value : "no_lifecycle_target";
+}
 function toTransitionEvents(value) {
 	return Array.isArray(value) ? value.filter((item) => item !== null && typeof item === "object") : [];
 }
@@ -6840,21 +6850,21 @@ function toReviewEvents(value) {
 	if (!Array.isArray(value)) return [];
 	return value.filter((item) => item !== null && typeof item === "object").map((item) => ({
 		allowed_by_policy: typeof item.allowed_by_policy === "boolean" ? item.allowed_by_policy : null,
-		artifact_path: toNullableString$3(item.artifact_path),
-		audit_class: toNullableString$3(item.audit_class),
-		event_commit: toNullableString$3(item.event_commit),
+		artifact_path: toNullableString$4(item.artifact_path),
+		audit_class: toNullableString$4(item.audit_class),
+		event_commit: toNullableString$4(item.event_commit),
 		implementation_scope: normalizeImplementationReviewScope$2(item.implementation_scope),
 		invalidated: toBoolean$1(item.invalidated),
 		must_fix_count: typeof item.must_fix_count === "number" && Number.isFinite(item.must_fix_count) ? item.must_fix_count : null,
-		recorded_at: toNullableString$3(item.recorded_at),
-		review_mode: toNullableString$3(item.review_mode),
-		reviewer: toNullableString$3(item.reviewer),
-		reviewer_agent_id: toNullableString$3(item.reviewer_agent_id),
-		reviewer_skill: toNullableString$3(item.reviewer_skill),
-		reviewer_thread_id: toNullableString$3(item.reviewer_thread_id),
-		security_trigger_reason: toNullableString$3(item.security_trigger_reason),
+		recorded_at: toNullableString$4(item.recorded_at),
+		review_mode: toNullableString$4(item.review_mode),
+		reviewer: toNullableString$4(item.reviewer),
+		reviewer_agent_id: toNullableString$4(item.reviewer_agent_id),
+		reviewer_skill: toNullableString$4(item.reviewer_skill),
+		reviewer_thread_id: toNullableString$4(item.reviewer_thread_id),
+		security_trigger_reason: toNullableString$4(item.security_trigger_reason),
 		stale: toBoolean$1(item.stale),
-		verdict: toNullableString$3(item.verdict)
+		verdict: toNullableString$4(item.verdict)
 	}));
 }
 function normalizeProcessMissSeverity(value) {
@@ -6863,11 +6873,11 @@ function normalizeProcessMissSeverity(value) {
 function toProcessMisses(value) {
 	if (!Array.isArray(value)) return [];
 	const misses = value.filter((item) => item !== null && typeof item === "object").map((item) => ({
-		id: toNullableString$3(item.id),
-		category: toNullableString$3(item.category),
+		id: toNullableString$4(item.id),
+		category: toNullableString$4(item.category),
 		severity: normalizeProcessMissSeverity(item.severity),
 		resolved: toBoolean$1(item.resolved),
-		summary: toNullableString$3(item.summary)
+		summary: toNullableString$4(item.summary)
 	})).filter((item) => item.id !== null && item.category !== null && item.summary !== null);
 	return [...new Map(misses.map((miss) => [miss.id, miss])).values()];
 }
@@ -6882,25 +6892,30 @@ function buildStageStateRecord(payload) {
 	const stage = normalizeStage(payload.metadata.stage);
 	const featureId = sanitizeFeatureId(payload.featureId, "feature id");
 	if (!stage) return null;
-	const backlogItemKey = toNullableString$3(payload.metadata.backlog_item_key);
+	const backlogItemKey = toNullableString$4(payload.metadata.backlog_item_key);
 	return {
 		version: 1,
 		stage,
 		feature_id: featureId,
-		feature_cycle_id: toNullableString$3(payload.metadata.feature_cycle_id) ?? "",
-		cycle_id: toNullableString$3(payload.metadata.cycle_id) ?? "",
+		feature_cycle_id: toNullableString$4(payload.metadata.feature_cycle_id) ?? "",
+		cycle_id: toNullableString$4(payload.metadata.cycle_id) ?? "",
 		log_path: payload.logPath.split(path.sep).join("/"),
 		backlog_item_key: backlogItemKey,
-		primary_feature_id: toNullableString$3(payload.metadata.primary_feature_id) ?? featureId,
-		primary_backlog_item_key: toNullableString$3(payload.metadata.primary_backlog_item_key) ?? backlogItemKey,
-		phase_scope: toNullableString$3(payload.metadata.phase_scope) ?? stage,
+		primary_feature_id: toNullableString$4(payload.metadata.primary_feature_id) ?? featureId,
+		primary_backlog_item_key: toNullableString$4(payload.metadata.primary_backlog_item_key) ?? backlogItemKey,
+		phase_scope: toNullableString$4(payload.metadata.phase_scope) ?? stage,
+		backlog_lifecycle_target: toNullableString$4(payload.metadata.backlog_lifecycle_target),
+		backlog_lifecycle_current: toNullableString$4(payload.metadata.backlog_lifecycle_current),
+		backlog_lifecycle_reconciled: toBoolean$1(payload.metadata.backlog_lifecycle_reconciled, true),
+		backlog_actualization_artifacts: toStringArray$3(payload.metadata.backlog_actualization_artifacts),
+		backlog_actualization_verdict: normalizeBacklogActualizationVerdict(payload.metadata.backlog_actualization_verdict),
 		backlog_followup_required: toBoolean$1(payload.metadata.backlog_followup_required),
-		backlog_followup_kind: toNullableString$3(payload.metadata.backlog_followup_kind),
+		backlog_followup_kind: toNullableString$4(payload.metadata.backlog_followup_kind),
 		backlog_followup_resolved: toBoolean$1(payload.metadata.backlog_followup_resolved),
 		stage_state: payload.metadata.stage_state === "blocked" || payload.metadata.stage_state === "in_progress" || payload.metadata.stage_state === "ready_for_close" ? payload.metadata.stage_state : "in_progress",
-		start_ts: toNullableString$3(payload.metadata.start_ts),
-		entered_ts: toNullableString$3(payload.metadata.entered_ts),
-		ready_for_close_ts: toNullableString$3(payload.metadata.ready_for_close_ts),
+		start_ts: toNullableString$4(payload.metadata.start_ts),
+		entered_ts: toNullableString$4(payload.metadata.entered_ts),
+		ready_for_close_ts: toNullableString$4(payload.metadata.ready_for_close_ts),
 		transition_events: toTransitionEvents(payload.metadata.transition_events),
 		required_audit_classes: toStringArray$3(payload.metadata.required_audit_classes),
 		executed_audit_classes: toStringArray$3(payload.metadata.executed_audit_classes),
@@ -6918,22 +6933,22 @@ function buildStageStateRecord(payload) {
 		skill_issues: toStringArray$3(payload.metadata.skill_issues),
 		skill_followups: toStringArray$3(payload.metadata.skill_followups),
 		process_misses: toProcessMisses(payload.metadata.process_misses),
-		session_id: toNullableString$3(payload.metadata.session_id),
-		trace_runtime: toNullableString$3(payload.metadata.trace_runtime),
-		trace_locator_kind: toNullableString$3(payload.metadata.trace_locator_kind),
-		stage_entry_commit: toNullableString$3(payload.metadata.stage_entry_commit),
-		final_delivery_commit: toNullableString$3(payload.metadata.final_delivery_commit),
-		final_closure_commit: toNullableString$3(payload.metadata.final_closure_commit),
+		session_id: toNullableString$4(payload.metadata.session_id),
+		trace_runtime: toNullableString$4(payload.metadata.trace_runtime),
+		trace_locator_kind: toNullableString$4(payload.metadata.trace_locator_kind),
+		stage_entry_commit: toNullableString$4(payload.metadata.stage_entry_commit),
+		final_delivery_commit: toNullableString$4(payload.metadata.final_delivery_commit),
+		final_closure_commit: toNullableString$4(payload.metadata.final_closure_commit),
 		implementation_review_scope: normalizeImplementationReviewScope$2(payload.metadata.implementation_review_scope),
 		required_security_review: typeof payload.metadata.required_security_review === "boolean" ? payload.metadata.required_security_review : null,
 		security_trigger_reasons: toStringArray$3(payload.metadata.security_trigger_reasons),
-		step_close_ts: toNullableString$3(payload.metadata.step_close_ts),
-		step_artifact: toNullableString$3(payload.metadata.step_artifact),
-		process_complete_ts: toNullableString$3(payload.metadata.process_complete_ts),
-		intake_process_complete_ts: toNullableString$3(payload.metadata.intake_process_complete_ts),
-		local_gates_green_ts: toNullableString$3(payload.metadata.local_gates_green_ts),
-		first_review_agent_started_ts: toNullableString$3(payload.metadata.first_review_agent_started_ts),
-		final_pass_ts: toNullableString$3(payload.metadata.final_pass_ts)
+		step_close_ts: toNullableString$4(payload.metadata.step_close_ts),
+		step_artifact: toNullableString$4(payload.metadata.step_artifact),
+		process_complete_ts: toNullableString$4(payload.metadata.process_complete_ts),
+		intake_process_complete_ts: toNullableString$4(payload.metadata.intake_process_complete_ts),
+		local_gates_green_ts: toNullableString$4(payload.metadata.local_gates_green_ts),
+		first_review_agent_started_ts: toNullableString$4(payload.metadata.first_review_agent_started_ts),
+		final_pass_ts: toNullableString$4(payload.metadata.final_pass_ts)
 	};
 }
 function stageStateMirrorFields(state) {
@@ -6952,7 +6967,12 @@ function stageStateMirrorFields(state) {
 		process_misses: state.process_misses,
 		primary_feature_id: state.primary_feature_id,
 		primary_backlog_item_key: state.primary_backlog_item_key,
-		phase_scope: state.phase_scope
+		phase_scope: state.phase_scope,
+		backlog_lifecycle_target: state.backlog_lifecycle_target,
+		backlog_lifecycle_current: state.backlog_lifecycle_current,
+		backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
+		backlog_actualization_artifacts: state.backlog_actualization_artifacts,
+		backlog_actualization_verdict: state.backlog_actualization_verdict
 	};
 }
 function normalizeMetadataForStageState(payload) {
@@ -6971,25 +6991,30 @@ async function readStageState(root, stage, featureId) {
 	if (!await fileExists(absPath)) return null;
 	await assertManagedReadPath(root, path.join(root, ".dossier", "stages", sanitizeFeatureId(featureId, "feature id")), absPath, `${stage} stage state`);
 	const parsed = JSON.parse(await readText(absPath));
-	if (normalizeStage(parsed.stage) !== stage || sanitizeFeatureId(toNullableString$3(parsed.feature_id) ?? featureId, "feature id") !== sanitizeFeatureId(featureId, "feature id")) return null;
+	if (normalizeStage(parsed.stage) !== stage || sanitizeFeatureId(toNullableString$4(parsed.feature_id) ?? featureId, "feature id") !== sanitizeFeatureId(featureId, "feature id")) return null;
 	return {
 		version: 1,
 		stage,
 		feature_id: sanitizeFeatureId(featureId, "feature id"),
-		feature_cycle_id: toNullableString$3(parsed.feature_cycle_id) ?? "",
-		cycle_id: toNullableString$3(parsed.cycle_id) ?? "",
-		log_path: toNullableString$3(parsed.log_path) ?? "",
-		backlog_item_key: toNullableString$3(parsed.backlog_item_key),
-		primary_feature_id: toNullableString$3(parsed.primary_feature_id) ?? sanitizeFeatureId(featureId, "feature id"),
-		primary_backlog_item_key: toNullableString$3(parsed.primary_backlog_item_key) ?? toNullableString$3(parsed.backlog_item_key),
-		phase_scope: toNullableString$3(parsed.phase_scope) ?? stage,
+		feature_cycle_id: toNullableString$4(parsed.feature_cycle_id) ?? "",
+		cycle_id: toNullableString$4(parsed.cycle_id) ?? "",
+		log_path: toNullableString$4(parsed.log_path) ?? "",
+		backlog_item_key: toNullableString$4(parsed.backlog_item_key),
+		primary_feature_id: toNullableString$4(parsed.primary_feature_id) ?? sanitizeFeatureId(featureId, "feature id"),
+		primary_backlog_item_key: toNullableString$4(parsed.primary_backlog_item_key) ?? toNullableString$4(parsed.backlog_item_key),
+		phase_scope: toNullableString$4(parsed.phase_scope) ?? stage,
+		backlog_lifecycle_target: toNullableString$4(parsed.backlog_lifecycle_target),
+		backlog_lifecycle_current: toNullableString$4(parsed.backlog_lifecycle_current),
+		backlog_lifecycle_reconciled: toBoolean$1(parsed.backlog_lifecycle_reconciled, true),
+		backlog_actualization_artifacts: toStringArray$3(parsed.backlog_actualization_artifacts),
+		backlog_actualization_verdict: normalizeBacklogActualizationVerdict(parsed.backlog_actualization_verdict),
 		backlog_followup_required: toBoolean$1(parsed.backlog_followup_required),
-		backlog_followup_kind: toNullableString$3(parsed.backlog_followup_kind),
+		backlog_followup_kind: toNullableString$4(parsed.backlog_followup_kind),
 		backlog_followup_resolved: toBoolean$1(parsed.backlog_followup_resolved),
 		stage_state: parsed.stage_state === "blocked" || parsed.stage_state === "in_progress" || parsed.stage_state === "ready_for_close" ? parsed.stage_state : "in_progress",
-		start_ts: toNullableString$3(parsed.start_ts),
-		entered_ts: toNullableString$3(parsed.entered_ts),
-		ready_for_close_ts: toNullableString$3(parsed.ready_for_close_ts),
+		start_ts: toNullableString$4(parsed.start_ts),
+		entered_ts: toNullableString$4(parsed.entered_ts),
+		ready_for_close_ts: toNullableString$4(parsed.ready_for_close_ts),
 		transition_events: toTransitionEvents(parsed.transition_events),
 		required_audit_classes: toStringArray$3(parsed.required_audit_classes),
 		executed_audit_classes: toStringArray$3(parsed.executed_audit_classes),
@@ -7007,22 +7032,22 @@ async function readStageState(root, stage, featureId) {
 		skill_issues: toStringArray$3(parsed.skill_issues),
 		skill_followups: toStringArray$3(parsed.skill_followups),
 		process_misses: toProcessMisses(parsed.process_misses),
-		session_id: toNullableString$3(parsed.session_id),
-		trace_runtime: toNullableString$3(parsed.trace_runtime),
-		trace_locator_kind: toNullableString$3(parsed.trace_locator_kind),
-		stage_entry_commit: toNullableString$3(parsed.stage_entry_commit),
-		final_delivery_commit: toNullableString$3(parsed.final_delivery_commit),
-		final_closure_commit: toNullableString$3(parsed.final_closure_commit),
+		session_id: toNullableString$4(parsed.session_id),
+		trace_runtime: toNullableString$4(parsed.trace_runtime),
+		trace_locator_kind: toNullableString$4(parsed.trace_locator_kind),
+		stage_entry_commit: toNullableString$4(parsed.stage_entry_commit),
+		final_delivery_commit: toNullableString$4(parsed.final_delivery_commit),
+		final_closure_commit: toNullableString$4(parsed.final_closure_commit),
 		implementation_review_scope: normalizeImplementationReviewScope$2(parsed.implementation_review_scope),
 		required_security_review: typeof parsed.required_security_review === "boolean" ? parsed.required_security_review : null,
 		security_trigger_reasons: toStringArray$3(parsed.security_trigger_reasons),
-		step_close_ts: toNullableString$3(parsed.step_close_ts),
-		step_artifact: toNullableString$3(parsed.step_artifact),
-		process_complete_ts: toNullableString$3(parsed.process_complete_ts),
-		intake_process_complete_ts: toNullableString$3(parsed.intake_process_complete_ts),
-		local_gates_green_ts: toNullableString$3(parsed.local_gates_green_ts),
-		first_review_agent_started_ts: toNullableString$3(parsed.first_review_agent_started_ts),
-		final_pass_ts: toNullableString$3(parsed.final_pass_ts)
+		step_close_ts: toNullableString$4(parsed.step_close_ts),
+		step_artifact: toNullableString$4(parsed.step_artifact),
+		process_complete_ts: toNullableString$4(parsed.process_complete_ts),
+		intake_process_complete_ts: toNullableString$4(parsed.intake_process_complete_ts),
+		local_gates_green_ts: toNullableString$4(parsed.local_gates_green_ts),
+		first_review_agent_started_ts: toNullableString$4(parsed.first_review_agent_started_ts),
+		final_pass_ts: toNullableString$4(parsed.final_pass_ts)
 	};
 }
 async function syncStageStateFromMetadata(payload) {
@@ -7054,7 +7079,7 @@ var AUDIT_CLASSES$2 = [
 	"code-reviewer",
 	"security-reviewer"
 ];
-function toNullableString$2(value) {
+function toNullableString$3(value) {
 	return typeof value === "string" && value.trim() ? value : null;
 }
 function toEventRecords(value) {
@@ -7101,11 +7126,11 @@ function stableString(value) {
 async function readLifecycleLog(root, absPath) {
 	const metadata = parseFrontmatter(await readText(absPath));
 	if (!metadata) return null;
-	const featureId = toNullableString$2(metadata.feature_id);
-	const featureCycleId = toNullableString$2(metadata.feature_cycle_id);
-	const stage = toNullableString$2(metadata.command) === "feature-intake" ? "feature-intake" : toNullableString$2(metadata.stage);
+	const featureId = toNullableString$3(metadata.feature_id);
+	const featureCycleId = toNullableString$3(metadata.feature_cycle_id);
+	const stage = toNullableString$3(metadata.command) === "feature-intake" ? "feature-intake" : toNullableString$3(metadata.stage);
 	if (!featureId || !featureCycleId || !stage || !LIFECYCLE_STAGES.includes(stage)) return null;
-	const cycleId = toNullableString$2(metadata.cycle_id);
+	const cycleId = toNullableString$3(metadata.cycle_id);
 	const stageState = await readStageState(root, stage, featureId);
 	const useStageState = stageState && stageState.cycle_id === cycleId && stageState.log_path === path.relative(root, absPath).split(path.sep).join("/");
 	return {
@@ -7116,22 +7141,22 @@ async function readLifecycleLog(root, absPath) {
 		featureCycleId,
 		stage,
 		cycleId,
-		backlogItemKey: toNullableString$2(metadata.backlog_item_key),
-		sessionId: toNullableString$2(metadata.session_id),
-		traceRuntime: toNullableString$2(metadata.trace_runtime),
-		traceLocatorKind: toNullableString$2(metadata.trace_locator_kind),
-		startTs: toNullableString$2(metadata.start_ts),
-		intakeProcessCompleteTs: toNullableString$2(metadata.intake_process_complete_ts),
-		localGatesGreenTs: toNullableString$2(metadata.local_gates_green_ts),
-		processCompleteTs: useStageState ? stageState.process_complete_ts : toNullableString$2(metadata.process_complete_ts),
-		stepCloseTs: useStageState ? stageState.step_close_ts : toNullableString$2(metadata.step_close_ts),
-		stepArtifact: useStageState ? stageState.step_artifact : toNullableString$2(metadata.step_artifact),
-		firstReviewAgentStartedTs: toNullableString$2(metadata.first_review_agent_started_ts),
-		finalPassTs: toNullableString$2(metadata.final_pass_ts),
+		backlogItemKey: toNullableString$3(metadata.backlog_item_key),
+		sessionId: toNullableString$3(metadata.session_id),
+		traceRuntime: toNullableString$3(metadata.trace_runtime),
+		traceLocatorKind: toNullableString$3(metadata.trace_locator_kind),
+		startTs: toNullableString$3(metadata.start_ts),
+		intakeProcessCompleteTs: toNullableString$3(metadata.intake_process_complete_ts),
+		localGatesGreenTs: toNullableString$3(metadata.local_gates_green_ts),
+		processCompleteTs: useStageState ? stageState.process_complete_ts : toNullableString$3(metadata.process_complete_ts),
+		stepCloseTs: useStageState ? stageState.step_close_ts : toNullableString$3(metadata.step_close_ts),
+		stepArtifact: useStageState ? stageState.step_artifact : toNullableString$3(metadata.step_artifact),
+		firstReviewAgentStartedTs: toNullableString$3(metadata.first_review_agent_started_ts),
+		finalPassTs: toNullableString$3(metadata.final_pass_ts),
 		requiredAuditClasses: useStageState ? sortAuditClasses$2(stageState.required_audit_classes) : toMetadataStringArray(metadata.required_audit_classes),
 		executedAuditClasses: useStageState ? sortAuditClasses$2(stageState.executed_audit_classes) : toMetadataStringArray(metadata.executed_audit_classes),
 		requiredExternalReviewPending: useStageState ? stageState.required_external_review_pending : typeof metadata.required_external_review_pending === "boolean" ? metadata.required_external_review_pending : null,
-		implementationReviewScope: useStageState ? stageState.implementation_review_scope : toNullableString$2(metadata.implementation_review_scope),
+		implementationReviewScope: useStageState ? stageState.implementation_review_scope : toNullableString$3(metadata.implementation_review_scope),
 		requiredSecurityReview: useStageState ? stageState.required_security_review : typeof metadata.required_security_review === "boolean" ? metadata.required_security_review : null,
 		degradedReviewPresent: useStageState ? stageState.degraded_review_present : typeof metadata.degraded_review_present === "boolean" ? metadata.degraded_review_present : null,
 		invalidatedReviewPresent: useStageState ? stageState.invalidated_review_present : typeof metadata.invalidated_review_present === "boolean" ? metadata.invalidated_review_present : null,
@@ -7227,7 +7252,7 @@ function countOperatorInterventions(aggregate) {
 	return aggregate.operatorInterventions.length;
 }
 function countRerounds(aggregate) {
-	const reviewRounds = toStringArray$2(aggregate.reviewEvents.filter((event) => event.invalidated !== true && event.allowed_by_policy !== false).map((event) => toNullableString$2(event.event_commit))).length;
+	const reviewRounds = toStringArray$2(aggregate.reviewEvents.filter((event) => event.invalidated !== true && event.allowed_by_policy !== false).map((event) => toNullableString$3(event.event_commit))).length;
 	if (reviewRounds > 0) return Math.max(reviewRounds - 1, 0);
 	return 0;
 }
@@ -7919,7 +7944,7 @@ function requiredAuditClassesForStep(step, implementationScope) {
 function stringOrFallback(value, fallback = "") {
 	return typeof value === "string" ? value : fallback;
 }
-function toNullableString$1(value) {
+function toNullableString$2(value) {
 	return typeof value === "string" && value.trim() ? value : null;
 }
 function normalizeImplementationReviewScope$1(value) {
@@ -7943,7 +7968,7 @@ async function resolveImplementationReviewScope(root, featureId) {
 	const declaredScope = normalizeImplementationReviewScope$1(state?.implementation_review_scope);
 	if (!declaredScope) return null;
 	if (declaredScope === "code-bearing") return "code-bearing";
-	const entryCommit = toNullableString$1(state?.stage_entry_commit);
+	const entryCommit = toNullableString$2(state?.stage_entry_commit);
 	if (!inGitRepo(root) || !entryCommit || !getCurrentCommit(root)) return "code-bearing";
 	const changedFiles = getChangedFilesBetween(root, entryCommit, "HEAD").filter((filePath) => !isManagedDossierPath(filePath));
 	const dirtyPaths = getDirtyPaths(root).filter((filePath) => !isManagedDossierPath(filePath));
@@ -9046,6 +9071,7 @@ function dossierStepCloseHelp() {
 		"  --step <name>                Workflow step being closed.",
 		"  --verify-artifact <path>     Verification artifact path.",
 		"  --review-artifact <path>     Review artifact path. Repeat for multi-audit bundles.",
+		"  --backlog-actualization-artifact <path>  Applied backlog patch artifact proving selected-item lifecycle actualization. Repeatable.",
 		`  --implementation-scope <scope> Optional cross-check only. Implementation scope is read from the current implementation stage state and must match if provided.`,
 		"  --next-step <name>           Override computed next step.",
 		"  --output <path>              Step artifact output path.",
@@ -9107,7 +9133,7 @@ async function runDossierStepCloseCommand(argv, io) {
 	const eventCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
 	const currentThreadId = runtimeThreadId();
 	const recordedReviewEvents = stageState?.review_events ?? [];
-	const recordedReviewPaths = new Map(recordedReviewEvents.map((event, index) => [toNullableString$1(event.artifact_path), {
+	const recordedReviewPaths = new Map(recordedReviewEvents.map((event, index) => [toNullableString$2(event.artifact_path), {
 		...event,
 		order_index: index
 	}]).filter((entry) => entry[0] !== null));
@@ -9128,7 +9154,7 @@ async function runDossierStepCloseCommand(argv, io) {
 		let reviewIsValid = true;
 		const reviewArtifactPath = reviewArtifactPaths.find((artifactPath) => {
 			const recorded = recordedReviewPaths.get(artifactPath);
-			return recorded && toNullableString$1(recorded.audit_class) === auditClass;
+			return recorded && toNullableString$2(recorded.audit_class) === auditClass;
 		});
 		if (!reviewArtifactPath) {
 			blockers.push(`Review artifact for ${auditClass} was not recorded in the current helper-managed ${step} stage state via review-artifact.`);
@@ -9169,7 +9195,7 @@ async function runDossierStepCloseCommand(argv, io) {
 			blockers.push(`Review artifact for ${auditClass} is not allowed by policy.`);
 			reviewIsValid = false;
 		}
-		if (inGitRepo(absRoot) && !toNullableString$1(review.event_commit)) {
+		if (inGitRepo(absRoot) && !toNullableString$2(review.event_commit)) {
 			staleReviewPresent = true;
 			blockers.push(`Review artifact for ${auditClass} is missing event_commit in a git repo.`);
 			reviewIsValid = false;
@@ -9179,7 +9205,7 @@ async function runDossierStepCloseCommand(argv, io) {
 			blockers.push(`Review artifact for ${auditClass} is stale: event commit ${review.event_commit} does not match current HEAD ${eventCommit}.`);
 			reviewIsValid = false;
 		}
-		const reviewerThreadId = toNullableString$1(review.reviewer_thread_id);
+		const reviewerThreadId = toNullableString$2(review.reviewer_thread_id);
 		if (currentThreadId && reviewerThreadId && reviewerThreadId === currentThreadId) {
 			blockers.push(`Review artifact for ${auditClass} was produced by the current thread and is not an independent external audit.`);
 			reviewIsValid = false;
@@ -9189,7 +9215,7 @@ async function runDossierStepCloseCommand(argv, io) {
 				blockers.push(`Review artifact implementation_scope mismatch for ${auditClass}: expected ${implementationScope}, got ${String(review.implementation_scope)}.`);
 				reviewIsValid = false;
 			}
-			if (auditClass === "security-reviewer" && implementationScope === "code-bearing" && !toNullableString$1(review.security_trigger_reason)) {
+			if (auditClass === "security-reviewer" && implementationScope === "code-bearing" && !toNullableString$2(review.security_trigger_reason)) {
 				blockers.push("Security review artifact is missing security_trigger_reason.");
 				reviewIsValid = false;
 			}
@@ -18318,7 +18344,7 @@ function assertAppliedRegistrySemanticInvariants(value, dependencies) {
 		seenSequences.add(patch.sequence);
 	}
 }
-async function readAppliedRegistry(dependencies, root) {
+async function readAppliedRegistry$1(dependencies, root) {
 	const registry = await readJsonArtifact({
 		fs: dependencies.fs,
 		path: dependencies.path,
@@ -18537,7 +18563,7 @@ function createArtifactsModule(dependencies) {
 			return writeSourceRegistry(dependencies, root, value);
 		},
 		readAppliedRegistry(root) {
-			return readAppliedRegistry(dependencies, root);
+			return readAppliedRegistry$1(dependencies, root);
 		},
 		writeAppliedRegistry(root, value) {
 			return writeAppliedRegistry(dependencies, root, value);
@@ -22153,6 +22179,204 @@ function writeCliEnvelope(stream, payload) {
 	stream.write(`${JSON.stringify(createCliEnvelope(payload))}\n`);
 }
 //#endregion
+//#region src/shared/lifecycle-reconciliation.ts
+var DELIVERY_STATES = [
+	"defined",
+	"specified",
+	"planned",
+	"implemented"
+];
+var BacklogActualizationRequiredError = class extends Error {
+	reconciliation;
+	nextCommands;
+	constructor(reconciliation) {
+		const itemKey = reconciliation.itemKey ?? "<missing>";
+		super(`Backlog lifecycle actualization is required for ${itemKey}: current=${reconciliation.current ?? "missing"}, target=${reconciliation.target ?? "none"}.`);
+		this.name = "BacklogActualizationRequiredError";
+		this.reconciliation = reconciliation;
+		this.nextCommands = [
+			"dossier-engineer patch-item --patch <path>",
+			`dossier-engineer items --item-keys ${itemKey}`,
+			"dossier-engineer status"
+		];
+	}
+};
+var schema = createSchemaModule();
+function normalizeDeliveryState(value) {
+	return DELIVERY_STATES.includes(value) ? value : null;
+}
+function stateRank(value) {
+	return DELIVERY_STATES.indexOf(value);
+}
+function toNullableString$1(value) {
+	return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
+}
+function toRepoRelative(root, absPath) {
+	return path.relative(root, absPath).split(path.sep).join("/");
+}
+function canonicalBacklogPathMatches(payload) {
+	return payload.canonicalPath === payload.repoRelativePath || path.posix.join(".dossier/backlog", payload.canonicalPath) === payload.repoRelativePath;
+}
+async function readJsonFile(filePath) {
+	return JSON.parse(await promises.readFile(filePath, "utf8"));
+}
+function lifecycleTargetForStage(stage) {
+	if (stage === "spec-compact") return "specified";
+	if (stage === "plan-slice") return "planned";
+	if (stage === "implementation") return "implemented";
+	return null;
+}
+function deliveryStateSatisfies(current, target) {
+	if (!target) return true;
+	return current !== null && stateRank(current) >= stateRank(target);
+}
+async function readBacklogState(root) {
+	return schema.parseStateFile(await readJsonFile(path.join(root, ".dossier", "backlog", "state.json")));
+}
+async function readAppliedRegistry(root) {
+	return schema.parseAppliedRegistry(await readJsonFile(path.join(root, ".dossier", "backlog", "applied.json")));
+}
+function findBacklogItem(state, itemKey) {
+	if (!itemKey) return null;
+	return state.items.find((item) => item.item_key === itemKey) ?? null;
+}
+function selectedBacklogItemKeyFromDossier(dossier) {
+	return toNullableString$1(dossier.frontmatter.backlog_item_key);
+}
+function selectedBacklogItemKeyFromStageState(state) {
+	return state?.primary_backlog_item_key ?? state?.backlog_item_key ?? null;
+}
+async function resolveSelectedBacklogItemKey(payload) {
+	return selectedBacklogItemKeyFromStageState(await readStageState(payload.root, payload.stage, payload.featureId)) ?? (payload.dossier ? selectedBacklogItemKeyFromDossier(payload.dossier) : null);
+}
+async function validateBacklogActualizationArtifacts(payload) {
+	if (payload.artifactPaths.length === 0) return [];
+	if (!payload.itemKey) throw new Error("Backlog actualization artifact validation requires a selected backlog item.");
+	const applied = await readAppliedRegistry(payload.root);
+	const accepted = [];
+	for (const artifactPath of payload.artifactPaths) {
+		const absPath = await resolveManagedReadPath(payload.root, artifactPath, path.join(payload.root, ".dossier", "backlog", "patches"), "backlog actualization artifact");
+		const relPath = toRepoRelative(payload.root, absPath);
+		if (!schema.parsePatchFile(await readJsonFile(absPath)).metadata.target_item_keys.includes(payload.itemKey)) throw new Error(`Backlog actualization artifact ${relPath} does not target ${payload.itemKey}.`);
+		if (!applied.patches.find((entry) => entry.kind === "patch-item" && entry.target_item_keys.includes(payload.itemKey ?? "") && canonicalBacklogPathMatches({
+			canonicalPath: entry.canonical_path,
+			repoRelativePath: relPath
+		}))) throw new Error(`Backlog actualization artifact ${relPath} is not recorded as an applied patch-item for ${payload.itemKey}.`);
+		accepted.push(relPath);
+	}
+	return [...new Set(accepted)];
+}
+async function evaluateBacklogLifecycleReconciliation(payload) {
+	const target = lifecycleTargetForStage(payload.stage);
+	const actualizationArtifacts = await validateBacklogActualizationArtifacts({
+		root: payload.root,
+		itemKey: payload.itemKey,
+		artifactPaths: payload.actualizationArtifactPaths ?? []
+	});
+	if (!target) return {
+		actualizationArtifacts,
+		current: null,
+		itemKey: payload.itemKey,
+		reconciled: true,
+		target: null,
+		verdict: "no_lifecycle_target"
+	};
+	const item = findBacklogItem(await readBacklogState(payload.root), payload.itemKey);
+	const current = normalizeDeliveryState(item?.delivery_state);
+	if (!item || !current) return {
+		actualizationArtifacts,
+		current: null,
+		itemKey: payload.itemKey,
+		reconciled: false,
+		target,
+		verdict: "blocked_backlog_item_missing"
+	};
+	const reconciled = deliveryStateSatisfies(current, target);
+	return {
+		actualizationArtifacts,
+		current,
+		itemKey: payload.itemKey,
+		reconciled,
+		target,
+		verdict: reconciled ? actualizationArtifacts.length > 0 ? "actualized_by_backlog_artifact" : "current_state_satisfies_target" : "actualization_required"
+	};
+}
+function lifecycleReconciliationMetadata(reconciliation) {
+	return {
+		backlog_lifecycle_target: reconciliation.target,
+		backlog_lifecycle_current: reconciliation.current,
+		backlog_lifecycle_reconciled: reconciliation.reconciled,
+		backlog_actualization_artifacts: reconciliation.actualizationArtifacts,
+		backlog_actualization_verdict: reconciliation.verdict
+	};
+}
+function featureIdFromDossier(dossier) {
+	return toNullableString$1(dossier.frontmatter.id) ?? path.basename(dossier.absPath, ".md");
+}
+async function collectDoneFeatureBacklogDrifts(payload) {
+	const dossiers = await readAllDossiers(payload.root, featureDossiersDirPath(payload.root)).catch(() => []);
+	const drifts = [];
+	for (const dossier of dossiers) {
+		if (dossier.frontmatter.status !== "done") continue;
+		const featureId = featureIdFromDossier(dossier);
+		const itemKey = selectedBacklogItemKeyFromDossier(dossier);
+		if (!featureId || !itemKey) continue;
+		const current = normalizeDeliveryState(findBacklogItem(payload.state, itemKey)?.delivery_state);
+		if (deliveryStateSatisfies(current, "implemented")) continue;
+		drifts.push({
+			kind: "done_feature_backlog_state",
+			feature_id: featureId,
+			backlog_item_key: itemKey,
+			backlog_delivery_state: current,
+			expected_delivery_state: "implemented",
+			step_artifact: null,
+			message: `Feature ${featureId} is done while selected backlog item ${itemKey} is ${current ?? "missing"}, expected implemented.`
+		});
+	}
+	return drifts;
+}
+async function collectStepCloseLinkageDrifts(root) {
+	const stepsDir = path.join(root, ".dossier", "steps");
+	const featureDirs = await promises.readdir(stepsDir, { withFileTypes: true }).catch(() => []);
+	const drifts = [];
+	for (const featureDir of featureDirs) {
+		if (!featureDir.isDirectory()) continue;
+		const featureId = featureDir.name;
+		const artifactPath = path.join(stepsDir, featureId, "implementation.json");
+		const raw = await readJsonFile(artifactPath).catch(() => null);
+		if (!raw || raw.process_complete !== true) continue;
+		const state = await readStageState(root, "implementation", featureId);
+		if (state?.step_artifact && state.step_close_ts && state.process_complete_ts) continue;
+		drifts.push({
+			kind: "step_close_stage_state_missing_linkage",
+			feature_id: featureId,
+			backlog_item_key: state?.primary_backlog_item_key ?? state?.backlog_item_key ?? null,
+			backlog_delivery_state: null,
+			expected_delivery_state: "implemented",
+			step_artifact: toRepoRelative(root, artifactPath),
+			message: `Implementation step artifact for ${featureId} is process_complete but helper-managed stage state is missing close linkage.`
+		});
+	}
+	return drifts;
+}
+async function collectLifecycleReconciliationDrifts(payload) {
+	const state = payload.state ?? await readBacklogState(payload.root);
+	const drifts = [...await collectDoneFeatureBacklogDrifts({
+		root: payload.root,
+		state
+	}), ...await collectStepCloseLinkageDrifts(payload.root)];
+	const seen = /* @__PURE__ */ new Set();
+	return drifts.filter((drift) => {
+		const key = `${drift.kind}:${drift.feature_id}:${drift.backlog_item_key ?? ""}:${drift.step_artifact ?? ""}`;
+		if (seen.has(key)) return false;
+		seen.add(key);
+		return true;
+	});
+}
+function lifecycleDriftBlockedItemKeys(drifts) {
+	return new Set(drifts.filter((drift) => drift.kind === "done_feature_backlog_state").map((drift) => drift.backlog_item_key).filter((itemKey) => itemKey !== null));
+}
+//#endregion
 //#region src/backlog/commands.ts
 function writeJson(stream, payload) {
 	stream.write(`${JSON.stringify(payload)}\n`);
@@ -22320,11 +22544,11 @@ function overlayItemsWithSourceReviewBlock(items, openReviews) {
 		open_source_review_ids: reviewIdsByItemKey.get(card.item.item_key) ?? []
 	}));
 }
-function overlayQueueWithSourceReviewBlock(queue, openReviews) {
+function overlayQueueWithSourceReviewBlock(queue, openReviews, lifecycleBlockedItemKeys = /* @__PURE__ */ new Set()) {
 	const blockedItemKeys = collectBlockedItemKeys(openReviews);
 	return queue.map((chain) => ({
 		...chain,
-		items: chain.items.filter((itemKey) => !blockedItemKeys.has(itemKey))
+		items: chain.items.filter((itemKey) => !blockedItemKeys.has(itemKey) && !lifecycleBlockedItemKeys.has(itemKey))
 	})).filter((chain) => chain.items.length > 0);
 }
 function overlaySearchWithSourceReviewBlock(results, openReviews) {
@@ -22362,7 +22586,9 @@ function buildStatusOutput(payload) {
 		...payload.baseStatus,
 		ready_for_next_step_count: payload.adjustedReadyForNextStepCount,
 		open_source_review_count: payload.openReviews.length,
-		source_review_blocked_item_count: blockedItemCount
+		source_review_blocked_item_count: blockedItemCount,
+		lifecycle_reconciliation_drift_count: payload.lifecycleDrifts.length,
+		lifecycle_reconciliation_drifts: payload.lifecycleDrifts
 	};
 }
 function takeOption$2(args, name) {
@@ -22505,12 +22731,18 @@ async function runStatusCommand(args, io) {
 		const openReviews = await loadOpenSourceReviews(context.backlogRoot);
 		const { state } = await context.ensureQueryState();
 		const blockedItemKeys = collectBlockedItemKeys(openReviews);
-		const adjustedReadyForNextStepCount = state.items.filter((item) => item.ready_for_next_step && !blockedItemKeys.has(item.item_key)).length;
+		const lifecycleDrifts = await collectLifecycleReconciliationDrifts({
+			root: context.backlogRoot,
+			state
+		});
+		const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(lifecycleDrifts);
+		const adjustedReadyForNextStepCount = state.items.filter((item) => item.ready_for_next_step && !blockedItemKeys.has(item.item_key) && !lifecycleBlockedItemKeys.has(item.item_key)).length;
 		writeCliEnvelope(io.stdout, {
 			command: "status",
 			data: buildStatusOutput({
 				adjustedReadyForNextStepCount,
 				baseStatus: status,
+				lifecycleDrifts,
 				openReviews
 			})
 		});
@@ -22562,9 +22794,15 @@ async function runQueueCommand(args, io) {
 		const result = await runVendoredBacklogCommand(QUEUE_COMMAND, args);
 		if (!result.context.backlogRoot) throw new Error("Backlog root not found.");
 		const openReviews = await loadOpenSourceReviews(result.context.backlogRoot);
+		const { state } = await result.context.ensureQueryState();
+		const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(await collectLifecycleReconciliationDrifts({
+			root: result.context.backlogRoot,
+			state
+		}));
 		writeCliEnvelope(io.stdout, {
 			command: "queue",
-			data: overlayQueueWithSourceReviewBlock(result.output, openReviews)
+			data: overlayQueueWithSourceReviewBlock(result.output, openReviews, lifecycleBlockedItemKeys),
+			warnings: lifecycleBlockedItemKeys.size > 0 ? [`Lifecycle reconciliation drift blocked queue items: ${[...lifecycleBlockedItemKeys].join(", ")}`] : []
 		});
 		return 0;
 	} catch (error) {
@@ -23115,6 +23353,11 @@ function machineMetadataFromStageState(state) {
 		backlog_followup_required: state.backlog_followup_required,
 		backlog_followup_kind: state.backlog_followup_kind,
 		backlog_followup_resolved: state.backlog_followup_resolved,
+		backlog_lifecycle_target: state.backlog_lifecycle_target,
+		backlog_lifecycle_current: state.backlog_lifecycle_current,
+		backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
+		backlog_actualization_artifacts: state.backlog_actualization_artifacts,
+		backlog_actualization_verdict: state.backlog_actualization_verdict,
 		required_audit_classes: state.required_audit_classes,
 		executed_audit_classes: state.executed_audit_classes,
 		required_external_review_pending: state.required_external_review_pending,
@@ -23447,6 +23690,15 @@ async function runStageControllerCommand(command, args) {
 	}) : { dossier: await readDossierRecord(await findDossierPathByFeatureId(root, featureId), { root }) };
 	const backlogItemKey = parseBacklogItemKey(dossier);
 	if (!backlogItemKey) throw new Error(`Dossier ${featureId} is missing canonical frontmatter backlog_item_key.`);
+	const lifecycleReconciliation = await evaluateBacklogLifecycleReconciliation({
+		root,
+		stage: command,
+		itemKey: backlogItemKey
+	});
+	const lifecycleFollowupRequired = lifecycleReconciliation.target !== null && !lifecycleReconciliation.reconciled;
+	const effectiveBacklogFollowupRequired = backlogFollowupRequired || lifecycleFollowupRequired;
+	const effectiveBacklogFollowupKind = backlogFollowupKind ?? (lifecycleFollowupRequired ? "backlog-lifecycle-actualization" : null);
+	const effectiveBacklogFollowupResolved = lifecycleFollowupRequired ? false : backlogFollowupResolved;
 	const latestForStage = await loadLatestStageLog(root, command, featureId, requestedCycleId);
 	const latestFeatureIntake = command === "feature-intake" ? null : await loadLatestStageLog(root, "feature-intake", featureId);
 	const latestImplementation = command === "feature-intake" ? null : await loadLatestStageLog(root, "implementation", featureId);
@@ -23486,9 +23738,10 @@ async function runStageControllerCommand(command, args) {
 		entered_ts: enteredTs,
 		ready_for_close_ts: readyForCloseTs ?? null,
 		transition_events: existingEvents,
-		backlog_followup_required: backlogFollowupRequired,
-		backlog_followup_kind: backlogFollowupKind,
-		backlog_followup_resolved: backlogFollowupResolved,
+		backlog_followup_required: effectiveBacklogFollowupRequired,
+		backlog_followup_kind: effectiveBacklogFollowupKind,
+		backlog_followup_resolved: effectiveBacklogFollowupResolved,
+		...lifecycleReconciliationMetadata(lifecycleReconciliation),
 		review_artifacts: carryStageEvidence ? currentStageState?.review_artifacts ?? [] : [],
 		verification_artifacts: carryStageEvidence ? currentStageState?.verification_artifacts ?? [] : [],
 		required_audit_classes: requiredAuditClasses,
@@ -23555,9 +23808,9 @@ async function runStageControllerCommand(command, args) {
 		entered_ts: enteredTs,
 		ready_for_close_ts: readyForCloseTs ?? null,
 		transition_events: existingEvents,
-		backlog_followup_required: backlogFollowupRequired,
-		backlog_followup_kind: backlogFollowupKind,
-		backlog_followup_resolved: backlogFollowupResolved,
+		backlog_followup_required: effectiveBacklogFollowupRequired,
+		backlog_followup_kind: effectiveBacklogFollowupKind,
+		backlog_followup_resolved: effectiveBacklogFollowupResolved,
 		log_path: relPath.split(path.sep).join("/"),
 		next_commands: nextCommandsForState(command, stageState)
 	};
@@ -23574,6 +23827,7 @@ async function recordStepCloseOnStageLog(payload) {
 		...currentStageState ? machineMetadataFromStageState(currentStageState) : {},
 		step_close_ts: now,
 		step_artifact: payload.stepArtifactPath,
+		...payload.backlogLifecycleReconciliation ? lifecycleReconciliationMetadata(payload.backlogLifecycleReconciliation) : {},
 		review_artifacts: uniqueStrings([...currentStageState?.review_artifacts ?? [], ...payload.reviewArtifactPaths]),
 		verification_artifacts: uniqueStrings([...currentStageState?.verification_artifacts ?? [], payload.verificationArtifactPath]),
 		final_closure_commit: payload.finalClosureCommit,
@@ -23975,12 +24229,25 @@ function createDossierCommandWrapper(name, family) {
 				const step = takeOption(args, "--step");
 				if (!dossierPath || !step) return executeCommand(command, args, io, name);
 				const normalizedStep = ensureAllowedStep(step, "--step");
-				const { featureId } = await resolveManagedDossierIdentity({
+				const { dossier, featureId } = await resolveManagedDossierIdentity({
 					root,
 					dossierPath
 				});
 				const stageLog = await resolveStageLogContext(root, normalizedStep, featureId);
 				if (!stageLog) throw new Error(`No ${normalizedStep} stage log found for ${featureId}.`);
+				const backlogActualizationArtifactPaths = takeManyOptions(args, "--backlog-actualization-artifact");
+				const backlogLifecycleReconciliation = await evaluateBacklogLifecycleReconciliation({
+					root,
+					stage: normalizedStep,
+					itemKey: await resolveSelectedBacklogItemKey({
+						root,
+						featureId,
+						stage: normalizedStep,
+						dossier
+					}),
+					actualizationArtifactPaths: backlogActualizationArtifactPaths
+				});
+				if (backlogLifecycleReconciliation.target !== null && !backlogLifecycleReconciliation.reconciled) throw new BacklogActualizationRequiredError(backlogLifecycleReconciliation);
 				const verifyArtifactPath = takeOption(args, "--verify-artifact");
 				const reviewArtifactPaths = takeManyOptions(args, "--review-artifact");
 				const outputPath = takeOption(args, "--output");
@@ -24032,7 +24299,8 @@ function createDossierCommandWrapper(name, family) {
 									reviewerSkills: Array.isArray(artifact.reviewer_skills) ? artifact.reviewer_skills : [],
 									securityTriggerReasons: Array.isArray(artifact.security_trigger_reasons) ? artifact.security_trigger_reasons : [],
 									staleReviewPresent: artifact.stale_review_present === true
-								}
+								},
+								backlogLifecycleReconciliation
 							});
 							if (exitCode === 2) {
 								io.stderr.write(`${JSON.stringify({ error: {
@@ -24059,6 +24327,19 @@ function createDossierCommandWrapper(name, family) {
 					}
 				});
 			} catch (error) {
+				if (error instanceof BacklogActualizationRequiredError) {
+					io.stderr.write(`${JSON.stringify({ error: {
+						code: "UDE_BACKLOG_ACTUALIZATION_REQUIRED",
+						message: error.message,
+						selected_backlog_item_key: error.reconciliation.itemKey,
+						current_delivery_state: error.reconciliation.current,
+						target_delivery_state: error.reconciliation.target,
+						backlog_actualization_verdict: error.reconciliation.verdict,
+						backlog_actualization_artifacts: error.reconciliation.actualizationArtifacts,
+						next_commands: error.nextCommands
+					} })}\n`);
+					return 3;
+				}
 				io.stderr.write(`${JSON.stringify({ error: {
 					code: "UDE_DOSSIER_STEP_CLOSE_FAILED",
 					message: error instanceof Error ? error.message : String(error)

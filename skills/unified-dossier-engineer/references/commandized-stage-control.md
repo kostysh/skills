@@ -99,6 +99,11 @@ Parity-protected fields:
 - `backlog_followup_required`
 - `backlog_followup_kind`
 - `backlog_followup_resolved`
+- `backlog_lifecycle_target`
+- `backlog_lifecycle_current`
+- `backlog_lifecycle_reconciled`
+- `backlog_actualization_artifacts`
+- `backlog_actualization_verdict`
 - `review_artifacts`
 - `verification_artifacts`
 - `step_artifact`
@@ -114,6 +119,7 @@ Parity-protected fields:
 
 Rules:
 
+- selected-feature lifecycle reconciliation fields are explicit machine state and are not inferred from prose;
 - review, verification, and close-out artifact links must be stored as explicit repo-relative arrays or fields, not recovered heuristically from prose;
 - `final_delivery_commit` and `final_closure_commit` are optional trace links only and must not become required closure evidence;
 - `skills_used`, `skill_issues`, and `skill_followups` are agent-supplied annotations, not automatic skill extraction from conversation traces;
@@ -168,6 +174,14 @@ Ordinary truth-changing delivery stages may require:
 - `patch-item`
 - `refresh+patch`
 
+For selected-feature lifecycle progression, stage controllers must expose the target and current backlog state for:
+
+- `spec-compact -> specified`
+- `plan-slice -> planned`
+- `implementation -> implemented`
+
+If the selected backlog item is behind the target, the stage-controller write keeps or sets backlog follow-up unresolved. The actual mutation remains a backlog command.
+
 For the mature change path, the stronger explicit selector remains:
 
 - `backlog impact verdict`
@@ -188,6 +202,7 @@ Commandized stage control must not weaken the already-established closure contra
 Required alignment:
 
 - `dossier-step-close` remains the authoritative closure artifact writer;
+- `dossier-step-close` enforces selected backlog item lifecycle reconciliation before writing a step artifact for `spec-compact`, `plan-slice`, and `implementation`;
 - `lifecycle-refresh` remains the lifecycle aggregation helper when lifecycle snapshots or session indexes need refresh;
 - stage-controller commands must not duplicate helper-owned closure truth;
 - commandized transitions should improve telemetry determinism, not create a second closure authority surface.
@@ -214,6 +229,7 @@ The utility specification and runtime packages now ship this boundary in first-w
 - do not document flags or output fields for stage-controller commands that the shipped runtime does not actually expose
 - do not make runtime-specific session discovery the canonical stage-controller provenance contract
 - do not infer skill usage or process misses from traces or prose when explicit schema fields are required
+- do not infer backlog lifecycle reconciliation from traces, prose, commit messages, or `docs/ssot/index.md`
 - do not make optional commit anchors a required proof for truthful closure
 - do not let stage controllers absorb `dossier-step-close`, `lifecycle-refresh`, or `next-step`
 - do not make stage-controller commands semantic automation

@@ -20,8 +20,14 @@ import {
 } from './delivery/stage-control.ts';
 import { acquireDeliveryMutationLock } from './shared/delivery-lock.ts';
 import { resolveManagedDossierIdentity, sanitizeFeatureId } from './shared/feature-identity.ts';
+import {
+  BacklogActualizationRequiredError,
+  evaluateBacklogLifecycleReconciliation,
+  resolveSelectedBacklogItemKey,
+} from './shared/lifecycle-reconciliation.ts';
 import { resolveProcessRoot } from './shared/process-root.ts';
 import { assertManagedWritePath, resolveManagedReadPath } from './shared/path-guards.ts';
+import type { StageStateStage } from './shared/stage-state.ts';
 import { writeCliEnvelope } from './shared/cli-envelope.ts';
 import path from 'node:path';
 import { promises as fs } from 'node:fs';
@@ -245,9 +251,9 @@ function createDossierCommandWrapper(
       family: 'delivery-stage',
       commandType: 'stage',
       summary: command.description,
-      usage: baseHelpLines.filter((line) =>
-        line.trim().startsWith('dossier-engineer feature-intake'),
-      ).map((line) => line.replace(' [options]', ' --session-id <id> [options]')),
+      usage: baseHelpLines
+        .filter((line) => line.trim().startsWith('dossier-engineer feature-intake'))
+        .map((line) => line.replace(' [options]', ' --session-id <id> [options]')),
       helpLines: featureIntakeHelpLines,
       async execute(args, io) {
         try {
@@ -451,7 +457,7 @@ function createDossierCommandWrapper(
             return executeDossierCommand(command, args, io as DossierCliIo, name);
           }
           const normalizedStep = ensureAllowedStep(step, '--step');
-          const { featureId } = await resolveManagedDossierIdentity({
+          const { dossier, featureId } = await resolveManagedDossierIdentity({
             root,
             dossierPath,
           });
@@ -462,6 +468,28 @@ function createDossierCommandWrapper(
           );
           if (!stageLog) {
             throw new Error(`No ${normalizedStep} stage log found for ${featureId}.`);
+          }
+          const backlogActualizationArtifactPaths = takeManyOptions(
+            args,
+            '--backlog-actualization-artifact',
+          );
+          const selectedBacklogItemKey = await resolveSelectedBacklogItemKey({
+            root,
+            featureId,
+            stage: normalizedStep as StageStateStage,
+            dossier,
+          });
+          const backlogLifecycleReconciliation = await evaluateBacklogLifecycleReconciliation({
+            root,
+            stage: normalizedStep,
+            itemKey: selectedBacklogItemKey,
+            actualizationArtifactPaths: backlogActualizationArtifactPaths,
+          });
+          if (
+            backlogLifecycleReconciliation.target !== null &&
+            !backlogLifecycleReconciliation.reconciled
+          ) {
+            throw new BacklogActualizationRequiredError(backlogLifecycleReconciliation);
           }
           const verifyArtifactPath = takeOption(args, '--verify-artifact');
           const reviewArtifactPaths = takeManyOptions(args, '--review-artifact');
@@ -623,6 +651,7 @@ function createDossierCommandWrapper(
                         : [],
                       staleReviewPresent: artifact.stale_review_present === true,
                     },
+                    backlogLifecycleReconciliation,
                   });
                   if (exitCode === 2) {
                     io.stderr.write(
@@ -660,6 +689,23 @@ function createDossierCommandWrapper(
             },
           });
         } catch (error) {
+          if (error instanceof BacklogActualizationRequiredError) {
+            io.stderr.write(
+              `${JSON.stringify({
+                error: {
+                  code: 'UDE_BACKLOG_ACTUALIZATION_REQUIRED',
+                  message: error.message,
+                  selected_backlog_item_key: error.reconciliation.itemKey,
+                  current_delivery_state: error.reconciliation.current,
+                  target_delivery_state: error.reconciliation.target,
+                  backlog_actualization_verdict: error.reconciliation.verdict,
+                  backlog_actualization_artifacts: error.reconciliation.actualizationArtifacts,
+                  next_commands: error.nextCommands,
+                },
+              })}\n`,
+            );
+            return 3;
+          }
           io.stderr.write(
             `${JSON.stringify({
               error: {

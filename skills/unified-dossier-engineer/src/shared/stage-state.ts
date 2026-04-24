@@ -14,6 +14,13 @@ const STAGE_STATE_STAGES = [
 
 const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
 const PROCESS_MISS_SEVERITIES = ['low', 'medium', 'high'] as const;
+const BACKLOG_ACTUALIZATION_VERDICTS = [
+  'actualization_required',
+  'actualized_by_backlog_artifact',
+  'blocked_backlog_item_missing',
+  'current_state_satisfies_target',
+  'no_lifecycle_target',
+] as const;
 
 export type StageStateStage = (typeof STAGE_STATE_STAGES)[number];
 export type ProcessMissSeverity = (typeof PROCESS_MISS_SEVERITIES)[number];
@@ -46,10 +53,15 @@ export type StageStateReviewEvent = {
 };
 
 export interface StageStateRecord {
+  backlog_actualization_artifacts: string[];
+  backlog_actualization_verdict: (typeof BACKLOG_ACTUALIZATION_VERDICTS)[number];
   backlog_followup_kind: string | null;
   backlog_followup_required: boolean;
   backlog_followup_resolved: boolean;
   backlog_item_key: string | null;
+  backlog_lifecycle_current: string | null;
+  backlog_lifecycle_reconciled: boolean;
+  backlog_lifecycle_target: string | null;
   cycle_id: string;
   degraded_review_present: boolean;
   entered_ts: string | null;
@@ -126,6 +138,16 @@ function normalizeImplementationReviewScope(
     : null;
 }
 
+function normalizeBacklogActualizationVerdict(
+  value: unknown,
+): (typeof BACKLOG_ACTUALIZATION_VERDICTS)[number] {
+  return BACKLOG_ACTUALIZATION_VERDICTS.includes(
+    value as (typeof BACKLOG_ACTUALIZATION_VERDICTS)[number],
+  )
+    ? (value as (typeof BACKLOG_ACTUALIZATION_VERDICTS)[number])
+    : 'no_lifecycle_target';
+}
+
 function toTransitionEvents(value: unknown): Array<Record<string, unknown>> {
   return Array.isArray(value)
     ? value.filter(
@@ -192,10 +214,7 @@ function toProcessMisses(value: unknown): StageStateProcessMiss[] {
         resolved: boolean;
         severity: ProcessMissSeverity;
         summary: string;
-      } =>
-        item.id !== null &&
-        item.category !== null &&
-        item.summary !== null,
+      } => item.id !== null && item.category !== null && item.summary !== null,
     );
   return [...new Map(misses.map((miss) => [miss.id, miss])).values()];
 }
@@ -232,6 +251,15 @@ function buildStageStateRecord(payload: {
     primary_backlog_item_key:
       toNullableString(payload.metadata.primary_backlog_item_key) ?? backlogItemKey,
     phase_scope: toNullableString(payload.metadata.phase_scope) ?? stage,
+    backlog_lifecycle_target: toNullableString(payload.metadata.backlog_lifecycle_target),
+    backlog_lifecycle_current: toNullableString(payload.metadata.backlog_lifecycle_current),
+    backlog_lifecycle_reconciled: toBoolean(payload.metadata.backlog_lifecycle_reconciled, true),
+    backlog_actualization_artifacts: toStringArray(
+      payload.metadata.backlog_actualization_artifacts,
+    ),
+    backlog_actualization_verdict: normalizeBacklogActualizationVerdict(
+      payload.metadata.backlog_actualization_verdict,
+    ),
     backlog_followup_required: toBoolean(payload.metadata.backlog_followup_required),
     backlog_followup_kind: toNullableString(payload.metadata.backlog_followup_kind),
     backlog_followup_resolved: toBoolean(payload.metadata.backlog_followup_resolved),
@@ -283,9 +311,7 @@ function buildStageStateRecord(payload: {
     process_complete_ts: toNullableString(payload.metadata.process_complete_ts),
     intake_process_complete_ts: toNullableString(payload.metadata.intake_process_complete_ts),
     local_gates_green_ts: toNullableString(payload.metadata.local_gates_green_ts),
-    first_review_agent_started_ts: toNullableString(
-      payload.metadata.first_review_agent_started_ts,
-    ),
+    first_review_agent_started_ts: toNullableString(payload.metadata.first_review_agent_started_ts),
     final_pass_ts: toNullableString(payload.metadata.final_pass_ts),
   };
 }
@@ -307,6 +333,11 @@ export function stageStateMirrorFields(state: StageStateRecord): Record<string, 
     primary_feature_id: state.primary_feature_id,
     primary_backlog_item_key: state.primary_backlog_item_key,
     phase_scope: state.phase_scope,
+    backlog_lifecycle_target: state.backlog_lifecycle_target,
+    backlog_lifecycle_current: state.backlog_lifecycle_current,
+    backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
+    backlog_actualization_artifacts: state.backlog_actualization_artifacts,
+    backlog_actualization_verdict: state.backlog_actualization_verdict,
   };
 }
 
@@ -319,7 +350,10 @@ export function normalizeMetadataForStageState(payload: {
   return record ? { ...payload.metadata, ...stageStateMirrorFields(record) } : payload.metadata;
 }
 
-function assertStageSchemaParity(metadata: Record<string, unknown>, record: StageStateRecord): void {
+function assertStageSchemaParity(
+  metadata: Record<string, unknown>,
+  record: StageStateRecord,
+): void {
   const mirror = stageStateMirrorFields(record);
   for (const [field, expected] of Object.entries(mirror)) {
     if (JSON.stringify(metadata[field] ?? null) !== JSON.stringify(expected ?? null)) {
@@ -359,11 +393,19 @@ export async function readStageState(
     cycle_id: toNullableString(parsed.cycle_id) ?? '',
     log_path: toNullableString(parsed.log_path) ?? '',
     backlog_item_key: toNullableString(parsed.backlog_item_key),
-    primary_feature_id: toNullableString(parsed.primary_feature_id) ?? sanitizeFeatureId(featureId, 'feature id'),
+    primary_feature_id:
+      toNullableString(parsed.primary_feature_id) ?? sanitizeFeatureId(featureId, 'feature id'),
     primary_backlog_item_key:
       toNullableString(parsed.primary_backlog_item_key) ??
       toNullableString(parsed.backlog_item_key),
     phase_scope: toNullableString(parsed.phase_scope) ?? stage,
+    backlog_lifecycle_target: toNullableString(parsed.backlog_lifecycle_target),
+    backlog_lifecycle_current: toNullableString(parsed.backlog_lifecycle_current),
+    backlog_lifecycle_reconciled: toBoolean(parsed.backlog_lifecycle_reconciled, true),
+    backlog_actualization_artifacts: toStringArray(parsed.backlog_actualization_artifacts),
+    backlog_actualization_verdict: normalizeBacklogActualizationVerdict(
+      parsed.backlog_actualization_verdict,
+    ),
     backlog_followup_required: toBoolean(parsed.backlog_followup_required),
     backlog_followup_kind: toNullableString(parsed.backlog_followup_kind),
     backlog_followup_resolved: toBoolean(parsed.backlog_followup_resolved),

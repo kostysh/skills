@@ -15,6 +15,11 @@ import {
   type StageStateRecord,
 } from '../shared/stage-state.ts';
 import { assertManagedWritePath } from '../shared/path-guards.ts';
+import {
+  evaluateBacklogLifecycleReconciliation,
+  lifecycleReconciliationMetadata,
+  type BacklogLifecycleReconciliation,
+} from '../shared/lifecycle-reconciliation.ts';
 import { fileExists, writeTextAtomic } from '../vendor/dossier-engineer/lib/fs-utils.ts';
 import { getCurrentCommit } from '../vendor/dossier-engineer/lib/git-utils.ts';
 import {
@@ -517,6 +522,11 @@ function machineMetadataFromStageState(state: StageStateRecord): Record<string, 
     backlog_followup_required: state.backlog_followup_required,
     backlog_followup_kind: state.backlog_followup_kind,
     backlog_followup_resolved: state.backlog_followup_resolved,
+    backlog_lifecycle_target: state.backlog_lifecycle_target,
+    backlog_lifecycle_current: state.backlog_lifecycle_current,
+    backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
+    backlog_actualization_artifacts: state.backlog_actualization_artifacts,
+    backlog_actualization_verdict: state.backlog_actualization_verdict,
     required_audit_classes: state.required_audit_classes,
     executed_audit_classes: state.executed_audit_classes,
     required_external_review_pending: state.required_external_review_pending,
@@ -722,11 +732,12 @@ function parseProcessMissDsl(value: string): StageStateProcessMiss {
     fields.get('resolved') ?? null,
     '--process-miss resolved',
   );
-  const summary = normalizeSingleLineOption(fields.get('summary') ?? null, '--process-miss summary');
+  const summary = normalizeSingleLineOption(
+    fields.get('summary') ?? null,
+    '--process-miss summary',
+  );
   if (!id || !category || !severity || !resolved || !summary) {
-    throw new Error(
-      '--process-miss must include id, category, severity, resolved, and summary.',
-    );
+    throw new Error('--process-miss must include id, category, severity, resolved, and summary.');
   }
   if (!['low', 'medium', 'high'].includes(severity)) {
     throw new Error('--process-miss severity must be one of: low, medium, high.');
@@ -745,7 +756,10 @@ function parseProcessMissDsl(value: string): StageStateProcessMiss {
 
 export function parseStageAnnotationsInput(args: string[]): StageAnnotationsInput {
   return {
-    skillsUsed: normalizeRepeatableSingleLineOptions(takeManyOptions(args, '--skill-used'), '--skill-used'),
+    skillsUsed: normalizeRepeatableSingleLineOptions(
+      takeManyOptions(args, '--skill-used'),
+      '--skill-used',
+    ),
     skillIssues: normalizeRepeatableSingleLineOptions(
       takeManyOptions(args, '--skill-issue'),
       '--skill-issue',
@@ -1069,6 +1083,19 @@ export async function runStageControllerCommand(
   if (!backlogItemKey) {
     throw new Error(`Dossier ${featureId} is missing canonical frontmatter backlog_item_key.`);
   }
+  const lifecycleReconciliation = await evaluateBacklogLifecycleReconciliation({
+    root,
+    stage: command,
+    itemKey: backlogItemKey,
+  });
+  const lifecycleFollowupRequired =
+    lifecycleReconciliation.target !== null && !lifecycleReconciliation.reconciled;
+  const effectiveBacklogFollowupRequired = backlogFollowupRequired || lifecycleFollowupRequired;
+  const effectiveBacklogFollowupKind =
+    backlogFollowupKind ?? (lifecycleFollowupRequired ? 'backlog-lifecycle-actualization' : null);
+  const effectiveBacklogFollowupResolved = lifecycleFollowupRequired
+    ? false
+    : backlogFollowupResolved;
   const latestForStage = await loadLatestStageLog(root, command, featureId, requestedCycleId);
   const latestFeatureIntake =
     command === 'feature-intake'
@@ -1166,9 +1193,10 @@ export async function runStageControllerCommand(
     entered_ts: enteredTs,
     ready_for_close_ts: readyForCloseTs ?? null,
     transition_events: existingEvents,
-    backlog_followup_required: backlogFollowupRequired,
-    backlog_followup_kind: backlogFollowupKind,
-    backlog_followup_resolved: backlogFollowupResolved,
+    backlog_followup_required: effectiveBacklogFollowupRequired,
+    backlog_followup_kind: effectiveBacklogFollowupKind,
+    backlog_followup_resolved: effectiveBacklogFollowupResolved,
+    ...lifecycleReconciliationMetadata(lifecycleReconciliation),
     review_artifacts: carryStageEvidence ? (currentStageState?.review_artifacts ?? []) : [],
     verification_artifacts: carryStageEvidence
       ? (currentStageState?.verification_artifacts ?? [])
@@ -1193,7 +1221,10 @@ export async function runStageControllerCommand(
     stale_review_present: carryStageEvidence
       ? (currentStageState?.stale_review_present ?? false)
       : false,
-    skills_used: uniqueStrings([...(currentStageState?.skills_used ?? []), ...annotations.skillsUsed]),
+    skills_used: uniqueStrings([
+      ...(currentStageState?.skills_used ?? []),
+      ...annotations.skillsUsed,
+    ]),
     skill_issues: uniqueStrings([
       ...(currentStageState?.skill_issues ?? []),
       ...annotations.skillIssues,
@@ -1209,10 +1240,7 @@ export async function runStageControllerCommand(
     session_id: provenance.sessionId,
     trace_runtime: provenance.traceRuntime,
     trace_locator_kind: 'session_id',
-    final_delivery_commit:
-      action === 'ready_for_close'
-        ? getCurrentCommit(root)
-        : null,
+    final_delivery_commit: action === 'ready_for_close' ? getCurrentCommit(root) : null,
     final_closure_commit: carryStageEvidence
       ? (currentStageState?.final_closure_commit ?? null)
       : null,
@@ -1279,9 +1307,9 @@ export async function runStageControllerCommand(
     entered_ts: enteredTs,
     ready_for_close_ts: readyForCloseTs ?? null,
     transition_events: existingEvents,
-    backlog_followup_required: backlogFollowupRequired,
-    backlog_followup_kind: backlogFollowupKind,
-    backlog_followup_resolved: backlogFollowupResolved,
+    backlog_followup_required: effectiveBacklogFollowupRequired,
+    backlog_followup_kind: effectiveBacklogFollowupKind,
+    backlog_followup_resolved: effectiveBacklogFollowupResolved,
     log_path: relPath.split(path.sep).join('/'),
     next_commands: nextCommandsForState(command, stageState),
   };
@@ -1289,6 +1317,7 @@ export async function runStageControllerCommand(
 
 export async function recordStepCloseOnStageLog(payload: {
   auditSummary?: AuditSummaryPayload;
+  backlogLifecycleReconciliation?: BacklogLifecycleReconciliation;
   finalClosureCommit: string | null;
   featureId: string;
   processComplete: boolean;
@@ -1318,6 +1347,9 @@ export async function recordStepCloseOnStageLog(payload: {
     ...(currentStageState ? machineMetadataFromStageState(currentStageState) : {}),
     step_close_ts: now,
     step_artifact: payload.stepArtifactPath,
+    ...(payload.backlogLifecycleReconciliation
+      ? lifecycleReconciliationMetadata(payload.backlogLifecycleReconciliation)
+      : {}),
     review_artifacts: uniqueStrings([
       ...(currentStageState?.review_artifacts ?? []),
       ...payload.reviewArtifactPaths,

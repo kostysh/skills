@@ -48,6 +48,8 @@ const STAGE_CONTROLLER_COMMANDS_REQUIRING_SESSION = new Set([
   'change-proposal',
 ]);
 
+type TestDeliveryState = 'defined' | 'specified' | 'planned' | 'implemented';
+
 async function makeTempRepoPath(): Promise<string> {
   return path.join(await mkdtemp(path.join(os.tmpdir(), 'ude-cli-')), 'repo');
 }
@@ -263,6 +265,151 @@ async function writeReviewArtifactFile(payload: {
   );
 }
 
+function testBacklogPacketItem(payload: {
+  deliveryState: TestDeliveryState;
+  itemKey: string;
+  title?: string | undefined;
+}): Record<string, unknown> {
+  return {
+    item_key: payload.itemKey,
+    title: payload.title ?? payload.itemKey,
+    type: 'feature',
+    delivery_state: payload.deliveryState,
+    gaps: [],
+    depends_on_keys: [],
+    origin_source_ids: [],
+    specification_source_ids: [],
+    plan_source_ids: [],
+    implementation_source_ids: [],
+    test_source_ids: [],
+    claim_keys: [],
+    contract_keys: [],
+    data_domain_keys: [],
+    quality_attribute_keys: [],
+    policy_decision_keys: [],
+  };
+}
+
+async function seedBacklogItem(payload: {
+  deliveryState: TestDeliveryState;
+  itemKey: string;
+  repo: string;
+  title?: string | undefined;
+}): Promise<void> {
+  const packetPath = path.join(
+    payload.repo,
+    'test-backlog-packets',
+    `${payload.itemKey}-${payload.deliveryState}.json`,
+  );
+  await mkdir(path.dirname(packetPath), { recursive: true });
+  await writeFile(
+    packetPath,
+    `${JSON.stringify(
+      {
+        context: {
+          glossary: [],
+          key_strategy: {},
+          target_system: [],
+          as_built: [],
+          claims: [],
+          contracts: [],
+          data_domains: [],
+          quality_attributes: [],
+          policy_decisions: [],
+        },
+        items: [
+          testBacklogPacketItem({
+            itemKey: payload.itemKey,
+            deliveryState: payload.deliveryState,
+            title: payload.title,
+          }),
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  runCli(['packet', '--path', packetPath], { cwd: payload.repo });
+}
+
+async function applyBacklogLifecyclePatch(payload: {
+  deliveryState: TestDeliveryState;
+  itemKey: string;
+  repo: string;
+}): Promise<string> {
+  const patchId = `test-${payload.itemKey}-${payload.deliveryState}`;
+  const patchPath = path.join(payload.repo, 'test-backlog-patches', `${patchId}.json`);
+  await mkdir(path.dirname(patchPath), { recursive: true });
+  await writeFile(
+    patchPath,
+    `${JSON.stringify(
+      {
+        metadata: {
+          patch_id: patchId,
+          created_at: '2026-04-24T12:00:00.000Z',
+          sequence: 1,
+          target_item_keys: [payload.itemKey],
+        },
+        operations: [
+          {
+            item_key: payload.itemKey,
+            action: 'replace_fields',
+            fields: {
+              delivery_state: payload.deliveryState,
+            },
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const envelope = parseEnvelope<{ canonical_patch_path: string }>(
+    runCli(['patch-item', '--patch', patchPath], { cwd: payload.repo }).stdout,
+  );
+  return path.relative(payload.repo, envelope.data.canonical_patch_path).split(path.sep).join('/');
+}
+
+function recordReviewArtifact(payload: {
+  auditClass: 'code-reviewer' | 'security-reviewer' | 'spec-conformance-reviewer';
+  dossier: string;
+  repo: string;
+  reviewerAgentId: string;
+  reviewerSkill?: string;
+  reviewerThreadId: string;
+  securityTriggerReason?: string;
+  step: string;
+}): string {
+  const result = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      payload.dossier,
+      '--step',
+      payload.step,
+      '--audit-class',
+      payload.auditClass,
+      ...(payload.auditClass === 'security-reviewer'
+        ? ['--security-trigger-reason', payload.securityTriggerReason ?? 'test-security-scope']
+        : []),
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      payload.reviewerSkill ?? payload.auditClass,
+      '--reviewer-skill',
+      payload.reviewerSkill ?? payload.auditClass,
+      '--reviewer-agent-id',
+      payload.reviewerAgentId,
+    ],
+    { cwd: payload.repo, env: { CODEX_THREAD_ID: payload.reviewerThreadId } },
+  );
+  const match = result.stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u);
+  assert.ok(match?.[1]);
+  return match[1].trim();
+}
+
 test('init creates the unified process root and SSOT skeleton', async () => {
   const repo = await makeTempRepoPath();
 
@@ -365,6 +512,7 @@ test('command help smoke covers the shipped public surface', () => {
       assert.match(result.stdout, /validates the observable durable review bundle/u);
       assert.match(result.stdout, /does not prove reviewer launch-mode independence/u);
       assert.match(result.stdout, /forked\/full-history authoring context must be rerun/u);
+      assert.match(result.stdout, /--backlog-actualization-artifact <path>/u);
     }
   }
 
@@ -1144,7 +1292,9 @@ test('dossier-verify links verification artifacts into stage log and stage state
   ) as { log_path: string; verification_artifacts: string[] };
   assert.deepEqual(state.verification_artifacts, [artifactRelativePath]);
 
-  const stageMetadata = parseStageLogMetadata(await readFile(path.join(repo, state.log_path), 'utf8'));
+  const stageMetadata = parseStageLogMetadata(
+    await readFile(path.join(repo, state.log_path), 'utf8'),
+  );
   assert.deepEqual(stageMetadata.verification_artifacts, state.verification_artifacts);
 });
 
@@ -2252,6 +2402,514 @@ test('dossier-step-close maps truthful blocked outcomes to exit code 3 with symb
   assert.match(payload.error.step_artifact, /\.dossier\/steps\/F-\d{4}\/feature-intake\.json$/);
 });
 
+test('dossier-step-close requires selected backlog lifecycle actualization before writing step artifacts', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'implementation-lifecycle-required',
+    deliveryState: 'planned',
+  });
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Implementation Lifecycle Required',
+        '--backlog-item-key',
+        'implementation-lifecycle-required',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'implementation-lifecycle-required.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    { cwd: repo },
+  );
+
+  const result = runCli(
+    ['dossier-step-close', '--dossier', intakeEnvelope.data.dossier, '--step', 'implementation'],
+    { cwd: repo, allowFailure: true },
+  );
+
+  assert.equal(result.code, 3);
+  const payload = JSON.parse(result.stderr) as {
+    error: {
+      backlog_actualization_verdict: string;
+      code: string;
+      current_delivery_state: string | null;
+      selected_backlog_item_key: string | null;
+      target_delivery_state: string | null;
+    };
+  };
+  assert.equal(payload.error.code, 'UDE_BACKLOG_ACTUALIZATION_REQUIRED');
+  assert.equal(payload.error.selected_backlog_item_key, 'implementation-lifecycle-required');
+  assert.equal(payload.error.current_delivery_state, 'planned');
+  assert.equal(payload.error.target_delivery_state, 'implemented');
+  assert.equal(payload.error.backlog_actualization_verdict, 'actualization_required');
+  await stat(path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id)).then(
+    () =>
+      assert.fail('step artifact directory should not be created before lifecycle actualization'),
+    () => undefined,
+  );
+});
+
+test('dossier-step-close records applied backlog actualization artifacts in stage telemetry', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'implementation-lifecycle-actualized',
+    deliveryState: 'planned',
+  });
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Implementation Lifecycle Actualized',
+        '--backlog-item-key',
+        'implementation-lifecycle-actualized',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'implementation-lifecycle-actualized.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const implementationStart = parseEnvelope<{ log_path: string }>(
+    runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id, '--json'], {
+      cwd: repo,
+    }).stdout,
+  );
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'non-code',
+    ],
+    { cwd: repo },
+  );
+  const actualizationArtifact = await applyBacklogLifecyclePatch({
+    repo,
+    itemKey: 'implementation-lifecycle-actualized',
+    deliveryState: 'implemented',
+  });
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+  });
+  const specReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'implementation',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: 'audit-agent-lifecycle-spec',
+    reviewerThreadId: 'review-thread-lifecycle-spec',
+  });
+  const codeReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'implementation',
+    auditClass: 'code-reviewer',
+    reviewerAgentId: 'audit-agent-lifecycle-code',
+    reviewerThreadId: 'review-thread-lifecycle-code',
+  });
+  const securityReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'implementation',
+    auditClass: 'security-reviewer',
+    reviewerAgentId: 'audit-agent-lifecycle-security',
+    reviewerThreadId: 'review-thread-lifecycle-security',
+    securityTriggerReason: 'backlog-lifecycle-actualization',
+  });
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+      '--backlog-actualization-artifact',
+      actualizationArtifact,
+    ],
+    { cwd: repo },
+  );
+
+  const stageState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', intakeEnvelope.data.feature_id, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    backlog_actualization_artifacts: string[];
+    backlog_actualization_verdict: string;
+    backlog_lifecycle_current: string | null;
+    backlog_lifecycle_reconciled: boolean;
+    backlog_lifecycle_target: string | null;
+    process_complete_ts: string | null;
+    step_artifact: string | null;
+  };
+  assert.equal(stageState.backlog_lifecycle_target, 'implemented');
+  assert.equal(stageState.backlog_lifecycle_current, 'implemented');
+  assert.equal(stageState.backlog_lifecycle_reconciled, true);
+  assert.deepEqual(stageState.backlog_actualization_artifacts, [actualizationArtifact]);
+  assert.equal(stageState.backlog_actualization_verdict, 'actualized_by_backlog_artifact');
+  assert.match(stageState.process_complete_ts ?? '', /^\d{4}-\d{2}-\d{2}T/u);
+  assert.equal(
+    stageState.step_artifact,
+    `.dossier/steps/${intakeEnvelope.data.feature_id}/implementation.json`,
+  );
+
+  const stageMetadata = parseStageLogMetadata(
+    await readFile(path.join(repo, implementationStart.data.log_path), 'utf8'),
+  );
+  assert.deepEqual(
+    stageMetadata.backlog_actualization_artifacts,
+    stageState.backlog_actualization_artifacts,
+  );
+  assert.equal(stageMetadata.backlog_actualization_verdict, 'actualized_by_backlog_artifact');
+});
+
+test('dossier-step-close accepts already reconciled backlog lifecycle without an actualization artifact', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'implementation-lifecycle-current',
+    deliveryState: 'implemented',
+  });
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Implementation Lifecycle Current',
+        '--backlog-item-key',
+        'implementation-lifecycle-current',
+        '--backlog-delivery-state',
+        'implemented',
+        '--backlog-source',
+        'implementation-lifecycle-current.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  runCli(['implementation', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      intakeEnvelope.data.feature_id,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    { cwd: repo },
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'implementation',
+  });
+  const specReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'implementation',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: 'audit-agent-current-spec',
+    reviewerThreadId: 'review-thread-current-spec',
+  });
+  const codeReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'implementation',
+    auditClass: 'code-reviewer',
+    reviewerAgentId: 'audit-agent-current-code',
+    reviewerThreadId: 'review-thread-current-code',
+  });
+  const securityReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'implementation',
+    auditClass: 'security-reviewer',
+    reviewerAgentId: 'audit-agent-current-security',
+    reviewerThreadId: 'review-thread-current-security',
+    securityTriggerReason: 'current-backlog-state',
+  });
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+    ],
+    { cwd: repo },
+  );
+
+  const stageState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', intakeEnvelope.data.feature_id, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    backlog_actualization_artifacts: string[];
+    backlog_actualization_verdict: string;
+    backlog_lifecycle_current: string | null;
+    backlog_lifecycle_reconciled: boolean;
+    backlog_lifecycle_target: string | null;
+  };
+  assert.equal(stageState.backlog_lifecycle_target, 'implemented');
+  assert.equal(stageState.backlog_lifecycle_current, 'implemented');
+  assert.equal(stageState.backlog_lifecycle_reconciled, true);
+  assert.deepEqual(stageState.backlog_actualization_artifacts, []);
+  assert.equal(stageState.backlog_actualization_verdict, 'current_state_satisfies_target');
+});
+
+test('spec and plan close-out enforce their selected backlog lifecycle targets', async () => {
+  const cases = [
+    {
+      stage: 'spec-compact',
+      itemKey: 'spec-lifecycle-required',
+      current: 'defined',
+      target: 'specified',
+    },
+    {
+      stage: 'plan-slice',
+      itemKey: 'plan-lifecycle-required',
+      current: 'specified',
+      target: 'planned',
+    },
+  ] as const;
+
+  for (const { stage, itemKey, current, target } of cases) {
+    const repo = await makeTempRepoPath();
+    await initializeRepo(repo);
+    await seedBacklogItem({
+      repo,
+      itemKey,
+      deliveryState: current,
+    });
+
+    const intakeEnvelope = parseEnvelope<{
+      dossier: string;
+      feature_id: string;
+    }>(
+      runCli(
+        [
+          'feature-intake',
+          '--title',
+          `${stage} Lifecycle Required`,
+          '--backlog-item-key',
+          itemKey,
+          '--backlog-delivery-state',
+          current,
+          '--backlog-source',
+          `${itemKey}.md`,
+          '--area',
+          'docs',
+          '--owner',
+          'platform',
+          '--impact',
+          'docs',
+          '--json',
+        ],
+        { cwd: repo },
+      ).stdout,
+    );
+
+    runCli([stage, '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+    runCli([stage, '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'], {
+      cwd: repo,
+    });
+
+    const result = runCli(
+      ['dossier-step-close', '--dossier', intakeEnvelope.data.dossier, '--step', stage],
+      { cwd: repo, allowFailure: true },
+    );
+
+    assert.equal(result.code, 3, stage);
+    const payload = JSON.parse(result.stderr) as {
+      error: {
+        code: string;
+        current_delivery_state: string | null;
+        target_delivery_state: string | null;
+      };
+    };
+    assert.equal(payload.error.code, 'UDE_BACKLOG_ACTUALIZATION_REQUIRED');
+    assert.equal(payload.error.current_delivery_state, current);
+    assert.equal(payload.error.target_delivery_state, target);
+    await stat(path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id)).then(
+      () => assert.fail(`${stage} step artifact directory should not be created`),
+      () => undefined,
+    );
+  }
+});
+
+test('status and queue expose lifecycle drift instead of silently returning stale done features', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'done-feature-stale-backlog',
+    deliveryState: 'planned',
+  });
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Done Feature Stale Backlog',
+        '--backlog-item-key',
+        'done-feature-stale-backlog',
+        '--backlog-delivery-state',
+        'planned',
+        '--backlog-source',
+        'done-feature-stale-backlog.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const dossierPath = path.join(repo, intakeEnvelope.data.dossier);
+  await writeFile(
+    dossierPath,
+    (await readFile(dossierPath, 'utf8')).replace(/^status: .+$/mu, 'status: done'),
+  );
+
+  const statusEnvelope = parseEnvelope<{
+    lifecycle_reconciliation_drift_count: number;
+    lifecycle_reconciliation_drifts: Array<{
+      backlog_item_key: string | null;
+      expected_delivery_state: string | null;
+      feature_id: string;
+      kind: string;
+    }>;
+    ready_for_next_step_count: number;
+  }>(runCli(['status'], { cwd: repo }).stdout);
+  assert.equal(statusEnvelope.data.lifecycle_reconciliation_drift_count, 1);
+  assert.equal(statusEnvelope.data.ready_for_next_step_count, 0);
+  assert.deepEqual(statusEnvelope.data.lifecycle_reconciliation_drifts, [
+    {
+      kind: 'done_feature_backlog_state',
+      feature_id: intakeEnvelope.data.feature_id,
+      backlog_item_key: 'done-feature-stale-backlog',
+      backlog_delivery_state: 'planned',
+      expected_delivery_state: 'implemented',
+      step_artifact: null,
+      message: `Feature ${intakeEnvelope.data.feature_id} is done while selected backlog item done-feature-stale-backlog is planned, expected implemented.`,
+    },
+  ]);
+
+  const queueEnvelope = parseEnvelope<Array<{ items: string[] }>>(
+    runCli(['queue'], { cwd: repo }).stdout,
+  );
+  assert.deepEqual(queueEnvelope.data, []);
+  assert.deepEqual(queueEnvelope.warnings, [
+    'Lifecycle reconciliation drift blocked queue items: done-feature-stale-backlog',
+  ]);
+});
+
 test('dossier-step-close rejects invalid stage log paths before writing step artifacts', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
@@ -2561,6 +3219,11 @@ test('review-artifact marks stale git-backed reviews as pending in stage telemet
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'stale-review-telemetry',
+    deliveryState: 'specified',
+  });
   commitRepoState(repo, 'baseline');
 
   const intakeEnvelope = parseEnvelope<{
@@ -3032,6 +3695,11 @@ test('implementation reopen resets the stage-entry anchor for later non-code cla
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'implementation-reopen-entry-reset',
+    deliveryState: 'implemented',
+  });
   commitRepoState(repo, 'baseline');
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
@@ -3191,14 +3859,19 @@ test('implementation reopen resets the stage-entry anchor for later non-code cla
 
 test('non-implementation mutating stages keep the required external baseline at close-out', async () => {
   const cases = [
-    { stage: 'spec-compact', title: 'Spec Compact Baseline' },
-    { stage: 'plan-slice', title: 'Plan Slice Baseline' },
-    { stage: 'change-proposal', title: 'Change Proposal Baseline' },
+    { stage: 'spec-compact', title: 'Spec Compact Baseline', deliveryState: 'specified' },
+    { stage: 'plan-slice', title: 'Plan Slice Baseline', deliveryState: 'planned' },
+    { stage: 'change-proposal', title: 'Change Proposal Baseline', deliveryState: 'defined' },
   ] as const;
 
-  for (const { stage, title } of cases) {
+  for (const { stage, title, deliveryState } of cases) {
     const repo = await makeTempRepoPath();
     await initializeRepo(repo);
+    await seedBacklogItem({
+      repo,
+      itemKey: `${stage}-baseline`,
+      deliveryState,
+    });
 
     const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
       runCli(
@@ -3286,6 +3959,11 @@ test('non-implementation mutating stages keep the required external baseline at 
 test('implementation close-out blocks code-bearing scope when the security audit is missing', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'missing-security-audit',
+    deliveryState: 'implemented',
+  });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -3425,6 +4103,11 @@ test('implementation close-out blocks code-bearing scope when the security audit
 test('implementation close-out accepts the full code-bearing audit bundle and records audit observability', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'full-code-bearing-bundle',
+    deliveryState: 'implemented',
+  });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -3642,6 +4325,11 @@ test('implementation close-out rejects out-of-order required audits', async () =
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'out-of-order-implementation-audits',
+    deliveryState: 'implemented',
+  });
   commitRepoState(repo, 'baseline');
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
@@ -3801,6 +4489,11 @@ test('lifecycle-refresh treats a first-pass code-bearing audit bundle as zero re
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'lifecycle-first-pass-bundle',
+    deliveryState: 'implemented',
+  });
   commitRepoState(repo, 'baseline');
 
   const intakeEnvelope = parseEnvelope<{
@@ -4013,6 +4706,11 @@ test('implementation close-out allows the explicit non-code baseline with only s
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'implementation-non-code',
+    deliveryState: 'implemented',
+  });
   commitRepoState(repo, 'baseline');
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
@@ -4183,6 +4881,11 @@ test('implementation non-code close-out ignores tampered stage-log scope and use
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'machine-stage-state-scope',
+    deliveryState: 'implemented',
+  });
   commitRepoState(repo, 'baseline');
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
@@ -4307,6 +5010,11 @@ test('dirty code forces implementation close-out back to code-bearing scope even
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'dirty-code-reclassifies-scope',
+    deliveryState: 'implemented',
+  });
   commitRepoState(repo, 'baseline');
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(

@@ -2038,6 +2038,7 @@ function dossierStepCloseHelp(): string {
     '  --step <name>                Workflow step being closed.',
     '  --verify-artifact <path>     Verification artifact path.',
     '  --review-artifact <path>     Review artifact path. Repeat for multi-audit bundles.',
+    '  --backlog-actualization-artifact <path>  Applied backlog patch artifact proving selected-item lifecycle actualization. Repeatable.',
     `  --implementation-scope <scope> Optional cross-check only. Implementation scope is read from the current implementation stage state and must match if provided.`,
     '  --next-step <name>           Override computed next step.',
     '  --output <path>              Step artifact output path.',

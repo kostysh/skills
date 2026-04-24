@@ -52,6 +52,7 @@ Current status:
 | [implementation-log-14.ru.md](logs/implementation-log-14.ru.md) | Log for external independent audit launch contract: non-forked/no-full-history reviewer launch, rerun on invalid launch method, and runtime non-proof guardrails. | Read when validating the implementation of `issues/improvement-proposal-20260423-3.md`. |
 | [implementation-log-15.ru.md](logs/implementation-log-15.ru.md) | Log for explicit stage session provenance: required `--session-id`, fail-closed stage writes, and non-canonical runtime env/session-store discovery. | Read when validating the implementation of `issues/improvement-proposal-20260423-4.md`. |
 | [implementation-log-16.ru.md](logs/implementation-log-16.ru.md) | Log for machine-complete stage artifact schema: parity-protected stage fields, explicit artifact links, agent-supplied skill annotations, structured `process_misses`, and scope identity. | Read when validating the implementation of `issues/improvement-proposal-20260423-5.md`. |
+| [implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | Log for lifecycle reconciliation closure gate: selected backlog item target validation, close-out fail-closed behavior, stage-state parity fields, and status/queue drift detection. | Read when validating the implementation of `issues/improvement-proposal-20260424-1.md`. |
 
 ## Issue Status
 
@@ -66,7 +67,7 @@ Current status:
 | [improvement-proposal-20260423-3.md](issues/improvement-proposal-20260423-3.md) | Embedded draft plan in issue | [implementation-log-14.ru.md](logs/implementation-log-14.ru.md) | Implemented |
 | [improvement-proposal-20260423-4.md](issues/improvement-proposal-20260423-4.md) | Embedded draft plan in issue | [implementation-log-15.ru.md](logs/implementation-log-15.ru.md) | Implemented |
 | [improvement-proposal-20260423-5.md](issues/improvement-proposal-20260423-5.md) | Embedded draft plan in issue | [implementation-log-16.ru.md](logs/implementation-log-16.ru.md) | Implemented |
-| [improvement-proposal-20260424-1.md](issues/improvement-proposal-20260424-1.md) | [implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | Not created yet | Plan audited; implementation pending |
+| [improvement-proposal-20260424-1.md](issues/improvement-proposal-20260424-1.md) | [implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | Implemented |
 
 ## Scope of This Folder
 

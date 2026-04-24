@@ -43,6 +43,11 @@ import { initializeProcessRoot, resolveProcessRoot } from '../shared/process-roo
 import { assertManagedWritePath } from '../shared/path-guards.ts';
 import type { CliJsonResult } from '../shared/cli-envelope.ts';
 import { writeCliEnvelope } from '../shared/cli-envelope.ts';
+import {
+  collectLifecycleReconciliationDrifts,
+  lifecycleDriftBlockedItemKeys,
+  type LifecycleDrift,
+} from '../shared/lifecycle-reconciliation.ts';
 
 export type CliIo = {
   stdout: Pick<NodeJS.WriteStream, 'write'>;
@@ -313,12 +318,15 @@ function overlayItemsWithSourceReviewBlock(
 function overlayQueueWithSourceReviewBlock(
   queue: QueueCommandOutput,
   openReviews: readonly SourceReviewRecord[],
+  lifecycleBlockedItemKeys: ReadonlySet<string> = new Set(),
 ): Array<Record<string, unknown>> {
   const blockedItemKeys = collectBlockedItemKeys(openReviews);
   return queue
     .map((chain) => ({
       ...chain,
-      items: chain.items.filter((itemKey) => !blockedItemKeys.has(itemKey)),
+      items: chain.items.filter(
+        (itemKey) => !blockedItemKeys.has(itemKey) && !lifecycleBlockedItemKeys.has(itemKey),
+      ),
     }))
     .filter((chain) => chain.items.length > 0);
 }
@@ -365,6 +373,7 @@ function buildAttentionOutput(payload: {
 function buildStatusOutput(payload: {
   adjustedReadyForNextStepCount: number;
   baseStatus: Record<string, unknown>;
+  lifecycleDrifts: readonly LifecycleDrift[];
   openReviews: readonly SourceReviewRecord[];
 }): Record<string, unknown> {
   const blockedItemCount = collectBlockedItemKeys(payload.openReviews).size;
@@ -373,6 +382,8 @@ function buildStatusOutput(payload: {
     ready_for_next_step_count: payload.adjustedReadyForNextStepCount,
     open_source_review_count: payload.openReviews.length,
     source_review_blocked_item_count: blockedItemCount,
+    lifecycle_reconciliation_drift_count: payload.lifecycleDrifts.length,
+    lifecycle_reconciliation_drifts: payload.lifecycleDrifts,
   };
 }
 
@@ -565,14 +576,23 @@ async function runStatusCommand(args: string[], io: CliIo): Promise<number> {
     const openReviews = await loadOpenSourceReviews(context.backlogRoot);
     const { state } = await context.ensureQueryState();
     const blockedItemKeys = collectBlockedItemKeys(openReviews);
+    const lifecycleDrifts = await collectLifecycleReconciliationDrifts({
+      root: context.backlogRoot,
+      state,
+    });
+    const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(lifecycleDrifts);
     const adjustedReadyForNextStepCount = state.items.filter(
-      (item) => item.ready_for_next_step && !blockedItemKeys.has(item.item_key),
+      (item) =>
+        item.ready_for_next_step &&
+        !blockedItemKeys.has(item.item_key) &&
+        !lifecycleBlockedItemKeys.has(item.item_key),
     ).length;
     writeCliEnvelope(io.stdout, {
       command: 'status',
       data: buildStatusOutput({
         adjustedReadyForNextStepCount,
         baseStatus: status,
+        lifecycleDrifts,
         openReviews,
       }),
     });
@@ -637,9 +657,23 @@ async function runQueueCommand(args: string[], io: CliIo): Promise<number> {
       throw new Error('Backlog root not found.');
     }
     const openReviews = await loadOpenSourceReviews(result.context.backlogRoot);
+    const { state } = await result.context.ensureQueryState();
+    const lifecycleDrifts = await collectLifecycleReconciliationDrifts({
+      root: result.context.backlogRoot,
+      state,
+    });
+    const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(lifecycleDrifts);
     writeCliEnvelope(io.stdout, {
       command: 'queue',
-      data: overlayQueueWithSourceReviewBlock(result.output, openReviews),
+      data: overlayQueueWithSourceReviewBlock(result.output, openReviews, lifecycleBlockedItemKeys),
+      warnings:
+        lifecycleBlockedItemKeys.size > 0
+          ? [
+              `Lifecycle reconciliation drift blocked queue items: ${[
+                ...lifecycleBlockedItemKeys,
+              ].join(', ')}`,
+            ]
+          : [],
     });
     return 0;
   } catch (error) {
@@ -968,9 +1002,7 @@ export const BACKLOG_COMMANDS: UnifiedBacklogCommand[] = [
     family: 'backlog-read',
     summary: 'Search backlog items with source-review readiness overlay.',
     usage: ['dossier-engineer search [filters]'],
-    options: [
-      'See `dossier-engineer help search` for the full filter surface.',
-    ],
+    options: ['See `dossier-engineer help search` for the full filter surface.'],
     execute: runSearchCommand,
   },
   createVendoredCommandWrapper(GAPS_COMMAND, 'backlog-read'),

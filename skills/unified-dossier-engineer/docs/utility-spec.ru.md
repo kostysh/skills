@@ -313,6 +313,11 @@ Parity-protected machine fields:
 - `backlog_followup_required`
 - `backlog_followup_kind`
 - `backlog_followup_resolved`
+- `backlog_lifecycle_target`
+- `backlog_lifecycle_current`
+- `backlog_lifecycle_reconciled`
+- `backlog_actualization_artifacts`
+- `backlog_actualization_verdict`
 - `review_artifacts`
 - `verification_artifacts`
 - `step_artifact`
@@ -342,6 +347,7 @@ id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;sum
 
 Rules:
 
+- selected-feature lifecycle reconciliation is explicit machine state, not inferred from prose, commits, or `docs/ssot/index.md`;
 - malformed `--process-miss` entries fail before stage artifacts are written;
 - `process_misses` is structured source of truth; `Process misses` prose is rendered mirror plus preserved human notes;
 - `review_artifacts`, `verification_artifacts`, and `step_artifact` are explicit artifact links, not heuristic recovery;
@@ -369,6 +375,11 @@ Minimum common fields:
 - `backlog_followup_required`
 - `backlog_followup_kind`
 - `backlog_followup_resolved`
+- `backlog_lifecycle_target`
+- `backlog_lifecycle_current`
+- `backlog_lifecycle_reconciled`
+- `backlog_actualization_artifacts`
+- `backlog_actualization_verdict`
 - `review_artifacts`
 - `verification_artifacts`
 - `step_artifact`
@@ -416,6 +427,7 @@ Rules:
 ### Helper ownership rules
 
 - `dossier-step-close` remains the only authoritative closure writer for delivery steps;
+- `dossier-step-close` enforces selected backlog item lifecycle reconciliation for `spec-compact`, `plan-slice`, and `implementation` before writing a step artifact;
 - `lifecycle-refresh` remains the lifecycle aggregation helper for metrics/session-index refresh;
 - `next-step` remains dossier-local query surface;
 - `contract-drift-audit` remains mature-change helper, not a primary stage controller.
@@ -475,6 +487,7 @@ Audit-launch rules such as `fork_context: false`, no forked/full-history inherit
 - a required audit is stale or invalidated;
 - a required audit still carries blocking findings.
 - current helper validation cannot confirm the required bundle from the helper-managed stage state.
+- selected backlog item current delivery state is below the lifecycle target for `spec-compact`, `plan-slice`, or `implementation`.
 
 ## 7. Preservation / rename / deprecation matrix
 
@@ -602,6 +615,14 @@ If backlog truth changed during any delivery stage:
 ... -> patch-item or refresh+patch -> items -> status -> continue / close
 ```
 
+Selected-feature lifecycle close targets:
+
+- `spec-compact -> specified`
+- `plan-slice -> planned`
+- `implementation -> implemented`
+
+`dossier-step-close` validates current backlog truth against these targets. A managed backlog actualization artifact may be recorded as trace evidence, but it does not override current-state validation.
+
 ## 8.4 Mature change path
 
 ```text
@@ -702,6 +723,7 @@ Minimum family:
 - `UDE_SCHEMA_INVALID`
 - `UDE_SOURCE_REVIEW_OPEN`
 - `UDE_BACKLOG_FOLLOWUP_REQUIRED`
+- `UDE_BACKLOG_ACTUALIZATION_REQUIRED`
 - `UDE_REVIEW_STALE`
 - `UDE_CLOSURE_BLOCKED`
 - `UDE_CANONICAL_ARTIFACT_MISSING`
@@ -718,12 +740,15 @@ Required utility-level rules:
 
 - stage-controller commands may only reach `ready_for_close`;
 - authoritative closure is written only by `dossier-step-close`;
+- `dossier-step-close` fails closed before step artifact write when selected backlog item lifecycle reconciliation is unresolved for `spec-compact`, `plan-slice`, or `implementation`;
 - lifecycle aggregation happens only through `lifecycle-refresh`;
 - implementation lifecycle end markers cannot materialize without step-close-backed evidence;
 - logs remain `.md` with YAML frontmatter;
 - logs preserve the canonical narrative scaffold required by the active log contract for both `feature-intake` and primary stages;
 - helper-owned closure writes preserve authored narrative sections without translation or normalization while updating helper-owned closure fields;
 - lifecycle snapshots and session index remain structured machine artifacts;
+- `status` exposes lifecycle reconciliation drift count/details;
+- `queue` must not silently return a mapped done feature as ordinary ready work;
 - no command may infer missing truth from prose.
 - no command may treat a mechanical `plan-slice --ready-for-close` transition as automatic proof that the implementation objective is clear; that semantic readiness remains agent-owned unless a future runtime explicitly implements and tests such validation.
 - no automatic language detection or translation is part of the shipped runtime unless a future change implements and tests it explicitly.

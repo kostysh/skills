@@ -407,6 +407,11 @@ void test('stage artifact schema is machine-complete and trace-scraping-free', a
     'backlog_followup_required',
     'backlog_followup_kind',
     'backlog_followup_resolved',
+    'backlog_lifecycle_target',
+    'backlog_lifecycle_current',
+    'backlog_lifecycle_reconciled',
+    'backlog_actualization_artifacts',
+    'backlog_actualization_verdict',
     'review_artifacts',
     'verification_artifacts',
     'step_artifact',
@@ -428,6 +433,62 @@ void test('stage artifact schema is machine-complete and trace-scraping-free', a
   assertContainsTerms(utilitySpec, [
     'shipped writers must normalize and enforce parity',
     'skill annotations are not scraped from trace or prose',
+  ]);
+});
+
+void test('lifecycle reconciliation gate protects backlog truth before step closure', async () => {
+  const [
+    deliveryWorkflow,
+    backlogTruth,
+    stageControl,
+    telemetryClosure,
+    runtimeBoundary,
+    utilitySpec,
+  ] = await Promise.all([
+    readFile(DELIVERY_WORKFLOW_PATH, 'utf8'),
+    readFile(BACKLOG_TRUTH_LAYER_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(deliveryWorkflow, [
+    '`spec-compact` close requires the selected backlog item to be at least `specified`',
+    '`plan-slice` close requires the selected backlog item to be at least `planned`',
+    '`implementation` close requires the selected backlog item to be `implemented`',
+    '`dossier-step-close` must fail closed before writing a step artifact',
+    'backlog actualization artifacts are trace evidence and must not override current state validation',
+  ]);
+  assertContainsTerms(backlogTruth, [
+    'Selected-feature lifecycle targets',
+    'These targets do not merge backlog lifecycle with dossier maturity.',
+    'do not treat a backlog actualization artifact as sufficient when current backlog state still fails',
+  ]);
+  assertContainsTerms(stageControl, [
+    'Stage-controller commands do not mutate backlog truth directly.',
+    '`spec-compact -> specified`',
+    '`plan-slice -> planned`',
+    '`implementation -> implemented`',
+    'stage-controller write keeps or sets backlog follow-up unresolved',
+  ]);
+  assertContainsTerms(telemetryClosure, [
+    'selected-feature lifecycle reconciliation fields are also parity-protected',
+    '`backlog_lifecycle_target`',
+    '`backlog_actualization_verdict`',
+    'successful helper-owned closure must update helper-managed stage state',
+    '`step_close_ts`, `step_artifact`, `process_complete_ts`',
+  ]);
+  assertContainsTerms(runtimeBoundary, [
+    'Lifecycle-reconciliation rule for this family',
+    'backlog actualization artifacts are accepted only as managed trace links',
+    'mapped done feature cannot silently reappear as ordinary queue work',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'UDE_BACKLOG_ACTUALIZATION_REQUIRED',
+    'Selected-feature lifecycle close targets',
+    'status` exposes lifecycle reconciliation drift count/details',
+    '`queue` must not silently return a mapped done feature',
   ]);
 });
 

@@ -125,6 +125,12 @@ Rules:
 
 - if dossier-side work changes backlog truth, the agent stays inside this skill and moves into the backlog actualization branch
 - delivery closure is not truthful while required backlog actualization remains unresolved
+- selected-feature lifecycle closure must reconcile dossier progress with backlog delivery state:
+  - `spec-compact` close requires the selected backlog item to be at least `specified`
+  - `plan-slice` close requires the selected backlog item to be at least `planned`
+  - `implementation` close requires the selected backlog item to be `implemented`
+- `dossier-step-close` must fail closed before writing a step artifact when the selected backlog item is behind the target state
+- current backlog truth must satisfy the target; backlog actualization artifacts are trace evidence and must not override current state validation
 - mature change path must always end with one explicit backlog impact verdict:
   - `no-op`
   - `patch existing item`
@@ -156,6 +162,7 @@ Required gates:
 - local verification artifacts before final closure claim
 - debt review
 - required external audit bundle in fail-closed mode
+- selected backlog item lifecycle reconciliation for stages that advance backlog truth
 - review freshness validation
 - explicit pre-close / DoD readiness
 - authoritative step-close artifact
@@ -186,5 +193,6 @@ The stage-controller command boundary is defined separately in [Commandized stag
 
 - do not degrade the mature change branch into a backlog appendix
 - do not let delivery closure bypass required backlog actualization
+- do not let `dossier-step-close` mark `spec-compact`, `plan-slice`, or `implementation` complete while the selected backlog item is behind the stage lifecycle target
 - do not dissolve `coverage_gate` into generic maturity wording
 - do not equate backlog `planned|implemented` with dossier `planned|done`

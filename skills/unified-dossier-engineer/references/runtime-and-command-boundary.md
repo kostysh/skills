@@ -96,6 +96,13 @@ Audit-policy rule for this family:
 - both helpers validate only observable durable provenance and must not claim to prove launch-mode facts such as `fork_context`, full-history inheritance, prompt mutability, or model tier;
 - neither helper performs the audit itself.
 
+Lifecycle-reconciliation rule for this family:
+
+- `dossier-step-close` enforces selected backlog item lifecycle reconciliation for `spec-compact`, `plan-slice`, and `implementation`;
+- the helper reads current backlog truth through the canonical backlog state/read model;
+- backlog actualization artifacts are accepted only as managed trace links and must not bypass current-state validation;
+- backlog read surfaces expose deterministic lifecycle drift so a mapped done feature cannot silently reappear as ordinary queue work.
+
 ## Workflow stages versus runnable commands
 
 Runtime design keeps this rule explicit:
