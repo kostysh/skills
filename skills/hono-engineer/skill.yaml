@@ -1,0 +1,186 @@
+apiVersion: "skillforge/v1alpha1"
+kind: "SkillSource"
+skill:
+  name: "hono-engineer"
+  source-version: "0.1.0"
+  recommended-skill-md-max-bytes: 28000
+  description: "Build and maintain production-grade Hono API services across projects. Use when designing endpoints, middleware, config, logging, validation, security, and tests for Hono-based APIs."
+fragments:
+  overview: "fragments/overview.md"
+references:
+  - id: "ref-architecture"
+    title: "Architecture"
+    source: "references/architecture.md"
+    target: "references/architecture.md"
+    required: true
+    trigger: "Read this when you need module boundaries, layering, and dependency rules."
+  - id: "ref-auth"
+    title: "Auth"
+    source: "references/auth.md"
+    target: "references/auth.md"
+    required: true
+    trigger: "Read this when you need API keys, JWT/JWKS, mTLS, CSRF, authz policies."
+  - id: "ref-caching"
+    title: "Caching"
+    source: "references/caching.md"
+    target: "references/caching.md"
+    required: true
+    trigger: "Read this when you need HTTP caching, Cache API, edge caching."
+  - id: "ref-contracts-types"
+    title: "Contracts Types"
+    source: "references/contracts-types.md"
+    target: "references/contracts-types.md"
+    required: true
+    trigger: "Read this when you need exporting request/response types to consumers."
+  - id: "ref-errors-logs"
+    title: "Errors Logs"
+    source: "references/errors-logs.md"
+    target: "references/errors-logs.md"
+    required: true
+    trigger: "Read this when you need error + logging standards."
+  - id: "ref-observability"
+    title: "Observability"
+    source: "references/observability.md"
+    target: "references/observability.md"
+    required: true
+    trigger: "Read this when you need logs, metrics, tracing, requestId propagation."
+  - id: "ref-perf-security"
+    title: "Perf Security"
+    source: "references/perf-security.md"
+    target: "references/perf-security.md"
+    required: true
+    trigger: "Read this when you need timeouts, retries, circuit breaker, compression, security defaults."
+  - id: "ref-pipelines"
+    title: "Pipelines"
+    source: "references/pipelines.md"
+    target: "references/pipelines.md"
+    required: true
+    trigger: "Read this when you need middleware order per endpoint class."
+  - id: "ref-rate-limiting"
+    title: "Rate Limiting"
+    source: "references/rate-limiting.md"
+    target: "references/rate-limiting.md"
+    required: true
+    trigger: "Read this when you need pre/post-auth limits, key choice, edge/WAF limits."
+  - id: "ref-routers"
+    title: "Routers"
+    source: "references/routers.md"
+    target: "references/routers.md"
+    required: true
+    trigger: "Read this when you need router types and when to override defaults."
+  - id: "ref-security"
+    title: "Security"
+    source: "references/security.md"
+    target: "references/security.md"
+    required: true
+    trigger: "Read this when you need edge WAF, API Shield, endpoint discovery."
+  - id: "ref-supabase"
+    title: "Supabase"
+    source: "references/supabase.md"
+    target: "references/supabase.md"
+    required: true
+    trigger: "Read this when you need Supabase usage patterns and RLS safety."
+  - id: "ref-typing"
+    title: "Typing"
+    source: "references/typing.md"
+    target: "references/typing.md"
+    required: true
+    trigger: "Read this when you need Context variables typing (generics vs module augmentation)."
+  - id: "ref-validation-openapi"
+    title: "Validation Openapi"
+    source: "references/validation-openapi.md"
+    target: "references/validation-openapi.md"
+    required: true
+    trigger: "Read this when you need Zod validation, OpenAPI, docs, schema validation."
+  - id: "ref-workers-platform"
+    title: "Workers Platform"
+    source: "references/workers-platform.md"
+    target: "references/workers-platform.md"
+    required: true
+    trigger: "Read this when you need CPU/subrequest limits, floating promises, binding safety, fetch scope, `waitUntil`, service bindings."
+  - id: "ref-wrangler"
+    title: "Wrangler"
+    source: "references/wrangler.md"
+    target: "references/wrangler.md"
+    required: true
+    trigger: "Read this when you need runtime config, compatibility flags, bindings, generated `Env`, observability (Workers)."
+assets: []
+copies:
+  - id: "copy-agents-openai-yaml"
+    source: "agents/openai.yaml"
+    target: "agents/openai.yaml"
+    description: "Portable copy of agents/openai.yaml."
+  - id: "copy-package-json"
+    source: "package.json"
+    target: "package.json"
+    description: "Portable copy of package.json."
+  - id: "copy-test-docs-contract-test-mjs"
+    source: "test/docs-contract.test.mjs"
+    target: "test/docs-contract.test.mjs"
+    description: "Portable copy of test/docs-contract.test.mjs."
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - "ref-architecture"
+      - "ref-auth"
+      - "ref-caching"
+      - "ref-contracts-types"
+      - "ref-errors-logs"
+      - "ref-observability"
+      - "ref-perf-security"
+      - "ref-pipelines"
+      - "ref-rate-limiting"
+      - "ref-routers"
+      - "ref-security"
+      - "ref-supabase"
+      - "ref-typing"
+      - "ref-validation-openapi"
+      - "ref-workers-platform"
+      - "ref-wrangler"
+    optionalReferences: []
+  supportingGlobs:
+    - "docs/*"
+sections:
+  startHere:
+    - "Confirm the work is on a Hono-based API or a route/middleware surface that directly affects Hono."
+    - "Follow the project conventions already present before applying the baseline guidance."
+    - "Preserve the existing Hono app factory, middleware order, error handling, validation, logging, and request-id contracts."
+    - "For endpoint work, use the preserved endpoint workflow in the overview and load only the relevant references."
+  whenToUse:
+    - "Designing or changing Hono endpoints, routers, middleware, or app composition."
+    - "Working on Hono config, validation, OpenAPI contracts, logging, security, caching, or tests."
+    - "Adapting Hono services to Cloudflare Workers or another edge runtime."
+  whenNotToUse:
+    - "The task has no Hono API, route, middleware, or edge-runtime API surface."
+    - "The task is purely TypeScript language work, testing strategy, Supabase design, or security review without Hono-specific behavior."
+  workflow:
+    - id: "stage-apply-hono-guidance"
+      title: "Apply Hono guidance"
+      goal: "Keep Hono API changes aligned with the preserved app, middleware, validation, logging, security, and testing rules."
+      steps:
+        - "Identify the endpoint class, runtime, and existing project conventions."
+        - "Use the preserved endpoint workflow and auth-admission checkpoint before implementation."
+        - "Load only the references relevant to the touched Hono surface."
+        - "Verify the affected unit, integration, or runtime-specific tests."
+      validation:
+        - "The route or middleware behavior remains consistent with the existing Hono app composition."
+        - "Validation, Problem Details errors, redacted logs, and requestId propagation remain intact."
+  interop:
+    - id: "interop-typescript-tests"
+      domain: "TypeScript testing patterns"
+      winner: "typescript-test-engineer"
+      rationale: "This skill owns Hono API guidance, while testing depth and runner patterns belong to the TypeScript testing skill."
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - "Do not reference machine-specific absolute paths or local files outside this skill folder."
+      - "Keep all mandatory hono-engineer guidance inside this skill folder."
+      - "Use relative links for local references, assets, scripts, tests, and supporting docs."
+    checklist:
+      - "Run the skill-source-compiler check command after regeneration."
+      - "Search the skill folder for absolute local paths before finishing."
+      - "Confirm every required reference listed by SKILL.md exists inside this skill folder."
