@@ -30,6 +30,7 @@ Current status:
 | [issues/improvement-proposal-20260424-1.md](issues/improvement-proposal-20260424-1.md) | Proposal to enforce backlog actualization before delivery step closure. | Read when changing lifecycle reconciliation, backlog delivery-state closure gates, or close-out drift detection. |
 | [issues/issue-20260424-2.md](issues/issue-20260424-2.md) | Issue для post-close backlog hygiene evidence после implementation closure. | Читать при изменении branch-complete reporting, post-implementation source refresh или проверок готовности next-intake. |
 | [issues/issue-20260424-3.md](issues/issue-20260424-3.md) | Issue для immutable per-round review artifacts. | Читать при изменении review artifact paths, review telemetry, reround evidence или retrospective reconstruction of review failures. |
+| [implementation-plan-20260424-3.md](issues/implementation-plan-20260424-3.md) | План имплементации для immutable per-round review artifacts. | Читать перед изменением `review-artifact`, `dossier-step-close`, stage-state review events или latest review artifact compatibility paths. |
 | [issues/issue-20260424-4.md](issues/issue-20260424-4.md) | Issue для implementation pre-review risk checklist evidence. | Читать при изменении implementation readiness, high-risk risk-family declarations или policy/admission checklist evidence. |
 | [refactoring-plan-3.ru.md](issues/refactoring-plan-3.ru.md) | Implementation plan for restoring canonical dossier-stage audit policy, including stage-wide external-review baseline and required implementation audit bundles. | Read before changing dossier-stage review policy, review telemetry, or `review-artifact` semantics. |
 | [refactoring-plan-4.ru.md](issues/refactoring-plan-4.ru.md) | Implementation plan for removing stale split-skill / merge-era wording from the active and operator-facing surface of the canonical unified skill. | Read before cleaning source-bundle wording, generated `SKILL.md`, or help/runtime identity text. |
@@ -72,7 +73,7 @@ Current status:
 | [improvement-proposal-20260423-5.md](issues/improvement-proposal-20260423-5.md) | Embedded draft plan in issue | [implementation-log-16.ru.md](logs/implementation-log-16.ru.md) | Implemented |
 | [improvement-proposal-20260424-1.md](issues/improvement-proposal-20260424-1.md) | [implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | Implemented |
 | [issue-20260424-2.md](issues/issue-20260424-2.md) | Not planned | Not implemented | Audited |
-| [issue-20260424-3.md](issues/issue-20260424-3.md) | Not planned | Not implemented | Audited |
+| [issue-20260424-3.md](issues/issue-20260424-3.md) | [implementation-plan-20260424-3.md](issues/implementation-plan-20260424-3.md) | Not implemented | Planned |
 | [issue-20260424-4.md](issues/issue-20260424-4.md) | Not planned | Not implemented | Audited |
 
 ## Scope of This Folder
