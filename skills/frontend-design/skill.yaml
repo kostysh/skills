@@ -1,0 +1,101 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: frontend-design
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Use when the task asks for a visually strong landing page, website, app UI,
+    dashboard, prototype, demo UI, poster-like web artifact, or a meaningful
+    visual upgrade to an existing frontend surface. This skill enforces strong
+    hierarchy, restrained composition, purposeful imagery, expressive typography,
+    tasteful motion, and system-aware polish while avoiding generic cards, weak
+    branding, and AI-slop aesthetics.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-anti-patterns
+    title: Anti Patterns
+    source: references/anti-patterns.md
+    target: references/anti-patterns.md
+    required: true
+    trigger: Read this when you need common failure patterns and anti-AI-slop guidance.
+  - id: ref-references-interop
+    title: Interop
+    source: references/interop.md
+    target: references/interop.md
+    required: true
+    trigger: Read this when you need boundaries with React, Ant Design, and shadcn skills.
+  - id: ref-references-surface-modes
+    title: Surface Modes
+    source: references/surface-modes.md
+    target: references/surface-modes.md
+    required: true
+    trigger: Read this when you need mode-specific application rules.
+  - id: ref-references-visual-engines
+    title: Visual Engines
+    source: references/visual-engines.md
+    target: references/visual-engines.md
+    required: true
+    trigger: Read this when you need choosing an image-led, type-led, grid-led, product-led, or data-led direction.
+assets: []
+copies:
+  - id: copy-license
+    source: LICENSE.txt
+    target: LICENSE.txt
+    description: Portable copy of LICENSE.txt.
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-anti-patterns
+      - ref-references-interop
+      - ref-references-surface-modes
+      - ref-references-visual-engines
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches frontend-design's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Visually strong landing pages, marketing websites, hero sections, or branded surfaces
+    - Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline
+    - Beautifying or restyling an existing React, HTML/CSS, or component-based UI
+    - Prototypes, demo UI, and secondary web formats such as poster-like artifacts or game UI mock surfaces
+  whenNotToUse:
+    - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement
+    - Pure component API lookup or design-system component selection; use `antd-components` or `shadcn` for that
+    - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`
+  workflow:
+    - id: stage-apply-frontend-design
+      title: Apply frontend-design guidance
+      goal: Apply the preserved frontend-design guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory frontend-design guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
