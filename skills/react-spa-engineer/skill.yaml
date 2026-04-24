@@ -1,0 +1,142 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: react-spa-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Comprehensive React SPA development expert for building production-ready single-page applications. Covers component architecture, state management (Zustand, Context), explicit persistence architecture (URL state, runtime UI state, Dexie/IndexedDB), data fetching (TanStack Query v5), forms (React Hook Form + Zod), routing (React Router v7), TypeScript patterns, performance optimization, testing (Vitest, RTL, Playwright), and accessibility.
+
+    Use when building React SPAs, implementing features, reviewing code, setting up project architecture, or troubleshooting React client-side applications. Excludes SSR, RSC, Next.js server-side patterns.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-accessibility
+    title: Accessibility
+    source: references/accessibility.md
+    target: references/accessibility.md
+    required: true
+    trigger: Read this when you need patterns and examples.
+  - id: ref-references-component-architecture
+    title: Component Architecture
+    source: references/component-architecture.md
+    target: references/component-architecture.md
+    required: true
+    trigger: Read this when you need Functional components, composition patterns.
+  - id: ref-references-data-fetching
+    title: Data Fetching
+    source: references/data-fetching.md
+    target: references/data-fetching.md
+    required: true
+    trigger: Read this when you need TanStack Query v5 patterns, caching, mutations.
+  - id: ref-references-forms-validation
+    title: Forms & Validation
+    source: references/forms-validation.md
+    target: references/forms-validation.md
+    required: true
+    trigger: Read this when you need React Hook Form, Zod schemas.
+  - id: ref-references-indexeddb-persistence
+    title: IndexedDB Persistence
+    source: references/indexeddb-persistence.md
+    target: references/indexeddb-persistence.md
+    required: true
+    trigger: Read this when you need full patterns.
+  - id: ref-references-performance
+    title: Performance
+    source: references/performance.md
+    target: references/performance.md
+    required: true
+    trigger: Read this when you need the prioritized rulepack and examples.
+  - id: ref-references-persistence-architecture
+    title: Persistence Architecture
+    source: references/persistence-architecture.md
+    target: references/persistence-architecture.md
+    required: true
+    trigger: Read this when you need full rules.
+  - id: ref-references-routing
+    title: Routing
+    source: references/routing.md
+    target: references/routing.md
+    required: true
+    trigger: Read this when you need React Router v7, loaders, protected routes.
+  - id: ref-references-state-management
+    title: State Management
+    source: references/state-management.md
+    target: references/state-management.md
+    required: true
+    trigger: Read this when you need Zustand, Context API, persistence guidance.
+  - id: ref-references-testing
+    title: Testing
+    source: references/testing.md
+    target: references/testing.md
+    required: true
+    trigger: Read this when you need full setup and examples.
+  - id: ref-references-typescript-patterns
+    title: TypeScript Patterns
+    source: references/typescript-patterns.md
+    target: references/typescript-patterns.md
+    required: true
+    trigger: Read this when you need Type-safe React development.
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-accessibility
+      - ref-references-component-architecture
+      - ref-references-data-fetching
+      - ref-references-forms-validation
+      - ref-references-indexeddb-persistence
+      - ref-references-performance
+      - ref-references-persistence-architecture
+      - ref-references-routing
+      - ref-references-state-management
+      - ref-references-testing
+      - ref-references-typescript-patterns
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches react-spa-engineer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Building, implementing, reviewing, or troubleshooting React single-page applications.
+    - Working on React SPA component architecture, state management, URL/runtime/IndexedDB persistence, TanStack Query data fetching, forms, routing, performance, testing, or accessibility.
+    - Setting up a production-ready React client-side app with TypeScript.
+  whenNotToUse:
+    - Server-side rendering, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.
+    - The work is purely reusable component hardening without app-level SPA architecture; use react-components-engineer.
+    - The work is purely visual design; use frontend-design.
+  workflow:
+    - id: stage-apply-react-spa-engineer
+      title: Apply react-spa-engineer guidance
+      goal: Apply the preserved react-spa-engineer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory react-spa-engineer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.

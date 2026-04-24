@@ -96,7 +96,7 @@ test('renders login form', () => {
 screen.getByRole('button', { name: /submit/i });
 
 // Links
-screen.getByRole('link', { name: /home/i });
+screen.getByRole('link', { name: new RegExp('home', 'i') });
 
 // Text inputs (not password, not checkbox)
 screen.getByRole('textbox', { name: /username/i });
