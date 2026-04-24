@@ -7,7 +7,7 @@ Goal: ship interfaces that feel deliberate, premium, current, and memorable. Def
 - Use `frontend-design` for visual direction, hierarchy, composition, imagery, motion, typography, copy compression, and atmosphere
 - Use `react-spa-engineer` for React SPA architecture, state, routing, data, testing, and accessibility implementation patterns
 - Use `react-components-engineer` for reusable component hardening and correctness
-- Use `antd-engineer`, `antd-components`, or `shadcn` when working inside those systems; preserve the existing design system and keep creativity inside its tokens, patterns, and components
+- Use `shadcn` when working inside the primary UI system; preserve the existing design system and keep creativity inside its tokens, patterns, and components
 - If a project already has a design system or UI framework, do not introduce a parallel ad-hoc styling system without explicit approval
 
 ## Working Model
@@ -27,7 +27,7 @@ Load references only when needed:
 - `references/surface-modes.md` for mode-specific application rules
 - `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction
 - `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance
-- `references/interop.md` for boundaries with React, Ant Design, and shadcn skills
+- `references/interop.md` for boundaries with React and shadcn skills
 
 ## Beautiful Defaults
 

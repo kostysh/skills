@@ -13,9 +13,9 @@ description: >-
   up project architecture, or troubleshooting React client-side applications.
   Excludes SSR, RSC, Next.js server-side patterns.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e9470b20006c8f462c0d55093d0b9a3423c15fc8b93322f4141b3e350ecea8f6
+  skillforge-source-hash: c9129f82a1b7f78b5660b8ad5783f647b114b1cd2bc1a5f1580dc18953c36267
 ---
 
 # react-spa-engineer
@@ -227,7 +227,7 @@ See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patter
 - `getByRole` first; `getByTestId` last
 - Always use `userEvent.setup()` before render
 - For async UI, use `findBy*` and `waitFor`
-- For modal/dialog components with animation (for example Ant Design `Modal`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
+- For modal/dialog components with animation (for example shadcn `Dialog`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
 
 **Parallel integration isolation rules**:
 - Keep a deterministic local profile (for example single-worker integration) and a separate CI profile when parallelism is tuned.

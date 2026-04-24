@@ -54,7 +54,7 @@ Avoid:
 
 ## `system-constrained UI`
 
-Use when the project already has an active design system or component framework such as Ant Design or shadcn.
+Use when the project already has an active design system or component framework such as shadcn.
 
 Default priorities:
 

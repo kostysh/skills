@@ -8,9 +8,9 @@ description: |-
   tasteful motion, and system-aware polish while avoiding generic cards, weak
   branding, and AI-slop aesthetics.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3e3d8ebde11924f9c49258eaff309bc2d3eaaa7c951d77ebde9df21665e6735c
+  skillforge-source-hash: f14deed06d60b3a4d06253c8a0ee28c0184dcff1de3d73363134314ce2833238
 ---
 
 # frontend-design
@@ -32,7 +32,7 @@ metadata:
 ## When NOT to use this skill
 
 - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement
-- Pure component API lookup or design-system component selection; use `antd-components` or `shadcn` for that
+- Pure component API lookup or design-system component selection; use `shadcn` for that
 - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`
 
 ## Overview
@@ -46,7 +46,7 @@ Goal: ship interfaces that feel deliberate, premium, current, and memorable. Def
 - Use `frontend-design` for visual direction, hierarchy, composition, imagery, motion, typography, copy compression, and atmosphere
 - Use `react-spa-engineer` for React SPA architecture, state, routing, data, testing, and accessibility implementation patterns
 - Use `react-components-engineer` for reusable component hardening and correctness
-- Use `antd-engineer`, `antd-components`, or `shadcn` when working inside those systems; preserve the existing design system and keep creativity inside its tokens, patterns, and components
+- Use `shadcn` when working inside the primary UI system; preserve the existing design system and keep creativity inside its tokens, patterns, and components
 - If a project already has a design system or UI framework, do not introduce a parallel ad-hoc styling system without explicit approval
 
 ## Working Model
@@ -66,7 +66,7 @@ Load references only when needed:
 - `references/surface-modes.md` for mode-specific application rules
 - `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction
 - `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance
-- `references/interop.md` for boundaries with React, Ant Design, and shadcn skills
+- `references/interop.md` for boundaries with React and shadcn skills
 
 ## Beautiful Defaults
 
@@ -268,7 +268,7 @@ Validation:
 
 ## Required active references
 - [Anti Patterns](references/anti-patterns.md) — Read this when you need common failure patterns and anti-AI-slop guidance.
-- [Interop](references/interop.md) — Read this when you need boundaries with React, Ant Design, and shadcn skills.
+- [Interop](references/interop.md) — Read this when you need boundaries with React and shadcn skills.
 - [Surface Modes](references/surface-modes.md) — Read this when you need mode-specific application rules.
 - [Visual Engines](references/visual-engines.md) — Read this when you need choosing an image-led, type-led, grid-led, product-led, or data-led direction.
 

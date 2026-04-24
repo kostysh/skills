@@ -184,7 +184,7 @@ See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patter
 - `getByRole` first; `getByTestId` last
 - Always use `userEvent.setup()` before render
 - For async UI, use `findBy*` and `waitFor`
-- For modal/dialog components with animation (for example Ant Design `Modal`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
+- For modal/dialog components with animation (for example shadcn `Dialog`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
 
 **Parallel integration isolation rules**:
 - Keep a deterministic local profile (for example single-worker integration) and a separate CI profile when parallelism is tuned.

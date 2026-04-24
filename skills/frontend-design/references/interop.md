@@ -31,22 +31,6 @@ Use `frontend-design` to define how a component should look and feel. Use `react
 
 Rule: when there is tension between appearance and component correctness, preserve correctness and adjust the design.
 
-## `antd-engineer` and `antd-components`
-
-`frontend-design` may improve:
-
-- layout hierarchy
-- information density
-- token choices
-- copy clarity
-- motion restraint
-
-It must not:
-
-- replace Ant Design with an unrelated styling system
-- bypass tokens/configuration when supported framework paths exist
-- introduce bespoke components where Ant Design already solves the problem cleanly
-
 ## `shadcn`
 
 Use `frontend-design` for the page-level art direction and composition. Use `shadcn` for registry-aware component selection, patterns, and implementation details.
