@@ -1,0 +1,127 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: shadcn
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 23000
+  description: Manages shadcn components and projects — adding, searching, fixing, debugging, styling, and composing UI. Provides project context, component docs, and usage examples. Applies when working with shadcn/ui, component registries, presets, --preset codes, or any project with a components.json file. Also triggers for "shadcn init", "create an app with --preset", or "switch to --preset".
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-cli
+    title: Cli
+    source: references/cli.md
+    target: references/cli.md
+    required: true
+    trigger: Read this when you need Commands, flags, presets, templates.
+  - id: ref-references-customization
+    title: Customization
+    source: references/customization.md
+    target: references/customization.md
+    required: true
+    trigger: Read this when you need Theming, CSS variables, extending components.
+  - id: ref-references-rules-base-vs-radix
+    title: Base Vs Radix
+    source: references/rules/base-vs-radix.md
+    target: references/rules/base-vs-radix.md
+    required: true
+    trigger: Read this when you need asChild vs render, Select, ToggleGroup, Slider, Accordion.
+  - id: ref-references-rules-composition
+    title: Composition
+    source: references/rules/composition.md
+    target: references/rules/composition.md
+    required: true
+    trigger: Read this when you need Groups, overlays, Card, Tabs, Avatar, Alert, Empty, Toast, Separator, Skeleton, Badge, Button loading.
+  - id: ref-references-rules-forms
+    title: Forms
+    source: references/rules/forms.md
+    target: references/rules/forms.md
+    required: true
+    trigger: Read this when you need FieldGroup, Field, InputGroup, ToggleGroup, FieldSet, validation states.
+  - id: ref-references-rules-icons
+    title: Icons
+    source: references/rules/icons.md
+    target: references/rules/icons.md
+    required: true
+    trigger: Read this when you need data-icon, icon sizing, passing icons as objects.
+  - id: ref-references-rules-styling
+    title: Styling
+    source: references/rules/styling.md
+    target: references/rules/styling.md
+    required: true
+    trigger: Read this when you need Semantic colors, variants, className, spacing, size, truncate, dark mode, cn(), z-index.
+assets:
+  - id: asset-assets-shadcn-small
+    source: assets/shadcn-small.png
+    target: assets/shadcn-small.png
+    description: "Bundled asset: assets/shadcn-small.png."
+  - id: asset-assets-shadcn
+    source: assets/shadcn.png
+    target: assets/shadcn.png
+    description: "Bundled asset: assets/shadcn.png."
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yml
+    target: agents/openai.yml
+    description: Portable copy of agents/openai.yml.
+  - id: copy-evals-evals
+    source: evals/evals.json
+    target: evals/evals.json
+    description: Portable copy of evals/evals.json.
+  - id: copy-mcp
+    source: mcp.md
+    target: mcp.md
+    description: Portable copy of mcp.md.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-cli
+      - ref-references-customization
+      - ref-references-rules-base-vs-radix
+      - ref-references-rules-composition
+      - ref-references-rules-forms
+      - ref-references-rules-icons
+      - ref-references-rules-styling
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches shadcn's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Working with shadcn/ui components, registries, presets, components.json, or shadcn CLI commands.
+    - Adding, composing, styling, fixing, debugging, or reviewing shadcn components in a project.
+    - Searching or viewing registry items, component docs, examples, presets, or templates.
+  whenNotToUse:
+    - The project does not use shadcn/ui, components.json, registry items, or shadcn presets.
+    - The task is broad visual art direction rather than shadcn component composition; use frontend-design.
+    - The task is React architecture or reusable component runtime correctness without shadcn-specific behavior.
+  workflow:
+    - id: stage-apply-shadcn
+      title: Apply shadcn guidance
+      goal: Apply the preserved shadcn guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory shadcn guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
