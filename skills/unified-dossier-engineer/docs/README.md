@@ -29,6 +29,7 @@ Current status:
 | [issues/improvement-proposal-20260423-5.md](issues/improvement-proposal-20260423-5.md) | Proposal to make stage artifact schema machine-complete with parity-protected state, artifact links, skill annotations, process misses, and scope identity. | Read when changing stage-state schema, log frontmatter mirrors, or downstream tooling contracts. |
 | [issues/improvement-proposal-20260424-1.md](issues/improvement-proposal-20260424-1.md) | Proposal to enforce backlog actualization before delivery step closure. | Read when changing lifecycle reconciliation, backlog delivery-state closure gates, or close-out drift detection. |
 | [issues/issue-20260424-2.md](issues/issue-20260424-2.md) | Issue для post-close backlog hygiene evidence после implementation closure. | Читать при изменении branch-complete reporting, post-implementation source refresh или проверок готовности next-intake. |
+| [implementation-plan-20260424-2.md](issues/implementation-plan-20260424-2.md) | План имплементации для post-close backlog hygiene evidence после implementation closure. | Читать перед изменением post-close hygiene checkpoint, source-review cleanliness evidence, readiness warnings или branch-complete reporting. |
 | [issues/issue-20260424-3.md](issues/issue-20260424-3.md) | Issue для immutable per-round review artifacts. | Читать при изменении review artifact paths, review telemetry, reround evidence или retrospective reconstruction of review failures. |
 | [implementation-plan-20260424-3.md](issues/implementation-plan-20260424-3.md) | План имплементации для immutable per-round review artifacts. | Читать перед изменением `review-artifact`, `dossier-step-close`, stage-state review events или latest review artifact compatibility paths. |
 | [issues/issue-20260424-4.md](issues/issue-20260424-4.md) | Issue для implementation pre-review risk checklist evidence. | Читать при изменении implementation readiness, high-risk risk-family declarations или policy/admission checklist evidence. |
@@ -73,7 +74,7 @@ Current status:
 | [improvement-proposal-20260423-4.md](issues/improvement-proposal-20260423-4.md) | Embedded draft plan in issue | [implementation-log-15.ru.md](logs/implementation-log-15.ru.md) | Implemented |
 | [improvement-proposal-20260423-5.md](issues/improvement-proposal-20260423-5.md) | Embedded draft plan in issue | [implementation-log-16.ru.md](logs/implementation-log-16.ru.md) | Implemented |
 | [improvement-proposal-20260424-1.md](issues/improvement-proposal-20260424-1.md) | [implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | Implemented |
-| [issue-20260424-2.md](issues/issue-20260424-2.md) | Not planned | Not implemented | Audited |
+| [issue-20260424-2.md](issues/issue-20260424-2.md) | [implementation-plan-20260424-2.md](issues/implementation-plan-20260424-2.md) | Not implemented | Planned |
 | [issue-20260424-3.md](issues/issue-20260424-3.md) | [implementation-plan-20260424-3.md](issues/implementation-plan-20260424-3.md) | Not implemented | Planned |
 | [issue-20260424-4.md](issues/issue-20260424-4.md) | [implementation-plan-20260424-4.md](issues/implementation-plan-20260424-4.md) | Not implemented | Planned |
 
