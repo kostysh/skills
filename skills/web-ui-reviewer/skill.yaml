@@ -1,0 +1,70 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: web-ui-reviewer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: Review web UI code for Web Interface Guidelines compliance (accessibility, UX, typography, forms, content handling, performance). Use when asked to review UI/UX, audit design, check accessibility, or review web interfaces.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-web-interface-guidelines
+    title: Web Interface Guidelines
+    source: references/web-interface-guidelines.md
+    target: references/web-interface-guidelines.md
+    required: true
+    trigger: Read this when you need the portable Web Interface Guidelines baseline and fallback.
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-web-interface-guidelines
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches web-ui-reviewer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - UI/UX reviews
+    - Accessibility checks
+    - Design audits
+    - '"Review my UI" requests'
+  whenNotToUse:
+    - The task is not a web UI, UX, accessibility, design, typography, form, content handling, or frontend performance review.
+    - The task is implementation work rather than review; use the relevant frontend or framework skill.
+    - The task is a security-first audit; use security-reviewer.
+  workflow:
+    - id: stage-apply-web-ui-reviewer
+      title: Apply web-ui-reviewer guidance
+      goal: Apply the preserved web-ui-reviewer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory web-ui-reviewer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
