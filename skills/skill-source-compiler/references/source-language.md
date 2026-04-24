@@ -18,10 +18,12 @@ Encode **semantics** in the manifest and use fragment files only for focused pro
 
 ## File kinds
 
-- `references`: active or optional linked docs inside `references/`
+- `references`: active or optional linked docs inside `references/`; omit this list for simple skills whose generated `SKILL.md` is self-contained
 - `assets`: templates and static resources inside `assets/`
 - `copies`: additional emitted files such as runtime scripts or tests when a skill is code-backed
 - `supporting`: non-normative docs, usually under `docs/`
+
+Reference files are for progressive disclosure, reusable detailed guidance, templates, or large content that would make `SKILL.md` harder to scan. Do not create placeholder references merely to satisfy the compiler; an empty active reference surface is valid.
 
 ## Version model
 
@@ -46,7 +48,7 @@ When the skill ships a CLI or other runtime artifact, prefer rooting `skill.yaml
 
 ## Rendering model
 
-The compiler renders `SKILL.md` from structured sections, then copies the declared files into their emitted targets.
+The compiler renders `SKILL.md` from structured sections, then copies the declared files into their emitted targets. Required and optional reference sections are emitted only when the source bundle declares reference ids for those surfaces.
 
 Frontmatter placement rule:
 

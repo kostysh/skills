@@ -17,7 +17,7 @@ var __exportAll = (all, no_symbols) => {
 //#endregion
 //#region package.json
 var name = "@kostysh/skill-source-compiler-cli";
-var version$1 = "0.2.0";
+var version$1 = "0.2.1";
 var description = "CLI utilities for the skill-source-compiler skill.";
 var type = "module";
 var bin = { "skill-source-compiler": "scripts/skill-source-compiler.mjs" };
@@ -10624,7 +10624,7 @@ var extractFrontmatter = (markdown) => {
 		frontmatter: browser_default.parse(match[1] ?? "")
 	};
 };
-var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeFile, diagnostics) => {
+var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeFile, diagnostics, options = {}) => {
 	let body = "";
 	let frontmatter = {};
 	try {
@@ -10652,14 +10652,16 @@ var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeF
 			message: `Frontmatter name ${parsedFrontmatter.data.name} does not match folder ${folderName}.`
 		});
 	}
-	for (const heading of [
+	const requiredHeadings = [
 		"## Start here",
 		"## When to use this skill",
 		"## When NOT to use this skill",
-		"## Required active references",
 		"## Portability rules",
-		"## Supporting and historical surface"
-	]) if (!body.includes(heading)) diagnostics.push({
+		"## Supporting and historical surface",
+		...options.requireRequiredReferencesHeading === true ? ["## Required active references"] : [],
+		...options.requireOptionalReferencesHeading === true ? ["## Optional references"] : []
+	];
+	for (const heading of requiredHeadings) if (!body.includes(heading)) diagnostics.push({
 		code: "missing-heading",
 		level: "error",
 		message: `Generated SKILL.md is missing heading: ${heading}`
@@ -10678,15 +10680,15 @@ var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeF
 		});
 	}
 	const requiredReferenceLinks = [...markdown.matchAll(/\[[^\]]+\]\((references\/[^)]+)\)/gu)].map((match) => match[1]).filter((value) => value !== void 0);
-	if (requiredReferenceLinks.length === 0) diagnostics.push({
-		code: "no-reference-links",
-		level: "error",
-		message: "Compiled SKILL.md does not link to any reference file."
-	});
 	for (const referencePath of requiredReferenceLinks) if (!relativeFiles.includes(referencePath)) diagnostics.push({
 		code: "missing-linked-reference",
 		level: "error",
 		message: `SKILL.md links to ${referencePath}, but the file is missing.`
+	});
+	for (const expectedReferenceLink of options.expectedReferenceLinks ?? []) if (!requiredReferenceLinks.includes(expectedReferenceLink)) diagnostics.push({
+		code: "missing-expected-reference-link",
+		level: "error",
+		message: `Generated SKILL.md is missing expected reference link: ${expectedReferenceLink}`
 	});
 };
 var collectEmittedRelativeFiles = (rendered) => {
@@ -10700,6 +10702,7 @@ var collectEmittedRelativeFiles = (rendered) => {
 	];
 	return [...new Set(files)].sort();
 };
+var collectExpectedActiveReferenceTargets = (rendered, referenceIds) => referenceIds.map((referenceId) => rendered.loaded.source.references.find((entry) => entry.id === referenceId)?.target).filter((target) => target !== void 0);
 var checkSourceBundle = async (skillDir) => {
 	const diagnostics = [];
 	const normalizedDir = resolve(skillDir);
@@ -10737,7 +10740,11 @@ var checkSourceBundle = async (skillDir) => {
 		const sourceFile = rendered.loaded.files.get(entry.source);
 		if (sourceFile !== void 0) sourceContentByTarget.set(entry.target, sourceFile.content);
 	}
-	await checkSkillMarkdown(normalizedDir, rendered.skillMarkdown, relativeFiles, (relativePath) => Promise.resolve(sourceContentByTarget.get(relativePath) ?? ""), diagnostics);
+	await checkSkillMarkdown(normalizedDir, rendered.skillMarkdown, relativeFiles, (relativePath) => Promise.resolve(sourceContentByTarget.get(relativePath) ?? ""), diagnostics, {
+		expectedReferenceLinks: [...collectExpectedActiveReferenceTargets(rendered, rendered.loaded.source.surfaces.active.requiredReferences), ...collectExpectedActiveReferenceTargets(rendered, rendered.loaded.source.surfaces.active.optionalReferences)],
+		requireOptionalReferencesHeading: rendered.loaded.source.surfaces.active.optionalReferences.length > 0,
+		requireRequiredReferencesHeading: rendered.loaded.source.surfaces.active.requiredReferences.length > 0
+	});
 	return finalizeResult(diagnostics);
 };
 /**

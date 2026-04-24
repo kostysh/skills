@@ -12,8 +12,8 @@ skill-name/
 ├── SKILL.md                  # generated output
 ├── skill.yaml                # source of truth for skill content
 ├── fragments/                # optional prose fragments rendered into SKILL.md
-├── references/              # active reference docs copied into the output
-├── assets/                  # templates and bundled static files
+├── references/              # optional active reference docs copied into the output
+├── assets/                  # optional templates and bundled static files
 ├── src/                     # source code for the shipped runtime
 ├── test/                    # tests for the shipped runtime and contracts
 ├── scripts/                 # built runtime artifacts copied into the output
@@ -27,6 +27,7 @@ Required setup:
 - define shipped commands in `skill.yaml` only if the runtime actually exposes them
 - include command runtime files and smoke tests under `copies`
 - keep `AGENTS.md` explicit about skill type, source of truth, and maintenance shortcuts
+- do not add placeholder `references/*` files for simple skills whose generated `SKILL.md` is self-contained
 
 ## Version model
 
@@ -51,7 +52,7 @@ The generated `SKILL.md` should stay focused on:
 
 - activation criteria
 - workflow stages
-- required references
+- required references when they exist
 - short gotchas and policies
 
 Move bulky detail into `references/*` when possible:
@@ -76,7 +77,7 @@ When maintaining a generated skill:
 5. run lint, typecheck, and tests from the workspace root
 
 Do not hand-edit generated `SKILL.md` as the source of truth.
-If compile warns that `SKILL.md` exceeds the recommended size, reduce root-file prose first and move detail into active references before increasing the limit.
+If compile warns that `SKILL.md` exceeds the recommended size, reduce root-file prose first and move detail into active references before increasing the limit. If a simple skill remains clear and under the recommended size, keep it self-contained instead of adding placeholder references.
 
 Use `compile <source-dir> --out-dir <independent-skills-dir>` only when you need an out-of-place packaged copy. The output directory must not be the source bundle, a parent of the source bundle, or a child of the source bundle.
 

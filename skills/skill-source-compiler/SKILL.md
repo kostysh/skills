@@ -9,9 +9,9 @@ compatibility: Designed for skills-compatible agents that can read Markdown
   files and copy local files inside the skill folder. The packaged CLI at
   scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9c3e0fc28d760f9aec44a0e69019a56a58601ecb72471fbe20dd01a1a84e0572
+  skillforge-source-hash: 23e118b9e459edeb0d681bdbce1faab552cf8d628e7ac5a321957e0784f769f8
 ---
 
 # skill-source-compiler
@@ -175,6 +175,7 @@ Validation:
 - **high** — Do not require repository files outside the emitted skill folder to understand or execute the skill.
 - **medium** — Do not silently guess through unresolved conflicts; emit a compile error instead.
 - **medium** — Never present a workflow stage as a runnable command unless the packaged CLI help surface actually exposes it.
+- **medium** — Do not create placeholder references for simple source bundles; reference sections are conditional and should exist only when they carry real active guidance.
 
 ## Policies
 
@@ -189,6 +190,9 @@ A workflow stage is not a runnable command unless the packaged CLI help surface 
 
 ### In-place regeneration
 In-place regeneration writes only compiler-owned generated files. Manifest entries whose source and target resolve to the same path are validation-only; non-same-path in-place copies fail closed until ownership is explicit.
+
+### Optional reference surface
+Source bundles may omit references when the generated SKILL.md is self-contained; checks must still validate declared or linked references when they exist.
 
 ## Required active references
 - [Source language](references/source-language.md) — Read this before mapping source bundle fields into generated sections.

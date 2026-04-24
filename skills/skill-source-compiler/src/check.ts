@@ -17,6 +17,12 @@ export interface CheckResult {
   readonly ok: boolean;
 }
 
+interface SkillMarkdownCheckOptions {
+  readonly expectedReferenceLinks?: readonly string[];
+  readonly requireOptionalReferencesHeading?: boolean;
+  readonly requireRequiredReferencesHeading?: boolean;
+}
+
 const finalizeResult = (diagnostics: readonly CheckDiagnostic[]): CheckResult => ({
   diagnostics,
   ok: diagnostics.every((entry) => entry.level !== 'error'),
@@ -40,6 +46,7 @@ const checkSkillMarkdown = async (
   relativeFiles: readonly string[],
   readRelativeFile: (relativePath: string) => Promise<string>,
   diagnostics: CheckDiagnostic[],
+  options: SkillMarkdownCheckOptions = {},
 ): Promise<void> => {
   let body = '';
   let frontmatter: unknown = {};
@@ -77,9 +84,10 @@ const checkSkillMarkdown = async (
     '## Start here',
     '## When to use this skill',
     '## When NOT to use this skill',
-    '## Required active references',
     '## Portability rules',
     '## Supporting and historical surface',
+    ...(options.requireRequiredReferencesHeading === true ? ['## Required active references'] : []),
+    ...(options.requireOptionalReferencesHeading === true ? ['## Optional references'] : []),
   ];
 
   for (const heading of requiredHeadings) {
@@ -114,13 +122,6 @@ const checkSkillMarkdown = async (
   const requiredReferenceLinks = [...markdown.matchAll(/\[[^\]]+\]\((references\/[^)]+)\)/gu)]
     .map((match) => match[1])
     .filter((value): value is string => value !== undefined);
-  if (requiredReferenceLinks.length === 0) {
-    diagnostics.push({
-      code: 'no-reference-links',
-      level: 'error',
-      message: 'Compiled SKILL.md does not link to any reference file.',
-    });
-  }
 
   for (const referencePath of requiredReferenceLinks) {
     if (!relativeFiles.includes(referencePath)) {
@@ -128,6 +129,16 @@ const checkSkillMarkdown = async (
         code: 'missing-linked-reference',
         level: 'error',
         message: `SKILL.md links to ${referencePath}, but the file is missing.`,
+      });
+    }
+  }
+
+  for (const expectedReferenceLink of options.expectedReferenceLinks ?? []) {
+    if (!requiredReferenceLinks.includes(expectedReferenceLink)) {
+      diagnostics.push({
+        code: 'missing-expected-reference-link',
+        level: 'error',
+        message: `Generated SKILL.md is missing expected reference link: ${expectedReferenceLink}`,
       });
     }
   }
@@ -145,6 +156,14 @@ const collectEmittedRelativeFiles = (rendered: RenderedSourceBundle): readonly s
 
   return [...new Set(files)].sort();
 };
+
+const collectExpectedActiveReferenceTargets = (
+  rendered: RenderedSourceBundle,
+  referenceIds: readonly string[],
+): readonly string[] =>
+  referenceIds
+    .map((referenceId) => rendered.loaded.source.references.find((entry) => entry.id === referenceId)?.target)
+    .filter((target): target is string => target !== undefined);
 
 const checkSourceBundle = async (skillDir: string): Promise<CheckResult> => {
   const diagnostics: CheckDiagnostic[] = [];
@@ -207,6 +226,22 @@ const checkSourceBundle = async (skillDir: string): Promise<CheckResult> => {
     relativeFiles,
     (relativePath) => Promise.resolve(sourceContentByTarget.get(relativePath) ?? ''),
     diagnostics,
+    {
+      expectedReferenceLinks: [
+        ...collectExpectedActiveReferenceTargets(
+          rendered,
+          rendered.loaded.source.surfaces.active.requiredReferences,
+        ),
+        ...collectExpectedActiveReferenceTargets(
+          rendered,
+          rendered.loaded.source.surfaces.active.optionalReferences,
+        ),
+      ],
+      requireOptionalReferencesHeading:
+        rendered.loaded.source.surfaces.active.optionalReferences.length > 0,
+      requireRequiredReferencesHeading:
+        rendered.loaded.source.surfaces.active.requiredReferences.length > 0,
+    },
   );
 
   return finalizeResult(diagnostics);

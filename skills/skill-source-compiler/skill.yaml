@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.2.1
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
@@ -240,6 +240,9 @@ sections:
     - id: gotcha-stage-command-drift
       priority: medium
       text: Never present a workflow stage as a runnable command unless the packaged CLI help surface actually exposes it.
+    - id: gotcha-placeholder-references
+      priority: medium
+      text: Do not create placeholder references for simple source bundles; reference sections are conditional and should exist only when they carry real active guidance.
   policies:
     - id: policy-active-surface
       title: Active normative surface
@@ -253,6 +256,9 @@ sections:
     - id: policy-in-place-regeneration
       title: In-place regeneration
       text: In-place regeneration writes only compiler-owned generated files. Manifest entries whose source and target resolve to the same path are validation-only; non-same-path in-place copies fail closed until ownership is explicit.
+    - id: policy-optional-references
+      title: Optional reference surface
+      text: Source bundles may omit references when the generated SKILL.md is self-contained; checks must still validate declared or linked references when they exist.
   portability:
     required: true
     rules:

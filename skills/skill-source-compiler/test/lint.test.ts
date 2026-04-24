@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { tmpdir } from "node:os";
@@ -10,10 +10,62 @@ import { lintSourceBundle } from "../src/lint.ts";
 const TEST_DIR = dirname(fileURLToPath(import.meta.url));
 const fixtureRoot = join(TEST_DIR, "..");
 
+const noReferenceManifest = `apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: simple-skill
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 12000
+  description: Simple generated skill without active references.
+
+surfaces:
+  active:
+    requiredReferences: []
+    optionalReferences: []
+  supportingGlobs: []
+
+sections:
+  startHere:
+    - Confirm the simple workflow applies.
+  whenToUse:
+    - Use for simple generated skill checks.
+  whenNotToUse:
+    - Do not use when references are required.
+  workflow:
+    - id: stage-simple
+      title: Simple stage
+      goal: Keep the bundle minimal.
+      steps:
+        - Run the simple step.
+      validation:
+        - The generated skill remains valid.
+  portability:
+    required: true
+    rules:
+      - Keep this generated skill portable.
+    checklist:
+      - Confirm no reference files are required.
+`;
+
 void test("lintSourceBundle accepts the example source bundle", async () => {
   const result = await lintSourceBundle(fixtureRoot);
   assert.equal(result.ok, true, result.diagnostics.map((entry) => entry.message).join("\n"));
   assert.deepEqual(result.diagnostics, []);
+});
+
+void test("lintSourceBundle accepts source bundles without active references", async () => {
+  const tempRoot = await mkdtemp(join(tmpdir(), "skillforge-lint-no-reference-"));
+
+  try {
+    await writeFile(join(tempRoot, "skill.yaml"), noReferenceManifest, "utf8");
+
+    const result = await lintSourceBundle(tempRoot);
+    assert.equal(result.ok, true, result.diagnostics.map((entry) => entry.message).join("\n"));
+    assert.deepEqual(result.diagnostics, []);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
 });
 
 void test("lintSourceBundle reports duplicate ids", async () => {

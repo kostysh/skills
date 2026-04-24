@@ -8,8 +8,8 @@ skill-name/
 ├── SKILL.md
 ├── skill.yaml
 ├── fragments/   # only if the source bundle uses fragment files
-├── references/
-├── assets/
+├── references/  # only if the source bundle declares references
+├── assets/      # only if the source bundle declares assets
 ├── scripts/     # only if the source bundle emits runtime files here
 ├── test/        # only if the source bundle emits tests here
 └── docs/
@@ -26,8 +26,8 @@ skill-name/
 7. Runnable commands (only if the skill actually ships commands)
 8. Gotchas
 9. Policies
-10. Active references
-11. Assets
+10. Active references (only when required or optional references are declared)
+11. Assets (only when bundled assets are declared)
 12. Portability
 13. Supporting surface
 14. Final checks
