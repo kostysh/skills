@@ -1,0 +1,121 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: code-reviewer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Systematic code review skill for pull requests, diffs, and local branch changes.
+    Use when asked to review code, audit a PR, find bugs or regressions, assess maintainability,
+    spec or intent alignment, or produce high-signal review feedback. Owns review workflow,
+    severity triage, evidence, and output conventions; pairs with domain skills for stack-specific
+    rules.
+fragments:
+  overview: fragments/overview.md
+references:
+  - id: ref-references-diff-completeness
+    title: Diff Completeness
+    source: references/diff-completeness.md
+    target: references/diff-completeness.md
+    required: true
+    trigger: Read this when you need full diff recovery, reviewed-file accounting, and pre-conclusion audit.
+  - id: ref-references-domain-routing
+    title: Domain Routing
+    source: references/domain-routing.md
+    target: references/domain-routing.md
+    required: true
+    trigger: Read this when you need which local skill to load for each file or change pattern.
+  - id: ref-references-findings-format
+    title: Findings Format
+    source: references/findings-format.md
+    target: references/findings-format.md
+    required: true
+    trigger: Read this when you need severity rubric, comment labels, and output templates.
+  - id: ref-references-methodology
+    title: Methodology
+    source: references/methodology.md
+    target: references/methodology.md
+    required: true
+    trigger: Read this when you need full review process, completeness audit, and pass-by-pass checks.
+  - id: ref-references-severity-confidence
+    title: Severity Confidence
+    source: references/severity-confidence.md
+    target: references/severity-confidence.md
+    required: true
+    trigger: Read this when you need how severity and confidence interact during triage.
+  - id: ref-references-spec-pass
+    title: Spec Pass
+    source: references/spec-pass.md
+    target: references/spec-pass.md
+    required: true
+    trigger: Read this when you need lightweight issue or spec alignment pass and escalation rules.
+assets:
+  - id: asset-assets-pr-review-template
+    source: assets/pr-review-template.md
+    target: assets/pr-review-template.md
+    description: "Bundled asset: assets/pr-review-template.md."
+  - id: asset-assets-review-checklist
+    source: assets/review-checklist.md
+    target: assets/review-checklist.md
+    description: "Bundled asset: assets/review-checklist.md."
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting: []
+surfaces:
+  active:
+    requiredReferences:
+      - ref-references-diff-completeness
+      - ref-references-domain-routing
+      - ref-references-findings-format
+      - ref-references-methodology
+      - ref-references-severity-confidence
+      - ref-references-spec-pass
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+sections:
+  startHere:
+    - Confirm the task matches code-reviewer's applicability criteria.
+    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Load only the active references that match the current task.
+    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+  whenToUse:
+    - Reviewing a pull request, diff, branch, or changed file set
+    - '"Review my changes", "find bugs in this patch", "what should block this merge"'
+    - Auditing maintainability, regression risk, test adequacy, or compatibility impact
+    - Running a lightweight issue or spec alignment check as part of normal PR review
+    - Producing concise review comments with severity and evidence
+  whenNotToUse:
+    - "Security-first or exploitability-driven review: use `security-reviewer`"
+    - "Full implementation-versus-spec compliance audit: use `spec-conformance-reviewer`"
+    - "UI, accessibility, or UX-only audit: use `web-ui-reviewer`"
+    - "Framework implementation guidance or design from scratch: use the relevant domain skill"
+    - "Test architecture or runner policy design: use `typescript-test-engineer`"
+  workflow:
+    - id: stage-apply-code-reviewer
+      title: Apply code-reviewer guidance
+      goal: Apply the preserved code-reviewer guidance without changing its domain behavior.
+      steps:
+        - Match the request to the applicability criteria.
+        - Follow the preserved overview sections for the concrete work.
+        - Read the smallest relevant active reference before using detailed guidance from it.
+        - Run the relevant verification from the overview or report why it could not be run.
+      validation:
+        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+  interop: []
+  commands: []
+  gotchas: []
+  policies: []
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory code-reviewer guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
