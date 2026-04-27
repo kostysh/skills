@@ -84,12 +84,14 @@ sections:
       goal: "Produce deterministic, behavior-focused tests and verify them through the relevant runner and coverage gates."
       steps:
         - "Identify test level, runner, TypeScript execution path, touched files, and changed behaviors."
-        - "Design isolated fixtures, mocks, and assertions that prove the named risk or behavior."
+        - "For side-effecting/state-changing behavior, list applicable negative matrix rows and mark irrelevant rows N/A with a reason."
+        - "Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components."
         - "Implement tests with clear Arrange-Act-Assert and event listeners registered before actions that emit events."
         - "Run relevant tests, inspect output and warnings, resolve introduced deprecations, and run coverage checkpoints when required."
         - "For CI workflow changes, validate touched YAML and pair with security-reviewer when permissions, secrets, or untrusted inputs change."
       validation:
         - "Tests assert observable behavior and do not rely on shared mutable global state or real network calls."
+        - "Relevant side-effecting/state-changing risks are covered or explicitly marked N/A by relevance."
         - "Relevant tests pass, warnings are resolved or documented, and coverage policy is followed."
   interop:
     - id: "interop-typescript"

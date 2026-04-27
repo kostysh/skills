@@ -6,16 +6,16 @@
 
 | Issue | Status | Notes |
 | --- | --- | --- |
-| [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Audited | Negative matrix для side-effecting/state-changing workflows и contract tests для fixtures/test doubles. |
+| [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Implemented | Negative matrix для side-effecting/state-changing workflows и contract tests для fixtures/test doubles. |
 
 ## Implementation Plans
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
-| [issues/implementation-plan-20260425-1.md](issues/implementation-plan-20260425-1.md) | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Audited PASS |
+| [issues/implementation-plan-20260425-1.md](issues/implementation-plan-20260425-1.md) | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Implemented |
 
 ## Implementation Logs
 
 | Log | Related issue | Status |
 | --- | --- | --- |
-| _None yet_ | _None_ | _Not started_ |
+| [logs/implementation-log-20260425-1.md](logs/implementation-log-20260425-1.md) | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | PASS |

@@ -35,6 +35,28 @@ Specific findings to look for:
 - mocks that bypass the real edge the change was supposed to exercise;
 - CI or workflow changes that reduce which tests actually run.
 
+## Side-effecting/state-changing workflow negative matrix
+
+Use this matrix when the changed behavior can mutate state, produce side effects, retry work, replay commands/events, enter terminal states, call an external executor, or persist partial evidence/state. It applies by risk relevance across TypeScript systems; it is not limited to database-backed code.
+
+Before writing or reviewing tests, list the applicable rows in the test plan, review notes, or handover. Rows that do not apply should be marked `N/A` with a short reason. `N/A` rows do not require tests; the point is to make the risk decision visible instead of silently skipping it.
+
+| Row | Risk to consider | Coverage intent |
+| --- | --- | --- |
+| duplicate request / repeated command | same command, event, idempotency key, request ID, or operator action is submitted twice | prove duplicate handling is rejected, deduped, or idempotent according to the contract |
+| concurrent request / parallel command | two actors or workers attempt the same transition or mutation in parallel | prove locking, conflict detection, or deterministic winning behavior |
+| state read failure | current state cannot be loaded or decoded before deciding the transition | prove the workflow fails closed, surfaces the expected error, and does not continue from guessed state |
+| state write failure | the final state, event, evidence, or side effect marker cannot be persisted | prove the workflow reports failure and does not claim completion without the write |
+| completion conflict | completion races with another completion, cancellation, retry, or terminal transition | prove only the allowed terminal result wins and the loser is reported or ignored by contract |
+| terminal replay / terminal overwrite attempt | an already terminal workflow is replayed or asked to move to another terminal state | prove terminal state is preserved and cannot be overwritten accidentally |
+| live running replay versus stale recovery | replay finds an active in-flight run versus a stale run that should be recovered | prove live work is not duplicated while stale work follows the documented recovery path |
+| external executor failure | external job, API, child process, queue worker, browser, model, or runtime executor fails | prove failure is captured, state/evidence remains consistent, and retry or terminal handling follows contract |
+| invalid, unknown or stale input | input references unknown state, unsupported command, outdated version, stale token, or obsolete evidence | prove the workflow rejects or normalizes the input without corrupting state |
+| partial evidence/state after failure | failure occurs after some evidence, events, files, rows, or side-effect markers were written | prove later reads, retries, and reviews see a coherent partial state or an explicit failure marker |
+| retry after partial success | retry occurs after an earlier attempt completed only some writes or external side effects | prove retry resumes, dedupes, compensates, or rejects according to the contract without double-applying side effects |
+
+Do not turn the matrix into a required test count. One test can cover multiple related rows when the scenario truly exercises them. A row can be covered by unit, integration, E2E, or contract tests depending on where the invariant lives.
+
 ## Replay and rate-limit regression tests
 
 Use this only for replay, idempotency, quota, or rate-limit fixes.

@@ -225,7 +225,54 @@ BEFORE creating mock responses:
   If uncertain: Include all documented fields
 ```
 
-## Anti-Pattern 5: Integration Tests as Afterthought
+## Anti-Pattern 5: State-Changing Test Doubles Without Contract Tests
+
+**The violation:**
+```typescript
+// X BAD: in-memory model has its own state machine, but only production code is tested
+const store = new InMemoryWorkflowStore();
+
+await store.complete("run-1");
+await store.complete("run-1"); // fixture accidentally allows terminal overwrite
+```
+
+**Why this is wrong:**
+- A fixture, model, or test double that replaces a production state-changing component can repeat the same defect as production code.
+- Tests then confirm the fake's behavior instead of protecting the invariant shared with production.
+- State machines are especially vulnerable when transitions, terminal states, conflicts, or replay behavior are duplicated in helpers.
+
+**The fix:**
+```typescript
+// OK GOOD: one contract suite runs against both implementations
+runWorkflowStoreContract("production store", createProductionStore);
+runWorkflowStoreContract("in-memory store", createInMemoryStore);
+```
+
+The shared contract suite should assert observable invariants against both implementations. It is not testing mock internals; it is proving that the double preserves the same externally visible contract as production.
+
+For state machines, the contract table usually covers:
+- allowed transitions;
+- terminal states;
+- conflict behavior;
+- replay behavior.
+
+Do this only when the fixture/model/test double replaces a production state-changing component. Simple value builders, static response objects, and pure stubs do not need a contract suite unless they encode state-changing behavior.
+
+### Gate Function
+
+```
+BEFORE trusting a state-changing test double:
+  Ask: "Does this double replace production state-changing behavior?"
+
+  IF yes:
+    Extract the shared invariants into a contract suite
+    Run the suite against production and the double
+
+  IF no:
+    Keep the double minimal and avoid testing its internals
+```
+
+## Anti-Pattern 6: Integration Tests as Afterthought
 
 **The violation:**
 ```
@@ -248,7 +295,7 @@ TDD cycle:
 4. THEN claim complete
 ```
 
-## Anti-Pattern 6: Closing a Stage Without Coverage Checkpoints
+## Anti-Pattern 7: Closing a Stage Without Coverage Checkpoints
 
 **The violation:**
 ```
@@ -270,7 +317,7 @@ X Coverage was never run after final changes
 4. Record checkpoint result before closure
 ```
 
-## Anti-Pattern 7: Never-Resolving Promises in Tests
+## Anti-Pattern 8: Never-Resolving Promises in Tests
 
 **The violation:**
 ```typescript
@@ -304,7 +351,7 @@ BEFORE using a pending promise in test mocks:
     STOP - add deferred + explicit settle path
 ```
 
-## Anti-Pattern 8: Async Callback Inside waitFor
+## Anti-Pattern 9: Async Callback Inside waitFor
 
 **The violation:**
 ```typescript
@@ -329,7 +376,7 @@ const draft = await readDraft(scope);
 expect(draft).toBeNull();
 ```
 
-## Anti-Pattern 9: Acting Before UI Is Ready
+## Anti-Pattern 10: Acting Before UI Is Ready
 
 **The violation:**
 ```typescript
@@ -379,6 +426,7 @@ await user.click(submit);
 | Test-only methods in production | Move to test utilities |
 | Mock without understanding | Understand dependencies first, mock minimally |
 | Incomplete mocks | Mirror real API completely |
+| State-changing double without contract tests | Run shared contract suite against production and the double |
 | Tests as afterthought | TDD - tests first |
 | No final coverage checkpoint | Run and record coverage before closure |
 | Never-settled promises in test mocks | Use deferred and always resolve/reject |
@@ -394,6 +442,7 @@ await user.click(submit);
 - Test fails when you remove mock
 - Can't explain why mock is needed
 - Mocking "just to be safe"
+- State-changing fixture/model has no shared contract suite with production
 - No recorded coverage checkpoint at milestone/final closure
 - Pending mock promises without explicit settle path
 - `waitFor` callback contains `await`

@@ -122,7 +122,7 @@
 - `pnpm --filter @kostysh/typescript-test-engineer test`
 - `git diff --check -- skills/typescript-test-engineer`
 - Active-surface portability scan:
-  - `rg -n "/home/|/code/projects/|C:\\\\|plan-slice|unified-dossier|dossier|backlog" skills/typescript-test-engineer/SKILL.md skills/typescript-test-engineer/skill.yaml skills/typescript-test-engineer/fragments skills/typescript-test-engineer/references`
+  - scan `SKILL.md`, `skill.yaml`, `fragments/*` and `references/*` for machine-specific absolute paths, Windows drive paths, and workflow-specific terms such as `plan-slice`, `unified-dossier`, `dossier`, or `backlog`.
 - Manual parity checks:
   - `SKILL.md` points agents to the new matrix/fixture guidance through generated quick workflow and required references;
   - every required matrix row from issue appears in active guidance;
