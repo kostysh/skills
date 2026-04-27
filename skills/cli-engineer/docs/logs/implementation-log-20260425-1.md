@@ -61,6 +61,27 @@ None.
 - Generated `SKILL.md` and `docs/compile-report.md` changed as expected after source bundle regeneration.
 - No runtime, parser framework, or package recommendation changed.
 
+## Independent Audit
+
+Audit status: `PASS`
+
+Auditor: spawned agent `Sagan`
+
+Audit criteria:
+- Conformance to `issue-20260425-1` acceptance criteria.
+- Conformance to audited `implementation-plan-20260425-1`.
+- Source-bundle/generated-output parity.
+- Portability and framework/parser neutrality.
+- Sufficiency and truthfulness of recorded verification.
+
+Audit notes:
+- Auditor found no blocking findings.
+- Auditor confirmed the implementation satisfies the protected command definition, per-action allowlist guidance, unknown/removed/prohibited legacy flag rejection, deprecated alias migration handling, fail-before-side-effects testing guidance, ordinary-vs-protected distinction, CLI/domain boundary, portability, and generated output coherence.
+- Residual risk: exact edit chronology cannot be proven from the commit, but compiler checks confirm generated outputs match the source bundle.
+
+Required corrections:
+- None.
+
 ## Follow-up
 
 None.
