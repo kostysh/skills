@@ -35,6 +35,7 @@ Current status:
 | [issues/issue-20260424-4.md](issues/issue-20260424-4.md) | Issue для implementation pre-review risk checklist evidence. | Читать при изменении implementation readiness, high-risk risk-family declarations или policy/admission checklist evidence. |
 | [implementation-plan-20260424-4.md](issues/implementation-plan-20260424-4.md) | План имплементации для implementation pre-review risk checklist evidence. | Читать перед изменением implementation `ready_for_close`, risk-family declarations, pre-review checklist schema или checklist readiness gating. |
 | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Issue для canonical audit handoff recipes, protected side-effect `plan-slice` handoff и pre-close hygiene rehearsal. | Читать при изменении audit prompt recipes, `plan-slice` risk presets, reviewer handoff, closure ritual или pre/post-close hygiene guidance. |
+| [implementation-plan-20260425-1.md](issues/implementation-plan-20260425-1.md) | План имплементации для canonical audit handoff recipes, protected side-effect `plan-slice` handoff и pre-close hygiene rehearsal. | Читать перед изменением audit handoff recipes, review accounting boundary, protected side-effect preset или pre-close hygiene rehearsal. |
 | [refactoring-plan-3.ru.md](issues/refactoring-plan-3.ru.md) | Implementation plan for restoring canonical dossier-stage audit policy, including stage-wide external-review baseline and required implementation audit bundles. | Read before changing dossier-stage review policy, review telemetry, or `review-artifact` semantics. |
 | [refactoring-plan-4.ru.md](issues/refactoring-plan-4.ru.md) | Implementation plan for removing stale split-skill / merge-era wording from the active and operator-facing surface of the canonical unified skill. | Read before cleaning source-bundle wording, generated `SKILL.md`, or help/runtime identity text. |
 | [refactoring-plan-5.ru.md](issues/refactoring-plan-5.ru.md) | Implementation plan for adding a goal-oriented `plan-slice` handoff contract with explicit execution target and fail-closed ambiguous objective handling. | Read before changing `plan-slice` active workflow semantics, stage-controller readiness wording, or planning docs-contract tests. |
@@ -81,7 +82,7 @@ Current status:
 | [issue-20260424-2.md](issues/issue-20260424-2.md) | [implementation-plan-20260424-2.md](issues/implementation-plan-20260424-2.md) | [implementation-log-20260424-2.md](logs/implementation-log-20260424-2.md) | Implemented |
 | [issue-20260424-3.md](issues/issue-20260424-3.md) | [implementation-plan-20260424-3.md](issues/implementation-plan-20260424-3.md) | [implementation-log-20260424-3.md](logs/implementation-log-20260424-3.md) | Implemented |
 | [issue-20260424-4.md](issues/issue-20260424-4.md) | [implementation-plan-20260424-4.md](issues/implementation-plan-20260424-4.md) | [implementation-log-20260424-4.md](logs/implementation-log-20260424-4.md) | Implemented |
-| [issue-20260425-1.md](issues/issue-20260425-1.md) | Pending | Pending | Audited, plan pending |
+| [issue-20260425-1.md](issues/issue-20260425-1.md) | [implementation-plan-20260425-1.md](issues/implementation-plan-20260425-1.md) | Pending | Audited, plan audited |
 
 ## Scope of This Folder
 
