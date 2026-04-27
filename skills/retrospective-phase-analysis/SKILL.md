@@ -13,7 +13,7 @@ compatibility: Requires access to the project workspace, session trace files,
 metadata:
   source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: acba227452446455211968f536290a434f8e0cf8d8fa79ea9d69f58d44dd7ec0
+  skillforge-source-hash: 87629b1052e131eef3826afb06289745a8df3781a70c12e3fff539587716ec04
 ---
 
 # retrospective-phase-analysis

@@ -77,6 +77,8 @@ Generated from `skill.yaml`.
 - `test/fixtures/rpa-05/stage-log-referenced-only.md`
 - `test/fixtures/rpa-05/stage-log-structured-review.md`
 - `test/fixtures/rpa-05/structured-stage-state.json`
+- `test/fixtures/rpa-06/project/.dossier/logs/implementation.md`
+- `test/fixtures/rpa-06/session-compacted-with-raw-trace.jsonl`
 - `test/fixtures/sessions/multi-feature-session.jsonl`
 - `test/fixtures/sessions/phase-session-with-apply-patch-body-mention.jsonl`
 - `test/fixtures/sessions/phase-session-with-log-link.jsonl`

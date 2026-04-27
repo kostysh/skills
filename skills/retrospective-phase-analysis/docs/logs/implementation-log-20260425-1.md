@@ -41,6 +41,11 @@ Status: implemented and audited
 - `node skills/skill-source-compiler/scripts/skill-source-compiler.mjs regenerate skills/retrospective-phase-analysis` — pass.
 - `node skills/skill-source-compiler/scripts/skill-source-compiler.mjs lint skills/retrospective-phase-analysis` — pass.
 - `node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/retrospective-phase-analysis` — pass.
+- `node skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile skills/retrospective-phase-analysis --out-dir <tmp>/rpa06-compile.CmwHR2` — pass.
+- `test -f <tmp>/rpa06-compile.CmwHR2/retrospective-phase-analysis/test/fixtures/rpa-06/session-compacted-with-raw-trace.jsonl` — pass.
+- `test -f <tmp>/rpa06-compile.CmwHR2/retrospective-phase-analysis/test/fixtures/rpa-06/project/.dossier/logs/implementation.md` — pass.
+- `node --experimental-strip-types --test test/report.test.ts test/scan.test.ts` in compiled skill — pass.
+- `node scripts/skill-source-compiler.mjs check <tmp>/rpa06-compile.CmwHR2/retrospective-phase-analysis` — pass.
 - `rg -n -P '(^|[^A-Za-z])([A-Za-z]:[\\/]|/(home|code|Users)/)' skills/retrospective-phase-analysis --glob '!scripts/*.map'` — pass, no matches.
 
 ## Decisions
@@ -63,6 +68,14 @@ Status: implemented and audited
 
 Local implementation audit: `PASS`.
 
+External implementation audit:
+
+- Auditor: `Kepler`.
+- Initial verdict: `FAIL`.
+- Blocking finding: RPA-06 regression fixtures were not declared in `skill.yaml` `copies`, so out-of-place compiled skills omitted `test/fixtures/rpa-06/*` and compiled `report.test.ts` failed.
+- Correction: added both RPA-06 fixture files to `skill.yaml` `copies` and regenerated generated outputs.
+- Re-audit verdict: `PASS`.
+
 Audit criteria:
 
 - conformance to `RPA-06` acceptance criteria and implementation constraints;
@@ -76,12 +89,12 @@ Findings:
 
 Notes:
 
-- The `RPA-06` fixture stage log is intentionally under `.dossier/logs`; the repository ignore rule for `logs` means it must be force-added when committing.
-- External spawned-agent audit was not run in this implementation pass.
+- The `RPA-06` fixture stage log is intentionally under `.dossier/logs`; the repository ignore rule for `logs` means it was force-added in the implementation commit.
+- External audit confirmed the blocking portability issue is resolved: both RPA-06 fixtures are now in `skill.yaml`, `docs/compile-report.md`, and the out-of-place compiled skill.
 
 ## Follow-up
 
-- Force-add the ignored fixture stage log when committing implementation changes.
+- None.
 
 ## Final Status
 
