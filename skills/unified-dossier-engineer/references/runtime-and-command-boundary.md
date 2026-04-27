@@ -95,6 +95,7 @@ Contract for this family:
 Audit-policy rule for this family:
 
 - `review-artifact` persists one immutable already obtained audit attempt for one audit class;
+- audit handoff recipes may tell reviewers to run `dossier-engineer review-artifact` after deciding PASS or FAIL, but the runtime does not synthesize reviewer prompts or perform the audit;
 - default review-attempt paths are bounded deterministic artifacts under `.dossier/reviews/<feature>/`;
 - stable/latest review paths, when written, are backward-compatible full JSON copies that point back to the immutable attempt and are not the only durable evidence;
 - `dossier-step-close` validates the policy-required audit bundle for the stage being closed;
@@ -224,6 +225,7 @@ Command-local help must:
 - do not let top-level help blur backlog truth commands with delivery-stage commands;
 - do not let helper commands absorb stage-controller responsibilities or vice versa;
 - do not imply that stage-controller commands author or validate semantic `plan-slice` execution-target content;
+- do not imply that runtime commands infer protected side-effect presets or perform pre-close hygiene rehearsal;
 - do not imply runtime support for automatic operator-language detection, translation, or localization unless shipped runtime code and tests explicitly implement that behavior;
 - do not imply `dossier-step-close` auto-refreshes sources or auto-resolves source reviews;
 - do not imply support for alternate roots, extra launchers, or unshipped adaptation flows.

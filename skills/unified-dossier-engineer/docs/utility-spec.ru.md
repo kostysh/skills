@@ -646,6 +646,16 @@ While a source-review record is open:
 queue -> items -> feature-intake -> spec-compact -> plan-slice -> implementation -> dossier-verify -> review-artifact* -> dossier-step-close -> lifecycle-refresh
 ```
 
+Before final implementation verification and the final review bundle, agents should run a pre-close hygiene rehearsal when refresh/status/attention/source-review checks can open or update backlog/source-review truth. The rehearsal runs refresh/status/attention/source-review checks without auto-ack, resolves discovered blockers through explicit backlog truth actions, and requires rerunning affected verification and review artifacts before `dossier-step-close` when material backlog/source-review mutation happens after earlier audits.
+
+Final implementation close sequencing is:
+
+```text
+material commit freeze -> external reviewers write immutable review artifacts -> final verification -> dossier-step-close -> post-close hygiene
+```
+
+After material commit freeze, agents must not make material source/test/backlog truth changes before the final review artifacts are recorded. External reviewers record PASS or FAIL through `review-artifact`, final verification corresponds to the same material scope reviewed by those auditors, and any material mutation after final audits or final verification requires rerunning affected verification and affected review artifacts before `dossier-step-close`.
+
 After successful `implementation` close, final branch-complete reporting and next-intake recommendation require explicit post-close backlog hygiene evidence:
 
 ```text
@@ -669,6 +679,8 @@ Selected-feature lifecycle close targets:
 - `implementation -> implemented`
 
 `dossier-step-close` validates current backlog truth against these targets. A managed backlog actualization artifact may be recorded as trace evidence, but it does not override current-state validation.
+
+`plan-slice` protected side-effect handoff remains semantic agent-owned guidance. If implementation touches deploy, rollback, release, external executor, host/container boundary, caller-controlled input, or another protected side effect, the plan and audit scope must call out reservation before side effect, idempotent replay behavior, terminal CAS / no terminal overwrite, strict caller input, and live-vs-stale running behavior. Stage-controller commands do not infer or validate those invariants.
 
 ## 8.4 Mature change path
 
@@ -805,6 +817,7 @@ Required utility-level rules:
 - `queue` must not silently return a mapped done feature as ordinary ready work;
 - no command may infer missing truth from prose.
 - no command may treat a mechanical `plan-slice --ready-for-close` transition as automatic proof that the implementation objective is clear; that semantic readiness remains agent-owned unless a future runtime explicitly implements and tests such validation.
+- no command may synthesize audit handoff prompts, infer protected side-effect presets, auto-ack source reviews during pre-close hygiene rehearsal, or replace post-close hygiene confirmation.
 - no automatic language detection or translation is part of the shipped runtime unless a future change implements and tests it explicitly.
 
 ## 12. Non-goals for first merged runtime

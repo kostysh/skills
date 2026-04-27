@@ -3,6 +3,7 @@
 Use this reference when maintaining the shipped stage-controller model for primary delivery workflows in this skill.
 
 Use it together with [Implementation pre-review checklists](implementation-pre-review-checklists.md) when changing implementation risk-family inputs or pre-review readiness gates.
+Use it together with [Audit handoff recipes](audit-handoff-recipes.md) when changing reviewer handoff prompts or audit recording guidance.
 
 ## Purpose
 
@@ -249,6 +250,8 @@ Required alignment:
 - for every mutating stage, helper-owned close-out must enforce the required external audit bundle defined in [Audit policy](audit-policy.md).
 - implementation pre-review checklist evidence is author-side readiness context only; it does not satisfy or weaken the external audit bundle.
 - post-close backlog hygiene is branch/readiness evidence after closure; it does not replace `dossier-step-close` and must not auto-ack source-review records.
+- for `plan-slice`, protected side-effect preset content is agent-owned semantic handoff and audit-scope content. The stage controller must not infer it from filenames, diffs, keywords, chat summaries, or prose.
+- pre-close hygiene rehearsal before final verification/review is an agent-owned ordering guard; stage-controller commands do not auto-run refresh/status/attention/source-review checks or auto-ack source reviews.
 
 ## Utility-spec handoff
 
@@ -276,4 +279,6 @@ The utility specification and runtime packages now ship this boundary in first-w
 - do not let `dossier-step-close` silently absorb the explicit `post-close-hygiene` checkpoint
 - do not make stage-controller commands semantic automation
 - do not treat a mechanical `ready_for_close` transition as a substitute for agent-owned `plan-slice` execution-target clarity
+- do not imply that stage controllers author, infer, or validate protected side-effect invariants
+- do not imply that stage controllers perform pre-close hygiene rehearsal
 - do not let commandized stage control blur the boundary between delivery progress and backlog truth mutation

@@ -7,6 +7,7 @@ Use it together with:
 - [Delivery workflow layer](delivery-workflow-layer.md)
 - [Commandized stage control](commandized-stage-control.md)
 - [Audit policy](audit-policy.md)
+- [Audit handoff recipes](audit-handoff-recipes.md)
 - [Telemetry and closure](telemetry-and-closure.md)
 
 ## Purpose
@@ -16,6 +17,8 @@ Implementation pre-review checklists are author-side readiness evidence for expl
 They exist to move obvious high-risk branch checks before external review handoff. They are not correctness proof, not audit evidence, not launch-mode proof, and not a replacement for required external independent audits.
 
 `implementation-discipline` remains general coding discipline. The pre-review checklist mechanism belongs to dossier workflow readiness because it records durable implementation-stage evidence under `.dossier/stages/*` and mirrored implementation log frontmatter.
+
+Protected side-effect preset guidance in `plan-slice` handoff is separate audit-scope content. It does not become a pre-review checklist unless the implementation agent explicitly declares a risk family through the implementation stage controller.
 
 ## Explicit declaration rule
 

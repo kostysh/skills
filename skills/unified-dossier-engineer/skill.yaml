@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: unified-dossier-engineer
-  source-version: 0.2.0
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 26000
   description: >-
     Build and maintain the canonical dossier/backlog skill and its CLI runtime.
@@ -59,6 +59,12 @@ references:
     target: references/audit-policy.md
     required: true
     trigger: Read this when changing mutating-stage review policy, review bundles, review freshness, or truthful close-out rules.
+  - id: ref-audit-handoff-recipes
+    title: Audit handoff recipes
+    source: references/audit-handoff-recipes.md
+    target: references/audit-handoff-recipes.md
+    required: true
+    trigger: Read this when launching blocking external audits or preparing reviewer handoff prompts.
   - id: ref-telemetry-and-closure
     title: Telemetry and closure
     source: references/telemetry-and-closure.md
@@ -153,6 +159,7 @@ surfaces:
       - ref-source-review-contract
       - ref-delivery-workflow-layer
       - ref-audit-policy
+      - ref-audit-handoff-recipes
       - ref-telemetry-and-closure
       - ref-commandized-stage-control
       - ref-implementation-pre-review-checklists

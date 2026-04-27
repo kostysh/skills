@@ -12,6 +12,7 @@ const SKILL_YAML_PATH = path.join(SKILL_DIR, 'skill.yaml');
 const PACKAGE_JSON_PATH = path.join(SKILL_DIR, 'package.json');
 const STATUS_SCOPE_PATH = path.join(SKILL_DIR, 'references', 'status-and-scope.md');
 const AUDIT_POLICY_PATH = path.join(SKILL_DIR, 'references', 'audit-policy.md');
+const AUDIT_HANDOFF_RECIPES_PATH = path.join(SKILL_DIR, 'references', 'audit-handoff-recipes.md');
 const RUNTIME_BOUNDARY_PATH = path.join(SKILL_DIR, 'references', 'runtime-and-command-boundary.md');
 const DELIVERY_WORKFLOW_PATH = path.join(SKILL_DIR, 'references', 'delivery-workflow-layer.md');
 const TELEMETRY_CLOSURE_PATH = path.join(SKILL_DIR, 'references', 'telemetry-and-closure.md');
@@ -39,6 +40,7 @@ const ACTIVE_REFERENCE_PATHS = [
   SOURCE_REVIEW_CONTRACT_PATH,
   DELIVERY_WORKFLOW_PATH,
   AUDIT_POLICY_PATH,
+  AUDIT_HANDOFF_RECIPES_PATH,
   TELEMETRY_CLOSURE_PATH,
   STAGE_CONTROL_PATH,
   PRE_REVIEW_CHECKLISTS_PATH,
@@ -161,7 +163,9 @@ void test('source bundle and package manifest expose only the canonical launcher
     'scripts/dossier-engineer.mjs',
     'Canonical runtime shipped',
     'references/audit-policy.md',
+    'references/audit-handoff-recipes.md',
     'references/implementation-pre-review-checklists.md',
+    'ref-audit-handoff-recipes',
     'ref-implementation-pre-review-checklists',
     'command-post-close-hygiene',
   ]);
@@ -295,6 +299,133 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     'non-forked/no-full-history external review',
     'does not prove the reviewer launch mode',
     'helper-owned close-out must enforce the required external audit bundle defined in [Audit policy](audit-policy.md).',
+  ]);
+});
+
+void test('audit handoff recipes are active, complete, and helper-boundary safe', async () => {
+  const [
+    skill,
+    skillYaml,
+    auditRecipes,
+    auditPolicy,
+    deliveryWorkflow,
+    stageControl,
+    telemetryClosure,
+    runtimeBoundary,
+    utilitySpec,
+  ] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(SKILL_YAML_PATH, 'utf8'),
+    readFile(AUDIT_HANDOFF_RECIPES_PATH, 'utf8'),
+    readFile(AUDIT_POLICY_PATH, 'utf8'),
+    readFile(DELIVERY_WORKFLOW_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(skill, [
+    'Use the audit handoff recipes when launching required external audits',
+    'Audit handoff recipes',
+  ]);
+  assertContainsTerms(skillYaml, [
+    'ref-audit-handoff-recipes',
+    'references/audit-handoff-recipes.md',
+    'Read this when launching blocking external audits or preparing reviewer handoff prompts.',
+  ]);
+  assertContainsTerms(auditRecipes, [
+    'Audit task:',
+    'Audit class:',
+    'Checked scope:',
+    'Trace commit:',
+    'Read-only audit analysis',
+    'Do not change product/source/test/backlog truth files.',
+    'Do not change `HEAD`',
+    'After deciding PASS or FAIL, record only the review verdict through `dossier-engineer review-artifact`.',
+    'That helper-owned accounting write is allowed only for managed review artifact / stage-state evidence',
+    'Any other reviewer mutation invalidates the audit.',
+    'Shared risk map',
+    'Reviewer focus',
+    '`spec-conformance-reviewer`',
+    '`code-reviewer`',
+    '`security-reviewer`',
+    'PASS command templates',
+    'FAIL command templates',
+    '--audit-class spec-conformance-reviewer --verdict PASS',
+    '--audit-class spec-conformance-reviewer --verdict FAIL',
+    '--audit-class code-reviewer --verdict PASS',
+    '--audit-class code-reviewer --verdict FAIL',
+    '--audit-class security-reviewer --verdict PASS',
+    '--audit-class security-reviewer --verdict FAIL',
+    '--security-trigger-reason <reason>',
+    'A required blocking audit round is incomplete until `review-artifact` writes one immutable attempt artifact',
+  ]);
+  assertContainsTerms(auditPolicy, [
+    '[Audit handoff recipes](audit-handoff-recipes.md)',
+    'Read-only audit analysis means the reviewer must not change product/source/test/backlog truth files',
+    'must not change `HEAD`',
+    'narrow helper-owned `review-artifact` accounting write is allowed',
+    'limited to managed review artifact / stage-state evidence',
+    'Any other reviewer mutation invalidates the audit',
+    'A blocking audit round is not complete until `review-artifact` records the immutable attempt artifact',
+  ]);
+  assertContainsTerms(deliveryWorkflow, [
+    'protected side-effect risk preset',
+    'deploy, rollback, release, external executor, host/container boundary, caller-controlled input, or another protected side effect',
+    'reservation before side effect',
+    'idempotent replay behavior',
+    'terminal CAS / no terminal overwrite',
+    'strict caller input',
+    'live-vs-stale running behavior',
+    'pre-close hygiene rehearsal',
+    'runs those checks without auto-ack',
+    'reruns final verification and affected audits',
+    'pre-close hygiene rehearsal does not replace post-close hygiene',
+    'material commit freeze -> external reviewers write immutable review artifacts -> final verification -> dossier-step-close -> post-close hygiene',
+    'do not make material source/test/backlog truth changes before the final review artifacts are recorded',
+    'external reviewers must record PASS or FAIL through `review-artifact`',
+    'final verification must correspond to the same material scope reviewed by the external auditors',
+    'rerun affected verification and affected review artifacts before `dossier-step-close`',
+    'post-close hygiene remains a separate confirmation after close',
+  ]);
+  assertContainsTerms(stageControl, [
+    'protected side-effect preset content is agent-owned semantic handoff and audit-scope content',
+    'must not infer it from filenames, diffs, keywords, chat summaries, or prose',
+    'pre-close hygiene rehearsal before final verification/review is an agent-owned ordering guard',
+    'do not imply that stage controllers author, infer, or validate protected side-effect invariants',
+  ]);
+  assertContainsTerms(telemetryClosure, [
+    'Audit handoff recipes, shared risk maps, protected side-effect presets, and pre-close hygiene rehearsal use existing artifact families and narrative sections.',
+    'must not introduce new mandatory stage-log fields',
+    'Immutable review attempts and helper-managed stage state remain the durable review evidence.',
+  ]);
+  assertContainsTerms(runtimeBoundary, [
+    'the runtime does not synthesize reviewer prompts or perform the audit',
+    'do not imply that runtime commands infer protected side-effect presets or perform pre-close hygiene rehearsal',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'pre-close hygiene rehearsal',
+    'without auto-ack',
+    'requires rerunning affected verification and review artifacts before `dossier-step-close`',
+    'material commit freeze -> external reviewers write immutable review artifacts -> final verification -> dossier-step-close -> post-close hygiene',
+    'must not make material source/test/backlog truth changes before the final review artifacts are recorded',
+    'External reviewers record PASS or FAIL through `review-artifact`',
+    'final verification corresponds to the same material scope reviewed by those auditors',
+    'deploy, rollback, release, external executor, host/container boundary, caller-controlled input, or another protected side effect',
+    'reservation before side effect',
+    'idempotent replay behavior',
+    'terminal CAS / no terminal overwrite',
+    'strict caller input',
+    'live-vs-stale running behavior',
+    'no command may synthesize audit handoff prompts',
+    'auto-ack source reviews during pre-close hygiene rehearsal',
+    'replace post-close hygiene confirmation',
+  ]);
+  assertNotContainsTerms(auditRecipes, [
+    'new mandatory workflow stage',
+    'new stage-log field',
+    'change global reviewer skills',
   ]);
 });
 

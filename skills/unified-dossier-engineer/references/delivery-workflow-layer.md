@@ -5,6 +5,7 @@ Use this reference when preserving or designing dossier-side execution workflow 
 Use it together with:
 
 - [Audit policy](audit-policy.md)
+- [Audit handoff recipes](audit-handoff-recipes.md)
 - [Commandized stage control](commandized-stage-control.md)
 - [Implementation pre-review checklists](implementation-pre-review-checklists.md)
 - [Telemetry and closure](telemetry-and-closure.md)
@@ -74,10 +75,19 @@ The workflow must preserve:
 - explicit non-goals or boundaries for the implementation pass; if no extra boundaries exist beyond acceptance criteria, DoD, or rollout constraints, say so explicitly
 - proof obligations for verification
 - explicit handling of heavy-runtime planning when the trigger fires
+- protected side-effect risk preset when implementation touches deploy, rollback, release, external executor, host/container boundary, caller-controlled input, or another protected side effect
 - return to backlog truth layer when planning changes backlog truth
 
 `plan-slice` is not implementation-ready when the implementation objective is ambiguous.
 If a future implementation agent would need to rediscover the goal from prior chat or backlog prose, the stage must remain open or blocked rather than handing off a task list.
+
+When the protected side-effect risk preset applies, `plan-slice` handoff and audit scope must explicitly call out these invariants:
+
+- reservation before side effect;
+- idempotent replay behavior;
+- terminal CAS / no terminal overwrite;
+- strict caller input;
+- live-vs-stale running behavior.
 
 ### `implementation`
 
@@ -95,6 +105,20 @@ The workflow must preserve:
 Implementation pre-review checklist evidence is required only for declared risk families. The workflow must not infer those families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose.
 
 After a successful `implementation` close, the workflow must run explicit post-close backlog hygiene before claiming the branch is backlog-clean or recommending a next intake. The required evidence is `refresh`, then `status`, `attention`, and `queue`, persisted through `post-close-hygiene`. This checkpoint is branch/readiness evidence after closure; it is not an extra `dossier-step-close` gate.
+
+Before final verification and the final external review bundle, implementation should run a pre-close hygiene rehearsal when refresh/status/attention/source-review checks can open or update backlog/source-review truth. This rehearsal runs those checks without auto-ack, resolves discovered source-review or attention blockers through explicit backlog truth actions, and then reruns final verification and affected audits if any material backlog/source-review mutation happened after earlier audits.
+
+Final implementation close sequencing must stay explicit:
+
+`material commit freeze -> external reviewers write immutable review artifacts -> final verification -> dossier-step-close -> post-close hygiene`
+
+Rules:
+
+- after material commit freeze, do not make material source/test/backlog truth changes before the final review artifacts are recorded;
+- external reviewers must record PASS or FAIL through `review-artifact`, leaving immutable review attempt artifacts;
+- final verification must correspond to the same material scope reviewed by the external auditors;
+- if any material mutation happens after final audits or final verification, rerun affected verification and affected review artifacts before `dossier-step-close`;
+- post-close hygiene remains a separate confirmation after close and does not replace pre-close rehearsal, final verification, final audits, or `dossier-step-close`.
 
 ## Required mutating-stage audit baseline
 
@@ -174,6 +198,7 @@ Required gates:
 - review freshness validation
 - implementation pre-review checklist completeness only when explicit risk families are declared
 - explicit pre-close / DoD readiness
+- pre-close hygiene rehearsal before final verification/final review bundle when backlog/source-review checks can mutate truth, with no auto-ack behavior
 - authoritative step-close artifact
 - post-close backlog hygiene evidence after successful `implementation` close and before branch-complete reporting or next-intake recommendation
 - truthful blocked close branch
@@ -185,6 +210,7 @@ For `implementation`, the stronger bundle policy from [Audit policy](audit-polic
 - truthful closure is blocked until that required bundle is fully satisfied.
 - implementation rerounds preserve earlier failed review evidence and close only from the final valid PASS bundle selected by `dossier-step-close`.
 - successful `implementation` closure marks post-close backlog hygiene as required and initially `missing`; clean branch-complete reporting requires a fresh `post-close-hygiene` artifact.
+- final implementation close follows `material commit freeze -> external reviewers write immutable review artifacts -> final verification -> dossier-step-close -> post-close hygiene`.
 
 Important:
 
@@ -193,6 +219,7 @@ Important:
 - informal “looks good” signals never replace durable closure evidence
 - an external-looking reviewer run does not satisfy closure policy if it inherited the authoring agent's forked/full-history context
 - `dossier-step-close` must not auto-run source refresh or auto-ack source-review records; `post-close-hygiene` is the explicit helper for the post-close refresh/status/attention/queue checkpoint.
+- pre-close hygiene rehearsal does not replace post-close hygiene; it is an ordering guard before final verification/review, while post-close hygiene remains the confirmation checkpoint after `implementation` close.
 
 ## Semantic heritage versus shipped runtime
 
@@ -210,5 +237,7 @@ The stage-controller command boundary is defined separately in [Commandized stag
 - do not let `dossier-step-close` mark `spec-compact`, `plan-slice`, or `implementation` complete while the selected backlog item is behind the stage lifecycle target
 - do not claim an implementation branch is backlog-clean before fresh post-close hygiene evidence exists
 - do not hide open source reviews after post-close refresh behind a clean final state
+- do not treat pre-close hygiene rehearsal as source-review auto-ack or as a replacement for explicit source-review resolution
+- do not treat protected side-effect preset guidance as runtime-inferred checklist evidence
 - do not dissolve `coverage_gate` into generic maturity wording
 - do not equate backlog `planned|implemented` with dossier `planned|done`

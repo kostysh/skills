@@ -5,6 +5,7 @@ Use this reference when designing lifecycle identity, logs, closure artifacts, o
 Use it together with:
 
 - [Audit policy](audit-policy.md)
+- [Audit handoff recipes](audit-handoff-recipes.md)
 - [Delivery workflow layer](delivery-workflow-layer.md)
 - [Commandized stage control](commandized-stage-control.md)
 - [Implementation pre-review checklists](implementation-pre-review-checklists.md)
@@ -170,6 +171,8 @@ When helper-owned closure updates materialize audit policy state, stage logs and
 - whether recorded review evidence is limited to observable provenance rather than proof of reviewer launch-mode independence.
 - that implementation pre-review checklist evidence, when present, is author-side readiness context rather than correctness proof or audit evidence.
 - that implementation post-close backlog hygiene evidence, when required, links to a durable refresh/status/attention/queue artifact before branch-complete reporting.
+
+Audit handoff recipes, shared risk maps, protected side-effect presets, and pre-close hygiene rehearsal use existing artifact families and narrative sections. They must not introduce new mandatory stage-log fields for FAIL history, reviewer prompts, or rehearsal state. Immutable review attempts and helper-managed stage state remain the durable review evidence.
 
 ## Session anchors
 

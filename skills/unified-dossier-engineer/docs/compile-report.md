@@ -2,13 +2,14 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.0`
+- Skill source version: `0.2.2`
 - CLI package version: `0.2.0`
 
 ## Source files
 - `assets/README.md`
 - `fragments/overview.md`
 - `package.json`
+- `references/audit-handoff-recipes.md`
 - `references/audit-policy.md`
 - `references/backlog-truth-layer.md`
 - `references/commandized-stage-control.md`
@@ -43,6 +44,7 @@ Generated from `skill.yaml`.
 - `references/source-review-contract.md`
 - `references/delivery-workflow-layer.md`
 - `references/audit-policy.md`
+- `references/audit-handoff-recipes.md`
 - `references/telemetry-and-closure.md`
 - `references/commandized-stage-control.md`
 - `references/implementation-pre-review-checklists.md`

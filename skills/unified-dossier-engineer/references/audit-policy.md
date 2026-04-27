@@ -5,6 +5,7 @@ Use this reference when maintaining required dossier-stage audits, audit bundles
 Use it together with:
 
 - [Delivery workflow layer](delivery-workflow-layer.md)
+- [Audit handoff recipes](audit-handoff-recipes.md)
 - [Commandized stage control](commandized-stage-control.md)
 - [Implementation pre-review checklists](implementation-pre-review-checklists.md)
 - [Telemetry and closure](telemetry-and-closure.md)
@@ -125,6 +126,12 @@ Rules:
 - reviewer prompts must remain read-only;
 - if an audit was launched with forked/full-history context, invalidate that audit and rerun it with a valid external execution mode;
 - if a reviewer mutates files or changes `HEAD`, invalidate that audit and rerun it.
+
+Use [Audit handoff recipes](audit-handoff-recipes.md) when launching required external audits. The recipes make scope, audit class, shared risk map, reviewer focus, read-only analysis boundary, and PASS/FAIL `review-artifact` recording explicit instead of leaving each authoring agent to reconstruct the handoff.
+
+Read-only audit analysis means the reviewer must not change product/source/test/backlog truth files and must not change `HEAD`. After the reviewer decides PASS or FAIL, a narrow helper-owned `review-artifact` accounting write is allowed when it is limited to managed review artifact / stage-state evidence and does not mutate material scope. Any other reviewer mutation invalidates the audit and requires rerun.
+
+A blocking audit round is not complete until `review-artifact` records the immutable attempt artifact for that audit class and verdict.
 
 Those launch constraints are active process rules. The canonical runtime mechanically enforces only the durable subset it can validate from review artifacts and helper-managed stage telemetry:
 

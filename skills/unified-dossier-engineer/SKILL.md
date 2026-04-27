@@ -6,9 +6,9 @@ description: Build and maintain the canonical dossier/backlog skill and its CLI
 compatibility: Canonical runtime shipped. Only the canonical `.dossier` +
   `docs/ssot` layout and the `dossier-engineer` launcher are part of this skill.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 4987c6ce6ddaf85ed4a9a2f8e6594fa22e2f337b4aa1b4f0c0d02f61c286ef44
+  skillforge-source-hash: e2e9b370ebf7a683c3e8e6e41f6bb4a6a779828fbfe2204946905a44a7528c0a
 ---
 
 # unified-dossier-engineer
@@ -37,6 +37,8 @@ This skill is the code-backed home of the canonical dossier/backlog runtime. Its
 The shipped runtime serves one canonical model: `.dossier` for accounting/process truth and `docs/ssot` for project-facing SSOT. Only that layout and the `dossier-engineer` launcher are supported.
 
 Every mutating dossier stage requires external review before truthful closure. Blocking external reviews must be launched as separate reviewer executions without forked/full-history authoring context. In Codex this means `fork_context: false`; in other runtimes use the equivalent no-full-context-inheritance mode. If an audit was launched with forked/full-history context, discard it and rerun it correctly.
+
+Use the audit handoff recipes when launching required external audits so scope, read-only boundaries, shared risk map, reviewer focus, and PASS/FAIL `review-artifact` persistence are not reconstructed ad hoc.
 
 `review-artifact` records one immutable already obtained audit attempt for one audit class. Stable/latest review copies are compatibility conveniences, not the sole evidence. `dossier-step-close` validates the policy-required audit bundle before truthful closure and records selected immutable PASS attempt paths. These helpers record and validate only observable durable provenance; they do not prove reviewer launch-mode independence.
 
@@ -465,6 +467,7 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 - [Source-review contract](references/source-review-contract.md) — Read this when designing refresh/attention behavior or source-change review semantics.
 - [Delivery workflow layer](references/delivery-workflow-layer.md) — Read this when designing feature intake, spec/planning/implementation flow, mature change path, coverage gate, or closure readiness in this skill.
 - [Audit policy](references/audit-policy.md) — Read this when changing mutating-stage review policy, review bundles, review freshness, or truthful close-out rules.
+- [Audit handoff recipes](references/audit-handoff-recipes.md) — Read this when launching blocking external audits or preparing reviewer handoff prompts.
 - [Telemetry and closure](references/telemetry-and-closure.md) — Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
 - [Commandized stage control](references/commandized-stage-control.md) — Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
 - [Implementation pre-review checklists](references/implementation-pre-review-checklists.md) — Read this when designing implementation pre-review checklist evidence, risk-family declarations, or readiness gates before external review.

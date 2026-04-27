@@ -4,6 +4,8 @@ The shipped runtime serves one canonical model: `.dossier` for accounting/proces
 
 Every mutating dossier stage requires external review before truthful closure. Blocking external reviews must be launched as separate reviewer executions without forked/full-history authoring context. In Codex this means `fork_context: false`; in other runtimes use the equivalent no-full-context-inheritance mode. If an audit was launched with forked/full-history context, discard it and rerun it correctly.
 
+Use the audit handoff recipes when launching required external audits so scope, read-only boundaries, shared risk map, reviewer focus, and PASS/FAIL `review-artifact` persistence are not reconstructed ad hoc.
+
 `review-artifact` records one immutable already obtained audit attempt for one audit class. Stable/latest review copies are compatibility conveniences, not the sole evidence. `dossier-step-close` validates the policy-required audit bundle before truthful closure and records selected immutable PASS attempt paths. These helpers record and validate only observable durable provenance; they do not prove reviewer launch-mode independence.
 
 Implementation pre-review checklists are author-side readiness evidence for explicitly declared risk families before external review handoff. They are not correctness proof and never replace required external audits.
