@@ -171,6 +171,7 @@ export function summarizeSession(
       durationMinutes: null,
       abortedTurns: 0,
       longGaps: 0,
+      compactedEvents: 0,
       tools: {},
       sampleEventTypes: [],
       events: [],
@@ -200,6 +201,7 @@ export function summarizeSession(
   let lastTimestamp: string | null = null;
   let abortedTurns = 0;
   let longGaps = 0;
+  let compactedEvents = 0;
   let previousDate: Date | null = null;
 
   for (const event of events) {
@@ -239,6 +241,10 @@ export function summarizeSession(
     }
 
     const eventType = extractEventType(event).toLowerCase();
+    if (eventType === 'compacted') {
+      compactedEvents += 1;
+    }
+
     const eventText = JSON.stringify(event).toLowerCase();
     if (
       eventType.includes('abort') ||
@@ -267,6 +273,7 @@ export function summarizeSession(
       firstTimestamp && lastTimestamp ? diffMinutes(firstTimestamp, lastTimestamp) : null,
     abortedTurns,
     longGaps,
+    compactedEvents,
     tools: Object.fromEntries(
       Array.from(toolCounts.entries()).sort((left, right) => right[1] - left[1]),
     ),

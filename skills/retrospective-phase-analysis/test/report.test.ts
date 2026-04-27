@@ -42,6 +42,21 @@ function buildReferencedOnlyStageLogSummary() {
   });
 }
 
+function buildCompactedRawTraceSummary() {
+  const projectRoot = fixturePath('rpa-06', 'project');
+  return buildScanSummary({
+    session: fixturePath('rpa-06', 'session-compacted-with-raw-trace.jsonl'),
+    logsDir: path.join(projectRoot, '.dossier', 'logs'),
+    artifactsDir: projectRoot,
+    skillsDir: fixturePath('skills'),
+  });
+}
+
+function markdownSection(markdown: string, heading: string): string {
+  const match = markdown.match(new RegExp(`^## ${heading}\\n\\n([\\s\\S]*?)(?=\\n## |\\n$)`, 'mu'));
+  return match?.[1] ?? '';
+}
+
 void test('report markdown includes core retrospective sections and inferred signals', () => {
   const markdown = buildReportMarkdown(buildLinkedFixtureSummary(), {
     phase: 'implementation',
@@ -89,7 +104,26 @@ void test('logging review markdown highlights missing artifact links and automat
   assert.match(markdown, /Status: draft, requires agent validation/u);
   assert.match(markdown, /Missing review artifacts: 0/mu);
   assert.match(markdown, /Missing verification artifacts: 0/mu);
+  assert.match(markdown, /^## Recommendation discipline$/mu);
+  assert.match(markdown, /canonical review artifacts, workflow sequencing, or prompt recipes/mu);
   assert.match(markdown, /Add machine-readable trace anchors to each stage log/mu);
+});
+
+void test('report markdown separates compaction from data-quality limits', () => {
+  const markdown = buildReportMarkdown(buildCompactedRawTraceSummary(), {
+    phase: 'implementation',
+    title: 'Retrospective: RPA-06 implementation',
+  });
+
+  const dataQuality = markdownSection(markdown, 'Data-quality limits');
+  const agentContext = markdownSection(markdown, 'Agent-context factors');
+
+  assert.match(markdown, /^## Data-quality limits$/mu);
+  assert.match(markdown, /^## Agent-context factors$/mu);
+  assert.match(dataQuality, /Session trace available: true/mu);
+  assert.match(dataQuality, /Session parse errors: 0/mu);
+  assert.doesNotMatch(dataQuality, /compaction|compacted/iu);
+  assert.match(agentContext, /Compaction events observed: 1/mu);
 });
 
 void test('markdown renderers mark zero included logs with excluded candidates as incomplete', () => {

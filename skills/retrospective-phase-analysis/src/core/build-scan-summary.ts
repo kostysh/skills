@@ -427,6 +427,7 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
       durationMinutes: sessionSummary.durationMinutes,
       abortedTurns: sessionSummary.abortedTurns,
       longGaps: sessionSummary.longGaps,
+      compactedEvents: sessionSummary.compactedEvents,
       tools: sessionSummary.tools,
       sampleEventTypes: sessionSummary.sampleEventTypes,
     },

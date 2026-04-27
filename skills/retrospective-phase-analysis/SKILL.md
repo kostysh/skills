@@ -13,7 +13,7 @@ compatibility: Requires access to the project workspace, session trace files,
 metadata:
   source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d683c560dd8e4c9933a7f25d816445ffd4cd017d97ac7a4588c4cf31e7aaa7ec
+  skillforge-source-hash: acba227452446455211968f536290a434f8e0cf8d8fa79ea9d69f58d44dd7ec0
 ---
 
 # retrospective-phase-analysis
@@ -22,8 +22,9 @@ metadata:
 
 1. Confirm the request is retrospective analysis of completed work with evidence artifacts.
 2. Resolve the session id and candidate project root before broad artifact reading.
-3. Use trace-driven scoping, phase boundaries, and data-quality limits before drawing conclusions.
-4. When using the CLI, run the first scan and reuse its reported run directory for follow-up reports.
+3. Use trace-driven scoping, phase boundaries, and evidence-source data-quality limits before drawing conclusions.
+4. Separate agent-context factors from data-quality limits; `compacted` is not evidence loss when raw trace is available and parsed.
+5. When using the CLI, run the first scan and reuse its reported run directory for follow-up reports.
 
 ## When to use this skill
 
@@ -93,9 +94,10 @@ Produce one or more Markdown reports that help the operator understand:
 3. Distinguish process failures from expected iterative development.
 4. Treat repeated review findings, rerounds, restarts, aborted turns, and prolonged tool loops as high-signal.
 5. Audit skill usage separately from general process issues.
-6. Always include data-quality limits and confidence notes.
-7. Prefer exact timestamps and artifacts when available.
-8. Do not treat successful outcomes as proof that the process was efficient.
+6. Always include evidence-source data-quality limits and confidence notes.
+7. Separate agent-context factors from data-quality limits; `compacted` is not evidence loss when raw trace is available and parsed.
+8. Prefer exact timestamps and artifacts when available.
+9. Do not treat successful outcomes as proof that the process was efficient.
 
 ## Inputs to collect
 
@@ -413,6 +415,8 @@ Compare the observed logs with the logging contract:
 
 Highlight observability gaps that reduced retrospective confidence.
 
+Before proposing schema or log expansion, check whether existing canonical artifacts, workflow sequencing, or prompt recipes already solve the issue. Recommend new fields only when those mechanisms are insufficient.
+
 ### 10) Produce reports
 
 Produce at least:
@@ -432,6 +436,8 @@ A findings-first draft is acceptable before full template expansion. Do not forc
 Write final Markdown analysis content in the operator language. Generated CLI scaffold headings and structural labels are always English. Keep English for direct quotes, commands, paths, identifiers, JSON keys, tool names, skill names, and generated scaffold labels. When using the CLI, pass `--language <language>` to the first `scan`; follow-up commands with `--run-dir` inherit the report language from `scan-summary.json` as metadata. The operator language is not limited to a fixed list.
 
 Generated Markdown is a scaffold, not the final retrospective. The final report is the agent's responsibility after reading and validating the cited evidence. When the CLI marks output as `Status: draft, requires agent validation`, do not present it as final; resolve the listed status reasons first or explicitly document the residual limits.
+
+Data quality describes evidence-source availability and reliability. Agent-context factors describe execution-context factors separately from data quality.
 
 ## Recommended workflow with the CLI
 
@@ -472,6 +478,8 @@ A good retrospective report should:
 - contain a dedicated skill-friction analysis;
 - identify both local fixes and systemic fixes;
 - make confidence limits explicit.
+- keep `Data quality` focused on evidence-source availability and reliability;
+- describe material `Agent-context factors` separately from data quality.
 
 ## Edge cases
 
@@ -541,7 +549,7 @@ Bound the retrospective before scanning or reading broadly.
 
 Validation:
 
-- The report can state included sessions, excluded follow-up work, and data-quality limits.
+- The report can state included sessions, excluded follow-up work, data-quality limits, and material agent-context factors.
 - No repo-wide reading substitutes for trace-driven scope discovery.
 
 ### Workflow stage: Produce retrospective reports
@@ -555,6 +563,7 @@ Create evidence-backed Markdown reports and validate CLI scaffolds before treati
 Validation:
 
 - Facts, inferred causes, confidence limits, and recommendations are separated.
+- Logging recommendations check existing canonical artifacts, workflow sequencing, and prompt recipes before proposing schema changes.
 - Generated draft status is resolved or explicitly documented before final delivery.
 
 ## Interop priority

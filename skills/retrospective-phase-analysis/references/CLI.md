@@ -49,6 +49,7 @@ Outputs:
 - timeline bounds
 - event counts
 - tool usage
+- agent-context counters such as `session.compactedEvents`, long gaps, and aborted turns
 - stage-log metrics
 - review metrics
 - process-miss metrics
@@ -144,6 +145,8 @@ node scripts/retro-cli.mjs report \
   --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3
 ```
 
+Generated reports keep `Data-quality limits` evidence-source focused and render `Agent-context factors` separately. A `compacted` event is not a data-quality limitation when the raw trace is available and parsed, but it can appear as an agent-context factor.
+
 ### `skill-audit`
 
 Generate a skill-focused Markdown draft.
@@ -163,6 +166,8 @@ Generate a logging-quality and improvement draft.
 node scripts/retro-cli.mjs logging-review \
   --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3
 ```
+
+Generated logging reviews include a recommendation-discipline checkpoint: check existing canonical artifacts, workflow sequencing, or prompt recipes before proposing new fields or log schema changes.
 
 ## Supported options
 
@@ -200,6 +205,7 @@ Report status rule:
 - Generated Markdown is a scaffold. The final report is the agent's responsibility after evidence validation.
 - `draft_requires_agent_validation` is used when evidence quality is degraded, no stage logs were analyzed despite dossier activity, unresolved ambiguities exist, manual overrides were used, or the injected `Available skills` catalog is missing.
 - Excluded stage-log candidates are stronger than generic missing logs: `reportStatus.reasons` names the excluded candidates and generated Markdown marks log-derived metrics as incomplete.
+- Compaction is reported as agent context, not data-quality loss, when the raw trace is available and parsed.
 - Draft Markdown includes `Status: draft, requires agent validation`.
 - `ready_for_agent_finalization` means the automated checks found no draft trigger, but the agent still owns final conclusions.
 

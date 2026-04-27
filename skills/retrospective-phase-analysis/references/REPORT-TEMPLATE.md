@@ -106,6 +106,21 @@
 
 ## 11. Data-quality limits
 
-- Missing evidence:
-- Ambiguities:
-- Confidence downgrades:
+- Raw trace present/missing:
+- Session parse errors:
+- Phase boundary reliability:
+- Missing expected artifacts:
+- Manual artifact overrides and evidence:
+- Confidence downgrades from evidence-source quality:
+
+Do not list agent working-context events here when the raw evidence remains available and parsed.
+
+## 12. Agent-context factors
+
+- Compaction events:
+- Long gaps:
+- Interrupted/resumed context:
+- Handoff or summary reliance:
+- Known context ambiguity during execution:
+
+Mention only material factors. Treat compaction as execution context, not evidence loss, when the raw trace is available and parsed.

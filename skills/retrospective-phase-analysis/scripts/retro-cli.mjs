@@ -1942,6 +1942,7 @@ function summarizeSession(filePath, options = {}) {
 		durationMinutes: null,
 		abortedTurns: 0,
 		longGaps: 0,
+		compactedEvents: 0,
 		tools: {},
 		sampleEventTypes: [],
 		events: [],
@@ -1961,6 +1962,7 @@ function summarizeSession(filePath, options = {}) {
 	let lastTimestamp = null;
 	let abortedTurns = 0;
 	let longGaps = 0;
+	let compactedEvents = 0;
 	let previousDate = null;
 	for (const event of events) {
 		if (event && typeof event === "object" && event.type === "session_meta") {
@@ -1983,6 +1985,7 @@ function summarizeSession(filePath, options = {}) {
 			if (currentDate) previousDate = currentDate;
 		}
 		const eventType = extractEventType$1(event).toLowerCase();
+		if (eventType === "compacted") compactedEvents += 1;
 		const eventText = JSON.stringify(event).toLowerCase();
 		if (eventType.includes("abort") || eventText.includes("aborted turn") || eventText.includes("\"aborted\":true")) abortedTurns += 1;
 		for (const toolName of extractToolNames(event)) toolCounts.set(toolName, (toolCounts.get(toolName) ?? 0) + 1);
@@ -2000,6 +2003,7 @@ function summarizeSession(filePath, options = {}) {
 		durationMinutes: firstTimestamp && lastTimestamp ? diffMinutes(firstTimestamp, lastTimestamp) : null,
 		abortedTurns,
 		longGaps,
+		compactedEvents,
 		tools: Object.fromEntries(Array.from(toolCounts.entries()).sort((left, right) => right[1] - left[1])),
 		sampleEventTypes: Array.from(new Set(events.map((event) => extractEventType$1(event)))).slice(0, 25),
 		events,
@@ -2008,11 +2012,11 @@ function summarizeSession(filePath, options = {}) {
 }
 //#endregion
 //#region src/core/build-scan-summary.ts
-function hasManualOverrides(args) {
+function hasManualOverrides$1(args) {
 	return (args.stageLogs?.length ?? 0) > 0 || (args.reviewArtifacts?.length ?? 0) > 0 || (args.verificationArtifacts?.length ?? 0) > 0;
 }
 function assertManualOverridesHaveEvidence(args) {
-	if (hasManualOverrides(args) && !args.artifactEvidence?.trim()) throw new Error("Manual artifact overrides require artifactEvidence with a short justification");
+	if (hasManualOverrides$1(args) && !args.artifactEvidence?.trim()) throw new Error("Manual artifact overrides require artifactEvidence with a short justification");
 }
 function hasManualCandidates(candidates) {
 	return candidates.some((candidate) => candidate.inclusion_source === "manual_included");
@@ -2228,6 +2232,7 @@ function buildScanSummary(args) {
 			durationMinutes: sessionSummary.durationMinutes,
 			abortedTurns: sessionSummary.abortedTurns,
 			longGaps: sessionSummary.longGaps,
+			compactedEvents: sessionSummary.compactedEvents,
 			tools: sessionSummary.tools,
 			sampleEventTypes: sessionSummary.sampleEventTypes
 		},
@@ -2324,6 +2329,10 @@ ${formatObservedGaps({
 		missingSkillCatalog: !scan.dataQuality.skillCatalogPresent,
 		excludedStageLogCandidates: excludedStageLogs
 	})}
+
+## Recommendation discipline
+
+Before adding fields or expanding log schema, check whether the issue is already solvable through existing canonical review artifacts, workflow sequencing, or prompt recipes. Propose schema/log expansion only when those mechanisms are insufficient and name the remaining gap.
 
 ## Suggested improvements
 
@@ -2595,6 +2604,41 @@ function candidateIncidentSection(scan, incidentSections) {
 	if (hasIncompleteZeroStageLogMetrics(scan)) return "No candidate incidents were inferred automatically because no stage logs were analyzed; excluded stage-log candidates require validation first.";
 	return "No candidate incidents were inferred automatically.";
 }
+function hasManualOverrides(scan) {
+	return scan.reportStatus.reasons.some((reason) => /manual artifact overrides/iu.test(reason));
+}
+function evidenceSourceStatus(scan) {
+	const limits = [];
+	if (!scan.dataQuality.sessionPresent) limits.push("session trace missing");
+	if (scan.dataQuality.sessionParseErrors > 0) limits.push(`${scan.dataQuality.sessionParseErrors} session parse error(s)`);
+	if (!scan.dataQuality.logsPresent) limits.push("stage logs missing or unresolved");
+	if (!scan.dataQuality.skillCatalogPresent) limits.push("skill catalog missing or unresolved");
+	if (hasIncompleteZeroStageLogMetrics(scan)) limits.push("excluded stage-log candidates require validation");
+	if (hasManualOverrides(scan)) limits.push("manual artifact overrides require validation");
+	return limits.length > 0 ? limits.join("; ") : "core evidence sources are available.";
+}
+function formatDataQualityLimits(scan) {
+	return [
+		`- Session trace available: ${scan.dataQuality.sessionPresent}`,
+		`- Session parse errors: ${scan.dataQuality.sessionParseErrors}`,
+		`- Phase boundary mode: ${scan.phase_boundary.mode}`,
+		`- Phase boundary confidence note: ${scan.phase_boundary.reason}`,
+		`- Stage-log directory available: ${scan.dataQuality.logsPresent}`,
+		`- Stage logs analyzed: ${scan.stageLogs.count}`,
+		`- Excluded stage-log candidates requiring validation: ${excludedStageLogCandidates(scan).length}`,
+		`- Skill catalog available: ${scan.dataQuality.skillCatalogPresent}`,
+		`- Manual artifact overrides used: ${hasManualOverrides(scan)}`,
+		"- This draft is heuristic and should be refined by reading the cited artifacts."
+	].join("\n");
+}
+function formatAgentContextFactors(scan) {
+	const compactedEvents = scan.session.compactedEvents ?? 0;
+	const factors = [];
+	if (compactedEvents > 0) factors.push(`Compaction events observed: ${compactedEvents}; treat as execution context, not evidence loss when the raw trace is available and parsed.`);
+	if (scan.session.longGaps > 0) factors.push(`Long gaps observed: ${scan.session.longGaps}.`);
+	if (scan.session.abortedTurns > 0) factors.push(`Aborted or restarted turns observed: ${scan.session.abortedTurns}.`);
+	return factors.length > 0 ? formatList(factors) : "- No material agent-context factors were inferred automatically.";
+}
 function formatExcludedStageLogCandidates(scan) {
 	const candidates = excludedStageLogCandidates(scan);
 	return candidates.length > 0 ? formatList(candidates.map((candidate) => `${candidate.path} (${candidate.evidence_kind}; ${candidate.next_action ?? candidate.reason})`)) : "- none";
@@ -2629,7 +2673,7 @@ ${statusLine$1(scan)}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
 - Scope confidence: ${scan.scope.scope_confidence}
 - Report scaffold status: ${scan.reportStatus.status}
-- Data-quality note: ${scan.dataQuality.sessionPresent && scan.dataQuality.logsPresent ? "Both session trace and stage logs were available." : "One or more core evidence sources were missing; confidence is reduced."}
+- Evidence-source status: ${evidenceSourceStatus(scan)}
 
 ## Evidence manifest
 
@@ -2712,11 +2756,11 @@ ${statusReasons(scan)}
 
 ## Data-quality limits
 
-- Session parse errors: ${scan.dataQuality.sessionParseErrors}
-- Session trace available: ${scan.dataQuality.sessionPresent}
-- Stage logs available: ${scan.dataQuality.logsPresent}
-- Skill catalog available: ${scan.dataQuality.skillCatalogPresent}
-- This draft is heuristic and should be refined by reading the cited artifacts.
+${formatDataQualityLimits(scan)}
+
+## Agent-context factors
+
+${formatAgentContextFactors(scan)}
 `;
 }
 //#endregion

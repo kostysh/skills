@@ -373,7 +373,8 @@ sections:
   startHere:
     - "Confirm the request is retrospective analysis of completed work with evidence artifacts."
     - "Resolve the session id and candidate project root before broad artifact reading."
-    - "Use trace-driven scoping, phase boundaries, and data-quality limits before drawing conclusions."
+    - "Use trace-driven scoping, phase boundaries, and evidence-source data-quality limits before drawing conclusions."
+    - "Separate agent-context factors from data-quality limits; `compacted` is not evidence loss when raw trace is available and parsed."
     - "When using the CLI, run the first scan and reuse its reported run directory for follow-up reports."
   whenToUse:
     - "A completed implementation, review, closure, or agent-execution phase already has evidence artifacts."
@@ -392,7 +393,7 @@ sections:
         - "Read session_meta.cwd or an operator-provided root to establish the candidate project root."
         - "Set the phase boundary and include only trace-linked evidence unless a justified manual override is provided."
       validation:
-        - "The report can state included sessions, excluded follow-up work, and data-quality limits."
+        - "The report can state included sessions, excluded follow-up work, data-quality limits, and material agent-context factors."
         - "No repo-wide reading substitutes for trace-driven scope discovery."
     - id: "stage-produce-reports"
       title: "Produce retrospective reports"
@@ -403,6 +404,7 @@ sections:
         - "Validate every generated scaffold against cited evidence and operator language requirements."
       validation:
         - "Facts, inferred causes, confidence limits, and recommendations are separated."
+        - "Logging recommendations check existing canonical artifacts, workflow sequencing, and prompt recipes before proposing schema changes."
         - "Generated draft status is resolved or explicitly documented before final delivery."
   interop:
     - id: "interop-retrospective-method"

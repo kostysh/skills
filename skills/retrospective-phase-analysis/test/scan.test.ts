@@ -267,6 +267,27 @@ void test('buildScanSummary downgrades data quality when the session trace is mi
   assert.equal(summary.scope.scope_confidence, 'low');
 });
 
+void test('buildScanSummary treats compacted events as agent context when raw trace is available', () => {
+  const projectRoot = fixturePath('rpa-06', 'project');
+  const summary = buildScanSummary({
+    session: fixturePath('rpa-06', 'session-compacted-with-raw-trace.jsonl'),
+    logsDir: path.join(projectRoot, '.dossier', 'logs'),
+    artifactsDir: projectRoot,
+    skillsDir: fixturePath('skills'),
+  });
+
+  assert.equal(summary.dataQuality.sessionPresent, true);
+  assert.equal(summary.dataQuality.sessionParseErrors, 0);
+  assert.equal(summary.dataQuality.logsPresent, true);
+  assert.equal(summary.stageLogs.count, 1);
+  assert.equal(summary.session.compactedEvents, 1);
+  assert.equal(summary.session.sampleEventTypes.includes('compacted'), true);
+  assert.equal(
+    summary.reportStatus.reasons.some((reason) => /compacted|compaction/iu.test(reason)),
+    false,
+  );
+});
+
 void test('buildScanSummary scopes stage logs to the log paths explicitly mentioned in the trace', () => {
   const summary = buildScanSummary({
     session: fixturePath('sessions', 'phase-session-with-log-link.jsonl'),

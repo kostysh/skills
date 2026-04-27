@@ -51,6 +51,8 @@ void test('SKILL.md keeps explicit selection, interop, and runtime-reference sec
     'Every manual override requires `--artifact-evidence <text>`',
     'Structured metrics come first',
     'Generated Markdown is a scaffold, not the final retrospective.',
+    'Data quality describes evidence-source availability and reliability.',
+    'Agent-context factors describe execution-context factors separately from data quality.',
   ]);
 });
 
@@ -76,12 +78,15 @@ void test('CLI reference documents global help, version, and the four command su
     'metric `sources`',
     'reportStatus',
     'Excluded stage-log candidates',
+    'Agent-context factors',
+    'Data-quality limits',
     'mandatory bundle checkpoints',
     '--until-ts <iso>',
     '--artifact-evidence <text>',
     'stage_artifact_link',
     'Unvalidated prose fallback',
     'Structured `review_events`',
+    'existing canonical artifacts, workflow sequencing, or prompt recipes',
     'The first `scan` that writes a bundle establishes the canonical run directory.',
     'scan',
     'report',
@@ -98,5 +103,6 @@ void test('evaluation contract keeps maintainer intent explicit alongside execut
     'future regression fixtures',
     'session trace is missing',
     'stage log omits review artifacts',
+    'compacted event with available raw trace',
   ]);
 });

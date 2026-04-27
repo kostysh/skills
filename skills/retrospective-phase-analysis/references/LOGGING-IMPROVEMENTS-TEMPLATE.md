@@ -15,10 +15,19 @@
 - Proposed improvement:
 - Priority:
 
+## Existing mechanisms checked
+
+Before proposing schema or log changes, check whether existing canonical artifacts, workflow sequencing, or prompt recipes already solve the issue.
+
+| Mechanism | Checked? | Result | Remaining gap |
+|---|---|---|---|
+
 ## Recommended schema changes
 
 | Field or artifact | Why add/change it | Consumer | Priority |
 |---|---|---|---|
+
+Recommend schema/log expansion only when the existing mechanisms above are insufficient.
 
 ## Recommended process changes
 

@@ -149,7 +149,30 @@ Give every major conclusion a qualitative confidence:
 - **Medium**: supported by one strong source or several weaker ones.
 - **Low**: plausible inference with limited evidence.
 
-## 8. Minimum deliverable set
+## 8. Data quality versus agent context
+
+Data quality describes evidence-source availability and reliability.
+
+Data-quality checks include:
+- raw trace present or missing;
+- session parse errors;
+- phase boundary reliability;
+- missing expected artifacts;
+- manual artifact overrides and their evidence;
+- metric source quality.
+
+Agent-context factors describe execution-context factors separately from data quality.
+
+Agent-context factors include:
+- compaction events;
+- long gaps;
+- interrupted or resumed context;
+- handoff or summary reliance;
+- known context ambiguity during execution.
+
+Do not classify `compacted` as a data-quality limitation when the raw trace is available and parsed. Mention it as an agent-context factor only when it is material to interpreting behavior.
+
+## 9. Minimum deliverable set
 
 For a serious phase retrospective, produce:
 - executive summary;
@@ -162,15 +185,23 @@ For a serious phase retrospective, produce:
 - control effectiveness;
 - prioritized improvements;
 - data-quality limits.
+- agent-context factors when material.
 
-## 9. Suggested operator-facing recommendations
+## 10. Suggested operator-facing recommendations
 
 Structure recommendations by horizon:
 - **Immediate**: fixes before the next phase.
 - **Near-term**: fixes for the next 1-3 similar cycles.
 - **Systemic**: changes to skills, workflow, or telemetry.
 
-## 10. Anti-patterns to avoid
+Before proposing new fields or log schema changes, check whether the problem is already solved by:
+1. existing canonical artifacts;
+2. workflow sequencing;
+3. prompt recipes.
+
+Propose schema/log expansion only when those mechanisms are insufficient, and name the remaining gap.
+
+## 11. Anti-patterns to avoid
 
 Do not:
 - overfit conclusions to one noisy event;
@@ -178,3 +209,4 @@ Do not:
 - count every review finding as a process failure;
 - hide uncertainty;
 - treat missing telemetry as proof that nothing happened.
+- treat agent-context factors as evidence-source loss when the raw evidence is available and parsed.

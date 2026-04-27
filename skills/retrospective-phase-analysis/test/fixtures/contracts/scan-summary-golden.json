@@ -47,6 +47,7 @@
     "durationMinutes": 26,
     "abortedTurns": 1,
     "longGaps": 1,
+    "compactedEvents": 0,
     "tools": {
       "functions.exec_command": 2,
       "functions.update_plan": 1

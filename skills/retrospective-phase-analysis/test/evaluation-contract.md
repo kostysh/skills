@@ -20,6 +20,8 @@ quality checks. It complements executable tests; it does not replace them.
    fabricating trace-derived timing.
 3. When a stage log omits review artifacts, the logging review should call out the observability gap
    and avoid inventing review history.
+4. When a trace contains a compacted event with available raw trace and zero parse errors, the
+   report should treat it as an agent-context factor, not as a data-quality limitation.
 
 ## Future regression fixtures
 

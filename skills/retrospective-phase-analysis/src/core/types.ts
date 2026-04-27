@@ -73,6 +73,7 @@ export interface SessionSummary {
   durationMinutes: number | null;
   abortedTurns: number;
   longGaps: number;
+  compactedEvents: number;
   tools: Record<string, number>;
   sampleEventTypes: string[];
   events: unknown[];
@@ -251,6 +252,7 @@ export interface ScanSummary {
     durationMinutes: number | null;
     abortedTurns: number;
     longGaps: number;
+    compactedEvents: number;
     tools: Record<string, number>;
     sampleEventTypes: string[];
   };

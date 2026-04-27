@@ -52,9 +52,10 @@ Produce one or more Markdown reports that help the operator understand:
 3. Distinguish process failures from expected iterative development.
 4. Treat repeated review findings, rerounds, restarts, aborted turns, and prolonged tool loops as high-signal.
 5. Audit skill usage separately from general process issues.
-6. Always include data-quality limits and confidence notes.
-7. Prefer exact timestamps and artifacts when available.
-8. Do not treat successful outcomes as proof that the process was efficient.
+6. Always include evidence-source data-quality limits and confidence notes.
+7. Separate agent-context factors from data-quality limits; `compacted` is not evidence loss when raw trace is available and parsed.
+8. Prefer exact timestamps and artifacts when available.
+9. Do not treat successful outcomes as proof that the process was efficient.
 
 ## Inputs to collect
 
@@ -372,6 +373,8 @@ Compare the observed logs with the logging contract:
 
 Highlight observability gaps that reduced retrospective confidence.
 
+Before proposing schema or log expansion, check whether existing canonical artifacts, workflow sequencing, or prompt recipes already solve the issue. Recommend new fields only when those mechanisms are insufficient.
+
 ### 10) Produce reports
 
 Produce at least:
@@ -391,6 +394,8 @@ A findings-first draft is acceptable before full template expansion. Do not forc
 Write final Markdown analysis content in the operator language. Generated CLI scaffold headings and structural labels are always English. Keep English for direct quotes, commands, paths, identifiers, JSON keys, tool names, skill names, and generated scaffold labels. When using the CLI, pass `--language <language>` to the first `scan`; follow-up commands with `--run-dir` inherit the report language from `scan-summary.json` as metadata. The operator language is not limited to a fixed list.
 
 Generated Markdown is a scaffold, not the final retrospective. The final report is the agent's responsibility after reading and validating the cited evidence. When the CLI marks output as `Status: draft, requires agent validation`, do not present it as final; resolve the listed status reasons first or explicitly document the residual limits.
+
+Data quality describes evidence-source availability and reliability. Agent-context factors describe execution-context factors separately from data quality.
 
 ## Recommended workflow with the CLI
 
@@ -431,6 +436,8 @@ A good retrospective report should:
 - contain a dedicated skill-friction analysis;
 - identify both local fixes and systemic fixes;
 - make confidence limits explicit.
+- keep `Data quality` focused on evidence-source availability and reliability;
+- describe material `Agent-context factors` separately from data quality.
 
 ## Edge cases
 

@@ -120,6 +120,10 @@ ${formatObservedGaps({
   excludedStageLogCandidates: excludedStageLogs,
 })}
 
+## Recommendation discipline
+
+Before adding fields or expanding log schema, check whether the issue is already solvable through existing canonical review artifacts, workflow sequencing, or prompt recipes. Propose schema/log expansion only when those mechanisms are insufficient and name the remaining gap.
+
 ## Suggested improvements
 
 1. Add machine-readable trace anchors to each stage log:
