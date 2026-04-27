@@ -98,6 +98,14 @@ Closing the record requires an explicit outcome:
    - `resolution_kind = ack`
 5. clean confirmation comes from `status`, not from chat-only reasoning
 
+## Source-review decision rules
+
+- Continue source-review triage while the changed source, linked backlog items, or authority of the change has not been read.
+- Ask the operator when the source authority, intended product meaning, or acceptable backlog mutation path cannot be determined from repo artifacts.
+- Block readiness while any linked source-review record remains `open` with `outcome = pending`.
+- Stop triage when the changed source and linked items have enough evidence for one explicit outcome: `no_backlog_change`, `patched_existing_items`, `created_new_item`, or `source_maintenance`.
+- Do not continue searching unrelated backlog areas once the changed source, linked items, and explicit outcome are sufficient for the canonical resolution path.
+
 ## Post-close hygiene interaction
 
 After successful `implementation` closure, `post-close-hygiene` runs `refresh` and captures `status`, `attention`, and `queue` evidence. If refresh opens or updates source-review records, the hygiene result is `blocked` or not clean until those records are explicitly resolved through the canonical paths above.

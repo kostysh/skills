@@ -104,6 +104,10 @@ Machine-complete stage schema fields:
 - skill annotations are explicit agent-supplied state and must not be scraped from conversation traces;
 - `process_misses` is structured state with `id`, `category`, `severity`, `resolved`, and `summary`; prose rendering is not the source of truth.
 
+Schema snippets and field lists in this reference are runtime/artifact contracts. They are not prompts for free-form model output; agents should rely on helper commands, runtime validation, templates, and tests to write or verify machine fields.
+
+`phase_scope` is a dossier workflow accounting field for stage telemetry. It is not the OpenAI Responses API `phase`; if host-side Responses output items are replayed manually, API-level `phase` stays outside the dossier schema.
+
 Purpose rule:
 
 - logs exist not only for lifecycle reconstruction;

@@ -47,6 +47,23 @@ The workflow must also preserve the mature change branch as first-class workflow
 
 `change-proposal -> contract-drift-audit -> explicit backlog impact verdict -> backlog actualization when verdict is not no-op`
 
+## Stage-level decision rules
+
+Use these rules to avoid both under-execution and process-heavy overexecution. They classify agent action; they do not remove any stage obligation below.
+
+| Stage | Continue | Ask operator | Block | Stop |
+| --- | --- | --- | --- | --- |
+| `feature-intake` | Selected backlog item, source traceability, blockers, and dependencies are concrete enough to start the feature cycle. | The selected item, source authority, or intended feature boundary is ambiguous. | Intake cannot truthfully capture backlog item identity, source traceability, or known blockers. | Intake log and helper-managed stage state capture the durable handoff and required audit path. |
+| `spec-compact` | Requirements, acceptance framing, and relevant edge cases are sufficient for the selected backlog item. | Requirement authority conflicts or the operator must decide a product boundary. | Specification changes backlog truth and actualization is unresolved, or acceptance remains undecidable. | The compact states requirements, non-goals or known gaps, proof obligations, and the required external audit path. |
+| `plan-slice` | The implementation target, completion recognition, boundaries, proof obligations, and protected side-effect preset if triggered are explicit. | The target outcome, rollout boundary, protected side effect, or non-goal needs operator judgment. | A future implementation agent would need to rediscover the goal, or backlog actualization required by planning is unresolved. | The plan is implementation-ready, audit scope is clear, and no further context search is needed for the next safe action. |
+| `implementation` | The implementation scope, local verification, debt review, pre-review checklist evidence when declared, and final review bundle path are clear. | The operator must decide scope expansion, destructive side effect, external-review permission, or unresolved source-review outcome. | Required verification, backlog lifecycle reconciliation, source-review resolution, external audit, or freshness evidence is missing. | `dossier-step-close` has truthfully closed the step and `post-close-hygiene` has recorded clean or blocked branch/readiness evidence. |
+| `change-proposal` | The proposed change, drift evidence, and backlog impact verdict path are concrete. | The operator must choose between no-op, patch existing item, source update, or new backlog item. | Contract drift or backlog impact cannot be classified with current evidence. | The explicit backlog impact verdict is recorded and required actualization/audit work is complete or blocked. |
+
+Progress-update rule:
+
+- during long-running tool, verification, or audit workflows, provide a concise progress update when the host environment supports visible updates;
+- progress updates are operator UX only and never replace verification artifacts, review artifacts, stage logs, helper-managed state, or closure truth.
+
 ## Stage obligations
 
 ### `feature-intake`

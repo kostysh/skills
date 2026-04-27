@@ -200,6 +200,16 @@ Responsibilities:
 
 Implemented through the shipped lifecycle/closure surface without separate migration modules.
 
+## Schema and help contract
+
+Schema snippets, JSON examples, and CLI DSL snippets in this skill describe persisted runtime artifacts, helper-managed stage state, or command input contracts. They are not prompts for free-form model output.
+
+Rules:
+
+- agents should use shipped templates, helper commands, runtime validation, docs-contract tests, and command-behavior tests instead of hand-authoring machine state from prose;
+- before documenting or invoking a command option, confirm it exists in the shipped help surface when practical;
+- if prose would require a new command, flag, output field, error code, artifact path, or schema field, update runtime/help/tests in the same change set before treating it as shipped behavior.
+
 ## Help surface contract
 
 Top-level help for the utility must:

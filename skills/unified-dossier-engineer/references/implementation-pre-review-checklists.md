@@ -51,6 +51,8 @@ Checklist entry schema:
 
 `summary`, `evidence`, ids, and test refs must stay bounded single-line machine fields. Narrative detail may live in the stage log body, but it is not the machine source of truth.
 
+The schema and DSL snippets here are runtime command/input contracts for `implementation` stage readiness. They are not prompts for free-form model output; use the stage-controller command and let runtime validation accept or reject the entries.
+
 ## CLI input
 
 Only the `implementation` stage-controller accepts checklist inputs:

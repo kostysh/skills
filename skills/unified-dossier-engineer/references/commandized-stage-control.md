@@ -98,6 +98,8 @@ Runtime-specific variables may be useful to the agent while it manually determin
 
 Helper-managed stage state under `.dossier/stages/*` is the authoritative structured coordination and validation surface for stage schema fields. Stage log YAML frontmatter is a bounded human-readable mirror of that structured state.
 
+Schema snippets and CLI DSL snippets in this reference are runtime contracts for helper-managed state and command inputs. They are not prompts asking the model to hand-author free-form machine output.
+
 Parity-protected fields:
 
 - `backlog_followup_required`
@@ -147,6 +149,12 @@ Rules:
 - `process_misses` is the structured source of truth for process misses, while the `Process misses` Markdown section is a rendered mirror plus preserved human notes;
 - stage-controller writes accept `--skill-used`, `--skill-issue`, `--skill-followup`, `--process-miss`, and `--phase-scope` as explicit machine-facing stage context.
 - `implementation` also accepts repeatable `--risk-family <id>` and `--pre-review-check <dsl>` as explicit author-side readiness evidence; other stage controllers reject those flags before writing artifacts.
+
+`phase_scope` clarification:
+
+- `phase_scope` is a dossier workflow accounting field for grouping stage activity and telemetry inside this skill;
+- it is not the OpenAI Responses API assistant-item `phase`;
+- if a host manually replays Responses output items, preserve the API `phase` outside dossier stage schema instead of mapping it into `phase_scope`.
 
 Repeatable `--process-miss` DSL:
 

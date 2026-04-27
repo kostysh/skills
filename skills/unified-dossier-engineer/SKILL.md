@@ -6,9 +6,9 @@ description: Build and maintain the canonical dossier/backlog skill and its CLI
 compatibility: Canonical runtime shipped. Only the canonical `.dossier` +
   `docs/ssot` layout and the `dossier-engineer` launcher are part of this skill.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e2e9b370ebf7a683c3e8e6e41f6bb4a6a779828fbfe2204946905a44a7528c0a
+  skillforge-source-hash: d174eee4bac32dee915bf06740e92973793f96ac45f04e3fba51f8b97ee65942
 ---
 
 # unified-dossier-engineer
@@ -16,8 +16,10 @@ metadata:
 ## Start here
 
 1. Confirm the task is about maintaining or extending this dossier/backlog skill.
-2. Read the required active references relevant to the contract you are changing.
-3. Treat this skill as a shipped runtime with one supported `.dossier` + `docs/ssot` layout and one supported launcher.
+2. Read [Status and scope](references/status-and-scope.md) first.
+3. Then load only the required active references whose trigger matches the surface you are changing or the command you are about to use.
+4. Required active references are mandatory when their trigger applies; they are not a command to load every reference before the first useful action.
+5. Treat this skill as a shipped runtime with one supported `.dossier` + `docs/ssot` layout and one supported launcher.
 
 ## When to use this skill
 

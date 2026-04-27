@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: unified-dossier-engineer
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 26000
   description: >-
     Build and maintain the canonical dossier/backlog skill and its CLI runtime.
@@ -169,7 +169,9 @@ surfaces:
 sections:
   startHere:
     - Confirm the task is about maintaining or extending this dossier/backlog skill.
-    - Read the required active references relevant to the contract you are changing.
+    - Read [Status and scope](references/status-and-scope.md) first.
+    - Then load only the required active references whose trigger matches the surface you are changing or the command you are about to use.
+    - Required active references are mandatory when their trigger applies; they are not a command to load every reference before the first useful action.
     - Treat this skill as a shipped runtime with one supported `.dossier` + `docs/ssot` layout and one supported launcher.
   whenToUse:
     - Define or refine the architecture that combines backlog truth and dossier delivery workflow.

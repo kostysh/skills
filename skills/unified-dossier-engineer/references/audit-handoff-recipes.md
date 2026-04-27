@@ -23,21 +23,30 @@ Use it together with:
 
 ## Common handoff skeleton
 
-Use this skeleton as the prompt body for the external reviewer. Fill every placeholder before handoff.
+Use this outcome-first skeleton as the prompt body for the external reviewer. Fill every placeholder before handoff and keep the review read-only.
 
 ```text
+Goal:
 Audit task: Review the dossier stage for correctness against the stated scope. Do not implement fixes.
-Audit class: <spec-conformance-reviewer|code-reviewer|security-reviewer>
-Stage: <feature-intake|spec-compact|plan-slice|implementation|change-proposal>
-Feature: <feature_id>
-Dossier: <repo-relative dossier path>
-Checked scope: <repo-relative files, artifacts, commands, and behavior under review>
-Trace commit: <commit sha or explicit no-commit anchor>
-Implementation scope: <non-code|code-bearing|not-applicable>
-Verification artifacts: <repo-relative verification artifact paths or none>
-Prior review artifacts: <repo-relative review artifact paths or none>
-Source materials: <issue, plan, spec, backlog item, acceptance criteria, or other repo-relative sources>
 
+Success criteria:
+- Decide PASS only when the checked scope satisfies the audit class, source materials, verification evidence, freshness requirements, and closure policy.
+- Decide FAIL when required evidence is missing, stale, invalidated, internally inconsistent, or insufficient for the audit class.
+- If evidence is missing, return FAIL with the smallest missing evidence list that would make the review decidable.
+
+Inputs:
+- Audit class: <spec-conformance-reviewer|code-reviewer|security-reviewer>
+- Stage: <feature-intake|spec-compact|plan-slice|implementation|change-proposal>
+- Feature: <feature_id>
+- Dossier: <repo-relative dossier path>
+- Checked scope: <repo-relative files, artifacts, commands, and behavior under review>
+- Trace commit: <commit sha or explicit no-commit anchor>
+- Implementation scope: <non-code|code-bearing|not-applicable>
+- Verification artifacts: <repo-relative verification artifact paths or none>
+- Prior review artifacts: <repo-relative review artifact paths or none>
+- Source materials: <issue, plan, spec, backlog item, acceptance criteria, or other repo-relative sources>
+
+Constraints:
 Read-only audit analysis:
 - Do not change product/source/test/backlog truth files.
 - Do not change `HEAD`, create commits, rewrite history, or stage changes.
@@ -56,6 +65,16 @@ After review:
 - If PASS, run the PASS `review-artifact` command for this audit class.
 - If FAIL, run the FAIL `review-artifact` command for this audit class and include must-fix findings.
 - A blocking audit round is not complete until the immutable review attempt artifact exists.
+
+Output:
+- One PASS or FAIL verdict.
+- PASS/FAIL `review-artifact` command result and immutable artifact path when the runtime write succeeds.
+- For FAIL, must-fix findings with repo-relative evidence.
+
+Stop rules:
+- Stop and return FAIL if required source material, verification artifacts, trace commit, implementation scope, or dossier artifacts are absent or stale.
+- Stop and return FAIL if the reviewer cannot determine whether the audit class applies.
+- Stop and ask the authoring agent to relaunch the audit if the handoff is not read-only, inherits forked/full-history authoring context, or requires material mutation before review.
 ```
 
 ## Shared risk map

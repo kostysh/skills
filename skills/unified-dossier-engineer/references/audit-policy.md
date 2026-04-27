@@ -122,10 +122,16 @@ Rules:
 - blocking audits must not inherit the authoring agent's full working context or full conversation history;
 - in Codex, blocking audits must use `fork_context: false`; in another runtime, use the equivalent execution mode that does not fork or inherit full authoring context;
 - reviewer delegation with forked context or full-history inheritance does not satisfy external independent audit requirements;
-- weak or mini models do not satisfy blocking audit requirements;
+- reviewers must use an approved reviewer-grade profile for the audit class and stage scope; degraded, unapproved, or task-incapable reviewers do not satisfy blocking audit requirements;
 - reviewer prompts must remain read-only;
 - if an audit was launched with forked/full-history context, invalidate that audit and rerun it with a valid external execution mode;
 - if a reviewer mutates files or changes `HEAD`, invalidate that audit and rerun it.
+
+Delegation availability rule:
+
+- if the runtime requires operator permission before launching an independent reviewer and that permission is unavailable, denied, or cannot be obtained in the current turn, leave the stage open or blocked;
+- if independent reviewer execution is unavailable in the current environment, leave the stage open or blocked;
+- do not replace a required external independent audit with self-review, local verification, implementation pre-review checklist evidence, or chat-only reasoning.
 
 Use [Audit handoff recipes](audit-handoff-recipes.md) when launching required external audits. The recipes make scope, audit class, shared risk map, reviewer focus, read-only analysis boundary, and PASS/FAIL `review-artifact` recording explicit instead of leaving each authoring agent to reconstruct the handoff.
 

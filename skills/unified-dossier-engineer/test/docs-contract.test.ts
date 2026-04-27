@@ -31,6 +31,11 @@ const UNIFIED_ARTIFACT_TOPOLOGY_PATH = path.join(
 );
 const BACKLOG_TRUTH_LAYER_PATH = path.join(SKILL_DIR, 'references', 'backlog-truth-layer.md');
 const SOURCE_REVIEW_CONTRACT_PATH = path.join(SKILL_DIR, 'references', 'source-review-contract.md');
+const SOURCE_BUNDLE_GOVERNANCE_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'source-bundle-governance.md',
+);
 
 const ACTIVE_REFERENCE_PATHS = [
   STATUS_SCOPE_PATH,
@@ -191,6 +196,94 @@ void test('source bundle and package manifest expose only the canonical launcher
   assertNotContainsTerms(packageJson, ['"dossier":', '"backlog-engineer":']);
 });
 
+void test('reasoning-model guidance is progressive, model-neutral, and no-loss', async () => {
+  const [skill, skillYaml, statusScope, sourceGovernance, ...activeRefs] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(SKILL_YAML_PATH, 'utf8'),
+    readFile(STATUS_SCOPE_PATH, 'utf8'),
+    readFile(SOURCE_BUNDLE_GOVERNANCE_PATH, 'utf8'),
+    ...ACTIVE_REFERENCE_PATHS.map((referencePath) => readFile(referencePath, 'utf8')),
+  ]);
+  const activeReferenceCorpus = activeRefs.join('\n\n');
+  const activeReferenceNames = ACTIVE_REFERENCE_PATHS.map((referencePath) =>
+    path.relative(SKILL_DIR, referencePath).replaceAll(path.sep, '/'),
+  ).join('\n');
+
+  assertContainsTerms(skill, [
+    'Read [Status and scope](references/status-and-scope.md) first.',
+    'Required active references are mandatory when their trigger applies',
+    'they are not a command to load every reference before the first useful action',
+  ]);
+  assertContainsTerms(skillYaml, [
+    'Read [Status and scope](references/status-and-scope.md) first.',
+    'Then load only the required active references whose trigger matches the surface you are changing',
+    'Required active references are mandatory when their trigger applies',
+  ]);
+  assertContainsTerms(statusScope, [
+    'Hard invariants',
+    'Model-agnostic operating posture',
+    'Agent decision rules',
+    'Use the lightest sufficient reasoning posture that preserves correctness',
+    'This is behavioral guidance for agents.',
+    'not tied to one model number',
+    'do not treat existing workflow protections as removable noise',
+    'Stop expanding context when the loaded evidence is sufficient to make the next safe decision',
+  ]);
+  assertContainsTerms(sourceGovernance, [
+    'No-loss de-noising rule',
+    'preserve existing behavior first',
+    'Allowed changes:',
+    'Forbidden changes:',
+    'creating active reference filenames tied to a concrete current model number',
+    'Durable active guidance must be model-agnostic.',
+  ]);
+  assertContainsTerms(activeReferenceCorpus, [
+    'register-source',
+    'list-sources',
+    'update-source-path',
+    'remove-source',
+    'refresh',
+    'ack-source-review',
+    'template',
+    'packet',
+    'patch-item',
+    'remove-item',
+    'status',
+    'report',
+    'items',
+    'queue',
+    'attention',
+    'gaps',
+    'search',
+    'feature-intake',
+    'spec-compact',
+    'plan-slice',
+    'implementation',
+    'change-proposal',
+    'contract-drift-audit',
+    'coverage_gate',
+    'coverage-audit',
+    'debt-audit',
+    'dependency-graph',
+    'sync-index',
+    'index-refresh',
+    'lint-dossiers',
+    'dossier-verify',
+    'review-artifact',
+    'dossier-step-close',
+    'post-close-hygiene',
+    'next-step',
+    'lifecycle-refresh',
+    'spec-conformance-reviewer',
+    'code-reviewer',
+    'security-reviewer',
+    'pre_review_risk_families',
+    'post_close_backlog_hygiene_required',
+  ]);
+  assert.doesNotMatch(activeReferenceNames, /gpt-?\d|gpt-\d+\.\d+|references\/gpt/iu);
+  assert.doesNotMatch(skillYaml, /references\/gpt-?\d|references\/gpt-\d+\.\d+/iu);
+});
+
 void test('active audit policy is canonical, stage-wide, and helper-safe', async () => {
   const [
     skill,
@@ -241,6 +334,13 @@ void test('active audit policy is canonical, stage-wide, and helper-safe', async
     "must not inherit the authoring agent's full working context or full conversation history",
     '`fork_context: false`',
     'reviewer delegation with forked context or full-history inheritance does not satisfy external independent audit requirements',
+    'approved reviewer-grade profile',
+    'degraded, unapproved, or task-incapable reviewers do not satisfy blocking audit requirements',
+    'if the runtime requires operator permission before launching an independent reviewer',
+    'permission is unavailable, denied, or cannot be obtained',
+    'independent reviewer execution is unavailable',
+    'leave the stage open or blocked',
+    'do not replace a required external independent audit with self-review',
     'invalidate that audit and rerun it with a valid external execution mode',
     'must not claim to prove launch-mode independence beyond the observable provenance',
     'backlog support files like `.dossier/backlog/.gitignore` or `.dossier/backlog/AGENTS.md` do not invalidate audits by themselves',
@@ -335,10 +435,17 @@ void test('audit handoff recipes are active, complete, and helper-boundary safe'
     'Read this when launching blocking external audits or preparing reviewer handoff prompts.',
   ]);
   assertContainsTerms(auditRecipes, [
+    'Goal:',
+    'Success criteria:',
+    'Inputs:',
+    'Constraints:',
+    'Output:',
+    'Stop rules:',
     'Audit task:',
     'Audit class:',
     'Checked scope:',
     'Trace commit:',
+    'If evidence is missing, return FAIL with the smallest missing evidence list',
     'Read-only audit analysis',
     'Do not change product/source/test/backlog truth files.',
     'Do not change `HEAD`',
@@ -426,6 +533,73 @@ void test('audit handoff recipes are active, complete, and helper-boundary safe'
     'new mandatory workflow stage',
     'new stage-log field',
     'change global reviewer skills',
+  ]);
+});
+
+void test('stage and source-review guidance exposes decision and stop rules', async () => {
+  const [deliveryWorkflow, sourceReviewContract] = await Promise.all([
+    readFile(DELIVERY_WORKFLOW_PATH, 'utf8'),
+    readFile(SOURCE_REVIEW_CONTRACT_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(deliveryWorkflow, [
+    'Stage-level decision rules',
+    '| Stage | Continue | Ask operator | Block | Stop |',
+    '`feature-intake`',
+    '`spec-compact`',
+    '`plan-slice`',
+    '`implementation`',
+    '`change-proposal`',
+    'Progress-update rule',
+    'progress updates are operator UX only',
+    'never replace verification artifacts, review artifacts, stage logs, helper-managed state, or closure truth',
+  ]);
+  assertContainsTerms(sourceReviewContract, [
+    'Source-review decision rules',
+    'Continue source-review triage while the changed source, linked backlog items, or authority of the change has not been read.',
+    'Ask the operator when the source authority, intended product meaning, or acceptable backlog mutation path cannot be determined from repo artifacts.',
+    'Block readiness while any linked source-review record remains `open` with `outcome = pending`.',
+    'Stop triage when the changed source and linked items have enough evidence for one explicit outcome',
+    'Do not continue searching unrelated backlog areas once the changed source, linked items, and explicit outcome are sufficient',
+    'must not auto-resolve source-review records during post-close hygiene',
+  ]);
+});
+
+void test('schema snippets are runtime contracts and phase_scope is not Responses API phase', async () => {
+  const [runtimeBoundary, stageControl, telemetryClosure, preReviewChecklists] = await Promise.all([
+    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(PRE_REVIEW_CHECKLISTS_PATH, 'utf8'),
+  ]);
+
+  assertContainsTerms(runtimeBoundary, [
+    'Schema and help contract',
+    'Schema snippets, JSON examples, and CLI DSL snippets in this skill describe persisted runtime artifacts',
+    'They are not prompts for free-form model output.',
+    'shipped templates, helper commands, runtime validation, docs-contract tests, and command-behavior tests',
+    'before documenting or invoking a command option, confirm it exists in the shipped help surface',
+    'update runtime/help/tests in the same change set',
+  ]);
+  assertContainsTerms(stageControl, [
+    'Schema snippets and CLI DSL snippets in this reference are runtime contracts',
+    'They are not prompts asking the model to hand-author free-form machine output.',
+    '`phase_scope` clarification',
+    '`phase_scope` is a dossier workflow accounting field',
+    'it is not the OpenAI Responses API assistant-item `phase`',
+    'preserve the API `phase` outside dossier stage schema',
+  ]);
+  assertContainsTerms(telemetryClosure, [
+    'Schema snippets and field lists in this reference are runtime/artifact contracts.',
+    'They are not prompts for free-form model output',
+    '`phase_scope` is a dossier workflow accounting field for stage telemetry.',
+    'It is not the OpenAI Responses API `phase`',
+    'API-level `phase` stays outside the dossier schema',
+  ]);
+  assertContainsTerms(preReviewChecklists, [
+    'The schema and DSL snippets here are runtime command/input contracts',
+    'They are not prompts for free-form model output',
+    'use the stage-controller command and let runtime validation accept or reject the entries',
   ]);
 });
 

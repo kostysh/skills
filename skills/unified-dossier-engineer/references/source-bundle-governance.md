@@ -27,6 +27,25 @@ Required behavior:
 - move detailed active guidance, architecture, and long examples into `references/*` or `assets/*`
 - treat compile size warnings as a signal to refactor the source bundle, not as a casual reason to raise the size ceiling
 
+## No-loss de-noising rule
+
+When adapting this skill for newer reasoning models or lower-noise instruction flow, preserve existing behavior first.
+
+Allowed changes:
+
+- reorder guidance so the stable scope and trigger-matched references are read first
+- mark hard invariants separately from agent decision rules
+- add stop conditions for tool-heavy, audit-heavy, and source-review-heavy work
+- move bulky explanations into stable references when the emitted root grows too large
+
+Forbidden changes:
+
+- deleting commands, stages, helper boundaries, audit classes, artifact contracts, telemetry fields, source-review paths, pre-review checklist behavior, post-close hygiene, canonical layout, or no-legacy guarantees because they look verbose
+- creating active reference filenames tied to a concrete current model number
+- documenting runtime behavior that the shipped CLI, help, and tests do not support
+
+Model-specific investigations may remain in dated `docs/*` reports. Durable active guidance must be model-agnostic.
+
 ## Regeneration workflow
 
 1. update the source bundle files
