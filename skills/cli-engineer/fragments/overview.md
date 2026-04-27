@@ -35,6 +35,7 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 - Every interactive flow must have a non-interactive path through flags, args, stdin, config, or files.
 - Use `stdout` for primary output and machine-readable output; use `stderr` for diagnostics, prompts, and errors.
 - Treat `--help`, output shape, flag names, and exit codes as public API.
+- For protected deploy, rollback, release, infra mutation, external executor, or comparable side-effecting commands, validate the per-action option contract before any side effect.
 - Show concise help when required inputs are missing, unless the command is intentionally interactive-first and still exposes a non-interactive path; show full help on `-h` / `--help`.
 - Define an explicit error taxonomy and exit-code mapping; do not scatter ad hoc `process.exit(1)`.
 - Detect TTY before prompts, spinners, colors, or full-screen UI; respect CI and non-interactive shells.
@@ -64,13 +65,14 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 
 1. Classify the CLI before choosing tools: tiny utility, standard multi-command CLI, plugin platform, rich TUI, or service-backed operator CLI.
 2. Decide the automation contract first: human-only, human-first but scriptable, or machine-first with human affordances.
-3. For durable or installable CLIs, pin the binary name, source material, and first concrete jobs before coding; check whether the proposed command already exists with `command -v <tool-name>`.
-4. Pick the thinnest framework that satisfies the real requirements.
-5. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
-6. Design non-interactive paths before prompts or TUI polish.
-7. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
-8. Ensure the repo has a package-level quality gate with explicit scripts for `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`; if the repo splits formatter and linter, expose the narrower scripts too.
-9. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, install-path verification, and provenance where supported.
+3. Identify whether any command is protected because it can trigger deploy, rollback, release, infra mutation, an external executor, or another side effect.
+4. For durable or installable CLIs, pin the binary name, source material, and first concrete jobs before coding; check whether the proposed command already exists with `command -v <tool-name>`.
+5. Pick the thinnest framework that satisfies the real requirements.
+6. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
+7. Design non-interactive paths before prompts or TUI polish.
+8. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
+9. Ensure the repo has a package-level quality gate with explicit scripts for `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`; if the repo splits formatter and linter, expose the narrower scripts too.
+10. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, install-path verification, and provenance where supported.
 
 ## High-signal Triggers
 
@@ -82,6 +84,7 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 - **Need interactive flows**: read `references/ux-and-security.md` before adding prompts or Ink. TUI is never the only path.
 - **Need contract-safe testing or packaging**: read `references/testing-and-release.md` before finalizing command output or publish workflows.
 - **Need modular boundaries or mandatory quality gates**: read `references/architecture-and-layout.md` and `references/testing-and-release.md`.
+- **Need protected deploy, rollback, release, infra mutation, or external executor behavior**: read `references/ux-and-security.md`, `references/testing-and-release.md`, and `references/architecture-and-layout.md` for protected option contracts, tests, and pre-side-effect boundaries.
 
 ## When You Need More Detail
 
@@ -100,5 +103,5 @@ Use `rg` if you only need one section:
 - `rg -n "Preflight|Command Taxonomy|Auth And Config|Installability" references/service-backed-clis.md`
 - `rg -n "Decision Matrix|Framework Notes" references/framework-selection.md`
 - `rg -n "Simple CLI Blueprint|Complex CLI Blueprint|TUI Blueprint" references/architecture-and-layout.md`
-- `rg -n "Runner Selection|Integration Tests|Release Baseline" references/testing-and-release.md`
-- `rg -n "Output Contract|Interactive Rules|Security Rules|Anti-patterns" references/ux-and-security.md`
+- `rg -n "Runner Selection|Integration Tests|Protected Command|Release Baseline" references/testing-and-release.md`
+- `rg -n "Output Contract|Interactive Rules|Protected Command|Security Rules|Anti-patterns" references/ux-and-security.md`

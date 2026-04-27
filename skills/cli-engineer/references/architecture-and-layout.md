@@ -81,6 +81,12 @@ Expected failures should produce actionable messages. Unexpected failures should
 - treat subcommands, flags, env vars, config keys, and machine-readable output as versioned interfaces
 - prefer additive evolution; when breaking changes are unavoidable, emit deprecation warnings with a clear migration path
 
+## Protected Option Validation Boundary
+
+Per-action option allowlists for protected commands are CLI-layer contract validation. They must run before command handlers call app/use-case modules or infrastructure adapters.
+
+Keep this separate from domain business rules. The CLI layer decides whether the requested flags are allowed for that action; the application and domain layers decide whether the valid request is meaningful for the product.
+
 ## Signals, Recovery, And Interruptions
 
 - Ctrl-C should interrupt promptly

@@ -33,6 +33,8 @@ For service-backed CLIs, prefer an explicit family of commands:
 
 Do not expose only a generic `request` command. Give agents high-level verbs for the repeated jobs.
 
+Service-backed write commands that mutate external systems are protected commands. Define their per-action option allowlist and reject unknown, removed, or prohibited legacy flags before calling the service or executor. Deprecated-but-supported aliases may remain only as explicit aliases with warning, migration, and test coverage.
+
 ## Auth and config
 
 For secrets and tokens, prefer the boring path first:

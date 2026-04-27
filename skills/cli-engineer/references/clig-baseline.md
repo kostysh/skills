@@ -83,6 +83,7 @@ A production CLI should feel pleasant for humans and predictable inside scripts.
 - treat flags, env vars, subcommands, and machine-readable output as versioned interfaces
 - prefer additive changes
 - warn before breaking changes and tell users how to migrate
+- for protected side-effecting commands, reject unknown, removed, or prohibited flags before side effects
 - do not make unstable human output the only interface scripts can depend on
 
 ### Signals And Control Characters

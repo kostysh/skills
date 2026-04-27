@@ -6,16 +6,16 @@
 
 | Issue | Status | Notes |
 | --- | --- | --- |
-| [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Audited, planned | Protected command option contracts для operator-facing side-effecting CLIs. |
+| [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Implemented | Protected command option contracts для operator-facing side-effecting CLIs. |
 
 ## Implementation Plans
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
-| [issues/implementation-plan-20260425-1.md](issues/implementation-plan-20260425-1.md) | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Audited PASS |
+| [issues/implementation-plan-20260425-1.md](issues/implementation-plan-20260425-1.md) | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Implemented |
 
 ## Implementation Logs
 
 | Log | Related issue | Status |
 | --- | --- | --- |
-| _None yet_ | _None_ | _Not started_ |
+| [logs/implementation-log-20260425-1.md](logs/implementation-log-20260425-1.md) | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | PASS |

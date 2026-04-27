@@ -54,6 +54,17 @@ Lock down public CLI surface:
 
 Be selective with snapshots. Snapshot only stable contract surfaces, not noisy debug output.
 
+### Protected command contract tests
+
+For commands that can trigger deploy, rollback, release, infra mutation, external executors, subprocesses, network mutation, filesystem mutation, persistence mutation, or comparable protected side effects, add contract coverage for:
+
+- unknown flag rejection
+- removed or prohibited legacy flag rejection
+- deprecated-but-supported alias warning and migration behavior when such an alias remains supported
+- assertion that service, executor, subprocess, network, filesystem, or persistence dependencies are not invoked on validation failure
+
+Do not treat integration or smoke coverage as a substitute for proving validation fails before protected side effects.
+
 ## Runner Selection
 
 ### `node:test`
@@ -210,5 +221,6 @@ Typical release flow:
 - Are stdout/stderr and exit codes asserted?
 - Are non-interactive and CI paths covered?
 - Are deprecation and migration surfaces tested when interfaces evolve?
+- For protected commands, are unknown flags, removed/prohibited legacy flags, deprecated supported aliases, and fail-before-side-effects behavior tested?
 - Are publish credentials and provenance handled safely?
 - Are optional standalone artifacts treated as a separately verified contract?

@@ -57,6 +57,24 @@ For long-lived CLIs, also provide:
 
 Interactive UI is an enhancement layer, not the only product surface.
 
+## Protected Command Option Contracts
+
+A command is protected when it can trigger deploy, rollback, release, infra mutation, an external executor or subprocess, network mutation, persistence mutation, or another comparable protected side effect.
+
+For ordinary read, list, search, or inspect commands, an unknown flag is usually a command-contract and automation compatibility problem. For protected commands, an unknown flag, removed flag, or prohibited legacy flag is a side-effect safety problem.
+
+Protected commands must:
+
+- define an explicit per-action allowlist of accepted options
+- reject unknown flags before work starts
+- reject removed or prohibited legacy flags before work starts
+- keep deprecated-but-supported flags only as explicit aliases with a warning, a migration path, and tests until removal
+- fail before service calls, executor invocation, subprocess spawning, network mutation, filesystem mutation, or persistence mutation
+
+This is a command contract, not a parser-library requirement. Implement it with the parser and architecture the target repo already uses, but make the fail-before-side-effects boundary testable.
+
+A protected CLI without strict option allowlists and pre-side-effect validation tests is a blocker in review.
+
 ## Color And Formatting
 
 - use color only when the terminal supports it
@@ -127,5 +145,6 @@ Interactive UI is an enhancement layer, not the only product surface.
 - Startup network calls before command selection
 - Update checks or telemetry that slow down every invocation
 - Shelling out with unsanitized user input
+- Letting unknown, removed, or prohibited legacy flags reach a protected side effect
 - Logging raw tokens, credentials, or secret file contents
 - Treating help text as an afterthought instead of a contract
