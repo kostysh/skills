@@ -1,0 +1,4 @@
+interface:
+  display_name: "Electron engineer"
+  short_description: "Production Electron architecture, security, builds, packaging, and release"
+  default_prompt: "Use $electron-engineer to build, review, test, package, or release a production Electron desktop application."
