@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: electron-engineer
-  source-version: 0.1.6
+  source-version: 0.1.7
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, modernize, review, test, package, and release production-grade
@@ -22,13 +22,13 @@ references:
     title: Architecture
     source: references/architecture.md
     target: references/architecture.md
-    required: true
+    required: false
     trigger: Read this when designing process boundaries, window ownership, sessions, custom protocols, crash boundaries, offline-first behavior, or multi-window architecture.
   - id: ref-security-ipc-preload
     title: Security, IPC, and Preload
     source: references/security-ipc-preload.md
     target: references/security-ipc-preload.md
-    required: true
+    required: false
     trigger: Read this when configuring BrowserWindow security, preload APIs, IPC contracts, sender validation, CSP, navigation policy, or external URL handling.
   - id: ref-tooling-project-structure
     title: Tooling and Project Structure
@@ -94,10 +94,10 @@ copies:
 
 surfaces:
   active:
-    requiredReferences:
+    requiredReferences: []
+    optionalReferences:
       - ref-architecture
       - ref-security-ipc-preload
-    optionalReferences:
       - ref-tooling-project-structure
       - ref-build-process
       - ref-renderer-integration
@@ -225,7 +225,7 @@ sections:
       text: If required context is retrievable, look it up before asking. Ask only when the missing choice materially changes architecture, security, distribution, or irreversible release behavior. If proceeding with an assumption, state it and choose a reversible action.
     - id: policy-active-surface
       title: Active normative surface
-      text: The generated SKILL.md and required references are the active instruction surface. docs/* and investigations are supporting material only unless explicitly promoted by SKILL.md.
+      text: The generated SKILL.md is the default active instruction surface. References become active for the task when selected from SKILL.md navigation or explicitly loaded by the agent; docs/* and investigations are supporting material only unless explicitly promoted by SKILL.md.
     - id: policy-compiler-maintenance
       title: Compiler maintenance
       text: Maintain this skill through skill.yaml, fragments, references, and skill-source-compiler regeneration. Do not hand-edit generated SKILL.md as the source of truth.

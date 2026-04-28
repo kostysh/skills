@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.6`
+- Skill source version: `0.1.7`
 
 ## Source files
 - `agents/openai.yaml`
@@ -21,8 +21,7 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- `references/architecture.md`
-- `references/security-ipc-preload.md`
+- none
 
 ## Warnings
 - none

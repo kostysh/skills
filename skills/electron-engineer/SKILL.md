@@ -8,9 +8,9 @@ description: Build, modernize, review, test, package, and release
   pipelines, performance, testing, observability, packaging, signing,
   notarization, auto-updates, and Electron major-version migrations.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 173bd238b8ce43b7c9626df2935a092850c6797049cce053c8fdc924aaa231c4
+  skillforge-source-hash: a08a93b2152fd613563e77f4106f6e75af38dffe406fb4222e6c8d992aad6852
 ---
 
 # electron-engineer
@@ -98,19 +98,19 @@ Use the canonical split from [Build Process](references/build-process.md): elect
 
 Read only the reference needed for the task:
 
-| Task | Reference |
-| --- | --- |
-| Process boundaries, windows, sessions, custom protocols | [Architecture](references/architecture.md) |
-| BrowserWindow security, IPC, preload, navigation, CSP | [Security, IPC, and Preload](references/security-ipc-preload.md) |
-| Project layout, package boundaries, ESM/CJS | [Tooling and Project Structure](references/tooling-project-structure.md) |
-| End-to-end build pipeline | [Build Process](references/build-process.md) |
-| React/Vite renderer, routing, dev/prod origins | [Renderer Integration](references/renderer-integration.md) |
-| Menus, tray, shortcuts, dialogs, downloads, native OS features | [Native OS Integration](references/native-os-integration.md) |
-| Files, config, secrets, SQLite, native modules | [Data, Storage, and Native Integration](references/data-storage-native.md) |
-| Testing, packaged smoke, logs, crash reporting | [Testing and Observability](references/testing-observability.md) |
-| ASAR, fuses, signing, notarization, updates, CI | [Packaging, Release, and Updates](references/packaging-release-updates.md) |
-| Reducing source exposure in distributed apps | [Source Protection](references/source-protection.md) |
-| Reviews, migrations, release checklists, playbooks | [Review Playbooks](references/review-playbooks.md) |
+| Task                                                           | Reference                                                                  |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Process boundaries, windows, sessions, custom protocols        | [Architecture](references/architecture.md)                                 |
+| BrowserWindow security, IPC, preload, navigation, CSP          | [Security, IPC, and Preload](references/security-ipc-preload.md)           |
+| Project layout, package boundaries, ESM/CJS                    | [Tooling and Project Structure](references/tooling-project-structure.md)   |
+| End-to-end build pipeline                                      | [Build Process](references/build-process.md)                               |
+| React/Vite renderer, routing, dev/prod origins                 | [Renderer Integration](references/renderer-integration.md)                 |
+| Menus, tray, shortcuts, dialogs, downloads, native OS features | [Native OS Integration](references/native-os-integration.md)               |
+| Files, config, secrets, SQLite, native modules                 | [Data, Storage, and Native Integration](references/data-storage-native.md) |
+| Testing, packaged smoke, logs, crash reporting                 | [Testing and Observability](references/testing-observability.md)           |
+| ASAR, fuses, signing, notarization, updates, CI                | [Packaging, Release, and Updates](references/packaging-release-updates.md) |
+| Reducing source exposure in distributed apps                   | [Source Protection](references/source-protection.md)                       |
+| Reviews, migrations, release checklists, playbooks             | [Review Playbooks](references/review-playbooks.md)                         |
 
 ## Workflow stages
 
@@ -177,34 +177,41 @@ Validation:
 ## Policies
 
 ### Security defaults
+
 Generate secure defaults first. If compatibility requires weaker settings, document the specific risk and implement the least-dangerous fallback with compensating controls.
 
 ### Release discipline
+
 Treat packaging, signing, updater metadata, rollback, SBOM, provenance, and platform-specific smoke tests as part of product behavior, not post-build chores.
 
 ### Source protection discipline
+
 For closed-source commercial Electron apps, protect against trivial source extraction by removing source maps and dev artifacts, minimizing readable bundles, considering targeted obfuscation or bytecode for main/preload/business-critical modules, and auditing packaged contents. Do not put secrets, private keys, licensing authority, or irreplaceable business logic exclusively in distributed client code.
 
 ### Retrieval and grounding budget
+
 For version-sensitive Electron facts, inspect local manifests and lockfiles first. Fetch version-matched official Electron docs, release notes, or platform docs only when a required fact, API, date, migration risk, or source-backed claim is missing. Stop searching once the core decision is supported; if evidence remains missing, label the assumption instead of guessing.
 
 ### Output contract
+
 For implementation work, report the outcome first, then changed surfaces, validation run, and remaining release or platform risk. For audits, lead with findings. For plans, include requirements, affected files/APIs, data flow or state changes when relevant, validation checks, failure behavior, privacy/security considerations, and material open questions.
 
 ### Missing context and stop rules
+
 If required context is retrievable, look it up before asking. Ask only when the missing choice materially changes architecture, security, distribution, or irreversible release behavior. If proceeding with an assumption, state it and choose a reversible action.
 
 ### Active normative surface
-The generated SKILL.md and required references are the active instruction surface. docs/* and investigations are supporting material only unless explicitly promoted by SKILL.md.
+
+The generated SKILL.md is the default active instruction surface. References become active for the task when selected from SKILL.md navigation or explicitly loaded by the agent; docs/\* and investigations are supporting material only unless explicitly promoted by SKILL.md.
 
 ### Compiler maintenance
+
 Maintain this skill through skill.yaml, fragments, references, and skill-source-compiler regeneration. Do not hand-edit generated SKILL.md as the source of truth.
 
-## Required active references
+## Optional references
+
 - [Architecture](references/architecture.md) — Read this when designing process boundaries, window ownership, sessions, custom protocols, crash boundaries, offline-first behavior, or multi-window architecture.
 - [Security, IPC, and Preload](references/security-ipc-preload.md) — Read this when configuring BrowserWindow security, preload APIs, IPC contracts, sender validation, CSP, navigation policy, or external URL handling.
-
-## Optional references
 - [Tooling and Project Structure](references/tooling-project-structure.md) — Read this when shaping project layout, package boundaries, ESM/CJS strategy, monorepo layout, or native-module boundaries.
 - [Build Process](references/build-process.md) — Read this when defining, implementing, reviewing, or debugging the Electron build pipeline, electron-vite scripts, Forge package/make/publish flow, CI build lanes, source-protection build steps, or packaged artifact validation.
 - [Renderer Integration](references/renderer-integration.md) — Read this when integrating React, Vite, routing, custom app protocols, dev/prod renderer origins, CSP differences, or renderer test doubles.
