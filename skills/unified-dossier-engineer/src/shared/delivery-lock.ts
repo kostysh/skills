@@ -53,3 +53,45 @@ export async function acquireDeliveryMutationLock(payload: {
     await fs.rm(lockPath, { force: true });
   };
 }
+
+export async function acquireGlobalOperationLock(payload: {
+  command: string;
+  root: string;
+}): Promise<() => Promise<void>> {
+  const command = sanitizeFilesystemSegment(payload.command, 'global operation lock command');
+  const locksDir = path.join(payload.root, '.dossier', 'ops', 'locks');
+  const lockPath = path.join(locksDir, `${command}.lock`);
+  await assertManagedWritePath(payload.root, locksDir, lockPath, 'global operation lock');
+
+  let handle: Awaited<ReturnType<typeof fs.open>> | null = null;
+  try {
+    handle = await fs.open(lockPath, 'wx');
+    await handle.writeFile(
+      `${JSON.stringify({
+        command,
+        pid: process.pid,
+        started_at: new Date().toISOString(),
+      })}\n`,
+    );
+  } catch (error) {
+    const err = error as NodeJS.ErrnoException;
+    if (err.code === 'EEXIST') {
+      throw new Error(`Global operation lock is already held for ${command}.`);
+    }
+    throw error;
+  }
+
+  let released = false;
+  return async () => {
+    if (released) {
+      return;
+    }
+    released = true;
+    try {
+      await handle?.close();
+    } catch {
+      // noop
+    }
+    await fs.rm(lockPath, { force: true });
+  };
+}

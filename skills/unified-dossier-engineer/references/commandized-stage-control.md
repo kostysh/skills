@@ -3,6 +3,7 @@
 Use this reference when maintaining the shipped stage-controller model for primary delivery workflows in this skill.
 
 Use it together with [Implementation pre-review checklists](implementation-pre-review-checklists.md) when changing implementation risk-family inputs or pre-review readiness gates.
+Use it together with [Policy/admission risk families](policy-admission-risk-families.md) when changing `plan-slice` policy/admission inputs, negative matrix validation, or implementation readiness rechecks.
 Use it together with [Audit handoff recipes](audit-handoff-recipes.md) when changing reviewer handoff prompts or audit recording guidance.
 
 ## Purpose
@@ -123,6 +124,14 @@ Parity-protected fields:
 - `primary_feature_id`
 - `primary_backlog_item_key`
 - `phase_scope`
+- selected closure summary fields: `closure_bundle_id`, `closure_bundle_rounds_by_audit_class`, compatibility `closure_bundle_round`, `selected_review_artifacts`, `selected_verification_artifact`, `selected_step_artifact`, and `selected_closure_ts`
+- RPA producer fields: `rpa_source_identity`, `rpa_source_quality`, and `non_pass_review_events`
+- plan-slice-only `policy_admission_risk_profile`
+- plan-slice-only `policy_admission_risk_rationale`
+- plan-slice-only `policy_admission_risk_families`
+- plan-slice-only `policy_admission_negative_matrix`
+- plan-slice-only `policy_admission_matrix_status`
+- plan-slice-only `policy_admission_matrix_blockers`
 - implementation-only `pre_review_risk_families`
 - implementation-only `pre_review_checklists`
 - implementation-only `pre_review_checklist_status`
@@ -137,6 +146,7 @@ Parity-protected fields:
 - implementation-only `post_close_lifecycle_reconciliation_drift_count`
 - implementation-only `post_close_unresolved_attention_present`
 - implementation-only `post_close_backlog_hygiene_blockers`
+- implementation-only post-close hygiene v2 fields: `post_close_backlog_hygiene_global_refresh_artifact`, `post_close_affected_feature_ids`, `post_close_pre_status_summary`, `post_close_post_status_summary`, and `post_close_hygiene_schema_version`
 
 Rules:
 
@@ -145,10 +155,13 @@ Rules:
 - review attempt linkage in `review_events[]` must include attempt id, round id, round number, immutable artifact path, optional latest copy path, audit class, verdict, reviewer provenance, and freshness/invalidation state;
 - `review_artifacts` stores immutable attempt artifact paths, while latest copies remain compatibility conveniences rather than closure truth;
 - `final_delivery_commit` and `final_closure_commit` are optional trace links only and must not become required closure evidence;
+- artifact-level `event_commit` values on selected review and verification artifacts are material-scope freshness anchors in git repositories when present or expected; stage-level commit fields are trace context, not closure proof;
 - `skills_used`, `skill_issues`, and `skill_followups` are agent-supplied annotations, not automatic skill extraction from conversation traces;
 - `process_misses` is the structured source of truth for process misses, while the `Process misses` Markdown section is a rendered mirror plus preserved human notes;
 - stage-controller writes accept `--skill-used`, `--skill-issue`, `--skill-followup`, `--process-miss`, and `--phase-scope` as explicit machine-facing stage context.
+- `plan-slice` accepts policy/admission classification inputs: `--policy-admission-risk-profile`, `--policy-admission-risk-rationale`, repeatable `--policy-admission-risk`, and repeatable `--policy-admission-negative`.
 - `implementation` also accepts repeatable `--risk-family <id>` and `--pre-review-check <dsl>` as explicit author-side readiness evidence; other stage controllers reject those flags before writing artifacts.
+- `plan-slice` also accepts policy/admission classification inputs; other stage controllers reject those flags before writing artifacts.
 
 `phase_scope` clarification:
 
@@ -170,13 +183,42 @@ Repeatable `--pre-review-check` DSL:
 risk_family=<id>;id=<id>;status=<pass|not_applicable|blocked>;summary=<text>;evidence=<text>;test_refs=<comma-list>
 ```
 
+`plan-slice` policy/admission inputs:
+
+```text
+--policy-admission-risk-profile <not_applicable|applicable>
+--policy-admission-risk-rationale <text>
+--policy-admission-risk <admission|replay|evidence|release-policy|runtime-gating>
+--policy-admission-negative <dsl>
+```
+
+Repeatable `--policy-admission-negative` DSL for `plan-slice`:
+
+```text
+ac=<id>;risk=<admission|replay|evidence|release-policy|runtime-gating>;negative_test=<text>;production_path=<path-or-behavior>;evidence=<path-or-command>
+```
+
 Readiness rules:
 
 - risk families are explicit declarations and must not be inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
+- policy/admission risk families are explicit `plan-slice` declarations and must not be inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
+- `plan-slice --ready-for-close` requires `--policy-admission-risk-profile <not_applicable|applicable>`;
+- `not_applicable` requires `--policy-admission-risk-rationale <text>` and no declared policy/admission risks;
+- `applicable` requires at least one bounded risk family and negative-matrix coverage for every declared family;
 - checklist entries must reference a declared `--risk-family`;
 - `policy-admission-governance` requires the checklist ids listed in [Implementation pre-review checklists](implementation-pre-review-checklists.md);
 - custom risk families require at least one `pass` or `not_applicable` entry and no `blocked` entries;
 - `implementation --ready-for-close` fails before writing `stage_state: ready_for_close` when the declared checklist status is `missing` or `blocked`.
+- `plan-slice --ready-for-close` fails before writing `stage_state: ready_for_close` when policy/admission classification is missing, `not_applicable` lacks a rationale, an unsupported risk id is declared, or applicable risks lack negative-matrix coverage;
+- the runtime validates policy/admission field shape and declared-risk coverage, not semantic acceptance-criteria completeness.
+
+Linked `plan-slice` lookup for implementation readiness:
+
+- canonical lookup is the helper-managed `.dossier/stages/<feature_id>/plan-slice.json` record for the same `feature_id`;
+- if that helper-managed state is absent, the runtime may fall back to the latest `plan-slice` stage log for the same `feature_id`;
+- the linked `plan-slice` must belong to the same `feature_cycle_id` as the implementation stage; a mismatched `feature_cycle_id` is stale and blocks readiness;
+- if no `plan-slice` state or log exists, legacy/non-commandized flows are treated as `not_required` rather than inventing a policy/admission requirement;
+- when linked state exists, missing classification, incomplete matrix coverage, or blocked matrix status fails before implementation writes `stage_state: ready_for_close`.
 
 ## Logging role
 
@@ -251,6 +293,7 @@ Required alignment:
 - `dossier-step-close` enforces selected backlog item lifecycle reconciliation before writing a step artifact for `spec-compact`, `plan-slice`, and `implementation`;
 - successful `implementation` closure marks post-close backlog hygiene required and missing, but does not run source refresh or block the step artifact on post-close hygiene;
 - `post-close-hygiene` is the explicit helper that runs refresh/status/attention/queue evidence after implementation close and records clean or blocked readiness state;
+- `post-close-hygiene` writes the durable global refresh artifact before per-feature state points to it, separates global refresh evidence from per-feature hygiene artifacts, and records run id, affected/failed feature ids, pre/post status summaries, retry command for failed or partial runs, and schema version; failed or partial feature writes return JSON result `fail`, not `partial_success`.
 - `lifecycle-refresh` remains the lifecycle aggregation helper when lifecycle snapshots or session indexes need refresh;
 - stage-controller commands must not duplicate helper-owned closure truth;
 - commandized transitions should improve telemetry determinism, not create a second closure authority surface.
@@ -274,6 +317,8 @@ The utility specification must derive from this boundary and define:
 - exact transition event schema;
 - exact backlog follow-up field names and allowed values.
 - exact post-close hygiene field names, statuses, artifact path, and readiness warning behavior.
+- exact policy/admission flag names, negative-matrix field names, and readiness outputs.
+- exact selected closure bundle and RPA producer field names.
 
 The utility specification and runtime packages now ship this boundary in first-wave form. Later packages may harden or extend it, but they must not weaken the authority split defined here.
 
@@ -283,6 +328,7 @@ The utility specification and runtime packages now ship this boundary in first-w
 - do not make runtime-specific session discovery the canonical stage-controller provenance contract
 - do not infer skill usage or process misses from traces or prose when explicit schema fields are required
 - do not infer implementation risk-family declarations from traces, prose, keywords, filenames, or diffs
+- do not infer policy/admission classification or negative-matrix applicability from traces, prose, keywords, filenames, or diffs
 - do not infer backlog lifecycle reconciliation from traces, prose, commit messages, or `docs/ssot/index.md`
 - do not make optional commit anchors a required proof for truthful closure
 - do not let stage controllers absorb `dossier-step-close`, `lifecycle-refresh`, or `next-step`

@@ -6,9 +6,9 @@ description: Build and maintain the canonical dossier/backlog skill and its CLI
 compatibility: Canonical runtime shipped. Only the canonical `.dossier` +
   `docs/ssot` layout and the `dossier-engineer` launcher are part of this skill.
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9fb64c7e51c8173c289cc65e59d5fcd5d508d9ba88f19ae7503bf2b58a922474
+  skillforge-source-hash: 2e37a1d3017ee3f8141b2922cba66caa8fa3880f3be11431dca1ea261963a461
 ---
 
 # unified-dossier-engineer
@@ -45,6 +45,8 @@ Use the audit handoff recipes when launching required external audits so scope, 
 `review-artifact` records one immutable already obtained audit attempt for one audit class. Stable/latest review copies are compatibility conveniences, not the sole evidence. `dossier-step-close` validates the policy-required audit bundle before truthful closure and records selected immutable PASS attempt paths. These helpers record and validate only observable durable provenance; they do not prove reviewer launch-mode independence.
 
 Implementation pre-review checklists are author-side readiness evidence for explicitly declared risk families before external review handoff. They are not correctness proof and never replace required external audits.
+
+Policy/admission work uses explicit `plan-slice` classification and negative-matrix evidence for `admission`, `replay`, `evidence`, `release-policy`, and `runtime-gating` risk families. The runtime validates bounded fields and readiness gates; external reviewers still judge semantic sufficiency.
 
 This skill preserves two distinct semantic layers inside one runtime:
 
@@ -473,6 +475,7 @@ Primary delivery stages may gain first-class commands, but closure truth, review
 - [Telemetry and closure](references/telemetry-and-closure.md) — Read this when designing lifecycle identity, logs, closure artifacts, retrospective signals, or truthful blocked/open/closed semantics.
 - [Commandized stage control](references/commandized-stage-control.md) — Read this when designing future delivery-stage commands, stage transitions, or the boundary between stage controllers and closure/helper commands.
 - [Implementation pre-review checklists](references/implementation-pre-review-checklists.md) — Read this when designing implementation pre-review checklist evidence, risk-family declarations, or readiness gates before external review.
+- [Policy/admission risk families](references/policy-admission-risk-families.md) — Read this when designing plan-slice policy/admission classification, negative-matrix evidence, implementation readiness rechecks, or policy/admission reviewer handoff.
 - [Runtime and command boundary](references/runtime-and-command-boundary.md) — Read this when designing or maintaining canonical runtime modules, help surface, or command-family boundaries.
 
 ## Bundled assets

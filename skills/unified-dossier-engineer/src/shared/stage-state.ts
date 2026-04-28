@@ -16,6 +16,13 @@ const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
 const PROCESS_MISS_SEVERITIES = ['low', 'medium', 'high'] as const;
 const PRE_REVIEW_CHECKLIST_ENTRY_STATUSES = ['pass', 'not_applicable', 'blocked'] as const;
 const PRE_REVIEW_CHECKLIST_STATUSES = ['not_required', 'missing', 'blocked', 'complete'] as const;
+const POLICY_ADMISSION_RISK_PROFILES = ['not_applicable', 'applicable'] as const;
+const POLICY_ADMISSION_MATRIX_STATUSES = [
+  'not_required',
+  'missing',
+  'blocked',
+  'complete',
+] as const;
 const POST_CLOSE_BACKLOG_HYGIENE_STATUSES = [
   'not_required',
   'missing',
@@ -35,6 +42,8 @@ export type StageStateStage = (typeof STAGE_STATE_STAGES)[number];
 export type ProcessMissSeverity = (typeof PROCESS_MISS_SEVERITIES)[number];
 export type PreReviewChecklistEntryStatus = (typeof PRE_REVIEW_CHECKLIST_ENTRY_STATUSES)[number];
 export type PreReviewChecklistStatus = (typeof PRE_REVIEW_CHECKLIST_STATUSES)[number];
+export type PolicyAdmissionRiskProfile = (typeof POLICY_ADMISSION_RISK_PROFILES)[number];
+export type PolicyAdmissionMatrixStatus = (typeof POLICY_ADMISSION_MATRIX_STATUSES)[number];
 export type PostCloseBacklogHygieneStatus = (typeof POST_CLOSE_BACKLOG_HYGIENE_STATUSES)[number];
 
 export type StageStateProcessMiss = {
@@ -49,6 +58,7 @@ export type StageStateReviewEvent = {
   allowed_by_policy: boolean | null;
   artifact_path: string | null;
   audit_class: string | null;
+  evidence_count: number | null;
   event_commit: string | null;
   implementation_scope: (typeof IMPLEMENTATION_REVIEW_SCOPES)[number] | null;
   invalidated: boolean;
@@ -66,6 +76,14 @@ export type StageStateReviewEvent = {
   security_trigger_reason: string | null;
   stale: boolean;
   verdict: string | null;
+};
+
+export type StageStatePolicyAdmissionNegativeMatrixEntry = {
+  ac: string;
+  evidence: string;
+  negative_test: string;
+  production_path: string;
+  risk: string;
 };
 
 export type StageStatePreReviewChecklistEntry = {
@@ -103,10 +121,25 @@ export interface StageStateRecord {
   local_gates_green_ts: string | null;
   log_path: string;
   phase_scope: string | null;
+  closure_bundle_id: string | null;
+  closure_bundle_round: number | null;
+  closure_bundle_rounds_by_audit_class: Record<string, number>;
+  non_pass_review_events: Array<Record<string, unknown>>;
+  policy_admission_matrix_blockers: string[];
+  policy_admission_matrix_status: PolicyAdmissionMatrixStatus;
+  policy_admission_negative_matrix: StageStatePolicyAdmissionNegativeMatrixEntry[];
+  policy_admission_risk_families: string[];
+  policy_admission_risk_profile: PolicyAdmissionRiskProfile | null;
+  policy_admission_risk_rationale: string | null;
   post_close_backlog_hygiene_artifact: string | null;
+  post_close_affected_feature_ids: string[];
   post_close_backlog_hygiene_blockers: string[];
   post_close_backlog_hygiene_checked_at: string | null;
+  post_close_backlog_hygiene_global_refresh_artifact: string | null;
   post_close_backlog_hygiene_refresh_at: string | null;
+  post_close_hygiene_schema_version: number | null;
+  post_close_post_status_summary: Record<string, unknown> | null;
+  post_close_pre_status_summary: Record<string, unknown> | null;
   post_close_backlog_hygiene_required: boolean;
   post_close_backlog_hygiene_status: PostCloseBacklogHygieneStatus;
   post_close_lifecycle_reconciliation_drift_count: number | null;
@@ -130,7 +163,13 @@ export interface StageStateRecord {
   review_trace_commits: string[];
   reviewer_agent_ids: string[];
   reviewer_skills: string[];
+  rpa_source_identity: Record<string, unknown> | null;
+  rpa_source_quality: Record<string, unknown> | null;
   security_trigger_reasons: string[];
+  selected_closure_ts: string | null;
+  selected_review_artifacts: string[];
+  selected_step_artifact: string | null;
+  selected_verification_artifact: string | null;
   session_id: string | null;
   skill_followups: string[];
   skill_issues: string[];
@@ -171,6 +210,38 @@ function toNullableNumber(value: unknown): number | null {
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
+function toPositiveInteger(value: unknown): number | null {
+  return typeof value === 'number' && Number.isInteger(value) && value > 0 ? value : null;
+}
+
+function toObjectRecord(value: unknown): Record<string, unknown> | null {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function toObjectArray(value: unknown): Array<Record<string, unknown>> {
+  return Array.isArray(value)
+    ? value.filter(
+        (item): item is Record<string, unknown> =>
+          item !== null && typeof item === 'object' && !Array.isArray(item),
+      )
+    : [];
+}
+
+function toNumberRecord(value: unknown): Record<string, number> {
+  const record = toObjectRecord(value);
+  if (!record) {
+    return {};
+  }
+  return Object.fromEntries(
+    Object.entries(record).filter((entry): entry is [string, number] => {
+      const [, entryValue] = entry;
+      return typeof entryValue === 'number' && Number.isInteger(entryValue) && entryValue > 0;
+    }),
+  );
+}
+
 function normalizeImplementationReviewScope(
   value: unknown,
 ): (typeof IMPLEMENTATION_REVIEW_SCOPES)[number] | null {
@@ -179,6 +250,18 @@ function normalizeImplementationReviewScope(
   )
     ? (value as (typeof IMPLEMENTATION_REVIEW_SCOPES)[number])
     : null;
+}
+
+function normalizePolicyAdmissionRiskProfile(value: unknown): PolicyAdmissionRiskProfile | null {
+  return POLICY_ADMISSION_RISK_PROFILES.includes(value as PolicyAdmissionRiskProfile)
+    ? (value as PolicyAdmissionRiskProfile)
+    : null;
+}
+
+function normalizePolicyAdmissionMatrixStatus(value: unknown): PolicyAdmissionMatrixStatus {
+  return POLICY_ADMISSION_MATRIX_STATUSES.includes(value as PolicyAdmissionMatrixStatus)
+    ? (value as PolicyAdmissionMatrixStatus)
+    : 'missing';
 }
 
 function normalizeBacklogActualizationVerdict(
@@ -210,6 +293,7 @@ function toReviewEvents(value: unknown): StageStateReviewEvent[] {
         typeof item.allowed_by_policy === 'boolean' ? item.allowed_by_policy : null,
       artifact_path: toNullableString(item.artifact_path),
       audit_class: toNullableString(item.audit_class),
+      evidence_count: toNullableNumber(item.evidence_count),
       event_commit: toNullableString(item.event_commit),
       implementation_scope: normalizeImplementationReviewScope(item.implementation_scope),
       invalidated: toBoolean(item.invalidated),
@@ -236,6 +320,40 @@ function toReviewEvents(value: unknown): StageStateReviewEvent[] {
       stale: toBoolean(item.stale),
       verdict: toNullableString(item.verdict),
     }));
+}
+
+function toPolicyAdmissionNegativeMatrixEntries(
+  value: unknown,
+): StageStatePolicyAdmissionNegativeMatrixEntry[] {
+  const entries = toObjectArray(value)
+    .map((item) => ({
+      ac: toNullableString(item.ac),
+      risk: toNullableString(item.risk),
+      negative_test: toNullableString(item.negative_test),
+      production_path: toNullableString(item.production_path),
+      evidence: toNullableString(item.evidence),
+    }))
+    .filter(
+      (
+        item,
+      ): item is {
+        ac: string;
+        evidence: string;
+        negative_test: string;
+        production_path: string;
+        risk: string;
+      } =>
+        item.ac !== null &&
+        item.risk !== null &&
+        item.negative_test !== null &&
+        item.production_path !== null &&
+        item.evidence !== null,
+    );
+  return [
+    ...new Map(
+      entries.map((entry) => [`${entry.ac}\u0000${entry.risk}\u0000${entry.negative_test}`, entry]),
+    ).values(),
+  ];
 }
 
 function normalizeProcessMissSeverity(value: unknown): ProcessMissSeverity {
@@ -361,6 +479,36 @@ function buildStageStateRecord(payload: {
     primary_backlog_item_key:
       toNullableString(payload.metadata.primary_backlog_item_key) ?? backlogItemKey,
     phase_scope: toNullableString(payload.metadata.phase_scope) ?? stage,
+    closure_bundle_id: toNullableString(payload.metadata.closure_bundle_id),
+    closure_bundle_round: toPositiveInteger(payload.metadata.closure_bundle_round),
+    closure_bundle_rounds_by_audit_class: toNumberRecord(
+      payload.metadata.closure_bundle_rounds_by_audit_class,
+    ),
+    selected_review_artifacts: toStringArray(payload.metadata.selected_review_artifacts),
+    selected_verification_artifact: toNullableString(
+      payload.metadata.selected_verification_artifact,
+    ),
+    selected_step_artifact: toNullableString(payload.metadata.selected_step_artifact),
+    selected_closure_ts: toNullableString(payload.metadata.selected_closure_ts),
+    rpa_source_identity: toObjectRecord(payload.metadata.rpa_source_identity),
+    rpa_source_quality: toObjectRecord(payload.metadata.rpa_source_quality),
+    non_pass_review_events: toObjectArray(payload.metadata.non_pass_review_events),
+    policy_admission_risk_profile: normalizePolicyAdmissionRiskProfile(
+      payload.metadata.policy_admission_risk_profile,
+    ),
+    policy_admission_risk_rationale: toNullableString(
+      payload.metadata.policy_admission_risk_rationale,
+    ),
+    policy_admission_risk_families: toStringArray(payload.metadata.policy_admission_risk_families),
+    policy_admission_negative_matrix: toPolicyAdmissionNegativeMatrixEntries(
+      payload.metadata.policy_admission_negative_matrix,
+    ),
+    policy_admission_matrix_status: normalizePolicyAdmissionMatrixStatus(
+      payload.metadata.policy_admission_matrix_status,
+    ),
+    policy_admission_matrix_blockers: toStringArray(
+      payload.metadata.policy_admission_matrix_blockers,
+    ),
     backlog_lifecycle_target: toNullableString(payload.metadata.backlog_lifecycle_target),
     backlog_lifecycle_current: toNullableString(payload.metadata.backlog_lifecycle_current),
     backlog_lifecycle_reconciled: toBoolean(payload.metadata.backlog_lifecycle_reconciled, true),
@@ -379,6 +527,17 @@ function buildStageStateRecord(payload: {
       : 'not_required',
     post_close_backlog_hygiene_artifact: toNullableString(
       payload.metadata.post_close_backlog_hygiene_artifact,
+    ),
+    post_close_backlog_hygiene_global_refresh_artifact: toNullableString(
+      payload.metadata.post_close_backlog_hygiene_global_refresh_artifact,
+    ),
+    post_close_affected_feature_ids: toStringArray(
+      payload.metadata.post_close_affected_feature_ids,
+    ),
+    post_close_pre_status_summary: toObjectRecord(payload.metadata.post_close_pre_status_summary),
+    post_close_post_status_summary: toObjectRecord(payload.metadata.post_close_post_status_summary),
+    post_close_hygiene_schema_version: toNullableNumber(
+      payload.metadata.post_close_hygiene_schema_version,
     ),
     post_close_backlog_hygiene_checked_at: toNullableString(
       payload.metadata.post_close_backlog_hygiene_checked_at,
@@ -482,6 +641,26 @@ export function stageStateMirrorFields(state: StageStateRecord): Record<string, 
     primary_feature_id: state.primary_feature_id,
     primary_backlog_item_key: state.primary_backlog_item_key,
     phase_scope: state.phase_scope,
+    closure_bundle_id: state.closure_bundle_id,
+    closure_bundle_round: state.closure_bundle_round,
+    closure_bundle_rounds_by_audit_class: state.closure_bundle_rounds_by_audit_class,
+    selected_review_artifacts: state.selected_review_artifacts,
+    selected_verification_artifact: state.selected_verification_artifact,
+    selected_step_artifact: state.selected_step_artifact,
+    selected_closure_ts: state.selected_closure_ts,
+    rpa_source_identity: state.rpa_source_identity,
+    rpa_source_quality: state.rpa_source_quality,
+    non_pass_review_events: state.non_pass_review_events,
+    ...(state.stage === 'plan-slice'
+      ? {
+          policy_admission_risk_profile: state.policy_admission_risk_profile,
+          policy_admission_risk_rationale: state.policy_admission_risk_rationale,
+          policy_admission_risk_families: state.policy_admission_risk_families,
+          policy_admission_negative_matrix: state.policy_admission_negative_matrix,
+          policy_admission_matrix_status: state.policy_admission_matrix_status,
+          policy_admission_matrix_blockers: state.policy_admission_matrix_blockers,
+        }
+      : {}),
     backlog_lifecycle_target: state.backlog_lifecycle_target,
     backlog_lifecycle_current: state.backlog_lifecycle_current,
     backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
@@ -496,6 +675,12 @@ export function stageStateMirrorFields(state: StageStateRecord): Record<string, 
           post_close_backlog_hygiene_required: state.post_close_backlog_hygiene_required,
           post_close_backlog_hygiene_status: state.post_close_backlog_hygiene_status,
           post_close_backlog_hygiene_artifact: state.post_close_backlog_hygiene_artifact,
+          post_close_backlog_hygiene_global_refresh_artifact:
+            state.post_close_backlog_hygiene_global_refresh_artifact,
+          post_close_affected_feature_ids: state.post_close_affected_feature_ids,
+          post_close_pre_status_summary: state.post_close_pre_status_summary,
+          post_close_post_status_summary: state.post_close_post_status_summary,
+          post_close_hygiene_schema_version: state.post_close_hygiene_schema_version,
           post_close_backlog_hygiene_checked_at: state.post_close_backlog_hygiene_checked_at,
           post_close_backlog_hygiene_refresh_at: state.post_close_backlog_hygiene_refresh_at,
           post_close_open_source_review_count: state.post_close_open_source_review_count,
@@ -570,6 +755,30 @@ export async function readStageState(
       toNullableString(parsed.primary_backlog_item_key) ??
       toNullableString(parsed.backlog_item_key),
     phase_scope: toNullableString(parsed.phase_scope) ?? stage,
+    closure_bundle_id: toNullableString(parsed.closure_bundle_id),
+    closure_bundle_round: toPositiveInteger(parsed.closure_bundle_round),
+    closure_bundle_rounds_by_audit_class: toNumberRecord(
+      parsed.closure_bundle_rounds_by_audit_class,
+    ),
+    selected_review_artifacts: toStringArray(parsed.selected_review_artifacts),
+    selected_verification_artifact: toNullableString(parsed.selected_verification_artifact),
+    selected_step_artifact: toNullableString(parsed.selected_step_artifact),
+    selected_closure_ts: toNullableString(parsed.selected_closure_ts),
+    rpa_source_identity: toObjectRecord(parsed.rpa_source_identity),
+    rpa_source_quality: toObjectRecord(parsed.rpa_source_quality),
+    non_pass_review_events: toObjectArray(parsed.non_pass_review_events),
+    policy_admission_risk_profile: normalizePolicyAdmissionRiskProfile(
+      parsed.policy_admission_risk_profile,
+    ),
+    policy_admission_risk_rationale: toNullableString(parsed.policy_admission_risk_rationale),
+    policy_admission_risk_families: toStringArray(parsed.policy_admission_risk_families),
+    policy_admission_negative_matrix: toPolicyAdmissionNegativeMatrixEntries(
+      parsed.policy_admission_negative_matrix,
+    ),
+    policy_admission_matrix_status: normalizePolicyAdmissionMatrixStatus(
+      parsed.policy_admission_matrix_status,
+    ),
+    policy_admission_matrix_blockers: toStringArray(parsed.policy_admission_matrix_blockers),
     backlog_lifecycle_target: toNullableString(parsed.backlog_lifecycle_target),
     backlog_lifecycle_current: toNullableString(parsed.backlog_lifecycle_current),
     backlog_lifecycle_reconciled: toBoolean(parsed.backlog_lifecycle_reconciled, true),
@@ -584,6 +793,13 @@ export async function readStageState(
     post_close_backlog_hygiene_artifact: toNullableString(
       parsed.post_close_backlog_hygiene_artifact,
     ),
+    post_close_backlog_hygiene_global_refresh_artifact: toNullableString(
+      parsed.post_close_backlog_hygiene_global_refresh_artifact,
+    ),
+    post_close_affected_feature_ids: toStringArray(parsed.post_close_affected_feature_ids),
+    post_close_pre_status_summary: toObjectRecord(parsed.post_close_pre_status_summary),
+    post_close_post_status_summary: toObjectRecord(parsed.post_close_post_status_summary),
+    post_close_hygiene_schema_version: toNullableNumber(parsed.post_close_hygiene_schema_version),
     post_close_backlog_hygiene_checked_at: toNullableString(
       parsed.post_close_backlog_hygiene_checked_at,
     ),

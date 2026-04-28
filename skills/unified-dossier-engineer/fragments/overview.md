@@ -10,6 +10,8 @@ Use the audit handoff recipes when launching required external audits so scope, 
 
 Implementation pre-review checklists are author-side readiness evidence for explicitly declared risk families before external review handoff. They are not correctness proof and never replace required external audits.
 
+Policy/admission work uses explicit `plan-slice` classification and negative-matrix evidence for `admission`, `replay`, `evidence`, `release-policy`, and `runtime-gating` risk families. The runtime validates bounded fields and readiness gates; external reviewers still judge semantic sufficiency.
+
 This skill preserves two distinct semantic layers inside one runtime:
 
 - `backlog truth layer` for backlog graph, source registry, packets, patches, and source-review discipline

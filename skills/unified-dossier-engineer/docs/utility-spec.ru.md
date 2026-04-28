@@ -2,21 +2,21 @@
 
 ## Статус документа
 
-Этот документ является **maintainer-facing utility specification** для будущей объединённой утилиты merged skill-а `dossier-engineer`.
+Этот документ является **maintainer-facing utility specification** для canonical shipped runtime `dossier-engineer`.
 
-Это **не** описание уже shipped runtime.
+Он поддерживает активные references, runtime/help/tests parity и maintainer-facing schema reasoning. Если этот supporting документ расходится с shipped runtime, active references, help surface и tests выигрывают до исправления спецификации.
 
 Документ:
 
-- фиксирует целевой command contract;
+- фиксирует shipped command contract и planned-compatible invariants;
 - задаёт root / artifact / lock / output / error semantics;
-- служит обязательным upstream input для `Package 8`.
+- служит upstream input для runtime/help/test parity work.
 
-Документ не означает, что перечисленные commands уже существуют в help surface текущего runtime.
+Документ не делает docs-only behavior shipped: команды, flags, output fields и error codes считаются shipped только когда они есть в runtime/help/tests.
 
 ## 1. Назначение утилиты
 
-Будущая объединённая утилита `dossier-engineer` должна стать единым mechanical runtime для двух внутренних подсистем merged skill-а:
+Утилита `dossier-engineer` является единым mechanical runtime для двух внутренних подсистем skill-а:
 
 - `backlog truth layer`
 - `delivery workflow layer`
@@ -74,9 +74,7 @@ Stage-controller commands могут only materialize-ить:
 dossier-engineer <command> [options]
 ```
 
-Физический runtime entrypoint и script path будут окончательно зафиксированы в `Package 8`.
-
-До того момента этот документ нормирует command semantics, а не конкретный launcher path.
+Физический runtime entrypoint зафиксирован как `scripts/dossier-engineer.mjs` и package bin `dossier-engineer`.
 
 ## 4. Root и artifact contract
 
@@ -225,7 +223,7 @@ Merged `init` должен materialize-ить оба слоя:
 - backlog-owned state/artifact directories
 - `docs/ssot/index.md`
 - `docs/ssot/features/`
-- repo-local reinforcement artifacts only where the merged process explicitly owns them
+- repo-local reinforcement artifacts only where the canonical process explicitly owns them
 
 `init` не должен silently destroy existing managed truth.
 
@@ -275,7 +273,7 @@ Semantics:
 
 ## 6.3 Delivery stage-controller commands
 
-Future first-class stage-controller set:
+Shipped first-class stage-controller set:
 
 - `feature-intake`
 - `spec-compact`
@@ -331,10 +329,23 @@ Parity-protected machine fields:
 - `primary_feature_id`
 - `primary_backlog_item_key`
 - `phase_scope`
+- selected closure summary fields: `closure_bundle_id`, `closure_bundle_rounds_by_audit_class`, compatibility `closure_bundle_round`, `selected_review_artifacts`, `selected_verification_artifact`, `selected_step_artifact`, `selected_closure_ts`
+- RPA producer fields: `rpa_source_identity`, `rpa_source_quality`, `non_pass_review_events`
+- plan-slice-only `policy_admission_risk_profile`
+- plan-slice-only `policy_admission_risk_rationale`
+- plan-slice-only `policy_admission_risk_families`
+- plan-slice-only `policy_admission_negative_matrix`
+- plan-slice-only `policy_admission_matrix_status`
+- plan-slice-only `policy_admission_matrix_blockers`
 - implementation-only `pre_review_risk_families`
 - implementation-only `pre_review_checklists`
 - implementation-only `pre_review_checklist_status`
 - implementation-only `pre_review_checklist_blockers`
+- implementation-only `post_close_backlog_hygiene_global_refresh_artifact`
+- implementation-only `post_close_affected_feature_ids`
+- implementation-only `post_close_pre_status_summary`
+- implementation-only `post_close_post_status_summary`
+- implementation-only `post_close_hygiene_schema_version`
 
 Agent-supplied schema inputs:
 
@@ -343,6 +354,10 @@ Agent-supplied schema inputs:
 - repeatable `--skill-followup <code-or-summary>`;
 - repeatable `--process-miss <dsl>`;
 - optional `--phase-scope <text>`.
+- `plan-slice` only: `--policy-admission-risk-profile <not_applicable|applicable>`;
+- `plan-slice` only: `--policy-admission-risk-rationale <text>`;
+- `plan-slice` only: repeatable `--policy-admission-risk <admission|replay|evidence|release-policy|runtime-gating>`;
+- `plan-slice` only: repeatable `--policy-admission-negative <dsl>`;
 - `implementation` only: repeatable `--risk-family <id>`;
 - `implementation` only: repeatable `--pre-review-check <dsl>`.
 
@@ -358,21 +373,34 @@ id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;sum
 risk_family=<id>;id=<id>;status=<pass|not_applicable|blocked>;summary=<text>;evidence=<text>;test_refs=<comma-list>
 ```
 
+`--policy-admission-negative` DSL:
+
+```text
+ac=<id>;risk=<admission|replay|evidence|release-policy|runtime-gating>;negative_test=<text>;production_path=<path-or-behavior>;evidence=<path-or-command>
+```
+
 Rules:
 
 - selected-feature lifecycle reconciliation is explicit machine state, not inferred from prose, commits, or `docs/ssot/index.md`;
 - malformed `--process-miss` entries fail before stage artifacts are written;
 - malformed `--pre-review-check` entries fail before stage artifacts are written;
+- malformed `--policy-admission-negative` entries fail before stage artifacts are written;
+- `plan-slice --ready-for-close` requires explicit policy/admission classification: `not_applicable` with rationale and no risks, or `applicable` with bounded risk families and negative-matrix coverage;
+- policy/admission risk taxonomy is `admission`, `replay`, `evidence`, `release-policy`, and `runtime-gating`;
+- policy/admission negative matrix shape is `AC -> risk -> negative test -> production path -> evidence source`;
+- policy/admission classification is explicit and must not be inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
 - `--risk-family` and `--pre-review-check` are accepted only by `implementation`;
 - implementation risk-family declarations are explicit and must not be inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
-- `implementation --ready-for-close` fails before writing `stage_state: ready_for_close` when declared pre-review checklist evidence is `missing` or `blocked`;
+- `implementation --ready-for-close` fails before writing `stage_state: ready_for_close` when declared pre-review checklist evidence is `missing` or `blocked`, or when linked applicable `plan-slice` policy/admission matrix evidence is missing or incomplete;
+- linked `plan-slice` lookup for implementation readiness uses helper-managed `.dossier/stages/<feature_id>/plan-slice.json` first, falls back to latest same-feature `plan-slice` stage log only when state is absent, requires matching `feature_cycle_id`, treats mismatched cycle identity as stale, and treats absent linked plan evidence as `not_required` for legacy/non-commandized flows;
 - built-in `policy-admission-governance` requires `explicit-allow-deny`, `deny-or-failed-admission-no-invocation`, `conflicting-request-replay-fail-closed`, `ambiguous-stale-unsupported-evidence`, `freshness-timestamp-required`, `active-scope-concurrency-model`, `append-only-decision-audit-facts`, and `regression-test-paths`;
 - custom risk families require at least one `pass` or `not_applicable` checklist entry and no `blocked` entries, without core runtime domain changes;
 - `process_misses` is structured source of truth; `Process misses` prose is rendered mirror plus preserved human notes;
 - `review_artifacts`, `review_events`, `verification_artifacts`, and `step_artifact` are explicit artifact links, not heuristic recovery;
-- `review_events[]` links every review attempt to attempt id, round id, round number, immutable artifact path, optional latest copy path, audit class, verdict, reviewer provenance, freshness, and invalidation state;
+- `review_events[]` links every review attempt to attempt id, round id, round number, immutable artifact path, optional latest copy path, audit class, verdict, reviewer provenance, freshness, invalidation state, and bounded `evidence_count`;
 - `review_artifacts` is an ordered unique list of immutable attempt artifact paths, including failed and passing attempts;
 - `final_delivery_commit` and `final_closure_commit` are optional trace links only and never required closure evidence;
+- artifact-level `event_commit` on selected review and verification artifacts is the material-scope freshness anchor in git repositories when present or expected; no-commit repositories do not invent commit-anchor requirements;
 - skill annotations are not scraped from trace or prose.
 
 Они не:
@@ -493,6 +521,8 @@ Fail-closed runtime rule:
 - helper-managed stage-state membership for the current stage cycle
 - security-trigger reason where applicable
 
+FAIL `review-artifact` attempts must include at least one `--must-fix` and at least one `--evidence`. PASS attempts must not include `--must-fix`. Full FAIL `must_fix` and `evidence` findings live in the immutable review artifact; stage state/log mirrors only bounded links and counts such as `must_fix_count` and `evidence_count`.
+
 Default review artifact filenames are bounded immutable attempt files under `.dossier/reviews/<feature>/`, for example `<step>--<audit_class>--rNN--<verdict>--<commit-or-no-commit>.json`.
 
 Stable/latest review references are backward-compatible full artifact JSON copies. They preserve ordinary review artifact fields such as `audit_class`, `verdict`, `findings`, reviewer provenance, `stage`, `feature_id`, and freshness fields, but they must also stamp `artifact_role: "latest_copy"` and `immutable_artifact_path`. Latest copies are convenience references only; retrospective reconstruction and closure outputs must use immutable attempt artifacts as authoritative evidence.
@@ -525,20 +555,33 @@ Implementation pre-review checklist evidence is reviewer context and author-side
 
 When `--review-artifact` points at a latest copy, `dossier-step-close` resolves and validates its `immutable_artifact_path` inside `.dossier/reviews/<feature>/`. If that path is missing, unmanaged, or does not contain `artifact_role: "immutable_attempt"`, close-out fails closed. Step-close artifacts record the selected final PASS bundle as immutable attempt paths, while helper-managed stage state preserves the full review history.
 
-## 7. Preservation / rename / deprecation matrix
+Selected closure bundle contract:
 
-| Current command | Future status | Rationale |
+- selected review artifacts must be latest valid immutable PASS attempts for each required audit class in policy order;
+- selected review and verification artifacts must share the same material-scope `event_commit` in git repositories when commit anchors are available or expected;
+- selected verification artifact missing or mismatched `event_commit` in a git repository is stale and should return a next action to rerun `dossier-verify` for the reviewed material scope;
+- `closure_bundle_id` is the authoritative selected-close identity;
+- `closure_bundle_rounds_by_audit_class` is the authoritative per-class selected round map;
+- `closure_bundle_round` is compatibility scalar equal to the maximum selected round number and must not be treated as mixed-bundle identity;
+- step artifacts and helper-managed stage state mirror `selected_review_artifacts`, `selected_verification_artifact`, `selected_step_artifact`, and `selected_closure_ts`;
+- `rpa_source_identity`, `rpa_source_quality`, and `non_pass_review_events[]` are emitted so retrospective consumers do not need trace-only inference when immutable artifacts exist.
+
+Structured process-miss categories include `missing-fail-review-artifact`, `trace-only-fail`, `invalid-review-launch-mode`, `same-thread-review-artifact`, and `source-quality-limitation`. Historical prose-only FAIL rounds must not be backfilled as synthetic reviewer-owned immutable artifacts.
+
+## 7. Shipped command matrix
+
+| Command | Shipped status | Rationale |
 | --- | --- | --- |
-| `feature-intake` | preserve literally | already aligns with future stage-controller model |
-| `spec-compact` | add as new first-class command | currently workflow-only, becomes stage controller |
-| `plan-slice` | add as new first-class command | currently workflow-only, becomes stage controller |
-| `implementation` | add as new first-class command | currently workflow-only, becomes stage controller |
-| `change-proposal` | add as new first-class command | mature change path becomes commandized stage boundary |
+| `feature-intake` | shipped stage controller | aligns with the commandized stage-controller model |
+| `spec-compact` | shipped stage controller | commandized stage boundary for compact specification |
+| `plan-slice` | shipped stage controller | commandized stage boundary for implementation planning |
+| `implementation` | shipped stage controller | commandized stage boundary for implementation work |
+| `change-proposal` | shipped stage controller | mature change path commandized as a stage boundary |
 | `contract-drift-audit` | preserve literally | helper for mature-change executable drift |
 | `dossier-verify` | preserve literally | helper-owned verification artifact writer |
 | `review-artifact` | preserve literally | helper-owned review persistence |
 | `dossier-step-close` | preserve literally | authoritative closure artifact writer |
-| `post-close-hygiene` | add as explicit delivery helper | implementation post-close refresh/status/attention/queue evidence |
+| `post-close-hygiene` | shipped delivery helper | implementation post-close refresh/status/attention/queue evidence |
 | `lifecycle-refresh` | preserve literally | authoritative lifecycle aggregation helper |
 | `next-step` | preserve literally | dossier-local query/read surface |
 | `coverage-audit` | preserve literally | delivery verification helper |
@@ -547,7 +590,7 @@ When `--review-artifact` points at a latest copy, `dossier-step-close` resolves 
 | `sync-index` | preserve literally | deterministic index helper |
 | `index-refresh` | preserve literally | single-writer orchestrated index refresh |
 | `lint-dossiers` | preserve literally | integrity/lint helper |
-| `register-source` | preserve literally | backlog source registry contract already fits merged model |
+| `register-source` | preserve literally | backlog source registry contract already fits canonical model |
 | `list-sources` | preserve literally | source registry query surface |
 | `update-source-path` | preserve literally | source identity must survive relocations |
 | `remove-source` | preserve literally | source removal remains first-class maintenance path |
@@ -564,8 +607,8 @@ When `--review-artifact` points at a latest copy, `dossier-step-close` resolves 
 | `gaps` | preserve literally | backlog blocker read model |
 | `search` | preserve literally | backlog structural search |
 | `ack-source-review` | add as new first-class backlog helper | explicit truthful no-op closure for source-review records |
-| `init` | preserve literally with expanded merged semantics | now bootstraps both process root and backlog subroot |
-| `delete-backlog` | deprecate from first-wave merged runtime | dangerous backlog-root-only semantics no longer map cleanly to unified process root |
+| `init` | preserve literally with expanded canonical semantics | now bootstraps both process root and backlog subroot |
+| `delete-backlog` | not shipped in canonical runtime | dangerous backlog-root-only semantics no longer map cleanly to unified process root |
 
 ## 8. Canonical flows
 
@@ -662,7 +705,15 @@ After successful `implementation` close, final branch-complete reporting and nex
 dossier-step-close --step implementation -> post-close-hygiene --step implementation -> status / next-step
 ```
 
-`dossier-step-close` must not auto-refresh sources. It only marks future implementation closures with `post_close_backlog_hygiene_required: true` and initial `post_close_backlog_hygiene_status: missing`. `post-close-hygiene` explicitly runs `refresh`, captures `status`, `attention`, and `queue`, writes `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json`, and updates the implementation stage state to `clean` or `blocked`.
+`dossier-step-close` must not auto-refresh sources. It only marks future implementation closures with `post_close_backlog_hygiene_required: true` and initial `post_close_backlog_hygiene_status: missing`. `post-close-hygiene` explicitly runs `refresh`, captures pre/post `status`, `attention`, and `queue`, writes one durable global refresh artifact under `.dossier/verification/post-close-hygiene/` before any per-feature state points to it, writes per-feature `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json` artifacts for affected implementation features, and updates implementation stage state to `clean`, `blocked`, `stale`, or failed/partial evidence as appropriate.
+
+Post-close hygiene v2 separates global refresh freshness from per-feature hygiene evidence:
+
+- global artifact records `run_id`, result `complete|partial|failed`, affected feature ids, failed feature ids, pre/post status summaries, refresh summary, per-feature write statuses, and retry command for failed or partial runs;
+- per-feature artifacts record `global_refresh_artifact`, `affected_feature_ids`, `pre_status_summary`, `post_status_summary`, schema version, feature-local result, and blockers;
+- a global refresh can make another implementation feature stale or blocked without meaning the current feature has hidden cleanup debt;
+- no feature is marked `clean` unless its per-feature artifact and stage state/frontmatter update both succeed;
+- overlapping runs serialize through a global `post-close-hygiene` operation lock and sorted per-feature delivery locks.
 
 If `refresh` opens source-review records, the branch is not backlog-clean. The command must surface that state as blocked evidence and must not auto-ack source reviews or apply backlog patches/packets.
 
@@ -686,6 +737,8 @@ Canonical backlog lifecycle order is `defined < intaken < specified < planned < 
 `queue` must not silently return `intaken` items as fresh intake-ready work; the next action remains dossier-local `spec-compact` via `next-step`.
 
 `plan-slice` protected side-effect handoff remains semantic agent-owned guidance. If implementation touches deploy, rollback, release, external executor, host/container boundary, caller-controlled input, or another protected side effect, the plan and audit scope must call out reservation before side effect, idempotent replay behavior, terminal CAS / no terminal overwrite, strict caller input, and live-vs-stale running behavior. Stage-controller commands do not infer or validate those invariants.
+
+`plan-slice` policy/admission classification remains mechanical input plus runtime shape validation. Applicable `admission`, `replay`, `evidence`, `release-policy`, or `runtime-gating` scopes must record the negative matrix before implementation handoff; `not_applicable` must record a bounded rationale. External review still evaluates semantic sufficiency.
 
 ## 8.4 Mature change path
 
@@ -758,7 +811,8 @@ If stage content itself still requires agent work, the command must say so via `
 Minimum direction:
 
 - `dossier-step-close` returns step artifact path, blockers, and authoritative `process_complete`;
-- `post-close-hygiene` returns the hygiene artifact path, `post_close_backlog_hygiene_status`, open source-review count, source-review blocked item count, lifecycle drift count, unresolved attention flag, `backlog_clean`, and blockers;
+- `post-close-hygiene` returns the selected feature hygiene artifact path, global refresh artifact path, `run_id`, affected feature ids, failed feature ids, per-feature results, `post_close_backlog_hygiene_status`, open source-review count, source-review blocked item count, lifecycle drift count, unresolved attention flag, `backlog_clean`, blockers, and a retry command for failed or partial runs;
+- `post-close-hygiene` partial or failed feature-write runs return non-zero with JSON result `fail`; they must not use `partial_success`, which remains reserved for other command families that can preserve a separately documented partial-success contract;
 - `lifecycle-refresh` returns lifecycle snapshot path and session-index path when refreshed;
 - `review-artifact` and `dossier-verify` return artifact paths and truthful pass/fail.
 
@@ -772,7 +826,7 @@ Minimum direction:
 
 ## 10.1 Exit-code policy
 
-Future runtime should standardize on:
+The shipped runtime standardizes on:
 
 | Exit code | Meaning |
 | --- | --- |
@@ -822,13 +876,13 @@ Required utility-level rules:
 - `queue` must not silently return a mapped done feature as ordinary ready work;
 - `queue` must not silently return an `intaken` item as fresh intake-ready work;
 - no command may infer missing truth from prose.
-- no command may treat a mechanical `plan-slice --ready-for-close` transition as automatic proof that the implementation objective is clear; that semantic readiness remains agent-owned unless a future runtime explicitly implements and tests such validation.
+- no command may treat a mechanical `plan-slice --ready-for-close` transition as automatic proof that the implementation objective is clear; that semantic readiness remains agent-owned unless a future change explicitly implements and tests such validation.
 - no command may synthesize audit handoff prompts, infer protected side-effect presets, auto-ack source reviews during pre-close hygiene rehearsal, or replace post-close hygiene confirmation.
 - no automatic language detection or translation is part of the shipped runtime unless a future change implements and tests it explicitly.
 
-## 12. Non-goals for first merged runtime
+## 12. Non-goals for the canonical runtime
 
-This specification intentionally does **not** require first-wave runtime to support:
+This specification intentionally does **not** require the canonical runtime to support:
 
 - semantic prose classification;
 - automatic plan/spec authoring;
@@ -836,11 +890,11 @@ This specification intentionally does **not** require first-wave runtime to supp
 - repo-wide destructive delete replacement for `delete-backlog`;
 - implicit closure by commit, chat summary, or informal PASS signal.
 
-## 13. Package 8 handoff
+## 13. Runtime maintenance handoff
 
-`Package 8` must derive from this document, not re-open it ad hoc.
+Runtime changes must derive from this document and the active references, not reopen command boundaries ad hoc.
 
-Implementation/runtime design in `Package 8` must preserve:
+Implementation/runtime design must preserve:
 
 - command family boundaries from section 6;
 - preservation / deprecation matrix from section 7;

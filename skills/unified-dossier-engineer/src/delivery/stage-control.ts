@@ -11,7 +11,10 @@ import {
   normalizeMetadataForStageState,
   readStageState,
   syncStageStateFromMetadata,
+  type PolicyAdmissionMatrixStatus,
+  type PolicyAdmissionRiskProfile,
   type StageStateProcessMiss,
+  type StageStatePolicyAdmissionNegativeMatrixEntry,
   type StageStatePreReviewChecklistEntry,
   type StageStateRecord,
 } from '../shared/stage-state.ts';
@@ -51,6 +54,14 @@ const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
 type ImplementationReviewScope = (typeof IMPLEMENTATION_REVIEW_SCOPES)[number];
 const PRE_REVIEW_CHECKLIST_ENTRY_STATUSES = ['pass', 'not_applicable', 'blocked'] as const;
 const PRE_REVIEW_RISK_IDENTIFIER_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/u;
+const POLICY_ADMISSION_RISK_PROFILES = ['not_applicable', 'applicable'] as const;
+const POLICY_ADMISSION_RISK_FAMILIES = [
+  'admission',
+  'replay',
+  'evidence',
+  'release-policy',
+  'runtime-gating',
+] as const;
 const POLICY_ADMISSION_GOVERNANCE_CHECKLIST_IDS = [
   'explicit-allow-deny',
   'deny-or-failed-admission-no-invocation',
@@ -78,6 +89,11 @@ export interface StageControllerResult {
   pre_review_checklist_blockers: string[];
   pre_review_checklist_status: 'not_required' | 'missing' | 'blocked' | 'complete';
   pre_review_risk_families: string[];
+  policy_admission_matrix_blockers: string[];
+  policy_admission_matrix_status: PolicyAdmissionMatrixStatus;
+  policy_admission_risk_families: string[];
+  policy_admission_risk_profile: PolicyAdmissionRiskProfile | null;
+  policy_admission_risk_rationale: string | null;
   ready_for_close_ts: string | null;
   stage: StageControllerCommand;
   stage_state: 'blocked' | 'in_progress' | 'ready_for_close';
@@ -99,6 +115,7 @@ type ReviewEventPayload = {
   allowed_by_policy: boolean;
   artifact_path: string;
   audit_class: AuditClass;
+  evidence_count: number;
   event_commit: string | null;
   implementation_scope: ImplementationReviewScope | null;
   invalidated: boolean;
@@ -131,6 +148,19 @@ type AuditSummaryPayload = {
   reviewerSkills: string[];
   securityTriggerReasons: string[];
   staleReviewPresent: boolean;
+};
+
+type SelectedClosurePayload = {
+  closureBundleId: string | null;
+  closureBundleRound: number | null;
+  closureBundleRoundsByAuditClass: Record<string, number>;
+  nonPassReviewEvents: Array<Record<string, unknown>>;
+  rpaSourceIdentity: Record<string, unknown> | null;
+  rpaSourceQuality: Record<string, unknown> | null;
+  selectedClosureTs: string | null;
+  selectedReviewArtifacts: string[];
+  selectedStepArtifact: string | null;
+  selectedVerificationArtifact: string | null;
 };
 
 export type StageProvenanceInput = {
@@ -537,6 +567,26 @@ function machineMetadataFromStageState(state: StageStateRecord): Record<string, 
     primary_feature_id: state.primary_feature_id,
     primary_backlog_item_key: state.primary_backlog_item_key,
     phase_scope: state.phase_scope,
+    closure_bundle_id: state.closure_bundle_id,
+    closure_bundle_round: state.closure_bundle_round,
+    closure_bundle_rounds_by_audit_class: state.closure_bundle_rounds_by_audit_class,
+    selected_review_artifacts: state.selected_review_artifacts,
+    selected_verification_artifact: state.selected_verification_artifact,
+    selected_step_artifact: state.selected_step_artifact,
+    selected_closure_ts: state.selected_closure_ts,
+    rpa_source_identity: state.rpa_source_identity,
+    rpa_source_quality: state.rpa_source_quality,
+    non_pass_review_events: state.non_pass_review_events,
+    ...(state.stage === 'plan-slice'
+      ? {
+          policy_admission_risk_profile: state.policy_admission_risk_profile,
+          policy_admission_risk_rationale: state.policy_admission_risk_rationale,
+          policy_admission_risk_families: state.policy_admission_risk_families,
+          policy_admission_negative_matrix: state.policy_admission_negative_matrix,
+          policy_admission_matrix_status: state.policy_admission_matrix_status,
+          policy_admission_matrix_blockers: state.policy_admission_matrix_blockers,
+        }
+      : {}),
     stage_state: state.stage_state,
     start_ts: state.start_ts,
     entered_ts: state.entered_ts,
@@ -559,6 +609,12 @@ function machineMetadataFromStageState(state: StageStateRecord): Record<string, 
           post_close_backlog_hygiene_required: state.post_close_backlog_hygiene_required,
           post_close_backlog_hygiene_status: state.post_close_backlog_hygiene_status,
           post_close_backlog_hygiene_artifact: state.post_close_backlog_hygiene_artifact,
+          post_close_backlog_hygiene_global_refresh_artifact:
+            state.post_close_backlog_hygiene_global_refresh_artifact,
+          post_close_affected_feature_ids: state.post_close_affected_feature_ids,
+          post_close_pre_status_summary: state.post_close_pre_status_summary,
+          post_close_post_status_summary: state.post_close_post_status_summary,
+          post_close_hygiene_schema_version: state.post_close_hygiene_schema_version,
           post_close_backlog_hygiene_checked_at: state.post_close_backlog_hygiene_checked_at,
           post_close_backlog_hygiene_refresh_at: state.post_close_backlog_hygiene_refresh_at,
           post_close_open_source_review_count: state.post_close_open_source_review_count,
@@ -638,6 +694,7 @@ function reviewEventsFromStageState(state: StageStateRecord | null): ReviewEvent
       allowed_by_policy: event.allowed_by_policy,
       artifact_path: event.artifact_path,
       audit_class: event.audit_class,
+      evidence_count: event.evidence_count ?? 0,
       event_commit: event.event_commit,
       implementation_scope: event.implementation_scope,
       invalidated: event.invalidated,
@@ -770,6 +827,21 @@ function normalizePreReviewIdentifier(value: string | null, optionName: string):
   return normalized;
 }
 
+function normalizePolicyAdmissionRiskFamily(value: string | null, optionName: string): string {
+  const normalized = normalizeSingleLineOption(value, optionName);
+  if (!normalized) {
+    throw new Error(`${optionName} cannot be empty.`);
+  }
+  if (
+    !POLICY_ADMISSION_RISK_FAMILIES.includes(
+      normalized as (typeof POLICY_ADMISSION_RISK_FAMILIES)[number],
+    )
+  ) {
+    throw new Error(`${optionName} must be one of: ${POLICY_ADMISSION_RISK_FAMILIES.join(', ')}`);
+  }
+  return normalized;
+}
+
 export function parseStageProvenanceInput(args: string[]): StageProvenanceInput {
   const sessionId = normalizeSingleLineOption(takeOption(args, '--session-id'), '--session-id');
   if (!sessionId) {
@@ -849,6 +921,13 @@ type PreReviewChecklistInput = {
   riskFamilies: string[];
 };
 
+type PolicyAdmissionInput = {
+  matrixEntries: StageStatePolicyAdmissionNegativeMatrixEntry[];
+  profile: PolicyAdmissionRiskProfile | null;
+  rationale: string | null;
+  riskFamilies: string[];
+};
+
 function parsePreReviewCheckDsl(value: string): StageStatePreReviewChecklistEntry {
   const fields = parseKeyValueDsl(value, '--pre-review-check');
   const allowedKeys = new Set(['risk_family', 'id', 'status', 'summary', 'evidence', 'test_refs']);
@@ -922,6 +1001,87 @@ function parsePreReviewChecklistInput(
       '--risk-family',
     ).map((riskFamily) => normalizePreReviewIdentifier(riskFamily, '--risk-family')),
     checklistEntries: takeManyOptionsStrict(args, '--pre-review-check').map(parsePreReviewCheckDsl),
+  };
+}
+
+function parsePolicyAdmissionNegativeDsl(
+  value: string,
+): StageStatePolicyAdmissionNegativeMatrixEntry {
+  const fields = parseKeyValueDsl(value, '--policy-admission-negative');
+  const allowedKeys = new Set(['ac', 'risk', 'negative_test', 'production_path', 'evidence']);
+  for (const key of fields.keys()) {
+    if (!allowedKeys.has(key)) {
+      throw new Error(`--policy-admission-negative contains unsupported key: ${key}.`);
+    }
+  }
+  const ac = normalizeSingleLineOption(fields.get('ac') ?? null, '--policy-admission-negative ac');
+  const risk = normalizePolicyAdmissionRiskFamily(
+    fields.get('risk') ?? null,
+    '--policy-admission-negative risk',
+  );
+  const negativeTest = normalizeSingleLineOption(
+    fields.get('negative_test') ?? null,
+    '--policy-admission-negative negative_test',
+  );
+  const productionPath = normalizeSingleLineOption(
+    fields.get('production_path') ?? null,
+    '--policy-admission-negative production_path',
+  );
+  const evidence = normalizeSingleLineOption(
+    fields.get('evidence') ?? null,
+    '--policy-admission-negative evidence',
+  );
+  if (!ac || !negativeTest || !productionPath || !evidence) {
+    throw new Error(
+      '--policy-admission-negative must include ac, risk, negative_test, production_path, and evidence.',
+    );
+  }
+  return {
+    ac,
+    risk,
+    negative_test: negativeTest,
+    production_path: productionPath,
+    evidence,
+  };
+}
+
+function parsePolicyAdmissionInput(
+  command: StageControllerCommand,
+  args: string[],
+): PolicyAdmissionInput {
+  const hasPolicyAdmission =
+    hasOption(args, '--policy-admission-risk-profile') ||
+    hasOption(args, '--policy-admission-risk-rationale') ||
+    hasOption(args, '--policy-admission-risk') ||
+    hasOption(args, '--policy-admission-negative');
+  if (command !== 'plan-slice' && hasPolicyAdmission) {
+    throw new Error('policy/admission risk options are only allowed for plan-slice.');
+  }
+  if (!hasPolicyAdmission) {
+    return { profile: null, rationale: null, riskFamilies: [], matrixEntries: [] };
+  }
+  const profileRaw = normalizeSingleLineOption(
+    takeOption(args, '--policy-admission-risk-profile'),
+    '--policy-admission-risk-profile',
+  );
+  const profile = profileRaw
+    ? ensureEnumValue(profileRaw, POLICY_ADMISSION_RISK_PROFILES, '--policy-admission-risk-profile')
+    : null;
+  return {
+    profile,
+    rationale: normalizeSingleLineOption(
+      takeOption(args, '--policy-admission-risk-rationale'),
+      '--policy-admission-risk-rationale',
+    ),
+    riskFamilies: normalizeRepeatableSingleLineOptions(
+      takeManyOptionsStrict(args, '--policy-admission-risk'),
+      '--policy-admission-risk',
+    ).map((riskFamily) =>
+      normalizePolicyAdmissionRiskFamily(riskFamily, '--policy-admission-risk'),
+    ),
+    matrixEntries: takeManyOptionsStrict(args, '--policy-admission-negative').map(
+      parsePolicyAdmissionNegativeDsl,
+    ),
   };
 }
 
@@ -1033,6 +1193,116 @@ function evaluatePreReviewChecklist(payload: {
   return { status: 'complete', blockers: [] };
 }
 
+function mergePolicyAdmissionMatrixEntries(
+  existing: StageStatePolicyAdmissionNegativeMatrixEntry[],
+  incoming: StageStatePolicyAdmissionNegativeMatrixEntry[],
+): StageStatePolicyAdmissionNegativeMatrixEntry[] {
+  return [
+    ...new Map(
+      [...existing, ...incoming].map((entry) => [
+        `${entry.ac}\u0000${entry.risk}\u0000${entry.negative_test}`,
+        entry,
+      ]),
+    ).values(),
+  ];
+}
+
+function evaluatePolicyAdmissionMatrix(payload: {
+  matrixEntries: StageStatePolicyAdmissionNegativeMatrixEntry[];
+  profile: PolicyAdmissionRiskProfile | null;
+  rationale: string | null;
+  riskFamilies: string[];
+}): {
+  blockers: string[];
+  status: PolicyAdmissionMatrixStatus;
+} {
+  if (!payload.profile) {
+    return { status: 'missing', blockers: ['policy/admission risk classification is missing'] };
+  }
+  if (payload.profile === 'not_applicable') {
+    const blockers = [
+      ...(payload.riskFamilies.length > 0
+        ? ['not_applicable policy/admission profile cannot declare risk families']
+        : []),
+      ...(payload.matrixEntries.length > 0
+        ? ['not_applicable policy/admission profile cannot include negative matrix rows']
+        : []),
+      ...(payload.rationale ? [] : ['not_applicable policy/admission profile requires rationale']),
+    ];
+    return { status: blockers.length > 0 ? 'blocked' : 'not_required', blockers };
+  }
+
+  const blockers: string[] = [];
+  if (payload.riskFamilies.length === 0) {
+    blockers.push('applicable policy/admission profile requires at least one risk family');
+  }
+  const matrixRisks = new Set(payload.matrixEntries.map((entry) => entry.risk));
+  const declaredRisks = new Set(payload.riskFamilies);
+  const undeclaredRisks = [...matrixRisks].filter((risk) => !declaredRisks.has(risk));
+  if (undeclaredRisks.length > 0) {
+    blockers.push(
+      `policy/admission matrix contains undeclared risks: ${undeclaredRisks.join(', ')}`,
+    );
+  }
+  const missingRisks = payload.riskFamilies.filter((risk) => !matrixRisks.has(risk));
+  if (missingRisks.length > 0) {
+    blockers.push(`policy/admission matrix missing rows for risks: ${missingRisks.join(', ')}`);
+  }
+  return { status: blockers.length > 0 ? 'missing' : 'complete', blockers };
+}
+
+function latestPlanSlicePolicyAdmissionState(payload: {
+  currentStageState: StageStateRecord | null;
+  expectedFeatureCycleId: string;
+  latestPlanSlice: ParsedStageLog | null;
+}): {
+  blockers: string[];
+  status: PolicyAdmissionMatrixStatus;
+} {
+  const stageState = payload.currentStageState;
+  if (stageState) {
+    if (stageState.feature_cycle_id !== payload.expectedFeatureCycleId) {
+      return {
+        status: 'missing',
+        blockers: [
+          `linked plan-slice feature_cycle_id ${stageState.feature_cycle_id} does not match implementation feature_cycle_id ${payload.expectedFeatureCycleId}`,
+        ],
+      };
+    }
+    return {
+      status: stageState.policy_admission_matrix_status,
+      blockers: stageState.policy_admission_matrix_blockers,
+    };
+  }
+  if (!payload.latestPlanSlice) {
+    return { status: 'not_required', blockers: [] };
+  }
+  const latestPlanFeatureCycleId = toNullableString(
+    payload.latestPlanSlice.metadata.feature_cycle_id,
+  );
+  if (latestPlanFeatureCycleId && latestPlanFeatureCycleId !== payload.expectedFeatureCycleId) {
+    return {
+      status: 'missing',
+      blockers: [
+        `linked plan-slice feature_cycle_id ${latestPlanFeatureCycleId} does not match implementation feature_cycle_id ${payload.expectedFeatureCycleId}`,
+      ],
+    };
+  }
+  return {
+    status:
+      payload.latestPlanSlice?.metadata.policy_admission_matrix_status === 'not_required' ||
+      payload.latestPlanSlice?.metadata.policy_admission_matrix_status === 'complete'
+        ? (payload.latestPlanSlice.metadata
+            .policy_admission_matrix_status as PolicyAdmissionMatrixStatus)
+        : 'missing',
+    blockers: Array.isArray(payload.latestPlanSlice?.metadata.policy_admission_matrix_blockers)
+      ? payload.latestPlanSlice.metadata.policy_admission_matrix_blockers.filter(
+          (item): item is string => typeof item === 'string',
+        )
+      : [],
+  };
+}
+
 function stageSchemaMetadata(payload: {
   featureId: string;
   logPath: string;
@@ -1048,8 +1318,12 @@ function commandUsage(command: StageControllerCommand): string {
       : '';
   const implementationPreReviewSuffix =
     command === 'implementation' ? ' [--risk-family <id>] [--pre-review-check <dsl>]' : '';
+  const planSlicePolicyAdmissionSuffix =
+    command === 'plan-slice'
+      ? ' [--policy-admission-risk-profile <not_applicable|applicable>] [--policy-admission-risk-rationale <text>] [--policy-admission-risk <id>] [--policy-admission-negative <dsl>]'
+      : '';
   return [
-    `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}${implementationPreReviewSuffix}`,
+    `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationScopeSuffix}${implementationPreReviewSuffix}${planSlicePolicyAdmissionSuffix}`,
     `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
   ].join('\n');
 }
@@ -1315,6 +1589,7 @@ export async function runStageControllerCommand(
   const provenance = parseStageProvenanceInput(args);
   const annotations = parseStageAnnotationsInput(args);
   const preReviewChecklistInput = parsePreReviewChecklistInput(command, args);
+  const policyAdmissionInput = parsePolicyAdmissionInput(command, args);
   const cwd = process.cwd();
   const root = await resolveProcessRoot(cwd, takeOption(args, '--root'));
   const featureId = sanitizeFeatureId(
@@ -1368,6 +1643,10 @@ export async function runStageControllerCommand(
       : await loadLatestStageLog(root, 'implementation', featureId);
   const currentStageState =
     command === 'feature-intake' ? null : await readStageState(root, command, featureId);
+  const latestPlanSlice =
+    command === 'implementation' ? await loadLatestStageLog(root, 'plan-slice', featureId) : null;
+  const planSliceStageState =
+    command === 'implementation' ? await readStageState(root, 'plan-slice', featureId) : null;
   const lifecycleAnchor = latestForStage ?? latestFeatureIntake ?? latestImplementation;
   const featureCycleId =
     toNullableString(lifecycleAnchor?.metadata.feature_cycle_id) ??
@@ -1452,6 +1731,55 @@ export async function runStageControllerCommand(
           checklists: preReviewChecklists,
         })
       : { status: 'not_required' as const, blockers: [] };
+  const existingPolicyAdmissionProfile =
+    command === 'plan-slice' && !resetImplementationEntry
+      ? (currentStageState?.policy_admission_risk_profile ?? null)
+      : null;
+  const policyAdmissionProfile =
+    command === 'plan-slice'
+      ? (policyAdmissionInput.profile ?? existingPolicyAdmissionProfile)
+      : null;
+  const policyAdmissionRiskRationale =
+    command === 'plan-slice'
+      ? (policyAdmissionInput.rationale ??
+        currentStageState?.policy_admission_risk_rationale ??
+        null)
+      : null;
+  const policyAdmissionRiskFamilies =
+    command === 'plan-slice'
+      ? uniqueStrings([
+          ...(currentStageState?.policy_admission_risk_families ?? []),
+          ...policyAdmissionInput.riskFamilies,
+        ])
+      : [];
+  const policyAdmissionNegativeMatrix =
+    command === 'plan-slice'
+      ? mergePolicyAdmissionMatrixEntries(
+          currentStageState?.policy_admission_negative_matrix ?? [],
+          policyAdmissionInput.matrixEntries,
+        )
+      : [];
+  const policyAdmissionEvaluation =
+    command === 'plan-slice'
+      ? evaluatePolicyAdmissionMatrix({
+          profile: policyAdmissionProfile,
+          rationale: policyAdmissionRiskRationale,
+          riskFamilies: policyAdmissionRiskFamilies,
+          matrixEntries: policyAdmissionNegativeMatrix,
+        })
+      : { status: 'not_required' as const, blockers: [] };
+  if (
+    command === 'plan-slice' &&
+    action === 'ready_for_close' &&
+    policyAdmissionEvaluation.status !== 'not_required' &&
+    policyAdmissionEvaluation.status !== 'complete'
+  ) {
+    throw new Error(
+      `plan-slice policy/admission matrix is ${policyAdmissionEvaluation.status}: ${policyAdmissionEvaluation.blockers.join(
+        '; ',
+      )}`,
+    );
+  }
   if (
     command === 'implementation' &&
     action === 'ready_for_close' &&
@@ -1463,6 +1791,23 @@ export async function runStageControllerCommand(
         '; ',
       )}`,
     );
+  }
+  if (command === 'implementation' && action === 'ready_for_close') {
+    const planPolicyAdmission = latestPlanSlicePolicyAdmissionState({
+      currentStageState: planSliceStageState,
+      expectedFeatureCycleId: featureCycleId,
+      latestPlanSlice,
+    });
+    if (
+      planPolicyAdmission.status !== 'not_required' &&
+      planPolicyAdmission.status !== 'complete'
+    ) {
+      throw new Error(
+        `linked plan-slice policy/admission matrix is ${planPolicyAdmission.status}: ${planPolicyAdmission.blockers.join(
+          '; ',
+        )}`,
+      );
+    }
   }
   const implementationReviewScope =
     command === 'implementation'
@@ -1561,6 +1906,14 @@ export async function runStageControllerCommand(
     metadata.pre_review_checklist_status = preReviewEvaluation.status;
     metadata.pre_review_checklist_blockers = preReviewEvaluation.blockers;
   }
+  if (command === 'plan-slice') {
+    metadata.policy_admission_risk_profile = policyAdmissionProfile;
+    metadata.policy_admission_risk_rationale = policyAdmissionRiskRationale;
+    metadata.policy_admission_risk_families = policyAdmissionRiskFamilies;
+    metadata.policy_admission_negative_matrix = policyAdmissionNegativeMatrix;
+    metadata.policy_admission_matrix_status = policyAdmissionEvaluation.status;
+    metadata.policy_admission_matrix_blockers = policyAdmissionEvaluation.blockers;
+  }
   if (command === 'implementation' && stageState === 'ready_for_close') {
     metadata.local_gates_green_ts = now;
   }
@@ -1622,6 +1975,11 @@ export async function runStageControllerCommand(
     pre_review_risk_families: preReviewRiskFamilies,
     pre_review_checklist_status: preReviewEvaluation.status,
     pre_review_checklist_blockers: preReviewEvaluation.blockers,
+    policy_admission_risk_profile: policyAdmissionProfile,
+    policy_admission_risk_rationale: policyAdmissionRiskRationale,
+    policy_admission_risk_families: policyAdmissionRiskFamilies,
+    policy_admission_matrix_status: policyAdmissionEvaluation.status,
+    policy_admission_matrix_blockers: policyAdmissionEvaluation.blockers,
     log_path: relPath.split(path.sep).join('/'),
     next_commands: nextCommandsForState(command, stageState),
   };
@@ -1635,6 +1993,7 @@ export async function recordStepCloseOnStageLog(payload: {
   processComplete: boolean;
   reviewArtifactPaths: string[];
   root: string;
+  selectedClosure?: SelectedClosurePayload;
   step: string;
   stepArtifactPath: string;
   verificationArtifactPath: string | null;
@@ -1671,6 +2030,21 @@ export async function recordStepCloseOnStageLog(payload: {
       payload.verificationArtifactPath,
     ]),
     final_closure_commit: payload.finalClosureCommit,
+    ...(payload.selectedClosure
+      ? {
+          closure_bundle_id: payload.selectedClosure.closureBundleId,
+          closure_bundle_round: payload.selectedClosure.closureBundleRound,
+          closure_bundle_rounds_by_audit_class:
+            payload.selectedClosure.closureBundleRoundsByAuditClass,
+          selected_review_artifacts: payload.selectedClosure.selectedReviewArtifacts,
+          selected_verification_artifact: payload.selectedClosure.selectedVerificationArtifact,
+          selected_step_artifact: payload.selectedClosure.selectedStepArtifact,
+          selected_closure_ts: payload.selectedClosure.selectedClosureTs,
+          rpa_source_identity: payload.selectedClosure.rpaSourceIdentity,
+          rpa_source_quality: payload.selectedClosure.rpaSourceQuality,
+          non_pass_review_events: payload.selectedClosure.nonPassReviewEvents,
+        }
+      : {}),
     ...(payload.auditSummary
       ? {
           required_audit_classes: payload.auditSummary.requiredAuditClasses,
@@ -1732,14 +2106,19 @@ export async function recordStepCloseOnStageLog(payload: {
 }
 
 export async function recordPostCloseBacklogHygieneOnStageLog(payload: {
+  affectedFeatureIds?: string[];
   artifactPath: string;
   blockers: string[];
   checkedAt: string;
   featureId: string;
+  globalRefreshArtifactPath?: string | null;
   lifecycleReconciliationDriftCount: number;
   openSourceReviewCount: number;
+  postStatusSummary?: Record<string, unknown> | null;
+  preStatusSummary?: Record<string, unknown> | null;
   refreshAt: string;
   root: string;
+  schemaVersion?: number | null;
   sourceReviewBlockedItemCount: number;
   status: 'blocked' | 'clean';
   unresolvedAttentionPresent: boolean;
@@ -1760,6 +2139,11 @@ export async function recordPostCloseBacklogHygieneOnStageLog(payload: {
     post_close_backlog_hygiene_required: true,
     post_close_backlog_hygiene_status: payload.status,
     post_close_backlog_hygiene_artifact: payload.artifactPath,
+    post_close_backlog_hygiene_global_refresh_artifact: payload.globalRefreshArtifactPath ?? null,
+    post_close_affected_feature_ids: payload.affectedFeatureIds ?? [featureId],
+    post_close_pre_status_summary: payload.preStatusSummary ?? null,
+    post_close_post_status_summary: payload.postStatusSummary ?? null,
+    post_close_hygiene_schema_version: payload.schemaVersion ?? 1,
     post_close_backlog_hygiene_checked_at: payload.checkedAt,
     post_close_backlog_hygiene_refresh_at: payload.refreshAt,
     post_close_open_source_review_count: payload.openSourceReviewCount,
@@ -1801,6 +2185,7 @@ export async function recordReviewArtifactOnStageLog(payload: {
   implementationScope: ImplementationReviewScope | null;
   invalidated: boolean;
   latestCopyPath: string | null;
+  evidenceCount: number;
   mustFixCount: number;
   reviewMode: ReviewMode;
   reviewAttemptId: string | null;
@@ -1836,6 +2221,7 @@ export async function recordReviewArtifactOnStageLog(payload: {
     at: recordedAt,
     audit_class: payload.auditClass,
     allowed_by_policy: payload.allowedByPolicy,
+    evidence_count: payload.evidenceCount,
     event_commit: payload.eventCommit,
     implementation_scope: payload.implementationScope,
     invalidated: payload.invalidated,

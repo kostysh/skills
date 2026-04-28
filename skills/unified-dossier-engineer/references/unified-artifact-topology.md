@@ -41,6 +41,8 @@ Target layout:
 │   └── implementation/
 ├── reviews/
 ├── verification/
+│   ├── post-close-hygiene/
+│   └── <feature_id>/
 ├── steps/
 ├── metrics/
 ├── retro/
@@ -54,7 +56,10 @@ Stage schema topology:
 - `.dossier/stages/<feature_id>/<stage>.json` is the authoritative structured coordination and validation record for parity-protected stage fields;
 - `.dossier/logs/<stage>/*.md` remains the human-readable stage log, with YAML frontmatter mirroring the bounded structured fields from stage state;
 - `.dossier/reviews/<feature_id>/*.json`, `.dossier/verification/<feature_id>/*.json`, and `.dossier/steps/<feature_id>/*.json` must be linked explicitly from stage state/log metadata when they are produced or consumed;
-- optional commit anchors in stage metadata are repo trace links only, not required closure proof.
+- `.dossier/verification/post-close-hygiene/*.json` stores global refresh artifacts for batch post-close hygiene runs and must be linked by affected per-feature hygiene artifacts;
+- per-feature implementation hygiene remains under `.dossier/verification/<feature_id>/implementation-post-close-backlog-hygiene.json`;
+- optional commit anchors in stage metadata are repo trace links only, not required closure proof;
+- selected review and verification artifacts may carry artifact-level `event_commit` values that serve as material-scope freshness anchors in git repositories.
 
 ## Canonical project SSOT layout
 

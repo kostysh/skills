@@ -8,6 +8,7 @@ Use it together with:
 - [Audit handoff recipes](audit-handoff-recipes.md)
 - [Commandized stage control](commandized-stage-control.md)
 - [Implementation pre-review checklists](implementation-pre-review-checklists.md)
+- [Policy/admission risk families](policy-admission-risk-families.md)
 - [Telemetry and closure](telemetry-and-closure.md)
 
 ## Purpose
@@ -139,6 +140,8 @@ Read-only audit analysis means the reviewer must not change product/source/test/
 
 A blocking audit round is not complete until `review-artifact` records the immutable attempt artifact for that audit class and verdict.
 
+For a FAIL verdict, `review-artifact` must preserve actionable reviewer-owned accounting: at least one `must_fix` finding and at least one `evidence` reference. Correction work after prose-only or trace-only FAIL must not continue as if the round were durably accounted; either rerun reviewer-owned FAIL accounting or record a structured process miss when the original artifact is unrecoverable.
+
 Those launch constraints are active process rules. The canonical runtime mechanically enforces only the durable subset it can validate from review artifacts and helper-managed stage telemetry:
 
 - external-versus-degraded review mode;
@@ -173,6 +176,7 @@ Stale or invalidated audits do not satisfy closure policy.
 Helper command roles stay narrow:
 
 - `review-artifact` persists one immutable already obtained audit attempt for one audit class;
+- FAIL `review-artifact` writes require both `must_fix` and `evidence`; PASS artifacts must not carry `must_fix`;
 - later attempts supersede earlier attempts for closure only through policy validation, never by overwriting earlier evidence;
 - `dossier-step-close` validates that the required audit bundle exists and is still valid;
 - neither helper performs the audit itself.
@@ -193,9 +197,26 @@ Durable review evidence must preserve enough structure to answer:
 - which reviewer thread provenance was stamped by the runtime when available;
 - whether the audit is invalidated or degraded;
 - the review attempt identity: `review_attempt_id`, `review_round_id`, `review_round_number`, and immutable `artifact_path`;
+- FAIL findings: full `must_fix` and `evidence` live in the immutable review artifact, while stage state/log may store bounded links and counts such as `must_fix_count` and `evidence_count`;
 - any compatibility latest copy path as a convenience pointer, not as the sole evidence;
 - which audit classes were required versus executed;
 - which helper-managed stage state recorded the audit bundle for the current stage cycle;
 - for implementation, whether security review was required and why.
+- for policy/admission scopes, which classification, declared risk families, negative matrix, prior non-PASS artifacts, and process misses were handed to reviewers.
 
 This must remain mechanically observable without prose inference.
+
+## Selected Bundle Closure
+
+`dossier-step-close` must select only the final valid PASS bundle required by the policy-defined audit order.
+
+Rules:
+
+- selected artifacts must resolve to managed immutable attempts, even when the operator passes a latest-copy path;
+- selected artifacts must be latest recorded valid attempts for their audit class in current helper-managed stage state;
+- selected artifacts must be policy ordered, stage/feature/scope compatible, external, PASS, not degraded, not invalidated, not stale, and not same-thread when reviewer thread provenance is available;
+- in git repositories, selected review artifact `event_commit` values and selected verification artifact `event_commit` are material-scope freshness anchors and must match the reviewed/current material scope when present or expected;
+- no-commit repositories do not invent commit-anchor requirements solely because git metadata is absent;
+- stage-level commit frontmatter such as `final_delivery_commit` and `final_closure_commit` is trace context only and must not be used as closure proof.
+
+Successful closure records the selected bundle summary: `closure_bundle_id`, `closure_bundle_rounds_by_audit_class`, compatibility `closure_bundle_round`, `selected_review_artifacts`, `selected_verification_artifact`, `selected_step_artifact`, and `selected_closure_ts`.

@@ -8,6 +8,7 @@ Use it together with:
 - [Commandized stage control](commandized-stage-control.md)
 - [Audit policy](audit-policy.md)
 - [Audit handoff recipes](audit-handoff-recipes.md)
+- [Policy/admission risk families](policy-admission-risk-families.md)
 - [Telemetry and closure](telemetry-and-closure.md)
 
 ## Purpose
@@ -20,6 +21,8 @@ They exist to move obvious high-risk branch checks before external review handof
 
 Protected side-effect preset guidance in `plan-slice` handoff is separate audit-scope content. It does not become a pre-review checklist unless the implementation agent explicitly declares a risk family through the implementation stage controller.
 
+Policy/admission negative-matrix planning in `plan-slice` is also separate. [Policy/admission risk families](policy-admission-risk-families.md) owns `admission`, `replay`, `evidence`, `release-policy`, and `runtime-gating` classification before implementation handoff. The `policy-admission-governance` implementation checklist is later author-side readiness evidence for the implementation stage; it does not replace the `plan-slice` matrix and does not satisfy external audit closure.
+
 ## Explicit declaration rule
 
 Risk-family declarations are explicit agent input.
@@ -27,6 +30,7 @@ Risk-family declarations are explicit agent input.
 Rules:
 
 - the runtime must not infer risk families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
+- the runtime must not infer `plan-slice` policy/admission families either; those are explicit inputs governed by [Policy/admission risk families](policy-admission-risk-families.md);
 - undeclared-risk implementation stages do not require pre-review checklist evidence;
 - low-risk, documentation-only, and artifact-only implementation stages must not receive irrelevant checklist gates unless the agent explicitly declares a risk family;
 - `--risk-family <id>` values are bounded stable identifiers, not prose labels.

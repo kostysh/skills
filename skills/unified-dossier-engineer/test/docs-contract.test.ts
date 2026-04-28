@@ -17,6 +17,11 @@ const RUNTIME_BOUNDARY_PATH = path.join(SKILL_DIR, 'references', 'runtime-and-co
 const DELIVERY_WORKFLOW_PATH = path.join(SKILL_DIR, 'references', 'delivery-workflow-layer.md');
 const TELEMETRY_CLOSURE_PATH = path.join(SKILL_DIR, 'references', 'telemetry-and-closure.md');
 const STAGE_CONTROL_PATH = path.join(SKILL_DIR, 'references', 'commandized-stage-control.md');
+const POLICY_ADMISSION_PATH = path.join(
+  SKILL_DIR,
+  'references',
+  'policy-admission-risk-families.md',
+);
 const PRE_REVIEW_CHECKLISTS_PATH = path.join(
   SKILL_DIR,
   'references',
@@ -44,6 +49,7 @@ const ACTIVE_REFERENCE_PATHS = [
   BACKLOG_TRUTH_LAYER_PATH,
   SOURCE_REVIEW_CONTRACT_PATH,
   DELIVERY_WORKFLOW_PATH,
+  POLICY_ADMISSION_PATH,
   AUDIT_POLICY_PATH,
   AUDIT_HANDOFF_RECIPES_PATH,
   TELEMETRY_CLOSURE_PATH,
@@ -169,14 +175,15 @@ void test('source bundle and package manifest expose only the canonical launcher
     'Canonical runtime shipped',
     'references/audit-policy.md',
     'references/audit-handoff-recipes.md',
+    'references/policy-admission-risk-families.md',
     'references/implementation-pre-review-checklists.md',
     'ref-audit-handoff-recipes',
+    'ref-policy-admission-risk-families',
     'ref-implementation-pre-review-checklists',
     'command-post-close-hygiene',
   ]);
   assertNotContainsTerms(skillYaml, [
     'references/migration-and-rollout.md',
-    'references/source-bundle-governance.md',
     'scripts/dossier.mjs',
     'scripts/backlog-engineer.mjs',
     'legacy-dossier',
@@ -566,12 +573,14 @@ void test('stage and source-review guidance exposes decision and stop rules', as
 });
 
 void test('schema snippets are runtime contracts and phase_scope is not Responses API phase', async () => {
-  const [runtimeBoundary, stageControl, telemetryClosure, preReviewChecklists] = await Promise.all([
-    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
-    readFile(STAGE_CONTROL_PATH, 'utf8'),
-    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
-    readFile(PRE_REVIEW_CHECKLISTS_PATH, 'utf8'),
-  ]);
+  const [runtimeBoundary, stageControl, telemetryClosure, preReviewChecklists, utilitySpec] =
+    await Promise.all([
+      readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+      readFile(STAGE_CONTROL_PATH, 'utf8'),
+      readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+      readFile(PRE_REVIEW_CHECKLISTS_PATH, 'utf8'),
+      readFile(UTILITY_SPEC_PATH, 'utf8'),
+    ]);
 
   assertContainsTerms(runtimeBoundary, [
     'Schema and help contract',
@@ -600,6 +609,27 @@ void test('schema snippets are runtime contracts and phase_scope is not Response
     'The schema and DSL snippets here are runtime command/input contracts',
     'They are not prompts for free-form model output',
     'use the stage-controller command and let runtime validation accept or reject the entries',
+  ]);
+  assertContainsTerms(utilitySpec, [
+    'canonical shipped runtime `dossier-engineer`',
+    'runtime/help/tests parity',
+    'команды, flags, output fields и error codes считаются shipped только когда они есть в runtime/help/tests',
+    'Runtime maintenance handoff',
+    'Shipped command matrix',
+    'shipped stage controller',
+  ]);
+  assertNotContainsTerms(utilitySpec, [
+    'Package 8',
+    'Future status',
+    'Future first-class stage-controller set',
+    'Future runtime should standardize on',
+    'currently workflow-only',
+    'becomes stage controller',
+    'future runtime',
+    'not an already shipped runtime',
+    'Это **не** описание уже shipped runtime.',
+    'merged runtime',
+    'merged skill',
   ]);
 });
 
@@ -702,6 +732,87 @@ void test('implementation pre-review checklist contract is explicit readiness ev
     'implementation` only: repeatable `--pre-review-check <dsl>`',
     'custom risk families require at least one `pass` or `not_applicable` checklist entry and no `blocked` entries, without core runtime domain changes',
     'It is not audit evidence, not correctness proof, and not a replacement for `spec-conformance-reviewer`, `code-reviewer`, or `security-reviewer`.',
+  ]);
+});
+
+void test('policy admission plan-slice gate is reachable and bounded', async () => {
+  const [
+    skill,
+    skillYaml,
+    policyAdmission,
+    deliveryWorkflow,
+    stageControl,
+    runtimeBoundary,
+    telemetryClosure,
+    utilitySpec,
+  ] = await Promise.all([
+    readFile(SKILL_PATH, 'utf8'),
+    readFile(SKILL_YAML_PATH, 'utf8'),
+    readFile(POLICY_ADMISSION_PATH, 'utf8'),
+    readFile(DELIVERY_WORKFLOW_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+  const corpus = [
+    policyAdmission,
+    deliveryWorkflow,
+    stageControl,
+    runtimeBoundary,
+    telemetryClosure,
+    utilitySpec,
+  ].join('\n\n');
+
+  assertContainsTerms(skill, [
+    'Policy/admission work uses explicit `plan-slice` classification',
+    'Policy/admission risk families',
+  ]);
+  assertContainsTerms(skillYaml, [
+    'ref-policy-admission-risk-families',
+    'references/policy-admission-risk-families.md',
+    'Read this when designing plan-slice policy/admission classification',
+  ]);
+  assertContainsTerms(policyAdmission, [
+    'admission',
+    'replay',
+    'evidence',
+    'release-policy',
+    'runtime-gating',
+    'policy_admission_risk_profile',
+    'policy_admission_risk_rationale',
+    'policy_admission_risk_families',
+    'policy_admission_negative_matrix',
+    'policy_admission_matrix_status',
+    'policy_admission_matrix_blockers',
+    'AC -> risk -> negative test -> production path -> evidence source',
+    'ac=<id>;risk=<admission|replay|evidence|release-policy|runtime-gating>;negative_test=<text>;production_path=<path-or-behavior>;evidence=<path-or-command>',
+    '`not_applicable` is valid only when',
+    '`applicable` is valid only when',
+    'The runtime must not infer the classification',
+    '`implementation --ready-for-close` rechecks the linked `plan-slice` state.',
+    'Canonical lookup is `.dossier/stages/<feature_id>/plan-slice.json` for the same `feature_id`',
+    'must match the implementation `feature_cycle_id`',
+    'mismatched cycle identity is stale and blocks readiness',
+    'legacy/non-commandized flows are treated as `not_required`',
+  ]);
+  assertContainsTerms(corpus, [
+    '--policy-admission-risk-profile',
+    '--policy-admission-risk-rationale',
+    '--policy-admission-risk',
+    '--policy-admission-negative',
+    'not_applicable',
+    'applicable',
+    'negative-matrix coverage',
+    'policy/admission classification is explicit',
+    'must not be inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose',
+    'Implementation pre-review checklist evidence remains separate',
+    'external review validates sufficiency',
+    'same `feature_id`',
+    'same `feature_cycle_id`',
+  ]);
+  assertNotContainsTerms(stageControl, [
+    'ac=<id>;risk=<id>;negative_test=<text>;production_path=<path-or-behavior>;evidence=<path-or-command>',
   ]);
 });
 
@@ -874,6 +985,74 @@ void test('stage artifact schema is machine-complete and trace-scraping-free', a
   ]);
 });
 
+void test('closure telemetry exposes selected bundle, non-pass history, RPA fields, and hygiene v2', async () => {
+  const [
+    auditPolicy,
+    auditRecipes,
+    telemetryClosure,
+    stageControl,
+    runtimeBoundary,
+    artifactTopology,
+    utilitySpec,
+  ] = await Promise.all([
+    readFile(AUDIT_POLICY_PATH, 'utf8'),
+    readFile(AUDIT_HANDOFF_RECIPES_PATH, 'utf8'),
+    readFile(TELEMETRY_CLOSURE_PATH, 'utf8'),
+    readFile(STAGE_CONTROL_PATH, 'utf8'),
+    readFile(RUNTIME_BOUNDARY_PATH, 'utf8'),
+    readFile(UNIFIED_ARTIFACT_TOPOLOGY_PATH, 'utf8'),
+    readFile(UTILITY_SPEC_PATH, 'utf8'),
+  ]);
+  const corpus = [
+    auditPolicy,
+    auditRecipes,
+    telemetryClosure,
+    stageControl,
+    runtimeBoundary,
+    artifactTopology,
+    utilitySpec,
+  ].join('\n\n');
+
+  assertContainsTerms(corpus, [
+    'FAIL `review-artifact` attempts must include at least one `--must-fix` and at least one `--evidence`',
+    'prose-only FAIL is not operationally complete',
+    'Full FAIL `must_fix` and `evidence` findings live in the immutable review artifact',
+    'missing-fail-review-artifact',
+    'trace-only-fail',
+    'invalid-review-launch-mode',
+    'same-thread-review-artifact',
+    'source-quality-limitation',
+    'closure_bundle_id',
+    'closure_bundle_rounds_by_audit_class',
+    'closure_bundle_round',
+    'selected_review_artifacts',
+    'selected_verification_artifact',
+    'selected_step_artifact',
+    'selected_closure_ts',
+    'rpa_source_identity',
+    'rpa_source_quality',
+    'non_pass_review_events',
+    'review_history_quality: complete',
+    'review_history_quality: process_miss',
+    'review_history_quality: limited',
+    'selected_bundle_quality: complete',
+    'artifact-level `event_commit`',
+    'material-scope freshness anchor',
+    'stage-level commit fields remain optional trace context, not closure proof',
+    '.dossier/verification/post-close-hygiene/',
+    'global_refresh_artifact',
+    'affected_feature_ids',
+    'pre_status_summary',
+    'post_status_summary',
+    'complete|partial|failed',
+    'failed feature ids',
+    'retry command',
+    'JSON result `fail`; they must not use `partial_success`',
+    'Historical prose-only FAIL rounds must not be backfilled as synthetic reviewer-owned immutable artifacts',
+  ]);
+  assertNotContainsTerms(corpus, ['stage-level commit fields are closure proof']);
+});
+
 void test('lifecycle reconciliation gate protects backlog truth before step closure', async () => {
   const [
     deliveryWorkflow,
@@ -1012,7 +1191,8 @@ void test('post-close backlog hygiene contract is explicit and non-mutating beyo
   assertContainsTerms(runtimeBoundary, [
     '`post-close-hygiene` runs explicit refresh/status/attention/queue evidence',
     '`post-close-hygiene` never auto-acks source-review records',
-    '`dossier-step-close` auto-refreshes sources',
+    'must not report post-close partial feature failures as `partial_success`',
+    'do not imply `dossier-step-close` auto-refreshes sources',
   ]);
   assertNotContainsTerms(corpus, [
     'dossier-step-close automatically runs refresh',

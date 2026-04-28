@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import { execFileSync, spawnSync } from "node:child_process";
+import crypto, { createHash } from "node:crypto";
 import { constants, promises } from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
-import crypto from "node:crypto";
 import fs from "node:fs/promises";
 //#region \0rolldown/runtime.js
 var __defProp = Object.defineProperty;
@@ -19,7 +19,7 @@ var __exportAll = (all, no_symbols) => {
 //#endregion
 //#region package.json
 var name = "@kostysh/unified-dossier-engineer";
-var version$1 = "0.2.1";
+var version$1 = "0.2.2";
 var description = "CLI runtime for the canonical dossier/backlog skill.";
 var type = "module";
 var bin = { "dossier-engineer": "scripts/dossier-engineer.mjs" };
@@ -6843,6 +6843,13 @@ var PRE_REVIEW_CHECKLIST_STATUSES = [
 	"blocked",
 	"complete"
 ];
+var POLICY_ADMISSION_RISK_PROFILES$1 = ["not_applicable", "applicable"];
+var POLICY_ADMISSION_MATRIX_STATUSES = [
+	"not_required",
+	"missing",
+	"blocked",
+	"complete"
+];
 var POST_CLOSE_BACKLOG_HYGIENE_STATUSES = [
 	"not_required",
 	"missing",
@@ -6869,8 +6876,31 @@ function toBoolean$1(value, fallback = false) {
 function toNullableNumber(value) {
 	return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
+function toPositiveInteger(value) {
+	return typeof value === "number" && Number.isInteger(value) && value > 0 ? value : null;
+}
+function toObjectRecord(value) {
+	return value !== null && typeof value === "object" && !Array.isArray(value) ? value : null;
+}
+function toObjectArray(value) {
+	return Array.isArray(value) ? value.filter((item) => item !== null && typeof item === "object" && !Array.isArray(item)) : [];
+}
+function toNumberRecord(value) {
+	const record = toObjectRecord(value);
+	if (!record) return {};
+	return Object.fromEntries(Object.entries(record).filter((entry) => {
+		const [, entryValue] = entry;
+		return typeof entryValue === "number" && Number.isInteger(entryValue) && entryValue > 0;
+	}));
+}
 function normalizeImplementationReviewScope$2(value) {
 	return IMPLEMENTATION_REVIEW_SCOPES$2.includes(value) ? value : null;
+}
+function normalizePolicyAdmissionRiskProfile(value) {
+	return POLICY_ADMISSION_RISK_PROFILES$1.includes(value) ? value : null;
+}
+function normalizePolicyAdmissionMatrixStatus(value) {
+	return POLICY_ADMISSION_MATRIX_STATUSES.includes(value) ? value : "missing";
 }
 function normalizeBacklogActualizationVerdict(value) {
 	return BACKLOG_ACTUALIZATION_VERDICTS.includes(value) ? value : "no_lifecycle_target";
@@ -6884,6 +6914,7 @@ function toReviewEvents(value) {
 		allowed_by_policy: typeof item.allowed_by_policy === "boolean" ? item.allowed_by_policy : null,
 		artifact_path: toNullableString$5(item.artifact_path),
 		audit_class: toNullableString$5(item.audit_class),
+		evidence_count: toNullableNumber(item.evidence_count),
 		event_commit: toNullableString$5(item.event_commit),
 		implementation_scope: normalizeImplementationReviewScope$2(item.implementation_scope),
 		invalidated: toBoolean$1(item.invalidated),
@@ -6902,6 +6933,16 @@ function toReviewEvents(value) {
 		stale: toBoolean$1(item.stale),
 		verdict: toNullableString$5(item.verdict)
 	}));
+}
+function toPolicyAdmissionNegativeMatrixEntries(value) {
+	const entries = toObjectArray(value).map((item) => ({
+		ac: toNullableString$5(item.ac),
+		risk: toNullableString$5(item.risk),
+		negative_test: toNullableString$5(item.negative_test),
+		production_path: toNullableString$5(item.production_path),
+		evidence: toNullableString$5(item.evidence)
+	})).filter((item) => item.ac !== null && item.risk !== null && item.negative_test !== null && item.production_path !== null && item.evidence !== null);
+	return [...new Map(entries.map((entry) => [`${entry.ac}\u0000${entry.risk}\u0000${entry.negative_test}`, entry])).values()];
 }
 function normalizeProcessMissSeverity(value) {
 	return PROCESS_MISS_SEVERITIES.includes(value) ? value : "medium";
@@ -6962,6 +7003,22 @@ function buildStageStateRecord(payload) {
 		primary_feature_id: toNullableString$5(payload.metadata.primary_feature_id) ?? featureId,
 		primary_backlog_item_key: toNullableString$5(payload.metadata.primary_backlog_item_key) ?? backlogItemKey,
 		phase_scope: toNullableString$5(payload.metadata.phase_scope) ?? stage,
+		closure_bundle_id: toNullableString$5(payload.metadata.closure_bundle_id),
+		closure_bundle_round: toPositiveInteger(payload.metadata.closure_bundle_round),
+		closure_bundle_rounds_by_audit_class: toNumberRecord(payload.metadata.closure_bundle_rounds_by_audit_class),
+		selected_review_artifacts: toStringArray$3(payload.metadata.selected_review_artifacts),
+		selected_verification_artifact: toNullableString$5(payload.metadata.selected_verification_artifact),
+		selected_step_artifact: toNullableString$5(payload.metadata.selected_step_artifact),
+		selected_closure_ts: toNullableString$5(payload.metadata.selected_closure_ts),
+		rpa_source_identity: toObjectRecord(payload.metadata.rpa_source_identity),
+		rpa_source_quality: toObjectRecord(payload.metadata.rpa_source_quality),
+		non_pass_review_events: toObjectArray(payload.metadata.non_pass_review_events),
+		policy_admission_risk_profile: normalizePolicyAdmissionRiskProfile(payload.metadata.policy_admission_risk_profile),
+		policy_admission_risk_rationale: toNullableString$5(payload.metadata.policy_admission_risk_rationale),
+		policy_admission_risk_families: toStringArray$3(payload.metadata.policy_admission_risk_families),
+		policy_admission_negative_matrix: toPolicyAdmissionNegativeMatrixEntries(payload.metadata.policy_admission_negative_matrix),
+		policy_admission_matrix_status: normalizePolicyAdmissionMatrixStatus(payload.metadata.policy_admission_matrix_status),
+		policy_admission_matrix_blockers: toStringArray$3(payload.metadata.policy_admission_matrix_blockers),
 		backlog_lifecycle_target: toNullableString$5(payload.metadata.backlog_lifecycle_target),
 		backlog_lifecycle_current: toNullableString$5(payload.metadata.backlog_lifecycle_current),
 		backlog_lifecycle_reconciled: toBoolean$1(payload.metadata.backlog_lifecycle_reconciled, true),
@@ -6970,6 +7027,11 @@ function buildStageStateRecord(payload) {
 		post_close_backlog_hygiene_required: postCloseBacklogHygieneRequired,
 		post_close_backlog_hygiene_status: postCloseBacklogHygieneRequired ? normalizePostCloseBacklogHygieneStatus(payload.metadata.post_close_backlog_hygiene_status, "missing") : "not_required",
 		post_close_backlog_hygiene_artifact: toNullableString$5(payload.metadata.post_close_backlog_hygiene_artifact),
+		post_close_backlog_hygiene_global_refresh_artifact: toNullableString$5(payload.metadata.post_close_backlog_hygiene_global_refresh_artifact),
+		post_close_affected_feature_ids: toStringArray$3(payload.metadata.post_close_affected_feature_ids),
+		post_close_pre_status_summary: toObjectRecord(payload.metadata.post_close_pre_status_summary),
+		post_close_post_status_summary: toObjectRecord(payload.metadata.post_close_post_status_summary),
+		post_close_hygiene_schema_version: toNullableNumber(payload.metadata.post_close_hygiene_schema_version),
 		post_close_backlog_hygiene_checked_at: toNullableString$5(payload.metadata.post_close_backlog_hygiene_checked_at),
 		post_close_backlog_hygiene_refresh_at: toNullableString$5(payload.metadata.post_close_backlog_hygiene_refresh_at),
 		post_close_open_source_review_count: toNullableNumber(payload.metadata.post_close_open_source_review_count),
@@ -7041,6 +7103,24 @@ function stageStateMirrorFields(state) {
 		primary_feature_id: state.primary_feature_id,
 		primary_backlog_item_key: state.primary_backlog_item_key,
 		phase_scope: state.phase_scope,
+		closure_bundle_id: state.closure_bundle_id,
+		closure_bundle_round: state.closure_bundle_round,
+		closure_bundle_rounds_by_audit_class: state.closure_bundle_rounds_by_audit_class,
+		selected_review_artifacts: state.selected_review_artifacts,
+		selected_verification_artifact: state.selected_verification_artifact,
+		selected_step_artifact: state.selected_step_artifact,
+		selected_closure_ts: state.selected_closure_ts,
+		rpa_source_identity: state.rpa_source_identity,
+		rpa_source_quality: state.rpa_source_quality,
+		non_pass_review_events: state.non_pass_review_events,
+		...state.stage === "plan-slice" ? {
+			policy_admission_risk_profile: state.policy_admission_risk_profile,
+			policy_admission_risk_rationale: state.policy_admission_risk_rationale,
+			policy_admission_risk_families: state.policy_admission_risk_families,
+			policy_admission_negative_matrix: state.policy_admission_negative_matrix,
+			policy_admission_matrix_status: state.policy_admission_matrix_status,
+			policy_admission_matrix_blockers: state.policy_admission_matrix_blockers
+		} : {},
 		backlog_lifecycle_target: state.backlog_lifecycle_target,
 		backlog_lifecycle_current: state.backlog_lifecycle_current,
 		backlog_lifecycle_reconciled: state.backlog_lifecycle_reconciled,
@@ -7054,6 +7134,11 @@ function stageStateMirrorFields(state) {
 			post_close_backlog_hygiene_required: state.post_close_backlog_hygiene_required,
 			post_close_backlog_hygiene_status: state.post_close_backlog_hygiene_status,
 			post_close_backlog_hygiene_artifact: state.post_close_backlog_hygiene_artifact,
+			post_close_backlog_hygiene_global_refresh_artifact: state.post_close_backlog_hygiene_global_refresh_artifact,
+			post_close_affected_feature_ids: state.post_close_affected_feature_ids,
+			post_close_pre_status_summary: state.post_close_pre_status_summary,
+			post_close_post_status_summary: state.post_close_post_status_summary,
+			post_close_hygiene_schema_version: state.post_close_hygiene_schema_version,
 			post_close_backlog_hygiene_checked_at: state.post_close_backlog_hygiene_checked_at,
 			post_close_backlog_hygiene_refresh_at: state.post_close_backlog_hygiene_refresh_at,
 			post_close_open_source_review_count: state.post_close_open_source_review_count,
@@ -7093,6 +7178,22 @@ async function readStageState(root, stage, featureId) {
 		primary_feature_id: toNullableString$5(parsed.primary_feature_id) ?? sanitizeFeatureId(featureId, "feature id"),
 		primary_backlog_item_key: toNullableString$5(parsed.primary_backlog_item_key) ?? toNullableString$5(parsed.backlog_item_key),
 		phase_scope: toNullableString$5(parsed.phase_scope) ?? stage,
+		closure_bundle_id: toNullableString$5(parsed.closure_bundle_id),
+		closure_bundle_round: toPositiveInteger(parsed.closure_bundle_round),
+		closure_bundle_rounds_by_audit_class: toNumberRecord(parsed.closure_bundle_rounds_by_audit_class),
+		selected_review_artifacts: toStringArray$3(parsed.selected_review_artifacts),
+		selected_verification_artifact: toNullableString$5(parsed.selected_verification_artifact),
+		selected_step_artifact: toNullableString$5(parsed.selected_step_artifact),
+		selected_closure_ts: toNullableString$5(parsed.selected_closure_ts),
+		rpa_source_identity: toObjectRecord(parsed.rpa_source_identity),
+		rpa_source_quality: toObjectRecord(parsed.rpa_source_quality),
+		non_pass_review_events: toObjectArray(parsed.non_pass_review_events),
+		policy_admission_risk_profile: normalizePolicyAdmissionRiskProfile(parsed.policy_admission_risk_profile),
+		policy_admission_risk_rationale: toNullableString$5(parsed.policy_admission_risk_rationale),
+		policy_admission_risk_families: toStringArray$3(parsed.policy_admission_risk_families),
+		policy_admission_negative_matrix: toPolicyAdmissionNegativeMatrixEntries(parsed.policy_admission_negative_matrix),
+		policy_admission_matrix_status: normalizePolicyAdmissionMatrixStatus(parsed.policy_admission_matrix_status),
+		policy_admission_matrix_blockers: toStringArray$3(parsed.policy_admission_matrix_blockers),
 		backlog_lifecycle_target: toNullableString$5(parsed.backlog_lifecycle_target),
 		backlog_lifecycle_current: toNullableString$5(parsed.backlog_lifecycle_current),
 		backlog_lifecycle_reconciled: toBoolean$1(parsed.backlog_lifecycle_reconciled, true),
@@ -7101,6 +7202,11 @@ async function readStageState(root, stage, featureId) {
 		post_close_backlog_hygiene_required: postCloseBacklogHygieneRequired,
 		post_close_backlog_hygiene_status: postCloseBacklogHygieneRequired ? normalizePostCloseBacklogHygieneStatus(parsed.post_close_backlog_hygiene_status, "missing") : "not_required",
 		post_close_backlog_hygiene_artifact: toNullableString$5(parsed.post_close_backlog_hygiene_artifact),
+		post_close_backlog_hygiene_global_refresh_artifact: toNullableString$5(parsed.post_close_backlog_hygiene_global_refresh_artifact),
+		post_close_affected_feature_ids: toStringArray$3(parsed.post_close_affected_feature_ids),
+		post_close_pre_status_summary: toObjectRecord(parsed.post_close_pre_status_summary),
+		post_close_post_status_summary: toObjectRecord(parsed.post_close_post_status_summary),
+		post_close_hygiene_schema_version: toNullableNumber(parsed.post_close_hygiene_schema_version),
 		post_close_backlog_hygiene_checked_at: toNullableString$5(parsed.post_close_backlog_hygiene_checked_at),
 		post_close_backlog_hygiene_refresh_at: toNullableString$5(parsed.post_close_backlog_hygiene_refresh_at),
 		post_close_open_source_review_count: toNullableNumber(parsed.post_close_open_source_review_count),
@@ -8189,11 +8295,14 @@ function ensureEnumValue$1(value, allowedValues, optionName, helpText) {
 function toStringArray(value) {
 	return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
 }
-function uniqueStrings$1(values) {
+function positiveIntegerOrNull(value) {
+	return typeof value === "number" && Number.isInteger(value) && value > 0 ? value : null;
+}
+function uniqueStrings$2(values) {
 	return [...new Set([...values].map((value) => typeof value === "string" ? value.trim() : "").filter(Boolean))];
 }
 function sortAuditClasses$1(values) {
-	const unique = uniqueStrings$1(values);
+	const unique = uniqueStrings$2(values);
 	return [...AUDIT_CLASSES$1.filter((value) => unique.includes(value)), ...unique.filter((value) => !AUDIT_CLASSES$1.includes(value)).sort()];
 }
 function requiredAuditClassesForStep(step, implementationScope) {
@@ -9331,13 +9440,15 @@ async function runReviewArtifactCommand(argv, io) {
 	const rerunReason = takeOption$3(argv, "--rerun-reason", null);
 	const notes = takeOption$3(argv, "--notes", "") ?? "";
 	const output = takeOption$3(argv, "--output", null);
-	const mustFix = takeManyOptions$2(argv, "--must-fix");
-	const shouldFix = takeManyOptions$2(argv, "--should-fix");
-	const evidence = takeManyOptions$2(argv, "--evidence");
+	const mustFix = takeManyOptions$2(argv, "--must-fix").map((value) => value.trim()).filter(Boolean);
+	const shouldFix = takeManyOptions$2(argv, "--should-fix").map((value) => value.trim()).filter(Boolean);
+	const evidence = takeManyOptions$2(argv, "--evidence").map((value) => value.trim()).filter(Boolean);
 	const absRoot = path.resolve(root);
 	const absDossier = path.resolve(absRoot, dossier);
 	if (!["PASS", "FAIL"].includes(verdict)) throw new UsageError("--verdict must be PASS or FAIL.", helpText);
 	if (verdict === "PASS" && mustFix.length > 0) throw new UsageError("PASS review artifacts cannot contain --must-fix findings.", helpText);
+	if (verdict === "FAIL" && mustFix.length === 0) throw new UsageError("FAIL review artifacts require at least one --must-fix finding.", helpText);
+	if (verdict === "FAIL" && evidence.length === 0) throw new UsageError("FAIL review artifacts require at least one --evidence pointer.", helpText);
 	const dossierRecord = await readDossierRecord(absDossier, { root: absRoot });
 	const featureId = frontmatterString(dossierRecord.frontmatter, "id", path.basename(absDossier, ".md"));
 	const inRepo = inGitRepo(absRoot);
@@ -9466,15 +9577,34 @@ async function runDossierStepCloseCommand(argv, io) {
 	if (step === "implementation" && !implementationScope) throw new UsageError("Implementation review scope is missing from the current implementation stage state. Record it via implementation --ready-for-close --implementation-scope <scope> before dossier-step-close.", helpText);
 	if (step === "implementation" && requestedImplementationScope && requestedImplementationScope !== implementationScope) throw new UsageError(`--implementation-scope (${requestedImplementationScope}) does not match the current implementation stage state scope (${implementationScope}).`, helpText);
 	const blockers = [];
+	let staleReviewPresent = false;
+	let staleSelectedEvidencePresent = false;
+	let invalidSelectedEvidencePresent = false;
+	const markStaleSelectedEvidence = () => {
+		staleReviewPresent = true;
+		staleSelectedEvidencePresent = true;
+	};
+	const markInvalidSelectedEvidence = () => {
+		invalidSelectedEvidencePresent = true;
+	};
+	const reviewNextAction = (auditClass) => `Next action: rerun reviewer-owned review-artifact accounting for ${auditClass} and select the latest valid PASS artifact.`;
+	const reviewFreshnessNextAction = (auditClass) => `Next action: rerun reviewer-owned review-artifact accounting for ${auditClass} after refreshing review for the reviewed material scope.`;
+	const reviewArtifactReadNextAction = "Next action: rerun reviewer-owned review-artifact accounting for the required audit class and select the latest valid PASS artifact.";
+	const verificationArtifactLabel = relativeToRoot(absRoot, path.resolve(absRoot, verifyArtifact));
+	const rejectVerification = (message) => {
+		markInvalidSelectedEvidence();
+		blockers.push(`Verification artifact ${verificationArtifactLabel} ${message}. Next action: rerun dossier-verify for the reviewed material scope.`);
+	};
 	const stageState = await readStageState(absRoot, step, featureId);
 	if (!stageState) blockers.push(`No helper-managed ${step} stage state found for ${featureId}. Re-run the stage controller before dossier-step-close.`);
 	let verify = null;
 	try {
 		verify = await readJsonArtifact$1(absRoot, verifyArtifact);
 	} catch (error) {
-		blockers.push(`Could not read verification artifact ${relativeToRoot(absRoot, path.resolve(absRoot, verifyArtifact))} (${error instanceof Error ? error.message : String(error)}).`);
+		rejectVerification(`could not be read (${error instanceof Error ? error.message : String(error)})`);
 	}
 	const reviewArtifactPaths = [];
+	const reviewArtifactPathByAuditClass = /* @__PURE__ */ new Map();
 	const reviewsByAuditClass = /* @__PURE__ */ new Map();
 	for (const reviewArtifact of reviewArtifacts) try {
 		const { path: resolvedReviewArtifactPath, review } = await readReviewArtifactForClose({
@@ -9484,13 +9614,17 @@ async function runDossierStepCloseCommand(argv, io) {
 		});
 		const auditClass = ensureEnumValue$1(stringOrFallback(review.audit_class), AUDIT_CLASSES$1, "review artifact audit_class", helpText);
 		if (reviewsByAuditClass.has(auditClass)) {
-			blockers.push(`Duplicate review artifact for audit class ${auditClass}.`);
+			markInvalidSelectedEvidence();
+			const existingArtifactPath = reviewArtifactPathByAuditClass.get(auditClass) ?? "<already selected artifact>";
+			blockers.push(`Duplicate review artifact for audit class ${auditClass}: selected ${existingArtifactPath} and ${resolvedReviewArtifactPath}. ${reviewNextAction(auditClass)}`);
 			continue;
 		}
 		reviewsByAuditClass.set(auditClass, review);
+		reviewArtifactPathByAuditClass.set(auditClass, resolvedReviewArtifactPath);
 		reviewArtifactPaths.push(resolvedReviewArtifactPath);
 	} catch (error) {
-		blockers.push(`Could not read review artifact ${relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact))} (${error instanceof Error ? error.message : String(error)}).`);
+		markInvalidSelectedEvidence();
+		blockers.push(`Could not read review artifact ${relativeToRoot(absRoot, path.resolve(absRoot, reviewArtifact))} (${error instanceof Error ? error.message : String(error)}). ${reviewArtifactReadNextAction}`);
 	}
 	const eventCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
 	const currentThreadId = runtimeThreadId();
@@ -9499,17 +9633,23 @@ async function runDossierStepCloseCommand(argv, io) {
 		...event,
 		order_index: index
 	}]).filter((entry) => entry[0] !== null));
-	if (verify && verify.status !== "pass") blockers.push(`Verification artifact does not report status=pass (got ${String(verify.status)}).`);
-	if (verify && verify.step !== step) blockers.push(`Verification artifact step mismatch: expected ${step}, got ${String(verify.step)}.`);
-	if (verify?.feature_id && verify.feature_id !== featureId) blockers.push(`Verification artifact feature mismatch: expected ${featureId}, got ${verify.feature_id}.`);
+	const latestRecordedReviewByAuditClass = /* @__PURE__ */ new Map();
+	for (const event of recordedReviewEvents) {
+		const auditClass = toNullableString$2(event.audit_class);
+		if (!auditClass) continue;
+		latestRecordedReviewByAuditClass.set(auditClass, event);
+	}
+	if (verify && verify.status !== "pass") rejectVerification(`does not report status=pass (got ${String(verify.status)})`);
+	if (verify && verify.step !== step) rejectVerification(`has step mismatch: expected ${step}, got ${String(verify.step)}`);
+	if (verify?.feature_id && verify.feature_id !== featureId) rejectVerification(`has feature mismatch: expected ${featureId}, got ${verify.feature_id}`);
 	const requiredAuditClasses = requiredAuditClassesForStep(step, implementationScope);
-	let staleReviewPresent = false;
 	const reviewSatisfiesPolicy = /* @__PURE__ */ new Map();
 	const reviewOrderIndices = /* @__PURE__ */ new Map();
 	for (const auditClass of requiredAuditClasses) {
 		const review = reviewsByAuditClass.get(auditClass);
 		if (!review) {
-			blockers.push(`Missing required review artifact for audit class ${auditClass}.`);
+			markInvalidSelectedEvidence();
+			blockers.push(`Missing required review artifact for audit class ${auditClass}. ${reviewNextAction(auditClass)}`);
 			reviewSatisfiesPolicy.set(auditClass, false);
 			continue;
 		}
@@ -9518,78 +9658,63 @@ async function runDossierStepCloseCommand(argv, io) {
 			const recorded = recordedReviewPaths.get(artifactPath);
 			return recorded && toNullableString$2(recorded.audit_class) === auditClass;
 		});
-		if (!reviewArtifactPath) {
-			blockers.push(`Review artifact for ${auditClass} was not recorded in the current helper-managed ${step} stage state via review-artifact.`);
+		const reviewArtifactLabel = reviewArtifactPath ?? `<unrecorded ${auditClass} artifact>`;
+		const rejectReview = (message) => {
+			markInvalidSelectedEvidence();
+			blockers.push(`Review artifact ${reviewArtifactLabel} for ${auditClass} ${message}. ${reviewNextAction(auditClass)}`);
 			reviewIsValid = false;
-		} else {
+		};
+		const rejectStaleReview = (message) => {
+			markStaleSelectedEvidence();
+			blockers.push(`Review artifact ${reviewArtifactLabel} for ${auditClass} ${message}. ${reviewFreshnessNextAction(auditClass)}`);
+			reviewIsValid = false;
+		};
+		if (!reviewArtifactPath) rejectReview(`was not recorded in the current helper-managed ${step} stage state via review-artifact`);
+		else {
 			const recorded = recordedReviewPaths.get(reviewArtifactPath);
 			if (recorded) reviewOrderIndices.set(auditClass, recorded.order_index);
+			const latestRecordedArtifactPath = toNullableString$2(latestRecordedReviewByAuditClass.get(auditClass)?.artifact_path);
+			if (latestRecordedArtifactPath && latestRecordedArtifactPath !== reviewArtifactPath) rejectReview(`is not the latest recorded attempt for this audit class; selected ${reviewArtifactPath}, latest ${latestRecordedArtifactPath}`);
 		}
-		if (review.verdict !== "PASS") {
-			blockers.push(`Review artifact verdict for ${auditClass} is ${String(review.verdict)}, expected PASS.`);
-			reviewIsValid = false;
-		}
-		if (!review.reviewer || !String(review.reviewer).trim()) {
-			blockers.push(`Review artifact for ${auditClass} is missing reviewer provenance.`);
-			reviewIsValid = false;
-		}
-		if (review.step !== step) {
-			blockers.push(`Review artifact step mismatch for ${auditClass}: expected ${step}, got ${String(review.step)}.`);
-			reviewIsValid = false;
-		}
-		if (review.feature_id && review.feature_id !== featureId) {
-			blockers.push(`Review artifact feature mismatch for ${auditClass}: expected ${featureId}, got ${review.feature_id}.`);
-			reviewIsValid = false;
-		}
-		if (Array.isArray(review.findings?.must_fix) && review.findings.must_fix.length > 0) {
-			blockers.push(`Review artifact for ${auditClass} still contains must-fix findings.`);
-			reviewIsValid = false;
-		}
-		if ((review.review_mode ?? "external") !== "external") {
-			blockers.push(`Review artifact for ${auditClass} is not an external audit.`);
-			reviewIsValid = false;
-		}
-		if (review.invalidated === true) {
-			blockers.push(`Review artifact for ${auditClass} is marked invalidated.`);
-			reviewIsValid = false;
-		}
-		if (review.allowed_by_policy === false) {
-			blockers.push(`Review artifact for ${auditClass} is not allowed by policy.`);
-			reviewIsValid = false;
-		}
-		if (inGitRepo(absRoot) && !toNullableString$2(review.event_commit)) {
-			staleReviewPresent = true;
-			blockers.push(`Review artifact for ${auditClass} is missing event_commit in a git repo.`);
-			reviewIsValid = false;
-		}
-		if (eventCommit && review.event_commit && String(review.event_commit).trim() && review.event_commit !== eventCommit) {
-			staleReviewPresent = true;
-			blockers.push(`Review artifact for ${auditClass} is stale: event commit ${review.event_commit} does not match current HEAD ${eventCommit}.`);
-			reviewIsValid = false;
-		}
+		if (review.verdict !== "PASS") rejectReview(`has verdict ${String(review.verdict)}, expected PASS`);
+		if (!review.reviewer || !String(review.reviewer).trim()) rejectReview("is missing reviewer provenance");
+		if (review.step !== step) rejectReview(`has step mismatch: expected ${step}, got ${String(review.step)}`);
+		if (review.feature_id && review.feature_id !== featureId) rejectReview(`has feature mismatch: expected ${featureId}, got ${review.feature_id}`);
+		if (Array.isArray(review.findings?.must_fix) && review.findings.must_fix.length > 0) rejectReview("still contains must-fix findings");
+		if ((review.review_mode ?? "external") !== "external") rejectReview("is not an external audit");
+		if (review.invalidated === true) rejectReview("is marked invalidated");
+		if (review.allowed_by_policy === false) rejectReview("is not allowed by policy");
+		if (inGitRepo(absRoot) && !toNullableString$2(review.event_commit)) rejectStaleReview("is missing event_commit in a git repo");
+		if (eventCommit && review.event_commit && String(review.event_commit).trim() && review.event_commit !== eventCommit) rejectStaleReview(`is stale: event commit ${review.event_commit} does not match current HEAD ${eventCommit}`);
 		const reviewerThreadId = toNullableString$2(review.reviewer_thread_id);
-		if (currentThreadId && reviewerThreadId && reviewerThreadId === currentThreadId) {
-			blockers.push(`Review artifact for ${auditClass} was produced by the current thread and is not an independent external audit.`);
-			reviewIsValid = false;
-		}
+		if (currentThreadId && reviewerThreadId && reviewerThreadId === currentThreadId) rejectReview("was produced by the current thread and is not an independent external audit");
 		if (step === "implementation") {
-			if (review.implementation_scope !== implementationScope) {
-				blockers.push(`Review artifact implementation_scope mismatch for ${auditClass}: expected ${implementationScope}, got ${String(review.implementation_scope)}.`);
-				reviewIsValid = false;
-			}
-			if (auditClass === "security-reviewer" && implementationScope === "code-bearing" && !toNullableString$2(review.security_trigger_reason)) {
-				blockers.push("Security review artifact is missing security_trigger_reason.");
-				reviewIsValid = false;
-			}
+			if (review.implementation_scope !== implementationScope) rejectReview(`has implementation_scope mismatch: expected ${implementationScope}, got ${String(review.implementation_scope)}`);
+			if (auditClass === "security-reviewer" && implementationScope === "code-bearing" && !toNullableString$2(review.security_trigger_reason)) rejectReview("is missing security_trigger_reason");
 		}
 		reviewSatisfiesPolicy.set(auditClass, reviewIsValid);
+	}
+	const selectedReviewCommits = uniqueStrings$2(requiredAuditClasses.map((auditClass) => reviewsByAuditClass.get(auditClass)?.event_commit));
+	const verificationEventCommit = toNullableString$2(verify?.event_commit);
+	if (inGitRepo(absRoot) && verify && !verificationEventCommit) {
+		markStaleSelectedEvidence();
+		blockers.push(`Verification artifact ${verificationArtifactLabel} is missing event_commit in a git repo. Next action: rerun dossier-verify for the reviewed material scope.`);
+	}
+	if (selectedReviewCommits.length === 1 && verificationEventCommit && verificationEventCommit !== selectedReviewCommits[0]) {
+		markStaleSelectedEvidence();
+		blockers.push(`Verification artifact ${verificationArtifactLabel} is stale: event commit ${verificationEventCommit} does not match selected review bundle commit ${selectedReviewCommits[0]}. Next action: rerun dossier-verify for the reviewed material scope.`);
+	}
+	if (eventCommit && verificationEventCommit && verificationEventCommit !== eventCommit) {
+		markStaleSelectedEvidence();
+		blockers.push(`Verification artifact ${verificationArtifactLabel} is stale: event commit ${verificationEventCommit} does not match current HEAD ${eventCommit}. Next action: rerun dossier-verify for the reviewed material scope.`);
 	}
 	if (step === "implementation" && implementationScope === "code-bearing") {
 		const specOrder = reviewOrderIndices.get("spec-conformance-reviewer");
 		const codeOrder = reviewOrderIndices.get("code-reviewer");
 		const securityOrder = reviewOrderIndices.get("security-reviewer");
 		if (typeof specOrder === "number" && typeof codeOrder === "number" && typeof securityOrder === "number" && !(specOrder < codeOrder && codeOrder < securityOrder)) {
-			blockers.push("Implementation audit bundle order is invalid: expected spec-conformance-reviewer before code-reviewer before security-reviewer.");
+			markInvalidSelectedEvidence();
+			blockers.push("Implementation audit bundle order is invalid: expected spec-conformance-reviewer before code-reviewer before security-reviewer. Next action: rerun reviewer-owned review-artifact accounting in required bundle order and select the ordered PASS artifacts.");
 			reviewSatisfiesPolicy.set("spec-conformance-reviewer", false);
 			reviewSatisfiesPolicy.set("code-reviewer", false);
 			reviewSatisfiesPolicy.set("security-reviewer", false);
@@ -9598,7 +9723,7 @@ async function runDossierStepCloseCommand(argv, io) {
 	if (inGitRepo(absRoot)) {
 		const dirtyPaths = getDirtyPaths(absRoot).filter((filePath) => !isAuditFreshnessExemptPath(filePath));
 		if (dirtyPaths.length > 0) {
-			staleReviewPresent = true;
+			markStaleSelectedEvidence();
 			for (const auditClass of requiredAuditClasses) reviewSatisfiesPolicy.set(auditClass, false);
 			blockers.push(`Required audits are stale against uncommitted material changes: ${dirtyPaths.join(", ")}`);
 		}
@@ -9606,10 +9731,95 @@ async function runDossierStepCloseCommand(argv, io) {
 	}
 	const processComplete = blockers.length === 0;
 	const requiredExternalReviewPending = requiredAuditClasses.some((auditClass) => reviewSatisfiesPolicy.get(auditClass) !== true);
-	const reviewTraceCommits = uniqueStrings$1([...reviewsByAuditClass.values()].map((review) => review.event_commit ?? null));
-	const reviewerSkills = uniqueStrings$1([...reviewsByAuditClass.values()].map((review) => review.reviewer_skill ?? null));
-	const reviewerAgentIds = uniqueStrings$1([...reviewsByAuditClass.values()].map((review) => review.reviewer_agent_id ?? null));
-	const securityTriggerReasons = uniqueStrings$1([...reviewsByAuditClass.values()].map((review) => review.security_trigger_reason ?? null));
+	const reviewTraceCommits = uniqueStrings$2([...reviewsByAuditClass.values()].map((review) => review.event_commit ?? null));
+	const reviewerSkills = uniqueStrings$2([...reviewsByAuditClass.values()].map((review) => review.reviewer_skill ?? null));
+	const reviewerAgentIds = uniqueStrings$2([...reviewsByAuditClass.values()].map((review) => review.reviewer_agent_id ?? null));
+	const securityTriggerReasons = uniqueStrings$2([...reviewsByAuditClass.values()].map((review) => review.security_trigger_reason ?? null));
+	const selectedReviewArtifactsByAuditClass = Object.fromEntries(requiredAuditClasses.map((auditClass) => [auditClass, reviewArtifactPaths.find((artifactPath) => {
+		const recorded = recordedReviewPaths.get(artifactPath);
+		return recorded && toNullableString$2(recorded.audit_class) === auditClass;
+	}) ?? null]));
+	const closureBundleRoundsByAuditClass = Object.fromEntries(requiredAuditClasses.map((auditClass) => {
+		const roundNumber = positiveIntegerOrNull(reviewsByAuditClass.get(auditClass)?.review_round_number);
+		return roundNumber ? [auditClass, roundNumber] : null;
+	}).filter((entry) => entry !== null));
+	const closureBundleRoundValues = Object.values(closureBundleRoundsByAuditClass);
+	const closureBundleRound = closureBundleRoundValues.length > 0 ? Math.max(...closureBundleRoundValues) : null;
+	const selectedClosureTs = (/* @__PURE__ */ new Date()).toISOString();
+	const closureBundleId = `${step}--bundle-${createHash("sha256").update(JSON.stringify({
+		event_commit: eventCommit ?? "no-commit",
+		review_rounds: closureBundleRoundsByAuditClass,
+		selected_review_artifacts: selectedReviewArtifactsByAuditClass,
+		step
+	})).digest("hex").slice(0, 12)}--${closureBundleRound ? `r${String(closureBundleRound).padStart(2, "0")}` : "r00"}--${eventCommit ? eventCommit.slice(0, 12) : "no-commit"}`;
+	const stageStatePath = path.join(".dossier", "stages", featureId, `${step}.json`).split(path.sep).join("/");
+	const stepArtifactRelPath = output ? relativeToRoot(absRoot, path.resolve(absRoot, output)) : path.join(".dossier", "steps", featureId, `${step}.json`).split(path.sep).join("/");
+	const nonPassReviewEvents = recordedReviewEvents.filter((event) => event.verdict && event.verdict !== "PASS").map((event) => ({
+		review_attempt_id: event.review_attempt_id,
+		review_round_id: event.review_round_id,
+		review_round_number: event.review_round_number,
+		audit_class: event.audit_class,
+		verdict: event.verdict,
+		artifact_path: event.artifact_path,
+		latest_copy_path: event.latest_copy_path,
+		event_commit: event.event_commit,
+		reviewer: event.reviewer,
+		reviewer_agent_id: event.reviewer_agent_id,
+		reviewer_skill: event.reviewer_skill,
+		reviewer_thread_id: event.reviewer_thread_id,
+		review_mode: event.review_mode,
+		stale: event.stale,
+		invalidated: event.invalidated,
+		must_fix_count: event.must_fix_count,
+		evidence_count: event.evidence_count
+	}));
+	const processMisses = stageState?.process_misses ?? [];
+	const countProcessMissCategory = (category) => processMisses.filter((miss) => miss.category === category).length;
+	const hasProcessMiss = processMisses.some((miss) => [
+		"missing-fail-review-artifact",
+		"trace-only-fail",
+		"invalid-review-launch-mode",
+		"same-thread-review-artifact",
+		"source-quality-limitation"
+	].includes(miss.category));
+	const rpaSourceIdentity = {
+		schema_version: 1,
+		feature_id: featureId,
+		backlog_item_key: stageState?.backlog_item_key ?? null,
+		feature_cycle_id: stageState?.feature_cycle_id ?? null,
+		cycle_id: stageState?.cycle_id ?? null,
+		stage: step,
+		dossier: dossierRecord.relPath,
+		stage_log: stageState?.log_path ?? null,
+		stage_state_path: stageStatePath,
+		step_artifact: stepArtifactRelPath,
+		event_commit: eventCommit,
+		session_id: stageState?.session_id ?? null,
+		trace_runtime: stageState?.trace_runtime ?? null
+	};
+	const rpaSourceQuality = {
+		schema_version: 1,
+		review_history_quality: hasProcessMiss ? "process_miss" : recordedReviewEvents.some((event) => event.verdict !== "PASS" && (!event.artifact_path || !event.review_attempt_id || !event.review_round_id)) ? "limited" : "complete",
+		selected_bundle_quality: processComplete ? "complete" : staleSelectedEvidencePresent ? "stale" : invalidSelectedEvidencePresent ? "invalid" : "blocked",
+		missing_fail_artifact_count: countProcessMissCategory("missing-fail-review-artifact"),
+		trace_only_fail_count: countProcessMissCategory("trace-only-fail"),
+		same_thread_rejected_count: blockers.filter((blocker) => blocker.includes("not an independent external audit")).length,
+		invalid_launch_mode_process_miss_count: countProcessMissCategory("invalid-review-launch-mode"),
+		unrecoverable_historical_fail_present: processMisses.some((miss) => miss.category === "trace-only-fail" || miss.category === "source-quality-limitation"),
+		limitations: processMisses.filter((miss) => !miss.resolved).map((miss) => `${miss.category}: ${miss.summary}`)
+	};
+	const selectedClosureBundle = {
+		closure_bundle_id: closureBundleId,
+		closure_bundle_round: closureBundleRound,
+		closure_bundle_rounds_by_audit_class: closureBundleRoundsByAuditClass,
+		selected_review_artifacts: reviewArtifactPaths,
+		selected_review_artifacts_by_audit_class: selectedReviewArtifactsByAuditClass,
+		selected_verification_artifact: relativeToRoot(absRoot, path.resolve(absRoot, verifyArtifact)),
+		selected_step_artifact: stepArtifactRelPath,
+		audit_class_order: requiredAuditClasses,
+		selected_closure_ts: selectedClosureTs,
+		event_commit: eventCommit
+	};
 	const artifact = {
 		version: 1,
 		created_at: (/* @__PURE__ */ new Date()).toISOString(),
@@ -9623,6 +9833,17 @@ async function runDossierStepCloseCommand(argv, io) {
 		verification_trace_commit: verify?.event_commit ?? null,
 		verification_artifact: relativeToRoot(absRoot, path.resolve(absRoot, verifyArtifact)),
 		review_artifacts: reviewArtifactPaths,
+		selected_closure_bundle: selectedClosureBundle,
+		closure_bundle_id: closureBundleId,
+		closure_bundle_round: closureBundleRound,
+		closure_bundle_rounds_by_audit_class: closureBundleRoundsByAuditClass,
+		selected_review_artifacts: reviewArtifactPaths,
+		selected_verification_artifact: selectedClosureBundle.selected_verification_artifact,
+		selected_step_artifact: stepArtifactRelPath,
+		selected_closure_ts: selectedClosureTs,
+		rpa_source_identity: rpaSourceIdentity,
+		rpa_source_quality: rpaSourceQuality,
+		non_pass_review_events: nonPassReviewEvents,
 		review_freshness: blockers.some((blocker) => blocker.includes("stale")) ? "stale" : processComplete ? "pass" : reviewsByAuditClass.size > 0 ? "fail" : "missing",
 		required_audit_classes: requiredAuditClasses,
 		executed_audit_classes: sortAuditClasses$1(reviewsByAuditClass.keys()),
@@ -23500,6 +23721,33 @@ async function acquireDeliveryMutationLock(payload) {
 		await promises.rm(lockPath, { force: true });
 	};
 }
+async function acquireGlobalOperationLock(payload) {
+	const command = sanitizeFilesystemSegment(payload.command, "global operation lock command");
+	const locksDir = path.join(payload.root, ".dossier", "ops", "locks");
+	const lockPath = path.join(locksDir, `${command}.lock`);
+	await assertManagedWritePath(payload.root, locksDir, lockPath, "global operation lock");
+	let handle = null;
+	try {
+		handle = await promises.open(lockPath, "wx");
+		await handle.writeFile(`${JSON.stringify({
+			command,
+			pid: process.pid,
+			started_at: (/* @__PURE__ */ new Date()).toISOString()
+		})}\n`);
+	} catch (error) {
+		if (error.code === "EEXIST") throw new Error(`Global operation lock is already held for ${command}.`);
+		throw error;
+	}
+	let released = false;
+	return async () => {
+		if (released) return;
+		released = true;
+		try {
+			await handle?.close();
+		} catch {}
+		await promises.rm(lockPath, { force: true });
+	};
+}
 //#endregion
 //#region src/delivery/stage-control.ts
 var STAGE_CONTROLLER_COMMANDS = [
@@ -23526,6 +23774,14 @@ var PRE_REVIEW_CHECKLIST_ENTRY_STATUSES = [
 	"blocked"
 ];
 var PRE_REVIEW_RISK_IDENTIFIER_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/u;
+var POLICY_ADMISSION_RISK_PROFILES = ["not_applicable", "applicable"];
+var POLICY_ADMISSION_RISK_FAMILIES = [
+	"admission",
+	"replay",
+	"evidence",
+	"release-policy",
+	"runtime-gating"
+];
 var BUILT_IN_PRE_REVIEW_CHECKLIST_IDS = new Map([["policy-admission-governance", [
 	"explicit-allow-deny",
 	"deny-or-failed-admission-no-invocation",
@@ -23715,11 +23971,11 @@ function toNullableString(value) {
 function toBoolean(value) {
 	return typeof value === "boolean" ? value : null;
 }
-function uniqueStrings(values) {
+function uniqueStrings$1(values) {
 	return [...new Set([...values].map((value) => typeof value === "string" ? value.trim() : "").filter(Boolean))];
 }
 function sortAuditClasses(values) {
-	const unique = uniqueStrings(values);
+	const unique = uniqueStrings$1(values);
 	return [...AUDIT_CLASSES.filter((value) => unique.includes(value)), ...unique.filter((value) => !AUDIT_CLASSES.includes(value)).sort()];
 }
 function normalizeImplementationReviewScope(value) {
@@ -23748,10 +24004,10 @@ function summarizeReviewPolicy(stage, reviewEvents, implementationScope, staleRe
 		degradedReviewPresent: reviewEvents.some((event) => event.review_mode === "degraded"),
 		invalidatedReviewPresent: reviewEvents.some((event) => event.invalidated === true),
 		staleReviewPresent: anyStaleReviewPresent,
-		reviewerSkills: uniqueStrings(reviewEvents.map((event) => event.reviewer_skill)),
-		reviewerAgentIds: uniqueStrings(reviewEvents.map((event) => event.reviewer_agent_id)),
-		reviewTraceCommits: uniqueStrings(reviewEvents.map((event) => event.event_commit)),
-		securityTriggerReasons: uniqueStrings(reviewEvents.map((event) => event.security_trigger_reason))
+		reviewerSkills: uniqueStrings$1(reviewEvents.map((event) => event.reviewer_skill)),
+		reviewerAgentIds: uniqueStrings$1(reviewEvents.map((event) => event.reviewer_agent_id)),
+		reviewTraceCommits: uniqueStrings$1(reviewEvents.map((event) => event.event_commit)),
+		securityTriggerReasons: uniqueStrings$1(reviewEvents.map((event) => event.security_trigger_reason))
 	};
 }
 function machineMetadataFromStageState(state) {
@@ -23765,6 +24021,24 @@ function machineMetadataFromStageState(state) {
 		primary_feature_id: state.primary_feature_id,
 		primary_backlog_item_key: state.primary_backlog_item_key,
 		phase_scope: state.phase_scope,
+		closure_bundle_id: state.closure_bundle_id,
+		closure_bundle_round: state.closure_bundle_round,
+		closure_bundle_rounds_by_audit_class: state.closure_bundle_rounds_by_audit_class,
+		selected_review_artifacts: state.selected_review_artifacts,
+		selected_verification_artifact: state.selected_verification_artifact,
+		selected_step_artifact: state.selected_step_artifact,
+		selected_closure_ts: state.selected_closure_ts,
+		rpa_source_identity: state.rpa_source_identity,
+		rpa_source_quality: state.rpa_source_quality,
+		non_pass_review_events: state.non_pass_review_events,
+		...state.stage === "plan-slice" ? {
+			policy_admission_risk_profile: state.policy_admission_risk_profile,
+			policy_admission_risk_rationale: state.policy_admission_risk_rationale,
+			policy_admission_risk_families: state.policy_admission_risk_families,
+			policy_admission_negative_matrix: state.policy_admission_negative_matrix,
+			policy_admission_matrix_status: state.policy_admission_matrix_status,
+			policy_admission_matrix_blockers: state.policy_admission_matrix_blockers
+		} : {},
 		stage_state: state.stage_state,
 		start_ts: state.start_ts,
 		entered_ts: state.entered_ts,
@@ -23786,6 +24060,11 @@ function machineMetadataFromStageState(state) {
 			post_close_backlog_hygiene_required: state.post_close_backlog_hygiene_required,
 			post_close_backlog_hygiene_status: state.post_close_backlog_hygiene_status,
 			post_close_backlog_hygiene_artifact: state.post_close_backlog_hygiene_artifact,
+			post_close_backlog_hygiene_global_refresh_artifact: state.post_close_backlog_hygiene_global_refresh_artifact,
+			post_close_affected_feature_ids: state.post_close_affected_feature_ids,
+			post_close_pre_status_summary: state.post_close_pre_status_summary,
+			post_close_post_status_summary: state.post_close_post_status_summary,
+			post_close_hygiene_schema_version: state.post_close_hygiene_schema_version,
 			post_close_backlog_hygiene_checked_at: state.post_close_backlog_hygiene_checked_at,
 			post_close_backlog_hygiene_refresh_at: state.post_close_backlog_hygiene_refresh_at,
 			post_close_open_source_review_count: state.post_close_open_source_review_count,
@@ -23834,6 +24113,7 @@ function reviewEventsFromStageState(state) {
 		allowed_by_policy: event.allowed_by_policy,
 		artifact_path: event.artifact_path,
 		audit_class: event.audit_class,
+		evidence_count: event.evidence_count ?? 0,
 		event_commit: event.event_commit,
 		implementation_scope: event.implementation_scope,
 		invalidated: event.invalidated,
@@ -23912,7 +24192,7 @@ function normalizeSingleLineOption(value, optionName) {
 	return normalized;
 }
 function normalizeRepeatableSingleLineOptions(values, optionName) {
-	return uniqueStrings(values.map((value) => {
+	return uniqueStrings$1(values.map((value) => {
 		const normalized = normalizeSingleLineOption(value, optionName);
 		if (!normalized) throw new Error(`${optionName} cannot be empty.`);
 		return normalized;
@@ -23922,6 +24202,12 @@ function normalizePreReviewIdentifier(value, optionName) {
 	const normalized = normalizeSingleLineOption(value, optionName);
 	if (!normalized) throw new Error(`${optionName} cannot be empty.`);
 	if (!PRE_REVIEW_RISK_IDENTIFIER_PATTERN.test(normalized)) throw new Error(`${optionName} must be a stable lowercase identifier using letters, digits, and hyphens.`);
+	return normalized;
+}
+function normalizePolicyAdmissionRiskFamily(value, optionName) {
+	const normalized = normalizeSingleLineOption(value, optionName);
+	if (!normalized) throw new Error(`${optionName} cannot be empty.`);
+	if (!POLICY_ADMISSION_RISK_FAMILIES.includes(normalized)) throw new Error(`${optionName} must be one of: ${POLICY_ADMISSION_RISK_FAMILIES.join(", ")}`);
 	return normalized;
 }
 function parseStageProvenanceInput(args) {
@@ -23999,7 +24285,7 @@ function parsePreReviewCheckDsl(value) {
 		status,
 		summary,
 		evidence,
-		test_refs: fields.has("test_refs") ? uniqueStrings((fields.get("test_refs") ?? "").split(",").map((value) => normalizeSingleLineOption(value, "--pre-review-check test_refs")).filter((value) => value !== null)) : []
+		test_refs: fields.has("test_refs") ? uniqueStrings$1((fields.get("test_refs") ?? "").split(",").map((value) => normalizeSingleLineOption(value, "--pre-review-check test_refs")).filter((value) => value !== null)) : []
 	};
 }
 function parsePreReviewChecklistInput(command, args) {
@@ -24013,6 +24299,47 @@ function parsePreReviewChecklistInput(command, args) {
 	return {
 		riskFamilies: normalizeRepeatableSingleLineOptions(takeManyOptionsStrict(args, "--risk-family"), "--risk-family").map((riskFamily) => normalizePreReviewIdentifier(riskFamily, "--risk-family")),
 		checklistEntries: takeManyOptionsStrict(args, "--pre-review-check").map(parsePreReviewCheckDsl)
+	};
+}
+function parsePolicyAdmissionNegativeDsl(value) {
+	const fields = parseKeyValueDsl(value, "--policy-admission-negative");
+	const allowedKeys = new Set([
+		"ac",
+		"risk",
+		"negative_test",
+		"production_path",
+		"evidence"
+	]);
+	for (const key of fields.keys()) if (!allowedKeys.has(key)) throw new Error(`--policy-admission-negative contains unsupported key: ${key}.`);
+	const ac = normalizeSingleLineOption(fields.get("ac") ?? null, "--policy-admission-negative ac");
+	const risk = normalizePolicyAdmissionRiskFamily(fields.get("risk") ?? null, "--policy-admission-negative risk");
+	const negativeTest = normalizeSingleLineOption(fields.get("negative_test") ?? null, "--policy-admission-negative negative_test");
+	const productionPath = normalizeSingleLineOption(fields.get("production_path") ?? null, "--policy-admission-negative production_path");
+	const evidence = normalizeSingleLineOption(fields.get("evidence") ?? null, "--policy-admission-negative evidence");
+	if (!ac || !negativeTest || !productionPath || !evidence) throw new Error("--policy-admission-negative must include ac, risk, negative_test, production_path, and evidence.");
+	return {
+		ac,
+		risk,
+		negative_test: negativeTest,
+		production_path: productionPath,
+		evidence
+	};
+}
+function parsePolicyAdmissionInput(command, args) {
+	const hasPolicyAdmission = hasOption(args, "--policy-admission-risk-profile") || hasOption(args, "--policy-admission-risk-rationale") || hasOption(args, "--policy-admission-risk") || hasOption(args, "--policy-admission-negative");
+	if (command !== "plan-slice" && hasPolicyAdmission) throw new Error("policy/admission risk options are only allowed for plan-slice.");
+	if (!hasPolicyAdmission) return {
+		profile: null,
+		rationale: null,
+		riskFamilies: [],
+		matrixEntries: []
+	};
+	const profileRaw = normalizeSingleLineOption(takeOption$1(args, "--policy-admission-risk-profile"), "--policy-admission-risk-profile");
+	return {
+		profile: profileRaw ? ensureEnumValue(profileRaw, POLICY_ADMISSION_RISK_PROFILES, "--policy-admission-risk-profile") : null,
+		rationale: normalizeSingleLineOption(takeOption$1(args, "--policy-admission-risk-rationale"), "--policy-admission-risk-rationale"),
+		riskFamilies: normalizeRepeatableSingleLineOptions(takeManyOptionsStrict(args, "--policy-admission-risk"), "--policy-admission-risk").map((riskFamily) => normalizePolicyAdmissionRiskFamily(riskFamily, "--policy-admission-risk")),
+		matrixEntries: takeManyOptionsStrict(args, "--policy-admission-negative").map(parsePolicyAdmissionNegativeDsl)
 	};
 }
 function parseStageAnnotationsInput(args) {
@@ -24032,7 +24359,7 @@ function mergePreReviewChecklists(existing, incoming) {
 }
 function assertPreReviewChecklistDeclarations(payload) {
 	const declaredRiskFamilies = new Set(payload.riskFamilies);
-	const undeclared = uniqueStrings(payload.checklists.filter((entry) => !declaredRiskFamilies.has(entry.risk_family)).map((entry) => entry.risk_family));
+	const undeclared = uniqueStrings$1(payload.checklists.filter((entry) => !declaredRiskFamilies.has(entry.risk_family)).map((entry) => entry.risk_family));
 	if (undeclared.length > 0) throw new Error(`--pre-review-check entries must reference declared --risk-family values: ${undeclared.join(", ")}.`);
 }
 function evaluatePreReviewChecklist(payload) {
@@ -24066,11 +24393,69 @@ function evaluatePreReviewChecklist(payload) {
 		blockers: []
 	};
 }
+function mergePolicyAdmissionMatrixEntries(existing, incoming) {
+	return [...new Map([...existing, ...incoming].map((entry) => [`${entry.ac}\u0000${entry.risk}\u0000${entry.negative_test}`, entry])).values()];
+}
+function evaluatePolicyAdmissionMatrix(payload) {
+	if (!payload.profile) return {
+		status: "missing",
+		blockers: ["policy/admission risk classification is missing"]
+	};
+	if (payload.profile === "not_applicable") {
+		const blockers = [
+			...payload.riskFamilies.length > 0 ? ["not_applicable policy/admission profile cannot declare risk families"] : [],
+			...payload.matrixEntries.length > 0 ? ["not_applicable policy/admission profile cannot include negative matrix rows"] : [],
+			...payload.rationale ? [] : ["not_applicable policy/admission profile requires rationale"]
+		];
+		return {
+			status: blockers.length > 0 ? "blocked" : "not_required",
+			blockers
+		};
+	}
+	const blockers = [];
+	if (payload.riskFamilies.length === 0) blockers.push("applicable policy/admission profile requires at least one risk family");
+	const matrixRisks = new Set(payload.matrixEntries.map((entry) => entry.risk));
+	const declaredRisks = new Set(payload.riskFamilies);
+	const undeclaredRisks = [...matrixRisks].filter((risk) => !declaredRisks.has(risk));
+	if (undeclaredRisks.length > 0) blockers.push(`policy/admission matrix contains undeclared risks: ${undeclaredRisks.join(", ")}`);
+	const missingRisks = payload.riskFamilies.filter((risk) => !matrixRisks.has(risk));
+	if (missingRisks.length > 0) blockers.push(`policy/admission matrix missing rows for risks: ${missingRisks.join(", ")}`);
+	return {
+		status: blockers.length > 0 ? "missing" : "complete",
+		blockers
+	};
+}
+function latestPlanSlicePolicyAdmissionState(payload) {
+	const stageState = payload.currentStageState;
+	if (stageState) {
+		if (stageState.feature_cycle_id !== payload.expectedFeatureCycleId) return {
+			status: "missing",
+			blockers: [`linked plan-slice feature_cycle_id ${stageState.feature_cycle_id} does not match implementation feature_cycle_id ${payload.expectedFeatureCycleId}`]
+		};
+		return {
+			status: stageState.policy_admission_matrix_status,
+			blockers: stageState.policy_admission_matrix_blockers
+		};
+	}
+	if (!payload.latestPlanSlice) return {
+		status: "not_required",
+		blockers: []
+	};
+	const latestPlanFeatureCycleId = toNullableString(payload.latestPlanSlice.metadata.feature_cycle_id);
+	if (latestPlanFeatureCycleId && latestPlanFeatureCycleId !== payload.expectedFeatureCycleId) return {
+		status: "missing",
+		blockers: [`linked plan-slice feature_cycle_id ${latestPlanFeatureCycleId} does not match implementation feature_cycle_id ${payload.expectedFeatureCycleId}`]
+	};
+	return {
+		status: payload.latestPlanSlice?.metadata.policy_admission_matrix_status === "not_required" || payload.latestPlanSlice?.metadata.policy_admission_matrix_status === "complete" ? payload.latestPlanSlice.metadata.policy_admission_matrix_status : "missing",
+		blockers: Array.isArray(payload.latestPlanSlice?.metadata.policy_admission_matrix_blockers) ? payload.latestPlanSlice.metadata.policy_admission_matrix_blockers.filter((item) => typeof item === "string") : []
+	};
+}
 function stageSchemaMetadata(payload) {
 	return normalizeMetadataForStageState(payload);
 }
 function commandUsage(command) {
-	return [`${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${command === "implementation" ? " [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close" : ""}${command === "implementation" ? " [--risk-family <id>] [--pre-review-check <dsl>]" : ""}`, `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`].join("\n");
+	return [`${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${command === "implementation" ? " [--implementation-scope <non-code|code-bearing>] when used with --ready-for-close" : ""}${command === "implementation" ? " [--risk-family <id>] [--pre-review-check <dsl>]" : ""}${command === "plan-slice" ? " [--policy-admission-risk-profile <not_applicable|applicable>] [--policy-admission-risk-rationale <text>] [--policy-admission-risk <id>] [--policy-admission-negative <dsl>]" : ""}`, `${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`].join("\n");
 }
 function nextCommandsForState(command, stageState) {
 	if (stageState === "blocked") return [`dossier-engineer ${command} --feature-id <id> --session-id <id>`];
@@ -24225,6 +24610,7 @@ async function runStageControllerCommand(command, args) {
 	const provenance = parseStageProvenanceInput(args);
 	const annotations = parseStageAnnotationsInput(args);
 	const preReviewChecklistInput = parsePreReviewChecklistInput(command, args);
+	const policyAdmissionInput = parsePolicyAdmissionInput(command, args);
 	const root = await resolveProcessRoot(process.cwd(), takeOption$1(args, "--root"));
 	const featureId = sanitizeFeatureId(ensureRequired(takeOption$1(args, "--feature-id"), "--feature-id is required."), "--feature-id");
 	const backlogFollowupKind = takeOption$1(args, "--backlog-followup-kind");
@@ -24254,6 +24640,8 @@ async function runStageControllerCommand(command, args) {
 	const latestFeatureIntake = command === "feature-intake" ? null : await loadLatestStageLog(root, "feature-intake", featureId);
 	const latestImplementation = command === "feature-intake" ? null : await loadLatestStageLog(root, "implementation", featureId);
 	const currentStageState = command === "feature-intake" ? null : await readStageState(root, command, featureId);
+	const latestPlanSlice = command === "implementation" ? await loadLatestStageLog(root, "plan-slice", featureId) : null;
+	const planSliceStageState = command === "implementation" ? await readStageState(root, "plan-slice", featureId) : null;
 	const featureCycleId = toNullableString((latestForStage ?? latestFeatureIntake ?? latestImplementation)?.metadata.feature_cycle_id) ?? `fc-${extractFeatureNumericId(featureId) ?? featureId}-${crypto.randomUUID().slice(0, 8)}`;
 	const now = (/* @__PURE__ */ new Date()).toISOString();
 	const action = args.includes("--block") ? "blocked" : args.includes("--ready-for-close") ? "ready_for_close" : latestForStage ? "resumed" : "entered";
@@ -24273,7 +24661,7 @@ async function runStageControllerCommand(command, args) {
 	const carryStageEvidence = action === "ready_for_close";
 	const existingPreReviewRiskFamilies = command === "implementation" && !resetImplementationEntry ? currentStageState?.pre_review_risk_families ?? [] : [];
 	const existingPreReviewChecklists = command === "implementation" && !resetImplementationEntry ? currentStageState?.pre_review_checklists ?? [] : [];
-	const preReviewRiskFamilies = command === "implementation" ? uniqueStrings([...existingPreReviewRiskFamilies, ...preReviewChecklistInput.riskFamilies]) : [];
+	const preReviewRiskFamilies = command === "implementation" ? uniqueStrings$1([...existingPreReviewRiskFamilies, ...preReviewChecklistInput.riskFamilies]) : [];
 	const preReviewChecklists = command === "implementation" ? mergePreReviewChecklists(existingPreReviewChecklists, preReviewChecklistInput.checklistEntries) : [];
 	if (command === "implementation") assertPreReviewChecklistDeclarations({
 		riskFamilies: preReviewRiskFamilies,
@@ -24286,7 +24674,30 @@ async function runStageControllerCommand(command, args) {
 		status: "not_required",
 		blockers: []
 	};
+	const existingPolicyAdmissionProfile = command === "plan-slice" && !resetImplementationEntry ? currentStageState?.policy_admission_risk_profile ?? null : null;
+	const policyAdmissionProfile = command === "plan-slice" ? policyAdmissionInput.profile ?? existingPolicyAdmissionProfile : null;
+	const policyAdmissionRiskRationale = command === "plan-slice" ? policyAdmissionInput.rationale ?? currentStageState?.policy_admission_risk_rationale ?? null : null;
+	const policyAdmissionRiskFamilies = command === "plan-slice" ? uniqueStrings$1([...currentStageState?.policy_admission_risk_families ?? [], ...policyAdmissionInput.riskFamilies]) : [];
+	const policyAdmissionNegativeMatrix = command === "plan-slice" ? mergePolicyAdmissionMatrixEntries(currentStageState?.policy_admission_negative_matrix ?? [], policyAdmissionInput.matrixEntries) : [];
+	const policyAdmissionEvaluation = command === "plan-slice" ? evaluatePolicyAdmissionMatrix({
+		profile: policyAdmissionProfile,
+		rationale: policyAdmissionRiskRationale,
+		riskFamilies: policyAdmissionRiskFamilies,
+		matrixEntries: policyAdmissionNegativeMatrix
+	}) : {
+		status: "not_required",
+		blockers: []
+	};
+	if (command === "plan-slice" && action === "ready_for_close" && policyAdmissionEvaluation.status !== "not_required" && policyAdmissionEvaluation.status !== "complete") throw new Error(`plan-slice policy/admission matrix is ${policyAdmissionEvaluation.status}: ${policyAdmissionEvaluation.blockers.join("; ")}`);
 	if (command === "implementation" && action === "ready_for_close" && preReviewEvaluation.status !== "not_required" && preReviewEvaluation.status !== "complete") throw new Error(`implementation pre-review checklist is ${preReviewEvaluation.status}: ${preReviewEvaluation.blockers.join("; ")}`);
+	if (command === "implementation" && action === "ready_for_close") {
+		const planPolicyAdmission = latestPlanSlicePolicyAdmissionState({
+			currentStageState: planSliceStageState,
+			expectedFeatureCycleId: featureCycleId,
+			latestPlanSlice
+		});
+		if (planPolicyAdmission.status !== "not_required" && planPolicyAdmission.status !== "complete") throw new Error(`linked plan-slice policy/admission matrix is ${planPolicyAdmission.status}: ${planPolicyAdmission.blockers.join("; ")}`);
+	}
 	const implementationReviewScope = command === "implementation" ? action === "ready_for_close" ? ensureEnumValue(implementationScopeRaw ?? currentStageState?.implementation_review_scope ?? "code-bearing", IMPLEMENTATION_REVIEW_SCOPES, "--implementation-scope") : currentStageState?.implementation_review_scope ?? null : null;
 	const stageEntryCommit = command === "implementation" ? resetImplementationEntry ? getCurrentCommit(root) : currentStageState?.stage_entry_commit ?? getCurrentCommit(root) : null;
 	const requiredAuditClasses = requiredAuditClassesForStage(command, implementationReviewScope);
@@ -24321,9 +24732,9 @@ async function runStageControllerCommand(command, args) {
 		degraded_review_present: carryStageEvidence ? currentStageState?.degraded_review_present ?? false : false,
 		invalidated_review_present: carryStageEvidence ? currentStageState?.invalidated_review_present ?? false : false,
 		stale_review_present: carryStageEvidence ? currentStageState?.stale_review_present ?? false : false,
-		skills_used: uniqueStrings([...currentStageState?.skills_used ?? [], ...annotations.skillsUsed]),
-		skill_issues: uniqueStrings([...currentStageState?.skill_issues ?? [], ...annotations.skillIssues]),
-		skill_followups: uniqueStrings([...currentStageState?.skill_followups ?? [], ...annotations.skillFollowups]),
+		skills_used: uniqueStrings$1([...currentStageState?.skills_used ?? [], ...annotations.skillsUsed]),
+		skill_issues: uniqueStrings$1([...currentStageState?.skill_issues ?? [], ...annotations.skillIssues]),
+		skill_followups: uniqueStrings$1([...currentStageState?.skill_followups ?? [], ...annotations.skillFollowups]),
 		process_misses: mergeProcessMisses(currentStageState?.process_misses ?? [], annotations.processMisses),
 		session_id: provenance.sessionId,
 		trace_runtime: provenance.traceRuntime,
@@ -24340,6 +24751,14 @@ async function runStageControllerCommand(command, args) {
 		metadata.pre_review_checklists = preReviewChecklists;
 		metadata.pre_review_checklist_status = preReviewEvaluation.status;
 		metadata.pre_review_checklist_blockers = preReviewEvaluation.blockers;
+	}
+	if (command === "plan-slice") {
+		metadata.policy_admission_risk_profile = policyAdmissionProfile;
+		metadata.policy_admission_risk_rationale = policyAdmissionRiskRationale;
+		metadata.policy_admission_risk_families = policyAdmissionRiskFamilies;
+		metadata.policy_admission_negative_matrix = policyAdmissionNegativeMatrix;
+		metadata.policy_admission_matrix_status = policyAdmissionEvaluation.status;
+		metadata.policy_admission_matrix_blockers = policyAdmissionEvaluation.blockers;
 	}
 	if (command === "implementation" && stageState === "ready_for_close") metadata.local_gates_green_ts = now;
 	const relPath = path.join(".dossier", "logs", command, `${featureId}--${featureCycleId}--${cycleId}.md`);
@@ -24385,6 +24804,11 @@ async function runStageControllerCommand(command, args) {
 		pre_review_risk_families: preReviewRiskFamilies,
 		pre_review_checklist_status: preReviewEvaluation.status,
 		pre_review_checklist_blockers: preReviewEvaluation.blockers,
+		policy_admission_risk_profile: policyAdmissionProfile,
+		policy_admission_risk_rationale: policyAdmissionRiskRationale,
+		policy_admission_risk_families: policyAdmissionRiskFamilies,
+		policy_admission_matrix_status: policyAdmissionEvaluation.status,
+		policy_admission_matrix_blockers: policyAdmissionEvaluation.blockers,
 		log_path: relPath.split(path.sep).join("/"),
 		next_commands: nextCommandsForState(command, stageState)
 	};
@@ -24402,9 +24826,21 @@ async function recordStepCloseOnStageLog(payload) {
 		step_close_ts: now,
 		step_artifact: payload.stepArtifactPath,
 		...payload.backlogLifecycleReconciliation ? lifecycleReconciliationMetadata(payload.backlogLifecycleReconciliation) : {},
-		review_artifacts: uniqueStrings([...currentStageState?.review_artifacts ?? [], ...payload.reviewArtifactPaths]),
-		verification_artifacts: uniqueStrings([...currentStageState?.verification_artifacts ?? [], payload.verificationArtifactPath]),
+		review_artifacts: uniqueStrings$1([...currentStageState?.review_artifacts ?? [], ...payload.reviewArtifactPaths]),
+		verification_artifacts: uniqueStrings$1([...currentStageState?.verification_artifacts ?? [], payload.verificationArtifactPath]),
 		final_closure_commit: payload.finalClosureCommit,
+		...payload.selectedClosure ? {
+			closure_bundle_id: payload.selectedClosure.closureBundleId,
+			closure_bundle_round: payload.selectedClosure.closureBundleRound,
+			closure_bundle_rounds_by_audit_class: payload.selectedClosure.closureBundleRoundsByAuditClass,
+			selected_review_artifacts: payload.selectedClosure.selectedReviewArtifacts,
+			selected_verification_artifact: payload.selectedClosure.selectedVerificationArtifact,
+			selected_step_artifact: payload.selectedClosure.selectedStepArtifact,
+			selected_closure_ts: payload.selectedClosure.selectedClosureTs,
+			rpa_source_identity: payload.selectedClosure.rpaSourceIdentity,
+			rpa_source_quality: payload.selectedClosure.rpaSourceQuality,
+			non_pass_review_events: payload.selectedClosure.nonPassReviewEvents
+		} : {},
 		...payload.auditSummary ? {
 			required_audit_classes: payload.auditSummary.requiredAuditClasses,
 			executed_audit_classes: payload.auditSummary.executedAuditClasses,
@@ -24460,6 +24896,11 @@ async function recordPostCloseBacklogHygieneOnStageLog(payload) {
 		post_close_backlog_hygiene_required: true,
 		post_close_backlog_hygiene_status: payload.status,
 		post_close_backlog_hygiene_artifact: payload.artifactPath,
+		post_close_backlog_hygiene_global_refresh_artifact: payload.globalRefreshArtifactPath ?? null,
+		post_close_affected_feature_ids: payload.affectedFeatureIds ?? [featureId],
+		post_close_pre_status_summary: payload.preStatusSummary ?? null,
+		post_close_post_status_summary: payload.postStatusSummary ?? null,
+		post_close_hygiene_schema_version: payload.schemaVersion ?? 1,
 		post_close_backlog_hygiene_checked_at: payload.checkedAt,
 		post_close_backlog_hygiene_refresh_at: payload.refreshAt,
 		post_close_open_source_review_count: payload.openSourceReviewCount,
@@ -24493,6 +24934,7 @@ async function recordReviewArtifactOnStageLog(payload) {
 		at: recordedAt,
 		audit_class: payload.auditClass,
 		allowed_by_policy: payload.allowedByPolicy,
+		evidence_count: payload.evidenceCount,
 		event_commit: payload.eventCommit,
 		implementation_scope: payload.implementationScope,
 		invalidated: payload.invalidated,
@@ -24517,7 +24959,7 @@ async function recordReviewArtifactOnStageLog(payload) {
 	const metadata = {
 		...latest.metadata,
 		...currentStageState ? machineMetadataFromStageState(currentStageState) : {},
-		review_artifacts: uniqueStrings([...currentStageState?.review_artifacts ?? [], payload.artifactPath]),
+		review_artifacts: uniqueStrings$1([...currentStageState?.review_artifacts ?? [], payload.artifactPath]),
 		review_events: reviewEvents,
 		required_audit_classes: summary.requiredAuditClasses,
 		executed_audit_classes: summary.executedAuditClasses,
@@ -24555,7 +24997,7 @@ async function recordVerificationArtifactOnStageLog(payload) {
 	const metadata = {
 		...latest.metadata,
 		...currentStageState ? machineMetadataFromStageState(currentStageState) : {},
-		verification_artifacts: uniqueStrings([...currentStageState?.verification_artifacts ?? [], payload.artifactPath]),
+		verification_artifacts: uniqueStrings$1([...currentStageState?.verification_artifacts ?? [], payload.artifactPath]),
 		verification_trace_commit: payload.eventCommit
 	};
 	const normalizedMetadata = stageSchemaMetadata({
@@ -24719,6 +25161,84 @@ function numericField(record, key) {
 	const value = record[key];
 	return typeof value === "number" && Number.isFinite(value) ? value : 0;
 }
+function uniqueStrings(values) {
+	return [...new Set([...values].map((value) => typeof value === "string" ? value.trim() : "").filter(Boolean))];
+}
+function stringArrayField(record, key) {
+	const value = record[key];
+	return Array.isArray(value) ? value.filter((item) => typeof item === "string" && item.trim().length > 0) : [];
+}
+function postCloseHygieneRetryCommand(featureId) {
+	return `dossier-engineer post-close-hygiene --feature-id ${featureId} --step implementation --json`;
+}
+function postCloseHygieneEvidenceTimestamp(...truthTimestamps) {
+	const now = Date.now();
+	const latestTruthTimestamp = truthTimestamps.reduce((latest, timestamp) => {
+		const parsed = typeof timestamp === "string" ? Date.parse(timestamp) : NaN;
+		return Number.isFinite(parsed) ? Math.max(latest, parsed) : latest;
+	}, 0);
+	return new Date(latestTruthTimestamp > now ? latestTruthTimestamp + 1 : now).toISOString();
+}
+async function writePostCloseHygieneGlobalArtifact(payload) {
+	await writeJsonAtomic(payload.context.absGlobalRefreshArtifactPath, {
+		version: 2,
+		schema_version: 2,
+		run_id: payload.context.runId,
+		created_at: payload.context.checkedAt,
+		updated_at: (/* @__PURE__ */ new Date()).toISOString(),
+		step: "implementation",
+		command: "post-close-hygiene",
+		result: payload.result,
+		durability_status: payload.durabilityStatus,
+		global_refresh_ran_at: payload.summaries.globalRefreshRanAt,
+		pre_status_summary: payload.summaries.preStatusSummary,
+		refresh_summary: payload.summaries.refreshSummary,
+		post_status_summary: payload.summaries.postStatusSummary,
+		affected_feature_ids: payload.context.affectedFeatureIds,
+		failed_feature_ids: payload.failedFeatureIds,
+		per_feature_results: payload.summaries.perFeatureResults,
+		retry_command: payload.result === "complete" ? null : payload.context.retryCommand,
+		...payload.errorMessage ? { error: payload.errorMessage } : {}
+	});
+}
+async function listPostCloseHygieneFeatureIds(root, selectedFeatureId) {
+	const stagesDir = path.join(root, ".dossier", "stages");
+	const featureIds = new Set([sanitizeFeatureId(selectedFeatureId, "feature id")]);
+	if (!await pathExists(stagesDir)) return [...featureIds].sort((left, right) => left.localeCompare(right));
+	const entries = await promises.readdir(stagesDir, { withFileTypes: true });
+	for (const entry of entries) {
+		if (!entry.isDirectory()) continue;
+		let featureId;
+		try {
+			featureId = sanitizeFeatureId(entry.name, "feature id");
+		} catch {
+			continue;
+		}
+		const state = await readStageState(root, "implementation", featureId);
+		if (state?.process_complete_ts && state.step_artifact && state.post_close_backlog_hygiene_required) featureIds.add(featureId);
+	}
+	return [...featureIds].sort((left, right) => left.localeCompare(right));
+}
+async function acquireFeatureLocksForHygiene(payload) {
+	const releases = [];
+	try {
+		for (const featureId of payload.featureIds) {
+			const state = await readStageState(payload.root, "implementation", featureId);
+			releases.push(await acquireDeliveryMutationLock({
+				root: payload.root,
+				featureId,
+				featureCycleId: state?.feature_cycle_id || "post-close-hygiene",
+				command: "post-close-hygiene"
+			}));
+		}
+	} catch (error) {
+		for (const release of releases.reverse()) await release().catch(() => void 0);
+		throw error;
+	}
+	return async () => {
+		for (const release of releases.reverse()) await release();
+	};
+}
 function createPostCloseHygieneCommand() {
 	const helpLines = [
 		"Run explicit post-close backlog hygiene evidence after implementation closure.",
@@ -24741,6 +25261,14 @@ function createPostCloseHygieneCommand() {
 		usage: ["dossier-engineer post-close-hygiene --dossier <path> --step implementation [--json]", "dossier-engineer post-close-hygiene --feature-id <id> --step implementation [--json]"],
 		helpLines: () => helpLines,
 		async execute(args, io) {
+			let hygieneContext = null;
+			const hygieneSummaries = {
+				globalRefreshRanAt: null,
+				perFeatureResults: [],
+				postStatusSummary: null,
+				preStatusSummary: null,
+				refreshSummary: null
+			};
 			try {
 				const root = await resolveProcessRoot(process.cwd(), takeOption(args, "--root"));
 				if ((takeOption(args, "--step") ?? "implementation") !== "implementation") throw new Error("--step must be implementation for post-close-hygiene.");
@@ -24758,116 +25286,258 @@ function createPostCloseHygieneCommand() {
 				const stageState = await readStageState(root, "implementation", featureId);
 				if (!stageState) throw new Error(`No helper-managed implementation stage state found for ${featureId}.`);
 				if (!stageState.process_complete_ts || !stageState.step_artifact) throw new Error(`Implementation stage for ${featureId} is not process-complete.`);
-				return await withDeliveryLock({
+				const releaseGlobalLock = await acquireGlobalOperationLock({
 					root,
-					featureId,
-					featureCycleId: stageState.feature_cycle_id || "post-close-hygiene",
-					command: "post-close-hygiene",
-					run: async () => {
-						const refreshedState = await readStageState(root, "implementation", featureId);
-						if (!refreshedState?.process_complete_ts || !refreshedState.step_artifact) throw new Error(`Implementation stage for ${featureId} is not process-complete.`);
-						const refreshResult = await captureBacklogCommandOutput("refresh", [], root);
-						if (refreshResult.exitCode !== 0) throw new Error(refreshResult.stderr.trim() || "refresh failed.");
-						const refreshEnvelope = parseCapturedEnvelope({
-							commandName: "refresh",
-							stdout: refreshResult.stdout,
-							stderr: refreshResult.stderr
-						});
-						const truth = await readBacklogTruthTimestamps(root);
-						const statusResult = await captureBacklogCommandOutput("status", [], root);
-						if (statusResult.exitCode !== 0) throw new Error(statusResult.stderr.trim() || "status failed.");
-						const statusEnvelope = parseCapturedEnvelope({
-							commandName: "status",
-							stdout: statusResult.stdout,
-							stderr: statusResult.stderr
-						});
-						const attentionResult = await captureBacklogCommandOutput("attention", [], root);
-						if (attentionResult.exitCode !== 0) throw new Error(attentionResult.stderr.trim() || "attention failed.");
-						const attentionEnvelope = parseCapturedEnvelope({
-							commandName: "attention",
-							stdout: attentionResult.stdout,
-							stderr: attentionResult.stderr
-						});
-						const queueResult = await captureBacklogCommandOutput("queue", [], root);
-						if (queueResult.exitCode !== 0) throw new Error(queueResult.stderr.trim() || "queue failed.");
-						const queueEnvelope = parseCapturedEnvelope({
-							commandName: "queue",
-							stdout: queueResult.stdout,
-							stderr: queueResult.stderr
-						});
-						const openSourceReviewCount = numericField(statusEnvelope.data, "open_source_review_count");
-						const sourceReviewBlockedItemCount = numericField(statusEnvelope.data, "source_review_blocked_item_count");
-						const lifecycleReconciliationDriftCount = numericField(statusEnvelope.data, "lifecycle_reconciliation_drift_count");
-						const unresolvedAttentionPresent = attentionEnvelope.data.length > 0;
-						const blockers = [
-							...openSourceReviewCount > 0 ? [`Open source reviews remain after refresh: ${openSourceReviewCount}.`] : [],
-							...sourceReviewBlockedItemCount > 0 ? [`Source-review blocked backlog items remain: ${sourceReviewBlockedItemCount}.`] : [],
-							...lifecycleReconciliationDriftCount > 0 ? [`Lifecycle reconciliation drift remains: ${lifecycleReconciliationDriftCount}.`] : []
-						];
-						const hygieneStatus = blockers.length > 0 ? "blocked" : "clean";
-						const checkedAt = (/* @__PURE__ */ new Date()).toISOString();
-						const artifactPath = path.join(".dossier", "verification", featureId, "implementation-post-close-backlog-hygiene.json").split(path.sep).join("/");
-						const absArtifactPath = path.join(root, artifactPath);
-						await assertManagedWritePath(root, path.join(root, ".dossier", "verification", featureId), absArtifactPath, "post-close backlog hygiene artifact");
-						const artifact = {
-							version: 1,
-							created_at: checkedAt,
+					command: "post-close-hygiene"
+				});
+				try {
+					const checkedAt = (/* @__PURE__ */ new Date()).toISOString();
+					const runId = `post-close-hygiene-${checkedAt.replaceAll(/[:.]/gu, "-")}`;
+					const retryCommand = postCloseHygieneRetryCommand(featureId);
+					const globalRefreshArtifactPath = path.join(".dossier", "verification", "post-close-hygiene", `global-refresh-${runId}.json`).split(path.sep).join("/");
+					const absGlobalRefreshArtifactPath = path.join(root, globalRefreshArtifactPath);
+					hygieneContext = {
+						absGlobalRefreshArtifactPath,
+						affectedFeatureIds: [featureId],
+						checkedAt,
+						featureId,
+						globalRefreshArtifactPath,
+						retryCommand,
+						runId
+					};
+					await assertManagedWritePath(root, path.join(root, ".dossier", "verification", "post-close-hygiene"), absGlobalRefreshArtifactPath, "post-close backlog hygiene global refresh artifact");
+					await writePostCloseHygieneGlobalArtifact({
+						context: hygieneContext,
+						durabilityStatus: "initialized",
+						failedFeatureIds: [featureId],
+						result: "failed",
+						summaries: hygieneSummaries
+					});
+					const preStatusResult = await captureBacklogCommandOutput("status", [], root);
+					if (preStatusResult.exitCode !== 0) throw new Error(preStatusResult.stderr.trim() || "pre-refresh status failed.");
+					const preStatusEnvelope = parseCapturedEnvelope({
+						commandName: "status",
+						stdout: preStatusResult.stdout,
+						stderr: preStatusResult.stderr
+					});
+					hygieneSummaries.preStatusSummary = preStatusEnvelope.data;
+					const refreshResult = await captureBacklogCommandOutput("refresh", [], root);
+					if (refreshResult.exitCode !== 0) throw new Error(refreshResult.stderr.trim() || "refresh failed.");
+					const refreshEnvelope = parseCapturedEnvelope({
+						commandName: "refresh",
+						stdout: refreshResult.stdout,
+						stderr: refreshResult.stderr
+					});
+					hygieneSummaries.refreshSummary = refreshEnvelope.data;
+					const truth = await readBacklogTruthTimestamps(root);
+					hygieneSummaries.globalRefreshRanAt = truth.last_refresh_at ?? checkedAt;
+					const statusResult = await captureBacklogCommandOutput("status", [], root);
+					if (statusResult.exitCode !== 0) throw new Error(statusResult.stderr.trim() || "status failed.");
+					const statusEnvelope = parseCapturedEnvelope({
+						commandName: "status",
+						stdout: statusResult.stdout,
+						stderr: statusResult.stderr
+					});
+					hygieneSummaries.postStatusSummary = statusEnvelope.data;
+					const attentionResult = await captureBacklogCommandOutput("attention", [], root);
+					if (attentionResult.exitCode !== 0) throw new Error(attentionResult.stderr.trim() || "attention failed.");
+					const attentionEnvelope = parseCapturedEnvelope({
+						commandName: "attention",
+						stdout: attentionResult.stdout,
+						stderr: attentionResult.stderr
+					});
+					const queueResult = await captureBacklogCommandOutput("queue", [], root);
+					if (queueResult.exitCode !== 0) throw new Error(queueResult.stderr.trim() || "queue failed.");
+					const queueEnvelope = parseCapturedEnvelope({
+						commandName: "queue",
+						stdout: queueResult.stdout,
+						stderr: queueResult.stderr
+					});
+					const finalCheckedAt = postCloseHygieneEvidenceTimestamp(truth.updated_at, truth.last_refresh_at);
+					hygieneContext.checkedAt = finalCheckedAt;
+					const evidenceCheckedAt = hygieneContext.checkedAt;
+					const openSourceReviewCount = numericField(statusEnvelope.data, "open_source_review_count");
+					const sourceReviewBlockedItemCount = numericField(statusEnvelope.data, "source_review_blocked_item_count");
+					const lifecycleReconciliationDriftCount = numericField(statusEnvelope.data, "lifecycle_reconciliation_drift_count");
+					const unresolvedAttentionPresent = attentionEnvelope.data.length > 0;
+					const blockers = [
+						...openSourceReviewCount > 0 ? [`Open source reviews remain after refresh: ${openSourceReviewCount}.`] : [],
+						...sourceReviewBlockedItemCount > 0 ? [`Source-review blocked backlog items remain: ${sourceReviewBlockedItemCount}.`] : [],
+						...lifecycleReconciliationDriftCount > 0 ? [`Lifecycle reconciliation drift remains: ${lifecycleReconciliationDriftCount}.`] : []
+					];
+					const hygieneStatus = blockers.length > 0 ? "blocked" : "clean";
+					const affectedFeatureIds = uniqueStrings([
+						...await listPostCloseHygieneFeatureIds(root, featureId),
+						...stringArrayField(statusEnvelope.data, "post_close_hygiene_missing_feature_ids"),
+						...stringArrayField(statusEnvelope.data, "post_close_hygiene_stale_feature_ids"),
+						...stringArrayField(statusEnvelope.data, "post_close_hygiene_blocked_feature_ids")
+					]).sort((left, right) => left.localeCompare(right));
+					hygieneContext.affectedFeatureIds = affectedFeatureIds;
+					const releaseFeatureLocks = await acquireFeatureLocksForHygiene({
+						root,
+						featureIds: affectedFeatureIds
+					});
+					const perFeatureResults = [];
+					try {
+						for (const affectedFeatureId of affectedFeatureIds) try {
+							const affectedIdentity = await resolveManagedDossierIdentityByFeatureId({
+								root,
+								featureId: affectedFeatureId
+							});
+							const affectedState = await readStageState(root, "implementation", affectedFeatureId);
+							if (!affectedState?.process_complete_ts || !affectedState.step_artifact) throw new Error(`Implementation stage for ${affectedFeatureId} is not process-complete.`);
+							const artifactPath = path.join(".dossier", "verification", affectedFeatureId, "implementation-post-close-backlog-hygiene.json").split(path.sep).join("/");
+							const absArtifactPath = path.join(root, artifactPath);
+							await assertManagedWritePath(root, path.join(root, ".dossier", "verification", affectedFeatureId), absArtifactPath, "post-close backlog hygiene artifact");
+							await writeJsonAtomic(absArtifactPath, {
+								version: 2,
+								schema_version: 2,
+								created_at: evidenceCheckedAt,
+								feature_id: affectedFeatureId,
+								step: "implementation",
+								dossier: path.relative(root, affectedIdentity.absPath).split(path.sep).join("/"),
+								implementation_step_artifact: affectedState.step_artifact,
+								implementation_process_complete_ts: affectedState.process_complete_ts,
+								global_refresh_artifact: globalRefreshArtifactPath,
+								affected_feature_ids: affectedFeatureIds,
+								pre_status_summary: preStatusEnvelope.data,
+								post_status_summary: statusEnvelope.data,
+								refresh_ran_at: truth.last_refresh_at ?? evidenceCheckedAt,
+								backlog_last_refresh_at: truth.last_refresh_at,
+								refresh_summary: refreshEnvelope.data,
+								status_summary: statusEnvelope.data,
+								attention_summary: attentionEnvelope.data,
+								queue_summary: {
+									data: queueEnvelope.data,
+									warnings: queueEnvelope.warnings
+								},
+								open_source_review_count: openSourceReviewCount,
+								source_review_blocked_item_count: sourceReviewBlockedItemCount,
+								lifecycle_reconciliation_drift_count: lifecycleReconciliationDriftCount,
+								unresolved_attention_present: unresolvedAttentionPresent,
+								backlog_clean: blockers.length === 0,
+								result: hygieneStatus,
+								blockers
+							});
+							await recordPostCloseBacklogHygieneOnStageLog({
+								root,
+								featureId: affectedFeatureId,
+								artifactPath,
+								globalRefreshArtifactPath,
+								affectedFeatureIds,
+								checkedAt: evidenceCheckedAt,
+								refreshAt: truth.last_refresh_at ?? evidenceCheckedAt,
+								schemaVersion: 2,
+								preStatusSummary: preStatusEnvelope.data,
+								postStatusSummary: statusEnvelope.data,
+								status: hygieneStatus,
+								openSourceReviewCount,
+								sourceReviewBlockedItemCount,
+								lifecycleReconciliationDriftCount,
+								unresolvedAttentionPresent,
+								blockers
+							});
+							perFeatureResults.push({
+								artifact_path: artifactPath,
+								feature_id: affectedFeatureId,
+								result: hygieneStatus
+							});
+						} catch (error) {
+							perFeatureResults.push({
+								feature_id: affectedFeatureId,
+								result: "failed",
+								error: error instanceof Error ? error.message : String(error)
+							});
+						}
+					} finally {
+						await releaseFeatureLocks();
+					}
+					const failedCount = perFeatureResults.filter((result) => result.result === "failed").length;
+					const failedFeatureIds = perFeatureResults.filter((result) => result.result === "failed" && typeof result.feature_id === "string").map((result) => result.feature_id);
+					const runResult = failedCount === 0 ? "complete" : failedCount === perFeatureResults.length ? "failed" : "partial";
+					hygieneSummaries.perFeatureResults = perFeatureResults;
+					await writePostCloseHygieneGlobalArtifact({
+						context: hygieneContext,
+						durabilityStatus: "final",
+						failedFeatureIds,
+						result: runResult,
+						summaries: hygieneSummaries
+					});
+					const selectedResult = perFeatureResults.find((result) => result.feature_id === featureId);
+					const selectedArtifactPath = typeof selectedResult?.artifact_path === "string" ? selectedResult.artifact_path : null;
+					writeCliEnvelope(io.stdout, {
+						command: "post-close-hygiene",
+						scope: {
 							feature_id: featureId,
-							step: "implementation",
-							dossier: path.relative(root, identity.absPath).split(path.sep).join("/"),
-							implementation_step_artifact: refreshedState.step_artifact,
-							implementation_process_complete_ts: refreshedState.process_complete_ts,
-							refresh_ran_at: truth.last_refresh_at ?? checkedAt,
-							backlog_last_refresh_at: truth.last_refresh_at,
-							refresh_summary: refreshEnvelope.data,
-							status_summary: statusEnvelope.data,
-							attention_summary: attentionEnvelope.data,
-							queue_summary: {
-								data: queueEnvelope.data,
-								warnings: queueEnvelope.warnings
-							},
+							step: "implementation"
+						},
+						result: runResult !== "complete" ? "fail" : hygieneStatus === "blocked" ? "blocked" : "ok",
+						data: {
+							artifact_path: selectedArtifactPath,
+							global_refresh_artifact: globalRefreshArtifactPath,
+							affected_feature_ids: affectedFeatureIds,
+							failed_feature_ids: failedFeatureIds,
+							per_feature_results: perFeatureResults,
+							result: runResult,
+							run_id: runId,
+							backlog_clean: blockers.length === 0,
 							open_source_review_count: openSourceReviewCount,
 							source_review_blocked_item_count: sourceReviewBlockedItemCount,
 							lifecycle_reconciliation_drift_count: lifecycleReconciliationDriftCount,
 							unresolved_attention_present: unresolvedAttentionPresent,
-							backlog_clean: blockers.length === 0,
-							blockers
-						};
-						await writeJsonAtomic(absArtifactPath, artifact);
-						await recordPostCloseBacklogHygieneOnStageLog({
-							root,
-							featureId,
-							artifactPath,
-							checkedAt,
-							refreshAt: truth.last_refresh_at ?? checkedAt,
-							status: hygieneStatus,
-							openSourceReviewCount,
-							sourceReviewBlockedItemCount,
-							lifecycleReconciliationDriftCount,
-							unresolvedAttentionPresent,
-							blockers
-						});
-						writeCliEnvelope(io.stdout, {
-							command: "post-close-hygiene",
-							scope: {
-								feature_id: featureId,
-								step: "implementation"
-							},
-							result: hygieneStatus === "blocked" ? "blocked" : "ok",
-							data: {
-								artifact_path: artifactPath,
-								...artifact,
-								post_close_backlog_hygiene_status: hygieneStatus
-							},
-							nextCommands: hygieneStatus === "blocked" ? ["dossier-engineer attention"] : [`dossier-engineer next-step --dossier ${artifact.dossier} --json`]
-						});
-						return 0;
-					}
-				});
+							blockers,
+							post_close_backlog_hygiene_status: hygieneStatus,
+							retry_command: runResult === "complete" ? null : retryCommand
+						},
+						nextCommands: runResult !== "complete" ? [retryCommand] : hygieneStatus === "blocked" ? ["dossier-engineer attention"] : [`dossier-engineer next-step --dossier ${identity.dossier.relPath} --json`]
+					});
+					return runResult === "complete" ? 0 : 1;
+				} finally {
+					await releaseGlobalLock();
+				}
 			} catch (error) {
+				const message = error instanceof Error ? error.message : String(error);
+				if (hygieneContext) {
+					const failedFeatureIds = hygieneContext.affectedFeatureIds.length > 0 ? hygieneContext.affectedFeatureIds : [hygieneContext.featureId];
+					if (hygieneSummaries.perFeatureResults.length === 0) hygieneSummaries.perFeatureResults = failedFeatureIds.map((failedFeatureId) => ({
+						error: message,
+						feature_id: failedFeatureId,
+						result: "failed"
+					}));
+					await writePostCloseHygieneGlobalArtifact({
+						context: hygieneContext,
+						durabilityStatus: "final",
+						errorMessage: message,
+						failedFeatureIds,
+						result: "failed",
+						summaries: hygieneSummaries
+					}).catch(() => void 0);
+					writeCliEnvelope(io.stdout, {
+						command: "post-close-hygiene",
+						scope: {
+							feature_id: hygieneContext.featureId,
+							step: "implementation"
+						},
+						result: "fail",
+						data: {
+							artifact_path: null,
+							global_refresh_artifact: hygieneContext.globalRefreshArtifactPath,
+							affected_feature_ids: hygieneContext.affectedFeatureIds,
+							failed_feature_ids: failedFeatureIds,
+							per_feature_results: hygieneSummaries.perFeatureResults,
+							result: "failed",
+							run_id: hygieneContext.runId,
+							backlog_clean: false,
+							blockers: [message],
+							post_close_backlog_hygiene_status: "failed",
+							retry_command: hygieneContext.retryCommand
+						},
+						nextCommands: [hygieneContext.retryCommand]
+					});
+				}
 				io.stderr.write(`${JSON.stringify({ error: {
 					code: "UDE_POST_CLOSE_HYGIENE_FAILED",
-					message: error instanceof Error ? error.message : String(error)
+					message
 				} })}\n`);
 				return 1;
 			}
@@ -25086,13 +25756,21 @@ function createDossierCommandWrapper(name, family) {
 				const outputPath = takeOption(args, "--output");
 				if (verifyArtifactPath) {
 					const absVerifyArtifactPath = await resolveManagedReadPath(root, verifyArtifactPath, path.join(root, ".dossier", "verification", featureId), "verification artifact path");
-					const verifyArtifact = JSON.parse(await promises.readFile(absVerifyArtifactPath, "utf8"));
-					if (verifyArtifact.feature_id !== featureId || verifyArtifact.step !== normalizedStep) throw new Error(`Verification artifact must match feature ${featureId} and step ${normalizedStep}.`);
+					try {
+						const verifyArtifact = JSON.parse(await promises.readFile(absVerifyArtifactPath, "utf8"));
+						if (verifyArtifact.feature_id !== featureId || verifyArtifact.step !== normalizedStep) throw new Error(`Verification artifact must match feature ${featureId} and step ${normalizedStep}.`);
+					} catch (error) {
+						if (error instanceof Error && error.message.startsWith("Verification artifact must match")) throw error;
+					}
 				}
 				for (const reviewArtifactPath of reviewArtifactPaths) if (reviewArtifactPath) {
 					const absReviewArtifactPath = await resolveManagedReadPath(root, reviewArtifactPath, path.join(root, ".dossier", "reviews", featureId), "review artifact path");
-					const reviewArtifact = JSON.parse(await promises.readFile(absReviewArtifactPath, "utf8"));
-					if (reviewArtifact.feature_id !== featureId || reviewArtifact.step !== normalizedStep) throw new Error(`Review artifact must match feature ${featureId} and step ${normalizedStep}.`);
+					try {
+						const reviewArtifact = JSON.parse(await promises.readFile(absReviewArtifactPath, "utf8"));
+						if (reviewArtifact.feature_id !== featureId || reviewArtifact.step !== normalizedStep) throw new Error(`Review artifact must match feature ${featureId} and step ${normalizedStep}.`);
+					} catch (error) {
+						if (error instanceof Error && error.message.startsWith("Review artifact must match")) throw error;
+					}
 				}
 				if (outputPath) await assertManagedWritePath(root, path.join(root, ".dossier", "steps", featureId), path.resolve(root, outputPath), "step-close output path");
 				await assertManagedWritePath(root, path.join(root, ".dossier", "logs", normalizedStep), stageLog.absPath, `${normalizedStep} stage log`);
@@ -25134,7 +25812,19 @@ function createDossierCommandWrapper(name, family) {
 									securityTriggerReasons: Array.isArray(artifact.security_trigger_reasons) ? artifact.security_trigger_reasons : [],
 									staleReviewPresent: artifact.stale_review_present === true
 								},
-								backlogLifecycleReconciliation
+								backlogLifecycleReconciliation,
+								selectedClosure: {
+									closureBundleId: typeof artifact.closure_bundle_id === "string" ? artifact.closure_bundle_id : null,
+									closureBundleRound: typeof artifact.closure_bundle_round === "number" && Number.isInteger(artifact.closure_bundle_round) && artifact.closure_bundle_round > 0 ? artifact.closure_bundle_round : null,
+									closureBundleRoundsByAuditClass: artifact.closure_bundle_rounds_by_audit_class && typeof artifact.closure_bundle_rounds_by_audit_class === "object" ? artifact.closure_bundle_rounds_by_audit_class : {},
+									selectedReviewArtifacts: Array.isArray(artifact.selected_review_artifacts) ? artifact.selected_review_artifacts.filter((artifactPath) => typeof artifactPath === "string" && artifactPath.trim().length > 0) : selectedReviewArtifactPaths,
+									selectedVerificationArtifact: typeof artifact.selected_verification_artifact === "string" ? artifact.selected_verification_artifact : null,
+									selectedStepArtifact: typeof artifact.selected_step_artifact === "string" ? artifact.selected_step_artifact : null,
+									selectedClosureTs: typeof artifact.selected_closure_ts === "string" ? artifact.selected_closure_ts : null,
+									rpaSourceIdentity: artifact.rpa_source_identity && typeof artifact.rpa_source_identity === "object" ? artifact.rpa_source_identity : null,
+									rpaSourceQuality: artifact.rpa_source_quality && typeof artifact.rpa_source_quality === "object" ? artifact.rpa_source_quality : null,
+									nonPassReviewEvents: Array.isArray(artifact.non_pass_review_events) ? artifact.non_pass_review_events.filter((event) => event !== null && typeof event === "object") : []
+								}
 							});
 							if (exitCode === 2) {
 								io.stderr.write(`${JSON.stringify({ error: {
@@ -25238,6 +25928,7 @@ function createDossierCommandWrapper(name, family) {
 								invalidated: artifact.invalidated === true,
 								latestCopyPath: typeof artifact.latest_copy_path === "string" && artifact.latest_copy_path.trim().length > 0 ? artifact.latest_copy_path : null,
 								mustFixCount: Array.isArray(artifact.findings?.must_fix) ? artifact.findings.must_fix.length : 0,
+								evidenceCount: Array.isArray(artifact.findings?.evidence) ? artifact.findings.evidence.length : 0,
 								reviewMode: artifact.review_mode ?? "external",
 								reviewAttemptId: typeof artifact.review_attempt_id === "string" && artifact.review_attempt_id.trim().length > 0 ? artifact.review_attempt_id : null,
 								reviewRoundId: typeof artifact.review_round_id === "string" && artifact.review_round_id.trim().length > 0 ? artifact.review_round_id : null,
@@ -25481,11 +26172,18 @@ function createDossierCommandWrapper(name, family) {
 }
 function createStageControllerWrapper(command) {
 	const implementationUsageSuffix = command === "implementation" ? " [--implementation-scope <non-code|code-bearing>] [--risk-family <id>] [--pre-review-check <dsl>]" : "";
+	const planSliceUsageSuffix = command === "plan-slice" ? " [--policy-admission-risk-profile <not_applicable|applicable>] [--policy-admission-risk-rationale <text>] [--policy-admission-risk <id>] [--policy-admission-negative <dsl>]" : "";
 	const implementationHelpLines = command === "implementation" ? [
 		"  - --implementation-scope is accepted only with implementation --ready-for-close",
 		"  - --risk-family declares an explicit bounded implementation pre-review risk family",
 		"  - --pre-review-check uses risk_family=<id>;id=<id>;status=<pass|not_applicable|blocked>;summary=<text>;evidence=<text>;test_refs=<comma-list>",
 		"  - declared risk families require complete non-blocked pre-review checklist evidence before implementation can reach ready_for_close"
+	] : [];
+	const planSliceHelpLines = command === "plan-slice" ? [
+		"  - --policy-admission-risk-profile records explicit policy/admission classification before ready_for_close",
+		"  - --policy-admission-risk-rationale is required for not_applicable classification",
+		"  - --policy-admission-risk declares admission, replay, evidence, release-policy, or runtime-gating risk",
+		"  - --policy-admission-negative uses ac=<id>;risk=<admission|replay|evidence|release-policy|runtime-gating>;negative_test=<text>;production_path=<text>;evidence=<text>"
 	] : [];
 	return {
 		name: command,
@@ -25501,7 +26199,7 @@ function createStageControllerWrapper(command) {
 			`Mechanical controller for the ${command} delivery stage.`,
 			"",
 			"Usage:",
-			`  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationUsageSuffix}`,
+			`  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] [--skill-used <name>] [--skill-issue <text>] [--skill-followup <text>] [--process-miss <dsl>] [--phase-scope <text>] [--root <path>] [--dossier <path>] [--cycle-id <id>] [--block | --ready-for-close]${implementationUsageSuffix}${planSliceUsageSuffix}`,
 			`  dossier-engineer ${command} --feature-id <id> --session-id <id> [--trace-runtime <name>] --backlog-followup-kind <kind> [--backlog-followup-required] [--backlog-followup-resolved]`,
 			"",
 			"Rules:",
@@ -25510,6 +26208,7 @@ function createStageControllerWrapper(command) {
 			"  - --skill-used, --skill-issue, --skill-followup, and --process-miss are explicit agent-supplied annotations",
 			"  - --process-miss uses id=<id>;category=<category>;severity=<low|medium|high>;resolved=<true|false>;summary=<text>",
 			...implementationHelpLines,
+			...planSliceHelpLines,
 			"  - stage controllers stop at ready_for_close",
 			"  - authoritative closure remains dossier-step-close + lifecycle-refresh",
 			"  - backlog truth is not mutated directly by the stage controller"

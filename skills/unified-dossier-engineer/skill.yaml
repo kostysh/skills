@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: unified-dossier-engineer
-  source-version: 0.2.4
+  source-version: 0.2.5
   recommended-skill-md-max-bytes: 26000
   description: >-
     Build and maintain the canonical dossier/backlog skill and its CLI runtime.
@@ -83,6 +83,12 @@ references:
     target: references/implementation-pre-review-checklists.md
     required: true
     trigger: Read this when designing implementation pre-review checklist evidence, risk-family declarations, or readiness gates before external review.
+  - id: ref-policy-admission-risk-families
+    title: Policy/admission risk families
+    source: references/policy-admission-risk-families.md
+    target: references/policy-admission-risk-families.md
+    required: true
+    trigger: Read this when designing plan-slice policy/admission classification, negative-matrix evidence, implementation readiness rechecks, or policy/admission reviewer handoff.
   - id: ref-runtime-command-boundary
     title: Runtime and command boundary
     source: references/runtime-and-command-boundary.md
@@ -109,6 +115,26 @@ copies:
     source: test/docs-contract.test.ts
     target: test/docs-contract.test.ts
     description: Docs/runtime/source-bundle parity checks for the generated skill.
+  - id: copy-package-json
+    source: package.json
+    target: package.json
+    description: Package manifest used by copied runtime/docs contract tests.
+  - id: copy-source-manifest
+    source: skill.yaml
+    target: skill.yaml
+    description: Source manifest used by copied docs contract tests.
+  - id: copy-fragment-overview
+    source: fragments/overview.md
+    target: fragments/overview.md
+    description: Source overview fragment used by copied source manifest checks.
+  - id: copy-utility-spec
+    source: docs/utility-spec.ru.md
+    target: docs/utility-spec.ru.md
+    description: Supporting maintainer-facing utility specification used by docs contract tests.
+  - id: copy-source-bundle-governance
+    source: references/source-bundle-governance.md
+    target: references/source-bundle-governance.md
+    description: Supporting source-bundle governance reference used by docs contract tests.
   - id: copy-fixture-root-marker
     source: test/fixtures/refreshable-backlog/.backlog.json
     target: test/fixtures/refreshable-backlog/.backlog.json
@@ -163,6 +189,7 @@ surfaces:
       - ref-telemetry-and-closure
       - ref-commandized-stage-control
       - ref-implementation-pre-review-checklists
+      - ref-policy-admission-risk-families
       - ref-runtime-command-boundary
     optionalReferences: []
 

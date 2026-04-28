@@ -9,6 +9,7 @@ Use it together with:
 - [Delivery workflow layer](delivery-workflow-layer.md)
 - [Commandized stage control](commandized-stage-control.md)
 - [Implementation pre-review checklists](implementation-pre-review-checklists.md)
+- [Policy/admission risk families](policy-admission-risk-families.md)
 
 ## Purpose
 
@@ -30,6 +31,7 @@ This design keeps telemetry and closure artifacts in separate accounting familie
 - helper-managed stage state under `.dossier/stages/*`
 - review artifacts under `.dossier/reviews/*`
 - verification artifacts under `.dossier/verification/*`
+- post-close hygiene global refresh artifacts under `.dossier/verification/post-close-hygiene/*`
 - step-close artifacts under `.dossier/steps/*`
 - lifecycle snapshots under `.dossier/metrics/*`
 - session discoverability under `.dossier/retro/session-index.jsonl`
@@ -95,14 +97,32 @@ Machine-complete stage schema fields:
 - parity-protected fields include `backlog_followup_required`, `backlog_followup_kind`, `backlog_followup_resolved`, `review_artifacts`, `review_events`, `verification_artifacts`, `step_artifact`, `final_delivery_commit`, `final_closure_commit`, `skills_used`, `skill_issues`, `skill_followups`, `process_misses`, `primary_feature_id`, `primary_backlog_item_key`, and `phase_scope`;
 - selected-feature lifecycle reconciliation fields are also parity-protected: `backlog_lifecycle_target`, `backlog_lifecycle_current`, `backlog_lifecycle_reconciled`, `backlog_actualization_artifacts`, and `backlog_actualization_verdict`;
 - implementation pre-review checklist fields are parity-protected for the `implementation` stage: `pre_review_risk_families`, `pre_review_checklists`, `pre_review_checklist_status`, and `pre_review_checklist_blockers`;
-- implementation post-close backlog hygiene fields are parity-protected for the `implementation` stage: `post_close_backlog_hygiene_required`, `post_close_backlog_hygiene_status`, `post_close_backlog_hygiene_artifact`, `post_close_backlog_hygiene_checked_at`, `post_close_backlog_hygiene_refresh_at`, `post_close_open_source_review_count`, `post_close_source_review_blocked_item_count`, `post_close_lifecycle_reconciliation_drift_count`, `post_close_unresolved_attention_present`, and `post_close_backlog_hygiene_blockers`;
+- plan-slice policy/admission fields are parity-protected for the `plan-slice` stage: `policy_admission_risk_profile`, `policy_admission_risk_rationale`, `policy_admission_risk_families`, `policy_admission_negative_matrix`, `policy_admission_matrix_status`, and `policy_admission_matrix_blockers`;
+- implementation post-close backlog hygiene fields are parity-protected for the `implementation` stage: `post_close_backlog_hygiene_required`, `post_close_backlog_hygiene_status`, `post_close_backlog_hygiene_artifact`, `post_close_backlog_hygiene_global_refresh_artifact`, `post_close_affected_feature_ids`, `post_close_pre_status_summary`, `post_close_post_status_summary`, `post_close_hygiene_schema_version`, `post_close_backlog_hygiene_checked_at`, `post_close_backlog_hygiene_refresh_at`, `post_close_open_source_review_count`, `post_close_source_review_blocked_item_count`, `post_close_lifecycle_reconciliation_drift_count`, `post_close_unresolved_attention_present`, and `post_close_backlog_hygiene_blockers`;
+- selected closure bundle fields are parity-protected after helper-owned close-out: `closure_bundle_id`, `closure_bundle_rounds_by_audit_class`, compatibility `closure_bundle_round`, `selected_review_artifacts`, `selected_verification_artifact`, `selected_step_artifact`, and `selected_closure_ts`;
+- RPA producer fields are parity-protected after helper-owned close-out: `rpa_source_identity`, `rpa_source_quality`, and `non_pass_review_events`;
 - review/verification/close-out artifact linkage is explicit in machine fields and must not require heuristic recovery from prose;
-- `review_events[]` links each attempt to `audit_class`, `verdict`, `review_attempt_id`, `review_round_id`, `review_round_number`, immutable `artifact_path`, optional `latest_copy_path`, reviewer provenance, freshness, and invalidation state;
+- `review_events[]` links each attempt to `audit_class`, `verdict`, `review_attempt_id`, `review_round_id`, `review_round_number`, immutable `artifact_path`, optional `latest_copy_path`, reviewer provenance, freshness, invalidation state, and bounded `evidence_count`;
 - `review_artifacts` is an ordered unique list of immutable attempt artifact paths, including FAIL and PASS attempts;
 - backlog actualization artifacts are trace links to accepted backlog mutations, while current backlog state remains the source of truth for lifecycle reconciliation;
-- commit anchors are optional trace links only and must not become required closure evidence;
+- stage-level commit anchors are optional trace links only and must not become required closure evidence;
+- artifact-level `event_commit` on selected review and verification artifacts is the material-scope freshness signal in git repositories when present or expected; no-commit repositories do not invent commit-anchor requirements;
 - skill annotations are explicit agent-supplied state and must not be scraped from conversation traces;
-- `process_misses` is structured state with `id`, `category`, `severity`, `resolved`, and `summary`; prose rendering is not the source of truth.
+- `process_misses` is structured state with `id`, `category`, `severity`, `resolved`, and `summary`; supported categories include `missing-fail-review-artifact`, `trace-only-fail`, `invalid-review-launch-mode`, `same-thread-review-artifact`, and `source-quality-limitation`; prose rendering is not the source of truth.
+
+RPA producer fields are UDE producer contracts, not retrospective policy:
+
+- `rpa_source_identity` includes `schema_version`, `feature_id`, `backlog_item_key`, `feature_cycle_id`, `cycle_id`, `stage`, `dossier`, `stage_log`, `stage_state_path`, `step_artifact`, `event_commit`, `session_id`, and `trace_runtime`;
+- `rpa_source_quality` includes `schema_version`, `review_history_quality`, `selected_bundle_quality`, `missing_fail_artifact_count`, `trace_only_fail_count`, `same_thread_rejected_count`, `invalid_launch_mode_process_miss_count`, `unrecoverable_historical_fail_present`, and `limitations`;
+- `non_pass_review_events[]` includes attempt/round identity, audit class, verdict, immutable artifact path, latest copy path, event commit, reviewer provenance, freshness/invalidation state, `must_fix_count`, and `evidence_count`.
+
+Derivation rules:
+
+- `review_history_quality: complete` when every non-PASS `review_events[]` entry has managed immutable artifact linkage and no related missing/trace-only process miss exists;
+- `review_history_quality: process_miss` when structured `process_misses[]` records missing FAIL artifact, trace-only FAIL, invalid launch mode, same-thread rejection, or unrecoverable historical FAIL evidence;
+- `review_history_quality: limited` when review history exists but source identity, immutable artifact linkage, or freshness data is incomplete without a specific process-miss category;
+- `selected_bundle_quality: complete` when close completed and every selected review/verification artifact is valid, fresh, managed, latest, policy-ordered, and tied to the selected close;
+- `selected_bundle_quality: blocked`, `stale`, or `invalid` when close is blocked, freshness fails, or selected evidence is degraded, invalidated, unmanaged, wrong-scope, wrong-order, same-thread, wrong-commit, or not latest.
 
 Schema snippets and field lists in this reference are runtime/artifact contracts. They are not prompts for free-form model output; agents should rely on helper commands, runtime validation, templates, and tests to write or verify machine fields.
 
@@ -176,7 +196,7 @@ When helper-owned closure updates materialize audit policy state, stage logs and
 - that implementation pre-review checklist evidence, when present, is author-side readiness context rather than correctness proof or audit evidence.
 - that implementation post-close backlog hygiene evidence, when required, links to a durable refresh/status/attention/queue artifact before branch-complete reporting.
 
-Audit handoff recipes, shared risk maps, protected side-effect presets, and pre-close hygiene rehearsal use existing artifact families and narrative sections. They must not introduce new mandatory stage-log fields for FAIL history, reviewer prompts, or rehearsal state. Immutable review attempts and helper-managed stage state remain the durable review evidence.
+Audit handoff recipes, shared risk maps, protected side-effect presets, and pre-close hygiene rehearsal use existing artifact families and narrative sections. They must not introduce new mandatory stage-log fields for reviewer prompts or rehearsal state. Policy/admission negative matrix evidence also uses existing plan-slice stage state/log fields and review artifacts rather than mandatory reviewer prompts in stage logs. Immutable review attempts and helper-managed stage state remain the durable review evidence.
 
 ## Session anchors
 
@@ -213,8 +233,12 @@ Required rules:
 - implementation closure truth requires authoritative step-close evidence
 - `dossier-step-close` must fail closed before writing a step artifact when `feature-intake`, `spec-compact`, `plan-slice`, or `implementation` lifecycle reconciliation is not satisfied by current backlog truth
 - successful helper-owned closure must update helper-managed stage state and mirrored frontmatter with `step_close_ts`, `step_artifact`, `process_complete_ts`, and lifecycle reconciliation fields
+- successful helper-owned closure must also update selected closure summary fields: `closure_bundle_id`, `closure_bundle_rounds_by_audit_class`, compatibility `closure_bundle_round`, `selected_review_artifacts`, `selected_verification_artifact`, `selected_step_artifact`, and `selected_closure_ts`
+- `closure_bundle_id` is the authoritative selected close-bundle identity; `closure_bundle_rounds_by_audit_class` is the authoritative per-audit-class round map; compatibility `closure_bundle_round` is the maximum selected round number and must not be used as the identity for mixed-round bundles
 - successful `implementation` closure must update helper-managed stage state and mirrored frontmatter with `post_close_backlog_hygiene_required: true` and initial `post_close_backlog_hygiene_status: missing`
-- `post-close-hygiene` must persist the durable `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json` artifact and update the implementation stage state with clean or blocked summary fields
+- `post-close-hygiene` must persist a durable global refresh artifact under `.dossier/verification/post-close-hygiene/` before any per-feature state references it, then per-feature `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json` artifacts, and update each affected implementation stage state with clean, blocked, stale, or failed summary fields; partial or failed runs record `run_id`, `failed_feature_ids`, and a retry command, then return non-zero
+- per-feature post-close hygiene artifacts must link `global_refresh_artifact`, `affected_feature_ids`, `pre_status_summary`, `post_status_summary`, and schema version
+- a global hygiene run may be `complete`, `partial`, or `failed`; no feature is marked `clean` unless its per-feature artifact and stage state/frontmatter update both succeed
 - stale hygiene is reported when the artifact predates implementation closure or current backlog truth timestamps such as `state.updated_at` or `last_refresh_at`
 - `lifecycle-refresh` remains the shipped lifecycle aggregation helper for lifecycle snapshots and session-index refresh
 - lifecycle timestamps must never materialize from chat-only or commit-only signals

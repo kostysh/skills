@@ -153,6 +153,14 @@ function commitRepoState(repo: string, message: string): string {
   return runGit(repo, ['rev-parse', 'HEAD']).trim();
 }
 
+function gitHeadForManagedArtifact(filePath: string): string | null {
+  const root = path.resolve(path.dirname(filePath), '..', '..', '..');
+  const result = spawnSync('git', ['-C', root, 'rev-parse', 'HEAD'], {
+    encoding: 'utf8',
+  });
+  return result.status === 0 ? result.stdout.trim() || null : null;
+}
+
 function parseEnvelope<T>(stdout: string): CliEnvelope<T> {
   return JSON.parse(stdout) as CliEnvelope<T>;
 }
@@ -222,7 +230,10 @@ async function writeVerifyArtifactFile(payload: {
         feature_id: payload.featureId,
         step: payload.step,
         status: payload.status ?? 'pass',
-        event_commit: payload.eventCommit ?? null,
+        event_commit:
+          payload.eventCommit === undefined
+            ? gitHeadForManagedArtifact(payload.path)
+            : payload.eventCommit,
       },
       null,
       2,
@@ -1025,6 +1036,108 @@ test('stage-controller rejects malformed process-miss DSL before writing stage a
   assert.equal(result.code, 1);
   assert.match(result.stderr, /severity must be one of: low, medium, high/u);
   assert.deepEqual(await readdir(path.join(repo, '.dossier', 'logs', 'spec-compact')), []);
+});
+
+test('plan-slice enforces policy admission classification and negative matrix before implementation readiness', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await createImplementationFeature({
+    repo,
+    itemKey: 'policy-admission-plan-slice',
+    title: 'Policy Admission Plan Slice',
+  });
+
+  runCli(['plan-slice', '--feature-id', feature.featureId], { cwd: repo });
+  const missingMatrix = runCli(
+    [
+      'plan-slice',
+      '--feature-id',
+      feature.featureId,
+      '--ready-for-close',
+      '--policy-admission-risk-profile',
+      'applicable',
+      '--policy-admission-risk',
+      'admission',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(missingMatrix.code, 1);
+  assert.match(missingMatrix.stderr, /policy\/admission matrix is missing/u);
+
+  const undeclaredMatrixRisk = runCli(
+    [
+      'plan-slice',
+      '--feature-id',
+      feature.featureId,
+      '--ready-for-close',
+      '--policy-admission-risk-profile',
+      'applicable',
+      '--policy-admission-risk',
+      'admission',
+      '--policy-admission-negative',
+      'ac=AC-1;risk=replay;negative_test=deny replay without admission;production_path=src/policy/admission.ts;evidence=pnpm test replay-negative',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(undeclaredMatrixRisk.code, 1);
+  assert.match(undeclaredMatrixRisk.stderr, /undeclared risks: replay/u);
+
+  const readyEnvelope = parseEnvelope<{
+    policy_admission_matrix_status: string;
+    policy_admission_risk_families: string[];
+  }>(
+    runCli(
+      [
+        'plan-slice',
+        '--feature-id',
+        feature.featureId,
+        '--ready-for-close',
+        '--policy-admission-risk-profile',
+        'applicable',
+        '--policy-admission-risk',
+        'admission',
+        '--policy-admission-negative',
+        'ac=AC-1;risk=admission;negative_test=deny replay without admission;production_path=src/policy/admission.ts;evidence=pnpm test admission-negative',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  assert.equal(readyEnvelope.data.policy_admission_matrix_status, 'complete');
+  assert.deepEqual(readyEnvelope.data.policy_admission_risk_families, ['admission']);
+
+  const planState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', feature.featureId, 'plan-slice.json'),
+      'utf8',
+    ),
+  ) as {
+    policy_admission_matrix_status: string;
+    policy_admission_negative_matrix: Array<{ evidence: string; risk: string }>;
+  };
+  assert.equal(planState.policy_admission_matrix_status, 'complete');
+  assert.deepEqual(planState.policy_admission_negative_matrix, [
+    {
+      ac: 'AC-1',
+      evidence: 'pnpm test admission-negative',
+      negative_test: 'deny replay without admission',
+      production_path: 'src/policy/admission.ts',
+      risk: 'admission',
+    },
+  ]);
+
+  runCli(['implementation', '--feature-id', feature.featureId], { cwd: repo });
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      feature.featureId,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    { cwd: repo },
+  );
 });
 
 test('implementation ready-for-close blocks declared policy-admission-governance risk without checklist evidence', async () => {
@@ -2818,6 +2931,77 @@ test('review-artifact rejects unsupported steps before touching the vendored com
   assert.match(payload.error.message, /--step must be one of:/);
 });
 
+test('review-artifact requires must-fix and evidence for FAIL attempts', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{ dossier: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Fail Review Evidence Guard',
+        '--backlog-item-key',
+        'fail-review-evidence-guard',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'review-evidence.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+
+  const missingMustFix = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'FAIL',
+      '--evidence',
+      'review-notes.md',
+      '--reviewer',
+      'external-spec-review',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(missingMustFix.code, 2);
+  assert.match(missingMustFix.stderr, /at least one --must-fix/u);
+
+  const missingEvidence = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--audit-class',
+      'spec-conformance-reviewer',
+      '--verdict',
+      'FAIL',
+      '--must-fix',
+      'Add durable evidence.',
+      '--reviewer',
+      'external-spec-review',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(missingEvidence.code, 2);
+  assert.match(missingEvidence.stderr, /at least one --evidence/u);
+});
+
 test('dossier-step-close rejects symlinked verification artifacts before vendored closeout', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
@@ -3690,6 +3874,74 @@ test('post-close-hygiene writes clean evidence and detects later stale backlog t
   ]);
 });
 
+test('post-close-hygiene records failed run artifact when feature lock is held', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'post-close-hygiene-lock-failure',
+    title: 'Post Close Hygiene Lock Failure',
+  });
+  await closeImplementationWithSpecReview({
+    repo,
+    dossier: feature.dossier,
+    featureId: feature.featureId,
+  });
+
+  const stageState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', feature.featureId, 'implementation.json'),
+      'utf8',
+    ),
+  ) as { feature_cycle_id: string | null };
+  const lockDir = path.join(repo, '.dossier', 'ops', 'locks');
+  await mkdir(lockDir, { recursive: true });
+  await writeFile(
+    path.join(
+      lockDir,
+      `${feature.featureId}--${stageState.feature_cycle_id ?? 'post-close-hygiene'}.lock`,
+    ),
+    '{}\n',
+  );
+
+  const result = runCli(
+    ['post-close-hygiene', '--dossier', feature.dossier, '--step', 'implementation', '--json'],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(result.code, 1);
+  const envelope = parseEnvelope<{
+    failed_feature_ids: string[];
+    global_refresh_artifact: string;
+    per_feature_results: Array<{ error?: string; feature_id: string; result: string }>;
+    result: string;
+    retry_command: string;
+    run_id: string;
+  }>(result.stdout);
+  assert.equal(envelope.result, 'fail');
+  assert.equal(envelope.data.result, 'failed');
+  assert.deepEqual(envelope.data.failed_feature_ids, [feature.featureId]);
+  assert.match(envelope.data.retry_command, /post-close-hygiene --feature-id/u);
+  assert.equal(envelope.data.run_id.length > 0, true);
+
+  const globalArtifact = JSON.parse(
+    await readFile(path.join(repo, envelope.data.global_refresh_artifact), 'utf8'),
+  ) as {
+    durability_status: string;
+    error: string;
+    failed_feature_ids: string[];
+    per_feature_results: Array<{ error?: string; feature_id: string; result: string }>;
+    result: string;
+    retry_command: string;
+    run_id: string;
+  };
+  assert.equal(globalArtifact.durability_status, 'final');
+  assert.equal(globalArtifact.result, 'failed');
+  assert.deepEqual(globalArtifact.failed_feature_ids, [feature.featureId]);
+  assert.match(globalArtifact.error, /Delivery mutation lock is already held/u);
+  assert.equal(globalArtifact.retry_command, envelope.data.retry_command);
+  assert.deepEqual(globalArtifact.per_feature_results, envelope.data.per_feature_results);
+});
+
 test('post-close-hygiene marks changed sources blocked without auto-ack', async () => {
   const repo = await makeTempRepoPath();
   await seedRefreshableBacklog(repo);
@@ -3877,9 +4129,25 @@ test('spec and plan close-out enforce their selected backlog lifecycle targets',
     );
 
     runCli([stage, '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
-    runCli([stage, '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'], {
-      cwd: repo,
-    });
+    runCli(
+      [
+        stage,
+        '--feature-id',
+        intakeEnvelope.data.feature_id,
+        '--ready-for-close',
+        ...(stage === 'plan-slice'
+          ? [
+              '--policy-admission-risk-profile',
+              'not_applicable',
+              '--policy-admission-risk-rationale',
+              'lifecycle target enforcement fixture has no policy/admission surface',
+            ]
+          : []),
+      ],
+      {
+        cwd: repo,
+      },
+    );
 
     const result = runCli(
       ['dossier-step-close', '--dossier', intakeEnvelope.data.dossier, '--step', stage],
@@ -4508,6 +4776,8 @@ test('latest invalidated audit event reopens the required review pending signal'
       'audit-agent-invalidated',
       '--must-fix',
       'rerun required after material change',
+      '--evidence',
+      '.dossier/reviews/F-0001/invalidated-review.md',
     ],
     { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-invalidated' } },
   );
@@ -4975,9 +5245,25 @@ test('non-implementation mutating stages keep the required external baseline at 
     );
 
     runCli([stage, '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
-    runCli([stage, '--feature-id', intakeEnvelope.data.feature_id, '--ready-for-close'], {
-      cwd: repo,
-    });
+    runCli(
+      [
+        stage,
+        '--feature-id',
+        intakeEnvelope.data.feature_id,
+        '--ready-for-close',
+        ...(stage === 'plan-slice'
+          ? [
+              '--policy-admission-risk-profile',
+              'not_applicable',
+              '--policy-admission-risk-rationale',
+              'baseline close-out fixture has no policy/admission surface',
+            ]
+          : []),
+      ],
+      {
+        cwd: repo,
+      },
+    );
 
     const verifyArtifact = path.join(
       repo,
@@ -5975,6 +6261,8 @@ test('lifecycle-refresh counts same-audit rerounds from structured review round 
       'FAIL',
       '--must-fix',
       'Add reround evidence.',
+      '--evidence',
+      '.dossier/reviews/F-0001/reround-evidence.md',
       '--reviewer',
       'spec-reviewer',
       '--reviewer-skill',
@@ -6815,6 +7103,8 @@ test('review-artifact preserves immutable same-class FAIL and PASS attempts with
       'FAIL',
       '--must-fix',
       'Clarify immutable evidence handling.',
+      '--evidence',
+      '.dossier/reviews/F-0001/immutable-evidence.md',
       '--reviewer',
       'external-spec-review',
       '--reviewer-skill',
@@ -6994,11 +7284,350 @@ test('review-artifact preserves immutable same-class FAIL and PASS attempts with
       'utf8',
     ),
   ) as {
+    closure_bundle_id: string;
+    closure_bundle_round: number;
+    closure_bundle_rounds_by_audit_class: Record<string, number>;
+    non_pass_review_events: Array<{
+      artifact_path: string;
+      evidence_count: number;
+      verdict: string;
+    }>;
     process_complete: boolean;
     review_artifacts: string[];
+    selected_review_artifacts: string[];
+    selected_verification_artifact: string;
+    selected_step_artifact: string;
   };
   assert.equal(stepArtifact.process_complete, true);
   assert.deepEqual(stepArtifact.review_artifacts, [passArtifactPath]);
+  assert.match(stepArtifact.closure_bundle_id, /^feature-intake--bundle-[0-9a-f]{12}--r02--/u);
+  assert.equal(stepArtifact.closure_bundle_round, 2);
+  assert.deepEqual(stepArtifact.closure_bundle_rounds_by_audit_class, {
+    'spec-conformance-reviewer': 2,
+  });
+  assert.deepEqual(stepArtifact.selected_review_artifacts, [passArtifactPath]);
+  assert.equal(stepArtifact.selected_verification_artifact.endsWith('feature-intake.json'), true);
+  assert.equal(stepArtifact.selected_step_artifact.endsWith('feature-intake.json'), true);
+  assert.deepEqual(
+    stepArtifact.non_pass_review_events.map((event) => ({
+      artifact_path: event.artifact_path,
+      evidence_count: event.evidence_count,
+      verdict: event.verdict,
+    })),
+    [
+      {
+        artifact_path: failArtifactPath,
+        evidence_count: 1,
+        verdict: 'FAIL',
+      },
+    ],
+  );
+});
+
+test('dossier-step-close classifies unreadable verification artifacts as invalid RPA evidence', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'unreadable-verification-rpa' });
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Unreadable Verification RPA',
+        '--backlog-item-key',
+        'unreadable-verification-rpa',
+        '--backlog-delivery-state',
+        'intaken',
+        '--backlog-source',
+        'unreadable-verification-rpa.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  const specReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'feature-intake',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: 'audit-agent-unreadable-verification',
+    reviewerThreadId: 'review-thread-unreadable-verification',
+  });
+  const missingVerifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'missing-feature-intake.json',
+  );
+
+  const closeResult = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--verify-artifact',
+      missingVerifyArtifact,
+      '--review-artifact',
+      specReview,
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(closeResult.code, 3);
+  const stepArtifact = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id, 'feature-intake.json'),
+      'utf8',
+    ),
+  ) as {
+    blockers: string[];
+    process_complete: boolean;
+    rpa_source_quality: { selected_bundle_quality: string };
+  };
+  assert.equal(stepArtifact.process_complete, false);
+  assert.equal(stepArtifact.rpa_source_quality.selected_bundle_quality, 'invalid');
+  assert.equal(
+    stepArtifact.blockers.some(
+      (blocker) =>
+        blocker.includes('Verification artifact') &&
+        blocker.includes('could not be read') &&
+        blocker.includes('Next action: rerun dossier-verify'),
+    ),
+    true,
+  );
+});
+
+test('dossier-step-close classifies duplicate selected reviews as invalid RPA evidence', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'duplicate-review-rpa' });
+  const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Duplicate Review RPA',
+        '--backlog-item-key',
+        'duplicate-review-rpa',
+        '--backlog-delivery-state',
+        'intaken',
+        '--backlog-source',
+        'duplicate-review-rpa.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
+  const firstReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'feature-intake',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: 'audit-agent-duplicate-review-1',
+    reviewerThreadId: 'review-thread-duplicate-review-1',
+  });
+  const secondReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'feature-intake',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: 'audit-agent-duplicate-review-2',
+    reviewerThreadId: 'review-thread-duplicate-review-2',
+  });
+
+  const closeResult = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      firstReview,
+      '--review-artifact',
+      secondReview,
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(closeResult.code, 3);
+  const stepArtifact = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'steps', intakeEnvelope.data.feature_id, 'feature-intake.json'),
+      'utf8',
+    ),
+  ) as {
+    blockers: string[];
+    process_complete: boolean;
+    rpa_source_quality: { selected_bundle_quality: string };
+  };
+  assert.equal(stepArtifact.process_complete, false);
+  assert.equal(stepArtifact.rpa_source_quality.selected_bundle_quality, 'invalid');
+  assert.equal(
+    stepArtifact.blockers.some(
+      (blocker) =>
+        blocker.includes('Duplicate review artifact for audit class spec-conformance-reviewer') &&
+        blocker.includes(firstReview) &&
+        blocker.includes(secondReview) &&
+        blocker.includes('Next action: rerun reviewer-owned review-artifact accounting'),
+    ),
+    true,
+  );
+});
+
+test('dossier-step-close closure bundle id distinguishes mixed audit rounds', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  initializeGitRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'mixed-round-closure',
+    title: 'Mixed Round Closure',
+  });
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      feature.featureId,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+    ],
+    { cwd: repo },
+  );
+  const eventCommit = commitRepoState(repo, 'implementation mixed round closure ready');
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    feature.featureId,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: feature.featureId,
+    step: 'implementation',
+    eventCommit,
+  });
+  const specReview = recordReviewArtifact({
+    repo,
+    dossier: feature.dossier,
+    step: 'implementation',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: 'audit-agent-mixed-spec',
+    reviewerThreadId: 'review-thread-mixed-spec',
+  });
+  const codeFail = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'FAIL',
+      '--must-fix',
+      'Correct closure bundle identity.',
+      '--evidence',
+      '.dossier/reviews/F-0001/mixed-round-code-fail.md',
+      '--reviewer',
+      'code-reviewer',
+      '--reviewer-skill',
+      'code-reviewer',
+      '--reviewer-agent-id',
+      'audit-agent-mixed-code-fail',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-mixed-code-fail' } },
+  ).stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  const codeReview = recordReviewArtifact({
+    repo,
+    dossier: feature.dossier,
+    step: 'implementation',
+    auditClass: 'code-reviewer',
+    reviewerAgentId: 'audit-agent-mixed-code-pass',
+    reviewerThreadId: 'review-thread-mixed-code-pass',
+  });
+  const securityReview = recordReviewArtifact({
+    repo,
+    dossier: feature.dossier,
+    step: 'implementation',
+    auditClass: 'security-reviewer',
+    reviewerAgentId: 'audit-agent-mixed-security',
+    reviewerThreadId: 'review-thread-mixed-security',
+    securityTriggerReason: 'mixed-round-code-bearing',
+  });
+  assert.ok(codeFail);
+  assert.notEqual(codeFail, codeReview);
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'author-thread-default' } },
+  );
+
+  const stepArtifact = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'steps', feature.featureId, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    closure_bundle_id: string;
+    closure_bundle_round: number;
+    closure_bundle_rounds_by_audit_class: Record<string, number>;
+  };
+  assert.match(stepArtifact.closure_bundle_id, /^implementation--bundle-[0-9a-f]{12}--r02--/u);
+  assert.notEqual(
+    stepArtifact.closure_bundle_id,
+    `implementation--r02--${eventCommit.slice(0, 12)}`,
+  );
+  assert.equal(stepArtifact.closure_bundle_round, 2);
+  assert.deepEqual(stepArtifact.closure_bundle_rounds_by_audit_class, {
+    'spec-conformance-reviewer': 1,
+    'code-reviewer': 2,
+    'security-reviewer': 1,
+  });
 });
 
 test('dossier-step-close rejects latest review copies that do not resolve to immutable attempts', async () => {

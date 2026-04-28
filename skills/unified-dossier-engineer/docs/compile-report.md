@@ -2,11 +2,12 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.4`
-- CLI package version: `0.2.1`
+- Skill source version: `0.2.5`
+- CLI package version: `0.2.2`
 
 ## Source files
 - `assets/README.md`
+- `docs/utility-spec.ru.md`
 - `fragments/overview.md`
 - `package.json`
 - `references/audit-handoff-recipes.md`
@@ -15,7 +16,9 @@ Generated from `skill.yaml`.
 - `references/commandized-stage-control.md`
 - `references/delivery-workflow-layer.md`
 - `references/implementation-pre-review-checklists.md`
+- `references/policy-admission-risk-families.md`
 - `references/runtime-and-command-boundary.md`
+- `references/source-bundle-governance.md`
 - `references/source-review-contract.md`
 - `references/status-and-scope.md`
 - `references/telemetry-and-closure.md`
@@ -48,6 +51,7 @@ Generated from `skill.yaml`.
 - `references/telemetry-and-closure.md`
 - `references/commandized-stage-control.md`
 - `references/implementation-pre-review-checklists.md`
+- `references/policy-admission-risk-families.md`
 - `references/runtime-and-command-boundary.md`
 
 ## Warnings

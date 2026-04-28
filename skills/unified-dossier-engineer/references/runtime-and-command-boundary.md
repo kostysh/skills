@@ -72,9 +72,13 @@ Contract for this family:
 - optional `--trace-runtime <name>` is explicit metadata only, not a runtime-specific default;
 - missing required `--session-id` fails closed before stage log or helper-managed stage-state writes;
 - the runtime must not make Codex-local trace stores, private filesystem layouts, or environment variables the canonical way to resolve session provenance.
+- only `plan-slice` accepts `--policy-admission-risk-profile`, `--policy-admission-risk-rationale`, repeatable `--policy-admission-risk`, and repeatable `--policy-admission-negative` inputs for policy/admission readiness evidence;
+- policy/admission classification and negative-matrix applicability are explicit inputs and are never inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
+- `plan-slice --ready-for-close` fails before writing `stage_state: ready_for_close` when classification is missing, `not_applicable` lacks rationale, risk ids are unknown, or applicable risks lack negative-matrix coverage;
 - only `implementation` accepts repeatable `--risk-family <id>` and `--pre-review-check <dsl>` inputs for author-side pre-review checklist readiness evidence;
 - declared implementation risk families are never inferred from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose;
 - `implementation --ready-for-close` fails before writing `stage_state: ready_for_close` when declared checklist evidence is `missing` or `blocked`.
+- `implementation --ready-for-close` also rechecks latest `plan-slice` policy/admission matrix status before material close readiness.
 
 ### Delivery helper / integrity / closure family
 
@@ -95,16 +99,20 @@ Contract for this family:
 Audit-policy rule for this family:
 
 - `review-artifact` persists one immutable already obtained audit attempt for one audit class;
+- FAIL `review-artifact` attempts require at least one `--must-fix` and at least one `--evidence`; PASS attempts must not carry `--must-fix`;
 - audit handoff recipes may tell reviewers to run `dossier-engineer review-artifact` after deciding PASS or FAIL, but the runtime does not synthesize reviewer prompts or perform the audit;
 - default review-attempt paths are bounded deterministic artifacts under `.dossier/reviews/<feature>/`;
 - stable/latest review paths, when written, are backward-compatible full JSON copies that point back to the immutable attempt and are not the only durable evidence;
 - `dossier-step-close` validates the policy-required audit bundle for the stage being closed;
 - `dossier-step-close` accepts immutable attempt paths directly and resolves latest-copy paths back to managed immutable attempts before recording closure outputs;
+- `dossier-step-close` records selected closure bundle fields and RPA producer fields after successful close;
+- in git repositories, selected review and verification artifact `event_commit` values are material-scope freshness anchors; stage-level commit fields remain optional trace context, not closure proof;
 - both helpers read and update the helper-managed stage state under `.dossier/stages/*` for current-cycle review-bundle coordination and validation;
 - both helpers validate only observable durable provenance and must not claim to prove launch-mode facts such as `fork_context`, full-history inheritance, prompt mutability, or model tier;
 - neither helper performs the audit itself.
 - implementation pre-review checklist evidence is not an audit artifact and cannot satisfy or weaken the audit bundle validated by `dossier-step-close`.
-- `post-close-hygiene` runs explicit refresh/status/attention/queue evidence after successful `implementation` closure, writes `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json`, and updates helper-managed implementation stage state;
+- `post-close-hygiene` runs explicit refresh/status/attention/queue evidence after successful `implementation` closure, writes a global refresh artifact plus per-feature `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json` artifacts, and updates helper-managed implementation stage state;
+- `post-close-hygiene` serializes the global refresh and per-feature evidence writes, writes a durable global artifact before any per-feature state points to it, records `run_id`, affected/failed feature ids, pre/post status summaries, per-feature statuses, and returns non-zero with JSON result `fail` plus a retry command for failed or partial runs; it must not report post-close partial feature failures as `partial_success`;
 - `post-close-hygiene` never auto-acks source-review records and never applies backlog patches or packets on behalf of the operator.
 
 Lifecycle-reconciliation rule for this family:
@@ -224,6 +232,7 @@ Top-level help for the utility must:
 Command-local help must:
 
 - show only shipped options and output guarantees;
+- show `--policy-admission-risk-profile`, `--policy-admission-risk-rationale`, `--policy-admission-risk`, and `--policy-admission-negative` only for `plan-slice`;
 - show `--risk-family` and `--pre-review-check` only for `implementation`;
 - show `post-close-hygiene` only because the runtime, help, and tests ship it;
 - reflect the shipped command contract rather than inventing ad hoc wording;
@@ -233,6 +242,7 @@ Command-local help must:
 
 - do not add compatibility wrappers as a second public contract;
 - do not promote commands or flags into `skill.yaml` if runtime code and tests do not ship them;
+- do not document policy/admission flags unless the shipped help/runtime/tests expose them;
 - do not let top-level help blur backlog truth commands with delivery-stage commands;
 - do not let helper commands absorb stage-controller responsibilities or vice versa;
 - do not imply that stage-controller commands author or validate semantic `plan-slice` execution-target content;

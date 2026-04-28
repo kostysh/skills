@@ -8,6 +8,7 @@ Use it together with:
 - [Audit handoff recipes](audit-handoff-recipes.md)
 - [Commandized stage control](commandized-stage-control.md)
 - [Implementation pre-review checklists](implementation-pre-review-checklists.md)
+- [Policy/admission risk families](policy-admission-risk-families.md)
 - [Telemetry and closure](telemetry-and-closure.md)
 
 ## What this layer owns
@@ -93,6 +94,7 @@ The workflow must preserve:
 - proof obligations for verification
 - explicit handling of heavy-runtime planning when the trigger fires
 - protected side-effect risk preset when implementation touches deploy, rollback, release, external executor, host/container boundary, caller-controlled input, or another protected side effect
+- explicit policy/admission classification before implementation handoff: `not_applicable` with rationale, or `applicable` with bounded risk families and negative matrix
 - return to backlog truth layer when planning changes backlog truth
 
 `plan-slice` is not implementation-ready when the implementation objective is ambiguous.
@@ -105,6 +107,8 @@ When the protected side-effect risk preset applies, `plan-slice` handoff and aud
 - terminal CAS / no terminal overwrite;
 - strict caller input;
 - live-vs-stale running behavior.
+
+When policy/admission risk applies, `plan-slice` must record the UDE-owned taxonomy from [Policy/admission risk families](policy-admission-risk-families.md): `admission`, `replay`, `evidence`, `release-policy`, and `runtime-gating`. Applicable scopes must include a negative matrix with `AC -> risk -> negative test -> production path -> evidence source` before the stage can be treated as implementation-ready. `not_applicable` is allowed only with explicit rationale and no declared risk families.
 
 ### `implementation`
 
@@ -121,6 +125,8 @@ The workflow must preserve:
 
 Implementation pre-review checklist evidence is required only for declared risk families. The workflow must not infer those families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose.
 
+Implementation readiness must recheck the linked `plan-slice` policy/admission classification. The linked plan is the helper-managed `plan-slice` state for the same `feature_id` and `feature_cycle_id`, with latest same-feature `plan-slice` stage-log fallback only when helper-managed state is absent. A mismatched `feature_cycle_id` is stale and blocks readiness. If no linked `plan-slice` state or log exists, legacy/non-commandized flows do not invent a policy/admission requirement. If linked `plan-slice` declared applicable policy/admission risks and the matrix is missing, incomplete, or blocked, `implementation --ready-for-close` must fail before material close readiness.
+
 After a successful `implementation` close, the workflow must run explicit post-close backlog hygiene before claiming the branch is backlog-clean or recommending a next intake. The required evidence is `refresh`, then `status`, `attention`, and `queue`, persisted through `post-close-hygiene`. This checkpoint is branch/readiness evidence after closure; it is not an extra `dossier-step-close` gate.
 
 Before final verification and the final external review bundle, implementation should run a pre-close hygiene rehearsal when refresh/status/attention/source-review checks can open or update backlog/source-review truth. This rehearsal runs those checks without auto-ack, resolves discovered source-review or attention blockers through explicit backlog truth actions, and then reruns final verification and affected audits if any material backlog/source-review mutation happened after earlier audits.
@@ -133,6 +139,7 @@ Rules:
 
 - after material commit freeze, do not make material source/test/backlog truth changes before the final review artifacts are recorded;
 - external reviewers must record PASS or FAIL through `review-artifact`, leaving immutable review attempt artifacts;
+- correction work after a prose/trace FAIL must stop until the reviewer-owned immutable FAIL artifact exists with `must_fix` and `evidence`, or a structured process miss records that original reviewer accounting is unrecoverable;
 - final verification must correspond to the same material scope reviewed by the external auditors;
 - if any material mutation happens after final audits or final verification, rerun affected verification and affected review artifacts before `dossier-step-close`;
 - post-close hygiene remains a separate confirmation after close and does not replace pre-close rehearsal, final verification, final audits, or `dossier-step-close`.
@@ -214,6 +221,7 @@ Required gates:
 - debt review
 - required external audit bundle in fail-closed mode
 - selected backlog item lifecycle reconciliation for stages that advance backlog truth
+- policy/admission classification and negative matrix for applicable `plan-slice` scopes
 - review freshness validation
 - implementation pre-review checklist completeness only when explicit risk families are declared
 - explicit pre-close / DoD readiness
@@ -253,6 +261,8 @@ The stage-controller command boundary is defined separately in [Commandized stag
 - do not degrade the mature change branch into a backlog appendix
 - do not let delivery closure bypass required backlog actualization
 - do not infer implementation risk families from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose
+- do not infer policy/admission risk classification from keywords, filenames, source code, diff heuristics, chat summaries, review findings, or dossier prose
+- do not hand off applicable policy/admission implementation before `plan-slice` has a complete negative matrix
 - do not let `dossier-step-close` mark `spec-compact`, `plan-slice`, or `implementation` complete while the selected backlog item is behind the stage lifecycle target
 - do not claim an implementation branch is backlog-clean before fresh post-close hygiene evidence exists
 - do not hide open source reviews after post-close refresh behind a clean final state

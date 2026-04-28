@@ -44,6 +44,8 @@ Inputs:
 - Implementation scope: <non-code|code-bearing|not-applicable>
 - Verification artifacts: <repo-relative verification artifact paths or none>
 - Prior review artifacts: <repo-relative review artifact paths or none>
+- Prior non-PASS review artifacts and process misses: <repo-relative review artifacts, process-miss ids, or none>
+- Policy/admission classification and negative matrix: <risk profile, risk families, rows, or not_applicable rationale>
 - Source materials: <issue, plan, spec, backlog item, acceptance criteria, or other repo-relative sources>
 
 Constraints:
@@ -63,13 +65,13 @@ Reviewer focus:
 
 After review:
 - If PASS, run the PASS `review-artifact` command for this audit class.
-- If FAIL, run the FAIL `review-artifact` command for this audit class and include must-fix findings.
+- If FAIL, run the FAIL `review-artifact` command for this audit class and include must-fix findings plus repo-relative evidence.
 - A blocking audit round is not complete until the immutable review attempt artifact exists.
 
 Output:
 - One PASS or FAIL verdict.
 - PASS/FAIL `review-artifact` command result and immutable artifact path when the runtime write succeeds.
-- For FAIL, must-fix findings with repo-relative evidence.
+- For FAIL, must-fix findings with repo-relative evidence and the immutable FAIL artifact path.
 
 Stop rules:
 - Stop and return FAIL if required source material, verification artifacts, trace commit, implementation scope, or dossier artifacts are absent or stale.
@@ -89,6 +91,7 @@ Include risks such as:
 - unresolved backlog or source-review blockers;
 - lifecycle reconciliation drift;
 - implementation scope misclassification;
+- policy/admission negative matrix gaps for admission, replay, evidence, release-policy, or runtime-gating work;
 - protected side effects from deploy, rollback, release, external executor, host/container boundary, caller-controlled input, or another protected side effect.
 
 ## Reviewer focus by audit class
@@ -100,6 +103,7 @@ Focus on:
 - issue, plan, spec, acceptance criteria, and backlog truth alignment;
 - selected backlog item lifecycle target for the audited stage;
 - whether implementation or plan scope exceeds the approved objective;
+- whether applicable policy/admission risks have explicit negative matrix coverage before implementation handoff;
 - unresolved ambiguity, non-goals, or source-review blockers;
 - whether verification and review evidence covers the stated requirements.
 
@@ -116,6 +120,7 @@ Focus on:
   - terminal CAS / no terminal overwrite;
   - strict caller input;
   - live-vs-stale running behavior.
+- deployed runtime-gate paths when policy/admission `runtime-gating` is declared.
 
 ### `security-reviewer`
 
@@ -179,6 +184,8 @@ A required blocking audit round is incomplete until `review-artifact` writes one
 Rules:
 
 - PASS and FAIL rounds both need durable immutable artifacts.
+- FAIL rounds must include at least one `--must-fix` and at least one `--evidence`; prose-only FAIL is not operationally complete.
 - A later PASS supersedes an earlier FAIL only through `dossier-step-close` policy validation.
+- Authoring correction work must stop after a prose/trace FAIL until reviewer-owned FAIL accounting exists, or until a structured process miss records why original reviewer accounting cannot be recovered.
 - If the reviewer mutates material files, backlog truth, or `HEAD`, discard the attempt and rerun it with a valid read-only reviewer.
 - If material scope changes after the artifact is recorded, rerun affected verification and review artifacts before `dossier-step-close`.
