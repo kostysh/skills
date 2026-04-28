@@ -3,16 +3,16 @@ kind: SkillSource
 
 skill:
   name: electron-engineer
-  source-version: 0.1.7
+  source-version: 0.1.8
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, modernize, review, test, package, and release production-grade
     Electron desktop applications across macOS, Windows, and Linux. Covers
     Electron process architecture, main/preload/renderer trust boundaries,
-    typed IPC, security hardening, custom protocols, native OS integration,
-    data and secret storage, source exposure reduction, build pipelines,
-    performance, testing, observability, packaging, signing, notarization,
-    auto-updates, and Electron major-version migrations.
+    TypeScript process typing, typed IPC, security hardening, custom protocols,
+    native OS integration, data and secret storage, source exposure reduction,
+    build pipelines, performance, testing, observability, packaging, signing,
+    notarization, auto-updates, and Electron major-version migrations.
 
 fragments:
   overview: fragments/overview.md
@@ -36,6 +36,12 @@ references:
     target: references/tooling-project-structure.md
     required: false
     trigger: Read this when shaping project layout, package boundaries, ESM/CJS strategy, monorepo layout, or native-module boundaries.
+  - id: ref-typescript-in-electron
+    title: TypeScript in Electron
+    source: references/typescript-in-electron.md
+    target: references/typescript-in-electron.md
+    required: false
+    trigger: Read this when configuring TypeScript for Electron main, preload, renderer, utility, or shared code; designing typed IPC/preload/window APIs; choosing tsconfig/moduleResolution/types; typing electron-vite env/imports/assets; handling ESM/CJS output; using decorators; or setting typecheck gates.
   - id: ref-build-process
     title: Build Process
     source: references/build-process.md
@@ -99,6 +105,7 @@ surfaces:
       - ref-architecture
       - ref-security-ipc-preload
       - ref-tooling-project-structure
+      - ref-typescript-in-electron
       - ref-build-process
       - ref-renderer-integration
       - ref-native-os-integration
@@ -119,6 +126,7 @@ sections:
     - Building a new Electron desktop application for macOS, Windows, Linux, or a cross-platform target matrix.
     - Modernizing or reviewing Electron main/preload/renderer architecture, IPC, BrowserWindow, custom protocols, menus, tray, native OS integration, or multi-window flows.
     - Hardening Electron security, including context isolation, sandboxing, CSP, navigation, external URL handling, sender validation, and preload surface review.
+    - Configuring TypeScript across Electron main, preload, renderer, utility, shared contracts, electron-vite, and Forge surfaces.
     - Designing local data, file, secret storage, source exposure reduction, build process, native module, offline-first, or crash recovery behavior in an Electron app.
     - Packaging, signing, notarizing, distributing, updating, testing, debugging, observing, or migrating Electron applications.
   whenNotToUse:

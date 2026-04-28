@@ -50,7 +50,7 @@ If Forge output and electron-vite output directories conflict, set electron-vite
 Use this order for production builds:
 
 1. Install dependencies with the repo package manager and lockfile.
-2. Run lint, typecheck, and unit/contract tests.
+2. Run lint, process-specific typecheck, and unit/contract tests; use [TypeScript in Electron](typescript-in-electron.md) for TypeScript boundaries and gates.
 3. Run `electron-vite build` for main, preload, and renderer.
 4. Run source-protection transforms configured in electron-vite, such as bytecode for selected main/preload modules, only when policy requires them.
 5. Audit built output for sourcemaps, raw source, dev artifacts, `.env` files, test fixtures, private keys, and readable business-critical modules.

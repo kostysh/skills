@@ -61,6 +61,7 @@ Read only the reference needed for the task:
 | Process boundaries, windows, sessions, custom protocols | [Architecture](references/architecture.md) |
 | BrowserWindow security, IPC, preload, navigation, CSP | [Security, IPC, and Preload](references/security-ipc-preload.md) |
 | Project layout, package boundaries, ESM/CJS | [Tooling and Project Structure](references/tooling-project-structure.md) |
+| TypeScript across main, preload, renderer, shared contracts | [TypeScript in Electron](references/typescript-in-electron.md) |
 | End-to-end build pipeline | [Build Process](references/build-process.md) |
 | React/Vite renderer, routing, dev/prod origins | [Renderer Integration](references/renderer-integration.md) |
 | Menus, tray, shortcuts, dialogs, downloads, native OS features | [Native OS Integration](references/native-os-integration.md) |

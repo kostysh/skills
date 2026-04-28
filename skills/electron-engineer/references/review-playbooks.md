@@ -1,6 +1,6 @@
 # Review Playbooks
 
-Use this reference when reviewing Electron code, migrating Electron majors, auditing release readiness, or applying practical security and recovery playbooks. For the canonical build/package/make/publish sequence and artifact gates, use [Build Process](build-process.md).
+Use this reference when reviewing Electron code, migrating Electron majors, auditing release readiness, or applying practical security and recovery playbooks. For the canonical build/package/make/publish sequence and artifact gates, use [Build Process](build-process.md). For Electron-specific TypeScript boundary review, use [TypeScript in Electron](typescript-in-electron.md).
 
 ## Code Review Checklist
 

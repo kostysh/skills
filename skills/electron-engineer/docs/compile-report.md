@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.7`
+- Skill source version: `0.1.8`
 
 ## Source files
 - `agents/openai.yaml`
@@ -18,6 +18,7 @@ Generated from `skill.yaml`.
 - `references/source-protection.md`
 - `references/testing-observability.md`
 - `references/tooling-project-structure.md`
+- `references/typescript-in-electron.md`
 - `skill.yaml`
 
 ## Required references

@@ -45,7 +45,7 @@ Rules:
 
 ## TypeScript and Module Boundaries
 
-Use TypeScript by default. Pair with `typescript-engineer` for tsconfig and language rules.
+Use TypeScript by default. Use [TypeScript in Electron](typescript-in-electron.md) for process-specific tsconfig, Electron type surfaces, typed preload and IPC contracts, electron-vite TypeScript behavior, and ESM/CJS output decisions. Pair with `typescript-engineer` for general TypeScript language and type-system rules.
 
 Electron has distinct execution contexts:
 
