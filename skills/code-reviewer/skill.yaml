@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.2.0
+  source-version: 0.3.0
   recommended-skill-md-max-bytes: 20000
   description: |-
     Systematic code review skill for pull requests, diffs, and local branch changes.
@@ -42,6 +42,11 @@ references:
     source: references/policy-admission-merge-risk.md
     target: references/policy-admission-merge-risk.md
     trigger: Read this when changed files or linked review intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active scope, idempotency, replay, or freshness checks.
+  - id: ref-references-runtime-gate-deployed-path
+    title: Runtime Gate Deployed Path
+    source: references/runtime-gate-deployed-path.md
+    target: references/runtime-gate-deployed-path.md
+    trigger: Read this when changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle, production construction path, deployed dependency wiring, request or tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
   - id: ref-references-severity-confidence
     title: Severity Confidence
     source: references/severity-confidence.md
@@ -67,6 +72,10 @@ assets:
     source: assets/fixtures/policy-admission-review.md
     target: assets/fixtures/policy-admission-review.md
     description: "Fixture examples for the conditional policy/admission merge-risk pass."
+  - id: asset-assets-fixtures-runtime-gate-deployed-path-review
+    source: assets/fixtures/runtime-gate-deployed-path-review.md
+    target: assets/fixtures/runtime-gate-deployed-path-review.md
+    description: "Fixture examples for runtime-gate deployed-path and identity-binding review."
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
@@ -84,6 +93,7 @@ surfaces:
       - ref-references-spec-pass
     optionalReferences:
       - ref-references-policy-admission-merge-risk
+      - ref-references-runtime-gate-deployed-path
   supportingGlobs:
     - docs/*
 sections:

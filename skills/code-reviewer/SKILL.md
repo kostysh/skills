@@ -15,9 +15,9 @@ description: >-
 
   rules.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.3.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c00fd708cf8ede64a07ee9b76ed81c80ce6799e05a389a6e0d5b6ddf12973bfd
+  skillforge-source-hash: caf54141ca40d8b2ee5f186a1cbb2092ada3847c87ab22ee76435e3c69a2a732
 ---
 
 # code-reviewer
@@ -64,6 +64,7 @@ Review code changes for merge risk, not for style points. Run a lightweight spec
   - `web-ui-reviewer`
 - `security-reviewer` owns threat model, exploitability, and vulnerability classification.
 - This skill owns the conditional policy/admission merge-risk pass for non-security review findings when changed files or linked intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active-scope activation, idempotency, replay, or freshness checks.
+- This skill owns the conditional runtime-gate deployed-path pass for non-security review findings when changed files or linked intent touch gates that authorize execution through a shipped lifecycle, production construction path, dependency wiring, request/tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
 - If both general and spec review are requested, keep spec-backed findings under `spec-conformance-reviewer` and move non-spec merge-risk findings here.
 - If both general and security review are requested, use this skill for non-security findings and `security-reviewer` for confirmed security findings.
 
@@ -75,6 +76,7 @@ Review code changes for merge risk, not for style points. Run a lightweight spec
   - research the wider codebase when needed to confirm or clear a concern
 - When a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
 - When changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
+- When changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
 - Review behavior, compatibility, tests, and operability before discussing minor cleanup.
 - Do not block on formatting, naming preference, or framework taste unless it creates concrete risk.
 - Verify each finding against surrounding code, nearby tests, and existing guards before reporting it.
@@ -86,23 +88,24 @@ Review code changes for merge risk, not for style points. Run a lightweight spec
 
 1. Gather context:
    - review target, base branch, linked issue, user intent, and any available normative source
-   - note risky file classes: migrations, auth, CI, runtime config, state, tests
+   - note risky file classes: migrations, auth, CI, runtime config, state, tests, runtime gates
 2. Read the full diff and list touched files.
 3. If normative context exists, run the lightweight pass from `references/spec-pass.md`.
 4. If diff completeness is in doubt, follow `references/diff-completeness.md` before writing any findings.
 5. Route by file type and load only the relevant domain skill. See `references/domain-routing.md`.
 6. If policy/admission triggers are present, run the bounded pass from `references/policy-admission-merge-risk.md`.
-7. Review in four passes:
+7. If runtime-gate deployed-path triggers are present, run the pass from `references/runtime-gate-deployed-path.md`.
+8. Review in four passes:
    - correctness and regressions
    - design and maintainability
    - tests and operability
    - performance and compatibility
-8. For each candidate finding, confirm:
+9. For each candidate finding, confirm:
    - the changed behavior is real
    - the surrounding code does not already mitigate it
    - severity matches actual impact
    - confidence is high enough to emit as a finding instead of a question
-9. Report findings first, ordered by severity. Put open questions after findings. Keep summary brief.
+10. Report findings first, ordered by severity. Put open questions after findings. Keep summary brief.
 
 ## What to Check
 
@@ -184,6 +187,7 @@ Read only what you need:
 - `references/diff-completeness.md` - full diff recovery, reviewed-file accounting, and pre-conclusion audit
 - `references/domain-routing.md` - which local skill to load for each file or change pattern
 - `references/policy-admission-merge-risk.md` - bounded pass for policy/admission merge-risk paths
+- `references/runtime-gate-deployed-path.md` - deployed-path and identity-binding pass for runtime-gating changes
 - `references/findings-format.md` - severity rubric, comment labels, and output templates
 - `references/severity-confidence.md` - how severity and confidence interact during triage
 
@@ -212,12 +216,14 @@ Validation:
 
 ## Optional references
 - [Policy Admission Merge Risk](references/policy-admission-merge-risk.md) — Read this when changed files or linked review intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active scope, idempotency, replay, or freshness checks.
+- [Runtime Gate Deployed Path](references/runtime-gate-deployed-path.md) — Read this when changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle, production construction path, deployed dependency wiring, request or tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
 
 ## Bundled assets
 
 - `assets/pr-review-template.md` — Bundled asset: assets/pr-review-template.md.
 - `assets/review-checklist.md` — Bundled asset: assets/review-checklist.md.
 - `assets/fixtures/policy-admission-review.md` — Fixture examples for the conditional policy/admission merge-risk pass.
+- `assets/fixtures/runtime-gate-deployed-path-review.md` — Fixture examples for runtime-gate deployed-path and identity-binding review.
 
 ## Portability rules
 

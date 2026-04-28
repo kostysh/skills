@@ -27,6 +27,18 @@ Do not expand this into a full compliance matrix or threat model:
 - use `security-reviewer` for exploitability analysis, vulnerability classification, and security severity
 - use the matching domain skill for framework or runtime correctness details
 
+## Runtime-gate Deployed-path Ownership
+
+Keep non-security deployed-path runtime-gate probes in `code-reviewer` when changed files or linked intent touch a gate that authorizes execution through a shipped lifecycle. Load `references/runtime-gate-deployed-path.md` for the bounded pass.
+
+Use this skill for review findings such as production construction bypassing a gate, deployed dependency wiring that omits the gate, request/tick execution that invokes before the gate, invocation boundaries that move outside the policy/admission decision, idempotency locks scoped away from the gated side effect, deployed-path tests that cover only isolated units, or hard-coded deployment/cell identity at an integration boundary.
+
+Do not expand this into another skill's ownership:
+
+- use `security-reviewer` for exploitability analysis, replay authority, credential handling, vulnerability classification, and security severity
+- use `spec-conformance-reviewer` for requirement-by-requirement identity or lifecycle compliance
+- use the matching domain skill for framework lifecycle, dependency injection, storage, lock, queue, router, or runtime mechanics needed to confirm or clear the probe
+
 ## Route to Security Reviewer
 
 Switch to `security-reviewer` when the change is primarily about:

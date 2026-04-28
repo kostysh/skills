@@ -21,8 +21,10 @@ Before writing findings:
    - CI workflows
    - tests removed or weakened
    - policy gates, admission flow, decision or audit persistence, active-scope activation, idempotency, replay, or freshness checks
+   - runtime gates in shipped lifecycle paths, production construction, deployed dependency wiring, request or tick execution, invocation boundaries, idempotency locks, or deployment/cell identity binding
 5. If a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
 6. If changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
+7. If changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
 
 If any diff output is truncated, read the touched files directly until every changed hunk is seen.
 
@@ -41,6 +43,22 @@ Ask:
 - Do tests exercise the actual policy/admission risk path instead of only a nearby happy path?
 
 Only report findings grounded in reachable changed behavior and surrounding code. If the concern is theoretical or the mitigation cannot be verified, move it to questions or omit it.
+
+## Conditional Runtime-gate Deployed-path Pass
+
+Use this pass only when the changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle. For detailed probes, load `references/runtime-gate-deployed-path.md`.
+
+Ask:
+
+- Does the production construction path instantiate the gated component with the gate enabled and wired to the expected policy or admission dependency?
+- Does the actual request, tick, job, or lifecycle path call the gate before provider invocation, enqueue, external side effect, or durable allow decision?
+- Does the invocation boundary remain after the policy/admission decision rather than bypassing it through a parallel route, fallback, or default dependency?
+- Does the idempotency or lock scope cover the gate, decision persistence, and side effect at the same runtime identity and request scope?
+- Do tests execute the deployed path or construction path that ships, not only isolated service/router units?
+- Is release/deployment/cell identity derived from canonical upstream evidence or explicit configuration passed through the deployed path?
+- Do tests cover non-default identity, mismatch refusal, and no silent fallback to a hard-coded default identity?
+
+Isolated unit tests are insufficient when production construction, lifecycle wiring, or integration identity can bypass or mis-bind the gate. Only report findings grounded in reachable changed behavior and deployed-path evidence gaps.
 
 ## Four Review Passes
 

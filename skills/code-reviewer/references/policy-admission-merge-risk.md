@@ -4,6 +4,8 @@ Use this reference only when changed files or linked review intent touch policy 
 
 This pass is not a full compliance audit or threat model. It is a bounded code-review pass for concrete merge risks in changed behavior.
 
+If the policy/admission decision is enforced through a shipped runtime lifecycle, also run the deployed-path pass from `references/runtime-gate-deployed-path.md`. Keep this reference focused on policy/admission risk; use the runtime-gate reference for production construction, dependency wiring, request/tick execution, invocation boundaries, idempotency lock scope, deployed-path tests, and deployment/cell identity binding.
+
 ## Trigger Signals
 
 Run the pass when the diff or linked intent includes any of these surfaces:
@@ -30,6 +32,7 @@ For each touched surface, check only the reachable changed paths.
 | Active-scope concurrency | Active or singleton decisions use a transaction, lock, compare-and-swap, or uniqueness constraint that matches the data model. | Concurrent activations can admit two active policies or leave the active state ambiguous. |
 | Append-only facts | Append-only fact or audit tables do not rely on uniqueness shortcuts that hide conflicting facts. | A shortcut treats the first or last row as authoritative without resolving conflict, replay, or freshness. |
 | Risk-path tests | Tests exercise the actual policy/admission failure path. | Coverage only checks nearby happy paths while a merge-critical deny, replay, freshness, persistence, or active-scope path is changed. |
+| Deployed enforcement path | When enforcement depends on runtime lifecycle wiring, the deployed-path pass is run. | Isolated policy/admission tests pass, but production construction or lifecycle wiring can bypass the gate. |
 
 ## Evidence Standard
 
