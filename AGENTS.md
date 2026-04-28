@@ -101,6 +101,27 @@ When creating or modifying skills:
 - Include explicit "When to use" and "When NOT to use" sections
 - Define interop priority when the skill works alongside others
 
+### Instruction Quality Gate
+
+After substantial changes to a skill, perform an audit against the `Audit instruction quality` workflow stage from `skill-source-compiler`.
+
+Substantial changes include:
+
+- adding or materially rewriting root `SKILL.md` sections, workflow stages, policies, gotchas, commands, or output contracts
+- adding new active `references/*` files or changing when references must be loaded
+- changing active/supporting surface boundaries, interop priority, tool triggers, validation behavior, fallback behavior, or stop rules
+- changing generated skill source bundles in a way that affects how agents decide, act, verify, or report
+
+The audit must check:
+
+- outcome-first instructions with clear success criteria, constraints, allowed side effects, evidence rules, and output shape
+- no unresolved contradictions, duplicated rules, vague precedence, or hidden mandatory guidance
+- right-sized freedom: avoid step-by-step micromanagement unless sequence is required for safety, correctness, or fragile tooling
+- concrete reference and tool triggers that support progressive disclosure
+- explicit validation gates, fallback behavior, and stop rules
+
+Fix audit gaps before finishing. If no change is needed, note that the instruction quality audit passed in the implementation log or final report.
+
 ## Documentation Layers
 
 Every skill should make its documentation layers explicit.
