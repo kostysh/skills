@@ -7,6 +7,7 @@
 | Issue | Status | Notes |
 | --- | --- | --- |
 | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented | Условная policy/admission edge-case matrix для normative allow/deny, refusal, freshness, replay и activation requirements. Log: [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md). |
+| [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | Audited PASS | Traceability и checklist для policy/admission conformance; включает matrix `AC -> code path -> negative test -> evidence source` и shared risk-family alignment. |
 
 ## Implementation Plans
 

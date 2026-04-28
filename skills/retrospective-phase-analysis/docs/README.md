@@ -12,6 +12,7 @@
 | [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | Audited | Artifact-driven discovery, conservative boundaries и structured-first metrics. |
 | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited | Regression case для `referenced_only` stage logs, validation-required reports и false positives в skill-audit. |
 | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Audited | Разделение data quality и agent-context factors; recommendation discipline перед schema/log changes. |
+| [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | Audited PASS | Обнаружение evidence, non-PASS metrics, problem-matrix generation, validation markers и UDE defect-history contract. |
 
 ## Implementation Plans
 
