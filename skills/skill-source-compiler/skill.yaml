@@ -3,12 +3,13 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
     Use when authoring, normalizing, or regenerating complex multi-file skills
-    that need explicit active references, supporting docs, and portability rules.
+    that need explicit active references, outcome-first instruction structure,
+    supporting docs, and portability rules.
   license: Apache-2.0
   compatibility: >-
     Designed for skills-compatible agents that can read Markdown files and copy
@@ -43,7 +44,7 @@ references:
     source: references/authoring-guidelines.md
     target: references/authoring-guidelines.md
     required: false
-    trigger: Read this when refining SKILL.md scope, progressive disclosure, or description quality.
+    trigger: Read this when refining SKILL.md scope, progressive disclosure, instruction quality, or description quality.
   - id: ref-output-structure
     title: Output structure
     source: references/output-structure.md
@@ -92,6 +93,7 @@ sections:
     - Read every required active reference before rewriting the target skill.
     - If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
     - Keep active normative guidance separate from supporting or historical documents.
+    - Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing.
     - Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
   whenToUse:
     - Compile or regenerate a multi-file skill from a structured source bundle.
@@ -121,6 +123,17 @@ sections:
         - Fail the compile if the source bundle lacks a deterministic conflict policy.
       validation:
         - Every conflict is resolved by an explicit rule or becomes a compile error.
+    - id: stage-audit-instruction-quality
+      title: Audit instruction quality
+      goal: Ensure the generated skill gives enough outcome, constraint, tool, validation, and stop-rule structure without over-specifying the path.
+      steps:
+        - Check that the skill states the user-visible outcome, success criteria, constraints, side-effect limits, and output contract.
+        - Remove vague, contradictory, or duplicate rules; add precedence only where behavior would otherwise be ambiguous.
+        - Replace unnecessary step-by-step micromanagement with decision criteria, unless the exact sequence is required for safety, correctness, or tooling.
+        - Ensure reference and tool triggers are concrete enough to support precise retrieval without loading everything by default.
+        - Include validation commands, self-check expectations, fallback behavior, and stop rules when the skill changes code, artifacts, or external state.
+      validation:
+        - The skill is outcome-first, contradiction-free, progressively disclosed, and has explicit validation and stop conditions.
     - id: stage-render-output
       title: Render the target skill
       goal: Produce a standard Agent Skills folder with progressive disclosure.
@@ -259,6 +272,9 @@ sections:
     - id: policy-optional-references
       title: Optional reference surface
       text: Source bundles may omit references when the generated SKILL.md is self-contained; checks must still validate declared or linked references when they exist.
+    - id: policy-instruction-quality
+      title: Instruction quality
+      text: Skill instructions should be outcome-first, precise about constraints and completion criteria, explicit about validation and stop rules, and free of contradictory or unnecessarily mechanical process guidance.
   portability:
     required: true
     rules:

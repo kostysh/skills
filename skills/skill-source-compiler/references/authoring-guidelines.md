@@ -33,6 +33,34 @@ Use `references/*` for:
 
 Write explicit load triggers in `SKILL.md`. A concrete rule like “Read `references/api-errors.md` if the API returns a non-200 status code” is better than a vague “see references for details.”
 
+## Instruction quality audit
+
+Strong agent instructions define the desired outcome and operating boundaries, then leave implementation freedom where multiple safe paths are valid.
+
+Audit every new or substantially changed skill against these model-agnostic traits:
+
+| Instruction trait | Skill authoring implication |
+| --- | --- |
+| Outcome execution | State the user-visible goal, success criteria, allowed side effects, evidence rules, and final output shape. |
+| Literal rule application | Remove contradictions, duplicated rules, and vague precedence. If two rules can conflict, say which one wins. |
+| Right-sized freedom | Avoid long step-by-step process scripts unless the exact sequence is required for safety, correctness, or a fragile tool. Prefer decision criteria and validation gates. |
+| Precise tool use | Put tool-specific rules near the tool or command description: when to use it, required inputs, side effects, retry safety, and expected outputs. |
+| Long-running orchestration | Be explicit about codebase inspection, reuse of local conventions, validation commands, acceptance criteria, and when to ask or stop. |
+| Retrieval discipline | Give concrete reference triggers and stopping conditions so agents load only the smallest useful reference set. |
+| Direct output style | Specify tone, Markdown, length, and section shape only when the product or workflow needs them. |
+| Tool-backed self-checking | Require concrete checks where possible; if validation cannot run, require the agent to report the gap and the next-best check. |
+
+For skills, this usually means:
+
+- `Start here` names the first decision and the minimum context to inspect.
+- `Workflow stages` describe outcomes, constraints, and validation, not every obvious micro-action.
+- `Reference Navigation` says exactly when to load each reference.
+- `Gotchas` contain high-impact failure modes, not generic advice.
+- `Policies` define precedence, side-effect limits, evidence rules, and stop conditions.
+- `Output contract` says what the final answer must include when that matters.
+
+Do not add model-version lore to domain skills. Keep these traits as an authoring gate; only domain-relevant consequences should appear in generated skill text.
+
 ## Description quality
 
 The `description` field is the trigger surface. Keep it:

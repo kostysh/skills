@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.2`
+- Skill source version: `0.2.3`
 - CLI package version: `0.2.1`
 
 ## Source files

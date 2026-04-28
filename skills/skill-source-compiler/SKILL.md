@@ -2,16 +2,16 @@
 name: skill-source-compiler
 description: Compile structured skill source bundles into portable Agent Skills
   folders. Use when authoring, normalizing, or regenerating complex multi-file
-  skills that need explicit active references, supporting docs, and portability
-  rules.
+  skills that need explicit active references, outcome-first instruction
+  structure, supporting docs, and portability rules.
 license: Apache-2.0
 compatibility: Designed for skills-compatible agents that can read Markdown
   files and copy local files inside the skill folder. The packaged CLI at
   scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 23e118b9e459edeb0d681bdbce1faab552cf8d628e7ac5a321957e0784f769f8
+  skillforge-source-hash: 581be9214fb9e7c39d050c834312ee485ea727bbfdc080cb463bca3a592bd6f4
 ---
 
 # skill-source-compiler
@@ -22,7 +22,8 @@ metadata:
 2. Read every required active reference before rewriting the target skill.
 3. If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
 4. Keep active normative guidance separate from supporting or historical documents.
-5. Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
+5. Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing.
+6. Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
 
 ## When to use this skill
 
@@ -68,6 +69,20 @@ Convert competing guidance into a single deterministic instruction set.
 Validation:
 
 - Every conflict is resolved by an explicit rule or becomes a compile error.
+
+### Workflow stage: Audit instruction quality
+
+Ensure the generated skill gives enough outcome, constraint, tool, validation, and stop-rule structure without over-specifying the path.
+
+1. Check that the skill states the user-visible outcome, success criteria, constraints, side-effect limits, and output contract.
+2. Remove vague, contradictory, or duplicate rules; add precedence only where behavior would otherwise be ambiguous.
+3. Replace unnecessary step-by-step micromanagement with decision criteria, unless the exact sequence is required for safety, correctness, or tooling.
+4. Ensure reference and tool triggers are concrete enough to support precise retrieval without loading everything by default.
+5. Include validation commands, self-check expectations, fallback behavior, and stop rules when the skill changes code, artifacts, or external state.
+
+Validation:
+
+- The skill is outcome-first, contradiction-free, progressively disclosed, and has explicit validation and stop conditions.
 
 ### Workflow stage: Render the target skill
 
@@ -194,13 +209,16 @@ In-place regeneration writes only compiler-owned generated files. Manifest entri
 ### Optional reference surface
 Source bundles may omit references when the generated SKILL.md is self-contained; checks must still validate declared or linked references when they exist.
 
+### Instruction quality
+Skill instructions should be outcome-first, precise about constraints and completion criteria, explicit about validation and stop rules, and free of contradictory or unnecessarily mechanical process guidance.
+
 ## Required active references
 - [Source language](references/source-language.md) — Read this before mapping source bundle fields into generated sections.
 - [Conflict resolution](references/conflict-resolution.md) — Read this when duplicate or overlapping guidance appears in the source bundle.
 - [Maintenance](references/maintenance.md) — Read this when creating, versioning, compiling, or releasing a code-backed generated skill.
 
 ## Optional references
-- [Authoring guidelines](references/authoring-guidelines.md) — Read this when refining SKILL.md scope, progressive disclosure, or description quality.
+- [Authoring guidelines](references/authoring-guidelines.md) — Read this when refining SKILL.md scope, progressive disclosure, instruction quality, or description quality.
 - [Output structure](references/output-structure.md) — Read this when you need the canonical generated folder layout and section order.
 
 ## Bundled assets
@@ -233,5 +251,6 @@ Before finishing:
 
 - verify that every required reference is linked from `SKILL.md`
 - verify that supporting docs remain clearly non-normative
+- verify instruction quality: outcome-first instructions, no unresolved contradictions, precise reference/tool triggers, validation gates, and stop rules
 - verify that copied assets, runtime files, and tests are still reachable by relative path
 - verify that the generated bundle can be copied to another machine without losing required behavior

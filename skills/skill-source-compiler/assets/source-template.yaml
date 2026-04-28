@@ -39,7 +39,10 @@ sections:
   interop: []
   commands: []
   gotchas: []
-  policies: []
+  policies:
+    - id: policy-instruction-quality
+      title: Instruction quality
+      text: Keep instructions outcome-first, contradiction-free, explicit about validation and stop rules, and no more step-by-step than correctness requires.
   portability:
     required: true
     rules:
