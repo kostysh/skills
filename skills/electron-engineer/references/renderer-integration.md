@@ -80,6 +80,8 @@ const result = await window.desktop.workspace.list({ root });
 
 It should not know IPC channel names. It should not import Electron. It should not call Node APIs. For component tests, mock `window.desktop` at the boundary instead of launching Electron for every component.
 
+Renderer may present permission explanations, native-flow UI, and progress states, but main and session policy own the actual desktop capability. Use [Native OS Integration](native-os-integration.md) for feature ownership and [Security, IPC, and Preload](security-ipc-preload.md) for permission/session rules.
+
 ## State and Persistence
 
 Use browser storage only for low-risk UI preferences. Do not store access tokens, refresh tokens, encryption keys, sensitive file contents, or privileged policy state in renderer storage.

@@ -66,6 +66,39 @@ Before choosing a native SQLite binding:
 
 Keep migrations deterministic and testable outside the full Electron UI.
 
+## App Data Migrations
+
+Treat app data migrations as release-critical behavior, not as startup glue.
+
+Migration rules:
+
+- version every durable schema or file format that can outlive one app session
+- make migrations idempotent or explicitly record completed steps
+- run local database migrations inside transactions when the storage engine supports it
+- create a backup or restore point before destructive migrations
+- define recovery for partial failure, power loss, or downgrade attempts
+- keep a safe mode, read-only mode, reset, or restore path for corrupted state
+- test migrations without launching the full Electron UI
+- document whether downgrades are supported, blocked, or require restore from backup
+
+Do not let renderer code decide that a migration succeeded. Main-owned storage services should expose status and recoverable errors through typed IPC.
+
+## Embedded Local Backends
+
+An embedded HTTP or WebSocket backend is a product architecture choice, not a shortcut around IPC. Prefer typed IPC for private desktop capabilities unless browser-compatible integrations, local plugins, or external automation require a local network surface.
+
+If a local backend is required:
+
+- bind to loopback only
+- use a random port where feasible
+- require a per-session capability token or equivalent authentication
+- enforce strict CORS and allowed origins
+- expose only documented capabilities
+- shut down with the app, account switch, logout, and crash recovery paths
+- log access with redaction and correlation IDs
+
+Never expose an unauthenticated privileged localhost API. Renderer code should not discover hidden desktop powers by probing local ports.
+
 ## Native Modules
 
 Native modules require release discipline:

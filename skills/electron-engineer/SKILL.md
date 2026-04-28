@@ -8,9 +8,9 @@ description: Build, modernize, review, test, package, and release
   pipelines, performance, testing, observability, packaging, signing,
   notarization, auto-updates, and Electron major-version migrations.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 748fa3836a0db367b0dd10bc3cabcd6a7a5cd25e6fa5fbdaf48d6d8db450ae3e
+  skillforge-source-hash: 173bd238b8ce43b7c9626df2935a092850c6797049cce053c8fdc924aaa231c4
 ---
 
 # electron-engineer
@@ -105,6 +105,7 @@ Read only the reference needed for the task:
 | Project layout, package boundaries, ESM/CJS | [Tooling and Project Structure](references/tooling-project-structure.md) |
 | End-to-end build pipeline | [Build Process](references/build-process.md) |
 | React/Vite renderer, routing, dev/prod origins | [Renderer Integration](references/renderer-integration.md) |
+| Menus, tray, shortcuts, dialogs, downloads, native OS features | [Native OS Integration](references/native-os-integration.md) |
 | Files, config, secrets, SQLite, native modules | [Data, Storage, and Native Integration](references/data-storage-native.md) |
 | Testing, packaged smoke, logs, crash reporting | [Testing and Observability](references/testing-observability.md) |
 | ASAR, fuses, signing, notarization, updates, CI | [Packaging, Release, and Updates](references/packaging-release-updates.md) |
@@ -207,6 +208,7 @@ Maintain this skill through skill.yaml, fragments, references, and skill-source-
 - [Tooling and Project Structure](references/tooling-project-structure.md) — Read this when shaping project layout, package boundaries, ESM/CJS strategy, monorepo layout, or native-module boundaries.
 - [Build Process](references/build-process.md) — Read this when defining, implementing, reviewing, or debugging the Electron build pipeline, electron-vite scripts, Forge package/make/publish flow, CI build lanes, source-protection build steps, or packaged artifact validation.
 - [Renderer Integration](references/renderer-integration.md) — Read this when integrating React, Vite, routing, custom app protocols, dev/prod renderer origins, CSP differences, or renderer test doubles.
+- [Native OS Integration](references/native-os-integration.md) — Read this when designing or reviewing menus, tray, dock/taskbar, shortcuts, dialogs, clipboard, downloads, drag-and-drop, notifications, desktop capture, screen/display behavior, power APIs, dark mode, accessibility, or other native OS features.
 - [Data, Storage, and Native Integration](references/data-storage-native.md) — Read this when handling app paths, config files, local state, secrets, SQLite, safeStorage, file import/export, or native modules.
 - [Testing and Observability](references/testing-observability.md) — Read this when designing Electron test layers, debugging runtime issues, logging, crash reporting, diagnostics export, performance budgets, or packaged smoke tests.
 - [Packaging, Release, and Updates](references/packaging-release-updates.md) — Read this when packaging, signing, notarizing, choosing distribution targets, configuring auto-updates, release channels, CI provenance, SBOM, or rollback policy.
@@ -230,6 +232,3 @@ Maintain this skill through skill.yaml, fragments, references, and skill-source-
 ## Supporting and historical surface
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
-- Supporting glob: `docs/*`
-- Supporting glob: `docs/issues/*`
-- Supporting glob: `docs/logs/*`

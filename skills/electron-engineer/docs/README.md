@@ -6,13 +6,13 @@
 
 | Issue | Status | Notes |
 | --- | --- | --- |
-| [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | OPEN / AUDIT PASS | Расширить production guidance для native OS integration, lifecycle, permissions и diagnostics. |
+| [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | IMPLEMENTED / AUDIT PASS | Расширить production guidance для native OS integration, lifecycle, permissions и diagnostics. |
 
 ## Implementation Plans
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
-| [issues/implementation-plan-20260428-1.md](issues/implementation-plan-20260428-1.md) | [issue-20260428-1](issues/issue-20260428-1.md) | OPEN / AUDIT PASS |
+| [issues/implementation-plan-20260428-1.md](issues/implementation-plan-20260428-1.md) | [issue-20260428-1](issues/issue-20260428-1.md) | IMPLEMENTED / AUDIT PASS |
 
 ## Implementation Logs
 
@@ -22,3 +22,4 @@
 | [logs/implementation-log-20260428-2.md](logs/implementation-log-20260428-2.md) | N/A | PASS |
 | [logs/implementation-log-20260428-3.md](logs/implementation-log-20260428-3.md) | N/A | PASS |
 | [logs/implementation-log-20260428-4.md](logs/implementation-log-20260428-4.md) | N/A | PASS |
+| [logs/implementation-log-20260428-5.md](logs/implementation-log-20260428-5.md) | [issue-20260428-1](issues/issue-20260428-1.md) | PASS |

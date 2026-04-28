@@ -14,6 +14,7 @@ Baseline:
 - ASAR integrity enabled when supported by the chosen toolchain
 - source exposure audit completed for sourcemaps, dev artifacts, readable bundles, and accidental secrets
 - release artifacts named and versioned deterministically
+- app name, bundle/application IDs, icons, desktop categories, file associations, protocol handlers, and platform resources reviewed
 - checksums generated
 - platform-specific smoke tests run against packaged artifacts
 
@@ -28,6 +29,21 @@ ASAR is not a security boundary by itself. Integrity, fuses, signing, and truste
 | Linux | AppImage, deb, rpm, Flatpak, Snap | distro expectations, package-manager trust, sandbox model, checksums, provenance, update model |
 
 Choose targets based on users and deployment environment, not on what is easiest to build locally.
+
+## Store and Managed Distribution Targets
+
+Store targets such as Mac App Store, MSIX, Windows Store, Flatpak, Snap, or enterprise-managed channels are product decisions. Do not add them as incidental makers.
+
+Before committing to a store or managed target, review:
+
+- sandbox model and entitlement/capability requirements
+- filesystem, network, background, login item, screen capture, notification, and auto-launch constraints
+- update strategy: store-managed, enterprise-managed, or app-managed
+- package identity, signing identity, icons, metadata, privacy labels, and review requirements
+- runtime checks such as `process.mas` or `process.windowsStore` when behavior must differ
+- whether self-update is prohibited, redundant, or allowed for that target
+
+Run a separate smoke check against the store-shaped or sideloaded artifact when feasible. A direct-download build passing smoke tests does not prove the store target is valid.
 
 ## Signing and Notarization
 

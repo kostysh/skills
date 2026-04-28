@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: electron-engineer
-  source-version: 0.1.5
+  source-version: 0.1.6
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, modernize, review, test, package, and release production-grade
@@ -48,6 +48,12 @@ references:
     target: references/renderer-integration.md
     required: false
     trigger: Read this when integrating React, Vite, routing, custom app protocols, dev/prod renderer origins, CSP differences, or renderer test doubles.
+  - id: ref-native-os-integration
+    title: Native OS Integration
+    source: references/native-os-integration.md
+    target: references/native-os-integration.md
+    required: false
+    trigger: Read this when designing or reviewing menus, tray, dock/taskbar, shortcuts, dialogs, clipboard, downloads, drag-and-drop, notifications, desktop capture, screen/display behavior, power APIs, dark mode, accessibility, or other native OS features.
   - id: ref-data-storage-native
     title: Data, Storage, and Native Integration
     source: references/data-storage-native.md
@@ -85,35 +91,6 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting:
-  - id: supporting-docs-readme
-    source: docs/README.md
-    target: docs/README.md
-    description: Supporting documentation index for issues, plans, and implementation logs.
-  - id: supporting-implementation-log-20260428-1
-    source: docs/logs/implementation-log-20260428-1.md
-    target: docs/logs/implementation-log-20260428-1.md
-    description: Supporting implementation log for the initial electron-engineer skill creation.
-  - id: supporting-implementation-log-20260428-2
-    source: docs/logs/implementation-log-20260428-2.md
-    target: docs/logs/implementation-log-20260428-2.md
-    description: Supporting implementation log for GPT-5.5 prompt-guidance tuning.
-  - id: supporting-implementation-log-20260428-3
-    source: docs/logs/implementation-log-20260428-3.md
-    target: docs/logs/implementation-log-20260428-3.md
-    description: Supporting implementation log for source-protection guidance.
-  - id: supporting-implementation-log-20260428-4
-    source: docs/logs/implementation-log-20260428-4.md
-    target: docs/logs/implementation-log-20260428-4.md
-    description: Supporting implementation log for canonical build-process guidance.
-  - id: supporting-issue-20260428-1
-    source: docs/issues/issue-20260428-1.md
-    target: docs/issues/issue-20260428-1.md
-    description: Supporting issue for enriching native OS integration, lifecycle, permissions, diagnostics, migrations, and release guidance.
-  - id: supporting-implementation-plan-20260428-1
-    source: docs/issues/implementation-plan-20260428-1.md
-    target: docs/issues/implementation-plan-20260428-1.md
-    description: Supporting implementation plan for issue-20260428-1.
 
 surfaces:
   active:
@@ -124,15 +101,12 @@ surfaces:
       - ref-tooling-project-structure
       - ref-build-process
       - ref-renderer-integration
+      - ref-native-os-integration
       - ref-data-storage-native
       - ref-testing-observability
       - ref-packaging-release-updates
       - ref-source-protection
       - ref-review-playbooks
-  supportingGlobs:
-    - docs/*
-    - docs/issues/*
-    - docs/logs/*
 
 sections:
   startHere:

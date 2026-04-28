@@ -63,6 +63,7 @@ Read only the reference needed for the task:
 | Project layout, package boundaries, ESM/CJS | [Tooling and Project Structure](references/tooling-project-structure.md) |
 | End-to-end build pipeline | [Build Process](references/build-process.md) |
 | React/Vite renderer, routing, dev/prod origins | [Renderer Integration](references/renderer-integration.md) |
+| Menus, tray, shortcuts, dialogs, downloads, native OS features | [Native OS Integration](references/native-os-integration.md) |
 | Files, config, secrets, SQLite, native modules | [Data, Storage, and Native Integration](references/data-storage-native.md) |
 | Testing, packaged smoke, logs, crash reporting | [Testing and Observability](references/testing-observability.md) |
 | ASAR, fuses, signing, notarization, updates, CI | [Packaging, Release, and Updates](references/packaging-release-updates.md) |

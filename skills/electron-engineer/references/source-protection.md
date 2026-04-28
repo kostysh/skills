@@ -100,6 +100,8 @@ Bytecode can hide source text better than minification, but it is not absolute p
 
 Native modules or WASM can raise the reverse-engineering cost for selected algorithms, but they introduce ABI, signing, notarization, packaging, and platform support costs. Do not move logic into native code merely to hide it unless the product value justifies the release burden.
 
+If production fuses disable or plan to disable run-as-node behavior, do not depend on `child_process.fork` for protected background logic. Prefer `utilityProcess` or another packaged and smoke-tested isolation boundary that does not require weakening Electron security controls.
+
 ## Tooling Guidance
 
 Prefer source-protection tooling that integrates with the existing build system and can be verified in packaged smoke tests:

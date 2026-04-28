@@ -66,6 +66,30 @@ Keep build boundaries aligned with runtime trust boundaries:
 
 Use [Build Process](build-process.md) for the concrete command sequence and artifact rules.
 
+## Utility and Native Service Boundaries
+
+Keep utility-process entrypoints, native integration services, and long-running desktop services close to `main` ownership:
+
+```text
+src/
+  main/
+    services/
+    native/
+    utility/
+  shared/
+    contracts/
+```
+
+Rules:
+
+- utility entrypoints must not import renderer UI
+- shared contracts crossing process boundaries must be serializable and schema-validated
+- native OS services should live behind main-owned capability APIs
+- long-running helpers need lifecycle, cancellation, logging, and packaged smoke coverage
+- source-protection or fuse choices must not force unsafe renderer or preload privileges
+
+Use [Architecture](architecture.md) for heavy-work isolation and [Build Process](build-process.md) for where helper entrypoints are bundled and packaged.
+
 ## Native Module Boundary
 
 Native modules are an operational dependency:

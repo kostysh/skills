@@ -41,6 +41,31 @@ Review Electron features against these abuse paths:
 | App binary and update chain | tampered package or metadata | signing, notarization, fuses, ASAR integrity, trusted update origin |
 | Remote content | navigation into privileged renderer | session isolation, no privileged preload, navigation deny policy |
 
+## Session Permissions and Cleanup
+
+Use deny-by-default permission handling for sessions that can load remote content, embedded content, media flows, desktop capture, notifications, or geolocation.
+
+Permission grants must be scoped by:
+
+- session partition
+- expected origin and protocol
+- expected window role or webContents ID
+- permission type
+- explicit product feature state or user action
+
+Do not grant permissions globally because one trusted window needs them. The deny path should be user-visible when it affects a workflow and testable in automation or manual release checks.
+
+Own session storage deliberately:
+
+| Session kind | Storage policy |
+| --- | --- |
+| trusted packaged app UI | durable only when product state requires it |
+| remote or untrusted content | isolated partition, no privileged preload, explicit permission handler |
+| auth or browser-like flow | isolated partition, clear cookies/storage on logout or account switch |
+| temporary/private window | in-memory or cleanup-on-close partition |
+
+Cookies, localStorage, IndexedDB, cache, service workers, and permissions should be cleared for logout, account switching, private windows, and remote flows when retention is not explicitly required.
+
 ## IPC Architecture
 
 Default to command-style IPC:
@@ -142,6 +167,25 @@ For external links:
 - call `shell.openExternal` only after validation
 - log denials without leaking sensitive URLs
 
+## Web Embeds
+
+Default choices:
+
+- Use a sandboxed `iframe` for ordinary web embeds that do not need Electron control.
+- Use `WebContentsView` for main-controlled embedded contexts with separate `webContents`.
+- Avoid `<webview>` for new work. If legacy or product constraints require it, treat it as a reviewed exception.
+
+For any embedded remote content:
+
+- use a separate session partition
+- do not attach privileged preload
+- deny popups and arbitrary navigation
+- validate all external URL handoff
+- configure permission handling on that session
+- test at least one denied navigation or permission path
+
+If `<webview>` is allowed, validate `will-attach-webview` parameters, strip unsafe `preload`, reject untrusted URLs, keep `allowpopups` off unless explicitly required, and document why `iframe` or `WebContentsView` is insufficient.
+
 ## Review Red Flags
 
 Flag these immediately:
@@ -155,4 +199,7 @@ Flag these immediately:
 - unvalidated `shell.openExternal`
 - missing CSP
 - remote content in privileged session
+- no deny-by-default permission handler for remote or media-capable sessions
+- no cookies/storage cleanup for logout, private windows, or remote auth flows
+- `<webview>` enabled without `will-attach-webview` validation
 - secrets in `localStorage`, `sessionStorage`, or renderer logs

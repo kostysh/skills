@@ -28,6 +28,21 @@ Keep main process thin:
 
 Do not let windows construct their own privileged policy ad hoc. A main-owned registry should track window roles, webContents IDs, allowed origins, session partitions, and cleanup hooks.
 
+## App Lifecycle and Activation
+
+Create windows and use UI APIs only after Electron is ready. Register protocol privileges and early launch handlers before `app.whenReady()` when the platform requires it.
+
+Define lifecycle policy before coding:
+
+- single instance or multi-instance behavior
+- second launch behavior for files, URLs, and launcher actions
+- macOS `open-file`, `open-url`, and `activate` behavior
+- Windows/Linux argv handling for file opens and launcher actions
+- tray-only or background behavior when all windows close
+- explicit quit path and cleanup for background services
+
+Use `requestSingleInstanceLock()` when deep links, file opens, updater flows, tray state, or shared local resources require a single app authority. Normalize all launch inputs in main and route only validated commands to window roles. Raw argv, file paths, and URLs are not authorization.
+
 ## Window Ownership
 
 Use `BrowserWindow` for app shell windows. Prefer `WebContentsView` for new embedded-content composition when the project needs view-level composition; treat older `BrowserView` code as migration-review material during Electron upgrades.
@@ -43,6 +58,18 @@ Every privileged window should define:
 
 For multi-window apps, synchronize through main-owned events or persisted domain state. Avoid renderer-to-renderer hidden coupling.
 
+## Embedded Contexts
+
+Choose embedded content by trust and control needs:
+
+| Need | Preferred option |
+| --- | --- |
+| Standard web embed with browser sandbox semantics | sandboxed `iframe` |
+| Main-controlled embedded page with its own `webContents` | `WebContentsView` |
+| Legacy compatibility with existing `<webview>` code | reviewed exception only |
+
+Embedded remote content must use isolated sessions and no privileged preload. Use [Security, IPC, and Preload](security-ipc-preload.md) for permission, navigation, and `<webview>` validation policy.
+
 ## Sessions and Remote Content
 
 Use separate `session` partitions for:
@@ -53,6 +80,21 @@ Use separate `session` partitions for:
 - temporary/private windows
 
 Remote content should not share the privileged app session and should not receive a preload exposing app capabilities. If remote content needs to communicate with the app, design a small, audited protocol rather than exposing desktop APIs.
+
+## Heavy Work Isolation
+
+Main coordinates desktop services; it should not run long CPU-bound work, crash-prone native code, or untrusted plugins on the UI-critical path.
+
+Use this decision model:
+
+| Workload | Preferred boundary |
+| --- | --- |
+| Browser-safe UI computation | renderer worker |
+| Node-side CPU or crash-prone work | `utilityProcess` or a dedicated service process |
+| Native addon work | main or utility process only after worker safety is proven |
+| Large or frequent payloads | `MessagePort`, streaming, or shared persisted state instead of chatty IPC |
+
+Prefer `utilityProcess` over `child_process.fork` for Electron-owned Node-side isolation when production fuses may disable run-as-node behavior. Track process lifecycle, exit codes, stderr/log correlation, backpressure, and cancellation. Do not hide a broad privileged service surface inside a worker or utility process.
 
 ## Custom Protocols
 

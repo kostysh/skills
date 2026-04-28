@@ -16,12 +16,22 @@ Flag high-risk issues first:
 - arbitrary `shell.openExternal`
 - arbitrary navigation or popup allowance
 - remote content in privileged session
+- no deny-by-default session permission handler for remote, media, notification, desktop capture, or geolocation flows
+- over-broad permission grants not scoped by session, origin, window role, and permission type
+- no cookies/storage cleanup for logout, private windows, account switch, or remote auth flows
+- `<webview>` or `webviewTag` enabled without reviewed `will-attach-webview` validation
 - string-built `file://` paths
 - no CSP or dev CSP in production
 - long sync work in main
+- CPU-heavy, crash-prone, or plugin work left on the main-process critical path
+- `child_process.fork` dependency when production fuses disable or plan to disable run-as-node behavior
+- local HTTP/WebSocket backend without loopback binding, auth, CORS, and lifecycle shutdown
+- migrations without idempotency, backup, recovery, or downgrade policy
+- unmanaged global shortcuts, tray objects, download handlers, power blockers, or webContents listeners
 - no cleanup for `webContents` or event listeners
 - stale Electron major with no upgrade plan
 - production package contains source maps, dev artifacts, env files, private keys, or readable business-critical bundles without an accepted source-protection decision
+- missing app metadata, icons, protocol handlers, file associations, or store-target capability review
 - no packaged smoke for packaging/protocol/updater/native-module changes
 
 ## Migration Checklist
@@ -51,9 +61,12 @@ Before stable release:
 - Linux artifacts have checksums and chosen distribution trust model
 - ASAR/fuses/integrity settings match policy
 - source exposure audit passed: no source maps, dev artifacts, env files, private keys, fixtures, or unprotected business-critical bundles outside accepted policy
+- app metadata, icons, protocol handlers, file associations, launcher actions, and platform resources match the release target
 - native modules load in packaged app
 - no packaged request to dev server or localhost
+- native OS flows that depend on package metadata, permissions, or platform resources are smoke-tested where relevant
 - updater checks a test feed successfully
+- store or managed-distribution constraints are reviewed when the release target requires them
 - rollback artifact exists and is documented
 - SBOM/provenance/checksums are published or archived
 - smoke tests passed on each supported OS lane or missing lanes are reported
@@ -135,3 +148,62 @@ When native modules fail:
 - avoid loading native modules inside workers unless proven safe
 
 Treat native failures as release blockers, not post-release support chores.
+
+## Native OS Integration Review
+
+For menus, tray, shortcuts, dialogs, clipboard, downloads, notifications, desktop capture, display, power, and theme features:
+
+- main owns the OS API call and lifecycle
+- preload exposes only the named user capability
+- renderer owns UI intent and state only
+- cancellation, denial, and cleanup paths are visible in tests or release checks
+- platform-specific behavior is packaged-smoke-tested or listed as unverified
+
+Reject broad exports such as `fs`, `shell`, `clipboard`, `screen`, `session`, or raw native objects into renderer.
+
+## Session and Permission Review
+
+For any session that loads remote content or requests media, notifications, geolocation, desktop capture, or similar permissions:
+
+- permission handler is deny-by-default
+- grants are scoped by session partition, origin, window role or webContents ID, permission type, and user action
+- remote content does not share privileged app session or preload
+- logout, account switch, private windows, and auth-flow teardown clear storage according to policy
+- at least one deny path is tested or covered by a manual release check
+
+## Heavy Work and Utility Process Review
+
+For CPU-heavy, crash-prone, native, plugin, or long-running work:
+
+- main coordinates; it does not run the work on the startup or UI-critical path
+- `utilityProcess` or another supervised boundary is used for Node-side isolation when appropriate
+- renderer workers are limited to browser-safe computation
+- large or frequent payloads use `MessagePort`, streaming, or persisted state instead of chatty IPC
+- process exit, cancellation, backpressure, stderr/log correlation, and restart policy are defined
+
+If production fuses disable run-as-node behavior, do not approve a design that depends on `child_process.fork` without a tested alternative.
+
+## Data Migration Review
+
+For durable config, files, SQLite, IndexedDB-backed product data, or app-owned databases:
+
+- schema or format versions are explicit
+- migrations are idempotent or step-recorded
+- destructive migrations create backup or restore points
+- partial failure and downgrade behavior are defined
+- migrations run in tests without the full Electron UI
+- renderer cannot mark migration success by assertion alone
+
+## Embedded Local Backend Review
+
+Approve an embedded local HTTP/WebSocket backend only when IPC is insufficient for the product requirement.
+
+Required controls:
+
+- loopback-only bind
+- random port where feasible
+- per-session capability token or equivalent auth
+- strict CORS and allowed origins
+- documented API surface
+- lifecycle shutdown on quit, logout, account switch, and crash recovery
+- no unauthenticated privileged localhost endpoint
