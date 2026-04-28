@@ -2,11 +2,13 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.3`
+- Skill source version: `0.1.5`
 
 ## Source files
 - `agents/openai.yaml`
 - `docs/README.md`
+- `docs/issues/implementation-plan-20260428-1.md`
+- `docs/issues/issue-20260428-1.md`
 - `docs/logs/implementation-log-20260428-1.md`
 - `docs/logs/implementation-log-20260428-2.md`
 - `docs/logs/implementation-log-20260428-3.md`

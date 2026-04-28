@@ -8,9 +8,9 @@ description: Build, modernize, review, test, package, and release
   pipelines, performance, testing, observability, packaging, signing,
   notarization, auto-updates, and Electron major-version migrations.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 843fccb75bd55a3be9676bb4394ce60303df522358e90954e95f2efc13202947
+  skillforge-source-hash: 748fa3836a0db367b0dd10bc3cabcd6a7a5cd25e6fa5fbdaf48d6d8db450ae3e
 ---
 
 # electron-engineer
@@ -231,4 +231,5 @@ Maintain this skill through skill.yaml, fragments, references, and skill-source-
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/issues/*`
 - Supporting glob: `docs/logs/*`

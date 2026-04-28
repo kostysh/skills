@@ -6,13 +6,13 @@
 
 | Issue | Status | Notes |
 | --- | --- | --- |
-| _Нет созданных issue_ | N/A | Начальное создание выполнено напрямую по запросу оператора. |
+| [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | OPEN / AUDIT PASS | Расширить production guidance для native OS integration, lifecycle, permissions и diagnostics. |
 
 ## Implementation Plans
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
-| _Нет файлов планов_ | N/A | План был согласован в диалоге, отдельный issue-plan не создавался. |
+| [issues/implementation-plan-20260428-1.md](issues/implementation-plan-20260428-1.md) | [issue-20260428-1](issues/issue-20260428-1.md) | OPEN / AUDIT PASS |
 
 ## Implementation Logs
 
