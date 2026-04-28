@@ -41,6 +41,7 @@ Current status:
 | [issues/issue-20260427-1.md](issues/issue-20260427-1.md) | Issue для model-agnostic adaptation of active guidance to reasoning-model orchestration without loss of existing skill functionality. | Читать при изменении progressive disclosure, decision/stop rules, audit orchestration wording, schema-as-runtime-contract guidance, or model-neutral operating posture. |
 | [implementation-plan-20260427-1.md](issues/implementation-plan-20260427-1.md) | План имплементации для `ISS-09`: adapting active guidance to reasoning-model orchestration while preserving all existing commands, stages, audit gates, artifacts, and helper boundaries. | Читать перед имплементацией предложений из GPT-5.5 prompting audit. |
 | [implementation-log-20260427-1.md](logs/implementation-log-20260427-1.md) | Лог имплементации для `ISS-09`: progressive disclosure, model-neutral operating posture, decision/stop rules, outcome-first audit recipes, schema-contract wording and docs-contract regression guards. | Читать при проверке реализации `issues/issue-20260427-1.md`. |
+| [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | Issue для explicit `intaken` backlog state после `feature-intake`. | Читать при изменении backlog lifecycle states, feature-intake actualization, queue/status readiness after intake или selected-item handoff semantics. |
 | [refactoring-plan-3.ru.md](issues/refactoring-plan-3.ru.md) | Implementation plan for restoring canonical dossier-stage audit policy, including stage-wide external-review baseline and required implementation audit bundles. | Read before changing dossier-stage review policy, review telemetry, or `review-artifact` semantics. |
 | [refactoring-plan-4.ru.md](issues/refactoring-plan-4.ru.md) | Implementation plan for removing stale split-skill / merge-era wording from the active and operator-facing surface of the canonical unified skill. | Read before cleaning source-bundle wording, generated `SKILL.md`, or help/runtime identity text. |
 | [refactoring-plan-5.ru.md](issues/refactoring-plan-5.ru.md) | Implementation plan for adding a goal-oriented `plan-slice` handoff contract with explicit execution target and fail-closed ambiguous objective handling. | Read before changing `plan-slice` active workflow semantics, stage-controller readiness wording, or planning docs-contract tests. |
@@ -89,6 +90,7 @@ Current status:
 | [issue-20260424-4.md](issues/issue-20260424-4.md) | [implementation-plan-20260424-4.md](issues/implementation-plan-20260424-4.md) | [implementation-log-20260424-4.md](logs/implementation-log-20260424-4.md) | Implemented |
 | [issue-20260425-1.md](issues/issue-20260425-1.md) | [implementation-plan-20260425-1.md](issues/implementation-plan-20260425-1.md) | [implementation-log-20260425-1.md](logs/implementation-log-20260425-1.md) | Implemented |
 | [issue-20260427-1.md](issues/issue-20260427-1.md) | [implementation-plan-20260427-1.md](issues/implementation-plan-20260427-1.md) | [implementation-log-20260427-1.md](logs/implementation-log-20260427-1.md) | Implemented |
+| [issue-20260428-1.md](issues/issue-20260428-1.md) | — | — | Audited |
 
 ## Scope of This Folder
 
