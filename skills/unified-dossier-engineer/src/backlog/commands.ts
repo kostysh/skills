@@ -348,6 +348,13 @@ function overlaySearchWithSourceReviewBlock(
   }));
 }
 
+function intakenQueueItemKeys(state: StateFile): string[] {
+  return state.items
+    .filter((item) => item.delivery_state === 'intaken')
+    .map((item) => item.item_key)
+    .sort((left, right) => left.localeCompare(right));
+}
+
 function buildAttentionOutput(payload: {
   itemAttention: AttentionCommandOutput;
   openReviews: readonly SourceReviewRecord[];
@@ -599,6 +606,7 @@ async function runStatusCommand(args: string[], io: CliIo): Promise<number> {
     const adjustedReadyForNextStepCount = state.items.filter(
       (item) =>
         item.ready_for_next_step &&
+        item.delivery_state !== 'intaken' &&
         !blockedItemKeys.has(item.item_key) &&
         !lifecycleBlockedItemKeys.has(item.item_key),
     ).length;
@@ -679,10 +687,18 @@ async function runQueueCommand(args: string[], io: CliIo): Promise<number> {
       state,
     });
     const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(lifecycleDrifts);
+    const intakenItemKeys = intakenQueueItemKeys(state);
     const postCloseHygieneSummary = await collectPostCloseBacklogHygieneSummary(
       result.context.backlogRoot,
     );
     const warnings = [
+      ...(intakenItemKeys.length > 0
+        ? [
+            `Intaken backlog items continue via dossier-local spec-compact: ${intakenItemKeys.join(
+              ', ',
+            )}`,
+          ]
+        : []),
       ...(lifecycleBlockedItemKeys.size > 0
         ? [
             `Lifecycle reconciliation drift blocked queue items: ${[

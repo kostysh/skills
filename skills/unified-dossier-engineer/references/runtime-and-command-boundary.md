@@ -109,10 +109,11 @@ Audit-policy rule for this family:
 
 Lifecycle-reconciliation rule for this family:
 
-- `dossier-step-close` enforces selected backlog item lifecycle reconciliation for `spec-compact`, `plan-slice`, and `implementation`;
+- `dossier-step-close` enforces selected backlog item lifecycle reconciliation for `feature-intake`, `spec-compact`, `plan-slice`, and `implementation`;
 - the helper reads current backlog truth through the canonical backlog state/read model;
 - backlog actualization artifacts are accepted only as managed trace links and must not bypass current-state validation;
 - backlog read surfaces expose deterministic lifecycle drift so a mapped done feature cannot silently reappear as ordinary queue work.
+- `status` exposes `intaken_count`, and `queue` must not silently return `intaken` items as fresh intake-ready work.
 - `status`, `queue`, and `next-step` expose missing, stale, or blocked post-close hygiene after implementation closure without changing queue ranking.
 
 ## Workflow stages versus runnable commands

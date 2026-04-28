@@ -310,6 +310,7 @@ export const StatusCommandOutputSchema = z.strictObject({
   total_items: NonNegativeIntSchema,
   last_refresh_at: z.nullable(IsoUtcTimestampSchema),
   defined_count: NonNegativeIntSchema,
+  intaken_count: NonNegativeIntSchema,
   specified_count: NonNegativeIntSchema,
   planned_count: NonNegativeIntSchema,
   implemented_count: NonNegativeIntSchema,

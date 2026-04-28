@@ -211,7 +211,7 @@ Required rules:
 
 - blocked, open, and closed remain truthful durable states
 - implementation closure truth requires authoritative step-close evidence
-- `dossier-step-close` must fail closed before writing a step artifact when `spec-compact`, `plan-slice`, or `implementation` lifecycle reconciliation is not satisfied by current backlog truth
+- `dossier-step-close` must fail closed before writing a step artifact when `feature-intake`, `spec-compact`, `plan-slice`, or `implementation` lifecycle reconciliation is not satisfied by current backlog truth
 - successful helper-owned closure must update helper-managed stage state and mirrored frontmatter with `step_close_ts`, `step_artifact`, `process_complete_ts`, and lifecycle reconciliation fields
 - successful `implementation` closure must update helper-managed stage state and mirrored frontmatter with `post_close_backlog_hygiene_required: true` and initial `post_close_backlog_hygiene_status: missing`
 - `post-close-hygiene` must persist the durable `.dossier/verification/<feature>/implementation-post-close-backlog-hygiene.json` artifact and update the implementation stage state with clean or blocked summary fields

@@ -28,6 +28,7 @@ import {
 import {
   BacklogActualizationRequiredError,
   evaluateBacklogLifecycleReconciliation,
+  lifecycleReconciliationMetadata,
   resolveSelectedBacklogItemKey,
 } from './shared/lifecycle-reconciliation.ts';
 import { resolveProcessRoot } from './shared/process-root.ts';
@@ -641,11 +642,22 @@ function createDossierCommandWrapper(
                 return exitCode;
               }
               try {
+                const backlogLifecycleReconciliation = await evaluateBacklogLifecycleReconciliation(
+                  {
+                    root,
+                    stage: 'feature-intake',
+                    itemKey: summary.backlog_item_key,
+                  },
+                );
+                const lifecycleFollowupRequired =
+                  backlogLifecycleReconciliation.target !== null &&
+                  !backlogLifecycleReconciliation.reconciled;
                 const intakeLog = await appendFeatureIntakeLog({
                   root,
                   featureId,
                   featureCycleId,
                   backlogItemKey: summary.backlog_item_key,
+                  backlogLifecycleReconciliation,
                   phaseScope: annotations.phaseScope,
                   processMisses: annotations.processMisses,
                   sessionId: provenance.sessionId,
@@ -663,9 +675,12 @@ function createDossierCommandWrapper(
                   entered_ts: intakeLog.enteredTs,
                   ready_for_close_ts: intakeLog.readyForCloseTs,
                   transition_events: intakeLog.transitionEvents,
-                  backlog_followup_required: false,
-                  backlog_followup_kind: null,
-                  backlog_followup_resolved: true,
+                  backlog_followup_required: lifecycleFollowupRequired,
+                  backlog_followup_kind: lifecycleFollowupRequired
+                    ? 'backlog-lifecycle-actualization'
+                    : null,
+                  backlog_followup_resolved: !lifecycleFollowupRequired,
+                  ...lifecycleReconciliationMetadata(backlogLifecycleReconciliation),
                   log_path: intakeLog.logPath,
                 };
                 if (args.includes('--json')) {

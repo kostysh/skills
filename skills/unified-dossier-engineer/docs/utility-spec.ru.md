@@ -674,11 +674,16 @@ If backlog truth changed during any delivery stage:
 
 Selected-feature lifecycle close targets:
 
+- `feature-intake -> intaken`
 - `spec-compact -> specified`
 - `plan-slice -> planned`
 - `implementation -> implemented`
 
 `dossier-step-close` validates current backlog truth against these targets. A managed backlog actualization artifact may be recorded as trace evidence, but it does not override current-state validation.
+Canonical backlog lifecycle order is `defined < intaken < specified < planned < implemented`.
+`intaken` means dossier handoff exists; it is not equivalent to `specified` and does not satisfy `spec-compact` closure.
+`status` exposes `intaken_count`, while adjusted `ready_for_next_step_count` excludes `intaken` item keys from ordinary next-intake readiness.
+`queue` must not silently return `intaken` items as fresh intake-ready work; the next action remains dossier-local `spec-compact` via `next-step`.
 
 `plan-slice` protected side-effect handoff remains semantic agent-owned guidance. If implementation touches deploy, rollback, release, external executor, host/container boundary, caller-controlled input, or another protected side effect, the plan and audit scope must call out reservation before side effect, idempotent replay behavior, terminal CAS / no terminal overwrite, strict caller input, and live-vs-stale running behavior. Stage-controller commands do not infer or validate those invariants.
 
@@ -806,7 +811,7 @@ Required utility-level rules:
 
 - stage-controller commands may only reach `ready_for_close`;
 - authoritative closure is written only by `dossier-step-close`;
-- `dossier-step-close` fails closed before step artifact write when selected backlog item lifecycle reconciliation is unresolved for `spec-compact`, `plan-slice`, or `implementation`;
+- `dossier-step-close` fails closed before step artifact write when selected backlog item lifecycle reconciliation is unresolved for `feature-intake`, `spec-compact`, `plan-slice`, or `implementation`;
 - lifecycle aggregation happens only through `lifecycle-refresh`;
 - implementation lifecycle end markers cannot materialize without step-close-backed evidence;
 - logs remain `.md` with YAML frontmatter;
@@ -815,6 +820,7 @@ Required utility-level rules:
 - lifecycle snapshots and session index remain structured machine artifacts;
 - `status` exposes lifecycle reconciliation drift count/details;
 - `queue` must not silently return a mapped done feature as ordinary ready work;
+- `queue` must not silently return an `intaken` item as fresh intake-ready work;
 - no command may infer missing truth from prose.
 - no command may treat a mechanical `plan-slice --ready-for-close` transition as automatic proof that the implementation objective is clear; that semantic readiness remains agent-owned unless a future runtime explicitly implements and tests such validation.
 - no command may synthesize audit handoff prompts, infer protected side-effect presets, auto-ack source reviews during pre-close hygiene rehearsal, or replace post-close hygiene confirmation.

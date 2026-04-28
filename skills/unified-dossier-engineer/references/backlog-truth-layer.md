@@ -66,11 +66,20 @@ Truth-changing dossier stages do not close cleanly until backlog truth has been 
 
 Selected-feature lifecycle targets:
 
+- Canonical lifecycle order is `defined < intaken < specified < planned < implemented`
+- `feature-intake` close requires the selected backlog item to be at least `intaken`
 - `spec-compact` close requires the selected backlog item to be at least `specified`
 - `plan-slice` close requires the selected backlog item to be at least `planned`
 - `implementation` close requires the selected backlog item to be `implemented`
 
 These targets do not merge backlog lifecycle with dossier maturity. They only define the minimum backlog truth that must be observable before the corresponding dossier step can close truthfully.
+`intaken` is dossier handoff state only; it is not equivalent to `specified` and must not satisfy `spec-compact` closure.
+
+Read-model consequences:
+
+- `status` exposes `intaken_count` as the deterministic handoff count
+- `queue` must not present `intaken` items as fresh intake candidates
+- adjusted `ready_for_next_step_count` excludes `intaken` item keys from ordinary next-intake readiness
 
 ## Clean confirmation
 

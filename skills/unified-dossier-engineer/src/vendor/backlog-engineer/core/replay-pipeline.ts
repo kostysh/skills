@@ -858,9 +858,10 @@ export function recomputeDerivedState(payload: {
 
   const stageRank = {
     defined: 0,
-    specified: 1,
-    planned: 2,
-    implemented: 3,
+    intaken: 1,
+    specified: 2,
+    planned: 3,
+    implemented: 4,
   } as const;
 
   next.items = sortItems(next.items).map((item) => {
@@ -913,6 +914,7 @@ export function recomputeDerivedState(payload: {
       attention_reasons: attentionReasons,
       ready_for_next_step:
         item.delivery_state !== 'implemented' &&
+        item.delivery_state !== 'intaken' &&
         item.gaps.length === 0 &&
         (todoIdsByItem.get(item.item_key)?.length ?? 0) === 0 &&
         dependencyReady,

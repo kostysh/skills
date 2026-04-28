@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: unified-dossier-engineer
-  source-version: 0.2.3
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 26000
   description: >-
     Build and maintain the canonical dossier/backlog skill and its CLI runtime.
@@ -303,7 +303,7 @@ sections:
       when: You need filtered backlog discovery while preserving source-review blocking signals.
       script: scripts/dossier-engineer.mjs
       examples:
-        - node scripts/dossier-engineer.mjs search --status defined
+        - node scripts/dossier-engineer.mjs search --delivery-state defined
     - id: command-queue
       command: queue
       summary: Return queue chains after excluding source-review blocked items.

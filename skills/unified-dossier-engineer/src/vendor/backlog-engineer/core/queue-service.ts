@@ -7,7 +7,10 @@ import { buildReverseDependencyIndex } from './graph-service.ts';
 function createReadySubset(items: readonly StateItem[]): StateItem[] {
   return items.filter(
     (item) =>
-      item.ready_for_next_step && item.delivery_state !== 'implemented' && item.gaps.length === 0,
+      item.ready_for_next_step &&
+      item.delivery_state !== 'intaken' &&
+      item.delivery_state !== 'implemented' &&
+      item.gaps.length === 0,
   );
 }
 

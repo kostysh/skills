@@ -59,7 +59,7 @@ const POLICY_ADMISSION_GOVERNANCE_CHECKLIST_IDS = [
   'regression-test-paths',
 ] as const;
 
-type TestDeliveryState = 'defined' | 'specified' | 'planned' | 'implemented';
+type TestDeliveryState = 'defined' | 'intaken' | 'specified' | 'planned' | 'implemented';
 
 async function makeTempRepoPath(): Promise<string> {
   return path.join(await mkdtemp(path.join(os.tmpdir(), 'ude-cli-')), 'repo');
@@ -343,6 +343,19 @@ async function seedBacklogItem(payload: {
   );
 
   runCli(['packet', '--path', packetPath], { cwd: payload.repo });
+}
+
+async function seedIntakenBacklogItem(payload: {
+  itemKey: string;
+  repo: string;
+  title?: string | undefined;
+}): Promise<void> {
+  await seedBacklogItem({
+    repo: payload.repo,
+    itemKey: payload.itemKey,
+    deliveryState: 'intaken',
+    title: payload.title,
+  });
 }
 
 async function applyBacklogLifecyclePatch(payload: {
@@ -1423,11 +1436,21 @@ test('implementation pre-review checklist evidence does not satisfy external aud
 test('feature-intake and stage controllers produce unified dossiers and stage logs', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'auth-timeout',
+    deliveryState: 'defined',
+  });
 
   const intakeEnvelope = parseEnvelope<{
-    backlog_followup_kind: null;
+    backlog_actualization_artifacts: string[];
+    backlog_actualization_verdict: string;
+    backlog_followup_kind: string | null;
     backlog_followup_required: boolean;
     backlog_followup_resolved: boolean;
+    backlog_lifecycle_current: string | null;
+    backlog_lifecycle_reconciled: boolean;
+    backlog_lifecycle_target: string | null;
     cycle_id: string;
     dossier: string;
     entered_ts: string;
@@ -1484,9 +1507,14 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
     intake.transition_events.map((event) => event.kind),
     ['entered', 'ready_for_close'],
   );
-  assert.equal(intake.backlog_followup_required, false);
-  assert.equal(intake.backlog_followup_kind, null);
-  assert.equal(intake.backlog_followup_resolved, true);
+  assert.equal(intake.backlog_followup_required, true);
+  assert.equal(intake.backlog_followup_kind, 'backlog-lifecycle-actualization');
+  assert.equal(intake.backlog_followup_resolved, false);
+  assert.equal(intake.backlog_lifecycle_target, 'intaken');
+  assert.equal(intake.backlog_lifecycle_current, 'defined');
+  assert.equal(intake.backlog_lifecycle_reconciled, false);
+  assert.deepEqual(intake.backlog_actualization_artifacts, []);
+  assert.equal(intake.backlog_actualization_verdict, 'actualization_required');
   assert.deepEqual(intakeEnvelope.next_commands, [
     `dossier-engineer spec-compact --feature-id ${intake.feature_id} --session-id <id>`,
   ]);
@@ -1523,7 +1551,17 @@ test('feature-intake and stage controllers produce unified dossiers and stage lo
       path.join(repo, '.dossier', 'stages', intake.feature_id, 'feature-intake.json'),
       'utf8',
     ),
-  ) as { session_id: string; trace_locator_kind: string; trace_runtime: string };
+  ) as {
+    backlog_lifecycle_current: string | null;
+    backlog_lifecycle_reconciled: boolean;
+    backlog_lifecycle_target: string | null;
+    session_id: string;
+    trace_locator_kind: string;
+    trace_runtime: string;
+  };
+  assert.equal(intakeState.backlog_lifecycle_target, 'intaken');
+  assert.equal(intakeState.backlog_lifecycle_current, 'defined');
+  assert.equal(intakeState.backlog_lifecycle_reconciled, false);
   assert.equal(intakeState.session_id, DEFAULT_STAGE_SESSION_ID);
   assert.equal(intakeState.trace_runtime, DEFAULT_TRACE_RUNTIME);
   assert.equal(intakeState.trace_locator_kind, 'session_id');
@@ -2783,6 +2821,7 @@ test('review-artifact rejects unsupported steps before touching the vendored com
 test('dossier-step-close rejects symlinked verification artifacts before vendored closeout', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'symlinked-verify-guard' });
 
   const intakeEnvelope = parseEnvelope<{
     dossier: string;
@@ -2796,7 +2835,7 @@ test('dossier-step-close rejects symlinked verification artifacts before vendore
         '--backlog-item-key',
         'symlinked-verify-guard',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'verify-guard.md',
         '--area',
@@ -2911,6 +2950,7 @@ test('dossier-step-close rejects unsupported steps before touching the vendored 
 test('dossier-step-close maps truthful blocked outcomes to exit code 3 with symbolic error code', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'blocked-closeout' });
 
   const intakeEnvelope = parseEnvelope<{
     dossier: string;
@@ -2924,7 +2964,7 @@ test('dossier-step-close maps truthful blocked outcomes to exit code 3 with symb
         '--backlog-item-key',
         'blocked-closeout',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'blocked-closeout.md',
         '--area',
@@ -3066,6 +3106,182 @@ test('dossier-step-close requires selected backlog lifecycle actualization befor
       assert.fail('step artifact directory should not be created before lifecycle actualization'),
     () => undefined,
   );
+});
+
+test('feature-intake close requires intaken backlog actualization evidence', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'feature-intake-lifecycle-required',
+    deliveryState: 'defined',
+  });
+
+  const intakeEnvelope = parseEnvelope<{
+    backlog_lifecycle_current: string | null;
+    backlog_lifecycle_reconciled: boolean;
+    backlog_lifecycle_target: string | null;
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Feature Intake Lifecycle Required',
+        '--backlog-item-key',
+        'feature-intake-lifecycle-required',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'feature-intake-lifecycle-required.md',
+        '--area',
+        'docs',
+        '--owner',
+        'platform',
+        '--impact',
+        'docs',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  assert.equal(intakeEnvelope.data.backlog_lifecycle_target, 'intaken');
+  assert.equal(intakeEnvelope.data.backlog_lifecycle_current, 'defined');
+  assert.equal(intakeEnvelope.data.backlog_lifecycle_reconciled, false);
+
+  const blockedClose = runCli(
+    ['dossier-step-close', '--dossier', intakeEnvelope.data.dossier, '--step', 'feature-intake'],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(blockedClose.code, 3);
+  const blockedPayload = JSON.parse(blockedClose.stderr) as {
+    error: {
+      backlog_actualization_verdict: string;
+      code: string;
+      current_delivery_state: string | null;
+      selected_backlog_item_key: string | null;
+      target_delivery_state: string | null;
+    };
+  };
+  assert.equal(blockedPayload.error.code, 'UDE_BACKLOG_ACTUALIZATION_REQUIRED');
+  assert.equal(blockedPayload.error.selected_backlog_item_key, 'feature-intake-lifecycle-required');
+  assert.equal(blockedPayload.error.current_delivery_state, 'defined');
+  assert.equal(blockedPayload.error.target_delivery_state, 'intaken');
+  assert.equal(blockedPayload.error.backlog_actualization_verdict, 'actualization_required');
+
+  const actualizationArtifact = await applyBacklogLifecyclePatch({
+    repo,
+    itemKey: 'feature-intake-lifecycle-required',
+    deliveryState: 'intaken',
+  });
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    intakeEnvelope.data.feature_id,
+    'feature-intake.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: intakeEnvelope.data.feature_id,
+    step: 'feature-intake',
+  });
+  const specReview = recordReviewArtifact({
+    repo,
+    dossier: intakeEnvelope.data.dossier,
+    step: 'feature-intake',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: 'audit-agent-feature-intake-lifecycle',
+    reviewerThreadId: 'review-thread-feature-intake-lifecycle',
+  });
+
+  runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'feature-intake',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--backlog-actualization-artifact',
+      actualizationArtifact,
+    ],
+    { cwd: repo },
+  );
+
+  const stageState = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', intakeEnvelope.data.feature_id, 'feature-intake.json'),
+      'utf8',
+    ),
+  ) as {
+    backlog_actualization_artifacts: string[];
+    backlog_actualization_verdict: string;
+    backlog_lifecycle_current: string | null;
+    backlog_lifecycle_reconciled: boolean;
+    backlog_lifecycle_target: string | null;
+    process_complete_ts: string | null;
+  };
+  assert.equal(stageState.backlog_lifecycle_target, 'intaken');
+  assert.equal(stageState.backlog_lifecycle_current, 'intaken');
+  assert.equal(stageState.backlog_lifecycle_reconciled, true);
+  assert.deepEqual(stageState.backlog_actualization_artifacts, [actualizationArtifact]);
+  assert.equal(stageState.backlog_actualization_verdict, 'actualized_by_backlog_artifact');
+  assert.match(stageState.process_complete_ts ?? '', /^\d{4}-\d{2}-\d{2}T/u);
+
+  const nextStep = JSON.parse(
+    runCli(['next-step', '--dossier', intakeEnvelope.data.dossier, '--json'], { cwd: repo }).stdout,
+  ) as { workflow_stage_next: string | null };
+  assert.equal(nextStep.workflow_stage_next, 'spec-compact');
+});
+
+test('intaken backlog items are visible but excluded from ordinary next-intake readiness', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  await seedBacklogItem({
+    repo,
+    itemKey: 'intaken-read-model',
+    deliveryState: 'intaken',
+    title: 'Intaken Read Model',
+  });
+
+  const statusEnvelope = parseEnvelope<{
+    intaken_count: number;
+    ready_for_next_step_count: number;
+  }>(runCli(['status'], { cwd: repo }).stdout);
+  assert.equal(statusEnvelope.data.intaken_count, 1);
+  assert.equal(statusEnvelope.data.ready_for_next_step_count, 0);
+
+  const queueEnvelope = parseEnvelope<Array<{ items: string[] }>>(
+    runCli(['queue'], { cwd: repo }).stdout,
+  );
+  assert.deepEqual(queueEnvelope.data, []);
+  assert.deepEqual(queueEnvelope.warnings, [
+    'Intaken backlog items continue via dossier-local spec-compact: intaken-read-model',
+  ]);
+
+  const itemsEnvelope = parseEnvelope<
+    Array<{ computed_state: { ready_for_next_step: boolean }; item: { delivery_state: string } }>
+  >(runCli(['items', '--item-keys', 'intaken-read-model'], { cwd: repo }).stdout);
+  assert.equal(itemsEnvelope.data[0]?.item.delivery_state, 'intaken');
+  assert.equal(itemsEnvelope.data[0]?.computed_state.ready_for_next_step, false);
+
+  const searchEnvelope = parseEnvelope<Array<{ delivery_state: string; match_reasons: string[] }>>(
+    runCli(['search', '--delivery-state', 'intaken'], { cwd: repo }).stdout,
+  );
+  assert.equal(searchEnvelope.data[0]?.delivery_state, 'intaken');
+  assert.deepEqual(searchEnvelope.data[0]?.match_reasons, ['delivery_state=intaken']);
+
+  const reportEnvelope = parseEnvelope<{ report_path: string }>(
+    runCli(['report'], { cwd: repo }).stdout,
+  );
+  const report = await readFile(reportEnvelope.data.report_path, 'utf8');
+  assert.match(report, /Items by delivery state: intaken=1/u);
+  assert.match(report, /Delivery state: intaken/u);
 });
 
 test('dossier-step-close records applied backlog actualization artifacts in stage telemetry', async () => {
@@ -3612,8 +3828,8 @@ test('spec and plan close-out enforce their selected backlog lifecycle targets',
   const cases = [
     {
       stage: 'spec-compact',
-      itemKey: 'spec-lifecycle-required',
-      current: 'defined',
+      itemKey: 'spec-lifecycle-intaken-required',
+      current: 'intaken',
       target: 'specified',
     },
     {
@@ -3766,6 +3982,7 @@ test('status and queue expose lifecycle drift instead of silently returning stal
 test('dossier-step-close rejects invalid stage log paths before writing step artifacts', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'step-close-log-guard' });
 
   const intakeEnvelope = parseEnvelope<{
     dossier: string;
@@ -3780,7 +3997,7 @@ test('dossier-step-close rejects invalid stage log paths before writing step art
         '--backlog-item-key',
         'step-close-log-guard',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'step-close-log.md',
         '--area',
@@ -3821,6 +4038,7 @@ test('dossier-step-close rejects invalid stage log paths before writing step art
 test('dossier-step-close preserves authored intake narrative sections', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'closeout-narrative-preservation' });
 
   const intakeEnvelope = parseEnvelope<{
     dossier: string;
@@ -3835,7 +4053,7 @@ test('dossier-step-close preserves authored intake narrative sections', async ()
         '--backlog-item-key',
         'closeout-narrative-preservation',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'closeout-preservation.md',
         '--area',
@@ -4303,6 +4521,7 @@ test('latest invalidated audit event reopens the required review pending signal'
 test('dossier-step-close rejects self-review as a substitute for the required external baseline audit', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'self-review-block' });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -4313,7 +4532,7 @@ test('dossier-step-close rejects self-review as a substitute for the required ex
         '--backlog-item-key',
         'self-review-block',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'self-review.md',
         '--area',
@@ -4382,6 +4601,7 @@ test('dossier-step-close rejects same-thread review artifacts as non-independent
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'same-thread-review-block' });
 
   const intakeEnvelope = parseEnvelope<{
     dossier: string;
@@ -4395,7 +4615,7 @@ test('dossier-step-close rejects same-thread review artifacts as non-independent
         '--backlog-item-key',
         'same-thread-review-block',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'same-thread-review.md',
         '--area',
@@ -6150,6 +6370,7 @@ test('dirty code forces implementation close-out back to code-bearing scope even
 test('process-trust close-out accepts review artifacts without reviewer_thread_id', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'process-trust-review-pending' });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -6160,7 +6381,7 @@ test('process-trust close-out accepts review artifacts without reviewer_thread_i
         '--backlog-item-key',
         'process-trust-review-pending',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'process-trust-review-pending.md',
         '--area',
@@ -6243,6 +6464,7 @@ test('allow-dirty does not bypass audit freshness invalidation for uncommitted c
   await initializeRepo(repo);
   initializeGitRepo(repo);
   commitRepoState(repo, 'baseline');
+  await seedIntakenBacklogItem({ repo, itemKey: 'allow-dirty-still-invalidates-audits' });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -6253,7 +6475,7 @@ test('allow-dirty does not bypass audit freshness invalidation for uncommitted c
         '--backlog-item-key',
         'allow-dirty-still-invalidates-audits',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'allow-dirty-still-invalidates-audits.md',
         '--area',
@@ -6356,6 +6578,7 @@ test('allow-dirty still permits helper-owned backlog support files that are fres
   await initializeRepo(repo);
   initializeGitRepo(repo);
   commitRepoState(repo, 'baseline');
+  await seedIntakenBacklogItem({ repo, itemKey: 'helper-owned-backlog-support-files-stay-exempt' });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -6366,7 +6589,7 @@ test('allow-dirty still permits helper-owned backlog support files that are fres
         '--backlog-item-key',
         'helper-owned-backlog-support-files-stay-exempt',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'helper-owned-backlog-support-files-stay-exempt.md',
         '--area',
@@ -6538,6 +6761,7 @@ test('review-artifact preserves immutable same-class FAIL and PASS attempts with
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'immutable-review-attempts' });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -6548,7 +6772,7 @@ test('review-artifact preserves immutable same-class FAIL and PASS attempts with
         '--backlog-item-key',
         'immutable-review-attempts',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'immutable-review-attempts.md',
         '--area',
@@ -6781,6 +7005,7 @@ test('dossier-step-close rejects latest review copies that do not resolve to imm
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
   initializeGitRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'broken-latest-review-copy' });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -6791,7 +7016,7 @@ test('dossier-step-close rejects latest review copies that do not resolve to imm
         '--backlog-item-key',
         'broken-latest-review-copy',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'broken-latest-review-copy.md',
         '--area',
@@ -6879,6 +7104,7 @@ test('dossier-step-close rejects latest review copies that do not resolve to imm
 test('dossier-step-close rejects invalidated required audits', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
+  await seedIntakenBacklogItem({ repo, itemKey: 'invalidated-audit' });
 
   const intakeEnvelope = parseEnvelope<{ dossier: string; feature_id: string }>(
     runCli(
@@ -6889,7 +7115,7 @@ test('dossier-step-close rejects invalidated required audits', async () => {
         '--backlog-item-key',
         'invalidated-audit',
         '--backlog-delivery-state',
-        'defined',
+        'intaken',
         '--backlog-source',
         'invalidated-audit.md',
         '--area',

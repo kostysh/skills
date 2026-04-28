@@ -892,23 +892,32 @@ void test('lifecycle reconciliation gate protects backlog truth before step clos
   ]);
 
   assertContainsTerms(deliveryWorkflow, [
+    '`feature-intake` close requires the selected backlog item to be at least `intaken`',
     '`spec-compact` close requires the selected backlog item to be at least `specified`',
     '`plan-slice` close requires the selected backlog item to be at least `planned`',
     '`implementation` close requires the selected backlog item to be `implemented`',
+    '`intaken` means dossier handoff exists',
     '`dossier-step-close` must fail closed before writing a step artifact',
     'backlog actualization artifacts are trace evidence and must not override current state validation',
   ]);
   assertContainsTerms(backlogTruth, [
     'Selected-feature lifecycle targets',
+    'defined < intaken < specified < planned < implemented',
+    '`feature-intake` close requires the selected backlog item to be at least `intaken`',
+    '`intaken` is dossier handoff state only; it is not equivalent to `specified`',
+    '`status` exposes `intaken_count`',
+    'adjusted `ready_for_next_step_count` excludes `intaken` item keys',
     'These targets do not merge backlog lifecycle with dossier maturity.',
     'do not treat a backlog actualization artifact as sufficient when current backlog state still fails',
   ]);
   assertContainsTerms(stageControl, [
     'Stage-controller commands do not mutate backlog truth directly.',
+    '`feature-intake -> intaken`',
     '`spec-compact -> specified`',
     '`plan-slice -> planned`',
     '`implementation -> implemented`',
     'stage-controller write keeps or sets backlog follow-up unresolved',
+    '`feature-intake` must not directly mutate backlog truth',
   ]);
   assertContainsTerms(telemetryClosure, [
     'selected-feature lifecycle reconciliation fields are also parity-protected',
@@ -919,14 +928,22 @@ void test('lifecycle reconciliation gate protects backlog truth before step clos
   ]);
   assertContainsTerms(runtimeBoundary, [
     'Lifecycle-reconciliation rule for this family',
+    '`dossier-step-close` enforces selected backlog item lifecycle reconciliation for `feature-intake`, `spec-compact`, `plan-slice`, and `implementation`',
     'backlog actualization artifacts are accepted only as managed trace links',
+    '`status` exposes `intaken_count`',
     'mapped done feature cannot silently reappear as ordinary queue work',
   ]);
   assertContainsTerms(utilitySpec, [
     'UDE_BACKLOG_ACTUALIZATION_REQUIRED',
     'Selected-feature lifecycle close targets',
+    '`feature-intake -> intaken`',
+    'defined < intaken < specified < planned < implemented',
+    '`intaken` means dossier handoff exists',
+    '`status` exposes `intaken_count`',
+    'adjusted `ready_for_next_step_count` excludes `intaken` item keys',
     'status` exposes lifecycle reconciliation drift count/details',
     '`queue` must not silently return a mapped done feature',
+    '`queue` must not silently return an `intaken` item',
   ]);
 });
 

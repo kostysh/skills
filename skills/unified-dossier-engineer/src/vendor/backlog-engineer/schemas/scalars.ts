@@ -173,7 +173,13 @@ export const NonNegativeIntSchema = z.number().int().min(0);
 export const ApplyIndexSchema = PositiveIntSchema;
 export const SequenceSchema = PositiveIntSchema;
 
-export const DeliveryStateSchema = z.enum(['defined', 'specified', 'planned', 'implemented']);
+export const DeliveryStateSchema = z.enum([
+  'defined',
+  'intaken',
+  'specified',
+  'planned',
+  'implemented',
+]);
 export const AttentionReasonCodeSchema = z.enum([
   'source_changed',
   'dependency_changed',

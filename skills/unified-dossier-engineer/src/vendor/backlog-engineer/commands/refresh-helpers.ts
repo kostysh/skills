@@ -205,6 +205,7 @@ export function buildStatusSummary(payload: {
   const { context, state } = payload;
   const counts = {
     defined_count: 0,
+    intaken_count: 0,
     specified_count: 0,
     planned_count: 0,
     implemented_count: 0,
@@ -221,6 +222,9 @@ export function buildStatusSummary(payload: {
   for (const item of state.items) {
     if (item.delivery_state === 'defined') {
       counts.defined_count += 1;
+    }
+    if (item.delivery_state === 'intaken') {
+      counts.intaken_count += 1;
     }
     if (item.delivery_state === 'specified') {
       counts.specified_count += 1;

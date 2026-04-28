@@ -16,7 +16,7 @@ import {
   type StateItem,
 } from '../vendor/backlog-engineer/schemas/index.ts';
 
-const DELIVERY_STATES = ['defined', 'specified', 'planned', 'implemented'] as const;
+const DELIVERY_STATES = ['defined', 'intaken', 'specified', 'planned', 'implemented'] as const;
 
 export type DeliveryState = (typeof DELIVERY_STATES)[number];
 
@@ -101,6 +101,9 @@ async function readJsonFile<T>(filePath: string): Promise<T> {
 }
 
 export function lifecycleTargetForStage(stage: string): DeliveryState | null {
+  if (stage === 'feature-intake') {
+    return 'intaken';
+  }
   if (stage === 'spec-compact') {
     return 'specified';
   }

@@ -6,9 +6,9 @@ description: Build and maintain the canonical dossier/backlog skill and its CLI
 compatibility: Canonical runtime shipped. Only the canonical `.dossier` +
   `docs/ssot` layout and the `dossier-engineer` launcher are part of this skill.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d174eee4bac32dee915bf06740e92973793f96ac45f04e3fba51f8b97ee65942
+  skillforge-source-hash: 9fb64c7e51c8173c289cc65e59d5fcd5d508d9ba88f19ae7503bf2b58a922474
 ---
 
 # unified-dossier-engineer
@@ -204,7 +204,7 @@ Validation:
 
 **Runtime script:** `scripts/dossier-engineer.mjs`
 
-**Examples:** node scripts/dossier-engineer.mjs search --status defined
+**Examples:** node scripts/dossier-engineer.mjs search --delivery-state defined
 
 ### CLI command: `queue`
 **Use when:** You need execution-ready chains rather than a flat item list.

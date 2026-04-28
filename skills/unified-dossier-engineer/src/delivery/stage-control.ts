@@ -1195,6 +1195,7 @@ export async function resolveLatestFeatureCycleId(
 }
 
 export async function appendFeatureIntakeLog(payload: {
+  backlogLifecycleReconciliation: BacklogLifecycleReconciliation;
   backlogItemKey: string;
   featureCycleId: string;
   featureId: string;
@@ -1226,6 +1227,9 @@ export async function appendFeatureIntakeLog(payload: {
     { kind: 'entered', at: now },
     { kind: 'ready_for_close', at: now },
   ];
+  const lifecycleFollowupRequired =
+    payload.backlogLifecycleReconciliation.target !== null &&
+    !payload.backlogLifecycleReconciliation.reconciled;
   const metadata = {
     version: 1,
     command: 'feature-intake',
@@ -1241,9 +1245,10 @@ export async function appendFeatureIntakeLog(payload: {
     entered_ts: now,
     ready_for_close_ts: now,
     stage_state: 'ready_for_close',
-    backlog_followup_required: false,
-    backlog_followup_kind: null,
-    backlog_followup_resolved: true,
+    backlog_followup_required: lifecycleFollowupRequired,
+    backlog_followup_kind: lifecycleFollowupRequired ? 'backlog-lifecycle-actualization' : null,
+    backlog_followup_resolved: !lifecycleFollowupRequired,
+    ...lifecycleReconciliationMetadata(payload.backlogLifecycleReconciliation),
     review_artifacts: [],
     verification_artifacts: [],
     required_audit_classes: ['spec-conformance-reviewer'],

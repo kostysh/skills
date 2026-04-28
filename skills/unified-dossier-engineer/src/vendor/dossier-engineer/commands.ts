@@ -46,7 +46,13 @@ export const EXIT_SUCCESS = 0;
 export const EXIT_FAILURE = 1;
 export const EXIT_USAGE = 2;
 const DEFAULT_INDEX_FILE = 'docs/ssot/index.md';
-const BACKLOG_DELIVERY_STATES = ['defined', 'specified', 'planned', 'implemented'] as const;
+const BACKLOG_DELIVERY_STATES = [
+  'defined',
+  'intaken',
+  'specified',
+  'planned',
+  'implemented',
+] as const;
 
 export interface CliIo {
   stderr: Pick<NodeJS.WriteStream, 'write'>;
@@ -1126,7 +1132,7 @@ function featureIntakeHelp(): string {
     '  --title <text>               Dossier title. Required.',
     '  --backlog-item-key <key>     Selected backlog item key from the backlog truth layer. Required.',
     '  --backlog-delivery-state <state>  Backlog delivery state at intake. Required.',
-    '                               Allowed: defined, specified, planned, implemented.',
+    '                               Allowed: defined, intaken, specified, planned, implemented.',
     '  --backlog-source <source>    Repeatable backlog source traceability entry. At least one required.',
     '  --backlog-dependency <key>   Repeatable backlog dependency visible at intake.',
     '  --backlog-blocker <text>     Repeatable backlog blocker visible at intake.',

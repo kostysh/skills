@@ -175,9 +175,11 @@ Rules:
 - if dossier-side work changes backlog truth, the agent stays inside this skill and moves into the backlog actualization branch
 - delivery closure is not truthful while required backlog actualization remains unresolved
 - selected-feature lifecycle closure must reconcile dossier progress with backlog delivery state:
+  - `feature-intake` close requires the selected backlog item to be at least `intaken`
   - `spec-compact` close requires the selected backlog item to be at least `specified`
   - `plan-slice` close requires the selected backlog item to be at least `planned`
   - `implementation` close requires the selected backlog item to be `implemented`
+- `intaken` means dossier handoff exists; it is not equivalent to `specified`, planned, implemented, or dossier maturity
 - `dossier-step-close` must fail closed before writing a step artifact when the selected backlog item is behind the target state
 - current backlog truth must satisfy the target; backlog actualization artifacts are trace evidence and must not override current state validation
 - mature change path must always end with one explicit backlog impact verdict:

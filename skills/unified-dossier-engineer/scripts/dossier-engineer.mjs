@@ -19,7 +19,7 @@ var __exportAll = (all, no_symbols) => {
 //#endregion
 //#region package.json
 var name = "@kostysh/unified-dossier-engineer";
-var version$1 = "0.2.0";
+var version$1 = "0.2.1";
 var description = "CLI runtime for the canonical dossier/backlog skill.";
 var type = "module";
 var bin = { "dossier-engineer": "scripts/dossier-engineer.mjs" };
@@ -8100,6 +8100,7 @@ var CLI_DISPLAY_NAME = "dossier-engineer";
 var DEFAULT_INDEX_FILE = "docs/ssot/index.md";
 var BACKLOG_DELIVERY_STATES = [
 	"defined",
+	"intaken",
 	"specified",
 	"planned",
 	"implemented"
@@ -8708,7 +8709,7 @@ function featureIntakeHelp() {
 		"  --title <text>               Dossier title. Required.",
 		"  --backlog-item-key <key>     Selected backlog item key from the backlog truth layer. Required.",
 		"  --backlog-delivery-state <state>  Backlog delivery state at intake. Required.",
-		"                               Allowed: defined, specified, planned, implemented.",
+		"                               Allowed: defined, intaken, specified, planned, implemented.",
 		"  --backlog-source <source>    Repeatable backlog source traceability entry. At least one required.",
 		"  --backlog-dependency <key>   Repeatable backlog dependency visible at intake.",
 		"  --backlog-blocker <text>     Repeatable backlog blocker visible at intake.",
@@ -14313,6 +14314,7 @@ var ApplyIndexSchema = PositiveIntSchema;
 var SequenceSchema = PositiveIntSchema;
 var DeliveryStateSchema = _enum([
 	"defined",
+	"intaken",
 	"specified",
 	"planned",
 	"implemented"
@@ -14867,6 +14869,7 @@ var StatusCommandOutputSchema = strictObject({
 	total_items: NonNegativeIntSchema,
 	last_refresh_at: nullable(IsoUtcTimestampSchema),
 	defined_count: NonNegativeIntSchema,
+	intaken_count: NonNegativeIntSchema,
 	specified_count: NonNegativeIntSchema,
 	planned_count: NonNegativeIntSchema,
 	implemented_count: NonNegativeIntSchema,
@@ -16141,6 +16144,7 @@ function buildStatusSummary(payload) {
 	const { context, state } = payload;
 	const counts = {
 		defined_count: 0,
+		intaken_count: 0,
 		specified_count: 0,
 		planned_count: 0,
 		implemented_count: 0,
@@ -16155,6 +16159,7 @@ function buildStatusSummary(payload) {
 	};
 	for (const item of state.items) {
 		if (item.delivery_state === "defined") counts.defined_count += 1;
+		if (item.delivery_state === "intaken") counts.intaken_count += 1;
 		if (item.delivery_state === "specified") counts.specified_count += 1;
 		if (item.delivery_state === "planned") counts.planned_count += 1;
 		if (item.delivery_state === "implemented") counts.implemented_count += 1;
@@ -19587,9 +19592,10 @@ function recomputeDerivedState(payload) {
 	}
 	const stageRank = {
 		defined: 0,
-		specified: 1,
-		planned: 2,
-		implemented: 3
+		intaken: 1,
+		specified: 2,
+		planned: 3,
+		implemented: 4
 	};
 	next.items = sortItems(next.items).map((item) => {
 		const itemTodos = next.todos.filter((todo) => todo.item_key === item.item_key);
@@ -19622,7 +19628,7 @@ function recomputeDerivedState(payload) {
 			needs_attention: attentionReasonCodes.length > 0,
 			attention_reason_codes: attentionReasonCodes,
 			attention_reasons: attentionReasons,
-			ready_for_next_step: item.delivery_state !== "implemented" && item.gaps.length === 0 && (todoIdsByItem.get(item.item_key)?.length ?? 0) === 0 && dependencyReady
+			ready_for_next_step: item.delivery_state !== "implemented" && item.delivery_state !== "intaken" && item.gaps.length === 0 && (todoIdsByItem.get(item.item_key)?.length ?? 0) === 0 && dependencyReady
 		};
 	});
 	next.todos = sortTodos$1(next.todos).filter((todo) => next.items.some((item) => item.item_key === todo.item_key));
@@ -20646,7 +20652,7 @@ function createMutationService(payload) {
 //#endregion
 //#region src/vendor/backlog-engineer/core/queue-service.ts
 function createReadySubset(items) {
-	return items.filter((item) => item.ready_for_next_step && item.delivery_state !== "implemented" && item.gaps.length === 0);
+	return items.filter((item) => item.ready_for_next_step && item.delivery_state !== "intaken" && item.delivery_state !== "implemented" && item.gaps.length === 0);
 }
 function computeDepths(payload) {
 	const depths = new Map([[payload.rootItemKey, 0]]);
@@ -22560,6 +22566,7 @@ function writeCliEnvelope(stream, payload) {
 //#region src/shared/lifecycle-reconciliation.ts
 var DELIVERY_STATES = [
 	"defined",
+	"intaken",
 	"specified",
 	"planned",
 	"implemented"
@@ -22599,6 +22606,7 @@ async function readJsonFile(filePath) {
 	return JSON.parse(await promises.readFile(filePath, "utf8"));
 }
 function lifecycleTargetForStage(stage) {
+	if (stage === "feature-intake") return "intaken";
 	if (stage === "spec-compact") return "specified";
 	if (stage === "plan-slice") return "planned";
 	if (stage === "implementation") return "implemented";
@@ -22937,6 +22945,9 @@ function overlaySearchWithSourceReviewBlock(results, openReviews) {
 		source_review_blocked: blockedItemKeys.has(entry.item_key)
 	}));
 }
+function intakenQueueItemKeys(state) {
+	return state.items.filter((item) => item.delivery_state === "intaken").map((item) => item.item_key).sort((left, right) => left.localeCompare(right));
+}
 function buildAttentionOutput(payload) {
 	const sourceReviewEntries = payload.openReviews.map((review) => ({
 		entry_kind: "source_review",
@@ -23121,7 +23132,7 @@ async function runStatusCommand(args, io) {
 		});
 		const postCloseHygieneSummary = await collectPostCloseBacklogHygieneSummary(context.backlogRoot);
 		const lifecycleBlockedItemKeys = lifecycleDriftBlockedItemKeys(lifecycleDrifts);
-		const adjustedReadyForNextStepCount = state.items.filter((item) => item.ready_for_next_step && !blockedItemKeys.has(item.item_key) && !lifecycleBlockedItemKeys.has(item.item_key)).length;
+		const adjustedReadyForNextStepCount = state.items.filter((item) => item.ready_for_next_step && item.delivery_state !== "intaken" && !blockedItemKeys.has(item.item_key) && !lifecycleBlockedItemKeys.has(item.item_key)).length;
 		writeCliEnvelope(io.stdout, {
 			command: "status",
 			data: buildStatusOutput({
@@ -23185,8 +23196,13 @@ async function runQueueCommand(args, io) {
 			root: result.context.backlogRoot,
 			state
 		}));
+		const intakenItemKeys = intakenQueueItemKeys(state);
 		const postCloseHygieneSummary = await collectPostCloseBacklogHygieneSummary(result.context.backlogRoot);
-		const warnings = [...lifecycleBlockedItemKeys.size > 0 ? [`Lifecycle reconciliation drift blocked queue items: ${[...lifecycleBlockedItemKeys].join(", ")}`] : [], ...postCloseBacklogHygieneWarnings(postCloseHygieneSummary)];
+		const warnings = [
+			...intakenItemKeys.length > 0 ? [`Intaken backlog items continue via dossier-local spec-compact: ${intakenItemKeys.join(", ")}`] : [],
+			...lifecycleBlockedItemKeys.size > 0 ? [`Lifecycle reconciliation drift blocked queue items: ${[...lifecycleBlockedItemKeys].join(", ")}`] : [],
+			...postCloseBacklogHygieneWarnings(postCloseHygieneSummary)
+		];
 		writeCliEnvelope(io.stdout, {
 			command: "queue",
 			data: overlayQueueWithSourceReviewBlock(result.output, openReviews, lifecycleBlockedItemKeys),
@@ -24140,6 +24156,7 @@ async function appendFeatureIntakeLog(payload) {
 		kind: "ready_for_close",
 		at: now
 	}];
+	const lifecycleFollowupRequired = payload.backlogLifecycleReconciliation.target !== null && !payload.backlogLifecycleReconciliation.reconciled;
 	const metadata = {
 		version: 1,
 		command: "feature-intake",
@@ -24155,9 +24172,10 @@ async function appendFeatureIntakeLog(payload) {
 		entered_ts: now,
 		ready_for_close_ts: now,
 		stage_state: "ready_for_close",
-		backlog_followup_required: false,
-		backlog_followup_kind: null,
-		backlog_followup_resolved: true,
+		backlog_followup_required: lifecycleFollowupRequired,
+		backlog_followup_kind: lifecycleFollowupRequired ? "backlog-lifecycle-actualization" : null,
+		backlog_followup_resolved: !lifecycleFollowupRequired,
+		...lifecycleReconciliationMetadata(payload.backlogLifecycleReconciliation),
 		review_artifacts: [],
 		verification_artifacts: [],
 		required_audit_classes: ["spec-conformance-reviewer"],
@@ -24934,11 +24952,18 @@ function createDossierCommandWrapper(name, family) {
 								return exitCode;
 							}
 							try {
+								const backlogLifecycleReconciliation = await evaluateBacklogLifecycleReconciliation({
+									root,
+									stage: "feature-intake",
+									itemKey: summary.backlog_item_key
+								});
+								const lifecycleFollowupRequired = backlogLifecycleReconciliation.target !== null && !backlogLifecycleReconciliation.reconciled;
 								const intakeLog = await appendFeatureIntakeLog({
 									root,
 									featureId,
 									featureCycleId,
 									backlogItemKey: summary.backlog_item_key,
+									backlogLifecycleReconciliation,
 									phaseScope: annotations.phaseScope,
 									processMisses: annotations.processMisses,
 									sessionId: provenance.sessionId,
@@ -24956,9 +24981,10 @@ function createDossierCommandWrapper(name, family) {
 									entered_ts: intakeLog.enteredTs,
 									ready_for_close_ts: intakeLog.readyForCloseTs,
 									transition_events: intakeLog.transitionEvents,
-									backlog_followup_required: false,
-									backlog_followup_kind: null,
-									backlog_followup_resolved: true,
+									backlog_followup_required: lifecycleFollowupRequired,
+									backlog_followup_kind: lifecycleFollowupRequired ? "backlog-lifecycle-actualization" : null,
+									backlog_followup_resolved: !lifecycleFollowupRequired,
+									...lifecycleReconciliationMetadata(backlogLifecycleReconciliation),
 									log_path: intakeLog.logPath
 								};
 								if (args.includes("--json")) {

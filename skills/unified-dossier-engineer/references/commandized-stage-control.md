@@ -220,11 +220,13 @@ Ordinary truth-changing delivery stages may require:
 
 For selected-feature lifecycle progression, stage controllers must expose the target and current backlog state for:
 
+- `feature-intake -> intaken`
 - `spec-compact -> specified`
 - `plan-slice -> planned`
 - `implementation -> implemented`
 
 If the selected backlog item is behind the target, the stage-controller write keeps or sets backlog follow-up unresolved. The actual mutation remains a backlog command.
+`feature-intake` must not directly mutate backlog truth; the agent uses `patch-item` or `refresh+patch` to actualize `defined -> intaken` and passes accepted evidence to `dossier-step-close`.
 
 For the mature change path, the stronger explicit selector remains:
 
