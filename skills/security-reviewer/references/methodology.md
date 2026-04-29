@@ -25,7 +25,7 @@ Before finalizing a review or audit, identify which of these surfaces are in sco
 - CI, release, and automation paths
 - data plane and privilege boundaries such as SQL, RLS, grants, or storage policies
 - inbound or outbound integrations such as webhooks, callbacks, and URL fetchers
-- policy-governance admission gates for external invocation, policy activation, active-scope selection, governance/audit persistence preconditions, fail-closed decisions, or security-relevant replay/idempotency controls
+- policy-governance admission gates for external invocation, executable approval capability, policy activation, active-scope selection, governance/audit persistence preconditions, fail-closed decisions, stored `allowed` replay, conflict replay, authority binding, or security-relevant replay/idempotency controls
 
 If both frontend and backend exist, inspect both before claiming the review is complete.
 
@@ -37,7 +37,7 @@ For an explicit scan or report, use this order unless the user gives a narrower 
 2. Auth, session, cookie, and privilege transitions.
 3. Attacker-controlled input reaching sensitive sinks or missing permission checks.
 4. File handling, redirects, outbound requests, and integration boundaries.
-5. Policy-governance admission when the trigger is present: deny/no-invocation, failed/conflicting persistence, stale replay, freshness, activation races, and audit sufficiency.
+5. Policy-governance admission when the trigger is present: deny/no-invocation, failed/conflicting persistence, historical replay versus current executable capability, conflict replay, freshness authority, evidence identity, release/runtime/deployment binding, activation races, and audit sufficiency.
 6. CI, automation, secrets exposure, and supply chain paths.
 7. Stack-specific deep dives through `references/domain-handoffs.md` when implementation details change exploitability.
 

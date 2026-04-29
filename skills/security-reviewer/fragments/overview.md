@@ -75,10 +75,10 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - state replay/idempotency expectations and quota/key isolation when they are relevant
    - require bounded request-body handling on high-risk routes before untrusted body reads
    - keep this checkpoint bounded to route admission; do not turn it into a generic security planning framework
-3. Apply the policy-governance admission checkpoint only when a slice gates external consultant/tool invocation, policy profile activation, active-scope selection, governance/audit persistence preconditions, fail-closed policy gates, or replay/idempotency controls around security-relevant decisions:
+3. Apply the policy-governance admission checkpoint only when a slice gates external consultant/tool invocation, admission/approval executable capability, policy profile activation, active-scope selection, governance/audit persistence preconditions, fail-closed policy gates, or replay/idempotency controls around security-relevant decisions:
    - keep this checkpoint distinct from route auth-admission; it covers policy/control-plane admission rather than HTTP route admission
    - load `references/policy-governance-admission.md` for the bounded checklist
-   - check explicit deny/no-invocation, failed or conflicting persistence before side effects, stale allow replay, missing freshness evidence, activation races, and audit sufficiency
+   - check explicit deny/no-invocation, failed or conflicting persistence before side effects, historical replay versus current executable capability, conflict replay, caller-controlled freshness/evidence refs, authority binding, activation races, and audit sufficiency
    - report only HIGH-confidence findings with a confirmed attacker/control path or security-relevant operator/control-plane impact; route non-security merge risks to `code-reviewer`
 4. Classify the review scope and load only the needed references:
    - general methodology
@@ -186,7 +186,7 @@ Read only what you need:
 
 - `references/methodology.md` - confidence gating, surface discovery, audit order, uncertainty language, and report format
 - `references/api-auth-input.md` - input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints
-- `references/policy-governance-admission.md` - external invocation admission, policy activation, fail-closed governance gates, freshness, replay, and audit sufficiency checks
+- `references/policy-governance-admission.md` - external invocation admission, approval gates that produce executable capability, policy activation, fail-closed governance gates, freshness, replay semantics, authority binding, and audit sufficiency checks
 - `references/github-actions.md` - GitHub Actions threat model, attack classes, detection hints, and safe patterns
 - `references/supabase-rls.md` - RLS, grants, privileged functions, RPC, and service-role review
 - `references/webhooks.md` - signature verification, replay windows, raw body handling, idempotency, and reporting checks

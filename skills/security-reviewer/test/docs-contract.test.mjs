@@ -51,8 +51,12 @@ test('early-use workflow exposes the bounded policy-governance admission checkpo
 
   assert.match(skill, /policy-governance admission checkpoint/);
   assert.match(skill, /external consultant\/tool invocation/);
+  assert.match(skill, /admission\/approval executable capability/);
   assert.match(skill, /active-scope selection/);
   assert.match(skill, /distinct from route auth-admission/);
+  assert.match(skill, /historical replay versus current executable capability/);
+  assert.match(skill, /conflict replay/);
+  assert.match(skill, /authority binding/);
   assert.match(skill, /references\/policy-governance-admission\.md/);
   assert.match(skill, /security-relevant operator\/control-plane impact/);
 });
@@ -67,8 +71,20 @@ test('policy-governance admission reference keeps the checkpoint bounded and rep
   assert.match(reference, /explicit deny\/no-invocation/);
   assert.match(reference, /failed\/conflicting audit persistence/);
   assert.match(reference, /stale allow replay/);
+  assert.match(reference, /## Admission Replay Semantics/);
+  assert.match(reference, /historical\/audit replay/);
+  assert.match(reference, /current invocable or executable capability/);
+  assert.match(reference, /conflict replay/);
+  assert.match(reference, /stored `allowed` decision returns only historical\/audit status/);
+  assert.match(reference, /idempotency scope includes every security-relevant dimension/);
   assert.match(reference, /freshness timestamp/);
   assert.match(reference, /age-gated evidence fails closed/);
+  assert.match(reference, /## Authority Binding/);
+  assert.match(reference, /freshness timestamp authority/);
+  assert.match(reference, /evidence identity authority/);
+  assert.match(reference, /release-to-runtime artifact binding/);
+  assert.match(reference, /deployment identity binding/);
+  assert.match(reference, /For an admission-gate verdict, return `FAIL`/);
   assert.match(reference, /activation race/);
   assert.match(reference, /audit explanation sufficiency/);
   assert.match(reference, /HIGH-confidence findings/);
@@ -83,8 +99,29 @@ test('policy-governance examples cover external invocation and active-policy act
   assert.match(reference, /After explicit DENY/);
   assert.match(reference, /failed\/conflicting persistence still permits side effects/);
   assert.match(reference, /stale replay reaches an external invocation/);
+  assert.match(reference, /stored `allowed` decision can invoke the consultant\/tool again/);
+  assert.match(reference, /### Caller-Controlled Freshness or Evidence Review/);
+  assert.match(reference, /caller-selected ref bound to a canonical server\/provider record/);
+  assert.match(reference, /release ref bind to an immutable runtime artifact and protected deployment identity/);
+  assert.match(reference, /caller-controlled freshness or evidence refs can satisfy admission without canonical authority binding/);
   assert.match(reference, /### Active-Policy Activation Review/);
   assert.match(reference, /active-policy activation is serialized/);
   assert.match(reference, /simultaneous active security\/governance policies/);
   assert.match(reference, /audit explanation sufficiency for both the refused activation and the admitted active policy/);
+});
+
+test('policy-governance admission boundaries stay separated from route and release checks', async () => {
+  const apiAuth = await readSkillFile('references/api-auth-input.md');
+  const domainHandoffs = await readSkillFile('references/domain-handoffs.md');
+  const githubActions = await readSkillFile('references/github-actions.md');
+
+  assert.match(apiAuth, /route-specific/);
+  assert.match(apiAuth, /stored `allowed` replay/);
+  assert.match(apiAuth, /caller-selected evidence\/freshness refs/);
+  assert.match(domainHandoffs, /admission-gate authority binding/);
+  assert.match(domainHandoffs, /artifact provenance/);
+  assert.match(domainHandoffs, /deployment identity/);
+  assert.match(githubActions, /stored admission decisions/);
+  assert.match(githubActions, /release\/runtime\/deployment refs/);
+  assert.match(githubActions, /immutable runtime artifacts and protected deployment identities/);
 });

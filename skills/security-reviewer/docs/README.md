@@ -8,13 +8,14 @@
 | --- | --- | --- |
 | [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | Implemented | Bounded auth-admission early checklist stack для `security-reviewer`, `HONO engineer` и `typescript-test-engineer`. |
 | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented | Policy-governance admission checkpoint для external invocation, replay/freshness и activation race review. Plan: [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md). Log: [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md). |
-| [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | Audited PASS | Admission-gate security checklist для replay semantics, invocable capability и authority binding. |
+| [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | Implemented PASS | Admission-gate security checklist для replay semantics, invocable capability и authority binding. Plan: [issues/implementation-plan-20260428-1.md](issues/implementation-plan-20260428-1.md). Log: [logs/implementation-log-20260428-1.md](logs/implementation-log-20260428-1.md). |
 
 ## Implementation Plans
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
 | [issues/implementation-plan-20260424-1.md](issues/implementation-plan-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implemented PASS |
+| [issues/implementation-plan-20260428-1.md](issues/implementation-plan-20260428-1.md) | [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | PASS |
 
 ## Implementation Logs
 
@@ -22,3 +23,4 @@
 | --- | --- | --- |
 | [logs/implementation-log-20260423-1.md](logs/implementation-log-20260423-1.md) | [issues/improvement-proposal-20260423-1.md](issues/improvement-proposal-20260423-1.md) | PASS |
 | [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | PASS |
+| [logs/implementation-log-20260428-1.md](logs/implementation-log-20260428-1.md) | [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | PASS |

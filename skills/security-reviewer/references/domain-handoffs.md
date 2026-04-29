@@ -2,7 +2,7 @@
 
 This skill owns security review method. Stop and hand off framework detail when you hit implementation-specific questions.
 
-Policy-governance admission reportability stays with `security-reviewer`: decide whether external invocation, policy activation, active-scope selection, governance/audit persistence, fail-closed gates, or replay/idempotency behavior creates a security finding here. Hand off only the framework/runtime facts needed to prove exploitability or remediation.
+Policy-governance admission reportability stays with `security-reviewer`: decide whether external invocation, executable approval capability, policy activation, active-scope selection, governance/audit persistence, fail-closed gates, replay/idempotency behavior, or admission-gate authority binding creates a security finding here. Hand off only the framework/runtime facts needed to prove exploitability or remediation.
 
 ## Stack Discovery
 
@@ -84,4 +84,4 @@ Security questions to resolve:
 
 If exploitability depends on a stack-specific fact that this skill cannot confirm, keep the item in `needs verification` until the relevant domain skill resolves it.
 
-Do not transfer non-route policy-governance security reportability to a domain skill. Domain skills can resolve transaction, runtime, middleware, queue, or framework facts, but `security-reviewer` owns the final HIGH-confidence security finding decision.
+Do not transfer non-route policy-governance security reportability to a domain skill. Domain skills can resolve transaction, runtime, middleware, queue, artifact provenance, deployment identity, provider timestamp, canonical evidence storage, or framework facts, but `security-reviewer` owns the final HIGH-confidence security finding decision.

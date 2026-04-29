@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.1"
+  source-version: "0.1.2"
   recommended-skill-md-max-bytes: 36000
   description: "Systematic security code review skill for vulnerabilities in application code, CI workflows, permission models, webhooks, secrets, and configuration. Use when asked to security review, find vulnerabilities, audit auth or RLS, check GitHub Actions security, inspect webhook verification, or review code against OWASP-style risks. Owns threat modeling, confidence gating, exploitability checks, and evidence; pairs with domain skills for framework details."
 fragments:
@@ -37,7 +37,7 @@ references:
     source: "references/policy-governance-admission.md"
     target: "references/policy-governance-admission.md"
     required: true
-    trigger: "Read this when reviewing external consultant/tool invocation admission, policy profile activation, active-scope selection, governance/audit persistence preconditions, fail-closed policy gates, or replay/idempotency controls around security-relevant decisions."
+    trigger: "Read this when reviewing external consultant/tool invocation admission, admission/approval gates that can produce executable capability, policy profile activation, active-scope selection, governance/audit persistence preconditions, fail-closed policy gates, or replay/idempotency controls around security-relevant decisions."
   - id: "ref-secrets-config"
     title: "Secrets Config"
     source: "references/secrets-config.md"
@@ -108,13 +108,13 @@ sections:
       steps:
         - "Identify reviewed surfaces, stack, trust boundaries, identities, secrets, privileged actions, and sensitive sinks."
         - "Apply the bounded auth-admission checkpoint when route admission, replay, idempotency, or pre-auth resource use changes."
-        - "Apply the bounded policy-governance admission checkpoint only when external invocation, policy activation, active-scope selection, governance/audit preconditions, fail-closed gates, or security-relevant replay/idempotency controls change."
+        - "Apply the bounded policy-governance admission checkpoint only when external invocation, admission/approval executable capability, policy activation, active-scope selection, governance/audit preconditions, fail-closed gates, or security-relevant replay/idempotency controls change."
         - "Trace attacker-controlled input or identity to a missing control or sensitive sink."
         - "Check surrounding mitigations, framework defaults, and deployment constraints before reporting."
         - "Classify confidence and severity, then choose targeted chat output or formal audit format."
       validation:
         - "Reported findings have confirmed attacker control, reachability, impact, evidence, and fix direction."
-        - "Policy-governance findings state the relevant actor/control path or security-relevant operator/control-plane impact."
+        - "Policy-governance findings state the relevant actor/control path or security-relevant operator/control-plane impact, including replay semantics and authority binding when those decide executable capability."
         - "Low-confidence, theoretical, test-only, comment-only, or mitigated patterns are not reported by default."
   interop:
     - id: "interop-security"
