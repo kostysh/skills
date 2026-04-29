@@ -6,19 +6,77 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
+import { runCli } from '../src/cli/run-cli.ts';
+
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(TEST_DIR, '..');
 const CLI_PATH = path.join(SKILL_DIR, 'scripts', 'retro-cli.mjs');
 const FIXTURES_DIR = path.join(TEST_DIR, 'fixtures');
+const TEST_CLI_VERSION = '0.1.1';
 
 function fixturePath(...segments: string[]): string {
   return path.join(FIXTURES_DIR, ...segments);
 }
 
-function runBuiltCli(
+interface CliRunResult {
+  status: number | null;
+  stdout: string;
+  stderr: string;
+}
+
+function spawnErrorCode(result: SpawnSyncReturns<string>): string | undefined {
+  return (result.error as NodeJS.ErrnoException | undefined)?.code;
+}
+
+// Some local agent sandboxes block nested node subprocess output; keep the command contract testable.
+const SUBPROCESS_CLI_BLOCKED = (() => {
+  const result = spawnSync('node', ['-e', 'process.stdout.write("ok")'], {
+    encoding: 'utf8',
+  });
+  return spawnErrorCode(result) === 'EPERM' && result.stdout === '' && result.stderr === '';
+})();
+
+async function runCliInProcess(
+  args: string[],
+  { cwd = SKILL_DIR }: { cwd?: string } = {},
+): Promise<CliRunResult> {
+  let stdout = '';
+  let stderr = '';
+  const previousCwd = process.cwd();
+  process.chdir(cwd);
+  try {
+    const status = await runCli(
+      args,
+      {
+        stdout: {
+          write(chunk: string | Uint8Array) {
+            stdout += String(chunk);
+            return true;
+          },
+        },
+        stderr: {
+          write(chunk: string | Uint8Array) {
+            stderr += String(chunk);
+            return true;
+          },
+        },
+      },
+      TEST_CLI_VERSION,
+    );
+    return { status, stdout, stderr };
+  } finally {
+    process.chdir(previousCwd);
+  }
+}
+
+async function runBuiltCli(
   args: string[],
   { cwd = SKILL_DIR, env }: { cwd?: string; env?: NodeJS.ProcessEnv } = {},
-): SpawnSyncReturns<string> {
+): Promise<CliRunResult> {
+  if (SUBPROCESS_CLI_BLOCKED) {
+    return runCliInProcess(args, { cwd });
+  }
+
   const result = spawnSync('node', [CLI_PATH, ...args], {
     cwd,
     env,
@@ -29,7 +87,11 @@ function runBuiltCli(
     throw result.error;
   }
 
-  return result;
+  return {
+    status: result.status,
+    stdout: result.stdout,
+    stderr: result.stderr,
+  };
 }
 
 function parseScanStdout(stdout: string): {
@@ -131,8 +193,8 @@ async function createFallbackOutputFixture(): Promise<{
   return { tempDir, projectRoot, sessionPath };
 }
 
-void test('global help and command help are available on the built CLI', () => {
-  const help = runBuiltCli(['--help']);
+void test('global help and command help are available on the built CLI', async () => {
+  const help = await runBuiltCli(['--help']);
   assert.equal(help.status, 0);
   assert.equal(help.stderr, '');
   assert.match(help.stdout, /retrospective-phase-analysis CLI/u);
@@ -141,13 +203,13 @@ void test('global help and command help are available on the built CLI', () => {
   assert.match(help.stdout, /problem-matrix/u);
   assert.match(help.stdout, /validate/u);
 
-  const commandHelp = runBuiltCli(['help', 'report']);
+  const commandHelp = await runBuiltCli(['help', 'report']);
   assert.equal(commandHelp.status, 0);
   assert.equal(commandHelp.stderr, '');
   assert.match(commandHelp.stdout, /^report - Generate a Markdown retrospective draft\./mu);
   assert.match(commandHelp.stdout, /--title <text>/u);
 
-  const scanHelp = runBuiltCli(['help', 'scan']);
+  const scanHelp = await runBuiltCli(['help', 'scan']);
   assert.equal(scanHelp.status, 0);
   assert.equal(scanHelp.stderr, '');
   assert.match(scanHelp.stdout, /^ {2}node scripts\/retro-cli\.mjs scan --session <file>$/mu);
@@ -168,7 +230,7 @@ void test('scan writes a JSON summary file from fixture inputs', async () => {
   const outputPath = path.join(tempDir, 'scan-summary.json');
 
   try {
-    const result = runBuiltCli([
+    const result = await runBuiltCli([
       'scan',
       '--session',
       fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
@@ -210,7 +272,7 @@ void test('scan writes display-safe skill evidence paths to persisted summary', 
   const outputPath = path.join(tempDir, 'scan-summary.json');
 
   try {
-    const result = runBuiltCli([
+    const result = await runBuiltCli([
       'scan',
       '--session',
       fixturePath('contracts', 'session-skills-trace.jsonl'),
@@ -245,7 +307,7 @@ void test('scan accepts arbitrary operator language labels', async () => {
   const outputPath = path.join(tempDir, 'scan-summary.json');
 
   try {
-    const result = runBuiltCli([
+    const result = await runBuiltCli([
       'scan',
       '--session',
       fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
@@ -270,7 +332,7 @@ void test('scan accepts arbitrary operator language labels', async () => {
     assert.equal(parsed.operator_language, 'italiano');
     assert.equal(parsed.report_language, 'italiano');
 
-    const reportResult = runBuiltCli([
+    const reportResult = await runBuiltCli([
       'report',
       '--session',
       fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
@@ -295,7 +357,7 @@ void test('scan returns a usage error when --session is omitted', async () => {
   const outputPath = path.join(tempDir, 'scan-summary.json');
 
   try {
-    const result = runBuiltCli([
+    const result = await runBuiltCli([
       'scan',
       '--logs-dir',
       fixturePath('artifacts', '.dossier', 'logs'),
@@ -317,7 +379,7 @@ void test('scan returns usage errors for invalid phase boundary and manual overr
   const outputPath = path.join(tempDir, 'scan-summary.json');
 
   try {
-    const invalidLine = runBuiltCli([
+    const invalidLine = await runBuiltCli([
       'scan',
       '--session',
       fixturePath('sessions', 'phase-session.jsonl'),
@@ -329,7 +391,7 @@ void test('scan returns usage errors for invalid phase boundary and manual overr
     assert.equal(invalidLine.status, 1);
     assert.match(invalidLine.stderr, /--until-line must be a positive integer/u);
 
-    const lineBeyondTrace = runBuiltCli([
+    const lineBeyondTrace = await runBuiltCli([
       'scan',
       '--session',
       fixturePath('sessions', 'phase-session.jsonl'),
@@ -341,7 +403,7 @@ void test('scan returns usage errors for invalid phase boundary and manual overr
     assert.equal(lineBeyondTrace.status, 1);
     assert.match(lineBeyondTrace.stderr, /exceeds the session trace length/u);
 
-    const invalidTimestamp = runBuiltCli([
+    const invalidTimestamp = await runBuiltCli([
       'scan',
       '--session',
       fixturePath('sessions', 'phase-session.jsonl'),
@@ -353,7 +415,7 @@ void test('scan returns usage errors for invalid phase boundary and manual overr
     assert.equal(invalidTimestamp.status, 1);
     assert.match(invalidTimestamp.stderr, /--until-ts must be a valid ISO-like timestamp/u);
 
-    const missingManualEvidence = runBuiltCli([
+    const missingManualEvidence = await runBuiltCli([
       'scan',
       '--session',
       fixturePath('sessions', 'phase-session.jsonl'),
@@ -374,7 +436,14 @@ void test('scan discovers standard evidence directories from session_meta.cwd af
   const outputPath = path.join(tempDir, 'scan-summary.json');
 
   try {
-    const result = runBuiltCli(['scan', '--session', sessionPath, '--out', outputPath, '--pretty']);
+    const result = await runBuiltCli([
+      'scan',
+      '--session',
+      sessionPath,
+      '--out',
+      outputPath,
+      '--pretty',
+    ]);
 
     assert.equal(result.status, 0);
     const scanOutput = parseScanStdout(result.stdout);
@@ -411,7 +480,7 @@ void test('report writes a markdown draft from fixture inputs', async () => {
   const outputPath = path.join(tempDir, 'retrospective.md');
 
   try {
-    const result = runBuiltCli([
+    const result = await runBuiltCli([
       'report',
       '--session',
       fixturePath('sessions', 'phase-session-with-log-link.jsonl'),
@@ -457,14 +526,16 @@ void test('scan and report reuse the same durable retrospective run directory fr
   const rerunDir = `${baseRunDir}-r2`;
 
   try {
-    const firstScan = runBuiltCli(['scan', '--session', sessionPath], { cwd: nestedWorkdir });
+    const firstScan = await runBuiltCli(['scan', '--session', sessionPath], {
+      cwd: nestedWorkdir,
+    });
     assert.equal(firstScan.status, 0);
     assert.equal(parseScanStdout(firstScan.stdout).run_dir, baseRunDir);
 
     const firstScanOutput = path.join(baseRunDir, 'scan-summary.json');
     await readFile(firstScanOutput, 'utf8');
 
-    const firstReport = runBuiltCli(
+    const firstReport = await runBuiltCli(
       ['report', '--session', sessionPath, '--phase', 'implementation'],
       { cwd: nestedWorkdir },
     );
@@ -474,12 +545,14 @@ void test('scan and report reuse the same durable retrospective run directory fr
     const firstReportMarkdown = await readFile(firstReportOutput, 'utf8');
     assert.match(firstReportMarkdown, /^# Retrospective:/mu);
 
-    const secondScan = runBuiltCli(['scan', '--session', sessionPath], { cwd: nestedWorkdir });
+    const secondScan = await runBuiltCli(['scan', '--session', sessionPath], {
+      cwd: nestedWorkdir,
+    });
     assert.equal(secondScan.status, 0);
     assert.equal(parseScanStdout(secondScan.stdout).run_dir, rerunDir);
     await readFile(path.join(rerunDir, 'scan-summary.json'), 'utf8');
 
-    const secondReport = runBuiltCli(
+    const secondReport = await runBuiltCli(
       ['report', '--session', sessionPath, '--phase', 'implementation'],
       { cwd: nestedWorkdir },
     );
@@ -496,7 +569,7 @@ void test('run-dir keeps all retrospective bundle files in one canonical directo
   const runDir = path.join(projectRoot, '.dossier', 'retro', 'session-019d7490', 'manual-run');
 
   try {
-    const scan = runBuiltCli(
+    const scan = await runBuiltCli(
       ['scan', '--session', sessionPath, '--run-dir', runDir, '--language', 'ru', '--pretty'],
       { cwd: nestedWorkdir },
     );
@@ -514,26 +587,28 @@ void test('run-dir keeps all retrospective bundle files in one canonical directo
     assert.equal(scanSummary.operator_language, 'ru');
     assert.equal(scanSummary.report_language, 'ru');
 
-    const report = runBuiltCli(['report', '--run-dir', runDir, '--phase', 'implementation'], {
+    const report = await runBuiltCli(['report', '--run-dir', runDir, '--phase', 'implementation'], {
       cwd: nestedWorkdir,
     });
     assert.equal(report.status, 0);
     assert.equal(report.stdout, '');
 
-    const skillAudit = runBuiltCli(['skill-audit', '--run-dir', runDir], { cwd: nestedWorkdir });
+    const skillAudit = await runBuiltCli(['skill-audit', '--run-dir', runDir], {
+      cwd: nestedWorkdir,
+    });
     assert.equal(skillAudit.status, 0);
 
-    const loggingReview = runBuiltCli(['logging-review', '--run-dir', runDir], {
+    const loggingReview = await runBuiltCli(['logging-review', '--run-dir', runDir], {
       cwd: nestedWorkdir,
     });
     assert.equal(loggingReview.status, 0);
 
-    const problemMatrix = runBuiltCli(['problem-matrix', '--run-dir', runDir], {
+    const problemMatrix = await runBuiltCli(['problem-matrix', '--run-dir', runDir], {
       cwd: nestedWorkdir,
     });
     assert.equal(problemMatrix.status, 0);
 
-    const validate = runBuiltCli(
+    const validate = await runBuiltCli(
       [
         'validate',
         '--run-dir',
@@ -596,7 +671,7 @@ void test('scan falls back to out/retro when the project root is not dossier-man
   const { tempDir, projectRoot, sessionPath } = await createFallbackOutputFixture();
 
   try {
-    const result = runBuiltCli(['scan', '--session', sessionPath], { cwd: projectRoot });
+    const result = await runBuiltCli(['scan', '--session', sessionPath], { cwd: projectRoot });
     assert.equal(result.status, 0);
 
     const outputPath = path.join(
@@ -631,7 +706,7 @@ void test('scan does not derive fallback out/retro from session_meta.cwd when no
   try {
     await rm(path.join(SKILL_DIR, 'out'), { recursive: true, force: true });
 
-    const result = runBuiltCli(['scan', '--session', sessionPath]);
+    const result = await runBuiltCli(['scan', '--session', sessionPath]);
     assert.equal(result.status, 0);
 
     const parsed = JSON.parse(await readFile(outputPath, 'utf8')) as {
