@@ -1,3 +1,4 @@
+import { isActionableReviewSignal, isContextReviewSignal } from '../core/review-signals.ts';
 import type { ScanSummary } from '../core/types.ts';
 
 function statusLine(scan: ScanSummary): string {
@@ -89,8 +90,9 @@ export function buildLoggingReviewMarkdown(scan: ScanSummary): string {
   ).length;
   const excludedStageLogs = excludedStageLogCandidateLabels(scan);
   const missingNonPassReviewArtifacts = (scan.reviewSignals ?? []).filter(
-    (signal) => !signal.matching_artifact,
+    (signal) => isActionableReviewSignal(signal) && !signal.matching_artifact,
   ).length;
+  const contextReviewSignals = (scan.reviewSignals ?? []).filter(isContextReviewSignal).length;
   const logDerivedMetricsStatus =
     scan.stageLogs.count === 0 && excludedStageLogs.length > 0
       ? 'incomplete; excluded stage-log candidates require validation.'
@@ -106,6 +108,7 @@ ${statusLine(scan)}
 - Log-derived metrics: ${logDerivedMetricsStatus}
 - Excluded stage-log candidates require validation: ${excludedStageLogs.join(', ') || 'none'}
 - Non-PASS review signals without matching immutable artifacts: ${missingNonPassReviewArtifacts}
+- Historical or superseded trace-only review signals retained as context: ${contextReviewSignals}
 - Process misses recorded: ${scan.stageLogs.metrics.processMissesTotal}
 - Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
 - Missing review artifacts: ${missingReviewArtifacts}

@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 //#region package.json
 var name = "@kostysh/retrospective-phase-analysis-cli";
-var version = "0.1.1";
+var version = "0.1.2";
 var description = "CLI utilities for the retrospective-phase-analysis skill.";
 var type = "module";
 var bin = { "retrospective-phase-analysis": "scripts/retro-cli.mjs" };
@@ -1345,7 +1345,7 @@ function withExcludedStageLogValidationActions(candidates) {
 		return {
 			...candidate,
 			reason: `Referenced in ${candidate.event_ref ?? "the trace"}, but not confirmed as created or changed in scope.`,
-			next_action: "Validate same-session stage-log evidence before manual inclusion; otherwise keep this candidate excluded."
+			next_action: "Validate same-session stage-log evidence; when valid, rerun scan with --stage-log <path> --artifact-evidence <justification>."
 		};
 	});
 }
@@ -1569,6 +1569,14 @@ function parseStageLog(filePath) {
 	};
 }
 //#endregion
+//#region src/core/review-signals.ts
+function isActionableReviewSignal(signal) {
+	return signal.classification === "active_unmatched";
+}
+function isContextReviewSignal(signal) {
+	return signal.classification === "historical" || signal.classification === "superseded";
+}
+//#endregion
 //#region src/core/infer-candidate-incidents.ts
 function processMissEvidence(metadata, proseLines) {
 	if (Array.isArray(metadata.process_misses)) return {
@@ -1594,7 +1602,7 @@ function inferCandidateIncidents(sessionSummary, logSummary, reviewSignals = log
 		const structuredReviewFindings = Number(metadata.review_findings_total);
 		const hasStructuredReviewFindings = Number.isFinite(structuredReviewFindings);
 		const reviewFindingTotal = hasStructuredReviewFindings ? structuredReviewFindings : 0;
-		const logReviewSignals = reviewSignals.filter((signal) => signal.evidence === log.filePath);
+		const logReviewSignals = reviewSignals.filter(isActionableReviewSignal).filter((signal) => signal.evidence === log.filePath);
 		const hasStructuredNonPassReview = structuredReviewEventsFromMetadata(metadata).some(isNonPassReviewEvent) || logReviewSignals.some((signal) => ["structured", "incomplete"].includes(signal.source_quality));
 		if (processMisses.count > 0) incidents.push({
 			title: `Process misses in ${path.basename(log.filePath)}`,
@@ -1643,7 +1651,7 @@ function inferCandidateIncidents(sessionSummary, logSummary, reviewSignals = log
 		evidence: sessionSummary.filePath,
 		reason: `${sessionSummary.abortedTurns} aborted/restarted turn(s) detected in the session trace.`
 	});
-	for (const signal of reviewSignals.filter((entry) => entry.source === "trace")) incidents.push({
+	for (const signal of reviewSignals.filter((entry) => entry.source === "trace" && isActionableReviewSignal(entry))) incidents.push({
 		title: "Trace-derived non-pass review signal",
 		severity: "medium",
 		stage: "review",
@@ -1904,6 +1912,7 @@ function reviewSignalFromStructuredRecord(input) {
 	return {
 		source_quality: input.forceIncomplete ? "incomplete" : "structured",
 		source: input.source,
+		classification: "active_unmatched",
 		verdict: stringFromUnknown(verdict, "non-pass"),
 		audit_class: firstNullableString(input.record.audit_class, input.record.reviewer, input.record.skill),
 		round: firstNullableString(input.record.review_round_id, input.record.review_attempt_id) ?? numberOrNull(input.record.review_round_number) ?? numberOrNull(input.record.round),
@@ -1943,6 +1952,7 @@ function proseReviewSignals(log) {
 	return log.reviewEvents.filter((event) => event.source === "prose" && isNonPassReviewEvent(event)).map((event) => ({
 		source_quality: "prose_derived",
 		source: "prose",
+		classification: "active_unmatched",
 		verdict: stringFromUnknown(event.verdict, "non-pass"),
 		audit_class: null,
 		round: null,
@@ -1964,12 +1974,13 @@ function collectReviewSignals(log, projectRoot) {
 	return proseReviewSignals(log);
 }
 function reviewSignalMetricQuality(signals) {
-	if (signals.length === 0) return "none";
-	if (signals.some((signal) => !signal.matching_artifact || signal.source_quality === "incomplete")) return "incomplete";
-	return signals.reduce((current, signal) => mergeQuality(current, signal.source_quality), "none");
+	const actionableSignals = signals.filter(isActionableReviewSignal);
+	if (actionableSignals.length === 0) return "none";
+	if (actionableSignals.some((signal) => !signal.matching_artifact || signal.source_quality === "incomplete")) return "incomplete";
+	return actionableSignals.reduce((current, signal) => mergeQuality(current, signal.source_quality), "none");
 }
 function reviewFindingsFromSignals(signals) {
-	return signals.reduce((total, signal) => total + (signal.must_fix_count ?? 0), 0);
+	return signals.filter(isActionableReviewSignal).reduce((total, signal) => total + (signal.must_fix_count ?? 0), 0);
 }
 function summarizeParsedLogs(logs, projectRoot) {
 	const metrics = createEmptyMetrics();
@@ -2271,7 +2282,7 @@ function buildReportStatus(input) {
 	if (scope.scope_ambiguities.length > 0) reasons.push("Unresolved scope ambiguities remain.");
 	if (hasManualCandidates(scope.stage_log_candidates) || hasManualCandidates(scope.review_artifact_candidates) || hasManualCandidates(scope.verification_artifact_candidates)) reasons.push("Manual artifact overrides were used.");
 	if (hasUnvalidatedFallbackMetrics(logSummary.metrics.sources)) reasons.push("Trace/prose-derived or incomplete metrics require agent validation.");
-	if (reviewSignals.some((signal) => !signal.matching_artifact)) reasons.push("Non-PASS review signals without matching immutable artifacts require validation.");
+	if (reviewSignals.some((signal) => isActionableReviewSignal(signal) && !signal.matching_artifact)) reasons.push("Non-PASS review signals without matching immutable artifacts require validation.");
 	return {
 		status: reasons.length > 0 ? "draft_requires_agent_validation" : "ready_for_agent_finalization",
 		reasons
@@ -2334,13 +2345,37 @@ function collectTraceReviewText(event, depth = 0, key) {
 	if (typeof event === "object") return Object.entries(event).flatMap(([entryKey, value]) => collectTraceReviewText(value, depth + 1, entryKey));
 	return [];
 }
-function traceSignalFindingCount(value) {
+function traceSignalExplicitFindingCount(value) {
 	const explicit = value.match(/\b(\d+)\s+(?:must[-_\s]?fix|blocking|finding|issue)s?\b/iu)?.[1];
 	if (explicit) return Number(explicit);
 	const blockingMarkers = value.match(/\[(?:blocking|must[-_\s]?fix)\]/giu)?.length ?? 0;
 	if (blockingMarkers > 0) return blockingMarkers;
 	if (/\bone\s+(?:must[-_\s]?fix|blocking|finding|issue)\b/iu.test(value)) return 1;
-	return 1;
+	return null;
+}
+function onlyUniqueMatch(value, pattern) {
+	const matches = Array.from(value.matchAll(pattern)).map((match) => match[1]).filter((match) => match !== void 0);
+	const uniqueMatches = Array.from(new Set(matches));
+	return uniqueMatches.length === 1 ? uniqueMatches.at(0) ?? null : null;
+}
+function hasAmbiguousMatches(value, pattern) {
+	return Array.from(new Set(Array.from(value.matchAll(pattern)).map((match) => match[1]).filter((match) => match !== void 0))).length > 1;
+}
+function traceSignalScopeIdentity(value) {
+	const featurePattern = /\b(F-\d{4})\b/giu;
+	const backlogPattern = /\b(CF-\d{3,4})\b/giu;
+	const stagePattern = /\b(feature-intake|spec-compact|plan-slice|implementation|change-proposal|next-step)\b/giu;
+	const featureId = onlyUniqueMatch(value, featurePattern);
+	const backlogItemKey = onlyUniqueMatch(value, backlogPattern);
+	const stage = onlyUniqueMatch(value, stagePattern);
+	const ambiguous = hasAmbiguousMatches(value, featurePattern) || hasAmbiguousMatches(value, backlogPattern) || hasAmbiguousMatches(value, stagePattern);
+	if (!featureId && !backlogItemKey && !stage && !ambiguous) return null;
+	return {
+		feature_id: featureId,
+		backlog_item_key: backlogItemKey,
+		stage,
+		ambiguous
+	};
 }
 function extractTraceReviewSignals(sessionSummary) {
 	if (!sessionSummary.filePath) return [];
@@ -2352,37 +2387,100 @@ function extractTraceReviewSignals(sessionSummary) {
 		out.push({
 			source_quality: "trace_derived",
 			source: "trace",
+			classification: "active_unmatched",
 			verdict: "non-pass",
 			audit_class: raw.match(/\b(spec-conformance-reviewer|security-reviewer|code-reviewer)\b/iu)?.[1] ?? null,
 			round: raw.match(/\b(?:r|round)[-_ ]?(\d+)\b/iu)?.[1] ?? null,
 			commit: raw.match(/\b[0-9a-f]{7,40}\b/iu)?.[0] ?? null,
 			artifact_path: null,
 			matching_artifact: false,
-			source_identity: null,
+			source_identity: traceSignalScopeIdentity(raw),
 			timestamp: extractTimestamp(event),
 			evidence: `${sessionSummary.filePath}#event:${sessionSummary.eventLines[index] ?? index + 1}`,
-			must_fix_count: traceSignalFindingCount(raw),
+			must_fix_count: traceSignalExplicitFindingCount(raw),
 			evidence_count: null
 		});
 	}
 	return out;
 }
+function reviewHistoryQuality(logSummary, evidence) {
+	const quality = logSummary.logs.find((entry) => entry.filePath === evidence)?.metadata.rpa_source_quality;
+	if (!quality || typeof quality !== "object") return null;
+	const reviewHistoryQualityValue = quality.review_history_quality;
+	return typeof reviewHistoryQualityValue === "string" ? reviewHistoryQualityValue : null;
+}
+function normalizedScalar(value) {
+	return value === null ? null : String(value).toLowerCase();
+}
+function normalizedRound(value) {
+	return normalizedScalar(value)?.replace(/^r0*/u, "").replace(/^0+/u, "") ?? null;
+}
+function signalTimestamp(value) {
+	const date = tryParseDate(value);
+	return date ? date.valueOf() : null;
+}
+function identityValue(identity, key) {
+	const value = identity?.[key];
+	return typeof value === "string" && value.length > 0 ? value.toLowerCase() : null;
+}
+function identityFlag(identity, key) {
+	return identity?.[key] === true;
+}
+function completeStructuredReviewSignals(logSummary) {
+	return logSummary.reviewSignals.filter((signal) => signal.source !== "trace" && signal.source !== "prose" && signal.source_quality === "structured" && signal.matching_artifact && reviewHistoryQuality(logSummary, signal.evidence) === "complete");
+}
+function traceMatchesCompleteReviewSignal(trace, complete) {
+	if (!trace.audit_class || normalizedScalar(trace.audit_class) !== normalizedScalar(complete.audit_class)) return false;
+	if (!trace.round || normalizedRound(trace.round) !== normalizedRound(complete.round)) return false;
+	if (!trace.commit || normalizedScalar(trace.commit) !== normalizedScalar(complete.commit)) return false;
+	if (trace.must_fix_count === null || trace.must_fix_count !== complete.must_fix_count) return false;
+	const traceFeatureId = identityValue(trace.source_identity, "feature_id");
+	const traceBacklogItemKey = identityValue(trace.source_identity, "backlog_item_key");
+	const traceStage = identityValue(trace.source_identity, "stage");
+	const completeFeatureId = identityValue(complete.source_identity, "feature_id");
+	const completeBacklogItemKey = identityValue(complete.source_identity, "backlog_item_key");
+	const completeStage = identityValue(complete.source_identity, "stage");
+	if (identityFlag(trace.source_identity, "ambiguous")) return false;
+	if (!traceStage || traceStage !== completeStage) return false;
+	if (!traceFeatureId && !traceBacklogItemKey) return false;
+	if (traceFeatureId && traceFeatureId !== completeFeatureId) return false;
+	if (traceBacklogItemKey && completeBacklogItemKey && traceBacklogItemKey !== completeBacklogItemKey) return false;
+	const traceTs = signalTimestamp(trace.timestamp);
+	const completeTs = signalTimestamp(complete.timestamp);
+	return traceTs !== null && completeTs !== null && traceTs <= completeTs;
+}
+function classifyTraceReviewSignals(logSummary, traceReviewSignals) {
+	const completeSignals = completeStructuredReviewSignals(logSummary);
+	if (completeSignals.length === 0) return [...traceReviewSignals];
+	return traceReviewSignals.map((trace) => {
+		const matches = completeSignals.filter((complete) => traceMatchesCompleteReviewSignal(trace, complete));
+		if (matches.length !== 1) return trace;
+		const traceTs = signalTimestamp(trace.timestamp);
+		const completeTs = signalTimestamp(matches[0]?.timestamp ?? null);
+		return {
+			...trace,
+			classification: traceTs !== null && completeTs !== null && traceTs < completeTs ? "historical" : "superseded"
+		};
+	});
+}
 function logSummaryWithTraceReviewSignals(logSummary, traceReviewSignals) {
 	if (traceReviewSignals.length === 0) return logSummary;
-	const reviewFindingsFromTrace = traceReviewSignals.reduce((total, signal) => total + (signal.must_fix_count ?? 1), 0);
+	const actionableTraceReviewSignals = traceReviewSignals.filter(isActionableReviewSignal);
+	const reviewFindingsFromTrace = actionableTraceReviewSignals.reduce((total, signal) => total + (signal.must_fix_count ?? 1), 0);
+	const metrics = actionableTraceReviewSignals.length === 0 ? logSummary.metrics : {
+		...logSummary.metrics,
+		reviewFindingsTotal: logSummary.metrics.reviewFindingsTotal + reviewFindingsFromTrace,
+		sources: {
+			...logSummary.metrics.sources,
+			candidate_incidents: {
+				quality: "incomplete",
+				reason: "candidate_incidents include trace-derived non-PASS review signals without matching immutable review artifacts."
+			}
+		}
+	};
 	return {
 		...logSummary,
-		metrics: {
-			...logSummary.metrics,
-			reviewFindingsTotal: logSummary.metrics.reviewFindingsTotal + reviewFindingsFromTrace,
-			sources: {
-				...logSummary.metrics.sources,
-				candidate_incidents: {
-					quality: "incomplete",
-					reason: "candidate_incidents include trace-derived non-PASS review signals without matching immutable review artifacts."
-				}
-			}
-		},
+		metrics,
 		reviewSignals: [...logSummary.reviewSignals, ...traceReviewSignals]
 	};
 }
@@ -2530,7 +2628,7 @@ function buildScanSummary(args) {
 	};
 	if (args.skillsDir) skillScopeOptions.skillsDir = args.skillsDir;
 	const skillTraceSummary = extractSkillTraceSummary(skillScopeOptions);
-	const traceReviewSignals = logSummary.reviewSignals.length === 0 ? extractTraceReviewSignals(sessionSummary) : [];
+	const traceReviewSignals = classifyTraceReviewSignals(logSummary, extractTraceReviewSignals(sessionSummary));
 	const evidenceLogSummary = logSummaryWithTraceReviewSignals(logSummary, traceReviewSignals);
 	const reviewSignals = evidenceLogSummary.reviewSignals;
 	const candidateIncidents = inferCandidateIncidents(sessionSummary, evidenceLogSummary, reviewSignals);
@@ -2663,7 +2761,8 @@ function buildLoggingReviewMarkdown(scan) {
 	const missingVerificationArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.verification_artifact).length;
 	const approximateDurations = scan.stageLogs.files.filter((entry) => entry.metadata.log_quality && typeof entry.metadata.log_quality === "object" && entry.metadata.log_quality.duration_exact === false).length;
 	const excludedStageLogs = excludedStageLogCandidateLabels(scan);
-	const missingNonPassReviewArtifacts = (scan.reviewSignals ?? []).filter((signal) => !signal.matching_artifact).length;
+	const missingNonPassReviewArtifacts = (scan.reviewSignals ?? []).filter((signal) => isActionableReviewSignal(signal) && !signal.matching_artifact).length;
+	const contextReviewSignals = (scan.reviewSignals ?? []).filter(isContextReviewSignal).length;
 	const logDerivedMetricsStatus = scan.stageLogs.count === 0 && excludedStageLogs.length > 0 ? "incomplete; excluded stage-log candidates require validation." : "based on included stage logs.";
 	return `# Logging review draft
 
@@ -2675,6 +2774,7 @@ ${statusLine$2(scan)}
 - Log-derived metrics: ${logDerivedMetricsStatus}
 - Excluded stage-log candidates require validation: ${excludedStageLogs.join(", ") || "none"}
 - Non-PASS review signals without matching immutable artifacts: ${missingNonPassReviewArtifacts}
+- Historical or superseded trace-only review signals retained as context: ${contextReviewSignals}
 - Process misses recorded: ${scan.stageLogs.metrics.processMissesTotal}
 - Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
 - Missing review artifacts: ${missingReviewArtifacts}
@@ -2956,7 +3056,7 @@ function recommendationForIncident(incident) {
 	return "Validate the symptom against cited evidence, then move the reusable prevention rule into the owning skill or workflow.";
 }
 function reviewHistoryRows(scan) {
-	if (!(scan.reviewSignals ?? []).some((signal) => !signal.matching_artifact)) return [];
+	if (!(scan.reviewSignals ?? []).some((signal) => isActionableReviewSignal(signal) && !signal.matching_artifact)) return [];
 	return [[
 		"PM-REVIEW-HISTORY",
 		"Non-PASS review history is present, but at least one signal lacks a matching immutable review artifact.",
@@ -3114,8 +3214,13 @@ function formatReviewEvidenceQuality(scan) {
 	return formatList(signals.map((signal) => {
 		const artifact = signal.artifact_path ?? "no immutable artifact";
 		const match = signal.matching_artifact ? "matched artifact" : "missing matching artifact";
-		return `${signal.source_quality}: ${signal.verdict} from ${signal.source} (${artifact}; ${match})`;
+		return `${signal.source_quality}: ${signal.verdict} from ${signal.source} (${signal.classification}; ${artifact}; ${match})`;
 	}));
+}
+function formatReviewEvidenceContext(scan) {
+	const signals = (scan.reviewSignals ?? []).filter(isContextReviewSignal);
+	if (signals.length === 0) return "- No historical or superseded trace-only review signals were extracted automatically.";
+	return formatList(signals.map((signal) => `${signal.classification}: ${signal.source_quality} ${signal.verdict} from ${signal.source} at ${signal.timestamp ?? "unknown time"} (${signal.evidence})`));
 }
 function formatValidationMetadata(scan) {
 	const validation = scan.validation;
@@ -3230,6 +3335,10 @@ ${formatExcludedStageLogCandidates(scan)}
 ## Review evidence quality
 
 ${formatReviewEvidenceQuality(scan)}
+
+## Review evidence context
+
+${formatReviewEvidenceContext(scan)}
 
 ## Report status reasons
 

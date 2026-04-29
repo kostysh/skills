@@ -102,7 +102,7 @@ Machine-complete stage schema fields:
 - selected closure bundle fields are parity-protected after helper-owned close-out: `closure_bundle_id`, `closure_bundle_rounds_by_audit_class`, compatibility `closure_bundle_round`, `selected_review_artifacts`, `selected_verification_artifact`, `selected_step_artifact`, and `selected_closure_ts`;
 - RPA producer fields are parity-protected after helper-owned close-out: `rpa_source_identity`, `rpa_source_quality`, and `non_pass_review_events`;
 - review/verification/close-out artifact linkage is explicit in machine fields and must not require heuristic recovery from prose;
-- `review_events[]` links each attempt to `audit_class`, `verdict`, `review_attempt_id`, `review_round_id`, `review_round_number`, immutable `artifact_path`, optional `latest_copy_path`, reviewer provenance, freshness, invalidation state, and bounded `evidence_count`;
+- `review_events[]` links each attempt to `audit_class`, `verdict`, `review_attempt_id`, `review_round_id`, `review_round_number`, immutable `artifact_path`, optional `latest_copy_path`, reviewer provenance, freshness, invalidation state, optional implementation FAIL `risk_families` / `repair_next_action`, and bounded `evidence_count`;
 - `review_artifacts` is an ordered unique list of immutable attempt artifact paths, including FAIL and PASS attempts;
 - backlog actualization artifacts are trace links to accepted backlog mutations, while current backlog state remains the source of truth for lifecycle reconciliation;
 - stage-level commit anchors are optional trace links only and must not become required closure evidence;
@@ -114,7 +114,9 @@ RPA producer fields are UDE producer contracts, not retrospective policy:
 
 - `rpa_source_identity` includes `schema_version`, `feature_id`, `backlog_item_key`, `feature_cycle_id`, `cycle_id`, `stage`, `dossier`, `stage_log`, `stage_state_path`, `step_artifact`, `event_commit`, `session_id`, and `trace_runtime`;
 - `rpa_source_quality` includes `schema_version`, `review_history_quality`, `selected_bundle_quality`, `missing_fail_artifact_count`, `trace_only_fail_count`, `same_thread_rejected_count`, `invalid_launch_mode_process_miss_count`, `unrecoverable_historical_fail_present`, and `limitations`;
-- `non_pass_review_events[]` includes attempt/round identity, audit class, verdict, immutable artifact path, latest copy path, event commit, reviewer provenance, freshness/invalidation state, `must_fix_count`, and `evidence_count`.
+- `non_pass_review_events[]` includes attempt/round identity, audit class, verdict, immutable artifact path, latest copy path, event commit, reviewer provenance, optional implementation FAIL `risk_families` / `repair_next_action`, freshness/invalidation state, `must_fix_count`, and `evidence_count`.
+
+Verification artifacts may include `verification_profile_source`, `verification_profile_scope`, `required_categories`, `satisfied_categories`, `missing_categories`, `side_effectful_categories`, and `next_action` when `dossier-verify --verification-profile <repo-relative-json>` is used. Code-bearing implementation stages with declared pre-review risk families require this profile before close verification can pass and before `dossier-step-close` can accept the selected verification artifact. The protected implementation profile scope is `implementation-protected-side-effects`, and the profile must declare at least one required category. Required side-effectful categories need an evidence pointer as well as any passing command they declare. Those fields are the structured category contract; free-form `--extra` commands remain ordinary checks and do not define required categories by themselves.
 
 Derivation rules:
 

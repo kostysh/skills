@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 import { buildScanSummary } from '../src/core/build-scan-summary.ts';
 import { redactScanSummaryForPublicArtifact } from '../src/core/shared.ts';
+import { buildProblemMatrixMarkdown } from '../src/render/problem-matrix-markdown.ts';
 import { buildReportMarkdown } from '../src/render/report-markdown.ts';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -1960,12 +1961,301 @@ void test('buildScanSummary consumes active UDE RPA producer fields as structure
     assert.equal(summary.reviewSignals.length, 1);
     assert.equal(summary.reviewSignals[0]?.source, 'ude');
     assert.equal(summary.reviewSignals[0]?.source_quality, 'structured');
+    assert.equal(summary.reviewSignals[0]?.classification, 'active_unmatched');
     assert.equal(summary.reviewSignals[0]?.matching_artifact, true);
     assert.equal(summary.reviewSignals[0]?.must_fix_count, 2);
     assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 2);
     assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'structured');
   } finally {
     await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary keeps duplicate trace review FAIL as historical context when complete UDE evidence covers it', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const stateDir = path.join(projectRoot, '.dossier', 'stages', 'F-0073');
+  const reviewsDir = path.join(projectRoot, '.dossier', 'reviews', 'F-0073');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const failArtifact = path.join(
+    reviewsDir,
+    'implementation--code-reviewer--r01--fail--abcdef1.json',
+  );
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await mkdir(stateDir, { recursive: true });
+    await mkdir(reviewsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '---',
+        'stage: implementation',
+        'primary_feature_id: F-0073',
+        'primary_backlog_item_key: CF-0073',
+        '---',
+        '# Log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(failArtifact, JSON.stringify({ verdict: 'FAIL' }), 'utf8');
+    await writeFile(
+      path.join(stateDir, 'implementation.json'),
+      JSON.stringify({
+        stage: 'implementation',
+        primary_feature_id: 'F-0073',
+        primary_backlog_item_key: 'CF-0073',
+        rpa_source_identity: {
+          schema_version: '1',
+          feature_id: 'F-0073',
+          backlog_item_key: 'CF-0073',
+          stage: 'implementation',
+        },
+        rpa_source_quality: {
+          schema_version: '1',
+          review_history_quality: 'complete',
+          selected_bundle_quality: 'complete',
+          missing_fail_artifact_count: 0,
+          trace_only_fail_count: 0,
+        },
+        non_pass_review_events: [
+          {
+            audit_class: 'code-reviewer',
+            verdict: 'FAIL',
+            review_round_id: 'r01',
+            timestamp: '2026-04-26T09:10:00Z',
+            artifact_path:
+              '.dossier/reviews/F-0073/implementation--code-reviewer--r01--fail--abcdef1.json',
+            event_commit: 'abcdef1',
+            must_fix_count: 2,
+            evidence_count: 3,
+          },
+        ],
+      }),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-26T09:00:00Z',
+          type: 'session_meta',
+          payload: { id: '019d9000-0000-7000-8000-000000000073', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-26T09:01:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-26T09:02:00Z',
+          type: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-26T09:05:00Z',
+          type: 'assistant',
+          content:
+            'External code-reviewer audit returned FAIL for F-0073 CF-0073 implementation round r01 at commit abcdef1 with 2 must-fix findings.',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+    const traceSignal = summary.reviewSignals.find((signal) => signal.source === 'trace');
+    const matrix = buildProblemMatrixMarkdown(summary);
+
+    assert.equal(summary.reviewSignals.length, 2);
+    assert.equal(traceSignal?.classification, 'historical');
+    assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 2);
+    assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'structured');
+    assert.equal(
+      summary.candidateIncidents.some((incident) =>
+        incident.title.includes('Trace-derived non-pass review signal'),
+      ),
+      false,
+    );
+    assert.equal(
+      summary.reportStatus.reasons.some((reason) =>
+        reason.includes('Non-PASS review signals without matching immutable artifacts'),
+      ),
+      false,
+    );
+    assert.doesNotMatch(matrix, /PM-REVIEW-HISTORY/u);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary keeps mismatched trace review FAIL active even when complete UDE evidence exists', async () => {
+  const cases = [
+    {
+      name: 'later timestamp',
+      timestamp: '2026-04-26T09:15:00Z',
+      content:
+        'External code-reviewer audit returned FAIL for F-0074 CF-0074 implementation round r01 at commit abcdef1 with 2 must-fix findings.',
+    },
+    {
+      name: 'different audit class',
+      timestamp: '2026-04-26T09:05:00Z',
+      content:
+        'External security-reviewer audit returned FAIL for F-0074 CF-0074 implementation round r01 at commit abcdef1 with 2 must-fix findings.',
+    },
+    {
+      name: 'different round',
+      timestamp: '2026-04-26T09:05:00Z',
+      content:
+        'External code-reviewer audit returned FAIL for F-0074 CF-0074 implementation round r02 at commit abcdef1 with 2 must-fix findings.',
+    },
+    {
+      name: 'different commit',
+      timestamp: '2026-04-26T09:05:00Z',
+      content:
+        'External code-reviewer audit returned FAIL for F-0074 CF-0074 implementation round r01 at commit 1234567 with 2 must-fix findings.',
+    },
+    {
+      name: 'ambiguous scope',
+      timestamp: '2026-04-26T09:05:00Z',
+      content:
+        'External code-reviewer audit returned FAIL for F-0074 F-9999 CF-0074 implementation round r01 at commit abcdef1 with 2 must-fix findings.',
+    },
+    {
+      name: 'missing count',
+      timestamp: '2026-04-26T09:05:00Z',
+      content:
+        'External code-reviewer audit returned FAIL for F-0074 CF-0074 implementation round r01 at commit abcdef1.',
+    },
+  ];
+
+  for (const entry of cases) {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+    const projectRoot = path.join(tempDir, 'project');
+    const logsDir = path.join(projectRoot, '.dossier', 'logs');
+    const stateDir = path.join(projectRoot, '.dossier', 'stages', 'F-0074');
+    const reviewsDir = path.join(projectRoot, '.dossier', 'reviews', 'F-0074');
+    const sessionPath = path.join(tempDir, 'session.jsonl');
+    const failArtifact = path.join(
+      reviewsDir,
+      'implementation--code-reviewer--r01--fail--abcdef1.json',
+    );
+
+    try {
+      await mkdir(logsDir, { recursive: true });
+      await mkdir(stateDir, { recursive: true });
+      await mkdir(reviewsDir, { recursive: true });
+      await writeFile(
+        path.join(logsDir, 'implementation.md'),
+        [
+          '---',
+          'stage: implementation',
+          'primary_feature_id: F-0074',
+          'primary_backlog_item_key: CF-0074',
+          '---',
+          '# Log',
+        ].join('\n'),
+        'utf8',
+      );
+      await writeFile(failArtifact, JSON.stringify({ verdict: 'FAIL' }), 'utf8');
+      await writeFile(
+        path.join(stateDir, 'implementation.json'),
+        JSON.stringify({
+          stage: 'implementation',
+          primary_feature_id: 'F-0074',
+          primary_backlog_item_key: 'CF-0074',
+          rpa_source_identity: {
+            schema_version: '1',
+            feature_id: 'F-0074',
+            backlog_item_key: 'CF-0074',
+            stage: 'implementation',
+          },
+          rpa_source_quality: {
+            schema_version: '1',
+            review_history_quality: 'complete',
+            selected_bundle_quality: 'complete',
+            missing_fail_artifact_count: 0,
+            trace_only_fail_count: 0,
+          },
+          non_pass_review_events: [
+            {
+              audit_class: 'code-reviewer',
+              verdict: 'FAIL',
+              review_round_id: 'r01',
+              timestamp: '2026-04-26T09:10:00Z',
+              artifact_path:
+                '.dossier/reviews/F-0074/implementation--code-reviewer--r01--fail--abcdef1.json',
+              event_commit: 'abcdef1',
+              must_fix_count: 2,
+              evidence_count: 3,
+            },
+          ],
+        }),
+        'utf8',
+      );
+      await writeFile(
+        sessionPath,
+        [
+          JSON.stringify({
+            timestamp: '2026-04-26T09:00:00Z',
+            type: 'session_meta',
+            payload: { id: '019d9000-0000-7000-8000-000000000074', cwd: projectRoot },
+          }),
+          JSON.stringify({
+            timestamp: '2026-04-26T09:01:00Z',
+            type: 'tool_call',
+            tool: 'functions.apply_patch',
+            patch:
+              '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+          }),
+          JSON.stringify({
+            timestamp: '2026-04-26T09:02:00Z',
+            type: 'tool_result',
+            recipient: 'functions.apply_patch',
+            status: 'ok',
+          }),
+          JSON.stringify({
+            timestamp: entry.timestamp,
+            type: 'assistant',
+            content: entry.content,
+          }),
+        ].join('\n'),
+        'utf8',
+      );
+
+      const summary = buildScanSummary({
+        session: sessionPath,
+        artifactsDir: projectRoot,
+        untilTs: '2026-04-26T09:20:00Z',
+      });
+      const traceSignal = summary.reviewSignals.find((signal) => signal.source === 'trace');
+
+      assert.equal(traceSignal?.classification, 'active_unmatched', entry.name);
+      assert.equal(
+        summary.stageLogs.metrics.reviewFindingsTotal,
+        entry.name === 'missing count' ? 3 : 4,
+        entry.name,
+      );
+      assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'incomplete');
+      assert.equal(
+        summary.candidateIncidents.some((incident) =>
+          incident.title.includes('Trace-derived non-pass review signal'),
+        ),
+        true,
+        entry.name,
+      );
+      assert.equal(
+        summary.reportStatus.reasons.some((reason) =>
+          reason.includes('Non-PASS review signals without matching immutable artifacts'),
+        ),
+        true,
+        entry.name,
+      );
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   }
 });
 
@@ -2011,6 +2301,7 @@ void test('buildScanSummary marks operational trace-derived review FAIL as incom
     assert.equal(summary.reviewSignals.length, 1);
     assert.equal(summary.reviewSignals[0]?.source, 'trace');
     assert.equal(summary.reviewSignals[0]?.source_quality, 'trace_derived');
+    assert.equal(summary.reviewSignals[0]?.classification, 'active_unmatched');
     assert.equal(summary.reviewSignals[0]?.audit_class, 'code-reviewer');
     assert.equal(summary.reviewSignals[0]?.matching_artifact, false);
     assert.equal(summary.reviewSignals[0]?.must_fix_count, 1);

@@ -1,6 +1,6 @@
 {
   "name": "@kostysh/unified-dossier-engineer",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "description": "CLI runtime for the canonical dossier/backlog skill.",
   "type": "module",

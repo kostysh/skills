@@ -23,6 +23,7 @@ export type MetricEvidenceQuality =
   | 'incomplete'
   | 'validated_fallback';
 export type ResidualConfidence = 'high' | 'medium' | 'low';
+export type ReviewSignalClassification = 'active_unmatched' | 'historical' | 'superseded';
 
 export interface MetricSourceQuality {
   quality: MetricEvidenceQuality;
@@ -58,6 +59,7 @@ export interface ReviewEvent {
 export interface ReviewSignal {
   source_quality: Exclude<MetricEvidenceQuality, 'none' | 'validated_fallback'>;
   source: 'ude' | 'stage_log_metadata' | 'stage_state' | 'trace' | 'prose';
+  classification: ReviewSignalClassification;
   verdict: string;
   audit_class: string | null;
   round: string | number | null;

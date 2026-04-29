@@ -1552,6 +1552,8 @@ function createDossierCommandWrapper(
                   reviewer_agent_id?: string | null;
                   reviewer_skill?: string | null;
                   reviewer_thread_id?: string | null;
+                  repair_next_action?: string | null;
+                  risk_families?: unknown;
                   security_trigger_reason?: string | null;
                   step?: string;
                   verdict?: 'FAIL' | 'PASS';
@@ -1620,6 +1622,17 @@ function createDossierCommandWrapper(
                   reviewerAgentId: artifact.reviewer_agent_id ?? null,
                   reviewerSkill: artifact.reviewer_skill ?? null,
                   reviewerThreadId,
+                  repairNextAction:
+                    typeof artifact.repair_next_action === 'string' &&
+                    artifact.repair_next_action.trim().length > 0
+                      ? artifact.repair_next_action
+                      : null,
+                  riskFamilies: Array.isArray(artifact.risk_families)
+                    ? artifact.risk_families.filter(
+                        (riskFamily): riskFamily is string =>
+                          typeof riskFamily === 'string' && riskFamily.trim().length > 0,
+                      )
+                    : [],
                   securityTriggerReason: artifact.security_trigger_reason ?? null,
                   stale,
                   verdict: artifact.verdict,

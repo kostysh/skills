@@ -130,6 +130,8 @@ type ReviewEventPayload = {
   reviewer_agent_id: string | null;
   reviewer_skill: string | null;
   reviewer_thread_id: string | null;
+  repair_next_action: string | null;
+  risk_families: string[];
   security_trigger_reason: string | null;
   stale?: boolean;
   verdict: 'FAIL' | 'PASS';
@@ -709,6 +711,8 @@ function reviewEventsFromStageState(state: StageStateRecord | null): ReviewEvent
       reviewer_agent_id: event.reviewer_agent_id,
       reviewer_skill: event.reviewer_skill,
       reviewer_thread_id: event.reviewer_thread_id,
+      repair_next_action: event.repair_next_action,
+      risk_families: event.risk_families,
       security_trigger_reason: event.security_trigger_reason,
       stale: event.stale,
       verdict: event.verdict,
@@ -2195,6 +2199,8 @@ export async function recordReviewArtifactOnStageLog(payload: {
   reviewerAgentId: string | null;
   reviewerSkill: string | null;
   reviewerThreadId: string | null;
+  repairNextAction: string | null;
+  riskFamilies: string[];
   root: string;
   securityTriggerReason: string | null;
   stage: LoggedStage;
@@ -2236,6 +2242,8 @@ export async function recordReviewArtifactOnStageLog(payload: {
     reviewer_agent_id: payload.reviewerAgentId,
     reviewer_skill: payload.reviewerSkill,
     reviewer_thread_id: payload.reviewerThreadId,
+    repair_next_action: payload.repairNextAction,
+    risk_families: payload.riskFamilies,
     security_trigger_reason: payload.securityTriggerReason,
     stale: payload.stale,
     verdict: payload.verdict,

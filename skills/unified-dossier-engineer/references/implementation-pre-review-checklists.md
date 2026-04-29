@@ -44,6 +44,8 @@ The implementation stage state may carry:
 - `pre_review_checklist_status: "not_required" | "missing" | "blocked" | "complete"`
 - `pre_review_checklist_blockers: string[]`
 
+The same `pre_review_risk_families` list is also the allowed vocabulary for implementation FAIL `review-artifact --risk-family <id>` accounting. Reviewer-owned FAIL accounting can reference a family only after the implementation stage state has declared it.
+
 Checklist entry schema:
 
 - `risk_family`

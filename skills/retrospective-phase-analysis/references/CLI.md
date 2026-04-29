@@ -61,7 +61,7 @@ Outputs:
 - structured `stage_log_candidates`, `review_artifact_candidates`, `verification_artifact_candidates`, and `step_artifact_candidates`
 - `artifact_identity` derived from included stage artifacts when available
 - metric `sources` and quality labels: `structured`, `trace_derived`, `prose_derived`, `incomplete`, and legacy `validated_fallback`
-- extracted `reviewSignals` for non-PASS review evidence, including source quality and immutable-artifact matching status
+- extracted `reviewSignals` for non-PASS review evidence, including source quality, classification, and immutable-artifact matching status
 - `reportStatus`
 - `validation` metadata with `agent_validated: false` for generated scaffolds
 - `skills.available`, `skills.referenced`, and `skills.unreferenced_count`
@@ -112,7 +112,7 @@ Phase boundary:
 Artifact candidates:
 
 - `referenced_only` paths remain candidates but are not analyzed by default.
-- Excluded stage-log candidates include a precise `reason` and `next_action`; when all stage-log candidates are excluded, the report is validation-required instead of incident-free.
+- Excluded stage-log candidates include a precise `reason` and `next_action`; `referenced_only` stage-log candidates tell the operator to rerun with `--stage-log <path> --artifact-evidence <justification>` when manual inclusion is valid.
 - `trace_patch_target`, `trace_shell_write`, `trace_write`, and `tool_output_path` candidates can be auto-included when the trace confirms write/change evidence.
 - `stage_artifact_link` candidates can be auto-included when an included stage log or bounded stage state explicitly links the artifact, the path exists inside the confirmed project root, and the artifact path or content matches the artifact scope.
 - Legacy arrays such as `candidate_stage_logs` are derived from included candidates only.

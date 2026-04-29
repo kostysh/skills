@@ -2,8 +2,8 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.1`
-- CLI package version: `0.1.1`
+- Skill source version: `0.1.2`
+- CLI package version: `0.1.2`
 
 ## Source files
 - `agents/openai.yaml`
@@ -39,6 +39,7 @@ Generated from `skill.yaml`.
 - `src/core/extract-trace-scope.ts`
 - `src/core/infer-candidate-incidents.ts`
 - `src/core/resolve-evidence-roots.ts`
+- `src/core/review-signals.ts`
 - `src/core/shared.ts`
 - `src/core/summarize-logs.ts`
 - `src/core/summarize-session.ts`

@@ -706,6 +706,7 @@ test('command help smoke covers the shipped public surface', () => {
       assert.doesNotMatch(result.stdout, /--pre-review-check <dsl>/u);
     }
     if (command === 'review-artifact') {
+      assert.match(result.stdout, /--risk-family <id>/u);
       assert.match(
         result.stdout,
         /Persist one immutable already obtained audit attempt for one audit class/u,
@@ -719,6 +720,9 @@ test('command help smoke covers the shipped public surface', () => {
         result.stdout,
         /never replaces the required audit bundle enforced by dossier-step-close/u,
       );
+    }
+    if (command === 'dossier-verify') {
+      assert.match(result.stdout, /--verification-profile <path>/u);
     }
     if (command === 'dossier-step-close') {
       assert.match(result.stdout, /Repeat for multi-audit bundles/u);
@@ -1990,6 +1994,482 @@ test('dossier-verify artifacts use the canonical dossier-engineer command displa
   }
 });
 
+test('dossier-verify records structured verification profile categories', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+
+  const intakeEnvelope = parseEnvelope<{
+    dossier: string;
+    feature_id: string;
+  }>(
+    runCli(
+      [
+        'feature-intake',
+        '--title',
+        'Verification Profile',
+        '--backlog-item-key',
+        'verification-profile',
+        '--backlog-delivery-state',
+        'defined',
+        '--backlog-source',
+        'verification-profile.md',
+        '--area',
+        'ops',
+        '--owner',
+        'platform',
+        '--impact',
+        'backend',
+        '--json',
+      ],
+      { cwd: repo },
+    ).stdout,
+  );
+  runCli(['spec-compact', '--feature-id', intakeEnvelope.data.feature_id], { cwd: repo });
+
+  await writeFile(
+    path.join(repo, 'missing-scope-profile.json'),
+    `${JSON.stringify({ version: 1, categories: {} }, null, 2)}\n`,
+  );
+  const missingScope = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+      '--verification-profile',
+      'missing-scope-profile.json',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(missingScope.code, 1);
+  assert.match(missingScope.stderr, /verification profile scope is required/u);
+
+  await writeFile(
+    path.join(repo, 'verification-profile.json'),
+    `${JSON.stringify(
+      {
+        version: 1,
+        scope: 'implementation-protected-side-effects',
+        required_categories: ['runtime-smoke', 'release-note'],
+        categories: {
+          'runtime-smoke': {
+            command: 'node -e "process.exit(0)"',
+            evidence: 'pnpm smoke:cell',
+            required: true,
+            side_effectful: true,
+          },
+          'release-note': {
+            evidence: 'docs/release-note.md',
+          },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const verifyResult = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      intakeEnvelope.data.dossier,
+      '--step',
+      'spec-compact',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+      '--verification-profile',
+      'verification-profile.json',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  const artifactRelativePath = verifyResult.stdout
+    .match(/\[dossier-verify\] artifact=(.+)/)?.[1]
+    ?.trim();
+  assert.ok(artifactRelativePath);
+
+  const artifact = JSON.parse(await readFile(path.join(repo, artifactRelativePath), 'utf8')) as {
+    missing_categories: string[];
+    required_categories: string[];
+    satisfied_categories: string[];
+    side_effectful_categories: string[];
+    verification_profile_source: string;
+    verification_profile_scope: string;
+    checks: Array<{ name: string; status: string }>;
+  };
+  assert.equal(artifact.verification_profile_source, 'verification-profile.json');
+  assert.equal(artifact.verification_profile_scope, 'implementation-protected-side-effects');
+  assert.deepEqual(artifact.required_categories, ['runtime-smoke', 'release-note']);
+  assert.deepEqual(artifact.satisfied_categories, ['runtime-smoke', 'release-note']);
+  assert.deepEqual(artifact.missing_categories, []);
+  assert.deepEqual(artifact.side_effectful_categories, ['runtime-smoke']);
+  assert.ok(artifact.checks.some((check) => check.name === 'profile:runtime-smoke'));
+  assert.ok(artifact.checks.some((check) => check.name === 'profile:release-note'));
+});
+
+test('dossier-verify fails when required side-effect profile evidence is missing', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'missing-side-effect-profile-evidence',
+    title: 'Missing Side Effect Profile Evidence',
+  });
+
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      feature.featureId,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+      '--risk-family',
+      'custom-side-effect',
+      '--pre-review-check',
+      'risk_family=custom-side-effect;id=custom-side-effect-check;status=pass;summary=Protected side effect reviewed;evidence=test/custom-side-effect.test.ts',
+    ],
+    { cwd: repo },
+  );
+
+  const missingProfile = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(missingProfile.code, 2);
+  const missingProfileArtifactPath = missingProfile.stdout
+    .match(/\[dossier-verify\] artifact=(.+)/)?.[1]
+    ?.trim();
+  assert.ok(missingProfileArtifactPath);
+  const missingProfileArtifact = JSON.parse(
+    await readFile(path.join(repo, missingProfileArtifactPath), 'utf8'),
+  ) as { missing_categories: string[] };
+  assert.deepEqual(missingProfileArtifact.missing_categories, ['protected-side-effect-profile']);
+
+  await writeFile(
+    path.join(repo, 'side-effect-profile.json'),
+    `${JSON.stringify(
+      {
+        version: 1,
+        scope: 'implementation-protected-side-effects',
+        required_categories: ['runtime-smoke'],
+        categories: {
+          'runtime-smoke': {
+            command: 'node -e "process.exit(0)"',
+            required: true,
+            side_effectful: true,
+          },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const missingEvidence = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+      '--verification-profile',
+      'side-effect-profile.json',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(missingEvidence.code, 2);
+  const missingEvidenceArtifactPath = missingEvidence.stdout
+    .match(/\[dossier-verify\] artifact=(.+)/)?.[1]
+    ?.trim();
+  assert.ok(missingEvidenceArtifactPath);
+  const missingEvidenceArtifact = JSON.parse(
+    await readFile(path.join(repo, missingEvidenceArtifactPath), 'utf8'),
+  ) as {
+    missing_categories: string[];
+    checks: Array<{ name: string; status: string }>;
+  };
+  assert.deepEqual(missingEvidenceArtifact.missing_categories, ['runtime-smoke']);
+  assert.ok(
+    missingEvidenceArtifact.checks.some(
+      (check) => check.name === 'profile:runtime-smoke:evidence' && check.status === 'fail',
+    ),
+  );
+
+  await writeFile(
+    path.join(repo, 'empty-profile.json'),
+    `${JSON.stringify(
+      {
+        version: 1,
+        scope: 'implementation-protected-side-effects',
+        categories: {},
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  const emptyProfile = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+      '--verification-profile',
+      'empty-profile.json',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(emptyProfile.code, 2);
+  const emptyProfileArtifactPath = emptyProfile.stdout
+    .match(/\[dossier-verify\] artifact=(.+)/)?.[1]
+    ?.trim();
+  assert.ok(emptyProfileArtifactPath);
+  const emptyProfileArtifact = JSON.parse(
+    await readFile(path.join(repo, emptyProfileArtifactPath), 'utf8'),
+  ) as { missing_categories: string[] };
+  assert.deepEqual(emptyProfileArtifact.missing_categories, ['protected-side-effect-profile']);
+
+  await writeFile(
+    path.join(repo, 'wrong-scope-profile.json'),
+    `${JSON.stringify(
+      {
+        version: 1,
+        scope: 'unrelated-scope',
+        required_categories: ['runtime-smoke'],
+        categories: {
+          'runtime-smoke': {
+            evidence: 'pnpm smoke:cell',
+            required: true,
+          },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  const wrongScope = runCli(
+    [
+      'dossier-verify',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--skip-index-refresh',
+      '--skip-diff-check',
+      '--verification-profile',
+      'wrong-scope-profile.json',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(wrongScope.code, 2);
+  const wrongScopeArtifactPath = wrongScope.stdout
+    .match(/\[dossier-verify\] artifact=(.+)/)?.[1]
+    ?.trim();
+  assert.ok(wrongScopeArtifactPath);
+  const wrongScopeArtifact = JSON.parse(
+    await readFile(path.join(repo, wrongScopeArtifactPath), 'utf8'),
+  ) as { missing_categories: string[] };
+  assert.ok(wrongScopeArtifact.missing_categories.includes('protected-side-effect-profile'));
+});
+
+test('dossier-step-close rejects implementation verification artifacts without required profile evidence', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'close-profile-required',
+    title: 'Close Profile Required',
+  });
+
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      feature.featureId,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+      '--risk-family',
+      'custom-side-effect',
+      '--pre-review-check',
+      'risk_family=custom-side-effect;id=custom-side-effect-check;status=pass;summary=Protected side effect reviewed;evidence=test/custom-side-effect.test.ts',
+    ],
+    { cwd: repo },
+  );
+
+  const verifyArtifact = path.join(
+    repo,
+    '.dossier',
+    'verification',
+    feature.featureId,
+    'implementation.json',
+  );
+  await writeVerifyArtifactFile({
+    path: verifyArtifact,
+    featureId: feature.featureId,
+    step: 'implementation',
+  });
+
+  const specReview = recordReviewArtifact({
+    repo,
+    dossier: feature.dossier,
+    step: 'implementation',
+    auditClass: 'spec-conformance-reviewer',
+    reviewerAgentId: 'audit-agent-profile-close-spec',
+    reviewerThreadId: 'review-thread-profile-close-spec',
+  });
+  const codeReview = recordReviewArtifact({
+    repo,
+    dossier: feature.dossier,
+    step: 'implementation',
+    auditClass: 'code-reviewer',
+    reviewerAgentId: 'audit-agent-profile-close-code',
+    reviewerThreadId: 'review-thread-profile-close-code',
+  });
+  const securityReview = recordReviewArtifact({
+    repo,
+    dossier: feature.dossier,
+    step: 'implementation',
+    auditClass: 'security-reviewer',
+    reviewerAgentId: 'audit-agent-profile-close-security',
+    reviewerThreadId: 'review-thread-profile-close-security',
+    securityTriggerReason: 'profile-required-close-test',
+  });
+
+  const closeResult = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+
+  assert.equal(closeResult.code, 3);
+  const payload = JSON.parse(closeResult.stderr) as { error: { blockers: string[] } };
+  assert.ok(
+    payload.error.blockers.some((blocker) => blocker.includes('verification_profile_source')),
+  );
+
+  await writeFile(
+    verifyArtifact,
+    `${JSON.stringify(
+      {
+        feature_id: feature.featureId,
+        step: 'implementation',
+        status: 'pass',
+        event_commit: gitHeadForManagedArtifact(verifyArtifact),
+        verification_profile_source: 'verification-profile.json',
+        verification_profile_scope: 'implementation-protected-side-effects',
+        required_categories: ['runtime-smoke'],
+        missing_categories: [],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const missingSatisfiedClose = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(missingSatisfiedClose.code, 3);
+  const missingSatisfiedPayload = JSON.parse(missingSatisfiedClose.stderr) as {
+    error: { blockers: string[] };
+  };
+  assert.ok(
+    missingSatisfiedPayload.error.blockers.some((blocker) =>
+      blocker.includes('satisfied_categories'),
+    ),
+  );
+
+  await writeFile(
+    verifyArtifact,
+    `${JSON.stringify(
+      {
+        feature_id: feature.featureId,
+        step: 'implementation',
+        status: 'pass',
+        event_commit: gitHeadForManagedArtifact(verifyArtifact),
+        verification_profile_source: 'verification-profile.json',
+        verification_profile_scope: 'implementation-protected-side-effects',
+        required_categories: ['runtime-smoke'],
+        satisfied_categories: [],
+        missing_categories: [],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const unsatisfiedClose = runCli(
+    [
+      'dossier-step-close',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--verify-artifact',
+      verifyArtifact,
+      '--review-artifact',
+      specReview,
+      '--review-artifact',
+      codeReview,
+      '--review-artifact',
+      securityReview,
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(unsatisfiedClose.code, 3);
+  const unsatisfiedPayload = JSON.parse(unsatisfiedClose.stderr) as {
+    error: { blockers: string[] };
+  };
+  assert.ok(
+    unsatisfiedPayload.error.blockers.some((blocker) =>
+      blocker.includes('does not satisfy required verification profile categories'),
+    ),
+  );
+});
+
 test('dossier-verify links verification artifacts into stage log and stage state', async () => {
   const repo = await makeTempRepoPath();
   await initializeRepo(repo);
@@ -3014,6 +3494,235 @@ test('review-artifact requires must-fix and evidence for FAIL attempts', async (
   );
   assert.equal(missingEvidence.code, 2);
   assert.match(missingEvidence.stderr, /at least one --evidence/u);
+});
+
+test('review-artifact validates and records FAIL risk-family diagnostics', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'review-risk-family',
+    title: 'Review Risk Family',
+  });
+
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      feature.featureId,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+      '--risk-family',
+      'custom-review-risk',
+      '--pre-review-check',
+      'risk_family=custom-review-risk;id=custom-review-risk-check;status=pass;summary=Covered adjacent scenario;evidence=test/custom-review-risk.test.ts',
+    ],
+    { cwd: repo },
+  );
+
+  const passWithRisk = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'PASS',
+      '--reviewer',
+      'external-code-review',
+      '--risk-family',
+      'custom-review-risk',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(passWithRisk.code, 2);
+  assert.match(passWithRisk.stderr, /only allowed for FAIL review artifacts/u);
+
+  const undeclaredRisk = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'FAIL',
+      '--reviewer',
+      'external-code-review',
+      '--must-fix',
+      'Cover adjacent scenario.',
+      '--evidence',
+      'review.md',
+      '--risk-family',
+      'other-review-risk',
+    ],
+    { cwd: repo, allowFailure: true },
+  );
+  assert.equal(undeclaredRisk.code, 2);
+  assert.match(
+    undeclaredRisk.stderr,
+    /must be declared in the current implementation stage state/u,
+  );
+
+  const firstFail = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'FAIL',
+      '--reviewer',
+      'external-code-review',
+      '--reviewer-agent-id',
+      'audit-agent-risk-1',
+      '--must-fix',
+      'Cover adjacent scenario.',
+      '--evidence',
+      'review.md',
+      '--risk-family',
+      'custom-review-risk',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-risk-1' } },
+  );
+  const firstArtifactPath = firstFail.stdout.match(/\[review-artifact\] Wrote ([^\n]+)/u)?.[1];
+  assert.ok(firstArtifactPath);
+  const firstArtifact = JSON.parse(await readFile(path.join(repo, firstArtifactPath), 'utf8')) as {
+    risk_families: string[];
+  };
+  assert.deepEqual(firstArtifact.risk_families, ['custom-review-risk']);
+
+  const secondFail = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'FAIL',
+      '--reviewer',
+      'external-code-review',
+      '--reviewer-agent-id',
+      'audit-agent-risk-2',
+      '--must-fix',
+      'Adjacent scenario still missing.',
+      '--evidence',
+      'review-2.md',
+      '--risk-family',
+      'custom-review-risk',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-risk-2' } },
+  );
+  assert.match(secondFail.stdout, /repair_next_action=/u);
+
+  const state = JSON.parse(
+    await readFile(
+      path.join(repo, '.dossier', 'stages', feature.featureId, 'implementation.json'),
+      'utf8',
+    ),
+  ) as {
+    review_events: Array<{ repair_next_action?: string | null; risk_families?: string[] }>;
+  };
+  assert.deepEqual(state.review_events.at(-2)?.risk_families, ['custom-review-risk']);
+  assert.deepEqual(state.review_events.at(-1)?.risk_families, ['custom-review-risk']);
+  assert.match(
+    state.review_events.at(-1)?.repair_next_action ?? '',
+    /repeated FAIL risk families/u,
+  );
+});
+
+test('review-artifact repeat risk-family diagnostics are scoped to implementation scope', async () => {
+  const repo = await makeTempRepoPath();
+  await initializeRepo(repo);
+  const feature = await startImplementationFeature({
+    repo,
+    itemKey: 'review-risk-family-scope',
+    title: 'Review Risk Family Scope',
+  });
+
+  runCli(
+    [
+      'implementation',
+      '--feature-id',
+      feature.featureId,
+      '--ready-for-close',
+      '--implementation-scope',
+      'code-bearing',
+      '--risk-family',
+      'custom-review-risk',
+      '--pre-review-check',
+      'risk_family=custom-review-risk;id=custom-review-risk-check;status=pass;summary=Covered adjacent scenario;evidence=test/custom-review-risk.test.ts',
+    ],
+    { cwd: repo },
+  );
+
+  runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'FAIL',
+      '--reviewer',
+      'external-code-review',
+      '--must-fix',
+      'Cover adjacent scenario.',
+      '--evidence',
+      'review.md',
+      '--risk-family',
+      'custom-review-risk',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-risk-scope-1' } },
+  );
+
+  const statePath = path.join(repo, '.dossier', 'stages', feature.featureId, 'implementation.json');
+  const state = JSON.parse(await readFile(statePath, 'utf8')) as {
+    review_events: Array<{ implementation_scope: string | null }>;
+  };
+  assert.ok(state.review_events[0]);
+  state.review_events[0].implementation_scope = 'non-code';
+  await writeFile(statePath, `${JSON.stringify(state, null, 2)}\n`);
+
+  const secondFail = runCli(
+    [
+      'review-artifact',
+      '--dossier',
+      feature.dossier,
+      '--step',
+      'implementation',
+      '--audit-class',
+      'code-reviewer',
+      '--verdict',
+      'FAIL',
+      '--reviewer',
+      'external-code-review',
+      '--must-fix',
+      'Adjacent scenario still missing.',
+      '--evidence',
+      'review-2.md',
+      '--risk-family',
+      'custom-review-risk',
+    ],
+    { cwd: repo, env: { CODEX_THREAD_ID: 'review-thread-risk-scope-2' } },
+  );
+
+  assert.doesNotMatch(secondFail.stdout, /repair_next_action=/u);
 });
 
 test('dossier-step-close rejects symlinked verification artifacts before vendored closeout', async () => {

@@ -73,6 +73,8 @@ export type StageStateReviewEvent = {
   reviewer_agent_id: string | null;
   reviewer_skill: string | null;
   reviewer_thread_id: string | null;
+  repair_next_action: string | null;
+  risk_families: string[];
   security_trigger_reason: string | null;
   stale: boolean;
   verdict: string | null;
@@ -316,6 +318,8 @@ function toReviewEvents(value: unknown): StageStateReviewEvent[] {
       reviewer_agent_id: toNullableString(item.reviewer_agent_id),
       reviewer_skill: toNullableString(item.reviewer_skill),
       reviewer_thread_id: toNullableString(item.reviewer_thread_id),
+      repair_next_action: toNullableString(item.repair_next_action),
+      risk_families: toStringArray(item.risk_families),
       security_trigger_reason: toNullableString(item.security_trigger_reason),
       stale: toBoolean(item.stale),
       verdict: toNullableString(item.verdict),

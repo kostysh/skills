@@ -6,9 +6,9 @@ description: Build and maintain the canonical dossier/backlog skill and its CLI
 compatibility: Canonical runtime shipped. Only the canonical `.dossier` +
   `docs/ssot` layout and the `dossier-engineer` launcher are part of this skill.
 metadata:
-  source-version: 0.2.5
+  source-version: 0.2.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 2e37a1d3017ee3f8141b2922cba66caa8fa3880f3be11431dca1ea261963a461
+  skillforge-source-hash: d10aadf9cc2801d0c289657bae4f00715cdf4b2995e830c6bf556cc97ee0ec0f
 ---
 
 # unified-dossier-engineer

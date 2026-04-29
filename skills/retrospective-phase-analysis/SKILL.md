@@ -11,9 +11,9 @@ compatibility: Requires access to the project workspace, session trace files,
   stage logs, and Node.js >= 22.22.0 to run scripts/retro-cli.mjs. Works best
   when stage logs follow a structured logging contract.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 28ffd00f53761784c7912f25b00341e2cc8d6e70f371b65e4ad99159ff3ad224
+  skillforge-source-hash: 8c421eec5d44f1bc77a5e380a4dc3f5ae109aa126ed165b5efe46fd5ae6f986a
 ---
 
 # retrospective-phase-analysis

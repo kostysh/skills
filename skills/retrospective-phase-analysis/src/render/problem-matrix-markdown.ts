@@ -1,3 +1,4 @@
+import { isActionableReviewSignal } from '../core/review-signals.ts';
 import { topEntries } from '../core/shared.ts';
 import type { CandidateIncident, ScanSummary } from '../core/types.ts';
 
@@ -24,7 +25,7 @@ function recommendationForIncident(incident: CandidateIncident): string {
 
 function reviewHistoryRows(scan: ScanSummary): string[][] {
   const hasIncompleteReviewSignals = (scan.reviewSignals ?? []).some(
-    (signal) => !signal.matching_artifact,
+    (signal) => isActionableReviewSignal(signal) && !signal.matching_artifact,
   );
   if (!hasIncompleteReviewSignals) {
     return [];

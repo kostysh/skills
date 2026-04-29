@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import { isNonPassReviewEvent, structuredReviewEventsFromMetadata } from '../parsers/stage-log.ts';
+import { isActionableReviewSignal } from './review-signals.ts';
 import { stringFromUnknown } from './shared.ts';
 import type { CandidateIncident, LogsSummary, ReviewSignal, SessionSummary } from './types.ts';
 
@@ -47,7 +48,9 @@ export function inferCandidateIncidents(
     const structuredReviewFindings = Number(metadata.review_findings_total);
     const hasStructuredReviewFindings = Number.isFinite(structuredReviewFindings);
     const reviewFindingTotal = hasStructuredReviewFindings ? structuredReviewFindings : 0;
-    const logReviewSignals = reviewSignals.filter((signal) => signal.evidence === log.filePath);
+    const logReviewSignals = reviewSignals
+      .filter(isActionableReviewSignal)
+      .filter((signal) => signal.evidence === log.filePath);
     const hasStructuredNonPassReview =
       structuredReviewEventsFromMetadata(metadata).some(isNonPassReviewEvent) ||
       logReviewSignals.some((signal) =>
@@ -129,7 +132,9 @@ export function inferCandidateIncidents(
     });
   }
 
-  for (const signal of reviewSignals.filter((entry) => entry.source === 'trace')) {
+  for (const signal of reviewSignals.filter(
+    (entry) => entry.source === 'trace' && isActionableReviewSignal(entry),
+  )) {
     incidents.push({
       title: 'Trace-derived non-pass review signal',
       severity: 'medium',

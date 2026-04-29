@@ -876,7 +876,7 @@ function withExcludedStageLogValidationActions(
       ...candidate,
       reason: `Referenced in ${candidate.event_ref ?? 'the trace'}, but not confirmed as created or changed in scope.`,
       next_action:
-        'Validate same-session stage-log evidence before manual inclusion; otherwise keep this candidate excluded.',
+        'Validate same-session stage-log evidence; when valid, rerun scan with --stage-log <path> --artifact-evidence <justification>.',
     };
   });
 }

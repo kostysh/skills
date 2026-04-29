@@ -7,9 +7,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3ac599e0154c252c53f0e7739f4b466226d4d79f0132f6663b46d5042487966a
+  skillforge-source-hash: f02ca7c85581cb4e026bf728cafc395369b068a18c366eb47e4cb73e28ef5ecd
 ---
 
 # implementation-discipline
@@ -82,8 +82,9 @@ Close the loop with concrete checks instead of intuition.
 1. Run the narrowest meaningful checks that prove the change.
 2. Prefer existing local test, lint, typecheck, build, or smoke-test commands when they are the narrowest meaningful proof.
 3. If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
-4. If verification cannot run, use the next-best static check or state why no useful check is available.
-5. Report the outcome, checks run, checks not run, and remaining risk.
+4. When repeated independent validation signals point to one defect class, expand verification from the specific symptom to adjacent observable cases before reporting done.
+5. If verification cannot run, use the next-best static check or state why no useful check is available.
+6. Report the outcome, checks run, checks not run, and remaining risk.
 
 Validation:
 

@@ -141,6 +141,8 @@ Rules:
 - external reviewers must record PASS or FAIL through `review-artifact`, leaving immutable review attempt artifacts;
 - correction work after a prose/trace FAIL must stop until the reviewer-owned immutable FAIL artifact exists with `must_fix` and `evidence`, or a structured process miss records that original reviewer accounting is unrecoverable;
 - final verification must correspond to the same material scope reviewed by the external auditors;
+- when a code-bearing implementation stage declares pre-review risk families, run `dossier-verify --verification-profile <repo-relative-json>` before close; the profile declares `scope`, `required_categories`, and `categories.<id>.command` or `categories.<id>.evidence`, and `--extra` remains free-form supplemental verification rather than a required-category contract;
+- the protected implementation profile scope is `implementation-protected-side-effects`, and the profile must declare at least one required category;
 - if any material mutation happens after final audits or final verification, rerun affected verification and affected review artifacts before `dossier-step-close`;
 - post-close hygiene remains a separate confirmation after close and does not replace pre-close rehearsal, final verification, final audits, or `dossier-step-close`.
 
@@ -218,6 +220,7 @@ The delivery workflow must preserve all hard gates from the current dossier mode
 Required gates:
 
 - local verification artifacts before final closure claim
+- named verification-profile categories when code-bearing implementation declares pre-review risk families
 - debt review
 - required external audit bundle in fail-closed mode
 - selected backlog item lifecycle reconciliation for stages that advance backlog truth

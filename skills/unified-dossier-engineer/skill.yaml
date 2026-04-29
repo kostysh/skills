@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: unified-dossier-engineer
-  source-version: 0.2.5
+  source-version: 0.2.6
   recommended-skill-md-max-bytes: 26000
   description: >-
     Build and maintain the canonical dossier/backlog skill and its CLI runtime.

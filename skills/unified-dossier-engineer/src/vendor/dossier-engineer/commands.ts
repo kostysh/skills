@@ -111,6 +111,8 @@ interface ReviewArtifactShape {
   reviewer_skill?: string | null;
   reviewer_thread_id?: string | null;
   reviewer?: string;
+  repair_next_action?: string | null;
+  risk_families?: unknown;
   security_trigger_reason?: string | null;
   step?: string;
   verdict?: string;
@@ -137,8 +139,14 @@ interface StepArtifactShape {
 interface VerifyArtifactShape {
   event_commit?: string | null;
   feature_id?: string;
+  missing_categories?: unknown;
+  next_action?: string | null;
+  required_categories?: unknown;
+  satisfied_categories?: unknown;
   status?: string;
   step?: string;
+  verification_profile_source?: string | null;
+  verification_profile_scope?: string | null;
 }
 
 const AUDIT_CLASSES = ['spec-conformance-reviewer', 'code-reviewer', 'security-reviewer'] as const;
@@ -146,6 +154,8 @@ const AUDIT_CLASSES = ['spec-conformance-reviewer', 'code-reviewer', 'security-r
 const REVIEW_MODES = ['external', 'degraded', 'self-review'] as const;
 
 const IMPLEMENTATION_REVIEW_SCOPES = ['non-code', 'code-bearing'] as const;
+const PRE_REVIEW_RISK_IDENTIFIER_PATTERN = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/u;
+const IMPLEMENTATION_PROTECTED_PROFILE_SCOPE = 'implementation-protected-side-effects';
 const NON_CODE_FILE_EXTENSIONS = new Set([
   '.adoc',
   '.gif',
@@ -303,6 +313,27 @@ function normalizeImplementationReviewScope(
   )
     ? (value as (typeof IMPLEMENTATION_REVIEW_SCOPES)[number])
     : null;
+}
+
+function normalizeRiskFamily(value: string, optionName: string, helpText: string): string {
+  const normalized = value.trim();
+  if (!normalized) {
+    throw new UsageError(`${optionName} cannot be empty.`, helpText);
+  }
+  if (/[\r\n]/u.test(normalized)) {
+    throw new UsageError(`${optionName} must be a single-line value.`, helpText);
+  }
+  if (!PRE_REVIEW_RISK_IDENTIFIER_PATTERN.test(normalized)) {
+    throw new UsageError(
+      `${optionName} must be a stable lowercase identifier using letters, digits, and hyphens.`,
+      helpText,
+    );
+  }
+  return normalized;
+}
+
+function normalizeRiskFamilies(values: string[], optionName: string, helpText: string): string[] {
+  return uniqueStrings(values.map((value) => normalizeRiskFamily(value, optionName, helpText)));
 }
 
 function isManagedDossierPath(filePath: string): boolean {
@@ -2031,6 +2062,7 @@ function reviewArtifactHelp(): string {
     '  --reviewer-agent-id <id>     Reviewer agent identifier when available.',
     '  --implementation-scope <scope> Deprecated here; implementation scope must be recorded on the current implementation stage state via implementation --ready-for-close.',
     '  --security-trigger-reason <text> Security trigger reason for applicable implementation security audits.',
+    '  --risk-family <id>           Repeatable declared implementation risk family for FAIL artifacts only.',
     '  --invalidated                Mark this audit artifact as invalidated by later material change.',
     '  --rerun-reason <text>        Optional rerun or invalidation reason.',
     '  --notes <text>               Free-form reviewer notes.',
@@ -2091,6 +2123,11 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
   const reviewerAgentId = takeOption(argv, '--reviewer-agent-id', null);
   const implementationScopeRaw = takeOption(argv, '--implementation-scope', null);
   const securityTriggerReason = takeOption(argv, '--security-trigger-reason', null);
+  const riskFamilies = normalizeRiskFamilies(
+    takeManyOptions(argv, '--risk-family'),
+    '--risk-family',
+    helpText,
+  );
   const invalidated = hasOption(argv, '--invalidated');
   const rerunReason = takeOption(argv, '--rerun-reason', null);
   const notes = takeOption(argv, '--notes', '') ?? '';
@@ -2125,6 +2162,15 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
       helpText,
     );
   }
+  if (verdict === 'PASS' && riskFamilies.length > 0) {
+    throw new UsageError('--risk-family is only allowed for FAIL review artifacts.', helpText);
+  }
+  if (riskFamilies.length > 0 && step !== 'implementation') {
+    throw new UsageError(
+      '--risk-family is only allowed for implementation review artifacts.',
+      helpText,
+    );
+  }
 
   const dossierRecord = await readDossierRecord(absDossier, { root: absRoot });
   const featureId = frontmatterString(
@@ -2145,12 +2191,24 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
       helpText,
     );
   }
+  const implementationStageState =
+    step === 'implementation' ? await readStageState(absRoot, 'implementation', featureId) : null;
   const implementationScope =
     step === 'implementation' ? await resolveImplementationReviewScope(absRoot, featureId) : null;
   if (step === 'implementation') {
     if (!implementationScope) {
       throw new UsageError(
         'Implementation review scope is missing from the current implementation stage state. Record it via implementation --ready-for-close --implementation-scope <scope> before review-artifact.',
+        helpText,
+      );
+    }
+    const declaredRiskFamilies = implementationStageState?.pre_review_risk_families ?? [];
+    const undeclaredRiskFamilies = riskFamilies.filter(
+      (riskFamily) => !declaredRiskFamilies.includes(riskFamily),
+    );
+    if (undeclaredRiskFamilies.length > 0) {
+      throw new UsageError(
+        `--risk-family values must be declared in the current implementation stage state: ${undeclaredRiskFamilies.join(', ')}.`,
         helpText,
       );
     }
@@ -2182,6 +2240,22 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
   });
   const latestOutputPath = reviewLatestPath(absRoot, featureId, step, auditClass);
   const latestOutputRelPath = relativeToRoot(absRoot, latestOutputPath);
+  const repeatedFailRiskFamilies =
+    verdict === 'FAIL'
+      ? riskFamilies.filter((riskFamily) =>
+          (implementationStageState?.review_events ?? []).some(
+            (event) =>
+              event.verdict === 'FAIL' &&
+              event.implementation_scope === implementationScope &&
+              Array.isArray(event.risk_families) &&
+              event.risk_families.includes(riskFamily),
+          ),
+        )
+      : [];
+  const repairNextAction =
+    repeatedFailRiskFamilies.length > 0
+      ? `Repair adjacent scenario evidence for repeated FAIL risk families: ${repeatedFailRiskFamilies.join(', ')}. Add or update the nearest regression scenario before rerunning the external review.`
+      : null;
 
   const artifact = {
     version: 1,
@@ -2193,6 +2267,8 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     reviewer_skill: reviewerSkill,
     reviewer_agent_id: reviewerAgentId,
     reviewer_thread_id: reviewerThreadId,
+    ...(riskFamilies.length > 0 ? { risk_families: riskFamilies } : {}),
+    ...(repairNextAction ? { repair_next_action: repairNextAction } : {}),
     review_attempt_id: attemptIdentity.reviewAttemptId,
     review_round_id: attemptIdentity.reviewRoundId,
     review_round_number: attemptIdentity.reviewRoundNumber,
@@ -2267,6 +2343,9 @@ async function runReviewArtifactCommand(argv: string[], io: CliIo): Promise<numb
     io.stdout,
     `[review-artifact] audit_class=${auditClass} verdict=${verdict} step=${step} feature=${featureId} event_commit=${commit ?? 'none'}`,
   );
+  if (repairNextAction) {
+    writeLine(io.stdout, `[review-artifact] repair_next_action=${repairNextAction}`);
+  }
   return EXIT_SUCCESS;
 }
 
@@ -2487,6 +2566,58 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
   }
   if (verify?.feature_id && verify.feature_id !== featureId) {
     rejectVerification(`has feature mismatch: expected ${featureId}, got ${verify.feature_id}`);
+  }
+  if (
+    verify &&
+    step === 'implementation' &&
+    implementationScope === 'code-bearing' &&
+    (stageState?.pre_review_risk_families.length ?? 0) > 0
+  ) {
+    const requiredCategories = Array.isArray(verify.required_categories)
+      ? toStringArray(verify.required_categories)
+      : null;
+    const satisfiedCategories = Array.isArray(verify.satisfied_categories)
+      ? toStringArray(verify.satisfied_categories)
+      : null;
+    const missingCategories = Array.isArray(verify.missing_categories)
+      ? toStringArray(verify.missing_categories)
+      : null;
+    if (!toNullableString(verify.verification_profile_source)) {
+      rejectVerification(
+        'is missing verification_profile_source for code-bearing implementation with declared pre-review risk families',
+      );
+    }
+    if (verify.verification_profile_scope !== IMPLEMENTATION_PROTECTED_PROFILE_SCOPE) {
+      rejectVerification(
+        `has verification_profile_scope mismatch: expected ${IMPLEMENTATION_PROTECTED_PROFILE_SCOPE}, got ${String(verify.verification_profile_scope)}`,
+      );
+    }
+    if (!requiredCategories) {
+      rejectVerification('is missing required_categories array');
+    } else if (requiredCategories.length === 0) {
+      rejectVerification(
+        'has no required_categories for code-bearing implementation with declared pre-review risk families',
+      );
+    }
+    if (!satisfiedCategories) {
+      rejectVerification('is missing satisfied_categories array');
+    } else if (requiredCategories) {
+      const unsatisfiedCategories = requiredCategories.filter(
+        (category) => !satisfiedCategories.includes(category),
+      );
+      if (unsatisfiedCategories.length > 0) {
+        rejectVerification(
+          `does not satisfy required verification profile categories: ${unsatisfiedCategories.join(', ')}`,
+        );
+      }
+    }
+    if (!missingCategories) {
+      rejectVerification('is missing missing_categories array');
+    } else if (missingCategories.length > 0) {
+      rejectVerification(
+        `has missing verification profile categories: ${missingCategories.join(', ')}`,
+      );
+    }
   }
 
   const requiredAuditClasses = requiredAuditClassesForStep(step, implementationScope);
@@ -2737,6 +2868,8 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
       reviewer_agent_id: event.reviewer_agent_id,
       reviewer_skill: event.reviewer_skill,
       reviewer_thread_id: event.reviewer_thread_id,
+      risk_families: event.risk_families,
+      repair_next_action: event.repair_next_action,
       review_mode: event.review_mode,
       stale: event.stale,
       invalidated: event.invalidated,
@@ -2885,6 +3018,174 @@ async function runDossierStepCloseCommand(argv: string[], io: CliIo): Promise<nu
   return EXIT_SUCCESS;
 }
 
+type VerificationProfileCategory = {
+  command: string | null;
+  evidence: string[];
+  required: boolean;
+  sideEffectful: boolean;
+};
+
+type VerificationProfile = {
+  categories: Map<string, VerificationProfileCategory>;
+  requiredCategories: string[];
+  scope: string;
+  source: string;
+};
+
+function normalizeVerificationCategoryId(value: string, label: string, helpText: string): string {
+  const normalized = value.trim();
+  if (!normalized) {
+    throw new UsageError(`${label} cannot be empty.`, helpText);
+  }
+  if (!PRE_REVIEW_RISK_IDENTIFIER_PATTERN.test(normalized)) {
+    throw new UsageError(
+      `${label} must be a stable lowercase identifier using letters, digits, and hyphens.`,
+      helpText,
+    );
+  }
+  return normalized;
+}
+
+function toEvidenceArray(value: unknown, category: string, helpText: string): string[] {
+  const rawValues =
+    typeof value === 'string' ? [value] : Array.isArray(value) ? value : value == null ? [] : null;
+  if (rawValues === null) {
+    throw new UsageError(
+      `verification profile category "${category}" evidence must be a string or string array.`,
+      helpText,
+    );
+  }
+  return uniqueStrings(
+    rawValues.map((item) => {
+      if (typeof item !== 'string') {
+        throw new UsageError(
+          `verification profile category "${category}" evidence must contain only strings.`,
+          helpText,
+        );
+      }
+      return item;
+    }),
+  );
+}
+
+async function readVerificationProfile(payload: {
+  helpText: string;
+  inputPath: string;
+  root: string;
+}): Promise<VerificationProfile> {
+  if (path.isAbsolute(payload.inputPath)) {
+    throw new UsageError(
+      '--verification-profile must be a repository-relative path.',
+      payload.helpText,
+    );
+  }
+  const absPath = await resolveManagedReadPath(
+    payload.root,
+    payload.inputPath,
+    payload.root,
+    'verification profile path',
+  );
+  const relPath = relativeToRoot(payload.root, absPath);
+  const parsed = JSON.parse(await readText(absPath)) as Record<string, unknown>;
+  if (parsed.version !== 1) {
+    throw new UsageError('verification profile version must be 1.', payload.helpText);
+  }
+  const scope =
+    typeof parsed.scope === 'string'
+      ? normalizeVerificationCategoryId(
+          parsed.scope,
+          'verification profile scope',
+          payload.helpText,
+        )
+      : null;
+  if (!scope) {
+    throw new UsageError('verification profile scope is required.', payload.helpText);
+  }
+  if (
+    parsed.categories === null ||
+    typeof parsed.categories !== 'object' ||
+    Array.isArray(parsed.categories)
+  ) {
+    throw new UsageError('verification profile categories must be an object.', payload.helpText);
+  }
+  const categories = new Map<string, VerificationProfileCategory>();
+  for (const [rawId, rawCategory] of Object.entries(parsed.categories)) {
+    const id = normalizeVerificationCategoryId(
+      rawId,
+      'verification profile category',
+      payload.helpText,
+    );
+    if (rawCategory === null || typeof rawCategory !== 'object' || Array.isArray(rawCategory)) {
+      throw new UsageError(
+        `verification profile category "${id}" must be an object.`,
+        payload.helpText,
+      );
+    }
+    const category = rawCategory as Record<string, unknown>;
+    const command =
+      typeof category.command === 'string' && category.command.trim().length > 0
+        ? category.command.trim()
+        : null;
+    if (command && /[\r\n]/u.test(command)) {
+      throw new UsageError(
+        `verification profile category "${id}" command must be a single-line value.`,
+        payload.helpText,
+      );
+    }
+    categories.set(id, {
+      command,
+      evidence: toEvidenceArray(category.evidence, id, payload.helpText),
+      required: category.required === true,
+      sideEffectful: category.side_effectful === true,
+    });
+  }
+  const explicitRequired = Array.isArray(parsed.required_categories)
+    ? parsed.required_categories.map((item) => {
+        if (typeof item !== 'string') {
+          throw new UsageError(
+            'verification profile required_categories must contain only strings.',
+            payload.helpText,
+          );
+        }
+        return normalizeVerificationCategoryId(
+          item,
+          'verification profile required category',
+          payload.helpText,
+        );
+      })
+    : [];
+  const requiredCategories = uniqueStrings([
+    ...explicitRequired,
+    ...[...categories.entries()]
+      .filter(([, category]) => category.required)
+      .map(([categoryId]) => categoryId),
+  ]);
+  const unknownRequired = requiredCategories.filter((categoryId) => !categories.has(categoryId));
+  if (unknownRequired.length > 0) {
+    throw new UsageError(
+      `verification profile required_categories reference missing categories: ${unknownRequired.join(', ')}.`,
+      payload.helpText,
+    );
+  }
+  return { source: relPath, scope, categories, requiredCategories };
+}
+
+function syntheticVerificationCheck(payload: {
+  message: string;
+  name: string;
+  status: 'fail' | 'pass';
+}): VerificationCheck {
+  return {
+    name: payload.name,
+    command: 'verification profile evidence',
+    exit_code: payload.status === 'pass' ? 0 : 1,
+    stdout: payload.status === 'pass' ? payload.message : '',
+    stderr: payload.status === 'fail' ? payload.message : '',
+    duration_ms: 0,
+    status: payload.status,
+  };
+}
+
 function dossierVerifyHelp(): string {
   return [
     'Run the canonical verification bundle and persist its JSON artifact.',
@@ -2902,6 +3203,7 @@ function dossierVerifyHelp(): string {
     '  --skip-index-refresh              Skip index-refresh in the verification bundle.',
     '  --skip-diff-check                 Skip git diff --check.',
     '  --coverage-orphans-scope <scope>  Scope for coverage orphan detection.',
+    '  --verification-profile <path>     Repository-relative JSON profile declaring required verification categories.',
     '  --extra <command>                 Repeatable extra shell command.',
     '  -h, --help                        Show help.',
     '',
@@ -2928,6 +3230,7 @@ async function runDossierVerifyCommand(argv: string[], io: CliIo): Promise<numbe
   const skipIndexRefresh = hasOption(argv, '--skip-index-refresh');
   const skipDiffCheck = hasOption(argv, '--skip-diff-check');
   const coverageOrphansScope = takeOption(argv, '--coverage-orphans-scope', 'auto') ?? 'auto';
+  const verificationProfilePath = takeOption(argv, '--verification-profile', null);
   const extra = takeManyOptions(argv, '--extra');
   const absRoot = path.resolve(root);
 
@@ -2950,6 +3253,21 @@ async function runDossierVerifyCommand(argv: string[], io: CliIo): Promise<numbe
   }
 
   const checks: VerificationCheck[] = [];
+  const verificationProfile = verificationProfilePath
+    ? await readVerificationProfile({
+        root: absRoot,
+        inputPath: verificationProfilePath,
+        helpText,
+      })
+    : null;
+  const implementationStageState =
+    dossierRelPath && step === 'implementation'
+      ? await readStageState(absRoot, 'implementation', featureId)
+      : null;
+  const implementationProfileRequired =
+    step === 'implementation' &&
+    (await resolveImplementationReviewScope(absRoot, featureId)) === 'code-bearing' &&
+    (implementationStageState?.pre_review_risk_families.length ?? 0) > 0;
   if (!skipIndexRefresh) {
     checks.push(
       await captureCommandResult({
@@ -3038,6 +3356,111 @@ async function runDossierVerifyCommand(argv: string[], io: CliIo): Promise<numbe
     );
   }
 
+  const satisfiedCategories: string[] = [];
+  const missingCategories: string[] = [];
+  const sideEffectfulCategories: string[] = [];
+  const profileRequiredCategories = verificationProfile
+    ? verificationProfile.requiredCategories
+    : implementationProfileRequired
+      ? ['protected-side-effect-profile']
+      : [];
+  if (verificationProfile) {
+    if (implementationProfileRequired) {
+      if (verificationProfile.scope !== IMPLEMENTATION_PROTECTED_PROFILE_SCOPE) {
+        missingCategories.push('protected-side-effect-profile');
+        checks.push(
+          syntheticVerificationCheck({
+            name: 'profile:protected-side-effect-profile',
+            status: 'fail',
+            message: `Verification profile scope must be ${IMPLEMENTATION_PROTECTED_PROFILE_SCOPE} for code-bearing implementation with declared pre-review risk families.`,
+          }),
+        );
+      }
+      if (verificationProfile.requiredCategories.length === 0) {
+        missingCategories.push('protected-side-effect-profile');
+        checks.push(
+          syntheticVerificationCheck({
+            name: 'profile:protected-side-effect-profile',
+            status: 'fail',
+            message:
+              'Verification profile must declare at least one required category for code-bearing implementation with declared pre-review risk families.',
+          }),
+        );
+      }
+    }
+    for (const categoryId of verificationProfile.requiredCategories) {
+      const category = verificationProfile.categories.get(categoryId);
+      if (!category) {
+        missingCategories.push(categoryId);
+        continue;
+      }
+      if (category.sideEffectful) {
+        sideEffectfulCategories.push(categoryId);
+      }
+      const commandCheck = category.command
+        ? runExternalCommand({
+            name: `profile:${categoryId}`,
+            command: category.command,
+            cwd: absRoot,
+            shell: true,
+            displayCommand: category.command,
+          })
+        : null;
+      if (commandCheck) {
+        checks.push(commandCheck);
+      }
+      const evidenceSatisfied = category.evidence.length > 0;
+      const commandSatisfied = commandCheck === null || commandCheck.status === 'pass';
+      const satisfied = category.sideEffectful
+        ? evidenceSatisfied && commandSatisfied
+        : commandCheck !== null
+          ? commandCheck.status === 'pass'
+          : evidenceSatisfied;
+      if (satisfied) {
+        satisfiedCategories.push(categoryId);
+        if (!commandCheck) {
+          checks.push(
+            syntheticVerificationCheck({
+              name: `profile:${categoryId}`,
+              status: 'pass',
+              message: `Declared evidence: ${category.evidence.join(' | ')}`,
+            }),
+          );
+        }
+      } else {
+        missingCategories.push(categoryId);
+        if (category.sideEffectful && !evidenceSatisfied) {
+          checks.push(
+            syntheticVerificationCheck({
+              name: `profile:${categoryId}:evidence`,
+              status: 'fail',
+              message: 'Required side-effect verification category has no evidence pointer.',
+            }),
+          );
+        }
+        if (!commandCheck) {
+          checks.push(
+            syntheticVerificationCheck({
+              name: `profile:${categoryId}`,
+              status: 'fail',
+              message: 'Required verification category has no evidence or passing command.',
+            }),
+          );
+        }
+      }
+    }
+  } else if (implementationProfileRequired) {
+    missingCategories.push('protected-side-effect-profile');
+    checks.push(
+      syntheticVerificationCheck({
+        name: 'profile:protected-side-effect-profile',
+        status: 'fail',
+        message:
+          'Code-bearing implementation with declared pre-review risk families requires --verification-profile.',
+      }),
+    );
+  }
+
   const overallStatus = checks.every((check) => check.status === 'pass') ? 'pass' : 'fail';
   const eventCommit = inGitRepo(absRoot) ? getCurrentCommit(absRoot) : null;
   const artifact = {
@@ -3048,6 +3471,16 @@ async function runDossierVerifyCommand(argv: string[], io: CliIo): Promise<numbe
     dossier: dossierRelPath,
     event_commit: eventCommit,
     status: overallStatus,
+    verification_profile_source: verificationProfile?.source ?? null,
+    verification_profile_scope: verificationProfile?.scope ?? null,
+    required_categories: profileRequiredCategories,
+    satisfied_categories: satisfiedCategories,
+    missing_categories: missingCategories,
+    side_effectful_categories: sideEffectfulCategories,
+    next_action:
+      missingCategories.length > 0
+        ? `Provide passing evidence for required verification categories: ${missingCategories.join(', ')}.`
+        : null,
     checks,
   };
 

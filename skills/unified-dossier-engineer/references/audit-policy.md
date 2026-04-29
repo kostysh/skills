@@ -142,6 +142,10 @@ A blocking audit round is not complete until `review-artifact` records the immut
 
 For a FAIL verdict, `review-artifact` must preserve actionable reviewer-owned accounting: at least one `must_fix` finding and at least one `evidence` reference. Correction work after prose-only or trace-only FAIL must not continue as if the round were durably accounted; either rerun reviewer-owned FAIL accounting or record a structured process miss when the original artifact is unrecoverable.
 
+For implementation FAIL verdicts, the reviewer may add `--risk-family <id>` only for risk families already declared in the current implementation stage state by `implementation --ready-for-close`. The runtime persists those `risk_families` on the immutable FAIL artifact and stage `review_events[]`; a second FAIL in the same declared family also records `repair_next_action` directing the author to add or repair the nearest adjacent regression scenario before rerunning external review.
+
+For code-bearing implementation stages with declared pre-review risk families, `dossier-verify` must use a repository-relative `--verification-profile` before close verification can pass. The profile records a stable `scope`, required categories, evidence pointers, optional commands, and side-effectful category markers. Required side-effectful categories are incomplete without explicit evidence pointers even when their command exits successfully.
+
 Those launch constraints are active process rules. The canonical runtime mechanically enforces only the durable subset it can validate from review artifacts and helper-managed stage telemetry:
 
 - external-versus-degraded review mode;
@@ -177,6 +181,7 @@ Helper command roles stay narrow:
 
 - `review-artifact` persists one immutable already obtained audit attempt for one audit class;
 - FAIL `review-artifact` writes require both `must_fix` and `evidence`; PASS artifacts must not carry `must_fix`;
+- implementation FAIL artifacts may carry declared `risk_families`; PASS artifacts and non-implementation artifacts do not carry risk-family accounting;
 - later attempts supersede earlier attempts for closure only through policy validation, never by overwriting earlier evidence;
 - `dossier-step-close` validates that the required audit bundle exists and is still valid;
 - neither helper performs the audit itself.
@@ -198,6 +203,7 @@ Durable review evidence must preserve enough structure to answer:
 - whether the audit is invalidated or degraded;
 - the review attempt identity: `review_attempt_id`, `review_round_id`, `review_round_number`, and immutable `artifact_path`;
 - FAIL findings: full `must_fix` and `evidence` live in the immutable review artifact, while stage state/log may store bounded links and counts such as `must_fix_count` and `evidence_count`;
+- for implementation FAIL findings tied to declared readiness risks, `risk_families` and optional `repair_next_action`;
 - any compatibility latest copy path as a convenience pointer, not as the sole evidence;
 - which audit classes were required versus executed;
 - which helper-managed stage state recorded the audit bundle for the current stage cycle;

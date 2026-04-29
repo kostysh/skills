@@ -1,4 +1,5 @@
 import { formatList, topEntries } from '../core/shared.ts';
+import { isContextReviewSignal } from '../core/review-signals.ts';
 import type { ScanSummary } from '../core/types.ts';
 
 export interface ReportRenderOptions {
@@ -157,8 +158,22 @@ function formatReviewEvidenceQuality(scan: ScanSummary): string {
     signals.map((signal) => {
       const artifact = signal.artifact_path ?? 'no immutable artifact';
       const match = signal.matching_artifact ? 'matched artifact' : 'missing matching artifact';
-      return `${signal.source_quality}: ${signal.verdict} from ${signal.source} (${artifact}; ${match})`;
+      return `${signal.source_quality}: ${signal.verdict} from ${signal.source} (${signal.classification}; ${artifact}; ${match})`;
     }),
+  );
+}
+
+function formatReviewEvidenceContext(scan: ScanSummary): string {
+  const signals = (scan.reviewSignals ?? []).filter(isContextReviewSignal);
+  if (signals.length === 0) {
+    return '- No historical or superseded trace-only review signals were extracted automatically.';
+  }
+
+  return formatList(
+    signals.map(
+      (signal) =>
+        `${signal.classification}: ${signal.source_quality} ${signal.verdict} from ${signal.source} at ${signal.timestamp ?? 'unknown time'} (${signal.evidence})`,
+    ),
   );
 }
 
@@ -300,6 +315,10 @@ ${formatExcludedStageLogCandidates(scan)}
 ## Review evidence quality
 
 ${formatReviewEvidenceQuality(scan)}
+
+## Review evidence context
+
+${formatReviewEvidenceContext(scan)}
 
 ## Report status reasons
 

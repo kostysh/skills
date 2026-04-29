@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { isNonPassReviewEvent, parseStageLog } from '../parsers/stage-log.ts';
+import { isActionableReviewSignal } from './review-signals.ts';
 import { stringFromUnknown } from './shared.ts';
 import type {
   LogMetrics,
@@ -384,6 +385,7 @@ function reviewSignalFromStructuredRecord(input: {
   return {
     source_quality: input.forceIncomplete ? 'incomplete' : 'structured',
     source: input.source,
+    classification: 'active_unmatched',
     verdict: stringFromUnknown(verdict, 'non-pass'),
     audit_class: firstNullableString(
       input.record.audit_class,
@@ -446,6 +448,7 @@ function proseReviewSignals(log: ParsedStageLog): ReviewSignal[] {
     .map((event) => ({
       source_quality: 'prose_derived',
       source: 'prose',
+      classification: 'active_unmatched',
       verdict: stringFromUnknown(event.verdict, 'non-pass'),
       audit_class: null,
       round: null,
@@ -478,22 +481,27 @@ function collectReviewSignals(log: ParsedStageLog, projectRoot: string | null): 
 }
 
 function reviewSignalMetricQuality(signals: readonly ReviewSignal[]): MetricEvidenceQuality {
-  if (signals.length === 0) {
+  const actionableSignals = signals.filter(isActionableReviewSignal);
+  if (actionableSignals.length === 0) {
     return 'none';
   }
   if (
-    signals.some((signal) => !signal.matching_artifact || signal.source_quality === 'incomplete')
+    actionableSignals.some(
+      (signal) => !signal.matching_artifact || signal.source_quality === 'incomplete',
+    )
   ) {
     return 'incomplete';
   }
-  return signals.reduce<MetricEvidenceQuality>(
+  return actionableSignals.reduce<MetricEvidenceQuality>(
     (current, signal) => mergeQuality(current, signal.source_quality),
     'none',
   );
 }
 
 function reviewFindingsFromSignals(signals: readonly ReviewSignal[]): number {
-  return signals.reduce((total, signal) => total + (signal.must_fix_count ?? 0), 0);
+  return signals
+    .filter(isActionableReviewSignal)
+    .reduce((total, signal) => total + (signal.must_fix_count ?? 0), 0);
 }
 
 function summarizeParsedLogs(logs: ParsedStageLog[], projectRoot: string | null): LogsSummary {

@@ -6,6 +6,7 @@ import {
 import { extractSkillTraceSummary } from './extract-skill-scope.ts';
 import { extractTraceScope } from './extract-trace-scope.ts';
 import { inferCandidateIncidents } from './infer-candidate-incidents.ts';
+import { isActionableReviewSignal } from './review-signals.ts';
 import { resolveStandardEvidenceDir } from './resolve-evidence-roots.ts';
 import {
   extractTimestamp,
@@ -104,7 +105,9 @@ function buildReportStatus(input: {
   if (hasUnvalidatedFallbackMetrics(logSummary.metrics.sources)) {
     reasons.push('Trace/prose-derived or incomplete metrics require agent validation.');
   }
-  if (reviewSignals.some((signal) => !signal.matching_artifact)) {
+  if (
+    reviewSignals.some((signal) => isActionableReviewSignal(signal) && !signal.matching_artifact)
+  ) {
     reasons.push(
       'Non-PASS review signals without matching immutable artifacts require validation.',
     );
@@ -203,7 +206,7 @@ function collectTraceReviewText(event: unknown, depth = 0, key?: string): string
   return [];
 }
 
-function traceSignalFindingCount(value: string): number {
+function traceSignalExplicitFindingCount(value: string): number | null {
   const explicit = value.match(/\b(\d+)\s+(?:must[-_\s]?fix|blocking|finding|issue)s?\b/iu)?.[1];
   if (explicit) {
     return Number(explicit);
@@ -218,7 +221,50 @@ function traceSignalFindingCount(value: string): number {
     return 1;
   }
 
-  return 1;
+  return null;
+}
+
+function onlyUniqueMatch(value: string, pattern: RegExp): string | null {
+  const matches = Array.from(value.matchAll(pattern))
+    .map((match) => match[1])
+    .filter((match): match is string => match !== undefined);
+  const uniqueMatches = Array.from(new Set(matches));
+  return uniqueMatches.length === 1 ? (uniqueMatches.at(0) ?? null) : null;
+}
+
+function hasAmbiguousMatches(value: string, pattern: RegExp): boolean {
+  const uniqueMatches = Array.from(
+    new Set(
+      Array.from(value.matchAll(pattern))
+        .map((match) => match[1])
+        .filter((match): match is string => match !== undefined),
+    ),
+  );
+  return uniqueMatches.length > 1;
+}
+
+function traceSignalScopeIdentity(value: string): Record<string, unknown> | null {
+  const featurePattern = /\b(F-\d{4})\b/giu;
+  const backlogPattern = /\b(CF-\d{3,4})\b/giu;
+  const stagePattern =
+    /\b(feature-intake|spec-compact|plan-slice|implementation|change-proposal|next-step)\b/giu;
+  const featureId = onlyUniqueMatch(value, featurePattern);
+  const backlogItemKey = onlyUniqueMatch(value, backlogPattern);
+  const stage = onlyUniqueMatch(value, stagePattern);
+  const ambiguous =
+    hasAmbiguousMatches(value, featurePattern) ||
+    hasAmbiguousMatches(value, backlogPattern) ||
+    hasAmbiguousMatches(value, stagePattern);
+  if (!featureId && !backlogItemKey && !stage && !ambiguous) {
+    return null;
+  }
+
+  return {
+    feature_id: featureId,
+    backlog_item_key: backlogItemKey,
+    stage,
+    ambiguous,
+  };
 }
 
 function extractTraceReviewSignals(sessionSummary: SessionSummary): ReviewSignal[] {
@@ -240,6 +286,7 @@ function extractTraceReviewSignals(sessionSummary: SessionSummary): ReviewSignal
     out.push({
       source_quality: 'trace_derived',
       source: 'trace',
+      classification: 'active_unmatched',
       verdict: 'non-pass',
       audit_class:
         raw.match(/\b(spec-conformance-reviewer|security-reviewer|code-reviewer)\b/iu)?.[1] ?? null,
@@ -247,14 +294,134 @@ function extractTraceReviewSignals(sessionSummary: SessionSummary): ReviewSignal
       commit: raw.match(/\b[0-9a-f]{7,40}\b/iu)?.[0] ?? null,
       artifact_path: null,
       matching_artifact: false,
-      source_identity: null,
+      source_identity: traceSignalScopeIdentity(raw),
       timestamp: extractTimestamp(event),
       evidence: `${sessionSummary.filePath}#event:${sessionSummary.eventLines[index] ?? index + 1}`,
-      must_fix_count: traceSignalFindingCount(raw),
+      must_fix_count: traceSignalExplicitFindingCount(raw),
       evidence_count: null,
     });
   }
   return out;
+}
+
+function reviewHistoryQuality(logSummary: LogsSummary, evidence: string): string | null {
+  const log = logSummary.logs.find((entry) => entry.filePath === evidence);
+  const quality = log?.metadata.rpa_source_quality;
+  if (!quality || typeof quality !== 'object') {
+    return null;
+  }
+  const reviewHistoryQualityValue = (quality as Record<string, unknown>).review_history_quality;
+  return typeof reviewHistoryQualityValue === 'string' ? reviewHistoryQualityValue : null;
+}
+
+function normalizedScalar(value: string | number | null): string | null {
+  return value === null ? null : String(value).toLowerCase();
+}
+
+function normalizedRound(value: string | number | null): string | null {
+  const normalized = normalizedScalar(value);
+  return normalized?.replace(/^r0*/u, '').replace(/^0+/u, '') ?? null;
+}
+
+function signalTimestamp(value: string | null): number | null {
+  const date = tryParseDate(value);
+  return date ? date.valueOf() : null;
+}
+
+function identityValue(identity: Record<string, unknown> | null, key: string): string | null {
+  const value = identity?.[key];
+  return typeof value === 'string' && value.length > 0 ? value.toLowerCase() : null;
+}
+
+function identityFlag(identity: Record<string, unknown> | null, key: string): boolean {
+  return identity?.[key] === true;
+}
+
+function completeStructuredReviewSignals(logSummary: LogsSummary): ReviewSignal[] {
+  return logSummary.reviewSignals.filter(
+    (signal) =>
+      signal.source !== 'trace' &&
+      signal.source !== 'prose' &&
+      signal.source_quality === 'structured' &&
+      signal.matching_artifact &&
+      reviewHistoryQuality(logSummary, signal.evidence) === 'complete',
+  );
+}
+
+function traceMatchesCompleteReviewSignal(trace: ReviewSignal, complete: ReviewSignal): boolean {
+  if (
+    !trace.audit_class ||
+    normalizedScalar(trace.audit_class) !== normalizedScalar(complete.audit_class)
+  ) {
+    return false;
+  }
+  if (!trace.round || normalizedRound(trace.round) !== normalizedRound(complete.round)) {
+    return false;
+  }
+  if (!trace.commit || normalizedScalar(trace.commit) !== normalizedScalar(complete.commit)) {
+    return false;
+  }
+  if (trace.must_fix_count === null || trace.must_fix_count !== complete.must_fix_count) {
+    return false;
+  }
+
+  const traceFeatureId = identityValue(trace.source_identity, 'feature_id');
+  const traceBacklogItemKey = identityValue(trace.source_identity, 'backlog_item_key');
+  const traceStage = identityValue(trace.source_identity, 'stage');
+  const completeFeatureId = identityValue(complete.source_identity, 'feature_id');
+  const completeBacklogItemKey = identityValue(complete.source_identity, 'backlog_item_key');
+  const completeStage = identityValue(complete.source_identity, 'stage');
+  if (identityFlag(trace.source_identity, 'ambiguous')) {
+    return false;
+  }
+  if (!traceStage || traceStage !== completeStage) {
+    return false;
+  }
+  if (!traceFeatureId && !traceBacklogItemKey) {
+    return false;
+  }
+  if (traceFeatureId && traceFeatureId !== completeFeatureId) {
+    return false;
+  }
+  if (
+    traceBacklogItemKey &&
+    completeBacklogItemKey &&
+    traceBacklogItemKey !== completeBacklogItemKey
+  ) {
+    return false;
+  }
+  const traceTs = signalTimestamp(trace.timestamp);
+  const completeTs = signalTimestamp(complete.timestamp);
+  return traceTs !== null && completeTs !== null && traceTs <= completeTs;
+}
+
+function classifyTraceReviewSignals(
+  logSummary: LogsSummary,
+  traceReviewSignals: readonly ReviewSignal[],
+): ReviewSignal[] {
+  const completeSignals = completeStructuredReviewSignals(logSummary);
+  if (completeSignals.length === 0) {
+    return [...traceReviewSignals];
+  }
+
+  return traceReviewSignals.map((trace) => {
+    const matches = completeSignals.filter((complete) =>
+      traceMatchesCompleteReviewSignal(trace, complete),
+    );
+    if (matches.length !== 1) {
+      return trace;
+    }
+
+    const traceTs = signalTimestamp(trace.timestamp);
+    const completeTs = signalTimestamp(matches[0]?.timestamp ?? null);
+    return {
+      ...trace,
+      classification:
+        traceTs !== null && completeTs !== null && traceTs < completeTs
+          ? 'historical'
+          : 'superseded',
+    };
+  });
 }
 
 function logSummaryWithTraceReviewSignals(
@@ -265,25 +432,30 @@ function logSummaryWithTraceReviewSignals(
     return logSummary;
   }
 
-  const reviewFindingsFromTrace = traceReviewSignals.reduce(
+  const actionableTraceReviewSignals = traceReviewSignals.filter(isActionableReviewSignal);
+  const reviewFindingsFromTrace = actionableTraceReviewSignals.reduce(
     (total, signal) => total + (signal.must_fix_count ?? 1),
     0,
   );
+  const metrics =
+    actionableTraceReviewSignals.length === 0
+      ? logSummary.metrics
+      : {
+          ...logSummary.metrics,
+          reviewFindingsTotal: logSummary.metrics.reviewFindingsTotal + reviewFindingsFromTrace,
+          sources: {
+            ...logSummary.metrics.sources,
+            candidate_incidents: {
+              quality: 'incomplete' as const,
+              reason:
+                'candidate_incidents include trace-derived non-PASS review signals without matching immutable review artifacts.',
+            },
+          },
+        };
 
   return {
     ...logSummary,
-    metrics: {
-      ...logSummary.metrics,
-      reviewFindingsTotal: logSummary.metrics.reviewFindingsTotal + reviewFindingsFromTrace,
-      sources: {
-        ...logSummary.metrics.sources,
-        candidate_incidents: {
-          quality: 'incomplete',
-          reason:
-            'candidate_incidents include trace-derived non-PASS review signals without matching immutable review artifacts.',
-        },
-      },
-    },
+    metrics,
     reviewSignals: [...logSummary.reviewSignals, ...traceReviewSignals],
   };
 }
@@ -572,8 +744,10 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
   }
   const skillTraceSummary = extractSkillTraceSummary(skillScopeOptions);
 
-  const traceReviewSignals =
-    logSummary.reviewSignals.length === 0 ? extractTraceReviewSignals(sessionSummary) : [];
+  const traceReviewSignals = classifyTraceReviewSignals(
+    logSummary,
+    extractTraceReviewSignals(sessionSummary),
+  );
   const evidenceLogSummary = logSummaryWithTraceReviewSignals(logSummary, traceReviewSignals);
   const reviewSignals = evidenceLogSummary.reviewSignals;
   const candidateIncidents = inferCandidateIncidents(

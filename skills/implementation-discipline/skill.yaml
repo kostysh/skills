@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 18000
   description: >-
     Behavioral coding discipline for writing, modifying, and reviewing code
@@ -93,6 +93,7 @@ sections:
         - Run the narrowest meaningful checks that prove the change.
         - Prefer existing local test, lint, typecheck, build, or smoke-test commands when they are the narrowest meaningful proof.
         - If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
+        - When repeated independent validation signals point to one defect class, expand verification from the specific symptom to adjacent observable cases before reporting done.
         - If verification cannot run, use the next-best static check or state why no useful check is available.
         - Report the outcome, checks run, checks not run, and remaining risk.
       validation:

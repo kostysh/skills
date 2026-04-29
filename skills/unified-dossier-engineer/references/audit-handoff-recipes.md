@@ -46,6 +46,7 @@ Inputs:
 - Prior review artifacts: <repo-relative review artifact paths or none>
 - Prior non-PASS review artifacts and process misses: <repo-relative review artifacts, process-miss ids, or none>
 - Policy/admission classification and negative matrix: <risk profile, risk families, rows, or not_applicable rationale>
+- Declared implementation pre-review risk families: <implementation stage pre_review_risk_families or not_applicable>
 - Source materials: <issue, plan, spec, backlog item, acceptance criteria, or other repo-relative sources>
 
 Constraints:
@@ -65,7 +66,7 @@ Reviewer focus:
 
 After review:
 - If PASS, run the PASS `review-artifact` command for this audit class.
-- If FAIL, run the FAIL `review-artifact` command for this audit class and include must-fix findings plus repo-relative evidence.
+- If FAIL, run the FAIL `review-artifact` command for this audit class and include must-fix findings plus repo-relative evidence. For implementation FAILs tied to a declared pre-review risk, include the matching `--risk-family <id>`.
 - A blocking audit round is not complete until the immutable review attempt artifact exists.
 
 Output:
@@ -177,6 +178,12 @@ For `security-reviewer`:
 dossier-engineer review-artifact --dossier <dossier-path> --step implementation --audit-class security-reviewer --verdict FAIL --reviewer <reviewer-id> --reviewer-skill security-reviewer --reviewer-agent-id <agent-id> --security-trigger-reason <reason> --must-fix <finding> --evidence <repo-relative evidence>
 ```
 
+When a FAIL finding maps to a declared implementation pre-review risk family, append the matching repeatable flag:
+
+```text
+--risk-family <declared-risk-family>
+```
+
 ## Completion rule
 
 A required blocking audit round is incomplete until `review-artifact` writes one immutable attempt artifact for the audit class and verdict.
@@ -185,6 +192,7 @@ Rules:
 
 - PASS and FAIL rounds both need durable immutable artifacts.
 - FAIL rounds must include at least one `--must-fix` and at least one `--evidence`; prose-only FAIL is not operationally complete.
+- Implementation FAIL `--risk-family` values must match current implementation stage `pre_review_risk_families`; repeated same-family FAILs produce `repair_next_action` diagnostics for adjacent scenario repair.
 - A later PASS supersedes an earlier FAIL only through `dossier-step-close` policy validation.
 - Authoring correction work must stop after a prose/trace FAIL until reviewer-owned FAIL accounting exists, or until a structured process miss records why original reviewer accounting cannot be recovered.
 - If the reviewer mutates material files, backlog truth, or `HEAD`, discard the attempt and rerun it with a valid read-only reviewer.
