@@ -13,6 +13,7 @@
 | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Audited | Regression case для `referenced_only` stage logs, validation-required reports и false positives в skill-audit. |
 | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | Audited | Разделение data quality и agent-context factors; recommendation discipline перед schema/log changes. |
 | [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | Audited PASS | Обнаружение evidence, non-PASS metrics, problem-matrix generation, validation markers и UDE defect-history contract. |
+| [issues/issue-20260429-1.md](issues/issue-20260429-1.md) | Audited PASS | Классификация duplicate trace-only review signals при complete bounded stage state. |
 
 ## Implementation Plans
 
