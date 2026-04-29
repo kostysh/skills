@@ -4,9 +4,9 @@ description: Design, implement, and maintain robust tests for TypeScript
   projects (Node/React/edge) with focus on node:test, Vitest, mocking,
   determinism, and coverage.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 98f73906e10573d76c3ea54db60cc124d1ddb23ac0a780d43ac7bc3b55c19254
+  skillforge-source-hash: 229643299df8928c29fbe1080f40845960fee833742b42f11cf888ea22a46fda
 ---
 
 # typescript-test-engineer
@@ -31,6 +31,8 @@ metadata:
 - The task is security-sensitive CI permission or secret handling without a testing focus; pair with security-reviewer.
 
 ## Overview
+
+Use this skill to make TypeScript test work prove observable behavior through the repository's existing runner, isolation patterns, and verification gates. The expected outcome is deterministic tests or review findings backed by exact validation commands, warning status, and any coverage or validation gaps.
 
 ## Scope
 Applies to TypeScript projects, especially Node and edge backends, plus React apps. If the repo already uses a test runner or established conventions (Jest/Vitest/etc.), follow them and avoid conflicts.
@@ -238,9 +240,9 @@ No production code without a failing test first.
 - If a test passes immediately, fix the test; don't write more code.
 
 ### When to pause and ask
-- Existing code already implemented without tests.
-- Tests are hard to write (may indicate design issues).
-- The user did not ask for TDD explicitly.
+- The user requested TDD, but existing code already implements the behavior without tests.
+- The user requested TDD, but the first failing test cannot be written without a design change.
+- The request is ambiguous about whether to discard already-written production code to preserve strict TDD.
 
 ## Testing anti-patterns (reference)
 
@@ -278,6 +280,11 @@ Validation:
 - **TypeScript language and type-system rules:** typescript-engineer. This skill owns testing strategy and runner behavior, while TypeScript language semantics belong to typescript-engineer.
 - **browser interaction and UI E2E automation workflow:** agent-browser. Use agent-browser for browser sessions, snapshots, and debugging workflows.
 - **CI permissions, secrets, and untrusted inputs:** security-reviewer. Pair CI security-sensitive testing changes with security-reviewer.
+
+## Policies
+
+### Completion evidence
+When reporting completion, name the relevant test, coverage, or CI validation commands that ran; state whether warnings and stderr were clean or documented; and call out any check that could not run with the exact blocker and next-best evidence. Do not imply completion while required validation is missing or still failing.
 
 ## Required active references
 - [Agent Browser](references/agent-browser.md) — Read this when working with agent browser.

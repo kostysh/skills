@@ -8,7 +8,7 @@ Tests must verify real behavior, not mock behavior. Mocks are a means to isolate
 
 **Core principle:** Test what the code does, not what the mocks do.
 
-**Following strict TDD prevents these anti-patterns.**
+If the user explicitly requests TDD, its strict fail-first loop helps prevent these anti-patterns. Otherwise, use the gates below without switching the task into TDD mode.
 
 ## The Iron Laws
 
@@ -283,15 +283,15 @@ X No tests written
 
 **Why this is wrong:**
 - Testing is part of implementation, not optional follow-up
-- TDD would have caught this
+- A test-first loop would have caught this, and normal implementation still cannot claim completion without relevant tests
 - Can't claim complete without tests
 
 **The fix:**
 ```
-TDD cycle:
-1. Write failing test
-2. Implement to pass
-3. Refactor
+Minimum completion gate:
+1. Add or repair the behavior test that proves the change
+2. Run the relevant test command
+3. Resolve warnings or document the blocker
 4. THEN claim complete
 ```
 
@@ -408,15 +408,15 @@ await user.click(submit);
 
 **Consider:** Integration tests with real components often simpler than complex mocks
 
-## TDD Prevents These Anti-Patterns
+## TDD Context
 
-**Why TDD helps:**
+When TDD is explicitly requested, it helps prevent these anti-patterns:
 1. **Write test first** -> Forces you to think about what you're actually testing
 2. **Watch it fail** -> Confirms test tests real behavior, not mocks
 3. **Minimal implementation** -> No test-only methods creep in
 4. **Real dependencies** -> You see what the test actually needs before mocking
 
-**If you're testing mock behavior, you violated TDD** - you added mocks without watching test fail against real code first.
+If TDD is not explicitly requested, use the gate functions and normal validation workflow instead of converting the task to TDD.
 
 ## Quick Reference
 
@@ -427,7 +427,7 @@ await user.click(submit);
 | Mock without understanding | Understand dependencies first, mock minimally |
 | Incomplete mocks | Mirror real API completely |
 | State-changing double without contract tests | Run shared contract suite against production and the double |
-| Tests as afterthought | TDD - tests first |
+| Tests as afterthought | Add behavior tests before claiming completion; use TDD only if requested |
 | No final coverage checkpoint | Run and record coverage before closure |
 | Never-settled promises in test mocks | Use deferred and always resolve/reject |
 | `waitFor(async () => ...)` | Keep `waitFor` callback sync, run async work outside |
@@ -452,6 +452,6 @@ await user.click(submit);
 
 **Mocks are tools to isolate, not things to test.**
 
-If TDD reveals you're testing mock behavior, you've gone wrong.
+If a test only verifies mock behavior, the test has gone wrong.
 
 Fix: Test real behavior or question why you're mocking at all.

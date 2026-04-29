@@ -7,13 +7,13 @@
 
 ## Confidence contours (default)
 
-Apply test execution by contour:
+Apply test execution by contour. If repo policy differs, follow repo policy exactly and document the deviation.
+
 - Local: targeted/changed tests for fast feedback.
 - PR: full required quality gates for merge safety.
-- Nightly: shuffle/repeated integration/E2E for flake detection.
 - Release: full gates + coverage + smoke.
 
-If repo policy differs, follow repo policy and document the deviation.
+Optional stability/nightly contour exists only when the repository explicitly defines scheduled repeated/shuffled validation. Do not introduce nightly, telemetry, or soak runs from this guide alone.
 
 ## Changed-scope review for test adequacy
 
@@ -75,8 +75,9 @@ Near miss:
 - renaming a generic 429 test to mention replay or quota without changing the request sequence, key choice, or assertions that represent the risk.
 
 ## Runner
-- Use `node:test` and a lightweight TS strip/transform (`node --experimental-strip-types` or similar).
-- No ts-node.
+- For Node and edge projects without an existing runner policy, prefer `node:test` and a lightweight TS strip/transform (`node --experimental-strip-types` or similar).
+- If the repo already uses Jest, Vitest, or another runner, follow existing conventions unless the task is to change the runner.
+- Avoid `ts-node` as a default test execution path.
 Notes:
 - `--experimental-strip-types` has limitations (no TS emit transforms, decorators, or path-alias rewriting). If you need those, use a lightweight build step (e.g., `tsc --noEmit false` into `dist/` for tests) or a dedicated test build config.
 - When running source `.ts` files directly with `node --experimental-strip-types`, ESM import specifiers must match the source extension (use `.ts`, not `.js`). If you build to `dist/`, use `.js` in emitted output.

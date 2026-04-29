@@ -1,3 +1,5 @@
+Use this skill to make TypeScript test work prove observable behavior through the repository's existing runner, isolation patterns, and verification gates. The expected outcome is deterministic tests or review findings backed by exact validation commands, warning status, and any coverage or validation gaps.
+
 ## Scope
 Applies to TypeScript projects, especially Node and edge backends, plus React apps. If the repo already uses a test runner or established conventions (Jest/Vitest/etc.), follow them and avoid conflicts.
 
@@ -204,9 +206,9 @@ No production code without a failing test first.
 - If a test passes immediately, fix the test; don't write more code.
 
 ### When to pause and ask
-- Existing code already implemented without tests.
-- Tests are hard to write (may indicate design issues).
-- The user did not ask for TDD explicitly.
+- The user requested TDD, but existing code already implements the behavior without tests.
+- The user requested TDD, but the first failing test cannot be written without a design change.
+- The request is ambiguous about whether to discard already-written production code to preserve strict TDD.
 
 ## Testing anti-patterns (reference)
 

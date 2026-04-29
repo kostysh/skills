@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.0"
+  source-version: "0.1.1"
   recommended-skill-md-max-bytes: 46000
   description: "Design, implement, and maintain robust tests for TypeScript projects (Node/React/edge) with focus on node:test, Vitest, mocking, determinism, and coverage."
 fragments:
@@ -108,7 +108,10 @@ sections:
       rationale: "Pair CI security-sensitive testing changes with security-reviewer."
   commands: []
   gotchas: []
-  policies: []
+  policies:
+    - id: "completion-evidence"
+      title: "Completion evidence"
+      text: "When reporting completion, name the relevant test, coverage, or CI validation commands that ran; state whether warnings and stderr were clean or documented; and call out any check that could not run with the exact blocker and next-best evidence. Do not imply completion while required validation is missing or still failing."
   portability:
     required: true
     rules:
