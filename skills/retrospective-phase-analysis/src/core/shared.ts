@@ -308,13 +308,19 @@ export function sortUnique(values: string[]): string[] {
   return Array.from(new Set(values)).sort((left, right) => left.localeCompare(right));
 }
 
-export type RetroOutputCommandName = 'scan' | 'report' | 'skill-audit' | 'logging-review';
+export type RetroOutputCommandName =
+  | 'scan'
+  | 'report'
+  | 'skill-audit'
+  | 'logging-review'
+  | 'problem-matrix';
 
 const RETRO_OUTPUT_FILE_NAMES = {
   scan: 'scan-summary.json',
   report: 'retrospective-report.md',
   'skill-audit': 'skill-audit.md',
   'logging-review': 'logging-review.md',
+  'problem-matrix': 'problem-matrix-by-skill.md',
 } as const;
 
 function slugifyOutputPart(value: string): string {
@@ -491,6 +497,7 @@ export function resolveRetroOutputLayout(
         retrospectiveReport: path.join(runDir, RETRO_OUTPUT_FILE_NAMES.report),
         skillAudit: path.join(runDir, RETRO_OUTPUT_FILE_NAMES['skill-audit']),
         loggingReview: path.join(runDir, RETRO_OUTPUT_FILE_NAMES['logging-review']),
+        problemMatrixBySkill: path.join(runDir, RETRO_OUTPUT_FILE_NAMES['problem-matrix']),
       },
     };
   }
@@ -515,6 +522,7 @@ export function resolveRetroOutputLayout(
       retrospectiveReport: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES.report),
       skillAudit: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES['skill-audit']),
       loggingReview: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES['logging-review']),
+      problemMatrixBySkill: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES['problem-matrix']),
     },
   };
 }

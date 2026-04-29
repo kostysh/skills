@@ -9,6 +9,8 @@ export type ArtifactEvidenceKind =
   | 'trace_patch_target'
   | 'trace_shell_write'
   | 'tool_output_path'
+  | 'producer_output_path'
+  | 'stage_state_log_path'
   | 'referenced_only'
   | 'manual_override';
 export type ArtifactInclusion = 'auto_included' | 'manual_included' | 'not_included';
@@ -16,8 +18,11 @@ export type ReportStatus = 'draft_requires_agent_validation' | 'ready_for_agent_
 export type MetricEvidenceQuality =
   | 'none'
   | 'structured'
-  | 'unvalidated_fallback'
+  | 'trace_derived'
+  | 'prose_derived'
+  | 'incomplete'
   | 'validated_fallback';
+export type ResidualConfidence = 'high' | 'medium' | 'low';
 
 export interface MetricSourceQuality {
   quality: MetricEvidenceQuality;
@@ -48,6 +53,22 @@ export interface ReviewEvent {
   timestamp: string | null;
   verdict: string | null;
   source?: 'prose' | 'structured';
+}
+
+export interface ReviewSignal {
+  source_quality: Exclude<MetricEvidenceQuality, 'none' | 'validated_fallback'>;
+  source: 'ude' | 'stage_log_metadata' | 'stage_state' | 'trace' | 'prose';
+  verdict: string;
+  audit_class: string | null;
+  round: string | number | null;
+  commit: string | null;
+  artifact_path: string | null;
+  matching_artifact: boolean;
+  source_identity: LooseRecord | null;
+  timestamp: string | null;
+  evidence: string;
+  must_fix_count: number | null;
+  evidence_count: number | null;
 }
 
 export interface ParsedStageLog {
@@ -100,6 +121,7 @@ export interface LogsSummary {
   exists: boolean;
   logs: ParsedStageLog[];
   metrics: LogMetrics;
+  reviewSignals: ReviewSignal[];
 }
 
 export interface SkillSummary {
@@ -205,10 +227,22 @@ export interface RetroOutputLayout {
     retrospectiveReport: string;
     skillAudit: string;
     loggingReview: string;
+    problemMatrixBySkill: string;
   };
 }
 
+export interface ValidationMetadata {
+  agent_validated: boolean;
+  validated_scope: string | null;
+  manual_overrides: boolean;
+  residual_confidence: ResidualConfidence | null;
+  validation_notes: string | null;
+  validated_at: string | null;
+  validated_by: string | null;
+}
+
 export interface ScanSummary {
+  schema_version: string;
   generatedAt: string;
   run_dir: string;
   operator_language: string;
@@ -288,7 +322,13 @@ export interface ScanSummary {
     status: ReportStatus;
     reasons: string[];
   };
+  validation: ValidationMetadata;
+  discovery: {
+    provenance: ArtifactCandidate[];
+    manual_overrides: ArtifactCandidate[];
+  };
   skills: SkillTraceSummary;
   recommendedOutput: RetroOutputLayout;
   candidateIncidents: CandidateIncident[];
+  reviewSignals: ReviewSignal[];
 }

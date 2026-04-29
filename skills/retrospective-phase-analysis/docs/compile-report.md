@@ -26,11 +26,13 @@ Generated from `skill.yaml`.
 - `src/cli/run-cli.ts`
 - `src/commands/index.ts`
 - `src/commands/logging-review.ts`
+- `src/commands/problem-matrix.ts`
 - `src/commands/report.ts`
 - `src/commands/scan.ts`
 - `src/commands/shared.ts`
 - `src/commands/skill-audit.ts`
 - `src/commands/types.ts`
+- `src/commands/validate.ts`
 - `src/core/artifact-evidence.ts`
 - `src/core/build-scan-summary.ts`
 - `src/core/extract-skill-scope.ts`
@@ -46,6 +48,7 @@ Generated from `skill.yaml`.
 - `src/parsers/markdown.ts`
 - `src/parsers/stage-log.ts`
 - `src/render/logging-review-markdown.ts`
+- `src/render/problem-matrix-markdown.ts`
 - `src/render/report-markdown.ts`
 - `src/render/skill-audit-markdown.ts`
 - `test/cli-contract-snapshots.test.ts`

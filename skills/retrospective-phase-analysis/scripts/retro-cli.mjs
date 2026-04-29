@@ -197,7 +197,8 @@ var RETRO_OUTPUT_FILE_NAMES = {
 	scan: "scan-summary.json",
 	report: "retrospective-report.md",
 	"skill-audit": "skill-audit.md",
-	"logging-review": "logging-review.md"
+	"logging-review": "logging-review.md",
+	"problem-matrix": "problem-matrix-by-skill.md"
 };
 function slugifyOutputPart(value) {
 	const normalized = value.trim().toLowerCase().replaceAll(/[^a-z0-9]+/gu, "-").replaceAll(/^-+|-+$/gu, "");
@@ -308,7 +309,8 @@ function resolveRetroOutputLayout(summary, options) {
 				scanSummary: path.join(runDir, RETRO_OUTPUT_FILE_NAMES.scan),
 				retrospectiveReport: path.join(runDir, RETRO_OUTPUT_FILE_NAMES.report),
 				skillAudit: path.join(runDir, RETRO_OUTPUT_FILE_NAMES["skill-audit"]),
-				loggingReview: path.join(runDir, RETRO_OUTPUT_FILE_NAMES["logging-review"])
+				loggingReview: path.join(runDir, RETRO_OUTPUT_FILE_NAMES["logging-review"]),
+				problemMatrixBySkill: path.join(runDir, RETRO_OUTPUT_FILE_NAMES["problem-matrix"])
 			}
 		};
 	}
@@ -330,7 +332,8 @@ function resolveRetroOutputLayout(summary, options) {
 			scanSummary: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES.scan),
 			retrospectiveReport: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES.report),
 			skillAudit: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES["skill-audit"]),
-			loggingReview: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES["logging-review"])
+			loggingReview: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES["logging-review"]),
+			problemMatrixBySkill: path.join(runInfo.runDir, RETRO_OUTPUT_FILE_NAMES["problem-matrix"])
 		}
 	};
 }
@@ -384,7 +387,7 @@ function safeFileInsideRoot$1(root, candidate) {
 		return false;
 	}
 }
-function normalizeLinkedPath(projectRoot, value) {
+function normalizeLinkedPath$1(projectRoot, value) {
 	const trimmed = value.replaceAll(/^[\s("'`[{<]+|[\s"',.;:)\]}>`]+$/gu, "");
 	if (!trimmed) return null;
 	const normalized = path.isAbsolute(trimmed) ? path.normalize(trimmed) : path.resolve(projectRoot, trimmed);
@@ -432,7 +435,7 @@ function buildLinkedCandidates(input) {
 		const featureId = stringFromUnknown(log.metadata.primary_feature_id, "") || stringFromUnknown(log.metadata.feature_id, "");
 		const backlogItemKey = stringFromUnknown(log.metadata.primary_backlog_item_key, "") || stringFromUnknown(log.metadata.backlog_item_key, "");
 		for (const key of input.keys) for (const rawPath of stringListFromUnknown(log.metadata[key])) {
-			const normalized = normalizeLinkedPath(input.projectRoot, rawPath);
+			const normalized = normalizeLinkedPath$1(input.projectRoot, rawPath);
 			if (!normalized) continue;
 			out.push(artifactLinkCandidate({
 				projectRoot: input.projectRoot,
@@ -497,7 +500,11 @@ function latestBoundaryTimestamp(logs) {
 	return latest ? latest.toISOString() : null;
 }
 function hasUnvalidatedFallbackMetrics(input) {
-	return Object.values(input).some((source) => source.quality === "unvalidated_fallback");
+	return Object.values(input).some((source) => [
+		"trace_derived",
+		"prose_derived",
+		"incomplete"
+	].includes(source.quality));
 }
 function deriveArtifactEvidenceEnhancement(input) {
 	const { identity, ambiguities } = deriveArtifactIdentity(input.logs);
@@ -1012,6 +1019,12 @@ function isStepArtifact(value, projectRoot) {
 	if (relative.startsWith("..")) return false;
 	return relative.startsWith(".dossier/steps/") || relative.startsWith(`.dossier${path.sep}steps${path.sep}`);
 }
+function isStageStateArtifact(value, projectRoot) {
+	if (!projectRoot) return false;
+	const relative = path.relative(projectRoot, value);
+	if (relative.startsWith("..")) return false;
+	return (relative.startsWith(".dossier/stages/") || relative.startsWith(`.dossier${path.sep}stages${path.sep}`)) && value.endsWith(".json");
+}
 function collectNestedStrings(input, depth = 0) {
 	if (depth > 8 || input === null || input === void 0) return [];
 	if (typeof input === "string") return [input];
@@ -1224,6 +1237,82 @@ function extractAutoIncludedArtifactCandidates(events, projectRoot) {
 	}
 	return mergeCandidates(out);
 }
+var STAGE_LOG_LINK_KEYS = new Set([
+	"log_path",
+	"logPath",
+	"stage_log",
+	"stageLog",
+	"stage_log_path",
+	"stageLogPath"
+]);
+function collectStringsByKey(input, keys, depth = 0) {
+	if (depth > 8 || input === null || input === void 0) return [];
+	if (Array.isArray(input)) return input.flatMap((item) => collectStringsByKey(item, keys, depth + 1));
+	if (typeof input !== "object") return [];
+	const out = [];
+	for (const [key, value] of Object.entries(input)) {
+		if (keys.has(key)) {
+			out.push(...collectNestedStrings(value));
+			continue;
+		}
+		out.push(...collectStringsByKey(value, keys, depth + 1));
+	}
+	return out;
+}
+function normalizeLinkedProjectPath(projectRoot, value) {
+	const trimmed = trimPathCandidate(value);
+	if (!trimmed) return null;
+	const normalized = path.isAbsolute(trimmed) ? path.normalize(trimmed) : path.resolve(projectRoot, trimmed);
+	return isProjectScopedPath(normalized, projectRoot) ? normalized : null;
+}
+function producerOutputStageLogCandidates(events, projectRoot) {
+	if (!projectRoot) return [];
+	const out = [];
+	for (const [index, event] of events.entries()) {
+		if (!event || typeof event !== "object") continue;
+		const record = event;
+		const eventType = extractEventType(record);
+		if (!(isToolResultEvent(record) && isSuccessfulToolResult(record) || eventType === "exec_command_end" && isSuccessfulToolResult(record))) continue;
+		for (const rawPath of collectStringsByKey(record, STAGE_LOG_LINK_KEYS)) {
+			const filePath = normalizeLinkedProjectPath(projectRoot, rawPath);
+			if (!filePath || !isStageLogArtifact(filePath, projectRoot) || !fs.existsSync(filePath)) continue;
+			out.push({
+				path: filePath,
+				evidence_kind: "producer_output_path",
+				event_ref: eventRef(index),
+				included: true,
+				inclusion_source: "auto_included",
+				reason: `Producer output exposed stage-log path in ${eventRef(index)}.`
+			});
+		}
+	}
+	return mergeCandidates(out);
+}
+function stageStateLogPathCandidates(stageStateCandidates, projectRoot) {
+	if (!projectRoot) return [];
+	const out = [];
+	for (const candidate of stageStateCandidates) {
+		if (!candidate.included || !isStageStateArtifact(candidate.path, projectRoot)) continue;
+		try {
+			const parsed = JSON.parse(fs.readFileSync(candidate.path, "utf8"));
+			for (const rawPath of collectStringsByKey(parsed, STAGE_LOG_LINK_KEYS)) {
+				const filePath = normalizeLinkedProjectPath(projectRoot, rawPath);
+				if (!filePath || !isStageLogArtifact(filePath, projectRoot) || !fs.existsSync(filePath)) continue;
+				out.push({
+					path: filePath,
+					evidence_kind: "stage_state_log_path",
+					event_ref: candidate.event_ref,
+					included: true,
+					inclusion_source: "auto_included",
+					reason: `Linked by log_path in bounded stage state ${candidate.path}.`
+				});
+			}
+		} catch {
+			continue;
+		}
+	}
+	return mergeCandidates(out);
+}
 function normalizeManualOverridePath(value, projectRoot) {
 	const normalized = normalizePathCandidate(value, projectRoot);
 	if (normalized) return normalized;
@@ -1278,12 +1367,20 @@ function extractTraceScope({ sessionSummary, projectRoot, manualStageLogs, manua
 	const referencedArtifacts = sortUnique(touchedPaths.filter((filePath) => isReferencedArtifact(filePath, projectRoot)));
 	const referencedByEvent = extractReferencedArtifactsByEvent(sessionSummary.events, projectRoot);
 	const autoIncludedCandidates = extractAutoIncludedArtifactCandidates(sessionSummary.events, projectRoot);
+	const stageStateLinkedStageLogs = stageStateLogPathCandidates(autoIncludedCandidates, projectRoot);
+	const producerOutputStageLogs = producerOutputStageLogCandidates(sessionSummary.events, projectRoot);
 	const manualStageLogCandidates = manualCandidates(manualStageLogs, projectRoot, artifactEvidence);
 	const manualReviewCandidates = manualCandidates(manualReviewArtifacts, projectRoot, artifactEvidence);
 	const manualVerificationCandidates = manualCandidates(manualVerificationArtifacts, projectRoot, artifactEvidence);
 	const stageLogCandidates = withExcludedStageLogValidationActions(mergeCandidates([
 		...autoIncludedCandidates.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
-		...referencedOnlyCandidates(referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)), autoIncludedCandidates),
+		...stageStateLinkedStageLogs,
+		...producerOutputStageLogs,
+		...referencedOnlyCandidates(referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)), [
+			...autoIncludedCandidates,
+			...stageStateLinkedStageLogs,
+			...producerOutputStageLogs
+		]),
 		...manualStageLogCandidates
 	]));
 	const reviewArtifactCandidates = mergeCandidates([
@@ -1488,7 +1585,7 @@ function processMissEvidence(metadata, proseLines) {
 		reason: proseLines.join("; ")
 	};
 }
-function inferCandidateIncidents(sessionSummary, logSummary) {
+function inferCandidateIncidents(sessionSummary, logSummary, reviewSignals = logSummary.reviewSignals) {
 	const incidents = [];
 	for (const log of logSummary.logs) {
 		const metadata = log.metadata;
@@ -1497,7 +1594,8 @@ function inferCandidateIncidents(sessionSummary, logSummary) {
 		const structuredReviewFindings = Number(metadata.review_findings_total);
 		const hasStructuredReviewFindings = Number.isFinite(structuredReviewFindings);
 		const reviewFindingTotal = hasStructuredReviewFindings ? structuredReviewFindings : 0;
-		const hasStructuredNonPassReview = structuredReviewEventsFromMetadata(metadata).some(isNonPassReviewEvent);
+		const logReviewSignals = reviewSignals.filter((signal) => signal.evidence === log.filePath);
+		const hasStructuredNonPassReview = structuredReviewEventsFromMetadata(metadata).some(isNonPassReviewEvent) || logReviewSignals.some((signal) => ["structured", "incomplete"].includes(signal.source_quality));
 		if (processMisses.count > 0) incidents.push({
 			title: `Process misses in ${path.basename(log.filePath)}`,
 			severity: processMisses.count >= 2 ? "high" : "medium",
@@ -1512,13 +1610,16 @@ function inferCandidateIncidents(sessionSummary, logSummary) {
 			evidence: log.filePath,
 			reason: `${reviewFindingTotal} review finding(s) recorded.`
 		});
-		else if (hasStructuredNonPassReview) incidents.push({
-			title: `Non-pass review cycle in ${path.basename(log.filePath)}`,
-			severity: "medium",
-			stage,
-			evidence: log.filePath,
-			reason: "Structured review_events recorded FAIL or non-compliant review state before final pass."
-		});
+		else if (hasStructuredNonPassReview) {
+			const sourceQuality = logReviewSignals.some((signal) => signal.source_quality === "incomplete") ? "Structured review evidence is incomplete because no matching immutable non-PASS review artifact was found." : "Structured review_events recorded FAIL or non-compliant review state before final pass.";
+			incidents.push({
+				title: `Non-pass review cycle in ${path.basename(log.filePath)}`,
+				severity: "medium",
+				stage,
+				evidence: log.filePath,
+				reason: sourceQuality
+			});
+		}
 		if (metadata.backlog_actualized === false && /backlog/iu.test(log.raw)) incidents.push({
 			title: `Backlog actualization deferred in ${path.basename(log.filePath)}`,
 			severity: "low",
@@ -1527,7 +1628,7 @@ function inferCandidateIncidents(sessionSummary, logSummary) {
 			reason: "The log references backlog actualization but marks it incomplete or deferred."
 		});
 		const reviewText = (log.sections["События ревью"] || log.sections["Review events"] || "").toLowerCase();
-		if (!hasStructuredReviewFindings && !hasStructuredNonPassReview && (reviewText.includes("fail") || reviewText.includes("non-compliant"))) incidents.push({
+		if (!hasStructuredReviewFindings && !hasStructuredNonPassReview && (reviewText.includes("fail") || reviewText.includes("non-compliant") || logReviewSignals.some((signal) => signal.source_quality === "prose_derived"))) incidents.push({
 			title: `Non-pass review cycle in ${path.basename(log.filePath)}`,
 			severity: "medium",
 			stage,
@@ -1541,6 +1642,13 @@ function inferCandidateIncidents(sessionSummary, logSummary) {
 		stage: "session",
 		evidence: sessionSummary.filePath,
 		reason: `${sessionSummary.abortedTurns} aborted/restarted turn(s) detected in the session trace.`
+	});
+	for (const signal of reviewSignals.filter((entry) => entry.source === "trace")) incidents.push({
+		title: "Trace-derived non-pass review signal",
+		severity: "medium",
+		stage: "review",
+		evidence: signal.evidence,
+		reason: "Session trace indicates a non-PASS review signal without a matching immutable review artifact."
 	});
 	return incidents;
 }
@@ -1579,13 +1687,18 @@ function createEmptyMetrics() {
 function qualityRank(value) {
 	return {
 		none: 0,
+		trace_derived: 1,
+		prose_derived: 1,
+		validated_fallback: 2,
 		structured: 3,
-		unvalidated_fallback: 1,
-		validated_fallback: 2
+		incomplete: 4
 	}[value];
 }
 function mergeQuality(current, incoming) {
-	if (current === "unvalidated_fallback" || incoming === "unvalidated_fallback") return "unvalidated_fallback";
+	if (current === "incomplete" || incoming === "incomplete") return "incomplete";
+	if (current === "none") return incoming;
+	if (incoming === "none" || current === incoming) return current;
+	if (current === "trace_derived" || current === "prose_derived" || incoming === "trace_derived" || incoming === "prose_derived") return "incomplete";
 	return qualityRank(incoming) > qualityRank(current) ? incoming : current;
 }
 function stringArray(value) {
@@ -1604,7 +1717,7 @@ function processMissCount(log) {
 	};
 	if (log.processMissLines.length > 0) return {
 		count: log.processMissLines.length,
-		quality: "unvalidated_fallback"
+		quality: "prose_derived"
 	};
 	return {
 		count: 0,
@@ -1626,13 +1739,6 @@ function skillNames(log) {
 		skills: ["unknown"],
 		quality: "none"
 	};
-}
-function reviewIncidentQuality(log) {
-	if (structuredReviewEventsFromMetadata(log.metadata).some(isNonPassReviewEvent)) return "structured";
-	const structuredFindings = Number(log.metadata.review_findings_total);
-	if (Number.isFinite(structuredFindings)) return "structured";
-	const reviewText = (log.sections["События ревью"] || log.sections["Review events"] || "").toLowerCase();
-	return reviewText.includes("fail") || reviewText.includes("non-compliant") ? "unvalidated_fallback" : "none";
 }
 function isSafeStageSegment(value) {
 	return /^[A-Za-z0-9._-]+$/u.test(value) && value !== "." && value !== "..";
@@ -1677,6 +1783,16 @@ var STAGE_STATE_ALLOWED_FIELDS = new Set([
 	"process_misses",
 	"process_misses_total",
 	"ready_for_close_ts",
+	"closure_bundle_id",
+	"closure_bundle_round",
+	"closure_bundle_rounds_by_audit_class",
+	"non_pass_review_events",
+	"rpa_source_identity",
+	"rpa_source_quality",
+	"selected_closure_ts",
+	"selected_review_artifacts",
+	"selected_step_artifact",
+	"selected_verification_artifact",
 	"review_artifact",
 	"review_artifacts",
 	"review_findings_total",
@@ -1744,25 +1860,136 @@ function enrichLogWithStageState(log, projectRoot) {
 function sourceReason(quality, metric) {
 	if (quality === "structured") return `${metric} used structured stage artifact fields where available.`;
 	if (quality === "validated_fallback") return `${metric} used legacy structured metadata fields because new structured fields were absent.`;
-	if (quality === "unvalidated_fallback") return `${metric} used prose fallback because structured fields were absent in at least one analyzed log.`;
+	if (quality === "trace_derived") return `${metric} used trace-derived fallback evidence because structured fields were absent.`;
+	if (quality === "prose_derived") return `${metric} used prose-derived fallback because structured fields were absent in at least one analyzed log.`;
+	if (quality === "incomplete") return `${metric} mixed lower-quality or incomplete evidence and requires agent validation.`;
 	return `${metric} had no usable evidence in analyzed logs.`;
 }
-function summarizeParsedLogs(logs) {
+function objectRecord(value) {
+	return value && typeof value === "object" && !Array.isArray(value) ? value : null;
+}
+function objectArray(value) {
+	return Array.isArray(value) ? value.map((entry) => objectRecord(entry)).filter((entry) => entry !== null) : [];
+}
+function numberOrNull(value) {
+	const numeric = Number(value);
+	return Number.isFinite(numeric) ? numeric : null;
+}
+function firstNullableString(...values) {
+	return values.find((value) => typeof value === "string" && value.length > 0) ?? null;
+}
+function normalizeLinkedPath(projectRoot, filePath) {
+	if (!filePath) return null;
+	if (path.isAbsolute(filePath)) return path.normalize(filePath);
+	return projectRoot ? path.resolve(projectRoot, filePath) : filePath;
+}
+function matchingArtifact(projectRoot, filePath) {
+	const normalized = normalizeLinkedPath(projectRoot, filePath);
+	if (!normalized || !projectRoot) return false;
+	return safeFileInsideRoot(projectRoot, normalized);
+}
+function reviewSignalFromStructuredRecord(input) {
+	const raw = firstNullableString(input.record.raw, input.record.summary, input.record.message, input.record.title, input.record.notes) ?? JSON.stringify(input.record);
+	const verdict = firstNullableString(input.record.verdict, input.record.status, input.record.result, input.record.outcome, input.record.review_status);
+	const reviewEvent = {
+		raw,
+		details: [],
+		timestamp: firstNullableString(input.record.timestamp, input.record.ts, input.record.created_at, input.record.time, input.record.occurred_at),
+		verdict,
+		source: "structured"
+	};
+	if (!isNonPassReviewEvent(reviewEvent)) return null;
+	const artifactPath = firstNullableString(input.record.artifact_path, input.record.immutable_artifact_path, input.record.review_artifact, input.record.review_artifact_path);
+	const normalizedArtifact = normalizeLinkedPath(input.projectRoot, artifactPath);
+	return {
+		source_quality: input.forceIncomplete ? "incomplete" : "structured",
+		source: input.source,
+		verdict: stringFromUnknown(verdict, "non-pass"),
+		audit_class: firstNullableString(input.record.audit_class, input.record.reviewer, input.record.skill),
+		round: firstNullableString(input.record.review_round_id, input.record.review_attempt_id) ?? numberOrNull(input.record.review_round_number) ?? numberOrNull(input.record.round),
+		commit: firstNullableString(input.record.event_commit, input.record.commit),
+		artifact_path: normalizedArtifact,
+		matching_artifact: matchingArtifact(input.projectRoot, artifactPath),
+		source_identity: input.sourceIdentity,
+		timestamp: reviewEvent.timestamp,
+		evidence: input.log.filePath,
+		must_fix_count: numberOrNull(input.record.must_fix_count),
+		evidence_count: numberOrNull(input.record.evidence_count)
+	};
+}
+function udeReviewSignals(log, projectRoot) {
+	const sourceIdentity = objectRecord(log.metadata.rpa_source_identity);
+	const reviewHistoryQuality = firstNullableString(objectRecord(log.metadata.rpa_source_quality)?.review_history_quality);
+	const forceIncomplete = reviewHistoryQuality === "process_miss" || reviewHistoryQuality === "limited";
+	return objectArray(log.metadata.non_pass_review_events).map((record) => reviewSignalFromStructuredRecord({
+		record,
+		log,
+		projectRoot,
+		source: "ude",
+		sourceIdentity,
+		forceIncomplete
+	})).filter((signal) => signal !== null);
+}
+function structuredReviewSignals(log, projectRoot) {
+	return objectArray(log.metadata.review_events).map((record) => reviewSignalFromStructuredRecord({
+		record,
+		log,
+		projectRoot,
+		source: log.metadata.stage_state_artifact ? "stage_state" : "stage_log_metadata",
+		sourceIdentity: objectRecord(log.metadata.rpa_source_identity)
+	})).filter((signal) => signal !== null);
+}
+function proseReviewSignals(log) {
+	return log.reviewEvents.filter((event) => event.source === "prose" && isNonPassReviewEvent(event)).map((event) => ({
+		source_quality: "prose_derived",
+		source: "prose",
+		verdict: stringFromUnknown(event.verdict, "non-pass"),
+		audit_class: null,
+		round: null,
+		commit: null,
+		artifact_path: null,
+		matching_artifact: false,
+		source_identity: null,
+		timestamp: event.timestamp,
+		evidence: log.filePath,
+		must_fix_count: null,
+		evidence_count: event.details.length > 0 ? event.details.length : null
+	}));
+}
+function collectReviewSignals(log, projectRoot) {
+	const structured = [...udeReviewSignals(log, projectRoot), ...structuredReviewSignals(log, projectRoot)];
+	if (structured.length > 0) return structured;
+	const structuredFindings = Number(log.metadata.review_findings_total);
+	if (Number.isFinite(structuredFindings) && structuredFindings > 0) return [];
+	return proseReviewSignals(log);
+}
+function reviewSignalMetricQuality(signals) {
+	if (signals.length === 0) return "none";
+	if (signals.some((signal) => !signal.matching_artifact || signal.source_quality === "incomplete")) return "incomplete";
+	return signals.reduce((current, signal) => mergeQuality(current, signal.source_quality), "none");
+}
+function reviewFindingsFromSignals(signals) {
+	return signals.reduce((total, signal) => total + (signal.must_fix_count ?? 0), 0);
+}
+function summarizeParsedLogs(logs, projectRoot) {
 	const metrics = createEmptyMetrics();
 	metrics.logsTotal = logs.length;
 	let processMissQuality = "none";
 	let skillsQuality = "none";
 	let candidateIncidentQuality = "none";
+	const reviewSignals = logs.flatMap((log) => collectReviewSignals(log, projectRoot));
 	for (const log of logs) {
 		const metadata = log.metadata;
 		const stage = stringFromUnknown(metadata.stage, "unknown");
 		const reviewRounds = Number(metadata.review_rounds ?? metadata.review_rounds_total ?? log.reviewEvents.length ?? 0);
-		const reviewFindings = Number(metadata.review_findings_total ?? 0);
+		const reviewFindings = Number(metadata.review_findings_total);
+		const hasStructuredReviewFindings = Number.isFinite(reviewFindings);
 		const processMisses = processMissCount(log);
-		const reviewIncidents = reviewIncidentQuality(log);
 		const skills = skillNames(log);
+		const logReviewSignals = reviewSignals.filter((signal) => signal.evidence === log.filePath);
+		const reviewIncidents = hasStructuredReviewFindings && reviewFindings > 0 ? "structured" : reviewSignalMetricQuality(logReviewSignals);
 		metrics.reviewRoundsTotal += Number.isFinite(reviewRounds) ? reviewRounds : 0;
-		metrics.reviewFindingsTotal += Number.isFinite(reviewFindings) ? reviewFindings : 0;
+		metrics.reviewFindingsTotal += hasStructuredReviewFindings ? reviewFindings : reviewFindingsFromSignals(logReviewSignals);
 		metrics.processMissesTotal += processMisses.count;
 		metrics.backlogActualizedCount += metadata.backlog_actualized === true ? 1 : 0;
 		if (metadata.late_start === true || metadata.late_log_start === true) metrics.lateLogStartCount += 1;
@@ -1782,25 +2009,27 @@ function summarizeParsedLogs(logs) {
 	};
 	metrics.sources.candidate_incidents = {
 		quality: candidateIncidentQuality,
-		reason: candidateIncidentQuality === "unvalidated_fallback" ? "Candidate incident inference includes prose fallback evidence." : "Candidate incident inference uses structured evidence where available."
+		reason: sourceReason(candidateIncidentQuality, "candidate_incidents")
 	};
 	return {
 		exists: true,
 		logs,
-		metrics
+		metrics,
+		reviewSignals
 	};
 }
 function summarizeLogs(logsDir, allowedFilePaths, projectRoot) {
 	const files = allowedFilePaths === void 0 ? [] : Array.from(new Set(allowedFilePaths.filter((filePath) => filePath.endsWith(".md") && fs.existsSync(filePath))));
 	if (!logsDir || !fs.existsSync(logsDir)) {
-		if (files.length > 0) return summarizeParsedLogs(files.map((filePath) => enrichLogWithStageState(parseStageLog(filePath), projectRoot ?? null)));
+		if (files.length > 0) return summarizeParsedLogs(files.map((filePath) => enrichLogWithStageState(parseStageLog(filePath), projectRoot ?? null)), projectRoot ?? null);
 		return {
 			exists: false,
 			logs: [],
-			metrics: createEmptyMetrics()
+			metrics: createEmptyMetrics(),
+			reviewSignals: []
 		};
 	}
-	return summarizeParsedLogs(files.map((filePath) => enrichLogWithStageState(parseStageLog(filePath), projectRoot ?? null)));
+	return summarizeParsedLogs(files.map((filePath) => enrichLogWithStageState(parseStageLog(filePath), projectRoot ?? null)), projectRoot ?? null);
 }
 //#endregion
 //#region src/parsers/jsonl.ts
@@ -2012,6 +2241,7 @@ function summarizeSession(filePath, options = {}) {
 }
 //#endregion
 //#region src/core/build-scan-summary.ts
+var SCAN_SUMMARY_SCHEMA_VERSION = "1.1.0";
 function hasManualOverrides$1(args) {
 	return (args.stageLogs?.length ?? 0) > 0 || (args.reviewArtifacts?.length ?? 0) > 0 || (args.verificationArtifacts?.length ?? 0) > 0;
 }
@@ -2030,7 +2260,7 @@ function formatStageLogCandidate(candidate) {
 }
 function buildReportStatus(input) {
 	const reasons = [];
-	const { sessionSummary, logSummary, skillTraceSummary, scope } = input;
+	const { sessionSummary, logSummary, skillTraceSummary, scope, reviewSignals } = input;
 	if (!sessionSummary.exists) reasons.push("Session trace is missing.");
 	if (sessionSummary.parseErrors.length > 0) reasons.push(`Session trace has ${sessionSummary.parseErrors.length} parse error(s).`);
 	if (!logSummary.exists) reasons.push("Stage-log directory is missing or unresolved.");
@@ -2040,11 +2270,129 @@ function buildReportStatus(input) {
 	else if (logSummary.metrics.logsTotal === 0 && scope.referenced_artifacts.some((artifactPath) => artifactPath.includes(".dossier"))) reasons.push("Trace indicates dossier activity, but no stage logs were analyzed.");
 	if (scope.scope_ambiguities.length > 0) reasons.push("Unresolved scope ambiguities remain.");
 	if (hasManualCandidates(scope.stage_log_candidates) || hasManualCandidates(scope.review_artifact_candidates) || hasManualCandidates(scope.verification_artifact_candidates)) reasons.push("Manual artifact overrides were used.");
-	if (hasUnvalidatedFallbackMetrics(logSummary.metrics.sources)) reasons.push("Unvalidated fallback metrics require agent validation.");
+	if (hasUnvalidatedFallbackMetrics(logSummary.metrics.sources)) reasons.push("Trace/prose-derived or incomplete metrics require agent validation.");
+	if (reviewSignals.some((signal) => !signal.matching_artifact)) reasons.push("Non-PASS review signals without matching immutable artifacts require validation.");
 	return {
 		status: reasons.length > 0 ? "draft_requires_agent_validation" : "ready_for_agent_finalization",
 		reasons
 	};
+}
+function traceTextContainsNonPassReviewSignal(value) {
+	if (!/\b(?:FAIL|failed|non-compliant|noncompliant|changes[-_\s]requested|request[-_\s]changes)\b/iu.test(value) || !/\b(?:review|reviewer|audit|auditor|spec-conformance|security|code-reviewer)\b/iu.test(value)) return false;
+	return [
+		/\b(?:verdict|result|status|outcome)\s*[:=-]\s*(?:FAIL|failed|non-compliant|noncompliant|changes[-_\s]requested|request[-_\s]changes)\b/iu,
+		/\b(?:review|reviewer|audit|auditor|spec-conformance-reviewer|security-reviewer|code-reviewer)\b.{0,180}\b(?:returned|reported|completed|found|blocked|requested|requested changes|verdict|result|status)\b.{0,120}\b(?:FAIL|failed|non-compliant|noncompliant|changes[-_\s]requested|request[-_\s]changes)\b/isu,
+		/\b(?:FAIL|failed|non-compliant|noncompliant|changes[-_\s]requested|request[-_\s]changes)\b.{0,120}\b(?:review|reviewer|audit|auditor|spec-conformance-reviewer|security-reviewer|code-reviewer)\b.{0,120}\b(?:found|returned|reported|blocked|requested)\b/isu
+	].some((pattern) => pattern.test(value));
+}
+var TRACE_REVIEW_TEXT_KEYS = new Set([
+	"content",
+	"message",
+	"notes",
+	"summary",
+	"completed",
+	"final",
+	"output",
+	"stdout",
+	"stderr",
+	"result",
+	"status",
+	"outcome",
+	"verdict"
+]);
+var TRACE_REVIEW_BLOB_SKIP_PATTERN = /(^|\n)\s*(?:#{1,6}\s*)?(?:In scope:|Out of scope:|Proposed Resolution|Alternatives Considered|Destructive Side Effects|Verification|Independent Audit|Required corrections:|##\s+)/iu;
+function eventRole(event) {
+	if (!event || typeof event !== "object") return "";
+	const record = event;
+	return [
+		record.role,
+		record.type,
+		record.kind,
+		record.event
+	].find((value) => typeof value === "string")?.toLowerCase() ?? "";
+}
+function isTraceReviewCandidateEvent(event) {
+	const role = eventRole(event);
+	if ([
+		"user",
+		"system",
+		"developer",
+		"session_meta"
+	].includes(role)) return false;
+	return true;
+}
+function collectTraceReviewText(event, depth = 0, key) {
+	if (depth > 5 || event === null || event === void 0) return [];
+	if (typeof event === "string") {
+		const normalizedKey = String(key ?? "").toLowerCase();
+		if (!TRACE_REVIEW_TEXT_KEYS.has(normalizedKey)) return [];
+		const trimmed = event.trim();
+		if (trimmed.length === 0 || trimmed.length > 4e3 || TRACE_REVIEW_BLOB_SKIP_PATTERN.test(trimmed) || trimmed.includes("<INSTRUCTIONS>") || trimmed.includes("Available skills")) return [];
+		return [trimmed];
+	}
+	if (Array.isArray(event)) return event.flatMap((entry) => collectTraceReviewText(entry, depth + 1, key));
+	if (typeof event === "object") return Object.entries(event).flatMap(([entryKey, value]) => collectTraceReviewText(value, depth + 1, entryKey));
+	return [];
+}
+function traceSignalFindingCount(value) {
+	const explicit = value.match(/\b(\d+)\s+(?:must[-_\s]?fix|blocking|finding|issue)s?\b/iu)?.[1];
+	if (explicit) return Number(explicit);
+	const blockingMarkers = value.match(/\[(?:blocking|must[-_\s]?fix)\]/giu)?.length ?? 0;
+	if (blockingMarkers > 0) return blockingMarkers;
+	if (/\bone\s+(?:must[-_\s]?fix|blocking|finding|issue)\b/iu.test(value)) return 1;
+	return 1;
+}
+function extractTraceReviewSignals(sessionSummary) {
+	if (!sessionSummary.filePath) return [];
+	const out = [];
+	for (const [index, event] of sessionSummary.events.entries()) {
+		if (!isTraceReviewCandidateEvent(event)) continue;
+		const raw = collectTraceReviewText(event).join("\n");
+		if (!traceTextContainsNonPassReviewSignal(raw)) continue;
+		out.push({
+			source_quality: "trace_derived",
+			source: "trace",
+			verdict: "non-pass",
+			audit_class: raw.match(/\b(spec-conformance-reviewer|security-reviewer|code-reviewer)\b/iu)?.[1] ?? null,
+			round: raw.match(/\b(?:r|round)[-_ ]?(\d+)\b/iu)?.[1] ?? null,
+			commit: raw.match(/\b[0-9a-f]{7,40}\b/iu)?.[0] ?? null,
+			artifact_path: null,
+			matching_artifact: false,
+			source_identity: null,
+			timestamp: extractTimestamp(event),
+			evidence: `${sessionSummary.filePath}#event:${sessionSummary.eventLines[index] ?? index + 1}`,
+			must_fix_count: traceSignalFindingCount(raw),
+			evidence_count: null
+		});
+	}
+	return out;
+}
+function logSummaryWithTraceReviewSignals(logSummary, traceReviewSignals) {
+	if (traceReviewSignals.length === 0) return logSummary;
+	const reviewFindingsFromTrace = traceReviewSignals.reduce((total, signal) => total + (signal.must_fix_count ?? 1), 0);
+	return {
+		...logSummary,
+		metrics: {
+			...logSummary.metrics,
+			reviewFindingsTotal: logSummary.metrics.reviewFindingsTotal + reviewFindingsFromTrace,
+			sources: {
+				...logSummary.metrics.sources,
+				candidate_incidents: {
+					quality: "incomplete",
+					reason: "candidate_incidents include trace-derived non-PASS review signals without matching immutable review artifacts."
+				}
+			}
+		},
+		reviewSignals: [...logSummary.reviewSignals, ...traceReviewSignals]
+	};
+}
+function allArtifactCandidates(scope) {
+	return [
+		...scope.stage_log_candidates,
+		...scope.review_artifact_candidates,
+		...scope.verification_artifact_candidates,
+		...scope.step_artifact_candidates
+	];
 }
 function explicitBoundaryOptions(args) {
 	const out = {};
@@ -2182,14 +2530,20 @@ function buildScanSummary(args) {
 	};
 	if (args.skillsDir) skillScopeOptions.skillsDir = args.skillsDir;
 	const skillTraceSummary = extractSkillTraceSummary(skillScopeOptions);
-	const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
+	const traceReviewSignals = logSummary.reviewSignals.length === 0 ? extractTraceReviewSignals(sessionSummary) : [];
+	const evidenceLogSummary = logSummaryWithTraceReviewSignals(logSummary, traceReviewSignals);
+	const reviewSignals = evidenceLogSummary.reviewSignals;
+	const candidateIncidents = inferCandidateIncidents(sessionSummary, evidenceLogSummary, reviewSignals);
 	const reportStatus = buildReportStatus({
 		sessionSummary,
-		logSummary,
+		logSummary: evidenceLogSummary,
 		skillTraceSummary,
-		scope
+		scope,
+		reviewSignals
 	});
+	const artifactCandidates = allArtifactCandidates(scope);
 	const summaryBase = {
+		schema_version: SCAN_SUMMARY_SCHEMA_VERSION,
 		generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
 		operator_language: operatorLanguage,
 		report_language: reportLanguage,
@@ -2217,7 +2571,7 @@ function buildScanSummary(args) {
 		},
 		dataQuality: {
 			sessionPresent: sessionSummary.exists,
-			logsPresent: logSummary.exists,
+			logsPresent: evidenceLogSummary.exists,
 			skillCatalogPresent: skillTraceSummary.available.length > 0,
 			sessionParseErrors: sessionSummary.parseErrors.length
 		},
@@ -2237,9 +2591,9 @@ function buildScanSummary(args) {
 			sampleEventTypes: sessionSummary.sampleEventTypes
 		},
 		stageLogs: {
-			count: logSummary.metrics.logsTotal,
-			metrics: logSummary.metrics,
-			files: logSummary.logs.map((log) => ({
+			count: evidenceLogSummary.metrics.logsTotal,
+			metrics: evidenceLogSummary.metrics,
+			files: evidenceLogSummary.logs.map((log) => ({
 				filePath: log.filePath,
 				metadata: log.metadata,
 				reviewEvents: log.reviewEvents.length,
@@ -2248,8 +2602,22 @@ function buildScanSummary(args) {
 		},
 		scope,
 		reportStatus,
+		validation: {
+			agent_validated: false,
+			validated_scope: null,
+			manual_overrides: artifactCandidates.some((candidate) => candidate.inclusion_source === "manual_included"),
+			residual_confidence: null,
+			validation_notes: null,
+			validated_at: null,
+			validated_by: null
+		},
+		discovery: {
+			provenance: artifactCandidates,
+			manual_overrides: artifactCandidates.filter((candidate) => candidate.inclusion_source === "manual_included")
+		},
 		skills: skillTraceSummary,
-		candidateIncidents
+		candidateIncidents,
+		reviewSignals
 	};
 	const outputOptions = { commandName: "scan" };
 	if (args.outRoot) outputOptions.outRoot = args.outRoot;
@@ -2265,6 +2633,7 @@ function buildScanSummary(args) {
 //#endregion
 //#region src/render/logging-review-markdown.ts
 function statusLine$2(scan) {
+	if (scan.validation?.agent_validated) return "Status: agent validated";
 	return scan.reportStatus.status === "draft_requires_agent_validation" ? "Status: draft, requires agent validation" : "Status: ready for agent finalization";
 }
 function formatObservedGaps(input) {
@@ -2274,6 +2643,7 @@ function formatObservedGaps(input) {
 	if (input.approximateDurations > 0) gaps.push(`Duration accuracy is not always exact (${input.approximateDurations} log(s)).`);
 	if (input.missingSkillCatalog) gaps.push("The injected Available skills catalog was missing or unresolved.");
 	if (input.excludedStageLogCandidates.length > 0) gaps.push(`Excluded stage-log candidates require validation: ${input.excludedStageLogCandidates.join(", ")}.`);
+	if (input.missingNonPassReviewArtifacts > 0) gaps.push(`${input.missingNonPassReviewArtifacts} non-PASS review signal(s) lack matching immutable review artifacts.`);
 	if (gaps.length === 0) return "- No automated logging gaps were inferred from the available counters.";
 	return gaps.map((gap) => `- ${gap}`).join("\n");
 }
@@ -2293,6 +2663,7 @@ function buildLoggingReviewMarkdown(scan) {
 	const missingVerificationArtifacts = scan.stageLogs.files.filter((entry) => !entry.metadata.verification_artifact).length;
 	const approximateDurations = scan.stageLogs.files.filter((entry) => entry.metadata.log_quality && typeof entry.metadata.log_quality === "object" && entry.metadata.log_quality.duration_exact === false).length;
 	const excludedStageLogs = excludedStageLogCandidateLabels(scan);
+	const missingNonPassReviewArtifacts = (scan.reviewSignals ?? []).filter((signal) => !signal.matching_artifact).length;
 	const logDerivedMetricsStatus = scan.stageLogs.count === 0 && excludedStageLogs.length > 0 ? "incomplete; excluded stage-log candidates require validation." : "based on included stage logs.";
 	return `# Logging review draft
 
@@ -2303,6 +2674,7 @@ ${statusLine$2(scan)}
 - Logs analyzed: ${scan.stageLogs.count}
 - Log-derived metrics: ${logDerivedMetricsStatus}
 - Excluded stage-log candidates require validation: ${excludedStageLogs.join(", ") || "none"}
+- Non-PASS review signals without matching immutable artifacts: ${missingNonPassReviewArtifacts}
 - Process misses recorded: ${scan.stageLogs.metrics.processMissesTotal}
 - Late log starts: ${scan.stageLogs.metrics.lateLogStartCount}
 - Missing review artifacts: ${missingReviewArtifacts}
@@ -2327,7 +2699,8 @@ ${formatObservedGaps({
 		missingStepArtifacts,
 		approximateDurations,
 		missingSkillCatalog: !scan.dataQuality.skillCatalogPresent,
-		excludedStageLogCandidates: excludedStageLogs
+		excludedStageLogCandidates: excludedStageLogs,
+		missingNonPassReviewArtifacts
 	})}
 
 ## Recommendation discipline
@@ -2469,7 +2842,8 @@ function parseOptions(argv, specs) {
 	return parsed;
 }
 function optionToHelpLine(spec) {
-	return `${[...spec.aliases ?? [], `--${spec.name}`].map((flag) => spec.type === "string" ? `${flag} ${spec.valueLabel ?? "<value>"}` : flag).join(", ").padEnd(28)}${spec.description}`;
+	const flags = [...spec.aliases ?? [], `--${spec.name}`].map((flag) => spec.type === "string" ? `${flag} ${spec.valueLabel ?? "<value>"}` : flag).join(", ");
+	return `${flags}${flags.length >= 28 ? " " : "".padEnd(28 - flags.length)}${spec.description}`;
 }
 function toCommonCommandInput(options) {
 	const input = {};
@@ -2569,8 +2943,99 @@ var LOGGING_REVIEW_COMMAND = {
 	}
 };
 //#endregion
+//#region src/render/problem-matrix-markdown.ts
+function firstProblemSkill(scan) {
+	const stageSkill = topEntries(scan.stageLogs.metrics.skillsReferenced, 1)[0]?.[0];
+	if (stageSkill && stageSkill !== "unknown") return stageSkill;
+	return scan.skills.referenced[0]?.name ?? "process";
+}
+function recommendationForIncident(incident) {
+	if (/review/iu.test(incident.title)) return "Preserve structured review history and link immutable non-PASS artifacts before finalizing retrospective metrics.";
+	if (/process miss/iu.test(incident.title)) return "Move the repeated process miss into the owning skill or workflow checklist with a concrete validation gate.";
+	if (/backlog/iu.test(incident.title)) return "Require durable backlog actualization evidence before closure and expose it in stage telemetry.";
+	return "Validate the symptom against cited evidence, then move the reusable prevention rule into the owning skill or workflow.";
+}
+function reviewHistoryRows(scan) {
+	if (!(scan.reviewSignals ?? []).some((signal) => !signal.matching_artifact)) return [];
+	return [[
+		"PM-REVIEW-HISTORY",
+		"Non-PASS review history is present, but at least one signal lacks a matching immutable review artifact.",
+		"unified-dossier-engineer",
+		"Use structured UDE producer fields for durable review history; keep trace/prose signals as lower-quality fallback evidence until matching artifacts exist."
+	]];
+}
+function incidentRows(scan) {
+	return scan.candidateIncidents.map((incident, index) => [
+		`PM-${String(index + 1).padStart(2, "0")}`,
+		`${incident.title}: ${incident.reason}`,
+		firstProblemSkill(scan),
+		recommendationForIncident(incident)
+	]);
+}
+function formatTable(rows) {
+	if (rows.length === 0) return "| none | No reusable skill/process problem was inferred automatically. | process | Validate cited evidence manually before adding a skill change. |";
+	return rows.map((row) => `| ${row.map((cell) => cell.replaceAll("|", "\\|")).join(" | ")} |`).join("\n");
+}
+function buildProblemMatrixMarkdown(scan) {
+	const rows = [...reviewHistoryRows(scan), ...incidentRows(scan)];
+	const validation = scan.validation ?? {
+		agent_validated: false,
+		validated_scope: null,
+		residual_confidence: null,
+		validation_notes: null,
+		validated_at: null,
+		validated_by: null
+	};
+	return `# Problem matrix by skill
+
+Status: ${validation.agent_validated ? "agent validated" : "draft, requires agent validation"}
+
+| ID | Проблема | Скил, содержащий проблему | Предложение по решению проблемы |
+|---|---|---|---|
+${formatTable(rows)}
+
+## Validation metadata
+
+- agent_validated: ${validation.agent_validated}
+- validated_scope: ${validation.validated_scope ?? "not validated"}
+- residual_confidence: ${validation.residual_confidence ?? "not validated"}
+- validation_notes: ${validation.validation_notes ?? "not validated"}
+`;
+}
+//#endregion
+//#region src/commands/problem-matrix.ts
+var PROBLEM_MATRIX_COMMAND = {
+	name: "problem-matrix",
+	summary: "Generate a skill/process problem matrix draft.",
+	usage: [
+		"node scripts/retro-cli.mjs problem-matrix --run-dir <dir>",
+		"node scripts/retro-cli.mjs problem-matrix --session <file> --out-root <dir>",
+		"node scripts/retro-cli.mjs problem-matrix --session <file> --out <file>"
+	],
+	options: [...COMMON_OPTION_SPECS, {
+		name: "out",
+		type: "string",
+		valueLabel: "<file>",
+		description: "Output Markdown path override."
+	}],
+	notes: ["The generated matrix is a draft grouping of reusable skill/process problems.", "Without --out, the command writes problem-matrix-by-skill.md into the selected run directory."],
+	parseArgs(argv) {
+		const options = parseOptions(argv, this.options);
+		const input = { ...toCommonCommandInput(options) };
+		const out = toOptionalString(options.out);
+		if (out) input.out = out;
+		assertOutputOverrideIsExclusive(input);
+		return input;
+	},
+	run(input) {
+		const scan = input.runDir ? loadScanSummaryFromRunDir(input.runDir) : buildScanSummary(input);
+		writeText(resolveCommandOutputPath(scan, input, "problem-matrix"), buildProblemMatrixMarkdown(redactScanSummaryForPublicArtifact(scan)));
+	}
+};
+//#endregion
 //#region src/render/report-markdown.ts
 function statusLine$1(scan) {
+	if (scan.validation?.agent_validated) return "Status: agent validated";
 	return scan.reportStatus.status === "draft_requires_agent_validation" ? "Status: draft, requires agent validation" : "Status: ready for agent finalization";
 }
 function statusReasons(scan) {
@@ -2643,6 +3108,26 @@ function formatExcludedStageLogCandidates(scan) {
 	const candidates = excludedStageLogCandidates(scan);
 	return candidates.length > 0 ? formatList(candidates.map((candidate) => `${candidate.path} (${candidate.evidence_kind}; ${candidate.next_action ?? candidate.reason})`)) : "- none";
 }
+function formatReviewEvidenceQuality(scan) {
+	const signals = scan.reviewSignals ?? [];
+	if (signals.length === 0) return "- No non-PASS review signals were extracted automatically.";
+	return formatList(signals.map((signal) => {
+		const artifact = signal.artifact_path ?? "no immutable artifact";
+		const match = signal.matching_artifact ? "matched artifact" : "missing matching artifact";
+		return `${signal.source_quality}: ${signal.verdict} from ${signal.source} (${artifact}; ${match})`;
+	}));
+}
+function formatValidationMetadata(scan) {
+	const validation = scan.validation;
+	if (!validation) return "- Validation metadata is unavailable in this legacy scan summary.";
+	return [
+		`- agent_validated: ${validation.agent_validated}`,
+		`- validated_scope: ${validation.validated_scope ?? "not validated"}`,
+		`- manual_overrides: ${validation.manual_overrides}`,
+		`- residual_confidence: ${validation.residual_confidence ?? "not validated"}`,
+		`- validation_notes: ${validation.validation_notes ?? "not validated"}`
+	].join("\n");
+}
 function buildReportMarkdown(scan, options) {
 	const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ""}`;
 	const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
@@ -2673,6 +3158,7 @@ ${statusLine$1(scan)}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
 - Scope confidence: ${scan.scope.scope_confidence}
 - Report scaffold status: ${scan.reportStatus.status}
+- Agent validated: ${scan.validation?.agent_validated ?? false}
 - Evidence-source status: ${evidenceSourceStatus(scan)}
 
 ## Evidence manifest
@@ -2741,6 +3227,10 @@ ${scopeAmbiguities}
 
 ${formatExcludedStageLogCandidates(scan)}
 
+## Review evidence quality
+
+${formatReviewEvidenceQuality(scan)}
+
 ## Report status reasons
 
 ${statusReasons(scan)}
@@ -2757,6 +3247,10 @@ ${statusReasons(scan)}
 ## Data-quality limits
 
 ${formatDataQualityLimits(scan)}
+
+## Validation metadata
+
+${formatValidationMetadata(scan)}
 
 ## Agent-context factors
 
@@ -3057,13 +3551,97 @@ var SKILL_AUDIT_COMMAND = {
 	}
 };
 //#endregion
+//#region src/commands/validate.ts
+function parseResidualConfidence(value) {
+	if (value === "high" || value === "medium" || value === "low") return value;
+	throw createUsageError("--residual-confidence must be one of high, medium, or low");
+}
+var VALIDATE_COMMAND = {
+	name: "validate",
+	summary: "Record agent validation metadata for a retrospective run.",
+	usage: ["node scripts/retro-cli.mjs validate --run-dir <dir> --validated-scope <text> --residual-confidence <high|medium|low> --validation-notes <text>"],
+	options: [
+		{
+			name: "run-dir",
+			type: "string",
+			valueLabel: "<dir>",
+			description: "Exact canonical retrospective run directory to update.",
+			required: true
+		},
+		{
+			name: "validated-scope",
+			type: "string",
+			valueLabel: "<text>",
+			description: "Evidence scope the agent validated.",
+			required: true
+		},
+		{
+			name: "residual-confidence",
+			type: "string",
+			valueLabel: "<high|medium|low>",
+			description: "Residual confidence after validation.",
+			required: true
+		},
+		{
+			name: "validation-notes",
+			type: "string",
+			valueLabel: "<text>",
+			description: "Agent-authored validation notes.",
+			required: true
+		},
+		{
+			name: "validated-by",
+			type: "string",
+			valueLabel: "<name>",
+			description: "Optional validator identity."
+		}
+	],
+	notes: ["This command records validation already performed by the agent; it does not validate evidence automatically.", "Existing reportStatus reasons are preserved so residual risks remain visible."],
+	parseArgs(argv) {
+		const options = parseOptions(argv, this.options);
+		const input = {
+			runDir: toRequiredString(options["run-dir"], "validate requires --run-dir"),
+			validatedScope: toRequiredString(options["validated-scope"], "validate requires --validated-scope"),
+			residualConfidence: parseResidualConfidence(toRequiredString(options["residual-confidence"], "validate requires --residual-confidence")),
+			validationNotes: toRequiredString(options["validation-notes"], "validate requires --validation-notes")
+		};
+		const validatedBy = toOptionalString(options["validated-by"]);
+		if (validatedBy) input.validatedBy = validatedBy;
+		return input;
+	},
+	run(input) {
+		const summary = loadScanSummaryFromRunDir(input.runDir);
+		const scanSummaryPath = path.join(path.resolve(input.runDir), "scan-summary.json");
+		if (!fs.existsSync(scanSummaryPath)) throw createUsageError(`--run-dir requires an existing scan-summary.json: ${scanSummaryPath}`);
+		writeJson(scanSummaryPath, redactScanSummaryForPublicArtifact({
+			...summary,
+			validation: {
+				...summary.validation,
+				agent_validated: true,
+				validated_scope: input.validatedScope,
+				residual_confidence: input.residualConfidence,
+				validation_notes: input.validationNotes,
+				validated_at: (/* @__PURE__ */ new Date()).toISOString(),
+				validated_by: input.validatedBy ?? null
+			}
+		}), true);
+		return JSON.stringify({
+			run_dir: path.resolve(input.runDir),
+			scan_summary: scanSummaryPath,
+			agent_validated: true
+		});
+	}
+};
+//#endregion
 //#region src/cli/command-registry.ts
 var CLI_DISPLAY_NAME = "node scripts/retro-cli.mjs";
 var COMMANDS = [
 	SCAN_COMMAND,
 	REPORT_COMMAND,
 	SKILL_AUDIT_COMMAND,
-	LOGGING_REVIEW_COMMAND
+	LOGGING_REVIEW_COMMAND,
+	PROBLEM_MATRIX_COMMAND,
+	VALIDATE_COMMAND
 ];
 var COMMAND_MAP = new Map(COMMANDS.map((command) => [command.name, command]));
 function findCommand(name) {

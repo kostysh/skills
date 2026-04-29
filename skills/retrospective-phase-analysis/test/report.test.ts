@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { buildScanSummary } from '../src/core/build-scan-summary.ts';
 import type { ScanSummary } from '../src/core/types.ts';
 import { buildLoggingReviewMarkdown } from '../src/render/logging-review-markdown.ts';
+import { buildProblemMatrixMarkdown } from '../src/render/problem-matrix-markdown.ts';
 import { buildReportMarkdown } from '../src/render/report-markdown.ts';
 import { buildSkillAuditMarkdown } from '../src/render/skill-audit-markdown.ts';
 
@@ -120,6 +121,7 @@ void test('report markdown separates compaction from data-quality limits', () =>
 
   assert.match(markdown, /^## Data-quality limits$/mu);
   assert.match(markdown, /^## Agent-context factors$/mu);
+  assert.match(markdown, /^## Validation metadata$/mu);
   assert.match(dataQuality, /Session trace available: true/mu);
   assert.match(dataQuality, /Session parse errors: 0/mu);
   assert.doesNotMatch(dataQuality, /compaction|compacted/iu);
@@ -148,6 +150,17 @@ void test('markdown renderers mark zero included logs with excluded candidates a
     loggingReview,
     /Excluded stage-log candidates require validation: .*implementation\.md/u,
   );
+});
+
+void test('problem matrix markdown includes required columns and validation metadata', () => {
+  const markdown = buildProblemMatrixMarkdown(buildReferencedOnlyStageLogSummary());
+
+  assert.match(markdown, /^# Problem matrix by skill$/mu);
+  assert.match(
+    markdown,
+    /\| ID \| Проблема \| Скил, содержащий проблему \| Предложение по решению проблемы \|/u,
+  );
+  assert.match(markdown, /agent_validated: false/u);
 });
 
 void test('markdown renderers tolerate legacy scan summaries without metric source fields', () => {

@@ -7,6 +7,9 @@ export interface ReportRenderOptions {
 }
 
 function statusLine(scan: ScanSummary): string {
+  if (scan.validation?.agent_validated) {
+    return 'Status: agent validated';
+  }
   return scan.reportStatus.status === 'draft_requires_agent_validation'
     ? 'Status: draft, requires agent validation'
     : 'Status: ready for agent finalization';
@@ -144,6 +147,36 @@ function formatExcludedStageLogCandidates(scan: ScanSummary): string {
     : '- none';
 }
 
+function formatReviewEvidenceQuality(scan: ScanSummary): string {
+  const signals = scan.reviewSignals ?? [];
+  if (signals.length === 0) {
+    return '- No non-PASS review signals were extracted automatically.';
+  }
+
+  return formatList(
+    signals.map((signal) => {
+      const artifact = signal.artifact_path ?? 'no immutable artifact';
+      const match = signal.matching_artifact ? 'matched artifact' : 'missing matching artifact';
+      return `${signal.source_quality}: ${signal.verdict} from ${signal.source} (${artifact}; ${match})`;
+    }),
+  );
+}
+
+function formatValidationMetadata(scan: ScanSummary): string {
+  const validation = scan.validation;
+  if (!validation) {
+    return '- Validation metadata is unavailable in this legacy scan summary.';
+  }
+
+  return [
+    `- agent_validated: ${validation.agent_validated}`,
+    `- validated_scope: ${validation.validated_scope ?? 'not validated'}`,
+    `- manual_overrides: ${validation.manual_overrides}`,
+    `- residual_confidence: ${validation.residual_confidence ?? 'not validated'}`,
+    `- validation_notes: ${validation.validation_notes ?? 'not validated'}`,
+  ].join('\n');
+}
+
 export function buildReportMarkdown(scan: ScanSummary, options: ReportRenderOptions): string {
   const title = options.title ?? `Retrospective${options.phase ? `: ${options.phase}` : ''}`;
   const topTools = topEntries(scan.session.tools, 10).map(([name, count]) => `${name} (${count})`);
@@ -183,6 +216,7 @@ ${statusLine(scan)}
 - Distinct tools observed: ${Object.keys(scan.session.tools).length}
 - Scope confidence: ${scan.scope.scope_confidence}
 - Report scaffold status: ${scan.reportStatus.status}
+- Agent validated: ${scan.validation?.agent_validated ?? false}
 - Evidence-source status: ${evidenceSourceStatus(scan)}
 
 ## Evidence manifest
@@ -263,6 +297,10 @@ ${scopeAmbiguities}
 
 ${formatExcludedStageLogCandidates(scan)}
 
+## Review evidence quality
+
+${formatReviewEvidenceQuality(scan)}
+
 ## Report status reasons
 
 ${statusReasons(scan)}
@@ -279,6 +317,10 @@ ${statusReasons(scan)}
 ## Data-quality limits
 
 ${formatDataQualityLimits(scan)}
+
+## Validation metadata
+
+${formatValidationMetadata(scan)}
 
 ## Agent-context factors
 

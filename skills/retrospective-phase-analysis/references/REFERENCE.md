@@ -48,8 +48,13 @@ Structured fields win over prose heuristics.
 - Count `process_misses` or `process_misses_total` before parsing prose `Process misses` sections.
 - Count `skills_used` before legacy `skill` metadata or trace-only skill hints.
 - Treat structured `review_events` with `FAIL` or `non-compliant` verdicts as candidate-incident evidence before a final PASS artifact.
+- Prefer active UDE producer fields when present: `rpa_source_identity`, `rpa_source_quality`, and `non_pass_review_events`.
+- Treat UDE `review_history_quality: complete` as structured review evidence.
+- Treat UDE `review_history_quality: process_miss` or `limited` as structured evidence with incomplete aggregate quality until the limitation is validated.
+- Label trace-only review notifications as `trace_derived` and stage-log prose review signals as `prose_derived`; do not treat either as immutable review truth.
+- Mark aggregate review metrics as `incomplete` when a non-PASS review signal lacks a matching immutable review artifact.
 - Do not double-count prose evidence when structured evidence exists for the same log.
-- Record source quality for metrics; unvalidated prose fallback requires agent validation before final report finalization.
+- Record source quality for metrics; `trace_derived`, `prose_derived`, and `incomplete` metrics require agent validation before final report finalization.
 
 ## 2. Finding taxonomy
 
@@ -181,11 +186,20 @@ For a serious phase retrospective, produce:
 - incident register;
 - stage weakness analysis;
 - skill audit;
+- problem matrix grouped by reusable skill/process root cause when skill/process issues are present;
 - time sinks;
 - control effectiveness;
 - prioritized improvements;
 - data-quality limits.
 - agent-context factors when material.
+
+Problem matrix rows should use columns `ID`, `Проблема`, `Скил, содержащий проблему`, and `Предложение по решению проблемы`. Group symptoms by reusable root cause where possible. Keep project-specific incidents as evidence for the reusable skill or process fix, not as the only remediation target.
+
+## 9a. Validation metadata
+
+Generated CLI artifacts are scaffolds. They start with `agent_validated: false`.
+
+Record `agent_validated: true` only after the agent validates cited evidence. The `validate` command records the result with `validated_scope`, `residual_confidence`, `validation_notes`, `validated_at`, and optional `validated_by`; it does not perform validation automatically.
 
 ## 10. Suggested operator-facing recommendations
 

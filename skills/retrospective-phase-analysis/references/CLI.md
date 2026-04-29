@@ -43,9 +43,11 @@ node scripts/retro-cli.mjs scan \
 ```
 
 Outputs:
+- `schema_version`
 - provided session trace path
 - resolved project root from `session_meta.cwd`
 - trace-derived scope block
+- discovery provenance for included, excluded, and manually included artifacts
 - timeline bounds
 - event counts
 - tool usage
@@ -58,8 +60,10 @@ Outputs:
 - `phase_boundary`
 - structured `stage_log_candidates`, `review_artifact_candidates`, `verification_artifact_candidates`, and `step_artifact_candidates`
 - `artifact_identity` derived from included stage artifacts when available
-- metric `sources` and quality for structured versus fallback evidence
+- metric `sources` and quality labels: `structured`, `trace_derived`, `prose_derived`, `incomplete`, and legacy `validated_fallback`
+- extracted `reviewSignals` for non-PASS review evidence, including source quality and immutable-artifact matching status
 - `reportStatus`
+- `validation` metadata with `agent_validated: false` for generated scaffolds
 - `skills.available`, `skills.referenced`, and `skills.unreferenced_count`
 - `run_dir`, `operator_language`, and `report_language`
 
@@ -70,6 +74,7 @@ After `scan`, generate all three Markdown scaffolds into the same `run_dir`:
 - `report --run-dir <run_dir>`
 - `skill-audit --run-dir <run_dir>`
 - `logging-review --run-dir <run_dir>`
+- `problem-matrix --run-dir <run_dir>`
 
 These files are mandatory bundle checkpoints, but they remain scaffolds until the agent validates them against the cited evidence.
 
@@ -118,8 +123,11 @@ Metrics:
 
 - Structured fields such as `process_misses`, `process_misses_total`, and `skills_used` win over prose sections.
 - Structured `review_events` with `FAIL` or `non-compliant` verdicts produce candidate incidents even when a linked final review artifact is `PASS`.
-- Prose fallback is counted only when the structured field is absent, and fallback source quality is recorded in `stageLogs.metrics.sources`.
-- Unvalidated prose fallback keeps `reportStatus.status` at `draft_requires_agent_validation`.
+- Active UDE producer fields are consumed when present: `rpa_source_identity`, `rpa_source_quality`, `non_pass_review_events`, selected closure bundle fields, and `review_events`.
+- UDE `review_history_quality: complete` is structured review evidence; `process_miss` or `limited` keeps aggregate review metrics incomplete until the agent validates the limitation.
+- Trace-derived and prose-derived non-PASS review signals are fallback evidence, not immutable review truth.
+- Prose fallback is counted only when structured fields are absent, and fallback source quality is recorded in `stageLogs.metrics.sources`.
+- `trace_derived`, `prose_derived`, or `incomplete` metrics keep `reportStatus.status` at `draft_requires_agent_validation`.
 
 Manual overrides:
 
@@ -169,6 +177,31 @@ node scripts/retro-cli.mjs logging-review \
 
 Generated logging reviews include a recommendation-discipline checkpoint: check existing canonical artifacts, workflow sequencing, or prompt recipes before proposing new fields or log schema changes.
 
+### `problem-matrix`
+
+Generate a skill/process problem matrix draft.
+
+```bash
+node scripts/retro-cli.mjs problem-matrix \
+  --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3
+```
+
+The command writes `problem-matrix-by-skill.md` into the run directory unless `--out <file>` is supplied. The matrix includes columns `ID`, `Проблема`, `Скил, содержащий проблему`, and `Предложение по решению проблемы`. It is a draft grouping of reusable skill/process problems until the agent validates the cited evidence.
+
+### `validate`
+
+Record final agent validation metadata after the agent has read and validated the cited evidence.
+
+```bash
+node scripts/retro-cli.mjs validate \
+  --run-dir /path/to/.dossier/retro/session-019d8db3/retrospective-20260414-203415-019d8db3 \
+  --validated-scope "scan summary and generated Markdown bundle" \
+  --residual-confidence medium \
+  --validation-notes "Validated cited evidence; residual incomplete metrics remain documented."
+```
+
+`validate` updates `scan-summary.json` with `agent_validated: true`, `validated_scope`, `residual_confidence`, `validation_notes`, `validated_at`, and optional `validated_by`. It records validation already performed by the agent; it does not validate evidence automatically and does not erase existing `reportStatus.reasons`.
+
 ## Supported options
 
 - `--session <file>`: rollout or session JSONL file
@@ -187,6 +220,10 @@ Generated logging reviews include a recommendation-discipline checkpoint: check 
 - `--review-artifact <path>`: manually include a review artifact; repeatable; requires `--artifact-evidence`
 - `--verification-artifact <path>`: manually include a verification artifact; repeatable; requires `--artifact-evidence`
 - `--artifact-evidence <text>`: required justification for manual artifact inclusion
+- `--validated-scope <text>`: validation command only; evidence scope the agent validated
+- `--residual-confidence <high|medium|low>`: validation command only; confidence after validation
+- `--validation-notes <text>`: validation command only; agent-authored validation notes
+- `--validated-by <name>`: validation command only; optional validator identity
 - `--draft`: write an explicitly temporary draft bundle
 - `--pretty`: pretty-print JSON for `scan`
 - `--help`: show command help
@@ -195,7 +232,7 @@ Language rule:
 
 - Pass the operator language to `scan`, for example `--language ru`, `--language it`, or `--language "Italian"`.
 - `scan-summary.json` records `operator_language` and `report_language`.
-- `report`, `skill-audit`, and `logging-review` inherit language from `scan-summary.json` when invoked with `--run-dir`.
+- `report`, `skill-audit`, `logging-review`, and `problem-matrix` inherit language from `scan-summary.json` when invoked with `--run-dir`.
 - Generated Markdown scaffold headings and structural labels are always English.
 - The operator language is metadata for agent-authored analysis content and final conclusions, not a template-localization selector.
 - English is acceptable for direct quotes, commands, paths, identifiers, JSON keys, tool names, skill names, and generated scaffold labels.
@@ -203,9 +240,12 @@ Language rule:
 Report status rule:
 
 - Generated Markdown is a scaffold. The final report is the agent's responsibility after evidence validation.
+- Generated scan summaries set `validation.agent_validated` to `false`.
+- Use `validate --run-dir ...` only after the agent has validated the cited evidence; it records `agent_validated: true` with validation scope, residual confidence, and notes.
 - `draft_requires_agent_validation` is used when evidence quality is degraded, no stage logs were analyzed despite dossier activity, unresolved ambiguities exist, manual overrides were used, or the injected `Available skills` catalog is missing.
 - Excluded stage-log candidates are stronger than generic missing logs: `reportStatus.reasons` names the excluded candidates and generated Markdown marks log-derived metrics as incomplete.
 - Compaction is reported as agent context, not data-quality loss, when the raw trace is available and parsed.
+- Non-PASS review signals without matching immutable artifacts keep review metrics incomplete until validated.
 - Draft Markdown includes `Status: draft, requires agent validation`.
 - `ready_for_agent_finalization` means the automated checks found no draft trigger, but the agent still owns final conclusions.
 

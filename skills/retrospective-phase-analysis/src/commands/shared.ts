@@ -116,7 +116,8 @@ export function optionToHelpLine(spec: OptionSpec): string {
   const flags = [...(spec.aliases ?? []), `--${spec.name}`]
     .map((flag) => (spec.type === 'string' ? `${flag} ${spec.valueLabel ?? '<value>'}` : flag))
     .join(', ');
-  return `${flags.padEnd(28)}${spec.description}`;
+  const separator = flags.length >= 28 ? ' ' : ''.padEnd(28 - flags.length);
+  return `${flags}${separator}${spec.description}`;
 }
 
 export function toCommonCommandInput(options: ParsedOptions): CommonCommandInput {

@@ -587,6 +587,104 @@ void test('buildScanSummary blocks finalization when same-session stage-log cand
   }
 });
 
+void test('buildScanSummary discovers stage logs through bounded stage state log_path', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const stateDir = path.join(projectRoot, '.dossier', 'stages', 'F-0070');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await mkdir(stateDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      ['---', 'stage: implementation', 'primary_feature_id: F-0070', '---', '# Log'].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(stateDir, 'implementation.json'),
+      JSON.stringify({
+        stage: 'implementation',
+        primary_feature_id: 'F-0070',
+        log_path: '.dossier/logs/implementation.md',
+      }),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-26T09:00:00Z',
+          type: 'session_meta',
+          payload: { id: '019d9000-0000-7000-8000-000000000070', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-26T09:01:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch:
+            '*** Begin Patch\n*** Update File: .dossier/stages/F-0070/implementation.json\n*** End Patch',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-26T09:02:00Z',
+          type: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+    assert.equal(summary.stageLogs.count, 1);
+    assert.equal(summary.scope.stage_log_candidates[0]?.evidence_kind, 'stage_state_log_path');
+    assert.equal(summary.discovery.provenance[0]?.evidence_kind, 'stage_state_log_path');
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary includes producer-output log_path while keeping read-only prose excluded', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      ['---', 'stage: implementation', 'primary_feature_id: F-0071', '---', '# Log'].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-26T09:00:00Z',
+          type: 'session_meta',
+          payload: { id: '019d9000-0000-7000-8000-000000000071', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-26T09:01:00Z',
+          type: 'tool_result',
+          recipient: 'dossier-engineer',
+          status: 'ok',
+          payload: { log_path: '.dossier/logs/implementation.md' },
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+    assert.equal(summary.stageLogs.count, 1);
+    assert.equal(summary.scope.stage_log_candidates[0]?.evidence_kind, 'producer_output_path');
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 void test('buildScanSummary ignores copied skill catalogs while keeping active skill-use evidence', () => {
   const summary = buildScanSummary({
     session: fixturePath('rpa-05', 'session-skill-catalog-noise.jsonl'),
@@ -1764,7 +1862,172 @@ void test('buildScanSummary infers structured non-pass review incidents before a
     );
     assert.match(reviewIncidents[0]?.reason ?? '', /Structured review_events/u);
     assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 0);
+    assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'incomplete');
+    assert.equal(summary.reviewSignals.length, 1);
+    assert.equal(summary.reviewSignals[0]?.matching_artifact, false);
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary consumes active UDE RPA producer fields as structured evidence', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const logsDir = path.join(projectRoot, '.dossier', 'logs');
+  const stateDir = path.join(projectRoot, '.dossier', 'stages', 'F-0072');
+  const reviewsDir = path.join(projectRoot, '.dossier', 'reviews', 'F-0072');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+  const failArtifact = path.join(
+    reviewsDir,
+    'implementation--code-reviewer--r01--fail--abcdef1.json',
+  );
+
+  try {
+    await mkdir(logsDir, { recursive: true });
+    await mkdir(stateDir, { recursive: true });
+    await mkdir(reviewsDir, { recursive: true });
+    await writeFile(
+      path.join(logsDir, 'implementation.md'),
+      [
+        '---',
+        'stage: implementation',
+        'primary_feature_id: F-0072',
+        'primary_backlog_item_key: CF-0072',
+        '---',
+        '# Log',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(failArtifact, JSON.stringify({ verdict: 'FAIL' }), 'utf8');
+    await writeFile(
+      path.join(stateDir, 'implementation.json'),
+      JSON.stringify({
+        stage: 'implementation',
+        primary_feature_id: 'F-0072',
+        primary_backlog_item_key: 'CF-0072',
+        rpa_source_identity: {
+          schema_version: '1',
+          feature_id: 'F-0072',
+          stage: 'implementation',
+        },
+        rpa_source_quality: {
+          schema_version: '1',
+          review_history_quality: 'complete',
+          selected_bundle_quality: 'complete',
+          missing_fail_artifact_count: 0,
+          trace_only_fail_count: 0,
+        },
+        non_pass_review_events: [
+          {
+            audit_class: 'code-reviewer',
+            verdict: 'FAIL',
+            review_round_id: 'r01',
+            artifact_path:
+              '.dossier/reviews/F-0072/implementation--code-reviewer--r01--fail--abcdef1.json',
+            event_commit: 'abcdef1',
+            must_fix_count: 2,
+            evidence_count: 3,
+          },
+        ],
+      }),
+      'utf8',
+    );
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-26T09:00:00Z',
+          type: 'session_meta',
+          payload: { id: '019d9000-0000-7000-8000-000000000072', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-26T09:01:00Z',
+          type: 'tool_call',
+          tool: 'functions.apply_patch',
+          patch: '*** Begin Patch\n*** Update File: .dossier/logs/implementation.md\n*** End Patch',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-26T09:02:00Z',
+          type: 'tool_result',
+          recipient: 'functions.apply_patch',
+          status: 'ok',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+    assert.equal(summary.reviewSignals.length, 1);
+    assert.equal(summary.reviewSignals[0]?.source, 'ude');
+    assert.equal(summary.reviewSignals[0]?.source_quality, 'structured');
+    assert.equal(summary.reviewSignals[0]?.matching_artifact, true);
+    assert.equal(summary.reviewSignals[0]?.must_fix_count, 2);
+    assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 2);
     assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'structured');
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+void test('buildScanSummary marks operational trace-derived review FAIL as incomplete evidence', async () => {
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), 'retrospective-phase-analysis-'));
+  const projectRoot = path.join(tempDir, 'project');
+  const sessionPath = path.join(tempDir, 'session.jsonl');
+
+  try {
+    await mkdir(projectRoot, { recursive: true });
+    await writeFile(
+      sessionPath,
+      [
+        JSON.stringify({
+          timestamp: '2026-04-28T09:00:00Z',
+          type: 'session_meta',
+          payload: { id: '019f0000-0000-7000-8000-000000000077', cwd: projectRoot },
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-28T09:01:00Z',
+          type: 'user',
+          content:
+            '## Proposed Resolution\nExtract trace-derived FAIL notifications from review metrics fixtures.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-28T09:02:00Z',
+          type: 'assistant',
+          content:
+            '## Proposed Resolution\nA copied issue says trace-derived FAIL notifications should be lower quality review evidence.',
+        }),
+        JSON.stringify({
+          timestamp: '2026-04-28T09:30:00Z',
+          type: 'assistant',
+          content:
+            'External code-reviewer audit returned FAIL for round r1: one must-fix remains before final pass.',
+        }),
+      ].join('\n'),
+      'utf8',
+    );
+
+    const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
+
+    assert.equal(summary.reviewSignals.length, 1);
+    assert.equal(summary.reviewSignals[0]?.source, 'trace');
+    assert.equal(summary.reviewSignals[0]?.source_quality, 'trace_derived');
+    assert.equal(summary.reviewSignals[0]?.audit_class, 'code-reviewer');
+    assert.equal(summary.reviewSignals[0]?.matching_artifact, false);
+    assert.equal(summary.reviewSignals[0]?.must_fix_count, 1);
+    assert.equal(summary.stageLogs.metrics.reviewFindingsTotal, 1);
+    assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'incomplete');
+    assert.equal(
+      summary.candidateIncidents.some((incident) =>
+        incident.title.includes('Trace-derived non-pass review signal'),
+      ),
+      true,
+    );
+    assert.equal(
+      summary.reportStatus.reasons.some((reason) =>
+        reason.includes('Non-PASS review signals without matching immutable artifacts'),
+      ),
+      true,
+    );
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
@@ -1829,13 +2092,10 @@ void test('buildScanSummary marks prose review incident fallback as validation-r
       ),
       true,
     );
-    assert.equal(
-      summary.stageLogs.metrics.sources.candidate_incidents.quality,
-      'unvalidated_fallback',
-    );
+    assert.equal(summary.stageLogs.metrics.sources.candidate_incidents.quality, 'incomplete');
     assert.equal(summary.reportStatus.status, 'draft_requires_agent_validation');
     assert.equal(
-      summary.reportStatus.reasons.some((entry) => entry.includes('Unvalidated fallback metrics')),
+      summary.reportStatus.reasons.some((entry) => entry.includes('incomplete metrics')),
       true,
     );
   } finally {
@@ -1896,10 +2156,10 @@ void test('buildScanSummary marks prose fallback metrics as validation-required'
 
     const summary = buildScanSummary({ session: sessionPath, artifactsDir: projectRoot });
 
-    assert.equal(summary.stageLogs.metrics.sources.process_misses.quality, 'unvalidated_fallback');
+    assert.equal(summary.stageLogs.metrics.sources.process_misses.quality, 'prose_derived');
     assert.equal(summary.reportStatus.status, 'draft_requires_agent_validation');
     assert.equal(
-      summary.reportStatus.reasons.some((entry) => entry.includes('Unvalidated fallback metrics')),
+      summary.reportStatus.reasons.some((entry) => entry.includes('incomplete metrics')),
       true,
     );
   } finally {

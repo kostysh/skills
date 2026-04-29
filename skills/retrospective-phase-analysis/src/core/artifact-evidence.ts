@@ -294,7 +294,9 @@ export function hasUnvalidatedFallbackMetrics(input: {
   process_misses: { quality: MetricEvidenceQuality };
   skills_referenced: { quality: MetricEvidenceQuality };
 }): boolean {
-  return Object.values(input).some((source) => source.quality === 'unvalidated_fallback');
+  return Object.values(input).some((source) =>
+    ['trace_derived', 'prose_derived', 'incomplete'].includes(source.quality),
+  );
 }
 
 export function deriveArtifactEvidenceEnhancement(input: {

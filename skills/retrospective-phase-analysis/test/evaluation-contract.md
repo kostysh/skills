@@ -22,6 +22,9 @@ quality checks. It complements executable tests; it does not replace them.
    and avoid inventing review history.
 4. When a trace contains a compacted event with available raw trace and zero parse errors, the
    report should treat it as an agent-context factor, not as a data-quality limitation.
+5. When operational trace evidence reports a non-PASS review without matching immutable review
+   artifacts, the scan should keep the signal lower-quality, mark aggregate review metrics
+   incomplete, and ignore copied issue or instruction text that merely discusses FAIL fixtures.
 
 ## Future regression fixtures
 

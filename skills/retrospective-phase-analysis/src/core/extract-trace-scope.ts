@@ -246,6 +246,23 @@ function isStepArtifact(value: string, projectRoot: string | null): boolean {
   );
 }
 
+function isStageStateArtifact(value: string, projectRoot: string | null): boolean {
+  if (!projectRoot) {
+    return false;
+  }
+
+  const relative = path.relative(projectRoot, value);
+  if (relative.startsWith('..')) {
+    return false;
+  }
+
+  return (
+    (relative.startsWith('.dossier/stages/') ||
+      relative.startsWith(`.dossier${path.sep}stages${path.sep}`)) &&
+    value.endsWith('.json')
+  );
+}
+
 function collectNestedStrings(input: unknown, depth = 0): string[] {
   if (depth > 8 || input === null || input === undefined) {
     return [];
@@ -680,6 +697,131 @@ function extractAutoIncludedArtifactCandidates(
   return mergeCandidates(out);
 }
 
+const STAGE_LOG_LINK_KEYS = new Set([
+  'log_path',
+  'logPath',
+  'stage_log',
+  'stageLog',
+  'stage_log_path',
+  'stageLogPath',
+]);
+
+function collectStringsByKey(input: unknown, keys: ReadonlySet<string>, depth = 0): string[] {
+  if (depth > 8 || input === null || input === undefined) {
+    return [];
+  }
+
+  if (Array.isArray(input)) {
+    return input.flatMap((item) => collectStringsByKey(item, keys, depth + 1));
+  }
+
+  if (typeof input !== 'object') {
+    return [];
+  }
+
+  const out: string[] = [];
+  for (const [key, value] of Object.entries(input)) {
+    if (keys.has(key)) {
+      out.push(...collectNestedStrings(value));
+      continue;
+    }
+    out.push(...collectStringsByKey(value, keys, depth + 1));
+  }
+  return out;
+}
+
+function normalizeLinkedProjectPath(projectRoot: string, value: string): string | null {
+  const trimmed = trimPathCandidate(value);
+  if (!trimmed) {
+    return null;
+  }
+  const normalized = path.isAbsolute(trimmed)
+    ? path.normalize(trimmed)
+    : path.resolve(projectRoot, trimmed);
+  return isProjectScopedPath(normalized, projectRoot) ? normalized : null;
+}
+
+function producerOutputStageLogCandidates(
+  events: readonly unknown[],
+  projectRoot: string | null,
+): ArtifactCandidate[] {
+  if (!projectRoot) {
+    return [];
+  }
+
+  const out: ArtifactCandidate[] = [];
+  for (const [index, event] of events.entries()) {
+    if (!event || typeof event !== 'object') {
+      continue;
+    }
+    const record = event as Record<string, unknown>;
+    const eventType = extractEventType(record);
+    if (
+      !(
+        (isToolResultEvent(record) && isSuccessfulToolResult(record)) ||
+        (eventType === 'exec_command_end' && isSuccessfulToolResult(record))
+      )
+    ) {
+      continue;
+    }
+
+    for (const rawPath of collectStringsByKey(record, STAGE_LOG_LINK_KEYS)) {
+      const filePath = normalizeLinkedProjectPath(projectRoot, rawPath);
+      if (!filePath || !isStageLogArtifact(filePath, projectRoot) || !fs.existsSync(filePath)) {
+        continue;
+      }
+      out.push({
+        path: filePath,
+        evidence_kind: 'producer_output_path',
+        event_ref: eventRef(index),
+        included: true,
+        inclusion_source: 'auto_included',
+        reason: `Producer output exposed stage-log path in ${eventRef(index)}.`,
+      });
+    }
+  }
+
+  return mergeCandidates(out);
+}
+
+function stageStateLogPathCandidates(
+  stageStateCandidates: readonly ArtifactCandidate[],
+  projectRoot: string | null,
+): ArtifactCandidate[] {
+  if (!projectRoot) {
+    return [];
+  }
+
+  const out: ArtifactCandidate[] = [];
+  for (const candidate of stageStateCandidates) {
+    if (!candidate.included || !isStageStateArtifact(candidate.path, projectRoot)) {
+      continue;
+    }
+
+    try {
+      const parsed = JSON.parse(fs.readFileSync(candidate.path, 'utf8')) as unknown;
+      for (const rawPath of collectStringsByKey(parsed, STAGE_LOG_LINK_KEYS)) {
+        const filePath = normalizeLinkedProjectPath(projectRoot, rawPath);
+        if (!filePath || !isStageLogArtifact(filePath, projectRoot) || !fs.existsSync(filePath)) {
+          continue;
+        }
+        out.push({
+          path: filePath,
+          evidence_kind: 'stage_state_log_path',
+          event_ref: candidate.event_ref,
+          included: true,
+          inclusion_source: 'auto_included',
+          reason: `Linked by log_path in bounded stage state ${candidate.path}.`,
+        });
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return mergeCandidates(out);
+}
+
 function normalizeManualOverridePath(value: string, projectRoot: string | null): string {
   const normalized = normalizePathCandidate(value, projectRoot);
   if (normalized) {
@@ -806,6 +948,14 @@ export function extractTraceScope({
     sessionSummary.events,
     projectRoot,
   );
+  const stageStateLinkedStageLogs = stageStateLogPathCandidates(
+    autoIncludedCandidates,
+    projectRoot,
+  );
+  const producerOutputStageLogs = producerOutputStageLogCandidates(
+    sessionSummary.events,
+    projectRoot,
+  );
   const manualStageLogCandidates = manualCandidates(manualStageLogs, projectRoot, artifactEvidence);
   const manualReviewCandidates = manualCandidates(
     manualReviewArtifacts,
@@ -823,9 +973,11 @@ export function extractTraceScope({
       ...autoIncludedCandidates.filter((candidate) =>
         isStageLogArtifact(candidate.path, projectRoot),
       ),
+      ...stageStateLinkedStageLogs,
+      ...producerOutputStageLogs,
       ...referencedOnlyCandidates(
         referencedByEvent.filter((candidate) => isStageLogArtifact(candidate.path, projectRoot)),
-        autoIncludedCandidates,
+        [...autoIncludedCandidates, ...stageStateLinkedStageLogs, ...producerOutputStageLogs],
       ),
       ...manualStageLogCandidates,
     ]),

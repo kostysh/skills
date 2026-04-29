@@ -61,4 +61,16 @@ export interface LoggingReviewCommandInput extends CommonCommandInput {
   out?: string;
 }
 
+export interface ProblemMatrixCommandInput extends CommonCommandInput {
+  out?: string;
+}
+
+export interface ValidateCommandInput {
+  runDir: string;
+  validatedScope: string;
+  residualConfidence: 'high' | 'medium' | 'low';
+  validationNotes: string;
+  validatedBy?: string;
+}
+
 export type ReportLanguage = string;

@@ -1,8 +1,10 @@
 import {
   LOGGING_REVIEW_COMMAND,
+  PROBLEM_MATRIX_COMMAND,
   REPORT_COMMAND,
   SCAN_COMMAND,
   SKILL_AUDIT_COMMAND,
+  VALIDATE_COMMAND,
 } from '../commands/index.ts';
 import { optionToHelpLine } from '../commands/shared.ts';
 import type { AnyCommandDefinition } from '../commands/types.ts';
@@ -14,6 +16,8 @@ export const COMMANDS = [
   REPORT_COMMAND,
   SKILL_AUDIT_COMMAND,
   LOGGING_REVIEW_COMMAND,
+  PROBLEM_MATRIX_COMMAND,
+  VALIDATE_COMMAND,
 ] satisfies readonly AnyCommandDefinition[];
 
 const COMMAND_MAP = new Map<string, AnyCommandDefinition>(

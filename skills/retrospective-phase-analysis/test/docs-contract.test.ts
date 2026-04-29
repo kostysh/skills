@@ -56,7 +56,7 @@ void test('SKILL.md keeps explicit selection, interop, and runtime-reference sec
   ]);
 });
 
-void test('CLI reference documents global help, version, and the four command surfaces', async () => {
+void test('CLI reference documents global help, version, and the six command surfaces', async () => {
   const reference = await readFile(filePath('references', 'CLI.md'), 'utf8');
 
   assertContainsTerms(reference, [
@@ -77,21 +77,34 @@ void test('CLI reference documents global help, version, and the four command su
     'next_action',
     'metric `sources`',
     'reportStatus',
+    'schema_version',
+    'validation',
+    'reviewSignals',
     'Excluded stage-log candidates',
     'Agent-context factors',
     'Data-quality limits',
     'mandatory bundle checkpoints',
+    'problem-matrix-by-skill.md',
     '--until-ts <iso>',
     '--artifact-evidence <text>',
+    '--validated-scope <text>',
+    '--residual-confidence <high|medium|low>',
     'stage_artifact_link',
-    'Unvalidated prose fallback',
+    'trace_derived',
+    'prose_derived',
+    'incomplete',
     'Structured `review_events`',
+    'rpa_source_identity',
+    'rpa_source_quality',
+    'non_pass_review_events',
     'existing canonical artifacts, workflow sequencing, or prompt recipes',
     'The first `scan` that writes a bundle establishes the canonical run directory.',
     'scan',
     'report',
     'skill-audit',
     'logging-review',
+    'problem-matrix',
+    'validate',
   ]);
 });
 

@@ -7,17 +7,25 @@ import { extractSkillTraceSummary } from './extract-skill-scope.ts';
 import { extractTraceScope } from './extract-trace-scope.ts';
 import { inferCandidateIncidents } from './infer-candidate-incidents.ts';
 import { resolveStandardEvidenceDir } from './resolve-evidence-roots.ts';
-import { inferProjectRootFromLogsDir, resolveRetroOutputLayout, tryParseDate } from './shared.ts';
+import {
+  extractTimestamp,
+  inferProjectRootFromLogsDir,
+  resolveRetroOutputLayout,
+  tryParseDate,
+} from './shared.ts';
 import { summarizeLogs } from './summarize-logs.ts';
 import { summarizeSession } from './summarize-session.ts';
 import type {
   ArtifactCandidate,
   LogsSummary,
+  ReviewSignal,
   ScanSourceOptions,
   ScanSummary,
   SessionSummary,
   TraceScopeSummary,
 } from './types.ts';
+
+const SCAN_SUMMARY_SCHEMA_VERSION = '1.1.0';
 
 function hasManualOverrides(args: ScanSourceOptions): boolean {
   return (
@@ -53,9 +61,10 @@ function buildReportStatus(input: {
   logSummary: ReturnType<typeof summarizeLogs>;
   skillTraceSummary: ReturnType<typeof extractSkillTraceSummary>;
   scope: ReturnType<typeof extractTraceScope>;
+  reviewSignals: readonly ReviewSignal[];
 }): ScanSummary['reportStatus'] {
   const reasons: string[] = [];
-  const { sessionSummary, logSummary, skillTraceSummary, scope } = input;
+  const { sessionSummary, logSummary, skillTraceSummary, scope, reviewSignals } = input;
 
   if (!sessionSummary.exists) {
     reasons.push('Session trace is missing.');
@@ -93,12 +102,199 @@ function buildReportStatus(input: {
     reasons.push('Manual artifact overrides were used.');
   }
   if (hasUnvalidatedFallbackMetrics(logSummary.metrics.sources)) {
-    reasons.push('Unvalidated fallback metrics require agent validation.');
+    reasons.push('Trace/prose-derived or incomplete metrics require agent validation.');
+  }
+  if (reviewSignals.some((signal) => !signal.matching_artifact)) {
+    reasons.push(
+      'Non-PASS review signals without matching immutable artifacts require validation.',
+    );
   }
   return {
     status: reasons.length > 0 ? 'draft_requires_agent_validation' : 'ready_for_agent_finalization',
     reasons,
   };
+}
+
+function traceTextContainsNonPassReviewSignal(value: string): boolean {
+  if (
+    !/\b(?:FAIL|failed|non-compliant|noncompliant|changes[-_\s]requested|request[-_\s]changes)\b/iu.test(
+      value,
+    ) ||
+    !/\b(?:review|reviewer|audit|auditor|spec-conformance|security|code-reviewer)\b/iu.test(value)
+  ) {
+    return false;
+  }
+
+  return [
+    /\b(?:verdict|result|status|outcome)\s*[:=-]\s*(?:FAIL|failed|non-compliant|noncompliant|changes[-_\s]requested|request[-_\s]changes)\b/iu,
+    /\b(?:review|reviewer|audit|auditor|spec-conformance-reviewer|security-reviewer|code-reviewer)\b.{0,180}\b(?:returned|reported|completed|found|blocked|requested|requested changes|verdict|result|status)\b.{0,120}\b(?:FAIL|failed|non-compliant|noncompliant|changes[-_\s]requested|request[-_\s]changes)\b/isu,
+    /\b(?:FAIL|failed|non-compliant|noncompliant|changes[-_\s]requested|request[-_\s]changes)\b.{0,120}\b(?:review|reviewer|audit|auditor|spec-conformance-reviewer|security-reviewer|code-reviewer)\b.{0,120}\b(?:found|returned|reported|blocked|requested)\b/isu,
+  ].some((pattern) => pattern.test(value));
+}
+
+const TRACE_REVIEW_TEXT_KEYS = new Set([
+  'content',
+  'message',
+  'notes',
+  'summary',
+  'completed',
+  'final',
+  'output',
+  'stdout',
+  'stderr',
+  'result',
+  'status',
+  'outcome',
+  'verdict',
+]);
+
+const TRACE_REVIEW_BLOB_SKIP_PATTERN =
+  /(^|\n)\s*(?:#{1,6}\s*)?(?:In scope:|Out of scope:|Proposed Resolution|Alternatives Considered|Destructive Side Effects|Verification|Independent Audit|Required corrections:|##\s+)/iu;
+
+function eventRole(event: unknown): string {
+  if (!event || typeof event !== 'object') {
+    return '';
+  }
+  const record = event as Record<string, unknown>;
+  return (
+    [record.role, record.type, record.kind, record.event]
+      .find((value): value is string => typeof value === 'string')
+      ?.toLowerCase() ?? ''
+  );
+}
+
+function isTraceReviewCandidateEvent(event: unknown): boolean {
+  const role = eventRole(event);
+  if (['user', 'system', 'developer', 'session_meta'].includes(role)) {
+    return false;
+  }
+  return true;
+}
+
+function collectTraceReviewText(event: unknown, depth = 0, key?: string): string[] {
+  if (depth > 5 || event === null || event === undefined) {
+    return [];
+  }
+  if (typeof event === 'string') {
+    const normalizedKey = String(key ?? '').toLowerCase();
+    if (!TRACE_REVIEW_TEXT_KEYS.has(normalizedKey)) {
+      return [];
+    }
+    const trimmed = event.trim();
+    if (
+      trimmed.length === 0 ||
+      trimmed.length > 4000 ||
+      TRACE_REVIEW_BLOB_SKIP_PATTERN.test(trimmed) ||
+      trimmed.includes('<INSTRUCTIONS>') ||
+      trimmed.includes('Available skills')
+    ) {
+      return [];
+    }
+    return [trimmed];
+  }
+  if (Array.isArray(event)) {
+    return event.flatMap((entry) => collectTraceReviewText(entry, depth + 1, key));
+  }
+  if (typeof event === 'object') {
+    return Object.entries(event).flatMap(([entryKey, value]) =>
+      collectTraceReviewText(value, depth + 1, entryKey),
+    );
+  }
+  return [];
+}
+
+function traceSignalFindingCount(value: string): number {
+  const explicit = value.match(/\b(\d+)\s+(?:must[-_\s]?fix|blocking|finding|issue)s?\b/iu)?.[1];
+  if (explicit) {
+    return Number(explicit);
+  }
+
+  const blockingMarkers = value.match(/\[(?:blocking|must[-_\s]?fix)\]/giu)?.length ?? 0;
+  if (blockingMarkers > 0) {
+    return blockingMarkers;
+  }
+
+  if (/\bone\s+(?:must[-_\s]?fix|blocking|finding|issue)\b/iu.test(value)) {
+    return 1;
+  }
+
+  return 1;
+}
+
+function extractTraceReviewSignals(sessionSummary: SessionSummary): ReviewSignal[] {
+  if (!sessionSummary.filePath) {
+    return [];
+  }
+
+  const out: ReviewSignal[] = [];
+  for (const [index, event] of sessionSummary.events.entries()) {
+    if (!isTraceReviewCandidateEvent(event)) {
+      continue;
+    }
+
+    const raw = collectTraceReviewText(event).join('\n');
+    if (!traceTextContainsNonPassReviewSignal(raw)) {
+      continue;
+    }
+
+    out.push({
+      source_quality: 'trace_derived',
+      source: 'trace',
+      verdict: 'non-pass',
+      audit_class:
+        raw.match(/\b(spec-conformance-reviewer|security-reviewer|code-reviewer)\b/iu)?.[1] ?? null,
+      round: raw.match(/\b(?:r|round)[-_ ]?(\d+)\b/iu)?.[1] ?? null,
+      commit: raw.match(/\b[0-9a-f]{7,40}\b/iu)?.[0] ?? null,
+      artifact_path: null,
+      matching_artifact: false,
+      source_identity: null,
+      timestamp: extractTimestamp(event),
+      evidence: `${sessionSummary.filePath}#event:${sessionSummary.eventLines[index] ?? index + 1}`,
+      must_fix_count: traceSignalFindingCount(raw),
+      evidence_count: null,
+    });
+  }
+  return out;
+}
+
+function logSummaryWithTraceReviewSignals(
+  logSummary: LogsSummary,
+  traceReviewSignals: readonly ReviewSignal[],
+): LogsSummary {
+  if (traceReviewSignals.length === 0) {
+    return logSummary;
+  }
+
+  const reviewFindingsFromTrace = traceReviewSignals.reduce(
+    (total, signal) => total + (signal.must_fix_count ?? 1),
+    0,
+  );
+
+  return {
+    ...logSummary,
+    metrics: {
+      ...logSummary.metrics,
+      reviewFindingsTotal: logSummary.metrics.reviewFindingsTotal + reviewFindingsFromTrace,
+      sources: {
+        ...logSummary.metrics.sources,
+        candidate_incidents: {
+          quality: 'incomplete',
+          reason:
+            'candidate_incidents include trace-derived non-PASS review signals without matching immutable review artifacts.',
+        },
+      },
+    },
+    reviewSignals: [...logSummary.reviewSignals, ...traceReviewSignals],
+  };
+}
+
+function allArtifactCandidates(scope: TraceScopeSummary): ArtifactCandidate[] {
+  return [
+    ...scope.stage_log_candidates,
+    ...scope.review_artifact_candidates,
+    ...scope.verification_artifact_candidates,
+    ...scope.step_artifact_candidates,
+  ];
 }
 
 function explicitBoundaryOptions(args: ScanSourceOptions): {
@@ -376,15 +572,26 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
   }
   const skillTraceSummary = extractSkillTraceSummary(skillScopeOptions);
 
-  const candidateIncidents = inferCandidateIncidents(sessionSummary, logSummary);
+  const traceReviewSignals =
+    logSummary.reviewSignals.length === 0 ? extractTraceReviewSignals(sessionSummary) : [];
+  const evidenceLogSummary = logSummaryWithTraceReviewSignals(logSummary, traceReviewSignals);
+  const reviewSignals = evidenceLogSummary.reviewSignals;
+  const candidateIncidents = inferCandidateIncidents(
+    sessionSummary,
+    evidenceLogSummary,
+    reviewSignals,
+  );
   const reportStatus = buildReportStatus({
     sessionSummary,
-    logSummary,
+    logSummary: evidenceLogSummary,
     skillTraceSummary,
     scope,
+    reviewSignals,
   });
+  const artifactCandidates = allArtifactCandidates(scope);
 
   const summaryBase: Omit<ScanSummary, 'recommendedOutput' | 'run_dir'> = {
+    schema_version: SCAN_SUMMARY_SCHEMA_VERSION,
     generatedAt: new Date().toISOString(),
     operator_language: operatorLanguage,
     report_language: reportLanguage,
@@ -412,7 +619,7 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
     },
     dataQuality: {
       sessionPresent: sessionSummary.exists,
-      logsPresent: logSummary.exists,
+      logsPresent: evidenceLogSummary.exists,
       skillCatalogPresent: skillTraceSummary.available.length > 0,
       sessionParseErrors: sessionSummary.parseErrors.length,
     },
@@ -432,9 +639,9 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
       sampleEventTypes: sessionSummary.sampleEventTypes,
     },
     stageLogs: {
-      count: logSummary.metrics.logsTotal,
-      metrics: logSummary.metrics,
-      files: logSummary.logs.map((log) => ({
+      count: evidenceLogSummary.metrics.logsTotal,
+      metrics: evidenceLogSummary.metrics,
+      files: evidenceLogSummary.logs.map((log) => ({
         filePath: log.filePath,
         metadata: log.metadata,
         reviewEvents: log.reviewEvents.length,
@@ -443,8 +650,26 @@ export function buildScanSummary(args: ScanSourceOptions): ScanSummary {
     },
     scope,
     reportStatus,
+    validation: {
+      agent_validated: false,
+      validated_scope: null,
+      manual_overrides: artifactCandidates.some(
+        (candidate) => candidate.inclusion_source === 'manual_included',
+      ),
+      residual_confidence: null,
+      validation_notes: null,
+      validated_at: null,
+      validated_by: null,
+    },
+    discovery: {
+      provenance: artifactCandidates,
+      manual_overrides: artifactCandidates.filter(
+        (candidate) => candidate.inclusion_source === 'manual_included',
+      ),
+    },
     skills: skillTraceSummary,
     candidateIncidents,
+    reviewSignals,
   };
 
   const outputOptions: { commandName: 'scan'; outRoot?: string; runDir?: string; draft?: boolean } =

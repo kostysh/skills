@@ -74,23 +74,38 @@
 | Skill | Helped with | Problem observed | Evidence | Suggested improvement |
 |---|---|---|---|---|
 
-## 7. Time sinks
+## 7. Problem matrix by skill
+
+| ID | Проблема | Скил, содержащий проблему | Предложение по решению проблемы |
+|---|---|---|---|
+
+Group reusable skill/process root causes here. Keep project-specific incidents as evidence, not as the only remediation target.
+
+## 8. Time sinks
 
 | Activity | Approx. cost | Why it took time | Necessary or avoidable | Recommendation |
 |---|---|---|---|---|
 
-## 8. Control effectiveness
+## 9. Control effectiveness
 
 | Control | What it caught | When it fired | Was that timely? | Improvement |
 |---|---|---|---|---|
 
-## 9. Logging and observability gaps
+## 10. Review evidence quality
+
+- Structured UDE producer fields present:
+- Trace-derived non-PASS review signals:
+- Prose-derived non-PASS review signals:
+- Non-PASS signals missing immutable artifacts:
+- Metric source-quality labels:
+
+## 11. Logging and observability gaps
 
 - Gap:
 - Effect on confidence:
 - Recommendation:
 
-## 10. Prioritized improvements
+## 12. Prioritized improvements
 
 ### Immediate
 1.
@@ -104,7 +119,7 @@
 1.
 2.
 
-## 11. Data-quality limits
+## 13. Data-quality limits
 
 - Raw trace present/missing:
 - Session parse errors:
@@ -115,7 +130,17 @@
 
 Do not list agent working-context events here when the raw evidence remains available and parsed.
 
-## 12. Agent-context factors
+## 14. Validation metadata
+
+- agent_validated:
+- validated_scope:
+- manual_overrides:
+- residual_confidence:
+- validation_notes:
+
+Generated scaffolds start with `agent_validated: false`. Set it to true only after agent validation of cited evidence.
+
+## 15. Agent-context factors
 
 - Compaction events:
 - Long gaps:

@@ -95,6 +95,10 @@ copies:
     source: "src/commands/logging-review.ts"
     target: "src/commands/logging-review.ts"
     description: "Portable copy of src/commands/logging-review.ts."
+  - id: "copy-src-commands-problem-matrix-ts"
+    source: "src/commands/problem-matrix.ts"
+    target: "src/commands/problem-matrix.ts"
+    description: "Portable copy of src/commands/problem-matrix.ts."
   - id: "copy-src-commands-report-ts"
     source: "src/commands/report.ts"
     target: "src/commands/report.ts"
@@ -115,6 +119,10 @@ copies:
     source: "src/commands/types.ts"
     target: "src/commands/types.ts"
     description: "Portable copy of src/commands/types.ts."
+  - id: "copy-src-commands-validate-ts"
+    source: "src/commands/validate.ts"
+    target: "src/commands/validate.ts"
+    description: "Portable copy of src/commands/validate.ts."
   - id: "copy-src-core-artifact-evidence-ts"
     source: "src/core/artifact-evidence.ts"
     target: "src/core/artifact-evidence.ts"
@@ -175,6 +183,10 @@ copies:
     source: "src/render/logging-review-markdown.ts"
     target: "src/render/logging-review-markdown.ts"
     description: "Portable copy of src/render/logging-review-markdown.ts."
+  - id: "copy-src-render-problem-matrix-markdown-ts"
+    source: "src/render/problem-matrix-markdown.ts"
+    target: "src/render/problem-matrix-markdown.ts"
+    description: "Portable copy of src/render/problem-matrix-markdown.ts."
   - id: "copy-src-render-report-markdown-ts"
     source: "src/render/report-markdown.ts"
     target: "src/render/report-markdown.ts"
@@ -460,6 +472,17 @@ sections:
         - "logging-review.md in the run directory."
       examples:
         - "node scripts/retro-cli.mjs logging-review --run-dir <run_dir>"
+    - id: "command-problem-matrix"
+      command: "problem-matrix"
+      summary: "Generate a skill/process problem matrix draft."
+      when: "Reusable skill or process problems should be grouped by owning skill."
+      script: "scripts/retro-cli.mjs"
+      inputs:
+        - "--run-dir <run_dir>"
+      outputs:
+        - "problem-matrix-by-skill.md in the run directory."
+      examples:
+        - "node scripts/retro-cli.mjs problem-matrix --run-dir <run_dir>"
     - id: "command-skill-audit"
       command: "skill-audit"
       summary: "Generate a skill-focused retrospective draft."
@@ -471,6 +494,20 @@ sections:
         - "skill-audit.md in the run directory."
       examples:
         - "node scripts/retro-cli.mjs skill-audit --run-dir <run_dir>"
+    - id: "command-validate"
+      command: "validate"
+      summary: "Record completed agent validation metadata for a run."
+      when: "The agent has validated generated scaffolds against the cited evidence."
+      script: "scripts/retro-cli.mjs"
+      inputs:
+        - "--run-dir <run_dir>"
+        - "--validated-scope <text>"
+        - "--residual-confidence <high|medium|low>"
+        - "--validation-notes <text>"
+      outputs:
+        - "Updated validation metadata in scan-summary.json."
+      examples:
+        - "node scripts/retro-cli.mjs validate --run-dir <run_dir> --validated-scope <text> --residual-confidence medium --validation-notes <text>"
   gotchas: []
   policies: []
   portability:

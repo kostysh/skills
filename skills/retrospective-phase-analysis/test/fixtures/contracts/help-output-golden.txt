@@ -11,6 +11,8 @@ Commands:
   report         Generate a Markdown retrospective draft.
   skill-audit    Generate a skill-focused Markdown draft.
   logging-review Generate a logging-quality and improvement draft.
+  problem-matrix Generate a skill/process problem matrix draft.
+  validate       Record agent validation metadata for a retrospective run.
 
 Notes:
   Generated reports are drafts; validate them against the cited artifacts.

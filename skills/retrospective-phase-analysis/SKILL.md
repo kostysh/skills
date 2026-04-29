@@ -13,7 +13,7 @@ compatibility: Requires access to the project workspace, session trace files,
 metadata:
   source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 87629b1052e131eef3826afb06289745a8df3781a70c12e3fff539587716ec04
+  skillforge-source-hash: 28ffd00f53761784c7912f25b00341e2cc8d6e70f371b65e4ad99159ff3ad224
 ---
 
 # retrospective-phase-analysis
@@ -204,6 +204,7 @@ Within the root, keep every analysis under `<scope-slug>/<run-slug>/` so old and
 - `retrospective-report.md`
 - `skill-audit.md`
 - `logging-review.md`
+- `problem-matrix-by-skill.md`
 
 For a retrospective of one session trace, the default `<scope-slug>` is `session-<short-session-id>`. Use a feature semantic slug only when the operator explicitly asks for a feature-scoped retrospective or when one analysis intentionally combines multiple session traces for one feature.
 
@@ -295,11 +296,13 @@ Classify incidents at least into:
 
 Structured metrics come first:
 
-- prefer structured stage-log fields such as `process_misses`, `process_misses_total`, and `skills_used`;
-- infer candidate incidents from structured `review_events` that record FAIL or non-compliant review states before final PASS;
+- prefer structured stage-log fields such as `process_misses`, `process_misses_total`, `skills_used`, and active UDE producer fields;
+- consume active UDE retrospective fields when present: `rpa_source_identity`, `rpa_source_quality`, `non_pass_review_events`, selected closure-bundle fields, and structured `review_events`;
+- infer candidate incidents from structured `review_events` or `non_pass_review_events` that record FAIL or non-compliant review states before final PASS;
 - use prose section parsing only when the structured field is absent;
 - do not add prose-derived counts on top of structured counts for the same log;
-- treat unvalidated prose fallback metrics as requiring agent validation before finalization.
+- label weaker sources explicitly as `trace_derived`, `prose_derived`, or `incomplete`;
+- treat trace-derived, prose-derived, incomplete, and unmatched non-PASS review signals as requiring agent validation before finalization.
 
 ### 5) Run the skill audit
 
@@ -423,7 +426,8 @@ Produce at least:
 
 - a main retrospective report;
 - a skill-issues section or separate report when skill problems are material;
-- a logging-improvement report when the logs limit analysis.
+- a logging-improvement report when the logs limit analysis;
+- a problem matrix by skill when reusable skill/process problems are material.
 
 Use the report templates in:
 
@@ -435,7 +439,7 @@ A findings-first draft is acceptable before full template expansion. Do not forc
 
 Write final Markdown analysis content in the operator language. Generated CLI scaffold headings and structural labels are always English. Keep English for direct quotes, commands, paths, identifiers, JSON keys, tool names, skill names, and generated scaffold labels. When using the CLI, pass `--language <language>` to the first `scan`; follow-up commands with `--run-dir` inherit the report language from `scan-summary.json` as metadata. The operator language is not limited to a fixed list.
 
-Generated Markdown is a scaffold, not the final retrospective. The final report is the agent's responsibility after reading and validating the cited evidence. When the CLI marks output as `Status: draft, requires agent validation`, do not present it as final; resolve the listed status reasons first or explicitly document the residual limits.
+Generated Markdown is a scaffold, not the final retrospective. The final report is the agent's responsibility after reading and validating the cited evidence. Generated scan summaries start with `validation.agent_validated: false`. When the CLI marks output as `Status: draft, requires agent validation`, do not present it as final; resolve the listed status reasons first, run `validate --run-dir ...` only after evidence validation, or explicitly document the residual limits.
 
 Data quality describes evidence-source availability and reliability. Agent-context factors describe execution-context factors separately from data quality.
 
@@ -448,8 +452,9 @@ Minimum viable workflow:
 3. Run `scan` to build the first evidence summary and trace-derived scope.
 4. Check the candidate incidents and scope ambiguities.
 5. Read only the highest-ranked linked evidence.
-6. Generate `report`, `skill-audit`, and `logging-review` into the same run directory.
-7. Validate all three Markdown scaffolds against the cited evidence before finalizing conclusions.
+6. Generate `report`, `skill-audit`, `logging-review`, and `problem-matrix` into the same run directory.
+7. Validate all Markdown scaffolds against the cited evidence before finalizing conclusions.
+8. Record validation metadata with `validate --run-dir ...` only after the agent has completed that evidence validation.
 
 When Node.js is available, use:
 
@@ -460,6 +465,8 @@ When Node.js is available, use:
 - `scripts/retro-cli.mjs report --run-dir <run_dir> ...` to add `retrospective-report.md` to that same bundle;
 - `scripts/retro-cli.mjs logging-review --run-dir <run_dir>` to add `logging-review.md`;
 - `scripts/retro-cli.mjs skill-audit --run-dir <run_dir>` to add `skill-audit.md`.
+- `scripts/retro-cli.mjs problem-matrix --run-dir <run_dir>` to add `problem-matrix-by-skill.md`;
+- `scripts/retro-cli.mjs validate --run-dir <run_dir> --validated-scope <text> --residual-confidence <high|medium|low> --validation-notes <text>` to record completed agent validation metadata.
 
 Read the CLI reference first:
 
@@ -611,6 +618,19 @@ Validation:
 
 **Examples:** node scripts/retro-cli.mjs logging-review --run-dir <run_dir>
 
+### CLI command: `problem-matrix`
+**Use when:** Reusable skill or process problems should be grouped by owning skill.
+
+**Summary:** Generate a skill/process problem matrix draft.
+
+**Runtime script:** `scripts/retro-cli.mjs`
+
+**Inputs:** --run-dir <run_dir>
+
+**Outputs:** problem-matrix-by-skill.md in the run directory.
+
+**Examples:** node scripts/retro-cli.mjs problem-matrix --run-dir <run_dir>
+
 ### CLI command: `skill-audit`
 **Use when:** Skill usage, skill friction, or skill-instruction problems are material to the phase.
 
@@ -623,6 +643,19 @@ Validation:
 **Outputs:** skill-audit.md in the run directory.
 
 **Examples:** node scripts/retro-cli.mjs skill-audit --run-dir <run_dir>
+
+### CLI command: `validate`
+**Use when:** The agent has validated generated scaffolds against the cited evidence.
+
+**Summary:** Record completed agent validation metadata for a run.
+
+**Runtime script:** `scripts/retro-cli.mjs`
+
+**Inputs:** --run-dir <run_dir>; --validated-scope <text>; --residual-confidence <high|medium|low>; --validation-notes <text>
+
+**Outputs:** Updated validation metadata in scan-summary.json.
+
+**Examples:** node scripts/retro-cli.mjs validate --run-dir <run_dir> --validated-scope <text> --residual-confidence medium --validation-notes <text>
 
 ## Required active references
 - [CLI reference](references/CLI.md) — Read this when working with CLI reference.

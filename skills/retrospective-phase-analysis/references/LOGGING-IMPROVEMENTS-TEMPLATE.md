@@ -29,6 +29,12 @@ Before proposing schema or log changes, check whether existing canonical artifac
 
 Recommend schema/log expansion only when the existing mechanisms above are insufficient.
 
+When review history is involved, distinguish producer and consumer ownership:
+
+- UDE owns producer fields such as `rpa_source_identity`, `rpa_source_quality`, and `non_pass_review_events`.
+- RPA owns consumer behavior: source-quality labels, incomplete aggregate metrics, and fallback trace/prose extraction when producer fields are absent.
+- Missing immutable non-PASS review artifacts should be recorded as telemetry gaps, not silently converted into structured truth.
+
 ## Recommended process changes
 
 1.

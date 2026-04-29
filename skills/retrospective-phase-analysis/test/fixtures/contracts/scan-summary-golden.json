@@ -1,4 +1,5 @@
 {
+  "schema_version": "1.1.0",
   "generatedAt": "<generated>",
   "operator_language": "und",
   "report_language": "en",
@@ -68,7 +69,7 @@
       "sources": {
         "candidate_incidents": {
           "quality": "none",
-          "reason": "Candidate incident inference uses structured evidence where available."
+          "reason": "candidate_incidents had no usable evidence in analyzed logs."
         },
         "process_misses": {
           "quality": "none",
@@ -147,6 +148,36 @@
       "Unresolved scope ambiguities remain."
     ]
   },
+  "validation": {
+    "agent_validated": false,
+    "validated_scope": null,
+    "manual_overrides": false,
+    "residual_confidence": null,
+    "validation_notes": null,
+    "validated_at": null,
+    "validated_by": null
+  },
+  "discovery": {
+    "provenance": [
+      {
+        "path": "/abs/fixtures/artifacts/.dossier/reviews/F-0016-review.md",
+        "evidence_kind": "referenced_only",
+        "event_ref": "event:4",
+        "included": false,
+        "inclusion_source": "not_included",
+        "reason": "Referenced in the trace, but not confirmed as created or changed in scope."
+      },
+      {
+        "path": "/abs/fixtures/artifacts/.dossier/verification/F-0016-verification.md",
+        "evidence_kind": "referenced_only",
+        "event_ref": "event:4",
+        "included": false,
+        "inclusion_source": "not_included",
+        "reason": "Referenced in the trace, but not confirmed as created or changed in scope."
+      }
+    ],
+    "manual_overrides": []
+  },
   "skills": {
     "available": [],
     "referenced": [],
@@ -161,6 +192,7 @@
       "reason": "1 aborted/restarted turn(s) detected in the session trace."
     }
   ],
+  "reviewSignals": [],
   "run_dir": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490",
   "recommendedOutput": {
     "mode": "fallback-default",
@@ -173,7 +205,8 @@
       "scanSummary": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/scan-summary.json",
       "retrospectiveReport": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/retrospective-report.md",
       "skillAudit": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/skill-audit.md",
-      "loggingReview": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/logging-review.md"
+      "loggingReview": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/logging-review.md",
+      "problemMatrixBySkill": "/abs/cwd/out/retro/session-019d7490/retrospective-20260410-095900-019d7490/problem-matrix-by-skill.md"
     }
   }
 }

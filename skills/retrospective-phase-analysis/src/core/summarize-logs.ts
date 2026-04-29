@@ -1,13 +1,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import {
-  isNonPassReviewEvent,
-  parseStageLog,
-  structuredReviewEventsFromMetadata,
-} from '../parsers/stage-log.ts';
+import { isNonPassReviewEvent, parseStageLog } from '../parsers/stage-log.ts';
 import { stringFromUnknown } from './shared.ts';
-import type { LogMetrics, LogsSummary, MetricEvidenceQuality, ParsedStageLog } from './types.ts';
+import type {
+  LogMetrics,
+  LogsSummary,
+  MetricEvidenceQuality,
+  ParsedStageLog,
+  ReviewEvent,
+  ReviewSignal,
+} from './types.ts';
 
 function emptyMetricSource(reason: string): { quality: MetricEvidenceQuality; reason: string } {
   return {
@@ -37,9 +40,11 @@ function createEmptyMetrics(): LogMetrics {
 function qualityRank(value: MetricEvidenceQuality): number {
   return {
     none: 0,
-    structured: 3,
-    unvalidated_fallback: 1,
+    trace_derived: 1,
+    prose_derived: 1,
     validated_fallback: 2,
+    structured: 3,
+    incomplete: 4,
   }[value];
 }
 
@@ -47,8 +52,22 @@ function mergeQuality(
   current: MetricEvidenceQuality,
   incoming: MetricEvidenceQuality,
 ): MetricEvidenceQuality {
-  if (current === 'unvalidated_fallback' || incoming === 'unvalidated_fallback') {
-    return 'unvalidated_fallback';
+  if (current === 'incomplete' || incoming === 'incomplete') {
+    return 'incomplete';
+  }
+  if (current === 'none') {
+    return incoming;
+  }
+  if (incoming === 'none' || current === incoming) {
+    return current;
+  }
+  if (
+    current === 'trace_derived' ||
+    current === 'prose_derived' ||
+    incoming === 'trace_derived' ||
+    incoming === 'prose_derived'
+  ) {
+    return 'incomplete';
   }
   return qualityRank(incoming) > qualityRank(current) ? incoming : current;
 }
@@ -76,7 +95,7 @@ function processMissCount(log: ParsedStageLog): {
   }
 
   if (log.processMissLines.length > 0) {
-    return { count: log.processMissLines.length, quality: 'unvalidated_fallback' };
+    return { count: log.processMissLines.length, quality: 'prose_derived' };
   }
 
   return { count: 0, quality: 'none' };
@@ -97,29 +116,6 @@ function skillNames(log: ParsedStageLog): {
   }
 
   return { skills: ['unknown'], quality: 'none' };
-}
-
-function reviewIncidentQuality(log: ParsedStageLog): MetricEvidenceQuality {
-  const hasStructuredNonPassReview = structuredReviewEventsFromMetadata(log.metadata).some(
-    isNonPassReviewEvent,
-  );
-  if (hasStructuredNonPassReview) {
-    return 'structured';
-  }
-
-  const structuredFindings = Number(log.metadata.review_findings_total);
-  if (Number.isFinite(structuredFindings)) {
-    return 'structured';
-  }
-
-  const reviewText = (
-    log.sections['События ревью'] ||
-    log.sections['Review events'] ||
-    ''
-  ).toLowerCase();
-  return reviewText.includes('fail') || reviewText.includes('non-compliant')
-    ? 'unvalidated_fallback'
-    : 'none';
 }
 
 function isSafeStageSegment(value: string): boolean {
@@ -176,6 +172,16 @@ const STAGE_STATE_ALLOWED_FIELDS = new Set([
   'process_misses',
   'process_misses_total',
   'ready_for_close_ts',
+  'closure_bundle_id',
+  'closure_bundle_round',
+  'closure_bundle_rounds_by_audit_class',
+  'non_pass_review_events',
+  'rpa_source_identity',
+  'rpa_source_quality',
+  'selected_closure_ts',
+  'selected_review_artifacts',
+  'selected_step_artifact',
+  'selected_verification_artifact',
   'review_artifact',
   'review_artifacts',
   'review_findings_total',
@@ -272,18 +278,231 @@ function sourceReason(quality: MetricEvidenceQuality, metric: string): string {
   if (quality === 'validated_fallback') {
     return `${metric} used legacy structured metadata fields because new structured fields were absent.`;
   }
-  if (quality === 'unvalidated_fallback') {
-    return `${metric} used prose fallback because structured fields were absent in at least one analyzed log.`;
+  if (quality === 'trace_derived') {
+    return `${metric} used trace-derived fallback evidence because structured fields were absent.`;
+  }
+  if (quality === 'prose_derived') {
+    return `${metric} used prose-derived fallback because structured fields were absent in at least one analyzed log.`;
+  }
+  if (quality === 'incomplete') {
+    return `${metric} mixed lower-quality or incomplete evidence and requires agent validation.`;
   }
   return `${metric} had no usable evidence in analyzed logs.`;
 }
 
-function summarizeParsedLogs(logs: ParsedStageLog[]): LogsSummary {
+function objectRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function objectArray(value: unknown): Array<Record<string, unknown>> {
+  return Array.isArray(value)
+    ? value
+        .map((entry) => objectRecord(entry))
+        .filter((entry): entry is Record<string, unknown> => entry !== null)
+    : [];
+}
+
+function numberOrNull(value: unknown): number | null {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
+}
+
+function firstNullableString(...values: unknown[]): string | null {
+  return (
+    values.find((value): value is string => typeof value === 'string' && value.length > 0) ?? null
+  );
+}
+
+function normalizeLinkedPath(projectRoot: string | null, filePath: string | null): string | null {
+  if (!filePath) {
+    return null;
+  }
+  if (path.isAbsolute(filePath)) {
+    return path.normalize(filePath);
+  }
+  return projectRoot ? path.resolve(projectRoot, filePath) : filePath;
+}
+
+function matchingArtifact(projectRoot: string | null, filePath: string | null): boolean {
+  const normalized = normalizeLinkedPath(projectRoot, filePath);
+  if (!normalized || !projectRoot) {
+    return false;
+  }
+  return safeFileInsideRoot(projectRoot, normalized);
+}
+
+function reviewSignalFromStructuredRecord(input: {
+  record: Record<string, unknown>;
+  log: ParsedStageLog;
+  projectRoot: string | null;
+  source: ReviewSignal['source'];
+  sourceIdentity: Record<string, unknown> | null;
+  forceIncomplete?: boolean;
+}): ReviewSignal | null {
+  const raw =
+    firstNullableString(
+      input.record.raw,
+      input.record.summary,
+      input.record.message,
+      input.record.title,
+      input.record.notes,
+    ) ?? JSON.stringify(input.record);
+  const verdict = firstNullableString(
+    input.record.verdict,
+    input.record.status,
+    input.record.result,
+    input.record.outcome,
+    input.record.review_status,
+  );
+  const reviewEvent: ReviewEvent = {
+    raw,
+    details: [],
+    timestamp: firstNullableString(
+      input.record.timestamp,
+      input.record.ts,
+      input.record.created_at,
+      input.record.time,
+      input.record.occurred_at,
+    ),
+    verdict,
+    source: 'structured',
+  };
+  if (!isNonPassReviewEvent(reviewEvent)) {
+    return null;
+  }
+
+  const artifactPath = firstNullableString(
+    input.record.artifact_path,
+    input.record.immutable_artifact_path,
+    input.record.review_artifact,
+    input.record.review_artifact_path,
+  );
+  const normalizedArtifact = normalizeLinkedPath(input.projectRoot, artifactPath);
+
+  return {
+    source_quality: input.forceIncomplete ? 'incomplete' : 'structured',
+    source: input.source,
+    verdict: stringFromUnknown(verdict, 'non-pass'),
+    audit_class: firstNullableString(
+      input.record.audit_class,
+      input.record.reviewer,
+      input.record.skill,
+    ),
+    round:
+      firstNullableString(input.record.review_round_id, input.record.review_attempt_id) ??
+      numberOrNull(input.record.review_round_number) ??
+      numberOrNull(input.record.round),
+    commit: firstNullableString(input.record.event_commit, input.record.commit),
+    artifact_path: normalizedArtifact,
+    matching_artifact: matchingArtifact(input.projectRoot, artifactPath),
+    source_identity: input.sourceIdentity,
+    timestamp: reviewEvent.timestamp,
+    evidence: input.log.filePath,
+    must_fix_count: numberOrNull(input.record.must_fix_count),
+    evidence_count: numberOrNull(input.record.evidence_count),
+  };
+}
+
+function udeReviewSignals(log: ParsedStageLog, projectRoot: string | null): ReviewSignal[] {
+  const sourceIdentity = objectRecord(log.metadata.rpa_source_identity);
+  const sourceQuality = objectRecord(log.metadata.rpa_source_quality);
+  const reviewHistoryQuality = firstNullableString(sourceQuality?.review_history_quality);
+  const forceIncomplete =
+    reviewHistoryQuality === 'process_miss' || reviewHistoryQuality === 'limited';
+
+  return objectArray(log.metadata.non_pass_review_events)
+    .map((record) =>
+      reviewSignalFromStructuredRecord({
+        record,
+        log,
+        projectRoot,
+        source: 'ude',
+        sourceIdentity,
+        forceIncomplete,
+      }),
+    )
+    .filter((signal): signal is ReviewSignal => signal !== null);
+}
+
+function structuredReviewSignals(log: ParsedStageLog, projectRoot: string | null): ReviewSignal[] {
+  return objectArray(log.metadata.review_events)
+    .map((record) =>
+      reviewSignalFromStructuredRecord({
+        record,
+        log,
+        projectRoot,
+        source: log.metadata.stage_state_artifact ? 'stage_state' : 'stage_log_metadata',
+        sourceIdentity: objectRecord(log.metadata.rpa_source_identity),
+      }),
+    )
+    .filter((signal): signal is ReviewSignal => signal !== null);
+}
+
+function proseReviewSignals(log: ParsedStageLog): ReviewSignal[] {
+  return log.reviewEvents
+    .filter((event) => event.source === 'prose' && isNonPassReviewEvent(event))
+    .map((event) => ({
+      source_quality: 'prose_derived',
+      source: 'prose',
+      verdict: stringFromUnknown(event.verdict, 'non-pass'),
+      audit_class: null,
+      round: null,
+      commit: null,
+      artifact_path: null,
+      matching_artifact: false,
+      source_identity: null,
+      timestamp: event.timestamp,
+      evidence: log.filePath,
+      must_fix_count: null,
+      evidence_count: event.details.length > 0 ? event.details.length : null,
+    }));
+}
+
+function collectReviewSignals(log: ParsedStageLog, projectRoot: string | null): ReviewSignal[] {
+  const structured = [
+    ...udeReviewSignals(log, projectRoot),
+    ...structuredReviewSignals(log, projectRoot),
+  ];
+  if (structured.length > 0) {
+    return structured;
+  }
+
+  const structuredFindings = Number(log.metadata.review_findings_total);
+  if (Number.isFinite(structuredFindings) && structuredFindings > 0) {
+    return [];
+  }
+
+  return proseReviewSignals(log);
+}
+
+function reviewSignalMetricQuality(signals: readonly ReviewSignal[]): MetricEvidenceQuality {
+  if (signals.length === 0) {
+    return 'none';
+  }
+  if (
+    signals.some((signal) => !signal.matching_artifact || signal.source_quality === 'incomplete')
+  ) {
+    return 'incomplete';
+  }
+  return signals.reduce<MetricEvidenceQuality>(
+    (current, signal) => mergeQuality(current, signal.source_quality),
+    'none',
+  );
+}
+
+function reviewFindingsFromSignals(signals: readonly ReviewSignal[]): number {
+  return signals.reduce((total, signal) => total + (signal.must_fix_count ?? 0), 0);
+}
+
+function summarizeParsedLogs(logs: ParsedStageLog[], projectRoot: string | null): LogsSummary {
   const metrics = createEmptyMetrics();
   metrics.logsTotal = logs.length;
   let processMissQuality: MetricEvidenceQuality = 'none';
   let skillsQuality: MetricEvidenceQuality = 'none';
   let candidateIncidentQuality: MetricEvidenceQuality = 'none';
+  const reviewSignals = logs.flatMap((log) => collectReviewSignals(log, projectRoot));
 
   for (const log of logs) {
     const metadata = log.metadata;
@@ -291,13 +510,20 @@ function summarizeParsedLogs(logs: ParsedStageLog[]): LogsSummary {
     const reviewRounds = Number(
       metadata.review_rounds ?? metadata.review_rounds_total ?? log.reviewEvents.length ?? 0,
     );
-    const reviewFindings = Number(metadata.review_findings_total ?? 0);
+    const reviewFindings = Number(metadata.review_findings_total);
+    const hasStructuredReviewFindings = Number.isFinite(reviewFindings);
     const processMisses = processMissCount(log);
-    const reviewIncidents = reviewIncidentQuality(log);
     const skills = skillNames(log);
+    const logReviewSignals = reviewSignals.filter((signal) => signal.evidence === log.filePath);
+    const reviewIncidents =
+      hasStructuredReviewFindings && reviewFindings > 0
+        ? 'structured'
+        : reviewSignalMetricQuality(logReviewSignals);
 
     metrics.reviewRoundsTotal += Number.isFinite(reviewRounds) ? reviewRounds : 0;
-    metrics.reviewFindingsTotal += Number.isFinite(reviewFindings) ? reviewFindings : 0;
+    metrics.reviewFindingsTotal += hasStructuredReviewFindings
+      ? reviewFindings
+      : reviewFindingsFromSignals(logReviewSignals);
     metrics.processMissesTotal += processMisses.count;
     metrics.backlogActualizedCount += metadata.backlog_actualized === true ? 1 : 0;
     if (metadata.late_start === true || metadata.late_log_start === true) {
@@ -325,16 +551,14 @@ function summarizeParsedLogs(logs: ParsedStageLog[]): LogsSummary {
   };
   metrics.sources.candidate_incidents = {
     quality: candidateIncidentQuality,
-    reason:
-      candidateIncidentQuality === 'unvalidated_fallback'
-        ? 'Candidate incident inference includes prose fallback evidence.'
-        : 'Candidate incident inference uses structured evidence where available.',
+    reason: sourceReason(candidateIncidentQuality, 'candidate_incidents'),
   };
 
   return {
     exists: true,
     logs,
     metrics,
+    reviewSignals,
   };
 }
 
@@ -360,6 +584,7 @@ export function summarizeLogs(
         files.map((filePath) =>
           enrichLogWithStageState(parseStageLog(filePath), projectRoot ?? null),
         ),
+        projectRoot ?? null,
       );
     }
 
@@ -367,6 +592,7 @@ export function summarizeLogs(
       exists: false,
       logs: [],
       metrics: createEmptyMetrics(),
+      reviewSignals: [],
     };
   }
 
@@ -374,5 +600,5 @@ export function summarizeLogs(
     enrichLogWithStageState(parseStageLog(filePath), projectRoot ?? null),
   );
 
-  return summarizeParsedLogs(logs);
+  return summarizeParsedLogs(logs, projectRoot ?? null);
 }

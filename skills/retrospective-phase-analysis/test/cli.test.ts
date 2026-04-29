@@ -138,6 +138,8 @@ void test('global help and command help are available on the built CLI', () => {
   assert.match(help.stdout, /retrospective-phase-analysis CLI/u);
   assert.match(help.stdout, /scan/u);
   assert.match(help.stdout, /logging-review/u);
+  assert.match(help.stdout, /problem-matrix/u);
+  assert.match(help.stdout, /validate/u);
 
   const commandHelp = runBuiltCli(['help', 'report']);
   assert.equal(commandHelp.status, 0);
@@ -526,11 +528,51 @@ void test('run-dir keeps all retrospective bundle files in one canonical directo
     });
     assert.equal(loggingReview.status, 0);
 
+    const problemMatrix = runBuiltCli(['problem-matrix', '--run-dir', runDir], {
+      cwd: nestedWorkdir,
+    });
+    assert.equal(problemMatrix.status, 0);
+
+    const validate = runBuiltCli(
+      [
+        'validate',
+        '--run-dir',
+        runDir,
+        '--validated-scope',
+        'scan summary and generated markdown bundle',
+        '--residual-confidence',
+        'medium',
+        '--validation-notes',
+        'Validated cited evidence; residual incomplete metrics remain documented.',
+        '--validated-by',
+        'test-agent',
+      ],
+      { cwd: nestedWorkdir },
+    );
+    assert.equal(validate.status, 0);
+    assert.match(validate.stdout, /"agent_validated":true/u);
+
     const markdown = await readFile(path.join(runDir, 'retrospective-report.md'), 'utf8');
     assert.match(markdown, /^# Retrospective:/mu);
     assert.doesNotMatch(markdown, /^# Ретроанализ/mu);
     await readFile(path.join(runDir, 'skill-audit.md'), 'utf8');
     await readFile(path.join(runDir, 'logging-review.md'), 'utf8');
+    const matrix = await readFile(path.join(runDir, 'problem-matrix-by-skill.md'), 'utf8');
+    assert.match(matrix, /Скил, содержащий проблему/u);
+    const validatedSummary = JSON.parse(
+      await readFile(path.join(runDir, 'scan-summary.json'), 'utf8'),
+    ) as {
+      validation: {
+        agent_validated: boolean;
+        validated_scope: string;
+        residual_confidence: string;
+        validation_notes: string;
+        validated_by: string;
+      };
+    };
+    assert.equal(validatedSummary.validation.agent_validated, true);
+    assert.equal(validatedSummary.validation.validated_by, 'test-agent');
+    assert.equal(validatedSummary.validation.residual_confidence, 'medium');
 
     await assert.rejects(
       readFile(
