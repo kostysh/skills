@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 18000
   description: >-
     Behavioral coding discipline for writing, modifying, and reviewing code
@@ -43,7 +43,7 @@ surfaces:
 sections:
   startHere:
     - Confirm the task actually includes code changes, refactoring, or code review.
-    - State assumptions, constraints, and any ambiguity before changing code.
+    - State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
     - Prefer the simplest sufficient design and define the verification target before implementing.
     - Use this skill together with the relevant language, framework, or review skill; it does not replace them.
   whenToUse:
@@ -60,10 +60,11 @@ sections:
       goal: Make the implementation target explicit before touching code.
       steps:
         - State assumptions that the change relies on.
-        - Surface ambiguity instead of silently choosing an interpretation.
+        - Surface ambiguity instead of silently choosing an interpretation; stop and ask when a safe conservative assumption is not available.
         - Define what successful completion will look like in observable terms.
       validation:
         - The chosen interpretation is explicit.
+        - Any blocking ambiguity has either a stated conservative assumption or an explicit ask.
         - Success can be checked without vague phrases like "should work now".
     - id: stage-design-minimal
       title: Design the smallest sufficient change
@@ -90,10 +91,12 @@ sections:
       goal: Close the loop with concrete checks instead of intuition.
       steps:
         - Run the narrowest meaningful checks that prove the change.
+        - Prefer existing local test, lint, typecheck, build, or smoke-test commands when they are the narrowest meaningful proof.
         - If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
-        - Report what was verified and what was not verified.
+        - If verification cannot run, use the next-best static check or state why no useful check is available.
+        - Report the outcome, checks run, checks not run, and remaining risk.
       validation:
-        - The final report names the checks that passed.
+        - The final report names the checks that passed or explains why they could not run.
         - Any unverified risk is called out explicitly.
   interop:
     - id: interop-language-framework
@@ -118,6 +121,9 @@ sections:
     - id: gotcha-verify-or-say-so
       priority: medium
       text: If you cannot verify the intended outcome, say so explicitly instead of implying confidence.
+    - id: gotcha-stop-on-blocking-ambiguity
+      priority: medium
+      text: If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
   policies:
     - id: policy-simplicity-first
       title: Simplicity-first policy
@@ -128,6 +134,9 @@ sections:
     - id: policy-evidence-over-intuition
       title: Evidence-over-intuition policy
       text: Completion requires naming the checks that prove success or the exact gap that remains.
+    - id: policy-reporting-contract
+      title: Reporting contract
+      text: Final reports must name the completed outcome, verification evidence, and any unverified risk; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
   portability:
     required: true
     rules:

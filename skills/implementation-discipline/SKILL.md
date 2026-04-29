@@ -7,9 +7,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: aeded42eecb3d28c730bbf65c611eb67069c4448b1804ebbad8522657db85557
+  skillforge-source-hash: 3ac599e0154c252c53f0e7739f4b466226d4d79f0132f6663b46d5042487966a
 ---
 
 # implementation-discipline
@@ -17,7 +17,7 @@ metadata:
 ## Start here
 
 1. Confirm the task actually includes code changes, refactoring, or code review.
-2. State assumptions, constraints, and any ambiguity before changing code.
+2. State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
 3. Prefer the simplest sufficient design and define the verification target before implementing.
 4. Use this skill together with the relevant language, framework, or review skill; it does not replace them.
 
@@ -40,12 +40,13 @@ metadata:
 Make the implementation target explicit before touching code.
 
 1. State assumptions that the change relies on.
-2. Surface ambiguity instead of silently choosing an interpretation.
+2. Surface ambiguity instead of silently choosing an interpretation; stop and ask when a safe conservative assumption is not available.
 3. Define what successful completion will look like in observable terms.
 
 Validation:
 
 - The chosen interpretation is explicit.
+- Any blocking ambiguity has either a stated conservative assumption or an explicit ask.
 - Success can be checked without vague phrases like "should work now".
 
 ### Workflow stage: Design the smallest sufficient change
@@ -79,12 +80,14 @@ Validation:
 Close the loop with concrete checks instead of intuition.
 
 1. Run the narrowest meaningful checks that prove the change.
-2. If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
-3. Report what was verified and what was not verified.
+2. Prefer existing local test, lint, typecheck, build, or smoke-test commands when they are the narrowest meaningful proof.
+3. If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
+4. If verification cannot run, use the next-best static check or state why no useful check is available.
+5. Report the outcome, checks run, checks not run, and remaining risk.
 
 Validation:
 
-- The final report names the checks that passed.
+- The final report names the checks that passed or explains why they could not run.
 - Any unverified risk is called out explicitly.
 
 ## Interop priority
@@ -98,6 +101,7 @@ Validation:
 - **high** — Do not add speculative abstractions, configuration, or error handling that the task did not require.
 - **high** — Do not broaden the diff with unrelated cleanup or refactoring.
 - **medium** — If you cannot verify the intended outcome, say so explicitly instead of implying confidence.
+- **medium** — If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
 
 ## Policies
 
@@ -109,6 +113,9 @@ Every changed line should trace directly to the task; unrelated cleanup belongs 
 
 ### Evidence-over-intuition policy
 Completion requires naming the checks that prove success or the exact gap that remains.
+
+### Reporting contract
+Final reports must name the completed outcome, verification evidence, and any unverified risk; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
 
 ## Required active references
 - [Core principles](references/core-principles.md) — Read this first when the task involves writing, changing, or reviewing code.

@@ -1,6 +1,6 @@
 # Core principles
 
-Use this reference whenever the task involves code changes.
+Use this reference whenever the task involves writing, changing, or reviewing code.
 
 ## Think before coding
 
