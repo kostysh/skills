@@ -1,0 +1,499 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: dossier-engineer
+  source-version: 2.3.0
+  recommended-skill-md-max-bytes: 30000
+  description: >-
+    Manage a source-traced, capability-oriented, merge-safe dossier workflow for
+    software delivery. Use when registering requirement sources, mapping product
+    capabilities, onboarding an existing project, deriving backlog work,
+    separating capability from infrastructure, running delivery stages,
+    verification, audits, closure, queue/status/attention checks, post-close
+    hygiene, or retrospective reporting with Markdown/YAML dossier artifacts.
+  compatibility: >-
+    Requires git, Markdown files, and the bundled dossier-engineer runtime under
+    scripts/dossier-engineer.mjs or an equivalent dossier-engineer executable on
+    PATH.
+  metadata:
+    canonical_storage: markdown-yaml-frontmatter
+    runtime: dossier-engineer
+
+fragments:
+  overview: fragments/overview.md
+  finalChecks: fragments/final-checks.md
+
+references:
+  - id: ref-workflow
+    title: Workflow protocol
+    source: references/workflow.md
+    target: references/workflow.md
+    required: true
+    trigger: Read this when running stage procedure, existing-project onboarding, change-proposal, closure, or detailed command flow.
+  - id: ref-capability-governance
+    title: Capability governance
+    source: references/capability-governance.md
+    target: references/capability-governance.md
+    required: true
+    trigger: Read this when separating observable capability from infrastructure, defining anti-claims, demonstrations, concept conformance, or guardrails.
+  - id: ref-artifact-contract
+    title: Artifact contract
+    source: references/artifact-contract.md
+    target: references/artifact-contract.md
+    required: true
+    trigger: Read this when creating, validating, repairing, or reviewing dossier artifact schemas and runtime-owned frontmatter.
+  - id: ref-runtime-commands
+    title: Runtime command guide
+    source: references/runtime-commands.md
+    target: references/runtime-commands.md
+    required: true
+    trigger: Read this when choosing a dossier-engineer command family, arguments, or expected operator flow.
+  - id: ref-review-closure
+    title: Review and closure policy
+    source: references/review-and-closure.md
+    target: references/review-and-closure.md
+    required: true
+    trigger: Read this before implementation closure, verification, audit recording, freshness checks, or behavioral evidence review.
+  - id: ref-parallel-development
+    title: Parallel development rules
+    source: references/parallel-development.md
+    target: references/parallel-development.md
+    required: false
+    trigger: Read this when working across branches, resolving merge conflicts, or creating changesets for handoff.
+  - id: ref-retrospective
+    title: Retrospective protocol
+    source: references/retrospective.md
+    target: references/retrospective.md
+    required: false
+    trigger: Read this when creating retrospectives, process-miss records, skill feedback, changesets, or capability drift reports.
+
+assets:
+  - id: example-baseline
+    source: assets/examples/baseline.ru.md
+    target: assets/examples/baseline.ru.md
+    description: Russian historical example of a baseline artifact.
+  - id: example-capability
+    source: assets/examples/capability.ru.md
+    target: assets/examples/capability.ru.md
+    description: Russian historical example of a capability artifact.
+  - id: example-changeset
+    source: assets/examples/changeset.ru.md
+    target: assets/examples/changeset.ru.md
+    description: Russian historical example of a changeset artifact.
+  - id: example-guardrail
+    source: assets/examples/guardrail.ru.md
+    target: assets/examples/guardrail.ru.md
+    description: Russian historical example of a guardrail artifact.
+  - id: example-review-concept
+    source: assets/examples/review-concept.ru.md
+    target: assets/examples/review-concept.ru.md
+    description: Russian historical example of a concept review artifact.
+  - id: example-source
+    source: assets/examples/source.ru.md
+    target: assets/examples/source.ru.md
+    description: Russian historical example of a source artifact.
+  - id: example-verification-behavioral
+    source: assets/examples/verification-behavioral.ru.md
+    target: assets/examples/verification-behavioral.ru.md
+    description: Russian historical example of behavioral verification.
+  - id: example-work-item-capability
+    source: assets/examples/work-item-capability.ru.md
+    target: assets/examples/work-item-capability.ru.md
+    description: Russian historical example of capability work.
+  - id: example-work-item-support
+    source: assets/examples/work-item-support.ru.md
+    target: assets/examples/work-item-support.ru.md
+    description: Russian historical example of support work.
+
+copies:
+  - id: runtime-script
+    source: scripts/dossier-engineer.mjs
+    target: scripts/dossier-engineer.mjs
+    description: Built dossier-engineer CLI runtime.
+  - id: runtime-sourcemap
+    source: scripts/dossier-engineer.mjs.map
+    target: scripts/dossier-engineer.mjs.map
+    description: Source map for the built runtime.
+  - id: package-json
+    source: package.json
+    target: package.json
+    description: Node package manifest for the CLI runtime.
+  - id: package-lock
+    source: pnpm-lock.yaml
+    target: pnpm-lock.yaml
+    description: Runtime package lockfile.
+  - id: tsconfig
+    source: tsconfig.json
+    target: tsconfig.json
+    description: TypeScript configuration for runtime maintenance.
+  - id: vite-config
+    source: vite.config.ts
+    target: vite.config.ts
+    description: Vite build configuration for the bundled runtime.
+  - id: source-app
+    source: src/app.ts
+    target: src/app.ts
+    description: Runtime application command handlers.
+  - id: source-cli
+    source: src/cli.ts
+    target: src/cli.ts
+    description: Runtime CLI entrypoint.
+  - id: source-run-cli
+    source: src/cli/run-cli.ts
+    target: src/cli/run-cli.ts
+    description: Runtime parser and output renderer.
+  - id: source-domain
+    source: src/domain.ts
+    target: src/domain.ts
+    description: Runtime domain constants and result contracts.
+  - id: source-errors
+    source: src/errors.ts
+    target: src/errors.ts
+    description: Runtime error taxonomy.
+  - id: source-infra
+    source: src/infra.ts
+    target: src/infra.ts
+    description: Runtime filesystem, hashing, and Markdown/YAML infrastructure.
+  - id: cli-test
+    source: test/cli.test.ts
+    target: test/cli.test.ts
+    description: Runtime integration and contract tests.
+
+supporting:
+  - id: readme
+    source: README.md
+    target: README.md
+    description: Supporting repository README.
+  - id: cli-spec-ru
+    source: docs/cli-spec.ru.md
+    target: docs/cli-spec.ru.md
+    description: Historical Russian CLI specification.
+  - id: coverage-matrix-ru
+    source: docs/functional-coverage-matrix.ru.md
+    target: docs/functional-coverage-matrix.ru.md
+    description: Historical Russian functional coverage matrix.
+  - id: docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Supporting navigation for skill docs.
+  - id: implementation-log-20260430-1
+    source: docs/logs/implementation-log-20260430-1.md
+    target: docs/logs/implementation-log-20260430-1.md
+    description: Implementation log for source-bundle conversion and reference translation.
+  - id: ru-workflow-reference
+    source: docs/ru/references/workflow.ru.md
+    target: docs/ru/references/workflow.ru.md
+    description: Historical Russian workflow reference.
+  - id: ru-capability-reference
+    source: docs/ru/references/capability-governance.ru.md
+    target: docs/ru/references/capability-governance.ru.md
+    description: Historical Russian capability governance reference.
+  - id: ru-artifact-reference
+    source: docs/ru/references/artifact-contract.ru.md
+    target: docs/ru/references/artifact-contract.ru.md
+    description: Historical Russian artifact contract reference.
+  - id: ru-runtime-reference
+    source: docs/ru/references/runtime-commands.ru.md
+    target: docs/ru/references/runtime-commands.ru.md
+    description: Historical Russian runtime command reference.
+  - id: ru-review-reference
+    source: docs/ru/references/review-and-closure.ru.md
+    target: docs/ru/references/review-and-closure.ru.md
+    description: Historical Russian review and closure reference.
+  - id: ru-parallel-reference
+    source: docs/ru/references/parallel-development.ru.md
+    target: docs/ru/references/parallel-development.ru.md
+    description: Historical Russian parallel development reference.
+  - id: ru-retro-reference
+    source: docs/ru/references/retrospective.ru.md
+    target: docs/ru/references/retrospective.ru.md
+    description: Historical Russian retrospective reference.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-workflow
+      - ref-capability-governance
+      - ref-artifact-contract
+      - ref-runtime-commands
+      - ref-review-closure
+    optionalReferences:
+      - ref-parallel-development
+      - ref-retrospective
+  supportingGlobs:
+    - docs/*
+    - docs/logs/*
+    - docs/ru/*
+    - docs/ru/references/*
+
+sections:
+  startHere:
+    - Confirm the task is about repository-local dossier control, capability governance, backlog/workflow execution, or maintaining this code-backed skill.
+    - "Run `dossier-engineer status --root .`, `dossier-engineer attention --root .`, and `dossier-engineer queue --root .` before starting dossier-managed delivery work when a dossier already exists."
+    - Separate observable capability from support substrate before creating or closing work; do not accept infrastructure-only evidence for capability progress.
+    - Use the runtime for all machine-owned frontmatter, IDs, timestamps, hashes, lifecycle states, source-review records, review records, verification records, guardrail states, and closure transitions.
+    - "Follow `Next actions` from every mutating command unless a blocker makes the next action unsafe or impossible."
+    - "For source-bundle maintenance, edit `skill.yaml`, fragments, references, assets, runtime source, and tests first; regenerate `SKILL.md` instead of hand-editing it."
+  whenToUse:
+    - Register durable requirement sources and track source hash changes.
+    - Map product, operator, integration, or system capabilities before creating work.
+    - Onboard an existing project through baseline capabilities and evidence.
+    - Create and execute capability, support, maintenance, or exploration work items with explicit gates.
+    - Run feature-intake, spec-compact, plan-slice, implementation, change-proposal, verification, review, closure, hygiene, changeset, report, or retrospective flows.
+    - Maintain the dossier-engineer skill source bundle or its bundled CLI runtime.
+  whenNotToUse:
+    - Chat-only planning that will not create or update durable dossier artifacts.
+    - Generic project management without source-to-capability traceability.
+    - Manual editing of machine-owned dossier frontmatter.
+    - Claiming capability completion from mocks, schemas, queues, tests, wrappers, reports, or scaffolding without a behavioral demonstration.
+    - Maintaining unrelated skills or runtime formats outside the dossier-engineer bundle.
+  workflow:
+    - id: stage-health
+      title: Inspect dossier health
+      goal: Establish current blockers and readiness before changing dossier artifacts.
+      steps:
+        - "Run `dossier-engineer status --root .`, `dossier-engineer attention --root .`, `dossier-engineer queue --root .`, `dossier-engineer capability check --root .`, and `dossier-engineer guardrail check --root .` when a dossier exists."
+        - Treat open source-review records, triggered guardrails, invalid artifacts, and missing capability gates as blockers.
+        - "Choose the next work item from `queue` only after blockers are understood."
+      validation:
+        - The selected work is not source-review blocked.
+        - Triggered guardrails are either resolved or explicitly outside the selected scope.
+    - id: stage-source-capability
+      title: Anchor sources and capabilities
+      goal: Keep work tied to durable source material and observable capability.
+      steps:
+        - "Register or refresh sources with `source add`, `source refresh`, and `source impact`."
+        - Create capability records before work records.
+        - Complete capability claims with actor, trigger, observable behavior, response, state change, and continuity.
+        - For existing projects, create baseline records instead of artificial historical closed work.
+      validation:
+        - Capability records have source refs and complete claims unless retired.
+        - Existing capabilities have pass demo evidence or observed baseline membership before being treated as proven.
+    - id: stage-work-authoring
+      title: Author capability-safe work
+      goal: Prevent infrastructure work from masquerading as product progress.
+      steps:
+        - "Use `delivery=capability` only for work that can be behaviorally demonstrated."
+        - "Use `delivery=support` for scaffolding, refactoring, schemas, tests, pipelines, or operational support that does not itself create observable behavior."
+        - Add behavioral acceptance, demonstration scenario, anti-claims, and pre-implementation challenge for capability work.
+        - Add support reasons and capability or guardrail links for support work.
+      validation:
+        - "`dossier-engineer capability check --root .` reports no missing capability gates for the target work."
+        - Capability work has behavior criteria, demo scenario, anti-claims, and challenge before closure.
+    - id: stage-delivery
+      title: Run delivery stages
+      goal: Move work through controlled stage transitions without bypassing closure gates.
+      steps:
+        - "Run stages in order: `feature-intake`, `spec-compact`, `plan-slice`, then `implementation`, unless `change-proposal` is required."
+        - "Use `stage start`, `stage ready`, and `stage close`; treat `ready_for_close` as a checkpoint."
+        - "Open `change-proposal` when implementation discovers material requirement, scope, concept, capability, contract, security, dependency, acceptance, anti-claim, or demo drift."
+      validation:
+        - Previous required stages are closed before later stages advance.
+        - Material drift returns to the earliest affected stage.
+    - id: stage-verification-review-closure
+      title: Verify, review, and close truthfully
+      goal: Close implementation only with fresh evidence that proves the claimed capability.
+      steps:
+        - "Ask `verify required` and `review required` before implementation closure."
+        - "Use `verify run` for configured profiles or `verify record` for explicit manual/external evidence."
+        - "Record required reviews with immutable `review record` artifacts."
+        - "Close implementation only after fresh required verification and review evidence, then run `hygiene run`."
+      validation:
+        - Capability work has fresh behavioral-demo verification.
+        - Capability work has fresh concept-conformance and spec-conformance reviews.
+        - Hygiene passes before handoff or closure reporting.
+    - id: stage-handoff-retro
+      title: Produce handoff and retrospective evidence
+      goal: Record branch-level and process evidence without turning derived reports into truth.
+      steps:
+        - "Use `changeset create` for branch or handoff summaries."
+        - "Use `report create` only for derived views requested by the user or process."
+        - "Use `retro create` for process-miss, capability drift, guardrail, review, verification, and skill-feedback analysis."
+      validation:
+        - Reports are not cited as closure evidence.
+        - "`lint`, `capability check`, and `guardrail check` pass before handoff."
+  interop:
+    - id: interop-capability
+      domain: capability and dossier workflow truth
+      winner: dossier-engineer
+      rationale: This skill owns dossier artifact semantics, capability gates, stage transitions, and closure truth.
+    - id: interop-implementation
+      domain: runtime code changes
+      winner: implementation-discipline with the relevant language or CLI skill
+      rationale: Dossier semantics decide what must be observable; implementation discipline and CLI engineering decide how runtime code is changed and verified.
+    - id: interop-reviews
+      domain: external review content
+      winner: the named review skill
+      rationale: This skill records required review artifacts, while specialist review skills own findings and review standards.
+  commands:
+    - id: command-help
+      command: help
+      summary: Show shipped help or command-local help.
+      when: Confirm the public command surface before invoking or documenting another command.
+      script: scripts/dossier-engineer.mjs
+      outputs:
+        - Human-readable help text on stdout.
+        - Exit code 0 on success.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - node scripts/dossier-engineer.mjs help
+    - id: command-init
+      command: init
+      summary: "Initialize `docs/dossier/project.md` and canonical directories."
+      when: Bootstrap a repository for dossier control.
+      script: scripts/dossier-engineer.mjs
+      inputs:
+        - --root <path>
+        - --project-name <name>
+      outputs:
+        - Project artifact and canonical directories.
+        - Next actions for source registration and baseline onboarding.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - dossier-engineer init --root . --project-name "<project>"
+    - id: command-status-attention-queue-next
+      command: status | attention | queue | next
+      summary: Derive readiness, blockers, executable work, and next safe action from Markdown/YAML artifacts.
+      when: Inspect current state before work, handoff, review, or closure.
+      script: scripts/dossier-engineer.mjs
+      outputs:
+        - Read-only derived summaries, findings, blockers, and next actions.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - dossier-engineer status --root .
+        - dossier-engineer attention --root .
+        - dossier-engineer queue --root .
+        - dossier-engineer next --work <work-id>
+    - id: command-lint-repair
+      command: lint | repair frontmatter
+      summary: Validate schemas, refs, gates, forbidden state files, and safely repair inferable metadata.
+      when: Before handoff, after manual body edits, after source-bundle changes, or when invalid frontmatter is detected.
+      script: scripts/dossier-engineer.mjs
+      outputs:
+        - Exit code 3 when lint finds errors.
+        - No invented semantic fields during repair.
+      tests:
+        - test/cli.test.ts
+      examples:
+        - dossier-engineer lint --root .
+        - dossier-engineer repair frontmatter --path <artifact-path> --type <artifact-type>
+    - id: command-source
+      command: source add | source list | source refresh | source impact | source review resolve
+      summary: Register sources, compute hashes, open source reviews, inspect impact, and resolve source-review blockers.
+      when: Source material enters or changes in the dossier truth layer.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - dossier-engineer source add --path <path> --kind concept --authority canonical --title "<title>"
+        - dossier-engineer source refresh --root .
+    - id: command-capability
+      command: capability create | capability claim set | capability anti-claim add | capability demo record | capability check
+      summary: Create capability records, complete observable claims, record demos, and check capability gates.
+      when: Mapping product behavior, onboarding existing behavior, or checking infrastructure-masquerade risk.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - dossier-engineer capability create --title "<capability>" --status intended --source <source-id>
+        - dossier-engineer capability check --root .
+    - id: command-baseline
+      command: baseline create | baseline capability add
+      summary: Record existing-project, release, regression, or manual capability baselines.
+      when: Starting from an already working project or recording observed capability state.
+      script: scripts/dossier-engineer.mjs
+      examples:
+        - dossier-engineer baseline create --title "Existing product baseline" --mode existing-project --source <source-id>
+    - id: command-guardrail
+      command: guardrail add | guardrail check | guardrail resolve
+      summary: Create, evaluate, trigger, and resolve stop conditions that protect capability truth.
+      when: Support accumulation, capability drift, or project-level kill criteria must block unsafe work.
+      script: scripts/dossier-engineer.mjs
+      examples:
+        - dossier-engineer guardrail check --root .
+    - id: command-work
+      command: work create | work acceptance add | work demo set | work anti-claim add | work challenge record | work support explain | work dependency add/remove | work blocker add/resolve | work risk set | work split | work retire
+      summary: Create and maintain capability-safe work items and their gates.
+      when: Deriving concrete work from sources and capabilities.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - dossier-engineer work create --title "<title>" --type feature --delivery capability --capability <capability-id> --relation introduces --source <source-id> --area <area> --owner <owner>
+    - id: command-stage
+      command: stage start | stage ready | stage close | stage reopen | stage log
+      summary: Control delivery stage transitions and immutable stage events.
+      when: Running feature-intake, spec-compact, plan-slice, implementation, or change-proposal.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - dossier-engineer stage start --work <work-id> --stage feature-intake --session <session-id>
+    - id: command-verify-review-hygiene
+      command: verify required/run/record | review required/record | hygiene run
+      summary: Determine required evidence, record verification and review artifacts, and validate post-close hygiene.
+      when: Preparing implementation closure or handoff.
+      script: scripts/dossier-engineer.mjs
+      tests:
+        - test/cli.test.ts
+      examples:
+        - dossier-engineer verify required --work <work-id> --stage implementation
+        - dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>
+    - id: command-reporting
+      command: changeset create | report create | retro create
+      summary: Create branch evidence, derived reports, and retrospective reports without replacing primary truth.
+      when: Preparing handoff, requested derived views, or retrospective process analysis.
+      script: scripts/dossier-engineer.mjs
+      examples:
+        - dossier-engineer changeset create --scope current-branch --summary "<branch summary>"
+  gotchas:
+    - id: gotcha-substrate
+      priority: high
+      text: A passing command, generated file, report, or test is not capability proof unless it demonstrates the claimed behavior.
+    - id: gotcha-frontmatter
+      priority: high
+      text: Never hand-edit machine-owned frontmatter to bypass a blocker; use a runtime command or leave the blocker open.
+    - id: gotcha-json-state
+      priority: high
+      text: "Do not create JSON/JSONL/database canonical state or generated global indexes; `lint` treats forbidden state files as errors."
+    - id: gotcha-reports
+      priority: medium
+      text: Reports and retrospectives are derived views and never closure evidence.
+    - id: gotcha-ready
+      priority: medium
+      text: "`ready_for_close` is a checkpoint; closure still requires the stage close command and relevant gates."
+    - id: gotcha-compiler
+      priority: medium
+      text: "`SKILL.md` is generated in this source-bundle format; edit `skill.yaml`, fragments, and references instead."
+  policies:
+    - id: policy-capability-first
+      title: Capability-first policy
+      text: Work that claims product progress must be traceable to a capability and proven by observable behavior, not by support substrate.
+    - id: policy-markdown-truth
+      title: Markdown/YAML truth policy
+      text: "Canonical dossier state lives only in Markdown files with YAML frontmatter under `docs/dossier/`."
+    - id: policy-runtime-owned-frontmatter
+      title: Runtime-owned frontmatter policy
+      text: The runtime owns IDs, timestamps, hashes, lifecycle, stage state, delivery kind, status, material-scope hashes, review freshness, and guardrail state.
+    - id: policy-generated-skill
+      title: Generated skill policy
+      text: "`skill.yaml` is the source of truth for the instruction surface; `SKILL.md` and `docs/compile-report.md` are compiler-owned outputs."
+    - id: policy-parallel
+      title: Parallel development policy
+      text: Prefer sharded immutable artifacts and scope-local edits over shared counters, locks, generated global status files, or mutable indexes.
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths in generated skill instructions.
+      - Keep required references, bundled assets, runtime scripts, runtime source, tests, and supporting historical files inside the skill folder.
+      - Use relative links and paths in generated guidance.
+      - Do not require hidden repository state outside Markdown/YAML artifacts and the bundled runtime.
+    checklist:
+      - Run skill-source-compiler regenerate and check after changing the source bundle.
+      - "Confirm every required reference exists under `references/`."
+      - "Confirm Russian historical references remain under `docs/ru/references/`."
+      - "Run `pnpm run lint`, `pnpm run format:check`, and `pnpm test` after runtime or source-bundle changes."
