@@ -2,16 +2,13 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.3`
+- Skill source version: `0.1.0`
 
 ## Source files
-- `references/core-principles.md`
-- `references/verification-loop.md`
 - `skill.yaml`
 
 ## Required references
-- `references/core-principles.md`
-- `references/verification-loop.md`
+- none
 
 ## Warnings
 - none

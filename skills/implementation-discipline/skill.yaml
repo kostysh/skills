@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 18000
   description: >-
     Behavioral coding discipline for writing, modifying, and reviewing code
@@ -66,6 +66,19 @@ sections:
         - The chosen interpretation is explicit.
         - Any blocking ambiguity has either a stated conservative assumption or an explicit ask.
         - Success can be checked without vague phrases like "should work now".
+    - id: stage-capability-reality
+      title: Run a capability reality checkpoint
+      goal: Prevent implementation work from turning a claimed capability into substrate-only progress without saying so.
+      steps:
+        - For feature, runtime, product, agent, or system-capability changes, state the observable behavior the system should have after the work.
+        - Separate real behavior from substrate such as storage, APIs, jobs, wrappers, logs, config, migrations, tests, or documentation.
+        - "State anti-claims: what the change will still not make possible after it is complete."
+        - Check whether the acceptance criteria can be satisfied without delivering the observable behavior.
+        - If the acceptance criteria can pass through substrate-only work, call that a specification defect before implementation and either narrow the claim or ask to rewrite the spec.
+      validation:
+        - The implementation target is an observable behavior or is explicitly labeled as substrate-only.
+        - Any substrate-only result is not described as a completed capability.
+        - The final report states important behavior that remains non-working.
     - id: stage-design-minimal
       title: Design the smallest sufficient change
       goal: Prevent speculative abstractions and unnecessary surface area.
@@ -125,6 +138,9 @@ sections:
     - id: gotcha-stop-on-blocking-ambiguity
       priority: medium
       text: If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
+    - id: gotcha-acceptance-exploit
+      priority: high
+      text: Do not treat acceptance criteria as sufficient when they can be satisfied by mocks, metadata, tables, logs, wrappers, or documentation without the claimed behavior.
   policies:
     - id: policy-simplicity-first
       title: Simplicity-first policy
@@ -135,6 +151,9 @@ sections:
     - id: policy-evidence-over-intuition
       title: Evidence-over-intuition policy
       text: Completion requires naming the checks that prove success or the exact gap that remains.
+    - id: policy-capability-reality
+      title: Capability reality policy
+      text: A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure.
     - id: policy-reporting-contract
       title: Reporting contract
       text: Final reports must name the completed outcome, verification evidence, and any unverified risk; when another active review skill defines a stricter format, follow that format while preserving the same evidence.

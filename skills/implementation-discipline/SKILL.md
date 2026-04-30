@@ -7,9 +7,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f02ca7c85581cb4e026bf728cafc395369b068a18c366eb47e4cb73e28ef5ecd
+  skillforge-source-hash: 5870904c54f399fbc394c8be3e392a94fd2962c3b4c98ce3b25bef8d1f39198b
 ---
 
 # implementation-discipline
@@ -48,6 +48,22 @@ Validation:
 - The chosen interpretation is explicit.
 - Any blocking ambiguity has either a stated conservative assumption or an explicit ask.
 - Success can be checked without vague phrases like "should work now".
+
+### Workflow stage: Run a capability reality checkpoint
+
+Prevent implementation work from turning a claimed capability into substrate-only progress without saying so.
+
+1. For feature, runtime, product, agent, or system-capability changes, state the observable behavior the system should have after the work.
+2. Separate real behavior from substrate such as storage, APIs, jobs, wrappers, logs, config, migrations, tests, or documentation.
+3. State anti-claims: what the change will still not make possible after it is complete.
+4. Check whether the acceptance criteria can be satisfied without delivering the observable behavior.
+5. If the acceptance criteria can pass through substrate-only work, call that a specification defect before implementation and either narrow the claim or ask to rewrite the spec.
+
+Validation:
+
+- The implementation target is an observable behavior or is explicitly labeled as substrate-only.
+- Any substrate-only result is not described as a completed capability.
+- The final report states important behavior that remains non-working.
 
 ### Workflow stage: Design the smallest sufficient change
 
@@ -103,6 +119,7 @@ Validation:
 - **high** — Do not broaden the diff with unrelated cleanup or refactoring.
 - **medium** — If you cannot verify the intended outcome, say so explicitly instead of implying confidence.
 - **medium** — If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
+- **high** — Do not treat acceptance criteria as sufficient when they can be satisfied by mocks, metadata, tables, logs, wrappers, or documentation without the claimed behavior.
 
 ## Policies
 
@@ -114,6 +131,9 @@ Every changed line should trace directly to the task; unrelated cleanup belongs 
 
 ### Evidence-over-intuition policy
 Completion requires naming the checks that prove success or the exact gap that remains.
+
+### Capability reality policy
+A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure.
 
 ### Reporting contract
 Final reports must name the completed outcome, verification evidence, and any unverified risk; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
