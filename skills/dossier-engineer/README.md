@@ -30,6 +30,7 @@ Active references:
 - `references/artifact-contract.md` — artifact schemas, frontmatter ownership, and runtime-managed fields.
 - `references/runtime-commands.md` — command families, arguments, and expected operator flow.
 - `references/review-and-closure.md` — verification, review, freshness, evidence, and closure gates.
+- `references/body-completion.md` — required body completion criteria before stage close, handoff, PR preparation, or final response.
 - `references/parallel-development.md` — branch, scope, merge, and changeset rules.
 - `references/retrospective.md` — retrospective reporting and process-miss analysis.
 - `references/operator-capabilities.md` — operator-facing capability overview and prompt patterns.
@@ -50,6 +51,7 @@ Supporting documents do not override `SKILL.md` or active references unless `ski
 - Canonical dossier state lives only in Markdown files with YAML frontmatter under `docs/dossier/`.
 - Runtime commands own IDs, timestamps, hashes, lifecycle states, source-review records, review records, verification records, guardrail states, and closure transitions.
 - Agents may edit semantic body sections only after the runtime creates the artifact scaffold.
+- Runtime-created scaffolds are not complete dossier artifacts until relevant body sections contain project-specific human-readable interpretation.
 - Capability work cannot close on infrastructure evidence alone.
 - Support work must be explicitly marked as support and linked to the capability or guardrail it enables.
 - Existing-project onboarding records already working behavior as baseline capabilities, not as artificial closed work items.

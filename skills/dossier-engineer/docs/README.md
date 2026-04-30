@@ -1,16 +1,17 @@
-# Dossier-engineer skill docs
+# Dossier-engineer Skill Docs
 
-Этот каталог содержит supporting и historical документы для скила `dossier-engineer`.
+This directory contains supporting and historical documents for the `dossier-engineer` skill.
 
-Активная нормативная поверхность находится в:
+The active normative surface is:
 
 - `SKILL.md`;
-- `references/*.md`, на которые указывает `SKILL.md`;
-- `skill.yaml`, `fragments/*`, `src/*`, `test/*` и `scripts/*` для сопровождения generated/code-backed skill.
+- `references/*.md` linked from `SKILL.md`;
+- `skill.yaml`, `fragments/*`, `src/*`, `test/*`, and `scripts/*` for generated/code-backed skill maintenance.
 
-Исторические русскоязычные reference-документы сохранены в `docs/ru/references/`.
+Historical Russian reference documents are stored in `docs/ru/references/`.
 
 ## Implementation logs
 
-- `docs/logs/implementation-log-20260430-1.md` — перевод скила в формат `skill-source-compiler`, перевод references на английский, сохранение русских копий.
-- `docs/logs/implementation-log-20260430-2.md` — добавление англоязычного operator capability reference и его подключение к optional references.
+- `docs/logs/implementation-log-20260430-1.md` — converted the skill to `skill-source-compiler` source-bundle format, translated references to English, and preserved Russian copies.
+- `docs/logs/implementation-log-20260430-2.md` — added the English operator capability reference and connected it to optional references.
+- `docs/logs/implementation-log-20260430-3.md` — added the Body Completion Gate and required body-completion reference.

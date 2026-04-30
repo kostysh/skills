@@ -15,7 +15,7 @@ metadata:
   canonical_storage: markdown-yaml-frontmatter
   runtime: dossier-engineer
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 02efca6b3ae602e2aeacc01072e73bf6ddf40c9fead466f9a6cbca3265afe077
+  skillforge-source-hash: 7b9e6ece7ff7159da3e4d2e00bd0f282606e0c04af5cb39ac827d8a5f0b75061
 ---
 
 # dossier-engineer
@@ -26,8 +26,9 @@ metadata:
 2. Run `dossier-engineer status --root .`, `dossier-engineer attention --root .`, and `dossier-engineer queue --root .` before starting dossier-managed delivery work when a dossier already exists.
 3. Separate observable capability from support substrate before creating or closing work; do not accept infrastructure-only evidence for capability progress.
 4. Use the runtime for all machine-owned frontmatter, IDs, timestamps, hashes, lifecycle states, source-review records, review records, verification records, guardrail states, and closure transitions.
-5. Follow `Next actions` from every mutating command unless a blocker makes the next action unsafe or impossible.
-6. For source-bundle maintenance, edit `skill.yaml`, fragments, references, assets, runtime source, and tests first; regenerate `SKILL.md` instead of hand-editing it.
+5. Complete relevant body sections for created or materially changed dossier artifacts before stage close, handoff, PR preparation, or final response.
+6. Follow `Next actions` from every mutating command unless a blocker makes the next action unsafe or impossible.
+7. For source-bundle maintenance, edit `skill.yaml`, fragments, references, assets, runtime source, and tests first; regenerate `SKILL.md` instead of hand-editing it.
 
 ## When to use this skill
 
@@ -82,6 +83,7 @@ Do not create work directly from vague implementation ideas. Anchor work to sour
 15. Treat `ready_for_close` as a checkpoint, not as closure.
 16. Treat generated reports as derived views. Reports never override artifact frontmatter.
 17. In parallel branches, edit only the records that belong to the active source, capability, work item, review, verification, hygiene, guardrail, baseline, or changeset scope.
+18. Complete relevant body sections for every created or materially changed dossier artifact before stage close, handoff, PR preparation, or final response.
 
 ## Runtime contract
 
@@ -134,6 +136,16 @@ Primary truth lives in source records, capability records, baseline records, gua
 ## Frontmatter ownership
 
 The runtime owns artifact frontmatter. The agent owns semantic content in body sections.
+
+## Body Completion Gate
+
+Runtime scaffolding creates structurally valid dossier artifacts, not complete dossier artifacts.
+
+After creating or materially changing any source, capability, baseline, guardrail, work item, review, verification, or changeset artifact, the agent MUST complete the relevant body sections before stage close, handoff, PR preparation, or final response.
+
+Frontmatter is canonical machine-readable state. Body sections are canonical human-readable interpretation.
+
+Scaffold-only body content is allowed only as transient working state during the same active task. It is not allowed at handoff.
 
 Use runtime commands for structured changes:
 
@@ -227,6 +239,7 @@ Validation:
 
 - Capability records have source refs and complete claims unless retired.
 - Existing capabilities have pass demo evidence or observed baseline membership before being treated as proven.
+- Created or updated source, baseline, and capability bodies are completed before handoff, especially during existing-project onboarding.
 
 ### Workflow stage: Author capability-safe work
 
@@ -254,6 +267,7 @@ Validation:
 
 - Previous required stages are closed before later stages advance.
 - Material drift returns to the earliest affected stage.
+- Created or materially changed dossier artifact bodies are completed before any stage close.
 
 ### Workflow stage: Verify, review, and close truthfully
 
@@ -268,6 +282,7 @@ Validation:
 
 - Capability work has fresh behavioral-demo verification.
 - Capability work has fresh concept-conformance and spec-conformance reviews.
+- Review and verification bodies explain verdict rationale, evidence inspected, and what was proven.
 - Hygiene passes before handoff or closure reporting.
 
 ### Workflow stage: Produce handoff and retrospective evidence
@@ -281,6 +296,7 @@ Record branch-level and process evidence without turning derived reports into tr
 Validation:
 
 - Reports are not cited as closure evidence.
+- Changeset and affected dossier artifact bodies are complete before handoff.
 - `lint`, `capability check`, and `guardrail check` pass before handoff.
 
 ## Interop priority
@@ -458,6 +474,7 @@ Prefer sharded immutable artifacts and scope-local edits over shared counters, l
 - [Artifact contract](references/artifact-contract.md) — Read this when creating, validating, repairing, or reviewing dossier artifact schemas and runtime-owned frontmatter.
 - [Runtime command guide](references/runtime-commands.md) — Read this when choosing a dossier-engineer command family, arguments, or expected operator flow.
 - [Review and closure policy](references/review-and-closure.md) — Read this before implementation closure, verification, audit recording, freshness checks, or behavioral evidence review.
+- [Body completion](references/body-completion.md) — Read this after creating or materially changing Markdown dossier artifacts and before stage close, handoff, PR preparation, changeset publication, or final response.
 
 ## Optional references
 - [Parallel development rules](references/parallel-development.md) — Read this when working across branches, resolving merge conflicts, or creating changesets for handoff.

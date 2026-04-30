@@ -21,6 +21,7 @@ Generated from `skill.yaml`.
 - `docs/functional-coverage-matrix.ru.md`
 - `docs/logs/implementation-log-20260430-1.md`
 - `docs/logs/implementation-log-20260430-2.md`
+- `docs/logs/implementation-log-20260430-3.md`
 - `docs/operator-ux.ru.md`
 - `docs/ru/references/artifact-contract.ru.md`
 - `docs/ru/references/capability-governance.ru.md`
@@ -34,6 +35,7 @@ Generated from `skill.yaml`.
 - `package.json`
 - `pnpm-lock.yaml`
 - `references/artifact-contract.md`
+- `references/body-completion.md`
 - `references/capability-governance.md`
 - `references/operator-capabilities.md`
 - `references/parallel-development.md`
@@ -60,6 +62,7 @@ Generated from `skill.yaml`.
 - `references/artifact-contract.md`
 - `references/runtime-commands.md`
 - `references/review-and-closure.md`
+- `references/body-completion.md`
 
 ## Warnings
 - none

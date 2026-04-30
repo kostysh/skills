@@ -31,6 +31,7 @@ Do not create work directly from vague implementation ideas. Anchor work to sour
 15. Treat `ready_for_close` as a checkpoint, not as closure.
 16. Treat generated reports as derived views. Reports never override artifact frontmatter.
 17. In parallel branches, edit only the records that belong to the active source, capability, work item, review, verification, hygiene, guardrail, baseline, or changeset scope.
+18. Complete relevant body sections for every created or materially changed dossier artifact before stage close, handoff, PR preparation, or final response.
 
 ## Runtime contract
 
@@ -83,6 +84,16 @@ Primary truth lives in source records, capability records, baseline records, gua
 ## Frontmatter ownership
 
 The runtime owns artifact frontmatter. The agent owns semantic content in body sections.
+
+## Body Completion Gate
+
+Runtime scaffolding creates structurally valid dossier artifacts, not complete dossier artifacts.
+
+After creating or materially changing any source, capability, baseline, guardrail, work item, review, verification, or changeset artifact, the agent MUST complete the relevant body sections before stage close, handoff, PR preparation, or final response.
+
+Frontmatter is canonical machine-readable state. Body sections are canonical human-readable interpretation.
+
+Scaffold-only body content is allowed only as transient working state during the same active task. It is not allowed at handoff.
 
 Use runtime commands for structured changes:
 

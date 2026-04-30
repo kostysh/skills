@@ -4,7 +4,7 @@ kind: SkillSource
 skill:
   name: dossier-engineer
   source-version: 2.3.0
-  recommended-skill-md-max-bytes: 30000
+  recommended-skill-md-max-bytes: 32000
   description: >-
     Manage a source-traced, capability-oriented, merge-safe dossier workflow for
     software delivery. Use when registering requirement sources, mapping product
@@ -56,6 +56,12 @@ references:
     target: references/review-and-closure.md
     required: true
     trigger: Read this before implementation closure, verification, audit recording, freshness checks, or behavioral evidence review.
+  - id: ref-body-completion
+    title: Body completion
+    source: references/body-completion.md
+    target: references/body-completion.md
+    required: true
+    trigger: Read this after creating or materially changing Markdown dossier artifacts and before stage close, handoff, PR preparation, changeset publication, or final response.
   - id: ref-parallel-development
     title: Parallel development rules
     source: references/parallel-development.md
@@ -196,6 +202,10 @@ supporting:
     source: docs/logs/implementation-log-20260430-2.md
     target: docs/logs/implementation-log-20260430-2.md
     description: Implementation log for operator capability reference integration.
+  - id: implementation-log-20260430-3
+    source: docs/logs/implementation-log-20260430-3.md
+    target: docs/logs/implementation-log-20260430-3.md
+    description: Implementation log for Body Completion Gate integration.
   - id: ru-workflow-reference
     source: docs/ru/references/workflow.ru.md
     target: docs/ru/references/workflow.ru.md
@@ -233,6 +243,7 @@ surfaces:
       - ref-artifact-contract
       - ref-runtime-commands
       - ref-review-closure
+      - ref-body-completion
     optionalReferences:
       - ref-parallel-development
       - ref-retrospective
@@ -249,6 +260,7 @@ sections:
     - "Run `dossier-engineer status --root .`, `dossier-engineer attention --root .`, and `dossier-engineer queue --root .` before starting dossier-managed delivery work when a dossier already exists."
     - Separate observable capability from support substrate before creating or closing work; do not accept infrastructure-only evidence for capability progress.
     - Use the runtime for all machine-owned frontmatter, IDs, timestamps, hashes, lifecycle states, source-review records, review records, verification records, guardrail states, and closure transitions.
+    - Complete relevant body sections for created or materially changed dossier artifacts before stage close, handoff, PR preparation, or final response.
     - "Follow `Next actions` from every mutating command unless a blocker makes the next action unsafe or impossible."
     - "For source-bundle maintenance, edit `skill.yaml`, fragments, references, assets, runtime source, and tests first; regenerate `SKILL.md` instead of hand-editing it."
   whenToUse:
@@ -287,6 +299,7 @@ sections:
       validation:
         - Capability records have source refs and complete claims unless retired.
         - Existing capabilities have pass demo evidence or observed baseline membership before being treated as proven.
+        - Created or updated source, baseline, and capability bodies are completed before handoff, especially during existing-project onboarding.
     - id: stage-work-authoring
       title: Author capability-safe work
       goal: Prevent infrastructure work from masquerading as product progress.
@@ -308,6 +321,7 @@ sections:
       validation:
         - Previous required stages are closed before later stages advance.
         - Material drift returns to the earliest affected stage.
+        - Created or materially changed dossier artifact bodies are completed before any stage close.
     - id: stage-verification-review-closure
       title: Verify, review, and close truthfully
       goal: Close implementation only with fresh evidence that proves the claimed capability.
@@ -319,6 +333,7 @@ sections:
       validation:
         - Capability work has fresh behavioral-demo verification.
         - Capability work has fresh concept-conformance and spec-conformance reviews.
+        - Review and verification bodies explain verdict rationale, evidence inspected, and what was proven.
         - Hygiene passes before handoff or closure reporting.
     - id: stage-handoff-retro
       title: Produce handoff and retrospective evidence
@@ -329,6 +344,7 @@ sections:
         - "Use `retro create` for process-miss, capability drift, guardrail, review, verification, and skill-feedback analysis."
       validation:
         - Reports are not cited as closure evidence.
+        - Changeset and affected dossier artifact bodies are complete before handoff.
         - "`lint`, `capability check`, and `guardrail check` pass before handoff."
   interop:
     - id: interop-capability
