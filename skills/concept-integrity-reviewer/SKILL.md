@@ -1,5 +1,5 @@
 ---
-name: concept-integrity-reviewer
+name: concept-conformance-reviewer
 description: Review feature ideas, backlog items, specifications, plans,
   acceptance criteria, or implementations against a higher-level product or
   system concept. Use when a task may create infrastructure, mocks, metadata,
@@ -18,7 +18,7 @@ metadata:
   skillforge-source-hash: 6daeb1cd722588064afa84583993167aa5db82647f4e17e2ceda82c82e9e8314
 ---
 
-# concept-integrity-reviewer
+# concept-conformance-reviewer
 
 ## Start here
 
@@ -128,12 +128,12 @@ Acceptance criteria are defective when they can pass without the claimed capabil
 ## Portability rules
 
 - Do not reference machine-specific paths or external repository state.
-- Keep all mandatory concept-integrity-reviewer guidance inside this skill folder.
+- Keep all mandatory concept-conformance-reviewer guidance inside this skill folder.
 - Use this skill as a review and planning discipline; it does not prescribe framework-specific implementation techniques.
 
 ## Portability checklist before finishing
 
-- Confirm the generated skill has clear triggers for when to apply concept-integrity-reviewer.
+- Confirm the generated skill has clear triggers for when to apply concept-conformance-reviewer.
 - Confirm the fake-risk verdict and decision options are present.
 - Confirm no absolute paths appear in the emitted skill.
 
