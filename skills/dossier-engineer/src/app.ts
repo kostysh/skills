@@ -54,9 +54,22 @@ export interface ParsedCommand {
 
 const artifactInfo = (artifact: Artifact) => ({
   path: artifact.path,
-  artifact_type: String(artifact.frontmatter.artifact_type ?? ''),
-  id: String(artifact.frontmatter.id ?? artifact.frontmatter.project_id ?? ''),
+  artifact_type: displayValue(artifact.frontmatter.artifact_type),
+  id: artifactId(artifact),
 });
+
+const displayValue = (input: unknown, fallback = ''): string => {
+  if (input === null || input === undefined) return fallback;
+  if (typeof input === 'string') return input;
+  if (typeof input === 'number' || typeof input === 'boolean' || typeof input === 'bigint') {
+    return String(input);
+  }
+  const json = JSON.stringify(input);
+  return json ?? fallback;
+};
+
+const artifactId = (artifact: Artifact): string =>
+  displayValue(artifact.frontmatter.id ?? artifact.frontmatter.project_id);
 
 const value = (command: ParsedCommand, name: string): string | undefined => {
   const raw = command.options[name];
@@ -197,7 +210,7 @@ const evidencePathsExist = async (root: string, paths: readonly string[]): Promi
 };
 
 const loadRootArtifacts = async (ctx: RuntimeContext, command: ParsedCommand) => {
-  const root = await discoverRoot(ctx.cwd, value(command, 'root'), command.words.join(' '));
+  const root = discoverRoot(ctx.cwd, value(command, 'root'), command.words.join(' '));
   const loaded = await loadArtifacts(root);
   return { root, ...loaded };
 };
@@ -291,16 +304,16 @@ const workGateFindings = (work: Artifact): string[] => {
 
   if (kind === 'capability') {
     if (!criteria.some((entry) => (entry as Record<string, unknown>).kind === 'behavior')) {
-      findings.push(`${work.frontmatter.id}: capability work lacks behavior acceptance criterion.`);
+      findings.push(`${artifactId(work)}: capability work lacks behavior acceptance criterion.`);
     }
     if (typeof demonstration?.scenario !== 'string' || demonstration.scenario.trim() === '') {
-      findings.push(`${work.frontmatter.id}: capability work lacks demonstration scenario.`);
+      findings.push(`${artifactId(work)}: capability work lacks demonstration scenario.`);
     }
     if (antiClaims.length === 0) {
-      findings.push(`${work.frontmatter.id}: capability work lacks anti-claims.`);
+      findings.push(`${artifactId(work)}: capability work lacks anti-claims.`);
     }
     if (challenge?.recorded !== true) {
-      findings.push(`${work.frontmatter.id}: capability work lacks pre-implementation challenge.`);
+      findings.push(`${artifactId(work)}: capability work lacks pre-implementation challenge.`);
     }
   }
 
@@ -308,7 +321,7 @@ const workGateFindings = (work: Artifact): string[] => {
     kind === 'support' &&
     (typeof delivery?.support_reason !== 'string' || delivery.support_reason.trim() === '')
   ) {
-    findings.push(`${work.frontmatter.id}: support work lacks support reason.`);
+    findings.push(`${artifactId(work)}: support work lacks support reason.`);
   }
 
   return findings;
@@ -349,7 +362,7 @@ const closureFindings = (work: Artifact, all: readonly Artifact[]): string[] => 
       !verificationFresh(work, verifications, 'behavioral-demo')
     ) {
       findings.push(
-        `${work.frontmatter.id}: implementation closed without fresh behavioral-demo verification.`,
+        `${artifactId(work)}: implementation closed without fresh behavioral-demo verification.`,
       );
     }
     if (
@@ -357,7 +370,7 @@ const closureFindings = (work: Artifact, all: readonly Artifact[]): string[] => 
       !reviewFresh(work, reviews, 'concept-conformance-reviewer')
     ) {
       findings.push(
-        `${work.frontmatter.id}: implementation closed without fresh concept-conformance-reviewer review.`,
+        `${artifactId(work)}: implementation closed without fresh concept-conformance-reviewer review.`,
       );
     }
   }
@@ -451,7 +464,7 @@ const genericBlocked = (command: ParsedCommand, blocker: string): CommandResult 
   });
 
 const init = async (ctx: RuntimeContext, command: ParsedCommand): Promise<CommandResult> => {
-  const root = await discoverRoot(ctx.cwd, value(command, 'root'), 'init');
+  const root = discoverRoot(ctx.cwd, value(command, 'root'), 'init');
   const projectName = requireValue(command, 'project-name');
   const reviewMode = value(command, 'review-mode') ?? 'risk_weighted';
   if (!['risk_weighted', 'strict', 'custom'].includes(reviewMode)) {
@@ -465,14 +478,7 @@ const init = async (ctx: RuntimeContext, command: ParsedCommand): Promise<Comman
     );
   }
   const now = isoNow(ctx.now());
-  const projectId = await makeId(
-    root,
-    'PRJ',
-    projectName,
-    ctx.randomHex,
-    () => projectPath,
-    ctx.now(),
-  );
+  const projectId = makeId(root, 'PRJ', projectName, ctx.randomHex, () => projectPath, ctx.now());
   const frontmatter = {
     artifact_type: 'dossier_project',
     schema_version: SCHEMA_VERSION,
@@ -531,11 +537,11 @@ const status = async (ctx: RuntimeContext, command: ParsedCommand): Promise<Comm
   const capabilitySummary = new Map<string, number>();
   const lifecycleSummary = new Map<string, number>();
   for (const capability of capabilities) {
-    const key = String(capability.frontmatter.status ?? 'unknown');
+    const key = displayValue(capability.frontmatter.status, 'unknown');
     capabilitySummary.set(key, (capabilitySummary.get(key) ?? 0) + 1);
   }
   for (const work of workItems) {
-    const key = String(work.frontmatter.lifecycle ?? 'unknown');
+    const key = displayValue(work.frontmatter.lifecycle, 'unknown');
     lifecycleSummary.set(key, (lifecycleSummary.get(key) ?? 0) + 1);
   }
   const closureViolations = workItems.flatMap((work) => closureFindings(work, artifacts));
@@ -566,12 +572,12 @@ const attention = async (ctx: RuntimeContext, command: ParsedCommand): Promise<C
     ...parseErrors.map((entry) => `invalid artifact: ${entry}`),
     ...findArtifactsByType(artifacts, 'guardrail')
       .filter((artifact) => artifact.frontmatter.status === 'triggered')
-      .map((artifact) => `triggered guardrail: ${artifact.frontmatter.id}`),
+      .map((artifact) => `triggered guardrail: ${artifactId(artifact)}`),
     ...findArtifactsByType(artifacts, 'source_review')
       .filter((artifact) => artifact.frontmatter.status === 'open')
       .map(
         (artifact) =>
-          `open source review: ${artifact.frontmatter.id} for ${artifact.frontmatter.source_id}`,
+          `open source review: ${artifactId(artifact)} for ${displayValue(artifact.frontmatter.source_id)}`,
       ),
     ...findArtifactsByType(artifacts, 'capability')
       .filter(
@@ -579,7 +585,7 @@ const attention = async (ctx: RuntimeContext, command: ParsedCommand): Promise<C
           artifact.frontmatter.status === 'existing' &&
           ((artifact.frontmatter.demo_evidence as unknown[]) ?? []).length === 0,
       )
-      .map((artifact) => `existing capability without demo evidence: ${artifact.frontmatter.id}`),
+      .map((artifact) => `existing capability without demo evidence: ${artifactId(artifact)}`),
     ...findArtifactsByType(artifacts, 'work_item').flatMap((artifact) =>
       closureFindings(artifact, artifacts),
     ),
@@ -624,15 +630,16 @@ const queue = async (ctx: RuntimeContext, command: ParsedCommand): Promise<Comma
     const blockers = [
       ...workGateFindings(work),
       ...openBlockers(work).map(
-        (entry) => `${work.frontmatter.id}: open blocker ${(entry as Record<string, unknown>).id}`,
+        (entry) =>
+          `${artifactId(work)}: open blocker ${displayValue((entry as Record<string, unknown>).id)}`,
       ),
       ...dependencies
         .filter((dep) => !closed.has(String(dep)))
-        .map((dep) => `${work.frontmatter.id}: dependency not closed ${dep}`),
+        .map((dep) => `${artifactId(work)}: dependency not closed ${displayValue(dep)}`),
     ];
     if (sourceReviewOpenForWork(work, sourceReviews))
-      blockers.push(`${work.frontmatter.id}: linked source review is open.`);
-    if (guardrailTriggered) blockers.push(`${work.frontmatter.id}: triggered guardrail exists.`);
+      blockers.push(`${artifactId(work)}: linked source review is open.`);
+    if (guardrailTriggered) blockers.push(`${artifactId(work)}: triggered guardrail exists.`);
     if (blockers.length === 0) {
       ready.push(String(work.frontmatter.id));
     } else {
@@ -719,7 +726,7 @@ const nextForWork = async (ctx: RuntimeContext, command: ParsedCommand): Promise
 };
 
 const lint = async (ctx: RuntimeContext, command: ParsedCommand): Promise<CommandResult> => {
-  const root = await discoverRoot(ctx.cwd, value(command, 'root'), 'lint');
+  const root = discoverRoot(ctx.cwd, value(command, 'root'), 'lint');
   const parseErrors: string[] = [];
   const artifacts: Artifact[] = [];
   const pathFilter = value(command, 'path');
@@ -774,7 +781,7 @@ const lint = async (ctx: RuntimeContext, command: ParsedCommand): Promise<Comman
       for (const ref of (artifact.frontmatter.source_refs as unknown[]) ?? []) {
         if (!sourceIds.has(String((ref as Record<string, unknown>).source_id))) {
           findings.push(
-            `${artifact.frontmatter.id}: missing source ref ${(ref as Record<string, unknown>).source_id}.`,
+            `${artifactId(artifact)}: missing source ref ${displayValue((ref as Record<string, unknown>).source_id)}.`,
           );
         }
       }
@@ -790,14 +797,14 @@ const lint = async (ctx: RuntimeContext, command: ParsedCommand): Promise<Comman
           'continuity',
         ].some((key) => typeof claim?.[key] !== 'string' || String(claim[key]).trim() === '')
       ) {
-        findings.push(`${artifact.frontmatter.id}: capability claim is incomplete.`);
+        findings.push(`${artifactId(artifact)}: capability claim is incomplete.`);
       }
       if (
         artifact.frontmatter.status === 'existing' &&
         ((artifact.frontmatter.demo_evidence as unknown[]) ?? []).length === 0
       ) {
         findings.push(
-          `${artifact.frontmatter.id}: existing capability lacks pass demo evidence or observed baseline.`,
+          `${artifactId(artifact)}: existing capability lacks pass demo evidence or observed baseline.`,
         );
       }
     }
@@ -805,7 +812,7 @@ const lint = async (ctx: RuntimeContext, command: ParsedCommand): Promise<Comman
       for (const ref of (artifact.frontmatter.source_refs as unknown[]) ?? []) {
         if (!sourceIds.has(String((ref as Record<string, unknown>).source_id))) {
           findings.push(
-            `${artifact.frontmatter.id}: missing source ref ${(ref as Record<string, unknown>).source_id}.`,
+            `${artifactId(artifact)}: missing source ref ${displayValue((ref as Record<string, unknown>).source_id)}.`,
           );
         }
       }
@@ -813,13 +820,13 @@ const lint = async (ctx: RuntimeContext, command: ParsedCommand): Promise<Comman
       for (const ref of (delivery?.capability_refs as unknown[]) ?? []) {
         if (!capabilityIds.has(String((ref as Record<string, unknown>).capability_id))) {
           findings.push(
-            `${artifact.frontmatter.id}: missing capability ref ${(ref as Record<string, unknown>).capability_id}.`,
+            `${artifactId(artifact)}: missing capability ref ${displayValue((ref as Record<string, unknown>).capability_id)}.`,
           );
         }
       }
       for (const dependency of (artifact.frontmatter.dependencies as unknown[]) ?? []) {
         if (!workIds.has(String(dependency))) {
-          findings.push(`${artifact.frontmatter.id}: missing dependency ${dependency}.`);
+          findings.push(`${artifactId(artifact)}: missing dependency ${displayValue(dependency)}.`);
         }
       }
       findings.push(...closureFindings(artifact, artifacts));
@@ -847,7 +854,7 @@ const repairFrontmatter = async (
   ctx: RuntimeContext,
   command: ParsedCommand,
 ): Promise<CommandResult> => {
-  const root = await discoverRoot(ctx.cwd, value(command, 'root'), 'repair frontmatter');
+  const root = discoverRoot(ctx.cwd, value(command, 'root'), 'repair frontmatter');
   const targetPath = requireValue(command, 'path');
   const type = requireValue(command, 'type');
   if (!existsSync(path.resolve(root, targetPath))) {
@@ -874,7 +881,7 @@ const repairFrontmatter = async (
         {
           path: artifact.path,
           artifact_type: type,
-          id: String(updated.id ?? updated.project_id ?? ''),
+          id: displayValue(updated.id ?? updated.project_id),
         },
       ],
       warnings: ['Only safe machine metadata was repaired; semantic fields were not invented.'],
@@ -902,7 +909,7 @@ const sourceAdd = async (ctx: RuntimeContext, command: ParsedCommand): Promise<C
   if (duplicate !== undefined && !hasFlag(command, 'allow-duplicate')) {
     return result(command, {
       result: 'blocked',
-      warnings: [`Source path already registered: ${duplicate.frontmatter.id}`],
+      warnings: [`Source path already registered: ${artifactId(duplicate)}`],
       blockers: ['Duplicate source path. Use --allow-duplicate only when intentional.'],
       next_actions: [next('dossier-engineer source list --root .', 'Inspect registered sources.')],
       exitCode: 2,
@@ -921,7 +928,7 @@ const sourceAdd = async (ctx: RuntimeContext, command: ParsedCommand): Promise<C
     hash = await hashFile(absoluteSourcePath);
   }
   const now = isoNow(ctx.now());
-  const id = await makeId(
+  const id = makeId(
     root,
     'SRC',
     title,
@@ -975,7 +982,7 @@ const sourceList = async (ctx: RuntimeContext, command: ParsedCommand): Promise<
     .filter((source) => kindFilter === undefined || source.frontmatter.source_kind === kindFilter)
     .map(
       (source) =>
-        `${source.frontmatter.id} ${source.frontmatter.source_kind} ${source.frontmatter.authority} ${source.frontmatter.source_path}`,
+        `${artifactId(source)} ${displayValue(source.frontmatter.source_kind)} ${displayValue(source.frontmatter.authority)} ${displayValue(source.frontmatter.source_path)}`,
     );
   return result(command, {
     result: 'success',
@@ -1037,7 +1044,7 @@ const sourceRefresh = async (
         );
         changed.push(updated);
       } else {
-        warnings.push(`${source.frontmatter.id}: missing local source ${sourcePath}`);
+        warnings.push(`${artifactId(source)}: missing local source ${sourcePath}`);
       }
       continue;
     }
@@ -1059,10 +1066,10 @@ const sourceRefresh = async (
     changed.push(updated);
     if (previousHash !== null) {
       const impact = impactedBySource(String(source.frontmatter.id), artifacts);
-      const srId = await makeId(
+      const srId = makeId(
         root,
         'SR',
-        `${source.frontmatter.title} review`,
+        `${displayValue(source.frontmatter.title)} review`,
         ctx.randomHex,
         (candidate) => artifactPath('source-review', candidate),
         ctx.now(),
@@ -1188,7 +1195,7 @@ const capabilityCreate = async (
   const sourceId = requireValue(command, 'source');
   if (!findArtifactById(artifacts, sourceId)) throw new UsageError(`Source not found: ${sourceId}`);
   const now = isoNow(ctx.now());
-  const id = await makeId(
+  const id = makeId(
     root,
     'CAP',
     title,
@@ -1337,10 +1344,10 @@ const capabilityDemoRecord = async (
   if (capability === undefined || capability.frontmatter.artifact_type !== 'capability')
     throw new UsageError(`Capability not found: ${id}`);
   const now = isoNow(ctx.now());
-  const demoId = await makeId(
+  const demoId = makeId(
     root,
     'VER',
-    `${capability.frontmatter.title} demo`,
+    `${displayValue(capability.frontmatter.title)} demo`,
     ctx.randomHex,
     (candidate) => `${DOSSIER_DIR}/_embedded/${candidate}`,
     ctx.now(),
@@ -1395,7 +1402,7 @@ const capabilityCheck = async (
         'continuity',
       ].some((key) => typeof claim?.[key] !== 'string' || String(claim[key]).trim() === '')
     ) {
-      findings.push(`${capability.frontmatter.id}: incomplete observable behavior claim.`);
+      findings.push(`${artifactId(capability)}: incomplete observable behavior claim.`);
     }
     if (
       capability.frontmatter.status === 'existing' &&
@@ -1403,7 +1410,7 @@ const capabilityCheck = async (
         (entry) => (entry as Record<string, unknown>).verdict === 'pass',
       ).length === 0
     ) {
-      findings.push(`${capability.frontmatter.id}: existing capability lacks pass demo evidence.`);
+      findings.push(`${artifactId(capability)}: existing capability lacks pass demo evidence.`);
     }
   }
   for (const work of findArtifactsByType(artifacts, 'work_item').filter(
@@ -1438,7 +1445,7 @@ const baselineCreate = async (
   const sourceId = requireValue(command, 'source');
   if (!findArtifactById(artifacts, sourceId)) throw new UsageError(`Source not found: ${sourceId}`);
   const now = isoNow(ctx.now());
-  const id = await makeId(
+  const id = makeId(
     root,
     'BASE',
     title,
@@ -1539,7 +1546,7 @@ const guardrailAdd = async (
   const { root } = await loadRootArtifacts(ctx, command);
   const title = requireValue(command, 'title');
   const now = isoNow(ctx.now());
-  const id = await makeId(
+  const id = makeId(
     root,
     'KILL',
     title,
@@ -1589,12 +1596,12 @@ const guardrailCheck = async (
     (entry) => guardrailId === undefined || entry.frontmatter.id === guardrailId,
   )) {
     if (guardrail.frontmatter.status === 'triggered') {
-      findings.push(`${guardrail.frontmatter.id}: already triggered.`);
+      findings.push(`${artifactId(guardrail)}: already triggered.`);
       continue;
     }
     if (guardrail.frontmatter.status !== 'active') continue;
     findings.push(
-      `${guardrail.frontmatter.id}: needs_manual_evaluation: ${guardrail.frontmatter.condition}`,
+      `${artifactId(guardrail)}: needs_manual_evaluation: ${displayValue(guardrail.frontmatter.condition)}`,
     );
     if (hasFlag(command, 'record')) {
       changed.push(
@@ -1691,7 +1698,7 @@ const workCreate = async (ctx: RuntimeContext, command: ParsedCommand): Promise<
           },
         ];
   const now = isoNow(ctx.now());
-  const id = await makeId(
+  const id = makeId(
     root,
     'WI',
     title,
@@ -1792,7 +1799,7 @@ const workAcceptanceAdd = async (
   if (work === undefined || work.frontmatter.artifact_type !== 'work_item')
     throw new UsageError(`Work item not found: ${workId}`);
   const now = isoNow(ctx.now());
-  const acId = await makeId(
+  const acId = makeId(
     root,
     'AC',
     text,
@@ -1909,7 +1916,7 @@ const createStageEvent = async (
   summary: string,
   sessionId: string | null,
 ): Promise<{ path: string; id: string }> => {
-  const id = await makeId(
+  const id = makeId(
     root,
     'STG',
     `${workId} ${stage} ${event}`,
@@ -2081,7 +2088,7 @@ const workBlockerAdd = async (
   if (work === undefined || work.frontmatter.artifact_type !== 'work_item')
     throw new UsageError(`Work item not found: ${workId}`);
   const now = isoNow(ctx.now());
-  const blockerId = await makeId(
+  const blockerId = makeId(
     root,
     'BLK',
     summary,
@@ -2203,7 +2210,7 @@ const workSplit = async (ctx: RuntimeContext, command: ParsedCommand): Promise<C
   if (sourceWork === undefined || sourceWork.frontmatter.artifact_type !== 'work_item')
     throw new UsageError(`Work item not found: ${sourceWorkId}`);
   const now = isoNow(ctx.now());
-  const id = await makeId(
+  const id = makeId(
     root,
     'WI',
     title,
@@ -2255,21 +2262,19 @@ const previousStageClosed = (work: Artifact, stage: Stage): boolean => {
 const stageGateFindings = (work: Artifact, all: readonly Artifact[], stage: Stage): string[] => {
   const findings: string[] = [];
   if (!previousStageClosed(work, stage))
-    findings.push(`${work.frontmatter.id}: previous stage is not closed for ${stage}.`);
-  if (openBlockers(work).length > 0) findings.push(`${work.frontmatter.id}: open blocker exists.`);
+    findings.push(`${artifactId(work)}: previous stage is not closed for ${stage}.`);
+  if (openBlockers(work).length > 0) findings.push(`${artifactId(work)}: open blocker exists.`);
   if (stage === 'feature-intake') {
     const delivery = work.frontmatter.delivery as Record<string, unknown>;
     if (!isOneOf(delivery.kind, DELIVERY_KINDS))
-      findings.push(`${work.frontmatter.id}: invalid delivery kind.`);
+      findings.push(`${artifactId(work)}: invalid delivery kind.`);
   }
   if (stage === 'spec-compact')
     findings.push(...workGateFindings(work).filter((entry) => !entry.includes('challenge')));
   if (stage === 'plan-slice') {
     const challenge = work.frontmatter.challenge as Record<string, unknown>;
     if (challenge.recorded !== true)
-      findings.push(
-        `${work.frontmatter.id}: challenge must be recorded before plan-slice readiness.`,
-      );
+      findings.push(`${artifactId(work)}: challenge must be recorded before plan-slice readiness.`);
   }
   if (stage === 'implementation') {
     const delivery = work.frontmatter.delivery as Record<string, unknown>;
@@ -2277,19 +2282,19 @@ const stageGateFindings = (work: Artifact, all: readonly Artifact[], stage: Stag
       delivery.kind === 'capability' &&
       !verificationFresh(work, findArtifactsByType(all, 'verification'), 'behavioral-demo')
     ) {
-      findings.push(`${work.frontmatter.id}: fresh behavioral-demo verification required.`);
+      findings.push(`${artifactId(work)}: fresh behavioral-demo verification required.`);
     }
     if (
       delivery.kind === 'capability' &&
       !reviewFresh(work, findArtifactsByType(all, 'review'), 'concept-conformance-reviewer')
     ) {
-      findings.push(`${work.frontmatter.id}: fresh concept-conformance review required.`);
+      findings.push(`${artifactId(work)}: fresh concept-conformance review required.`);
     }
     if (
       delivery.kind === 'capability' &&
       !reviewFresh(work, findArtifactsByType(all, 'review'), 'spec-conformance-reviewer')
     ) {
-      findings.push(`${work.frontmatter.id}: fresh spec-conformance review required.`);
+      findings.push(`${artifactId(work)}: fresh spec-conformance review required.`);
     }
   }
   return findings;
@@ -2505,7 +2510,7 @@ const verifyRun = async (ctx: RuntimeContext, command: ParsedCommand): Promise<C
     });
     const failed = commandResults.find((entry) => entry.exit_code !== 0);
     const verdict = failed === undefined ? 'pass' : 'fail';
-    const id = await makeId(
+    const id = makeId(
       root,
       'VER',
       `${workId} ${profile}`,
@@ -2606,7 +2611,7 @@ const verifyRecord = async (
   const work = findArtifactById(artifacts, workId);
   if (work === undefined || work.frontmatter.artifact_type !== 'work_item')
     throw new UsageError(`Work item not found: ${workId}`);
-  const id = await makeId(
+  const id = makeId(
     root,
     'VER',
     `${workId} ${profile}`,
@@ -2717,7 +2722,7 @@ const reviewRecord = async (
   const work = findArtifactById(artifacts, workId);
   if (work === undefined || work.frontmatter.artifact_type !== 'work_item')
     throw new UsageError(`Work item not found: ${workId}`);
-  const id = await makeId(
+  const id = makeId(
     root,
     'REV',
     `${workId} ${auditClass}`,
@@ -2771,7 +2776,7 @@ const hygieneRun = async (ctx: RuntimeContext, command: ParsedCommand): Promise<
     throw new UsageError(`Work item not found: ${workId}`);
   const findings = closureFindings(work, artifacts);
   const verdict = findings.length === 0 ? 'pass' : 'blocked';
-  const id = await makeId(
+  const id = makeId(
     root,
     'HYG',
     `${workId} ${stage}`,
@@ -2847,7 +2852,7 @@ const changesetCreate = async (
   const { root } = await loadRootArtifacts(ctx, command);
   const scope = requireValue(command, 'scope');
   const summary = requireValue(command, 'summary');
-  const id = await makeId(
+  const id = makeId(
     root,
     'CS',
     summary,
@@ -2931,7 +2936,7 @@ const retroCreate = async (ctx: RuntimeContext, command: ParsedCommand): Promise
   const { root, artifacts } = await loadRootArtifacts(ctx, command);
   const since = requireValue(command, 'since');
   const until = requireValue(command, 'until');
-  const id = await makeId(
+  const id = makeId(
     root,
     'RETRO',
     `${since} ${until}`,

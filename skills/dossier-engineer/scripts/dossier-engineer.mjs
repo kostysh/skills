@@ -30,8 +30,9 @@ var scripts = {
 	"format": "biome format --files-ignore-unknown=true --write src test package.json tsconfig.json vite.config.ts",
 	"format:check": "biome check --files-ignore-unknown=true --formatter-enabled=true --linter-enabled=false --assist-enabled=false src test package.json tsconfig.json vite.config.ts",
 	"lint:biome": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings src test package.json tsconfig.json vite.config.ts",
-	"lint": "pnpm run lint:biome && pnpm run typecheck",
-	"lint:fix": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings --write src test package.json tsconfig.json vite.config.ts && pnpm run typecheck",
+	"lint:eslint": "eslint \"src/**/*.ts\" \"test/**/*.ts\" \"vite.config.ts\"",
+	"lint": "pnpm run lint:biome && pnpm run lint:eslint && pnpm run typecheck",
+	"lint:fix": "biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings --write src test package.json tsconfig.json vite.config.ts && eslint --fix \"src/**/*.ts\" \"test/**/*.ts\" \"vite.config.ts\" && pnpm run typecheck",
 	"pretest": "pnpm run build",
 	"test": "node --experimental-strip-types --test test/*.test.ts",
 	"typecheck": "tsc --noEmit"
@@ -6286,7 +6287,7 @@ var toPosix = (value) => value.split(path.sep).join("/");
 var relativeToRoot = (root, absolutePath) => toPosix(path.relative(root, absolutePath));
 var isUrlLike = (value) => /^[a-z][a-z0-9+.-]*:\/\//i.test(value);
 var dossierPath = (root, ...parts) => path.join(root, DOSSIER_DIR, ...parts);
-var discoverRoot = async (cwd, suppliedRoot, command) => {
+var discoverRoot = (cwd, suppliedRoot, command) => {
 	if (suppliedRoot !== void 0) {
 		const resolved = path.resolve(cwd, suppliedRoot);
 		if (!existsSync(resolved)) throw new RootNotFoundError(`Root does not exist: ${suppliedRoot}`);
@@ -6411,7 +6412,7 @@ var slugify = (value) => {
 	const normalized = value.normalize("NFKD").replace(/\p{Diacritic}/gu, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40).replace(/-+$/g, "");
 	return normalized.length > 0 ? normalized : "item";
 };
-var makeId = async (root, prefix, title, randomHex, relativePathForId, now = /* @__PURE__ */ new Date()) => {
+var makeId = (root, prefix, title, randomHex, relativePathForId, now = /* @__PURE__ */ new Date()) => {
 	const date = now.toISOString().slice(0, 10).replace(/-/g, "");
 	const slug = slugify(title);
 	for (let attempt = 0; attempt < 20; attempt += 1) {
@@ -6440,9 +6441,16 @@ var newArtifactFrontmatter = (artifact_type, id, title, now) => ({
 //#region src/app.ts
 var artifactInfo = (artifact) => ({
 	path: artifact.path,
-	artifact_type: String(artifact.frontmatter.artifact_type ?? ""),
-	id: String(artifact.frontmatter.id ?? artifact.frontmatter.project_id ?? "")
+	artifact_type: displayValue(artifact.frontmatter.artifact_type),
+	id: artifactId(artifact)
 });
+var displayValue = (input, fallback = "") => {
+	if (input === null || input === void 0) return fallback;
+	if (typeof input === "string") return input;
+	if (typeof input === "number" || typeof input === "boolean" || typeof input === "bigint") return String(input);
+	return JSON.stringify(input) ?? fallback;
+};
+var artifactId = (artifact) => displayValue(artifact.frontmatter.id ?? artifact.frontmatter.project_id);
 var value = (command, name) => {
 	const raw = command.options[name];
 	if (Array.isArray(raw)) return raw.at(-1);
@@ -6536,7 +6544,7 @@ var evidencePathsExist = async (root, paths) => {
 	return missing;
 };
 var loadRootArtifacts = async (ctx, command) => {
-	const root = await discoverRoot(ctx.cwd, value(command, "root"), command.words.join(" "));
+	const root = discoverRoot(ctx.cwd, value(command, "root"), command.words.join(" "));
 	return {
 		root,
 		...await loadArtifacts(root)
@@ -6596,12 +6604,12 @@ var workGateFindings = (work) => {
 	const antiClaims = work.frontmatter.anti_claims ?? [];
 	const challenge = work.frontmatter.challenge;
 	if (kind === "capability") {
-		if (!criteria.some((entry) => entry.kind === "behavior")) findings.push(`${work.frontmatter.id}: capability work lacks behavior acceptance criterion.`);
-		if (typeof demonstration?.scenario !== "string" || demonstration.scenario.trim() === "") findings.push(`${work.frontmatter.id}: capability work lacks demonstration scenario.`);
-		if (antiClaims.length === 0) findings.push(`${work.frontmatter.id}: capability work lacks anti-claims.`);
-		if (challenge?.recorded !== true) findings.push(`${work.frontmatter.id}: capability work lacks pre-implementation challenge.`);
+		if (!criteria.some((entry) => entry.kind === "behavior")) findings.push(`${artifactId(work)}: capability work lacks behavior acceptance criterion.`);
+		if (typeof demonstration?.scenario !== "string" || demonstration.scenario.trim() === "") findings.push(`${artifactId(work)}: capability work lacks demonstration scenario.`);
+		if (antiClaims.length === 0) findings.push(`${artifactId(work)}: capability work lacks anti-claims.`);
+		if (challenge?.recorded !== true) findings.push(`${artifactId(work)}: capability work lacks pre-implementation challenge.`);
 	}
-	if (kind === "support" && (typeof delivery?.support_reason !== "string" || delivery.support_reason.trim() === "")) findings.push(`${work.frontmatter.id}: support work lacks support reason.`);
+	if (kind === "support" && (typeof delivery?.support_reason !== "string" || delivery.support_reason.trim() === "")) findings.push(`${artifactId(work)}: support work lacks support reason.`);
 	return findings;
 };
 var reviewFresh = (work, reviews, auditClass) => reviews.some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === work.frontmatter.material_scope_hash);
@@ -6613,8 +6621,8 @@ var closureFindings = (work, all) => {
 	const verifications = findArtifactsByType(all, "verification");
 	const reviews = findArtifactsByType(all, "review");
 	if (stageState?.implementation === "closed" || work.frontmatter.lifecycle === "implemented") {
-		if (delivery?.kind === "capability" && !verificationFresh(work, verifications, "behavioral-demo")) findings.push(`${work.frontmatter.id}: implementation closed without fresh behavioral-demo verification.`);
-		if (delivery?.kind === "capability" && !reviewFresh(work, reviews, "concept-conformance-reviewer")) findings.push(`${work.frontmatter.id}: implementation closed without fresh concept-conformance-reviewer review.`);
+		if (delivery?.kind === "capability" && !verificationFresh(work, verifications, "behavioral-demo")) findings.push(`${artifactId(work)}: implementation closed without fresh behavioral-demo verification.`);
+		if (delivery?.kind === "capability" && !reviewFresh(work, reviews, "concept-conformance-reviewer")) findings.push(`${artifactId(work)}: implementation closed without fresh concept-conformance-reviewer review.`);
 	}
 	return findings;
 };
@@ -6679,7 +6687,7 @@ var genericBlocked = (command, blocker) => result(command, {
 	exitCode: 2
 });
 var init = async (ctx, command) => {
-	const root = await discoverRoot(ctx.cwd, value(command, "root"), "init");
+	const root = discoverRoot(ctx.cwd, value(command, "root"), "init");
 	const projectName = requireValue(command, "project-name");
 	const reviewMode = value(command, "review-mode") ?? "risk_weighted";
 	if (![
@@ -6691,7 +6699,7 @@ var init = async (ctx, command) => {
 	const projectPath = `${DOSSIER_DIR}/project.md`;
 	if (existsSync(path.join(root, projectPath)) && !hasFlag(command, "force")) throw new BlockedError("Dossier project already exists. Use --force only to intentionally rewrite project metadata.");
 	const now = isoNow(ctx.now());
-	const projectId = await makeId(root, "PRJ", projectName, ctx.randomHex, () => projectPath, ctx.now());
+	const projectId = makeId(root, "PRJ", projectName, ctx.randomHex, () => projectPath, ctx.now());
 	await writeArtifactFile(root, projectPath, {
 		artifact_type: "dossier_project",
 		schema_version: "2.2",
@@ -6736,11 +6744,11 @@ var status = async (ctx, command) => {
 	const capabilitySummary = /* @__PURE__ */ new Map();
 	const lifecycleSummary = /* @__PURE__ */ new Map();
 	for (const capability of capabilities) {
-		const key = String(capability.frontmatter.status ?? "unknown");
+		const key = displayValue(capability.frontmatter.status, "unknown");
 		capabilitySummary.set(key, (capabilitySummary.get(key) ?? 0) + 1);
 	}
 	for (const work of workItems) {
-		const key = String(work.frontmatter.lifecycle ?? "unknown");
+		const key = displayValue(work.frontmatter.lifecycle, "unknown");
 		lifecycleSummary.set(key, (lifecycleSummary.get(key) ?? 0) + 1);
 	}
 	const closureViolations = workItems.flatMap((work) => closureFindings(work, artifacts));
@@ -6765,9 +6773,9 @@ var attention = async (ctx, command) => {
 	const { artifacts, parseErrors } = await loadRootArtifacts(ctx, command);
 	const findings = [
 		...parseErrors.map((entry) => `invalid artifact: ${entry}`),
-		...findArtifactsByType(artifacts, "guardrail").filter((artifact) => artifact.frontmatter.status === "triggered").map((artifact) => `triggered guardrail: ${artifact.frontmatter.id}`),
-		...findArtifactsByType(artifacts, "source_review").filter((artifact) => artifact.frontmatter.status === "open").map((artifact) => `open source review: ${artifact.frontmatter.id} for ${artifact.frontmatter.source_id}`),
-		...findArtifactsByType(artifacts, "capability").filter((artifact) => artifact.frontmatter.status === "existing" && (artifact.frontmatter.demo_evidence ?? []).length === 0).map((artifact) => `existing capability without demo evidence: ${artifact.frontmatter.id}`),
+		...findArtifactsByType(artifacts, "guardrail").filter((artifact) => artifact.frontmatter.status === "triggered").map((artifact) => `triggered guardrail: ${artifactId(artifact)}`),
+		...findArtifactsByType(artifacts, "source_review").filter((artifact) => artifact.frontmatter.status === "open").map((artifact) => `open source review: ${artifactId(artifact)} for ${displayValue(artifact.frontmatter.source_id)}`),
+		...findArtifactsByType(artifacts, "capability").filter((artifact) => artifact.frontmatter.status === "existing" && (artifact.frontmatter.demo_evidence ?? []).length === 0).map((artifact) => `existing capability without demo evidence: ${artifactId(artifact)}`),
 		...findArtifactsByType(artifacts, "work_item").flatMap((artifact) => closureFindings(artifact, artifacts))
 	];
 	return result(command, {
@@ -6797,11 +6805,11 @@ var queue = async (ctx, command) => {
 		const dependencies = work.frontmatter.dependencies ?? [];
 		const blockers = [
 			...workGateFindings(work),
-			...openBlockers(work).map((entry) => `${work.frontmatter.id}: open blocker ${entry.id}`),
-			...dependencies.filter((dep) => !closed.has(String(dep))).map((dep) => `${work.frontmatter.id}: dependency not closed ${dep}`)
+			...openBlockers(work).map((entry) => `${artifactId(work)}: open blocker ${displayValue(entry.id)}`),
+			...dependencies.filter((dep) => !closed.has(String(dep))).map((dep) => `${artifactId(work)}: dependency not closed ${displayValue(dep)}`)
 		];
-		if (sourceReviewOpenForWork(work, sourceReviews)) blockers.push(`${work.frontmatter.id}: linked source review is open.`);
-		if (guardrailTriggered) blockers.push(`${work.frontmatter.id}: triggered guardrail exists.`);
+		if (sourceReviewOpenForWork(work, sourceReviews)) blockers.push(`${artifactId(work)}: linked source review is open.`);
+		if (guardrailTriggered) blockers.push(`${artifactId(work)}: triggered guardrail exists.`);
 		if (blockers.length === 0) ready.push(String(work.frontmatter.id));
 		else blocked.push(...blockers);
 	}
@@ -6845,7 +6853,7 @@ var nextForWork = async (ctx, command) => {
 	});
 };
 var lint = async (ctx, command) => {
-	const root = await discoverRoot(ctx.cwd, value(command, "root"), "lint");
+	const root = discoverRoot(ctx.cwd, value(command, "root"), "lint");
 	const parseErrors = [];
 	const artifacts = [];
 	const pathFilter = value(command, "path");
@@ -6875,7 +6883,7 @@ var lint = async (ctx, command) => {
 		const id = artifact.frontmatter.id ?? artifact.frontmatter.project_id;
 		if (expected !== "dossier_project" && typeof id === "string" && !artifact.path.endsWith(`${id}.md`)) findings.push(`${artifact.path}: filename must match id ${id}.`);
 		if (artifact.frontmatter.artifact_type === "capability") {
-			for (const ref of artifact.frontmatter.source_refs ?? []) if (!sourceIds.has(String(ref.source_id))) findings.push(`${artifact.frontmatter.id}: missing source ref ${ref.source_id}.`);
+			for (const ref of artifact.frontmatter.source_refs ?? []) if (!sourceIds.has(String(ref.source_id))) findings.push(`${artifactId(artifact)}: missing source ref ${displayValue(ref.source_id)}.`);
 			const claim = artifact.frontmatter.claim;
 			if (artifact.frontmatter.status !== "retired" && [
 				"actor",
@@ -6884,14 +6892,14 @@ var lint = async (ctx, command) => {
 				"system_response",
 				"state_change",
 				"continuity"
-			].some((key) => typeof claim?.[key] !== "string" || String(claim[key]).trim() === "")) findings.push(`${artifact.frontmatter.id}: capability claim is incomplete.`);
-			if (artifact.frontmatter.status === "existing" && (artifact.frontmatter.demo_evidence ?? []).length === 0) findings.push(`${artifact.frontmatter.id}: existing capability lacks pass demo evidence or observed baseline.`);
+			].some((key) => typeof claim?.[key] !== "string" || String(claim[key]).trim() === "")) findings.push(`${artifactId(artifact)}: capability claim is incomplete.`);
+			if (artifact.frontmatter.status === "existing" && (artifact.frontmatter.demo_evidence ?? []).length === 0) findings.push(`${artifactId(artifact)}: existing capability lacks pass demo evidence or observed baseline.`);
 		}
 		if (artifact.frontmatter.artifact_type === "work_item") {
-			for (const ref of artifact.frontmatter.source_refs ?? []) if (!sourceIds.has(String(ref.source_id))) findings.push(`${artifact.frontmatter.id}: missing source ref ${ref.source_id}.`);
+			for (const ref of artifact.frontmatter.source_refs ?? []) if (!sourceIds.has(String(ref.source_id))) findings.push(`${artifactId(artifact)}: missing source ref ${displayValue(ref.source_id)}.`);
 			const delivery = artifact.frontmatter.delivery;
-			for (const ref of delivery?.capability_refs ?? []) if (!capabilityIds.has(String(ref.capability_id))) findings.push(`${artifact.frontmatter.id}: missing capability ref ${ref.capability_id}.`);
-			for (const dependency of artifact.frontmatter.dependencies ?? []) if (!workIds.has(String(dependency))) findings.push(`${artifact.frontmatter.id}: missing dependency ${dependency}.`);
+			for (const ref of delivery?.capability_refs ?? []) if (!capabilityIds.has(String(ref.capability_id))) findings.push(`${artifactId(artifact)}: missing capability ref ${displayValue(ref.capability_id)}.`);
+			for (const dependency of artifact.frontmatter.dependencies ?? []) if (!workIds.has(String(dependency))) findings.push(`${artifactId(artifact)}: missing dependency ${displayValue(dependency)}.`);
 			findings.push(...closureFindings(artifact, artifacts));
 		}
 	}
@@ -6904,7 +6912,7 @@ var lint = async (ctx, command) => {
 	});
 };
 var repairFrontmatter = async (ctx, command) => {
-	const root = await discoverRoot(ctx.cwd, value(command, "root"), "repair frontmatter");
+	const root = discoverRoot(ctx.cwd, value(command, "root"), "repair frontmatter");
 	const targetPath = requireValue(command, "path");
 	const type = requireValue(command, "type");
 	if (!existsSync(path.resolve(root, targetPath))) throw new UsageError(`Artifact path does not exist: ${targetPath}`);
@@ -6926,7 +6934,7 @@ var repairFrontmatter = async (ctx, command) => {
 			changed_artifacts: [{
 				path: artifact.path,
 				artifact_type: type,
-				id: String(updated.id ?? updated.project_id ?? "")
+				id: displayValue(updated.id ?? updated.project_id)
 			}],
 			warnings: ["Only safe machine metadata was repaired; semantic fields were not invented."],
 			next_actions: [next(`dossier-engineer lint --path ${artifact.path}`, "Validate the repaired artifact.")]
@@ -6947,7 +6955,7 @@ var sourceAdd = async (ctx, command) => {
 	const duplicate = findArtifactsByType(artifacts, "source").find((artifact) => artifact.frontmatter.source_path === sourcePath);
 	if (duplicate !== void 0 && !hasFlag(command, "allow-duplicate")) return result(command, {
 		result: "blocked",
-		warnings: [`Source path already registered: ${duplicate.frontmatter.id}`],
+		warnings: [`Source path already registered: ${artifactId(duplicate)}`],
 		blockers: ["Duplicate source path. Use --allow-duplicate only when intentional."],
 		next_actions: [next("dossier-engineer source list --root .", "Inspect registered sources.")],
 		exitCode: 2
@@ -6961,7 +6969,7 @@ var sourceAdd = async (ctx, command) => {
 		hash = await hashFile(absoluteSourcePath);
 	}
 	const now = isoNow(ctx.now());
-	const id = await makeId(root, "SRC", title, ctx.randomHex, (candidate) => artifactPath("source", candidate), ctx.now());
+	const id = makeId(root, "SRC", title, ctx.randomHex, (candidate) => artifactPath("source", candidate), ctx.now());
 	const frontmatter = {
 		artifact_type: "source",
 		schema_version: "2.2",
@@ -6999,7 +7007,7 @@ var sourceList = async (ctx, command) => {
 	const { artifacts } = await loadRootArtifacts(ctx, command);
 	const statusFilter = value(command, "status");
 	const kindFilter = value(command, "kind");
-	const findings = findArtifactsByType(artifacts, "source").filter((source) => statusFilter === void 0 || source.frontmatter.status === statusFilter).filter((source) => kindFilter === void 0 || source.frontmatter.source_kind === kindFilter).map((source) => `${source.frontmatter.id} ${source.frontmatter.source_kind} ${source.frontmatter.authority} ${source.frontmatter.source_path}`);
+	const findings = findArtifactsByType(artifacts, "source").filter((source) => statusFilter === void 0 || source.frontmatter.status === statusFilter).filter((source) => kindFilter === void 0 || source.frontmatter.source_kind === kindFilter).map((source) => `${artifactId(source)} ${displayValue(source.frontmatter.source_kind)} ${displayValue(source.frontmatter.authority)} ${displayValue(source.frontmatter.source_path)}`);
 	return result(command, {
 		result: "success",
 		summary: findings.length === 0 ? ["No sources."] : findings,
@@ -7038,7 +7046,7 @@ var sourceRefresh = async (ctx, command) => {
 					status: "missing"
 				}, now);
 				changed.push(updated);
-			} else warnings.push(`${source.frontmatter.id}: missing local source ${sourcePath}`);
+			} else warnings.push(`${artifactId(source)}: missing local source ${sourcePath}`);
 			continue;
 		}
 		const currentHash = await hashFile(absolute);
@@ -7057,7 +7065,7 @@ var sourceRefresh = async (ctx, command) => {
 		changed.push(updated);
 		if (previousHash !== null) {
 			const impact = impactedBySource(String(source.frontmatter.id), artifacts);
-			const srId = await makeId(root, "SR", `${source.frontmatter.title} review`, ctx.randomHex, (candidate) => artifactPath("source-review", candidate), ctx.now());
+			const srId = makeId(root, "SR", `${displayValue(source.frontmatter.title)} review`, ctx.randomHex, (candidate) => artifactPath("source-review", candidate), ctx.now());
 			const reviewPath = artifactPath("source-review", srId);
 			await writeArtifactFile(root, reviewPath, {
 				artifact_type: "source_review",
@@ -7140,7 +7148,7 @@ var capabilityCreate = async (ctx, command) => {
 	const sourceId = requireValue(command, "source");
 	if (!findArtifactById(artifacts, sourceId)) throw new UsageError(`Source not found: ${sourceId}`);
 	const now = isoNow(ctx.now());
-	const id = await makeId(root, "CAP", title, ctx.randomHex, (candidate) => artifactPath("capability", candidate), ctx.now());
+	const id = makeId(root, "CAP", title, ctx.randomHex, (candidate) => artifactPath("capability", candidate), ctx.now());
 	const frontmatter = {
 		...newArtifactFrontmatter("capability", id, title, now),
 		status,
@@ -7235,7 +7243,7 @@ var capabilityDemoRecord = async (ctx, command) => {
 	const capability = findArtifactById(artifacts, id);
 	if (capability === void 0 || capability.frontmatter.artifact_type !== "capability") throw new UsageError(`Capability not found: ${id}`);
 	const now = isoNow(ctx.now());
-	const demoId = await makeId(root, "VER", `${capability.frontmatter.title} demo`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/_embedded/${candidate}`, ctx.now());
+	const demoId = makeId(root, "VER", `${displayValue(capability.frontmatter.title)} demo`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/_embedded/${candidate}`, ctx.now());
 	const demoEvidence = [...capability.frontmatter.demo_evidence ?? [], {
 		id: demoId,
 		verdict,
@@ -7269,8 +7277,8 @@ var capabilityCheck = async (ctx, command) => {
 			"system_response",
 			"state_change",
 			"continuity"
-		].some((key) => typeof claim?.[key] !== "string" || String(claim[key]).trim() === "")) findings.push(`${capability.frontmatter.id}: incomplete observable behavior claim.`);
-		if (capability.frontmatter.status === "existing" && (capability.frontmatter.demo_evidence ?? []).filter((entry) => entry.verdict === "pass").length === 0) findings.push(`${capability.frontmatter.id}: existing capability lacks pass demo evidence.`);
+		].some((key) => typeof claim?.[key] !== "string" || String(claim[key]).trim() === "")) findings.push(`${artifactId(capability)}: incomplete observable behavior claim.`);
+		if (capability.frontmatter.status === "existing" && (capability.frontmatter.demo_evidence ?? []).filter((entry) => entry.verdict === "pass").length === 0) findings.push(`${artifactId(capability)}: existing capability lacks pass demo evidence.`);
 	}
 	for (const work of findArtifactsByType(artifacts, "work_item").filter((entry) => workFilter === void 0 || entry.frontmatter.id === workFilter)) findings.push(...workGateFindings(work));
 	return result(command, {
@@ -7288,7 +7296,7 @@ var baselineCreate = async (ctx, command) => {
 	const sourceId = requireValue(command, "source");
 	if (!findArtifactById(artifacts, sourceId)) throw new UsageError(`Source not found: ${sourceId}`);
 	const now = isoNow(ctx.now());
-	const id = await makeId(root, "BASE", title, ctx.randomHex, (candidate) => artifactPath("baseline", candidate), ctx.now());
+	const id = makeId(root, "BASE", title, ctx.randomHex, (candidate) => artifactPath("baseline", candidate), ctx.now());
 	const frontmatter = {
 		...newArtifactFrontmatter("baseline", id, title, now),
 		mode,
@@ -7349,7 +7357,7 @@ var guardrailAdd = async (ctx, command) => {
 	const { root } = await loadRootArtifacts(ctx, command);
 	const title = requireValue(command, "title");
 	const now = isoNow(ctx.now());
-	const id = await makeId(root, "KILL", title, ctx.randomHex, (candidate) => artifactPath("guardrail", candidate), ctx.now());
+	const id = makeId(root, "KILL", title, ctx.randomHex, (candidate) => artifactPath("guardrail", candidate), ctx.now());
 	const frontmatter = {
 		...newArtifactFrontmatter("guardrail", id, title, now),
 		condition: requireValue(command, "condition"),
@@ -7388,11 +7396,11 @@ var guardrailCheck = async (ctx, command) => {
 	const now = isoNow(ctx.now());
 	for (const guardrail of findArtifactsByType(artifacts, "guardrail").filter((entry) => guardrailId === void 0 || entry.frontmatter.id === guardrailId)) {
 		if (guardrail.frontmatter.status === "triggered") {
-			findings.push(`${guardrail.frontmatter.id}: already triggered.`);
+			findings.push(`${artifactId(guardrail)}: already triggered.`);
 			continue;
 		}
 		if (guardrail.frontmatter.status !== "active") continue;
-		findings.push(`${guardrail.frontmatter.id}: needs_manual_evaluation: ${guardrail.frontmatter.condition}`);
+		findings.push(`${artifactId(guardrail)}: needs_manual_evaluation: ${displayValue(guardrail.frontmatter.condition)}`);
 		if (hasFlag(command, "record")) changed.push(await updateArtifact(root, guardrail, {
 			...guardrail.frontmatter,
 			status: "triggered",
@@ -7452,7 +7460,7 @@ var workCreate = async (ctx, command) => {
 		relation: relation ?? (delivery === "support" ? "supports" : "introduces")
 	}];
 	const now = isoNow(ctx.now());
-	const id = await makeId(root, "WI", title, ctx.randomHex, (candidate) => artifactPath("work", candidate), ctx.now());
+	const id = makeId(root, "WI", title, ctx.randomHex, (candidate) => artifactPath("work", candidate), ctx.now());
 	const frontmatter = {
 		...newArtifactFrontmatter("work_item", id, title, now),
 		type,
@@ -7539,7 +7547,7 @@ var workAcceptanceAdd = async (ctx, command) => {
 	const work = findArtifactById(artifacts, workId);
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
 	const now = isoNow(ctx.now());
-	const acId = await makeId(root, "AC", text, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/_embedded/${candidate}`, ctx.now());
+	const acId = makeId(root, "AC", text, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/_embedded/${candidate}`, ctx.now());
 	const acceptance = work.frontmatter.acceptance;
 	const criteria = [...acceptance.criteria ?? [], {
 		id: acId,
@@ -7606,7 +7614,7 @@ var workAntiClaimAdd = async (ctx, command) => {
 	});
 };
 var createStageEvent = async (root, ctx, workId, stage, event, summary, sessionId) => {
-	const id = await makeId(root, "STG", `${workId} ${stage} ${event}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/stages/${workId}/${candidate}.md`, ctx.now());
+	const id = makeId(root, "STG", `${workId} ${stage} ${event}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/stages/${workId}/${candidate}.md`, ctx.now());
 	const relativePath = `${DOSSIER_DIR}/stages/${workId}/${id}.md`;
 	await writeArtifactFile(root, relativePath, {
 		artifact_type: "stage_event",
@@ -7724,7 +7732,7 @@ var workBlockerAdd = async (ctx, command) => {
 	const work = findArtifactById(artifacts, workId);
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
 	const now = isoNow(ctx.now());
-	const blockerId = await makeId(root, "BLK", summary, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/_embedded/${candidate}`, ctx.now());
+	const blockerId = makeId(root, "BLK", summary, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/_embedded/${candidate}`, ctx.now());
 	const blockers = [...work.frontmatter.blockers ?? [], {
 		id: blockerId,
 		kind,
@@ -7812,7 +7820,7 @@ var workSplit = async (ctx, command) => {
 	const sourceWork = findArtifactById(artifacts, sourceWorkId);
 	if (sourceWork === void 0 || sourceWork.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${sourceWorkId}`);
 	const now = isoNow(ctx.now());
-	const id = await makeId(root, "WI", title, ctx.randomHex, (candidate) => artifactPath("work", candidate), ctx.now());
+	const id = makeId(root, "WI", title, ctx.randomHex, (candidate) => artifactPath("work", candidate), ctx.now());
 	const frontmatter = {
 		...sourceWork.frontmatter,
 		id,
@@ -7855,21 +7863,21 @@ var previousStageClosed = (work, stage) => {
 };
 var stageGateFindings = (work, all, stage) => {
 	const findings = [];
-	if (!previousStageClosed(work, stage)) findings.push(`${work.frontmatter.id}: previous stage is not closed for ${stage}.`);
-	if (openBlockers(work).length > 0) findings.push(`${work.frontmatter.id}: open blocker exists.`);
+	if (!previousStageClosed(work, stage)) findings.push(`${artifactId(work)}: previous stage is not closed for ${stage}.`);
+	if (openBlockers(work).length > 0) findings.push(`${artifactId(work)}: open blocker exists.`);
 	if (stage === "feature-intake") {
 		const delivery = work.frontmatter.delivery;
-		if (!isOneOf(delivery.kind, DELIVERY_KINDS)) findings.push(`${work.frontmatter.id}: invalid delivery kind.`);
+		if (!isOneOf(delivery.kind, DELIVERY_KINDS)) findings.push(`${artifactId(work)}: invalid delivery kind.`);
 	}
 	if (stage === "spec-compact") findings.push(...workGateFindings(work).filter((entry) => !entry.includes("challenge")));
 	if (stage === "plan-slice") {
-		if (work.frontmatter.challenge.recorded !== true) findings.push(`${work.frontmatter.id}: challenge must be recorded before plan-slice readiness.`);
+		if (work.frontmatter.challenge.recorded !== true) findings.push(`${artifactId(work)}: challenge must be recorded before plan-slice readiness.`);
 	}
 	if (stage === "implementation") {
 		const delivery = work.frontmatter.delivery;
-		if (delivery.kind === "capability" && !verificationFresh(work, findArtifactsByType(all, "verification"), "behavioral-demo")) findings.push(`${work.frontmatter.id}: fresh behavioral-demo verification required.`);
-		if (delivery.kind === "capability" && !reviewFresh(work, findArtifactsByType(all, "review"), "concept-conformance-reviewer")) findings.push(`${work.frontmatter.id}: fresh concept-conformance review required.`);
-		if (delivery.kind === "capability" && !reviewFresh(work, findArtifactsByType(all, "review"), "spec-conformance-reviewer")) findings.push(`${work.frontmatter.id}: fresh spec-conformance review required.`);
+		if (delivery.kind === "capability" && !verificationFresh(work, findArtifactsByType(all, "verification"), "behavioral-demo")) findings.push(`${artifactId(work)}: fresh behavioral-demo verification required.`);
+		if (delivery.kind === "capability" && !reviewFresh(work, findArtifactsByType(all, "review"), "concept-conformance-reviewer")) findings.push(`${artifactId(work)}: fresh concept-conformance review required.`);
+		if (delivery.kind === "capability" && !reviewFresh(work, findArtifactsByType(all, "review"), "spec-conformance-reviewer")) findings.push(`${artifactId(work)}: fresh spec-conformance review required.`);
 	}
 	return findings;
 };
@@ -8004,7 +8012,7 @@ var verifyRun = async (ctx, command) => {
 		});
 		const failed = commandResults.find((entry) => entry.exit_code !== 0);
 		const verdict = failed === void 0 ? "pass" : "fail";
-		const id = await makeId(root, "VER", `${workId} ${profile}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/verification/${workId}/${candidate}.md`, ctx.now());
+		const id = makeId(root, "VER", `${workId} ${profile}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/verification/${workId}/${candidate}.md`, ctx.now());
 		const relativePath = `${DOSSIER_DIR}/verification/${workId}/${id}.md`;
 		await writeArtifactFile(root, relativePath, {
 			artifact_type: "verification",
@@ -8066,7 +8074,7 @@ var verifyRecord = async (ctx, command) => {
 	if (missing.length > 0) throw new UsageError(`Evidence path does not exist: ${missing.join(", ")}`);
 	const work = findArtifactById(artifacts, workId);
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
-	const id = await makeId(root, "VER", `${workId} ${profile}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/verification/${workId}/${candidate}.md`, ctx.now());
+	const id = makeId(root, "VER", `${workId} ${profile}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/verification/${workId}/${candidate}.md`, ctx.now());
 	const relativePath = `${DOSSIER_DIR}/verification/${workId}/${id}.md`;
 	await writeArtifactFile(root, relativePath, {
 		artifact_type: "verification",
@@ -8140,7 +8148,7 @@ var reviewRecord = async (ctx, command) => {
 	const reviewer = requireValue(command, "reviewer");
 	const work = findArtifactById(artifacts, workId);
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
-	const id = await makeId(root, "REV", `${workId} ${auditClass}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/reviews/${workId}/${candidate}.md`, ctx.now());
+	const id = makeId(root, "REV", `${workId} ${auditClass}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/reviews/${workId}/${candidate}.md`, ctx.now());
 	const relativePath = `${DOSSIER_DIR}/reviews/${workId}/${id}.md`;
 	await writeArtifactFile(root, relativePath, {
 		artifact_type: "review",
@@ -8178,7 +8186,7 @@ var hygieneRun = async (ctx, command) => {
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
 	const findings = closureFindings(work, artifacts);
 	const verdict = findings.length === 0 ? "pass" : "blocked";
-	const id = await makeId(root, "HYG", `${workId} ${stage}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/hygiene/${workId}/${candidate}.md`, ctx.now());
+	const id = makeId(root, "HYG", `${workId} ${stage}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/hygiene/${workId}/${candidate}.md`, ctx.now());
 	const relativePath = `${DOSSIER_DIR}/hygiene/${workId}/${id}.md`;
 	await writeArtifactFile(root, relativePath, {
 		artifact_type: "hygiene",
@@ -8229,7 +8237,7 @@ var changesetCreate = async (ctx, command) => {
 	const { root } = await loadRootArtifacts(ctx, command);
 	const scope = requireValue(command, "scope");
 	const summary = requireValue(command, "summary");
-	const id = await makeId(root, "CS", summary, ctx.randomHex, (candidate) => artifactPath("changeset", candidate), ctx.now());
+	const id = makeId(root, "CS", summary, ctx.randomHex, (candidate) => artifactPath("changeset", candidate), ctx.now());
 	const relativePath = artifactPath("changeset", id);
 	await writeArtifactFile(root, relativePath, {
 		artifact_type: "changeset",
@@ -8301,7 +8309,7 @@ var retroCreate = async (ctx, command) => {
 	const { root, artifacts } = await loadRootArtifacts(ctx, command);
 	const since = requireValue(command, "since");
 	const until = requireValue(command, "until");
-	const id = await makeId(root, "RETRO", `${since} ${until}`, ctx.randomHex, (candidate) => artifactPath("retro", candidate), ctx.now());
+	const id = makeId(root, "RETRO", `${since} ${until}`, ctx.randomHex, (candidate) => artifactPath("retro", candidate), ctx.now());
 	const relativePath = artifactPath("retro", id);
 	await writeArtifactFile(root, relativePath, {
 		artifact_type: "retrospective_report",

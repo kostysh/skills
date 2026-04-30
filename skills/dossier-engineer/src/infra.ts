@@ -30,11 +30,11 @@ export const isUrlLike = (value: string): boolean => /^[a-z][a-z0-9+.-]*:\/\//i.
 export const dossierPath = (root: string, ...parts: string[]): string =>
   path.join(root, DOSSIER_DIR, ...parts);
 
-export const discoverRoot = async (
+export const discoverRoot = (
   cwd: string,
   suppliedRoot: string | undefined,
   command: string,
-): Promise<string> => {
+): string => {
   if (suppliedRoot !== undefined) {
     const resolved = path.resolve(cwd, suppliedRoot);
     if (!existsSync(resolved)) {
@@ -242,14 +242,14 @@ export const slugify = (value: string): string => {
   return normalized.length > 0 ? normalized : 'item';
 };
 
-export const makeId = async (
+export const makeId = (
   root: string,
   prefix: string,
   title: string,
   randomHex: (bytes: number) => string,
   relativePathForId: (id: string) => string,
   now = new Date(),
-): Promise<string> => {
+): string => {
   const date = now.toISOString().slice(0, 10).replace(/-/g, '');
   const slug = slugify(title);
   for (let attempt = 0; attempt < 20; attempt += 1) {

@@ -15,7 +15,7 @@ const run = (args: readonly string[], cwd: string) =>
 
 const tempProject = async () => mkdtemp(path.join(os.tmpdir(), 'dossier-engineer-'));
 
-test('init creates markdown-only dossier project and directories', async () => {
+void test('init creates markdown-only dossier project and directories', async () => {
   const root = await tempProject();
   const result = run(['init', '--root', root, '--project-name', 'Example'], root);
   assert.equal(result.status, 0, result.stdout + result.stderr);
@@ -25,7 +25,7 @@ test('init creates markdown-only dossier project and directories', async () => {
   assert.doesNotMatch(project, /state\.json/);
 });
 
-test('scaffold-generating commands remind agents to complete artifact bodies', async () => {
+void test('scaffold-generating commands remind agents to complete artifact bodies', async () => {
   const root = await tempProject();
   await writeFile(path.join(root, 'concept.md'), '# Concept\n\nObservable thing.\n', 'utf8');
   assert.equal(run(['init', '--root', root, '--project-name', 'Body Gate'], root).status, 0);
@@ -57,7 +57,7 @@ test('scaffold-generating commands remind agents to complete artifact bodies', a
   );
 });
 
-test('source, capability, work, verification, review, stage and hygiene flow is observable', async () => {
+void test('source, capability, work, verification, review, stage and hygiene flow is observable', async () => {
   const root = await tempProject();
   await writeFile(path.join(root, 'concept.md'), '# Concept\n\nObservable thing.\n', 'utf8');
   await writeFile(path.join(root, 'evidence.md'), 'Observed behavior.\n', 'utf8');
@@ -489,7 +489,7 @@ test('source, capability, work, verification, review, stage and hygiene flow is 
   assert.equal(run(['lint', '--root', root], root).status, 0);
 });
 
-test('lint rejects forbidden canonical JSON state', async () => {
+void test('lint rejects forbidden canonical JSON state', async () => {
   const root = await tempProject();
   assert.equal(run(['init', '--root', root, '--project-name', 'Forbidden'], root).status, 0);
   await writeFile(path.join(root, 'docs/dossier/state.json'), '{}\n', 'utf8');
