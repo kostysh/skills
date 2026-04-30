@@ -36,6 +36,12 @@ Next actions:
 
 The agent must read `Next actions` and perform the first applicable protocol-safe step.
 
+When a command creates a source, capability, baseline, guardrail, work item,
+review, verification, or changeset scaffold, runtime also returns a body
+completion reminder in `Next actions`. That reminder does not validate the body
+and does not replace the Body Completion Gate; it makes the required manual body
+completion visible immediately after scaffold creation.
+
 ## 2. Project commands
 
 ### `init`

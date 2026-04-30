@@ -6443,15 +6443,6 @@ var artifactInfo = (artifact) => ({
 	artifact_type: String(artifact.frontmatter.artifact_type ?? ""),
 	id: String(artifact.frontmatter.id ?? artifact.frontmatter.project_id ?? "")
 });
-var result = (command, patch) => ({
-	command: command.raw,
-	created_artifacts: [],
-	changed_artifacts: [],
-	warnings: [],
-	blockers: [],
-	next_actions: [],
-	...patch
-});
 var value = (command, name) => {
 	const raw = command.options[name];
 	if (Array.isArray(raw)) return raw.at(-1);
@@ -6481,6 +6472,38 @@ var body = (title, sections) => [
 var next = (command, reason) => ({
 	command,
 	reason
+});
+var BODY_COMPLETION_ARTIFACT_TYPES = new Set([
+	"source",
+	"capability",
+	"baseline",
+	"guardrail",
+	"work_item",
+	"review",
+	"verification",
+	"changeset"
+]);
+var bodyCompletionNextAction = (createdArtifacts) => {
+	const paths = createdArtifacts.filter((artifact) => BODY_COMPLETION_ARTIFACT_TYPES.has(artifact.artifact_type ?? "")).map((artifact) => artifact.path);
+	if (paths.length === 0) return void 0;
+	return next(`edit body sections in ${paths.length === 1 ? paths[0] : `${paths.length} created dossier artifacts`}`, "Complete the human-readable body before stage close, handoff, PR preparation, or final response.");
+};
+var withBodyCompletionReminder = (patch) => {
+	const reminder = bodyCompletionNextAction(patch.created_artifacts ?? []);
+	if (reminder === void 0) return patch;
+	return {
+		...patch,
+		next_actions: [...patch.next_actions ?? [], reminder]
+	};
+};
+var result = (command, patch) => ({
+	command: command.raw,
+	created_artifacts: [],
+	changed_artifacts: [],
+	warnings: [],
+	blockers: [],
+	next_actions: [],
+	...withBodyCompletionReminder(patch)
 });
 var sourceRef = (sourceId, anchor) => ({
 	source_id: sourceId,

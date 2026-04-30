@@ -214,6 +214,10 @@ supporting:
     source: docs/logs/implementation-log-20260430-5.md
     target: docs/logs/implementation-log-20260430-5.md
     description: Implementation log for English example assets and link updates.
+  - id: implementation-log-20260430-6
+    source: docs/logs/implementation-log-20260430-6.md
+    target: docs/logs/implementation-log-20260430-6.md
+    description: Implementation log for scaffold body completion reminders.
   - id: ru-workflow-reference
     source: docs/ru/references/workflow.ru.md
     target: docs/ru/references/workflow.ru.md

@@ -15,7 +15,7 @@ metadata:
   canonical_storage: markdown-yaml-frontmatter
   runtime: dossier-engineer
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 701d6c407faa33f4975fc125b8813b6d52978bc2da0a081841845d43cbf67a9b
+  skillforge-source-hash: 36373c493b285d94f62769db33026cc5dcc2c7cdd24a546fa144feb5ebca7014
 ---
 
 # dossier-engineer

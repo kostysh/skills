@@ -17,3 +17,4 @@ Historical Russian reference documents are stored in `docs/ru/references/`.
 - `docs/logs/implementation-log-20260430-3.md` — added the Body Completion Gate and required body-completion reference.
 - `docs/logs/implementation-log-20260430-4.md` — added Dossier Language Policy and connected it to body completion.
 - `docs/logs/implementation-log-20260430-5.md` — translated example assets to English and updated asset links.
+- `docs/logs/implementation-log-20260430-6.md` — added runtime next-action reminders for scaffold body completion.

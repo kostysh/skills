@@ -1,14 +1,14 @@
 {
-	"compilerOptions": {
-		"allowImportingTsExtensions": true,
-		"module": "nodenext",
-		"moduleResolution": "nodenext",
-		"noEmit": true,
-		"resolveJsonModule": true,
-		"strict": true,
-		"target": "ES2024",
-		"types": ["node"],
-		"verbatimModuleSyntax": true
-	},
-	"include": ["src/**/*.ts", "test/**/*.ts", "vite.config.ts"]
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "ES2024",
+    "types": ["node"],
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "vite.config.ts"]
 }

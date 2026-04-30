@@ -24,6 +24,7 @@ Generated from `skill.yaml`.
 - `docs/logs/implementation-log-20260430-3.md`
 - `docs/logs/implementation-log-20260430-4.md`
 - `docs/logs/implementation-log-20260430-5.md`
+- `docs/logs/implementation-log-20260430-6.md`
 - `docs/operator-ux.ru.md`
 - `docs/ru/references/artifact-contract.ru.md`
 - `docs/ru/references/capability-governance.ru.md`
