@@ -1,4 +1,0 @@
-interface:
-  display_name: "Retrospective Phase Analysis"
-  short_description: "Audit a completed agent phase and produce evidence-backed retrospective, skill-friction, and logging-improvement reports."
-  default_prompt: "Use $retrospective-phase-analysis to analyze a completed agent phase from traces, logs, artifacts, and skill files, then produce evidence-backed retrospective findings and prioritized improvements."

@@ -1,5 +1,0 @@
-{"timestamp":"2026-04-10T09:59:00Z","type":"session_meta","payload":{"id":"019d7490-46d0-7811-b43f-056bb617a7ab","cwd":"/fixture/project"}}
-{"ts":"2026-04-10T10:00:00Z","type":"assistant","content":"Start implementation phase retrospective for CF-0016 and F-0016."}
-{"timestamp":"2026-04-10T10:05:00Z","type":"tool_call","tool":"functions.exec_command","command":"sed -n '1,200p' docs/features/F-0016-retro.md && sed -n '1,200p' src/retro/collector.ts"}
-{"time":"2026-04-10T10:20:00Z","kind":"tool_result","recipient":"functions.exec_command","aborted":true,"notes":"Review artifacts: .dossier/reviews/F-0016-review.md and .dossier/verification/F-0016-verification.md"}
-{"created_at":"2026-04-10T10:25:00Z","event":"tool_call","tool_name":"functions.update_plan","message":"Update docs/adr/ADR-0016-observability.md after reviewing package.json"}

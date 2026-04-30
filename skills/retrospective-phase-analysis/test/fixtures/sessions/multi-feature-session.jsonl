@@ -1,4 +1,0 @@
-{"timestamp":"2026-04-10T09:59:00Z","type":"session_meta","payload":{"id":"019d7490-46d0-7811-b43f-056bb617a7ac","cwd":"/fixture/project"}}
-{"ts":"2026-04-10T10:00:00Z","type":"assistant","content":"Investigate CF-0016 / F-0016 and CF-0020 / F-0020 in one reround."}
-{"timestamp":"2026-04-10T10:05:00Z","type":"tool_call","tool":"functions.exec_command","command":"sed -n '1,200p' docs/features/F-0016-retro.md && sed -n '1,200p' docs/features/F-0020-queue.md"}
-{"created_at":"2026-04-10T10:25:00Z","event":"tool_call","tool_name":"functions.update_plan","message":"Compare .dossier/reviews/F-0016-review.md with .dossier/reviews/F-0020-review.md before final analysis"}
