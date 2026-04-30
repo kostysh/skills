@@ -64,7 +64,7 @@ updated_at: "2026-04-30T13:00:00Z"
 
 ## Summary
 
-Реализовать наблюдаемое resume behavior для предыдущей работы по досье.
+Implement observable resume behavior for previous dossier work.
 
 ## Capability relation
 
@@ -72,7 +72,7 @@ Introduces `CAP-20260430-resume-investigation-a17c92`.
 
 ## Source interpretation
 
-Concept требует durable continuation, not just persisted session rows.
+The concept requires durable continuation, not just persisted session rows.
 
 ## Scope
 
@@ -100,7 +100,7 @@ None.
 
 ## Implementation notes
 
-To be filled during implementation.
+Implementation must connect stored dossier context to the resume flow and surface the unresolved blocker to the operator.
 
 ## Verification notes
 

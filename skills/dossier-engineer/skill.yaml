@@ -83,41 +83,41 @@ references:
 
 assets:
   - id: example-baseline
-    source: assets/examples/baseline.ru.md
-    target: assets/examples/baseline.ru.md
-    description: Russian historical example of a baseline artifact.
+    source: assets/examples/baseline.md
+    target: assets/examples/baseline.md
+    description: English example of a baseline artifact.
   - id: example-capability
-    source: assets/examples/capability.ru.md
-    target: assets/examples/capability.ru.md
-    description: Russian historical example of a capability artifact.
+    source: assets/examples/capability.md
+    target: assets/examples/capability.md
+    description: English example of a capability artifact.
   - id: example-changeset
-    source: assets/examples/changeset.ru.md
-    target: assets/examples/changeset.ru.md
-    description: Russian historical example of a changeset artifact.
+    source: assets/examples/changeset.md
+    target: assets/examples/changeset.md
+    description: English example of a changeset artifact.
   - id: example-guardrail
-    source: assets/examples/guardrail.ru.md
-    target: assets/examples/guardrail.ru.md
-    description: Russian historical example of a guardrail artifact.
+    source: assets/examples/guardrail.md
+    target: assets/examples/guardrail.md
+    description: English example of a guardrail artifact.
   - id: example-review-concept
-    source: assets/examples/review-concept.ru.md
-    target: assets/examples/review-concept.ru.md
-    description: Russian historical example of a concept review artifact.
+    source: assets/examples/review-concept.md
+    target: assets/examples/review-concept.md
+    description: English example of a concept review artifact.
   - id: example-source
-    source: assets/examples/source.ru.md
-    target: assets/examples/source.ru.md
-    description: Russian historical example of a source artifact.
+    source: assets/examples/source.md
+    target: assets/examples/source.md
+    description: English example of a source artifact.
   - id: example-verification-behavioral
-    source: assets/examples/verification-behavioral.ru.md
-    target: assets/examples/verification-behavioral.ru.md
-    description: Russian historical example of behavioral verification.
+    source: assets/examples/verification-behavioral.md
+    target: assets/examples/verification-behavioral.md
+    description: English example of behavioral verification.
   - id: example-work-item-capability
-    source: assets/examples/work-item-capability.ru.md
-    target: assets/examples/work-item-capability.ru.md
-    description: Russian historical example of capability work.
+    source: assets/examples/work-item-capability.md
+    target: assets/examples/work-item-capability.md
+    description: English example of capability work.
   - id: example-work-item-support
-    source: assets/examples/work-item-support.ru.md
-    target: assets/examples/work-item-support.ru.md
-    description: Russian historical example of support work.
+    source: assets/examples/work-item-support.md
+    target: assets/examples/work-item-support.md
+    description: English example of support work.
 
 copies:
   - id: runtime-script
@@ -206,6 +206,14 @@ supporting:
     source: docs/logs/implementation-log-20260430-3.md
     target: docs/logs/implementation-log-20260430-3.md
     description: Implementation log for Body Completion Gate integration.
+  - id: implementation-log-20260430-4
+    source: docs/logs/implementation-log-20260430-4.md
+    target: docs/logs/implementation-log-20260430-4.md
+    description: Implementation log for Dossier Language Policy integration.
+  - id: implementation-log-20260430-5
+    source: docs/logs/implementation-log-20260430-5.md
+    target: docs/logs/implementation-log-20260430-5.md
+    description: Implementation log for English example assets and link updates.
   - id: ru-workflow-reference
     source: docs/ru/references/workflow.ru.md
     target: docs/ru/references/workflow.ru.md

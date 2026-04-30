@@ -21,16 +21,16 @@ updated_at: "2026-04-30T12:00:00Z"
 
 ## Intent
 
-Не позволять проекту бесконечно строить инфраструктуру без end-to-end product behavior.
+Prevent the project from endlessly building infrastructure without end-to-end product behavior.
 
 ## Trigger interpretation
 
-Runtime может вычислить количество закрытых support work items с момента последней behavioral demonstration.
+The runtime can count closed support work items since the latest behavioral demonstration.
 
 ## Required action
 
-Показать capability demo или открыть change-proposal для пересмотра decomposition.
+Show a capability demo or open a change-proposal to revisit the decomposition.
 
 ## Resolution history
 
-Нет resolution.
+No resolution.

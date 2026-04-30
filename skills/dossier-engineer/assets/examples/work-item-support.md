@@ -90,7 +90,7 @@ This support item does not implement user-visible resume behavior.
 
 ## Pre-implementation challenge
 
-To be recorded before plan-slice close.
+The challenge must confirm that persistence alone does not claim product-level resume behavior.
 
 ## Dependencies and blockers
 
@@ -98,7 +98,7 @@ None.
 
 ## Implementation notes
 
-To be filled.
+Implementation must create the persistence layer and expose it to the resume flow without claiming the linked capability is complete.
 
 ## Verification notes
 

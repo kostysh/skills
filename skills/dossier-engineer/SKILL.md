@@ -15,7 +15,7 @@ metadata:
   canonical_storage: markdown-yaml-frontmatter
   runtime: dossier-engineer
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 7b9e6ece7ff7159da3e4d2e00bd0f282606e0c04af5cb39ac827d8a5f0b75061
+  skillforge-source-hash: 701d6c407faa33f4975fc125b8813b6d52978bc2da0a081841845d43cbf67a9b
 ---
 
 # dossier-engineer
@@ -146,6 +146,16 @@ After creating or materially changing any source, capability, baseline, guardrai
 Frontmatter is canonical machine-readable state. Body sections are canonical human-readable interpretation.
 
 Scaffold-only body content is allowed only as transient working state during the same active task. It is not allowed at handoff.
+
+## Dossier Language Policy
+
+Maintain human-readable dossier content in the operator's working language.
+
+Keep protocol mechanics in English: commands, flags, frontmatter keys, enum values, IDs, file paths, schema names, delivery kinds, statuses, and review class names.
+
+Use the operator's language for source interpretation, capability claims, anti-claims, work item prose, acceptance criteria, demo scenarios, evidence interpretation, review rationale, verification notes, blocker explanations, guardrail rationale, changesets, retrospectives, and handoff summaries.
+
+When the operator's working language is clear, use it for dossier semantic content unless the operator explicitly requests another language.
 
 Use runtime commands for structured changes:
 
@@ -483,15 +493,15 @@ Prefer sharded immutable artifacts and scope-local edits over shared counters, l
 
 ## Bundled assets
 
-- `assets/examples/baseline.ru.md` — Russian historical example of a baseline artifact.
-- `assets/examples/capability.ru.md` — Russian historical example of a capability artifact.
-- `assets/examples/changeset.ru.md` — Russian historical example of a changeset artifact.
-- `assets/examples/guardrail.ru.md` — Russian historical example of a guardrail artifact.
-- `assets/examples/review-concept.ru.md` — Russian historical example of a concept review artifact.
-- `assets/examples/source.ru.md` — Russian historical example of a source artifact.
-- `assets/examples/verification-behavioral.ru.md` — Russian historical example of behavioral verification.
-- `assets/examples/work-item-capability.ru.md` — Russian historical example of capability work.
-- `assets/examples/work-item-support.ru.md` — Russian historical example of support work.
+- `assets/examples/baseline.md` — English example of a baseline artifact.
+- `assets/examples/capability.md` — English example of a capability artifact.
+- `assets/examples/changeset.md` — English example of a changeset artifact.
+- `assets/examples/guardrail.md` — English example of a guardrail artifact.
+- `assets/examples/review-concept.md` — English example of a concept review artifact.
+- `assets/examples/source.md` — English example of a source artifact.
+- `assets/examples/verification-behavioral.md` — English example of behavioral verification.
+- `assets/examples/work-item-capability.md` — English example of capability work.
+- `assets/examples/work-item-support.md` — English example of support work.
 
 ## Portability rules
 

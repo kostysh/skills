@@ -29,24 +29,24 @@ updated_at: "2026-04-30T12:30:00Z"
 
 ## Summary
 
-Пользователь или оператор может продолжить предыдущую работу по досье без потери контекста.
+A user or operator can continue previous dossier work without losing context.
 
 ## Concept interpretation
 
-Способность связана с идеей durable project memory and explainable continuation.
+This capability supports durable project memory and explainable continuation.
 
 ## Observable behavior
 
-Оператор запрашивает resume; система показывает сохранённый контекст, последний unresolved blocker и следующий безопасный шаг.
+The operator asks to resume work; the system shows the saved context, the latest unresolved blocker, and the next safe action.
 
 ## Anti-claims
 
-Capability не означает автономное действие без подтверждения оператора.
+This capability does not mean autonomous action without operator approval.
 
 ## Demonstrations
 
-Демонстрация будет записана runtime-командой `capability demo record`.
+The demonstration will be recorded through the `capability demo record` runtime command.
 
 ## Notes
 
-Frontmatter создаётся runtime, не вручную.
+Frontmatter is created by the runtime, not manually.

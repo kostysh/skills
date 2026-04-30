@@ -95,6 +95,16 @@ Frontmatter is canonical machine-readable state. Body sections are canonical hum
 
 Scaffold-only body content is allowed only as transient working state during the same active task. It is not allowed at handoff.
 
+## Dossier Language Policy
+
+Maintain human-readable dossier content in the operator's working language.
+
+Keep protocol mechanics in English: commands, flags, frontmatter keys, enum values, IDs, file paths, schema names, delivery kinds, statuses, and review class names.
+
+Use the operator's language for source interpretation, capability claims, anti-claims, work item prose, acceptance criteria, demo scenarios, evidence interpretation, review rationale, verification notes, blocker explanations, guardrail rationale, changesets, retrospectives, and handoff summaries.
+
+When the operator's working language is clear, use it for dossier semantic content unless the operator explicitly requests another language.
+
 Use runtime commands for structured changes:
 
 ```bash

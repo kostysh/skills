@@ -21,20 +21,20 @@ updated_at: "2026-04-30T12:30:00Z"
 
 ## Scope
 
-Baseline фиксирует уже работающее поведение на момент подключения dossier workflow.
+This baseline records behavior that already works when the dossier workflow is introduced.
 
 ## Observed capabilities
 
-- `CAP-20260430-auth-login-a17c92` — пользователь может войти через UI flow.
+- `CAP-20260430-auth-login-a17c92` — the user can log in through the UI flow.
 
 ## Assumed or unverified capabilities
 
-Нет.
+None.
 
 ## Evidence notes
 
-Evidence хранится в `docs/evidence/login-demo.md`.
+Evidence is stored in `docs/evidence/login-demo.md`.
 
 ## Gaps
 
-Нет.
+None.

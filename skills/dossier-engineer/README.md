@@ -42,7 +42,7 @@ Active references:
 - `docs/operator-ux.ru.md` — historical Russian operator UX source for the English operator capability reference.
 - `docs/ru/references/*.ru.md` — historical Russian copies of the reference material.
 - `docs/logs/*.md` — implementation logs for skill maintenance.
-- `assets/examples/*.ru.md` — historical Russian examples of runtime-created artifacts.
+- `assets/examples/*.md` — English examples of runtime-created artifacts.
 
 Supporting documents do not override `SKILL.md` or active references unless `skill.yaml` explicitly promotes them.
 
@@ -52,6 +52,7 @@ Supporting documents do not override `SKILL.md` or active references unless `ski
 - Runtime commands own IDs, timestamps, hashes, lifecycle states, source-review records, review records, verification records, guardrail states, and closure transitions.
 - Agents may edit semantic body sections only after the runtime creates the artifact scaffold.
 - Runtime-created scaffolds are not complete dossier artifacts until relevant body sections contain project-specific human-readable interpretation.
+- Human-readable dossier body content uses the operator's working language; protocol mechanics remain in English.
 - Capability work cannot close on infrastructure evidence alone.
 - Support work must be explicitly marked as support and linked to the capability or guardrail it enables.
 - Existing-project onboarding records already working behavior as baseline capabilities, not as artificial closed work items.

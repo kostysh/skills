@@ -18,6 +18,42 @@ Scaffold-only body content is allowed only as transient working state inside the
 - changeset publication;
 - final response to the operator.
 
+## Dossier Language Policy
+
+Maintain human-readable dossier content in the operator's working language.
+
+Keep protocol mechanics in English:
+
+- commands;
+- flags;
+- frontmatter keys;
+- enum values;
+- IDs;
+- file paths;
+- schema names;
+- delivery kinds;
+- statuses;
+- review class names.
+
+Use the operator's language for semantic body content:
+
+- source interpretation;
+- capability claims;
+- anti-claims;
+- work item prose;
+- acceptance criteria;
+- demo scenarios;
+- evidence interpretation;
+- review rationale;
+- verification notes;
+- blocker explanations;
+- guardrail rationale;
+- changesets;
+- retrospectives;
+- handoff summaries.
+
+When the operator's working language is clear, use it for dossier semantic content unless the operator explicitly requests another language.
+
 ## Unacceptable Body State
 
 The following body states are not acceptable before handoff:
@@ -25,6 +61,7 @@ The following body states are not acceptable before handoff:
 - empty sections;
 - headings without explanatory text;
 - `TODO`, `TBD`, placeholder, or template-only body text;
+- semantic body text in the wrong language for the operator's working context;
 - copied scaffold text that has not been interpreted for the project;
 - empty lists where evidence, interpretation, uncertainty, or follow-up should appear;
 - unexplained `unknown`;
@@ -171,5 +208,6 @@ Before handoff, inspect every Markdown dossier artifact created or materially ch
 1. List the changed artifact paths.
 2. Confirm each changed artifact has project-specific body interpretation.
 3. Confirm no required body section remains scaffold-only.
-4. Confirm evidence and uncertainty are explained in prose, not only encoded in frontmatter.
-5. If a body is incomplete, complete it or explicitly keep the artifact open as transient work and do not close the stage or hand off.
+4. Confirm semantic body sections use the operator's working language while protocol mechanics remain in English.
+5. Confirm evidence and uncertainty are explained in prose, not only encoded in frontmatter.
+6. If a body is incomplete, complete it or explicitly keep the artifact open as transient work and do not close the stage or hand off.

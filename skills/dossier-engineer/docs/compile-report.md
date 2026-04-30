@@ -7,21 +7,23 @@ Generated from `skill.yaml`.
 
 ## Source files
 - `README.md`
-- `assets/examples/baseline.ru.md`
-- `assets/examples/capability.ru.md`
-- `assets/examples/changeset.ru.md`
-- `assets/examples/guardrail.ru.md`
-- `assets/examples/review-concept.ru.md`
-- `assets/examples/source.ru.md`
-- `assets/examples/verification-behavioral.ru.md`
-- `assets/examples/work-item-capability.ru.md`
-- `assets/examples/work-item-support.ru.md`
+- `assets/examples/baseline.md`
+- `assets/examples/capability.md`
+- `assets/examples/changeset.md`
+- `assets/examples/guardrail.md`
+- `assets/examples/review-concept.md`
+- `assets/examples/source.md`
+- `assets/examples/verification-behavioral.md`
+- `assets/examples/work-item-capability.md`
+- `assets/examples/work-item-support.md`
 - `docs/README.md`
 - `docs/cli-spec.ru.md`
 - `docs/functional-coverage-matrix.ru.md`
 - `docs/logs/implementation-log-20260430-1.md`
 - `docs/logs/implementation-log-20260430-2.md`
 - `docs/logs/implementation-log-20260430-3.md`
+- `docs/logs/implementation-log-20260430-4.md`
+- `docs/logs/implementation-log-20260430-5.md`
 - `docs/operator-ux.ru.md`
 - `docs/ru/references/artifact-contract.ru.md`
 - `docs/ru/references/capability-governance.ru.md`

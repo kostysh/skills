@@ -28,4 +28,4 @@ Canonical concept source registered by runtime.
 
 ## Notes
 
-Frontmatter создаётся runtime, не вручную.
+Frontmatter is created by the runtime, not manually.
