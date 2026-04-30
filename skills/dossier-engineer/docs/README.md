@@ -13,3 +13,4 @@
 ## Implementation logs
 
 - `docs/logs/implementation-log-20260430-1.md` — перевод скила в формат `skill-source-compiler`, перевод references на английский, сохранение русских копий.
+- `docs/logs/implementation-log-20260430-2.md` — добавление англоязычного operator capability reference и его подключение к optional references.

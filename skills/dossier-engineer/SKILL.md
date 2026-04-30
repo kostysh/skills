@@ -5,7 +5,8 @@ description: Manage a source-traced, capability-oriented, merge-safe dossier
   mapping product capabilities, onboarding an existing project, deriving backlog
   work, separating capability from infrastructure, running delivery stages,
   verification, audits, closure, queue/status/attention checks, post-close
-  hygiene, or retrospective reporting with Markdown/YAML dossier artifacts.
+  hygiene, retrospective reporting with Markdown/YAML dossier artifacts, or
+  explaining dossier-engineer capabilities and operator prompt patterns.
 compatibility: Requires git, Markdown files, and the bundled dossier-engineer
   runtime under scripts/dossier-engineer.mjs or an equivalent dossier-engineer
   executable on PATH.
@@ -14,7 +15,7 @@ metadata:
   canonical_storage: markdown-yaml-frontmatter
   runtime: dossier-engineer
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 1a9714f2e81d1bb3c35d50ab8381337140e1d09b9d9c77df155b6c0b416c2f5c
+  skillforge-source-hash: 02efca6b3ae602e2aeacc01072e73bf6ddf40c9fead466f9a6cbca3265afe077
 ---
 
 # dossier-engineer
@@ -35,11 +36,12 @@ metadata:
 - Onboard an existing project through baseline capabilities and evidence.
 - Create and execute capability, support, maintenance, or exploration work items with explicit gates.
 - Run feature-intake, spec-compact, plan-slice, implementation, change-proposal, verification, review, closure, hygiene, changeset, report, or retrospective flows.
+- Explain dossier-engineer capabilities, operator-facing workflows, and prompt patterns when the operator asks how to use this skill.
 - Maintain the dossier-engineer skill source bundle or its bundled CLI runtime.
 
 ## When NOT to use this skill
 
-- Chat-only planning that will not create or update durable dossier artifacts.
+- Chat-only planning that will not create or update durable dossier artifacts, unless the operator is asking about dossier-engineer capabilities or usage.
 - Generic project management without source-to-capability traceability.
 - Manual editing of machine-owned dossier frontmatter.
 - Claiming capability completion from mocks, schemas, queues, tests, wrappers, reports, or scaffolding without a behavioral demonstration.
@@ -460,6 +462,7 @@ Prefer sharded immutable artifacts and scope-local edits over shared counters, l
 ## Optional references
 - [Parallel development rules](references/parallel-development.md) — Read this when working across branches, resolving merge conflicts, or creating changesets for handoff.
 - [Retrospective protocol](references/retrospective.md) — Read this when creating retrospectives, process-miss records, skill feedback, changesets, or capability drift reports.
+- [Operator capability reference](references/operator-capabilities.md) — Read this when the operator asks what dossier-engineer can do, how to ask an agent to use it, which workflow fits a delivery situation, or how to phrase capability-safe prompts.
 
 ## Bundled assets
 

@@ -1,30 +1,81 @@
 # dossier-engineer
 
-`dossier-engineer` — скил для ведения source-traced, capability-oriented и merge-safe процесса разработки через Markdown/YAML досье.
+`dossier-engineer` is a source-traced, capability-oriented, merge-safe delivery workflow for software projects that use Markdown/YAML dossier artifacts.
 
-## Состав пакета
+Its main purpose is to keep agents focused on observable product capability instead of mistaking infrastructure, scaffolding, tests, reports, or lifecycle metadata for delivered behavior.
 
-- `SKILL.md` — активный скил на английском языке.
-- `references/workflow.ru.md` — рабочий workflow по стадиям, включая старт нового проекта и onboarding существующего проекта.
-- `references/capability-governance.ru.md` — правила защиты продуктовой способности от подмены инфраструктурой.
-- `references/artifact-contract.ru.md` — контракт артефактов, frontmatter ownership и runtime-owned schemas.
-- `references/runtime-commands.ru.md` — как агент использует runtime-команды.
-- `references/review-and-closure.ru.md` — verification, review, concept conformance и closure gates.
-- `references/parallel-development.ru.md` — правила параллельной разработки.
-- `references/retrospective.ru.md` — ретроспективный анализ процесса.
+## What It Provides
 
-## Не часть активной методики
+- Source registration and impact tracking for concepts, specs, policies, contracts, test plans, and external references.
+- Capability records that describe observable behavior before work items are created.
+- Existing-project onboarding through baseline capabilities and evidence instead of retroactive closed tasks.
+- Capability, support, maintenance, and exploration work items with explicit gates.
+- Delivery stage control for feature-intake, spec-compact, plan-slice, implementation, change-proposal, review, verification, closure, hygiene, changesets, reports, and retrospectives.
+- Guardrails against support work accumulating without capability progress.
+- Operator-facing guidance for asking agents what `dossier-engineer` can do and how to use it safely.
 
-- `docs/cli-spec.ru.md` — техническая спецификация CLI для реализации runtime.
-- `docs/functional-coverage-matrix.ru.md` — проектная матрица покрытия функций исходного процесса.
-- `assets/examples/*.ru.md` — примеры артефактов, создаваемых runtime.
+## Active Skill Surface
 
-## Ключевые решения
+- `SKILL.md` — generated agent-facing skill instructions.
+- `skill.yaml` — source of truth for generated skill metadata, sections, active references, supporting files, and copied runtime files.
+- `fragments/*.md` — source fragments rendered into `SKILL.md`.
+- `references/*.md` — active English references linked from `SKILL.md`.
+- `scripts/dossier-engineer.mjs` — bundled CLI runtime.
+- `src/*.ts`, `src/cli/*.ts`, `test/*.ts` — runtime source and tests.
 
-- Canonical state хранится только в Markdown-файлах с YAML frontmatter под `docs/dossier/`.
-- Frontmatter создаётся и изменяется runtime-командами, а не вручную агентом.
-- Capability layer отделяет наблюдаемую продуктовую способность от work items и инфраструктуры.
-- Feature-like work item не закрывается без capability claim, behavioral demo, anti-claims, pre-implementation challenge и concept-conformance evidence.
-- Infrastructure/support work явно маркируется как support и не засчитывается как продуктовая функция без связанной demonstration.
-- Existing-project onboarding фиксирует уже работающую функциональность как baseline capabilities, а не как искусственно закрытые задачи.
-- Queue/status/attention/capability/guardrail checks являются derived views, а не отдельными источниками истины.
+Active references:
+
+- `references/workflow.md` — delivery stages, onboarding, change-proposal, closure, and detailed command flow.
+- `references/capability-governance.md` — capability-vs-substrate rules, anti-claims, demonstrations, concept conformance, and guardrails.
+- `references/artifact-contract.md` — artifact schemas, frontmatter ownership, and runtime-managed fields.
+- `references/runtime-commands.md` — command families, arguments, and expected operator flow.
+- `references/review-and-closure.md` — verification, review, freshness, evidence, and closure gates.
+- `references/parallel-development.md` — branch, scope, merge, and changeset rules.
+- `references/retrospective.md` — retrospective reporting and process-miss analysis.
+- `references/operator-capabilities.md` — operator-facing capability overview and prompt patterns.
+
+## Supporting And Historical Surface
+
+- `docs/cli-spec.ru.md` — historical Russian CLI specification.
+- `docs/functional-coverage-matrix.ru.md` — historical Russian functional coverage matrix.
+- `docs/operator-ux.ru.md` — historical Russian operator UX source for the English operator capability reference.
+- `docs/ru/references/*.ru.md` — historical Russian copies of the reference material.
+- `docs/logs/*.md` — implementation logs for skill maintenance.
+- `assets/examples/*.ru.md` — historical Russian examples of runtime-created artifacts.
+
+Supporting documents do not override `SKILL.md` or active references unless `skill.yaml` explicitly promotes them.
+
+## Key Rules
+
+- Canonical dossier state lives only in Markdown files with YAML frontmatter under `docs/dossier/`.
+- Runtime commands own IDs, timestamps, hashes, lifecycle states, source-review records, review records, verification records, guardrail states, and closure transitions.
+- Agents may edit semantic body sections only after the runtime creates the artifact scaffold.
+- Capability work cannot close on infrastructure evidence alone.
+- Support work must be explicitly marked as support and linked to the capability or guardrail it enables.
+- Existing-project onboarding records already working behavior as baseline capabilities, not as artificial closed work items.
+- Status, queue, attention, capability, guardrail, report, and retrospective outputs are derived views, not primary truth.
+
+## Maintenance
+
+This is a generated source-bundle skill. Do not hand-edit `SKILL.md` as the source of truth.
+
+For instruction-surface changes:
+
+1. Edit `skill.yaml`, `fragments/*`, `references/*`, or supporting files as appropriate.
+2. Run `node ../skill-source-compiler/scripts/skill-source-compiler.mjs regenerate .` from this skill root.
+3. Run `node ../skill-source-compiler/scripts/skill-source-compiler.mjs check .`.
+4. Run the runtime package checks that are relevant to the change.
+
+For runtime changes, keep `src/`, `scripts/`, tests, command documentation, and `SKILL.md` command references aligned.
+
+## Useful Checks
+
+```bash
+node ../skill-source-compiler/scripts/skill-source-compiler.mjs regenerate .
+node ../skill-source-compiler/scripts/skill-source-compiler.mjs check .
+pnpm run lint
+pnpm run format:check
+pnpm test
+```
+
+`format:check` currently also validates existing runtime formatting. If it fails on unrelated pre-existing formatting drift, report that separately instead of hiding it.

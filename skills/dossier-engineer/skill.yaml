@@ -11,7 +11,8 @@ skill:
     capabilities, onboarding an existing project, deriving backlog work,
     separating capability from infrastructure, running delivery stages,
     verification, audits, closure, queue/status/attention checks, post-close
-    hygiene, or retrospective reporting with Markdown/YAML dossier artifacts.
+    hygiene, retrospective reporting with Markdown/YAML dossier artifacts, or
+    explaining dossier-engineer capabilities and operator prompt patterns.
   compatibility: >-
     Requires git, Markdown files, and the bundled dossier-engineer runtime under
     scripts/dossier-engineer.mjs or an equivalent dossier-engineer executable on
@@ -67,6 +68,12 @@ references:
     target: references/retrospective.md
     required: false
     trigger: Read this when creating retrospectives, process-miss records, skill feedback, changesets, or capability drift reports.
+  - id: ref-operator-capabilities
+    title: Operator capability reference
+    source: references/operator-capabilities.md
+    target: references/operator-capabilities.md
+    required: false
+    trigger: Read this when the operator asks what dossier-engineer can do, how to ask an agent to use it, which workflow fits a delivery situation, or how to phrase capability-safe prompts.
 
 assets:
   - id: example-baseline
@@ -177,10 +184,18 @@ supporting:
     source: docs/README.md
     target: docs/README.md
     description: Supporting navigation for skill docs.
+  - id: operator-ux-ru
+    source: docs/operator-ux.ru.md
+    target: docs/operator-ux.ru.md
+    description: Historical Russian operator UX source used for the English operator capability reference.
   - id: implementation-log-20260430-1
     source: docs/logs/implementation-log-20260430-1.md
     target: docs/logs/implementation-log-20260430-1.md
     description: Implementation log for source-bundle conversion and reference translation.
+  - id: implementation-log-20260430-2
+    source: docs/logs/implementation-log-20260430-2.md
+    target: docs/logs/implementation-log-20260430-2.md
+    description: Implementation log for operator capability reference integration.
   - id: ru-workflow-reference
     source: docs/ru/references/workflow.ru.md
     target: docs/ru/references/workflow.ru.md
@@ -221,6 +236,7 @@ surfaces:
     optionalReferences:
       - ref-parallel-development
       - ref-retrospective
+      - ref-operator-capabilities
   supportingGlobs:
     - docs/*
     - docs/logs/*
@@ -241,9 +257,10 @@ sections:
     - Onboard an existing project through baseline capabilities and evidence.
     - Create and execute capability, support, maintenance, or exploration work items with explicit gates.
     - Run feature-intake, spec-compact, plan-slice, implementation, change-proposal, verification, review, closure, hygiene, changeset, report, or retrospective flows.
+    - Explain dossier-engineer capabilities, operator-facing workflows, and prompt patterns when the operator asks how to use this skill.
     - Maintain the dossier-engineer skill source bundle or its bundled CLI runtime.
   whenNotToUse:
-    - Chat-only planning that will not create or update durable dossier artifacts.
+    - Chat-only planning that will not create or update durable dossier artifacts, unless the operator is asking about dossier-engineer capabilities or usage.
     - Generic project management without source-to-capability traceability.
     - Manual editing of machine-owned dossier frontmatter.
     - Claiming capability completion from mocks, schemas, queues, tests, wrappers, reports, or scaffolding without a behavioral demonstration.
