@@ -945,6 +945,169 @@ void test('plan-slice blocks weak integration path and AC evidence matrix semant
   assert.match(blocked.stdout, /AC to evidence matrix lacks implementation surface/);
 });
 
+void test('plan-slice review freshness uses normalized material sections', async () => {
+  const root = await tempProject();
+  const { sourceId, workId } = await createBasicWork(root);
+  for (const args of [
+    [
+      'work',
+      'acceptance',
+      'add',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--kind',
+      'behavior',
+      '--text',
+      'operator sees truthful queue state',
+      '--source',
+      `${sourceId}#behavior`,
+    ],
+    [
+      'work',
+      'demo',
+      'set',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--name',
+      'demo',
+      '--scenario',
+      'operator runs queue and sees next action',
+    ],
+    [
+      'work',
+      'anti-claim',
+      'add',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--text',
+      'does not claim implementation readiness',
+    ],
+  ] as const) {
+    assert.equal(run(args, root).status, 0);
+  }
+  await completeCapabilityWorkBody(root, workId, 'Implement normalized review freshness');
+  for (const stage of ['feature-intake', 'spec-compact'] as const) {
+    assert.equal(
+      run(
+        [
+          'stage',
+          'start',
+          '--root',
+          root,
+          '--work',
+          workId,
+          '--stage',
+          stage,
+          '--session',
+          'sess-test',
+        ],
+        root,
+      ).status,
+      0,
+    );
+    assert.equal(
+      run(
+        [
+          'stage',
+          'ready',
+          '--root',
+          root,
+          '--work',
+          workId,
+          '--stage',
+          stage,
+          '--summary',
+          'ready',
+        ],
+        root,
+      ).status,
+      0,
+    );
+    assert.equal(
+      run(['stage', 'close', '--root', root, '--work', workId, '--stage', stage], root).status,
+      0,
+    );
+  }
+  assert.equal(
+    run(
+      [
+        'work',
+        'challenge',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--summary',
+        'plan could become substrate only',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'review',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'plan-slice',
+        '--class',
+        'concept-conformance-reviewer',
+        '--verdict',
+        'pass',
+        '--reviewer',
+        'reviewer',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  const fresh = run(
+    ['review', 'required', '--root', root, '--work', workId, '--stage', 'plan-slice'],
+    root,
+  );
+  assert.equal(fresh.status, 0, fresh.stdout + fresh.stderr);
+  assert.match(fresh.stdout, /concept-conformance-reviewer: fresh/);
+
+  const workPath = path.join(root, 'docs/dossier/work-items', `${workId}.md`);
+  await writeFile(
+    workPath,
+    `${await readFile(workPath, 'utf8')}\n\n## Editorial note\n\nWhitespace-only implementation note.\n`,
+    'utf8',
+  );
+  const stillFresh = run(
+    ['review', 'required', '--root', root, '--work', workId, '--stage', 'plan-slice'],
+    root,
+  );
+  assert.equal(stillFresh.status, 0, stillFresh.stdout + stillFresh.stderr);
+
+  await writeFile(
+    workPath,
+    (await readFile(workPath, 'utf8')).replace(
+      '- Runtime path: CLI parse -> runCommand -> stage and queue handlers.',
+      '- Runtime path: CLI parse -> alternate runtime path.',
+    ),
+    'utf8',
+  );
+  const stale = run(
+    ['review', 'required', '--root', root, '--work', workId, '--stage', 'plan-slice'],
+    root,
+  );
+  assert.equal(stale.status, 2, stale.stdout + stale.stderr);
+  assert.match(stale.stdout, /concept-conformance-reviewer: missing_or_stale/);
+});
+
 void test('known mutating commands enter the write-lock envelope', async () => {
   const root = await tempProject();
   assert.equal(run(['init', '--root', root, '--project-name', 'Command Matrix'], root).status, 0);
@@ -1326,7 +1489,7 @@ void test('verify run rejects stale material scope before recording results', as
       "const { readFileSync, writeFileSync } = require('node:fs');",
       'const file = process.argv[2];',
       "const raw = readFileSync(file, 'utf8');",
-      "writeFileSync(file, raw.replace(/^material_scope_hash: .*$/m, 'material_scope_hash: changed-by-test'), 'utf8');",
+      "writeFileSync(file, raw.replace(/^  coverage_gate: open$/m, '  coverage_gate: changed-by-test'), 'utf8');",
       '',
     ].join('\n'),
     'utf8',
@@ -1910,6 +2073,68 @@ void test('source, capability, work, verification, review, stage and hygiene flo
       /runtime_path: CLI parse -> runCommand -> stage and queue handlers/.test(text),
     ),
   );
+  const staleReviews = run(['review', 'required', '--root', root, '--work', workId], root);
+  assert.equal(staleReviews.status, 2, staleReviews.stdout + staleReviews.stderr);
+  assert.match(staleReviews.stdout, /concept-conformance-reviewer: missing_or_stale/);
+  assert.match(staleReviews.stdout, /spec-conformance-reviewer: missing_or_stale/);
+  for (const reviewClass of ['concept-conformance-reviewer', 'spec-conformance-reviewer']) {
+    assert.equal(
+      run(
+        [
+          'review',
+          'record',
+          '--root',
+          root,
+          '--work',
+          workId,
+          '--stage',
+          'implementation',
+          '--class',
+          reviewClass,
+          '--verdict',
+          'pass',
+          '--reviewer',
+          'reviewer',
+        ],
+        root,
+      ).status,
+      0,
+    );
+  }
+  assert.equal(
+    run(
+      [
+        'verify',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'implementation',
+        '--profile',
+        'behavioral-demo',
+        '--evidence-class',
+        'live-app',
+        '--entrypoint',
+        'scripts/dossier-engineer.mjs command execution',
+        '--runtime-path',
+        'CLI parse -> runCommand -> stage and queue handlers',
+        '--verdict',
+        'pass',
+        '--summary',
+        'same live-app path re-observed',
+        '--evidence',
+        'evidence.md',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  const stillFreshReviews = run(['review', 'required', '--root', root, '--work', workId], root);
+  assert.equal(stillFreshReviews.status, 0, stillFreshReviews.stdout + stillFreshReviews.stderr);
+  assert.match(stillFreshReviews.stdout, /concept-conformance-reviewer: fresh/);
+  assert.match(stillFreshReviews.stdout, /spec-conformance-reviewer: fresh/);
   assert.equal(
     run(
       [

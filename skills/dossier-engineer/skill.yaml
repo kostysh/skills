@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: dossier-engineer
-  source-version: 2.6.0
+  source-version: 2.7.0
   recommended-skill-md-max-bytes: 32000
   description: >-
     Manage a source-traced, capability-oriented, merge-safe dossier workflow for
@@ -238,6 +238,10 @@ supporting:
     source: docs/logs/implementation-log-20260502-3.md
     target: docs/logs/implementation-log-20260502-3.md
     description: Implementation log for Phase 3 live-app evidence semantics.
+  - id: implementation-log-20260502-4
+    source: docs/logs/implementation-log-20260502-4.md
+    target: docs/logs/implementation-log-20260502-4.md
+    description: Implementation log for Phase 4 review freshness semantics.
   - id: ru-workflow-reference
     source: docs/ru/references/workflow.ru.md
     target: docs/ru/references/workflow.ru.md

@@ -429,6 +429,13 @@ Enums:
 `live-app`. CLI flags use kebab-case (`--runtime-path`); stored frontmatter uses
 snake_case (`runtime_path`).
 
+Verification `material_scope_hash` is computed from the current normalized work
+material scope: source hashes, capability claim, delivery kind, acceptance
+criteria including negative/falsifier entries, anti-claims, demo/falsifier
+surface, dependencies, risk, and required material `Spec Compact` / `Plan Slice`
+subsections. Non-material note sections and insignificant whitespace must not
+stale verification by themselves.
+
 ## 13. Review artifact
 
 Path: `docs/dossier/reviews/<work-id>/<id>.md`.
@@ -461,6 +468,15 @@ Built-in review classes:
 - `security-reviewer`;
 - `release-reviewer`;
 - `contract-reviewer`.
+
+Review `material_scope_hash` uses normalized material scope. For
+`stage=plan-slice`, it covers the work/source/capability/spec/plan material
+scope. For implementation reviews, it also includes the current passing
+`live-app` behavioral-demo evidence path when applicable, so reviews recorded
+before final live-app evidence do not satisfy implementation closure.
+
+There is no `consolidated-reviewer` class. Consolidation is represented by
+fresh required review artifacts recorded after stabilization.
 
 ## 14. Hygiene artifact
 

@@ -32,7 +32,9 @@ Built-in review classes:
 
 ## 3. Concept-conformance review
 
-Concept-conformance review is required for capability work implementation closure.
+Concept-conformance review is required for capability work before `plan-slice`
+closes. Implementation closure may reuse that review only when its material
+scope remains fresh; otherwise a fresh implementation-stage review is required.
 
 The reviewer must inspect:
 
@@ -43,7 +45,8 @@ The reviewer must inspect:
 - behavioral acceptance criteria;
 - anti-claims;
 - demo scenario;
-- implementation evidence;
+- integration path and AC/evidence/falsifier matrix;
+- implementation evidence when reviewing implementation closure;
 - support dependencies;
 - guardrail state.
 
@@ -124,18 +127,39 @@ non-user-visible rationale.
 
 Review and verification freshness is determined by material scope hash.
 
+Consolidated review is a timing and scope policy, not a review class. Do not
+create `consolidated-reviewer`, and do not replace required review classes with
+one generic review. If a work item requires concept, spec, code, security,
+contract, or release review, the final review bundle must still contain fresh
+eligible PASS artifacts for each required class. Consolidation means those
+reviews assess the final material scope after stabilization instead of every
+micro-fix separately.
+
 Material scope includes:
 
 - source refs and source hashes;
 - capability refs and capability claim;
 - delivery kind and relation;
 - acceptance criteria;
+- negative acceptance criteria and falsifiers;
 - demo scenario;
+- falsifier set;
 - anti-claims;
+- `Spec Compact` material subsections;
+- `Plan Slice` material subsections, including `Integration path` and AC to
+  evidence matrix;
 - dependencies;
 - risk classification;
-- implementation evidence references;
+- implementation surface recorded in the plan/evidence matrix;
+- accepted change-proposal effects;
+- live-app evidence path for implementation-stage review freshness;
 - guardrail relevance.
+
+Material body hashing uses normalized material subsections, not a blind full
+Markdown body hash. Runtime ignores insignificant whitespace and non-material
+notes outside required material sections, but changes to required material
+subsections, acceptance/evidence/falsifier mapping, integration path, risks, or
+runtime path remain material.
 
 If any material scope input changes after a PASS review or verification, the evidence becomes stale.
 
@@ -149,6 +173,18 @@ dossier-engineer status --root .
 dossier-engineer attention --root .
 dossier-engineer lint --root .
 ```
+
+Material re-review triggers include source interpretation, capability claim,
+acceptance criteria, demo scenario, falsifier set, trust boundary,
+IPC/security/persistence posture, `Spec Compact`, `Plan Slice`, implementation
+surface, production entrypoint, and live-app evidence path.
+
+Note-only micro-fixes are allowed only when the change stays inside the same
+material scope and trust boundary, does not alter source interpretation,
+capability claim, acceptance criteria, security posture, production entrypoint,
+integration path, demo scenario, or falsifier set, and only stabilizes already
+reviewed implementation. A note-only micro-fix must remain visible in a stage
+log, verification artifact summary, or changeset summary.
 
 ## 7. Closure gates by delivery kind
 
@@ -167,7 +203,7 @@ Implementation closure requires:
 - behavioral verification PASS and fresh;
 - live-app behavioral verification PASS and fresh for user-visible/operator-visible
   capability work;
-- concept-conformance review PASS and fresh;
+- concept-conformance review PASS and fresh for the final material scope;
 - spec-conformance review PASS and fresh;
 - code/security/contract/release reviews according to risk;
 - no open blockers;

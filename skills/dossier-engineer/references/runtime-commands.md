@@ -536,14 +536,19 @@ dossier-engineer review required --work <work-id> --stage implementation
 Returns required review classes and freshness state for the requested stage.
 For capability work at `stage=plan-slice`, the required class is
 `concept-conformance-reviewer` and the review must be fresh for `plan-slice`.
+For implementation, freshness is computed against the normalized material scope
+and current live-app evidence path when live-app evidence is required.
 
 ### `review record`
 
 ```bash
+dossier-engineer review record --work <work-id> --stage plan-slice --class concept-conformance-reviewer --verdict pass|fail|blocked|not_applicable --reviewer <reviewer-id> [--summary "<summary>"] [--evidence <path>...]
 dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer|spec-conformance-reviewer|code-reviewer|security-reviewer|<class> --verdict pass|fail|blocked|not_applicable --reviewer <reviewer-id> [--summary "<summary>"] [--evidence <path>...]
 ```
 
-Creates immutable `REV-*.md` and compares material scope hash.
+Creates immutable `REV-*.md` and stores the current material scope hash.
+`review record` does not create a consolidated review class; use the existing
+required review classes and let `review required` report freshness.
 
 ## 11. Hygiene commands
 

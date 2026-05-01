@@ -240,19 +240,17 @@ Concept conformance differs from spec conformance:
 - spec conformance checks whether the task was implemented as specified;
 - concept conformance checks whether the task specification itself is a valid slice of the concept.
 
-Capability work requires concept-conformance review before implementation closure:
+Capability work requires concept-conformance review before `plan-slice` closes:
 
 ```bash
-dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>
+dossier-engineer review record --work <work-id> --stage plan-slice --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>
 ```
 
-Plan-slice should also receive concept-conformance review when:
-
-- the item is broad or foundational;
-- the capability claim is novel;
-- the work is likely to drift into infrastructure;
-- the project has no recent passing end-to-end demonstration;
-- guardrails are close to triggering.
+Implementation closure may reuse that review only if material scope remains
+fresh. If the implementation changes source interpretation, capability claim,
+acceptance criteria, plan surface, demo scenario, falsifier set, integration
+path, or live-app evidence path, runtime reports the review as stale and
+requires a fresh eligible review.
 
 A concept-conformance review must inspect:
 

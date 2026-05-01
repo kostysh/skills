@@ -6669,11 +6669,32 @@ var updateArtifact = async (root, artifact, frontmatter, now) => {
 		frontmatter: updated
 	};
 };
+var normalizedMaterialSection = (bodyText, section, subsection) => {
+	const sectionContent = markdownSection(bodyText, section, 2) ?? "";
+	return materialText(subsection === void 0 ? sectionContent : markdownSection(sectionContent, subsection, 3) ?? "").replace(/\s+/g, " ").trim().toLowerCase();
+};
+var materialBodyScope = (bodyText) => ({
+	spec_compact: {
+		behavior_statement: normalizedMaterialSection(bodyText, "Spec Compact", "Behavior statement"),
+		acceptance_criteria_matrix: normalizedMaterialSection(bodyText, "Spec Compact", "Acceptance criteria matrix"),
+		negative_acceptance_falsifiers: normalizedMaterialSection(bodyText, "Spec Compact", "Negative acceptance / falsifiers"),
+		anti_claims_non_goals: normalizedMaterialSection(bodyText, "Spec Compact", "Anti-claims and non-goals"),
+		open_questions_gaps: normalizedMaterialSection(bodyText, "Spec Compact", "Open questions and gaps")
+	},
+	plan_slice: {
+		implementation_target: normalizedMaterialSection(bodyText, "Plan Slice", "Implementation target"),
+		integration_path: normalizedMaterialSection(bodyText, "Plan Slice", "Integration path"),
+		files_interfaces_components: normalizedMaterialSection(bodyText, "Plan Slice", "Files, interfaces, and components"),
+		sequence: normalizedMaterialSection(bodyText, "Plan Slice", "Sequence"),
+		ac_evidence_matrix: normalizedMaterialSection(bodyText, "Plan Slice", "AC to evidence matrix"),
+		risks_change_proposal: normalizedMaterialSection(bodyText, "Plan Slice", "Risks and fallback/change-proposal triggers")
+	}
+});
 var materialWorkHash = (work, capabilities, sources) => {
-	const capabilityRefs = (work.delivery?.capability_refs ?? []).map((entry) => entry.capability_id).filter((entry) => typeof entry === "string");
-	const sourceRefs = (work.source_refs ?? []).map((entry) => entry.source_id).filter((entry) => typeof entry === "string");
+	const capabilityRefs = (work.frontmatter.delivery?.capability_refs ?? []).map((entry) => entry.capability_id).filter((entry) => typeof entry === "string");
+	const sourceRefs = (work.frontmatter.source_refs ?? []).map((entry) => entry.source_id).filter((entry) => typeof entry === "string");
 	return hashObject({
-		source_refs: work.source_refs,
+		source_refs: work.frontmatter.source_refs,
 		source_hashes: sources.filter((source) => sourceRefs.includes(String(source.frontmatter.id))).map((source) => ({
 			id: source.frontmatter.id,
 			content_hash: source.frontmatter.content_hash
@@ -6685,18 +6706,19 @@ var materialWorkHash = (work, capabilities, sources) => {
 			anti_claims: capability.frontmatter.anti_claims,
 			source_refs: capability.frontmatter.source_refs
 		})),
-		delivery: work.delivery,
-		acceptance: work.acceptance,
-		demonstration: work.demonstration,
-		anti_claims: work.anti_claims,
-		challenge: work.challenge,
-		dependencies: work.dependencies,
-		risk: work.risk
+		delivery: work.frontmatter.delivery,
+		acceptance: work.frontmatter.acceptance,
+		demonstration: work.frontmatter.demonstration,
+		anti_claims: work.frontmatter.anti_claims,
+		challenge: work.frontmatter.challenge,
+		dependencies: work.frontmatter.dependencies,
+		risk: work.frontmatter.risk,
+		material_body: materialBodyScope(work.body)
 	});
 };
 var recomputeWorkHash = (work, all) => ({
 	...work.frontmatter,
-	material_scope_hash: materialWorkHash(work.frontmatter, findArtifactsByType(all, "capability"), findArtifactsByType(all, "source"))
+	material_scope_hash: materialWorkHash(work, findArtifactsByType(all, "capability"), findArtifactsByType(all, "source"))
 });
 var sourceReviewOpenForWork = (work, sourceReviews) => {
 	const refs = (work.frontmatter.source_refs ?? []).map((entry) => entry.source_id).filter((entry) => typeof entry === "string");
@@ -6720,9 +6742,31 @@ var workGateFindings = (work) => {
 	if (kind === "support" && (typeof delivery?.support_reason !== "string" || delivery.support_reason.trim() === "")) findings.push(`${artifactId(work)}: support work lacks support reason.`);
 	return findings;
 };
-var reviewFresh = (work, reviews, auditClass) => reviews.some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === work.frontmatter.material_scope_hash);
-var reviewFreshForStage = (work, reviews, auditClass, stage) => reviews.some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.stage === stage && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === work.frontmatter.material_scope_hash);
-var verificationFresh = (work, verifications, profile) => verifications.some((verification) => verification.frontmatter.work_item_id === work.frontmatter.id && verification.frontmatter.profile === profile && verification.frontmatter.verdict === "pass" && verification.frontmatter.material_scope_hash === work.frontmatter.material_scope_hash);
+var currentMaterialWorkHash = (work, all) => materialWorkHash(work, findArtifactsByType(all, "capability"), findArtifactsByType(all, "source"));
+var currentMaterialReviewHash = (work, all) => {
+	const evidenceKey = (entry) => JSON.stringify(entry);
+	const liveAppEvidence = findArtifactsByType(all, "verification").filter((verification) => verification.frontmatter.work_item_id === work.frontmatter.id && verification.frontmatter.profile === "behavioral-demo" && verification.frontmatter.evidence_class === "live-app" && verification.frontmatter.verdict === "pass").map((verification) => ({
+		entrypoint: verification.frontmatter.entrypoint,
+		runtime_path: verification.frontmatter.runtime_path,
+		evidence: verification.frontmatter.evidence
+	})).sort((a, b) => evidenceKey(a).localeCompare(evidenceKey(b))).filter((entry, index, entries) => index === 0 || evidenceKey(entry) !== evidenceKey(entries[index - 1]));
+	return hashObject({
+		material_scope: currentMaterialWorkHash(work, all),
+		live_app_evidence: liveAppEvidence
+	});
+};
+var reviewFresh = (work, all, auditClass) => {
+	const currentHash = currentMaterialReviewHash(work, all);
+	return findArtifactsByType(all, "review").some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === currentHash);
+};
+var reviewFreshForStage = (work, all, auditClass, stage) => {
+	const currentHash = stage === "plan-slice" ? currentMaterialWorkHash(work, all) : currentMaterialReviewHash(work, all);
+	return findArtifactsByType(all, "review").some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.stage === stage && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === currentHash);
+};
+var verificationFresh = (work, all, profile) => {
+	const currentHash = currentMaterialWorkHash(work, all);
+	return findArtifactsByType(all, "verification").some((verification) => verification.frontmatter.work_item_id === work.frontmatter.id && verification.frontmatter.profile === profile && verification.frontmatter.verdict === "pass" && verification.frontmatter.material_scope_hash === currentHash);
+};
 var markdownLineValue = (input, label) => {
 	const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 	const match = new RegExp(`^\\s*(?:[-*]\\s*)?${escaped}:\\s*(.+?)\\s*$`, "im").exec(input);
@@ -6739,11 +6783,12 @@ var hasNonUserVisibleRationale = (work) => {
 var isUserVisibleCapabilityWork = (work) => {
 	return work.frontmatter.delivery?.kind === "capability" && !hasNonUserVisibleRationale(work);
 };
-var liveAppVerificationFresh = (work, verifications, profile = "behavioral-demo") => {
+var liveAppVerificationFresh = (work, all, profile = "behavioral-demo") => {
+	const currentHash = currentMaterialWorkHash(work, all);
 	const requiredRuntimePath = planRuntimePath(work);
 	const normalizedRequiredPath = requiredRuntimePath === null ? null : normalizedComparable(requiredRuntimePath);
-	return verifications.some((verification) => {
-		if (verification.frontmatter.work_item_id !== work.frontmatter.id || verification.frontmatter.profile !== profile || verification.frontmatter.verdict !== "pass" || verification.frontmatter.evidence_class !== "live-app" || verification.frontmatter.material_scope_hash !== work.frontmatter.material_scope_hash) return false;
+	return findArtifactsByType(all, "verification").some((verification) => {
+		if (verification.frontmatter.work_item_id !== work.frontmatter.id || verification.frontmatter.profile !== profile || verification.frontmatter.verdict !== "pass" || verification.frontmatter.evidence_class !== "live-app" || verification.frontmatter.material_scope_hash !== currentHash) return false;
 		const entrypoint = verification.frontmatter.entrypoint;
 		const runtimePath = verification.frontmatter.runtime_path;
 		if (typeof entrypoint !== "string" || entrypoint.trim() === "" || typeof runtimePath !== "string" || runtimePath.trim() === "") return false;
@@ -6760,13 +6805,10 @@ var handoffComplete = (work) => postCloseHygieneClosed(work, "implementation") &
 var closureFindings = (work, all) => {
 	const findings = workGateFindings(work);
 	const delivery = work.frontmatter.delivery;
-	const stageState = work.frontmatter.stage_state;
-	const verifications = findArtifactsByType(all, "verification");
-	const reviews = findArtifactsByType(all, "review");
-	if (stageState?.implementation === "closed" || work.frontmatter.lifecycle === "implemented") {
-		if (delivery?.kind === "capability" && !verificationFresh(work, verifications, "behavioral-demo")) findings.push(`${artifactId(work)}: implementation closed without fresh behavioral-demo verification.`);
-		if (isUserVisibleCapabilityWork(work) && !liveAppVerificationFresh(work, verifications)) findings.push(`${artifactId(work)}: implementation closed without fresh live-app behavioral-demo verification for the named production path.`);
-		if (delivery?.kind === "capability" && !reviewFresh(work, reviews, "concept-conformance-reviewer")) findings.push(`${artifactId(work)}: implementation closed without fresh concept-conformance-reviewer review.`);
+	if (work.frontmatter.stage_state?.implementation === "closed" || work.frontmatter.lifecycle === "implemented") {
+		if (delivery?.kind === "capability" && !verificationFresh(work, all, "behavioral-demo")) findings.push(`${artifactId(work)}: implementation closed without fresh behavioral-demo verification.`);
+		if (isUserVisibleCapabilityWork(work) && !liveAppVerificationFresh(work, all)) findings.push(`${artifactId(work)}: implementation closed without fresh live-app behavioral-demo verification for the named production path.`);
+		for (const reviewClass of requiredReviewClasses(work, "implementation")) if (!reviewFresh(work, all, reviewClass)) findings.push(`${artifactId(work)}: implementation closed without fresh ${reviewClass} review.`);
 	}
 	return findings;
 };
@@ -7523,7 +7565,7 @@ var capabilityCheck = async (ctx, command) => {
 	for (const work of findArtifactsByType(artifacts, "work_item").filter((entry) => workFilter === void 0 || entry.frontmatter.id === workFilter)) {
 		findings.push(...workGateFindings(work));
 		const stageState = work.frontmatter.stage_state;
-		if (isUserVisibleCapabilityWork(work) && (stageState?.implementation === "closed" || work.frontmatter.lifecycle === "implemented") && !liveAppVerificationFresh(work, findArtifactsByType(artifacts, "verification"))) findings.push(`${artifactId(work)}: user-visible capability implementation lacks fresh live-app behavioral evidence.`);
+		if (isUserVisibleCapabilityWork(work) && (stageState?.implementation === "closed" || work.frontmatter.lifecycle === "implemented") && !liveAppVerificationFresh(work, artifacts)) findings.push(`${artifactId(work)}: user-visible capability implementation lacks fresh live-app behavioral evidence.`);
 	}
 	return result(command, {
 		result: findings.length === 0 ? "success" : "blocked",
@@ -7750,12 +7792,16 @@ var workCreate = async (ctx, command) => {
 		material_scope_hash: null,
 		priority: value(command, "priority") ?? "normal"
 	};
+	const bodyText = workItemBody(title, delivery);
 	const withHash = {
 		...frontmatter,
-		material_scope_hash: materialWorkHash(frontmatter, findArtifactsByType(artifacts, "capability"), findArtifactsByType(artifacts, "source"))
+		material_scope_hash: materialWorkHash({
+			body: bodyText,
+			frontmatter
+		}, findArtifactsByType(artifacts, "capability"), findArtifactsByType(artifacts, "source"))
 	};
 	const relativePath = artifactPath("work", id);
-	await writeArtifactFile(root, relativePath, withHash, workItemBody(title, delivery));
+	await writeArtifactFile(root, relativePath, withHash, bodyText);
 	return result(command, {
 		result: "success",
 		created_artifacts: [{
@@ -8183,14 +8229,13 @@ var stageGateFindings = (work, all, stage) => {
 		if (work.frontmatter.challenge.recorded !== true) findings.push(`${artifactId(work)}: challenge must be recorded before plan-slice readiness.`);
 		if (delivery.kind === "capability") {
 			findings.push(...planSliceFindings(work));
-			if (!reviewFreshForStage(work, findArtifactsByType(all, "review"), "concept-conformance-reviewer", "plan-slice")) findings.push(`${artifactId(work)}: current PASS concept-conformance-reviewer review is required before plan-slice close. Run dossier-engineer review required --work ${artifactId(work)} --stage plan-slice.`);
+			if (!reviewFreshForStage(work, all, "concept-conformance-reviewer", "plan-slice")) findings.push(`${artifactId(work)}: current PASS concept-conformance-reviewer review is required before plan-slice close. Run dossier-engineer review required --work ${artifactId(work)} --stage plan-slice.`);
 		}
 	}
 	if (stage === "implementation") {
-		if (delivery.kind === "capability" && !verificationFresh(work, findArtifactsByType(all, "verification"), "behavioral-demo")) findings.push(`${artifactId(work)}: fresh behavioral-demo verification required.`);
-		if (isUserVisibleCapabilityWork(work) && !liveAppVerificationFresh(work, findArtifactsByType(all, "verification"))) findings.push(`${artifactId(work)}: fresh live-app behavioral-demo verification required for user-visible capability work.`);
-		if (delivery.kind === "capability" && !reviewFresh(work, findArtifactsByType(all, "review"), "concept-conformance-reviewer")) findings.push(`${artifactId(work)}: fresh concept-conformance review required.`);
-		if (delivery.kind === "capability" && !reviewFresh(work, findArtifactsByType(all, "review"), "spec-conformance-reviewer")) findings.push(`${artifactId(work)}: fresh spec-conformance review required.`);
+		if (delivery.kind === "capability" && !verificationFresh(work, all, "behavioral-demo")) findings.push(`${artifactId(work)}: fresh behavioral-demo verification required.`);
+		if (isUserVisibleCapabilityWork(work) && !liveAppVerificationFresh(work, all)) findings.push(`${artifactId(work)}: fresh live-app behavioral-demo verification required for user-visible capability work.`);
+		for (const reviewClass of requiredReviewClasses(work, "implementation")) if (!reviewFresh(work, all, reviewClass)) findings.push(`${artifactId(work)}: fresh ${reviewClass} review required.`);
 	}
 	return findings;
 };
@@ -8297,9 +8342,8 @@ var verifyRequired = async (ctx, command) => {
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
 	const delivery = work.frontmatter.delivery;
 	const required = delivery.kind === "capability" ? ["behavioral-demo"] : delivery.kind === "maintenance" ? ["default"] : ["default"];
-	const verifications = findArtifactsByType(artifacts, "verification");
-	const findings = required.map((profile) => `${profile}: ${verificationFresh(work, verifications, profile) ? "fresh" : "missing_or_stale"}`);
-	if (isUserVisibleCapabilityWork(work)) findings.push(`behavioral-demo live-app: ${liveAppVerificationFresh(work, verifications) ? "fresh" : "missing_or_stale"}`);
+	const findings = required.map((profile) => `${profile}: ${verificationFresh(work, artifacts, profile) ? "fresh" : "missing_or_stale"}`);
+	if (isUserVisibleCapabilityWork(work)) findings.push(`behavioral-demo live-app: ${liveAppVerificationFresh(work, artifacts) ? "fresh" : "missing_or_stale"}`);
 	const recordCommand = isUserVisibleCapabilityWork(work) ? `dossier-engineer verify record --work ${workId} --stage implementation --profile behavioral-demo --evidence-class live-app --entrypoint "<actual app entrypoint>" --runtime-path "<production path>" --verdict pass --summary "<observed behavior>" --evidence <path>` : `dossier-engineer verify record --work ${workId} --stage implementation --profile ${required[0]} --evidence-class behavioral --verdict pass --summary "<observed behavior>" --evidence <path>`;
 	return result(command, {
 		result: findings.some((entry) => entry.includes("missing")) ? "blocked" : "success",
@@ -8317,7 +8361,7 @@ var verifyRun = async (ctx, command) => {
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
 	const profileCommands = (findArtifactsByType(artifacts, "dossier_project")[0]?.frontmatter.verification_profiles)?.[profile]?.commands ?? [];
 	if (profileCommands.length > 0) {
-		const startingMaterialScopeHash = work.frontmatter.material_scope_hash;
+		const startingMaterialScopeHash = currentMaterialWorkHash(work, artifacts);
 		const startingProfileCommands = JSON.stringify(profileCommands);
 		const commandResults = profileCommands.map((profileCommand) => {
 			const spawned = spawnSync(profileCommand, {
@@ -8336,7 +8380,7 @@ var verifyRun = async (ctx, command) => {
 			const { artifacts: currentArtifacts } = await loadRootArtifacts(ctx, command);
 			const currentWork = findArtifactById(currentArtifacts, workId);
 			if (currentWork === void 0 || currentWork.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
-			if (currentWork.frontmatter.material_scope_hash !== startingMaterialScopeHash) return result(command, {
+			if (currentMaterialWorkHash(currentWork, currentArtifacts) !== startingMaterialScopeHash) return result(command, {
 				result: "blocked",
 				blockers: ["Verification result was not recorded because the work item material scope changed while the external command was running."],
 				next_actions: [next(`dossier-engineer verify run --work ${workId} --stage ${stage} --profile ${profile}`, "Re-run verification against the current work item scope.")],
@@ -8366,7 +8410,7 @@ var verifyRun = async (ctx, command) => {
 				evidence: [],
 				coverage_gate: verdict === "pass" ? "green" : "open",
 				created_at: isoNow(ctx.now()),
-				material_scope_hash: currentWork.frontmatter.material_scope_hash
+				material_scope_hash: currentMaterialWorkHash(currentWork, currentArtifacts)
 			}, body(`${profile} verification`, ["Command output", "Evidence interpretation"]));
 			const changed = [];
 			if (verdict === "pass") {
@@ -8436,7 +8480,7 @@ var verifyRecord = async (ctx, command) => {
 		evidence,
 		coverage_gate: verdict === "pass" ? "green" : "open",
 		created_at: isoNow(ctx.now()),
-		material_scope_hash: work.frontmatter.material_scope_hash
+		material_scope_hash: currentMaterialWorkHash(work, artifacts)
 	}, [
 		`# ${profile} verification`,
 		"",
@@ -8478,10 +8522,9 @@ var reviewRequired = async (ctx, command) => {
 	const stage = value(command, "stage") === void 0 ? "implementation" : requireEnum(command, "stage", STAGES);
 	const work = findArtifactById(artifacts, workId);
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
-	const reviews = findArtifactsByType(artifacts, "review");
 	const required = requiredReviewClasses(work, stage);
 	const findings = required.map((reviewClass) => {
-		return `${reviewClass}: ${(stage === "plan-slice" ? reviewFreshForStage(work, reviews, reviewClass, stage) : reviewFresh(work, reviews, reviewClass)) ? "fresh" : "missing_or_stale"} for stage=${stage}`;
+		return `${reviewClass}: ${(stage === "plan-slice" ? reviewFreshForStage(work, artifacts, reviewClass, stage) : reviewFresh(work, artifacts, reviewClass)) ? "fresh" : "missing_or_stale"} for stage=${stage}`;
 	});
 	return result(command, {
 		result: findings.some((entry) => entry.includes("missing")) ? "blocked" : "success",
@@ -8512,7 +8555,7 @@ var reviewRecord = async (ctx, command) => {
 		verdict,
 		reviewer,
 		created_at: isoNow(ctx.now()),
-		material_scope_hash: work.frontmatter.material_scope_hash,
+		material_scope_hash: stage === "plan-slice" ? currentMaterialWorkHash(work, artifacts) : currentMaterialReviewHash(work, artifacts),
 		reviewed_artifacts: [work.path],
 		findings: [],
 		summary: value(command, "summary") ?? null,

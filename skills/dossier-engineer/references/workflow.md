@@ -342,6 +342,17 @@ closing behavioral-demo evidence must include `evidence_class=live-app`,
 `entrypoint`, and `runtime_path`, unless the Plan Slice records an explicit
 non-user-visible rationale.
 
+Use consolidated review as a timing policy, not as a review class. A sequence of
+micro-fixes inside the same material scope can be recorded in stage notes,
+verification summaries, or changesets without a full review bundle after every
+fix. Before implementation closure, the required review bundle must still have
+fresh PASS artifacts for every required class against the final material scope.
+
+Do not treat a change as note-only when it changes source interpretation,
+capability claim, acceptance criteria, trust boundary, security posture,
+production entrypoint, integration path, demo scenario, falsifier set, or
+implementation surface named in the AC/evidence matrix.
+
 For support work:
 
 ```bash
@@ -369,7 +380,7 @@ implementation close and does not report hygiene again after successful hygiene.
 Closure must fail closed if:
 
 - behavioral demo is missing for capability work;
-- concept-conformance review is missing or stale;
+- any required review class is missing or stale for the final material scope;
 - support work has no support explanation;
 - guardrail is triggered;
 - source-review is open;
