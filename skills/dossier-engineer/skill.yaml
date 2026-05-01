@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: dossier-engineer
-  source-version: 2.3.0
+  source-version: 2.4.0
   recommended-skill-md-max-bytes: 32000
   description: >-
     Manage a source-traced, capability-oriented, merge-safe dossier workflow for
@@ -172,6 +172,10 @@ copies:
     source: test/cli.test.ts
     target: test/cli.test.ts
     description: Runtime integration and contract tests.
+  - id: infra-test
+    source: test/infra.test.ts
+    target: test/infra.test.ts
+    description: Runtime infrastructure contract tests.
 
 supporting:
   - id: readme
@@ -222,6 +226,10 @@ supporting:
     source: docs/logs/implementation-log-20260501-1.md
     target: docs/logs/implementation-log-20260501-1.md
     description: Implementation log for ESLint-backed linting.
+  - id: implementation-log-20260502-1
+    source: docs/logs/implementation-log-20260502-1.md
+    target: docs/logs/implementation-log-20260502-1.md
+    description: Implementation log for Phase 2 runtime write-lock safety.
   - id: ru-workflow-reference
     source: docs/ru/references/workflow.ru.md
     target: docs/ru/references/workflow.ru.md

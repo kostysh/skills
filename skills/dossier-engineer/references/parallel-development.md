@@ -11,9 +11,14 @@ Forbidden:
 - global mutable indexes;
 - sequential counters;
 - committed generated status/queue/attention reports;
-- shared lock files;
+- committed or shared lock files used as canonical dossier state;
 - JSON/JSONL canonical state;
 - manual frontmatter edits.
+
+Ephemeral runtime write locks are allowed only under
+`.dossier-runtime/write.lock/` while a mutating command is running. They are not
+artifacts, must be ignored by git, and must never appear in changesets,
+reports, or durable dossier records.
 
 ## 2. Conflict-safe artifact model
 

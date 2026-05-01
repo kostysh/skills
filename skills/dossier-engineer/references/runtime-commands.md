@@ -36,6 +36,30 @@ Next actions:
 
 The agent must read `Next actions` and perform the first applicable protocol-safe step.
 
+Mutating runtime commands acquire an exclusive ephemeral dossier write lock before
+reading and writing artifacts. The primary lock path is
+`.dossier-runtime/write.lock/` under the dossier root. The lock is runtime
+metadata, not dossier state: do not commit it, reference it from changesets, or
+repair it as an artifact. Ensure `.dossier-runtime/` is ignored by git in
+dossier-managed repositories.
+
+Default lock conflict behavior is fail-fast. A blocked mutating command reports
+the lock path, holder metadata when available, lock age, and recovery-oriented
+Next actions. Do not wait or retry implicitly; re-run the command after
+confirming the holder finished or after safely removing a stale lock.
+
+Read-only commands may run without the write lock and may observe a transient
+mixed view while another process is committing multiple artifact updates.
+Closure, record, and other mutating decisions re-read affected artifacts after
+acquiring the write lock.
+
+`verify run` is logically mutating because it may record verification results,
+but its external command execution phase does not hold the write lock. The
+runtime reads the intended verification scope, runs external commands without
+the lock, then acquires the lock, re-reads affected artifacts, checks material
+scope and profile freshness, records the verification artifact, validates the
+write, and releases the lock.
+
 When a command creates a source, capability, baseline, guardrail, work item,
 review, verification, or changeset scaffold, runtime also returns a body
 completion reminder in `Next actions`. That reminder does not validate the body

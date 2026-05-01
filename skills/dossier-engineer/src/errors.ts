@@ -1,11 +1,12 @@
 export class DossierError extends Error {
-  public constructor(
-    message: string,
-    public readonly exitCode: number,
-    public readonly code: string,
-  ) {
+  public readonly exitCode: number;
+  public readonly code: string;
+
+  public constructor(message: string, exitCode: number, code: string) {
     super(message);
     this.name = 'DossierError';
+    this.exitCode = exitCode;
+    this.code = code;
   }
 }
 

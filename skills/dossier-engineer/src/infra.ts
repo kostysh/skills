@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import YAML from 'yaml';
@@ -20,6 +20,32 @@ export const defaultContext = (cwd: string) => ({
   randomHex: (bytes: number) => randomBytes(bytes).toString('hex'),
 });
 
+export interface DossierWriteLockMetadata {
+  readonly pid: number;
+  readonly command: string;
+  readonly acquired_at: string;
+}
+
+export interface DossierWriteLockConflict {
+  readonly lockPath: string;
+  readonly holder: DossierWriteLockMetadata | null;
+  readonly ageSeconds: number | null;
+}
+
+export class DossierWriteLockConflictError extends Error {
+  public readonly conflict: DossierWriteLockConflict;
+
+  public constructor(conflict: DossierWriteLockConflict) {
+    super(`Dossier write lock is held: ${conflict.lockPath}`);
+    this.name = 'DossierWriteLockConflictError';
+    this.conflict = conflict;
+  }
+}
+
+export interface DossierWriteLockOptions {
+  readonly writeMetadata?: (lockPath: string, metadata: DossierWriteLockMetadata) => Promise<void>;
+}
+
 export const toPosix = (value: string): string => value.split(path.sep).join('/');
 
 export const relativeToRoot = (root: string, absolutePath: string): string =>
@@ -29,6 +55,105 @@ export const isUrlLike = (value: string): boolean => /^[a-z][a-z0-9+.-]*:\/\//i.
 
 export const dossierPath = (root: string, ...parts: string[]): string =>
   path.join(root, DOSSIER_DIR, ...parts);
+
+export const runtimeDirPath = (root: string): string => path.join(root, '.dossier-runtime');
+
+export const dossierWriteLockPath = (root: string): string =>
+  path.join(runtimeDirPath(root), 'write.lock');
+
+export const ensureRuntimeDirectoryIgnored = async (root: string): Promise<boolean> => {
+  const gitignorePath = path.join(root, '.gitignore');
+  const entry = '.dossier-runtime/';
+  const note = '# Dossier-engineer ephemeral runtime locks';
+  if (!existsSync(gitignorePath)) {
+    await writeFile(gitignorePath, `${note}\n${entry}\n`, 'utf8');
+    return true;
+  }
+  const current = await readFile(gitignorePath, 'utf8');
+  const lines = current
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line !== '' && !line.startsWith('#'));
+  if (lines.includes(entry) || lines.includes('**/.dossier-runtime/')) {
+    return false;
+  }
+  const separator = current.endsWith('\n') ? '\n' : '\n\n';
+  await writeFile(gitignorePath, `${current}${separator}${note}\n${entry}\n`, 'utf8');
+  return true;
+};
+
+const readLockMetadata = async (lockPath: string): Promise<DossierWriteLockMetadata | null> => {
+  try {
+    const raw = await readFile(path.join(lockPath, 'holder.json'), 'utf8');
+    const parsed = JSON.parse(raw) as unknown;
+    if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    const record = parsed as Record<string, unknown>;
+    if (
+      typeof record.pid !== 'number' ||
+      typeof record.command !== 'string' ||
+      typeof record.acquired_at !== 'string'
+    ) {
+      return null;
+    }
+    return {
+      pid: record.pid,
+      command: record.command,
+      acquired_at: record.acquired_at,
+    };
+  } catch {
+    return null;
+  }
+};
+
+export const acquireDossierWriteLock = async (
+  root: string,
+  command: string,
+  now: Date,
+  options: DossierWriteLockOptions = {},
+): Promise<() => Promise<void>> => {
+  const runtimeDir = runtimeDirPath(root);
+  const lockPath = dossierWriteLockPath(root);
+  await mkdir(runtimeDir, { recursive: true });
+  try {
+    await mkdir(lockPath);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'EEXIST') {
+      throw error;
+    }
+    const [holder, details] = await Promise.all([
+      readLockMetadata(lockPath),
+      stat(lockPath).catch(() => null),
+    ]);
+    const ageSeconds =
+      details === null ? null : Math.max(0, Math.round((now.getTime() - details.mtimeMs) / 1000));
+    throw new DossierWriteLockConflictError({ lockPath, holder, ageSeconds });
+  }
+
+  const metadata = {
+    pid: process.pid,
+    command,
+    acquired_at: now.toISOString(),
+  } satisfies DossierWriteLockMetadata;
+
+  try {
+    if (options.writeMetadata !== undefined) {
+      await options.writeMetadata(lockPath, metadata);
+    } else {
+      await writeFile(
+        path.join(lockPath, 'holder.json'),
+        JSON.stringify(metadata, null, 2),
+        'utf8',
+      );
+    }
+  } catch (error) {
+    await rm(lockPath, { recursive: true, force: true });
+    throw error;
+  }
+
+  return async () => {
+    await rm(lockPath, { recursive: true, force: true });
+  };
+};
 
 export const discoverRoot = (
   cwd: string,
@@ -124,8 +249,19 @@ export const writeArtifactFile = async (
   body: string,
 ): Promise<void> => {
   const absolutePath = path.resolve(root, relativePath);
-  await mkdir(path.dirname(absolutePath), { recursive: true });
-  await writeFile(absolutePath, stringifyMarkdownArtifact(frontmatter, body), 'utf8');
+  const parentDir = path.dirname(absolutePath);
+  await mkdir(parentDir, { recursive: true });
+  const tempPath = path.join(
+    parentDir,
+    `.${path.basename(absolutePath)}.${process.pid}.${randomBytes(6).toString('hex')}.tmp`,
+  );
+  try {
+    await writeFile(tempPath, stringifyMarkdownArtifact(frontmatter, body), 'utf8');
+    await rename(tempPath, absolutePath);
+  } catch (error) {
+    await rm(tempPath, { force: true });
+    throw error;
+  }
 };
 
 export const listFilesRecursive = async (dir: string): Promise<string[]> => {

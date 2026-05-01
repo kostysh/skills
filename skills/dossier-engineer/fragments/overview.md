@@ -16,7 +16,7 @@ Do not create work directly from vague implementation ideas. Anchor work to sour
 
 1. Store canonical dossier state only in Markdown files with YAML frontmatter under `docs/dossier/`.
 2. Use the `dossier-engineer` runtime to create, update, validate, and close dossier artifacts.
-3. Do not create canonical JSON files, JSONL files, databases, hidden state stores, generated global state snapshots, committed mutable indexes, sequential counters, or shared lock files.
+3. Do not create canonical JSON files, JSONL files, databases, hidden state stores, generated global state snapshots, committed mutable indexes, sequential counters, or committed/shared lock files as dossier state. Ephemeral runtime locks under `.dossier-runtime/` are runtime metadata only.
 4. Do not manually create artifact IDs, timestamps, lifecycle values, delivery-kind values, capability statuses, stage states, source hashes, review freshness values, material-scope hashes, guardrail states, or other machine-owned frontmatter fields.
 5. Edit artifact body sections only after the runtime creates the artifact scaffold.
 6. After manual body edits that affect requirements, concept interpretation, capabilities, scope, acceptance, dependencies, risks, demonstrations, evidence, anti-claims, guardrails, or closure, run `dossier-engineer lint` on the changed artifact or repository.

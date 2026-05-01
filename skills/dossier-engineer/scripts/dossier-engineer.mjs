@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { createHash, randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 //#region \0rolldown/runtime.js
@@ -6126,11 +6126,13 @@ var browser_default = /* @__PURE__ */ __exportAll({
 //#endregion
 //#region src/errors.ts
 var DossierError = class extends Error {
+	exitCode;
+	code;
 	constructor(message, exitCode, code) {
 		super(message);
+		this.name = "DossierError";
 		this.exitCode = exitCode;
 		this.code = code;
-		this.name = "DossierError";
 	}
 };
 var UsageError = class extends DossierError {
@@ -6283,10 +6285,87 @@ var defaultContext = (cwd) => ({
 	now: () => /* @__PURE__ */ new Date(),
 	randomHex: (bytes) => randomBytes(bytes).toString("hex")
 });
+var DossierWriteLockConflictError = class extends Error {
+	conflict;
+	constructor(conflict) {
+		super(`Dossier write lock is held: ${conflict.lockPath}`);
+		this.name = "DossierWriteLockConflictError";
+		this.conflict = conflict;
+	}
+};
 var toPosix = (value) => value.split(path.sep).join("/");
 var relativeToRoot = (root, absolutePath) => toPosix(path.relative(root, absolutePath));
 var isUrlLike = (value) => /^[a-z][a-z0-9+.-]*:\/\//i.test(value);
 var dossierPath = (root, ...parts) => path.join(root, DOSSIER_DIR, ...parts);
+var runtimeDirPath = (root) => path.join(root, ".dossier-runtime");
+var dossierWriteLockPath = (root) => path.join(runtimeDirPath(root), "write.lock");
+var ensureRuntimeDirectoryIgnored = async (root) => {
+	const gitignorePath = path.join(root, ".gitignore");
+	const entry = ".dossier-runtime/";
+	const note = "# Dossier-engineer ephemeral runtime locks";
+	if (!existsSync(gitignorePath)) {
+		await writeFile(gitignorePath, `${note}\n${entry}\n`, "utf8");
+		return true;
+	}
+	const current = await readFile(gitignorePath, "utf8");
+	const lines = current.split(/\r?\n/).map((line) => line.trim()).filter((line) => line !== "" && !line.startsWith("#"));
+	if (lines.includes(entry) || lines.includes("**/.dossier-runtime/")) return false;
+	await writeFile(gitignorePath, `${current}${current.endsWith("\n") ? "\n" : "\n\n"}${note}\n${entry}\n`, "utf8");
+	return true;
+};
+var readLockMetadata = async (lockPath) => {
+	try {
+		const raw = await readFile(path.join(lockPath, "holder.json"), "utf8");
+		const parsed = JSON.parse(raw);
+		if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) return null;
+		const record = parsed;
+		if (typeof record.pid !== "number" || typeof record.command !== "string" || typeof record.acquired_at !== "string") return null;
+		return {
+			pid: record.pid,
+			command: record.command,
+			acquired_at: record.acquired_at
+		};
+	} catch {
+		return null;
+	}
+};
+var acquireDossierWriteLock = async (root, command, now, options = {}) => {
+	const runtimeDir = runtimeDirPath(root);
+	const lockPath = dossierWriteLockPath(root);
+	await mkdir(runtimeDir, { recursive: true });
+	try {
+		await mkdir(lockPath);
+	} catch (error) {
+		if (error.code !== "EEXIST") throw error;
+		const [holder, details] = await Promise.all([readLockMetadata(lockPath), stat(lockPath).catch(() => null)]);
+		throw new DossierWriteLockConflictError({
+			lockPath,
+			holder,
+			ageSeconds: details === null ? null : Math.max(0, Math.round((now.getTime() - details.mtimeMs) / 1e3))
+		});
+	}
+	const metadata = {
+		pid: process.pid,
+		command,
+		acquired_at: now.toISOString()
+	};
+	try {
+		if (options.writeMetadata !== void 0) await options.writeMetadata(lockPath, metadata);
+		else await writeFile(path.join(lockPath, "holder.json"), JSON.stringify(metadata, null, 2), "utf8");
+	} catch (error) {
+		await rm(lockPath, {
+			recursive: true,
+			force: true
+		});
+		throw error;
+	}
+	return async () => {
+		await rm(lockPath, {
+			recursive: true,
+			force: true
+		});
+	};
+};
 var discoverRoot = (cwd, suppliedRoot, command) => {
 	if (suppliedRoot !== void 0) {
 		const resolved = path.resolve(cwd, suppliedRoot);
@@ -6341,8 +6420,16 @@ var readArtifactFile = async (root, relativePath) => {
 };
 var writeArtifactFile = async (root, relativePath, frontmatter, body) => {
 	const absolutePath = path.resolve(root, relativePath);
-	await mkdir(path.dirname(absolutePath), { recursive: true });
-	await writeFile(absolutePath, stringifyMarkdownArtifact(frontmatter, body), "utf8");
+	const parentDir = path.dirname(absolutePath);
+	await mkdir(parentDir, { recursive: true });
+	const tempPath = path.join(parentDir, `.${path.basename(absolutePath)}.${process.pid}.${randomBytes(6).toString("hex")}.tmp`);
+	try {
+		await writeFile(tempPath, stringifyMarkdownArtifact(frontmatter, body), "utf8");
+		await rename(tempPath, absolutePath);
+	} catch (error) {
+		await rm(tempPath, { force: true });
+		throw error;
+	}
 };
 var listFilesRecursive = async (dir) => {
 	if (!existsSync(dir)) return [];
@@ -6551,6 +6638,8 @@ var loadRootArtifacts = async (ctx, command) => {
 	};
 };
 var updateArtifact = async (root, artifact, frontmatter, now) => {
+	const current = await readArtifactFile(root, artifact.path);
+	if (current.body !== artifact.body || current.frontmatter.updated_at !== artifact.frontmatter.updated_at || hashObject(current.frontmatter) !== hashObject(artifact.frontmatter)) throw new BlockedError(`Stale dossier artifact write rejected for ${artifact.path}; re-run the command after reading current dossier state.`);
 	const updated = {
 		...frontmatter,
 		updated_at: now
@@ -6626,7 +6715,59 @@ var closureFindings = (work, all) => {
 	}
 	return findings;
 };
-var runCommand = async (ctx, command) => {
+var commandMutationMode = (command) => {
+	const [head, second, third] = command.words;
+	if (head === "status" || head === "attention" || head === "queue" || head === "next" || head === "lint" || head === "source" && (second === "list" || second === "impact") || head === "capability" && second === "check" || head === "verify" && second === "required" || head === "review" && second === "required") return "read-only";
+	if (head === "guardrail" && second === "check" && !hasFlag(command, "record")) return "read-only";
+	if (head === "verify" && second === "run") return "verify-run-split";
+	if (head === "init" || head === "repair" && second === "frontmatter" || head === "source" && (second === "add" || second === "refresh") || head === "source" && second === "review" && third === "resolve" || head === "capability" && (second === "create" || second === "claim" && third === "set" || second === "anti-claim" && third === "add" || second === "demo" && third === "record") || head === "baseline" && (second === "create" || second === "capability" && third === "add") || head === "guardrail" && (second === "add" || second === "check" || second === "resolve") || head === "work" && (second === "create" || second === "acceptance" && third === "add" || second === "demo" && third === "set" || second === "anti-claim" && third === "add" || second === "challenge" && third === "record" || second === "support" && third === "explain" || second === "dependency" && (third === "add" || third === "remove") || second === "blocker" && (third === "add" || third === "resolve") || second === "risk" && third === "set" || second === "retire" || second === "amend" || second === "split") || head === "stage" && [
+		"start",
+		"ready",
+		"close",
+		"reopen",
+		"log"
+	].includes(String(second)) || head === "verify" && second === "record" || head === "review" && second === "record" || head === "hygiene" && second === "run" || head === "changeset" && second === "create" || head === "report" && second === "create" || head === "retro" && second === "create") return "locked";
+	return "read-only";
+};
+var lockConflictResult = (command, conflict) => {
+	const holder = conflict.holder;
+	const holderText = holder === null ? "holder metadata unavailable" : `pid=${holder.pid}, command=${holder.command}, acquired_at=${holder.acquired_at}`;
+	const ageText = conflict.ageSeconds === null ? "unknown" : `${conflict.ageSeconds}s`;
+	return result(command, {
+		result: "blocked",
+		blockers: [
+			`Dossier write lock is held at ${conflict.lockPath}.`,
+			`Holder: ${holderText}.`,
+			`Lock age: ${ageText}.`
+		],
+		next_actions: [next("inspect the running dossier-engineer command or remove the lock only after confirming the holder is dead", "Default lock conflict behavior is fail-fast; the runtime does not wait implicitly."), next("re-run the blocked command after the lock is released", "Mutating commands re-read dossier artifacts after acquiring the lock.")],
+		exitCode: 2
+	});
+};
+var validateMutationResult = async (root, commandResult) => {
+	const artifacts = [...commandResult.created_artifacts, ...commandResult.changed_artifacts];
+	for (const artifact of artifacts) {
+		const parsed = await readArtifactFile(root, artifact.path);
+		const expectedType = expectedArtifactType(artifact.path);
+		if (expectedType !== null && parsed.frontmatter.artifact_type !== expectedType) throw new BlockedError(`Post-write validation failed for ${artifact.path}: expected artifact_type ${expectedType}, got ${displayValue(parsed.frontmatter.artifact_type)}.`);
+	}
+};
+var withMutationEnvelope = async (ctx, command, operation, rootOverride) => {
+	const root = rootOverride ?? discoverRoot(ctx.cwd, value(command, "root"), command.words.join(" "));
+	let release;
+	try {
+		release = await acquireDossierWriteLock(root, command.raw, ctx.now());
+		const commandResult = await operation();
+		await validateMutationResult(root, commandResult);
+		return commandResult;
+	} catch (error) {
+		if (error instanceof DossierWriteLockConflictError) return lockConflictResult(command, error.conflict);
+		throw error;
+	} finally {
+		if (release !== void 0) await release();
+	}
+};
+var dispatchCommand = async (ctx, command) => {
 	const [head, second, third] = command.words;
 	if (head === "init") return init(ctx, command);
 	if (head === "status") return status(ctx, command);
@@ -6680,6 +6821,10 @@ var runCommand = async (ctx, command) => {
 	if (head === "retro" && second === "create") return retroCreate(ctx, command);
 	throw new UsageError(`Unknown command: ${command.words.join(" ")}`);
 };
+var runCommand = async (ctx, command) => {
+	if (commandMutationMode(command) === "locked") return withMutationEnvelope(ctx, command, () => dispatchCommand(ctx, command));
+	return dispatchCommand(ctx, command);
+};
 var genericBlocked = (command, blocker) => result(command, {
 	result: "blocked",
 	blockers: [blocker],
@@ -6699,6 +6844,7 @@ var init = async (ctx, command) => {
 	const projectPath = `${DOSSIER_DIR}/project.md`;
 	if (existsSync(path.join(root, projectPath)) && !hasFlag(command, "force")) throw new BlockedError("Dossier project already exists. Use --force only to intentionally rewrite project metadata.");
 	const now = isoNow(ctx.now());
+	const gitignoreChanged = await ensureRuntimeDirectoryIgnored(root);
 	const projectId = makeId(root, "PRJ", projectName, ctx.randomHex, () => projectPath, ctx.now());
 	await writeArtifactFile(root, projectPath, {
 		artifact_type: "dossier_project",
@@ -6732,6 +6878,7 @@ var init = async (ctx, command) => {
 			artifact_type: "dossier_project",
 			id: projectId
 		}],
+		warnings: gitignoreChanged ? ["Updated .gitignore to ignore .dossier-runtime/."] : [],
 		next_actions: [next("dossier-engineer source add --path <path> --kind concept --authority canonical --title \"<product concept>\"", "Register the concept source before creating capabilities."), next("dossier-engineer baseline create --title \"Existing product baseline\" --mode existing-project --source <source-id>", "Use this when onboarding an already working project.")]
 	});
 };
@@ -7997,6 +8144,8 @@ var verifyRun = async (ctx, command) => {
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
 	const profileCommands = (findArtifactsByType(artifacts, "dossier_project")[0]?.frontmatter.verification_profiles)?.[profile]?.commands ?? [];
 	if (profileCommands.length > 0) {
+		const startingMaterialScopeHash = work.frontmatter.material_scope_hash;
+		const startingProfileCommands = JSON.stringify(profileCommands);
 		const commandResults = profileCommands.map((profileCommand) => {
 			const spawned = spawnSync(profileCommand, {
 				cwd: root,
@@ -8010,49 +8159,67 @@ var verifyRun = async (ctx, command) => {
 				stderr: spawned.stderr.slice(0, 4e3)
 			};
 		});
-		const failed = commandResults.find((entry) => entry.exit_code !== 0);
-		const verdict = failed === void 0 ? "pass" : "fail";
-		const id = makeId(root, "VER", `${workId} ${profile}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/verification/${workId}/${candidate}.md`, ctx.now());
-		const relativePath = `${DOSSIER_DIR}/verification/${workId}/${id}.md`;
-		await writeArtifactFile(root, relativePath, {
-			artifact_type: "verification",
-			schema_version: "2.2",
-			id,
-			work_item_id: workId,
-			stage,
-			profile,
-			evidence_class: profile === "behavioral-demo" ? "behavioral" : "support",
-			verdict,
-			commands: commandResults,
-			evidence: [],
-			coverage_gate: verdict === "pass" ? "green" : "open",
-			created_at: isoNow(ctx.now()),
-			material_scope_hash: work.frontmatter.material_scope_hash
-		}, body(`${profile} verification`, ["Command output", "Evidence interpretation"]));
-		const changed = [];
-		if (verdict === "pass") {
-			const acceptance = work.frontmatter.acceptance;
-			const updated = await updateArtifact(root, work, {
-				...work.frontmatter,
-				acceptance: {
-					...acceptance,
-					coverage_gate: "green"
-				}
-			}, isoNow(ctx.now()));
-			changed.push(artifactInfo(updated));
-		}
-		return result(command, {
-			result: verdict === "pass" ? "success" : "failed",
-			created_artifacts: [{
-				path: relativePath,
+		return withMutationEnvelope(ctx, command, async () => {
+			const { artifacts: currentArtifacts } = await loadRootArtifacts(ctx, command);
+			const currentWork = findArtifactById(currentArtifacts, workId);
+			if (currentWork === void 0 || currentWork.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
+			if (currentWork.frontmatter.material_scope_hash !== startingMaterialScopeHash) return result(command, {
+				result: "blocked",
+				blockers: ["Verification result was not recorded because the work item material scope changed while the external command was running."],
+				next_actions: [next(`dossier-engineer verify run --work ${workId} --stage ${stage} --profile ${profile}`, "Re-run verification against the current work item scope.")],
+				exitCode: 2
+			});
+			const currentProfileCommands = (findArtifactsByType(currentArtifacts, "dossier_project")[0]?.frontmatter.verification_profiles)?.[profile]?.commands ?? [];
+			if (JSON.stringify(currentProfileCommands) !== startingProfileCommands) return result(command, {
+				result: "blocked",
+				blockers: ["Verification result was not recorded because the verification profile changed while the external command was running."],
+				next_actions: [next(`dossier-engineer verify run --work ${workId} --stage ${stage} --profile ${profile}`, "Re-run verification using the current profile command set.")],
+				exitCode: 2
+			});
+			const failed = commandResults.find((entry) => entry.exit_code !== 0);
+			const verdict = failed === void 0 ? "pass" : "fail";
+			const id = makeId(root, "VER", `${workId} ${profile}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/verification/${workId}/${candidate}.md`, ctx.now());
+			const relativePath = `${DOSSIER_DIR}/verification/${workId}/${id}.md`;
+			await writeArtifactFile(root, relativePath, {
 				artifact_type: "verification",
-				id
-			}],
-			changed_artifacts: changed,
-			blockers: failed === void 0 ? [] : [`Verification command failed (${failed.exit_code}): ${failed.command}`],
-			next_actions: verdict === "pass" ? [next(`dossier-engineer review required --work ${workId} --stage ${stage}`, "Check review requirements after verification evidence.")] : [next(`dossier-engineer verify run --work ${workId} --stage ${stage} --profile ${profile}`, "Rerun after fixing the failed command.")],
-			exitCode: verdict === "pass" ? 0 : 4
-		});
+				schema_version: "2.2",
+				id,
+				work_item_id: workId,
+				stage,
+				profile,
+				evidence_class: profile === "behavioral-demo" ? "behavioral" : "support",
+				verdict,
+				commands: commandResults,
+				evidence: [],
+				coverage_gate: verdict === "pass" ? "green" : "open",
+				created_at: isoNow(ctx.now()),
+				material_scope_hash: currentWork.frontmatter.material_scope_hash
+			}, body(`${profile} verification`, ["Command output", "Evidence interpretation"]));
+			const changed = [];
+			if (verdict === "pass") {
+				const acceptance = currentWork.frontmatter.acceptance;
+				const updated = await updateArtifact(root, currentWork, {
+					...currentWork.frontmatter,
+					acceptance: {
+						...acceptance,
+						coverage_gate: "green"
+					}
+				}, isoNow(ctx.now()));
+				changed.push(artifactInfo(updated));
+			}
+			return result(command, {
+				result: verdict === "pass" ? "success" : "failed",
+				created_artifacts: [{
+					path: relativePath,
+					artifact_type: "verification",
+					id
+				}],
+				changed_artifacts: changed,
+				blockers: failed === void 0 ? [] : [`Verification command failed (${failed.exit_code}): ${failed.command}`],
+				next_actions: verdict === "pass" ? [next(`dossier-engineer review required --work ${workId} --stage ${stage}`, "Check review requirements after verification evidence.")] : [next(`dossier-engineer verify run --work ${workId} --stage ${stage} --profile ${profile}`, "Rerun after fixing the failed command.")],
+				exitCode: verdict === "pass" ? 0 : 4
+			});
+		}, root);
 	}
 	return result(command, {
 		result: "blocked",
