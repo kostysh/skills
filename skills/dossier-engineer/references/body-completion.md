@@ -134,6 +134,29 @@ A completed work-item body should include:
 - risks, blockers, and uncertainty;
 - next stage recommendation.
 
+For capability work, the `Spec Compact` body must include project-specific
+content for:
+
+- behavior statement;
+- acceptance criteria matrix;
+- negative acceptance or falsifiers;
+- anti-claims and non-goals;
+- open questions and gaps.
+
+For capability work, the `Plan Slice` body must include project-specific content
+for:
+
+- implementation target;
+- integration path with production entrypoint and runtime path;
+- files, interfaces, and components or an explicit non-code rationale;
+- sequence;
+- acceptance-criterion to evidence matrix;
+- risks and fallback/change-proposal triggers.
+
+These sections are not optional prose hints. Runtime stage gates may block
+`spec-compact` or `plan-slice` readiness/closure when these sections are empty,
+placeholder-only, template-only, or heading-only.
+
 ### Verification
 
 A completed verification body should include:

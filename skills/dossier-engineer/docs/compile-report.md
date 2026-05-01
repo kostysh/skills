@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `2.4.0`
+- Skill source version: `2.5.0`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -27,6 +27,7 @@ Generated from `skill.yaml`.
 - `docs/logs/implementation-log-20260430-6.md`
 - `docs/logs/implementation-log-20260501-1.md`
 - `docs/logs/implementation-log-20260502-1.md`
+- `docs/logs/implementation-log-20260502-2.md`
 - `docs/operator-ux.ru.md`
 - `docs/ru/references/artifact-contract.ru.md`
 - `docs/ru/references/capability-governance.ru.md`

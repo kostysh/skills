@@ -15,6 +15,136 @@ const run = (args: readonly string[], cwd: string) =>
 
 const tempProject = async () => mkdtemp(path.join(os.tmpdir(), 'dossier-engineer-'));
 
+const replaceArtifactBody = async (absolutePath: string, body: string) => {
+  const current = await readFile(absolutePath, 'utf8');
+  await writeFile(
+    absolutePath,
+    current.replace(/^(---\n[\s\S]*?\n---\n)[\s\S]*$/m, `$1${body}`),
+    'utf8',
+  );
+};
+
+const completeCapabilityWorkBody = async (root: string, workId: string, title: string) => {
+  await replaceArtifactBody(
+    path.join(root, 'docs/dossier/work-items', `${workId}.md`),
+    [
+      `# ${title}`,
+      '',
+      '## Summary',
+      '',
+      'This work delivers the operator-visible lock-safe queue behavior described by the concept source.',
+      '',
+      '## Capability relation',
+      '',
+      'The work introduces the linked capability and keeps support-only implementation details out of the claim.',
+      '',
+      '## Source interpretation',
+      '',
+      'The concept source requires observable runtime behavior, not just metadata or generated reports.',
+      '',
+      '## Scope',
+      '',
+      'In scope is the runtime behavior for the named command path. Out of scope is a new artifact family.',
+      '',
+      '## Spec Compact',
+      '',
+      '### Behavior statement',
+      '',
+      'When the operator runs the command, the runtime reports the next safe action and preserves dossier truth.',
+      '',
+      '### Acceptance criteria matrix',
+      '',
+      '| AC | Expected behavior | Source |',
+      '| --- | --- | --- |',
+      '| AC-1 | Queue reports actionable stage readiness without claiming implementation readiness. | concept |',
+      '',
+      '### Negative acceptance / falsifiers',
+      '',
+      '- FALSIFIER-1: A feature-intake item must not be labelled implementation-ready.',
+      '',
+      '### Anti-claims and non-goals',
+      '',
+      '- This work does not add a database or a new mandatory dossier artifact family.',
+      '',
+      '### Open questions and gaps',
+      '',
+      '- No open product questions remain for this implementation slice.',
+      '',
+      '## Plan Slice',
+      '',
+      '### Implementation target',
+      '',
+      'Update the existing runtime command handlers so the operator sees truthful protocol state.',
+      '',
+      '### Integration path',
+      '',
+      'Production entrypoint: scripts/dossier-engineer.mjs command execution. Runtime path: CLI parse -> runCommand -> stage and queue handlers.',
+      '',
+      '### Files, interfaces, and components',
+      '',
+      '- skills/dossier-engineer/src/app.ts command handlers',
+      '- skills/dossier-engineer/test/cli.test.ts runtime acceptance tests',
+      '',
+      '### Sequence',
+      '',
+      '1. Update runtime handlers.',
+      '2. Record review evidence.',
+      '3. Close stages only after gates pass.',
+      '',
+      '### AC to evidence matrix',
+      '',
+      '| AC | Evidence |',
+      '| --- | --- |',
+      '| AC-1 | CLI runtime acceptance test and review artifact |',
+      '',
+      '### Risks and fallback/change-proposal triggers',
+      '',
+      '- If the production entrypoint changes, open a change-proposal before implementation closure.',
+      '',
+      '## Acceptance criteria notes',
+      '',
+      'The frontmatter acceptance records mirror the matrix above.',
+      '',
+      '## Demonstration notes',
+      '',
+      'The demo exercises the CLI path instead of an internal helper only.',
+      '',
+      '## Anti-claims notes',
+      '',
+      'The anti-claim prevents treating substrate as capability completion.',
+      '',
+      '## Pre-implementation challenge',
+      '',
+      'The plan could fail if queue wording changes without changing stage state semantics.',
+      '',
+      '## Dependencies and blockers',
+      '',
+      'No unresolved dependencies or blockers remain.',
+      '',
+      '## Implementation notes',
+      '',
+      'Implementation touches the existing runtime handlers only.',
+      '',
+      '## Verification notes',
+      '',
+      'Runtime tests prove the command behavior.',
+      '',
+      '## Review notes',
+      '',
+      'Concept review is recorded before plan-slice close.',
+      '',
+      '## Closure notes',
+      '',
+      'Implementation closure is not terminal until hygiene passes.',
+      '',
+      '## Process notes',
+      '',
+      'Body content is intentionally written in the operator working language for semantic sections.',
+      '',
+    ].join('\n'),
+  );
+};
+
 const createBasicWork = async (root: string) => {
   await writeFile(path.join(root, 'concept.md'), '# Concept\n\nObservable thing.\n', 'utf8');
   assert.equal(run(['init', '--root', root, '--project-name', 'Lock Test'], root).status, 0);
@@ -183,6 +313,288 @@ void test('mutating commands fail fast when dossier write lock is held', async (
 
   const readOnly = run(['status', '--root', root], root);
   assert.equal(readOnly.status, 0, readOnly.stdout + readOnly.stderr);
+});
+
+void test('queue reports actionable next work without claiming implementation readiness', async () => {
+  const root = await tempProject();
+  const { workId } = await createBasicWork(root);
+
+  const queued = run(['queue', '--root', root], root);
+
+  assert.equal(queued.status, 0, queued.stdout + queued.stderr);
+  assert.match(queued.stdout, /Next actionable work: 1/);
+  assert.doesNotMatch(queued.stdout, /Ready work items/);
+  assert.match(
+    queued.stdout,
+    new RegExp(
+      `${workId} \\| next_action=start_stage \\| stage=feature-intake \\| implementation_ready=false`,
+    ),
+  );
+});
+
+void test('next treats older implemented work with closed hygiene as terminal handoff complete', async () => {
+  const root = await tempProject();
+  const { workId } = await createBasicWork(root);
+  const workPath = path.join(root, 'docs/dossier/work-items', `${workId}.md`);
+  const current = await readFile(workPath, 'utf8');
+  await writeFile(
+    workPath,
+    current
+      .replace('lifecycle: defined', 'lifecycle: implemented')
+      .replace(
+        'post_close_hygiene:\n  implementation: not_started',
+        'post_close_hygiene:\n  implementation: closed',
+      ),
+    'utf8',
+  );
+
+  const result = run(['next', '--root', root, '--work', workId], root);
+
+  assert.equal(result.status, 0, result.stdout + result.stderr);
+  assert.match(result.stdout, /terminal closed\/handoff-complete/);
+  assert.doesNotMatch(result.stdout, /hygiene run/);
+});
+
+void test('spec and plan-slice close gates require material body contracts and plan-slice concept review', async () => {
+  const root = await tempProject();
+  const { sourceId, workId } = await createBasicWork(root);
+  assert.equal(
+    run(
+      [
+        'work',
+        'acceptance',
+        'add',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--kind',
+        'behavior',
+        '--text',
+        'operator sees truthful queue state',
+        '--source',
+        `${sourceId}#behavior`,
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'work',
+        'demo',
+        'set',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--name',
+        'demo',
+        '--scenario',
+        'operator runs queue and sees next action',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'work',
+        'anti-claim',
+        'add',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--text',
+        'does not claim implementation readiness',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'stage',
+        'start',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'feature-intake',
+        '--session',
+        'sess-test',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'stage',
+        'ready',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'feature-intake',
+        '--summary',
+        'ready',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(['stage', 'close', '--root', root, '--work', workId, '--stage', 'feature-intake'], root)
+      .status,
+    0,
+  );
+
+  const blockedSpec = run(
+    [
+      'stage',
+      'ready',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'spec-compact',
+      '--summary',
+      'ready',
+    ],
+    root,
+  );
+  assert.equal(blockedSpec.status, 2, blockedSpec.stdout + blockedSpec.stderr);
+  assert.match(
+    blockedSpec.stdout,
+    /Spec Compact body section is missing|Spec Compact \/ Behavior statement/,
+  );
+
+  await completeCapabilityWorkBody(root, workId, 'Implement lock capability');
+  assert.equal(
+    run(
+      [
+        'stage',
+        'ready',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'spec-compact',
+        '--summary',
+        'ready',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(['stage', 'close', '--root', root, '--work', workId, '--stage', 'spec-compact'], root)
+      .status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'work',
+        'challenge',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--summary',
+        'plan could become substrate only',
+      ],
+      root,
+    ).status,
+    0,
+  );
+
+  const blockedPlan = run(
+    [
+      'stage',
+      'ready',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--summary',
+      'ready',
+    ],
+    root,
+  );
+  assert.equal(blockedPlan.status, 2, blockedPlan.stdout + blockedPlan.stderr);
+  assert.match(
+    blockedPlan.stdout,
+    /concept-conformance-reviewer review is required before plan-slice close/,
+  );
+
+  const required = run(
+    ['review', 'required', '--root', root, '--work', workId, '--stage', 'plan-slice'],
+    root,
+  );
+  assert.equal(required.status, 2, required.stdout + required.stderr);
+  assert.match(
+    required.stdout,
+    /concept-conformance-reviewer: missing_or_stale for stage=plan-slice/,
+  );
+  assert.match(
+    required.stdout,
+    /review record --work .* --stage plan-slice --class concept-conformance-reviewer/,
+  );
+
+  assert.equal(
+    run(
+      [
+        'review',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'plan-slice',
+        '--class',
+        'concept-conformance-reviewer',
+        '--verdict',
+        'pass',
+        '--reviewer',
+        'reviewer',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'stage',
+        'ready',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'plan-slice',
+        '--summary',
+        'ready',
+      ],
+      root,
+    ).status,
+    0,
+  );
 });
 
 void test('known mutating commands enter the write-lock envelope', async () => {
@@ -721,6 +1133,7 @@ void test('source, capability, work, verification, review, stage and hygiene flo
   assert.equal(work.status, 0, work.stdout);
   const workId = /id: (WI-[^\n]+)/.exec(work.stdout)?.[1];
   assert.ok(workId);
+  await completeCapabilityWorkBody(root, workId, 'Implement resume work');
   assert.equal(
     run(
       [
@@ -737,6 +1150,28 @@ void test('source, capability, work, verification, review, stage and hygiene flo
         'operator sees artifact',
         '--source',
         `${sourceId}#behavior`,
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'review',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'plan-slice',
+        '--class',
+        'concept-conformance-reviewer',
+        '--verdict',
+        'pass',
+        '--reviewer',
+        'reviewer',
       ],
       root,
     ).status,
@@ -872,6 +1307,28 @@ void test('source, capability, work, verification, review, stage and hygiene flo
         workId,
         '--summary',
         'could be infrastructure only',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'review',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'plan-slice',
+        '--class',
+        'concept-conformance-reviewer',
+        '--verdict',
+        'pass',
+        '--reviewer',
+        'reviewer',
       ],
       root,
     ).status,
@@ -1028,11 +1485,23 @@ void test('source, capability, work, verification, review, stage and hygiene flo
       .status,
     0,
   );
+  const implementedWork = await readFile(
+    path.join(root, 'docs/dossier/work-items', `${workId}.md`),
+    'utf8',
+  );
+  assert.match(implementedWork, /lifecycle: implemented/);
+  const hygieneNext = run(['next', '--root', root, '--work', workId], root);
+  assert.equal(hygieneNext.status, 0, hygieneNext.stdout + hygieneNext.stderr);
+  assert.match(hygieneNext.stdout, /hygiene run/);
   assert.equal(
     run(['hygiene', 'run', '--root', root, '--work', workId, '--stage', 'implementation'], root)
       .status,
     0,
   );
+  const terminalNext = run(['next', '--root', root, '--work', workId], root);
+  assert.equal(terminalNext.status, 0, terminalNext.stdout + terminalNext.stderr);
+  assert.doesNotMatch(terminalNext.stdout, /hygiene run/);
+  assert.match(terminalNext.stdout, /terminal closed\/handoff-complete/);
   assert.equal(run(['lint', '--root', root], root).status, 0);
 });
 

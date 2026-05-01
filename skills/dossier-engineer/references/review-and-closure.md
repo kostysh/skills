@@ -135,6 +135,7 @@ If any material scope input changes after a PASS review or verification, the evi
 Runtime derives freshness during:
 
 ```bash
+dossier-engineer review required --work <work-id> --stage plan-slice
 dossier-engineer review required --work <work-id> --stage implementation
 dossier-engineer verify required --work <work-id> --stage implementation
 dossier-engineer status --root .
@@ -223,6 +224,8 @@ Blocks capability closure if:
 Blocks closure if:
 
 - no challenge event;
+- capability work lacks a current PASS `concept-conformance-reviewer` review
+  recorded for `stage=plan-slice`;
 - no verification profile or manual verification plan;
 - risk review requirements unknown;
 - support item lacks immediate support reason;
@@ -243,6 +246,12 @@ After implementation stage closes:
 ```bash
 dossier-engineer hygiene run --work <work-id> --stage implementation
 ```
+
+Implementation close creates `lifecycle=implemented`, which is non-terminal.
+Successful post-close hygiene is the terminal handoff gate. A work item is
+closed/handoff-complete only when implementation hygiene is closed/passed and
+the lifecycle is terminal, with backwards-compatible support for older
+`lifecycle=implemented` records that already have closed/passed hygiene.
 
 Checks:
 

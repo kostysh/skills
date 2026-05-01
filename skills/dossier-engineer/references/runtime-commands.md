@@ -123,18 +123,31 @@ Prioritizes:
 dossier-engineer queue --root . [--area <area>] [--owner <owner>]
 ```
 
-Computes ready work by dependency order and protocol readiness.
+Computes the next actionable work by dependency order and protocol readiness.
+The summary uses `Next actionable work`, not `Ready work items`, because items
+in early stages are not implementation-ready.
 
-A work item is not ready when:
+Each actionable line includes:
+
+```text
+WI-... | next_action=start_stage|mark_stage_ready|close_stage|run_hygiene | stage=<stage> | implementation_ready=true|false
+```
+
+`implementation_ready=true` is emitted only when the next protocol action is on
+the implementation stage itself. Feature-intake, spec-compact, plan-slice, and
+post-close hygiene actions remain `implementation_ready=false`.
+
+A work item is not actionable when:
 
 - source-review is open;
 - guardrail is triggered for its scope;
 - dependency is not closed;
 - blocker is open;
-- capability refs are invalid;
-- delivery kind gates are incomplete;
-- previous stage is not closed;
-- lint errors exist.
+
+For dependency calculation, a work item is terminal only after post-close
+hygiene has passed. `lifecycle=implemented` alone is not dependency-complete.
+For backwards compatibility, `lifecycle=implemented` plus closed/passed
+implementation hygiene is treated as terminal handoff-complete.
 
 ### `next`
 
@@ -143,6 +156,11 @@ dossier-engineer next --work <work-id>
 ```
 
 Returns the next safe protocol action for a work item.
+
+After `stage close --stage implementation`, `next` reports the required hygiene
+action. After successful `hygiene run --stage implementation`, `next` reports no
+required work-item action and may only suggest optional changeset/report
+handoff evidence.
 
 ### `lint`
 
@@ -440,6 +458,11 @@ dossier-engineer stage ready --work <work-id> --stage <stage> --summary "<summar
 
 Sets `ready_for_close` only when required stage gates pass.
 
+For capability work, `spec-compact` and `plan-slice` readiness also enforce the
+material body contracts described in the workflow reference. `plan-slice`
+readiness requires a current PASS `concept-conformance-reviewer` review recorded
+for `stage=plan-slice`.
+
 ### `stage close`
 
 ```bash
@@ -447,6 +470,10 @@ dossier-engineer stage close --work <work-id> --stage <stage>
 ```
 
 Closes stage only when all closure gates pass.
+
+Closing implementation sets `lifecycle=implemented`; it does not mark the work
+item handoff-complete. Successful post-close hygiene is the terminal handoff
+gate and sets the work item to closed/handoff-complete state.
 
 ### `stage reopen`
 
@@ -495,10 +522,13 @@ Records external/manual verification evidence.
 ### `review required`
 
 ```bash
+dossier-engineer review required --work <work-id> --stage plan-slice
 dossier-engineer review required --work <work-id> --stage implementation
 ```
 
-Returns required review classes and freshness state.
+Returns required review classes and freshness state for the requested stage.
+For capability work at `stage=plan-slice`, the required class is
+`concept-conformance-reviewer` and the review must be fresh for `plan-slice`.
 
 ### `review record`
 

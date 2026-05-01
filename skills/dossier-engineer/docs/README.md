@@ -20,6 +20,7 @@ Historical Russian reference documents are stored in `docs/ru/references/`.
 - `docs/logs/implementation-log-20260430-6.md` — added runtime next-action reminders for scaffold body completion.
 - `docs/logs/implementation-log-20260501-1.md` — switched runtime linting to include ESLint and fixed ESLint findings.
 - `docs/logs/implementation-log-20260502-1.md` — implemented Phase 2 runtime write-lock safety, atomic writes, stale-scope checks, and lock tests.
+- `docs/logs/implementation-log-20260502-2.md` — implemented Phase 1 truthful queue, spec/plan body gates, plan-slice concept review, and terminal lifecycle.
 
 ## Issues
 
@@ -27,7 +28,7 @@ Historical Russian reference documents are stored in `docs/ru/references/`.
 - `docs/issues/issue-20260501-2.md` — Phase 2: single-writer runtime safety для mutating dossier commands. Status: issue revised, independent re-audit `PASS`.
 - `docs/issues/issue-20260501-3.md` — Phase 3: integration correctness, live-app evidence и negative falsifiers. Status: issue revised, independent re-audit `PASS`.
 - `docs/issues/issue-20260501-4.md` — Phase 4: consolidated review policy без micro-fix noise. Status: issue revised, independent re-audit `PASS`.
-- `docs/issues/implementation-plan-20260501-1.md` — implementation plan for `issue-20260501-1`. Status: plan revised, independent re-audit `PASS`.
+- `docs/issues/implementation-plan-20260501-1.md` — implementation plan for `issue-20260501-1`. Status: implementation completed in `docs/logs/implementation-log-20260502-2.md`.
 - `docs/issues/implementation-plan-20260501-2.md` — implementation plan for `issue-20260501-2`. Status: implementation completed in `docs/logs/implementation-log-20260502-1.md`.
 - `docs/issues/implementation-plan-20260501-3.md` — implementation plan for `issue-20260501-3`. Status: plan revised, independent re-audit `PASS`.
 - `docs/issues/implementation-plan-20260501-4.md` — implementation plan for `issue-20260501-4`. Status: plan created, independent audit `PASS`.

@@ -6564,6 +6564,23 @@ var body = (title, sections) => [
 	"",
 	...sections.flatMap((section) => [`## ${section}`, ""])
 ].join("\n");
+var workItemBody = (title, deliveryKind) => {
+	const sections = [
+		"# " + title,
+		"",
+		"## Summary",
+		"",
+		"## Capability relation",
+		"",
+		"## Source interpretation",
+		"",
+		"## Scope",
+		""
+	];
+	if (deliveryKind === "capability") sections.push("## Spec Compact", "", "### Behavior statement", "", "### Acceptance criteria matrix", "", "### Negative acceptance / falsifiers", "", "### Anti-claims and non-goals", "", "### Open questions and gaps", "", "## Plan Slice", "", "### Implementation target", "", "### Integration path", "", "### Files, interfaces, and components", "", "### Sequence", "", "### AC to evidence matrix", "", "### Risks and fallback/change-proposal triggers", "");
+	sections.push("## Acceptance criteria notes", "", "## Demonstration notes", "", "## Anti-claims notes", "", "## Pre-implementation challenge", "", "## Dependencies and blockers", "", "## Implementation notes", "", "## Verification notes", "", "## Review notes", "", "## Closure notes", "", "## Process notes", "");
+	return sections.join("\n");
+};
 var next = (command, reason) => ({
 	command,
 	reason
@@ -6702,7 +6719,13 @@ var workGateFindings = (work) => {
 	return findings;
 };
 var reviewFresh = (work, reviews, auditClass) => reviews.some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === work.frontmatter.material_scope_hash);
+var reviewFreshForStage = (work, reviews, auditClass, stage) => reviews.some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.stage === stage && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === work.frontmatter.material_scope_hash);
 var verificationFresh = (work, verifications, profile) => verifications.some((verification) => verification.frontmatter.work_item_id === work.frontmatter.id && verification.frontmatter.profile === profile && verification.frontmatter.verdict === "pass" && verification.frontmatter.material_scope_hash === work.frontmatter.material_scope_hash);
+var postCloseHygieneClosed = (work, stage) => {
+	const postCloseHygiene = work.frontmatter.post_close_hygiene;
+	return postCloseHygiene?.[stage] === "closed" || postCloseHygiene?.[stage] === "pass";
+};
+var handoffComplete = (work) => postCloseHygieneClosed(work, "implementation") && (work.frontmatter.lifecycle === "closed" || work.frontmatter.lifecycle === "implemented");
 var closureFindings = (work, all) => {
 	const findings = workGateFindings(work);
 	const delivery = work.frontmatter.delivery;
@@ -6932,39 +6955,68 @@ var attention = async (ctx, command) => {
 		exitCode: findings.length === 0 ? 0 : 2
 	});
 };
+var protocolActionForWork = (work) => {
+	if (handoffComplete(work)) return {
+		nextAction: "none",
+		stage: "terminal",
+		implementationReady: false
+	};
+	if (work.frontmatter.lifecycle === "implemented") return {
+		nextAction: "run_hygiene",
+		stage: "implementation",
+		implementationReady: false
+	};
+	const state = work.frontmatter.stage_state;
+	for (const stage of STAGES.filter((entry) => entry !== "change-proposal")) {
+		if (state[stage] === "ready_for_close") return {
+			nextAction: "close_stage",
+			stage,
+			implementationReady: stage === "implementation"
+		};
+		if (state[stage] === "in_progress") return {
+			nextAction: "mark_stage_ready",
+			stage,
+			implementationReady: stage === "implementation"
+		};
+		if (state[stage] !== "closed") return {
+			nextAction: "start_stage",
+			stage,
+			implementationReady: stage === "implementation"
+		};
+	}
+	return {
+		nextAction: "run_hygiene",
+		stage: "implementation",
+		implementationReady: false
+	};
+};
 var queue = async (ctx, command) => {
 	const { artifacts } = await loadRootArtifacts(ctx, command);
 	const area = value(command, "area");
 	const owner = value(command, "owner");
 	const sourceReviews = findArtifactsByType(artifacts, "source_review");
 	const guardrailTriggered = findArtifactsByType(artifacts, "guardrail").some((entry) => entry.frontmatter.status === "triggered");
-	const closed = new Set(findArtifactsByType(artifacts, "work_item").filter((work) => work.frontmatter.lifecycle === "closed" || work.frontmatter.lifecycle === "implemented").map((work) => String(work.frontmatter.id)));
-	const ready = [];
+	const closed = new Set(findArtifactsByType(artifacts, "work_item").filter((work) => handoffComplete(work)).map((work) => String(work.frontmatter.id)));
+	const actionable = [];
 	const blocked = [];
 	for (const work of findArtifactsByType(artifacts, "work_item")) {
-		if ([
-			"closed",
-			"retired",
-			"implemented"
-		].includes(String(work.frontmatter.lifecycle))) continue;
+		if (handoffComplete(work) || work.frontmatter.lifecycle === "retired") continue;
 		if (area !== void 0 && !(work.frontmatter.area ?? []).includes(area)) continue;
 		if (owner !== void 0 && !(work.frontmatter.owners ?? []).includes(owner)) continue;
 		const dependencies = work.frontmatter.dependencies ?? [];
-		const blockers = [
-			...workGateFindings(work),
-			...openBlockers(work).map((entry) => `${artifactId(work)}: open blocker ${displayValue(entry.id)}`),
-			...dependencies.filter((dep) => !closed.has(String(dep))).map((dep) => `${artifactId(work)}: dependency not closed ${displayValue(dep)}`)
-		];
+		const blockers = [...openBlockers(work).map((entry) => `${artifactId(work)}: open blocker ${displayValue(entry.id)}`), ...dependencies.filter((dep) => !closed.has(String(dep))).map((dep) => `${artifactId(work)}: dependency not closed ${displayValue(dep)}`)];
 		if (sourceReviewOpenForWork(work, sourceReviews)) blockers.push(`${artifactId(work)}: linked source review is open.`);
 		if (guardrailTriggered) blockers.push(`${artifactId(work)}: triggered guardrail exists.`);
-		if (blockers.length === 0) ready.push(String(work.frontmatter.id));
-		else blocked.push(...blockers);
+		if (blockers.length === 0) {
+			const action = protocolActionForWork(work);
+			if (action.nextAction !== "none") actionable.push(`${artifactId(work)} | next_action=${action.nextAction} | stage=${action.stage} | implementation_ready=${String(action.implementationReady)}`);
+		} else blocked.push(...blockers);
 	}
 	return result(command, {
 		result: "success",
-		summary: [`Ready work items: ${ready.length}`, ...ready.map((id) => `- ${id}`)],
+		summary: [`Next actionable work: ${actionable.length}`, ...actionable.map((entry) => `- ${entry}`)],
 		findings: blocked,
-		next_actions: ready.length > 0 ? [next(`dossier-engineer next --work ${ready[0]}`, "Inspect the next safe action.")] : [next("dossier-engineer attention --root .", "Resolve blockers before selecting work.")]
+		next_actions: actionable.length > 0 ? [next(`dossier-engineer next --work ${actionable[0]?.split(" | ")[0]}`, "Inspect the next safe action before treating any queued item as implementation-ready.")] : [next("dossier-engineer attention --root .", "Resolve blockers before selecting work.")]
 	});
 };
 var nextForWork = async (ctx, command) => {
@@ -6972,12 +7024,21 @@ var nextForWork = async (ctx, command) => {
 	const { artifacts } = await loadRootArtifacts(ctx, command);
 	const work = findArtifactById(artifacts, workId);
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
+	if (handoffComplete(work)) return result(command, {
+		result: "success",
+		summary: [`${workId}: terminal closed/handoff-complete.`],
+		next_actions: [next("dossier-engineer changeset create --scope current-branch --summary \"<branch summary>\"", "Optional handoff evidence; no required work-item action remains.")]
+	});
 	const findings = closureFindings(work, artifacts);
 	if (findings.length > 0) return result(command, {
 		result: "blocked",
 		findings,
 		next_actions: [next(`dossier-engineer capability check --work ${workId}`, "Inspect missing capability gates.")],
 		exitCode: 2
+	});
+	if (work.frontmatter.lifecycle === "implemented") return result(command, {
+		result: "success",
+		next_actions: [next(`dossier-engineer hygiene run --work ${workId} --stage implementation`, "Run post-close hygiene exactly once after implementation closure.")]
 	});
 	const state = work.frontmatter.stage_state;
 	for (const stage of STAGES.filter((entry) => entry !== "change-proposal")) {
@@ -7658,22 +7719,7 @@ var workCreate = async (ctx, command) => {
 		material_scope_hash: materialWorkHash(frontmatter, findArtifactsByType(artifacts, "capability"), findArtifactsByType(artifacts, "source"))
 	};
 	const relativePath = artifactPath("work", id);
-	await writeArtifactFile(root, relativePath, withHash, body(title, [
-		"Summary",
-		"Capability relation",
-		"Source interpretation",
-		"Scope",
-		"Acceptance criteria notes",
-		"Demonstration notes",
-		"Anti-claims notes",
-		"Pre-implementation challenge",
-		"Dependencies and blockers",
-		"Implementation notes",
-		"Verification notes",
-		"Review notes",
-		"Closure notes",
-		"Process notes"
-	]));
+	await writeArtifactFile(root, relativePath, withHash, workItemBody(title, delivery));
 	return result(command, {
 		result: "success",
 		created_artifacts: [{
@@ -8008,20 +8054,74 @@ var previousStageClosed = (work, stage) => {
 	if (stage === "implementation") return state["plan-slice"] === "closed";
 	return false;
 };
+var markdownSection = (bodyText, heading, level) => {
+	const marker = "#".repeat(level);
+	const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	const start = new RegExp(`^${marker}\\s+${escaped}\\s*$`, "im").exec(bodyText);
+	if (start === null) return null;
+	const contentStart = start.index + start[0].length;
+	const next = new RegExp(`^#{1,${level}}\\s+`, "im").exec(bodyText.slice(contentStart));
+	const contentEnd = next === null ? bodyText.length : contentStart + next.index;
+	return bodyText.slice(contentStart, contentEnd).trim();
+};
+var materialText = (input) => input.split(/\r?\n/).map((line) => line.trim()).filter((line) => line !== "" && !line.startsWith("#")).filter((line) => !/^(-\s*)?(todo|tbd|placeholder|fill me|n\/a)$/i.test(line)).join(" ").trim();
+var hasMaterialSectionContent = (input) => {
+	const content = materialText(input);
+	return content.length >= 24 && /[A-Za-zА-Яа-я0-9]/.test(content);
+};
+var requiredSubsectionFindings = (work, sectionName, subsections) => {
+	const section = markdownSection(work.body, sectionName, 2);
+	if (section === null || !hasMaterialSectionContent(section)) return [`${artifactId(work)}: ${sectionName} body section is missing, heading-only, placeholder-only, or template-only.`];
+	const findings = [];
+	for (const subsection of subsections) {
+		const content = markdownSection(section, subsection, 3);
+		if (content === null || !hasMaterialSectionContent(content)) findings.push(`${artifactId(work)}: ${sectionName} / ${subsection} lacks project-specific content.`);
+	}
+	return findings;
+};
+var specCompactFindings = (work) => requiredSubsectionFindings(work, "Spec Compact", [
+	"Behavior statement",
+	"Acceptance criteria matrix",
+	"Negative acceptance / falsifiers",
+	"Anti-claims and non-goals",
+	"Open questions and gaps"
+]);
+var planSliceFindings = (work) => {
+	const findings = requiredSubsectionFindings(work, "Plan Slice", [
+		"Implementation target",
+		"Integration path",
+		"Files, interfaces, and components",
+		"Sequence",
+		"AC to evidence matrix",
+		"Risks and fallback/change-proposal triggers"
+	]);
+	const plan = markdownSection(work.body, "Plan Slice", 2) ?? "";
+	const integration = markdownSection(plan, "Integration path", 3) ?? "";
+	const files = markdownSection(plan, "Files, interfaces, and components", 3) ?? "";
+	if (hasMaterialSectionContent(integration) && (!/production entrypoint/i.test(integration) || !/runtime path/i.test(integration))) findings.push(`${artifactId(work)}: Plan Slice / Integration path must name production entrypoint and runtime path for user-visible capability work.`);
+	if (hasMaterialSectionContent(files) && !(/(?:^|\s)(?:[\w.-]+\/)+[\w.-]+/.test(files) || /non-code/i.test(files))) findings.push(`${artifactId(work)}: Plan Slice / Files, interfaces, and components must name concrete files/interfaces/components or an explicit non-code rationale.`);
+	return findings;
+};
 var stageGateFindings = (work, all, stage) => {
 	const findings = [];
+	const delivery = work.frontmatter.delivery;
 	if (!previousStageClosed(work, stage)) findings.push(`${artifactId(work)}: previous stage is not closed for ${stage}.`);
 	if (openBlockers(work).length > 0) findings.push(`${artifactId(work)}: open blocker exists.`);
 	if (stage === "feature-intake") {
-		const delivery = work.frontmatter.delivery;
 		if (!isOneOf(delivery.kind, DELIVERY_KINDS)) findings.push(`${artifactId(work)}: invalid delivery kind.`);
 	}
-	if (stage === "spec-compact") findings.push(...workGateFindings(work).filter((entry) => !entry.includes("challenge")));
+	if (stage === "spec-compact") {
+		findings.push(...workGateFindings(work).filter((entry) => !entry.includes("challenge")));
+		if (delivery.kind === "capability") findings.push(...specCompactFindings(work));
+	}
 	if (stage === "plan-slice") {
 		if (work.frontmatter.challenge.recorded !== true) findings.push(`${artifactId(work)}: challenge must be recorded before plan-slice readiness.`);
+		if (delivery.kind === "capability") {
+			findings.push(...planSliceFindings(work));
+			if (!reviewFreshForStage(work, findArtifactsByType(all, "review"), "concept-conformance-reviewer", "plan-slice")) findings.push(`${artifactId(work)}: current PASS concept-conformance-reviewer review is required before plan-slice close. Run dossier-engineer review required --work ${artifactId(work)} --stage plan-slice.`);
+		}
 	}
 	if (stage === "implementation") {
-		const delivery = work.frontmatter.delivery;
 		if (delivery.kind === "capability" && !verificationFresh(work, findArtifactsByType(all, "verification"), "behavioral-demo")) findings.push(`${artifactId(work)}: fresh behavioral-demo verification required.`);
 		if (delivery.kind === "capability" && !reviewFresh(work, findArtifactsByType(all, "review"), "concept-conformance-reviewer")) findings.push(`${artifactId(work)}: fresh concept-conformance review required.`);
 		if (delivery.kind === "capability" && !reviewFresh(work, findArtifactsByType(all, "review"), "spec-conformance-reviewer")) findings.push(`${artifactId(work)}: fresh spec-conformance review required.`);
@@ -8102,10 +8202,14 @@ var stageLog = async (ctx, command) => {
 		next_actions: [next(`dossier-engineer next --work ${workId}`, "Continue protocol after the note.")]
 	});
 };
-var requiredReviewClasses = (work) => {
+var requiredReviewClasses = (work, stage = "implementation") => {
 	const delivery = work.frontmatter.delivery;
 	const risk = work.frontmatter.risk;
 	const classes = /* @__PURE__ */ new Set();
+	if (stage === "plan-slice") {
+		if (delivery.kind === "capability") classes.add("concept-conformance-reviewer");
+		return [...classes];
+	}
 	if (delivery.kind === "capability") {
 		classes.add("concept-conformance-reviewer");
 		classes.add("spec-conformance-reviewer");
@@ -8295,13 +8399,18 @@ var verifyRecord = async (ctx, command) => {
 var reviewRequired = async (ctx, command) => {
 	const { artifacts } = await loadRootArtifacts(ctx, command);
 	const workId = requireValue(command, "work");
+	const stage = value(command, "stage") === void 0 ? "implementation" : requireEnum(command, "stage", STAGES);
 	const work = findArtifactById(artifacts, workId);
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
-	const findings = requiredReviewClasses(work).map((reviewClass) => `${reviewClass}: ${reviewFresh(work, findArtifactsByType(artifacts, "review"), reviewClass) ? "fresh" : "missing_or_stale"}`);
+	const reviews = findArtifactsByType(artifacts, "review");
+	const required = requiredReviewClasses(work, stage);
+	const findings = required.map((reviewClass) => {
+		return `${reviewClass}: ${(stage === "plan-slice" ? reviewFreshForStage(work, reviews, reviewClass, stage) : reviewFresh(work, reviews, reviewClass)) ? "fresh" : "missing_or_stale"} for stage=${stage}`;
+	});
 	return result(command, {
 		result: findings.some((entry) => entry.includes("missing")) ? "blocked" : "success",
 		findings: findings.length === 0 ? ["No required reviews by current risk policy."] : findings,
-		next_actions: [next(`dossier-engineer review record --work ${workId} --stage implementation --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>`, "Record immutable external review evidence.")],
+		next_actions: [next(`dossier-engineer review record --work ${workId} --stage ${stage} --class ${required[0] ?? "<review-class>"} --verdict pass --reviewer <reviewer-id>`, stage === "plan-slice" ? "Record current concept-conformance review before plan-slice close." : "Record immutable external review evidence.")],
 		exitCode: findings.some((entry) => entry.includes("missing")) ? 2 : 0
 	});
 };

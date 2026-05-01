@@ -174,6 +174,11 @@ dossier-engineer stage ready --work <work-id> --stage <stage> --summary "<summar
 dossier-engineer stage close --work <work-id> --stage <stage>
 ```
 
+For capability work, `Spec Compact` and `Plan Slice` body sections are subject
+to the Body Completion Gate. Their semantic body content must be written in the
+operator's working language. Protocol keys, CLI commands, enum values, review
+class names, and file paths remain in English.
+
 ### 7.1 feature-intake
 
 Purpose:
@@ -208,6 +213,14 @@ Closure gates for capability work:
 - anti-claim exists;
 - capability claim is complete or inherited from referenced capability;
 - no open source-review affects the capability.
+- `Spec Compact` body is not empty, heading-only, placeholder-only, or
+  template-only.
+- `Spec Compact` includes project-specific content for:
+  - `Behavior statement`;
+  - `Acceptance criteria matrix`;
+  - `Negative acceptance / falsifiers`;
+  - `Anti-claims and non-goals`;
+  - `Open questions and gaps`.
 
 Closure gates for support work:
 
@@ -230,6 +243,13 @@ Required command:
 dossier-engineer work challenge record --work <work-id> --summary "<how this plan can fail, become a stub, or hide missing behavior>"
 ```
 
+Required review before close:
+
+```bash
+dossier-engineer review required --work <work-id> --stage plan-slice
+dossier-engineer review record --work <work-id> --stage plan-slice --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>
+```
+
 Closure gates:
 
 - challenge recorded;
@@ -237,6 +257,16 @@ Closure gates:
 - verification plan exists;
 - required review classes known;
 - support chain does not violate guardrails.
+- capability work has a current PASS `concept-conformance-reviewer` review
+  recorded for `stage=plan-slice`;
+- `Plan Slice` body is not empty, heading-only, placeholder-only, or
+  template-only;
+- `Plan Slice` includes project-specific content for `Implementation target`,
+  `Integration path`, `Files, interfaces, and components`, `Sequence`,
+  `AC to evidence matrix`, and `Risks and fallback/change-proposal triggers`;
+- `Integration path` names the production entrypoint and runtime path;
+- `Files, interfaces, and components` names concrete files/interfaces/components
+  or gives an explicit non-code rationale.
 
 ### 7.4 implementation
 
@@ -311,6 +341,12 @@ dossier-engineer stage ready --work <work-id> --stage implementation --summary "
 dossier-engineer stage close --work <work-id> --stage implementation
 dossier-engineer hygiene run --work <work-id> --stage implementation
 ```
+
+`stage close --stage implementation` produces `lifecycle=implemented`; this is
+not terminal handoff completion. The work item becomes terminal
+closed/handoff-complete only after successful `hygiene run --stage
+implementation`. `next --work <id>` reports hygiene exactly once after
+implementation close and does not report hygiene again after successful hygiene.
 
 Closure must fail closed if:
 

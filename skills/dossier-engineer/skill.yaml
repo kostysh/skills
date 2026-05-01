@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: dossier-engineer
-  source-version: 2.4.0
+  source-version: 2.5.0
   recommended-skill-md-max-bytes: 32000
   description: >-
     Manage a source-traced, capability-oriented, merge-safe dossier workflow for
@@ -230,6 +230,10 @@ supporting:
     source: docs/logs/implementation-log-20260502-1.md
     target: docs/logs/implementation-log-20260502-1.md
     description: Implementation log for Phase 2 runtime write-lock safety.
+  - id: implementation-log-20260502-2
+    source: docs/logs/implementation-log-20260502-2.md
+    target: docs/logs/implementation-log-20260502-2.md
+    description: Implementation log for Phase 1 truthful queue and spec/plan gates.
   - id: ru-workflow-reference
     source: docs/ru/references/workflow.ru.md
     target: docs/ru/references/workflow.ru.md
