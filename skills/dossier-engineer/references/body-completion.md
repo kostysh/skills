@@ -148,9 +148,13 @@ for:
 
 - implementation target;
 - integration path with production entrypoint and runtime path;
+- integration path fields for actor entrypoint, runtime path, production
+  components touched, UI/API/agent path, state/effect path, continuity path,
+  integration proof, and substrate-only falsifier;
 - files, interfaces, and components or an explicit non-code rationale;
 - sequence;
-- acceptance-criterion to evidence matrix;
+- acceptance-criterion to observable behavior, implementation surface, evidence
+  method, and falsifier matrix;
 - risks and fallback/change-proposal triggers.
 
 These sections are not optional prose hints. Runtime stage gates may block

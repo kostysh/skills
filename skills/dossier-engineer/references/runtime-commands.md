@@ -499,7 +499,9 @@ Creates immutable note event without transition.
 dossier-engineer verify required --work <work-id> --stage implementation
 ```
 
-Returns required profiles and freshness state.
+Returns required profiles and freshness state. For user-visible capability work,
+the output also reports `behavioral-demo live-app` freshness and suggests
+`verify record --evidence-class live-app --entrypoint ... --runtime-path ...`.
 
 ### `verify run`
 
@@ -507,15 +509,20 @@ Returns required profiles and freshness state.
 dossier-engineer verify run --work <work-id> --stage implementation --profile default|behavioral-demo|<profile>
 ```
 
-Executes configured verification profile, creates `VER-*.md`, updates coverage gate when appropriate.
+Executes configured verification profile, creates `VER-*.md`, updates coverage
+gate when appropriate. Configured command profiles are supporting evidence by
+default; they do not create `live-app` evidence unless recorded explicitly with
+the required live-app fields.
 
 ### `verify record`
 
 ```bash
-dossier-engineer verify record --work <work-id> --stage implementation --profile <profile> --evidence-class behavioral|contract|unit|integration|security|manual|support --verdict pass|fail|blocked|not_applicable --summary "<summary>" [--evidence <path>...]
+dossier-engineer verify record --work <work-id> --stage implementation --profile <profile> --evidence-class behavioral|contract|unit|integration|security|manual|support|live-app --verdict pass|fail|blocked|not_applicable --summary "<summary>" [--entrypoint "<actual app entrypoint>"] [--runtime-path "<production path>"] [--evidence <path>...]
 ```
 
-Records external/manual verification evidence.
+Records external/manual verification evidence. `--evidence-class live-app`
+requires `--entrypoint` and `--runtime-path`. CLI flags use kebab-case; stored
+frontmatter uses snake_case fields (`evidence_class`, `runtime_path`).
 
 ## 10. Review commands
 

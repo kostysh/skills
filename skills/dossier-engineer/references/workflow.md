@@ -221,6 +221,8 @@ Closure gates for capability work:
   - `Negative acceptance / falsifiers`;
   - `Anti-claims and non-goals`;
   - `Open questions and gaps`.
+- testable anti-claims explicitly marked in the body are represented as
+  `negative` or `falsifier` acceptance criteria.
 
 Closure gates for support work:
 
@@ -265,8 +267,17 @@ Closure gates:
   `Integration path`, `Files, interfaces, and components`, `Sequence`,
   `AC to evidence matrix`, and `Risks and fallback/change-proposal triggers`;
 - `Integration path` names the production entrypoint and runtime path;
+- `Integration path` names actor entrypoint, runtime path, production
+  components touched, UI/API/agent path, state/effect path, continuity path,
+  what proves integration, and what proves substrate-only work;
+- `AC to evidence matrix` links AC, observable behavior, implementation
+  surface, evidence method, and falsifier;
 - `Files, interfaces, and components` names concrete files/interfaces/components
   or gives an explicit non-code rationale.
+- `Risks and fallback/change-proposal triggers` names change-proposal triggers.
+
+Phase 1 validates that the sections exist and have material body content. Phase
+3 validates production-path, matrix, live-app evidence, and falsifier semantics.
 
 ### 7.4 implementation
 
@@ -319,10 +330,17 @@ dossier-engineer review required --work <work-id> --stage implementation
 For capability work:
 
 ```bash
-dossier-engineer verify run --work <work-id> --stage implementation --profile behavioral-demo
+dossier-engineer verify required --work <work-id> --stage implementation
+dossier-engineer verify record --work <work-id> --stage implementation --profile behavioral-demo --evidence-class live-app --entrypoint "<actual app entrypoint>" --runtime-path "<production path>" --verdict pass --summary "<observed behavior>" --evidence <path>
 dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>
 dossier-engineer review record --work <work-id> --stage implementation --class spec-conformance-reviewer --verdict pass --reviewer <reviewer-id>
 ```
+
+`verify run --profile behavioral-demo` and mock/headless/unit evidence may be
+supporting evidence. For user-visible/operator-visible capability work, the
+closing behavioral-demo evidence must include `evidence_class=live-app`,
+`entrypoint`, and `runtime_path`, unless the Plan Slice records an explicit
+non-user-visible rationale.
 
 For support work:
 

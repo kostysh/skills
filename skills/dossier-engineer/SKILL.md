@@ -11,11 +11,11 @@ compatibility: Requires git, Markdown files, and the bundled dossier-engineer
   runtime under scripts/dossier-engineer.mjs or an equivalent dossier-engineer
   executable on PATH.
 metadata:
-  source-version: 2.5.0
+  source-version: 2.6.0
   canonical_storage: markdown-yaml-frontmatter
   runtime: dossier-engineer
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 646343da83b11d607c1f19df5cedb7d83ee943bff18a41e731aeeef3118ae4ad
+  skillforge-source-hash: 2c49cbb7227fc81ae9c66c5371d67bb0fe023a0552d3b450fceb40ef9552d49b
 ---
 
 # dossier-engineer

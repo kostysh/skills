@@ -78,7 +78,14 @@ const completeCapabilityWorkBody = async (root: string, workId: string, title: s
       '',
       '### Integration path',
       '',
-      'Production entrypoint: scripts/dossier-engineer.mjs command execution. Runtime path: CLI parse -> runCommand -> stage and queue handlers.',
+      '- Actor entrypoint: scripts/dossier-engineer.mjs command execution.',
+      '- Runtime path: CLI parse -> runCommand -> stage and queue handlers.',
+      '- Production components touched: skills/dossier-engineer/src/app.ts command handlers.',
+      '- UI/API/agent path: operator CLI invocation through the bundled runtime.',
+      '- State/effect path: work item frontmatter and verification records update under docs/dossier.',
+      '- Continuity path: later next, queue, lint, and hygiene commands read the same dossier state.',
+      '- What would prove this is integrated: the bundled runtime command observes and mutates the dossier through the documented command path.',
+      '- What would prove this is only substrate: helper-only or mock-only tests pass while bundled runtime commands cannot show the behavior.',
       '',
       '### Files, interfaces, and components',
       '',
@@ -93,13 +100,13 @@ const completeCapabilityWorkBody = async (root: string, workId: string, title: s
       '',
       '### AC to evidence matrix',
       '',
-      '| AC | Evidence |',
-      '| --- | --- |',
-      '| AC-1 | CLI runtime acceptance test and review artifact |',
+      '| AC | Observable behavior | Implementation surface | Evidence method | Falsifier |',
+      '| --- | --- | --- | --- | --- |',
+      '| AC-1 | Queue reports actionable stage readiness without claiming implementation readiness. | stage and queue handlers | CLI runtime acceptance test and review artifact | Passing helper-only evidence without CLI output would prove substrate-only work. |',
       '',
       '### Risks and fallback/change-proposal triggers',
       '',
-      '- If the production entrypoint changes, open a change-proposal before implementation closure.',
+      '- Change-proposal trigger: if the production entrypoint changes, open a change-proposal before implementation closure.',
       '',
       '## Acceptance criteria notes',
       '',
@@ -355,6 +362,177 @@ void test('next treats older implemented work with closed hygiene as terminal ha
   assert.doesNotMatch(result.stdout, /hygiene run/);
 });
 
+void test('spec-compact requires marked testable anti-claims to have negative or falsifier acceptance', async () => {
+  const root = await tempProject();
+  const { sourceId, workId } = await createBasicWork(root);
+  assert.equal(
+    run(
+      [
+        'work',
+        'acceptance',
+        'add',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--kind',
+        'behavior',
+        '--text',
+        'operator sees truthful queue state',
+        '--source',
+        `${sourceId}#behavior`,
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'work',
+        'demo',
+        'set',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--name',
+        'demo',
+        '--scenario',
+        'operator runs queue and sees next action',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'work',
+        'anti-claim',
+        'add',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--text',
+        'ordinary status output is not implementation-ready',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  await completeCapabilityWorkBody(root, workId, 'Implement negative checks');
+  const workPath = path.join(root, 'docs/dossier/work-items', `${workId}.md`);
+  await writeFile(
+    workPath,
+    (await readFile(workPath, 'utf8')).replace(
+      '- FALSIFIER-1: A feature-intake item must not be labelled implementation-ready.',
+      '- Testable anti-claim: A feature-intake item must not be labelled implementation-ready.',
+    ),
+    'utf8',
+  );
+  assert.equal(
+    run(
+      [
+        'stage',
+        'start',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'feature-intake',
+        '--session',
+        'sess-test',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'stage',
+        'ready',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'feature-intake',
+        '--summary',
+        'ready',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(['stage', 'close', '--root', root, '--work', workId, '--stage', 'feature-intake'], root)
+      .status,
+    0,
+  );
+
+  const blocked = run(
+    [
+      'stage',
+      'ready',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'spec-compact',
+      '--summary',
+      'ready',
+    ],
+    root,
+  );
+  assert.equal(blocked.status, 2, blocked.stdout + blocked.stderr);
+  assert.match(blocked.stdout, /testable anti-claims must be represented as negative or falsifier/);
+
+  assert.equal(
+    run(
+      [
+        'work',
+        'acceptance',
+        'add',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--kind',
+        'negative',
+        '--text',
+        'feature-intake work must not be labelled implementation-ready',
+        '--source',
+        `${sourceId}#negative`,
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'stage',
+        'ready',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'spec-compact',
+        '--summary',
+        'ready',
+      ],
+      root,
+    ).status,
+    0,
+  );
+});
+
 void test('spec and plan-slice close gates require material body contracts and plan-slice concept review', async () => {
   const root = await tempProject();
   const { sourceId, workId } = await createBasicWork(root);
@@ -577,24 +755,194 @@ void test('spec and plan-slice close gates require material body contracts and p
     ).status,
     0,
   );
+  const readyPlan = run(
+    [
+      'stage',
+      'ready',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--summary',
+      'ready',
+    ],
+    root,
+  );
+  assert.equal(readyPlan.status, 0, readyPlan.stdout + readyPlan.stderr);
+});
+
+void test('plan-slice blocks weak integration path and AC evidence matrix semantics', async () => {
+  const root = await tempProject();
+  const { sourceId, workId } = await createBasicWork(root);
+  for (const args of [
+    [
+      'work',
+      'acceptance',
+      'add',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--kind',
+      'behavior',
+      '--text',
+      'operator sees truthful queue state',
+      '--source',
+      `${sourceId}#behavior`,
+    ],
+    [
+      'work',
+      'acceptance',
+      'add',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--kind',
+      'falsifier',
+      '--text',
+      'helper-only evidence without CLI output proves substrate-only work',
+      '--source',
+      `${sourceId}#falsifier`,
+    ],
+    [
+      'work',
+      'demo',
+      'set',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--name',
+      'demo',
+      '--scenario',
+      'operator runs queue and sees next action',
+    ],
+    [
+      'work',
+      'anti-claim',
+      'add',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--text',
+      'does not claim implementation readiness',
+    ],
+  ] as const) {
+    assert.equal(run(args, root).status, 0);
+  }
+  await completeCapabilityWorkBody(root, workId, 'Implement integration path');
+  const workPath = path.join(root, 'docs/dossier/work-items', `${workId}.md`);
+  await writeFile(
+    workPath,
+    (await readFile(workPath, 'utf8'))
+      .replace('- What would prove this is only substrate:', '- Substrate-only note:')
+      .replace('Implementation surface | Evidence method | Falsifier', 'Evidence'),
+    'utf8',
+  );
+  for (const stage of ['feature-intake', 'spec-compact'] as const) {
+    assert.equal(
+      run(
+        [
+          'stage',
+          'start',
+          '--root',
+          root,
+          '--work',
+          workId,
+          '--stage',
+          stage,
+          '--session',
+          'sess-test',
+        ],
+        root,
+      ).status,
+      0,
+    );
+    assert.equal(
+      run(
+        [
+          'stage',
+          'ready',
+          '--root',
+          root,
+          '--work',
+          workId,
+          '--stage',
+          stage,
+          '--summary',
+          'ready',
+        ],
+        root,
+      ).status,
+      0,
+    );
+    assert.equal(
+      run(['stage', 'close', '--root', root, '--work', workId, '--stage', stage], root).status,
+      0,
+    );
+  }
   assert.equal(
     run(
       [
-        'stage',
-        'ready',
+        'work',
+        'challenge',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--summary',
+        'plan could become substrate only',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  assert.equal(
+    run(
+      [
+        'review',
+        'record',
         '--root',
         root,
         '--work',
         workId,
         '--stage',
         'plan-slice',
-        '--summary',
-        'ready',
+        '--class',
+        'concept-conformance-reviewer',
+        '--verdict',
+        'pass',
+        '--reviewer',
+        'reviewer',
       ],
       root,
     ).status,
     0,
   );
+
+  const blocked = run(
+    [
+      'stage',
+      'ready',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--summary',
+      'ready',
+    ],
+    root,
+  );
+  assert.equal(blocked.status, 2, blocked.stdout + blocked.stderr);
+  assert.match(blocked.stdout, /Integration path lacks What would prove this is only substrate/);
+  assert.match(blocked.stdout, /AC to evidence matrix lacks implementation surface/);
 });
 
 void test('known mutating commands enter the write-lock envelope', async () => {
@@ -1334,24 +1682,22 @@ void test('source, capability, work, verification, review, stage and hygiene flo
     ).status,
     0,
   );
-  assert.equal(
-    run(
-      [
-        'stage',
-        'ready',
-        '--root',
-        root,
-        '--work',
-        workId,
-        '--stage',
-        'plan-slice',
-        '--summary',
-        'ready',
-      ],
+  const readyPlan = run(
+    [
+      'stage',
+      'ready',
+      '--root',
       root,
-    ).status,
-    0,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--summary',
+      'ready',
+    ],
+    root,
   );
+  assert.equal(readyPlan.status, 0, readyPlan.stdout + readyPlan.stderr);
   assert.equal(
     run(['stage', 'close', '--root', root, '--work', workId, '--stage', 'plan-slice'], root).status,
     0,
@@ -1388,11 +1734,11 @@ void test('source, capability, work, verification, review, stage and hygiene flo
         '--profile',
         'behavioral-demo',
         '--evidence-class',
-        'behavioral',
+        'headless',
         '--verdict',
         'pass',
         '--summary',
-        'observed',
+        'observed in headless support harness',
         '--evidence',
         'evidence.md',
       ],
@@ -1421,6 +1767,34 @@ void test('source, capability, work, verification, review, stage and hygiene flo
       root,
     ).status,
     0,
+  );
+  const missingLiveApp = run(
+    [
+      'verify',
+      'record',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'implementation',
+      '--profile',
+      'behavioral-demo',
+      '--evidence-class',
+      'live-app',
+      '--verdict',
+      'pass',
+      '--summary',
+      'observed in app',
+      '--evidence',
+      'evidence.md',
+    ],
+    root,
+  );
+  assert.equal(missingLiveApp.status, 1, missingLiveApp.stdout + missingLiveApp.stderr);
+  assert.match(
+    missingLiveApp.stderr + missingLiveApp.stdout,
+    /requires --entrypoint and --runtime-path/,
   );
   assert.equal(
     run(
@@ -1461,6 +1835,80 @@ void test('source, capability, work, verification, review, stage and hygiene flo
       root,
     ).status,
     0,
+  );
+  const blockedImplementation = run(
+    [
+      'stage',
+      'ready',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'implementation',
+      '--summary',
+      'implemented',
+    ],
+    root,
+  );
+  assert.equal(
+    blockedImplementation.status,
+    2,
+    blockedImplementation.stdout + blockedImplementation.stderr,
+  );
+  assert.match(
+    blockedImplementation.stdout,
+    /fresh live-app behavioral-demo verification required/,
+  );
+  const requiredVerification = run(['verify', 'required', '--root', root, '--work', workId], root);
+  assert.equal(
+    requiredVerification.status,
+    2,
+    requiredVerification.stdout + requiredVerification.stderr,
+  );
+  assert.match(requiredVerification.stdout, /behavioral-demo live-app: missing_or_stale/);
+  assert.match(requiredVerification.stdout, /--evidence-class live-app --entrypoint/);
+  assert.equal(
+    run(
+      [
+        'verify',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'implementation',
+        '--profile',
+        'behavioral-demo',
+        '--evidence-class',
+        'live-app',
+        '--entrypoint',
+        'scripts/dossier-engineer.mjs command execution',
+        '--runtime-path',
+        'CLI parse -> runCommand -> stage and queue handlers',
+        '--verdict',
+        'pass',
+        '--summary',
+        'observed in bundled CLI',
+        '--evidence',
+        'evidence.md',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  const verificationFiles = await readdir(path.join(root, 'docs/dossier/verification', workId));
+  const verificationBodies = await Promise.all(
+    verificationFiles.map((file) =>
+      readFile(path.join(root, 'docs/dossier/verification', workId, file), 'utf8'),
+    ),
+  );
+  assert.ok(verificationBodies.some((text) => /evidence_class: live-app/.test(text)));
+  assert.ok(
+    verificationBodies.some((text) =>
+      /runtime_path: CLI parse -> runCommand -> stage and queue handlers/.test(text),
+    ),
   );
   assert.equal(
     run(

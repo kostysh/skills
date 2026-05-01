@@ -113,9 +113,15 @@ Runtime command:
 
 ```bash
 dossier-engineer work acceptance add --work <work-id> --kind behavior --text "<criterion>" --source <source-id>#<anchor>
+dossier-engineer work acceptance add --work <work-id> --kind negative --text "<forbidden observable behavior>" --source <source-id>#<anchor>
+dossier-engineer work acceptance add --work <work-id> --kind falsifier --text "<condition that would prove the capability is not integrated>" --source <source-id>#<anchor>
 ```
 
 Support or infrastructure criteria may exist, but they cannot satisfy capability closure by themselves.
+
+Runtime does not infer testability from arbitrary anti-claim prose. If the agent
+marks an anti-claim as testable in `Spec Compact`, that claim must be represented
+as `negative` or `falsifier` acceptance before spec-compact closure.
 
 ## 5. Demonstration scenario
 
@@ -146,6 +152,18 @@ or:
 ```bash
 dossier-engineer verify record --work <work-id> --stage implementation --profile behavioral-demo --evidence-class behavioral --verdict pass --summary "<observed behavior>" --evidence <path>
 ```
+
+For user-visible/operator-visible capability work, implementation closure
+requires live-app behavioral evidence through the named production path:
+
+```bash
+dossier-engineer verify record --work <work-id> --stage implementation --profile behavioral-demo --evidence-class live-app --entrypoint "<actual app entrypoint>" --runtime-path "<production path>" --verdict pass --summary "<observed behavior>" --evidence <path>
+```
+
+Capability work is treated as user-visible/operator-visible unless `Plan Slice`
+records an explicit non-user-visible rationale. Mock, headless, unit, contract,
+and support evidence can support closure, but cannot be the only passing
+behavioral-demo evidence for user-visible capability work.
 
 Capability records can also hold baseline demonstration evidence:
 

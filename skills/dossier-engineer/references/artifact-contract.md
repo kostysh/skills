@@ -320,6 +320,7 @@ Enums:
 - `lifecycle`: `defined|intaken|specified|planned|implemented|closed|retired`;
 - `delivery.kind`: `capability|support|maintenance|exploration`;
 - `delivery.capability_refs[].relation`: `introduces|extends|supports|maintains|verifies|retires`;
+- `acceptance.criteria[].kind`: `behavior|contract|unit|integration|security|performance|accessibility|operational|documentation|support|negative|falsifier`;
 - `stage_state.*`: `not_started|in_progress|blocked|ready_for_close|closed|reopened`;
 - `coverage_gate`: `open|partial|green|not_applicable`.
 
@@ -409,6 +410,8 @@ work_item_id: WI-20260430-resume-session-6f31c2
 stage: implementation
 profile: behavioral-demo
 evidence_class: behavioral
+entrypoint: null
+runtime_path: null
 verdict: pass
 commands: []
 evidence: []
@@ -419,8 +422,12 @@ material_scope_hash: <hex>
 
 Enums:
 
-- `evidence_class`: `behavioral|contract|unit|integration|security|performance|manual|operational|documentation|support`;
+- `evidence_class`: `behavioral|contract|unit|integration|security|performance|manual|operational|documentation|support|live-app`;
 - `verdict`: `pass|fail|blocked|not_applicable`.
+
+`entrypoint` and `runtime_path` are required when `evidence_class` is
+`live-app`. CLI flags use kebab-case (`--runtime-path`); stored frontmatter uses
+snake_case (`runtime_path`).
 
 ## 13. Review artifact
 

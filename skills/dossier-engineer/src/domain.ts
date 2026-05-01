@@ -90,6 +90,8 @@ export const ACCEPTANCE_KINDS = [
   'operational',
   'documentation',
   'support',
+  'negative',
+  'falsifier',
 ] as const;
 export const STAGES = [
   'feature-intake',

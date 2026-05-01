@@ -111,7 +111,14 @@ Commands:
 ```bash
 dossier-engineer verify run --work <work-id> --stage implementation --profile behavioral-demo
 dossier-engineer verify record --work <work-id> --stage implementation --profile behavioral-demo --evidence-class behavioral --verdict pass --summary "<observed behavior>" --evidence <path>
+dossier-engineer verify record --work <work-id> --stage implementation --profile behavioral-demo --evidence-class live-app --entrypoint "<actual app entrypoint>" --runtime-path "<production path>" --verdict pass --summary "<observed behavior>" --evidence <path>
 ```
+
+For user-visible/operator-visible capability work, `live-app` behavioral-demo
+evidence is required for implementation closure. Mock, headless, unit, contract,
+manual, or support evidence may be recorded as supporting verification, but
+cannot be the sole closing evidence unless the Plan Slice records an explicit
+non-user-visible rationale.
 
 ## 6. Review freshness
 
@@ -158,6 +165,8 @@ Implementation closure requires:
 - anti-claim exists;
 - pre-implementation challenge recorded;
 - behavioral verification PASS and fresh;
+- live-app behavioral verification PASS and fresh for user-visible/operator-visible
+  capability work;
 - concept-conformance review PASS and fresh;
 - spec-conformance review PASS and fresh;
 - code/security/contract/release reviews according to risk;

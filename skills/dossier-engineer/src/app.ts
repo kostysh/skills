@@ -144,11 +144,23 @@ const workItemBody = (title: string, deliveryKind: string): string => {
       '',
       '### Integration path',
       '',
+      '- Actor entrypoint:',
+      '- Runtime path:',
+      '- Production components touched:',
+      '- UI/API/agent path:',
+      '- State/effect path:',
+      '- Continuity path:',
+      '- What would prove this is integrated:',
+      '- What would prove this is only substrate:',
+      '',
       '### Files, interfaces, and components',
       '',
       '### Sequence',
       '',
       '### AC to evidence matrix',
+      '',
+      '| AC | Observable behavior | Implementation surface | Evidence method | Falsifier |',
+      '| --- | --- | --- | --- | --- |',
       '',
       '### Risks and fallback/change-proposal triggers',
       '',
@@ -445,6 +457,71 @@ const verificationFresh = (
       verification.frontmatter.material_scope_hash === work.frontmatter.material_scope_hash,
   );
 
+const markdownLineValue = (input: string, label: string): string | null => {
+  const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = new RegExp(`^\\s*(?:[-*]\\s*)?${escaped}:\\s*(.+?)\\s*$`, 'im').exec(input);
+  return match?.[1]?.trim() === '' ? null : (match?.[1]?.trim() ?? null);
+};
+
+const normalizedComparable = (input: string): string =>
+  input.toLowerCase().replace(/\s+/g, ' ').trim();
+
+const planSliceSection = (work: Artifact): string =>
+  markdownSection(work.body, 'Plan Slice', 2) ?? '';
+
+const planIntegrationSection = (work: Artifact): string =>
+  markdownSection(planSliceSection(work), 'Integration path', 3) ?? '';
+
+const planRuntimePath = (work: Artifact): string | null =>
+  markdownLineValue(planIntegrationSection(work), 'Runtime path');
+
+const hasNonUserVisibleRationale = (work: Artifact): boolean => {
+  const plan = planSliceSection(work);
+  return /non[- ]user[- ]visible/i.test(plan) && hasMaterialSectionContent(plan);
+};
+
+const isUserVisibleCapabilityWork = (work: Artifact): boolean => {
+  const delivery = work.frontmatter.delivery as Record<string, unknown> | undefined;
+  return delivery?.kind === 'capability' && !hasNonUserVisibleRationale(work);
+};
+
+const liveAppVerificationFresh = (
+  work: Artifact,
+  verifications: readonly Artifact[],
+  profile = 'behavioral-demo',
+): boolean => {
+  const requiredRuntimePath = planRuntimePath(work);
+  const normalizedRequiredPath =
+    requiredRuntimePath === null ? null : normalizedComparable(requiredRuntimePath);
+  return verifications.some((verification) => {
+    if (
+      verification.frontmatter.work_item_id !== work.frontmatter.id ||
+      verification.frontmatter.profile !== profile ||
+      verification.frontmatter.verdict !== 'pass' ||
+      verification.frontmatter.evidence_class !== 'live-app' ||
+      verification.frontmatter.material_scope_hash !== work.frontmatter.material_scope_hash
+    ) {
+      return false;
+    }
+    const entrypoint = verification.frontmatter.entrypoint;
+    const runtimePath = verification.frontmatter.runtime_path;
+    if (
+      typeof entrypoint !== 'string' ||
+      entrypoint.trim() === '' ||
+      typeof runtimePath !== 'string' ||
+      runtimePath.trim() === ''
+    ) {
+      return false;
+    }
+    if (normalizedRequiredPath === null) return true;
+    const normalizedEvidencePath = normalizedComparable(runtimePath);
+    return (
+      normalizedEvidencePath.includes(normalizedRequiredPath) ||
+      normalizedRequiredPath.includes(normalizedEvidencePath)
+    );
+  });
+};
+
 const postCloseHygieneClosed = (work: Artifact, stage: string): boolean => {
   const postCloseHygiene = work.frontmatter.post_close_hygiene as
     | Record<string, unknown>
@@ -470,6 +547,11 @@ const closureFindings = (work: Artifact, all: readonly Artifact[]): string[] => 
     ) {
       findings.push(
         `${artifactId(work)}: implementation closed without fresh behavioral-demo verification.`,
+      );
+    }
+    if (isUserVisibleCapabilityWork(work) && !liveAppVerificationFresh(work, verifications)) {
+      findings.push(
+        `${artifactId(work)}: implementation closed without fresh live-app behavioral-demo verification for the named production path.`,
       );
     }
     if (
@@ -1740,6 +1822,16 @@ const capabilityCheck = async (
     (entry) => workFilter === undefined || entry.frontmatter.id === workFilter,
   )) {
     findings.push(...workGateFindings(work));
+    const stageState = work.frontmatter.stage_state as Record<string, unknown> | undefined;
+    if (
+      isUserVisibleCapabilityWork(work) &&
+      (stageState?.implementation === 'closed' || work.frontmatter.lifecycle === 'implemented') &&
+      !liveAppVerificationFresh(work, findArtifactsByType(artifacts, 'verification'))
+    ) {
+      findings.push(
+        `${artifactId(work)}: user-visible capability implementation lacks fresh live-app behavioral evidence.`,
+      );
+    }
   }
   return result(command, {
     result: findings.length === 0 ? 'success' : 'blocked',
@@ -2610,14 +2702,33 @@ const requiredSubsectionFindings = (
   return findings;
 };
 
-const specCompactFindings = (work: Artifact): string[] =>
-  requiredSubsectionFindings(work, 'Spec Compact', [
+const hasNegativeOrFalsifierCriterion = (work: Artifact): boolean => {
+  const acceptance = work.frontmatter.acceptance as Record<string, unknown> | undefined;
+  const criteria = (acceptance?.criteria as unknown[]) ?? [];
+  return criteria.some((entry) =>
+    ['negative', 'falsifier'].includes(String((entry as Record<string, unknown>).kind)),
+  );
+};
+
+const specCompactFindings = (work: Artifact): string[] => {
+  const findings = requiredSubsectionFindings(work, 'Spec Compact', [
     'Behavior statement',
     'Acceptance criteria matrix',
     'Negative acceptance / falsifiers',
     'Anti-claims and non-goals',
     'Open questions and gaps',
   ]);
+  const spec = markdownSection(work.body, 'Spec Compact', 2) ?? '';
+  if (
+    /testable[- ](?:negative|anti-claim)|testable anti-claim/i.test(spec) &&
+    !hasNegativeOrFalsifierCriterion(work)
+  ) {
+    findings.push(
+      `${artifactId(work)}: testable anti-claims must be represented as negative or falsifier acceptance criteria.`,
+    );
+  }
+  return findings;
+};
 
 const planSliceFindings = (work: Artifact): string[] => {
   const findings = requiredSubsectionFindings(work, 'Plan Slice', [
@@ -2631,12 +2742,30 @@ const planSliceFindings = (work: Artifact): string[] => {
   const plan = markdownSection(work.body, 'Plan Slice', 2) ?? '';
   const integration = markdownSection(plan, 'Integration path', 3) ?? '';
   const files = markdownSection(plan, 'Files, interfaces, and components', 3) ?? '';
+  const matrix = markdownSection(plan, 'AC to evidence matrix', 3) ?? '';
+  const risks = markdownSection(plan, 'Risks and fallback/change-proposal triggers', 3) ?? '';
+  const requiredIntegrationFields = [
+    'Actor entrypoint',
+    'Runtime path',
+    'Production components touched',
+    'UI/API/agent path',
+    'State/effect path',
+    'Continuity path',
+    'What would prove this is integrated',
+    'What would prove this is only substrate',
+  ];
+  for (const field of requiredIntegrationFields) {
+    if (hasMaterialSectionContent(integration) && markdownLineValue(integration, field) === null) {
+      findings.push(`${artifactId(work)}: Plan Slice / Integration path lacks ${field}.`);
+    }
+  }
   if (
     hasMaterialSectionContent(integration) &&
-    (!/production entrypoint/i.test(integration) || !/runtime path/i.test(integration))
+    markdownLineValue(integration, 'Actor entrypoint') === null &&
+    !/production entrypoint/i.test(integration)
   ) {
     findings.push(
-      `${artifactId(work)}: Plan Slice / Integration path must name production entrypoint and runtime path for user-visible capability work.`,
+      `${artifactId(work)}: Plan Slice / Integration path must name production or actor entrypoint for user-visible capability work.`,
     );
   }
   if (
@@ -2645,6 +2774,26 @@ const planSliceFindings = (work: Artifact): string[] => {
   ) {
     findings.push(
       `${artifactId(work)}: Plan Slice / Files, interfaces, and components must name concrete files/interfaces/components or an explicit non-code rationale.`,
+    );
+  }
+  const normalizedMatrix = matrix.toLowerCase();
+  for (const column of [
+    'ac',
+    'observable behavior',
+    'implementation surface',
+    'evidence method',
+    'falsifier',
+  ]) {
+    if (hasMaterialSectionContent(matrix) && !normalizedMatrix.includes(column)) {
+      findings.push(`${artifactId(work)}: Plan Slice / AC to evidence matrix lacks ${column}.`);
+    }
+  }
+  if (
+    hasMaterialSectionContent(risks) &&
+    (!/change-proposal/i.test(risks) || !/trigger/i.test(risks))
+  ) {
+    findings.push(
+      `${artifactId(work)}: Plan Slice / Risks and fallback/change-proposal triggers must name change-proposal triggers.`,
     );
   }
   return findings;
@@ -2690,6 +2839,14 @@ const stageGateFindings = (work: Artifact, all: readonly Artifact[], stage: Stag
       !verificationFresh(work, findArtifactsByType(all, 'verification'), 'behavioral-demo')
     ) {
       findings.push(`${artifactId(work)}: fresh behavioral-demo verification required.`);
+    }
+    if (
+      isUserVisibleCapabilityWork(work) &&
+      !liveAppVerificationFresh(work, findArtifactsByType(all, 'verification'))
+    ) {
+      findings.push(
+        `${artifactId(work)}: fresh live-app behavioral-demo verification required for user-visible capability work.`,
+      );
     }
     if (
       delivery.kind === 'capability' &&
@@ -2874,18 +3031,24 @@ const verifyRequired = async (
       : delivery.kind === 'maintenance'
         ? ['default']
         : ['default'];
+  const verifications = findArtifactsByType(artifacts, 'verification');
   const findings = required.map(
     (profile) =>
-      `${profile}: ${verificationFresh(work, findArtifactsByType(artifacts, 'verification'), profile) ? 'fresh' : 'missing_or_stale'}`,
+      `${profile}: ${verificationFresh(work, verifications, profile) ? 'fresh' : 'missing_or_stale'}`,
   );
+  if (isUserVisibleCapabilityWork(work)) {
+    findings.push(
+      `behavioral-demo live-app: ${liveAppVerificationFresh(work, verifications) ? 'fresh' : 'missing_or_stale'}`,
+    );
+  }
+  const recordCommand = isUserVisibleCapabilityWork(work)
+    ? `dossier-engineer verify record --work ${workId} --stage implementation --profile behavioral-demo --evidence-class live-app --entrypoint "<actual app entrypoint>" --runtime-path "<production path>" --verdict pass --summary "<observed behavior>" --evidence <path>`
+    : `dossier-engineer verify record --work ${workId} --stage implementation --profile ${required[0]} --evidence-class behavioral --verdict pass --summary "<observed behavior>" --evidence <path>`;
   return result(command, {
     result: findings.some((entry) => entry.includes('missing')) ? 'blocked' : 'success',
     findings,
     next_actions: [
-      next(
-        `dossier-engineer verify record --work ${workId} --stage implementation --profile ${required[0]} --evidence-class behavioral --verdict pass --summary "<observed behavior>" --evidence <path>`,
-        'Record verification evidence when no runnable profile is configured.',
-      ),
+      next(recordCommand, 'Record verification evidence when no runnable profile is configured.'),
     ],
     exitCode: findings.some((entry) => entry.includes('missing')) ? 2 : 0,
   });
@@ -3065,6 +3228,19 @@ const verifyRecord = async (
   const verdict = requireEnum(command, 'verdict', VERDICTS);
   const summary = requireValue(command, 'summary');
   const evidence = values(command, 'evidence');
+  const entrypoint = value(command, 'entrypoint');
+  const runtimePath = value(command, 'runtime-path');
+  if (
+    evidenceClass === 'live-app' &&
+    (entrypoint === undefined ||
+      entrypoint.trim() === '' ||
+      runtimePath === undefined ||
+      runtimePath.trim() === '')
+  ) {
+    throw new UsageError(
+      'live-app evidence requires --entrypoint and --runtime-path structured fields.',
+    );
+  }
   const missing = await evidencePathsExist(root, evidence);
   if (missing.length > 0)
     throw new UsageError(`Evidence path does not exist: ${missing.join(', ')}`);
@@ -3091,6 +3267,12 @@ const verifyRecord = async (
       stage,
       profile,
       evidence_class: evidenceClass,
+      ...(evidenceClass === 'live-app'
+        ? {
+            entrypoint,
+            runtime_path: runtimePath,
+          }
+        : {}),
       verdict,
       commands: [],
       evidence,
