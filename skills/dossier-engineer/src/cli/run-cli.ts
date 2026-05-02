@@ -30,7 +30,7 @@ const COMMANDS = [
   'work create|acceptance add|demo set|anti-claim add|challenge record|support explain|dependency add|dependency remove|blocker add|blocker resolve|risk set|split|retire',
   'stage start|ready|close|reopen|log',
   'verify required|run|record',
-  'review required|record',
+  'review required|packet|record',
   'hygiene run',
   'changeset create',
   'report create',

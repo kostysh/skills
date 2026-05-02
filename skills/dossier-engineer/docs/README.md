@@ -23,6 +23,7 @@ Historical Russian reference documents are stored in `docs/ru/references/`.
 - `docs/logs/implementation-log-20260502-2.md` — implemented Phase 1 truthful queue, spec/plan body gates, plan-slice concept review, and terminal lifecycle.
 - `docs/logs/implementation-log-20260502-3.md` — implemented Phase 3 live-app evidence, integration path semantics, and negative/falsifier acceptance criteria.
 - `docs/logs/implementation-log-20260502-4.md` — implemented Phase 4 normalized review freshness, final review bundle gates, and consolidated review guidance.
+- `docs/logs/implementation-log-20260502-5.md` — implemented independent required review gates, bounded review packets, provenance eligibility, and reviewer compute policy.
 
 ## Issues
 
@@ -30,9 +31,9 @@ Historical Russian reference documents are stored in `docs/ru/references/`.
 - `docs/issues/issue-20260501-2.md` — Phase 2: single-writer runtime safety для mutating dossier commands. Status: issue revised, independent re-audit `PASS`.
 - `docs/issues/issue-20260501-3.md` — Phase 3: integration correctness, live-app evidence и negative falsifiers. Status: issue revised, independent re-audit `PASS`.
 - `docs/issues/issue-20260501-4.md` — Phase 4: consolidated review policy без micro-fix noise. Status: issue revised, independent re-audit `PASS`.
-- `docs/issues/issue-20260501-5.md` — independent required reviews: provenance, bounded review packet, and eligibility gates. Status: issue harmonized, external audit pending.
+- `docs/issues/issue-20260501-5.md` — independent required reviews: provenance, bounded review packet, and eligibility gates. Status: issue harmonized, implementation completed in `docs/logs/implementation-log-20260502-5.md`.
 - `docs/issues/implementation-plan-20260501-1.md` — implementation plan for `issue-20260501-1`. Status: implementation completed in `docs/logs/implementation-log-20260502-2.md`.
 - `docs/issues/implementation-plan-20260501-2.md` — implementation plan for `issue-20260501-2`. Status: implementation completed in `docs/logs/implementation-log-20260502-1.md`.
 - `docs/issues/implementation-plan-20260501-3.md` — implementation plan for `issue-20260501-3`. Status: implementation completed in `docs/logs/implementation-log-20260502-3.md`.
 - `docs/issues/implementation-plan-20260501-4.md` — implementation plan for `issue-20260501-4`. Status: implementation completed in `docs/logs/implementation-log-20260502-4.md`.
-- `docs/issues/implementation-plan-20260501-5.md` — implementation plan for `issue-20260501-5`. Status: plan created, independent audit `PASS`.
+- `docs/issues/implementation-plan-20260501-5.md` — implementation plan for `issue-20260501-5`. Status: implementation completed in `docs/logs/implementation-log-20260502-5.md`.

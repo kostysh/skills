@@ -449,6 +449,22 @@ stage: implementation
 audit_class: concept-conformance-reviewer
 verdict: pass
 reviewer: independent-agent
+reviewer_kind: spawned-agent
+reviewer_role: concept-conformance-reviewer
+reviewer_id: concept-review-agent
+implementer_id: implementer-agent
+launch_mode: spawned
+launch_context: fresh-session-no-fork
+isolation_level: bounded-packet
+context_inheritance: none
+readonly: true
+packet_hash: sha256:<hex>
+required_reason: capability implementation scope
+raw_report_ref: reviews/WI-20260430-resume-session-6f31c2/concept-review.md
+reviewer_model: default
+reviewer_reasoning_effort: high
+model_selection_policy: required-review-risk-weighted
+model_selection_reason: runtime and lifecycle scope require high reasoning
 created_at: "2026-04-30T12:00:00Z"
 material_scope_hash: <hex>
 reviewed_artifacts: []
@@ -459,6 +475,26 @@ Enums:
 
 - `audit_class`: built-in class or project-configured class;
 - `verdict`: `pass|fail|blocked|not_applicable`.
+
+Required gate eligibility fields:
+
+- `reviewer_kind`: currently `spawned-agent` for eligible independent agent
+  reviews;
+- `reviewer_role`: review class the reviewer was instructed to perform;
+- `reviewer_id` and `implementer_id`: must be present and different;
+- `launch_mode`: `spawned`;
+- `launch_context`: `fresh-session-no-fork`;
+- `isolation_level`: `bounded-packet` or `repository-readonly`;
+- `context_inheritance`: `none`;
+- `readonly`: `true`;
+- `packet_hash`: exact `sha256:<hex>` from current `review packet`;
+- `reviewer_model`: model label, usually `default`;
+- `reviewer_reasoning_effort`: `medium|high|xhigh`; `low` is not eligible;
+- `model_selection_policy` and `model_selection_reason`: explain the model and
+  reasoning choice.
+
+The review body must preserve the returned findings/rationale or the
+frontmatter must point to a durable report path through `raw_report_ref`.
 
 Built-in review classes:
 

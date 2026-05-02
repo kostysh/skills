@@ -243,7 +243,9 @@ Concept conformance differs from spec conformance:
 Capability work requires concept-conformance review before `plan-slice` closes:
 
 ```bash
-dossier-engineer review record --work <work-id> --stage plan-slice --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>
+dossier-engineer review required --work <work-id> --stage plan-slice
+dossier-engineer review packet --work <work-id> --stage plan-slice --class concept-conformance-reviewer
+dossier-engineer review record --work <work-id> --stage plan-slice --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id> --reviewer-kind spawned-agent --reviewer-role concept-conformance-reviewer --reviewer-id <reviewer-agent-id> --implementer-id <implementer-id> --launch-mode spawned --launch-context fresh-session-no-fork --isolation-level bounded-packet --context-inheritance none --readonly true --packet-hash <packet-hash> --reviewer-model default --reviewer-reasoning-effort high --model-selection-policy required-review-risk-weighted --model-selection-reason "<reason>" --report <path>
 ```
 
 Implementation closure may reuse that review only if material scope remains

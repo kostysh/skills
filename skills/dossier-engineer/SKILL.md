@@ -11,11 +11,11 @@ compatibility: Requires git, Markdown files, and the bundled dossier-engineer
   runtime under scripts/dossier-engineer.mjs or an equivalent dossier-engineer
   executable on PATH.
 metadata:
-  source-version: 2.7.0
+  source-version: 2.8.0
   canonical_storage: markdown-yaml-frontmatter
   runtime: dossier-engineer
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6bcd0c3de8bffe23823b6422b4bb9369a9c4f7e049d268b9344aa2b2c54b0f31
+  skillforge-source-hash: 01c25ce4df925d6cdbf91f803691c28fe30fdec8a2fdeba93f3e8fa38bf0444d
 ---
 
 # dossier-engineer
@@ -285,13 +285,14 @@ Close implementation only with fresh evidence that proves the claimed capability
 
 1. Ask `verify required` and `review required` before implementation closure.
 2. Use `verify run` for configured profiles or `verify record` for explicit manual/external evidence.
-3. Record required reviews with immutable `review record` artifacts.
+3. Use `review packet`; spawn a fresh independent reviewer without forked context, then `review record` the returned report with eligible provenance.
 4. Close implementation only after fresh required verification and review evidence, then run `hygiene run`.
 
 Validation:
 
 - Capability work has fresh behavioral-demo verification.
-- Capability work has fresh concept-conformance and spec-conformance reviews.
+- Capability work has fresh eligible concept-conformance and spec-conformance reviews.
+- Required reviews record reviewer separation, packet hash, read-only context, model label, reasoning effort, and model-selection rationale.
 - Review and verification bodies explain verdict rationale, evidence inspected, and what was proven.
 - Hygiene passes before handoff or closure reporting.
 
@@ -432,7 +433,7 @@ Validation:
 
 **Examples:** dossier-engineer stage start --work <work-id> --stage feature-intake --session <session-id>
 
-### CLI command: `verify required/run/record | review required/record | hygiene run`
+### CLI command: `verify required/run/record | review required/packet/record | hygiene run`
 **Use when:** Preparing implementation closure or handoff.
 
 **Summary:** Determine required evidence, record verification and review artifacts, and validate post-close hygiene.
@@ -441,7 +442,7 @@ Validation:
 
 **Tests:** `test/cli.test.ts`
 
-**Examples:** dossier-engineer verify required --work <work-id> --stage implementation; dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>
+**Examples:** dossier-engineer verify required --work <work-id> --stage implementation; dossier-engineer review packet --work <work-id> --stage implementation --class concept-conformance-reviewer; dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id> --reviewer-kind spawned-agent --packet-hash <packet-hash> --reviewer-model default --reviewer-reasoning-effort high --report <path>
 
 ### CLI command: `changeset create | report create | retro create`
 **Use when:** Preparing handoff, requested derived views, or retrospective process analysis.

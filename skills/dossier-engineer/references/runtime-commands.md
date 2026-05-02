@@ -539,16 +539,53 @@ For capability work at `stage=plan-slice`, the required class is
 For implementation, freshness is computed against the normalized material scope
 and current live-app evidence path when live-app evidence is required.
 
+States:
+
+- `fresh`: an eligible PASS review exists for the current material scope;
+- `missing_or_stale`: no PASS review exists for the current material scope;
+- `ineligible`: a PASS review exists, but its provenance, packet hash, reviewer
+  independence, read-only status, or compute policy does not satisfy the required
+  review gate.
+
+### `review packet`
+
+```bash
+dossier-engineer review packet --work <work-id> --stage plan-slice --class concept-conformance-reviewer
+dossier-engineer review packet --work <work-id> --stage implementation --class concept-conformance-reviewer|spec-conformance-reviewer|code-reviewer|security-reviewer|<class>
+```
+
+Produces a bounded review packet and `packet_hash` for a required independent
+review. Pass only this packet plus read-only repository access to a fresh
+reviewer session. Do not fork the implementer's current thread, do not inherit
+the implementer's hidden reasoning or session history, and do not let the
+reviewer write dossier artifacts directly.
+
 ### `review record`
 
 ```bash
-dossier-engineer review record --work <work-id> --stage plan-slice --class concept-conformance-reviewer --verdict pass|fail|blocked|not_applicable --reviewer <reviewer-id> [--summary "<summary>"] [--evidence <path>...]
-dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer|spec-conformance-reviewer|code-reviewer|security-reviewer|<class> --verdict pass|fail|blocked|not_applicable --reviewer <reviewer-id> [--summary "<summary>"] [--evidence <path>...]
+dossier-engineer review record --work <work-id> --stage plan-slice --class concept-conformance-reviewer --verdict pass|fail|blocked|not_applicable --reviewer <reviewer-id> --reviewer-kind spawned-agent --reviewer-role concept-conformance-reviewer --reviewer-id <reviewer-agent-id> --implementer-id <implementer-id> --launch-mode spawned --launch-context fresh-session-no-fork --isolation-level bounded-packet --context-inheritance none --readonly true --packet-hash <packet-hash> --reviewer-model default --reviewer-reasoning-effort high --model-selection-policy required-review-risk-weighted --model-selection-reason "<reason>" --report <path>
+dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer|spec-conformance-reviewer|code-reviewer|security-reviewer|<class> --verdict pass|fail|blocked|not_applicable --reviewer <reviewer-id> --reviewer-kind spawned-agent --reviewer-role <class> --reviewer-id <reviewer-agent-id> --implementer-id <implementer-id> --launch-mode spawned --launch-context fresh-session-no-fork --isolation-level bounded-packet --context-inheritance none --readonly true --packet-hash <packet-hash> --reviewer-model default --reviewer-reasoning-effort high --model-selection-policy required-review-risk-weighted --model-selection-reason "<reason>" --report <path>
 ```
 
-Creates immutable `REV-*.md` and stores the current material scope hash.
-`review record` does not create a consolidated review class; use the existing
-required review classes and let `review required` report freshness.
+Creates immutable `REV-*.md`, stores the current material scope hash, and
+preserves the returned reviewer report. Required review gates only accept PASS
+reviews when provenance is eligible:
+
+- reviewer is a spawned independent reviewer, not the implementing agent;
+- `reviewer_id` differs from `implementer_id`;
+- launch context is `fresh-session-no-fork` with no inherited thread history;
+- reviewer was read-only and either used the bounded packet or read-only repo
+  access;
+- `packet_hash` matches the current `review packet` output;
+- `reviewer_reasoning_effort` is at least `medium`; `low` is never eligible;
+- high-risk or security-sensitive reviews use `high` or `xhigh`;
+- `reviewer_model`, `model_selection_policy`, and `model_selection_reason` are
+  recorded. Use `reviewer_model=default` for the normal inherited model choice.
+
+`review record` does not launch the reviewer and does not create a consolidated
+review class. The implementing agent records the independent reviewer's returned
+report unchanged through the runtime; the reviewer itself must not write the
+review artifact.
 
 ## 11. Hygiene commands
 

@@ -174,6 +174,47 @@ dossier-engineer attention --root .
 dossier-engineer lint --root .
 ```
 
+## 7. Independent required review eligibility
+
+Required review gates require independent, eligible review artifacts. A PASS
+`REV-*.md` is not enough by itself.
+
+Correct sequence:
+
+```bash
+dossier-engineer review required --work <work-id> --stage <stage>
+dossier-engineer review packet --work <work-id> --stage <stage> --class <review-class>
+# Spawn a fresh independent reviewer session with no current-thread fork and no inherited thread history.
+dossier-engineer review record --work <work-id> --stage <stage> --class <review-class> --verdict pass --reviewer <reviewer-id> --reviewer-kind spawned-agent --reviewer-role <review-class> --reviewer-id <reviewer-agent-id> --implementer-id <implementer-id> --launch-mode spawned --launch-context fresh-session-no-fork --isolation-level bounded-packet --context-inheritance none --readonly true --packet-hash <packet-hash> --reviewer-model default --reviewer-reasoning-effort high --model-selection-policy required-review-risk-weighted --model-selection-reason "<reason>" --report <path>
+```
+
+The implementing agent launches the reviewer and records the returned report.
+The reviewer does not write the review artifact. Requirements clarification by
+the operator is allowed, but it does not override a required reviewer verdict or
+make a same-session/self-review eligible.
+
+Reviewer launch policy:
+
+- use a fresh reviewer session;
+- do not fork the implementer's current thread;
+- do not inherit hidden reasoning, session memory, or unbounded conversation
+  history;
+- provide the bounded review packet and, when needed, read-only repository
+  access;
+- keep the reviewer read-only.
+
+Model and reasoning policy:
+
+- `reviewer_model` records the chosen model; use `default` for the normal
+  inherited model choice;
+- `reviewer_reasoning_effort=low` is never eligible for required closure gates;
+- ordinary required reviews need at least `medium`;
+- high-risk, runtime, provenance, lifecycle, concurrency, security, auth,
+  privacy, network, dependency, or security-reviewer gates need `high` or
+  `xhigh`;
+- `model_selection_policy` and `model_selection_reason` must explain why the
+  selected model and reasoning effort are sufficient.
+
 Material re-review triggers include source interpretation, capability claim,
 acceptance criteria, demo scenario, falsifier set, trust boundary,
 IPC/security/persistence posture, `Spec Compact`, `Plan Slice`, implementation
@@ -186,7 +227,7 @@ integration path, demo scenario, or falsifier set, and only stabilizes already
 reviewed implementation. A note-only micro-fix must remain visible in a stage
 log, verification artifact summary, or changeset summary.
 
-## 7. Closure gates by delivery kind
+## 8. Closure gates by delivery kind
 
 ### Capability work
 
@@ -242,7 +283,7 @@ Closure requires:
 - follow-up work/capability created or explicitly declined;
 - no claim of product capability.
 
-## 8. Stage closure gates
+## 9. Stage closure gates
 
 ### feature-intake
 
@@ -284,7 +325,7 @@ Blocks closure according to delivery kind gates.
 
 Blocks closure if accepted changes are not reflected in structured artifacts.
 
-## 9. Hygiene run
+## 10. Hygiene run
 
 After implementation stage closes:
 
@@ -313,7 +354,7 @@ Checks:
 
 Hygiene is not a substitute for review. It verifies that closure evidence remains coherent after closure.
 
-## 10. Failure behavior
+## 11. Failure behavior
 
 Runtime must fail closed:
 

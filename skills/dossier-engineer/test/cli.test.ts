@@ -233,6 +233,208 @@ const createBasicWork = async (root: string) => {
   return { sourceId, capabilityId, workId };
 };
 
+const reviewPacketHashFromOutput = (stdout: string): string => {
+  const hash = /packet_hash: (sha256:[a-f0-9]{64})/.exec(stdout)?.[1];
+  assert.ok(hash, stdout);
+  return hash;
+};
+
+const recordEligibleReview = async (
+  root: string,
+  workId: string,
+  stage: string,
+  reviewClass: string,
+  overrides: readonly string[] = [],
+) => {
+  const packet = run(
+    [
+      'review',
+      'packet',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      stage,
+      '--class',
+      reviewClass,
+    ],
+    root,
+  );
+  assert.equal(packet.status, 0, packet.stdout + packet.stderr);
+  const packetHash = reviewPacketHashFromOutput(packet.stdout);
+  const reportPath = `review-${stage}-${reviewClass}.md`;
+  await writeFile(
+    path.join(root, reportPath),
+    [
+      `# ${reviewClass}`,
+      '',
+      '## Verdict',
+      '',
+      'PASS',
+      '',
+      '## Findings',
+      '',
+      'No blocking findings for the reviewed bounded packet.',
+      '',
+      '## Rationale',
+      '',
+      'The review was performed from the packet and readonly repository context.',
+      '',
+    ].join('\n'),
+    'utf8',
+  );
+  return run(
+    [
+      'review',
+      'record',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      stage,
+      '--class',
+      reviewClass,
+      '--verdict',
+      'pass',
+      '--reviewer',
+      `${reviewClass}-agent`,
+      '--reviewer-kind',
+      'spawned-agent',
+      '--reviewer-role',
+      reviewClass,
+      '--reviewer-id',
+      `${reviewClass}-agent`,
+      '--implementer-id',
+      'implementer-agent',
+      '--launch-mode',
+      'spawned',
+      '--launch-context',
+      'fresh-session-no-fork',
+      '--isolation-level',
+      'bounded-packet',
+      '--context-inheritance',
+      'none',
+      '--readonly',
+      'true',
+      '--packet-hash',
+      packetHash,
+      '--required-reason',
+      'test required review',
+      '--reviewer-model',
+      'default',
+      '--reviewer-reasoning-effort',
+      'high',
+      '--model-selection-policy',
+      'required-review-risk-weighted',
+      '--model-selection-reason',
+      'test review risk',
+      '--report',
+      reportPath,
+      ...overrides,
+    ],
+    root,
+  );
+};
+
+const preparePlanSliceReviewWork = async (root: string) => {
+  const { sourceId, capabilityId, workId } = await createBasicWork(root);
+  for (const args of [
+    [
+      'work',
+      'acceptance',
+      'add',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--kind',
+      'behavior',
+      '--text',
+      'operator sees truthful queue state',
+      '--source',
+      `${sourceId}#behavior`,
+    ],
+    [
+      'work',
+      'demo',
+      'set',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--name',
+      'demo',
+      '--scenario',
+      'operator runs queue and sees next action',
+    ],
+    [
+      'work',
+      'anti-claim',
+      'add',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--text',
+      'does not claim implementation readiness',
+    ],
+  ] as const) {
+    assert.equal(run(args, root).status, 0);
+  }
+  await completeCapabilityWorkBody(root, workId, 'Implement independent review gates');
+  for (const stage of ['feature-intake', 'spec-compact'] as const) {
+    assert.equal(
+      run(
+        ['stage', 'start', '--root', root, '--work', workId, '--stage', stage, '--session', 's'],
+        root,
+      ).status,
+      0,
+    );
+    assert.equal(
+      run(
+        [
+          'stage',
+          'ready',
+          '--root',
+          root,
+          '--work',
+          workId,
+          '--stage',
+          stage,
+          '--summary',
+          'ready',
+        ],
+        root,
+      ).status,
+      0,
+    );
+    assert.equal(
+      run(['stage', 'close', '--root', root, '--work', workId, '--stage', stage], root).status,
+      0,
+    );
+  }
+  assert.equal(
+    run(
+      [
+        'work',
+        'challenge',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--summary',
+        'plan could become substrate only',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  return { sourceId, capabilityId, workId };
+};
+
 void test('init creates markdown-only dossier project and directories', async () => {
   const root = await tempProject();
   const result = run(['init', '--root', root, '--project-name', 'Example'], root);
@@ -734,25 +936,7 @@ void test('spec and plan-slice close gates require material body contracts and p
   );
 
   assert.equal(
-    run(
-      [
-        'review',
-        'record',
-        '--root',
-        root,
-        '--work',
-        workId,
-        '--stage',
-        'plan-slice',
-        '--class',
-        'concept-conformance-reviewer',
-        '--verdict',
-        'pass',
-        '--reviewer',
-        'reviewer',
-      ],
-      root,
-    ).status,
+    (await recordEligibleReview(root, workId, 'plan-slice', 'concept-conformance-reviewer')).status,
     0,
   );
   const readyPlan = run(
@@ -771,6 +955,189 @@ void test('spec and plan-slice close gates require material body contracts and p
     root,
   );
   assert.equal(readyPlan.status, 0, readyPlan.stdout + readyPlan.stderr);
+});
+
+void test('required review gates reject pass artifacts without independent provenance', async () => {
+  const root = await tempProject();
+  const { workId } = await preparePlanSliceReviewWork(root);
+
+  assert.equal(
+    run(
+      [
+        'review',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'plan-slice',
+        '--class',
+        'concept-conformance-reviewer',
+        '--verdict',
+        'pass',
+        '--reviewer',
+        'same-session-reviewer',
+      ],
+      root,
+    ).status,
+    0,
+  );
+
+  const required = run(
+    ['review', 'required', '--root', root, '--work', workId, '--stage', 'plan-slice'],
+    root,
+  );
+  assert.equal(required.status, 2, required.stdout + required.stderr);
+  assert.match(required.stdout, /concept-conformance-reviewer: ineligible/);
+  assert.match(required.stdout, /launch_mode must be spawned/);
+  assert.match(required.stdout, /packet_hash must be a sha256 hash from review packet/);
+  assert.match(required.stdout, /reviewer_id is required/);
+
+  const blockedPlan = run(
+    [
+      'stage',
+      'ready',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--summary',
+      'ready',
+    ],
+    root,
+  );
+  assert.equal(blockedPlan.status, 2, blockedPlan.stdout + blockedPlan.stderr);
+  assert.match(
+    blockedPlan.stdout,
+    /concept-conformance-reviewer review is required before plan-slice close/,
+  );
+});
+
+void test('required review gates enforce reviewer separation and packet hash freshness', async () => {
+  const sameAgentRoot = await tempProject();
+  const { workId: sameAgentWork } = await preparePlanSliceReviewWork(sameAgentRoot);
+  assert.equal(
+    (
+      await recordEligibleReview(
+        sameAgentRoot,
+        sameAgentWork,
+        'plan-slice',
+        'concept-conformance-reviewer',
+        ['--implementer-id', 'concept-conformance-reviewer-agent'],
+      )
+    ).status,
+    0,
+  );
+  const sameAgentRequired = run(
+    [
+      'review',
+      'required',
+      '--root',
+      sameAgentRoot,
+      '--work',
+      sameAgentWork,
+      '--stage',
+      'plan-slice',
+    ],
+    sameAgentRoot,
+  );
+  assert.equal(sameAgentRequired.status, 2, sameAgentRequired.stdout + sameAgentRequired.stderr);
+  assert.match(sameAgentRequired.stdout, /reviewer_id must differ from implementer_id/);
+
+  const stalePacketRoot = await tempProject();
+  const { workId: stalePacketWork } = await preparePlanSliceReviewWork(stalePacketRoot);
+  assert.equal(
+    (
+      await recordEligibleReview(
+        stalePacketRoot,
+        stalePacketWork,
+        'plan-slice',
+        'concept-conformance-reviewer',
+        ['--packet-hash', `sha256:${'0'.repeat(64)}`],
+      )
+    ).status,
+    0,
+  );
+  const stalePacketRequired = run(
+    [
+      'review',
+      'required',
+      '--root',
+      stalePacketRoot,
+      '--work',
+      stalePacketWork,
+      '--stage',
+      'plan-slice',
+    ],
+    stalePacketRoot,
+  );
+  assert.equal(
+    stalePacketRequired.status,
+    2,
+    stalePacketRequired.stdout + stalePacketRequired.stderr,
+  );
+  assert.match(stalePacketRequired.stdout, /packet_hash does not match current review packet/);
+});
+
+void test('required review gates reject low reasoning and require high reasoning for high-risk work', async () => {
+  const lowRoot = await tempProject();
+  const { workId: lowWork } = await preparePlanSliceReviewWork(lowRoot);
+  assert.equal(
+    (
+      await recordEligibleReview(lowRoot, lowWork, 'plan-slice', 'concept-conformance-reviewer', [
+        '--reviewer-reasoning-effort',
+        'low',
+      ])
+    ).status,
+    0,
+  );
+  const lowRequired = run(
+    ['review', 'required', '--root', lowRoot, '--work', lowWork, '--stage', 'plan-slice'],
+    lowRoot,
+  );
+  assert.equal(lowRequired.status, 2, lowRequired.stdout + lowRequired.stderr);
+  assert.match(lowRequired.stdout, /low reasoning is not eligible/);
+
+  const highRiskRoot = await tempProject();
+  const { workId: highRiskWork } = await preparePlanSliceReviewWork(highRiskRoot);
+  assert.equal(
+    run(
+      [
+        'work',
+        'risk',
+        'set',
+        '--root',
+        highRiskRoot,
+        '--work',
+        highRiskWork,
+        '--implementation',
+        'runtime',
+      ],
+      highRiskRoot,
+    ).status,
+    0,
+  );
+  assert.equal(
+    (
+      await recordEligibleReview(
+        highRiskRoot,
+        highRiskWork,
+        'implementation',
+        'concept-conformance-reviewer',
+        ['--reviewer-reasoning-effort', 'medium'],
+      )
+    ).status,
+    0,
+  );
+  const highRiskRequired = run(
+    ['review', 'required', '--root', highRiskRoot, '--work', highRiskWork],
+    highRiskRoot,
+  );
+  assert.equal(highRiskRequired.status, 2, highRiskRequired.stdout + highRiskRequired.stderr);
+  assert.match(highRiskRequired.stdout, /high-risk review requires high or xhigh reasoning/);
 });
 
 void test('plan-slice blocks weak integration path and AC evidence matrix semantics', async () => {
@@ -903,25 +1270,7 @@ void test('plan-slice blocks weak integration path and AC evidence matrix semant
     0,
   );
   assert.equal(
-    run(
-      [
-        'review',
-        'record',
-        '--root',
-        root,
-        '--work',
-        workId,
-        '--stage',
-        'plan-slice',
-        '--class',
-        'concept-conformance-reviewer',
-        '--verdict',
-        'pass',
-        '--reviewer',
-        'reviewer',
-      ],
-      root,
-    ).status,
+    (await recordEligibleReview(root, workId, 'plan-slice', 'concept-conformance-reviewer')).status,
     0,
   );
 
@@ -1052,25 +1401,7 @@ void test('plan-slice review freshness uses normalized material sections', async
     0,
   );
   assert.equal(
-    run(
-      [
-        'review',
-        'record',
-        '--root',
-        root,
-        '--work',
-        workId,
-        '--stage',
-        'plan-slice',
-        '--class',
-        'concept-conformance-reviewer',
-        '--verdict',
-        'pass',
-        '--reviewer',
-        'reviewer',
-      ],
-      root,
-    ).status,
+    (await recordEligibleReview(root, workId, 'plan-slice', 'concept-conformance-reviewer')).status,
     0,
   );
   const fresh = run(
@@ -1669,28 +2000,6 @@ void test('source, capability, work, verification, review, stage and hygiene flo
   assert.equal(
     run(
       [
-        'review',
-        'record',
-        '--root',
-        root,
-        '--work',
-        workId,
-        '--stage',
-        'plan-slice',
-        '--class',
-        'concept-conformance-reviewer',
-        '--verdict',
-        'pass',
-        '--reviewer',
-        'reviewer',
-      ],
-      root,
-    ).status,
-    0,
-  );
-  assert.equal(
-    run(
-      [
         'work',
         'demo',
         'set',
@@ -1824,25 +2133,7 @@ void test('source, capability, work, verification, review, stage and hygiene flo
     0,
   );
   assert.equal(
-    run(
-      [
-        'review',
-        'record',
-        '--root',
-        root,
-        '--work',
-        workId,
-        '--stage',
-        'plan-slice',
-        '--class',
-        'concept-conformance-reviewer',
-        '--verdict',
-        'pass',
-        '--reviewer',
-        'reviewer',
-      ],
-      root,
-    ).status,
+    (await recordEligibleReview(root, workId, 'plan-slice', 'concept-conformance-reviewer')).status,
     0,
   );
   const readyPlan = run(
@@ -2079,25 +2370,7 @@ void test('source, capability, work, verification, review, stage and hygiene flo
   assert.match(staleReviews.stdout, /spec-conformance-reviewer: missing_or_stale/);
   for (const reviewClass of ['concept-conformance-reviewer', 'spec-conformance-reviewer']) {
     assert.equal(
-      run(
-        [
-          'review',
-          'record',
-          '--root',
-          root,
-          '--work',
-          workId,
-          '--stage',
-          'implementation',
-          '--class',
-          reviewClass,
-          '--verdict',
-          'pass',
-          '--reviewer',
-          'reviewer',
-        ],
-        root,
-      ).status,
+      (await recordEligibleReview(root, workId, 'implementation', reviewClass)).status,
       0,
     );
   }

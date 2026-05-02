@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 
@@ -425,6 +425,19 @@ const materialWorkHash = (
   });
 };
 
+const materialWorkSnapshot = (work: Artifact): Record<string, unknown> => ({
+  id: work.frontmatter.id,
+  source_refs: work.frontmatter.source_refs,
+  delivery: work.frontmatter.delivery,
+  acceptance: work.frontmatter.acceptance,
+  demonstration: work.frontmatter.demonstration,
+  anti_claims: work.frontmatter.anti_claims,
+  challenge: work.frontmatter.challenge,
+  dependencies: work.frontmatter.dependencies,
+  risk: work.frontmatter.risk,
+  material_body: materialBodyScope(work.body),
+});
+
 const recomputeWorkHash = (work: Artifact, all: readonly Artifact[]): Record<string, unknown> => ({
   ...work.frontmatter,
   material_scope_hash: materialWorkHash(
@@ -493,9 +506,12 @@ const currentMaterialWorkHash = (work: Artifact, all: readonly Artifact[]): stri
     findArtifactsByType(all, 'source'),
   );
 
-const currentMaterialReviewHash = (work: Artifact, all: readonly Artifact[]): string => {
+const liveAppEvidenceScope = (
+  work: Artifact,
+  all: readonly Artifact[],
+): Record<string, unknown>[] => {
   const evidenceKey = (entry: Record<string, unknown>) => JSON.stringify(entry);
-  const liveAppEvidence = findArtifactsByType(all, 'verification')
+  return findArtifactsByType(all, 'verification')
     .filter(
       (verification) =>
         verification.frontmatter.work_item_id === work.frontmatter.id &&
@@ -513,6 +529,10 @@ const currentMaterialReviewHash = (work: Artifact, all: readonly Artifact[]): st
       (entry, index, entries) =>
         index === 0 || evidenceKey(entry) !== evidenceKey(entries[index - 1]),
     );
+};
+
+const currentMaterialReviewHash = (work: Artifact, all: readonly Artifact[]): string => {
+  const liveAppEvidence = liveAppEvidenceScope(work, all);
   return hashObject({
     material_scope: currentMaterialWorkHash(work, all),
     live_app_evidence: liveAppEvidence,
@@ -526,7 +546,8 @@ const reviewFresh = (work: Artifact, all: readonly Artifact[], auditClass: strin
       review.frontmatter.work_item_id === work.frontmatter.id &&
       review.frontmatter.audit_class === auditClass &&
       review.frontmatter.verdict === 'pass' &&
-      review.frontmatter.material_scope_hash === currentHash,
+      review.frontmatter.material_scope_hash === currentHash &&
+      reviewEligibleForRequiredGate(review, work, all, auditClass, 'implementation').eligible,
   );
 };
 
@@ -546,8 +567,278 @@ const reviewFreshForStage = (
       review.frontmatter.stage === stage &&
       review.frontmatter.audit_class === auditClass &&
       review.frontmatter.verdict === 'pass' &&
-      review.frontmatter.material_scope_hash === currentHash,
+      review.frontmatter.material_scope_hash === currentHash &&
+      reviewEligibleForRequiredGate(review, work, all, auditClass, stage).eligible,
   );
+};
+
+const reviewMaterialHashForStage = (
+  work: Artifact,
+  all: readonly Artifact[],
+  stage: Stage,
+): string =>
+  stage === 'plan-slice'
+    ? currentMaterialWorkHash(work, all)
+    : currentMaterialReviewHash(work, all);
+
+const packetSection = (title: string, content: unknown): string =>
+  [
+    `## ${title}`,
+    '',
+    typeof content === 'string' ? content : JSON.stringify(content, null, 2),
+    '',
+  ].join('\n');
+
+const reviewClassQuestions = (auditClass: string): string[] => {
+  if (auditClass === 'concept-conformance-reviewer') {
+    return [
+      'Does this work advance the capability concept instead of only creating substrate?',
+      'Can the demo and falsifiers catch false completion?',
+      'Is the integration path specific enough for implementation?',
+    ];
+  }
+  if (auditClass === 'spec-conformance-reviewer') {
+    return [
+      'Does implementation evidence satisfy each acceptance criterion?',
+      'Are negative and falsifier criteria represented and respected?',
+      'Did scope or source interpretation drift without a change proposal?',
+    ];
+  }
+  if (auditClass === 'code-reviewer') {
+    return [
+      'Is the changed implementation correct, maintainable, and integrated?',
+      'Are lifecycle, error, concurrency, and regression risks handled?',
+    ];
+  }
+  if (auditClass === 'security-reviewer') {
+    return [
+      'Does the change affect auth, permissions, secrets, persistence, external input, or runtime boundaries?',
+      'Does the implementation fail closed for security-sensitive behavior?',
+    ];
+  }
+  return ['Is this required review class satisfied for the current material scope?'];
+};
+
+const reviewRequiredReason = (work: Artifact, auditClass: string, stage: Stage): string => {
+  const risk = work.frontmatter.risk as Record<string, unknown> | undefined;
+  if (stage === 'plan-slice' && auditClass === 'concept-conformance-reviewer') {
+    return 'capability plan-slice requires concept conformance';
+  }
+  if (auditClass === 'concept-conformance-reviewer') return 'capability implementation scope';
+  if (auditClass === 'spec-conformance-reviewer')
+    return 'implementation closure against acceptance criteria';
+  if (auditClass === 'code-reviewer') return 'code-bearing implementation risk';
+  if (auditClass === 'security-reviewer') {
+    return (
+      [...((risk?.implementation as string[]) ?? []), ...((risk?.policy as string[]) ?? [])]
+        .filter((entry) => ['security', 'auth', 'privacy', 'network', 'dependency'].includes(entry))
+        .join(', ') || 'security-sensitive surface'
+    );
+  }
+  return 'project review policy';
+};
+
+const highRiskReview = (work: Artifact, all: readonly Artifact[], auditClass: string): boolean => {
+  if (auditClass === 'security-reviewer') return true;
+  const risk = work.frontmatter.risk as Record<string, unknown> | undefined;
+  const riskEntries = [
+    ...((risk?.implementation as string[]) ?? []),
+    ...((risk?.policy as string[]) ?? []),
+  ].map((entry) => entry.toLowerCase());
+  if (
+    riskEntries.some((entry) =>
+      [
+        'runtime',
+        'platform',
+        'lifecycle',
+        'concurrency',
+        'provenance',
+        'source-of-truth',
+        'security',
+        'auth',
+        'privacy',
+        'network',
+        'dependency',
+      ].includes(entry),
+    )
+  ) {
+    return true;
+  }
+  const acceptance = work.frontmatter.acceptance as Record<string, unknown> | undefined;
+  const criteria = (acceptance?.criteria as unknown[]) ?? [];
+  if (criteria.length > 3) return true;
+  if (
+    criteria.some((entry) =>
+      ['negative', 'falsifier'].includes(String((entry as Record<string, unknown>).kind)),
+    )
+  ) {
+    return true;
+  }
+  return findArtifactsByType(all, 'review').some(
+    (review) =>
+      review.frontmatter.work_item_id === work.frontmatter.id &&
+      review.frontmatter.audit_class === auditClass &&
+      ['fail', 'blocked'].includes(String(review.frontmatter.verdict)),
+  );
+};
+
+const reviewPacketContent = (
+  work: Artifact,
+  all: readonly Artifact[],
+  stage: Stage,
+  auditClass: string,
+): string => {
+  const sourceRefs = work.frontmatter.source_refs ?? [];
+  const delivery = work.frontmatter.delivery as Record<string, unknown> | undefined;
+  const capabilityRefs = ((delivery?.capability_refs as unknown[]) ?? [])
+    .map((entry) => (entry as Record<string, unknown>).capability_id)
+    .filter((entry): entry is string => typeof entry === 'string');
+  const capabilities = findArtifactsByType(all, 'capability').filter((capability) =>
+    capabilityRefs.includes(String(capability.frontmatter.id)),
+  );
+  const liveAppEvidence = liveAppEvidenceScope(work, all);
+  const materialScopeHash = reviewMaterialHashForStage(work, all, stage);
+  return [
+    `# Review packet: ${auditClass}`,
+    '',
+    `work_item_id: ${artifactId(work)}`,
+    `stage: ${stage}`,
+    `review_class: ${auditClass}`,
+    `material_scope_hash: ${materialScopeHash}`,
+    `required_reason: ${reviewRequiredReason(work, auditClass, stage)}`,
+    '',
+    packetSection(
+      'Reviewer instructions',
+      reviewClassQuestions(auditClass)
+        .map((q) => `- ${q}`)
+        .join('\n'),
+    ),
+    packetSection('Work item material scope', materialWorkSnapshot(work)),
+    packetSection('Source refs', sourceRefs),
+    packetSection(
+      'Capability claims',
+      capabilities.map((capability) => capability.frontmatter),
+    ),
+    packetSection('Spec Compact', markdownSection(work.body, 'Spec Compact', 2) ?? ''),
+    packetSection('Plan Slice', markdownSection(work.body, 'Plan Slice', 2) ?? ''),
+    packetSection('Live-app evidence material scope', liveAppEvidence),
+    packetSection('Known blockers', openBlockers(work)),
+  ].join('\n');
+};
+
+const reviewPacketHash = (
+  work: Artifact,
+  all: readonly Artifact[],
+  stage: Stage,
+  auditClass: string,
+): string => `sha256:${hashObject({ packet: reviewPacketContent(work, all, stage, auditClass) })}`;
+
+const isValidPacketHash = (input: unknown): input is string =>
+  typeof input === 'string' && /^sha256:[a-f0-9]{64}$/.test(input);
+
+const booleanFrontmatter = (input: unknown): boolean => input === true || input === 'true';
+
+const stringFrontmatter = (input: unknown): string => (typeof input === 'string' ? input : '');
+
+const reviewEligibleForRequiredGate = (
+  review: Artifact,
+  work: Artifact,
+  all: readonly Artifact[],
+  auditClass: string,
+  stage: Stage,
+): { eligible: boolean; reasons: string[] } => {
+  const reasons: string[] = [];
+  const frontmatter = review.frontmatter;
+  if (frontmatter.launch_mode !== 'spawned') reasons.push('launch_mode must be spawned');
+  if (frontmatter.launch_context !== 'fresh-session-no-fork')
+    reasons.push('launch_context must be fresh-session-no-fork');
+  if (frontmatter.context_inheritance !== 'none') reasons.push('context_inheritance must be none');
+  if (!['bounded-packet', 'repository-readonly'].includes(String(frontmatter.isolation_level))) {
+    reasons.push('isolation_level must be bounded-packet or repository-readonly');
+  }
+  if (!booleanFrontmatter(frontmatter.readonly)) reasons.push('readonly must be true');
+  if (frontmatter.reviewer_kind !== 'spawned-agent') {
+    reasons.push('reviewer_kind must be spawned-agent');
+  }
+  if (frontmatter.reviewer_role !== auditClass)
+    reasons.push('reviewer_role must match audit_class');
+  if (typeof frontmatter.reviewer_id !== 'string' || frontmatter.reviewer_id.trim() === '') {
+    reasons.push('reviewer_id is required');
+  }
+  if (typeof frontmatter.implementer_id !== 'string' || frontmatter.implementer_id.trim() === '') {
+    reasons.push('implementer_id is required');
+  }
+  if (
+    typeof frontmatter.reviewer_id === 'string' &&
+    typeof frontmatter.implementer_id === 'string' &&
+    frontmatter.reviewer_id === frontmatter.implementer_id
+  ) {
+    reasons.push('reviewer_id must differ from implementer_id');
+  }
+  if (!isValidPacketHash(frontmatter.packet_hash)) {
+    reasons.push('packet_hash must be a sha256 hash from review packet');
+  } else if (frontmatter.packet_hash !== reviewPacketHash(work, all, stage, auditClass)) {
+    reasons.push('packet_hash does not match current review packet');
+  }
+  if (typeof frontmatter.reviewer_model !== 'string' || frontmatter.reviewer_model.trim() === '') {
+    reasons.push('reviewer_model is required');
+  }
+  const reasoningEffort = stringFrontmatter(frontmatter.reviewer_reasoning_effort);
+  if (!['medium', 'high', 'xhigh'].includes(reasoningEffort)) {
+    reasons.push('reviewer_reasoning_effort must be medium, high, or xhigh');
+  }
+  if (reasoningEffort === 'low') reasons.push('low reasoning is not eligible');
+  if (highRiskReview(work, all, auditClass) && !['high', 'xhigh'].includes(reasoningEffort)) {
+    reasons.push('high-risk review requires high or xhigh reasoning');
+  }
+  if (
+    typeof frontmatter.model_selection_policy !== 'string' ||
+    frontmatter.model_selection_policy.trim() === ''
+  ) {
+    reasons.push('model_selection_policy is required');
+  }
+  if (
+    typeof frontmatter.model_selection_reason !== 'string' ||
+    frontmatter.model_selection_reason.trim() === ''
+  ) {
+    reasons.push('model_selection_reason is required');
+  }
+  const hasRawReportRef =
+    typeof frontmatter.raw_report_ref === 'string' && frontmatter.raw_report_ref.trim() !== '';
+  const hasFindingsBody = hasMaterialSectionContent(
+    markdownSection(review.body, 'Findings', 2) ?? '',
+  );
+  if (!hasRawReportRef && !hasFindingsBody) {
+    reasons.push('review findings or raw_report_ref must be preserved');
+  }
+  return { eligible: reasons.length === 0, reasons };
+};
+
+const requiredReviewState = (
+  work: Artifact,
+  all: readonly Artifact[],
+  auditClass: string,
+  stage: Stage,
+): { state: 'fresh' | 'ineligible' | 'missing_or_stale'; reasons: string[] } => {
+  const currentHash = reviewMaterialHashForStage(work, all, stage);
+  const candidates = findArtifactsByType(all, 'review').filter(
+    (review) =>
+      review.frontmatter.work_item_id === work.frontmatter.id &&
+      review.frontmatter.audit_class === auditClass &&
+      review.frontmatter.verdict === 'pass' &&
+      review.frontmatter.material_scope_hash === currentHash &&
+      (stage === 'plan-slice' ? review.frontmatter.stage === stage : true),
+  );
+  const ineligibleReasons: string[] = [];
+  for (const candidate of candidates) {
+    const eligibility = reviewEligibleForRequiredGate(candidate, work, all, auditClass, stage);
+    if (eligibility.eligible) return { state: 'fresh', reasons: [] };
+    ineligibleReasons.push(...eligibility.reasons);
+  }
+  if (ineligibleReasons.length > 0) {
+    return { state: 'ineligible', reasons: [...new Set(ineligibleReasons)] };
+  }
+  return { state: 'missing_or_stale', reasons: [] };
 };
 
 const verificationFresh = (work: Artifact, all: readonly Artifact[], profile: string): boolean => {
@@ -679,7 +970,7 @@ const commandMutationMode = (command: ParsedCommand): MutationMode => {
     (head === 'source' && (second === 'list' || second === 'impact')) ||
     (head === 'capability' && second === 'check') ||
     (head === 'verify' && second === 'required') ||
-    (head === 'review' && second === 'required')
+    (head === 'review' && (second === 'required' || second === 'packet'))
   ) {
     return 'read-only';
   }
@@ -869,6 +1160,7 @@ const dispatchCommand = async (
   if (head === 'verify' && second === 'run') return verifyRun(ctx, command);
   if (head === 'verify' && second === 'record') return verifyRecord(ctx, command);
   if (head === 'review' && second === 'required') return reviewRequired(ctx, command);
+  if (head === 'review' && second === 'packet') return reviewPacket(ctx, command);
   if (head === 'review' && second === 'record') return reviewRecord(ctx, command);
   if (head === 'hygiene' && second === 'run') return hygieneRun(ctx, command);
   if (head === 'changeset' && second === 'create') return changesetCreate(ctx, command);
@@ -3414,24 +3706,57 @@ const reviewRequired = async (
     throw new UsageError(`Work item not found: ${workId}`);
   const required = requiredReviewClasses(work, stage);
   const findings = required.map((reviewClass) => {
-    const fresh =
-      stage === 'plan-slice'
-        ? reviewFreshForStage(work, artifacts, reviewClass, stage)
-        : reviewFresh(work, artifacts, reviewClass);
-    return `${reviewClass}: ${fresh ? 'fresh' : 'missing_or_stale'} for stage=${stage}`;
+    const state = requiredReviewState(work, artifacts, reviewClass, stage);
+    const reasonText = state.reasons.length > 0 ? ` (${state.reasons.join('; ')})` : '';
+    return `${reviewClass}: ${state.state} for stage=${stage}${reasonText}`;
   });
+  const blocked = required.length > 0 && findings.some((entry) => !entry.includes(': fresh'));
   return result(command, {
-    result: findings.some((entry) => entry.includes('missing')) ? 'blocked' : 'success',
+    result: blocked ? 'blocked' : 'success',
     findings: findings.length === 0 ? ['No required reviews by current risk policy.'] : findings,
     next_actions: [
       next(
-        `dossier-engineer review record --work ${workId} --stage ${stage} --class ${required[0] ?? '<review-class>'} --verdict pass --reviewer <reviewer-id>`,
+        `dossier-engineer review packet --work ${workId} --stage ${stage} --class ${required[0] ?? '<review-class>'}`,
+        'Generate a bounded review packet and packet hash for independent review.',
+      ),
+      next(
+        `dossier-engineer review record --work ${workId} --stage ${stage} --class ${required[0] ?? '<review-class>'} --verdict pass --reviewer <reviewer-id> --reviewer-kind spawned-agent --reviewer-role ${required[0] ?? '<review-class>'} --reviewer-id <reviewer-agent-id> --implementer-id <implementer-id> --launch-mode spawned --launch-context fresh-session-no-fork --isolation-level bounded-packet --context-inheritance none --readonly true --packet-hash <packet-hash> --reviewer-model default --reviewer-reasoning-effort high --model-selection-policy required-review-risk-weighted --model-selection-reason "<reason>" --report <path>`,
         stage === 'plan-slice'
           ? 'Record current concept-conformance review before plan-slice close.'
-          : 'Record immutable external review evidence.',
+          : 'Record immutable independent review evidence with eligible provenance.',
       ),
     ],
-    exitCode: findings.some((entry) => entry.includes('missing')) ? 2 : 0,
+    exitCode: blocked ? 2 : 0,
+  });
+};
+
+const reviewPacket = async (
+  ctx: RuntimeContext,
+  command: ParsedCommand,
+): Promise<CommandResult> => {
+  const { artifacts } = await loadRootArtifacts(ctx, command);
+  const workId = requireValue(command, 'work');
+  const stage = requireEnum(command, 'stage', STAGES);
+  const auditClass = requireValue(command, 'class');
+  const work = findArtifactById(artifacts, workId);
+  if (work === undefined || work.frontmatter.artifact_type !== 'work_item')
+    throw new UsageError(`Work item not found: ${workId}`);
+  const packet = reviewPacketContent(work, artifacts, stage, auditClass);
+  const packetHash = reviewPacketHash(work, artifacts, stage, auditClass);
+  return result(command, {
+    result: 'success',
+    summary: [`packet_hash: ${packetHash}`],
+    findings: [packet],
+    next_actions: [
+      next(
+        `spawn fresh independent ${auditClass} with launch_context=fresh-session-no-fork and bounded review packet`,
+        'Run the reviewer read-only without current-thread fork or inherited thread history.',
+      ),
+      next(
+        `dossier-engineer review record --work ${workId} --stage ${stage} --class ${auditClass} --verdict pass --reviewer <reviewer-id> --packet-hash ${packetHash} ...`,
+        'Record the returned reviewer report unchanged through the runtime.',
+      ),
+    ],
   });
 };
 
@@ -3450,9 +3775,20 @@ const reviewRecord = async (
     throw new UsageError(`Invalid review class: ${auditClass}`);
   const verdict = requireEnum(command, 'verdict', VERDICTS);
   const reviewer = requireValue(command, 'reviewer');
+  const report = value(command, 'report');
+  if (report !== undefined && !(await localPathExists(path.resolve(root, report)))) {
+    throw new UsageError(`Review report path does not exist: ${report}`);
+  }
   const work = findArtifactById(artifacts, workId);
   if (work === undefined || work.frontmatter.artifact_type !== 'work_item')
     throw new UsageError(`Work item not found: ${workId}`);
+  const reportContent =
+    report === undefined ? '' : readFileSync(path.resolve(root, report), 'utf8').slice(0, 20000);
+  const readOnlyRaw = command.options.readonly;
+  const readonly =
+    readOnlyRaw === true ||
+    readOnlyRaw === 'true' ||
+    (Array.isArray(readOnlyRaw) && readOnlyRaw.at(-1) === 'true');
   const id = makeId(
     root,
     'REV',
@@ -3474,6 +3810,22 @@ const reviewRecord = async (
       audit_class: auditClass,
       verdict,
       reviewer,
+      reviewer_kind: value(command, 'reviewer-kind') ?? null,
+      reviewer_role: value(command, 'reviewer-role') ?? null,
+      reviewer_id: value(command, 'reviewer-id') ?? null,
+      implementer_id: value(command, 'implementer-id') ?? null,
+      launch_mode: value(command, 'launch-mode') ?? null,
+      launch_context: value(command, 'launch-context') ?? null,
+      isolation_level: value(command, 'isolation-level') ?? null,
+      context_inheritance: value(command, 'context-inheritance') ?? null,
+      readonly,
+      packet_hash: value(command, 'packet-hash') ?? null,
+      required_reason: value(command, 'required-reason') ?? null,
+      raw_report_ref: report ?? null,
+      reviewer_model: value(command, 'reviewer-model') ?? null,
+      reviewer_reasoning_effort: value(command, 'reviewer-reasoning-effort') ?? null,
+      model_selection_policy: value(command, 'model-selection-policy') ?? null,
+      model_selection_reason: value(command, 'model-selection-reason') ?? null,
       created_at: isoNow(ctx.now()),
       material_scope_hash:
         stage === 'plan-slice'
@@ -3484,7 +3836,18 @@ const reviewRecord = async (
       summary: value(command, 'summary') ?? null,
       evidence: values(command, 'evidence'),
     },
-    body(`${auditClass} review`, ['Findings', 'Reviewer notes']),
+    [
+      `# ${auditClass} review`,
+      '',
+      '## Findings',
+      '',
+      reportContent || value(command, 'summary') || '',
+      '',
+      '## Reviewer notes',
+      '',
+      value(command, 'summary') ?? '',
+      '',
+    ].join('\n'),
   );
   return result(command, {
     result: verdict === 'pass' || verdict === 'not_applicable' ? 'success' : 'blocked',

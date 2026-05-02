@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: dossier-engineer
-  source-version: 2.7.0
+  source-version: 2.8.0
   recommended-skill-md-max-bytes: 32000
   description: >-
     Manage a source-traced, capability-oriented, merge-safe dossier workflow for
@@ -364,11 +364,12 @@ sections:
       steps:
         - "Ask `verify required` and `review required` before implementation closure."
         - "Use `verify run` for configured profiles or `verify record` for explicit manual/external evidence."
-        - "Record required reviews with immutable `review record` artifacts."
+        - "Use `review packet`; spawn a fresh independent reviewer without forked context, then `review record` the returned report with eligible provenance."
         - "Close implementation only after fresh required verification and review evidence, then run `hygiene run`."
       validation:
         - Capability work has fresh behavioral-demo verification.
-        - Capability work has fresh concept-conformance and spec-conformance reviews.
+        - Capability work has fresh eligible concept-conformance and spec-conformance reviews.
+        - Required reviews record reviewer separation, packet hash, read-only context, model label, reasoning effort, and model-selection rationale.
         - Review and verification bodies explain verdict rationale, evidence inspected, and what was proven.
         - Hygiene passes before handoff or closure reporting.
     - id: stage-handoff-retro
@@ -503,7 +504,7 @@ sections:
       examples:
         - dossier-engineer stage start --work <work-id> --stage feature-intake --session <session-id>
     - id: command-verify-review-hygiene
-      command: verify required/run/record | review required/record | hygiene run
+      command: verify required/run/record | review required/packet/record | hygiene run
       summary: Determine required evidence, record verification and review artifacts, and validate post-close hygiene.
       when: Preparing implementation closure or handoff.
       script: scripts/dossier-engineer.mjs
@@ -511,7 +512,8 @@ sections:
         - test/cli.test.ts
       examples:
         - dossier-engineer verify required --work <work-id> --stage implementation
-        - dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id>
+        - dossier-engineer review packet --work <work-id> --stage implementation --class concept-conformance-reviewer
+        - dossier-engineer review record --work <work-id> --stage implementation --class concept-conformance-reviewer --verdict pass --reviewer <reviewer-id> --reviewer-kind spawned-agent --packet-hash <packet-hash> --reviewer-model default --reviewer-reasoning-effort high --report <path>
     - id: command-reporting
       command: changeset create | report create | retro create
       summary: Create branch evidence, derived reports, and retrospective reports without replacing primary truth.
