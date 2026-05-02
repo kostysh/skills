@@ -560,6 +560,14 @@ reviewer session. Do not fork the implementer's current thread, do not inherit
 the implementer's hidden reasoning or session history, and do not let the
 reviewer write dossier artifacts directly.
 
+The packet includes the work material scope, source artifact paths/excerpts,
+capability claim, acceptance criteria, anti-claims, demo, `Spec Compact`,
+`Plan Slice`, integration path, implementation surface, AC/evidence/falsifier
+matrix, verification evidence semantics, live-app evidence obligations, blockers,
+role-selection reason, and class-specific questions. It excludes conversation
+transcript, hidden scratchpad, private reasoning, and artifact IDs that would
+stale the packet for duplicate equivalent evidence.
+
 ### `review record`
 
 ```bash
@@ -577,15 +585,29 @@ reviews when provenance is eligible:
 - reviewer was read-only and either used the bounded packet or read-only repo
   access;
 - `packet_hash` matches the current `review packet` output;
+- review artifact `stage` matches the required gate stage;
 - `reviewer_reasoning_effort` is at least `medium`; `low` is never eligible;
 - high-risk or security-sensitive reviews use `high` or `xhigh`;
 - `reviewer_model`, `model_selection_policy`, and `model_selection_reason` are
   recorded. Use `reviewer_model=default` for the normal inherited model choice.
+- `raw_report_ref` points to the durable reviewer-authored report passed with
+  a relative in-repo `--report` path; the copied report body contains reviewer
+  findings; implementer-authored `--summary` text is not eligible report
+  preservation for required gates.
 
 `review record` does not launch the reviewer and does not create a consolidated
 review class. The implementing agent records the independent reviewer's returned
 report unchanged through the runtime; the reviewer itself must not write the
-review artifact.
+review artifact. `FAIL` and `BLOCKED` review records require `--report` so the
+blocking findings/rationale remain immutable and visible even if a later eligible
+`PASS` supersedes the gate.
+
+Implementation-stage required classes are selected from material work signals:
+capability work requires concept/spec review, code-bearing implementation surface
+requires `code-reviewer`, and security-sensitive risk/surface requires
+`security-reviewer`. Runtime/lifecycle/concurrency/provenance/source-of-truth
+implementation surface is high risk for reviewer reasoning even when the
+implementer's `model_selection_reason` understates the risk.
 
 ## 11. Hygiene commands
 

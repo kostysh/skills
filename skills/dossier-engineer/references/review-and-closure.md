@@ -215,6 +215,29 @@ Model and reasoning policy:
 - `model_selection_policy` and `model_selection_reason` must explain why the
   selected model and reasoning effort are sufficient.
 
+Required review report preservation:
+
+- `review record --report <path>` must point to the reviewer-authored report;
+- the runtime stores that path as `raw_report_ref` and copies the report content
+  into the immutable review body;
+- the report path must be relative, stay inside the repository, and contain
+  reviewer findings;
+- implementer-authored `--summary` text is not enough to satisfy required gates.
+- `FAIL` and `BLOCKED` review records require `--report`; later eligible PASS
+  reviews may satisfy the gate, but must not delete, overwrite, or obscure the
+  earlier failed/blocked findings.
+
+Required class selection:
+
+- capability implementation requires concept/spec review;
+- code-bearing implementation surface requires `code-reviewer`;
+- security-sensitive risk or implementation surface requires `security-reviewer`;
+- pure non-material documentation/source formatting does not require code/security
+  review by default.
+- runtime, lifecycle, concurrency, provenance, source-of-truth, generated runtime,
+  or similarly broad implementation surface is high risk for reviewer reasoning
+  even if the recorded model-selection reason understates the risk.
+
 Material re-review triggers include source interpretation, capability claim,
 acceptance criteria, demo scenario, falsifier set, trust boundary,
 IPC/security/persistence posture, `Spec Compact`, `Plan Slice`, implementation

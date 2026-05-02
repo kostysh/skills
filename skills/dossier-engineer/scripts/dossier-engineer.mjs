@@ -6728,6 +6728,21 @@ var materialWorkSnapshot = (work) => ({
 	risk: work.frontmatter.risk,
 	material_body: materialBodyScope(work.body)
 });
+var implementationSurfaceText = (work) => [
+	planIntegrationSection(work),
+	markdownSection(planSliceSection(work), "Files, interfaces, and components", 3) ?? "",
+	markdownSection(planSliceSection(work), "AC to evidence matrix", 3) ?? ""
+].join("\n");
+var hasCodeBearingSurface = (work) => {
+	const surface = implementationSurfaceText(work).toLowerCase();
+	if (surface.trim() === "") return false;
+	if (/\.(?:cjs|css|go|java|js|jsx|json|kt|mjs|py|rb|rs|sh|sql|swift|toml|ts|tsx|ya?ml)\b/.test(surface)) return true;
+	return /\b(?:src|scripts|test|tests|runtime|cli|command handler|build script|generated runtime|ci|workflow|config(?:uration)?|integration glue|package\.json)\b/.test(surface);
+};
+var hasSecuritySensitiveSurface = (work) => {
+	const surface = implementationSurfaceText(work).toLowerCase();
+	return /\b(?:security|auth|privacy|network|dependency|dependencies|external input|persistence|permission|permissions|secret|secrets|execution boundary|runtime boundary|package script|fail-closed|ci|workflow|dependency loading)\b/.test(surface);
+};
 var recomputeWorkHash = (work, all) => ({
 	...work.frontmatter,
 	material_scope_hash: materialWorkHash(work, findArtifactsByType(all, "capability"), findArtifactsByType(all, "source"))
@@ -6763,6 +6778,18 @@ var liveAppEvidenceScope = (work, all) => {
 		evidence: verification.frontmatter.evidence
 	})).sort((a, b) => evidenceKey(a).localeCompare(evidenceKey(b))).filter((entry, index, entries) => index === 0 || evidenceKey(entry) !== evidenceKey(entries[index - 1]));
 };
+var verificationEvidenceScope = (work, all) => {
+	const evidenceKey = (entry) => JSON.stringify(entry);
+	return findArtifactsByType(all, "verification").filter((verification) => verification.frontmatter.work_item_id === work.frontmatter.id).map((verification) => ({
+		stage: verification.frontmatter.stage,
+		profile: verification.frontmatter.profile,
+		evidence_class: verification.frontmatter.evidence_class,
+		verdict: verification.frontmatter.verdict,
+		entrypoint: verification.frontmatter.entrypoint,
+		runtime_path: verification.frontmatter.runtime_path,
+		evidence: verification.frontmatter.evidence
+	})).sort((a, b) => evidenceKey(a).localeCompare(evidenceKey(b))).filter((entry, index, entries) => index === 0 || evidenceKey(entry) !== evidenceKey(entries[index - 1]));
+};
 var currentMaterialReviewHash = (work, all) => {
 	const liveAppEvidence = liveAppEvidenceScope(work, all);
 	return hashObject({
@@ -6772,7 +6799,7 @@ var currentMaterialReviewHash = (work, all) => {
 };
 var reviewFresh = (work, all, auditClass) => {
 	const currentHash = currentMaterialReviewHash(work, all);
-	return findArtifactsByType(all, "review").some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === currentHash && reviewEligibleForRequiredGate(review, work, all, auditClass, "implementation").eligible);
+	return findArtifactsByType(all, "review").some((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.stage === "implementation" && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === currentHash && reviewEligibleForRequiredGate(review, work, all, auditClass, "implementation").eligible);
 };
 var reviewFreshForStage = (work, all, auditClass, stage) => {
 	const currentHash = stage === "plan-slice" ? currentMaterialWorkHash(work, all) : currentMaterialReviewHash(work, all);
@@ -6805,7 +6832,7 @@ var reviewRequiredReason = (work, auditClass, stage) => {
 	if (stage === "plan-slice" && auditClass === "concept-conformance-reviewer") return "capability plan-slice requires concept conformance";
 	if (auditClass === "concept-conformance-reviewer") return "capability implementation scope";
 	if (auditClass === "spec-conformance-reviewer") return "implementation closure against acceptance criteria";
-	if (auditClass === "code-reviewer") return "code-bearing implementation risk";
+	if (auditClass === "code-reviewer") return "code-bearing implementation surface";
 	if (auditClass === "security-reviewer") return [...risk?.implementation ?? [], ...risk?.policy ?? []].filter((entry) => [
 		"security",
 		"auth",
@@ -6815,6 +6842,7 @@ var reviewRequiredReason = (work, auditClass, stage) => {
 	].includes(entry)).join(", ") || "security-sensitive surface";
 	return "project review policy";
 };
+var highRiskReasonText = (input) => /\b(?:broad|novel|agent|runtime|platform|lifecycle|concurrency|locking|provenance|source-of-truth|source of truth|many ac|many acceptance|falsifier|negative|ambiguity|ambiguous|blast radius|generated runtime|security|auth|privacy|network|dependency|dependencies|permission|persistence|external input|fail-closed)\b/i.test(input);
 var highRiskReview = (work, all, auditClass) => {
 	if (auditClass === "security-reviewer") return true;
 	const risk = work.frontmatter.risk;
@@ -6831,6 +6859,7 @@ var highRiskReview = (work, all, auditClass) => {
 		"network",
 		"dependency"
 	].includes(entry))) return true;
+	if (highRiskReasonText(implementationSurfaceText(work))) return true;
 	const criteria = work.frontmatter.acceptance?.criteria ?? [];
 	if (criteria.length > 3) return true;
 	if (criteria.some((entry) => ["negative", "falsifier"].includes(String(entry.kind)))) return true;
@@ -6840,23 +6869,45 @@ var reviewPacketContent = (work, all, stage, auditClass) => {
 	const sourceRefs = work.frontmatter.source_refs ?? [];
 	const capabilityRefs = (work.frontmatter.delivery?.capability_refs ?? []).map((entry) => entry.capability_id).filter((entry) => typeof entry === "string");
 	const capabilities = findArtifactsByType(all, "capability").filter((capability) => capabilityRefs.includes(String(capability.frontmatter.id)));
+	const sourceIds = (work.frontmatter.source_refs ?? []).map((entry) => entry.source_id).filter((entry) => typeof entry === "string");
+	const sources = findArtifactsByType(all, "source").filter((source) => sourceIds.includes(String(source.frontmatter.id))).map((source) => ({
+		id: source.frontmatter.id,
+		kind: source.frontmatter.source_kind,
+		title: source.frontmatter.title,
+		path: source.frontmatter.source_path,
+		content_hash: source.frontmatter.content_hash,
+		excerpt: source.body.slice(0, 4e3)
+	}));
 	const liveAppEvidence = liveAppEvidenceScope(work, all);
+	const verificationEvidence = verificationEvidenceScope(work, all);
 	const materialScopeHash = reviewMaterialHashForStage(work, all, stage);
+	const demonstration = work.frontmatter.demonstration ?? null;
+	const title = typeof work.frontmatter.title === "string" ? work.frontmatter.title : "";
 	return [
 		`# Review packet: ${auditClass}`,
 		"",
 		`work_item_id: ${artifactId(work)}`,
+		`work_title: ${title}`,
 		`stage: ${stage}`,
 		`review_class: ${auditClass}`,
 		`material_scope_hash: ${materialScopeHash}`,
 		`required_reason: ${reviewRequiredReason(work, auditClass, stage)}`,
+		"operator_language: dossier/operator working language",
 		"",
 		packetSection("Reviewer instructions", reviewClassQuestions(auditClass).map((q) => `- ${q}`).join("\n")),
 		packetSection("Work item material scope", materialWorkSnapshot(work)),
 		packetSection("Source refs", sourceRefs),
+		packetSection("Source artifacts and excerpts", sources),
 		packetSection("Capability claims", capabilities.map((capability) => capability.frontmatter)),
+		packetSection("Acceptance criteria", work.frontmatter.acceptance?.criteria ?? []),
+		packetSection("Anti-claims", work.frontmatter.anti_claims ?? []),
+		packetSection("Demo artifacts", demonstration),
 		packetSection("Spec Compact", markdownSection(work.body, "Spec Compact", 2) ?? ""),
 		packetSection("Plan Slice", markdownSection(work.body, "Plan Slice", 2) ?? ""),
+		packetSection("Implementation surface", implementationSurfaceText(work)),
+		packetSection("AC evidence falsifier matrix", markdownSection(planSliceSection(work), "AC to evidence matrix", 3) ?? ""),
+		packetSection("Integration path", markdownSection(planSliceSection(work), "Integration path", 3) ?? ""),
+		packetSection("Verification artifacts", verificationEvidence),
 		packetSection("Live-app evidence material scope", liveAppEvidence),
 		packetSection("Known blockers", openBlockers(work))
 	].join("\n");
@@ -6888,12 +6939,15 @@ var reviewEligibleForRequiredGate = (review, work, all, auditClass, stage) => {
 		"xhigh"
 	].includes(reasoningEffort)) reasons.push("reviewer_reasoning_effort must be medium, high, or xhigh");
 	if (reasoningEffort === "low") reasons.push("low reasoning is not eligible");
-	if (highRiskReview(work, all, auditClass) && !["high", "xhigh"].includes(reasoningEffort)) reasons.push("high-risk review requires high or xhigh reasoning");
+	const modelSelectionReason = stringFrontmatter(frontmatter.model_selection_reason);
+	const requiredReason = stringFrontmatter(frontmatter.required_reason);
+	const declaredHighRisk = highRiskReasonText(modelSelectionReason) || highRiskReasonText(requiredReason);
+	if ((highRiskReview(work, all, auditClass) || declaredHighRisk) && !["high", "xhigh"].includes(reasoningEffort)) reasons.push("high-risk review requires high or xhigh reasoning");
 	if (typeof frontmatter.model_selection_policy !== "string" || frontmatter.model_selection_policy.trim() === "") reasons.push("model_selection_policy is required");
-	if (typeof frontmatter.model_selection_reason !== "string" || frontmatter.model_selection_reason.trim() === "") reasons.push("model_selection_reason is required");
-	const hasRawReportRef = typeof frontmatter.raw_report_ref === "string" && frontmatter.raw_report_ref.trim() !== "";
-	const hasFindingsBody = hasMaterialSectionContent(markdownSection(review.body, "Findings", 2) ?? "");
-	if (!hasRawReportRef && !hasFindingsBody) reasons.push("review findings or raw_report_ref must be preserved");
+	if (modelSelectionReason.trim() === "") reasons.push("model_selection_reason is required");
+	if (!(typeof frontmatter.raw_report_ref === "string" && frontmatter.raw_report_ref.trim() !== "")) reasons.push("raw_report_ref is required to preserve reviewer-authored report");
+	else if (path.isAbsolute(frontmatter.raw_report_ref) || frontmatter.raw_report_ref.split(/[\\/]/).includes("..")) reasons.push("raw_report_ref must be a durable relative in-repo path");
+	if (!hasMaterialSectionContent(markdownSection(review.body, "Raw reviewer report", 2) ?? "")) reasons.push("review body must preserve reviewer-authored findings");
 	return {
 		eligible: reasons.length === 0,
 		reasons
@@ -6901,7 +6955,7 @@ var reviewEligibleForRequiredGate = (review, work, all, auditClass, stage) => {
 };
 var requiredReviewState = (work, all, auditClass, stage) => {
 	const currentHash = reviewMaterialHashForStage(work, all, stage);
-	const candidates = findArtifactsByType(all, "review").filter((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === currentHash && (stage === "plan-slice" ? review.frontmatter.stage === stage : true));
+	const candidates = findArtifactsByType(all, "review").filter((review) => review.frontmatter.work_item_id === work.frontmatter.id && review.frontmatter.audit_class === auditClass && review.frontmatter.verdict === "pass" && review.frontmatter.material_scope_hash === currentHash && review.frontmatter.stage === stage);
 	const ineligibleReasons = [];
 	for (const candidate of candidates) {
 		const eligibility = reviewEligibleForRequiredGate(candidate, work, all, auditClass, stage);
@@ -8474,6 +8528,8 @@ var stageLog = async (ctx, command) => {
 var requiredReviewClasses = (work, stage = "implementation") => {
 	const delivery = work.frontmatter.delivery;
 	const risk = work.frontmatter.risk;
+	const implementationRisk = risk?.implementation ?? [];
+	const policyRisk = risk?.policy ?? [];
 	const classes = /* @__PURE__ */ new Set();
 	if (stage === "plan-slice") {
 		if (delivery.kind === "capability") classes.add("concept-conformance-reviewer");
@@ -8483,14 +8539,14 @@ var requiredReviewClasses = (work, stage = "implementation") => {
 		classes.add("concept-conformance-reviewer");
 		classes.add("spec-conformance-reviewer");
 	}
-	if ((risk?.implementation ?? []).some((entry) => ["code", "implementation"].includes(entry))) classes.add("code-reviewer");
-	if ([...risk?.implementation ?? [], ...risk?.policy ?? []].some((entry) => [
+	if (implementationRisk.some((entry) => ["code", "implementation"].includes(entry)) || hasCodeBearingSurface(work)) classes.add("code-reviewer");
+	if ([...implementationRisk, ...policyRisk].some((entry) => [
 		"security",
 		"auth",
 		"privacy",
 		"network",
 		"dependency"
-	].includes(entry))) classes.add("security-reviewer");
+	].includes(entry)) || hasSecuritySensitiveSurface(work)) classes.add("security-reviewer");
 	return [...classes];
 };
 var verifyRequired = async (ctx, command) => {
@@ -8719,12 +8775,24 @@ var reviewRecord = async (ctx, command) => {
 	const verdict = requireEnum(command, "verdict", VERDICTS);
 	const reviewer = requireValue(command, "reviewer");
 	const report = value(command, "report");
-	if (report !== void 0 && !await localPathExists(path.resolve(root, report))) throw new UsageError(`Review report path does not exist: ${report}`);
+	if ((verdict === "fail" || verdict === "blocked") && report === void 0) throw new UsageError(`${verdict} review records require --report to preserve findings.`);
+	let reportRef = null;
+	let reportContent = "";
+	if (report !== void 0) {
+		if (path.isAbsolute(report)) throw new UsageError(`Review report path must be relative to the dossier root: ${report}`);
+		const resolvedReport = path.resolve(root, report);
+		const relativeReport = path.relative(root, resolvedReport);
+		if (relativeReport.startsWith("..") || path.isAbsolute(relativeReport)) throw new UsageError(`Review report path must stay inside the dossier root: ${report}`);
+		if (!await localPathExists(resolvedReport)) throw new UsageError(`Review report path does not exist: ${report}`);
+		reportContent = readFileSync(resolvedReport, "utf8").slice(0, 2e4);
+		if (!hasMaterialSectionContent(reportContent)) throw new UsageError(`Review report must contain reviewer-authored findings: ${report}`);
+		reportRef = relativeReport.split(path.sep).join("/");
+	}
 	const work = findArtifactById(artifacts, workId);
 	if (work === void 0 || work.frontmatter.artifact_type !== "work_item") throw new UsageError(`Work item not found: ${workId}`);
-	const reportContent = report === void 0 ? "" : readFileSync(path.resolve(root, report), "utf8").slice(0, 2e4);
 	const readOnlyRaw = command.options.readonly;
 	const readonly = readOnlyRaw === true || readOnlyRaw === "true" || Array.isArray(readOnlyRaw) && readOnlyRaw.at(-1) === "true";
+	const preservedReport = reportContent === "" ? "" : reportContent.split("\n").map((line) => `    ${line}`).join("\n");
 	const id = makeId(root, "REV", `${workId} ${auditClass}`, ctx.randomHex, (candidate) => `${DOSSIER_DIR}/reviews/${workId}/${candidate}.md`, ctx.now());
 	const relativePath = `${DOSSIER_DIR}/reviews/${workId}/${id}.md`;
 	await writeArtifactFile(root, relativePath, {
@@ -8747,7 +8815,7 @@ var reviewRecord = async (ctx, command) => {
 		readonly,
 		packet_hash: value(command, "packet-hash") ?? null,
 		required_reason: value(command, "required-reason") ?? null,
-		raw_report_ref: report ?? null,
+		raw_report_ref: reportRef,
 		reviewer_model: value(command, "reviewer-model") ?? null,
 		reviewer_reasoning_effort: value(command, "reviewer-reasoning-effort") ?? null,
 		model_selection_policy: value(command, "model-selection-policy") ?? null,
@@ -8763,11 +8831,15 @@ var reviewRecord = async (ctx, command) => {
 		"",
 		"## Findings",
 		"",
-		reportContent || value(command, "summary") || "",
+		reportContent === "" ? "" : "See raw reviewer report below.",
 		"",
 		"## Reviewer notes",
 		"",
 		value(command, "summary") ?? "",
+		"",
+		"## Raw reviewer report",
+		"",
+		preservedReport,
 		""
 	].join("\n"));
 	return result(command, {

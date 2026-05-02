@@ -493,8 +493,13 @@ Required gate eligibility fields:
 - `model_selection_policy` and `model_selection_reason`: explain the model and
   reasoning choice.
 
-The review body must preserve the returned findings/rationale or the
-frontmatter must point to a durable report path through `raw_report_ref`.
+For required gates, `raw_report_ref` must point to the durable reviewer-authored
+report passed with a relative in-repo `review record --report <path>`. The
+runtime copies that non-empty report into the immutable review body. Absolute
+paths, paths outside the repository, empty reports, and implementer-authored
+summary text are not eligible report preservation.
+`FAIL` and `BLOCKED` review records also require `raw_report_ref` / copied raw
+report content so unsuccessful attempts retain their findings and rationale.
 
 Built-in review classes:
 

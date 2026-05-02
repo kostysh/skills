@@ -1082,6 +1082,333 @@ void test('required review gates enforce reviewer separation and packet hash fre
   assert.match(stalePacketRequired.stdout, /packet_hash does not match current review packet/);
 });
 
+void test('review packet contains bounded material context for the reviewer', async () => {
+  const root = await tempProject();
+  const { workId } = await preparePlanSliceReviewWork(root);
+  const packet = run(
+    [
+      'review',
+      'packet',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--class',
+      'concept-conformance-reviewer',
+    ],
+    root,
+  );
+  assert.equal(packet.status, 0, packet.stdout + packet.stderr);
+  assert.match(packet.stdout, /packet_hash: sha256:[a-f0-9]{64}/);
+  assert.match(packet.stdout, /Source artifacts and excerpts/);
+  assert.match(packet.stdout, /concept\.md/);
+  assert.match(packet.stdout, /Acceptance criteria/);
+  assert.match(packet.stdout, /Anti-claims/);
+  assert.match(packet.stdout, /Demo artifacts/);
+  assert.match(packet.stdout, /Spec Compact/);
+  assert.match(packet.stdout, /Plan Slice/);
+  assert.match(packet.stdout, /Integration path/);
+  assert.match(packet.stdout, /AC evidence falsifier matrix/);
+  assert.match(packet.stdout, /Implementation surface/);
+  assert.match(packet.stdout, /material_scope_hash:/);
+  assert.doesNotMatch(packet.stdout, /hidden scratchpad|chain of thought|conversation transcript/i);
+});
+
+void test('required review gates require preserved raw reviewer report', async () => {
+  const root = await tempProject();
+  const { workId } = await preparePlanSliceReviewWork(root);
+  const packet = run(
+    [
+      'review',
+      'packet',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--class',
+      'concept-conformance-reviewer',
+    ],
+    root,
+  );
+  assert.equal(packet.status, 0, packet.stdout + packet.stderr);
+  const packetHash = reviewPacketHashFromOutput(packet.stdout);
+  assert.equal(
+    run(
+      [
+        'review',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'plan-slice',
+        '--class',
+        'concept-conformance-reviewer',
+        '--verdict',
+        'pass',
+        '--reviewer',
+        'concept-conformance-reviewer-agent',
+        '--reviewer-kind',
+        'spawned-agent',
+        '--reviewer-role',
+        'concept-conformance-reviewer',
+        '--reviewer-id',
+        'concept-conformance-reviewer-agent',
+        '--implementer-id',
+        'implementer-agent',
+        '--launch-mode',
+        'spawned',
+        '--launch-context',
+        'fresh-session-no-fork',
+        '--isolation-level',
+        'bounded-packet',
+        '--context-inheritance',
+        'none',
+        '--readonly',
+        'true',
+        '--packet-hash',
+        packetHash,
+        '--reviewer-model',
+        'default',
+        '--reviewer-reasoning-effort',
+        'high',
+        '--model-selection-policy',
+        'required-review-risk-weighted',
+        '--model-selection-reason',
+        'test review risk',
+        '--summary',
+        'implementer-written summary is not a raw reviewer report',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  const required = run(
+    ['review', 'required', '--root', root, '--work', workId, '--stage', 'plan-slice'],
+    root,
+  );
+  assert.equal(required.status, 2, required.stdout + required.stderr);
+  assert.match(required.stdout, /raw_report_ref is required/);
+
+  const outsideRoot = await mkdtemp(path.join(os.tmpdir(), 'dossier-review-outside-'));
+  const outsideReport = path.join(outsideRoot, 'review.md');
+  await writeFile(outsideReport, '# Review\n\n## Findings\n\nPASS from outside repo.\n', 'utf8');
+  const outside = run(
+    [
+      'review',
+      'record',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--class',
+      'concept-conformance-reviewer',
+      '--verdict',
+      'pass',
+      '--reviewer',
+      'concept-conformance-reviewer-agent',
+      '--report',
+      outsideReport,
+    ],
+    root,
+  );
+  assert.equal(outside.status, 1, outside.stdout + outside.stderr);
+  assert.match(outside.stderr + outside.stdout, /Review report path must be relative/);
+
+  await writeFile(path.join(root, 'empty-review.md'), '   \n', 'utf8');
+  const empty = run(
+    [
+      'review',
+      'record',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--class',
+      'concept-conformance-reviewer',
+      '--verdict',
+      'pass',
+      '--reviewer',
+      'concept-conformance-reviewer-agent',
+      '--report',
+      'empty-review.md',
+    ],
+    root,
+  );
+  assert.equal(empty.status, 1, empty.stdout + empty.stderr);
+  assert.match(empty.stderr + empty.stdout, /must contain reviewer-authored findings/);
+});
+
+void test('failed and blocked reviews must preserve reviewer findings', async () => {
+  const root = await tempProject();
+  const { workId } = await preparePlanSliceReviewWork(root);
+  const missingReport = run(
+    [
+      'review',
+      'record',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--class',
+      'concept-conformance-reviewer',
+      '--verdict',
+      'fail',
+      '--reviewer',
+      'concept-conformance-reviewer-agent',
+    ],
+    root,
+  );
+  assert.equal(missingReport.status, 1, missingReport.stdout + missingReport.stderr);
+  assert.match(missingReport.stderr + missingReport.stdout, /fail review records require --report/);
+
+  await writeFile(
+    path.join(root, 'failed-review.md'),
+    [
+      '# Failed concept review',
+      '',
+      '## Findings',
+      '',
+      'Blocking issue remains in the reviewed plan.',
+      '',
+      '## Rationale',
+      '',
+      'The packet does not prove the claimed capability.',
+      '',
+    ].join('\n'),
+    'utf8',
+  );
+  const failed = run(
+    [
+      'review',
+      'record',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'plan-slice',
+      '--class',
+      'concept-conformance-reviewer',
+      '--verdict',
+      'fail',
+      '--reviewer',
+      'concept-conformance-reviewer-agent',
+      '--report',
+      'failed-review.md',
+    ],
+    root,
+  );
+  assert.equal(failed.status, 2, failed.stdout + failed.stderr);
+  assert.equal(
+    (await recordEligibleReview(root, workId, 'plan-slice', 'concept-conformance-reviewer')).status,
+    0,
+  );
+  const reviewFiles = await readdir(path.join(root, 'docs/dossier/reviews', workId));
+  const reviewBodies = await Promise.all(
+    reviewFiles.map((file) =>
+      readFile(path.join(root, 'docs/dossier/reviews', workId, file), 'utf8'),
+    ),
+  );
+  assert.ok(reviewBodies.some((body) => /verdict: fail/.test(body)));
+  assert.ok(reviewBodies.some((body) => /Blocking issue remains in the reviewed plan/.test(body)));
+  assert.ok(reviewBodies.some((body) => /verdict: pass/.test(body)));
+});
+
+void test('implementation review gates reject fresh pass artifacts recorded for the wrong stage', async () => {
+  const root = await tempProject();
+  const { workId } = await preparePlanSliceReviewWork(root);
+  const packet = run(
+    [
+      'review',
+      'packet',
+      '--root',
+      root,
+      '--work',
+      workId,
+      '--stage',
+      'implementation',
+      '--class',
+      'code-reviewer',
+    ],
+    root,
+  );
+  assert.equal(packet.status, 0, packet.stdout + packet.stderr);
+  const packetHash = reviewPacketHashFromOutput(packet.stdout);
+  await writeFile(
+    path.join(root, 'wrong-stage-code-review.md'),
+    '# Code review\n\n## Findings\n\nPASS for implementation packet but wrong recorded stage.\n',
+    'utf8',
+  );
+  assert.equal(
+    run(
+      [
+        'review',
+        'record',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--stage',
+        'feature-intake',
+        '--class',
+        'code-reviewer',
+        '--verdict',
+        'pass',
+        '--reviewer',
+        'code-reviewer-agent',
+        '--reviewer-kind',
+        'spawned-agent',
+        '--reviewer-role',
+        'code-reviewer',
+        '--reviewer-id',
+        'code-reviewer-agent',
+        '--implementer-id',
+        'implementer-agent',
+        '--launch-mode',
+        'spawned',
+        '--launch-context',
+        'fresh-session-no-fork',
+        '--isolation-level',
+        'bounded-packet',
+        '--context-inheritance',
+        'none',
+        '--readonly',
+        'true',
+        '--packet-hash',
+        packetHash,
+        '--reviewer-model',
+        'default',
+        '--reviewer-reasoning-effort',
+        'high',
+        '--model-selection-policy',
+        'required-review-risk-weighted',
+        '--model-selection-reason',
+        'runtime code review',
+        '--report',
+        'wrong-stage-code-review.md',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  const required = run(['review', 'required', '--root', root, '--work', workId], root);
+  assert.equal(required.status, 2, required.stdout + required.stderr);
+  assert.match(required.stdout, /code-reviewer: missing_or_stale/);
+  assert.doesNotMatch(required.stdout, /code-reviewer: fresh/);
+});
+
 void test('required review gates reject low reasoning and require high reasoning for high-risk work', async () => {
   const lowRoot = await tempProject();
   const { workId: lowWork } = await preparePlanSliceReviewWork(lowRoot);
@@ -1138,6 +1465,99 @@ void test('required review gates reject low reasoning and require high reasoning
   );
   assert.equal(highRiskRequired.status, 2, highRiskRequired.stdout + highRiskRequired.stderr);
   assert.match(highRiskRequired.stdout, /high-risk review requires high or xhigh reasoning/);
+
+  const declaredRiskRoot = await tempProject();
+  const { workId: declaredRiskWork } = await preparePlanSliceReviewWork(declaredRiskRoot);
+  assert.equal(
+    (
+      await recordEligibleReview(
+        declaredRiskRoot,
+        declaredRiskWork,
+        'plan-slice',
+        'concept-conformance-reviewer',
+        [
+          '--reviewer-reasoning-effort',
+          'medium',
+          '--model-selection-reason',
+          'runtime provenance work',
+        ],
+      )
+    ).status,
+    0,
+  );
+  const declaredRiskRequired = run(
+    [
+      'review',
+      'required',
+      '--root',
+      declaredRiskRoot,
+      '--work',
+      declaredRiskWork,
+      '--stage',
+      'plan-slice',
+    ],
+    declaredRiskRoot,
+  );
+  assert.equal(
+    declaredRiskRequired.status,
+    2,
+    declaredRiskRequired.stdout + declaredRiskRequired.stderr,
+  );
+  assert.match(declaredRiskRequired.stdout, /high-risk review requires high or xhigh reasoning/);
+
+  const surfaceRiskRoot = await tempProject();
+  const { workId: surfaceRiskWork } = await preparePlanSliceReviewWork(surfaceRiskRoot);
+  assert.equal(
+    (
+      await recordEligibleReview(
+        surfaceRiskRoot,
+        surfaceRiskWork,
+        'implementation',
+        'code-reviewer',
+        ['--reviewer-reasoning-effort', 'medium', '--model-selection-reason', 'small code review'],
+      )
+    ).status,
+    0,
+  );
+  const surfaceRiskRequired = run(
+    ['review', 'required', '--root', surfaceRiskRoot, '--work', surfaceRiskWork],
+    surfaceRiskRoot,
+  );
+  assert.equal(
+    surfaceRiskRequired.status,
+    2,
+    surfaceRiskRequired.stdout + surfaceRiskRequired.stderr,
+  );
+  assert.match(surfaceRiskRequired.stdout, /code-reviewer: ineligible/);
+  assert.match(surfaceRiskRequired.stdout, /high-risk review requires high or xhigh reasoning/);
+});
+
+void test('security-sensitive risk requires security-reviewer gate', async () => {
+  const root = await tempProject();
+  const { workId } = await preparePlanSliceReviewWork(root);
+  assert.equal(
+    run(
+      [
+        'work',
+        'risk',
+        'set',
+        '--root',
+        root,
+        '--work',
+        workId,
+        '--implementation',
+        'code',
+        '--policy',
+        'security',
+      ],
+      root,
+    ).status,
+    0,
+  );
+  const required = run(['review', 'required', '--root', root, '--work', workId], root);
+  assert.equal(required.status, 2, required.stdout + required.stderr);
+  assert.match(required.stdout, /code-reviewer: missing_or_stale/);
+  assert.match(required.stdout, /security-reviewer: missing_or_stale/);
 });
 
 void test('plan-slice blocks weak integration path and AC evidence matrix semantics', async () => {
@@ -2368,7 +2788,12 @@ void test('source, capability, work, verification, review, stage and hygiene flo
   assert.equal(staleReviews.status, 2, staleReviews.stdout + staleReviews.stderr);
   assert.match(staleReviews.stdout, /concept-conformance-reviewer: missing_or_stale/);
   assert.match(staleReviews.stdout, /spec-conformance-reviewer: missing_or_stale/);
-  for (const reviewClass of ['concept-conformance-reviewer', 'spec-conformance-reviewer']) {
+  assert.match(staleReviews.stdout, /code-reviewer: missing_or_stale/);
+  for (const reviewClass of [
+    'concept-conformance-reviewer',
+    'spec-conformance-reviewer',
+    'code-reviewer',
+  ]) {
     assert.equal(
       (await recordEligibleReview(root, workId, 'implementation', reviewClass)).status,
       0,
@@ -2408,6 +2833,7 @@ void test('source, capability, work, verification, review, stage and hygiene flo
   assert.equal(stillFreshReviews.status, 0, stillFreshReviews.stdout + stillFreshReviews.stderr);
   assert.match(stillFreshReviews.stdout, /concept-conformance-reviewer: fresh/);
   assert.match(stillFreshReviews.stdout, /spec-conformance-reviewer: fresh/);
+  assert.match(stillFreshReviews.stdout, /code-reviewer: fresh/);
   assert.equal(
     run(
       [
