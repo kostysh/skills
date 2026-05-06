@@ -1,0 +1,4 @@
+interface:
+  display_name: "Next.js"
+  short_description: "Next.js App Router guidance"
+  default_prompt: "Use $nextjs to build, review, or debug a Next.js App Router feature."

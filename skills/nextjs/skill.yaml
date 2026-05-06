@@ -1,0 +1,297 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: nextjs
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: |-
+    Build, review, and debug Next.js applications, especially App Router projects using React Server Components, Server Actions, Route Handlers, async request APIs, metadata, image/font optimization, bundling, hydration fixes, parallel routes, or self-hosting.
+
+    Use for Next.js framework behavior and version-sensitive Next 15/16 patterns. Do not use as a generic React SPA or TypeScript skill when Next.js is not the main concern.
+
+fragments:
+  overview: fragments/overview.md
+
+references:
+  - id: ref-app-router-files
+    title: App Router Files
+    source: references/app-router-files.md
+    target: references/app-router-files.md
+    required: true
+    trigger: Read this when you need compact App Router file conventions and example route signatures.
+  - id: ref-async-patterns
+    title: Async Patterns
+    source: references/async-patterns.md
+    target: references/async-patterns.md
+    required: true
+    trigger: Read this when handling Next.js 15+ async params, searchParams, cookies(), or headers().
+  - id: ref-bundling
+    title: Bundling
+    source: references/bundling.md
+    target: references/bundling.md
+    required: true
+    trigger: Read this when debugging server-incompatible packages, CSS imports, ESM/CJS issues, bundle analysis, or Turbopack migration.
+  - id: ref-data-patterns
+    title: Data Patterns
+    source: references/data-patterns.md
+    target: references/data-patterns.md
+    required: true
+    trigger: Read this when choosing between Server Components, Server Actions, Route Handlers, or client data fetching.
+  - id: ref-debug-tricks
+    title: Debug Tricks
+    source: references/debug-tricks.md
+    target: references/debug-tricks.md
+    required: true
+    trigger: Read this when using Next.js development MCP debugging or debug build paths.
+  - id: ref-directives
+    title: Directives
+    source: references/directives.md
+    target: references/directives.md
+    required: true
+    trigger: Read this when applying 'use client', 'use server', or 'use cache'.
+  - id: ref-error-handling
+    title: Error Handling
+    source: references/error-handling.md
+    target: references/error-handling.md
+    required: true
+    trigger: Read this when implementing Next.js error boundaries, redirects, not-found behavior, or auth errors.
+  - id: ref-file-conventions
+    title: File Conventions
+    source: references/file-conventions.md
+    target: references/file-conventions.md
+    required: true
+    trigger: Read this when working with project structure, special files, route segments, route groups, parallel routes, intercepting routes, or proxy/middleware files.
+  - id: ref-font
+    title: Font Optimization
+    source: references/font.md
+    target: references/font.md
+    required: true
+    trigger: Read this when configuring next/font, Google fonts, local fonts, Tailwind font variables, subsets, or display behavior.
+  - id: ref-functions
+    title: Functions
+    source: references/functions.md
+    target: references/functions.md
+    required: true
+    trigger: Read this when using navigation hooks, server functions, generate functions, or Next request/response helpers.
+  - id: ref-hydration-error
+    title: Hydration Errors
+    source: references/hydration-error.md
+    target: references/hydration-error.md
+    required: true
+    trigger: Read this when diagnosing hydration mismatch errors.
+  - id: ref-image
+    title: Image Optimization
+    source: references/image.md
+    target: references/image.md
+    required: true
+    trigger: Read this when using next/image, remote image patterns, responsive sizes, blur placeholders, priority loading, or static export.
+  - id: ref-metadata
+    title: Metadata
+    source: references/metadata.md
+    target: references/metadata.md
+    required: true
+    trigger: Read this when implementing metadata, generateMetadata, viewport, OG images, sitemaps, or file-based metadata.
+  - id: ref-parallel-routes
+    title: Parallel and Intercepting Routes
+    source: references/parallel-routes.md
+    target: references/parallel-routes.md
+    required: true
+    trigger: Read this when implementing modal routes, @slot folders, intercepting routes, default.tsx fallbacks, or close behavior.
+  - id: ref-route-handlers
+    title: Route Handlers
+    source: references/route-handlers.md
+    target: references/route-handlers.md
+    required: true
+    trigger: Read this when implementing route.ts handlers, supported methods, dynamic handlers, request helpers, or page.tsx conflicts.
+  - id: ref-rsc-boundaries
+    title: RSC Boundaries
+    source: references/rsc-boundaries.md
+    target: references/rsc-boundaries.md
+    required: true
+    trigger: Read this when checking React Server Component boundaries, async Client Components, serializable props, or Server Action exceptions.
+  - id: ref-runtime-selection
+    title: Runtime Selection
+    source: references/runtime-selection.md
+    target: references/runtime-selection.md
+    required: true
+    trigger: Read this when choosing Node.js or Edge runtime for Next.js code.
+  - id: ref-scripts
+    title: Scripts
+    source: references/scripts.md
+    target: references/scripts.md
+    required: true
+    trigger: Read this when adding next/script, inline scripts, loading strategies, or third-party scripts.
+  - id: ref-self-hosting
+    title: Self Hosting
+    source: references/self-hosting.md
+    target: references/self-hosting.md
+    required: true
+    trigger: Read this when deploying Next.js outside Vercel, using standalone output, Docker, PM2, custom cache handlers, or runtime env config.
+  - id: ref-suspense-boundaries
+    title: Suspense Boundaries
+    source: references/suspense-boundaries.md
+    target: references/suspense-boundaries.md
+    required: true
+    trigger: Read this when useSearchParams, usePathname, or client-only hooks cause CSR bailouts that need Suspense boundaries.
+
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for nextjs skill maintenance records.
+  - id: supporting-implementation-log-20260506-1
+    source: docs/logs/implementation-log-20260506-1.md
+    target: docs/logs/implementation-log-20260506-1.md
+    description: Non-normative implementation log for initial nextjs skill creation.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-app-router-files
+      - ref-async-patterns
+      - ref-bundling
+      - ref-data-patterns
+      - ref-debug-tricks
+      - ref-directives
+      - ref-error-handling
+      - ref-file-conventions
+      - ref-font
+      - ref-functions
+      - ref-hydration-error
+      - ref-image
+      - ref-metadata
+      - ref-parallel-routes
+      - ref-route-handlers
+      - ref-rsc-boundaries
+      - ref-runtime-selection
+      - ref-scripts
+      - ref-self-hosting
+      - ref-suspense-boundaries
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+    - docs/logs/*
+
+sections:
+  startHere:
+    - Confirm the task is about Next.js framework behavior, preferably an App Router project or migration.
+    - "Inspect local context before changing code: installed `next` version, App Router vs Pages Router, package manager, validation commands, and deployment target."
+    - Load only the active reference files that match the current task; do not read every reference by default.
+    - Preserve existing project conventions unless they conflict with Next.js behavior, version-specific migration rules, or the explicit request.
+    - Run the narrowest meaningful verification such as `next build`, typecheck, lint, tests, or a browser smoke check; report any gap.
+  whenToUse:
+    - Building, changing, reviewing, or troubleshooting Next.js applications.
+    - Working with App Router file conventions, React Server Components, Server Actions, Route Handlers, async request APIs, metadata, image/font optimization, scripts, bundling, hydration, parallel routes, or self-hosting.
+    - Migrating or reviewing version-sensitive Next.js 15/16 behavior such as async params/searchParams, async cookies/headers, proxy.ts, or Turbopack defaults.
+  whenNotToUse:
+    - The project is a generic React SPA without Next.js framework behavior; use react-spa-engineer.
+    - The task is purely TypeScript language or toolchain work; use typescript-engineer.
+    - The task is purely reusable React component correctness without Next.js boundaries; use react-components-engineer.
+    - The task is pure visual design with no Next.js-specific implementation concern; use frontend-design.
+    - The task is backend Node.js runtime behavior outside Next.js; use node-engineer.
+  workflow:
+    - id: stage-establish-next-context
+      title: Establish Next.js context
+      goal: Ground the work in the project's actual Next.js version, router model, and deployment constraints.
+      steps:
+        - Inspect package metadata, config, route tree, and existing commands before choosing a framework pattern.
+        - Identify version-sensitive behavior that affects the change.
+        - Choose the smallest relevant reference file for the specific area.
+      validation:
+        - The selected approach matches the installed Next.js version or explicitly states a version assumption.
+        - The work is scoped to real Next.js behavior, not generic React or TypeScript guidance.
+    - id: stage-apply-framework-pattern
+      title: Apply the framework pattern
+      goal: Make the requested change using Next.js primitives and boundaries that fit the route, runtime, and data flow.
+      steps:
+        - Use the loaded reference guidance and local project conventions together.
+        - Keep Server Component, Client Component, Server Action, Route Handler, and runtime boundaries explicit.
+        - Prefer the least invasive framework-supported solution that satisfies the observable task.
+      validation:
+        - The result avoids known Next.js anti-patterns for the touched area.
+        - Any substrate-only work such as config, docs, or wrappers is not described as completed runtime behavior unless verified.
+    - id: stage-verify-next-behavior
+      title: Verify Next.js behavior
+      goal: Prove the framework behavior with the narrowest available project check.
+      steps:
+        - Run existing validation that exercises the changed route, build, type surface, or browser behavior.
+        - For build/runtime issues, prefer `next build` or the repo's production-equivalent command when feasible.
+        - If validation cannot run, perform the next-best static check and report the limitation.
+      validation:
+        - The final report names the checks that passed or the exact verification gap.
+  interop:
+    - id: interop-typescript
+      domain: TypeScript language, tsconfig, linting, and type-system issues
+      winner: typescript-engineer
+      rationale: This skill owns Next.js framework semantics; TypeScript language/toolchain rules belong to typescript-engineer.
+    - id: interop-react-components
+      domain: reusable React component correctness, SSR-safe rendering, portals, and component API hardening
+      winner: react-components-engineer
+      rationale: Use this skill for Next.js boundaries and App Router usage, but let react-components-engineer own reusable component behavior.
+    - id: interop-react-spa
+      domain: generic client-side React SPA architecture
+      winner: react-spa-engineer
+      rationale: Use react-spa-engineer when Next.js server routing, RSC, and framework APIs are not central.
+    - id: interop-frontend-design
+      domain: visual design, UI hierarchy, and frontend presentation polish
+      winner: frontend-design
+      rationale: Use frontend-design for visual direction while this skill owns Next.js implementation constraints.
+    - id: interop-node-runtime
+      domain: general Node.js runtime behavior outside Next.js
+      winner: node-engineer
+      rationale: Use this skill for Next.js runtime selection and deployment-specific framework behavior; use node-engineer for broader Node runtime work.
+  commands: []
+  gotchas:
+    - id: gotcha-version-sensitive
+      priority: high
+      text: Next.js APIs are version-sensitive; verify installed `next` before applying async params/searchParams, async cookies/headers, proxy.ts, Turbopack, or debug-MCP guidance.
+    - id: gotcha-client-boundary-sprawl
+      priority: high
+      text: Do not add 'use client' at a broad route/layout level to fix a narrow hook or browser API need; isolate the smallest Client Component.
+    - id: gotcha-rsc-serialization
+      priority: high
+      text: Server-to-client props must be serializable except for documented Server Action cases.
+    - id: gotcha-route-handler-page-conflict
+      priority: high
+      text: A route segment cannot expose a GET Route Handler and a page for the same path without a real conflict; separate UI routes from API routes.
+    - id: gotcha-self-hosting-assumptions
+      priority: medium
+      text: Self-hosting is not equivalent to Vercel hosting unless cache handlers, image optimization, runtime env behavior, and process management are explicitly configured.
+    - id: gotcha-official-components
+      priority: medium
+      text: Prefer next/image, next/font, and next/script over native tags when the framework component addresses the use case.
+  policies:
+    - id: policy-app-router-first
+      title: App Router first policy
+      text: Prefer App Router and React Server Component semantics when the project uses `app/`; do not import Pages Router assumptions unless the project still uses `pages/`.
+    - id: policy-version-aware
+      title: Version-aware policy
+      text: Treat Next.js version-specific guidance as conditional until the installed `next` version or migration target is known.
+    - id: policy-boundary-integrity
+      title: Boundary integrity policy
+      text: Keep server/client/runtime/data boundaries explicit and local; broad boundary changes require a concrete behavioral reason.
+    - id: policy-evidence
+      title: Evidence policy
+      text: Completion requires a concrete check such as build, typecheck, lint, test, or browser verification, or an explicit report of why no meaningful check could run.
+    - id: policy-active-surface
+      title: Active normative surface
+      text: "`SKILL.md` and the referenced files listed in this source bundle are the active default instruction surface; docs/* remains supporting unless explicitly promoted."
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory Next.js guidance inside this skill folder.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+      - Treat external Next.js documentation links as optional verification context, not required local dependencies.
+    checklist:
+      - Run the skill-source-compiler lint and check commands after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Confirm generated links point to local `references/*` files or clearly optional external docs.
