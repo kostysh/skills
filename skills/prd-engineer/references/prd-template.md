@@ -16,12 +16,23 @@ Use this reference when the user needs a formal PRD artifact, not just a short c
 # PRD: <title>
 
 ## Metadata
-- Status: draft | review | baselined | updated | archived
-- Owner:
-- Reviewers:
-- Target release:
-- Related docs:
-- Last updated:
+prd_id:
+status: draft | review | baselined | updated | archived
+version:
+owner:
+reviewers:
+created_at:
+updated_at:
+target_release:
+product_area:
+audience:
+related_docs:
+success_metrics:
+guardrail_metrics:
+security_review_required:
+legal_review_required:
+ai_feature:
+outcome_review_date:
 
 ## Executive Summary
 - Problem:
@@ -72,6 +83,24 @@ Use this reference when the user needs a formal PRD artifact, not just a short c
 | 0.1 |  | Initial draft |  |
 ```
 
+## Minimal Lifecycle
+
+For PRDs that guide delivery, track only what prevents drift:
+
+- current status
+- accountable owner
+- next review or outcome checkpoint
+
+Avoid elaborate stage diagrams unless the user asks for process documentation.
+
+## Evidence and Related Work
+
+Use this table when requirements depend on research, metrics, designs, prior decisions, or stakeholder input.
+
+| Artifact | Link | What it supports | Open uncertainty |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
 ## Requirement Quality Checklist
 
 Each important requirement should be:
@@ -82,6 +111,12 @@ Each important requirement should be:
 - verifiable: testable through observable behavior, measurement, or review evidence
 - prioritized: must, should, could, or explicitly deferred
 - traced: linked to a problem, user need, metric, source, or decision when the work is high risk
+
+For standard or extended PRDs, use attributes when engineering, QA, or later review will trace against the document:
+
+| ID | Requirement | Source / evidence | Rationale | Priority | Acceptance / verification | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| R1 |  |  |  | must |  | draft |
 
 Replace vague adjectives with thresholds, examples, or TBDs:
 
@@ -144,11 +179,34 @@ Use when changing existing workflows, APIs, schemas, permissions, integrations, 
 - Deprecation or communication:
 - Data integrity checks:
 
+### Review Routing
+
+Route review only to functions whose decisions can change scope, acceptance, or risk.
+
+| Reviewer | Trigger |
+| --- | --- |
+| Design | User flow, IA, usability, accessibility, or prototype decisions matter |
+| Engineering | Architecture, feasibility, integration, migration, or NFR decisions matter |
+| Data / ML | Metrics, experimentation, ranking, model quality, or eval design matters |
+| Security / Legal | Sensitive data, auth, payments, compliance, or policy constraints matter |
+| Support / GTM | Launch promises, docs, support load, beta criteria, or customer comms matter |
+
+## Document Location
+
+Choose the canonical location by collaboration need:
+
+| Location | Use when |
+| --- | --- |
+| Repo Markdown | Code, API, platform, infrastructure, AI evals, or implementation traceability are central |
+| Collaborative workspace | Cross-functional comments, embeds, and stakeholder review are central |
+| Hybrid | Keep the PRD canonical in one place and link research, designs, issues, evals, and decisions |
+
 ## PRD Review Checklist
 
 Mark blockers separately from improvements:
 
 - problem and target user are explicit
+- evidence or assumptions behind major claims are linked or named
 - success metrics and guardrails are measurable
 - scope and non-goals prevent common misunderstandings
 - requirements are atomic and verifiable
@@ -157,4 +215,15 @@ Mark blockers separately from improvements:
 - AI features have evals and quality bars
 - risks, dependencies, and open questions have owners
 - rollout, instrumentation, and outcome review are defined
-- document status, links, and change history are visible when needed
+- document status, owner, next review, links, and change history are visible when needed
+
+## Anti-Pattern Check
+
+- PRD exists but no decision, scope, acceptance, or risk changed.
+- Solution details appear before the user problem and outcome.
+- Vague words replace thresholds, examples, or TBDs.
+- Non-goals are missing for scope-sensitive work.
+- Implementation is over-specified where boundaries and acceptance criteria would be enough.
+- NFRs are omitted for performance, security, privacy, accessibility, reliability, or operations risk.
+- Claims lack evidence links or clearly labeled assumptions.
+- Launch has no instrumentation or outcome review.

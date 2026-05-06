@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: prd-engineer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: >-
     Create, refine, and review Product Requirements Documents (PRDs), product
@@ -21,7 +21,7 @@ references:
     source: references/prd-template.md
     target: references/prd-template.md
     required: false
-    trigger: Read this when creating a formal PRD artifact, expanding an existing PRD, adding AI/security/rollout modules, or running a detailed PRD quality check.
+    trigger: Read this when creating a formal PRD artifact, expanding an existing PRD, adding metadata, evidence, traceability, review routing, AI/security/rollout modules, or running a detailed PRD quality check.
 
 assets: []
 copies:
@@ -36,6 +36,9 @@ supporting:
   - id: supporting-implementation-log
     source: docs/logs/implementation-log-20260506-1.md
     target: docs/logs/implementation-log-20260506-1.md
+  - id: supporting-implementation-log-2
+    source: docs/logs/implementation-log-20260506-2.md
+    target: docs/logs/implementation-log-20260506-2.md
 
 surfaces:
   active:
@@ -159,7 +162,7 @@ sections:
       text: AI feature PRDs need evaluation strategy and quality bars; a demo or prompt description is not enough.
     - id: gotcha-living-artifact
       priority: medium
-      text: A PRD should carry status, owner, links, and open questions when it will guide real delivery.
+      text: For delivery PRDs, keep lifecycle tracking minimal but visible; status, owner, and next review are usually enough.
   policies:
     - id: policy-problem-first
       title: Problem-first policy

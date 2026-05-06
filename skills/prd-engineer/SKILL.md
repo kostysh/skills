@@ -7,9 +7,9 @@ description: Create, refine, and review Product Requirements Documents (PRDs),
   metrics, handle AI evaluation requirements, or audit a PRD for ambiguity,
   missing evidence, weak acceptance criteria, or scope risk.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b55347a09768b21657c1913740560fecbcc7efa50041e12afb78b8e2d6a73399
+  skillforge-source-hash: a851fde946ed1b2edcfdcd003069df8e9e2c006ba92b8130beb93257a3760cbc
 ---
 
 # prd-engineer
@@ -60,6 +60,19 @@ For a PRD review, lead with the gaps most likely to cause wrong implementation, 
 ## Reference Map
 
 Read [PRD template](references/prd-template.md) when creating a formal PRD artifact, expanding a draft, adding AI/security/rollout modules, or running a detailed quality check.
+
+## Contextual Reference Triggers
+
+Open only the block that matches the task:
+
+- **Formal PRD skeleton, metadata, or minimal lifecycle:** use [PRD template](references/prd-template.md) sections `Core PRD Skeleton` and `Minimal Lifecycle`.
+- **Claims that depend on research, metrics, designs, or decisions:** use [PRD template](references/prd-template.md) section `Evidence and Related Work`.
+- **Handoff to engineering, QA, or later conformance review:** use [PRD template](references/prd-template.md) section `Requirement Quality Checklist` for requirement attributes and traceability.
+- **Acceptance criteria review:** use [PRD template](references/prd-template.md) section `Acceptance Criteria Test`.
+- **AI, security, privacy, compliance, migration, or compatibility risk:** use [PRD template](references/prd-template.md) section `Optional Modules`.
+- **Cross-functional review planning:** use [PRD template](references/prd-template.md) section `Review Routing`.
+- **Choosing where the PRD should live:** use [PRD template](references/prd-template.md) section `Document Location`.
+- **Reviewing an existing PRD:** use [PRD template](references/prd-template.md) sections `PRD Review Checklist` and `Anti-Pattern Check`.
 
 ## Workflow stages
 
@@ -156,7 +169,7 @@ Validation:
 - **high** — Do not fabricate users, research, metrics, constraints, or technical decisions; mark them as assumptions, TBDs, or open questions.
 - **medium** — Do not over-prescribe implementation details when acceptance criteria and boundaries are enough.
 - **high** — AI feature PRDs need evaluation strategy and quality bars; a demo or prompt description is not enough.
-- **medium** — A PRD should carry status, owner, links, and open questions when it will guide real delivery.
+- **medium** — For delivery PRDs, keep lifecycle tracking minimal but visible; status, owner, and next review are usually enough.
 
 ## Policies
 
@@ -176,7 +189,7 @@ Use requirement IDs, owners, source links, statuses, and change notes when multi
 In chat, keep outputs concise unless the user asks for a formal artifact; use the reference template for full documents.
 
 ## Optional references
-- [PRD template](references/prd-template.md) — Read this when creating a formal PRD artifact, expanding an existing PRD, adding AI/security/rollout modules, or running a detailed PRD quality check.
+- [PRD template](references/prd-template.md) — Read this when creating a formal PRD artifact, expanding an existing PRD, adding metadata, evidence, traceability, review routing, AI/security/rollout modules, or running a detailed PRD quality check.
 
 ## Portability rules
 
