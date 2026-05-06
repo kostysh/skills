@@ -1,0 +1,4 @@
+interface:
+  display_name: "PRD Engineer"
+  short_description: "Draft concise, testable product requirements"
+  default_prompt: "Use $prd-engineer to turn this product idea into a concise, testable PRD."
