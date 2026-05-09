@@ -85,7 +85,6 @@ const checkSkillMarkdown = async (
     '## When to use this skill',
     '## When NOT to use this skill',
     '## Portability rules',
-    '## Supporting and historical surface',
     ...(options.requireRequiredReferencesHeading === true ? ['## Required active references'] : []),
     ...(options.requireOptionalReferencesHeading === true ? ['## Optional references'] : []),
   ];

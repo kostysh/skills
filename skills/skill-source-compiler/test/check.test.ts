@@ -74,6 +74,7 @@ void test('checkCompiledSkill accepts source bundles without active references',
     const skill = await readFile(join(sourceRoot, 'SKILL.md'), 'utf8');
     assert.doesNotMatch(skill, /## Required active references/u);
     assert.doesNotMatch(skill, /## Optional references/u);
+    assert.doesNotMatch(skill, /## Supporting and historical surface/u);
 
     const result = await checkCompiledSkill(sourceRoot);
     assert.equal(result.ok, true, result.diagnostics.map((entry) => entry.message).join('\n'));

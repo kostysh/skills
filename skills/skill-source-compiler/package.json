@@ -1,6 +1,6 @@
 {
   "name": "@kostysh/skill-source-compiler-cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "description": "CLI utilities for the skill-source-compiler skill.",
   "type": "module",

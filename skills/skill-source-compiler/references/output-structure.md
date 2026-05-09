@@ -29,7 +29,7 @@ skill-name/
 10. Active references (only when required or optional references are declared)
 11. Assets (only when bundled assets are declared)
 12. Portability
-13. Supporting surface
+13. Supporting surface (only when supporting globs are declared)
 14. Final checks
 
 ## Generated metadata

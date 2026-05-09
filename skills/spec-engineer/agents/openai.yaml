@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec Engineer"
+  short_description: "Draft concise, falsifiable engineering specs"
+  default_prompt: "Use $spec-engineer to turn this implementation request into a concise, falsifiable software specification."

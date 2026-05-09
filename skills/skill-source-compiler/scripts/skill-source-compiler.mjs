@@ -17,7 +17,7 @@ var __exportAll = (all, no_symbols) => {
 //#endregion
 //#region package.json
 var name = "@kostysh/skill-source-compiler-cli";
-var version$1 = "0.2.1";
+var version$1 = "0.2.2";
 var description = "CLI utilities for the skill-source-compiler skill.";
 var type = "module";
 var bin = { "skill-source-compiler": "scripts/skill-source-compiler.mjs" };
@@ -10477,7 +10477,8 @@ var renderSkillMarkdown = (loaded) => {
 		const assets = source.assets.map((entry) => `- \`${entry.target}\`${entry.description === void 0 ? "" : ` — ${entry.description}`}`).join("\n");
 		parts.push("## Bundled assets", assets);
 	}
-	parts.push("## Portability rules", renderBulletList(source.sections.portability.rules), "## Portability checklist before finishing", renderBulletList(source.sections.portability.checklist), "## Supporting and historical surface", ["- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.", ...source.surfaces.supportingGlobs.map((item) => `- Supporting glob: \`${item}\``)].join("\n"));
+	parts.push("## Portability rules", renderBulletList(source.sections.portability.rules), "## Portability checklist before finishing", renderBulletList(source.sections.portability.checklist));
+	if (source.surfaces.supportingGlobs.length > 0) parts.push("## Supporting and historical surface", ["- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.", ...source.surfaces.supportingGlobs.map((item) => `- Supporting glob: \`${item}\``)].join("\n"));
 	if (finalChecks !== null && finalChecks.length > 0) parts.push("## Final checks", finalChecks);
 	return `${parts.join("\n\n").trim()}\n`;
 };
@@ -10657,7 +10658,6 @@ var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeF
 		"## When to use this skill",
 		"## When NOT to use this skill",
 		"## Portability rules",
-		"## Supporting and historical surface",
 		...options.requireRequiredReferencesHeading === true ? ["## Required active references"] : [],
 		...options.requireOptionalReferencesHeading === true ? ["## Optional references"] : []
 	];

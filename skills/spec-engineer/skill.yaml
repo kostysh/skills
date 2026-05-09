@@ -1,0 +1,259 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: spec-engineer
+  source-version: 0.2.0
+  recommended-skill-md-max-bytes: 26000
+  description: >-
+    Create concise, falsifiable software specifications for AI coding agents.
+    Use when turning feature requests, tickets, product ideas, API/interface
+    changes, domain rules, migrations, workflows, or function-level behavior
+    into a Markdown spec that guides implementation without process overhead.
+    Emphasizes observable behavior, capability/substrate separation, atomic
+    requirements, acceptance criteria, anti-claims, verification mapping, and
+    right-sized detail.
+  compatibility: >-
+    Portable, self-contained documentation-only skill. It ships no runtime and
+    keeps all method instructions required to create specifications inside this
+    folder.
+
+fragments:
+  overview: fragments/overview.md
+
+references:
+  - id: ref-methodology
+    title: Specification methodology
+    source: references/methodology.md
+    target: references/methodology.md
+    required: true
+    trigger: Read this when drafting or materially revising a software specification.
+  - id: ref-patterns
+    title: Specification patterns
+    source: references/spec-patterns.md
+    target: references/spec-patterns.md
+    required: false
+    trigger: Read this when choosing the minimal structure for a feature, API endpoint, validation rule, workflow, migration, or non-functional constraint.
+  - id: ref-discovery-techniques
+    title: Discovery techniques
+    source: references/discovery-techniques.md
+    target: references/discovery-techniques.md
+    required: false
+    trigger: Read this when behavior inventory feels checklist-driven, risk is high, or you need systematic edge-case discovery.
+  - id: ref-anti-patterns
+    title: Self-deception anti-patterns
+    source: references/anti-patterns.md
+    target: references/anti-patterns.md
+    required: false
+    trigger: Read this before finalizing a spec with vague acceptance, mocks, substrate evidence, happy-path bias, or ambiguous terms.
+  - id: ref-example-spec
+    title: Worked example specification
+    source: references/example-spec.md
+    target: references/example-spec.md
+    required: false
+    trigger: Read this when you need a small input-to-output example of the expected final specification artifact.
+
+assets: []
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for spec-engineer maintenance records.
+  - id: supporting-implementation-log-20260509-1
+    source: docs/logs/implementation-log-20260509-1.md
+    target: docs/logs/implementation-log-20260509-1.md
+    description: Non-normative implementation log for initial spec-engineer creation.
+  - id: supporting-implementation-log-20260509-2
+    source: docs/logs/implementation-log-20260509-2.md
+    target: docs/logs/implementation-log-20260509-2.md
+    description: Non-normative implementation log for self-contained wording revision.
+  - id: supporting-implementation-log-20260509-3
+    source: docs/logs/implementation-log-20260509-3.md
+    target: docs/logs/implementation-log-20260509-3.md
+    description: Non-normative implementation log for review-driven methodology revision.
+  - id: supporting-skill-review-report
+    source: docs/skill-review-report.md
+    target: docs/skill-review-report.md
+    description: Non-normative review report that drove the 0.2.0 revision.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-methodology
+    optionalReferences:
+      - ref-patterns
+      - ref-discovery-techniques
+      - ref-anti-patterns
+      - ref-example-spec
+  supportingGlobs: []
+
+sections:
+  startHere:
+    - Confirm the user needs a software specification, not a PRD, implementation plan, code review, or implementation patch.
+    - "Confirm the input is sufficient or salvageable: at minimum, identify the requested object, intended behavior, and source material; if these are absent, ask for them."
+    - Inspect the available source material and state assumptions, constraints, criticality, and any blocking ambiguity before drafting.
+    - Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
+    - Choose the smallest specification depth that can guide correct implementation and verification for this task.
+  whenToUse:
+    - Creating or revising a specification that will guide software implementation.
+    - Turning a feature request, ticket, issue, PRD section, domain rule, integration requirement, API change, migration, workflow, or function behavior into implementation-ready requirements.
+    - Compressing vague source material into a compact spec with scope, behavior, constraints, acceptance criteria, anti-claims, and verification intent.
+    - Right-sizing the spec for anything from a single function or endpoint to a subsystem or whole product slice.
+  whenNotToUse:
+    - Writing a product PRD where product discovery, rollout, metrics, or business scope are the main concern instead of implementation-ready behavior; if available, route that work to prd-engineer.
+    - Checking code against an existing spec rather than authoring or revising the spec; if available, route that work to spec-conformance-reviewer.
+    - Reviewing whether an implementation delivers real capability instead of only substrate; if available, route that work to concept-conformance-reviewer.
+    - Implementing code directly when the user did not ask for a specification and the task is already unambiguous.
+    - Creating heavyweight governance, lifecycle records, project-management state, or delivery tracking artifacts instead of a specification document.
+    - Producing formal methods artifacts as the primary deliverable unless the user explicitly asks for that level of rigor.
+  workflow:
+    - id: stage-frame-intake
+      title: Frame the specification target
+      goal: Turn vague intent into a bounded engineering target before writing requirements.
+      steps:
+        - Identify the system, subsystem, function, interface, actor, trigger, and production entry point when known.
+        - "State the capability claim with precondition and guard when relevant: Given <precondition>, when <actor> does <trigger/action>, if <guard>, the system MUST <observable response>, creating or preserving <state/effect>, so that <continuity> holds."
+        - "Apply a criticality lens: ask what the worst observable consequence is if the requirement is wrong, then increase rigor for security, money, data loss, compliance, safety, privacy, compatibility, or irreversible state."
+        - List source material and authority levels when there are multiple inputs; resolve conflicts or mark them as open questions.
+        - Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
+        - For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
+        - Add initial anti-claims that keep the spec from implying broader behavior than requested.
+      validation:
+        - The target can be described without relying on implementation-only terms.
+        - The spec scope says what is in, what is out, and what remains unknown.
+        - Acceptance cannot be satisfied only by substrate when the claim is behavioral.
+        - High-criticality scope has explicit invariants, stronger falsifiers, and a verification path beyond happy-path examples.
+    - id: stage-map-behavior
+      title: Map behavior and constraints
+      goal: Cover the behavior space before committing to normative statements.
+      steps:
+        - Create a glossary before writing requirements for terms that repeat, carry roles, or are likely ambiguous.
+        - Inventory main flows, alternate flows, failure paths, invalid inputs, boundary cases, permission cases, timing, retries, concurrency, ordering, idempotency, consistency, compatibility, and observability concerns that matter for the task.
+        - Use systematic discovery techniques when memory is not enough, especially equivalence partitions, boundary values, state transitions, fault analysis, role/abuse cases, and concurrency probes.
+        - Identify domain terms, states, events, entities, inputs, outputs, side effects, invariants, assumptions, external dependencies, and temporal promises.
+        - Decide which unknowns block implementation and which can be recorded as explicit assumptions or gaps.
+      validation:
+        - The behavior inventory includes the important non-happy paths for the scope.
+        - Hidden assumptions about external systems, ordering, time, roles, or persistence are explicit.
+        - Important invariants and failure semantics are not buried inside examples.
+        - Concurrency, ordering, idempotency, and consistency are treated as separate concerns when any one of them matters.
+    - id: stage-draft-compact-spec
+      title: Draft the compact specification
+      goal: Produce a concise spec that is implementation-ready without becoming process-heavy.
+      steps:
+        - Use the compact 6-section structure from the methodology reference for trivial scope; use the fuller structure only when the task needs it.
+        - Write a scope statement, glossary, capability or behavior statement, assumptions, and anti-claims.
+        - Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
+        - Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
+        - Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
+        - "Define requirement lifecycle status when revising an existing spec: new, changed, superseded, deprecated, or removed."
+        - Record open questions and gaps without letting non-blocking gaps stop useful specification work.
+      validation:
+        - Every important requirement is falsifiable by demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or another explicit method.
+        - If a requirement can produce two independently verifiable acceptance criteria, it has been split.
+        - Acceptance criteria prove real behavior and include at least one negative or falsifier for self-deception risk.
+        - Anti-claims prevent scope inflation and make clear what the spec does not promise.
+    - id: stage-audit-spec
+      title: Audit and right-size
+      goal: Improve precision without adding ceremony that distracts from building correct code.
+      steps:
+        - Run the Quality audit checklist from the methodology reference before reporting done.
+        - Scan for ambiguous terms, vague adjectives, compound requirements, hidden implementation decisions, duplicate rules, missing failure behavior, missing invalid inputs, and examples that contradict rules.
+        - Check self-deception patterns such as tautological acceptance, mock-driven success, single-actor blindness, hidden retroactive scope, and completion bias.
+        - Remove sections, tables, or process language that do not constrain implementation or verification.
+        - Strengthen under-specified NFRs with metric, threshold, measurement object, and measurement window.
+        - Apply the Stop rules before finalizing.
+      validation:
+        - The final spec is as small as possible while still reducing implementation guesses.
+        - The spec has no known contradictions between prose, rules, examples, tables, schemas, or state transitions.
+        - Remaining risks are visible as assumptions, gaps, anti-claims, or open questions.
+  interop: []
+  commands: []
+  gotchas:
+    - id: gotcha-spec-is-not-substrate
+      priority: high
+      text: A spec is useful only if it constrains observable behavior; a template, section list, or artifact path is substrate until the requirements are precise and falsifiable.
+    - id: gotcha-no-false-capability
+      priority: high
+      text: Do not let acceptance criteria pass through mocks, generated docs, schemas, wrappers, or tests alone when the claim is user-, operator-, integration-, or system-observable behavior.
+    - id: gotcha-avoid-template-bloat
+      priority: high
+      text: Do not force every section onto small tasks; use the smallest structure that removes implementation ambiguity.
+    - id: gotcha-examples-need-rules
+      priority: medium
+      text: Examples and Gherkin scenarios clarify boundaries but do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
+    - id: gotcha-implementation-detail
+      priority: medium
+      text: Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
+    - id: gotcha-test-default
+      priority: medium
+      text: Do not use tests as the default verification answer when inspection, analysis, contract validation, simulation, or conformance suites prove the claim more directly.
+  policies:
+    - id: policy-lightweight-first
+      title: Lightweight-first policy
+      text: A one-page spec is better than a complete template when it captures the behavior, rules, edge cases, and verification path needed for correct code. Add structure only when it removes a concrete ambiguity or defect class.
+    - id: policy-modality
+      title: Normative language policy
+      text: Use MUST for required behavior, MUST NOT for forbidden behavior, SHOULD for recommended behavior with known exceptions, MAY for optional behavior, and CAN for capability statements. Avoid mixing normative and descriptive wording in the same sentence.
+    - id: policy-atomic-requirements
+      title: Atomic requirement policy
+      text: Each normative requirement should express one obligation with an explicit subject, condition, action, object, and constraint. Split compound requirements before adding acceptance criteria.
+    - id: policy-representation-fit
+      title: Representation-fit policy
+      text: >-
+        The canonical representation-fit table lives in the methodology
+        reference. In SKILL.md, remember the rule of thumb only: choose the
+        lightest representation that removes the concrete ambiguity or defect
+        class, and prefer invariants whenever a behavior can be stated as an
+        always-true property.
+    - id: policy-verification-map
+      title: Verification map policy
+      text: Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. If verification is not currently possible, the spec must say why.
+    - id: policy-stop-rules
+      title: Stop rules
+      text: |-
+        Stop and ask the user when:
+
+        - source material contains a contradiction that changes behavior;
+        - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
+        - the spec would make a capability claim that can only be proven by substrate evidence;
+        - a required external contract is missing and cannot be inferred safely.
+
+        Do not stop for minor unknowns. Record them as assumptions or non-blocking gaps.
+    - id: policy-output-language
+      title: Output language policy
+      text: Produce the specification in the user's working language unless the target repository, existing spec corpus, or user request clearly requires another language.
+    - id: policy-output-contract
+      title: Output contract
+      text: |-
+        The deliverable is a Markdown specification. Include at minimum:
+
+        - title;
+        - status or scope;
+        - source context;
+        - terms;
+        - behavior or capability statement;
+        - assumptions;
+        - anti-claims;
+        - atomic requirements with source trace;
+        - acceptance criteria with negative or falsifier coverage;
+        - verification map;
+        - open questions or gaps.
+
+        Omit or collapse sections only when the resulting spec remains clear, falsifiable, and implementation-ready.
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory spec-engineer guidance inside this skill folder.
+      - Use relative links for local references and supporting docs.
+      - Treat external standards or reports as optional background; do not make them required to use the skill.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.

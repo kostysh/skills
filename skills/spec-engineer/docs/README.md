@@ -1,0 +1,13 @@
+# spec-engineer docs
+
+This directory contains supporting maintenance material only. The normative skill surface is `SKILL.md` plus the reference files explicitly linked from it.
+
+## Review Material
+
+- `docs/skill-review-report.md` - non-normative review report that drove the 0.2.0 revision.
+
+## Logs
+
+- `docs/logs/implementation-log-20260509-1.md` - initial creation of the prose-only `spec-engineer` skill.
+- `docs/logs/implementation-log-20260509-2.md` - self-contained wording revision.
+- `docs/logs/implementation-log-20260509-3.md` - review-driven methodology revision.

@@ -175,12 +175,17 @@ export const renderSkillMarkdown = (loaded: LoadedSourceBundle): string => {
     renderBulletList(source.sections.portability.rules),
     "## Portability checklist before finishing",
     renderBulletList(source.sections.portability.checklist),
-    "## Supporting and historical surface",
-    [
-      "- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.",
-      ...source.surfaces.supportingGlobs.map((item) => `- Supporting glob: \`${item}\``),
-    ].join("\n"),
   );
+
+  if (source.surfaces.supportingGlobs.length > 0) {
+    parts.push(
+      "## Supporting and historical surface",
+      [
+        "- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.",
+        ...source.surfaces.supportingGlobs.map((item) => `- Supporting glob: \`${item}\``),
+      ].join("\n"),
+    );
+  }
 
   if (finalChecks !== null && finalChecks.length > 0) {
     parts.push("## Final checks", finalChecks);
