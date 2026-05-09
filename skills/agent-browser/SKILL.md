@@ -32,8 +32,6 @@ allowed-tools: Bash(agent-browser:*)
 - The environment lacks agent-browser or Playwright dependencies and they cannot be installed or fixed quickly.
 - The required verification is a formal project E2E suite rather than smoke or diagnostic browser automation.
 
-## Overview
-
 ## Preflight: verify tool + Playwright setup
 
 Before using this skill, verify the CLI and its Playwright dependencies are installed. If anything is missing, fix it or hand off to the developer.
