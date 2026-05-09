@@ -1,0 +1,4 @@
+interface:
+  display_name: "Payload"
+  short_description: "Payload CMS development guidance"
+  default_prompt: "Use $payload to build, review, or debug Payload CMS code."

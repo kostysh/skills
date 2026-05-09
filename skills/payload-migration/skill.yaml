@@ -1,0 +1,162 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: payload-migration
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 20000
+  description: >-
+    Use when migrating content from WordPress, Contentful, Strapi, Sanity,
+    Webflow, CSV/JSON exports, or another CMS into Payload CMS; especially when
+    analyzing source data, designing Payload collections, mapping fields,
+    resolving relationships, media, rich text, localization, and planning an
+    import strategy.
+  compatibility: >-
+    Portable documentation-only migration planning skill based on the upstream
+    payloadcms/skills cms-migration guidance. Use payload for general Payload
+    implementation after the migration model is agreed.
+
+fragments:
+  overview: fragments/overview.md
+
+references:
+  - id: ref-payload-field-reference
+    title: Payload Field Reference
+    source: references/payload-field-reference.md
+    target: references/payload-field-reference.md
+    required: true
+    trigger: Read this when mapping source fields, nested data, arrays, media, rich text, relationships, auth/upload collections, or CMS-specific patterns to Payload field configs.
+
+assets: []
+copies:
+  - id: copy-agents-openai-yaml
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for payload-migration skill maintenance records.
+  - id: supporting-implementation-log-20260509-1
+    source: docs/logs/implementation-log-20260509-1.md
+    target: docs/logs/implementation-log-20260509-1.md
+    description: Non-normative implementation log for initial payload-migration skill creation.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-payload-field-reference
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+    - docs/logs/*
+
+sections:
+  startHere:
+    - Confirm the task is about migrating content or schema into Payload CMS.
+    - Ask for representative source data, schema, or export samples before proposing collection configs; one happy-path row is not enough when edge cases matter.
+    - "Use a config-first workflow: design and confirm Payload collections before planning or writing an import."
+    - Load the field reference when choosing Payload field types or mapping CMS-specific patterns.
+    - Do not claim data has been migrated until import code or a migration run has been verified against real or representative data.
+  whenToUse:
+    - Migrating content from WordPress, Contentful, Strapi, Sanity, Webflow, custom CMSs, CSV, JSON, API responses, or database schemas into Payload CMS.
+    - Mapping source fields to Payload text, textarea, richText, number, date, relationship, upload, array, blocks, group, select, json, auth, or upload collection configs.
+    - Designing migration order, source-ID to Payload-ID mapping, media handling, rich text conversion, localization, and seed/import scripts after collection configs are confirmed.
+  whenNotToUse:
+    - The task is general Payload application development with an existing schema; use payload.
+    - The migration target is not Payload CMS.
+    - The user only needs generic ETL, database import, or data cleaning with no Payload collection or field design.
+    - The user asks to execute a destructive import but source data, target environment, rollback, or verification path is unclear; stop and ask.
+  workflow:
+    - id: stage-analyze-source-data
+      title: Analyze source data
+      goal: Understand the source content model, field shapes, relationships, and edge cases before proposing Payload config.
+      steps:
+        - Inspect sample JSON, CSV headers, API responses, database schemas, or user-provided CMS descriptions.
+        - Identify field types, repeated patterns, IDs, timestamps, nested objects, arrays, media URLs, rich text, localization, and relationship candidates.
+        - Flag ambiguous fields instead of silently choosing a Payload type.
+      validation:
+        - The analysis names source content types, candidate relationships, and missing samples or edge cases.
+        - Ambiguities that affect Payload field choice are explicit.
+    - id: stage-propose-collection-config
+      title: Propose collection config
+      goal: Produce Payload collection configs that match the source model and can be reviewed before data import.
+      steps:
+        - Use Payload field types from the field reference and local project conventions when available.
+        - Prefer relationships for dynamic content concepts such as categories, tags, authors, assignees, topics, and labels unless the user confirms they are fixed enums.
+        - Explain uncertain choices and ask for confirmation when select vs relationship, rich text format, media handling, nesting, or localization is unclear.
+      validation:
+        - Proposed configs are copy-paste-ready TypeScript or clearly marked pseudocode when project context is missing.
+        - Related collections needed by relationship fields are included in the migration model.
+    - id: stage-confirm-complete-model
+      title: Confirm complete model
+      goal: Iterate until all collections and globals needed for the migration are agreed.
+      steps:
+        - Incorporate user feedback into the collection configs.
+        - Ask whether more content types, media, users/authors, categories/tags, or settings/globals must be modeled.
+        - Do not move to import planning until the user confirms the collection set.
+      validation:
+        - The final model lists every collection/global needed for the migration.
+        - Unresolved schema decisions are either closed or explicitly deferred.
+    - id: stage-plan-import
+      title: Plan import
+      goal: Define an import approach that respects dependency order, identity mapping, media, rich text, localization, and verification.
+      steps:
+        - Order collections by dependency and identify source-ID to Payload-ID mapping storage.
+        - Define media download/re-upload versus external URL handling.
+        - Define rich text conversion strategy and any fields that must remain raw.
+        - Offer a seed/import script only after the model is confirmed.
+      validation:
+        - The plan separates generated configs from actual data import behavior.
+        - Verification includes representative migrated records, relationships, media, and rich text where applicable.
+  interop:
+    - id: interop-payload
+      domain: general Payload project implementation after schema decisions are made
+      winner: payload
+      rationale: payload-migration owns source-to-Payload mapping; payload owns ongoing Payload app development.
+    - id: interop-typescript
+      domain: TypeScript language, module structure, type generation, and compile errors in import scripts
+      winner: typescript-engineer
+      rationale: This skill owns migration modeling; TypeScript language/toolchain rules belong to typescript-engineer.
+    - id: interop-tests
+      domain: deterministic tests for import scripts, fixtures, and parity checks
+      winner: typescript-test-engineer
+      rationale: This skill defines migration verification targets; test design belongs to typescript-test-engineer.
+  commands: []
+  gotchas:
+    - id: gotcha-select-vs-relationship
+      priority: high
+      text: Repeated strings such as categories, tags, authors, topics, or labels often need relationship collections, not select fields.
+    - id: gotcha-partial-samples
+      priority: high
+      text: Partial source data can hide nullable fields, mixed types, relationship cardinality, rich text formats, media variants, and localization.
+    - id: gotcha-import-is-later
+      priority: high
+      text: Collection config approval is not a completed migration; import code or execution needs separate verification.
+    - id: gotcha-rich-text
+      priority: medium
+      text: Rich text sources may be HTML, Markdown, Lexical JSON, Slate JSON, or vendor-specific ASTs; choose a conversion path explicitly.
+    - id: gotcha-media
+      priority: medium
+      text: Media URLs are not equivalent to Payload upload relationships unless download, upload, metadata, and failure handling are planned.
+  policies:
+    - id: policy-config-first
+      title: Config-first policy
+      text: Design and confirm the Payload content model before writing or running data import code.
+    - id: policy-ambiguity
+      title: Ambiguity policy
+      text: Ask when a source field could reasonably map to multiple Payload types; do not hide irreversible modeling choices inside generated config.
+    - id: policy-capability-claims
+      title: Capability claims policy
+      text: Distinguish schema design, import planning, generated scripts, and verified migrated data in final reports.
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory migration guidance inside this skill folder through SKILL.md and local references.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
