@@ -29,8 +29,6 @@ metadata:
 - The task has no Hono API, route, middleware, or edge-runtime API surface.
 - The task is purely TypeScript language work, testing strategy, Supabase design, or security review without Hono-specific behavior.
 
-## Overview
-
 ## Scope
 Applies to any Hono-based API project. If the current project already has established conventions, follow them and avoid conflicts.
 
