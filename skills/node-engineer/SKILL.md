@@ -47,8 +47,6 @@ metadata:
 - Framework-specific routing, middleware, or service architecture; use the framework skill
 - Browser or bundler-only module behavior; use the relevant frontend skill
 
-## Overview
-
 ## Scope
 
 Applies to Node.js runtime and platform concerns. If the current project already has established runtime conventions, follow them unless they are the source of the bug.
