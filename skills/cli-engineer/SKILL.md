@@ -47,8 +47,6 @@ metadata:
 - Pure test-runner troubleshooting without CLI-specific behavior; use `typescript-test-engineer`
 - Broad security review without CLI-specific attack surfaces; use `security-reviewer`
 
-## Overview
-
 ## Scope
 
 Applies to TypeScript-only Node.js command-line software, from tiny single-command tools to plugin-capable CLIs and interactive TUI applications.
