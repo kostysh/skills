@@ -43,8 +43,6 @@ metadata:
 - Pure content rewriting without site architecture work
 - Non-Docusaurus stacks like VitePress, Starlight, MkDocs, Astro, or a Next.js app
 
-## Overview
-
 ## Interop priority
 
 - This skill owns Docusaurus repository bootstrap, config, routing, plugin and theme selection, search architecture, and deployment constraints.
