@@ -32,8 +32,6 @@ metadata:
 - The task is implementation work rather than review; use the relevant frontend or framework skill.
 - The task is a security-first audit; use security-reviewer.
 
-## Overview
-
 ## Scope
 Review web UI code (HTML/CSS/JS/React/etc.) against the Web Interface Guidelines.
 
