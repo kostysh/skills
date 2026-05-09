@@ -229,7 +229,3 @@ Maintain this skill through skill.yaml, fragments, references, and skill-source-
 - Search the skill folder for absolute local paths before finishing.
 - Confirm every required reference listed by SKILL.md exists inside this skill folder.
 - Confirm the copied skill remains understandable and usable in isolation.
-
-## Supporting and historical surface
-
-- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
