@@ -48,8 +48,6 @@ metadata:
 - Claiming capability completion from mocks, schemas, queues, tests, wrappers, reports, or scaffolding without a behavioral demonstration.
 - Maintaining unrelated skills or runtime formats outside the dossier-engineer bundle.
 
-## Overview
-
 ## Core objective
 
 Deliver observable product capability, not merely infrastructure.
