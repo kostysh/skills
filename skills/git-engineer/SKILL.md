@@ -32,8 +32,6 @@ metadata:
 
 ## Overview
 
-## Overview
-
 Ensure all commits follow Conventional Commits and keep history clean, minimal, and reviewable.
 
 ## Conventional Commits (required)
