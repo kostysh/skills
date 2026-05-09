@@ -77,6 +77,18 @@ const renderCommands = (loaded: LoadedSourceBundle): string | null => {
   return `## Runnable commands\n${body}`;
 };
 
+const firstNonEmptyLine = (value: string): string | null => {
+  for (const line of value.split(/\r?\n/u)) {
+    if (line.trim().length > 0) {
+      return line.trim();
+    }
+  }
+  return null;
+};
+
+const overviewProvidesTopLevelHeading = (value: string): boolean =>
+  /^##\s+\S/u.test(firstNonEmptyLine(value) ?? "");
+
 /**
  * Renders the generated SKILL.md content.
  */
@@ -97,7 +109,9 @@ export const renderSkillMarkdown = (loaded: LoadedSourceBundle): string => {
     renderBulletList(source.sections.whenNotToUse),
   ];
 
-  if (overview !== null && overview.length > 0) {
+  if (overview !== null && overview.length > 0 && overviewProvidesTopLevelHeading(overview)) {
+    parts.push(overview);
+  } else if (overview !== null && overview.length > 0) {
     parts.push("## Overview", overview);
   }
 

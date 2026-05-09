@@ -17,7 +17,7 @@ var __exportAll = (all, no_symbols) => {
 //#endregion
 //#region package.json
 var name = "@kostysh/skill-source-compiler-cli";
-var version$1 = "0.2.2";
+var version$1 = "0.2.3";
 var description = "CLI utilities for the skill-source-compiler skill.";
 var type = "module";
 var bin = { "skill-source-compiler": "scripts/skill-source-compiler.mjs" };
@@ -10427,6 +10427,11 @@ var renderCommands = (loaded) => {
 		return `### CLI command: \`${command.command}\`\n${details.join("\n\n")}`;
 	}).join("\n\n")}`;
 };
+var firstNonEmptyLine = (value) => {
+	for (const line of value.split(/\r?\n/u)) if (line.trim().length > 0) return line.trim();
+	return null;
+};
+var overviewProvidesTopLevelHeading = (value) => /^##\s+\S/u.test(firstNonEmptyLine(value) ?? "");
 /**
 * Renders the generated SKILL.md content.
 */
@@ -10444,7 +10449,8 @@ var renderSkillMarkdown = (loaded) => {
 		"## When NOT to use this skill",
 		renderBulletList(source.sections.whenNotToUse)
 	];
-	if (overview !== null && overview.length > 0) parts.push("## Overview", overview);
+	if (overview !== null && overview.length > 0 && overviewProvidesTopLevelHeading(overview)) parts.push(overview);
+	else if (overview !== null && overview.length > 0) parts.push("## Overview", overview);
 	const workflow = source.sections.workflow.map((stage) => {
 		const lines = [
 			`### Workflow stage: ${stage.title}`,

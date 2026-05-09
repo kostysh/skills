@@ -83,6 +83,36 @@ void test('checkCompiledSkill accepts source bundles without active references',
   }
 });
 
+void test('regenerateSourceBundle preserves overview fragments that start with a level-two heading', async () => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'skillforge-check-overview-heading-'));
+  const sourceRoot = join(tempRoot, 'heading-overview-skill');
+
+  try {
+    await mkdir(join(sourceRoot, 'fragments'), { recursive: true });
+    await writeFile(
+      join(sourceRoot, 'skill.yaml'),
+      `${noReferenceManifest('heading-overview-skill')}
+fragments:
+  overview: fragments/overview.md
+`,
+      'utf8',
+    );
+    await writeFile(
+      join(sourceRoot, 'fragments/overview.md'),
+      '## Scope\n\nCustom scoped content.\n',
+      'utf8',
+    );
+
+    await regenerateSourceBundle(sourceRoot);
+
+    const skill = await readFile(join(sourceRoot, 'SKILL.md'), 'utf8');
+    assert.match(skill, /## Scope\n\nCustom scoped content\./u);
+    assert.doesNotMatch(skill, /## Overview\n\n## Scope/u);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
 void test('checkCompiledSkill accepts compiled skills without reference links', async () => {
   const tempRoot = await mkdtemp(join(tmpdir(), 'skillforge-check-no-reference-compiled-'));
   const sourceRoot = join(tempRoot, 'simple-skill');
