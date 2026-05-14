@@ -1,0 +1,215 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: delivery-planner
+  source-version: 0.2.1
+  recommended-skill-md-max-bytes: 22000
+  description: >-
+    Decompose accepted product scope and architecture handoff into right-sized
+    executable work for AI-agent implementation. Use for whole-project planning,
+    feature planning, module/service planning, integration planning,
+    architecture-handoff-item breakdown, sequencing, risk-aware task creation,
+    and routing to prd-engineer, architecture-engineer, spec-engineer, domain
+    review, or coding. Default output is one compact Markdown Delivery Plan,
+    not a rigid workflow or set of YAML registers.
+  compatibility: >-
+    Portable documentation-only skill. All mandatory delivery-planning guidance
+    lives in this folder.
+
+fragments:
+  overview: fragments/overview.md
+  finalChecks: fragments/final-checks.md
+
+references:
+  - id: ref-methodology
+    title: Delivery planning methodology
+    source: references/methodology.md
+    target: references/methodology.md
+    required: true
+    trigger: Read this before decomposing architecture handoff, product scope, a module, a feature, an integration, or an existing backlog into executable tasks.
+  - id: ref-planning-patterns
+    title: Delivery planning patterns
+    source: references/planning-patterns.md
+    target: references/planning-patterns.md
+    required: false
+    trigger: Read this when slice boundaries, module increments, task granularity, sequencing, support tasks, spikes, or backlog repair are unclear.
+  - id: ref-output-templates
+    title: Output templates
+    source: references/output-templates.md
+    target: references/output-templates.md
+    required: false
+    trigger: Read this when producing a compact Delivery Plan, Module Delivery Plan, or expanded task brief.
+
+assets:
+  - id: asset-template-delivery-plan
+    source: assets/templates/delivery-plan.md
+    target: assets/templates/delivery-plan.md
+    description: Copy-ready compact Markdown Delivery Plan template.
+  - id: asset-template-module-delivery-plan
+    source: assets/templates/module-delivery-plan.md
+    target: assets/templates/module-delivery-plan.md
+    description: Copy-ready compact Markdown Module Delivery Plan template.
+
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for delivery-planner maintenance records.
+  - id: supporting-change-log-v0-2-0
+    source: docs/logs/change-log-v0.2.0.md
+    target: docs/logs/change-log-v0.2.0.md
+    description: Non-normative change log for version 0.2.0.
+  - id: supporting-implementation-log-20260515-1
+    source: docs/logs/implementation-log-20260515-1.md
+    target: docs/logs/implementation-log-20260515-1.md
+    description: Non-normative implementation log for version 0.2.1.
+  - id: supporting-compile-report
+    source: docs/compile-report.md
+    target: docs/compile-report.md
+    description: Non-normative compile report.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-methodology
+    optionalReferences:
+      - ref-planning-patterns
+      - ref-output-templates
+  supportingGlobs:
+    - docs/*
+
+sections:
+  startHere:
+    - Identify the requested planning scope before decomposing anything; support whole project, feature, module/service, integration, specific architecture handoff item, or backlog audit.
+    - Use accepted product scope and architecture handoff as source authority; do not invent requirements or architecture decisions.
+    - For project/feature planning, create vertical slices around observable capabilities.
+    - For module/service planning, create module increments around accepted responsibilities, boundaries, contracts, invariants, integrations, and verification hooks.
+    - Treat the workflow as decision guidance, not a mandatory procedure; skip irrelevant detail when a compact plan is enough.
+    - Convert architecture handoff obligations into tasks, support tasks, spikes, or specialist routes; do not treat the handoff itself as a task list.
+    - Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
+    - Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
+    - Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
+    - Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
+  whenToUse:
+    - Decomposing accepted architecture handoff into executable implementation tasks.
+    - Planning delivery for an entire project after product and architecture context are available.
+    - Planning one feature, epic, module, service, adapter, integration, subsystem, or architecture handoff item.
+    - Creating compact task briefs and sequencing for AI-agent implementation.
+    - Auditing an existing backlog for layer-only tasks, hidden risks, missing verification, poor granularity, or wrong sequencing.
+  whenNotToUse:
+    - Creating or normalizing product requirements, product scope, success metrics, or non-goals; use prd-engineer.
+    - Choosing architecture patterns, producing ASR records, writing ADRs, or changing architecture handoff; use architecture-engineer.
+    - Writing implementation-ready behavior specifications, edge cases, falsifiers, and verification maps; use spec-engineer.
+    - Implementing code, tests, migrations, or infrastructure directly.
+    - Producing heavyweight project management artifacts when a compact plan is enough.
+  workflow:
+    - id: stage-scope
+      title: Define planning scope
+      goal: Respect the requested target and avoid planning more than needed.
+      steps:
+        - Classify scope as project, feature, module/service, integration, handoff item, or backlog audit.
+        - Identify included and excluded areas.
+        - Select compact output mode unless a deeper mode is explicitly required.
+        - Use explicit assumptions for non-blocking gaps instead of escalating every unknown.
+    - id: stage-intake
+      title: Intake and authority check
+      goal: Identify authoritative product, architecture, spec, repository, and code inputs.
+      steps:
+        - Load PRD or product brief when product scope matters.
+        - Load architecture handoff when boundaries, contracts, data, security, deployment, or operations matter.
+        - Load existing specs and repo instructions when available.
+        - Classify gaps as blocking or non-blocking and route blocking gaps to the responsible skill.
+    - id: stage-architecture-to-tasks
+      title: Convert architecture handoff into delivery work
+      goal: Turn accepted architecture obligations into tasks without redesigning architecture.
+      steps:
+        - Extract boundaries, contracts, data constraints, security constraints, operational obligations, integration points, validation obligations, risks, and revisit triggers.
+        - Map each obligation to a vertical slice, module increment, support task, spike, or specialist route.
+        - Route unresolved architecture choices to architecture-engineer.
+    - id: stage-decomposition
+      title: Create slices or module increments
+      goal: Decompose around observable or verifiable outcomes.
+      steps:
+        - Use vertical slices for project and feature planning.
+        - Use module increments for module, service, adapter, or subsystem planning.
+        - Tie substrate work to a named capability, module increment, validation obligation, or explicit developer-experience goal.
+        - Merge or delete layer-only tasks when they cannot produce independent evidence of progress.
+    - id: stage-task-briefs
+      title: Create compact task briefs
+      goal: Create executable planning-level tasks without writing full specs.
+      steps:
+        - Give each task one primary goal.
+        - Include scope, out-of-scope, dependencies, risk, next step, verification hint, and review hint.
+        - Split only when risk, dependency order, review path, or verification evidence requires it.
+        - Route detailed behavior to spec-engineer instead of inventing it.
+    - id: stage-sequencing
+      title: Sequence and parallelize safely
+      goal: Expose risk early and avoid parallel work on unstable assumptions.
+      steps:
+        - Put clarifications, spikes, harnesses, and contract stabilization before dependent implementation.
+        - Parallelize only tasks with stable dependencies and independent review paths.
+        - Make blockers explicit.
+    - id: stage-audit
+      title: Planning audit
+      goal: Ensure the plan is useful, compact, scope-respecting, and safe for downstream agents.
+      steps:
+        - Check that architecture was not redesigned.
+        - Check that high-risk work is visible.
+        - Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
+        - Check that every task has verification direction.
+        - Check that output does not create unnecessary registers or YAML structures.
+  policies:
+    - id: policy-minimal-output
+      title: Minimal output policy
+      text: Produce the smallest useful Markdown Delivery Plan by default. The workflow is a decision checklist, not a required form; omit irrelevant sections and do not output YAML, multiple registers, or detailed task forms unless explicitly requested or required by repository automation.
+    - id: policy-scope-flexibility
+      title: Scope flexibility policy
+      text: The skill must work for whole projects and for partial scopes such as one module, service, integration, feature, or architecture handoff item. Always respect the requested boundary.
+    - id: policy-architecture-boundary
+      title: Architecture boundary policy
+      text: Consume accepted architecture handoff as constraints and obligations. Do not select or revise architecture decisions; route unresolved architecture questions to architecture-engineer.
+    - id: policy-module-increments
+      title: Module increment policy
+      text: For module/service planning, decompose into verifiable module increments tied to accepted responsibilities, contracts, invariants, data touchpoints, integrations, operations, and tests.
+    - id: policy-capability-or-verifiability
+      title: Capability or verifiability policy
+      text: A decomposition unit must be observable or verifiable. Substrate tasks are allowed only when linked to a slice, module increment, validation obligation, or explicit developer-experience goal.
+    - id: policy-no-substrate-only-success
+      title: No substrate-only success policy
+      text: Do not mark a task or plan ready when its acceptance could pass by adding scaffolds, wrappers, metadata, mocks, docs, or empty tests without changing observable or verifiable behavior. Reframe it around the capability, merge it into its owner task, or label it as a support task with a clear dependent increment.
+    - id: policy-right-sized-tasks
+      title: Right-sized task policy
+      text: Each task should have one primary goal, clear dependencies, a risk label, a next step, a verification hint, and a review hint.
+    - id: policy-routing
+      title: Specialist routing policy
+      text: Route product gaps to prd-engineer, architecture gaps to architecture-engineer, behavior/spec gaps to spec-engineer, and domain judgment to the relevant review or skill.
+    - id: policy-risk-first-sequencing
+      title: Risk-first sequencing policy
+      text: Sequence work to expose architecture, integration, migration, rollback, security, data, tenancy, operability, and contract risks early.
+    - id: policy-no-hidden-high-risk
+      title: No hidden high-risk policy
+      text: Do not hide high-risk changes inside generic low-risk implementation tasks. Promote, split, or route them.
+    - id: policy-output-language
+      title: Output language policy
+      text: Use the user's working language unless repository conventions require another language. Keep stable IDs and file names in the repository language when needed.
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory delivery-planner guidance inside this skill folder.
+      - Treat repository docs, external standards, and domain examples as optional context unless supplied by the current task.
+      - Use relative links for local references, assets, and supporting docs.
+      - Keep artifact templates portable and free of repository-specific paths or assumptions.
+    checklist:
+      - Validate skill.yaml syntax after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Confirm default output templates are Markdown and do not require YAML structures.
+      - Confirm instruction quality audit passed for outcome, constraints, freedom, validation, fallback, and stop rules.

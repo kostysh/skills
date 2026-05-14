@@ -1,0 +1,25 @@
+# delivery-planner docs
+
+This directory contains non-normative maintenance records for the `delivery-planner` skill.
+
+Default active guidance lives in:
+
+- `SKILL.md`
+- `references/methodology.md`
+
+Optional guidance is loaded only when its trigger applies:
+
+- `references/planning-patterns.md`
+- `references/output-templates.md`
+
+Compiler source fragments are source-bundle inputs, not standalone operating instructions:
+
+- `fragments/overview.md`
+- `fragments/final-checks.md`
+
+Maintenance records:
+
+| Record | Status | Notes |
+| --- | --- | --- |
+| `logs/change-log-v0.2.0.md` | Historical | v0.2.0 framing notes. |
+| `logs/implementation-log-20260515-1.md` | PASS | v0.2.1 compiler alignment and instruction-quality refinement. |

@@ -1,0 +1,30 @@
+# Compile report
+Generated from `skill.yaml`.
+
+## Versions
+- Skill source version: `0.2.1`
+
+## Source files
+- `agents/openai.yaml`
+- `assets/templates/delivery-plan.md`
+- `assets/templates/module-delivery-plan.md`
+- `docs/README.md`
+- `docs/compile-report.md`
+- `docs/logs/change-log-v0.2.0.md`
+- `docs/logs/implementation-log-20260515-1.md`
+- `fragments/final-checks.md`
+- `fragments/overview.md`
+- `references/methodology.md`
+- `references/output-templates.md`
+- `references/planning-patterns.md`
+- `skill.yaml`
+
+## Required references
+- `references/methodology.md`
+
+## Warnings
+- none
+
+## Notes
+- This document is supporting output only.
+- It does not override `SKILL.md`.
