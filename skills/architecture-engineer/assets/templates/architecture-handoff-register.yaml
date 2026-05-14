@@ -1,0 +1,9 @@
+architecture_handoff_register:
+  - id: AHI-<number>
+    kind: spec_candidate | spike | validation_obligation | migration_constraint | security_constraint | observability_requirement | rollout_constraint | documentation_update | architecture_revisit_trigger
+    title: "<handoff title>"
+    linked_asr:
+      - <ASR ID>
+    linked_decision:
+      - <pattern decision or ADR ID>
+    next_stage_owner: spec-engineer

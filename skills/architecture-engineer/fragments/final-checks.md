@@ -1,0 +1,12 @@
+- Product requirements are separated from implementation choices.
+- Capability and substrate are not conflated.
+- ASR are explicit and linked to evidence.
+- Scope and risk classification are stated.
+- Candidate patterns were considered for significant decisions.
+- Selected pattern is the simplest reversible option that satisfies ASR.
+- Alternatives, consequences, confidence, and revisit triggers are visible.
+- High-risk decisions have quality scenarios, spikes, or validation plan.
+- Data, API, auth, tenant isolation, integration, deployment, and observability implications are covered when relevant.
+- Decision weight is appropriate: inline note, pattern decision, or ADR.
+- Architecture output produces architecture-to-spec handoff, not implementation task backlog.
+- Handoff items use `architecture_handoff_item`, not task-backlog naming.

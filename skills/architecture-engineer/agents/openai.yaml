@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Engineer"
+  short_description: "Design right-sized software architecture"
+  default_prompt: "Use $architecture-engineer to turn these requirements into architecture decisions, constraints, and handoff items."

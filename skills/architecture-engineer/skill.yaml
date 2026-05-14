@@ -1,0 +1,360 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: architecture-engineer
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 26000
+  description: >-
+    Design or revise software architecture for AI-agent-driven development. Use
+    when a PRD, feature, specification, repository change, integration, data
+    change, security concern, deployment change, or implementation finding
+    requires architectural judgment: architecturally significant requirements,
+    system/component pattern selection, boundaries, trade-offs, quality
+    scenarios, spikes, ADRs, and architecture-to-specification handoff. This
+    skill creates architectural frames and constraints, not implementation task
+    backlogs.
+  compatibility: >-
+    Portable documentation-only skill. It ships artifact templates but no
+    runtime; all mandatory architecture guidance lives in this folder.
+
+fragments:
+  overview: fragments/overview.md
+  finalChecks: fragments/final-checks.md
+
+references:
+  - id: ref-methodology
+    title: Architecture methodology
+    source: references/methodology.md
+    target: references/methodology.md
+    required: true
+    trigger: Read this before medium/high-risk architecture work, ASR extraction, pattern selection, decision records, quality scenarios, spikes, or architecture-to-spec handoff.
+  - id: ref-artifact-templates
+    title: Artifact templates
+    source: references/artifact-templates.md
+    target: references/artifact-templates.md
+    required: false
+    trigger: Read this when producing an architecture check, delta, ASR register, pattern decision, ADR, quality scenario, spike brief, architecture brief, or handoff item/register.
+  - id: ref-pattern-catalog
+    title: Pattern catalog
+    source: references/pattern-catalog.md
+    target: references/pattern-catalog.md
+    required: false
+    trigger: Read this when architecture forces require comparing system, frontend, backend, data, integration, security, privacy, observability, deployment, or delivery-safety patterns.
+
+assets:
+  - id: asset-template-architecture-check
+    source: assets/templates/architecture-check.md
+    target: assets/templates/architecture-check.md
+    description: Copy-ready template for a low-risk architecture check.
+  - id: asset-template-architecture-delta
+    source: assets/templates/architecture-delta.md
+    target: assets/templates/architecture-delta.md
+    description: Copy-ready template for a medium-risk architecture delta.
+  - id: asset-template-architecture-brief
+    source: assets/templates/architecture-brief.md
+    target: assets/templates/architecture-brief.md
+    description: Copy-ready template for a new-system or major-redesign architecture brief.
+  - id: asset-template-asr-record
+    source: assets/templates/asr-record.yaml
+    target: assets/templates/asr-record.yaml
+    description: Copy-ready template for an architecturally significant requirement record.
+  - id: asset-template-pattern-decision
+    source: assets/templates/pattern-decision.md
+    target: assets/templates/pattern-decision.md
+    description: Copy-ready template for a lightweight pattern decision.
+  - id: asset-template-adr
+    source: assets/templates/adr.md
+    target: assets/templates/adr.md
+    description: Copy-ready template for an Architectural Decision Record.
+  - id: asset-template-quality-scenario
+    source: assets/templates/quality-scenario.md
+    target: assets/templates/quality-scenario.md
+    description: Copy-ready template for a quality scenario.
+  - id: asset-template-spike-brief
+    source: assets/templates/spike-brief.md
+    target: assets/templates/spike-brief.md
+    description: Copy-ready template for a bounded architecture spike.
+  - id: asset-template-handoff-item
+    source: assets/templates/architecture-handoff-item.yaml
+    target: assets/templates/architecture-handoff-item.yaml
+    description: Copy-ready template for a single architecture-to-spec handoff item.
+  - id: asset-template-handoff-register
+    source: assets/templates/architecture-handoff-register.yaml
+    target: assets/templates/architecture-handoff-register.yaml
+    description: Copy-ready template for multiple architecture-to-spec handoff items.
+
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for architecture-engineer maintenance records.
+  - id: supporting-implementation-log-20260514-1
+    source: docs/logs/implementation-log-20260514-1.md
+    target: docs/logs/implementation-log-20260514-1.md
+    description: Non-normative implementation log for initial architecture-engineer creation.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-methodology
+    optionalReferences:
+      - ref-artifact-templates
+      - ref-pattern-catalog
+  supportingGlobs:
+    - docs/*
+
+sections:
+  startHere:
+    - Determine whether the task actually needs architecture work; do not create architecture artifacts for trivial local implementation work.
+    - Separate capability from substrate; architecture must enable observable behavior or clearly label itself as constraints and handoff, not completed capability.
+    - Load the smallest sufficient context from PRD, specs, repository instructions, code, tests, migrations, infra, CI, docs, and existing ADRs.
+    - Classify scope and risk before choosing patterns.
+    - Separate product requirements from implementation choices.
+    - Extract architecturally significant requirements and forces.
+    - Select the simplest reversible pattern that satisfies current ASR and fits the existing system.
+    - Validate high-risk decisions with quality scenarios or bounded spikes.
+    - Record only decision rationale that will matter later.
+    - Produce architecture-to-spec handoff items, not implementation tickets, and state revisit triggers.
+  whenToUse:
+    - Creating initial architecture after a PRD or feature brief.
+    - Turning PRD requirements into architecturally significant requirements.
+    - Choosing system-level patterns such as modular monolith, service-based architecture, microservices, event-driven architecture, CQRS-lite, tenancy model, or deployment topology.
+    - Choosing component-level patterns for frontend, backend, data, integrations, security, privacy, observability, or delivery safety.
+    - Designing architecture for a vertical slice before implementation specs.
+    - Reviewing medium-risk or high-risk specs for architecture consistency.
+    - Writing pattern decisions, design notes, or ADRs.
+    - Planning spikes for uncertain architecture choices.
+    - Creating architecture-to-spec handoff items from architecture decisions.
+    - Handling implementation feedback that changes boundaries, contracts, data, auth, deployment, observability, or selected patterns.
+  whenNotToUse:
+    - Writing product requirements where the main issue is users, product scope, success metrics, or rollout; use `prd-engineer`.
+    - Writing implementation-ready behavior specs for a bounded task when architecture decisions are already known; use `spec-engineer`.
+    - Implementing code directly when the task is low-risk and unambiguous.
+    - Producing heavyweight architecture documentation when a short decision note is enough.
+    - Creating formal safety-critical, regulated, or legal architecture without domain-specific review.
+    - Making technology choices before requirements, constraints, and architectural forces are explicit.
+    - Decomposing architecture into implementation tickets, sprint backlog, estimates, or owner assignments.
+  workflow:
+    - id: stage-classify-architecture-need
+      title: Classify architecture need
+      goal: Avoid both under-design and ceremony by identifying architectural impact, scope, risk, and the smallest useful output.
+      steps:
+        - Identify whether the task changes component boundaries, public contracts, persistent data, auth/security, tenant isolation, integration topology, deployment, observability, cost, or operability.
+        - Classify scope as code-level, component-level, container-level, system-level, or organization-level.
+        - Classify risk as low, medium, or high; criticality overrides size.
+        - Choose output depth from the right-sized rigor table in the methodology reference.
+      validation:
+        - Low-risk tasks are not forced through architecture ceremony.
+        - Medium/high-risk tasks cannot proceed without architecture context.
+        - Small but critical tasks are escalated when blast radius is high.
+    - id: stage-load-context
+      title: Load context and evidence
+      goal: Prevent architecture guesses by grounding claims in source material, repository conventions, or explicit assumptions.
+      steps:
+        - For existing systems, inspect project instructions, relevant docs, existing ADRs, scripts, CI/CD, deployment, infra, schemas, migrations, API contracts, routes, tests, and affected code.
+        - For greenfield work, inspect PRD or product brief, users, core scenarios, product metrics, non-goals, runtime, platform, team, cost, compliance, and delivery constraints.
+        - Identify source authority, reliability, confidence, and missing evidence before selecting patterns.
+      validation:
+        - Architecture claims are linked to evidence, source material, or explicit assumptions.
+        - Existing repo conventions are known before proposing new patterns.
+        - Missing context is labeled by confidence and validation method.
+    - id: stage-normalize-requirements
+      title: Normalize architecture-relevant requirements
+      goal: Translate product or task input into architecture-ready requirements without rewriting the whole PRD.
+      steps:
+        - Identify the product requirement or task capability.
+        - Separate requirement from implementation choice; turn technology suggestions into the force they are meant to satisfy unless externally mandated.
+        - Capture actor, trigger, main flow, edge cases, out of scope, acceptance, metric, priority, and source where they affect architecture.
+        - Mark missing NFR targets as TBD instead of inventing them.
+      validation:
+        - Each architecture-relevant requirement traces to PRD, spec, issue, code, policy, or explicit assumption.
+        - Requirements do not silently prescribe technology without rationale.
+        - Open questions are separated into blocking, non-blocking, and validation gaps.
+    - id: stage-extract-asr-forces
+      title: Extract ASR and forces
+      goal: Identify what actually shapes the system and what validation each force needs.
+      steps:
+        - Extract ASR for performance, availability, recoverability, security, privacy, data consistency, integrations, evolvability, operations, cost, and delivery.
+        - Map each ASR to concrete forces such as latency, throughput, consistency, coupling, volatility, failure mode, team topology, cost, security, privacy, or operability.
+        - Estimate architectural risk and confidence.
+        - Identify whether each ASR requires a spike, pattern decision, ADR, quality scenario, or only a handoff constraint.
+      validation:
+        - ASR register is shorter than the full requirement list.
+        - Each ASR explains why architecture shape is affected.
+        - Forces are specific enough to guide pattern choice.
+        - ASR records do not prescribe tasks; they describe architecture-shaping requirements.
+    - id: stage-select-pattern
+      title: Generate, score, and select patterns
+      goal: Compare credible options before selecting the simplest reversible pattern that satisfies the ASR.
+      steps:
+        - Determine decision scope before comparing options; do not lift a local choice to system-level unless ASR forces it.
+        - Create at least two candidates for significant decisions and include the simplest baseline unless it clearly cannot satisfy ASR.
+        - Score significant decisions using ASR fit, simplicity, reversibility, codebase fit, team/ops fit, failure visibility, security/privacy fit, and cost fit.
+        - "Use tie-breakers: simpler option, more reversible option under uncertainty, more observable option when failures matter, and existing conventions unless they conflict with ASR."
+      validation:
+        - Candidate set includes alternatives with different trade-offs.
+        - Candidate patterns are selected because of forces, not naming preference.
+        - Alternatives are not strawmen; selected pattern has rationale, consequences, confidence, and revisit triggers.
+    - id: stage-validate-decisions
+      title: Validate with quality scenarios or spikes
+      goal: Avoid false confidence for high-risk or weak-evidence decisions.
+      steps:
+        - Use quality scenarios for known quality attributes such as latency, availability, recoverability, security, privacy, consistency, or operability.
+        - Use spikes for unknown feasibility and keep each spike tied to a decision it will unblock.
+        - Do not write a final ADR before a necessary spike produces evidence.
+      validation:
+        - High-risk ASR has at least one scenario or explicit validation path.
+        - Spike has a bounded question, success criteria, and expected output.
+        - Validation focuses on the ASR that drove the pattern, not only generic CI success.
+    - id: stage-record-and-handoff
+      title: Record decisions and produce handoff
+      goal: Preserve useful rationale and transfer constraints to `spec-engineer` without creating implementation tickets.
+      steps:
+        - "Choose decision record weight: inline note, pattern decision, or ADR."
+        - Include alternatives, consequences, validation, migration or rollback considerations, confidence, and revisit triggers when the decision weight requires them.
+        - Produce architecture handoff items for constraints, invariants, validation obligations, rollback/migration considerations, documentation obligations, or spec candidates.
+        - Use `not_prescribed` when the architecture intentionally leaves implementation freedom.
+      validation:
+        - ADR exists only when decision weight justifies it.
+        - Handoff items are clearly not implementation tasks.
+        - "`spec-engineer` can write behavior-level specs without reselecting architecture patterns."
+    - id: stage-review-and-revisit
+      title: Review and revisit
+      goal: Keep architecture current without rewriting docs unnecessarily.
+      steps:
+        - Revisit architecture when spec changes boundaries, data, public contracts, auth, tenancy, deployment, or external dependencies.
+        - Revisit when implementation reveals drift, a spike invalidates an assumption, an ASR quality gate fails, production incidents expose a wrong assumption, or an ADR revisit trigger fires.
+        - "Update only the artifact whose decision changed: PRD for product scope, ASR register or brief for new forces, pattern decision or ADR for decision change, spec for behavior change, architecture delta for invariant-preservation failure."
+      validation:
+        - Architecture documents change only when decisions change.
+        - Stale ADRs are superseded or revisited when triggers fire.
+        - Retro output produces a concrete improvement or an explicit no-op rationale.
+  interop:
+    - id: interop-prd
+      domain: product requirements, success metrics, scope, non-goals, rollout, and product-level acceptance
+      winner: prd-engineer
+      rationale: architecture-engineer consumes PRD material and extracts ASR; it does not own product discovery or product scope.
+    - id: interop-architecture
+      domain: ASR extraction, architecture forces, pattern selection, boundaries, trade-offs, ADRs, design notes, and architecture-to-spec handoff
+      winner: architecture-engineer
+      rationale: this skill owns architecture frames and constraints before behavior-level specs are written.
+    - id: interop-spec
+      domain: behavior-level implementation specifications, atomic normative requirements, edge cases, falsifiers, and verification maps
+      winner: spec-engineer
+      rationale: architecture-engineer hands off constraints and obligations; spec-engineer turns them into implementation-ready behavior specs.
+    - id: interop-domain
+      domain: framework, security, data, ML, infrastructure, regulatory, or product-domain facts
+      winner: the relevant domain skill
+      rationale: domain skills own specialized technical facts; architecture-engineer uses them to choose patterns and constraints.
+    - id: interop-planning
+      domain: implementation backlog, sequencing, estimates, and ticket structure
+      winner: planning or implementation workflow stages
+      rationale: architecture-engineer may identify workstreams or spec candidates, but must not emit task backlogs.
+  commands: []
+  gotchas:
+    - id: gotcha-pattern-name-chasing
+      priority: high
+      text: Pattern name chasing selects microservices, CQRS, event sourcing, GraphQL, or edge runtime by popularity rather than ASR.
+    - id: gotcha-premature-distribution
+      priority: high
+      text: Premature distribution splits services without team topology, scaling, reliability, or ownership reason.
+    - id: gotcha-hidden-assumptions
+      priority: high
+      text: Do not treat unknown latency, throughput, provider behavior, data sensitivity, or team capacity as known.
+    - id: gotcha-adr-theater
+      priority: high
+      text: ADR theater means writing ADRs for every minor choice or writing final ADRs before evidence exists.
+    - id: gotcha-security-afterthought
+      priority: high
+      text: Do not design data, API, or integration first and check auth, tenant isolation, secrets, or audit later.
+    - id: gotcha-async-no-idempotency
+      priority: high
+      text: Async without idempotency adds queues or retries without dedupe, ordering, poison-message handling, observability, or DLQ.
+    - id: gotcha-caching-no-freshness
+      priority: high
+      text: Caching without freshness adds cache without invalidation, consistency expectations, and freshness SLO.
+    - id: gotcha-handoff-backlog
+      priority: high
+      text: Handoff as task backlog writes implementation tickets under architecture output instead of constraints and spec candidates.
+    - id: gotcha-spec-reinvents-architecture
+      priority: medium
+      text: Do not let task specs choose a new data model or integration pattern without architecture delta.
+    - id: gotcha-big-architecture-doc
+      priority: medium
+      text: One big architecture document that does not affect decisions, tests, or handoff obligations is noise.
+    - id: gotcha-ignore-repo-conventions
+      priority: medium
+      text: Do not introduce new layering, framework, or naming style without checking existing code.
+    - id: gotcha-gates-disconnected
+      priority: medium
+      text: Quality gates are weak when CI passes but does not validate the scenario that drove the pattern.
+    - id: gotcha-local-optimum
+      priority: medium
+      text: Improving one component while violating system-level constraints is a local optimum, not good architecture.
+  policies:
+    - id: policy-evidence-first
+      title: Evidence-first policy
+      text: Do not present architecture assumptions as facts. Link claims to PRD, repository evidence, existing docs, code, tests, constraints, or explicit assumptions with confidence.
+    - id: policy-requirements-before-patterns
+      title: Requirements-before-patterns policy
+      text: Do not select technology or architecture patterns until requirements, ASR, and forces are explicit enough to justify the choice.
+    - id: policy-minimum-sufficient
+      title: Minimum sufficient architecture policy
+      text: Prefer the smallest architecture artifact and simplest pattern that prevents material implementation mistakes and satisfies current ASR.
+    - id: policy-reversibility
+      title: Reversibility policy
+      text: When alternatives have similar ASR fit, choose the more reversible option. For hard-to-reverse choices, record consequences, migration path, and revisit triggers.
+    - id: policy-existing-system-fit
+      title: Existing-system fit policy
+      text: Respect existing repository conventions unless they conflict with requirements or create unacceptable risk. Do not introduce a cleaner pattern that fragments the codebase without a requirement-driven reason.
+    - id: policy-spike-before-commitment
+      title: Spike-before-commitment policy
+      text: When a high-risk decision depends on missing evidence, propose a bounded spike before writing a final ADR.
+    - id: policy-handoff
+      title: Architecture-to-spec handoff policy
+      text: Every significant architecture decision must produce clear constraints, invariants, validation obligations, rollback/migration considerations, or documentation obligations for the next stage.
+    - id: policy-no-backlog
+      title: No task backlog policy
+      text: Do not emit implementation tickets from this skill. Use `architecture_handoff_item` for downstream spec candidates or obligations. Leave task decomposition to `spec-engineer`, planning, or implementation workflow stages.
+    - id: policy-light-traceability
+      title: Lightweight traceability policy
+      text: "Use short ID chains for medium/high-risk work: PRD requirement -> ASR -> pattern decision/ADR -> architecture handoff item -> spec requirement -> acceptance/verification."
+    - id: policy-output-language
+      title: Output language policy
+      text: Use the user's working language unless repository conventions require another language. Keep stable technical identifiers in the repository language when needed.
+    - id: policy-stop-escalation
+      title: Stop or escalation rules
+      text: |-
+        Ask one focused question or mark human review required when:
+
+        - product requirements conflict in a way that changes architecture;
+        - implementation would require choosing between incompatible security, privacy, compliance, data-loss, or compatibility outcomes;
+        - a public API, identity model, tenant isolation model, data model, migration strategy, secrets handling, or deployment topology would change;
+        - a new paid or operationally significant external dependency is introduced;
+        - a required external contract is missing and cannot be inferred safely;
+        - the architecture would weaken rollback, observability, audit, or security posture.
+
+        For non-blocking gaps, proceed with assumptions and validation steps.
+    - id: policy-output-contract
+      title: Output contract
+      text: For architecture work, return the smallest complete subset that fits the risk. A low-risk task may need only an architecture check; medium-risk work usually needs an architecture delta or pattern decision plus handoff; high-risk decisions need ASR, candidate comparison, quality scenarios or spikes, validation and rollback/migration notes, and an ADR only when justified.
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory architecture-engineer guidance inside this skill folder.
+      - Treat external standards, examples, and repository docs as optional context unless the current task supplies them.
+      - Use relative links for local references, assets, and supporting docs.
+      - Keep artifact templates portable and free of repository-specific paths or assumptions.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Confirm the artifact templates listed as assets are present and usable without external files.

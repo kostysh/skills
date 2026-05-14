@@ -1,0 +1,30 @@
+architecture_handoff_item:
+  id: AHI-<number>
+  kind: spec_candidate | spike | validation_obligation | migration_constraint | security_constraint | observability_requirement | rollout_constraint | documentation_update | architecture_revisit_trigger
+  title: "<handoff title>"
+  linked_prd:
+    - <PRD requirement ID>
+  linked_asr:
+    - <ASR ID>
+  linked_decision:
+    - <pattern decision or ADR ID>
+  architectural_intent: >
+    <Why this item exists and what downstream specs must preserve.>
+  constraints:
+    - <architecture constraint>
+  acceptance_constraints:
+    - <acceptance condition that protects architecture intent>
+  required_validation:
+    - <validation obligation>
+  observability_requirements:
+    - <metric, trace, log, dashboard, or runbook obligation>
+  rollback_constraints:
+    - <rollback or migration constraint>
+  next_stage_owner: spec-engineer
+  expected_next_output:
+    - <expected downstream specification>
+  not_prescribed:
+    - exact table names
+    - exact endpoint names
+    - exact class/function names
+    - exact queue implementation unless separately decided
