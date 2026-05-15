@@ -18,7 +18,7 @@ For a PRD review, lead with the gaps most likely to cause wrong implementation, 
 
 ## Reference Map
 
-Read [PRD template](references/prd-template.md) when creating a formal PRD artifact, expanding a draft, adding AI/security/rollout modules, or running a detailed quality check.
+Read [PRD template](references/prd-template.md) when creating a formal PRD artifact, expanding a draft, adding architecture handoff, AI/security/rollout modules, or running a detailed quality check.
 
 ## Contextual Reference Triggers
 
@@ -26,6 +26,8 @@ Open only the block that matches the task:
 
 - **Formal PRD skeleton, metadata, or minimal lifecycle:** use [PRD template](references/prd-template.md) sections `Core PRD Skeleton` and `Minimal Lifecycle`.
 - **Claims that depend on research, metrics, designs, or decisions:** use [PRD template](references/prd-template.md) section `Evidence and Related Work`.
+- **Product metrics, quality guardrails, release phases, or owner attributes:** use [PRD template](references/prd-template.md) sections `Metrics and Quality Guardrails` and `Requirement Quality Checklist`.
+- **Architecture handoff, external systems, or data classification:** use [PRD template](references/prd-template.md) section `Architecture Handoff Module`.
 - **Handoff to engineering, QA, or later conformance review:** use [PRD template](references/prd-template.md) section `Requirement Quality Checklist` for requirement attributes and traceability.
 - **Acceptance criteria review:** use [PRD template](references/prd-template.md) section `Acceptance Criteria Test`.
 - **AI, security, privacy, compliance, migration, or compatibility risk:** use [PRD template](references/prd-template.md) section `Optional Modules`.

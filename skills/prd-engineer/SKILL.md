@@ -4,12 +4,13 @@ description: Create, refine, and review Product Requirements Documents (PRDs),
   product specs, feature requirements, and AI feature requirements. Use when
   asked to write a PRD, turn a vague product idea into testable requirements,
   define scope and non-goals, create acceptance criteria, add rollout or success
-  metrics, handle AI evaluation requirements, or audit a PRD for ambiguity,
-  missing evidence, weak acceptance criteria, or scope risk.
+  metrics, prepare product input for architecture or specification handoff,
+  handle AI evaluation requirements, or audit a PRD for ambiguity, missing
+  evidence, weak acceptance criteria, or scope risk.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a851fde946ed1b2edcfdcd003069df8e9e2c006ba92b8130beb93257a3760cbc
+  skillforge-source-hash: 30800c95f01b572181441e4fb1208690ad3e9a7833669db81a5a10ed48166158
 ---
 
 # prd-engineer
@@ -19,7 +20,8 @@ metadata:
 1. Confirm whether the user needs a new PRD, a refinement, or a review of an existing PRD.
 2. Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
 3. Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
-4. Ask only focused discovery questions that would change scope, metrics, or acceptance; otherwise draft with explicit assumptions and TBDs.
+4. If the PRD feeds architecture, delivery planning, or implementation specs, surface architecture-relevant constraints and questions without choosing architecture patterns.
+5. Ask only focused discovery questions that would change scope, metrics, or acceptance; otherwise draft with explicit assumptions and TBDs.
 
 ## When to use this skill
 
@@ -28,6 +30,7 @@ metadata:
 - Defining scope, non-goals, user stories, acceptance criteria, success metrics, rollout, risks, or open questions.
 - Reviewing an existing PRD for ambiguity, missing evidence, unverifiable requirements, weak acceptance criteria, hidden scope, or missing AI evaluation.
 - Creating a compact one-pager, standard feature PRD, or extended PRD for high-risk, AI, platform, regulated, or multi-team work.
+- Preparing product-stage input for architecture, delivery planning, or implementation specification in a risk-adaptive development workflow.
 
 ## When NOT to use this skill
 
@@ -59,7 +62,7 @@ For a PRD review, lead with the gaps most likely to cause wrong implementation, 
 
 ## Reference Map
 
-Read [PRD template](references/prd-template.md) when creating a formal PRD artifact, expanding a draft, adding AI/security/rollout modules, or running a detailed quality check.
+Read [PRD template](references/prd-template.md) when creating a formal PRD artifact, expanding a draft, adding architecture handoff, AI/security/rollout modules, or running a detailed quality check.
 
 ## Contextual Reference Triggers
 
@@ -67,6 +70,8 @@ Open only the block that matches the task:
 
 - **Formal PRD skeleton, metadata, or minimal lifecycle:** use [PRD template](references/prd-template.md) sections `Core PRD Skeleton` and `Minimal Lifecycle`.
 - **Claims that depend on research, metrics, designs, or decisions:** use [PRD template](references/prd-template.md) section `Evidence and Related Work`.
+- **Product metrics, quality guardrails, release phases, or owner attributes:** use [PRD template](references/prd-template.md) sections `Metrics and Quality Guardrails` and `Requirement Quality Checklist`.
+- **Architecture handoff, external systems, or data classification:** use [PRD template](references/prd-template.md) section `Architecture Handoff Module`.
 - **Handoff to engineering, QA, or later conformance review:** use [PRD template](references/prd-template.md) section `Requirement Quality Checklist` for requirement attributes and traceability.
 - **Acceptance criteria review:** use [PRD template](references/prd-template.md) section `Acceptance Criteria Test`.
 - **AI, security, privacy, compliance, migration, or compatibility risk:** use [PRD template](references/prd-template.md) section `Optional Modules`.
@@ -94,8 +99,9 @@ Validation:
 Prevent a PRD from becoming a polished guess.
 
 1. Identify the core problem, target users, why now, current evidence, desired outcome, constraints, and success metrics.
-2. Ask the fewest concise questions needed when missing answers would materially change the PRD.
-3. If the user asks for an immediate draft, proceed with clearly labeled assumptions, TBDs, and open questions instead of inventing facts.
+2. Separate product success metrics from quality guardrails when reliability, performance, cost, security, or operations could affect later architecture or acceptance.
+3. Ask the fewest concise questions needed when missing answers would materially change the PRD.
+4. If the user asks for an immediate draft, proceed with clearly labeled assumptions, TBDs, and open questions instead of inventing facts.
 
 Validation:
 
@@ -121,9 +127,10 @@ Validation:
 Convert intent into buildable and reviewable requirements.
 
 1. Write requirements as atomic, clear, feasible, prioritized, and verifiable statements.
-2. Prefer IDs for standard or extended PRDs, especially when engineering, QA, or implementation review will trace against them.
-3. Pair user stories or capabilities with acceptance criteria that force observable behavior.
-4. Include non-functional requirements for performance, reliability, accessibility, security, privacy, cost, and operations when they affect success.
+2. Prefer IDs for standard or extended PRDs, especially when engineering, QA, architecture, or implementation review will trace against them.
+3. Add owner and release phase attributes when requirement ownership, MVP/beta/GA scope, or deferred behavior could change downstream decisions.
+4. Pair user stories or capabilities with acceptance criteria that force observable behavior.
+5. Include non-functional requirements for performance, reliability, accessibility, security, privacy, cost, and operations when they affect success.
 
 Validation:
 
@@ -136,11 +143,13 @@ Cover risk-specific requirements without turning every PRD into a master documen
 
 1. Add an AI module when outputs are probabilistic, model-driven, prompt-driven, retrieval-based, or evaluated by quality rather than deterministic logic.
 2. Add security, privacy, compliance, migration, GTM, support, or alternatives modules only when those topics affect scope, approval, delivery, or acceptance.
-3. Link to existing research, designs, epics, issues, experiments, and decisions instead of copying bulky context.
+3. Add architecture handoff inputs when the PRD may affect boundaries, contracts, data, security, tenancy, integration, deployment, observability, cost, operability, rollback, or long-term constraints.
+4. Link to existing research, designs, epics, issues, experiments, and decisions instead of copying bulky context.
 
 Validation:
 
 - Optional modules are justified by risk or decision value.
+- Architecture handoff content names product constraints and questions; it does not select architecture patterns, ASRs, ADRs, or deployment designs.
 - AI PRDs include evaluation strategy, quality thresholds, latency or cost guardrails, and failure handling.
 
 ### Workflow stage: Run PRD quality gate
@@ -160,6 +169,7 @@ Validation:
 
 - **capability versus substrate:** concept-conformance-reviewer. concept-conformance-reviewer owns fake-risk analysis when acceptance criteria or plans can pass without delivering the claimed capability.
 - **implementation against PRD:** spec-conformance-reviewer. spec-conformance-reviewer owns checking code or implementation evidence against an approved PRD.
+- **architecture-significant requirements, pattern decisions, and ADRs:** architecture-engineer. architecture-engineer owns translating product requirements into architecture decisions, constraints, quality scenarios, architecture handoff, and architecture drift handling.
 - **technical feasibility and domain-specific requirements:** the relevant domain skill. Domain skills own framework, security, data, ML, infrastructure, regulatory, or product-domain facts.
 - **documentation architecture:** documentation. documentation owns Diataxis and docs IA; this skill owns PRD content and requirements quality.
 
@@ -169,6 +179,7 @@ Validation:
 - **high** — Do not fabricate users, research, metrics, constraints, or technical decisions; mark them as assumptions, TBDs, or open questions.
 - **medium** — Do not over-prescribe implementation details when acceptance criteria and boundaries are enough.
 - **high** — AI feature PRDs need evaluation strategy and quality bars; a demo or prompt description is not enough.
+- **high** — Do not present candidate architecture-significant inputs as accepted ASRs, pattern decisions, ADRs, or implementation designs.
 - **medium** — For delivery PRDs, keep lifecycle tracking minimal but visible; status, owner, and next review are usually enough.
 
 ## Policies
@@ -184,6 +195,9 @@ Acceptance criteria must require observable behavior or measurable evidence, not
 
 ### Light traceability policy
 Use requirement IDs, owners, source links, statuses, and change notes when multiple people or later implementation review will depend on the PRD.
+
+### Architecture handoff policy
+PRDs may surface architecture-relevant product constraints, quality guardrails, external systems, data sensitivity, release phases, and blocking questions, but architecture-engineer owns ASR extraction and architecture decisions.
 
 ### Brevity policy
 In chat, keep outputs concise unless the user asks for a formal artifact; use the reference template for full documents.
