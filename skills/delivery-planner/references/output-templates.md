@@ -2,6 +2,14 @@
 
 Use these templates as flexible shapes, not mandatory forms. Prefer the smallest one that is useful. Delete rows or sections that do not help the downstream agent; do not expand a narrow request just to satisfy the template.
 
+## Repository artifact conventions
+
+Before creating a persistent Delivery Plan, Module Delivery Plan, expanded task brief, or backlog audit in a repository, check whether repo-local artifact conventions exist through AGENTS.md, README, CONTRIBUTING, or docs linked from them.
+
+If conventions exist, follow them for delivery plan path, delivery plan ID, module delivery plan ID, task brief persistence rules, metadata/front matter, source links, related artifact IDs, and module index updates. Do not hard-code a repository-specific path in these templates. If no convention exists, use the compact Markdown defaults below and state path assumptions only when writing files.
+
+Do not persist task briefs as separate files when the delivery plan table is sufficient and repo conventions do not require standalone task artifacts. Recommend standalone task briefs only when they have reuse, execution, or review value outside the current plan.
+
 ## Compact Delivery Plan
 
 ```md

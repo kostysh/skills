@@ -10,9 +10,9 @@ description: Decompose accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 232066a48ca76262a832c6ec81a70ad750b9b4ff85998d8d62390db8fc4648c2
+  skillforge-source-hash: 581b23946e90847ed76c487fc1d64c21a2ce94dd4cbc3128cfc7e3c49f72e7b8
 ---
 
 # delivery-planner
@@ -25,10 +25,11 @@ metadata:
 4. For module/service planning, create module increments around accepted responsibilities, boundaries, contracts, invariants, integrations, and verification hooks.
 5. Treat the workflow as decision guidance, not a mandatory procedure; skip irrelevant detail when a compact plan is enough.
 6. Convert architecture handoff obligations into tasks, support tasks, spikes, or specialist routes; do not treat the handoff itself as a task list.
-7. Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
-8. Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
-9. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
-10. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
+7. Before creating or recommending a persistent delivery plan, module delivery plan, task brief, or backlog audit artifact, check whether the current repository defines artifact conventions and follow them when present.
+8. Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
+9. Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
+10. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
+11. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
 
 ## When to use this skill
 
@@ -135,6 +136,9 @@ Ensure the plan is useful, compact, scope-respecting, and safe for downstream ag
 
 ### Minimal output policy
 Produce the smallest useful Markdown Delivery Plan by default. The workflow is a decision checklist, not a required form; omit irrelevant sections and do not output YAML, multiple registers, or detailed task forms unless explicitly requested or required by repository automation.
+
+### Repository artifact conventions policy
+When producing or recommending a persistent delivery plan, module delivery plan, expanded task brief, or backlog audit in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for artifact location, delivery-plan and module-plan IDs, task-brief persistence rules, metadata/front matter, source links, related artifact links, and module index updates. Do not hard-code one repository's paths into this skill. If no conventions exist, use this skill's compact Markdown defaults and state any location assumption only when writing files.
 
 ### Scope flexibility policy
 The skill must work for whole projects and for partial scopes such as one module, service, integration, feature, or architecture handoff item. Always respect the requested boundary.

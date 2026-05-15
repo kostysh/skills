@@ -11,9 +11,9 @@ description: "Design or revise software architecture for AI-agent-driven
 compatibility: Portable documentation-only skill. It ships artifact templates
   but no runtime; all mandatory architecture guidance lives in this folder.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: fb2fe2c2a6690b16709d4882fdcefec96d0e8975fa35007d7b3217c53e740483
+  skillforge-source-hash: 36c8ed931a593e4bbf969304ac3bd12bb5b34029bd290629f85e7b510ad7437c
 ---
 
 # architecture-engineer
@@ -279,6 +279,9 @@ When alternatives have similar ASR fit, choose the more reversible option. For h
 
 ### Existing-system fit policy
 Respect existing repository conventions unless they conflict with requirements or create unacceptable risk. Do not introduce a cleaner pattern that fragments the codebase without a requirement-driven reason.
+
+### Repository artifact conventions policy
+For persistent architecture artifacts, first discover repo-local conventions from AGENTS.md, README, CONTRIBUTING, or linked docs. Use them for location, IDs/prefixes, metadata, source/related links, and index updates; never hard-code repo paths. If none exist, use existing templates and state path assumptions only when writing files.
 
 ### Spike-before-commitment policy
 When a high-risk decision depends on missing evidence, propose a bounded spike before writing a final ADR.

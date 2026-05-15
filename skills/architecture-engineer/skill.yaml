@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise software architecture for AI-agent-driven development. Use
@@ -99,6 +99,10 @@ supporting:
     source: docs/logs/implementation-log-20260514-1.md
     target: docs/logs/implementation-log-20260514-1.md
     description: Non-normative implementation log for initial architecture-engineer creation.
+  - id: supporting-implementation-log-20260515-1
+    source: docs/logs/implementation-log-20260515-1.md
+    target: docs/logs/implementation-log-20260515-1.md
+    description: Non-normative implementation log for repository artifact convention guidance.
 
 surfaces:
   active:
@@ -314,6 +318,9 @@ sections:
     - id: policy-existing-system-fit
       title: Existing-system fit policy
       text: Respect existing repository conventions unless they conflict with requirements or create unacceptable risk. Do not introduce a cleaner pattern that fragments the codebase without a requirement-driven reason.
+    - id: policy-repository-artifact-conventions
+      title: Repository artifact conventions policy
+      text: For persistent architecture artifacts, first discover repo-local conventions from AGENTS.md, README, CONTRIBUTING, or linked docs. Use them for location, IDs/prefixes, metadata, source/related links, and index updates; never hard-code repo paths. If none exist, use existing templates and state path assumptions only when writing files.
     - id: policy-spike-before-commitment
       title: Spike-before-commitment policy
       text: When a high-risk decision depends on missing evidence, propose a bounded spike before writing a final ADR.

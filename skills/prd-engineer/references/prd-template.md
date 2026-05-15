@@ -2,6 +2,21 @@
 
 Use this reference when the user needs a formal PRD artifact, not just a short chat answer.
 
+## Repository Artifact Conventions
+
+Before creating a persistent PRD, product brief, or PRD review in a repository, check whether repo-local artifact conventions exist through AGENTS.md, README, CONTRIBUTING, or docs linked from them.
+
+If conventions exist, follow them for:
+
+- canonical PRD/product brief location;
+- stable artifact ID and ID prefix;
+- metadata or front matter;
+- requirement and acceptance ID prefixes;
+- source links and related artifact IDs;
+- module index updates.
+
+Do not hard-code a repository-specific path in this template. If no repository convention exists, use the default shape below and state any location assumption when writing files.
+
 ## Choose the Right Size
 
 | Mode | Use when | Shape |
@@ -11,6 +26,8 @@ Use this reference when the user needs a formal PRD artifact, not just a short c
 | Extended PRD | AI, platform, regulated, multi-team, migration-heavy, or security-sensitive work | Core PRD plus IDs, owners, traceability, optional modules, decision log |
 
 ## Core PRD Skeleton
+
+If the repository requires front matter or a different metadata block, use that convention and preserve the same product meaning.
 
 ```markdown
 # PRD: <title>
@@ -125,7 +142,7 @@ Each important requirement should be:
 - prioritized: must, should, could, or explicitly deferred
 - traced: linked to a problem, user need, metric, source, or decision when the work is high risk
 
-Use the existing product corpus ID convention when one exists. If no convention exists, suggested prefixes are `PRD-R` for functional requirements, `PRD-NFR` for non-functional requirements, and `AC` for acceptance criteria. Reference `ASR`, `PD`, or `ADR` identifiers only when those architecture artifacts already exist; do not mint accepted architecture IDs from a PRD.
+Use the existing product corpus or repo artifact convention when one exists. If no convention exists, suggested prefixes are `PRD-R` for functional requirements, `PRD-NFR` for non-functional requirements, and `AC` for acceptance criteria. Reference `ASR`, `PD`, or `ADR` identifiers only when those architecture artifacts already exist; do not mint accepted architecture IDs from a PRD.
 
 For standard or extended PRDs, use attributes when engineering, QA, or later review will trace against the document:
 
@@ -265,6 +282,8 @@ Route review only to functions whose decisions can change scope, acceptance, or 
 ## Document Location
 
 Choose the canonical location by collaboration need:
+
+Repo-local artifact conventions override these generic defaults when the PRD is canonical in the repository. Apply the convention's location, ID, metadata/front matter, source-link, related-artifact, and module-index rules before writing or recommending a persistent PRD path.
 
 | Location | Use when |
 | --- | --- |

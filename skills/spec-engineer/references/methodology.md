@@ -173,7 +173,7 @@ Architecture context is inherited input, not a place to make new architecture de
 
 Stop and route a feedback note when the spec would require a new or changed architecture decision that is not already accepted. For lower-impact discoveries where implementation can safely proceed, record `Architecture delta needed` with owner, affected decision, and validation or revisit trigger.
 
-Do not invent `ASR`, `PD`, or `ADR` identifiers. Cite existing ones. If no local ID convention exists for spec-owned statements, suggested prefixes are `SPEC-R` for requirements, `INV` for invariants, and `AC` for acceptance criteria.
+Do not invent `ASR`, `PD`, or `ADR` identifiers. Cite existing ones. If no repo-local artifact or spec ID convention exists for spec-owned statements, suggested prefixes are `SPEC-R` for requirements, `INV` for invariants, and `AC` for acceptance criteria.
 
 ## Write atomic normative requirements
 
@@ -274,9 +274,26 @@ Natural language is acceptable for intent and simple behavior. It is weak for co
 
 Rules are normative. Examples are illustrative unless the spec explicitly labels an executable scenario as normative. If a rule and example conflict, the rule wins and the example must be corrected.
 
+## Repository artifact conventions
+
+Before creating a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map in a repository, check whether repo-local artifact conventions exist through AGENTS.md, README, CONTRIBUTING, or docs linked from them.
+
+If conventions exist, follow them for:
+
+- spec path and stable spec ID;
+- requirement, invariant, and acceptance ID prefixes;
+- metadata or front matter;
+- source context;
+- related PRD, architecture, delivery, and decision IDs;
+- module index updates.
+
+Do not hard-code a repository-specific path in this methodology. If no repository convention exists, use the Markdown structure below and state any location assumption when writing files.
+
 ## Specification document structure
 
 Use this as the default structure, collapsing sections when the task is small:
+
+If the repository requires front matter or a different metadata block, use that convention and preserve the same implementation-ready meaning.
 
 ```markdown
 # <Spec Title>

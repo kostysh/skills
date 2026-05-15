@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.0`
+- Skill source version: `0.1.1`
 
 ## Source files
 - `agents/openai.yaml`
@@ -18,6 +18,7 @@ Generated from `skill.yaml`.
 - `assets/templates/spike-brief.md`
 - `docs/README.md`
 - `docs/logs/implementation-log-20260514-1.md`
+- `docs/logs/implementation-log-20260515-1.md`
 - `fragments/final-checks.md`
 - `fragments/overview.md`
 - `references/artifact-templates.md`

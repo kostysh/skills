@@ -8,9 +8,9 @@ description: Create, refine, and review Product Requirements Documents (PRDs),
   handle AI evaluation requirements, or audit a PRD for ambiguity, missing
   evidence, weak acceptance criteria, or scope risk.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 30800c95f01b572181441e4fb1208690ad3e9a7833669db81a5a10ed48166158
+  skillforge-source-hash: 7139f7d658ad078497c0634549a569acc80d4d717b226e7c9f8b06420bd67fb6
 ---
 
 # prd-engineer
@@ -20,8 +20,9 @@ metadata:
 1. Confirm whether the user needs a new PRD, a refinement, or a review of an existing PRD.
 2. Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
 3. Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
-4. If the PRD feeds architecture, delivery planning, or implementation specs, surface architecture-relevant constraints and questions without choosing architecture patterns.
-5. Ask only focused discovery questions that would change scope, metrics, or acceptance; otherwise draft with explicit assumptions and TBDs.
+4. Before creating or recommending a persistent PRD, product brief, or PRD review artifact, check whether the current repository defines artifact conventions and follow them when present.
+5. If the PRD feeds architecture, delivery planning, or implementation specs, surface architecture-relevant constraints and questions without choosing architecture patterns.
+6. Ask only focused discovery questions that would change scope, metrics, or acceptance; otherwise draft with explicit assumptions and TBDs.
 
 ## When to use this skill
 
@@ -195,6 +196,9 @@ Acceptance criteria must require observable behavior or measurable evidence, not
 
 ### Light traceability policy
 Use requirement IDs, owners, source links, statuses, and change notes when multiple people or later implementation review will depend on the PRD.
+
+### Repository artifact conventions policy
+When producing or recommending a persistent PRD, product brief, or PRD review in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for canonical location, stable PRD or product-brief IDs, metadata/front matter, requirement and acceptance ID prefixes, source links, related artifact links, and module index updates. Do not hard-code one repository's paths into this skill. If no repository convention exists, use this skill's default PRD shape and state any location assumption when writing files. Repository conventions override generic PRD location defaults when the artifact is canonical in the repo.
 
 ### Architecture handoff policy
 PRDs may surface architecture-relevant product constraints, quality guardrails, external systems, data sensitivity, release phases, and blocking questions, but architecture-engineer owns ASR extraction and architecture decisions.

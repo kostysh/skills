@@ -23,3 +23,4 @@ Maintenance records:
 | --- | --- | --- |
 | `logs/change-log-v0.2.0.md` | Historical | v0.2.0 framing notes. |
 | `logs/implementation-log-20260515-1.md` | PASS | v0.2.1 compiler alignment and instruction-quality refinement. |
+| `logs/implementation-log-20260515-2.md` | PASS | Repository artifact convention guidance for persistent delivery artifacts. |

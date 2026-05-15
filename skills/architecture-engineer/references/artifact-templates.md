@@ -2,9 +2,19 @@
 
 Use these templates only for artifacts that the risk and scope justify. Prefer the copy-ready files under `assets/templates/` when writing a standalone artifact.
 
+## Repository artifact conventions
+
+Before creating a persistent architecture artifact in a repository, check whether repo-local artifact conventions exist through AGENTS.md, README, CONTRIBUTING, or docs linked from them.
+
+If conventions exist, apply them to architecture checks, architecture deltas, architecture briefs, ASR records/registers, pattern decisions, ADRs, quality scenarios, spike briefs, and architecture handoff items/registers. Follow convention-defined artifact locations, stable IDs or ID prefixes, metadata/front matter, source links, related artifact IDs, and module index updates.
+
+Do not hard-code a repository-specific path in these templates. If no repository convention exists, use the templates below and state path assumptions only when writing files.
+
 ## Output contract
 
 For architecture work, return the smallest complete subset below.
+
+For persistent artifacts, include or recommend convention-compliant path, ID, and metadata when repo-local conventions define them.
 
 ### Low-risk architecture check
 

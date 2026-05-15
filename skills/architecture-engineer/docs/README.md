@@ -5,6 +5,7 @@ This directory contains supporting maintenance material only. The normative skil
 ## Logs
 
 - `docs/logs/implementation-log-20260514-1.md` - initial creation of the `architecture-engineer` skill from a large draft, with progressive-disclosure references and artifact templates.
+- `docs/logs/implementation-log-20260515-1.md` - repository artifact convention guidance for persistent architecture artifacts.
 
 ## Generated Reports
 
