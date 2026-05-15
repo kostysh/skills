@@ -22,6 +22,47 @@ Common falsifiers:
 - an unsupported actor can perform the feature;
 - a documented negative case still follows the happy path.
 
+## Vertical slice specification
+
+Minimum:
+
+- capability delivered by this slice;
+- linked PRD requirements, architecture constraints, delivery task brief, or accepted assumptions;
+- in scope, out of scope, and anti-claims;
+- main flow, important alternate flow, and failure flow;
+- atomic requirements for the slice only;
+- interfaces, data, security, and observability details only where needed to implement and verify the slice;
+- acceptance criteria, negative cases, falsifiers, and quality gates.
+
+Best when a larger feature has been decomposed into a delivery slice and the coding agent needs a bounded implementation target without reopening the full product or architecture discussion.
+
+Common falsifiers:
+
+- the slice's claimed capability cannot be observed end-to-end within the slice boundary;
+- the slice violates an inherited architecture or product constraint;
+- acceptance passes through mock or substrate evidence while the actor-visible behavior fails;
+- implementation requires an unstated dependency on a later slice.
+
+## Spike specification
+
+Minimum:
+
+- decision or question the spike must unblock;
+- hypothesis or options being tested;
+- scope boundary and explicit non-goals;
+- validation harness: script, prototype, sandbox call, load test, static analysis, review, or other evidence-producing method;
+- success and failure criteria with observable thresholds;
+- output evidence, recommendation, risks, and next decision.
+
+Best when implementation should not start until uncertainty is reduced, especially around external systems, rate limits, performance, migration feasibility, AI quality, security constraints, or architecture tradeoffs.
+
+Common falsifiers:
+
+- the spike produces code or notes but no evidence tied to the decision;
+- success criteria can pass without exercising the uncertain boundary;
+- the spike silently expands into implementation work;
+- recommendation does not state residual risk or next decision.
+
 ## API endpoint or integration
 
 Minimum:

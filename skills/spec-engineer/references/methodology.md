@@ -87,6 +87,22 @@ For high-criticality scope, require:
 
 This override applies even when the object is a small function, rule, or endpoint.
 
+## Project risk classification and spec depth
+
+Risk level and criticality are related but not identical. Risk level describes process and coordination needs; criticality describes the consequence of a wrong requirement. Use both, and choose the higher rigor when they disagree.
+
+| Risk | Spec depth |
+| --- | --- |
+| Low | Compact goal, behavior, acceptance, relevant tests/checks, and anti-claims are usually enough. Do not add architecture context unless a hidden architecture-impact trigger appears. |
+| Medium | Include source context, behavior, edge cases, inherited constraints, architecture context when boundaries/contracts/data/security/deployment are affected, and a verification map. |
+| High | Include explicit product and architecture sources, invariants, negative/falsifier coverage, rollback or compatibility semantics, security/privacy/observability constraints, strong quality gates, and post-merge validation expectations when relevant. |
+
+Examples:
+
+- A copy or styling fix can be low risk even when user-visible.
+- A small authorization rule can be high rigor because the consequence of being wrong is high.
+- A medium-risk slice may need architecture context because it touches a public contract, even if the behavior is simple.
+
 ## Select the minimum spec depth
 
 Use this scale as a starting point, then override with criticality:
@@ -138,6 +154,26 @@ When the work changes current behavior, specify the delta instead of writing as 
 - **Rollback/retry:** what happens if the change is interrupted or reverted.
 
 Acceptance must prove both the new behavior and important preserved behavior.
+
+## Architecture context and drift
+
+Use this section only when the spec is medium/high risk or changes boundaries, public contracts, data model, security, tenancy, integration topology, deployment, observability, cost, operability, rollback, or a selected architecture pattern.
+
+Architecture context is inherited input, not a place to make new architecture decisions.
+
+```markdown
+## Architecture Context
+- Linked PRD requirements:
+- Linked ASRs, architecture brief, pattern decisions, or ADRs:
+- Delivery task brief or vertical slice:
+- Existing conventions that MUST be preserved:
+- Architecture constraints for this spec:
+- Architecture drift triggers:
+```
+
+Stop and route a feedback note when the spec would require a new or changed architecture decision that is not already accepted. For lower-impact discoveries where implementation can safely proceed, record `Architecture delta needed` with owner, affected decision, and validation or revisit trigger.
+
+Do not invent `ASR`, `PD`, or `ADR` identifiers. Cite existing ones. If no local ID convention exists for spec-owned statements, suggested prefixes are `SPEC-R` for requirements, `INV` for invariants, and `AC` for acceptance criteria.
 
 ## Write atomic normative requirements
 
@@ -251,6 +287,10 @@ Use this as the default structure, collapsing sections when the task is small:
 - Out of scope:
 - Source context:
 - Criticality:
+- Risk:
+
+## Architecture Context
+Add only when risk or affected boundaries make it useful for implementation correctness.
 
 ## Terms
 | Term | Meaning |
@@ -291,6 +331,8 @@ Add measurable constraints only when relevant.
 ## Open Questions And Gaps
 - Blocking:
 - Non-blocking:
+- Validation gaps:
+- Architecture delta needed:
 ```
 
 For very small tasks, compress this to:
@@ -348,6 +390,23 @@ Map each important requirement to the method that proves it most directly. Do no
 
 If verification is not currently possible, say why and whether that blocks implementation.
 
+## Quality gate mapping
+
+Quality gates should follow the local repository and package rules first. Use this table to choose spec-level verification obligations when local gates are not already explicit:
+
+| Requirement or risk | Typical gate |
+| --- | --- |
+| Type-level API or DTO change | typecheck, schema validation, compile-time contract check |
+| Public API change | contract test, backward compatibility check, request/response examples |
+| Data migration | migration dry run/check, rollback rehearsal, data invariant validation |
+| Auth or security boundary | permission matrix check, abuse-case tests, SAST or security review when configured |
+| External integration | sandbox or stubbed integration test, contract validation, retry/idempotency and failure tests |
+| Critical workflow | executable scenario, e2e test, preserved-behavior regression |
+| AI output quality | eval suite, regression set, human-review rubric, latency/cost monitoring plan |
+| Operational or reliability claim | metrics/logs/traces inspection, fault injection, load or recovery analysis |
+
+Do not list every possible gate. Name the gates that prove the specific requirements or risks in the spec.
+
 ## AI-agent failure controls
 
 Because this skill is for agents that write code, the spec must reduce common agent failure modes:
@@ -385,6 +444,7 @@ Stop and ask the user when:
 - source material contains a contradiction that changes behavior;
 - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
 - the spec would make a capability claim that can only be proven by substrate evidence;
+- the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;
 - a required external contract is missing and cannot be inferred safely.
 
-Do not stop for minor unknowns. Record them as assumptions or non-blocking gaps.
+Do not stop for minor unknowns. Record them as assumptions, non-blocking gaps, validation gaps, or architecture delta needed.

@@ -6,14 +6,14 @@ description: Create concise, falsifiable software specifications for AI coding
   behavior into a Markdown spec that guides implementation without process
   overhead. Emphasizes observable behavior, capability/substrate separation,
   atomic requirements, acceptance criteria, anti-claims, verification mapping,
-  and right-sized detail.
+  architecture-context handoff, risk-based depth, and right-sized detail.
 compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b23ef01ebc59ce4d50eea09faf9cb04c1ee4273f09b44f74d40b812d0eb18b03
+  skillforge-source-hash: 8d66113acb018b0560f750f7b3dcd78a27ddb18c93676f557408f977371fe5c8
 ---
 
 # spec-engineer
@@ -24,7 +24,8 @@ metadata:
 2. Confirm the input is sufficient or salvageable: at minimum, identify the requested object, intended behavior, and source material; if these are absent, ask for them.
 3. Inspect the available source material and state assumptions, constraints, criticality, and any blocking ambiguity before drafting.
 4. Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
-5. Choose the smallest specification depth that can guide correct implementation and verification for this task.
+5. For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
+6. Choose the smallest specification depth that can guide correct implementation and verification for this task.
 
 ## When to use this skill
 
@@ -32,6 +33,7 @@ metadata:
 - Turning a feature request, ticket, issue, PRD section, domain rule, integration requirement, API change, migration, workflow, or function behavior into implementation-ready requirements.
 - Compressing vague source material into a compact spec with scope, behavior, constraints, acceptance criteria, anti-claims, and verification intent.
 - Right-sizing the spec for anything from a single function or endpoint to a subsystem or whole product slice.
+- Creating vertical-slice specs or spike specs when implementation needs bounded behavior, evidence, or decision-unblocking criteria.
 
 ## When NOT to use this skill
 
@@ -94,15 +96,18 @@ Turn vague intent into a bounded engineering target before writing requirements.
 1. Identify the system, subsystem, function, interface, actor, trigger, and production entry point when known.
 2. State the capability claim with precondition and guard when relevant: Given <precondition>, when <actor> does <trigger/action>, if <guard>, the system MUST <observable response>, creating or preserving <state/effect>, so that <continuity> holds.
 3. Apply a criticality lens: ask what the worst observable consequence is if the requirement is wrong, then increase rigor for security, money, data loss, compliance, safety, privacy, compatibility, or irreversible state.
-4. List source material and authority levels when there are multiple inputs; resolve conflicts or mark them as open questions.
-5. Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
-6. For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
-7. Add initial anti-claims that keep the spec from implying broader behavior than requested.
+4. Classify risk as low, medium, or high when the source material provides or implies it, and use that classification with criticality to choose spec depth.
+5. List source material and authority levels when there are multiple inputs; resolve conflicts or mark them as open questions.
+6. For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
+7. Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
+8. For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
+9. Add initial anti-claims that keep the spec from implying broader behavior than requested.
 
 Validation:
 
 - The target can be described without relying on implementation-only terms.
 - The spec scope says what is in, what is out, and what remains unknown.
+- Risk depth and inherited product, architecture, delivery, and specification context are explicit when they affect implementation.
 - Acceptance cannot be satisfied only by substrate when the claim is behavioral.
 - High-criticality scope has explicit invariants, stronger falsifiers, and a verification path beyond happy-path examples.
 
@@ -128,12 +133,14 @@ Validation:
 Produce a concise spec that is implementation-ready without becoming process-heavy.
 
 1. Use the compact 6-section structure from the methodology reference for trivial scope; use the fuller structure only when the task needs it.
-2. Write a scope statement, glossary, capability or behavior statement, assumptions, and anti-claims.
-3. Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
-4. Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
-5. Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
-6. Define requirement lifecycle status when revising an existing spec: new, changed, superseded, deprecated, or removed.
-7. Record open questions and gaps without letting non-blocking gaps stop useful specification work.
+2. Include Architecture Context only when risk or affected boundaries make it useful for implementation correctness.
+3. For spike specs, specify the question, hypothesis, validation harness, success/failure criteria, output evidence, and next decision instead of pretending the spike delivers product behavior.
+4. Write a scope statement, glossary, capability or behavior statement, assumptions, and anti-claims.
+5. Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
+6. Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
+7. Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
+8. Define requirement lifecycle status when revising an existing spec: new, changed, superseded, deprecated, or removed.
+9. Record open questions and gaps without letting non-blocking gaps stop useful specification work.
 
 Validation:
 
@@ -147,17 +154,26 @@ Validation:
 Improve precision without adding ceremony that distracts from building correct code.
 
 1. Run the Quality audit checklist from the methodology reference before reporting done.
-2. Scan for ambiguous terms, vague adjectives, compound requirements, hidden implementation decisions, duplicate rules, missing failure behavior, missing invalid inputs, and examples that contradict rules.
-3. Check self-deception patterns such as tautological acceptance, mock-driven success, single-actor blindness, hidden retroactive scope, and completion bias.
-4. Remove sections, tables, or process language that do not constrain implementation or verification.
-5. Strengthen under-specified NFRs with metric, threshold, measurement object, and measurement window.
-6. Apply the Stop rules before finalizing.
+2. Check whether the spec discovered architecture drift; stop for blocking drift or record an architecture delta needed when implementation can safely proceed.
+3. Scan for ambiguous terms, vague adjectives, compound requirements, hidden implementation decisions, duplicate rules, missing failure behavior, missing invalid inputs, and examples that contradict rules.
+4. Check self-deception patterns such as tautological acceptance, mock-driven success, single-actor blindness, hidden retroactive scope, and completion bias.
+5. Remove sections, tables, or process language that do not constrain implementation or verification.
+6. Strengthen under-specified NFRs with metric, threshold, measurement object, and measurement window.
+7. Apply the Stop rules before finalizing.
 
 Validation:
 
 - The final spec is as small as possible while still reducing implementation guesses.
 - The spec has no known contradictions between prose, rules, examples, tables, schemas, or state transitions.
+- Architecture constraints are inherited or routed; they are not silently invented.
 - Remaining risks are visible as assumptions, gaps, anti-claims, or open questions.
+
+## Interop priority
+
+- **product scope, users, scenarios, success criteria, and product acceptance framing:** prd-engineer. prd-engineer owns product intent and gaps; this skill consumes accepted product basis when producing implementation-ready behavior.
+- **architecture boundaries, ASRs, pattern decisions, ADRs, quality scenarios, and architecture drift:** architecture-engineer. architecture-engineer owns architecture decisions and handoff; this skill inherits those constraints and routes drift back instead of deciding architecture inside a spec.
+- **vertical slices, task briefs, sequencing, dependencies, and risk routing:** delivery-planner. delivery-planner owns decomposition and sequencing; this skill may specify a slice or task but does not create the delivery plan.
+- **checking implementation evidence against an existing spec:** spec-conformance-reviewer. spec-conformance-reviewer owns conformance review after a spec exists; this skill owns authoring or revising the spec.
 
 ## Gotchas
 
@@ -166,12 +182,19 @@ Validation:
 - **high** — Do not force every section onto small tasks; use the smallest structure that removes implementation ambiguity.
 - **medium** — Examples and Gherkin scenarios clarify boundaries but do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
 - **medium** — Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
+- **high** — Do not turn missing architecture decisions into spec requirements; route public contracts, data model, security boundary, tenancy, integration topology, deployment, rollback, or selected pattern changes to architecture.
 - **medium** — Do not use tests as the default verification answer when inspection, analysis, contract validation, simulation, or conformance suites prove the claim more directly.
 
 ## Policies
 
 ### Lightweight-first policy
 A one-page spec is better than a complete template when it captures the behavior, rules, edge cases, and verification path needed for correct code. Add structure only when it removes a concrete ambiguity or defect class.
+
+### Risk-depth policy
+Low-risk specs can stay compact; medium-risk specs need enough behavior, edge cases, inherited constraints, and verification mapping for coordination; high-risk specs need explicit invariants, negative/falsifier coverage, rollback or compatibility semantics, stronger gates, and routed specialist review triggers.
+
+### Architecture context policy
+Include architecture context only when it constrains implementation or verification. Treat linked ASRs, ADRs, pattern decisions, and architecture handoff as inherited sources, not as decisions created by the spec.
 
 ### Normative language policy
 Use MUST for required behavior, MUST NOT for forbidden behavior, SHOULD for recommended behavior with known exceptions, MAY for optional behavior, and CAN for capability statements. Avoid mixing normative and descriptive wording in the same sentence.
@@ -191,9 +214,10 @@ Stop and ask the user when:
 - source material contains a contradiction that changes behavior;
 - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
 - the spec would make a capability claim that can only be proven by substrate evidence;
+- the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;
 - a required external contract is missing and cannot be inferred safely.
 
-Do not stop for minor unknowns. Record them as assumptions or non-blocking gaps.
+Do not stop for minor unknowns. Record them as assumptions, non-blocking gaps, validation gaps, or architecture delta needed.
 
 ### Output language policy
 Produce the specification in the user's working language unless the target repository, existing spec corpus, or user request clearly requires another language.
@@ -204,6 +228,8 @@ The deliverable is a Markdown specification. Include at minimum:
 - title;
 - status or scope;
 - source context;
+- risk or criticality;
+- architecture context when medium/high risk or architecture-impacting scope requires it;
 - terms;
 - behavior or capability statement;
 - assumptions;
@@ -211,7 +237,7 @@ The deliverable is a Markdown specification. Include at minimum:
 - atomic requirements with source trace;
 - acceptance criteria with negative or falsifier coverage;
 - verification map;
-- open questions or gaps.
+- open questions, gaps, or architecture delta needed.
 
 Omit or collapse sections only when the resulting spec remains clear, falsifiable, and implementation-ready.
 
@@ -219,7 +245,7 @@ Omit or collapse sections only when the resulting spec remains clear, falsifiabl
 - [Specification methodology](references/methodology.md) — Read this when drafting or materially revising a software specification.
 
 ## Optional references
-- [Specification patterns](references/spec-patterns.md) — Read this when choosing the minimal structure for a feature, API endpoint, validation rule, workflow, migration, or non-functional constraint.
+- [Specification patterns](references/spec-patterns.md) — Read this when choosing the minimal structure for a feature, vertical slice, spike, API endpoint, validation rule, workflow, migration, or non-functional constraint.
 - [Discovery techniques](references/discovery-techniques.md) — Read this when behavior inventory feels checklist-driven, risk is high, or you need systematic edge-case discovery.
 - [Self-deception anti-patterns](references/anti-patterns.md) — Read this before finalizing a spec with vague acceptance, mocks, substrate evidence, happy-path bias, or ambiguous terms.
 - [Worked example specification](references/example-spec.md) — Read this when you need a small input-to-output example of the expected final specification artifact.

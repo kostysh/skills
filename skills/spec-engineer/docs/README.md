@@ -11,3 +11,4 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/implementation-log-20260509-1.md` - initial creation of the prose-only `spec-engineer` skill.
 - `docs/logs/implementation-log-20260509-2.md` - self-contained wording revision.
 - `docs/logs/implementation-log-20260509-3.md` - review-driven methodology revision.
+- `docs/logs/implementation-log-20260515-1.md` - risk-depth, architecture-context, slice, spike, and quality-gate revision.
