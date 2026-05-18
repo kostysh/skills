@@ -1,0 +1,29 @@
+processing_activities:
+  - id: PA-001
+    name:
+    purpose:
+    lawful_basis_candidate:
+    legal_or_dpo_decision_required:
+    data_subjects: []
+    data_categories: []
+    special_or_criminal_data: false
+    children_or_vulnerable_subjects: false
+    source:
+    operations: []
+    systems_and_stores: []
+    logs_metrics_traces:
+    caches_queues_indexes:
+    backups_archives:
+    non_production:
+    recipients_and_vendors: []
+    controller_processor_roles:
+    countries_regions: []
+    transfer_mechanism:
+    retention_rule:
+    deletion_or_anonymisation_path:
+    rights_coverage:
+    access_boundary:
+    security_controls:
+    dpia_trigger:
+    evidence:
+    gaps: []

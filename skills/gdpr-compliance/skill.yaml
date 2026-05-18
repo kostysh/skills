@@ -1,0 +1,278 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: gdpr-compliance
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 24000
+  description: >-
+    Audit product requirements, software architecture, specifications,
+    implementation plans, or existing systems for GDPR compliance risks. Use
+    this programming-language-agnostic skill when a system may collect, infer,
+    store, log, transmit, expose, profile, delete, retain, or share personal
+    data subject to the EU GDPR. The skill produces architecture-level controls,
+    findings, evidence gaps, and handoff obligations; it does not produce legal
+    advice, compliance certification, or privacy-policy prose.
+  compatibility: >-
+    Portable documentation-only skill. It ships active audit references and
+    artifact templates, but no runtime. All mandatory GDPR architecture audit
+    guidance lives inside this folder.
+
+fragments:
+  overview: fragments/overview.md
+  finalChecks: fragments/final-checks.md
+
+references:
+  - id: ref-audit-methodology
+    title: Audit methodology
+    source: references/audit-methodology.md
+    target: references/audit-methodology.md
+    required: true
+    trigger: Read this before auditing PRD, architecture, specification, implementation, data flows, vendors, retention, rights handling, or release readiness for GDPR risks.
+  - id: ref-control-catalog
+    title: Control catalog
+    source: references/control-catalog.md
+    target: references/control-catalog.md
+    required: true
+    trigger: Read this when mapping GDPR obligations to architecture controls, severity, required behavior, red flags, and evidence.
+  - id: ref-implementation-evidence
+    title: Implementation evidence
+    source: references/implementation-evidence.md
+    target: references/implementation-evidence.md
+    required: false
+    trigger: Read this when auditing code, configuration, migrations, APIs, jobs, logs, analytics, infrastructure, tests, or runtime evidence for GDPR behavior.
+
+assets:
+  - id: asset-template-gdpr-architecture-audit
+    source: assets/templates/gdpr-architecture-audit.md
+    target: assets/templates/gdpr-architecture-audit.md
+    description: Copy-ready template for a GDPR architecture audit report.
+  - id: asset-template-processing-map
+    source: assets/templates/processing-map.yaml
+    target: assets/templates/processing-map.yaml
+    description: Copy-ready YAML template for processing activities and data-flow inventory.
+  - id: asset-template-gdpr-finding
+    source: assets/templates/gdpr-finding.yaml
+    target: assets/templates/gdpr-finding.yaml
+    description: Copy-ready YAML template for one GDPR architecture finding.
+
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for gdpr-compliance maintenance records.
+  - id: supporting-implementation-log-20260518-1
+    source: docs/logs/implementation-log-20260518-1.md
+    target: docs/logs/implementation-log-20260518-1.md
+    description: Non-normative implementation log for initial compiler-standard gdpr-compliance creation.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-audit-methodology
+      - ref-control-catalog
+    optionalReferences:
+      - ref-implementation-evidence
+  supportingGlobs:
+    - docs/*
+
+sections:
+  startHere:
+    - Treat GDPR as a system architecture constraint, not as a request to draft compliance documents.
+    - Separate observable privacy/compliance capability from substrate such as policies, data maps, checklists, flags, empty endpoints, migrations, logs, or tests.
+    - Scope whether GDPR may apply, what personal data is processed, who the data subjects are, and which controller/processor roles are in play.
+    - Build or update a processing and data-flow map before approving architecture, specs, vendors, analytics, telemetry, retention, deletion, AI use, or implementation behavior.
+    - Audit the system against the GDPR architecture controls, then trace findings to required behavior and verification.
+    - Escalate legal interpretation to the organisation's legal owner or DPO, while still identifying engineering risks, missing evidence, and safer design constraints.
+    - Produce findings, architecture constraints, and handoff obligations; do not claim legal compliance certification.
+  whenToUse:
+    - Reviewing PRD, product brief, architecture, ADR, RFC, specification, user story, issue, implementation plan, migration, or code that may process personal data.
+    - Designing or reviewing user accounts, identity, cookies, telemetry, analytics, profiling, marketing, support tooling, audit logs, HR/customer data, exports, deletion, retention, incident response, vendors, or international data flows.
+    - Checking whether a feature, integration, data pipeline, AI workflow, or operational process has GDPR architecture gaps.
+    - Turning GDPR obligations into system constraints, acceptance criteria, verification obligations, or architecture-to-spec handoff items.
+    - Reviewing existing implementation evidence for consent gating, data minimisation, rights handling, retention, deletion propagation, logging limits, vendor controls, transfer controls, or breach readiness.
+  whenNotToUse:
+    - Drafting privacy notices, cookie banners, processor agreements, legitimate-interest assessments, DPIAs, or legal memos as the main deliverable; involve legal/DPO owners.
+    - Certifying that an organisation, product, or vendor is GDPR-compliant.
+    - Performing a generic security review with no personal-data processing concern; use `security-reviewer`.
+    - Choosing programming language, framework, database, or vendor APIs except where the choice creates a GDPR architecture constraint.
+    - Replacing national-law, employment-law, health-data, criminal-data, children's-data, ePrivacy, AI Act, sector-specific, or cross-border-transfer legal review.
+  workflow:
+    - id: stage-capability-reality-check
+      title: Run the capability reality checkpoint
+      goal: Prevent GDPR work from becoming compliance theater that produces artifacts without enforceable system behavior.
+      steps:
+        - State the observable GDPR-relevant behavior the system should have after the change, such as no optional tracking before consent, deletion propagation, exportability, retention expiry, transfer blocking, or least-privilege access.
+        - List substrate that may support the behavior but does not prove it, such as a policy, data map, RoPA row, consent checkbox, feature flag, migration, queue, test, dashboard, or empty API.
+        - "State anti-claims: what this work will not prove, such as legal approval, completed DPIA, vendor adequacy, or production deletion from backups."
+        - Check whether proposed acceptance criteria can pass without the observable behavior.
+      validation:
+        - The target is either real system behavior or is explicitly labeled as analysis/substrate.
+        - Any substrate-only deliverable is not reported as completed compliance.
+        - Weak acceptance criteria are called out before implementation or approval.
+    - id: stage-scope-and-escalate
+      title: Scope GDPR applicability and escalation
+      goal: Establish the review boundary, roles, and legal uncertainty before making architecture claims.
+      steps:
+        - Assume GDPR may apply when processing happens in an EU/EEA establishment context, offers goods or services to people in the EU/EEA, or monitors their behaviour there.
+        - Identify personal data, including online identifiers, device IDs, cookie IDs, IP addresses, location data, behavioural events, support content, logs, and pseudonymised identifiers when re-identification is reasonably possible.
+        - Identify data subjects, controller, processor, joint-controller, sub-processor, recipient, and third-country transfer roles where evidence exists.
+        - Flag special category, criminal-offence, children's, employee, biometric, location, profiling, large-scale monitoring, or automated significant-decision processing.
+        - Mark legal interpretation questions for legal/DPO review instead of inventing conclusions.
+      validation:
+        - Scope assumptions, unknowns, and role evidence are explicit.
+        - High-risk categories cannot be silently treated as ordinary personal data.
+        - Legal escalation gaps do not block engineering risk identification.
+    - id: stage-map-processing
+      title: Map processing and data flows
+      goal: Make hidden personal-data processing visible before judging GDPR compliance risk.
+      steps:
+        - Map each processing activity by purpose, lawful-basis candidate or missing basis, data subject category, personal data category, source, recipient, storage location, retention rule, access boundary, and deletion path.
+        - "Include non-obvious surfaces: logs, metrics, traces, crash reports, analytics events, support tools, admin tools, search indexes, caches, queues, ML/AI datasets, exports, imports, backups, non-production, screenshots, and vendor dashboards."
+        - Map regions and transfer mechanisms for vendors, hosting, support access, subprocessors, and onward transfers.
+        - Identify where the same data is reused for a new purpose or combined with other datasets.
+      validation:
+        - No material store, flow, vendor, log, backup, or non-production copy is left outside the map without an explicit reason.
+        - Every mapped activity has purpose, retention, access, and transfer status, even if marked missing or unknown.
+        - Reuse and inference are treated as processing, not ignored because no new form field was added.
+    - id: stage-audit-controls
+      title: Audit architecture controls
+      goal: Convert GDPR principles and obligations into concrete system constraints and findings.
+      steps:
+        - Evaluate the processing map against the control catalog for lawful basis, purpose limitation, minimisation, transparency, consent, privacy by default, rights handling, retention/deletion, security, vendors, transfers, DPIA triggers, automated decisions, breach readiness, and accountability evidence.
+        - For each gap, distinguish PRD gap, architecture gap, specification gap, implementation gap, operational process gap, legal/DPO decision gap, or missing evidence.
+        - Rate severity by user impact, legal/operational risk, reversibility, blast radius, data sensitivity, scale, and whether processing would continue unlawfully or invisibly.
+        - Prefer design changes that reduce collection, exposure, retention, access, transfer, and identifiability before adding compensating controls.
+      validation:
+        - Findings cite evidence or say evidence is missing.
+        - Controls are framed as required behavior or constraints, not only documents to produce.
+        - Severity is tied to risk and blocked behavior, not to how much text is missing.
+    - id: stage-trace-to-verification
+      title: Trace controls to behavior and verification
+      goal: Ensure GDPR architecture decisions can be implemented and tested without reinterpreting the obligation.
+      steps:
+        - Translate required controls into falsifiable requirements, acceptance constraints, invariants, and verification obligations for specs or implementation.
+        - Define how to verify runtime behavior for high-risk controls, such as consent gating, withdrawal, deletion propagation, retention expiry, access export, restriction, objection, automated-decision safeguards, vendor blocking, logging exclusion, and breach escalation.
+        - Identify substrate that must exist to support the behavior, but keep it separate from proof that the behavior works.
+        - Mark controls that need operational runbooks, legal/DPO approval, vendor evidence, or production observability before release.
+      validation:
+        - Each P0/P1 finding has a concrete required behavior and verification path.
+        - Acceptance criteria cannot pass through metadata-only or documentation-only work.
+        - Downstream specs can implement behavior without reselecting GDPR architecture decisions.
+    - id: stage-report-and-handoff
+      title: Report findings and handoff obligations
+      goal: Produce a useful audit result that engineering, product, and legal/DPO stakeholders can act on.
+      steps:
+        - "Report the smallest complete output for the task: short findings for targeted review, a control matrix for medium review, or an architecture audit report for broad/high-risk review."
+        - For each finding include severity, evidence, affected processing activity, GDPR control, user/system impact, required capability, insufficient substrate, recommended constraint, verification, and escalation owner type when needed.
+        - State anti-claims and residual risk, including legal questions not resolved by the audit.
+        - For implementation work, hand off constraints and acceptance obligations rather than broad compliance commentary.
+      validation:
+        - The report is traceable from source evidence to control to required behavior.
+        - Legal review needs are explicit and not disguised as engineering certainty.
+        - Residual risk and unverified behavior are visible.
+  interop:
+    - id: interop-architecture
+      domain: general architecture pattern selection, component boundaries, quality scenarios, and architecture-to-spec handoff
+      winner: architecture-engineer
+      rationale: gdpr-compliance supplies privacy/GDPR constraints and findings; architecture-engineer owns broad system pattern selection unless GDPR obligations decide the constraint.
+    - id: interop-security
+      domain: vulnerability analysis, cryptography details, exploitability, hardening, and secure coding
+      winner: security-reviewer
+      rationale: gdpr-compliance flags Article 32 and personal-data security obligations; security-reviewer owns detailed security analysis and vulnerability remediation.
+    - id: interop-spec
+      domain: implementation-ready behavior specifications and normative requirement wording
+      winner: spec-engineer
+      rationale: gdpr-compliance produces constraints, acceptance obligations, and findings; spec-engineer turns them into implementation-ready specs.
+    - id: interop-spec-conformance
+      domain: checking implementation against an existing normative specification
+      winner: spec-conformance-reviewer
+      rationale: Use gdpr-compliance to add GDPR obligations as review criteria; use spec-conformance-reviewer for traceability against the supplied spec.
+    - id: interop-legal
+      domain: legal interpretation, lawful-basis approval, DPIA approval, transfer-impact assessment approval, DPA/SCC terms, and supervisory-authority consultation
+      winner: legal owner or DPO
+      rationale: This skill supports engineering analysis and escalation, but cannot replace legal accountability or organisational decisions.
+    - id: interop-language
+      domain: programming language, framework, database, cloud API, test framework, or library mechanics
+      winner: relevant language, framework, platform, or database skill
+      rationale: GDPR controls are language-agnostic; implementation mechanics belong to the technical skill.
+  commands: []
+  gotchas:
+    - id: gotcha-policy-theater
+      priority: high
+      text: A privacy policy, RoPA entry, DPIA draft, or data map is substrate; it does not prove consent gating, deletion, retention expiry, access control, or transfer restriction works.
+    - id: gotcha-purpose-after-flow
+      priority: high
+      text: Do not design data collection, logging, analytics, or vendor transfer first and assign purpose or lawful basis later.
+    - id: gotcha-hidden-surfaces
+      priority: high
+      text: Logs, traces, metrics, analytics, support tooling, admin exports, queues, caches, backups, screenshots, and non-production data often carry personal data even when the main schema looks clean.
+    - id: gotcha-consent-checkbox
+      priority: high
+      text: Consent UI without demonstrable pre-processing blocking, versioned evidence, withdrawal, and downstream propagation is not consent architecture.
+    - id: gotcha-delete-endpoint-only
+      priority: high
+      text: A delete endpoint alone is not erasure if derived data, vendors, logs, indexes, backups, queues, and support copies remain routinely usable.
+    - id: gotcha-pseudonymous-anonymous
+      priority: high
+      text: Pseudonymised data remains personal data when re-identification is reasonably possible; do not treat hashes, tokens, or user IDs as anonymous by default.
+    - id: gotcha-vendor-first
+      priority: high
+      text: Adding SaaS, analytics, support, AI, or hosting vendors before roles, terms, regions, retention, subprocessors, and transfer safeguards are known creates architecture risk.
+    - id: gotcha-dpia-checkbox
+      priority: high
+      text: High-risk processing needs risk analysis and mitigation before processing; a DPIA label or backlog item does not lower the risk.
+    - id: gotcha-broad-legitimate-interest
+      priority: medium
+      text: Legitimate interest is not a blanket basis for marketing, profiling, enrichment, or invisible reuse; the balancing and opt-out consequences must fit the processing.
+    - id: gotcha-region-assumption
+      priority: medium
+      text: EU hosting alone does not prove no third-country transfer when support access, subprocessors, telemetry, backups, or admin tools cross regions.
+    - id: gotcha-tests-without-behavior
+      priority: medium
+      text: Tests that assert fields or endpoints exist do not prove GDPR behavior unless they exercise the actual control path.
+    - id: gotcha-processor-label
+      priority: medium
+      text: Calling a party a processor does not make it one; role follows purpose-setting power and actual processing instructions.
+  policies:
+    - id: policy-no-legal-advice
+      title: No legal advice or certification policy
+      text: Do not state that a system, organisation, vendor, transfer, lawful basis, DPIA, consent flow, or contract is legally approved or GDPR-compliant. State engineering findings, evidence, assumptions, residual risks, and legal/DPO escalation needs.
+    - id: policy-purpose-before-processing
+      title: Purpose and lawful-basis before processing policy
+      text: No personal-data collection, inference, storage, logging, enrichment, sharing, training, analysis, or transfer should proceed without a specific purpose and lawful-basis candidate or legal/DPO-approved basis. Special category and criminal-offence data require explicit escalation.
+    - id: policy-minimise-first
+      title: Minimise before compensating policy
+      text: Prefer removing, aggregating, delaying, shortening, narrowing, or localising personal-data processing before adding encryption, access controls, notices, or documentation as compensating measures.
+    - id: policy-evidence-first
+      title: Evidence-first verdict policy
+      text: Findings must distinguish confirmed behavior, missing behavior, missing evidence, legal uncertainty, and residual risk. Absence of evidence is a review finding when the system would rely on that control.
+    - id: policy-fail-closed-high-risk
+      title: High-risk fail-closed policy
+      text: P0 issues, high-risk DPIA triggers without review, unresolved special/criminal/children data processing, uncontrolled international transfers, or processing without purpose/lawful basis should block launch or continued processing until a responsible owner resolves them.
+    - id: policy-output-language
+      title: Output language policy
+      text: Use the user's working language for audit findings and reports unless repository conventions require another language. Keep GDPR terms, control IDs, and artifact identifiers stable in English when they are part of templates.
+    - id: policy-output-contract
+      title: Output contract
+      text: For targeted work, return concise findings ordered by severity. For broad audits, include scope, evidence reviewed, processing map summary, capability/substrate anti-claims, control coverage, findings, required behavior, verification gaps, legal/DPO escalations, and residual risk.
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory gdpr-compliance guidance inside this skill folder.
+      - Use relative links for local references, assets, and supporting docs.
+      - Treat external GDPR guidance, regulator pages, and repository docs as optional context unless the current task supplies them.
+      - Keep the skill programming-language-agnostic; implementation examples must describe evidence surfaces and behavior, not specific frameworks or libraries.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Confirm templates listed as assets are present and usable without external files.
+      - Confirm the skill can be copied to another machine without losing required behavior.

@@ -1,0 +1,15 @@
+id: GDPR-001
+severity: P0
+title:
+status: confirmed_gap
+affected_processing_activity:
+gdpr_control:
+evidence:
+missing_evidence:
+risk_to_people_or_accountability:
+required_observable_capability:
+insufficient_substrate:
+recommended_constraint:
+verification_path:
+legal_or_dpo_escalation:
+residual_risk:

@@ -1,0 +1,4 @@
+interface:
+  display_name: "GDPR Compliance"
+  short_description: "Architecture-focused GDPR audit for systems that process personal data"
+  default_prompt: "Use $gdpr-compliance to audit the PRD, architecture, specification, implementation, or integration for GDPR risks. Map personal-data processing, separate real control behavior from substrate, produce severity-ranked findings with evidence, and hand off concrete architecture or spec obligations without claiming legal approval."
