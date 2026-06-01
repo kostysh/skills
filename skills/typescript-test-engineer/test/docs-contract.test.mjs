@@ -51,6 +51,20 @@ test('quick workflow points state-changing changes to the negative matrix and N/
   assert.match(skill, /state-changing doubles without contract coverage/);
 });
 
+test('skill requires negative fail-closed tests for forbidden behavior', async () => {
+  const skill = await readSkillFile('SKILL.md');
+  const reference = await readSkillFile('references/testing.md');
+
+  assert.match(skill, /negative\/fail-closed tests/);
+  assert.match(skill, /security-sensitive code, treat missing negative tests as a test gap/);
+  assert.match(reference, /## Negative\/fail-closed coverage/);
+  assert.match(reference, /happy-path tests as enough/);
+  assert.match(reference, /auth\/RBAC rule/);
+  assert.match(reference, /redaction rule/);
+  assert.match(reference, /environment isolation boundary/);
+  assert.match(reference, /missing negative\/fail-closed tests are a test gap/);
+});
+
 test('testing reference contains the complete state-changing negative matrix', async () => {
   const reference = await readSkillFile('references/testing.md');
 

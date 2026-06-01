@@ -6,6 +6,7 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 ## Non-negotiables (baseline)
 - Prefer deterministic, order-agnostic tests; avoid shared mutable global state.
 - Keep tests small and behavior-focused; assert on observable outcomes.
+- When a spec, security/privacy contract, CI/CD gate, auth/RBAC rule, validation rule, redaction rule, environment boundary, or acceptance falsifier implies forbidden behavior, require negative tests that prove fail-closed behavior; for security-sensitive code, missing negative tests are a test gap.
 - Use dependency injection or targeted mocks; avoid real network calls in unit/integration tests.
 - When generating larger synthetic test-data sets, prefer `@faker-js/faker` over ad hoc random builders, and seed it when determinism matters.
 - Use real systems or dedicated sandboxes in E2E; never use production credentials.
@@ -17,17 +18,18 @@ Applies to TypeScript projects, especially Node and edge backends, plus React ap
 1. Identify test level: unit vs integration vs E2E.
 2. Confirm runner and TypeScript execution path (node:test + strip/build, or existing toolchain). For React, prefer Vitest + Testing Library.
 3. For changed behavior, enumerate touched files and behaviors first; verify what existing tests cover and where coverage is missing.
-4. For side-effecting/state-changing behavior, list applicable failure modes from the negative matrix in `references/testing.md`; mark irrelevant rows `N/A` with a reason in the test plan or review notes.
-5. Design fixtures/mocks for isolation and determinism; when a test double replaces a production state-changing component, plan a shared contract suite for both implementations before relying on the double.
-6. For replay/rate-limit regression tests, name the targeted risk or failure mode and make the exercised scenario or assertions prove that exact risk; a prose label alone is not coverage.
-7. Implement tests with clear Arrange-Act-Assert.
-8. When reviewing test quality, flag removed tests, weakened assertions, behavior changes without matching coverage, missing negative matrix consideration for relevant state-changing risks, and state-changing doubles without contract coverage.
-9. Run relevant tests and inspect output for warnings (including stderr), not only failures.
-10. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
-11. Run coverage checkpoints according to stage/task cadence.
-12. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
-13. After any GitHub Actions workflow or CI YAML change, validate the touched YAML files locally before claiming completion (at minimum parse/syntax validation, and repo-standard workflow lint if available).
-14. If the CI change also alters permissions, secret handling, or untrusted inputs, pair the task with `security-reviewer`.
+4. For specified or implied forbidden behavior, plan negative/fail-closed tests from `references/testing.md`; for security-sensitive code, treat missing negative tests as a test gap.
+5. For side-effecting/state-changing behavior, list applicable failure modes from the negative matrix in `references/testing.md`; mark irrelevant rows `N/A` with a reason in the test plan or review notes.
+6. Design fixtures/mocks for isolation and determinism; when a test double replaces a production state-changing component, plan a shared contract suite for both implementations before relying on the double.
+7. For replay/rate-limit regression tests, name the targeted risk or failure mode and make the exercised scenario or assertions prove that exact risk; a prose label alone is not coverage.
+8. Implement tests with clear Arrange-Act-Assert.
+9. When reviewing test quality, flag removed tests, weakened assertions, behavior changes without matching coverage, missing negative/fail-closed coverage for forbidden behavior, missing negative matrix consideration for relevant state-changing risks, and state-changing doubles without contract coverage.
+10. Run relevant tests and inspect output for warnings (including stderr), not only failures.
+11. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
+12. Run coverage checkpoints according to stage/task cadence.
+13. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
+14. After any GitHub Actions workflow or CI YAML change, validate the touched YAML files locally before claiming completion (at minimum parse/syntax validation, and repo-standard workflow lint if available).
+15. If the CI change also alters permissions, secret handling, or untrusted inputs, pair the task with `security-reviewer`.
 
 ## Multi-contour confidence model (default)
 

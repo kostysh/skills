@@ -33,7 +33,19 @@ Specific findings to look for:
 - deleted tests without a replacement at another layer;
 - weaker assertions (`toBeTruthy`, status-only checks, broad snapshots) replacing contract checks;
 - mocks that bypass the real edge the change was supposed to exercise;
+- security-sensitive behavior without negative/fail-closed tests for forbidden paths;
 - CI or workflow changes that reduce which tests actually run.
+
+## Negative/fail-closed coverage
+
+Do not treat happy-path tests as enough when the source contract forbids behavior. If a specification, security/privacy contract, CI/CD gate, auth/RBAC rule, validation rule, redaction rule, environment isolation boundary, or acceptance falsifier defines an invalid or forbidden path, the test plan must include a negative case that proves fail-closed behavior.
+
+Coverage intent:
+- reject, deny, redact, isolate, or abort according to the contract;
+- prove the forbidden action does not partially succeed or leak protected data;
+- assert the observable error/status/audit behavior the contract requires.
+
+For security-sensitive code, missing negative/fail-closed tests are a test gap. Do not inflate this into a fixed test count: one scenario can cover multiple forbidden paths when it truly exercises them, and irrelevant paths can be marked `N/A` with a short reason.
 
 ## Side-effecting/state-changing workflow negative matrix
 
