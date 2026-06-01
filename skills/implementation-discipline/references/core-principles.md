@@ -4,9 +4,12 @@ Use this reference whenever the task involves writing, changing, or reviewing co
 
 ## Think before coding
 
+- For non-trivial local work, name the larger project goal or end-to-end capability the change is supposed to advance.
+- State the role this local change plays in that larger flow, and call out purpose assumptions when the role is inferred.
 - State assumptions explicitly.
 - If the request is ambiguous, name the ambiguity instead of silently picking one interpretation.
 - If there is a materially simpler implementation, prefer it and say why.
+- If the narrow task framing does not advance or conflicts with the intended project capability, say so before coding.
 
 ## Simplicity first
 

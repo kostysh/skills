@@ -3,12 +3,12 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 18000
   description: >-
     Behavioral coding discipline for writing, modifying, and reviewing code
-    with explicit assumptions, minimal complexity, surgical diffs, and
-    verifiable success criteria.
+    with explicit assumptions, project-purpose alignment, minimal complexity,
+    surgical diffs, and verifiable success criteria.
   compatibility: >-
     Portable documentation-only skill. Use alongside language, framework, and
     review skills; it does not replace domain-specific engineering guidance.
@@ -43,6 +43,7 @@ surfaces:
 sections:
   startHere:
     - Confirm the task actually includes code changes, refactoring, or code review.
+    - For non-trivial local work, identify the larger project goal or end-to-end capability the change is supposed to advance before changing or assessing code.
     - State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
     - Prefer the simplest sufficient design and define the verification target before implementing.
     - Use this skill together with the relevant language, framework, or review skill; it does not replace them.
@@ -59,10 +60,12 @@ sections:
       title: Clarify the task and the target
       goal: Make the implementation target explicit before touching code.
       steps:
+        - For non-trivial local work, identify the larger project goal or end-to-end flow and the role this local change plays in it.
         - State assumptions that the change relies on.
         - Surface ambiguity instead of silently choosing an interpretation; stop and ask when a safe conservative assumption is not available.
         - Define what successful completion will look like in observable terms.
       validation:
+        - Non-trivial local work is tied to a project goal or end-to-end flow, or explicitly labeled as purpose-uncertain or support-only.
         - The chosen interpretation is explicit.
         - Any blocking ambiguity has either a stated conservative assumption or an explicit ask.
         - Success can be checked without vague phrases like "should work now".
@@ -73,6 +76,7 @@ sections:
         - For feature, runtime, product, agent, or system-capability changes, state the observable behavior the system should have after the work.
         - Separate real behavior from substrate such as storage, APIs, jobs, wrappers, logs, config, migrations, tests, or documentation.
         - "State anti-claims: what the change will still not make possible after it is complete."
+        - Check whether the narrow task framing advances, ignores, or conflicts with the stated project purpose; call out misleading framing before implementation.
         - Check whether the acceptance criteria can be satisfied without delivering the observable behavior.
         - If the acceptance criteria can pass through substrate-only work, call that a specification defect before implementation and either narrow the claim or ask to rewrite the spec.
       validation:
@@ -141,7 +145,13 @@ sections:
     - id: gotcha-acceptance-exploit
       priority: high
       text: Do not treat acceptance criteria as sufficient when they can be satisfied by mocks, metadata, tables, logs, wrappers, or documentation without the claimed behavior.
+    - id: gotcha-local-correctness
+      priority: high
+      text: Do not treat local correctness as sufficient when the change does not advance, or actively conflicts with, the intended project capability.
   policies:
+    - id: policy-project-purpose-fit
+      title: Project-purpose fit policy
+      text: Local implementation correctness is insufficient when the work fails to advance the intended project capability. For non-trivial work, state the larger goal or end-to-end flow, the local role, and any purpose assumptions before coding.
     - id: policy-simplicity-first
       title: Simplicity-first policy
       text: Default to the smallest implementation that satisfies the request. Extra flexibility is a cost, not a virtue.
@@ -156,7 +166,7 @@ sections:
       text: A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure.
     - id: policy-reporting-contract
       title: Reporting contract
-      text: Final reports must name the completed outcome, verification evidence, and any unverified risk; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
+      text: Final reports must name the completed outcome, verification evidence, and any unverified risk. For non-trivial work, also state whether the result advances the intended project capability or remains support-only; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
   portability:
     required: true
     rules:

@@ -1,15 +1,15 @@
 ---
 name: implementation-discipline
 description: Behavioral coding discipline for writing, modifying, and reviewing
-  code with explicit assumptions, minimal complexity, surgical diffs, and
-  verifiable success criteria.
+  code with explicit assumptions, project-purpose alignment, minimal complexity,
+  surgical diffs, and verifiable success criteria.
 compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5870904c54f399fbc394c8be3e392a94fd2962c3b4c98ce3b25bef8d1f39198b
+  skillforge-source-hash: 70ed8f66f0619b36776b460e65cdcb992c91636f6b7ee14799fa18a6d4ab7bad
 ---
 
 # implementation-discipline
@@ -17,9 +17,10 @@ metadata:
 ## Start here
 
 1. Confirm the task actually includes code changes, refactoring, or code review.
-2. State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
-3. Prefer the simplest sufficient design and define the verification target before implementing.
-4. Use this skill together with the relevant language, framework, or review skill; it does not replace them.
+2. For non-trivial local work, identify the larger project goal or end-to-end capability the change is supposed to advance before changing or assessing code.
+3. State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
+4. Prefer the simplest sufficient design and define the verification target before implementing.
+5. Use this skill together with the relevant language, framework, or review skill; it does not replace them.
 
 ## When to use this skill
 
@@ -39,12 +40,14 @@ metadata:
 
 Make the implementation target explicit before touching code.
 
-1. State assumptions that the change relies on.
-2. Surface ambiguity instead of silently choosing an interpretation; stop and ask when a safe conservative assumption is not available.
-3. Define what successful completion will look like in observable terms.
+1. For non-trivial local work, identify the larger project goal or end-to-end flow and the role this local change plays in it.
+2. State assumptions that the change relies on.
+3. Surface ambiguity instead of silently choosing an interpretation; stop and ask when a safe conservative assumption is not available.
+4. Define what successful completion will look like in observable terms.
 
 Validation:
 
+- Non-trivial local work is tied to a project goal or end-to-end flow, or explicitly labeled as purpose-uncertain or support-only.
 - The chosen interpretation is explicit.
 - Any blocking ambiguity has either a stated conservative assumption or an explicit ask.
 - Success can be checked without vague phrases like "should work now".
@@ -56,8 +59,9 @@ Prevent implementation work from turning a claimed capability into substrate-onl
 1. For feature, runtime, product, agent, or system-capability changes, state the observable behavior the system should have after the work.
 2. Separate real behavior from substrate such as storage, APIs, jobs, wrappers, logs, config, migrations, tests, or documentation.
 3. State anti-claims: what the change will still not make possible after it is complete.
-4. Check whether the acceptance criteria can be satisfied without delivering the observable behavior.
-5. If the acceptance criteria can pass through substrate-only work, call that a specification defect before implementation and either narrow the claim or ask to rewrite the spec.
+4. Check whether the narrow task framing advances, ignores, or conflicts with the stated project purpose; call out misleading framing before implementation.
+5. Check whether the acceptance criteria can be satisfied without delivering the observable behavior.
+6. If the acceptance criteria can pass through substrate-only work, call that a specification defect before implementation and either narrow the claim or ask to rewrite the spec.
 
 Validation:
 
@@ -120,8 +124,12 @@ Validation:
 - **medium** — If you cannot verify the intended outcome, say so explicitly instead of implying confidence.
 - **medium** — If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
 - **high** — Do not treat acceptance criteria as sufficient when they can be satisfied by mocks, metadata, tables, logs, wrappers, or documentation without the claimed behavior.
+- **high** — Do not treat local correctness as sufficient when the change does not advance, or actively conflicts with, the intended project capability.
 
 ## Policies
+
+### Project-purpose fit policy
+Local implementation correctness is insufficient when the work fails to advance the intended project capability. For non-trivial work, state the larger goal or end-to-end flow, the local role, and any purpose assumptions before coding.
 
 ### Simplicity-first policy
 Default to the smallest implementation that satisfies the request. Extra flexibility is a cost, not a virtue.
@@ -136,7 +144,7 @@ Completion requires naming the checks that prove success or the exact gap that r
 A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure.
 
 ### Reporting contract
-Final reports must name the completed outcome, verification evidence, and any unverified risk; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
+Final reports must name the completed outcome, verification evidence, and any unverified risk. For non-trivial work, also state whether the result advances the intended project capability or remains support-only; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
 
 ## Required active references
 - [Core principles](references/core-principles.md) — Read this first when the task involves writing, changing, or reviewing code.

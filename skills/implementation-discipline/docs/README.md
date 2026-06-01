@@ -14,8 +14,14 @@
 | --- | --- | --- |
 | [issues/implementation-plan-20260429-1.md](issues/implementation-plan-20260429-1.md) | [issues/issue-20260429-1.md](issues/issue-20260429-1.md) | Audited PASS |
 
+## Logs
+
+- [logs/implementation-log-20260429-1.md](logs/implementation-log-20260429-1.md) - portable repeated-validation heuristic for adjacent observable cases.
+- [logs/implementation-log-20260602-1.md](logs/implementation-log-20260602-1.md) - project-purpose alignment for non-trivial local implementation work.
+
 ## Scope of This Folder
 
 - `docs/issues/*` contains proposals, bug reports, investigations, and implementation plans.
+- `docs/logs/*` contains non-normative implementation logs.
 - `docs/templates/*` contains local templates for issue, plan, and implementation-log artifacts.
 - `docs/compile-report.md` is generated and non-normative.
