@@ -13,3 +13,4 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/implementation-log-20260509-3.md` - review-driven methodology revision.
 - `docs/logs/implementation-log-20260515-1.md` - risk-depth, architecture-context, slice, spike, and quality-gate revision.
 - `docs/logs/implementation-log-20260515-2.md` - repository artifact convention guidance for persistent specification artifacts.
+- `docs/logs/implementation-log-20260602-1.md` - parent-intent alignment guidance for specifications.

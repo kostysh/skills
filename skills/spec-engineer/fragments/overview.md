@@ -2,6 +2,8 @@ Create a specification that helps an AI coding agent build correct software with
 
 The spec is not a governance artifact, a product pitch, or a verbose checklist. It is a compact set of statements and representations that narrows the allowed behavior of a system enough that implementation and verification can proceed without inventing missing requirements.
 
+Before writing requirements, place the target inside its parent product, system, workflow, or architecture intent. A locally precise spec can still be wrong when it does not advance or protect that parent capability; if the parent intent is missing, record it as an assumption, gap, or blocking question instead of inventing it.
+
 ### Input contract
 
 Acceptable input can be loose, but it must be usable. A ticket, issue, free-form request, product note, API change, code behavior description, domain rule, or migration request is enough when it lets you identify the object being specified, the intended behavior or change, and at least one source of authority. If the object and behavior are both missing, ask before drafting.

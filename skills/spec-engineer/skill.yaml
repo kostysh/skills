@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 26000
   description: >-
     Create concise, falsifiable software specifications for AI coding agents.
@@ -12,7 +12,8 @@ skill:
     into a Markdown spec that guides implementation without process overhead.
     Emphasizes observable behavior, capability/substrate separation, atomic
     requirements, acceptance criteria, anti-claims, verification mapping,
-    architecture-context handoff, risk-based depth, and right-sized detail.
+    parent-intent alignment, architecture-context handoff, risk-based depth,
+    and right-sized detail.
   compatibility: >-
     Portable, self-contained documentation-only skill. It ships no runtime and
     keeps all method instructions required to create specifications inside this
@@ -88,6 +89,10 @@ supporting:
     source: docs/logs/implementation-log-20260515-2.md
     target: docs/logs/implementation-log-20260515-2.md
     description: Non-normative implementation log for repository artifact convention guidance.
+  - id: supporting-implementation-log-20260602-1
+    source: docs/logs/implementation-log-20260602-1.md
+    target: docs/logs/implementation-log-20260602-1.md
+    description: Non-normative implementation log for parent-intent alignment guidance.
 
 surfaces:
   active:
@@ -104,6 +109,7 @@ sections:
   startHere:
     - Confirm the user needs a software specification, not a PRD, implementation plan, code review, or implementation patch.
     - "Confirm the input is sufficient or salvageable: at minimum, identify the requested object, intended behavior, and source material; if these are absent, ask for them."
+    - Identify the parent product, system, workflow, or architecture intent the spec is meant to constrain, or label that intent as missing before drafting.
     - Inspect the available source material and state assumptions, constraints, criticality, and any blocking ambiguity before drafting.
     - Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
     - For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
@@ -127,6 +133,7 @@ sections:
       title: Frame the specification target
       goal: Turn vague intent into a bounded engineering target before writing requirements.
       steps:
+        - Identify the parent product, system, workflow, or architecture intent and state how this spec's behavior advances or protects it; if the spec is substrate-only, name the capability it supports.
         - Identify the system, subsystem, function, interface, actor, trigger, and production entry point when known.
         - "State the capability claim with precondition and guard when relevant: Given <precondition>, when <actor> does <trigger/action>, if <guard>, the system MUST <observable response>, creating or preserving <state/effect>, so that <continuity> holds."
         - "Apply a criticality lens: ask what the worst observable consequence is if the requirement is wrong, then increase rigor for security, money, data loss, compliance, safety, privacy, compatibility, or irreversible state."
@@ -137,6 +144,7 @@ sections:
         - For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
         - Add initial anti-claims that keep the spec from implying broader behavior than requested.
       validation:
+        - The spec target is tied to parent intent, or missing parent intent is recorded as an assumption, gap, or blocking question.
         - The target can be described without relying on implementation-only terms.
         - The spec scope says what is in, what is out, and what remains unknown.
         - Risk depth and inherited product, architecture, delivery, and specification context are explicit when they affect implementation.
@@ -163,7 +171,7 @@ sections:
         - Use the compact 6-section structure from the methodology reference for trivial scope; use the fuller structure only when the task needs it.
         - Include Architecture Context only when risk or affected boundaries make it useful for implementation correctness.
         - For spike specs, specify the question, hypothesis, validation harness, success/failure criteria, output evidence, and next decision instead of pretending the spike delivers product behavior.
-        - Write a scope statement, glossary, capability or behavior statement, assumptions, and anti-claims.
+        - Write a scope statement, parent intent or supported capability, glossary, capability or behavior statement, assumptions, and anti-claims.
         - Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
         - Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
         - Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
@@ -215,6 +223,9 @@ sections:
     - id: gotcha-no-false-capability
       priority: high
       text: Do not let acceptance criteria pass through mocks, generated docs, schemas, wrappers, or tests alone when the claim is user-, operator-, integration-, or system-observable behavior.
+    - id: gotcha-local-spec-drift
+      priority: high
+      text: Do not make a locally precise spec that drifts from the parent product, system, workflow, or architecture intent without calling out the conflict.
     - id: gotcha-avoid-template-bloat
       priority: high
       text: Do not force every section onto small tasks; use the smallest structure that removes implementation ambiguity.
@@ -234,6 +245,9 @@ sections:
     - id: policy-lightweight-first
       title: Lightweight-first policy
       text: A one-page spec is better than a complete template when it captures the behavior, rules, edge cases, and verification path needed for correct code. Add structure only when it removes a concrete ambiguity or defect class.
+    - id: policy-parent-intent
+      title: Parent intent policy
+      text: A specification constrains implementation in service of a parent product, system, workflow, or architecture intent. Local requirement precision is insufficient when the spec does not advance or protect that intent; record missing intent as an assumption, gap, or blocking question instead of inventing it.
     - id: policy-repository-artifact-conventions
       title: Repository artifact conventions policy
       text: When producing or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for artifact location, stable spec IDs, requirement and acceptance ID prefixes, metadata/front matter, source context, related PRD/architecture/delivery IDs, and module index updates. Do not hard-code one repository's paths into this skill. If no conventions exist, use this skill's Markdown spec output contract and state any location assumption only when writing files.
@@ -266,6 +280,7 @@ sections:
         Stop and ask the user when:
 
         - source material contains a contradiction that changes behavior;
+        - the requested spec scope conflicts with known parent product, system, workflow, or architecture intent in a behavior-changing way;
         - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
         - the spec would make a capability claim that can only be proven by substrate evidence;
         - the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;
@@ -283,6 +298,7 @@ sections:
         - title;
         - status or scope;
         - source context;
+        - parent intent or supported capability;
         - risk or criticality;
         - architecture context when medium/high risk or architecture-impacting scope requires it;
         - terms;

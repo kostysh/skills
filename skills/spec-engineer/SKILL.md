@@ -6,14 +6,15 @@ description: Create concise, falsifiable software specifications for AI coding
   behavior into a Markdown spec that guides implementation without process
   overhead. Emphasizes observable behavior, capability/substrate separation,
   atomic requirements, acceptance criteria, anti-claims, verification mapping,
-  architecture-context handoff, risk-based depth, and right-sized detail.
+  parent-intent alignment, architecture-context handoff, risk-based depth, and
+  right-sized detail.
 compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 186f1e5819136467849810f0fa7aa24f9413669d499765d0dafad8c7b29e5cee
+  skillforge-source-hash: 55a7e03d0e838b649976fb3c9ff0bfeba574a6977db3378c76d2454f65aba792
 ---
 
 # spec-engineer
@@ -22,11 +23,12 @@ metadata:
 
 1. Confirm the user needs a software specification, not a PRD, implementation plan, code review, or implementation patch.
 2. Confirm the input is sufficient or salvageable: at minimum, identify the requested object, intended behavior, and source material; if these are absent, ask for them.
-3. Inspect the available source material and state assumptions, constraints, criticality, and any blocking ambiguity before drafting.
-4. Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
-5. For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
-6. Before creating or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map, check whether the current repository defines artifact conventions and follow them when present.
-7. Choose the smallest specification depth that can guide correct implementation and verification for this task.
+3. Identify the parent product, system, workflow, or architecture intent the spec is meant to constrain, or label that intent as missing before drafting.
+4. Inspect the available source material and state assumptions, constraints, criticality, and any blocking ambiguity before drafting.
+5. Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
+6. For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
+7. Before creating or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map, check whether the current repository defines artifact conventions and follow them when present.
+8. Choose the smallest specification depth that can guide correct implementation and verification for this task.
 
 ## When to use this skill
 
@@ -50,6 +52,8 @@ metadata:
 Create a specification that helps an AI coding agent build correct software with fewer guesses.
 
 The spec is not a governance artifact, a product pitch, or a verbose checklist. It is a compact set of statements and representations that narrows the allowed behavior of a system enough that implementation and verification can proceed without inventing missing requirements.
+
+Before writing requirements, place the target inside its parent product, system, workflow, or architecture intent. A locally precise spec can still be wrong when it does not advance or protect that parent capability; if the parent intent is missing, record it as an assumption, gap, or blocking question instead of inventing it.
 
 ### Input contract
 
@@ -94,18 +98,20 @@ Criticality overrides size. A small authz rule, payment idempotency rule, data d
 
 Turn vague intent into a bounded engineering target before writing requirements.
 
-1. Identify the system, subsystem, function, interface, actor, trigger, and production entry point when known.
-2. State the capability claim with precondition and guard when relevant: Given <precondition>, when <actor> does <trigger/action>, if <guard>, the system MUST <observable response>, creating or preserving <state/effect>, so that <continuity> holds.
-3. Apply a criticality lens: ask what the worst observable consequence is if the requirement is wrong, then increase rigor for security, money, data loss, compliance, safety, privacy, compatibility, or irreversible state.
-4. Classify risk as low, medium, or high when the source material provides or implies it, and use that classification with criticality to choose spec depth.
-5. List source material and authority levels when there are multiple inputs; resolve conflicts or mark them as open questions.
-6. For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
-7. Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
-8. For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
-9. Add initial anti-claims that keep the spec from implying broader behavior than requested.
+1. Identify the parent product, system, workflow, or architecture intent and state how this spec's behavior advances or protects it; if the spec is substrate-only, name the capability it supports.
+2. Identify the system, subsystem, function, interface, actor, trigger, and production entry point when known.
+3. State the capability claim with precondition and guard when relevant: Given <precondition>, when <actor> does <trigger/action>, if <guard>, the system MUST <observable response>, creating or preserving <state/effect>, so that <continuity> holds.
+4. Apply a criticality lens: ask what the worst observable consequence is if the requirement is wrong, then increase rigor for security, money, data loss, compliance, safety, privacy, compatibility, or irreversible state.
+5. Classify risk as low, medium, or high when the source material provides or implies it, and use that classification with criticality to choose spec depth.
+6. List source material and authority levels when there are multiple inputs; resolve conflicts or mark them as open questions.
+7. For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
+8. Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
+9. For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
+10. Add initial anti-claims that keep the spec from implying broader behavior than requested.
 
 Validation:
 
+- The spec target is tied to parent intent, or missing parent intent is recorded as an assumption, gap, or blocking question.
 - The target can be described without relying on implementation-only terms.
 - The spec scope says what is in, what is out, and what remains unknown.
 - Risk depth and inherited product, architecture, delivery, and specification context are explicit when they affect implementation.
@@ -136,7 +142,7 @@ Produce a concise spec that is implementation-ready without becoming process-hea
 1. Use the compact 6-section structure from the methodology reference for trivial scope; use the fuller structure only when the task needs it.
 2. Include Architecture Context only when risk or affected boundaries make it useful for implementation correctness.
 3. For spike specs, specify the question, hypothesis, validation harness, success/failure criteria, output evidence, and next decision instead of pretending the spike delivers product behavior.
-4. Write a scope statement, glossary, capability or behavior statement, assumptions, and anti-claims.
+4. Write a scope statement, parent intent or supported capability, glossary, capability or behavior statement, assumptions, and anti-claims.
 5. Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
 6. Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
 7. Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
@@ -180,6 +186,7 @@ Validation:
 
 - **high** — A spec is useful only if it constrains observable behavior; a template, section list, or artifact path is substrate until the requirements are precise and falsifiable.
 - **high** — Do not let acceptance criteria pass through mocks, generated docs, schemas, wrappers, or tests alone when the claim is user-, operator-, integration-, or system-observable behavior.
+- **high** — Do not make a locally precise spec that drifts from the parent product, system, workflow, or architecture intent without calling out the conflict.
 - **high** — Do not force every section onto small tasks; use the smallest structure that removes implementation ambiguity.
 - **medium** — Examples and Gherkin scenarios clarify boundaries but do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
 - **medium** — Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
@@ -190,6 +197,9 @@ Validation:
 
 ### Lightweight-first policy
 A one-page spec is better than a complete template when it captures the behavior, rules, edge cases, and verification path needed for correct code. Add structure only when it removes a concrete ambiguity or defect class.
+
+### Parent intent policy
+A specification constrains implementation in service of a parent product, system, workflow, or architecture intent. Local requirement precision is insufficient when the spec does not advance or protect that intent; record missing intent as an assumption, gap, or blocking question instead of inventing it.
 
 ### Repository artifact conventions policy
 When producing or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for artifact location, stable spec IDs, requirement and acceptance ID prefixes, metadata/front matter, source context, related PRD/architecture/delivery IDs, and module index updates. Do not hard-code one repository's paths into this skill. If no conventions exist, use this skill's Markdown spec output contract and state any location assumption only when writing files.
@@ -216,6 +226,7 @@ Every important requirement needs a verification path such as demonstration, ins
 Stop and ask the user when:
 
 - source material contains a contradiction that changes behavior;
+- the requested spec scope conflicts with known parent product, system, workflow, or architecture intent in a behavior-changing way;
 - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
 - the spec would make a capability claim that can only be proven by substrate evidence;
 - the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;
@@ -232,6 +243,7 @@ The deliverable is a Markdown specification. Include at minimum:
 - title;
 - status or scope;
 - source context;
+- parent intent or supported capability;
 - risk or criticality;
 - architecture context when medium/high risk or architecture-impacting scope requires it;
 - terms;

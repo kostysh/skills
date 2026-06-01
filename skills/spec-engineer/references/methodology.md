@@ -19,6 +19,7 @@ The goal is not to cite a framework. The goal is to produce a compact spec that 
 
 Before writing requirements, extract the smallest useful target:
 
+- **Parent intent:** product outcome, system capability, workflow, architecture constraint, or end-to-end flow this spec must advance or protect.
 - **Object:** system, subsystem, module, endpoint, function, workflow, migration, rule, or public contract.
 - **Actor or consumer:** user, operator, client, service, job, administrator, external system, or downstream code.
 - **Precondition:** what must already be true for the behavior to be valid.
@@ -30,6 +31,8 @@ Before writing requirements, extract the smallest useful target:
 - **Boundaries:** what is included, excluded, delegated to existing behavior, or intentionally unspecified.
 - **Sources:** issue, user request, product note, decision, code behavior, API contract, policy, domain rule, or external dependency.
 - **Criticality:** worst observable consequence if the requirement is wrong.
+
+If the parent intent is missing, record it as an assumption, gap, or blocking question according to risk. Do not invent product, system, workflow, or architecture intent just to make the spec feel complete.
 
 If source material conflicts, do not silently average it. Choose the higher-authority source when that is clear; otherwise mark a blocking question or a non-blocking assumption.
 
@@ -47,6 +50,7 @@ Capability is relative to the spec consumer. A public API contract is capability
 
 Then list:
 
+- **Parent intent or supported capability:** the broader behavior this spec advances or protects.
 - **Substrate needed:** infrastructure or internal artifacts that may be necessary.
 - **Anti-claims:** behavior the spec does not promise.
 - **Falsifiers:** observations that would prove the capability is not present.
