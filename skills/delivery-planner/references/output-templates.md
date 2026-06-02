@@ -2,6 +2,8 @@
 
 Use these templates as flexible shapes, not mandatory forms. Prefer the smallest one that is useful. Delete rows or sections that do not help the downstream agent; do not expand a narrow request just to satisfy the template.
 
+The capability/substrate/anti-claims, decomposition type, and gate fields are guardrails, not a request for a longer document. Keep them terse. Their job is to prevent plans from presenting scaffolds, wrappers, specs, mocks, metadata, or empty tests as delivered capability.
+
 ## Repository artifact conventions
 
 Before creating a persistent Delivery Plan, Module Delivery Plan, expanded task brief, or backlog audit in a repository, check whether repo-local artifact conventions exist through AGENTS.md, README, CONTRIBUTING, or docs linked from them.
@@ -24,25 +26,36 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Source authority:
 - Output mode: compact
 
-## 2. Assumptions and gaps
+## 2. Capability, substrate, and anti-claims
+
+- Capability:
+- Substrate:
+- Anti-claims:
+
+## 3. Current baseline
+
+- Already present:
+- Not present / unknown:
+
+## 4. Assumptions and gaps
 
 | Type | Item | Impact | Route / handling |
 |---|---|---|---|
 | Blocking / non-blocking |  |  |  |
 
-## 3. Decomposition
+## 5. Decomposition
 
-| ID | Slice / module increment | Observable or verifiable outcome | Source / architecture reference | Risk |
-|---|---|---|---|---|
-| VS-01 / MI-01 |  |  |  | low/medium/high |
+| ID | Type | Slice / increment | Observable or verifiable outcome | Source / architecture reference | Risk |
+|---|---|---|---|---|---|
+| VS-01 / MI-01 | vertical slice / support / spike / spec / review / module increment |  |  |  | low/medium/high |
 
-## 4. Task table
+## 6. Task table
 
-| Task | Slice / increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
-|---|---|---|---|---|---|---|---|---|
-| T-01 | VS-01 |  |  |  |  | spec-engineer/coding/etc. |  |  |
+| Task | Type | Slice / increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
+|---|---|---|---|---|---|---|---|---|---|
+| T-01 | vertical slice / support / spike / spec / review | VS-01 |  |  |  |  | spec-engineer/coding/etc. |  |  |
 
-## 5. Sequencing
+## 7. Sequencing and gates
 
 - Wave 0:
 - Wave 1:
@@ -50,7 +63,11 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Parallelizable:
 - Must not parallelize yet:
 
-## 6. Routing and risk notes
+| Gate | Blocks | How to clear |
+|---|---|---|
+|  |  |  |
+
+## 8. Routing and risk notes
 
 - `prd-engineer`:
 - `architecture-engineer`:
@@ -58,7 +75,7 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - coding-ready:
 - review-sensitive:
 
-## 7. Audit summary
+## 9. Audit summary
 
 - Scope respected:
 - Architecture not redesigned:
@@ -82,24 +99,36 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Out of scope:
 - Architecture handoff references:
 
-## 2. Architecture obligations to implement
+## 2. Module outcome, substrate, and anti-claims
+
+- Module outcome:
+- Substrate:
+- Anti-claims:
+
+## 3. Current module baseline
+
+- Already present:
+- Not present / unknown:
+
+## 4. Architecture obligations to implement
 
 | Obligation | Meaning for this module | Risk | Route if unresolved |
 |---|---|---|---|
 | Contract / data / security / ops / integration |  |  |  |
 
-## 3. Module increments
+## 5. Module increments
 
 | ID | Increment | Verifiable module outcome | Verification hook | Risk |
 |---|---|---|---|---|
 | MI-01 |  |  | test/contract/log/metric/audit |  |
 
-## 4. Tasks
+## 6. Tasks
 
-| Task | Increment | Goal | Depends on | Risk | Next step | Verification hint | Review hint |
-|---|---|---|---|---|---|---|---|
+| Task | Type | Increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
+|---|---|---|---|---|---|---|---|---|---|
+| T-01 | module increment / support / spike / spec / review | MI-01 |  |  |  |  | spec-engineer/coding/etc. |  |  |
 
-## 5. Sequence
+## 7. Sequence and gates
 
 - First stabilize:
 - Then implement:
@@ -107,7 +136,11 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Parallelizable:
 - Blocked by:
 
-## 6. Audit summary
+| Gate | Blocks | How to clear |
+|---|---|---|
+|  |  |  |
+
+## 8. Audit summary
 
 - Module boundary respected:
 - Substrate tied to module increments:

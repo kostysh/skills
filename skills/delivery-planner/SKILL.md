@@ -10,9 +10,9 @@ description: Decompose accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 581b23946e90847ed76c487fc1d64c21a2ce94dd4cbc3128cfc7e3c49f72e7b8
+  skillforge-source-hash: e3009db3dc851504e80bf6dbfe92773eb3bda2bd303d2dc71b679d0e0e66b491
 ---
 
 # delivery-planner

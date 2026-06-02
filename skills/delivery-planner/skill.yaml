@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 22000
   description: >-
     Decompose accepted product scope and architecture handoff into right-sized
@@ -78,6 +78,10 @@ supporting:
     source: docs/logs/implementation-log-20260515-2.md
     target: docs/logs/implementation-log-20260515-2.md
     description: Non-normative implementation log for repository artifact convention guidance.
+  - id: supporting-implementation-log-20260602-1
+    source: docs/logs/implementation-log-20260602-1.md
+    target: docs/logs/implementation-log-20260602-1.md
+    description: Non-normative implementation log for compact-plus delivery plan templates.
 
 surfaces:
   active:

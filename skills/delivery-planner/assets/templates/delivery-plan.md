@@ -9,25 +9,36 @@
 - Source authority:
 - Output mode: compact
 
-## 2. Assumptions and gaps
+## 2. Capability, substrate, and anti-claims
+
+- Capability:
+- Substrate:
+- Anti-claims:
+
+## 3. Current baseline
+
+- Already present:
+- Not present / unknown:
+
+## 4. Assumptions and gaps
 
 | Type | Item | Impact | Route / handling |
 |---|---|---|---|
 |  |  |  |  |
 
-## 3. Decomposition
+## 5. Decomposition
 
-| ID | Slice / module increment | Observable or verifiable outcome | Source / architecture reference | Risk |
-|---|---|---|---|---|
-|  |  |  |  |  |
+| ID | Type | Slice / increment | Observable or verifiable outcome | Source / architecture reference | Risk |
+|---|---|---|---|---|---|
+|  | vertical slice / support / spike / spec / review / module increment |  |  |  |  |
 
-## 4. Task table
+## 6. Task table
 
-| Task | Slice / increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
-|---|---|---|---|---|---|---|---|---|
-|  |  |  |  |  |  |  |  |  |
+| Task | Type | Slice / increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
+|---|---|---|---|---|---|---|---|---|---|
+|  | vertical slice / support / spike / spec / review |  |  |  |  |  |  |  |  |
 
-## 5. Sequencing
+## 7. Sequencing and gates
 
 - Wave 0:
 - Wave 1:
@@ -35,7 +46,11 @@
 - Parallelizable:
 - Must not parallelize yet:
 
-## 6. Routing and risk notes
+| Gate | Blocks | How to clear |
+|---|---|---|
+|  |  |  |
+
+## 8. Routing and risk notes
 
 - `prd-engineer`:
 - `architecture-engineer`:
@@ -43,7 +58,7 @@
 - coding-ready:
 - review-sensitive:
 
-## 7. Audit summary
+## 9. Audit summary
 
 - Scope respected:
 - Architecture not redesigned:

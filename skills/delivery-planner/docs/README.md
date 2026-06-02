@@ -24,3 +24,4 @@ Maintenance records:
 | `logs/change-log-v0.2.0.md` | Historical | v0.2.0 framing notes. |
 | `logs/implementation-log-20260515-1.md` | PASS | v0.2.1 compiler alignment and instruction-quality refinement. |
 | `logs/implementation-log-20260515-2.md` | PASS | Repository artifact convention guidance for persistent delivery artifacts. |
+| `logs/implementation-log-20260602-1.md` | PASS | Compact-plus delivery plan templates with capability/substrate guardrails, typed tasks, and gates. |
