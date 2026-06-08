@@ -14,6 +14,8 @@ Use the CLI as the first choice when the saved file path is the source of truth.
 
 Use CLI interactive mode as a fallback bridge: it exposes MCP-style tool calls against a running app or a headless local editor, but it is still a terminal workflow. Prefer direct MCP tools when the agent already has them; prefer normal CLI agent/export/batch commands when the task is one-shot and path-based.
 
+CLI agent mode may use MCP tools internally while the output `.pen` is still only active editor state. During that run, the `--out` file may not exist on disk until the final save. Do not run path-based export or inspection against the `--out` path, and do not claim the file is missing, until the CLI process exits. After exit, verify the saved file with filesystem metadata and review an export when possible.
+
 Core CLI shape:
 
 ```bash

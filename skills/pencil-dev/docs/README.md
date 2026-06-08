@@ -6,3 +6,4 @@ Supporting documentation for `pencil-dev`. These files are not part of the activ
 
 - [implementation-log-20260608-1.md](logs/implementation-log-20260608-1.md) — Initial `pencil-dev` skill creation.
 - [implementation-log-20260608-2.md](logs/implementation-log-20260608-2.md) — MCP vs CLI selection rules.
+- [implementation-log-20260608-3.md](logs/implementation-log-20260608-3.md) — Move practical save-boundary rules into the source bundle.

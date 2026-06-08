@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: pencil-dev
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 18000
   description: |-
     Use when creating, iterating, inspecting, or exporting Pencil `.pen` design
@@ -30,6 +30,7 @@ sections:
     - Treat `.pen` files as opaque design artifacts. Do not read, grep, parse, or hand-edit them as text; use Pencil MCP tools when available, or the Pencil CLI.
     - Choose MCP when the current open Pencil canvas is the source of truth; choose CLI when an on-disk file, headless run, export, batch job, or CI-style automation is the source of truth.
     - Prefer existing project paths and keep generated design files in the user's working tree or an obvious subdirectory such as `designs/`.
+    - If the project or user requires a specific Pencil CLI model or agent configuration, pass it explicitly and verify command output or usage metadata before reporting completion.
   whenToUse:
     - Creating a new Pencil design from a natural-language brief.
     - Iterating on an existing `.pen` file while preserving design continuity.
@@ -55,6 +56,7 @@ sections:
         - Prefer CLI interactive mode only when direct MCP tools are unavailable but you still need fine-grained MCP-style operations against a saved file or a headless editor.
         - If both MCP and CLI are available, do not mix them until the source of truth is clear. Use MCP for the live open canvas; use CLI for saved-file automation after the file is saved.
         - If neither MCP nor CLI can operate on the chosen source of truth, explain that no real Pencil artifact can be produced in this session and do not claim completion.
+        - For an existing saved `.pen`, prefer MCP or CLI interactive iteration when the task needs inspection, variables, layout diagnosis, screenshots, or focused node edits; prefer CLI agent mode when the requested change is broad and prompt-driven.
       validation:
         - The chosen surface matches the source of truth and can create, modify, inspect, or export the requested artifact without raw `.pen` file editing.
         - The final report can name whether MCP, CLI agent mode, CLI export mode, CLI batch mode, or CLI interactive mode was used and why.
@@ -86,11 +88,15 @@ sections:
       steps:
         - For new designs, run `pencil --out <output.pen> --prompt "<user brief>" --export <output.png> --export-scale 2`.
         - For edits, run `pencil --in <existing.pen> --out <next.pen> --prompt "<requested change>" --export <next.png> --export-scale 2`.
+        - If the user or project requires a specific model, pass it explicitly with the supported CLI option and verify the model in command output or available usage metadata.
         - Pass the user's brief directly. Do not add invented layout, palette, typography, or content details unless the user asked for them.
         - Use a generous command timeout, normally at least 10 minutes, because design generation can take several minutes.
         - Keep successive versions discoverable, such as `design.pen`, `design-v2.pen`, and `design-v3.pen`.
+        - When using CLI agent mode, do not treat intermediate MCP screenshots, `batch_design` success, README text, prompt files, usage files, or created directories as the deliverable. The deliverable is the saved `.pen` after the command exits.
+        - Do not run path-based MCP export or inspection against a CLI `--out` path while the CLI process is still running; wait for the final save and process exit first.
       validation:
         - The command exits successfully, the `.pen` output exists and is non-empty, and an export exists when export was requested or feasible.
+        - If the CLI reported export success after final save, open the exported file visually; if export failed, retry from the saved `.pen` or report the split result explicitly.
     - id: stage-review-and-report
       title: Review and report
       goal: Close the loop with visual evidence instead of only command success.
@@ -133,6 +139,12 @@ sections:
     - id: gotcha-source-of-truth
       priority: high
       text: Do not switch between MCP and CLI on the same design until you know whether the live canvas or saved `.pen` file is authoritative.
+    - id: gotcha-cli-save-boundary
+      priority: high
+      text: In CLI agent mode, the active editor state is not a durable repository artifact until the final save writes the `.pen` file.
+    - id: gotcha-premature-path-export
+      priority: medium
+      text: Path-based MCP export can fail or inspect stale content if the `.pen` path has not been saved yet. Wait for CLI exit, verify the saved file, then export from the saved file or use the final CLI export.
   policies:
     - id: policy-capability-reality
       title: Capability reality policy
@@ -149,6 +161,9 @@ sections:
     - id: policy-tool-selection
       title: Tool selection policy
       text: MCP is for live, editor-backed, precise design work; CLI is for headless, path-based, export, batch, and automation work. When both could work, choose by source of truth rather than convenience.
+    - id: policy-save-boundary
+      title: Save boundary policy
+      text: For CLI agent runs, the completion boundary is process exit plus a verified non-empty `.pen` file. Do not report completion from intermediate MCP/editor state alone.
   portability:
     required: true
     rules:

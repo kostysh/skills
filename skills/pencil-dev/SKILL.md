@@ -7,9 +7,9 @@ description: |-
   graphics, and edits to existing Pencil designs where the observable outcome
   is a saved `.pen` file plus, when possible, a visually inspected export.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 7b67c0606e1b1340292f955168cc8cffe0982cc484b52ddac51cfc1607e03b41
+  skillforge-source-hash: 5921eba15cc9b96de70ec53de4ffba2c2929b3331c42bbeebdaff25323f38791
 ---
 
 # pencil-dev
@@ -21,6 +21,7 @@ metadata:
 3. Treat `.pen` files as opaque design artifacts. Do not read, grep, parse, or hand-edit them as text; use Pencil MCP tools when available, or the Pencil CLI.
 4. Choose MCP when the current open Pencil canvas is the source of truth; choose CLI when an on-disk file, headless run, export, batch job, or CI-style automation is the source of truth.
 5. Prefer existing project paths and keep generated design files in the user's working tree or an obvious subdirectory such as `designs/`.
+6. If the project or user requires a specific Pencil CLI model or agent configuration, pass it explicitly and verify command output or usage metadata before reporting completion.
 
 ## When to use this skill
 
@@ -53,6 +54,8 @@ Use the CLI as the first choice when the saved file path is the source of truth.
 
 Use CLI interactive mode as a fallback bridge: it exposes MCP-style tool calls against a running app or a headless local editor, but it is still a terminal workflow. Prefer direct MCP tools when the agent already has them; prefer normal CLI agent/export/batch commands when the task is one-shot and path-based.
 
+CLI agent mode may use MCP tools internally while the output `.pen` is still only active editor state. During that run, the `--out` file may not exist on disk until the final save. Do not run path-based export or inspection against the `--out` path, and do not claim the file is missing, until the CLI process exits. After exit, verify the saved file with filesystem metadata and review an export when possible.
+
 Core CLI shape:
 
 ```bash
@@ -78,6 +81,7 @@ Choose the smallest Pencil interface that can deliver an observable design artif
 7. Prefer CLI interactive mode only when direct MCP tools are unavailable but you still need fine-grained MCP-style operations against a saved file or a headless editor.
 8. If both MCP and CLI are available, do not mix them until the source of truth is clear. Use MCP for the live open canvas; use CLI for saved-file automation after the file is saved.
 9. If neither MCP nor CLI can operate on the chosen source of truth, explain that no real Pencil artifact can be produced in this session and do not claim completion.
+10. For an existing saved `.pen`, prefer MCP or CLI interactive iteration when the task needs inspection, variables, layout diagnosis, screenshots, or focused node edits; prefer CLI agent mode when the requested change is broad and prompt-driven.
 
 Validation:
 
@@ -118,13 +122,17 @@ Produce a `.pen` file that reflects the user's actual brief.
 
 1. For new designs, run `pencil --out <output.pen> --prompt "<user brief>" --export <output.png> --export-scale 2`.
 2. For edits, run `pencil --in <existing.pen> --out <next.pen> --prompt "<requested change>" --export <next.png> --export-scale 2`.
-3. Pass the user's brief directly. Do not add invented layout, palette, typography, or content details unless the user asked for them.
-4. Use a generous command timeout, normally at least 10 minutes, because design generation can take several minutes.
-5. Keep successive versions discoverable, such as `design.pen`, `design-v2.pen`, and `design-v3.pen`.
+3. If the user or project requires a specific model, pass it explicitly with the supported CLI option and verify the model in command output or available usage metadata.
+4. Pass the user's brief directly. Do not add invented layout, palette, typography, or content details unless the user asked for them.
+5. Use a generous command timeout, normally at least 10 minutes, because design generation can take several minutes.
+6. Keep successive versions discoverable, such as `design.pen`, `design-v2.pen`, and `design-v3.pen`.
+7. When using CLI agent mode, do not treat intermediate MCP screenshots, `batch_design` success, README text, prompt files, usage files, or created directories as the deliverable. The deliverable is the saved `.pen` after the command exits.
+8. Do not run path-based MCP export or inspection against a CLI `--out` path while the CLI process is still running; wait for the final save and process exit first.
 
 Validation:
 
 - The command exits successfully, the `.pen` output exists and is non-empty, and an export exists when export was requested or feasible.
+- If the CLI reported export success after final save, open the exported file visually; if export failed, retry from the saved `.pen` or report the split result explicitly.
 
 ### Workflow stage: Review and report
 
@@ -152,6 +160,8 @@ Validation:
 - **medium** — Do not use temporary directories for durable design artifacts unless the user explicitly wants throwaway output.
 - **medium** — Export commands can fail even when `.pen` generation succeeds; report the split result precisely.
 - **high** — Do not switch between MCP and CLI on the same design until you know whether the live canvas or saved `.pen` file is authoritative.
+- **high** — In CLI agent mode, the active editor state is not a durable repository artifact until the final save writes the `.pen` file.
+- **medium** — Path-based MCP export can fail or inspect stale content if the `.pen` path has not been saved yet. Wait for CLI exit, verify the saved file, then export from the saved file or use the final CLI export.
 
 ## Policies
 
@@ -169,6 +179,9 @@ Prefer exported visual evidence. If visual inspection is impossible, say the art
 
 ### Tool selection policy
 MCP is for live, editor-backed, precise design work; CLI is for headless, path-based, export, batch, and automation work. When both could work, choose by source of truth rather than convenience.
+
+### Save boundary policy
+For CLI agent runs, the completion boundary is process exit plus a verified non-empty `.pen` file. Do not report completion from intermediate MCP/editor state alone.
 
 ## Portability rules
 
