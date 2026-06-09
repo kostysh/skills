@@ -1,0 +1,8 @@
+{
+  "workflow": "ci.yml",
+  "ref": "main",
+  "inputs": {
+    "environment": "staging",
+    "dry_run": "true"
+  }
+}

@@ -1,0 +1,15 @@
+# GitHub Project field update plan.
+# Review project number, owner, field names, option names, and item IDs before mutation.
+project:
+  owner: OWNER
+  number: 1
+  owner_type: user # user | organization
+updates:
+  - item_id: PVTI_example
+    field: Status
+    value: In progress
+    risk: medium
+  - item_id: PVTI_example2
+    field: Priority
+    value: P1
+    risk: medium

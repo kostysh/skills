@@ -1,0 +1,7 @@
+interface:
+  display_name: "gh Utility"
+  short_description: "Comprehensive, safety-first GitHub CLI workflows."
+  brand_color: "#24292F"
+  default_prompt: "Use $gh-utility to inspect GitHub state with gh, plan the safest command sequence, and ask before risky mutations."
+policy:
+  allow_implicit_invocation: true

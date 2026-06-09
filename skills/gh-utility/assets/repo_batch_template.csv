@@ -1,0 +1,4 @@
+repo,action,resource,value,notes
+OWNER/REPO,audit,rulesets,,read only
+OWNER/REPO,audit,workflows,,read only
+OWNER/REPO,set-variable,EXAMPLE_VARIABLE,example-value,requires approval
