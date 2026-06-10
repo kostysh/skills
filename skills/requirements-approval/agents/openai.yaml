@@ -1,0 +1,3 @@
+interface:
+  display_name: "Requirements Approval"
+  short_description: "Coordinates customer approval questions, email replies, GitHub tasks, documentation updates, and commits."
