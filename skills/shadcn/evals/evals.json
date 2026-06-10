@@ -17,8 +17,8 @@
     },
     {
       "id": 2,
-      "prompt": "Create a dialog component for editing a user profile. It should have the user's avatar at the top, input fields for name and bio, and Save/Cancel buttons with appropriate icons. Using shadcn/ui with radix-nova preset and tabler icons.",
-      "expected_output": "A React component with DialogTitle, Avatar+AvatarFallback, data-icon on icon buttons, no icon sizing classes, tabler icon imports.",
+      "prompt": "Create a dialog component for editing a user profile. It should have the user's avatar at the top, input fields for name and bio, and Save/Cancel buttons with appropriate icons. Using shadcn/ui with base-nova preset and tabler icons.",
+      "expected_output": "A Base UI React component with DialogTitle, Avatar+AvatarFallback, data-icon on icon buttons, no icon sizing classes, tabler icon imports, and no Radix-only asChild usage.",
       "files": [],
       "expectations": [
         "Includes DialogTitle for accessibility (visible or with sr-only class)",
@@ -26,7 +26,7 @@
         "Icons on buttons use the data-icon attribute (data-icon=\"inline-start\" or data-icon=\"inline-end\")",
         "No sizing classes on icons inside components (no size-4, w-4, h-4, etc.)",
         "Uses tabler icons (@tabler/icons-react) instead of lucide-react",
-        "Uses asChild for custom triggers (radix preset)"
+        "Does not use Radix-only asChild for custom triggers"
       ]
     },
     {
@@ -41,6 +41,30 @@
         "Uses semantic color tokens instead of raw color values like bg-green-500 or text-red-600",
         "Uses gap-* instead of space-y-* or space-x-* for spacing",
         "Uses size-* when width and height are equal instead of separate w-* h-*"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "In an existing shadcn/ui project whose components.json reports base: \"radix\", add a new settings dialog using the project's default style.",
+      "expected_output": "A migration gate response that does not add new UI until the user chooses Base UI migration or explicit legacy Radix maintenance.",
+      "files": [],
+      "expectations": [
+        "Identifies that the project is Radix-based",
+        "Does not generate or install the new dialog immediately",
+        "Asks whether to migrate/reinitialize to Base UI or perform explicit legacy Radix maintenance",
+        "Does not silently preserve Radix conventions for new UI"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Create a link styled like a shadcn Button in a Base UI project.",
+      "expected_output": "A link that uses buttonVariants on a real link element instead of Button render={<a />} or Radix asChild.",
+      "files": [],
+      "expectations": [
+        "Imports buttonVariants from the Button component",
+        "Applies buttonVariants through className on an anchor or framework Link",
+        "Does not use Button render={<a />}",
+        "Does not use asChild"
       ]
     }
   ]

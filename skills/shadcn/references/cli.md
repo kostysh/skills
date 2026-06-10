@@ -6,7 +6,9 @@ Configuration is read from `components.json`.
 
 Before install, update, or init workflows, check the current official shadcn CLI docs or help output and use the latest CLI unless the operator explicitly requests another version.
 
-> **IMPORTANT:** Only use the flags documented below. Do not invent or guess flags — if a flag isn't listed here, it doesn't exist. The CLI auto-detects the package manager from the project's lockfile; there is no `--package-manager` flag.
+This skill is Base UI-first. Use explicit `--base base` for initialization and `docs --base base` for component documentation unless the user explicitly requests legacy Radix maintenance.
+
+> **IMPORTANT:** Only use the flags documented below or confirmed by current `--help`. Do not invent or guess flags. The CLI auto-detects the package manager from the project's lockfile; there is no `--package-manager` flag.
 
 ## Contents
 
@@ -29,7 +31,8 @@ Initializes shadcn/ui in an existing project or creates a new project (when `--n
 
 | Flag                    | Short | Description                                               | Default |
 | ----------------------- | ----- | --------------------------------------------------------- | ------- |
-| `--template <template>` | `-t`  | Template (next, start, vite, next-monorepo, react-router) | —       |
+| `--template <template>` | `-t`  | Template (next, start, vite, react-router, laravel, astro) | —       |
+| `--base <base>`         | `-b`  | Component library (`base` or `radix`)                     | —       |
 | `--preset [name]`       | `-p`  | Preset configuration (named, code, or URL)                | —       |
 | `--yes`                 | `-y`  | Skip confirmation prompt                                  | `true`  |
 | `--defaults`            | `-d`  | Use defaults (`--template=next --preset=base-nova`)       | `false` |
@@ -37,12 +40,25 @@ Initializes shadcn/ui in an existing project or creates a new project (when `--n
 | `--cwd <cwd>`           | `-c`  | Working directory                                         | current |
 | `--name <name>`         | `-n`  | Name for new project                                      | —       |
 | `--silent`              | `-s`  | Mute output                                               | `false` |
+| `--css-variables`       |       | Use CSS variables for theming                             | `true`  |
+| `--no-css-variables`    |       | Do not use CSS variables for theming                      | —       |
 | `--rtl`                 |       | Enable RTL support                                        | —       |
+| `--no-rtl`              |       | Disable RTL support                                       | —       |
+| `--pointer`             |       | Enable pointer cursor for buttons                         | —       |
+| `--no-pointer`          |       | Disable pointer cursor for buttons                        | —       |
 | `--reinstall`           |       | Re-install existing UI components                         | `false` |
+| `--no-reinstall`        |       | Do not re-install existing UI components                  | —       |
 | `--monorepo`            |       | Scaffold a monorepo project                               | —       |
 | `--no-monorepo`         |       | Skip the monorepo prompt                                  | —       |
 
 `npx shadcn@latest create` is an alias for `npx shadcn@latest init`.
+
+For this skill, new project examples must include `--base base`:
+
+```bash
+npx shadcn@latest init --name my-app --base base --template next
+npx shadcn@latest init --base base
+```
 
 ### `add` — Add components
 
@@ -138,18 +154,34 @@ npx shadcn@latest docs <components...> [options]
 
 Outputs resolved URLs for component documentation, examples, and API references. Accepts one or more component names. Fetch the URLs to get the actual content.
 
-Example output for `npx shadcn@latest docs input button`:
+| Flag           | Short | Description                                      | Default |
+| -------------- | ----- | ------------------------------------------------ | ------- |
+| `--cwd <cwd>`  | `-c`  | Working directory                                | current |
+| `--base <base>` | `-b` | Docs base (`base` or `radix`)                    | project base |
+| `--json`       |       | Output JSON                                      | `false` |
 
+For Base UI work, use:
+
+```bash
+npx shadcn@latest docs input button --base base --json
 ```
-base  radix
 
-input
-  docs      https://ui.shadcn.com/docs/components/radix/input
-  examples  https://raw.githubusercontent.com/.../examples/input-example.tsx
+Example JSON shape:
 
-button
-  docs      https://ui.shadcn.com/docs/components/radix/button
-  examples  https://raw.githubusercontent.com/.../examples/button-example.tsx
+```json
+{
+  "base": "base",
+  "results": [
+    {
+      "component": "button",
+      "base": "base",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/base/button",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/examples/button-example.tsx"
+      }
+    }
+  ]
+}
 ```
 
 Some components include an `api` link to the underlying library (e.g. `cmdk` for the command component).
@@ -169,6 +201,7 @@ Displays project info and `components.json` configuration. Run this first to dis
 | Flag          | Short | Description       | Default |
 | ------------- | ----- | ----------------- | ------- |
 | `--cwd <cwd>` | `-c`  | Working directory | current |
+| `--json`      |       | Output JSON       | `false` |
 
 **Project Info fields:**
 
@@ -189,8 +222,8 @@ Displays project info and `components.json` configuration. Run this first to dis
 
 | Field                | Type      | Meaning                                                                                    |
 | -------------------- | --------- | ------------------------------------------------------------------------------------------ |
-| `base`               | `string`  | Primitive library (`radix` or `base`) — determines component APIs and available props      |
-| `style`              | `string`  | Visual style (e.g. `nova`, `vega`)                                                         |
+| `base`               | `string`  | Primitive library (`base` or `radix`) — must be `base` for new UI work                     |
+| `style`              | `string`  | Visual style or preset style value (e.g. `nova`, `vega`, `base-nova`)                      |
 | `rsc`                | `boolean` | RSC flag from config                                                                       |
 | `tsx`                | `boolean` | TypeScript flag                                                                            |
 | `tailwind.config`    | `string`  | Tailwind config path                                                                       |
@@ -242,9 +275,9 @@ All templates support monorepo scaffolding via the `--monorepo` flag. When passe
 
 Three ways to specify a preset via `--preset`:
 
-1. **Named:** `--preset base-nova` or `--preset radix-nova`
+1. **Named or configured:** pass the documented preset name through to the CLI; pair it with `--base base` for new work unless the preset URL explicitly sets `base=base`
 2. **Code:** `--preset a2r6bw` (base62 string, starts with lowercase `a`)
-3. **URL:** `--preset "https://ui.shadcn.com/init?base=radix&style=nova&..."`
+3. **URL:** `--preset "https://ui.shadcn.com/init?base=base&style=nova&..."`
 
 > **IMPORTANT:** Never try to decode, fetch, or resolve preset codes manually. Preset codes are opaque — pass them directly to `npx shadcn@latest init --preset <code>` and let the CLI handle resolution.
 
@@ -252,8 +285,8 @@ Three ways to specify a preset via `--preset`:
 
 Ask the user first: **reinstall**, **merge**, or **skip** existing components?
 
-- **Re-install** → `npx shadcn@latest init --preset <code> --force --reinstall`. Overwrites all component files with the new preset styles. Use when the user hasn't customized components.
-- **Merge** → `npx shadcn@latest init --preset <code> --force --no-reinstall`, then run `npx shadcn@latest info` to get the list of installed components and use the [smart merge workflow](./SKILL.md#updating-components) to update them one by one, preserving local changes. Use when the user has customized components.
-- **Skip** → `npx shadcn@latest init --preset <code> --force --no-reinstall`. Only updates config and CSS variables, leaves existing components as-is.
+- **Re-install** → `npx shadcn@latest init --base base --preset <code> --force --reinstall`. Overwrites all component files with the new preset styles. Use when the user hasn't customized components.
+- **Merge** → `npx shadcn@latest init --base base --preset <code> --force --no-reinstall`, then run `npx shadcn@latest info --json` to get the list of installed components and use the [smart merge workflow](./SKILL.md#updating-components) to update them one by one, preserving local changes. Use when the user has customized components.
+- **Skip** → `npx shadcn@latest init --base base --preset <code> --force --no-reinstall`. Only updates config and CSS variables, leaves existing components as-is.
 
-Always run preset commands inside the user's project directory. The CLI automatically preserves the current base (`base` vs `radix`) from `components.json`. If you must use a scratch/temp directory (e.g. for `--dry-run` comparisons), pass `--base <current-base>` explicitly — preset codes do not encode the base.
+Always run preset commands inside the user's project directory. For new UI work, pass `--base base` explicitly. If a project is currently Radix-based, stop and get a migration or explicit legacy-maintenance decision before changing components.

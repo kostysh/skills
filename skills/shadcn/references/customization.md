@@ -65,14 +65,14 @@ import { ThemeProvider } from "next-themes"
 
 ```bash
 # Apply a preset code from ui.shadcn.com.
-npx shadcn@latest init --preset a2r6bw --force
+npx shadcn@latest init --base base --preset a2r6bw --force
 
-# Switch to a named preset.
-npx shadcn@latest init --preset radix-nova --force
+# Switch to a Base UI preset/style.
+npx shadcn@latest init --base base --preset base-nova --force
 npx shadcn@latest init --reinstall  # update existing components to match
 
 # Use a custom theme URL.
-npx shadcn@latest init --preset "https://ui.shadcn.com/init?base=radix&style=nova&theme=blue&..." --force
+npx shadcn@latest init --preset "https://ui.shadcn.com/init?base=base&style=nova&theme=blue&..." --force
 ```
 
 Or edit CSS variables directly in `globals.css`.
@@ -165,10 +165,10 @@ warning: "bg-warning text-warning-foreground hover:bg-warning/90",
 Compose shadcn/ui primitives into higher-level components:
 
 ```tsx
-export function ConfirmDialog({ title, description, onConfirm, children }) {
+export function ConfirmDialog({ title, description, trigger, onConfirm }) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger render={trigger} />
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

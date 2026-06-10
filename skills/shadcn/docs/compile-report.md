@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.1`
+- Skill source version: `0.1.2`
 
 ## Source files
 - `agents/openai.yml`
@@ -11,6 +11,7 @@ Generated from `skill.yaml`.
 - `evals/evals.json`
 - `fragments/overview.md`
 - `mcp.md`
+- `references/base-ui-policy.md`
 - `references/cli.md`
 - `references/customization.md`
 - `references/rules/base-vs-radix.md`
@@ -21,6 +22,7 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
+- `references/base-ui-policy.md`
 - `references/cli.md`
 - `references/customization.md`
 - `references/rules/base-vs-radix.md`

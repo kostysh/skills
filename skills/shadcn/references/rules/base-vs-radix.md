@@ -1,33 +1,59 @@
-# Base vs Radix
+# Base UI API Checks
 
-API differences between `base` and `radix`. Check the `base` field from `npx shadcn@latest info`.
+Base UI is the default for this skill. Radix guidance in this file exists only to recognize legacy code and migration boundaries.
+
+Before using this reference, read [../base-ui-policy.md](../base-ui-policy.md) when the task can add, update, or migrate components.
 
 ## Contents
 
-- Composition: asChild vs render
-- Button / trigger as non-button element
-- Select (items prop, placeholder, positioning, multiple, object values)
-- ToggleGroup (type vs multiple)
-- Slider (scalar vs array)
-- Accordion (type and defaultValue)
+- Base UI docs are the source of truth
+- Radix legacy markers
+- Custom triggers and polymorphic rendering
+- Links styled as buttons
+- Current Base UI component API checks
+- Migration review checks
 
 ---
 
-## Composition: asChild (radix) vs render (base)
+## Base UI Docs Are the Source of Truth
 
-Radix uses `asChild` to replace the default element. Base uses `render`. Don't wrap triggers in extra elements.
+shadcn's Base UI wrappers can preserve familiar shadcn APIs while changing the underlying primitive implementation. Do not infer current wrapper APIs from old Radix examples or from raw Base UI primitive examples.
 
-**Incorrect:**
+For every component you create, fix, or update:
 
-```tsx
-<DialogTrigger>
-  <div>
-    <Button>Open</Button>
-  </div>
-</DialogTrigger>
+```bash
+npx shadcn@latest docs button dialog select --base base --json
 ```
 
-**Correct (radix):**
+Fetch the returned docs and examples before choosing props. If local project context already confirms `base: "base"`, the project may drive the docs command, but `--base base` is still the safest explicit choice.
+
+---
+
+## Radix Legacy Markers
+
+Treat these as blockers for new Base UI work unless the user explicitly asked for legacy Radix maintenance:
+
+- imports from `@radix-ui/*`
+- imports from `radix-ui`
+- imports from `@radix-ui/react-slot`
+- `asChild` on shadcn UI components
+- preset URLs or config values that explicitly select `base=radix`
+
+Use `rg` on changed UI files after edits:
+
+```bash
+rg -n '@radix-ui/|from "radix-ui"|from '\''radix-ui'\''|@radix-ui/react-slot|asChild' <changed-ui-paths>
+```
+
+Expected result for new Base UI work: no matches in changed UI files.
+
+---
+
+## Custom Triggers and Polymorphic Rendering
+
+Radix uses `asChild`. Base UI uses `render` at the primitive layer, and shadcn Base UI components may expose `render` where polymorphic replacement is supported.
+
+**Incorrect for new Base UI work:**
 
 ```tsx
 <DialogTrigger asChild>
@@ -35,27 +61,26 @@ Radix uses `asChild` to replace the default element. Base uses `render`. Don't w
 </DialogTrigger>
 ```
 
-**Correct (base):**
+**Base UI pattern when docs show `render`:**
 
 ```tsx
 <DialogTrigger render={<Button />}>Open</DialogTrigger>
 ```
 
-This applies to all trigger and close components: `DialogTrigger`, `SheetTrigger`, `AlertDialogTrigger`, `DropdownMenuTrigger`, `PopoverTrigger`, `TooltipTrigger`, `CollapsibleTrigger`, `DialogClose`, `SheetClose`, `NavigationMenuLink`, `BreadcrumbLink`, `SidebarMenuButton`, `Badge`, `Item`.
+Rules:
+
+- Do not wrap triggers in extra elements to make composition work.
+- Do not write `asChild` in Base UI work.
+- Check current Base docs before assuming every trigger supports `render`.
+- If an existing Radix project needs `asChild`, label the work as explicit legacy Radix maintenance.
 
 ---
 
-## Button / trigger as non-button element (base only)
+## Links Styled as Buttons
 
-When `render` changes an element to a non-button (`<a>`, `<span>`), add `nativeButton={false}`.
+For Base UI button links, prefer `buttonVariants` on a plain link/anchor. Do not render links through the Base UI `Button` component unless current docs explicitly require it.
 
-**Incorrect (base):** missing `nativeButton={false}`.
-
-```tsx
-<Button render={<a href="/docs" />}>Read the docs</Button>
-```
-
-**Correct (base):**
+**Incorrect for Base UI links:**
 
 ```tsx
 <Button render={<a href="/docs" />} nativeButton={false}>
@@ -63,244 +88,104 @@ When `render` changes an element to a non-button (`<a>`, `<span>`), add `nativeB
 </Button>
 ```
 
-**Correct (radix):**
+**Correct:**
 
 ```tsx
-<Button asChild>
-  <a href="/docs">Read the docs</a>
-</Button>
+import { buttonVariants } from "@/components/ui/button"
+
+<a className={buttonVariants({ variant: "outline" })} href="/docs">
+  Read the docs
+</a>
 ```
 
-Same for triggers whose `render` is not a `Button`:
-
-```tsx
-// base.
-<PopoverTrigger render={<InputGroupAddon />} nativeButton={false}>
-  Pick date
-</PopoverTrigger>
-```
+For framework links, apply `buttonVariants` through `className` on the link component when it accepts anchor attributes.
 
 ---
 
-## Select
+## Current Base UI Component API Checks
 
-**items prop (base only).** Base requires an `items` prop on the root. Radix uses inline JSX only.
+These checks reflect current shadcn Base UI docs. If the docs command returns different usage, follow the fetched docs and update this reference.
 
-**Incorrect (base):**
+### Select
 
-```tsx
-<Select>
-  <SelectTrigger><SelectValue placeholder="Select a fruit" /></SelectTrigger>
-</Select>
-```
-
-**Correct (base):**
+Base UI `Select` uses an `items` prop on the root in the shadcn wrapper. Keep items inside `SelectGroup`.
 
 ```tsx
 const items = [
-  { label: "Select a fruit", value: null },
-  { label: "Apple", value: "apple" },
-  { label: "Banana", value: "banana" },
+  { label: "Light", value: "light" },
+  { label: "Dark", value: "dark" },
+  { label: "System", value: "system" },
 ]
 
 <Select items={items}>
   <SelectTrigger>
-    <SelectValue />
+    <SelectValue placeholder="Theme" />
   </SelectTrigger>
   <SelectContent>
     <SelectGroup>
       {items.map((item) => (
-        <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>
+        <SelectItem key={item.value} value={item.value}>
+          {item.label}
+        </SelectItem>
       ))}
     </SelectGroup>
   </SelectContent>
 </Select>
 ```
 
-**Correct (radix):**
+Do not use old guidance that says Base placeholders must be encoded only as `{ value: null }`; current shadcn Base docs show `SelectValue placeholder`.
+
+### ToggleGroup
+
+Current shadcn Base docs use the familiar shadcn wrapper API with `type="single"` for single selection.
 
 ```tsx
-<Select>
-  <SelectTrigger>
-    <SelectValue placeholder="Select a fruit" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      <SelectItem value="apple">Apple</SelectItem>
-      <SelectItem value="banana">Banana</SelectItem>
-    </SelectGroup>
-  </SelectContent>
-</Select>
-```
-
-**Placeholder.** Base uses a `{ value: null }` item in the items array. Radix uses `<SelectValue placeholder="...">`.
-
-**Content positioning.** Base uses `alignItemWithTrigger`. Radix uses `position`.
-
-```tsx
-// base.
-<SelectContent alignItemWithTrigger={false} side="bottom">
-
-// radix.
-<SelectContent position="popper">
-```
-
----
-
-## Select — multiple selection and object values (base only)
-
-Base supports `multiple`, render-function children on `SelectValue`, and object values with `itemToStringValue`. Radix is single-select with string values only.
-
-**Correct (base — multiple selection):**
-
-```tsx
-<Select items={items} multiple defaultValue={[]}>
-  <SelectTrigger>
-    <SelectValue>
-      {(value: string[]) => value.length === 0 ? "Select fruits" : `${value.length} selected`}
-    </SelectValue>
-  </SelectTrigger>
-  ...
-</Select>
-```
-
-**Correct (base — object values):**
-
-```tsx
-<Select defaultValue={plans[0]} itemToStringValue={(plan) => plan.name}>
-  <SelectTrigger>
-    <SelectValue>{(value) => value.name}</SelectValue>
-  </SelectTrigger>
-  ...
-</Select>
-```
-
----
-
-## ToggleGroup
-
-Base uses a `multiple` boolean prop. Radix uses `type="single"` or `type="multiple"`.
-
-**Incorrect (base):**
-
-```tsx
-<ToggleGroup type="single" defaultValue="daily">
-  <ToggleGroupItem value="daily">Daily</ToggleGroupItem>
+<ToggleGroup type="single">
+  <ToggleGroupItem value="list">List</ToggleGroupItem>
+  <ToggleGroupItem value="grid">Grid</ToggleGroupItem>
 </ToggleGroup>
 ```
 
-**Correct (base):**
+Do not remove `type` just because raw Base UI primitives use a different lower-level API.
+
+### Slider
+
+Current shadcn Base docs use an array for `defaultValue` on single-thumb sliders.
 
 ```tsx
-// Single (no prop needed), defaultValue is always an array.
-<ToggleGroup defaultValue={["daily"]} spacing={2}>
-  <ToggleGroupItem value="daily">Daily</ToggleGroupItem>
-  <ToggleGroupItem value="weekly">Weekly</ToggleGroupItem>
-</ToggleGroup>
-
-// Multi-selection.
-<ToggleGroup multiple>
-  <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
-  <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
-</ToggleGroup>
+<Slider defaultValue={[33]} max={100} step={1} />
 ```
 
-**Correct (radix):**
+Do not convert single-thumb values to scalar numbers unless the fetched shadcn Base docs for the installed version require it.
 
-```tsx
-// Single, defaultValue is a string.
-<ToggleGroup type="single" defaultValue="daily" spacing={2}>
-  <ToggleGroupItem value="daily">Daily</ToggleGroupItem>
-  <ToggleGroupItem value="weekly">Weekly</ToggleGroupItem>
-</ToggleGroup>
+### Accordion
 
-// Multi-selection.
-<ToggleGroup type="multiple">
-  <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
-  <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
-</ToggleGroup>
-```
-
-**Controlled single value:**
-
-```tsx
-// base — wrap/unwrap arrays.
-const [value, setValue] = React.useState("normal")
-<ToggleGroup value={[value]} onValueChange={(v) => setValue(v[0])}>
-
-// radix — plain string.
-const [value, setValue] = React.useState("normal")
-<ToggleGroup type="single" value={value} onValueChange={setValue}>
-```
-
----
-
-## Slider
-
-Base accepts a plain number for a single thumb. Radix always requires an array.
-
-**Incorrect (base):**
-
-```tsx
-<Slider defaultValue={[50]} max={100} step={1} />
-```
-
-**Correct (base):**
-
-```tsx
-<Slider defaultValue={50} max={100} step={1} />
-```
-
-**Correct (radix):**
-
-```tsx
-<Slider defaultValue={[50]} max={100} step={1} />
-```
-
-Both use arrays for range sliders. Controlled `onValueChange` in base may need a cast:
-
-```tsx
-// base.
-const [value, setValue] = React.useState([0.3, 0.7])
-<Slider value={value} onValueChange={(v) => setValue(v as number[])} />
-
-// radix.
-const [value, setValue] = React.useState([0.3, 0.7])
-<Slider value={value} onValueChange={setValue} />
-```
-
----
-
-## Accordion
-
-Radix requires `type="single"` or `type="multiple"` and supports `collapsible`. `defaultValue` is a string. Base uses no `type` prop, uses `multiple` boolean, and `defaultValue` is always an array.
-
-**Incorrect (base):**
-
-```tsx
-<Accordion type="single" collapsible defaultValue="item-1">
-  <AccordionItem value="item-1">...</AccordionItem>
-</Accordion>
-```
-
-**Correct (base):**
+Current shadcn Base docs use array `defaultValue`.
 
 ```tsx
 <Accordion defaultValue={["item-1"]}>
-  <AccordionItem value="item-1">...</AccordionItem>
-</Accordion>
-
-// Multi-select.
-<Accordion multiple defaultValue={["item-1", "item-2"]}>
-  <AccordionItem value="item-1">...</AccordionItem>
-  <AccordionItem value="item-2">...</AccordionItem>
-</Accordion>
-```
-
-**Correct (radix):**
-
-```tsx
-<Accordion type="single" collapsible defaultValue="item-1">
-  <AccordionItem value="item-1">...</AccordionItem>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>
+      Yes. It follows the documented accessibility pattern.
+    </AccordionContent>
+  </AccordionItem>
 </Accordion>
 ```
+
+Use `multiple` for multi-open accordions when the fetched Base docs show it.
+
+---
+
+## Migration Review Checks
+
+When moving code from Radix to Base UI:
+
+1. Replace Radix dependencies through the shadcn CLI or documented migration path, not raw GitHub files.
+2. Re-fetch Base docs for every touched component.
+3. Remove `asChild` from changed Base UI code.
+4. Replace link buttons with `buttonVariants` on real links.
+5. Inspect changed files for Radix imports and `@radix-ui/react-slot`.
+6. Re-run project checks or the narrowest available type/lint check.
+
+If any Radix marker remains because the user requested legacy maintenance, report it explicitly.

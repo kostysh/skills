@@ -2,12 +2,18 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: shadcn
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 23000
-  description: Manages shadcn components and projects — adding, searching, fixing, debugging, styling, and composing UI. Provides project context, component docs, and usage examples. Applies when working with shadcn/ui, component registries, presets, --preset codes, or any project with a components.json file. Also triggers for "shadcn init", "create an app with --preset", or "switch to --preset".
+  description: Manages shadcn components and projects with a Base UI-first policy — adding, searching, fixing, debugging, styling, and composing UI. Provides project context, component docs, and usage examples. Applies when working with shadcn/ui, Base UI, basecn, component registries, presets, --preset codes, or any project with a components.json file. Also triggers for "shadcn init", "create an app with --preset", or "switch to --preset".
 fragments:
   overview: fragments/overview.md
 references:
+  - id: ref-references-base-ui-policy
+    title: Base UI Policy
+    source: references/base-ui-policy.md
+    target: references/base-ui-policy.md
+    required: true
+    trigger: Read this before init, add, update, migration, registry, or component-authoring work where Base UI vs Radix can affect the result.
   - id: ref-references-cli
     title: Cli
     source: references/cli.md
@@ -21,11 +27,11 @@ references:
     required: true
     trigger: Read this when you need Theming, CSS variables, extending components.
   - id: ref-references-rules-base-vs-radix
-    title: Base Vs Radix
+    title: Base UI API Checks
     source: references/rules/base-vs-radix.md
     target: references/rules/base-vs-radix.md
     required: true
-    trigger: Read this when you need asChild vs render, Select, ToggleGroup, Slider, Accordion.
+    trigger: Read this when you need Base UI API checks, legacy Radix markers, custom triggers, link buttons, Select, ToggleGroup, Slider, or Accordion.
   - id: ref-references-rules-composition
     title: Composition
     source: references/rules/composition.md
@@ -76,6 +82,7 @@ supporting: []
 surfaces:
   active:
     requiredReferences:
+      - ref-references-base-ui-policy
       - ref-references-cli
       - ref-references-customization
       - ref-references-rules-base-vs-radix
@@ -89,11 +96,12 @@ surfaces:
 sections:
   startHere:
     - Confirm the task matches shadcn's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
+    - Treat Base UI as the invariant for all new shadcn UI work unless the user explicitly requests legacy Radix maintenance.
+    - Use the preserved overview guidance as the normative workflow for this skill after the Base UI invariant is satisfied.
     - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Preserve existing project conventions only when they do not conflict with the Base UI invariant.
   whenToUse:
-    - Working with shadcn/ui components, registries, presets, components.json, or shadcn CLI commands.
+    - Working with shadcn/ui components, Base UI, basecn, registries, presets, components.json, or shadcn CLI commands.
     - Adding, composing, styling, fixing, debugging, or reviewing shadcn components in a project.
     - Searching or viewing registry items, component docs, examples, presets, or templates.
   whenNotToUse:
@@ -102,19 +110,37 @@ sections:
     - The task is React architecture or reusable component runtime correctness without shadcn-specific behavior.
   workflow:
     - id: stage-apply-shadcn
-      title: Apply shadcn guidance
-      goal: Apply the preserved shadcn guidance without changing its domain behavior.
+      title: Apply Base UI-first shadcn guidance
+      goal: Apply shadcn guidance while keeping new UI work on Base UI and routing Radix projects through an explicit legacy or migration decision.
       steps:
         - Match the request to the applicability criteria.
+        - Check project context before init, add, update, migration, or component-authoring work; if the project is Radix-based, stop before adding new UI and ask for migration or explicit legacy Radix maintenance.
         - Follow the preserved overview sections for the concrete work.
         - Read the smallest relevant active reference before using detailed guidance from it.
+        - Fetch Base UI component docs with `shadcn docs <component> --base base` unless a confirmed Base project context already drives the docs command.
         - Run the relevant verification from the overview or report why it could not be run.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+        - The outcome follows the preserved skill guidance, the Base UI policy, and any loaded reference constraints.
+        - New or changed shadcn UI files do not introduce Radix imports, `radix-ui` imports, `@radix-ui/react-slot`, or `asChild` unless the user explicitly requested legacy Radix work.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-basecn-not-config
+      priority: high
+      text: "`basecn.dev` is an optional Base UI registry, not a replacement for confirming the project's shadcn `base` configuration."
+    - id: gotcha-prose-is-not-base-ui
+      priority: high
+      text: "Do not satisfy a Base UI request by only changing prose or theme names; verify the project config, docs source, and touched component files."
+    - id: gotcha-old-radix-examples
+      priority: medium
+      text: "Older examples may show Radix `asChild` or package imports; treat them as legacy unless current Base UI docs explicitly require them."
+  policies:
+    - id: policy-base-ui-invariant
+      title: Base UI invariant
+      text: "All new shadcn UI work targets Base UI. Radix is allowed only for explicit legacy maintenance or migration work requested by the user."
+    - id: policy-base-ui-verification
+      title: Base UI verification
+      text: "When changing shadcn UI files, verify project context and inspect changed files for Radix imports, `@radix-ui/react-slot`, `from \"radix-ui\"`, and `asChild`; report any intentional legacy exceptions."
   portability:
     required: true
     rules:

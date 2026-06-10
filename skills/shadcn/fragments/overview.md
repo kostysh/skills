@@ -1,8 +1,10 @@
-A framework for building ui, components and design systems. Components are added as source code to the user's project via the CLI.
+A framework for building UI, components, and design systems. Components are added as source code to the user's project via the CLI.
+
+This skill is **Base UI-first**. All new shadcn UI work targets Base UI unless the user explicitly requests legacy Radix maintenance. This is a capability invariant, not a naming preference: verify project config, docs source, installed component source, and changed files.
 
 > **IMPORTANT:** Run all CLI commands using the project's package runner: `npx shadcn@latest`, `pnpm dlx shadcn@latest`, or `bunx --bun shadcn@latest` — based on the project's `packageManager`. Examples below use `npx shadcn@latest` but substitute the correct runner for the project.
 
-Before install, update, or init workflows, check the current official shadcn CLI docs or help output and use the latest CLI unless the operator explicitly requests another version.
+Before install, update, or init workflows, check the current official shadcn CLI docs or help output and use the latest CLI unless the operator explicitly requests another version. Prefer explicit `--base base` for initialization and explicit `--base base` for docs lookup.
 
 ## Current Project Context
 
@@ -10,14 +12,17 @@ Before install, update, or init workflows, check the current official shadcn CLI
 !`npx shadcn@latest info --json 2>/dev/null || echo '{"error": "No shadcn project found. Run shadcn init first."}'`
 ```
 
-The JSON above contains the project config and installed components. Use `npx shadcn@latest docs <component>` to get documentation and example URLs for any component.
+The JSON above contains the project config and installed components. Use `npx shadcn@latest docs <component> --base base --json` to get Base UI documentation and example URLs for any component.
+
+If the project context reports `base: "radix"` or Radix-based shadcn component source, stop before adding new UI. Ask whether to migrate to Base UI or perform explicit legacy Radix maintenance.
 
 ## Principles
 
 1. **Use existing components first.** Use `npx shadcn@latest search` to check registries before writing custom UI. Check community registries too.
-2. **Compose, don't reinvent.** Settings page = Tabs + Card + form controls. Dashboard = Sidebar + Card + Chart + Table.
-3. **Use built-in variants before custom styles.** `variant="outline"`, `size="sm"`, etc.
-4. **Use semantic colors.** `bg-primary`, `text-muted-foreground` — never raw values like `bg-blue-500`.
+2. **Use Base UI docs and project config.** Fetch docs with `--base base` unless confirmed Base project context already drives the command.
+3. **Compose, don't reinvent.** Settings page = Tabs + Card + form controls. Dashboard = Sidebar + Card + Chart + Table.
+4. **Use built-in variants before custom styles.** `variant="outline"`, `size="sm"`, etc.
+5. **Use semantic colors.** `bg-primary`, `text-muted-foreground` — never raw values like `bg-blue-500`.
 
 ## Critical Rules
 
@@ -45,7 +50,7 @@ These rules are **always enforced**. Each links to a file with Incorrect/Correct
 ### Component Structure → [composition.md](references/rules/composition.md)
 
 - **Items always inside their Group.** `SelectItem` → `SelectGroup`. `DropdownMenuItem` → `DropdownMenuGroup`. `CommandItem` → `CommandGroup`.
-- **Use `asChild` (radix) or `render` (base) for custom triggers.** Check `base` field from `npx shadcn@latest info`. → [base-vs-radix.md](references/rules/base-vs-radix.md)
+- **Use Base UI APIs for custom triggers.** In Base UI work, do not write `asChild`; fetch current Base docs and use `render` or the documented wrapper API. Radix `asChild` is allowed only for explicit legacy work. → [base-vs-radix.md](references/rules/base-vs-radix.md)
 - **Dialog, Sheet, and Drawer always need a Title.** `DialogTitle`, `SheetTitle`, `DrawerTitle` required for accessibility. Use `className="sr-only"` if visually hidden.
 - **Use full Card composition.** `CardHeader`/`CardTitle`/`CardDescription`/`CardContent`/`CardFooter`. Don't dump everything in `CardContent`.
 - **Button has no `isPending`/`isLoading`.** Compose with `Spinner` + `data-icon` + `disabled`.
@@ -70,6 +75,7 @@ These rules are **always enforced**. Each links to a file with Incorrect/Correct
 
 ### CLI
 
+- **Base UI is the default invariant for this skill.** Use `--base base` on init and `docs --base base` for docs lookup unless explicit legacy Radix maintenance is requested.
 - **Never decode or fetch preset codes manually.** Pass them directly to `npx shadcn@latest init --preset <code>`.
 
 ## Key Patterns
@@ -138,7 +144,7 @@ The injected project context contains these key fields:
 - **`tailwindVersion`** → `"v4"` uses `@theme inline` blocks; `"v3"` uses `tailwind.config.js` (see help/docs).
 - **`tailwindCssFile`** → the global CSS file where custom CSS variables are defined. Always edit this file, never create a new one.
 - **`style`** → component visual treatment (e.g. `nova`, `vega`).
-- **`base`** → primitive library (`radix` or `base`). Affects component APIs and available props.
+- **`base`** → primitive library (`radix` or `base`). Must be `base` for new UI work; `radix` triggers the migration/legacy gate.
 - **`iconLibrary`** → determines icon imports. Use `lucide-react` for `lucide`, `@tabler/icons-react` for `tabler`, etc. Never assume `lucide-react`.
 - **`resolvedPaths`** → exact file-system destinations for components, utils, hooks, etc.
 - **`framework`** → routing and file conventions (e.g. Next.js App Router vs Vite SPA).
@@ -148,29 +154,30 @@ See [cli.md — `info` command](references/cli.md) for the full field reference.
 
 ## Component Docs, Examples, and Usage
 
-Run `npx shadcn@latest docs <component>` to get the URLs for a component's documentation, examples, and API reference. Fetch these URLs to get the actual content.
+Run `npx shadcn@latest docs <component> --base base --json` to get the URLs for a component's Base UI documentation, examples, and API reference. Fetch these URLs to get the actual content.
 
 ```bash
-npx shadcn@latest docs button dialog select
+npx shadcn@latest docs button dialog select --base base --json
 ```
 
 **When creating, fixing, debugging, or using a component, always run `npx shadcn@latest docs` and fetch the URLs first.** This ensures you're working with the correct API and usage patterns rather than guessing.
 
 ## Workflow
 
-1. **Get project context** — already injected above. Run `npx shadcn@latest info` again if you need to refresh.
-2. **Check installed components first** — before running `add`, always check the `components` list from project context or list the `resolvedPaths.ui` directory. Don't import components that haven't been added, and don't re-add ones already installed.
-3. **Find components** — `npx shadcn@latest search`.
-4. **Get docs and examples** — run `npx shadcn@latest docs <component>` to get URLs, then fetch them. Use `npx shadcn@latest view` to browse registry items you haven't installed. To preview changes to installed components, use `npx shadcn@latest add --diff`.
-5. **Install or update** — `npx shadcn@latest add`. When updating existing components, use `--dry-run` and `--diff` to preview changes first (see [Updating Components](#updating-components) below).
-6. **Fix imports in third-party components** — After adding components from community registries (e.g. `@bundui`, `@magicui`), check the added non-UI files for hardcoded import paths like `@/components/ui/...`. These won't match the project's actual aliases. Use `npx shadcn@latest info` to get the correct `ui` alias (e.g. `@workspace/ui/components`) and rewrite the imports accordingly. The CLI rewrites imports for its own UI files, but third-party registry components may use default paths that don't match the project.
-7. **Review added components** — After adding a component or block from any registry, **always read the added files and verify they are correct**. Check for missing sub-components (e.g. `SelectItem` without `SelectGroup`), missing imports, incorrect composition, or violations of the [Critical Rules](#critical-rules). Also replace any icon imports with the project's `iconLibrary` from the project context (e.g. if the registry item uses `lucide-react` but the project uses `hugeicons`, swap the imports and icon names accordingly). Fix all issues before moving on.
-8. **Registry must be explicit** — When the user asks to add a block or component, **do not guess the registry**. If no registry is specified (e.g. user says "add a login block" without specifying `@shadcn`, `@tailark`, etc.), ask which registry to use. Never default to a registry on behalf of the user.
-9. **Switching presets** — Ask the user first: **reinstall**, **merge**, or **skip**?
+1. **Get project context** — already injected above. Run `npx shadcn@latest info --json` again if you need to refresh.
+2. **Enforce Base UI gate** — If there is no project and you are initializing, use `--base base`. If the project is Radix-based, stop before adding new UI and ask whether to migrate or do explicit legacy Radix maintenance. See [base-ui-policy.md](references/base-ui-policy.md).
+3. **Check installed components first** — before running `add`, always check the `components` list from project context or list the `resolvedPaths.ui` directory. Don't import components that haven't been added, and don't re-add ones already installed.
+4. **Find components** — `npx shadcn@latest search`.
+5. **Get docs and examples** — run `npx shadcn@latest docs <component> --base base --json` to get URLs, then fetch them. Use `npx shadcn@latest view` to browse registry items you haven't installed. To preview changes to installed components, use `npx shadcn@latest add --diff`.
+6. **Install or update** — `npx shadcn@latest add`. When updating existing components, use `--dry-run` and `--diff` to preview changes first (see [Updating Components](#updating-components) below).
+7. **Fix imports in third-party components** — After adding components from community registries (e.g. `@basecn`, `@bundui`, `@magicui`), check the added non-UI files for hardcoded import paths like `@/components/ui/...`. These won't match the project's actual aliases. Use `npx shadcn@latest info --json` to get the correct `ui` alias (e.g. `@workspace/ui/components`) and rewrite the imports accordingly. The CLI rewrites imports for its own UI files, but third-party registry components may use default paths that don't match the project.
+8. **Review added components** — After adding a component or block from any registry, **always read the added files and verify they are correct**. Check for missing sub-components (e.g. `SelectItem` without `SelectGroup`), missing imports, incorrect composition, Radix imports, `asChild`, or violations of the [Critical Rules](#critical-rules). Also replace any icon imports with the project's `iconLibrary` from the project context (e.g. if the registry item uses `lucide-react` but the project uses `hugeicons`, swap the imports and icon names accordingly). Fix all issues before moving on.
+9. **Registry must be explicit** — When the user asks to add a block or component, **do not guess the registry**. If no registry is specified (e.g. user says "add a login block" without specifying `@shadcn`, `@basecn`, `@tailark`, etc.), ask which registry to use. Never default to a registry on behalf of the user.
+10. **Switching presets** — Ask the user first: **reinstall**, **merge**, or **skip**?
    - **Reinstall**: `npx shadcn@latest init --preset <code> --force --reinstall`. Overwrites all components.
    - **Merge**: `npx shadcn@latest init --preset <code> --force --no-reinstall`, then run `npx shadcn@latest info` to list installed components, then for each installed component use `--dry-run` and `--diff` to [smart merge](#updating-components) it individually.
    - **Skip**: `npx shadcn@latest init --preset <code> --force --no-reinstall`. Only updates config and CSS, leaves components as-is.
-   - **Important**: Always run preset commands inside the user's project directory. The CLI automatically preserves the current base (`base` vs `radix`) from `components.json`. If you must use a scratch/temp directory (e.g. for `--dry-run` comparisons), pass `--base <current-base>` explicitly — preset codes do not encode the base.
+   - **Important**: Always run preset commands inside the user's project directory. For new Base UI work, keep or set `--base base`. If a scratch/temp directory is needed for comparisons, pass `--base base` explicitly unless this is an approved legacy Radix task.
 
 ## Updating Components
 
@@ -187,49 +194,18 @@ When the user asks to update a component from upstream while keeping their local
 ## Quick Reference
 
 ```bash
-# Create a new project.
-npx shadcn@latest init --name my-app --preset base-nova
-npx shadcn@latest init --name my-app --preset a2r6bw --template vite
+# Init Base UI.
+npx shadcn@latest init --name my-app --base base
+npx shadcn@latest init --base base
 
-# Create a monorepo project.
-npx shadcn@latest init --name my-app --preset base-nova --monorepo
-npx shadcn@latest init --name my-app --preset base-nova --template next --monorepo
-
-# Initialize existing project.
-npx shadcn@latest init --preset base-nova
-npx shadcn@latest init --defaults  # shortcut: --template=next --preset=base-nova
-
-# Add components.
+# Add and inspect.
 npx shadcn@latest add button card dialog
-npx shadcn@latest add @magicui/shimmer-button
-npx shadcn@latest add --all
-
-# Preview changes before adding/updating.
+npx shadcn@latest add @basecn/combobox
 npx shadcn@latest add button --dry-run
 npx shadcn@latest add button --diff button.tsx
-npx shadcn@latest add @acme/form --view button.tsx
 
-# Search registries.
-npx shadcn@latest search @shadcn -q "sidebar"
-npx shadcn@latest search @tailark -q "stats"
-
-# Get component docs and example URLs.
-npx shadcn@latest docs button dialog select
-
-# View registry item details (for items not yet installed).
-npx shadcn@latest view @shadcn/button
+# Base docs.
+npx shadcn@latest docs button dialog select --base base --json
 ```
 
-**Named presets:** `base-nova`, `radix-nova`
-**Templates:** `next`, `vite`, `start`, `react-router`, `astro` (all support `--monorepo`) and `laravel` (not supported for monorepo)
-**Preset codes:** Base62 strings starting with `a` (e.g. `a2r6bw`), from [ui.shadcn.com](https://ui.shadcn.com).
-
-## Detailed References
-
-- [rules/forms.md](references/rules/forms.md) — FieldGroup, Field, InputGroup, ToggleGroup, FieldSet, validation states
-- [rules/composition.md](references/rules/composition.md) — Groups, overlays, Card, Tabs, Avatar, Alert, Empty, Toast, Separator, Skeleton, Badge, Button loading
-- [rules/icons.md](references/rules/icons.md) — data-icon, icon sizing, passing icons as objects
-- [rules/styling.md](references/rules/styling.md) — Semantic colors, variants, className, spacing, size, truncate, dark mode, cn(), z-index
-- [rules/base-vs-radix.md](references/rules/base-vs-radix.md) — asChild vs render, Select, ToggleGroup, Slider, Accordion
-- [cli.md](references/cli.md) — Commands, flags, presets, templates
-- [customization.md](references/customization.md) — Theming, CSS variables, extending components
+**Base UI invariant:** use `--base base` for new projects and docs lookup. Radix presets or `base=radix` URLs are legacy-only.

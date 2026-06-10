@@ -147,7 +147,7 @@ Combine with `Field` for labelled toggle groups:
 </Field>
 ```
 
-> **Note:** `defaultValue` and `type`/`multiple` props differ between base and radix. See [base-vs-radix.md](./base-vs-radix.md#togglegroup).
+> **Note:** Base UI is the default for this skill. Fetch current Base docs before relying on option-set props, and see [base-vs-radix.md](./base-vs-radix.md#current-base-ui-component-api-checks).
 
 ---
 
