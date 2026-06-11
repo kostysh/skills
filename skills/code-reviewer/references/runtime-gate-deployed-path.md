@@ -11,6 +11,7 @@ Run the pass when the diff or linked intent includes any of these surfaces:
 - gates that authorize provider calls, model calls, webhook dispatch, queue publishes, job enqueues, payments, notifications, background ticks, or other side effects
 - production construction, app composition, dependency injection, service factories, lifecycle registration, route registration, worker boot, schedulers, or tick loops that wire a gate
 - request, tick, job, queue, router, model, provider, or handler paths that should call a gate before invocation
+- long-lived protected streams, SSE, subscription, or WebSocket-like handlers whose authorization can change after connection opening
 - invocation boundaries after allow, deny, refusal, admission, or policy decisions
 - idempotency, replay, request locks, singleton locks, active-scope locks, or lock keys around gated execution
 - release, deployment, tenant, region, cell, environment, or runtime identity binding used by integration code
@@ -43,6 +44,19 @@ For each triggered surface, check only the reachable changed paths.
 | Idempotency lock scope | Lock keys and lock lifetime cover the same runtime identity, request scope, gate decision, persistence, and side effect. | Duplicate or concurrent execution can bypass the gate because the lock is scoped only around isolated logic, a different identity, or the side effect alone. |
 | Deployed-path tests | Tests execute the shipped construction or lifecycle path when wiring can bypass the gate. | Coverage proves only an isolated unit while production construction, lifecycle wiring, or integration identity can change the outcome. |
 | Identity binding | Release, deployment, cell, tenant, region, or runtime identity comes from canonical upstream evidence or explicit configuration passed through the deployed path. | Integration code hard-codes identity, silently falls back to a default identity, or ignores identity mismatch unless a normative source explicitly requires that behavior. |
+| Long-lived revalidation | Protected streams or sockets revalidate authorization or consume an explicit invalidation mechanism during the connection lifetime. | Opening admission is correct, but stale/revoked/disabled/maintenance-denied changes can keep receiving protected events indefinitely. |
+
+## Long-lived Protected Endpoint Checks
+
+For SSE, stream, subscription, or WebSocket-like endpoints, opening auth is only the first gate when permissions can change while the connection remains open.
+
+Check:
+
+- the route-level guard protects the opening request;
+- service/domain logic supports repeated authorization checks, heartbeat revalidation, or an explicit accepted invalidation mechanism;
+- stale session, revoked account/session/role, wrong active context, wrong scope/tenant, disabled status, or maintenance denial reaches an observable blocked, closed, or denied state;
+- stream loops handle cancellation/abort and do not leave floating promises;
+- tests cover the lifecycle path, not only the initial handler response.
 
 ## Identity-binding Checks
 

@@ -15,9 +15,9 @@ description: >-
 
   rules.
 metadata:
-  source-version: 0.3.0
+  source-version: 0.3.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: caf54141ca40d8b2ee5f186a1cbb2092ada3847c87ab22ee76435e3c69a2a732
+  skillforge-source-hash: 0cbca9eeef6e76c9652c118f1ca5c90d39e104986182447e3ade7a01c2d9f773
 ---
 
 # code-reviewer
@@ -77,6 +77,9 @@ Review code changes for merge risk, not for style points. Run a lightweight spec
 - When a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
 - When changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
 - When changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
+- For backend auth/RBAC/session/context/data-access changes, check for fake-green tests: mocks or in-memory paths can prove API flow while leaving the real persistence/RLS/RPC/provider path untested.
+- For fixture-heavy tests, check that fixtures model production invariants such as session row/version, active context, role/scope/tenant, status, and profile/readiness gates instead of seeding impossible states.
+- For long-lived protected endpoints, do not reduce the review to one-shot handler admission when permission can change while the stream or socket is open.
 - Review behavior, compatibility, tests, and operability before discussing minor cleanup.
 - Do not block on formatting, naming preference, or framework taste unless it creates concrete risk.
 - Verify each finding against surrounding code, nearby tests, and existing guards before reporting it.
@@ -95,7 +98,8 @@ Review code changes for merge risk, not for style points. Run a lightweight spec
 5. Route by file type and load only the relevant domain skill. See `references/domain-routing.md`.
 6. If policy/admission triggers are present, run the bounded pass from `references/policy-admission-merge-risk.md`.
 7. If runtime-gate deployed-path triggers are present, run the pass from `references/runtime-gate-deployed-path.md`.
-8. Review in four passes:
+8. If backend auth/RBAC/session/context, direct data access, long-lived protected streams, or audit durability changed, include a production-path evidence pass: route/service path, real store/RLS/RPC/provider path, fixtures, negative tests, and audit fallback/error paths.
+9. Review in four passes:
    - correctness and regressions
    - design and maintainability
    - tests and operability
@@ -130,6 +134,11 @@ Review code changes for merge risk, not for style points. Run a lightweight spec
 - Missing tests for merge-critical behavior
 - Missing tests for requirement-critical behavior when a normative source is available
 - Tests that do not exercise the real risk path
+- API tests that pass through mocked or in-memory stores while the real persistence/RLS/RPC/provider boundary can behave differently
+- Fixtures that bypass production invariants, such as impossible role/profile states, mismatched session/context versions, wrong tenant/scope, or disabled/revoked statuses that production would reject
+- Missing negative tests for stale session, stale active context, wrong role, wrong scope/tenant, disabled/revoked account/session/role, or missing profile/readiness state in auth/RBAC/session/context changes
+- Long-lived protected endpoints that only test opening admission and not permission revocation, status change, maintenance denial, or context change during the connection
+- Audit/durable behavior whose fallback or error path is silent best effort without test evidence
 - New logs, metrics, migrations, jobs, or background work without enough validation
 - Changes that need rollback or release notes but do not acknowledge it
 
@@ -146,6 +155,8 @@ Treat these as likely `blocking` unless surrounding context proves otherwise:
 
 - Auth or permission model changes
 - Migrations, RLS, or data retention changes
+- Long-lived protected streams, SSE, subscription, or WebSocket-like endpoints
+- Audit/security event capture or durable fallback behavior
 - New external side effects: queues, webhooks, cron, background jobs
 - CI or release workflow changes
 - Shared library or API contract changes

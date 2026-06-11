@@ -13,6 +13,7 @@ Run the pass when the diff or linked intent includes any of these surfaces:
 - policy allow, deny, refusal, or admission decisions
 - code that must decide before an external invocation, webhook, queue publish, job enqueue, notification, payment, model call, or other side effect
 - decision logs, audit rows, replay records, request ids, idempotency keys, or conflict handling
+- audit/security event capture, fallback, append-only storage, or failure behavior used as merge-critical evidence
 - active-scope activation, singleton decisions, policy version activation, or replacement of the currently active record
 - freshness controls such as evidence timestamps, `observedAt`, `collectedAt`, `expiresAt`, `maxEvidenceAgeMs`, or TTL checks
 - tests that claim to cover policy/admission failure paths
@@ -29,6 +30,7 @@ For each touched surface, check only the reachable changed paths.
 | Replay and conflict handling | Duplicate request ids, idempotency keys, persistence conflicts, and replayed audit rows are resolved before side effects. | A replay can reuse stale success state, ignore a conflict, or perform the side effect before conflict resolution. |
 | Freshness fail-closed | When age limits exist, missing or stale freshness metadata is rejected. | `maxEvidenceAgeMs` or equivalent exists, but absent `observedAt` or stale evidence silently passes through defaults. |
 | Persistence fail-closed | Decision and audit persistence failures cannot produce an allowed action. | A write failure, partial write, or swallowed persistence error lets the operation continue as allowed. |
+| Audit capture semantics | Required audit/security events have the promised capture path, durability, and failure behavior. | Code only names or logs an event, or silently best-effort writes it, while the contract requires fail-closed capture, durable fallback, or append-only evidence. |
 | Active-scope concurrency | Active or singleton decisions use a transaction, lock, compare-and-swap, or uniqueness constraint that matches the data model. | Concurrent activations can admit two active policies or leave the active state ambiguous. |
 | Append-only facts | Append-only fact or audit tables do not rely on uniqueness shortcuts that hide conflicting facts. | A shortcut treats the first or last row as authoritative without resolving conflict, replay, or freshness. |
 | Risk-path tests | Tests exercise the actual policy/admission failure path. | Coverage only checks nearby happy paths while a merge-critical deny, replay, freshness, persistence, or active-scope path is changed. |

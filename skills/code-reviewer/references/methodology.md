@@ -16,12 +16,14 @@ Before writing findings:
 4. Flag high-risk files early:
    - migrations
    - auth or permission code
+   - RBAC/session/context code and direct data-access paths
    - runtime config
    - background work
    - CI workflows
    - tests removed or weakened
    - policy gates, admission flow, decision or audit persistence, active-scope activation, idempotency, replay, or freshness checks
    - runtime gates in shipped lifecycle paths, production construction, deployed dependency wiring, request or tick execution, invocation boundaries, idempotency locks, or deployment/cell identity binding
+   - long-lived protected streams, subscriptions, SSE, or WebSocket-like endpoints
 5. If a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
 6. If changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
 7. If changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
@@ -87,6 +89,11 @@ Ask:
 
 - What behavior changed, and where is it tested?
 - Are edge cases and failure paths covered?
+- Do tests exercise the production data path that can actually fail, such as persistence, RLS, RPC, provider gate, or service-role boundary, rather than only a mock or in-memory path?
+- Do fixtures satisfy production authorization invariants, including session row/version, active context id/version, role, scope/tenant, account/session/role status, and profile/readiness gates?
+- For auth/RBAC/session/context changes, are negative tests present for stale session, stale active context, wrong role, wrong scope/tenant, disabled/revoked status, and missing readiness when relevant?
+- For long-lived protected streams or sockets, is there evidence that stale/revoked/disabled/maintenance-denied transitions produce an observable blocked/closed/denied state?
+- For required audit or durable behavior, are fallback and write-failure paths tested instead of swallowed as silent best effort?
 - Are logs, metrics, retries, and rollout concerns handled?
 - Would a rollback or emergency fix be obvious?
 
