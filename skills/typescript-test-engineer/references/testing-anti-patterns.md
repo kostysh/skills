@@ -272,6 +272,43 @@ BEFORE trusting a state-changing test double:
     Keep the double minimal and avoid testing its internals
 ```
 
+## Backend Evidence Anti-Pattern: Fake-Green Production Boundaries
+
+**The violation:**
+```typescript
+// X BAD: API test proves route flow but not production RLS/provider behavior
+const app = createApp({ store: new InMemoryUserStore() });
+const res = await app.request("/documents");
+assert.equal(res.status, 200);
+```
+
+**Why this is wrong:**
+- The test can prove middleware, routing, and service orchestration while the real persistence, RLS, RPC, provider gate, or service-role boundary remains untested.
+- In-memory fixtures can accidentally allow impossible roles, stale sessions, wrong tenants, or incomplete profiles that production would reject.
+- A mocked provider can hide that stage/prod selects a different credential, policy, or authorization path.
+
+**The fix:**
+Use layered evidence:
+
+- API/service tests for HTTP behavior;
+- contract tests for store/adapters when an in-memory double replaces production behavior;
+- database/RLS/RPC allow/deny tests with the caller identity production uses;
+- negative tests for stale session, stale active context, wrong role, wrong scope/tenant, revoked/disabled status, and missing readiness when relevant;
+- provider-boundary tests proving the double is test-only and cannot be selected in stage/prod.
+
+### Gate Function
+
+```
+BEFORE accepting backend tests as production evidence:
+  Ask: "Which production boundary does this test actually exercise?"
+
+  IF the answer is only route/service + mock/in-memory store:
+    Report a production-boundary evidence gap
+
+  IF fixtures bypass auth/RBAC/session/context/profile/status invariants:
+    Replace them with production-valid fixtures or make rejection explicit
+```
+
 ## Anti-Pattern 6: Integration Tests as Afterthought
 
 **The violation:**
@@ -427,6 +464,7 @@ If TDD is not explicitly requested, use the gate functions and normal validation
 | Mock without understanding | Understand dependencies first, mock minimally |
 | Incomplete mocks | Mirror real API completely |
 | State-changing double without contract tests | Run shared contract suite against production and the double |
+| Fake-green production boundary tests | Add real boundary, contract, or allow/deny tests |
 | Tests as afterthought | Add behavior tests before claiming completion; use TDD only if requested |
 | No final coverage checkpoint | Run and record coverage before closure |
 | Never-settled promises in test mocks | Use deferred and always resolve/reject |
@@ -443,6 +481,9 @@ If TDD is not explicitly requested, use the gate functions and normal validation
 - Can't explain why mock is needed
 - Mocking "just to be safe"
 - State-changing fixture/model has no shared contract suite with production
+- API tests with mock/in-memory stores are treated as proof for persistence/RLS/RPC/provider behavior
+- Fixtures seed impossible auth/RBAC/session/context/profile/status states
+- Test doubles can be selected outside test runtime
 - No recorded coverage checkpoint at milestone/final closure
 - Pending mock promises without explicit settle path
 - `waitFor` callback contains `await`

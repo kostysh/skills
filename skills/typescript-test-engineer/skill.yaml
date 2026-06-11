@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.2"
+  source-version: "0.1.3"
   recommended-skill-md-max-bytes: 46000
   description: "Design, implement, and maintain robust tests for TypeScript projects (Node/React/edge) with focus on node:test, Vitest, mocking, determinism, and coverage."
 fragments:

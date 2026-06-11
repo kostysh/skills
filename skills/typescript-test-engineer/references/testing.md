@@ -33,6 +33,8 @@ Specific findings to look for:
 - deleted tests without a replacement at another layer;
 - weaker assertions (`toBeTruthy`, status-only checks, broad snapshots) replacing contract checks;
 - mocks that bypass the real edge the change was supposed to exercise;
+- mocked or in-memory paths accepted as proof for production persistence/RLS/RPC/provider behavior;
+- fixtures that create impossible auth/RBAC/session/context/profile/readiness/status states;
 - security-sensitive behavior without negative/fail-closed tests for forbidden paths;
 - CI or workflow changes that reduce which tests actually run.
 
@@ -46,6 +48,28 @@ Coverage intent:
 - assert the observable error/status/audit behavior the contract requires.
 
 For security-sensitive code, missing negative/fail-closed tests are a test gap. Do not inflate this into a fixed test count: one scenario can cover multiple forbidden paths when it truly exercises them, and irrelevant paths can be marked `N/A` with a short reason.
+
+## Backend production-boundary evidence
+
+Use this when backend behavior depends on auth/RBAC, sessions, active context, persistence, RLS, RPC, provider gates, or service-role boundaries.
+
+Mocks and in-memory stores can prove API flow, validation, routing, and service branching. They do not prove production persistence, RLS/RPC, provider authorization, service-role safety, or security semantics unless the same boundary is exercised or a shared contract suite covers it.
+
+Prefer a layered strategy:
+
+- service/API behavior tests for request/response, validation, error mapping, and orchestration;
+- adapter/store contract tests for shared behavior across production and in-memory implementations;
+- database/RLS/RPC allow and deny tests with the caller identity that production uses;
+- negative cases for stale session, stale active context, wrong role, wrong scope/tenant, revoked/disabled status, and missing profile/readiness when relevant;
+- provider test-double boundary tests that prove the double is test-only and stage/prod cannot select it.
+
+Fixtures should model production invariants. Do not seed convenient roles, sessions, profiles, statuses, or scopes that production authorization, RLS, readiness gates, or status rules would reject unless the test is explicitly proving rejection of that impossible state.
+
+When only mock or in-memory evidence exists for a production boundary, report the gap directly:
+
+```text
+API-flow tests pass, but the real RLS/RPC/provider boundary is untested.
+```
 
 ## Side-effecting/state-changing workflow negative matrix
 
