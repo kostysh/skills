@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.0"
+  source-version: "0.1.1"
   recommended-skill-md-max-bytes: 28000
   description: "Build and maintain production-grade Hono API services across projects. Use when designing endpoints, middleware, config, logging, validation, security, and tests for Hono-based APIs."
 fragments:

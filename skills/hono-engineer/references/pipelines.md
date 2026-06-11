@@ -16,6 +16,7 @@ Notes:
 - Keep CORS before routes so preflight requests don’t hit business logic.
 - Prefer the built‑in `requestId` middleware unless you need custom behavior.
 - Timeout middleware is not compatible with streaming responses; avoid it on streaming endpoints.
+- For protected streaming endpoints, keep the route auth/authorize middleware on the opening request and implement lifecycle revalidation or invalidation inside the stream service.
 
 Minimal example (stream timeout):
 ```ts
@@ -29,6 +30,16 @@ app.get('/sse', (c) =>
   })
 )
 ```
+
+## E) Protected stream / SSE / WebSocket-like
+- Global chain
+- Route-group: `rateLimit` (pre-auth) -> `auth` -> `authorize` -> `handler`
+- Inside the stream/service loop: heartbeat or periodic revalidation, explicit invalidation handling, abort cleanup, and no floating async work.
+
+Observable lifecycle expectations:
+- stale session/context, revoked or disabled account/session/role, wrong role/scope/tenant, missing readiness, or maintenance denial closes/blocks/denies the stream;
+- cancellation clears timers, listeners, upstream subscriptions, and pending work;
+- tests exercise a permission-change transition, not only the first response.
 
 ## A) Public read (cacheable GET)
 - Global chain

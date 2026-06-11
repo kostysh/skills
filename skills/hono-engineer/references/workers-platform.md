@@ -20,6 +20,7 @@
 - Use `ctx.waitUntil()` for non-critical async work (logs, metrics, audit) to avoid blocking responses.
 - Do not destructure `ctx.waitUntil`; call it as a method on `ctx`.
 - Stream large or unknown-size upstream responses; avoid `await response.text()` on unbounded payloads.
+- For long-lived streams, wire abort/cancel handlers to clear timers, upstream subscriptions, and pending work; do not rely on one-time route admission for protected event delivery.
 
 ## Security-sensitive patterns
 - Use `crypto.randomUUID()` or `crypto.getRandomValues()` for tokens and identifiers; never `Math.random()`.

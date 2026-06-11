@@ -62,6 +62,18 @@ app.use('*', csrf())
 - For auth-admission route changes, preserve the touched route's current public, user, admin, webhook, service, or operator admission boundary before changing handler behavior.
 - If the route has owner or tenant gate semantics, keep the gate explicit and covered by integration tests rather than relying on route naming or UI-only checks.
 
+## Long-lived protected endpoints
+
+Use this for SSE, streaming responses, subscriptions, or WebSocket-like handlers that can outlive the initial request admission.
+
+Rules:
+
+- Route-level guard protects the opening request, but service/domain logic must support repeated authorization checks during the connection lifecycle.
+- Require periodic revalidation or another explicit accepted invalidation mechanism when session, account, role, scope/tenant, active context, maintenance mode, or profile/readiness state can change while connected.
+- Stale, revoked, disabled, wrong-context, wrong-scope, or maintenance-denied transitions should produce an observable blocked, closed, or denied state.
+- Stream loops must observe request abort/cancellation, clean timers/listeners, and avoid floating promises.
+- Tests should cover at least opening admission plus one permission-change transition when the endpoint carries protected data.
+
 ## Middleware composition (complex auth flows)
 - Use `combine` helpers: `some()` (any pass), `every()` (all pass), `except()` (skip for matched paths).
 
