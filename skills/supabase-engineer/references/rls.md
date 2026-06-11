@@ -7,6 +7,8 @@
 - Add indexes on RLS-checked columns (e.g. `user_id`, `org_id`).
 - Specify roles with `to authenticated`/`anon` where appropriate.
 - Treat views as a separate boundary; prefer `security_invoker = true` for views exposed to end-user queries.
+- For user-scoped capabilities, test direct PostgREST/RPC behavior with publishable key + user JWT; API-route tests alone do not prove RLS.
+- Keep service-layer auth/RBAC gates and RLS/RPC helper gates aligned for session/context freshness, status, scope/tenant, role, and profile/readiness requirements.
 
 ## Policy templates
 ```sql
@@ -97,8 +99,24 @@ If an operation should be impossible, record that intentionally and keep the pol
 - Policies cover every intended operation and role explicitly.
 - Policy predicates match the actual ownership or membership model.
 - Elevated paths (`service_role`, privileged functions, admin RPCs) are documented as intentional bypasses.
+- User-scoped operations use user JWT/RLS or security-checked RPC instead of service-role bypass.
+- Policies or helper functions reject stale or mismatched session id/version, active context id/version, role, scope/tenant, disabled/revoked status, and missing profile/readiness state when those claims protect the capability.
 - RLS columns used in predicates are indexed.
 - Views and functions do not accidentally bypass caller RLS semantics.
+
+## Database test matrix
+
+For auth/RBAC-sensitive tables, storage policies, and RPCs, include allow and deny cases for:
+
+- valid caller and expected role/scope/tenant;
+- stale session or session version;
+- stale active context or active context version;
+- wrong role, scope, or tenant;
+- revoked or disabled account/session/role status;
+- missing profile/readiness state when permission depends on it;
+- direct PostgREST/RPC behavior with publishable key + user JWT where the path is exposed.
+
+Do not rely only on server API or in-memory tests when RLS is the production permission boundary.
 
 ## Schema design rules
 - Use `public.profiles` with FK to `auth.users(id)`; avoid exposing `auth.users` directly.

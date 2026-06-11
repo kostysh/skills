@@ -10,6 +10,9 @@ Build and operate Supabase-backed systems with strong security, performance, and
 - Prefer schema-first migrations: edit `supabase/schemas/*.sql`, then `supabase db diff`.
 - Separate Supabase clients by trust boundary (`anon`, `user`, `service`) and document where bypass-RLS access is allowed.
 - Build user-scoped clients per request and inject user JWT via request headers during client creation (avoid shared mutable auth state in server runtimes).
+- For ordinary user reads/writes, prefer user JWT + RLS or a security-checked RPC; reserve service-role clients for documented internal/admin/secret-bearing boundaries.
+- For auth/RBAC work, verify direct PostgREST/RPC behavior with publishable key + user JWT, not only server API behavior.
+- RLS helpers, storage policies, and RPC functions that protect the same capability as service code must enforce the same session/context freshness, status, scope/tenant, role, and profile/readiness gates.
 - Use `security_invoker = true` on exposed views that must obey caller RLS semantics.
 - Default storage bucket provisioning to idempotent SQL migrations (not manual dashboard/runtime auto-create) unless the project explicitly chooses another ops model.
 - For Edge Functions, use `Deno.serve()`, versioned imports, and write only to `/tmp`.
@@ -31,10 +34,11 @@ Build and operate Supabase-backed systems with strong security, performance, and
 2. Draft schema, grants, and RLS policies early; add indexes for RLS columns.
 3. Pick architecture variant and client setup.
 4. Implement auth + storage + realtime with typed clients.
-5. Add retries/backoff/idempotency for writes; cache or batch hot reads.
-6. Configure local dev, CI, and multi-env secrets.
-7. Prepare production checklist and incident runbook.
-8. Align database/app test execution with project contours (local fast loop, PR required gates, nightly stability).
+5. Verify user-scoped direct data paths: PostgREST/RPC with publishable key + user JWT, RLS allow/deny behavior, and stale/wrong claim denial where relevant.
+6. Add retries/backoff/idempotency for writes; cache or batch hot reads.
+7. Configure local dev, CI, and multi-env secrets.
+8. Prepare production checklist and incident runbook.
+9. Align database/app test execution with project contours (local fast loop, PR required gates, nightly stability).
 
 ## Local deterministic bootstrapping (dev-only)
 
@@ -55,7 +59,7 @@ Critical reminders:
 
 - `anon` client: publishable key without JWT; use only for endpoints intentionally exposed by RLS to unauthenticated reads.
 - `user` client: publishable key + end-user JWT from the incoming request (cookie/header) for RLS-scoped operations.
-- `service` client: service role key for internal/admin tasks only; never pass through from browser/client code.
+- `service` client: service role key for internal/admin/secret-bearing tasks only; never pass through from browser/client code and do not use it for ordinary user-scoped reads or mutations unless the bypass is explicitly documented and separately authorized.
 - Prefer request-scoped client factories to avoid cross-request auth leakage in long-lived runtimes.
 - For each endpoint, define expected trust level first, then choose the matching client type.
 
@@ -122,7 +126,7 @@ Read only what you need:
 - Storage operations: `references/storage.md`
 - Edge Functions (Deno): `references/edge-functions.md`
 - Vector embeddings (pgvector): `references/vector.md`
-- Database functions + triggers: `references/db-functions.md`
+- Database functions, triggers, security-definer RPCs, and helper authorization: `references/db-functions.md`
 - Migrations + CLI: `references/migrations-cli.md`
 - Reliability, rate limits, performance: `references/operations-reliability.md`
 - Observability + debug bundles: `references/operations-observability.md`

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: supabase-engineer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: Comprehensive Supabase engineering guidance for PostgreSQL schema design, RLS policies, auth, realtime, storage, Edge Functions, migrations/CLI, performance, observability, and troubleshooting. Use when building, refactoring, or debugging Supabase apps; designing schemas or policies; integrating auth/storage/realtime; writing Edge Functions; or setting up Supabase CI/ops workflows.
 fragments:
@@ -43,7 +43,7 @@ references:
     source: references/db-functions.md
     target: references/db-functions.md
     required: true
-    trigger: Read this when you need Database functions + triggers.
+    trigger: Read this when you need database functions, triggers, security-definer RPCs, and helper-function authorization.
   - id: ref-references-edge-functions
     title: Edge Functions
     source: references/edge-functions.md
