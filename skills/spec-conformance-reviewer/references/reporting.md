@@ -112,6 +112,8 @@ Use the full structure when the user asks for a formal report or when the review
 - Call out conflicting sources explicitly; do not pick a winner silently.
 - If the implementation adds behavior with no requirement basis, label it as unspecified behavior, spec divergence, or contract drift.
 - If confidence depends on inference instead of direct text, say so explicitly.
+- Do not call a requirement fulfilled when the only evidence is schema/route/contract presence, a mock success path, an in-memory test, documentation, or an audit event name without capture semantics.
+- When mocks or in-memory stores are the only tests for a production persistence/RLS/RPC/provider boundary, report a verification gap unless the normative requirement is limited to the mocked layer.
 - Avoid vague language such as "looks wrong" or "should probably".
 
 ## Minimal Self-Check

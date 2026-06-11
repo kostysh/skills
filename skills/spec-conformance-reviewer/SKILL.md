@@ -13,9 +13,9 @@ description: >-
   compliance gaps or ambiguities, or issue an implementation-versus-spec
   verdict.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ae86dc9b4d3ffd44d5f4e41a1992c3ab2d7a9ac551010ec84ad8c772be433348
+  skillforge-source-hash: 38e07b71d9bccb7b0bde0285181104fe05bb1fc6934bd23d5887e0735ad478b8
 ---
 
 # spec-conformance-reviewer
@@ -75,6 +75,9 @@ If sources conflict, do not silently choose one. Record the conflict, cite both 
   - requirement to code and tests
   - code behavior to requirement basis
 - Treat tests as evidence, not as proof by existence.
+- Distinguish observable runtime capability from substrate such as schema presence, route registration, OpenAPI entries, mock handlers, in-memory tests, or documentation claims.
+- For auth/RBAC requirements, check both API/service behavior and persistence/RLS/direct data-access behavior when the system exposes such a path.
+- For audit/security-event requirements, verify write-class semantics, capture durability, and failure behavior; an event name alone is not evidence.
 - Do not turn this into a general code-quality review unless the spec makes that dimension normative.
 - Build the conditional policy/admission matrix only when normative sources trigger it; every row needs requirement basis.
 - If critical inputs are missing or contradictory, limit the verdict instead of pretending certainty.
@@ -84,7 +87,7 @@ If sources conflict, do not silently choose one. Record the conflict, cite both 
 1. Fix the scope and normative sources. Use `references/methodology.md`.
 2. Extract atomic requirements with IDs, source, type, priority, and expected behavior.
 3. If policy/admission triggers are present, build the bounded matrix from `references/policy-admission-matrix.md`.
-4. Map implementation surfaces across handlers, orchestration, domain logic, persistence, config, flags, serializers, and tests.
+4. Map implementation surfaces across handlers, orchestration, domain logic, direct data access, persistence, config, flags, serializers, long-lived lifecycles, audit capture, and tests.
 5. Build a traceability matrix from requirements to code and tests.
 6. Classify findings, verification gaps, and unspecified behavior.
 7. Issue one final verdict using `references/reporting.md`.
@@ -109,6 +112,9 @@ If sources conflict, do not silently choose one. Record the conflict, cite both 
 - tests that actually prove the required behavior
 - runtime-dependent areas that cannot be proven from the current evidence
 - admission allow, deny, refusal, freshness, downstream, replay, activation, and persistence rows when normative
+- auth/RBAC direct data paths: user-JWT RLS, PostgREST, RPC, storage policies, service-role stores, and provider boundaries when exposed
+- SSE/subscription/stream lifecycles: initial admission, revalidation or invalidation, stale/revoked/disabled/maintenance-denied transition, and observable blocked/closed/denied state when normative
+- audit/security events: required write class, durable capture or fallback, append-only behavior, and failure path when normative
 
 ## Default Brevity Mode
 

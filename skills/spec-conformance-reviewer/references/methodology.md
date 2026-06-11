@@ -23,6 +23,7 @@ Collect the evidence surface:
 - related interfaces and shared libraries
 - feature flags, defaults, env-dependent config
 - tests and fixtures
+- real persistence/RLS/RPC/provider-boundary evidence when those layers implement the requirement
 - rollout or migration documentation when it affects compliance
 
 ## Scope Boundaries
@@ -45,6 +46,23 @@ Out of scope unless the spec makes them normative:
 - performance tuning
 - security review
 - observability review
+
+## Capability Vs Substrate Evidence
+
+Classify evidence before assigning a requirement status.
+
+Observable capability evidence shows the required runtime behavior through the layer that must enforce it. Substrate can support a capability but does not prove it by itself.
+
+Treat these as substrate unless paired with runtime evidence:
+
+- schema, table, policy, or migration exists;
+- route, handler, OpenAPI entry, or SDK method is registered;
+- mock handler returns success;
+- in-memory test passes;
+- documentation or comments claim completion;
+- audit/security event name is declared but capture semantics are unproven.
+
+If only substrate exists, use `cannot_determine`, `partially_fulfilled`, or a verification gap depending on the requirement and evidence surface. Do not mark a requirement `fulfilled` from substrate alone.
 
 ## Source Priority and Conflicts
 
@@ -150,8 +168,12 @@ Find where the behavior actually lives:
 - entry points
 - orchestration layer
 - domain logic
+- API/service authorization and direct data-access authorization when both exist
 - persistence and caching
+- RLS policies, RPC functions, storage policies, provider gates, or service-role stores when they enforce the requirement
 - validators and serializers
+- long-lived stream/subscription lifecycle when permission can change after admission
+- audit/security event capture path when events are required
 - async side effects
 - feature flags and defaults
 - error mapping
@@ -186,6 +208,9 @@ Review the categories that apply to the normative sources:
 - output contract and serialization
 - error mapping, refusal paths, and atomicity
 - state transitions, idempotency, and invariants
+- auth/RBAC requirements across API/service and persistence/RLS/direct data paths
+- SSE, stream, subscription, or WebSocket-like lifecycle behavior: initial admission, heartbeat/revalidation or explicit invalidation, stale/revoked/disabled/maintenance-denied transition, and observable close/block/deny state
+- audit/security-event requirements: write class, same-transaction capture, durable fallback or fail-closed design, append-only constraints, and failure behavior
 - backward compatibility and mixed-version safety
 - rollout, migrations, defaults, and feature flags
 - non-functional requirements only when they are normative
@@ -208,6 +233,8 @@ Use these labels when helpful:
 - `untestable from current evidence`
 
 Do not treat missing tests as automatic non-compliance unless the normative source requires them. Treat them as proof gaps when the requirement cannot otherwise be established.
+
+If tests rely on mocks or in-memory stores, classify what they prove. API-flow tests with doubles may prove routing or service behavior, but they do not prove persistence, RLS, RPC, provider-gate, service-role, or security-event durability semantics unless the same boundary is exercised or covered by a contract suite.
 
 ### 8. Separate New and Pre-Existing Problems
 
