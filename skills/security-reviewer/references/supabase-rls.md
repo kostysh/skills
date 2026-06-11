@@ -41,6 +41,24 @@ Flag when:
 - default `public` privileges stay wider than intended
 - privileged roles are reused for ordinary request paths
 
+## PostgREST And Supabase REST Query Construction
+
+When server code uses Supabase REST/PostgREST directly, review it as part of the database security boundary.
+
+Flag when:
+
+- request-controlled values are interpolated into `/rest/v1` query strings;
+- filter values are assembled as `eq.${value}` without approved encoding;
+- `select`, `or`, `order`, `limit`, or table names can be influenced by request data;
+- service-role PostgREST calls are reachable from user request paths without narrow validation and ownership/authorization checks.
+
+Safe patterns:
+
+- official Supabase query builder with constrained values;
+- a single typed helper using `URLSearchParams` for filters;
+- enum/UUID/canonical schemas before data access;
+- table/column/select names as code-owned literals, not request data.
+
 ## Detection Hints
 
 - search migrations and SQL for `enable row level security`, `force row level security`, `create policy`, `grant`, `revoke`, and `security definer`

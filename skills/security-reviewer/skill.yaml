@@ -2,9 +2,9 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.2"
+  source-version: "0.1.3"
   recommended-skill-md-max-bytes: 36000
-  description: "Systematic security code review skill for vulnerabilities in application code, CI workflows, permission models, webhooks, secrets, and configuration. Use when asked to security review, find vulnerabilities, audit auth or RLS, check GitHub Actions security, inspect webhook verification, or review code against OWASP-style risks. Owns threat modeling, confidence gating, exploitability checks, and evidence; pairs with domain skills for framework details."
+  description: "Systematic security code review skill for vulnerabilities in application code, CI workflows, permission models, webhooks, secrets, app-layer data access, and configuration. Use when asked to security review, find vulnerabilities, audit auth, RLS, REST/PostgREST filters, SDK query builders, check GitHub Actions security, inspect webhook verification, or review code against OWASP-style risks. Owns threat modeling, confidence gating, exploitability checks, and evidence; pairs with domain skills for framework details."
 fragments:
   overview: "fragments/overview.md"
 references:
@@ -14,6 +14,12 @@ references:
     target: "references/api-auth-input.md"
     required: true
     trigger: "Read this when you need input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints."
+  - id: "ref-data-access-injection"
+    title: "Data Access Injection"
+    source: "references/data-access-injection.md"
+    target: "references/data-access-injection.md"
+    required: true
+    trigger: "Read this when backend code constructs SQL, REST/PostgREST URLs, SDK query-builder filters, RPC args, storage keys, search queries, or service-role data access from request or persisted user-controlled values."
   - id: "ref-domain-handoffs"
     title: "Domain Handoffs"
     source: "references/domain-handoffs.md"
@@ -70,11 +76,16 @@ copies:
     source: "test/docs-contract.test.mjs"
     target: "test/docs-contract.test.mjs"
     description: "Portable copy of test/docs-contract.test.mjs."
+  - id: "copy-test-fixtures-data-access-injection-ts"
+    source: "test/fixtures/data-access-injection.ts"
+    target: "test/fixtures/data-access-injection.ts"
+    description: "Regression fixture for unsafe and safe PostgREST data-access construction examples."
 supporting: []
 surfaces:
   active:
     requiredReferences:
       - "ref-api-auth-input"
+      - "ref-data-access-injection"
       - "ref-domain-handoffs"
       - "ref-github-actions"
       - "ref-methodology"
@@ -95,7 +106,7 @@ sections:
     - "Load only the references needed for the reviewed surface and keep findings evidence-backed."
   whenToUse:
     - "Security review, vulnerability finding, OWASP-style audit, or exploitability triage."
-    - "Authn, authz, sessions, tokens, secrets, permissions, webhooks, CI, Supabase RLS, or sensitive input-to-sink flows."
+    - "Authn, authz, sessions, tokens, secrets, permissions, webhooks, CI, Supabase RLS, app-layer data-access construction, or sensitive input-to-sink flows."
     - "Formal security audit or report mode when the user explicitly asks for it."
   whenNotToUse:
     - "General non-security code quality review without a security objective."
@@ -109,11 +120,13 @@ sections:
         - "Identify reviewed surfaces, stack, trust boundaries, identities, secrets, privileged actions, and sensitive sinks."
         - "Apply the bounded auth-admission checkpoint when route admission, replay, idempotency, or pre-auth resource use changes."
         - "Apply the bounded policy-governance admission checkpoint only when external invocation, admission/approval executable capability, policy activation, active-scope selection, governance/audit preconditions, fail-closed gates, or security-relevant replay/idempotency controls change."
+        - "Apply the data-access construction checkpoint when backend code reads or writes a database, constructs REST/PostgREST filters, uses Supabase clients, calls RPC, uses query builders, touches storage keys, or reaches service-role clients."
         - "Trace attacker-controlled input or identity to a missing control or sensitive sink."
         - "Check surrounding mitigations, framework defaults, and deployment constraints before reporting."
         - "Classify confidence and severity, then choose targeted chat output or formal audit format."
       validation:
         - "Reported findings have confirmed attacker control, reachability, impact, evidence, and fix direction."
+        - "Backend/database audits name whether raw SQL, REST/PostgREST construction, SDK query builders, RPC, and service-role paths were inspected; database security is not claimed complete when server-side data-access construction was out of scope."
         - "Policy-governance findings state the relevant actor/control path or security-relevant operator/control-plane impact, including replay semantics and authority binding when those decide executable capability."
         - "Low-confidence, theoretical, test-only, comment-only, or mitigated patterns are not reported by default."
   interop:

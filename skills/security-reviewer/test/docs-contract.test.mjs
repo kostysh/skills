@@ -125,3 +125,65 @@ test('policy-governance admission boundaries stay separated from route and relea
   assert.match(githubActions, /release\/runtime\/deployment refs/);
   assert.match(githubActions, /immutable runtime artifacts and protected deployment identities/);
 });
+
+test('workflow exposes the data-access construction checkpoint', async () => {
+  const skill = await readSkillFile('SKILL.md');
+
+  assert.match(skill, /data-access construction checkpoint/);
+  assert.match(skill, /REST\/PostgREST/);
+  assert.match(skill, /Supabase clients/);
+  assert.match(skill, /request\/body\/query\/header\/cookie values/);
+  assert.match(skill, /data-access filters, select lists, RPC args, SQL fragments, storage keys, or service-role calls/);
+  assert.match(skill, /data-access construction reviewed/);
+  assert.match(skill, /Do not claim database security review is complete/);
+});
+
+test('data-access injection reference requires trace before reporting PostgREST findings', async () => {
+  const reference = await readSkillFile('references/data-access-injection.md');
+
+  assert.match(reference, /## Required Inventory/);
+  assert.match(reference, /SQL migrations, RPC, RLS, and grants/);
+  assert.match(reference, /REST\/PostgREST query construction/);
+  assert.match(reference, /SDK filter and query-builder calls/);
+  assert.match(reference, /service-role and client trust boundaries/);
+  assert.match(reference, /Pattern matches are not findings/);
+  assert.match(reference, /Entry point: request body\/query\/header\/cookie or persisted user-controlled value/);
+  assert.match(reference, /Validation: exact schema constraints, not only `string\(\)\.min\(1\)`/);
+  assert.match(reference, /Treat `id=eq\.\$\{value\}` as suspicious even though it is not raw SQL/);
+  assert.match(reference, /challengeId = "x&select=\*"/);
+  assert.match(reference, /Do not flag a URL-encoded construction pattern by default/);
+  assert.match(reference, /supabase-engineer/);
+});
+
+test('data-access regression fixture contains unsafe and safe PostgREST construction', async () => {
+  const manifest = await readSkillFile('skill.yaml');
+  const fixture = await readSkillFile('test/fixtures/data-access-injection.ts');
+
+  assert.match(manifest, /ref-data-access-injection/);
+  assert.match(manifest, /copy-test-fixtures-data-access-injection-ts/);
+  assert.ok(fixture.includes('const challengeId = body.challengeId;'));
+  assert.ok(
+    fixture.includes('await fetch(`${baseUrl}/rest/v1/otp_challenges?id=eq.${challengeId}&select=*`);'),
+  );
+  assert.ok(fixture.includes('const params = new URLSearchParams();'));
+  assert.ok(fixture.includes("params.append('id', `eq.${challengeId}`);"));
+  assert.ok(fixture.includes("params.set('select', 'id');"));
+  assert.ok(fixture.includes('await fetch(`${baseUrl}/rest/v1/otp_challenges?${params.toString()}`);'));
+});
+
+test('data-access guidance is reachable from related references', async () => {
+  const apiAuth = await readSkillFile('references/api-auth-input.md');
+  const supabaseRls = await readSkillFile('references/supabase-rls.md');
+  const domainHandoffs = await readSkillFile('references/domain-handoffs.md');
+  const methodology = await readSkillFile('references/methodology.md');
+
+  assert.match(apiAuth, /data-access injection through REST\/PostgREST\/query-builder filters/);
+  assert.match(apiAuth, /PostgREST filter expressions, SDK filters, RPC args, and storage keys/);
+  assert.match(supabaseRls, /## PostgREST And Supabase REST Query Construction/);
+  assert.match(supabaseRls, /request-controlled values are interpolated into `\/rest\/v1` query strings/);
+  assert.match(supabaseRls, /table\/column\/select names as code-owned literals/);
+  assert.match(domainHandoffs, /Supabase REST\/PostgREST filter semantics/);
+  assert.match(domainHandoffs, /service-role data-access boundaries/);
+  assert.match(methodology, /server-side data-access construction/);
+  assert.match(methodology, /raw SQL, REST\/PostgREST, SDK query builders, RPC, and service-role paths/);
+});

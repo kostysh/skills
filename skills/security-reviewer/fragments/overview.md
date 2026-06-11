@@ -6,6 +6,7 @@ Find exploitable security weaknesses without turning every suspicious pattern in
 - Reviewing authn, authz, session, token, secret, or permission changes
 - Reviewing GitHub Actions, release workflows, or automation with secrets
 - Reviewing Supabase RLS, grants, privileged functions, or service-role boundaries
+- Reviewing app-layer data-access construction through REST/PostgREST, SDK query builders, RPC, storage, search, or service-role clients
 - Reviewing webhook handlers, signature verification, replay protection, or idempotency
 - Checking user-controlled input flowing into sensitive sinks
 
@@ -86,27 +87,30 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - policy-governance admission
    - GitHub Actions
    - Supabase RLS
+   - data-access injection
    - webhooks
    - secrets/config
    - domain handoffs when stack-specific behavior changes exploitability
-5. Map trust boundaries:
+5. Apply the data-access construction checkpoint when backend code reads/writes a database, uses REST/PostgREST, Supabase clients, RPC calls, service-role clients, query builders, or manually constructs URLs/filters.
+   This checkpoint must enumerate attacker-controlled request/body/query/header/cookie values and persisted user-controlled values that reach data-access filters, select lists, RPC args, SQL fragments, storage keys, or service-role calls.
+6. Map trust boundaries:
    - inputs
    - identities and roles
    - secrets and credentials
    - privileged actions
    - sensitive sinks
-6. Trace the attack path:
+7. Trace the attack path:
    - entry point
    - attacker-controlled value
    - execution or authorization mechanism
    - impact
-7. Verify mitigations:
+8. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
    - access controls
    - environment or deployment constraints
-8. Classify confidence and severity.
-9. Choose the output mode:
+9. Classify confidence and severity.
+10. Choose the output mode:
    - targeted findings in chat
    - formal audit sections with stable IDs
    - remediation of one confirmed finding at a time
@@ -164,6 +168,7 @@ Unless the user explicitly asks for a formal audit or report:
 - If useful, add a short "needs verification" section for medium-confidence items.
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
 - In formal audit mode, add stable finding IDs and a short executive summary.
+- In formal audit mode that includes backend/database code, include a short "data-access construction reviewed" note naming whether raw SQL, REST/PostgREST, SDK query builders, RPC, and service-role paths were inspected. Do not claim database security review is complete if server-side data-access construction was not inspected.
 - Write a markdown report only when the user asks for one or the repo expects an artifact.
 - If nothing clears the bar, say so plainly instead of inventing issues.
 
@@ -186,6 +191,7 @@ Read only what you need:
 
 - `references/methodology.md` - confidence gating, surface discovery, audit order, uncertainty language, and report format
 - `references/api-auth-input.md` - input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints
+- `references/data-access-injection.md` - SQL, REST/PostgREST, SDK query-builder, RPC, storage, search, and service-role data-access construction checks
 - `references/policy-governance-admission.md` - external invocation admission, approval gates that produce executable capability, policy activation, fail-closed governance gates, freshness, replay semantics, authority binding, and audit sufficiency checks
 - `references/github-actions.md` - GitHub Actions threat model, attack classes, detection hints, and safe patterns
 - `references/supabase-rls.md` - RLS, grants, privileged functions, RPC, and service-role review

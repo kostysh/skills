@@ -14,6 +14,7 @@ Check:
 High-signal classes:
 
 - SQL, command, path, header, and template injection
+- data-access injection through REST/PostgREST/query-builder filters, not only raw SQL
 - stored or reflected XSS
 - mass assignment or unsafe object merge
 - unsafe deserialization
@@ -21,6 +22,7 @@ High-signal classes:
 Detection hints:
 
 - trace request, form, query, cookie, header, and persisted user content into SQL, shell, template, HTML, redirect, file path, or dynamic code sinks
+- search for user-controlled identifiers flowing into REST query strings, PostgREST filter expressions, SDK filters, RPC args, and storage keys
 - search for unchecked object spread, patch merges, or schema validators that parse but still allow dangerous fields through
 - look for file upload handlers that trust MIME type, filename, storage key, or inline serving defaults
 

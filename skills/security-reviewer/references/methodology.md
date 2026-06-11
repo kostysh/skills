@@ -24,6 +24,7 @@ Before finalizing a review or audit, identify which of these surfaces are in sco
 - auth, sessions, cookies, and identity boundaries
 - CI, release, and automation paths
 - data plane and privilege boundaries such as SQL, RLS, grants, or storage policies
+- server-side data-access construction such as REST/PostgREST filters, SDK query builders, RPC args, storage keys, search filters, or service-role paths
 - inbound or outbound integrations such as webhooks, callbacks, and URL fetchers
 - policy-governance admission gates for external invocation, executable approval capability, policy activation, active-scope selection, governance/audit persistence preconditions, fail-closed decisions, stored `allowed` replay, conflict replay, authority binding, or security-relevant replay/idempotency controls
 
@@ -36,10 +37,11 @@ For an explicit scan or report, use this order unless the user gives a narrower 
 1. Entrypoints, deployment config, trust-boundary assumptions, and environment handling.
 2. Auth, session, cookie, and privilege transitions.
 3. Attacker-controlled input reaching sensitive sinks or missing permission checks.
-4. File handling, redirects, outbound requests, and integration boundaries.
-5. Policy-governance admission when the trigger is present: deny/no-invocation, failed/conflicting persistence, historical replay versus current executable capability, conflict replay, freshness authority, evidence identity, release/runtime/deployment binding, activation races, and audit sufficiency.
-6. CI, automation, secrets exposure, and supply chain paths.
-7. Stack-specific deep dives through `references/domain-handoffs.md` when implementation details change exploitability.
+4. Server-side data-access construction: raw SQL, REST/PostgREST URLs, SDK query builders, RPC args, storage/search keys, and service-role paths.
+5. File handling, redirects, outbound requests, and integration boundaries.
+6. Policy-governance admission when the trigger is present: deny/no-invocation, failed/conflicting persistence, historical replay versus current executable capability, conflict replay, freshness authority, evidence identity, release/runtime/deployment binding, activation races, and audit sufficiency.
+7. CI, automation, secrets exposure, and supply chain paths.
+8. Stack-specific deep dives through `references/domain-handoffs.md` when implementation details change exploitability.
 
 ## Confidence Rubric
 
@@ -113,6 +115,9 @@ Needs verification
 
 Reviewed and cleared
 - Short list of high-risk surfaces inspected but not reported
+
+Data-access construction reviewed
+- State whether raw SQL, REST/PostgREST, SDK query builders, RPC, and service-role paths were inspected, or explicitly say they were out of scope.
 ```
 
 ## Review Close-Out
@@ -120,6 +125,7 @@ Reviewed and cleared
 Before finalizing:
 
 - ensure the reviewed surfaces are clear from the response
+- for formal audits that include backend/database code, name whether raw SQL, REST/PostgREST, SDK query builders, RPC, and service-role paths were inspected
 - ensure all reported findings are high confidence
 - ensure each finding names a concrete attacker outcome
 - drop anything that is really just a best-practice suggestion

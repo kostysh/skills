@@ -1,16 +1,17 @@
 ---
 name: security-reviewer
 description: Systematic security code review skill for vulnerabilities in
-  application code, CI workflows, permission models, webhooks, secrets, and
-  configuration. Use when asked to security review, find vulnerabilities, audit
-  auth or RLS, check GitHub Actions security, inspect webhook verification, or
+  application code, CI workflows, permission models, webhooks, secrets,
+  app-layer data access, and configuration. Use when asked to security review,
+  find vulnerabilities, audit auth, RLS, REST/PostgREST filters, SDK query
+  builders, check GitHub Actions security, inspect webhook verification, or
   review code against OWASP-style risks. Owns threat modeling, confidence
   gating, exploitability checks, and evidence; pairs with domain skills for
   framework details.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8864fef6a4c3cb650c88ae08b9db482d1a4bd5430969664a285a617340f05709
+  skillforge-source-hash: 762c91272a2679c7af5b331d366c2c8acd89b1a1513cdf529f0f22941ec89d9a
 ---
 
 # security-reviewer
@@ -25,7 +26,7 @@ metadata:
 ## When to use this skill
 
 - Security review, vulnerability finding, OWASP-style audit, or exploitability triage.
-- Authn, authz, sessions, tokens, secrets, permissions, webhooks, CI, Supabase RLS, or sensitive input-to-sink flows.
+- Authn, authz, sessions, tokens, secrets, permissions, webhooks, CI, Supabase RLS, app-layer data-access construction, or sensitive input-to-sink flows.
 - Formal security audit or report mode when the user explicitly asks for it.
 
 ## When NOT to use this skill
@@ -44,6 +45,7 @@ Find exploitable security weaknesses without turning every suspicious pattern in
 - Reviewing authn, authz, session, token, secret, or permission changes
 - Reviewing GitHub Actions, release workflows, or automation with secrets
 - Reviewing Supabase RLS, grants, privileged functions, or service-role boundaries
+- Reviewing app-layer data-access construction through REST/PostgREST, SDK query builders, RPC, storage, search, or service-role clients
 - Reviewing webhook handlers, signature verification, replay protection, or idempotency
 - Checking user-controlled input flowing into sensitive sinks
 
@@ -124,27 +126,30 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - policy-governance admission
    - GitHub Actions
    - Supabase RLS
+   - data-access injection
    - webhooks
    - secrets/config
    - domain handoffs when stack-specific behavior changes exploitability
-5. Map trust boundaries:
+5. Apply the data-access construction checkpoint when backend code reads/writes a database, uses REST/PostgREST, Supabase clients, RPC calls, service-role clients, query builders, or manually constructs URLs/filters.
+   This checkpoint must enumerate attacker-controlled request/body/query/header/cookie values and persisted user-controlled values that reach data-access filters, select lists, RPC args, SQL fragments, storage keys, or service-role calls.
+6. Map trust boundaries:
    - inputs
    - identities and roles
    - secrets and credentials
    - privileged actions
    - sensitive sinks
-6. Trace the attack path:
+7. Trace the attack path:
    - entry point
    - attacker-controlled value
    - execution or authorization mechanism
    - impact
-7. Verify mitigations:
+8. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
    - access controls
    - environment or deployment constraints
-8. Classify confidence and severity.
-9. Choose the output mode:
+9. Classify confidence and severity.
+10. Choose the output mode:
    - targeted findings in chat
    - formal audit sections with stable IDs
    - remediation of one confirmed finding at a time
@@ -202,6 +207,7 @@ Unless the user explicitly asks for a formal audit or report:
 - If useful, add a short "needs verification" section for medium-confidence items.
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
 - In formal audit mode, add stable finding IDs and a short executive summary.
+- In formal audit mode that includes backend/database code, include a short "data-access construction reviewed" note naming whether raw SQL, REST/PostgREST, SDK query builders, RPC, and service-role paths were inspected. Do not claim database security review is complete if server-side data-access construction was not inspected.
 - Write a markdown report only when the user asks for one or the repo expects an artifact.
 - If nothing clears the bar, say so plainly instead of inventing issues.
 
@@ -224,6 +230,7 @@ Read only what you need:
 
 - `references/methodology.md` - confidence gating, surface discovery, audit order, uncertainty language, and report format
 - `references/api-auth-input.md` - input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints
+- `references/data-access-injection.md` - SQL, REST/PostgREST, SDK query-builder, RPC, storage, search, and service-role data-access construction checks
 - `references/policy-governance-admission.md` - external invocation admission, approval gates that produce executable capability, policy activation, fail-closed governance gates, freshness, replay semantics, authority binding, and audit sufficiency checks
 - `references/github-actions.md` - GitHub Actions threat model, attack classes, detection hints, and safe patterns
 - `references/supabase-rls.md` - RLS, grants, privileged functions, RPC, and service-role review
@@ -240,13 +247,15 @@ Find exploitable weaknesses with confidence gating and line-referenced evidence.
 1. Identify reviewed surfaces, stack, trust boundaries, identities, secrets, privileged actions, and sensitive sinks.
 2. Apply the bounded auth-admission checkpoint when route admission, replay, idempotency, or pre-auth resource use changes.
 3. Apply the bounded policy-governance admission checkpoint only when external invocation, admission/approval executable capability, policy activation, active-scope selection, governance/audit preconditions, fail-closed gates, or security-relevant replay/idempotency controls change.
-4. Trace attacker-controlled input or identity to a missing control or sensitive sink.
-5. Check surrounding mitigations, framework defaults, and deployment constraints before reporting.
-6. Classify confidence and severity, then choose targeted chat output or formal audit format.
+4. Apply the data-access construction checkpoint when backend code reads or writes a database, constructs REST/PostgREST filters, uses Supabase clients, calls RPC, uses query builders, touches storage keys, or reaches service-role clients.
+5. Trace attacker-controlled input or identity to a missing control or sensitive sink.
+6. Check surrounding mitigations, framework defaults, and deployment constraints before reporting.
+7. Classify confidence and severity, then choose targeted chat output or formal audit format.
 
 Validation:
 
 - Reported findings have confirmed attacker control, reachability, impact, evidence, and fix direction.
+- Backend/database audits name whether raw SQL, REST/PostgREST construction, SDK query builders, RPC, and service-role paths were inspected; database security is not claimed complete when server-side data-access construction was out of scope.
 - Policy-governance findings state the relevant actor/control path or security-relevant operator/control-plane impact, including replay semantics and authority binding when those decide executable capability.
 - Low-confidence, theoretical, test-only, comment-only, or mitigated patterns are not reported by default.
 
@@ -258,6 +267,7 @@ Validation:
 
 ## Required active references
 - [Api Auth Input](references/api-auth-input.md) — Read this when you need input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints.
+- [Data Access Injection](references/data-access-injection.md) — Read this when backend code constructs SQL, REST/PostgREST URLs, SDK query-builder filters, RPC args, storage keys, search queries, or service-role data access from request or persisted user-controlled values.
 - [Domain Handoffs](references/domain-handoffs.md) — Read this when you need stack discovery and when to defer to domain skills for framework-specific detail.
 - [Github Actions](references/github-actions.md) — Read this when you need GitHub Actions threat model, attack classes, detection hints, and safe patterns.
 - [Methodology](references/methodology.md) — Read this when you need confidence gating, surface discovery, audit order, uncertainty language, and report format.

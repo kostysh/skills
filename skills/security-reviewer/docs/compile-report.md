@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.2`
+- Skill source version: `0.1.3`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -10,6 +10,7 @@ Generated from `skill.yaml`.
 - `fragments/overview.md`
 - `package.json`
 - `references/api-auth-input.md`
+- `references/data-access-injection.md`
 - `references/domain-handoffs.md`
 - `references/github-actions.md`
 - `references/methodology.md`
@@ -19,9 +20,11 @@ Generated from `skill.yaml`.
 - `references/webhooks.md`
 - `skill.yaml`
 - `test/docs-contract.test.mjs`
+- `test/fixtures/data-access-injection.ts`
 
 ## Required references
 - `references/api-auth-input.md`
+- `references/data-access-injection.md`
 - `references/domain-handoffs.md`
 - `references/github-actions.md`
 - `references/methodology.md`

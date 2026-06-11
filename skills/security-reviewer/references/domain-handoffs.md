@@ -43,12 +43,14 @@ When the finding depends on:
 - user vs service client construction
 - Edge Function auth wiring
 - migration strategy for grants, functions, or buckets
+- Supabase REST/PostgREST filter semantics, official client escaping, RPC argument behavior, or service-role data-access boundaries
 
 Security questions to resolve:
 
 - whether the real permission boundary lives in RLS, grants, storage policy, or server code
 - whether a service-role path is intentionally narrow or accidentally broad
 - whether later migrations or platform defaults change the reviewed risk
+- whether an attacker-controlled identifier can change REST/PostgREST, SDK filter, RPC, or service-role data-access semantics
 
 ## Load `react-spa-engineer` or `react-components-engineer`
 
