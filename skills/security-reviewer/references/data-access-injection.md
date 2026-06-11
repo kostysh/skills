@@ -22,8 +22,9 @@ Do not claim a database security review is complete if server-side data-access c
 - filter expressions such as `eq.${value}`, `in.(${value})`, `or=...`, and `select=...`;
 - manually concatenated query strings;
 - SDK filters fed by unconstrained user input;
+- query-builder fragments, dynamic column paths, and filter operator strings;
 - RPC args that drive dynamic SQL or privileged lookup;
-- storage keys, search expressions, or provider filters assembled from attacker-controlled values;
+- storage object keys, search expressions, provider filters, and table/function/column names assembled from attacker-controlled values;
 - service-role reads or writes reachable from request paths.
 
 ## Detection Commands
@@ -42,9 +43,24 @@ Pattern matches are not findings. A finding requires the trace below.
 
 1. Entry point: request body/query/header/cookie or persisted user-controlled value.
 2. Validation: exact schema constraints, not only `string().min(1)`.
-3. Sink: SQL, REST/PostgREST, SDK, RPC, storage, search, or query builder.
+3. Sink: SQL, REST/PostgREST, SDK, RPC, storage, search, query builder, provider filter, or dynamic identifier.
 4. Neutralization: parameterization, allowlist, `URLSearchParams`, `encodeURIComponent`, typed query builder, UUID/enum/canonical schema, or a single approved helper.
 5. Impact: widened read/write, bypassed filter, wrong row, data exposure, privilege use, DoS, or provider-side effect.
+
+## Controlled Identifier Rule
+
+Distinguish code-owned literals from user/provider-controlled values before reporting.
+
+Usually safe:
+
+- table, function, column, bucket, and select-list names fixed in source code;
+- enum-mapped identifiers where unknown values fail closed before query construction.
+
+Suspicious:
+
+- request or persisted user data selecting table/function/column names, storage key prefixes, RPC function names, PostgREST `select` strings, or query-builder operators;
+- provider-controlled identifiers replayed into data access without a local allowlist;
+- service-role operations whose target table, key, or filter is partially caller-controlled.
 
 ## PostgREST-Specific Rule
 

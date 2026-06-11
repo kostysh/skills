@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.3"
+  source-version: "0.1.4"
   recommended-skill-md-max-bytes: 36000
   description: "Systematic security code review skill for vulnerabilities in application code, CI workflows, permission models, webhooks, secrets, app-layer data access, and configuration. Use when asked to security review, find vulnerabilities, audit auth, RLS, REST/PostgREST filters, SDK query builders, check GitHub Actions security, inspect webhook verification, or review code against OWASP-style risks. Owns threat modeling, confidence gating, exploitability checks, and evidence; pairs with domain skills for framework details."
 fragments:

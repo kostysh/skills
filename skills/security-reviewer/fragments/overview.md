@@ -41,6 +41,9 @@ Find exploitable security weaknesses without turning every suspicious pattern in
 - Trace attacker-controlled input, identity, or code execution path to the sink or missing control.
 - Check surrounding code for mitigations, validation, framework defaults, and trust boundaries.
 - Distinguish attacker-controlled data from server-controlled config, constants, and operator-managed settings.
+- For auth/RBAC/RLS reviews, inspect both HTTP/API admission + service logic and direct data-access paths such as PostgREST, RPC, RLS helpers/policies, storage, and service-role store methods; do not accept API-only evidence as proof of database-path safety.
+- For session or active-context authorization, check freshness claims across layers: session id/version, active context id/version, active role, active scope/tenant, account/session/role status, and profile/readiness gates when permissions depend on them.
+- Treat service-role access as privileged. Ordinary user reads/writes should use user JWT, RLS, or security-checked RPC unless a documented internal/admin/secret boundary requires privileged credentials.
 - Report HIGH confidence findings by default. MEDIUM confidence items belong in a separate "needs verification" section only when they materially affect next steps.
 - Do not report LOW confidence, purely theoretical, dead-code, comment-only, or test-only issues unless the user explicitly asks.
 
@@ -92,25 +95,30 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - secrets/config
    - domain handoffs when stack-specific behavior changes exploitability
 5. Apply the data-access construction checkpoint when backend code reads/writes a database, uses REST/PostgREST, Supabase clients, RPC calls, service-role clients, query builders, or manually constructs URLs/filters.
-   This checkpoint must enumerate attacker-controlled request/body/query/header/cookie values and persisted user-controlled values that reach data-access filters, select lists, RPC args, SQL fragments, storage keys, or service-role calls.
-6. Map trust boundaries:
+   This checkpoint must enumerate attacker-controlled request/body/query/header/cookie values and persisted user-controlled values that reach data-access filters, select lists, RPC args, query-builder fragments, SQL fragments, storage keys, table/function/column names, or service-role calls.
+6. For protected backend data paths, compare the route/service authorization with the direct data-access boundary:
+   - user JWT/PostgREST/RPC/RLS behavior versus server API behavior
+   - service-role reads for internal secrets/admin tasks versus ordinary user-scoped reads or mutations
+   - stale or mismatched session/context/role/scope/status/readiness claims at RLS helper, RPC, and storage-policy boundaries
+   - required audit/security events, including fail-closed same-transaction capture or durable fallback where the event is required
+7. Map trust boundaries:
    - inputs
    - identities and roles
    - secrets and credentials
    - privileged actions
    - sensitive sinks
-7. Trace the attack path:
+8. Trace the attack path:
    - entry point
    - attacker-controlled value
    - execution or authorization mechanism
    - impact
-8. Verify mitigations:
+9. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
    - access controls
    - environment or deployment constraints
-9. Classify confidence and severity.
-10. Choose the output mode:
+10. Classify confidence and severity.
+11. Choose the output mode:
    - targeted findings in chat
    - formal audit sections with stable IDs
    - remediation of one confirmed finding at a time
@@ -168,7 +176,7 @@ Unless the user explicitly asks for a formal audit or report:
 - If useful, add a short "needs verification" section for medium-confidence items.
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
 - In formal audit mode, add stable finding IDs and a short executive summary.
-- In formal audit mode that includes backend/database code, include a short "data-access construction reviewed" note naming whether raw SQL, REST/PostgREST, SDK query builders, RPC, and service-role paths were inspected. Do not claim database security review is complete if server-side data-access construction was not inspected.
+- In formal audit mode that includes backend/database code, include a short "data-access construction reviewed" note naming whether raw SQL, REST/PostgREST, SDK query builders, RPC, storage, RLS helper/policy, and service-role paths were inspected. Do not claim database security review is complete if server-side data-access construction or direct data-access authorization was not inspected.
 - Write a markdown report only when the user asks for one or the repo expects an artifact.
 - If nothing clears the bar, say so plainly instead of inventing issues.
 

@@ -102,12 +102,21 @@ test('policy-governance examples cover external invocation and active-policy act
   assert.match(reference, /stored `allowed` decision can invoke the consultant\/tool again/);
   assert.match(reference, /### Caller-Controlled Freshness or Evidence Review/);
   assert.match(reference, /caller-selected ref bound to a canonical server\/provider record/);
-  assert.match(reference, /release ref bind to an immutable runtime artifact and protected deployment identity/);
-  assert.match(reference, /caller-controlled freshness or evidence refs can satisfy admission without canonical authority binding/);
+  assert.match(
+    reference,
+    /release ref bind to an immutable runtime artifact and protected deployment identity/,
+  );
+  assert.match(
+    reference,
+    /caller-controlled freshness or evidence refs can satisfy admission without canonical authority binding/,
+  );
   assert.match(reference, /### Active-Policy Activation Review/);
   assert.match(reference, /active-policy activation is serialized/);
   assert.match(reference, /simultaneous active security\/governance policies/);
-  assert.match(reference, /audit explanation sufficiency for both the refused activation and the admitted active policy/);
+  assert.match(
+    reference,
+    /audit explanation sufficiency for both the refused activation and the admitted active policy/,
+  );
 });
 
 test('policy-governance admission boundaries stay separated from route and release checks', async () => {
@@ -133,7 +142,10 @@ test('workflow exposes the data-access construction checkpoint', async () => {
   assert.match(skill, /REST\/PostgREST/);
   assert.match(skill, /Supabase clients/);
   assert.match(skill, /request\/body\/query\/header\/cookie values/);
-  assert.match(skill, /data-access filters, select lists, RPC args, SQL fragments, storage keys, or service-role calls/);
+  assert.match(
+    skill,
+    /data-access filters, select lists, RPC args, query-builder fragments, SQL fragments, storage keys, table\/function\/column names, or service-role calls/,
+  );
   assert.match(skill, /data-access construction reviewed/);
   assert.match(skill, /Do not claim database security review is complete/);
 });
@@ -147,7 +159,10 @@ test('data-access injection reference requires trace before reporting PostgREST 
   assert.match(reference, /SDK filter and query-builder calls/);
   assert.match(reference, /service-role and client trust boundaries/);
   assert.match(reference, /Pattern matches are not findings/);
-  assert.match(reference, /Entry point: request body\/query\/header\/cookie or persisted user-controlled value/);
+  assert.match(
+    reference,
+    /Entry point: request body\/query\/header\/cookie or persisted user-controlled value/,
+  );
   assert.match(reference, /Validation: exact schema constraints, not only `string\(\)\.min\(1\)`/);
   assert.match(reference, /Treat `id=eq\.\$\{value\}` as suspicious even though it is not raw SQL/);
   assert.match(reference, /challengeId = "x&select=\*"/);
@@ -163,12 +178,16 @@ test('data-access regression fixture contains unsafe and safe PostgREST construc
   assert.match(manifest, /copy-test-fixtures-data-access-injection-ts/);
   assert.ok(fixture.includes('const challengeId = body.challengeId;'));
   assert.ok(
-    fixture.includes('await fetch(`${baseUrl}/rest/v1/otp_challenges?id=eq.${challengeId}&select=*`);'),
+    fixture.includes(
+      'await fetch(`${baseUrl}/rest/v1/otp_challenges?id=eq.${challengeId}&select=*`);',
+    ),
   );
   assert.ok(fixture.includes('const params = new URLSearchParams();'));
   assert.ok(fixture.includes("params.append('id', `eq.${challengeId}`);"));
   assert.ok(fixture.includes("params.set('select', 'id');"));
-  assert.ok(fixture.includes('await fetch(`${baseUrl}/rest/v1/otp_challenges?${params.toString()}`);'));
+  assert.ok(
+    fixture.includes('await fetch(`${baseUrl}/rest/v1/otp_challenges?${params.toString()}`);'),
+  );
 });
 
 test('data-access guidance is reachable from related references', async () => {
@@ -180,10 +199,16 @@ test('data-access guidance is reachable from related references', async () => {
   assert.match(apiAuth, /data-access injection through REST\/PostgREST\/query-builder filters/);
   assert.match(apiAuth, /PostgREST filter expressions, SDK filters, RPC args, and storage keys/);
   assert.match(supabaseRls, /## PostgREST And Supabase REST Query Construction/);
-  assert.match(supabaseRls, /request-controlled values are interpolated into `\/rest\/v1` query strings/);
+  assert.match(
+    supabaseRls,
+    /request-controlled values are interpolated into `\/rest\/v1` query strings/,
+  );
   assert.match(supabaseRls, /table\/column\/select names as code-owned literals/);
   assert.match(domainHandoffs, /Supabase REST\/PostgREST filter semantics/);
   assert.match(domainHandoffs, /service-role data-access boundaries/);
   assert.match(methodology, /server-side data-access construction/);
-  assert.match(methodology, /raw SQL, REST\/PostgREST, SDK query builders, RPC, and service-role paths/);
+  assert.match(
+    methodology,
+    /raw SQL, REST\/PostgREST, SDK query builders, RPC, and service-role paths/,
+  );
 });
