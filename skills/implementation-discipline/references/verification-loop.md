@@ -40,3 +40,21 @@ In the final report:
 - say whether any residual risk remains.
 
 If verification could not be run, treat that as a real limitation, not as a minor footnote.
+
+## Audit remediation matrix
+
+When implementing from an accepted audit or review report, track each accepted finding or recommendation as:
+
+```text
+finding/recommendation -> concrete change -> test/evidence -> status
+```
+
+Allowed statuses:
+
+- `implemented` — change exists but has not yet been proven by the agreed evidence.
+- `verified` — change exists and the named evidence passed.
+- `blocked-by-compatibility` — implementation would break a required compatibility constraint.
+- `deferred-by-trigger` — recommendation applies only when a specified trigger occurs.
+- `not-applicable` — the finding does not apply to the current system, with reason.
+
+Do not treat tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability without observable behavior and acceptance evidence.

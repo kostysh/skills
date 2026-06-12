@@ -18,6 +18,7 @@
 
 - [logs/implementation-log-20260429-1.md](logs/implementation-log-20260429-1.md) - portable repeated-validation heuristic for adjacent observable cases.
 - [logs/implementation-log-20260602-1.md](logs/implementation-log-20260602-1.md) - project-purpose alignment for non-trivial local implementation work.
+- [logs/implementation-log-20260612-1.md](logs/implementation-log-20260612-1.md) - remediation matrix statuses and substrate-versus-runtime-capability evidence.
 
 ## Scope of This Folder
 

@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.1.4
+  source-version: 0.1.5
   recommended-skill-md-max-bytes: 18000
   description: >-
     Behavioral coding discipline for writing, modifying, and reviewing code
@@ -39,12 +39,14 @@ surfaces:
     optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/logs/*
 
 sections:
   startHere:
     - Confirm the task actually includes code changes, refactoring, or code review.
     - For non-trivial local work, identify the larger project goal or end-to-end capability the change is supposed to advance before changing or assessing code.
     - State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
+    - When implementing from an accepted audit or review report, create a remediation matrix before claiming completion.
     - Prefer the simplest sufficient design and define the verification target before implementing.
     - Use this skill together with the relevant language, framework, or review skill; it does not replace them.
   whenToUse:
@@ -83,6 +85,18 @@ sections:
         - The implementation target is an observable behavior or is explicitly labeled as substrate-only.
         - Any substrate-only result is not described as a completed capability.
         - The final report states important behavior that remains non-working.
+    - id: stage-remediation-matrix
+      title: Convert accepted audit reports into a remediation matrix
+      goal: Keep audit remediation tied to concrete behavior, evidence, and explicit status.
+      steps:
+        - For each accepted finding or recommendation, map `finding/recommendation -> concrete change -> test/evidence -> status`.
+        - "Use only these statuses unless the project defines stricter equivalents: `implemented`, `verified`, `blocked-by-compatibility`, `deferred-by-trigger`, and `not-applicable`."
+        - Do not mark tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability unless observable behavior and acceptance evidence prove it.
+        - If a recommendation is only substrate, label it as substrate and state which behavior remains unverified.
+      validation:
+        - Every accepted finding or recommendation has a mapped change or a justified non-implementation status.
+        - "`verified` entries name concrete evidence."
+        - Substrate-only entries are not reported as delivered runtime capability.
     - id: stage-design-minimal
       title: Design the smallest sufficient change
       goal: Prevent speculative abstractions and unnecessary surface area.
@@ -148,6 +162,9 @@ sections:
     - id: gotcha-local-correctness
       priority: high
       text: Do not treat local correctness as sufficient when the change does not advance, or actively conflicts with, the intended project capability.
+    - id: gotcha-remediation-matrix
+      priority: high
+      text: Do not collapse accepted audit findings into a vague done list; keep finding, change, evidence, and status linked.
   policies:
     - id: policy-project-purpose-fit
       title: Project-purpose fit policy
@@ -163,7 +180,7 @@ sections:
       text: Completion requires naming the checks that prove success or the exact gap that remains.
     - id: policy-capability-reality
       title: Capability reality policy
-      text: A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure.
+      text: A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure. Tooling and substrate are not runtime capability without observable behavior and acceptance evidence.
     - id: policy-reporting-contract
       title: Reporting contract
       text: Final reports must name the completed outcome, verification evidence, and any unverified risk. For non-trivial work, also state whether the result advances the intended project capability or remains support-only; when another active review skill defines a stricter format, follow that format while preserving the same evidence.

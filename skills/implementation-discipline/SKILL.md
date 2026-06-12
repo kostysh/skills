@@ -7,9 +7,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 70ed8f66f0619b36776b460e65cdcb992c91636f6b7ee14799fa18a6d4ab7bad
+  skillforge-source-hash: 61a90ad92185448716c28d5c486a7294fc194c19404f572b2e081b13663f887e
 ---
 
 # implementation-discipline
@@ -19,8 +19,9 @@ metadata:
 1. Confirm the task actually includes code changes, refactoring, or code review.
 2. For non-trivial local work, identify the larger project goal or end-to-end capability the change is supposed to advance before changing or assessing code.
 3. State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
-4. Prefer the simplest sufficient design and define the verification target before implementing.
-5. Use this skill together with the relevant language, framework, or review skill; it does not replace them.
+4. When implementing from an accepted audit or review report, create a remediation matrix before claiming completion.
+5. Prefer the simplest sufficient design and define the verification target before implementing.
+6. Use this skill together with the relevant language, framework, or review skill; it does not replace them.
 
 ## When to use this skill
 
@@ -68,6 +69,21 @@ Validation:
 - The implementation target is an observable behavior or is explicitly labeled as substrate-only.
 - Any substrate-only result is not described as a completed capability.
 - The final report states important behavior that remains non-working.
+
+### Workflow stage: Convert accepted audit reports into a remediation matrix
+
+Keep audit remediation tied to concrete behavior, evidence, and explicit status.
+
+1. For each accepted finding or recommendation, map `finding/recommendation -> concrete change -> test/evidence -> status`.
+2. Use only these statuses unless the project defines stricter equivalents: `implemented`, `verified`, `blocked-by-compatibility`, `deferred-by-trigger`, and `not-applicable`.
+3. Do not mark tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability unless observable behavior and acceptance evidence prove it.
+4. If a recommendation is only substrate, label it as substrate and state which behavior remains unverified.
+
+Validation:
+
+- Every accepted finding or recommendation has a mapped change or a justified non-implementation status.
+- `verified` entries name concrete evidence.
+- Substrate-only entries are not reported as delivered runtime capability.
 
 ### Workflow stage: Design the smallest sufficient change
 
@@ -125,6 +141,7 @@ Validation:
 - **medium** — If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
 - **high** — Do not treat acceptance criteria as sufficient when they can be satisfied by mocks, metadata, tables, logs, wrappers, or documentation without the claimed behavior.
 - **high** — Do not treat local correctness as sufficient when the change does not advance, or actively conflicts with, the intended project capability.
+- **high** — Do not collapse accepted audit findings into a vague done list; keep finding, change, evidence, and status linked.
 
 ## Policies
 
@@ -141,7 +158,7 @@ Every changed line should trace directly to the task; unrelated cleanup belongs 
 Completion requires naming the checks that prove success or the exact gap that remains.
 
 ### Capability reality policy
-A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure.
+A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure. Tooling and substrate are not runtime capability without observable behavior and acceptance evidence.
 
 ### Reporting contract
 Final reports must name the completed outcome, verification evidence, and any unverified risk. For non-trivial work, also state whether the result advances the intended project capability or remains support-only; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
@@ -165,3 +182,4 @@ Final reports must name the completed outcome, verification evidence, and any un
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/logs/*`
