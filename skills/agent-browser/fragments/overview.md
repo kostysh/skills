@@ -63,6 +63,13 @@ agent-browser close             # Close browser
 - Do not silently replace required PR E2E suites with ad-hoc browser automation.
 - If PR policy switches to changed-only/smoke E2E, ensure the trigger and rollback policy is documented in project-level testing strategy docs.
 
+## Scenario-level SPA evidence
+
+- For interactive SPA tasks, collect scenario-level evidence, not only screenshots, snapshots, or component-test results.
+- Distinguish local route-intercepted coverage from live stage/prod acceptance. Intercepts and mocked responses can prove local UI behavior, but they do not prove real API/provider paths.
+- For auth-heavy SPAs, exercise the relevant end-to-end flow: registration/login/OTP/profile/context, protected mutation, maintenance/admin flow, reload/CSRF recovery, and cancel/resend/cooldown states when available.
+- A report should name the route/origin tested, whether network calls were real or intercepted, the main user steps, the observed terminal state, and any unverified live-provider risk.
+
 ## SPA/API verification checklist (before declaring backend/client broken)
 
 For auth and API flows, validate these in order:

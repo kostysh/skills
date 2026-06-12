@@ -5,9 +5,9 @@ description: Automates browser interactions for web testing, form filling,
   websites, interact with web pages, fill forms, take screenshots, test web
   applications, or extract information from web pages.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 08621b20e84eab928450c96496619b7ea361d3c713cb4bd10e10058779a89f07
+  skillforge-source-hash: d6395bd30d9796e5a5613ff0aec09a88a50555b403612837ccb4d6a97fbd7fba
 allowed-tools: Bash(agent-browser:*)
 ---
 
@@ -23,7 +23,7 @@ allowed-tools: Bash(agent-browser:*)
 
 - Navigating websites or web applications from the terminal.
 - Interacting with pages, filling forms, taking screenshots, recording video, or exporting PDFs.
-- Testing web UI flows, inspecting accessibility snapshots, network requests, cookies, storage, tabs, frames, or dialogs.
+- Testing web UI flows, collecting scenario-level SPA evidence, inspecting accessibility snapshots, network requests, cookies, storage, tabs, frames, or dialogs.
 - Extracting information from rendered web pages with agent-browser commands.
 
 ## When NOT to use this skill
@@ -96,6 +96,13 @@ agent-browser close             # Close browser
 - Treat agent-browser checks as smoke/diagnostic tooling by default.
 - Do not silently replace required PR E2E suites with ad-hoc browser automation.
 - If PR policy switches to changed-only/smoke E2E, ensure the trigger and rollback policy is documented in project-level testing strategy docs.
+
+## Scenario-level SPA evidence
+
+- For interactive SPA tasks, collect scenario-level evidence, not only screenshots, snapshots, or component-test results.
+- Distinguish local route-intercepted coverage from live stage/prod acceptance. Intercepts and mocked responses can prove local UI behavior, but they do not prove real API/provider paths.
+- For auth-heavy SPAs, exercise the relevant end-to-end flow: registration/login/OTP/profile/context, protected mutation, maintenance/admin flow, reload/CSRF recovery, and cancel/resend/cooldown states when available.
+- A report should name the route/origin tested, whether network calls were real or intercepted, the main user steps, the observed terminal state, and any unverified live-provider risk.
 
 ## SPA/API verification checklist (before declaring backend/client broken)
 
@@ -364,3 +371,4 @@ Validation:
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/logs/*`

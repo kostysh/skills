@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: agent-browser
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages.
   allowedTools:
@@ -23,6 +23,7 @@ surfaces:
     optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/logs/*
 sections:
   startHere:
     - Confirm the task matches agent-browser's applicability criteria.
@@ -31,7 +32,7 @@ sections:
   whenToUse:
     - Navigating websites or web applications from the terminal.
     - Interacting with pages, filling forms, taking screenshots, recording video, or exporting PDFs.
-    - Testing web UI flows, inspecting accessibility snapshots, network requests, cookies, storage, tabs, frames, or dialogs.
+    - Testing web UI flows, collecting scenario-level SPA evidence, inspecting accessibility snapshots, network requests, cookies, storage, tabs, frames, or dialogs.
     - Extracting information from rendered web pages with agent-browser commands.
   whenNotToUse:
     - The task can be completed with static source inspection or an HTTP client without a browser.
