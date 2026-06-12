@@ -114,6 +114,10 @@ function ParentComponent() {
 }
 ```
 
+### Verify The Split
+
+After adding route-level lazy loading, inspect build output or bundler warnings. A `React.lazy(() => import(...))` call does not create useful splitting if the same module is imported statically elsewhere. Treat warnings such as ineffective dynamic import or modules present in the initial chunk as failed acceptance until the static import is removed or the claim is narrowed.
+
 ---
 
 ## 2. useMemo - Only After Profiling
@@ -678,7 +682,7 @@ export function loadPreferences() {
 }
 ```
 
-Never persist access tokens, full server payloads, or context-scoped business cache in `localStorage`. Prefer URL state, TanStack Query cache, or Dexie when they match the ownership model better.
+Never persist access tokens, OTPs, CSRF tokens, cookies, JWT/session IDs, raw identity/provider payloads, full server payloads, raw request/response/header/query/cookie data, or context-scoped business cache in `localStorage`. Prefer URL state, TanStack Query cache, or allowlisted Dexie records when they match the ownership model better.
 
 ---
 
@@ -735,10 +739,11 @@ This matters for keyboard shortcuts, resize listeners, visibility handlers, and 
 1. **Profile first** - Never optimize without measuring
 2. **Parallelize before memoizing** - Kill waterfalls with `Promise.all`
 3. **React.lazy at module level** - Never inside components
-4. **Protect interaction paths** - `startTransition` / `useDeferredValue` for expensive UI updates
-5. **Profile `useMemo` and `useCallback`** - Add only when proven useful
-6. **Use `useShallow` for Zustand** - When selecting multiple properties
-7. **Avoid barrel imports** - Import directly from source
-8. **Use `content-visibility` or virtualization** - Skip off-screen work
-9. **Preload only high-likelihood next resources** - Use resource hints sparingly
-10. **Use Dexie as the default persistence layer** - Keep `localStorage` narrow, tiny, and non-sensitive
+4. **Verify lazy loading in build output** - Dynamic import is not enough if static imports keep the module in the initial chunk
+5. **Protect interaction paths** - `startTransition` / `useDeferredValue` for expensive UI updates
+6. **Profile `useMemo` and `useCallback`** - Add only when proven useful
+7. **Use `useShallow` for Zustand** - When selecting multiple properties
+8. **Avoid barrel imports** - Import directly from source
+9. **Use `content-visibility` or virtualization** - Skip off-screen work
+10. **Preload only high-likelihood next resources** - Use resource hints sparingly
+11. **Use Dexie as the default persistence layer** - Keep `localStorage` narrow, tiny, and non-sensitive

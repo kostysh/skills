@@ -476,6 +476,11 @@ Required evidence for an end-to-end interactive flow claim:
 4. A handoff note listing the scenarios tested, the e2e command/result, and the
    browser walkthrough result.
 
+Scenario-level evidence is required. For auth-heavy SPAs, cover the relevant
+registration/login/OTP/profile/context flow, a protected mutation, reload/CSRF
+recovery when cookie sessions are used, and cancel/resend/cooldown/expiry states
+when the backend contract exposes them.
+
 For minor interaction-only changes where e2e coverage would be disproportionate
 (for example an isolated toggle, menu, disclosure, local control state, or modal
 animation assertion), verify at the component/unit layer plus browser walkthrough

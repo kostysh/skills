@@ -6,12 +6,55 @@
 
 **Version policy:** Use the current official TanStack Query React package and API unless the operator explicitly requests a different version.
 
+## API Boundary
+
+All project-owned API calls must pass through `shared/api`. Keep transport, credentials, CSRF attachment, response normalization, typed errors, and endpoint contract functions there.
+
+Allowed direction:
+
+```text
+features/* Query adapters -> shared/api contracts -> shared/api transport
+```
+
+Disallowed:
+- `fetch('/api/...')` in components, routes, stores, or UI hooks;
+- feature code attaching cookies/CSRF headers itself;
+- each screen inventing its own error shape or retry behavior.
+
 ### Setup
 
 ```tsx
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { apiRecovery, isApiError } from '@/shared/api';
 
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => {
+      if (!isApiError(error)) return;
+      if (error.code === 'unauthorized') {
+        apiRecovery.resetSessionAndScopedCaches();
+      }
+      if (error.code === 'csrf_required') {
+        void apiRecovery.reissueCsrfOnce();
+      }
+    },
+  }),
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      if (!isApiError(error)) return;
+      if (error.code === 'unauthorized') {
+        apiRecovery.resetSessionAndScopedCaches();
+      }
+      if (error.code === 'csrf_required') {
+        void apiRecovery.reissueCsrfOnce();
+      }
+    },
+  }),
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
@@ -30,6 +73,8 @@ function App() {
   );
 }
 ```
+
+`unauthorized` handling must clear session state plus scoped durable cache for the previous user/tenant. `csrf_required` recovery must be bounded and single-flight; repeated failures should surface recoverable UI rather than looping. For cookie-session SPAs that store CSRF only in memory, browser refresh requires an explicit CSRF reissue API/UX contract before reload-safe auth is claimed.
 
 ---
 

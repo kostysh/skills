@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-spa-engineer
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 20000
   description: |-
     Comprehensive React SPA development expert for building production-ready single-page applications. Covers component architecture, state management (Zustand, Context), explicit persistence architecture (URL state, runtime UI state, Dexie/IndexedDB), data fetching (TanStack Query), forms (React Hook Form + Zod), routing (React Router), TypeScript patterns, performance optimization, testing (Vitest, RTL, Playwright), and accessibility.
@@ -22,25 +22,25 @@ references:
     source: references/component-architecture.md
     target: references/component-architecture.md
     required: true
-    trigger: Read this when you need Functional components, composition patterns.
+    trigger: Read this when you need feature-based structure, import boundaries, functional components, or composition patterns.
   - id: ref-references-data-fetching
     title: Data Fetching
     source: references/data-fetching.md
     target: references/data-fetching.md
     required: true
-    trigger: Read this when you need TanStack Query patterns, caching, mutations.
+    trigger: Read this when you need shared API boundaries, TanStack Query patterns, global cache handling, caching, mutations, or CSRF recovery.
   - id: ref-references-forms-validation
     title: Forms & Validation
     source: references/forms-validation.md
     target: references/forms-validation.md
     required: true
-    trigger: Read this when you need React Hook Form, Zod schemas.
+    trigger: Read this when you need React Hook Form, TanStack Form wrappers, Zod schemas, or typed server-error handling.
   - id: ref-references-indexeddb-persistence
     title: IndexedDB Persistence
     source: references/indexeddb-persistence.md
     target: references/indexeddb-persistence.md
     required: true
-    trigger: Read this when you need full patterns.
+    trigger: Read this when you need durable-cache allowlists, TTL, scoping, and IndexedDB patterns.
   - id: ref-references-performance
     title: Performance
     source: references/performance.md
@@ -101,6 +101,7 @@ surfaces:
     optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/logs/*
 sections:
   startHere:
     - Confirm the task matches react-spa-engineer's applicability criteria.

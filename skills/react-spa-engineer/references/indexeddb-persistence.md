@@ -659,8 +659,24 @@ On logout or tenant/user switch:
 | Validate events | Parse & validate before persisting real-time data |
 | Metadata required | Persist `cacheKey`, context (`tenantId`/`userId`), and `loadedAt` |
 | Scoped keys | Keep strict tenant/user isolation in keys and indexes |
+| Allowlisted contents | Persist only explicitly approved durable-cache payloads |
+| TTL-bound | Every cache namespace has a TTL or explicit cleanup policy |
+| Non-authoritative | Treat Dexie as a convenience cache, not proof of server truth or authorization |
 | Dual invalidation | Update/invalidate Dexie and Query caches together |
 | Context cleanup | Clear scoped Dexie + Query cache + runtime store on context switch |
+
+---
+
+## Durable Cache Denylist
+
+Dexie, `localStorage`, and `sessionStorage` must not store:
+- OTPs or one-time login challenges;
+- CSRF tokens;
+- cookies, JWTs, session IDs, refresh tokens, or equivalent bearer/session material;
+- raw identity/provider payloads;
+- raw request bodies, response bodies, headers, query strings, cookie values, or full API envelopes.
+
+Persist only allowlisted, scoped, TTL-bound data whose stale copy cannot authorize actions. If a value is needed to prove identity, freshness, or authorization, fetch or reissue it through the API boundary instead of trusting durable browser storage.
 
 ---
 
@@ -677,6 +693,8 @@ On logout or tenant/user switch:
 | Query key and cache key drift | Invalidation misses, duplicate cache lines | Generate both via centralized key factories |
 | Mutations without persistent invalidation | Stale IndexedDB after server update | Invalidate/update Dexie entries in mutation flow |
 | No cleanup on logout/switch | Previous account data reused | Scope-delete Dexie and reset runtime caches |
+| Storing OTP/CSRF/session/identity material | Secrets survive refresh and local device access | Keep them out of browser durable storage; reissue through API |
+| Unbounded durable cache | Stale data masquerades as current business truth | Add TTL and treat cache as non-authoritative |
 
 ---
 

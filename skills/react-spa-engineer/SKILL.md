@@ -13,9 +13,9 @@ description: >-
   up project architecture, or troubleshooting React client-side applications.
   Excludes SSR, RSC, Next.js server-side patterns.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5cf0de2dfd3e23e393f617519e6b19c08db9a926ab55d042d28e65974afec6c0
+  skillforge-source-hash: 99cf4077e051ce0cf6501501c6c16ff79299e3a2941daf737124d63a9cb34321
 ---
 
 # react-spa-engineer
@@ -56,14 +56,6 @@ Build production-ready React single-page applications with TypeScript, modern st
 
 ## Quick Reference
 
-### Project Setup
-
-```bash
-pnpm create vite@latest my-app --template react-ts
-cd my-app && pnpm install
-pnpm add @tanstack/react-query@latest zustand@latest react-hook-form@latest @hookform/resolvers@latest zod@latest react-router@latest dexie@latest dexie-react-hooks@latest
-```
-
 ### Strict TypeScript Config
 
 ```json
@@ -93,6 +85,8 @@ pnpm add @tanstack/react-query@latest zustand@latest react-hook-form@latest @hoo
 | Interface props | Props MUST be typed with explicit TypeScript interfaces. `type` is allowed only for complex unions/utility-derived props where interfaces are awkward |
 | One per file | One component per file SHOULD be default |
 
+Use feature-based SPA structure by default: `app`, `shared/api`, `shared/ui`, `shared/forms`, `shared/state`, `shared/storage`, and `features/*`. Enforce layer boundaries with executable import rules; source-grep tests are not sufficient architecture enforcement.
+
 Example: see [Component Architecture](references/component-architecture.md).
 
 ### State Management Hierarchy
@@ -120,6 +114,7 @@ Define storage layer and source of truth for each state explicitly:
 **Non-negotiables**:
 - If state must survive direct link open/reload and be reproducible, URL MUST be source of truth.
 - Components, UI hooks, and Zustand stores MUST NOT perform direct HTTP calls for app data.
+- Routes, screens, components, stores, and UI hooks MUST NOT call project API `fetch` directly; project API calls live behind `shared/api`.
 - Server reads/mutations MUST run through TanStack Query (`useQuery`, `useMutation`, `queryClient`) with `queryFn`/`mutationFn`.
 - `queryKey` and Dexie `cacheKey` MUST be generated from centralized key factories with aligned semantics.
 - For user/tenant-scoped data, both `queryKey` and `cacheKey` MUST include `tenantId` and `userId` when applicable.
@@ -145,20 +140,14 @@ Example: see [Data Fetching](references/data-fetching.md).
 
 **Non-negotiables**:
 - Components/pages MUST NOT call `fetch` directly for server API interactions.
-- Zustand stores and UI hooks MUST NOT bypass TanStack Query for server reads/mutations.
-- Keep explicit layering:
-  - transport client (`http` wrapper, base URL, timeout, credentials),
-  - API contract functions,
-  - React Query adapters/options at feature layer,
-  - UI hooks/components consuming Query.
+- Routes, Zustand stores, and UI hooks MUST NOT bypass `shared/api` or TanStack Query for server reads/mutations.
+- All project-owned API transport, credentials, CSRF token attachment, response normalization, and typed error mapping MUST live under `shared/api`.
+- Keep explicit layering: transport client, API contract functions, feature Query adapters/options, then UI hooks/components.
 - All external API requests in SPA flows MUST run via TanStack Query (`useQuery`/`useMutation`/`queryClient`).
+- Configure global `QueryCache`/`MutationCache` handling for cross-cutting API errors: `unauthorized` resets session state and scoped durable cache; `csrf_required` triggers bounded CSRF recovery instead of unbounded retry loops.
 
 **Current API expectations**:
-- Object options syntax required: `useQuery({ queryKey, queryFn })`
-- Use `gcTime` for inactive cache garbage collection
-- Use `isPending` for initial-load pending states
-- React to query data changes outside query options when the current API requires it
-- Define explicit initial page params for infinite queries when required by the current API
+Use current TanStack Query APIs: object options syntax, `gcTime`, `isPending`, external reactions to query data when required, and explicit initial page params for infinite queries.
 
 ### Cookie-based Auth SPA Baseline
 
@@ -170,6 +159,7 @@ For cookie-session auth SPAs, model auth explicitly:
   - proactive refresh (timer-based background refresh for active sessions).
 - Use single-flight coordination for refresh to avoid concurrent refresh storms.
 - Keep API `baseUrl` in env config and enforce required vars at build/deploy pipeline level.
+- If CSRF is memory-only, require explicit reissue API/UX before claiming reload-safe cookie-session flows; repeated recovery failures surface recoverable UI instead of looping.
 
 ### Forms & Validation
 
@@ -179,6 +169,7 @@ Example: see [Forms & Validation](references/forms-validation.md).
 - `defaultValues` MUST be set (prevents uncontrolled warnings)
 - Server validation MUST NOT be skipped (security)
 - Use `field.id` as key in `useFieldArray` (not index)
+- TanStack Form wrappers, when used, MUST be typed adapters that map API/server errors without leaking `as any` or field-error casts into screens.
 
 ### Routing (React Router Data APIs)
 
@@ -198,6 +189,7 @@ Example: see [Routing](references/routing.md).
 **Key moves**:
 - Eliminate request waterfalls first: start independent work early and await late
 - Reduce initial bundle pressure: route-level `React.lazy`, direct imports, intent-based preload for likely next navigation
+- Verify route-level lazy loading with build output; a dynamic import is not successful splitting when the same module is statically imported and the bundler reports ineffective dynamic import.
 - Keep interactions responsive: use `startTransition` or `useDeferredValue` for expensive derived renders
 - Use virtualization or `content-visibility: auto` for long lists and feed-like UIs
 - Prefer Dexie for reload-safe client persistence; keep `localStorage` limited to tiny non-sensitive preferences or bootstrap hints when IndexedDB would be excessive
@@ -216,6 +208,7 @@ For structured data, offline-first, and >5MB persistence use Dexie + IndexedDB.
 - Use `useLiveQuery` for reactive UI updates
 - Persist cache entries with metadata: `cacheKey`, `tenantId`/`userId`, `loadedAt`, payload
 - Keep strict tenant/user isolation in keys and indexes
+- Durable cache contents MUST be allowlisted, scoped, TTL-bound, non-authoritative, and must not include OTPs, CSRF, cookies, JWT/session IDs, raw identity payloads, or raw network data.
 - Invalidate Dexie caches and TanStack Query caches together after related mutations
 - On user/tenant switch or logout, clear scoped Dexie data + reset runtime state (`Zustand`, `queryClient`)
 
@@ -231,10 +224,9 @@ See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patter
 
 **Interactive flow completion gate**:
 - If a task implements or changes a material user-visible flow (for example auth, onboarding, checkout, profile editing, protected navigation, destructive confirmation, or a multi-step wizard), do not report delivered interactive SPA capability until the affected scenario has successful Playwright e2e coverage and has been exercised through real browser automation.
-- Use the project's browser automation tool when one is specified (for example `agent-browser`); otherwise use Playwright/browser-driven manual walkthrough evidence.
-- For minor interaction-only changes where e2e coverage would be disproportionate, state the narrower claim and verify with component/unit tests plus browser walkthrough evidence.
-- Unit/component tests, route existence, screenshots, mocked happy-path render states, or static fixtures are not enough to claim end-to-end interactive SPA capability.
-- Handoffs for interactive flow work must list the user scenarios tested, the e2e command/result or explicit narrowed-scope reason it was not run, and the browser walkthrough result.
+- Use the project's browser automation tool when specified; otherwise use Playwright/browser-driven walkthrough evidence.
+- Minor interaction-only changes can use component/unit tests plus browser walkthrough evidence, but the handoff must state the narrower claim.
+- Unit/component tests, route existence, screenshots, mocked happy-path renders, or static fixtures alone are not end-to-end interactive SPA evidence.
 
 **Parallel integration isolation rules**:
 - Keep a deterministic local profile (for example single-worker integration) and a separate CI profile when parallelism is tuned.
@@ -276,6 +268,7 @@ See [Accessibility](references/accessibility.md) for patterns and examples.
 | UI control updates URL-backed state directly (without URL write) | URL and runtime diverge; back/forward/manual URL edits break behavior | Write URL param first; derive runtime state from URL |
 | Bidirectional URL/state effects without equality guards | Oscillation/flicker loops, unstable UI | Add strict same-value guards and clear authority direction |
 | Direct HTTP in components/stores/hooks | Bypasses server-state lifecycle and cache | Use TanStack Query (`queryFn`/`mutationFn`) |
+| Project API calls outside `shared/api` | Scatters credentials, CSRF, retries, and error mapping | Centralize transport/contracts under `shared/api` |
 | Query/cache keys without tenant/user context | Cross-user/tenant data leakage | Include `tenantId` and `userId` (when applicable) |
 | Ad-hoc key composition | Inconsistent cache hits and invalidation | Use centralized key factories + canonicalized params |
 | No cache cleanup on context switch | Stale data from previous account/tenant | Clear Dexie scope + reset Query cache + reset runtime UI state |
@@ -334,10 +327,10 @@ Validation:
 
 ## Required active references
 - [Accessibility](references/accessibility.md) — Read this when you need patterns and examples.
-- [Component Architecture](references/component-architecture.md) — Read this when you need Functional components, composition patterns.
-- [Data Fetching](references/data-fetching.md) — Read this when you need TanStack Query patterns, caching, mutations.
-- [Forms & Validation](references/forms-validation.md) — Read this when you need React Hook Form, Zod schemas.
-- [IndexedDB Persistence](references/indexeddb-persistence.md) — Read this when you need full patterns.
+- [Component Architecture](references/component-architecture.md) — Read this when you need feature-based structure, import boundaries, functional components, or composition patterns.
+- [Data Fetching](references/data-fetching.md) — Read this when you need shared API boundaries, TanStack Query patterns, global cache handling, caching, mutations, or CSRF recovery.
+- [Forms & Validation](references/forms-validation.md) — Read this when you need React Hook Form, TanStack Form wrappers, Zod schemas, or typed server-error handling.
+- [IndexedDB Persistence](references/indexeddb-persistence.md) — Read this when you need durable-cache allowlists, TTL, scoping, and IndexedDB patterns.
 - [Performance](references/performance.md) — Read this when you need the prioritized rulepack and examples.
 - [Persistence Architecture](references/persistence-architecture.md) — Read this when you need full rules.
 - [Routing](references/routing.md) — Read this when you need React Router data APIs, loaders, protected routes.
@@ -361,3 +354,4 @@ Validation:
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/logs/*`

@@ -1,5 +1,28 @@
 # Component Architecture Rules for React SPA
 
+## 0. Feature-Based SPA Structure
+
+**Rule: Use a feature-based structure with executable layer boundaries.**
+
+Default layout:
+
+```text
+src/
+  app/              # shell, providers, router, bootstrap
+  shared/
+    api/            # project API transport, contracts, typed errors, CSRF/session recovery helpers
+    ui/             # reusable presentational UI
+    forms/          # typed form adapters and field primitives
+    state/          # reusable runtime-state primitives
+    storage/        # Dexie/local durable storage primitives
+  features/
+    feature-name/   # route modules, screens, Query adapters, feature UI
+```
+
+`shared/api` is the only place that owns project API `fetch`, credentials, CSRF headers, response normalization, and typed API errors. Screens, routes, stores, and UI hooks consume feature Query adapters or API contract functions; they do not perform project API `fetch` directly.
+
+Enforce this with import-boundary tooling such as ESLint rules. Source-grep tests are useful smoke checks, but they are not sufficient evidence that layer boundaries are executable.
+
 ## 1. Functional Components Only
 
 **Rule: Use functional components exclusively. Class components are only allowed for ErrorBoundary.**

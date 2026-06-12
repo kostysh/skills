@@ -58,6 +58,7 @@ Persist long-lived client data in Dexie:
 - local caches.
 
 Treat Zustand as an operational projection over Dexie and/or server state.
+Dexie/local durable cache is allowlisted, scoped, TTL-bound, and non-authoritative. Never persist OTPs, CSRF tokens, cookies, JWT/session IDs, raw identity/provider payloads, or raw request/response/header/query/cookie data.
 
 ### Server interactions
 
@@ -209,3 +210,5 @@ Encapsulate persistence operations in application layer modules:
 
 Do not spread raw URL parsing/writing, Dexie operations, and query invalidation logic across UI components.
 This keeps persistence policy consistent across the project.
+
+`shared/storage` owns durable storage primitives. Feature modules may define allowlisted cache namespaces, but they must not bypass shared TTL, scoping, cleanup, and denylist rules.

@@ -433,6 +433,25 @@ function RegistrationForm() {
 }
 ```
 
+### Typed Server Error Adapters
+
+Keep server-error casts inside shared form adapters, not in screens. When using TanStack Form, wrap API field errors in typed helpers that accept the form's field-name union and expose a safe screen API.
+
+```ts
+type FieldErrors<TField extends string> = Partial<Record<TField, string>>;
+
+export function applyFieldErrors<TField extends string>(
+  setFieldError: (field: TField, message: string) => void,
+  errors: FieldErrors<TField>,
+) {
+  for (const [field, message] of Object.entries(errors) as [TField, string][]) {
+    setFieldError(field, message);
+  }
+}
+```
+
+Screens should call the adapter with typed field names. Do not scatter `as any`, raw API error casts, or stringly field mapping across route components.
+
 ### Revalidate Same Schema on Server
 
 ```tsx
