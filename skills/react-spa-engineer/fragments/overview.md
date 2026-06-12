@@ -186,6 +186,13 @@ See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patter
 - For async UI, use `findBy*` and `waitFor`
 - For modal/dialog components with animation (for example shadcn `Dialog`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
 
+**Interactive flow completion gate**:
+- If a task implements or changes a material user-visible flow (for example auth, onboarding, checkout, profile editing, protected navigation, destructive confirmation, or a multi-step wizard), do not report delivered interactive SPA capability until the affected scenario has successful Playwright e2e coverage and has been exercised through real browser automation.
+- Use the project's browser automation tool when one is specified (for example `agent-browser`); otherwise use Playwright/browser-driven manual walkthrough evidence.
+- For minor interaction-only changes where e2e coverage would be disproportionate, state the narrower claim and verify with component/unit tests plus browser walkthrough evidence.
+- Unit/component tests, route existence, screenshots, mocked happy-path render states, or static fixtures are not enough to claim end-to-end interactive SPA capability.
+- Handoffs for interactive flow work must list the user scenarios tested, the e2e command/result or explicit narrowed-scope reason it was not run, and the browser walkthrough result.
+
 **Parallel integration isolation rules**:
 - Keep a deterministic local profile (for example single-worker integration) and a separate CI profile when parallelism is tuned.
 - Isolate IndexedDB state per test run where feasible; always clear tables in `afterEach`.

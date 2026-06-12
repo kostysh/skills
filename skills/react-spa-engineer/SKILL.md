@@ -13,9 +13,9 @@ description: >-
   up project architecture, or troubleshooting React client-side applications.
   Excludes SSR, RSC, Next.js server-side patterns.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c9129f82a1b7f78b5660b8ad5783f647b114b1cd2bc1a5f1580dc18953c36267
+  skillforge-source-hash: 5cf0de2dfd3e23e393f617519e6b19c08db9a926ab55d042d28e65974afec6c0
 ---
 
 # react-spa-engineer
@@ -228,6 +228,13 @@ See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patter
 - Always use `userEvent.setup()` before render
 - For async UI, use `findBy*` and `waitFor`
 - For modal/dialog components with animation (for example shadcn `Dialog`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
+
+**Interactive flow completion gate**:
+- If a task implements or changes a material user-visible flow (for example auth, onboarding, checkout, profile editing, protected navigation, destructive confirmation, or a multi-step wizard), do not report delivered interactive SPA capability until the affected scenario has successful Playwright e2e coverage and has been exercised through real browser automation.
+- Use the project's browser automation tool when one is specified (for example `agent-browser`); otherwise use Playwright/browser-driven manual walkthrough evidence.
+- For minor interaction-only changes where e2e coverage would be disproportionate, state the narrower claim and verify with component/unit tests plus browser walkthrough evidence.
+- Unit/component tests, route existence, screenshots, mocked happy-path render states, or static fixtures are not enough to claim end-to-end interactive SPA capability.
+- Handoffs for interactive flow work must list the user scenarios tested, the e2e command/result or explicit narrowed-scope reason it was not run, and the browser walkthrough result.
 
 **Parallel integration isolation rules**:
 - Keep a deterministic local profile (for example single-worker integration) and a separate CI profile when parallelism is tuned.

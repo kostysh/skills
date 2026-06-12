@@ -458,6 +458,41 @@ test('useCounter with async', async () => {
 
 ## 8. Playwright for E2E
 
+**Rule: Material interactive user flows require both reproducible Playwright e2e coverage and a real browser automation walkthrough before end-to-end completion is claimed.**
+
+Apply this gate whenever the task implements or changes a material user-visible
+flow such as registration, login, onboarding, checkout, profile editing, data
+entry that persists or submits business data, navigation across protected zones,
+destructive confirmation, or a multi-step wizard.
+
+Required evidence for an end-to-end interactive flow claim:
+
+1. Playwright e2e test coverage for the affected happy path and meaningful
+   failure/edge states.
+2. Successful execution of the e2e command that covers those scenarios.
+3. A real browser walkthrough using the project's specified browser automation
+   tool. If the project provides `agent-browser`, use it; otherwise use
+   Playwright or an equivalent browser-driven inspection workflow.
+4. A handoff note listing the scenarios tested, the e2e command/result, and the
+   browser walkthrough result.
+
+For minor interaction-only changes where e2e coverage would be disproportionate
+(for example an isolated toggle, menu, disclosure, local control state, or modal
+animation assertion), verify at the component/unit layer plus browser walkthrough
+evidence, then state the narrower claim. Do not present that as end-to-end flow
+acceptance.
+
+If no e2e infrastructure or browser automation path is available, do not
+silently substitute screenshots, route existence, or mocked component renders.
+Either add the narrow Playwright/browser coverage needed for the material flow,
+or report the unverified risk and limit the completion claim.
+
+Do not claim delivered interactive SPA capability from unit tests, component
+tests, route existence, screenshots, static fixtures, or mock-only happy-path
+renders alone. Deterministic network interception is acceptable for local UI
+coverage only when the handoff clearly labels it as local coverage and does not
+present it as real backend/provider acceptance.
+
 ### Setup
 
 ```bash
