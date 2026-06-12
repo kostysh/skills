@@ -21,7 +21,9 @@ Before finalizing a review or audit, identify which of these surfaces are in sco
 
 - backend request handlers, jobs, and worker code
 - frontend browser code, rendered templates, and client-side state
+- browser durable storage such as IndexedDB, `localStorage`, and `sessionStorage`
 - auth, sessions, cookies, and identity boundaries
+- telemetry, logging, and error-reporting flows
 - CI, release, and automation paths
 - data plane and privilege boundaries such as SQL, RLS, grants, or storage policies
 - server-side data-access construction such as REST/PostgREST filters, SDK query builders, RPC args, storage keys, search filters, or service-role paths
@@ -40,10 +42,12 @@ For an explicit scan or report, use this order unless the user gives a narrower 
 2. Auth, session, cookie, and privilege transitions.
 3. Attacker-controlled input reaching sensitive sinks or missing permission checks.
 4. Server-side data-access construction and direct authorization: raw SQL, REST/PostgREST URLs, SDK query builders, RPC args, storage/search keys, user-JWT RLS/RPC behavior, and service-role paths.
-5. File handling, redirects, outbound requests, and integration boundaries.
-6. Policy-governance admission when the trigger is present: deny/no-invocation, failed/conflicting persistence, historical replay versus current executable capability, conflict replay, freshness authority, evidence identity, release/runtime/deployment binding, activation races, and audit sufficiency.
-7. CI, automation, secrets exposure, and supply chain paths.
-8. Stack-specific deep dives through `references/domain-handoffs.md` when implementation details change exploitability.
+5. Browser durable storage and telemetry/error reporting: OTP/CSRF/session/identity storage, raw network envelope leaks, redaction, sentinel payload behavior, and negative API tests.
+6. CSRF refresh/reissue when present: valid cookie boundary, Origin/CORS, rate/admission, session freshness, rotation atomicity, no JWT/session/cookie in response body, and pending-session scope.
+7. File handling, redirects, outbound requests, and integration boundaries.
+8. Policy-governance admission when the trigger is present: deny/no-invocation, failed/conflicting persistence, historical replay versus current executable capability, conflict replay, freshness authority, evidence identity, release/runtime/deployment binding, activation races, and audit sufficiency.
+9. CI, automation, secrets exposure, and supply chain paths.
+10. Stack-specific deep dives through `references/domain-handoffs.md` when implementation details change exploitability.
 
 ## Confidence Rubric
 
@@ -62,6 +66,8 @@ For every reported finding, prove:
 - why framework defaults do not already make it safe
 - what attacker outcome becomes possible
 - what assumption still depends on runtime, edge, or deployment config if the repo does not show it
+
+Source-text tests, source-grep checks, and absence/presence string checks are not security evidence by themselves. Use behavioral tests, sentinel payloads, negative API tests, or runtime traces that exercise the control.
 
 ## Common False Positives
 
@@ -133,3 +139,4 @@ Before finalizing:
 - drop anything that is really just a best-practice suggestion
 - keep medium-confidence items separate from confirmed findings
 - say what must still be verified at runtime if that affects confidence
+- do not claim storage, telemetry, or CSRF protection is verified from source-text tests alone

@@ -23,11 +23,25 @@ Flag:
 - tokens, cookies, webhook payloads, or raw auth material in logs
 - stack traces or debug payloads returned to untrusted clients when they reveal sensitive internals
 - derived secrets that bypass masking in CI logs
+- telemetry or error reports containing raw stack/source, component props, request bodies, response bodies, headers, query strings, cookies, OTPs, CSRF tokens, bearer tokens, or raw identity values
 
 Detection hints:
 
 - search for structured logger calls that serialize full request, env, headers, cookies, config, or exception objects
 - inspect debug endpoints, verbose error middleware, and CI logs emitted by release or deploy scripts
+- inspect browser error-reporting hooks and telemetry ingestion for serialization of props, network envelopes, headers, cookies, tokens, and identity/provider payloads
+
+## Browser Durable Storage
+
+Flag browser durable storage of:
+
+- OTPs, one-time challenges, or recovery codes
+- CSRF tokens
+- cookies, JWTs, session IDs, refresh tokens, or equivalent bearer/session material
+- raw identity values or provider payloads
+- raw request bodies, response bodies, headers, query strings, cookie values, or full network envelopes
+
+Accept durable browser storage only when the payload is allowlisted, scoped to user/tenant/context, TTL-bound, non-authoritative, and cleared on logout/context switch.
 
 ## Trust Boundary Mistakes
 
@@ -59,9 +73,11 @@ Usually good signs:
 - narrow token scopes
 - request-scoped privilege escalation only where documented
 - redacted structured logs
+- project-owned telemetry ingestion with sentinel-payload tests proving sensitive fields are redacted or rejected
 
 ## What to Verify Before Reporting
 
 - whether a credential-looking value is a real secret, a test fixture, or a documented example
 - whether masking, redaction, or edge TLS is implemented outside the reviewed code
 - whether HTTP-only assumptions are limited to development or also reach production
+- whether source-text checks are backed by behavioral tests, sentinel payloads, or negative API tests

@@ -9,9 +9,9 @@ description: Systematic security code review skill for vulnerabilities in
   gating, exploitability checks, and evidence; pairs with domain skills for
   framework details.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: fc0a2a35a3807e1d00c41cb247e221f6c2dea145968eced5f0b1290272f28dc4
+  skillforge-source-hash: 0943323065f1a9cfc6aa59d9b2aef9007249491fe4cef39bf493e192fbae1251
 ---
 
 # security-reviewer
@@ -47,6 +47,7 @@ Find exploitable security weaknesses without turning every suspicious pattern in
 - Reviewing Supabase RLS, grants, privileged functions, or service-role boundaries
 - Reviewing app-layer data-access construction through REST/PostgREST, SDK query builders, RPC, storage, search, or service-role clients
 - Reviewing webhook handlers, signature verification, replay protection, or idempotency
+- Reviewing browser durable storage, client telemetry, error reporting, or cookie-session CSRF refresh/reissue behavior
 - Checking user-controlled input flowing into sensitive sinks
 
 ## When NOT to Use
@@ -108,7 +109,9 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 1. Identify the reviewed surfaces and stack before judging findings:
    - backend request handlers, jobs, and workers
    - frontend browser code and client-side rendering paths
+   - browser durable storage such as IndexedDB, `localStorage`, and `sessionStorage`
    - auth, sessions, cookies, and identity boundaries
+   - telemetry, logging, and error-reporting paths
    - CI, release automation, and supply chain paths
    - storage, data plane, and database privilege boundaries
    - inbound and outbound integrations such as webhooks and URL fetchers
@@ -135,29 +138,34 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - domain handoffs when stack-specific behavior changes exploitability
 5. Apply the data-access construction checkpoint when backend code reads/writes a database, uses REST/PostgREST, Supabase clients, RPC calls, service-role clients, query builders, or manually constructs URLs/filters.
    This checkpoint must enumerate attacker-controlled request/body/query/header/cookie values and persisted user-controlled values that reach data-access filters, select lists, RPC args, query-builder fragments, SQL fragments, storage keys, table/function/column names, or service-role calls.
-6. For protected backend data paths, compare the route/service authorization with the direct data-access boundary:
+6. Apply the browser storage and telemetry checkpoint when frontend code persists data or reports client errors:
+   - durable storage must not contain OTPs, CSRF tokens, cookies, JWT/session IDs, raw identity/provider payloads, or raw request/response/header/query/cookie data
+   - telemetry/error reports must not include raw stack/source, props, request bodies, response bodies, headers, query strings, cookies, OTPs, CSRF tokens, bearer tokens, or raw identity values
+   - source-text checks are not evidence by themselves; require behavioral tests, sentinel payloads, or negative API tests for the claimed protection
+7. For CSRF refresh/reissue reviews, model valid-cookie boundary, Origin/CORS, rate/admission, session freshness, rotation atomicity, absence of JWT/session/cookie data in response bodies, and pending-session scope.
+8. For protected backend data paths, compare the route/service authorization with the direct data-access boundary:
    - user JWT/PostgREST/RPC/RLS behavior versus server API behavior
    - service-role reads for internal secrets/admin tasks versus ordinary user-scoped reads or mutations
    - stale or mismatched session/context/role/scope/status/readiness claims at RLS helper, RPC, and storage-policy boundaries
    - required audit/security events, including fail-closed same-transaction capture or durable fallback where the event is required
-7. Map trust boundaries:
+9. Map trust boundaries:
    - inputs
    - identities and roles
    - secrets and credentials
    - privileged actions
    - sensitive sinks
-8. Trace the attack path:
+10. Trace the attack path:
    - entry point
    - attacker-controlled value
    - execution or authorization mechanism
    - impact
-9. Verify mitigations:
+11. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
    - access controls
    - environment or deployment constraints
-10. Classify confidence and severity.
-11. Choose the output mode:
+12. Classify confidence and severity.
+13. Choose the output mode:
    - targeted findings in chat
    - formal audit sections with stable IDs
    - remediation of one confirmed finding at a time
@@ -216,6 +224,7 @@ Unless the user explicitly asks for a formal audit or report:
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
 - In formal audit mode, add stable finding IDs and a short executive summary.
 - In formal audit mode that includes backend/database code, include a short "data-access construction reviewed" note naming whether raw SQL, REST/PostgREST, SDK query builders, RPC, storage, RLS helper/policy, and service-role paths were inspected. Do not claim database security review is complete if server-side data-access construction or direct data-access authorization was not inspected.
+- Do not cite source-text tests, source-grep tests, or presence/absence string checks as security evidence unless they are paired with behavioral tests, sentinel payloads, or negative API tests that exercise the protection.
 - Write a markdown report only when the user asks for one or the repo expects an artifact.
 - If nothing clears the bar, say so plainly instead of inventing issues.
 
@@ -243,7 +252,7 @@ Read only what you need:
 - `references/github-actions.md` - GitHub Actions threat model, attack classes, detection hints, and safe patterns
 - `references/supabase-rls.md` - RLS, grants, privileged functions, RPC, and service-role review
 - `references/webhooks.md` - signature verification, replay windows, raw body handling, idempotency, and reporting checks
-- `references/secrets-config.md` - secrets, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance
+- `references/secrets-config.md` - secrets, browser durable storage, telemetry/error reporting leaks, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance
 - `references/domain-handoffs.md` - stack discovery and when to defer to domain skills for framework-specific detail
 
 ## Workflow stages
@@ -274,13 +283,13 @@ Validation:
 - **non-security review flow and general merge-risk findings:** code-reviewer. Move non-security findings to code-reviewer when both skills are active.
 
 ## Required active references
-- [Api Auth Input](references/api-auth-input.md) — Read this when you need input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints.
+- [Api Auth Input](references/api-auth-input.md) — Read this when you need input validation, injection, authn, authz, CSRF refresh/reissue threat modeling, mass assignment, file handling checks, and detection hints.
 - [Data Access Injection](references/data-access-injection.md) — Read this when backend code constructs SQL, REST/PostgREST URLs, SDK query-builder filters, RPC args, storage keys, search queries, or service-role data access from request or persisted user-controlled values.
 - [Domain Handoffs](references/domain-handoffs.md) — Read this when you need stack discovery and when to defer to domain skills for framework-specific detail.
 - [Github Actions](references/github-actions.md) — Read this when you need GitHub Actions threat model, attack classes, detection hints, and safe patterns.
 - [Methodology](references/methodology.md) — Read this when you need confidence gating, surface discovery, audit order, uncertainty language, and report format.
 - [Policy Governance Admission](references/policy-governance-admission.md) — Read this when reviewing external consultant/tool invocation admission, admission/approval gates that can produce executable capability, policy profile activation, active-scope selection, governance/audit persistence preconditions, fail-closed policy gates, or replay/idempotency controls around security-relevant decisions.
-- [Secrets Config](references/secrets-config.md) — Read this when you need secrets, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance.
+- [Secrets Config](references/secrets-config.md) — Read this when you need secrets, browser durable storage, telemetry/error reporting leaks, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance.
 - [Supabase Rls](references/supabase-rls.md) — Read this when you need RLS, grants, privileged functions, RPC, and service-role review.
 - [Webhooks](references/webhooks.md) — Read this when you need signature verification, replay windows, raw body handling, idempotency, and reporting checks.
 

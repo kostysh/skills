@@ -74,6 +74,7 @@ What to verify before reporting:
 Check:
 
 - CSRF defenses for cookie-authenticated flows
+- CSRF refresh/reissue flows for cookie-session SPAs
 - replay handling for idempotent-looking endpoints
 - rate limits or abuse controls on expensive or privileged actions
 
@@ -87,6 +88,18 @@ What to verify before reporting:
 
 - whether the route is browser-reachable or only for trusted machine clients
 - whether upstream rate limiting, CSRF protection, or replay protection exists outside the reviewed file
+
+### CSRF Refresh/Reissue Threat Model
+
+When reviewing CSRF refresh or reissue endpoints, check:
+- valid cookie boundary: a valid httpOnly session cookie is required, and the response never contains a JWT, session ID, cookie value, or raw session data;
+- Origin/CORS boundary: only accepted origins can receive a token;
+- rate/admission behavior: missing/invalid cookies, disallowed origins, stale sessions, and wrong session classes fail before rotation;
+- session freshness: disabled, expired, logged-out, wrong-context, or not-yet-active sessions cannot mint active CSRF tokens;
+- rotation atomicity: the session-bound CSRF hash/token state changes atomically with the token returned;
+- pending-session scope: onboarding/pending CSRF tokens cannot authorize active-account protected APIs.
+
+Require negative API tests for these cases where the codebase has a test harness. Source-text checks alone are not security evidence.
 
 ## Auth-Admission Early Checklist
 

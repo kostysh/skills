@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.4"
+  source-version: "0.1.5"
   recommended-skill-md-max-bytes: 36000
   description: "Systematic security code review skill for vulnerabilities in application code, CI workflows, permission models, webhooks, secrets, app-layer data access, and configuration. Use when asked to security review, find vulnerabilities, audit auth, RLS, REST/PostgREST filters, SDK query builders, check GitHub Actions security, inspect webhook verification, or review code against OWASP-style risks. Owns threat modeling, confidence gating, exploitability checks, and evidence; pairs with domain skills for framework details."
 fragments:
@@ -13,7 +13,7 @@ references:
     source: "references/api-auth-input.md"
     target: "references/api-auth-input.md"
     required: true
-    trigger: "Read this when you need input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints."
+    trigger: "Read this when you need input validation, injection, authn, authz, CSRF refresh/reissue threat modeling, mass assignment, file handling checks, and detection hints."
   - id: "ref-data-access-injection"
     title: "Data Access Injection"
     source: "references/data-access-injection.md"
@@ -49,7 +49,7 @@ references:
     source: "references/secrets-config.md"
     target: "references/secrets-config.md"
     required: true
-    trigger: "Read this when you need secrets, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance."
+    trigger: "Read this when you need secrets, browser durable storage, telemetry/error reporting leaks, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance."
   - id: "ref-supabase-rls"
     title: "Supabase Rls"
     source: "references/supabase-rls.md"

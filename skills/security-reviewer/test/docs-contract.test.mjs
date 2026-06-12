@@ -212,3 +212,37 @@ test('data-access guidance is reachable from related references', async () => {
     /raw SQL, REST\/PostgREST, SDK query builders, RPC, and service-role paths/,
   );
 });
+
+test('browser storage and telemetry leak checks are explicit', async () => {
+  const [skill, secrets, methodology] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/secrets-config.md'),
+    readSkillFile('references/methodology.md'),
+  ]);
+
+  assert.match(skill, /browser durable storage/);
+  assert.match(skill, /OTPs, CSRF tokens, cookies, JWT\/session IDs/);
+  assert.match(skill, /raw stack\/source, props, request bodies, response bodies, headers/);
+  assert.match(secrets, /Browser Durable Storage/);
+  assert.match(secrets, /raw request bodies, response bodies, headers, query strings, cookie values/);
+  assert.match(secrets, /allowlisted, scoped to user\/tenant\/context, TTL-bound, non-authoritative/);
+  assert.match(methodology, /Browser durable storage and telemetry\/error reporting/);
+  assert.match(methodology, /sentinel payload behavior/);
+});
+
+test('CSRF reissue threat model and behavioral evidence are required', async () => {
+  const [skill, apiAuth, methodology] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/api-auth-input.md'),
+    readSkillFile('references/methodology.md'),
+  ]);
+
+  assert.match(skill, /valid-cookie boundary, Origin\/CORS, rate\/admission/);
+  assert.match(skill, /rotation atomicity/);
+  assert.match(apiAuth, /CSRF Refresh\/Reissue Threat Model/);
+  assert.match(apiAuth, /valid httpOnly session cookie/);
+  assert.match(apiAuth, /pending-session scope/);
+  assert.match(apiAuth, /Source-text checks alone are not security evidence/);
+  assert.match(methodology, /Source-text tests, source-grep checks/);
+  assert.match(methodology, /behavioral tests, sentinel payloads, negative API tests/);
+});
