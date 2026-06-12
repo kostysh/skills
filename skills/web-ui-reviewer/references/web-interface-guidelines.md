@@ -37,6 +37,17 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Placeholders end with `…` and show example pattern
 - `autocomplete="off"` on non-auth fields to avoid password manager triggers
 - Warn before navigation with unsaved changes (`beforeunload` or router guard)
+- Mutation forms preserve entered values on server/network error and clear only after success
+- Pending submit buttons expose `aria-busy="true"` while the request is active
+- Repeated field/error ids are stable per component instance; use `useId` or equivalent, not hardcoded ids reused across rows/forms
+
+### OTP and One-Time Code UI
+
+- Failed submit does not clear entered digits; preserve them so the user can correct or retry
+- Visible OTP digits are acceptable for one-time codes unless the product explicitly requires masking
+- Provide cancel/back and resend actions when the backend contract supports them
+- Show cooldown, expiry, and resend-disabled states when those states exist server-side
+- Do not block paste for OTP codes
 
 ### Animation
 
@@ -84,6 +95,13 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Links use `<a>`/`<Link>` (Cmd/Ctrl+click, middle-click support)
 - Deep-link all stateful UI (if uses `useState`, consider URL sync via nuqs or similar)
 - Destructive actions need confirmation modal or undo window—never immediate
+- Hiding admin navigation for non-admin users is UX-only. Flag any review claim that treats hidden nav as API authorization; authoritative authorization must be checked separately in API/server review.
+
+### Error Boundaries
+
+- Error boundaries provide a clear recovery action such as retry, reload, go back, or contact support with a safe reference id
+- User-facing error copy avoids stack traces, process details, technical internals, and "report JSON"
+- Safe error reporting is explicit: no raw props, request/response bodies, headers, cookies, tokens, OTPs, CSRF tokens, or raw identity payloads
 
 ### Touch & Interaction
 
@@ -144,6 +162,10 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Large arrays `.map()` without virtualization
 - Form inputs without labels
 - Icon buttons without `aria-label`
+- Pending buttons without `aria-busy`
+- Reused hardcoded ids for field help/error text
+- Mutation forms clearing user input on error
+- OTP failures clearing digits with no recovery path
 - Hardcoded date/number formats (use `Intl.*`)
 - `autoFocus` without clear justification
 

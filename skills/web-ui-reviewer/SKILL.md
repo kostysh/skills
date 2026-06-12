@@ -5,9 +5,9 @@ description: Review web UI code for Web Interface Guidelines compliance
   when asked to review UI/UX, audit design, check accessibility, or review web
   interfaces.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e1b34d00ac32b4b7cd4961cda68feab54997e230d5a679791d72555b32381253
+  skillforge-source-hash: 63b34f930ea4c3ed52035f2d7551651a158d051e821acf5ed4353b44d4bf1089
 ---
 
 # web-ui-reviewer
@@ -85,7 +85,7 @@ Validation:
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
 
 ## Required active references
-- [Web Interface Guidelines](references/web-interface-guidelines.md) — Read this when you need the portable Web Interface Guidelines baseline and fallback.
+- [Web Interface Guidelines](references/web-interface-guidelines.md) — Read this when you need the portable Web Interface Guidelines baseline, OTP UI recovery, mutation form behavior, error-boundary UX, admin-navigation caveats, accessibility IDs, or fallback.
 
 ## Portability rules
 
@@ -103,3 +103,4 @@ Validation:
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/logs/*`

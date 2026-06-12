@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: Review web UI code for Web Interface Guidelines compliance (accessibility, UX, typography, forms, content handling, performance). Use when asked to review UI/UX, audit design, check accessibility, or review web interfaces.
 fragments:
@@ -13,7 +13,7 @@ references:
     source: references/web-interface-guidelines.md
     target: references/web-interface-guidelines.md
     required: true
-    trigger: Read this when you need the portable Web Interface Guidelines baseline and fallback.
+    trigger: Read this when you need the portable Web Interface Guidelines baseline, OTP UI recovery, mutation form behavior, error-boundary UX, admin-navigation caveats, accessibility IDs, or fallback.
 assets: []
 copies:
   - id: copy-agents-openai
@@ -28,6 +28,7 @@ surfaces:
     optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/logs/*
 sections:
   startHere:
     - Confirm the task matches web-ui-reviewer's applicability criteria.
