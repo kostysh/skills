@@ -9,6 +9,7 @@ Applies to any Hono-based API project. If the current project already has establ
 - Validate env/config with a schema (Zod recommended) and expose parsed config via context (avoid raw env access in handlers).
 - On Cloudflare Workers, generate binding types with `wrangler types`; do not hand-write `Env` interfaces.
 - Validate all request inputs and outputs against schemas. For output validation, use a response helper, per-route output middleware, or contract tests (see `references/validation-openapi.md`).
+- New API routes must have Zod/OpenAPI request and response schemas, exported contract types/schemas, route security metadata, and tests.
 - For rich HTML inputs, sanitize server-side before persistence using an explicit allowlist policy (default: `sanitize-html` when runtime-compatible).
 - Errors use Problem Details. Never leak secrets or raw input in error bodies.
 - Logs are structured JSON and must be redacted. Never log tokens, cookies, or bodies.
@@ -40,13 +41,14 @@ Design to work both for a greenfield project and for incremental adoption in an 
 - `docs/standards/*` – error and logging standards for long-term consistency.
 
 ## Workflow for adding endpoints
-1. Decide endpoint class (public, user, admin, webhook) and choose the middleware chain (see `references/pipelines.md` when needed).
+1. Decide endpoint class (public, pending/onboarding, user, admin, webhook) and choose the middleware chain (see `references/pipelines.md` when needed).
 2. For auth-admission work, run a short route-admission checkpoint before implementation: bound body reads before parsing, keep pre-auth and post-auth quota isolation distinct, state replay behavior, and preserve the touched route's admission boundary or owner-gate semantics.
 3. Add route module under `src/routes/` and mount with `app.route()`.
 4. Keep routes thin: parse/validate inputs, call domain/service logic, return response.
 5. For long-lived protected endpoints, keep the opening route guard and put repeated authorization/revalidation or invalidation support in service/domain logic; test stale/revoked/disabled/maintenance/context transitions.
-6. Convert validation and controlled errors to Problem Details. Do not expose secrets.
-7. Add tests at the right level (unit/integration/e2e).
+6. For cookie-session CSRF reissue endpoints, keep the public API contract explicit: valid httpOnly session cookie, accepted Origin/CORS, no old CSRF token requirement, session-bound CSRF hash rotation, and response body containing only the new CSRF token.
+7. Convert validation and controlled errors to Problem Details. Do not expose secrets.
+8. Add tests at the right level (unit/integration/e2e).
 
 ## Platform constraints
 If using Cloudflare Workers or another edge runtime, review `references/workers-platform.md` and `references/wrangler.md` and adjust for platform limits, binding typing, caching semantics, and async work handling. For Workers-specific APIs or config fields that may have changed, prefer current docs or the local Wrangler schema over memory.
@@ -67,6 +69,7 @@ If using Cloudflare Workers or another edge runtime, review `references/workers-
 - Always call `redactValue()` before writing logs or returning error details.
 - Prefer event-style logs: `request.completed`, `request.failed`, `auth.failed`, `validation.failed`.
 - Never log request/response bodies by default. Log sizes or hashes instead.
+- Client telemetry/error ingestion should use a project-owned API routed through the existing observability boundary. Do not add third-party RUM/session replay as the default telemetry path.
 
 ## Testing baseline
 - Unit: pure helpers (config parsing, redaction).

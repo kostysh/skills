@@ -4,9 +4,9 @@ description: Build and maintain production-grade Hono API services across
   projects. Use when designing endpoints, middleware, config, logging,
   validation, security, and tests for Hono-based APIs.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 98799a576523ceca7ea0255c95a79d0099da50c500df570accbfc36677a447fb
+  skillforge-source-hash: 31715ecd6a8ef2891b1b304485267cf57dbdf72828e4e63a369373a9f77ced62
 ---
 
 # hono-engineer
@@ -40,6 +40,7 @@ Applies to any Hono-based API project. If the current project already has establ
 - Validate env/config with a schema (Zod recommended) and expose parsed config via context (avoid raw env access in handlers).
 - On Cloudflare Workers, generate binding types with `wrangler types`; do not hand-write `Env` interfaces.
 - Validate all request inputs and outputs against schemas. For output validation, use a response helper, per-route output middleware, or contract tests (see `references/validation-openapi.md`).
+- New API routes must have Zod/OpenAPI request and response schemas, exported contract types/schemas, route security metadata, and tests.
 - For rich HTML inputs, sanitize server-side before persistence using an explicit allowlist policy (default: `sanitize-html` when runtime-compatible).
 - Errors use Problem Details. Never leak secrets or raw input in error bodies.
 - Logs are structured JSON and must be redacted. Never log tokens, cookies, or bodies.
@@ -71,13 +72,14 @@ Design to work both for a greenfield project and for incremental adoption in an 
 - `docs/standards/*` – error and logging standards for long-term consistency.
 
 ## Workflow for adding endpoints
-1. Decide endpoint class (public, user, admin, webhook) and choose the middleware chain (see `references/pipelines.md` when needed).
+1. Decide endpoint class (public, pending/onboarding, user, admin, webhook) and choose the middleware chain (see `references/pipelines.md` when needed).
 2. For auth-admission work, run a short route-admission checkpoint before implementation: bound body reads before parsing, keep pre-auth and post-auth quota isolation distinct, state replay behavior, and preserve the touched route's admission boundary or owner-gate semantics.
 3. Add route module under `src/routes/` and mount with `app.route()`.
 4. Keep routes thin: parse/validate inputs, call domain/service logic, return response.
 5. For long-lived protected endpoints, keep the opening route guard and put repeated authorization/revalidation or invalidation support in service/domain logic; test stale/revoked/disabled/maintenance/context transitions.
-6. Convert validation and controlled errors to Problem Details. Do not expose secrets.
-7. Add tests at the right level (unit/integration/e2e).
+6. For cookie-session CSRF reissue endpoints, keep the public API contract explicit: valid httpOnly session cookie, accepted Origin/CORS, no old CSRF token requirement, session-bound CSRF hash rotation, and response body containing only the new CSRF token.
+7. Convert validation and controlled errors to Problem Details. Do not expose secrets.
+8. Add tests at the right level (unit/integration/e2e).
 
 ## Platform constraints
 If using Cloudflare Workers or another edge runtime, review `references/workers-platform.md` and `references/wrangler.md` and adjust for platform limits, binding typing, caching semantics, and async work handling. For Workers-specific APIs or config fields that may have changed, prefer current docs or the local Wrangler schema over memory.
@@ -98,6 +100,7 @@ If using Cloudflare Workers or another edge runtime, review `references/workers-
 - Always call `redactValue()` before writing logs or returning error details.
 - Prefer event-style logs: `request.completed`, `request.failed`, `auth.failed`, `validation.failed`.
 - Never log request/response bodies by default. Log sizes or hashes instead.
+- Client telemetry/error ingestion should use a project-owned API routed through the existing observability boundary. Do not add third-party RUM/session replay as the default telemetry path.
 
 ## Testing baseline
 - Unit: pure helpers (config parsing, redaction).
@@ -151,11 +154,11 @@ Validation:
 
 ## Required active references
 - [Architecture](references/architecture.md) — Read this when you need module boundaries, layering, and dependency rules.
-- [Auth](references/auth.md) — Read this when you need API keys, JWT/JWKS, mTLS, CSRF, authz policies.
+- [Auth](references/auth.md) — Read this when you need API keys, JWT/JWKS, mTLS, CSRF reissue contracts, cookie sessions, pending/onboarding sessions, or authz policies.
 - [Caching](references/caching.md) — Read this when you need HTTP caching, Cache API, edge caching.
 - [Contracts Types](references/contracts-types.md) — Read this when you need exporting request/response types to consumers.
 - [Errors Logs](references/errors-logs.md) — Read this when you need error + logging standards.
-- [Observability](references/observability.md) — Read this when you need logs, metrics, tracing, requestId propagation.
+- [Observability](references/observability.md) — Read this when you need logs, metrics, tracing, requestId propagation, or project-owned client telemetry ingestion.
 - [Perf Security](references/perf-security.md) — Read this when you need timeouts, retries, circuit breaker, compression, security defaults.
 - [Pipelines](references/pipelines.md) — Read this when you need middleware order per endpoint class.
 - [Rate Limiting](references/rate-limiting.md) — Read this when you need pre/post-auth limits, key choice, edge/WAF limits.
@@ -163,7 +166,7 @@ Validation:
 - [Security](references/security.md) — Read this when you need edge WAF, API Shield, endpoint discovery.
 - [Supabase](references/supabase.md) — Read this when you need Supabase usage patterns and RLS safety.
 - [Typing](references/typing.md) — Read this when you need Context variables typing (generics vs module augmentation).
-- [Validation Openapi](references/validation-openapi.md) — Read this when you need Zod validation, OpenAPI, docs, schema validation.
+- [Validation Openapi](references/validation-openapi.md) — Read this when you need Zod validation, OpenAPI, exported route contracts, security metadata, docs, or schema validation.
 - [Workers Platform](references/workers-platform.md) — Read this when you need CPU/subrequest limits, floating promises, binding safety, fetch scope, `waitUntil`, service bindings.
 - [Wrangler](references/wrangler.md) — Read this when you need runtime config, compatibility flags, bindings, generated `Env`, observability (Workers).
 
@@ -183,3 +186,4 @@ Validation:
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/logs/*`

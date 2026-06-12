@@ -5,6 +5,15 @@
 - Keep schemas close to routes or in a shared contracts module.
 - Surface validation errors via Problem Details (`errors[]` only).
 
+## New route contract checklist
+
+Every new API route should ship with:
+- Zod schemas for params/query/body and response;
+- exported request/response types or schemas for client/server consumers;
+- OpenAPI registration or an explicit reason the route is internal and omitted;
+- route security metadata: public, pending/onboarding, user, admin, webhook, service, or operator plus CSRF/auth/rate-limit expectations;
+- tests for valid input, invalid input, authorization/admission failure, and response shape.
+
 ## How to validate in Hono (request data)
 - Hono’s built-in `validator()` supports `json`, `query`, `param`, `header`, `cookie`, and `form`.
 - Use `@hono/zod-validator` for a shorter Zod-first middleware.

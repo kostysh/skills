@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.1"
+  source-version: "0.1.2"
   recommended-skill-md-max-bytes: 28000
   description: "Build and maintain production-grade Hono API services across projects. Use when designing endpoints, middleware, config, logging, validation, security, and tests for Hono-based APIs."
 fragments:
@@ -19,7 +19,7 @@ references:
     source: "references/auth.md"
     target: "references/auth.md"
     required: true
-    trigger: "Read this when you need API keys, JWT/JWKS, mTLS, CSRF, authz policies."
+    trigger: "Read this when you need API keys, JWT/JWKS, mTLS, CSRF reissue contracts, cookie sessions, pending/onboarding sessions, or authz policies."
   - id: "ref-caching"
     title: "Caching"
     source: "references/caching.md"
@@ -43,7 +43,7 @@ references:
     source: "references/observability.md"
     target: "references/observability.md"
     required: true
-    trigger: "Read this when you need logs, metrics, tracing, requestId propagation."
+    trigger: "Read this when you need logs, metrics, tracing, requestId propagation, or project-owned client telemetry ingestion."
   - id: "ref-perf-security"
     title: "Perf Security"
     source: "references/perf-security.md"
@@ -91,7 +91,7 @@ references:
     source: "references/validation-openapi.md"
     target: "references/validation-openapi.md"
     required: true
-    trigger: "Read this when you need Zod validation, OpenAPI, docs, schema validation."
+    trigger: "Read this when you need Zod validation, OpenAPI, exported route contracts, security metadata, docs, or schema validation."
   - id: "ref-workers-platform"
     title: "Workers Platform"
     source: "references/workers-platform.md"
@@ -141,6 +141,7 @@ surfaces:
     optionalReferences: []
   supportingGlobs:
     - "docs/*"
+    - "docs/logs/*"
 sections:
   startHere:
     - "Confirm the work is on a Hono-based API or a route/middleware surface that directly affects Hono."

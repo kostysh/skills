@@ -35,3 +35,33 @@ test('supporting references keep route-admission guidance bounded', async () => 
   assert.match(perfSecurity, /high-risk auth-admission routes/);
   assert.match(perfSecurity, /bounded body reads before untrusted `json\(\)`/);
 });
+
+test('cookie-session CSRF reissue and pending sessions are explicit contracts', async () => {
+  const [skill, auth] = await Promise.all([readSkillFile('SKILL.md'), readSkillFile('references/auth.md')]);
+
+  assert.match(skill, /CSRF reissue endpoints/);
+  assert.match(skill, /valid httpOnly session cookie/);
+  assert.match(skill, /no old CSRF token requirement/);
+  assert.match(auth, /CSRF Reissue Endpoint Contract/);
+  assert.match(auth, /rotate or replace the session-bound CSRF hash atomically/);
+  assert.match(auth, /return only the new CSRF token/);
+  assert.match(auth, /Pending\/onboarding sessions/);
+  assert.match(auth, /Do not weaken the normal protected API guard/);
+});
+
+test('new route and client telemetry contracts are documented', async () => {
+  const [skill, validation, observability] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/validation-openapi.md'),
+    readSkillFile('references/observability.md'),
+  ]);
+
+  assert.match(skill, /New API routes must have Zod\/OpenAPI request and response schemas/);
+  assert.match(validation, /New route contract checklist/);
+  assert.match(validation, /route security metadata/);
+  assert.match(validation, /pending\/onboarding/);
+  assert.match(validation, /tests for valid input, invalid input, authorization\/admission failure, and response shape/);
+  assert.match(observability, /project-owned API route/);
+  assert.match(observability, /Do not add third-party RUM\/session replay as the default path/);
+  assert.match(observability, /OTPs, CSRF tokens, bearer tokens, and raw identity payloads/);
+});

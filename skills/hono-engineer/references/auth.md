@@ -56,6 +56,23 @@ import { csrf } from 'hono/csrf'
 app.use('*', csrf())
 ```
 
+### CSRF Reissue Endpoint Contract
+
+For cookie-session SPAs, expose CSRF reissue as an explicit public API contract when the client can lose an in-memory CSRF token on browser refresh.
+
+Required behavior:
+- accept only requests with a valid httpOnly session cookie and an allowed Origin/CORS path;
+- do not require the old CSRF token, because refresh recovery exists for the missing-token case;
+- rotate or replace the session-bound CSRF hash atomically;
+- return only the new CSRF token in the response body;
+- never return JWTs, session IDs, cookies, or raw session data in the body.
+
+Test both positive and negative paths: valid cookie plus allowed Origin succeeds; missing/invalid cookie, disallowed Origin, stale session, and wrong pending/active session scope fail.
+
+## Pending/onboarding sessions
+
+If an endpoint must be callable before a full active-account session exists, give it a separate pending/onboarding session guard. Do not weaken the normal protected API guard to admit pending users. Name the narrower guard, route group, and allowed capabilities explicitly, and cover that the same pending session cannot access active-account protected APIs.
+
 ## Authorization policies
 - Keep policy checks in pure functions (`can(principal, action, resource)`), called by middleware or routes.
 - Enforce tenant boundaries explicitly (do not rely on incidental filters).
