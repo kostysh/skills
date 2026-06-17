@@ -12,9 +12,9 @@ compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 55a7e03d0e838b649976fb3c9ff0bfeba574a6977db3378c76d2454f65aba792
+  skillforge-source-hash: c380519815aceb6915185c362c0c1554ed0cd6fadf0fd6c5ccd845f0720d85f3
 ---
 
 # spec-engineer
@@ -188,7 +188,7 @@ Validation:
 - **high** — Do not let acceptance criteria pass through mocks, generated docs, schemas, wrappers, or tests alone when the claim is user-, operator-, integration-, or system-observable behavior.
 - **high** — Do not make a locally precise spec that drifts from the parent product, system, workflow, or architecture intent without calling out the conflict.
 - **high** — Do not force every section onto small tasks; use the smallest structure that removes implementation ambiguity.
-- **medium** — Examples and Gherkin scenarios clarify boundaries but do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
+- **medium** — Examples and Gherkin/BDD scenarios clarify boundaries only when representation-fit justifies them; they do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
 - **medium** — Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
 - **high** — Do not turn missing architecture decisions into spec requirements; route public contracts, data model, security boundary, tenancy, integration topology, deployment, rollback, or selected pattern changes to architecture.
 - **medium** — Do not use tests as the default verification answer when inspection, analysis, contract validation, simulation, or conformance suites prove the claim more directly.
@@ -218,6 +218,9 @@ Each normative requirement should express one obligation with an explicit subjec
 
 ### Representation-fit policy
 The canonical representation-fit table lives in the methodology reference. In SKILL.md, remember the rule of thumb only: choose the lightest representation that removes the concrete ambiguity or defect class, and prefer invariants whenever a behavior can be stated as an always-true property.
+
+### BDD fit policy
+Use BDD/Gherkin-style scenarios only when they materially clarify actor-trigger-response behavior, guards, failure paths, continuity, or acceptance risk. A scenario must not replace atomic normative requirements, negative acceptance criteria, falsifiers, or a verification map. Prefer invariants, decision tables, state models, contracts, schemas, or measurable constraints when they express the requirement more directly. Do not add BDD ceremony for trivial, substrate-only, or already unambiguous scope.
 
 ### Verification map policy
 Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. If verification is not currently possible, the spec must say why.

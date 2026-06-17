@@ -278,6 +278,19 @@ Natural language is acceptable for intent and simple behavior. It is weak for co
 
 Rules are normative. Examples are illustrative unless the spec explicitly labels an executable scenario as normative. If a rule and example conflict, the rule wins and the example must be corrected.
 
+## BDD/Gherkin scenario fit
+
+Use BDD/Gherkin-style scenarios only when they improve the specification by exposing actor-trigger-response behavior, guards, failure paths, continuity, or acceptance risk that plain requirements would hide.
+
+Before adding a scenario, confirm:
+
+- the actor or consumer, production trigger, precondition, and guard are real for the target system;
+- `Then` states an observable response, state/effect, or continuity promise, not substrate such as a file, wrapper, mock, log line, schema, or test;
+- the scenario is backed by atomic `MUST` or `MUST NOT` requirements, negative acceptance or a falsifier, and a verification method;
+- another representation would not express the requirement more directly.
+
+Prefer another representation when the requirement is mainly a pure rule, invariant, decision table, state model, API contract, schema, measurable NFR, or architecture decision. Do not add BDD ceremony for trivial, substrate-only, or already unambiguous scope.
+
 ## Repository artifact conventions
 
 Before creating a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map in a repository, check whether repo-local artifact conventions exist through AGENTS.md, README, CONTRIBUTING, or docs linked from them.

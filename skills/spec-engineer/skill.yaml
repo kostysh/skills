@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.3
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 26000
   description: >-
     Create concise, falsifiable software specifications for AI coding agents.
@@ -93,6 +93,10 @@ supporting:
     source: docs/logs/implementation-log-20260602-1.md
     target: docs/logs/implementation-log-20260602-1.md
     description: Non-normative implementation log for parent-intent alignment guidance.
+  - id: supporting-implementation-log-20260617-1
+    source: docs/logs/implementation-log-20260617-1.md
+    target: docs/logs/implementation-log-20260617-1.md
+    description: Non-normative implementation log for BDD fit guidance.
 
 surfaces:
   active:
@@ -231,7 +235,7 @@ sections:
       text: Do not force every section onto small tasks; use the smallest structure that removes implementation ambiguity.
     - id: gotcha-examples-need-rules
       priority: medium
-      text: Examples and Gherkin scenarios clarify boundaries but do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
+      text: Examples and Gherkin/BDD scenarios clarify boundaries only when representation-fit justifies them; they do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
     - id: gotcha-implementation-detail
       priority: medium
       text: Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
@@ -271,6 +275,17 @@ sections:
         lightest representation that removes the concrete ambiguity or defect
         class, and prefer invariants whenever a behavior can be stated as an
         always-true property.
+    - id: policy-bdd-fit
+      title: BDD fit policy
+      text: >-
+        Use BDD/Gherkin-style scenarios only when they materially clarify
+        actor-trigger-response behavior, guards, failure paths, continuity, or
+        acceptance risk. A scenario must not replace atomic normative
+        requirements, negative acceptance criteria, falsifiers, or a
+        verification map. Prefer invariants, decision tables, state models,
+        contracts, schemas, or measurable constraints when they express the
+        requirement more directly. Do not add BDD ceremony for trivial,
+        substrate-only, or already unambiguous scope.
     - id: policy-verification-map
       title: Verification map policy
       text: Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. If verification is not currently possible, the spec must say why.
