@@ -7,9 +7,9 @@ description: "Professional TypeScript development skill focused purely on the
   Zod, and modern toolchain configuration (tsconfig, ESLint, Biome, pnpm).
   Framework-agnostic: no React, NestJS, or other framework-specific content."
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f89ed6edcd7dd8726ec2565709cfca83d7868c28912d1aaf95997fa1ab9b067f
+  skillforge-source-hash: 04533a04c8d0a242fba1244a25e4eb69afdd6eafea2fd9074ee872fe079399e9
 ---
 
 # typescript-engineer
@@ -19,7 +19,8 @@ metadata:
 1. Confirm the work is TypeScript language, type-system, type-safe debugging, or TypeScript toolchain work.
 2. Run the existing typecheck command before non-trivial typing changes, or use pnpm tsc --noEmit when no wrapper exists.
 3. Identify the root compiler or inference cause before patching symptoms.
-4. Use the narrowest sound type fix and rerun typecheck after changes.
+4. Prefer TypeScript inference, narrowing, `satisfies`, built-in utility types, runtime-derived types, and schema-derived types before bespoke type machinery or new helper dependencies.
+5. Use the narrowest sound type fix and rerun typecheck after changes.
 
 ## When to use this skill
 
@@ -48,6 +49,7 @@ Applies to TypeScript language features, type system design, and toolchain confi
 - For non-trivial typing work, run the repo's typecheck command first; if none exists, use `pnpm tsc --noEmit`. Re-run it after changes.
 - Keep tests and type checks deterministic; do not rely on implicit `any` or unsafe assertions.
 - Replace `any` deliberately: prefer `unknown`, constrained generics, discriminated unions, overloads, or schema-derived types.
+- Use the first sufficient TypeScript construct: inference, narrowing, `satisfies`, built-in utility types, runtime-derived types, and schema-derived types come before bespoke conditional/mapped machinery or helper dependencies.
 - Use both Biome and ESLint: Biome for formatting and baseline lint, ESLint for type-aware rules.
 - Use `@ts-expect-error` with a short justification; do not use `@ts-ignore`.
 - For fragile type-level behavior, add type tests or negative compile assertions.
@@ -56,9 +58,10 @@ Applies to TypeScript language features, type system design, and toolchain confi
 ## When Invoked
 1. Run the existing typecheck command, or `pnpm tsc --noEmit` if the repo has no wrapper script, to capture the full error set before changing types.
 2. Identify the root cause before patching symptoms: widened literals, missing constraints, invalid indexing, overload mismatch, unsafe `any`, or unsound assertions.
-3. Prefer the narrowest sound fix: constraints, narrowing, `satisfies`, runtime-derived types, overloads, or schema inference instead of widening everything to `string`, `object`, or `any`.
-4. Validate call sites and IntelliSense after the fix. For tricky type-level APIs, add type tests or negative assertions to lock behavior.
-5. Re-run typecheck after changes and verify the error count moved in the intended direction.
+3. Check whether inference, narrowing, `satisfies`, built-in utility types, runtime-derived types, or schema inference solves the problem before adding bespoke type helpers.
+4. Prefer the narrowest sound fix: constraints, narrowing, `satisfies`, runtime-derived types, overloads, or schema inference instead of widening everything to `string`, `object`, or `any`.
+5. Validate call sites and IntelliSense after the fix. For tricky type-level APIs, add type tests or negative assertions to lock behavior.
+6. Re-run typecheck after changes and verify the error count moved in the intended direction.
 
 ## Quick Start (no Vite)
 ```bash
@@ -128,9 +131,10 @@ Resolve TypeScript problems with narrow, sound fixes and deterministic verificat
 
 1. Run the repo typecheck or pnpm tsc --noEmit to capture the baseline.
 2. Identify root causes such as widened literals, missing constraints, invalid indexing, overload mismatch, unsafe any, or unsound assertions.
-3. Prefer constraints, narrowing, satisfies, runtime-derived types, overloads, or schema inference over broad widening.
-4. Validate call sites and IntelliSense; add type tests or negative assertions for fragile type-level APIs.
-5. Rerun typecheck and verify the error count moved in the intended direction.
+3. Check whether built-in TypeScript utilities, inference, narrowing, `satisfies`, runtime-derived types, or schema inference solve the problem before adding custom conditional/mapped helpers or third-party type helpers.
+4. Prefer constraints, narrowing, satisfies, runtime-derived types, overloads, or schema inference over broad widening.
+5. Validate call sites and IntelliSense; add type tests or negative assertions for fragile type-level APIs.
+6. Rerun typecheck and verify the error count moved in the intended direction.
 
 Validation:
 

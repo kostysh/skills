@@ -475,6 +475,8 @@ const length = process(5); // number (2 - length of "10")
 
 ## Built-in Utility Types
 
+Check built-in utility types before writing a custom mapped or conditional helper. If a source-of-truth runtime value or schema can derive the type, prefer that over duplicating a parallel type hierarchy.
+
 | Utility | Purpose | Example |
 |---------|---------|---------|
 | `Partial<T>` | All properties optional | `Partial<User>` |
