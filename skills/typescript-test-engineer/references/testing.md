@@ -38,6 +38,20 @@ Specific findings to look for:
 - security-sensitive behavior without negative/fail-closed tests for forbidden paths;
 - CI or workflow changes that reduce which tests actually run.
 
+## Smallest sufficient check
+
+For low-risk helper logic, use the smallest runnable check that would fail on the targeted behavior regression. This often covers:
+
+- pure branches;
+- loops and collection transforms;
+- parsers and formatters;
+- small validators with local input/output behavior;
+- deterministic utility functions.
+
+The check can be a focused unit test, a smoke command, or a repo-conventional self-check, but it must assert observable behavior rather than merely execute the file.
+
+Do not use this rule to downshift high-risk verification. Security, privacy, money, data-loss, auth, accessibility, release, persistence/RLS/RPC/provider, service-role, and production-wiring paths need the stronger project or domain evidence that exercises the real boundary.
+
 ## Negative/fail-closed coverage
 
 Do not treat happy-path tests as enough when the source contract forbids behavior. If a specification, security/privacy contract, CI/CD gate, auth/RBAC rule, validation rule, redaction rule, environment isolation boundary, or acceptance falsifier defines an invalid or forbidden path, the test plan must include a negative case that proves fail-closed behavior.

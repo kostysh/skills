@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.3"
+  source-version: "0.1.4"
   recommended-skill-md-max-bytes: 46000
   description: "Design, implement, and maintain robust tests for TypeScript projects (Node/React/edge) with focus on node:test, Vitest, mocking, determinism, and coverage."
 fragments:
@@ -69,6 +69,7 @@ sections:
     - "Confirm the task is about TypeScript test design, implementation, maintenance, review, CI test behavior, or coverage."
     - "Follow the repository test runner and existing conventions before applying defaults."
     - "Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean."
+    - "Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check."
     - "Run the relevant tests and inspect warnings, stderr, hangs, and coverage expectations before claiming completion."
   whenToUse:
     - "Designing, writing, reviewing, or fixing tests in TypeScript Node, edge, or React projects."
@@ -84,6 +85,7 @@ sections:
       goal: "Produce deterministic, behavior-focused tests and verify them through the relevant runner and coverage gates."
       steps:
         - "Identify test level, runner, TypeScript execution path, touched files, and changed behaviors."
+        - "For low-risk helper logic such as a branch, loop, parser, formatter, or pure utility, choose the smallest runnable check that would fail if the behavior regresses."
         - "For specified or implied forbidden behavior, plan negative/fail-closed tests from the contract source: spec, security/privacy contract, CI/CD gate, auth/RBAC, validation, redaction, environment isolation, or acceptance falsifier."
         - "For side-effecting/state-changing behavior, list applicable negative matrix rows and mark irrelevant rows N/A with a reason."
         - "Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components."
@@ -92,6 +94,7 @@ sections:
         - "For CI workflow changes, validate touched YAML and pair with security-reviewer when permissions, secrets, or untrusted inputs change."
       validation:
         - "Tests assert observable behavior, covering the happy path and relevant negative/fail-closed cases instead of relying on happy-path coverage alone."
+        - "Low-risk helper checks are intentionally small but still fail on the targeted behavior regression."
         - "For security-sensitive code, missing negative/fail-closed tests are reported as a test gap."
         - "Relevant side-effecting/state-changing risks are covered or explicitly marked N/A by relevance."
         - "Relevant tests pass, warnings are resolved or documented, and coverage policy is followed."
@@ -114,6 +117,9 @@ sections:
     - id: "completion-evidence"
       title: "Completion evidence"
       text: "When reporting completion, name the relevant test, coverage, or CI validation commands that ran; state whether warnings and stderr were clean or documented; and call out any check that could not run with the exact blocker and next-best evidence. Do not imply completion while required validation is missing or still failing."
+    - id: "smallest-sufficient-check"
+      title: "Smallest sufficient check"
+      text: "Prefer the smallest runnable check that fails on the behavior regression for low-risk logic. Do not use that rule to downshift security, privacy, money, data-loss, auth, accessibility, release, persistence/RLS/RPC/provider, or production-wiring verification."
   portability:
     required: true
     rules:
