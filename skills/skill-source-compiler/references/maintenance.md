@@ -25,6 +25,7 @@ Required setup:
 - add `skill.source-version` in `skill.yaml`
 - add `skill.recommended-skill-md-max-bytes` in `skill.yaml`
 - define shipped commands in `skill.yaml` only if the runtime actually exposes them
+- define modes, metrics, and configuration surfaces only if the current skill behavior uses them and verification can prove or inspect them
 - include command runtime files and smoke tests under `copies`
 - keep `AGENTS.md` explicit about skill type, source of truth, and maintenance shortcuts
 - do not add placeholder `references/*` files for simple skills whose generated `SKILL.md` is self-contained
@@ -94,5 +95,6 @@ Manifest entries whose `source` and `target` resolve to the same path are valida
 
 - confirm documented commands match the built CLI help surface
 - confirm every documented command still has tests
+- confirm documented modes, metrics, configuration surfaces, and active references are current behavior, not future substrate
 - confirm `SKILL.md`, `docs/compile-report.md`, runtime files, and tests reflect the same change set
 - confirm the skill can be copied by itself without losing required behavior

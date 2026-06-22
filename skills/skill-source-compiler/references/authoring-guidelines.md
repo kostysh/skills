@@ -49,6 +49,7 @@ Audit every new or substantially changed skill against these model-agnostic trai
 | Retrieval discipline | Give concrete reference triggers and stopping conditions so agents load only the smallest useful reference set. |
 | Direct output style | Specify tone, Markdown, length, and section shape only when the product or workflow needs them. |
 | Tool-backed self-checking | Require concrete checks where possible; if validation cannot run, require the agent to report the gap and the next-best check. |
+| Observable surface | Add commands, modes, metrics, configuration knobs, and active references only when they change current agent behavior and can be backed by runtime behavior, measured evidence, or active guidance. |
 
 For skills, this usually means:
 
@@ -58,6 +59,8 @@ For skills, this usually means:
 - `Gotchas` contain high-impact failure modes, not generic advice.
 - `Policies` define precedence, side-effect limits, evidence rules, and stop conditions.
 - `Output contract` says what the final answer must include when that matters.
+
+Do not add placeholder surfaces for future flexibility. A command must be exposed by the runtime, a mode must change an agent decision path, a metric must come from measured data or be labeled as a qualitative check, and a reference must carry active guidance that is worth retrieving separately.
 
 Do not add model-version lore to domain skills. Keep these traits as an authoring gate; only domain-relevant consequences should appear in generated skill text.
 

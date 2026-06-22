@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.2.5
+  source-version: 0.2.6
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
@@ -94,6 +94,7 @@ sections:
     - If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
     - Keep active normative guidance separate from supporting or historical documents.
     - Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing.
+    - Reject placeholder commands, modes, metrics, configuration surfaces, and references that do not change the agent workflow or cannot be backed by runtime behavior, measurement, or active guidance.
     - Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
   whenToUse:
     - Compile or regenerate a multi-file skill from a structured source bundle.
@@ -130,10 +131,12 @@ sections:
         - Check that the skill states the user-visible outcome, success criteria, constraints, side-effect limits, and output contract.
         - Remove vague, contradictory, or duplicate rules; add precedence only where behavior would otherwise be ambiguous.
         - Replace unnecessary step-by-step micromanagement with decision criteria, unless the exact sequence is required for safety, correctness, or tooling.
+        - Remove placeholder commands, modes, metrics, configuration surfaces, or references that are only future substrate and do not create observable agent behavior now.
         - Ensure reference and tool triggers are concrete enough to support precise retrieval without loading everything by default.
         - Include validation commands, self-check expectations, fallback behavior, and stop rules when the skill changes code, artifacts, or external state.
       validation:
         - The skill is outcome-first, contradiction-free, progressively disclosed, and has explicit validation and stop conditions.
+        - Every declared command, mode, metric, config knob, and active reference is justified by current runtime behavior, measured evidence, or active guidance.
     - id: stage-render-output
       title: Render the target skill
       goal: Produce a standard Agent Skills folder with progressive disclosure.
@@ -256,6 +259,9 @@ sections:
     - id: gotcha-placeholder-references
       priority: medium
       text: Do not create placeholder references for simple source bundles; reference sections are conditional and should exist only when they carry real active guidance.
+    - id: gotcha-placeholder-surfaces
+      priority: medium
+      text: Do not add placeholder commands, modes, metrics, or config knobs for future flexibility; add them only when the current skill behavior uses and verifies them.
   policies:
     - id: policy-active-surface
       title: Active normative surface
@@ -275,6 +281,9 @@ sections:
     - id: policy-instruction-quality
       title: Instruction quality
       text: Skill instructions should be outcome-first, precise about constraints and completion criteria, explicit about validation and stop rules, and free of contradictory or unnecessarily mechanical process guidance.
+    - id: policy-observable-surface
+      title: Observable skill surface
+      text: Commands, modes, metrics, configuration surfaces, and active references belong in a skill only when they change current agent behavior and have a runtime, measurement, or guidance source that agents can verify.
   portability:
     required: true
     rules:

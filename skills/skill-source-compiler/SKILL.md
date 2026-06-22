@@ -9,9 +9,9 @@ compatibility: Designed for skills-compatible agents that can read Markdown
   files and copy local files inside the skill folder. The packaged CLI at
   scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 metadata:
-  source-version: 0.2.5
+  source-version: 0.2.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 14157c530ca3b82c05d611c457c48ccb321f9594e6a13d12db2b1db8aec3ec91
+  skillforge-source-hash: 53480299cdcf27db36716958aa8168b4f793d5875218746fb0c21d4c2779707a
 ---
 
 # skill-source-compiler
@@ -23,7 +23,8 @@ metadata:
 3. If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
 4. Keep active normative guidance separate from supporting or historical documents.
 5. Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing.
-6. Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
+6. Reject placeholder commands, modes, metrics, configuration surfaces, and references that do not change the agent workflow or cannot be backed by runtime behavior, measurement, or active guidance.
+7. Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
 
 ## When to use this skill
 
@@ -77,12 +78,14 @@ Ensure the generated skill gives enough outcome, constraint, tool, validation, a
 1. Check that the skill states the user-visible outcome, success criteria, constraints, side-effect limits, and output contract.
 2. Remove vague, contradictory, or duplicate rules; add precedence only where behavior would otherwise be ambiguous.
 3. Replace unnecessary step-by-step micromanagement with decision criteria, unless the exact sequence is required for safety, correctness, or tooling.
-4. Ensure reference and tool triggers are concrete enough to support precise retrieval without loading everything by default.
-5. Include validation commands, self-check expectations, fallback behavior, and stop rules when the skill changes code, artifacts, or external state.
+4. Remove placeholder commands, modes, metrics, configuration surfaces, or references that are only future substrate and do not create observable agent behavior now.
+5. Ensure reference and tool triggers are concrete enough to support precise retrieval without loading everything by default.
+6. Include validation commands, self-check expectations, fallback behavior, and stop rules when the skill changes code, artifacts, or external state.
 
 Validation:
 
 - The skill is outcome-first, contradiction-free, progressively disclosed, and has explicit validation and stop conditions.
+- Every declared command, mode, metric, config knob, and active reference is justified by current runtime behavior, measured evidence, or active guidance.
 
 ### Workflow stage: Render the target skill
 
@@ -191,6 +194,7 @@ Validation:
 - **medium** — Do not silently guess through unresolved conflicts; emit a compile error instead.
 - **medium** — Never present a workflow stage as a runnable command unless the packaged CLI help surface actually exposes it.
 - **medium** — Do not create placeholder references for simple source bundles; reference sections are conditional and should exist only when they carry real active guidance.
+- **medium** — Do not add placeholder commands, modes, metrics, or config knobs for future flexibility; add them only when the current skill behavior uses and verifies them.
 
 ## Policies
 
@@ -211,6 +215,9 @@ Source bundles may omit references when the generated SKILL.md is self-contained
 
 ### Instruction quality
 Skill instructions should be outcome-first, precise about constraints and completion criteria, explicit about validation and stop rules, and free of contradictory or unnecessarily mechanical process guidance.
+
+### Observable skill surface
+Commands, modes, metrics, configuration surfaces, and active references belong in a skill only when they change current agent behavior and have a runtime, measurement, or guidance source that agents can verify.
 
 ## Required active references
 - [Source language](references/source-language.md) — Read this before mapping source bundle fields into generated sections.
