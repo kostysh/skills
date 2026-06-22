@@ -5,9 +5,9 @@ description: Review web UI code for Web Interface Guidelines compliance
   when asked to review UI/UX, audit design, check accessibility, or review web
   interfaces.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 63b34f930ea4c3ed52035f2d7551651a158d051e821acf5ed4353b44d4bf1089
+  skillforge-source-hash: e8fe7b2ab677b7b98e6d3d81ec1a2d3955581e8d73f35402d0056450dabc03b1
 ---
 
 # web-ui-reviewer
@@ -17,7 +17,8 @@ metadata:
 1. Confirm the task matches web-ui-reviewer's applicability criteria.
 2. Use the preserved overview guidance as the normative workflow for this skill.
 3. Load only the active references that match the current task.
-4. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+4. Flag custom widgets, JavaScript layout, or UI dependencies when native HTML, CSS, or browser APIs would satisfy the same interface behavior with better accessibility or less code.
+5. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
 
 ## When to use this skill
 

@@ -17,6 +17,12 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Headings hierarchical `<h1>`–`<h6>`; include skip link for main content
 - `scroll-margin-top` on heading anchors
 
+### Native Platform Fit
+
+- Prefer native HTML controls, CSS, and browser APIs before custom widgets, JavaScript layout engines, scroll managers, or UI dependencies
+- Flag a custom control when it replaces a native element without preserving keyboard behavior, labels, focus, autofill, form submit, link navigation, or browser zoom
+- Do not flag an existing design-system component just for being abstracted if it preserves native semantics and is the repo standard
+
 ### Focus States
 
 - Interactive elements need visible focus: `focus-visible:ring-*` or equivalent
@@ -158,6 +164,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - `outline-none` without focus-visible replacement
 - Inline `onClick` navigation without `<a>`
 - `<div>` or `<span>` with click handlers (should be `<button>`)
+- Custom select/dialog/tabs widgets that lose native keyboard or focus behavior
 - Images without dimensions
 - Large arrays `.map()` without virtualization
 - Form inputs without labels

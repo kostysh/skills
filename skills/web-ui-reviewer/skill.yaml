@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 20000
   description: Review web UI code for Web Interface Guidelines compliance (accessibility, UX, typography, forms, content handling, performance). Use when asked to review UI/UX, audit design, check accessibility, or review web interfaces.
 fragments:
@@ -34,6 +34,7 @@ sections:
     - Confirm the task matches web-ui-reviewer's applicability criteria.
     - Use the preserved overview guidance as the normative workflow for this skill.
     - Load only the active references that match the current task.
+    - Flag custom widgets, JavaScript layout, or UI dependencies when native HTML, CSS, or browser APIs would satisfy the same interface behavior with better accessibility or less code.
     - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
   whenToUse:
     - UI/UX reviews
