@@ -37,6 +37,7 @@ function closeServer(server: import("node:http").Server): Promise<void> {
 - If the repo already uses `close-with-grace` or an equivalent helper, stay consistent.
 - If the repo does not, a small manual signal handler is often enough.
 - Do not introduce a new shutdown dependency just to avoid writing a 10-line wrapper.
+- Do not wrap shutdown in a generic lifecycle framework unless the app has multiple real lifecycle participants that use it now.
 
 ## Readiness and health
 
@@ -72,6 +73,8 @@ Use `debug` or `util.debuglog()` for opt-in module tracing.
 Use the structured application logger for operational logs.
 
 Do not mix the two responsibilities into one noisy stream.
+
+Prefer the existing project logger and built-in opt-in tracing before adding a new logging facade. Add a new logger only when the current project lacks structured redaction-capable operational logging.
 
 ## Resource cleanup checklist
 

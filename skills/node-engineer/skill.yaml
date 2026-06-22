@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: node-engineer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: |-
     Node.js runtime engineering skill for modern server-side JavaScript and TypeScript.
@@ -59,6 +59,7 @@ sections:
     - Confirm the task matches node-engineer's applicability criteria.
     - Use the preserved overview guidance as the normative workflow for this skill.
     - Load only the active references that match the current task.
+    - Before adding a runtime dependency or wrapper, check whether a built-in `node:` API, existing project helper, or small local adapter already satisfies the runtime behavior.
     - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
   whenToUse:
     - Running TypeScript directly in Node with built-in type stripping or `--experimental-transform-types`

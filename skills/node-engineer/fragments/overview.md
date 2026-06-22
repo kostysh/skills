@@ -11,7 +11,7 @@ Applies to Node.js runtime and platform concerns. If the current project already
 
 ## Non-negotiables
 
-- Prefer built-in Node capabilities before adding runtime dependencies.
+- Prefer the first sufficient Node runtime surface: built-in `node:` APIs, repo-standard helpers, and small local adapters come before new runtime dependencies or generic wrappers.
 - Identify the actual runtime mode before changing imports or config: source `.ts` executed directly, emitted `.js`, or an explicit transform/bundler path.
 - Keep import extensions aligned with the runtime path that actually executes: source-run `.ts` uses `.ts`; emitted JavaScript uses `.js`.
 - Prefer `await pipeline(...)` or explicit backpressure-aware loops over chained `.pipe()` or fire-and-forget writes.
@@ -24,8 +24,9 @@ Applies to Node.js runtime and platform concerns. If the current project already
 1. Identify runtime mode and Node version from `package.json`, scripts, CI config, and the failing command.
 2. Read only the smallest relevant reference file instead of loading all Node guidance.
 3. Preserve existing runtime conventions unless the current setup is clearly broken or internally inconsistent.
-4. Make the minimal runtime-safe change, then run the narrowest verification that proves the behavior.
-5. If the process still hangs, switch to the handle/resource workflow immediately instead of only extending timeouts.
+4. Before adding a dependency, check the matching built-in Node capability such as `node:stream/promises`, `AbortController`, `node:timers/promises`, `util.debuglog()`, `server[Symbol.asyncDispose]()`, or the repo's existing runtime helper.
+5. Make the minimal runtime-safe change, then run the narrowest verification that proves the behavior.
+6. If the process still hangs, switch to the handle/resource workflow immediately instead of only extending timeouts.
 
 ## Runtime Mode Quick Matrix
 

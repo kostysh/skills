@@ -65,7 +65,7 @@ async function writeAll(writable: NodeJS.WritableStream, chunks: string[]) {
 
 ## Cache selection quick guide
 
-Use the repo's existing cache abstraction first. If there is none:
+Use the first sufficient cache surface. If repeated work is not proven hot, do not add a cache. If a cache is needed, use the repo's existing cache abstraction first. If there is none:
 
 | Need | Default choice | Why |
 |------|----------------|-----|
