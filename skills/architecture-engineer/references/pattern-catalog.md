@@ -77,6 +77,7 @@ Use this catalog after ASR and forces are explicit. Do not choose patterns by na
 
 - Select candidate patterns only after ASR and forces are stated.
 - Include the simplest baseline unless it cannot satisfy the ASR.
+- Reject one-implementation abstraction layers unless they protect a current boundary, contract, migration path, plugin point, or validation obligation.
 - Do not treat this catalog as exhaustive; add a candidate when repository evidence or a domain skill justifies it.
 - For significant decisions, score candidates using the matrix in [Architecture methodology](methodology.md).
 - If a pattern needs runtime- or framework-specific validation, load the relevant domain skill before finalizing the decision.

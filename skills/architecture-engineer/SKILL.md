@@ -11,9 +11,9 @@ description: "Design or revise software architecture for AI-agent-driven
 compatibility: Portable documentation-only skill. It ships artifact templates
   but no runtime; all mandatory architecture guidance lives in this folder.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 36c8ed931a593e4bbf969304ac3bd12bb5b34029bd290629f85e7b510ad7437c
+  skillforge-source-hash: eec3c59485def84c7151622ccef6575a6cb312c09f5e7ecf1247e9c271ec77e2
 ---
 
 # architecture-engineer

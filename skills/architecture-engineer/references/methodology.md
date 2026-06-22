@@ -131,8 +131,9 @@ Goal: compare credible options before selecting a pattern.
 
 1. Create at least two candidates for significant decisions.
 2. Include the simplest baseline as one candidate unless it clearly cannot satisfy ASR.
-3. Include future evolution path when choosing a simpler current pattern.
-4. Reject fashionable patterns when the forces do not justify them.
+3. Treat one-implementation interfaces, providers, wrappers, config layers, and adapters as suspect unless a current boundary, contract, validation obligation, migration path, plugin point, or second implementation justifies them.
+4. Include future evolution path when choosing a simpler current pattern.
+5. Reject fashionable patterns when the forces do not justify them.
 
 Candidate pattern families:
 
@@ -156,6 +157,7 @@ Validation:
 - Candidate set includes alternatives with different trade-offs.
 - Candidate patterns are selected because of forces, not naming preference.
 - Overly complex candidates are rejected with explicit rationale.
+- Single-implementation abstractions are rejected, labeled `not_prescribed`, or justified by a current architecture force.
 
 ## Workflow stage: Score and select patterns
 

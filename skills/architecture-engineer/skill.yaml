@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise software architecture for AI-agent-driven development. Use
@@ -103,6 +103,10 @@ supporting:
     source: docs/logs/implementation-log-20260515-1.md
     target: docs/logs/implementation-log-20260515-1.md
     description: Non-normative implementation log for repository artifact convention guidance.
+  - id: supporting-implementation-log-20260622-1
+    source: docs/logs/implementation-log-20260622-1.md
+    target: docs/logs/implementation-log-20260622-1.md
+    description: Non-normative implementation log for one-implementation abstraction guidance.
 
 surfaces:
   active:
