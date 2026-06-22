@@ -20,6 +20,12 @@ Problem: the spec claims an integration works because the mocked upstream return
 
 Fix: distinguish support tests from integration evidence. Add contract validation, failure semantics, and a demo or conformance path against the real boundary when required.
 
+## Future-substrate requirements
+
+Problem: the spec requires scaffolds, wrappers, config knobs, lifecycle records, prompts, or extension points only because they might be useful later.
+
+Fix: remove them from the current spec, defer them with a concrete trigger, or label them as substrate tied to a named dependent capability.
+
 ## Single-actor blindness
 
 Problem: behavior is specified only for the happy actor.

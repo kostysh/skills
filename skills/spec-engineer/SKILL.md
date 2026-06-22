@@ -12,9 +12,9 @@ compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c380519815aceb6915185c362c0c1554ed0cd6fadf0fd6c5ccd845f0720d85f3
+  skillforge-source-hash: 932dca6ab28e2800698c5485bd80a79c22100e5845fcf63e47e989b6bea69c27
 ---
 
 # spec-engineer
@@ -26,9 +26,10 @@ metadata:
 3. Identify the parent product, system, workflow, or architecture intent the spec is meant to constrain, or label that intent as missing before drafting.
 4. Inspect the available source material and state assumptions, constraints, criticality, and any blocking ambiguity before drafting.
 5. Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
-6. For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
-7. Before creating or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map, check whether the current repository defines artifact conventions and follow them when present.
-8. Choose the smallest specification depth that can guide correct implementation and verification for this task.
+6. Do not require layers, scaffolds, config, wrappers, or future extension points unless they are necessary for the current capability or explicitly labeled substrate with a dependent capability.
+7. For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
+8. Before creating or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map, check whether the current repository defines artifact conventions and follow them when present.
+9. Choose the smallest specification depth that can guide correct implementation and verification for this task.
 
 ## When to use this skill
 
@@ -106,8 +107,9 @@ Turn vague intent into a bounded engineering target before writing requirements.
 6. List source material and authority levels when there are multiple inputs; resolve conflicts or mark them as open questions.
 7. For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
 8. Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
-9. For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
-10. Add initial anti-claims that keep the spec from implying broader behavior than requested.
+9. Reject future-only substrate such as layers, scaffolds, config knobs, wrappers, or extension points unless a current requirement, accepted architecture constraint, or dependent capability needs it.
+10. For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
+11. Add initial anti-claims that keep the spec from implying broader behavior than requested.
 
 Validation:
 
@@ -116,6 +118,7 @@ Validation:
 - The spec scope says what is in, what is out, and what remains unknown.
 - Risk depth and inherited product, architecture, delivery, and specification context are explicit when they affect implementation.
 - Acceptance cannot be satisfied only by substrate when the claim is behavioral.
+- Future-only substrate is absent, deferred by trigger, or explicitly labeled as support work for a named dependent capability.
 - High-criticality scope has explicit invariants, stronger falsifiers, and a verification path beyond happy-path examples.
 
 ### Workflow stage: Map behavior and constraints
@@ -188,6 +191,7 @@ Validation:
 - **high** — Do not let acceptance criteria pass through mocks, generated docs, schemas, wrappers, or tests alone when the claim is user-, operator-, integration-, or system-observable behavior.
 - **high** — Do not make a locally precise spec that drifts from the parent product, system, workflow, or architecture intent without calling out the conflict.
 - **high** — Do not force every section onto small tasks; use the smallest structure that removes implementation ambiguity.
+- **high** — Do not specify layers, scaffolds, wrappers, config knobs, or extension points for future flexibility unless they are required by current behavior, accepted architecture, or an explicitly labeled substrate task with a dependent capability.
 - **medium** — Examples and Gherkin/BDD scenarios clarify boundaries only when representation-fit justifies them; they do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
 - **medium** — Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
 - **high** — Do not turn missing architecture decisions into spec requirements; route public contracts, data model, security boundary, tenancy, integration topology, deployment, rollback, or selected pattern changes to architecture.
@@ -197,6 +201,9 @@ Validation:
 
 ### Lightweight-first policy
 A one-page spec is better than a complete template when it captures the behavior, rules, edge cases, and verification path needed for correct code. Add structure only when it removes a concrete ambiguity or defect class.
+
+### No future-substrate policy
+A specification must not require scaffolding, wrappers, layers, config surfaces, or extension points only because they might be useful later. Keep them out, defer them by an explicit trigger, or label them as substrate tied to a named dependent capability.
 
 ### Parent intent policy
 A specification constrains implementation in service of a parent product, system, workflow, or architecture intent. Local requirement precision is insufficient when the spec does not advance or protect that intent; record missing intent as an assumption, gap, or blocking question instead of inventing it.

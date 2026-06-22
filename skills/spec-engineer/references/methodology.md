@@ -55,6 +55,8 @@ Then list:
 - **Anti-claims:** behavior the spec does not promise.
 - **Falsifiers:** observations that would prove the capability is not present.
 
+Do not require future-only substrate. Layers, scaffolds, wrappers, config knobs, extension points, prompts, lifecycle records, or generated artifacts belong in the spec only when current behavior, accepted architecture, or a named dependent capability needs them. Otherwise omit them or defer them with a concrete trigger.
+
 Example anti-claims:
 
 - This spec does not require a new persistence layer.
@@ -63,6 +65,7 @@ Example anti-claims:
 - This spec does not make generated documentation acceptance evidence for runtime behavior.
 - This spec does not count mocked upstream success as proof that the real upstream integration works.
 - This spec does not count schema presence as proof that users can complete the workflow.
+- This spec does not create extension points for uncommitted future providers.
 
 ## Criticality lens
 
@@ -121,6 +124,8 @@ Use this scale as a starting point, then override with criticality:
 | System slice | Actors, entry points, behavior inventory, contracts, NFRs, observability, verification map |
 
 Do not add sections beyond the minimum unless they remove a concrete risk.
+
+Do not add implementation substrate beyond the minimum unless it is required by current capability, inherited architecture, compatibility, or verification. "We may need it later" is not a spec constraint.
 
 ## Build the behavior inventory
 
@@ -450,6 +455,7 @@ Because this skill is for agents that write code, the spec must reduce common ag
 - vague noun interpretation: define repeated or role-bearing terms in the glossary;
 - happy-path completion bias: require negative cases and falsifiers;
 - mock-driven confidence: distinguish mocked support evidence from runtime behavior;
+- future-substrate bias: remove layers, wrappers, config, or extension points that have no current behavior or accepted dependent capability;
 - implementation drift: require the agent to revisit the spec when code reveals material ambiguity.
 
 ## Quality audit before finalizing

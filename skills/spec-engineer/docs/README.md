@@ -15,3 +15,4 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/implementation-log-20260515-2.md` - repository artifact convention guidance for persistent specification artifacts.
 - `docs/logs/implementation-log-20260602-1.md` - parent-intent alignment guidance for specifications.
 - `docs/logs/implementation-log-20260617-1.md` - BDD fit guidance for scenario use in specifications.
+- `docs/logs/implementation-log-20260622-1.md` - future-substrate guardrails for specifications.

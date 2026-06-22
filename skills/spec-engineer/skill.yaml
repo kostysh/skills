@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.4
+  source-version: 0.2.5
   recommended-skill-md-max-bytes: 26000
   description: >-
     Create concise, falsifiable software specifications for AI coding agents.
@@ -97,6 +97,10 @@ supporting:
     source: docs/logs/implementation-log-20260617-1.md
     target: docs/logs/implementation-log-20260617-1.md
     description: Non-normative implementation log for BDD fit guidance.
+  - id: supporting-implementation-log-20260622-1
+    source: docs/logs/implementation-log-20260622-1.md
+    target: docs/logs/implementation-log-20260622-1.md
+    description: Non-normative implementation log for future-substrate guardrails.
 
 surfaces:
   active:
@@ -116,6 +120,7 @@ sections:
     - Identify the parent product, system, workflow, or architecture intent the spec is meant to constrain, or label that intent as missing before drafting.
     - Inspect the available source material and state assumptions, constraints, criticality, and any blocking ambiguity before drafting.
     - Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
+    - Do not require layers, scaffolds, config, wrappers, or future extension points unless they are necessary for the current capability or explicitly labeled substrate with a dependent capability.
     - For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
     - Before creating or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map, check whether the current repository defines artifact conventions and follow them when present.
     - Choose the smallest specification depth that can guide correct implementation and verification for this task.
@@ -145,6 +150,7 @@ sections:
         - List source material and authority levels when there are multiple inputs; resolve conflicts or mark them as open questions.
         - For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
         - Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
+        - Reject future-only substrate such as layers, scaffolds, config knobs, wrappers, or extension points unless a current requirement, accepted architecture constraint, or dependent capability needs it.
         - For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
         - Add initial anti-claims that keep the spec from implying broader behavior than requested.
       validation:
@@ -153,6 +159,7 @@ sections:
         - The spec scope says what is in, what is out, and what remains unknown.
         - Risk depth and inherited product, architecture, delivery, and specification context are explicit when they affect implementation.
         - Acceptance cannot be satisfied only by substrate when the claim is behavioral.
+        - Future-only substrate is absent, deferred by trigger, or explicitly labeled as support work for a named dependent capability.
         - High-criticality scope has explicit invariants, stronger falsifiers, and a verification path beyond happy-path examples.
     - id: stage-map-behavior
       title: Map behavior and constraints
@@ -233,6 +240,9 @@ sections:
     - id: gotcha-avoid-template-bloat
       priority: high
       text: Do not force every section onto small tasks; use the smallest structure that removes implementation ambiguity.
+    - id: gotcha-no-future-substrate
+      priority: high
+      text: Do not specify layers, scaffolds, wrappers, config knobs, or extension points for future flexibility unless they are required by current behavior, accepted architecture, or an explicitly labeled substrate task with a dependent capability.
     - id: gotcha-examples-need-rules
       priority: medium
       text: Examples and Gherkin/BDD scenarios clarify boundaries only when representation-fit justifies them; they do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
@@ -249,6 +259,9 @@ sections:
     - id: policy-lightweight-first
       title: Lightweight-first policy
       text: A one-page spec is better than a complete template when it captures the behavior, rules, edge cases, and verification path needed for correct code. Add structure only when it removes a concrete ambiguity or defect class.
+    - id: policy-no-future-substrate
+      title: No future-substrate policy
+      text: A specification must not require scaffolding, wrappers, layers, config surfaces, or extension points only because they might be useful later. Keep them out, defer them by an explicit trigger, or label them as substrate tied to a named dependent capability.
     - id: policy-parent-intent
       title: Parent intent policy
       text: A specification constrains implementation in service of a parent product, system, workflow, or architecture intent. Local requirement precision is insufficient when the spec does not advance or protect that intent; record missing intent as an assumption, gap, or blocking question instead of inventing it.
