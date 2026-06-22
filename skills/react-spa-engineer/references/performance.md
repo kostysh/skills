@@ -25,6 +25,8 @@ Apply optimizations in this order:
 5. **Harden client persistence** - prefer Dexie for reload-safe state and local caches; if `localStorage` is unavoidable, keep it minimal, versioned, and failure-tolerant.
 6. **Profile before memoization** - `useMemo` and `useCallback` come after the larger wins above.
 
+Prefer CSS and browser primitives before JavaScript layout engines, scroll managers, or observer wrappers. Add a library only when native CSS/browser behavior cannot meet the measured interaction or compatibility requirement.
+
 ---
 
 ## 1. React.lazy + Suspense for Code Splitting

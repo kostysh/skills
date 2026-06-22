@@ -16,6 +16,8 @@ Global Client State (Zustand)
 
 **Persistence contract**: define source of truth per layer. Use URL for link-reproducible page state, Zustand for runtime UI state, Dexie (IndexedDB) for long-lived client persistence, and TanStack Query for all server state interactions.
 
+Before adding Zustand or another app-level store, check whether the behavior is already covered by URL state, component-local `useState`, `useReducer`, or props/context that the app already owns. Add global state only when multiple features need the same runtime value now.
+
 ### Mandatory Layer Mapping
 
 | Layer | Source of truth | Typical data |

@@ -13,9 +13,9 @@ description: >-
   up project architecture, or troubleshooting React client-side applications.
   Excludes SSR, RSC, Next.js server-side patterns.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 99cf4077e051ce0cf6501501c6c16ff79299e3a2941daf737124d63a9cb34321
+  skillforge-source-hash: 16ebfe6c0593c9e5377f39c5448f66ce56aef00daa90fc96073c3a15b7767878
 ---
 
 # react-spa-engineer

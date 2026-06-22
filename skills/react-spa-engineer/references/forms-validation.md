@@ -4,6 +4,8 @@
 
 **Rule: Use React Hook Form for form state, Zod for schema validation.**
 
+Start from native form semantics before adding custom field widgets. Use real `<form>`, `<label>`, `<input>`, `<select>`, `<textarea>`, and `<button>` elements when they satisfy the interaction; layer React Hook Form and custom components around them without losing labels, keyboard behavior, autofill, submit semantics, or server validation.
+
 ### Setup
 
 ```bash
