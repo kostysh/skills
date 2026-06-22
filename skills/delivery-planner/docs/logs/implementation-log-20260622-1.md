@@ -39,7 +39,7 @@ Russian.
 
 ## Verification Performed
 
-Будет выполнено:
+Выполнено:
 
 - `node skills/skill-source-compiler/scripts/skill-source-compiler.mjs regenerate skills/delivery-planner`
 - `node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/delivery-planner`
