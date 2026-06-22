@@ -14,8 +14,10 @@ Use this reference whenever the task involves writing, changing, or reviewing co
 ## Simplicity first
 
 - Add only what the task needs.
-- Do not introduce single-use abstractions unless they genuinely reduce complexity.
+- Stop at the first sufficient rung: skip speculative work; use language/runtime standard features; use native platform or existing project features; use an already-installed dependency; then write the smallest code that works.
+- Do not introduce single-use abstractions unless they genuinely reduce complexity or protect a real boundary such as security, compatibility, a test seam, or a plugin/API contract.
 - Do not add configurability, extensibility, or defensive branches for scenarios the task does not require.
+- Do not add dependencies, factories, providers, wrappers, or config knobs without a concrete reason the simpler rung fails.
 - If the solution feels larger than the problem, simplify it before proceeding.
 
 ## Surgical changes

@@ -7,9 +7,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 61a90ad92185448716c28d5c486a7294fc194c19404f572b2e081b13663f887e
+  skillforge-source-hash: 9e40ebb9139588c2eb12d901520f46702daa101bf324151eb0d712d9c46fe3ef
 ---
 
 # implementation-discipline
@@ -20,7 +20,7 @@ metadata:
 2. For non-trivial local work, identify the larger project goal or end-to-end capability the change is supposed to advance before changing or assessing code.
 3. State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
 4. When implementing from an accepted audit or review report, create a remediation matrix before claiming completion.
-5. Prefer the simplest sufficient design and define the verification target before implementing.
+5. Prefer the first sufficient design rung and define the verification target before implementing.
 6. Use this skill together with the relevant language, framework, or review skill; it does not replace them.
 
 ## When to use this skill
@@ -76,26 +76,31 @@ Keep audit remediation tied to concrete behavior, evidence, and explicit status.
 
 1. For each accepted finding or recommendation, map `finding/recommendation -> concrete change -> test/evidence -> status`.
 2. Use only these statuses unless the project defines stricter equivalents: `implemented`, `verified`, `blocked-by-compatibility`, `deferred-by-trigger`, and `not-applicable`.
-3. Do not mark tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability unless observable behavior and acceptance evidence prove it.
-4. If a recommendation is only substrate, label it as substrate and state which behavior remains unverified.
+3. For `deferred-by-trigger`, name the shortcut ceiling, revisit trigger, and evidence needed when the trigger occurs.
+4. Do not mark tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability unless observable behavior and acceptance evidence prove it.
+5. If a recommendation is only substrate, label it as substrate and state which behavior remains unverified.
 
 Validation:
 
 - Every accepted finding or recommendation has a mapped change or a justified non-implementation status.
 - `verified` entries name concrete evidence.
+- `deferred-by-trigger` entries name a concrete trigger instead of vague later work.
 - Substrate-only entries are not reported as delivered runtime capability.
 
 ### Workflow stage: Design the smallest sufficient change
 
 Prevent speculative abstractions and unnecessary surface area.
 
-1. Choose the smallest design that satisfies the request.
-2. Reject flexibility, configurability, or abstractions that are not demanded by the task.
-3. Prefer adapting existing code over introducing a new layer for one use.
+1. Choose the first sufficient rung that satisfies the request or preserves the intended capability.
+2. Check rungs in order: do not build it when the need is speculative; use language/runtime standard features; use native platform or existing project features; use an already-installed dependency; then write the smallest code that works.
+3. Reject flexibility, configurability, or abstractions that are not demanded by the task.
+4. Prefer adapting existing code over introducing a new layer for one use.
+5. Add a new dependency, factory, interface, provider, config knob, or wrapper only when the simpler rung fails for a concrete reason.
 
 Validation:
 
 - Every new concept in the diff is required by the request.
+- The chosen rung is explicit when the change adds a dependency, abstraction, layer, or new surface.
 - A simpler design was considered and rejected for a concrete reason.
 
 ### Workflow stage: Implement surgically
@@ -117,10 +122,12 @@ Close the loop with concrete checks instead of intuition.
 
 1. Run the narrowest meaningful checks that prove the change.
 2. Prefer existing local test, lint, typecheck, build, or smoke-test commands when they are the narrowest meaningful proof.
-3. If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
-4. When repeated independent validation signals point to one defect class, expand verification from the specific symptom to adjacent observable cases before reporting done.
-5. If verification cannot run, use the next-best static check or state why no useful check is available.
-6. Report the outcome, checks run, checks not run, and remaining risk.
+3. For low-risk non-trivial logic such as a branch, loop, parser, or formatting rule, leave the smallest runnable check that would fail if the behavior regresses.
+4. For security, privacy, money, data-loss, auth, accessibility, release, or production-wiring paths, use the stronger project/domain verification instead of a minimal self-check.
+5. If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
+6. When repeated independent validation signals point to one defect class, expand verification from the specific symptom to adjacent observable cases before reporting done.
+7. If verification cannot run, use the next-best static check or state why no useful check is available.
+8. Report the outcome, checks run, checks not run, and remaining risk.
 
 Validation:
 
@@ -136,12 +143,14 @@ Validation:
 
 - **high** — Do not hide uncertainty behind implementation; surface assumptions and ambiguities before coding.
 - **high** — Do not add speculative abstractions, configuration, or error handling that the task did not require.
+- **high** — Do not add a dependency, layer, factory, interface, provider, wrapper, or config surface until standard, native, existing-project, or inline options have been checked and found insufficient.
 - **high** — Do not broaden the diff with unrelated cleanup or refactoring.
 - **medium** — If you cannot verify the intended outcome, say so explicitly instead of implying confidence.
 - **medium** — If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
 - **high** — Do not treat acceptance criteria as sufficient when they can be satisfied by mocks, metadata, tables, logs, wrappers, or documentation without the claimed behavior.
 - **high** — Do not treat local correctness as sufficient when the change does not advance, or actively conflicts with, the intended project capability.
 - **high** — Do not collapse accepted audit findings into a vague done list; keep finding, change, evidence, and status linked.
+- **high** — Do not leave deliberate shortcuts or deferrals without a named ceiling and concrete revisit trigger.
 
 ## Policies
 
@@ -149,13 +158,19 @@ Validation:
 Local implementation correctness is insufficient when the work fails to advance the intended project capability. For non-trivial work, state the larger goal or end-to-end flow, the local role, and any purpose assumptions before coding.
 
 ### Simplicity-first policy
-Default to the smallest implementation that satisfies the request. Extra flexibility is a cost, not a virtue.
+Default to the first sufficient implementation rung that satisfies the request. Extra flexibility is a cost, not a virtue.
+
+### First sufficient rung policy
+Before adding code, layers, dependencies, configurability, or documentation, check whether the work can be skipped, handled by language/runtime standard features, handled by native platform or existing project features, handled by an already-installed dependency, or implemented inline with less surface area.
 
 ### Surgical-diff policy
 Every changed line should trace directly to the task; unrelated cleanup belongs in a different change set.
 
 ### Evidence-over-intuition policy
 Completion requires naming the checks that prove success or the exact gap that remains.
+
+### Deferred shortcut policy
+A deliberate simplification is acceptable only when the final report or remediation matrix names its ceiling, the trigger that requires revisiting it, and the evidence needed before upgrading it.
 
 ### Capability reality policy
 A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure. Tooling and substrate are not runtime capability without observable behavior and acceptance evidence.

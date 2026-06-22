@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.1.5
+  source-version: 0.1.6
   recommended-skill-md-max-bytes: 18000
   description: >-
     Behavioral coding discipline for writing, modifying, and reviewing code
@@ -47,7 +47,7 @@ sections:
     - For non-trivial local work, identify the larger project goal or end-to-end capability the change is supposed to advance before changing or assessing code.
     - State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
     - When implementing from an accepted audit or review report, create a remediation matrix before claiming completion.
-    - Prefer the simplest sufficient design and define the verification target before implementing.
+    - Prefer the first sufficient design rung and define the verification target before implementing.
     - Use this skill together with the relevant language, framework, or review skill; it does not replace them.
   whenToUse:
     - Implement new code with minimal complexity and explicit verification.
@@ -91,21 +91,26 @@ sections:
       steps:
         - For each accepted finding or recommendation, map `finding/recommendation -> concrete change -> test/evidence -> status`.
         - "Use only these statuses unless the project defines stricter equivalents: `implemented`, `verified`, `blocked-by-compatibility`, `deferred-by-trigger`, and `not-applicable`."
+        - For `deferred-by-trigger`, name the shortcut ceiling, revisit trigger, and evidence needed when the trigger occurs.
         - Do not mark tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability unless observable behavior and acceptance evidence prove it.
         - If a recommendation is only substrate, label it as substrate and state which behavior remains unverified.
       validation:
         - Every accepted finding or recommendation has a mapped change or a justified non-implementation status.
         - "`verified` entries name concrete evidence."
+        - "`deferred-by-trigger` entries name a concrete trigger instead of vague later work."
         - Substrate-only entries are not reported as delivered runtime capability.
     - id: stage-design-minimal
       title: Design the smallest sufficient change
       goal: Prevent speculative abstractions and unnecessary surface area.
       steps:
-        - Choose the smallest design that satisfies the request.
+        - Choose the first sufficient rung that satisfies the request or preserves the intended capability.
+        - "Check rungs in order: do not build it when the need is speculative; use language/runtime standard features; use native platform or existing project features; use an already-installed dependency; then write the smallest code that works."
         - Reject flexibility, configurability, or abstractions that are not demanded by the task.
         - Prefer adapting existing code over introducing a new layer for one use.
+        - Add a new dependency, factory, interface, provider, config knob, or wrapper only when the simpler rung fails for a concrete reason.
       validation:
         - Every new concept in the diff is required by the request.
+        - The chosen rung is explicit when the change adds a dependency, abstraction, layer, or new surface.
         - A simpler design was considered and rejected for a concrete reason.
     - id: stage-implement-surgically
       title: Implement surgically
@@ -123,6 +128,8 @@ sections:
       steps:
         - Run the narrowest meaningful checks that prove the change.
         - Prefer existing local test, lint, typecheck, build, or smoke-test commands when they are the narrowest meaningful proof.
+        - For low-risk non-trivial logic such as a branch, loop, parser, or formatting rule, leave the smallest runnable check that would fail if the behavior regresses.
+        - For security, privacy, money, data-loss, auth, accessibility, release, or production-wiring paths, use the stronger project/domain verification instead of a minimal self-check.
         - If a bug was fixed, confirm the failing behavior is now covered or demonstrably resolved.
         - When repeated independent validation signals point to one defect class, expand verification from the specific symptom to adjacent observable cases before reporting done.
         - If verification cannot run, use the next-best static check or state why no useful check is available.
@@ -147,6 +154,9 @@ sections:
     - id: gotcha-no-speculative-abstractions
       priority: high
       text: Do not add speculative abstractions, configuration, or error handling that the task did not require.
+    - id: gotcha-first-rung
+      priority: high
+      text: Do not add a dependency, layer, factory, interface, provider, wrapper, or config surface until standard, native, existing-project, or inline options have been checked and found insufficient.
     - id: gotcha-no-broadened-diff
       priority: high
       text: Do not broaden the diff with unrelated cleanup or refactoring.
@@ -165,19 +175,28 @@ sections:
     - id: gotcha-remediation-matrix
       priority: high
       text: Do not collapse accepted audit findings into a vague done list; keep finding, change, evidence, and status linked.
+    - id: gotcha-shortcut-trigger
+      priority: high
+      text: Do not leave deliberate shortcuts or deferrals without a named ceiling and concrete revisit trigger.
   policies:
     - id: policy-project-purpose-fit
       title: Project-purpose fit policy
       text: Local implementation correctness is insufficient when the work fails to advance the intended project capability. For non-trivial work, state the larger goal or end-to-end flow, the local role, and any purpose assumptions before coding.
     - id: policy-simplicity-first
       title: Simplicity-first policy
-      text: Default to the smallest implementation that satisfies the request. Extra flexibility is a cost, not a virtue.
+      text: Default to the first sufficient implementation rung that satisfies the request. Extra flexibility is a cost, not a virtue.
+    - id: policy-first-sufficient-rung
+      title: First sufficient rung policy
+      text: Before adding code, layers, dependencies, configurability, or documentation, check whether the work can be skipped, handled by language/runtime standard features, handled by native platform or existing project features, handled by an already-installed dependency, or implemented inline with less surface area.
     - id: policy-surgical-diff
       title: Surgical-diff policy
       text: Every changed line should trace directly to the task; unrelated cleanup belongs in a different change set.
     - id: policy-evidence-over-intuition
       title: Evidence-over-intuition policy
       text: Completion requires naming the checks that prove success or the exact gap that remains.
+    - id: policy-deferred-shortcut
+      title: Deferred shortcut policy
+      text: A deliberate simplification is acceptable only when the final report or remediation matrix names its ceiling, the trigger that requires revisiting it, and the evidence needed before upgrading it.
     - id: policy-capability-reality
       title: Capability reality policy
       text: A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure. Tooling and substrate are not runtime capability without observable behavior and acceptance evidence.

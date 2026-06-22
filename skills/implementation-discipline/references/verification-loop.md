@@ -30,6 +30,10 @@ Bad plan shape:
 1. refactor everything
 2. make it work
 
+For low-risk non-trivial logic such as a branch, loop, parser, or formatting rule, the smallest useful check is enough when it would fail on the behavior regression. This can be a targeted unit test, smoke command, or local self-check that matches repository conventions.
+
+Do not downshift high-risk paths to a minimal self-check. Security, privacy, money, data-loss, auth, accessibility, release, and production-wiring changes need the stronger project or domain verification that proves the real boundary.
+
 ## Report evidence, not vibes
 
 In the final report:
@@ -54,7 +58,7 @@ Allowed statuses:
 - `implemented` — change exists but has not yet been proven by the agreed evidence.
 - `verified` — change exists and the named evidence passed.
 - `blocked-by-compatibility` — implementation would break a required compatibility constraint.
-- `deferred-by-trigger` — recommendation applies only when a specified trigger occurs.
+- `deferred-by-trigger` — recommendation applies only when a specified trigger occurs; name the current shortcut ceiling, the trigger, and the evidence needed when the trigger is hit.
 - `not-applicable` — the finding does not apply to the current system, with reason.
 
 Do not treat tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability without observable behavior and acceptance evidence.
