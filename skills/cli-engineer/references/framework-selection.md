@@ -8,6 +8,7 @@
   - plugin platform
   - rich TUI
 - Default to the lowest abstraction that still solves the real problem.
+- Before adding a new framework or library, check the first sufficient rung: built-in `node:util.parseArgs`, native shell/stdin/stdout behavior, a dependency already present in the project, then one small local adapter. Add a new CLI framework only when those rungs cannot meet the command, help, validation, extensibility, or TTY contract.
 - Verify the current Active LTS Node version and the current framework major before hardcoding version guidance into project files or docs.
 - Within this repository's tooling standard, prefer Vite for bundling and `node:test` for tests unless the target framework or repo already mandates something else. Treat that as a local convention, not as a universal ecosystem default.
 - Preserve an existing framework unless it is the source of the problem or clearly blocks the required capability.

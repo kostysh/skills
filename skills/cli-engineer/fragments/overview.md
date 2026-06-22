@@ -30,6 +30,7 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 ## Non-negotiables
 
 - Keep the CLI layer thin. Parsing, help, TTY detection, formatting, and exit codes belong in CLI code; business rules do not.
+- Use the first sufficient CLI surface: built-in `node:util.parseArgs`, native shell/stdin/stdout behavior, and existing project dependencies come before a new parser framework, prompt layer, TUI library, or wrapper.
 - Design the utility as modular layers and modules with explicit boundaries so commands, use cases, formatters, and adapters stay independently testable.
 - For service-backed CLIs, prefer an explicit command family over vague catch-all verbs: health/setup (`doctor`, optional `init`), discovery, resolve/ID lookup, read/list/search, narrow write actions, and a clearly named raw escape hatch when one is justified.
 - Every interactive flow must have a non-interactive path through flags, args, stdin, config, or files.
@@ -67,12 +68,13 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 2. Decide the automation contract first: human-only, human-first but scriptable, or machine-first with human affordances.
 3. Identify whether any command is protected because it can trigger deploy, rollback, release, infra mutation, an external executor, or another side effect.
 4. For durable or installable CLIs, pin the binary name, source material, and first concrete jobs before coding; check whether the proposed command already exists with `command -v <tool-name>`.
-5. Pick the thinnest framework that satisfies the real requirements.
-6. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
-7. Design non-interactive paths before prompts or TUI polish.
-8. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
-9. Ensure the repo has a package-level quality gate with explicit scripts for `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`; if the repo splits formatter and linter, expose the narrower scripts too.
-10. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, install-path verification, and provenance where supported.
+5. Check the first sufficient surface before adding tooling: `node:util.parseArgs`, native shell/stdin/stdout behavior, existing parser dependencies, and one small local adapter.
+6. Pick the thinnest framework that satisfies the real requirements.
+7. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
+8. Design non-interactive paths before prompts or TUI polish.
+9. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
+10. Ensure the repo has a package-level quality gate with explicit scripts for `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`; if the repo splits formatter and linter, expose the narrower scripts too.
+11. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, install-path verification, and provenance where supported.
 
 ## High-signal Triggers
 
