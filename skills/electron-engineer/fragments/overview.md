@@ -2,6 +2,8 @@ Production Electron work is desktop platform engineering, not only a web app in 
 
 Default to a thin main process, an untrusted renderer, a minimal capability-based preload, typed IPC with runtime validation, explicit navigation policy, signed release artifacts, and regular Electron major upgrades.
 
+Use the first boundary-safe desktop surface: built-in Electron APIs, native OS behavior, and existing main-owned services come before new abstraction layers or renderer-facing wrappers.
+
 ## Default Architecture
 
 Use paths and package boundaries to make trust boundaries obvious:

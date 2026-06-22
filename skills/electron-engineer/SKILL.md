@@ -8,9 +8,9 @@ description: Build, modernize, review, test, package, and release
   reduction, build pipelines, performance, testing, observability, packaging,
   signing, notarization, auto-updates, and Electron major-version migrations.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: aa4162e94da0b5063c612bc1dbc59347df5775d1ec875631ea4c5e9a055bd439
+  skillforge-source-hash: 6df2f7083ec8416964772472100828f9d6d7d8476def19827d972405dd4e938c
 ---
 
 # electron-engineer
@@ -20,8 +20,9 @@ metadata:
 1. Confirm the task is Electron-specific and state the intended user-visible outcome before changing code.
 2. Preserve the core trust boundary: renderer is untrusted UI, preload is a minimal capability facade, and main owns privileged desktop services.
 3. Load the smallest matching reference for the task; do not load every reference by default.
-4. Prefer existing project conventions unless they violate Electron security, packaging, or release invariants.
-5. Finish only after running the narrowest meaningful validation, or explicitly reporting why validation could not run.
+4. Before adding a desktop abstraction, wrapper, or renderer-facing capability, check whether a built-in Electron API, native OS behavior, or existing project service already satisfies the boundary-safe behavior.
+5. Prefer existing project conventions unless they violate Electron security, packaging, or release invariants.
+6. Finish only after running the narrowest meaningful validation, or explicitly reporting why validation could not run.
 
 ## When to use this skill
 
@@ -44,6 +45,8 @@ metadata:
 Production Electron work is desktop platform engineering, not only a web app in a shell. Treat Electron as a security-sensitive runtime with browser content, Node capabilities, native OS integration, a local install footprint, and a supply-chain-sensitive updater.
 
 Default to a thin main process, an untrusted renderer, a minimal capability-based preload, typed IPC with runtime validation, explicit navigation policy, signed release artifacts, and regular Electron major upgrades.
+
+Use the first boundary-safe desktop surface: built-in Electron APIs, native OS behavior, and existing main-owned services come before new abstraction layers or renderer-facing wrappers.
 
 ## Default Architecture
 
@@ -135,9 +138,10 @@ Validation:
 Make the smallest change that preserves security, runtime, and release invariants.
 
 1. Keep privileged capabilities in main-owned services; keep preload role-specific; keep renderer browser-safe.
-2. For IPC or preload work, use explicit capability methods, runtime schemas, sender validation, and serialized errors; never expose raw IPC or generic channel dispatch.
-3. For windows or navigation, keep secure BrowserWindow defaults, deny-by-default popup/navigation policy, and validated external URL handling.
-4. For source builds, packaging, source protection, updates, native modules, or signing, preserve packaged-runtime behavior and platform release requirements.
+2. Prefer direct Electron/native OS APIs behind narrow main/preload capabilities before adding generic desktop service layers, broad facades, or renderer convenience wrappers.
+3. For IPC or preload work, use explicit capability methods, runtime schemas, sender validation, and serialized errors; never expose raw IPC or generic channel dispatch.
+4. For windows or navigation, keep secure BrowserWindow defaults, deny-by-default popup/navigation policy, and validated external URL handling.
+5. For source builds, packaging, source protection, updates, native modules, or signing, preserve packaged-runtime behavior and platform release requirements.
 
 Validation:
 
@@ -171,6 +175,7 @@ Validation:
 - **high** — Dev-mode renderer behavior is not proof that a packaged Electron app works; packaging changes origins, CSP, ASAR paths, protocols, signing, and update metadata.
 - **high** — Do not introduce `nodeIntegration: true`, `contextIsolation: false`, disabled CSP, arbitrary navigation, or raw IPC for convenience.
 - **high** — A generic preload bridge such as `invoke(channel, payload)` is a privilege-expansion bug pattern, not a production abstraction.
+- **high** — Do not add a broad desktop abstraction or renderer-facing wrapper when a narrow Electron/native OS capability method satisfies the current product behavior.
 - **high** — Source protection raises the reverse-engineering cost but does not make client-side business logic secret; do not use obfuscation, bytecode, ASAR, or native wrappers as a replacement for server-side authorization, licensing checks, or signing/ASAR integrity.
 - **high** — Auto-update is a supply-chain boundary; it needs signed artifacts, trusted metadata, rollback policy, and test feeds.
 - **medium** — Native modules must be rebuilt and smoke-tested against Electron's bundled Node, target OS, target architecture, ASAR layout, and signing/notarization path.

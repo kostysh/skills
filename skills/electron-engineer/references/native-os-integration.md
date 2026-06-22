@@ -12,6 +12,8 @@ Native OS features are privileged product behavior:
 | Preload | narrow capability methods and event subscriptions with cleanup |
 | Renderer | UI, user intent, progress display, permission explanation, and browser-safe state |
 
+Prefer built-in Electron and native OS APIs behind narrow main-owned services before adding cross-platform abstraction packages or broad desktop facades. Add a wrapper only when the current feature needs shared policy, repeated behavior, or platform normalization now.
+
 Do not expose broad native objects to renderer. Expose commands such as `openWorkspace`, `showSaveDialog`, `subscribeDownloadProgress`, or `setThemePreference`, not `fs`, `shell`, `clipboard`, `screen`, `session`, or raw IPC.
 
 ## Feature Decisions

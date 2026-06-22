@@ -128,6 +128,8 @@ Good preload APIs are:
 - event subscriptions with cleanup functions
 - free of renderer framework dependencies
 
+Expose the smallest current capability. Do not add generic convenience wrappers, broad desktop facades, or pass-through APIs for possible future features; each exposed method should map to a real product action and a validated main-owned handler.
+
 Example shape:
 
 ```ts

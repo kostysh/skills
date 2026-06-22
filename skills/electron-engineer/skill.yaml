@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: electron-engineer
-  source-version: 0.1.8
+  source-version: 0.1.9
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, modernize, review, test, package, and release production-grade
@@ -120,6 +120,7 @@ sections:
     - Confirm the task is Electron-specific and state the intended user-visible outcome before changing code.
     - "Preserve the core trust boundary: renderer is untrusted UI, preload is a minimal capability facade, and main owns privileged desktop services."
     - Load the smallest matching reference for the task; do not load every reference by default.
+    - Before adding a desktop abstraction, wrapper, or renderer-facing capability, check whether a built-in Electron API, native OS behavior, or existing project service already satisfies the boundary-safe behavior.
     - Prefer existing project conventions unless they violate Electron security, packaging, or release invariants.
     - Finish only after running the narrowest meaningful validation, or explicitly reporting why validation could not run.
   whenToUse:
@@ -151,6 +152,7 @@ sections:
       goal: Make the smallest change that preserves security, runtime, and release invariants.
       steps:
         - Keep privileged capabilities in main-owned services; keep preload role-specific; keep renderer browser-safe.
+        - Prefer direct Electron/native OS APIs behind narrow main/preload capabilities before adding generic desktop service layers, broad facades, or renderer convenience wrappers.
         - For IPC or preload work, use explicit capability methods, runtime schemas, sender validation, and serialized errors; never expose raw IPC or generic channel dispatch.
         - For windows or navigation, keep secure BrowserWindow defaults, deny-by-default popup/navigation policy, and validated external URL handling.
         - For source builds, packaging, source protection, updates, native modules, or signing, preserve packaged-runtime behavior and platform release requirements.
@@ -200,6 +202,9 @@ sections:
     - id: gotcha-generic-bridge
       priority: high
       text: A generic preload bridge such as `invoke(channel, payload)` is a privilege-expansion bug pattern, not a production abstraction.
+    - id: gotcha-wrapper-expansion
+      priority: high
+      text: Do not add a broad desktop abstraction or renderer-facing wrapper when a narrow Electron/native OS capability method satisfies the current product behavior.
     - id: gotcha-source-protection-boundary
       priority: high
       text: Source protection raises the reverse-engineering cost but does not make client-side business logic secret; do not use obfuscation, bytecode, ASAR, or native wrappers as a replacement for server-side authorization, licensing checks, or signing/ASAR integrity.
