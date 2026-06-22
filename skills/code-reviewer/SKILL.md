@@ -15,9 +15,9 @@ description: >-
 
   rules.
 metadata:
-  source-version: 0.3.1
+  source-version: 0.3.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 0cbca9eeef6e76c9652c118f1ca5c90d39e104986182447e3ade7a01c2d9f773
+  skillforge-source-hash: f7fb6c6ce2074af9b494d79ffa13d9957a13a0a2165357b05b5dbe1b84efdd72
 ---
 
 # code-reviewer
@@ -34,6 +34,7 @@ metadata:
 - Reviewing a pull request, diff, branch, or changed file set
 - "Review my changes", "find bugs in this patch", "what should block this merge"
 - Auditing maintainability, regression risk, test adequacy, or compatibility impact
+- Reviewing a diff or repository scope specifically for over-engineering, unnecessary abstraction, avoidable dependencies, or deletable code
 - Running a lightweight issue or spec alignment check as part of normal PR review
 - Producing concise review comments with severity and evidence
 
@@ -48,6 +49,8 @@ metadata:
 ## Overview
 
 Review code changes for merge risk, not for style points. Run a lightweight spec-pass when normative sources exist, but keep full implementation-vs-spec audits in `spec-conformance-reviewer`. This skill owns review process and reporting discipline. It does not replace stack-specific engineering skills.
+
+When the user explicitly asks for over-engineering, simplification, unnecessary dependency, or deletion review, use the bounded complexity-only mode from `references/complexity-only.md`. Keep that output separate from normal merge-risk findings: complexity-only reports what can be cut, while this skill's default review still prioritizes bugs, regressions, tests, operability, and compatibility.
 
 ## Skill Interop (Priority)
 
@@ -81,6 +84,7 @@ Review code changes for merge risk, not for style points. Run a lightweight spec
 - For fixture-heavy tests, check that fixtures model production invariants such as session row/version, active context, role/scope/tenant, status, and profile/readiness gates instead of seeding impossible states.
 - For long-lived protected endpoints, do not reduce the review to one-shot handler admission when permission can change while the stream or socket is open.
 - Review behavior, compatibility, tests, and operability before discussing minor cleanup.
+- Do not use line-count reduction as severity in normal review; line-count estimates belong only to the explicit complexity-only mode.
 - Do not block on formatting, naming preference, or framework taste unless it creates concrete risk.
 - Verify each finding against surrounding code, nearby tests, and existing guards before reporting it.
 - Explain why the issue matters in runtime terms: regression, incorrect result, broken invariant, missing coverage, migration risk, or operational hazard.
@@ -199,6 +203,7 @@ Read only what you need:
 - `references/domain-routing.md` - which local skill to load for each file or change pattern
 - `references/policy-admission-merge-risk.md` - bounded pass for policy/admission merge-risk paths
 - `references/runtime-gate-deployed-path.md` - deployed-path and identity-binding pass for runtime-gating changes
+- `references/complexity-only.md` - bounded over-engineering/deletion review mode, only when explicitly requested
 - `references/findings-format.md` - severity rubric, comment labels, and output templates
 - `references/severity-confidence.md` - how severity and confidence interact during triage
 
@@ -209,9 +214,10 @@ Read only what you need:
 Apply the preserved code-reviewer guidance without changing its domain behavior.
 
 1. Match the request to the applicability criteria.
-2. Follow the preserved overview sections for the concrete work.
-3. Read the smallest relevant active reference before using detailed guidance from it.
-4. Run the relevant verification from the overview or report why it could not be run.
+2. If the user explicitly requests over-engineering, simplification, deletion, or avoidable dependency review, load `references/complexity-only.md` and keep that pass separate from normal merge-risk findings.
+3. Follow the preserved overview sections for the concrete work.
+4. Read the smallest relevant active reference before using detailed guidance from it.
+5. Run the relevant verification from the overview or report why it could not be run.
 
 Validation:
 
@@ -228,6 +234,7 @@ Validation:
 ## Optional references
 - [Policy Admission Merge Risk](references/policy-admission-merge-risk.md) — Read this when changed files or linked review intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active scope, idempotency, replay, or freshness checks.
 - [Runtime Gate Deployed Path](references/runtime-gate-deployed-path.md) — Read this when changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle, production construction path, deployed dependency wiring, request or tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
+- [Complexity-only Review](references/complexity-only.md) — Read this only when the user explicitly asks to review for over-engineering, simplification, unnecessary dependencies, dead flexibility, or what can be deleted.
 
 ## Bundled assets
 

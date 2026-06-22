@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.3.1
+  source-version: 0.3.2
   recommended-skill-md-max-bytes: 20000
   description: |-
     Systematic code review skill for pull requests, diffs, and local branch changes.
@@ -59,6 +59,11 @@ references:
     target: references/spec-pass.md
     required: true
     trigger: Read this when you need lightweight issue or spec alignment pass and escalation rules.
+  - id: ref-references-complexity-only
+    title: Complexity-only Review
+    source: references/complexity-only.md
+    target: references/complexity-only.md
+    trigger: Read this only when the user explicitly asks to review for over-engineering, simplification, unnecessary dependencies, dead flexibility, or what can be deleted.
 assets:
   - id: asset-assets-pr-review-template
     source: assets/pr-review-template.md
@@ -94,6 +99,7 @@ surfaces:
     optionalReferences:
       - ref-references-policy-admission-merge-risk
       - ref-references-runtime-gate-deployed-path
+      - ref-references-complexity-only
   supportingGlobs:
     - docs/*
 sections:
@@ -106,6 +112,7 @@ sections:
     - Reviewing a pull request, diff, branch, or changed file set
     - '"Review my changes", "find bugs in this patch", "what should block this merge"'
     - Auditing maintainability, regression risk, test adequacy, or compatibility impact
+    - Reviewing a diff or repository scope specifically for over-engineering, unnecessary abstraction, avoidable dependencies, or deletable code
     - Running a lightweight issue or spec alignment check as part of normal PR review
     - Producing concise review comments with severity and evidence
   whenNotToUse:
@@ -120,6 +127,7 @@ sections:
       goal: Apply the preserved code-reviewer guidance without changing its domain behavior.
       steps:
         - Match the request to the applicability criteria.
+        - If the user explicitly requests over-engineering, simplification, deletion, or avoidable dependency review, load `references/complexity-only.md` and keep that pass separate from normal merge-risk findings.
         - Follow the preserved overview sections for the concrete work.
         - Read the smallest relevant active reference before using detailed guidance from it.
         - Run the relevant verification from the overview or report why it could not be run.

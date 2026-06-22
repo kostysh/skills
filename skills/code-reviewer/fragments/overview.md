@@ -1,5 +1,7 @@
 Review code changes for merge risk, not for style points. Run a lightweight spec-pass when normative sources exist, but keep full implementation-vs-spec audits in `spec-conformance-reviewer`. This skill owns review process and reporting discipline. It does not replace stack-specific engineering skills.
 
+When the user explicitly asks for over-engineering, simplification, unnecessary dependency, or deletion review, use the bounded complexity-only mode from `references/complexity-only.md`. Keep that output separate from normal merge-risk findings: complexity-only reports what can be cut, while this skill's default review still prioritizes bugs, regressions, tests, operability, and compatibility.
+
 ## Skill Interop (Priority)
 
 - This skill owns review sequence, diff completeness, severity labeling, evidence quality, and merge recommendation framing.
@@ -32,6 +34,7 @@ Review code changes for merge risk, not for style points. Run a lightweight spec
 - For fixture-heavy tests, check that fixtures model production invariants such as session row/version, active context, role/scope/tenant, status, and profile/readiness gates instead of seeding impossible states.
 - For long-lived protected endpoints, do not reduce the review to one-shot handler admission when permission can change while the stream or socket is open.
 - Review behavior, compatibility, tests, and operability before discussing minor cleanup.
+- Do not use line-count reduction as severity in normal review; line-count estimates belong only to the explicit complexity-only mode.
 - Do not block on formatting, naming preference, or framework taste unless it creates concrete risk.
 - Verify each finding against surrounding code, nearby tests, and existing guards before reporting it.
 - Explain why the issue matters in runtime terms: regression, incorrect result, broken invariant, missing coverage, migration risk, or operational hazard.
@@ -150,5 +153,6 @@ Read only what you need:
 - `references/domain-routing.md` - which local skill to load for each file or change pattern
 - `references/policy-admission-merge-risk.md` - bounded pass for policy/admission merge-risk paths
 - `references/runtime-gate-deployed-path.md` - deployed-path and identity-binding pass for runtime-gating changes
+- `references/complexity-only.md` - bounded over-engineering/deletion review mode, only when explicitly requested
 - `references/findings-format.md` - severity rubric, comment labels, and output templates
 - `references/severity-confidence.md` - how severity and confidence interact during triage

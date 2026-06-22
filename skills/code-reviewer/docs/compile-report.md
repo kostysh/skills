@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.3.1`
+- Skill source version: `0.3.2`
 
 ## Source files
 - `agents/openai.yaml`
@@ -11,6 +11,7 @@ Generated from `skill.yaml`.
 - `assets/pr-review-template.md`
 - `assets/review-checklist.md`
 - `fragments/overview.md`
+- `references/complexity-only.md`
 - `references/diff-completeness.md`
 - `references/domain-routing.md`
 - `references/findings-format.md`
