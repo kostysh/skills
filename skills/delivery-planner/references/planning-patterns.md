@@ -52,6 +52,8 @@ Better: Add audit event helper used by VS-03 account-status transition and cover
 
 If there is no owner outcome, merge it into another task, delete it, or route the missing outcome as a planning gap.
 
+Future-only substrate is not a valid standalone task. If a wrapper, config surface, harness, or extension point is only for "later", require a concrete dependent increment and revisit trigger before keeping it.
+
 ## 4. Contract-first task
 
 Use when multiple tasks depend on a stable API/event/schema/interface.

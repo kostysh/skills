@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.3
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 22000
   description: >-
     Decompose accepted product scope and architecture handoff into right-sized
@@ -82,6 +82,10 @@ supporting:
     source: docs/logs/implementation-log-20260602-1.md
     target: docs/logs/implementation-log-20260602-1.md
     description: Non-normative implementation log for compact-plus delivery plan templates.
+  - id: supporting-implementation-log-20260622-1
+    source: docs/logs/implementation-log-20260622-1.md
+    target: docs/logs/implementation-log-20260622-1.md
+    description: Non-normative implementation log for future-substrate task guardrails.
 
 surfaces:
   active:
@@ -106,6 +110,7 @@ sections:
     - Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
     - Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
     - Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
+    - Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
   whenToUse:
     - Decomposing accepted architecture handoff into executable implementation tasks.
     - Planning delivery for an entire project after product and architecture context are available.
@@ -149,7 +154,8 @@ sections:
         - Use vertical slices for project and feature planning.
         - Use module increments for module, service, adapter, or subsystem planning.
         - Tie substrate work to a named capability, module increment, validation obligation, or explicit developer-experience goal.
-        - Merge or delete layer-only tasks when they cannot produce independent evidence of progress.
+        - Merge or delete layer-only and future-only tasks when they cannot produce independent evidence of progress.
+        - For valid support tasks, name the owner outcome and the evidence the substrate unlocks.
     - id: stage-task-briefs
       title: Create compact task briefs
       goal: Create executable planning-level tasks without writing full specs.
@@ -172,6 +178,7 @@ sections:
         - Check that architecture was not redesigned.
         - Check that high-risk work is visible.
         - Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
+        - Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.
         - Check that every task has verification direction.
         - Check that output does not create unnecessary registers or YAML structures.
   policies:
@@ -196,6 +203,9 @@ sections:
     - id: policy-no-substrate-only-success
       title: No substrate-only success policy
       text: Do not mark a task or plan ready when its acceptance could pass by adding scaffolds, wrappers, metadata, mocks, docs, or empty tests without changing observable or verifiable behavior. Reframe it around the capability, merge it into its owner task, or label it as a support task with a clear dependent increment.
+    - id: policy-no-future-only-support
+      title: No future-only support policy
+      text: Do not create tasks for scaffolds, wrappers, config surfaces, harnesses, folders, or extension points only because they may be useful later. Keep them out, merge them into the owner increment, or label them as support work with a concrete dependent increment, evidence unlocked, and revisit trigger.
     - id: policy-right-sized-tasks
       title: Right-sized task policy
       text: Each task should have one primary goal, clear dependencies, a risk label, a next step, a verification hint, and a review hint.

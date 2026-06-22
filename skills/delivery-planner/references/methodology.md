@@ -192,6 +192,8 @@ Create helper folder.
 
 Unless it is tied to a concrete capability, validation obligation, or module increment.
 
+Do not keep future-only support tasks. A scaffold, wrapper, config surface, harness, folder, or extension point is valid support work only when it names the owner slice/module increment, the evidence it unlocks, and the trigger that makes it necessary. Otherwise merge it into the owner task, delete it, or route the missing owner outcome as a planning gap.
+
 ### Spike
 
 Use when a task cannot be planned safely without bounded evidence.
@@ -243,12 +245,13 @@ A task is too large when:
 A task is too small when:
 
 - it creates only an empty scaffold, mock, wrapper, or unused file;
+- it creates a future extension point, config surface, or helper layer with no current owner outcome;
 - no useful progress can be verified;
 - it has no source link or verification hint;
 - it exists only because of technical layering;
 - its acceptance can pass without observable or verifiable behavior.
 
-Substrate can be a valid task only when it has an owner outcome, such as a slice, module increment, validation obligation, or explicit developer-experience goal.
+Substrate can be a valid task only when it has an owner outcome, such as a slice, module increment, validation obligation, or explicit developer-experience goal. Future substrate also needs a concrete revisit trigger.
 
 A task is ready for coding only when:
 

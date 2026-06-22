@@ -10,9 +10,9 @@ description: Decompose accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e3009db3dc851504e80bf6dbfe92773eb3bda2bd303d2dc71b679d0e0e66b491
+  skillforge-source-hash: a939d7d0ed83fa5e377387077d7eaa6c6de0a292b87f4a13da3187dc8c8ca6d2
 ---
 
 # delivery-planner
@@ -30,6 +30,7 @@ metadata:
 9. Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
 10. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
 11. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
+12. Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
 
 ## When to use this skill
 
@@ -103,7 +104,8 @@ Decompose around observable or verifiable outcomes.
 1. Use vertical slices for project and feature planning.
 2. Use module increments for module, service, adapter, or subsystem planning.
 3. Tie substrate work to a named capability, module increment, validation obligation, or explicit developer-experience goal.
-4. Merge or delete layer-only tasks when they cannot produce independent evidence of progress.
+4. Merge or delete layer-only and future-only tasks when they cannot produce independent evidence of progress.
+5. For valid support tasks, name the owner outcome and the evidence the substrate unlocks.
 
 ### Workflow stage: Create compact task briefs
 
@@ -129,8 +131,9 @@ Ensure the plan is useful, compact, scope-respecting, and safe for downstream ag
 1. Check that architecture was not redesigned.
 2. Check that high-risk work is visible.
 3. Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
-4. Check that every task has verification direction.
-5. Check that output does not create unnecessary registers or YAML structures.
+4. Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.
+5. Check that every task has verification direction.
+6. Check that output does not create unnecessary registers or YAML structures.
 
 ## Policies
 
@@ -154,6 +157,9 @@ A decomposition unit must be observable or verifiable. Substrate tasks are allow
 
 ### No substrate-only success policy
 Do not mark a task or plan ready when its acceptance could pass by adding scaffolds, wrappers, metadata, mocks, docs, or empty tests without changing observable or verifiable behavior. Reframe it around the capability, merge it into its owner task, or label it as a support task with a clear dependent increment.
+
+### No future-only support policy
+Do not create tasks for scaffolds, wrappers, config surfaces, harnesses, folders, or extension points only because they may be useful later. Keep them out, merge them into the owner increment, or label them as support work with a concrete dependent increment, evidence unlocked, and revisit trigger.
 
 ### Right-sized task policy
 Each task should have one primary goal, clear dependencies, a risk label, a next step, a verification hint, and a review hint.
