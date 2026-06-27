@@ -5,9 +5,9 @@ description: Enforce Conventional Commits, Git hygiene, and worktree-based
   changes into multiple commits, deciding between merge/rebase/cherry-pick, or
   setting up git worktrees in any repo.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e7ff83c3081a23fe654998bb57a96246bfd9420ad2bcba38b45eff954b0fa248
+  skillforge-source-hash: f32555ecd5da68a071550237e73de2111fd7dfce3d04a190609834ed3d152578
 ---
 
 # git-engineer
@@ -15,8 +15,9 @@ metadata:
 ## Start here
 
 1. Confirm the task matches git-engineer's applicability criteria.
-2. Use the preserved overview guidance as the normative workflow for this skill.
-3. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+2. Before branch, worktree, PR, merge, or cleanup, resolve repo policy from operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs.
+3. Use the preserved overview guidance as the normative workflow for this skill.
+4. Treat generic commands as fallbacks only; preserve commits, branches, and validation gates when project or operator policy requires them.
 
 ## When to use this skill
 
@@ -33,6 +34,17 @@ metadata:
 ## Overview
 
 Ensure all commits follow Conventional Commits and keep history clean, minimal, and reviewable.
+
+## Repository Git policy first
+
+Before branch, worktree, PR, merge, cleanup, or force-push operations, resolve repo policy:
+
+1. Follow explicit operator instructions for the current task.
+2. Check `AGENTS.md`, `CONTRIBUTING.md`, `README*`, and process docs linked by the issue, PR, task brief, or operator.
+3. Use `gh repo view --json nameWithOwner,defaultBranchRef` for orientation only.
+4. If the next step would collapse commits, rewrite shared history, delete a branch, or bypass validation, ask when policy is unknown.
+
+Generic commands are fallbacks. Do not copy project-specific branches, paths, statuses, or CI commands into this portable skill.
 
 ## Conventional Commits (required)
 
@@ -195,24 +207,43 @@ Review PR:
 
 Checks and merge:
 - `gh pr checks <number> --watch --fail-fast`
-- `gh pr merge <number> --squash --delete-branch`
-- If policy requires waiting for checks/queue: `gh pr merge <number> --auto --squash --delete-branch`
-- To prevent merging stale head: `gh pr merge <number> --match-head-commit <sha> --squash`
+- Choose the merge method from operator or repo policy before running merge commands:
+  - If policy requires linear history with preserved commits, use platform rebase merge such as `gh pr merge <number> --rebase`, or rebase and fast-forward when direct branch integration is allowed.
+  - If policy explicitly allows squash, use `gh pr merge <number> --squash`.
+  - If policy requires merge commits, use `gh pr merge <number> --merge`.
+  - If policy is unknown, do not squash or delete the branch without asking.
+- If policy requires waiting for checks/queue, add `--auto` to the selected merge command, for example `gh pr merge <number> --auto --rebase`.
+- To prevent merging stale head, add `--match-head-commit <sha>` when available.
+- Do not couple branch deletion to merge when policy requires post-merge evidence first.
+
+Branch cleanup gate:
+- Treat remote branch cleanup as a separate step from merge unless repo policy explicitly allows deletion at merge time.
+- If policy requires CI/CD or post-merge validation on the target branch, wait for that evidence before `git push origin --delete <branch>` or any merge command using `--delete-branch`.
+- If no post-merge evidence gate exists and cleanup is allowed, delete only the merged task branch.
 
 ### Branch discipline for multi-PR work
 
 1. One issue = one branch = one PR.
-2. Always create new work branch from fresh default branch (`<default-branch>`, often `main`):
-   - `git checkout <default-branch> && git pull --ff-only`
+2. Resolve the base branch from repo policy; do not assume the GitHub default branch is the working base.
+3. Create the new work branch from the refreshed policy base branch:
+   - `git checkout <base-branch> && git pull --ff-only`
    - `git checkout -b fix/<issue-number>-<short-topic>`
-3. Before edits, verify branch explicitly:
+4. Before edits, verify branch explicitly:
    - `git branch --show-current`
-4. When switching to existing PR, use:
+5. When switching to existing PR, use:
    - `gh pr checkout <number>`
-5. Do not mix changes for different PRs in one branch.
-6. After PR creation/update, return local workspace to `<default-branch>`:
-   - `git checkout <default-branch> && git pull --ff-only`
+6. Do not mix changes for different PRs in one branch.
+7. After PR creation/update, return local workspace to the repo's policy base branch:
+   - `git checkout <base-branch> && git pull --ff-only`
    - keep feature branch checked out only while implementing/review-fix for that PR.
+
+### Rebase and force-push safety
+
+- Rebase only when it matches operator or repo policy, or when the user asks for a linear local history.
+- After rebasing a published task branch, push only that owned task branch with `git push --force-with-lease origin <branch>`.
+- Never use `git push --force` for agent work.
+- Never force-push protected, release, base, or other mainline branches.
+- If branch ownership, upstream tracking, or remote head is unclear, stop and inspect before pushing.
 
 ### GitHub Actions / CI diagnostics
 
@@ -238,13 +269,14 @@ Notes:
 
 1. `gh issue view <id> --comments`
 2. `gh issue edit <id> --add-label "in-progress"` (and add assignee if supported)
-3. Create/switch to dedicated branch from updated `<default-branch>`.
+3. Resolve repo policy, then create/switch to a dedicated branch from updated `<base-branch>`.
 4. `gh pr create --base <base> --head <branch> --title "<cc-title>" --body-file <file>`
 5. `gh issue comment <id> --body "PR opened: <url>"`
 6. `gh pr checks <pr> --watch --fail-fast`
-7. `gh pr merge <pr> --squash --delete-branch` (or `--auto` if required)
-8. `gh issue close <id> --reason completed --comment "Completed in #<pr>"`
-9. Return to baseline locally: `git checkout <default-branch> && git pull --ff-only`
+7. Merge using the repo-approved method: rebase/fast-forward when commits must be preserved, squash only when allowed, merge commit when required.
+8. Wait for any required CI/CD or post-merge validation evidence before remote branch cleanup.
+9. `gh issue close <id> --reason completed --comment "Completed in #<pr>"`
+10. Return to baseline locally: `git checkout <base-branch> && git pull --ff-only`
 
 ### Manual references
 
@@ -263,7 +295,17 @@ Announce at start: "I'm using the git worktrees workflow to set up an isolated w
 
 Follow this priority order:
 
-#### 1) Check existing directories
+#### 1) Check repository policy
+
+Check operator instructions and repo-local process docs before generic defaults:
+
+```bash
+rg -n -i "worktree|branch|merge|cleanup|ci" AGENTS.md CONTRIBUTING.md README* docs 2>/dev/null
+```
+
+If the repository specifies worktree directory, base branch, merge policy, or cleanup timing, follow that policy.
+
+#### 2) Check existing directories
 
 ```bash
 # Check in priority order
@@ -271,32 +313,25 @@ ls -d .worktrees 2>/dev/null     # Preferred (hidden)
 ls -d worktrees 2>/dev/null      # Alternative
 ```
 
-If found, use that directory. If both exist, `.worktrees` wins.
-
-#### 2) Check AGENTS.md
-
-```bash
-grep -i "worktree.*director" AGENTS.md 2>/dev/null
-```
-
-If a preference is specified, use it without asking.
+If found and no repo policy overrides it, use that directory. If both exist, `.worktrees` wins.
 
 #### 3) Ask the user
 
-If no directory exists and no AGENTS.md preference:
+If no repository policy or existing directory resolves the location:
 
 ```
 No worktree directory found. Where should I create worktrees?
 
-1. .worktrees/ (project-local, hidden)
-2. ~/.config/superpowers/worktrees/<project-name>/ (global location)
+1. .worktrees/ (project-local, hidden, must be ignored)
+2. worktrees/ (project-local, visible, must be ignored)
+3. An outside-repository directory you provide
 
 Which would you prefer?
 ```
 
 ### Safety verification
 
-For project-local directories (`.worktrees` or `worktrees`), verify the directory is ignored before creating the worktree:
+For any worktree path inside the repository root, verify the top-level worktree directory is ignored before creating the worktree:
 
 ```bash
 # Check if directory is ignored (respects local, global, and system gitignore)
@@ -310,7 +345,7 @@ If NOT ignored:
 
 Why this is critical: prevents accidentally committing worktree contents to the repository.
 
-For global directory (`~/.config/superpowers/worktrees`): no `.gitignore` verification needed.
+For an outside-repository directory: no repository `.gitignore` verification is needed.
 
 ### Creation steps
 
@@ -328,13 +363,13 @@ case $LOCATION in
   .worktrees|worktrees)
     path="$LOCATION/$BRANCH_NAME"
     ;;
-  ~/.config/superpowers/worktrees/*)
-    path="~/.config/superpowers/worktrees/$project/$BRANCH_NAME"
+  *)
+    path="$LOCATION/$project/$BRANCH_NAME"
     ;;
 esac
 
-# Create worktree with new branch
-git worktree add "$path" -b "$BRANCH_NAME"
+# Create worktree with new branch from the repo policy base branch
+git worktree add "$path" -b "$BRANCH_NAME" "$BASE_BRANCH"
 cd "$path"
 ```
 
@@ -380,10 +415,11 @@ Ready to implement <feature-name>
 
 | Situation | Action |
 |-----------|--------|
-| `.worktrees/` exists | Use it (verify ignored) |
-| `worktrees/` exists | Use it (verify ignored) |
-| Both exist | Use `.worktrees/` |
-| Neither exists | Check AGENTS.md → Ask user |
+| Repo policy specifies location | Use repo policy |
+| `.worktrees/` exists | Use it if policy does not override it (verify ignored) |
+| `worktrees/` exists | Use it if policy does not override it (verify ignored) |
+| Both exist | Use `.worktrees/` unless policy says otherwise |
+| Neither exists | Ask user |
 | Directory not ignored | Add to .gitignore + commit |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
@@ -396,7 +432,7 @@ Ready to implement <feature-name>
 
 #### Assuming directory location
 - Problem: Creates inconsistency, violates project conventions
-- Fix: Follow priority: existing > AGENTS.md > ask
+- Fix: Follow priority: repo policy > existing directory > ask
 
 #### Proceeding with failing tests
 - Problem: Can't distinguish new bugs from pre-existing issues
@@ -421,8 +457,10 @@ Ready to implement <feature-name>
 - If the user requests separate commits, honor the split explicitly.
 
 ## Rebase vs merge (when asked)
-- Default to rebase for a linear history unless the user asks for merge commits.
-- Use merge when preserving branch context is required.
+- Follow repo policy first.
+- Use rebase or fast-forward merge for linear history when commits must be preserved.
+- Use squash only when operator or repo policy permits collapsing commits.
+- Use merge commits when preserving branch topology is required.
 
 ## Commit message selection cheatsheet
 - `feat`: new behavior/user-facing capability
@@ -443,15 +481,31 @@ Ready to implement <feature-name>
 
 ### Workflow stage: Apply git-engineer guidance
 
-Apply the preserved git-engineer guidance without changing its domain behavior.
+Apply policy-first Git guidance without overriding repo-specific branch, worktree, merge, cleanup, or validation rules.
 
 1. Match the request to the applicability criteria.
-2. Follow the preserved overview sections for the concrete work.
-3. Run the relevant verification from the overview or report why it could not be run.
+2. Resolve repo policy before choosing base branch, worktree location, PR merge method, cleanup timing, or force-push command.
+3. Follow the preserved overview sections for the concrete work.
+4. Run the relevant verification from the overview or report why it could not be run.
 
 Validation:
 
-- The outcome follows the preserved skill guidance and any loaded reference constraints.
+- The outcome follows repo policy, preserved skill guidance, and loaded reference constraints.
+- Destructive or history-collapsing operations require operator or repo-policy permission.
+
+## Gotchas
+
+- **high** — `gh repo view defaultBranchRef` is orientation, not base-branch, merge, worktree, or cleanup policy.
+- **high** — Squash collapses commits; use it only when operator or repo policy permits it.
+- **high** — Delete remote task branches only after required post-merge evidence.
+
+## Policies
+
+### Repository Git policy first
+Operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs override generic defaults for branch base, worktree location, PR merge method, validation gates, and cleanup timing.
+
+### Force-push safety
+Force-push only an owned task branch, never a protected/mainline branch, and use `--force-with-lease` instead of `--force`.
 
 ## Portability rules
 
@@ -469,3 +523,4 @@ Validation:
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/logs/*`

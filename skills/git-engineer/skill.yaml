@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: git-engineer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 21000
   description: Enforce Conventional Commits, Git hygiene, and worktree-based isolation. Use when making commits, crafting commit messages, splitting changes into multiple commits, deciding between merge/rebase/cherry-pick, or setting up git worktrees in any repo.
 fragments:
@@ -14,18 +14,28 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for git-engineer maintenance records.
+  - id: supporting-implementation-log-20260627-1
+    source: docs/logs/implementation-log-20260627-1.md
+    target: docs/logs/implementation-log-20260627-1.md
+    description: Non-normative implementation log for repository Git policy alignment.
 surfaces:
   active:
     requiredReferences: []
     optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/logs/*
 sections:
   startHere:
     - Confirm the task matches git-engineer's applicability criteria.
+    - Before branch, worktree, PR, merge, or cleanup, resolve repo policy from operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs.
     - Use the preserved overview guidance as the normative workflow for this skill.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Treat generic commands as fallbacks only; preserve commits, branches, and validation gates when project or operator policy requires them.
   whenToUse:
     - Making, splitting, or reviewing commits and commit messages.
     - Choosing merge, rebase, cherry-pick, branch, PR, issue, or worktree workflows.
@@ -37,17 +47,34 @@ sections:
   workflow:
     - id: stage-apply-git-engineer
       title: Apply git-engineer guidance
-      goal: Apply the preserved git-engineer guidance without changing its domain behavior.
+      goal: Apply policy-first Git guidance without overriding repo-specific branch, worktree, merge, cleanup, or validation rules.
       steps:
         - Match the request to the applicability criteria.
+        - Resolve repo policy before choosing base branch, worktree location, PR merge method, cleanup timing, or force-push command.
         - Follow the preserved overview sections for the concrete work.
         - Run the relevant verification from the overview or report why it could not be run.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+        - The outcome follows repo policy, preserved skill guidance, and loaded reference constraints.
+        - Destructive or history-collapsing operations require operator or repo-policy permission.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-default-branch-is-not-policy
+      priority: high
+      text: "`gh repo view defaultBranchRef` is orientation, not base-branch, merge, worktree, or cleanup policy."
+    - id: gotcha-squash-destroys-intermediate-commits
+      priority: high
+      text: Squash collapses commits; use it only when operator or repo policy permits it.
+    - id: gotcha-delete-branch-after-evidence
+      priority: high
+      text: Delete remote task branches only after required post-merge evidence.
+  policies:
+    - id: policy-repository-git-policy-first
+      title: Repository Git policy first
+      text: Operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs override generic defaults for branch base, worktree location, PR merge method, validation gates, and cleanup timing.
+    - id: policy-force-push-safety
+      title: Force-push safety
+      text: Force-push only an owned task branch, never a protected/mainline branch, and use `--force-with-lease` instead of `--force`.
   portability:
     required: true
     rules:
