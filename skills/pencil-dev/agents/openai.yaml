@@ -1,13 +1,13 @@
 interface:
   display_name: "Pencil Dev"
-  short_description: "Create and iterate Pencil design files"
-  default_prompt: "Use $pencil-dev to create a Pencil design mockup and export a review image."
+  short_description: "Create and iterate Pencil designs through MCP"
+  default_prompt: "Use $pencil-dev with Pencil MCP to edit the open .pen design and export review evidence."
 
 dependencies:
   tools:
     - type: "mcp"
       value: "pencil"
-      description: "Pencil MCP tools for inspecting, editing, validating, and exporting .pen designs when available."
+      description: "Required Pencil MCP tools for inspecting, editing, validating, and exporting open .pen designs."
 
 policy:
   allow_implicit_invocation: true

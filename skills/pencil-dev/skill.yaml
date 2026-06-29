@@ -2,14 +2,14 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: pencil-dev
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 18000
   description: |-
-    Use when creating, iterating, inspecting, or exporting Pencil `.pen` design
-    files with the Pencil CLI or Pencil MCP tools. Applies to generated UI
-    mockups, app screens, dashboards, web pages, marketing visuals, slide-like
-    graphics, and edits to existing Pencil designs where the observable outcome
-    is a saved `.pen` file plus, when possible, a visually inspected export.
+    Use when creating, iterating, inspecting, validating, or exporting Pencil
+    `.pen` design files through Pencil MCP tools attached to an open Pencil
+    editor or custom editor. Applies to generated UI mockups, app screens,
+    dashboards, web pages, marketing visuals, slide-like graphics, and edits to
+    existing Pencil designs where `.pen` handling must stay MCP-only.
 fragments:
   overview: fragments/overview.md
 copies:
@@ -25,113 +25,104 @@ surfaces:
     - docs/*
 sections:
   startHere:
-    - Confirm the request needs a Pencil design artifact, not only web code, prose, or a generic bitmap image.
-    - Separate capability from substrate before acting. The target capability is a saved Pencil design and, when export is possible, a visually checked image or PDF export.
-    - Treat `.pen` files as opaque design artifacts. Do not read, grep, parse, or hand-edit them as text; use Pencil MCP tools when available, or the Pencil CLI.
-    - If the user says a `.pen` document is open in VSCode, Pencil extension, or Pencil app, treat the live MCP editor state as the source of truth for edits.
-    - Respect explicit project constraints such as editing only through MCP with CLI export allowed after save.
-    - Choose MCP when the current open Pencil canvas is the source of truth; choose CLI when an on-disk file, headless run, export, batch job, or CI-style automation is the source of truth.
-    - Do not use CLI agent mode for edits when direct MCP editing is available for the live editor.
-    - Prefer existing project paths and keep generated design files in the user's working tree or an obvious subdirectory such as `designs/`.
-    - If the project or user requires a specific Pencil CLI model or agent configuration, pass it explicitly and verify command output or usage metadata before reporting completion.
+    - Confirm the request needs a Pencil `.pen` design artifact, not only web code, prose, or a generic bitmap image.
+    - Separate capability from substrate before acting. The target capability is an open editor-backed Pencil design that can be inspected, changed, or exported through MCP tools; CLI setup, filesystem access, or raw file metadata is not the capability.
+    - Treat `.pen` files as opaque design artifacts. Do not read, grep, parse, diff, patch, or hand-edit them through filesystem tools, JSON tooling, text editors, or raw file inspection.
+    - The only allowed working path for `.pen` read, inspect, edit, layout-check, screenshot, or export work is Pencil MCP connected to an open Pencil Design Editor or Pencil custom editor.
+    - "Before any MCP operation beyond discovery, call `get_editor_state(include_schema: true)` and use the returned schema and active file/editor state as the contract for later operations."
+    - If MCP cannot see the file or reports that a file needs to be open in the editor, stop and diagnose the editor/custom-editor bridge. Do not fall back to Pencil CLI, raw `.pen` access, a built-in Pencil agent, or another agent.
+    - "Use `batch_get` for hierarchy/search reads, `batch_design` for design edits, `snapshot_layout(problemsOnly: true)` for structural layout checks, `get_screenshot` for visual review, `get_variables` for tokens/themes, and `export_nodes` for image/PDF exports."
+    - Do not install, reinstall, invoke, or recommend Pencil CLI for `.pen` work in this skill; CLI/headless/interactive/agent/export paths are explicitly out of scope.
+    - Report blocked status clearly when the required MCP/editor bridge is unavailable.
   whenToUse:
-    - Creating a new Pencil design from a natural-language brief.
-    - Iterating on an existing `.pen` file while preserving design continuity.
-    - Exporting a `.pen` design to PNG, JPEG, WebP, or PDF for review.
+    - Creating a new Pencil design in an open Pencil editor through MCP.
+    - Iterating on an existing open `.pen` file while preserving design continuity.
     - Inspecting, validating, or modifying a Pencil design through Pencil MCP tools.
-    - Producing visual mockups for websites, app screens, dashboards, slides, posters, banners, or marketing assets.
+    - Exporting nodes from an open `.pen` design through MCP.
+    - Producing visual mockups for websites, app screens, dashboards, slides, posters, banners, or marketing assets when MCP can operate on the open design.
   whenNotToUse:
     - The user only wants frontend code changes and no Pencil design artifact.
     - The task is generic raster image generation or photo editing; use an image generation/editing workflow instead.
-    - The task requires manual JSON surgery inside `.pen` files; use Pencil tools or stop and explain the limitation.
-    - Authentication, account creation, package installation, or global machine configuration would be required but the user has not authorized that side effect.
+    - The task requires manual JSON surgery, raw `.pen` parsing, filesystem patching, or text-editor edits inside `.pen` files.
+    - The task can only be performed by Pencil CLI, CLI interactive mode, CLI agent mode, headless generation, or path-based export without an open MCP-connected editor.
+    - Pencil MCP cannot see an open Pencil Design Editor/custom editor document and the operator cannot restore that bridge in the current session.
   workflow:
-    - id: stage-select-pencil-surface
-      title: Select the Pencil surface
-      goal: Choose the smallest Pencil interface that can deliver an observable design artifact.
+    - id: stage-confirm-mcp-editor-boundary
+      title: Confirm MCP editor boundary
+      goal: Prove that the active work can happen through the open Pencil editor, not through a stale saved-file or CLI path.
       steps:
-        - "Identify the source of truth first: an open Pencil app/IDE canvas, a saved `.pen` path, a requested export file, or a batch/automation target."
-        - Use direct Pencil MCP tools for live editor edits when the user refers to the current/open design, selected elements, live canvas changes, inspecting hierarchy, precise node edits, variables, guidelines, screenshots, or exporting specific nodes.
-        - "Before using other Pencil MCP tools, discover/load the Pencil MCP surface, then call `get_editor_state(include_schema: true)`; only after that use `batch_get`, `batch_design`, `snapshot_layout`, `get_screenshot`, `get_variables`, `set_variables`, or `export_nodes`."
-        - Prefer CLI agent mode only when the user wants a new design or prompt-driven saved-file edit from the terminal and no live MCP editor state is the source of truth.
-        - Prefer CLI export mode when the only requested outcome is exporting an existing saved `.pen` file to PNG, JPEG, WEBP, or PDF.
-        - Prefer CLI batch mode for multiple independent design tasks, repeatable automation, or CI-style work.
-        - Prefer CLI interactive mode only when direct MCP tools are unavailable but you still need fine-grained MCP-style operations against a saved file or a headless editor.
-        - If both MCP and CLI are available, do not mix them until the source of truth is clear. Use MCP for the live open canvas; use normal CLI export only after the file is saved and the user allows saved-file export.
-        - If neither MCP nor CLI can operate on the chosen source of truth, explain that no real Pencil artifact can be produced in this session and do not claim completion.
-        - For an existing saved `.pen`, prefer MCP or CLI interactive iteration when the task needs inspection, variables, layout diagnosis, screenshots, or focused node edits; prefer CLI agent mode when the requested change is broad and prompt-driven.
+        - Identify the intended `.pen` document and confirm it is open as a Pencil Design Editor or Pencil custom editor, not as raw text.
+        - Discover/load the Pencil MCP tool surface when needed.
+        - "Call `get_editor_state(include_schema: true)` before any read, edit, screenshot, layout, variable, or export operation."
+        - Check that the editor state points at the intended active file/canvas/selection before changing anything.
+        - Treat the returned schema and Pencil rules as the authoritative operation contract; do not infer a raw file structure.
       validation:
-        - The chosen surface matches the source of truth and can create, modify, inspect, or export the requested artifact without raw `.pen` file editing.
-        - The final report can name whether MCP, CLI agent mode, CLI export mode, CLI batch mode, or CLI interactive mode was used and why.
-    - id: stage-check-cli-readiness
-      title: Check CLI readiness
-      goal: Verify the local CLI and auth assumptions before starting a long-running design job.
+        - "`get_editor_state(include_schema: true)` succeeds and identifies an active Pencil editor state for the intended document."
+        - The next MCP operation can be chosen from the returned schema and the available MCP tools.
+    - id: stage-troubleshoot-editor-bridge
+      title: Troubleshoot editor bridge
+      goal: Restore MCP visibility when the editor/custom-editor bridge, not the design content, is the blocker.
       steps:
-        - Check availability with `command -v pencil` first.
-        - If `pencil` is absent, ask before using `npx`, installing `@pencil.dev/cli`, or changing project/global dependencies.
-        - When version freshness matters, compare the installed version with `npm view @pencil.dev/cli version`; checking once near the first Pencil run is enough unless behavior changes.
-        - Check account state with `pencil status` before a CLI generation run.
-        - Ask before installing packages globally, creating accounts, logging in, or relying on a user-provided `PENCIL_CLI_KEY`.
-        - After explicit approval, accepted setup options include `npm install -g @pencil.dev/cli`, local `npm install @pencil.dev/cli`, `pencil signup`, and `pencil login`.
+        - If the MCP tool reports `A file needs to be open in the editor`, ask the operator to focus the Pencil canvas for the target `.pen`.
+        - Ask the operator to close any raw/text tab for the `.pen` and reopen the file with the Pencil Design Editor or Pencil custom editor.
+        - Ask the operator to reload the editor window or Pencil extension when the correct editor is open but MCP still sees no file.
+        - "Re-run `get_editor_state(include_schema: true)` after the operator changes focus, editor mode, or extension state."
+        - If MCP still cannot see the file, mark the task blocked until the editor/custom-editor bridge is restored.
       validation:
-        - The CLI command surface and authentication state are known, or the missing prerequisite is reported as a blocker.
-    - id: stage-protect-open-file-state
-      title: Protect open file state
-      goal: Avoid losing unsaved live-canvas changes when switching between MCP and CLI.
+        - "The bridge is restored only when `get_editor_state(include_schema: true)` succeeds for the intended document."
+        - No CLI, raw file access, filesystem patching, or alternate agent path is used to bypass the missing MCP state.
+    - id: stage-read-and-plan-with-mcp
+      title: Read and plan with MCP
+      goal: Inspect only the design state needed for the requested change.
       steps:
-        - If Pencil app/IDE has the design open, assume unsaved canvas state may differ from the saved `.pen` file.
-        - Use MCP against the open canvas when the user is working in that canvas; do not substitute CLI agent edits for direct MCP editing.
-        - "If MCP cannot see the open document, or an export reports `wrong .pen file`, diagnose the source-of-truth boundary instead of switching to CLI editing: ask the user to save, reopen the document, or restart the VSCode window/Pencil extension."
-        - Before using CLI on a file that may also be open in Pencil, make sure the current canvas has been saved or ask the user to confirm that the saved file is the source of truth.
-        - After the saved-file boundary is clear, CLI export is acceptable; CLI editing remains inappropriate for a live editor task unless the user explicitly changes the source of truth.
-        - After major MCP changes, save through the available Pencil surface when possible before running CLI export or external automation.
-        - Even when MCP has problems, do not inspect `.pen` files with filesystem read, grep, diff, or patch tools.
+        - Use `batch_get` to read top-level nodes, selected nodes, known node IDs, or grouped search patterns.
+        - Combine related searches and node reads into a single `batch_get` call when possible.
+        - Use low read depth first and request deeper node data only for the specific subtree needed for the task.
+        - Use `get_variables` when the change depends on design tokens, themes, or CSS handoff values.
+        - Use `get_guidelines` only when a task-specific Pencil guide or style is needed; do not load unrelated guides.
       validation:
-        - The workflow does not overwrite or export stale `.pen` content without acknowledging the source-of-truth risk.
-    - id: stage-create-or-iterate-design
-      title: Create or iterate the design
-      goal: Produce a `.pen` file that reflects the user's actual brief.
+        - The planned edit or export is grounded in MCP-returned nodes, variables, guidelines, or selection state.
+        - The agent has not read or parsed the `.pen` file through filesystem or JSON tools.
+    - id: stage-create-or-iterate-with-mcp
+      title: Create or iterate with MCP
+      goal: Modify the open Pencil design through schema-backed MCP operations.
       steps:
-        - For new designs, run `pencil --out <output.pen> --prompt "<user brief>" --export <output.png> --export-scale 2`.
-        - For edits, run `pencil --in <existing.pen> --out <next.pen> --prompt "<requested change>" --export <next.png> --export-scale 2`.
-        - If the user or project requires a specific model, pass it explicitly with the supported CLI option and verify the model in command output or available usage metadata.
-        - Pass the user's brief directly. Do not add invented layout, palette, typography, or content details unless the user asked for them.
-        - Use a generous command timeout, normally at least 10 minutes, because design generation can take several minutes.
-        - Keep successive versions discoverable, such as `design.pen`, `design-v2.pen`, and `design-v3.pen`.
-        - When using CLI agent mode, do not treat intermediate MCP screenshots, `batch_design` success, README text, prompt files, usage files, or created directories as the deliverable. The deliverable is the saved `.pen` after the command exits.
-        - Do not run path-based MCP export or inspection against a CLI `--out` path while the CLI process is still running; wait for the final save and process exit first.
+        - Use `batch_design` for creating frames, inserting nodes, copying, updating properties, replacing, moving, deleting, setting variables, or generating assets in the open design.
+        - Pass the user's brief or requested change directly unless the user asked for elaboration.
+        - Keep edits scoped to the intended nodes, frames, or canvas region from MCP state.
+        - After broad edits, use `batch_get` or `snapshot_layout` to confirm the intended nodes exist and copied reference/foundation frames were removed when they were only scaffolding.
+        - Do not claim completion from a successful MCP call alone; verify the resulting design state.
       validation:
-        - The command exits successfully, the `.pen` output exists and is non-empty, and an export exists when export was requested or feasible.
-        - If the CLI reported export success after final save, open the exported file visually; if export failed, retry from the saved `.pen` or report the split result explicitly.
+        - MCP reports the edit operation succeeded and follow-up MCP inspection shows the intended design state.
+        - No Pencil CLI, CLI agent, CLI interactive session, headless prompt run, raw JSON edit, or filesystem patch was used.
+    - id: stage-export-and-review-with-mcp
+      title: Export and review with MCP
+      goal: Close the loop with MCP layout and visual evidence.
+      steps:
+        - "Run `snapshot_layout(problemsOnly: true)` after material edits, or a scoped `snapshot_layout` when only one node subtree changed."
+        - Use `get_screenshot` sparingly for the smallest meaningful node when visual fidelity must be checked.
+        - Use `export_nodes` for PNG, JPEG, WEBP, or PDF exports from MCP-visible node IDs.
+        - Visually inspect MCP screenshots or generated exports before reporting done when visual review is part of the request.
+        - If MCP export or screenshot cannot operate on the open design, report the split result precisely and do not switch to CLI export.
+      validation:
+        - The final report names the MCP layout check, screenshot, or export used as evidence.
+        - Any missing visual review, export, or layout validation is reported as a limitation instead of implied success.
     - id: stage-maintain-design-handoff-clarity
       title: Maintain design handoff clarity
       goal: Keep multi-frame mockups reviewable without turning design artifacts into false delivery gates.
       steps:
-        - For a new or materially updated multi-frame mockup, add or update a sibling README or index next to the `.pen` file.
+        - For a new or materially updated multi-frame mockup, add or update a sibling README or index next to the `.pen` file when the project expects a handoff artifact.
         - Include purpose, artifact status, source/spec links, frame inventory, anti-claims, privacy constraints, and review evidence.
-        - If foundation or reference frames were copied into the target `.pen`, remove those copied reference frames after creating the target frames.
-        - After cleanup, verify the top-level node inventory through MCP and confirm that only intended target frames or sections remain.
+        - Verify frame inventory through MCP after cleanup.
         - Treat `.pen` files, screenshots, and exports as design substrate. Do not create or hold GitHub/blocker tasks on mockups when the delivery plan accepts implemented runtime behavior.
       validation:
-        - Multi-frame mockups have a sibling README/index that explains frame purpose and review status.
-        - Copied foundation/reference frames are absent from the target document's top-level inventory after cleanup.
+        - Multi-frame mockups have enough handoff context for review when a README/index is expected.
         - The report does not claim runtime capability from Pencil mockups, screenshots, or exports alone.
-    - id: stage-review-and-report
-      title: Review and report
-      goal: Close the loop with visual evidence instead of only command success.
-      steps:
-        - Open or render the exported image/PDF and visually inspect it before reporting done.
-        - "If using MCP, use `snapshot_layout(problemsOnly: true)` where feasible and use screenshot/export tools to verify the visible state."
-        - After cleanup of copied reference frames, verify top-level inventory through MCP before reporting done.
-        - If export fails but the `.pen` is saved and visually checked through MCP, report the split result precisely.
-        - Report artifact paths, what was checked, and any limitation such as missing auth, no export, or an unreviewed visual result.
-      validation:
-        - The final response names the produced artifacts and the verification performed.
   interop:
     - id: interop-frontend-design
       domain: art direction for web UI quality
       winner: frontend-design
-      rationale: '`pencil-dev` owns Pencil artifact creation, iteration, export, and `.pen` handling; frontend-design owns broader visual direction.'
+      rationale: '`pencil-dev` owns MCP-only Pencil artifact creation, iteration, export, and `.pen` handling; frontend-design owns broader visual direction.'
     - id: interop-browser-testing
       domain: testing built web apps
       winner: playwright or browser testing skills
@@ -139,64 +130,58 @@ sections:
     - id: interop-imagegen
       domain: bitmap-only generation or editing
       winner: imagegen
-      rationale: Use Pencil only when a durable `.pen` artifact is part of the requested outcome.
+      rationale: Use Pencil only when a durable `.pen` artifact is part of the requested outcome and MCP can operate on an open design.
   commands: []
   gotchas:
     - id: gotcha-setup-is-not-outcome
       priority: high
-      text: Do not claim success from setup alone; a real outcome needs a saved `.pen` artifact and usually an inspected export.
+      text: Do not claim success from tool discovery, MCP listing, editor reload, or setup alone; real progress needs MCP-visible design state or an MCP-produced export/screenshot.
     - id: gotcha-opaque-pen-files
       priority: high
-      text: Do not read, grep, parse, diff, or patch `.pen` files as text. Treat them as opaque and use Pencil tools.
+      text: Do not read, grep, parse, diff, patch, or hand-edit `.pen` files as text or JSON. Treat them as opaque and use Pencil MCP only.
+    - id: gotcha-no-cli-fallback
+      priority: high
+      text: Do not use Pencil CLI, reinstall Pencil CLI, CLI interactive mode, CLI agent mode, headless generation, or CLI export as fallback for `.pen` work.
+    - id: gotcha-editor-bridge
+      priority: high
+      text: "If MCP cannot see the intended `.pen`, the task is blocked on the editor/custom-editor bridge until `get_editor_state(include_schema: true)` succeeds."
     - id: gotcha-prompt-fidelity
       priority: high
-      text: Do not silently add creative detail to the user's prompt. Pencil has its own design agent; invented specifics can conflict with it.
+      text: Do not silently add creative detail to the user's prompt. Pencil has its own design operations; invented specifics can conflict with the brief.
     - id: gotcha-durable-output-location
       priority: medium
-      text: Do not use temporary directories for durable design artifacts unless the user explicitly wants throwaway output.
-    - id: gotcha-export-split-result
-      priority: medium
-      text: Export commands can fail even when `.pen` generation succeeds; report the split result precisely.
-    - id: gotcha-source-of-truth
-      priority: high
-      text: Do not switch between MCP and CLI on the same design until you know whether the live canvas or saved `.pen` file is authoritative.
-    - id: gotcha-cli-save-boundary
-      priority: high
-      text: In CLI agent mode, the active editor state is not a durable repository artifact until the final save writes the `.pen` file.
-    - id: gotcha-premature-path-export
-      priority: medium
-      text: Path-based MCP export can fail or inspect stale content if the `.pen` path has not been saved yet. Wait for CLI exit, verify the saved file, then export from the saved file or use the final CLI export.
+      text: Do not use temporary directories for durable exports or handoff docs unless the user explicitly wants throwaway output.
     - id: gotcha-reference-frame-cleanup
       priority: medium
-      text: Copied foundation/reference frames are scaffolding. Remove them from the target `.pen` after target frames are created and verify the top-level inventory.
+      text: Copied foundation/reference frames are scaffolding. Remove them from the target `.pen` after target frames are created and verify the top-level inventory through MCP.
     - id: gotcha-design-substrate
       priority: high
       text: Pencil mockups, screenshots, and exports are design substrate, not implemented runtime behavior or production delivery gates.
   policies:
     - id: policy-capability-reality
       title: Capability reality policy
-      text: A completed Pencil task means the user can open or review a produced design artifact. Installation, auth checks, command planning, or metadata alone are substrate.
-    - id: policy-side-effects
-      title: Side-effect policy
-      text: Package installation, account signup, login, and persistent global configuration require explicit user approval.
+      text: A completed Pencil task means the user can inspect the open MCP-backed design state or review an MCP-produced screenshot/export. CLI setup, filesystem metadata, or raw `.pen` access is substrate and does not prove design capability.
+    - id: policy-mcp-only
+      title: MCP-only `.pen` policy
+      text: All `.pen` read, inspect, edit, layout-check, screenshot, and export work must go through Pencil MCP tools attached to an open Pencil editor/custom editor.
+    - id: policy-prohibited-paths
+      title: Prohibited paths policy
+      text: Pencil CLI, CLI headless runs, CLI interactive mode, CLI agent mode, CLI export, CLI installation/reinstallation, built-in Pencil agents, raw JSON, text editors, filesystem reads, grep, diff, and patch tools are not valid `.pen` workflows for this skill.
+    - id: policy-editor-bridge
+      title: Editor bridge policy
+      text: "If `get_editor_state(include_schema: true)` cannot see the intended `.pen`, stop and troubleshoot the editor/custom-editor bridge; if it remains unavailable, report blocked instead of bypassing MCP."
+    - id: policy-schema-first
+      title: Schema-first policy
+      text: "Call `get_editor_state(include_schema: true)` before other MCP operations unless the current `.pen` schema is already in context, and follow that schema for every `batch_get`, `batch_design`, layout, screenshot, variable, or export operation."
     - id: policy-prompt-fidelity
       title: Prompt fidelity policy
-      text: Pass the user's design request or edit request directly to Pencil unless the user asks you to elaborate the brief.
+      text: Pass the user's design request or edit request directly unless the user asks you to elaborate the brief.
     - id: policy-evidence
       title: Evidence policy
-      text: Prefer exported visual evidence. If visual inspection is impossible, say the artifact is unreviewed and explain why.
-    - id: policy-tool-selection
-      title: Tool selection policy
-      text: MCP is for live, editor-backed, precise design work; CLI is for headless, path-based, export, batch, and automation work. When both could work, choose by source of truth rather than convenience.
-    - id: policy-save-boundary
-      title: Save boundary policy
-      text: For CLI agent runs, the completion boundary is process exit plus a verified non-empty `.pen` file. Do not report completion from intermediate MCP/editor state alone.
-    - id: policy-live-editor
-      title: Live editor policy
-      text: If the user is working in an open VSCode/Pencil extension or app document, direct MCP editor state is the source of truth for edits; CLI export is allowed only after the file is saved and the saved-file boundary is clear.
+      text: Prefer MCP layout checks plus MCP screenshot/export evidence. If visual inspection is impossible, say the artifact is unreviewed and explain why.
     - id: policy-handoff-clarity
       title: Handoff clarity policy
-      text: Multi-frame mockups need a sibling README or index that explains purpose, status, source links, frame inventory, anti-claims, privacy constraints, and review evidence.
+      text: Multi-frame mockups need a sibling README or index when the project expects a handoff artifact; it should explain purpose, status, source links, frame inventory, anti-claims, privacy constraints, and review evidence.
     - id: policy-runtime-delivery
       title: Runtime delivery policy
       text: Do not treat Pencil artifacts as proof of implemented runtime capability when the project delivery plan accepts runtime behavior.
@@ -204,9 +189,9 @@ sections:
     required: true
     rules:
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
-      - Keep mandatory Pencil guidance inside this skill folder; external CLI docs are optional update context, not required runtime dependencies.
+      - Keep mandatory Pencil guidance inside this skill folder; external Pencil docs are optional update context, not required runtime dependencies.
       - Use relative links for local metadata, docs, references, scripts, and assets.
     checklist:
       - Run the skill-source-compiler check command after regeneration when this source bundle changes.
       - Search the skill folder for absolute local paths before finishing.
-      - Confirm copied standalone skill users can understand the Pencil CLI/MCP boundary from `SKILL.md` alone.
+      - Confirm copied standalone skill users can understand the MCP-only `.pen` boundary from `SKILL.md` alone.

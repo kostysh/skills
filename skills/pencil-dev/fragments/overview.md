@@ -1,27 +1,69 @@
 ## Overview
 
-`pencil-dev` creates, iterates, inspects, and exports Pencil `.pen` design artifacts while keeping `.pen` handling tool-based rather than text-based.
+`pencil-dev` creates, iterates, inspects, validates, and exports Pencil `.pen`
+design artifacts through Pencil MCP tools attached to an open Pencil editor or
+custom editor.
 
-Verify current CLI behavior when it matters. Pencil generation can take several minutes; warn before CLI runs.
+The capability is editor-backed design work that the user can inspect or review:
+an MCP-visible design state, an MCP screenshot, or an MCP node export. Tool
+discovery, CLI setup, raw file metadata, or filesystem access is only substrate
+and must not be reported as completed design work.
 
-## MCP vs CLI
+## MCP-only `.pen` boundary
 
-Use Pencil MCP when the current open design is the source of truth: visible canvas, selection, live edits, hierarchy inspection, variables, precise node changes, screenshots, or node export. If the user says the document is open in VSCode, the Pencil extension, or the Pencil app, direct MCP editing is mandatory for live edits.
+Treat `.pen` files as opaque design artifacts. Do not read, grep, parse, diff,
+patch, or hand-edit them with filesystem tools, text editors, JSON tooling, or
+ad hoc scripts. Do not use Pencil CLI, install or reinstall Pencil CLI, start
+CLI headless/interactive/agent workflows, run CLI export, or delegate to a
+built-in Pencil agent as a fallback for `.pen` work.
 
-Use the CLI when the saved file path is the source of truth: headless creation, prompt-driven saved-file edits, simple export, batch jobs, automation, CI, or sessions without the Pencil app/IDE extension. CLI export is acceptable after save when the user allows saved-file export; CLI editing is not a fallback for live editor edits.
+The only working path for `.pen` read, inspect, edit, layout-check, screenshot,
+or export operations in this skill is Pencil MCP connected to an open Pencil
+Design Editor or Pencil custom editor. If MCP is unavailable or cannot see the
+intended file, the task is blocked until the editor/custom-editor bridge is
+restored.
 
-Use CLI interactive mode as fallback when direct MCP tools are unavailable. CLI agent may launch an internal agent and cross a different state boundary; it is not a substitute for direct MCP editing.
+## Required MCP sequence
 
-CLI agent mode may use MCP tools internally while the output `.pen` is still only active editor state. During that run, the `--out` file may not exist on disk until the final save. Do not run path-based export or inspection against the `--out` path, and do not claim the file is missing, until the CLI process exits. After exit, verify the saved file with filesystem metadata and review an export when possible.
+Before any design operation beyond tool discovery, call
+`get_editor_state(include_schema: true)`. Use the returned editor state, active
+file, selection, schema, and Pencil rules as the contract for subsequent MCP
+calls. Guessing the `.pen` structure or reading the file directly is not a valid
+substitute.
 
-Core CLI shape:
+Use the MCP tools by role:
 
-```bash
-pencil --out <output.pen> --prompt "<design description>" --export <output.png> --export-scale 2
+| Need | MCP tool |
+| --- | --- |
+| Confirm active file/editor/schema | `get_editor_state(include_schema: true)` |
+| Inspect hierarchy, nodes, or reusable components | `batch_get` |
+| Create, modify, move, replace, delete, or set variables | `batch_design` |
+| Check structural layout problems | `snapshot_layout(problemsOnly: true)` |
+| Review visual fidelity | `get_screenshot` |
+| Read variables/themes | `get_variables` |
+| Export review artifacts | `export_nodes` |
+
+Example MCP flow:
+
+```text
+1. get_editor_state(include_schema: true)
+2. batch_get(...) for the smallest useful nodes or searches
+3. batch_design(...) for the requested edit
+4. snapshot_layout(problemsOnly: true)
+5. get_screenshot(...) or export_nodes(...) when visual/export evidence is needed
 ```
 
-Use `--export-type png|jpeg|webp|pdf` for non-default exports. Use `--prompt-file` only for reference files, not as a substitute for the user's prompt text.
+## Editor/custom-editor troubleshooting
 
-When working through Pencil MCP tools, first discover/load the Pencil MCP tools, then call `get_editor_state(include_schema: true)`. The schema is the contract for subsequent `batch_get`, `batch_design`, `snapshot_layout`, `get_screenshot`, `get_variables`, `set_variables`, and `export_nodes` calls; guessing structure or reading `.pen` directly is not a valid substitute.
+If MCP reports `A file needs to be open in the editor`, or
+`get_editor_state(include_schema: true)` does not identify the intended
+document, ask the operator to:
 
-If MCP cannot see the open document, or export reports `wrong .pen file`, diagnose the source-of-truth boundary: ask the user to save, reopen the file, or restart the VSCode window/Pencil extension. After save, ordinary CLI export is acceptable when allowed; do not switch to CLI agent editing.
+1. focus the Pencil canvas for the target `.pen`;
+2. close any raw/text tab for the same file;
+3. reopen the file with the Pencil Design Editor or Pencil custom editor;
+4. reload the editor window or Pencil extension if MCP still cannot see it.
+
+After each operator action, retry `get_editor_state(include_schema: true)`.
+Do not bypass the problem with CLI, raw `.pen` reads, filesystem patching,
+or another agent. Report `blocked` if the MCP/editor bridge remains unavailable.
