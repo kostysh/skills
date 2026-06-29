@@ -7,9 +7,9 @@ description: |-
   dashboards, web pages, marketing visuals, slide-like graphics, and edits to
   existing Pencil designs where `.pen` handling must stay MCP-only.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 438d168b3cc3074e54c68ab757e6e10d004d969ec15ed75f001b3c4d6ba91058
+  skillforge-source-hash: c7d40affac518fc32bd5778a22137f031acff5ef74087f7603c5afde6ce174eb
 ---
 
 # pencil-dev
@@ -21,7 +21,7 @@ metadata:
 3. Treat `.pen` files as opaque design artifacts. Do not read, grep, parse, diff, patch, or hand-edit them through filesystem tools, JSON tooling, text editors, or raw file inspection.
 4. The only allowed working path for `.pen` read, inspect, edit, layout-check, screenshot, or export work is Pencil MCP connected to an open Pencil Design Editor or Pencil custom editor.
 5. Before any MCP operation beyond discovery, call `get_editor_state(include_schema: true)` and use the returned schema and active file/editor state as the contract for later operations.
-6. If MCP cannot see the file or reports that a file needs to be open in the editor, stop and diagnose the editor/custom-editor bridge. Do not fall back to Pencil CLI, raw `.pen` access, a built-in Pencil agent, or another agent.
+6. If Pencil MCP is unavailable, cannot see the file, or reports that a file needs to be open in the editor, immediately notify the operator, then diagnose the editor/custom-editor bridge. Do not fall back to Pencil CLI, raw `.pen` access, a built-in Pencil agent, or another agent.
 7. Use `batch_get` for hierarchy/search reads, `batch_design` for design edits, `snapshot_layout(problemsOnly: true)` for structural layout checks, `get_screenshot` for visual review, `get_variables` for tokens/themes, and `export_nodes` for image/PDF exports.
 8. Do not install, reinstall, invoke, or recommend Pencil CLI for `.pen` work in this skill; CLI/headless/interactive/agent/export paths are explicitly out of scope.
 9. Report blocked status clearly when the required MCP/editor bridge is unavailable.
@@ -32,6 +32,7 @@ metadata:
 - Iterating on an existing open `.pen` file while preserving design continuity.
 - Inspecting, validating, or modifying a Pencil design through Pencil MCP tools.
 - Exporting nodes from an open `.pen` design through MCP.
+- Creating or using component libraries through MCP-visible reusable nodes and instances.
 - Producing visual mockups for websites, app screens, dashboards, slides, posters, banners, or marketing assets when MCP can operate on the open design.
 
 ## When NOT to use this skill
@@ -44,36 +45,24 @@ metadata:
 
 ## Overview
 
-`pencil-dev` creates, iterates, inspects, validates, and exports Pencil `.pen`
-design artifacts through Pencil MCP tools attached to an open Pencil editor or
-custom editor.
-
-The capability is editor-backed design work that the user can inspect or review:
-an MCP-visible design state, an MCP screenshot, or an MCP node export. Tool
-discovery, CLI setup, raw file metadata, or filesystem access is only substrate
-and must not be reported as completed design work.
+`pencil-dev` works on Pencil `.pen` design artifacts only through Pencil MCP
+tools attached to an open Pencil editor or custom editor. The capability is
+MCP-visible design state, screenshot, or node export; setup and file metadata
+are only substrate.
 
 ## MCP-only `.pen` boundary
 
-Treat `.pen` files as opaque design artifacts. Do not read, grep, parse, diff,
-patch, or hand-edit them with filesystem tools, text editors, JSON tooling, or
-ad hoc scripts. Do not use Pencil CLI, install or reinstall Pencil CLI, start
-CLI headless/interactive/agent workflows, run CLI export, or delegate to a
-built-in Pencil agent as a fallback for `.pen` work.
-
-The only working path for `.pen` read, inspect, edit, layout-check, screenshot,
-or export operations in this skill is Pencil MCP connected to an open Pencil
-Design Editor or Pencil custom editor. If MCP is unavailable or cannot see the
-intended file, the task is blocked until the editor/custom-editor bridge is
-restored.
+Treat `.pen` files as opaque. Never use filesystem reads, text/JSON tooling,
+Pencil CLI, headless/interactive/agent workflows, CLI export, or another agent
+as fallback. If MCP is unavailable or cannot see the intended file, immediately
+tell the operator what is blocked; the task remains blocked until the
+editor/custom-editor bridge is restored.
 
 ## Required MCP sequence
 
 Before any design operation beyond tool discovery, call
-`get_editor_state(include_schema: true)`. Use the returned editor state, active
-file, selection, schema, and Pencil rules as the contract for subsequent MCP
-calls. Guessing the `.pen` structure or reading the file directly is not a valid
-substitute.
+`get_editor_state(include_schema: true)` and use the returned schema/rules as
+the contract. Guessing `.pen` structure is not valid.
 
 Use the MCP tools by role:
 
@@ -86,22 +75,13 @@ Use the MCP tools by role:
 | Review visual fidelity | `get_screenshot` |
 | Read variables/themes | `get_variables` |
 | Export review artifacts | `export_nodes` |
-
-Example MCP flow:
-
-```text
-1. get_editor_state(include_schema: true)
-2. batch_get(...) for the smallest useful nodes or searches
-3. batch_design(...) for the requested edit
-4. snapshot_layout(problemsOnly: true)
-5. get_screenshot(...) or export_nodes(...) when visual/export evidence is needed
-```
+| Inspect or use component libraries | `batch_get` plus `batch_design`; read the component-library reference first |
 
 ## Editor/custom-editor troubleshooting
 
-If MCP reports `A file needs to be open in the editor`, or
-`get_editor_state(include_schema: true)` does not identify the intended
-document, ask the operator to:
+If MCP reports `A file needs to be open in the editor`, or the editor state does
+not identify the intended document, immediately notify the operator, then ask
+them to:
 
 1. focus the Pencil canvas for the target `.pen`;
 2. close any raw/text tab for the same file;
@@ -111,6 +91,12 @@ document, ask the operator to:
 After each operator action, retry `get_editor_state(include_schema: true)`.
 Do not bypass the problem with CLI, raw `.pen` reads, filesystem patching,
 or another agent. Report `blocked` if the MCP/editor bridge remains unavailable.
+
+## Component libraries
+
+When the operator asks for component libraries, reusable components,
+`.lib.pen`, or design-system assets, read
+[Component libraries](references/component-libraries.md) before acting.
 
 ## Workflow stages
 
@@ -133,15 +119,17 @@ Validation:
 
 Restore MCP visibility when the editor/custom-editor bridge, not the design content, is the blocker.
 
-1. If the MCP tool reports `A file needs to be open in the editor`, ask the operator to focus the Pencil canvas for the target `.pen`.
-2. Ask the operator to close any raw/text tab for the `.pen` and reopen the file with the Pencil Design Editor or Pencil custom editor.
-3. Ask the operator to reload the editor window or Pencil extension when the correct editor is open but MCP still sees no file.
-4. Re-run `get_editor_state(include_schema: true)` after the operator changes focus, editor mode, or extension state.
-5. If MCP still cannot see the file, mark the task blocked until the editor/custom-editor bridge is restored.
+1. If Pencil MCP is unavailable or cannot see the intended `.pen`, immediately tell the operator that MCP/open-file access is blocked before attempting troubleshooting.
+2. If the MCP tool reports `A file needs to be open in the editor`, ask the operator to focus the Pencil canvas for the target `.pen`.
+3. Ask the operator to close any raw/text tab for the `.pen` and reopen the file with the Pencil Design Editor or Pencil custom editor.
+4. Ask the operator to reload the editor window or Pencil extension when the correct editor is open but MCP still sees no file.
+5. Re-run `get_editor_state(include_schema: true)` after the operator changes focus, editor mode, or extension state.
+6. If MCP still cannot see the file, mark the task blocked until the editor/custom-editor bridge is restored.
 
 Validation:
 
 - The bridge is restored only when `get_editor_state(include_schema: true)` succeeds for the intended document.
+- The operator was notified immediately when MCP or target-file access was unavailable.
 - No CLI, raw file access, filesystem patching, or alternate agent path is used to bypass the missing MCP state.
 
 ### Workflow stage: Read and plan with MCP
@@ -158,6 +146,19 @@ Validation:
 
 - The planned edit or export is grounded in MCP-returned nodes, variables, guidelines, or selection state.
 - The agent has not read or parsed the `.pen` file through filesystem or JSON tools.
+
+### Workflow stage: Create or use component libraries
+
+Build reusable Pencil component assets and use them in mockups without leaving the MCP-only boundary.
+
+1. Read `references/component-libraries.md` before creating, importing, inspecting, or using reusable components or `.lib.pen` files.
+2. Work only against MCP-visible open library and target files; immediately notify the operator when an editor UI action is required for library creation, import, or asset placement.
+3. Use `batch_design` and `batch_get` according to the schema to create/list reusable components and place instances, then verify refs or instances through MCP.
+
+Validation:
+
+- The component inventory and target mockup usage are visible through MCP reads.
+- Any required UI-only library setup/import step is reported immediately and not bypassed with CLI or raw `.pen` editing.
 
 ### Workflow stage: Create or iterate with MCP
 
@@ -215,6 +216,7 @@ Validation:
 - **high** — Do not read, grep, parse, diff, patch, or hand-edit `.pen` files as text or JSON. Treat them as opaque and use Pencil MCP only.
 - **high** — Do not use Pencil CLI, reinstall Pencil CLI, CLI interactive mode, CLI agent mode, headless generation, or CLI export as fallback for `.pen` work.
 - **high** — If MCP cannot see the intended `.pen`, the task is blocked on the editor/custom-editor bridge until `get_editor_state(include_schema: true)` succeeds.
+- **high** — Do not claim component-library work from naming, screenshots, or duplicate shapes alone; verify reusable components, refs, or instances through MCP.
 - **high** — Do not silently add creative detail to the user's prompt. Pencil has its own design operations; invented specifics can conflict with the brief.
 - **medium** — Do not use temporary directories for durable exports or handoff docs unless the user explicitly wants throwaway output.
 - **medium** — Copied foundation/reference frames are scaffolding. Remove them from the target `.pen` after target frames are created and verify the top-level inventory through MCP.
@@ -232,7 +234,7 @@ All `.pen` read, inspect, edit, layout-check, screenshot, and export work must g
 Pencil CLI, CLI headless runs, CLI interactive mode, CLI agent mode, CLI export, CLI installation/reinstallation, built-in Pencil agents, raw JSON, text editors, filesystem reads, grep, diff, and patch tools are not valid `.pen` workflows for this skill.
 
 ### Editor bridge policy
-If `get_editor_state(include_schema: true)` cannot see the intended `.pen`, stop and troubleshoot the editor/custom-editor bridge; if it remains unavailable, report blocked instead of bypassing MCP.
+If Pencil MCP is unavailable or `get_editor_state(include_schema: true)` cannot see the intended `.pen`, immediately notify the operator, then troubleshoot the editor/custom-editor bridge; if it remains unavailable, report blocked instead of bypassing MCP.
 
 ### Schema-first policy
 Call `get_editor_state(include_schema: true)` before other MCP operations unless the current `.pen` schema is already in context, and follow that schema for every `batch_get`, `batch_design`, layout, screenshot, variable, or export operation.
@@ -243,11 +245,17 @@ Pass the user's design request or edit request directly unless the user asks you
 ### Evidence policy
 Prefer MCP layout checks plus MCP screenshot/export evidence. If visual inspection is impossible, say the artifact is unreviewed and explain why.
 
+### Component library policy
+Component library work must prove reusable component origins and mockup instances through MCP-visible nodes; UI-only library creation/import steps must be surfaced to the operator immediately when MCP does not expose them.
+
 ### Handoff clarity policy
 Multi-frame mockups need a sibling README or index when the project expects a handoff artifact; it should explain purpose, status, source links, frame inventory, anti-claims, privacy constraints, and review evidence.
 
 ### Runtime delivery policy
 Do not treat Pencil artifacts as proof of implemented runtime capability when the project delivery plan accepts runtime behavior.
+
+## Optional references
+- [Component libraries](references/component-libraries.md) — Read this when the operator asks to create, maintain, import, inspect, or use Pencil component libraries, reusable components, `.lib.pen` files, or design-system assets.
 
 ## Portability rules
 

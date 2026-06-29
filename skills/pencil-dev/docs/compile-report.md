@@ -2,11 +2,12 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.4`
+- Skill source version: `0.1.5`
 
 ## Source files
 - `agents/openai.yaml`
 - `fragments/overview.md`
+- `references/component-libraries.md`
 - `skill.yaml`
 
 ## Required references
