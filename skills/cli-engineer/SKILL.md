@@ -15,9 +15,9 @@ description: >-
 
   UI, and packaging or releasing command-line apps.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: df4e01773611666cba485ac1b16368956dd9ef88b24d99b285aab4962cf5aaa1
+  skillforge-source-hash: 5deceebb91d13d2eb03f7c1081907d6deebf7b8a1a7efa35a1cb7159c40c8d96
 ---
 
 # cli-engineer
@@ -39,7 +39,7 @@ metadata:
 - Setting up CLI testing, release automation, packaging, npm publishing, provenance, or optional standalone distribution
 - Requiring modular CLI architecture for better testability or adding a missing repo quality gate
 - Standardizing Vite-based CLI bundling and `node:test` process-level verification
-- Reviewing a CLI for UX, scripting composability, cross-platform behavior, or operational safety
+- Reviewing a CLI for UX, scripting composability, cross-platform behavior, manifest/package contracts, or operational safety
 
 ## When NOT to use this skill
 
@@ -81,15 +81,18 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 
 - Keep the CLI layer thin. Parsing, help, TTY detection, formatting, and exit codes belong in CLI code; business rules do not.
 - Use the first sufficient CLI surface: built-in `node:util.parseArgs`, native shell/stdin/stdout behavior, and existing project dependencies come before a new parser framework, prompt layer, TUI library, or wrapper.
+- Use conventional POSIX-style flag syntax unless the product has an explicit, documented reason to do otherwise; do not invent custom option grammars that make shell use, help, and completion harder.
 - Design the utility as modular layers and modules with explicit boundaries so commands, use cases, formatters, and adapters stay independently testable.
 - For service-backed CLIs, prefer an explicit command family over vague catch-all verbs: health/setup (`doctor`, optional `init`), discovery, resolve/ID lookup, read/list/search, narrow write actions, and a clearly named raw escape hatch when one is justified.
 - Every interactive flow must have a non-interactive path through flags, args, stdin, config, or files.
 - Use `stdout` for primary output and machine-readable output; use `stderr` for diagnostics, prompts, and errors.
 - Treat `--help`, output shape, flag names, and exit codes as public API.
+- For installable or user-facing CLIs, expose `--version` / `-V`, derive it from the package version source of truth, and include version context in supportable error or bug-report paths.
 - For protected deploy, rollback, release, infra mutation, external executor, or comparable side-effecting commands, validate the per-action option contract before any side effect.
 - Show concise help when required inputs are missing, unless the command is intentionally interactive-first and still exposes a non-interactive path; show full help on `-h` / `--help`.
 - Define an explicit error taxonomy and exit-code mapping; do not scatter ad hoc `process.exit(1)`.
 - Detect TTY before prompts, spinners, colors, or full-screen UI; respect CI and non-interactive shells.
+- Persist CLI state only when it materially improves repeated use; use user-controlled config/state locations, document precedence, and provide a cleanup or uninstall path for files the CLI creates.
 - Keep CLI evolution additive where possible: prefer explicit aliases, avoid catch-all subcommands, and do not rely on ambiguous prefix abbreviations.
 - Never require secrets on the command line when stdin, env, keychain, or config files are safer.
 - Unit tests are mandatory. Do not treat integration or smoke coverage as a substitute for unit coverage of core behavior.
@@ -123,8 +126,9 @@ Do not force Vite when bundling is unnecessary or repo-specific constraints clea
 7. Separate CLI/adapters from app/domain logic into modular, testable boundaries and define config precedence, output modes, and error codes.
 8. Design non-interactive paths before prompts or TUI polish.
 9. Make unit tests mandatory, then add process execution and contract-surface coverage, with `node:test` and `node --experimental-strip-types --test` as the required baseline.
-10. Ensure the repo has a package-level quality gate with explicit scripts for `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`; if the repo splits formatter and linter, expose the narrower scripts too.
-11. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, install-path verification, and provenance where supported.
+10. Lock the package contract for durable CLIs: `bin`, `files`, `engines.node`, `--version`, changelog/release notes, and install/uninstall behavior.
+11. Ensure the repo has a package-level quality gate with explicit scripts for `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`; if the repo splits formatter and linter, expose the narrower scripts too.
+12. Package and release with reproducible builds, Vite artifact smoke tests, platform smoke tests, install-path verification, and provenance where supported.
 
 ## High-signal Triggers
 

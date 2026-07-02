@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: cli-engineer
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 20000
   description: |-
     Standardize and build production-grade TypeScript command-line tools on Node.js.
@@ -83,7 +83,7 @@ sections:
     - Setting up CLI testing, release automation, packaging, npm publishing, provenance, or optional standalone distribution
     - Requiring modular CLI architecture for better testability or adding a missing repo quality gate
     - Standardizing Vite-based CLI bundling and `node:test` process-level verification
-    - Reviewing a CLI for UX, scripting composability, cross-platform behavior, or operational safety
+    - Reviewing a CLI for UX, scripting composability, cross-platform behavior, manifest/package contracts, or operational safety
   whenNotToUse:
     - General Node backend or service runtime work without a CLI surface; use `node-engineer`
     - Type-level library API design that is not CLI-specific; use `typescript-engineer`

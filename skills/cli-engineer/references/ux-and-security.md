@@ -85,8 +85,8 @@ A protected CLI without strict option allowlists and pre-side-effect validation 
 
 ## Telemetry And Updates
 
-- telemetry must be transparent, documented, and easy to disable
-- opt-in is preferred; opt-out requires explicit disclosure and a frictionless disable path
+- new telemetry and analytics collection must be explicit opt-in
+- any inherited opt-out telemetry must be transparent, documented, and easy to disable before it is preserved
 - never block startup on analytics
 - update notifications should be lazy, infrequent, and respectful of TTY
 - do not surprise users with network traffic on every command invocation
@@ -108,6 +108,8 @@ A protected CLI without strict option allowlists and pre-side-effect validation 
 
 - prefer structured argument APIs over shell-interpolated command strings
 - never concatenate untrusted input into shell commands
+- pass user-controlled operands after a `--` terminator when the child command supports it
+- validate proxyable flags and subcommands with allowlists before invoking external tools
 - allowlist external commands when the CLI proxies or shells out
 - quote and escape only through well-understood APIs, not ad hoc string templates
 

@@ -26,6 +26,7 @@ A production CLI should feel pleasant for humans and predictable inside scripts.
 - return `0` on success and stable non-zero codes on meaningful failure classes
 - send primary and machine-readable output to `stdout`
 - send errors, diagnostics, prompts, and log-style messaging to `stderr`
+- expose `--version` / `-V` for installable or user-facing tools
 
 ### Help
 
@@ -106,6 +107,7 @@ A production CLI should feel pleasant for humans and predictable inside scripts.
 - use XDG-aware config locations where a user-level config file is justified
 - use standard env vars where they already exist: `NO_COLOR`, `DEBUG`, `EDITOR`, proxy vars, `TMPDIR`, `PAGER`, `LINES`, `COLUMNS`
 - do not use `.env` as a universal substitute for real configuration
+- when a CLI writes persistent config, cache, logs, or credentials, document the files and provide a cleanup or uninstall path
 
 ### Naming
 

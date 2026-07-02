@@ -45,6 +45,14 @@ Never make precedence depend on load order accidents.
 
 If configuration is complex enough to deserve files, keep the layer split explicit instead of overloading `.env` for everything.
 
+Persist user state only when repeated invocations materially benefit from it. When a CLI writes user config, credentials, caches, logs, or generated defaults:
+
+- use platform-appropriate, user-controlled config and state locations
+- document what is written and which layer wins during config resolution
+- keep secrets out of world-readable locations
+- provide a documented cleanup or uninstall path for files created by the CLI
+- do not silently create long-lived state for commands that can remain stateless
+
 ## Output Model
 
 Default contract:
@@ -61,6 +69,8 @@ For automation-facing commands, prefer:
 - `--plain` only when rich human formatting would otherwise break scripting
 - `-` for stdin/stdout when stream workflows are a first-class use case
 
+When output points users to URLs, docs, or source locations, prefer full terminal-clickable URLs and `path:line[:column]` style file references over opaque short links.
+
 ## Error Model
 
 Define an application error type with at least:
@@ -71,6 +81,13 @@ Define an application error type with at least:
 - optional structured details for debug mode
 
 Expected failures should produce actionable messages. Unexpected failures should produce a short summary plus a path to deeper debugging (`--debug`, log file, trace id, etc.).
+
+For installable or user-facing CLIs, error and bug-report paths should include enough support context to identify the running build:
+
+- command name and version
+- stable error code
+- debug or verbose path for deeper diagnostics
+- issue/report URL only when it is maintained and prefilled without leaking secrets
 
 ## Command Grammar And Evolution
 
@@ -89,7 +106,7 @@ Keep this separate from domain business rules. The CLI layer decides whether the
 
 ## Signals, Recovery, And Interruptions
 
-- Ctrl-C should interrupt promptly
+- Ctrl-C and POSIX termination signals such as `SIGINT` and `SIGTERM` should interrupt promptly
 - cleanup must not hang forever; bound it with timeouts
 - if a second Ctrl-C changes behavior, say so explicitly
 - design long-running work to be resumable, idempotent, or crash-only where possible
@@ -191,12 +208,16 @@ For package-based CLI work:
 - source code lives in `src/` as TypeScript
 - tests live in `test/` as TypeScript
 - build output defaults to `dist/`, but the final output directory should be agreed with the operator and may be `dist/`, `bin/`, or `scripts/` depending on repo conventions
-- `package.json#bin` points at the runtime entry inside the chosen output directory
+- `package.json#bin` points at the runtime entry inside the chosen output directory; for published CLIs, prefer an explicit object mapping command name to runtime entry
+- `package.json#files` allowlists only the built runtime files and required assets
+- `package.json#version` is the single source of truth for `--version` unless the repository has a stronger release metadata source
+- `package.json#engines.node` states the supported Node baseline, and unsupported runtimes fail early with a clear message when practical
 - tiny shell wrappers are acceptable, but do not bury real product logic in `bin/`
 - Vite is the default bundler baseline when bundling is required
 - for Vite-based CLI builds, set an explicit Node-oriented target and entry instead of relying on browser defaults
 - set the bundler output directory explicitly so the runtime path matches the agreed package layout
 - keep sourcemaps enabled for production debugging unless the distribution model has a strong reason not to
+- executable entries should use an environment-based shebang such as `#!/usr/bin/env node`; never hardcode a machine-specific Node path
 
 In a pnpm workspace:
 
@@ -277,6 +298,7 @@ Apply the rest of the CLI contract around that baseline:
 
 - test Windows explicitly; do not assume POSIX shell behavior
 - use structured subprocess APIs instead of shell-joined strings
+- use `process.cwd()` for user-supplied relative paths and `import.meta.dirname` / module-relative resolution for files shipped with the CLI
 - normalize paths and line endings where CLI contracts depend on them
 - design for terminals that are narrow, non-color, or not fully interactive
 - use standard env vars where helpful, for example `NO_COLOR`, `DEBUG`, proxy vars, `EDITOR`, `PAGER`, `LINES`, and `COLUMNS`

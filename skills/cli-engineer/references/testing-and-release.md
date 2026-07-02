@@ -45,11 +45,13 @@ If the CLI is intended to be invoked as an installed command outside its source 
 Lock down public CLI surface:
 
 - `--help`
+- `--version` / `-V` for installable or user-facing CLIs
 - concise help when required args are missing, unless the command is intentionally interactive-first and still exposes a non-interactive path
 - `--json`
 - `--plain` when the CLI explicitly supports a richer human view that needs a script-safe escape hatch
 - stable exit-code mappings
 - machine-readable schema for automation-facing commands
+- documented debug or verbose behavior
 - deprecation warnings for interfaces scheduled to change
 
 Be selective with snapshots. Snapshot only stable contract surfaces, not noisy debug output.
@@ -119,6 +121,15 @@ Verify:
 
 If the interactive framework offers test helpers, use them, but still keep at least one process-level smoke test for the real entrypoint.
 
+## Locale And Environment Tests
+
+Do not let tests depend accidentally on the developer's terminal, locale, timezone, or color support.
+
+- set locale, timezone, color, CI, and TTY-related environment variables explicitly when assertions depend on them
+- assert behavior and structured fields before asserting translated or human-facing prose
+- test non-TTY and piped paths separately from interactive paths
+- keep fixture paths portable across Windows, macOS, and Linux
+
 ## Quality Gate Baseline
 
 If the target CLI repository does not already provide an equivalent gate, add one.
@@ -176,11 +187,12 @@ Do not publish a CLI because unit tests passed while the built artifact was neve
 
 For npm-distributed CLIs:
 
-- define `bin`
+- define `bin`, preferably as an explicit command-name object for published CLIs
 - keep `files` tight
 - publish only built runtime files and required assets
 - set `engines.node` intentionally
 - ensure shebang handling survives the build tool
+- expose `--version` / `-V` from the same version source used by release tooling
 - make uninstall straightforward and documented where install instructions are published
 - for bundled TypeScript CLIs, prefer Vite as the default bundler baseline and configure it for a Node target rather than browser defaults
 - choose the build output directory with the operator for the target repo; `dist/` is common, but `bin/` or `scripts/` may be the correct runtime folder in repos with established conventions
@@ -215,6 +227,8 @@ Typical release flow:
 6. verify update path if the CLI has plugin or self-update behavior
 7. verify uninstall or clean removal instructions still work
 
+For public versioned releases, keep SemVer, npm tags, changelog/release notes, and documented deprecations aligned with the CLI's public interfaces: flags, env vars, config keys, command output schemas, and command names.
+
 ## Review Checklist
 
 - Was the real built command executed in tests?
@@ -224,3 +238,5 @@ Typical release flow:
 - For protected commands, are unknown flags, removed/prohibited legacy flags, deprecated supported aliases, and fail-before-side-effects behavior tested?
 - Are publish credentials and provenance handled safely?
 - Are optional standalone artifacts treated as a separately verified contract?
+- Does the published package include only intended runtime files and required assets?
+- Can users identify the running CLI version from `--version` and support/error paths?
