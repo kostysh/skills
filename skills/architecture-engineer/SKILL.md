@@ -11,9 +11,9 @@ description: "Design or revise software architecture for AI-agent-driven
 compatibility: Portable documentation-only skill. It ships artifact templates
   but no runtime; all mandatory architecture guidance lives in this folder.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 1a067af385726509abbaf0555182dff87e6492d85e42f46596c375f5ec82c2ff
+  skillforge-source-hash: cd009f6209b8381bda1b3f70a02a309a87d21c17940d9411d1ccb6d25a0e1a9e
 ---
 
 # architecture-engineer
@@ -262,7 +262,6 @@ Validation:
 - **medium** — Do not introduce new layering, framework, or naming style without checking existing code.
 - **medium** — Quality gates are weak when CI passes but does not validate the scenario that drove the pattern.
 - **medium** — Improving one component while violating system-level constraints is a local optimum, not good architecture.
-- **high** — Treat route namespaces, privileged data paths, universal event-payload shape, service-role use, and cross-slice validation behavior as architecture-boundary decisions, not local implementation details.
 
 ## Policies
 
@@ -289,9 +288,6 @@ When a high-risk decision depends on missing evidence, propose a bounded spike b
 
 ### Architecture-to-spec handoff policy
 Every significant architecture decision must produce clear constraints, invariants, validation obligations, rollback/migration considerations, or documentation obligations for the next stage.
-
-### Contract boundary note policy
-When a design changes a public API route family, privileged persistence path, shared event/history model, or validation/data-quality boundary, create or update the narrowest architecture or contract note before downstream implementation.
 
 ### No task backlog policy
 Do not emit implementation tickets from this skill. Use `architecture_handoff_item` for downstream spec candidates or obligations. Leave task decomposition to `spec-engineer`, planning, or implementation workflow stages.

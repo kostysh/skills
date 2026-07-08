@@ -454,6 +454,12 @@ export function applyFieldErrors<TField extends string>(
 
 Screens should call the adapter with typed field names. Do not scatter `as any`, raw API error casts, or stringly field mapping across route components.
 
+### Form-backed mutation contract
+
+For form-backed mutations, prefer the server-exported schema, enum, or type for the request contract. Do not create local domain schemas, enum copies, or validation rules when the server contract already exports them.
+
+Before network submission, validate the editable payload against that contract. Render server field errors under the relevant fields, keep required markers owned by the field component instead of literal label strings, and send the complete editable payload unless the accepted server contract explicitly defines a partial command with intentionally omitted fields.
+
 ### Revalidate Same Schema on Server
 
 ```tsx

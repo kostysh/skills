@@ -9,9 +9,9 @@ description: >-
   Use when designing or hardening reusable React components, including
   RSC-oriented code paths.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f22f108f0c68dca98fe67334ee9ee5ceb507a616bcdf1c9d4156ef301122b1d2
+  skillforge-source-hash: 677cd24809a176f56ea4d83047e53d06de5e963de9efa027bb149f90e8eb6326
 ---
 
 # react-components-engineer
@@ -121,7 +121,7 @@ Validation:
 ## Policies
 
 ### Reusable component first policy
-When a UI control or state can plausibly recur, add the reusable component and Storybook states before wiring the domain screen; feature code should compose shared controls rather than redrawing them.
+When a UI control is already reused, belongs to an accepted design-system surface, or the task explicitly asks for reusable UI foundation, add or update the shared component and Storybook states before wiring domain screens.
 
 ## Required active references
 - [Bulletproof Patterns](references/bulletproof-patterns.md) — Read this when you need Full guidance for all 10 hardening patterns, code templates, caveats, and review checks.

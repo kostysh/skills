@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise software architecture for AI-agent-driven development. Use
@@ -306,9 +306,6 @@ sections:
     - id: gotcha-local-optimum
       priority: medium
       text: Improving one component while violating system-level constraints is a local optimum, not good architecture.
-    - id: gotcha-public-contract-boundary
-      priority: high
-      text: Treat route namespaces, privileged data paths, universal event-payload shape, service-role use, and cross-slice validation behavior as architecture-boundary decisions, not local implementation details.
   policies:
     - id: policy-evidence-first
       title: Evidence-first policy
@@ -334,9 +331,6 @@ sections:
     - id: policy-handoff
       title: Architecture-to-spec handoff policy
       text: Every significant architecture decision must produce clear constraints, invariants, validation obligations, rollback/migration considerations, or documentation obligations for the next stage.
-    - id: policy-contract-boundary-note
-      title: Contract boundary note policy
-      text: When a design changes a public API route family, privileged persistence path, shared event/history model, or validation/data-quality boundary, create or update the narrowest architecture or contract note before downstream implementation.
     - id: policy-no-backlog
       title: No task backlog policy
       text: Do not emit implementation tickets from this skill. Use `architecture_handoff_item` for downstream spec candidates or obligations. Leave task decomposition to `spec-engineer`, planning, or implementation workflow stages.

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-components-engineer
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 20000
   description: |-
     Build and review bulletproof React components that remain correct across SSR, hydration, multiple instances, concurrent rendering, async/opaque children, portals/iframes, transitions, Activity visibility, server-client data boundaries, and future React runtime changes.
@@ -68,7 +68,7 @@ sections:
   policies:
     - id: policy-reusable-component-first
       title: Reusable component first policy
-      text: When a UI control or state can plausibly recur, add the reusable component and Storybook states before wiring the domain screen; feature code should compose shared controls rather than redrawing them.
+      text: When a UI control is already reused, belongs to an accepted design-system surface, or the task explicitly asks for reusable UI foundation, add or update the shared component and Storybook states before wiring domain screens.
   portability:
     required: true
     rules:

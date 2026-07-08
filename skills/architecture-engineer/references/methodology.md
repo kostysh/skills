@@ -124,6 +124,8 @@ Validation:
 
 - The decision is not lifted to system-level unless ASR forces it.
 - Public API, data, auth, tenancy, and deployment decisions are not treated as local code choices.
+- Route namespaces, privileged persistence paths, shared event/history models, service-role use, and cross-slice validation or data-quality boundaries are treated as architecture-boundary decisions.
+- When a design changes a public route family, privileged persistence path, shared event model, or validation boundary, create or update the narrowest architecture or contract note before downstream implementation.
 
 ## Workflow stage: Generate candidate patterns
 

@@ -7,9 +7,9 @@ description: |-
   dashboards, web pages, marketing visuals, slide-like graphics, and edits to
   existing Pencil designs where `.pen` handling must stay MCP-only.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 72bf050600f2599fd17c5cee55a24a93538d94c5877c4c3c4029a611bd71f971
+  skillforge-source-hash: 183264db27125655f8ce81533f742dd767e6ae62d01a6c45d25c4cfb2014030f
 ---
 
 # pencil-dev
@@ -216,7 +216,6 @@ Validation:
 - **high** — Do not read, grep, parse, diff, patch, or hand-edit `.pen` files as text or JSON. Treat them as opaque and use Pencil MCP only.
 - **high** — Do not use Pencil CLI, reinstall Pencil CLI, CLI interactive mode, CLI agent mode, headless generation, or CLI export as fallback for `.pen` work.
 - **high** — If MCP cannot see the intended `.pen`, the task is blocked on the editor/custom-editor bridge until `get_editor_state(include_schema: true)` succeeds.
-- **high** — If an imported `.lib.pen` changed, do not trust an already-open consumer document until MCP confirms the refreshed library/component state after the operator reloads or reopens it.
 - **high** — Do not claim component-library work from naming, screenshots, or duplicate shapes alone; verify reusable components, refs, or instances through MCP.
 - **high** — Do not silently add creative detail to the user's prompt. Pencil has its own design operations; invented specifics can conflict with the brief.
 - **medium** — Do not use temporary directories for durable exports or handoff docs unless the user explicitly wants throwaway output.

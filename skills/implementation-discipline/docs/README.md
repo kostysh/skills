@@ -20,6 +20,7 @@
 - [logs/implementation-log-20260602-1.md](logs/implementation-log-20260602-1.md) - project-purpose alignment for non-trivial local implementation work.
 - [logs/implementation-log-20260612-1.md](logs/implementation-log-20260612-1.md) - remediation matrix statuses and substrate-versus-runtime-capability evidence.
 - [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) - first sufficient rung, shortcut trigger, and minimum-check guidance.
+- [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) - stable-evidence and operator-not-QA remediation traceability.
 
 ## Scope of This Folder
 

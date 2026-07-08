@@ -10,3 +10,4 @@ Supporting documentation for `pencil-dev`. These files are not part of the activ
 - [implementation-log-20260610-1.md](logs/implementation-log-20260610-1.md) — Live editor MCP rules, handoff cleanup, and mockup delivery-gate guidance.
 - [implementation-log-20260629-1.md](logs/implementation-log-20260629-1.md) — MCP-only `.pen` workflow and CLI fallback prohibition.
 - [implementation-log-20260629-2.md](logs/implementation-log-20260629-2.md) — Immediate MCP-block notification and component-library workflow.
+- [implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — `.lib.pen` stale-cache guardrail, size-warning cleanup, and evidence traceability.

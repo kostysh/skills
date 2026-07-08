@@ -53,11 +53,14 @@ operator what is blocked and which editor action is needed. Continue only after
 2. Confirm the needed library is imported or otherwise visible to the target
    file. If not, immediately notify the operator and ask for the editor import
    step instead of bypassing MCP.
-3. Use `batch_get` reusable-node searches to list available library components.
-4. Place or copy component instances through `batch_design` according to the
+3. After a `.lib.pen` file changes, do not trust an already-open consumer file
+   until MCP confirms refreshed library/component state after the operator
+   reloads or reopens it.
+4. Use `batch_get` reusable-node searches to list available library components.
+5. Place or copy component instances through `batch_design` according to the
    schema. Customize instance content, state, or variant without detaching unless
    the user asks for a one-off design.
-5. Verify that target frames contain component refs or instances, not merely
+6. Verify that target frames contain component refs or instances, not merely
    visually similar duplicated shapes.
 
 ## Reporting

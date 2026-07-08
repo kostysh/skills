@@ -13,3 +13,4 @@
 ## Implementation Logs
 
 - [logs/implementation-log-20260612-1.md](logs/implementation-log-20260612-1.md) — scenario-level SPA evidence и distinction между route-intercepted и live acceptance. Статус: PASS.
+- [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — browser evidence guardrails и remediation traceability для SL-01. Статус: PASS.

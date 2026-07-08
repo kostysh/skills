@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-spa-engineer
-  source-version: 0.1.6
+  source-version: 0.1.7
   recommended-skill-md-max-bytes: 20000
   description: |-
     Comprehensive React SPA development expert for building production-ready single-page applications. Covers component architecture, state management (Zustand, Context), explicit persistence architecture (URL state, runtime UI state, Dexie/IndexedDB), data fetching (TanStack Query), forms (React Hook Form + Zod), routing (React Router), TypeScript patterns, performance optimization, testing (Vitest, RTL, Playwright), and accessibility.
@@ -129,17 +129,8 @@ sections:
         - The outcome follows the preserved skill guidance and any loaded reference constraints.
   interop: []
   commands: []
-  gotchas:
-    - id: gotcha-local-schema-duplication
-      priority: high
-      text: Do not create local domain schemas, enums, or form validation rules when the server contract exports the schema or type for that request.
-    - id: gotcha-dirty-only-default
-      priority: high
-      text: Do not send dirty-only payloads from a full edit form unless the server contract is explicitly partial and the omitted fields are intentionally unchanged.
-  policies:
-    - id: policy-spa-form-contract
-      title: SPA form contract policy
-      text: Form-backed mutations must validate with server-exported schemas before network submission, render field errors under fields, keep required markers component-driven, and send complete editable payloads unless the accepted contract says partial command.
+  gotchas: []
+  policies: []
   portability:
     required: true
     rules:

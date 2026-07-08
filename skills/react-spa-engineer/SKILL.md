@@ -13,9 +13,9 @@ description: >-
   up project architecture, or troubleshooting React client-side applications.
   Excludes SSR, RSC, Next.js server-side patterns.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 0f5e96de6d5008730103959b20abf9ebf7ca545ce83d1c4ff787ff1ac70ed53a
+  skillforge-source-hash: ac0fa82fee2f550c959ab28a04879ccae44a44a1c9df64c14cd91ef295690b4c
 ---
 
 # react-spa-engineer
@@ -324,16 +324,6 @@ Apply the preserved react-spa-engineer guidance without changing its domain beha
 Validation:
 
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
-
-## Gotchas
-
-- **high** — Do not create local domain schemas, enums, or form validation rules when the server contract exports the schema or type for that request.
-- **high** — Do not send dirty-only payloads from a full edit form unless the server contract is explicitly partial and the omitted fields are intentionally unchanged.
-
-## Policies
-
-### SPA form contract policy
-Form-backed mutations must validate with server-exported schemas before network submission, render field errors under fields, keep required markers component-driven, and send complete editable payloads unless the accepted contract says partial command.
 
 ## Required active references
 - [Accessibility](references/accessibility.md) — Read this when you need patterns and examples.
