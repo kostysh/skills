@@ -4,9 +4,9 @@ description: Build and maintain production-grade Hono API services across
   projects. Use when designing endpoints, middleware, config, logging,
   validation, security, and tests for Hono-based APIs.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 31715ecd6a8ef2891b1b304485267cf57dbdf72828e4e63a369373a9f77ced62
+  skillforge-source-hash: f3cc7e2462bce1dee14e333e80a16dd35ac93ab59173ac22292257f7f8665984
 ---
 
 # hono-engineer
@@ -151,6 +151,16 @@ Validation:
 ## Interop priority
 
 - **TypeScript testing patterns:** typescript-test-engineer. This skill owns Hono API guidance, while testing depth and runner patterns belong to the TypeScript testing skill.
+
+## Gotchas
+
+- **high** — Do not let predictable Zod, domain, RPC, Postgres, or Supabase validation failures escape as raw internal errors. Map form-backed validation to safe field-level problem details before the response leaves Hono.
+- **high** — Do not name public routes after roles unless the capability is truly an admin console surface; route names should normally describe the domain, capability, or resource.
+
+## Policies
+
+### API preflight policy
+Before adding or changing a Hono route, confirm route naming disposition, strict request schema coverage, forbidden/computed fields, all editable fields, service-level field errors, safe problem mapping, auth/CSRF behavior, and test evidence.
 
 ## Required active references
 - [Architecture](references/architecture.md) — Read this when you need module boundaries, layering, and dependency rules.

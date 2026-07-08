@@ -9,9 +9,9 @@ description: Systematic security code review skill for vulnerabilities in
   gating, exploitability checks, and evidence; pairs with domain skills for
   framework details.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 0943323065f1a9cfc6aa59d9b2aef9007249491fe4cef39bf493e192fbae1251
+  skillforge-source-hash: 900d3b9e47bbd31140575324dcc221ec93de48dc898060c0cbccc5b3e89735b1
 ---
 
 # security-reviewer
@@ -281,6 +281,16 @@ Validation:
 - **security threat model, exploitability, confidence thresholds, and vulnerability reporting:** security-reviewer. This skill owns security findings and reporting discipline.
 - **framework/runtime facts and remediation detail:** the relevant domain skill. Domain skills own framework behavior, while this skill decides whether the issue is exploitable and reportable.
 - **non-security review flow and general merge-risk findings:** code-reviewer. Move non-security findings to code-reviewer when both skills are active.
+
+## Gotchas
+
+- **high** — A PASS on an old diff is not evidence for a changed implementation. If files or behavior changed after the audit, perform a delta review on the new scope before reporting PASS.
+- **high** — Review screenshots, status-site evidence, history payloads, logs, and problem responses for secrets, raw provider payloads, tokens, cookies, OTP, and unnecessary PII; code-only security review is insufficient for evidence-bearing changes.
+
+## Policies
+
+### Audit scope contract
+A security audit must name the exact diff or commit scope, external surfaces, data-access construction, forbidden-data checks, and current evidence artifacts reviewed. If any scope item is unreviewed, report it as residual risk.
 
 ## Required active references
 - [Api Auth Input](references/api-auth-input.md) — Read this when you need input validation, injection, authn, authz, CSRF refresh/reissue threat modeling, mass assignment, file handling checks, and detection hints.

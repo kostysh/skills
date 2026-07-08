@@ -4,9 +4,9 @@ description: Design, implement, and maintain robust tests for TypeScript
   projects (Node/React/edge) with focus on node:test, Vitest, mocking,
   determinism, and coverage.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: fac52d2a1eb4274fee3ae0f92e7427272d09ef82a68873433b00d13287e14308
+  skillforge-source-hash: 3e42638ed53a29ac57b6f35cae3940a79dd896ae32611c20556a34261a53b8af
 ---
 
 # typescript-test-engineer
@@ -295,6 +295,10 @@ Validation:
 - **browser interaction and UI E2E automation workflow:** agent-browser. Use agent-browser for browser sessions, snapshots, and debugging workflows.
 - **CI permissions, secrets, and untrusted inputs:** security-reviewer. Pair CI security-sensitive testing changes with security-reviewer.
 
+## Gotchas
+
+- **high** — Do not let UI tests pass against fixtures that drift from exported server schemas, route names, validation problem shapes, history payload contracts, or security boundaries.
+
 ## Policies
 
 ### Completion evidence
@@ -302,6 +306,9 @@ When reporting completion, name the relevant test, coverage, or CI validation co
 
 ### Smallest sufficient check
 Prefer the smallest runnable check that fails on the behavior regression for low-risk logic. Do not use that rule to downshift security, privacy, money, data-loss, auth, accessibility, release, persistence/RLS/RPC/provider, or production-wiring verification.
+
+### Scenario template coverage
+For API validation, form validation, loading indicators, route naming migration, and history payload work, include tests for both the happy path and the falsifier that previously failed or could pass as substrate-only behavior.
 
 ## Required active references
 - [Agent Browser](references/agent-browser.md) — Read this when working with agent browser.

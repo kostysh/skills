@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 20000
   description: |-
     Review code against normative requirements from specs, contracts, ADRs, tickets, and acceptance
@@ -79,8 +79,17 @@ sections:
         - The outcome follows the preserved skill guidance and any loaded reference constraints.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-issue-is-not-normative
+      priority: high
+      text: Do not treat a delivery issue body as the normative source when PRD, SPEC, PD, architecture, or validation artifacts define the contract.
+    - id: gotcha-substrate-acceptance
+      priority: high
+      text: Do not mark conformance PASS when acceptance can be satisfied by mock screens, storybook stories, generated artifacts, docs, or tests without the claimed runtime behavior.
+  policies:
+    - id: policy-trace-to-source
+      title: Trace to source policy
+      text: Conformance review must trace public contracts, statuses, routes, payloads, and UX claims to their owning artifacts and name any unmatched behavior as drift, not as an implementation choice.
   portability:
     required: true
     rules:

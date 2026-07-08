@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: supabase-engineer
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 20000
   description: Comprehensive Supabase engineering guidance for PostgreSQL schema design, RLS policies, auth, realtime, storage, Edge Functions, migrations/CLI, performance, observability, and troubleshooting. Use when building, refactoring, or debugging Supabase apps; designing schemas or policies; integrating auth/storage/realtime; writing Edge Functions; or setting up Supabase CI/ops workflows.
 fragments:
@@ -173,8 +173,17 @@ sections:
         - The outcome follows the preserved skill guidance and any loaded reference constraints.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-rpc-first-evidence
+      priority: high
+      text: Do not treat memory-store tests, mocked API tests, or direct table reads as evidence for a production Supabase/RLS path that is supposed to be RPC-first.
+    - id: gotcha-audit-fail-open
+      priority: high
+      text: Do not allow domain mutations to succeed when required audit/history evidence is missing, unsafe, or only written outside the transaction.
+  policies:
+    - id: policy-sql-api-design-output
+      title: SQL/API design output policy
+      text: For Supabase-backed API work, design notes must name tables, RPCs, grants/RLS, service-role exceptions, direct table paths, validation/constraint mapping, audit/history payload profile, and tests before migration application.
   portability:
     required: true
     rules:

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-components-engineer
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 20000
   description: |-
     Build and review bulletproof React components that remain correct across SSR, hydration, multiple instances, concurrent rendering, async/opaque children, portals/iframes, transitions, Activity visibility, server-client data boundaries, and future React runtime changes.
@@ -58,8 +58,17 @@ sections:
         - The outcome follows the preserved skill guidance and any loaded reference constraints.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-storybook-app-screen
+      priority: high
+      text: Do not hide full application screens inside Storybook as if they were reusable components. Storybook should document reusable components, states, and justified compositions.
+    - id: gotcha-required-marker-string
+      priority: high
+      text: Do not encode required markers as literal asterisks inside label strings. Form field components should expose a boolean required indicator and own its visual styling.
+  policies:
+    - id: policy-reusable-component-first
+      title: Reusable component first policy
+      text: When a UI control or state can plausibly recur, add the reusable component and Storybook states before wiring the domain screen; feature code should compose shared controls rather than redrawing them.
   portability:
     required: true
     rules:

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.3.2
+  source-version: 0.3.3
   recommended-skill-md-max-bytes: 20000
   description: |-
     Systematic code review skill for pull requests, diffs, and local branch changes.
@@ -135,8 +135,17 @@ sections:
         - The outcome follows the preserved skill guidance and any loaded reference constraints.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-review-moving-target
+      priority: high
+      text: Do not issue a clean review while the diff is still changing. If implementation changes after review, rerun a focused delta review or clearly mark the previous result stale.
+    - id: gotcha-behaviorless-pass
+      priority: high
+      text: Do not pass a change only because types/tests/docs look correct when the requested outcome is runtime behavior, browser behavior, security behavior, or data persistence that was not exercised.
+  policies:
+    - id: policy-review-scope-evidence
+      title: Review scope evidence
+      text: A review should state the reviewed commit or diffstat, the behavioral evidence considered, and any untested user/API/data path. The absence of findings is not evidence for paths that were outside scope.
   portability:
     required: true
     rules:

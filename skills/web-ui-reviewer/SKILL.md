@@ -5,9 +5,9 @@ description: Review web UI code for Web Interface Guidelines compliance
   when asked to review UI/UX, audit design, check accessibility, or review web
   interfaces.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e8fe7b2ab677b7b98e6d3d81ec1a2d3955581e8d73f35402d0056450dabc03b1
+  skillforge-source-hash: ce042745c8d9f1698fba7210255e5d2c07d0d9104daacd04703c77bd5100e0a4
 ---
 
 # web-ui-reviewer
@@ -84,6 +84,16 @@ Apply the preserved web-ui-reviewer guidance without changing its domain behavio
 Validation:
 
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
+
+## Gotchas
+
+- **high** — Do not approve UI work from code inspection alone when visual regressions, spacing, responsive behavior, overlays, or loading states are in scope.
+- **high** — Treat one-off colors, badges, buttons, tabs, pagination, drawers, or form controls as defects unless they match the accepted design system or are explicitly documented deviations.
+
+## Policies
+
+### Current screenshot evidence
+UI review should use current browser or design-tool screenshots for affected desktop/mobile states, including error/loading/empty/drawer/modal states when those states are in scope.
 
 ## Required active references
 - [Web Interface Guidelines](references/web-interface-guidelines.md) — Read this when you need the portable Web Interface Guidelines baseline, OTP UI recovery, mutation form behavior, error-boundary UX, admin-navigation caveats, accessibility IDs, or fallback.

@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.4
+  source-version: 0.2.5
   recommended-skill-md-max-bytes: 22000
   description: >-
     Decompose accepted product scope and architecture handoff into right-sized
@@ -206,6 +206,9 @@ sections:
     - id: policy-no-future-only-support
       title: No future-only support policy
       text: Do not create tasks for scaffolds, wrappers, config surfaces, harnesses, folders, or extension points only because they may be useful later. Keep them out, merge them into the owner increment, or label them as support work with a concrete dependent increment, evidence unlocked, and revisit trigger.
+    - id: policy-support-task-contract
+      title: Support task contract
+      text: A remediation, tooling, documentation, or skills task must name the capability it protects, the defect class it prevents, the evidence it unlocks, and the effectiveness check for the next slice. Do not present support substrate as delivered product capability.
     - id: policy-right-sized-tasks
       title: Right-sized task policy
       text: Each task should have one primary goal, clear dependencies, a risk label, a next step, a verification hint, and a review hint.

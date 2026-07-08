@@ -5,9 +5,9 @@ description: Automates browser interactions for web testing, form filling,
   websites, interact with web pages, fill forms, take screenshots, test web
   applications, or extract information from web pages.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d6395bd30d9796e5a5613ff0aec09a88a50555b403612837ccb4d6a97fbd7fba
+  skillforge-source-hash: dbab52eebb0089049dbe78332ec106b6c54b3d9105abac9da0855dc28a8896bd
 allowed-tools: Bash(agent-browser:*)
 ---
 
@@ -354,6 +354,16 @@ Apply the preserved agent-browser guidance without changing its domain behavior.
 Validation:
 
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
+
+## Gotchas
+
+- **high** — Do not report browser verification without naming the route, account/context, API mode, visible terminal state, console/network findings, and whether backend calls were real or intercepted.
+- **high** — If you launch a local server or browser-owned process for evidence, either stop it before handoff or clearly state that it remains running and who owns it.
+
+## Policies
+
+### Browser handoff evidence
+Browser evidence should include steps taken, expected versus observed behavior, screenshots when useful, console/network summary, authentication context, and exact blockers for any scenario not completed.
 
 ## Portability rules
 

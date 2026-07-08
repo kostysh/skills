@@ -15,9 +15,9 @@ description: >-
 
   rules.
 metadata:
-  source-version: 0.3.2
+  source-version: 0.3.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f7fb6c6ce2074af9b494d79ffa13d9957a13a0a2165357b05b5dbe1b84efdd72
+  skillforge-source-hash: 6af2c59d887f35cb6761b1f81372120cb9e2b9b9a62e9a57691700e381d36965
 ---
 
 # code-reviewer
@@ -222,6 +222,16 @@ Apply the preserved code-reviewer guidance without changing its domain behavior.
 Validation:
 
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
+
+## Gotchas
+
+- **high** — Do not issue a clean review while the diff is still changing. If implementation changes after review, rerun a focused delta review or clearly mark the previous result stale.
+- **high** — Do not pass a change only because types/tests/docs look correct when the requested outcome is runtime behavior, browser behavior, security behavior, or data persistence that was not exercised.
+
+## Policies
+
+### Review scope evidence
+A review should state the reviewed commit or diffstat, the behavioral evidence considered, and any untested user/API/data path. The absence of findings is not evidence for paths that were outside scope.
 
 ## Required active references
 - [Diff Completeness](references/diff-completeness.md) — Read this when you need full diff recovery, reviewed-file accounting, and pre-conclusion audit.

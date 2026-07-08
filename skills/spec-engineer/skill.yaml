@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.5
+  source-version: 0.2.6
   recommended-skill-md-max-bytes: 26000
   description: >-
     Create concise, falsifiable software specifications for AI coding agents.
@@ -255,6 +255,9 @@ sections:
     - id: gotcha-test-default
       priority: medium
       text: Do not use tests as the default verification answer when inspection, analysis, contract validation, simulation, or conformance suites prove the claim more directly.
+    - id: gotcha-public-contract-drift
+      priority: high
+      text: Do not introduce or preserve public routes, enum values, statuses, action names, or history events without an owning source, domain meaning, forbidden values, and falsifiers.
   policies:
     - id: policy-lightweight-first
       title: Lightweight-first policy
@@ -280,6 +283,9 @@ sections:
     - id: policy-atomic-requirements
       title: Atomic requirement policy
       text: Each normative requirement should express one obligation with an explicit subject, condition, action, object, and constraint. Split compound requirements before adding acceptance criteria.
+    - id: policy-event-payload-contracts
+      title: Event payload contract policy
+      text: Runtime history or audit events must define purpose, bounded result/status, safe payload fields, forbidden data, and consumer usefulness. Events that only say an action happened are incomplete unless their explicit purpose is access accountability.
     - id: policy-representation-fit
       title: Representation-fit policy
       text: >-

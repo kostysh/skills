@@ -7,9 +7,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9e40ebb9139588c2eb12d901520f46702daa101bf324151eb0d712d9c46fe3ef
+  skillforge-source-hash: 2061865e5f0c62ff29ac857ef26fdc5168b3efd23bd6cd2532ca81a584df0ed1
 ---
 
 # implementation-discipline
@@ -146,6 +146,7 @@ Validation:
 - **high** — Do not add a dependency, layer, factory, interface, provider, wrapper, or config surface until standard, native, existing-project, or inline options have been checked and found insufficient.
 - **high** — Do not broaden the diff with unrelated cleanup or refactoring.
 - **medium** — If you cannot verify the intended outcome, say so explicitly instead of implying confidence.
+- **high** — Do not hand off non-trivial work from a moving diff. Stabilize the changed scope, run the relevant verification, and label any remaining claim as implemented but not verified.
 - **medium** — If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
 - **high** — Do not treat acceptance criteria as sufficient when they can be satisfied by mocks, metadata, tables, logs, wrappers, or documentation without the claimed behavior.
 - **high** — Do not treat local correctness as sufficient when the change does not advance, or actively conflicts with, the intended project capability.
@@ -168,6 +169,9 @@ Every changed line should trace directly to the task; unrelated cleanup belongs 
 
 ### Evidence-over-intuition policy
 Completion requires naming the checks that prove success or the exact gap that remains.
+
+### Operator-not-QA policy
+Operator feedback is not the primary verification mechanism. For UI, API, data, security, or delivery-flow work, produce current tool evidence before asking for approval; user screenshots may reveal defects but must not replace agent-side checks.
 
 ### Deferred shortcut policy
 A deliberate simplification is acceptable only when the final report or remediation matrix names its ceiling, the trigger that requires revisiting it, and the evidence needed before upgrading it.

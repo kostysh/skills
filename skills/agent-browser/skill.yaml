@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: agent-browser
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 20000
   description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages.
   allowedTools:
@@ -50,8 +50,17 @@ sections:
         - The outcome follows the preserved skill guidance and any loaded reference constraints.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-browser-evidence-ambiguous
+      priority: high
+      text: Do not report browser verification without naming the route, account/context, API mode, visible terminal state, console/network findings, and whether backend calls were real or intercepted.
+    - id: gotcha-owned-process-left-running
+      priority: high
+      text: If you launch a local server or browser-owned process for evidence, either stop it before handoff or clearly state that it remains running and who owns it.
+  policies:
+    - id: policy-browser-handoff-evidence
+      title: Browser handoff evidence
+      text: Browser evidence should include steps taken, expected versus observed behavior, screenshots when useful, console/network summary, authentication context, and exact blockers for any scenario not completed.
   portability:
     required: true
     rules:

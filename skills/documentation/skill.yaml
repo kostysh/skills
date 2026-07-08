@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: documentation
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: "Create, review, restructure, and rewrite technical documentation using the Diataxis framework. Use when the task is to decide whether content should be a tutorial, how-to guide, reference, or explanation; split mixed documentation into the right forms; improve documentation architecture; or review docs for user-need fit, structure, and quality. Trigger terms include: Diataxis, tutorial vs how-to, reference vs explanation, documentation structure, reorganize docs, docs IA, technical writing, rewrite docs."
   metadata:
@@ -56,8 +56,17 @@ sections:
         - The outcome follows the preserved skill guidance and any loaded reference constraints.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-language-afterthought
+      priority: high
+      text: Do not write persistent project prose in the wrong language with the intent to translate later. Select the language mode before the first draft.
+    - id: gotcha-docs-as-capability
+      priority: high
+      text: Do not present documentation, matrices, reports, or process notes as delivered runtime capability unless the task is explicitly a documentation or support capability.
+  policies:
+    - id: policy-language-preflight
+      title: Language preflight policy
+      text: Before creating persistent docs, identify the audience and repository language rule; final language review is a verification step, not the primary drafting workflow.
   portability:
     required: true
     rules:

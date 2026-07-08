@@ -8,11 +8,11 @@ description: "Create, review, restructure, and rewrite technical documentation
   Diataxis, tutorial vs how-to, reference vs explanation, documentation
   structure, reorganize docs, docs IA, technical writing, rewrite docs."
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   tags: documentation, technical-writing, diataxis, tutorials, how-to, reference,
     explanation
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6188b49514f829bd330578f81507cc86c3420b386f84d63f3c58168c39547457
+  skillforge-source-hash: 5a6c58b6dff636979dbf1a29abf80cc79c625bb4754c4f738eddc8097b7424bd
 ---
 
 # documentation
@@ -179,6 +179,16 @@ Apply the preserved documentation guidance without changing its domain behavior.
 Validation:
 
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
+
+## Gotchas
+
+- **high** — Do not write persistent project prose in the wrong language with the intent to translate later. Select the language mode before the first draft.
+- **high** — Do not present documentation, matrices, reports, or process notes as delivered runtime capability unless the task is explicitly a documentation or support capability.
+
+## Policies
+
+### Language preflight policy
+Before creating persistent docs, identify the audience and repository language rule; final language review is a verification step, not the primary drafting workflow.
 
 ## Required active references
 - [Diataxis Guide](references/diataxis-guide.md) — Read this when you need deeper guidance, rewrite patterns, or more detailed distinctions between the four forms.

@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.6`
+- Skill source version: `0.1.7`
 
 ## Source files
 - `references/core-principles.md`

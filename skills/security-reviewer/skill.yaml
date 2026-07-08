@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.5"
+  source-version: "0.1.6"
   recommended-skill-md-max-bytes: 36000
   description: "Systematic security code review skill for vulnerabilities in application code, CI workflows, permission models, webhooks, secrets, app-layer data access, and configuration. Use when asked to security review, find vulnerabilities, audit auth, RLS, REST/PostgREST filters, SDK query builders, check GitHub Actions security, inspect webhook verification, or review code against OWASP-style risks. Owns threat modeling, confidence gating, exploitability checks, and evidence; pairs with domain skills for framework details."
 fragments:
@@ -143,8 +143,17 @@ sections:
       winner: "code-reviewer"
       rationale: "Move non-security findings to code-reviewer when both skills are active."
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: "gotcha-stale-audit-scope"
+      priority: "high"
+      text: "A PASS on an old diff is not evidence for a changed implementation. If files or behavior changed after the audit, perform a delta review on the new scope before reporting PASS."
+    - id: "gotcha-evidence-artifact-leak"
+      priority: "high"
+      text: "Review screenshots, status-site evidence, history payloads, logs, and problem responses for secrets, raw provider payloads, tokens, cookies, OTP, and unnecessary PII; code-only security review is insufficient for evidence-bearing changes."
+  policies:
+    - id: "policy-audit-scope-contract"
+      title: "Audit scope contract"
+      text: "A security audit must name the exact diff or commit scope, external surfaces, data-access construction, forbidden-data checks, and current evidence artifacts reviewed. If any scope item is unreviewed, report it as residual risk."
   portability:
     required: true
     rules:

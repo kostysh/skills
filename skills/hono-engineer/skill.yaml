@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.2"
+  source-version: "0.1.3"
   recommended-skill-md-max-bytes: 28000
   description: "Build and maintain production-grade Hono API services across projects. Use when designing endpoints, middleware, config, logging, validation, security, and tests for Hono-based APIs."
 fragments:
@@ -173,8 +173,17 @@ sections:
       winner: "typescript-test-engineer"
       rationale: "This skill owns Hono API guidance, while testing depth and runner patterns belong to the TypeScript testing skill."
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: "gotcha-validation-db-leak"
+      priority: "high"
+      text: "Do not let predictable Zod, domain, RPC, Postgres, or Supabase validation failures escape as raw internal errors. Map form-backed validation to safe field-level problem details before the response leaves Hono."
+    - id: "gotcha-route-role-name"
+      priority: "high"
+      text: "Do not name public routes after roles unless the capability is truly an admin console surface; route names should normally describe the domain, capability, or resource."
+  policies:
+    - id: "policy-api-preflight"
+      title: "API preflight policy"
+      text: "Before adding or changing a Hono route, confirm route naming disposition, strict request schema coverage, forbidden/computed fields, all editable fields, service-level field errors, safe problem mapping, auth/CSRF behavior, and test evidence."
   portability:
     required: true
     rules:

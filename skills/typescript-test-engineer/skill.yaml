@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.4"
+  source-version: "0.1.5"
   recommended-skill-md-max-bytes: 46000
   description: "Design, implement, and maintain robust tests for TypeScript projects (Node/React/edge) with focus on node:test, Vitest, mocking, determinism, and coverage."
 fragments:
@@ -112,7 +112,10 @@ sections:
       winner: "security-reviewer"
       rationale: "Pair CI security-sensitive testing changes with security-reviewer."
   commands: []
-  gotchas: []
+  gotchas:
+    - id: "gotcha-contractless-ui-test"
+      priority: "high"
+      text: "Do not let UI tests pass against fixtures that drift from exported server schemas, route names, validation problem shapes, history payload contracts, or security boundaries."
   policies:
     - id: "completion-evidence"
       title: "Completion evidence"
@@ -120,6 +123,9 @@ sections:
     - id: "smallest-sufficient-check"
       title: "Smallest sufficient check"
       text: "Prefer the smallest runnable check that fails on the behavior regression for low-risk logic. Do not use that rule to downshift security, privacy, money, data-loss, auth, accessibility, release, persistence/RLS/RPC/provider, or production-wiring verification."
+    - id: "scenario-template-coverage"
+      title: "Scenario template coverage"
+      text: "For API validation, form validation, loading indicators, route naming migration, and history payload work, include tests for both the happy path and the falsifier that previously failed or could pass as substrate-only behavior."
   portability:
     required: true
     rules:

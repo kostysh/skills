@@ -9,9 +9,9 @@ description: >-
   Use when designing or hardening reusable React components, including
   RSC-oriented code paths.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 665e896fa4b5d0bef9ac70e0d304b31811ab65a68e19106f203e24df9a8dd62c
+  skillforge-source-hash: f22f108f0c68dca98fe67334ee9ee5ceb507a616bcdf1c9d4156ef301122b1d2
 ---
 
 # react-components-engineer
@@ -112,6 +112,16 @@ Apply the preserved react-components-engineer guidance without changing its doma
 Validation:
 
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
+
+## Gotchas
+
+- **high** — Do not hide full application screens inside Storybook as if they were reusable components. Storybook should document reusable components, states, and justified compositions.
+- **high** — Do not encode required markers as literal asterisks inside label strings. Form field components should expose a boolean required indicator and own its visual styling.
+
+## Policies
+
+### Reusable component first policy
+When a UI control or state can plausibly recur, add the reusable component and Storybook states before wiring the domain screen; feature code should compose shared controls rather than redrawing them.
 
 ## Required active references
 - [Bulletproof Patterns](references/bulletproof-patterns.md) — Read this when you need Full guidance for all 10 hardening patterns, code templates, caveats, and review checks.

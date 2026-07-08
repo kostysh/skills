@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: pencil-dev
-  source-version: 0.1.5
+  source-version: 0.1.6
   recommended-skill-md-max-bytes: 18000
   description: |-
     Use when creating, iterating, inspecting, validating, or exporting Pencil
@@ -166,6 +166,9 @@ sections:
     - id: gotcha-editor-bridge
       priority: high
       text: "If MCP cannot see the intended `.pen`, the task is blocked on the editor/custom-editor bridge until `get_editor_state(include_schema: true)` succeeds."
+    - id: gotcha-stale-library-cache
+      priority: high
+      text: If an imported `.lib.pen` changed, do not trust an already-open consumer document until MCP confirms the refreshed library/component state after the operator reloads or reopens it.
     - id: gotcha-library-substrate
       priority: high
       text: Do not claim component-library work from naming, screenshots, or duplicate shapes alone; verify reusable components, refs, or instances through MCP.

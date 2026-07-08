@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 20000
   description: Review web UI code for Web Interface Guidelines compliance (accessibility, UX, typography, forms, content handling, performance). Use when asked to review UI/UX, audit design, check accessibility, or review web interfaces.
 fragments:
@@ -58,8 +58,17 @@ sections:
         - The outcome follows the preserved skill guidance and any loaded reference constraints.
   interop: []
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-no-visual-proof
+      priority: high
+      text: Do not approve UI work from code inspection alone when visual regressions, spacing, responsive behavior, overlays, or loading states are in scope.
+    - id: gotcha-design-system-drift
+      priority: high
+      text: Treat one-off colors, badges, buttons, tabs, pagination, drawers, or form controls as defects unless they match the accepted design system or are explicitly documented deviations.
+  policies:
+    - id: policy-current-screenshot-evidence
+      title: Current screenshot evidence
+      text: UI review should use current browser or design-tool screenshots for affected desktop/mobile states, including error/loading/empty/drawer/modal states when those states are in scope.
   portability:
     required: true
     rules:

@@ -13,9 +13,9 @@ description: >-
   compliance gaps or ambiguities, or issue an implementation-versus-spec
   verdict.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 38e07b71d9bccb7b0bde0285181104fe05bb1fc6934bd23d5887e0735ad478b8
+  skillforge-source-hash: 53f3f9cde1a9a71f5129ef2f393fb27ad32a67afeab3c60c6b4943dd6cc5bc94
 ---
 
 # spec-conformance-reviewer
@@ -162,6 +162,16 @@ Apply the preserved spec-conformance-reviewer guidance without changing its doma
 Validation:
 
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
+
+## Gotchas
+
+- **high** — Do not treat a delivery issue body as the normative source when PRD, SPEC, PD, architecture, or validation artifacts define the contract.
+- **high** — Do not mark conformance PASS when acceptance can be satisfied by mock screens, storybook stories, generated artifacts, docs, or tests without the claimed runtime behavior.
+
+## Policies
+
+### Trace to source policy
+Conformance review must trace public contracts, statuses, routes, payloads, and UX claims to their owning artifacts and name any unmatched behavior as drift, not as an implementation choice.
 
 ## Required active references
 - [Methodology](references/methodology.md) — Read this when you need source priority, scope rules, extraction workflow, traceability, evidence, and ambiguity handling.

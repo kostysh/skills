@@ -12,9 +12,9 @@ compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.5
+  source-version: 0.2.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 932dca6ab28e2800698c5485bd80a79c22100e5845fcf63e47e989b6bea69c27
+  skillforge-source-hash: b7f9bace1d552532acfb81c851b811fdcd9d8072ca48f1ef9ad181c4ff9e3d36
 ---
 
 # spec-engineer
@@ -196,6 +196,7 @@ Validation:
 - **medium** — Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
 - **high** — Do not turn missing architecture decisions into spec requirements; route public contracts, data model, security boundary, tenancy, integration topology, deployment, rollback, or selected pattern changes to architecture.
 - **medium** — Do not use tests as the default verification answer when inspection, analysis, contract validation, simulation, or conformance suites prove the claim more directly.
+- **high** — Do not introduce or preserve public routes, enum values, statuses, action names, or history events without an owning source, domain meaning, forbidden values, and falsifiers.
 
 ## Policies
 
@@ -222,6 +223,9 @@ Use MUST for required behavior, MUST NOT for forbidden behavior, SHOULD for reco
 
 ### Atomic requirement policy
 Each normative requirement should express one obligation with an explicit subject, condition, action, object, and constraint. Split compound requirements before adding acceptance criteria.
+
+### Event payload contract policy
+Runtime history or audit events must define purpose, bounded result/status, safe payload fields, forbidden data, and consumer usefulness. Events that only say an action happened are incomplete unless their explicit purpose is access accountability.
 
 ### Representation-fit policy
 The canonical representation-fit table lives in the methodology reference. In SKILL.md, remember the rule of thumb only: choose the lightest representation that removes the concrete ambiguity or defect class, and prefer invariants whenever a behavior can be stated as an always-true property.

@@ -7,9 +7,9 @@ description: Comprehensive Supabase engineering guidance for PostgreSQL schema
   integrating auth/storage/realtime; writing Edge Functions; or setting up
   Supabase CI/ops workflows.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d6e227ec144523a98a65026554b6669c65361b48fdefc8d3dbf8da5cffa04602
+  skillforge-source-hash: f830f70bc36af4c10cb6956045e2ec7095e4348d59af64865c0b95e24fa95a5e
 ---
 
 # supabase-engineer
@@ -186,6 +186,16 @@ Apply the preserved supabase-engineer guidance without changing its domain behav
 Validation:
 
 - The outcome follows the preserved skill guidance and any loaded reference constraints.
+
+## Gotchas
+
+- **high** — Do not treat memory-store tests, mocked API tests, or direct table reads as evidence for a production Supabase/RLS path that is supposed to be RPC-first.
+- **high** — Do not allow domain mutations to succeed when required audit/history evidence is missing, unsafe, or only written outside the transaction.
+
+## Policies
+
+### SQL/API design output policy
+For Supabase-backed API work, design notes must name tables, RPCs, grants/RLS, service-role exceptions, direct table paths, validation/constraint mapping, audit/history payload profile, and tests before migration application.
 
 ## Required active references
 - [Architecture](references/architecture.md) — Read this when you need Architecture variants.

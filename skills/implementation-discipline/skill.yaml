@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.1.6
+  source-version: 0.1.7
   recommended-skill-md-max-bytes: 18000
   description: >-
     Behavioral coding discipline for writing, modifying, and reviewing code
@@ -163,6 +163,9 @@ sections:
     - id: gotcha-verify-or-say-so
       priority: medium
       text: If you cannot verify the intended outcome, say so explicitly instead of implying confidence.
+    - id: gotcha-stable-evidence
+      priority: high
+      text: Do not hand off non-trivial work from a moving diff. Stabilize the changed scope, run the relevant verification, and label any remaining claim as implemented but not verified.
     - id: gotcha-stop-on-blocking-ambiguity
       priority: medium
       text: If the next change would depend on guessing through blocking ambiguity, stop and ask before editing.
@@ -194,6 +197,9 @@ sections:
     - id: policy-evidence-over-intuition
       title: Evidence-over-intuition policy
       text: Completion requires naming the checks that prove success or the exact gap that remains.
+    - id: policy-operator-not-qa
+      title: Operator-not-QA policy
+      text: Operator feedback is not the primary verification mechanism. For UI, API, data, security, or delivery-flow work, produce current tool evidence before asking for approval; user screenshots may reveal defects but must not replace agent-side checks.
     - id: policy-deferred-shortcut
       title: Deferred shortcut policy
       text: A deliberate simplification is acceptable only when the final report or remediation matrix names its ceiling, the trigger that requires revisiting it, and the evidence needed before upgrading it.

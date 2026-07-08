@@ -10,9 +10,9 @@ description: Decompose accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a939d7d0ed83fa5e377387077d7eaa6c6de0a292b87f4a13da3187dc8c8ca6d2
+  skillforge-source-hash: c61e89618b7c720f6326c1a94fc868f6345e76432c0467c97a52cd450e30e6d6
 ---
 
 # delivery-planner
@@ -160,6 +160,9 @@ Do not mark a task or plan ready when its acceptance could pass by adding scaffo
 
 ### No future-only support policy
 Do not create tasks for scaffolds, wrappers, config surfaces, harnesses, folders, or extension points only because they may be useful later. Keep them out, merge them into the owner increment, or label them as support work with a concrete dependent increment, evidence unlocked, and revisit trigger.
+
+### Support task contract
+A remediation, tooling, documentation, or skills task must name the capability it protects, the defect class it prevents, the evidence it unlocks, and the effectiveness check for the next slice. Do not present support substrate as delivered product capability.
 
 ### Right-sized task policy
 Each task should have one primary goal, clear dependencies, a risk label, a next step, a verification hint, and a review hint.
