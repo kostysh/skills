@@ -1,3 +1,4 @@
 interface:
-  display_name: "Typescript Test Engineer"
-  short_description: "Help with Typescript Test Engineer tasks"
+  display_name: "TypeScript Test Engineer"
+  short_description: "Design, review, and debug TypeScript tests"
+  default_prompt: "Use $typescript-test-engineer to design or review tests for this TypeScript change and report evidence gaps."

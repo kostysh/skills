@@ -2,6 +2,8 @@
 
 > **Load when:** User asks about testing React UI, Vite + Vitest, Testing Library, jsdom/happy-dom, or frontend test setup.
 
+**Mode boundary:** Any instruction here to edit, install, patch, tune configuration, or change policy is executable only in explicitly authorized implementation/fix mode. In design, review, or diagnose mode, keep repository files and external state unchanged and report the step as a plan or recommendation; safe diagnostic commands may still run within the user's stated boundary.
+
 ## Core stack (recommended)
 - Builder: Vite (assumed for React apps in this guide).
 - Runner: Vitest (paired with Vite).
@@ -42,6 +44,7 @@ Notes:
 - Keep `globals: true` if your repo prefers global `describe/it/expect`; otherwise disable and import explicitly.
 - Use `vite-tsconfig-paths` when TS path aliases exist.
 - Prefer timeout policy in Vitest config (`testTimeout`, `hookTimeout`, `teardownTimeout`) or contour-specific configs, not in individual test cases.
+- `typecheck.enabled` remains an experimental Vitest surface. Follow the repository's pinned Vitest version and keep a separate project typecheck when its contract covers more than Vitest type tests.
 
 ## Setup file
 ```ts
@@ -56,7 +59,8 @@ import '@testing-library/jest-dom/vitest';
 - Prefer `findBy*`/`waitFor` for async UI updates.
 
 ## Async stability checklist
-- Keep `waitFor` callbacks synchronous; do not place `await` inside `waitFor(() => { ... })`.
+- Prefer synchronous observable assertions inside `waitFor` because their retry semantics are easier to read.
+- Async `waitFor` callbacks are supported when the condition itself requires an async read; they are retried only after the returned promise rejects. Do not perform repeated side effects inside either sync or async callbacks.
 - Do not use never-settling mock promises (`new Promise(() => {})`) without explicit resolve/reject path.
 - For loading-state tests, use deferred promises and settle them before test end.
 - Before clicking async-dependent actions, wait for actionable state (`toBeEnabled`).
@@ -96,20 +100,24 @@ describe('Counter', () => {
 
 ```ts
 // src/features/profile/Profile.test.tsx
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Profile } from './Profile';
 
-beforeEach(() => {
-  vi.resetAllMocks();
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 describe('Profile', () => {
   it('renders user name from API', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ name: 'Ada' })
-    }) as unknown as typeof fetch;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ name: 'Ada' })
+      })
+    );
 
     render(<Profile />);
 
@@ -121,19 +129,27 @@ describe('Profile', () => {
 
 ## Mocking and timers
 - Use `vi.fn()` / `vi.spyOn()` for mocks and spies.
+- Use `vi.stubGlobal()` for global APIs such as `fetch` and restore them with `vi.unstubAllGlobals()` in `afterEach`, or enable the repository's `unstubGlobals` policy.
 - Use `vi.useFakeTimers()` + `vi.setSystemTime()` for time-based UI; always `vi.useRealTimers()` after.
 - Prefer mocking at the boundary (API clients, fetch) rather than internal component functions.
+
+## Simulated DOM, Browser Mode, and browser smoke
+
+- Use `jsdom` or `happy-dom` for fast component behavior that does not depend on a real browser engine.
+- Use Vitest Browser Mode when the repository requires browser-native DOM, CSS, layout-adjacent, or browser API behavior inside the formal test suite.
+- Use `agent-browser` when available for sampled interaction smoke and diagnostics. Its session evidence does not replace the repository's Vitest Browser Mode, Playwright, or other formal E2E gate.
+- Report which environment actually ran; do not describe simulated DOM results as browser-native evidence.
 
 ## Coverage hang triage (Vitest + RTL)
 If `test:coverage` hangs while normal tests pass:
 - Run exact package coverage command with a shell timeout (example: `timeout 900 pnpm -C packages/client test:coverage`).
 - Isolate suspect suites under coverage config (not unit-only config).
 - Check recently changed tests for unresolved promises, async-in-`waitFor`, and actions fired before controls are enabled.
-- Tune timeout values in the active Vitest config first (`testTimeout`, and when needed `hookTimeout`/`teardownTimeout`) and keep values centralized.
+- In diagnose mode, report the proven cause and recommend any timeout/configuration change without applying it. Only when fixes are explicitly authorized may implementation tune the active Vitest config (`testTimeout`, and when needed `hookTimeout`/`teardownTimeout`); keep values centralized.
 - Use explicit per-test timeout only as a rare exception with a documented rationale.
 
 ## Coverage
 - Prefer `provider: 'v8'` with `reporter: ['text', 'json', 'html']`.
 - Keep source-only metrics by excluding test files (`**/test/**`, `**/*.test.*`, `**/*.spec.*`).
-- Run coverage at milestone checkpoints and before final stage closure.
+- When the repository or user defines a coverage command or closure gate, run that exact contour at the required checkpoints. Do not invent a coverage gate for a repository that deliberately has none.
 - Treat coverage as a signal; prioritize meaningful assertions and edge cases.

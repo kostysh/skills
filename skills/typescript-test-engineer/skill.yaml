@@ -2,42 +2,36 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.5"
+  source-version: "0.1.6"
   recommended-skill-md-max-bytes: 46000
-  description: "Design, implement, and maintain robust tests for TypeScript projects (Node/React/edge) with focus on node:test, Vitest, mocking, determinism, and coverage."
+  description: "Design, implement, review, and diagnose TypeScript tests for Node, React, and edge projects. Use for test strategy, node:test or Vitest behavior, deterministic fixtures and mocks, coverage and CI test failures, hanging tests, and evidence-quality review; keep review and diagnosis read-only unless fixes are explicitly requested."
 fragments:
   overview: "fragments/overview.md"
 references:
-  - id: "ref-agent-browser"
-    title: "Agent Browser"
-    source: "references/agent-browser.md"
-    target: "references/agent-browser.md"
-    required: true
-    trigger: "Read this when working with agent browser."
   - id: "ref-react-vitest"
     title: "React Vitest"
     source: "references/react-vitest.md"
     target: "references/react-vitest.md"
-    required: true
-    trigger: "Read this when you need React testing with Vitest + Testing Library (jsdom/happy-dom, setup, and patterns)."
+    required: false
+    trigger: "Read this for React tests using Vitest, Testing Library, jsdom, happy-dom, or Browser Mode."
   - id: "ref-tdd"
     title: "Tdd"
     source: "references/tdd.md"
     target: "references/tdd.md"
-    required: true
-    trigger: "Read this when you need full TDD workflow and rationale (only when explicitly requested)."
+    required: false
+    trigger: "Read this only when the user explicitly requests TDD."
   - id: "ref-testing-anti-patterns"
     title: "Testing Anti Patterns"
     source: "references/testing-anti-patterns.md"
     target: "references/testing-anti-patterns.md"
-    required: true
-    trigger: "Read this when you need detailed anti-patterns and mock guardrails."
+    required: false
+    trigger: "Read this when writing or reviewing mocks, fixtures, test doubles, or test utilities."
   - id: "ref-testing"
     title: "Testing"
     source: "references/testing.md"
     target: "references/testing.md"
-    required: true
-    trigger: "Read this when you need patterns, examples, mocking, data handling, and coverage."
+    required: false
+    trigger: "Read only the relevant section for Node, edge, integration, E2E, database, coverage, event, or hanging-test work."
 assets: []
 copies:
   - id: "copy-agents-openai-yaml"
@@ -55,71 +49,135 @@ copies:
 supporting: []
 surfaces:
   active:
-    requiredReferences:
-      - "ref-agent-browser"
+    requiredReferences: []
+    optionalReferences:
       - "ref-react-vitest"
       - "ref-tdd"
       - "ref-testing-anti-patterns"
       - "ref-testing"
-    optionalReferences: []
   supportingGlobs:
     - "docs/*"
 sections:
   startHere:
-    - "Confirm the task is about TypeScript test design, implementation, maintenance, review, CI test behavior, or coverage."
+    - "Classify the request as design, implementation, review, or diagnose before selecting a workflow; review and diagnose are read-only unless the user explicitly requests fixes."
+    - "Resolve expected behavior from explicit user decisions, accepted specifications or acceptance criteria, and repository contracts; treat current implementation and existing tests as evidence, not authority when sources conflict."
     - "Follow the repository test runner and existing conventions before applying defaults."
     - "Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean."
     - "Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check."
-    - "Run the relevant tests and inspect warnings, stderr, hangs, and coverage expectations before claiming completion."
+    - "If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions."
+    - "Report mode-specific outputs, exact validation evidence, and any unverified production boundary before claiming completion."
   whenToUse:
     - "Designing, writing, reviewing, or fixing tests in TypeScript Node, edge, or React projects."
     - "Debugging node:test, Vitest, mocks, hanging tests, open handles, deprecations, coverage, or CI test behavior."
     - "Applying explicit TDD only when the user asks for it."
   whenNotToUse:
     - "The task is pure TypeScript language work without test design or runner behavior."
-    - "The task is browser interaction automation rather than test strategy; use agent-browser for that workflow."
-    - "The task is security-sensitive CI permission or secret handling without a testing focus; pair with security-reviewer."
+    - "The task is browser interaction automation rather than test strategy or formal project E2E; use agent-browser for smoke and browser diagnostics when available."
+    - "The task is security-sensitive CI permission or secret handling without a testing focus; use security-reviewer."
   workflow:
-    - id: "stage-test-workflow"
-      title: "Run the testing workflow"
-      goal: "Produce deterministic, behavior-focused tests and verify them through the relevant runner and coverage gates."
+    - id: "stage-resolve-mode-and-contract"
+      title: "Resolve mode and behavior contract"
+      goal: "Establish mutation authority, expected behavior, evidence boundary, and the honest completion state before designing assertions."
       steps:
-        - "Identify test level, runner, TypeScript execution path, touched files, and changed behaviors."
+        - "Classify the request as design, implementation, review, or diagnose; do not mutate files in review or diagnose mode."
+        - "Identify the requested scope, runner, TypeScript execution path, test level, changed behavior, and downstream consumer."
+        - "Apply source precedence: explicit user decisions, accepted specifications or acceptance criteria, then repository contracts and conventions; use implementation and existing tests as evidence only."
+        - "Inspect callers and nearby sources when behavior is underspecified; return blocked or limited when a material conflict remains."
+      validation:
+        - "Mode and allowed side effects are explicit."
+        - "Expected behavior is sourced, or the result is honestly blocked or limited."
+        - "No green test, coverage number, mock, fixture, or current implementation is treated as authority by itself."
+    - id: "stage-design-or-implement"
+      title: "Design or implement behavior-focused tests"
+      goal: "Produce the smallest sufficient test design or authorized test change that proves the named behavior and applicable falsifiers."
+      steps:
         - "For low-risk helper logic such as a branch, loop, parser, formatter, or pure utility, choose the smallest runnable check that would fail if the behavior regresses."
         - "For specified or implied forbidden behavior, plan negative/fail-closed tests from the contract source: spec, security/privacy contract, CI/CD gate, auth/RBAC, validation, redaction, environment isolation, or acceptance falsifier."
         - "For side-effecting/state-changing behavior, list applicable negative matrix rows and mark irrelevant rows N/A with a reason."
         - "Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components."
-        - "Implement tests with clear Arrange-Act-Assert and event listeners registered before actions that emit events."
-        - "Run relevant tests, inspect output and warnings, resolve introduced deprecations, and run coverage checkpoints when required."
-        - "For CI workflow changes, validate touched YAML and pair with security-reviewer when permissions, secrets, or untrusted inputs change."
+        - "In design mode, return the test plan without changing files; in implementation mode, change only the explicitly authorized scope and use clear Arrange-Act-Assert."
       validation:
         - "Tests assert observable behavior, covering the happy path and relevant negative/fail-closed cases instead of relying on happy-path coverage alone."
         - "Low-risk helper checks are intentionally small but still fail on the targeted behavior regression."
         - "For security-sensitive code, missing negative/fail-closed tests are reported as a test gap."
         - "Relevant side-effecting/state-changing risks are covered or explicitly marked N/A by relevance."
-        - "Relevant tests pass, warnings are resolved or documented, and coverage policy is followed."
+    - id: "stage-review-or-diagnose"
+      title: "Review or diagnose without implicit remediation"
+      goal: "Produce evidence-backed findings or a diagnosis while preserving the read-only boundary."
+      steps:
+        - "For review, freeze the target scope, read the full touched diff, and map each changed behavior to existing, added, removed, or weakened tests."
+        - "For diagnosis, reproduce or isolate the failure when safe, identify the cause and evidence limits, and recommend the smallest remediation without applying it."
+        - "Route formal diff severity and merge guidance to code-reviewer while retaining ownership of test-strategy and runner judgments."
+      validation:
+        - "No file or external state changed unless the user separately authorized fixes."
+        - "Findings and diagnoses distinguish proven behavior, gaps, assumptions, and unassessed boundaries."
+    - id: "stage-verify-and-report"
+      title: "Verify and report proportionate evidence"
+      goal: "Run the checks appropriate to the selected mode and report a decision-complete result without substrate-only closure."
+      steps:
+        - "In implementation mode, run relevant tests, inspect warnings and stderr, resolve warnings introduced by the change, and run repository-required coverage or CI gates."
+        - "For CI workflow changes, validate touched YAML and pair with security-reviewer when permissions, secrets, or untrusted inputs change."
+        - "Report the mode-specific output contract and name every required check that did not run with its blocker and next-best evidence."
+      validation:
+        - "Implementation output maps behavior to changed tests, files, commands and results, warning status, coverage status, and unverified boundaries."
+        - "Review output includes stable scope, behavior-to-test mapping, findings with evidence, unverified areas, and a test-adequacy verdict."
+        - "Design output includes test levels, scenarios and falsifiers, fixture or boundary needs, intended commands, and open assumptions."
+        - "Diagnose output includes reproduction or symptom, cause evidence, evidence limits, and recommended remediation."
   interop:
     - id: "interop-typescript"
       domain: "TypeScript language and type-system rules"
       winner: "typescript-engineer"
       rationale: "This skill owns testing strategy and runner behavior, while TypeScript language semantics belong to typescript-engineer."
+    - id: "interop-code-review"
+      domain: "Stable diff scope, finding severity, and merge guidance"
+      winner: "code-reviewer"
+      rationale: "code-reviewer owns the formal read-only review process; this skill supplies test-strategy and runner-domain judgments."
+    - id: "interop-implementation"
+      domain: "Authorized code and test remediation"
+      winner: "implementation-discipline"
+      rationale: "implementation-discipline owns mutation discipline and minimal changes; this skill owns the test behavior and evidence contract."
     - id: "interop-browser"
-      domain: "browser interaction and UI E2E automation workflow"
+      domain: "Browser smoke sessions and interaction diagnostics"
       winner: "agent-browser"
-      rationale: "Use agent-browser for browser sessions, snapshots, and debugging workflows."
+      rationale: "Use agent-browser when available for sampled browser interaction evidence; formal repository E2E remains owned by the project test suite and its framework tooling."
     - id: "interop-security-ci"
       domain: "CI permissions, secrets, and untrusted inputs"
       winner: "security-reviewer"
-      rationale: "Pair CI security-sensitive testing changes with security-reviewer."
+      rationale: "security-reviewer owns permissions, secrets, untrusted-input, and exploitability judgments; this skill owns tests that exercise the sourced security contract."
+    - id: "interop-domain-contract"
+      domain: "Framework, platform, and domain behavior used as the test oracle"
+      winner: "the relevant framework or domain skill"
+      rationale: "Specialized owners define the behavior contract; this skill converts that contract into proportionate test evidence without inventing domain rules."
   commands: []
   gotchas:
     - id: "gotcha-contractless-ui-test"
       priority: "high"
       text: "Do not let UI tests pass against fixtures that drift from exported server schemas, route names, validation problem shapes, history payload contracts, or security boundaries."
+    - id: "gotcha-review-mutation"
+      priority: "high"
+      text: "Do not change tests, production code, configuration, or deprecated APIs during review or diagnosis unless the user separately requests remediation."
+    - id: "gotcha-tdd-opt-in"
+      priority: "high"
+      text: "Do not activate TDD or delete already-written code unless the user explicitly requested TDD and separately authorized any destructive rewrite."
+    - id: "gotcha-green-substrate"
+      priority: "high"
+      text: "A green suite, coverage percentage, mock, fixture, generated file, or test name is evidence only for what it actually exercises; none proves an unexercised production boundary."
   policies:
+    - id: "mode-and-mutation-boundary"
+      title: "Mode and mutation boundary"
+      text: "Classify every task as design, implementation, review, or diagnose. Design returns a plan; review and diagnose stay read-only; implementation changes only the explicitly authorized scope. A request to review, assess, inspect, or diagnose does not authorize fixes."
+    - id: "behavior-authority"
+      title: "Behavior authority and readiness"
+      text: "Use explicit user decisions, accepted specifications or acceptance criteria, and repository contracts as behavior authority in that order. Treat current implementation and existing tests as evidence, not authority when sources conflict. Inspect callers and sources first, then return blocked or limited rather than inventing expected behavior."
+    - id: "mode-specific-output"
+      title: "Mode-specific output"
+      text: "Implementation reports behavior-to-test mapping, changed files, exact commands and results, warnings, coverage, and unverified boundaries. Review reports stable scope, behavior-to-test mapping, evidence-backed findings, unverified areas, and verdict. Design reports levels, scenarios, falsifiers, fixtures, commands, and assumptions. Diagnose reports symptom or reproduction, cause evidence, limits, and recommended remediation."
     - id: "completion-evidence"
       title: "Completion evidence"
       text: "When reporting completion, name the relevant test, coverage, or CI validation commands that ran; state whether warnings and stderr were clean or documented; and call out any check that could not run with the exact blocker and next-best evidence. Do not imply completion while required validation is missing or still failing."
+    - id: "structural-evidence-limit"
+      title: "Structural evidence limit"
+      text: "Test-file existence, regex contract tests, coverage percentages, mocks, fixtures, and green commands are substrate or bounded evidence. Claim the named behavior only when the corresponding scenario or real boundary was exercised; otherwise report the gap."
     - id: "smallest-sufficient-check"
       title: "Smallest sufficient check"
       text: "Prefer the smallest runnable check that fails on the behavior regression for low-risk logic. Do not use that rule to downshift security, privacy, money, data-loss, auth, accessibility, release, persistence/RLS/RPC/provider, or production-wiring verification."
@@ -135,4 +193,4 @@ sections:
     checklist:
       - "Run the skill-source-compiler check command after regeneration."
       - "Search the skill folder for absolute local paths before finishing."
-      - "Confirm every required reference listed by SKILL.md exists inside this skill folder."
+      - "Confirm every linked reference listed by SKILL.md exists inside this skill folder and that optional interop skills are not required for the core capability."

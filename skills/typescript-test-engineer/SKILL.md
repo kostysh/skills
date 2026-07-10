@@ -1,23 +1,27 @@
 ---
 name: typescript-test-engineer
-description: Design, implement, and maintain robust tests for TypeScript
-  projects (Node/React/edge) with focus on node:test, Vitest, mocking,
-  determinism, and coverage.
+description: Design, implement, review, and diagnose TypeScript tests for Node,
+  React, and edge projects. Use for test strategy, node:test or Vitest behavior,
+  deterministic fixtures and mocks, coverage and CI test failures, hanging
+  tests, and evidence-quality review; keep review and diagnosis read-only unless
+  fixes are explicitly requested.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3e42638ed53a29ac57b6f35cae3940a79dd896ae32611c20556a34261a53b8af
+  skillforge-source-hash: 5e9bc2b78f72ea7a511ce0263185fb3aae4217bd1dd8572f0bb5c7860550e856
 ---
 
 # typescript-test-engineer
 
 ## Start here
 
-1. Confirm the task is about TypeScript test design, implementation, maintenance, review, CI test behavior, or coverage.
-2. Follow the repository test runner and existing conventions before applying defaults.
-3. Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean.
-4. Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check.
-5. Run the relevant tests and inspect warnings, stderr, hangs, and coverage expectations before claiming completion.
+1. Classify the request as design, implementation, review, or diagnose before selecting a workflow; review and diagnose are read-only unless the user explicitly requests fixes.
+2. Resolve expected behavior from explicit user decisions, accepted specifications or acceptance criteria, and repository contracts; treat current implementation and existing tests as evidence, not authority when sources conflict.
+3. Follow the repository test runner and existing conventions before applying defaults.
+4. Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean.
+5. Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check.
+6. If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions.
+7. Report mode-specific outputs, exact validation evidence, and any unverified production boundary before claiming completion.
 
 ## When to use this skill
 
@@ -28,258 +32,121 @@ metadata:
 ## When NOT to use this skill
 
 - The task is pure TypeScript language work without test design or runner behavior.
-- The task is browser interaction automation rather than test strategy; use agent-browser for that workflow.
-- The task is security-sensitive CI permission or secret handling without a testing focus; pair with security-reviewer.
+- The task is browser interaction automation rather than test strategy or formal project E2E; use agent-browser for smoke and browser diagnostics when available.
+- The task is security-sensitive CI permission or secret handling without a testing focus; use security-reviewer.
 
 ## Overview
 
-Use this skill to make TypeScript test work prove observable behavior through the repository's existing runner, isolation patterns, and verification gates. The expected outcome is deterministic tests or review findings backed by exact validation commands, warning status, and any coverage or validation gaps.
+Use this skill to turn an authoritative behavior contract into deterministic TypeScript test design, implemented tests, review findings, or a bounded diagnosis. The result must identify what was actually exercised and must not present green tooling, coverage, fixtures, or mocks as proof of a broader production capability.
 
-## Scope
-Applies to TypeScript projects, especially Node and edge backends, plus React apps. If the repo already uses a test runner or established conventions (Jest/Vitest/etc.), follow them and avoid conflicts.
+## Scope and capability boundary
 
-## Non-negotiables (baseline)
-- Prefer deterministic, order-agnostic tests; avoid shared mutable global state.
-- Keep tests small and behavior-focused; assert on observable outcomes.
-- For low-risk helper logic such as a branch, loop, parser, formatter, or pure utility, use the smallest runnable check that fails on the targeted behavior regression.
-- When a spec, security/privacy contract, CI/CD gate, auth/RBAC rule, validation rule, redaction rule, environment boundary, or acceptance falsifier implies forbidden behavior, require negative tests that prove fail-closed behavior; for security-sensitive code, missing negative tests are a test gap.
-- Use dependency injection or targeted mocks; avoid real network calls in unit/integration tests.
-- In-memory stores and mocks are useful for API-flow tests, but they are not sufficient evidence for persistence, RLS, RPC, provider-gate, service-role boundary, or security semantics.
-- Do not downshift security, privacy, money, data-loss, auth, accessibility, release, persistence/RLS/RPC/provider, or production-wiring verification to a tiny self-check.
-- Test doubles must be explicit, local/test-only, and impossible to select in stage/prod runtime.
-- Fixtures must model production invariants instead of bypassing auth/RBAC/session/context/profile/readiness/status rules for convenient happy paths.
-- When generating larger synthetic test-data sets, prefer `@faker-js/faker` over ad hoc random builders, and seed it when determinism matters.
-- Use real systems or dedicated sandboxes in E2E; never use production credentials.
-- For test-review or CI-review tasks, read the full touched diff before judging test adequacy; do not infer coverage from one failing or passing test alone.
-- For event-driven tests, subscribe or create the `once(...)`/listener promise before triggering the action that emits the event.
-- When tests hang or the process does not exit, isolate first, capture handles, patch teardown in the resource-creation scope, and verify repeated stability before calling the issue fixed.
+Apply this skill to TypeScript test strategy and runner behavior for Node, React, and edge projects. Repository runner policy and existing conventions win over defaults.
 
-## Quick workflow
-1. Identify test level: unit vs integration vs E2E.
-2. Confirm runner and TypeScript execution path (node:test + strip/build, or existing toolchain). For React, prefer Vitest + Testing Library.
-3. For changed behavior, enumerate touched files and behaviors first; verify what existing tests cover and where coverage is missing.
-4. For low-risk helper logic, choose the smallest runnable check that would fail on the targeted regression.
-5. For specified or implied forbidden behavior, plan negative/fail-closed tests from `references/testing.md`; for security-sensitive code, treat missing negative tests as a test gap.
-6. For side-effecting/state-changing behavior, list applicable failure modes from the negative matrix in `references/testing.md`; mark irrelevant rows `N/A` with a reason in the test plan or review notes.
-7. For security-sensitive backend work, plan layered evidence: service/API behavior, adapter/store contract behavior, database/RLS/RPC allow/deny behavior, negative stale-claim cases, and provider test-double boundaries.
-8. Design fixtures/mocks for isolation and determinism; when a test double replaces a production state-changing or authorization component, plan a shared contract suite or separate boundary tests before relying on the double.
-9. For replay/rate-limit regression tests, name the targeted risk or failure mode and make the exercised scenario or assertions prove that exact risk; a prose label alone is not coverage.
-10. Implement tests with clear Arrange-Act-Assert.
-11. When reviewing test quality, flag removed tests, weakened assertions, behavior changes without matching coverage, fake-green API tests that skip real persistence/RLS/RPC/provider paths, missing negative/fail-closed coverage for forbidden behavior, missing negative matrix consideration for relevant state-changing risks, fixtures that bypass production invariants, and state-changing doubles without contract coverage.
-12. Run relevant tests and inspect output for warnings (including stderr), not only failures.
-13. Fix deprecation warnings immediately when they are introduced or detected in touched scope.
-14. Run coverage checkpoints according to stage/task cadence.
-15. Run final relevant tests; do not claim completion before they pass and warnings are resolved.
-16. After any GitHub Actions workflow or CI YAML change, validate the touched YAML files locally before claiming completion (at minimum parse/syntax validation, and repo-standard workflow lint if available).
-17. If the CI change also alters permissions, secret handling, or untrusted inputs, pair the task with `security-reviewer`.
+This skill can:
 
-## Multi-contour confidence model (default)
+- select proportionate unit, integration, contract, E2E, or smoke evidence;
+- design or implement tests when the selected mode authorizes it;
+- review changed behavior against test evidence;
+- diagnose runner failures, hangs, warnings, coverage differences, and flaky async behavior.
 
-Always follow the target repository policy first. Do not invent extra contours if the repo has already defined them.
+This skill does not define framework, platform, security, money, persistence, or product behavior. Consume those rules from accepted sources and the relevant domain owner. Browser smoke evidence does not satisfy a formal repository E2E gate unless the repository contract says it does.
 
-Default contour model when the repo does not define a different policy:
+## Core testing rules
 
-1. Local contour (fast loop):
-   - run targeted or changed-only tests while developing;
-   - prioritize short feedback loops over full-suite reruns.
-2. PR contour (required checks):
-   - run required quality gates for changed scopes;
-   - keep deterministic runner settings for merge protection.
-3. Release contour:
-   - run full required gates + coverage checkpoints + smoke validation.
+- Prefer deterministic, order-agnostic tests and avoid shared mutable global state.
+- Assert observable outcomes, state transitions, errors, and side effects instead of internal call shape unless the call is itself the contract.
+- For low-risk helpers, use the smallest runnable check that fails on the targeted behavior regression.
+- Do not downshift security, privacy, money, data-loss, auth, accessibility, release, persistence, RLS, RPC, provider, or production-wiring verification to a tiny self-check.
+- When a sourced contract forbids behavior, add negative or fail-closed coverage; for security-sensitive code, missing negative coverage is a test gap.
+- Use dependency injection or targeted mocks for isolation. Unit and integration tests must not make uncontrolled real network calls.
+- Test doubles must be local or test-only and impossible to select in stage or production runtime.
+- Fixtures must preserve relevant production invariants rather than invent convenient roles, sessions, tenants, profiles, readiness, or status combinations.
+- In-memory stores and mocks can prove API flow but cannot prove persistence, RLS, RPC, provider authorization, service-role safety, or other unexercised boundaries.
+- For state-changing doubles, use a shared contract suite when the double reimplements production state transitions or authorization behavior.
+- For event-driven tests, subscribe or create the listener promise before triggering the action that may emit the event.
+- For hanging tests in diagnose mode, isolate the repro, inspect handles, identify the cause and evidence limits, and recommend remediation without editing. Only when fixes are explicitly authorized may implementation repair teardown where the resource is created, stress-rerun the isolated case, and run the full relevant suite.
 
-Optional contour:
-- Stability/nightly contour exists only when the repository explicitly defines scheduled repeated/shuffled validation. Do not assume nightly, telemetry, or soak runs are part of the active strategy.
+## Test-evidence selection
 
-## CI check-only policy
+1. Identify the named behavior, falsifier, risk, runner, TypeScript execution path, and downstream consumer.
+2. Select the evidence layer that owns the invariant:
+   - unit for pure local input/output and branching;
+   - integration for service, HTTP, middleware, adapter, and composition behavior;
+   - contract for shared producer/consumer or production/double invariants;
+   - runtime or database boundary tests for RLS, RPC, bindings, persistence, or provider behavior;
+   - formal E2E for repository-defined user journeys and deployed boundaries;
+   - browser smoke only for sampled interaction evidence and diagnostics.
+3. For specified or implied forbidden behavior, plan negative/fail-closed tests from `references/testing.md`; for security-sensitive code, treat missing negative tests as a test gap.
+4. For side-effecting/state-changing behavior, list applicable failure modes from the negative matrix in `references/testing.md`; mark irrelevant rows `N/A` with a reason in the design or review notes.
+5. For replay/rate-limit regression tests, name the targeted risk or failure mode and make the exercised scenario or assertions prove that exact risk; a prose label alone is not coverage.
+6. Use clear Arrange-Act-Assert and deterministic time, random, IDs, ports, data, and cleanup where relevant.
+7. Run repository-native checks for the selected contour and inspect failures, warnings, stderr, skips, hangs, and coverage differences.
 
-- In CI, prefer check-only lint/format commands.
-- Keep auto-fix commands for local development.
-- If CI still uses auto-fix commands, flag this as technical debt and propose migration to check-only scripts.
+## Confidence contours
 
-## PR E2E policy decision tree
+Repository policy wins. When no policy exists, use:
 
-Repository policy wins:
-- if the repo defines risk-based or path-based browser gating, follow that policy exactly;
-- do not restore full PR E2E by default when the repository intentionally moved browser coverage to conditional PR gates plus release/manual verification.
+- local: targeted tests for fast feedback;
+- PR: required deterministic gates for merge risk;
+- release: full repository-required gates and documented smoke or E2E evidence where the accepted behavior or release policy requires it; coverage only when an accepted coverage contour exists.
 
-When the repo does not define a policy:
-1. start with the smallest browser gate that still protects the critical user journeys;
-2. keep PR browser tests deterministic and scoped to merge-critical risk;
-3. require explicit release/manual browser verification for flows removed from always-on PR coverage;
-4. document exact trigger paths or decision rules in project docs/SDD artifacts.
+Add repeated shuffle, soak, or nightly stability contours only when the repository defines them. Do not invent telemetry, thresholds, or scheduled jobs from this skill alone.
 
-## Flake threshold and rollback guard
+## Runner and environment selection
 
-Only apply this section when the repository explicitly uses repeated stability suites (for example nightly shuffle/soak runs).
+- Follow the existing runner. Do not migrate Jest, Vitest, or `node:test` unless runner migration is the task.
+- For modern supported Node versions, built-in TypeScript type stripping can execute erasable `.ts` syntax, but it does not type-check, read `tsconfig.json`, transform path aliases, or support syntax that requires JavaScript emit. Read the Node section of `references/testing.md` before choosing direct execution, a build path, or a third-party loader.
+- For React, read `references/react-vitest.md`; distinguish simulated DOM tests from Vitest Browser Mode and external browser smoke.
+- For Cloudflare Workers without a repository-specific harness, use the current Workers Vitest integration for local runtime unit and integration tests. Treat `unstable_dev` as a legacy migration case, not the default.
+- For formal E2E, follow the repository contract and use dedicated test or sandbox credentials. Never use production credentials or real payment instruments.
 
-For repeated stability suites:
-- instability rate = failed runs / total repeated runs * 100.
+## Warning and coverage boundaries
 
-Recommended baseline threshold (override when repo policy exists):
-- instability rate < 2%.
+- Fix warnings introduced by the current change. For pre-existing or upstream-blocked warnings, record the exact warning, ownership, blocker, and next evidence instead of silently broadening the mutation scope.
+- Use the repository coverage command when it exists. Coverage is a signal about exercised code, not proof of assertion quality or real-boundary behavior.
+- When normal tests pass but coverage fails, diagnose by rerunning the exact coverage command, comparing flags and environment, and isolating under instrumentation. Recommend the root-cause fix without editing; only an explicitly authorized implementation may apply it before changing thresholds or timeouts.
+- When timeout changes are explicitly authorized and justified, centralize integration timeouts in runner configuration or repository scripts; never use increases to hide unresolved async work, open handles, or long polling.
 
-If threshold is exceeded:
-1. freeze parallelism increases;
-2. revert to a safer deterministic profile (for example lower workers);
-3. create follow-up tasks for isolation fixes;
-4. restore the accelerated profile only after stability returns below threshold.
+## TDD opt-in
 
-If the repository has no active stability contour:
-- do not introduce nightly/telemetry thresholds on your own;
-- use the repo's PR and release policy as the source of truth for risk management.
+Use TDD only when the user explicitly requests it. Then read `references/tdd.md`. A regression test added after an already-implemented fix is valid test work but is not represented as test-first TDD. Never delete or rewrite existing production code merely to recreate a TDD sequence without separate destructive-change authorization.
 
-## Deprecated warnings gate (required)
+## Conditional references
 
-- Treat framework/runtime deprecation warnings in test output as mandatory fixes, not informational noise.
-- Do not stop at the single line shown in logs; search the entire affected package/scope for the deprecated API and migrate all occurrences in that scope in the same change.
-- Re-run the relevant test command after migration and verify the specific deprecation warning is gone.
-- If an immediate fix is impossible (for example blocked by upstream library constraints), explicitly document:
-  - exact warning text,
-  - why it cannot be fixed now,
-  - concrete follow-up task/owner.
+- `references/testing.md` — read the relevant section for Node, edge, integration, E2E, databases, coverage, events, mocks, or hanging tests.
+- `references/testing-anti-patterns.md` — read when writing or reviewing mocks, fixtures, test doubles, or test utilities.
+- `references/react-vitest.md` — read for React, Vitest, Testing Library, DOM environments, Browser Mode, and async UI tests.
+- `references/tdd.md` — read only after explicit TDD opt-in.
 
-## Coverage cadence (required)
-
-- If package has a coverage command (for example `test:coverage`), use it as the primary source of truth.
-- Run coverage after major implementation waves in long tasks/stages.
-- Run a final coverage checkpoint before closing stage-level implementation.
-- Prefer source-only coverage metrics; exclude test files if the runner includes them.
-- If there is no dedicated coverage script, run explicit runner coverage flags and record the exact command.
-
-## Coverage failure triage
-
-When normal tests pass but coverage run fails (or behaves differently):
-- Re-run using the exact coverage command first.
-- Compare runtime flags/environment between `test` and `test:coverage`.
-- Isolate failing suite with coverage instrumentation enabled.
-- Check for instrumentation-sensitive paths (timers, concurrency, unmocked network, module mocks order).
-- If coverage appears to hang near completion (for example `N-1` files done), inspect recently added/changed tests first.
-- Wrap local diagnostic runs with shell timeout to avoid blocked sessions while triaging (for example `timeout 900 <coverage-command>`).
-- Follow `references/testing.md` runbook and record diagnosis in progress/handover.
-
-## React/Vitest async stability checklist
-
-When touching React Testing Library + Vitest tests:
-- Do not leave unresolved promises in mocks (`new Promise(() => {})`) unless you also explicitly resolve/reject them in the test.
-- Prefer a deferred helper and close pending async paths before test end.
-- Avoid `waitFor(async () => ...)`; keep `waitFor` callbacks synchronous assertions.
-- Before clicking submit/action controls, wait until prerequisites are complete and controls are enabled.
-- If a legitimate integration scenario is slow only under coverage instrumentation, prefer adjusting the active Vitest config (`testTimeout`, `hookTimeout`, `teardownTimeout`) with rationale; use per-test timeout override only as a last resort.
-
-## URL-state regression checklist (React SPAs)
-
-When UI state is URL-backed (filters, locale, pagination, tabs):
-- Verify URL param has highest priority over runtime/persisted state.
-- Verify UI interaction updates URL first (or at least produces URL change observed by app state).
-- Verify manual URL change (navigate/update search params) immediately updates rendered state.
-- Verify no bounce-back/oscillation after change:
-  - set state via UI or URL,
-  - assert expected value,
-  - wait briefly and assert value remains stable.
-- Verify canonicalization for accepted variants (for example `IT` -> `it`) when contract requires normalized params.
-
-Recommended assertions:
-- assert both rendered value and `location.search` together.
-- use `waitFor` for post-navigation stabilization checks.
-
-## CI timeout budgeting for integration suites
-
-- Do not leave integration suites on default timeout (`5000ms`) when real runtime is materially higher.
-- For Vitest, set timeout policy in config files (`vitest.config.ts`, `vitest.integration.config.ts`) via `testTimeout`, `hookTimeout`, and `teardownTimeout` instead of scattering per-test overrides.
-- For Node.js test runner (`node:test`), configure timeout policy via runner flags in scripts (for example `node --test --test-timeout=30000`) instead of per-test overrides.
-- Use per-test timeout overrides only as an exception after root-cause analysis and add inline rationale.
-- Practical baseline: choose timeout as at least `3x` local mean runtime of the slowest integration file, then validate in CI.
-- If CI shows worker-termination timeouts or OOM, first check for unresolved async/mocks and accidental long polling before only increasing limits.
-
-## Hanging tests and open handles (required on trigger)
-
-Apply this workflow immediately when prompts or logs include any of:
-- `node --test` hangs
-- tests appear done but the process never exits
-- CI times out after tests complete
-- open handles / active handles
-- passes in isolation but hangs in the full suite
-
-Required sequence:
-1. isolate to one file, then one test name;
-2. rerun with an explicit reporter and timeout to get location context;
-3. capture active handles if the runner is still stuck;
-4. patch teardown in the same scope that created the resource, usually with `t.after(...)`;
-5. stress-rerun the isolated repro, then rerun the full suite.
-
-Do not mark the issue fixed until repeated isolated runs and a full suite run exit cleanly.
-
-Use `references/testing.md` for the detailed runbook and command path.
-
-## Event timing operational check (required for event-driven tests)
-
-Apply this check when tests involve `EventEmitter`, streams, WebSocket/message events, child processes, or any `once()`/listener-based synchronization:
-- create the listener or `once(...)` promise before the act step that may emit the event;
-- keep subscription in Arrange and the emitting action in Act;
-- avoid sleep-based workarounds for races that are actually caused by late subscription;
-- if the event may fire synchronously during setup, change the test arrangement or production seam so the listener can exist first.
-
-Use `references/testing.md` for examples and failure patterns.
-
-## HTTP/SDK mock precision checklist
-
-- Match mocks by `method + pathname (+ query)`, not only by path.
-- Keep a strict fallback (`throw new Error("Unexpected request ...")`) to catch drift immediately.
-- For SDK-driven auth/session flows, account for secondary requests (for example token refresh calls) that may not be obvious from service code.
-- Avoid broad catch-all handlers that shadow other endpoints in the same path family.
-
-## Optional TDD mode (only with explicit request)
-
-Use TDD only when the user explicitly asks for it. If they do, follow this stricter flow and load `references/tdd.md` for the full guide.
-
-### Core rule
-No production code without a failing test first.
-
-### Red-Green-Refactor loop
-1. **RED**: Write a single, minimal test for one behavior.
-2. **Verify RED**: Run the test and confirm it fails for the expected reason (feature missing, not a typo).
-3. **GREEN**: Write the smallest code change to pass.
-4. **Verify GREEN**: Re-run tests and confirm pass.
-5. **REFACTOR**: Clean up while keeping tests green.
-
-### TDD guardrails
-- Tests must fail before code is written.
-- Favor real behavior over heavy mocks.
-- Keep tests small and behavior-focused (one assertion group per behavior).
-- If a test passes immediately, fix the test; don't write more code.
-
-### When to pause and ask
-- The user requested TDD, but existing code already implements the behavior without tests.
-- The user requested TDD, but the first failing test cannot be written without a design change.
-- The request is ambiguous about whether to discard already-written production code to preserve strict TDD.
-
-## Testing anti-patterns (reference)
-
-When writing or changing tests, especially with mocks or test utilities, read `references/testing-anti-patterns.md` and follow it.
-
-## When you need more detail
-Read only the relevant reference file or skill:
-- `references/testing.md` - patterns, examples, mocking, data handling, and coverage.
-- `references/tdd.md` - full TDD workflow and rationale (only when explicitly requested).
-- `references/testing-anti-patterns.md` - detailed anti-patterns and mock guardrails.
-- `references/react-vitest.md` - React testing with Vitest + Testing Library (jsdom/happy-dom, setup, and patterns).
-- `agent-browser` skill - UI E2E testing with agent-browser (workflow, snapshots, sessions, and debugging).
+If an interop skill such as `agent-browser`, `code-reviewer`, or a domain owner is unavailable, preserve its boundary: provide the test strategy or limited finding that this skill owns and report the unperformed browser, formal-review, or domain judgment instead of inventing evidence.
 
 ## Workflow stages
 
-### Workflow stage: Run the testing workflow
+### Workflow stage: Resolve mode and behavior contract
 
-Produce deterministic, behavior-focused tests and verify them through the relevant runner and coverage gates.
+Establish mutation authority, expected behavior, evidence boundary, and the honest completion state before designing assertions.
 
-1. Identify test level, runner, TypeScript execution path, touched files, and changed behaviors.
-2. For low-risk helper logic such as a branch, loop, parser, formatter, or pure utility, choose the smallest runnable check that would fail if the behavior regresses.
-3. For specified or implied forbidden behavior, plan negative/fail-closed tests from the contract source: spec, security/privacy contract, CI/CD gate, auth/RBAC, validation, redaction, environment isolation, or acceptance falsifier.
-4. For side-effecting/state-changing behavior, list applicable negative matrix rows and mark irrelevant rows N/A with a reason.
-5. Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components.
-6. Implement tests with clear Arrange-Act-Assert and event listeners registered before actions that emit events.
-7. Run relevant tests, inspect output and warnings, resolve introduced deprecations, and run coverage checkpoints when required.
-8. For CI workflow changes, validate touched YAML and pair with security-reviewer when permissions, secrets, or untrusted inputs change.
+1. Classify the request as design, implementation, review, or diagnose; do not mutate files in review or diagnose mode.
+2. Identify the requested scope, runner, TypeScript execution path, test level, changed behavior, and downstream consumer.
+3. Apply source precedence: explicit user decisions, accepted specifications or acceptance criteria, then repository contracts and conventions; use implementation and existing tests as evidence only.
+4. Inspect callers and nearby sources when behavior is underspecified; return blocked or limited when a material conflict remains.
+
+Validation:
+
+- Mode and allowed side effects are explicit.
+- Expected behavior is sourced, or the result is honestly blocked or limited.
+- No green test, coverage number, mock, fixture, or current implementation is treated as authority by itself.
+
+### Workflow stage: Design or implement behavior-focused tests
+
+Produce the smallest sufficient test design or authorized test change that proves the named behavior and applicable falsifiers.
+
+1. For low-risk helper logic such as a branch, loop, parser, formatter, or pure utility, choose the smallest runnable check that would fail if the behavior regresses.
+2. For specified or implied forbidden behavior, plan negative/fail-closed tests from the contract source: spec, security/privacy contract, CI/CD gate, auth/RBAC, validation, redaction, environment isolation, or acceptance falsifier.
+3. For side-effecting/state-changing behavior, list applicable negative matrix rows and mark irrelevant rows N/A with a reason.
+4. Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components.
+5. In design mode, return the test plan without changing files; in implementation mode, change only the explicitly authorized scope and use clear Arrange-Act-Assert.
 
 Validation:
 
@@ -287,22 +154,67 @@ Validation:
 - Low-risk helper checks are intentionally small but still fail on the targeted behavior regression.
 - For security-sensitive code, missing negative/fail-closed tests are reported as a test gap.
 - Relevant side-effecting/state-changing risks are covered or explicitly marked N/A by relevance.
-- Relevant tests pass, warnings are resolved or documented, and coverage policy is followed.
+
+### Workflow stage: Review or diagnose without implicit remediation
+
+Produce evidence-backed findings or a diagnosis while preserving the read-only boundary.
+
+1. For review, freeze the target scope, read the full touched diff, and map each changed behavior to existing, added, removed, or weakened tests.
+2. For diagnosis, reproduce or isolate the failure when safe, identify the cause and evidence limits, and recommend the smallest remediation without applying it.
+3. Route formal diff severity and merge guidance to code-reviewer while retaining ownership of test-strategy and runner judgments.
+
+Validation:
+
+- No file or external state changed unless the user separately authorized fixes.
+- Findings and diagnoses distinguish proven behavior, gaps, assumptions, and unassessed boundaries.
+
+### Workflow stage: Verify and report proportionate evidence
+
+Run the checks appropriate to the selected mode and report a decision-complete result without substrate-only closure.
+
+1. In implementation mode, run relevant tests, inspect warnings and stderr, resolve warnings introduced by the change, and run repository-required coverage or CI gates.
+2. For CI workflow changes, validate touched YAML and pair with security-reviewer when permissions, secrets, or untrusted inputs change.
+3. Report the mode-specific output contract and name every required check that did not run with its blocker and next-best evidence.
+
+Validation:
+
+- Implementation output maps behavior to changed tests, files, commands and results, warning status, coverage status, and unverified boundaries.
+- Review output includes stable scope, behavior-to-test mapping, findings with evidence, unverified areas, and a test-adequacy verdict.
+- Design output includes test levels, scenarios and falsifiers, fixture or boundary needs, intended commands, and open assumptions.
+- Diagnose output includes reproduction or symptom, cause evidence, evidence limits, and recommended remediation.
 
 ## Interop priority
 
 - **TypeScript language and type-system rules:** typescript-engineer. This skill owns testing strategy and runner behavior, while TypeScript language semantics belong to typescript-engineer.
-- **browser interaction and UI E2E automation workflow:** agent-browser. Use agent-browser for browser sessions, snapshots, and debugging workflows.
-- **CI permissions, secrets, and untrusted inputs:** security-reviewer. Pair CI security-sensitive testing changes with security-reviewer.
+- **Stable diff scope, finding severity, and merge guidance:** code-reviewer. code-reviewer owns the formal read-only review process; this skill supplies test-strategy and runner-domain judgments.
+- **Authorized code and test remediation:** implementation-discipline. implementation-discipline owns mutation discipline and minimal changes; this skill owns the test behavior and evidence contract.
+- **Browser smoke sessions and interaction diagnostics:** agent-browser. Use agent-browser when available for sampled browser interaction evidence; formal repository E2E remains owned by the project test suite and its framework tooling.
+- **CI permissions, secrets, and untrusted inputs:** security-reviewer. security-reviewer owns permissions, secrets, untrusted-input, and exploitability judgments; this skill owns tests that exercise the sourced security contract.
+- **Framework, platform, and domain behavior used as the test oracle:** the relevant framework or domain skill. Specialized owners define the behavior contract; this skill converts that contract into proportionate test evidence without inventing domain rules.
 
 ## Gotchas
 
 - **high** — Do not let UI tests pass against fixtures that drift from exported server schemas, route names, validation problem shapes, history payload contracts, or security boundaries.
+- **high** — Do not change tests, production code, configuration, or deprecated APIs during review or diagnosis unless the user separately requests remediation.
+- **high** — Do not activate TDD or delete already-written code unless the user explicitly requested TDD and separately authorized any destructive rewrite.
+- **high** — A green suite, coverage percentage, mock, fixture, generated file, or test name is evidence only for what it actually exercises; none proves an unexercised production boundary.
 
 ## Policies
 
+### Mode and mutation boundary
+Classify every task as design, implementation, review, or diagnose. Design returns a plan; review and diagnose stay read-only; implementation changes only the explicitly authorized scope. A request to review, assess, inspect, or diagnose does not authorize fixes.
+
+### Behavior authority and readiness
+Use explicit user decisions, accepted specifications or acceptance criteria, and repository contracts as behavior authority in that order. Treat current implementation and existing tests as evidence, not authority when sources conflict. Inspect callers and sources first, then return blocked or limited rather than inventing expected behavior.
+
+### Mode-specific output
+Implementation reports behavior-to-test mapping, changed files, exact commands and results, warnings, coverage, and unverified boundaries. Review reports stable scope, behavior-to-test mapping, evidence-backed findings, unverified areas, and verdict. Design reports levels, scenarios, falsifiers, fixtures, commands, and assumptions. Diagnose reports symptom or reproduction, cause evidence, limits, and recommended remediation.
+
 ### Completion evidence
 When reporting completion, name the relevant test, coverage, or CI validation commands that ran; state whether warnings and stderr were clean or documented; and call out any check that could not run with the exact blocker and next-best evidence. Do not imply completion while required validation is missing or still failing.
+
+### Structural evidence limit
+Test-file existence, regex contract tests, coverage percentages, mocks, fixtures, and green commands are substrate or bounded evidence. Claim the named behavior only when the corresponding scenario or real boundary was exercised; otherwise report the gap.
 
 ### Smallest sufficient check
 Prefer the smallest runnable check that fails on the behavior regression for low-risk logic. Do not use that rule to downshift security, privacy, money, data-loss, auth, accessibility, release, persistence/RLS/RPC/provider, or production-wiring verification.
@@ -310,12 +222,11 @@ Prefer the smallest runnable check that fails on the behavior regression for low
 ### Scenario template coverage
 For API validation, form validation, loading indicators, route naming migration, and history payload work, include tests for both the happy path and the falsifier that previously failed or could pass as substrate-only behavior.
 
-## Required active references
-- [Agent Browser](references/agent-browser.md) — Read this when working with agent browser.
-- [React Vitest](references/react-vitest.md) — Read this when you need React testing with Vitest + Testing Library (jsdom/happy-dom, setup, and patterns).
-- [Tdd](references/tdd.md) — Read this when you need full TDD workflow and rationale (only when explicitly requested).
-- [Testing Anti Patterns](references/testing-anti-patterns.md) — Read this when you need detailed anti-patterns and mock guardrails.
-- [Testing](references/testing.md) — Read this when you need patterns, examples, mocking, data handling, and coverage.
+## Optional references
+- [React Vitest](references/react-vitest.md) — Read this for React tests using Vitest, Testing Library, jsdom, happy-dom, or Browser Mode.
+- [Tdd](references/tdd.md) — Read this only when the user explicitly requests TDD.
+- [Testing Anti Patterns](references/testing-anti-patterns.md) — Read this when writing or reviewing mocks, fixtures, test doubles, or test utilities.
+- [Testing](references/testing.md) — Read only the relevant section for Node, edge, integration, E2E, database, coverage, event, or hanging-test work.
 
 ## Portability rules
 
@@ -327,7 +238,7 @@ For API validation, form validation, loading indicators, route naming migration,
 
 - Run the skill-source-compiler check command after regeneration.
 - Search the skill folder for absolute local paths before finishing.
-- Confirm every required reference listed by SKILL.md exists inside this skill folder.
+- Confirm every linked reference listed by SKILL.md exists inside this skill folder and that optional interop skills are not required for the core capability.
 
 ## Supporting and historical surface
 

@@ -1,5 +1,7 @@
 # Testing Notes
 
+**Mode boundary:** Any instruction here to edit, install, patch, tune configuration, or change policy is executable only in explicitly authorized implementation/fix mode. In design, review, or diagnose mode, keep repository files and external state unchanged and report the step as a plan or recommendation; safe diagnostic commands may still run within the user's stated boundary.
+
 ## Structure
 - Unit: `test/unit/*.test.ts` (or your repo's equivalent)
 - Integration: `test/integration/*.test.ts` (or your repo's equivalent)
@@ -11,7 +13,7 @@ Apply test execution by contour. If repo policy differs, follow repo policy exac
 
 - Local: targeted/changed tests for fast feedback.
 - PR: full required quality gates for merge safety.
-- Release: full gates + coverage + smoke.
+- Release: full repository-required gates, plus coverage and smoke only when the accepted repository/user contour requires them.
 
 Optional stability/nightly contour exists only when the repository explicitly defines scheduled repeated/shuffled validation. Do not introduce nightly, telemetry, or soak runs from this guide alone.
 
@@ -125,13 +127,14 @@ Near miss:
 - renaming a generic 429 test to mention replay or quota without changing the request sequence, key choice, or assertions that represent the risk.
 
 ## Runner
-- For Node and edge projects without an existing runner policy, prefer `node:test` and a lightweight TS strip/transform (`node --experimental-strip-types` or similar).
+- For Node projects without an existing runner policy, prefer `node:test` and first inspect the pinned Node version and TypeScript syntax used by the tests.
 - If the repo already uses Jest, Vitest, or another runner, follow existing conventions unless the task is to change the runner.
 - Avoid `ts-node` as a default test execution path.
 Notes:
-- `--experimental-strip-types` has limitations (no TS emit transforms, decorators, or path-alias rewriting). If you need those, use a lightweight build step (e.g., `tsc --noEmit false` into `dist/` for tests) or a dedicated test build config.
-- When running source `.ts` files directly with `node --experimental-strip-types`, ESM import specifiers must match the source extension (use `.ts`, not `.js`). If you build to `dist/`, use `.js` in emitted output.
-- For timeout policy in `node:test`, prefer runner-level script flags (for example `node --test --test-timeout=30000`) over per-test timeout options.
+- Current supported Node releases can execute erasable `.ts` syntax with built-in type stripping; do not add `--experimental-strip-types` by default when the pinned runtime already enables it.
+- Built-in stripping does not type-check, read `tsconfig.json`, rewrite path aliases, transform syntax that requires JavaScript emit, or support `.tsx`. Keep a separate typecheck and use the repository build, `tsx`, or another existing loader when those features are required.
+- For direct `.ts` execution, use explicit type-only imports and runtime-compatible relative specifiers. If the project builds tests to JavaScript, follow its emitted extension and module policy instead.
+- Prefer the repository timeout wrapper. On Node versions that support it, a runner-level script flag such as `node --test --test-timeout=30000` centralizes policy; otherwise use the programmatic runner or sourced test/hook timeout options.
 
 ## Naming
 - File names: `<area>.test.ts` or `<area>.<behavior>.test.ts` (examples: `health.test.ts`, `users.create.test.ts`).
@@ -144,8 +147,8 @@ Notes:
 - Unit tests: pure helpers (env parsing, redaction, small utilities).
 - Unit tests for error-mapping helpers are mandatory when logic branches on status/problem codes (do not rely only on integration tests for these paths).
 - Integration: use a local app factory or HTTP harness with mocked config/env and in-memory deps.
-- E2E: runtime-specific harness (Cloudflare Workers: `wrangler unstable_dev`), keep concurrency low.
-  - Validate the current recommended runtime workflow for E2E (the `unstable_dev` flow may change).
+- Edge runtime tests: use the repository harness. For Cloudflare Workers without one, prefer the current Workers Vitest integration for local runtime unit and integration tests.
+- Formal E2E: use the repository-defined deployed or black-box harness; do not relabel a local runtime integration test as deployed E2E.
 
 ## Integration test specifics
 - Scope: HTTP pipeline + middleware + routing + error mapping, without real network calls.
@@ -158,13 +161,14 @@ Notes:
 - For larger synthetic data sets, prefer `@faker-js/faker` over hand-rolled random object generation, and seed it when reproducibility matters.
 
 ## E2E test specifics
-- Scope: runtime behavior in the real harness (Workers: `wrangler unstable_dev`).
+- Scope: runtime or deployed behavior in the repository's formal harness.
 - Treat it as a black box: assert only via HTTP and responses, not internal internals.
 - Keep concurrency low and isolate ports/resources; clean up processes and temp data.
 - Use test-only bindings/secrets; avoid production credentials.
 - Prefer a small number of high-signal scenarios over many brittle ones.
 - Avoid mocks in E2E; use real external systems or dedicated test instances/sandboxes with deterministic data.
 - For edge runtimes, distinguish local dev harness behavior from deployed runtime; verify both when it matters.
+- For Cloudflare Workers, use `@cloudflare/vitest-pool-workers` for current local runtime unit/integration coverage when repository policy does not select another harness. Treat `unstable_dev` only as a legacy migration case and follow current Cloudflare migration guidance rather than starting new suites on it.
 
 ## Writing tests (examples)
 Use Arrange-Act-Assert and keep assertions focused on behavior.
@@ -362,7 +366,12 @@ Apply this runbook when:
 - logs mention open handles or active handles;
 - a test passes alone but hangs in the full suite.
 
-Definition of done:
+Diagnosis completion in read-only `diagnose` mode:
+- the hang is reproduced or narrowed as far as available evidence permits;
+- the likely or proven handle/cause and evidence limits are reported;
+- the smallest remediation is recommended but not applied.
+
+Post-fix definition of done, only when fixes are explicitly authorized:
 - isolated repro passes repeatedly without hangs;
 - the full suite exits cleanly;
 - any handle-dump tool shows no unexpected leftovers in the touched scope.
@@ -372,8 +381,8 @@ Definition of done:
 1. Isolate to one file, then one test name.
 2. Rerun with explicit timeout and reporter output.
 3. Capture active handles if the process still hangs.
-4. Patch teardown in the same scope that created the resource.
-5. Stress-rerun the isolated repro, then rerun the full suite.
+4. In `diagnose`, stop at cause/evidence/recommendation without editing.
+5. Only in explicitly authorized implementation/fix mode, patch teardown in the same scope that created the resource, stress-rerun the isolated repro, then rerun the full suite.
 
 Do not stop at "it passed once".
 
@@ -478,15 +487,16 @@ Use the built-in `node:test` mocking APIs instead of ad-hoc stubs.
 - `mock.module()` replaces ESM/CJS/JSON/builtin modules.
   - Requires `--experimental-test-module-mocks`.
   - Set up the mock before importing the module under test; use dynamic `import()` so the mock is in place.
+  - Use the `exports` option. `defaultExport` and `namedExports` are deprecated compatibility fields.
   - Keep non-mocked exports by re-exporting them from the original module.
   - References created before mocking are not affected, so mock early.
-  - Usually no need to call `restore()` or `reset()` manually; the runner handles it.
+  - Prefer `t.mock` for test-scoped mocks because the test context resets them automatically. When using the global `mock` tracker, call `mock.reset()` in deterministic teardown.
 
 Optional (for Node fetch): use `undici`'s `MockAgent` for HTTP stubbing; `undici` is shipped with Node but not exposed, so install it when needed.
 
 Example (module mock with dynamic import):
 ```ts
-import { before, describe, it, mock } from "node:test";
+import { after, before, describe, it, mock } from "node:test";
 import assert from "node:assert/strict";
 
 describe("uses mocked dependency", () => {
@@ -496,10 +506,12 @@ describe("uses mocked dependency", () => {
   before(async () => {
     dep = mock.fn();
     const named = await import("./dep.js").then(({ default: _, ...rest }) => rest);
-    mock.module("./dep.js", { defaultExport: dep, namedExports: named });
+    mock.module("./dep.js", { exports: { default: dep, ...named } });
 
     ({ handler } = await import("./handler.js"));
   });
+
+  after(() => mock.reset());
 
   it("calls dependency once", async () => {
     await handler();
@@ -526,14 +538,14 @@ Notes:
 - If coverage includes test files in your setup, add `--test-coverage-exclude=test/**` (or your test glob) to keep reports focused on source.
 - For HTML reports, use an external converter (e.g., `lcov-viewer`).
 - Coverage is a signal, not a goal by itself. Prefer fewer tests with strong assertions over superficial line coverage.
-- In CI, consider a modest coverage threshold as a guardrail (but do not chase percentages at the expense of test quality).
+- A coverage command does not authorize inventing a CI threshold. Add or change a threshold only when the repository or user explicitly requires that policy decision, and report the chosen basis separately from test evidence.
 
 ## Coverage cadence
 
-- Use project-native coverage command when available (for example `pnpm -C packages/server test:coverage`).
-- Run at milestone boundaries in long implementations (after major waves).
-- Run a final checkpoint before stage/release closure.
+- Use the project-native coverage command when repository or user policy provides one (for example `pnpm -C packages/server test:coverage`).
+- Run it at the checkpoints required by that accepted policy, including a final checkpoint only when the policy makes it a closure gate.
 - Record command + summary so coverage decisions are traceable.
+- If the repository deliberately has no coverage command or gate, do not invent an equivalent or block closure on unsourced coverage work; report that limit and run the accepted test contour.
 
 ## Source-only coverage policy
 

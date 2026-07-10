@@ -2,6 +2,8 @@
 
 **Load this reference when:** writing or changing tests, adding mocks, or tempted to add test-only methods to production code.
 
+**Mode boundary:** Examples labelled as fixes authorize no mutation by themselves. Apply them only in explicitly authorized implementation/fix mode; in design, review, or diagnose mode, report the recommended correction without editing files or external state.
+
 ## Overview
 
 Tests must verify real behavior, not mock behavior. Mocks are a means to isolate, not the thing being tested.
@@ -194,16 +196,15 @@ const mockResponse = {
 - **Tests pass but integration fails** - Mock incomplete, real API complete
 - **False confidence** - Test proves nothing about real behavior
 
-**The Iron Rule:** Mock the COMPLETE data structure as it exists in reality, not just fields your immediate test uses.
+**The rule:** Derive the mock from the authoritative contract and include every field that the exercised producer/consumer path can observe. Do not guess undocumented fields or require irrelevant payload expansion merely to make a fixture look complete.
 
 **The fix:**
 ```typescript
-// OK GOOD: Mirror real API completeness
-const mockResponse = {
+// OK GOOD: Contract-aligned fixture for the exercised consumer
+const mockResponse: ProfileResponse = {
   status: 'success',
   data: { userId: '123', name: 'Alice' },
   metadata: { requestId: 'req-789', timestamp: 1234567890 }
-  // All fields real API returns
 };
 ```
 
@@ -211,18 +212,18 @@ const mockResponse = {
 
 ```
 BEFORE creating mock responses:
-  Check: "What fields does the real API response contain?"
+  Check: "Which authoritative schema or producer contract owns this shape?"
 
   Actions:
-    1. Examine actual API response from docs/examples
-    2. Include ALL fields system might consume downstream
-    3. Verify mock matches real response schema completely
+    1. Inspect the exported type/schema or documented producer contract
+    2. Include every field observable on the exercised path
+    3. Validate with a shared builder, schema parse, `satisfies`, or typed fixture when available
 
   Critical:
-    If you're creating a mock, you must understand the ENTIRE structure
-    Partial mocks fail silently when code depends on omitted fields
+    A cast such as `as unknown as Response` does not establish conformance
+    A fixture that omits an observed field or invents an impossible state can create false confidence
 
-  If uncertain: Include all documented fields
+  If uncertain: inspect the producer or report the contract gap instead of guessing
 ```
 
 ## Anti-Pattern 5: State-Changing Test Doubles Without Contract Tests
@@ -332,27 +333,29 @@ Minimum completion gate:
 4. THEN claim complete
 ```
 
-## Anti-Pattern 7: Closing a Stage Without Coverage Checkpoints
+## Anti-Pattern 7: Skipping a Required Coverage Checkpoint
 
 **The violation:**
 ```
 OK Tests are green
-X Coverage was never run after final changes
+X The repository-required coverage gate was not run after final changes
 "Stage complete"
 ```
 
 **Why this is wrong:**
 - Instrumentation can reveal issues hidden in normal test runs
 - You lose visibility into untested branches/error paths
-- Coverage regressions are discovered too late
+- A declared coverage regression or release gate may be discovered too late
 
 **The fix:**
 ```
-1. Run package-native coverage command (or explicit equivalent)
+1. If repository or user policy defines a coverage gate, run that exact command
 2. Ensure report focuses on source files, not tests
 3. Fix high-risk uncovered paths
 4. Record checkpoint result before closure
 ```
+
+If no coverage command or closure gate exists, do not invent one. Report that coverage was not part of the accepted contour and rely on the repository-required tests and behavior evidence.
 
 ## Anti-Pattern 8: Never-Resolving Promises in Tests
 
@@ -388,30 +391,34 @@ BEFORE using a pending promise in test mocks:
     STOP - add deferred + explicit settle path
 ```
 
-## Anti-Pattern 9: Async Callback Inside waitFor
+## Anti-Pattern 9: Repeated Side Effects or Opaque Async Work Inside waitFor
 
 **The violation:**
 ```typescript
-// X BAD: async side effects inside waitFor callback
+// X BAD: a retried callback can submit more than once
 await waitFor(async () => {
+  await submitDraft(scope);
   const draft = await readDraft(scope);
   expect(draft).toBeNull();
 });
 ```
 
 **Why this is wrong:**
-- `waitFor` expects polling assertions, not async workflows
-- Makes retry semantics unclear and can create hidden race conditions
+- Testing Library supports promise-returning callbacks, but a rejected promise causes a retry after it settles.
+- A side effect inside the callback may therefore execute multiple times and hide idempotency or race defects.
+- Mixing the action and assertion obscures which operation is allowed to repeat.
 
 **The fix:**
 ```typescript
-// OK GOOD: wait for observable signal, then run async read once
-await waitFor(() => {
-  expect(reloadSession).toHaveBeenCalledTimes(1);
+// OK GOOD: perform the action once; retry only the side-effect-free observation
+await submitDraft(scope);
+await waitFor(async () => {
+  const draft = await readDraft(scope);
+  expect(draft).toBeNull();
 });
-const draft = await readDraft(scope);
-expect(draft).toBeNull();
 ```
+
+Prefer a synchronous observable assertion when one exists. Use an async callback when the observation itself is asynchronous, ensure it rejects until the condition is satisfied, and keep retryable callbacks free of mutations or other repeated side effects.
 
 ## Anti-Pattern 10: Acting Before UI Is Ready
 
@@ -462,13 +469,13 @@ If TDD is not explicitly requested, use the gate functions and normal validation
 | Assert on mock elements | Test real component or unmock it |
 | Test-only methods in production | Move to test utilities |
 | Mock without understanding | Understand dependencies first, mock minimally |
-| Incomplete mocks | Mirror real API completely |
+| Contract-drifting mocks | Derive typed fixtures from the authoritative producer/schema contract |
 | State-changing double without contract tests | Run shared contract suite against production and the double |
 | Fake-green production boundary tests | Add real boundary, contract, or allow/deny tests |
 | Tests as afterthought | Add behavior tests before claiming completion; use TDD only if requested |
-| No final coverage checkpoint | Run and record coverage before closure |
+| Skipped required coverage checkpoint | Run and record the repository/user-defined coverage gate before closure |
 | Never-settled promises in test mocks | Use deferred and always resolve/reject |
-| `waitFor(async () => ...)` | Keep `waitFor` callback sync, run async work outside |
+| Side effects inside `waitFor` | Perform the action once; retry only a side-effect-free sync or async observation |
 | Click while control is disabled/loading | Wait until actionable (`toBeEnabled`) before action |
 | Over-complex mocks | Consider integration tests |
 
@@ -484,9 +491,9 @@ If TDD is not explicitly requested, use the gate functions and normal validation
 - API tests with mock/in-memory stores are treated as proof for persistence/RLS/RPC/provider behavior
 - Fixtures seed impossible auth/RBAC/session/context/profile/status states
 - Test doubles can be selected outside test runtime
-- No recorded coverage checkpoint at milestone/final closure
+- A repository/user-required coverage checkpoint was skipped at milestone/final closure
 - Pending mock promises without explicit settle path
-- `waitFor` callback contains `await`
+- `waitFor` callback repeats writes, submissions, navigation, or other side effects
 - User actions fired before UI control is enabled
 
 ## The Bottom Line

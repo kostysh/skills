@@ -2,14 +2,13 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.5`
+- Skill source version: `0.1.6`
 - CLI package version: `0.1.0`
 
 ## Source files
 - `agents/openai.yaml`
 - `fragments/overview.md`
 - `package.json`
-- `references/agent-browser.md`
 - `references/react-vitest.md`
 - `references/tdd.md`
 - `references/testing-anti-patterns.md`
@@ -18,11 +17,7 @@ Generated from `skill.yaml`.
 - `test/docs-contract.test.mjs`
 
 ## Required references
-- `references/agent-browser.md`
-- `references/react-vitest.md`
-- `references/tdd.md`
-- `references/testing-anti-patterns.md`
-- `references/testing.md`
+- none
 
 ## Warnings
 - none
