@@ -177,18 +177,18 @@ const response3: ApiResponse<User, ValidationError> = {
 ### Basic Mapped Types
 
 ```typescript
-// Transform all properties to optional
-type Partial<T> = {
+// Conceptual expansion; production code should use built-in Partial<T>.
+type OptionalProperties<T> = {
   [K in keyof T]?: T[K];
 };
 
-// Transform all properties to required
-type Required<T> = {
+// Conceptual expansion; production code should use built-in Required<T>.
+type RequiredProperties<T> = {
   [K in keyof T]-?: T[K];
 };
 
-// Transform all properties to readonly
-type Readonly<T> = {
+// Conceptual expansion; production code should use built-in Readonly<T>.
+type ReadonlyProperties<T> = {
   readonly [K in keyof T]: T[K];
 };
 
@@ -267,11 +267,11 @@ type A = IsString<string>;  // true
 type B = IsString<number>;  // false
 type C = IsString<"hello">; // true
 
-// Practical: Extract non-nullable type
-type NonNullable<T> = T extends null | undefined ? never : T;
+// Conceptual expansion; production code should use built-in NonNullable<T>.
+type Defined<T> = T extends null | undefined ? never : T;
 
-type D = NonNullable<string | null>;     // string
-type E = NonNullable<number | undefined>; // number
+type D = Defined<string | null>;     // string
+type E = Defined<number | undefined>; // number
 ```
 
 ### Distributive Conditional Types
@@ -293,20 +293,20 @@ type Mixed = ToArrayNonDist<string | number>;
 ### infer Keyword
 
 ```typescript
-// Extract return type
-type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+// Custom extraction example; prefer built-in ReturnType<T> in production code.
+type InferredReturn<T> = T extends (...args: never[]) => infer R ? R : never;
 
-type FnReturn = ReturnType<() => string>; // string
+type FnReturn = InferredReturn<() => string>; // string
 
 // Extract array element type
 type ArrayElement<T> = T extends (infer E)[] ? E : never;
 
 type Element = ArrayElement<number[]>; // number
 
-// Extract Promise result
-type Awaited<T> = T extends Promise<infer R> ? Awaited<R> : T;
+// Custom recursive example; prefer built-in Awaited<T> in production code.
+type UnwrappedPromise<T> = T extends Promise<infer R> ? UnwrappedPromise<R> : T;
 
-type Result = Awaited<Promise<Promise<string>>>; // string
+type Result = UnwrappedPromise<Promise<Promise<string>>>; // string
 
 // Extract function first parameter
 type FirstParam<T> = T extends (first: infer F, ...rest: any[]) => any ? F : never;
@@ -434,42 +434,21 @@ type WithLast = Append<[1, 2, 3], 4>;
 // [1, 2, 3, 4]
 ```
 
-### Practical Variadic Patterns
+### Composition warning
+
+A variadic `pipe` or `compose` signature is sound only when it relates every function's output to the next function's input and returns the final function's result. `ReturnType<T[number]>` produces a union of every stage result and does not enforce adjacency. Prefer an existing, tested library type or a small set of sound overloads over a compact-looking variadic signature. Lock any custom composition API with positive cases and `@ts-expect-error` cases for incompatible adjacent functions. Run the exact published snippet with the supported compiler before presenting the signature as verified.
+
+On a multiline call, TypeScript may report tuple incompatibility on the first argument line rather than the `pipe(` line. Place the directive immediately before the actual diagnostic line and also run an unsuppressed copy to prove the expected error exists:
 
 ```typescript
-// Typed curry function
-type Curry<F> = F extends (...args: infer A) => infer R
-  ? A extends [infer First, ...infer Rest]
-    ? (arg: First) => Curry<(...args: Rest) => R>
-    : R
-  : never;
-
-declare function curry<F extends (...args: any[]) => any>(fn: F): Curry<F>;
-
-function add(a: number, b: number, c: number): number {
-  return a + b + c;
-}
-
-const curriedAdd = curry(add);
-const add1 = curriedAdd(1);     // (arg: number) => Curry<...>
-const add1and2 = add1(2);       // (arg: number) => number
-const result = add1and2(3);     // number (6)
-
-// Typed pipe function
-function pipe<T extends ((arg: any) => any)[]>(
-  ...fns: T
-): (arg: Parameters<T[0]>[0]) => ReturnType<T[number]> {
-  return (arg) => fns.reduce((acc, fn) => fn(acc), arg);
-}
-
-const process = pipe(
-  (n: number) => n * 2,
-  (n: number) => n.toString(),
-  (s: string) => s.length
+pipe(
+  // @ts-expect-error - number output cannot feed a boolean input
+  (text: string) => text.length,
+  (value: boolean) => (value ? 1 : 0),
 );
-
-const length = process(5); // number (2 - length of "10")
 ```
+
+An unused directive is a failed negative test, even when the intended incompatibility appears on the next line.
 
 ---
 

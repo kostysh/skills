@@ -18,7 +18,7 @@ Primary source of truth:
 - `skill.yaml`
 - `fragments/*`
 - `references/*`
-- `assets/*`
+- `agents/*`
 
 Generated output:
 
@@ -30,3 +30,4 @@ Generated output:
 - Use the `skill-source-compiler` skill when maintaining this skill.
 - Update the source bundle first and regenerate instead of hand-editing generated files.
 - Keep the skill portable: no absolute paths and no required files outside this skill folder.
+- Keep this skill documentation-only; do not add starter configs or validation scripts unless a repeated executable contract and matching tests justify them.

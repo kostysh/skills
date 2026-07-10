@@ -1,4 +1,4 @@
 interface:
   display_name: "TypeScript Engineer"
-  short_description: "Advanced TypeScript typing and debugging"
-  default_prompt: "Use $typescript-engineer to diagnose TypeScript errors, remove unsafe any, and design sound type-safe APIs."
+  short_description: "Sound TypeScript diagnosis, APIs, and toolchains"
+  default_prompt: "Use $typescript-engineer to establish the repository and installed-version context, diagnose the root TypeScript cause, preserve Biome plus ESLint coverage, and report the exact verification boundary."

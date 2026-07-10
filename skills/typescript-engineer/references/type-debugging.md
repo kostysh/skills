@@ -16,20 +16,18 @@ Use a repeatable debugging loop instead of patching errors with casts.
 
 ## Workflow
 
-Prefer the repo's existing typecheck script. If none exists, use:
-
-```bash
-pnpm tsc --noEmit
-```
+Prefer the repository's existing package- or workspace-scoped typecheck/build command. If none exists, identify the local compiler, intended `tsconfig`, and source set before using a fallback. A successful generic `tsc --noEmit` is not useful evidence when it loads the wrong config, checks zero root files, or skips project references.
 
 Recommended loop:
-1. Capture the current error output before editing types.
-2. Find the first actionable root cause, not just the topmost symptom.
-3. Apply the narrowest sound fix.
-4. Re-run typecheck.
-5. Add type regression checks for tricky behavior.
+1. Capture the exact command, TypeScript version, targeted diagnostic, and relevant baseline output before editing types.
+2. Confirm which config, files, and project references the command covers.
+3. Find the first actionable root cause, not just the topmost symptom.
+4. Apply the narrowest sound fix when changes are authorized.
+5. Re-run the same relevant command and any affected consumer check.
+6. Confirm the targeted diagnostic is resolved or intentionally preserved and no new relevant diagnostics appeared.
+7. Add positive and negative compile assertions for fragile behavior.
 
-For monorepos, use the package or workspace entrypoint that matches the affected codepath.
+For monorepos, use the package or graph-aware workspace entrypoint that matches the affected codepath; read `monorepo.md` before selecting a fallback.
 
 ---
 
@@ -79,12 +77,12 @@ Common root-cause categories:
 |---------|-------------------|-------------|
 | Literal widened to `string` | Missing `as const` or `const` type parameter | Derive from runtime literals |
 | `string` cannot index `T` | Key is unconstrained | Use `K extends keyof T` |
-| Property missing on `unknown` | Boundary data not narrowed | Add guard, assertion, or schema validation |
+| Property missing on `unknown` | Boundary data not narrowed | Add a runtime-backed guard or use the accepted schema boundary |
 | `any` leaking through API | Untyped boundary or wrapper | Replace with `unknown`, generics, or schema-derived types |
 | Unexpected union distribution | Distributive conditional type | Wrap in tuple to stop distribution |
 | No overload matches | Signature order or wrong abstraction | Add overloads or switch to union/options object |
 
-Prefer these fixes over broad casts:
+Prefer these fixes over broad casts when they preserve the accepted public and runtime contract:
 - `unknown` plus narrowing
 - generic constraints
 - `satisfies`
@@ -166,3 +164,13 @@ When removing `any` or tightening public APIs:
 - check all affected call sites
 - verify autocomplete still exposes the intended literals
 - confirm the new type does not force callers into unnecessary casts
+
+## Completion evidence
+
+Do not close a diagnosis because the total error count decreased. Record:
+
+- whether the targeted diagnostic disappeared or changed for an understood reason;
+- whether new relevant diagnostics appeared;
+- which config, files, and project graph the command checked;
+- whether public call sites or emitted declarations changed;
+- which runtime, framework, or test boundary remains outside the TypeScript evidence.

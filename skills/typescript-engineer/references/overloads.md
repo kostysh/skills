@@ -139,11 +139,11 @@ If signatures only shuffle optional parameters or all return the same type, over
 ### Losing literals before overload resolution
 
 ```typescript
-const method = "GET";
+let method = "GET";
 request(method);
 ```
 
-If `method` widened to `string`, the specific overload may not match. Preserve literals with `as const`, `satisfies`, or `const` type parameters where appropriate.
+Because a mutable `let` binding widens here to `string`, the specific overload may not match. Preserve literals with a `const` binding, a narrow annotation, `satisfies`, or a `const` type parameter where appropriate; do not add `as const` reflexively to values that must remain mutable.
 
 ### Missing fallback overload
 

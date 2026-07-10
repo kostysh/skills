@@ -1,110 +1,79 @@
-# Practices and Policies
+# TypeScript Practices and Migration
 
-> **Load when:** User asks about migration, common mistakes, or TypeScript suppression directives.
+> **Load when:** The task reduces unsafe `any` or assertions, changes a public type contract, migrates JavaScript, or needs a TypeScript suppression policy.
 
-## @ts-expect-error policy
-- Use `@ts-expect-error` with a short justification comment (ticket or reason).
-- Do not use `@ts-ignore`.
-- Prefer narrowing or explicit types first; suppression is a last resort.
-- Remove the suppression when the underlying issue is fixed.
+Repository policy and the intended public contract win over style preferences in this reference.
 
-Example:
+## Suppression directives
+
+Fix the type or boundary first. When a negative compile assertion or temporary upstream incompatibility genuinely needs a directive:
+
+- prefer `@ts-expect-error` because it fails when the expected diagnostic disappears;
+- include a short description of the expected error and why it is intentional;
+- keep the directive on the narrowest line;
+- remove it when the condition no longer applies;
+- follow stricter repository policy when present.
+
 ```ts
-// @ts-expect-error - TODO(TS-123): upstream types are incorrect
-callIntoLegacyApi(value);
+declare function setMode(mode: "safe" | "fast"): void;
+
+// @ts-expect-error - unsupported modes must remain rejected
+setMode("legacy");
 ```
 
-## Common mistakes
+Do not mechanically replace a version-matrix `@ts-ignore` without checking every supported TypeScript version: a line can error in one supported version and not another. If repository policy permits that exceptional case, document the version boundary and keep an executable matrix check.
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Using `any` liberally | Defeats type safety | Use `unknown` and narrow |
-| Ignoring strict mode | Misses null/undefined bugs | Enable all strict options |
-| Type assertions (`as`) | Can hide type errors | Use `satisfies` or guards |
-| Enum for simple unions | Generates runtime code | Use literal unions instead |
-| Not validating API data | Runtime type mismatches | Use Zod at boundaries |
+## Unsafe `any` and assertions
 
-## API contracts and boundaries
-- Explicitly annotate return types for exported/public APIs to lock contracts.
-- Accept `unknown` at boundaries (user input, APIs, storage) and validate before use.
-- Prefer discriminated unions for state modeling instead of boolean flag combinations.
+Distinguish `any` by propagation risk instead of banning the token mechanically.
 
-## Imports and code hygiene
-- Use `import type` for type-only dependencies.
-- Keep imports grouped: `node:` built-ins, external packages, internal modules.
-- Keep the import graph acyclic; extract shared types into a lower-level module.
-- Prefer guard clauses and early returns to reduce nesting and improve narrowing.
+Prefer:
 
-## Constants and literal types
-- Use `as const` for immutable lookup arrays and config objects.
-- Derive unions from const data: `type Role = typeof ROLES[number]`.
-- Name constant collections consistently:
-  - Source arrays: `PLURAL_NOUN`, add unit suffix when relevant (`BITRATES_KBPS`).
-  - Derived options: `*_OPTIONS` for `{ value, label }` arrays.
-  - IDs derived from options: `*_IDS`.
-  - Label maps: `*_TO_LABEL` for `Record<Id, string>`.
-  - Use `SCREAMING_SNAKE_CASE` for exported constants.
+- `unknown` plus narrowing for untrusted or opaque values;
+- constrained generics for relationships between inputs and outputs;
+- discriminated unions for state variants;
+- `satisfies` when validating a shape while preserving inference;
+- types derived from an accepted runtime schema or source definition;
+- a small adapter around inaccurate third-party declarations.
 
-## Dependency hygiene
-- Always commit the lockfile and keep it in sync with `package.json`.
-- Add a single verify script (typecheck + lint + tests) and run it in CI/pre-commit.
-- Delegate test tool details to `typescript-test-engineer`.
+An assertion is acceptable only when a runtime invariant or external contract exists, TypeScript cannot express it directly, and the assertion is isolated at that boundary. Record the invariant and add the narrowest regression evidence. An assertion does not validate data.
 
-## Type assertions and inference
-- Avoid `as` casts unless interfacing with untyped libraries; prefer narrowing, `satisfies`, or schema inference.
-- In TS 5.5+, avoid manual type predicates in simple `.filter()` callbacks when inference already narrows.
+## Public type contracts
 
-## Migration strategies
+Before tightening or widening an exported type:
 
-### Incremental migration from JavaScript
+1. find callers, implementers, declaration consumers, and serialized boundaries;
+2. state whether the change is source-compatible and whether it changes emitted declarations;
+3. prefer inference internally but annotate exported behavior when the annotation intentionally protects a public contract;
+4. compile affected consumers or declaration tests when the claim depends on them.
 
-**Phase 1: Enable TypeScript alongside JavaScript**
-```json
+Do not force callers into casts merely to make the implementation typecheck.
+
+## Boundary data
+
+Accept opaque external data as `unknown` until the owning runtime boundary validates or narrows it. TypeScript may derive a type from an accepted schema, but the validation library, framework, or domain owner decides what the schema must accept and how failures behave.
+
+## Incremental JavaScript migration
+
+Preserve runtime behavior and advance strictness in observable steps:
+
+1. identify the current JS checking, transpilation, test, and module paths;
+2. enable TypeScript or `checkJs` only for an intentionally bounded source set;
+3. migrate files or boundaries in small groups with the existing runtime tests;
+4. reduce `any` and enable stricter compiler options as explicit gates;
+5. keep generated declarations and public consumers compatible where applicable.
+
+Example starting point for a checked JavaScript slice:
+
+```jsonc
 {
   "compilerOptions": {
     "allowJs": true,
-    "checkJs": false,
-    "strict": false,
-    "noImplicitAny": false
-  }
+    "checkJs": true,
+    "noEmit": true
+  },
+  "include": ["src/migrating/**/*.js"]
 }
 ```
 
-**Phase 2: Rename files gradually**
-```bash
-mv src/utils/helpers.js src/utils/helpers.ts
-# Add minimal type annotations, fix errors, run tests
-```
-
-**Phase 3: Enable stricter checks incrementally**
-```json
-{
-  "compilerOptions": {
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strict": true,
-    "noUncheckedIndexedAccess": true
-  }
-}
-```
-
-### JSDoc for gradual typing
-```js
-/**
- * @param {string} name
- * @param {number} age
- * @returns {User}
- */
-function createUser(name, age) {
-  return { name, age };
-}
-
-/**
- * @template T
- * @param {T[]} items
- * @returns {T | undefined}
- */
-function first(items) {
-  return items[0];
-}
-```
+Do not advertise migration complete because files were renamed or a config exists. Completion requires the intended source set to be checked and the relevant runtime behavior to remain verified by its owning tests.

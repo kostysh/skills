@@ -1,86 +1,39 @@
-Professional TypeScript development - language and type system only, no frameworks.
+Guide TypeScript language, type-system, compiler, and lint decisions to a sound, observable result. The skill is useful only when the agent can explain the type contract, preserve the authorized runtime behavior, and show what the selected compiler and lint commands actually checked.
 
-## Scope
-Applies to TypeScript language features, type system design, and toolchain configuration. Avoid framework-specific guidance.
-## Interop (Priority)
-- When paired with a framework skill (e.g. `react-spa-engineer`), this skill provides the baseline for TypeScript language/toolchain rules.
-- Defer framework-specific patterns (React, routing, hooks, UI) to the framework skill.
-- If rules conflict, follow this skill for TypeScript/toolchain and the framework skill for framework APIs.
+## Capability and anti-claims
 
-## Non-negotiables (baseline)
-- For non-trivial typing work, run the repo's typecheck command first; if none exists, use `pnpm tsc --noEmit`. Re-run it after changes.
-- Keep tests and type checks deterministic; do not rely on implicit `any` or unsafe assertions.
-- Replace `any` deliberately: prefer `unknown`, constrained generics, discriminated unions, overloads, or schema-derived types.
-- Use the first sufficient TypeScript construct: inference, narrowing, `satisfies`, built-in utility types, runtime-derived types, and schema-derived types come before bespoke conditional/mapped machinery or helper dependencies.
-- Use both Biome and ESLint: Biome for formatting and baseline lint, ESLint for type-aware rules.
-- Use `@ts-expect-error` with a short justification; do not use `@ts-ignore`.
-- For fragile type-level behavior, add type tests or negative compile assertions.
-- For testing guidance, use the `typescript-test-engineer` skill.
+When a TypeScript request is supplied, identify whether the user wants an explanation, a read-only review or diagnosis, or an implementation. Use repository and installed-version evidence to diagnose the root cause, choose the narrowest sound construct, preserve public consumers, and report a verified, partial, or blocked result.
 
-## When Invoked
-1. Run the existing typecheck command, or `pnpm tsc --noEmit` if the repo has no wrapper script, to capture the full error set before changing types.
-2. Identify the root cause before patching symptoms: widened literals, missing constraints, invalid indexing, overload mismatch, unsafe `any`, or unsound assertions.
-3. Check whether inference, narrowing, `satisfies`, built-in utility types, runtime-derived types, or schema inference solves the problem before adding bespoke type helpers.
-4. Prefer the narrowest sound fix: constraints, narrowing, `satisfies`, runtime-derived types, overloads, or schema inference instead of widening everything to `string`, `object`, or `any`.
-5. Validate call sites and IntelliSense after the fix. For tricky type-level APIs, add type tests or negative assertions to lock behavior.
-6. Re-run typecheck after changes and verify the error count moved in the intended direction.
+This documentation does not typecheck a project by itself. Compiler or lint success does not prove runtime, framework, validation, security, or domain behavior. A generated config, lower diagnostic count, empty solution program, type assertion, schema type, test double, or supporting log cannot close a broader capability claim.
 
-## Quick Start (no Vite)
-```bash
-pnpm init -y
-pnpm add -D typescript @types/node
-npx tsc --init
-```
+## Minimum inputs and source precedence
 
-Adjust `tsconfig.json` for your runtime and module resolution. See `references/toolchain.md` for the moduleResolution matrix and baseline configs.
+Derive or obtain the expected behavior, repository instructions, installed TypeScript and lint versions, relevant `tsconfig` chain, package or workspace commands, current diagnostics, and affected public call sites or declaration consumers. For toolchain work, also identify the emitter, runtime, bundler, and downstream package consumers that determine module behavior.
 
-### Module resolution quick matrix
+Apply authority in this order:
 
-| App type | moduleResolution | module | Notes |
-|---------|------------------|--------|-------|
-| Node.js apps | `NodeNext` | `NodeNext` | Align with `package.json` `type`. |
-| React apps (Vite) | `bundler` | `ESNext` | Bundler-based resolution. |
+1. explicit user requirements for the authorized task;
+2. compatible repository policy and installed project behavior;
+3. current official documentation that matches the installed or requested version;
+4. portable defaults in this skill.
 
-## Project Setup Checklist
-- Use pnpm for package management.
-- Configure ESM/CJS and `moduleResolution` to match your runtime.
-- Enable strict mode and incremental builds where appropriate.
-- Set up Biome + ESLint together.
-- Validate external data at boundaries (Zod or equivalent).
-- Delegate testing patterns to `typescript-test-engineer`.
-- When defining project scripts, keep test contours explicit (local fast loop, PR required gates, nightly stability) and defer details to `typescript-test-engineer`.
+If equal-authority sources conflict, the requested contract is missing, or the required project graph cannot be exercised, limit the recommendation or report `blocked`. Do not invent the missing behavior.
 
-## When to Use This Skill
-Use when:
-- Writing type-safe TypeScript code (any project)
-- Designing complex type patterns (generics, mapped types, conditional types)
-- Resolving TypeScript compiler errors and inference failures
-- Removing `any` types from legacy or loosely typed code
-- Designing type guards, assertion functions, and overloads
-- Deriving types from runtime values with `as const`, `typeof`, or `const` type parameters
-- Migrating JavaScript codebases to TypeScript
-- Configuring TypeScript toolchains (tsconfig, ESLint, Biome, pnpm)
-- Implementing validation with Zod
-- Creating branded/nominal types for domain safety
+## Dual-lint contract
 
-Do NOT use for:
-- React-specific patterns (use React skills)
-- Backend framework patterns (use framework skills)
-- Frontend UI patterns
+For greenfield TypeScript setup or explicitly authorized lint hardening, use both Biome and ESLint with typescript-eslint. Biome owns formatting, fast syntax-oriented checks, and the type-aware rules supported by the installed Biome version. ESLint owns the remaining type-informed and repository-policy rules. Inspect installed versions and assign one owner to overlapping rules so duplicate diagnostics do not obscure the complementary coverage.
 
-## Assets and Scripts
-- Use `references/assets-scripts.md` for guidance on bundled assets and scripts.
+In an existing repository, follow its declared commands and policy. Do not add a missing linter during an unrelated TypeScript change. If the required Biome or ESLint contour is unavailable, report the exact gap and do not describe the toolchain as fully verified.
 
-## When you need more detail
-Read only the relevant reference file:
-- [type-system.md](references/type-system.md) - Core type system guide
-- [generics.md](references/generics.md) - Advanced generics and utility types
-- [runtime-derived-types.md](references/runtime-derived-types.md) - `as const`, `typeof`, `[number]`, and `const` type parameters
-- [type-debugging.md](references/type-debugging.md) - Diagnosing compiler errors, isolating root causes, and type regression checks
-- [overloads.md](references/overloads.md) - Function overloads, overload ordering, and overloads vs unions
-- [patterns.md](references/patterns.md) - Error handling, validation, project organization
-- [toolchain.md](references/toolchain.md) - Tooling, tsconfig, linting, module resolution
-- [vite.md](references/vite.md) - Vite setup for React/TS apps
-- [monorepo.md](references/monorepo.md) - Large codebases and project references
-- [practices.md](references/practices.md) - Common mistakes, migration, @ts-expect-error policy
-- [assets-scripts.md](references/assets-scripts.md) - How to use bundled assets and scripts
+## Completion contract
+
+`verified` requires evidence that the targeted diagnostic or type behavior is correct, no new relevant diagnostics were introduced, the selected command actually covered the affected project or reference graph, and public consumers still satisfy the intended contract. Use `partial` when useful work is complete but a required verification contour is missing; use `blocked` when missing authority or incompatible constraints prevent a sound result.
+
+The final response states:
+
+- the outcome or root cause;
+- authoritative inputs and material assumptions;
+- the changed or reviewed type/API contract;
+- exact typecheck, build-graph, lint, or compile-assertion evidence;
+- remaining diagnostics and unverified owner boundaries;
+- `verified`, `partial`, or `blocked` status.

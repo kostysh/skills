@@ -125,8 +125,8 @@ type Handler = (event: Event) => void;
 // Type aliases for mapped types
 type Nullable<T> = { [K in keyof T]: T[K] | null };
 
-// Type aliases for conditional types
-type NonNullable<T> = T extends null | undefined ? never : T;
+// Type aliases for conditional types; use built-in NonNullable<T> for this case.
+type Defined<T> = T extends null | undefined ? never : T;
 
 // Type aliases for tuples
 type Point = [x: number, y: number];
@@ -236,8 +236,10 @@ move("up");    // Error: Argument of type '"up"' is not assignable
 type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6;
 type BinaryDigit = 0 | 1;
 
+const DICE_ROLLS = [1, 2, 3, 4, 5, 6] as const;
+
 function roll(): DiceRoll {
-  return Math.ceil(Math.random() * 6) as DiceRoll;
+  return DICE_ROLLS[Math.floor(Math.random() * DICE_ROLLS.length)] ?? 1;
 }
 ```
 
@@ -371,8 +373,8 @@ const config = {
   host: "localhost"
 } as Record<string, string | number>;
 
-// No error, but port is now string | number
-const portString = config.port.toFixed(2); // Runtime error if port is string!
+// The assertion discards the useful property-specific inference.
+config.port.toFixed(2); // Compile error: port is string | number.
 ```
 
 ### Solution: satisfies Validates Without Widening

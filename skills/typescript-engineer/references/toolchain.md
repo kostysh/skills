@@ -1,410 +1,125 @@
-# Toolchain Reference
+# TypeScript Toolchain
 
-> **Load when:** User asks about pnpm, ESLint, Biome, tsconfig, build tools, or project configuration.
+> **Load when:** The task changes `tsconfig`, TypeScript versions, module or module-resolution behavior, or coordinated Biome and ESLint coverage.
 
-Modern TypeScript toolchain configuration.
+Treat toolchain configuration as executable behavior. Inspect the repository and installed versions before recommending options or commands; do not copy a generic config over an existing project.
 
-## Contents
+## Establish the real toolchain
 
-- [TypeScript Configuration](#typescript-configuration)
-- [Module Resolution Matrix](#module-resolution-matrix)
-- [Package Manager (pnpm)](#package-manager-pnpm)
-- [Linting and Formatting](#linting-and-formatting)
-  - [Biome](#biome)
-  - [ESLint (Type-Aware)](#eslint-type-aware)
-- [Testing](#testing)
+Before editing, identify:
 
----
+- the repository's package manager and package/workspace scripts;
+- the installed TypeScript, Biome, ESLint, and typescript-eslint versions;
+- the `tsconfig` inheritance and project-reference graph;
+- whether TypeScript emits JavaScript, declarations only, or no output;
+- the runtime, bundler, test transform, and downstream package consumers;
+- the exact local, CI, and release commands whose behavior must remain compatible.
 
-## TypeScript Configuration
+Repository policy and compatible installed behavior win over this reference's defaults. If a requested upgrade changes compiler, lint, emit, or module semantics, treat it as explicit migration work rather than incidental cleanup.
 
-### Strict Enterprise Configuration (bundler-first)
+## TypeScript configuration decisions
 
-```json
-// tsconfig.json
+Start with the smallest compiler configuration that matches the real execution and distribution path. Common strictness options include:
+
+```jsonc
 {
   "compilerOptions": {
-    // Language and Environment
-    "target": "ES2024",
-    "lib": ["ES2024"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-
-    // Strict Type Checking
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-
-    // Module Handling
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-
-    // Output
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-
-    // Path Aliases
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-
-    // Performance
-    "skipLibCheck": true,
-    "incremental": true,
-    "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo"
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
-}
-```
-
-### Node.js Backend Configuration
-
-```json
-// tsconfig.json for Node.js
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "lib": ["ES2022"],
-
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitOverride": true,
-
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "skipLibCheck": true,
-
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "declaration": true,
-    "sourceMap": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
-}
-```
-
-### Configuration Options Explained
-
-| Option | Purpose |
-|--------|---------|
-| `strict` | Enable all strict type checking options |
-| `noUncheckedIndexedAccess` | Add `undefined` to indexed access results |
-| `exactOptionalPropertyTypes` | Differentiate `undefined` from missing |
-| `noImplicitOverride` | Require `override` keyword |
-| `noPropertyAccessFromIndexSignature` | Require bracket notation for index signatures |
-| `isolatedModules` | Ensure each file can be transpiled independently |
-| `verbatimModuleSyntax` | Enforce explicit `type` imports/exports |
-
----
-
-## Module Resolution Matrix
-
-Choose `moduleResolution` based on runtime and bundler:
-
-| App type | moduleResolution | module | Notes |
-|---------|------------------|--------|-------|
-| Node.js apps | `NodeNext` (module) | `NodeNext` | Use Node-style module resolution; align with `package.json` `type`. |
-| React apps (Vite) | `bundler` | `ESNext` | Use bundler resolution for modern Vite/ESM workflows. |
-
-Shortcut: Node.js apps use module resolution (NodeNext); React apps use bundler resolution.
----
-
-## Node ESM + source TypeScript (strip-types)
-
-If you run source `.ts` directly (e.g., `node --experimental-strip-types`):
-- Use `.ts` in ESM import specifiers to match the source files.
-- Avoid `.js` specifiers unless you are importing built output from `dist/`.
-- Do not rely on TS path aliases; Node will not rewrite them.
-
-
-## Package Manager (pnpm)
-
-### Why pnpm
-
-| Feature | npm | pnpm |
-|---------|-----|------|
-| Disk usage | Duplicates packages | Shared store, symlinks |
-| Install speed | Slower | 2-3x faster |
-| Strictness | Allows phantom deps | Strict by default |
-| Monorepo support | Basic workspaces | First-class support |
-
-### Basic Commands
-
-```bash
-# Install dependencies
-pnpm install
-
-# Add packages
-pnpm add typescript
-pnpm add -D @types/node
-
-# Run scripts
-pnpm run build
-pnpm test
-
-# Update packages
-pnpm update
-pnpm update --interactive
-
-# List packages
-pnpm list
-pnpm why lodash
-
-# Clean install
-pnpm install --frozen-lockfile
-```
-
-### Workspace Configuration
-
-```yaml
-# pnpm-workspace.yaml
-packages:
-  - 'packages/*'
-  - 'apps/*'
-```
-
-```json
-// package.json (root)
-{
-  "name": "my-monorepo",
-  "private": true,
-  "scripts": {
-    "build": "pnpm -r run build",
-    "test": "pnpm -r run test",
-    "lint": "pnpm -r run lint"
+    "verbatimModuleSyntax": true
   }
 }
 ```
 
----
+These are candidates, not a universal template:
 
-## Build Tool (Vite)
+- enabling them in an existing project can expose migration work;
+- `exactOptionalPropertyTypes` changes assignability at public boundaries;
+- `noUncheckedIndexedAccess` propagates `undefined` into indexed reads;
+- `verbatimModuleSyntax` makes type/value import intent observable and must match the emitter and runtime path;
+- emit, declaration, JSX, library, target, and interop options depend on the actual project.
 
-For Vite setup and configuration, see `references/vite.md`.
+Prefer the repository's existing `typecheck`, `build`, or package-scoped command. A generic local compiler fallback is acceptable only after confirming the intended `tsconfig` and source set. Do not claim coverage from a successful command that loaded zero root files or skipped referenced projects.
 
----
+## Module and module-resolution workflow
 
-## Linting and Formatting
+Choose `module` and `moduleResolution` from the real emitter/runtime/consumer contract, not from a framework label.
 
-Use both: Biome for fast formatting and baseline linting, ESLint for type-aware rules.
+1. Identify what executes: source TypeScript, emitted JavaScript, or bundled output.
+2. Identify who resolves imports: Node, a bundler, another runtime, or downstream package consumers.
+3. Identify whether emitted declarations preserve imports that consumers must resolve.
+4. Select settings that model that path, then run the real build and consumer-facing check.
 
-### Biome
+Typical directions:
 
-Fast all-in-one linter and formatter written in Rust. Simpler setup, excellent TypeScript support out of the box.
+| Execution or distribution path | TypeScript direction | Required owner check |
+| --- | --- | --- |
+| JavaScript emitted for modern Node | a matching Node mode such as `NodeNext` or a version-frozen Node mode supported by the installed TypeScript | `node-engineer` confirms runtime mode, package type, and import extensions |
+| Application fully processed by a bundler | `moduleResolution: "bundler"` with a compatible `module` setting | framework/bundler owner confirms the produced runtime behavior |
+| Published library with externalized imports or declarations | model downstream consumers, not only the author's bundler | build and consumer/declaration evidence |
+| Source `.ts` executed by Node | compiler options must reflect the runtime mode, but Node ignores many `tsconfig` transforms | `node-engineer` owns type stripping and runtime import semantics |
 
-#### Installation
+Do not assume `paths` rewrites runtime imports. TypeScript path mapping describes resolution to the compiler; the runtime or bundler needs a compatible mechanism.
 
-```bash
-pnpm add -D @biomejs/biome
-pnpm biome init
-```
+## Dual-lint baseline: Biome plus ESLint
 
-#### Configuration
+For a new TypeScript setup or explicit lint hardening, configure both tools because their coverage is complementary.
 
-```json
-// biome.json
-{
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
-  "organizeImports": {
-    "enabled": true
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "complexity": {
-        "noExcessiveCognitiveComplexity": "warn"
-      },
-      "suspicious": {
-        "noExplicitAny": "error"
-      },
-      "style": {
-        "useConst": "error",
-        "noNonNullAssertion": "warn"
-      }
-    }
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 100
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "semicolons": "always",
-      "trailingCommas": "es5"
-    }
-  }
-}
-```
+### Biome owns
 
-#### Commands
+- formatting;
+- import organization when enabled for the installed version;
+- fast syntax and repository-style checks;
+- the type-aware rules implemented and enabled by the installed Biome version.
 
-```bash
-# Check (lint + format check)
-pnpm biome check .
+### ESLint plus typescript-eslint owns
 
-# Fix all auto-fixable issues
-pnpm biome check --write .
+- type-informed rules not implemented or not stable enough in the installed Biome version;
+- repository policy expressed through ESLint plugins or rule options;
+- compatibility rules whose behavior the project has already standardized.
 
-# Format only
-pnpm biome format --write .
+The overlap changes between releases. Inspect the installed rule surfaces instead of preserving a historical comparison table. Current Biome releases include some promise and condition analysis that older releases lacked; typescript-eslint still exposes additional type-checked rules and configuration. Examples that commonly require an ESLint decision include strict boolean expressions, unsafe `any` propagation, template-expression restrictions, exhaustive switches, unbound methods, or project-specific plugin rules. Verify each example against the installed versions before assigning ownership.
 
-# Lint only
-pnpm biome lint .
-```
+For every overlapping rule:
 
-#### Package Scripts (Biome + ESLint)
+1. choose Biome or ESLint as the single diagnostic owner;
+2. disable or avoid enabling the duplicate in the other tool;
+3. keep the complementary tool enabled for its remaining coverage;
+4. run both repository commands in check-only mode before claiming the lint contour verified.
 
-```json
-{
-  "scripts": {
-    "lint": "biome check . && eslint .",
-    "lint:fix": "biome check --write . && eslint . --fix",
-    "format": "biome format --write .",
-    "typecheck": "tsc --noEmit"
-  }
-}
-```
+Do not add either tool during an unrelated TypeScript fix. In an existing project, preserve its declared toolchain and report a missing required contour. If repository policy intentionally overrides the dual-lint baseline, state that authority and the coverage it leaves unassessed.
 
-#### VSCode Integration
+## Type-aware ESLint setup
 
-Install extension: `biomejs.biome`
+Use the installed typescript-eslint documentation and project convention. A modern flat-config setup normally combines a recommended type-checked configuration with project-service or an explicit project configuration. Confirm:
 
-```json
-// .vscode/settings.json
-{
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.organizeImports.biome": "explicit"
-  }
-}
-```
+- linted files belong to the intended TypeScript projects;
+- config and generated files that need different treatment have explicit overrides;
+- type-aware rules are not silently running without type information;
+- the supported ESLint, typescript-eslint, and TypeScript version ranges are compatible.
 
----
+Strict and stylistic presets are policy choices, not universal defaults. Prefer a stable recommended type-checked baseline unless the repository deliberately accepts a more opinionated or semver-unstable preset.
 
-### ESLint (Type-Aware)
+## Verification
 
-Use alongside Biome for deep type-aware linting rules that Biome doesn't support yet. Do not use ESLint for formatting; let Biome handle formatting and import organization.
+For a toolchain change, record:
 
-#### Why ESLint in addition to Biome
+- installed versions before and after;
+- the effective `tsconfig` and project graph used by the command;
+- the exact typecheck or build command and whether it covered referenced projects;
+- Biome and ESLint check-only commands;
+- the rule ownership decision for overlaps;
+- any diagnostics intentionally deferred and the authority for doing so.
 
-- `@typescript-eslint/no-floating-promises` — catch unhandled promises
-- `@typescript-eslint/await-thenable` — prevent awaiting non-promises
-- `@typescript-eslint/strict-boolean-expressions` — strict boolean checks
-- `@typescript-eslint/no-misused-promises` — promise misuse detection
+Compiler success proves only the loaded TypeScript program. Lint success proves only enabled rules over matched files. Neither proves runtime, framework, domain, or deployment behavior.
 
-#### Flat Config Format
+## Currency sources
 
-```javascript
-// eslint.config.js
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
+For version-sensitive work, consult the current official documentation that matches the installed or requested version:
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
-
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname
-      }
-    }
-  },
-
-  {
-    rules: {
-      '@typescript-eslint/no-unused-vars': ['error', {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_'
-      }],
-      '@typescript-eslint/consistent-type-imports': ['error', {
-        prefer: 'type-imports'
-      }],
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/await-thenable': 'error',
-      '@typescript-eslint/no-misused-promises': 'error',
-      '@typescript-eslint/strict-boolean-expressions': 'error'
-    }
-  },
-
-  {
-    ignores: ['dist/**', 'node_modules/**', '*.config.js']
-  }
-);
-```
-
-#### Important Type-Aware Rules
-
-```javascript
-{
-  rules: {
-    // Promise handling (requires type info)
-    '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/no-misused-promises': 'error',
-    '@typescript-eslint/await-thenable': 'error',
-
-    // Strict boolean (requires type info)
-    '@typescript-eslint/strict-boolean-expressions': 'error',
-
-    // Prefer nullish coalescing
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-
-    // Require return types on public API
-    '@typescript-eslint/explicit-module-boundary-types': 'warn'
-  }
-}
-```
-
----
-
-### Biome vs ESLint Comparison
-
-| Feature | Biome | ESLint + typescript-eslint |
-|---------|-------|---------------------------|
-| Speed | ~100x faster | Slower |
-| Setup | Single tool | Multiple packages |
-| Formatting | Built-in | Needs separate tool |
-| Type-aware rules | Limited | Comprehensive |
-| Promise checking | No | Yes |
-| Strict boolean | No | Yes |
-| VSCode integration | Yes | Yes |
-
-**Recommendation:** Use both. Biome provides fast formatting and baseline linting, ESLint provides type-aware rules.
-
----
-
-## Testing
-
-For testing patterns and tooling, see the dedicated skill: **typescript-test-engineer**.
-
----
-
-## Project Setup Notes
-
-- For Vite-based setup and project layout, see `references/vite.md`.
-- For environment validation, use `scripts/validate-setup.sh`.
+- TypeScript modules and compiler options: `https://www.typescriptlang.org/docs/handbook/modules/`
+- Biome configuration and rule inventory: `https://biomejs.dev/reference/configuration/` and `https://biomejs.dev/linter/rules/`
+- typescript-eslint typed linting and shared configs: `https://typescript-eslint.io/getting-started/typed-linting/` and `https://typescript-eslint.io/users/configs/`
+- Node TypeScript runtime behavior: `https://nodejs.org/api/typescript.html` through `node-engineer`

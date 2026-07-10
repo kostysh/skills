@@ -1,76 +1,66 @@
-# Monorepo and Large Codebases
+# Monorepo and Project-Reference Typechecking
 
-> **Load when:** User works in a monorepo, large codebase, or asks about project references, tsconfig.base.json, or incremental builds.
+> **Load when:** The affected TypeScript project uses workspaces, shared configs, solution configs, `composite`, or project references.
 
-## Recommended structure
-- `tsconfig.base.json` at repo root with shared compilerOptions.
-- Per-package `tsconfig.json` extends the base and sets package-specific options.
-- Use project references for build ordering and incremental builds.
+Do not assume a root `tsc --noEmit` checks a monorepo. Establish the repository's build graph and package commands before selecting a fallback.
 
-Example:
-```json
-// tsconfig.base.json
-{
-  "compilerOptions": {
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitOverride": true,
-    "isolatedModules": true,
-    "skipLibCheck": true,
-    "incremental": true,
-    "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo"
-  }
-}
-```
+## Discover the graph
 
-```json
-// packages/foo/tsconfig.json
-{
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "outDir": "./dist",
-    "rootDir": "./src"
-  },
-  "include": ["src/**/*"]
-}
-```
+Inspect:
 
-```json
-// tsconfig.json (root build graph)
+- root and package `package.json` scripts;
+- package-manager workspace definitions;
+- shared `tsconfig` files and each `extends` chain;
+- root solution configs with `files: []` and `references`;
+- package configs using `composite`, declaration emit, or separate build/typecheck configs;
+- the CI command that is expected to traverse the graph.
+
+A root solution config can intentionally have zero root files. Running ordinary `tsc --noEmit` against it may validate no package sources. Project references are normally traversed by a repository wrapper or build mode such as `tsc -b`; use the project's contract rather than inventing one.
+
+## Shared configuration boundaries
+
+Share only options that are genuinely common. Package-specific values usually include:
+
+- `rootDir`, `outDir`, and declaration paths;
+- runtime or bundler-specific `module` settings;
+- JSX, DOM, Worker, or Node libraries and types;
+- test and generated-file inclusions;
+- incremental cache locations.
+
+Avoid a shared `tsBuildInfoFile` that makes packages overwrite the same cache. Avoid forcing one runtime's module or library settings onto every package.
+
+## Project references
+
+Use project references when the repository benefits from an explicit build graph, incremental composite builds, or package declaration boundaries. They are not required merely because multiple packages exist.
+
+A referenced package commonly enables `composite` and, when it is distributed through declarations, appropriate declaration emit. The root solution lists dependencies without pretending those referenced sources are root files.
+
+```jsonc
+// Root solution config: graph declaration, not an ordinary source program.
 {
   "files": [],
   "references": [
-    { "path": "./packages/foo" },
-    { "path": "./packages/bar" }
+    { "path": "./packages/core" },
+    { "path": "./packages/api" }
   ]
 }
 ```
 
-## Build and typecheck
-```bash
-# Build in dependency order
-pnpm tsc -b
+The verification command must traverse the intended graph. Record whether it is a repository script, package-manager recursive command, task runner, or `tsc -b` invocation.
 
-# Typecheck only (no emit/build output)
-pnpm tsc --noEmit
+## Public package boundaries
 
-# Clean build outputs
-pnpm tsc -b --clean
-```
+- Prefer package entrypoints and exports over cross-package imports into private source paths.
+- Keep compiler path aliases aligned with the actual runtime/bundler and package-resolution contract.
+- Check declaration output and at least the affected downstream consumers when exported types change.
+- Do not turn a TypeScript diagnosis into a package-manager or monorepo-architecture migration without explicit authority.
 
-## Path aliases
-- Prefer per-package public entrypoints over cross-package path aliases.
-- If you must use aliases, define them in `tsconfig.base.json` and align bundler/runtime resolution.
+## Verification
 
-## Dependency installation (monorepo rule)
-- Install dependencies only from the repo root with `pnpm install`.
-- Do not run package-local installs inside `packages/*` or `apps/*`.
-- Add dependencies via workspace-aware commands from the root (e.g., `pnpm -C <path> add ...` when needed).
+For a monorepo type change, verify:
 
-## Linting at scale
-- Run Biome at repo root for formatting and baseline lint.
-- Run ESLint with `projectService: true` and a consistent `tsconfigRootDir`.
-- Keep ignore patterns consistent across packages (dist, coverage, generated).
+1. the targeted package command or graph-aware root command;
+2. the targeted diagnostic and absence of new relevant diagnostics;
+3. affected project references or downstream consumers;
+4. both configured Biome and ESLint contours for matched files;
+5. any intentionally unvisited package or runtime boundary as an explicit evidence limit.

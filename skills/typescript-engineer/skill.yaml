@@ -2,105 +2,77 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-engineer"
-  source-version: "0.1.1"
-  recommended-skill-md-max-bytes: 26000
-  description: "Professional TypeScript development skill focused purely on the language, type system, and type-safe debugging. Covers type inference, generics, mapped/conditional/template literal types, type guards, overloads, branded types, removing `any`, diagnosing compiler errors, validation with Zod, and modern toolchain configuration (tsconfig, ESLint, Biome, pnpm). Framework-agnostic: no React, NestJS, or other framework-specific content."
+  source-version: "0.2.0"
+  recommended-skill-md-max-bytes: 20000
+  description: "Use for TypeScript language, type-system, compiler-diagnostic, type-safe API, tsconfig, and coordinated Biome plus ESLint work. Guides explain, review/diagnose, and authorized change flows using repository and installed-version evidence. Pair with framework, Node runtime, testing, validation-library, and domain skills when those owners determine runtime behavior."
 fragments:
   overview: "fragments/overview.md"
 references:
-  - id: "ref-assets-scripts"
-    title: "assets-scripts.md"
-    source: "references/assets-scripts.md"
-    target: "references/assets-scripts.md"
-    required: true
-    trigger: "Read this when you need How to use bundled assets and scripts."
   - id: "ref-generics"
-    title: "generics.md"
+    title: "Generics"
     source: "references/generics.md"
     target: "references/generics.md"
-    required: true
-    trigger: "Read this when you need Advanced generics and utility types."
+    required: false
+    trigger: "Read this when designing or diagnosing generics, mapped or conditional types, template literal types, variadic tuples, or reusable type transforms."
   - id: "ref-monorepo"
-    title: "monorepo.md"
+    title: "Monorepo Typechecking"
     source: "references/monorepo.md"
     target: "references/monorepo.md"
-    required: true
-    trigger: "Read this when you need Large codebases and project references."
+    required: false
+    trigger: "Read this when the affected TypeScript project uses workspaces, project references, solution configs, composite builds, or shared tsconfig files."
   - id: "ref-overloads"
-    title: "overloads.md"
+    title: "Function Overloads"
     source: "references/overloads.md"
     target: "references/overloads.md"
-    required: true
-    trigger: "Read this when you need Function overloads, overload ordering, and overloads vs unions."
+    required: false
+    trigger: "Read this when return types depend on input shape, an overloaded API is wrapped, or overloads must be compared with unions or an options object."
   - id: "ref-patterns"
-    title: "patterns.md"
+    title: "Boundary Type Patterns"
     source: "references/patterns.md"
     target: "references/patterns.md"
-    required: true
-    trigger: "Read this when you need Error handling, validation, project organization."
+    required: false
+    trigger: "Read this when modeling typed success/failure states, unknown boundaries, schema-derived types, or branded values without taking over runtime or domain policy."
   - id: "ref-practices"
-    title: "practices.md"
+    title: "TypeScript Practices"
     source: "references/practices.md"
     target: "references/practices.md"
-    required: true
-    trigger: "Read this when you need Common mistakes, migration, @ts-expect-error policy."
+    required: false
+    trigger: "Read this when migrating JavaScript, reducing unsafe any or assertions, preserving public type contracts, or handling TypeScript suppression directives."
   - id: "ref-runtime-derived-types"
-    title: "runtime-derived-types.md"
+    title: "Runtime-Derived Types"
     source: "references/runtime-derived-types.md"
     target: "references/runtime-derived-types.md"
-    required: true
-    trigger: "Read this when you need `as const`, `typeof`, `[number]`, and `const` type parameters."
+    required: false
+    trigger: "Read this when deriving literal unions or API types with as const, typeof, indexed access, satisfies, or const type parameters."
   - id: "ref-toolchain"
-    title: "toolchain.md"
+    title: "TypeScript Toolchain"
     source: "references/toolchain.md"
     target: "references/toolchain.md"
-    required: true
-    trigger: "Read this when you need Tooling, tsconfig, linting, module resolution."
+    required: false
+    trigger: "Read this when changing tsconfig, module or moduleResolution, TypeScript versions, or coordinated Biome and ESLint plus typescript-eslint coverage."
   - id: "ref-type-debugging"
-    title: "type-debugging.md"
+    title: "Type Debugging"
     source: "references/type-debugging.md"
     target: "references/type-debugging.md"
-    required: true
-    trigger: "Read this when you need Diagnosing compiler errors, isolating root causes, and type regression checks."
+    required: false
+    trigger: "Read this when diagnosing compiler errors, inference failures, invalid indexing, assignability, overload resolution, or type-regression evidence."
   - id: "ref-type-system"
-    title: "type-system.md"
+    title: "Type System"
     source: "references/type-system.md"
     target: "references/type-system.md"
-    required: true
-    trigger: "Read this when you need Core type system guide."
-  - id: "ref-vite"
-    title: "vite.md"
-    source: "references/vite.md"
-    target: "references/vite.md"
-    required: true
-    trigger: "Read this when you need Vite setup for React/TS apps."
-assets:
-  - id: "asset-biome-json"
-    source: "assets/biome.json"
-    target: "assets/biome.json"
-    description: "Bundled asset: assets/biome.json."
-  - id: "asset-eslint-config-js"
-    source: "assets/eslint.config.js"
-    target: "assets/eslint.config.js"
-    description: "Bundled asset: assets/eslint.config.js."
-  - id: "asset-tsconfig-strict-json"
-    source: "assets/tsconfig-strict.json"
-    target: "assets/tsconfig-strict.json"
-    description: "Bundled asset: assets/tsconfig-strict.json."
+    required: false
+    trigger: "Read this when the task needs TypeScript type-system fundamentals, narrowing, unions, intersections, interfaces, aliases, satisfies, unknown, or never."
+assets: []
 copies:
   - id: "copy-agents-openai-yaml"
     source: "agents/openai.yaml"
     target: "agents/openai.yaml"
     description: "Portable copy of agents/openai.yaml."
-  - id: "copy-scripts-validate-setup-sh"
-    source: "scripts/validate-setup.sh"
-    target: "scripts/validate-setup.sh"
-    description: "Portable copy of scripts/validate-setup.sh."
 supporting: []
 surfaces:
   active:
-    requiredReferences:
-      - "ref-assets-scripts"
+    requiredReferences: []
+    optionalReferences:
       - "ref-generics"
       - "ref-monorepo"
       - "ref-overloads"
@@ -110,58 +82,127 @@ surfaces:
       - "ref-toolchain"
       - "ref-type-debugging"
       - "ref-type-system"
-      - "ref-vite"
-    optionalReferences: []
   supportingGlobs:
     - "docs/*"
+    - "docs/logs/*"
 sections:
   startHere:
-    - "Confirm the work is TypeScript language, type-system, type-safe debugging, or TypeScript toolchain work."
-    - "Run the existing typecheck command before non-trivial typing changes, or use pnpm tsc --noEmit when no wrapper exists."
-    - "Identify the root compiler or inference cause before patching symptoms."
-    - "Prefer TypeScript inference, narrowing, `satisfies`, built-in utility types, runtime-derived types, and schema-derived types before bespoke type machinery or new helper dependencies."
-    - "Use the narrowest sound type fix and rerun typecheck after changes."
+    - "Classify the request as explain, review/diagnose, or authorized change; review and diagnosis stay read-only unless the user also requests remediation."
+    - "Establish the expected type or compiler behavior, repository policy, installed TypeScript and lint versions, relevant tsconfig and package or workspace commands, current diagnostics, and affected public call sites before choosing a fix."
+    - "Apply precedence in this order: explicit user requirements, repository policy and compatible installed behavior, current official version-matched documentation, then this skill's portable defaults; stop when equal-authority inputs conflict."
+    - "Load only the optional reference triggered by the current problem and keep framework, runtime, testing, validation-library, and domain decisions with their owning skills."
+    - "Define the evidence boundary before changing code: compiler and lint checks prove only the paths they inspect, not runtime or domain behavior."
   whenToUse:
-    - "Writing type-safe TypeScript code in any project."
-    - "Designing generics, mapped types, conditional types, overloads, type guards, branded types, or runtime-derived types."
-    - "Resolving compiler errors, removing any, configuring tsconfig, ESLint, Biome, pnpm, or Zod validation."
+    - "Explaining, designing, reviewing, diagnosing, or changing TypeScript language and type-system behavior."
+    - "Resolving compiler diagnostics, unsafe any flow, inference and narrowing failures, overload or generic API behavior, public declaration contracts, and type regressions."
+    - "Configuring TypeScript compiler behavior or coordinating Biome with ESLint plus typescript-eslint for complementary lint coverage."
   whenNotToUse:
-    - "React-specific patterns, hooks, routing, or UI behavior."
-    - "Backend framework patterns that belong to a framework skill."
-    - "Frontend design or UI implementation guidance."
+    - "Framework APIs, component or route behavior, bundler integration, or Vite/React application setup except for the narrowly isolated TypeScript compiler facet."
+    - "Node execution mode, built-in type stripping, ESM or CJS runtime behavior, runtime import extensions, or process behavior; use node-engineer."
+    - "Test strategy, runner configuration, coverage, mocks, or CI contours; use typescript-test-engineer, pairing this skill only for compile-time type assertions."
+    - "Package-manager selection, business or domain modeling policy, validation-library runtime semantics, or application architecture without a TypeScript-specific decision."
   workflow:
-    - id: "stage-type-safe-change"
-      title: "Make the TypeScript change"
-      goal: "Resolve TypeScript problems with narrow, sound fixes and deterministic verification."
+    - id: "stage-establish-basis"
+      title: "Establish the TypeScript basis"
+      goal: "Make the task, authority, installed behavior, affected contract, and allowed side effects explicit before drawing conclusions."
       steps:
-        - "Run the repo typecheck or pnpm tsc --noEmit to capture the baseline."
-        - "Identify root causes such as widened literals, missing constraints, invalid indexing, overload mismatch, unsafe any, or unsound assertions."
-        - "Check whether built-in TypeScript utilities, inference, narrowing, `satisfies`, runtime-derived types, or schema inference solve the problem before adding custom conditional/mapped helpers or third-party type helpers."
-        - "Prefer constraints, narrowing, satisfies, runtime-derived types, overloads, or schema inference over broad widening."
-        - "Validate call sites and IntelliSense; add type tests or negative assertions for fragile type-level APIs."
-        - "Rerun typecheck and verify the error count moved in the intended direction."
+        - "Record explain, review/diagnose, or change mode and whether mutations are authorized."
+        - "Inspect repository instructions, package and workspace scripts, installed TypeScript and lint versions, relevant tsconfig inheritance or project references, current diagnostics, and affected call sites or declaration consumers."
+        - "Define the targeted diagnostic or type/API behavior and identify any runtime, framework, test, validation-library, or domain owner that must be paired."
+        - "If required sources are missing or conflict, provide bounded guidance or report blocked instead of inventing a contract."
       validation:
-        - "The fix avoids implicit any, unsafe assertions, and unnecessary broadening."
-        - "Typecheck or an explicit equivalent verification was run or the gap is reported."
+        - "The task mode, source precedence, target behavior, verification command, public contract, and mutation boundary are reconstructable."
+    - id: "stage-diagnose-design"
+      title: "Diagnose and choose the first sound construct"
+      goal: "Resolve the root compiler or inference cause without broadening types or importing unnecessary machinery."
+      steps:
+        - "Trace the first actionable root cause, such as widening, missing constraints, invalid indexing, unsound assertions, incorrect overloads, module-resolution mismatch, or unsafe boundary data."
+        - "Prefer inference, control-flow narrowing, satisfies, built-in utility types, runtime- or schema-derived types, and constrained generics before bespoke conditional types or helper dependencies."
+        - "Check public call sites and declaration consumers before tightening or widening an exported type."
+        - "Keep runtime and domain semantics unchanged unless the user explicitly authorized that separate owner-controlled change."
+      validation:
+        - "The proposed result explains why it is sound, what contract changes, and what remains outside the TypeScript claim."
+    - id: "stage-apply-authorized-change"
+      title: "Apply only the authorized TypeScript change"
+      goal: "Implement the narrowest sound change while preserving repository and owner boundaries."
+      steps:
+        - "In explain or review/diagnose mode, return the explanation or findings without editing."
+        - "In change mode, modify only the accepted TypeScript or toolchain scope and avoid broad assertions, implicit any, unowned suppressions, or unrelated dependency and config changes."
+        - "For a new setup or explicit lint hardening, keep both Biome and ESLint plus typescript-eslint, assign one owner to overlapping rules, and retain ESLint rules that cover installed-version gaps."
+        - "In an existing project, do not install a missing linter during an unrelated task; report the missing contour as a verification gap unless toolchain changes are authorized."
+      validation:
+        - "Every mutation traces to the requested behavior, and dual-lint coverage is either present or honestly reported as incomplete."
+    - id: "stage-verify-report"
+      title: "Verify and report at the claimed boundary"
+      goal: "Prove the targeted TypeScript behavior without treating partial or substrate checks as broader completion."
+      steps:
+        - "Run the repository's relevant typecheck or build-graph command and both configured lint contours; use a local compiler fallback only after confirming it targets the intended files and config."
+        - "Confirm the targeted diagnostic is resolved or intentionally preserved, no new relevant diagnostics were introduced, and affected call sites or declarations still satisfy the intended contract."
+        - "Use positive and negative compile assertions for fragile type APIs; route runtime, integration, and test-runner evidence to the owning skill."
+        - "Report the outcome or root cause, changed type/API contract, exact checks, remaining diagnostics, unverified boundaries, and status as verified, partial, or blocked."
+      validation:
+        - "A lower error count, an empty solution program, compiler success, lint success, generated files, or mocks cannot by themselves satisfy completion."
   interop:
     - id: "interop-framework"
-      domain: "framework APIs and framework-specific patterns"
+      domain: "framework APIs, framework lifecycle, bundler integration, React or Vite application setup"
       winner: "the relevant framework skill"
-      rationale: "This skill owns TypeScript language and toolchain rules, while framework skills own framework behavior."
+      rationale: "typescript-engineer owns the isolated TypeScript compiler and type-system facet; the framework owner decides framework behavior and integration."
+    - id: "interop-node-runtime"
+      domain: "Node execution mode, type stripping, ESM or CJS runtime semantics, and runtime import behavior"
+      winner: "node-engineer"
+      rationale: "node-engineer establishes the runtime contract; typescript-engineer configures TypeScript consistently with that resolved contract."
     - id: "interop-testing"
-      domain: "testing patterns"
+      domain: "test strategy, runner behavior, mocks, coverage, and CI test contours"
       winner: "typescript-test-engineer"
-      rationale: "Use the testing skill for test design and runner behavior."
+      rationale: "typescript-engineer owns compile-time type assertions and expected type contracts; typescript-test-engineer owns executable test design and runner policy."
+    - id: "interop-validation"
+      domain: "runtime validation-library semantics and domain validation policy"
+      winner: "the relevant validation-library, framework, or domain skill"
+      rationale: "typescript-engineer may derive and inspect types from an accepted runtime schema but cannot invent what must be validated or claim runtime safety from a type alone."
+    - id: "interop-review"
+      domain: "formal code-review scope, severity, findings format, and merge guidance"
+      winner: "code-reviewer"
+      rationale: "typescript-engineer supplies TypeScript domain analysis while code-reviewer owns the formal review verdict and merge-risk synthesis."
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: "gotcha-empty-typecheck"
+      priority: "high"
+      text: "Do not run a generic tsc --noEmit fallback until you know which config and files it checks; an empty solution config can return success without traversing referenced projects."
+    - id: "gotcha-compiler-boundary"
+      priority: "high"
+      text: "Do not treat compiler or lint success as runtime, framework, validation, security, or domain proof."
+    - id: "gotcha-unsound-silencing"
+      priority: "high"
+      text: "Do not replace a diagnostic with any, a broad assertion, a non-null assertion, or a suppression unless the authority, invariant, and regression evidence justify that exact boundary."
+    - id: "gotcha-dual-lint-drift"
+      priority: "high"
+      text: "Do not assume Biome and ESLint coverage is static; inspect installed versions, assign one owner to overlapping rules, and preserve the complementary contour required by repository policy."
+    - id: "gotcha-public-type-compatibility"
+      priority: "medium"
+      text: "Do not silently tighten an exported type without checking source compatibility, declaration output, and affected consumers."
+  policies:
+    - id: "policy-source-precedence"
+      title: "Source precedence"
+      text: "Explicit user requirements override repository policy only for the authorized task; compatible repository policy and installed behavior override generic defaults. Equal-authority conflicts stop the strongest claim."
+    - id: "policy-dual-lint-baseline"
+      title: "Dual-lint baseline"
+      text: "New TypeScript setup and explicit lint hardening use Biome plus ESLint with typescript-eslint because their coverage is complementary. Existing repositories retain their declared policy; a missing required contour is reported rather than silently treated as equivalent coverage."
+    - id: "policy-mutation-boundary"
+      title: "Mutation boundary"
+      text: "Explain and review/diagnose requests are read-only. Change requests authorize only the TypeScript or toolchain scope explicitly requested or necessarily implied by the accepted behavior."
+    - id: "policy-evidence-completion"
+      title: "Evidence and completion"
+      text: "Verified requires the targeted behavior or diagnostic, no new relevant diagnostics, a command that actually covers the affected project graph, and any necessary consumer checks. Partial and blocked states must remain visible."
+    - id: "policy-output-contract"
+      title: "Output contract"
+      text: "Report the outcome or root cause, source basis and assumptions, changed type or API contract, exact verification and remaining diagnostics, unverified runtime or owner boundaries, and verified, partial, or blocked status."
   portability:
     required: true
     rules:
-      - "Do not reference machine-specific absolute paths or local files outside this skill folder."
-      - "Keep all mandatory typescript-engineer guidance inside this skill folder."
-      - "Use relative links for local references, assets, scripts, tests, and supporting docs."
+      - "Do not reference machine-specific absolute paths or require repository files outside this skill folder to understand core behavior."
+      - "Treat package-manager commands, TypeScript versions, lint versions, tsconfig paths, workspace layout, and CI gates as discovered project context rather than portable constants."
+      - "Use only relative links for optional references and supporting documents inside the skill folder."
     checklist:
-      - "Run the skill-source-compiler check command after regeneration."
-      - "Search the skill folder for absolute local paths before finishing."
-      - "Confirm every required reference listed by SKILL.md exists inside this skill folder."
+      - "Run skill-source-compiler lint, regenerate, and check after source changes."
+      - "Confirm every optional reference has a precise trigger and is reachable from generated SKILL.md."
+      - "Search the copied skill for absolute paths, stale assets or scripts, and external mandatory dependencies."
