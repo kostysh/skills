@@ -38,6 +38,11 @@ status: draft | review | baselined | updated | archived
 version:
 owner:
 reviewers:
+product_intent_sources_and_precedence:
+current_version_approval_evidence:
+intended_handoff: architecture | specification | delivery-planning | none
+authority: authoritative | non-authoritative
+handoff: not-assessed | draft-only | blocked | ready for <named consumer>
 created_at:
 updated_at:
 target_release:
@@ -51,6 +56,15 @@ legal_review_required:
 architecture_review_required:
 ai_feature:
 outcome_review_date:
+
+## Authority and Handoff
+- Product-intent sources and precedence:
+- Current content/version approval or canonicalization evidence:
+- Authority: authoritative | non-authoritative
+- Intended downstream consumer:
+- Handoff: not-assessed | draft-only | blocked | ready for <architecture | specification | delivery-planning>
+- Blocking product decisions:
+- Non-blocking gaps, owners, and decision triggers:
 
 ## Executive Summary
 - Problem:
@@ -109,6 +123,12 @@ For PRDs that guide delivery, track only what prevents drift:
 - accountable owner
 - next review or outcome checkpoint
 
+Resolve authority of product-intent sources separately from authority of the current PRD artifact. Generated or materially refined content remains `non-authoritative` until explicit operator evidence or the repository process approves or canonicalizes that content and version. Input authority, stale approval, or a `review` / `baselined` label does not transfer authority automatically.
+
+Use `Handoff: not-assessed` when readiness was not requested or no consumer is named. If readiness is requested without a consumer, ask for it or leave only readiness unassessed while continuing the underlying PRD review. Use `ready` only when current-version authority is explicit and no unresolved product decision can change the named consumer's input. Remaining TBDs must be non-blocking and have an owner or decision trigger.
+
+`Ready for <consumer>` certifies only the PRD's product input. It does not certify architecture, specification, delivery plan, implementation, or release readiness.
+
 Avoid elaborate stage diagrams unless the user asks for process documentation.
 
 ## Evidence and Related Work
@@ -166,13 +186,16 @@ Replace vague adjectives with thresholds, examples, or TBDs:
 
 For every acceptance criterion, ask:
 
-- What observable behavior must happen?
+- Which actor or consumer triggers the behavior?
+- What observable response, state or effect, and feedback must occur?
+- What failure, continuity, or recovery behavior matters at this boundary?
 - What evidence would prove it?
-- Could this pass with only a mock, log line, file, ticket, documentation, or static field?
+- What is the least-real implementation that could pass this criterion?
+- Could this pass with only an endpoint, config value, mock, test, log line, file, ticket, documentation, static field, or other substrate?
 - What negative or edge case should fail if the implementation is wrong?
 - Who can verify it?
 
-If an acceptance criterion can pass without real user or system behavior, rewrite it.
+If an acceptance criterion can pass without the claimed user or system behavior across the declared boundary, rewrite it.
 
 ## Optional Modules
 
@@ -181,6 +204,8 @@ If an acceptance criterion can pass without real user or system behavior, rewrit
 Use when the PRD will feed architecture, delivery planning, or implementation specs and the work may affect boundaries, public contracts, data model, security, tenancy, integration, deployment, observability, cost, operability, rollback, or long-term constraints.
 
 The PRD may surface candidate architecture-relevant inputs. It must not choose patterns, define accepted ASRs, write ADRs, or make deployment decisions unless those decisions already exist and are cited.
+
+This module supplies product constraints and blocking questions only. `architecture-engineer` owns ASR extraction and architecture decisions, `spec-engineer` owns implementation-ready behavior and verification maps, and `delivery-planner` owns slices, tasks, dependencies, and sequencing.
 
 #### Linked Product Requirements
 
@@ -295,12 +320,18 @@ Repo-local artifact conventions override these generic defaults when the PRD is 
 
 Mark blockers separately from improvements:
 
+- product-source precedence is separate from approval or canonical status of the current PRD version
+- generated or materially refined content is non-authoritative until the resulting version is explicitly authorized
+- the intended downstream consumer and readiness are explicit when handoff is assessed; otherwise handoff is `not-assessed`
+- a non-authoritative PRD or unresolved product blocker is not marked ready
+- remaining non-blocking TBDs have an owner or decision trigger
 - problem and target user are explicit
 - evidence or assumptions behind major claims are linked or named
 - success metrics and guardrails are measurable
 - scope and non-goals prevent common misunderstandings
 - requirements are atomic and verifiable
-- acceptance criteria require observable behavior
+- material capabilities identify actor or consumer, trigger, response, state or effect, feedback, and applicable failure or continuity behavior
+- acceptance criteria require observable behavior and reject the least-real substrate-only implementation
 - important NFRs are not missing
 - architecture-relevant constraints, external systems, data sensitivity, and blocking questions are surfaced when the PRD feeds architecture or high-risk delivery
 - AI features have evals and quality bars
@@ -311,11 +342,16 @@ Mark blockers separately from improvements:
 ## Anti-Pattern Check
 
 - PRD exists but no decision, scope, acceptance, or risk changed.
+- Authority of input sources, stale approval, document status, or polish is treated as approval of generated or materially changed PRD content.
+- A generic PRD review invents a downstream consumer instead of leaving handoff `not-assessed`.
+- Handoff is marked ready while authority is missing or a product blocker can still change the named consumer's input.
+- Product-input readiness is presented as architecture, specification, delivery, implementation, or release readiness.
 - Solution details appear before the user problem and outcome.
 - Vague words replace thresholds, examples, or TBDs.
 - Non-goals are missing for scope-sensitive work.
 - Implementation is over-specified where boundaries and acceptance criteria would be enough.
 - Candidate ASRs, pattern decisions, ADRs, or deployment choices are presented as accepted architecture without an architecture source.
+- PRD requirements are expanded into implementation-ready behavior, verification maps, task backlogs, or sequencing instead of routing them to the owning downstream skill.
 - NFRs are omitted for performance, security, privacy, accessibility, reliability, or operations risk.
 - Claims lack evidence links or clearly labeled assumptions.
 - Launch has no instrumentation or outcome review.

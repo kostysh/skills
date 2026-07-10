@@ -6,6 +6,7 @@ This skill favors concise documents with strong requirements over heavyweight te
 
 For a new PRD, include:
 
+- authority and handoff: product-source precedence, current-version approval evidence, `Authority`, intended consumer, `Handoff`, blockers, and owned non-blocking gaps
 - executive summary: problem, why now, solution, success metrics, guardrails
 - audience and scenarios: users, jobs, primary flow, key edge cases
 - scope: in scope, non-goals, anti-claims
@@ -14,7 +15,7 @@ For a new PRD, include:
 - risks and dependencies: owners, open questions, decisions needed
 - rollout and learning: phases, instrumentation, outcome review
 
-For a PRD review, lead with the gaps most likely to cause wrong implementation, false acceptance, or scope drift. Then provide concrete rewrites or section-level fixes.
+For a PRD review, lead with `Authority`; include target handoff and readiness when assessed. Then list blockers, evidence gaps, substrate-only acceptance defects, anti-claims, concrete rewrites, and the next owner.
 
 ## Reference Map
 
@@ -24,7 +25,7 @@ Read [PRD template](references/prd-template.md) when creating a formal PRD artif
 
 Open only the block that matches the task:
 
-- **Formal PRD skeleton, metadata, or minimal lifecycle:** use [PRD template](references/prd-template.md) sections `Core PRD Skeleton` and `Minimal Lifecycle`.
+- **Formal PRD skeleton, metadata, authority, handoff readiness, or minimal lifecycle:** use [PRD template](references/prd-template.md) sections `Core PRD Skeleton`, `Authority and Handoff`, and `Minimal Lifecycle`.
 - **Claims that depend on research, metrics, designs, or decisions:** use [PRD template](references/prd-template.md) section `Evidence and Related Work`.
 - **Product metrics, quality guardrails, release phases, or owner attributes:** use [PRD template](references/prd-template.md) sections `Metrics and Quality Guardrails` and `Requirement Quality Checklist`.
 - **Architecture handoff, external systems, or data classification:** use [PRD template](references/prd-template.md) section `Architecture Handoff Module`.

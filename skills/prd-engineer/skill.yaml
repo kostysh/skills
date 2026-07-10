@@ -3,16 +3,16 @@ kind: SkillSource
 
 skill:
   name: prd-engineer
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Create, refine, and review Product Requirements Documents (PRDs), product
-    specs, feature requirements, and AI feature requirements. Use when asked to
-    write a PRD, turn a vague product idea into testable requirements, define
-    scope and non-goals, create acceptance criteria, add rollout or success
-    metrics, prepare product input for architecture or specification handoff,
-    handle AI evaluation requirements, or audit a PRD for ambiguity, missing
-    evidence, weak acceptance criteria, or scope risk.
+    Create, refine, and review PRDs, product specs, feature requirements, and AI
+    requirements. Use when asked to turn a product idea into testable
+    requirements, define scope, non-goals, acceptance, rollout, or metrics,
+    establish product-source authority, assess product-input readiness for
+    architecture, specification, or delivery-planning handoff, handle AI
+    evaluation, or audit a PRD for ambiguity, missing evidence, weak acceptance,
+    or scope risk.
 fragments:
   overview: fragments/overview.md
 
@@ -22,7 +22,7 @@ references:
     source: references/prd-template.md
     target: references/prd-template.md
     required: false
-    trigger: Read this when creating a formal PRD artifact, expanding an existing PRD, adding metadata, evidence, traceability, review routing, AI/security/rollout modules, or running a detailed PRD quality check.
+    trigger: Read this when creating a formal PRD artifact, expanding an existing PRD, adding authority or handoff-readiness metadata, evidence, traceability, review routing, AI/security/rollout modules, or running a detailed PRD quality check.
 
 assets: []
 copies:
@@ -46,6 +46,9 @@ supporting:
   - id: supporting-implementation-log-20260515-2
     source: docs/logs/implementation-log-20260515-2.md
     target: docs/logs/implementation-log-20260515-2.md
+  - id: supporting-implementation-log-20260710-1
+    source: docs/logs/implementation-log-20260710-1.md
+    target: docs/logs/implementation-log-20260710-1.md
 
 surfaces:
   active:
@@ -57,12 +60,13 @@ surfaces:
 
 sections:
   startHere:
-    - Confirm whether the user needs a new PRD, a refinement, or a review of an existing PRD.
+    - Confirm whether the task is a new PRD, refinement, or review; name the downstream consumer when handoff matters.
+    - Resolve source precedence; separately verify approval of the current PRD version.
     - Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
     - Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
     - Before creating or recommending a persistent PRD, product brief, or PRD review artifact, check whether the current repository defines artifact conventions and follow them when present.
     - If the PRD feeds architecture, delivery planning, or implementation specs, surface architecture-relevant constraints and questions without choosing architecture patterns.
-    - Ask only focused discovery questions that would change scope, metrics, or acceptance; otherwise draft with explicit assumptions and TBDs.
+    - Ask only focused discovery questions that would change users, scope, metrics, acceptance, constraints, or handoff readiness; otherwise draft with explicit assumptions and TBDs.
   whenToUse:
     - Writing a PRD, product requirements document, feature spec, product spec, or requirements doc.
     - Turning a vague product idea, stakeholder request, or AI feature idea into problem-first, testable requirements.
@@ -74,7 +78,7 @@ sections:
     - Writing marketing copy, launch announcements, sales enablement, or public-facing positioning without requirements work.
     - Implementing the feature described by a PRD; use implementation and domain skills instead.
     - Reviewing code against an existing PRD; use `spec-conformance-reviewer`.
-    - Checking whether a task only creates substrate while claiming a product capability; use `concept-conformance-reviewer`.
+    - Issuing an independent concept-conformance or fake-risk verdict against an established higher-level concept; use `concept-conformance-reviewer`.
     - Creating formal safety-critical, procurement, legal, or regulated specifications without a domain-specific template or reviewer.
   workflow:
     - id: stage-select-mode
@@ -86,7 +90,20 @@ sections:
         - Use an extended PRD when the work is AI-driven, platform-level, regulated, multi-team, migration-heavy, security-sensitive, or hard to verify.
       validation:
         - The selected mode is stated or obvious from the output.
-        - The document is no larger than the risk justifies.
+        - Document size matches the risk.
+    - id: stage-establish-authority
+      title: Establish authority and handoff target
+      goal: Prevent a polished draft from masquerading as authoritative product input.
+      steps:
+        - Separate product-source precedence from approval or canonical status of the current PRD version.
+        - Apply known precedence; block handoff when equal or unknown authority conflicts could change users, scope, metrics, acceptance, constraints, or the target handoff.
+        - Use `authoritative` only when the operator or repository process approves or canonicalizes the current content and version; input authority or prior approval does not transfer.
+        - Keep generated or materially refined output `non-authoritative` until that resulting version is explicitly authorized.
+        - Treat outcome- or handoff-changing gaps as blockers; give other assumptions or TBDs an owner or decision trigger.
+      validation:
+        - "`Authority` is explicitly `authoritative` or `non-authoritative` whenever readiness is assessed."
+        - An unresolved equal- or unknown-authority conflict cannot produce a ready handoff.
+        - Input authority, prior approval, or status metadata cannot authorize newly generated or materially changed PRD content.
     - id: stage-discovery
       title: Run discovery checkpoint
       goal: Prevent a PRD from becoming a polished guess.
@@ -94,7 +111,7 @@ sections:
         - Identify the core problem, target users, why now, current evidence, desired outcome, constraints, and success metrics.
         - Separate product success metrics from quality guardrails when reliability, performance, cost, security, or operations could affect later architecture or acceptance.
         - Ask the fewest concise questions needed when missing answers would materially change the PRD.
-        - If the user asks for an immediate draft, proceed with clearly labeled assumptions, TBDs, and open questions instead of inventing facts.
+        - "If the user asks for an immediate draft, proceed with labeled assumptions, TBDs, and open questions; use `Authority: non-authoritative` and `Handoff: draft-only` when handoff is named, otherwise `Handoff: not-assessed`."
       validation:
         - Missing problem, user, scope, metric, or constraint information is either answered, marked TBD, or listed as an open question.
         - No constraint, metric, user research, data source, or technical dependency is hallucinated.
@@ -103,11 +120,13 @@ sections:
       goal: Make the intended observable product behavior explicit before listing requirements.
       steps:
         - State the product outcome in user terms before describing the solution.
+        - For each material capability, identify the actor or consumer, trigger, observable response, state or effect, feedback, and applicable failure, continuity, or recovery expectation.
         - Separate in-scope behavior from substrate and supporting artifacts.
         - "Define non-goals and anti-claims: what this PRD or release will not make possible."
         - Capture important assumptions, dependencies, risks, owners, and decision points.
       validation:
         - The PRD cannot be mistaken for a promise to deliver behavior that is only researched, mocked, documented, or deferred.
+        - Material capability claims can be traced across actor, trigger, response, effect, feedback, and applicable failure or continuity behavior.
         - Non-goals and open questions protect scope instead of hiding uncertainty.
     - id: stage-write-requirements
       title: Write testable requirements
@@ -117,10 +136,12 @@ sections:
         - Prefer IDs for standard or extended PRDs, especially when engineering, QA, architecture, or implementation review will trace against them.
         - Add owner and release phase attributes when requirement ownership, MVP/beta/GA scope, or deferred behavior could change downstream decisions.
         - Pair user stories or capabilities with acceptance criteria that force observable behavior.
+        - For each material acceptance criterion, find the least-real passing implementation; rewrite it if an endpoint, file, config, log, mock, test, or other substrate could pass without the claimed behavior.
         - Include non-functional requirements for performance, reliability, accessibility, security, privacy, cost, and operations when they affect success.
       validation:
         - Vague words such as fast, easy, intuitive, robust, scalable, or modern are replaced by thresholds, examples, guardrails, or TBDs.
         - Acceptance criteria cannot pass only through mocks, metadata, logs, documentation, or static existence checks.
+        - Important failure or negative behavior is represented where happy-path acceptance alone could create false confidence.
     - id: stage-add-modules
       title: Add only needed modules
       goal: Cover risk-specific requirements without turning every PRD into a master document.
@@ -139,15 +160,24 @@ sections:
       steps:
         - Check the PRD against problem-first framing, measurable success, scope/non-goals, testable requirements, risks, owners, rollout, instrumentation, and outcome review.
         - Mark blockers separately from polish.
-        - When reviewing a PRD, lead with gaps that would cause wrong implementation, false acceptance, or scope drift.
+        - "Use `Handoff: not-assessed` without a readiness request or consumer; otherwise use `draft-only`, `blocked`, or `ready for <architecture | specification | delivery-planning>`."
+        - If readiness is requested without a consumer, ask once or leave readiness unassessed; continue the PRD review.
+        - Use `ready` only when authority is explicit and no unresolved product decision can change that consumer's input; assign an owner or trigger to every remaining non-blocking TBD.
+        - For reviews, return authority, assessed handoff, blockers, evidence gaps, substrate-only acceptance defects, anti-claims, remediation, and next owner.
       validation:
         - The final output names important assumptions, unresolved questions, and verification gaps.
-        - The PRD can be used by product, design, engineering, QA, and stakeholders without relying on hidden context.
+        - "`Authority: non-authoritative` or any product blocker prevents a ready verdict."
+        - Ready certifies only product input for the named consumer, not architecture, specification, planning, implementation, or release readiness.
+        - The named downstream consumer can use the product input without hidden product decisions.
   interop:
+    - id: interop-product-authority
+      domain: product intent, users, scope, non-goals, success metrics, and product-level acceptance
+      winner: prd-engineer
+      rationale: prd-engineer owns product-source revisions and product-input readiness; it does not own architecture, implementation-ready behavior, or delivery decomposition.
     - id: interop-concept-conformance
-      domain: capability versus substrate
+      domain: independent concept drift and fake-risk review
       winner: concept-conformance-reviewer
-      rationale: concept-conformance-reviewer owns fake-risk analysis when acceptance criteria or plans can pass without delivering the claimed capability.
+      rationale: concept-conformance-reviewer owns the independent verdict when acceptance or plans may pass without the established capability; prd-engineer remains the owner of product-source revisions.
     - id: interop-spec-conformance
       domain: implementation against PRD
       winner: spec-conformance-reviewer
@@ -156,6 +186,14 @@ sections:
       domain: architecture-significant requirements, pattern decisions, and ADRs
       winner: architecture-engineer
       rationale: architecture-engineer owns translating product requirements into architecture decisions, constraints, quality scenarios, architecture handoff, and architecture drift handling.
+    - id: interop-specification
+      domain: implementation-ready behavior, atomic normative requirements, negative cases, falsifiers, and verification maps
+      winner: spec-engineer
+      rationale: spec-engineer consumes accepted product input and owns implementation-ready behavior; prd-engineer owns product intent and product-level acceptance only.
+    - id: interop-delivery-planning
+      domain: vertical slices, module increments, tasks, dependencies, and sequencing
+      winner: delivery-planner
+      rationale: delivery-planner consumes accepted product scope and applicable architecture handoff to decompose work; prd-engineer must not create the backlog or sequence implementation.
     - id: interop-domain-skills
       domain: technical feasibility and domain-specific requirements
       winner: the relevant domain skill
@@ -193,7 +231,13 @@ sections:
       text: Include a section only when it changes a decision, reduces risk, clarifies scope, or supports acceptance.
     - id: policy-acceptance-integrity
       title: Acceptance integrity policy
-      text: Acceptance criteria must require observable behavior or measurable evidence, not only the existence of files, mocks, logs, or tickets.
+      text: Acceptance criteria must require observable behavior or measurable evidence. Find the least-real passing implementation and rewrite any criterion that can pass through endpoints, files, config, mocks, tests, logs, tickets, or other substrate without the claimed behavior.
+    - id: policy-source-authority
+      title: Product source authority policy
+      text: Separate source precedence from artifact authority. Only the operator or repository process can approve the current PRD version; generated or materially changed content stays non-authoritative until then.
+    - id: policy-handoff-readiness
+      title: Product-input handoff readiness policy
+      text: "Report `Authority` separately from `Handoff`. Use `not-assessed` without a requested consumer. Ready requires current-version authority and no product blocker; it covers product input only."
     - id: policy-light-traceability
       title: Light traceability policy
       text: Use requirement IDs, owners, source links, statuses, and change notes when multiple people or later implementation review will depend on the PRD.
