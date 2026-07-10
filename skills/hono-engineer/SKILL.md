@@ -1,196 +1,207 @@
 ---
 name: hono-engineer
-description: Build and maintain production-grade Hono API services across
-  projects. Use when designing endpoints, middleware, config, logging,
-  validation, security, and tests for Hono-based APIs.
+description: Build, change, and diagnose Hono API services. Use when work
+  requires Hono-specific routing, middleware composition, Context or runtime
+  APIs, validation and contract integration, or Hono testing boundaries. Pair
+  with the relevant TypeScript, runtime, testing, security, data, or
+  architecture skill when those domains determine correctness.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f3cc7e2462bce1dee14e333e80a16dd35ac93ab59173ac22292257f7f8665984
+  skillforge-source-hash: f54c5fbef8b15f11f6ba80d6d1842101117fc16262c023939e4375e38ff10004
 ---
 
 # hono-engineer
 
 ## Start here
 
-1. Confirm the work is on a Hono-based API or a route/middleware surface that directly affects Hono.
-2. Follow the project conventions already present before applying the baseline guidance.
-3. Preserve the existing Hono app factory, middleware order, error handling, validation, logging, and request-id contracts.
-4. For endpoint work, use the preserved endpoint workflow in the overview and load only the relevant references.
+1. Confirm the request requires a Hono-specific decision or change; otherwise route to the owning skill.
+2. Establish the authoritative behavior, existing app composition, installed Hono and runtime/tooling versions, endpoint class, security contract, and available test contours before proposing implementation.
+3. For a version-sensitive API or platform decision, read Framework Currency and check current official sources; treat the installed project version as a compatibility constraint rather than silently upgrading it.
+4. Apply precedence in this order: authoritative requirements, compatible existing project conventions, then this skill's greenfield defaults. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable.
+5. Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion.
 
 ## When to use this skill
 
-- Designing or changing Hono endpoints, routers, middleware, or app composition.
-- Working on Hono config, validation, OpenAPI contracts, logging, security, caching, or tests.
-- Adapting Hono services to Cloudflare Workers or another edge runtime.
+- Designing, implementing, diagnosing, or changing Hono endpoints, routers, middleware, Context usage, or app composition.
+- Integrating Hono validation, contracts, errors, logging, auth admission, caching, streaming, or runtime adapters.
+- Selecting Hono-specific unit, app.request integration, or runtime-boundary verification.
 
 ## When NOT to use this skill
 
-- The task has no Hono API, route, middleware, or edge-runtime API surface.
-- The task is purely TypeScript language work, testing strategy, Supabase design, or security review without Hono-specific behavior.
+- The task has no Hono-specific API, middleware, Context, routing, or adapter behavior.
+- The task is solely TypeScript language design, generic testing, platform operations, security review, Supabase/data design, or architecture without a Hono integration decision.
+- The requested outcome is a production, security, data, or architecture verdict that requires a specialized owner; use this skill only for the Hono portion.
 
-## Scope
-Applies to any Hono-based API project. If the current project already has established conventions, follow them and avoid conflicts.
+## Capability and scope
 
-## Non-negotiables (baseline)
-- Keep a single app factory (commonly `src/index.ts`) and mount routes via `app.route()`.
-- Preserve a stable global middleware order: `requestId` → `accessLog` → `runtimeConfig` → `secureHeaders` → `cors` → `requestLimits` (adapt names to your project).
-- Keep global request body limits conservative; use route-specific overrides for known large-payload endpoints.
-- Centralize error handling in `app.onError()` (not a regular middleware). Use a try/catch wrapper only when needed for structured error logging.
-- Validate env/config with a schema (Zod recommended) and expose parsed config via context (avoid raw env access in handlers).
-- On Cloudflare Workers, generate binding types with `wrangler types`; do not hand-write `Env` interfaces.
-- Validate all request inputs and outputs against schemas. For output validation, use a response helper, per-route output middleware, or contract tests (see `references/validation-openapi.md`).
-- New API routes must have Zod/OpenAPI request and response schemas, exported contract types/schemas, route security metadata, and tests.
-- For rich HTML inputs, sanitize server-side before persistence using an explicit allowlist policy (default: `sanitize-html` when runtime-compatible).
-- Errors use Problem Details. Never leak secrets or raw input in error bodies.
-- Logs are structured JSON and must be redacted. Never log tokens, cookies, or bodies.
-- Include a `requestId` in responses, error payloads, logs, and upstream calls.
-- Every Promise must be awaited, returned, intentionally `void`ed, or passed to `ctx.waitUntil()`; never leave floating async work in request paths.
-- For SSE, streaming, subscription, or WebSocket-like protected endpoints, opening auth is not enough when permissions can change during the connection; require periodic revalidation or an explicit accepted invalidation mechanism, observable close/block/deny behavior, and abort-safe loops.
-- For tokens, secrets, and webhook signatures, use Web Crypto randomness and timing-safe comparison. Never use `Math.random()` or plain string equality for sensitive comparisons.
-- For TypeScript tests, avoid ts-node; prefer `node:test` with a lightweight TS strip/transform.
+Guide Hono-specific routing, middleware, Context, contract integration, and verification decisions inside an existing or greenfield API. The capability is an observable HTTP or runtime behavior with evidence at the boundary claimed by the task.
 
-## Project structure (recommended)
-Design to work both for a greenfield project and for incremental adoption in an existing codebase.
-- `src/index.ts` – app factory, middleware, route composition, `notFound`/`onError`.
-- `src/routes/*` – HTTP routing (thin layer).
-- `src/middleware/*` – cross-cutting concerns only.
-- `src/config/*` – env/schema parsing and config helpers.
-- `src/http/*` – Problem Details mapping/shape.
-- `src/redaction/*` – log/response redaction.
-- `src/types.ts` – Hono `Bindings`/`Variables` typing.
-- `src/services/*` – application services (use-cases); routes call services, not infra directly.
-- `src/domain/*` – pure domain logic (policies, errors, invariants), no Hono/Workers imports.
-- `src/infra/*` – external integrations (fetch wrapper, DB clients, third-party APIs).
-- `src/observability/*` – structured logger, metrics, audit events.
-- `src/security/*` – auth/authorization policies, rate-limit helpers.
-- `src/middleware/auth/*` – auth middlewares (jwt, api-key, mTLS metadata checks).
-- `src/middleware/validate.ts` – request validation wrapper (zod).
-- `src/middleware/cache/*` – etag/cache/edge caching helpers.
-- `src/config/openapi.ts` – OpenAPI assembly (if/when contracts are added).
-- `src/contracts/*` or `packages/contracts/*` – shared Zod schemas + DTOs (single source of truth).
-- `docs/standards/*` – error and logging standards for long-term consistency.
+This documentation does not ship a Hono runtime, make an endpoint production-ready by itself, or replace security, data, runtime, architecture, and testing authorities. Compiler success, route/schema presence, mocks, `app.request()`, and structural docs tests are substrate or bounded evidence, not universal runtime proof.
 
-## Workflow for adding endpoints
-1. Decide endpoint class (public, pending/onboarding, user, admin, webhook) and choose the middleware chain (see `references/pipelines.md` when needed).
-2. For auth-admission work, run a short route-admission checkpoint before implementation: bound body reads before parsing, keep pre-auth and post-auth quota isolation distinct, state replay behavior, and preserve the touched route's admission boundary or owner-gate semantics.
-3. Add route module under `src/routes/` and mount with `app.route()`.
-4. Keep routes thin: parse/validate inputs, call domain/service logic, return response.
-5. For long-lived protected endpoints, keep the opening route guard and put repeated authorization/revalidation or invalidation support in service/domain logic; test stale/revoked/disabled/maintenance/context transitions.
-6. For cookie-session CSRF reissue endpoints, keep the public API contract explicit: valid httpOnly session cookie, accepted Origin/CORS, no old CSRF token requirement, session-bound CSRF hash rotation, and response body containing only the new CSRF token.
-7. Convert validation and controlled errors to Problem Details. Do not expose secrets.
-8. Add tests at the right level (unit/integration/e2e).
+## Minimum inputs and readiness
 
-## Platform constraints
-If using Cloudflare Workers or another edge runtime, review `references/workers-platform.md` and `references/wrangler.md` and adjust for platform limits, binding typing, caching semantics, and async work handling. For Workers-specific APIs or config fields that may have changed, prefer current docs or the local Wrangler schema over memory.
+Before implementation, derive or obtain:
 
-## Payload and content guardrails
+- the authoritative request and externally observable behavior, including error and recovery behavior;
+- the current app factory or entrypoint, route composition, middleware/error hooks, and project conventions;
+- installed `hono`, companion package, adapter, and runtime/tooling versions;
+- endpoint class and its auth, CSRF, tenancy, replay, payload, caching, streaming, or webhook contract;
+- available unit, Hono integration, runtime integration, and live verification contours.
 
-- Keep a strict global payload limit to reduce abuse surface.
-- Add endpoint-level limit increases only where required by explicit contracts (for example document upload endpoints).
-- Sanitize untrusted HTML on write-path as a minimum; optionally re-sanitize on read-path as defense in depth.
-- Verify sanitizer compatibility with the target runtime (Node vs Workers) before rollout.
+If an authoritative behavior is missing, equal-authority sources conflict, or a required runtime boundary cannot be exercised, provide bounded guidance or report the work blocked. Do not invent product behavior, security policy, migration authority, or production readiness.
 
-## Environment and secrets
-- Add new env keys to your config schema and map them into a runtime config object.
-- Non-secrets live in config files; secrets are stored in the platform’s secret manager.
-- If using Cloudflare Workers, keep non-secrets in Wrangler `vars`, secrets via `wrangler secret put`, and local values in `.dev.vars`.
+## Latest framework currency
 
-## Logging and redaction
-- Always call `redactValue()` before writing logs or returning error details.
-- Prefer event-style logs: `request.completed`, `request.failed`, `auth.failed`, `validation.failed`.
-- Never log request/response bodies by default. Log sizes or hashes instead.
-- Client telemetry/error ingestion should use a project-owned API routed through the existing observability boundary. Do not add third-party RUM/session replay as the default telemetry path.
+Recommendations track the latest official stable Hono guidance rather than a pinned version. For version-sensitive work, inspect the project's installed versions and read `references/framework-currency.md`. Preserve compatible installed behavior unless the request authorizes an upgrade; report any latest-versus-installed gap explicitly.
 
-## Testing baseline
-- Unit: pure helpers (config parsing, redaction).
-- Integration: `createApp().request()`.
-- E2E: use a runtime-specific harness (Cloudflare Workers: `wrangler unstable_dev`).
-- Keep contour-aware execution:
-  - local: deterministic profile;
-  - PR CI: full required suite with check-only lint/format commands;
-  - nightly: repeated stability checks for flaky integration/e2e paths.
-- Prefer CI check-only lint commands; keep auto-fix lint commands for local development only.
-For deeper testing guidance, use the `typescript-test-engineer` skill.
+## Hono baseline decisions
 
-## When you need more detail
-Read only the relevant reference file:
-- `references/architecture.md` – module boundaries, layering, and dependency rules.
-- `references/pipelines.md` – middleware order per endpoint class.
-- `references/typing.md` – Context variables typing (generics vs module augmentation).
-- `references/errors-logs.md` – error + logging standards.
-- `references/auth.md` – API keys, JWT/JWKS, mTLS, CSRF, authz policies, and long-lived protected endpoint authorization.
-- `references/validation-openapi.md` – Zod validation, OpenAPI, docs, schema validation.
-- `references/routers.md` – router types and when to override defaults.
-- `references/caching.md` – HTTP caching, Cache API, edge caching.
-- `references/perf-security.md` – timeouts, retries, circuit breaker, compression, security defaults.
-- `references/security.md` – edge WAF, API Shield, endpoint discovery.
-- `references/rate-limiting.md` – pre/post-auth limits, key choice, edge/WAF limits.
-- `references/observability.md` – logs, metrics, tracing, requestId propagation.
-- `references/wrangler.md` – runtime config, compatibility flags, bindings, generated `Env`, observability (Workers).
-- `references/supabase.md` – Supabase usage patterns and RLS safety.
-- `references/workers-platform.md` – CPU/subrequest limits, floating promises, binding safety, fetch scope, `waitUntil`, service bindings.
-- `references/contracts-types.md` – exporting request/response types to consumers.
+- Preserve the existing compatible app composition. For greenfield composition, prefer typed factories and `app.route()`; capture chained route return types when Hono RPC or typed test clients consume them.
+- Treat middleware order as behavior. Use one project-owned global chain and endpoint-specific additions; register `app.onError()` and `notFound()` as hooks, not middleware positions.
+- Keep handlers thin: read validated input, call service/domain behavior, and produce the response contract.
+- Keep request-scoped state in Hono Context or explicit parameters, never module-level mutable state.
+- Validate configuration at its boundary and use the project's typed Context bindings or variables. On Workers, prefer current `wrangler types` output over handwritten binding casts.
+- Use Problem Details, structured redacted logs, and request correlation when the project contract requires them. Do not invent a new error or logging standard during a narrow route change.
+- Await work that affects the response. On Cloudflare Workers, use `c.executionCtx.waitUntil(promise)` only for work allowed to outlive the response; handle rejection observably. `waitUntil()` extends execution but does not provide durable delivery. Use a durable queue or equivalent when the accepted contract requires it.
+- Do not use `void` merely to silence a floating Promise. Detached work needs an explicit lifecycle owner, failure handling, and evidence appropriate to its delivery claim.
+- For protected SSE, streaming, subscription, or WebSocket-like endpoints, opening admission is insufficient when permissions can change. Require revalidation or an accepted invalidation mechanism, observable deny/close behavior, and abort-safe cleanup.
+- For secrets and signatures, use runtime-compatible verified cryptographic primitives. Do not use `Math.random()` or plain string equality for attacker-controlled secret comparisons.
+
+## Endpoint workflow
+
+1. Classify the endpoint: public, pending/onboarding, user, admin, service/operator, webhook, or long-lived protected connection.
+2. Preserve the route's current admission boundary and owner/tenant semantics. For auth admission, bound body reads before parsing, keep pre-auth and post-auth quotas isolated, and state replay behavior.
+3. Select the endpoint middleware pipeline from the authoritative contract; for signed webhooks, verify the exact raw bytes before parsing when the provider requires it.
+4. Define request validation, success responses, expected failures, and client-visible contract. Keep forbidden or computed fields outside writable schemas.
+5. Choose contract publication deliberately: use OpenAPI when an external or project contract requires it; use Hono RPC/type exports when that is the project boundary; an internal route may document why neither public surface applies.
+6. Distinguish runtime response validation from schema-based contract tests. Production validation requires code on the response path; contract tests prove only the branches they exercise.
+7. Implement the smallest change that preserves app composition, error hooks, Context typing, logging/redaction, and request correlation.
+8. Verify negative and lifecycle behavior at the narrowest real boundary required by the completion claim.
+
+## Auth, CSRF, and client recovery boundaries
+
+- Keep authentication, authorization, and route admission distinct. Route naming or hidden UI is not authorization evidence.
+- Hono's built-in `csrf()` checks Origin and Fetch Metadata for its documented unsafe, form-capable request set. It is not a synchronizer-token or double-submit implementation and does not by itself prove token-protected JSON mutation behavior.
+- If a cookie-session SPA needs CSRF token reissue after losing memory state, keep that project contract explicit: valid session cookie, allowed Origin/CORS boundary, no old-token requirement, atomic session-bound rotation, and a response containing only the new CSRF token.
+- Pending/onboarding sessions use a narrower guard and cannot pass normal active-account protected routes.
+
+## Verification contours
+
+- Pure unit tests cover helpers and domain logic, not Hono or platform integration.
+- `app.request()` or `testClient()` covers the Hono request/response composition actually exercised. Preserve the project's runner rather than imposing `node:test`, Vitest, or another runner.
+- Runtime integration covers adapter APIs, bindings, ExecutionContext, streaming, caching, and platform behavior. For Cloudflare Workers, prefer the current Workers Vitest integration when the project uses it; migrate from `unstable_dev` only when the task authorizes that change.
+- Live or staging evidence proves only the observed deployment, configuration, and scenario. Require it when the claim depends on provider delivery, edge configuration, or operational observability.
+
+## Completion report
+
+Report:
+
+- delivered or proposed HTTP/runtime behavior and changed public contracts;
+- installed-version compatibility and any latest-guidance delta;
+- checks run and the exact boundary each proves;
+- blocked, simulated, or unverified behavior;
+- residual production, security, data, and operational risks owned elsewhere.
 
 ## Workflow stages
 
-### Workflow stage: Apply Hono guidance
+### Workflow stage: Establish the Hono decision basis
 
-Keep Hono API changes aligned with the preserved app, middleware, validation, logging, security, and testing rules.
+Make the requested behavior, authority, version compatibility, and proof boundary explicit before changing the API.
 
-1. Identify the endpoint class, runtime, and existing project conventions.
-2. Use the preserved endpoint workflow and auth-admission checkpoint before implementation.
-3. Load only the references relevant to the touched Hono surface.
-4. Verify the affected unit, integration, or runtime-specific tests.
+1. Inspect the project entrypoint or app factory, route composition, middleware and error hooks, installed versions, runtime config, contracts, and existing test harness.
+2. Classify the endpoint and identify which security, data, platform, or architecture decisions belong to another skill.
+3. Select only the references triggered by the touched surface and resolve any installed-versus-latest compatibility gap.
 
 Validation:
 
-- The route or middleware behavior remains consistent with the existing Hono app composition.
-- Validation, Problem Details errors, redacted logs, and requestId propagation remain intact.
+- The intended observable behavior and authoritative inputs are known, or the output is explicitly blocked or guidance-only.
+- No specialized security, data, runtime, or architecture verdict is invented by Hono guidance.
+
+### Workflow stage: Implement the Hono boundary
+
+Preserve compatible project composition while making the smallest Hono-specific change that delivers the requested behavior.
+
+1. Choose the route and middleware pipeline from the endpoint contract, preserving raw-body, auth-admission, streaming, and error-hook ordering where applicable.
+2. Keep handlers thin, keep request validation distinct from runtime response guarantees, and preserve route type inference when Hono RPC or typed clients consume it.
+3. Use runtime lifecycle APIs only with their documented durability and failure semantics.
+
+Validation:
+
+- The implemented route behavior, failure paths, and public contract match the authoritative requirement.
+- Framework-specific APIs are compatible with the installed project versions and current official guidance.
+
+### Workflow stage: Verify and report the real boundary
+
+Match evidence and completion claims to the boundary actually exercised.
+
+1. Run the narrowest project checks for pure logic, Hono app integration, and the real runtime boundary required by the claim.
+2. Exercise negative admission, validation, error, cancellation, and lifecycle transitions relevant to the change.
+3. Report delivered behavior, interface changes, compatibility constraints, checks, evidence limits, and remaining risks.
+
+Validation:
+
+- app.request, mocks, schemas, OpenAPI, and docs-contract tests are not described as production-runtime proof.
+- A blocked or unverified boundary remains explicit instead of being reported production-ready.
 
 ## Interop priority
 
-- **TypeScript testing patterns:** typescript-test-engineer. This skill owns Hono API guidance, while testing depth and runner patterns belong to the TypeScript testing skill.
+- **Implementation scope and evidence discipline:** implementation-discipline. hono-engineer owns framework-specific choices; implementation-discipline owns minimal diffs, capability reality, remediation traceability, and completion evidence.
+- **TypeScript language and type-system design:** typescript-engineer. hono-engineer owns Hono generics and Context integration; TypeScript language semantics and reusable type design belong to typescript-engineer.
+- **TypeScript test runner, mocking, and test architecture:** typescript-test-engineer. hono-engineer selects the Hono and runtime boundary; runner conventions and test implementation depth belong to typescript-test-engineer.
+- **Node.js runtime behavior:** node-engineer. Hono adapter integration remains here; Node process, module, stream, and runtime lifecycle behavior belongs to node-engineer.
+- **Security verdicts and exploitability:** security-reviewer. hono-engineer integrates auth and security middleware but does not issue a security audit verdict.
+- **Supabase schema, RLS, RPC, and data boundaries:** supabase-engineer. hono-engineer owns the HTTP integration; Supabase correctness and direct data-path evidence belong to supabase-engineer.
+- **Architecturally significant boundaries and trade-offs:** architecture-engineer. hono-engineer may apply an accepted architecture but does not invent cross-system boundaries or quality trade-offs.
 
 ## Gotchas
 
-- **high** — Do not let predictable Zod, domain, RPC, Postgres, or Supabase validation failures escape as raw internal errors. Map form-backed validation to safe field-level problem details before the response leaves Hono.
-- **high** — Do not name public routes after roles unless the capability is truly an admin console surface; route names should normally describe the domain, capability, or resource.
+- **high** — Do not call an endpoint production-ready because a route, schema, OpenAPI entry, generated file, mock, or docs-contract test exists; require evidence at every boundary named by the claim.
+- **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested.
+- **high** — Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions.
+- **high** — Do not let predictable validation or service failures escape as raw internal errors. Map only safe, contract-approved details before the response leaves Hono.
 
 ## Policies
 
-### API preflight policy
-Before adding or changing a Hono route, confirm route naming disposition, strict request schema coverage, forbidden/computed fields, all editable fields, service-level field errors, safe problem mapping, auth/CSRF behavior, and test evidence.
+### Source and compatibility precedence
+Authoritative requirements and compatible project conventions override greenfield defaults. When they conflict or latest guidance is incompatible with installed versions, stop, surface the gap, and do not invent a migration decision.
 
-## Required active references
-- [Architecture](references/architecture.md) — Read this when you need module boundaries, layering, and dependency rules.
-- [Auth](references/auth.md) — Read this when you need API keys, JWT/JWKS, mTLS, CSRF reissue contracts, cookie sessions, pending/onboarding sessions, or authz policies.
-- [Caching](references/caching.md) — Read this when you need HTTP caching, Cache API, edge caching.
-- [Contracts Types](references/contracts-types.md) — Read this when you need exporting request/response types to consumers.
-- [Errors Logs](references/errors-logs.md) — Read this when you need error + logging standards.
-- [Observability](references/observability.md) — Read this when you need logs, metrics, tracing, requestId propagation, or project-owned client telemetry ingestion.
-- [Perf Security](references/perf-security.md) — Read this when you need timeouts, retries, circuit breaker, compression, security defaults.
-- [Pipelines](references/pipelines.md) — Read this when you need middleware order per endpoint class.
-- [Rate Limiting](references/rate-limiting.md) — Read this when you need pre/post-auth limits, key choice, edge/WAF limits.
-- [Routers](references/routers.md) — Read this when you need router types and when to override defaults.
-- [Security](references/security.md) — Read this when you need edge WAF, API Shield, endpoint discovery.
-- [Supabase](references/supabase.md) — Read this when you need Supabase usage patterns and RLS safety.
-- [Typing](references/typing.md) — Read this when you need Context variables typing (generics vs module augmentation).
-- [Validation Openapi](references/validation-openapi.md) — Read this when you need Zod validation, OpenAPI, exported route contracts, security metadata, docs, or schema validation.
-- [Workers Platform](references/workers-platform.md) — Read this when you need CPU/subrequest limits, floating promises, binding safety, fetch scope, `waitUntil`, service bindings.
-- [Wrangler](references/wrangler.md) — Read this when you need runtime config, compatibility flags, bindings, generated `Env`, observability (Workers).
+### Evidence boundary
+Match proof to the claim: unit tests cover pure logic, app.request covers Hono integration, a runtime harness covers platform behavior, and live evidence covers only the observed deployment conditions.
+
+### Output contract
+Report the delivered or proposed HTTP/runtime behavior, changed interfaces, installed-versus-latest compatibility constraints, checks and their boundaries, blocked or unverified work, and residual risk.
+
+## Optional references
+- [Framework Currency](references/framework-currency.md) — Read this before a version-sensitive Hono, adapter, or runtime decision, or when installed and latest versions may differ.
+- [Architecture](references/architecture.md) — Read this when Hono app composition, route type inference, layering, or dependency boundaries are in scope.
+- [Auth](references/auth.md) — Read this when Hono middleware integrates API keys, JWT/JWKS, mTLS metadata, cookie sessions, CSRF, pending sessions, authorization, or protected long-lived endpoints.
+- [Caching](references/caching.md) — Read this when HTTP or runtime cache behavior is part of the requested Hono route.
+- [Contracts Types](references/contracts-types.md) — Read this when Hono RPC, exported request or response types, runtime schemas, or external consumers are in scope.
+- [Errors Logs](references/errors-logs.md) — Read this when changing Hono error mapping, Problem Details, request correlation, or structured logging.
+- [Observability](references/observability.md) — Read this when logs, metrics, tracing, requestId propagation, or client telemetry ingestion are in scope.
+- [Perf Security](references/perf-security.md) — Read this when Hono request limits, timeouts, retries, compression, upstream resilience, or security middleware defaults are in scope.
+- [Pipelines](references/pipelines.md) — Read this when selecting or changing middleware order for an endpoint class.
+- [Rate Limiting](references/rate-limiting.md) — Read this when Hono integrates pre-auth, post-auth, application, or edge rate limits.
+- [Routers](references/routers.md) — Read this only when measured route registration, matching, or bundle constraints justify overriding Hono's default router.
+- [Security](references/security.md) — Read this when Hono must integrate with edge WAF, mTLS, API discovery, or schema enforcement; use security-reviewer for a security verdict.
+- [Supabase](references/supabase.md) — Read this when a Hono route calls Supabase; use supabase-engineer for RLS, RPC, schema, or data-boundary decisions.
+- [Typing](references/typing.md) — Read this when Hono Context Bindings or Variables typing is in scope; use typescript-engineer for language-level type design.
+- [Validation Openapi](references/validation-openapi.md) — Read this when request validation, runtime response validation, OpenAPI, Hono RPC, exported schemas, or contract evidence is in scope.
+- [Workers Platform](references/workers-platform.md) — Read this when a Hono service runs on Cloudflare Workers or uses ExecutionContext, bindings, streaming, queues, or service bindings.
+- [Wrangler](references/wrangler.md) — Read this when Wrangler config, bindings, generated Env types, compatibility flags, secrets, or Workers observability are in scope.
 
 ## Portability rules
 
-- Do not reference machine-specific absolute paths or local files outside this skill folder.
-- Keep all mandatory hono-engineer guidance inside this skill folder.
+- Do not reference machine-specific absolute paths or required local files outside this skill folder.
+- Keep all mandatory hono-engineer guidance inside this skill folder and use official external docs only as live version authority.
 - Use relative links for local references, assets, scripts, tests, and supporting docs.
 
 ## Portability checklist before finishing
 
 - Run the skill-source-compiler check command after regeneration.
 - Search the skill folder for absolute local paths before finishing.
-- Confirm every required reference listed by SKILL.md exists inside this skill folder.
+- Confirm every optional reference listed by SKILL.md exists inside this skill folder and has a precise load trigger.
 
 ## Supporting and historical surface
 

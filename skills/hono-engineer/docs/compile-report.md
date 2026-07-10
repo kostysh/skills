@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.3`
+- Skill source version: `0.1.4`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -14,6 +14,7 @@ Generated from `skill.yaml`.
 - `references/caching.md`
 - `references/contracts-types.md`
 - `references/errors-logs.md`
+- `references/framework-currency.md`
 - `references/observability.md`
 - `references/perf-security.md`
 - `references/pipelines.md`
@@ -29,22 +30,7 @@ Generated from `skill.yaml`.
 - `test/docs-contract.test.mjs`
 
 ## Required references
-- `references/architecture.md`
-- `references/auth.md`
-- `references/caching.md`
-- `references/contracts-types.md`
-- `references/errors-logs.md`
-- `references/observability.md`
-- `references/perf-security.md`
-- `references/pipelines.md`
-- `references/rate-limiting.md`
-- `references/routers.md`
-- `references/security.md`
-- `references/supabase.md`
-- `references/typing.md`
-- `references/validation-openapi.md`
-- `references/workers-platform.md`
-- `references/wrangler.md`
+- none
 
 ## Warnings
 - none

@@ -16,9 +16,10 @@
 
 ## Runtime model
 - Avoid doing network `fetch()` in global scope; initialize clients lazily inside handlers.
-- Every async side effect must be awaited, returned, intentionally ignored with `void`, or passed to `ctx.waitUntil()`.
-- Use `ctx.waitUntil()` for non-critical async work (logs, metrics, audit) to avoid blocking responses.
-- Do not destructure `ctx.waitUntil`; call it as a method on `ctx`.
+- Await work that determines the response or accepted delivery contract.
+- Use `c.executionCtx.waitUntil(promise)` for work allowed to continue after the response; observe rejection through the project's logging/metrics boundary. Do not destructure `waitUntil`.
+- `waitUntil()` extends the invocation lifetime but is not durable delivery. If loss or retry changes accepted behavior, await a durable enqueue and process it through a queue or equivalent.
+- Do not use `void` merely to silence a floating Promise. Detached work needs an explicit lifecycle owner and failure handling.
 - Stream large or unknown-size upstream responses; avoid `await response.text()` on unbounded payloads.
 - For long-lived streams, wire abort/cancel handlers to clear timers, upstream subscriptions, and pending work; do not rely on one-time route admission for protected event delivery.
 

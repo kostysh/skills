@@ -1,102 +1,69 @@
-## Scope
-Applies to any Hono-based API project. If the current project already has established conventions, follow them and avoid conflicts.
+## Capability and scope
 
-## Non-negotiables (baseline)
-- Keep a single app factory (commonly `src/index.ts`) and mount routes via `app.route()`.
-- Preserve a stable global middleware order: `requestId` → `accessLog` → `runtimeConfig` → `secureHeaders` → `cors` → `requestLimits` (adapt names to your project).
-- Keep global request body limits conservative; use route-specific overrides for known large-payload endpoints.
-- Centralize error handling in `app.onError()` (not a regular middleware). Use a try/catch wrapper only when needed for structured error logging.
-- Validate env/config with a schema (Zod recommended) and expose parsed config via context (avoid raw env access in handlers).
-- On Cloudflare Workers, generate binding types with `wrangler types`; do not hand-write `Env` interfaces.
-- Validate all request inputs and outputs against schemas. For output validation, use a response helper, per-route output middleware, or contract tests (see `references/validation-openapi.md`).
-- New API routes must have Zod/OpenAPI request and response schemas, exported contract types/schemas, route security metadata, and tests.
-- For rich HTML inputs, sanitize server-side before persistence using an explicit allowlist policy (default: `sanitize-html` when runtime-compatible).
-- Errors use Problem Details. Never leak secrets or raw input in error bodies.
-- Logs are structured JSON and must be redacted. Never log tokens, cookies, or bodies.
-- Include a `requestId` in responses, error payloads, logs, and upstream calls.
-- Every Promise must be awaited, returned, intentionally `void`ed, or passed to `ctx.waitUntil()`; never leave floating async work in request paths.
-- For SSE, streaming, subscription, or WebSocket-like protected endpoints, opening auth is not enough when permissions can change during the connection; require periodic revalidation or an explicit accepted invalidation mechanism, observable close/block/deny behavior, and abort-safe loops.
-- For tokens, secrets, and webhook signatures, use Web Crypto randomness and timing-safe comparison. Never use `Math.random()` or plain string equality for sensitive comparisons.
-- For TypeScript tests, avoid ts-node; prefer `node:test` with a lightweight TS strip/transform.
+Guide Hono-specific routing, middleware, Context, contract integration, and verification decisions inside an existing or greenfield API. The capability is an observable HTTP or runtime behavior with evidence at the boundary claimed by the task.
 
-## Project structure (recommended)
-Design to work both for a greenfield project and for incremental adoption in an existing codebase.
-- `src/index.ts` – app factory, middleware, route composition, `notFound`/`onError`.
-- `src/routes/*` – HTTP routing (thin layer).
-- `src/middleware/*` – cross-cutting concerns only.
-- `src/config/*` – env/schema parsing and config helpers.
-- `src/http/*` – Problem Details mapping/shape.
-- `src/redaction/*` – log/response redaction.
-- `src/types.ts` – Hono `Bindings`/`Variables` typing.
-- `src/services/*` – application services (use-cases); routes call services, not infra directly.
-- `src/domain/*` – pure domain logic (policies, errors, invariants), no Hono/Workers imports.
-- `src/infra/*` – external integrations (fetch wrapper, DB clients, third-party APIs).
-- `src/observability/*` – structured logger, metrics, audit events.
-- `src/security/*` – auth/authorization policies, rate-limit helpers.
-- `src/middleware/auth/*` – auth middlewares (jwt, api-key, mTLS metadata checks).
-- `src/middleware/validate.ts` – request validation wrapper (zod).
-- `src/middleware/cache/*` – etag/cache/edge caching helpers.
-- `src/config/openapi.ts` – OpenAPI assembly (if/when contracts are added).
-- `src/contracts/*` or `packages/contracts/*` – shared Zod schemas + DTOs (single source of truth).
-- `docs/standards/*` – error and logging standards for long-term consistency.
+This documentation does not ship a Hono runtime, make an endpoint production-ready by itself, or replace security, data, runtime, architecture, and testing authorities. Compiler success, route/schema presence, mocks, `app.request()`, and structural docs tests are substrate or bounded evidence, not universal runtime proof.
 
-## Workflow for adding endpoints
-1. Decide endpoint class (public, pending/onboarding, user, admin, webhook) and choose the middleware chain (see `references/pipelines.md` when needed).
-2. For auth-admission work, run a short route-admission checkpoint before implementation: bound body reads before parsing, keep pre-auth and post-auth quota isolation distinct, state replay behavior, and preserve the touched route's admission boundary or owner-gate semantics.
-3. Add route module under `src/routes/` and mount with `app.route()`.
-4. Keep routes thin: parse/validate inputs, call domain/service logic, return response.
-5. For long-lived protected endpoints, keep the opening route guard and put repeated authorization/revalidation or invalidation support in service/domain logic; test stale/revoked/disabled/maintenance/context transitions.
-6. For cookie-session CSRF reissue endpoints, keep the public API contract explicit: valid httpOnly session cookie, accepted Origin/CORS, no old CSRF token requirement, session-bound CSRF hash rotation, and response body containing only the new CSRF token.
-7. Convert validation and controlled errors to Problem Details. Do not expose secrets.
-8. Add tests at the right level (unit/integration/e2e).
+## Minimum inputs and readiness
 
-## Platform constraints
-If using Cloudflare Workers or another edge runtime, review `references/workers-platform.md` and `references/wrangler.md` and adjust for platform limits, binding typing, caching semantics, and async work handling. For Workers-specific APIs or config fields that may have changed, prefer current docs or the local Wrangler schema over memory.
+Before implementation, derive or obtain:
 
-## Payload and content guardrails
+- the authoritative request and externally observable behavior, including error and recovery behavior;
+- the current app factory or entrypoint, route composition, middleware/error hooks, and project conventions;
+- installed `hono`, companion package, adapter, and runtime/tooling versions;
+- endpoint class and its auth, CSRF, tenancy, replay, payload, caching, streaming, or webhook contract;
+- available unit, Hono integration, runtime integration, and live verification contours.
 
-- Keep a strict global payload limit to reduce abuse surface.
-- Add endpoint-level limit increases only where required by explicit contracts (for example document upload endpoints).
-- Sanitize untrusted HTML on write-path as a minimum; optionally re-sanitize on read-path as defense in depth.
-- Verify sanitizer compatibility with the target runtime (Node vs Workers) before rollout.
+If an authoritative behavior is missing, equal-authority sources conflict, or a required runtime boundary cannot be exercised, provide bounded guidance or report the work blocked. Do not invent product behavior, security policy, migration authority, or production readiness.
 
-## Environment and secrets
-- Add new env keys to your config schema and map them into a runtime config object.
-- Non-secrets live in config files; secrets are stored in the platform’s secret manager.
-- If using Cloudflare Workers, keep non-secrets in Wrangler `vars`, secrets via `wrangler secret put`, and local values in `.dev.vars`.
+## Latest framework currency
 
-## Logging and redaction
-- Always call `redactValue()` before writing logs or returning error details.
-- Prefer event-style logs: `request.completed`, `request.failed`, `auth.failed`, `validation.failed`.
-- Never log request/response bodies by default. Log sizes or hashes instead.
-- Client telemetry/error ingestion should use a project-owned API routed through the existing observability boundary. Do not add third-party RUM/session replay as the default telemetry path.
+Recommendations track the latest official stable Hono guidance rather than a pinned version. For version-sensitive work, inspect the project's installed versions and read `references/framework-currency.md`. Preserve compatible installed behavior unless the request authorizes an upgrade; report any latest-versus-installed gap explicitly.
 
-## Testing baseline
-- Unit: pure helpers (config parsing, redaction).
-- Integration: `createApp().request()`.
-- E2E: use a runtime-specific harness (Cloudflare Workers: `wrangler unstable_dev`).
-- Keep contour-aware execution:
-  - local: deterministic profile;
-  - PR CI: full required suite with check-only lint/format commands;
-  - nightly: repeated stability checks for flaky integration/e2e paths.
-- Prefer CI check-only lint commands; keep auto-fix lint commands for local development only.
-For deeper testing guidance, use the `typescript-test-engineer` skill.
+## Hono baseline decisions
 
-## When you need more detail
-Read only the relevant reference file:
-- `references/architecture.md` – module boundaries, layering, and dependency rules.
-- `references/pipelines.md` – middleware order per endpoint class.
-- `references/typing.md` – Context variables typing (generics vs module augmentation).
-- `references/errors-logs.md` – error + logging standards.
-- `references/auth.md` – API keys, JWT/JWKS, mTLS, CSRF, authz policies, and long-lived protected endpoint authorization.
-- `references/validation-openapi.md` – Zod validation, OpenAPI, docs, schema validation.
-- `references/routers.md` – router types and when to override defaults.
-- `references/caching.md` – HTTP caching, Cache API, edge caching.
-- `references/perf-security.md` – timeouts, retries, circuit breaker, compression, security defaults.
-- `references/security.md` – edge WAF, API Shield, endpoint discovery.
-- `references/rate-limiting.md` – pre/post-auth limits, key choice, edge/WAF limits.
-- `references/observability.md` – logs, metrics, tracing, requestId propagation.
-- `references/wrangler.md` – runtime config, compatibility flags, bindings, generated `Env`, observability (Workers).
-- `references/supabase.md` – Supabase usage patterns and RLS safety.
-- `references/workers-platform.md` – CPU/subrequest limits, floating promises, binding safety, fetch scope, `waitUntil`, service bindings.
-- `references/contracts-types.md` – exporting request/response types to consumers.
+- Preserve the existing compatible app composition. For greenfield composition, prefer typed factories and `app.route()`; capture chained route return types when Hono RPC or typed test clients consume them.
+- Treat middleware order as behavior. Use one project-owned global chain and endpoint-specific additions; register `app.onError()` and `notFound()` as hooks, not middleware positions.
+- Keep handlers thin: read validated input, call service/domain behavior, and produce the response contract.
+- Keep request-scoped state in Hono Context or explicit parameters, never module-level mutable state.
+- Validate configuration at its boundary and use the project's typed Context bindings or variables. On Workers, prefer current `wrangler types` output over handwritten binding casts.
+- Use Problem Details, structured redacted logs, and request correlation when the project contract requires them. Do not invent a new error or logging standard during a narrow route change.
+- Await work that affects the response. On Cloudflare Workers, use `c.executionCtx.waitUntil(promise)` only for work allowed to outlive the response; handle rejection observably. `waitUntil()` extends execution but does not provide durable delivery. Use a durable queue or equivalent when the accepted contract requires it.
+- Do not use `void` merely to silence a floating Promise. Detached work needs an explicit lifecycle owner, failure handling, and evidence appropriate to its delivery claim.
+- For protected SSE, streaming, subscription, or WebSocket-like endpoints, opening admission is insufficient when permissions can change. Require revalidation or an accepted invalidation mechanism, observable deny/close behavior, and abort-safe cleanup.
+- For secrets and signatures, use runtime-compatible verified cryptographic primitives. Do not use `Math.random()` or plain string equality for attacker-controlled secret comparisons.
+
+## Endpoint workflow
+
+1. Classify the endpoint: public, pending/onboarding, user, admin, service/operator, webhook, or long-lived protected connection.
+2. Preserve the route's current admission boundary and owner/tenant semantics. For auth admission, bound body reads before parsing, keep pre-auth and post-auth quotas isolated, and state replay behavior.
+3. Select the endpoint middleware pipeline from the authoritative contract; for signed webhooks, verify the exact raw bytes before parsing when the provider requires it.
+4. Define request validation, success responses, expected failures, and client-visible contract. Keep forbidden or computed fields outside writable schemas.
+5. Choose contract publication deliberately: use OpenAPI when an external or project contract requires it; use Hono RPC/type exports when that is the project boundary; an internal route may document why neither public surface applies.
+6. Distinguish runtime response validation from schema-based contract tests. Production validation requires code on the response path; contract tests prove only the branches they exercise.
+7. Implement the smallest change that preserves app composition, error hooks, Context typing, logging/redaction, and request correlation.
+8. Verify negative and lifecycle behavior at the narrowest real boundary required by the completion claim.
+
+## Auth, CSRF, and client recovery boundaries
+
+- Keep authentication, authorization, and route admission distinct. Route naming or hidden UI is not authorization evidence.
+- Hono's built-in `csrf()` checks Origin and Fetch Metadata for its documented unsafe, form-capable request set. It is not a synchronizer-token or double-submit implementation and does not by itself prove token-protected JSON mutation behavior.
+- If a cookie-session SPA needs CSRF token reissue after losing memory state, keep that project contract explicit: valid session cookie, allowed Origin/CORS boundary, no old-token requirement, atomic session-bound rotation, and a response containing only the new CSRF token.
+- Pending/onboarding sessions use a narrower guard and cannot pass normal active-account protected routes.
+
+## Verification contours
+
+- Pure unit tests cover helpers and domain logic, not Hono or platform integration.
+- `app.request()` or `testClient()` covers the Hono request/response composition actually exercised. Preserve the project's runner rather than imposing `node:test`, Vitest, or another runner.
+- Runtime integration covers adapter APIs, bindings, ExecutionContext, streaming, caching, and platform behavior. For Cloudflare Workers, prefer the current Workers Vitest integration when the project uses it; migrate from `unstable_dev` only when the task authorizes that change.
+- Live or staging evidence proves only the observed deployment, configuration, and scenario. Require it when the claim depends on provider delivery, edge configuration, or operational observability.
+
+## Completion report
+
+Report:
+
+- delivered or proposed HTTP/runtime behavior and changed public contracts;
+- installed-version compatibility and any latest-guidance delta;
+- checks run and the exact boundary each proves;
+- blocked, simulated, or unverified behavior;
+- residual production, security, data, and operational risks owned elsewhere.

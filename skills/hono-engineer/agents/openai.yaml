@@ -1,3 +1,4 @@
 interface:
-  display_name: "Hono engineer"
-  short_description: "Help with Hono engineer tasks"
+  display_name: "Hono Engineer"
+  short_description: "Build and verify Hono API behavior"
+  default_prompt: "Use $hono-engineer to implement or diagnose this Hono API change against current project conventions and the latest official framework guidance, with evidence matched to the runtime boundary."

@@ -2,6 +2,14 @@
 
 Use this when you need to expose API request/response types to other apps without creating a separate package.
 
+Choose the contract boundary already owned by the project:
+
+- Hono RPC: export the type of a chained route/app result and keep server and client TypeScript settings compatible with current Hono guidance.
+- OpenAPI/runtime schemas: publish them when external or cross-language consumers need a wire contract.
+- Type-only exports: use them when consumers share TypeScript types but do not need runtime validation.
+
+Do not create all three surfaces by default. A type-only export is not runtime validation, and an OpenAPI document is not evidence that the deployed response conforms.
+
 ## Recommended pattern (type-only export)
 - Define contracts in a dedicated module (e.g., `src/contracts/v1/*`).
 - Keep schemas close to routes or in `src/contracts`, and re-use them in handlers.
@@ -41,3 +49,4 @@ import type { HealthResponse } from 'your-package/types'
 - Avoid `export *` for contracts; prefer explicit `export type` to keep the public surface stable.
 - Keep contracts versioned by API version (`v1`, `v2`) to avoid breaking consumers.
 - If you need runtime schemas outside the server, switch to a built output (emit `.d.ts` and/or JS) and document it explicitly.
+- If Hono RPC is used, capture `const routes = app.route(...).route(...)` (or another chained result) and export `typeof routes`; exporting the original unchained app can lose route inference.

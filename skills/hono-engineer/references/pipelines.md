@@ -2,19 +2,20 @@
 
 Use the global middleware chain from your app factory for all routes. Add route-group middleware only when required.
 
-## Global baseline order (recommended)
+## Canonical global middleware baseline (greenfield default)
 1. requestId
 2. access log / metrics
-3. secure headers
-4. CORS
-5. error handling (app.onError)
-6. request limits (body size + timeout)
-7. routes
-8. notFound / onError (fallback)
+3. parsed runtime config / request context
+4. secure headers
+5. CORS
+6. conservative request limits that truly apply globally
+7. routes and route-group middleware
 
 Notes:
+- Preserve a compatible project-owned order; this is a greenfield default, not a mandate to reorder a working app.
 - Keep CORS before routes so preflight requests don’t hit business logic.
 - Prefer the built‑in `requestId` middleware unless you need custom behavior.
+- Register `app.onError()` and `app.notFound()` as Hono hooks. They are not positions in the middleware chain.
 - Timeout middleware is not compatible with streaming responses; avoid it on streaming endpoints.
 - For protected streaming endpoints, keep the route auth/authorize middleware on the opening request and implement lifecycle revalidation or invalidation inside the stream service.
 
@@ -56,6 +57,6 @@ Observable lifecycle expectations:
 ## D) Webhook
 - Global chain (may skip `cors` if not needed)
 - Route-group: `bodyLimit` (strict) → `verifySignature` → `replayProtection` → `rateLimit` → handler
-- Prefer quick ACK and move heavy work to `ctx.waitUntil()` or a queue.
+- Prefer a provider-compatible quick ACK. On Workers, use `c.executionCtx.waitUntil()` only for best-effort work allowed to outlive the response; use a durable queue when delivery is part of the accepted contract.
 Notes:
 - Verify signatures on the raw body before JSON parsing if the provider requires it.

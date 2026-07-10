@@ -46,8 +46,10 @@ app.use('/api/*', jwk({ jwks_uri: 'https://issuer/.well-known/jwks.json' }))
 - Keep service-to-service endpoints isolated and audited.
 
 ## Cookies + CSRF (if browser auth is used)
-- Use CSRF protection for unsafe methods.
+- Use a CSRF control whose semantics match the browser authentication and mutation contract.
 - Don’t rely on cookies for public API clients unless required.
+
+Hono's built-in `csrf()` validates Origin and `Sec-Fetch-Site` for its documented unsafe requests with form-capable content types. It does not implement synchronizer tokens or double-submit tokens and is not evidence that token-protected JSON mutations are covered. Verify the current middleware scope in official Hono documentation before using it as the project control.
 
 Minimal example (CSRF middleware):
 ```ts
@@ -68,6 +70,8 @@ Required behavior:
 - never return JWTs, session IDs, cookies, or raw session data in the body.
 
 Test both positive and negative paths: valid cookie plus allowed Origin succeeds; missing/invalid cookie, disallowed Origin, stale session, and wrong pending/active session scope fail.
+
+The reissue contract is application behavior, not a feature supplied by Hono's built-in `csrf()` middleware. The normal unsafe mutation path still needs the project's token validation and Origin/CORS policy.
 
 ## Pending/onboarding sessions
 

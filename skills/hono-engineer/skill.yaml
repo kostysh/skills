@@ -2,108 +2,119 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.3"
-  recommended-skill-md-max-bytes: 28000
-  description: "Build and maintain production-grade Hono API services across projects. Use when designing endpoints, middleware, config, logging, validation, security, and tests for Hono-based APIs."
+  source-version: "0.1.4"
+  recommended-skill-md-max-bytes: 24000
+  description: >-
+    Build, change, and diagnose Hono API services. Use when work requires
+    Hono-specific routing, middleware composition, Context or runtime APIs,
+    validation and contract integration, or Hono testing boundaries. Pair with
+    the relevant TypeScript, runtime, testing, security, data, or architecture
+    skill when those domains determine correctness.
 fragments:
   overview: "fragments/overview.md"
 references:
+  - id: "ref-framework-currency"
+    title: "Framework Currency"
+    source: "references/framework-currency.md"
+    target: "references/framework-currency.md"
+    required: false
+    trigger: "Read this before a version-sensitive Hono, adapter, or runtime decision, or when installed and latest versions may differ."
   - id: "ref-architecture"
     title: "Architecture"
     source: "references/architecture.md"
     target: "references/architecture.md"
-    required: true
-    trigger: "Read this when you need module boundaries, layering, and dependency rules."
+    required: false
+    trigger: "Read this when Hono app composition, route type inference, layering, or dependency boundaries are in scope."
   - id: "ref-auth"
     title: "Auth"
     source: "references/auth.md"
     target: "references/auth.md"
-    required: true
-    trigger: "Read this when you need API keys, JWT/JWKS, mTLS, CSRF reissue contracts, cookie sessions, pending/onboarding sessions, or authz policies."
+    required: false
+    trigger: "Read this when Hono middleware integrates API keys, JWT/JWKS, mTLS metadata, cookie sessions, CSRF, pending sessions, authorization, or protected long-lived endpoints."
   - id: "ref-caching"
     title: "Caching"
     source: "references/caching.md"
     target: "references/caching.md"
-    required: true
-    trigger: "Read this when you need HTTP caching, Cache API, edge caching."
+    required: false
+    trigger: "Read this when HTTP or runtime cache behavior is part of the requested Hono route."
   - id: "ref-contracts-types"
     title: "Contracts Types"
     source: "references/contracts-types.md"
     target: "references/contracts-types.md"
-    required: true
-    trigger: "Read this when you need exporting request/response types to consumers."
+    required: false
+    trigger: "Read this when Hono RPC, exported request or response types, runtime schemas, or external consumers are in scope."
   - id: "ref-errors-logs"
     title: "Errors Logs"
     source: "references/errors-logs.md"
     target: "references/errors-logs.md"
-    required: true
-    trigger: "Read this when you need error + logging standards."
+    required: false
+    trigger: "Read this when changing Hono error mapping, Problem Details, request correlation, or structured logging."
   - id: "ref-observability"
     title: "Observability"
     source: "references/observability.md"
     target: "references/observability.md"
-    required: true
-    trigger: "Read this when you need logs, metrics, tracing, requestId propagation, or project-owned client telemetry ingestion."
+    required: false
+    trigger: "Read this when logs, metrics, tracing, requestId propagation, or client telemetry ingestion are in scope."
   - id: "ref-perf-security"
     title: "Perf Security"
     source: "references/perf-security.md"
     target: "references/perf-security.md"
-    required: true
-    trigger: "Read this when you need timeouts, retries, circuit breaker, compression, security defaults."
+    required: false
+    trigger: "Read this when Hono request limits, timeouts, retries, compression, upstream resilience, or security middleware defaults are in scope."
   - id: "ref-pipelines"
     title: "Pipelines"
     source: "references/pipelines.md"
     target: "references/pipelines.md"
-    required: true
-    trigger: "Read this when you need middleware order per endpoint class."
+    required: false
+    trigger: "Read this when selecting or changing middleware order for an endpoint class."
   - id: "ref-rate-limiting"
     title: "Rate Limiting"
     source: "references/rate-limiting.md"
     target: "references/rate-limiting.md"
-    required: true
-    trigger: "Read this when you need pre/post-auth limits, key choice, edge/WAF limits."
+    required: false
+    trigger: "Read this when Hono integrates pre-auth, post-auth, application, or edge rate limits."
   - id: "ref-routers"
     title: "Routers"
     source: "references/routers.md"
     target: "references/routers.md"
-    required: true
-    trigger: "Read this when you need router types and when to override defaults."
+    required: false
+    trigger: "Read this only when measured route registration, matching, or bundle constraints justify overriding Hono's default router."
   - id: "ref-security"
     title: "Security"
     source: "references/security.md"
     target: "references/security.md"
-    required: true
-    trigger: "Read this when you need edge WAF, API Shield, endpoint discovery."
+    required: false
+    trigger: "Read this when Hono must integrate with edge WAF, mTLS, API discovery, or schema enforcement; use security-reviewer for a security verdict."
   - id: "ref-supabase"
     title: "Supabase"
     source: "references/supabase.md"
     target: "references/supabase.md"
-    required: true
-    trigger: "Read this when you need Supabase usage patterns and RLS safety."
+    required: false
+    trigger: "Read this when a Hono route calls Supabase; use supabase-engineer for RLS, RPC, schema, or data-boundary decisions."
   - id: "ref-typing"
     title: "Typing"
     source: "references/typing.md"
     target: "references/typing.md"
-    required: true
-    trigger: "Read this when you need Context variables typing (generics vs module augmentation)."
+    required: false
+    trigger: "Read this when Hono Context Bindings or Variables typing is in scope; use typescript-engineer for language-level type design."
   - id: "ref-validation-openapi"
     title: "Validation Openapi"
     source: "references/validation-openapi.md"
     target: "references/validation-openapi.md"
-    required: true
-    trigger: "Read this when you need Zod validation, OpenAPI, exported route contracts, security metadata, docs, or schema validation."
+    required: false
+    trigger: "Read this when request validation, runtime response validation, OpenAPI, Hono RPC, exported schemas, or contract evidence is in scope."
   - id: "ref-workers-platform"
     title: "Workers Platform"
     source: "references/workers-platform.md"
     target: "references/workers-platform.md"
-    required: true
-    trigger: "Read this when you need CPU/subrequest limits, floating promises, binding safety, fetch scope, `waitUntil`, service bindings."
+    required: false
+    trigger: "Read this when a Hono service runs on Cloudflare Workers or uses ExecutionContext, bindings, streaming, queues, or service bindings."
   - id: "ref-wrangler"
     title: "Wrangler"
     source: "references/wrangler.md"
     target: "references/wrangler.md"
-    required: true
-    trigger: "Read this when you need runtime config, compatibility flags, bindings, generated `Env`, observability (Workers)."
+    required: false
+    trigger: "Read this when Wrangler config, bindings, generated Env types, compatibility flags, secrets, or Workers observability are in scope."
 assets: []
 copies:
   - id: "copy-agents-openai-yaml"
@@ -113,15 +124,17 @@ copies:
   - id: "copy-package-json"
     source: "package.json"
     target: "package.json"
-    description: "Portable copy of package.json."
+    description: "Private structural test package; not a Hono runtime or CLI."
   - id: "copy-test-docs-contract-test-mjs"
     source: "test/docs-contract.test.mjs"
     target: "test/docs-contract.test.mjs"
-    description: "Portable copy of test/docs-contract.test.mjs."
+    description: "Structural docs-contract tests; not behavioral Hono runtime evidence."
 supporting: []
 surfaces:
   active:
-    requiredReferences:
+    requiredReferences: []
+    optionalReferences:
+      - "ref-framework-currency"
       - "ref-architecture"
       - "ref-auth"
       - "ref-caching"
@@ -138,59 +151,115 @@ surfaces:
       - "ref-validation-openapi"
       - "ref-workers-platform"
       - "ref-wrangler"
-    optionalReferences: []
   supportingGlobs:
     - "docs/*"
     - "docs/logs/*"
 sections:
   startHere:
-    - "Confirm the work is on a Hono-based API or a route/middleware surface that directly affects Hono."
-    - "Follow the project conventions already present before applying the baseline guidance."
-    - "Preserve the existing Hono app factory, middleware order, error handling, validation, logging, and request-id contracts."
-    - "For endpoint work, use the preserved endpoint workflow in the overview and load only the relevant references."
+    - "Confirm the request requires a Hono-specific decision or change; otherwise route to the owning skill."
+    - "Establish the authoritative behavior, existing app composition, installed Hono and runtime/tooling versions, endpoint class, security contract, and available test contours before proposing implementation."
+    - "For a version-sensitive API or platform decision, read Framework Currency and check current official sources; treat the installed project version as a compatibility constraint rather than silently upgrading it."
+    - "Apply precedence in this order: authoritative requirements, compatible existing project conventions, then this skill's greenfield defaults. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable."
+    - "Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion."
   whenToUse:
-    - "Designing or changing Hono endpoints, routers, middleware, or app composition."
-    - "Working on Hono config, validation, OpenAPI contracts, logging, security, caching, or tests."
-    - "Adapting Hono services to Cloudflare Workers or another edge runtime."
+    - "Designing, implementing, diagnosing, or changing Hono endpoints, routers, middleware, Context usage, or app composition."
+    - "Integrating Hono validation, contracts, errors, logging, auth admission, caching, streaming, or runtime adapters."
+    - "Selecting Hono-specific unit, app.request integration, or runtime-boundary verification."
   whenNotToUse:
-    - "The task has no Hono API, route, middleware, or edge-runtime API surface."
-    - "The task is purely TypeScript language work, testing strategy, Supabase design, or security review without Hono-specific behavior."
+    - "The task has no Hono-specific API, middleware, Context, routing, or adapter behavior."
+    - "The task is solely TypeScript language design, generic testing, platform operations, security review, Supabase/data design, or architecture without a Hono integration decision."
+    - "The requested outcome is a production, security, data, or architecture verdict that requires a specialized owner; use this skill only for the Hono portion."
   workflow:
-    - id: "stage-apply-hono-guidance"
-      title: "Apply Hono guidance"
-      goal: "Keep Hono API changes aligned with the preserved app, middleware, validation, logging, security, and testing rules."
+    - id: "stage-establish-hono-basis"
+      title: "Establish the Hono decision basis"
+      goal: "Make the requested behavior, authority, version compatibility, and proof boundary explicit before changing the API."
       steps:
-        - "Identify the endpoint class, runtime, and existing project conventions."
-        - "Use the preserved endpoint workflow and auth-admission checkpoint before implementation."
-        - "Load only the references relevant to the touched Hono surface."
-        - "Verify the affected unit, integration, or runtime-specific tests."
+        - "Inspect the project entrypoint or app factory, route composition, middleware and error hooks, installed versions, runtime config, contracts, and existing test harness."
+        - "Classify the endpoint and identify which security, data, platform, or architecture decisions belong to another skill."
+        - "Select only the references triggered by the touched surface and resolve any installed-versus-latest compatibility gap."
       validation:
-        - "The route or middleware behavior remains consistent with the existing Hono app composition."
-        - "Validation, Problem Details errors, redacted logs, and requestId propagation remain intact."
+        - "The intended observable behavior and authoritative inputs are known, or the output is explicitly blocked or guidance-only."
+        - "No specialized security, data, runtime, or architecture verdict is invented by Hono guidance."
+    - id: "stage-implement-hono-boundary"
+      title: "Implement the Hono boundary"
+      goal: "Preserve compatible project composition while making the smallest Hono-specific change that delivers the requested behavior."
+      steps:
+        - "Choose the route and middleware pipeline from the endpoint contract, preserving raw-body, auth-admission, streaming, and error-hook ordering where applicable."
+        - "Keep handlers thin, keep request validation distinct from runtime response guarantees, and preserve route type inference when Hono RPC or typed clients consume it."
+        - "Use runtime lifecycle APIs only with their documented durability and failure semantics."
+      validation:
+        - "The implemented route behavior, failure paths, and public contract match the authoritative requirement."
+        - "Framework-specific APIs are compatible with the installed project versions and current official guidance."
+    - id: "stage-verify-report-hono"
+      title: "Verify and report the real boundary"
+      goal: "Match evidence and completion claims to the boundary actually exercised."
+      steps:
+        - "Run the narrowest project checks for pure logic, Hono app integration, and the real runtime boundary required by the claim."
+        - "Exercise negative admission, validation, error, cancellation, and lifecycle transitions relevant to the change."
+        - "Report delivered behavior, interface changes, compatibility constraints, checks, evidence limits, and remaining risks."
+      validation:
+        - "app.request, mocks, schemas, OpenAPI, and docs-contract tests are not described as production-runtime proof."
+        - "A blocked or unverified boundary remains explicit instead of being reported production-ready."
   interop:
+    - id: "interop-implementation"
+      domain: "Implementation scope and evidence discipline"
+      winner: "implementation-discipline"
+      rationale: "hono-engineer owns framework-specific choices; implementation-discipline owns minimal diffs, capability reality, remediation traceability, and completion evidence."
+    - id: "interop-typescript"
+      domain: "TypeScript language and type-system design"
+      winner: "typescript-engineer"
+      rationale: "hono-engineer owns Hono generics and Context integration; TypeScript language semantics and reusable type design belong to typescript-engineer."
     - id: "interop-typescript-tests"
-      domain: "TypeScript testing patterns"
+      domain: "TypeScript test runner, mocking, and test architecture"
       winner: "typescript-test-engineer"
-      rationale: "This skill owns Hono API guidance, while testing depth and runner patterns belong to the TypeScript testing skill."
+      rationale: "hono-engineer selects the Hono and runtime boundary; runner conventions and test implementation depth belong to typescript-test-engineer."
+    - id: "interop-node-runtime"
+      domain: "Node.js runtime behavior"
+      winner: "node-engineer"
+      rationale: "Hono adapter integration remains here; Node process, module, stream, and runtime lifecycle behavior belongs to node-engineer."
+    - id: "interop-security"
+      domain: "Security verdicts and exploitability"
+      winner: "security-reviewer"
+      rationale: "hono-engineer integrates auth and security middleware but does not issue a security audit verdict."
+    - id: "interop-supabase"
+      domain: "Supabase schema, RLS, RPC, and data boundaries"
+      winner: "supabase-engineer"
+      rationale: "hono-engineer owns the HTTP integration; Supabase correctness and direct data-path evidence belong to supabase-engineer."
+    - id: "interop-architecture"
+      domain: "Architecturally significant boundaries and trade-offs"
+      winner: "architecture-engineer"
+      rationale: "hono-engineer may apply an accepted architecture but does not invent cross-system boundaries or quality trade-offs."
   commands: []
   gotchas:
+    - id: "gotcha-substrate-closure"
+      priority: "high"
+      text: "Do not call an endpoint production-ready because a route, schema, OpenAPI entry, generated file, mock, or docs-contract test exists; require evidence at every boundary named by the claim."
+    - id: "gotcha-output-validation"
+      priority: "high"
+      text: "Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested."
+    - id: "gotcha-version-memory"
+      priority: "high"
+      text: "Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions."
     - id: "gotcha-validation-db-leak"
       priority: "high"
-      text: "Do not let predictable Zod, domain, RPC, Postgres, or Supabase validation failures escape as raw internal errors. Map form-backed validation to safe field-level problem details before the response leaves Hono."
-    - id: "gotcha-route-role-name"
-      priority: "high"
-      text: "Do not name public routes after roles unless the capability is truly an admin console surface; route names should normally describe the domain, capability, or resource."
+      text: "Do not let predictable validation or service failures escape as raw internal errors. Map only safe, contract-approved details before the response leaves Hono."
   policies:
-    - id: "policy-api-preflight"
-      title: "API preflight policy"
-      text: "Before adding or changing a Hono route, confirm route naming disposition, strict request schema coverage, forbidden/computed fields, all editable fields, service-level field errors, safe problem mapping, auth/CSRF behavior, and test evidence."
+    - id: "policy-source-precedence"
+      title: "Source and compatibility precedence"
+      text: "Authoritative requirements and compatible project conventions override greenfield defaults. When they conflict or latest guidance is incompatible with installed versions, stop, surface the gap, and do not invent a migration decision."
+    - id: "policy-evidence-boundary"
+      title: "Evidence boundary"
+      text: "Match proof to the claim: unit tests cover pure logic, app.request covers Hono integration, a runtime harness covers platform behavior, and live evidence covers only the observed deployment conditions."
+    - id: "policy-output-contract"
+      title: "Output contract"
+      text: "Report the delivered or proposed HTTP/runtime behavior, changed interfaces, installed-versus-latest compatibility constraints, checks and their boundaries, blocked or unverified work, and residual risk."
   portability:
     required: true
     rules:
-      - "Do not reference machine-specific absolute paths or local files outside this skill folder."
-      - "Keep all mandatory hono-engineer guidance inside this skill folder."
+      - "Do not reference machine-specific absolute paths or required local files outside this skill folder."
+      - "Keep all mandatory hono-engineer guidance inside this skill folder and use official external docs only as live version authority."
       - "Use relative links for local references, assets, scripts, tests, and supporting docs."
     checklist:
       - "Run the skill-source-compiler check command after regeneration."
       - "Search the skill folder for absolute local paths before finishing."
-      - "Confirm every required reference listed by SKILL.md exists inside this skill folder."
+      - "Confirm every optional reference listed by SKILL.md exists inside this skill folder and has a precise load trigger."
