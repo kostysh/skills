@@ -1,4 +1,4 @@
 interface:
   display_name: "Spec Conformance Reviewer"
   short_description: "Requirement-traceable implementation-versus-spec review"
-  default_prompt: "Use $spec-conformance-reviewer to extract atomic requirements from the normative sources, trace them to code and tests, separate non-compliance from ambiguity or missing evidence, and default to terse chat output unless a formal audit or report is requested."
+  default_prompt: "Use $spec-conformance-reviewer to fix a stable read-only implementation snapshot, establish normative source authority, extract atomic requirements, trace them to boundary-matched implementation and test evidence, and limit the verdict when a mandatory requirement is ambiguous or cannot be determined. Default to terse chat output unless a formal report is requested."

@@ -1,6 +1,6 @@
 # Review Fixture: Consultant Admission Policy
 
-This is a portable review fixture for `spec-conformance-reviewer`. It is not a real product specification.
+This is a portable worked regression oracle for `spec-conformance-reviewer`. It is not a real product specification, a blind forward-test, or independent behavioral evidence. Blind evaluation must use a different raw scenario without exposing the expected extraction or classification.
 
 ## Normative Source
 

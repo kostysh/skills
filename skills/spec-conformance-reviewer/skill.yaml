@@ -2,13 +2,14 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 20000
   description: |-
-    Review code against normative requirements from specs, contracts, ADRs, tickets, and acceptance
-    criteria. Use when asked whether an implementation matches a specification, API contract, PRD,
-    RFC, or migration requirement, produce a requirement-to-code traceability matrix, identify
-    compliance gaps or ambiguities, or issue an implementation-versus-spec verdict.
+    Review code against authoritative normative requirements from specs, contracts, ADRs, tickets,
+    and acceptance criteria. Use when asked whether an implementation matches a specification, API
+    contract, PRD, RFC, or migration requirement, produce a requirement-to-code traceability matrix,
+    identify compliance gaps or ambiguities, or issue an implementation-versus-spec verdict. Limit
+    the verdict when source authority or mandatory implementation evidence is insufficient.
 fragments:
   overview: fragments/overview.md
 references:
@@ -17,13 +18,13 @@ references:
     source: references/methodology.md
     target: references/methodology.md
     required: true
-    trigger: Read this when you need source priority, scope rules, extraction workflow, traceability, evidence, and ambiguity handling.
+    trigger: Read this for every review before selecting normative sources, extracting requirements, or judging implementation evidence.
   - id: ref-references-reporting
     title: Reporting
     source: references/reporting.md
     target: references/reporting.md
     required: true
-    trigger: Read this when you need statuses, severities, verdicts, report template, and wording rules.
+    trigger: Read this before assigning requirement statuses or issuing any final verdict.
   - id: ref-references-policy-admission-matrix
     title: Policy/admission matrix
     source: references/policy-admission-matrix.md
@@ -34,7 +35,7 @@ assets:
   - id: asset-consultant-admission-policy-fixture
     source: assets/fixtures/consultant-admission-policy.md
     target: assets/fixtures/consultant-admission-policy.md
-    description: Portable review fixture for consultant admission policy matrix behavior.
+    description: Portable worked regression oracle for consultant admission policy matrix behavior; not blind or independent behavioral evidence.
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
@@ -52,10 +53,11 @@ surfaces:
     - docs/*
 sections:
   startHere:
-    - Confirm the task matches spec-conformance-reviewer's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Confirm the request asks for implementation-versus-normative-source conformance, not general review, security analysis, concept review, or spec authoring.
+    - Fix a read-only review scope and stable identities for the implementation snapshot and every candidate normative source before reaching conclusions.
+    - Read the required methodology for every review and the reporting reference before assigning statuses or a verdict.
+    - Establish source ownership, approval, version, applicability, supersession, and project-declared precedence; do not infer authority from artifact type alone.
+    - Load optional references only when their stated trigger applies.
   whenToUse:
     - '"implementation vs spec", "spec compliance review", or "does this match the spec"'
     - Verifying a PR, module, or behavior against a feature spec, ADR, RFC, OpenAPI contract, schema, or acceptance criteria
@@ -67,17 +69,64 @@ sections:
     - Architecture, performance, or style review unless those concerns are explicit in the normative sources
     - Authoring or refining a spec instead of checking implementation against it
   workflow:
-    - id: stage-apply-spec-conformance-reviewer
-      title: Apply spec-conformance-reviewer guidance
-      goal: Apply the preserved spec-conformance-reviewer guidance without changing its domain behavior.
+    - id: stage-establish-review-basis
+      title: Establish the review basis
+      goal: Make the read-only scope, source authority, and reviewed snapshot reproducible before judging conformance.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Record the implementation commit, diff plus base, aggregate hash, or equivalent immutable identity and the layers included in scope.
+        - Record each candidate normative source's owner, approval state, version, applicability, supersession, and any explicit project or user precedence.
+        - Classify missing, lower-authority, generated, stale, or conflicting inputs and stop if the reviewed snapshot moves.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - Another reviewer can reconstruct the implementation and normative source surface from the recorded identities.
+        - Artifact type alone never selects the normative authority.
+        - The reviewer has not modified the reviewed implementation or normative sources.
+    - id: stage-trace-requirements-and-evidence
+      title: Trace requirements and evidence
+      goal: Map atomic requirements to the actual enforcement boundaries without accepting substrate as broader runtime capability.
+      steps:
+        - Extract atomic requirements with separate modality and origin fields, preserving derivation basis and confidence.
+        - Trace each requirement to implementation, runtime or boundary evidence, and tests in both directions.
+        - Assign fulfilled, partial, not-fulfilled, ambiguous, or cannot-determine status according to the observed evidence surface.
+      validation:
+        - Every material conclusion cites an authoritative requirement and either observed implementation evidence or the exact missing evidence surface.
+        - Substrate satisfies only an atomic substrate requirement; broader runtime behavior requires boundary-matched evidence.
+        - A derived requirement retains its independent must, should, or optional modality.
+    - id: stage-derive-and-handoff-verdict
+      title: Derive and hand off the verdict
+      goal: Produce a deterministic verdict whose strength does not exceed source authority or mandatory implementation evidence.
+      steps:
+        - Apply the reporting aggregation rules to mandatory statuses, confirmed deviations, ambiguities, and verification gaps.
+        - Report snapshot identity, source authority, coverage limits, blocked inputs, findings, routed observations, and the final verdict.
+        - Name the owner of clarification or remediation without resolving product intent or editing the reviewed surface.
+      validation:
+        - Compliant and compliant-with-minor-gaps are impossible while any mandatory requirement is ambiguous or cannot be determined.
+        - Confirmed deviations remain distinct from missing proof and source ambiguity.
+        - Any material change to the reviewed implementation or normative source invalidates the verdict.
+  interop:
+    - id: interop-spec-conformance
+      domain: requirement extraction, implementation traceability, compliance statuses, evidence limits, and the final implementation-versus-spec verdict
+      winner: spec-conformance-reviewer
+      rationale: This skill owns the conformance decision while preserving the authority and evidence supplied by upstream and domain owners.
+    - id: interop-spec-authority
+      domain: authoring, approving, clarifying, or changing normative product and software requirements
+      winner: spec-engineer or the named product and requirement owner
+      rationale: Upstream owners resolve ambiguity and establish authority; this reviewer records blockers and must not invent or rewrite intent.
+    - id: interop-concept
+      domain: whether requirements or implementation deliver the established product or system concept beyond literal spec compliance
+      winner: concept-conformance-reviewer
+      rationale: Concept conformance owns the broader capability boundary; this skill owns only implementation-versus-authoritative-requirement conformance.
+    - id: interop-code-review
+      domain: general merge risk, bugs, regressions, maintainability, and non-spec implementation concerns
+      winner: code-reviewer
+      rationale: Route non-spec findings to code-reviewer while retaining any direct requirement-backed deviation in this verdict.
+    - id: interop-security
+      domain: exploitability, attack paths, vulnerability classification, and security risk not explicitly defined by a normative requirement
+      winner: security-reviewer
+      rationale: Security-reviewer owns security judgment; this skill may consume its sourced facts without transferring the spec verdict.
+    - id: interop-domain-and-remediation
+      domain: stack-specific correctness facts and implementation remediation
+      winner: the relevant domain skill or implementation owner
+      rationale: Domain owners supply specialized facts and implement accepted corrections; this reviewer remains read-only and preserves traceability.
   commands: []
   gotchas:
     - id: gotcha-issue-is-not-normative
@@ -86,10 +135,28 @@ sections:
     - id: gotcha-substrate-acceptance
       priority: high
       text: Do not mark conformance PASS when acceptance can be satisfied by mock screens, storybook stories, generated artifacts, docs, or tests without the claimed runtime behavior.
+    - id: gotcha-type-is-not-authority
+      priority: high
+      text: A formal or generated contract is not automatically more authoritative than its owning approved requirement; establish ownership, version, applicability, and supersession first.
+    - id: gotcha-mandatory-unknown
+      priority: high
+      text: Do not issue compliant or compliant with minor gaps while a mandatory requirement is ambiguous or lacks sufficient implementation evidence.
+    - id: gotcha-moving-snapshot
+      priority: high
+      text: Stop when the reviewed implementation or normative source changes; the prior scope identity and verdict are no longer valid.
   policies:
     - id: policy-trace-to-source
       title: Trace to source policy
       text: Conformance review must trace public contracts, statuses, routes, payloads, and UX claims to their owning artifacts and name any unmatched behavior as drift, not as an implementation choice.
+    - id: policy-authority-before-type
+      title: Authority before artifact type
+      text: Explicit project or user source ownership, approval, version, applicability, and supersession win over generic artifact-type precedence; use type-based ordering only as a disclosed fallback among otherwise applicable sources.
+    - id: policy-read-only-snapshot
+      title: Read-only stable snapshot
+      text: Review a reproducible implementation and normative-source snapshot without remediation; stop on movement and invalidate the verdict after any material change.
+    - id: policy-verdict-ceiling
+      title: Verdict ceiling
+      text: The final verdict cannot exceed the weakest unresolved mandatory requirement basis or implementation evidence surface.
   portability:
     required: true
     rules:

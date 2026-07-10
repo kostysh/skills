@@ -17,8 +17,11 @@
 
 ## Implementation Logs
 
+Статусы в этой таблице различают implementation/self-check evidence и независимый capability verdict. Исторический `PASS` без snapshot-bound `skill-reviewer` audit не означает подтверждённую способность скила.
+
 | Log | Related issue | Status |
 | --- | --- | --- |
-| [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | PASS |
-| [logs/implementation-log-20260611-1.md](logs/implementation-log-20260611-1.md) | Direct operator request | PASS |
-| [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | PASS |
+| [logs/implementation-log-20260424-1.md](logs/implementation-log-20260424-1.md) | [issues/issue-20260424-1.md](issues/issue-20260424-1.md) | Implementation/self-check PASS; no independent capability verdict |
+| [logs/implementation-log-20260611-1.md](logs/implementation-log-20260611-1.md) | Direct operator request | Implementation/self-check PASS; no independent capability verdict |
+| [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | Implementation/self-check PASS; no independent capability verdict |
+| [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | Independent `skill-reviewer` capability PASS on recorded snapshot |

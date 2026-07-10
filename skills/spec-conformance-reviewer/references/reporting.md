@@ -7,9 +7,9 @@ Use findings and verdicts that can be traced back to specific requirements.
 | Status | Use for |
 |---|---|
 | `fulfilled` | enough evidence shows the requirement is implemented completely |
-| `partially_fulfilled` | some required behavior exists, but branches, constraints, or side effects are missing |
-| `not_fulfilled` | the implementation contradicts the requirement or omits mandatory behavior |
-| `cannot_determine` | current evidence is not enough for a responsible conclusion |
+| `partially_fulfilled` | evidence proves some required observable behavior, but required branches, constraints, or side effects are absent |
+| `not_fulfilled` | the complete reviewed implementation contradicts the requirement or visibly omits mandatory behavior |
+| `cannot_determine` | the relevant implementation or enforcement surface is incomplete or unavailable, so current evidence cannot support a responsible conclusion |
 | `not_applicable` | the requirement is outside the review scope |
 | `ambiguous_spec` | the sources do not define the expected behavior clearly enough |
 
@@ -39,23 +39,36 @@ Policy/admission findings should cite both a requirement ID and a matrix row. If
 
 | Verdict | Use for |
 |---|---|
-| `compliant` | all mandatory in-scope requirements are covered and no critical or major deviations remain |
-| `compliant with minor gaps` | core requirements are met but minor gaps or limited verification issues remain |
-| `partially compliant` | some requirements are met, but there are major gaps or partial implementations |
-| `non-compliant` | key mandatory requirements are violated |
-| `cannot determine due to missing or conflicting spec` | the normative basis is incomplete or contradictory enough that a reliable verdict is blocked |
+| `compliant` | every mandatory in-scope requirement is `fulfilled`, no mandatory ambiguity or unknown evidence remains, and evidence reaches each claimed enforcement boundary |
+| `compliant with minor gaps` | every mandatory in-scope requirement is `fulfilled`; remaining gaps affect only `should`, optional, or non-blocking evidence that cannot change the claimed capability |
+| `partially compliant` | one or more mandatory requirements are `partially_fulfilled`, no mandatory requirement is `not_fulfilled`, and evidence confirms meaningful required behavior |
+| `non-compliant` | one or more mandatory requirements are `not_fulfilled`; fulfilled behavior and unresolved coverage limits remain visible but do not weaken this verdict |
+| `cannot determine due to missing or conflicting normative basis` | an unresolved authority, missing normative input, or ambiguous mandatory requirement prevents a reliable verdict |
+| `cannot determine due to insufficient implementation evidence` | no confirmed mandatory violation is enough to decide the result, but one or more mandatory requirements are `cannot_determine` because the enforcement surface is incomplete or unavailable |
+
+## Verdict Aggregation
+
+Apply these rules instead of choosing a verdict by general impression:
+
+1. If the implementation or normative-source snapshot moves, stop and report the review as blocked; do not issue a conformance verdict for the stale identity.
+2. If any mandatory requirement is `not_fulfilled`, use `non-compliant`. Otherwise, if one or more mandatory requirements are `partially_fulfilled`, use `partially compliant`. Preserve fulfilled behavior, every unresolved ambiguity, and every evidence gap as coverage information.
+3. If no confirmed mandatory violation determines the result and any mandatory requirement is `ambiguous_spec`, use `cannot determine due to missing or conflicting normative basis`.
+4. If no confirmed mandatory violation determines the result and any mandatory requirement is `cannot_determine`, use `cannot determine due to insufficient implementation evidence`.
+5. Use `compliant` or `compliant with minor gaps` only when every mandatory requirement is `fulfilled`. Minor gaps cannot hide uncertainty about the claimed runtime or user-visible capability.
+
+When confirmed deviations and unknown requirements coexist, report the established negative verdict and state that coverage is incomplete. Never translate unknown evidence into `partially compliant`.
 
 ## Report Structure
 
 Use the full structure when the user asks for a formal report or when the review is broad:
 
 1. Executive Summary
-2. Scope and Sources
+2. Review Basis, Scope, and Sources
 3. Requirement Extraction
 4. Traceability Matrix
 5. Findings
-6. Verification Gaps
-7. Final Verdict
+6. Verification Gaps and Routed Observations
+7. Final Verdict and Handoff
 
 ## Markdown Template
 
@@ -64,27 +77,34 @@ Use the full structure when the user asks for a formal report or when the review
 
 ## 1. Executive Summary
 - Scope:
+- Implementation snapshot:
 - Normative sources:
 - Verdict:
 - Key blockers:
 - Analysis limitations:
 
-## 2. Scope and Sources
-### 2.1 Normative inputs
+## 2. Review Basis, Scope, and Sources
+### 2.1 Snapshot and invalidation rule
+- Implementation identity:
+- Review mode and base:
+- Invalidation condition:
+
+### 2.2 Normative inputs and authority
+| Source identity | Owner | Approval/version | Applicability | Authority basis |
+|---|---|---|---|---|
+
+### 2.3 Implementation inputs
 - ...
 
-### 2.2 Implementation inputs
-- ...
-
-### 2.3 Out of scope
+### 2.4 Out of scope and blocked inputs
 - ...
 
 ## 3. Requirement Extraction
-| ID | Type | Source | Requirement | Priority | Notes |
-|---|---|---|---|---|---|
+| ID | Type | Source | Requirement | Modality | Origin | Derivation/confidence | Notes |
+|---|---|---|---|---|---|---|---|
 
 ## 4. Traceability Matrix
-| Requirement ID | Requirement | Implementation Evidence | Test Evidence | Status | Notes |
+| Requirement ID | Requirement | Observed or Missing Implementation Surface | Test Evidence | Status | Notes |
 |---|---|---|---|---|---|
 
 ## 5. Findings
@@ -97,12 +117,15 @@ Use the full structure when the user asks for a formal report or when the review
 - Recommendation:
 - Confidence:
 
-## 6. Verification Gaps
+## 6. Verification Gaps and Routed Observations
 - ...
 
-## 7. Final Verdict
+## 7. Final Verdict and Handoff
 - Status:
 - Rationale:
+- Coverage limitations:
+- Clarification owner:
+- Remediation owner:
 ```
 
 ## Wording Rules
@@ -110,20 +133,26 @@ Use the full structure when the user asks for a formal report or when the review
 - Keep every serious finding tied to a requirement ID and source.
 - Separate non-compliance from missing proof.
 - Call out conflicting sources explicitly; do not pick a winner silently.
+- State why each normative source is authoritative; artifact type alone is not an authority argument.
 - If the implementation adds behavior with no requirement basis, label it as unspecified behavior, spec divergence, or contract drift.
 - If confidence depends on inference instead of direct text, say so explicitly.
 - Do not call a requirement fulfilled when the only evidence is schema/route/contract presence, a mock success path, an in-memory test, documentation, or an audit event name without capture semantics.
+- Do not use `partially_fulfilled` when only substrate exists; require evidence for some observable portion of the broader requirement.
 - When mocks or in-memory stores are the only tests for a production persistence/RLS/RPC/provider boundary, report a verification gap unless the normative requirement is limited to the mocked layer.
 - Avoid vague language such as "looks wrong" or "should probably".
 
 ## Minimal Self-Check
 
-- normative sources listed
+- stable implementation and normative-source identities recorded
+- normative source authority, approval, applicability, and supersession checked
 - requirements extracted explicitly
+- modality and origin recorded separately; derived mandatory requirements remain `must`
 - requirement-to-code traceability preserved
 - findings cite requirement basis and evidence
 - ambiguity and missing evidence separated from violations
 - edge cases and error paths checked when normative
 - policy/admission rows have normative basis before they affect the verdict
-- tests evaluated as proof, not counted superficially
-- verdict derived from requirement coverage, not from general impression
+- tests evaluated as evidence at the claimed boundary, not counted superficially
+- mandatory ambiguity or unknown evidence prevents both compliant verdicts
+- verdict derived from the aggregation rules, not from general impression
+- review remained read-only and the snapshot did not move

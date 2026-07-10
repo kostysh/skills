@@ -33,8 +33,8 @@ Russian.
 
 ## Instruction Quality Audit
 
-PASS. Правило не меняет normative extraction workflow; оно уточняет source precedence and runtime-behavior evidence.
+Author self-check `PASS`. Правило не меняет normative extraction workflow; оно уточняет source precedence and runtime-behavior evidence. Этот self-check не является независимым skill-capability verdict.
 
 ## Final Status
 
-PASS.
+Implementation/self-check `PASS`. Этот исторический статус не включает независимый `skill-reviewer` review или blind forward-tests.

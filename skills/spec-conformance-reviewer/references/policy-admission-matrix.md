@@ -46,8 +46,8 @@ For each included row, capture:
 ## Classification Rules
 
 - Use `not_fulfilled` only when a mandatory row has requirement basis and implementation evidence contradicts or omits it.
-- Use `partially_fulfilled` when the decision exists but a required branch, side effect, or proof surface is missing.
-- Use `cannot_determine` when code, tests, runtime configuration, or persistence evidence is insufficient.
+- Use `partially_fulfilled` only when evidence proves some required observable decision behavior and a required branch, constraint, or side effect is visibly absent. A missing proof surface alone does not establish partial fulfillment.
+- Use `cannot_determine` when code, tests, runtime configuration, persistence, or another enforcement surface is incomplete or unavailable.
 - Use `ambiguous_spec` when the normative source does not define the expected behavior clearly enough.
 - Mark rows out of scope when they are plausible policy concerns but have no source basis for the current review.
 

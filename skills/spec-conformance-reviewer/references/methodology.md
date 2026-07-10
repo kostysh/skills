@@ -2,6 +2,18 @@
 
 Use this file for full implementation-versus-spec review.
 
+## Review Basis and Side-Effect Boundary
+
+Before judging conformance, record:
+
+- a stable implementation identity: commit, diff plus base, aggregate content hash, or equivalent immutable revision;
+- included modules, layers, environments, flags, migrations, and explicitly excluded surfaces;
+- an identity for every candidate normative source, including owner, approval state, version or content hash, applicability, and supersession status;
+- explicit user or project source-of-truth and precedence declarations;
+- critical implementation or source inputs that are missing.
+
+Keep the review read-only. Do not edit the implementation or normative sources while producing the verdict. Stop when a reviewed surface moves; any material source or implementation change invalidates the prior verdict and requires a new review identity.
+
 ## Normative Inputs
 
 Collect the available sources before reading code:
@@ -11,6 +23,8 @@ Collect the available sources before reading code:
 - backward-compatibility requirements
 - migration or rollout requirements
 - state diagrams, sequence diagrams, or business rules when they are normative
+
+Do not infer authority from an artifact's format. A contract, ticket, test, or generated document is normative only for the behavior or contract dimension it is declared to own.
 
 If critical normative inputs are missing, limit the verdict and list the blocked surfaces.
 
@@ -26,6 +40,8 @@ Collect the evidence surface:
 - real persistence/RLS/RPC/provider-boundary evidence when those layers implement the requirement
 - rollout or migration documentation when it affects compliance
 
+If the available implementation surface cannot establish a mandatory requirement at its enforcement boundary, record the missing surface instead of substituting mocks, tests, documentation, or inference.
+
 ## Scope Boundaries
 
 In scope by default:
@@ -36,7 +52,7 @@ In scope by default:
 - error handling when specified
 - invariants, preconditions, and postconditions
 - backward compatibility, migrations, flags, and defaults when specified
-- tests as proof of compliance
+- tests as evidence whose strength must match the claimed requirement boundary
 
 Out of scope unless the spec makes them normative:
 
@@ -53,7 +69,7 @@ Classify evidence before assigning a requirement status.
 
 Observable capability evidence shows the required runtime behavior through the layer that must enforce it. Substrate can support a capability but does not prove it by itself.
 
-Treat these as substrate unless paired with runtime evidence:
+Treat these as substrate unless paired with runtime or other boundary-matched evidence:
 
 - schema, table, policy, or migration exists;
 - route, handler, OpenAPI entry, or SDK method is registered;
@@ -62,24 +78,31 @@ Treat these as substrate unless paired with runtime evidence:
 - documentation or comments claim completion;
 - audit/security event name is declared but capture semantics are unproven.
 
-If only substrate exists, use `cannot_determine`, `partially_fulfilled`, or a verification gap depending on the requirement and evidence surface. Do not mark a requirement `fulfilled` from substrate alone.
+Substrate may fulfill an atomic requirement that explicitly requires that artifact to exist, but it does not fulfill a broader runtime or user-visible requirement. For broader behavior:
 
-## Source Priority and Conflicts
+- use `partially_fulfilled` only when evidence proves some required observable behavior while another required branch, constraint, or side effect is absent;
+- use `not_fulfilled` when the complete reviewed implementation visibly omits or contradicts required behavior;
+- use `cannot_determine` when the relevant implementation, runtime configuration, persistence, provider, or other enforcement surface is unavailable or incomplete.
 
-Use the highest-priority source available:
+Do not mark a requirement `fulfilled` from substrate alone.
 
-1. formal contracts
-2. approved feature specs
-3. normative acceptance criteria
-4. ADR or RFC with mandatory constraints
-5. tests or reference behavior only when explicitly normative
+## Source Authority and Conflicts
 
-If two sources conflict:
+Resolve source authority in this order:
 
-- cite both sources
-- describe the conflict
-- limit the affected requirement to `ambiguous_spec` or a blocked verdict
-- do not invent a tie-breaker
+1. Apply explicit user or project declarations of ownership and precedence.
+2. Exclude or demote sources that are unapproved, stale, superseded, out of scope, or generated from another owning source.
+3. Respect dimension-specific ownership: a protocol or schema may own wire compatibility while a product requirement owns user-visible behavior.
+4. Only when no precedence is declared and the remaining sources are equally current and applicable, use this disclosed fallback: formal contract for its owned contract dimension, approved feature spec, explicitly normative acceptance criteria, mandatory ADR or RFC, then explicitly normative tests or reference behavior.
+
+Tickets and delivery issue bodies are normative only when the project explicitly grants them that authority. Otherwise, use them to locate the owning source and classify unmatched ticket wording as lower-authority context.
+
+If sources conflict:
+
+- cite both sources and their identity, owner, status, and applicability;
+- classify lower-authority, stale, superseded, or generated differences as drift relative to the owning source;
+- use `ambiguous_spec` when equally authoritative applicable sources remain unresolved;
+- limit the affected coverage and verdict rather than inventing a tie-breaker.
 
 ## Conditional Policy/Admission Matrix
 
@@ -113,10 +136,12 @@ If a row seems relevant but the source does not state or imply an expected behav
 
 Write one paragraph that states:
 
+- the immutable implementation identity
 - what code is being reviewed
-- which sources are normative
+- which source identities are normative and why they are authoritative
 - what layers are in scope
 - what critical inputs are missing
+- that the review is read-only and what change would invalidate it
 
 ### 2. Extract Atomic Requirements
 
@@ -126,7 +151,9 @@ Turn the sources into testable requirements. For each requirement, capture:
 - `source`
 - concise requirement statement
 - requirement type
-- priority: `must`, `should`, `optional`, or `derived`
+- modality: `must`, `should`, or `optional`
+- origin: `explicit` or `derived`
+- derivation basis and confidence when origin is `derived`
 - preconditions
 - expected behavior
 - negative scenario or failure behavior when relevant
@@ -146,7 +173,7 @@ Useful requirement types:
 - `non_functional_if_normative`
 - `observability_if_normative`
 
-When a requirement is inferred rather than stated directly, mark it as `derived` and explain why.
+When a requirement is inferred rather than stated directly, mark its origin as `derived`, cite the source statements that imply it, and explain the derivation and confidence. Preserve its independent modality; a derived invariant may still be `must`.
 
 ### 3. Normalize the Requirements
 
@@ -187,7 +214,7 @@ For each requirement, record:
 
 - requirement
 - spec source
-- implementation evidence
+- observed implementation evidence or exact missing evidence surface
 - test evidence
 - status
 - notes
@@ -252,6 +279,8 @@ Do not report a serious finding until you can explain:
 - what test or absence of test affects confidence
 - what production behavior, contract, or state can break
 
+For `cannot_determine`, cite the authoritative requirement and the exact unavailable surface instead of inventing implementation evidence. Missing proof is a verification gap, not a confirmed violation.
+
 Weak evidence includes comments, TODOs, function names, or tests whose asserts do not prove the requirement.
 
 ## Ambiguity and Missing Evidence
@@ -261,3 +290,4 @@ Use limited conclusions when necessary:
 - `cannot_determine` when the evidence surface is incomplete
 - `ambiguous_spec` when the normative source does not define the expected behavior clearly
 - note the exact blocked inputs instead of guessing the product intent
+- never aggregate a mandatory `cannot_determine` or `ambiguous_spec` into `compliant` or `compliant with minor gaps`
