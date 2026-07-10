@@ -61,4 +61,14 @@ Allowed statuses:
 - `deferred-by-trigger` — recommendation applies only when a specified trigger occurs; name the current shortcut ceiling, the trigger, and the evidence needed when the trigger is hit.
 - `not-applicable` — the finding does not apply to the current system, with reason.
 
+## Match the remediation claim to status
+
+Treat the matrix as traceability, not as proof of closure.
+
+- Claim that all applicable findings are fixed and verified only when every applicable finding is `verified`.
+- Report `not-applicable` entries separately as justified exclusions; do not describe them as fixes.
+- If any entry is `blocked-by-compatibility`, describe the overall remediation as blocked and incomplete and name the compatibility boundary.
+- Otherwise, if any entry is `deferred-by-trigger`, describe the overall remediation as partial and deferred and name the revisit trigger.
+- Otherwise, if any entry is `implemented`, describe the result as implemented but not verified.
+
 Do not treat tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability without observable behavior and acceptance evidence.

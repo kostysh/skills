@@ -4,6 +4,8 @@ Use this reference whenever the task involves writing, changing, or reviewing co
 
 ## Think before coding
 
+- Classify the request as implementation/remediation or review-only before selecting workflow stages.
+- Treat review, assessment, and diagnosis as read-only unless the request explicitly authorizes code changes; use `code-reviewer` when formal code-review findings and output are requested.
 - For non-trivial local work, name the larger project goal or end-to-end capability the change is supposed to advance.
 - State the role this local change plays in that larger flow, and call out purpose assumptions when the role is inferred.
 - State assumptions explicitly.

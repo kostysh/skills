@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.1.7
+  source-version: 0.1.8
   recommended-skill-md-max-bytes: 18000
   description: >-
     Behavioral coding discipline for writing, modifying, and reviewing code
@@ -44,6 +44,7 @@ surfaces:
 sections:
   startHere:
     - Confirm the task actually includes code changes, refactoring, or code review.
+    - Classify the task as implementation/remediation or review-only, and confirm whether code changes are authorized before selecting workflow stages.
     - For non-trivial local work, identify the larger project goal or end-to-end capability the change is supposed to advance before changing or assessing code.
     - State assumptions, constraints, and any blocking ambiguity before changing or assessing code.
     - When implementing from an accepted audit or review report, create a remediation matrix before claiming completion.
@@ -60,13 +61,17 @@ sections:
   workflow:
     - id: stage-clarify
       title: Clarify the task and the target
-      goal: Make the implementation target explicit before touching code.
+      goal: Make the task mode, mutation authority, and target explicit before changing or assessing code.
       steps:
+        - Classify the task as implementation/remediation or review-only and determine whether the request authorizes code changes.
+        - For review-only requests, do not change code; use the clarification, capability, and evidence lenses, route formal findings and output to `code-reviewer`, and skip the design and implementation stages unless remediation is explicitly requested.
         - For non-trivial local work, identify the larger project goal or end-to-end flow and the role this local change plays in it.
         - State assumptions that the change relies on.
         - Surface ambiguity instead of silently choosing an interpretation; stop and ask when a safe conservative assumption is not available.
         - Define what successful completion will look like in observable terms.
       validation:
+        - The task mode and mutation authority are explicit.
+        - Review-only work has no code mutations and does not enter design or implementation stages.
         - Non-trivial local work is tied to a project goal or end-to-end flow, or explicitly labeled as purpose-uncertain or support-only.
         - The chosen interpretation is explicit.
         - Any blocking ambiguity has either a stated conservative assumption or an explicit ask.
@@ -92,12 +97,16 @@ sections:
         - For each accepted finding or recommendation, map `finding/recommendation -> concrete change -> test/evidence -> status`.
         - "Use only these statuses unless the project defines stricter equivalents: `implemented`, `verified`, `blocked-by-compatibility`, `deferred-by-trigger`, and `not-applicable`."
         - For `deferred-by-trigger`, name the shortcut ceiling, revisit trigger, and evidence needed when the trigger occurs.
+        - "Tie the final remediation claim to the matrix statuses: claim that all applicable findings are fixed and verified only when every applicable finding is `verified`."
+        - "Report `not-applicable` entries separately as justified exclusions, not as fixes; classify unresolved remediation deterministically: any `blocked-by-compatibility` makes the overall result blocked and incomplete, otherwise any `deferred-by-trigger` makes it partial and deferred, otherwise any `implemented` makes it implemented but unverified."
         - Do not mark tooling, wrappers, metadata, config, migrations, tests, docs, or other substrate as runtime capability unless observable behavior and acceptance evidence prove it.
         - If a recommendation is only substrate, label it as substrate and state which behavior remains unverified.
       validation:
         - Every accepted finding or recommendation has a mapped change or a justified non-implementation status.
         - "`verified` entries name concrete evidence."
         - "`deferred-by-trigger` entries name a concrete trigger instead of vague later work."
+        - "The overall completion claim follows the unresolved-status precedence: blocked, then deferred, then implemented but unverified."
+        - A full fixed-and-verified claim has only `verified` applicable findings, with any `not-applicable` entries identified separately.
         - Substrate-only entries are not reported as delivered runtime capability.
     - id: stage-design-minimal
       title: Design the smallest sufficient change
@@ -145,7 +154,7 @@ sections:
     - id: interop-code-review
       domain: formal review workflow, severity, and evidence format
       winner: code-reviewer
-      rationale: This skill helps shape implementation quality, while code-reviewer owns review process and findings output.
+      rationale: This skill keeps review-only work read-only and shapes implementation quality, while code-reviewer owns review process and findings output; remediation starts only when the request explicitly authorizes changes.
   commands: []
   gotchas:
     - id: gotcha-surface-ambiguity
@@ -178,6 +187,12 @@ sections:
     - id: gotcha-remediation-matrix
       priority: high
       text: Do not collapse accepted audit findings into a vague done list; keep finding, change, evidence, and status linked.
+    - id: gotcha-remediation-closure
+      priority: high
+      text: Do not report a complete remediation merely because every matrix row has a status; classify unresolved remediation as blocked when compatibility blockers exist, otherwise deferred when trigger deferrals exist, otherwise implemented but unverified.
+    - id: gotcha-review-only-mutation
+      priority: high
+      text: Do not change code during review-only work; enter design and implementation stages only after the request explicitly authorizes remediation.
     - id: gotcha-shortcut-trigger
       priority: high
       text: Do not leave deliberate shortcuts or deferrals without a named ceiling and concrete revisit trigger.
@@ -206,9 +221,12 @@ sections:
     - id: policy-capability-reality
       title: Capability reality policy
       text: A feature is not complete unless it creates or preserves an observable capability. Infrastructure may be valuable, but it must be labeled as infrastructure. Tooling and substrate are not runtime capability without observable behavior and acceptance evidence.
+    - id: policy-review-only-boundary
+      title: Review-only boundary policy
+      text: A request to review, assess, or diagnose code does not authorize code changes. Keep review-only work read-only, use code-reviewer for formal findings and output, and begin remediation only after explicit change authority is present.
     - id: policy-reporting-contract
       title: Reporting contract
-      text: Final reports must name the completed outcome, verification evidence, and any unverified risk. For non-trivial work, also state whether the result advances the intended project capability or remains support-only; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
+      text: Final reports must name the completed outcome, verification evidence, and any unverified risk. Review-only reports must not imply remediation or mutations; remediation reports must classify unresolved status as blocked before deferred before implemented-but-unverified, reserve full fixed-and-verified claims for `verified` applicable findings, and list `not-applicable` entries separately. For non-trivial work, also state whether the result advances the intended project capability or remains support-only; when another active review skill defines a stricter format, follow that format while preserving the same evidence.
   portability:
     required: true
     rules:

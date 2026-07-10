@@ -21,10 +21,10 @@
 - [logs/implementation-log-20260612-1.md](logs/implementation-log-20260612-1.md) - remediation matrix statuses and substrate-versus-runtime-capability evidence.
 - [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) - first sufficient rung, shortcut trigger, and minimum-check guidance.
 - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) - stable-evidence and operator-not-QA remediation traceability.
+- [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) - review-only mutation boundary and remediation status-to-claim contract.
 
 ## Scope of This Folder
 
 - `docs/issues/*` contains proposals, bug reports, investigations, and implementation plans.
 - `docs/logs/*` contains non-normative implementation logs.
-- `docs/templates/*` contains local templates for issue, plan, and implementation-log artifacts.
 - `docs/compile-report.md` is generated and non-normative.
