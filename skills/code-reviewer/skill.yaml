@@ -2,41 +2,38 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.3.3
+  source-version: 0.4.0
   recommended-skill-md-max-bytes: 20000
   description: |-
-    Systematic code review skill for pull requests, diffs, and local branch changes.
-    Use when asked to review code, audit a PR, find bugs or regressions, assess maintainability,
-    spec or intent alignment, or produce high-signal review feedback. Owns review workflow,
-    severity triage, evidence, and output conventions; pairs with domain skills for stack-specific
-    rules.
+    Read-only code review for pull requests, diffs, and local branch changes. Use when asked to
+    find bugs or regressions, assess maintainability, test adequacy, compatibility, or lightweight
+    intent alignment, and produce evidence-backed merge guidance. Owns stable review scope,
+    severity triage, evidence, and output conventions; pairs with available domain skills.
 fragments:
   overview: fragments/overview.md
 references:
   - id: ref-references-diff-completeness
-    title: Diff Completeness
+    title: Review Basis and Diff Completeness
     source: references/diff-completeness.md
     target: references/diff-completeness.md
     required: true
-    trigger: Read this when you need full diff recovery, reviewed-file accounting, and pre-conclusion audit.
+    trigger: Always read this before reviewing to freeze the target, preserve read-only scope, account for changed files, and recheck snapshot identity before the verdict.
   - id: ref-references-domain-routing
     title: Domain Routing
     source: references/domain-routing.md
     target: references/domain-routing.md
-    required: true
-    trigger: Read this when you need which local skill to load for each file or change pattern.
+    trigger: Read this when changed code needs specialized framework, platform, security, privacy, financial, skill-package, or other domain authority.
   - id: ref-references-findings-format
     title: Findings Format
     source: references/findings-format.md
     target: references/findings-format.md
     required: true
-    trigger: Read this when you need severity rubric, comment labels, and output templates.
+    trigger: Always read this before reporting findings, evidence limits, or a merge recommendation.
   - id: ref-references-methodology
     title: Methodology
     source: references/methodology.md
     target: references/methodology.md
-    required: true
-    trigger: Read this when you need full review process, completeness audit, and pass-by-pass checks.
+    trigger: Read this for a broad, formal, high-risk, or large review that needs the full pass order and completeness audit.
   - id: ref-references-policy-admission-merge-risk
     title: Policy Admission Merge Risk
     source: references/policy-admission-merge-risk.md
@@ -52,13 +49,12 @@ references:
     source: references/severity-confidence.md
     target: references/severity-confidence.md
     required: true
-    trigger: Read this when you need how severity and confidence interact during triage.
+    trigger: Always read this before promoting a candidate concern to a finding or assigning severity.
   - id: ref-references-spec-pass
     title: Spec Pass
     source: references/spec-pass.md
     target: references/spec-pass.md
-    required: true
-    trigger: Read this when you need lightweight issue or spec alignment pass and escalation rules.
+    trigger: Read this when a linked issue, acceptance criteria, contract, ADR, migration note, or other normative source exists.
   - id: ref-references-complexity-only
     title: Complexity-only Review
     source: references/complexity-only.md
@@ -91,23 +87,23 @@ surfaces:
   active:
     requiredReferences:
       - ref-references-diff-completeness
-      - ref-references-domain-routing
       - ref-references-findings-format
-      - ref-references-methodology
       - ref-references-severity-confidence
-      - ref-references-spec-pass
     optionalReferences:
+      - ref-references-domain-routing
+      - ref-references-methodology
       - ref-references-policy-admission-merge-risk
       - ref-references-runtime-gate-deployed-path
+      - ref-references-spec-pass
       - ref-references-complexity-only
   supportingGlobs:
     - docs/*
 sections:
   startHere:
-    - Confirm the task matches code-reviewer's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Confirm the request is for read-only merge-risk review, not implementation or a specialized audit owned by another skill.
+    - Read the three required references and freeze a reproducible target, base, scope, and starting snapshot before judging code.
+    - Load only conditional references and available domain skills whose triggers match the changed behavior.
+    - Recheck snapshot identity before reporting and return an evidence-calibrated recommendation with explicit limits.
   whenToUse:
     - Reviewing a pull request, diff, branch, or changed file set
     - '"Review my changes", "find bugs in this patch", "what should block this merge"'
@@ -121,31 +117,37 @@ sections:
     - "UI, accessibility, or UX-only audit: use `web-ui-reviewer`"
     - "Framework implementation guidance or design from scratch: use the relevant domain skill"
     - "Test architecture or runner policy design: use `typescript-test-engineer`"
+    - "AI-agent skill capability or instruction-quality audit: use `skill-reviewer`; use this skill only for ordinary code/runtime merge risk inside a skill package"
+    - "Implementing review fixes: use the relevant implementation skill; any mutation makes the prior verdict stale"
   workflow:
-    - id: stage-apply-code-reviewer
-      title: Apply code-reviewer guidance
-      goal: Apply the preserved code-reviewer guidance without changing its domain behavior.
+    - id: stage-conduct-stable-review
+      title: Conduct a stable evidence-backed review
+      goal: Produce findings and merge guidance for one reproducible read-only snapshot.
       steps:
-        - Match the request to the applicability criteria.
-        - If the user explicitly requests over-engineering, simplification, deletion, or avoidable dependency review, load `references/complexity-only.md` and keep that pass separate from normal merge-risk findings.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Resolve target and base by the authority order in `references/diff-completeness.md`; return `blocked` instead of guessing through unresolved candidates.
+        - Freeze the snapshot, account for the changed scope, and use surrounding code only as research evidence.
+        - Run matching conditional and domain passes, then validate candidates against reachable behavior and existing guards.
+        - Recheck the snapshot identity and mark the result stale if the reviewed surface changed.
+        - Report findings first and include the mandatory evidence footer and one recommendation status.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
+        - Another reviewer can reconstruct the reviewed target and scope from the report.
+        - No recommendation exceeds the behavioral evidence or specialized authority actually assessed.
   interop: []
   commands: []
   gotchas:
     - id: gotcha-review-moving-target
       priority: high
-      text: Do not issue a clean review while the diff is still changing. If implementation changes after review, rerun a focused delta review or clearly mark the previous result stale.
+      text: Compare the ending snapshot identity to the starting identity. Any reviewed-surface mutation makes the prior result stale and requires a fresh or bounded delta review before approval.
     - id: gotcha-behaviorless-pass
       priority: high
       text: Do not pass a change only because types/tests/docs look correct when the requested outcome is runtime behavior, browser behavior, security behavior, or data persistence that was not exercised.
   policies:
+    - id: policy-read-only-review
+      title: Read-only review boundary
+      text: Review is read-only unless the user separately authorizes remediation. For a combined review-and-fix request, finish and record the review first, perform remediation as a separate phase, and invalidate the earlier verdict after the first mutation.
     - id: policy-review-scope-evidence
       title: Review scope evidence
-      text: A review should state the reviewed commit or diffstat, the behavioral evidence considered, and any untested user/API/data path. The absence of findings is not evidence for paths that were outside scope.
+      text: Every review must state the target/base/snapshot, changed-scope accounting, checks and behavioral evidence considered, untested or unassessed user/API/data paths, and exactly one recommendation status. The absence of findings is not evidence for paths outside that boundary.
   portability:
     required: true
     rules:

@@ -6,14 +6,15 @@ Use this file when the review scope is broad, the diff is large, or you need a d
 
 Before writing findings:
 
-1. Identify the review target:
+1. Read `references/diff-completeness.md`, resolve the authoritative target/base/scope, and record a starting snapshot identity. Keep the review read-only.
+2. Identify the review target:
    - current branch
    - explicit file list
    - commit range
    - PR diff
-2. Read the full diff.
-3. List the changed files.
-4. Flag high-risk files early:
+3. Read the full diff.
+4. List the changed files and explicit exclusions.
+5. Flag high-risk files early without assigning severity from file class alone:
    - migrations
    - auth or permission code
    - RBAC/session/context code and direct data-access paths
@@ -24,9 +25,9 @@ Before writing findings:
    - policy gates, admission flow, decision or audit persistence, active-scope activation, idempotency, replay, or freshness checks
    - runtime gates in shipped lifecycle paths, production construction, deployed dependency wiring, request or tick execution, invocation boundaries, idempotency locks, or deployment/cell identity binding
    - long-lived protected streams, subscriptions, SSE, or WebSocket-like endpoints
-5. If a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
-6. If changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
-7. If changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
+6. If a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
+7. If changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
+8. If changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
 
 If any diff output is truncated, read the touched files directly until every changed hunk is seen.
 
@@ -126,6 +127,10 @@ Before finalizing, quickly check:
 - deleted or rewritten tests were inspected, not just counted
 - findings are ordered by severity, not by file order
 - no finding is just a style preference in disguise
+- the ending snapshot identity matches the starting identity
+- the report names target/base/snapshot, scope, evidence, limits, and exactly one recommendation status
+
+If the snapshot changed, mark the result stale and do not approve until a fresh or bounded delta review completes. If incomplete scope or unavailable specialized authority prevents a clean recommendation, return `limited`; if the review basis cannot be established reproducibly, return `blocked`.
 
 ## Large Diff Handling
 

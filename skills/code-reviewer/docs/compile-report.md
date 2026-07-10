@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.3.3`
+- Skill source version: `0.4.0`
 
 ## Source files
 - `agents/openai.yaml`
@@ -24,11 +24,8 @@ Generated from `skill.yaml`.
 
 ## Required references
 - `references/diff-completeness.md`
-- `references/domain-routing.md`
 - `references/findings-format.md`
-- `references/methodology.md`
 - `references/severity-confidence.md`
-- `references/spec-pass.md`
 
 ## Warnings
 - none

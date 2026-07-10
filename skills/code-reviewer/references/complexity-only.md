@@ -2,7 +2,12 @@
 
 Use this reference only when the user explicitly asks for over-engineering, simplification, unnecessary dependency, dead flexibility, or deletion review.
 
-This is a bounded review mode. It complements normal merge-risk review; it does not replace correctness, security, performance, accessibility, release, or specification review.
+Choose one explicit mode from the request:
+
+- `complexity-only`: use when the user asks only what is over-engineered, deletable, or simplifiable. Report only unnecessary complexity and do not issue `approve` or `request changes`. State that correctness, security, performance, accessibility, release, and specification behavior were not assessed; use the mandatory evidence footer with `Recommendation: limited` only as a scope marker, not as a general merge verdict.
+- `complexity add-on`: use when the user asks for normal review plus simplification. Complete normal merge-risk review and its evidence footer first, then add a separate complexity section.
+
+Do not silently turn an explicit complexity-only request into a general review, and do not let an add-on suppress merge-risk findings.
 
 ## Scope
 
@@ -58,10 +63,16 @@ For a repository or broad scope:
 <tag>: <what to cut>. <replacement>. [<path>]
 ```
 
-Rank broad findings by biggest safe simplification first. End only this bounded report with:
+Rank broad findings by biggest safe simplification first. When exact removals were counted from concrete findings, end the complexity section with:
 
 ```text
 net: -<N> lines possible, -<M> deps possible.
+```
+
+When either value cannot be measured reliably, use:
+
+```text
+net: not reliably measurable.
 ```
 
 If there is nothing to cut:
@@ -70,4 +81,4 @@ If there is nothing to cut:
 Lean already for the reviewed scope.
 ```
 
-Do not use line-count net as severity in a normal merge-risk review.
+Do not estimate exact counts from intuition, and do not use line-count net as severity in a normal merge-risk review.

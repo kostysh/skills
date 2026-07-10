@@ -4,6 +4,8 @@ Severity answers "how bad if true." Confidence answers "how sure am I that it is
 
 ## Severity
 
+Assign severity from confirmed impact, not from a filename, technology, domain, or high-risk category. Auth, migrations, CI, streams, shared APIs, and similar surfaces require focused inspection but can receive no finding when no reachable defect is confirmed.
+
 | Label | Meaning |
 |---|---|
 | `[blocking]` | likely bug, regression, data risk, operational hazard, or missing merge-critical test |

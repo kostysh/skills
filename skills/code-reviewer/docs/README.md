@@ -2,6 +2,10 @@
 
 Эта папка содержит supporting и historical surface. Активные инструкции остаются в `SKILL.md` и явно подключенных `references/*`.
 
+## Review Evidence
+
+- [Blind forward-test evidence — 2026-07-10](forward-test-evidence-20260710.md) — raw prompts/artifacts, evaluator identities, exact outputs, rubrics and evidence limits for the `0.4.0` remediation.
+
 ## Issues
 
 | Issue | Status | Notes |
@@ -25,3 +29,4 @@
 | [logs/implementation-log-20260611-1.md](logs/implementation-log-20260611-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | PASS |
+| [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS |

@@ -1,21 +1,15 @@
-Review code changes for merge risk, not for style points. Run a lightweight spec-pass when normative sources exist, but keep full implementation-vs-spec audits in `spec-conformance-reviewer`. This skill owns review process and reporting discipline. It does not replace stack-specific engineering skills.
+Review one reproducible code-change snapshot for merge risk, not style. Keep review read-only and end with findings plus reconstructible, evidence-calibrated merge guidance. Run a lightweight spec-pass when normative sources exist; keep full implementation-vs-spec audits in `spec-conformance-reviewer` and specialized correctness with domain owners.
 
-When the user explicitly asks for over-engineering, simplification, unnecessary dependency, or deletion review, use the bounded complexity-only mode from `references/complexity-only.md`. Keep that output separate from normal merge-risk findings: complexity-only reports what can be cut, while this skill's default review still prioritizes bugs, regressions, tests, operability, and compatibility.
+When the user asks only for over-engineering, simplification, unnecessary dependency, or deletion review, use the bounded `complexity-only` mode from `references/complexity-only.md` and do not imply a general merge recommendation. When the user asks for both normal review and simplification, run normal merge-risk review first and add a separate complexity section.
 
 ## Skill Interop (Priority)
 
 - This skill owns review sequence, diff completeness, severity labeling, evidence quality, and merge recommendation framing.
 - `spec-conformance-reviewer` owns full requirement extraction, traceability, compliance statuses, and implementation-vs-spec verdicts.
-- Domain skills own correctness rules for their areas:
-  - `hono-engineer`
-  - `supabase-engineer`
-  - `react-spa-engineer`
-  - `react-components-engineer`
-  - `node-engineer`
-  - `typescript-engineer`
-  - `typescript-test-engineer`
-  - `web-ui-reviewer`
+- Discover the closest available domain authority from the skill catalog or repository guidance; routing examples are not exhaustive.
+- Without a matching authority, keep generic review bounded, mark specialized correctness `unassessed`, and use `limited` or `blocked` when the gap prevents the requested recommendation.
 - `security-reviewer` owns threat model, exploitability, and vulnerability classification.
+- `skill-reviewer` owns AI-agent skill capability, instruction-quality, interop, parity, portability, and evidence-integrity verdicts. Use this skill only for ordinary code/runtime merge risk inside a skill package.
 - This skill owns the conditional policy/admission merge-risk pass for non-security review findings when changed files or linked intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active-scope activation, idempotency, replay, or freshness checks.
 - This skill owns the conditional runtime-gate deployed-path pass for non-security review findings when changed files or linked intent touch gates that authorize execution through a shipped lifecycle, production construction path, dependency wiring, request/tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
 - If both general and spec review are requested, keep spec-backed findings under `spec-conformance-reviewer` and move non-spec merge-risk findings here.
@@ -23,6 +17,8 @@ When the user explicitly asks for over-engineering, simplification, unnecessary 
 
 ## Non-Negotiables
 
+- Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Load all other references only when their triggers match.
+- Keep review read-only. If the user also requests fixes, treat implementation as a separate phase and mark the review stale after any mutation.
 - Read the full diff. If the diff is truncated, enumerate changed files and read changed hunks directly from the files.
 - Separate report scope from research scope:
   - report only on the diff or files under review
@@ -43,8 +39,8 @@ When the user explicitly asks for over-engineering, simplification, unnecessary 
 
 ## Fast Workflow
 
-1. Gather context:
-   - review target, base branch, linked issue, user intent, and any available normative source
+1. Establish the review basis using `references/diff-completeness.md`:
+   - authoritative target, base, scope, starting snapshot identity, linked issue, user intent, and any available normative source
    - note risky file classes: migrations, auth, CI, runtime config, state, tests, runtime gates
 2. Read the full diff and list touched files.
 3. If normative context exists, run the lightweight pass from `references/spec-pass.md`.
@@ -58,12 +54,13 @@ When the user explicitly asks for over-engineering, simplification, unnecessary 
    - design and maintainability
    - tests and operability
    - performance and compatibility
-9. For each candidate finding, confirm:
+10. For each candidate finding, confirm:
    - the changed behavior is real
    - the surrounding code does not already mitigate it
    - severity matches actual impact
    - confidence is high enough to emit as a finding instead of a question
-10. Report findings first, ordered by severity. Put open questions after findings. Keep summary brief.
+11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes.
+12. Report findings first, ordered by severity, followed by the mandatory evidence footer and exactly one recommendation status.
 
 ## What to Check
 
@@ -103,9 +100,9 @@ When the user explicitly asks for over-engineering, simplification, unnecessary 
 - Cache invalidation or stale data risks
 - Resource usage that can grow with attacker or user input
 
-## Default Escalation Triggers
+## High-risk Review Surfaces
 
-Treat these as likely `blocking` unless surrounding context proves otherwise:
+Prioritize focused inspection for these surfaces. Their presence does not determine severity; emit `blocking` only for a confirmed reachable failure path with merge-critical impact:
 
 - Auth or permission model changes
 - Migrations, RLS, or data retention changes
@@ -118,9 +115,10 @@ Treat these as likely `blocking` unless surrounding context proves otherwise:
 
 ## Merge Guidance
 
-- Approve when only nits or low-risk follow-ups remain.
-- Request changes when the issue can plausibly ship a bug, regression, missing test for merge-critical behavior, or operational risk.
-- If the diff is too large for reliable review, say so explicitly and note the missed risk surface instead of pretending confidence.
+- `approve`: no blocking finding remains, the full declared scope is accounted for, and evidence is sufficient for the stated merge boundary; nits or bounded low-risk follow-ups may remain.
+- `request changes`: at least one confirmed blocking finding can ship a bug, regression, missing merge-critical test, compatibility break, or operational risk.
+- `limited`: review produced useful findings but incomplete scope, behavioral evidence, or specialized authority prevents a clean recommendation.
+- `blocked`: target/base/snapshot authority cannot be resolved reproducibly or the requested review cannot be assessed safely.
 
 ## Default Brevity Mode
 
@@ -133,26 +131,29 @@ Unless the user explicitly asks for a formal audit or report:
 - make each finding short, behavior-based, and evidence-backed
 - collapse duplicate symptoms into one root-cause finding where possible
 - keep questions and assumptions to the minimum necessary for correctness
+- always include the compact evidence footer; brevity never removes snapshot, scope, evidence, limits, or recommendation status
 
 ## Output Rules
 
 - Findings first, ordered by severity.
 - Use the format from `references/findings-format.md`.
 - Keep each finding self-contained: location, problem, impact, evidence, and fix direction.
-- After findings, include:
-  - open questions or assumptions
-  - a brief summary or approval recommendation only if it adds value
+- If no findings are confirmed, say `No findings.` instead of leaving the section empty.
+- After findings and any open questions, always include the compact evidence footer from `references/findings-format.md` with exactly one status: `approve`, `request changes`, `limited`, or `blocked`.
 
 ## Reference Map
 
-Read only what you need:
+Always read:
 
-- `references/methodology.md` - full review process, completeness audit, and pass-by-pass checks
-- `references/spec-pass.md` - lightweight issue or spec alignment pass and escalation rules
-- `references/diff-completeness.md` - full diff recovery, reviewed-file accounting, and pre-conclusion audit
-- `references/domain-routing.md` - which local skill to load for each file or change pattern
+- `references/diff-completeness.md` - review-basis authority, frozen snapshot, full-diff recovery, and ending identity check
+- `references/findings-format.md` - findings shape, mandatory evidence footer, and recommendation statuses
+- `references/severity-confidence.md` - confidence gating and impact-based severity
+
+Read conditionally:
+
+- `references/methodology.md` - broad, formal, high-risk, or large review needing the full pass order
+- `references/spec-pass.md` - linked issue, acceptance criteria, contract, ADR, migration note, or other normative source
+- `references/domain-routing.md` - changed behavior needing specialized authority
 - `references/policy-admission-merge-risk.md` - bounded pass for policy/admission merge-risk paths
 - `references/runtime-gate-deployed-path.md` - deployed-path and identity-binding pass for runtime-gating changes
-- `references/complexity-only.md` - bounded over-engineering/deletion review mode, only when explicitly requested
-- `references/findings-format.md` - severity rubric, comment labels, and output templates
-- `references/severity-confidence.md` - how severity and confidence interact during triage
+- `references/complexity-only.md` - explicit complexity-only or complexity add-on request

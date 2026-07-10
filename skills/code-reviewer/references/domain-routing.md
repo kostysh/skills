@@ -1,8 +1,8 @@
 # Domain Routing
 
-Load only the skill that matches the touched code. Keep review context narrow.
+Load only the available skill that matches the touched behavior. Keep review context narrow, and treat the table below as examples rather than a closed catalog.
 
-## File or Pattern -> Skill
+## Illustrative Signal -> Skill
 
 | Signal | Load |
 |---|---|
@@ -14,6 +14,18 @@ Load only the skill that matches the touched code. Keep review context narrow.
 | Type modeling, generics, unsafe assertions, tsconfig, lint rules | `typescript-engineer` |
 | `node:test`, Vitest, testing utilities, CI test contours | `typescript-test-engineer` |
 | UI, accessibility, content, forms, visual interaction quality | `web-ui-reviewer` |
+| AI-agent skill capability, instruction quality, trigger/interop/parity, portability, or skill evidence integrity | `skill-reviewer` |
+
+Before selecting an owner, inspect the current skill catalog and repository guidance for a more specific available authority, including domains not listed here. The matching domain skill owns specialized correctness; `code-reviewer` keeps general merge-risk sequence, evidence calibration, and recommendation framing.
+
+If the best matching authority is unavailable:
+
+- continue only with bounded generic review;
+- label specialized correctness as `unassessed` in the evidence footer;
+- return `limited` when that gap prevents a clean recommendation;
+- return `blocked` only when the requested verdict cannot be supported without that authority.
+
+For a code-backed skill package, use `skill-reviewer` for the skill-capability verdict and `code-reviewer` only for ordinary runtime or implementation merge risk.
 
 ## Policy/admission Merge-risk Ownership
 

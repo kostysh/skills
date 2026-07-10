@@ -1,5 +1,7 @@
 # Quick Checklist
 
+- authoritative target/base/scope resolved without guessing
+- starting snapshot identity recorded and review kept read-only
 - full diff read
 - changed files accounted for
 - spec or intent alignment checked when normative sources exist
@@ -9,5 +11,8 @@
 - regressions checked
 - test coverage checked
 - compatibility checked
+- available specialized authority loaded when needed, or the domain marked unassessed
 - findings ordered by severity
 - speculative comments removed or downgraded
+- ending snapshot matches the starting identity
+- evidence footer names scope, checks, limits, and exactly one recommendation status
