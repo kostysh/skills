@@ -6,18 +6,32 @@ import { fileURLToPath } from 'node:url';
 
 const skillDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
-const readSkillFile = (relativePath) => readFile(path.join(skillDir, relativePath), 'utf8');
+const readSkillFile = (relativePath: string) => readFile(path.join(skillDir, relativePath), 'utf8');
 
-const countMatches = (text, pattern) => [...text.matchAll(pattern)].length;
+const countMatches = (text: string, pattern: RegExp) => [...text.matchAll(pattern)].length;
 
 test('source contract exposes one required methodology and optional domain references', async () => {
   const manifest = await readSkillFile('skill.yaml');
 
-  assert.match(manifest, /source-version: "0\.1\.7"/);
+  assert.match(manifest, /source-version: "0\.1\.8"/);
   assert.match(manifest, /requiredReferences:\n\s+- "ref-methodology"\n\s+optionalReferences:/);
   assert.match(manifest, /id: "ref-api-auth-input"[\s\S]*?required: false/);
   assert.match(manifest, /id: "ref-github-actions"[\s\S]*?required: false/);
   assert.match(manifest, /id: "ref-secrets-config"[\s\S]*?required: false/);
+});
+
+test('TypeScript contract test runs directly with Node type stripping', async () => {
+  const [manifest, packageJson] = await Promise.all([
+    readSkillFile('skill.yaml'),
+    readSkillFile('package.json'),
+  ]);
+
+  assert.match(manifest, /source: "test\/docs-contract\.test\.ts"/);
+  assert.doesNotMatch(manifest, /docs-contract\.test\.mjs/);
+  assert.equal(
+    JSON.parse(packageJson).scripts.test,
+    'node --experimental-strip-types --test test/docs-contract.test.ts',
+  );
 });
 
 test('generated root has one activation and interop surface', async () => {

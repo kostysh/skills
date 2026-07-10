@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.7`
+- Skill source version: `0.1.8`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -19,7 +19,7 @@ Generated from `skill.yaml`.
 - `references/supabase-rls.md`
 - `references/webhooks.md`
 - `skill.yaml`
-- `test/docs-contract.test.mjs`
+- `test/docs-contract.test.ts`
 - `test/fixtures/data-access-injection.ts`
 
 ## Required references

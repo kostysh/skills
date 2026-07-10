@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.7"
+  source-version: "0.1.8"
   recommended-skill-md-max-bytes: 36000
   description: "Perform bounded, evidence-backed security code review for application code, CI workflows, permission models, webhooks, secrets, app-layer data access, and configuration. Use for targeted vulnerability review, exploitability triage, or a scoped formal audit with an identifiable target. Owns threat modeling, confidence gating, attack-path validation, security findings, and scoped security status; it does not replace scan orchestration, standards-compliance review, penetration testing, or implementation."
 fragments:
@@ -72,10 +72,10 @@ copies:
     source: "package.json"
     target: "package.json"
     description: "Portable copy of package.json."
-  - id: "copy-test-docs-contract-test-mjs"
-    source: "test/docs-contract.test.mjs"
-    target: "test/docs-contract.test.mjs"
-    description: "Portable copy of test/docs-contract.test.mjs."
+  - id: "copy-test-docs-contract-test-ts"
+    source: "test/docs-contract.test.ts"
+    target: "test/docs-contract.test.ts"
+    description: "Portable copy of test/docs-contract.test.ts."
   - id: "copy-test-fixtures-data-access-injection-ts"
     source: "test/fixtures/data-access-injection.ts"
     target: "test/fixtures/data-access-injection.ts"

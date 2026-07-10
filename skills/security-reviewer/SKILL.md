@@ -9,9 +9,9 @@ description: Perform bounded, evidence-backed security code review for
   orchestration, standards-compliance review, penetration testing, or
   implementation.
 metadata:
-  source-version: 0.1.7
+  source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f0652285fec8d8d68b27123ca681287973eebe3da56c282e86a233e2e569d150
+  skillforge-source-hash: 5feeb16cd08cd0b12da2d61e8c974ca647c42c09ad736aadd2ef0727245820e1
 ---
 
 # security-reviewer

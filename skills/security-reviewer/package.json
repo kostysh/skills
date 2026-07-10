@@ -5,6 +5,6 @@
   "description": "Docs-contract tests for the security-reviewer skill.",
   "type": "module",
   "scripts": {
-    "test": "node --test test/docs-contract.test.mjs"
+    "test": "node --experimental-strip-types --test test/docs-contract.test.ts"
   }
 }
