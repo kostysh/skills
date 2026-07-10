@@ -1,45 +1,44 @@
-# Privileges and Permission Model
+# Data API Grants and Privileges
 
-RLS is not a substitute for privilege design. Treat grants and policies as two layers:
+Grants and RLS are separate layers:
 
-1. privileges decide which operations a role may attempt;
-2. RLS decides which rows are visible or writable for allowed operations.
+1. schema/table/sequence/function privileges decide whether a Postgres role may attempt an operation;
+2. RLS decides which rows an allowed `anon` or `authenticated` operation can access.
 
-## Critical rules
-- Revoke broad default access from `public` where the schema should not be world-readable.
-- Grant only the minimum table, sequence, and schema privileges required by each application role.
-- Keep read, write, and admin capabilities separated; do not collapse everything into one role.
-- Document where `service_role` or other bypass-RLS access is allowed and why.
-- Use service-role credentials for internal/admin/secret-bearing boundaries, not ordinary user-scoped reads or mutations that should be authorized by user JWT, RLS, or security-checked RPC.
+New and existing projects can have different default privileges. Inspect actual grants and Data API settings; do not assume a table becomes reachable when it is created.
 
-## Minimal grant pattern
+## Data API grant pattern
+
+Grant only operations used by the application after RLS and policies are defined:
 
 ```sql
-revoke all on schema public from public;
-revoke all on all tables in schema public from public;
-
-create role app_readonly nologin;
-grant usage on schema public to app_readonly;
-grant select on public.products, public.categories to app_readonly;
-
-create role app_writer nologin;
-grant usage on schema public to app_writer;
-grant select, insert, update on public.orders to app_writer;
-grant usage on sequence public.orders_id_seq to app_writer;
+grant usage on schema public to authenticated;
+grant select, insert, update on table public.orders to authenticated;
+grant select on table public.products to anon, authenticated;
+grant usage, select on sequence public.orders_id_seq to authenticated;
 ```
 
-## Review checklist
-- Which roles can `select`, `insert`, `update`, `delete`, `execute`, and use sequences?
-- Does any role have `all privileges` where a narrower grant would work?
-- Are privileged database functions or jobs using dedicated roles instead of reusing the application role?
-- Are bypass paths (`service_role`, background jobs, admin tools) isolated from normal request handling?
-- Are ordinary user reads/writes prevented from silently taking a service-role path?
-- Do required audit or fallback tables have append-only behavior, narrow privileges, and no inappropriate user read/update/delete grants?
-- Are schema-level and sequence privileges granted explicitly where required, not accidentally through broad grants?
+Do not grant `delete` merely because CRUD is convenient. Do not restore broad default privileges to fix one 42501 error.
 
-## Common mistakes
-- Assuming RLS makes broad table grants harmless.
-- Granting write access on all tables to simplify migrations or local development.
-- Forgetting sequence privileges for insert paths, then compensating with broader grants than necessary.
-- Exposing views or functions that run with elevated privileges without documenting the trust boundary.
-- Treating an audit/security event name as enough without verifying durable insert permissions, fail-closed behavior where required, and append-only constraints.
+## Custom roles
+
+Creating `app_readonly` or `app_writer` does not make PostgREST use them. Use custom roles only when the authenticator/JWT role-switch contract, inheritance, grants, and connection path are explicitly designed and verified. For normal Supabase Auth/Data API traffic, build the matrix around the actual `anon` and `authenticated` roles.
+
+## Functions and elevated access
+
+- Revoke default function `EXECUTE` from `PUBLIC` and grant only the intended caller roles.
+- Secret and legacy `service_role` keys map to an elevated `BYPASSRLS` path; isolate and document them.
+- Keep elevated jobs/admin tools out of ordinary request handling.
+- Required audit/history writes must have narrow append-only privileges and share the mutation transaction when the contract is fail-closed.
+
+## Verification matrix
+
+For each exposed table, sequence, view, and function, record intended operations for `anon`, `authenticated`, and elevated callers. Verify:
+
+- actual privileges from catalog inspection;
+- direct publishable-key requests without and with representative user JWTs;
+- positive and negative RLS cases;
+- absence of stale broad grants and unintended function execution;
+- elevated bypass only at the documented internal boundary.
+
+A role definition or GRANT statement is not proof that PostgREST assumes that role or that RLS restricts rows correctly.

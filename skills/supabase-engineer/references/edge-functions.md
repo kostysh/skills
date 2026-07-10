@@ -1,45 +1,28 @@
-# Edge Functions (Deno)
+# Edge Functions
 
-## Basic function
-```ts
-// supabase/functions/hello/index.ts
-Deno.serve(async (req: Request) => {
-  const { name } = await req.json();
-  return new Response(JSON.stringify({ message: `Hello ${name}!` }), {
-    headers: { "Content-Type": "application/json" },
-  });
-});
-```
+Verify current Edge Runtime, CLI, key, and auth guidance before implementation. Keep imports versioned according to repository dependency policy.
 
-## With Supabase client
-```ts
-import { createClient } from "npm:@supabase/supabase-js@2";
+## Trust boundary first
 
-Deno.serve(async (req: Request) => {
-  const authHeader = req.headers.get("Authorization") ?? "";
+Choose the caller contract before creating clients:
 
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_ANON_KEY")!,
-    { global: { headers: { Authorization: authHeader } } }
-  );
+- public endpoint: explicitly anonymous and protected by validation, abuse controls, and least-privilege data access;
+- user endpoint: validate the user JWT and use a user-scoped client that preserves RLS;
+- internal endpoint: authenticate a controlled backend secret and use elevated access only for the documented operation;
+- external webhook: disable platform JWT verification only when required by the producer contract, then verify that producer's signature before parsing or trusting the payload.
 
-  const { data: { user } } = await supabase.auth.getUser();
+Publishable and secret keys are opaque API keys, not user JWTs. Send them through the supported `apikey` path. If current platform JWT verification does not support the chosen key model, configure the function accordingly and perform explicit authorization in code or use the current official server adapter.
 
-  const { data } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("user_id", user?.id);
+## Runtime rules
 
-  return new Response(JSON.stringify(data), {
-    headers: { "Content-Type": "application/json" },
-  });
-});
-```
+- Use the current official handler/adapter pattern supported by the installed runtime; `Deno.serve()` remains valid for direct handlers.
+- Use `npm:` for npm packages and `node:` for built-ins when the runtime and repository support them.
+- Use `EdgeRuntime.waitUntil(promise)` only for work whose loss/retry semantics are acceptable; it is not durable queue evidence.
+- Write ephemeral local files only under `/tmp`; use Storage or another durable system for persistence.
+- Validate input size and shape, handle returned `{ data, error }`, and emit non-sensitive structured errors.
 
-## Rules
-- Use `npm:` prefix for npm packages and `node:` for built-ins.
-- Always version external imports.
-- Use `Deno.serve()` (not deprecated `serve`).
-- For background work: `EdgeRuntime.waitUntil(promise)`.
-- File writes are allowed only in `/tmp`.
+## Verification
+
+- Run the local function with representative public/user/internal requests and negative auth cases.
+- Verify the Data API/RLS path with the same identity boundary used in production.
+- For deployed claims, check the deployed function, logs, and caller-visible terminal state; a local mock does not prove deployment, secrets, routing, or platform auth.

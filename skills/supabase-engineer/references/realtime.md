@@ -1,51 +1,22 @@
-# Realtime Subscriptions
+# Realtime
 
-## Subscribe to changes
-```ts
-const channel = supabase
-  .channel("posts-changes")
-  .on(
-    "postgres_changes",
-    { event: "*", schema: "public", table: "posts" },
-    (payload) => {
-      console.log("Change:", payload);
-    }
-  )
-  .subscribe();
+Check current Realtime guidance and installed client versions before selecting a transport.
 
-// Cleanup
-supabase.removeChannel(channel);
-```
+## Choose the mechanism
 
-## Filtered subscription
-```ts
-const channel = supabase
-  .channel("my-posts")
-  .on(
-    "postgres_changes",
-    {
-      event: "INSERT",
-      schema: "public",
-      table: "posts",
-      filter: `user_id=eq.${userId}`,
-    },
-    handleNewPost
-  )
-  .subscribe();
-```
+- Prefer Broadcast for most scalable or security-sensitive database-change delivery. Database triggers can call `realtime.broadcast_changes()` and private channels require Realtime authorization policies.
+- Use Postgres Changes for simpler flows whose scale, filtering, publication, and per-subscriber authorization costs are acceptable.
+- Use Presence for ephemeral participant state, not durable truth.
 
-## Presence
-```ts
-const channel = supabase.channel("online-users");
+Do not select from projected user count alone. Name event rate, payload size, fan-out, ordering, latency, authorization, reconnect, missed-event recovery, and durability requirements.
 
-channel
-  .on("presence", { event: "sync" }, () => {
-    const state = channel.presenceState();
-    console.log("Online:", Object.keys(state));
-  })
-  .subscribe(async (status) => {
-    if (status === "SUBSCRIBED") {
-      await channel.track({ user_id: userId, online_at: new Date() });
-    }
-  });
-```
+## Authorization
+
+- Use private channels for protected topics and define policies on `realtime.messages` according to current official guidance.
+- Derive topic/tenant/user identifiers from trusted state; do not trust a caller-provided topic as authorization.
+- Postgres Changes still depends on table grants, RLS, publication configuration, and the subscriber's JWT.
+- Remove channels on cleanup and handle subscription errors, reconnects, duplicate events, and token refresh.
+
+## Evidence
+
+Verify authorized and unauthorized subscribers, cross-tenant denial, reconnect behavior, and the actual deployed delivery path. A local callback invocation or successful `.subscribe()` call does not prove authorization, delivery, ordering, or recovery.

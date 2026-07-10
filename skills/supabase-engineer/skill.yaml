@@ -2,9 +2,9 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: supabase-engineer
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 20000
-  description: Comprehensive Supabase engineering guidance for PostgreSQL schema design, RLS policies, auth, realtime, storage, Edge Functions, migrations/CLI, performance, observability, and troubleshooting. Use when building, refactoring, or debugging Supabase apps; designing schemas or policies; integrating auth/storage/realtime; writing Edge Functions; or setting up Supabase CI/ops workflows.
+  description: Build, review, debug, and operate Supabase-backed systems from project constraints to verified schema, Data API, Auth, RLS, Storage, Realtime, Edge Functions, migrations, and operational outcomes. Use for Supabase-specific design or implementation decisions, direct boundary verification, CLI/MCP workflows, and incident diagnosis; pair with framework, architecture, security, privacy, and PostgreSQL specialists where they own the decision.
 fragments:
   overview: fragments/overview.md
 references:
@@ -13,19 +13,19 @@ references:
     source: references/architecture.md
     target: references/architecture.md
     required: true
-    trigger: Read this when you need Architecture variants.
+    trigger: Read this before making a topology or service-boundary recommendation for a Supabase-backed system.
   - id: ref-references-auth
     title: Auth
     source: references/auth.md
     target: references/auth.md
     required: true
-    trigger: Read this when you need Auth flows + protected routes.
+    trigger: Read this for Auth flows, server identity checks, protected routes, or trusted authorization claims.
   - id: ref-references-client-setup
     title: Client Setup
     source: references/client-setup.md
     target: references/client-setup.md
     required: true
-    trigger: Read this when you need Client setup.
+    trigger: Read this for browser, SSR, request-scoped, or elevated Supabase client setup; verify framework and package versions first.
   - id: ref-references-data-handling
     title: Data Handling
     source: references/data-handling.md
@@ -55,7 +55,7 @@ references:
     source: references/migrations-cli.md
     target: references/migrations-cli.md
     required: true
-    trigger: Read this when you need Migrations + CLI.
+    trigger: Read this before creating, diffing, replaying, or deploying database changes with the Supabase CLI.
   - id: ref-references-operations-observability
     title: Operations Observability
     source: references/operations-observability.md
@@ -79,7 +79,7 @@ references:
     source: references/realtime.md
     target: references/realtime.md
     required: true
-    trigger: Read this when you need Realtime + presence.
+    trigger: Read this when selecting or securing Broadcast, Postgres Changes, or Presence.
   - id: ref-references-rls
     title: Rls
     source: references/rls.md
@@ -115,7 +115,7 @@ references:
     source: references/webhooks.md
     target: references/webhooks.md
     required: true
-    trigger: Read this when you need Webhooks + signature verification.
+    trigger: Read this before authenticating or testing Database Webhooks, Auth HTTP Hooks, or external-provider webhooks.
 assets: []
 copies:
   - id: copy-agents-openai
@@ -149,10 +149,11 @@ surfaces:
     - docs/*
 sections:
   startHere:
-    - Confirm the task matches supabase-engineer's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Classify the request as design, implement, review, debug, or operate and keep work inside that requested mode.
+    - Inspect repository authority, installed versions, target environment, data ownership, and trust or authorization boundaries before choosing a Supabase pattern.
+    - For version-sensitive Auth, keys, CLI, MCP, Edge Functions, or Realtime behavior, check installed versions and current official Supabase guidance when accessible; otherwise report the freshness gap and avoid an unverified contract claim.
+    - Load only the active references whose concrete trigger matches the task.
+    - Preserve existing project conventions unless an explicit requirement or verified platform invariant requires a change.
   whenToUse:
     - Building, refactoring, reviewing, or debugging Supabase-backed applications.
     - Designing PostgreSQL schemas, RLS policies, auth flows, storage, realtime, Edge Functions, migrations, performance, observability, or operations workflows.
@@ -160,18 +161,50 @@ sections:
   whenNotToUse:
     - The task has no Supabase, PostgreSQL, RLS, auth, storage, realtime, Edge Function, or Supabase operations surface.
     - The task is purely frontend, framework, or TypeScript work without Supabase-specific behavior.
+    - The task is general PostgreSQL tuning, general architecture selection, a formal security audit, or privacy compliance with no Supabase-specific integration decision; route it to the owning specialist.
   workflow:
-    - id: stage-apply-supabase-engineer
-      title: Apply supabase-engineer guidance
-      goal: Apply the preserved supabase-engineer guidance without changing its domain behavior.
+    - id: stage-establish-task-contract
+      title: Establish task contract and authority
+      goal: Make the requested outcome, operating mode, authority, side-effect boundary, and evidence bar explicit before acting.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Identify the requested mode, target environment, downstream consumer, and whether mutations are authorized.
+        - Discover repository conventions, installed Supabase and framework versions, migration model, data ownership, and trust or authorization boundaries.
+        - "Apply source precedence in this order: explicit user requirements, repository authority, current official platform contracts, then this skill's defaults."
+        - Stop on unresolved conflicts that would change data ownership, tenant isolation, authorization, production safety, migration strategy, or external contracts; otherwise record a bounded assumption.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - The task can be completed or handed off without inventing product, architecture, security, privacy, or platform authority.
+    - id: stage-deliver-verified-outcome
+      title: Deliver and verify the requested outcome
+      goal: Produce the smallest complete Supabase result and match evidence to the real boundary being claimed.
+      steps:
+        - Load the smallest relevant references and verify version-sensitive claims against installed types or help plus current official sources when accessible; if freshness remains uncertain, limit the claim and report the gap.
+        - Design, implement, review, debug, or operate only within the authorized mode and side-effect boundary.
+        - Verify the direct production-equivalent path where the claim depends on Auth, Data API, RLS, RPC, Storage, Realtime, or Edge Functions; label simulations and missing live checks explicitly.
+        - Report status as completed, partial, or blocked with decisions, artifacts, Supabase boundaries, evidence, and remaining risk.
+      validation:
+        - Structural artifacts, generated files, mocks, and happy-path tests are not treated as proof of a broader runtime or security capability.
+        - The final status is no stronger than the available authority and boundary evidence.
+  interop:
+    - id: interop-architecture
+      domain: system topology, service decomposition, deployment model, ASRs, and architecture trade-offs
+      winner: architecture-engineer
+      rationale: architecture-engineer owns general topology decisions; supabase-engineer supplies Supabase-specific constraints and verifies their integration.
+    - id: interop-security-review
+      domain: formal vulnerability review, severity, exploitability, and security verdicts
+      winner: security-reviewer
+      rationale: security-reviewer owns the independent audit; supabase-engineer owns Supabase implementation guidance and remediation inputs.
+    - id: interop-framework-language
+      domain: framework lifecycle, rendering, middleware or proxy conventions, and language or type-system semantics
+      winner: the relevant framework or language skill
+      rationale: framework and language skills own their APIs; supabase-engineer owns Supabase client, session, data, and trust-boundary integration.
+    - id: interop-postgres
+      domain: PostgreSQL query planning, indexing, schema performance, and database configuration
+      winner: supabase-postgres-best-practices
+      rationale: PostgreSQL guidance owns database performance details; supabase-engineer adds Data API, RLS, Auth, and platform constraints.
+    - id: interop-privacy
+      domain: GDPR or other privacy-law assessment, legal basis, rights, retention, and compliance verdicts
+      winner: gdpr-compliance
+      rationale: gdpr-compliance owns regulatory conclusions; supabase-engineer implements accepted data-handling controls without claiming legal compliance.
   commands: []
   gotchas:
     - id: gotcha-rpc-first-evidence
@@ -180,10 +213,34 @@ sections:
     - id: gotcha-audit-fail-open
       priority: high
       text: Do not allow domain mutations to succeed when required audit/history evidence is missing, unsafe, or only written outside the transaction.
+    - id: gotcha-version-memory
+      priority: high
+      text: Do not apply remembered Auth, API-key, CLI, MCP, Edge Functions, or Realtime contracts without checking the installed version and, when accessible, current official guidance; report a freshness gap instead of inventing certainty.
+    - id: gotcha-substrate-completion
+      priority: high
+      text: A migration file, policy definition, generated types, mock, or compiler success is substrate; it cannot close a runtime, authorization, reliability, or end-to-end capability claim by itself.
   policies:
     - id: policy-sql-api-design-output
       title: SQL/API design output policy
       text: For Supabase-backed API work, design notes must name tables, RPCs, grants/RLS, service-role exceptions, direct table paths, validation/constraint mapping, audit/history payload profile, and tests before migration application.
+    - id: policy-cloud-side-effects
+      title: Cloud side-effect policy
+      text: Prefer local or isolated development environments. Do not connect MCP to production data; if exceptional read-only inspection is explicitly authorized, require project scoping, read-only mode, minimum tool features, manual review, and no mutating calls. Apply cloud changes through reviewed repository migrations and deployment workflows rather than ad hoc MCP writes.
+    - id: policy-stop-and-fallback
+      title: Stop and fallback policy
+      text: If required authority or real-boundary evidence is unavailable, return a partial or blocked result and name the missing input or next safe check. After two or three failed attempts with the same approach, stop retrying, inspect current documentation and errors, and choose a different bounded diagnostic path.
+    - id: policy-output-contract
+      title: Output contract
+      text: |-
+        Report:
+
+        - status: `completed`, `partial`, or `blocked`;
+        - requested mode and outcome;
+        - authoritative inputs and explicit assumptions;
+        - decisions and changed or proposed artifacts;
+        - affected Supabase trust, data, API, migration, and environment boundaries;
+        - checks run, distinguishing real paths from mocks or static inspection;
+        - remaining risks, blockers, and downstream owner when a handoff is required.
   portability:
     required: true
     rules:

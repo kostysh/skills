@@ -37,5 +37,7 @@ const { data: files } = await supabase.storage
 - Apply RLS on `storage.objects` (see `rls.md`).
 - Use private buckets + signed URLs for sensitive content.
 - Validate content type and size on upload.
+- Storage upsert requires policies permitting `insert`, `select`, and `update`; verify replacement separately from first upload.
 - Treat storage object keys and prefixes as authorization inputs. Derive user/tenant prefixes from trusted identity where possible, and allowlist or canonicalize any caller-provided path segments.
 - For user-scoped storage, verify direct storage policy behavior with user JWT and deny stale/wrong session, context, role, scope/tenant, status, or readiness claims when those gates apply.
+- Verify list, download/signed URL, upload, replace, move/copy when used, and delete as separate operations. A successful upload mock does not prove object-key authorization or later reads.

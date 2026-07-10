@@ -1,44 +1,33 @@
 # Reliability, Rate Limits, Performance
 
-## Retry with exponential backoff + jitter
-```ts
-async function withBackoff<T>(
-  operation: () => Promise<T>,
-  config = { maxRetries: 5, baseDelayMs: 1000, maxDelayMs: 32000, jitterMs: 500 }
-): Promise<T> {
-  for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
-    try {
-      return await operation();
-    } catch (error: any) {
-      if (attempt === config.maxRetries) throw error;
-      const status = error?.status ?? error?.response?.status;
-      if (status && status !== 429 && (status < 500 || status >= 600)) throw error;
+## Retry decision
 
-      const exp = config.baseDelayMs * Math.pow(2, attempt);
-      const jitter = Math.random() * config.jitterMs;
-      const delay = Math.min(exp + jitter, config.maxDelayMs);
-      await new Promise((r) => setTimeout(r, delay));
-    }
-  }
-  throw new Error("Unreachable");
-}
-```
+Retry only when all are true:
 
-## Idempotency for writes
-- Generate deterministic keys from inputs.
-- Store keys server-side to dedupe retried requests.
+- the failure is transient, such as an observed 429 or selected 5xx/network condition;
+- the operation is read-only or has a verified idempotency contract;
+- the retry budget, total deadline, cancellation behavior, and telemetry are bounded;
+- `Retry-After` is honored when present.
 
-## Circuit breaker + bulkhead
-- Wrap Supabase calls with a circuit breaker.
-- Separate queues by priority to avoid cascading failures.
-- Route permanent failures to a dead-letter queue (DLQ).
+`supabase-js` commonly returns `{ data, error }` instead of throwing. Normalize returned errors before a retry helper, and do not retry validation, authorization, RLS, constraint, or permanent configuration failures.
 
-## Rate limit handling
-- Inspect `429` responses and `Retry-After` headers.
-- Queue bursts to avoid thundering herds.
+## Idempotent writes
 
-## Performance basics
-- Cache hot reads (LRU/Redis) with TTL.
-- Batch related reads (DataLoader pattern).
-- Select only needed columns; index filtered fields.
-- Use connection pooling (pgBouncer) for high-traffic apps.
+- Define the deduplication key, scope, persistence, conflict result, and retention.
+- Enforce idempotency at the durable transaction boundary, not only in process memory.
+- Test duplicate, concurrent, timeout-after-commit, and replay behavior.
+
+## Queues and circuit breakers
+
+Add a queue, dead-letter path, circuit breaker, or bulkhead only for a measured failure mode and named recovery owner. Their existence does not prove delivery, ordering, replay safety, or graceful degradation.
+
+## Performance
+
+- Measure before adding caches, batching, pooling, or new infrastructure.
+- Select required columns and index actual filter, join, ordering, and RLS predicates.
+- Treat cache authorization, invalidation, tenant isolation, and staleness as correctness constraints.
+- Use the project's supported pooler/connection mode and verify prepared-statement compatibility before changing connection behavior.
+
+## Evidence
+
+Record workload, environment, concurrency, measurement window, errors, latency distribution, and before/after result. A single happy-path request or architecture diagram is not reliability or scale evidence.

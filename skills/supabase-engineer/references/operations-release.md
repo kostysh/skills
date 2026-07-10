@@ -22,10 +22,11 @@
 - Fix breaking changes before release.
 
 ## Load testing + scale
-- Use k6 or similar for baseline load tests.
-- Configure autoscaling (e.g., HPA) for stateless services.
+- Define the production-representative workload, SLO, environment, data safety, and stopping limits before load testing.
+- Use an accepted project tool to measure the actual bottleneck; do not infer topology from DAU or synthetic throughput alone.
+- Configure autoscaling, HPA, queues, or additional services only when measurements and the accepted architecture justify them. Route topology changes to `architecture-engineer`.
 
 ## Cost tuning
-- Monitor usage and storage growth.
-- Cache hot paths and batch writes.
-- Archive or delete cold data.
+- Measure product-specific usage, storage growth, egress, compute, and request patterns before changing architecture.
+- Add caching or batching only for an observed hot path with explicit authorization, invalidation, tenant isolation, consistency, and rollback behavior.
+- Archive or delete cold data only under an accepted retention, recovery, privacy, and audit contract; storage age alone is not deletion authority.

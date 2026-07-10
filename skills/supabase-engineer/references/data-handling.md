@@ -8,36 +8,20 @@
 | Business | Usage metrics | Aggregate when possible |
 | Public | Product names | Standard handling |
 
-## PII detection
-```ts
-const PII_PATTERNS = [
-  { type: "email", regex: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g },
-  { type: "phone", regex: /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g },
-  { type: "ssn", regex: /\b\d{3}-\d{2}-\d{4}\b/g },
-  { type: "credit_card", regex: /\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g },
-];
+## Discovery and classification
 
-function detectPII(text: string) {
-  return PII_PATTERNS.flatMap((p) =>
-    [...text.matchAll(p.regex)].map((m) => ({ type: p.type, match: m[0] }))
-  );
-}
-```
+- Inventory fields, free text, files, logs, backups, exports, Realtime payloads, and third-party transfers.
+- Trace collection purpose, source, access roles, storage location, retention, deletion/export behavior, and telemetry exposure.
+- Regexes and key-name allowlists can be local detection aids, but they are incomplete and cannot establish privacy coverage or legal compliance.
 
 ## Redaction
-```ts
-const SENSITIVE_KEYS = ["email", "phone", "ssn", "password", "apiKey"];
 
-function redact<T extends Record<string, any>>(data: T): T {
-  const result = { ...data };
-  for (const key of SENSITIVE_KEYS) {
-    if (key in result) result[key] = "[REDACTED]";
-  }
-  return result;
-}
-```
+- Prefer allowlisted structured logging over recursive denylist redaction.
+- Test with sentinel secrets and personal-data values across success and error paths.
+- Never log tokens, API keys, raw Auth payloads, signed URLs, or unrestricted query results.
 
 ## Retention rules
 - Define TTL for logs and exports.
-- Provide a user data export + delete path (GDPR/CCPA).
+- Implement accepted export and deletion requirements across application tables, `auth.users`, Storage, backups, and downstream processors.
 - Keep audit trails minimal and access-controlled.
+- Route legal basis, rights, retention, and compliance verdicts to `gdpr-compliance`; this skill owns Supabase implementation controls, not legal conclusions.

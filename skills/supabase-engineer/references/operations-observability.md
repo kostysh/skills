@@ -19,6 +19,6 @@ Collect a redacted bundle with:
 - Connectivity check to Supabase API
 
 ## Incident triage cues
-- 401/403: verify API keys and auth flow.
+- 401/403: distinguish `apikey`, user JWT, Edge Function auth mode, grants, and RLS before rotating credentials.
 - 429: enable backoff/queueing.
 - 5xx: enable graceful degradation and check status page.
