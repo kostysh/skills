@@ -6,7 +6,7 @@ Before writing requirements, place the target inside its parent product, system,
 
 ### Input contract
 
-Acceptable input can be loose, but it must be usable. A ticket, issue, free-form request, product note, API change, code behavior description, domain rule, or migration request is enough when it lets you identify the object being specified, the intended behavior or change, and at least one source of authority. If the object and behavior are both missing, ask before drafting.
+Acceptable input can be loose, but it must be usable. A ticket, issue, free-form request, product note, API change, code behavior description, domain rule, or migration request can support a draft when it identifies the object, intended behavior, and source material. If the object and behavior are both missing, ask before drafting.
 
 ### Capability vs substrate
 

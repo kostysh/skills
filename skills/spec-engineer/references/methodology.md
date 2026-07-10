@@ -30,11 +30,30 @@ Before writing requirements, extract the smallest useful target:
 - **Continuity:** what remains true later, after reload, retry, restart, downstream consumption, migration, or time delay.
 - **Boundaries:** what is included, excluded, delegated to existing behavior, or intentionally unspecified.
 - **Sources:** issue, user request, product note, decision, code behavior, API contract, policy, domain rule, or external dependency.
+- **Source authority and readiness:** which source owns each decision, whether its current version is authoritative, draft, blocked, or accepted, and which downstream consumer it is ready for.
 - **Criticality:** worst observable consequence if the requirement is wrong.
 
 If the parent intent is missing, record it as an assumption, gap, or blocking question according to risk. Do not invent product, system, workflow, or architecture intent just to make the spec feel complete.
 
 If source material conflicts, do not silently average it. Choose the higher-authority source when that is clear; otherwise mark a blocking question or a non-blocking assumption.
+
+## Draftability and handoff readiness
+
+Do not confuse enough input to draft with enough input for downstream action.
+
+- `draft` means the specification is useful, but at least one required input is incomplete, non-authoritative, unapproved, or not ready for the named consumer.
+- `blocked` means the named consumer cannot act without a product, architecture, domain, dependency, behavior, or verification decision that would change the result.
+- `ready for <consumer>` means that consumer can act without inventing source-owned decisions.
+
+A ready handoff requires:
+
+- explicit user authority or accepted product input for the specified behavior;
+- accepted architecture constraints, or an explicit determination that architecture is not affected;
+- accepted domain and external-contract facts needed by the behavior;
+- no blocking product, architecture, behavior, dependency, or verification gap;
+- source-traced atomic requirements, negative or falsifier coverage, and a verification path that proves the claim at its declared boundary.
+
+Non-authoritative, draft, or blocked input may still produce a useful draft when doing so does not require invention. Never make the specification more ready than its inputs. Completing, reviewing, or persisting a specification demonstrates specification work only; it does not demonstrate implementation progress, runtime behavior, or release readiness.
 
 ## Capability reality checkpoint
 
@@ -186,6 +205,8 @@ Do not invent `ASR`, `PD`, or `ADR` identifiers. Cite existing ones. If no repo-
 
 ## Write atomic normative requirements
 
+Use uppercase `MUST`, `MUST NOT`, `SHOULD`, and `MAY` when they carry normative meaning. Treat `CAN` as ordinary descriptive capability language, not as normative modality. Lowercase words keep their ordinary-language meaning unless the repository defines another convention.
+
 Prefer this shape:
 
 ```text
@@ -219,6 +240,7 @@ Rules:
 
 Atomicity test:
 
+- If a requirement contains more than one normative `MUST`, `MUST NOT`, `SHOULD`, or `MAY` clause, split it unless the clauses form one indivisible obligation.
 - If the statement can produce two independently verifiable acceptance criteria, split it.
 - If one half can pass while the other fails, split it.
 - If the requirement says "validate and log", "save and notify", or "calculate and display", split it unless the joined behavior is the single observable effect.
@@ -321,10 +343,12 @@ If the repository requires front matter or a different metadata block, use that 
 # <Spec Title>
 
 ## Status And Scope
-- Status:
+- Handoff status: draft | blocked | ready for <consumer>
+- Named consumer:
 - Scope:
 - Out of scope:
-- Source context:
+- Source context, authority, and readiness:
+- Blockers:
 - Criticality:
 - Risk:
 
@@ -379,7 +403,7 @@ For very small tasks, compress this to:
 ```markdown
 # <Spec Title>
 
-## Scope
+## Scope And Handoff
 ## Behavior
 ## Requirements
 ## Edge Cases
@@ -439,7 +463,7 @@ Quality gates should follow the local repository and package rules first. Use th
 | Public API change | contract test, backward compatibility check, request/response examples |
 | Data migration | migration dry run/check, rollback rehearsal, data invariant validation |
 | Auth or security boundary | permission matrix check, abuse-case tests, SAST or security review when configured |
-| External integration | sandbox or stubbed integration test, contract validation, retry/idempotency and failure tests |
+| External integration | contract or conformance validation, retry/idempotency and failure checks, plus a sandbox or real-boundary exercise that matches the claim; stub/mock checks are support evidence only |
 | Critical workflow | executable scenario, e2e test, preserved-behavior regression |
 | AI output quality | eval suite, regression set, human-review rubric, latency/cost monitoring plan |
 | Operational or reliability claim | metrics/logs/traces inspection, fault injection, load or recovery analysis |
@@ -475,16 +499,17 @@ Check the specification itself:
 - Are anti-claims strong enough to prevent scope inflation?
 - Does criticality require more rigor than scope size suggests?
 - Can implementation start without guessing through a blocking decision?
+- Is the handoff status no more ready than every required product, architecture, domain, dependency, behavior, and verification input?
 - Is any section present only because the template had it? If yes, remove or collapse it.
 
 ## Stop rules
 
 Stop and ask the user when:
 
-- source material contains a contradiction that changes behavior;
+- a behavior-changing source conflict remains unresolved after applying authority and readiness precedence;
 - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
 - the spec would make a capability claim that can only be proven by substrate evidence;
 - the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;
 - a required external contract is missing and cannot be inferred safely.
 
-Do not stop for minor unknowns. Record them as assumptions, non-blocking gaps, validation gaps, or architecture delta needed.
+Do not stop merely because an input is draft or non-authoritative when a useful draft can be produced without invention. Do not stop for minor unknowns. Record them as assumptions, non-blocking gaps, validation gaps, or architecture delta needed, and downgrade the handoff whenever the named consumer still cannot act safely.

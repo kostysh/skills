@@ -6,15 +6,15 @@ description: Create concise, falsifiable software specifications for AI coding
   behavior into a Markdown spec that guides implementation without process
   overhead. Emphasizes observable behavior, capability/substrate separation,
   atomic requirements, acceptance criteria, anti-claims, verification mapping,
-  parent-intent alignment, architecture-context handoff, risk-based depth, and
-  right-sized detail.
+  parent-intent alignment, architecture-context handoff, source-authority and
+  handoff-readiness gates, risk-based depth, and right-sized detail.
 compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.6
+  source-version: 0.2.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b7f9bace1d552532acfb81c851b811fdcd9d8072ca48f1ef9ad181c4ff9e3d36
+  skillforge-source-hash: 34ba47236b680494c71adf80ae3508b5fb9ab33f62db8d4b43346c8d31d01153
 ---
 
 # spec-engineer
@@ -22,9 +22,9 @@ metadata:
 ## Start here
 
 1. Confirm the user needs a software specification, not a PRD, implementation plan, code review, or implementation patch.
-2. Confirm the input is sufficient or salvageable: at minimum, identify the requested object, intended behavior, and source material; if these are absent, ask for them.
+2. Distinguish draftable from handoff-ready input: readiness requires sufficient source authority, applicable accepted constraints, and a named downstream consumer.
 3. Identify the parent product, system, workflow, or architecture intent the spec is meant to constrain, or label that intent as missing before drafting.
-4. Inspect the available source material and state assumptions, constraints, criticality, and any blocking ambiguity before drafting.
+4. Inspect accepted product and architecture context, domain constraints, assumptions, criticality, and blocking ambiguity before drafting.
 5. Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
 6. Do not require layers, scaffolds, config, wrappers, or future extension points unless they are necessary for the current capability or explicitly labeled substrate with a dependent capability.
 7. For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
@@ -38,6 +38,7 @@ metadata:
 - Compressing vague source material into a compact spec with scope, behavior, constraints, acceptance criteria, anti-claims, and verification intent.
 - Right-sizing the spec for anything from a single function or endpoint to a subsystem or whole product slice.
 - Creating vertical-slice specs or spike specs when implementation needs bounded behavior, evidence, or decision-unblocking criteria.
+- Assessing or revising whether a specification is honestly ready for a named downstream consumer.
 
 ## When NOT to use this skill
 
@@ -58,7 +59,7 @@ Before writing requirements, place the target inside its parent product, system,
 
 ### Input contract
 
-Acceptable input can be loose, but it must be usable. A ticket, issue, free-form request, product note, API change, code behavior description, domain rule, or migration request is enough when it lets you identify the object being specified, the intended behavior or change, and at least one source of authority. If the object and behavior are both missing, ask before drafting.
+Acceptable input can be loose, but it must be usable. A ticket, issue, free-form request, product note, API change, code behavior description, domain rule, or migration request can support a draft when it identifies the object, intended behavior, and source material. If the object and behavior are both missing, ask before drafting.
 
 ### Capability vs substrate
 
@@ -104,7 +105,7 @@ Turn vague intent into a bounded engineering target before writing requirements.
 3. State the capability claim with precondition and guard when relevant: Given <precondition>, when <actor> does <trigger/action>, if <guard>, the system MUST <observable response>, creating or preserving <state/effect>, so that <continuity> holds.
 4. Apply a criticality lens: ask what the worst observable consequence is if the requirement is wrong, then increase rigor for security, money, data loss, compliance, safety, privacy, compatibility, or irreversible state.
 5. Classify risk as low, medium, or high when the source material provides or implies it, and use that classification with criticality to choose spec depth.
-6. List source material and authority levels when there are multiple inputs; resolve conflicts or mark them as open questions.
+6. List source material, authority, approval/readiness, and the named downstream consumer; resolve conflicts or mark them as open questions.
 7. For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
 8. Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
 9. Reject future-only substrate such as layers, scaffolds, config knobs, wrappers, or extension points unless a current requirement, accepted architecture constraint, or dependent capability needs it.
@@ -117,6 +118,7 @@ Validation:
 - The target can be described without relying on implementation-only terms.
 - The spec scope says what is in, what is out, and what remains unknown.
 - Risk depth and inherited product, architecture, delivery, and specification context are explicit when they affect implementation.
+- Source authority, readiness, named consumer, and resulting handoff status are explicit; the spec is not more ready than its inputs.
 - Acceptance cannot be satisfied only by substrate when the claim is behavioral.
 - Future-only substrate is absent, deferred by trigger, or explicitly labeled as support work for a named dependent capability.
 - High-criticality scope has explicit invariants, stronger falsifiers, and a verification path beyond happy-path examples.
@@ -140,7 +142,7 @@ Validation:
 
 ### Workflow stage: Draft the compact specification
 
-Produce a concise spec that is implementation-ready without becoming process-heavy.
+Produce a concise spec at an honest handoff status without becoming process-heavy.
 
 1. Use the compact 6-section structure from the methodology reference for trivial scope; use the fuller structure only when the task needs it.
 2. Include Architecture Context only when risk or affected boundaries make it useful for implementation correctness.
@@ -184,6 +186,8 @@ Validation:
 - **architecture boundaries, ASRs, pattern decisions, ADRs, quality scenarios, and architecture drift:** architecture-engineer. architecture-engineer owns architecture decisions and handoff; this skill inherits those constraints and routes drift back instead of deciding architecture inside a spec.
 - **vertical slices, task briefs, sequencing, dependencies, and risk routing:** delivery-planner. delivery-planner owns decomposition and sequencing; this skill may specify a slice or task but does not create the delivery plan.
 - **checking implementation evidence against an existing spec:** spec-conformance-reviewer. spec-conformance-reviewer owns conformance review after a spec exists; this skill owns authoring or revising the spec.
+- **independent design-time concept alignment and false-capability risk:** concept-conformance-reviewer. concept-conformance-reviewer owns the independent verdict; this skill owns repairing the specification requirements and acceptance criteria.
+- **framework, security, data, financial, regulatory, infrastructure, or other specialized technical facts:** the relevant domain skill. domain skills own specialized facts and constraints; this skill records accepted facts without inventing them.
 
 ## Gotchas
 
@@ -210,7 +214,7 @@ A specification must not require scaffolding, wrappers, layers, config surfaces,
 A specification constrains implementation in service of a parent product, system, workflow, or architecture intent. Local requirement precision is insufficient when the spec does not advance or protect that intent; record missing intent as an assumption, gap, or blocking question instead of inventing it.
 
 ### Repository artifact conventions policy
-When producing or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for artifact location, stable spec IDs, requirement and acceptance ID prefixes, metadata/front matter, source context, related PRD/architecture/delivery IDs, and module index updates. Do not hard-code one repository's paths into this skill. If no conventions exist, use this skill's Markdown spec output contract and state any location assumption only when writing files.
+Before producing a persistent specification, check repository conventions for location, IDs, metadata, source links, and indexes. Follow them when present; otherwise use this skill's Markdown output contract. Never hard-code one repository's paths into this skill.
 
 ### Risk-depth policy
 Low-risk specs can stay compact; medium-risk specs need enough behavior, edge cases, inherited constraints, and verification mapping for coordination; high-risk specs need explicit invariants, negative/falsifier coverage, rollback or compatibility semantics, stronger gates, and routed specialist review triggers.
@@ -219,7 +223,7 @@ Low-risk specs can stay compact; medium-risk specs need enough behavior, edge ca
 Include architecture context only when it constrains implementation or verification. Treat linked ASRs, ADRs, pattern decisions, and architecture handoff as inherited sources, not as decisions created by the spec.
 
 ### Normative language policy
-Use MUST for required behavior, MUST NOT for forbidden behavior, SHOULD for recommended behavior with known exceptions, MAY for optional behavior, and CAN for capability statements. Avoid mixing normative and descriptive wording in the same sentence.
+Use uppercase MUST for required behavior, MUST NOT for forbidden behavior, SHOULD for recommended behavior with known exceptions, and MAY for optional behavior. Treat CAN as descriptive capability language, not normative modality, and do not mix normative and descriptive wording in the same sentence.
 
 ### Atomic requirement policy
 Each normative requirement should express one obligation with an explicit subject, condition, action, object, and constraint. Split compound requirements before adding acceptance criteria.
@@ -231,7 +235,7 @@ Runtime history or audit events must define purpose, bounded result/status, safe
 The canonical representation-fit table lives in the methodology reference. In SKILL.md, remember the rule of thumb only: choose the lightest representation that removes the concrete ambiguity or defect class, and prefer invariants whenever a behavior can be stated as an always-true property.
 
 ### BDD fit policy
-Use BDD/Gherkin-style scenarios only when they materially clarify actor-trigger-response behavior, guards, failure paths, continuity, or acceptance risk. A scenario must not replace atomic normative requirements, negative acceptance criteria, falsifiers, or a verification map. Prefer invariants, decision tables, state models, contracts, schemas, or measurable constraints when they express the requirement more directly. Do not add BDD ceremony for trivial, substrate-only, or already unambiguous scope.
+Use BDD/Gherkin only when scenarios materially clarify behavior, guards, failures, continuity, or acceptance risk. They must not replace atomic requirements, negative acceptance, falsifiers, or verification. Prefer a more direct representation and avoid BDD for trivial or substrate-only scope.
 
 ### Verification map policy
 Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. If verification is not currently possible, the spec must say why.
@@ -239,7 +243,7 @@ Every important requirement needs a verification path such as demonstration, ins
 ### Stop rules
 Stop and ask the user when:
 
-- source material contains a contradiction that changes behavior;
+- a behavior-changing source conflict remains unresolved after applying authority and readiness precedence;
 - the requested spec scope conflicts with known parent product, system, workflow, or architecture intent in a behavior-changing way;
 - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
 - the spec would make a capability claim that can only be proven by substrate evidence;
@@ -255,8 +259,10 @@ Produce the specification in the user's working language unless the target repos
 The deliverable is a Markdown specification. Include at minimum:
 
 - title;
-- status or scope;
-- source context;
+- handoff status: `draft`, `blocked`, or `ready for <consumer>`;
+- named downstream consumer;
+- scope;
+- source context, authority, and readiness;
 - parent intent or supported capability;
 - risk or criticality;
 - architecture context when medium/high risk or architecture-impacting scope requires it;
@@ -269,7 +275,10 @@ The deliverable is a Markdown specification. Include at minimum:
 - verification map;
 - open questions, gaps, or architecture delta needed.
 
-Omit or collapse sections only when the resulting spec remains clear, falsifiable, and implementation-ready.
+Omit or collapse sections only when the result remains clear and
+falsifiable at its declared handoff status. Completing the specification
+does not demonstrate implementation progress, runtime behavior, or
+release readiness.
 
 ## Required active references
 - [Specification methodology](references/methodology.md) — Read this when drafting or materially revising a software specification.
