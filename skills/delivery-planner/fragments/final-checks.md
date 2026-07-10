@@ -1,13 +1,17 @@
 - Requested scope is explicit and respected: project, feature, module, integration, handoff item, or backlog audit.
+- Product authority/handoff and architecture handoff item readiness are explicit; no dependent task is more ready than its inputs.
 - Architecture handoff is treated as accepted constraints and obligations, not redesigned.
+- Every in-scope product requirement and architecture obligation has a task, specialist route, spike, or explicit not-applicable rationale.
 - Missing architecture decisions are routed to `architecture-engineer`.
 - Missing product intent is routed to `prd-engineer`.
 - Missing behavior/verification detail is routed to `spec-engineer`.
 - Decomposition uses vertical slices for project/feature planning and module increments for module/service planning.
-- Every task has one primary goal, dependencies, risk, next step, verification hint, and review hint.
+- Every task has one primary goal, source trace, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or return route.
+- `ready for coding` is used only when the coding owner can act without inventing source-owned decisions and has concrete verification and review evidence.
 - Substrate work is tied to a capability or module increment.
 - No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests unless it is explicitly labeled as support work with a dependent increment.
 - High-risk work is visible and not hidden inside generic implementation tasks.
 - Sequencing exposes architectural, integration, migration, rollback, security, data, or tenancy risk early.
 - Parallel work depends only on stable contracts and independent review paths.
+- Plan completion is not reported as implementation progress, runtime behavior, or release readiness.
 - Output is the smallest useful plan; no YAML or multi-register bureaucracy unless requested.

@@ -7,6 +7,7 @@
 - Included:
 - Out of scope:
 - Source authority:
+- Plan handoff: `draft | blocked | ready for <consumer>`
 - Output mode: compact
 
 ## 2. Capability, substrate, and anti-claims
@@ -20,23 +21,23 @@
 - Already present:
 - Not present / unknown:
 
-## 4. Assumptions and gaps
+## 4. Input readiness, assumptions, and gaps
 
-| Type | Item | Impact | Route / handling |
-|---|---|---|---|
-|  |  |  |  |
+| Source / input | Authority or status | Blocking / non-blocking | Impact | Owner / handling |
+|---|---|---|---|---|
+|  |  |  |  |  |
 
-## 5. Decomposition
+## 5. Obligation disposition and decomposition
 
-| ID | Type | Slice / increment | Observable or verifiable outcome | Source / architecture reference | Risk |
+| Source / obligation | Disposition | Slice / increment | Observable or verifiable outcome | Task / route | Risk |
 |---|---|---|---|---|---|
-|  | vertical slice / support / spike / spec / review / module increment |  |  |  |  |
+|  | task / specialist route / spike / not applicable |  |  |  |  |
 
-## 6. Task table
+## 6. Task handoffs
 
-| Task | Type | Slice / increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
+| Task | Type / risk | Slice / increment | Goal / scope | Source / obligation | Handoff status | Blockers / dependencies | Next owner | Expected output / evidence | Unblock / return route |
 |---|---|---|---|---|---|---|---|---|---|
-|  | vertical slice / support / spike / spec / review |  |  |  |  |  |  |  |  |
+|  |  |  |  |  |  |  |  |  |  |
 
 ## 7. Sequencing and gates
 
@@ -61,8 +62,11 @@
 ## 9. Audit summary
 
 - Scope respected:
+- Input readiness preserved:
+- Every obligation dispositioned:
 - Architecture not redesigned:
 - Substrate tied to outcomes:
 - Hidden high-risk work exposed:
-- Every task has verification direction:
+- Every task has a truthful handoff and evidence contract:
+- Plan completion not reported as runtime progress:
 - Output kept compact:

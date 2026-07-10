@@ -8,6 +8,7 @@
 - Collaborators:
 - Out of scope:
 - Architecture handoff references:
+- Plan handoff: `draft | blocked | ready for <consumer>`
 
 ## 2. Module outcome, substrate, and anti-claims
 
@@ -20,11 +21,11 @@
 - Already present:
 - Not present / unknown:
 
-## 4. Architecture obligations to implement
+## 4. Input readiness and architecture obligation disposition
 
-| Obligation | Meaning for this module | Risk | Route if unresolved |
-|---|---|---|---|
-|  |  |  |  |
+| Source / obligation | Authority or status | Disposition | Meaning for this module | Task / route | Risk |
+|---|---|---|---|---|---|
+|  |  | task / specialist route / spike / not applicable |  |  |  |
 
 ## 5. Module increments
 
@@ -32,11 +33,11 @@
 |---|---|---|---|---|
 |  |  |  |  |  |
 
-## 6. Tasks
+## 6. Task handoffs
 
-| Task | Type | Increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
+| Task | Type / risk | Increment | Goal / scope | Source / obligation | Handoff status | Blockers / dependencies | Next owner | Expected output / evidence | Unblock / return route |
 |---|---|---|---|---|---|---|---|---|---|
-|  | module increment / support / spike / spec / review |  |  |  |  |  |  |  |  |
+|  |  |  |  |  |  |  |  |  |  |
 
 ## 7. Sequence and gates
 
@@ -53,6 +54,8 @@
 ## 8. Audit summary
 
 - Module boundary respected:
+- Input readiness preserved:
+- Every obligation dispositioned:
 - Substrate tied to module increments:
-- Hidden high-risk work exposed:
-- Verification hooks named:
+- Every task has a truthful handoff and evidence contract:
+- Plan completion not reported as runtime progress:

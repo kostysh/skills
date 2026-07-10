@@ -1,4 +1,4 @@
 interface:
   display_name: "Delivery Planner"
   short_description: "Decompose architecture handoff into compact executable task plans"
-  default_prompt: "Use $delivery-planner to turn the accepted product scope and architecture handoff into a compact delivery plan with slices or module increments, tasks, sequencing, risk, and routing. Keep output minimal unless deeper planning is requested."
+  default_prompt: "Use $delivery-planner to turn accepted product scope and architecture handoff into a compact delivery plan. Preserve input readiness, disposition every in-scope obligation, and give each task a draft, blocked, or ready-for-owner handoff with expected evidence and return conditions. Keep output minimal unless deeper planning is requested."

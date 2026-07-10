@@ -29,7 +29,9 @@ Those belong to `prd-engineer`, `architecture-engineer`, `spec-engineer`, and co
 
 ## Operating posture
 
-Use this methodology as a decision aid, not a mandatory ceremony. The plan is successful when a downstream agent can pick up the next task without inventing product intent, architecture choices, or behavior details.
+Use this methodology as a decision aid, not a mandatory ceremony. The plan is successful when each next owner can tell whether its task is draft, blocked, or ready and can produce the named output without inventing product intent, architecture choices, behavior details, or dependency state.
+
+A complete planning artifact may still contain blocked tasks. Planning completion is not implementation progress, runtime behavior, or release readiness.
 
 Keep the plan as small as the scope allows:
 
@@ -50,6 +52,7 @@ Scope type: project | feature | module | service | integration | handoff item | 
 Included: what the plan covers
 Excluded: what the plan intentionally does not cover
 Source authority: PRD/product brief, architecture handoff, accepted specs, repo instructions, existing code
+Plan handoff: draft | blocked | ready for <consumer>
 Output mode: compact by default
 ```
 
@@ -77,6 +80,18 @@ Use inputs according to their authority:
 - existing specs define accepted behavior details;
 - repository instructions define local workflow rules;
 - code/tests show existing implementation boundaries and integration seams.
+
+### Readiness propagation
+
+Use the repository's status vocabulary when it exists; otherwise preserve these semantics:
+
+| Input | Ready for dependent planning | Draft or blocked effect |
+| --- | --- | --- |
+| Product source | Current source is authoritative and its handoff is ready for delivery planning or the named consumer. | Non-authoritative or draft product input may shape draft decomposition but cannot yield a ready dependent task; unresolved product blockers route to `prd-engineer`. |
+| Architecture handoff item | Item is `ready`, its blockers are empty, and its next owner can produce the expected output without reselecting architecture. | A `draft` or `blocked` item keeps only dependent tasks draft or blocked; route the missing decision or artifact to `architecture-engineer`. |
+| Specification or domain input | Accepted behavior and verification detail is sufficient for the named owner. | Missing behavior or domain judgment blocks only dependent implementation work and routes to `spec-engineer` or the relevant domain skill. |
+
+Never make a task more ready than its product, architecture, specification, domain, or dependency inputs. Record the plan-level handoff separately from per-task readiness: `ready for <consumer>` means that consumer can use the artifact for the named planning purpose, not that every task is ready. A plan can be complete and usable for coordination while some tasks remain blocked.
 
 Classify gaps:
 
@@ -127,6 +142,17 @@ Known risk -> spike or early validation task.
 ```
 
 If an obligation only creates substrate, attach it to the capability or module increment it enables. If no dependent outcome exists, either delete it from the plan or label it as an unresolved scope problem.
+
+Every in-scope product requirement and architecture handoff obligation needs one explicit disposition:
+
+```text
+task or task set;
+specialist route;
+bounded spike;
+not applicable with rationale.
+```
+
+Keep the source or obligation identifier on the disposition. An obligation that disappears between source intake and the task plan makes the plan incomplete.
 
 Do not select a new architecture pattern. If decomposition requires choosing architecture, stop and route to `architecture-engineer`.
 
@@ -209,6 +235,8 @@ output needed for planning
 route after spike
 ```
 
+When architecture routes a ready spike to `delivery-planner`, the planner produces only a bounded task brief. The brief names an executor-capable owner, success and failure signals, the evidence contract, and where decision-changing evidence returns. The planner does not run the experiment or claim that empirical evidence exists.
+
 ---
 
 ## 5. Task creation
@@ -223,14 +251,26 @@ Title
 Slice / module increment
 Goal
 Scope / out of scope
-Dependencies
+Source / obligation trace
+Handoff status: draft | blocked | ready for <owner>
+Blockers and dependencies
 Risk: low | medium | high
-Next step: spec-engineer | architecture-engineer | coding | domain review | spike
-Verification hint
-Review hint
+Next owner: prd-engineer | architecture-engineer | spec-engineer | coding | domain review | executor
+Expected output or evidence
+Unblock condition or evidence-return route
 ```
 
 Use expanded task details only when risk or ambiguity justifies it.
+
+### Task handoff states
+
+| Status | Meaning |
+| --- | --- |
+| `draft` | The task boundary, source authority, or expected output is still incomplete. |
+| `blocked` | The next owner cannot act; name the concrete blocker, owner, required artifact or decision, and unblock condition. |
+| `ready for <owner>` | The named owner can produce the expected output without inventing product intent, architecture, behavior, or dependency state. |
+
+Use `ready for coding` only when product authority and relevant architecture are accepted or irrelevant, behavior detail is sufficient or linked to an accepted spec, dependencies are ready, and verification plus review evidence are concrete. High-risk work without the required specification or specialist basis routes to that owner instead of coding.
 
 ### Task size rules
 
@@ -256,11 +296,11 @@ Substrate can be a valid task only when it has an owner outcome, such as a slice
 A task is ready for coding only when:
 
 ```text
-source authority is clear;
-architecture basis is accepted or irrelevant;
-dependencies are known;
+product authority and handoff are accepted;
+architecture handoff is ready or irrelevant;
+dependencies are ready, not merely named;
 risk is explicit;
-verification path is known;
+verification and review evidence are concrete;
 behavior details are sufficient or spec-engineer has produced them;
 coding agent does not need to infer product intent or architecture decisions.
 ```
@@ -363,9 +403,10 @@ Recommended structure:
 
 ```text
 Planning scope
-Assumptions and gaps
+Input readiness, assumptions, and gaps
 Decomposition
-Task table
+Source-obligation dispositions
+Task handoffs
 Sequencing
 Routing and risks
 Audit summary
@@ -391,7 +432,10 @@ Before finalizing, verify:
 
 ```text
 The plan matches the requested scope.
+Product authority/handoff and architecture handoff item status are explicit.
+No task is more ready than its source or dependency inputs.
 The architecture handoff is consumed but not redesigned.
+Every in-scope product requirement and architecture obligation has a task, route, spike, or explicit not-applicable rationale.
 Missing architecture decisions are routed.
 Missing product intent is routed.
 Missing behavior detail is routed.
@@ -403,6 +447,8 @@ Task sizes are reviewable.
 Dependencies and blockers are explicit.
 Sequencing exposes risk early.
 Parallel work is safe.
-Every task has a verification hint.
+Every task has a handoff status, next owner, expected output or evidence, and unblock or return route.
+Ready-for-coding tasks have accepted inputs and concrete verification and review evidence.
+Plan completion is not reported as implementation or runtime capability progress.
 The output is compact enough to be useful.
 ```

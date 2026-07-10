@@ -24,6 +24,7 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Included:
 - Out of scope:
 - Source authority:
+- Plan handoff: draft | blocked | ready for <consumer>
 - Output mode: compact
 
 ## 2. Capability, substrate, and anti-claims
@@ -37,23 +38,23 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Already present:
 - Not present / unknown:
 
-## 4. Assumptions and gaps
+## 4. Input readiness, assumptions, and gaps
 
-| Type | Item | Impact | Route / handling |
-|---|---|---|---|
-| Blocking / non-blocking |  |  |  |
+| Source / input | Authority or status | Blocking / non-blocking | Impact | Owner / handling |
+|---|---|---|---|---|
+|  | authoritative / non-authoritative / draft / blocked / ready |  |  |  |
 
-## 5. Decomposition
+## 5. Obligation disposition and decomposition
 
-| ID | Type | Slice / increment | Observable or verifiable outcome | Source / architecture reference | Risk |
+| Source / obligation | Disposition | Slice / increment | Observable or verifiable outcome | Task / route | Risk |
 |---|---|---|---|---|---|
-| VS-01 / MI-01 | vertical slice / support / spike / spec / review / module increment |  |  |  | low/medium/high |
+|  | task / specialist route / spike / not applicable | VS-01 / MI-01 |  |  | low/medium/high |
 
-## 6. Task table
+## 6. Task handoffs
 
-| Task | Type | Slice / increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
+| Task | Type / risk | Slice / increment | Goal / scope | Source / obligation | Handoff status | Blockers / dependencies | Next owner | Expected output / evidence | Unblock / return route |
 |---|---|---|---|---|---|---|---|---|---|
-| T-01 | vertical slice / support / spike / spec / review | VS-01 |  |  |  |  | spec-engineer/coding/etc. |  |  |
+| T-01 | vertical slice / support / spike / spec / review; low/medium/high | VS-01 |  |  | draft / blocked / ready for owner |  |  |  |  |
 
 ## 7. Sequencing and gates
 
@@ -78,10 +79,13 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 ## 9. Audit summary
 
 - Scope respected:
+- Input readiness preserved:
+- Every obligation dispositioned:
 - Architecture not redesigned:
 - Substrate tied to outcomes:
 - Hidden high-risk work exposed:
-- Every task has verification direction:
+- Every task has a truthful handoff and evidence contract:
+- Plan completion not reported as runtime progress:
 - Output kept compact:
 ```
 
@@ -98,6 +102,7 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Collaborators:
 - Out of scope:
 - Architecture handoff references:
+- Plan handoff: draft | blocked | ready for <consumer>
 
 ## 2. Module outcome, substrate, and anti-claims
 
@@ -110,11 +115,11 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Already present:
 - Not present / unknown:
 
-## 4. Architecture obligations to implement
+## 4. Input readiness and architecture obligation disposition
 
-| Obligation | Meaning for this module | Risk | Route if unresolved |
-|---|---|---|---|
-| Contract / data / security / ops / integration |  |  |  |
+| Source / obligation | Authority or status | Disposition | Meaning for this module | Task / route | Risk |
+|---|---|---|---|---|---|
+| Contract / data / security / ops / integration | authoritative / non-authoritative / draft / blocked / ready | task / specialist route / spike / not applicable |  |  |  |
 
 ## 5. Module increments
 
@@ -122,11 +127,11 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 |---|---|---|---|---|
 | MI-01 |  |  | test/contract/log/metric/audit |  |
 
-## 6. Tasks
+## 6. Task handoffs
 
-| Task | Type | Increment | Goal | Scope | Depends on | Risk | Next step | Verification hint | Review hint |
+| Task | Type / risk | Increment | Goal / scope | Source / obligation | Handoff status | Blockers / dependencies | Next owner | Expected output / evidence | Unblock / return route |
 |---|---|---|---|---|---|---|---|---|---|
-| T-01 | module increment / support / spike / spec / review | MI-01 |  |  |  |  | spec-engineer/coding/etc. |  |  |
+| T-01 | module increment / support / spike / spec / review; low/medium/high | MI-01 |  |  | draft / blocked / ready for owner |  |  |  |  |
 
 ## 7. Sequence and gates
 
@@ -143,9 +148,11 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 ## 8. Audit summary
 
 - Module boundary respected:
+- Input readiness preserved:
+- Every obligation dispositioned:
 - Substrate tied to module increments:
-- Hidden high-risk work exposed:
-- Verification hooks named:
+- Every task has a truthful handoff and evidence contract:
+- Plan completion not reported as runtime progress:
 ```
 
 ## Expanded task brief
@@ -159,11 +166,12 @@ Use only when compact table is not enough.
 - Goal:
 - Scope:
 - Out of scope:
-- Dependencies:
+- Source / obligation trace:
+- Handoff status: draft | blocked | ready for <owner>
+- Blockers and dependencies:
 - Risk:
-- Architecture reference:
-- Next step:
-- Verification hint:
-- Review hint:
+- Next owner:
+- Expected output / evidence:
+- Unblock condition / evidence-return route:
 - Open questions:
 ```

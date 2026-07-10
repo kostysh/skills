@@ -10,9 +10,9 @@ description: Decompose accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.5
+  source-version: 0.2.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c61e89618b7c720f6326c1a94fc868f6345e76432c0467c97a52cd450e30e6d6
+  skillforge-source-hash: 0d8fc00061e279dd2123c8afd5e82868d396c7b3419577063c46b1c167d13630
 ---
 
 # delivery-planner
@@ -20,17 +20,18 @@ metadata:
 ## Start here
 
 1. Identify the requested planning scope before decomposing anything; support whole project, feature, module/service, integration, specific architecture handoff item, or backlog audit.
-2. Use accepted product scope and architecture handoff as source authority; do not invent requirements or architecture decisions.
-3. For project/feature planning, create vertical slices around observable capabilities.
-4. For module/service planning, create module increments around accepted responsibilities, boundaries, contracts, invariants, integrations, and verification hooks.
-5. Treat the workflow as decision guidance, not a mandatory procedure; skip irrelevant detail when a compact plan is enough.
-6. Convert architecture handoff obligations into tasks, support tasks, spikes, or specialist routes; do not treat the handoff itself as a task list.
-7. Before creating or recommending a persistent delivery plan, module delivery plan, task brief, or backlog audit artifact, check whether the current repository defines artifact conventions and follow them when present.
-8. Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
-9. Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
-10. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
-11. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
-12. Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
+2. Verify product authority and handoff readiness plus each relevant architecture handoff item's draft, blocked, or ready status; never make a dependent task more ready than its inputs.
+3. Use product scope and architecture handoff according to their verified authority and readiness; do not invent requirements or architecture decisions.
+4. For project/feature planning, create vertical slices around observable capabilities.
+5. For module/service planning, create module increments around accepted responsibilities, boundaries, contracts, invariants, integrations, and verification hooks.
+6. Treat the workflow as decision guidance, not a mandatory procedure; skip irrelevant detail when a compact plan is enough.
+7. Disposition every in-scope product requirement and architecture handoff obligation to a task, specialist route, spike, or explicit not-applicable rationale; do not treat the handoff itself as a task list.
+8. Before creating or recommending a persistent delivery plan, module delivery plan, task brief, or backlog audit artifact, check whether the current repository defines artifact conventions and follow them when present.
+9. Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
+10. Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
+11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
+12. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
+13. Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
 
 ## When to use this skill
 
@@ -87,15 +88,18 @@ Identify authoritative product, architecture, spec, repository, and code inputs.
 1. Load PRD or product brief when product scope matters.
 2. Load architecture handoff when boundaries, contracts, data, security, deployment, or operations matter.
 3. Load existing specs and repo instructions when available.
-4. Classify gaps as blocking or non-blocking and route blocking gaps to the responsible skill.
+4. Verify product Authority and Handoff for the named planning consumer plus architecture handoff item status, blockers, next owner, and expected output; use repository-equivalent fields when names differ.
+5. Allow non-authoritative, draft, or blocked inputs to inform draft decomposition, but keep their dependent tasks draft or blocked.
+6. Classify gaps as blocking or non-blocking and route blocking gaps to the responsible skill.
 
 ### Workflow stage: Convert architecture handoff into delivery work
 
 Turn accepted architecture obligations into tasks without redesigning architecture.
 
 1. Extract boundaries, contracts, data constraints, security constraints, operational obligations, integration points, validation obligations, risks, and revisit triggers.
-2. Map each obligation to a vertical slice, module increment, support task, spike, or specialist route.
-3. Route unresolved architecture choices to architecture-engineer.
+2. Map every in-scope product requirement and architecture obligation, with source trace, to a vertical slice, module increment, support task, spike, specialist route, or explicit not-applicable rationale.
+3. For a ready planner-owned spike, produce only a bounded brief naming the executor, success and failure signals, evidence contract, and return route; do not claim empirical evidence.
+4. Route unresolved architecture choices to architecture-engineer.
 
 ### Workflow stage: Create slices or module increments
 
@@ -112,9 +116,10 @@ Decompose around observable or verifiable outcomes.
 Create executable planning-level tasks without writing full specs.
 
 1. Give each task one primary goal.
-2. Include scope, out-of-scope, dependencies, risk, next step, verification hint, and review hint.
-3. Split only when risk, dependency order, review path, or verification evidence requires it.
-4. Route detailed behavior to spec-engineer instead of inventing it.
+2. Include source trace, scope, out-of-scope, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or evidence-return route.
+3. Use `draft`, `blocked`, or `ready for <owner>`; use `ready for coding` only when accepted product and architecture inputs, sufficient behavior detail, ready dependencies, and concrete verification and review evidence let the coding owner act without source-owned decisions.
+4. Split only when risk, dependency order, review path, or verification evidence requires it.
+5. Route detailed behavior to spec-engineer instead of inventing it.
 
 ### Workflow stage: Sequence and parallelize safely
 
@@ -129,11 +134,14 @@ Expose risk early and avoid parallel work on unstable assumptions.
 Ensure the plan is useful, compact, scope-respecting, and safe for downstream agents.
 
 1. Check that architecture was not redesigned.
-2. Check that high-risk work is visible.
-3. Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
-4. Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.
-5. Check that every task has verification direction.
-6. Check that output does not create unnecessary registers or YAML structures.
+2. Check that no task is more ready than its product, architecture, specification, or dependency inputs.
+3. Check that every in-scope requirement and architecture obligation has a task, route, spike, or explicit not-applicable rationale.
+4. Check that high-risk work is visible.
+5. Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
+6. Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.
+7. Check that every task has a handoff status, next owner, expected output or evidence, and unblock or return route.
+8. Check that completing the plan is not reported as implementation or runtime capability progress.
+9. Check that output does not create unnecessary registers or YAML structures.
 
 ## Policies
 
@@ -148,6 +156,12 @@ The skill must work for whole projects and for partial scopes such as one module
 
 ### Architecture boundary policy
 Consume accepted architecture handoff as constraints and obligations. Do not select or revise architecture decisions; route unresolved architecture questions to architecture-engineer.
+
+### Source and handoff readiness policy
+Verify product authority and readiness for the named consumer plus each relevant architecture handoff item's status and blockers. A non-authoritative, draft, blocked, or unresolved input may inform draft decomposition but cannot produce a ready dependent task; block only the tasks that depend on it and name the owner and artifact needed to clear it.
+
+### Obligation disposition policy
+Every in-scope product requirement and architecture handoff obligation must trace to one or more tasks, a specialist route, a bounded spike, or an explicit not-applicable rationale. Planning is incomplete when an obligation disappears between source and task plan.
 
 ### Module increment policy
 For module/service planning, decompose into verifiable module increments tied to accepted responsibilities, contracts, invariants, data touchpoints, integrations, operations, and tests.
@@ -165,7 +179,13 @@ Do not create tasks for scaffolds, wrappers, config surfaces, harnesses, folders
 A remediation, tooling, documentation, or skills task must name the capability it protects, the defect class it prevents, the evidence it unlocks, and the effectiveness check for the next slice. Do not present support substrate as delivered product capability.
 
 ### Right-sized task policy
-Each task should have one primary goal, clear dependencies, a risk label, a next step, a verification hint, and a review hint.
+Each task should have one primary goal, source trace, clear dependencies, a risk label, a handoff status, blockers, a next owner, an expected output or evidence contract, and an unblock or evidence-return route.
+
+### Task handoff output contract
+Use `draft`, `blocked`, or `ready for <owner>` for every task. Ready means the named owner can produce the expected output without inventing product intent, architecture, behavior, or dependency state. `ready for coding` additionally requires accepted product and architecture inputs, sufficient behavior detail or an accepted spec, ready dependencies, and concrete verification and review evidence. A planner-owned spike ends at an executable brief and never claims the executor's empirical evidence.
+
+### Planning completion anti-claim
+A delivery plan may be complete while some tasks remain blocked. Completing, reviewing, persisting, or tracking the plan is planning capability only; it does not demonstrate implementation progress, runtime behavior, or release readiness.
 
 ### Specialist routing policy
 Route product gaps to prd-engineer, architecture gaps to architecture-engineer, behavior/spec gaps to spec-engineer, and domain judgment to the relevant review or skill.
@@ -215,15 +235,19 @@ Use the user's working language unless repository conventions require another la
 ## Final checks
 
 - Requested scope is explicit and respected: project, feature, module, integration, handoff item, or backlog audit.
+- Product authority/handoff and architecture handoff item readiness are explicit; no dependent task is more ready than its inputs.
 - Architecture handoff is treated as accepted constraints and obligations, not redesigned.
+- Every in-scope product requirement and architecture obligation has a task, specialist route, spike, or explicit not-applicable rationale.
 - Missing architecture decisions are routed to `architecture-engineer`.
 - Missing product intent is routed to `prd-engineer`.
 - Missing behavior/verification detail is routed to `spec-engineer`.
 - Decomposition uses vertical slices for project/feature planning and module increments for module/service planning.
-- Every task has one primary goal, dependencies, risk, next step, verification hint, and review hint.
+- Every task has one primary goal, source trace, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or return route.
+- `ready for coding` is used only when the coding owner can act without inventing source-owned decisions and has concrete verification and review evidence.
 - Substrate work is tied to a capability or module increment.
 - No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests unless it is explicitly labeled as support work with a dependent increment.
 - High-risk work is visible and not hidden inside generic implementation tasks.
 - Sequencing exposes architectural, integration, migration, rollback, security, data, or tenancy risk early.
 - Parallel work depends only on stable contracts and independent review paths.
+- Plan completion is not reported as implementation progress, runtime behavior, or release readiness.
 - Output is the smallest useful plan; no YAML or multi-register bureaucracy unless requested.
