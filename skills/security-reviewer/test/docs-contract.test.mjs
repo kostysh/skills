@@ -8,6 +8,96 @@ const skillDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
 const readSkillFile = (relativePath) => readFile(path.join(skillDir, relativePath), 'utf8');
 
+const countMatches = (text, pattern) => [...text.matchAll(pattern)].length;
+
+test('source contract exposes one required methodology and optional domain references', async () => {
+  const manifest = await readSkillFile('skill.yaml');
+
+  assert.match(manifest, /source-version: "0\.1\.7"/);
+  assert.match(manifest, /requiredReferences:\n\s+- "ref-methodology"\n\s+optionalReferences:/);
+  assert.match(manifest, /id: "ref-api-auth-input"[\s\S]*?required: false/);
+  assert.match(manifest, /id: "ref-github-actions"[\s\S]*?required: false/);
+  assert.match(manifest, /id: "ref-secrets-config"[\s\S]*?required: false/);
+});
+
+test('generated root has one activation and interop surface', async () => {
+  const skill = await readSkillFile('SKILL.md');
+
+  assert.equal(countMatches(skill, /^## When to use this skill$/gm), 1);
+  assert.equal(countMatches(skill, /^## When NOT to use this skill$/gm), 1);
+  assert.equal(countMatches(skill, /^## Interop priority$/gm), 1);
+  assert.doesNotMatch(skill, /^## When to Use$/gm);
+  assert.doesNotMatch(skill, /^## Skill Interop \(Priority\)$/gm);
+  assert.doesNotMatch(skill, /^## Remediation Rules$/gm);
+});
+
+test('review basis and status contract prevent false closure', async () => {
+  const [skill, methodology] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/methodology.md'),
+  ]);
+
+  assert.match(skill, /Establish the review basis/);
+  assert.match(skill, /Missing evidence never becomes FAIL by itself/);
+  assert.match(skill, /PASS \(scoped\)/);
+  assert.match(skill, /INCOMPLETE/);
+  assert.match(skill, /BLOCKED/);
+  assert.match(skill, /Targeted review never emits PASS/);
+  assert.match(methodology, /Missing evidence alone is not `FAIL`/);
+  assert.match(methodology, /no confirmed findings in reviewed scope/);
+  assert.match(methodology, /whole-system security/);
+});
+
+test('partial snippets cannot become findings through symbol-name inference', async () => {
+  const [methodology, apiAuth] = await Promise.all([
+    readSkillFile('references/methodology.md'),
+    readSkillFile('references/api-auth-input.md'),
+  ]);
+
+  assert.match(
+    methodology,
+    /Do not infer helper, middleware, client, role, or credential semantics from names/,
+  );
+  assert.match(methodology, /Absence of a control in a supplied snippet or diff is not proof/);
+  assert.match(methodology, /Keep the item in `needs verification`/);
+  assert.match(apiAuth, /do not infer their guarantees from symbol names/);
+});
+
+test('review ownership stays read-only and leaves merge decisions to code-reviewer', async () => {
+  const [skill, handoffs] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/domain-handoffs.md'),
+  ]);
+
+  assert.match(skill, /Keep the review read-only by default/);
+  assert.match(skill, /Do not issue an overall merge recommendation/);
+  assert.match(skill, /spec-conformance-reviewer/);
+  assert.match(skill, /security-diff-scan, security-scan, or deep-security-scan/);
+  assert.match(handoffs, /security-reviewer` stays read-only/);
+  assert.match(handoffs, /overall merge recommendation/);
+  assert.match(handoffs, /do not start a parallel scan or issue a competing scan verdict/);
+});
+
+test('standards control fulfillment always routes to spec-conformance-reviewer', async () => {
+  const [skill, methodology] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/methodology.md'),
+  ]);
+
+  assert.match(skill, /whether or not a versioned control set is supplied/);
+  assert.match(skill, /standards\/control fulfillment always belongs to spec-conformance-reviewer/);
+  assert.match(methodology, /whether or not a complete versioned control set is supplied/);
+  assert.match(methodology, /must not issue per-control pass\/fail or the compliance status/);
+  assert.match(
+    methodology,
+    /`PASS \(scoped\)` \| The named stable security-review scope has complete required coverage/,
+  );
+  assert.doesNotMatch(
+    methodology,
+    /`PASS \(scoped\)` \| The named stable scope or versioned control set/,
+  );
+});
+
 test('early-use workflow exposes the bounded auth-admission checkpoint', async () => {
   const skill = await readSkillFile('SKILL.md');
 
@@ -33,7 +123,7 @@ test('api auth reference keeps the auth-admission checklist narrow and complete'
   assert.match(reference, /references\/policy-governance-admission\.md/);
 });
 
-test('domain handoff keeps Hono-specific admission facts with HONO engineer', async () => {
+test('domain handoff keeps Hono-specific admission facts with hono-engineer', async () => {
   const reference = await readSkillFile('references/domain-handoffs.md');
 
   assert.match(reference, /route admission-boundary preservation/);
@@ -170,12 +260,14 @@ test('data-access injection reference requires trace before reporting PostgREST 
   assert.match(reference, /supabase-engineer/);
 });
 
-test('data-access regression fixture contains unsafe and safe PostgREST construction', async () => {
+test('data-access documentation fixture preserves unsafe and safer examples without claiming behavioral proof', async () => {
   const manifest = await readSkillFile('skill.yaml');
   const fixture = await readSkillFile('test/fixtures/data-access-injection.ts');
 
   assert.match(manifest, /ref-data-access-injection/);
   assert.match(manifest, /copy-test-fixtures-data-access-injection-ts/);
+  assert.match(manifest, /Documentation-contract fixture/);
+  assert.match(manifest, /not behavioral security proof/);
   assert.ok(fixture.includes('const challengeId = body.challengeId;'));
   assert.ok(
     fixture.includes(
@@ -213,7 +305,7 @@ test('data-access guidance is reachable from related references', async () => {
   );
 });
 
-test('browser storage and telemetry leak checks are explicit', async () => {
+test('browser storage and telemetry checks are impact-aware while credential material stays prohibited', async () => {
   const [skill, secrets, methodology] = await Promise.all([
     readSkillFile('SKILL.md'),
     readSkillFile('references/secrets-config.md'),
@@ -221,28 +313,51 @@ test('browser storage and telemetry leak checks are explicit', async () => {
   ]);
 
   assert.match(skill, /browser durable storage/);
-  assert.match(skill, /OTPs, CSRF tokens, cookies, JWT\/session IDs/);
-  assert.match(skill, /raw stack\/source, props, request bodies, response bodies, headers/);
+  assert.match(skill, /passwords, OTP\/recovery material/);
+  assert.match(skill, /identity\/provider\/network payloads and telemetry fields by sensitivity/);
   assert.match(secrets, /Browser Durable Storage/);
-  assert.match(secrets, /raw request bodies, response bodies, headers, query strings, cookie values/);
-  assert.match(secrets, /allowlisted, scoped to user\/tenant\/context, TTL-bound, non-authoritative/);
+  assert.match(secrets, /Always flag browser durable storage of plaintext passwords/);
+  assert.match(
+    secrets,
+    /ordinary non-sensitive display preference or public identifier is not a security finding/,
+  );
+  assert.match(secrets, /Treat all client-side stored data as untrusted on read/);
+  assert.match(secrets, /telemetry destination, access controls, retention, redaction stage/);
   assert.match(methodology, /Browser durable storage and telemetry\/error reporting/);
   assert.match(methodology, /sentinel payload behavior/);
 });
 
-test('CSRF reissue threat model and behavioral evidence are required', async () => {
+test('CSRF guidance follows the selected pattern and requires behavioral evidence', async () => {
   const [skill, apiAuth, methodology] = await Promise.all([
     readSkillFile('SKILL.md'),
     readSkillFile('references/api-auth-input.md'),
     readSkillFile('references/methodology.md'),
   ]);
 
-  assert.match(skill, /valid-cookie boundary, Origin\/CORS, rate\/admission/);
-  assert.match(skill, /rotation atomicity/);
+  assert.match(skill, /synchronizer-token, signed double-submit/);
+  assert.match(
+    skill,
+    /require atomic rotation only when the selected stateful contract promises rotation/,
+  );
   assert.match(apiAuth, /CSRF Refresh\/Reissue Threat Model/);
-  assert.match(apiAuth, /valid httpOnly session cookie/);
+  assert.match(apiAuth, /stateful synchronizer token/);
+  assert.match(apiAuth, /signed double-submit token/);
+  assert.match(apiAuth, /Do not require server-side storage or per-request rotation/);
   assert.match(apiAuth, /pending-session scope/);
   assert.match(apiAuth, /Source-text checks alone are not security evidence/);
   assert.match(methodology, /Source-text tests, source-grep checks/);
   assert.match(methodology, /behavioral tests, sentinel payloads, negative API tests/);
+});
+
+test('GitHub Actions findings require actual untrusted execution reachability', async () => {
+  const reference = await readSkillFile('references/github-actions.md');
+
+  assert.match(reference, /Flag only when all are true/);
+  assert.match(reference, /can actually be fetched into an executable path/);
+  assert.match(reference, /built-in protections/);
+  assert.match(reference, /explicit unsafe opt-outs/);
+  assert.match(
+    reference,
+    /checking out data without executing or interpreting it is not the complete exploit/,
+  );
 });

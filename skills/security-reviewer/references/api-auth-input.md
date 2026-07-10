@@ -68,6 +68,7 @@ What to verify before reporting:
 
 - whether downstream policy, RLS, or service-layer checks already enforce the boundary
 - whether the same privilege is required to exploit the path, making it non-escalating
+- whether the supplied snippet or diff includes the relevant middleware, client construction, ownership helper, schema, and downstream authorization definitions; do not infer their guarantees from symbol names
 
 ## State-Changing Requests
 
@@ -91,15 +92,23 @@ What to verify before reporting:
 
 ### CSRF Refresh/Reissue Threat Model
 
-When reviewing CSRF refresh or reissue endpoints, check:
-- valid cookie boundary: a valid httpOnly session cookie is required, and the response never contains a JWT, session ID, cookie value, or raw session data;
-- Origin/CORS boundary: only accepted origins can receive a token;
-- rate/admission behavior: missing/invalid cookies, disallowed origins, stale sessions, and wrong session classes fail before rotation;
-- session freshness: disabled, expired, logged-out, wrong-context, or not-yet-active sessions cannot mint active CSRF tokens;
-- rotation atomicity: the session-bound CSRF hash/token state changes atomically with the token returned;
-- pending-session scope: onboarding/pending CSRF tokens cannot authorize active-account protected APIs.
+First identify the authoritative CSRF pattern used by the application:
 
-Require negative API tests for these cases where the codebase has a test harness. Source-text checks alone are not security evidence.
+- a stateful synchronizer token compared with server-side session state;
+- a signed double-submit token bound to session-specific data;
+- a framework-provided or other documented pattern whose guarantees can be verified.
+
+Do not require server-side storage or per-request rotation from a stateless signed double-submit design. Do not treat frequent rotation as a universal security improvement. When the documented stateful design does promise refresh or rotation, verify that state change and returned token are atomic and that old-token behavior matches the contract.
+
+For the selected pattern, check:
+
+- session binding and unpredictability: the token is bound to the authenticated session or equivalent trusted session-specific value without exposing the session identifier;
+- request boundary: the server validates the token through the documented header/form mechanism and applies the required Origin/Referer, SameSite, or CORS checks without treating CORS alone as CSRF protection;
+- response leakage: responses, URLs, logs, and telemetry do not expose JWTs, session IDs, cookie values, raw session data, or CSRF secrets;
+- rate/admission and freshness: missing/invalid session state, disallowed browser origins where applicable, expired/logged-out/wrong-context sessions, and unsupported session classes fail before token issuance or protected side effects;
+- pending-session scope: onboarding/pending tokens cannot authorize active-account protected APIs.
+
+Require negative API tests for applicable cases where the codebase has a test harness. Source-text checks alone are not security evidence.
 
 ## Auth-Admission Early Checklist
 
@@ -113,7 +122,7 @@ Check:
 - replay/idempotency expectations: whether duplicate, retried, or reordered requests are rejected, deduped, or safely accepted
 - bounded body handling: high-risk routes must bound request bodies before untrusted JSON, form, multipart, or raw body reads
 
-Keep the checklist narrow. If exploitability depends on Hono-specific body limits, middleware order, or admission-boundary preservation, resolve that fact through `HONO engineer` rather than duplicating framework guidance here.
+Keep the checklist narrow. If exploitability depends on Hono-specific body limits, middleware order, or admission-boundary preservation, resolve that fact through `hono-engineer` rather than duplicating framework guidance here.
 
 This auth-admission checklist is route-specific. For policy-governance admission before external invocation, executable approval capability, policy activation, governance/audit persistence preconditions, fail-closed policy gates, stored `allowed` replay, caller-selected evidence/freshness refs, or other security-relevant replay/idempotency controls, use `references/policy-governance-admission.md` instead of expanding this route checklist.
 

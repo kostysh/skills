@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.6`
+- Skill source version: `0.1.7`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -23,15 +23,7 @@ Generated from `skill.yaml`.
 - `test/fixtures/data-access-injection.ts`
 
 ## Required references
-- `references/api-auth-input.md`
-- `references/data-access-injection.md`
-- `references/domain-handoffs.md`
-- `references/github-actions.md`
 - `references/methodology.md`
-- `references/policy-governance-admission.md`
-- `references/secrets-config.md`
-- `references/supabase-rls.md`
-- `references/webhooks.md`
 
 ## Warnings
 - none

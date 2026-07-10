@@ -1,40 +1,11 @@
-Find exploitable security weaknesses without turning every suspicious pattern into a finding. This skill owns threat model, confidence, exploitability, and security reporting discipline.
-
-## When to Use
-
-- "security review", "find vulnerabilities", "audit for OWASP issues"
-- Reviewing authn, authz, session, token, secret, or permission changes
-- Reviewing GitHub Actions, release workflows, or automation with secrets
-- Reviewing Supabase RLS, grants, privileged functions, or service-role boundaries
-- Reviewing app-layer data-access construction through REST/PostgREST, SDK query builders, RPC, storage, search, or service-role clients
-- Reviewing webhook handlers, signature verification, replay protection, or idempotency
-- Reviewing browser durable storage, client telemetry, error reporting, or cookie-session CSRF refresh/reissue behavior
-- Checking user-controlled input flowing into sensitive sinks
-
-## When NOT to Use
-
-- General code quality review without a security objective: use `code-reviewer`
-- Pure framework implementation guidance: use the relevant domain skill
-- UI or accessibility review: use `web-ui-reviewer`
-- Pure shell portability or style review with no security angle: use the relevant engineering skill or tooling
-
-## Skill Interop (Priority)
-
-- This skill owns security threat model, confidence thresholds, exploitability checks, and vulnerability reporting.
-- Domain skills own framework/runtime facts and remediation detail:
-  - `hono-engineer`
-  - `supabase-engineer`
-  - `react-spa-engineer`
-  - `react-components-engineer`
-  - `node-engineer`
-- `code-reviewer` owns non-security review flow and general merge-risk findings.
-- If both skills are active, keep confirmed security findings under this skill and move non-security findings to `code-reviewer`.
+Find exploitable security weaknesses without turning every suspicious pattern into a finding. The observable capability is a reproducible, bounded review result tied to a stable target, explicit coverage, traced attack paths, and calibrated evidence. Files, compiler output, grep results, fixtures, mocks, and green tests are supporting substrate unless they exercise the security boundary being claimed.
 
 ## Non-Goals
 
 - Do not turn this into a generic code-quality reviewer.
 - Do not embed framework implementation playbooks that already belong to domain skills.
 - Do not author final Hono middleware designs, Supabase policies, or Cloudflare configuration from this skill alone.
+- Do not present this skill as penetration testing, SAST/DAST, dependency scanning, exhaustive repository traversal, or standards compliance. Even when a versioned control set is supplied, `spec-conformance-reviewer` owns control fulfillment and compliance status; this skill contributes only exploitability findings and evidence limits.
 
 ## Non-Negotiables
 
@@ -61,9 +32,9 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 
 ## Operating Modes
 
-- Targeted review is the default. Load only the references needed for the changed surface and report only high-confidence findings.
-- Passive notice applies while editing nearby code. Mention only high-signal issues that are likely real and matter to the work in progress.
-- Formal audit or report mode applies only when the user explicitly asks to scan, audit, or produce a report. In this mode, enumerate all relevant surfaces, use the audit order from `references/methodology.md`, assign stable finding IDs, and include line-referenced evidence.
+- Targeted review is the default. Load only the references needed for the identified surface, report only high-confidence findings, and never issue PASS.
+- Formal audit or report mode applies only when the user explicitly asks for it and the target, snapshot, scope, and requested assurance can be established. Enumerate applicable surfaces, assign stable finding IDs, and use the formal status contract from `references/methodology.md`.
+- Re-audit mode checks prior findings against a new stable snapshot and current evidence without editing the target.
 
 ## Fast Workflow
 
@@ -100,10 +71,10 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 5. Apply the data-access construction checkpoint when backend code reads/writes a database, uses REST/PostgREST, Supabase clients, RPC calls, service-role clients, query builders, or manually constructs URLs/filters.
    This checkpoint must enumerate attacker-controlled request/body/query/header/cookie values and persisted user-controlled values that reach data-access filters, select lists, RPC args, query-builder fragments, SQL fragments, storage keys, table/function/column names, or service-role calls.
 6. Apply the browser storage and telemetry checkpoint when frontend code persists data or reports client errors:
-   - durable storage must not contain OTPs, CSRF tokens, cookies, JWT/session IDs, raw identity/provider payloads, or raw request/response/header/query/cookie data
-   - telemetry/error reports must not include raw stack/source, props, request bodies, response bodies, headers, query strings, cookies, OTPs, CSRF tokens, bearer tokens, or raw identity values
+   - never accept browser storage of passwords, OTP/recovery material, CSRF secrets, cookies, JWT/session IDs, refresh tokens, or equivalent credentials/session material
+   - evaluate identity/provider/network payloads and telemetry fields by sensitivity, exposure, access control, retention, integrity/authority, and attacker impact rather than flagging field names alone
    - source-text checks are not evidence by themselves; require behavioral tests, sentinel payloads, or negative API tests for the claimed protection
-7. For CSRF refresh/reissue reviews, model valid-cookie boundary, Origin/CORS, rate/admission, session freshness, rotation atomicity, absence of JWT/session/cookie data in response bodies, and pending-session scope.
+7. For CSRF refresh/reissue reviews, first identify the documented synchronizer-token, signed double-submit, or other accepted pattern. Check session binding, secrecy, Origin/CORS and request validation, response leakage, and pending-session scope; require atomic rotation only when the selected stateful contract promises rotation.
 8. For protected backend data paths, compare the route/service authorization with the direct data-access boundary:
    - user JWT/PostgREST/RPC/RLS behavior versus server API behavior
    - service-role reads for internal secrets/admin tasks versus ordinary user-scoped reads or mutations
@@ -129,7 +100,7 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 13. Choose the output mode:
    - targeted findings in chat
    - formal audit sections with stable IDs
-   - remediation of one confirmed finding at a time
+   - re-audit status for a remediated snapshot
 
 ## What Not to Flag by Default
 
@@ -184,6 +155,8 @@ Unless the user explicitly asks for a formal audit or report:
 - If useful, add a short "needs verification" section for medium-confidence items.
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
 - In formal audit mode, add stable finding IDs and a short executive summary.
+- Include the review basis, coverage, uninspected surfaces, residual risk, evidence limits, and the status defined by `references/methodology.md`.
+- Never issue an overall merge recommendation; hand confirmed security blockers and residual risk to `code-reviewer`.
 - In formal audit mode that includes backend/database code, include a short "data-access construction reviewed" note naming whether raw SQL, REST/PostgREST, SDK query builders, RPC, storage, RLS helper/policy, and service-role paths were inspected. Do not claim database security review is complete if server-side data-access construction or direct data-access authorization was not inspected.
 - Do not cite source-text tests, source-grep tests, or presence/absence string checks as security evidence unless they are paired with behavioral tests, sentinel payloads, or negative API tests that exercise the protection.
 - Write a markdown report only when the user asks for one or the repo expects an artifact.
@@ -195,16 +168,9 @@ Unless the user explicitly asks for a formal audit or report:
 - Do not report a finding just because a pattern is non-ideal. Report it only when the override still leaves a plausible exploit path.
 - If an override is necessary but undocumented, suggest documenting the rationale and compensating controls.
 
-## Remediation Rules
-
-- Fix one confirmed finding at a time.
-- Preserve expected behavior unless the security issue requires a breaking change. Call out that tradeoff before making it.
-- Prefer narrow, auditable changes over broad rewrites.
-- Follow the project's normal test and change flow so the security fix is likely to be accepted and kept.
-
 ## Reference Map
 
-Read only what you need:
+Read `references/methodology.md` for every review, then load only the optional references whose triggers match the reviewed surface:
 
 - `references/methodology.md` - confidence gating, surface discovery, audit order, uncertainty language, and report format
 - `references/api-auth-input.md` - input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints

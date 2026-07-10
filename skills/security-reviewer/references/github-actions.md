@@ -15,10 +15,13 @@ Default attacker:
 
 ### Pwn Request
 
-Flag when both are true:
+Flag only when all are true:
 
 - `pull_request_target` or another privileged trigger is used
-- fork-controlled code or local actions are checked out and executed
+- fork-controlled code, artifacts, dependencies, configuration, or local actions can actually be fetched into an executable path
+- a later step executes or interprets that untrusted material with secrets, write permissions, privileged caches, internal runner access, or another meaningful privilege
+
+Do not stop at the YAML shape. Verify the exact checkout/action version and configuration, built-in protections, explicit unsafe opt-outs, alternate `git fetch` or artifact download paths, workspace path, and whether subsequent tools such as package installation, build, tests, local actions, or config loading execute the material. A protection that prevents the untrusted ref from being fetched breaks reachability; checking out data without executing or interpreting it is not the complete exploit.
 
 ### Expression Injection
 
@@ -60,6 +63,7 @@ when those files are loaded in a privileged workflow context.
 ## Detection Hints
 
 - search for privileged triggers such as `pull_request_target`, `workflow_run`, `issue_comment`, and manual dispatch flows that can reach secret-bearing jobs
+- inspect built-in checkout protections and unsafe opt-outs, but also look for `git fetch`, `gh pr checkout`, archive/artifact download, or custom actions that bypass checkout-specific protection
 - inspect `permissions:`, `secrets:`, OIDC setup, publish credentials, and environment protection rules
 - search for `actions/checkout`, local actions, or repo scripts executed after fork-controlled content is fetched
 - inspect `run:` blocks for attacker-controlled `${{ }}` interpolation, comment bodies, PR titles, branch names, or filenames
@@ -69,6 +73,8 @@ when those files are loaded in a privileged workflow context.
 ## What to Verify Before Reporting
 
 - whether the trigger is actually reachable by forks or other untrusted actors
+- whether the exact action/runtime configuration permits the untrusted ref or artifact to reach the workspace despite built-in protections
+- whether any later command executes, imports, installs, sources, renders, or otherwise interprets that untrusted material
 - whether branch protection, environment approval, or actor allowlists already block the exploit path
 - whether a suspicious expression is only used in metadata fields such as `if:` or `with:` rather than in a shell execution context
 - whether release refs are bound to immutable runtime artifacts and protected deployment identities when that binding decides publish, deploy, or rollback authority

@@ -1,79 +1,52 @@
 ---
 name: security-reviewer
-description: Systematic security code review skill for vulnerabilities in
+description: Perform bounded, evidence-backed security code review for
   application code, CI workflows, permission models, webhooks, secrets,
-  app-layer data access, and configuration. Use when asked to security review,
-  find vulnerabilities, audit auth, RLS, REST/PostgREST filters, SDK query
-  builders, check GitHub Actions security, inspect webhook verification, or
-  review code against OWASP-style risks. Owns threat modeling, confidence
-  gating, exploitability checks, and evidence; pairs with domain skills for
-  framework details.
+  app-layer data access, and configuration. Use for targeted vulnerability
+  review, exploitability triage, or a scoped formal audit with an identifiable
+  target. Owns threat modeling, confidence gating, attack-path validation,
+  security findings, and scoped security status; it does not replace scan
+  orchestration, standards-compliance review, penetration testing, or
+  implementation.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 900d3b9e47bbd31140575324dcc221ec93de48dc898060c0cbccc5b3e89735b1
+  skillforge-source-hash: f0652285fec8d8d68b27123ca681287973eebe3da56c282e86a233e2e569d150
 ---
 
 # security-reviewer
 
 ## Start here
 
-1. Confirm the user is asking for a security review, vulnerability search, audit, or security-sensitive code inspection.
-2. Use the default threat model unless the user or project gives a different one.
-3. Research exploitability before reporting; do not flag findings from pattern matching alone.
-4. Load only the references needed for the reviewed surface and keep findings evidence-backed.
+1. Confirm the request is a bounded security review, exploitability triage, or scoped formal audit rather than implementation, standards compliance, or scan orchestration.
+2. Read references/methodology.md, select targeted, formal, or re-audit mode, and establish a stable review basis before drawing conclusions.
+3. Keep the review read-only by default; research exploitability before reporting and do not flag findings from pattern matching alone.
+4. Load only the optional references triggered by the reviewed surfaces and state any missing evidence or residual risk.
 
 ## When to use this skill
 
-- Security review, vulnerability finding, OWASP-style audit, or exploitability triage.
+- Targeted security review, vulnerability finding, or exploitability triage for an identifiable code or configuration scope.
 - Authn, authz, sessions, tokens, secrets, permissions, webhooks, CI, Supabase RLS, app-layer data-access construction, or sensitive input-to-sink flows.
-- Formal security audit or report mode when the user explicitly asks for it.
+- Scoped formal security audit or remediation re-audit when the target, snapshot, and requested assurance can be established.
 
 ## When NOT to use this skill
 
 - General non-security code quality review without a security objective.
-- Pure framework implementation guidance owned by a domain skill.
+- Implementing a fix or pure framework guidance owned by a domain or implementation skill.
+- A full PR, repository, or deep multi-pass scan when a dedicated security scan orchestrator is available.
+- ASVS or another standards-compliance verdict or implementation-to-control-set mapping, whether or not a versioned control set is supplied; route that work to spec-conformance-reviewer.
 - UI, accessibility, shell portability, or style review with no security angle.
 
 ## Overview
 
-Find exploitable security weaknesses without turning every suspicious pattern into a finding. This skill owns threat model, confidence, exploitability, and security reporting discipline.
-
-## When to Use
-
-- "security review", "find vulnerabilities", "audit for OWASP issues"
-- Reviewing authn, authz, session, token, secret, or permission changes
-- Reviewing GitHub Actions, release workflows, or automation with secrets
-- Reviewing Supabase RLS, grants, privileged functions, or service-role boundaries
-- Reviewing app-layer data-access construction through REST/PostgREST, SDK query builders, RPC, storage, search, or service-role clients
-- Reviewing webhook handlers, signature verification, replay protection, or idempotency
-- Reviewing browser durable storage, client telemetry, error reporting, or cookie-session CSRF refresh/reissue behavior
-- Checking user-controlled input flowing into sensitive sinks
-
-## When NOT to Use
-
-- General code quality review without a security objective: use `code-reviewer`
-- Pure framework implementation guidance: use the relevant domain skill
-- UI or accessibility review: use `web-ui-reviewer`
-- Pure shell portability or style review with no security angle: use the relevant engineering skill or tooling
-
-## Skill Interop (Priority)
-
-- This skill owns security threat model, confidence thresholds, exploitability checks, and vulnerability reporting.
-- Domain skills own framework/runtime facts and remediation detail:
-  - `hono-engineer`
-  - `supabase-engineer`
-  - `react-spa-engineer`
-  - `react-components-engineer`
-  - `node-engineer`
-- `code-reviewer` owns non-security review flow and general merge-risk findings.
-- If both skills are active, keep confirmed security findings under this skill and move non-security findings to `code-reviewer`.
+Find exploitable security weaknesses without turning every suspicious pattern into a finding. The observable capability is a reproducible, bounded review result tied to a stable target, explicit coverage, traced attack paths, and calibrated evidence. Files, compiler output, grep results, fixtures, mocks, and green tests are supporting substrate unless they exercise the security boundary being claimed.
 
 ## Non-Goals
 
 - Do not turn this into a generic code-quality reviewer.
 - Do not embed framework implementation playbooks that already belong to domain skills.
 - Do not author final Hono middleware designs, Supabase policies, or Cloudflare configuration from this skill alone.
+- Do not present this skill as penetration testing, SAST/DAST, dependency scanning, exhaustive repository traversal, or standards compliance. Even when a versioned control set is supplied, `spec-conformance-reviewer` owns control fulfillment and compliance status; this skill contributes only exploitability findings and evidence limits.
 
 ## Non-Negotiables
 
@@ -100,9 +73,9 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 
 ## Operating Modes
 
-- Targeted review is the default. Load only the references needed for the changed surface and report only high-confidence findings.
-- Passive notice applies while editing nearby code. Mention only high-signal issues that are likely real and matter to the work in progress.
-- Formal audit or report mode applies only when the user explicitly asks to scan, audit, or produce a report. In this mode, enumerate all relevant surfaces, use the audit order from `references/methodology.md`, assign stable finding IDs, and include line-referenced evidence.
+- Targeted review is the default. Load only the references needed for the identified surface, report only high-confidence findings, and never issue PASS.
+- Formal audit or report mode applies only when the user explicitly asks for it and the target, snapshot, scope, and requested assurance can be established. Enumerate applicable surfaces, assign stable finding IDs, and use the formal status contract from `references/methodology.md`.
+- Re-audit mode checks prior findings against a new stable snapshot and current evidence without editing the target.
 
 ## Fast Workflow
 
@@ -139,10 +112,10 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 5. Apply the data-access construction checkpoint when backend code reads/writes a database, uses REST/PostgREST, Supabase clients, RPC calls, service-role clients, query builders, or manually constructs URLs/filters.
    This checkpoint must enumerate attacker-controlled request/body/query/header/cookie values and persisted user-controlled values that reach data-access filters, select lists, RPC args, query-builder fragments, SQL fragments, storage keys, table/function/column names, or service-role calls.
 6. Apply the browser storage and telemetry checkpoint when frontend code persists data or reports client errors:
-   - durable storage must not contain OTPs, CSRF tokens, cookies, JWT/session IDs, raw identity/provider payloads, or raw request/response/header/query/cookie data
-   - telemetry/error reports must not include raw stack/source, props, request bodies, response bodies, headers, query strings, cookies, OTPs, CSRF tokens, bearer tokens, or raw identity values
+   - never accept browser storage of passwords, OTP/recovery material, CSRF secrets, cookies, JWT/session IDs, refresh tokens, or equivalent credentials/session material
+   - evaluate identity/provider/network payloads and telemetry fields by sensitivity, exposure, access control, retention, integrity/authority, and attacker impact rather than flagging field names alone
    - source-text checks are not evidence by themselves; require behavioral tests, sentinel payloads, or negative API tests for the claimed protection
-7. For CSRF refresh/reissue reviews, model valid-cookie boundary, Origin/CORS, rate/admission, session freshness, rotation atomicity, absence of JWT/session/cookie data in response bodies, and pending-session scope.
+7. For CSRF refresh/reissue reviews, first identify the documented synchronizer-token, signed double-submit, or other accepted pattern. Check session binding, secrecy, Origin/CORS and request validation, response leakage, and pending-session scope; require atomic rotation only when the selected stateful contract promises rotation.
 8. For protected backend data paths, compare the route/service authorization with the direct data-access boundary:
    - user JWT/PostgREST/RPC/RLS behavior versus server API behavior
    - service-role reads for internal secrets/admin tasks versus ordinary user-scoped reads or mutations
@@ -168,7 +141,7 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 13. Choose the output mode:
    - targeted findings in chat
    - formal audit sections with stable IDs
-   - remediation of one confirmed finding at a time
+   - re-audit status for a remediated snapshot
 
 ## What Not to Flag by Default
 
@@ -223,6 +196,8 @@ Unless the user explicitly asks for a formal audit or report:
 - If useful, add a short "needs verification" section for medium-confidence items.
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
 - In formal audit mode, add stable finding IDs and a short executive summary.
+- Include the review basis, coverage, uninspected surfaces, residual risk, evidence limits, and the status defined by `references/methodology.md`.
+- Never issue an overall merge recommendation; hand confirmed security blockers and residual risk to `code-reviewer`.
 - In formal audit mode that includes backend/database code, include a short "data-access construction reviewed" note naming whether raw SQL, REST/PostgREST, SDK query builders, RPC, storage, RLS helper/policy, and service-role paths were inspected. Do not claim database security review is complete if server-side data-access construction or direct data-access authorization was not inspected.
 - Do not cite source-text tests, source-grep tests, or presence/absence string checks as security evidence unless they are paired with behavioral tests, sentinel payloads, or negative API tests that exercise the protection.
 - Write a markdown report only when the user asks for one or the repo expects an artifact.
@@ -234,16 +209,9 @@ Unless the user explicitly asks for a formal audit or report:
 - Do not report a finding just because a pattern is non-ideal. Report it only when the override still leaves a plausible exploit path.
 - If an override is necessary but undocumented, suggest documenting the rationale and compensating controls.
 
-## Remediation Rules
-
-- Fix one confirmed finding at a time.
-- Preserve expected behavior unless the security issue requires a breaking change. Call out that tradeoff before making it.
-- Prefer narrow, auditable changes over broad rewrites.
-- Follow the project's normal test and change flow so the security fix is likely to be accepted and kept.
-
 ## Reference Map
 
-Read only what you need:
+Read `references/methodology.md` for every review, then load only the optional references whose triggers match the reviewed surface:
 
 - `references/methodology.md` - confidence gating, surface discovery, audit order, uncertainty language, and report format
 - `references/api-auth-input.md` - input validation, injection, authn, authz, CSRF, mass assignment, file handling checks, and detection hints
@@ -257,7 +225,21 @@ Read only what you need:
 
 ## Workflow stages
 
-### Workflow stage: Run the security review
+### Workflow stage: Establish the review basis
+
+Make the requested review reproducible and prevent a stronger conclusion than the available inputs support.
+
+1. Record targeted, formal, or re-audit mode; the stable commit, diff, content hash, or exact supplied artifact; report scope; and wider research scope.
+2. Identify actors, assets, trust boundaries, authoritative requirements or exceptions, available runtime/config evidence, and any prior findings.
+3. Use the default threat model only as a labeled exploration hypothesis when project-specific authority is missing.
+4. Return BLOCKED when the target or snapshot is unavailable or unstable; use INCOMPLETE when review can proceed but required coverage or evidence remains missing.
+
+Validation:
+
+- Another reviewer can reconstruct the target, snapshot, report scope, research scope, threat model, inputs, and evidence limitations.
+- Missing evidence never becomes FAIL by itself, and absent authority never becomes an invented security requirement.
+
+### Workflow stage: Analyze security paths
 
 Find exploitable weaknesses with confidence gating and line-referenced evidence.
 
@@ -267,7 +249,7 @@ Find exploitable weaknesses with confidence gating and line-referenced evidence.
 4. Apply the data-access construction checkpoint when backend code reads or writes a database, constructs REST/PostgREST filters, uses Supabase clients, calls RPC, uses query builders, touches storage keys, or reaches service-role clients.
 5. Trace attacker-controlled input or identity to a missing control or sensitive sink.
 6. Check surrounding mitigations, framework defaults, and deployment constraints before reporting.
-7. Classify confidence and severity, then choose targeted chat output or formal audit format.
+7. Classify confidence and severity; keep unresolved stack or runtime facts in needs verification rather than promoting them to findings.
 
 Validation:
 
@@ -276,28 +258,67 @@ Validation:
 - Policy-governance findings state the relevant actor/control path or security-relevant operator/control-plane impact, including replay semantics and authority binding when those decide executable capability.
 - Low-confidence, theoretical, test-only, comment-only, or mitigated patterns are not reported by default.
 
+### Workflow stage: Close out with calibrated evidence
+
+Return a security result whose status, coverage, and downstream ownership cannot be mistaken for broader proof.
+
+1. Report the review basis, confirmed findings, needs verification, inspected and uninspected surfaces, residual risk, and evidence limits.
+2. In targeted mode, report findings or no confirmed findings in reviewed scope without issuing PASS.
+3. In formal mode, use FAIL only for confirmed in-scope findings, PASS (scoped) only for a complete named security-review scope, INCOMPLETE for missing mandatory coverage/evidence, and BLOCKED for an unavailable or unstable basis.
+4. Do not issue an overall merge recommendation; hand confirmed security blockers and residual risk to code-reviewer when merge guidance is requested.
+
+Validation:
+
+- Status follows the evidence contract and cannot imply penetration testing, full scan coverage, standards compliance, or whole-system security; standards/control fulfillment always belongs to spec-conformance-reviewer.
+- No reviewed-and-cleared claim rests only on grep, source-text assertions, mocks, fixtures, or green unit tests that do not exercise the claimed boundary.
+
+### Workflow stage: Re-audit a remediated snapshot
+
+Verify accepted fixes without editing the target or reusing a stale verdict.
+
+1. Map each prior finding to the concrete change, current evidence, and status on a new stable snapshot.
+2. Re-test the original attack path and adjacent regression surface; preserve unresolved items as needs verification or confirmed findings.
+3. Invalidate the prior result after any material code, configuration, runtime, test, or evidence change.
+
+Validation:
+
+- The reviewer remains read-only and every closure claim is tied to the new snapshot and current evidence.
+
 ## Interop priority
 
 - **security threat model, exploitability, confidence thresholds, and vulnerability reporting:** security-reviewer. This skill owns security findings and reporting discipline.
-- **framework/runtime facts and remediation detail:** the relevant domain skill. Domain skills own framework behavior, while this skill decides whether the issue is exploitable and reportable.
-- **non-security review flow and general merge-risk findings:** code-reviewer. Move non-security findings to code-reviewer when both skills are active.
+- **framework/runtime facts and remediation detail:** the relevant domain skill. Domain skills own framework behavior and remediation implementation, while this skill decides whether the issue is exploitable and reportable and later re-audits the result.
+- **non-security review flow and general merge-risk findings:** code-reviewer. Move non-security findings and every overall merge recommendation to code-reviewer when both skills are active.
+- **mapping implementation to an explicit security standard or versioned control set:** spec-conformance-reviewer. spec-conformance-reviewer owns requirement coverage and compliance status; security-reviewer owns exploitability and vulnerability classification.
+- **Git-backed diff scans, repository scans, deep multi-pass scans, and durable scan artifacts when a dedicated orchestrator is available:** security-diff-scan, security-scan, or deep-security-scan. The scan skill owns traversal and canonical scan artifacts; security-reviewer must not run a parallel scan or issue a competing scan verdict.
 
 ## Gotchas
 
 - **high** — A PASS on an old diff is not evidence for a changed implementation. If files or behavior changed after the audit, perform a delta review on the new scope before reporting PASS.
+- **high** — Do not use FAIL merely because the target, coverage, runtime facts, or evidence are missing; use INCOMPLETE or BLOCKED according to the status contract.
+- **high** — Do not issue an overall merge recommendation from security-reviewer, especially from MEDIUM-confidence or needs-verification items; route merge guidance to code-reviewer.
+- **high** — PASS is always scoped to the recorded snapshot and named coverage; it is not proof of whole-system security, standards compliance, penetration testing, or exhaustive scanning.
 - **high** — Review screenshots, status-site evidence, history payloads, logs, and problem responses for secrets, raw provider payloads, tokens, cookies, OTP, and unnecessary PII; code-only security review is insufficient for evidence-bearing changes.
 
 ## Policies
 
 ### Audit scope contract
-A security audit must name the exact diff or commit scope, external surfaces, data-access construction, forbidden-data checks, and current evidence artifacts reviewed. If any scope item is unreviewed, report it as residual risk.
+A security audit must name the exact diff, commit, hash, or supplied-artifact scope; research scope; actors and trust boundaries; external surfaces; data-access construction; sensitive-data checks; and current evidence artifacts reviewed. If mandatory scope or evidence is missing, report INCOMPLETE; if the basis is unavailable or unstable, report BLOCKED.
+
+### Read-only review boundary
+Security review is read-only by default. A separate domain or implementation owner applies remediation only when explicitly authorized, and security-reviewer re-audits the resulting stable snapshot.
+
+### Security status contract
+Targeted review never emits PASS. Formal FAIL requires a confirmed in-scope finding; PASS (scoped) requires a complete named security-review scope and no confirmed findings; INCOMPLETE represents missing mandatory coverage or evidence; BLOCKED represents an unavailable or unstable review basis. Standards/control fulfillment and compliance status always belong to spec-conformance-reviewer.
 
 ## Required active references
+- [Methodology](references/methodology.md) — Read this for every review before selecting mode, establishing the review basis, classifying findings, or issuing a scoped status.
+
+## Optional references
 - [Api Auth Input](references/api-auth-input.md) — Read this when you need input validation, injection, authn, authz, CSRF refresh/reissue threat modeling, mass assignment, file handling checks, and detection hints.
 - [Data Access Injection](references/data-access-injection.md) — Read this when backend code constructs SQL, REST/PostgREST URLs, SDK query-builder filters, RPC args, storage keys, search queries, or service-role data access from request or persisted user-controlled values.
 - [Domain Handoffs](references/domain-handoffs.md) — Read this when you need stack discovery and when to defer to domain skills for framework-specific detail.
 - [Github Actions](references/github-actions.md) — Read this when you need GitHub Actions threat model, attack classes, detection hints, and safe patterns.
-- [Methodology](references/methodology.md) — Read this when you need confidence gating, surface discovery, audit order, uncertainty language, and report format.
 - [Policy Governance Admission](references/policy-governance-admission.md) — Read this when reviewing external consultant/tool invocation admission, admission/approval gates that can produce executable capability, policy profile activation, active-scope selection, governance/audit persistence preconditions, fail-closed policy gates, or replay/idempotency controls around security-relevant decisions.
 - [Secrets Config](references/secrets-config.md) — Read this when you need secrets, browser durable storage, telemetry/error reporting leaks, config trust boundaries, token scope, logging exposure, and dev-versus-prod nuance.
 - [Supabase Rls](references/supabase-rls.md) — Read this when you need RLS, grants, privileged functions, RPC, and service-role review.

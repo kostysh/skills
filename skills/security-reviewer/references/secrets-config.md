@@ -23,25 +23,31 @@ Flag:
 - tokens, cookies, webhook payloads, or raw auth material in logs
 - stack traces or debug payloads returned to untrusted clients when they reveal sensitive internals
 - derived secrets that bypass masking in CI logs
-- telemetry or error reports containing raw stack/source, component props, request bodies, response bodies, headers, query strings, cookies, OTPs, CSRF tokens, bearer tokens, or raw identity values
+- telemetry or error reports containing credentials, session material, OTP/recovery values, CSRF secrets, or sensitive personal/business data outside an authorized and protected logging boundary
+- stack/source, component props, request/response bodies, headers, query strings, or identity/provider payloads when their actual contents are sensitive, the destination or readers are not authorized for them, retention is unjustified, or attacker-controlled data can create disclosure or log-injection impact
 
 Detection hints:
 
 - search for structured logger calls that serialize full request, env, headers, cookies, config, or exception objects
 - inspect debug endpoints, verbose error middleware, and CI logs emitted by release or deploy scripts
 - inspect browser error-reporting hooks and telemetry ingestion for serialization of props, network envelopes, headers, cookies, tokens, and identity/provider payloads
+- inspect the telemetry destination, access controls, retention, redaction stage, and whether sensitive fields are necessary for the stated operational purpose
 
 ## Browser Durable Storage
 
-Flag browser durable storage of:
+Always flag browser durable storage of plaintext passwords, OTP/recovery material, cookies, JWTs, session IDs, refresh tokens, or equivalent credentials/session material when JavaScript or the browser profile can recover it.
 
-- OTPs, one-time challenges, or recovery codes
-- CSRF tokens
-- cookies, JWTs, session IDs, refresh tokens, or equivalent bearer/session material
-- raw identity values or provider payloads
-- raw request bodies, response bodies, headers, query strings, cookie values, or full network envelopes
+For CSRF values, identify the chosen pattern before reporting: a readable double-submit value can be part of a valid design, while a synchronizer secret or session credential must not be persisted as a substitute for protected server/session state.
 
-Accept durable browser storage only when the payload is allowlisted, scoped to user/tenant/context, TTL-bound, non-authoritative, and cleared on logout/context switch.
+For identity values, provider payloads, request/response data, headers, query strings, or other application state, determine before reporting:
+
+- whether the actual fields are sensitive, secret, personal, or higher-classification data;
+- whether XSS, same-origin applications, browser-profile access, extensions, or a local attacker can read or modify them;
+- whether the application treats the stored value as authoritative for identity, authorization, tenant/context, or protected workflow state;
+- whether scope, TTL, logout/context-switch cleanup, and data minimization match the documented product contract;
+- what concrete confidentiality, integrity, or privilege impact follows.
+
+An ordinary non-sensitive display preference or public identifier is not a security finding solely because it is durable. Treat all client-side stored data as untrusted on read.
 
 ## Trust Boundary Mistakes
 

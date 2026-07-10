@@ -2,6 +2,8 @@
 
 This skill owns security review method. Stop and hand off framework detail when you hit implementation-specific questions.
 
+The handoff resolves a fact; it does not transfer or duplicate the security verdict. Ask the domain skill for the exact framework/runtime behavior and evidence needed to confirm reachability, mitigation, or remediation. Keep the item in `needs verification` until that fact returns, then let `security-reviewer` decide exploitability and reportability.
+
 Policy-governance admission reportability stays with `security-reviewer`: decide whether external invocation, executable approval capability, policy activation, active-scope selection, governance/audit persistence, fail-closed gates, replay/idempotency behavior, or admission-gate authority binding creates a security finding here. Hand off only the framework/runtime facts needed to prove exploitability or remediation.
 
 ## Stack Discovery
@@ -87,3 +89,7 @@ Security questions to resolve:
 If exploitability depends on a stack-specific fact that this skill cannot confirm, keep the item in `needs verification` until the relevant domain skill resolves it.
 
 Do not transfer non-route policy-governance security reportability to a domain skill. Domain skills can resolve transaction, runtime, middleware, queue, artifact provenance, deployment identity, provider timestamp, canonical evidence storage, or framework facts, but `security-reviewer` owns the final HIGH-confidence security finding decision.
+
+For authorized remediation, the relevant domain or implementation skill owns the code/configuration change and its local tests. `security-reviewer` stays read-only during the review and later re-audits the new stable snapshot.
+
+`code-reviewer` owns non-security findings and the overall merge recommendation. `spec-conformance-reviewer` owns mapping to an explicit versioned security control set. When a dedicated `security-diff-scan`, `security-scan`, or `deep-security-scan` is available for the requested Git-backed or repository scan, it owns traversal and canonical scan artifacts; do not start a parallel scan or issue a competing scan verdict from this skill.
