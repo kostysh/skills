@@ -8,5 +8,5 @@
 - High-risk decisions have quality scenarios, spikes, or validation plan.
 - Data, API, auth, tenant isolation, integration, deployment, and observability implications are covered when relevant.
 - Decision weight is appropriate: inline note, pattern decision, or ADR.
-- Architecture output produces architecture-to-spec handoff, not implementation task backlog.
-- Handoff items use `architecture_handoff_item`, not task-backlog naming.
+- Each significant ASR or decision with downstream obligations traces to a routed `architecture_handoff_item`, status, expected output, and verification or revisit path.
+- Downstream owners can proceed without reselecting architecture; architecture output is not claimed as implemented capability or a task backlog.

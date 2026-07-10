@@ -16,7 +16,7 @@ Generate the smallest sufficient subset. Do not emit every artifact by default.
 | Quality scenario | Makes a quality attribute testable | Reliability, performance, security, privacy, consistency, recoverability, or operability matters |
 | Spike brief | Defines bounded investigation | Missing evidence blocks or weakens a decision |
 | Architecture brief | Gives complete architecture frame | New system, major redesign, or large vertical slice |
-| Architecture handoff item/register | Transfers constraints to downstream specs | Any non-trivial architecture decision |
+| Architecture handoff item/register | Routes constraints and evidence obligations downstream | Significant ASR or decision with downstream work, validation, or revisit obligations |
 | Revisit trigger list | Defines when to reopen a decision | Uncertain, evolving, or high-impact decisions |
 
 ## Workflow stage: Classify architecture need
@@ -59,6 +59,12 @@ Validation:
 - Existing repo conventions are known before proposing new patterns.
 - Missing context is labeled by confidence and validation method.
 
+### Input authority and conflict handling
+
+Apply explicit user or repository precedence first. When none is defined, use product sources for intended capability and scope, accepted architecture records for architecture decisions, repository code/configuration/schema/tests for observed current behavior, and external contracts or domain skills for specialized facts. Current implementation can reveal drift but does not silently override accepted product or architecture intent.
+
+If equal-authority sources conflict in a way that changes architecture, stop for resolution. Treat lower-authority disagreement as drift and record non-blocking uncertainty as an assumption with a validation path.
+
 ## Workflow stage: Normalize architecture-relevant requirements
 
 Goal: translate product requirements into architecture-ready inputs without rewriting the whole PRD.
@@ -78,7 +84,7 @@ Validation:
 
 Goal: identify what actually shapes the system.
 
-1. Extract ASR for performance, availability, recoverability, security, privacy, data consistency, integrations, evolvability, operations, cost, and delivery.
+1. Extract ASR for performance, availability, recoverability, security, privacy, data consistency, integrations, evolvability, operations, cost, sustainability when material, and delivery.
 2. Map each ASR to forces.
 3. Estimate architectural risk and confidence.
 4. Identify whether the ASR requires a spike, pattern decision, or ADR.
@@ -259,6 +265,7 @@ Pattern decision shape:
 - Linked requirements: PRD-R7, PRD-NFR2
 - Linked ASR: ASR-INT-1, ASR-SEC-1
 - Selected pattern: adapter plus queued background worker
+- Confidence: medium — provider failure behavior still needs a bounded spike
 - Alternatives considered:
   - synchronous callback sync
   - full event-driven integration platform
@@ -294,6 +301,9 @@ Workspace admins connect provider accounts through OAuth. Tokens are sensitive s
 ## Decision
 Provider access and refresh tokens will be stored only in backend-owned encrypted credential records. Frontend clients receive connection status and provider metadata, never token values.
 
+## Confidence
+High. Existing trust boundaries and credential lifecycle requirements support the decision; key-management operations still require validation.
+
 ## Alternatives considered
 - Frontend-accessible token state. Rejected because it exposes secrets to client surface.
 - Generic workspace settings storage. Rejected because ownership and redaction boundaries become unclear.
@@ -317,19 +327,43 @@ Use `assets/templates/pattern-decision.md` or `assets/templates/adr.md` for copy
 Validation:
 
 - ADR exists only when decision weight justifies it.
-- Decision record includes alternatives, consequences, validation, and revisit triggers.
+- Decision record includes alternatives, consequences, confidence, validation, and revisit triggers.
 - Pattern decision does not claim more certainty than evidence supports.
 
-## Workflow stage: Produce architecture-to-spec handoff
+## Workflow stage: Produce routed architecture handoff
 
-Goal: make architecture usable by the next stage without turning it into task decomposition.
+Goal: make architecture usable by the correct next owner without turning it into task decomposition.
 
-The handoff tells `spec-engineer` what must be preserved, validated, and clarified. It should not prescribe implementation tickets or exact code shape unless the architecture decision explicitly requires it.
+Every handoff item names one accountable `next_stage_owner` and the `expected_next_output`. Use these routing defaults unless repository policy or a domain boundary requires a more specific owner:
+
+| Handoff need | Default next owner | Expected output or return path |
+| --- | --- | --- |
+| Behavior, contract, security, or migration constraints that need normative requirements | `spec-engineer`, with the relevant domain skill when needed | Implementation-ready spec and verification map |
+| Spike needs executable decomposition | `delivery-planner` | Bounded task brief naming execution owner, success criteria, evidence contract, and return route; no empirical evidence |
+| Spike is ready for execution | Executor-capable domain or implementation owner | Executed experiment and measured evidence returned to `architecture-engineer` before commitment |
+| Validation, observability, rollout, or documentation obligation | `delivery-planner` or the relevant domain skill | Executable work and named verification evidence |
+| Architecture revisit trigger | `architecture-engineer` | Updated decision, superseding record, or explicit no-op rationale |
+
+The handoff must carry enough intent, constraints, and non-prescribed detail that the next owner can act without silently reselecting architecture. It must not prescribe implementation tickets or exact code shape unless the architecture decision explicitly requires it.
+
+When `delivery-planner` owns the next stage for a spike, expect only a bounded task brief that names the execution owner, success criteria, evidence contract, and return route. Empirical evidence must come from that executor-capable domain or implementation owner; do not treat the delivery plan as executed evidence or add the eventual evidence package to the planner's expected output. A separate executor handoff is needed only when architecture routes directly to a known executor.
+
+Set handoff readiness independently from the status of the broader architecture package:
+
+| Status | Meaning |
+| --- | --- |
+| `draft` | The item, authority, constraints, or expected output is still incomplete. |
+| `blocked` | The next owner cannot act; list concrete `blockers`. |
+| `ready` | Authority and inputs are sufficient for the named owner to produce the expected output without making an unstated architecture choice. |
+
+A bounded spike or revisit item may be `ready` specifically to resolve an unaccepted decision; keep the dependent decision proposed and set `evidence_return_to: architecture-engineer`. Do not mark an ordinary downstream item ready while its required architecture decision remains unresolved.
 
 Architecture handoff shape:
 
 ```yaml
 architecture_handoff:
+  status: ready
+  blockers: []
   linked_prd_requirements:
     - PRD-R7
   linked_asr:
@@ -347,6 +381,8 @@ architecture_handoff:
     - provider failure integration test
     - log/trace/error token redaction inspection
   next_stage_owner: spec-engineer
+  expected_next_output:
+    - implementation-ready behavior specifications and verification map
 ```
 
 Architecture handoff item shape:
@@ -355,6 +391,8 @@ Architecture handoff item shape:
 architecture_handoff_item:
   id: AHI-001
   kind: spec_candidate
+  status: ready
+  blockers: []
   title: Retry-safe CRM initial sync capability
   linked_prd:
     - PRD-R7
@@ -422,10 +460,14 @@ Forbidden architecture output style:
 Validation:
 
 - Handoff items are clearly not implementation tasks.
-- `spec-engineer` can write behavior-level specs without reselecting architecture patterns.
+- Every significant ASR or decision with downstream obligations traces to a handoff item, status, next owner/output, and verification or revisit path; items without downstream obligations are omitted.
+- A `ready` downstream owner can produce the expected output without reselecting architecture patterns; `blocked` items list concrete blockers.
+- Each item requests only an output its `next_stage_owner` can produce; a planner-owned spike item ends at the task brief, which carries the eventual executor and evidence-return route.
+- Spike and revisit items set `evidence_return_to: architecture-engineer`; their evidence is reviewed before a dependent decision is accepted.
 - Risky changes have validation, rollback, or migration obligations.
 - `not_prescribed` is used when the architecture frame intentionally leaves implementation freedom.
 - Exact table names, endpoint names, class names, or task sequencing are omitted unless they are architectural constraints.
+- Architecture artifacts and handoff completion are enabling substrate; they do not demonstrate implemented product or runtime capability.
 
 Use `assets/templates/architecture-handoff-item.yaml` and `assets/templates/architecture-handoff-register.yaml` for copy-ready versions.
 
@@ -441,6 +483,8 @@ Review triggers:
 - quality gate fails for ASR-related reason;
 - production issue or high-risk retro identifies wrong architecture assumption;
 - ADR revisit trigger fires.
+
+Implementation, spike, and operational evidence returns through the linked handoff item. Update architecture only when that evidence changes a force, invalidates an assumption, fails an ASR gate, or fires a revisit trigger; otherwise record an explicit no-op rationale.
 
 Update rules:
 

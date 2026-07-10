@@ -1,9 +1,27 @@
 architecture_handoff_register:
   - id: AHI-<number>
     kind: spec_candidate | spike | validation_obligation | migration_constraint | security_constraint | observability_requirement | rollout_constraint | documentation_update | architecture_revisit_trigger
+    status: draft | blocked | ready
+    blockers:
+      - <concrete blocker; use an empty list when ready>
     title: "<handoff title>"
     linked_asr:
       - <ASR ID>
     linked_decision:
       - <pattern decision or ADR ID>
-    next_stage_owner: spec-engineer
+    architectural_intent: >
+      <Why this item exists and what downstream work must preserve.>
+    constraints:
+      - <architecture constraint>
+    required_validation:
+      - <validation obligation>
+    observability_requirements:
+      - <metric, trace, log, dashboard, or runbook obligation; omit when not applicable>
+    rollback_constraints:
+      - <rollback or migration constraint; omit when not applicable>
+    next_stage_owner: <owner skill or role>
+    expected_next_output:
+      - <one output producible by next_stage_owner; delivery-planner produces only a task brief naming executor and evidence return>
+    evidence_return_to: <architecture-engineer for spike or revisit; otherwise omit>
+    not_prescribed:
+      - <implementation detail intentionally left open>

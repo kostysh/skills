@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.4
+  source-version: 0.1.5
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise software architecture for AI-agent-driven development. Use
@@ -11,7 +11,7 @@ skill:
     change, security concern, deployment change, or implementation finding
     requires architectural judgment: architecturally significant requirements,
     system/component pattern selection, boundaries, trade-offs, quality
-    scenarios, spikes, ADRs, and architecture-to-specification handoff. This
+    scenarios, spikes, ADRs, and routed architecture handoff. This
     skill creates architectural frames and constraints, not implementation task
     backlogs.
   compatibility: >-
@@ -28,7 +28,7 @@ references:
     source: references/methodology.md
     target: references/methodology.md
     required: true
-    trigger: Read this before medium/high-risk architecture work, ASR extraction, pattern selection, decision records, quality scenarios, spikes, or architecture-to-spec handoff.
+    trigger: Read this before medium/high-risk architecture work, ASR extraction, pattern selection, decision records, quality scenarios, spikes, or routed architecture handoff.
   - id: ref-artifact-templates
     title: Artifact templates
     source: references/artifact-templates.md
@@ -78,11 +78,11 @@ assets:
   - id: asset-template-handoff-item
     source: assets/templates/architecture-handoff-item.yaml
     target: assets/templates/architecture-handoff-item.yaml
-    description: Copy-ready template for a single architecture-to-spec handoff item.
+    description: Copy-ready template for a single routed architecture handoff item.
   - id: asset-template-handoff-register
     source: assets/templates/architecture-handoff-register.yaml
     target: assets/templates/architecture-handoff-register.yaml
-    description: Copy-ready template for multiple architecture-to-spec handoff items.
+    description: Copy-ready template for multiple routed architecture handoff items.
 
 copies:
   - id: copy-agents-openai
@@ -107,6 +107,14 @@ supporting:
     source: docs/logs/implementation-log-20260622-1.md
     target: docs/logs/implementation-log-20260622-1.md
     description: Non-normative implementation log for one-implementation abstraction guidance.
+  - id: supporting-implementation-log-20260708-1
+    source: docs/logs/implementation-log-20260708-1.md
+    target: docs/logs/implementation-log-20260708-1.md
+    description: Non-normative implementation log for SL-01 contract-boundary remediation.
+  - id: supporting-implementation-log-20260710-1
+    source: docs/logs/implementation-log-20260710-1.md
+    target: docs/logs/implementation-log-20260710-1.md
+    description: Non-normative implementation log for end-to-end handoff integrity improvements.
 
 surfaces:
   active:
@@ -129,7 +137,7 @@ sections:
     - Select the simplest reversible pattern that satisfies current ASR and fits the existing system.
     - Validate high-risk decisions with quality scenarios or bounded spikes.
     - Record only decision rationale that will matter later.
-    - Produce architecture-to-spec handoff items, not implementation tickets, and state revisit triggers.
+    - Route architecture handoff items to named downstream owners; do not emit implementation tickets.
   whenToUse:
     - Creating initial architecture after a PRD or feature brief.
     - Turning PRD requirements into architecturally significant requirements.
@@ -139,7 +147,7 @@ sections:
     - Reviewing medium-risk or high-risk specs for architecture consistency.
     - Writing pattern decisions, design notes, or ADRs.
     - Planning spikes for uncertain architecture choices.
-    - Creating architecture-to-spec handoff items from architecture decisions.
+    - Creating routed architecture handoff items from architecture decisions.
     - Handling implementation feedback that changes boundaries, contracts, data, auth, deployment, observability, or selected patterns.
   whenNotToUse:
     - Writing product requirements where the main issue is users, product scope, success metrics, or rollout; use `prd-engineer`.
@@ -148,7 +156,7 @@ sections:
     - Producing heavyweight architecture documentation when a short decision note is enough.
     - Creating formal safety-critical, regulated, or legal architecture without domain-specific review.
     - Making technology choices before requirements, constraints, and architectural forces are explicit.
-    - Decomposing architecture into implementation tickets, sprint backlog, estimates, or owner assignments.
+    - Decomposing architecture into implementation tickets, sprint backlog, estimates, or human assignees.
   workflow:
     - id: stage-classify-architecture-need
       title: Classify architecture need
@@ -189,7 +197,7 @@ sections:
       title: Extract ASR and forces
       goal: Identify what actually shapes the system and what validation each force needs.
       steps:
-        - Extract ASR for performance, availability, recoverability, security, privacy, data consistency, integrations, evolvability, operations, cost, and delivery.
+        - Extract ASR for performance, availability, recoverability, security, privacy, data consistency, integrations, evolvability, operations, cost, sustainability when relevant, and delivery.
         - Map each ASR to concrete forces such as latency, throughput, consistency, coupling, volatility, failure mode, team topology, cost, security, privacy, or operability.
         - Estimate architectural risk and confidence.
         - Identify whether each ASR requires a spike, pattern decision, ADR, quality scenario, or only a handoff constraint.
@@ -223,16 +231,17 @@ sections:
         - Validation focuses on the ASR that drove the pattern, not only generic CI success.
     - id: stage-record-and-handoff
       title: Record decisions and produce handoff
-      goal: Preserve useful rationale and transfer constraints to `spec-engineer` without creating implementation tickets.
+      goal: Preserve useful rationale and route constraints downstream without creating implementation tickets.
       steps:
         - "Choose decision record weight: inline note, pattern decision, or ADR."
         - Include alternatives, consequences, validation, migration or rollback considerations, confidence, and revisit triggers when the decision weight requires them.
-        - Produce architecture handoff items for constraints, invariants, validation obligations, rollback/migration considerations, documentation obligations, or spec candidates.
+        - Route each handoff to a named owner that can produce its expected output; for spikes, `delivery-planner` produces only the task brief and an executor-capable owner produces evidence.
+        - Set each handoff to `draft`, `blocked`, or `ready` and list blockers; `ready` means the named owner has sufficient authoritative input to act.
         - Use `not_prescribed` when the architecture intentionally leaves implementation freedom.
       validation:
         - ADR exists only when decision weight justifies it.
         - Handoff items are clearly not implementation tasks.
-        - "`spec-engineer` can write behavior-level specs without reselecting architecture patterns."
+        - Each ready downstream owner can produce the expected output without reselecting architecture; spike or revisit evidence returns to `architecture-engineer`.
     - id: stage-review-and-revisit
       title: Review and revisit
       goal: Keep architecture current without rewriting docs unnecessarily.
@@ -250,7 +259,7 @@ sections:
       winner: prd-engineer
       rationale: architecture-engineer consumes PRD material and extracts ASR; it does not own product discovery or product scope.
     - id: interop-architecture
-      domain: ASR extraction, architecture forces, pattern selection, boundaries, trade-offs, ADRs, design notes, and architecture-to-spec handoff
+      domain: ASR extraction, architecture forces, pattern selection, boundaries, trade-offs, ADRs, design notes, and routed architecture handoff
       winner: architecture-engineer
       rationale: this skill owns architecture frames and constraints before behavior-level specs are written.
     - id: interop-spec
@@ -263,8 +272,8 @@ sections:
       rationale: domain skills own specialized technical facts; architecture-engineer uses them to choose patterns and constraints.
     - id: interop-planning
       domain: implementation backlog, sequencing, estimates, and ticket structure
-      winner: planning or implementation workflow stages
-      rationale: architecture-engineer may identify workstreams or spec candidates, but must not emit task backlogs.
+      winner: delivery-planner
+      rationale: architecture-engineer may identify handoff obligations or spec candidates, but delivery-planner owns executable decomposition and sequencing.
   commands: []
   gotchas:
     - id: gotcha-pattern-name-chasing
@@ -290,7 +299,7 @@ sections:
       text: Caching without freshness adds cache without invalidation, consistency expectations, and freshness SLO.
     - id: gotcha-handoff-backlog
       priority: high
-      text: Handoff as task backlog writes implementation tickets under architecture output instead of constraints and spec candidates.
+      text: Do not turn handoff into a task backlog or ask `delivery-planner` for empirical spike evidence; it only frames executable work and names an executor.
     - id: gotcha-spec-reinvents-architecture
       priority: medium
       text: Do not let task specs choose a new data model or integration pattern without architecture delta.
@@ -329,14 +338,14 @@ sections:
       title: Spike-before-commitment policy
       text: When a high-risk decision depends on missing evidence, propose a bounded spike before writing a final ADR.
     - id: policy-handoff
-      title: Architecture-to-spec handoff policy
-      text: Every significant architecture decision must produce clear constraints, invariants, validation obligations, rollback/migration considerations, or documentation obligations for the next stage.
+      title: Routed architecture handoff policy
+      text: Each significant ASR or decision that imposes downstream work, validation, or revisit must trace to a named owner, expected output, verification or revisit path, and preserved constraints; omit handoff when no downstream obligation exists.
     - id: policy-no-backlog
       title: No task backlog policy
-      text: Do not emit implementation tickets from this skill. Use `architecture_handoff_item` for downstream spec candidates or obligations. Leave task decomposition to `spec-engineer`, planning, or implementation workflow stages.
+      text: Do not emit implementation tickets from this skill. Use `architecture_handoff_item` for downstream obligations and leave executable decomposition to `delivery-planner`.
     - id: policy-light-traceability
       title: Lightweight traceability policy
-      text: "Use short ID chains for medium/high-risk work: PRD requirement -> ASR -> pattern decision/ADR -> architecture handoff item -> spec requirement -> acceptance/verification."
+      text: "Use short ID chains for medium/high-risk work: PRD requirement -> ASR -> decision -> architecture handoff item -> next owner/output -> verification or revisit."
     - id: policy-output-language
       title: Output language policy
       text: Use the user's working language unless repository conventions require another language. Keep stable technical identifiers in the repository language when needed.
@@ -355,7 +364,7 @@ sections:
         For non-blocking gaps, proceed with assumptions and validation steps.
     - id: policy-output-contract
       title: Output contract
-      text: For architecture work, return the smallest complete subset that fits the risk. A low-risk task may need only an architecture check; medium-risk work usually needs an architecture delta or pattern decision plus handoff; high-risk decisions need ASR, candidate comparison, quality scenarios or spikes, validation and rollback/migration notes, and an ADR only when justified.
+      text: Return the smallest complete, risk-fit subset defined by the rigor table. Every handoff states `draft`, `blocked`, or `ready` plus blockers.
   portability:
     required: true
     rules:

@@ -1,6 +1,9 @@
 architecture_handoff_item:
   id: AHI-<number>
   kind: spec_candidate | spike | validation_obligation | migration_constraint | security_constraint | observability_requirement | rollout_constraint | documentation_update | architecture_revisit_trigger
+  status: draft | blocked | ready
+  blockers:
+    - <concrete blocker; use an empty list when ready>
   title: "<handoff title>"
   linked_prd:
     - <PRD requirement ID>
@@ -9,7 +12,7 @@ architecture_handoff_item:
   linked_decision:
     - <pattern decision or ADR ID>
   architectural_intent: >
-    <Why this item exists and what downstream specs must preserve.>
+    <Why this item exists and what downstream work must preserve.>
   constraints:
     - <architecture constraint>
   acceptance_constraints:
@@ -20,9 +23,10 @@ architecture_handoff_item:
     - <metric, trace, log, dashboard, or runbook obligation>
   rollback_constraints:
     - <rollback or migration constraint>
-  next_stage_owner: spec-engineer
+  next_stage_owner: <owner skill or role>
   expected_next_output:
-    - <expected downstream specification>
+    - <one output producible by next_stage_owner; delivery-planner produces only a task brief naming executor and evidence return>
+  evidence_return_to: <architecture-engineer when spike or revisit evidence can change a decision; otherwise omit>
   not_prescribed:
     - exact table names
     - exact endpoint names

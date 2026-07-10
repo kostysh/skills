@@ -4,10 +4,9 @@ Architecture is a decision layer between PRD and implementation specifications.
 PRD / product brief
 -> architecture-engineer
 -> ASR register, pattern decisions, boundaries, constraints, quality scenarios, handoff items
--> spec-engineer
--> behavior specs, edge cases, verification map, implementation-ready requirements
--> planning / implementation
--> concrete tasks, code, tests, migrations, evidence
+-> spec-engineer / delivery-planner / relevant domain skill
+-> specs, executable plans, spikes, implementation, tests, migrations
+-> implementation evidence and architecture revisit when triggered
 ```
 
 The architecture agent owns the shape of the system and the reasoning behind it. It does not normally own sprint or task decomposition.
@@ -20,9 +19,9 @@ Architecture output is not completed product behavior. It is a frame that lets d
 
 This skill produces architecture checks, architecture deltas, ASR registers, system and component pattern decisions, ADRs when justified, architecture briefs, quality scenarios, spike briefs, architecture handoff items, constraints, invariants, validation obligations, and revisit triggers.
 
-This skill does not produce implementation task backlogs, sprint tickets, estimates, owner assignments, full behavior-level implementation specs, or exact file/class/function names unless the architecture itself requires them.
+This skill does not produce implementation task backlogs, sprint tickets, estimates, human staffing assignments, full behavior-level implementation specs, or exact file/class/function names unless the architecture itself requires them. `next_stage_owner` routes workflow responsibility to a skill or role; it does not assign a person to an implementation task.
 
-Allowed exception: the skill may identify architecture workstreams or spec candidates such as "credential lifecycle/security spec", "OAuth callback idempotency spec", or "initial sync worker behavior spec". These are handoff items, not implementation tasks.
+The skill may identify architecture workstreams or spec candidates. These are routed handoff items, not implementation tasks.
 
 ### Definitions
 
@@ -36,14 +35,14 @@ Allowed exception: the skill may identify architecture workstreams or spec candi
 | ADR | Architectural Decision Record for significant, hard-to-reverse, disputed, public, or long-lived decisions. |
 | Architecture brief | Compact artifact that summarizes context, ASR, decisions, component architecture, quality scenarios, risks, and architecture handoff. |
 | Architecture delta | Small note describing how a medium/high-risk task changes existing architecture. |
-| Architecture handoff item | Architecture-to-spec item carrying intent, constraints, acceptance constraints, validation obligations, and non-prescribed details to the next stage. It is not an implementation task. |
+| Architecture handoff item | Routed obligation carrying intent, constraints, validation, next owner/output, and non-prescribed details. It is not an implementation task. |
 | Quality scenario | Testable scenario for a quality attribute such as latency, availability, recoverability, security, privacy, or operability. |
 | Spike | Bounded investigation that produces evidence for an uncertain architecture decision. |
 | Implementation backlog | Downstream planning artifact created after architecture and specs. This skill may influence it but does not generate it. |
 
 ### Input contract
 
-Use any available source material, but identify its authority and reliability. Acceptable inputs include PRD or product brief, issue/task description, existing spec, architecture docs or ADRs, repository code and tests, API/schema/migration files, CI/CD and infra configuration, production constraints or incident history, and user-provided design preferences or constraints.
+Use available product, architecture, repository, contract, and operational evidence, but identify its authority and reliability.
 
 Minimum useful input for architecture work is the target capability or change, affected system/component, known constraints, risk level or enough information to classify risk, and source of authority for requirements. If information is incomplete, proceed with explicit assumptions unless the missing information can change a high-risk decision such as auth, tenant isolation, billing, public API, data migration, secrets, deployment topology, or external dependency.
 
@@ -54,7 +53,7 @@ Use the smallest artifact that prevents wrong implementation:
 | Situation | Minimum output |
 | --- | --- |
 | Low-risk local change | No architecture artifact, or one inline architecture check if an assumption matters |
-| Medium-risk component/API/data/integration change | Architecture delta or pattern decision, plus architecture handoff item if specs are needed |
+| Medium-risk component/API/data/integration change | Architecture delta or pattern decision, plus handoff for downstream work, validation, or revisit obligations |
 | High-risk auth/data/security/migration/infra/vendor decision | Design note or ADR, quality scenarios, validation and rollback/migration notes |
 | New system or major redesign | Architecture brief, ASR register, pattern decisions, spikes, architecture handoff register |
 | Uncertain architecture choice | Spike brief and validation plan before final ADR |

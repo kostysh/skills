@@ -8,6 +8,7 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/implementation-log-20260515-1.md` - repository artifact convention guidance for persistent architecture artifacts.
 - `docs/logs/implementation-log-20260622-1.md` - one-implementation abstraction guidance for pattern selection and handoff.
 - `docs/logs/implementation-log-20260708-1.md` - SL-01 contract-boundary guardrail remediation, size-warning cleanup, and evidence traceability.
+- `docs/logs/implementation-log-20260710-1.md` - end-to-end handoff routing, evidence-return, decision-confidence, and portability remediation.
 
 ## Generated Reports
 

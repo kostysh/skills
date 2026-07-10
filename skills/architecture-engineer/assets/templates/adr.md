@@ -12,6 +12,10 @@ Relevant evidence, ASR, forces, constraints, assumptions, and decision scope.
 
 The selected architecture decision and its boundary.
 
+## Confidence
+
+Low | Medium | High. <Evidence supporting the rating and unresolved uncertainty.>
+
 ## Alternatives considered
 
 - <alternative>. Rejected because <reason>.

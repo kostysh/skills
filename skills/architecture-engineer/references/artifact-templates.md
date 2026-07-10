@@ -59,7 +59,7 @@ Behavior constraints that implementation must preserve.
 Tests, contract checks, migration checks, observability and review.
 
 ## Architecture handoff
-Architecture handoff items for `spec-engineer`.
+Routed architecture handoff items with next owners and expected outputs.
 
 ## Revisit triggers
 Signals that require architecture review.
@@ -78,6 +78,7 @@ Use before ADR when a decision has future relevance but is not heavy enough for 
 - Linked requirements:
 - Linked ASR:
 - Selected pattern:
+- Confidence: low | medium | high — <evidence or uncertainty>
 - Alternatives considered:
 - Rationale:
 - Consequences:
@@ -115,6 +116,9 @@ Relevant evidence, ASR, forces, constraints, and assumptions.
 
 ## Decision
 The selected architecture decision and its boundary.
+
+## Confidence
+Low | Medium | High. <Evidence supporting the rating and unresolved uncertainty.>
 
 ## Alternatives considered
 - <alternative>. Rejected because <reason>.
@@ -225,16 +229,39 @@ Use this when multiple handoff items are produced.
 architecture_handoff_register:
   - id: AHI-001
     kind: spec_candidate
+    status: ready
+    blockers: []
     title: Credential lifecycle and token isolation
     linked_asr:
       - ASR-SEC-1
+    architectural_intent: Keep provider tokens inside the backend credential boundary.
+    constraints:
+      - Frontend and job payloads must not receive token values.
+    required_validation:
+      - API, log, trace, and analytics token non-disclosure checks.
     next_stage_owner: spec-engineer
+    expected_next_output:
+      - credential lifecycle and token isolation specification
+    not_prescribed:
+      - exact schema, route, class, or encryption library
   - id: AHI-002
-    kind: validation_obligation
-    title: OAuth callback idempotency validation
+    kind: spike
+    status: ready
+    blockers: []
+    title: Provider retry and idempotency evidence
     linked_asr:
       - ASR-INT-1
-    next_stage_owner: spec-engineer
+    architectural_intent: Resolve queue behavior before accepting the queue-dependent decision.
+    constraints:
+      - Measure duplicate delivery, ordering, throughput, and failure recovery.
+    required_validation:
+      - Recorded measurements against the stated success criteria.
+    next_stage_owner: delivery-planner
+    expected_next_output:
+      - bounded provider-failure spike task brief naming execution owner, success criteria, evidence contract, and return route
+    evidence_return_to: architecture-engineer
+    not_prescribed:
+      - exact experiment harness
 ```
 
 ### Architecture handoff item
@@ -243,6 +270,9 @@ architecture_handoff_register:
 architecture_handoff_item:
   id: AHI-<number>
   kind: spec_candidate | spike | validation_obligation | migration_constraint | security_constraint | observability_requirement | rollout_constraint | documentation_update | architecture_revisit_trigger
+  status: draft | blocked | ready
+  blockers:
+    - <concrete blocker; use an empty list when ready>
   title: "<handoff title>"
   linked_prd:
     - <PRD requirement ID>
@@ -251,7 +281,7 @@ architecture_handoff_item:
   linked_decision:
     - <pattern decision or ADR ID>
   architectural_intent: >
-    <Why this item exists and what downstream specs must preserve.>
+    <Why this item exists and what downstream work must preserve.>
   constraints:
     - <architecture constraint>
   acceptance_constraints:
@@ -262,9 +292,10 @@ architecture_handoff_item:
     - <metric, trace, log, dashboard, or runbook obligation>
   rollback_constraints:
     - <rollback or migration constraint>
-  next_stage_owner: spec-engineer
+  next_stage_owner: <owner skill or role>
   expected_next_output:
-    - <expected downstream specification>
+    - <one output producible by next_stage_owner; delivery-planner produces only a task brief naming executor and evidence return>
+  evidence_return_to: <architecture-engineer when spike or revisit evidence can change a decision; otherwise omit>
   not_prescribed:
     - exact table names
     - exact endpoint names
@@ -294,7 +325,9 @@ Do not use task-backlog naming or implementation-task schemas inside architectur
 Validation:
 
 - Handoff items are clearly not implementation tasks.
-- `spec-engineer` can write behavior-level specs without reselecting architecture patterns.
+- The named downstream owner can produce the expected output without reselecting architecture patterns.
+- A planner-owned spike item requests only a task brief that names the eventual executor and evidence-return route, never empirical evidence.
+- Spike and revisit items return decision-changing evidence to `architecture-engineer`.
 - Risky changes have validation, rollback, or migration obligations.
 - `not_prescribed` is used when the architecture frame intentionally leaves implementation freedom.
 - Exact table names, endpoint names, class names, or task sequencing are omitted unless they are architectural constraints.

@@ -6,6 +6,7 @@
 - Linked requirements:
 - Linked ASR:
 - Selected pattern:
+- Confidence: low | medium | high — <evidence or uncertainty>
 - Alternatives considered:
   - <alternative>
 - Rationale:

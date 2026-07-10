@@ -72,6 +72,7 @@ Use this catalog after ASR and forces are explicit. Do not choose patterns by na
 | Reliability | SLO, error budget, alert routing, degraded modes | alert fatigue, no owner |
 | Migration | expand/contract, migration checks, rollback plan | irreversible operations without validation |
 | Cost | cost tags, quotas, rate limits, budget alerts | hidden API/model/egress cost |
+| Sustainability when material | efficient utilization, autoscaling, workload scheduling, data lifecycle | unmeasured claims or treating cost as a complete proxy |
 
 ## Catalog use rules
 
