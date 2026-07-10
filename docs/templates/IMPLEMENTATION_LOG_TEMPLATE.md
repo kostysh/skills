@@ -36,6 +36,10 @@ Write this implementation log in the operator's language.
 
 <!-- List commands run, checks performed, and results. -->
 
+### Skill Review Evidence (when applicable)
+
+<!-- For substantial skill changes, record the claimed capability and anti-claims, stable reviewed snapshot, finding -> change -> evidence -> status remediation matrix, independent audit verdict, and blind forward-test rationale/results. State PROVISIONAL rather than PASS for self-review. -->
+
 ## Deviations From Plan
 
 <!-- Document any divergence from the plan and why it was necessary. -->

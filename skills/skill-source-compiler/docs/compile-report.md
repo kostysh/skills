@@ -2,12 +2,13 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.6`
+- Skill source version: `0.2.7`
 - CLI package version: `0.2.3`
 
 ## Source files
 - `assets/source-template.yaml`
 - `docs/issues/design-notes.md`
+- `docs/logs/implementation-log-20260710-1.md`
 - `fragments/final-checks.md`
 - `fragments/overview.md`
 - `package.json`

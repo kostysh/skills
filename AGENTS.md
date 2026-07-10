@@ -103,7 +103,7 @@ When creating or modifying skills:
 
 ### Instruction Quality Gate
 
-After substantial changes to a skill, perform an audit against the `Audit instruction quality` workflow stage from `skill-source-compiler`.
+After substantial changes to a skill, first perform the author self-check from the `Audit instruction quality` workflow stage in `skill-source-compiler`, then run an independent review with `skill-reviewer` against a stable snapshot. Compiler success and self-review are structural and authoring evidence; they are not a formal independent `PASS`.
 
 Substantial changes include:
 
@@ -112,15 +112,18 @@ Substantial changes include:
 - changing active/supporting surface boundaries, interop priority, tool triggers, validation behavior, fallback behavior, or stop rules
 - changing generated skill source bundles in a way that affects how agents decide, act, verify, or report
 
-The audit must check:
+The independent review must check:
 
 - outcome-first instructions with clear success criteria, constraints, allowed side effects, evidence rules, and output shape
 - no unresolved contradictions, duplicated rules, vague precedence, or hidden mandatory guidance
 - right-sized freedom: avoid step-by-step micromanagement unless sequence is required for safety, correctness, or fragile tooling
 - concrete reference and tool triggers that support progressive disclosure
 - explicit validation gates, fallback behavior, and stop rules
+- trigger and responsibility boundaries, input authority/readiness, output and verdict contracts, interop owner-producibility, active/supporting/runtime parity, portability, and substrate-only success paths
 
-Fix audit gaps before finishing. If no change is needed, note that the instruction quality audit passed in the implementation log or final report.
+For material changes to agent decisions, actions, handoffs, validation, stop rules, or reporting, include risk-based blind forward-tests without leaking the expected diagnosis or fix. A demonstrably non-behavioral change may skip forward-testing only with a recorded rationale.
+
+Fix review gaps and repeat the independent review until `PASS`. Record the reviewed snapshot and evidence in the implementation log. Any material change to the reviewed surface invalidates the prior `PASS` and requires re-review or a clearly bounded delta audit.
 
 ## Documentation Layers
 

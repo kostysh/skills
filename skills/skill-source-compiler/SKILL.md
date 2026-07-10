@@ -9,9 +9,9 @@ compatibility: Designed for skills-compatible agents that can read Markdown
   files and copy local files inside the skill folder. The packaged CLI at
   scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 metadata:
-  source-version: 0.2.6
+  source-version: 0.2.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 53480299cdcf27db36716958aa8168b4f793d5875218746fb0c21d4c2779707a
+  skillforge-source-hash: d32b80ddffddeef39db915d5fc67a3e7283fa36992822a286765120667961fcc
 ---
 
 # skill-source-compiler
@@ -22,7 +22,7 @@ metadata:
 2. Read every required active reference before rewriting the target skill.
 3. If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
 4. Keep active normative guidance separate from supporting or historical documents.
-5. Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing.
+5. Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing; treat this as an author self-check, not an independent capability verdict.
 6. Reject placeholder commands, modes, metrics, configuration surfaces, and references that do not change the agent workflow or cannot be backed by runtime behavior, measurement, or active guidance.
 7. Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
 
@@ -73,7 +73,7 @@ Validation:
 
 ### Workflow stage: Audit instruction quality
 
-Ensure the generated skill gives enough outcome, constraint, tool, validation, and stop-rule structure without over-specifying the path.
+Perform an author-side structural and instruction-quality self-check without presenting compiler success as an independent behavioral verdict.
 
 1. Check that the skill states the user-visible outcome, success criteria, constraints, side-effect limits, and output contract.
 2. Remove vague, contradictory, or duplicate rules; add precedence only where behavior would otherwise be ambiguous.
@@ -86,6 +86,7 @@ Validation:
 
 - The skill is outcome-first, contradiction-free, progressively disclosed, and has explicit validation and stop conditions.
 - Every declared command, mode, metric, config knob, and active reference is justified by current runtime behavior, measured evidence, or active guidance.
+- The result is reported as author self-check evidence; formal review of real skill capability is routed to skill-reviewer.
 
 ### Workflow stage: Render the target skill
 
@@ -104,6 +105,7 @@ Validation:
 
 - **language and toolchain matters:** the language or toolchain skill. Language semantics, packaging, linting, and testing conventions belong to language and toolchain skills.
 - **framework APIs and framework idioms:** the framework skill. Framework-specific APIs, lifecycle rules, and integration patterns belong to framework skills.
+- **independent review of skill capability, behavioral reliability, evidence integrity, and final review verdict:** skill-reviewer. skill-source-compiler owns source structure, generation, drift, and local author self-checks; skill-reviewer owns independent stable-snapshot review and behavioral verdicts.
 
 ## Runnable commands
 ### CLI command: `help`
@@ -214,7 +216,7 @@ In-place regeneration writes only compiler-owned generated files. Manifest entri
 Source bundles may omit references when the generated SKILL.md is self-contained; checks must still validate declared or linked references when they exist.
 
 ### Instruction quality
-Skill instructions should be outcome-first, precise about constraints and completion criteria, explicit about validation and stop rules, and free of contradictory or unnecessarily mechanical process guidance.
+Skill instructions should be outcome-first, precise about constraints and completion criteria, explicit about validation and stop rules, and free of contradictory or unnecessarily mechanical process guidance. This compiler stage is an author self-check and does not by itself establish independent behavioral PASS.
 
 ### Observable skill surface
 Commands, modes, metrics, configuration surfaces, and active references belong in a skill only when they change current agent behavior and have a runtime, measurement, or guidance source that agents can verify.
@@ -259,5 +261,6 @@ Before finishing:
 - verify that every required reference is linked from `SKILL.md`
 - verify that supporting docs remain clearly non-normative
 - verify instruction quality: outcome-first instructions, no unresolved contradictions, precise reference/tool triggers, validation gates, and stop rules
+- report this instruction-quality result as an author self-check; route formal independent skill-capability review to skill-reviewer
 - verify that copied assets, runtime files, and tests are still reachable by relative path
 - verify that the generated bundle can be copied to another machine without losing required behavior

@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.2.6
+  source-version: 0.2.7
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
@@ -73,6 +73,10 @@ supporting:
     source: docs/issues/design-notes.md
     target: docs/issues/design-notes.md
     description: Historical design notes for this generated example.
+  - id: supporting-implementation-log-20260710-1
+    source: docs/logs/implementation-log-20260710-1.md
+    target: docs/logs/implementation-log-20260710-1.md
+    description: Non-normative implementation log for independent skill-review ownership guidance.
 
 surfaces:
   active:
@@ -93,7 +97,7 @@ sections:
     - Read every required active reference before rewriting the target skill.
     - If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
     - Keep active normative guidance separate from supporting or historical documents.
-    - Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing.
+    - Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing; treat this as an author self-check, not an independent capability verdict.
     - Reject placeholder commands, modes, metrics, configuration surfaces, and references that do not change the agent workflow or cannot be backed by runtime behavior, measurement, or active guidance.
     - Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
   whenToUse:
@@ -126,7 +130,7 @@ sections:
         - Every conflict is resolved by an explicit rule or becomes a compile error.
     - id: stage-audit-instruction-quality
       title: Audit instruction quality
-      goal: Ensure the generated skill gives enough outcome, constraint, tool, validation, and stop-rule structure without over-specifying the path.
+      goal: Perform an author-side structural and instruction-quality self-check without presenting compiler success as an independent behavioral verdict.
       steps:
         - Check that the skill states the user-visible outcome, success criteria, constraints, side-effect limits, and output contract.
         - Remove vague, contradictory, or duplicate rules; add precedence only where behavior would otherwise be ambiguous.
@@ -137,6 +141,7 @@ sections:
       validation:
         - The skill is outcome-first, contradiction-free, progressively disclosed, and has explicit validation and stop conditions.
         - Every declared command, mode, metric, config knob, and active reference is justified by current runtime behavior, measured evidence, or active guidance.
+        - The result is reported as author self-check evidence; formal review of real skill capability is routed to skill-reviewer.
     - id: stage-render-output
       title: Render the target skill
       goal: Produce a standard Agent Skills folder with progressive disclosure.
@@ -156,6 +161,10 @@ sections:
       domain: framework APIs and framework idioms
       winner: the framework skill
       rationale: Framework-specific APIs, lifecycle rules, and integration patterns belong to framework skills.
+    - id: interop-skill-review
+      domain: independent review of skill capability, behavioral reliability, evidence integrity, and final review verdict
+      winner: skill-reviewer
+      rationale: skill-source-compiler owns source structure, generation, drift, and local author self-checks; skill-reviewer owns independent stable-snapshot review and behavioral verdicts.
   commands:
     - id: command-help
       command: help
@@ -280,7 +289,7 @@ sections:
       text: Source bundles may omit references when the generated SKILL.md is self-contained; checks must still validate declared or linked references when they exist.
     - id: policy-instruction-quality
       title: Instruction quality
-      text: Skill instructions should be outcome-first, precise about constraints and completion criteria, explicit about validation and stop rules, and free of contradictory or unnecessarily mechanical process guidance.
+      text: Skill instructions should be outcome-first, precise about constraints and completion criteria, explicit about validation and stop rules, and free of contradictory or unnecessarily mechanical process guidance. This compiler stage is an author self-check and does not by itself establish independent behavioral PASS.
     - id: policy-observable-surface
       title: Observable skill surface
       text: Commands, modes, metrics, configuration surfaces, and active references belong in a skill only when they change current agent behavior and have a runtime, measurement, or guidance source that agents can verify.

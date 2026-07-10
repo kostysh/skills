@@ -37,6 +37,8 @@ Write explicit load triggers in `SKILL.md`. A concrete rule like “Read `refere
 
 Strong agent instructions define the desired outcome and operating boundaries, then leave implementation freedom where multiple safe paths are valid.
 
+This compiler workflow is an author-side structural and instruction-quality self-check. It can expose missing contracts, contradictions, hidden guidance, and unjustified surfaces, but compiler success does not prove that realistic prompts produce correct skill behavior. For a formal independent verdict on a new or substantially changed skill, route the stable generated snapshot to `skill-reviewer`; use blind forward-tests when the change can affect agent decisions, actions, handoffs, validation, stop rules, or reporting.
+
 Audit every new or substantially changed skill against these model-agnostic traits:
 
 | Instruction trait | Skill authoring implication |

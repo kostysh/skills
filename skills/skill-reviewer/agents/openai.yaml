@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Reviewer"
+  short_description: "Independent reviews of skill capability"
+  default_prompt: "Use $skill-reviewer to independently review this skill package and issue an evidence-backed verdict."

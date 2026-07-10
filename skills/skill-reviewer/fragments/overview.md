@@ -1,0 +1,1 @@
+Review whether an AI-agent skill reliably delivers its declared decision or action capability without confusing package structure, generated files, tests, mocks, or documentation with behavioral proof. Produce a read-only, evidence-backed verdict tied to a reproducible snapshot, and leave remediation to a separate owner.
