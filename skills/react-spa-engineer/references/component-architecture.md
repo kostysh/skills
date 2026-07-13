@@ -1,304 +1,95 @@
-# Component Architecture Rules for React SPA
+# Component Architecture for React SPA
 
-## 0. Feature-Based SPA Structure
+Use this reference for app-level feature layout and import ownership. Use
+`react-components-engineer` when reusable component correctness across portals,
+multiple instances, SSR/hydration, or component API boundaries is the primary
+task.
 
-**Rule: Use a feature-based structure with executable layer boundaries.**
+Unless a block is explicitly labeled copyable, code and layout blocks in this
+reference are conceptual and omit project-specific modules and configuration.
 
-Default layout:
+## Feature and layer boundaries
+
+Default greenfield layout for this fixed stack:
 
 ```text
 src/
-  app/              # shell, providers, router, bootstrap
+  app/              # bootstrap, providers, router, application shell
   shared/
-    api/            # project API transport, contracts, typed errors, CSRF/session recovery helpers
-    ui/             # reusable presentational UI
-    forms/          # typed form adapters and field primitives
-    state/          # reusable runtime-state primitives
-    storage/        # Dexie/local durable storage primitives
+    api/            # HTTP/SSE/WebSocket transport, contracts, typed errors
+    ui/             # reusable presentational components
+    forms/          # shared RHF fields and error adapters
+    state/          # shared runtime-state primitives
+    storage/        # Dexie primitives, scoping, TTL and cleanup
   features/
-    feature-name/   # route modules, screens, Query adapters, feature UI
+    feature-name/   # route modules, Query adapters, screens and feature UI
 ```
 
-`shared/api` is the only place that owns project API `fetch`, credentials, CSRF headers, response normalization, and typed API errors. Screens, routes, stores, and UI hooks consume feature Query adapters or API contract functions; they do not perform project API `fetch` directly.
+Existing project conventions win when they preserve the same ownership
+boundaries. Do not reorganize a working application merely to match these folder
+names.
 
-Enforce this with import-boundary tooling such as ESLint rules. Source-grep tests are useful smoke checks, but they are not sufficient evidence that layer boundaries are executable.
+Allowed dependency direction:
 
-## 1. Functional Components Only
-
-**Rule: Use functional components exclusively. Class components are only allowed for ErrorBoundary.**
-
-```tsx
-// Correct - Functional component
-function MyButton() {
-  return <button>Click me</button>;
-}
-
-// Correct - Arrow function component
-const MyButton = () => {
-  return <button>Click me</button>;
-};
-
-// Only exception - ErrorBoundary must be a class
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, info) {
-    logErrorToService(error, info.componentStack);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
+```text
+app -> features -> shared
 ```
 
-## 2. PascalCase Naming Convention
+Feature-to-feature imports require an explicit public contract or a shared owner;
+do not reach into another feature's internals. Enforce material boundaries with
+the repository's executable import rules. Source grep can be a smoke signal but
+is not architecture enforcement.
 
-**Rule: Component names MUST start with capital letter (PascalCase). HTML tags use lowercase.**
+`shared/api` owns project transport, credentials, CSRF attachment, response
+normalization, and typed transport errors. Feature Query adapters own query
+options and invalidation semantics. Screens and UI components do not perform
+project network IO.
 
-```tsx
-// Correct
-<MyButton />
-<UserProfile />
-<ShoppingCart />
+## Component ownership
 
-// Incorrect - treated as HTML tag
-<myButton />
-<userProfile />
-```
+- Prefer functional components and hooks for ordinary UI.
+- A React render error boundary still requires the supported React boundary
+  mechanism; do not confuse it with React Router's function-shaped route
+  `ErrorBoundary` property.
+- Keep state as local as its consumers allow; lift or introduce Context/Zustand
+  only when the state reference justifies it.
+- Use composition through children and explicit slots before introducing render
+  props, compound components, or configuration-heavy factories.
+- Keep component files and exports consistent with the repository. One component
+  per file and PascalCase filenames are defaults, not reasons for unrelated
+  rewrites.
+- Props may use interfaces or type aliases according to the repository and the
+  type shape. `typescript-engineer` owns language-level policy.
 
-## 3. Props Through TypeScript Interfaces
+## Public entrypoints and imports
 
-**Rule: Define component props using TypeScript interfaces. Use `type` only for complex unions/utility-derived props.**
+Local `index.ts` files are acceptable as intentional public entrypoints for a
+small component or feature module. Avoid application-wide barrels that hide
+dependency direction, create cycles, or measurably pull unrelated modules into a
+bundle.
 
-```tsx
-// Correct - Interface for props
-interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  disabled?: boolean;
-  variant?: 'primary' | 'secondary';
-}
+Do not claim that every barrel harms tree shaking. Verify bundle impact from the
+production build before making a performance claim, and keep import-boundary
+correctness separate from bundle optimization.
 
-function Button({ label, onClick, disabled = false, variant = 'primary' }: ButtonProps) {
-  return (
-    <button onClick={onClick} disabled={disabled} className={variant}>
-      {label}
-    </button>
-  );
-}
+## Reusable composite widgets
 
-// Correct - Extending interfaces
-interface IconButtonProps extends ButtonProps {
-  icon: React.ReactNode;
-}
-```
+Do not invent a partially accessible listbox, combobox, tabs, menu, or dialog in
+an app-architecture example. Prefer the accepted project primitive. If a new
+reusable widget is required, hand its component contract to
+`react-components-engineer`; use the Accessibility reference and
+`web-ui-reviewer` for the integration and audit boundaries.
 
-## 4. One Component Per File
+## Verification
 
-**Rule: Each component should be in its own file. Export as default or named export consistently.**
+Match evidence to the claim:
 
-```
-src/
-  components/
-    Button/
-      Button.tsx        # Main component
-      Button.test.tsx   # Tests
-      index.ts          # Re-export
-    UserCard/
-      UserCard.tsx
-      UserCard.test.tsx
-      index.ts
-```
+- import-rule execution proves declared dependency boundaries;
+- typecheck and component tests prove only their exercised contracts;
+- production build output is required for bundle-splitting or tree-shaking
+  claims;
+- a material integrated flow requires browser evidence from the Testing
+  reference.
 
-```tsx
-// Button/Button.tsx
-interface ButtonProps {
-  label: string;
-}
-
-export function Button({ label }: ButtonProps) {
-  return <button>{label}</button>;
-}
-
-// Button/index.ts
-export { Button } from './Button';
-```
-
-## 5. Children Pattern
-
-**Rule: Use children prop for component composition.**
-
-```tsx
-interface CardProps {
-  children: React.ReactNode;
-  title?: string;
-}
-
-function Card({ children, title }: CardProps) {
-  return (
-    <div className="card">
-      {title && <h2>{title}</h2>}
-      <div className="card-content">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-// Usage
-<Card title="User Info">
-  <p>Name: John</p>
-  <p>Email: john@example.com</p>
-</Card>
-```
-
-## 6. Render Props Pattern
-
-**Rule: Use render props when children need access to internal state/logic.**
-
-```tsx
-interface MouseTrackerProps {
-  render: (position: { x: number; y: number }) => React.ReactNode;
-}
-
-function MouseTracker({ render }: MouseTrackerProps) {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setPosition({ x: e.clientX, y: e.clientY });
-  };
-
-  return (
-    <div onMouseMove={handleMouseMove}>
-      {render(position)}
-    </div>
-  );
-}
-
-// Usage
-<MouseTracker
-  render={({ x, y }) => (
-    <p>Mouse position: {x}, {y}</p>
-  )}
-/>
-```
-
-## 7. Compound Components Pattern
-
-**Rule: Use compound components for complex UI that shares implicit state.**
-
-```tsx
-// Context for shared state
-const SelectContext = createContext<{
-  value: string;
-  onChange: (value: string) => void;
-} | null>(null);
-
-// Parent component
-interface SelectProps {
-  value: string;
-  onChange: (value: string) => void;
-  children: React.ReactNode;
-}
-
-function Select({ value, onChange, children }: SelectProps) {
-  return (
-    <SelectContext.Provider value={{ value, onChange }}>
-      <div className="select" role="listbox">
-        {children}
-      </div>
-    </SelectContext.Provider>
-  );
-}
-
-// Child component
-interface OptionProps {
-  value: string;
-  children: React.ReactNode;
-}
-
-function Option({ value, children }: OptionProps) {
-  const context = useContext(SelectContext);
-  if (!context) throw new Error('Option must be used within Select');
-
-  const isSelected = context.value === value;
-
-  return (
-    <div
-      role="option"
-      aria-selected={isSelected}
-      onClick={() => context.onChange(value)}
-      className={isSelected ? 'selected' : ''}
-    >
-      {children}
-    </div>
-  );
-}
-
-// Attach child to parent
-Select.Option = Option;
-
-// Usage
-<Select value={selected} onChange={setSelected}>
-  <Select.Option value="apple">Apple</Select.Option>
-  <Select.Option value="banana">Banana</Select.Option>
-  <Select.Option value="cherry">Cherry</Select.Option>
-</Select>
-```
-
-## 8. Lifting State Up
-
-**Rule: Share state between siblings by moving it to their common parent.**
-
-```tsx
-interface CounterProps {
-  count: number;
-  onClick: () => void;
-}
-
-function Counter({ count, onClick }: CounterProps) {
-  return (
-    <button onClick={onClick}>
-      Clicked {count} times
-    </button>
-  );
-}
-
-function App() {
-  const [count, setCount] = useState(0);
-
-  const handleClick = () => {
-    setCount(count + 1);
-  };
-
-  return (
-    <div>
-      {/* Both counters share the same state */}
-      <Counter count={count} onClick={handleClick} />
-      <Counter count={count} onClick={handleClick} />
-    </div>
-  );
-}
-```
-
-## Best Practices Summary
-
-1. **Always use functional components** (except ErrorBoundary)
-2. **Name components in PascalCase**
-3. **Define props with TypeScript interfaces**
-4. **One component per file**
-5. **Use children for composition**
-6. **Use render props for shared behavior with custom rendering**
-7. **Use compound components for related UI elements**
-8. **Lift state up for shared state between siblings**
+A directory tree, exported component, route registration, story, or screenshot
+is substrate and cannot alone establish a working SPA capability.

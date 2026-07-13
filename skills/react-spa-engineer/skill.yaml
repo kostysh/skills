@@ -2,12 +2,20 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-spa-engineer
-  source-version: 0.1.7
+  source-version: 0.1.8
   recommended-skill-md-max-bytes: 20000
-  description: |-
-    Comprehensive React SPA development expert for building production-ready single-page applications. Covers component architecture, state management (Zustand, Context), explicit persistence architecture (URL state, runtime UI state, Dexie/IndexedDB), data fetching (TanStack Query), forms (React Hook Form + Zod), routing (React Router), TypeScript patterns, performance optimization, testing (Vitest, RTL, Playwright), and accessibility.
-
-    Use when building React SPAs, implementing features, reviewing code, setting up project architecture, or troubleshooting React client-side applications. Excludes SSR, RSC, Next.js server-side patterns.
+  description: >-
+    Design, implement, review, and diagnose production React single-page
+    applications built with TypeScript, Vite, TanStack Query, Zustand, React
+    Hook Form with Zod, React Router, and Dexie. Use for integrated client-side
+    flows that cross routing, server state, runtime state, forms, browser
+    persistence, performance, testing, or accessibility. Preserve the accepted
+    stack and project contracts; exclude SSR, React Server Components, and
+    Next.js server-side architecture.
+  compatibility: >-
+    Portable documentation-only engineering skill. It ships no application
+    runtime or test harness and requires repository evidence plus the installed
+    stack versions to make project-specific decisions.
 fragments:
   overview: fragments/overview.md
 references:
@@ -15,78 +23,107 @@ references:
     title: Accessibility
     source: references/accessibility.md
     target: references/accessibility.md
-    required: true
-    trigger: Read this when you need patterns and examples.
+    required: false
+    trigger: Read this when implementing or assessing semantics, keyboard interaction, focus management, live announcements, dialogs, or custom composite widgets.
   - id: ref-references-component-architecture
     title: Component Architecture
     source: references/component-architecture.md
     target: references/component-architecture.md
-    required: true
-    trigger: Read this when you need feature-based structure, import boundaries, functional components, or composition patterns.
+    required: false
+    trigger: Read this when SPA feature layout, import boundaries, component ownership, composition, or public module entrypoints are in scope.
   - id: ref-references-data-fetching
     title: Data Fetching
     source: references/data-fetching.md
     target: references/data-fetching.md
-    required: true
-    trigger: Read this when you need shared API boundaries, TanStack Query patterns, global cache handling, caching, mutations, or CSRF recovery.
+    required: false
+    trigger: Read this when TanStack Query status, query keys, server reads, mutations, invalidation, retries, API transport, or recovery behavior is in scope.
   - id: ref-references-forms-validation
     title: Forms & Validation
     source: references/forms-validation.md
     target: references/forms-validation.md
-    required: true
-    trigger: Read this when you need React Hook Form, TanStack Form wrappers, Zod schemas, or typed server-error handling.
+    required: false
+    trigger: Read this when React Hook Form, Zod, editable payloads, field arrays, client validation, or server field-error mapping is in scope.
   - id: ref-references-indexeddb-persistence
     title: IndexedDB Persistence
     source: references/indexeddb-persistence.md
     target: references/indexeddb-persistence.md
-    required: true
-    trigger: Read this when you need durable-cache allowlists, TTL, scoping, and IndexedDB patterns.
+    required: false
+    trigger: Read this when Dexie schema versions, migrations, durable records, realtime persistence, cache TTL, or user and tenant cleanup is in scope.
   - id: ref-references-performance
     title: Performance
     source: references/performance.md
     target: references/performance.md
-    required: true
-    trigger: Read this when you need the prioritized rulepack and examples.
+    required: false
+    trigger: Read this only when production build output, profiling, request waterfalls, bundle splitting, interaction latency, rendering cost, or measured list performance is in scope.
   - id: ref-references-persistence-architecture
     title: Persistence Architecture
     source: references/persistence-architecture.md
     target: references/persistence-architecture.md
-    required: true
-    trigger: Read this when you need full rules.
+    required: false
+    trigger: Read this when one flow crosses URL state, Zustand, TanStack Query, and Dexie or needs an explicit source-of-truth and invalidation map.
   - id: ref-references-routing
     title: Routing
     source: references/routing.md
     target: references/routing.md
-    required: true
-    trigger: Read this when you need React Router data APIs, loaders, protected routes.
+    required: false
+    trigger: Read this when React Router route objects, navigation, URL state, loaders, route admission, or error boundaries are in scope.
   - id: ref-references-state-management
     title: State Management
     source: references/state-management.md
     target: references/state-management.md
-    required: true
-    trigger: Read this when you need Zustand, Context API, persistence guidance.
+    required: false
+    trigger: Read this when choosing between local React state, Context, Zustand, URL state, TanStack Query, and Dexie for a concrete value.
   - id: ref-references-testing
     title: Testing
     source: references/testing.md
     target: references/testing.md
-    required: true
-    trigger: Read this when you need full setup and examples.
+    required: false
+    trigger: Read this when defining Vitest, Testing Library, Playwright, browser walkthrough, integration, or end-to-end evidence for an SPA claim.
   - id: ref-references-typescript-patterns
     title: TypeScript Patterns
     source: references/typescript-patterns.md
     target: references/typescript-patterns.md
-    required: true
-    trigger: Read this when you need Type-safe React development.
+    required: false
+    trigger: Read this when React-specific TypeScript props, hooks, events, generics, refs, or runtime-schema typing is in scope; use typescript-engineer for language and toolchain ownership.
 assets: []
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
     target: agents/openai.yaml
-    description: Portable copy of agents/openai.yaml.
-supporting: []
+    description: Portable UI metadata for react-spa-engineer.
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation and evidence-status notes.
+  - id: supporting-implementation-log-20260612-1
+    source: docs/logs/implementation-log-20260612-1.md
+    target: docs/logs/implementation-log-20260612-1.md
+    description: Historical non-normative implementation log.
+  - id: supporting-implementation-log-20260612-2
+    source: docs/logs/implementation-log-20260612-2.md
+    target: docs/logs/implementation-log-20260612-2.md
+    description: Historical non-normative implementation log.
+  - id: supporting-implementation-log-20260622-1
+    source: docs/logs/implementation-log-20260622-1.md
+    target: docs/logs/implementation-log-20260622-1.md
+    description: Historical non-normative implementation log.
+  - id: supporting-implementation-log-20260708-1
+    source: docs/logs/implementation-log-20260708-1.md
+    target: docs/logs/implementation-log-20260708-1.md
+    description: Historical non-normative implementation log.
+  - id: supporting-implementation-log-20260713-1
+    source: docs/logs/implementation-log-20260713-1.md
+    target: docs/logs/implementation-log-20260713-1.md
+    description: Non-normative remediation, verification, and independent-review evidence.
+  - id: supporting-forward-test-raw-20260713-1
+    source: docs/logs/forward-test-raw-20260713-1.md
+    target: docs/logs/forward-test-raw-20260713-1.md
+    description: Verbatim non-normative prompts and outputs from the blind candidate forward-test run.
 surfaces:
   active:
-    requiredReferences:
+    requiredReferences: []
+    optionalReferences:
       - ref-references-accessibility
       - ref-references-component-architecture
       - ref-references-data-fetching
@@ -98,46 +135,129 @@ surfaces:
       - ref-references-state-management
       - ref-references-testing
       - ref-references-typescript-patterns
-    optionalReferences: []
   supportingGlobs:
     - docs/*
     - docs/logs/*
 sections:
   startHere:
-    - Confirm the task matches react-spa-engineer's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Classify the request as design/setup, implement, review, or diagnose; review and diagnose are read-only unless remediation is explicitly authorized.
+    - Establish the observable SPA outcome, affected user flow, accepted product, API and security contracts, installed stack versions, existing project conventions, and available verification before choosing a change.
+    - "Apply precedence in this order: operator and repository instructions; accepted product, API and security contracts; manifest, lockfile, configuration and existing code; official documentation matching the installed major version; then examples in this skill. For greenfield work use current stable versions."
+    - Stop as blocked when equal-authority sources conflict or a required backend, security, product, or compatibility decision has no owner-supplied answer. Do not invent the missing contract.
+    - Load only the optional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
+    - Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
   whenToUse:
-    - Building, implementing, reviewing, or troubleshooting React single-page applications.
-    - Working on React SPA component architecture, state management, URL/runtime/IndexedDB persistence, TanStack Query data fetching, forms, routing, performance, testing, or accessibility.
-    - Setting up a production-ready React client-side app with TypeScript.
+    - Designing or setting up an integrated client-side React SPA on the declared stack.
+    - Implementing or diagnosing a user flow that crosses routing, server state, forms, runtime state, browser persistence, performance, testing, or accessibility.
+    - Reviewing app-level SPA architecture or feature integration when an evidence-backed client result is required.
   whenNotToUse:
-    - Server-side rendering, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.
-    - The work is purely reusable component hardening without app-level SPA architecture; use react-components-engineer.
-    - The work is purely visual design; use frontend-design.
+    - SSR, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.
+    - The work is solely reusable component correctness without app-level integration; use react-components-engineer.
+    - The work is solely visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.
   workflow:
-    - id: stage-apply-react-spa-engineer
-      title: Apply react-spa-engineer guidance
-      goal: Apply the preserved react-spa-engineer guidance without changing its domain behavior.
+    - id: stage-establish-spa-basis
+      title: Establish the SPA basis
+      goal: Make the mode, authority, user-visible claim, stack compatibility, side effects, and proof boundary explicit.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Inspect applicable repository instructions, accepted contracts, package manifest and lockfile, relevant app entrypoints and layer seams, installed versions, current behavior, and available verification.
+        - Record mode, in-scope flow, allowed mutations, source precedence, unresolved inputs, and the observable outcome or review/diagnosis question.
+        - For review or diagnosis, remain read-only; for design/setup or implementation, modify only the authorized scope and do not install dependencies, format broadly, or rewrite unrelated files without separate authority.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - The next action does not depend on invented product, backend, security, version, or architecture facts.
+        - The requested claim has a named consumer and falsifiable completion evidence.
+    - id: stage-trace-and-act
+      title: Trace and act on the end-to-end flow
+      goal: Preserve one coherent contract across every affected client layer.
+      steps:
+        - "Map each value and side effect to its owner: React Router for navigation and URL state; shared/api for project transport; TanStack Query for server reads and mutations; local React or Zustand for runtime UI state; React Hook Form and Zod for forms; Dexie for approved durable client data."
+        - Load the smallest matching references and route TypeScript, reusable component, design, testing, accessibility-review, formal-review, browser-execution, and security decisions to their owning skills while retaining SPA integration ownership.
+        - Design, implement, review, or diagnose the smallest project-compatible change; keep React Router actions and fetchers outside project server IO in this skill's architecture even though React Router supports them.
+        - Preserve backend authorization as a server responsibility; client route admission, cache keys, and hidden UI are not authorization controls.
+      validation:
+        - No affected state, network request, mutation, persistent record, or user-visible transition has competing owners.
+        - Examples and changes conform to the installed major versions and accepted project contracts.
+    - id: stage-verify-and-handoff
+      title: Verify and hand off the SPA result
+      goal: Match the completion claim to observed evidence and leave the next consumer an actionable result.
+      steps:
+        - Run the narrowest relevant checks and the stronger domain or browser boundary required by the claim; report unavailable checks as evidence limits.
+        - Classify the result as completed, partial, or blocked. Completed requires the claim-matched evidence; implementation without that evidence is partial.
+        - Report mode, observable outcome, changed or inspected surface, verification evidence, status, blockers or residual risks, anti-claims, and next owner.
+      validation:
+        - Type, lint, build, mock, route, screenshot, and generated-file evidence is not presented as proof of unexercised interactive, persistence, performance, auth, security, or production behavior.
+        - The handoff does not require the consumer to invent a missing contract or reinterpret the result status.
+  interop:
+    - id: interop-typescript
+      domain: TypeScript language, compiler, tsconfig, module resolution, Biome and ESLint ownership
+      winner: typescript-engineer
+      rationale: react-spa-engineer owns React SPA integration; typescript-engineer owns language and toolchain correctness using repository and installed-version evidence.
+    - id: interop-testing
+      domain: TypeScript test strategy, Vitest or Playwright runner behavior, fixtures, mocks, determinism, and CI test contours
+      winner: typescript-test-engineer
+      rationale: react-spa-engineer defines the SPA behavior and evidence boundary; typescript-test-engineer owns test design and runner correctness.
+    - id: interop-components
+      domain: reusable React component correctness across rendering contexts, portals, multiple instances, and component API boundaries
+      winner: react-components-engineer
+      rationale: react-components-engineer owns reusable component hardening; react-spa-engineer owns integration into routes, data, forms, state, and persistence.
+    - id: interop-design
+      domain: visual hierarchy, interaction design, styling, responsive composition, and design-system presentation
+      winner: frontend-design
+      rationale: frontend-design owns visual decisions; react-spa-engineer preserves the SPA behavior and stack integration.
+    - id: interop-ui-review
+      domain: formal UX and accessibility review
+      winner: web-ui-reviewer
+      rationale: web-ui-reviewer owns the audit verdict; react-spa-engineer implements or integrates accepted client corrections.
+    - id: interop-code-review
+      domain: formal code-review findings, severity, merge guidance, and review output
+      winner: code-reviewer
+      rationale: code-reviewer owns the formal verdict; react-spa-engineer supplies React SPA domain analysis and implements authorized remediation.
+    - id: interop-security
+      domain: auth, CSRF, sensitive browser persistence, exploitability, and security verdicts
+      winner: security-reviewer
+      rationale: security-reviewer owns exploitability and security findings; react-spa-engineer owns only the client integration of accepted API and security contracts.
+    - id: interop-browser
+      domain: real browser navigation, interaction, screenshots, traces, and walkthrough execution
+      winner: Playwright or the available browser-automation skill
+      rationale: Browser tooling supplies execution evidence; react-spa-engineer defines which SPA scenario and boundary the evidence must cover.
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-substrate-closure
+      priority: high
+      text: A route, component, schema, store, cache table, mock, screenshot, build, or green test can be useful substrate without proving the claimed end-to-end user flow.
+    - id: gotcha-dual-server-owner
+      priority: high
+      text: Do not split project server reads or mutations between React Router actions/fetchers and TanStack Query; this skill assigns project server IO to TanStack Query and uses React Router for navigation, URL state, and loader-driven Query orchestration.
+    - id: gotcha-client-auth
+      priority: high
+      text: Client route admission, hidden controls, tenant-scoped keys, and cleared caches improve UX or isolation but never replace server authorization.
+    - id: gotcha-version-drift
+      priority: high
+      text: Do not apply a latest-version snippet to an existing project until its installed major version and migration authority are known.
+    - id: gotcha-conceptual-example
+      priority: medium
+      text: Treat an example as copyable only when it states its version and satisfies the root ownership, error, security, accessibility, and evidence invariants; otherwise label it conceptual and name omitted obligations.
+  policies:
+    - id: policy-fixed-stack
+      title: Fixed stack contract
+      text: Preserve React, TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Do not introduce a competing framework or state, form, routing, query, or persistence library without an explicit operator decision.
+    - id: policy-example-integrity
+      title: Example integrity
+      text: Copyable examples must match the stated major version and all active root invariants. Conceptual examples must be labeled and list the production obligations they omit.
+    - id: policy-evidence-ladder
+      title: Evidence ladder
+      text: Typecheck, lint, and build prove only their technical contours; local UI behavior needs component tests and browser inspection; material flows need successful Playwright scenarios and browser automation; persistence needs reload, migration, TTL and context-switch evidence; performance needs production profiling; auth and security need the real backend boundary and the owning reviewer.
+    - id: policy-output-contract
+      title: Output contract
+      text: Report mode, observable outcome, changed or inspected surface, verification evidence, completed, partial or blocked status, blockers or residual risks, anti-claims, and the next owner.
   portability:
     required: true
     rules:
-      - Do not reference machine-specific absolute paths or local files outside this skill folder.
-      - Keep all mandatory react-spa-engineer guidance inside this skill folder.
-      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+      - Do not reference machine-specific absolute paths or require files outside this skill folder to understand the portable contract.
+      - Treat repository layout, commands, installed versions, API contracts, and acceptance gates as discovered project context rather than portable constants.
+      - Keep mandatory workflow and evidence rules in SKILL.md; keep conditional stack detail in reachable local references.
+      - Keep docs and implementation logs non-normative even when they are copied for maintenance traceability.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
-      - Search the skill folder for absolute local paths before finishing.
-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Run skill-source-compiler lint, regenerate, and check after source changes.
+      - Compile to an isolated output directory and confirm references, UI metadata, and supporting evidence remain reachable.
+      - Search active instructions and declared assets for absolute local dependencies.
+      - Confirm the copied skill remains useful without repository history, prior sessions, or the application it was designed against.

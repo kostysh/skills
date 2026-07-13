@@ -1,490 +1,116 @@
-# State Management for React SPA
-
-## State Hierarchy (local to global)
-
-```
-Local State (useState)
-    ↓
-Complex Local State (useReducer)
-    ↓
-Lifted State (props drilling)
-    ↓
-Cross-cutting State (Context API)
-    ↓
-Global Client State (Zustand)
-```
-
-**Persistence contract**: define source of truth per layer. Use URL for link-reproducible page state, Zustand for runtime UI state, Dexie (IndexedDB) for long-lived client persistence, and TanStack Query for all server state interactions.
-
-Before adding Zustand or another app-level store, check whether the behavior is already covered by URL state, component-local `useState`, `useReducer`, or props/context that the app already owns. Add global state only when multiple features need the same runtime value now.
-
-### Mandatory Layer Mapping
-
-| Layer | Source of truth | Typical data |
-|------|------------------|--------------|
-| URL state | URL (`path` + `search`) | Filters, sort, pagination, search, view mode |
-| Runtime UI state | Zustand | Modal open state, temporary selection, in-progress UI flags |
-| Client persistence | Dexie (IndexedDB) | Drafts, wizard progress, dictionary cache, local cache |
-| Server state | Server via TanStack Query | Business entities and remote reference data |
-
----
-
-## 1. useState - Local State
-
-**Rule: Use for simple, component-scoped state.**
-
-```tsx
-// Basic usage
-const [count, setCount] = useState(0);
-const [name, setName] = useState('');
-const [items, setItems] = useState<string[]>([]);
-
-// With type inference
-const [user, setUser] = useState<User | null>(null);
-```
-
-### Critical Rules
-
-```tsx
-// 1. Use updater function for state based on previous value
-function handleClick() {
-  setCount(prev => prev + 1);  // Correct
-  setCount(prev => prev + 1);  // Both will apply
-  setCount(prev => prev + 1);  // Result: +3
-}
-
-// Wrong - only results in +1
-function handleClickWrong() {
-  setCount(count + 1);
-  setCount(count + 1);
-  setCount(count + 1);
-}
-
-// 2. Never mutate state directly
-// Wrong
-obj.x = 10;
-setObj(obj);
-
-// Correct - create new object
-setObj({ ...obj, x: 10 });
-
-// 3. Lazy initialization for expensive computations
-// Wrong - runs every render
-const [data, setData] = useState(expensiveComputation());
-
-// Correct - runs only on mount
-const [data, setData] = useState(() => expensiveComputation());
-
-// 4. State updates are not immediate
-function handleClick() {
-  setName('Robin');
-  console.log(name); // Still old value!
-
-  // Correct approach
-  const nextName = 'Robin';
-  setName(nextName);
-  console.log(nextName); // Correct
-}
-```
-
----
-
-## 2. useReducer - Complex Local State
-
-**Rule: Use when state logic is complex or multiple values are related.**
-
-```tsx
-interface State {
-  count: number;
-  error: string | null;
-  loading: boolean;
-}
-
-type Action =
-  | { type: 'increment' }
-  | { type: 'decrement' }
-  | { type: 'setError'; payload: string }
-  | { type: 'setLoading'; payload: boolean };
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case 'increment':
-      return { ...state, count: state.count + 1 };
-    case 'decrement':
-      return { ...state, count: state.count - 1 };
-    case 'setError':
-      return { ...state, error: action.payload };
-    case 'setLoading':
-      return { ...state, loading: action.payload };
-    default:
-      throw new Error(`Unknown action type`);
-  }
-}
-
-function Counter() {
-  const [state, dispatch] = useReducer(reducer, {
-    count: 0,
-    error: null,
-    loading: false,
-  });
-
-  return (
-    <button onClick={() => dispatch({ type: 'increment' })}>
-      Count: {state.count}
-    </button>
-  );
-}
-```
-
-### Critical Rules
-
-```tsx
-// 1. Reducer must be pure - no side effects
-// Wrong
-function reducer(state, action) {
-  fetch('/api/update');  // Side effect!
-  return { ...state, count: state.count + 1 };
-}
-
-// 2. Never mutate state
-// Wrong
-function reducer(state, action) {
-  state.items.push(action.payload);  // Mutation!
-  return state;
-}
-
-// Correct
-function reducer(state, action) {
-  return {
-    ...state,
-    items: [...state.items, action.payload],
-  };
-}
-
-// 3. Always spread existing state
-// Wrong - loses other fields
-case 'increment':
-  return { count: state.count + 1 };
-
-// Correct
-case 'increment':
-  return { ...state, count: state.count + 1 };
-
-// 4. Lazy initialization
-const [state, dispatch] = useReducer(
-  reducer,
-  initialArg,
-  createInitialState  // Function, not function call
-);
-```
-
----
-
-## 3. Context API - Cross-cutting Data
-
-**Rule: Use for data needed by many components at different nesting levels (auth, theme, locale).**
-
-```tsx
-// 1. Create context with type
-interface AuthContextType {
-  user: User | null;
-  login: (nextUser: User) => void;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
-
-// 2. Create provider component
-interface AuthProviderProps {
-  children: React.ReactNode;
-}
-
-function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
-
-  // Server auth calls live in TanStack Query mutation hooks.
-  // Context stores only runtime auth snapshot.
-  const login = useCallback((nextUser: User) => {
-    setUser(nextUser);
-  }, []);
-
-  const logout = useCallback(() => {
-    setUser(null);
-  }, []);
-
-  // Memoize value to prevent unnecessary re-renders
-  const value = useMemo(
-    () => ({ user, login, logout }),
-    [user, login, logout]
-  );
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-// 3. Create custom hook with error handling
-function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-  return context;
-}
-
-// 4. Usage
-function UserProfile() {
-  const { user, logout } = useAuth();
-
-  if (!user) return <LoginPrompt />;
-
-  return (
-    <div>
-      <p>Welcome, {user.name}</p>
-      <button onClick={logout}>Logout</button>
-    </div>
-  );
-}
-```
-
-### Theme Context Example
-
-```tsx
-type Theme = 'light' | 'dark';
-
-interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-}
-
-const ThemeContext = createContext<ThemeContextType | null>(null);
-
-interface ThemeProviderProps {
-  children: React.ReactNode;
-}
-
-function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>('light');
-
-  const toggleTheme = useCallback(() => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  }, []);
-
-  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
-
-  return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
-  );
-}
-
-function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within ThemeProvider');
-  }
-  return context;
-}
-```
-
-### Critical Rules for Context
-
-```tsx
-// 1. Provider must be ABOVE consumers
-// Wrong - MyComponent can't access context
-function App() {
-  return (
-    <MyComponent>
-      <ThemeContext.Provider value="dark">
-        {/* ... */}
-      </ThemeContext.Provider>
-    </MyComponent>
-  );
-}
-
-// Correct
-function App() {
-  return (
-    <ThemeContext.Provider value="dark">
-      <MyComponent />
-    </ThemeContext.Provider>
-  );
-}
-
-// 2. Memoize context value to prevent re-renders
-// Wrong - new object on every render
-<AuthContext.Provider value={{ user, login, logout }}>
-
-// Correct
-const value = useMemo(() => ({ user, login, logout }), [user, login, logout]);
-<AuthContext.Provider value={value}>
-
-// 3. Separate frequently changing values
-// Wrong - every consumer re-renders on any change
-const value = { user, settings, notifications, ... };
-
-// Better - split into separate contexts
-<UserContext.Provider value={user}>
-  <SettingsContext.Provider value={settings}>
-    {children}
-  </SettingsContext.Provider>
-</UserContext.Provider>
-```
-
----
-
-## 4. Zustand - Global Client State
-
-**Rule: Use for global state that doesn't fit Context (complex, frequently updated, or accessed in many places).**
-
-### Critical: TypeScript with create<T>()()
-
-```tsx
+# State Management for the Fixed SPA Stack
+
+Use this reference when a concrete value needs an owner. Do not begin by adding
+a store; begin with the behavior that must survive navigation, reload, sharing,
+or an access-context change.
+
+Unless a block is explicitly labeled copyable, code blocks in this reference
+are conceptual and omit project composition and verification wiring.
+
+## Ownership decision
+
+| Required behavior | Owner |
+| --- | --- |
+| Private to one component or close subtree | React state or `useReducer` |
+| Stable cross-cutting dependency such as theme or locale | Context when the project already uses it |
+| Link-reproducible filter, sort, page, search, tab, or view | React Router URL state |
+| Remote read, mutation, retry, invalidation, or runtime server cache | TanStack Query |
+| Cross-feature runtime-only UI coordination | Zustand |
+| Approved data that must survive reload | Dexie |
+| Business truth, permissions, or authorization | Server contract |
+
+Choose the lowest and narrowest owner that satisfies the required lifetime. A
+value must not have competing writable copies in URL state, React state,
+Zustand, Query, and Dexie.
+
+## React state and reducers
+
+- Use component state for local interaction state.
+- Use functional updates when the next value depends on the previous value.
+- Keep reducers pure and immutable; network, storage, navigation, and telemetry
+  effects stay outside the reducer.
+- Lift state only to the nearest real common owner. Do not create application
+  Context solely to avoid a small, stable prop path.
+- Treat memoization as a measured identity or rendering decision, not a default
+  requirement for every callback or provider value. Follow the installed React
+  and React Compiler configuration.
+
+## Context
+
+Context distributes an accepted dependency; it is not a general server cache or
+durable store.
+
+- Keep the provider above every consumer and fail clearly when a required
+  provider is missing.
+- Separate independently changing concerns when broad invalidation is observed
+  or architecturally harmful.
+- A session Context may expose the accepted client session snapshot and UX
+  transitions. Login/logout transport and server state still belong to
+  `shared/api` and TanStack Query, and authorization stays on the server.
+- Do not mirror Query entities into Context.
+
+## Zustand
+
+Use Zustand only when multiple features coordinate mutable runtime UI state and
+local React/Context/URL state is insufficient.
+
+Conceptual store shape; persistence, server IO, and feature-specific behavior
+are intentionally omitted:
+
+```ts
 import { create } from 'zustand';
 
-interface BearState {
-  bears: number;
-  increasePopulation: () => void;
-  removeAllBears: () => void;
-  updateBears: (newBears: number) => void;
-}
+type WorkspaceUiState = {
+  selectedItemId: string | null;
+  isInspectorOpen: boolean;
+  selectItem: (itemId: string | null) => void;
+  setInspectorOpen: (open: boolean) => void;
+  reset: () => void;
+};
 
-// CRITICAL: Use curried syntax create<T>()() for TypeScript
-const useBearStore = create<BearState>()((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-  updateBears: (newBears) => set({ bears: newBears }),
+export const useWorkspaceUi = create<WorkspaceUiState>()((set) => ({
+  selectedItemId: null,
+  isInspectorOpen: false,
+  selectItem: (selectedItemId) => set({ selectedItemId }),
+  setInspectorOpen: (isInspectorOpen) => set({ isInspectorOpen }),
+  reset: () => set({ selectedItemId: null, isInspectorOpen: false }),
 }));
 ```
 
-### Using Selectors
+- Select the smallest value needed by a component. Use `useShallow` only when a
+  selector intentionally returns an object or tuple and shallow equality
+  matches its semantics.
+- Store actions update runtime UI state only. They do not call project
+  transport, write Dexie, navigate, or own Query invalidation.
+- Reset access-context-dependent state on logout, tenant switch, or user switch.
+- Do not add Zustand persistence middleware to bypass the Dexie allowlist,
+  migration, TTL, scoping, or cleanup contract.
 
-```tsx
-// Select specific state to avoid unnecessary re-renders
-function BearCounter() {
-  const bears = useBearStore((state) => state.bears);
-  return <h1>{bears} bears around here</h1>;
-}
+## Cross-layer derived state
 
-function Controls() {
-  const increasePopulation = useBearStore((state) => state.increasePopulation);
-  return <button onClick={increasePopulation}>Add bear</button>;
-}
-```
+Prefer deriving display values at read time. Materialize a duplicate only when
+the accepted behavior requires an independent lifecycle and defines:
 
-### useShallow for Multiple Selections
+- which owner is authoritative;
+- how updates propagate;
+- invalidation and conflict behavior;
+- reload and access-context-switch behavior;
+- evidence that detects divergence.
 
-```tsx
-import { useShallow } from 'zustand/react/shallow';
+For a URL + Query + Dexie flow, the URL owns representation parameters, Query
+owns live server data, and Dexie owns only an approved non-authoritative durable
+projection. Zustand may coordinate runtime UI but must not become another copy
+of the entity list.
 
-// CRITICAL: Use useShallow when selecting multiple properties
-function BearInfo() {
-  // Without useShallow - re-renders on ANY state change
-  // const { bears, fish } = useBearStore((state) => ({
-  //   bears: state.bears,
-  //   fish: state.fish
-  // }));
+## Evidence
 
-  // With useShallow - only re-renders when bears or fish change
-  const { bears, fish } = useBearStore(
-    useShallow((state) => ({ bears: state.bears, fish: state.fish }))
-  );
+- Reducer/store tests prove only the tested state transitions.
+- Component tests prove local subscription and rendering behavior.
+- URL ownership needs direct-link, reload, canonicalization, and history checks.
+- Runtime store reset needs logout/user/tenant-switch evidence.
+- A passing store test does not prove server mutation, persistence, security, or
+  the integrated user flow.
 
-  return <p>{bears} bears eating {fish} fish</p>;
-}
-```
-
-### Runtime Actions (No Direct Server Calls in Store)
-
-```tsx
-interface TodoUiState {
-  isCreateModalOpen: boolean;
-  selectedTodoId: string | null;
-  optimisticIds: string[];
-  setCreateModalOpen: (open: boolean) => void;
-  selectTodo: (id: string | null) => void;
-  addOptimisticId: (id: string) => void;
-  removeOptimisticId: (id: string) => void;
-}
-
-const useTodoUiStore = create<TodoUiState>()((set) => ({
-  isCreateModalOpen: false,
-  selectedTodoId: null,
-  optimisticIds: [],
-  setCreateModalOpen: (open) => set({ isCreateModalOpen: open }),
-  selectTodo: (id) => set({ selectedTodoId: id }),
-  addOptimisticId: (id) =>
-    set((state) => ({ optimisticIds: [...state.optimisticIds, id] })),
-  removeOptimisticId: (id) =>
-    set((state) => ({
-      optimisticIds: state.optimisticIds.filter((x) => x !== id),
-    })),
-}));
-
-// Server IO belongs to TanStack Query hooks/services.
-function useTodoFeature(tenantId: string, userId: string) {
-  const queryClient = useQueryClient();
-  const addOptimisticId = useTodoUiStore((s) => s.addOptimisticId);
-  const removeOptimisticId = useTodoUiStore((s) => s.removeOptimisticId);
-
-  const todosQuery = useQuery({
-    queryKey: todoKeys.list({ tenantId, userId, filters: {} }),
-    queryFn: () => api.todos.list({ tenantId, userId }),
-  });
-
-  const createMutation = useMutation({
-    mutationFn: (input: { text: string }) =>
-      api.todos.create({ tenantId, userId, ...input }),
-    onMutate: async () => {
-      const optimisticId = `tmp-${crypto.randomUUID()}`;
-      addOptimisticId(optimisticId);
-      return { optimisticId };
-    },
-    onSettled: (_data, _error, _vars, ctx) => {
-      if (ctx?.optimisticId) removeOptimisticId(ctx.optimisticId);
-      queryClient.invalidateQueries({ queryKey: todoKeys.lists({ tenantId, userId }) });
-    },
-  });
-
-  return { todosQuery, createMutation };
-}
-```
-
----
-
-## 5. Persistence Layer Contract
-
-**Rule: Persist by state semantics, not by convenience.**
-
-| State type | Storage | Why |
-|------------|---------|-----|
-| Link-reproducible page state | URL | Restores on direct link open and reload |
-| Runtime UI state | Zustand | Fast in-memory interaction state |
-| Long-lived client data | Dexie (IndexedDB) | Survives reload/navigation, supports structured cache |
-| Server business data | TanStack Query + server | Canonical source with request lifecycle and retries |
-
-**Do not use localStorage/sessionStorage as primary app persistence.**
-Use them only for tiny, non-critical preferences when URL/Dexie are not appropriate.
-
-**References**:
-- [Persistence Architecture](persistence-architecture.md)
-- [IndexedDB Persistence](indexeddb-persistence.md)
-
----
-
-## State Selection Guidelines
-
-| Scenario | Solution |
-|----------|----------|
-| Must be reproducible from link/reload | URL state (`search params`/route params) |
-| Single component, simple value | `useState` |
-| Single component, complex logic | `useReducer` |
-| Few components, parent-child | Lift state + props |
-| Auth, theme, locale | Context API |
-| Many components, frequent updates | Zustand |
-| Server data | TanStack Query (see data-fetching.md) |
-| Drafts/cache/reference data across reload | IndexedDB (Dexie) + `useLiveQuery` |
+See [Persistence Architecture](persistence-architecture.md) when the same flow
+crosses URL, Query, Zustand, and Dexie. See
+[IndexedDB Persistence](indexeddb-persistence.md) for durable record contracts.

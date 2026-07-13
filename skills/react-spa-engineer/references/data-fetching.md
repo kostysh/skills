@@ -1,582 +1,171 @@
-# Data Fetching in React SPA
+# Data Fetching with TanStack Query
 
-## TanStack Query (React Query)
+Use this reference for TanStack Query server-state behavior in the fixed SPA
+stack. Existing projects follow their installed major version; greenfield
+examples below target TanStack Query v5.
 
-**Rule: Use TanStack Query for all server state management in SPA.**
+Unless a block is explicitly labeled copyable, code blocks in this reference
+are conceptual and omit project types, API implementations, imports, and error
+contracts.
 
-**Version policy:** Use the current official TanStack Query React package and API unless the operator explicitly requests a different version.
+Official v5 reference: <https://tanstack.com/query/latest/docs/framework/react/reference/useQuery>
 
-## API Boundary
-
-All project-owned API calls must pass through `shared/api`. Keep transport, credentials, CSRF attachment, response normalization, typed errors, and endpoint contract functions there.
-
-Allowed direction:
+## Ownership boundary
 
 ```text
-features/* Query adapters -> shared/api contracts -> shared/api transport
+UI -> feature Query adapters/options -> shared/api contracts -> shared/api transport
 ```
 
-Disallowed:
-- `fetch('/api/...')` in components, routes, stores, or UI hooks;
-- feature code attaching cookies/CSRF headers itself;
-- each screen inventing its own error shape or retry behavior.
+- `shared/api` owns project HTTP/SSE/WebSocket transport, credentials, CSRF
+  attachment, response parsing, cancellation, and typed transport errors.
+- TanStack Query owns server reads, mutations, retries, invalidation, and
+  in-memory server-state lifecycle.
+- React Router loaders may call `ensureQueryData` or prefetch Query options when
+  route timing matters; Router actions/fetchers are not a second project-server
+  mutation path in this skill's architecture.
+- Components, routes, Zustand stores, and presentational hooks do not call
+  project transport directly.
 
-### Setup
+## Query status in v5
+
+Use the status that matches the UI question:
+
+| Signal | Meaning |
+| --- | --- |
+| `isPending` | The query has no successful data yet (`status === 'pending'`). |
+| `isLoading` | The first fetch is currently in flight (`isPending && isFetching`). |
+| `isFetching` | Any query function is executing, including background refetch. |
+| `isRefetching` | A background refetch is executing and this is not the initial pending fetch. |
 
 ```tsx
-import {
-  MutationCache,
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-import { apiRecovery, isApiError } from '@/shared/api';
-
-const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (error) => {
-      if (!isApiError(error)) return;
-      if (error.code === 'unauthorized') {
-        apiRecovery.resetSessionAndScopedCaches();
-      }
-      if (error.code === 'csrf_required') {
-        void apiRecovery.reissueCsrfOnce();
-      }
-    },
-  }),
-  mutationCache: new MutationCache({
-    onError: (error) => {
-      if (!isApiError(error)) return;
-      if (error.code === 'unauthorized') {
-        apiRecovery.resetSessionAndScopedCaches();
-      }
-      if (error.code === 'csrf_required') {
-        void apiRecovery.reissueCsrfOnce();
-      }
-    },
-  }),
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 30,   // 30 minutes (formerly cacheTime)
-      retry: 3,
-      refetchOnWindowFocus: false,
-    },
-  },
+const ordersQuery = useQuery({
+  queryKey: orderKeys.list(access, params),
+  queryFn: ({ signal }) => api.orders.list({ access, params, signal }),
 });
 
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <YourApp />
-    </QueryClientProvider>
-  );
-}
+if (ordersQuery.isPending) return <OrdersSkeleton />;
+if (ordersQuery.isError) return <OrdersError error={ordersQuery.error} />;
+
+return (
+  <OrdersView
+    orders={ordersQuery.data}
+    refreshing={ordersQuery.isRefetching}
+  />
+);
 ```
 
-`unauthorized` handling must clear session state plus scoped durable cache for the previous user/tenant. `csrf_required` recovery must be bounded and single-flight; repeated failures should surface recoverable UI rather than looping. For cookie-session SPAs that store CSRF only in memory, browser refresh requires an explicit CSRF reissue API/UX contract before reload-safe auth is claimed.
+Do not replace already rendered data with an initial-loading screen during a
+background refetch.
 
----
+## Query keys
 
-## 1. Basic Queries - Object Syntax
+Keys represent `domain / data type / access context / result parameters`.
 
-**Rule: Use the current object options syntax; do not use legacy positional arguments.**
+- Include every value that changes the returned representation: tenant, user
+  when user-dependent, filters, sort, pagination, search, locale, projection,
+  and feature flags that affect data.
+- Generate keys from centralized factories; UI code does not compose ad-hoc
+  arrays.
+- Canonicalize object-like parameters before using the same semantic identity as
+  a Dexie `cacheKey`.
+- A tenant/user key prevents accidental cache reuse; it is not authorization.
 
-```tsx
-import { useQuery } from '@tanstack/react-query';
-import { api } from './api-client';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface UserProfileProps {
-  userId: number;
-}
-
-function UserProfile({ userId }: UserProfileProps) {
-  const {
-    data,
-    isPending,    // No cached data yet (first load)
-    isLoading,    // Currently fetching (background or initial)
-    isError,
-    error,
-    isSuccess,
-    refetch,
-  } = useQuery({
-    queryKey: ['user', userId],  // Must be array
-    queryFn: () => api.users.get(userId),
-    staleTime: 1000 * 60 * 5,  // Consider fresh for 5 min
-  });
-
-  if (isPending) return <UserSkeleton />;
-  if (isError) return <ErrorMessage error={error} />;
-
-  return <UserCard user={data} />;
-}
-```
-
-### isPending vs isLoading
-
-```tsx
-// isPending: true when there's no cached data
-// - Initial load (no cache)
-// - After invalidation when cache is cleared
-
-// isLoading: true when actively fetching
-// - Initial load
-// - Background refetch
-
-// For initial loading states, use isPending
-if (isPending) return <Skeleton />;
-
-// For showing loading indicator during refetch
-if (isLoading) return <LoadingSpinner />;
-
-// For checking if we have data to show
-if (data) return <Content data={data} />;
-```
-
----
-
-## 2. Query Keys
-
-**Rules**:
-- Query keys MUST be stable array/tuple structures.
-- Keys MUST be hierarchical: `domain / type / access context / params`.
-- For user/tenant data, include `tenantId` and `userId` (when applicable).
-- Include every parameter that changes result: filters, sort, pagination, search, locale, projection.
-- Use centralized key factories only; no ad-hoc key construction in components.
-- Keep query key semantics aligned with Dexie `cacheKey` semantics.
-
-```tsx
+```ts
 type Access = { tenantId: string; userId?: string };
-type OrderFilters = { status?: 'new' | 'paid'; search?: string };
-type Sort = { by: 'createdAt' | 'total'; dir: 'asc' | 'desc' };
 
-const canonicalize = <T extends Record<string, unknown>>(value: T): T =>
-  Object.keys(value)
-    .sort()
-    .reduce((acc, key) => {
-      acc[key as keyof T] = value[key] as T[keyof T];
-      return acc;
-    }, {} as T);
-
-const orderKeys = {
+export const orderKeys = {
   all: (access: Access) =>
-    ['orders', access.tenantId, access.userId ?? 'anon'] as const,
+    ['orders', access.tenantId, access.userId ?? 'shared'] as const,
   lists: (access: Access) => [...orderKeys.all(access), 'list'] as const,
-  list: (
-    access: Access,
-    params: {
-      filters: OrderFilters;
-      sort: Sort;
-      page: number;
-      locale: string;
-    }
-  ) =>
-    [
-      ...orderKeys.lists(access),
-      canonicalize({
-        filters: canonicalize(params.filters),
-        sort: canonicalize(params.sort),
-        page: params.page,
-        locale: params.locale,
-      }),
-    ] as const,
-  details: (access: Access) => [...orderKeys.all(access), 'detail'] as const,
-  detail: (access: Access, id: string) => [...orderKeys.details(access), id] as const,
+  list: (access: Access, params: Readonly<OrderListParams>) =>
+    [...orderKeys.lists(access), canonicalizeOrderParams(params)] as const,
+  detail: (access: Access, orderId: string) =>
+    [...orderKeys.all(access), 'detail', orderId] as const,
 };
-
-// Usage
-useQuery({
-  queryKey: orderKeys.list(
-    { tenantId, userId },
-    { filters, sort, page, locale }
-  ),
-  queryFn: () => api.orders.list({ tenantId, userId, filters, sort, page, locale }),
-});
-
-// Prefix invalidation by namespace + access context
-queryClient.invalidateQueries({ queryKey: orderKeys.lists({ tenantId, userId }) });
 ```
 
-See [Persistence Architecture](persistence-architecture.md) for alignment rules between `queryKey` and Dexie `cacheKey`.
+## Queries are reads
 
----
+`queryFn` must be safe under Query retries, refetches, remounts, invalidation,
+and focus/reconnect policies. Do not create a chat, send a message, rotate a
+credential, submit a form, or perform another server mutation from `queryFn`.
 
-## 3. gcTime (Garbage Collection Time)
+If bootstrap requires a server mutation, model it explicitly:
 
-**Rule: Use the current garbage-collection option (`gcTime`) instead of legacy `cacheTime`. It controls how long inactive data stays in cache.**
+1. query existing server state;
+2. if the accepted product contract permits automatic creation, run a named
+   mutation with the required idempotency contract;
+3. invalidate or set the relevant Query data;
+4. persist only the approved non-authoritative local projection.
 
-```tsx
-useQuery({
-  queryKey: ['user', userId],
-  queryFn: fetchUser,
-  staleTime: 1000 * 60 * 5,   // Data considered fresh for 5 min
-  gcTime: 1000 * 60 * 30,     // Keep in cache for 30 min after last use
-});
+Without an owner-supplied idempotency and retry contract, stop instead of hiding
+the mutation in a query.
 
-// staleTime: How long until data is "stale" and needs refetch
-// gcTime: How long to keep unused data in memory
-```
-
----
-
-## 4. Mutations with useMutation
+## Mutations and invalidation
 
 ```tsx
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-interface CreateTodoInput {
-  title: string;
-  completed: boolean;
-}
-
-function AddTodo() {
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: (newTodo: CreateTodoInput) => api.todos.create(newTodo),
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
-    },
-    onError: (error) => {
-      console.error('Failed to create todo:', error);
-    },
-  });
-
-  const handleSubmit = (data: CreateTodoInput) => {
-    mutation.mutate(data);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      {/* form fields */}
-      <button type="submit" disabled={mutation.isPending}>
-        {mutation.isPending ? 'Adding...' : 'Add Todo'}
-      </button>
-    </form>
-  );
-}
-```
-
----
-
-## 5. Optimistic Updates
-
-**Rule: Use onMutate for optimistic updates, return context for rollback.**
-
-```tsx
-const mutation = useMutation({
-  mutationFn: updateTodo,
-
-  onMutate: async (newTodo) => {
-    // Cancel outgoing refetches
-    await queryClient.cancelQueries({ queryKey: ['todos', newTodo.id] });
-
-    // Snapshot previous value
-    const previousTodo = queryClient.getQueryData(['todos', newTodo.id]);
-
-    // Optimistically update
-    queryClient.setQueryData(['todos', newTodo.id], newTodo);
-
-    // Return context with snapshot
-    return { previousTodo };
-  },
-
-  onError: (err, newTodo, context) => {
-    // Rollback on error
-    if (context?.previousTodo) {
-      queryClient.setQueryData(['todos', newTodo.id], context.previousTodo);
-    }
-  },
-
-  onSettled: () => {
-    // Always refetch after error or success
-    queryClient.invalidateQueries({ queryKey: ['todos'] });
-  },
-});
-```
-
-### useMutationState for UI Optimistic Updates
-
-```tsx
-import { useMutationState } from '@tanstack/react-query';
-
-function TodoList() {
-  const { data: todos } = useQuery({ queryKey: ['todos'], queryFn: fetchTodos });
-
-  // Get pending mutations to show optimistic items
-  const pendingTodos = useMutationState({
-    filters: { mutationKey: ['addTodo'], status: 'pending' },
-    select: (mutation) => mutation.state.variables as Todo,
-  });
-
-  return (
-    <ul>
-      {todos?.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
-      ))}
-      {/* Show pending items with loading style */}
-      {pendingTodos.map((todo) => (
-        <TodoItem key={`pending-${todo.title}`} todo={todo} isPending />
-      ))}
-    </ul>
-  );
-}
-```
-
----
-
-## 6. Parallel Queries
-
-**Rule: Multiple useQuery hooks run in parallel automatically.**
-
-```tsx
-function Dashboard() {
-  // These run in parallel
-  const usersQuery = useQuery({
-    queryKey: ['users'],
-    queryFn: fetchUsers,
-  });
-
-  const projectsQuery = useQuery({
-    queryKey: ['projects'],
-    queryFn: fetchProjects,
-  });
-
-  const statsQuery = useQuery({
-    queryKey: ['stats'],
-    queryFn: fetchStats,
-  });
-
-  if (usersQuery.isPending || projectsQuery.isPending || statsQuery.isPending) {
-    return <DashboardSkeleton />;
-  }
-
-  return (
-    <div>
-      <UserList users={usersQuery.data} />
-      <ProjectList projects={projectsQuery.data} />
-      <StatsPanel stats={statsQuery.data} />
-    </div>
-  );
-}
-```
-
-### useQueries for Dynamic Parallel Queries
-
-```tsx
-import { useQueries } from '@tanstack/react-query';
-
-interface UserProfilesProps {
-  userIds: number[];
-}
-
-function UserProfiles({ userIds }: UserProfilesProps) {
-  const userQueries = useQueries({
-    queries: userIds.map((id) => ({
-      queryKey: ['user', id],
-      queryFn: () => fetchUser(id),
-    })),
-  });
-
-  const isLoading = userQueries.some((query) => query.isPending);
-  const users = userQueries.map((query) => query.data).filter(Boolean);
-
-  if (isLoading) return <Loading />;
-
-  return (
-    <div>
-      {users.map((user) => (
-        <UserCard key={user.id} user={user} />
-      ))}
-    </div>
-  );
-}
-```
-
----
-
-## 7. Dependent Queries
-
-**Rule: Use enabled option to create query dependencies.**
-
-```tsx
-interface UserPostsProps {
-  userId: number;
-}
-
-function UserPosts({ userId }: UserPostsProps) {
-  // First query
-  const userQuery = useQuery({
-    queryKey: ['user', userId],
-    queryFn: () => fetchUser(userId),
-  });
-
-  // Dependent query - only runs when user is loaded
-  const postsQuery = useQuery({
-    queryKey: ['posts', { authorId: userQuery.data?.id }],
-    queryFn: () => fetchPosts(userQuery.data!.id),
-    enabled: !!userQuery.data?.id,  // Only run when user.id exists
-  });
-
-  if (userQuery.isPending) return <UserSkeleton />;
-  if (postsQuery.isPending) return <PostsSkeleton />;
-
-  return (
-    <div>
-      <UserHeader user={userQuery.data} />
-      <PostList posts={postsQuery.data} />
-    </div>
-  );
-}
-```
-
----
-
-## 8. Prefetching
-
-**Rule: Prefetch data before it's needed for instant navigation.**
-
-```tsx
-import { useQueryClient } from '@tanstack/react-query';
-
-function TodoList() {
-  const queryClient = useQueryClient();
-
-  // Prefetch on hover
-  const handleMouseEnter = (todoId: number) => {
-    queryClient.prefetchQuery({
-      queryKey: ['todo', todoId],
-      queryFn: () => fetchTodo(todoId),
-      staleTime: 1000 * 60 * 5, // Don't refetch if less than 5 min old
+const updateOrder = useMutation({
+  mutationFn: (input: UpdateOrderInput) => api.orders.update(input),
+  onSuccess: async (order, input) => {
+    queryClient.setQueryData(orderKeys.detail(input.access, order.id), order);
+    await queryClient.invalidateQueries({
+      queryKey: orderKeys.lists(input.access),
     });
-  };
-
-  return (
-    <ul>
-      {todos.map((todo) => (
-        <li
-          key={todo.id}
-          onMouseEnter={() => handleMouseEnter(todo.id)}
-        >
-          <Link to={`/todos/${todo.id}`}>{todo.title}</Link>
-        </li>
-      ))}
-    </ul>
-  );
-}
-```
-
-### Prefetch in Router Loaders
-
-```tsx
-// With React Router
-const router = createBrowserRouter([
-  {
-    path: '/todos/:id',
-    loader: async ({ params }) => {
-      // Prefetch or return cached data
-      await queryClient.ensureQueryData({
-        queryKey: ['todo', params.id],
-        queryFn: () => fetchTodo(params.id),
-      });
-      return null;
-    },
-    element: <TodoDetail />,
-  },
-]);
-```
-
----
-
-## 9. Cache Invalidation
-
-```tsx
-const queryClient = useQueryClient();
-
-// Invalidate all queries starting with 'todos'
-queryClient.invalidateQueries({ queryKey: ['todos'] });
-
-// Invalidate specific query
-queryClient.invalidateQueries({ queryKey: ['todos', todoId] });
-
-// Invalidate with predicate
-queryClient.invalidateQueries({
-  predicate: (query) =>
-    query.queryKey[0] === 'todos' &&
-    query.state.data?.status === 'active',
-});
-
-// Remove from cache entirely
-queryClient.removeQueries({ queryKey: ['todos', todoId] });
-
-// Set query data directly
-queryClient.setQueryData(['todos', todoId], updatedTodo);
-```
-
----
-
-## 10. Error Handling
-
-```tsx
-// Global error handler
-const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (error, query) => {
-      if (error.message === 'Unauthorized') {
-        // Redirect to login
-        window.location.href = '/login';
-      }
-    },
-  }),
-});
-
-// Per-query error handling
-const { data, error, isError } = useQuery({
-  queryKey: ['user', userId],
-  queryFn: fetchUser,
-  retry: (failureCount, error) => {
-    // Don't retry on 404
-    if (error.status === 404) return false;
-    return failureCount < 3;
   },
 });
-
-// With Error Boundary
-<QueryErrorResetBoundary>
-  {({ reset }) => (
-    <ErrorBoundary
-      onReset={reset}
-      fallbackRender={({ resetErrorBoundary }) => (
-        <div>
-          <p>Something went wrong</p>
-          <button onClick={resetErrorBoundary}>Try again</button>
-        </div>
-      )}
-    >
-      <UserProfile userId={userId} />
-    </ErrorBoundary>
-  )}
-</QueryErrorResetBoundary>
 ```
 
----
+- Use `onMutate` only when the UI has a defined optimistic model and rollback.
+- Preserve the previous typed value for rollback and reconcile with the server
+  result.
+- Invalidate/update Dexie and Query together when a mutation affects both.
+- Do not swallow mutation failure in console output; expose an actionable and
+  accessible recovery state.
 
-## Best Practices Summary
+## Retry and recovery
 
-1. **Always use current object options syntax**
-2. **Use hierarchical query keys** with factory pattern
-3. **isPending for initial load**, isLoading for any fetch
-4. **Use `gcTime`** - controls cache garbage collection
-5. **enabled option** for dependent queries
-6. **Prefetch on hover/route** for instant navigation
-7. **Optimistic updates** with onMutate/onError rollback
-8. **useMutationState** for showing pending mutations in UI
-9. **Invalidate broadly, fetch specifically**
-10. **Never use useEffect for data fetching** - use TanStack Query
+Retry only failures that are safe and useful to repeat. The accepted API
+contract decides which status/error classes are retryable.
+
+Auth and CSRF recovery need one named coordinator under `shared/api`:
+
+- single-flight any refresh or token/CSRF reissue operation;
+- bound replay to the accepted maximum;
+- preserve abort/cancellation behavior;
+- surface repeated failure as recoverable UI;
+- clear scoped Query, Dexie, and runtime state when the session or access context
+  becomes invalid.
+
+Global `QueryCache`/`MutationCache` callbacks may observe and route typed errors,
+but a fire-and-forget callback alone does not prove that the failed operation was
+safely recovered or replayed.
+
+Client recovery implements an accepted backend contract; it does not invent
+session, CSRF, refresh, or authorization semantics.
+
+## Router integration
+
+```tsx
+const orderDetailOptions = (access: Access, orderId: string) => ({
+  queryKey: orderKeys.detail(access, orderId),
+  queryFn: ({ signal }: { signal: AbortSignal }) =>
+    api.orders.get({ access, orderId, signal }),
+});
+
+const orderLoader = ({ params }: LoaderFunctionArgs) =>
+  queryClient.ensureQueryData(orderDetailOptions(accessFromSession(), params.orderId!));
+```
+
+This pattern remains conceptual until `accessFromSession`, route parameter
+validation, API types, and error behavior are supplied by the project. Those
+omitted contracts must not be inferred from the example.
+
+## Evidence
+
+- Query-option tests can prove key construction and local retry/invalidation
+  decisions.
+- MSW proves the exercised browser-side network contract, not the real backend.
+- Integrated API evidence is required for auth, CSRF, idempotency, and production
+  error claims.
+- A successful query, cache entry, or mocked happy path cannot establish the
+  complete interactive flow.

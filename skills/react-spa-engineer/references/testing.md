@@ -1,620 +1,172 @@
 # Testing React SPA
 
-## Stack: Vitest + React Testing Library
+Use Vitest and Testing Library for local React behavior and Playwright for real
+browser flows in the fixed stack. Repository commands and installed versions win
+over generic setup examples. Use `typescript-test-engineer` for runner,
+determinism, fixtures, mocks, and CI test-contour decisions.
 
-**Rule: Use Vitest for test runner, React Testing Library for component testing, Playwright for E2E.**
+Unless a block is explicitly labeled copyable, code blocks in this reference
+are conceptual and omit project imports, fixtures, configuration, and cleanup.
 
-### Setup
+## Evidence levels
 
-```bash
-pnpm add -D vitest@latest @testing-library/react@latest @testing-library/jest-dom@latest @testing-library/user-event@latest jsdom@latest
-```
+| Evidence | Proves | Does not prove |
+| --- | --- | --- |
+| Typecheck/lint/build | The exercised compiler, lint, and bundler contours | User behavior or backend integration |
+| Vitest pure/unit | The invoked functions and branches | Browser layout, focus, navigation, or real IO |
+| Testing Library in jsdom | Local rendered DOM and simulated interaction | Full browser or accessibility behavior |
+| Vitest Browser Mode | Behavior in its configured browser/test harness | Production backend/provider behavior |
+| Playwright with intercepted network | Local browser UI contract against fixtures | Real API, session, provider, or persistence boundary |
+| Playwright against integrated test services | The named browser/service scenarios | Untested browsers, data, environments, or production |
+| Browser walkthrough | The observed scenario and environment | Repeatable regression coverage by itself |
 
-```ts
-// vitest.config.ts
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+Select the level from the completion claim. Do not upgrade mock-level evidence by
+calling it end-to-end.
 
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
-    globals: true,
-  },
-});
-```
+## Testing Library
 
-```ts
-// src/test/setup.ts
-import '@testing-library/jest-dom';
-```
+Query by user-visible semantics:
 
----
+1. `getByRole` with accessible name;
+2. `getByLabelText` for labelled form controls;
+3. visible text/value/alt text where appropriate;
+4. `getByTestId` only when no semantic query can represent the accepted UI.
 
-## 1. Query Priority (Most Important First)
-
-**Rule: Query by how users interact with your app, not implementation details.**
-
-### Priority Order
-
-| Priority | Query | When to Use |
-|----------|-------|-------------|
-| 1 | `getByRole` | Almost always - accessible to everyone |
-| 2 | `getByLabelText` | Form fields with labels |
-| 3 | `getByPlaceholderText` | When label isn't available |
-| 4 | `getByText` | Non-interactive content |
-| 5 | `getByDisplayValue` | Form elements with current value |
-| 6 | `getByAltText` | Images |
-| 7 | `getByTitle` | Less reliable - avoid if possible |
-| 8 | `getByTestId` | Last resort - invisible to users |
-
-### Examples
+Create `userEvent` in the test and await user interactions:
 
 ```tsx
-import { render, screen } from '@testing-library/react';
+test('submits the accepted form values', async () => {
+  const user = userEvent.setup();
+  render(<ProfileForm />);
 
-function LoginForm() {
-  return (
-    <form>
-      <label htmlFor="email">Email</label>
-      <input id="email" type="email" />
-
-      <label htmlFor="password">Password</label>
-      <input id="password" type="password" />
-
-      <button type="submit">Log In</button>
-    </form>
+  await user.clear(screen.getByRole('textbox', { name: /display name/i }));
+  await user.type(
+    screen.getByRole('textbox', { name: /display name/i }),
+    'Ada',
   );
-}
+  await user.click(screen.getByRole('button', { name: /save/i }));
 
-test('renders login form', () => {
-  render(<LoginForm />);
-
-  // 1. getByRole - BEST
-  expect(screen.getByRole('button', { name: /log in/i })).toBeInTheDocument();
-  expect(screen.getByRole('textbox', { name: /email/i })).toBeInTheDocument();
-
-  // 2. getByLabelText - for form fields
-  expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-  expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-
-  // 3. getByText - for static content
-  expect(screen.getByText(/log in/i)).toBeInTheDocument();
-
-  // 8. getByTestId - LAST RESORT
-  // Only when semantic queries don't work
-  // <div data-testid="custom-element">...</div>
-  // screen.getByTestId('custom-element')
+  expect(await screen.findByRole('status')).toHaveTextContent(/saved/i);
 });
 ```
 
-### Common Roles
+Use `findBy*` for an element expected to appear asynchronously and `waitFor` for
+an assertion that must eventually become true. Use `queryBy*` for absence. Do not
+put side effects into `waitFor` callbacks.
 
-```tsx
-// Buttons
-screen.getByRole('button', { name: /submit/i });
+## Test providers and isolation
 
-// Links
-screen.getByRole('link', { name: new RegExp('home', 'i') });
+Create a fresh QueryClient, router/history, Zustand state, and approved Dexie
+database scope per test or test worker. Restore global stubs and mocks after each
+test.
 
-// Text inputs (not password, not checkbox)
-screen.getByRole('textbox', { name: /username/i });
+- Disable or control Query retries and timers explicitly in local tests.
+- Clear IndexedDB tables, localStorage, and sessionStorage created by the test.
+- Do not share logged-in identities, tenant keys, service workers, or browser
+  storage across parallel cases.
+- Treat source-grep assertions as smoke checks, not behavioral enforcement.
+- Use executable import rules for architecture boundaries.
 
-// Checkboxes
-screen.getByRole('checkbox', { name: /agree/i });
+## Network doubles
 
-// Radio buttons
-screen.getByRole('radio', { name: /option 1/i });
+MSW or Playwright interception can model typed client responses and failure
+states. Fixtures must conform to the accepted API schemas and preserve important
+security/error shapes.
 
-// Combobox (select)
-screen.getByRole('combobox', { name: /country/i });
+Cover applicable negative paths: timeout/cancellation, typed validation errors,
+unauthorized or forbidden responses, CSRF recovery, retry ceiling, stale cache,
+context switch, duplicate submission, and partial failure.
 
-// Headings
-screen.getByRole('heading', { level: 1 }); // <h1>
-screen.getByRole('heading', { name: /welcome/i });
+Do not include realistic-looking tokens or credentials in fixtures, logs, traces,
+or screenshots.
 
-// Lists
-screen.getByRole('list');
-screen.getAllByRole('listitem');
+## Playwright setup
 
-// Navigation
-screen.getByRole('navigation');
+First inspect whether the repository already has `@playwright/test`, a config,
+browser installation, web server command, projects, and CI policy. Reuse them.
 
-// Alert
-screen.getByRole('alert');
-
-// Dialog
-screen.getByRole('dialog');
-```
-
----
-
-## 2. userEvent vs fireEvent
-
-**Rule: Always use userEvent. It simulates real user interactions.**
-
-```tsx
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-
-test('user interactions', async () => {
-  // CRITICAL: Setup userEvent before render
-  const user = userEvent.setup();
-
-  render(<MyComponent />);
-
-  // Click
-  await user.click(screen.getByRole('button', { name: /submit/i }));
-
-  // Type
-  await user.type(screen.getByRole('textbox'), 'hello world');
-
-  // Clear and type
-  await user.clear(screen.getByRole('textbox'));
-  await user.type(screen.getByRole('textbox'), 'new value');
-
-  // Tab navigation
-  await user.tab();
-
-  // Keyboard shortcuts
-  await user.keyboard('{Enter}');
-  await user.keyboard('{Escape}');
-  await user.keyboard('{ArrowDown}');
-
-  // Hover
-  await user.hover(screen.getByText(/menu/i));
-  await user.unhover(screen.getByText(/menu/i));
-
-  // Select option
-  await user.selectOptions(screen.getByRole('combobox'), 'option-value');
-
-  // Checkbox/Radio
-  await user.click(screen.getByRole('checkbox'));
-
-  // Upload file
-  const file = new File(['content'], 'test.png', { type: 'image/png' });
-  await user.upload(screen.getByLabelText(/upload/i), file);
-});
-```
-
-### Why userEvent Over fireEvent
-
-```tsx
-// fireEvent - dispatches single event
-fireEvent.click(button);  // Just click event
-
-// userEvent - simulates full interaction
-await user.click(button);
-// Fires: pointerOver, mouseOver, pointerMove, mouseMove,
-// pointerDown, mouseDown, pointerUp, mouseUp, click
-// Also handles focus, checks element visibility/interactivity
-```
-
----
-
-## 3. Async Testing: findBy* and waitFor
-
-**Rule: Use findBy* for elements that appear asynchronously. Use waitFor for assertions.**
-
-### findBy* Queries
-
-```tsx
-test('loads user data', async () => {
-  render(<UserProfile userId="1" />);
-
-  // findBy* waits for element to appear (default 1000ms timeout)
-  const userName = await screen.findByText(/john doe/i);
-  expect(userName).toBeInTheDocument();
-
-  // With custom timeout
-  const slowElement = await screen.findByRole('button', {}, { timeout: 3000 });
-});
-```
-
-### waitFor for Assertions
-
-```tsx
-import { render, screen, waitFor } from '@testing-library/react';
-
-test('removes item after delete', async () => {
-  const user = userEvent.setup();
-  render(<TodoList />);
-
-  // Item exists initially
-  expect(screen.getByText(/buy milk/i)).toBeInTheDocument();
-
-  // Delete item
-  await user.click(screen.getByRole('button', { name: /delete/i }));
-
-  // Wait for item to be removed
-  await waitFor(() => {
-    expect(screen.queryByText(/buy milk/i)).not.toBeInTheDocument();
-  });
-});
-
-test('shows error message', async () => {
-  const user = userEvent.setup();
-  render(<LoginForm />);
-
-  await user.click(screen.getByRole('button', { name: /submit/i }));
-
-  // Wait for error to appear
-  await waitFor(() => {
-    expect(screen.getByRole('alert')).toHaveTextContent(/email is required/i);
-  });
-});
-```
-
-### Query Types Summary
-
-| Query Type | Returns | Throws | Async |
-|------------|---------|--------|-------|
-| `getBy*` | Element | Yes if not found | No |
-| `queryBy*` | Element or null | No | No |
-| `findBy*` | Promise\<Element\> | Yes if not found | Yes |
-| `getAllBy*` | Element[] | Yes if empty | No |
-| `queryAllBy*` | Element[] (can be empty) | No | No |
-| `findAllBy*` | Promise\<Element[]\> | Yes if empty | Yes |
-
----
-
-## 4. Testing Components with Providers
-
-```tsx
-// test/utils.tsx
-import { render, RenderOptions } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router';
-
-interface WrapperProps {
-  children: React.ReactNode;
-}
-
-function createWrapper() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-
-  return function Wrapper({ children }: WrapperProps) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          {children}
-        </MemoryRouter>
-      </QueryClientProvider>
-    );
-  };
-}
-
-function customRender(
-  ui: React.ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) {
-  return render(ui, { wrapper: createWrapper(), ...options });
-}
-
-export * from '@testing-library/react';
-export { customRender as render };
-```
-
-```tsx
-// Usage in tests
-import { render, screen } from '@/test/utils';
-
-test('renders with providers', async () => {
-  render(<UserProfile />);
-  expect(await screen.findByText(/user name/i)).toBeInTheDocument();
-});
-```
-
----
-
-## 5. Mocking
-
-### Mocking Modules
-
-```tsx
-import { vi } from 'vitest';
-
-// Mock entire module
-vi.mock('./api', () => ({
-  fetchUser: vi.fn(() => Promise.resolve({ id: 1, name: 'John' })),
-}));
-
-// Mock specific export
-vi.mock('./utils', async () => {
-  const actual = await vi.importActual('./utils');
-  return {
-    ...actual,
-    formatDate: vi.fn(() => '2024-01-01'),
-  };
-});
-```
-
-### Mocking API Calls with MSW
-
-```tsx
-// src/test/mocks/handlers.ts
-import { http, HttpResponse } from 'msw';
-
-export const handlers = [
-  http.get('/api/users/:id', ({ params }) => {
-    return HttpResponse.json({
-      id: params.id,
-      name: 'John Doe',
-      email: 'john@example.com',
-    });
-  }),
-
-  http.post('/api/login', async ({ request }) => {
-    const body = await request.json();
-    if (body.email === 'invalid@example.com') {
-      return HttpResponse.json(
-        { message: 'Invalid credentials' },
-        { status: 401 }
-      );
-    }
-    return HttpResponse.json({ token: 'fake-token' });
-  }),
-];
-
-// src/test/mocks/server.ts
-import { setupServer } from 'msw/node';
-import { handlers } from './handlers';
-
-export const server = setupServer(...handlers);
-
-// src/test/setup.ts
-import { server } from './mocks/server';
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
-```
-
----
-
-## 6. Testing Forms
-
-```tsx
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-
-test('submits form with valid data', async () => {
-  const user = userEvent.setup();
-  const onSubmit = vi.fn();
-
-  render(<RegistrationForm onSubmit={onSubmit} />);
-
-  // Fill form
-  await user.type(screen.getByLabelText(/email/i), 'test@example.com');
-  await user.type(screen.getByLabelText(/password/i), 'password123');
-  await user.click(screen.getByRole('checkbox', { name: /terms/i }));
-
-  // Submit
-  await user.click(screen.getByRole('button', { name: /register/i }));
-
-  // Assert
-  await waitFor(() => {
-    expect(onSubmit).toHaveBeenCalledWith({
-      email: 'test@example.com',
-      password: 'password123',
-      acceptTerms: true,
-    });
-  });
-});
-
-test('shows validation errors', async () => {
-  const user = userEvent.setup();
-  render(<RegistrationForm onSubmit={vi.fn()} />);
-
-  // Submit without filling
-  await user.click(screen.getByRole('button', { name: /register/i }));
-
-  // Check errors
-  expect(await screen.findByText(/email is required/i)).toBeInTheDocument();
-  expect(screen.getByText(/password is required/i)).toBeInTheDocument();
-});
-```
-
----
-
-## 7. Testing Hooks
-
-```tsx
-import { renderHook, act } from '@testing-library/react';
-
-test('useCounter increments', () => {
-  const { result } = renderHook(() => useCounter(0));
-
-  expect(result.current.count).toBe(0);
-
-  act(() => {
-    result.current.increment();
-  });
-
-  expect(result.current.count).toBe(1);
-});
-
-test('useCounter with async', async () => {
-  const { result } = renderHook(() => useAsyncCounter());
-
-  expect(result.current.count).toBe(0);
-
-  await act(async () => {
-    await result.current.incrementAsync();
-  });
-
-  expect(result.current.count).toBe(1);
-});
-```
-
----
-
-## 8. Playwright for E2E
-
-**Rule: Material interactive user flows require both reproducible Playwright e2e coverage and a real browser automation walkthrough before end-to-end completion is claimed.**
-
-Apply this gate whenever the task implements or changes a material user-visible
-flow such as registration, login, onboarding, checkout, profile editing, data
-entry that persists or submits business data, navigation across protected zones,
-destructive confirmation, or a multi-step wizard.
-
-Required evidence for an end-to-end interactive flow claim:
-
-1. Playwright e2e test coverage for the affected happy path and meaningful
-   failure/edge states.
-2. Successful execution of the e2e command that covers those scenarios.
-3. A real browser walkthrough using the project's specified browser automation
-   tool. If the project provides `agent-browser`, use it; otherwise use
-   Playwright or an equivalent browser-driven inspection workflow.
-4. A handoff note listing the scenarios tested, the e2e command/result, and the
-   browser walkthrough result.
-
-Scenario-level evidence is required. For auth-heavy SPAs, cover the relevant
-registration/login/OTP/profile/context flow, a protected mutation, reload/CSRF
-recovery when cookie sessions are used, and cancel/resend/cooldown/expiry states
-when the backend contract exposes them.
-
-For minor interaction-only changes where e2e coverage would be disproportionate
-(for example an isolated toggle, menu, disclosure, local control state, or modal
-animation assertion), verify at the component/unit layer plus browser walkthrough
-evidence, then state the narrower claim. Do not present that as end-to-end flow
-acceptance.
-
-If no e2e infrastructure or browser automation path is available, do not
-silently substitute screenshots, route existence, or mocked component renders.
-Either add the narrow Playwright/browser coverage needed for the material flow,
-or report the unverified risk and limit the completion claim.
-
-Do not claim delivered interactive SPA capability from unit tests, component
-tests, route existence, screenshots, static fixtures, or mock-only happy-path
-renders alone. Deterministic network interception is acceptable for local UI
-coverage only when the handoff clearly labels it as local coverage and does not
-present it as real backend/provider acceptance.
-
-### Setup
+For a greenfield project, follow the current official installer rather than a
+bare `playwright` package invocation:
 
 ```bash
-pnpm dlx playwright@latest
+pnpm create playwright
 ```
 
-```ts
-// playwright.config.ts
-import { defineConfig } from '@playwright/test';
+Official installation: <https://playwright.dev/docs/intro>
 
+If the package is installed without browser binaries, run the repository's
+approved Playwright browser-install command in the appropriate development or CI
+environment. Installing dependencies or browsers is a side effect and requires
+the task's implementation authority.
+
+An illustrative Vite config must still be adapted to repository commands,
+ports, workers, retries, trace retention, authentication fixtures, and CI
+resources:
+
+```ts
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://127.0.0.1:5173',
     trace: 'on-first-retry',
   },
   webServer: {
     command: 'pnpm dev',
-    url: 'http://localhost:5173',
+    url: 'http://127.0.0.1:5173',
     reuseExistingServer: !process.env.CI,
   },
 });
 ```
 
-### Writing E2E Tests
+This is conceptual: it does not define the project's CI parallelism, environment,
+secrets, database isolation, or service readiness.
 
-```ts
-// e2e/login.spec.ts
-import { test, expect } from '@playwright/test';
+## Material interactive flow gate
 
-test.describe('Login Flow', () => {
-  test('successful login', async ({ page }) => {
-    await page.goto('/login');
+For auth, onboarding, profile editing, business-data submission, protected
+navigation, destructive confirmation, checkout, or a multi-step wizard, a
+`completed` interactive claim requires:
 
-    // Fill form
-    await page.getByLabel('Email').fill('user@example.com');
-    await page.getByLabel('Password').fill('password123');
+1. Playwright scenarios for the affected happy path and meaningful failure/edge
+   states;
+2. a successful run of the command that covers those scenarios;
+3. real browser automation of the affected flow;
+4. a handoff naming scenarios, environment, command/result, browser result, and
+   evidence limits.
 
-    // Submit
-    await page.getByRole('button', { name: 'Log In' }).click();
+When the claim includes a real cookie session, CSRF recovery, server
+authorization, provider, or durable data boundary, run against the corresponding
+integrated test service. Intercepted network proves only local browser behavior.
 
-    // Assert redirect
-    await expect(page).toHaveURL('/dashboard');
-    await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
-  });
+If the necessary environment is unavailable, report `partial` or `blocked`
+according to whether useful implementation evidence exists. Do not substitute a
+route, screenshot, fixture, mock, config file, or unexecuted test.
 
-  test('shows error for invalid credentials', async ({ page }) => {
-    await page.goto('/login');
+For a small isolated interaction, component tests plus browser walkthrough may
+support a deliberately narrower local claim. State that boundary explicitly.
 
-    await page.getByLabel('Email').fill('invalid@example.com');
-    await page.getByLabel('Password').fill('wrongpassword');
-    await page.getByRole('button', { name: 'Log In' }).click();
+## Persistence scenarios
 
-    await expect(page.getByRole('alert')).toContainText('Invalid credentials');
-    await expect(page).toHaveURL('/login');
-  });
-});
+When URL/Dexie/context behavior changes, cover applicable cases:
 
-test.describe('Navigation', () => {
-  test.beforeEach(async ({ page }) => {
-    // Login before each test
-    await page.goto('/login');
-    await page.getByLabel('Email').fill('user@example.com');
-    await page.getByLabel('Password').fill('password123');
-    await page.getByRole('button', { name: 'Log In' }).click();
-    await expect(page).toHaveURL('/dashboard');
-  });
+- direct link and manual URL edit;
+- reload and back/forward navigation;
+- expired and stale records;
+- prior-version migration with representative stored data;
+- storage unavailable/quota failure when relevant;
+- logout and tenant/user switch without old-context repopulation;
+- Query/Dexie invalidation after mutation.
 
-  test('navigates to settings', async ({ page }) => {
-    await page.getByRole('link', { name: 'Settings' }).click();
-    await expect(page).toHaveURL('/settings');
-  });
-});
-```
+## Accessibility scenarios
 
----
+Test accessible names, keyboard sequences, focus entry/return, error/status
+announcements, and route-navigation focus. For custom composite widgets, cover
+the full selected APG interaction model in a real browser. An axe-style ruleset
+or semantic query is useful but not a complete accessibility verdict.
 
-## 9. Test File Organization
+## Reporting
 
-```
-src/
-  components/
-    Button/
-      Button.tsx
-      Button.test.tsx       # Unit tests co-located
-  features/
-    auth/
-      LoginForm.tsx
-      LoginForm.test.tsx
-  hooks/
-    useAuth.ts
-    useAuth.test.ts
-  test/
-    setup.ts                # Test setup
-    utils.tsx               # Custom render, providers
-    mocks/
-      handlers.ts           # MSW handlers
-      server.ts             # MSW server setup
-e2e/
-  login.spec.ts             # Playwright E2E tests
-  navigation.spec.ts
-```
-
----
-
-## Best Practices Summary
-
-1. **getByRole first** - Most accessible, closest to user experience
-2. **getByLabelText for forms** - Users find inputs by labels
-3. **getByTestId last** - Only when semantic queries fail
-4. **userEvent.setup()** - Always before render, always async
-5. **findBy* for async** - Elements that appear after loading
-6. **waitFor for assertions** - When checking async state changes
-7. **queryBy* for absence** - Use with `.not.toBeInTheDocument()`
-8. **Custom render with providers** - Wrap in QueryClient, Router, etc.
-9. **MSW for API mocking** - Intercepts at network level
-10. **Playwright for E2E** - Real browser, real user flows
+Report the behavior contract, scenarios, commands, results, environment, real or
+mocked boundaries, and untested risk. Green tests prove only what they executed;
+coverage percentage, snapshots, fixtures, and configuration remain substrate
+unless tied to a falsifiable behavior.

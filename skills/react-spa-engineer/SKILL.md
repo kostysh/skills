@@ -1,354 +1,190 @@
 ---
 name: react-spa-engineer
-description: >-
-  Comprehensive React SPA development expert for building production-ready
-  single-page applications. Covers component architecture, state management
-  (Zustand, Context), explicit persistence architecture (URL state, runtime UI
-  state, Dexie/IndexedDB), data fetching (TanStack Query), forms (React Hook
-  Form + Zod), routing (React Router), TypeScript patterns, performance
-  optimization, testing (Vitest, RTL, Playwright), and accessibility.
-
-
-  Use when building React SPAs, implementing features, reviewing code, setting
-  up project architecture, or troubleshooting React client-side applications.
-  Excludes SSR, RSC, Next.js server-side patterns.
+description: Design, implement, review, and diagnose production React
+  single-page applications built with TypeScript, Vite, TanStack Query, Zustand,
+  React Hook Form with Zod, React Router, and Dexie. Use for integrated
+  client-side flows that cross routing, server state, runtime state, forms,
+  browser persistence, performance, testing, or accessibility. Preserve the
+  accepted stack and project contracts; exclude SSR, React Server Components,
+  and Next.js server-side architecture.
+compatibility: Portable documentation-only engineering skill. It ships no
+  application runtime or test harness and requires repository evidence plus the
+  installed stack versions to make project-specific decisions.
 metadata:
-  source-version: 0.1.7
+  source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ac0fa82fee2f550c959ab28a04879ccae44a44a1c9df64c14cd91ef295690b4c
+  skillforge-source-hash: 3c5d4bbfcc592598af0cb7278aabb97fb95d0a584fe6398c536f0b92f5ffd28c
 ---
 
 # react-spa-engineer
 
 ## Start here
 
-1. Confirm the task matches react-spa-engineer's applicability criteria.
-2. Use the preserved overview guidance as the normative workflow for this skill.
-3. Load only the active references that match the current task.
-4. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+1. Classify the request as design/setup, implement, review, or diagnose; review and diagnose are read-only unless remediation is explicitly authorized.
+2. Establish the observable SPA outcome, affected user flow, accepted product, API and security contracts, installed stack versions, existing project conventions, and available verification before choosing a change.
+3. Apply precedence in this order: operator and repository instructions; accepted product, API and security contracts; manifest, lockfile, configuration and existing code; official documentation matching the installed major version; then examples in this skill. For greenfield work use current stable versions.
+4. Stop as blocked when equal-authority sources conflict or a required backend, security, product, or compatibility decision has no owner-supplied answer. Do not invent the missing contract.
+5. Load only the optional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
+6. Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
 
 ## When to use this skill
 
-- Building, implementing, reviewing, or troubleshooting React single-page applications.
-- Working on React SPA component architecture, state management, URL/runtime/IndexedDB persistence, TanStack Query data fetching, forms, routing, performance, testing, or accessibility.
-- Setting up a production-ready React client-side app with TypeScript.
+- Designing or setting up an integrated client-side React SPA on the declared stack.
+- Implementing or diagnosing a user flow that crosses routing, server state, forms, runtime state, browser persistence, performance, testing, or accessibility.
+- Reviewing app-level SPA architecture or feature integration when an evidence-backed client result is required.
 
 ## When NOT to use this skill
 
-- Server-side rendering, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.
-- The work is purely reusable component hardening without app-level SPA architecture; use react-components-engineer.
-- The work is purely visual design; use frontend-design.
+- SSR, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.
+- The work is solely reusable component correctness without app-level integration; use react-components-engineer.
+- The work is solely visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.
 
 ## Overview
 
-Build production-ready React single-page applications with TypeScript, modern state management, and best practices.
-
-**Stack**: React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie (IndexedDB)
-
-## Skill Interop (Priority)
-
-- Use `typescript-engineer` as the baseline for TypeScript language/toolchain rules (tsconfig, linting, @ts-expect-error policy, unsafe assertions).
-- Use this skill for React-specific patterns (hooks typing, JSX, React Router, TanStack Query, RHF, Dexie).
-- For UI/UX and visual design work in web apps, also use the `frontend-design` skill.
-- If rules conflict, follow `typescript-engineer` for TypeScript/toolchain and this skill for React API usage.
-
----
-
-## Quick Reference
-
-### Strict TypeScript Config
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2024",
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "moduleResolution": "bundler"
-  }
-}
-```
-
-**Tooling baseline**: Use Biome + ESLint together. Biome handles formatting and baseline lint; ESLint handles type-aware rules.
-
----
-
-## Critical Rules
-
-### Component Architecture
-
-| Rule | Description |
-|------|-------------|
-| Functional only | Components MUST be functional. Class components MUST NOT be used (except ErrorBoundary) |
-| PascalCase files | Component files MUST use PascalCase: `UserProfile.tsx` |
-| Interface props | Props MUST be typed with explicit TypeScript interfaces. `type` is allowed only for complex unions/utility-derived props where interfaces are awkward |
-| One per file | One component per file SHOULD be default |
-
-Use feature-based SPA structure by default: `app`, `shared/api`, `shared/ui`, `shared/forms`, `shared/state`, `shared/storage`, and `features/*`. Enforce layer boundaries with executable import rules; source-grep tests are not sufficient architecture enforcement.
-
-Example: see [Component Architecture](references/component-architecture.md).
-
-### State Management Hierarchy
-
-Use state in this order (simplest → complex):
-
-1. **useState** — component-local state
-2. **useReducer** — complex local state with actions
-3. **Context API** — cross-cutting: auth, theme
-4. **Zustand** — global client state
-
-Example: see [State Management](references/state-management.md).
-
-### Persistence Architecture (Mandatory)
-
-Define storage layer and source of truth for each state explicitly:
-
-| Layer | Source of truth | Store only |
-|------|------------------|------------|
-| URL state | URL (`path` + `search`) | Link-reproducible page state (filters, sort, page, view, search) |
-| Runtime UI state | Zustand (in-memory) | Modal flags, temporary selections, control state, transient UI flags |
-| Client persistence | Dexie (IndexedDB) | Drafts, wizard progress, local caches, dictionaries |
-| Server business state | Server (via TanStack Query) | Primary business data; TanStack Query manages runtime lifecycle/cache |
-
-**Non-negotiables**:
-- If state must survive direct link open/reload and be reproducible, URL MUST be source of truth.
-- Components, UI hooks, and Zustand stores MUST NOT perform direct HTTP calls for app data.
-- Routes, screens, components, stores, and UI hooks MUST NOT call project API `fetch` directly; project API calls live behind `shared/api`.
-- Server reads/mutations MUST run through TanStack Query (`useQuery`, `useMutation`, `queryClient`) with `queryFn`/`mutationFn`.
-- `queryKey` and Dexie `cacheKey` MUST be generated from centralized key factories with aligned semantics.
-- For user/tenant-scoped data, both `queryKey` and `cacheKey` MUST include `tenantId` and `userId` when applicable.
-
-### URL State Authority (Critical)
-
-When a state value is represented in URL search params:
-- URL param is the highest-priority source of truth.
-- UI controls MUST update URL params, not independent local/global runtime state.
-- Runtime state MUST derive from URL changes (including manual address bar edits/navigation).
-- Canonicalize URL values (for example locale case normalization) before applying to runtime state.
-- If URL param is missing/invalid, resolve a deterministic fallback and write it back to URL.
-
-Avoid sync oscillation:
-- Do not implement competing effects that blindly write both `URL -> state` and `state -> URL`.
-- Every sync effect MUST have loop guards (`if same value -> return`) and explicit missing/invalid handling.
-
-See [Persistence Architecture](references/persistence-architecture.md) for full rules.
-
-### Data Fetching (TanStack Query)
-
-Example: see [Data Fetching](references/data-fetching.md).
-
-**Non-negotiables**:
-- Components/pages MUST NOT call `fetch` directly for server API interactions.
-- Routes, Zustand stores, and UI hooks MUST NOT bypass `shared/api` or TanStack Query for server reads/mutations.
-- All project-owned API transport, credentials, CSRF token attachment, response normalization, and typed error mapping MUST live under `shared/api`.
-- Keep explicit layering: transport client, API contract functions, feature Query adapters/options, then UI hooks/components.
-- All external API requests in SPA flows MUST run via TanStack Query (`useQuery`/`useMutation`/`queryClient`).
-- Configure global `QueryCache`/`MutationCache` handling for cross-cutting API errors: `unauthorized` resets session state and scoped durable cache; `csrf_required` triggers bounded CSRF recovery instead of unbounded retry loops.
-
-**Current API expectations**:
-Use current TanStack Query APIs: object options syntax, `gcTime`, `isPending`, external reactions to query data when required, and explicit initial page params for infinite queries.
-
-### Cookie-based Auth SPA Baseline
-
-For cookie-session auth SPAs, model auth explicitly:
-- Separate states: `loading` (bootstrap), `guest`, `authenticated`, `error`.
-- Do not collapse bootstrap network failures into `guest`; show recoverable error UI.
-- Implement both:
-  - reactive refresh (`401` -> single retry with refresh),
-  - proactive refresh (timer-based background refresh for active sessions).
-- Use single-flight coordination for refresh to avoid concurrent refresh storms.
-- Keep API `baseUrl` in env config and enforce required vars at build/deploy pipeline level.
-- If CSRF is memory-only, require explicit reissue API/UX before claiming reload-safe cookie-session flows; repeated recovery failures surface recoverable UI instead of looping.
-
-### Forms & Validation
-
-Example: see [Forms & Validation](references/forms-validation.md).
-
-**Critical Rules**:
-- `defaultValues` MUST be set (prevents uncontrolled warnings)
-- Server validation MUST NOT be skipped (security)
-- Use `field.id` as key in `useFieldArray` (not index)
-- TanStack Form wrappers, when used, MUST be typed adapters that map API/server errors without leaking `as any` or field-error casts into screens.
-
-### Routing (React Router Data APIs)
-
-Example: see [Routing](references/routing.md).
-
-**Decisions**:
-- `<Form>` → navigation with URL change
-- `useFetcher` → mutations without URL change
-- `loader` → data before render
-- `useEffect` → client-only, user-interaction dependent
-- Default to `Component` in route objects; use `element` only for inline composition/props
-- Follow the current React Router package guidance; avoid mixing router packages unless the official docs require it
-- For link-reproducible state, `URL search params` are source of truth; UI derives and writes back to URL
-
-### Performance
-
-**Key moves**:
-- Eliminate request waterfalls first: start independent work early and await late
-- Reduce initial bundle pressure: route-level `React.lazy`, direct imports, intent-based preload for likely next navigation
-- Verify route-level lazy loading with build output; a dynamic import is not successful splitting when the same module is statically imported and the bundler reports ineffective dynamic import.
-- Keep interactions responsive: use `startTransition` or `useDeferredValue` for expensive derived renders
-- Use virtualization or `content-visibility: auto` for long lists and feed-like UIs
-- Prefer Dexie for reload-safe client persistence; keep `localStorage` limited to tiny non-sensitive preferences or bootstrap hints when IndexedDB would be excessive
-- Profile before memoization
-
-See [Performance](references/performance.md) for the prioritized rulepack and examples.
-
-### IndexedDB Persistence (Dexie)
-
-For structured data, offline-first, and >5MB persistence use Dexie + IndexedDB.
-
-**Critical Rules**:
-- Use `Table<RowType, KeyType>` for type safety
-- Never modify existing version — add new version for schema changes
-- Export singleton `db` instance
-- Use `useLiveQuery` for reactive UI updates
-- Persist cache entries with metadata: `cacheKey`, `tenantId`/`userId`, `loadedAt`, payload
-- Keep strict tenant/user isolation in keys and indexes
-- Durable cache contents MUST be allowlisted, scoped, TTL-bound, non-authoritative, and must not include OTPs, CSRF, cookies, JWT/session IDs, raw identity payloads, or raw network data.
-- Invalidate Dexie caches and TanStack Query caches together after related mutations
-- On user/tenant switch or logout, clear scoped Dexie data + reset runtime state (`Zustand`, `queryClient`)
-
-See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patterns.
-
-### Testing
-
-**Rules of thumb**:
-- `getByRole` first; `getByTestId` last
-- Always use `userEvent.setup()` before render
-- For async UI, use `findBy*` and `waitFor`
-- For modal/dialog components with animation (for example shadcn `Dialog`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
-
-**Interactive flow completion gate**:
-- If a task implements or changes a material user-visible flow (for example auth, onboarding, checkout, profile editing, protected navigation, destructive confirmation, or a multi-step wizard), do not report delivered interactive SPA capability until the affected scenario has successful Playwright e2e coverage and has been exercised through real browser automation.
-- Use the project's browser automation tool when specified; otherwise use Playwright/browser-driven walkthrough evidence.
-- Minor interaction-only changes can use component/unit tests plus browser walkthrough evidence, but the handoff must state the narrower claim.
-- Unit/component tests, route existence, screenshots, mocked happy-path renders, or static fixtures alone are not end-to-end interactive SPA evidence.
-
-**Parallel integration isolation rules**:
-- Keep a deterministic local profile (for example single-worker integration) and a separate CI profile when parallelism is tuned.
-- Isolate IndexedDB state per test run where feasible; always clear tables in `afterEach`.
-- Always clear `localStorage`/`sessionStorage` in teardown.
-- When using global mocks/stubs (`fetch`, `ResizeObserver`, etc.), restore/unstub them after each test.
-- Add nightly shuffled/repeated integration checks before increasing CI workers again.
-
-See [Testing](references/testing.md) for full setup and examples.
-
-### Accessibility
-
-**Checklist**:
-- Provide accessible names (`aria-label`, `aria-labelledby`)
-- Mark errors with `aria-invalid` + `role="alert"`
-- Support keyboard navigation and focus management
-- Prefer skeletons to spinners
-
-See [Accessibility](references/accessibility.md) for patterns and examples.
-
----
-
-## Anti-Patterns
-
-| Anti-Pattern | Problem | Solution |
-|--------------|---------|----------|
-| `useQuery(['key'], fn)` | v4 syntax removed in v5 | `useQuery({ queryKey: ['key'], queryFn: fn })` |
-| `create<T>(...)` in Zustand | Breaks TypeScript inference | `create<T>()(...)` with double parentheses |
-| `onSuccess` in useQuery | Removed in v5 | Use `useEffect` to react to data |
-| Index as key in arrays | Causes re-render bugs | Use stable `id` or `field.id` |
-| No `defaultValues` in forms | Uncontrolled/controlled warnings | Always set `defaultValues` |
-| Barrel imports | Bloats bundle | Import components directly |
-| Manual memoization | Often unnecessary, adds complexity | Profile first; memoize only when proven |
-| Class components | Legacy pattern | Use functional components |
-| Modifying Dexie version | Breaks existing databases | Add new version instead |
-| Multiple db instances | Conflicts, memory waste | Export singleton |
-| useEffect for DB queries | Manual subscription needed | Use `useLiveQuery` |
-| Keeping shareable page state only in Zustand | Lost on reload/direct link open | Store in URL search params and sync UI |
-| UI control updates URL-backed state directly (without URL write) | URL and runtime diverge; back/forward/manual URL edits break behavior | Write URL param first; derive runtime state from URL |
-| Bidirectional URL/state effects without equality guards | Oscillation/flicker loops, unstable UI | Add strict same-value guards and clear authority direction |
-| Direct HTTP in components/stores/hooks | Bypasses server-state lifecycle and cache | Use TanStack Query (`queryFn`/`mutationFn`) |
-| Project API calls outside `shared/api` | Scatters credentials, CSRF, retries, and error mapping | Centralize transport/contracts under `shared/api` |
-| Query/cache keys without tenant/user context | Cross-user/tenant data leakage | Include `tenantId` and `userId` (when applicable) |
-| Ad-hoc key composition | Inconsistent cache hits and invalidation | Use centralized key factories + canonicalized params |
-| No cache cleanup on context switch | Stale data from previous account/tenant | Clear Dexie scope + reset Query cache + reset runtime UI state |
-
----
-
-## Reference Files
-
-Detailed patterns and examples:
-
-- [Component Architecture](references/component-architecture.md) — Functional components, composition patterns
-- [State Management](references/state-management.md) — Zustand, Context API, persistence guidance
-- [Persistence Architecture](references/persistence-architecture.md) — URL/Zustand/Dexie/Query contracts, invalidation, context switches
-- [Data Fetching](references/data-fetching.md) — TanStack Query patterns, caching, mutations
-- [Forms & Validation](references/forms-validation.md) — React Hook Form, Zod schemas
-- [Routing](references/routing.md) — React Router data APIs, loaders, protected routes
-- [TypeScript Patterns](references/typescript-patterns.md) — Type-safe React development
-- [Performance](references/performance.md) — Code splitting, optimization techniques
-- [IndexedDB Persistence](references/indexeddb-persistence.md) — Dexie, useLiveQuery, offline-first
-- [Testing](references/testing.md) — Vitest, React Testing Library, Playwright
-- [Accessibility](references/accessibility.md) — ARIA, keyboard navigation, focus management
-
----
-
-## Tool Grid
-
-| Task | Tool | Command |
-|------|------|---------|
-| Build | Vite | `pnpm build` |
-| Dev | Vite | `pnpm dev` |
-| Lint | Biome | `biome check .` |
-| Lint (ESLint) | ESLint | `eslint .` |
-| Format | Biome | `biome format --write .` |
-| Test | Vitest | `vitest` |
-| E2E | Playwright | `playwright test` |
-| Types | TypeScript | `tsc --noEmit` |
-
----
-
-**Note**: This skill is for client-side React SPA development only. For SSR, RSC, or Next.js patterns, use dedicated framework skills.
+Build and assess integrated client-side React SPA flows on this fixed stack:
+
+`React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie`
+
+## Cross-layer ownership
+
+| Concern | Owner in this skill's architecture |
+| --- | --- |
+| Navigation and link-reproducible state | React Router and the URL |
+| Project HTTP, SSE, or WebSocket transport | `shared/api` |
+| Server reads, mutations, retries, and runtime cache | TanStack Query |
+| Component-local and cross-feature runtime UI state | React state, Context, then Zustand when justified |
+| Form state and client validation | React Hook Form and Zod |
+| Approved reload-safe drafts and local cache | Dexie |
+| Business truth and authorization | The server contract, never browser state |
+
+Use loaders to orchestrate or prefill TanStack Query where route timing matters. In
+this fixed architecture, do not also use React Router actions or fetchers as a
+second owner for project server IO. Keep transport under `shared/api`, and keep
+all durable browser data allowlisted, scoped, TTL-bound, and non-authoritative.
+
+## Capability and anti-claims
+
+The skill succeeds when the requested design, implementation, review, or
+diagnosis preserves one coherent contract across every affected layer and the
+handoff is backed by evidence appropriate to the claimed behavior.
+
+The skill documentation does not itself run an SPA, validate a backend, grant
+authorization, prove accessibility, measure production performance, or establish
+end-to-end behavior. Compiler checks, types, builds, generated files, mocks,
+screenshots, routes, schemas, stores, and cache tables remain bounded evidence;
+they cannot close a broader claim without exercising its real boundary.
+
+## Reference example contract
+
+- A **copyable** example states the relevant major version and follows the root
+  ownership, error, security, accessibility, and evidence rules.
+- A **conceptual** example is explicitly labeled and names the production
+  obligations it omits.
+- When the project version differs, the installed manifest and lockfile are the
+  compatibility constraint; consult the matching official documentation rather
+  than silently upgrading or pasting the example.
 
 ## Workflow stages
 
-### Workflow stage: Apply react-spa-engineer guidance
+### Workflow stage: Establish the SPA basis
 
-Apply the preserved react-spa-engineer guidance without changing its domain behavior.
+Make the mode, authority, user-visible claim, stack compatibility, side effects, and proof boundary explicit.
 
-1. Match the request to the applicability criteria.
-2. Follow the preserved overview sections for the concrete work.
-3. Read the smallest relevant active reference before using detailed guidance from it.
-4. Run the relevant verification from the overview or report why it could not be run.
+1. Inspect applicable repository instructions, accepted contracts, package manifest and lockfile, relevant app entrypoints and layer seams, installed versions, current behavior, and available verification.
+2. Record mode, in-scope flow, allowed mutations, source precedence, unresolved inputs, and the observable outcome or review/diagnosis question.
+3. For review or diagnosis, remain read-only; for design/setup or implementation, modify only the authorized scope and do not install dependencies, format broadly, or rewrite unrelated files without separate authority.
 
 Validation:
 
-- The outcome follows the preserved skill guidance and any loaded reference constraints.
+- The next action does not depend on invented product, backend, security, version, or architecture facts.
+- The requested claim has a named consumer and falsifiable completion evidence.
 
-## Required active references
-- [Accessibility](references/accessibility.md) — Read this when you need patterns and examples.
-- [Component Architecture](references/component-architecture.md) — Read this when you need feature-based structure, import boundaries, functional components, or composition patterns.
-- [Data Fetching](references/data-fetching.md) — Read this when you need shared API boundaries, TanStack Query patterns, global cache handling, caching, mutations, or CSRF recovery.
-- [Forms & Validation](references/forms-validation.md) — Read this when you need React Hook Form, TanStack Form wrappers, Zod schemas, or typed server-error handling.
-- [IndexedDB Persistence](references/indexeddb-persistence.md) — Read this when you need durable-cache allowlists, TTL, scoping, and IndexedDB patterns.
-- [Performance](references/performance.md) — Read this when you need the prioritized rulepack and examples.
-- [Persistence Architecture](references/persistence-architecture.md) — Read this when you need full rules.
-- [Routing](references/routing.md) — Read this when you need React Router data APIs, loaders, protected routes.
-- [State Management](references/state-management.md) — Read this when you need Zustand, Context API, persistence guidance.
-- [Testing](references/testing.md) — Read this when you need full setup and examples.
-- [TypeScript Patterns](references/typescript-patterns.md) — Read this when you need Type-safe React development.
+### Workflow stage: Trace and act on the end-to-end flow
+
+Preserve one coherent contract across every affected client layer.
+
+1. Map each value and side effect to its owner: React Router for navigation and URL state; shared/api for project transport; TanStack Query for server reads and mutations; local React or Zustand for runtime UI state; React Hook Form and Zod for forms; Dexie for approved durable client data.
+2. Load the smallest matching references and route TypeScript, reusable component, design, testing, accessibility-review, formal-review, browser-execution, and security decisions to their owning skills while retaining SPA integration ownership.
+3. Design, implement, review, or diagnose the smallest project-compatible change; keep React Router actions and fetchers outside project server IO in this skill's architecture even though React Router supports them.
+4. Preserve backend authorization as a server responsibility; client route admission, cache keys, and hidden UI are not authorization controls.
+
+Validation:
+
+- No affected state, network request, mutation, persistent record, or user-visible transition has competing owners.
+- Examples and changes conform to the installed major versions and accepted project contracts.
+
+### Workflow stage: Verify and hand off the SPA result
+
+Match the completion claim to observed evidence and leave the next consumer an actionable result.
+
+1. Run the narrowest relevant checks and the stronger domain or browser boundary required by the claim; report unavailable checks as evidence limits.
+2. Classify the result as completed, partial, or blocked. Completed requires the claim-matched evidence; implementation without that evidence is partial.
+3. Report mode, observable outcome, changed or inspected surface, verification evidence, status, blockers or residual risks, anti-claims, and next owner.
+
+Validation:
+
+- Type, lint, build, mock, route, screenshot, and generated-file evidence is not presented as proof of unexercised interactive, persistence, performance, auth, security, or production behavior.
+- The handoff does not require the consumer to invent a missing contract or reinterpret the result status.
+
+## Interop priority
+
+- **TypeScript language, compiler, tsconfig, module resolution, Biome and ESLint ownership:** typescript-engineer. react-spa-engineer owns React SPA integration; typescript-engineer owns language and toolchain correctness using repository and installed-version evidence.
+- **TypeScript test strategy, Vitest or Playwright runner behavior, fixtures, mocks, determinism, and CI test contours:** typescript-test-engineer. react-spa-engineer defines the SPA behavior and evidence boundary; typescript-test-engineer owns test design and runner correctness.
+- **reusable React component correctness across rendering contexts, portals, multiple instances, and component API boundaries:** react-components-engineer. react-components-engineer owns reusable component hardening; react-spa-engineer owns integration into routes, data, forms, state, and persistence.
+- **visual hierarchy, interaction design, styling, responsive composition, and design-system presentation:** frontend-design. frontend-design owns visual decisions; react-spa-engineer preserves the SPA behavior and stack integration.
+- **formal UX and accessibility review:** web-ui-reviewer. web-ui-reviewer owns the audit verdict; react-spa-engineer implements or integrates accepted client corrections.
+- **formal code-review findings, severity, merge guidance, and review output:** code-reviewer. code-reviewer owns the formal verdict; react-spa-engineer supplies React SPA domain analysis and implements authorized remediation.
+- **auth, CSRF, sensitive browser persistence, exploitability, and security verdicts:** security-reviewer. security-reviewer owns exploitability and security findings; react-spa-engineer owns only the client integration of accepted API and security contracts.
+- **real browser navigation, interaction, screenshots, traces, and walkthrough execution:** Playwright or the available browser-automation skill. Browser tooling supplies execution evidence; react-spa-engineer defines which SPA scenario and boundary the evidence must cover.
+
+## Gotchas
+
+- **high** — A route, component, schema, store, cache table, mock, screenshot, build, or green test can be useful substrate without proving the claimed end-to-end user flow.
+- **high** — Do not split project server reads or mutations between React Router actions/fetchers and TanStack Query; this skill assigns project server IO to TanStack Query and uses React Router for navigation, URL state, and loader-driven Query orchestration.
+- **high** — Client route admission, hidden controls, tenant-scoped keys, and cleared caches improve UX or isolation but never replace server authorization.
+- **high** — Do not apply a latest-version snippet to an existing project until its installed major version and migration authority are known.
+- **medium** — Treat an example as copyable only when it states its version and satisfies the root ownership, error, security, accessibility, and evidence invariants; otherwise label it conceptual and name omitted obligations.
+
+## Policies
+
+### Fixed stack contract
+Preserve React, TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Do not introduce a competing framework or state, form, routing, query, or persistence library without an explicit operator decision.
+
+### Example integrity
+Copyable examples must match the stated major version and all active root invariants. Conceptual examples must be labeled and list the production obligations they omit.
+
+### Evidence ladder
+Typecheck, lint, and build prove only their technical contours; local UI behavior needs component tests and browser inspection; material flows need successful Playwright scenarios and browser automation; persistence needs reload, migration, TTL and context-switch evidence; performance needs production profiling; auth and security need the real backend boundary and the owning reviewer.
+
+### Output contract
+Report mode, observable outcome, changed or inspected surface, verification evidence, completed, partial or blocked status, blockers or residual risks, anti-claims, and the next owner.
+
+## Optional references
+- [Accessibility](references/accessibility.md) — Read this when implementing or assessing semantics, keyboard interaction, focus management, live announcements, dialogs, or custom composite widgets.
+- [Component Architecture](references/component-architecture.md) — Read this when SPA feature layout, import boundaries, component ownership, composition, or public module entrypoints are in scope.
+- [Data Fetching](references/data-fetching.md) — Read this when TanStack Query status, query keys, server reads, mutations, invalidation, retries, API transport, or recovery behavior is in scope.
+- [Forms & Validation](references/forms-validation.md) — Read this when React Hook Form, Zod, editable payloads, field arrays, client validation, or server field-error mapping is in scope.
+- [IndexedDB Persistence](references/indexeddb-persistence.md) — Read this when Dexie schema versions, migrations, durable records, realtime persistence, cache TTL, or user and tenant cleanup is in scope.
+- [Performance](references/performance.md) — Read this only when production build output, profiling, request waterfalls, bundle splitting, interaction latency, rendering cost, or measured list performance is in scope.
+- [Persistence Architecture](references/persistence-architecture.md) — Read this when one flow crosses URL state, Zustand, TanStack Query, and Dexie or needs an explicit source-of-truth and invalidation map.
+- [Routing](references/routing.md) — Read this when React Router route objects, navigation, URL state, loaders, route admission, or error boundaries are in scope.
+- [State Management](references/state-management.md) — Read this when choosing between local React state, Context, Zustand, URL state, TanStack Query, and Dexie for a concrete value.
+- [Testing](references/testing.md) — Read this when defining Vitest, Testing Library, Playwright, browser walkthrough, integration, or end-to-end evidence for an SPA claim.
+- [TypeScript Patterns](references/typescript-patterns.md) — Read this when React-specific TypeScript props, hooks, events, generics, refs, or runtime-schema typing is in scope; use typescript-engineer for language and toolchain ownership.
 
 ## Portability rules
 
-- Do not reference machine-specific absolute paths or local files outside this skill folder.
-- Keep all mandatory react-spa-engineer guidance inside this skill folder.
-- Use relative links for local references, assets, scripts, tests, and supporting docs.
+- Do not reference machine-specific absolute paths or require files outside this skill folder to understand the portable contract.
+- Treat repository layout, commands, installed versions, API contracts, and acceptance gates as discovered project context rather than portable constants.
+- Keep mandatory workflow and evidence rules in SKILL.md; keep conditional stack detail in reachable local references.
+- Keep docs and implementation logs non-normative even when they are copied for maintenance traceability.
 
 ## Portability checklist before finishing
 
-- Run the skill-source-compiler check command after regeneration.
-- Search the skill folder for absolute local paths before finishing.
-- Confirm every required reference listed by SKILL.md exists inside this skill folder.
+- Run skill-source-compiler lint, regenerate, and check after source changes.
+- Compile to an isolated output directory and confirm references, UI metadata, and supporting evidence remain reachable.
+- Search active instructions and declared assets for absolute local dependencies.
+- Confirm the copied skill remains useful without repository history, prior sessions, or the application it was designed against.
 
 ## Supporting and historical surface
 

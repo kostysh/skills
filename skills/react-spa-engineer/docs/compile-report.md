@@ -2,10 +2,17 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.7`
+- Skill source version: `0.1.8`
 
 ## Source files
 - `agents/openai.yaml`
+- `docs/README.md`
+- `docs/logs/forward-test-raw-20260713-1.md`
+- `docs/logs/implementation-log-20260612-1.md`
+- `docs/logs/implementation-log-20260612-2.md`
+- `docs/logs/implementation-log-20260622-1.md`
+- `docs/logs/implementation-log-20260708-1.md`
+- `docs/logs/implementation-log-20260713-1.md`
 - `fragments/overview.md`
 - `references/accessibility.md`
 - `references/component-architecture.md`
@@ -21,17 +28,7 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- `references/accessibility.md`
-- `references/component-architecture.md`
-- `references/data-fetching.md`
-- `references/forms-validation.md`
-- `references/indexeddb-persistence.md`
-- `references/performance.md`
-- `references/persistence-architecture.md`
-- `references/routing.md`
-- `references/state-management.md`
-- `references/testing.md`
-- `references/typescript-patterns.md`
+- none
 
 ## Warnings
 - none

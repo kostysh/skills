@@ -1,268 +1,42 @@
-Build production-ready React single-page applications with TypeScript, modern state management, and best practices.
-
-**Stack**: React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie (IndexedDB)
-
-## Skill Interop (Priority)
-
-- Use `typescript-engineer` as the baseline for TypeScript language/toolchain rules (tsconfig, linting, @ts-expect-error policy, unsafe assertions).
-- Use this skill for React-specific patterns (hooks typing, JSX, React Router, TanStack Query, RHF, Dexie).
-- For UI/UX and visual design work in web apps, also use the `frontend-design` skill.
-- If rules conflict, follow `typescript-engineer` for TypeScript/toolchain and this skill for React API usage.
-
----
-
-## Quick Reference
-
-### Strict TypeScript Config
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2024",
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "moduleResolution": "bundler"
-  }
-}
-```
-
-**Tooling baseline**: Use Biome + ESLint together. Biome handles formatting and baseline lint; ESLint handles type-aware rules.
-
----
-
-## Critical Rules
-
-### Component Architecture
-
-| Rule | Description |
-|------|-------------|
-| Functional only | Components MUST be functional. Class components MUST NOT be used (except ErrorBoundary) |
-| PascalCase files | Component files MUST use PascalCase: `UserProfile.tsx` |
-| Interface props | Props MUST be typed with explicit TypeScript interfaces. `type` is allowed only for complex unions/utility-derived props where interfaces are awkward |
-| One per file | One component per file SHOULD be default |
-
-Use feature-based SPA structure by default: `app`, `shared/api`, `shared/ui`, `shared/forms`, `shared/state`, `shared/storage`, and `features/*`. Enforce layer boundaries with executable import rules; source-grep tests are not sufficient architecture enforcement.
-
-Example: see [Component Architecture](references/component-architecture.md).
-
-### State Management Hierarchy
-
-Use state in this order (simplest → complex):
-
-1. **useState** — component-local state
-2. **useReducer** — complex local state with actions
-3. **Context API** — cross-cutting: auth, theme
-4. **Zustand** — global client state
-
-Example: see [State Management](references/state-management.md).
-
-### Persistence Architecture (Mandatory)
-
-Define storage layer and source of truth for each state explicitly:
-
-| Layer | Source of truth | Store only |
-|------|------------------|------------|
-| URL state | URL (`path` + `search`) | Link-reproducible page state (filters, sort, page, view, search) |
-| Runtime UI state | Zustand (in-memory) | Modal flags, temporary selections, control state, transient UI flags |
-| Client persistence | Dexie (IndexedDB) | Drafts, wizard progress, local caches, dictionaries |
-| Server business state | Server (via TanStack Query) | Primary business data; TanStack Query manages runtime lifecycle/cache |
-
-**Non-negotiables**:
-- If state must survive direct link open/reload and be reproducible, URL MUST be source of truth.
-- Components, UI hooks, and Zustand stores MUST NOT perform direct HTTP calls for app data.
-- Routes, screens, components, stores, and UI hooks MUST NOT call project API `fetch` directly; project API calls live behind `shared/api`.
-- Server reads/mutations MUST run through TanStack Query (`useQuery`, `useMutation`, `queryClient`) with `queryFn`/`mutationFn`.
-- `queryKey` and Dexie `cacheKey` MUST be generated from centralized key factories with aligned semantics.
-- For user/tenant-scoped data, both `queryKey` and `cacheKey` MUST include `tenantId` and `userId` when applicable.
-
-### URL State Authority (Critical)
-
-When a state value is represented in URL search params:
-- URL param is the highest-priority source of truth.
-- UI controls MUST update URL params, not independent local/global runtime state.
-- Runtime state MUST derive from URL changes (including manual address bar edits/navigation).
-- Canonicalize URL values (for example locale case normalization) before applying to runtime state.
-- If URL param is missing/invalid, resolve a deterministic fallback and write it back to URL.
-
-Avoid sync oscillation:
-- Do not implement competing effects that blindly write both `URL -> state` and `state -> URL`.
-- Every sync effect MUST have loop guards (`if same value -> return`) and explicit missing/invalid handling.
-
-See [Persistence Architecture](references/persistence-architecture.md) for full rules.
-
-### Data Fetching (TanStack Query)
-
-Example: see [Data Fetching](references/data-fetching.md).
-
-**Non-negotiables**:
-- Components/pages MUST NOT call `fetch` directly for server API interactions.
-- Routes, Zustand stores, and UI hooks MUST NOT bypass `shared/api` or TanStack Query for server reads/mutations.
-- All project-owned API transport, credentials, CSRF token attachment, response normalization, and typed error mapping MUST live under `shared/api`.
-- Keep explicit layering: transport client, API contract functions, feature Query adapters/options, then UI hooks/components.
-- All external API requests in SPA flows MUST run via TanStack Query (`useQuery`/`useMutation`/`queryClient`).
-- Configure global `QueryCache`/`MutationCache` handling for cross-cutting API errors: `unauthorized` resets session state and scoped durable cache; `csrf_required` triggers bounded CSRF recovery instead of unbounded retry loops.
-
-**Current API expectations**:
-Use current TanStack Query APIs: object options syntax, `gcTime`, `isPending`, external reactions to query data when required, and explicit initial page params for infinite queries.
-
-### Cookie-based Auth SPA Baseline
-
-For cookie-session auth SPAs, model auth explicitly:
-- Separate states: `loading` (bootstrap), `guest`, `authenticated`, `error`.
-- Do not collapse bootstrap network failures into `guest`; show recoverable error UI.
-- Implement both:
-  - reactive refresh (`401` -> single retry with refresh),
-  - proactive refresh (timer-based background refresh for active sessions).
-- Use single-flight coordination for refresh to avoid concurrent refresh storms.
-- Keep API `baseUrl` in env config and enforce required vars at build/deploy pipeline level.
-- If CSRF is memory-only, require explicit reissue API/UX before claiming reload-safe cookie-session flows; repeated recovery failures surface recoverable UI instead of looping.
-
-### Forms & Validation
-
-Example: see [Forms & Validation](references/forms-validation.md).
-
-**Critical Rules**:
-- `defaultValues` MUST be set (prevents uncontrolled warnings)
-- Server validation MUST NOT be skipped (security)
-- Use `field.id` as key in `useFieldArray` (not index)
-- TanStack Form wrappers, when used, MUST be typed adapters that map API/server errors without leaking `as any` or field-error casts into screens.
-
-### Routing (React Router Data APIs)
-
-Example: see [Routing](references/routing.md).
-
-**Decisions**:
-- `<Form>` → navigation with URL change
-- `useFetcher` → mutations without URL change
-- `loader` → data before render
-- `useEffect` → client-only, user-interaction dependent
-- Default to `Component` in route objects; use `element` only for inline composition/props
-- Follow the current React Router package guidance; avoid mixing router packages unless the official docs require it
-- For link-reproducible state, `URL search params` are source of truth; UI derives and writes back to URL
-
-### Performance
-
-**Key moves**:
-- Eliminate request waterfalls first: start independent work early and await late
-- Reduce initial bundle pressure: route-level `React.lazy`, direct imports, intent-based preload for likely next navigation
-- Verify route-level lazy loading with build output; a dynamic import is not successful splitting when the same module is statically imported and the bundler reports ineffective dynamic import.
-- Keep interactions responsive: use `startTransition` or `useDeferredValue` for expensive derived renders
-- Use virtualization or `content-visibility: auto` for long lists and feed-like UIs
-- Prefer Dexie for reload-safe client persistence; keep `localStorage` limited to tiny non-sensitive preferences or bootstrap hints when IndexedDB would be excessive
-- Profile before memoization
-
-See [Performance](references/performance.md) for the prioritized rulepack and examples.
-
-### IndexedDB Persistence (Dexie)
-
-For structured data, offline-first, and >5MB persistence use Dexie + IndexedDB.
-
-**Critical Rules**:
-- Use `Table<RowType, KeyType>` for type safety
-- Never modify existing version — add new version for schema changes
-- Export singleton `db` instance
-- Use `useLiveQuery` for reactive UI updates
-- Persist cache entries with metadata: `cacheKey`, `tenantId`/`userId`, `loadedAt`, payload
-- Keep strict tenant/user isolation in keys and indexes
-- Durable cache contents MUST be allowlisted, scoped, TTL-bound, non-authoritative, and must not include OTPs, CSRF, cookies, JWT/session IDs, raw identity payloads, or raw network data.
-- Invalidate Dexie caches and TanStack Query caches together after related mutations
-- On user/tenant switch or logout, clear scoped Dexie data + reset runtime state (`Zustand`, `queryClient`)
-
-See [IndexedDB Persistence](references/indexeddb-persistence.md) for full patterns.
-
-### Testing
-
-**Rules of thumb**:
-- `getByRole` first; `getByTestId` last
-- Always use `userEvent.setup()` before render
-- For async UI, use `findBy*` and `waitFor`
-- For modal/dialog components with animation (for example shadcn `Dialog`), avoid brittle assertions on immediate unmount after close/submit; prefer stable assertions on state transitions (loading indicator removed, success/error content visible, trigger state restored).
-
-**Interactive flow completion gate**:
-- If a task implements or changes a material user-visible flow (for example auth, onboarding, checkout, profile editing, protected navigation, destructive confirmation, or a multi-step wizard), do not report delivered interactive SPA capability until the affected scenario has successful Playwright e2e coverage and has been exercised through real browser automation.
-- Use the project's browser automation tool when specified; otherwise use Playwright/browser-driven walkthrough evidence.
-- Minor interaction-only changes can use component/unit tests plus browser walkthrough evidence, but the handoff must state the narrower claim.
-- Unit/component tests, route existence, screenshots, mocked happy-path renders, or static fixtures alone are not end-to-end interactive SPA evidence.
-
-**Parallel integration isolation rules**:
-- Keep a deterministic local profile (for example single-worker integration) and a separate CI profile when parallelism is tuned.
-- Isolate IndexedDB state per test run where feasible; always clear tables in `afterEach`.
-- Always clear `localStorage`/`sessionStorage` in teardown.
-- When using global mocks/stubs (`fetch`, `ResizeObserver`, etc.), restore/unstub them after each test.
-- Add nightly shuffled/repeated integration checks before increasing CI workers again.
-
-See [Testing](references/testing.md) for full setup and examples.
-
-### Accessibility
-
-**Checklist**:
-- Provide accessible names (`aria-label`, `aria-labelledby`)
-- Mark errors with `aria-invalid` + `role="alert"`
-- Support keyboard navigation and focus management
-- Prefer skeletons to spinners
-
-See [Accessibility](references/accessibility.md) for patterns and examples.
-
----
-
-## Anti-Patterns
-
-| Anti-Pattern | Problem | Solution |
-|--------------|---------|----------|
-| `useQuery(['key'], fn)` | v4 syntax removed in v5 | `useQuery({ queryKey: ['key'], queryFn: fn })` |
-| `create<T>(...)` in Zustand | Breaks TypeScript inference | `create<T>()(...)` with double parentheses |
-| `onSuccess` in useQuery | Removed in v5 | Use `useEffect` to react to data |
-| Index as key in arrays | Causes re-render bugs | Use stable `id` or `field.id` |
-| No `defaultValues` in forms | Uncontrolled/controlled warnings | Always set `defaultValues` |
-| Barrel imports | Bloats bundle | Import components directly |
-| Manual memoization | Often unnecessary, adds complexity | Profile first; memoize only when proven |
-| Class components | Legacy pattern | Use functional components |
-| Modifying Dexie version | Breaks existing databases | Add new version instead |
-| Multiple db instances | Conflicts, memory waste | Export singleton |
-| useEffect for DB queries | Manual subscription needed | Use `useLiveQuery` |
-| Keeping shareable page state only in Zustand | Lost on reload/direct link open | Store in URL search params and sync UI |
-| UI control updates URL-backed state directly (without URL write) | URL and runtime diverge; back/forward/manual URL edits break behavior | Write URL param first; derive runtime state from URL |
-| Bidirectional URL/state effects without equality guards | Oscillation/flicker loops, unstable UI | Add strict same-value guards and clear authority direction |
-| Direct HTTP in components/stores/hooks | Bypasses server-state lifecycle and cache | Use TanStack Query (`queryFn`/`mutationFn`) |
-| Project API calls outside `shared/api` | Scatters credentials, CSRF, retries, and error mapping | Centralize transport/contracts under `shared/api` |
-| Query/cache keys without tenant/user context | Cross-user/tenant data leakage | Include `tenantId` and `userId` (when applicable) |
-| Ad-hoc key composition | Inconsistent cache hits and invalidation | Use centralized key factories + canonicalized params |
-| No cache cleanup on context switch | Stale data from previous account/tenant | Clear Dexie scope + reset Query cache + reset runtime UI state |
-
----
-
-## Reference Files
-
-Detailed patterns and examples:
-
-- [Component Architecture](references/component-architecture.md) — Functional components, composition patterns
-- [State Management](references/state-management.md) — Zustand, Context API, persistence guidance
-- [Persistence Architecture](references/persistence-architecture.md) — URL/Zustand/Dexie/Query contracts, invalidation, context switches
-- [Data Fetching](references/data-fetching.md) — TanStack Query patterns, caching, mutations
-- [Forms & Validation](references/forms-validation.md) — React Hook Form, Zod schemas
-- [Routing](references/routing.md) — React Router data APIs, loaders, protected routes
-- [TypeScript Patterns](references/typescript-patterns.md) — Type-safe React development
-- [Performance](references/performance.md) — Code splitting, optimization techniques
-- [IndexedDB Persistence](references/indexeddb-persistence.md) — Dexie, useLiveQuery, offline-first
-- [Testing](references/testing.md) — Vitest, React Testing Library, Playwright
-- [Accessibility](references/accessibility.md) — ARIA, keyboard navigation, focus management
-
----
-
-## Tool Grid
-
-| Task | Tool | Command |
-|------|------|---------|
-| Build | Vite | `pnpm build` |
-| Dev | Vite | `pnpm dev` |
-| Lint | Biome | `biome check .` |
-| Lint (ESLint) | ESLint | `eslint .` |
-| Format | Biome | `biome format --write .` |
-| Test | Vitest | `vitest` |
-| E2E | Playwright | `playwright test` |
-| Types | TypeScript | `tsc --noEmit` |
-
----
-
-**Note**: This skill is for client-side React SPA development only. For SSR, RSC, or Next.js patterns, use dedicated framework skills.
+Build and assess integrated client-side React SPA flows on this fixed stack:
+
+`React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie`
+
+## Cross-layer ownership
+
+| Concern | Owner in this skill's architecture |
+| --- | --- |
+| Navigation and link-reproducible state | React Router and the URL |
+| Project HTTP, SSE, or WebSocket transport | `shared/api` |
+| Server reads, mutations, retries, and runtime cache | TanStack Query |
+| Component-local and cross-feature runtime UI state | React state, Context, then Zustand when justified |
+| Form state and client validation | React Hook Form and Zod |
+| Approved reload-safe drafts and local cache | Dexie |
+| Business truth and authorization | The server contract, never browser state |
+
+Use loaders to orchestrate or prefill TanStack Query where route timing matters. In
+this fixed architecture, do not also use React Router actions or fetchers as a
+second owner for project server IO. Keep transport under `shared/api`, and keep
+all durable browser data allowlisted, scoped, TTL-bound, and non-authoritative.
+
+## Capability and anti-claims
+
+The skill succeeds when the requested design, implementation, review, or
+diagnosis preserves one coherent contract across every affected layer and the
+handoff is backed by evidence appropriate to the claimed behavior.
+
+The skill documentation does not itself run an SPA, validate a backend, grant
+authorization, prove accessibility, measure production performance, or establish
+end-to-end behavior. Compiler checks, types, builds, generated files, mocks,
+screenshots, routes, schemas, stores, and cache tables remain bounded evidence;
+they cannot close a broader claim without exercising its real boundary.
+
+## Reference example contract
+
+- A **copyable** example states the relevant major version and follows the root
+  ownership, error, security, accessibility, and evidence rules.
+- A **conceptual** example is explicitly labeled and names the production
+  obligations it omits.
+- When the project version differs, the installed manifest and lockfile are the
+  compatibility constraint; consult the matching official documentation rather
+  than silently upgrading or pasting the example.
