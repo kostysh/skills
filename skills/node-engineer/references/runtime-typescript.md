@@ -1,57 +1,71 @@
 # Runtime TypeScript in Node
 
-## Use built-in Node TypeScript support intentionally
+## Establish the executed path first
 
-Built-in Node TypeScript support is a runtime feature, not a replacement for the TypeScript compiler.
+Before recommending a flag, loader, import extension, or tsconfig change, inspect:
 
-Use it when:
-- the code only needs erasable TypeScript syntax;
-- you want to execute source `.ts` files directly in Node;
-- the project does not rely on path alias rewriting, TSX, or downlevel transforms.
+- the exact local, CI, and deployed Node versions;
+- repository package-manager and start/test scripts;
+- `package.json` module markers and exports;
+- whether Node executes source `.ts`, emitted JavaScript, or loader/bundler output;
+- the TypeScript syntax actually present;
+- the exact failing command, `NODE_OPTIONS`, and diagnostics.
 
-Do not use it as a blanket rule when:
-- the repo already has an intentional build pipeline;
-- runtime code depends on non-erasable TS syntax;
-- the emitted JavaScript path is the supported production artifact.
+Do not prescribe npm, pnpm, `npx`, nvm, Volta, `tsx`, or a build tool until repository tooling, installation state, supported versions, and mutation/network authority are known.
 
-## Version guide
+If repository artifacts are unavailable, describe which scripts, configs, versions, and emitted files must be inspected, but do not invent a local binary path such as `./node_modules/.bin/...` or a package-manager command. Return a version-bounded diagnosis and `partial`/`blocked` next step instead.
 
-- Node `22.6` to `22.17`: use `node --experimental-strip-types`.
-- Node `22.18+`, `23.6+`, `24+`, `25+`: type stripping is enabled by default.
-- When the code requires non-erasable TypeScript syntax, use `--experimental-transform-types` deliberately or switch to a full TypeScript execution/build tool.
+## Built-in support and version boundaries
 
-## Runtime facts that matter
+Node's built-in TypeScript support strips types; it does not typecheck and does not read `tsconfig.json` at runtime.
 
-- Node does **not** read `tsconfig.json` at runtime.
-- Type stripping removes inline types only; it does not perform general TypeScript transforms.
-- Import specifiers must match the path the runtime executes.
-- Type-only imports still need `import type` or inline `type` markers so Node can strip them correctly.
+High-risk compatibility facts:
 
-## Import extension rules
+- Node `22.6` through `22.17` requires `--experimental-strip-types`; type stripping is enabled by default from `22.18`.
+- Node 24 enables stripping by default; it is stable from `24.12`.
+- Node 26 keeps stable erasable-syntax stripping but removes `--experimental-transform-types`.
+- `--experimental-transform-types` exists on supported Node 22/24 releases that document it, but must never be extrapolated to another major.
 
-When Node runs source `.ts` directly:
-- use `.ts`, `.mts`, or `.cts` in relative imports;
-- do not teach the repo to use `.js` in source files just because emitted output will eventually be `.js`.
+Always confirm the installed command surface with `node --version`, `node --help`, repository scripts, and current official documentation for every supported major. If a required major is unavailable locally, report that compatibility contour as unexecuted rather than claiming it from another version.
 
-When the runtime executes emitted JavaScript:
-- emitted files must contain valid `.js` specifiers;
-- keep the build step responsible for that rewrite, not ad-hoc string edits.
+## Choose the path from the syntax
 
-Do not mix both styles in one recommendation without stating which runtime path owns them.
+Use built-in stripping only when code contains erasable TypeScript syntax and does not depend on TSX, path alias rewriting, downlevel transforms, or code-generating TypeScript constructs.
 
-## Unsupported or risky assumptions
+For Node 26, code containing enums, parameter properties, namespaces with runtime code, or other non-erasable syntax needs one of these explicit decisions:
 
-Built-in type stripping does not solve:
-- path alias rewriting driven by `tsconfig`;
-- TSX execution;
-- generic downlevel compilation to older JavaScript targets;
-- automatic support for decorators just because decorators are advanced in TC39.
+1. refactor to erasable syntax when the change is small, compatible, and authorized;
+2. use an already-established full TypeScript loader when direct source execution is the accepted runtime contract;
+3. emit or bundle JavaScript and execute the built artifact.
 
-Treat decorators as runtime-sensitive and verify actual Node support before recommending them.
+Do not silently change the production artifact, introduce a loader, or mass-rewrite syntax merely to make one local command pass. Route TypeScript language/config work to `typescript-engineer` after the Node runtime path is selected.
 
-## Recommended typecheck config for source-executed `.ts`
+## Runtime facts that affect correctness
 
-Use a typecheck-oriented config for direct Node execution:
+- Node ignores `tsconfig.json` runtime options such as `paths` and downlevel targets.
+- Type-only imports need `import type` or inline `type` markers; otherwise Node treats them as runtime imports.
+- Built-in stripping does not execute TypeScript under `node_modules`.
+- `.tsx` is unsupported by built-in stripping.
+- Decorators and other evolving syntax are version-sensitive; verify the actual Node parser/runtime instead of inferring support from TypeScript or TC39 status.
+
+## Import extensions
+
+When Node executes source TypeScript directly:
+
+- use explicit `.ts`, `.mts`, or `.cts` relative specifiers matching the source files;
+- verify the module system from extensions and the nearest `package.json` `type` field.
+
+When Node executes emitted JavaScript:
+
+- emitted specifiers must resolve to `.js`, `.mjs`, or `.cjs` artifacts as appropriate;
+- keep source, compiler rewrite behavior, package exports, and runtime entry aligned;
+- inspect and execute the emitted entry instead of assuming a successful build produced runnable imports.
+
+Do not mix source-execution and emitted-output extension rules in one recommendation.
+
+## Typecheck guard for erasable source
+
+When the installed TypeScript version supports these options and direct source execution is accepted, a typecheck-only config can enforce the runtime subset:
 
 ```json
 {
@@ -66,16 +80,18 @@ Use a typecheck-oriented config for direct Node execution:
 }
 ```
 
-Notes:
-- `rewriteRelativeImportExtensions` belongs in configs that may emit or validate emitted paths.
-- If your TypeScript version/config requires `allowImportingTsExtensions` for checking `.ts` specifiers, use it only in a `noEmit` or `emitDeclarationOnly` config.
-- Do **not** copy `allowImportingTsExtensions` into a JavaScript-emitting build config blindly.
+Verify option availability against the installed TypeScript version. Use the repository's package-manager script or local compiler binary; do not invoke a potentially downloading command as a generic fallback.
 
-## Build-path guardrails
+`erasableSyntaxOnly` is a static guard, not runtime proof. Completion still requires the exact Node command on each claimed major. For an emitted-JavaScript service or package, keep a dedicated build config and execute the built artifact.
 
-For distributable packages or services that run emitted JavaScript:
-- keep a dedicated build config;
-- verify emitted import specifiers are valid in output;
-- prefer one source of truth for runtime artifacts (`dist/`, bundle output, etc.).
+## Verification and reporting
 
-If the repo supports both direct `.ts` execution and emitted `.js`, make that split explicit in scripts and docs instead of trying to hide it inside one magical tsconfig.
+At minimum report:
+
+- exact Node and TypeScript versions actually inspected;
+- exact source or emitted entry and module system;
+- repository command and flags used;
+- positive runtime result for supported syntax;
+- negative or compatibility result for the relevant unsupported syntax/version;
+- any supported major not executed locally;
+- whether the result is `verified`, `partial`, or `blocked`.

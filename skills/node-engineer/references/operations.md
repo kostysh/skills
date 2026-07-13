@@ -1,25 +1,50 @@
-# Operations: Shutdown, Logging, and Cleanup
+# Operations: Bounded Shutdown, Logging, and Cleanup
 
-## Graceful shutdown sequence
+## Define the shutdown contract before coding
 
-Treat shutdown as an ordered workflow:
-1. mark the service unready;
-2. stop accepting new work;
-3. let in-flight requests/jobs drain;
-4. close external resources in reverse order of initialization;
-5. exit with the correct code.
+Establish:
 
-Keep shutdown idempotent. A second signal should not start a second cleanup flow.
+- signal sources and platform/orchestrator behavior;
+- total termination budget and an internal deadline shorter than it;
+- how the framework exposes readiness and stops new admission;
+- in-flight work that may drain, must cancel, or is safe to abandon;
+- every owned resource and its close/flush API;
+- logger/transport completion semantics;
+- success, cleanup-failure, deadline, and repeated-signal exit behavior.
 
-## `server.close()` rule
+Framework skills own readiness endpoints and lifecycle hooks. `node-engineer` owns signal, process, server, stream, timer, worker, child-process, and resource semantics beneath them.
 
-For `node:http` servers, `server.close()` is callback-based.
+## Bounded graceful-shutdown sequence
 
-If you need a Promise:
-- wrap `server.close()` in a Promise, or
-- use `server[Symbol.asyncDispose]()` where the project and Node version intentionally rely on it.
+Use one idempotent shutdown promise and an explicit phase order:
 
-Do not write `await server.close()` as if it were universally promise-based.
+1. on the first supported signal, atomically enter `draining` and record the deadline;
+2. ask the framework/adapter to report unready before traffic draining begins;
+3. stop accepting new requests, jobs, IPC messages, and background scheduling;
+4. drain or cancel in-flight work according to the accepted policy and remaining budget;
+5. close external resources in reverse initialization order;
+6. stop and flush the logger or transport using its documented completion API;
+7. set `process.exitCode` from the result and allow the event loop to end naturally.
+
+A second signal must not start another cleanup flow. Route it through the documented repeated-signal policy, normally an observable non-success forced fallback.
+
+## Deadline and forced fallback
+
+Graceful shutdown must finish inside the external termination budget. Use an internal deadline that leaves time for diagnostics and the orchestrator's own termination path.
+
+At deadline:
+
+- record the incomplete phase and resources before forcing termination when possible;
+- abort or force-close only resources covered by the accepted policy;
+- use a non-success exit status;
+- report the run as forced/partial, never graceful or verified;
+- do not hide the cause by merely increasing the orchestrator timeout.
+
+`process.exit()` terminates synchronously and can truncate pending stdout/stderr or logger writes. Do not use it on the normal path. Reserve it for the bounded forced fallback after the non-success state and evidence have been made observable as far as the remaining budget permits.
+
+## HTTP server behavior
+
+`node:http` `server.close()` is callback-based. It stops new connections and waits for remaining active work according to the Node version, but it does not close databases, caches, workers, timers, watchers, or log transports and does not impose the application deadline.
 
 ```ts
 function closeServer(server: import("node:http").Server): Promise<void> {
@@ -32,59 +57,49 @@ function closeServer(server: import("node:http").Server): Promise<void> {
 }
 ```
 
-## Library choice for shutdown
+Use `server[Symbol.asyncDispose]()` only when every supported Node version provides the required stability and the repository intentionally adopts that API. Do not write `await server.close()` as if it were promise-based.
 
-- If the repo already uses `close-with-grace` or an equivalent helper, stay consistent.
-- If the repo does not, a small manual signal handler is often enough.
-- Do not introduce a new shutdown dependency just to avoid writing a 10-line wrapper.
-- Do not wrap shutdown in a generic lifecycle framework unless the app has multiple real lifecycle participants that use it now.
+Force-closing active connections can interrupt valid requests. `closeAllConnections()` or equivalent framework APIs therefore belong only in the accepted deadline/fallback policy, not the default graceful path.
 
-## Readiness and health
+## Logging and redaction
 
-When the process is shutting down:
-- readiness should usually fail immediately;
-- liveness may still report the process as alive until cleanup completes.
+Use the repository logger first. If none exists and logging setup is part of the authorized task, choose structured operational logging with explicit context and redaction; do not add a facade or dependency merely to avoid a small adapter.
 
-This matters in containers and load-balanced deployments where traffic draining depends on readiness changing before the process exits.
+Never log passwords, tokens, cookies, authorization headers, secret environment values, or request/response bodies by default. Prefer safe identifiers, counts, durations, hashes, sizes, phase names, and resource types.
 
-## Logging defaults
+Treat logger completion as a real resource boundary:
 
-Use the existing project logger first.
+- identify whether output is direct stdout/stderr, a stream, worker/thread transport, file, or network sink;
+- use the logger's documented flush/end callback or promise;
+- wait for completion before the natural exit path;
+- distinguish an accepted flush from merely enqueueing the last record.
 
-If there is no established logger:
-- structured JSON logs are the default;
-- Pino is a reasonable default in Node projects;
-- keep log context explicit (`requestId`, operation, resource id, duration).
+Use `debug` or `util.debuglog()` for opt-in module tracing and the application logger for operational events. Neither is a substitute for durable audit/event delivery when the product requires that separate capability.
 
-## Redaction rules
+## Resource inventory
 
-Never log:
-- passwords
-- tokens
-- cookies
-- authorization headers
-- request or response bodies by default
+Track resources where they are created and close them in the owning scope. Common event-loop keepers include:
 
-Prefer logging safe identifiers, counts, durations, hashes, or sizes instead of raw payloads.
+- HTTP/network servers and sockets;
+- database, message, and cache clients;
+- timers and intervals;
+- worker threads and child processes;
+- file watchers and readline interfaces;
+- open streams and logger transports;
+- scheduled or fire-and-forget work.
 
-## `debug` vs application logs
+Use `process.getActiveResourcesInfo()` on supported Node versions as a bounded diagnostic signal. It returns resource types, not ownership or proof that each resource is leaked; correlate it with initialization, phase timestamps, and close evidence.
 
-Use `debug` or `util.debuglog()` for opt-in module tracing.
-Use the structured application logger for operational logs.
+## Verification
 
-Do not mix the two responsibilities into one noisy stream.
+Exercise the real process boundary when the claim is graceful shutdown:
 
-Prefer the existing project logger and built-in opt-in tracing before adding a new logging facade. Add a new logger only when the current project lacks structured redaction-capable operational logging.
+- normal signal with no in-flight work;
+- held or slow request/job that completes inside the budget;
+- work that exceeds the budget and triggers the documented forced fallback;
+- pending logger output or deliberate stream backpressure;
+- cleanup rejection from one resource;
+- leaked timer, worker, watcher, client, or stream;
+- repeated signal during drain.
 
-## Resource cleanup checklist
-
-When a Node process refuses to exit, inspect:
-- HTTP servers
-- database or cache clients
-- timers or intervals
-- worker threads or child processes
-- file watchers
-- readline interfaces
-- fire-and-forget async work that never settles
-
-Close the resource in the same scope that created it whenever possible.
+Success evidence includes phase ordering, readiness handoff, admitted/in-flight counts where available, resource close results, logger completion, exit code, elapsed time below the budget, and absence of orchestrator hard-kill. A unit mock of `server.close()` cannot establish this process-level claim.

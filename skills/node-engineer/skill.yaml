@@ -2,48 +2,64 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: node-engineer
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 20000
   description: |-
-    Node.js runtime engineering skill for modern server-side JavaScript and TypeScript.
-    Use when designing or debugging Node-specific runtime concerns: built-in TypeScript
-    execution and type stripping, ESM/CJS and module resolution, streams and backpressure,
-    graceful shutdown, structured logging, profiling, dependency inspection, and process
-    hangs caused by open handles or leaked resources.
+    Explain, design, review, diagnose, or implement Node.js runtime behavior using
+    repository and installed-version evidence. Use for built-in TypeScript execution,
+    ESM/CJS resolution, streams and backpressure, graceful shutdown, logging, profiling,
+    dependency inspection, process hangs, open resources, and other Node-specific runtime
+    concerns; keep review and diagnosis read-only unless changes are explicitly requested.
 fragments:
   overview: fragments/overview.md
 references:
   - id: ref-references-debugging-profiling
-    title: Debugging Profiling
+    title: Debugging and profiling
     source: references/debugging-profiling.md
     target: references/debugging-profiling.md
     required: true
-    trigger: Read this when you need package inspection, module resolution, hang diagnosis, and performance workflow.
+    trigger: Read this for dependency or module-resolution inspection, process-hang diagnosis, profiling, or benchmarking.
   - id: ref-references-operations
     title: Operations
     source: references/operations.md
     target: references/operations.md
     required: true
-    trigger: Read this when you need graceful shutdown, logging defaults, redaction, and resource cleanup.
+    trigger: Read this for signals, graceful shutdown, health/readiness handoff, logging, redaction, or resource cleanup.
   - id: ref-references-runtime-typescript
-    title: Runtime Typescript
+    title: Runtime TypeScript
     source: references/runtime-typescript.md
     target: references/runtime-typescript.md
     required: true
-    trigger: Read this when you need built-in TypeScript execution, type stripping, import extensions, and safe config boundaries.
+    trigger: Read this for built-in TypeScript execution, type stripping, Node-version compatibility, import extensions, or build-path decisions.
   - id: ref-references-streams-caching
-    title: Streams Caching
+    title: Streams and caching
     source: references/streams-caching.md
     target: references/streams-caching.md
     required: true
-    trigger: Read this when you need `pipeline()`, async generators, backpressure, and cache selection.
+    trigger: Read this for stream pipelines, text or record framing, backpressure, cancellation, ETL, or local cache mechanics.
 assets: []
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for node-engineer maintenance records.
+  - id: supporting-implementation-log-20260622-1
+    source: docs/logs/implementation-log-20260622-1.md
+    target: docs/logs/implementation-log-20260622-1.md
+    description: Historical structural-maintenance log; it is not capability evidence.
+  - id: supporting-implementation-log-20260713-1
+    source: docs/logs/implementation-log-20260713-1.md
+    target: docs/logs/implementation-log-20260713-1.md
+    description: Non-normative implementation log for runtime-contract hardening.
+  - id: supporting-review-evidence-20260713-1
+    source: docs/reviews/validation-20260713-1.md
+    target: docs/reviews/validation-20260713-1.md
+    description: Non-normative baseline, forward-test, and independent review evidence.
 surfaces:
   active:
     requiredReferences:
@@ -54,49 +70,141 @@ surfaces:
     optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/logs/*
+    - docs/reviews/*
 sections:
   startHere:
-    - Confirm the task matches node-engineer's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Before adding a runtime dependency or wrapper, check whether a built-in `node:` API, existing project helper, or small local adapter already satisfies the runtime behavior.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Classify the request as explain/design, review/diagnose, or authorized change; review and diagnosis are read-only unless the operator explicitly requests remediation.
+    - Establish the actual Node versions and runtime path from repository scripts, package metadata, CI/deployment configuration, the failing command, and a narrow reproduction before recommending flags, imports, dependencies, or code changes.
+    - "Apply source precedence in this order: explicit operator requirements; compatible repository policy and installed/deployed behavior; current official documentation matching the relevant versions; then this skill's portable defaults."
+    - Load only the reference triggered by the current runtime problem and route language, test-runner, framework, CLI, architecture, or formal-review decisions to their owning skills.
+    - Define the observable runtime result and evidence boundary before implementation; generated files, types, mocks, logs, and compiler success do not prove application runtime behavior.
   whenToUse:
-    - Running TypeScript directly in Node with built-in type stripping or `--experimental-transform-types`
-    - Resolving Node ESM/CJS issues, import extensions, or module resolution behavior
-    - Building or debugging stream pipelines, large-file processing, ETL, or backpressure
-    - Implementing graceful shutdown, signal handling, readiness/liveness behavior, or resource cleanup
-    - Standardizing structured logging, redaction, or debug namespaces in Node services
-    - Profiling CPU, heap, or HTTP throughput in a Node service
-    - Inspecting installed dependencies, exports, resolution paths, or package-manager-specific layout
-    - Debugging Node process hangs, leaked handles, or runtime resources outside the broader test-policy workflow
+    - Explaining, designing, reviewing, diagnosing, or changing Node.js runtime and process behavior.
+    - Running TypeScript directly in Node, selecting a transform/build path, or resolving runtime import extensions.
+    - Resolving Node ESM/CJS, package exports, or module-resolution behavior.
+    - Building or debugging stream pipelines, text/record framing, large-file processing, ETL, cancellation, or backpressure.
+    - Implementing or diagnosing signals, bounded graceful shutdown, readiness handoff, logging, or resource cleanup.
+    - Profiling CPU, heap, event-loop, or HTTP behavior and diagnosing process hangs or leaked resources.
+    - Inspecting installed dependencies, exports, resolution paths, or package-manager-specific layout.
   whenNotToUse:
-    - Type-level API design, inference issues, or general TypeScript correctness work; use `typescript-engineer`
-    - Test policy, coverage cadence, runner selection, or CI gating; use `typescript-test-engineer`
-    - Framework-specific routing, middleware, or service architecture; use the framework skill
-    - Browser or bundler-only module behavior; use the relevant frontend skill
+    - Type-level API design, inference, general compiler diagnostics, or TypeScript correctness without a Node runtime decision; use `typescript-engineer`.
+    - Test strategy, runner configuration, coverage, fixtures, or CI gating; use `typescript-test-engineer`.
+    - Framework-specific routing, middleware, adapters, readiness endpoints, or service architecture; use the framework skill.
+    - CLI command models, help, stdout/stderr contracts, packaging, or release UX; use `cli-engineer`.
+    - Browser or bundler-only behavior with no Node runtime boundary; use the relevant frontend or bundler skill.
   workflow:
-    - id: stage-apply-node-engineer
-      title: Apply node-engineer guidance
-      goal: Apply the preserved node-engineer guidance without changing its domain behavior.
+    - id: stage-establish-runtime-basis
+      title: Establish the runtime basis
+      goal: Make the requested outcome, authority, runtime path, compatibility range, and mutation boundary reconstructable.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Record the task mode and whether code, configuration, dependencies, processes, profiles, benchmarks, or external targets may be changed or exercised.
+        - Inspect repository instructions, package manager and scripts, package type/exports, installed and deployed Node versions, TypeScript execution or emit path, failing command and diagnostics, and the smallest relevant call sites or resources.
+        - Define the expected observable behavior, affected consumer, compatibility range, and the narrowest runtime check that could prove or falsify the result.
+        - Stop with `blocked` or bounded guidance when required authority is missing, equal-authority sources conflict, the runtime path cannot be identified, or the requested check would cross an unauthorized boundary.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - Task mode, allowed side effects, sources, Node/runtime mode, target behavior, consumer, and verification boundary are explicit.
+        - No flag, package manager, version manager, dependency, or execution path is assumed merely because it is common elsewhere.
+    - id: stage-diagnose-runtime-contract
+      title: Diagnose and choose the first sufficient runtime path
+      goal: Identify the first runtime cause and smallest compatible solution without inventing adjacent language, framework, test, or architecture policy.
+      steps:
+        - Reproduce or inspect the narrowest failing behavior, then distinguish Node runtime semantics from TypeScript language/toolchain, framework, runner, CLI, data, and architecture concerns.
+        - "Prefer a supported built-in `node:` API, repository-standard helper, installed dependency, or small local adapter in that order; add a dependency or new abstraction only after the simpler surfaces fail for a concrete reason."
+        - Check current official documentation for every version-sensitive Node API or flag and reconcile it with all supported installed/deployed versions.
+        - In explain/design or review/diagnose mode, return the bounded result without editing; in change mode, define the exact authorized runtime contract before implementation.
+      validation:
+        - The root cause or bounded hypothesis, owner boundary, compatibility constraints, rejected simpler options, and evidence limit are explicit.
+    - id: stage-apply-authorized-runtime-change
+      title: Apply only the authorized runtime change
+      goal: Implement the smallest Node-runtime change that delivers the accepted observable behavior.
+      steps:
+        - Change only the accepted runtime scope and preserve repository module, lifecycle, logging, and dependency conventions unless they are the demonstrated cause.
+        - Keep module imports aligned with the path that actually executes, stream transforms encoding- and backpressure-safe, and shutdown idempotent and bounded.
+        - Coordinate compiler configuration, runner behavior, framework hooks, CLI contracts, or architectural cache decisions with the owning skill instead of silently taking them over.
+      validation:
+        - Every changed hunk and dependency traces to the accepted runtime behavior and compatibility range.
+        - No mutation occurs in explain/design or review/diagnose mode.
+    - id: stage-verify-report
+      title: Verify and report at the claimed boundary
+      goal: Prove the targeted Node behavior without treating substrate checks as runtime completion.
+      steps:
+        - Run the exact reproduction and the narrowest repository-native runtime, integration, process, or benchmark check that exercises the changed boundary; add typecheck or runner evidence only through the owning toolchain.
+        - Exercise relevant failure behavior such as unsupported versions, cancellation, stream errors, split records, held requests, shutdown deadlines, forced fallback, or leaked resources.
+        - Report the outcome or root cause, authoritative inputs and assumptions, runtime contract or change, exact checks, interop handoffs, unverified boundaries, remaining risk, and status as `verified`, `partial`, or `blocked`.
+      validation:
+        - "`verified` requires current evidence for the claimed runtime boundary and compatibility range."
+        - Generated prose, compiler/typecheck success, mocks, a clean process start, or a happy-path example cannot by themselves establish runtime completion.
+  interop:
+    - id: interop-implementation
+      domain: Implementation scope, minimal diffs, and evidence discipline
+      winner: implementation-discipline
+      rationale: node-engineer owns Node runtime semantics; implementation-discipline owns capability reality, surgical changes, and completion evidence for authorized implementation.
+    - id: interop-typescript
+      domain: TypeScript language, type-system, and compiler configuration
+      winner: typescript-engineer
+      rationale: node-engineer establishes the executed source or emitted-JavaScript runtime contract; typescript-engineer configures and checks TypeScript consistently with that contract.
+    - id: interop-testing
+      domain: Test strategy, runner behavior, coverage, mocks, and CI contours
+      winner: typescript-test-engineer
+      rationale: typescript-test-engineer owns the test workflow; node-engineer owns Node process, module, stream, and resource-lifecycle mechanics that may underlie a test hang.
+    - id: interop-framework
+      domain: Framework adapters, lifecycle hooks, routing, middleware, and readiness endpoints
+      winner: the relevant framework skill
+      rationale: the framework owner implements framework APIs; node-engineer owns signal, process, server, stream, and resource semantics beneath that integration.
+    - id: interop-cli
+      domain: CLI command model, help, output/error contract, packaging, and release UX
+      winner: cli-engineer
+      rationale: cli-engineer owns the public CLI surface; node-engineer owns low-level Node execution, module resolution, streams, signals, and process behavior.
+    - id: interop-architecture
+      domain: Distributed cache topology, cross-service lifecycle, and architecturally significant runtime trade-offs
+      winner: architecture-engineer
+      rationale: node-engineer may implement an accepted local runtime mechanism but does not invent distributed ownership, consistency, durability, or cross-system policy.
+    - id: interop-review
+      domain: Formal code-review scope, severity, findings, and merge guidance
+      winner: code-reviewer
+      rationale: node-engineer supplies Node-specific analysis; code-reviewer owns the formal review verdict and merge-risk synthesis.
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-chunks-records
+      priority: high
+      text: Never treat arbitrary byte chunks as UTF-8 strings or logical records; preserve decoder state and apply explicit framing before record-level transforms.
+    - id: gotcha-forced-exit
+      priority: high
+      text: Do not call a shutdown graceful merely because `server.close()` ran; bound the drain, close every owned resource, flush the logger, and reserve `process.exit()` for an observable non-success forced fallback because it can truncate pending I/O.
+    - id: gotcha-version-flags
+      priority: high
+      text: Do not recommend Node flags or APIs from a generic latest-version memory; inspect the actual compatibility range and version-matched official documentation.
+    - id: gotcha-tooling-assumptions
+      priority: medium
+      text: Do not prescribe `npx`, npm, pnpm, nvm, Volta, `./node_modules/.bin/...`, a profiler, benchmark package, cache package, or external target until repository tooling, layout, installation state, network behavior, and side-effect authority are known.
+    - id: gotcha-substrate-proof
+      priority: high
+      text: Do not claim runtime success from generated guidance, typecheck/compiler success, mocks, logs, or a happy-path snippet that does not exercise the named runtime boundary and failure path.
+  policies:
+    - id: policy-source-precedence
+      title: Source and compatibility precedence
+      text: Explicit operator requirements govern the authorized task; compatible repository policy and actual installed/deployed behavior govern execution; current official version-matched documentation resolves Node facts; portable defaults apply only when stronger sources are absent. Equal-authority conflicts block the strongest claim.
+    - id: policy-mutation-boundary
+      title: Mutation and side-effect boundary
+      text: Explain/design and review/diagnose requests are read-only. Code, configuration, dependency, process, profiling, benchmark, network, and external-target effects require authorization from the task and repository context.
+    - id: policy-runtime-evidence
+      title: Runtime evidence boundary
+      text: Match proof to the claim. Static and compiler checks prove only inspected structure; process and integration checks prove only exercised runtime paths; benchmarks prove only recorded conditions; deployed evidence proves only the observed environment.
+    - id: policy-first-sufficient-runtime
+      title: First sufficient runtime surface
+      text: Prefer supported Node built-ins, repository helpers, installed dependencies, and small local adapters before new runtime dependencies or generic lifecycle, logging, stream, cache, or profiling wrappers.
+    - id: policy-output-contract
+      title: Output contract
+      text: Report the outcome or root cause, source basis and assumptions, Node/runtime mode and compatibility range, changed or proposed runtime contract, exact checks and failure cases, interop handoffs, unverified boundaries, remaining risk, and `verified`, `partial`, or `blocked` status.
   portability:
     required: true
     rules:
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
-      - Keep all mandatory node-engineer guidance inside this skill folder.
+      - Keep all mandatory node-engineer guidance inside this skill folder and treat repository commands as discovered context, not universal requirements.
       - Use relative links for local references, assets, scripts, tests, and supporting docs.
     checklist:
       - Run the skill-source-compiler check command after regeneration.
       - Search the skill folder for absolute local paths before finishing.
-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Confirm every required reference listed by SKILL.md exists inside the copied skill folder.
+      - Confirm UI metadata, active references, generated output, and supporting evidence preserve the same capability and evidence limits.

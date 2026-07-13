@@ -1,53 +1,34 @@
-## Scope
+## Capability and anti-claims
 
-Applies to Node.js runtime and platform concerns. If the current project already has established runtime conventions, follow them unless they are the source of the bug.
+Use repository and installed-version evidence to establish the Node runtime contract, diagnose the first runtime cause, design or apply only an authorized change, and report what the selected checks actually proved. The result should let the operator or routed owner act without guessing the executed source, emitted artifact, module system, process lifecycle, compatibility range, or remaining evidence gap.
 
-## Interop (Priority)
+This documentation does not execute, typecheck, profile, benchmark, or deploy an application by itself. A generated skill, valid config, successful compiler/typecheck, mock, log, profile file, benchmark command, or happy-path snippet is substrate or bounded evidence; none proves a broader runtime claim unless it exercises the named behavior and relevant failure path.
 
-- Defer TypeScript language design, advanced typing, and general tsconfig/toolchain policy to `typescript-engineer`.
-- Defer test strategy, coverage policy, CI contours, and broad mocking guidance to `typescript-test-engineer`.
-- Defer framework APIs and app architecture to framework skills such as `hono-engineer`.
-- If rules conflict, this skill owns Node runtime behavior; the other skills own language, test policy, and framework-specific APIs in their domains.
+## Minimum inputs and source precedence
 
-## Non-negotiables
+Derive or obtain the expected behavior, task mode and mutation authority, repository instructions, package manager and scripts, actual installed and deployed Node versions, package module markers and exports, TypeScript source-versus-emit path when applicable, the failing command and diagnostics, affected consumers or resources, and the narrowest meaningful reproduction.
 
-- Prefer the first sufficient Node runtime surface: built-in `node:` APIs, repo-standard helpers, and small local adapters come before new runtime dependencies or generic wrappers.
-- Identify the actual runtime mode before changing imports or config: source `.ts` executed directly, emitted `.js`, or an explicit transform/bundler path.
-- Keep import extensions aligned with the runtime path that actually executes: source-run `.ts` uses `.ts`; emitted JavaScript uses `.js`.
-- Prefer `await pipeline(...)` or explicit backpressure-aware loops over chained `.pipe()` or fire-and-forget writes.
-- Shutdown must be idempotent: mark unready, stop new work, drain in-flight work, close resources, then exit.
-- Reuse the repo's logger if it already exists; otherwise structured logs with redaction are the default.
-- When a Node process hangs, isolate first and close resources in the same scope that created them.
+Apply authority in this order:
 
-## Quick Workflow
+1. explicit operator requirements for the authorized task;
+2. compatible repository policy and actual installed/deployed behavior;
+3. current official documentation matching every supported Node version;
+4. portable defaults in this skill.
 
-1. Identify runtime mode and Node version from `package.json`, scripts, CI config, and the failing command.
-2. Read only the smallest relevant reference file instead of loading all Node guidance.
-3. Preserve existing runtime conventions unless the current setup is clearly broken or internally inconsistent.
-4. Before adding a dependency, check the matching built-in Node capability such as `node:stream/promises`, `AbortController`, `node:timers/promises`, `util.debuglog()`, `server[Symbol.asyncDispose]()`, or the repo's existing runtime helper.
-5. Make the minimal runtime-safe change, then run the narrowest verification that proves the behavior.
-6. If the process still hangs, switch to the handle/resource workflow immediately instead of only extending timeouts.
+If equal-authority inputs conflict, the runtime path or compatibility range cannot be established, or the required check would cross an unauthorized process, network, benchmark, profile, or external-system boundary, return `blocked` or bounded guidance instead of inventing the missing contract.
 
-## Runtime Mode Quick Matrix
+## Runtime-mode matrix
 
-| Situation                                  | Runtime owner                                      | Import style            | Notes                                                          |
-| ------------------------------------------ | -------------------------------------------------- | ----------------------- | -------------------------------------------------------------- |
-| Source `.ts` executed directly by Node     | Node built-in TS support                           | `.ts` / `.mts` / `.cts` | No tsconfig transforms at runtime                              |
-| JavaScript emitted for runtime             | `tsc` / bundler / build step                       | `.js` in emitted output | Keep emit config and runtime path aligned                      |
-| Non-erasable TS syntax required at runtime | transform step or `--experimental-transform-types` | depends on output       | Choose intentionally; do not blur this with erasable-only mode |
+| Executed artifact | Runtime owner | Relative import contract | Required evidence |
+| --- | --- | --- | --- |
+| Source `.ts` executed directly | Node built-in stripping or an explicit loader | Match source files (`.ts`, `.mts`, `.cts`) | Exact Node version, command, supported syntax, and runtime smoke |
+| Emitted JavaScript | TypeScript compiler or build/bundle step | Valid emitted `.js`, `.mjs`, or `.cjs` specifiers | Build output inspection plus execution of the emitted entry |
+| Non-erasable TypeScript | Version-supported transform path, third-party loader, or build | Determined by the selected output path | Version compatibility and a real non-erasable syntax case |
 
-## High-signal triggers
+Do not collapse these modes into one tsconfig or import rule. `node-engineer` establishes which artifact Node executes; `typescript-engineer` configures compiler behavior consistently with that decision.
 
-- **CSV / ETL / large files / repeated async lookups**: use `pipeline()` + `async function*` + explicit cache choice.
-- **Import extension mismatch / Node ESM bug / package exports confusion**: inspect actual runtime path and package resolution before editing many files.
-- **SIGTERM / pod shutdown / process never exits**: apply the shutdown sequence and close resources in reverse order of initialization.
-- **Slow endpoint / CPU spike / memory growth**: baseline first, profile second, optimize third.
+## Completion contract
 
-## When You Need More Detail
+Use `verified` only when current evidence exercises the targeted Node runtime behavior, supported version range, and relevant failure case. Use `partial` when the diagnosis or authorized change is useful but a required runtime contour remains unexecuted. Use `blocked` when missing authority, conflicting constraints, unavailable runtime versions, or an unsafe validation boundary prevents a sound result.
 
-Read only the relevant reference file:
-
-- [runtime-typescript.md](references/runtime-typescript.md) - built-in TypeScript execution, type stripping, import extensions, and safe config boundaries
-- [streams-caching.md](references/streams-caching.md) - `pipeline()`, async generators, backpressure, and cache selection
-- [operations.md](references/operations.md) - graceful shutdown, logging defaults, redaction, and resource cleanup
-- [debugging-profiling.md](references/debugging-profiling.md) - package inspection, module resolution, hang diagnosis, and performance workflow
+The final response states the outcome or root cause, authoritative inputs and assumptions, Node/runtime mode and compatibility range, changed or proposed runtime contract, exact checks and failure cases, routed owner boundaries, remaining risk, and status.
