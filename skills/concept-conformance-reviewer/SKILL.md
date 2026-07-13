@@ -13,9 +13,9 @@ compatibility: Portable documentation-only review skill. Use before
   specification, planning, implementation, or closure when concept alignment and
   real capability are more important than local artifact compliance.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 66f00d714a63aad24948f12e212dc8b8375297e476149922006bf53efc720448
+  skillforge-source-hash: 957c8385bf1860926eef931faf2ad158024a85992e17c153fcd61777b0aeda20
 ---
 
 # concept-conformance-reviewer
@@ -178,7 +178,7 @@ Produce a deterministic decision that prevents false confidence without overreac
 2. For assessable or limited reviews, assign low, medium, or high fake-risk using the calibrated definitions in the output contract.
 3. Set one mode outcome: design-ready, invariant-ready, substrate-ready, claim-not-ready, capability-demonstrated, invariant-demonstrated, substrate-demonstrated, claim-not-demonstrated, or blocked, using the claim- and mode-specific rules in the output contract.
 4. Choose exactly one primary decision from proceed, proceed as substrate, rewrite, split, downscope, reject, or request authority/evidence.
-5. Name the next owner and smallest artifact, evidence, or decision needed; do not silently rewrite product scope, architecture, backlog, specification, code, or security findings.
+5. Name the next owner and needed artifact or decision; for the same or a materially related blocker surviving remediation, require root-cause analysis before more fixes. Do not rewrite product scope, architecture, backlog, specification, code, or security findings.
 
 Validation:
 
@@ -225,7 +225,7 @@ Closure requires current boundary evidence; record simulated, intercepted, stale
 Every non-trivial review must state the important behavior that remains unavailable, simulated, manually mediated, outside scope, or only weakly evidenced.
 
 ### Acceptance integrity policy
-Acceptance is defective when it can pass without the claimed capability; propose behavior-level proof and route formal specification changes to spec-engineer.
+Acceptance passing without claimed capability is defective; route behavior-level proof to spec-engineer.
 
 ### Output completeness policy
 For blocked reviews return only attempted mode, blocked status and outcome, missing, insufficient, or unresolved input, decision request authority/evidence, and next owner or artifact. Otherwise return mode, status, outcome, concept source, claim, classification, exploitable criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner or artifact.

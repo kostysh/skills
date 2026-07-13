@@ -5,3 +5,4 @@
 ## Журналы реализации
 
 - `docs/logs/implementation-log-20260710-1.md` — ревью и обновление скила до версии `0.2.0`.
+- `docs/logs/implementation-log-20260713-1.md` — escalation повторного blocking concept failure к root-cause investigation; independent PASS.

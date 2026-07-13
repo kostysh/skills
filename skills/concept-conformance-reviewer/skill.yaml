@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: concept-conformance-reviewer
-  source-version: 0.2.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review feature ideas, backlog items, specifications, plans, acceptance
@@ -35,6 +35,10 @@ supporting:
     source: docs/logs/implementation-log-20260710-1.md
     target: docs/logs/implementation-log-20260710-1.md
     description: Non-normative implementation and verification evidence for the 0.2.0 revision.
+  - id: supporting-implementation-log-20260713-1
+    source: docs/logs/implementation-log-20260713-1.md
+    target: docs/logs/implementation-log-20260713-1.md
+    description: Non-normative implementation log for repeated-failure escalation.
 
 surfaces:
   active:
@@ -119,7 +123,7 @@ sections:
         - For assessable or limited reviews, assign low, medium, or high fake-risk using the calibrated definitions in the output contract.
         - "Set one mode outcome: design-ready, invariant-ready, substrate-ready, claim-not-ready, capability-demonstrated, invariant-demonstrated, substrate-demonstrated, claim-not-demonstrated, or blocked, using the claim- and mode-specific rules in the output contract."
         - Choose exactly one primary decision from proceed, proceed as substrate, rewrite, split, downscope, reject, or request authority/evidence.
-        - Name the next owner and smallest artifact, evidence, or decision needed; do not silently rewrite product scope, architecture, backlog, specification, code, or security findings.
+        - Name the next owner and needed artifact or decision; for the same or a materially related blocker surviving remediation, require root-cause analysis before more fixes. Do not rewrite product scope, architecture, backlog, specification, code, or security findings.
       validation:
         - The assessment status, mode outcome, risk, decision, evidence gaps, and next owner are mutually consistent.
         - Capability and invariant ready or demonstrated outcomes require assessable + low + proceed; substrate outcomes require assessable + low + proceed as substrate; closure-time outcomes also require current boundary evidence.
@@ -193,7 +197,7 @@ sections:
       text: Every non-trivial review must state the important behavior that remains unavailable, simulated, manually mediated, outside scope, or only weakly evidenced.
     - id: policy-acceptance-integrity
       title: Acceptance integrity policy
-      text: Acceptance is defective when it can pass without the claimed capability; propose behavior-level proof and route formal specification changes to spec-engineer.
+      text: Acceptance passing without claimed capability is defective; route behavior-level proof to spec-engineer.
     - id: policy-output-completeness
       title: Output completeness policy
       text: For blocked reviews return only attempted mode, blocked status and outcome, missing, insufficient, or unresolved input, decision request authority/evidence, and next owner or artifact. Otherwise return mode, status, outcome, concept source, claim, classification, exploitable criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner or artifact.
