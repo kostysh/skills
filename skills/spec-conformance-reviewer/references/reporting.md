@@ -114,7 +114,7 @@ Use the full structure when the user asks for a formal report or when the review
 - Spec basis:
 - Implementation evidence:
 - Impact:
-- Recommendation:
+- Recommendation: bounded correction or root-cause investigation
 - Confidence:
 
 ## 6. Verification Gaps and Routed Observations
@@ -140,6 +140,7 @@ Use the full structure when the user asks for a formal report or when the review
 - Do not use `partially_fulfilled` when only substrate exists; require evidence for some observable portion of the broader requirement.
 - When mocks or in-memory stores are the only tests for a production persistence/RLS/RPC/provider boundary, report a verification gap unless the normative requirement is limited to the mocked layer.
 - Avoid vague language such as "looks wrong" or "should probably".
+- If a follow-up review repeats the same or a materially related blocking deviation after remediation, require root-cause investigation before more fixes.
 
 ## Minimal Self-Check
 

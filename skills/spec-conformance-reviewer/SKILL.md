@@ -16,9 +16,9 @@ description: >-
   the verdict when source authority or mandatory implementation evidence is
   insufficient.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 625d098b55030dac5e2ac4bb655080006dac196d4346b9d70f3664df65c26917
+  skillforge-source-hash: 8efa7fe65fa2996924b1ee91428959e46539a0bc12661463ec9e533b9eaa0be8
 ---
 
 # spec-conformance-reviewer
@@ -224,6 +224,9 @@ Review a reproducible implementation and normative-source snapshot without remed
 
 ### Verdict ceiling
 The final verdict cannot exceed the weakest unresolved mandatory requirement basis or implementation evidence surface.
+
+### Repeated-failure escalation
+If a follow-up review after remediation repeats the same or a materially related blocking deviation, require root-cause investigation of assumptions, the full requirement-to-behavior path, adjacent contracts and surfaces, and remediation scope before another point fix.
 
 ## Required active references
 - [Methodology](references/methodology.md) — Read this for every review before selecting normative sources, extracting requirements, or judging implementation evidence.

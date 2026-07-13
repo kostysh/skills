@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.4
+  source-version: 0.1.5
   recommended-skill-md-max-bytes: 20000
   description: |-
     Review code against authoritative normative requirements from specs, contracts, ADRs, tickets,
@@ -157,6 +157,9 @@ sections:
     - id: policy-verdict-ceiling
       title: Verdict ceiling
       text: The final verdict cannot exceed the weakest unresolved mandatory requirement basis or implementation evidence surface.
+    - id: policy-repeated-failure-escalation
+      title: Repeated-failure escalation
+      text: If a follow-up review after remediation repeats the same or a materially related blocking deviation, require root-cause investigation of assumptions, the full requirement-to-behavior path, adjacent contracts and surfaces, and remediation scope before another point fix.
   portability:
     required: true
     rules:
