@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.4"
+  source-version: "0.1.5"
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, change, and diagnose Hono API services. Use when work requires
@@ -159,7 +159,10 @@ sections:
     - "Confirm the request requires a Hono-specific decision or change; otherwise route to the owning skill."
     - "Establish the authoritative behavior, existing app composition, installed Hono and runtime/tooling versions, endpoint class, security contract, and available test contours before proposing implementation."
     - "For a version-sensitive API or platform decision, read Framework Currency and check current official sources; treat the installed project version as a compatibility constraint rather than silently upgrading it."
-    - "Apply precedence in this order: authoritative requirements, compatible existing project conventions, then this skill's greenfield defaults. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable."
+    - "Apply precedence in this order: authoritative requirements, compatible existing project conventions, then verified Hono/runtime facts. This skill supplies no fallback product or project policy. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable."
+    - "Treat optional references as conditional integration guidance: they cannot establish a new architecture, security, data, error, logging, or operational policy without an accepted project contract or the owning skill."
+    - "When any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority."
+    - "Make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract."
     - "Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion."
   whenToUse:
     - "Designing, implementing, diagnosing, or changing Hono endpoints, routers, middleware, Context usage, or app composition."
@@ -185,7 +188,7 @@ sections:
       goal: "Preserve compatible project composition while making the smallest Hono-specific change that delivers the requested behavior."
       steps:
         - "Choose the route and middleware pipeline from the endpoint contract, preserving raw-body, auth-admission, streaming, and error-hook ordering where applicable."
-        - "Keep handlers thin, keep request validation distinct from runtime response guarantees, and preserve route type inference when Hono RPC or typed clients consume it."
+        - "Preserve the accepted handler/dependency boundary, keep request validation distinct from runtime response guarantees, and preserve route type inference when Hono RPC or typed clients consume it."
         - "Use runtime lifecycle APIs only with their documented durability and failure semantics."
       validation:
         - "The implemented route behavior, failure paths, and public contract match the authoritative requirement."
@@ -243,10 +246,13 @@ sections:
     - id: "gotcha-validation-db-leak"
       priority: "high"
       text: "Do not let predictable validation or service failures escape as raw internal errors. Map only safe, contract-approved details before the response leaves Hono."
+    - id: "gotcha-example-authority"
+      priority: "high"
+      text: "An illustrative snippet must classify every concrete choice as authoritative input, verified framework fact, or owner-supplied placeholder. The placeholder must encapsulate the entire unknown boundary; wrapping only a status, schema, or dependency while selecting a media type, body, request part, or handler flow remains unauthorized. Even when a composition seam is supplied, show only the source-supplied composition primitives; do not add illustrative route methods, mounts, exports, or handlers merely to demonstrate ordering. The snippet must not decide unknown success/failure wire behavior, schema/tool stack, layout, middleware, limits, timeouts, retry, config, bindings, dependencies, data, security, or observability policy."
   policies:
     - id: "policy-source-precedence"
       title: "Source and compatibility precedence"
-      text: "Authoritative requirements and compatible project conventions override greenfield defaults. When they conflict or latest guidance is incompatible with installed versions, stop, surface the gap, and do not invent a migration decision."
+      text: "Authoritative requirements and compatible project conventions precede verified framework facts. No greenfield label supplies missing authority. When inputs conflict or latest guidance is incompatible with installed versions, stop, surface the gap, and do not invent a migration or policy decision."
     - id: "policy-evidence-boundary"
       title: "Evidence boundary"
       text: "Match proof to the claim: unit tests cover pure logic, app.request covers Hono integration, a runtime harness covers platform behavior, and live evidence covers only the observed deployment conditions."

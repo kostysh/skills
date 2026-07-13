@@ -18,11 +18,15 @@ Use this reference before a version-sensitive Hono, companion-package, adapter, 
 - Hono app and error hooks: <https://hono.dev/docs/api/hono>
 - Hono Context and `executionCtx`: <https://hono.dev/docs/api/context>
 - Hono middleware semantics: <https://hono.dev/docs/guides/middleware>
+- Hono JWT and JWK middleware: <https://hono.dev/docs/middleware/builtin/jwt> and <https://hono.dev/docs/middleware/builtin/jwk>
+- Hono CSRF middleware: <https://hono.dev/docs/middleware/builtin/csrf>
 - Hono validation and RPC: <https://hono.dev/docs/guides/validation> and <https://hono.dev/docs/guides/rpc>
 - Hono testing: <https://hono.dev/docs/guides/testing>
 - Hono on Cloudflare Workers: <https://hono.dev/docs/getting-started/cloudflare-workers>
+- Cloudflare Workers lifecycle and cache APIs: <https://developers.cloudflare.com/workers/runtime-apis/context/> and <https://developers.cloudflare.com/workers/runtime-apis/cache/>
 - Cloudflare Workers Vitest integration: <https://developers.cloudflare.com/workers/testing/vitest-integration/>
 - Cloudflare migration from `unstable_dev`: <https://developers.cloudflare.com/workers/testing/vitest-integration/migration-guides/migrate-from-unstable-dev/>
-- Wrangler configuration and generated types: <https://developers.cloudflare.com/workers/wrangler/configuration/> and <https://developers.cloudflare.com/workers/languages/typescript/>
+- Wrangler configuration, environments, and generated types: <https://developers.cloudflare.com/workers/wrangler/configuration/>, <https://developers.cloudflare.com/workers/wrangler/environments/>, and <https://developers.cloudflare.com/workers/languages/typescript/>
+- Cloudflare Node.js compatibility: <https://developers.cloudflare.com/workers/runtime-apis/nodejs/>
 
 Use other official runtime documentation when the project targets Node.js, Bun, Deno, Fastly, or another Hono adapter. External source links are live version authority, not files required for portability.

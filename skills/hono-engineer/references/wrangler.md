@@ -1,12 +1,11 @@
 # Wrangler / Runtime Config (Cloudflare Workers)
 
-- Pin `compatibility_date` and review compatibility flags during upgrades.
-- Prefer `wrangler.jsonc` for non-secret config and keep per-environment sections explicit.
-- Run `wrangler types` after binding changes and commit the generated type surface if the project tracks it.
-- For Workers tests, preserve the project's current harness. Prefer the current Workers Vitest integration for new or migrated coverage; do not introduce or migrate from `unstable_dev` unless the task authorizes the tooling change.
-- Set CPU limits explicitly when available (e.g., `limits.cpu_ms`) and monitor cost/latency impact.
-- Keep per-environment config isolated (`env.stage`, `env.prod`).
-- Define bindings (KV/D1/R2/Queues/Rate Limiting) in config and mirror them in your env schema.
-- Keep secrets out of config files; use `wrangler secret put` for secret material.
-- Enable `nodejs_compat` only when dependencies require Node built-ins; do not turn it on by default without need.
-- Enable structured `observability` settings when the deployment model supports them.
+- Preserve the project's config format and `compatibility_date`; review compatibility flags when an accepted runtime change modifies them.
+- Run `wrangler types --env-interface <Name>` after binding changes when the project uses generated Hono bindings; commit the generated type surface only if the project tracks it.
+- For Workers tests, preserve the project's current harness. Introduce or migrate to the current Workers Vitest integration only when the task authorizes that tooling change.
+- Configure CPU limits only when the platform/operations owner supplies a budget and monitoring contract.
+- Bindings, variables, and secrets are non-inheritable across Wrangler environments; define each accepted value/binding in every environment that uses it.
+- Verify selected bindings against the project's Env surface without adding KV, D1, R2, Queues, Rate Limiting, or another product by default.
+- Preserve the project secret-management boundary; Wrangler provides secret commands, but this reference does not choose storage or rotation policy.
+- Enable `nodejs_compat` only when dependencies require Node built-ins and the compatibility date supports the needed APIs. Some modules are partial implementations or import-only stubs whose methods fail at runtime; verify the exact calls in a Workers runtime test.
+- Configure Wrangler observability only when the project observability owner selects its fields, sampling, destination, and evidence requirements.

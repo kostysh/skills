@@ -6,9 +6,9 @@ description: Build, change, and diagnose Hono API services. Use when work
   with the relevant TypeScript, runtime, testing, security, data, or
   architecture skill when those domains determine correctness.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f54c5fbef8b15f11f6ba80d6d1842101117fc16262c023939e4375e38ff10004
+  skillforge-source-hash: 7afd17594daaeaeb9ca1cecf1d4a85fd91d359d440a74bea2fe2b4c4b5f72111
 ---
 
 # hono-engineer
@@ -18,8 +18,11 @@ metadata:
 1. Confirm the request requires a Hono-specific decision or change; otherwise route to the owning skill.
 2. Establish the authoritative behavior, existing app composition, installed Hono and runtime/tooling versions, endpoint class, security contract, and available test contours before proposing implementation.
 3. For a version-sensitive API or platform decision, read Framework Currency and check current official sources; treat the installed project version as a compatibility constraint rather than silently upgrading it.
-4. Apply precedence in this order: authoritative requirements, compatible existing project conventions, then this skill's greenfield defaults. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable.
-5. Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion.
+4. Apply precedence in this order: authoritative requirements, compatible existing project conventions, then verified Hono/runtime facts. This skill supplies no fallback product or project policy. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable.
+5. Treat optional references as conditional integration guidance: they cannot establish a new architecture, security, data, error, logging, or operational policy without an accepted project contract or the owning skill.
+6. When any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority.
+7. Make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract.
+8. Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion.
 
 ## When to use this skill
 
@@ -57,21 +60,21 @@ Recommendations track the latest official stable Hono guidance rather than a pin
 
 ## Hono baseline decisions
 
-- Preserve the existing compatible app composition. For greenfield composition, prefer typed factories and `app.route()`; capture chained route return types when Hono RPC or typed test clients consume them.
-- Treat middleware order as behavior. Use one project-owned global chain and endpoint-specific additions; register `app.onError()` and `notFound()` as hooks, not middleware positions.
-- Keep handlers thin: read validated input, call service/domain behavior, and produce the response contract.
+- Preserve the existing compatible app composition. In greenfield work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them.
+- Treat middleware order as behavior. Preserve the compatible project-owned global and route-group composition; register `app.onError()` and `notFound()` as hooks, not middleware positions.
+- Keep route handlers focused on the accepted HTTP boundary when that fits the project architecture; do not introduce a new service/domain layering scheme during a narrow Hono change.
 - Keep request-scoped state in Hono Context or explicit parameters, never module-level mutable state.
-- Validate configuration at its boundary and use the project's typed Context bindings or variables. On Workers, prefer current `wrangler types` output over handwritten binding casts.
+- Validate configuration at its accepted boundary and preserve the project's typed Context bindings or variables. On Workers, use current `wrangler types` output only when the project owns generated bindings; do not impose that migration over a different accepted Env boundary.
 - Use Problem Details, structured redacted logs, and request correlation when the project contract requires them. Do not invent a new error or logging standard during a narrow route change.
 - Await work that affects the response. On Cloudflare Workers, use `c.executionCtx.waitUntil(promise)` only for work allowed to outlive the response; handle rejection observably. `waitUntil()` extends execution but does not provide durable delivery. Use a durable queue or equivalent when the accepted contract requires it.
 - Do not use `void` merely to silence a floating Promise. Detached work needs an explicit lifecycle owner, failure handling, and evidence appropriate to its delivery claim.
-- For protected SSE, streaming, subscription, or WebSocket-like endpoints, opening admission is insufficient when permissions can change. Require revalidation or an accepted invalidation mechanism, observable deny/close behavior, and abort-safe cleanup.
-- For secrets and signatures, use runtime-compatible verified cryptographic primitives. Do not use `Math.random()` or plain string equality for attacker-controlled secret comparisons.
+- For protected SSE, streaming, subscription, or WebSocket-like endpoints, opening admission is insufficient only when the accepted security contract makes later permission changes effective. Implement that contract's revalidation/invalidation, observable deny/close behavior, and abort-safe cleanup.
+- For secrets and signatures, implement only the accepted cryptographic contract with runtime-compatible verified primitives. `Math.random()` and plain string equality do not establish security for attacker-controlled secret material.
 
 ## Endpoint workflow
 
-1. Classify the endpoint: public, pending/onboarding, user, admin, service/operator, webhook, or long-lived protected connection.
-2. Preserve the route's current admission boundary and owner/tenant semantics. For auth admission, bound body reads before parsing, keep pre-auth and post-auth quotas isolated, and state replay behavior.
+1. Classify the endpoint using the project-owned admission model; public, pending/onboarding, user, admin, service/operator, webhook, and long-lived protected connection are examples, not roles this skill creates.
+2. Preserve the route's current admission boundary and owner/tenant semantics. When the accepted auth contract defines a body bound, apply that owner-supplied limit before parsing; preserve accepted quota isolation and replay behavior.
 3. Select the endpoint middleware pipeline from the authoritative contract; for signed webhooks, verify the exact raw bytes before parsing when the provider requires it.
 4. Define request validation, success responses, expected failures, and client-visible contract. Keep forbidden or computed fields outside writable schemas.
 5. Choose contract publication deliberately: use OpenAPI when an external or project contract requires it; use Hono RPC/type exports when that is the project boundary; an internal route may document why neither public surface applies.
@@ -82,15 +85,15 @@ Recommendations track the latest official stable Hono guidance rather than a pin
 ## Auth, CSRF, and client recovery boundaries
 
 - Keep authentication, authorization, and route admission distinct. Route naming or hidden UI is not authorization evidence.
-- Hono's built-in `csrf()` checks Origin and Fetch Metadata for its documented unsafe, form-capable request set. It is not a synchronizer-token or double-submit implementation and does not by itself prove token-protected JSON mutation behavior.
-- If a cookie-session SPA needs CSRF token reissue after losing memory state, keep that project contract explicit: valid session cookie, allowed Origin/CORS boundary, no old-token requirement, atomic session-bound rotation, and a response containing only the new CSRF token.
-- Pending/onboarding sessions use a narrower guard and cannot pass normal active-account protected routes.
+- Hono's built-in `csrf()` allows a request when either its Origin check or Fetch Metadata check passes for the documented unsafe, form-capable request set. It is not a synchronizer-token or double-submit implementation and does not by itself prove token-protected JSON mutation behavior.
+- If the accepted cookie-session contract includes CSRF token reissue after losing memory state, preserve that project-owned recovery contract; do not introduce one as a Hono default.
+- If the accepted authentication model includes pending/onboarding sessions, preserve their narrower guard and prevent them from passing normal active-account protected routes.
 
 ## Verification contours
 
 - Pure unit tests cover helpers and domain logic, not Hono or platform integration.
 - `app.request()` or `testClient()` covers the Hono request/response composition actually exercised. Preserve the project's runner rather than imposing `node:test`, Vitest, or another runner.
-- Runtime integration covers adapter APIs, bindings, ExecutionContext, streaming, caching, and platform behavior. For Cloudflare Workers, prefer the current Workers Vitest integration when the project uses it; migrate from `unstable_dev` only when the task authorizes that change.
+- Runtime integration covers adapter APIs, bindings, ExecutionContext, streaming, caching, and platform behavior. Preserve the project's Workers harness; introduce or migrate to the current Workers Vitest integration only when the task authorizes that tooling decision.
 - Live or staging evidence proves only the observed deployment, configuration, and scenario. Require it when the claim depends on provider delivery, edge configuration, or operational observability.
 
 ## Completion report
@@ -123,7 +126,7 @@ Validation:
 Preserve compatible project composition while making the smallest Hono-specific change that delivers the requested behavior.
 
 1. Choose the route and middleware pipeline from the endpoint contract, preserving raw-body, auth-admission, streaming, and error-hook ordering where applicable.
-2. Keep handlers thin, keep request validation distinct from runtime response guarantees, and preserve route type inference when Hono RPC or typed clients consume it.
+2. Preserve the accepted handler/dependency boundary, keep request validation distinct from runtime response guarantees, and preserve route type inference when Hono RPC or typed clients consume it.
 3. Use runtime lifecycle APIs only with their documented durability and failure semantics.
 
 Validation:
@@ -160,11 +163,12 @@ Validation:
 - **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested.
 - **high** — Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions.
 - **high** — Do not let predictable validation or service failures escape as raw internal errors. Map only safe, contract-approved details before the response leaves Hono.
+- **high** — An illustrative snippet must classify every concrete choice as authoritative input, verified framework fact, or owner-supplied placeholder. The placeholder must encapsulate the entire unknown boundary; wrapping only a status, schema, or dependency while selecting a media type, body, request part, or handler flow remains unauthorized. Even when a composition seam is supplied, show only the source-supplied composition primitives; do not add illustrative route methods, mounts, exports, or handlers merely to demonstrate ordering. The snippet must not decide unknown success/failure wire behavior, schema/tool stack, layout, middleware, limits, timeouts, retry, config, bindings, dependencies, data, security, or observability policy.
 
 ## Policies
 
 ### Source and compatibility precedence
-Authoritative requirements and compatible project conventions override greenfield defaults. When they conflict or latest guidance is incompatible with installed versions, stop, surface the gap, and do not invent a migration decision.
+Authoritative requirements and compatible project conventions precede verified framework facts. No greenfield label supplies missing authority. When inputs conflict or latest guidance is incompatible with installed versions, stop, surface the gap, and do not invent a migration or policy decision.
 
 ### Evidence boundary
 Match proof to the claim: unit tests cover pure logic, app.request covers Hono integration, a runtime harness covers platform behavior, and live evidence covers only the observed deployment conditions.

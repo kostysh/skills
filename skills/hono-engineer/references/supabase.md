@@ -1,8 +1,8 @@
 # Supabase Integration
 
-- Prefer the official SDK for full features and RLS compatibility.
-- **Never** expose `service_role` to clients; it bypasses RLS.
-- User-facing flows: use anon key + user JWT so RLS stays effective.
-- Admin/service flows: restrict access, audit every call, consider separate worker.
-- Ordinary user reads/writes should not use service-role clients unless a documented internal/admin/secret boundary requires it; prefer user JWT/RLS or a security-checked RPC.
-- For auth/RBAC-sensitive routes, test direct Supabase behavior with publishable key + user JWT when RLS/RPC is the production permission boundary.
+Use `supabase-engineer` to establish the accepted SDK/direct-HTTP path, credential boundary, RLS/RPC behavior, and direct data-path evidence. This reference owns only the Hono integration:
+
+- pass the accepted user/service identity to the selected Supabase boundary without inventing a stronger credential;
+- keep secrets and service credentials inside the project-approved server/runtime boundary;
+- map Supabase failures to the accepted Hono error contract without leaking internal details;
+- when RLS/RPC is the production permission boundary, require the data owner’s direct-boundary evidence in addition to Hono `app.request()` coverage.

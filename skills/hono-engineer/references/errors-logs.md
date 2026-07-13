@@ -1,46 +1,25 @@
 # Errors & Logs
 
-## Problem Details response
-- Always return `application/problem+json`.
-- Required fields: `type`, `title`, `status`, `detail`, `instance`, `requestId`, `code`.
-- `errors[]` only for validation/conflict details.
-- Never include raw inputs, secrets, or stack traces.
-- Centralize the Problem Details shape and mapping in one module.
+## Preserve the project error contract
+- Keep the existing status, media type, body shape, headers, and redaction rules unless the request explicitly changes the wire contract.
+- Use Problem Details only when it is the accepted contract. Do not add non-standard required fields such as `requestId` or `code` unless the project owns them.
+- Do not expose raw inputs, secrets, stack traces, or unapproved internal details.
 
-## Error mapping (baseline)
-- Config/env error → 500 `INVALID_CONFIG` (generic detail).
-- Validation error → 400 `VALIDATION_ERROR` with `errors[]` (redacted messages).
-- HTTPException 4xx → `VALIDATION_ERROR` (or specific code) with redacted detail.
-- Auth errors (401/403) → avoid detailed client messages; keep details in logs.
-- Upstream timeout → 504 (or equivalent) with neutral detail.
-- Upstream 5xx → 502 (bad gateway) with neutral detail.
-- Unknown → 500 `INTERNAL_ERROR`.
+## Error mapping
+- Reuse the project-owned mapping for validation, auth, conflict, upstream, configuration, and unknown failures.
+- Do not map every `HTTPException` 4xx to a validation code; preserve the specific accepted error semantics.
+- When no authoritative mapping exists, stop or return bounded guidance instead of inventing public statuses/codes.
 
 ## Controlled errors
-- Use framework exceptions (e.g., HTTPException) for expected errors so they map cleanly to Problem Details.
+- Use `HTTPException` only when it fits the existing Hono error boundary; it does not imply Problem Details or any project-specific envelope.
 - `HTTPException.getResponse()` does not include headers already set on the Context. If you rely on context headers, merge them explicitly.
 
-Minimal example (preserve context headers):
-```ts
-app.onError((err, c) => {
-  if (err instanceof HTTPException) {
-    const res = err.getResponse()
-    const headers = new Headers(res.headers)
-    c.res.headers.forEach((value, key) => headers.set(key, value))
-    return new Response(res.body, { status: res.status, headers })
-  }
-  return c.text('Unexpected error', 500)
-})
-```
+When preserving Context headers, copy them into the `HTTPException` response without changing the project-owned unknown-error status, media type, body, or redaction behavior. Use a named project failure mapper when the non-`HTTPException` branch is not already defined.
 
 ## Logging
-- Structured JSON logs only.
-- Required fields: `ts`, `level`, `msg`, `requestId`, `method`, `path`, `route`, `status`, `durationMs`.
-- Event logs (optional): `auth.failed`, `ratelimit.exceeded`, `validation.failed`, `upstream.failed`, `webhook.rejected`.
-- Optional dimensions: `client` (ip/ua/colo), `principal` (type/id/tenant), `auth` (scheme/scopes), `cache` (hit/layer).
-- Built‑in `logger` middleware is fine for development; use custom structured logs for production.
+- Preserve the project-owned log format, fields, correlation, sampling, retention, and redaction rules.
+- Hono's built-in `logger` is available for development; production logging format is an observability decision, not a Hono default.
 
 ## Redaction rules
-- Always run payloads through `redactValue()` before logging.
-- Never log bodies, tokens, cookies, API keys.
-- Prefer sizes, hashes, or ids over raw values.
+- Apply the project redaction boundary before logging. Never invent a `redactValue()` helper or claim coverage without inspecting the implementation.
+- Do not log tokens, cookies, API keys, or request/response bodies unless an accepted, field-specific policy explicitly permits it.

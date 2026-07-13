@@ -1,47 +1,34 @@
 # Performance & Security Notes
 
 ## Request limits
-- Enforce body size and request timeout via config/env.
-- For upstream calls, implement per-request timeouts (AbortController).
-- Bun runtime note: Bun has its own `maxRequestBodySize`; set it if you rely on bodyLimit.
-- For high-risk auth-admission routes, apply bounded body reads before untrusted `json()`, form, multipart, or raw body parsing.
+- Apply body-size and timeout limits from the accepted route/runtime contract.
+- For upstream calls, use the project's accepted timeout/cancellation behavior.
+- Bun runtime fact: `maxRequestBodySize` is separate from Hono `bodyLimit`; if the accepted route contract depends on both, configure and test both from owner-supplied limits.
+- When an accepted auth-admission contract requires a bounded body, enforce its owner-supplied limit before untrusted `json()`, form, multipart, or raw-body parsing.
 - Keep route-specific body-limit increases local to the route group that needs them; do not widen a protected admission boundary as a side effect of accepting a larger body.
 
-Minimal example (Bun):
-```ts
-Bun.serve({
-  fetch: app.fetch,
-  maxRequestBodySize: 1024 * 1024 * 10,
-})
-```
-
 ## Upstream resilience
-- Retry only idempotent requests; use backoff + jitter.
-- Add circuit-breaker behavior for flaky dependencies.
-- Limit concurrency per request to avoid fan-out overload.
+- Preserve the accepted retry, backoff, circuit-breaker, and concurrency policy; Hono does not require these mechanisms.
+- Never add retries without checking idempotency and replay behavior.
 
 ## Compression
-- Enable response compression for JSON or large payloads when it helps.
-- On Cloudflare Workers and Deno Deploy, the compress middleware is redundant and adds overhead; prefer platform compression.
+- Enable response compression only when measurements and the runtime contract justify it.
+- Current Hono guidance says its compress middleware is unnecessary on Cloudflare Workers and Deno Deploy because those platforms handle compression; verify current adapter behavior before changing middleware.
 
 ## Hono presets
-- If bundle size is critical, consider minimal presets; otherwise use standard Hono and measure.
+- Change the project's router/preset only from a measured bundle, startup, or route-pattern requirement; this reference does not select one.
 
 ## Rate limiting
-- Use coarse pre-auth limit (IP/ASN) and precise post-auth limit (principal/client).
-- Return 429 with Problem Details, include `requestId`.
+- Integrate the project-owned pre-auth/post-auth quota model when one exists.
+- Preserve the accepted rejection status/body/header contract; do not infer `429`, Problem Details, or `requestId` fields.
 
 ## Caching
-- Cache only for non-personalized GETs.
-- Prefer ETag + conditional requests for stable reads.
-- Apply cache/ETag/compress at route-group level, not globally.
+- Apply cache/ETag/compression only where the accepted freshness, privacy, and middleware-order contract permits them.
 
 ## Upstream calls
-- Centralize fetch logic in one wrapper (timeouts, retries for idempotent requests, metrics).
-- Propagate `requestId` to upstream headers.
+- Reuse a project-owned fetch boundary when it exists. Do not introduce a wrapper or propagate correlation headers without the accepted architecture/trust policy.
 
-## Security defaults
-- `secureHeaders` always on.
-- CORS allow-list only; no wildcard in prod unless explicitly approved.
-- If adding auth, separate authentication and authorization.
-- Do not expose detailed auth failure reasons to clients.
+## Security integration
+- Configure `secureHeaders()` and CORS from the accepted browser/API security contract; Hono exposes configurable middleware and does not make either policy universal.
+- Keep authentication and authorization distinct, and preserve the accepted client-visible auth error boundary.
+- Route new header, origin, credential, and exploitability decisions to the security owner.
