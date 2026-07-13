@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.4.0
+  source-version: 0.4.1
   recommended-skill-md-max-bytes: 20000
   description: |-
     Read-only code review for pull requests, diffs, and local branch changes. Use when asked to
@@ -144,7 +144,7 @@ sections:
   policies:
     - id: policy-read-only-review
       title: Read-only review boundary
-      text: Review is read-only unless the user separately authorizes remediation. For a combined review-and-fix request, finish and record the review first, perform remediation as a separate phase, and invalidate the earlier verdict after the first mutation.
+      text: Review is read-only absent separate remediation authority. For review-and-fix, record review first, remediate separately, and invalidate the verdict after mutation. A related blocker recurring after remediation requires root-cause review of assumptions, failure path, adjacent surfaces, and scope before another fix.
     - id: policy-review-scope-evidence
       title: Review scope evidence
       text: Every review must state the target/base/snapshot, changed-scope accounting, checks and behavioral evidence considered, untested or unassessed user/API/data paths, and exactly one recommendation status. The absence of findings is not evidence for paths outside that boundary.

@@ -14,5 +14,6 @@
 - available specialized authority loaded when needed, or the domain marked unassessed
 - findings ordered by severity
 - speculative comments removed or downgraded
+- repeated related blocker after remediation routes to root-cause investigation before more fixes
 - ending snapshot matches the starting identity
 - evidence footer names scope, checks, limits, and exactly one recommendation status

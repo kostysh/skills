@@ -30,3 +30,4 @@
 | [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS |
+| [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) | Direct operator request | Independent PASS after root-cause remediation |

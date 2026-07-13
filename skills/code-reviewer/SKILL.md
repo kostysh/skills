@@ -13,9 +13,9 @@ description: >-
   severity triage, evidence, and output conventions; pairs with available domain
   skills.
 metadata:
-  source-version: 0.4.0
+  source-version: 0.4.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 82f64eda5c0ce2acba41677034d9c7e44d1fd4dba65ed977c75f50c133e7be84
+  skillforge-source-hash: 307f89f9cd95d722d8ac4a8d6733dea04f8550328d2d66331214c829cabefd3e
 ---
 
 # code-reviewer
@@ -233,7 +233,7 @@ Validation:
 ## Policies
 
 ### Read-only review boundary
-Review is read-only unless the user separately authorizes remediation. For a combined review-and-fix request, finish and record the review first, perform remediation as a separate phase, and invalidate the earlier verdict after the first mutation.
+Review is read-only absent separate remediation authority. For review-and-fix, record review first, remediate separately, and invalidate the verdict after mutation. A related blocker recurring after remediation requires root-cause review of assumptions, failure path, adjacent surfaces, and scope before another fix.
 
 ### Review scope evidence
 Every review must state the target/base/snapshot, changed-scope accounting, checks and behavioral evidence considered, untested or unassessed user/API/data paths, and exactly one recommendation status. The absence of findings is not evidence for paths outside that boundary.

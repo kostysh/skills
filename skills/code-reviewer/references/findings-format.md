@@ -18,7 +18,7 @@ Use findings-first output. Keep it concise and behavior-based.
 [blocking] `src/file.ts:42` Short title
 Why: concrete runtime impact
 Evidence: what in the changed code makes this real
-Fix: direction, not a giant rewrite
+Next: bounded correction or investigation direction
 ```
 
 ## Review Response Shape
@@ -47,12 +47,14 @@ Recommendation: approve | request changes | limited | blocked
 - `blocked` means a reproducible review basis or indispensable authority could not be established.
 - Use exactly one recommendation status. Do not use `comment only` as an ambiguous substitute; represent non-blocking observations with `approve` plus findings or limits.
 
+If a follow-up review repeats the same or a materially related blocker after remediation, set `Next` to root-cause investigation of assumptions, the full failure path, adjacent surfaces, and remediation scope before more fixes.
+
 ## Good Finding Traits
 
 - names the affected behavior
 - explains impact in production terms
 - proves the issue from the changed scope
-- suggests the next fix direction
+- gives the next correction or investigation direction
 
 ## Avoid
 

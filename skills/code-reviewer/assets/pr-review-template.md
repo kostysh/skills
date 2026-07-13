@@ -5,7 +5,7 @@
 [blocking] `path/to/file.ts:42` Short title
 Why: runtime impact
 Evidence: why this is real
-Fix: safest next move
+Next: safest correction or investigation direction
 
 <!-- If none are confirmed, write: No findings. -->
 
