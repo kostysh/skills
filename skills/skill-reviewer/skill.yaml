@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-reviewer
-  source-version: 0.1.0
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 22000
   description: >-
     Independently review new or changed AI-agent skills for real capability,
@@ -52,6 +52,14 @@ supporting:
     source: docs/logs/implementation-log-20260710-1.md
     target: docs/logs/implementation-log-20260710-1.md
     description: Non-normative implementation log for initial skill-reviewer creation.
+  - id: supporting-implementation-log-20260713-1
+    source: docs/logs/implementation-log-20260713-1.md
+    target: docs/logs/implementation-log-20260713-1.md
+    description: Non-normative implementation log for prompt-efficiency, autonomy, and evidence-contract hardening.
+  - id: supporting-implementation-log-20260713-2
+    source: docs/logs/implementation-log-20260713-2.md
+    target: docs/logs/implementation-log-20260713-2.md
+    description: Non-normative implementation log for repeated-failure escalation.
 
 surfaces:
   active:
@@ -65,12 +73,10 @@ surfaces:
 
 sections:
   startHere:
-    - Confirm the requested outcome is a review verdict, not authoring, remediation, compilation, or implementation.
-    - Select baseline for a whole current skill, change for a stable scoped diff plus affected unchanged guidance, or re-audit for a remediated snapshot and prior findings.
-    - Establish reviewer independence, a stable snapshot identity, review scope, claimed capability, actor or consumer, and source precedence before judging quality.
-    - Read the required methodology reference; read the forward-testing reference for material behavior changes or before issuing a formal PASS that depends on behavioral confidence.
-    - Separate the skill's claimed agent behavior from its substrate, including files, metadata, templates, compiler output, runtime helpers, tests, mocks, and supporting logs.
-    - Return findings and a verdict without editing the reviewed skill; route remediation to the owning authoring or implementation skill.
+    - Confirm the requested outcome is a review verdict, then read the required methodology and select baseline, change, or re-audit mode for a stable scope.
+    - Frame the claimed capability, actor, consumer, anti-claims, and source precedence before judging artifacts or evidence.
+    - Read the forward-testing reference for material behavior changes or any formal PASS that depends on realistic behavioral confidence.
+    - Return an evidence-backed verdict and route remediation to the owning authoring or implementation skill.
   whenToUse:
     - Reviewing a new skill before it is accepted or published.
     - Auditing an existing skill for purpose, triggers, responsibility boundaries, inputs, outputs, interop, guidance quality, portability, validation, or false capability claims.
@@ -85,68 +91,34 @@ sections:
   workflow:
     - id: stage-establish-review-basis
       title: Establish the review basis
-      goal: Make the scope, authority, snapshot, and assurance level stable enough for a reproducible review.
+      goal: Make the review reproducible and assessable.
       steps:
-        - Identify the target skill, review mode, included files or diff, excluded surfaces, and source-of-truth precedence.
-        - Record snapshot identity using an immutable revision, aggregate content hash, or exact diff plus base revision.
-        - Determine whether the reviewer is independent of authorship and remediation for this snapshot.
-        - Identify the claimed skill capability, actor or consumer, allowed side effects, and completion claim from the highest-authority active source.
-        - Return BLOCKED when the target, scope, source, or snapshot is missing or unstable enough to invalidate conclusions.
+        - Record mode, scope and exclusions, source precedence, snapshot identity, assurance, claimed capability, actor, consumer, and target-side effects.
+        - Apply the reviewer action boundary before running checks.
+        - Return BLOCKED only when a missing or moving basis or essential unavailable evidence prevents a defensible verdict; otherwise report the evidence limit.
       validation:
         - Another reviewer can reconstruct the same review surface from the recorded identity and scope.
-        - Review independence is explicit; self-review cannot produce PASS.
-        - Missing or conflicting authority is reported instead of being silently invented.
-    - id: stage-map-capability-and-surfaces
-      title: Map capability and instruction surfaces
-      goal: Distinguish the agent behavior being claimed from the artifacts that enable or describe it.
+        - Assurance and reviewer actions are explicit.
+    - id: stage-audit-capability-and-evidence
+      title: Audit capability and evidence
+      goal: Determine whether the relevant instruction and evidence surfaces support the claimed behavior rather than substrate-only confidence.
       steps:
-        - State the actor, triggering request, expected decisions or actions, observable output, downstream consumer, and important anti-claims.
-        - Inventory source-of-truth, generated, active normative, optional active, supporting, asset, runtime, test, and UI metadata surfaces that are in scope.
-        - Trace every mandatory rule to a reachable active surface and every generated or runtime claim to its owner and verification path.
-        - Classify files, commands, templates, tests, mocks, and logs as capability, enabling substrate, or evidence relative to the named claim boundary.
+        - Use the methodology to inspect every behavior-relevant surface and trace activation, authority, inputs, decisions, outputs, interop, fallback, validation, and stop rules.
+        - Classify artifacts as capability, substrate, or evidence relative to the claim, and distinguish inspected facts from reviewer inference and unresolved source conflict.
+        - Run proportionate structural and behavioral checks; use blind forward-tests when the forward-testing trigger applies.
       validation:
-        - Artifact existence is not treated as proof that the skill makes correct decisions on realistic inputs.
-        - Supporting or historical material does not silently override active guidance.
-        - The anti-claims prevent a documentation-only or structurally valid package from implying runtime or domain capability it does not have.
-    - id: stage-audit-contracts-and-behavior
-      title: Audit contracts and behavior
-      goal: Find instruction defects that can cause wrong activation, decisions, handoffs, actions, or closure claims.
-      steps:
-        - Review purpose and trigger precision, when-not-to-use boundaries, input authority and readiness, output and verdict contracts, stop rules, fallback behavior, and side-effect limits.
-        - Review responsibility and interop ownership, including whether every requested upstream input and downstream artifact is producible by its named owner.
-        - Check source and generated parity, active and supporting separation, docs/runtime/test parity, reference reachability, progressive disclosure, precedence, portability, and UI metadata alignment.
-        - Search for contradictions, duplicated rules, vague modality, hidden mandatory guidance, invented domain facts, and acceptance that can pass with substrate alone.
-        - Use the relevant domain or concept reviewer for specialized correctness without transferring this skill's ownership of the skill-package verdict.
-      validation:
-        - Each material finding cites the reviewed artifact and explains the observable skill failure or false-confidence path.
-        - The review distinguishes structural validity, instruction quality, domain correctness, and behavioral evidence.
-        - Proposed corrections are the smallest changes that close the identified failure path and do not silently expand scope.
-    - id: stage-test-evidence
-      title: Test evidence integrity
-      goal: Calibrate behavioral confidence without turning test scaffolding into proof of general capability.
-      steps:
-        - Run available structural, generated-drift, runtime, test, portability, and rendered-readback checks appropriate to the package.
-        - For material behavior changes or a formal capability claim, design risk-based blind forward-tests using the forward-testing reference.
-        - Include should-trigger, should-not-trigger, missing or conflicting input, substrate-only or adversarial, interop-boundary, and positive success cases when applicable.
-        - Record what each check proves and does not prove; mocks and fixtures support but do not close real-boundary claims by themselves.
-        - If forward-testing is skipped, state the narrow reason and why the change cannot affect agent decisions, actions, handoff, validation, or reporting.
-      validation:
-        - Evidence covers the claim at the boundary where PASS is requested.
-        - Blind evaluators receive raw artifacts and tasks without the expected diagnosis or fix.
-        - A compiler-valid or test-green package can still fail when realistic behavior remains misleading.
+        - Each material finding cites direct evidence, labels inference or conflict, and explains the observable failure or false-confidence path.
+        - Structural validity, instruction quality, domain correctness, and behavioral evidence remain separate claims.
     - id: stage-issue-verdict
       title: Issue the skill-review verdict
       goal: Produce a traceable decision that downstream maintainers cannot mistake for broader proof.
       steps:
-        - Assign P1, P2, or P3 to each finding using the methodology reference and consolidate duplicates by root cause.
-        - Map each accepted prior finding to current change, evidence, and status during re-audit.
-        - Choose PASS only for an independent stable-snapshot review with no unresolved P1 or P2 and sufficient behavioral evidence for material claims.
-        - Choose FAIL when P1 or P2 findings remain, BLOCKED when the review basis or required evidence is unavailable, and PROVISIONAL for completed self-review that cannot claim independence.
-        - Name the next owner and smallest required correction or evidence; do not perform remediation inside the independent review.
+        - Consolidate findings by root cause, assign severity, and map prior findings to current evidence when re-auditing; if the same or a related blocker survives remediation, require root-cause investigation before another point fix.
+        - Choose the verdict from the methodology contract; self-review cannot PASS, and missing optional evidence blocks only when the requested claim depends on it.
+        - Report the action boundary, findings and evidence bases, evidence limits, verdict, and next owner without performing remediation.
       validation:
         - Verdict, findings, evidence limits, anti-claims, and next owner are mutually consistent.
         - Any change to the reviewed surface invalidates the verdict until the changed snapshot is re-reviewed.
-        - P3-only observations do not block PASS and are not inflated into capability failures.
   interop:
     - id: interop-skill-creator
       domain: skill authoring, structure, concise guidance, and UI metadata
@@ -177,18 +149,9 @@ sections:
     - id: gotcha-compiler-is-not-capability-proof
       priority: high
       text: Compiler, schema, link, and portability success prove package invariants, not that the skill makes correct decisions on realistic tasks.
-    - id: gotcha-no-self-pass
-      priority: high
-      text: Do not issue PASS for a snapshot you authored or remediated; return PROVISIONAL until an independent reviewer examines the stable snapshot.
-    - id: gotcha-moving-snapshot
-      priority: high
-      text: A verdict belongs to the identified snapshot and scope; any material change makes the prior PASS stale.
     - id: gotcha-no-leaked-forward-test
       priority: high
       text: Do not call a forward-test blind when the evaluator received the suspected defect, expected answer, intended fix, or prior conclusions.
-    - id: gotcha-no-reviewer-remediation
-      priority: high
-      text: Do not edit the target during its independent review; findings must be handed to a separate authoring or implementation pass.
     - id: gotcha-rendered-surface
       priority: medium
       text: Inspect rendered or packaged readback when syntax, links, generated output, or markup can disappear despite structural validation.
@@ -196,21 +159,15 @@ sections:
     - id: policy-capability-first
       title: Capability-first review
       text: Judge the skill by the decisions, actions, artifacts, and handoffs it reliably produces for its declared actor or consumer, not by package completeness or instruction volume.
-    - id: policy-stable-snapshot
-      title: Stable snapshot
-      text: Every verdict is scoped to a reproducible snapshot; a changed review surface requires a new verdict or a clearly bounded delta re-audit.
-    - id: policy-independent-pass
-      title: Independent PASS
-      text: PASS requires a reviewer that did not author or remediate the reviewed snapshot, no unresolved P1 or P2 findings, and evidence proportionate to the behavioral claim.
-    - id: policy-evidence-calibration
-      title: Evidence calibration
-      text: State what each structural check, test, mock, example, forward-test, and boundary observation proves and what remains unverified.
-    - id: policy-minimal-remediation
-      title: Minimal remediation guidance
-      text: Findings should name the smallest correction that closes the observed failure path without redesigning the target skill or taking over another skill's authority.
+    - id: policy-reviewer-action-boundary
+      title: Reviewer action boundary
+      text: Read and inspect in-scope local artifacts by default. Do not mutate the reviewed snapshot; use a disposable copy for checks that may write, and require separate authority for external, destructive, costly, or scope-expanding actions.
+    - id: policy-grounded-findings
+      title: Grounded findings
+      text: Attach each material claim to inspected evidence, label reviewer inference and source conflict, and report missing evidence without turning absence in the reviewed scope into a factual no.
     - id: policy-output-contract
       title: Review output contract
-      text: Report mode, assurance, snapshot, scope, capability and anti-claims, surface inventory, findings with evidence and impact, structural and rendered/package readback, runtime/test and forward-test results, remediation status when applicable, verdict, and next owner.
+      text: Report mode, assurance, snapshot, scope, capability and anti-claims, surface inventory, reviewer actions, findings with evidence basis and impact, structural and rendered/package readback, runtime/test and forward-test results, remediation status when applicable, verdict, and next owner.
   portability:
     required: true
     rules:

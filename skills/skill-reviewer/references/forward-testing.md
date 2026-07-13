@@ -54,6 +54,8 @@ Before running the case, define an evaluator-only rubric from authoritative sour
 
 Assess the emitted answer or artifact, not only whether the skill was mentioned. A useful forward-test should fail when the skill omits a blocking distinction, makes an invented decision, accepts substrate-only evidence, violates interop, or reports a stronger status than the sources support.
 
+For prompt simplification or prompt-stack migration, record the current snapshot as the baseline before editing. Change one coherent instruction group at a time, then rerun the same representative cases. Compare verdict correctness, material finding coverage, false `PASS` or `BLOCKED`, invented requirements, evidence completeness, and, when available, tokens, latency, and cost. Lower resource use is an improvement only when the behavioral bar still passes.
+
 ## Reporting
 
 For each case record:
@@ -65,6 +67,9 @@ Prompt/artifacts: <raw inputs or durable location>
 Observed output: <decision/artifact summary>
 Rubric result: PASS | FAIL | INCONCLUSIVE
 Evidence limit: <what this case does not prove>
+Comparison: <baseline vs candidate behavior and available resource measures>
 ```
+
+Reuse a coordinator-supplied snapshot identity when it is authoritative. Otherwise record the exact hashing command or algorithm, relative-path convention, and file count so another reviewer can reproduce the identity without guessing path prefixes.
 
 Forward-tests are samples, not universal proof. Combine them with instruction inspection, structural checks, domain review, and runtime or boundary evidence proportionate to the claim.

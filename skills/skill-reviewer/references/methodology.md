@@ -23,12 +23,21 @@ Before classification, obtain or derive:
 1. target skill name and folder or packaged artifact;
 2. mode, included scope, explicit exclusions, and source precedence;
 3. stable snapshot identity: immutable revision, aggregate content hash, or exact diff plus base revision;
-4. claimed capability, actor or consumer, trigger, expected output or action, allowed side effects, and downstream consumer;
+4. claimed capability, actor or consumer, trigger, expected output or action, target-side effects, and downstream consumer;
 5. source-of-truth and active instruction surfaces;
 6. generated, runtime, test, asset, UI, and supporting surfaces relevant to the claim;
-7. previous findings and remediation evidence for `re-audit`.
+7. previous findings and remediation evidence for `re-audit`;
+8. reviewer action boundary, including which checks are read-only, may write locally, or cross an external boundary.
 
 Apply explicit user and repository precedence before inferring from the skill. A generated file cannot override its declared source of truth. Supporting history may explain intent but cannot silently become mandatory guidance. Return `BLOCKED` when a missing or moving target, unresolved equal-authority conflict, unavailable mandatory source, or unbounded scope prevents reproducible conclusions.
+
+## Reviewer autonomy and check side effects
+
+Treat a review request as authority to inspect and report, not to remediate. By default, read in-scope local files, inspect relevant history and logs, compute snapshot identity, and run checks known to be read-only.
+
+Before running a command, determine whether it can regenerate files, update caches or snapshots, install dependencies, stage or commit changes, write externally, incur cost, or otherwise alter the review basis. Run a potentially writing check in a disposable copy when that preserves the evidence boundary. Otherwise, do not run it without separate authority; report the missing check and what it limits. Never mutate the reviewed snapshot during an independent review.
+
+External writes, destructive actions, purchases or material cost, agent delegation, and material scope expansion require authority from the applicable user or environment policy. Missing optional validation does not automatically make the review `BLOCKED`; block only when the requested verdict depends on evidence that cannot be obtained safely.
 
 ## Capability and anti-claim frame
 
@@ -99,6 +108,7 @@ For a change review, inspect affected unchanged guidance whenever the diff chang
 
 - Are outcome, constraints, allowed side effects, validation, fallback, and reporting explicit?
 - Are normative rules atomic, deterministic, and free of vague precedence?
+- Is each normative rule canonical in one active location instead of being restated across the root and required references?
 - Do examples illustrate sourced rules instead of inventing product, architecture, domain, or error contracts?
 - Is the root concise while required detail remains reachable?
 
@@ -107,6 +117,8 @@ For a change review, inspect affected unchanged guidance whenever the diff chang
 - Find the least-real implementation or response that can pass each success criterion.
 - Reject acceptance that can pass through file existence, metadata, generated prose, route/schema presence, mocks, stubs, self-authored logs, or happy-path examples alone.
 - Match proof to claim boundary: structural checks prove structure; unit tests prove exercised units; contract tests prove the tested contract; real-boundary evidence proves only the observed boundary and conditions.
+- Attach claims to inspected artifacts, distinguish direct observations from reviewer inference, and state unresolved source conflicts.
+- Treat absence as "not found in the reviewed scope," not as proof that an artifact, behavior, or capability does not exist elsewhere.
 
 ## Finding model
 
@@ -115,9 +127,11 @@ Consolidate symptoms with one root cause. Every material finding must include:
 ```text
 <severity> <short title>
 Evidence: <artifact and precise location or observed behavior>
+Basis: <direct | inferred | conflicting, with uncertainty or source precedence when relevant>
 Failure path: <request/condition -> wrong decision/output/action/claim>
+P1 screen: <credible P1 outcome, or none with evidence showing why no P1 outcome is credible>
 Capability impact: <what the actor or downstream consumer cannot trust>
-Smallest correction: <minimal behavioral or instruction change>
+Remediation direction: <bounded correction, or root-cause investigation when recurrence shows the problem model may be incomplete>
 Verification: <evidence that would close the finding>
 ```
 
@@ -128,6 +142,12 @@ Severity rules:
 | `P1` | Can create false capability or closure, dangerous action, silent authority invention, fundamental contradiction, or systematically wrong routing. | Blocks `PASS`. |
 | `P2` | Materially weakens interop, parity, portability, evidence, reproducibility, progressive disclosure, or important edge-case behavior. | Blocks `PASS`. |
 | `P3` | Bounded clarity or polish improvement with no credible path to a wrong material decision or claim. | Does not block `PASS`. |
+
+Classify severity from the finding's own credible failure path, not from correction size or whether the final verdict is already blocked. If that path can create false capability or closure, dangerous action, silent authority invention, a fundamental contradiction, or systematically wrong routing, assign `P1`. Use `P2` only when those `P1` outcomes are not credible; the `P1 screen` must state the evidence that keeps the impact below `P1`.
+
+Keep the severity, failure path, and `P1 screen` internally consistent. A supporting, historical, optional, or non-normative surface does not by itself justify downgrading a finding when the stated failure path still lets a maintainer or consumer publish, approve, close, or act as if capability were proven. To keep an evidence-integrity or reproducibility finding at `P2`, bound its failure path to auditability, parity, portability, or confidence loss and explain why no credible consumer can turn it into closure, authority, dangerous action, fundamental contradiction, or systematic routing.
+
+Before selecting the verdict, re-read every finding's severity, failure path, and `P1 screen`; resolve any contradiction.
 
 Do not lower severity because a defect appears only in prose when prose is the runtime instruction surface. Do not raise style preference to P2 without a concrete failure path.
 
@@ -152,6 +172,7 @@ P3-only observations may accompany `PASS`. A missing optional check is not autom
 - Claimed capability and actor:
 - Anti-claims:
 - Surface inventory:
+- Reviewer actions / side effects:
 
 ### Findings
 
@@ -180,12 +201,14 @@ P3-only observations may accompany `PASS`. A missing optional check is not autom
 
 During remediation, a separate implementing agent maintains `finding -> concrete change -> evidence -> status`. The reviewer checks the correction against the original failure path, scans adjacent rules for contradictions or regressions, and issues a verdict only for the new snapshot.
 
+If a re-audit after remediation repeats the same or a materially related P1/P2, do not recommend another point fix. Treat recurrence as evidence that the problem model or remediation scope may be incomplete; re-examine assumptions, the full failure path, adjacent contracts and surfaces, and the root cause before proposing further remediation.
+
 Any change to an active instruction, required reference, relevant runtime or test contract, generated output, UI trigger, or reviewed evidence invalidates the previous PASS. A narrowly bounded supporting-log correction may use a delta re-audit only when it cannot alter the reviewed capability or evidence interpretation; record that rationale.
 
 ## Stop rules
 
 - Stop and return `BLOCKED` when the snapshot moves during review.
 - Stop before domain judgment when the required specialized authority is unavailable; route it to the relevant domain skill.
-- Do not edit the target while acting as its independent reviewer.
+- Do not run a check against the reviewed snapshot when it may write; use a disposable copy or report the evidence limit.
 - Do not grant PASS from compiler success, self-review, or unexecuted proposed tests.
 - Do not require a runtime or permanent test harness for a documentation-only skill unless a repeated deterministic operation justifies it.
