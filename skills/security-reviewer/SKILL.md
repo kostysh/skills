@@ -9,9 +9,9 @@ description: Perform bounded, evidence-backed security code review for
   orchestration, standards-compliance review, penetration testing, or
   implementation.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5feeb16cd08cd0b12da2d61e8c974ca647c42c09ad736aadd2ef0727245820e1
+  skillforge-source-hash: f52d8eb2c6eb255e6cf0bf1142b73198bbac50c504127fecfda627ed786dc876
 ---
 
 # security-reviewer
@@ -278,7 +278,8 @@ Verify accepted fixes without editing the target or reusing a stale verdict.
 
 1. Map each prior finding to the concrete change, current evidence, and status on a new stable snapshot.
 2. Re-test the original attack path and adjacent regression surface; preserve unresolved items as needs verification or confirmed findings.
-3. Invalidate the prior result after any material code, configuration, runtime, test, or evidence change.
+3. If the same or a materially related confirmed finding survives remediation, require root-cause investigation of assumptions, the full attack path, adjacent controls and surfaces, and remediation scope before another point fix.
+4. Invalidate the prior result after any material code, configuration, runtime, test, or evidence change.
 
 Validation:
 

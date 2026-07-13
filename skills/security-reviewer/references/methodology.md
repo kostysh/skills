@@ -142,7 +142,7 @@ Rules:
 Confidence: HIGH
 Impact: what an attacker gains
 Evidence: attacker input -> vulnerable path -> effect
-Fix: the safest remediation direction
+Next: the safest remediation or investigation direction
 
 Needs verification
 - unresolved fact and the owner/evidence that can close it
@@ -164,7 +164,7 @@ Confirmed findings
 Confidence: HIGH
 Impact: what an attacker gains
 Evidence: attacker input -> vulnerable path -> effect
-Fix: the safest remediation direction
+Next: the safest remediation or investigation direction
 
 Needs verification
 - `path/to/file.ts:99` What remains unclear and what to verify
@@ -183,7 +183,7 @@ Evidence limits: What this status does not prove
 Next owner: Domain fact, implementation, spec-conformance, scan orchestration, or merge decision owner
 ```
 
-For re-audit, add `prior finding -> current change -> evidence -> status`, re-run the original attack path and adjacent regression surface, and tie the result to the new snapshot.
+For re-audit, add `prior finding -> current change -> evidence -> status`, re-run the original attack path and adjacent regression surface, and tie the result to the new snapshot. If the same or a materially related confirmed finding survives remediation, set `Next` to root-cause investigation before more fixes.
 
 ## Review Close-Out
 

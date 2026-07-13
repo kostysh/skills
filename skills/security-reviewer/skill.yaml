@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.8"
+  source-version: "0.1.9"
   recommended-skill-md-max-bytes: 36000
   description: "Perform bounded, evidence-backed security code review for application code, CI workflows, permission models, webhooks, secrets, app-layer data access, and configuration. Use for targeted vulnerability review, exploitability triage, or a scoped formal audit with an identifiable target. Owns threat modeling, confidence gating, attack-path validation, security findings, and scoped security status; it does not replace scan orchestration, standards-compliance review, penetration testing, or implementation."
 fragments:
@@ -159,6 +159,7 @@ sections:
       steps:
         - "Map each prior finding to the concrete change, current evidence, and status on a new stable snapshot."
         - "Re-test the original attack path and adjacent regression surface; preserve unresolved items as needs verification or confirmed findings."
+        - "If the same or a materially related confirmed finding survives remediation, require root-cause investigation of assumptions, the full attack path, adjacent controls and surfaces, and remediation scope before another point fix."
         - "Invalidate the prior result after any material code, configuration, runtime, test, or evidence change."
       validation:
         - "The reviewer remains read-only and every closure claim is tied to the new snapshot and current evidence."
