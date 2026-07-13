@@ -26,7 +26,6 @@ gh project list --owner OWNER --format json
 gh project view 1 --owner OWNER --format json
 gh project field-list 1 --owner OWNER --format json
 gh project item-list 1 --owner OWNER --limit 100 --format json
-node scripts/gh-utility.mjs project-snapshot --owner OWNER --project 1 --limit 100 --json
 ```
 
 Export before bulk changes and keep a local snapshot in the task artifacts.
@@ -83,7 +82,7 @@ Bulk project operations are medium-risk. Default to dry-run tables:
 | Item | Current field | Proposed field | Command |
 |---|---|---|---|
 
-Then ask for approval. Execute in small batches and stop on first unexpected error.
+Execute only when the current request authorizes the listed updates. Use small batches and stop on the first unexpected error.
 
 ## Project reporting
 

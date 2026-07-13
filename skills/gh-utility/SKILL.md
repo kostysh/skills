@@ -1,160 +1,172 @@
 ---
 name: gh-utility
-description: >
-  Use this skill when a user asks to use GitHub CLI (`gh`) or needs GitHub repository, issue, pull request, review, CI, Actions, workflow, release, project, Codespaces, secret, variable, ruleset, search, API, gist, key, extension, alias, config, org, or `gh skill` workflows. Prefer authenticated `gh` over raw GitHub URLs or unauthenticated web fetches. Inspect first, summarize current state, and require explicit approval before risky mutations.
+description: Use when a task requires the installed GitHub CLI (`gh`) for
+  repositories, issues, pull requests, Actions, releases, Projects, Codespaces,
+  secrets, variables, rulesets, search, API access, or preview-stage `gh skill`
+  commands. Select and run native `gh` commands, keep the target explicit, and
+  verify GitHub state after changes. Route local Git history, code review, CI
+  remediation, security judgment, and skill authoring to their owning skills.
 license: MIT
-compatibility: "Requires GitHub CLI gh, git for repository work, Node.js >= 22.22.0 for helper commands, and network access to the relevant GitHub host."
+compatibility: Requires GitHub CLI gh and network access to the relevant GitHub
+  host. Command families, flags, and JSON fields that may vary by version must
+  be checked against installed help.
 metadata:
-  version: "1.0.0"
-  short-description: "Safety-first workflows for the GitHub CLI."
+  source-version: 1.2.0
+  skillforge-source-manifest: skill.yaml
+  skillforge-source-hash: d41804661eb156603c450da6b437c0d573bbe0e6f6b963bd374c2b3c82896894
 ---
 
 # gh-utility
 
-Use `gh` as the primary interface for GitHub work. This skill is a router plus safety policy: it tells you which `gh` surface to use, when to inspect first, which helper scripts can stabilize fragile flows, and which reference file to load only when needed.
+## Start here
 
-## Non-negotiable operating rules
+1. Confirm the task concerns GitHub state and can be handled with the installed gh CLI.
+2. Resolve the host, repository or organization, resource identifier, and requested outcome.
+3. Load only the reference matching the use case, then use native gh commands directly.
+4. After a mutation, run a fresh native gh read and report the observed result or failure.
 
-1. Prefer authenticated `gh` over `curl`, `wget`, raw `github.com`, `api.github.com`, `raw.githubusercontent.com`, and unauthenticated web fetches for GitHub repository data. Use web only when `gh` is unavailable, unauthenticated, or the target is not GitHub repository/API data.
-2. Start every GitHub task with read-only inspection unless the user explicitly provided all state and asked for a single safe command.
-3. Before mutations, present: target host/repo/org, exact command(s), expected effect, rollback/recovery path, and risks. Get explicit approval for risky changes.
-4. Never print secret values, tokens, private keys, or decrypted credentials. For `gh secret set`, prefer stdin or env-file flows and summarize secret names only.
-5. Do not force-push, delete repositories, delete releases/assets, delete branches/tags, resolve review threads, change rulesets/branch protection, alter org/repo secrets, publish releases, or change Codespaces port visibility without explicit approval.
-6. Treat `gh api` as an escape hatch. Prefer top-level `gh` commands first; when using REST/GraphQL, use explicit methods, pagination, JSON fields, and rate-limit-aware retries.
-7. Separate `git` and `gh`: use `git` for local commit/history operations, `gh` for GitHub API/platform operations.
-8. Keep responses in the user's language. If a command fails because of auth, scope, field drift, rate limit, or host mismatch, say that clearly and provide the smallest remediation command.
+## When to use this skill
 
-## Quick start sequence
+- Inspecting or changing GitHub repositories, issues, pull requests, Actions, releases, Projects, Codespaces, rulesets, secrets, variables, keys, search, API resources, or gh skill state.
+- Translating a GitHub request or URL into native gh commands.
+- Diagnosing gh authentication, host, permissions, API, or rate limits.
 
-Run these only when appropriate for the task and environment:
+## When NOT to use this skill
 
-```bash
-command -v gh
-gh --version
-gh auth status
-gh repo view --json nameWithOwner,defaultBranchRef,viewerPermission,visibility,url
-```
+- Local commits, rebases, worktrees, branch history, or push policy; use git-engineer.
+- Code-review judgment or review-feedback remediation; use code-reviewer or gh-address-comments.
+- Diagnosing and fixing CI failures; use gh-fix-ci, with gh-utility limited to GitHub inspection.
+- Security findings or control judgments; use security-reviewer.
+- Skill authoring, compilation, or review; use skill-creator, skill-source-compiler, or skill-reviewer.
 
-For a fuller diagnosis, run:
+## Overview
 
-```bash
-node scripts/gh-utility.mjs auth-doctor --repo .
-```
+`gh-utility` is a use-case guide for the installed GitHub CLI. It does not ship or require a
+wrapper, proxy, helper CLI, runtime, or alternate transport.
 
-For a GitHub URL, translate it to a `gh` workflow first:
+For each task, identify the GitHub host and target resource, choose the narrowest native `gh`
+command, run it directly, and inspect its output. Use explicit `--repo`, `--hostname`, or owner
+selectors whenever current-directory context could be ambiguous. After a mutation, run a fresh
+native read command to verify the resulting GitHub state.
 
-```bash
-node scripts/gh-utility.mjs route "https://github.com/OWNER/REPO/pull/123"
-```
+An exact user request authorizes that exact target and action. Ask only when the target, action,
+destructive scope, or secret handling is ambiguous. Never infer code-review, CI-remediation,
+security, or local-Git decisions that belong to specialized skills.
 
-## Route table
+## Workflow stages
 
-| User intent | First commands | Load when needed |
-|---|---|---|
-| Auth, host, scopes, enterprise host, token storage | `gh auth status`, `node scripts/gh-utility.mjs auth-doctor` | `references/auth-and-scopes.md`, `references/troubleshooting.md` |
-| Convert GitHub URL, inspect repo files, avoid raw URLs | `node scripts/gh-utility.mjs route URL`, `gh repo view`, shallow clone | `references/api-search-and-url-routing.md` |
-| Repo metadata, clone/fork/create/edit, labels, topics, visibility | `gh repo view`, `gh repo list`, `node scripts/gh-utility.mjs repo-audit` | `references/repo-issue-pr-playbook.md`, `references/admin-security-playbook.md` |
-| Issues, labels, milestones, triage, transfer/lock/pin | `gh issue list/view`, `gh label list` | `references/repo-issue-pr-playbook.md` |
-| Pull requests, create/update/review/merge/status | `gh pr view/list/status/checks/diff` | `references/repo-issue-pr-playbook.md`, `references/pr-ci-review-loop.md` |
-| PR review threads/comments | `node scripts/gh-utility.mjs pr-threads --repo . --pr N` | `references/pr-ci-review-loop.md` |
-| Failing checks, Actions logs, workflow runs/artifacts/cache | `gh pr checks`, `node scripts/gh-utility.mjs pr-checks`, `gh run view --log-failed` | `references/pr-ci-review-loop.md` |
-| Workflow dispatch, enable/disable, rerun/cancel/watch | `gh workflow list/view/run`, `gh run list/view/watch` | `references/pr-ci-review-loop.md`, `references/admin-security-playbook.md` |
-| Releases, tags, assets, release notes, immutable releases | `node scripts/gh-utility.mjs release-state`, `gh release view/list`, `git tag` | `references/release-playbook.md` |
-| GitHub Projects | `gh project list/view/field-list/item-list`, `node scripts/gh-utility.mjs project-snapshot` | `references/projects-playbook.md` |
-| Search repos/code/issues/PRs/commits | `gh search repos/code/issues/prs/commits`, `gh api -X GET search/...` | `references/api-search-and-url-routing.md`, `references/bulk-operations.md` |
-| Generic REST/GraphQL API | `node scripts/gh-utility.mjs safe-api ENDPOINT`, `gh api graphql` | `references/api-search-and-url-routing.md` |
-| Secrets, variables, deploy keys, SSH/GPG keys | `gh secret list`, `gh variable list`, `node scripts/gh-utility.mjs secret-manifest` | `references/admin-security-playbook.md` |
-| Rulesets, branch protection, security configuration | `gh ruleset list/view/check`, `gh api repos/.../branches/.../protection` | `references/admin-security-playbook.md` |
-| Codespaces lifecycle, ports, logs, SSH, copy files | `node scripts/gh-utility.mjs codespace-snapshot`, `gh codespace list/view/ports/logs` | `references/codespaces-and-dev-envs.md` |
-| Gists | `gh gist list/view/create/edit/delete` | `references/command-map.md` |
-| Alias, extension, config, completion | `gh alias list`, `gh extension list`, `gh config list` | `references/command-map.md` |
-| Install/update/publish agent skills with `gh skill` | `gh skill preview/install/update --dry-run` | `references/gh-skill-management.md` |
-| Multi-repo or bulk operations | generate dry-run plan first | `references/bulk-operations.md`, `assets/repo_batch_template.csv` |
+### Workflow stage: Select the native gh command
 
-## Default workflow pattern
+Choose the smallest installed gh command for the requested GitHub use case.
 
-### 1. Resolve target
+1. Resolve the host, target, and resource identifier.
+2. Check installed gh help when command syntax or JSON fields are uncertain.
 
-Identify the GitHub host, owner/repo, branch, PR/issue/release/project/codespace identifier, and the user's permission level. Prefer `gh repo view --json nameWithOwner,viewerPermission,defaultBranchRef` for repository context.
+Validation:
 
-### 2. Inspect read-only state
+- The command and target are explicit.
 
-Gather enough state to avoid guessing. Use `--json` and `--jq` where possible. For repository file contents, prefer shallow clone with `gh repo clone OWNER/REPO TMP -- --depth 1` and read files locally instead of decoding `/contents` API responses.
+### Workflow stage: Run gh directly
 
-### 3. Classify risk
+Execute the native gh command without an intermediary transport.
 
-Use this shorthand in your plan:
+1. Use explicit repository, owner, or hostname selectors when context is ambiguous.
+2. Run only the requested and authorized mutation.
 
-- **Read-only:** view/list/search/download logs, inspect metadata, produce reports.
-- **Low-risk mutation:** create a draft issue, comment, branch-local PR body edit, workflow dispatch in a dev environment.
-- **Medium-risk mutation:** create/edit PR or issue metadata, rerun/cancel workflow, update project fields, upload release notes to an existing draft.
-- **High-risk mutation:** merge/close/delete, force-push, tag push/delete, publish release, ruleset/branch protection changes, org/repo secrets or variables, key management, Codespaces port visibility, repo archive/delete/transfer.
+Validation:
 
-### 4. Plan before mutation
+- The command output or failure is captured without exposing secrets.
 
-For medium/high-risk mutations, show exact commands and ask for approval. For secrets, show only names and destinations. For release publishing, use `--notes-file` for multi-line Markdown and verify with `gh release view` after publication.
+### Workflow stage: Verify the result
 
-### 5. Execute narrowly
+Confirm the requested GitHub state after a mutation.
 
-Run the smallest command set. Prefer idempotent operations and `--dry-run`/preview modes where available. Record outputs needed for verification.
+1. Run a fresh native gh read for the changed resource.
+2. Report the observed result, command failure, or remaining external evidence boundary.
 
-### 6. Verify and report
+Validation:
 
-Re-run read-only checks after mutation. Report what changed, what remains pending, and any manual follow-up.
+- Completion is based on current gh output, not on a shown command or dry-run.
 
-## Approval gates
+## Interop priority
 
-Ask before doing any of the following, even if the user broadly asked to “fix” or “clean up” something:
+- **Local Git history, worktrees, commits, rebases, and push policy:** git-engineer. gh-utility covers native GitHub CLI use; git-engineer owns local Git decisions.
+- **Review findings and feedback remediation:** code-reviewer or gh-address-comments when available. gh-utility may fetch or post GitHub state but does not decide code findings or fixes.
+- **Failing pull-request checks:** gh-fix-ci when available. gh-utility may inspect checks; the specialized skill owns diagnosis and remediation.
+- **Security findings and policy judgment:** security-reviewer. gh-utility operates gh and does not issue security verdicts.
 
-- `gh repo delete/archive/transfer/rename`, visibility changes, default branch changes.
-- `gh pr merge/close/reopen/lock/unlock`, `git push --force*`, branch deletion.
-- `gh api` with `POST`, `PATCH`, `PUT`, or `DELETE` unless it is a narrowly scoped comment/reply the user approved.
-- `gh release create/delete/delete-asset/upload/edit` except read-only `view/list/download/verify`; release-body edits still need approval.
-- `gh secret set/delete`, `gh variable set/delete`, `gh ssh-key add/delete`, `gh gpg-key add/delete`, deploy key changes.
-- `gh ruleset` changes or branch protection API changes.
-- `gh codespace delete/rebuild/stop`, port visibility changes, or copying sensitive files into/out of a codespace.
-- `gh skill install/update/publish` unless the user approved the skill source and preview.
+## Gotchas
 
-## Helper scripts
+- **high** — gh command families, flags, and JSON fields vary by installed version; check gh help before using uncertain syntax.
+- **high** — Use explicit --repo or --hostname when the current checkout or host could select the wrong target.
+- **medium** — GitHub may expose only a link for external CI; report that boundary instead of claiming external-provider state.
 
-The helper command is optional and is implemented as a bundled TypeScript-built Node.js CLI at `scripts/gh-utility.mjs`. It is designed to inspect first, redact secrets, and fail clearly when `gh` is missing, unauthenticated, or lacks scopes.
+## Policies
 
-| Script | Purpose |
-|---|---|
-| `scripts/gh-utility.mjs auth-doctor` | Diagnose `gh`, auth, host, repo context, token storage hints, and rate limit access. |
-| `scripts/gh-utility.mjs route` | Convert common GitHub URLs into preferred `gh` commands or shallow-clone workflows. |
-| `scripts/gh-utility.mjs safe-api` | Safer `gh api` wrapper with explicit method, dry-run, pagination, JSON output, and mutation confirmation. |
-| `scripts/gh-utility.mjs pr-threads` | Fetch PR review threads/comments; optionally reply/resolve only with mutation confirmation. |
-| `scripts/gh-utility.mjs pr-checks` | Inspect PR checks and pull GitHub Actions failure snippets. |
-| `scripts/gh-utility.mjs release-state` | Inspect tags, releases, comparison range, and release health. |
-| `scripts/gh-utility.mjs project-snapshot` | Export GitHub Project schema/items for planning and bulk updates. |
-| `scripts/gh-utility.mjs secret-manifest` | Parse dotenv files into redacted secret/variable plans without printing values. |
-| `scripts/gh-utility.mjs codespace-snapshot` | Inspect Codespaces, ports, and logs without lifecycle mutation. |
-| `scripts/gh-utility.mjs repo-audit` | Read-only repository metadata, rulesets, workflows, labels, variables, and optional secret names. |
-| `scripts/gh-utility.mjs validate-skill` | Validate this skill folder's frontmatter, structure, and references. |
+### Native gh first
+Use installed gh commands directly. This skill ships no helper today; a future helper may only aggregate native gh reads or run a simple explicit sequence of native gh calls, never proxy transport, authorization, redaction, mutation policy, or semantic verdicts.
 
-## Output style
+### Authorization
+An exact unambiguous request authorizes that action and target; ask only when action, target, destructive scope, or secret handling remains ambiguous.
 
-Use concise, auditable summaries:
+### Secret confidentiality
+Never print, log, echo, or persist secret and token values; use native gh secret and variable input mechanisms.
 
-```markdown
-## gh task report
-Target: HOST/OWNER/REPO
-Mode: read-only | planned mutation | executed mutation
-Commands run: <redacted list>
-Findings: <bullets>
-Plan: <only if action remains>
-Approval needed: yes/no, because <risk>
-Verification: <read-only command/result>
-```
+### Evidence
+Report command output and fresh post-action reads honestly; help, dry-run, or validation output does not prove a GitHub mutation occurred.
 
-Use `assets/gh_task_report_template.md`, `assets/pr_body_template.md`, `assets/issue_template.md`, `assets/release_notes_template.md`, and `assets/pr_comment_triage_template.md` when a reusable artifact helps.
+## Optional references
+- [Safety rules](references/safety-rules.md) — Read before a destructive mutation, secret or key operation, release publication, admin change, or bulk operation.
+- [Auth and scopes](references/auth-and-scopes.md) — Read when gh is missing, unauthenticated, on the wrong host, or lacks permission.
+- [API, search, and URL routing](references/api-search-and-url-routing.md) — Read for GitHub URLs, cross-repository search, gh api, GraphQL, pagination, or rate limits.
+- [Repository, issue, and pull request use cases](references/repo-issue-pr-playbook.md) — Read for repository metadata, issues, labels, milestones, or pull requests.
+- [PR, CI, and review inspection](references/pr-ci-review-loop.md) — Read for GitHub-side PR checks, review state, threads, merge, or monitoring.
+- [Admin and security use cases](references/admin-security-playbook.md) — Read for rulesets, branch protection, settings, secrets, variables, keys, or organization administration.
+- [Bulk operations](references/bulk-operations.md) — Read when one request affects multiple repositories or independent GitHub resources.
+- [GitHub Projects](references/projects-playbook.md) — Read for GitHub Projects schema, items, fields, exports, or updates.
+- [Releases](references/release-playbook.md) — Read for release inspection, drafts, publication, assets, attestations, or recovery.
+- [Codespaces](references/codespaces-and-dev-envs.md) — Read for Codespaces lifecycle, ports, logs, SSH, file copy, cost, or data-loss decisions.
+- [gh command map](references/command-map.md) — Read when the task spans several gh command families or command availability is unclear.
+- [gh skill management](references/gh-skill-management.md) — Read for preview, install, list, update, search, or publish in the preview-stage gh skill family.
+- [Troubleshooting](references/troubleshooting.md) — Read after a gh command fails, returns incomplete data, or targets the wrong host or repository.
 
-## Common gotchas
+## Bundled assets
 
-- `gh pr checks --json` fields drift between versions. If a field is rejected, rerun with the fields listed by the error or fall back to plain output.
-- `gh api -f key=value` can imply a mutating request unless `-X GET` is explicit. For read/search endpoints, always specify `-X GET`.
-- GitHub Projects usually need the `project` scope; suggest `gh auth refresh -s project` if project commands fail for scope reasons.
-- GitHub Actions logs may be unavailable for external CI providers. Report external check URLs instead of scraping another provider.
-- Comments, review threads, and PR issue comments are different API surfaces. Do not mark a thread resolved unless the user approved that thread.
-- Immutable releases make tag/release mistakes harder to undo. Prefer draft releases, signed tags, notes files, and post-publication verification.
+- `assets/gh_task_report_template.md` — GitHub task report template.
+- `assets/issue_template.md` — Issue body template.
+- `assets/pr_body_template.md` — Pull request body template.
+- `assets/pr_comment_triage_template.md` — Pull request comment triage template.
+- `assets/project_fields_template.yaml` — GitHub Project field plan template.
+- `assets/release_notes_template.md` — Release notes template.
+- `assets/repo_batch_template.csv` — Repository batch inventory template.
+- `assets/workflow_dispatch_inputs.json` — Workflow-dispatch input review template.
+
+## Portability rules
+
+- Keep mandatory guidance, references, assets, license, and UI metadata inside this skill folder.
+- Use only relative local links and explicit GitHub host or repository selectors.
+- Do not depend on Node.js, package metadata, proxy CLIs, or files outside the skill folder.
+- If a future script is justified, keep it to transparent aggregation or a simple sequence of native gh calls with no independent policy or transport semantics.
+
+## Portability checklist before finishing
+
+- Run skill-source-compiler lint, regenerate, and check after source edits.
+- Compile to an isolated directory and confirm that no source, tests, package metadata, or scripts are emitted.
+- Search active and declared files for machine-specific absolute filesystem dependencies.
+
+## Supporting and historical surface
+
+- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
+- Supporting glob: `docs/*`
+- Supporting glob: `docs/logs/*`
+
+## Final checks
+
+Before reporting completion:
+
+- confirm that the command belongs to the installed `gh` version
+- name the host, repository or organization, and resource identifier
+- distinguish commands shown from commands actually run
+- after a mutation, include the fresh native `gh` read used to verify the result
+- report command failures or incomplete external-provider evidence without guessing
+- never print tokens, secret values, or sensitive command payloads

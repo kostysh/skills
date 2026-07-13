@@ -1,69 +1,59 @@
 # Release playbook
 
-Use this file for version bumps, release notes, tags, release health checks, publishing, assets, and immutable-release-aware flows.
+Use this file for GitHub-side release inspection, publication, assets, health checks, and
+immutable-release-aware recovery. Version selection, source edits, local branches, commits, tags,
+and pushes belong to the release implementation owner and `git-engineer`.
 
 ## Release safety defaults
 
-- Treat Git tags as source-of-truth.
-- Inspect before publish: `git tag`, `git show TAG`, `gh release list`, `gh release view TAG`.
-- Prefer signed tags created from the default branch after a release PR is merged.
-- Prefer CI-driven release creation where the repo already has a release workflow.
-- Use `--notes-file` for any multiline release body.
+- Treat the pushed Git tag and its commit SHA as source-of-truth.
+- Inspect the remote tag/ref, existing release, publication policy, and CI ownership before acting.
+- Prefer CI-driven release creation where the repository already has a release workflow.
+- Use `--notes-file` for multiline release bodies.
 - Prefer draft release → upload assets → publish when immutable releases may be enabled.
-- Do not delete releases/assets/tags without explicit approval and a recovery plan.
+- Do not delete releases, assets, or tags without exact authorization and a recovery plan.
 
-## Inspect release state
+## Inspect GitHub release state
 
 ```bash
-node scripts/gh-utility.mjs release-state --repo OWNER/REPO --tag v1.2.3 --fetch-tags
 gh release list --repo OWNER/REPO --limit 20
 gh release view v1.2.3 --repo OWNER/REPO --json tagName,name,isDraft,isPrerelease,publishedAt,url,assets,body
-git show --no-patch --format='%H %aI %s' v1.2.3
-git diff --stat v1.2.2..v1.2.3
+gh api -X GET repos/OWNER/REPO/git/ref/tags/v1.2.3 --jq '{ref,sha:.object.sha,type:.object.type}'
 ```
 
-## Determine version
+If the tag is annotated, resolve the returned tag object only when the peeled commit SHA matters.
+Do not infer local Git state from the presence of a GitHub release.
 
-Inspect ecosystem files before editing:
+## Required handoff from source and Git owners
 
-| Ecosystem | Common version files |
-|---|---|
-| Node | `package.json`, `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock` |
-| Python | `pyproject.toml`, `setup.cfg`, `setup.py`, package `__init__.py` |
-| Rust | `Cargo.toml`, `Cargo.lock` |
-| Go | tags/modules, `go.mod` for module path (not version) |
-| Java | `pom.xml`, `build.gradle`, `gradle.properties` |
-| .NET | `.csproj`, `Directory.Build.props`, `.nuspec` |
-| Docker/action | `action.yml`, image tags, Helm charts |
+Before GitHub publication, obtain:
 
-Use conventional commits only if the project already follows them; otherwise ask for major/minor/patch or infer conservatively.
+- approved version and release policy;
+- merged commit SHA and source-validation evidence;
+- signed tag name, target SHA, and push evidence from `git-engineer`;
+- release-notes file and exact asset paths from their owning workflow;
+- whether CI or a direct `gh release create` owns publication.
+
+If any input is absent or conflicts with remote state, stop as `blocked`. `gh-utility` does not
+infer versions, edit source files, create local branches, repair history, or push tags.
 
 ## Recommended release flow
 
-1. Inspect current state and latest tag.
-2. Determine next version and changed files.
-3. Update all version files consistently.
-4. Update changelog/release notes from actual diff evidence.
-5. Create `release/vX.Y.Z` branch and PR.
-6. Wait for CI and review.
-7. After merge, tag default branch with a signed tag:
-
-```bash
-git checkout main
-git pull --ff-only
-git tag -s vX.Y.Z -m "vX.Y.Z"
-git push origin vX.Y.Z
-```
-
-8. Let CI publish if configured.
-9. Verify:
+1. Inspect current GitHub release state and latest remote tag.
+2. Hand version/source/tag work to the release implementation owner and `git-engineer`.
+3. Compare returned tag/SHA evidence with the authoritative remote ref.
+4. Let CI publish when configured; otherwise use an exactly authorized direct release flow.
+5. Verify:
 
 ```bash
 gh release view vX.Y.Z --repo OWNER/REPO --json url,name,tagName,isDraft,isPrerelease,publishedAt,assets,body
-gh release verify vX.Y.Z --repo OWNER/REPO
 ```
 
-10. If release body needs editing, use:
+When repository policy requires signed release attestations, additionally run
+`gh release verify vX.Y.Z --repo OWNER/REPO`. Do not treat missing attestations as a generic release
+failure when that policy is not enabled.
+
+6. If an authorized body correction remains:
 
 ```bash
 gh release edit vX.Y.Z --repo OWNER/REPO --notes-file release-notes.md
@@ -71,47 +61,49 @@ gh release edit vX.Y.Z --repo OWNER/REPO --notes-file release-notes.md
 
 ## Direct `gh release create`
 
-Only use direct release creation when it matches the repository's policy and the user approves. Avoid implicit lightweight tag creation.
-
-Safer direct pattern with existing tag:
+Use direct creation only when repository policy allows it and the current request authorizes the
+exact repository, existing tag, title, body, draft/public state, and asset plan.
 
 ```bash
-git show --no-patch vX.Y.Z
+gh api -X GET repos/OWNER/REPO/git/ref/tags/vX.Y.Z --jq '{ref,sha:.object.sha,type:.object.type}'
 gh release create vX.Y.Z --repo OWNER/REPO --title "vX.Y.Z" --notes-file release-notes.md --draft
-# upload assets while draft
-gh release upload vX.Y.Z dist/* --repo OWNER/REPO
-# publish draft via UI or approved API/CLI step
+gh release upload vX.Y.Z dist/file1 dist/file2 --repo OWNER/REPO
 ```
 
-If the tag does not exist, stop and ask whether to create a signed tag from the default branch or let CI handle it.
+If the remote tag does not exist or points to the wrong SHA, stop and hand correction to
+`git-engineer`; do not create or push a tag from this skill.
 
-## Release notes evidence standard
+## Release notes evidence
 
-Do not rely only on commit subjects or `--generate-notes` when the user asks for accurate notes. Inspect:
+Use source-diff and validation evidence supplied by the implementation owner. Corroborate the
+GitHub-visible compare range instead of turning commit subjects into unsupported behavior claims:
 
 ```bash
-git log --oneline BASE..TAG
-git diff --name-status BASE..TAG
-git diff --stat BASE..TAG
-git show --stat IMPORTANT_COMMIT
+gh api -X GET repos/OWNER/REPO/compare/BASE...TAG \
+  --jq '{status,ahead_by,total_commits,files:[.files[]|{filename,status,changes}]}'
 ```
 
-Read changed workflows, scripts, docs, public API files, and version metadata before claiming behavior changed. Mention validation only if run in the current environment.
+Read changed workflows, scripts, docs, public API files, and version metadata through the owning
+source workflow before claiming behavior changed. Mention validation only when current evidence
+was supplied or observed.
 
 ## Assets and verification
 
 ```bash
 gh release upload TAG file1 file2 --repo OWNER/REPO
 gh release download TAG --repo OWNER/REPO --dir tmp/release-assets
-gh release verify-asset TAG asset-name --repo OWNER/REPO
-gh attestation verify dist/app.tar.gz --repo OWNER/REPO
+gh release verify-asset TAG tmp/release-assets/asset-name --repo OWNER/REPO
+gh attestation verify tmp/release-assets/asset-name --repo OWNER/REPO
 ```
 
-Asset upload/delete is medium/high risk; ask first. For immutable releases, attach all assets before publication.
+`verify-asset` takes a local downloaded file path, not the remote asset name alone. Asset
+upload/delete is medium/high risk; require an exact target and action. For immutable releases,
+attach all assets before publication.
 
 ## Recovery notes
 
 - Draft typo: edit body/title before publish.
 - Published mutable release typo: edit body with `--notes-file`; changing assets/tags may be policy-restricted.
+- Wrong or missing tag: hand correction to `git-engineer`; do not rewrite remote Git from this skill.
 - Immutable release tag mistake: tag name may not be reusable; stop and escalate to maintainer policy.
-- CI re-run clobbered notes: edit release body after CI completes and avoid re-running release workflow unless necessary.
+- CI re-run clobbered notes: inspect current state before an authorized edit; do not rerun blindly.

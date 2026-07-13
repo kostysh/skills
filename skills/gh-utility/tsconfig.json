@@ -1,9 +1,0 @@
-{
-  "extends": "../../tsconfig.eslint.json",
-  "compilerOptions": {
-    "rootDir": ".",
-    "allowImportingTsExtensions": true,
-    "types": ["node"]
-  },
-  "include": ["src/**/*.ts", "test/**/*.ts", "vite.config.ts"]
-}

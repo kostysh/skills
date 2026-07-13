@@ -7,16 +7,21 @@ Use this file for common repo, issue, label, milestone, and PR lifecycle tasks.
 ```bash
 gh repo view OWNER/REPO --json nameWithOwner,description,visibility,isArchived,isFork,defaultBranchRef,viewerPermission,licenseInfo,repositoryTopics,url
 gh label list --repo OWNER/REPO --limit 100 --json name,color,description
-gh ruleset list --repo OWNER/REPO --json id,name,target,enforcement,source
-node scripts/gh-utility.mjs repo-audit --repo OWNER/REPO --include-workflows --include-rulesets --include-variables
+gh ruleset list --repo OWNER/REPO
+gh api -X GET repos/OWNER/REPO/rulesets --paginate
+gh workflow list --repo OWNER/REPO --all --json id,name,state,path
+gh variable list --repo OWNER/REPO --json name,updatedAt
 ```
 
 Before creating a repo, inspect owner permissions and naming collisions:
 
 ```bash
-gh repo view OWNER/NEW_REPO || true
-gh repo create OWNER/NEW_REPO --private --description "..." --disable-wiki --disable-issues=false
+gh repo view OWNER/NEW_REPO --json nameWithOwner,url
+gh repo create OWNER/NEW_REPO --private --description "..." --disable-wiki
 ```
+
+Proceed to creation only when the read distinguishes an authoritative not-found result from auth,
+host, rate-limit, or permission failure. Do not mask the inspection exit code with `|| true`.
 
 After repo creation, recommend immediate baseline: default branch, branch protection/ruleset, CODEOWNERS, PR template, labels, security settings, Actions permissions, Dependabot/Renovate, and README/license.
 
@@ -48,18 +53,19 @@ Closing/transferring/locking/pinning issues changes collaboration state; ask fir
 ```bash
 gh pr view --json number,title,url,state,author,headRefName,baseRefName,mergeable,mergeStateStatus,reviewDecision,isDraft
 gh pr checks
-gh pr diff --stat
+gh pr diff --name-only
 ```
 
 ### Create PR
 
-Prefer generated body from a template and local diff evidence:
+Require the local Git owner to provide the pushed head/base refs and source-diff evidence. Then use
+generated body content and create only the authorized GitHub PR:
 
 ```bash
-git status --short
-git log --oneline origin/BASE..HEAD
 gh pr create --base BASE --head HEAD --title "..." --body-file pr_body.md --draft
 ```
+
+Local branch preparation, commits, rebases, worktrees, and push policy belong to `git-engineer`.
 
 Use draft PR if tests are not complete or the user wants early review. Do not mark ready without user intent.
 
@@ -82,7 +88,6 @@ Check three independent dimensions:
 ```bash
 gh pr view 123 --repo OWNER/REPO --json mergeable,mergeStateStatus,reviewDecision,isDraft
 gh pr checks 123 --repo OWNER/REPO
-node scripts/gh-utility.mjs pr-threads --repo OWNER/REPO --pr 123
 ```
 
 Do not merge if unresolved required comments or failing checks remain unless the user explicitly accepts the risk.
@@ -95,13 +100,14 @@ There are three comment surfaces:
 - PR review submissions: `gh pr review` or REST `/pulls/{number}/reviews`.
 - Inline review threads: GraphQL `reviewThreads` and `resolveReviewThread`.
 
-For inline comments, use `scripts/gh-utility.mjs pr-threads` to fetch thread IDs and line context. Reply before resolving when resolution is approved.
+For inline threads, use `gh api graphql` to fetch thread IDs and resolution state, or route the
+workflow to `gh-address-comments`. Reply before resolving when resolution is approved.
 
-## Force-push and branch updates
+## Local branch updates
 
-- Ask before `git push --force` or `--force-with-lease` when a PR branch may have collaborators.
-- Prefer `--force-with-lease` over `--force`.
-- After rebase, re-run tests and `gh pr checks --watch --fail-fast` if appropriate.
+Route rebase, force-with-lease, commit, worktree, and local branch-history decisions to
+`git-engineer`. After the owning workflow updates and pushes the branch, `gh-utility` may refresh
+PR/check state and monitor GitHub-side verification.
 
 ## Labels
 

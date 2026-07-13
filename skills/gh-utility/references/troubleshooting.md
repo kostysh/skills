@@ -32,39 +32,29 @@ gh api rate_limit
 
 Use `--verbose` sparingly because it can include sensitive headers in some contexts. Do not paste tokens into logs.
 
-Safer pattern:
-
-```bash
-set -o pipefail
-GH_DEBUG=api gh api -X GET repos/OWNER/REPO --jq '.full_name' 2>gh-debug.redacted.log
-python - <<'PY'
-from pathlib import Path
-p = Path('gh-debug.redacted.log')
-s = p.read_text(errors='replace')
-for marker in ['authorization:', 'Authorization:', 'token ']:
-    s = s.replace(marker, '[REDACTED] ')
-p.write_text(s)
-PY
-```
+Capture `GH_DEBUG=api` output only when a task-local redaction tool is already available. Inspect
+and redact authorization headers, tokens, cookies, private URLs, and payload data before retaining
+or sharing the log. If safe redaction cannot be established, do not persist debug output.
 
 ## Check repo context
 
 When a command unexpectedly targets the wrong repository:
 
 ```bash
-git remote -v
 gh repo view --json nameWithOwner,url
 echo "$GH_REPO"
 echo "$GH_HOST"
 ```
 
 Prefer explicit `--repo OWNER/REPO` in scripts and examples.
+If local remote configuration itself is suspect, hand that inspection to `git-engineer`; do not
+change local Git configuration as part of GitHub transport troubleshooting.
 
 ## Check installed extensions
 
 ```bash
 gh extension list
-gh extension upgrade --all   # ask before running in managed environments
+gh extension upgrade --all   # run only when the current request authorizes all installed extensions
 ```
 
 Extensions can change command behavior or add subcommands. Treat install/upgrade as high risk in locked-down environments.

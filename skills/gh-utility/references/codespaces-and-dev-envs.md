@@ -6,7 +6,6 @@ Use this file for `gh codespace` lifecycle, logs, SSH, file copy, ports, and env
 
 ```bash
 gh codespace list
-node scripts/gh-utility.mjs codespace-snapshot --json
 gh codespace view --codespace CODESPACE_NAME
 gh codespace logs --codespace CODESPACE_NAME
 gh codespace ports --codespace CODESPACE_NAME
@@ -47,14 +46,14 @@ gh codespace ports --codespace NAME
 gh codespace ports visibility 3000:private --codespace NAME
 ```
 
-Changing visibility can expose services. Ask before making ports public/org-visible. Verify no secrets/debug dashboards are exposed.
+Changing visibility can expose services. Require exact authorization for the codespace, port, and visibility. Verify no secrets or debug dashboards are exposed.
 
 ### SSH and copy
 
 ```bash
 gh codespace ssh --codespace NAME
-gh codespace cp localfile NAME:/workspaces/repo/path
-gh codespace cp NAME:/workspaces/repo/artifact ./artifact
+gh codespace cp localfile remote:/workspaces/repo/path --codespace NAME
+gh codespace cp remote:/workspaces/repo/artifact ./artifact --codespace NAME
 ```
 
 File copy can exfiltrate or inject sensitive data. Confirm paths and redact secrets in logs.

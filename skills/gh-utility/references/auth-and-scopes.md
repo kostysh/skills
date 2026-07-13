@@ -8,7 +8,7 @@ Use this file when `gh` is missing, unauthenticated, pointed at the wrong host, 
 command -v gh
 gh --version
 gh auth status
-node scripts/gh-utility.mjs auth-doctor --repo .
+gh repo view --json nameWithOwner,url,viewerPermission,defaultBranchRef
 ```
 
 For GitHub Enterprise:

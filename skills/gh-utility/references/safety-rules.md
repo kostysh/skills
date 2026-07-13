@@ -8,7 +8,7 @@ Use this file whenever a task may mutate GitHub state, touch secrets/keys, publi
 2. Inspect current state with read-only commands.
 3. Summarize state and classify risk.
 4. Present exact commands and expected effect.
-5. Ask for explicit approval for medium/high-risk operations.
+5. Confirm that the current request explicitly authorizes the exact target and action; if not, ask for the missing detail.
 6. Execute only the approved commands.
 7. Verify with read-only commands.
 8. Report what changed and any incomplete follow-up.
@@ -25,17 +25,17 @@ No approval needed beyond ordinary tool execution, unless the output may expose 
 
 Examples: draft issue creation in a dev repo, non-sensitive label creation, PR body draft update, adding a non-production project draft item.
 
-Approval can be implicit if the user explicitly asked for that exact action and the target is unambiguous. Still show a concise summary afterward.
+An exact unambiguous request is authorization for that action and target. Do not ask for duplicate confirmation. Still show a concise summary afterward.
 
 ### Medium-risk mutation
 
 Examples: issue/PR metadata changes, workflow rerun/cancel, project field update, PR review comment reply, release draft body edit, label deletion in an active repo.
 
-Show exact command(s) and ask for approval unless the user supplied exact command and target.
+An exact unambiguous request is sufficient authorization. Otherwise show the exact target and action and ask for the missing detail.
 
 ### High-risk mutation
 
-Always require explicit approval:
+Require explicit authorization in the current conversation for:
 
 - Repository delete/archive/transfer/rename/visibility/default branch changes.
 - Branch protection or ruleset changes.
@@ -50,7 +50,8 @@ Always require explicit approval:
 ## Secret handling
 
 - Never print token/secret values. Do not include them in Markdown, logs, command echoes, or JSON artifacts.
-- Prefer `gh secret set NAME` interactive prompt, stdin, or `gh secret set -f .env` after reviewing names.
+- Use `gh auth status` for authentication inspection. Never run `gh auth token` or another token-retrieval command in an observable agent/tool context.
+- Prefer `gh secret set NAME` interactive prompt or guarded stdin. Use `gh secret set -f .env` only for a reviewed file, an explicit target, and non-empty intended values.
 - In plans, show only: secret name, target, app, environment/org/repo/user, visibility, selected repos, and whether the value is empty/unknown.
 - For variables, values may be visible; still avoid printing production credentials accidentally stored as variables.
 - Do not use shell history-leaking forms such as `gh secret set NAME --body "actual-secret"`.
@@ -58,16 +59,17 @@ Always require explicit approval:
 ## API safety
 
 - Use `gh api -X GET` for reads with `-f` fields.
-- Use `scripts/gh-utility.mjs safe-api --dry-run` to show the exact command.
-- Require `--confirm-mutation` for `POST/PATCH/PUT/DELETE` or GraphQL mutations.
+- Prefer a top-level native `gh` command. Use `gh api -X METHOD` or `gh api graphql` directly only for a real command-surface gap.
+- Do not place secret values in visible command arguments. Use stdin, environment variables, or native file-input options as appropriate.
+- Treat a successful mutation response as unverified until a separate native read confirms the requested state.
 - Paginate read-only list endpoints when completeness matters.
 - For GraphQL mutations, use variables (`-F`) rather than string interpolation where possible.
 
 ## Release safety
 
-- Treat tags as source-of-truth. Inspect `git tag`, `git show TAG`, and `gh release view TAG`.
+- Treat the pushed Git tag as release source-of-truth. Obtain local tag/commit/push evidence from `git-engineer`, then inspect the remote ref and `gh release view TAG`.
 - Do not let `gh release create` create a lightweight tag implicitly unless the user explicitly approved that release strategy.
-- Prefer: version bump PR → merge → signed tag on default branch → push tag → CI publishes release → `gh release view` verification.
+- Prefer: release owner prepares version change → `git-engineer` creates/pushes the approved signed tag → CI publishes → `gh-utility` verifies GitHub release state.
 - When directly creating a release is appropriate, prefer draft first, attach assets, then publish.
 - Use `--notes-file` for release notes. Avoid multiline `--notes` shell quoting.
 

@@ -4,15 +4,16 @@ Use this file for rulesets, branch protection, repository settings, secrets, var
 
 ## General admin rule
 
-Admin/security changes are high-risk. Always inspect current state, present a dry-run plan, and get approval.
+Admin/security changes are high-risk. Always inspect current state and prepare a recovery and verification plan. Execute only when the current request explicitly authorizes the exact target and action.
 
 ## Rulesets and branch protection
 
 Read-only:
 
 ```bash
-gh ruleset list --repo OWNER/REPO --json id,name,target,enforcement,source
-gh ruleset view RULESET_ID --repo OWNER/REPO --json id,name,target,enforcement,conditions,rules,bypassActors
+gh ruleset list --repo OWNER/REPO
+gh ruleset view RULESET_ID --repo OWNER/REPO
+gh api -X GET repos/OWNER/REPO/rulesets --paginate
 gh ruleset check main --repo OWNER/REPO
 gh api -X GET repos/OWNER/REPO/branches/main/protection
 ```
@@ -34,7 +35,7 @@ gh repo view OWNER/REPO --json visibility,isArchived,viewerPermission,defaultBra
 gh api -X GET repos/OWNER/REPO --jq '{allow_auto_merge,delete_branch_on_merge,allow_squash_merge,allow_merge_commit,allow_rebase_merge,allow_update_branch}'
 ```
 
-Changing visibility, default branch, archive/delete, merge methods, or auto-merge policy needs approval.
+Changing visibility, default branch, archive/delete, merge methods, or auto-merge policy needs explicit authorization for the exact repository and change.
 
 ## Secrets
 
@@ -46,13 +47,6 @@ gh secret list --org ORG
 gh secret list --env production --repo OWNER/REPO
 ```
 
-Plan from dotenv without printing values:
-
-```bash
-node scripts/gh-utility.mjs secret-manifest .env --kind secret --repo OWNER/REPO
-node scripts/gh-utility.mjs secret-manifest .env --kind secret --repo OWNER/REPO --emit-commands
-```
-
 Set secrets safely:
 
 ```bash
@@ -60,9 +54,10 @@ Set secrets safely:
 gh secret set MY_SECRET --repo OWNER/REPO
 
 # From environment variable without printing value
+: "${MY_SECRET_VALUE:?set non-empty MY_SECRET_VALUE in the environment}"
 printf '%s' "$MY_SECRET_VALUE" | gh secret set MY_SECRET --repo OWNER/REPO
 
-# From dotenv file after reviewing names
+# From a reviewed dotenv file with an explicit target and intended non-empty values
 gh secret set -f .env --repo OWNER/REPO
 ```
 

@@ -1,0 +1,274 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: gh-utility
+  source-version: 1.2.0
+  recommended-skill-md-max-bytes: 16000
+  description: >-
+    Use when a task requires the installed GitHub CLI (`gh`) for repositories, issues,
+    pull requests, Actions, releases, Projects, Codespaces, secrets, variables, rulesets,
+    search, API access, or preview-stage `gh skill` commands. Select and run native `gh`
+    commands, keep the target explicit, and verify GitHub state after changes. Route local
+    Git history, code review, CI remediation, security judgment, and skill authoring to
+    their owning skills.
+  license: MIT
+  compatibility: >-
+    Requires GitHub CLI gh and network access to the relevant GitHub host. Command families,
+    flags, and JSON fields that may vary by version must be checked against installed help.
+
+fragments:
+  overview: fragments/overview.md
+  finalChecks: fragments/final-checks.md
+
+references:
+  - id: ref-safety-rules
+    title: Safety rules
+    source: references/safety-rules.md
+    target: references/safety-rules.md
+    required: false
+    trigger: Read before a destructive mutation, secret or key operation, release publication, admin change, or bulk operation.
+  - id: ref-auth-and-scopes
+    title: Auth and scopes
+    source: references/auth-and-scopes.md
+    target: references/auth-and-scopes.md
+    required: false
+    trigger: Read when gh is missing, unauthenticated, on the wrong host, or lacks permission.
+  - id: ref-api-search-routing
+    title: API, search, and URL routing
+    source: references/api-search-and-url-routing.md
+    target: references/api-search-and-url-routing.md
+    required: false
+    trigger: Read for GitHub URLs, cross-repository search, gh api, GraphQL, pagination, or rate limits.
+  - id: ref-repo-issue-pr
+    title: Repository, issue, and pull request use cases
+    source: references/repo-issue-pr-playbook.md
+    target: references/repo-issue-pr-playbook.md
+    required: false
+    trigger: Read for repository metadata, issues, labels, milestones, or pull requests.
+  - id: ref-pr-ci-review
+    title: PR, CI, and review inspection
+    source: references/pr-ci-review-loop.md
+    target: references/pr-ci-review-loop.md
+    required: false
+    trigger: Read for GitHub-side PR checks, review state, threads, merge, or monitoring.
+  - id: ref-admin-security
+    title: Admin and security use cases
+    source: references/admin-security-playbook.md
+    target: references/admin-security-playbook.md
+    required: false
+    trigger: Read for rulesets, branch protection, settings, secrets, variables, keys, or organization administration.
+  - id: ref-bulk-operations
+    title: Bulk operations
+    source: references/bulk-operations.md
+    target: references/bulk-operations.md
+    required: false
+    trigger: Read when one request affects multiple repositories or independent GitHub resources.
+  - id: ref-projects
+    title: GitHub Projects
+    source: references/projects-playbook.md
+    target: references/projects-playbook.md
+    required: false
+    trigger: Read for GitHub Projects schema, items, fields, exports, or updates.
+  - id: ref-releases
+    title: Releases
+    source: references/release-playbook.md
+    target: references/release-playbook.md
+    required: false
+    trigger: Read for release inspection, drafts, publication, assets, attestations, or recovery.
+  - id: ref-codespaces
+    title: Codespaces
+    source: references/codespaces-and-dev-envs.md
+    target: references/codespaces-and-dev-envs.md
+    required: false
+    trigger: Read for Codespaces lifecycle, ports, logs, SSH, file copy, cost, or data-loss decisions.
+  - id: ref-command-map
+    title: gh command map
+    source: references/command-map.md
+    target: references/command-map.md
+    required: false
+    trigger: Read when the task spans several gh command families or command availability is unclear.
+  - id: ref-gh-skill
+    title: gh skill management
+    source: references/gh-skill-management.md
+    target: references/gh-skill-management.md
+    required: false
+    trigger: Read for preview, install, list, update, search, or publish in the preview-stage gh skill family.
+  - id: ref-troubleshooting
+    title: Troubleshooting
+    source: references/troubleshooting.md
+    target: references/troubleshooting.md
+    required: false
+    trigger: Read after a gh command fails, returns incomplete data, or targets the wrong host or repository.
+
+assets:
+  - id: asset-task-report
+    source: assets/gh_task_report_template.md
+    target: assets/gh_task_report_template.md
+    description: GitHub task report template.
+  - id: asset-issue
+    source: assets/issue_template.md
+    target: assets/issue_template.md
+    description: Issue body template.
+  - id: asset-pr-body
+    source: assets/pr_body_template.md
+    target: assets/pr_body_template.md
+    description: Pull request body template.
+  - id: asset-pr-triage
+    source: assets/pr_comment_triage_template.md
+    target: assets/pr_comment_triage_template.md
+    description: Pull request comment triage template.
+  - id: asset-project-fields
+    source: assets/project_fields_template.yaml
+    target: assets/project_fields_template.yaml
+    description: GitHub Project field plan template.
+  - id: asset-release-notes
+    source: assets/release_notes_template.md
+    target: assets/release_notes_template.md
+    description: Release notes template.
+  - id: asset-repo-batch
+    source: assets/repo_batch_template.csv
+    target: assets/repo_batch_template.csv
+    description: Repository batch inventory template.
+  - id: asset-workflow-inputs
+    source: assets/workflow_dispatch_inputs.json
+    target: assets/workflow_dispatch_inputs.json
+    description: Workflow-dispatch input review template.
+
+copies:
+  - id: copy-agents-openai
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable UI metadata.
+  - id: copy-license
+    source: LICENSE
+    target: LICENSE
+    description: Skill license.
+
+supporting:
+  - id: supporting-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Navigation for non-normative maintenance records.
+  - id: supporting-research
+    source: docs/research-basis.md
+    target: docs/research-basis.md
+    description: Historical design and provenance notes.
+  - id: supporting-log-20260713-1
+    source: docs/logs/implementation-log-20260713-1.md
+    target: docs/logs/implementation-log-20260713-1.md
+    description: Native-gh simplification implementation log.
+
+surfaces:
+  active:
+    requiredReferences: []
+    optionalReferences:
+      - ref-safety-rules
+      - ref-auth-and-scopes
+      - ref-api-search-routing
+      - ref-repo-issue-pr
+      - ref-pr-ci-review
+      - ref-admin-security
+      - ref-bulk-operations
+      - ref-projects
+      - ref-releases
+      - ref-codespaces
+      - ref-command-map
+      - ref-gh-skill
+      - ref-troubleshooting
+  supportingGlobs:
+    - docs/*
+    - docs/logs/*
+
+sections:
+  startHere:
+    - Confirm the task concerns GitHub state and can be handled with the installed gh CLI.
+    - Resolve the host, repository or organization, resource identifier, and requested outcome.
+    - Load only the reference matching the use case, then use native gh commands directly.
+    - After a mutation, run a fresh native gh read and report the observed result or failure.
+  whenToUse:
+    - Inspecting or changing GitHub repositories, issues, pull requests, Actions, releases, Projects, Codespaces, rulesets, secrets, variables, keys, search, API resources, or gh skill state.
+    - Translating a GitHub request or URL into native gh commands.
+    - Diagnosing gh authentication, host, permissions, API, or rate limits.
+  whenNotToUse:
+    - Local commits, rebases, worktrees, branch history, or push policy; use git-engineer.
+    - Code-review judgment or review-feedback remediation; use code-reviewer or gh-address-comments.
+    - Diagnosing and fixing CI failures; use gh-fix-ci, with gh-utility limited to GitHub inspection.
+    - Security findings or control judgments; use security-reviewer.
+    - Skill authoring, compilation, or review; use skill-creator, skill-source-compiler, or skill-reviewer.
+  workflow:
+    - id: select-command
+      title: Select the native gh command
+      goal: Choose the smallest installed gh command for the requested GitHub use case.
+      steps:
+        - Resolve the host, target, and resource identifier.
+        - Check installed gh help when command syntax or JSON fields are uncertain.
+      validation:
+        - The command and target are explicit.
+    - id: run-command
+      title: Run gh directly
+      goal: Execute the native gh command without an intermediary transport.
+      steps:
+        - Use explicit repository, owner, or hostname selectors when context is ambiguous.
+        - Run only the requested and authorized mutation.
+      validation:
+        - The command output or failure is captured without exposing secrets.
+    - id: verify-result
+      title: Verify the result
+      goal: Confirm the requested GitHub state after a mutation.
+      steps:
+        - Run a fresh native gh read for the changed resource.
+        - Report the observed result, command failure, or remaining external evidence boundary.
+      validation:
+        - Completion is based on current gh output, not on a shown command or dry-run.
+  interop:
+    - id: interop-local-git
+      domain: Local Git history, worktrees, commits, rebases, and push policy
+      winner: git-engineer
+      rationale: gh-utility covers native GitHub CLI use; git-engineer owns local Git decisions.
+    - id: interop-review
+      domain: Review findings and feedback remediation
+      winner: code-reviewer or gh-address-comments when available
+      rationale: gh-utility may fetch or post GitHub state but does not decide code findings or fixes.
+    - id: interop-ci
+      domain: Failing pull-request checks
+      winner: gh-fix-ci when available
+      rationale: gh-utility may inspect checks; the specialized skill owns diagnosis and remediation.
+    - id: interop-security
+      domain: Security findings and policy judgment
+      winner: security-reviewer
+      rationale: gh-utility operates gh and does not issue security verdicts.
+  gotchas:
+    - id: gotcha-version-drift
+      priority: high
+      text: gh command families, flags, and JSON fields vary by installed version; check gh help before using uncertain syntax.
+    - id: gotcha-context
+      priority: high
+      text: Use explicit --repo or --hostname when the current checkout or host could select the wrong target.
+    - id: gotcha-external-ci
+      priority: medium
+      text: GitHub may expose only a link for external CI; report that boundary instead of claiming external-provider state.
+  policies:
+    - id: policy-native-first
+      title: Native gh first
+      text: Use installed gh commands directly. This skill ships no helper today; a future helper may only aggregate native gh reads or run a simple explicit sequence of native gh calls, never proxy transport, authorization, redaction, mutation policy, or semantic verdicts.
+    - id: policy-authorization
+      title: Authorization
+      text: An exact unambiguous request authorizes that action and target; ask only when action, target, destructive scope, or secret handling remains ambiguous.
+    - id: policy-secrets
+      title: Secret confidentiality
+      text: Never print, log, echo, or persist secret and token values; use native gh secret and variable input mechanisms.
+    - id: policy-evidence
+      title: Evidence
+      text: Report command output and fresh post-action reads honestly; help, dry-run, or validation output does not prove a GitHub mutation occurred.
+  portability:
+    required: true
+    rules:
+      - Keep mandatory guidance, references, assets, license, and UI metadata inside this skill folder.
+      - Use only relative local links and explicit GitHub host or repository selectors.
+      - Do not depend on Node.js, package metadata, proxy CLIs, or files outside the skill folder.
+      - If a future script is justified, keep it to transparent aggregation or a simple sequence of native gh calls with no independent policy or transport semantics.
+    checklist:
+      - Run skill-source-compiler lint, regenerate, and check after source edits.
+      - Compile to an isolated directory and confirm that no source, tests, package metadata, or scripts are emitted.
+      - Search active and declared files for machine-specific absolute filesystem dependencies.

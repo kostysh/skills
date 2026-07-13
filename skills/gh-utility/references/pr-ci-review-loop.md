@@ -1,66 +1,29 @@
-# PR CI and review loop
+# PR CI and review-state loop
 
-Use this file when the user wants a PR green, failing checks fixed, review feedback addressed, or merge readiness verified.
+Use this reference for GitHub-side pull-request state: mergeability, checks, Actions logs, review
+threads, monitoring, replies, resolution, and merge transport. `gh-utility` does not decide code
+findings or implement CI/review fixes. Route those decisions to `code-reviewer`, `gh-address-comments`,
+or `gh-fix-ci` when available.
 
-## Goal
-
-Bring the PR to an actionable state: all fixable CI failures addressed, high/medium review feedback handled, unresolved review threads either resolved with approval or clearly reported, and human gates separated from technical blockers.
-
-## Sequence
-
-1. Identify PR.
-2. Inspect mergeability and review state.
-3. Fetch review threads/comments.
-4. Inspect checks and logs.
-5. Build plan and ask before high-risk actions.
-6. Apply fixes locally.
-7. Verify locally, commit, push with approval if needed.
-8. Watch CI, loop on actionable failures.
-9. Ask before replying/resolving threads or merging.
-
-## Identify PR
+## Resolve and inspect
 
 ```bash
-gh pr view --json number,title,url,headRefName,baseRefName,isDraft,mergeable,mergeStateStatus,reviewDecision
 gh repo view --json nameWithOwner -q .nameWithOwner
+gh pr view --json number,title,url,headRefName,baseRefName,isDraft,mergeable,mergeStateStatus,reviewDecision
+gh pr checks
 ```
 
-If no PR exists for the current branch, stop and report that. If the user gave a PR URL, use `scripts/gh-utility.mjs route` then `--repo OWNER/REPO --pr N`.
+If no PR exists for the branch, stop as `blocked`. Keep three evidence dimensions separate:
 
-## Review threads
+1. mergeability and draft state;
+2. review decision and unresolved thread state;
+3. checks, pending work, and external-provider links.
 
-Fetch unresolved threads:
-
-```bash
-node scripts/gh-utility.mjs pr-threads --repo OWNER/REPO --pr 123
-```
-
-For each thread:
-
-- Read the reviewer comment.
-- Read current file contents around the line, not just the diff hunk.
-- Identify the enclosing function/class/config block.
-- Search for adjacent occurrences when the issue is systemic.
-- Classify: fix, investigate, discuss, acknowledge, outdated.
-- Do not resolve until the user approves specific thread resolution.
-
-Thread reply/resolve after approval:
-
-```bash
-node scripts/gh-utility.mjs pr-threads --reply-thread-id PRRT_xxx --reply-body-file reply.md --confirm-mutation
-node scripts/gh-utility.mjs pr-threads --resolve-thread-id PRRT_xxx --confirm-mutation
-```
+Do not report merge readiness when any required dimension is missing or incomplete.
 
 ## Checks and logs
 
-Start with:
-
-```bash
-gh pr checks 123 --repo OWNER/REPO
-node scripts/gh-utility.mjs pr-checks --repo OWNER/REPO --pr 123
-```
-
-Manual fallback:
+Use only fields listed by installed `gh pr checks --help`:
 
 ```bash
 gh pr checks 123 --repo OWNER/REPO --json name,state,bucket,link,workflow,startedAt,completedAt
@@ -68,64 +31,57 @@ gh run view RUN_ID --repo OWNER/REPO --json name,workflowName,status,conclusion,
 gh run view RUN_ID --repo OWNER/REPO --log-failed
 ```
 
-Treat non-GitHub Actions checks as external. Report the URL; do not scrape another provider unless the user gave credentials and asked.
+The `bucket` field groups check state into pass, fail, pending, skipping, or cancel. Preserve pending
+as pending; do not turn it into success. For external CI, report the linked provider and evidence
+limit rather than scraping it without separate authority.
 
-## Failure analysis pattern
+For an actionable failure, hand off the PR, failing check, run/log evidence, head SHA, and current
+repository state to `gh-fix-ci` or the implementation owner. A GitHub-side inspection is not a fix.
 
-For each failure:
+## Review threads
 
-1. Identify the failing job and exact assertion/lint/build error.
-2. Trace from error to source file.
-3. State root cause before editing.
-4. Search for related patterns/call sites.
-5. Fix root cause, not just the symptom.
-6. Run the smallest local validation command.
-7. Commit and push only when appropriate.
+Use `gh api graphql` when thread IDs or resolution state are required because `gh pr view` does not
+expose them:
 
-## Waiting and monitoring
+```bash
+gh api graphql \
+  -f query='query($owner:String!,$repo:String!,$number:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$number){reviewThreads(first:100){nodes{id isResolved path line comments(first:100){nodes{id author{login} body url}}} pageInfo{hasNextPage endCursor}}}}}' \
+  -F owner=OWNER -F repo=REPO -F number=123
+```
+
+If `pageInfo.hasNextPage` is true, repeat with a cursor before claiming completeness. Hand thread
+content and current file context to the owning review/remediation skill.
+
+Use `gh-address-comments` for reply and resolution workflows when available. If raw GraphQL is
+required, use `gh api graphql` with variables for the explicitly authorized thread and verify it
+with a fresh query.
+
+## Monitoring
 
 ```bash
 gh pr checks 123 --repo OWNER/REPO --watch --fail-fast
-# or
 gh run watch RUN_ID --repo OWNER/REPO --exit-status
 ```
 
-Do not wait for human approval, draft-readiness, review gates, or informational bots unless the user explicitly asked. Report them as human gates.
+Wait only when the user requested monitoring. Human review gates, draft readiness, and informational
+bots are not technical failures; report them separately.
 
-## Merge conflicts
+## Merge transport
 
-```bash
-git fetch origin
-BASE=$(gh pr view 123 --repo OWNER/REPO --json baseRefName -q .baseRefName)
-git rebase origin/$BASE
-```
-
-Ask before force-pushing if collaborators may be on the branch. After resolving conflicts, run local checks and use `git push --force-with-lease` only with approval.
-
-## Merge
-
-Before merge:
+Before an authorized merge, refresh all three evidence dimensions. Merge strategy is a repository
+or operator decision, not something `gh-utility` invents.
 
 ```bash
-gh pr view 123 --repo OWNER/REPO --json mergeable,mergeStateStatus,reviewDecision,isDraft
-gh pr checks 123 --repo OWNER/REPO
-node scripts/gh-utility.mjs pr-threads --repo OWNER/REPO --pr 123
+gh pr merge 123 --repo OWNER/REPO --squash
 ```
 
-Ask for explicit approval and merge strategy:
+Run the command only when the exact PR and strategy are authorized. Verify resulting PR state and
+remote branch state afterward. Remote branch deletion is a separate high-risk action that requires
+exact authorization; do not add `--delete-branch` implicitly. Local branch deletion, rebases,
+commits, force-with-lease, and worktree decisions belong to `git-engineer`.
 
-```bash
-gh pr merge 123 --repo OWNER/REPO --squash --delete-branch
-# or --merge / --rebase / --auto when policy allows
-```
+## Output
 
-## Final report
-
-Include:
-
-- PR URL.
-- Technical blockers fixed.
-- Checks rerun/watched and current result.
-- Threads replied/resolved/skipped.
-- Commits pushed.
-- Remaining human gates.
+Report PR URL and head SHA, mergeability, review state, check state, thread completeness, commands
+actually run, authorized GitHub mutations, verification, specialized handoff, and remaining human
+or external-provider gates.

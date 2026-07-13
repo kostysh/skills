@@ -14,7 +14,11 @@
 
 ## Logs
 
-- [logs/implementation-log-20260609-1.md](logs/implementation-log-20260609-1.md) - портирование `gh-utility` и замена Python helper-скриптов на TypeScript CLI.
+- [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) - переход к документационному bundle для нативного `gh` без proxy/runtime слоя.
+
+## Research
+
+- [research-basis.md](research-basis.md) - supporting provenance и исторические design influences.
 
 ## Scope of This Folder
 

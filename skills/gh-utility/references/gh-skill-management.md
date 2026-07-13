@@ -1,88 +1,76 @@
 # `gh skill` management playbook
 
-Use this file when installing, previewing, updating, validating, or publishing agent skills through GitHub CLI.
+Use this reference for the preview-stage `gh skill` command family. It is subject to change without
+notice. Start with `gh skill --help` and command-local help from the installed CLI; do not reuse
+syntax from an older session without checking it.
 
-## Safety rule
+## Preview and inspect
 
-Agent skills can contain instructions, scripts, hooks, and assets that an agent may execute or follow. Review the source before installation, especially when granting shell or bash pre-approval in an agent host.
-
-## Inspect before install
-
-```bash
-gh skill preview OWNER/REPO/SKILL_NAME
-# or a local folder
-node scripts/gh-utility.mjs validate-skill path/to/skill
-find path/to/skill -maxdepth 3 -type f | sort
-sed -n '1,220p' path/to/skill/SKILL.md
-```
-
-For a GitHub repo source, inspect repository metadata first:
+Preview fetches and renders a remote skill without installation:
 
 ```bash
-gh repo view OWNER/REPO --json nameWithOwner,description,visibility,isArchived,licenseInfo,defaultBranchRef,url
+gh skill preview OWNER/REPO SKILL_NAME
+gh skill preview OWNER/REPO path/to/SKILL.md
+gh skill preview OWNER/REPO SKILL_NAME@TAG_OR_SHA
 ```
+
+Inspect the shown tree, `SKILL.md`, scripts, references, assets, provenance, and requested agent
+permissions. Preview is not an independent capability or security review.
 
 ## Install
 
-Local skill:
+Remote installation takes the repository and skill selector as separate arguments:
 
 ```bash
-gh skill install ./gh-utility --from-local --agent codex --scope user
+gh skill install OWNER/REPO SKILL_NAME --agent codex --scope user
+gh skill install OWNER/REPO path/to/SKILL.md --agent codex --scope project
+gh skill install OWNER/REPO SKILL_NAME --pin TAG_OR_SHA --agent codex --scope user
 ```
 
-Repository skill:
+Local installation uses `--from-local`:
 
 ```bash
-gh skill install OWNER/REPO/skills/gh-utility --agent codex --scope user
+gh skill install ./skills-repository gh-utility --from-local --agent codex --scope user
 ```
 
-Shared project installation usually lives under `.agents/skills/`. User-level installs live under `~/.agents/skills/` or agent-specific skill directories depending on the host.
+The default non-interactive scope and agent may differ from the operator's intent. Specify both.
+Installing or forcing replacement changes agent instructions and may introduce executable code;
+require exact authorization for the source, skill, agent, scope, pin, and overwrite behavior.
 
-## Pinning and provenance
-
-Prefer pinned refs or reviewed local installs when reproducibility matters:
-
-```bash
-gh skill install OWNER/REPO/skills/gh-utility --ref TREE_SHA --agent codex --scope user
-```
-
-Record source, tree SHA/ref, install path, and review date in a local audit note.
-
-## Update
-
-Preview update first:
+## List and update
 
 ```bash
+gh skill list --agent codex --scope user --json skillName,path,sourceURL,scope,version,pinned
 gh skill update gh-utility --dry-run
 gh skill update gh-utility
 ```
 
-Pinned installs may be intentionally skipped by update tooling. Do not unpin or update without reviewing diffs.
+`--dry-run` reports available updates without applying them. Pinned skills are skipped unless the
+operator explicitly authorizes unpinning. A forced update can overwrite local modifications, so
+inspect provenance and diff implications first.
 
-## Publish checklist
+## Validate and publish
 
-Before publishing a skill repository:
-
-- `SKILL.md` has valid frontmatter with a precise description.
-- Large guidance is split into `references/`.
-- Scripts are deterministic, dependency-light, and inspect-first.
-- No tokens, secrets, private hostnames, or proprietary payloads are committed.
-- License is included.
-- README explains install, validation, and safety model.
-- Example prompts exercise both read-only and approval-gated mutation routes.
-- Version/tag/release flow is documented.
-
-## Validate this skill
+Run validation from the repository discovery root, not from an individual skill folder:
 
 ```bash
-node scripts/gh-utility.mjs validate-skill .
-pnpm --filter /gh-utility-cli typecheck
+gh skill publish skills --dry-run
 ```
 
-## Updating this skill safely
+The dry-run validates Agent Skills packaging rules. It does not prove instruction quality,
+runtime behavior, portability beyond the checked rules, or independent review PASS. Use
+`skill-source-compiler` for structured source drift and `skill-reviewer` for capability verdicts.
 
-1. Read the current `SKILL.md` and changed files.
-2. Run validator and Python compile checks.
-3. Re-run a few read-only examples against a test repository.
-4. Publish as a tag/release only after verification.
-5. In consuming environments, run `gh skill preview` or inspect the archive before installation.
+Publishing creates or changes repository/release state. Execute only after explicit authorization
+for repository, version tag, discovered skill set, and release effect:
+
+```bash
+gh skill publish --tag vX.Y.Z
+```
+
+Do not run `--fix` without reviewing the exact frontmatter changes it will write.
+
+## Verification
+
+After install or update, run `gh skill list` for the selected agent/scope and inspect the installed
+tree. After publish, verify the release and preview the published skill at the resulting tag.

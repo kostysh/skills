@@ -9,7 +9,7 @@ Bulk operations are where small `gh` mistakes become large incidents. Default to
 1. Define the scope: host, org/user, repo allowlist, archived/fork/private visibility filters, and maximum item count.
 2. Inventory read-only state into JSON/CSV.
 3. Produce a plan table: target, current state, proposed command, risk, rollback, verification.
-4. Ask for approval for every medium/high-risk operation.
+4. Confirm that the current request authorizes every medium/high-risk target/action pair; otherwise ask for the missing scope.
 5. Execute in small batches.
 6. Stop on the first unexpected error unless the user approved continue-on-error.
 7. Verify with read-only commands and produce a final report.
@@ -39,23 +39,19 @@ Read-only loop example:
 while IFS=, read -r repo action resource value notes; do
   [ "$repo" = "repo" ] && continue
   gh repo view "$repo" --json nameWithOwner,visibility,isArchived,viewerPermission
-  gh ruleset list --repo "$repo" --json id,name,target,enforcement
+  gh ruleset list --repo "$repo"
   gh variable list --repo "$repo"
 done < assets/repo_batch_template.csv
 ```
 
-Mutation loop pattern:
+Native secret upload pattern:
 
 ```bash
-# 1. Generate commands only
-node scripts/gh-utility.mjs secret-manifest .env --repo OWNER/REPO --emit-commands > plan.sh
-
-# 2. Review plan.sh manually
-sed -n '1,200p' plan.sh
-
-# 3. Execute only after approval, preferably one repo at a time
-bash plan.sh
+gh secret set -f .env --repo OWNER/REPO
 ```
+
+Use this only for a reviewed dotenv file, an explicit repository, and an authorized target set.
+Never print the file contents. Verify only secret names and metadata with `gh secret list`.
 
 ## Bulk labels
 
@@ -83,7 +79,7 @@ gh search issues 'org:ORG is:issue is:open label:bug updated:<2026-01-01' \
   --limit 100 --json repository,number,title,labels,updatedAt,url
 
 gh search prs 'org:ORG is:pr is:open draft:false review:required' \
-  --limit 100 --json repository,number,title,reviewDecision,updatedAt,url
+  --limit 100 --json repository,number,title,isDraft,updatedAt,url
 ```
 
 For edits, produce a table first:
