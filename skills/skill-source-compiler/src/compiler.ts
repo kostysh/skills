@@ -1,6 +1,12 @@
 import { isAbsolute, relative, resolve } from 'node:path';
 
-import { removeDirectory, writeTextFile, copyFilePortable } from './fs-utils.ts';
+import {
+  copyFilePortable,
+  fileExists,
+  pathExists,
+  removeDirectory,
+  writeTextFile,
+} from './fs-utils.ts';
 import { SkillforgeError } from './errors.ts';
 import { lintSourceBundle } from './lint.ts';
 import { renderCompileReport, renderSkillMarkdown } from './renderer.ts';
@@ -51,10 +57,7 @@ const buildSkillMarkdownSizeWarning = (
 
 const isSameOrNestedPath = (firstPath: string, secondPath: string): boolean => {
   const relativePath = relative(firstPath, secondPath);
-  return (
-    relativePath === '' ||
-    (!relativePath.startsWith('..') && !isAbsolute(relativePath))
-  );
+  return relativePath === '' || (!relativePath.startsWith('..') && !isAbsolute(relativePath));
 };
 
 const pathsOverlap = (firstPath: string, secondPath: string): boolean =>
@@ -143,7 +146,15 @@ const writePreparedCompile = async (
   prepared: PreparedCompile,
   options: CompileOptions,
 ): Promise<CompileResult> => {
-  if (options.clean ?? true) {
+  const outputExists = await pathExists(prepared.outputDir);
+  if (outputExists && options.clean !== true) {
+    throw new SkillforgeError(
+      'output-already-exists',
+      `Output directory already exists: ${prepared.outputDir}. Choose a new output root or remove a known disposable target explicitly before compiling.`,
+    );
+  }
+
+  if (outputExists && options.clean === true) {
     await removeDirectory(prepared.outputDir);
   }
 
@@ -218,7 +229,30 @@ export const compileAllSourceBundles = async (
     if (!entry.isDirectory()) {
       continue;
     }
-    prepared.push(await prepareCompile(resolve(sourcesRoot, entry.name), options));
+
+    const sourceDir = resolve(sourcesRoot, entry.name);
+    if (!(await fileExists(resolve(sourceDir, 'skill.yaml')))) {
+      continue;
+    }
+    prepared.push(await prepareCompile(sourceDir, options));
+  }
+
+  const outputDirs = new Set<string>();
+  for (const entry of prepared) {
+    if (outputDirs.has(entry.outputDir)) {
+      throw new SkillforgeError(
+        'duplicate-output-target',
+        `Multiple source bundles resolve to the same output directory: ${entry.outputDir}`,
+      );
+    }
+    outputDirs.add(entry.outputDir);
+
+    if ((await pathExists(entry.outputDir)) && options.clean !== true) {
+      throw new SkillforgeError(
+        'output-already-exists',
+        `Output directory already exists: ${entry.outputDir}. Choose a new output root or remove a known disposable target explicitly before compiling.`,
+      );
+    }
   }
 
   const results: CompileResult[] = [];

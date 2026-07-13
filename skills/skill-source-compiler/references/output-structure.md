@@ -1,19 +1,31 @@
 # Output structure
 
-The canonical generated layout is:
+The authoring source layout may be:
 
 ```text
 skill-name/
-├── package.json  # for code-backed skills that ship a runtime package or CLI
-├── SKILL.md
 ├── skill.yaml
-├── fragments/   # only if the source bundle uses fragment files
-├── references/  # only if the source bundle declares references
-├── assets/      # only if the source bundle declares assets
-├── scripts/     # only if the source bundle emits runtime files here
-├── test/        # only if the source bundle emits tests here
+├── fragments/
+├── references/
+├── assets/
+├── src/
+├── test/
+├── scripts/
+└── package.json
+```
+
+The emitted package layout is narrower:
+
+```text
+skill-name/
+├── SKILL.md
+├── references/  # declared entries only
+├── assets/      # declared entries only
+├── scripts/     # declared copies only
 └── docs/
 ```
+
+`docs/compile-report.md` is compiler-owned. `skill.yaml`, fragments, source code, tests, package metadata, and toolchain files are not emitted unless explicitly declared; do not declare them merely to make a source-bound test appear runnable.
 
 ## Section order
 

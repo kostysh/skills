@@ -1,11 +1,13 @@
-import { resolve } from "node:path";
+import { resolve } from 'node:path';
 
-import { fileExists } from "./fs-utils.ts";
-import { loadSourceBundle, type LoadedSourceBundle } from "./source-loader.ts";
-import { containsAbsolutePath, normalizeText } from "./text.ts";
+import { fileExists } from './fs-utils.ts';
+import { loadSourceBundle, type LoadedSourceBundle } from './source-loader.ts';
+import { containsAbsolutePath, normalizeText } from './text.ts';
+
+const UNRESOLVED_TEMPLATE_MARKER = 'SKILL_SOURCE_TODO';
 
 export interface Diagnostic {
-  readonly level: "error" | "warning";
+  readonly level: 'error' | 'warning';
   readonly code: string;
   readonly message: string;
 }
@@ -19,7 +21,7 @@ export interface LintResult {
 const pushIf = (
   diagnostics: Diagnostic[],
   condition: boolean,
-  level: Diagnostic["level"],
+  level: Diagnostic['level'],
   code: string,
   message: string,
 ): void => {
@@ -75,8 +77,8 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
 
   for (const duplicateId of duplicateIds(ids)) {
     diagnostics.push({
-      code: "duplicate-id",
-      level: "error",
+      code: 'duplicate-id',
+      level: 'error',
       message: `Duplicate id detected: ${duplicateId}`,
     });
   }
@@ -89,20 +91,31 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
   ];
   for (const duplicateTarget of duplicateIds(targetPaths)) {
     diagnostics.push({
-      code: "duplicate-target",
-      level: "error",
+      code: 'duplicate-target',
+      level: 'error',
       message: `Multiple emitted files target the same path: ${duplicateTarget}`,
     });
   }
 
   const requiredReferenceIds = new Set(source.surfaces.active.requiredReferences);
   const optionalReferenceIds = new Set(source.surfaces.active.optionalReferences);
+
+  for (const referenceId of requiredReferenceIds) {
+    pushIf(
+      diagnostics,
+      optionalReferenceIds.has(referenceId),
+      'error',
+      'ambiguous-reference-surface',
+      `Reference ${referenceId} is listed as both required and optional.`,
+    );
+  }
+
   for (const referenceId of requiredReferenceIds) {
     pushIf(
       diagnostics,
       !source.references.some((entry) => entry.id === referenceId),
-      "error",
-      "unknown-required-reference",
+      'error',
+      'unknown-required-reference',
       `Required reference id is not declared in references: ${referenceId}`,
     );
   }
@@ -110,37 +123,57 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
     pushIf(
       diagnostics,
       !source.references.some((entry) => entry.id === referenceId),
-      "error",
-      "unknown-optional-reference",
+      'error',
+      'unknown-optional-reference',
       `Optional reference id is not declared in references: ${referenceId}`,
     );
   }
 
   for (const reference of source.references) {
-    if (reference.required && !requiredReferenceIds.has(reference.id)) {
-      diagnostics.push({
-        code: "unreachable-required-reference",
-        level: "error",
-        message: `Reference ${reference.id} is marked required but is not listed in surfaces.active.requiredReferences.`,
-      });
-    }
-  }
-
-  for (const entry of [...source.references, ...source.assets, ...source.copies, ...source.supporting]) {
+    const isRequired = requiredReferenceIds.has(reference.id);
+    const isOptional = optionalReferenceIds.has(reference.id);
     pushIf(
       diagnostics,
-      containsAbsolutePath(entry.description ?? ""),
-      "error",
-      "absolute-path-in-description",
+      !isRequired && !isOptional,
+      'error',
+      'unreachable-reference',
+      `Reference ${reference.id} is declared but is not listed in an active reference surface.`,
+    );
+    pushIf(
+      diagnostics,
+      reference.required !== isRequired,
+      'error',
+      'reference-required-mismatch',
+      `Reference ${reference.id} required=${reference.required} does not match its active surface.`,
+    );
+  }
+
+  for (const entry of [
+    ...source.references,
+    ...source.assets,
+    ...source.copies,
+    ...source.supporting,
+  ]) {
+    pushIf(
+      diagnostics,
+      containsAbsolutePath(entry.description ?? ''),
+      'error',
+      'absolute-path-in-description',
       `Description for ${entry.id} contains an absolute path hint.`,
     );
   }
 
   const normativeTexts = [
+    source.skill.description,
+    ...(source.skill.compatibility === undefined ? [] : [source.skill.compatibility]),
     ...source.sections.startHere,
     ...source.sections.whenToUse,
     ...source.sections.whenNotToUse,
-    ...source.sections.workflow.flatMap((entry) => [entry.goal, ...entry.steps, ...entry.validation]),
+    ...source.sections.workflow.flatMap((entry) => [
+      entry.goal,
+      ...entry.steps,
+      ...entry.validation,
+    ]),
     ...source.sections.interop.flatMap((entry) => [entry.domain, entry.winner, entry.rationale]),
     ...source.sections.commands.flatMap((entry) => [entry.command, entry.summary, entry.when]),
     ...source.sections.gotchas.map((entry) => entry.text),
@@ -148,10 +181,50 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
     ...source.sections.portability.rules,
     ...source.sections.portability.checklist,
   ];
+
+  const activeFilePaths = [
+    ...Object.values(source.fragments),
+    ...source.references.map((entry) => entry.source),
+  ];
+  for (const relativePath of activeFilePaths) {
+    const content = loaded.files.get(relativePath)?.content ?? '';
+    pushIf(
+      diagnostics,
+      content.includes(UNRESOLVED_TEMPLATE_MARKER),
+      'error',
+      'unresolved-template-marker',
+      `Active source file ${relativePath} still contains ${UNRESOLVED_TEMPLATE_MARKER}.`,
+    );
+  }
+  pushIf(
+    diagnostics,
+    normativeTexts.some((text) => text.includes(UNRESOLVED_TEMPLATE_MARKER)),
+    'error',
+    'unresolved-template-marker',
+    `Active manifest guidance still contains ${UNRESOLVED_TEMPLATE_MARKER}.`,
+  );
+
+  const portableTextPaths = new Set([
+    'skill.yaml',
+    ...Object.values(source.fragments),
+    ...source.references.map((entry) => entry.source),
+    ...source.assets.map((entry) => entry.source),
+  ]);
+  for (const relativePath of portableTextPaths) {
+    const content = loaded.files.get(relativePath)?.content ?? '';
+    pushIf(
+      diagnostics,
+      containsAbsolutePath(content),
+      'error',
+      'absolute-path-in-source-file',
+      `Source text contains an absolute filesystem path: ${relativePath}`,
+    );
+  }
+
   for (const duplicateText of detectDuplicateNormativeTexts(normativeTexts)) {
     diagnostics.push({
-      code: "duplicated-guidance",
-      level: "warning",
+      code: 'duplicated-guidance',
+      level: 'warning',
       message: `Potential duplicate guidance detected: ${duplicateText}`,
     });
   }
@@ -160,8 +233,8 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
     pushIf(
       diagnostics,
       command.script === undefined,
-      "error",
-      "missing-command-runtime",
+      'error',
+      'missing-command-runtime',
       `Command ${command.id} does not declare a runtime script.`,
     );
 
@@ -170,8 +243,8 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
       pushIf(
         diagnostics,
         !hasEmittedScript,
-        "error",
-        "missing-command-script",
+        'error',
+        'missing-command-script',
         `Command ${command.id} references ${command.script}, but no copied runtime file emits that path.`,
       );
     }
@@ -182,8 +255,8 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
       pushIf(
         diagnostics,
         !exists,
-        "error",
-        "missing-command-test",
+        'error',
+        'missing-command-test',
         `Command ${command.id} expects test file ${testPath}, but it does not exist.`,
       );
 
@@ -191,8 +264,8 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
       pushIf(
         diagnostics,
         !hasEmittedTest,
-        "error",
-        "missing-command-test-copy",
+        'error',
+        'missing-command-test-copy',
         `Command ${command.id} references ${testPath}, but no copied runtime file emits that path.`,
       );
     }
@@ -201,9 +274,9 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
   pushIf(
     diagnostics,
     source.sections.commands.length > 0 && loaded.packageVersion === null,
-    "error",
-    "missing-package-manifest",
-    "Command-bearing source bundles must include package.json so the shipped CLI version can be tracked separately.",
+    'error',
+    'missing-package-manifest',
+    'Command-bearing source bundles must include package.json so the shipped CLI version can be tracked separately.',
   );
 
   const referencesToSupportingTargets = new Set(source.supporting.map((entry) => entry.target));
@@ -211,8 +284,8 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
     pushIf(
       diagnostics,
       referencesToSupportingTargets.has(reference.target),
-      "error",
-      "surface-conflict",
+      'error',
+      'surface-conflict',
       `Target ${reference.target} is declared as both active and supporting content.`,
     );
   }
@@ -220,7 +293,7 @@ const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult>
   return {
     diagnostics,
     loaded,
-    ok: diagnostics.every((entry) => entry.level !== "error"),
+    ok: diagnostics.every((entry) => entry.level !== 'error'),
   };
 };
 

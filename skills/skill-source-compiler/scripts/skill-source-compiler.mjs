@@ -17,7 +17,7 @@ var __exportAll = (all, no_symbols) => {
 //#endregion
 //#region package.json
 var name = "@kostysh/skill-source-compiler-cli";
-var version$1 = "0.2.3";
+var version$1 = "0.2.4";
 var description = "CLI utilities for the skill-source-compiler skill.";
 var type = "module";
 var bin = { "skill-source-compiler": "scripts/skill-source-compiler.mjs" };
@@ -6179,6 +6179,17 @@ var fileExists = async (path) => {
 		return false;
 	}
 };
+/**
+* Checks whether any filesystem entry exists at a path.
+*/
+var pathExists = async (path) => {
+	try {
+		await stat(path);
+		return true;
+	} catch {
+		return false;
+	}
+};
 //#endregion
 //#region src/errors.ts
 var SkillforgeError = class extends Error {
@@ -10258,10 +10269,14 @@ var sha256 = (input) => createHash("sha256").update(input).digest("hex");
 * Detects whether a path-like string is an absolute filesystem path.
 */
 var containsAbsolutePath = (input) => {
-	return /(^|[\s"'`(])\/(?:home|Users|var|opt|tmp|etc|code|workspace|mnt)\//u.test(input) || /(^|[\s"'`(])(?:[A-Za-z]:\\)/u.test(input);
+	const withoutFencedExamples = input.replace(/(^|\n)(?:```|~~~)[^\n]*\n[\s\S]*?\n(?:```|~~~)(?=\n|$)/gu, "$1");
+	const knownInlineRoute = /(^|["'{:\s])\/(?:_next|api|auth|blog|coupon|dashboard|docs|feed|path|photo|photos|rest|shop|sitemap|users|v\d+)(?:\/[^\s",}]+)+/u;
+	const withoutHttpRoutes = withoutFencedExamples.split("\n").map((line) => line.replace(/`([^`\n]+)`/gu, (inlineCode, content) => knownInlineRoute.test(content) ? "" : inlineCode)).join("\n").replace(/\b(?:file|https?):\/\/[^\s)>'"`]+/gu, "").replace(/^\s*(?:baseUrl|pathname|route|slug):\s*\/[^\s#]+.*$/gmu, "").replace(/(["'`])\/(?:api|v\d+)(?:\/[^"'`\s)]*)?\1/gu, "").replace(/\b(?:DELETE|GET|HEAD|OPTIONS|PATCH|POST|PUT)\s+\/(?!\/)[^\s`),;]+/gu, "");
+	return /(^|[\s"'`(=:[,{])\/(?!\/)[A-Za-z0-9._~-]+(?:\/[A-Za-z0-9._~-]+)+/u.test(withoutHttpRoutes) || /(^|[\s"'`(=:[,{])[A-Za-z]:[\\/][^\s"'`)>,;]+/u.test(withoutHttpRoutes) || /(^|[\s"'`(=:[,{])\\\\[^\\/\s]{2,}[\\/][^\s"'`)>,;]+/u.test(withoutHttpRoutes);
 };
 //#endregion
 //#region src/lint.ts
+var UNRESOLVED_TEMPLATE_MARKER = "SKILL_SOURCE_TODO";
 var pushIf = (diagnostics, condition, level, code, message) => {
 	if (condition) diagnostics.push({
 		code,
@@ -10322,13 +10337,15 @@ var lintLoadedBundle = async (loaded) => {
 	});
 	const requiredReferenceIds = new Set(source.surfaces.active.requiredReferences);
 	const optionalReferenceIds = new Set(source.surfaces.active.optionalReferences);
+	for (const referenceId of requiredReferenceIds) pushIf(diagnostics, optionalReferenceIds.has(referenceId), "error", "ambiguous-reference-surface", `Reference ${referenceId} is listed as both required and optional.`);
 	for (const referenceId of requiredReferenceIds) pushIf(diagnostics, !source.references.some((entry) => entry.id === referenceId), "error", "unknown-required-reference", `Required reference id is not declared in references: ${referenceId}`);
 	for (const referenceId of optionalReferenceIds) pushIf(diagnostics, !source.references.some((entry) => entry.id === referenceId), "error", "unknown-optional-reference", `Optional reference id is not declared in references: ${referenceId}`);
-	for (const reference of source.references) if (reference.required && !requiredReferenceIds.has(reference.id)) diagnostics.push({
-		code: "unreachable-required-reference",
-		level: "error",
-		message: `Reference ${reference.id} is marked required but is not listed in surfaces.active.requiredReferences.`
-	});
+	for (const reference of source.references) {
+		const isRequired = requiredReferenceIds.has(reference.id);
+		const isOptional = optionalReferenceIds.has(reference.id);
+		pushIf(diagnostics, !isRequired && !isOptional, "error", "unreachable-reference", `Reference ${reference.id} is declared but is not listed in an active reference surface.`);
+		pushIf(diagnostics, reference.required !== isRequired, "error", "reference-required-mismatch", `Reference ${reference.id} required=${reference.required} does not match its active surface.`);
+	}
 	for (const entry of [
 		...source.references,
 		...source.assets,
@@ -10336,6 +10353,8 @@ var lintLoadedBundle = async (loaded) => {
 		...source.supporting
 	]) pushIf(diagnostics, containsAbsolutePath(entry.description ?? ""), "error", "absolute-path-in-description", `Description for ${entry.id} contains an absolute path hint.`);
 	const normativeTexts = [
+		source.skill.description,
+		...source.skill.compatibility === void 0 ? [] : [source.skill.compatibility],
 		...source.sections.startHere,
 		...source.sections.whenToUse,
 		...source.sections.whenNotToUse,
@@ -10359,6 +10378,16 @@ var lintLoadedBundle = async (loaded) => {
 		...source.sections.portability.rules,
 		...source.sections.portability.checklist
 	];
+	const activeFilePaths = [...Object.values(source.fragments), ...source.references.map((entry) => entry.source)];
+	for (const relativePath of activeFilePaths) pushIf(diagnostics, (loaded.files.get(relativePath)?.content ?? "").includes(UNRESOLVED_TEMPLATE_MARKER), "error", "unresolved-template-marker", `Active source file ${relativePath} still contains ${UNRESOLVED_TEMPLATE_MARKER}.`);
+	pushIf(diagnostics, normativeTexts.some((text) => text.includes(UNRESOLVED_TEMPLATE_MARKER)), "error", "unresolved-template-marker", `Active manifest guidance still contains ${UNRESOLVED_TEMPLATE_MARKER}.`);
+	const portableTextPaths = new Set([
+		"skill.yaml",
+		...Object.values(source.fragments),
+		...source.references.map((entry) => entry.source),
+		...source.assets.map((entry) => entry.source)
+	]);
+	for (const relativePath of portableTextPaths) pushIf(diagnostics, containsAbsolutePath(loaded.files.get(relativePath)?.content ?? ""), "error", "absolute-path-in-source-file", `Source text contains an absolute filesystem path: ${relativePath}`);
 	for (const duplicateText of detectDuplicateNormativeTexts(normativeTexts)) diagnostics.push({
 		code: "duplicated-guidance",
 		level: "warning",
@@ -10570,7 +10599,9 @@ var prepareCompile = async (sourceDir, options) => {
 	};
 };
 var writePreparedCompile = async (prepared, options) => {
-	if (options.clean ?? true) await removeDirectory(prepared.outputDir);
+	const outputExists = await pathExists(prepared.outputDir);
+	if (outputExists && options.clean !== true) throw new SkillforgeError("output-already-exists", `Output directory already exists: ${prepared.outputDir}. Choose a new output root or remove a known disposable target explicitly before compiling.`);
+	if (outputExists && options.clean === true) await removeDirectory(prepared.outputDir);
 	await writeTextFile(resolve(prepared.outputDir, "SKILL.md"), prepared.rendered.skillMarkdown);
 	await writeTextFile(resolve(prepared.outputDir, "docs/compile-report.md"), prepared.rendered.compileReport);
 	for (const file of prepared.copiedFiles) await copyFilePortable(file.sourcePath, file.targetPath);
@@ -10611,7 +10642,15 @@ var compileAllSourceBundles = async (sourcesRoot, options) => {
 	const prepared = [];
 	for (const entry of entries) {
 		if (!entry.isDirectory()) continue;
-		prepared.push(await prepareCompile(resolve(sourcesRoot, entry.name), options));
+		const sourceDir = resolve(sourcesRoot, entry.name);
+		if (!await fileExists(resolve(sourceDir, "skill.yaml"))) continue;
+		prepared.push(await prepareCompile(sourceDir, options));
+	}
+	const outputDirs = /* @__PURE__ */ new Set();
+	for (const entry of prepared) {
+		if (outputDirs.has(entry.outputDir)) throw new SkillforgeError("duplicate-output-target", `Multiple source bundles resolve to the same output directory: ${entry.outputDir}`);
+		outputDirs.add(entry.outputDir);
+		if (await pathExists(entry.outputDir) && options.clean !== true) throw new SkillforgeError("output-already-exists", `Output directory already exists: ${entry.outputDir}. Choose a new output root or remove a known disposable target explicitly before compiling.`);
 	}
 	const results = [];
 	for (const entry of prepared) results.push(await writePreparedCompile(entry, options));
@@ -10631,9 +10670,18 @@ var extractFrontmatter = (markdown) => {
 		frontmatter: browser_default.parse(match[1] ?? "")
 	};
 };
+var extractCodePaths = (value) => [...value.matchAll(/`([^`]+)`/gu)].map((match) => match[1]).filter((entry) => entry !== void 0);
+var extractDocumentedPackagePaths = (markdown) => {
+	const paths = [];
+	for (const match of markdown.matchAll(/^\*\*(?:Runtime script|Tests):\*\* (.+)$/gmu)) paths.push(...extractCodePaths(match[1] ?? ""));
+	const assetsSection = markdown.match(/(?:^|\n)## Bundled assets\n([\s\S]*?)(?=\n## |$)/u);
+	if (assetsSection?.[1] !== void 0) paths.push(...extractCodePaths(assetsSection[1]));
+	return [...new Set(paths)].sort();
+};
 var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeFile, diagnostics, options = {}) => {
 	let body = "";
 	let frontmatter = {};
+	let compilerTagged = false;
 	try {
 		const extracted = extractFrontmatter(markdown);
 		body = extracted.body;
@@ -10652,6 +10700,7 @@ var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeF
 		message: parsedFrontmatter.error.message
 	});
 	else {
+		compilerTagged = parsedFrontmatter.data.metadata["skillforge-source-manifest"] !== void 0;
 		const folderName = resolve(skillDir).split(/[/\\]/u).at(-1);
 		if (parsedFrontmatter.data.name !== folderName) diagnostics.push({
 			code: "folder-name-mismatch",
@@ -10677,7 +10726,8 @@ var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeF
 		level: "error",
 		message: "Compiled SKILL.md contains an absolute path."
 	});
-	for (const relativePath of relativeFiles) {
+	const portableTextFiles = relativeFiles.filter((relativePath) => relativePath === "SKILL.md" || relativePath === "docs/compile-report.md" || /^(?:agents|assets|references)\//u.test(relativePath));
+	for (const relativePath of portableTextFiles) {
 		const content = await readRelativeFile(relativePath).catch(() => "");
 		if (content !== "" && containsAbsolutePath(content)) diagnostics.push({
 			code: "absolute-path-in-file",
@@ -10695,6 +10745,16 @@ var checkSkillMarkdown = async (skillDir, markdown, relativeFiles, readRelativeF
 		code: "missing-expected-reference-link",
 		level: "error",
 		message: `Generated SKILL.md is missing expected reference link: ${expectedReferenceLink}`
+	});
+	for (const documentedPath of extractDocumentedPackagePaths(markdown)) if (!relativeFiles.includes(documentedPath)) diagnostics.push({
+		code: "missing-documented-package-file",
+		level: "error",
+		message: `SKILL.md documents ${documentedPath}, but the file is missing.`
+	});
+	if (compilerTagged && !relativeFiles.includes("docs/compile-report.md")) diagnostics.push({
+		code: "missing-compile-report",
+		level: "error",
+		message: "Compiler-tagged skill package is missing docs/compile-report.md."
 	});
 };
 var collectEmittedRelativeFiles = (rendered) => {
@@ -10722,13 +10782,23 @@ var checkSourceBundle = async (skillDir) => {
 	});
 	if (rendered === null) return finalizeResult(diagnostics);
 	const existingSkillMarkdown = await readTextFile(resolve(normalizedDir, "SKILL.md")).catch(() => null);
-	if (existingSkillMarkdown !== null && existingSkillMarkdown !== rendered.skillMarkdown) diagnostics.push({
+	if (existingSkillMarkdown === null) diagnostics.push({
+		code: "missing-generated-skill",
+		level: "error",
+		message: "Source bundle is missing compiler-owned SKILL.md."
+	});
+	else if (existingSkillMarkdown !== rendered.skillMarkdown) diagnostics.push({
 		code: "generated-skill-drift",
 		level: "error",
 		message: "SKILL.md does not match the current source bundle render."
 	});
 	const existingCompileReport = await readTextFile(resolve(normalizedDir, "docs/compile-report.md")).catch(() => null);
-	if (existingCompileReport !== null && existingCompileReport !== rendered.compileReport) diagnostics.push({
+	if (existingCompileReport === null) diagnostics.push({
+		code: "missing-compile-report",
+		level: "error",
+		message: "Source bundle is missing compiler-owned docs/compile-report.md."
+	});
+	else if (existingCompileReport !== rendered.compileReport) diagnostics.push({
 		code: "compile-report-drift",
 		level: "error",
 		message: "docs/compile-report.md does not match the current source bundle render."
@@ -10797,7 +10867,7 @@ var COMMANDS = {
 		usage: [`node ${RUNTIME_SCRIPT} compile <source-dir> --out-dir <skills-dir>`]
 	},
 	"compile-all": {
-		summary: "Compile every source bundle found directly under the provided sources root into an independent output directory.",
+		summary: "Compile direct child directories that contain skill.yaml into distinct paths under an independent output directory.",
 		usage: [`node ${RUNTIME_SCRIPT} compile-all <sources-root> --out-dir <skills-dir>`]
 	},
 	lint: {

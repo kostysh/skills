@@ -1,10 +1,10 @@
-import { resolve } from "node:path";
-import YAML from "yaml";
-import { z } from "zod";
+import { resolve } from 'node:path';
+import YAML from 'yaml';
+import { z } from 'zod';
 
-import { fileExists, readTextFile } from "./fs-utils.ts";
-import { SkillforgeError } from "./errors.ts";
-import { skillSourceSchema, type SkillSource } from "./schema.ts";
+import { fileExists, readTextFile } from './fs-utils.ts';
+import { SkillforgeError } from './errors.ts';
+import { skillSourceSchema, type SkillSource } from './schema.ts';
 
 export interface LoadedSourceFile {
   readonly relativePath: string;
@@ -25,7 +25,7 @@ const packageManifestSchema = z.object({
 });
 
 const collectReferencedPaths = (source: SkillSource): readonly string[] => {
-  const result: string[] = ["skill.yaml"];
+  const result: string[] = ['skill.yaml'];
   result.push(...Object.values(source.fragments));
 
   for (const reference of source.references) {
@@ -49,10 +49,10 @@ const collectReferencedPaths = (source: SkillSource): readonly string[] => {
  */
 export const loadSourceBundle = async (rootDir: string): Promise<LoadedSourceBundle> => {
   const normalizedRootDir = resolve(rootDir);
-  const manifestPath = resolve(normalizedRootDir, "skill.yaml");
+  const manifestPath = resolve(normalizedRootDir, 'skill.yaml');
   const manifestContent = await readTextFile(manifestPath).catch((error: unknown) => {
     throw new SkillforgeError(
-      "missing-manifest",
+      'missing-manifest',
       `Could not read ${manifestPath}: ${error instanceof Error ? error.message : String(error)}`,
     );
   });
@@ -60,7 +60,7 @@ export const loadSourceBundle = async (rootDir: string): Promise<LoadedSourceBun
   const rawDocument: unknown = YAML.parse(manifestContent);
   const parsed = skillSourceSchema.safeParse(rawDocument);
   if (!parsed.success) {
-    throw new SkillforgeError("invalid-source", parsed.error.message);
+    throw new SkillforgeError('invalid-source', parsed.error.message);
   }
 
   const source = parsed.data;
@@ -69,44 +69,46 @@ export const loadSourceBundle = async (rootDir: string): Promise<LoadedSourceBun
     const absolutePath = resolve(normalizedRootDir, relativePath);
     const content = await readTextFile(absolutePath).catch((error: unknown) => {
       throw new SkillforgeError(
-        "missing-source-file",
+        'missing-source-file',
         `Could not read ${relativePath} from ${normalizedRootDir}: ${error instanceof Error ? error.message : String(error)}`,
       );
     });
     files.set(relativePath, { absolutePath, content, relativePath });
   }
 
-  const packageManifestPath = resolve(normalizedRootDir, "package.json");
+  const packageManifestPath = resolve(normalizedRootDir, 'package.json');
   const hasPackageManifest = await fileExists(packageManifestPath);
   let packageVersion: string | null = null;
 
   if (hasPackageManifest) {
-    const packageManifestContent = await readTextFile(packageManifestPath).catch((error: unknown) => {
-      throw new SkillforgeError(
-        "invalid-package-manifest",
-        `Could not read package.json from ${normalizedRootDir}: ${error instanceof Error ? error.message : String(error)}`,
-      );
-    });
+    const packageManifestContent = await readTextFile(packageManifestPath).catch(
+      (error: unknown) => {
+        throw new SkillforgeError(
+          'invalid-package-manifest',
+          `Could not read package.json from ${normalizedRootDir}: ${error instanceof Error ? error.message : String(error)}`,
+        );
+      },
+    );
 
     let rawPackageDocument: unknown;
     try {
       rawPackageDocument = JSON.parse(packageManifestContent);
     } catch (error: unknown) {
       throw new SkillforgeError(
-        "invalid-package-manifest",
+        'invalid-package-manifest',
         `Could not parse package.json from ${normalizedRootDir}: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
     const parsedPackageManifest = packageManifestSchema.safeParse(rawPackageDocument);
     if (!parsedPackageManifest.success) {
-      throw new SkillforgeError("invalid-package-manifest", parsedPackageManifest.error.message);
+      throw new SkillforgeError('invalid-package-manifest', parsedPackageManifest.error.message);
     }
 
     packageVersion = parsedPackageManifest.data.version;
-    files.set("package.json", {
+    files.set('package.json', {
       absolutePath: packageManifestPath,
       content: packageManifestContent,
-      relativePath: "package.json",
+      relativePath: 'package.json',
     });
   }
 

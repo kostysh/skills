@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.2.7
+  source-version: 0.2.8
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
@@ -63,10 +63,6 @@ copies:
     source: scripts/skill-source-compiler.mjs
     target: scripts/skill-source-compiler.mjs
     description: Packaged CLI runtime for the skill.
-  - id: copy-cli-smoke-test
-    source: test/cli.test.ts
-    target: test/cli.test.ts
-    description: Built-CLI smoke test for the shipped command surface.
 
 supporting:
   - id: supporting-design-notes
@@ -77,6 +73,10 @@ supporting:
     source: docs/logs/implementation-log-20260710-1.md
     target: docs/logs/implementation-log-20260710-1.md
     description: Non-normative implementation log for independent skill-review ownership guidance.
+  - id: supporting-implementation-log-20260713-1
+    source: docs/logs/implementation-log-20260713-1.md
+    target: docs/logs/implementation-log-20260713-1.md
+    description: Non-normative implementation log for the end-to-end compiler hardening review.
 
 surfaces:
   active:
@@ -90,16 +90,19 @@ surfaces:
   supportingGlobs:
     - docs/*
     - docs/issues/*
+    - docs/logs/*
 
 sections:
   startHere:
     - Confirm the task actually requires skill compilation or structural regeneration.
     - Read every required active reference before rewriting the target skill.
+    - Treat the supplied skill.yaml, declared local files, operator constraints, and applicable repository instructions as inputs; operator constraints win, then repository instructions, then explicit source precedence, then same-surface specificity.
     - If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
     - Keep active normative guidance separate from supporting or historical documents.
     - Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing; treat this as an author self-check, not an independent capability verdict.
     - Reject placeholder commands, modes, metrics, configuration surfaces, and references that do not change the agent workflow or cannot be backed by runtime behavior, measurement, or active guidance.
     - Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
+    - "Before writing generated output, determine either ready-to-regenerate from the resolved source inventory or blocked with a concrete reason; unresolved semantic conflicts require blocked: unresolved-conflict."
   whenToUse:
     - Compile or regenerate a multi-file skill from a structured source bundle.
     - Normalize a skill that accumulated duplicated or contradictory instructions.
@@ -125,9 +128,10 @@ sections:
       steps:
         - Merge semantically equivalent guidance instead of repeating it across sections.
         - Apply explicit precedence rules when two instructions overlap.
-        - Fail the compile if the source bundle lacks a deterministic conflict policy.
+        - "If active guidance still has an equal-authority semantic conflict, stop as blocked: unresolved-conflict instead of regenerating or publishing."
       validation:
-        - Every conflict is resolved by an explicit rule or becomes a compile error.
+        - "Every semantic conflict is resolved by an explicit rule or the agent reports blocked: unresolved-conflict."
+        - Do not claim that CLI lint or compile inferred semantic equivalence, contradiction, or behavioral readiness.
     - id: stage-audit-instruction-quality
       title: Audit instruction quality
       goal: Perform an author-side structural and instruction-quality self-check without presenting compiler success as an independent behavioral verdict.
@@ -142,6 +146,7 @@ sections:
         - The skill is outcome-first, contradiction-free, progressively disclosed, and has explicit validation and stop conditions.
         - Every declared command, mode, metric, config knob, and active reference is justified by current runtime behavior, measured evidence, or active guidance.
         - The result is reported as author self-check evidence; formal review of real skill capability is routed to skill-reviewer.
+        - The self-check ends in ready-to-regenerate or blocked with the blocking reason and unresolved inputs.
     - id: stage-render-output
       title: Render the target skill
       goal: Produce a standard Agent Skills folder with progressive disclosure.
@@ -151,8 +156,17 @@ sections:
         - Emit a non-normative compile report under docs/ for traceability.
       validation:
         - SKILL.md links every required reference.
-        - No emitted file contains absolute local paths.
+        - Active instructions and declared assets contain no absolute local dependencies; non-normative historical logs are not portability dependencies.
+        - CLI success is reported only as schema, structure, drift, reachability, and portability evidence, not behavioral PASS.
   interop:
+    - id: interop-skill-authoring
+      domain: defining a new skill's purpose, triggers, and authoring approach
+      winner: skill-creator
+      rationale: skill-creator owns initial skill design; skill-source-compiler owns normalization and generation after a structured bundle is chosen.
+    - id: interop-implementation-discipline
+      domain: assumptions, change scope, minimal implementation, and verification discipline
+      winner: implementation-discipline
+      rationale: implementation-discipline governs how code and skill changes are made; skill-source-compiler supplies the source and generation contract.
     - id: interop-language-toolchain
       domain: language and toolchain matters
       winner: the language or toolchain skill
@@ -203,11 +217,12 @@ sections:
       outputs:
         - Compiled output path on stdout.
         - Warning lines on stdout when lint emits warnings.
+        - Exit code 1 without modifying files when the resolved output skill directory already exists.
       examples:
         - node scripts/skill-source-compiler.mjs compile <source-dir> --out-dir <independent-skills-dir>
     - id: command-compile-all
       command: compile-all
-      summary: Compile every direct child source bundle under a sources root into an independent output directory.
+      summary: Compile direct child directories that contain skill.yaml into distinct paths under an independent output directory.
       when: You need out-of-place packaged copies of multiple source bundles.
       script: scripts/skill-source-compiler.mjs
       inputs:
@@ -216,6 +231,8 @@ sections:
       outputs:
         - Count of compiled source bundles on stdout.
         - One emitted output path per compiled bundle on stdout.
+        - Exit code 1 before writing when two bundles resolve to the same output path.
+        - Exit code 1 before writing when any resolved output skill directory already exists.
       examples:
         - node scripts/skill-source-compiler.mjs compile-all <sources-root> --out-dir <independent-skills-dir>
     - id: command-regenerate
@@ -232,7 +249,7 @@ sections:
         - node scripts/skill-source-compiler.mjs regenerate <source-dir>
     - id: command-check
       command: check
-      summary: Verify a compiled skill folder or generated source bundle against structural, drift, and portability invariants.
+      summary: Verify a compiled skill folder or generated source bundle against generated-file, reachability, structural, drift, and text-portability invariants.
       when: After compile, after regenerate, or when auditing a generated skill for drift.
       script: scripts/skill-source-compiler.mjs
       inputs:
@@ -253,6 +270,9 @@ sections:
     - id: gotcha-overlap-guard
       priority: high
       text: Never compile into an output directory that overlaps the source bundle; the runtime rejects overlap before destructive writes.
+    - id: gotcha-existing-output
+      priority: high
+      text: Compile and compile-all fail closed when a resolved output skill directory already exists. Choose a new output root; do not assume the CLI owns or may replace existing files.
     - id: gotcha-docs-surface
       priority: high
       text: Never promote docs/* into active guidance unless the source bundle explicitly marks that content as active.
@@ -261,7 +281,7 @@ sections:
       text: Do not require repository files outside the emitted skill folder to understand or execute the skill.
     - id: gotcha-guessing
       priority: medium
-      text: Do not silently guess through unresolved conflicts; emit a compile error instead.
+      text: "Do not silently guess through unresolved semantic conflicts; report blocked: unresolved-conflict because the CLI does not perform semantic analysis."
     - id: gotcha-stage-command-drift
       priority: medium
       text: Never present a workflow stage as a runnable command unless the packaged CLI help surface actually exposes it.
@@ -293,15 +313,24 @@ sections:
     - id: policy-observable-surface
       title: Observable skill surface
       text: Commands, modes, metrics, configuration surfaces, and active references belong in a skill only when they change current agent behavior and have a runtime, measurement, or guidance source that agents can verify.
+    - id: policy-cli-boundary
+      title: CLI evidence boundary
+      text: The CLI validates declared schema, structure, generated-file drift, reachability, output safety, and text portability. It does not infer semantic conflicts, prove instruction quality, or establish behavioral PASS.
+    - id: policy-output-safety
+      title: Output safety
+      text: Default CLI compilation writes only to a new resolved skill directory. Existing targets, source overlap, duplicate targets, and validation failures must stop before the first output write.
+    - id: policy-agent-output
+      title: Agent output contract
+      text: Report status ready-to-regenerate or blocked, the authoritative inputs and precedence used, emitted paths when writes occurred, checks run with evidence, and unresolved gaps. For blocked status, include the reason and confirm that generated output was not written.
   portability:
     required: true
     rules:
-      - Do not emit absolute paths or machine-specific environment assumptions.
+      - Do not emit absolute local dependencies or machine-specific environment assumptions in active instructions or declared assets; URLs and explicit web-route/example syntax are not filesystem dependencies.
       - Do not require external local files outside the skill folder.
       - Keep all mandatory templates, scripts, and references inside the emitted skill directory.
       - Use only relative links inside the generated skill bundle.
     checklist:
-      - Search the emitted skill for absolute paths and remove them.
+      - Search active instructions and declared assets for absolute local dependencies and remove them.
       - Confirm every required reference exists inside the emitted skill folder.
       - Confirm the copied skill remains understandable in isolation.
       - Keep docs/* clearly non-normative unless promoted explicitly by SKILL.md.

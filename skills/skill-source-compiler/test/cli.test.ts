@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync, type SpawnSyncReturns } from 'node:child_process';
-import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -70,6 +70,27 @@ async function runBuiltCli(args: string[], options: { cwd?: string } = {}): Prom
   }
 
   const result = spawnSync('node', [CLI_PATH, ...args], {
+    cwd: options.cwd ?? SKILL_DIR,
+    encoding: 'utf8',
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  return {
+    status: result.status,
+    stdout: result.stdout,
+    stderr: result.stderr,
+  };
+}
+
+function runCliAtPath(
+  cliPath: string,
+  args: string[],
+  options: { cwd?: string } = {},
+): CliRunResult {
+  const result = spawnSync('node', [cliPath, ...args], {
     cwd: options.cwd ?? SKILL_DIR,
     encoding: 'utf8',
   });
@@ -160,6 +181,25 @@ void test('built CLI rejects dangerous compile overlap', async () => {
   }
 });
 
+void test('built CLI preserves an existing output target', async () => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'skill-source-cli-existing-target-'));
+  const outDir = path.join(tempRoot, 'out');
+  const targetDir = path.join(outDir, 'skill-source-compiler');
+  const sentinelPath = path.join(targetDir, 'operator-notes.txt');
+
+  try {
+    await mkdir(targetDir, { recursive: true });
+    await writeFile(sentinelPath, 'do not delete\n', 'utf8');
+
+    const result = await runBuiltCli(['compile', SKILL_DIR, '--out-dir', outDir]);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /Output directory already exists/u);
+    assert.equal(await readFile(sentinelPath, 'utf8'), 'do not delete\n');
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
 void test('built CLI lint, compile, and check succeed for the self-hosted bundle', async () => {
   const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'skill-source-cli-'));
 
@@ -177,7 +217,7 @@ void test('built CLI lint, compile, and check succeed for the self-hosted bundle
     const compiledDir = path.join(tempRoot, 'skill-source-compiler');
     const compiledSkill = await readFile(path.join(compiledDir, 'SKILL.md'), 'utf8');
     assert.match(compiledSkill, /## Runnable commands/u);
-    assert.match(compiledSkill, /metadata:\n(?:.+\n)*\s+source-version: 0\.2\.7/u);
+    assert.match(compiledSkill, /metadata:\n(?:.+\n)*\s+source-version: 0\.2\.8/u);
     assert.doesNotMatch(compiledSkill, /\*\*Tests:\*\*/u);
     assert.doesNotMatch(compiledSkill, /test\/cli\.test\.ts/u);
     assert.match(compiledSkill, /references\/maintenance\.md/u);
@@ -188,6 +228,60 @@ void test('built CLI lint, compile, and check succeed for the self-hosted bundle
     assert.equal(check.status, 0, check.stderr);
     assert.equal(check.stderr, '');
     assert.match(check.stdout, /^OK /mu);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('isolated emitted CLI completes the documented maintenance flow', {
+  skip: SUBPROCESS_CLI_BLOCKED,
+}, async () => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'skill-source-cli-isolated-'));
+  const sourceRoot = path.join(tempRoot, 'source', 'skill-source-compiler');
+  const firstOut = path.join(tempRoot, 'first-out');
+  const secondOut = path.join(tempRoot, 'second-out');
+
+  try {
+    await cp(SKILL_DIR, sourceRoot, { recursive: true });
+    const initialCompile = await runBuiltCli(['compile', sourceRoot, '--out-dir', firstOut]);
+    assert.equal(initialCompile.status, 0, initialCompile.stderr);
+
+    const emittedDir = path.join(firstOut, 'skill-source-compiler');
+    const emittedCli = path.join(emittedDir, 'scripts', 'skill-source-compiler.mjs');
+    assert.equal(
+      await readFile(path.join(emittedDir, 'test', 'cli.test.ts'), 'utf8').then(
+        () => true,
+        () => false,
+      ),
+      false,
+    );
+
+    for (const args of [['--help'], ['--version']] as const) {
+      const result = runCliAtPath(emittedCli, [...args], { cwd: emittedDir });
+      assert.equal(result.status, 0, result.stderr);
+    }
+
+    const lint = runCliAtPath(emittedCli, ['lint', sourceRoot], { cwd: emittedDir });
+    assert.equal(lint.status, 0, lint.stderr);
+
+    const regenerate = runCliAtPath(emittedCli, ['regenerate', sourceRoot], {
+      cwd: emittedDir,
+    });
+    assert.equal(regenerate.status, 0, regenerate.stderr);
+
+    const compile = runCliAtPath(emittedCli, ['compile', sourceRoot, '--out-dir', secondOut], {
+      cwd: emittedDir,
+    });
+    assert.equal(compile.status, 0, compile.stderr);
+
+    const checkSource = runCliAtPath(emittedCli, ['check', sourceRoot], { cwd: emittedDir });
+    assert.equal(checkSource.status, 0, checkSource.stderr);
+    const checkEmitted = runCliAtPath(
+      emittedCli,
+      ['check', path.join(secondOut, 'skill-source-compiler')],
+      { cwd: emittedDir },
+    );
+    assert.equal(checkEmitted.status, 0, checkEmitted.stderr);
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

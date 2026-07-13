@@ -26,7 +26,7 @@ Required setup:
 - add `skill.recommended-skill-md-max-bytes` in `skill.yaml`
 - define shipped commands in `skill.yaml` only if the runtime actually exposes them
 - define modes, metrics, and configuration surfaces only if the current skill behavior uses them and verification can prove or inspect them
-- include command runtime files and smoke tests under `copies`
+- include built command runtime files under `copies`; keep source tests in the authoring package unless a test is deliberately shipped and runnable without omitted source or toolchain files
 - keep `AGENTS.md` explicit about skill type, source of truth, and maintenance shortcuts
 - do not add placeholder `references/*` files for simple skills whose generated `SKILL.md` is self-contained
 
@@ -82,7 +82,9 @@ If compile warns that `SKILL.md` exceeds the recommended size, reduce root-file 
 
 Use `compile <source-dir> --out-dir <independent-skills-dir>` only when you need an out-of-place packaged copy. The output directory must not be the source bundle, a parent of the source bundle, or a child of the source bundle.
 
-Use `compile-all <sources-root> --out-dir <independent-skills-dir>` only when every child source bundle can be emitted into an independent output directory. The runtime preflights all child output paths before the first destructive write.
+The resolved `<independent-skills-dir>/<skill-name>` directory must not already exist. The CLI fails closed instead of replacing it because an existing directory may contain operator-owned files. Choose a new output root or explicitly remove a target only after independently establishing that it is disposable.
+
+Use `compile-all <sources-root> --out-dir <independent-skills-dir>` for direct child directories that contain `skill.yaml`. Other direct child directories are skipped. The runtime rejects duplicate paths, overlap, or any existing resolved target before the first write.
 
 In-place regeneration writes only compiler-owned generated files:
 
@@ -96,5 +98,6 @@ Manifest entries whose `source` and `target` resolve to the same path are valida
 - confirm documented commands match the built CLI help surface
 - confirm every documented command still has tests
 - confirm documented modes, metrics, configuration surfaces, and active references are current behavior, not future substrate
-- confirm `SKILL.md`, `docs/compile-report.md`, runtime files, and tests reflect the same change set
+- confirm `SKILL.md`, `docs/compile-report.md`, runtime files, and source tests reflect the same change set
+- compile to an isolated directory and prove the emitted runtime works there without relying on omitted source files, package metadata, or toolchain configuration
 - confirm the skill can be copied by itself without losing required behavior

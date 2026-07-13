@@ -6,7 +6,8 @@ import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 
 import { checkCompiledSkill } from '../src/check.ts';
-import { regenerateSourceBundle } from '../src/compiler.ts';
+import { compileSourceBundle, regenerateSourceBundle } from '../src/compiler.ts';
+import { containsAbsolutePath } from '../src/text.ts';
 
 const TEST_DIR = dirname(fileURLToPath(import.meta.url));
 const fixtureRoot = join(TEST_DIR, '..');
@@ -217,4 +218,101 @@ void test('checkCompiledSkill reports source bundle generated output drift', asy
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }
+});
+
+void test('checkCompiledSkill rejects source bundles with missing compiler-owned output', async () => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'skillforge-check-missing-generated-'));
+  const sourceRoot = join(tempRoot, 'skill-source-compiler');
+
+  try {
+    await cp(fixtureRoot, sourceRoot, { recursive: true });
+    await rm(join(sourceRoot, 'SKILL.md'));
+    await rm(join(sourceRoot, 'docs/compile-report.md'));
+
+    const result = await checkCompiledSkill(sourceRoot);
+    assert.equal(result.ok, false);
+    assert.ok(result.diagnostics.some((entry) => entry.code === 'missing-generated-skill'));
+    assert.ok(result.diagnostics.some((entry) => entry.code === 'missing-compile-report'));
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('checkCompiledSkill rejects missing documented package files', async () => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'skillforge-check-missing-package-file-'));
+
+  try {
+    const result = await compileSourceBundle(fixtureRoot, { outDir: tempRoot });
+    await rm(join(result.outputDir, 'scripts/skill-source-compiler.mjs'));
+    await rm(join(result.outputDir, 'assets/source-template.yaml'));
+
+    const check = await checkCompiledSkill(result.outputDir);
+    assert.equal(check.ok, false);
+    assert.ok(
+      check.diagnostics.filter((entry) => entry.code === 'missing-documented-package-file')
+        .length >= 2,
+    );
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('checkCompiledSkill requires compile reports for compiler-tagged packages', async () => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'skillforge-check-missing-report-'));
+
+  try {
+    const result = await compileSourceBundle(fixtureRoot, { outDir: tempRoot });
+    await rm(join(result.outputDir, 'docs/compile-report.md'));
+
+    const check = await checkCompiledSkill(result.outputDir);
+    assert.equal(check.ok, false);
+    assert.ok(check.diagnostics.some((entry) => entry.code === 'missing-compile-report'));
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('checkCompiledSkill rejects non-whitelisted absolute POSIX paths', async () => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'skillforge-check-posix-path-'));
+
+  try {
+    const result = await compileSourceBundle(fixtureRoot, { outDir: tempRoot });
+    const skillPath = join(result.outputDir, 'SKILL.md');
+    await writeFile(
+      skillPath,
+      `${await readFile(skillPath, 'utf8')}\nRead /data/company/policy.md.\n`,
+      'utf8',
+    );
+
+    const check = await checkCompiledSkill(result.outputDir);
+    assert.equal(check.ok, false);
+    assert.ok(check.diagnostics.some((entry) => entry.code === 'absolute-path-in-skill'));
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('containsAbsolutePath detects portable-path violations without flagging URLs', () => {
+  assert.equal(containsAbsolutePath('/usr/local/example/policy.md'), true);
+  assert.equal(containsAbsolutePath('/private/company/policy.md'), true);
+  assert.equal(containsAbsolutePath('/data/company/policy.md'), true);
+  assert.equal(containsAbsolutePath('/app/company/policy.md'), true);
+  assert.equal(containsAbsolutePath('Read `/private/company/policy.md`.'), true);
+  assert.equal(containsAbsolutePath('Follow `/srv/acme/policy.md` before publishing.'), true);
+  assert.equal(containsAbsolutePath('Consult `/data/team/rules.yaml` before writing.'), true);
+  assert.equal(containsAbsolutePath('Follow `/srv/api/policy.md` before publishing.'), true);
+  assert.equal(containsAbsolutePath('Consult `/data/auth/rules.yaml` before writing.'), true);
+  assert.equal(containsAbsolutePath('Obey `/private/org/policy.md` for the API route.'), true);
+  assert.equal(containsAbsolutePath('Use C:/Users/example/policy.md.'), true);
+  assert.equal(containsAbsolutePath(String.raw`Use \\server\share\policy.md.`), true);
+  assert.equal(containsAbsolutePath('See https://example.com/docs/path.'), false);
+  assert.equal(containsAbsolutePath('slug: /auth/overview'), false);
+  assert.equal(containsAbsolutePath('The API defines POST /coupon/validate.'), false);
+  assert.equal(containsAbsolutePath('Visit `/photos/123` to open the route.'), false);
+  assert.equal(containsAbsolutePath('Append filters to `/rest/v1` query strings.'), false);
+  assert.equal(
+    containsAbsolutePath('```dockerfile\nCOPY --from=builder /app/public ./public\n```'),
+    false,
+  );
+  assert.equal(containsAbsolutePath('Run scripts/check.mjs from the skill root.'), false);
 });

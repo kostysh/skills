@@ -40,6 +40,25 @@ const extractFrontmatter = (markdown: string): { body: string; frontmatter: unkn
   };
 };
 
+const extractCodePaths = (value: string): readonly string[] =>
+  [...value.matchAll(/`([^`]+)`/gu)]
+    .map((match) => match[1])
+    .filter((entry): entry is string => entry !== undefined);
+
+const extractDocumentedPackagePaths = (markdown: string): readonly string[] => {
+  const paths: string[] = [];
+  for (const match of markdown.matchAll(/^\*\*(?:Runtime script|Tests):\*\* (.+)$/gmu)) {
+    paths.push(...extractCodePaths(match[1] ?? ''));
+  }
+
+  const assetsSection = markdown.match(/(?:^|\n)## Bundled assets\n([\s\S]*?)(?=\n## |$)/u);
+  if (assetsSection?.[1] !== undefined) {
+    paths.push(...extractCodePaths(assetsSection[1]));
+  }
+
+  return [...new Set(paths)].sort();
+};
+
 const checkSkillMarkdown = async (
   skillDir: string,
   markdown: string,
@@ -50,6 +69,7 @@ const checkSkillMarkdown = async (
 ): Promise<void> => {
   let body = '';
   let frontmatter: unknown = {};
+  let compilerTagged = false;
   try {
     const extracted = extractFrontmatter(markdown);
     body = extracted.body;
@@ -70,6 +90,7 @@ const checkSkillMarkdown = async (
       message: parsedFrontmatter.error.message,
     });
   } else {
+    compilerTagged = parsedFrontmatter.data.metadata['skillforge-source-manifest'] !== undefined;
     const folderName = resolve(skillDir).split(/[/\\]/u).at(-1);
     if (parsedFrontmatter.data.name !== folderName) {
       diagnostics.push({
@@ -107,7 +128,13 @@ const checkSkillMarkdown = async (
     });
   }
 
-  for (const relativePath of relativeFiles) {
+  const portableTextFiles = relativeFiles.filter(
+    (relativePath) =>
+      relativePath === 'SKILL.md' ||
+      relativePath === 'docs/compile-report.md' ||
+      /^(?:agents|assets|references)\//u.test(relativePath),
+  );
+  for (const relativePath of portableTextFiles) {
     const content = await readRelativeFile(relativePath).catch(() => '');
     if (content !== '' && containsAbsolutePath(content)) {
       diagnostics.push({
@@ -141,6 +168,24 @@ const checkSkillMarkdown = async (
       });
     }
   }
+
+  for (const documentedPath of extractDocumentedPackagePaths(markdown)) {
+    if (!relativeFiles.includes(documentedPath)) {
+      diagnostics.push({
+        code: 'missing-documented-package-file',
+        level: 'error',
+        message: `SKILL.md documents ${documentedPath}, but the file is missing.`,
+      });
+    }
+  }
+
+  if (compilerTagged && !relativeFiles.includes('docs/compile-report.md')) {
+    diagnostics.push({
+      code: 'missing-compile-report',
+      level: 'error',
+      message: 'Compiler-tagged skill package is missing docs/compile-report.md.',
+    });
+  }
 };
 
 const collectEmittedRelativeFiles = (rendered: RenderedSourceBundle): readonly string[] => {
@@ -161,7 +206,10 @@ const collectExpectedActiveReferenceTargets = (
   referenceIds: readonly string[],
 ): readonly string[] =>
   referenceIds
-    .map((referenceId) => rendered.loaded.source.references.find((entry) => entry.id === referenceId)?.target)
+    .map(
+      (referenceId) =>
+        rendered.loaded.source.references.find((entry) => entry.id === referenceId)?.target,
+    )
     .filter((target): target is string => target !== undefined);
 
 const checkSourceBundle = async (skillDir: string): Promise<CheckResult> => {
@@ -183,7 +231,13 @@ const checkSourceBundle = async (skillDir: string): Promise<CheckResult> => {
   const existingSkillMarkdown = await readTextFile(resolve(normalizedDir, 'SKILL.md')).catch(
     () => null,
   );
-  if (existingSkillMarkdown !== null && existingSkillMarkdown !== rendered.skillMarkdown) {
+  if (existingSkillMarkdown === null) {
+    diagnostics.push({
+      code: 'missing-generated-skill',
+      level: 'error',
+      message: 'Source bundle is missing compiler-owned SKILL.md.',
+    });
+  } else if (existingSkillMarkdown !== rendered.skillMarkdown) {
     diagnostics.push({
       code: 'generated-skill-drift',
       level: 'error',
@@ -194,7 +248,13 @@ const checkSourceBundle = async (skillDir: string): Promise<CheckResult> => {
   const existingCompileReport = await readTextFile(
     resolve(normalizedDir, 'docs/compile-report.md'),
   ).catch(() => null);
-  if (existingCompileReport !== null && existingCompileReport !== rendered.compileReport) {
+  if (existingCompileReport === null) {
+    diagnostics.push({
+      code: 'missing-compile-report',
+      level: 'error',
+      message: 'Source bundle is missing compiler-owned docs/compile-report.md.',
+    });
+  } else if (existingCompileReport !== rendered.compileReport) {
     diagnostics.push({
       code: 'compile-report-drift',
       level: 'error',

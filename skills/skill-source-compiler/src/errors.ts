@@ -4,6 +4,6 @@ export class SkillforgeError extends Error {
   public constructor(code: string, message: string) {
     super(message);
     this.code = code;
-    this.name = "SkillforgeError";
+    this.name = 'SkillforgeError';
   }
 }

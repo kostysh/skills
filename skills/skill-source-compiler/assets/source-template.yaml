@@ -2,11 +2,11 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 
 skill:
-  name: example-skill
+  name: replace-with-skill-name
   source-version: 0.1.0
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Describe what the skill does and when to use it.
+    SKILL_SOURCE_TODO describe the observable capability and precise trigger.
 
 fragments: {}
 references: []
@@ -23,19 +23,19 @@ surfaces:
 
 sections:
   startHere:
-    - Add a short activation checklist.
+    - SKILL_SOURCE_TODO add a short activation and input-readiness checklist.
   whenToUse:
-    - Describe the trigger conditions.
+    - SKILL_SOURCE_TODO describe the trigger conditions.
   whenNotToUse:
-    - Describe the non-applicable cases.
+    - SKILL_SOURCE_TODO describe the non-applicable cases.
   workflow:
     - id: stage-example
-      title: Example workflow stage
-      goal: Explain the objective.
+      title: SKILL_SOURCE_TODO replace with a workflow stage
+      goal: SKILL_SOURCE_TODO explain the observable stage objective.
       steps:
-        - Add the ordered steps.
+        - SKILL_SOURCE_TODO add only ordering required for correctness or safety.
       validation:
-        - Add validation gates.
+        - SKILL_SOURCE_TODO add validation gates that cannot pass on substrate alone.
   interop: []
   commands: []
   gotchas: []

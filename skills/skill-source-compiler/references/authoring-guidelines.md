@@ -1,6 +1,6 @@
 # Authoring guidelines
 
-This reference distills practical guidance from the Agent Skills specification and the public authoring guides.
+This reference distills practical guidance from the Agent Skills specification and OpenAI's Build Skills guide. External pages are optional provenance; the local rules below remain sufficient when the skill folder is copied offline.
 
 ## SKILL.md scope
 
@@ -68,7 +68,7 @@ Do not add model-version lore to domain skills. Keep these traits as an authorin
 
 ## Description quality
 
-The `description` field is the trigger surface. Keep it:
+The `description` field is the trigger surface and is loaded before the rest of the skill. Keep it:
 
 - imperative: tell the agent when to use the skill
 - focused on user intent, not internal implementation
@@ -76,6 +76,18 @@ The `description` field is the trigger surface. Keep it:
 - within the spec limit of 1024 characters
 
 When refining a description, test both should-trigger and should-not-trigger prompts so you do not broaden it blindly.
+
+## Specification alignment
+
+- Keep the folder name and frontmatter `name` identical and within the Agent Skills naming constraints.
+- Keep core instructions in `SKILL.md`; use `references/`, `scripts/`, and `assets/` as progressively disclosed resources.
+- Treat additional frontmatter metadata as compatibility-sensitive. The compiler emits only its supported contract and keeps source-version under `metadata`.
+- Design descriptions around realistic user intents, then test positive, negative, and near-boundary prompts. A structurally valid package is not evidence that activation behavior is reliable.
+
+Optional provenance:
+
+- OpenAI Build Skills: <https://learn.chatgpt.com/docs/build-skills>
+- Agent Skills specification: <https://agentskills.io/specification>
 
 ## Utility location
 

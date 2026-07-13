@@ -2,13 +2,14 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.7`
-- CLI package version: `0.2.3`
+- Skill source version: `0.2.8`
+- CLI package version: `0.2.4`
 
 ## Source files
 - `assets/source-template.yaml`
 - `docs/issues/design-notes.md`
 - `docs/logs/implementation-log-20260710-1.md`
+- `docs/logs/implementation-log-20260713-1.md`
 - `fragments/final-checks.md`
 - `fragments/overview.md`
 - `package.json`
@@ -19,7 +20,6 @@ Generated from `skill.yaml`.
 - `references/source-language.md`
 - `scripts/skill-source-compiler.mjs`
 - `skill.yaml`
-- `test/cli.test.ts`
 
 ## Required references
 - `references/source-language.md`

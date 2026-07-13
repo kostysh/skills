@@ -44,7 +44,7 @@ const COMMANDS: Readonly<
   },
   'compile-all': {
     summary:
-      'Compile every source bundle found directly under the provided sources root into an independent output directory.',
+      'Compile direct child directories that contain skill.yaml into distinct paths under an independent output directory.',
     usage: [`node ${RUNTIME_SCRIPT} compile-all <sources-root> --out-dir <skills-dir>`],
   },
   lint: {

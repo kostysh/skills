@@ -20,7 +20,7 @@ Encode **semantics** in the manifest and use fragment files only for focused pro
 
 - `references`: active or optional linked docs inside `references/`; omit this list for simple skills whose generated `SKILL.md` is self-contained
 - `assets`: templates and static resources inside `assets/`
-- `copies`: additional emitted files such as runtime scripts or tests when a skill is code-backed
+- `copies`: additional emitted files such as built runtime scripts; include tests only when they are intentionally shipped and independently runnable in the emitted package
 - `supporting`: non-normative docs, usually under `docs/`
 
 Reference files are for progressive disclosure, reusable detailed guidance, templates, or large content that would make `SKILL.md` harder to scan. Do not create placeholder references merely to satisfy the compiler; an empty active reference surface is valid.
@@ -46,9 +46,13 @@ If the skill ships a utility, document and invoke it from `<skill-root>/scripts`
 
 When the skill ships a CLI or other runtime artifact, prefer rooting `skill.yaml` in the actual skill folder instead of a duplicated shadow tree. That lets the source bundle reference the same `references/`, `assets/`, `scripts/`, and smoke-test files that the packaged skill really ships, which reduces drift between source, emitted output, runtime, and tests.
 
+The authoring folder may also contain `src/`, `test/`, `package.json`, and toolchain configuration. These are source-maintenance surfaces, not automatic emitted-package contents. Out-of-place compilation emits only compiler-owned output and files explicitly declared in `references`, `assets`, `copies`, and `supporting`.
+
 ## Rendering model
 
 The compiler renders `SKILL.md` from structured sections, then copies the declared files into their emitted targets. Required and optional reference sections are emitted only when the source bundle declares reference ids for those surfaces.
+
+Text portability checks treat POSIX, Windows-drive, and UNC filesystem dependencies as errors while excluding explicit URLs, HTTP route syntax, fenced examples, and non-normative historical logs. Keep mandatory filesystem inputs relative to the skill root and state them in active prose; do not hide them only inside executable examples.
 
 Frontmatter placement rule:
 
@@ -67,6 +71,7 @@ Current compiler-owned files:
 For manifest file entries:
 
 - out-of-place `compile` copies declared `references`, `assets`, `copies`, and `supporting` files into an independent output directory
+- out-of-place `compile` requires the resolved output skill directory to be absent and never replaces an existing target by default
 - in-place `regenerate` treats entries whose resolved `source` and `target` paths are the same as validation-only
 - in-place `regenerate` fails closed when a declared entry would copy from one source-bundle path to a different target path
 

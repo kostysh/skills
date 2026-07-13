@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const nonEmptyString = z.string().trim().min(1);
 const descriptionString = nonEmptyString.max(1024);
@@ -6,30 +6,36 @@ const positiveInteger = z.number().int().positive();
 const versionString = z
   .string()
   .trim()
-  .regex(/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/u, "Version must be semver-like.");
+  .regex(
+    /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/u,
+    'Version must be semver-like.',
+  );
 const skillName = z
   .string()
   .trim()
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u, "Skill names must be lowercase kebab-case.")
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u, 'Skill names must be lowercase kebab-case.')
   .max(64);
 const relativePortablePath = z
   .string()
   .trim()
   .min(1)
-  .refine((value) => !value.startsWith("/") && !/^[A-Za-z]:\\/u.test(value), {
-    message: "Path must be relative.",
+  .refine((value) => !value.startsWith('/') && !/^[A-Za-z]:\\/u.test(value), {
+    message: 'Path must be relative.',
   })
-  .refine((value) => !value.includes("\\"), {
-    message: "Use forward slashes in portable paths.",
+  .refine((value) => !value.includes('\\'), {
+    message: 'Use forward slashes in portable paths.',
   })
-  .refine((value) => !value.split("/").some((segment) => segment === ".."), {
-    message: "Path traversal is not allowed.",
+  .refine((value) => !value.split('/').some((segment) => segment === '..'), {
+    message: 'Path traversal is not allowed.',
   });
 
 const supportGlob = relativePortablePath.refine(
-  (value) => !value.startsWith("references/") && !value.startsWith("assets/") && !value.startsWith("scripts/"),
+  (value) =>
+    !value.startsWith('references/') &&
+    !value.startsWith('assets/') &&
+    !value.startsWith('scripts/'),
   {
-    message: "Supporting content should not live inside active runtime directories.",
+    message: 'Supporting content should not live inside active runtime directories.',
   },
 );
 
@@ -63,7 +69,7 @@ const workflowStageSchema = z.object({
 
 const gotchaSchema = z.object({
   id: nonEmptyString,
-  priority: z.enum(["high", "medium", "low"]),
+  priority: z.enum(['high', 'medium', 'low']),
   text: nonEmptyString,
 });
 
@@ -92,12 +98,12 @@ const portabilitySchema = z.object({
 });
 
 export const skillSourceSchema = z.object({
-  apiVersion: z.literal("skillforge/v1alpha1"),
-  kind: z.literal("SkillSource"),
+  apiVersion: z.literal('skillforge/v1alpha1'),
+  kind: z.literal('SkillSource'),
   skill: z.object({
     name: skillName,
-    "source-version": versionString,
-    "recommended-skill-md-max-bytes": positiveInteger.default(20_000),
+    'source-version': versionString,
+    'recommended-skill-md-max-bytes': positiveInteger.default(20_000),
     description: descriptionString,
     license: nonEmptyString.optional(),
     compatibility: nonEmptyString.max(500).optional(),
@@ -141,12 +147,12 @@ export const compiledFrontmatterSchema = z.object({
   compatibility: nonEmptyString.max(500).optional(),
   metadata: z
     .object({
-      "source-version": versionString,
-      "skillforge-source-manifest": nonEmptyString.optional(),
-      "skillforge-source-hash": nonEmptyString.optional(),
+      'source-version': versionString,
+      'skillforge-source-manifest': nonEmptyString.optional(),
+      'skillforge-source-hash': nonEmptyString.optional(),
     })
     .catchall(z.string()),
-  "allowed-tools": nonEmptyString.optional(),
+  'allowed-tools': nonEmptyString.optional(),
 });
 
 export type CompiledFrontmatter = z.infer<typeof compiledFrontmatterSchema>;
