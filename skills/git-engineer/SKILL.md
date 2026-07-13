@@ -5,9 +5,9 @@ description: Enforce Conventional Commits, Git hygiene, and worktree-based
   changes into multiple commits, deciding between merge/rebase/cherry-pick, or
   setting up git worktrees in any repo.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f32555ecd5da68a071550237e73de2111fd7dfce3d04a190609834ed3d152578
+  skillforge-source-hash: 8c8e4a55361af70e4bce37c081f6d9c0f4d8868eeb4af26d8c56ef1b1e12f4c8
 ---
 
 # git-engineer
@@ -16,8 +16,9 @@ metadata:
 
 1. Confirm the task matches git-engineer's applicability criteria.
 2. Before branch, worktree, PR, merge, or cleanup, resolve repo policy from operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs.
-3. Use the preserved overview guidance as the normative workflow for this skill.
-4. Treat generic commands as fallbacks only; preserve commits, branches, and validation gates when project or operator policy requires them.
+3. Before choosing, creating, or moving a worktree, load the worktree operations reference and apply its repo-local default and external-root confirmation gate.
+4. Use the preserved overview guidance as the normative workflow for this skill.
+5. Treat generic commands as fallbacks only; preserve commits, branches, and validation gates when project or operator policy requires them.
 
 ## When to use this skill
 
@@ -291,164 +292,9 @@ Use when starting feature work that needs isolation from the current workspace o
 
 Announce at start: "I'm using the git worktrees workflow to set up an isolated workspace."
 
-### Directory selection process
+Before choosing a worktree root, creating a worktree, or moving an existing worktree, read [Worktree operations](references/worktrees.md). That reference owns directory precedence, ignore preparation, creation checks, move preservation, stop rules, and the review handoff.
 
-Follow this priority order:
-
-#### 1) Check repository policy
-
-Check operator instructions and repo-local process docs before generic defaults:
-
-```bash
-rg -n -i "worktree|branch|merge|cleanup|ci" AGENTS.md CONTRIBUTING.md README* docs 2>/dev/null
-```
-
-If the repository specifies worktree directory, base branch, merge policy, or cleanup timing, follow that policy.
-
-#### 2) Check existing directories
-
-```bash
-# Check in priority order
-ls -d .worktrees 2>/dev/null     # Preferred (hidden)
-ls -d worktrees 2>/dev/null      # Alternative
-```
-
-If found and no repo policy overrides it, use that directory. If both exist, `.worktrees` wins.
-
-#### 3) Ask the user
-
-If no repository policy or existing directory resolves the location:
-
-```
-No worktree directory found. Where should I create worktrees?
-
-1. .worktrees/ (project-local, hidden, must be ignored)
-2. worktrees/ (project-local, visible, must be ignored)
-3. An outside-repository directory you provide
-
-Which would you prefer?
-```
-
-### Safety verification
-
-For any worktree path inside the repository root, verify the top-level worktree directory is ignored before creating the worktree:
-
-```bash
-# Check if directory is ignored (respects local, global, and system gitignore)
-git check-ignore -q .worktrees 2>/dev/null || git check-ignore -q worktrees 2>/dev/null
-```
-
-If NOT ignored:
-1. Add the appropriate line to `.gitignore`.
-2. Commit the change.
-3. Proceed with worktree creation.
-
-Why this is critical: prevents accidentally committing worktree contents to the repository.
-
-For an outside-repository directory: no repository `.gitignore` verification is needed.
-
-### Creation steps
-
-1) Detect project name:
-
-```bash
-project=$(basename "$(git rev-parse --show-toplevel)")
-```
-
-2) Create worktree:
-
-```bash
-# Determine full path
-case $LOCATION in
-  .worktrees|worktrees)
-    path="$LOCATION/$BRANCH_NAME"
-    ;;
-  *)
-    path="$LOCATION/$project/$BRANCH_NAME"
-    ;;
-esac
-
-# Create worktree with new branch from the repo policy base branch
-git worktree add "$path" -b "$BRANCH_NAME" "$BASE_BRANCH"
-cd "$path"
-```
-
-3) Run project setup (auto-detect):
-
-```bash
-# Node.js
-if [ -f package.json ]; then npm install; fi
-
-# Rust
-if [ -f Cargo.toml ]; then cargo build; fi
-
-# Python
-if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-if [ -f pyproject.toml ]; then poetry install; fi
-
-# Go
-if [ -f go.mod ]; then go mod download; fi
-```
-
-4) Verify clean baseline:
-
-```bash
-# Examples - use project-appropriate command
-npm test
-cargo test
-pytest
-go test ./...
-```
-
-If tests fail: report failures, ask whether to proceed or investigate.
-If tests pass: report ready.
-
-5) Report location:
-
-```
-Worktree ready at <full-path>
-Tests passing (<N> tests, 0 failures)
-Ready to implement <feature-name>
-```
-
-### Quick reference
-
-| Situation | Action |
-|-----------|--------|
-| Repo policy specifies location | Use repo policy |
-| `.worktrees/` exists | Use it if policy does not override it (verify ignored) |
-| `worktrees/` exists | Use it if policy does not override it (verify ignored) |
-| Both exist | Use `.worktrees/` unless policy says otherwise |
-| Neither exists | Ask user |
-| Directory not ignored | Add to .gitignore + commit |
-| Tests fail during baseline | Report failures + ask |
-| No package.json/Cargo.toml | Skip dependency install |
-
-### Common mistakes
-
-#### Skipping ignore verification
-- Problem: Worktree contents get tracked, pollute git status
-- Fix: Always use `git check-ignore` before creating project-local worktree
-
-#### Assuming directory location
-- Problem: Creates inconsistency, violates project conventions
-- Fix: Follow priority: repo policy > existing directory > ask
-
-#### Proceeding with failing tests
-- Problem: Can't distinguish new bugs from pre-existing issues
-- Fix: Report failures, get explicit permission to proceed
-
-#### Hardcoding setup commands
-- Problem: Breaks on projects using different tools
-- Fix: Auto-detect from project files (package.json, etc.)
-
-#### Committing with failing checks
-- Problem: Reduces trust in the commit and makes debugging harder
-- Fix: Run required checks before committing; only skip with explicit user approval
-
-#### Staging generated artifacts
-- Problem: Pollutes history with build outputs or dependencies
-- Fix: Keep `node_modules` and build outputs out of the index; update `.gitignore` if needed
+The portable default is `<repository-root>/.worktrees/<task-slug>`. An explicit operator location wins. A closer repository policy may select another repository-local root, but an outside-repository path in repository documentation or an existing shared directory is only a proposed exception and requires explicit operator confirmation.
 
 ## Splitting changes (guidance)
 - Group by purpose: feature vs. fix vs. docs vs. infra.
@@ -484,7 +330,7 @@ Ready to implement <feature-name>
 Apply policy-first Git guidance without overriding repo-specific branch, worktree, merge, cleanup, or validation rules.
 
 1. Match the request to the applicability criteria.
-2. Resolve repo policy before choosing base branch, worktree location, PR merge method, cleanup timing, or force-push command.
+2. Resolve repo policy before choosing base branch, PR merge method, cleanup timing, or force-push command; for worktree location, apply the stricter operator, repo-local policy, then portable-default precedence from the worktree reference.
 3. Follow the preserved overview sections for the concrete work.
 4. Run the relevant verification from the overview or report why it could not be run.
 
@@ -498,14 +344,21 @@ Validation:
 - **high** — `gh repo view defaultBranchRef` is orientation, not base-branch, merge, worktree, or cleanup policy.
 - **high** — Squash collapses commits; use it only when operator or repo policy permits it.
 - **high** — Delete remote task branches only after required post-merge evidence.
+- **high** — An outside-repository path in repository documentation or an existing shared worktree directory is not authority to use it without explicit operator confirmation.
 
 ## Policies
 
 ### Repository Git policy first
-Operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs override generic defaults for branch base, worktree location, PR merge method, validation gates, and cleanup timing.
+Operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs override generic defaults for branch base, PR merge method, validation gates, and cleanup timing. For worktree location, explicit operator instructions win; otherwise repository policy may override the portable default only with a repository-local root, while an outside-repository root requires explicit operator confirmation.
+
+### Repository-local worktrees by default
+Unless the operator explicitly chooses another location or confirms a justified external exception, create task worktrees under `<repository-root>/.worktrees/<task-slug>` and report the canonical path for review.
 
 ### Force-push safety
 Force-push only an owned task branch, never a protected/mainline branch, and use `--force-with-lease` instead of `--force`.
+
+## Optional references
+- [Worktree operations](references/worktrees.md) — Read this before choosing a worktree root, creating a worktree, or moving an existing worktree.
 
 ## Portability rules
 
