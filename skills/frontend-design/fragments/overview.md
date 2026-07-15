@@ -1,117 +1,62 @@
 Use this skill when the quality of the work depends on art direction, hierarchy, restraint, imagery, typography, and motion rather than component count alone.
 
-Goal: ship interfaces that feel deliberate, premium, current, and memorable. Default toward one big idea, strong hierarchy, sparse copy, rigorous spacing, and a small number of meaningful motions.
-
-## Skill Interop
-
-- Use `frontend-design` for visual direction, hierarchy, composition, imagery, motion, typography, copy compression, and atmosphere
-- Use `react-spa-engineer` for React SPA architecture, state, routing, data, testing, and accessibility implementation patterns
-- Use `react-components-engineer` for reusable component hardening and correctness
-- Use `shadcn` when working inside the primary UI system; preserve the existing design system and keep creativity inside its tokens, patterns, and components
-- If a project already has a design system or UI framework, do not introduce a parallel ad-hoc styling system without explicit approval
+Goal: produce deliberate, current interfaces and implementation-ready design
+strategies whose claims match the evidence. Prefer one clear idea, strong
+hierarchy, rigorous spacing, and only the imagery or motion the selected surface
+needs.
 
 ## Working Model
 
-Before building, write five things:
+Before designing or building, establish:
 
-- `surface mode`: `brand/landing`, `product/app`, `system-constrained UI`, or `secondary format`
+- `deliverable`: `strategy-only`, `design-artifact`, or `runtime-implementation`
+- `source hierarchy`: the brief, product behavior, existing runtime, design system, and assets that govern decisions
+- `surface type`: `brand/landing`, `product/app`, or `secondary format`
+- `constraint profile`: `greenfield` or `system-constrained`
+- `visual engine`: one primary engine and, only when useful, one supporting engine
 - `visual thesis`: one sentence describing mood, material, energy, and the dominant visual idea
-- `content plan`: hero, support, detail, final CTA for marketing work; or the working surface, navigation, secondary context, and action focus for product UI
-- `interaction thesis`: 2-3 motion ideas that materially improve presence, hierarchy, or affordance
-- `constraint guardrails`: framework, performance, accessibility, responsive, and design-system constraints
+- `content and state plan`: content order plus the relevant loading, empty, error, success, permission, responsive, and long-content states
+- `interaction thesis`: only the transitions or motion that materially improve presence, hierarchy, feedback, or affordance
+- `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim
 
 Each section gets one job, one dominant visual idea, and one primary takeaway or action.
 
+For non-trivial strategy, system-constrained work, implementation handoff, or
+runtime completion, read `references/strategy-to-implementation.md`.
+
 Load references only when needed:
 
-- `references/surface-modes.md` for mode-specific application rules
+- `references/strategy-to-implementation.md` for readiness, strategy handoff, implementation mapping, evidence, and status rules
+- `references/surface-modes.md` for surface type and constraint-profile rules
 - `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction
 - `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance
-- `references/interop.md` for boundaries with React and shadcn skills
 
-## Beautiful Defaults
+## Cross-Mode Defaults
 
 - Start with composition, not components.
-- Prefer a full-bleed hero or full-canvas visual anchor.
-- Make the brand or product name the loudest text.
 - Keep copy short enough to scan in seconds.
 - Use whitespace, alignment, scale, cropping, and contrast before adding chrome.
-- Limit the system: two typefaces max, one accent color by default.
+- In greenfield work, limit the system to two typefaces and one accent color by default; in system-constrained work, preserve the accepted token system.
 - Use expressive typography when the brief allows it; avoid safe, overused default choices that flatten the page.
 - Default to cardless layouts. Use sections, columns, dividers, lists, and media blocks instead.
-- Treat the first viewport as a poster, not a document.
 - Build atmosphere with backgrounds, texture, depth, overlays, or pattern only when they reinforce hierarchy and mood.
 - Avoid AI-slop aesthetics: generic SaaS card stacks, weak branding, filler gradients, predictable component mosaics, and cookie-cutter visual language.
 
-## Landing Pages
+## Mode Application
 
-Default sequence:
+For landing work, use a concise hero-support-detail-CTA sequence and one
+dominant first-screen composition. The anchor may be imagery, expressive type,
+product proof, data, or grid structure; do not force imagery into a non-image
+engine. Count persistent headers against the initial viewport budget.
 
-1. Hero: brand or product, promise, CTA, and one dominant visual
-2. Support: one concrete feature, offer, or proof point
-3. Detail: atmosphere, workflow, product depth, or story
-4. Final CTA: convert, start, visit, or contact
+For product work, lead with the working surface, navigation, secondary context,
+and one clear action or state accent. Prefer dense but readable layout over
+marketing heroes, decorative backgrounds, or card mosaics.
 
-Hero rules:
-
-- One composition only.
-- Use a full-bleed image or a dominant visual plane.
-- On branded landing pages, the hero itself should run edge-to-edge. Do not inherit shared gutters, framed containers, or a global max-width for the hero shell; constrain only the inner text and actions.
-- Brand first, headline second, body third, CTA fourth.
-- No hero cards, stat strips, logo clouds, pill soup, or floating dashboards by default.
-- Keep headlines to roughly 2-3 lines on desktop and readable in one glance on mobile.
-- Keep the text column narrow and anchored to a calm area of the image or composition.
-- All text over imagery must keep strong contrast and clear tap targets.
-
-If the first viewport still works after removing the image, the image is too weak. If the brand disappears after hiding the nav, the hierarchy is too weak.
-
-Viewport budget:
-
-- If the first screen uses a sticky or fixed header, that header counts against the hero. Header and hero content together must fit within the initial viewport on common desktop and mobile sizes.
-- When using `100vh` or `100svh` heroes, subtract persistent chrome with `calc(100svh - header-height)` or overlay the header instead of stacking it in normal flow.
-
-## Apps
-
-Default to restrained product UI:
-
-- calm surface hierarchy
-- strong typography and spacing
-- few colors
-- dense but readable information
-- minimal chrome
-- cards only when the card is the interaction
-
-For app UI, organize around:
-
-- primary workspace
-- navigation
-- secondary context or inspector
-- one clear accent for action or state
-
-Avoid:
-
-- dashboard-card mosaics
-- thick borders on every region
-- decorative gradients behind routine product UI
-- multiple competing accent colors
-- ornamental icons that do not improve scanning
-
-If a panel can become plain layout without losing meaning, remove the card treatment.
-
-For product and app work, utility copy and operational clarity beat marketing voice unless the user explicitly asks otherwise.
-
-## Imagery
-
-Imagery must do narrative work.
-
-- Use at least one strong, real-looking image for brands, venues, editorial pages, and lifestyle products.
-- Prefer in-situ photography over abstract gradients or fake 3D objects when the brief benefits from realism.
-- Choose or crop images with a stable tonal area for text.
-- Do not use images with embedded signage, logos, or typographic clutter fighting the UI.
-- Do not generate images with built-in UI frames, splits, cards, or panels.
-- If multiple moments are needed, use multiple images, not one collage.
-
-The first viewport needs a real visual anchor. Decorative texture is not enough.
+When imagery is selected, make it carry narrative meaning, crop it around the
+composition, and keep text away from visual or typographic clutter. Read
+`references/surface-modes.md` and `references/visual-engines.md` for the full
+mode and engine guidance.
 
 ## Copy
 
@@ -142,13 +87,20 @@ When the work is a dashboard, app surface, admin tool, or operational workspace,
 
 Use motion to create presence and hierarchy, not noise.
 
-Ship at least 2-3 intentional motions for visually led work:
+Choose only the motions the brief and surface can justify. A visually led
+landing page may use several coordinated motions; a routine product surface may
+need one transition or none.
+
+Possible roles include:
 
 - one entrance sequence in the hero
 - one scroll-linked, sticky, or depth effect
 - one hover, reveal, or layout transition that sharpens affordance
 
-Prefer Framer Motion when available for:
+Use the existing project motion stack. Prefer CSS for simple state changes and,
+when a React motion dependency is already installed or explicitly approved,
+verify its current package and framework API before use. Motion for React is
+appropriate for:
 
 - section reveals
 - shared layout transitions
@@ -159,13 +111,17 @@ Prefer Framer Motion when available for:
 
 Motion rules:
 
-- noticeable in a quick recording
+- observable when it is part of the intended experience
 - smooth on mobile
 - fast and restrained
 - consistent across the page
 - removed if ornamental only
+- non-essential transform, parallax, or autoplay behavior is disabled or replaced when the user prefers reduced motion
 
-## Hard Rules
+## Guardrails
+
+Accepted product behavior, accessibility constraints, and an existing design
+system take precedence over the aesthetic defaults below.
 
 - No cards by default.
 - No hero cards by default.
@@ -190,19 +146,9 @@ Motion rules:
 - App UI made of stacked cards instead of layout
 - “Creative” styling that breaks the existing design system or framework conventions
 
-## Litmus Checks
-
-- Is the brand or product unmistakable in the first screen?
-- Is there one strong visual anchor?
-- Can the page be understood by scanning headlines only?
-- Does each section have one job?
-- Are cards actually necessary?
-- Does motion improve hierarchy or atmosphere?
-- Would the design still feel premium if all decorative shadows were removed?
-
 ## Final Review Loop
 
-Before finishing, verify:
+Before finishing the requested deliverable, verify:
 
 - first-screen hierarchy is obvious
 - each section has one dominant idea
@@ -211,3 +157,9 @@ Before finishing, verify:
 - motion improves meaning, hierarchy, or affordance
 - desktop and mobile viewport composition both hold up
 - contrast, tap targets, focus states, and reduced-motion behavior are acceptable
+
+For a runtime implementation, these checks must come from the current rendered
+interface at representative viewports and relevant states. If rendered checks
+cannot run, report `implemented-not-verified`; do not imply runtime completion.
+For strategy-only or design-artifact work, report the corresponding scoped
+status and the runtime evidence still outstanding.

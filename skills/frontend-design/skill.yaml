@@ -2,13 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: frontend-design
-  source-version: 0.1.2
+  source-version: 0.2.0
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Use for strong landing pages, websites, app UIs, dashboards, prototypes, demos,
-    poster-like artifacts, or meaningful visual upgrades. Enforce hierarchy,
-    restrained composition, purposeful imagery, expressive typography, tasteful
-    motion, and system-aware polish while avoiding generic AI aesthetics.
+    Design and implement visually strong web interfaces and decision-complete
+    design strategies. Use for landing pages, product UI, dashboards,
+    prototypes, redesigns, or translating accepted design into code. Preserve
+    authoritative behavior and existing systems, then verify rendered results.
 fragments:
   overview: fragments/overview.md
 references:
@@ -16,26 +16,26 @@ references:
     title: Anti Patterns
     source: references/anti-patterns.md
     target: references/anti-patterns.md
-    required: true
-    trigger: Read this when you need common failure patterns and anti-AI-slop guidance.
-  - id: ref-references-interop
-    title: Interop
-    source: references/interop.md
-    target: references/interop.md
-    required: true
-    trigger: Read this when you need boundaries with React and shadcn skills.
+    required: false
+    trigger: Read this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.
   - id: ref-references-surface-modes
     title: Surface Modes
     source: references/surface-modes.md
     target: references/surface-modes.md
-    required: true
-    trigger: Read this when you need mode-specific application rules.
+    required: false
+    trigger: Read this when surface type or the design-system constraint profile is ambiguous.
   - id: ref-references-visual-engines
     title: Visual Engines
     source: references/visual-engines.md
     target: references/visual-engines.md
-    required: true
-    trigger: Read this when you need choosing an image-led, type-led, grid-led, product-led, or data-led direction.
+    required: false
+    trigger: Read this after classifying the surface when the primary visual engine is not already established.
+  - id: ref-strategy-to-implementation
+    title: Strategy To Implementation
+    source: references/strategy-to-implementation.md
+    target: references/strategy-to-implementation.md
+    required: false
+    trigger: Read this for non-trivial strategy, system-constrained work, implementation handoff, or runtime completion claims.
 assets: []
 copies:
   - id: copy-license
@@ -55,46 +55,152 @@ supporting:
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260716-1
+    source: docs/logs/implementation-log-20260716-1.md
+    target: docs/logs/implementation-log-20260716-1.md
+    description: Non-normative implementation and review evidence for the 0.2.0 strategy-to-runtime contract.
+  - id: supporting-forward-test-evidence-20260716-1
+    source: docs/logs/forward-test-evidence-20260716-1.md
+    target: docs/logs/forward-test-evidence-20260716-1.md
+    description: Non-normative blind forward-test evidence for the 0.2.0 candidate.
 surfaces:
   active:
-    requiredReferences:
+    requiredReferences: []
+    optionalReferences:
       - ref-references-anti-patterns
-      - ref-references-interop
       - ref-references-surface-modes
       - ref-references-visual-engines
-    optionalReferences: []
+      - ref-strategy-to-implementation
   supportingGlobs:
     - docs/*
 sections:
   startHere:
-    - Confirm the task matches frontend-design's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Confirm that visual direction, design strategy, or translating design into a rendered interface is material to the request.
+    - Name the requested deliverable as strategy-only, design-artifact, runtime-implementation, or a combination.
+    - Inspect the authoritative brief, existing runtime, design system, component inventory, and assets that can govern the work before making visual decisions.
+    - Classify surface type, constraint profile, and primary visual engine; load only the optional references whose triggers match.
+    - Define the evidence required for the strongest honest completion status before building.
   whenToUse:
+    - Create or refine an implementation-ready visual and interaction strategy for a web interface.
     - Visually strong landing pages, marketing websites, hero sections, or branded surfaces
     - Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline
-    - Beautifying or restyling an existing React, HTML/CSS, or component-based UI
+    - Translate an accepted design, mockup, or visual direction into React, HTML/CSS, or another component-based UI
     - Prototypes, demo UI, and secondary web formats such as poster-like artifacts or game UI mock surfaces
   whenNotToUse:
     - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement
     - Pure component API lookup or design-system component selection; use `shadcn` for that
     - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`
+    - Formal guidelines-based review of an implemented interface without design or remediation work; use `web-ui-reviewer`
   workflow:
-    - id: stage-apply-frontend-design
-      title: Apply frontend-design guidance
-      goal: Apply the preserved frontend-design guidance without changing its domain behavior.
+    - id: stage-establish-basis
+      title: Establish the design basis
+      goal: Prevent visual work from inventing product behavior or bypassing the current UI system.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Name the deliverable and its downstream consumer.
+        - Inspect the user brief, accepted product or UX sources, current runtime, design-system tokens, reusable components, Storybook or equivalent examples, and available assets that govern the task.
+        - Record source precedence when multiple inputs govern the same decision.
+        - Separate missing visual inspiration, which may be resolved with a labeled thesis, from missing product behavior, which must not be invented.
+        - Stop the affected path as blocked when equal-authority sources conflict or a required product decision is absent.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - Product behavior and design-system constraints have traceable owners.
+        - The agent has not invented actions, states, permissions, backend truth, validation, or copy authority.
+    - id: stage-write-strategy
+      title: Write a proportional design strategy
+      goal: Give implementation a clear visual, state, reuse, and evidence contract without unnecessary process artifacts.
+      steps:
+        - Classify surface type separately from the greenfield or system-constrained profile, then select one primary visual engine.
+        - State the capability, consumer, anti-claims, visual thesis, content and state plan, interaction thesis, responsive intent, reuse plan, and evidence plan.
+        - For complex operational UI, map material states to their existing component or owner; keep small changes inline when a matrix would add no clarity.
+        - Apply mode-specific composition, typography, imagery, copy, and motion guidance from the overview and matching references.
+      validation:
+        - A downstream implementer can act without inventing visual intent, product behavior, material states, or component ownership.
+        - Strategy-only output names the runtime evidence it still does not provide.
+    - id: stage-translate-or-build
+      title: Translate the strategy into the requested artifact or implementation
+      goal: Preserve the accepted strategy and current system while producing the requested surface.
+      steps:
+        - Reuse existing tokens, components, patterns, and assets before introducing screen-local primitives or styling.
+        - Resolve design-artifact and runtime-component conflicts by source authority instead of copying either blindly.
+        - Route design-tool mechanics, framework architecture, component APIs, and browser execution to their owning skills while preserving the visual contract.
+        - Implement responsive behavior, material states, content extremes, and reduced-motion behavior as part of the surface rather than as a later polish pass.
+      validation:
+        - The result traces to the strategy and does not create an unapproved parallel design or component system.
+        - Any custom component or visual-system exception has a concrete gap and owner.
+    - id: stage-verify-and-report
+      title: Verify the deliverable and report an honest status
+      goal: Match completion claims to current artifact or runtime evidence.
+      steps:
+        - For strategy-only work, verify contract completeness and report strategy-ready without a runtime claim.
+        - For design artifacts, inspect the current artifact and read back required exports or screenshots before reporting artifact-ready.
+        - For runtime implementation, inspect the current rendered interface at representative desktop and mobile viewports, relevant states and interactions, keyboard and focus behavior, reduced-motion behavior when applicable, and console or network state when applicable.
+        - Use `agent-browser` for interactive diagnostics and terminal-state evidence or `playwright` for reproducible scripted evidence; require both only when they prove distinct needed conditions.
+        - Report implemented-not-verified when required rendered evidence is missing or failed; use verified only when the requested runtime path and proportionate checks pass.
+      validation:
+        - Status, evidence, unrun checks, and anti-claims are consistent.
+        - Source, mockups, stories, screenshots, or compiler success alone cannot close an integrated runtime claim.
+  interop:
+    - id: interop-product-authority
+      domain: product behavior, actors, actions, states, validation, and copy authority
+      winner: The relevant product or specification skill and accepted project sources
+      rationale: frontend-design expresses authoritative behavior visually but must not invent or override it.
+    - id: interop-framework
+      domain: application architecture, state, routing, data, testing, and runtime accessibility mechanics
+      winner: The relevant framework skill such as react-spa-engineer
+      rationale: frontend-design owns visual strategy and rendered expression, not framework correctness.
+    - id: interop-component-correctness
+      domain: reusable React component correctness, SSR, hydration, portals, and lifecycle behavior
+      winner: react-components-engineer
+      rationale: Visual intent must adapt to component correctness rather than weaken it.
+    - id: interop-shadcn
+      domain: shadcn registry discovery, component selection, and registry-aware implementation
+      winner: shadcn
+      rationale: frontend-design supplies page-level direction while shadcn owns component-system mechanics.
+    - id: interop-pencil
+      domain: durable .pen inspection, editing, validation, screenshots, and exports
+      winner: pencil-dev
+      rationale: frontend-design defines strategy and frames; pencil-dev owns Pencil MCP mechanics.
+    - id: interop-browser
+      domain: interactive browser diagnostics, screenshots, and terminal-state checks
+      winner: agent-browser
+      rationale: frontend-design defines evidence conditions while agent-browser executes exploratory browser verification.
+    - id: interop-playwright
+      domain: reproducible scripted browser scenarios and visual, network, or console evidence
+      winner: playwright
+      rationale: frontend-design defines evidence conditions while playwright owns repeatable browser automation.
+    - id: interop-ui-review
+      domain: guidelines-based web UI and accessibility review
+      winner: web-ui-reviewer
+      rationale: frontend-design performs design self-checks; web-ui-reviewer owns the review contract, and a separate reviewer context is still required when the verdict must be independent.
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-authority-invention
+      priority: high
+      text: Do not turn missing product behavior, controls, states, permissions, or copy authority into a visual-design decision.
+    - id: gotcha-runtime-substrate
+      priority: high
+      text: A strategy, mockup, export, screenshot, Storybook story, component catalog, or source inspection is not integrated runtime evidence.
+    - id: gotcha-system-grounding
+      priority: high
+      text: In system-constrained work, inspect the current runtime component and design-system surface before introducing new primitives or one-off styling.
+    - id: gotcha-motion-quota
+      priority: high
+      text: Do not add motion to satisfy a quota; use only motion that improves hierarchy, continuity, feedback, or affordance and provide reduced behavior for non-essential physical motion.
+    - id: gotcha-stale-artifact
+      priority: medium
+      text: Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.
+  policies:
+    - id: policy-source-authority
+      title: Source-authority policy
+      text: Resolve product behavior, design-system constraints, runtime behavior, and visual inspiration from their named authorities; stop rather than silently resolve equal-authority conflicts.
+    - id: policy-system-constraint-precedence
+      title: System-constraint precedence
+      text: Accepted product behavior, accessibility constraints, and the existing design system override generic aesthetic defaults unless the user explicitly authorizes a system change.
+    - id: policy-capability-evidence
+      title: Capability-evidence policy
+      text: Match evidence to the requested deliverable and never use artifact-level or structural evidence to claim an integrated runtime capability.
+    - id: policy-status-contract
+      title: Status contract
+      text: Report strategy-ready, artifact-ready, implemented-not-verified, verified, or blocked per deliverable; do not collapse several deliverables into the strongest status achieved by only one.
   portability:
     required: true
     rules:
@@ -102,6 +208,7 @@ sections:
       - Keep all mandatory frontend-design guidance inside this skill folder.
       - Use relative links for local references, assets, scripts, tests, and supporting docs.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
+      - Run the packaged skill-source-compiler lint, regenerate, and check commands after source changes.
       - Search the skill folder for absolute local paths before finishing.
-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Confirm every active reference listed by SKILL.md exists inside this skill folder.
+      - Compile to an isolated directory and confirm the copied package retains the strategy, interop, and evidence contract.

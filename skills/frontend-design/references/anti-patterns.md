@@ -27,6 +27,17 @@ Use this reference when the output feels generic, overdesigned, or mismatched to
 - decorative backgrounds behind routine tables, filters, or forms
 - low-information chrome crowding out the actual work surface
 - visual density with no grouping logic
+- controls, states, or copy invented without an authoritative product source
+- new screen-level primitives created before inspecting the existing component inventory
+
+## Strategy and handoff failures
+
+- a visual thesis with no content/state plan or downstream consumer
+- treating a mockup, Storybook story, screenshot, or component catalog as integrated runtime capability
+- copying an accepted-looking design artifact when it conflicts with the current runtime component contract
+- declaring success from a stale export that was not read back after the source changed
+- omitting mobile, error, loading, permission, or long-content states that materially affect the implementation
+- reporting implementation as verified when rendered browser checks did not run
 
 ## Motion failures
 

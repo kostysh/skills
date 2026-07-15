@@ -1,30 +1,32 @@
 ---
 name: frontend-design
-description: Use for strong landing pages, websites, app UIs, dashboards,
-  prototypes, demos, poster-like artifacts, or meaningful visual upgrades.
-  Enforce hierarchy, restrained composition, purposeful imagery, expressive
-  typography, tasteful motion, and system-aware polish while avoiding generic AI
-  aesthetics.
+description: Design and implement visually strong web interfaces and
+  decision-complete design strategies. Use for landing pages, product UI,
+  dashboards, prototypes, redesigns, or translating accepted design into code.
+  Preserve authoritative behavior and existing systems, then verify rendered
+  results.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ac4336fe77dfa4189e93e59d00ed88b4269a749cf4239611fbbe4eb11fcf4d19
+  skillforge-source-hash: d24a1675aa80d52e1089b38d81711957eec304330fd1bb3655a6fd4302d8dc74
 ---
 
 # frontend-design
 
 ## Start here
 
-1. Confirm the task matches frontend-design's applicability criteria.
-2. Use the preserved overview guidance as the normative workflow for this skill.
-3. Load only the active references that match the current task.
-4. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+1. Confirm that visual direction, design strategy, or translating design into a rendered interface is material to the request.
+2. Name the requested deliverable as strategy-only, design-artifact, runtime-implementation, or a combination.
+3. Inspect the authoritative brief, existing runtime, design system, component inventory, and assets that can govern the work before making visual decisions.
+4. Classify surface type, constraint profile, and primary visual engine; load only the optional references whose triggers match.
+5. Define the evidence required for the strongest honest completion status before building.
 
 ## When to use this skill
 
+- Create or refine an implementation-ready visual and interaction strategy for a web interface.
 - Visually strong landing pages, marketing websites, hero sections, or branded surfaces
 - Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline
-- Beautifying or restyling an existing React, HTML/CSS, or component-based UI
+- Translate an accepted design, mockup, or visual direction into React, HTML/CSS, or another component-based UI
 - Prototypes, demo UI, and secondary web formats such as poster-like artifacts or game UI mock surfaces
 
 ## When NOT to use this skill
@@ -32,123 +34,69 @@ metadata:
 - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement
 - Pure component API lookup or design-system component selection; use `shadcn` for that
 - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`
+- Formal guidelines-based review of an implemented interface without design or remediation work; use `web-ui-reviewer`
 
 ## Overview
 
 Use this skill when the quality of the work depends on art direction, hierarchy, restraint, imagery, typography, and motion rather than component count alone.
 
-Goal: ship interfaces that feel deliberate, premium, current, and memorable. Default toward one big idea, strong hierarchy, sparse copy, rigorous spacing, and a small number of meaningful motions.
-
-## Skill Interop
-
-- Use `frontend-design` for visual direction, hierarchy, composition, imagery, motion, typography, copy compression, and atmosphere
-- Use `react-spa-engineer` for React SPA architecture, state, routing, data, testing, and accessibility implementation patterns
-- Use `react-components-engineer` for reusable component hardening and correctness
-- Use `shadcn` when working inside the primary UI system; preserve the existing design system and keep creativity inside its tokens, patterns, and components
-- If a project already has a design system or UI framework, do not introduce a parallel ad-hoc styling system without explicit approval
+Goal: produce deliberate, current interfaces and implementation-ready design
+strategies whose claims match the evidence. Prefer one clear idea, strong
+hierarchy, rigorous spacing, and only the imagery or motion the selected surface
+needs.
 
 ## Working Model
 
-Before building, write five things:
+Before designing or building, establish:
 
-- `surface mode`: `brand/landing`, `product/app`, `system-constrained UI`, or `secondary format`
+- `deliverable`: `strategy-only`, `design-artifact`, or `runtime-implementation`
+- `source hierarchy`: the brief, product behavior, existing runtime, design system, and assets that govern decisions
+- `surface type`: `brand/landing`, `product/app`, or `secondary format`
+- `constraint profile`: `greenfield` or `system-constrained`
+- `visual engine`: one primary engine and, only when useful, one supporting engine
 - `visual thesis`: one sentence describing mood, material, energy, and the dominant visual idea
-- `content plan`: hero, support, detail, final CTA for marketing work; or the working surface, navigation, secondary context, and action focus for product UI
-- `interaction thesis`: 2-3 motion ideas that materially improve presence, hierarchy, or affordance
-- `constraint guardrails`: framework, performance, accessibility, responsive, and design-system constraints
+- `content and state plan`: content order plus the relevant loading, empty, error, success, permission, responsive, and long-content states
+- `interaction thesis`: only the transitions or motion that materially improve presence, hierarchy, feedback, or affordance
+- `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim
 
 Each section gets one job, one dominant visual idea, and one primary takeaway or action.
 
+For non-trivial strategy, system-constrained work, implementation handoff, or
+runtime completion, read `references/strategy-to-implementation.md`.
+
 Load references only when needed:
 
-- `references/surface-modes.md` for mode-specific application rules
+- `references/strategy-to-implementation.md` for readiness, strategy handoff, implementation mapping, evidence, and status rules
+- `references/surface-modes.md` for surface type and constraint-profile rules
 - `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction
 - `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance
-- `references/interop.md` for boundaries with React and shadcn skills
 
-## Beautiful Defaults
+## Cross-Mode Defaults
 
 - Start with composition, not components.
-- Prefer a full-bleed hero or full-canvas visual anchor.
-- Make the brand or product name the loudest text.
 - Keep copy short enough to scan in seconds.
 - Use whitespace, alignment, scale, cropping, and contrast before adding chrome.
-- Limit the system: two typefaces max, one accent color by default.
+- In greenfield work, limit the system to two typefaces and one accent color by default; in system-constrained work, preserve the accepted token system.
 - Use expressive typography when the brief allows it; avoid safe, overused default choices that flatten the page.
 - Default to cardless layouts. Use sections, columns, dividers, lists, and media blocks instead.
-- Treat the first viewport as a poster, not a document.
 - Build atmosphere with backgrounds, texture, depth, overlays, or pattern only when they reinforce hierarchy and mood.
 - Avoid AI-slop aesthetics: generic SaaS card stacks, weak branding, filler gradients, predictable component mosaics, and cookie-cutter visual language.
 
-## Landing Pages
+## Mode Application
 
-Default sequence:
+For landing work, use a concise hero-support-detail-CTA sequence and one
+dominant first-screen composition. The anchor may be imagery, expressive type,
+product proof, data, or grid structure; do not force imagery into a non-image
+engine. Count persistent headers against the initial viewport budget.
 
-1. Hero: brand or product, promise, CTA, and one dominant visual
-2. Support: one concrete feature, offer, or proof point
-3. Detail: atmosphere, workflow, product depth, or story
-4. Final CTA: convert, start, visit, or contact
+For product work, lead with the working surface, navigation, secondary context,
+and one clear action or state accent. Prefer dense but readable layout over
+marketing heroes, decorative backgrounds, or card mosaics.
 
-Hero rules:
-
-- One composition only.
-- Use a full-bleed image or a dominant visual plane.
-- On branded landing pages, the hero itself should run edge-to-edge. Do not inherit shared gutters, framed containers, or a global max-width for the hero shell; constrain only the inner text and actions.
-- Brand first, headline second, body third, CTA fourth.
-- No hero cards, stat strips, logo clouds, pill soup, or floating dashboards by default.
-- Keep headlines to roughly 2-3 lines on desktop and readable in one glance on mobile.
-- Keep the text column narrow and anchored to a calm area of the image or composition.
-- All text over imagery must keep strong contrast and clear tap targets.
-
-If the first viewport still works after removing the image, the image is too weak. If the brand disappears after hiding the nav, the hierarchy is too weak.
-
-Viewport budget:
-
-- If the first screen uses a sticky or fixed header, that header counts against the hero. Header and hero content together must fit within the initial viewport on common desktop and mobile sizes.
-- When using `100vh` or `100svh` heroes, subtract persistent chrome with `calc(100svh - header-height)` or overlay the header instead of stacking it in normal flow.
-
-## Apps
-
-Default to restrained product UI:
-
-- calm surface hierarchy
-- strong typography and spacing
-- few colors
-- dense but readable information
-- minimal chrome
-- cards only when the card is the interaction
-
-For app UI, organize around:
-
-- primary workspace
-- navigation
-- secondary context or inspector
-- one clear accent for action or state
-
-Avoid:
-
-- dashboard-card mosaics
-- thick borders on every region
-- decorative gradients behind routine product UI
-- multiple competing accent colors
-- ornamental icons that do not improve scanning
-
-If a panel can become plain layout without losing meaning, remove the card treatment.
-
-For product and app work, utility copy and operational clarity beat marketing voice unless the user explicitly asks otherwise.
-
-## Imagery
-
-Imagery must do narrative work.
-
-- Use at least one strong, real-looking image for brands, venues, editorial pages, and lifestyle products.
-- Prefer in-situ photography over abstract gradients or fake 3D objects when the brief benefits from realism.
-- Choose or crop images with a stable tonal area for text.
-- Do not use images with embedded signage, logos, or typographic clutter fighting the UI.
-- Do not generate images with built-in UI frames, splits, cards, or panels.
-- If multiple moments are needed, use multiple images, not one collage.
-
-The first viewport needs a real visual anchor. Decorative texture is not enough.
+When imagery is selected, make it carry narrative meaning, crop it around the
+composition, and keep text away from visual or typographic clutter. Read
+`references/surface-modes.md` and `references/visual-engines.md` for the full
+mode and engine guidance.
 
 ## Copy
 
@@ -179,13 +127,20 @@ When the work is a dashboard, app surface, admin tool, or operational workspace,
 
 Use motion to create presence and hierarchy, not noise.
 
-Ship at least 2-3 intentional motions for visually led work:
+Choose only the motions the brief and surface can justify. A visually led
+landing page may use several coordinated motions; a routine product surface may
+need one transition or none.
+
+Possible roles include:
 
 - one entrance sequence in the hero
 - one scroll-linked, sticky, or depth effect
 - one hover, reveal, or layout transition that sharpens affordance
 
-Prefer Framer Motion when available for:
+Use the existing project motion stack. Prefer CSS for simple state changes and,
+when a React motion dependency is already installed or explicitly approved,
+verify its current package and framework API before use. Motion for React is
+appropriate for:
 
 - section reveals
 - shared layout transitions
@@ -196,13 +151,17 @@ Prefer Framer Motion when available for:
 
 Motion rules:
 
-- noticeable in a quick recording
+- observable when it is part of the intended experience
 - smooth on mobile
 - fast and restrained
 - consistent across the page
 - removed if ornamental only
+- non-essential transform, parallax, or autoplay behavior is disabled or replaced when the user prefers reduced motion
 
-## Hard Rules
+## Guardrails
+
+Accepted product behavior, accessibility constraints, and an existing design
+system take precedence over the aesthetic defaults below.
 
 - No cards by default.
 - No hero cards by default.
@@ -227,19 +186,9 @@ Motion rules:
 - App UI made of stacked cards instead of layout
 - “Creative” styling that breaks the existing design system or framework conventions
 
-## Litmus Checks
-
-- Is the brand or product unmistakable in the first screen?
-- Is there one strong visual anchor?
-- Can the page be understood by scanning headlines only?
-- Does each section have one job?
-- Are cards actually necessary?
-- Does motion improve hierarchy or atmosphere?
-- Would the design still feel premium if all decorative shadows were removed?
-
 ## Final Review Loop
 
-Before finishing, verify:
+Before finishing the requested deliverable, verify:
 
 - first-screen hierarchy is obvious
 - each section has one dominant idea
@@ -249,26 +198,110 @@ Before finishing, verify:
 - desktop and mobile viewport composition both hold up
 - contrast, tap targets, focus states, and reduced-motion behavior are acceptable
 
+For a runtime implementation, these checks must come from the current rendered
+interface at representative viewports and relevant states. If rendered checks
+cannot run, report `implemented-not-verified`; do not imply runtime completion.
+For strategy-only or design-artifact work, report the corresponding scoped
+status and the runtime evidence still outstanding.
+
 ## Workflow stages
 
-### Workflow stage: Apply frontend-design guidance
+### Workflow stage: Establish the design basis
 
-Apply the preserved frontend-design guidance without changing its domain behavior.
+Prevent visual work from inventing product behavior or bypassing the current UI system.
 
-1. Match the request to the applicability criteria.
-2. Follow the preserved overview sections for the concrete work.
-3. Read the smallest relevant active reference before using detailed guidance from it.
-4. Run the relevant verification from the overview or report why it could not be run.
+1. Name the deliverable and its downstream consumer.
+2. Inspect the user brief, accepted product or UX sources, current runtime, design-system tokens, reusable components, Storybook or equivalent examples, and available assets that govern the task.
+3. Record source precedence when multiple inputs govern the same decision.
+4. Separate missing visual inspiration, which may be resolved with a labeled thesis, from missing product behavior, which must not be invented.
+5. Stop the affected path as blocked when equal-authority sources conflict or a required product decision is absent.
 
 Validation:
 
-- The outcome follows the preserved skill guidance and any loaded reference constraints.
+- Product behavior and design-system constraints have traceable owners.
+- The agent has not invented actions, states, permissions, backend truth, validation, or copy authority.
 
-## Required active references
-- [Anti Patterns](references/anti-patterns.md) — Read this when you need common failure patterns and anti-AI-slop guidance.
-- [Interop](references/interop.md) — Read this when you need boundaries with React and shadcn skills.
-- [Surface Modes](references/surface-modes.md) — Read this when you need mode-specific application rules.
-- [Visual Engines](references/visual-engines.md) — Read this when you need choosing an image-led, type-led, grid-led, product-led, or data-led direction.
+### Workflow stage: Write a proportional design strategy
+
+Give implementation a clear visual, state, reuse, and evidence contract without unnecessary process artifacts.
+
+1. Classify surface type separately from the greenfield or system-constrained profile, then select one primary visual engine.
+2. State the capability, consumer, anti-claims, visual thesis, content and state plan, interaction thesis, responsive intent, reuse plan, and evidence plan.
+3. For complex operational UI, map material states to their existing component or owner; keep small changes inline when a matrix would add no clarity.
+4. Apply mode-specific composition, typography, imagery, copy, and motion guidance from the overview and matching references.
+
+Validation:
+
+- A downstream implementer can act without inventing visual intent, product behavior, material states, or component ownership.
+- Strategy-only output names the runtime evidence it still does not provide.
+
+### Workflow stage: Translate the strategy into the requested artifact or implementation
+
+Preserve the accepted strategy and current system while producing the requested surface.
+
+1. Reuse existing tokens, components, patterns, and assets before introducing screen-local primitives or styling.
+2. Resolve design-artifact and runtime-component conflicts by source authority instead of copying either blindly.
+3. Route design-tool mechanics, framework architecture, component APIs, and browser execution to their owning skills while preserving the visual contract.
+4. Implement responsive behavior, material states, content extremes, and reduced-motion behavior as part of the surface rather than as a later polish pass.
+
+Validation:
+
+- The result traces to the strategy and does not create an unapproved parallel design or component system.
+- Any custom component or visual-system exception has a concrete gap and owner.
+
+### Workflow stage: Verify the deliverable and report an honest status
+
+Match completion claims to current artifact or runtime evidence.
+
+1. For strategy-only work, verify contract completeness and report strategy-ready without a runtime claim.
+2. For design artifacts, inspect the current artifact and read back required exports or screenshots before reporting artifact-ready.
+3. For runtime implementation, inspect the current rendered interface at representative desktop and mobile viewports, relevant states and interactions, keyboard and focus behavior, reduced-motion behavior when applicable, and console or network state when applicable.
+4. Use `agent-browser` for interactive diagnostics and terminal-state evidence or `playwright` for reproducible scripted evidence; require both only when they prove distinct needed conditions.
+5. Report implemented-not-verified when required rendered evidence is missing or failed; use verified only when the requested runtime path and proportionate checks pass.
+
+Validation:
+
+- Status, evidence, unrun checks, and anti-claims are consistent.
+- Source, mockups, stories, screenshots, or compiler success alone cannot close an integrated runtime claim.
+
+## Interop priority
+
+- **product behavior, actors, actions, states, validation, and copy authority:** The relevant product or specification skill and accepted project sources. frontend-design expresses authoritative behavior visually but must not invent or override it.
+- **application architecture, state, routing, data, testing, and runtime accessibility mechanics:** The relevant framework skill such as react-spa-engineer. frontend-design owns visual strategy and rendered expression, not framework correctness.
+- **reusable React component correctness, SSR, hydration, portals, and lifecycle behavior:** react-components-engineer. Visual intent must adapt to component correctness rather than weaken it.
+- **shadcn registry discovery, component selection, and registry-aware implementation:** shadcn. frontend-design supplies page-level direction while shadcn owns component-system mechanics.
+- **durable .pen inspection, editing, validation, screenshots, and exports:** pencil-dev. frontend-design defines strategy and frames; pencil-dev owns Pencil MCP mechanics.
+- **interactive browser diagnostics, screenshots, and terminal-state checks:** agent-browser. frontend-design defines evidence conditions while agent-browser executes exploratory browser verification.
+- **reproducible scripted browser scenarios and visual, network, or console evidence:** playwright. frontend-design defines evidence conditions while playwright owns repeatable browser automation.
+- **guidelines-based web UI and accessibility review:** web-ui-reviewer. frontend-design performs design self-checks; web-ui-reviewer owns the review contract, and a separate reviewer context is still required when the verdict must be independent.
+
+## Gotchas
+
+- **high** — Do not turn missing product behavior, controls, states, permissions, or copy authority into a visual-design decision.
+- **high** — A strategy, mockup, export, screenshot, Storybook story, component catalog, or source inspection is not integrated runtime evidence.
+- **high** — In system-constrained work, inspect the current runtime component and design-system surface before introducing new primitives or one-off styling.
+- **high** — Do not add motion to satisfy a quota; use only motion that improves hierarchy, continuity, feedback, or affordance and provide reduced behavior for non-essential physical motion.
+- **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.
+
+## Policies
+
+### Source-authority policy
+Resolve product behavior, design-system constraints, runtime behavior, and visual inspiration from their named authorities; stop rather than silently resolve equal-authority conflicts.
+
+### System-constraint precedence
+Accepted product behavior, accessibility constraints, and the existing design system override generic aesthetic defaults unless the user explicitly authorizes a system change.
+
+### Capability-evidence policy
+Match evidence to the requested deliverable and never use artifact-level or structural evidence to claim an integrated runtime capability.
+
+### Status contract
+Report strategy-ready, artifact-ready, implemented-not-verified, verified, or blocked per deliverable; do not collapse several deliverables into the strongest status achieved by only one.
+
+## Optional references
+- [Anti Patterns](references/anti-patterns.md) — Read this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.
+- [Surface Modes](references/surface-modes.md) — Read this when surface type or the design-system constraint profile is ambiguous.
+- [Visual Engines](references/visual-engines.md) — Read this after classifying the surface when the primary visual engine is not already established.
+- [Strategy To Implementation](references/strategy-to-implementation.md) — Read this for non-trivial strategy, system-constrained work, implementation handoff, or runtime completion claims.
 
 ## Portability rules
 
@@ -278,9 +311,10 @@ Validation:
 
 ## Portability checklist before finishing
 
-- Run the skill-source-compiler check command after regeneration.
+- Run the packaged skill-source-compiler lint, regenerate, and check commands after source changes.
 - Search the skill folder for absolute local paths before finishing.
-- Confirm every required reference listed by SKILL.md exists inside this skill folder.
+- Confirm every active reference listed by SKILL.md exists inside this skill folder.
+- Compile to an isolated directory and confirm the copied package retains the strategy, interop, and evidence contract.
 
 ## Supporting and historical surface
 
