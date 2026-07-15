@@ -1,13 +1,13 @@
 ---
 name: agent-browser
-description: Automates browser interactions for web testing, form filling,
-  screenshots, and data extraction. Use when the user needs to navigate
-  websites, interact with web pages, fill forms, take screenshots, test web
-  applications, or extract information from web pages.
+description: Use agent-browser to navigate and interact with rendered web pages,
+  fill forms, take screenshots, extract data, and run browser smoke or
+  diagnostic checks. Verify the requested terminal state and report completed,
+  partial, or blocked; do not replace a formal project E2E suite.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: dbab52eebb0089049dbe78332ec106b6c54b3d9105abac9da0855dc28a8896bd
+  skillforge-source-hash: 92e48b0a36eb381a85c63edd8edc860c31761babc533f5c83ada755793fb1c3f
 allowed-tools: Bash(agent-browser:*)
 ---
 
@@ -15,367 +15,132 @@ allowed-tools: Bash(agent-browser:*)
 
 ## Start here
 
-1. Confirm the task matches agent-browser's applicability criteria.
-2. Use the preserved overview guidance as the normative workflow for this skill.
-3. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+1. Identify the target, requested user-visible result, expected terminal state, and any material limit on external side effects or extraction scope.
+2. Run `agent-browser --version` and load the installed CLI's version-matched guidance with `agent-browser skills get core --full`; if unavailable, use `agent-browser --help`.
+3. Follow the snapshot loop, verify the requested result, and report exactly one status: completed, partial, or blocked.
 
 ## When to use this skill
 
-- Navigating websites or web applications from the terminal.
-- Interacting with pages, filling forms, taking screenshots, recording video, or exporting PDFs.
-- Testing web UI flows, collecting scenario-level SPA evidence, inspecting accessibility snapshots, network requests, cookies, storage, tabs, frames, or dialogs.
-- Extracting information from rendered web pages with agent-browser commands.
+- Navigating or interacting with rendered websites and web applications from the terminal.
+- Filling forms, taking screenshots, recording evidence, exporting PDFs, or extracting rendered content.
+- Running sampled browser smoke or diagnostic scenarios and inspecting page, console, or network behavior.
+- Producing SPA evidence while distinguishing real backend paths from intercepted or mocked traffic.
 
 ## When NOT to use this skill
 
-- The task can be completed with static source inspection or an HTTP client without a browser.
-- The environment lacks agent-browser or Playwright dependencies and they cannot be installed or fixed quickly.
-- The required verification is a formal project E2E suite rather than smoke or diagnostic browser automation.
-
-## Preflight: verify tool + Playwright setup
-
-Before using this skill, verify the CLI and its Playwright dependencies are installed. If anything is missing, fix it or hand off to the developer.
-
-### 1) Verify agent-browser is available
-
-```bash
-command -v agent-browser
-agent-browser --version
-```
-
-If not found, install `agent-browser` (per project/organization instructions) and re-check.
-
-### 2) Verify Playwright dependencies
-
-Playwright requires project dependencies to be installed before downloading browsers.
-
-```bash
-# In the target project root
-pnpm install
-```
-
-If the project does not depend on Playwright yet:
-
-```bash
-pnpm add -D @playwright/test
-```
-
-Then install browsers:
-
-```bash
-pnpm exec playwright install
-```
-
-### 3) Platform warning handling
-
-If Playwright warns that the OS is not officially supported (e.g., Ubuntu 24.04 fallback builds), surface this to the developer. Proceed only with explicit approval or after they confirm the fallback build is acceptable.
-
-### 4) Handoff rule
-
-If any of the checks fail and you cannot fix them quickly, stop and ask the developer to resolve the environment/setup before proceeding with UI automation.
+- Static source inspection or a direct HTTP client can establish the result without a rendered browser.
+- The task is to author, maintain, or replace a formal project E2E suite.
+- The requested tool is explicitly Playwright or a more specific browser skill owns the target workflow.
 
 ## Quick start
 
+Use the guidance shipped by the installed CLI instead of a copied command
+reference:
+
 ```bash
-agent-browser open <url>        # Navigate to page
-agent-browser snapshot -i       # Get interactive elements with refs
-agent-browser click @e1         # Click element by ref
-agent-browser fill @e2 "text"   # Fill input by ref
-agent-browser close             # Close browser
+agent-browser --version
+agent-browser skills get core --full
 ```
 
-## Core workflow
-
-1. Navigate: `agent-browser open <url>`
-2. Snapshot: `agent-browser snapshot -i` (returns elements with refs like `@e1`, `@e2`)
-3. Interact using refs from the snapshot
-4. Re-snapshot after navigation or significant DOM changes
-
-## CI contour alignment
-
-- Treat agent-browser checks as smoke/diagnostic tooling by default.
-- Do not silently replace required PR E2E suites with ad-hoc browser automation.
-- If PR policy switches to changed-only/smoke E2E, ensure the trigger and rollback policy is documented in project-level testing strategy docs.
-
-## Scenario-level SPA evidence
-
-- For interactive SPA tasks, collect scenario-level evidence, not only screenshots, snapshots, or component-test results.
-- Distinguish local route-intercepted coverage from live stage/prod acceptance. Intercepts and mocked responses can prove local UI behavior, but they do not prove real API/provider paths.
-- For auth-heavy SPAs, exercise the relevant end-to-end flow: registration/login/OTP/profile/context, protected mutation, maintenance/admin flow, reload/CSRF recovery, and cancel/resend/cooldown states when available.
-- A report should name the route/origin tested, whether network calls were real or intercepted, the main user steps, the observed terminal state, and any unverified live-provider risk.
-
-## SPA/API verification checklist (before declaring backend/client broken)
-
-For auth and API flows, validate these in order:
-1. **Request target**: confirm requests go to intended API origin (`network requests`, browser URL checks).
-2. **Method/path**: confirm exact HTTP method/path to explain `404/405`.
-3. **Cookies/session**: verify expected cookies are set and included on subsequent requests.
-4. **CORS behavior**: verify preflight/response headers for cross-origin requests.
-5. **Error source split**: if API returns generic `500`, correlate with upstream provider logs (not only app logs).
-
-## Commands
-
-### Navigation
-```bash
-agent-browser open <url>      # Navigate to URL
-agent-browser back            # Go back
-agent-browser forward         # Go forward
-agent-browser reload          # Reload page
-agent-browser close           # Close browser
-```
-
-### Snapshot (page analysis)
-```bash
-agent-browser snapshot            # Full accessibility tree
-agent-browser snapshot -i         # Interactive elements only (recommended)
-agent-browser snapshot -c         # Compact output
-agent-browser snapshot -d 3       # Limit depth to 3
-agent-browser snapshot -s "#main" # Scope to CSS selector
-```
-
-### Interactions (use @refs from snapshot)
-```bash
-agent-browser click @e1           # Click
-agent-browser dblclick @e1        # Double-click
-agent-browser focus @e1           # Focus element
-agent-browser fill @e2 "text"     # Clear and type
-agent-browser type @e2 "text"     # Type without clearing
-agent-browser press Enter         # Press key
-agent-browser press Control+a     # Key combination
-agent-browser keydown Shift       # Hold key down
-agent-browser keyup Shift         # Release key
-agent-browser hover @e1           # Hover
-agent-browser check @e1           # Check checkbox
-agent-browser uncheck @e1         # Uncheck checkbox
-agent-browser select @e1 "value"  # Select dropdown
-agent-browser scroll down 500     # Scroll page
-agent-browser scrollintoview @e1  # Scroll element into view
-agent-browser drag @e1 @e2        # Drag and drop
-agent-browser upload @e1 file.pdf # Upload files
-```
-
-### Get information
-```bash
-agent-browser get text @e1        # Get element text
-agent-browser get html @e1        # Get innerHTML
-agent-browser get value @e1       # Get input value
-agent-browser get attr @e1 href   # Get attribute
-agent-browser get title           # Get page title
-agent-browser get url             # Get current URL
-agent-browser get count ".item"   # Count matching elements
-agent-browser get box @e1         # Get bounding box
-```
-
-### Check state
-```bash
-agent-browser is visible @e1      # Check if visible
-agent-browser is enabled @e1      # Check if enabled
-agent-browser is checked @e1      # Check if checked
-```
-
-### Screenshots & PDF
-```bash
-agent-browser screenshot          # Screenshot to stdout
-agent-browser screenshot path.png # Save to file
-agent-browser screenshot --full   # Full page
-agent-browser pdf output.pdf      # Save as PDF
-```
-
-### Video recording
-```bash
-agent-browser record start ./demo.webm    # Start recording (uses current URL + state)
-agent-browser click @e1                   # Perform actions
-agent-browser record stop                 # Stop and save video
-agent-browser record restart ./take2.webm # Stop current + start new recording
-```
-Recording creates a fresh context but preserves cookies/storage from your session. If no URL is provided, it automatically returns to your current page. For smooth demos, explore first, then start recording.
-
-### Wait
-```bash
-agent-browser wait @e1                     # Wait for element
-agent-browser wait 2000                    # Wait milliseconds
-agent-browser wait --text "Success"        # Wait for text
-agent-browser wait --url "**/dashboard"    # Wait for URL pattern
-agent-browser wait --load networkidle      # Wait for network idle
-agent-browser wait --fn "window.ready"     # Wait for JS condition
-```
-
-### Mouse control
-```bash
-agent-browser mouse move 100 200      # Move mouse
-agent-browser mouse down left         # Press button
-agent-browser mouse up left           # Release button
-agent-browser mouse wheel 100         # Scroll wheel
-```
-
-### Semantic locators (alternative to refs)
-```bash
-agent-browser find role button click --name "Submit"
-agent-browser find text "Sign In" click
-agent-browser find label "Email" fill "user@test.com"
-agent-browser find first ".item" click
-agent-browser find nth 2 "a" text
-```
-
-### Browser settings
-```bash
-agent-browser set viewport 1920 1080      # Set viewport size
-agent-browser set device "iPhone 14"      # Emulate device
-agent-browser set geo 37.7749 -122.4194   # Set geolocation
-agent-browser set offline on              # Toggle offline mode
-agent-browser set headers '{"X-Key":"v"}' # Extra HTTP headers
-agent-browser set credentials user pass   # HTTP basic auth
-agent-browser set media dark              # Emulate color scheme
-```
-
-### Cookies & Storage
-```bash
-agent-browser cookies                     # Get all cookies
-agent-browser cookies set name value      # Set cookie
-agent-browser cookies clear               # Clear cookies
-agent-browser storage local               # Get all localStorage
-agent-browser storage local key           # Get specific key
-agent-browser storage local set k v       # Set value
-agent-browser storage local clear         # Clear all
-```
-
-### Network
-```bash
-agent-browser network route <url>              # Intercept requests
-agent-browser network route <url> --abort      # Block requests
-agent-browser network route <url> --body '{}'  # Mock response
-agent-browser network unroute [url]            # Remove routes
-agent-browser network requests                 # View tracked requests
-agent-browser network requests --filter api    # Filter requests
-```
-
-### Tabs & Windows
-```bash
-agent-browser tab                 # List tabs
-agent-browser tab new [url]       # New tab
-agent-browser tab 2               # Switch to tab
-agent-browser tab close           # Close tab
-agent-browser window new          # New window
-```
-
-### Frames
-```bash
-agent-browser frame "#iframe"     # Switch to iframe
-agent-browser frame main          # Back to main frame
-```
-
-### Dialogs
-```bash
-agent-browser dialog accept [text]  # Accept dialog
-agent-browser dialog dismiss        # Dismiss dialog
-```
-
-### JavaScript
-```bash
-agent-browser eval "document.title"   # Run JavaScript
-```
-
-## Example: Form submission
+The stable interaction loop is:
 
 ```bash
-agent-browser open https://example.com/form
+agent-browser open <url>
 agent-browser snapshot -i
-# Output shows: textbox "Email" [ref=e1], textbox "Password" [ref=e2], button "Submit" [ref=e3]
-
-agent-browser fill @e1 "user@example.com"
-agent-browser fill @e2 "password123"
-agent-browser click @e3
-agent-browser wait --load networkidle
-agent-browser snapshot -i  # Check result
-```
-
-## Example: Authentication with saved state
-
-```bash
-# Login once
-agent-browser open https://app.example.com/login
+# interact with refs from the current snapshot
+# wait for the expected result
 agent-browser snapshot -i
-agent-browser fill @e1 "username"
-agent-browser fill @e2 "password"
-agent-browser click @e3
-agent-browser wait --url "**/dashboard"
-agent-browser state save auth.json
-
-# Later sessions: load saved state
-agent-browser state load auth.json
-agent-browser open https://app.example.com/dashboard
+agent-browser get url
 ```
 
-## Sessions (parallel browsers)
+Refs become stale after navigation and material page changes, so snapshot again
+before reusing them. If bundled guidance is unavailable, check the root and
+relevant subcommand help.
 
-```bash
-agent-browser --session test1 open site-a.com
-agent-browser --session test2 open site-b.com
-agent-browser session list
-```
+## What proves completion
 
-## JSON output (for parsing)
+- Navigation or interaction: the requested final URL or visible state is
+  observed.
+- Extraction: the requested fields and scope are checked, including pagination
+  or lazy loading; otherwise report the extracted subset as partial.
+- SPA or integration behavior: state whether relevant network calls were real or
+  intercepted. Mocks prove local UI behavior only.
+- Diagnosis: browser requests, responses, console, and page errors are evidence;
+  another domain owner must establish backend or provider root cause.
 
-Add `--json` for machine-readable output:
-```bash
-agent-browser snapshot -i --json
-agent-browser get text @e1 --json
-```
+A screenshot, snapshot, trace, successful command, or healthy runtime is useful
+evidence only when it supports the requested result. It is not completion by
+itself.
 
-## Debugging
+## Setup boundary
 
-```bash
-agent-browser open example.com --headed              # Show browser window
-agent-browser console                                # View console messages
-agent-browser errors                                 # View page errors
-agent-browser record start ./debug.webm   # Record from current page
-agent-browser record stop                            # Save recording
-agent-browser open example.com --headed  # Show browser window
-agent-browser --cdp 9222 snapshot        # Connect via CDP
-agent-browser console                    # View console messages
-agent-browser console --clear            # Clear console
-agent-browser errors                     # View page errors
-agent-browser errors --clear             # Clear errors
-agent-browser highlight @e1              # Highlight element
-agent-browser trace start                # Start recording trace
-agent-browser trace stop trace.zip       # Stop and save trace
-```
+Agent-browser owns its browser runtime. Do not install Playwright packages in the
+target project to prepare it. Use the installed CLI's diagnostic and install
+guidance, or report a blocked handoff when environment changes are not in scope.
+
+Do not put secrets in command history or reports. Use the installed CLI's
+authentication guidance and treat saved state, downloads, screenshots, traces,
+and recordings as potentially sensitive.
 
 ## Workflow stages
 
-### Workflow stage: Apply agent-browser guidance
+### Workflow stage: Run and verify the browser task
 
-Apply the preserved agent-browser guidance without changing its domain behavior.
+Reach the requested observable result through the rendered page without confusing CLI activity with task completion.
 
-1. Match the request to the applicability criteria.
-2. Follow the preserved overview sections for the concrete work.
-3. Run the relevant verification from the overview or report why it could not be run.
+1. Apply the governing user, system, and project policies; this skill does not grant authority for additional external side effects.
+2. Use the installed CLI guidance for command syntax. If the runtime fails, use its help or `agent-browser doctor --offline --quick`; use mutating repair commands only when already authorized, and never add Playwright to the target project merely to prepare agent-browser.
+3. Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes.
+4. Verify the final URL, visible state, or extracted values that establish the requested result; use console, page-error, network, screenshot, or trace evidence only when relevant.
+5. For extraction, verify the requested fields and scope, including pagination or lazy-loading limits; if completeness is not established, report the observed subset as partial.
+6. Treat intercepted responses as local UI evidence, not proof of a live API or provider path, and do not infer backend root cause from browser symptoms alone.
 
 Validation:
 
-- The outcome follows the preserved skill guidance and any loaded reference constraints.
+- The expected terminal state is directly observed, or the exact blocker and strongest supported partial result are recorded.
+
+### Workflow stage: Report the browser result
+
+Provide an evidence-bounded outcome instead of a command transcript.
+
+1. Report exactly one status: completed, partial, or blocked.
+2. Name the target and context, main actions, expected and observed terminal state, real or intercepted network mode when relevant, and any unverified scope.
+3. Do not expose credentials, tokens, cookies, or saved-state contents; report artifacts only when created.
+4. Close sessions and processes started for the task, or state what remains running and who owns it.
+
+Validation:
+
+- The user can tell what result was achieved, what was not proved, and whether anything remains running.
+
+## Interop priority
+
+- **Formal browser test suites, fixtures, assertions, coverage, and CI behavior:** the project E2E framework and its testing owner. Agent-browser supplies sampled smoke or diagnostic evidence and does not replace suite coverage.
+- **Explicit Playwright CLI work or persistent interactive browser and Electron QA:** playwright or playwright-interactive as requested. Do not silently switch tools when the requested tool or persistent session model is part of the task.
+- **Static retrieval or backend, security, accessibility, and other conclusions beyond observed browser facts:** the relevant source, HTTP, or domain skill. Agent-browser owns rendered browser interaction and observed evidence, not adjacent specialized conclusions.
 
 ## Gotchas
 
-- **high** — Do not report browser verification without naming the route, account/context, API mode, visible terminal state, console/network findings, and whether backend calls were real or intercepted.
-- **high** — If you launch a local server or browser-owned process for evidence, either stop it before handoff or clearly state that it remains running and who owns it.
+- **high** — Use the installed CLI's version-matched guidance and help for command syntax; do not maintain or trust a copied command encyclopedia when they disagree.
+- **high** — A successful command, snapshot, screenshot, trace, or intercepted response does not prove the requested user-visible result by itself.
+- **high** — Keep secrets out of shell history and reports, treat browser artifacts as potentially sensitive, and clean up sessions or processes started for the task.
 
 ## Policies
 
-### Browser handoff evidence
-Browser evidence should include steps taken, expected versus observed behavior, screenshots when useful, console/network summary, authentication context, and exact blockers for any scenario not completed.
+### Guidance and authority
+Governing user, system, and project policies define authority; installed version-matched CLI guidance defines command syntax; this skill does not widen either boundary.
+
+### Browser evidence
+Match evidence to the claim and report the target, expected and observed terminal state, relevant real or intercepted network mode, and exact limits of partial or blocked results.
 
 ## Portability rules
 
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
-- Keep all mandatory agent-browser guidance inside this skill folder.
-- Use relative links for local references, assets, scripts, tests, and supporting docs.
+- Keep the stable snapshot workflow and evidence contract inside this skill; external CLI guidance supplies only version-specific command details.
 
 ## Portability checklist before finishing
 
 - Run the skill-source-compiler check command after regeneration.
-- Search the skill folder for absolute local paths before finishing.
-- Confirm the skill remains understandable without placeholder reference files.
+- Confirm the copied skill remains understandable when the CLI is unavailable, while clearly reporting execution as blocked or handed off.
 
 ## Supporting and historical surface
 

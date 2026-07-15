@@ -45,7 +45,8 @@
 
 ## Instruction Quality Audit
 
-PASS. Правила outcome-first, проверяют observable browser scenario evidence и не подменяют E2E suite ad-hoc automation.
+Author self-check: PASS. Это структурная авторская проверка, а не независимый
+`skill-reviewer` verdict и не доказательство runtime capability.
 
 ## Deviations From Plan
 
@@ -61,4 +62,5 @@ PASS. Правила outcome-first, проверяют observable browser scenar
 
 ## Final Status
 
-PASS.
+Реализация завершена по тогдашнему scope; независимый capability verdict для
+этого snapshot не был зафиксирован.

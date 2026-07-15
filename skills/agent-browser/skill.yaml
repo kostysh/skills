@@ -2,9 +2,9 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: agent-browser
-  source-version: 0.1.2
+  source-version: 0.2.0
   recommended-skill-md-max-bytes: 20000
-  description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages.
+  description: Use agent-browser to navigate and interact with rendered web pages, fill forms, take screenshots, extract data, and run browser smoke or diagnostic checks. Verify the requested terminal state and report completed, partial, or blocked; do not replace a formal project E2E suite.
   allowedTools:
     - Bash(agent-browser:*)
 fragments:
@@ -26,48 +26,77 @@ surfaces:
     - docs/logs/*
 sections:
   startHere:
-    - Confirm the task matches agent-browser's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Identify the target, requested user-visible result, expected terminal state, and any material limit on external side effects or extraction scope.
+    - Run `agent-browser --version` and load the installed CLI's version-matched guidance with `agent-browser skills get core --full`; if unavailable, use `agent-browser --help`.
+    - "Follow the snapshot loop, verify the requested result, and report exactly one status: completed, partial, or blocked."
   whenToUse:
-    - Navigating websites or web applications from the terminal.
-    - Interacting with pages, filling forms, taking screenshots, recording video, or exporting PDFs.
-    - Testing web UI flows, collecting scenario-level SPA evidence, inspecting accessibility snapshots, network requests, cookies, storage, tabs, frames, or dialogs.
-    - Extracting information from rendered web pages with agent-browser commands.
+    - Navigating or interacting with rendered websites and web applications from the terminal.
+    - Filling forms, taking screenshots, recording evidence, exporting PDFs, or extracting rendered content.
+    - Running sampled browser smoke or diagnostic scenarios and inspecting page, console, or network behavior.
+    - Producing SPA evidence while distinguishing real backend paths from intercepted or mocked traffic.
   whenNotToUse:
-    - The task can be completed with static source inspection or an HTTP client without a browser.
-    - The environment lacks agent-browser or Playwright dependencies and they cannot be installed or fixed quickly.
-    - The required verification is a formal project E2E suite rather than smoke or diagnostic browser automation.
+    - Static source inspection or a direct HTTP client can establish the result without a rendered browser.
+    - The task is to author, maintain, or replace a formal project E2E suite.
+    - The requested tool is explicitly Playwright or a more specific browser skill owns the target workflow.
   workflow:
-    - id: stage-apply-agent-browser
-      title: Apply agent-browser guidance
-      goal: Apply the preserved agent-browser guidance without changing its domain behavior.
+    - id: stage-run-browser-task
+      title: Run and verify the browser task
+      goal: Reach the requested observable result through the rendered page without confusing CLI activity with task completion.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Apply the governing user, system, and project policies; this skill does not grant authority for additional external side effects.
+        - Use the installed CLI guidance for command syntax. If the runtime fails, use its help or `agent-browser doctor --offline --quick`; use mutating repair commands only when already authorized, and never add Playwright to the target project merely to prepare agent-browser.
+        - Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes.
+        - Verify the final URL, visible state, or extracted values that establish the requested result; use console, page-error, network, screenshot, or trace evidence only when relevant.
+        - For extraction, verify the requested fields and scope, including pagination or lazy-loading limits; if completeness is not established, report the observed subset as partial.
+        - Treat intercepted responses as local UI evidence, not proof of a live API or provider path, and do not infer backend root cause from browser symptoms alone.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - The expected terminal state is directly observed, or the exact blocker and strongest supported partial result are recorded.
+    - id: stage-report-browser-result
+      title: Report the browser result
+      goal: Provide an evidence-bounded outcome instead of a command transcript.
+      steps:
+        - "Report exactly one status: completed, partial, or blocked."
+        - Name the target and context, main actions, expected and observed terminal state, real or intercepted network mode when relevant, and any unverified scope.
+        - Do not expose credentials, tokens, cookies, or saved-state contents; report artifacts only when created.
+        - Close sessions and processes started for the task, or state what remains running and who owns it.
+      validation:
+        - The user can tell what result was achieved, what was not proved, and whether anything remains running.
+  interop:
+    - id: interop-formal-e2e
+      domain: Formal browser test suites, fixtures, assertions, coverage, and CI behavior
+      winner: the project E2E framework and its testing owner
+      rationale: Agent-browser supplies sampled smoke or diagnostic evidence and does not replace suite coverage.
+    - id: interop-playwright
+      domain: Explicit Playwright CLI work or persistent interactive browser and Electron QA
+      winner: playwright or playwright-interactive as requested
+      rationale: Do not silently switch tools when the requested tool or persistent session model is part of the task.
+    - id: interop-adjacent-work
+      domain: Static retrieval or backend, security, accessibility, and other conclusions beyond observed browser facts
+      winner: the relevant source, HTTP, or domain skill
+      rationale: Agent-browser owns rendered browser interaction and observed evidence, not adjacent specialized conclusions.
   commands: []
   gotchas:
-    - id: gotcha-browser-evidence-ambiguous
+    - id: gotcha-runtime-guidance-drift
       priority: high
-      text: Do not report browser verification without naming the route, account/context, API mode, visible terminal state, console/network findings, and whether backend calls were real or intercepted.
-    - id: gotcha-owned-process-left-running
+      text: Use the installed CLI's version-matched guidance and help for command syntax; do not maintain or trust a copied command encyclopedia when they disagree.
+    - id: gotcha-browser-substrate-only
       priority: high
-      text: If you launch a local server or browser-owned process for evidence, either stop it before handoff or clearly state that it remains running and who owns it.
+      text: A successful command, snapshot, screenshot, trace, or intercepted response does not prove the requested user-visible result by itself.
+    - id: gotcha-sensitive-or-owned-state
+      priority: high
+      text: Keep secrets out of shell history and reports, treat browser artifacts as potentially sensitive, and clean up sessions or processes started for the task.
   policies:
-    - id: policy-browser-handoff-evidence
-      title: Browser handoff evidence
-      text: Browser evidence should include steps taken, expected versus observed behavior, screenshots when useful, console/network summary, authentication context, and exact blockers for any scenario not completed.
+    - id: policy-guidance-and-authority
+      title: Guidance and authority
+      text: Governing user, system, and project policies define authority; installed version-matched CLI guidance defines command syntax; this skill does not widen either boundary.
+    - id: policy-browser-evidence
+      title: Browser evidence
+      text: Match evidence to the claim and report the target, expected and observed terminal state, relevant real or intercepted network mode, and exact limits of partial or blocked results.
   portability:
     required: true
     rules:
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
-      - Keep all mandatory agent-browser guidance inside this skill folder.
-      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+      - Keep the stable snapshot workflow and evidence contract inside this skill; external CLI guidance supplies only version-specific command details.
     checklist:
       - Run the skill-source-compiler check command after regeneration.
-      - Search the skill folder for absolute local paths before finishing.
-      - Confirm the skill remains understandable without placeholder reference files.
+      - Confirm the copied skill remains understandable when the CLI is unavailable, while clearly reporting execution as blocked or handed off.

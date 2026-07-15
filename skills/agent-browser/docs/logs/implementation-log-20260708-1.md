@@ -33,8 +33,10 @@ Russian.
 
 ## Instruction Quality Audit
 
-PASS. Правило outcome-first, не добавляет CLI command/config surface, не требует внешних файлов и не подменяет browser behavior документацией.
+Author self-check: PASS. Это структурная авторская проверка, а не независимый
+`skill-reviewer` verdict и не доказательство runtime capability.
 
 ## Final Status
 
-PASS.
+Реализация guardrail завершена по тогдашнему scope; независимый capability
+verdict для этого snapshot не был зафиксирован.
