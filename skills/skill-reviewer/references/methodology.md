@@ -83,6 +83,8 @@ For a change review, inspect affected unchanged guidance whenever the diff chang
 
 - Is the capability observable for a named actor or consumer?
 - Do description and UI metadata cover real triggers and exclude adjacent work?
+- Is the parsed frontmatter `description` no more than 300 Unicode code points after trimming? Astral characters such as emoji count as one code point; combining marks count separately.
+- When a description is shortened, does it preserve the owned capability, material should-trigger cases, should-not-trigger boundaries, and responsibility routing?
 - Can should-not-trigger requests be routed without loading or misusing the skill?
 
 ### Inputs, authority, and readiness
@@ -150,6 +152,8 @@ Keep the severity, failure path, and `P1 screen` internally consistent. A suppor
 Before selecting the verdict, re-read every finding's severity, failure path, and `P1 screen`; resolve any contradiction.
 
 Do not lower severity because a defect appears only in prose when prose is the runtime instruction surface. Do not raise style preference to P2 without a concrete failure path.
+
+Treat an isolated description-length violation as `P3` when no credible material routing, trigger, or progressive-disclosure failure path exists. Escalate to `P2` or `P1` only when direct evidence or a supported inference satisfies the corresponding severity definition above; do not infer material impact from character count alone.
 
 ## Verdict contract
 

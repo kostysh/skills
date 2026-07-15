@@ -1,21 +1,16 @@
 ---
 name: skill-reviewer
-description: Independently review new or changed AI-agent skills for real
-  capability, instruction quality, trigger and responsibility boundaries, input
-  and output contracts, interop, active/supporting/runtime parity, portability,
-  and evidence integrity. Use for baseline skill audits, scoped change reviews,
-  remediation re-audits, or closure claims where compiler success,
-  documentation, mocks, scaffolding, or self-review could be mistaken for a
-  reliable skill capability. Produces evidence-backed P1/P2/P3 findings and a
-  PASS, FAIL, BLOCKED, or PROVISIONAL verdict without editing the reviewed
-  skill.
+description: Independently review agent skills for real capability, instruction
+  quality, trigger boundaries, contracts, interop, parity, portability, and
+  evidence integrity. Use for baseline, change, re-audit, or closure reviews;
+  issue P1/P2/P3 findings and PASS, FAIL, BLOCKED, or PROVISIONAL without edits.
 compatibility: Portable documentation-only review skill. It ships no runtime or
   test package and requires only access to the skill artifacts and available
   validation evidence.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f1477321c70f896f0f7e842450f39fdbff5ba59e7cf96fb6eb9d52a0c16008d1
+  skillforge-source-hash: 02412ea486fbc357700e7ccb9e07ae464106a219ebf35a861c5b50864e124387
 ---
 
 # skill-reviewer

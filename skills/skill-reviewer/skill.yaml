@@ -3,18 +3,13 @@ kind: SkillSource
 
 skill:
   name: skill-reviewer
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 22000
   description: >-
-    Independently review new or changed AI-agent skills for real capability,
-    instruction quality, trigger and responsibility boundaries, input and
-    output contracts, interop, active/supporting/runtime parity, portability,
-    and evidence integrity. Use for baseline skill audits, scoped change
-    reviews, remediation re-audits, or closure claims where compiler success,
-    documentation, mocks, scaffolding, or self-review could be mistaken for a
-    reliable skill capability. Produces evidence-backed P1/P2/P3 findings and a
-    PASS, FAIL, BLOCKED, or PROVISIONAL verdict without editing the reviewed
-    skill.
+    Independently review agent skills for real capability, instruction quality,
+    trigger boundaries, contracts, interop, parity, portability, and evidence
+    integrity. Use for baseline, change, re-audit, or closure reviews; issue
+    P1/P2/P3 findings and PASS, FAIL, BLOCKED, or PROVISIONAL without edits.
   compatibility: >-
     Portable documentation-only review skill. It ships no runtime or test
     package and requires only access to the skill artifacts and available
@@ -60,6 +55,10 @@ supporting:
     source: docs/logs/implementation-log-20260713-2.md
     target: docs/logs/implementation-log-20260713-2.md
     description: Non-normative implementation log for repeated-failure escalation.
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative implementation log for the skill description length review rule.
 
 surfaces:
   active:
