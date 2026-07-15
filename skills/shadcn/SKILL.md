@@ -1,15 +1,13 @@
 ---
 name: shadcn
-description: Manages shadcn components and projects with a Base UI-first policy
-  — adding, searching, fixing, debugging, styling, and composing UI. Provides
-  project context, component docs, and usage examples. Applies when working with
-  shadcn/ui, Base UI, basecn, component registries, presets, --preset codes, or
-  any project with a components.json file. Also triggers for "shadcn init",
-  "create an app with --preset", or "switch to --preset".
+description: "Manage shadcn projects with a Base UI-first policy: add, search,
+  fix, debug, style, and compose components using docs, registries, and presets.
+  Use for shadcn/ui, Base UI, basecn, components.json, registry items, `shadcn
+  init`, `--preset` app creation, or preset switching."
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d5a06664265142b51f831b21deea40f24d2956656bbde952392811d470cc3c11
+  skillforge-source-hash: f7523bfa193cd0f9c84fdc9bb33b927989592727840be53f79d58145a248c437
 ---
 
 # shadcn

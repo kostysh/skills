@@ -1,16 +1,14 @@
 ---
 name: prd-engineer
-description: Create, refine, and review PRDs, product specs, feature
-  requirements, and AI requirements. Use when asked to turn a product idea into
-  testable requirements, define scope, non-goals, acceptance, rollout, or
-  metrics, establish product-source authority, assess product-input readiness
-  for architecture, specification, or delivery-planning handoff, handle AI
-  evaluation, or audit a PRD for ambiguity, missing evidence, weak acceptance,
-  or scope risk.
+description: Create, refine, and review PRDs, product specs, feature and AI
+  requirements. Turn ideas into testable scope, non-goals, acceptance, rollout,
+  and metrics; establish source authority and handoff readiness; address AI
+  evaluation; or audit ambiguity, missing evidence, weak acceptance, and scope
+  risk.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ce8995d0110479598fd0612b1e0400ffee079ba37bba8dc83279c2daae00582d
+  skillforge-source-hash: ad03f29e9fa4d5ee44b4562782f97e7be1e0d03d46b6d8ca12c310d19a8d4043
 ---
 
 # prd-engineer

@@ -1,18 +1,15 @@
 ---
 name: documentation
-description: "Create, review, restructure, and rewrite technical documentation
-  using the Diataxis framework. Use when the task is to decide whether content
-  should be a tutorial, how-to guide, reference, or explanation; split mixed
-  documentation into the right forms; improve documentation architecture; or
-  review docs for user-need fit, structure, and quality. Trigger terms include:
-  Diataxis, tutorial vs how-to, reference vs explanation, documentation
-  structure, reorganize docs, docs IA, technical writing, rewrite docs."
+description: Create, review, restructure, and rewrite technical documentation
+  with Diataxis. Use to classify or split tutorials, how-to guides, references,
+  and explanations; improve documentation architecture and information design;
+  or review technical writing for user-need fit, structure, and quality.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   tags: documentation, technical-writing, diataxis, tutorials, how-to, reference,
     explanation
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5a6c58b6dff636979dbf1a29abf80cc79c625bb4754c4f738eddc8097b7424bd
+  skillforge-source-hash: 512a22a3418dc6b257cf0c82e3f214d108b4c8034a7139371bcb596c586415a3
 ---
 
 # documentation

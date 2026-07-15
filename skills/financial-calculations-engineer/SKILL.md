@@ -1,14 +1,14 @@
 ---
 name: financial-calculations-engineer
 description: Design and implement deterministic EUR financial calculations
-  across PostgreSQL, backend, and browser layers. Use when building or reviewing
-  VAT/IVA, discounts, rates, allocations, parsing/formatting, scorporo, ledger
-  postings, and cross-layer parity tests. Enforce correct usage of the local
-  money library (`packages/money`) instead of ad-hoc arithmetic.
+  across PostgreSQL, backend, and browser. Use for VAT/IVA, discounts, rates,
+  allocations, parsing and formatting, scorporo, ledger postings, and
+  cross-layer parity tests. Enforce the project money library instead of ad hoc
+  arithmetic.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3150d0f8b80f2c65cbc2b24a92a091197b578c4df8d736cce251c5b70b8c062a
+  skillforge-source-hash: be36f805b13ced82de3f7df67f4a6a4e30985a9bf87848ae4d3fa16802b0112c
 ---
 
 # financial-calculations-engineer

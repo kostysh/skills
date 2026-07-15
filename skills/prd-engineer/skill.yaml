@@ -3,16 +3,13 @@ kind: SkillSource
 
 skill:
   name: prd-engineer
-  source-version: 0.1.4
+  source-version: 0.1.5
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Create, refine, and review PRDs, product specs, feature requirements, and AI
-    requirements. Use when asked to turn a product idea into testable
-    requirements, define scope, non-goals, acceptance, rollout, or metrics,
-    establish product-source authority, assess product-input readiness for
-    architecture, specification, or delivery-planning handoff, handle AI
-    evaluation, or audit a PRD for ambiguity, missing evidence, weak acceptance,
-    or scope risk.
+    Create, refine, and review PRDs, product specs, feature and AI requirements.
+    Turn ideas into testable scope, non-goals, acceptance, rollout, and metrics;
+    establish source authority and handoff readiness; address AI evaluation; or
+    audit ambiguity, missing evidence, weak acceptance, and scope risk.
 fragments:
   overview: fragments/overview.md
 
@@ -31,6 +28,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md

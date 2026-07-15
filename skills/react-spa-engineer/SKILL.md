@@ -1,19 +1,17 @@
 ---
 name: react-spa-engineer
-description: Design, implement, review, and diagnose production React
-  single-page applications built with TypeScript, Vite, TanStack Query, Zustand,
-  React Hook Form with Zod, React Router, and Dexie. Use for integrated
-  client-side flows that cross routing, server state, runtime state, forms,
-  browser persistence, performance, testing, or accessibility. Preserve the
-  accepted stack and project contracts; exclude SSR, React Server Components,
-  and Next.js server-side architecture.
+description: Design, implement, review, and diagnose React SPAs using
+  TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React
+  Router, and Dexie. Use for routing, server/runtime state, forms, browser
+  storage, performance, testing, or accessibility; exclude SSR, RSC, and Next.js
+  architecture.
 compatibility: Portable documentation-only engineering skill. It ships no
   application runtime or test harness and requires repository evidence plus the
   installed stack versions to make project-specific decisions.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3c5d4bbfcc592598af0cb7278aabb97fb95d0a584fe6398c536f0b92f5ffd28c
+  skillforge-source-hash: b6d8746394c90a57ab120f882d26e3ac97a27c867a986bda7318f322ae06f555
 ---
 
 # react-spa-engineer

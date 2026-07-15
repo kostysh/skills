@@ -1,19 +1,16 @@
 ---
 name: gdpr-compliance
-description: Audit product requirements, software architecture, specifications,
-  implementation plans, or existing systems for GDPR compliance risks. Use this
-  programming-language-agnostic skill when a system may collect, infer, store,
-  log, transmit, expose, profile, delete, retain, or share personal data subject
-  to the EU GDPR. The skill produces architecture-level controls, findings,
-  evidence gaps, and handoff obligations; it does not produce legal advice,
-  compliance certification, or privacy-policy prose.
+description: Audit architecture, specs, plans, or systems for EU GDPR risks
+  involving collection, inference, storage, logging, transfer, profiling,
+  retention, deletion, or sharing of personal data. Produce controls, findings,
+  evidence gaps, and handoffs—not legal advice, certification, or policy prose.
 compatibility: Portable documentation-only skill. It ships active audit
   references and artifact templates, but no runtime. All mandatory GDPR
   architecture audit guidance lives inside this folder.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 19bffe23cda10417edbbc61b7b3aa248e41751cf2d324d08b36cb34fa7a4bb4f
+  skillforge-source-hash: 414a4d27594174e0fb2c36bfc1d01c17a608ec934fe4322581e48c739e0a3e4a
 ---
 
 # gdpr-compliance

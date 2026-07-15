@@ -1,16 +1,14 @@
 ---
 name: frontend-design
-description: |-
-  Use when the task asks for a visually strong landing page, website, app UI,
-  dashboard, prototype, demo UI, poster-like web artifact, or a meaningful
-  visual upgrade to an existing frontend surface. This skill enforces strong
-  hierarchy, restrained composition, purposeful imagery, expressive typography,
-  tasteful motion, and system-aware polish while avoiding generic cards, weak
-  branding, and AI-slop aesthetics.
+description: Use for strong landing pages, websites, app UIs, dashboards,
+  prototypes, demos, poster-like artifacts, or meaningful visual upgrades.
+  Enforce hierarchy, restrained composition, purposeful imagery, expressive
+  typography, tasteful motion, and system-aware polish while avoiding generic AI
+  aesthetics.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f14deed06d60b3a4d06253c8a0ee28c0184dcff1de3d73363134314ce2833238
+  skillforge-source-hash: ac4336fe77dfa4189e93e59d00ed88b4269a749cf4239611fbbe4eb11fcf4d19
 ---
 
 # frontend-design

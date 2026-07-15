@@ -1,14 +1,14 @@
 ---
 name: typescript-test-engineer
 description: Design, implement, review, and diagnose TypeScript tests for Node,
-  React, and edge projects. Use for test strategy, node:test or Vitest behavior,
-  deterministic fixtures and mocks, coverage and CI test failures, hanging
-  tests, and evidence-quality review; keep review and diagnosis read-only unless
-  fixes are explicitly requested.
+  React, and edge projects. Use for test strategy, node:test or Vitest,
+  deterministic fixtures and mocks, coverage, CI failures, hanging tests, and
+  evidence quality; keep review and diagnosis read-only unless fixes are
+  requested.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5e9bc2b78f72ea7a511ce0263185fb3aae4217bd1dd8572f0bb5c7860550e856
+  skillforge-source-hash: e140d4c5cbd57a5b97bf9b44371ac089a4c95d87495019418093ccc6aa3c4e8d
 ---
 
 # typescript-test-engineer

@@ -13,3 +13,4 @@
 ## Implementation Logs
 
 - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — language preflight и docs-as-capability guardrails для SL-01 remediation. Статус: PASS.
+- [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points. Статус: LOCAL PASS, independent audit pending.

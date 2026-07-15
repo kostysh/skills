@@ -3,16 +3,13 @@ kind: SkillSource
 
 skill:
   name: gdpr-compliance
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 24000
   description: >-
-    Audit product requirements, software architecture, specifications,
-    implementation plans, or existing systems for GDPR compliance risks. Use
-    this programming-language-agnostic skill when a system may collect, infer,
-    store, log, transmit, expose, profile, delete, retain, or share personal
-    data subject to the EU GDPR. The skill produces architecture-level controls,
-    findings, evidence gaps, and handoff obligations; it does not produce legal
-    advice, compliance certification, or privacy-policy prose.
+    Audit architecture, specs, plans, or systems for EU GDPR risks involving
+    collection, inference, storage, logging, transfer, profiling, retention,
+    deletion, or sharing of personal data. Produce controls, findings, evidence
+    gaps, and handoffs—not legal advice, certification, or policy prose.
   compatibility: >-
     Portable documentation-only skill. It ships active audit references and
     artifact templates, but no runtime. All mandatory GDPR architecture audit
@@ -63,6 +60,10 @@ copies:
     description: Portable copy of agents/openai.yaml.
 
 supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md

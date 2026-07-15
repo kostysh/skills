@@ -2,9 +2,9 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: financial-calculations-engineer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
-  description: Design and implement deterministic EUR financial calculations across PostgreSQL, backend, and browser layers. Use when building or reviewing VAT/IVA, discounts, rates, allocations, parsing/formatting, scorporo, ledger postings, and cross-layer parity tests. Enforce correct usage of the local money library (`packages/money`) instead of ad-hoc arithmetic.
+  description: Design and implement deterministic EUR financial calculations across PostgreSQL, backend, and browser. Use for VAT/IVA, discounts, rates, allocations, parsing and formatting, scorporo, ledger postings, and cross-layer parity tests. Enforce the project money library instead of ad hoc arithmetic.
 fragments:
   overview: fragments/overview.md
 references:
@@ -50,7 +50,15 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative maintenance navigation.
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

@@ -2,14 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: pencil-dev
-  source-version: 0.1.8
+  source-version: 0.1.9
   recommended-skill-md-max-bytes: 18000
-  description: |-
-    Use when creating, iterating, inspecting, validating, or exporting Pencil
-    `.pen` design files through Pencil MCP tools attached to an open Pencil
-    desktop or IDE editor. Applies to generated UI mockups, app screens,
-    dashboards, web pages, marketing visuals, slide-like graphics, and edits to
-    existing Pencil designs where `.pen` handling must stay MCP-only.
+  description: >-
+    Create, iterate, inspect, validate, and export Pencil `.pen` designs through
+    Pencil MCP tools connected to an open editor. Use for UI mockups, app screens,
+    dashboards, web pages, marketing visuals, slide-like graphics, or edits to
+    existing Pencil designs; keep `.pen` handling MCP-only.
 fragments:
   overview: fragments/overview.md
 references:
@@ -24,6 +23,11 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences: []

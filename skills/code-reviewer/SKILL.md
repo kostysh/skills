@@ -1,21 +1,13 @@
 ---
 name: code-reviewer
-description: >-
-  Read-only code review for pull requests, diffs, and local branch changes. Use
-  when asked to
-
-  find bugs or regressions, assess maintainability, test adequacy,
-  compatibility, or lightweight
-
-  intent alignment, and produce evidence-backed merge guidance. Owns stable
-  review scope,
-
-  severity triage, evidence, and output conventions; pairs with available domain
-  skills.
+description: Perform read-only review of PRs, diffs, and local branch changes.
+  Use to find bugs or regressions, assess maintainability, tests, compatibility,
+  or lightweight intent alignment, and provide evidence-backed merge guidance
+  with stable scope, severity, and findings; pair with relevant domain skills.
 metadata:
-  source-version: 0.4.1
+  source-version: 0.4.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 307f89f9cd95d722d8ac4a8d6733dea04f8550328d2d66331214c829cabefd3e
+  skillforge-source-hash: 71f013cc6f1cf8f26b40a5c9e6158804b7806d25a669e36ddd8cbc2f69c932c5
 ---
 
 # code-reviewer

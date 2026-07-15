@@ -1,19 +1,15 @@
 ---
 name: architecture-engineer
-description: "Design or revise software architecture for AI-agent-driven
-  development. Use when a PRD, feature, specification, repository change,
-  integration, data change, security concern, deployment change, or
-  implementation finding requires architectural judgment: architecturally
-  significant requirements, system/component pattern selection, boundaries,
-  trade-offs, quality scenarios, spikes, ADRs, and routed architecture handoff.
-  This skill creates architectural frames and constraints, not implementation
-  task backlogs."
+description: Design or revise architecture for AI-agent-driven development. Use
+  when product scope, features, integrations, data, security, deployment, or
+  findings require architectural requirements, boundaries, patterns, trade-offs,
+  quality scenarios, spikes, ADRs, or handoff—not implementation backlogs.
 compatibility: Portable documentation-only skill. It ships artifact templates
   but no runtime; all mandatory architecture guidance lives in this folder.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f20831451dee5a82df33dc1bf3be72bfd077cf8c654946581f6117532466a91c
+  skillforge-source-hash: c569e517ba2d9d39c2c49edc3b4be174993baad7c52ef30d2a99e6eb212312fe
 ---
 
 # architecture-engineer

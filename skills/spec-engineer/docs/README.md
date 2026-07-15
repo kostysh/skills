@@ -18,3 +18,4 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/implementation-log-20260622-1.md` - future-substrate guardrails for specifications.
 - `docs/logs/implementation-log-20260708-1.md` - SL-01 public-contract and event-payload guardrail remediation evidence.
 - `docs/logs/implementation-log-20260710-1.md` - source-authority and downstream handoff-readiness guidance.
+- `docs/logs/implementation-log-20260715-1.md` - description shortened to 300 code points; independent audit pending.

@@ -9,3 +9,4 @@ No issues have been created for this skill.
 ## Implementation Logs
 
 - [implementation-log-20260506-1.md](logs/implementation-log-20260506-1.md) - initial `nextjs` skill creation.
+- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent audit pending.

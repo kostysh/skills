@@ -2,9 +2,9 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-engineer"
-  source-version: "0.2.0"
+  source-version: "0.2.1"
   recommended-skill-md-max-bytes: 20000
-  description: "Use for TypeScript language, type-system, compiler-diagnostic, type-safe API, tsconfig, and coordinated Biome plus ESLint work. Guides explain, review/diagnose, and authorized change flows using repository and installed-version evidence. Pair with framework, Node runtime, testing, validation-library, and domain skills when those owners determine runtime behavior."
+  description: "Use for TypeScript language and type-system work, compiler diagnostics, type-safe APIs, tsconfig, and Biome/ESLint configuration. Ground explanations, review, diagnosis, and changes in repository and installed-version evidence; pair with runtime, framework, testing, validation, and domain owners."
 fragments:
   overview: "fragments/overview.md"
 references:
@@ -68,7 +68,11 @@ copies:
     source: "agents/openai.yaml"
     target: "agents/openai.yaml"
     description: "Portable copy of agents/openai.yaml."
-supporting: []
+supporting:
+  - id: "supporting-implementation-log-20260715-1"
+    source: "docs/logs/implementation-log-20260715-1.md"
+    target: "docs/logs/implementation-log-20260715-1.md"
+    description: "Non-normative log for the skill description length update."
 surfaces:
   active:
     requiredReferences: []

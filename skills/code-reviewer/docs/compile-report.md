@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.4.1`
+- Skill source version: `0.4.2`
 
 ## Source files
 - `agents/openai.yaml`
@@ -10,6 +10,7 @@ Generated from `skill.yaml`.
 - `assets/fixtures/runtime-gate-deployed-path-review.md`
 - `assets/pr-review-template.md`
 - `assets/review-checklist.md`
+- `docs/logs/implementation-log-20260715-1.md`
 - `fragments/overview.md`
 - `references/complexity-only.md`
 - `references/diff-completeness.md`

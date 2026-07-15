@@ -2,14 +2,13 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.5"
+  source-version: "0.1.6"
   recommended-skill-md-max-bytes: 24000
   description: >-
-    Build, change, and diagnose Hono API services. Use when work requires
-    Hono-specific routing, middleware composition, Context or runtime APIs,
-    validation and contract integration, or Hono testing boundaries. Pair with
-    the relevant TypeScript, runtime, testing, security, data, or architecture
-    skill when those domains determine correctness.
+    Build, change, and diagnose Hono API services. Use for Hono routing,
+    middleware composition, Context and runtime APIs, validation, contract
+    integration, or test boundaries. Pair with TypeScript, runtime, testing,
+    security, data, or architecture skills when those domains determine correctness.
 fragments:
   overview: "fragments/overview.md"
 references:
@@ -129,7 +128,11 @@ copies:
     source: "test/docs-contract.test.mjs"
     target: "test/docs-contract.test.mjs"
     description: "Structural docs-contract tests; not behavioral Hono runtime evidence."
-supporting: []
+supporting:
+  - id: "supporting-implementation-log-20260715-1"
+    source: "docs/logs/implementation-log-20260715-1.md"
+    target: "docs/logs/implementation-log-20260715-1.md"
+    description: "Non-normative log for the skill description length update."
 surfaces:
   active:
     requiredReferences: []

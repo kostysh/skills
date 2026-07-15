@@ -3,15 +3,13 @@ kind: SkillSource
 
 skill:
   name: gh-utility
-  source-version: 1.2.0
+  source-version: 1.2.1
   recommended-skill-md-max-bytes: 16000
   description: >-
-    Use when a task requires the installed GitHub CLI (`gh`) for repositories, issues,
-    pull requests, Actions, releases, Projects, Codespaces, secrets, variables, rulesets,
-    search, API access, or preview-stage `gh skill` commands. Select and run native `gh`
-    commands, keep the target explicit, and verify GitHub state after changes. Route local
-    Git history, code review, CI remediation, security judgment, and skill authoring to
-    their owning skills.
+    Use when GitHub CLI (`gh`) is required for repos, issues, PRs, Actions, releases,
+    Projects, Codespaces, secrets, variables, rulesets, search, API access, or `gh
+    skill` commands. Keep targets explicit and verify changes; route Git history,
+    review, CI fixes, security, and skill authoring elsewhere.
   license: MIT
   compatibility: >-
     Requires GitHub CLI gh and network access to the relevant GitHub host. Command families,
@@ -146,6 +144,10 @@ copies:
     description: Skill license.
 
 supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
   - id: supporting-readme
     source: docs/README.md
     target: docs/README.md

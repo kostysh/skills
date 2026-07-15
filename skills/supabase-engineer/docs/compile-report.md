@@ -2,10 +2,11 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.3`
+- Skill source version: `0.1.4`
 
 ## Source files
 - `agents/openai.yaml`
+- `docs/logs/implementation-log-20260715-1.md`
 - `fragments/overview.md`
 - `references/architecture.md`
 - `references/auth.md`

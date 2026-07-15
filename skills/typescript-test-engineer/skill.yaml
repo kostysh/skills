@@ -2,9 +2,9 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.6"
+  source-version: "0.1.7"
   recommended-skill-md-max-bytes: 46000
-  description: "Design, implement, review, and diagnose TypeScript tests for Node, React, and edge projects. Use for test strategy, node:test or Vitest behavior, deterministic fixtures and mocks, coverage and CI test failures, hanging tests, and evidence-quality review; keep review and diagnosis read-only unless fixes are explicitly requested."
+  description: "Design, implement, review, and diagnose TypeScript tests for Node, React, and edge projects. Use for test strategy, node:test or Vitest, deterministic fixtures and mocks, coverage, CI failures, hanging tests, and evidence quality; keep review and diagnosis read-only unless fixes are requested."
 fragments:
   overview: "fragments/overview.md"
 references:
@@ -46,7 +46,11 @@ copies:
     source: "test/docs-contract.test.mjs"
     target: "test/docs-contract.test.mjs"
     description: "Portable copy of test/docs-contract.test.mjs."
-supporting: []
+supporting:
+  - id: "supporting-implementation-log-20260715-1"
+    source: "docs/logs/implementation-log-20260715-1.md"
+    target: "docs/logs/implementation-log-20260715-1.md"
+    description: "Non-normative log for the skill description length update."
 surfaces:
   active:
     requiredReferences: []

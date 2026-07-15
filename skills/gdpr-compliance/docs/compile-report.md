@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.0`
+- Skill source version: `0.1.1`
 
 ## Source files
 - `agents/openai.yaml`
@@ -11,6 +11,7 @@ Generated from `skill.yaml`.
 - `assets/templates/processing-map.yaml`
 - `docs/README.md`
 - `docs/logs/implementation-log-20260518-1.md`
+- `docs/logs/implementation-log-20260715-1.md`
 - `fragments/final-checks.md`
 - `fragments/overview.md`
 - `references/audit-methodology.md`

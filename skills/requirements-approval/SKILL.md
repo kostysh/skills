@@ -1,17 +1,13 @@
 ---
 name: requirements-approval
-description: |-
-  Organize customer requirements approval workflows. Use when an agent must
-  identify open requirement questions, research whether they can be resolved
-  without the customer, create conservative GitHub approval tasks, process
-  customer email replies through Gmail/GitHub connectors, propagate accepted
-  decisions through PRD, architecture, specs, plans, and commit/document the
-  result. Also applies to Russian requests about "согласование требований",
-  "открытые вопросы", "ответы заказчика", and "задачи согласования".
+description: "Organize customer requirements approvals: resolve open questions,
+  create GitHub approval tasks, process replies via Gmail/GitHub, and propagate
+  accepted decisions into PRDs, architecture, specs, and plans. Also use for
+  «согласование требований», «открытые вопросы» and «ответы заказчика»."
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 2d418827c2cc1641d1c7d36fc6417d8df314f596aedbb2a87e9c8a85de6070cd
+  skillforge-source-hash: af72458070fb7c8487ff1431a70a0c72758e932ce15babff5665f66886e4351b
 ---
 
 # requirements-approval

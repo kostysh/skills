@@ -2,16 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-spa-engineer
-  source-version: 0.1.8
+  source-version: 0.1.9
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Design, implement, review, and diagnose production React single-page
-    applications built with TypeScript, Vite, TanStack Query, Zustand, React
-    Hook Form with Zod, React Router, and Dexie. Use for integrated client-side
-    flows that cross routing, server state, runtime state, forms, browser
-    persistence, performance, testing, or accessibility. Preserve the accepted
-    stack and project contracts; exclude SSR, React Server Components, and
-    Next.js server-side architecture.
+    Design, implement, review, and diagnose React SPAs using TypeScript, Vite,
+    TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Use
+    for routing, server/runtime state, forms, browser storage, performance, testing,
+    or accessibility; exclude SSR, RSC, and Next.js architecture.
   compatibility: >-
     Portable documentation-only engineering skill. It ships no application
     runtime or test harness and requires repository evidence plus the installed
@@ -92,6 +89,10 @@ copies:
     target: agents/openai.yaml
     description: Portable UI metadata for react-spa-engineer.
 supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md

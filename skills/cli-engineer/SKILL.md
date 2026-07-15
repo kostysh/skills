@@ -1,23 +1,13 @@
 ---
 name: cli-engineer
-description: >-
-  Standardize and build production-grade TypeScript command-line tools on
-  Node.js.
-
-  Use when designing or reviewing CLI/TUI utilities, choosing frameworks,
-  structuring
-
-  packages, enforcing modular architecture, defining help/output/error
-  contracts,
-
-  testing command behavior, setting up quality gates, handling prompts or
-  terminal
-
-  UI, and packaging or releasing command-line apps.
+description: Design, review, and build production-grade TypeScript CLIs and TUIs
+  on Node.js. Use for framework choice, package structure, modular architecture,
+  help/output/error contracts, command tests, quality gates, prompts and
+  terminal UI, packaging, and releases.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5deceebb91d13d2eb03f7c1081907d6deebf7b8a1a7efa35a1cb7159c40c8d96
+  skillforge-source-hash: 0ab49809185d51d5d3e0a7c6dfe01cc07948ac512f95a1b76b3f7f1c4fa6df3d
 ---
 
 # cli-engineer

@@ -2,14 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.5
+  source-version: 0.1.6
   recommended-skill-md-max-bytes: 20000
-  description: |-
-    Review code against authoritative normative requirements from specs, contracts, ADRs, tickets,
-    and acceptance criteria. Use when asked whether an implementation matches a specification, API
-    contract, PRD, RFC, or migration requirement, produce a requirement-to-code traceability matrix,
-    identify compliance gaps or ambiguities, or issue an implementation-versus-spec verdict. Limit
-    the verdict when source authority or mandatory implementation evidence is insufficient.
+  description: >-
+    Review code against authoritative specs, contracts, ADRs, tickets, PRDs, RFCs,
+    migrations, and acceptance criteria. Build requirement-to-code traceability,
+    identify compliance gaps or ambiguities, and issue an implementation-versus-spec
+    verdict limited by source authority and evidence.
 fragments:
   overview: fragments/overview.md
 references:
@@ -41,7 +40,11 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

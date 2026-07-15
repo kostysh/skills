@@ -1,17 +1,13 @@
 ---
 name: react-components-engineer
-description: >-
-  Build and review bulletproof React components that remain correct across SSR,
-  hydration, multiple instances, concurrent rendering, async/opaque children,
-  portals/iframes, transitions, Activity visibility, server-client data
-  boundaries, and future React runtime changes.
-
-  Use when designing or hardening reusable React components, including
-  RSC-oriented code paths.
+description: Build and review resilient React components across SSR, hydration,
+  multiple instances, concurrent rendering, async children, portals, iframes,
+  transitions, Activity visibility, server-client boundaries, and React changes.
+  Use when designing or hardening reusable components, including RSC paths.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 677cd24809a176f56ea4d83047e53d06de5e963de9efa027bb149f90e8eb6326
+  skillforge-source-hash: 58dba0b97f1d8027e539ffb0e56f95140ab5df7fa9b2405a6ce2a827e3c24065
 ---
 
 # react-components-engineer

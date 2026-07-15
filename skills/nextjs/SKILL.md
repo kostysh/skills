@@ -1,19 +1,14 @@
 ---
 name: nextjs
-description: >-
-  Build, review, and debug Next.js applications, especially App Router projects
-  using React Server Components, Server Actions, Route Handlers, async request
-  APIs, metadata, image/font optimization, bundling, hydration fixes, parallel
-  routes, or self-hosting.
-
-
-  Use for Next.js framework behavior and version-sensitive Next 15/16 patterns.
-  Do not use as a generic React SPA or TypeScript skill when Next.js is not the
-  main concern.
+description: Build, review, and debug Next.js App Router apps using RSC, Server
+  Actions, Route Handlers, async request APIs, metadata, image/font
+  optimization, bundling, hydration, parallel routes, or self-hosting. Use for
+  Next.js-specific and version-sensitive behavior, not generic React or
+  TypeScript work.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 7e3561e705f12df462b56da2fc632494c072147ae920aa94c3003b09f7f13a55
+  skillforge-source-hash: 15c6502c4d3bc971ac2ed63008ff4ce77c481f943df2636be388fc5dfeb16172
 ---
 
 # nextjs

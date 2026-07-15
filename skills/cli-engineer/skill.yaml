@@ -2,14 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: cli-engineer
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 20000
-  description: |-
-    Standardize and build production-grade TypeScript command-line tools on Node.js.
-    Use when designing or reviewing CLI/TUI utilities, choosing frameworks, structuring
-    packages, enforcing modular architecture, defining help/output/error contracts,
-    testing command behavior, setting up quality gates, handling prompts or terminal
-    UI, and packaging or releasing command-line apps.
+  description: >-
+    Design, review, and build production-grade TypeScript CLIs and TUIs on Node.js.
+    Use for framework choice, package structure, modular architecture,
+    help/output/error contracts, command tests, quality gates, prompts and terminal
+    UI, packaging, and releases.
 fragments:
   overview: fragments/overview.md
 references:
@@ -55,7 +54,11 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

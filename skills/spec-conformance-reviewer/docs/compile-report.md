@@ -2,11 +2,12 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.5`
+- Skill source version: `0.1.6`
 
 ## Source files
 - `agents/openai.yaml`
 - `assets/fixtures/consultant-admission-policy.md`
+- `docs/logs/implementation-log-20260715-1.md`
 - `fragments/overview.md`
 - `references/methodology.md`
 - `references/policy-admission-matrix.md`

@@ -2,9 +2,9 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.9"
+  source-version: "0.1.10"
   recommended-skill-md-max-bytes: 36000
-  description: "Perform bounded, evidence-backed security code review for application code, CI workflows, permission models, webhooks, secrets, app-layer data access, and configuration. Use for targeted vulnerability review, exploitability triage, or a scoped formal audit with an identifiable target. Owns threat modeling, confidence gating, attack-path validation, security findings, and scoped security status; it does not replace scan orchestration, standards-compliance review, penetration testing, or implementation."
+  description: "Perform bounded security review of code, CI, permissions, webhooks, secrets, data access, and config. Use for vulnerability review, exploitability triage, or scoped audits. Own threat modeling, confidence gating, attack paths, and findings—not scan orchestration, compliance, pentesting, or fixes."
 fragments:
   overview: "fragments/overview.md"
 references:
@@ -80,7 +80,11 @@ copies:
     source: "test/fixtures/data-access-injection.ts"
     target: "test/fixtures/data-access-injection.ts"
     description: "Documentation-contract fixture for unsafe and safer PostgREST data-access construction examples; it is not behavioral security proof."
-supporting: []
+supporting:
+  - id: "supporting-implementation-log-20260715-1"
+    source: "docs/logs/implementation-log-20260715-1.md"
+    target: "docs/logs/implementation-log-20260715-1.md"
+    description: "Non-normative log for the skill description length update."
 surfaces:
   active:
     requiredReferences:

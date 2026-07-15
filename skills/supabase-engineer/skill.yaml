@@ -2,9 +2,9 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: supabase-engineer
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 20000
-  description: Build, review, debug, and operate Supabase-backed systems from project constraints to verified schema, Data API, Auth, RLS, Storage, Realtime, Edge Functions, migrations, and operational outcomes. Use for Supabase-specific design or implementation decisions, direct boundary verification, CLI/MCP workflows, and incident diagnosis; pair with framework, architecture, security, privacy, and PostgreSQL specialists where they own the decision.
+  description: Build, review, debug, and operate Supabase across schema, Data API, Auth, RLS, Storage, Realtime, Edge Functions, migrations, and operations. Use for Supabase design, implementation, boundary verification, CLI/MCP workflows, or incidents; pair with domain owners where they determine correctness.
 fragments:
   overview: fragments/overview.md
 references:
@@ -122,7 +122,11 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

@@ -1,23 +1,15 @@
 ---
 name: docusaurus-repo
-description: >-
-  Create and manage a documentation repository built on Docusaurus. Use for
-  repository
-
+description: Create and manage Docusaurus documentation repositories. Use for
   bootstrap, pnpm tooling, AGENTS.md, GitHub workflows, docs-only or hybrid
-  docs/blog
-
-  sites, config, sidebars, MDX authoring, theme and UI customization, search,
-
-  versioning, i18n, deployment, and common ecosystem plugins such as Mermaid or
-
-  OpenAPI docs.
+  docs/blog sites, config, sidebars, MDX, themes, UI customization, search,
+  versioning, i18n, deployment, and plugins such as Mermaid or OpenAPI docs.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   author: skills-etc
   version: 1.0.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 063b20e103fd97a6a875cd38522667a014baa5c0fd65912c4c88b729ff32e55f
+  skillforge-source-hash: 4699da9b4da2f18c3e62ebba218a2c959db4f0da2c36ea1ca0e3f458439adf9b
 ---
 
 # docusaurus-repo

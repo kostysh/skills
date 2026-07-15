@@ -2,9 +2,9 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: documentation
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 20000
-  description: "Create, review, restructure, and rewrite technical documentation using the Diataxis framework. Use when the task is to decide whether content should be a tutorial, how-to guide, reference, or explanation; split mixed documentation into the right forms; improve documentation architecture; or review docs for user-need fit, structure, and quality. Trigger terms include: Diataxis, tutorial vs how-to, reference vs explanation, documentation structure, reorganize docs, docs IA, technical writing, rewrite docs."
+  description: "Create, review, restructure, and rewrite technical documentation with Diataxis. Use to classify or split tutorials, how-to guides, references, and explanations; improve documentation architecture and information design; or review technical writing for user-need fit, structure, and quality."
   metadata:
     tags: documentation, technical-writing, diataxis, tutorials, how-to, reference, explanation
 fragments:
@@ -18,7 +18,11 @@ references:
     trigger: Read this when you need deeper guidance, rewrite patterns, or more detailed distinctions between the four forms.
 assets: []
 copies: []
-supporting: []
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

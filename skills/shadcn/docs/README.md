@@ -7,3 +7,4 @@
 | Лог | Статус | Кратко |
 | --- | --- | --- |
 | [implementation-log-20260610-1.md](logs/implementation-log-20260610-1.md) | PASS | Введена Base UI-first политика для `skills/shadcn`. |
+| [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | LOCAL PASS | Описание сокращено до 300 code points; independent audit pending. |

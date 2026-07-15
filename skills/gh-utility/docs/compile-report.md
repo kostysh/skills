@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `1.2.0`
+- Skill source version: `1.2.1`
 
 ## Source files
 - `LICENSE`
@@ -17,6 +17,7 @@ Generated from `skill.yaml`.
 - `assets/workflow_dispatch_inputs.json`
 - `docs/README.md`
 - `docs/logs/implementation-log-20260713-1.md`
+- `docs/logs/implementation-log-20260715-1.md`
 - `docs/research-basis.md`
 - `fragments/final-checks.md`
 - `fragments/overview.md`

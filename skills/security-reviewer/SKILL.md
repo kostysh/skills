@@ -1,17 +1,13 @@
 ---
 name: security-reviewer
-description: Perform bounded, evidence-backed security code review for
-  application code, CI workflows, permission models, webhooks, secrets,
-  app-layer data access, and configuration. Use for targeted vulnerability
-  review, exploitability triage, or a scoped formal audit with an identifiable
-  target. Owns threat modeling, confidence gating, attack-path validation,
-  security findings, and scoped security status; it does not replace scan
-  orchestration, standards-compliance review, penetration testing, or
-  implementation.
+description: Perform bounded security review of code, CI, permissions, webhooks,
+  secrets, data access, and config. Use for vulnerability review, exploitability
+  triage, or scoped audits. Own threat modeling, confidence gating, attack
+  paths, and findings—not scan orchestration, compliance, pentesting, or fixes.
 metadata:
-  source-version: 0.1.9
+  source-version: 0.1.10
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f52d8eb2c6eb255e6cf0bf1142b73198bbac50c504127fecfda627ed786dc876
+  skillforge-source-hash: 015d16c605864d8fa0210208ed64819689be157d692dc54210b0043c2de6bf85
 ---
 
 # security-reviewer

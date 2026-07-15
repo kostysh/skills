@@ -21,3 +21,7 @@
 ## Evidence artifacts
 
 - [forward-test-raw-20260713-1](logs/forward-test-raw-20260713-1.md) — дословные prompts и outputs свежего blind candidate run; не является независимым verdict.
+
+## Обслуживание описания
+
+- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent audit pending.

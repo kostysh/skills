@@ -1,15 +1,13 @@
 ---
 name: pencil-dev
-description: |-
-  Use when creating, iterating, inspecting, validating, or exporting Pencil
-  `.pen` design files through Pencil MCP tools attached to an open Pencil
-  desktop or IDE editor. Applies to generated UI mockups, app screens,
-  dashboards, web pages, marketing visuals, slide-like graphics, and edits to
-  existing Pencil designs where `.pen` handling must stay MCP-only.
+description: Create, iterate, inspect, validate, and export Pencil `.pen`
+  designs through Pencil MCP tools connected to an open editor. Use for UI
+  mockups, app screens, dashboards, web pages, marketing visuals, slide-like
+  graphics, or edits to existing Pencil designs; keep `.pen` handling MCP-only.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3efc97b4c6d824f73c5c8cebc2b65e3beb120ff967accc4e4fe2fb85554611d4
+  skillforge-source-hash: bbded369974202e8db0c4bda384b045a90f0907e5c51f7eaa023172b5736e994
 ---
 
 # pencil-dev

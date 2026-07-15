@@ -1,20 +1,17 @@
 ---
 name: spec-engineer
-description: Create concise, falsifiable software specifications for AI coding
-  agents. Use when turning feature requests, tickets, product ideas,
-  API/interface changes, domain rules, migrations, workflows, or function-level
-  behavior into a Markdown spec that guides implementation without process
-  overhead. Emphasizes observable behavior, capability/substrate separation,
-  atomic requirements, acceptance criteria, anti-claims, verification mapping,
-  parent-intent alignment, architecture-context handoff, source-authority and
-  handoff-readiness gates, risk-based depth, and right-sized detail.
+description: Create concise, falsifiable software specs for AI coding agents.
+  Use to turn ideas, tickets, APIs, domain rules, migrations, workflows, or
+  function behavior into implementation-ready Markdown with observable
+  requirements, acceptance evidence, anti-claims, source authority, and handoff
+  readiness.
 compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.7
+  source-version: 0.2.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 34ba47236b680494c71adf80ae3508b5fb9ab33f62db8d4b43346c8d31d01153
+  skillforge-source-hash: 44da254d21197291f77a85ddd7199db5782f1a30fb77210fbb12cb2abf096eeb
 ---
 
 # spec-engineer

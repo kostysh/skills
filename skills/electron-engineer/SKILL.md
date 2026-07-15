@@ -1,16 +1,13 @@
 ---
 name: electron-engineer
-description: Build, modernize, review, test, package, and release
-  production-grade Electron desktop applications across macOS, Windows, and
-  Linux. Covers Electron process architecture, main/preload/renderer trust
-  boundaries, TypeScript process typing, typed IPC, security hardening, custom
-  protocols, native OS integration, data and secret storage, source exposure
-  reduction, build pipelines, performance, testing, observability, packaging,
-  signing, notarization, auto-updates, and Electron major-version migrations.
+description: Build, modernize, review, test, package, and release Electron apps
+  for macOS, Windows, and Linux. Use for process and trust boundaries, typed
+  IPC, security, protocols, OS integration, storage, source exposure, builds,
+  performance, observability, signing, notarization, updates, and migrations.
 metadata:
-  source-version: 0.1.9
+  source-version: 0.1.10
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6df2f7083ec8416964772472100828f9d6d7d8476def19827d972405dd4e938c
+  skillforge-source-hash: c87db3d50344ca36b45bc36ffcb00d57d2b3cb7a1c69729823d88e0da520c029
 ---
 
 # electron-engineer

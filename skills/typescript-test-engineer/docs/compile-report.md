@@ -2,11 +2,12 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.6`
+- Skill source version: `0.1.7`
 - CLI package version: `0.1.0`
 
 ## Source files
 - `agents/openai.yaml`
+- `docs/logs/implementation-log-20260715-1.md`
 - `fragments/overview.md`
 - `package.json`
 - `references/react-vitest.md`

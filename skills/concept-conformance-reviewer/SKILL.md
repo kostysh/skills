@@ -1,21 +1,17 @@
 ---
 name: concept-conformance-reviewer
-description: Review feature ideas, backlog items, specifications, plans,
-  acceptance criteria, implementations, or closure claims against an established
-  product or system concept. Use for design-time or closure-time checks when
-  work may deliver scaffolding, APIs, mocks, tests, evidence, or documentation
-  while overclaiming an observable capability; when capability and substrate
-  must be classified relative to the claimed actor or consumer; or when weak
-  acceptance could create false confidence. Do not use as a substitute for
-  ordinary specification compliance, code review, security review, or domain
-  correctness.
+description: Review features, specs, plans, acceptance criteria,
+  implementations, and closure claims against an established product or system
+  concept. Use when scaffolding, APIs, mocks, tests, evidence, or docs may be
+  mistaken for observable capability; not for ordinary spec, code, security, or
+  domain review.
 compatibility: Portable documentation-only review skill. Use before
   specification, planning, implementation, or closure when concept alignment and
   real capability are more important than local artifact compliance.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 957c8385bf1860926eef931faf2ad158024a85992e17c153fcd61777b0aeda20
+  skillforge-source-hash: 184a54fb7802e82e4633bb620154be014462a8c0aa5a3da47724acd82b0c8d16
 ---
 
 # concept-conformance-reviewer

@@ -3,16 +3,13 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.6
+  source-version: 0.2.7
   recommended-skill-md-max-bytes: 22000
   description: >-
-    Decompose accepted product scope and architecture handoff into right-sized
-    executable work for AI-agent implementation. Use for whole-project planning,
-    feature planning, module/service planning, integration planning,
-    architecture-handoff-item breakdown, sequencing, risk-aware task creation,
-    and routing to prd-engineer, architecture-engineer, spec-engineer, domain
-    review, or coding. Default output is one compact Markdown Delivery Plan,
-    not a rigid workflow or set of YAML registers.
+    Turn accepted product scope and architecture handoff into right-sized executable
+    work for AI agents. Use for project, feature, module, service, or integration
+    planning, sequencing, risk-aware breakdown, and routing gaps to owning skills.
+    Produce one Delivery Plan, not rigid workflow registers.
   compatibility: >-
     Portable documentation-only skill. All mandatory delivery-planning guidance
     lives in this folder.
@@ -58,6 +55,10 @@ copies:
     description: Portable copy of agents/openai.yaml.
 
 supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md

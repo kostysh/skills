@@ -1,17 +1,16 @@
 ---
 name: payload-migration
-description: Use when migrating content from WordPress, Contentful, Strapi,
-  Sanity, Webflow, CSV/JSON exports, or another CMS into Payload CMS; especially
-  when analyzing source data, designing Payload collections, mapping fields,
-  resolving relationships, media, rich text, localization, and planning an
-  import strategy.
+description: Migrate content from WordPress, Contentful, Strapi, Sanity,
+  Webflow, CSV/JSON, or other CMSs into Payload CMS. Use to analyze source data,
+  design collections, map fields, resolve relationships, media, rich text, and
+  localization, and plan a reliable import strategy.
 compatibility: Portable documentation-only migration planning skill based on the
   upstream payloadcms/skills cms-migration guidance. Use payload for general
   Payload implementation after the migration model is agreed.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b5c584a8826abf246763a3f9f91072272b97ac48e5d0e8d735d06070c734b165
+  skillforge-source-hash: d0e580e6d02f9e72ba616b0e0c2a1f95b96a194d5aa43b71ba016a4676ee50a1
 ---
 
 # payload-migration

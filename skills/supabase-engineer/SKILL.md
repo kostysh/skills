@@ -1,16 +1,13 @@
 ---
 name: supabase-engineer
-description: Build, review, debug, and operate Supabase-backed systems from
-  project constraints to verified schema, Data API, Auth, RLS, Storage,
-  Realtime, Edge Functions, migrations, and operational outcomes. Use for
-  Supabase-specific design or implementation decisions, direct boundary
-  verification, CLI/MCP workflows, and incident diagnosis; pair with framework,
-  architecture, security, privacy, and PostgreSQL specialists where they own the
-  decision.
+description: Build, review, debug, and operate Supabase across schema, Data API,
+  Auth, RLS, Storage, Realtime, Edge Functions, migrations, and operations. Use
+  for Supabase design, implementation, boundary verification, CLI/MCP workflows,
+  or incidents; pair with domain owners where they determine correctness.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d4d168e68e26aaa8ce5e0e1df31ede800d4186c124e2fe2a3da3d01b929dad3a
+  skillforge-source-hash: 45fc994ddfb2abcc83ad35ee606f4a97f04661cd8c61ebb9bf41f63d15ed57e2
 ---
 
 # supabase-engineer

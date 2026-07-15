@@ -3,14 +3,13 @@ kind: SkillSource
 
 skill:
   name: payload-migration
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Use when migrating content from WordPress, Contentful, Strapi, Sanity,
-    Webflow, CSV/JSON exports, or another CMS into Payload CMS; especially when
-    analyzing source data, designing Payload collections, mapping fields,
-    resolving relationships, media, rich text, localization, and planning an
-    import strategy.
+    Migrate content from WordPress, Contentful, Strapi, Sanity, Webflow, CSV/JSON,
+    or other CMSs into Payload CMS. Use to analyze source data, design collections,
+    map fields, resolve relationships, media, rich text, and localization, and plan
+    a reliable import strategy.
   compatibility: >-
     Portable documentation-only migration planning skill based on the upstream
     payloadcms/skills cms-migration guidance. Use payload for general Payload
@@ -34,6 +33,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md

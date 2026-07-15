@@ -3,18 +3,13 @@ kind: SkillSource
 
 skill:
   name: concept-conformance-reviewer
-  source-version: 0.2.1
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Review feature ideas, backlog items, specifications, plans, acceptance
-    criteria, implementations, or closure claims against an established
-    product or system concept. Use for design-time or closure-time checks when
-    work may deliver scaffolding, APIs, mocks, tests, evidence, or documentation
-    while overclaiming an observable capability; when capability and substrate
-    must be classified relative to the claimed actor or consumer; or when weak
-    acceptance could create false confidence. Do not use as a substitute for
-    ordinary specification compliance, code review, security review, or domain
-    correctness.
+    Review features, specs, plans, acceptance criteria, implementations, and closure
+    claims against an established product or system concept. Use when scaffolding,
+    APIs, mocks, tests, evidence, or docs may be mistaken for observable capability;
+    not for ordinary spec, code, security, or domain review.
   compatibility: >-
     Portable documentation-only review skill. Use before specification,
     planning, implementation, or closure when concept alignment and real
@@ -27,6 +22,10 @@ references: []
 assets: []
 copies: []
 supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md

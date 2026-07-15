@@ -1,23 +1,14 @@
 ---
 name: node-engineer
-description: >-
-  Explain, design, review, diagnose, or implement Node.js runtime behavior using
-
-  repository and installed-version evidence. Use for built-in TypeScript
-  execution,
-
-  ESM/CJS resolution, streams and backpressure, graceful shutdown, logging,
-  profiling,
-
-  dependency inspection, process hangs, open resources, and other Node-specific
-  runtime
-
-  concerns; keep review and diagnosis read-only unless changes are explicitly
+description: Explain, design, review, diagnose, and implement Node.js runtime
+  behavior using repo and version evidence. Use for TypeScript execution,
+  ESM/CJS, streams, backpressure, shutdown, logging, profiling, dependencies,
+  hangs, and open resources; keep diagnosis read-only unless fixes are
   requested.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 46c0c22df44757207015b0b99617d1a30d2406a6a78abe4874e7f0880d44ad41
+  skillforge-source-hash: e18095a69fdb0d2ce38e338d2c9793ff257ce6c1ff0d5de8a49b8a001c0d9d6f
 ---
 
 # node-engineer

@@ -2,15 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: frontend-design
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 20000
-  description: |-
-    Use when the task asks for a visually strong landing page, website, app UI,
-    dashboard, prototype, demo UI, poster-like web artifact, or a meaningful
-    visual upgrade to an existing frontend surface. This skill enforces strong
-    hierarchy, restrained composition, purposeful imagery, expressive typography,
-    tasteful motion, and system-aware polish while avoiding generic cards, weak
-    branding, and AI-slop aesthetics.
+  description: >-
+    Use for strong landing pages, websites, app UIs, dashboards, prototypes, demos,
+    poster-like artifacts, or meaningful visual upgrades. Enforce hierarchy,
+    restrained composition, purposeful imagery, expressive typography, tasteful
+    motion, and system-aware polish while avoiding generic AI aesthetics.
 fragments:
   overview: fragments/overview.md
 references:
@@ -48,7 +46,15 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative maintenance navigation.
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

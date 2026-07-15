@@ -2,16 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: requirements-approval
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 12000
-  description: |-
-    Organize customer requirements approval workflows. Use when an agent must
-    identify open requirement questions, research whether they can be resolved
-    without the customer, create conservative GitHub approval tasks, process
-    customer email replies through Gmail/GitHub connectors, propagate accepted
-    decisions through PRD, architecture, specs, plans, and commit/document the
-    result. Also applies to Russian requests about "согласование требований",
-    "открытые вопросы", "ответы заказчика", and "задачи согласования".
+  description: >-
+    Organize customer requirements approvals: resolve open questions, create GitHub
+    approval tasks, process replies via Gmail/GitHub, and propagate accepted
+    decisions into PRDs, architecture, specs, and plans. Also use for «согласование
+    требований», «открытые вопросы» and «ответы заказчика».
 fragments:
   overview: fragments/overview.md
 copies:
@@ -19,6 +16,11 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences: []

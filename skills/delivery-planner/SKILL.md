@@ -1,18 +1,16 @@
 ---
 name: delivery-planner
-description: Decompose accepted product scope and architecture handoff into
-  right-sized executable work for AI-agent implementation. Use for whole-project
-  planning, feature planning, module/service planning, integration planning,
-  architecture-handoff-item breakdown, sequencing, risk-aware task creation, and
-  routing to prd-engineer, architecture-engineer, spec-engineer, domain review,
-  or coding. Default output is one compact Markdown Delivery Plan, not a rigid
-  workflow or set of YAML registers.
+description: Turn accepted product scope and architecture handoff into
+  right-sized executable work for AI agents. Use for project, feature, module,
+  service, or integration planning, sequencing, risk-aware breakdown, and
+  routing gaps to owning skills. Produce one Delivery Plan, not rigid workflow
+  registers.
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.6
+  source-version: 0.2.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 0d8fc00061e279dd2123c8afd5e82868d396c7b3419577063c46b1c167d13630
+  skillforge-source-hash: bf21fb15d1c5827cf56f98199dfb5888d023216b90b2a443ca3888fb503190e5
 ---
 
 # delivery-planner

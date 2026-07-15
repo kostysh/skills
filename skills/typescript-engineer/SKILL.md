@@ -1,15 +1,14 @@
 ---
 name: typescript-engineer
-description: Use for TypeScript language, type-system, compiler-diagnostic,
-  type-safe API, tsconfig, and coordinated Biome plus ESLint work. Guides
-  explain, review/diagnose, and authorized change flows using repository and
-  installed-version evidence. Pair with framework, Node runtime, testing,
-  validation-library, and domain skills when those owners determine runtime
-  behavior.
+description: Use for TypeScript language and type-system work, compiler
+  diagnostics, type-safe APIs, tsconfig, and Biome/ESLint configuration. Ground
+  explanations, review, diagnosis, and changes in repository and
+  installed-version evidence; pair with runtime, framework, testing, validation,
+  and domain owners.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5378e5ce46030d23ac37c6463ef81698106e49e5c8a14e5f52e8f066c12b5bd5
+  skillforge-source-hash: f49fff450f4148b6ea549e90824a957f47fb47bc031c6c071728c797d5ef3947
 ---
 
 # typescript-engineer

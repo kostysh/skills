@@ -1,14 +1,14 @@
 ---
 name: hono-engineer
-description: Build, change, and diagnose Hono API services. Use when work
-  requires Hono-specific routing, middleware composition, Context or runtime
-  APIs, validation and contract integration, or Hono testing boundaries. Pair
-  with the relevant TypeScript, runtime, testing, security, data, or
-  architecture skill when those domains determine correctness.
+description: Build, change, and diagnose Hono API services. Use for Hono
+  routing, middleware composition, Context and runtime APIs, validation,
+  contract integration, or test boundaries. Pair with TypeScript, runtime,
+  testing, security, data, or architecture skills when those domains determine
+  correctness.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 7afd17594daaeaeb9ca1cecf1d4a85fd91d359d440a74bea2fe2b4c4b5f72111
+  skillforge-source-hash: 89781d2f2361a14393d6f08158c3fb0f4ddfb3970c3b95d6b1bbb6732b10bb26
 ---
 
 # hono-engineer

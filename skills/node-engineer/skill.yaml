@@ -2,14 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: node-engineer
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 20000
-  description: |-
-    Explain, design, review, diagnose, or implement Node.js runtime behavior using
-    repository and installed-version evidence. Use for built-in TypeScript execution,
-    ESM/CJS resolution, streams and backpressure, graceful shutdown, logging, profiling,
-    dependency inspection, process hangs, open resources, and other Node-specific runtime
-    concerns; keep review and diagnosis read-only unless changes are explicitly requested.
+  description: >-
+    Explain, design, review, diagnose, and implement Node.js runtime behavior using
+    repo and version evidence. Use for TypeScript execution, ESM/CJS, streams,
+    backpressure, shutdown, logging, profiling, dependencies, hangs, and open
+    resources; keep diagnosis read-only unless fixes are requested.
 fragments:
   overview: fragments/overview.md
 references:
@@ -44,6 +43,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md

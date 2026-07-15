@@ -13,3 +13,7 @@ This directory contains supporting maintenance material only. The normative skil
 ## Generated Reports
 
 - `docs/compile-report.md` - supporting compile report for the current generated skill surface.
+
+## Обслуживание описания
+
+- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до лимита 300 code points; независимый аудит ожидается.

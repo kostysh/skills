@@ -31,3 +31,7 @@
 | Evidence | Snapshot | Status |
 | --- | --- | --- |
 | [logs/forward-tests-20260710.md](logs/forward-tests-20260710.md) | `f601c74a...0ec35df` | 13/13 sampled cases PASS |
+
+## Обслуживание описания
+
+- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent audit pending.

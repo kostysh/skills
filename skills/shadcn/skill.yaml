@@ -2,9 +2,9 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: shadcn
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 23000
-  description: Manages shadcn components and projects with a Base UI-first policy — adding, searching, fixing, debugging, styling, and composing UI. Provides project context, component docs, and usage examples. Applies when working with shadcn/ui, Base UI, basecn, component registries, presets, --preset codes, or any project with a components.json file. Also triggers for "shadcn init", "create an app with --preset", or "switch to --preset".
+  description: "Manage shadcn projects with a Base UI-first policy: add, search, fix, debug, style, and compose components using docs, registries, and presets. Use for shadcn/ui, Base UI, basecn, components.json, registry items, `shadcn init`, `--preset` app creation, or preset switching."
 fragments:
   overview: fragments/overview.md
 references:
@@ -78,7 +78,11 @@ copies:
     source: mcp.md
     target: mcp.md
     description: Portable copy of mcp.md.
-supporting: []
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

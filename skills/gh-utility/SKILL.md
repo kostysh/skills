@@ -1,19 +1,17 @@
 ---
 name: gh-utility
-description: Use when a task requires the installed GitHub CLI (`gh`) for
-  repositories, issues, pull requests, Actions, releases, Projects, Codespaces,
-  secrets, variables, rulesets, search, API access, or preview-stage `gh skill`
-  commands. Select and run native `gh` commands, keep the target explicit, and
-  verify GitHub state after changes. Route local Git history, code review, CI
-  remediation, security judgment, and skill authoring to their owning skills.
+description: Use when GitHub CLI (`gh`) is required for repos, issues, PRs,
+  Actions, releases, Projects, Codespaces, secrets, variables, rulesets, search,
+  API access, or `gh skill` commands. Keep targets explicit and verify changes;
+  route Git history, review, CI fixes, security, and skill authoring elsewhere.
 license: MIT
 compatibility: Requires GitHub CLI gh and network access to the relevant GitHub
   host. Command families, flags, and JSON fields that may vary by version must
   be checked against installed help.
 metadata:
-  source-version: 1.2.0
+  source-version: 1.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d41804661eb156603c450da6b437c0d573bbe0e6f6b963bd374c2b3c82896894
+  skillforge-source-hash: 88a2829d04ce2a992fb2ffdf3867efa0d975ff8c920bd0ae5f1fac7f7c621c99
 ---
 
 # gh-utility

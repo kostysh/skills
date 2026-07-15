@@ -2,13 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.4.1
+  source-version: 0.4.2
   recommended-skill-md-max-bytes: 20000
-  description: |-
-    Read-only code review for pull requests, diffs, and local branch changes. Use when asked to
-    find bugs or regressions, assess maintainability, test adequacy, compatibility, or lightweight
-    intent alignment, and produce evidence-backed merge guidance. Owns stable review scope,
-    severity triage, evidence, and output conventions; pairs with available domain skills.
+  description: >-
+    Perform read-only review of PRs, diffs, and local branch changes. Use to find
+    bugs or regressions, assess maintainability, tests, compatibility, or lightweight
+    intent alignment, and provide evidence-backed merge guidance with stable scope,
+    severity, and findings; pair with relevant domain skills.
 fragments:
   overview: fragments/overview.md
 references:
@@ -82,7 +82,11 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

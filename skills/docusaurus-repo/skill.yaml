@@ -2,14 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: docusaurus-repo
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 20000
-  description: |-
-    Create and manage a documentation repository built on Docusaurus. Use for repository
-    bootstrap, pnpm tooling, AGENTS.md, GitHub workflows, docs-only or hybrid docs/blog
-    sites, config, sidebars, MDX authoring, theme and UI customization, search,
-    versioning, i18n, deployment, and common ecosystem plugins such as Mermaid or
-    OpenAPI docs.
+  description: >-
+    Create and manage Docusaurus documentation repositories. Use for bootstrap,
+    pnpm tooling, AGENTS.md, GitHub workflows, docs-only or hybrid docs/blog sites,
+    config, sidebars, MDX, themes, UI customization, search, versioning, i18n,
+    deployment, and plugins such as Mermaid or OpenAPI docs.
   metadata:
     author: skills-etc
     version: 1.0.0
@@ -84,7 +83,15 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative maintenance navigation.
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences:

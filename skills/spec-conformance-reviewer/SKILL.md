@@ -1,24 +1,13 @@
 ---
 name: spec-conformance-reviewer
-description: >-
-  Review code against authoritative normative requirements from specs,
-  contracts, ADRs, tickets,
-
-  and acceptance criteria. Use when asked whether an implementation matches a
-  specification, API
-
-  contract, PRD, RFC, or migration requirement, produce a requirement-to-code
-  traceability matrix,
-
-  identify compliance gaps or ambiguities, or issue an
-  implementation-versus-spec verdict. Limit
-
-  the verdict when source authority or mandatory implementation evidence is
-  insufficient.
+description: Review code against authoritative specs, contracts, ADRs, tickets,
+  PRDs, RFCs, migrations, and acceptance criteria. Build requirement-to-code
+  traceability, identify compliance gaps or ambiguities, and issue an
+  implementation-versus-spec verdict limited by source authority and evidence.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8efa7fe65fa2996924b1ee91428959e46539a0bc12661463ec9e533b9eaa0be8
+  skillforge-source-hash: 5ddb1a1ba667f8f0bbadd5941132748885e62d32d8fdf263d41837aa15dcf4bf
 ---
 
 # spec-conformance-reviewer

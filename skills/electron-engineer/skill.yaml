@@ -3,16 +3,13 @@ kind: SkillSource
 
 skill:
   name: electron-engineer
-  source-version: 0.1.9
+  source-version: 0.1.10
   recommended-skill-md-max-bytes: 24000
   description: >-
-    Build, modernize, review, test, package, and release production-grade
-    Electron desktop applications across macOS, Windows, and Linux. Covers
-    Electron process architecture, main/preload/renderer trust boundaries,
-    TypeScript process typing, typed IPC, security hardening, custom protocols,
-    native OS integration, data and secret storage, source exposure reduction,
-    build pipelines, performance, testing, observability, packaging, signing,
-    notarization, auto-updates, and Electron major-version migrations.
+    Build, modernize, review, test, package, and release Electron apps for macOS,
+    Windows, and Linux. Use for process and trust boundaries, typed IPC, security,
+    protocols, OS integration, storage, source exposure, builds, performance,
+    observability, signing, notarization, updates, and migrations.
 
 fragments:
   overview: fragments/overview.md
@@ -98,6 +95,11 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 
+supporting:
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative log for the skill description length update.
 surfaces:
   active:
     requiredReferences: []
