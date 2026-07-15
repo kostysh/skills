@@ -2,60 +2,48 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: shadcn
-  source-version: 0.1.3
-  recommended-skill-md-max-bytes: 23000
-  description: "Manage shadcn projects with a Base UI-first policy: add, search, fix, debug, style, and compose components using docs, registries, and presets. Use for shadcn/ui, Base UI, basecn, components.json, registry items, `shadcn init`, `--preset` app creation, or preset switching."
+  source-version: 0.2.0
+  recommended-skill-md-max-bytes: 20000
+  description: "Build and maintain shadcn/ui projects with Base UI defaults: inspect components.json, use current CLI/docs, add or update registry components safely, compose and theme them, and verify project behavior. Use for shadcn components, registries, presets, configuration, fixes, or debugging."
 fragments:
   overview: fragments/overview.md
 references:
-  - id: ref-references-base-ui-policy
-    title: Base UI Policy
-    source: references/base-ui-policy.md
-    target: references/base-ui-policy.md
-    required: true
-    trigger: Read this before init, add, update, migration, registry, or component-authoring work where Base UI vs Radix can affect the result.
   - id: ref-references-cli
-    title: Cli
+    title: CLI
     source: references/cli.md
     target: references/cli.md
     required: true
-    trigger: Read this when you need Commands, flags, presets, templates.
+    trigger: Read this before init, add, update, registry search, docs lookup, or preset work.
   - id: ref-references-customization
     title: Customization
     source: references/customization.md
     target: references/customization.md
     required: true
-    trigger: Read this when you need Theming, CSS variables, extending components.
-  - id: ref-references-rules-base-vs-radix
-    title: Base UI API Checks
-    source: references/rules/base-vs-radix.md
-    target: references/rules/base-vs-radix.md
-    required: true
-    trigger: Read this when you need Base UI API checks, legacy Radix markers, custom triggers, link buttons, Select, ToggleGroup, Slider, or Accordion.
+    trigger: Read this when changing themes, CSS variables, component variants, or wrappers.
   - id: ref-references-rules-composition
     title: Composition
     source: references/rules/composition.md
     target: references/rules/composition.md
     required: true
-    trigger: Read this when you need Groups, overlays, Card, Tabs, Avatar, Alert, Empty, Toast, Separator, Skeleton, Badge, Button loading.
+    trigger: Read this when composing groups, overlays, cards, tabs, avatars, feedback, triggers, or link-styled buttons.
   - id: ref-references-rules-forms
     title: Forms
     source: references/rules/forms.md
     target: references/rules/forms.md
     required: true
-    trigger: Read this when you need FieldGroup, Field, InputGroup, ToggleGroup, FieldSet, validation states.
+    trigger: Read this when building fields, input groups, independent toggles, choice sets, or validation states.
   - id: ref-references-rules-icons
     title: Icons
     source: references/rules/icons.md
     target: references/rules/icons.md
     required: true
-    trigger: Read this when you need data-icon, icon sizing, passing icons as objects.
+    trigger: Read this when adding icons or changing the configured icon library.
   - id: ref-references-rules-styling
     title: Styling
     source: references/rules/styling.md
     target: references/rules/styling.md
     required: true
-    trigger: Read this when you need Semantic colors, variants, className, spacing, size, truncate, dark mode, cn(), z-index.
+    trigger: Read this when changing variants, semantic colors, className usage, spacing, responsive layout, or dark mode.
 assets:
   - id: asset-assets-shadcn-small
     source: assets/shadcn-small.png
@@ -73,23 +61,25 @@ copies:
   - id: copy-evals-evals
     source: evals/evals.json
     target: evals/evals.json
-    description: Portable copy of evals/evals.json.
-  - id: copy-mcp
-    source: mcp.md
-    target: mcp.md
-    description: Portable copy of mcp.md.
+    description: Portable forward-test scenarios for the instruction surface.
 supporting:
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260716-1
+    source: docs/logs/implementation-log-20260716-1.md
+    target: docs/logs/implementation-log-20260716-1.md
+    description: Non-normative remediation and verification log for source version 0.2.0.
+  - id: supporting-forward-test-evidence-20260716-1
+    source: docs/forward-tests/forward-test-evidence-20260716-1.md
+    target: docs/forward-tests/forward-test-evidence-20260716-1.md
+    description: Non-normative durable evidence for blind forward-tests of source version 0.2.0.
 surfaces:
   active:
     requiredReferences:
-      - ref-references-base-ui-policy
       - ref-references-cli
       - ref-references-customization
-      - ref-references-rules-base-vs-radix
       - ref-references-rules-composition
       - ref-references-rules-forms
       - ref-references-rules-icons
@@ -99,59 +89,123 @@ surfaces:
     - docs/*
 sections:
   startHere:
-    - Confirm the task matches shadcn's applicability criteria.
-    - Treat Base UI as the invariant for all new shadcn UI work unless the user explicitly requests legacy Radix maintenance.
-    - Use the preserved overview guidance as the normative workflow for this skill after the Base UI invariant is satisfied.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions only when they do not conflict with the Base UI invariant.
+    - Confirm that the task requires shadcn-specific component, registry, preset, configuration, or composition guidance.
+    - Identify the project root and acquire current project context before choosing imports, paths, dependencies, or component APIs.
+    - Treat Base UI as the current default for new shadcn work and use project-resolved documentation for exact APIs.
+    - Load only the active references whose triggers match the task.
+    - Define the observable result and the checks that must pass before changing files.
   whenToUse:
-    - Working with shadcn/ui components, Base UI, basecn, registries, presets, components.json, or shadcn CLI commands.
-    - Adding, composing, styling, fixing, debugging, or reviewing shadcn components in a project.
-    - Searching or viewing registry items, component docs, examples, presets, or templates.
+    - Initializing or configuring shadcn/ui and components.json.
+    - Searching, adding, updating, composing, styling, fixing, or debugging shadcn components and registry items.
+    - Inspecting or applying shadcn presets with the current CLI.
   whenNotToUse:
-    - The project does not use shadcn/ui, components.json, registry items, or shadcn presets.
-    - The task is broad visual art direction rather than shadcn component composition; use frontend-design.
-    - The task is React architecture or reusable component runtime correctness without shadcn-specific behavior.
+    - The task neither creates nor uses shadcn/ui, components.json, registry items, or shadcn presets.
+    - The task is broad visual direction rather than shadcn component composition; use frontend-design.
+    - The task is React runtime correctness, application architecture, or framework behavior without a shadcn-specific decision.
+    - The user requests a formal code, UX, or accessibility verdict; use the owning review skill and provide shadcn domain input only.
   workflow:
-    - id: stage-apply-shadcn
-      title: Apply Base UI-first shadcn guidance
-      goal: Apply shadcn guidance while keeping new UI work on Base UI and routing Radix projects through an explicit legacy or migration decision.
+    - id: stage-acquire-context
+      title: Acquire authoritative project context
+      goal: Establish the project configuration and current component contract without relying on host-specific prompt interpolation.
       steps:
-        - Match the request to the applicability criteria.
-        - Check project context before init, add, update, migration, or component-authoring work; if the project is Radix-based, stop before adding new UI and ask for migration or explicit legacy Radix maintenance.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Fetch Base UI component docs with `shadcn docs <component> --base base` unless a confirmed Base project context already drives the docs command.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Identify the project root from the user's scope, components.json, package.json, and lockfile.
+        - Choose the project package runner, then run `shadcn info --json` from the project root when components.json exists.
+        - If info fails, inspect components.json and installed component source directly; do not invent aliases, paths, icon libraries, installed components, or framework settings.
+        - For a new project, use the current CLI defaults unless the user supplied a preset or other supported configuration.
       validation:
-        - The outcome follows the preserved skill guidance, the Base UI policy, and any loaded reference constraints.
-        - New or changed shadcn UI files do not introduce Radix imports, `radix-ui` imports, `@radix-ui/react-slot`, or `asChild` unless the user explicitly requested legacy Radix work.
-  interop: []
+        - Every path, import, package-manager, and component-API decision traces to inspected project context or current official docs.
+        - Missing context is represented as blocked or limited before any dependent mutation.
+    - id: stage-plan-and-apply
+      title: Plan and apply the smallest safe shadcn change
+      goal: Reuse installed components and current registry/docs behavior while preserving user-owned source changes.
+      steps:
+        - Inspect installed components before adding or importing them.
+        - Use `shadcn search` and `shadcn docs` for current discovery and API guidance; fetch returned docs or inspect installed source before choosing props.
+        - Use `add --dry-run`, `--diff`, or `--view` before updating installed files or accepting third-party registry content.
+        - Ask only when a destructive overwrite, ambiguous third-party registry choice, or product/design decision requires user authority.
+        - Apply the smallest change that satisfies the request and preserve unrelated local modifications.
+      validation:
+        - The changed source uses project aliases, configured icons, current component APIs, and the requested registry or preset.
+        - No overwrite or broad preset application occurs without explicit authority.
+    - id: stage-verify-and-report
+      title: Verify behavior and report evidence
+      goal: Prove the strongest honest completion claim for the changed project.
+      steps:
+        - Read every added or changed registry file and resolve incorrect imports, missing dependencies, and composition defects.
+        - Run the narrowest relevant project checks such as typecheck, lint, tests, or build.
+        - Exercise the changed interaction with an existing browser test or targeted smoke check when the task changes observable UI behavior.
+        - Report the context used, commands and files changed, verification evidence, and any blocked or unverified behavior.
+      validation:
+        - CLI success, generated files, or static examples alone never close an interactive or project-build claim.
+        - The final status does not exceed the evidence produced.
+  interop:
+    - id: interop-visual-design
+      domain: Visual hierarchy, art direction, responsive composition, typography, and motion
+      winner: frontend-design
+      rationale: frontend-design owns presentation decisions; shadcn owns component discovery, installation, and library-specific composition.
+    - id: interop-react-runtime
+      domain: Reusable React component runtime, effects, hydration, portals, and multi-instance correctness
+      winner: react-components-engineer
+      rationale: react-components-engineer owns runtime correctness; shadcn supplies component-specific API and source guidance.
+    - id: interop-nextjs
+      domain: Next.js App Router, RSC transport, directives, routing, caching, and framework configuration
+      winner: nextjs
+      rationale: nextjs owns framework semantics; shadcn owns the component and registry layer within that framework.
+    - id: interop-react-spa
+      domain: SPA routing, client data, forms, state, persistence, and application integration
+      winner: react-spa-engineer
+      rationale: react-spa-engineer owns application-flow integration; shadcn owns the component and registry layer used by that flow.
+    - id: interop-typescript
+      domain: TypeScript language, compiler diagnostics, tsconfig, and module resolution
+      winner: typescript-engineer
+      rationale: typescript-engineer owns language and compiler correctness; shadcn owns its generated component contract.
+    - id: interop-testing
+      domain: Test runner behavior, fixtures, browser-test strategy, determinism, and CI integration
+      winner: typescript-test-engineer
+      rationale: typescript-test-engineer owns test design; shadcn defines the component behavior that needs evidence.
+    - id: interop-ui-review
+      domain: Formal UX and accessibility review
+      winner: web-ui-reviewer
+      rationale: web-ui-reviewer owns the verdict; shadcn provides domain-specific implementation facts and authorized remediation.
+    - id: interop-code-review
+      domain: Formal code-review findings, severity, merge guidance, and review verdict
+      winner: code-reviewer
+      rationale: code-reviewer owns the formal verdict; shadcn supplies library-specific evidence and authorized remediation.
   commands: []
   gotchas:
-    - id: gotcha-basecn-not-config
+    - id: gotcha-live-contract
       priority: high
-      text: "`basecn.dev` is an optional Base UI registry, not a replacement for confirming the project's shadcn `base` configuration."
-    - id: gotcha-prose-is-not-base-ui
+      text: "CLI flags and component props change; current project source, command help, and official docs outrank remembered examples."
+    - id: gotcha-context-is-not-injected
       priority: high
-      text: "Do not satisfy a Base UI request by only changing prose or theme names; verify the project config, docs source, and touched component files."
-    - id: gotcha-old-radix-examples
+      text: "Do not claim project context is already injected; acquire it explicitly and represent failure before dependent changes."
+    - id: gotcha-registry-output
+      priority: high
+      text: "Registry installation is not completion evidence; inspect emitted source, aliases, dependencies, and composition before running project checks."
+    - id: gotcha-theme-mode
       priority: medium
-      text: "Older examples may show Radix `asChild` or package imports; treat them as legacy unless current Base UI docs explicitly require them."
+      text: "Semantic-token guidance depends on components.json; preserve the project's configured theming mode instead of forcing a different one."
   policies:
-    - id: policy-base-ui-invariant
-      title: Base UI invariant
-      text: "All new shadcn UI work targets Base UI. Radix is allowed only for explicit legacy maintenance or migration work requested by the user."
-    - id: policy-base-ui-verification
-      title: Base UI verification
-      text: "When changing shadcn UI files, verify project context and inspect changed files for Radix imports, `@radix-ui/react-slot`, `from \"radix-ui\"`, and `asChild`; report any intentional legacy exceptions."
+    - id: policy-source-precedence
+      title: Source precedence
+      text: "Apply operator constraints first, then repository instructions, inspected project configuration and installed source, current CLI help and official docs, and finally static skill examples. Stop on unresolved equal-authority conflicts."
+    - id: policy-base-ui-default
+      title: Base UI default
+      text: "Use the current Base UI default for new shadcn work and resolve exact component APIs from the target project and current documentation."
+    - id: policy-mutation-safety
+      title: Mutation safety
+      text: "Preview updates and third-party registry content; require explicit approval before overwrite, broad preset application, or replacing customized component source."
+    - id: policy-evidence-boundary
+      title: Evidence boundary
+      text: "Compiler checks prove package structure, CLI output proves only that command, and project checks or interaction evidence prove only the exercised behavior."
   portability:
     required: true
     rules:
-      - Do not reference machine-specific absolute paths or local files outside this skill folder.
-      - Keep all mandatory shadcn guidance inside this skill folder.
-      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+      - Do not depend on host-specific prompt interpolation, machine-specific absolute paths, or files outside this skill folder.
+      - Keep mandatory shadcn guidance inside this skill folder and use relative links for local resources.
+      - Treat network-fetched docs as current authority with installed source and command help as the offline fallback.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
-      - Search the skill folder for absolute local paths before finishing.
-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Regenerate and run the skill-source-compiler lint and check commands.
+      - Resolve every local Markdown link in the emitted package.
+      - Search the complete skill folder for forbidden terminology and absolute local dependencies.
+      - Compile to an isolated directory and confirm the copied skill remains understandable and usable.

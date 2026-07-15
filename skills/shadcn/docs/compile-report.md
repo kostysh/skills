@@ -2,20 +2,19 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.3`
+- Skill source version: `0.2.0`
 
 ## Source files
 - `agents/openai.yml`
 - `assets/shadcn-small.png`
 - `assets/shadcn.png`
+- `docs/forward-tests/forward-test-evidence-20260716-1.md`
 - `docs/logs/implementation-log-20260715-1.md`
+- `docs/logs/implementation-log-20260716-1.md`
 - `evals/evals.json`
 - `fragments/overview.md`
-- `mcp.md`
-- `references/base-ui-policy.md`
 - `references/cli.md`
 - `references/customization.md`
-- `references/rules/base-vs-radix.md`
 - `references/rules/composition.md`
 - `references/rules/forms.md`
 - `references/rules/icons.md`
@@ -23,10 +22,8 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- `references/base-ui-policy.md`
 - `references/cli.md`
 - `references/customization.md`
-- `references/rules/base-vs-radix.md`
 - `references/rules/composition.md`
 - `references/rules/forms.md`
 - `references/rules/icons.md`

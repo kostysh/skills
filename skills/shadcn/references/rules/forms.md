@@ -1,19 +1,10 @@
-# Forms & Inputs
+# Forms and inputs
 
-## Contents
+Use current shadcn docs and installed source for exact props. Choose controls by user semantics, not by option count alone.
 
-- Forms use FieldGroup + Field
-- InputGroup requires InputGroupInput/InputGroupTextarea
-- Buttons inside inputs use InputGroup + InputGroupAddon
-- Option sets (2–7 choices) use ToggleGroup
-- FieldSet + FieldLegend for grouping related fields
-- Field validation and disabled states
+## Fields
 
----
-
-## Forms use FieldGroup + Field
-
-Always use `FieldGroup` + `Field` — never raw `div` with `space-y-*`:
+Use `Field` for a labelled control and `FieldGroup` for related fields:
 
 ```tsx
 <FieldGroup>
@@ -21,172 +12,66 @@ Always use `FieldGroup` + `Field` — never raw `div` with `space-y-*`:
     <FieldLabel htmlFor="email">Email</FieldLabel>
     <Input id="email" type="email" />
   </Field>
-  <Field>
-    <FieldLabel htmlFor="password">Password</FieldLabel>
-    <Input id="password" type="password" />
-  </Field>
 </FieldGroup>
 ```
 
-Use `Field orientation="horizontal"` for settings pages. Use `FieldLabel className="sr-only"` for visually hidden labels.
+Use `FieldSet` and `FieldLegend` for a semantic group of related controls.
 
-**Choosing form controls:**
+## Validation and disabled states
 
-- Simple text input → `Input`
-- Dropdown with predefined options → `Select`
-- Searchable dropdown → `Combobox`
-- Native HTML select (no JS) → `native-select`
-- Boolean toggle → `Switch` (for settings) or `Checkbox` (for forms)
-- Single choice from few options → `RadioGroup`
-- Toggle between 2–5 options → `ToggleGroup` + `ToggleGroupItem`
-- OTP/verification code → `InputOTP`
-- Multi-line text → `Textarea`
-
----
-
-## InputGroup requires InputGroupInput/InputGroupTextarea
-
-Never use raw `Input` or `Textarea` inside an `InputGroup`.
-
-**Incorrect:**
+Put group state on `Field` and control state on the interactive element:
 
 ```tsx
-<InputGroup>
-  <Input placeholder="Search..." />
-</InputGroup>
+<Field data-invalid>
+  <FieldLabel htmlFor="email">Email</FieldLabel>
+  <Input id="email" aria-invalid />
+  <FieldError>Enter a valid email address.</FieldError>
+</Field>
 ```
 
-**Correct:**
+For disabled fields, pair `data-disabled` on `Field` with `disabled` on the control. Connect error messages and descriptions using the component's documented accessibility pattern.
+
+## Input groups
+
+Use the input-group-specific controls and buttons:
 
 ```tsx
-import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
-
 <InputGroup>
   <InputGroupInput placeholder="Search..." />
-</InputGroup>
-```
-
----
-
-## Buttons inside inputs use InputGroup + InputGroupAddon
-
-Never place a `Button` directly inside or adjacent to an `Input` with custom positioning.
-
-**Incorrect:**
-
-```tsx
-<div className="relative">
-  <Input placeholder="Search..." className="pr-10" />
-  <Button className="absolute right-0 top-0" size="icon">
-    <SearchIcon />
-  </Button>
-</div>
-```
-
-**Correct:**
-
-```tsx
-import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group"
-
-<InputGroup>
-  <InputGroupInput placeholder="Search..." />
-  <InputGroupAddon>
-    <Button size="icon">
-      <SearchIcon data-icon="inline-start" />
-    </Button>
+  <InputGroupAddon align="inline-end">
+    <InputGroupButton size="icon-xs" aria-label="Search">
+      <SearchIcon />
+    </InputGroupButton>
   </InputGroupAddon>
 </InputGroup>
 ```
 
----
+- Use `InputGroupInput` or `InputGroupTextarea`, not a plain control inside `InputGroup`.
+- Use `InputGroupButton` for actions inside an addon.
+- Keep the addon after the control in DOM order when current docs require it; use `align` for visual placement.
 
-## Option sets (2–7 choices) use ToggleGroup
+## Choose controls by semantics
 
-Don't manually loop `Button` components with active state.
+- Independent boolean setting: `Switch`.
+- Boolean agreement inside a form: `Checkbox`.
+- One choice from a visible set: `RadioGroup` or documented single `ToggleGroup`.
+- Multiple independent selected items: checkboxes or documented multiple `ToggleGroup`, based on interaction semantics.
+- Predefined compact choice: `Select`.
+- Searchable choice: `Combobox`.
 
-**Incorrect:**
-
-```tsx
-const [selected, setSelected] = useState("daily")
-
-<div className="flex gap-2">
-  {["daily", "weekly", "monthly"].map((option) => (
-    <Button
-      key={option}
-      variant={selected === option ? "default" : "outline"}
-      onClick={() => setSelected(option)}
-    >
-      {option}
-    </Button>
-  ))}
-</div>
-```
-
-**Correct:**
+Current single-selection toggle groups use the documented single mode:
 
 ```tsx
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-
-<ToggleGroup spacing={2}>
-  <ToggleGroupItem value="daily">Daily</ToggleGroupItem>
-  <ToggleGroupItem value="weekly">Weekly</ToggleGroupItem>
-  <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
+<ToggleGroup type="single">
+  <ToggleGroupItem value="list">List</ToggleGroupItem>
+  <ToggleGroupItem value="grid">Grid</ToggleGroupItem>
 </ToggleGroup>
 ```
 
-Combine with `Field` for labelled toggle groups:
+Fetch current docs before using controlled values or multi-selection because their types are version-sensitive.
 
-```tsx
-<Field orientation="horizontal">
-  <FieldTitle id="theme-label">Theme</FieldTitle>
-  <ToggleGroup aria-labelledby="theme-label" spacing={2}>
-    <ToggleGroupItem value="light">Light</ToggleGroupItem>
-    <ToggleGroupItem value="dark">Dark</ToggleGroupItem>
-    <ToggleGroupItem value="system">System</ToggleGroupItem>
-  </ToggleGroup>
-</Field>
-```
+## Verification
 
-> **Note:** Base UI is the default for this skill. Fetch current Base docs before relying on option-set props, and see [base-vs-radix.md](./base-vs-radix.md#current-base-ui-component-api-checks).
-
----
-
-## FieldSet + FieldLegend for grouping related fields
-
-Use `FieldSet` + `FieldLegend` for related checkboxes, radios, or switches — not `div` with a heading:
-
-```tsx
-<FieldSet>
-  <FieldLegend variant="label">Preferences</FieldLegend>
-  <FieldDescription>Select all that apply.</FieldDescription>
-  <FieldGroup className="gap-3">
-    <Field orientation="horizontal">
-      <Checkbox id="dark" />
-      <FieldLabel htmlFor="dark" className="font-normal">Dark mode</FieldLabel>
-    </Field>
-  </FieldGroup>
-</FieldSet>
-```
-
----
-
-## Field validation and disabled states
-
-Both attributes are needed — `data-invalid`/`data-disabled` styles the field (label, description), while `aria-invalid`/`disabled` styles the control.
-
-```tsx
-// Invalid.
-<Field data-invalid>
-  <FieldLabel htmlFor="email">Email</FieldLabel>
-  <Input id="email" aria-invalid />
-  <FieldDescription>Invalid email address.</FieldDescription>
-</Field>
-
-// Disabled.
-<Field data-disabled>
-  <FieldLabel htmlFor="email">Email</FieldLabel>
-  <Input id="email" disabled />
-</Field>
-```
-
-Works for all controls: `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroupItem`, `Switch`, `Slider`, `NativeSelect`, `InputOTP`.
+- Run typecheck and form tests where present.
+- Test label activation, keyboard navigation, error announcement, disabled state, and submission behavior affected by the change.
+- Do not accept correct JSX structure as proof that validation or submission works.

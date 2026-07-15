@@ -3,68 +3,67 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "I'm building a Next.js app with shadcn/ui (base-nova preset, lucide icons). Create a settings form component with fields for: full name, email address, and notification preferences (email, SMS, push notifications as toggle options). Add validation states for required fields.",
-      "expected_output": "A React component using FieldGroup, Field, ToggleGroup, data-invalid/aria-invalid validation, gap-* spacing, and semantic colors.",
+      "prompt": "Add a shadcn dialog to this existing project. components.json and package files are present, but no project summary has been supplied.",
+      "expected_output": "The agent acquires project context before choosing paths, imports, icons, or component props, then reports evidence or a bounded blocked state.",
       "files": [],
       "expectations": [
-        "Uses FieldGroup and Field components for form layout instead of raw div with space-y",
-        "Uses Switch for independent on/off notification toggles (not looping Button with manual active state)",
-        "Uses data-invalid on Field and aria-invalid on the input control for validation states",
-        "Uses gap-* (e.g. gap-4, gap-6) instead of space-y-* or space-x-* for spacing",
-        "Uses semantic color tokens (e.g. bg-background, text-muted-foreground, text-destructive) instead of raw colors like bg-red-500",
-        "No manual dark: color overrides"
+        "Runs shadcn info --json from the project root or inspects components.json and installed source when the command fails",
+        "Does not claim that project context was automatically injected",
+        "Does not invent aliases, icon packages, resolved paths, or installed components",
+        "Fetches current dialog docs or inspects installed dialog source before choosing exact props",
+        "Names project checks and interaction evidence required before reporting working UI"
       ]
     },
     {
       "id": 2,
-      "prompt": "Create a dialog component for editing a user profile. It should have the user's avatar at the top, input fields for name and bio, and Save/Cancel buttons with appropriate icons. Using shadcn/ui with base-nova preset and tabler icons.",
-      "expected_output": "A Base UI React component with DialogTitle, Avatar+AvatarFallback, data-icon on icon buttons, no icon sizing classes, tabler icon imports, and no Radix-only asChild usage.",
+      "prompt": "Add the official shadcn button and dialog components to an initialized project, preserving any existing local component changes.",
+      "expected_output": "A safe standard add workflow that previews affected files, avoids unnecessary registry questions, preserves local source, and verifies the project.",
       "files": [],
       "expectations": [
-        "Includes DialogTitle for accessibility (visible or with sr-only class)",
-        "Avatar component includes AvatarFallback",
-        "Icons on buttons use the data-icon attribute (data-icon=\"inline-start\" or data-icon=\"inline-end\")",
-        "No sizing classes on icons inside components (no size-4, w-4, h-4, etc.)",
-        "Uses tabler icons (@tabler/icons-react) instead of lucide-react",
-        "Does not use Radix-only asChild for custom triggers"
+        "Treats unqualified official component names as unambiguous",
+        "Checks installed components before adding them",
+        "Uses add --dry-run or --diff before replacing installed files",
+        "Does not use --overwrite without explicit approval",
+        "Inspects emitted source and runs relevant project checks"
       ]
     },
     {
       "id": 3,
-      "prompt": "Create a dashboard component that shows 4 stat cards in a grid. Each card has a title, large number, percentage change badge, and a loading skeleton state. Using shadcn/ui with base-nova preset and lucide icons.",
-      "expected_output": "A React component with full Card composition, Skeleton for loading, Badge for changes, semantic colors, gap-* spacing.",
+      "prompt": "Apply preset code a2r6bw to this existing shadcn project, but keep my customized components intact and only change the theme if the CLI supports it.",
+      "expected_output": "The agent inspects current and incoming preset state, uses current preset/apply commands, scopes the operation to supported parts, and does not replace components.",
       "files": [],
       "expectations": [
-        "Uses full Card composition with CardHeader, CardTitle, CardContent (not dumping everything into CardContent)",
-        "Uses Skeleton component for loading placeholders instead of custom animate-pulse divs",
-        "Uses Badge component for percentage change instead of custom styled spans",
-        "Uses semantic color tokens instead of raw color values like bg-green-500 or text-red-600",
-        "Uses gap-* instead of space-y-* or space-x-* for spacing",
-        "Uses size-* when width and height are equal instead of separate w-* h-*"
+        "Uses preset resolve and preset decode or equivalent current CLI commands",
+        "Checks apply --help before relying on partial-apply flags",
+        "Uses apply rather than forced reinitialization for the existing project",
+        "Does not replace customized component source",
+        "Reports files changed and project or visual checks performed"
       ]
     },
     {
       "id": 4,
-      "prompt": "In an existing shadcn/ui project whose components.json reports base: \"radix\", add a new settings dialog using the project's default style.",
-      "expected_output": "A migration gate response that does not add new UI until the user chooses Base UI migration or explicit legacy Radix maintenance.",
+      "prompt": "Build a settings form with name and email fields, independent email/SMS/push notification switches, and a searchable input with an embedded submit action.",
+      "expected_output": "A current shadcn form composition using Field semantics, independent Switch controls, and InputGroupButton inside InputGroupAddon.",
       "files": [],
       "expectations": [
-        "Identifies that the project is Radix-based",
-        "Does not generate or install the new dialog immediately",
-        "Asks whether to migrate/reinitialize to Base UI or perform explicit legacy Radix maintenance",
-        "Does not silently preserve Radix conventions for new UI"
+        "Uses Field and FieldGroup for labelled controls",
+        "Uses Switch for each independent notification setting rather than a single-choice ToggleGroup",
+        "Uses InputGroupInput and InputGroupButton instead of plain Input and Button inside InputGroup",
+        "Pairs data-invalid on Field with aria-invalid on the control",
+        "Requires typecheck and behavior checks rather than accepting JSX shape alone"
       ]
     },
     {
       "id": 5,
-      "prompt": "Create a link styled like a shadcn Button in a Base UI project.",
-      "expected_output": "A link that uses buttonVariants on a real link element instead of Button render={<a />} or Radix asChild.",
+      "prompt": "Redesign the entire product so it feels premium, define a new visual hierarchy and motion language, then audit the finished experience for accessibility.",
+      "expected_output": "A clear handoff: frontend-design owns visual direction and web-ui-reviewer owns the formal accessibility verdict; shadcn remains scoped to component implementation guidance.",
       "files": [],
       "expectations": [
-        "Imports buttonVariants from the Button component",
-        "Applies buttonVariants through className on an anchor or framework Link",
-        "Does not use Button render={<a />}",
-        "Does not use asChild"
+        "Does not claim ownership of product-wide art direction",
+        "Routes visual hierarchy and motion decisions to frontend-design",
+        "Routes the formal accessibility verdict to web-ui-reviewer",
+        "States the shadcn-specific implementation contribution it can provide",
+        "Does not claim completion from component scaffolding alone"
       ]
     }
   ]

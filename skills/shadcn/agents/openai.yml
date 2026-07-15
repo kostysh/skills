@@ -1,5 +1,6 @@
 interface:
   display_name: "shadcn/ui"
-  short_description: "Manages shadcn/ui Base UI components — adding, searching, fixing, debugging, styling, and composing UI."
+  short_description: "Builds and maintains shadcn/ui Base UI projects."
   icon_small: "./assets/shadcn-small.png"
   icon_large: "./assets/shadcn.png"
+  default_prompt: "Use $shadcn to add or update a component safely and verify it in the target project."

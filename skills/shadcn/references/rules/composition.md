@@ -1,195 +1,63 @@
-# Component Composition
+# Component composition
 
-## Contents
+Fetch current component docs and inspect installed wrappers before relying on these patterns.
 
-- Items always inside their Group component
-- Callouts use Alert
-- Empty states use Empty component
-- Toast notifications use sonner
-- Choosing between overlay components
-- Dialog, Sheet, and Drawer always need a Title
-- Card structure
-- Button has no isPending or isLoading prop
-- TabsTrigger must be inside TabsList
-- Avatar always needs AvatarFallback
-- Use Separator instead of raw hr or border divs
-- Use Skeleton for loading placeholders
-- Use Badge instead of custom styled spans
+## Groups and structure
 
----
+Use the documented group/list structure for collection components:
 
-## Items always inside their Group component
+- `SelectItem` inside `SelectGroup`;
+- menu items inside documented menu groups;
+- `CommandItem` inside `CommandGroup` and `CommandList`;
+- `TabsTrigger` inside `TabsList`.
 
-Never render items directly inside the content container.
+Do not introduce wrapper elements between a trigger and the element that owns its interactive behavior unless current docs require them.
 
-**Incorrect:**
+## Custom triggers
+
+Current Base UI wrappers use documented composition props such as `render` for custom triggers. Fetch docs for the installed component before assuming support.
 
 ```tsx
-<SelectContent>
-  <SelectItem value="apple">Apple</SelectItem>
-  <SelectItem value="banana">Banana</SelectItem>
-</SelectContent>
+<DialogTrigger render={<Button variant="outline" />}>
+  Open
+</DialogTrigger>
 ```
 
-**Correct:**
+The rendered component must preserve forwarded props and refs required by the wrapper.
+
+## Links styled as buttons
+
+Use `buttonVariants` on a real link so link semantics remain intact:
 
 ```tsx
-<SelectContent>
-  <SelectGroup>
-    <SelectItem value="apple">Apple</SelectItem>
-    <SelectItem value="banana">Banana</SelectItem>
-  </SelectGroup>
-</SelectContent>
+import { buttonVariants } from "@/components/ui/button"
+
+<a className={buttonVariants({ variant: "outline" })} href="/docs">
+  Read the docs
+</a>
 ```
 
-This applies to all group-based components:
+Use the project's actual alias. Do not replace link semantics with a button role.
 
-| Item | Group |
-|------|-------|
-| `SelectItem`, `SelectLabel` | `SelectGroup` |
-| `DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSub` | `DropdownMenuGroup` |
-| `MenubarItem` | `MenubarGroup` |
-| `ContextMenuItem` | `ContextMenuGroup` |
-| `CommandItem` | `CommandGroup` |
+## Accessible overlays
 
----
+- Give `Dialog`, `Sheet`, and `Drawer` content an accessible title.
+- Use the documented description when additional context is needed.
+- Use `className="sr-only"` for a title that should be visually hidden.
+- Keep destructive confirmation in `AlertDialog` rather than a generic dialog.
 
-## Callouts use Alert
+Run a keyboard/focus smoke check when overlay behavior changes; source shape alone does not prove focus management.
 
-```tsx
-<Alert>
-  <AlertTitle>Warning</AlertTitle>
-  <AlertDescription>Something needs attention.</AlertDescription>
-</Alert>
-```
+## Common composition
 
----
+- Use `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, and `CardFooter` according to content structure; omit parts that have no content instead of filling them artificially.
+- Include `AvatarFallback` when an avatar image can fail or be absent.
+- Compose loading buttons with `Spinner`, `disabled`, and the documented icon-spacing attribute.
+- Use `Alert`, `Empty`, `Separator`, `Skeleton`, `Badge`, and `sonner` when they match the intended semantics; do not force them when native markup communicates the requirement more clearly.
 
-## Empty states use Empty component
+## Verification
 
-```tsx
-<Empty>
-  <EmptyHeader>
-    <EmptyMedia variant="icon"><FolderIcon /></EmptyMedia>
-    <EmptyTitle>No projects yet</EmptyTitle>
-    <EmptyDescription>Get started by creating a new project.</EmptyDescription>
-  </EmptyHeader>
-  <EmptyContent>
-    <Button>Create Project</Button>
-  </EmptyContent>
-</Empty>
-```
-
----
-
-## Toast notifications use sonner
-
-```tsx
-import { toast } from "sonner"
-
-toast.success("Changes saved.")
-toast.error("Something went wrong.")
-toast("File deleted.", {
-  action: { label: "Undo", onClick: () => undoDelete() },
-})
-```
-
----
-
-## Choosing between overlay components
-
-| Use case | Component |
-|----------|-----------|
-| Focused task that requires input | `Dialog` |
-| Destructive action confirmation | `AlertDialog` |
-| Side panel with details or filters | `Sheet` |
-| Mobile-first bottom panel | `Drawer` |
-| Quick info on hover | `HoverCard` |
-| Small contextual content on click | `Popover` |
-
----
-
-## Dialog, Sheet, and Drawer always need a Title
-
-`DialogTitle`, `SheetTitle`, `DrawerTitle` are required for accessibility. Use `className="sr-only"` if visually hidden.
-
-```tsx
-<DialogContent>
-  <DialogHeader>
-    <DialogTitle>Edit Profile</DialogTitle>
-    <DialogDescription>Update your profile.</DialogDescription>
-  </DialogHeader>
-  ...
-</DialogContent>
-```
-
----
-
-## Card structure
-
-Use full composition — don't dump everything into `CardContent`:
-
-```tsx
-<Card>
-  <CardHeader>
-    <CardTitle>Team Members</CardTitle>
-    <CardDescription>Manage your team.</CardDescription>
-  </CardHeader>
-  <CardContent>...</CardContent>
-  <CardFooter>
-    <Button>Invite</Button>
-  </CardFooter>
-</Card>
-```
-
----
-
-## Button has no isPending or isLoading prop
-
-Compose with `Spinner` + `data-icon` + `disabled`:
-
-```tsx
-<Button disabled>
-  <Spinner data-icon="inline-start" />
-  Saving...
-</Button>
-```
-
----
-
-## TabsTrigger must be inside TabsList
-
-Never render `TabsTrigger` directly inside `Tabs` — always wrap in `TabsList`:
-
-```tsx
-<Tabs defaultValue="account">
-  <TabsList>
-    <TabsTrigger value="account">Account</TabsTrigger>
-    <TabsTrigger value="password">Password</TabsTrigger>
-  </TabsList>
-  <TabsContent value="account">...</TabsContent>
-</Tabs>
-```
-
----
-
-## Avatar always needs AvatarFallback
-
-Always include `AvatarFallback` for when the image fails to load:
-
-```tsx
-<Avatar>
-  <AvatarImage src="/avatar.png" alt="User" />
-  <AvatarFallback>JD</AvatarFallback>
-</Avatar>
-```
-
----
-
-## Use existing components instead of custom markup
-
-| Instead of | Use |
-|---|---|
-| `<hr>` or `<div className="border-t">` | `<Separator />` |
-| `<div className="animate-pulse">` with styled divs | `<Skeleton className="h-4 w-3/4" />` |
-| `<span className="rounded-full bg-green-100 ...">` | `<Badge variant="secondary">` |
+- Inspect the installed component API and generated DOM assumptions.
+- Run typecheck and the relevant project checks.
+- Exercise trigger, close, focus return, keyboard navigation, and disabled/loading behavior for changed interactive components.
+- Route a formal accessibility or UX verdict to `web-ui-reviewer`.
