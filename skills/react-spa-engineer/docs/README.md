@@ -24,4 +24,4 @@
 
 ## Обслуживание описания
 
-- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent audit pending.
+- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent scoped PASS.

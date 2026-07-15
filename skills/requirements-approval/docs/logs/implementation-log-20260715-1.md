@@ -19,7 +19,8 @@
 - Широкий аудит скила не выполнялся; изменение ограничено оптимизацией `description` и обязательной трассируемостью.
 - Этот supporting log не является доказательством поведенческого качества описания.
 - Независимый change-review snapshot `dfd3832` выявил P2: формулировка `resolve open questions` размывала границу полномочий заказчика. Исправление явно разделяет внутреннее исследование и customer-owned decisions.
+- Bounded re-audit snapshot `cec31dc` подтвердил длину 299 code points, source/render parity и закрытие authority-boundary finding; verdict — `PASS`.
 
 ## Статус
 
-- **REMEDIATED** — локальная проверка обновлённого описания и bounded independent re-audit ожидаются.
+- **INDEPENDENT PASS** — scoped P2 закрыт и подтверждён bounded re-audit snapshot `cec31dc`; широкий аудит скила не выполнялся.

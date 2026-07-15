@@ -18,7 +18,8 @@
 
 - Широкий аудит скила не выполнялся; изменение ограничено оптимизацией `description` и обязательной трассируемостью.
 - Этот supporting log не является доказательством поведенческого качества описания.
+- Independent change-review snapshot `dfd3832` проверил old/new description, source/render parity и неизменность active body/UI metadata; scoped verdict — `PASS` без P1/P2.
 
 ## Статус
 
-- **LOCAL PASS** — локальные compiler checks подтверждены; независимый аудит ожидается.
+- **INDEPENDENT PASS** — локальные checks и scoped change-review snapshot `dfd3832` завершены; широкий аудит скила не выполнялся.

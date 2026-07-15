@@ -34,4 +34,4 @@
 - [Raw remediation forward-test failures 2026-07-13](logs/raw-forward-remediation-20260713.md)
 - [Strict authority stable-snapshot rerun 2026-07-13](logs/raw-forward-authority-rerun-20260713.md)
 - [Composition-authority paired rerun 2026-07-13](logs/raw-forward-composition-rerun-20260713.md)
-- [Description length update 2026-07-15](logs/implementation-log-20260715-1.md) — LOCAL PASS; independent audit pending.
+- [Description length update 2026-07-15](logs/implementation-log-20260715-1.md) — independent scoped PASS.

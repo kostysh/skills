@@ -16,4 +16,4 @@ This directory contains supporting maintenance material only. The normative skil
 
 ## Обслуживание описания
 
-- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до лимита 300 code points; независимый аудит ожидается.
+- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до лимита 300 code points; independent scoped PASS.

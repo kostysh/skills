@@ -5,4 +5,4 @@ Supporting documentation for `requirements-approval`. These files are not part o
 ## Implementation Logs
 
 - [implementation-log-20260610-1.md](logs/implementation-log-20260610-1.md) — Initial skill creation.
-- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent audit pending.
+- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — authority-boundary remediation; bounded independent PASS at `cec31dc`.

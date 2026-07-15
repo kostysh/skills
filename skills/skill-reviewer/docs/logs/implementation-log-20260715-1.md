@@ -47,6 +47,7 @@ N/A — operator-facing план согласован в диалоге и не 
 
 - Capability: будущий reviewer получает явную, детерминированную length-проверку и semantic-preservation lens.
 - Anti-claims: правило длины не доказывает trigger quality; локальная авторская проверка не является independent `PASS`.
+- Independent change-review snapshot `dfd3832` подтвердил code-point rule, semantic-preservation guidance, severity boundary и собственное описание 295 code points; verdict — `PASS` без P1/P2.
 
 ## Deviations From Plan
 
@@ -59,8 +60,8 @@ N/A — operator-facing план согласован в диалоге и не 
 
 ## Follow-up
 
-- Выполнить independent scoped change review на финальном validation checkpoint.
+- Отдельный follow-up не требуется в рамках description-length change.
 
 ## Final Status
 
-LOCAL PASS — Checkpoint 2 проверен локально; независимый audit authored snapshot остаётся обязательным финальным gate.
+INDEPENDENT PASS — scoped change-review snapshot `dfd3832` завершён без P1/P2; широкий baseline audit не выполнялся.

@@ -50,7 +50,8 @@ N/A — operator-facing план согласован в диалоге и не 
 
 - Capability: lint и compilation surfaces наблюдаемо предупреждают о 301+ code points без отказа от сборки.
 - Anti-claims: warning не доказывает trigger quality или реальную capability скила.
-- Независимый audit запланирован после stable multi-checkpoint diff; до него результат не является формальным independent `PASS`.
+- Independent change-review snapshot `dfd3832` завершён с verdict `PASS` без P1/P2.
+- Reviewer отметил P3: standalone `check` не повторяет advisory warning. Это принято как ограничение scope: исходный запрос требует warning при компиляции, а `lint`, `regenerate`, `compile` и `compile-all` его выдают; `check` не объявлен compilation surface.
 
 ## Deviations From Plan
 
@@ -63,8 +64,8 @@ N/A — operator-facing план согласован в диалоге и не 
 
 ## Follow-up
 
-- Выполнить независимый audit stable diff на финальном validation checkpoint.
+- Отдельный follow-up не требуется; расширять warning на standalone `check` можно только отдельным запросом на изменение контракта.
 
 ## Final Status
 
-LOCAL PASS — Checkpoint 1 проверен локально; независимый audit stable diff остаётся обязательным финальным gate.
+INDEPENDENT PASS — scoped change-review snapshot `dfd3832` завершён; P3 про standalone `check` не блокирует исходный compilation contract.
