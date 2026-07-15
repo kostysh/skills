@@ -43,7 +43,7 @@
 - `git diff --check -- skills/...` — PASS в финальной custom-проверке.
 - Portability search по измененным custom-скилам — PASS.
 
-## Instruction Quality Audit
+## Author Instruction Quality Self-Check
 
 PASS. Правила конкретны, имеют clear review evidence, не добавляют hidden mandatory references и явно отделяют UX-only behavior от authoritative authorization.
 
@@ -61,4 +61,4 @@ UI reviews будут чаще флагать loss of input on failed mutation, 
 
 ## Final Status
 
-PASS.
+Структурные и авторские проверки прошли. Независимый `skill-reviewer` verdict для этого исторического snapshot не выполнялся; прежняя метка PASS не является формальным capability verdict.

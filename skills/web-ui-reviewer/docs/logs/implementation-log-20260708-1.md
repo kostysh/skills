@@ -31,10 +31,10 @@ Russian.
 | Missing durable implementation evidence | Добавлен supporting log и README entry. | `skill-source-compiler check`, `git diff --check`, `pnpm test`. | verified |
 | UI review can miss rendered regressions | Guardrail зафиксирован как review support-capability with screenshot evidence boundary. | Instruction quality audit: affected states, desktop/mobile coverage, no code-only approval for visual scope. | verified |
 
-## Instruction Quality Audit
+## Author Instruction Quality Self-Check
 
 PASS. Правила остаются scoped to UI review and do not override frontend implementation skills.
 
 ## Final Status
 
-PASS.
+Структурные и авторские проверки прошли. Независимый `skill-reviewer` verdict для этого исторического snapshot не выполнялся; прежняя метка PASS не является формальным capability verdict.

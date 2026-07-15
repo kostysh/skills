@@ -1,36 +1,39 @@
-## Scope
-Review web UI code (HTML/CSS/JS/React/etc.) against the Web Interface Guidelines.
+## Capability and anti-claims
 
-## Workflow
-1. Identify files or patterns to review. If none are provided, ask the user.
-2. If browsing/retrieval is available, fetch the latest Web Interface Guidelines from the canonical source and use them as a freshness overlay:
-   `https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md`
-3. Load `references/web-interface-guidelines.md` as the portable baseline and fallback.
-4. Review the code against the complete rule set. Flag real interface issues, not product preferences.
-5. Group findings by file. If a reviewed file is clean, emit `✓ pass`.
-6. If the review scope is partial, state which files or patterns were reviewed.
+Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped UI findings and handoffs. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.
 
-## Output format
-- Group findings by file using the terse `file:line - finding` format required by the guidelines.
-- Keep findings brief, high signal, and actionable.
-- Include a short fix hint when helpful.
-- Avoid long explanations unless the fix is non-obvious.
+## Inputs and authority
 
-Example:
-```
+- Accept code, diffs, file patterns, screenshots, design artifacts, URLs, browser evidence, and explicit product or design-system requirements. Use the evidence already supplied instead of requiring files when a snippet or rendered artifact is the intended scope.
+- For accessibility and browser behavior, use observed behavior and applicable platform semantics; project convention does not excuse broken keyboard, focus, naming, or zoom behavior.
+- For visual, copy, navigation-state, and design-system preferences, require accepted project, product, or design authority before calling a deviation a defect. Without that authority, omit it or label it as a non-binding suggestion.
+- Use `references/web-interface-guidelines.md` as the portable heuristic baseline. If current retrieval is available, the canonical upstream is `https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md`; report the upstream revision or retrieval date and do not silently replace the local baseline.
 
-## src/components/Nav.tsx
+## Evidence rules
 
-src/components/Nav.tsx:42 - icon-only button missing aria-label
+- Code inspection supports code-level semantic findings and named risks. It does not establish spacing, responsive layout, overlays, state transitions, keyboard operation, assistive-technology behavior, or perceived performance unless those behaviors were observed with an appropriate tool.
+- Current browser or design-tool evidence supports only the states, viewport sizes, themes, and interactions actually inspected. Screenshots do not prove keyboard, accessibility-tree, network, or backend behavior.
+- Performance findings require measured or directly observed impact. Static patterns such as a large list, controlled input, dependency, preload, or preconnect are validation risks until scale and measurements support a defect.
+- Tests, snapshots, linters, and checklist matches prove only their exercised surface. State any requested states or evidence that remain unassessed.
 
-## src/pages/Login.tsx
+## Output contract
 
-src/pages/Login.tsx:88 - input missing autocomplete
+Start with one status:
 
-## src/components/Card.tsx
+- `findings` — at least one defect is supported by the reviewed evidence and authority.
+- `no-material-findings` — no material defect was found and the evidence is sufficient for the explicitly bounded claim.
+- `limited` — useful review was possible, but missing evidence or authority prevents `no-material-findings` for the requested claim.
+- `blocked` — the supplied inputs do not support a defensible review.
 
-✓ pass
-```
+Then report:
+
+1. **Review basis** — requested claim, files or artifacts, states and viewports, project authority, browser or measurement evidence, and any live guideline revision used.
+2. **Findings** — group by file or artifact using terse `file:line - finding` entries. Include the evidence-dependent qualifier or short fix hint only when needed.
+3. **Coverage limits and handoffs** — name unassessed behavior and the owner or evidence required next.
+
+For a clean file inside a partial review, use `✓ no code-level findings in reviewed scope`, never bare `✓ pass`. Keep the result brief, but do not omit the review basis or coverage limits to satisfy brevity.
 
 ## Tools
-- Use `rg` for file discovery and text search when available. If not, fall back to `git grep` (inside a repo) or `grep`/`find`.
+
+- Use `rg` for file discovery and text search when available; otherwise use `git grep`, `grep`, or `find`.
+- Use an available browser or design tool when the claim includes rendered, responsive, focus, overlay, loading, empty, or error states. If the required evidence cannot be collected safely, return `limited` and name the gap.

@@ -2,9 +2,9 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.1.3
+  source-version: 0.2.0
   recommended-skill-md-max-bytes: 20000
-  description: Review web UI code for Web Interface Guidelines compliance (accessibility, UX, typography, forms, content handling, performance). Use when asked to review UI/UX, audit design, check accessibility, or review web interfaces.
+  description: Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification.
 fragments:
   overview: fragments/overview.md
 references:
@@ -13,7 +13,7 @@ references:
     source: references/web-interface-guidelines.md
     target: references/web-interface-guidelines.md
     required: true
-    trigger: Read this when you need the portable Web Interface Guidelines baseline, OTP UI recovery, mutation form behavior, error-boundary UX, admin-navigation caveats, accessibility IDs, or fallback.
+    trigger: Read this before every review; use its classification and the sections relevant to the requested UI scope.
 assets: []
 copies:
   - id: copy-agents-openai
@@ -28,47 +28,91 @@ surfaces:
     optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/forward-tests/*
     - docs/logs/*
 sections:
   startHere:
-    - Confirm the task matches web-ui-reviewer's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Flag custom widgets, JavaScript layout, or UI dependencies when native HTML, CSS, or browser APIs would satisfy the same interface behavior with better accessibility or less code.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Identify the exact review claim, consumer, supplied UI evidence, and authoritative project or design-system rules.
+    - Read the required Web Interface Guidelines reference before reviewing; treat it as a heuristic baseline, not a conformance standard.
+    - Match code, browser, screenshot, accessibility, and performance evidence to the claim; report missing evidence instead of widening the conclusion.
+    - Keep the review read-only and hand implementation, formal code-review, browser collection, and security decisions to their owning skills.
   whenToUse:
-    - UI/UX reviews
-    - Accessibility checks
-    - Design audits
-    - '"Review my UI" requests'
+    - Review web UI code, diffs, screenshots, or rendered states for actionable interface findings.
+    - Audit accessibility risks, interaction behavior, responsive presentation, forms, content, visual consistency, or frontend performance evidence.
+    - Provide a scoped UI-domain assessment inside a broader code or product review.
   whenNotToUse:
     - The task is not a web UI, UX, accessibility, design, typography, form, content handling, or frontend performance review.
     - The task is implementation work rather than review; use the relevant frontend or framework skill.
     - The task is a security-first audit; use security-reviewer.
+    - The task requires formal WCAG, legal, assistive-technology, or performance certification; use the responsible specialist and treat this skill as supporting review only.
   workflow:
-    - id: stage-apply-web-ui-reviewer
-      title: Apply web-ui-reviewer guidance
-      goal: Apply the preserved web-ui-reviewer guidance without changing its domain behavior.
+    - id: stage-establish-review-basis
+      title: Establish the review basis
+      goal: Bound the requested claim to authoritative rules and available evidence.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Record the requested claim, consumer, files or states in scope, and supplied code, diff, URL, screenshot, browser, design-system, or performance evidence.
+        - Separate platform and accessibility behavior from product preferences; require accepted project authority before reporting a preference as a defect.
+        - Select the strongest honest status the evidence could support before beginning the review.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - The review basis names its authority, evidence, and unassessed scope without implying broader readiness.
+    - id: stage-review-observable-ui
+      title: Review observable UI behavior
+      goal: Produce supported findings without converting heuristics or missing evidence into defects.
+      steps:
+        - Inspect code for directly observable semantics and risk patterns; use current rendered evidence for visual, responsive, overlay, loading, empty, error, focus, and interaction claims.
+        - Classify each item as a supported defect, a risk needing named validation, or a non-binding preference; report only supported defects as findings.
+        - Use measurements for performance conclusions and browser or design-tool evidence for visual conclusions; otherwise mark the area not assessed.
+      validation:
+        - Every finding identifies the evidence and authority that make it actionable.
+        - Static analysis, screenshots, tests, or checklists are not presented as proof beyond what they observed.
+    - id: stage-report-and-handoff
+      title: Report and hand off
+      goal: Return a concise result that the next owner can act on without mistaking partial coverage for approval.
+      steps:
+        - Choose findings, no-material-findings, limited, or blocked according to the output contract.
+        - Group findings by file or artifact, then state reviewed evidence, coverage limits, unassessed states, and required handoffs.
+        - Keep remediation as a fix hint unless the user separately authorizes implementation.
+      validation:
+        - No-material-findings appears only when evidence is sufficient for the explicitly bounded claim.
+        - Limited and blocked results name the missing evidence or authority needed to strengthen the result.
+  interop:
+    - id: interop-code-review
+      domain: formal diff scope, finding severity, merge guidance, and overall code-review verdict
+      winner: code-reviewer
+      rationale: web-ui-reviewer supplies UI-domain findings; code-reviewer owns the formal code-review process and merge conclusion.
+    - id: interop-browser-evidence
+      domain: navigating a live UI, collecting current screenshots, exercising interactions, and recording viewport or state evidence
+      winner: agent-browser or playwright
+      rationale: Browser skills collect runtime evidence; web-ui-reviewer decides what UI evidence is required and interprets it within the bounded review.
+    - id: interop-design-and-implementation
+      domain: visual direction, component implementation, framework behavior, and test changes
+      winner: frontend-design and the relevant frontend or framework skill
+      rationale: web-ui-reviewer remains read-only and hands supported findings to the implementation owner.
+    - id: interop-security
+      domain: API or server authorization, vulnerability severity, secrets, and security controls
+      winner: security-reviewer
+      rationale: web-ui-reviewer may flag misleading UI or unsafe user-facing error behavior but cannot establish backend security.
   commands: []
   gotchas:
     - id: gotcha-no-visual-proof
       priority: high
-      text: Do not approve UI work from code inspection alone when visual regressions, spacing, responsive behavior, overlays, or loading states are in scope.
+      text: Do not return no-material-findings from code inspection alone when visual, responsive, focus, overlay, loading, empty, or error behavior is part of the claim.
     - id: gotcha-design-system-drift
       priority: high
-      text: Treat one-off colors, badges, buttons, tabs, pagination, drawers, or form controls as defects unless they match the accepted design system or are explicitly documented deviations.
+      text: Flag design-system drift only when an accepted design system or project convention establishes the expected component, token, or pattern; otherwise label the observation as a non-binding preference.
+    - id: gotcha-unmeasured-performance
+      priority: high
+      text: Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead.
   policies:
+    - id: policy-result-status
+      title: Result status
+      text: Use findings when at least one defect is supported; no-material-findings only when evidence is sufficient for the bounded claim; limited when useful review occurred but missing evidence prevents that conclusion; blocked when no defensible review can be performed.
     - id: policy-current-screenshot-evidence
       title: Current screenshot evidence
-      text: UI review should use current browser or design-tool screenshots for affected desktop/mobile states, including error/loading/empty/drawer/modal states when those states are in scope.
+      text: Require current browser or design-tool evidence for affected desktop and mobile states, including error, loading, empty, drawer, and modal states when those states are part of the requested claim; screenshots alone do not prove keyboard, assistive-technology, or backend behavior.
+    - id: policy-guidance-freshness
+      title: Guidance freshness and precedence
+      text: The portable reference is the reproducible baseline. A live upstream overlay may add non-conflicting guidance only when its URL and revision or retrieval date are reported; it never creates product authority or silently overrides project requirements.
   portability:
     required: true
     rules:

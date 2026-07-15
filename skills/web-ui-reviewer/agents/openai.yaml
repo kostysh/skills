@@ -1,3 +1,4 @@
 interface:
   display_name: "Web UI Reviewer"
-  short_description: "Help with Web UI Reviewer tasks"
+  short_description: "Review web UI with scoped evidence"
+  default_prompt: "Use $web-ui-reviewer to audit this web interface and report scoped, actionable findings with evidence limits."

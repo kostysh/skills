@@ -1,6 +1,24 @@
 # Web Interface Guidelines
 
-Read files, check against rules below. Output concise but comprehensive—sacrifice grammar for brevity. High signal-to-noise.
+Portable heuristic baseline, synchronized with the upstream `command.md` at revision `4e799d45c17aec1498c269287a83b9dba22b966b` and extended with locally maintained recovery, error-boundary, and native-platform checks. The upstream list is living and non-exhaustive; this reference does not establish WCAG certification or product authority.
+
+## Guidance classification
+
+- Treat keyboard access, focus visibility, semantic naming, zoom, and directly observed broken behavior as findings when the reviewed evidence supports them.
+- Treat performance, URL-state, preload, preconnect, virtualization, layout, and similar implementation guidance as contextual heuristics. Require relevant scale, behavior, or measurement before calling them defects.
+- Treat copy voice, capitalization, terminology, visual style, and design-system choices as product preferences. Report them as findings only when an accepted project, product, or design-system source adopts them.
+- When a rule conflicts with explicit project authority, preserve platform and accessibility invariants, but let accepted project authority decide product preferences. State unresolved conflicts rather than inventing a winner.
+
+## Navigation
+
+- [Accessibility and native controls](#accessibility)
+- [Forms and one-time codes](#forms)
+- [Motion, typography, content, and images](#animation)
+- [Performance and navigation state](#performance)
+- [Errors, interaction, layout, and themes](#error-boundaries)
+- [Locale, hydration, and interactive states](#locale--i18n)
+- [Product copy heuristics](#product-copy-heuristics)
+- [Anti-patterns and output](#anti-patterns-flag-these)
 
 ## Rules
 
@@ -8,7 +26,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 
 - Icon-only buttons need `aria-label`
 - Form controls need `<label>` or `aria-label`
-- Interactive elements need keyboard handlers (`onKeyDown`/`onKeyUp`)
+- Native interactive elements use their built-in keyboard behavior; custom or non-native controls must implement the expected keyboard interaction without duplicating native handlers
 - `<button>` for actions, `<a>`/`<Link>` for navigation (not `<div onClick>`)
 - Images need `alt` (or `alt=""` if decorative)
 - Decorative icons need `aria-hidden="true"`
@@ -41,7 +59,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Submit button stays enabled until request starts; spinner during request
 - Errors inline next to fields; focus first error on submit
 - Placeholders end with `…` and show example pattern
-- `autocomplete="off"` on non-auth fields to avoid password manager triggers
+- Use the correct `autocomplete` purpose token for personal or authentication data; for unrelated fields that trigger password managers incorrectly, use a specific non-auth token or `autocomplete="off"` only when appropriate
 - Warn before navigation with unsaved changes (`beforeunload` or router guard)
 - Mutation forms preserve entered values on server/network error and clear only after success
 - Pending submit buttons expose `aria-busy="true"` while the request is active
@@ -67,7 +85,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 ### Typography
 
 - `…` not `...`
-- Curly quotes `"` `"` not straight `"`
+- Curly quotes `“` `”` not straight `"`
 - Non-breaking spaces: `10&nbsp;MB`, `⌘&nbsp;K`, brand names
 - Loading states end with `…`: `"Loading…"`, `"Saving…"`
 - `font-variant-numeric: tabular-nums` for number columns/comparisons
@@ -84,22 +102,22 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 
 - `<img>` needs explicit `width` and `height` (prevents CLS)
 - Below-fold images: `loading="lazy"`
-- Above-fold critical images: `priority` or `fetchpriority="high"`
+- Above-fold critical images may use `fetchpriority="high"` or the framework equivalent when priority is established; do not mark every above-fold image high priority
 
 ### Performance
 
-- Large lists (>50 items): virtualize (`virtua`, `content-visibility: auto`)
+- For lists with demonstrated scale or rendering cost, consider virtualization or `content-visibility: auto`; do not infer a defect from item count alone
 - No layout reads in render (`getBoundingClientRect`, `offsetHeight`, `offsetWidth`, `scrollTop`)
 - Batch DOM reads/writes; avoid interleaving
 - Prefer uncontrolled inputs; controlled inputs must be cheap per keystroke
-- Add `<link rel="preconnect">` for CDN/asset domains
-- Critical fonts: `<link rel="preload" as="font">` with `font-display: swap`
+- Add `<link rel="preconnect">` only for known critical cross-origin connections where measurement or the loading path supports it
+- Preload only fonts required for critical text, and use `font-display: swap`; unnecessary preloads compete with critical resources
 
 ### Navigation & State
 
-- URL reflects state—filters, tabs, pagination, expanded panels in query params
+- Put shareable, navigable, or refresh-persistent state such as filters, tabs, and pagination in the URL when the product behavior requires those properties
 - Links use `<a>`/`<Link>` (Cmd/Ctrl+click, middle-click support)
-- Deep-link all stateful UI (if uses `useState`, consider URL sync via nuqs or similar)
+- Deep-link user-meaningful state; do not infer that every local `useState` value belongs in the URL
 - Destructive actions need confirmation modal or undo window—never immediate
 - Hiding admin navigation for non-admin users is UX-only. Flag any review claim that treats hidden nav as API authorization; authoritative authorization must be checked separately in API/server review.
 
@@ -134,6 +152,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Dates/times: use `Intl.DateTimeFormat` not hardcoded formats
 - Numbers/currency: use `Intl.NumberFormat` not hardcoded formats
 - Detect language via `Accept-Language` / `navigator.languages`, not IP
+- Brand names, code tokens, and identifiers: use `translate="no"` when automatic translation would corrupt verbatim content
 
 ### Hydration Safety
 
@@ -146,7 +165,9 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - Buttons/links need `hover:` state (visual feedback)
 - Interactive states increase contrast: hover/active/focus more prominent than rest
 
-### Content & Copy
+### Product Copy Heuristics
+
+Apply these as findings only when an accepted product or style source adopts them. Without that authority, they are non-binding suggestions rather than defects.
 
 - Active voice: "Install the CLI" not "The CLI will be installed"
 - Title Case for headings/buttons (Chicago style)
@@ -166,7 +187,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 - `<div>` or `<span>` with click handlers (should be `<button>`)
 - Custom select/dialog/tabs widgets that lose native keyboard or focus behavior
 - Images without dimensions
-- Large arrays `.map()` without virtualization
+- Lists with measured or clearly demonstrated rendering cost and no suitable containment or virtualization
 - Form inputs without labels
 - Icon buttons without `aria-label`
 - Pending buttons without `aria-busy`
@@ -178,7 +199,7 @@ Read files, check against rules below. Output concise but comprehensive—sacrif
 
 ## Output Format
 
-Group by file. Use `file:line` format (VS Code clickable). Terse findings.
+Follow the status, review-basis, coverage-limit, and handoff contract in `SKILL.md`. Group supported findings by file or artifact and use terse `file:line - finding` entries.
 
 ```text
 ## src/Button.tsx
@@ -195,7 +216,7 @@ src/Modal.tsx:34 - "..." → "…"
 
 ## src/Card.tsx
 
-✓ pass
+✓ no code-level findings in reviewed scope
 ```
 
-State issue + location. Skip explanation unless fix non-obvious. No preamble.
+State issue + location. Skip explanation unless the evidence qualifier or fix is non-obvious. Never use a bare pass to imply unobserved rendered, interaction, accessibility, or performance behavior.
