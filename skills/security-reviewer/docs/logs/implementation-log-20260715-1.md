@@ -13,6 +13,9 @@
 
 - Исходный `skill.yaml` успешно разобран как YAML; длина подтверждена подсчётом Unicode code points.
 - Команды `lint`, `regenerate` и `check` завершились успешно; репозиторный скан подтвердил source/render parity и отсутствие описаний свыше 300 code points.
+- GitHub Actions run `29444915365` выявил stale docs-contract assertion для прежнего `source-version: 0.1.9`; assertion синхронизирована с `0.1.10`.
+- `pnpm --dir skills/security-reviewer test` — 22/22 PASS.
+- `pnpm test:ci` — PASS для всех четырёх test-bearing workspace packages, включая 44/44 compiler tests.
 
 ## Границы
 
