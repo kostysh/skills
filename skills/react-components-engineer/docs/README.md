@@ -14,3 +14,4 @@
 
 - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — сужение reusable-component guardrail и evidence traceability для SL-01 remediation. Статус: PASS.
 - [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points. Статус: independent scoped PASS.
+- [logs/implementation-log-20260715-2.md](logs/implementation-log-20260715-2.md) — capability-аудит, актуализация React guidance и устранение substrate-only completion path. Статус: independent PASS; все baseline P1/P2 закрыты.

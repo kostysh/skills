@@ -1,59 +1,36 @@
-Build React components that survive real-world rendering contexts, not just happy-path demos.
+Build React components that preserve their declared behavior in the rendering contexts the project actually uses.
 
-## Skill Interop (Priority)
+## Capability and anti-claims
 
-- This skill owns component resilience rules and runtime correctness patterns.
-- `typescript-engineer` owns language/toolchain constraints.
-- `react-spa-engineer` owns app-level framework integration.
-- `typescript-test-engineer` owns broad test methodology.
-- If rules conflict, prefer:
-  1. `typescript-engineer` for TS/toolchain.
-  2. `react-components-engineer` for component hardening semantics.
-  3. `react-spa-engineer` for app-level React architecture.
+This skill succeeds when it identifies a concrete component-level failure path, selects a project-compatible React pattern, and reports a result whose status is supported by evidence from the relevant renderer or browser boundary.
 
-## Non-Negotiables
+The instructions do not create runtime capability, choose a framework contract, grant authorization, prove accessibility or performance, or establish security by themselves. A hook, API import, wrapper, Storybook story, mock, typecheck, build, or generated file is bounded evidence and cannot close a broader behavior claim.
 
-- Assume hostile runtime conditions: SSR, hydration timing, multi-instance mounts, concurrent rendering, async children, portals, and hidden/offscreen trees.
-- Do not rely on global singleton assumptions (`window`, hardcoded DOM ids, one-time mount semantics).
-- Treat `children` as opaque values; do not depend on `cloneElement` as the default data-flow mechanism.
-- Separate correctness from optimization hints (`useMemo` is not semantic persistence).
-- Protect sensitive server-only values before passing data into unknown component trees.
+## Context decision matrix
 
-## Bulletproof Checklist
+| Context | Apply when | Required invariant | Claim-matched evidence |
+| --- | --- | --- | --- |
+| Every render | Always | Render is pure; state ownership is explicit; Effects synchronize only with external systems and have symmetric cleanup | Re-render and lifecycle scenario covering the external behavior |
+| SSR and hydration | The component is server-rendered and hydrated | Server render does not touch browser-only APIs; initial client output matches server output | Server render plus hydration with mismatch/recoverable-error observation |
+| Multiple instances or roots | Reuse, repeated mounts, or multiple roots are possible | No hardcoded shared DOM IDs or mutable singleton state; root prefixes are coordinated by the root owner | Two instances or roots exercised together |
+| Opaque composition | The public API accepts arbitrary `children` or slots | Do not infer child shape without an explicit element contract; data flow remains traceable | Supported child forms and invalid-contract behavior exercised |
+| Portal, iframe, or pop-out | DOM or events may live in another document | Browser resources derive from the owned DOM node or an explicit realm contract | Scenario in the actual target document/window |
+| Visibility lifecycle | Activity or retained hidden UI is used | State and external side effects follow the installed API's visible/hidden lifecycle | Hide, update, reveal, and cleanup behavior exercised |
+| Server/client boundary | RSC or another server/client component boundary is real | Client props follow the framework serialization contract; sensitive fields are allowlisted on the server | Framework integration/build plus boundary behavior; security owner evidence for security claims |
+| Transition or optimization | The feature exists and a measured interaction or duplicate-work path is in scope | Optimization APIs never carry semantic correctness; version and release-channel gates are satisfied | Observed transition or measurement matching the claim |
 
-| Axis              | Risk                                             | Required Pattern                                                          |
-| ----------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
-| Server-proof      | Browser APIs crash SSR                           | Move browser reads/writes to effects or client-only execution             |
-| Hydration-proof   | FOUC/mismatch after hydration                    | Pre-hydration synchronous script for critical initial DOM state           |
-| Instance-proof    | Reused components collide                        | Use `useId()` for stable per-instance IDs                                 |
-| Concurrent-proof  | Duplicate server work                            | Wrap request-scoped async loaders in `cache()`                            |
-| Composition-proof | `cloneElement` breaks with async/opaque children | Use Context to pass data down                                             |
-| Portal-proof      | Wrong `window` in iframe/portal/popout           | Resolve `ownerDocument.defaultView` from component DOM node               |
-| Transition-proof  | Current React view transition animation snaps    | Wrap state update in `startTransition()`                                  |
-| Activity-proof    | Hidden UI still applies global effects           | Explicitly enable/disable global side effects with cleanup                |
-| Leak-proof        | Sensitive data leaks to client                   | Use `experimental_taintUniqueValue` / `experimental_taintObjectReference` |
-| Future-proof      | Semantics rely on cache hints                    | Use `useState`/`useRef` when correctness needs persistence                |
+Exclude contexts that project evidence makes impossible. Do not add substrate to satisfy an inapplicable row.
 
-## Fast Workflow
+## Version-sensitive API gates
 
-1. Identify execution contexts: server/client, hydration timing, window/document scope, instance multiplicity, hidden/offscreen behavior.
-2. Evaluate the component against all checklist axes.
-3. Apply exact fix patterns from `references/bulletproof-patterns.md`.
-4. Validate with scenario tests: SSR render, hydration, multi-instance, portal/iframe, transition, hidden activity, server/client boundary.
-5. When introducing expensive integration coverage, align execution contour with project policy (local fast loop, PR required checks, nightly stability).
-6. Optimize only after correctness is verified.
+| API | Gate | Boundary |
+| --- | --- | --- |
+| `useId` | Installed React supports it and a component-owned DOM relationship needs an ID | Not for list keys, data identity, cache keys, or async Server Components; multiple roots require owner-coordinated `identifierPrefix` |
+| `cache` | React Server Components are actually used | Request-scoped memoization and shared snapshots only; it is not a concurrency-correctness primitive and framework caching policy still wins |
+| `startTransition` | A non-urgent state update is appropriate | It does not create a View Transition and must not control text inputs; pending UI requires the matching transition API |
+| `<Activity>` | The installed stable React version exposes it and the component uses retained hidden UI | Hidden mode destroys Effects and later recreates them while preserving state; verify any globally scoped DOM or CSS behavior separately |
+| `<ViewTransition>` | The project already uses a React channel that exposes it | Canary/Experimental feature; requires a real `<ViewTransition>` boundary and transition-driven update, never a release-channel upgrade by default |
+| Experimental taint APIs | The project already uses a compatible Experimental RSC environment | Optional defense-in-depth after authorization, DTO allowlisting, and isolation; never security closure |
+| `useMemo`, `memo`, `useCallback` | Profiling or a concrete dependency-identity need justifies them | Performance hints only; correctness must survive cache discard or re-render |
 
-## Anti-Patterns to Reject
-
-| Anti-pattern                                          | Why it fails                      | Use instead                                 |
-| ----------------------------------------------------- | --------------------------------- | ------------------------------------------- |
-| Reading `localStorage` in render on server            | SSR crash                         | Read in effect or pre-hydration script      |
-| Hardcoded DOM ids inside reusable components          | Instance collisions               | `useId()`                                   |
-| `cloneElement(children, ...)` as default composition  | Fails for Promise/opaque children | Context                                     |
-| Assuming global `window` event target                 | Breaks in portals/iframes/popouts | `ownerDocument.defaultView`                 |
-| Using `useMemo` for stable semantic values            | Cache may be discarded            | `useState`/`useRef` with explicit lifecycle |
-| Trusting downstream components with sensitive objects | Accidental serialization/leak     | Taint sensitive values/objects              |
-
-## Reference Files
-
-- [Bulletproof Patterns](references/bulletproof-patterns.md) - Full guidance for all 10 hardening patterns, code templates, caveats, and review checks.
+For detailed patterns and caveats, load [React Component Resilience Patterns](references/bulletproof-patterns.md) only for the applicable contexts.

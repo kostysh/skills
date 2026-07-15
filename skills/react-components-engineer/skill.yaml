@@ -2,86 +2,174 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-components-engineer
-  source-version: 0.1.4
+  source-version: 0.2.0
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Build and review resilient React components across SSR, hydration, multiple
-    instances, concurrent rendering, async children, portals, iframes, transitions,
-    Activity visibility, server-client boundaries, and React changes. Use when
-    designing or hardening reusable components, including RSC paths.
+    Build, harden, review, and diagnose reusable React components across SSR,
+    hydration, multiple instances, portals, Effects, opaque children, and
+    server/client boundaries. Use for component-level runtime resilience; route
+    app architecture, styling, test strategy, and security verdicts to their owners.
+  compatibility: >-
+    Portable documentation-only engineering skill. It ships no runtime or test
+    harness and requires repository evidence plus installed React and framework
+    versions for project-specific decisions.
 fragments:
   overview: fragments/overview.md
 references:
   - id: ref-references-bulletproof-patterns
-    title: Bulletproof Patterns
+    title: React Component Resilience Patterns
     source: references/bulletproof-patterns.md
     target: references/bulletproof-patterns.md
-    required: true
-    trigger: Read this when you need Full guidance for all 10 hardening patterns, code templates, caveats, and review checks.
+    required: false
+    trigger: Read this when a concrete SSR, hydration, multi-instance, composition, portal, Effect lifecycle, transition, Activity, RSC, sensitive-data, or memoization risk is in scope and exact pattern or version caveats are needed.
 assets: []
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
     target: agents/openai.yaml
-    description: Portable copy of agents/openai.yaml.
+    description: Portable UI metadata for react-components-engineer.
 supporting:
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260715-2
+    source: docs/logs/implementation-log-20260715-2.md
+    target: docs/logs/implementation-log-20260715-2.md
+    description: Non-normative remediation and review evidence for the capability audit.
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for issues, plans, and implementation logs.
 surfaces:
   active:
-    requiredReferences:
+    requiredReferences: []
+    optionalReferences:
       - ref-references-bulletproof-patterns
-    optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/logs/*
 sections:
   startHere:
-    - Confirm the task matches react-components-engineer's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Classify the task as create/change, review, or diagnose; review and diagnosis remain read-only unless remediation is explicitly authorized.
+    - Establish the observable component behavior, consumer, supplied code, repository instructions, installed React and framework versions, release channel, applicable execution contexts, existing conventions, and available verification before choosing a pattern.
+    - "Apply precedence in this order: operator and repository instructions; accepted product, API, accessibility, and security contracts; manifest, lockfile, configuration, and existing code; official documentation matching the installed version and release channel; then examples in this skill."
+    - Apply only risks supported by the component's actual execution contexts. Do not introduce a Canary or Experimental API, change the React release channel, or replace a framework-owned mechanism without explicit authority.
+    - Stop as blocked when equal-authority sources conflict or a required product, security, framework, or compatibility decision has no owner-supplied answer. Otherwise provide the strongest bounded result and label missing evidence.
+    - Define claim-matched behavioral evidence before changing anything. Source files, API imports, Storybook stories, mocks, typecheck, lint, build, or compiler success prove only their own contours.
   whenToUse:
-    - Creating or refactoring reusable React components/providers.
-    - Reviewing component robustness for SSR, hydration, RSC, portals, iframes, or pop-out windows.
-    - Hardening server/client boundaries and preventing accidental sensitive-data leaks.
+    - Creating, changing, reviewing, or diagnosing reusable React components and providers when runtime correctness across rendering contexts is material.
+    - Hardening component behavior for SSR, hydration, repeated mounts, multiple instances or roots, opaque children, portals, iframes, pop-out windows, Effects, transitions, Activity, or memoization.
+    - Assessing component-level server/client boundary mechanics alongside the framework and security owners.
   whenNotToUse:
-    - "App-level SPA architecture (routing, data layer, forms): use `react-spa-engineer`."
-    - "TypeScript language/tooling decisions: use `typescript-engineer`."
-    - "Test framework strategy and mocking policy: use `typescript-test-engineer`."
-    - "Primarily visual styling or UI look-and-feel work: use `frontend-design`."
+    - App routing, data layers, forms, persistence, or SPA integration are the primary concern; use react-spa-engineer.
+    - Next.js App Router, RSC transport, caching, hydration shell, or framework configuration is the primary concern; use nextjs and pair this skill only for component semantics.
+    - The task is primarily visual design, design-system presentation, or styling; use frontend-design.
+    - The task is a formal accessibility or UX audit, test-runner strategy, TypeScript toolchain decision, security verdict, or general PR verdict; route that primary decision to its owning skill.
   workflow:
-    - id: stage-apply-react-components-engineer
-      title: Apply react-components-engineer guidance
-      goal: Apply the preserved react-components-engineer guidance without changing its domain behavior.
+    - id: stage-establish-component-basis
+      title: Establish the component basis
+      goal: Make the task mode, authority, compatibility boundary, runtime claim, side effects, and proof target explicit.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Inspect applicable repository instructions, accepted contracts, package manifest and lockfile, relevant component and call sites, renderer or framework configuration, installed versions, current behavior, and available checks.
+        - Record mode, in-scope component contract, consumer, allowed mutations, applicable contexts, source precedence, unresolved inputs, and the observable behavior or review question.
+        - For review or diagnosis, remain read-only. For authorized changes, preserve the public API unless the requested outcome requires a deliberate contract change.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - The next action does not depend on an invented React version, release channel, framework behavior, product rule, or security claim.
+        - Each selected resilience risk has a concrete failure path in the supplied component and contexts.
+    - id: stage-select-and-apply-pattern
+      title: Select and apply the smallest supported pattern
+      goal: Correct the applicable component failure without universal checklists or version-incompatible APIs.
+      steps:
+        - Load the optional resilience reference only for the concrete risks in scope and apply its version and context gates.
+        - Prefer project-native and stable React or framework mechanisms; add a version-sensitive API only when the installed environment supports it and the component actually uses the corresponding feature.
+        - Preserve render purity, deterministic server/client output where hydration applies, symmetric Effect setup and cleanup, per-instance ownership, opaque-child contracts, correct DOM realm ownership, and explicit server/client data boundaries as applicable.
+        - Route framework, security, accessibility, visual, TypeScript, test-runner, and formal-review decisions to their owners while retaining component-semantics responsibility.
+      validation:
+        - The change or finding addresses the observed failure path instead of merely adding a recommended API, wrapper, story, test file, or checklist item.
+        - Stable projects receive no unsupported Canary or Experimental imports and no release-channel change without explicit authority.
+    - id: stage-verify-and-handoff
+      title: Verify and hand off the component result
+      goal: Match the completion status to observed evidence and give the next consumer an actionable result.
+      steps:
+        - Run only applicable scenarios, using the existing project test stack and a real renderer or browser boundary when the claim depends on hydration, another document, visibility lifecycle, or server/client integration.
+        - Classify the result as verified, partial, or blocked. Verified requires evidence that exercises the claimed behavior; an implemented change without that evidence is partial.
+        - Report mode, component contract, applicable contexts, change or findings, verification evidence, status, residual risks or blockers, anti-claims, and next owner.
+      validation:
+        - Unavailable or lower-fidelity verification lowers the result status instead of being reported as completed.
+        - The handoff does not imply framework support, accessibility, performance, or security assurance that was not established by the owning skill and evidence.
+  interop:
+    - id: interop-typescript
+      domain: TypeScript language, compiler, tsconfig, module resolution, and lint configuration
+      winner: typescript-engineer
+      rationale: react-components-engineer owns component runtime semantics; typescript-engineer owns language and toolchain correctness.
+    - id: interop-testing
+      domain: Test strategy, runner behavior, fixtures, mocks, determinism, and CI contours
+      winner: typescript-test-engineer
+      rationale: react-components-engineer defines the component behavior and required scenario; typescript-test-engineer owns test design and runner correctness.
+    - id: interop-spa
+      domain: Client-side routing, data, forms, state, persistence, and SPA feature integration
+      winner: react-spa-engineer
+      rationale: react-spa-engineer owns the application flow; react-components-engineer owns reusable component behavior within that flow.
+    - id: interop-nextjs
+      domain: Next.js App Router, RSC transport, directives, caching, hydration shell, and framework configuration
+      winner: nextjs
+      rationale: nextjs owns framework semantics and installed-version behavior; react-components-engineer owns the reusable component contract at that boundary.
+    - id: interop-design
+      domain: Visual hierarchy, styling, motion design, responsive composition, and design-system presentation
+      winner: frontend-design
+      rationale: frontend-design owns presentation decisions; react-components-engineer preserves runtime correctness.
+    - id: interop-ui-review
+      domain: Formal UX and accessibility review
+      winner: web-ui-reviewer
+      rationale: web-ui-reviewer owns the audit verdict; react-components-engineer implements or reviews component-level runtime corrections.
+    - id: interop-security
+      domain: Sensitive-data classification, authorization, exploitability, threat modeling, and security verdicts
+      winner: security-reviewer
+      rationale: security-reviewer owns security assurance; react-components-engineer enforces only the accepted server/client component boundary.
+    - id: interop-code-review
+      domain: Formal PR findings, severity, merge guidance, and review verdict
+      winner: code-reviewer
+      rationale: code-reviewer owns the formal verdict; react-components-engineer supplies React component domain analysis and implements authorized remediation.
   commands: []
   gotchas:
-    - id: gotcha-storybook-app-screen
+    - id: gotcha-version-channel
       priority: high
-      text: Do not hide full application screens inside Storybook as if they were reusable components. Storybook should document reusable components, states, and justified compositions.
-    - id: gotcha-required-marker-string
+      text: Do not recommend an API from a different React release channel or version as a universal hardening step; prove installed support and feature applicability first.
+    - id: gotcha-substrate-closure
       priority: high
-      text: Do not encode required markers as literal asterisks inside label strings. Form field components should expose a boolean required indicator and own its visual styling.
+      text: An imported API, hook, wrapper, Storybook story, mock, typecheck, build, or green unit test can be useful substrate without proving SSR, hydration, cross-document, lifecycle, RSC, performance, or security behavior.
+    - id: gotcha-hydration-shell
+      priority: high
+      text: A reusable component must not silently inject a pre-hydration script or suppress a mismatch; app-shell ownership, CSP and escaping, framework support, and identical initial output must be resolved first.
+    - id: gotcha-taint-security
+      priority: high
+      text: Experimental taint APIs are optional defense-in-depth for supported RSC environments, not a substitute for server authorization, DTO allowlisting, isolation, or a security review.
+    - id: gotcha-global-dom
+      priority: high
+      text: Do not assume one global window, document, DOM id, mutable singleton, mount, or Effect setup; derive ownership from the component instance and mirror every external setup with cleanup.
+    - id: gotcha-use-id
+      priority: medium
+      text: Use useId for component-owned DOM and accessibility relationships, not list keys, data identities, cache keys, or async Server Components.
   policies:
-    - id: policy-reusable-component-first
-      title: Reusable component first policy
-      text: When a UI control is already reused, belongs to an accepted design-system surface, or the task explicitly asks for reusable UI foundation, add or update the shared component and Storybook states before wiring domain screens.
+    - id: policy-applicability-first
+      title: Applicability-first policy
+      text: Evaluate and verify only contexts that the component contract and project evidence make possible; an inapplicable axis is excluded with rationale, not mechanically implemented.
+    - id: policy-stable-first
+      title: Stable supported mechanism policy
+      text: Prefer the installed stable React and framework mechanisms. Canary or Experimental APIs require existing project adoption or explicit operator authority and must retain their channel caveats.
+    - id: policy-evidence-status
+      title: Evidence and status policy
+      text: Report verified only when claim-matched behavior was exercised. Report partial when analysis or implementation is useful but the required boundary was not observed, and blocked when a missing authoritative decision or conflict prevents a safe result.
   portability:
     required: true
     rules:
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
       - Keep all mandatory react-components-engineer guidance inside this skill folder.
+      - Treat external documentation links as optional provenance; the local instructions must remain sufficient offline.
       - Use relative links for local references, assets, scripts, tests, and supporting docs.
     checklist:
       - Run the skill-source-compiler check command after regeneration.
-      - Search the skill folder for absolute local paths before finishing.
-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Search active instructions and declared files for absolute local dependencies before finishing.
+      - Confirm every active reference listed by SKILL.md exists inside this skill folder.
+      - Confirm a copied skill remains understandable without repository history, runtime files, or supporting logs.

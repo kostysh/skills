@@ -1,293 +1,182 @@
-# Bulletproof React Component Patterns
+# React Component Resilience Patterns
 
-This reference captures the full hardening guidance from:
-`https://shud.in/thoughts/build-bulletproof-react-components`
+Load only the sections that match a concrete failure path. Installed project versions and matching official React or framework documentation outrank these examples. External links below are optional provenance, not portability dependencies.
 
-Use this file when implementing or reviewing component-level resilience.
+## 1. Render and Effect lifecycle
 
-## Table of Contents
+### Apply when
 
-1. [Server-Proof](#1-server-proof)
-2. [Hydration-Proof](#2-hydration-proof)
-3. [Instance-Proof](#3-instance-proof)
-4. [Concurrent-Proof](#4-concurrent-proof)
-5. [Composition-Proof](#5-composition-proof)
-6. [Portal-Proof](#6-portal-proof)
-7. [Transition-Proof](#7-transition-proof)
-8. [Activity-Proof](#8-activity-proof)
-9. [Leak-Proof](#9-leak-proof)
-10. [Future-Proof](#10-future-proof)
-11. [Review Matrix](#11-review-matrix)
+- A component reads or writes an external system.
+- Strict Mode, repeated mounts, hidden UI, or interrupted rendering can expose lifecycle assumptions.
 
-## 1. Server-Proof
+### Invariant
 
-### Failure mode
+- Render stays pure and repeatable.
+- An Effect exists only to synchronize with an external system.
+- Each setup can run again and every setup has mirrored cleanup using the same target and parameters.
+- Correctness does not depend on a one-time mount.
 
-Browser APIs (`window`, `document`, `localStorage`, `matchMedia`, `ResizeObserver`) run during server render and crash.
+### Reject
 
-### Required pattern
+- Mutating module globals, DOM, storage, timers, or subscriptions during render.
+- Empty dependency arrays used to hide reactive inputs.
+- Cleanup that removes a listener from global `window` when setup used another document's window.
 
-- Keep render paths server-safe.
-- Move browser-only reads/writes to effects or other client-only phases.
+### Verify
 
-```tsx
-import { useEffect, useState } from "react";
+Exercise setup, dependency change, cleanup, unmount, and remount around the observable external behavior. A test that only asserts an Effect or cleanup function exists is substrate.
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState("light");
+Official reference: [React `useEffect`](https://react.dev/reference/react/useEffect).
 
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved) setTheme(saved);
-  }, []);
+## 2. SSR and hydration
 
-  return <div className={theme}>{children}</div>;
-}
-```
+### Apply when
 
-## 2. Hydration-Proof
+The component is rendered to HTML and later hydrated. Do not impose SSR requirements on a client-only component unless the accepted architecture requires them.
 
-### Failure mode
+### Invariant
 
-Theme or other critical UI state is correct only after hydration, causing a flash or mismatch.
+- Server render does not evaluate browser-only globals such as `window`, `document`, storage, media queries, or observers.
+- The first client render produces the same output as the server render.
+- Browser synchronization happens through the smallest project-compatible mechanism: an Effect for non-paint-critical external state, `useSyncExternalStore` with a matching server snapshot for an external store, a client-only boundary, or framework-owned server data.
+- Hydration mismatches are treated as bugs. `suppressHydrationWarning` is a narrow escape hatch, not a fix.
 
-### Required pattern
+### App-shell boundary
 
-- If value is needed before first paint, set it synchronously before hydration.
-- Typical approach: small inline script in HTML shell that applies theme class/attribute.
+A synchronous pre-hydration script can be appropriate for genuinely paint-critical state such as theme, but a reusable component must not inject one silently. The app or framework shell must own ordering, CSP nonce or hash, escaping, initial DOM contract, and server/client parity.
 
-```html
-<script>
-  const t = localStorage.getItem("theme");
-  if (t === "dark") document.documentElement.classList.add("dark");
-</script>
-```
+### Verify
 
-Use this only for truly paint-critical state.
+Render with the project's server renderer, hydrate the same tree, observe recoverable hydration errors, and assert the user-visible initial and settled states. A client-only unit render, static snapshot, or green build does not prove hydration.
 
-## 3. Instance-Proof
+Official references: [React `hydrateRoot`](https://react.dev/reference/react-dom/client/hydrateRoot), [`useSyncExternalStore`](https://react.dev/reference/react/useSyncExternalStore), and [`useEffect`](https://react.dev/reference/react/useEffect).
 
-### Failure mode
+## 3. Instances, roots, and IDs
 
-Reusable components hardcode DOM ids, so multiple instances collide.
+### Apply when
 
-### Required pattern
+The component can appear more than once, remount, or run under multiple React roots.
 
-- Use `useId()` for deterministic per-instance IDs.
+### Invariant
 
-```tsx
-import { useId } from "react";
+- Component-owned DOM IDs are unique and stable across server/client rendering.
+- Mutable state belongs to the instance unless a shared owner is explicit.
+- Multiple roots coordinate distinct `identifierPrefix` values, with matching server and client prefixes when hydrated.
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const styleId = useId();
-  return (
-    <>
-      <style id={styleId}>{".dark { background: black; }"}</style>
-      {children}
-    </>
-  );
-}
-```
+Use `useId` for DOM and accessibility relationships. Do not use it for list keys, business/data identity, cache keys, or async Server Components.
 
-## 4. Concurrent-Proof
+### Verify
 
-### Failure mode
+Render at least two instances together and exercise their labels, descriptions, controls, styles, listeners, and teardown independently. For multiple roots, verify prefix coordination at the root integration boundary.
 
-Multiple server components request the same async data and duplicate work.
+Official reference: [React `useId`](https://react.dev/reference/react/useId).
 
-### Required pattern
+## 4. Opaque children and composition
 
-- Memoize request-scoped async work with `cache()` from React.
+### Apply when
 
-```tsx
-import { cache } from "react";
+A reusable component accepts arbitrary `children`, slots, or caller-provided elements.
 
-const getTheme = cache(async (userId: string) => {
-  return db.themes.get(userId);
-});
-```
+### Invariant
 
-This is especially relevant in RSC/concurrent server rendering paths.
+Treat React elements and children as opaque. Do not assume one valid element unless the public contract explicitly requires and validates it.
 
-## 5. Composition-Proof
+Choose the smallest traceable API:
 
-### Failure mode
+- explicit props for direct configuration;
+- named slots or compound components for a known structure;
+- render props for caller-controlled rendering;
+- Context for data shared through a deep subtree;
+- a custom Hook for reusable behavior.
 
-`cloneElement` assumes `children` is a plain React element. This breaks with async/opaque child values in modern React usage.
+`cloneElement` remains possible for an explicit valid-element contract, but it is not a default data-flow mechanism and must preserve keys, refs, and traceability.
 
-### Required pattern
+### Verify
 
-- Prefer Context to pass data to descendants.
-- Treat `children` as opaque.
+Exercise every supported child form and the declared behavior for unsupported input. A test that only finds Context or removes `cloneElement` does not prove the composition contract.
 
-```tsx
-import { createContext, useContext } from "react";
+Official references: [React `cloneElement`](https://react.dev/reference/react/cloneElement) and [React `Children`](https://react.dev/reference/react/Children).
 
-const ThemeContext = createContext("light");
+## 5. Portals and DOM realms
 
-export function ThemeProvider({
-  theme,
-  children,
-}: {
-  theme: string;
-  children: React.ReactNode;
-}) {
-  return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
-}
+### Apply when
 
-export function useTheme() {
-  return useContext(ThemeContext);
-}
-```
+The component can render or attach browser resources in a portal, iframe, pop-out, or adopted document.
 
-## 6. Portal-Proof
+### Invariant
 
-### Failure mode
+- Derive `document` and `window` from the component's owned DOM node (`ownerDocument` and `defaultView`) or receive an explicit realm/container contract.
+- Create elements, observers, styles, selections, and event listeners in that realm.
+- Cleanup uses the same realm and resource identity as setup.
 
-Code assumes global `window` and fails when a component renders in an iframe, portal root, or pop-out window.
+Do not claim portal resilience solely because `createPortal` appears in the code: a same-document portal does not exercise cross-document behavior.
 
-### Required pattern
+### Verify
 
-- Resolve the active window from the component node: `ownerDocument.defaultView`.
-- Attach listeners to that resolved window, not the global one.
+Mount into the real alternate document/window, exercise the relevant event or resource, and close or unmount it. Assert cleanup and absence of writes to the opener's globals.
 
-```tsx
-import { useEffect, useRef } from "react";
+## 6. Server Components and server/client data
 
-export function ThemeListener() {
-  const ref = useRef<HTMLDivElement>(null);
+### Apply when
 
-  useEffect(() => {
-    const win = ref.current?.ownerDocument?.defaultView;
-    if (!win) return;
+The installed framework actually implements React Server Components or another explicit server/client component boundary.
 
-    const onStorage = () => {};
-    win.addEventListener("storage", onStorage);
-    return () => win.removeEventListener("storage", onStorage);
-  }, []);
+### Invariant
 
-  return <div ref={ref} />;
-}
-```
+- Follow the framework's supported directive, import, serialization, and caching contracts for its installed version.
+- Send Client Components only the allowlisted fields needed for their user-visible behavior.
+- Keep authorization and sensitive-data selection on the server.
+- Treat framework builds and serialization checks as bounded integration evidence, not proof of authorization or absence of every leak.
 
-## 7. Transition-Proof
+### React `cache`
 
-### Failure mode
+`cache` is RSC-only request-scoped memoization. Define and share one memoized function where deduplication is required; remember that calls to different wrappers do not share a cache and errors are cached. Use it for a demonstrated duplicate computation or shared snapshot, not as a generic concurrency or correctness fix. Framework caching and invalidation rules take precedence.
 
-Current React view transition animation snaps because the update is urgent.
+### Experimental taint APIs
 
-### Required pattern
+Taint APIs are available only in Experimental React RSC environments and must not trigger a production release-channel change. They protect specific object instances or values from direct passage, but derived or cloned values can still leak. Use them only as optional defense-in-depth after server authorization, DTO allowlisting, and isolation, with `security-reviewer` owning the security verdict.
 
-- Wrap UI state updates that should participate in view transitions in `startTransition()`.
+### Verify
 
-```tsx
-import { startTransition, useState } from "react";
+Exercise the real framework boundary with allowed and rejected data shapes. Security claims additionally require evidence chosen by the security owner; an experimental taint call, DTO type, mock, or build alone cannot close them.
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState("light");
+Official references: [React `cache`](https://react.dev/reference/react/cache), [`'use client'`](https://react.dev/reference/rsc/use-client), and [experimental taint APIs](https://react.dev/reference/react/experimental_taintObjectReference).
 
-  function toggle() {
-    startTransition(() => {
-      setTheme((t) => (t === "light" ? "dark" : "light"));
-    });
-  }
+## 7. Transitions and Activity
 
-  return <button onClick={toggle}>Toggle</button>;
-}
-```
+### Transitions
 
-## 8. Activity-Proof
+Use `startTransition` or `useTransition` only when the update is non-urgent; do not use Transition updates to control text inputs. `startTransition` marks updates as non-blocking but does not create a browser or React View Transition.
 
-### Failure mode
+React `<ViewTransition>` is a Canary/Experimental feature. Use it only when the project already runs a supporting channel and the component contains a real `<ViewTransition>` boundary. Verify enter, exit, update, or shared-element behavior that the task actually claims.
 
-`<Activity />` can keep hidden trees mounted. Global side effects (for example root-level style tags) may still affect visible UI.
+### Activity
 
-### Required pattern
+Use `<Activity>` only when the installed React version exposes it and retained hidden UI is part of the component contract. In hidden mode React hides the subtree, destroys its Effects, processes hidden updates at lower priority, retains state, and recreates Effects when visible. Do not add manual listener toggles that duplicate this lifecycle without an observed gap. Test globally scoped DOM or CSS resources separately rather than assuming Effect cleanup covers them.
 
-- Explicitly disable side effects when hidden and re-enable when active.
-- A robust approach for style tags is toggling `media`.
+### Verify
 
-```tsx
-import { useLayoutEffect, useRef } from "react";
+For transitions, observe the actual interaction and pending or animation behavior. For Activity, hide, update, reveal, and unmount the subtree while asserting state preservation and external cleanup. An imported API or timer-only unit test is insufficient.
 
-export function ThemeStyles({ active }: { active: boolean }) {
-  const styleRef = useRef<HTMLStyleElement>(null);
+Official references: [React `startTransition`](https://react.dev/reference/react/startTransition), [`<ViewTransition>`](https://react.dev/reference/react/ViewTransition), and [`<Activity>`](https://react.dev/reference/react/Activity).
 
-  useLayoutEffect(() => {
-    if (!styleRef.current) return;
-    styleRef.current.media = active ? "all" : "not all";
-    return () => {
-      if (styleRef.current) styleRef.current.media = "not all";
-    };
-  }, [active]);
+## 8. Memoization and future changes
 
-  return <style ref={styleRef}>{".dark { background: black; }"}</style>;
-}
-```
+`useMemo`, `memo`, and `useCallback` are performance optimizations, not semantic persistence. Component correctness must survive re-rendering and permitted cache discard. Store lifecycle state in state or refs only when that state belongs to the component; first remove unnecessary dependencies or calculations rather than adding memoization automatically.
 
-## 9. Leak-Proof
+Use profiling or a concrete dependency-identity failure to justify optimization. Verify the measured interaction in the relevant build and environment. Do not claim performance improvement from API presence or an unmeasured micro-test.
 
-### Failure mode
+Official references: [React `useMemo`](https://react.dev/reference/react/useMemo) and [React `memo`](https://react.dev/reference/react/memo).
 
-Sensitive server-side values flow through component trees and can accidentally reach client boundaries.
+## Review output
 
-### Required pattern
+For each material issue record:
 
-- Mark sensitive values/objects with React experimental taint APIs.
-- Apply at server boundaries before passing data to component trees.
+- applicable context and inspected evidence;
+- failure path and affected component contract;
+- smallest supported correction or owner handoff;
+- verification that would falsify the failure;
+- status: `verified`, `partial`, or `blocked`;
+- residual risk and anti-claims.
 
-```tsx
-import {
-  experimental_taintObjectReference,
-  experimental_taintUniqueValue,
-} from "react";
-
-async function getUserData(userId: string) {
-  const user = await db.users.get(userId);
-  experimental_taintUniqueValue("Do not pass token to client", user, user.token);
-  experimental_taintObjectReference("Do not pass entire user to client", user);
-  return user;
-}
-```
-
-Notes:
-- APIs are experimental and version-sensitive.
-- Even with tainting, still prefer explicit DTO shaping and least-privilege data flow.
-
-## 10. Future-Proof
-
-### Failure mode
-
-Component correctness depends on caching hints such as `useMemo`, but React may discard memoized values (for example on HMR, offscreen behavior, or future runtime changes).
-
-### Required pattern
-
-- Treat `useMemo` as optimization only.
-- If semantic persistence is required, use `useState`/`useRef` with explicit lifecycle.
-- Use a defensive mindset, but do not apply defensive complexity everywhere.
-
-```tsx
-import { useState } from "react";
-
-export function Counter() {
-  const [count, setCount] = useState(0);
-  return <button onClick={() => setCount((c) => c + 1)}>{count}</button>;
-}
-```
-
-## 11. Review Matrix
-
-Use this matrix for PR review of reusable components.
-
-| Check | What to verify |
-|------|-----------------|
-| Server | No browser API in server render paths |
-| Hydration | No first-paint mismatch for critical UI state |
-| Instance | No shared hardcoded IDs or global mutable singleton assumptions |
-| Concurrent | Request-scoped async dedupe where duplicate calls are possible |
-| Composition | No fragile `cloneElement`-based contract with arbitrary children |
-| Portal | Event/document/window references derive from mounted node context |
-| Transition | Transition-sensitive updates wrapped in `startTransition` |
-| Activity | Hidden trees do not leave active global side effects |
-| Leak | Sensitive values protected at server boundary |
-| Future | Correctness does not depend on disposable memo caches |
+Do not report `verified` when the relevant renderer, document, lifecycle, framework, measurement, or security boundary was not exercised.
