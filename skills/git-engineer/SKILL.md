@@ -1,361 +1,225 @@
 ---
 name: git-engineer
-description: Enforce Conventional Commits, Git hygiene, and worktree-based
-  isolation. Use when making commits, crafting commit messages, splitting
-  changes into multiple commits, deciding between merge/rebase/cherry-pick, or
-  setting up git worktrees in any repo.
+description: Use for repository-aware Git staging, commits, branches, worktrees,
+  merge, rebase, cherry-pick, and safe pushes. Preserve unrelated work, apply
+  Conventional Commits with emoji by default, and verify exact refs. Route
+  GitHub resources, code review, and CI remediation to their owning skills.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8c8e4a55361af70e4bce37c081f6d9c0f4d8868eeb4af26d8c56ef1b1e12f4c8
+  skillforge-source-hash: 3b6ef3fbf878486ab553caac254c5f86d0a8299abdaaf275e261e98cb373acbb
 ---
 
 # git-engineer
 
 ## Start here
 
-1. Confirm the task matches git-engineer's applicability criteria.
-2. Before branch, worktree, PR, merge, or cleanup, resolve repo policy from operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs.
+1. Confirm the task concerns Git state or history and identify the exact requested operation and target.
+2. Before mutation, resolve operator authority and repository policy, then inspect the relevant branch, HEAD, index, worktree, upstream, remote, and in-progress operation state.
 3. Before choosing, creating, or moving a worktree, load the worktree operations reference and apply its repo-local default and external-root confirmation gate.
-4. Use the preserved overview guidance as the normative workflow for this skill.
-5. Treat generic commands as fallbacks only; preserve commits, branches, and validation gates when project or operator policy requires them.
+4. Preserve unrelated operator-owned work and verify the resulting local or remote refs before claiming completion.
 
 ## When to use this skill
 
-- Making, splitting, or reviewing commits and commit messages.
-- Choosing merge, rebase, cherry-pick, branch, PR, issue, or worktree workflows.
-- Using GitHub CLI for issues, pull requests, CI status, labels, or merge operations.
-- Setting up worktree-based isolation or enforcing Git hygiene.
+- Staging, committing, amending, splitting, or validating commits and commit messages.
+- Creating, switching, comparing, or cleaning up branches and worktrees.
+- Choosing or executing local merge, rebase, cherry-pick, revert, or safe push workflows.
+- Supplying repository-approved history semantics and exact branch/ref facts to a GitHub-owning skill.
 
 ## When NOT to use this skill
 
-- The task does not involve Git history, commits, branches, worktrees, PRs, issues, or GitHub CLI workflow.
-- The user explicitly asks not to commit or not to use Git operations.
+- GitHub repository, issue, pull-request, check, label, Actions, release, or settings work without a local Git-history decision; use gh-utility.
+- Code-review findings, approval, severity, or merge-readiness judgment; use code-reviewer.
+- Diagnosing or fixing failing GitHub pull-request checks; use gh-fix-ci.
+- The task does not involve Git state, history, refs, commits, branches, worktrees, or push policy.
+- The operator forbids the Git operation required to satisfy the request; report the constraint instead of substituting another mutation.
 
-## Overview
+## Outcome and evidence boundary
 
-Ensure all commits follow Conventional Commits and keep history clean, minimal, and reviewable.
+Complete the requested Git operation with the smallest authorized mutation, preserve unrelated operator-owned work, and verify the resulting local or remote refs. A command that was shown or started, a compiler check, and a globally clean worktree are not completion evidence by themselves.
 
-## Repository Git policy first
+This documentation-only skill does not enforce repository policy, prove GitHub state, decide code-review findings, or repair CI. It guides Git decisions and reports only the state that was actually observed.
 
-Before branch, worktree, PR, merge, cleanup, or force-push operations, resolve repo policy:
+## Authority and readiness
 
-1. Follow explicit operator instructions for the current task.
-2. Check `AGENTS.md`, `CONTRIBUTING.md`, `README*`, and process docs linked by the issue, PR, task brief, or operator.
-3. Use `gh repo view --json nameWithOwner,defaultBranchRef` for orientation only.
-4. If the next step would collapse commits, rewrite shared history, delete a branch, or bypass validation, ask when policy is unknown.
+Before mutating a repository:
 
-Generic commands are fallbacks. Do not copy project-specific branches, paths, statuses, or CI commands into this portable skill.
+1. Resolve the repository root and read explicit operator instructions plus applicable `AGENTS.md`, `CONTRIBUTING.md`, `README*`, hooks, and linked process documentation.
+2. Inspect the current branch, `HEAD`, index, staged, unstaged, untracked, upstream, remote, and any merge, rebase, revert, or cherry-pick state relevant to the request.
+3. Name the exact operation and target. Inspection does not authorize mutation; commit does not authorize push; push does not authorize a pull request; rewrite, deletion, conflict resolution, and destructive cleanup require explicit operator or repository authority.
+4. Stop before mutation when the target, base, remote, destination ref, ownership, protected status, operator-owned state, or applicable policy remains materially ambiguous.
 
-## Conventional Commits (required)
+Use repository state as evidence, not as permission. An existing branch, upstream, worktree, stash, or remote configuration does not by itself authorize changing it.
 
-Use this format for all commits unless the user explicitly asks otherwise:
+## Commit convention
 
-```
-<type>(<scope>)?: <subject>
+Apply commit-message policy in this order:
 
-<body>
+1. explicit operator instruction for the current task;
+2. mandatory repository policy and a clear, consistent repository convention;
+3. the portable `git-engineer` default below.
 
-<footer>
-```
+The default is Conventional Commits with a type emoji:
 
-Types: `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `build`, `ci`, `chore`, `revert`.
+```text
+<type>(<optional-scope>)<optional-!>: <emoji> <subject>
 
-Rules:
-- Subject is imperative, lower-case, no trailing period.
-- Scope is optional but preferred and must follow repo conventions:
-  - **Monorepo rule:** when the change targets a specific package area, use the **package name** (folder under `packages/`) as the scope, e.g. `kb-api`, `agent-ui`.
-  - If the change is **package-wide** (applies to the whole package), **omit the scope**.
-  - If changes span **multiple packages**, use a shared scope like `monorepo` (or follow the repo’s established multi-package scope if defined).
-  - If the change is **root-level** (tooling/infra/config shared by all), **omit the scope**.
-- Use `BREAKING CHANGE:` footer for breaking changes.
+<optional body>
 
-Examples:
-- `feat(kb-api): add output validation middleware`
-- `fix(agent-ui): remove skip ci from changelog automation`
-- `chore: update shared tooling configuration`
-- `refactor(kb-api): rename config keys`
-
-Breaking change example:
-```
-refactor(kb-api): rename config keys
-
-BREAKING CHANGE: renamed config keys require updates in all consumers
+<optional footer(s)>
 ```
 
-## Emojis (recommended)
-Prefix the subject with an emoji that matches the commit type:
-- feat → ✨
-- fix → 🐛
-- refactor → ♻️
-- perf → ⚡
-- test → 🧪
-- docs → 📝
-- build → 🏗️
-- ci → 👷
-- chore → 🔧
-- revert → ⏪
+| Purpose | Default type | Emoji |
+| --- | --- | --- |
+| New behavior or user-facing capability | `feat` | ✨ |
+| Bug fix | `fix` | 🐛 |
+| Internal restructuring without behavior change | `refactor` | ♻️ |
+| Performance improvement | `perf` | ⚡ |
+| Tests | `test` | 🧪 |
+| Documentation-only change | `docs` | 📝 |
+| Build system or dependencies | `build` | 🏗️ |
+| CI configuration | `ci` | 👷 |
+| Maintenance or tooling | `chore` | 🔧 |
+| Revert | `revert` | ⏪ |
 
-Example: `feat(server): ✨ add output validation middleware`
+Choose the type from the change purpose, not the file extension. Documentation that is required to complete a bug fix remains part of the `fix` commit unless repository policy says otherwise. Additional repository-defined types are valid.
 
-## Workflow for commits
+Derive an optional scope from repository policy and established history. Do not assume a `packages/` layout, invent a generic multi-package scope, or add a scope merely to fill the field. Keep the subject concise and imperative. For a breaking change, use `!`, a `BREAKING CHANGE:` footer, or both as required by repository policy.
 
-1. Inspect status: `git status -sb`
-2. Stage only the intended files; do not stage generated artifacts (e.g., `node_modules`, build outputs).
-3. If changes mix concerns, split into multiple commits.
-4. If the work follows SDD task artifacts (`docs/sdd/**/T*-tasks.md`), include matching task status/progress updates in the same task-completion commit (do not defer all status updates to stage end).
-5. Run required checks (type-check, lint, format, tests) unless the user explicitly waives them.
-6. Write a Conventional Commit message.
-7. Confirm status is clean.
+## Commit and amend operations
 
-## Docs-only commit workflow
+1. Record the starting branch and `HEAD`, then inspect `git status --porcelain=v2 --branch` and the current index.
+2. Select the intended paths or hunks explicitly. Avoid broad staging when unrelated changes exist.
+3. Inspect `git diff --cached --name-status` and the staged diff before committing. The staged delta must match the requested change.
+4. Preserve unrelated staged, unstaged, and untracked work. Do not reset, restore, clean, or stash it merely to obtain a clean status.
+5. Include tracked generated or synchronized artifacts when repository policy, source/generated parity, release behavior, or the requested change requires them. Exclude dependencies, caches, and incidental build output unless they are intentionally tracked and required.
+6. Split commits when changes have independent purposes, rollback boundaries, or validation evidence. Do not split mechanically by file class when the files jointly implement one outcome.
+7. Run the applicable repository checks unless the operator explicitly accepts the gap.
+8. After commit or amend, verify the resulting commit OID and inspect its message and changed paths. Re-read status and report preserved residual changes instead of requiring a globally clean worktree.
 
-Use this flow when the user asks to commit only documentation/artifacts:
-1. Identify the target docs paths explicitly (for example `docs/**`).
-2. Stage only those files via explicit `git add <path>` commands (avoid `git add .`).
-3. Verify staged files with `git diff --cached --name-only` and ensure no non-doc files are included.
-4. Use `docs:` Conventional Commit type (scope optional by repo rules).
-5. Keep unrelated modified files unstaged for a later commit.
+An amend rewrites the current commit. Do not amend a published or shared commit without explicit rewrite authority and a safe remote-update plan.
 
-## GitHub CLI (`gh`) workflow
+## Merge, rebase, cherry-pick, revert, and branch operations
 
-Use `gh` as the default interface for GitHub issues, pull requests, and CI status.
+- Resolve the source, destination, base, and expected tip OIDs before the operation. Do not substitute a hosting platform's default branch for repository policy.
+- Use rebase or fast-forward when policy requires linear history and commits must be preserved; squash only when collapse is authorized; use a merge commit when branch topology must remain visible.
+- Do not auto-stash or start a history operation over unrelated dirty state unless the operator explicitly authorizes the preservation strategy.
+- If Git stops on conflicts, preserve the in-progress state. Report the operation, conflicted paths, current `HEAD`, and the available continue, skip, or abort choices; do not claim completion or choose a destructive recovery path without authority.
+- After success, verify the relevant branch tips, ancestry or resulting commit, and worktree status against the requested outcome.
 
-### Setup and repository targeting
+## Push and remote-ref safety
 
-1. Confirm auth and host:
-   - `gh auth status`
-2. Confirm repo context from current directory:
-   - `gh repo view --json nameWithOwner,defaultBranchRef`
-3. If needed, set default repo for the current local clone:
-   - `gh repo set-default <owner>/<repo>`
-4. For cross-repo operations, always pass `-R <owner>/<repo>` explicitly.
+Before any push, resolve the exact remote, local source, destination ref, upstream relationship, and current remote destination OID. Prefer an explicit refspec such as `<source>:refs/heads/<destination>` over relying on ambiguous defaults.
 
-### Auth mode for agents (GitHub App)
+For a normal push:
 
-When working as an agent, prefer GitHub App auth over personal account auth.
+1. confirm that the update is the intended fast-forward or creation;
+2. push only the named ref;
+3. perform a fresh remote read and verify that the destination ref resolves to the intended OID.
 
-1. Do not use `gh auth login` with a GitHub App private key.
-   - GitHub App auth for `gh` works via temporary installation token in `GH_TOKEN`.
-2. Refresh token before GitHub operations:
-   - preferred: run your environment helper (for example `gh_app_refresh`) if available.
-   - fallback: mint an installation token with your approved method and export it to `GH_TOKEN` (for example `export GH_TOKEN="$(<token-mint-command>)"`).
-3. Verify active identity:
-   - `gh auth status`
-   - expected active account is App bot (`app/<slug>` or `<slug>[bot]`) with `(GH_TOKEN)`.
-4. Token lifetime is short (about 1 hour). Refresh on 401/403 or before long GH sessions.
-5. Never print raw tokens to logs.
+For a non-fast-forward update:
 
-### Non-interactive defaults (agent-safe)
+1. require explicit rewrite authority, an owned task branch, and confirmation that the destination is not protected or mainline;
+2. record the exact remote destination OID that the operator-authorized rewrite is based on;
+3. use an explicit source/destination refspec and `--force-with-lease=refs/heads/<destination>:<expected-oid>`;
+4. never use `--force`, an implicit lease, `--all`, `--mirror`, or a broad matching refspec;
+5. stop if the lease fails or ownership, protection, remote identity, or expected OID is uncertain;
+6. after success, freshly read the remote ref and compare its OID with the intended local source.
 
-- Prefer explicit flags over prompts.
-- Prefer `--body-file <file>` for long content.
-- Prefer machine-readable output for scripts:
-  - `--json ... --jq ...`
-- Do not print or log tokens; use `gh auth status` to validate auth.
+Local remote-tracking refs and successful command exit alone do not prove the current remote state. If a fresh remote read is unavailable, report the push result as `partial`, not `verified`.
 
-### Issues: read, triage, and ownership
-
-Read queue:
-- `gh issue list --state open --limit 100`
-- `gh issue list --state open --label bug --limit 100`
-- `gh issue list --state all --search "is:issue sort:updated-desc" --limit 100`
-- `gh issue list --state open --json number,title,labels,assignees,updatedAt,url --jq '.[] | {n:.number,t:.title,u:.url}'`
-
-Inspect issue details:
-- `gh issue view <number> --comments`
-- `gh issue view <number> --json number,title,body,labels,assignees,state,url`
-
-Take issue into work:
-- if assignee is supported for current identity: `gh issue edit <number> --add-assignee "@me" --add-label "in-progress"`
-- if App/bot identity is not assignable: `gh issue edit <number> --add-label "in-progress"`
-- `gh issue comment <number> --body "Taken into work."`
-- Optional linked branch: `gh issue develop <number> --checkout --name <branch-name>`
-
-Update triage metadata:
-- `gh issue edit <number> --add-label "bug" --remove-label "needs-triage"`
-- `gh issue edit <number> --title "<new title>"`
-
-Close/reopen:
-- `gh issue close <number> --reason completed --comment "Fixed in #<pr-number>"`
-- `gh issue reopen <number> --comment "Reopening: regression reproduced."`
-
-### Pull requests: create, review, merge
-
-Read PR queue:
-- `gh pr status`
-- `gh pr list --state open --limit 100`
-- `gh pr view <number> --comments --reviews`
-
-Check out and inspect locally:
-- `gh pr checkout <number>`
-- `gh pr diff <number>`
-
-Create PR (non-interactive):
-- `gh pr create --base <base> --head <branch> --title "<title>" --body-file <file>`
-- Draft PR when not ready: add `--draft`
-- Autofill from commits when appropriate: `gh pr create --fill`
-- Link issue auto-close in PR body: include `Fixes #<issue-number>` or `Closes #<issue-number>`
-
-Update PR metadata:
-- `gh pr edit <number> --add-label "ready-for-review" --remove-label "wip"`
-- `gh pr edit <number> --add-reviewer <login1>,<login2>`
-
-Review PR:
-- `gh pr review <number> --approve --body "LGTM"`
-- `gh pr review <number> --request-changes --body "Please address inline comments."`
-- `gh pr review <number> --comment --body "Left several suggestions."`
-
-Checks and merge:
-- `gh pr checks <number> --watch --fail-fast`
-- Choose the merge method from operator or repo policy before running merge commands:
-  - If policy requires linear history with preserved commits, use platform rebase merge such as `gh pr merge <number> --rebase`, or rebase and fast-forward when direct branch integration is allowed.
-  - If policy explicitly allows squash, use `gh pr merge <number> --squash`.
-  - If policy requires merge commits, use `gh pr merge <number> --merge`.
-  - If policy is unknown, do not squash or delete the branch without asking.
-- If policy requires waiting for checks/queue, add `--auto` to the selected merge command, for example `gh pr merge <number> --auto --rebase`.
-- To prevent merging stale head, add `--match-head-commit <sha>` when available.
-- Do not couple branch deletion to merge when policy requires post-merge evidence first.
-
-Branch cleanup gate:
-- Treat remote branch cleanup as a separate step from merge unless repo policy explicitly allows deletion at merge time.
-- If policy requires CI/CD or post-merge validation on the target branch, wait for that evidence before `git push origin --delete <branch>` or any merge command using `--delete-branch`.
-- If no post-merge evidence gate exists and cleanup is allowed, delete only the merged task branch.
-
-### Branch discipline for multi-PR work
-
-1. One issue = one branch = one PR.
-2. Resolve the base branch from repo policy; do not assume the GitHub default branch is the working base.
-3. Create the new work branch from the refreshed policy base branch:
-   - `git checkout <base-branch> && git pull --ff-only`
-   - `git checkout -b fix/<issue-number>-<short-topic>`
-4. Before edits, verify branch explicitly:
-   - `git branch --show-current`
-5. When switching to existing PR, use:
-   - `gh pr checkout <number>`
-6. Do not mix changes for different PRs in one branch.
-7. After PR creation/update, return local workspace to the repo's policy base branch:
-   - `git checkout <base-branch> && git pull --ff-only`
-   - keep feature branch checked out only while implementing/review-fix for that PR.
-
-### Rebase and force-push safety
-
-- Rebase only when it matches operator or repo policy, or when the user asks for a linear local history.
-- After rebasing a published task branch, push only that owned task branch with `git push --force-with-lease origin <branch>`.
-- Never use `git push --force` for agent work.
-- Never force-push protected, release, base, or other mainline branches.
-- If branch ownership, upstream tracking, or remote head is unclear, stop and inspect before pushing.
-
-### GitHub Actions / CI diagnostics
-
-- List runs: `gh run list --limit 20`
-- Filter branch/status: `gh run list --branch <branch> --status failure --limit 20`
-- View run summary: `gh run view <run-id>`
-- Watch run until completion: `gh run watch <run-id> --exit-status`
-- Re-run failed jobs when appropriate: `gh run rerun <run-id> --failed`
-
-Notes:
-- `gh pr checks` is the preferred PR-centric signal.
-- Use `gh run *` when you need workflow-level details, logs, or reruns.
-
-### Labels and metadata hygiene
-
-- List labels: `gh label list`
-- Create/update labels when repository workflow needs standardized triage:
-  - `gh label create "<name>" --color <hex> --description "<text>"`
-  - `gh label edit "<name>" --color <hex> --description "<text>"`
-- Keep issue/PR labels aligned with workflow states (`needs-triage`, `in-progress`, `review`, `blocked`, `done`).
-
-### Suggested issue-to-PR flow
-
-1. `gh issue view <id> --comments`
-2. `gh issue edit <id> --add-label "in-progress"` (and add assignee if supported)
-3. Resolve repo policy, then create/switch to a dedicated branch from updated `<base-branch>`.
-4. `gh pr create --base <base> --head <branch> --title "<cc-title>" --body-file <file>`
-5. `gh issue comment <id> --body "PR opened: <url>"`
-6. `gh pr checks <pr> --watch --fail-fast`
-7. Merge using the repo-approved method: rebase/fast-forward when commits must be preserved, squash only when allowed, merge commit when required.
-8. Wait for any required CI/CD or post-merge validation evidence before remote branch cleanup.
-9. `gh issue close <id> --reason completed --comment "Completed in #<pr>"`
-10. Return to baseline locally: `git checkout <base-branch> && git pull --ff-only`
-
-### Manual references
-
-- `https://cli.github.com/manual`
-- `https://cli.github.com/manual/gh_issue`
-- `https://cli.github.com/manual/gh_pr`
-- `https://cli.github.com/manual/gh_run`
-
-## Git worktrees (isolation workflow)
-
-Use when starting feature work that needs isolation from the current workspace or before executing implementation plans.
-
-Announce at start: "I'm using the git worktrees workflow to set up an isolated workspace."
+## Git worktrees
 
 Before choosing a worktree root, creating a worktree, or moving an existing worktree, read [Worktree operations](references/worktrees.md). That reference owns directory precedence, ignore preparation, creation checks, move preservation, stop rules, and the review handoff.
 
-The portable default is `<repository-root>/.worktrees/<task-slug>`. An explicit operator location wins. A closer repository policy may select another repository-local root, but an outside-repository path in repository documentation or an existing shared directory is only a proposed exception and requires explicit operator confirmation.
+The portable default is `<repository-root>/.worktrees/<task-slug>`. An explicit operator location wins. Repository policy may select another repository-local root, but an external location requires explicit operator confirmation.
 
-## Splitting changes (guidance)
-- Group by purpose: feature vs. fix vs. docs vs. infra.
-- Keep commits small and reviewable; avoid unrelated changes in one commit.
-- If changes touch multiple packages, prefer separate commits per affected package rather than one combined commit.
-- If the user requests separate commits, honor the split explicitly.
+## Interop handoff
 
-## Rebase vs merge (when asked)
-- Follow repo policy first.
-- Use rebase or fast-forward merge for linear history when commits must be preserved.
-- Use squash only when operator or repo policy permits collapsing commits.
-- Use merge commits when preserving branch topology is required.
+- Use `gh-utility` for GitHub repositories, issues, pull requests, checks, labels, Actions, merges, and other platform reads or mutations. `git-engineer` may supply the repository-approved history method and exact local branch/ref facts; `gh-utility` owns platform execution and fresh GitHub-state verification.
+- Use `code-reviewer` for findings, severity, approval, and merge-readiness judgment. A requested Git operation does not authorize a review verdict.
+- Use `gh-fix-ci` for diagnosis and remediation of failing GitHub pull-request checks. This skill may report the local branch or commit involved but does not decide the CI fix.
 
-## Commit message selection cheatsheet
-- `feat`: new behavior/user-facing capability
-- `fix`: bug fix
-- `refactor`: code change without behavior change
-- `perf`: performance improvement
-- `test`: add/change tests
-- `docs`: documentation only
-- `build`: build system/deps
-- `ci`: CI config changes
-- `chore`: tooling, formatting, maintenance
-- `revert`: revert prior commit
+## Output contract
 
-## Exceptions
-- If the repo already enforces a different convention, follow that repo’s rules and note the exception.
+End with exactly one evidence-calibrated status:
+
+- `verified`: the requested operation completed and the relevant local and, when applicable, remote terminal state was freshly observed;
+- `partial`: an authorized action occurred, but required validation or an external boundary could not be observed;
+- `blocked`: no safe completion is possible without missing authority, policy, target facts, conflict resolution, credentials, or an external-state change.
+
+Report the requested operation and scope, actions actually taken, starting and resulting branch/HEAD/commit or remote ref OIDs, applicable checks, preserved residual changes, conflicts or side effects, evidence limits, and the smallest next action when status is not `verified`. Distinguish commands proposed from commands actually run.
 
 ## Workflow stages
 
-### Workflow stage: Apply git-engineer guidance
+### Workflow stage: Establish authority and repository state
 
-Apply policy-first Git guidance without overriding repo-specific branch, worktree, merge, cleanup, or validation rules.
+Resolve the exact authorized operation, target, policy, and pre-mutation evidence.
 
-1. Match the request to the applicability criteria.
-2. Resolve repo policy before choosing base branch, PR merge method, cleanup timing, or force-push command; for worktree location, apply the stricter operator, repo-local policy, then portable-default precedence from the worktree reference.
-3. Follow the preserved overview sections for the concrete work.
-4. Run the relevant verification from the overview or report why it could not be run.
+1. Apply explicit operator instructions, repository policy, and the operation-specific readiness rules from the overview.
+2. Inspect the relevant repository root, branch, HEAD, index, worktree, upstream, remotes, refs, and in-progress operation state.
+3. Stop before mutation when authority, target, destructive scope, ownership, protection, or preservation of unrelated state remains materially ambiguous.
 
 Validation:
 
-- The outcome follows repo policy, preserved skill guidance, and loaded reference constraints.
-- Destructive or history-collapsing operations require operator or repo-policy permission.
+- The exact operation, target, initial state, and authority are explicit.
+
+### Workflow stage: Execute the smallest safe Git operation
+
+Produce only the intended Git-state change while preserving unrelated operator-owned work.
+
+1. Apply repository commit policy first; otherwise use Conventional Commits with the default type emoji.
+2. Stage or rewrite only the intended paths, hunks, commits, branches, or refs and inspect the operation-specific delta before finalizing it.
+3. Preserve unrelated state, stop honestly on conflicts or failed leases, and do not auto-stash, reset, clean, or broaden the mutation to manufacture a clean result.
+
+Validation:
+
+- The resulting delta matches the requested scope, and unresolved conflicts or residual changes remain visible.
+
+### Workflow stage: Verify terminal state and hand off
+
+Match completion status to freshly observed local and remote evidence.
+
+1. Re-read the resulting branch, HEAD, commit, index, worktree, and relevant refs; after a push, freshly read the remote destination ref.
+2. Classify the outcome as verified, partial, or blocked using the overview output contract.
+3. Report actions actually taken, exact OIDs, checks, preserved residual state, conflicts, evidence limits, and the smallest next action.
+
+Validation:
+
+- A shown command, clean status, local tracking ref, or unavailable verification is not reported as completed evidence.
+
+## Interop priority
+
+- **GitHub repositories, issues, pull requests, checks, labels, Actions, platform merges, and other GitHub resource state:** gh-utility. git-engineer owns local history semantics and branch/ref facts; gh-utility owns GitHub execution, targeting, and fresh platform-state verification.
+- **Code-review findings, severity, approval, and merge-readiness judgment:** code-reviewer. git-engineer may execute an authorized Git action but does not issue a review verdict.
+- **Diagnosis and remediation of failing GitHub pull-request checks:** gh-fix-ci when available. git-engineer supplies relevant local commit and branch state; the specialized CI skill owns diagnosis and fixes.
 
 ## Gotchas
 
-- **high** — `gh repo view defaultBranchRef` is orientation, not base-branch, merge, worktree, or cleanup policy.
-- **high** — Squash collapses commits; use it only when operator or repo policy permits it.
-- **high** — Delete remote task branches only after required post-merge evidence.
+- **high** — A globally clean worktree is not required for a scoped Git operation; preserve and report unrelated changes instead of stashing, resetting, cleaning, or committing them.
+- **high** — A command, exit code, local tracking ref, or generated report is not proof of the requested terminal state; inspect the resulting commit, refs, and fresh remote state as applicable.
+- **high** — An implicit --force-with-lease can be defeated by background fetch; bind a named destination ref to the exact expected remote OID.
 - **high** — An outside-repository path in repository documentation or an existing shared worktree directory is not authority to use it without explicit operator confirmation.
 
 ## Policies
 
-### Repository Git policy first
-Operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs override generic defaults for branch base, PR merge method, validation gates, and cleanup timing. For worktree location, explicit operator instructions win; otherwise repository policy may override the portable default only with a repository-local root, while an outside-repository root requires explicit operator confirmation.
+### Operation-specific authorization
+Inspection does not authorize mutation; commit does not authorize push; push does not authorize a pull request; rewrite, deletion, conflict resolution, and destructive cleanup require explicit operator or repository authority for the named target.
+
+### Conventional Commits with emoji by default
+Explicit operator instructions win, followed by mandatory repository policy and a clear consistent repository convention; otherwise use the portable Conventional Commit format and default type-to-emoji mapping from the overview.
+
+### Preserve unrelated state
+Stage, commit, rewrite, move, or push only the intended scope. Do not reset, restore, clean, auto-stash, or absorb unrelated operator-owned work merely to produce a clean status.
 
 ### Repository-local worktrees by default
 Unless the operator explicitly chooses another location or confirms a justified external exception, create task worktrees under `<repository-root>/.worktrees/<task-slug>` and report the canonical path for review.
 
 ### Force-push safety
-Force-push only an owned task branch, never a protected/mainline branch, and use `--force-with-lease` instead of `--force`.
+Rewrite only an explicitly authorized owned non-protected task branch, bind the named destination ref to its observed expected remote OID with an explicit force-with-lease, use an explicit source/destination refspec, and freshly verify the remote ref after success.
+
+### Evidence-calibrated completion
+Report verified only after observing the claimed terminal state; use partial when an action occurred but required evidence is unavailable, and blocked when safe completion requires missing authority, facts, conflict resolution, credentials, or external-state change.
 
 ## Optional references
 - [Worktree operations](references/worktrees.md) — Read this before choosing a worktree root, creating a worktree, or moving an existing worktree.

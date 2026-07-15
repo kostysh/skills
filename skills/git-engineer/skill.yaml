@@ -2,9 +2,9 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: git-engineer
-  source-version: 0.1.2
-  recommended-skill-md-max-bytes: 21000
-  description: Enforce Conventional Commits, Git hygiene, and worktree-based isolation. Use when making commits, crafting commit messages, splitting changes into multiple commits, deciding between merge/rebase/cherry-pick, or setting up git worktrees in any repo.
+  source-version: 0.2.0
+  recommended-skill-md-max-bytes: 20000
+  description: Use for repository-aware Git staging, commits, branches, worktrees, merge, rebase, cherry-pick, and safe pushes. Preserve unrelated work, apply Conventional Commits with emoji by default, and verify exact refs. Route GitHub resources, code review, and CI remediation to their owning skills.
 fragments:
   overview: fragments/overview.md
 references:
@@ -37,6 +37,14 @@ supporting:
     source: docs/logs/forward-test-evidence-20260713-1.md
     target: docs/logs/forward-test-evidence-20260713-1.md
     description: Non-normative reproducible blind forward-test evidence for repo-local worktree behavior.
+  - id: supporting-implementation-log-20260716-1
+    source: docs/logs/implementation-log-20260716-1.md
+    target: docs/logs/implementation-log-20260716-1.md
+    description: Non-normative implementation log for general Git capability hardening.
+  - id: supporting-forward-test-evidence-20260716-1
+    source: docs/logs/forward-test-evidence-20260716-1.md
+    target: docs/logs/forward-test-evidence-20260716-1.md
+    description: Non-normative blind forward-test evidence for commit, history, push, routing, and worktree behavior.
 surfaces:
   active:
     requiredReferences: []
@@ -47,56 +55,95 @@ surfaces:
     - docs/logs/*
 sections:
   startHere:
-    - Confirm the task matches git-engineer's applicability criteria.
-    - Before branch, worktree, PR, merge, or cleanup, resolve repo policy from operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs.
+    - Confirm the task concerns Git state or history and identify the exact requested operation and target.
+    - Before mutation, resolve operator authority and repository policy, then inspect the relevant branch, HEAD, index, worktree, upstream, remote, and in-progress operation state.
     - Before choosing, creating, or moving a worktree, load the worktree operations reference and apply its repo-local default and external-root confirmation gate.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Treat generic commands as fallbacks only; preserve commits, branches, and validation gates when project or operator policy requires them.
+    - Preserve unrelated operator-owned work and verify the resulting local or remote refs before claiming completion.
   whenToUse:
-    - Making, splitting, or reviewing commits and commit messages.
-    - Choosing merge, rebase, cherry-pick, branch, PR, issue, or worktree workflows.
-    - Using GitHub CLI for issues, pull requests, CI status, labels, or merge operations.
-    - Setting up worktree-based isolation or enforcing Git hygiene.
+    - Staging, committing, amending, splitting, or validating commits and commit messages.
+    - Creating, switching, comparing, or cleaning up branches and worktrees.
+    - Choosing or executing local merge, rebase, cherry-pick, revert, or safe push workflows.
+    - Supplying repository-approved history semantics and exact branch/ref facts to a GitHub-owning skill.
   whenNotToUse:
-    - The task does not involve Git history, commits, branches, worktrees, PRs, issues, or GitHub CLI workflow.
-    - The user explicitly asks not to commit or not to use Git operations.
+    - GitHub repository, issue, pull-request, check, label, Actions, release, or settings work without a local Git-history decision; use gh-utility.
+    - Code-review findings, approval, severity, or merge-readiness judgment; use code-reviewer.
+    - Diagnosing or fixing failing GitHub pull-request checks; use gh-fix-ci.
+    - The task does not involve Git state, history, refs, commits, branches, worktrees, or push policy.
+    - The operator forbids the Git operation required to satisfy the request; report the constraint instead of substituting another mutation.
   workflow:
-    - id: stage-apply-git-engineer
-      title: Apply git-engineer guidance
-      goal: Apply policy-first Git guidance without overriding repo-specific branch, worktree, merge, cleanup, or validation rules.
+    - id: stage-establish-authority-and-state
+      title: Establish authority and repository state
+      goal: Resolve the exact authorized operation, target, policy, and pre-mutation evidence.
       steps:
-        - Match the request to the applicability criteria.
-        - Resolve repo policy before choosing base branch, PR merge method, cleanup timing, or force-push command; for worktree location, apply the stricter operator, repo-local policy, then portable-default precedence from the worktree reference.
-        - Follow the preserved overview sections for the concrete work.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Apply explicit operator instructions, repository policy, and the operation-specific readiness rules from the overview.
+        - Inspect the relevant repository root, branch, HEAD, index, worktree, upstream, remotes, refs, and in-progress operation state.
+        - Stop before mutation when authority, target, destructive scope, ownership, protection, or preservation of unrelated state remains materially ambiguous.
       validation:
-        - The outcome follows repo policy, preserved skill guidance, and loaded reference constraints.
-        - Destructive or history-collapsing operations require operator or repo-policy permission.
-  interop: []
+        - The exact operation, target, initial state, and authority are explicit.
+    - id: stage-execute-smallest-safe-operation
+      title: Execute the smallest safe Git operation
+      goal: Produce only the intended Git-state change while preserving unrelated operator-owned work.
+      steps:
+        - Apply repository commit policy first; otherwise use Conventional Commits with the default type emoji.
+        - Stage or rewrite only the intended paths, hunks, commits, branches, or refs and inspect the operation-specific delta before finalizing it.
+        - Preserve unrelated state, stop honestly on conflicts or failed leases, and do not auto-stash, reset, clean, or broaden the mutation to manufacture a clean result.
+      validation:
+        - The resulting delta matches the requested scope, and unresolved conflicts or residual changes remain visible.
+    - id: stage-verify-and-handoff
+      title: Verify terminal state and hand off
+      goal: Match completion status to freshly observed local and remote evidence.
+      steps:
+        - Re-read the resulting branch, HEAD, commit, index, worktree, and relevant refs; after a push, freshly read the remote destination ref.
+        - Classify the outcome as verified, partial, or blocked using the overview output contract.
+        - Report actions actually taken, exact OIDs, checks, preserved residual state, conflicts, evidence limits, and the smallest next action.
+      validation:
+        - A shown command, clean status, local tracking ref, or unavailable verification is not reported as completed evidence.
+  interop:
+    - id: interop-github
+      domain: GitHub repositories, issues, pull requests, checks, labels, Actions, platform merges, and other GitHub resource state
+      winner: gh-utility
+      rationale: git-engineer owns local history semantics and branch/ref facts; gh-utility owns GitHub execution, targeting, and fresh platform-state verification.
+    - id: interop-review
+      domain: Code-review findings, severity, approval, and merge-readiness judgment
+      winner: code-reviewer
+      rationale: git-engineer may execute an authorized Git action but does not issue a review verdict.
+    - id: interop-ci
+      domain: Diagnosis and remediation of failing GitHub pull-request checks
+      winner: gh-fix-ci when available
+      rationale: git-engineer supplies relevant local commit and branch state; the specialized CI skill owns diagnosis and fixes.
   commands: []
   gotchas:
-    - id: gotcha-default-branch-is-not-policy
+    - id: gotcha-clean-is-not-scope
       priority: high
-      text: "`gh repo view defaultBranchRef` is orientation, not base-branch, merge, worktree, or cleanup policy."
-    - id: gotcha-squash-destroys-intermediate-commits
+      text: A globally clean worktree is not required for a scoped Git operation; preserve and report unrelated changes instead of stashing, resetting, cleaning, or committing them.
+    - id: gotcha-command-is-not-result
       priority: high
-      text: Squash collapses commits; use it only when operator or repo policy permits it.
-    - id: gotcha-delete-branch-after-evidence
+      text: A command, exit code, local tracking ref, or generated report is not proof of the requested terminal state; inspect the resulting commit, refs, and fresh remote state as applicable.
+    - id: gotcha-implicit-force-lease
       priority: high
-      text: Delete remote task branches only after required post-merge evidence.
+      text: An implicit --force-with-lease can be defeated by background fetch; bind a named destination ref to the exact expected remote OID.
     - id: gotcha-external-worktree-root
       priority: high
       text: An outside-repository path in repository documentation or an existing shared worktree directory is not authority to use it without explicit operator confirmation.
   policies:
-    - id: policy-repository-git-policy-first
-      title: Repository Git policy first
-      text: Operator instructions, AGENTS.md, CONTRIBUTING.md, and linked process docs override generic defaults for branch base, PR merge method, validation gates, and cleanup timing. For worktree location, explicit operator instructions win; otherwise repository policy may override the portable default only with a repository-local root, while an outside-repository root requires explicit operator confirmation.
+    - id: policy-authorization
+      title: Operation-specific authorization
+      text: Inspection does not authorize mutation; commit does not authorize push; push does not authorize a pull request; rewrite, deletion, conflict resolution, and destructive cleanup require explicit operator or repository authority for the named target.
+    - id: policy-commit-default
+      title: Conventional Commits with emoji by default
+      text: Explicit operator instructions win, followed by mandatory repository policy and a clear consistent repository convention; otherwise use the portable Conventional Commit format and default type-to-emoji mapping from the overview.
+    - id: policy-preserve-operator-state
+      title: Preserve unrelated state
+      text: Stage, commit, rewrite, move, or push only the intended scope. Do not reset, restore, clean, auto-stash, or absorb unrelated operator-owned work merely to produce a clean status.
     - id: policy-repository-local-worktrees
       title: Repository-local worktrees by default
       text: Unless the operator explicitly chooses another location or confirms a justified external exception, create task worktrees under `<repository-root>/.worktrees/<task-slug>` and report the canonical path for review.
     - id: policy-force-push-safety
       title: Force-push safety
-      text: Force-push only an owned task branch, never a protected/mainline branch, and use `--force-with-lease` instead of `--force`.
+      text: Rewrite only an explicitly authorized owned non-protected task branch, bind the named destination ref to its observed expected remote OID with an explicit force-with-lease, use an explicit source/destination refspec, and freshly verify the remote ref after success.
+    - id: policy-evidence-status
+      title: Evidence-calibrated completion
+      text: Report verified only after observing the claimed terminal state; use partial when an action occurred but required evidence is unavailable, and blocked when safe completion requires missing authority, facts, conflict resolution, credentials, or external-state change.
   portability:
     required: true
     rules:

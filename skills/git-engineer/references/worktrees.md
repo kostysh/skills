@@ -37,7 +37,7 @@ Before creating a worktree under the repository root:
 4. If it is not ignored, add the repository-relative directory rule to the root `.gitignore`.
 5. Stage only the root `.gitignore` with an explicit path. Never use `git add .` in a dirty checkout.
 6. Inspect `git diff --cached --name-only` and `git diff --cached -- .gitignore`; the staged set must contain only the intended root `.gitignore` change.
-7. Create a separate Conventional Commit containing only that change.
+7. Create a separate commit containing only that change. Follow explicit operator or repository commit policy; otherwise use the `git-engineer` Conventional Commit and emoji default.
 8. Repeat `git check-ignore` and stop if the directory is still not ignored.
 
 Do not create the worktree when repository policy or operator instructions prohibit the required `.gitignore` commit, the staged scope cannot be isolated, or the ignore check cannot be established. Never commit the contents of the worktree root.
