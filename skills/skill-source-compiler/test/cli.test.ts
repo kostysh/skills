@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import YAML from 'yaml';
 import packageJson from '../package.json' with { type: 'json' };
 import { runCli } from '../src/run-cli.ts';
 
@@ -217,7 +218,7 @@ void test('built CLI lint, compile, and check succeed for the self-hosted bundle
     const compiledDir = path.join(tempRoot, 'skill-source-compiler');
     const compiledSkill = await readFile(path.join(compiledDir, 'SKILL.md'), 'utf8');
     assert.match(compiledSkill, /## Runnable commands/u);
-    assert.match(compiledSkill, /metadata:\n(?:.+\n)*\s+source-version: 0\.2\.8/u);
+    assert.match(compiledSkill, /metadata:\n(?:.+\n)*\s+source-version: 0\.2\.9/u);
     assert.doesNotMatch(compiledSkill, /\*\*Tests:\*\*/u);
     assert.doesNotMatch(compiledSkill, /test\/cli\.test\.ts/u);
     assert.match(compiledSkill, /references\/maintenance\.md/u);
@@ -351,6 +352,72 @@ void test('built CLI surfaces a warning when generated SKILL.md exceeds the reco
     assert.match(compile.stdout, /Warnings:/u);
     assert.match(compile.stdout, /recommended maximum 128 bytes/u);
     assert.match(compile.stdout, /Move detailed guidance into references\/\*/u);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('built CLI propagates the recommended skill description length warning', async () => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'skill-source-cli-description-length-'));
+  const sourcesRoot = path.join(tempRoot, 'sources');
+  const sourceRoot = path.join(sourcesRoot, 'source');
+
+  try {
+    await cp(SKILL_DIR, sourceRoot, { recursive: true });
+
+    const manifestPath = path.join(sourceRoot, 'skill.yaml');
+    const manifest = YAML.parse(await readFile(manifestPath, 'utf8')) as {
+      skill: { description: string };
+    };
+    manifest.skill.description = 'a'.repeat(301);
+    await writeFile(manifestPath, YAML.stringify(manifest), 'utf8');
+
+    const lint = await runBuiltCli(['lint', sourceRoot]);
+    assert.equal(lint.status, 0, lint.stderr);
+    assert.equal(lint.stderr, '');
+    assert.match(
+      lint.stdout,
+      /\[warning\] skill-description-too-long: Skill description exceeds the recommended 300-character limit\./u,
+    );
+
+    const regenerate = await runBuiltCli(['regenerate', sourceRoot]);
+    assert.equal(regenerate.status, 0, regenerate.stderr);
+    assert.equal(regenerate.stderr, '');
+    assert.match(
+      regenerate.stdout,
+      /Skill description exceeds the recommended 300-character limit\./u,
+    );
+
+    const compile = await runBuiltCli([
+      'compile',
+      sourceRoot,
+      '--out-dir',
+      path.join(tempRoot, 'compiled-one'),
+    ]);
+    assert.equal(compile.status, 0, compile.stderr);
+    assert.equal(compile.stderr, '');
+    assert.match(
+      compile.stdout,
+      /Skill description exceeds the recommended 300-character limit\./u,
+    );
+
+    const compiledDir = path.join(tempRoot, 'compiled-one', 'skill-source-compiler');
+    const check = await runBuiltCli(['check', compiledDir]);
+    assert.equal(check.status, 0, check.stderr);
+    assert.equal(check.stderr, '');
+
+    const compileAll = await runBuiltCli([
+      'compile-all',
+      sourcesRoot,
+      '--out-dir',
+      path.join(tempRoot, 'compiled-all'),
+    ]);
+    assert.equal(compileAll.status, 0, compileAll.stderr);
+    assert.equal(compileAll.stderr, '');
+    assert.match(
+      compileAll.stdout,
+      /Skill description exceeds the recommended 300-character limit\./u,
+    );
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

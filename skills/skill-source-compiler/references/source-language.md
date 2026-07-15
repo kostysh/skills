@@ -33,6 +33,9 @@ Reference files are for progressive disclosure, reusable detailed guidance, temp
 
 ## Size guidance
 
+- `skill.description` should not exceed 300 Unicode code points after YAML parsing and trimming
+- lint and compile emit a warning rather than an error when the description exceeds that recommendation
+- astral characters such as emoji count as one code point; combining marks count separately
 - `skill.recommended-skill-md-max-bytes` defines the recommended maximum UTF-8 size for the generated `SKILL.md`
 - compile should emit a warning, not a hard error, when the generated `SKILL.md` exceeds this limit
 - the default `20000` bytes is an approximate stand-in for the public recommendation to keep `SKILL.md` around `5000` tokens and under `500` lines

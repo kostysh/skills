@@ -5,6 +5,9 @@ import { loadSourceBundle, type LoadedSourceBundle } from './source-loader.ts';
 import { containsAbsolutePath, normalizeText } from './text.ts';
 
 const UNRESOLVED_TEMPLATE_MARKER = 'SKILL_SOURCE_TODO';
+const RECOMMENDED_SKILL_DESCRIPTION_MAX_CODE_POINTS = 300;
+const SKILL_DESCRIPTION_TOO_LONG_MESSAGE =
+  'Skill description exceeds the recommended 300-character limit.';
 
 export interface Diagnostic {
   readonly level: 'error' | 'warning';
@@ -62,6 +65,14 @@ const detectDuplicateNormativeTexts = (texts: readonly string[]): readonly strin
 const lintLoadedBundle = async (loaded: LoadedSourceBundle): Promise<LintResult> => {
   const diagnostics: Diagnostic[] = [];
   const { source } = loaded;
+
+  pushIf(
+    diagnostics,
+    [...source.skill.description].length > RECOMMENDED_SKILL_DESCRIPTION_MAX_CODE_POINTS,
+    'warning',
+    'skill-description-too-long',
+    SKILL_DESCRIPTION_TOO_LONG_MESSAGE,
+  );
 
   const ids = [
     ...source.references.map((entry) => entry.id),

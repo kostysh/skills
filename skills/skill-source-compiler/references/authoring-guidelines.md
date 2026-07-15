@@ -73,9 +73,9 @@ The `description` field is the trigger surface and is loaded before the rest of 
 - imperative: tell the agent when to use the skill
 - focused on user intent, not internal implementation
 - concise: a few sentences to a short paragraph
-- within the spec limit of 1024 characters
+- no more than the recommended 300 Unicode code points after YAML parsing and trimming
 
-When refining a description, test both should-trigger and should-not-trigger prompts so you do not broaden it blindly.
+The compiler emits a warning, not an error, above this recommendation. Astral characters such as emoji count as one code point; combining marks count separately. When refining a description, test both should-trigger and should-not-trigger prompts so you do not broaden it blindly.
 
 ## Specification alignment
 

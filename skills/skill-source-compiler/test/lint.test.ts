@@ -48,6 +48,12 @@ sections:
       - Confirm no reference files are required.
 `;
 
+const manifestWithDescription = (description: string): string =>
+  noReferenceManifest.replace(
+    'description: Simple generated skill without active references.',
+    `description: ${description}`,
+  );
+
 void test('lintSourceBundle accepts the example source bundle', async () => {
   const result = await lintSourceBundle(fixtureRoot);
   assert.equal(result.ok, true, result.diagnostics.map((entry) => entry.message).join('\n'));
@@ -63,6 +69,78 @@ void test('lintSourceBundle accepts source bundles without active references', a
     const result = await lintSourceBundle(tempRoot);
     assert.equal(result.ok, true, result.diagnostics.map((entry) => entry.message).join('\n'));
     assert.deepEqual(result.diagnostics, []);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('lintSourceBundle warns only above 300 Unicode code points', async () => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'skillforge-lint-description-length-'));
+
+  try {
+    const exactlyThreeHundred = `${'a'.repeat(299)}😀`;
+    await writeFile(
+      join(tempRoot, 'skill.yaml'),
+      manifestWithDescription(exactlyThreeHundred),
+      'utf8',
+    );
+
+    const boundaryResult = await lintSourceBundle(tempRoot);
+    assert.equal(boundaryResult.ok, true);
+    assert.deepEqual(boundaryResult.diagnostics, []);
+
+    const threeHundredAndOne = `${exactlyThreeHundred}b`;
+    await writeFile(
+      join(tempRoot, 'skill.yaml'),
+      manifestWithDescription(threeHundredAndOne),
+      'utf8',
+    );
+
+    const aboveBoundaryResult = await lintSourceBundle(tempRoot);
+    assert.equal(aboveBoundaryResult.ok, true);
+    assert.deepEqual(aboveBoundaryResult.diagnostics, [
+      {
+        code: 'skill-description-too-long',
+        level: 'warning',
+        message: 'Skill description exceeds the recommended 300-character limit.',
+      },
+    ]);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});
+
+void test('lintSourceBundle counts combining marks separately and accepts descriptions above 1024 code points', async () => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'skillforge-lint-long-description-'));
+
+  try {
+    await writeFile(
+      join(tempRoot, 'skill.yaml'),
+      manifestWithDescription(`${'a'.repeat(299)}e\u0301`),
+      'utf8',
+    );
+
+    const combiningMarkResult = await lintSourceBundle(tempRoot);
+    assert.equal(combiningMarkResult.ok, true);
+    assert.ok(
+      combiningMarkResult.diagnostics.some(
+        (entry) => entry.code === 'skill-description-too-long' && entry.level === 'warning',
+      ),
+    );
+
+    await writeFile(
+      join(tempRoot, 'skill.yaml'),
+      manifestWithDescription('a'.repeat(1_025)),
+      'utf8',
+    );
+
+    const formerlyRejectedResult = await lintSourceBundle(tempRoot);
+    assert.equal(formerlyRejectedResult.ok, true);
+    assert.ok(
+      formerlyRejectedResult.diagnostics.some(
+        (entry) => entry.code === 'skill-description-too-long' && entry.level === 'warning',
+      ),
+    );
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }
@@ -92,6 +170,7 @@ void test('lintSourceBundle reports duplicate ids', async () => {
     'docs/issues/design-notes.md',
     'docs/logs/implementation-log-20260710-1.md',
     'docs/logs/implementation-log-20260713-1.md',
+    'docs/logs/implementation-log-20260715-1.md',
     'fragments/overview.md',
     'fragments/final-checks.md',
     'scripts/skill-source-compiler.mjs',
@@ -129,6 +208,7 @@ void test('lintSourceBundle requires package.json when commands are documented',
     'docs/issues/design-notes.md',
     'docs/logs/implementation-log-20260710-1.md',
     'docs/logs/implementation-log-20260713-1.md',
+    'docs/logs/implementation-log-20260715-1.md',
     'fragments/overview.md',
     'fragments/final-checks.md',
     'scripts/skill-source-compiler.mjs',

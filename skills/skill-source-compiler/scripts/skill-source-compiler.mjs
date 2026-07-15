@@ -17,7 +17,7 @@ var __exportAll = (all, no_symbols) => {
 //#endregion
 //#region package.json
 var name = "@kostysh/skill-source-compiler-cli";
-var version$1 = "0.2.4";
+var version$1 = "0.2.5";
 var description = "CLI utilities for the skill-source-compiler skill.";
 var type = "module";
 var bin = { "skill-source-compiler": "scripts/skill-source-compiler.mjs" };
@@ -10079,7 +10079,7 @@ function superRefine(fn) {
 //#endregion
 //#region src/schema.ts
 var nonEmptyString = string().trim().min(1);
-var descriptionString = nonEmptyString.max(1024);
+var descriptionString = nonEmptyString;
 var positiveInteger = number().int().positive();
 var versionString = string().trim().regex(/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/u, "Version must be semver-like.");
 var skillName = string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u, "Skill names must be lowercase kebab-case.").max(64);
@@ -10277,6 +10277,8 @@ var containsAbsolutePath = (input) => {
 //#endregion
 //#region src/lint.ts
 var UNRESOLVED_TEMPLATE_MARKER = "SKILL_SOURCE_TODO";
+var RECOMMENDED_SKILL_DESCRIPTION_MAX_CODE_POINTS = 300;
+var SKILL_DESCRIPTION_TOO_LONG_MESSAGE = "Skill description exceeds the recommended 300-character limit.";
 var pushIf = (diagnostics, condition, level, code, message) => {
 	if (condition) diagnostics.push({
 		code,
@@ -10308,6 +10310,7 @@ var detectDuplicateNormativeTexts = (texts) => {
 var lintLoadedBundle = async (loaded) => {
 	const diagnostics = [];
 	const { source } = loaded;
+	pushIf(diagnostics, [...source.skill.description].length > RECOMMENDED_SKILL_DESCRIPTION_MAX_CODE_POINTS, "warning", "skill-description-too-long", SKILL_DESCRIPTION_TOO_LONG_MESSAGE);
 	const ids = [
 		...source.references.map((entry) => entry.id),
 		...source.assets.map((entry) => entry.id),

@@ -97,6 +97,7 @@ Manifest entries whose `source` and `target` resolve to the same path are valida
 
 - confirm documented commands match the built CLI help surface
 - confirm every documented command still has tests
+- confirm `skill.description` is at most 300 Unicode code points or that the compiler warning is explicitly accepted pending author remediation
 - confirm documented modes, metrics, configuration surfaces, and active references are current behavior, not future substrate
 - confirm `SKILL.md`, `docs/compile-report.md`, runtime files, and source tests reflect the same change set
 - compile to an isolated directory and prove the emitted runtime works there without relying on omitted source files, package metadata, or toolchain configuration

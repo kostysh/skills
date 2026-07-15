@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.2.8
+  source-version: 0.2.9
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
@@ -77,6 +77,10 @@ supporting:
     source: docs/logs/implementation-log-20260713-1.md
     target: docs/logs/implementation-log-20260713-1.md
     description: Non-normative implementation log for the end-to-end compiler hardening review.
+  - id: supporting-implementation-log-20260715-1
+    source: docs/logs/implementation-log-20260715-1.md
+    target: docs/logs/implementation-log-20260715-1.md
+    description: Non-normative implementation log for the recommended skill description length warning.
 
 surfaces:
   active:
@@ -203,6 +207,7 @@ sections:
       outputs:
         - OK or FAIL status on stdout.
         - Structured diagnostic lines on stdout.
+        - A warning when skill.description exceeds 300 Unicode code points.
         - Exit code 1 when validation errors are found.
       examples:
         - node scripts/skill-source-compiler.mjs lint <source-dir>

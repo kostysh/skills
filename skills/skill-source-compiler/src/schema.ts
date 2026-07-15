@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const nonEmptyString = z.string().trim().min(1);
-const descriptionString = nonEmptyString.max(1024);
+const descriptionString = nonEmptyString;
 const positiveInteger = z.number().int().positive();
 const versionString = z
   .string()

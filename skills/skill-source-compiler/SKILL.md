@@ -9,9 +9,9 @@ compatibility: Designed for skills-compatible agents that can read Markdown
   files and copy local files inside the skill folder. The packaged CLI at
   scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 metadata:
-  source-version: 0.2.8
+  source-version: 0.2.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: eb93734e73ff95555afb172f7c2b4db161c14faf410f5ea469e6e3af387bd775
+  skillforge-source-hash: e3a2115edc32ede8487d9906ff8ece54810162a50098ba808d38e2e59c7ecaee
 ---
 
 # skill-source-compiler
@@ -139,7 +139,7 @@ Validation:
 
 **Inputs:** Source bundle directory path.
 
-**Outputs:** OK or FAIL status on stdout.; Structured diagnostic lines on stdout.; Exit code 1 when validation errors are found.
+**Outputs:** OK or FAIL status on stdout.; Structured diagnostic lines on stdout.; A warning when skill.description exceeds 300 Unicode code points.; Exit code 1 when validation errors are found.
 
 **Examples:** node scripts/skill-source-compiler.mjs lint <source-dir>
 
