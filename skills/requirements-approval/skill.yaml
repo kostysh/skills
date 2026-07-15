@@ -5,10 +5,10 @@ skill:
   source-version: 0.1.1
   recommended-skill-md-max-bytes: 12000
   description: >-
-    Organize customer requirements approvals: resolve open questions, create GitHub
-    approval tasks, process replies via Gmail/GitHub, and propagate accepted
-    decisions into PRDs, architecture, specs, and plans. Also use for «согласование
-    требований», «открытые вопросы» and «ответы заказчика».
+    Organize requirements approvals: identify open questions, research which can be
+    resolved internally, route customer-owned decisions, create GitHub tasks,
+    process Gmail/GitHub replies, and propagate accepted decisions into PRDs,
+    architecture, specs, and plans. Also use for «согласование требований».
 fragments:
   overview: fragments/overview.md
 copies:
