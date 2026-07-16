@@ -10,7 +10,9 @@
 - Default to the lowest abstraction that still solves the real problem.
 - Before adding a new framework or library, check the first sufficient rung: built-in `node:util.parseArgs`, native shell/stdin/stdout behavior, a dependency already present in the project, then one small local adapter. Add a new CLI framework only when those rungs cannot meet the command, help, validation, extensibility, or TTY contract.
 - Verify the current Active LTS Node version and the current framework major before hardcoding version guidance into project files or docs.
-- Within this repository's tooling standard, prefer Vite for bundling and `node:test` for tests unless the target framework or repo already mandates something else. Treat that as a local convention, not as a universal ecosystem default.
+- For new CLI work and when build/test tooling is selected or replaced, use Vite and `node:test`. Never add or invoke `tsx`; use the current Active LTS native type-stripping path for compatible TypeScript.
+- Use Vitest only when the user or an authoritative project contract explicitly requires it.
+- Preserve an existing non-Vite build when migration is outside the request, verify its actual artifact, and report the deviation instead of expanding the alternative into another standard.
 - Preserve an existing framework unless it is the source of the problem or clearly blocks the required capability.
 
 ## Decision Matrix
@@ -148,8 +150,8 @@ Do not default to a TUI just because it looks modern. Prefer prompts over full-s
 
 - Parser: `node:util.parseArgs` or `commander`
 - Validation: runtime schema validation at the CLI boundary
-- Bundling: Vite by default when bundling is needed; no bundler is fine if the runtime path is intentionally unbundled
-- Tests: `node:test` or repo-standard runner
+- Bundling: Vite
+- Tests: `node:test`
 - Packaging: standard npm package with a `bin` entry
 
 ### Standard Production CLI
@@ -166,14 +168,14 @@ Do not default to a TUI just because it looks modern. Prefer prompts over full-s
 - Framework: `oclif`
 - Architecture: commands + app/domain services; plugins treated as a trust boundary
 - Tests: command execution, plugin lifecycle, artifact smoke tests
-- Bundling: use the repo or framework standard if it is stronger than the default Vite baseline
+- Bundling: Vite for new work; preserve an existing framework build only when migration is outside scope
 - Packaging: npm plus installers/tarballs only when the distribution model truly needs them
 
 ### Rich Interactive CLI / TUI
 
 - Router: `commander`, `cac`, or `oclif`
 - UI: Ink
-- Bundling: Vite remains the default baseline unless the UI stack or repo has a stronger constraint
+- Bundling: Vite; stop on an unresolved incompatibility instead of silently replacing the standard
 - Rules: must still expose a non-interactive path, stable exit codes, and machine-readable fallback output
 
 ## Framework Notes

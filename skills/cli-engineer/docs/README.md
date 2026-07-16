@@ -22,3 +22,8 @@
 | [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260702-1.md](logs/implementation-log-20260702-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
+| [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) | Direct operator request | Independent PASS |
+
+## Forward-test evidence
+
+- [forward-tests/forward-test-evidence-20260716-1.md](forward-tests/forward-test-evidence-20260716-1.md) — blind boundary, tooling, release-authority, substrate-only, completion, and interop cases for source version 0.2.0.

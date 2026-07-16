@@ -136,7 +136,7 @@ CLIG is an excellent baseline, but adapt it carefully for this repository domain
 - CLIG does not focus on full-screen terminal programs. Use it for the command contract around a TUI, not as the sole guidance for persistent terminal UI design.
 - For Node.js, standalone distribution is a decision, not an absolute rule. npm distribution remains a sound default for interpreter-native or developer-facing tools; use SEA or installers only when distribution requirements justify the extra contract.
 - CLIG is stricter than many ecosystems about secret environment variables. For new designs, prefer files, stdin, keychain integration, secret managers, or IPC over env vars. If an existing ecosystem already depends on env-based secrets, document the risk and keep the interface explicit.
-- This repository standard uses Vite as the default CLI bundler and `node:test` as the default test baseline unless a repo or framework has a stronger established standard. Treat that as a local convention layered on top of CLIG, not as a universal ecosystem default.
+- This skill's standard stack uses the current Active LTS Node.js line, TypeScript, Vite, `node:test`, and native type stripping, and prohibits `tsx`. An existing non-Vite build may be preserved when migration is outside the request; Vitest requires an explicit user or authoritative project contract. Treat these as this skill's operating standard layered on top of CLIG, not as a universal ecosystem claim.
 
 ## What To Pull Into Reviews
 

@@ -10,13 +10,17 @@ Before scaffolding:
 - identify the source material: OpenAPI, SDK docs, curl examples, browser workflow, existing script, or admin tool
 - name the first concrete jobs in user language, for example `list drafts`, `download failed job logs`, or `search messages`
 
-For installable CLIs, check whether the proposed command already exists:
+For installable CLIs, check whether the proposed command already exists with the platform's command-resolution mechanism. Examples:
 
 ```bash
 command -v <tool-name> || true
 ```
 
-If the name is already taken, pick a clearer binary name before you scaffold the package and docs around it.
+```powershell
+Get-Command <tool-name> -ErrorAction SilentlyContinue
+```
+
+Treat these as platform-specific examples, not a universal command. If the name is already taken, pick a clearer binary name before you scaffold the package and docs around it.
 
 ## Command taxonomy
 
@@ -37,11 +41,12 @@ Service-backed write commands that mutate external systems are protected command
 
 ## Auth and config
 
-For secrets and tokens, prefer the boring path first:
+For secrets and tokens, follow the provider's established safe convention first:
 
 1. environment variables with the provider's standard name when one exists
 2. documented user config for normal usage
-3. explicit token flags only for one-off tests
+3. keychain, secret-manager, stdin, or IPC integration when the provider and threat model support it
+4. explicit token flags only for authorized one-off tests when no safer supported route exists
 
 `doctor --json` should report:
 
@@ -72,12 +77,15 @@ Minimum checks:
 - install instructions are explicit
 - the command works outside the source directory
 
-Smoke test from another working directory such as `/tmp` or an unrelated repo:
+Pack the package, install it into an isolated platform-appropriate temporary project, and invoke the exact installed bin outside the source tree. Verify:
 
-```bash
-command -v <tool-name>
-<tool-name> --help
-<tool-name> --json doctor
-```
+- `--help`
+- `--version`
+- `--json doctor`
+- one representative read or write job permitted by the test environment
+- one representative failure path
+- exit status, stdout/stderr, and relevant service-side or local side effects
 
-Do not treat `pnpm exec`, `npm run`, or source-mode wrappers as proof that the installed CLI contract works.
+Use platform APIs or test-runner temp utilities rather than a universal `/tmp` path. Use `command -v` only in a POSIX branch and `Get-Command` or the applicable package-manager shim in a Windows branch.
+
+Do not treat `pnpm exec`, `npm run`, source-mode wrappers, help-only smoke, or a mocked adapter as proof that the installed service-backed CLI works. A real service, official sandbox, or authoritative contract-conformant boundary must exercise the representative job before the real integration is called `verified`; otherwise report `partial` and name the missing boundary.

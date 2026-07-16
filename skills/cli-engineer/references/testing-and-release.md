@@ -1,242 +1,214 @@
 # CLI Testing And Release
 
-## Language And Runner Baseline
+Read this reference when changing CLI tests, the Vite artifact contract, installability, release readiness, or an explicitly authorized publication.
 
-For this skill, runtime code and tests are both TypeScript.
+Current upstream evidence should come from the official [Node.js release table](https://nodejs.org/en/about/previous-releases), [Node.js TypeScript contract](https://nodejs.org/dist/latest/docs/api/typescript.html), [Vite build options](https://vite.dev/config/build-options.html), and [npm trusted-publishing guidance](https://docs.npmjs.com/trusted-publishers/). These links are optional provenance; the local behavioral contract below remains usable offline.
 
-- execute tests with Node's built-in runner and native type stripping
-- representative command: `node --experimental-strip-types --test test/*.test.ts`
-- do not use the `tsx` runtime to execute tests
-- keep test entrypoints and helpers compatible with direct Node execution
+## Language, runtime, and runner baseline
 
-## Test Pyramid
+For new CLI test surfaces and when replacing test tooling:
 
-Treat CLI quality as more than parser correctness.
+- use TypeScript for runtime code and tests
+- use `node:test` as the test runner
+- resolve the current Active LTS Node.js line from official Node.js sources before setting `engines`, CI, or test commands
+- use the native type-stripping behavior supported by that Active LTS; do not preserve obsolete experimental flags by memory
+- run an explicit TypeScript typecheck because native stripping does not type-check
+- keep directly executed test files and helpers within Node's supported erasable TypeScript profile and independent of `tsconfig`-only runtime transforms such as `paths`
+- never add or invoke `tsx`; rewrite incompatible test helpers to erasable TypeScript or execute Vite-built JavaScript
+- use Vitest only when the user or an authoritative project contract explicitly requires it
+
+Use a portable package script such as `node --test` when current Node discovery covers the repository layout. If explicit paths are required, avoid shell-only glob assumptions and verify the script on every claimed platform.
+
+## Test pyramid
 
 ### Unit tests
 
-Unit tests are mandatory.
+Unit tests are mandatory. Test use cases, domain rules, error mapping, option validation, parsers, and pure formatters without real processes or networks.
 
-Test:
+### Process integration tests
 
-- use cases
-- domain rules
-- error mapping helpers
-- pure formatters and parsers
+Execute the CLI as a real process and assert:
 
-Keep these free of real process spawning and real network I/O.
-
-### Integration tests
-
-Execute the CLI as a real process and assert on:
-
-- exit code
+- exit status
 - `stdout`
 - `stderr`
-- filesystem side effects
-- environment-dependent behavior
+- filesystem and persistence effects
+- environment, locale, color, CI, TTY, timeout, and interruption behavior when relevant
 
-Use temporary directories and isolated env vars. Prefer black-box assertions over internal mocking here.
+Use isolated environment variables and platform-appropriate temporary directories. Keep black-box process assertions independent of parser internals.
 
-If the CLI is intended to be invoked as an installed command outside its source repository, include at least one smoke test from another working directory such as `/tmp` or an unrelated repo. Verify `command -v <tool-name>` and execute the real installed command rather than only package-manager wrappers.
+### Public contract tests
 
-### Contract tests
+Cover the interfaces users and automation depend on:
 
-Lock down public CLI surface:
-
-- `--help`
-- `--version` / `-V` for installable or user-facing CLIs
-- concise help when required args are missing, unless the command is intentionally interactive-first and still exposes a non-interactive path
-- `--json`
-- `--plain` when the CLI explicitly supports a richer human view that needs a script-safe escape hatch
+- `--help` and command-local help
+- `--version` / `-V`
+- missing-required-input behavior
+- `--json` schemas and `--plain` when supported
 - stable exit-code mappings
-- machine-readable schema for automation-facing commands
-- documented debug or verbose behavior
-- deprecation warnings for interfaces scheduled to change
+- stdout/stderr separation
+- non-interactive behavior
+- deprecation warnings and migration behavior
+- completion output when the CLI exposes completion
 
-Be selective with snapshots. Snapshot only stable contract surfaces, not noisy debug output.
+Snapshot only stable public surfaces, not incidental debug text.
 
-### Protected command contract tests
+### Protected command tests
 
-For commands that can trigger deploy, rollback, release, infra mutation, external executors, subprocesses, network mutation, filesystem mutation, persistence mutation, or comparable protected side effects, add contract coverage for:
+For deploy, rollback, release, infrastructure, subprocess, network, filesystem, persistence, or other protected actions, prove:
 
-- unknown flag rejection
-- removed or prohibited legacy flag rejection
-- deprecated-but-supported alias warning and migration behavior when such an alias remains supported
-- assertion that service, executor, subprocess, network, filesystem, or persistence dependencies are not invoked on validation failure
+- unknown options fail
+- removed or prohibited legacy options fail
+- supported deprecated aliases warn and map explicitly
+- service, executor, subprocess, network, filesystem, and persistence dependencies are not invoked after validation failure
 
-Do not treat integration or smoke coverage as a substitute for proving validation fails before protected side effects.
+Validation must fail before the protected side-effect boundary.
 
-## Runner Selection
+## Interactive and TUI testing
 
-### `node:test`
+Test both interactive and automation paths:
 
-Prefer when:
+- prompts appear only with suitable TTY input
+- `--no-input`, `--yes`, or an equivalent bypass works
+- Ctrl-C and abort paths terminate predictably
+- progress, color, and full-screen rendering degrade safely in CI and non-TTY environments
+- secret prompts do not echo input
 
-- the CLI is pure Node.js
-- you want low dependency surface
-- process-level integration is the main concern
-- the repository does not already have a stronger established runner standard
+Framework helpers may reduce rendering boilerplate, but they do not replace process-level coverage of the real entrypoint.
 
-Good fit:
+## Quality gate
 
-- small and medium CLIs
-- internal tools
-- repositories already committed to Node-native execution
-
-This is the required test baseline for this skill.
-
-Use it to cover:
-
-- pure unit tests for use cases and formatters
-- spawned process tests for exit code, `stdout`, `stderr`, and filesystem effects
-- contract tests for help, `--json`, deprecations, and non-interactive behavior
-- smoke tests that execute the built artifact rather than only source-mode entrypoints
-
-Use built-in mocking only where it meaningfully simplifies isolated tests. Keep published-command verification black-box and process-level.
-
-Do not replace this with `tsx`-driven test execution. If the repo needs TypeScript test execution without precompilation, use Node's type-stripping path directly.
-
-### Framework-specific helpers
-
-Use them only when they materially reduce boilerplate.
-
-- `@oclif/test` is useful for oclif command execution
-- framework helpers do not replace `node:test` as the primary runner or process-level tests for published artifacts
-
-## TUI And Interactive Testing
-
-For prompts and TUI flows, always test both:
-
-- TTY / interactive path
-- non-TTY / piped / CI path
-
-Verify:
-
-- prompts do not appear when `stdin` is not interactive
-- `--yes`, `--no-input`, or equivalent bypasses exist
-- Ctrl-C and abort flows are handled cleanly
-- color/spinner/progress behavior degrades safely in CI or non-TTY
-- password prompts do not echo sensitive input
-
-If the interactive framework offers test helpers, use them, but still keep at least one process-level smoke test for the real entrypoint.
-
-## Locale And Environment Tests
-
-Do not let tests depend accidentally on the developer's terminal, locale, timezone, or color support.
-
-- set locale, timezone, color, CI, and TTY-related environment variables explicitly when assertions depend on them
-- assert behavior and structured fields before asserting translated or human-facing prose
-- test non-TTY and piped paths separately from interactive paths
-- keep fixture paths portable across Windows, macOS, and Linux
-
-## Quality Gate Baseline
-
-If the target CLI repository does not already provide an equivalent gate, add one.
-
-Minimum required quality checks before a CLI is considered ready:
+If the target repository lacks an equivalent gate, add package scripts for:
 
 1. typecheck
 2. format check
 3. lint
-4. unit tests
-5. integration tests
-6. contract tests
-7. build
-8. artifact smoke test
+4. `node:test` unit, integration, and contract coverage
+5. Vite build
+6. built-artifact smoke
+7. packed and installed-command verification for durable CLIs
 
-Repository scripts should expose these checks clearly and should be the commands the agent actually runs before calling the work ready.
+Expose at least `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`. Preserve narrower formatter/linter scripts when the repository uses split tooling.
 
-Minimum package-level script surface:
+The gate is necessary evidence, not sufficient proof of the user job. Do not call the CLI `verified` merely because these commands are green.
 
-- `typecheck`
-- `format`
-- `format:check`
-- `lint`
-- `lint:fix`
-- `test`
+## Vite artifact verification
 
-If the repository uses split tooling, expose the narrower scripts too. In this repository's standard that normally means:
+For new CLI builds, Vite is the standard bundler. Verify the installed Vite major and current official configuration surface before authoring config.
 
-- `lint:biome`
-- `lint:eslint`
+The build must preserve:
 
-Recommended usage pattern:
+- an explicit Node-oriented entry and target matching the current Active LTS baseline
+- executable startup and shebang behavior
+- deliberate externalization of Node built-ins, native addons, plugin hosts, and dynamic runtime integrations
+- package assets and runtime-relative paths
+- sourcemaps unless the distribution contract forbids them
+- an output path that matches `package.json#bin` and `package.json#files`
 
-1. run `format` or `lint:fix` while iterating
-2. run `lint` before handing the CLI over for review
-3. run `test` before declaring the package ready
+If an existing project uses another build and migration is outside the request, verify its actual artifact without introducing a second bundler. Report the deviation from this skill's standard; do not claim Vite conformance.
 
-The exact formatter or linter may vary by repo, but the gate itself should not be omitted just because the repository started without one.
+## Installed-command evidence
 
-## Release Baseline
+For a CLI intended to work outside its source tree, build success and source-mode execution are insufficient.
 
-Minimum baseline for a production CLI:
+1. Inspect the manifest identity, `bin`, `files`, `engines`, and version source.
+2. Inspect `npm pack --dry-run`, then create the tarball when local writes are authorized.
+3. Install that tarball into an isolated, platform-appropriate temporary project.
+4. Resolve and invoke the exact installed bin without relying on the source checkout.
+5. Run `--help`, `--version`, one representative success job, and one representative failure job.
+6. Record exit status, stdout/stderr, side effects, runtime/platform, and cleanup result.
 
-1. typecheck
-2. unit tests
-3. integration tests
-4. contract tests
-5. build
-6. artifact smoke test
-7. non-TTY / CI smoke path for interactive-capable commands
+Use platform APIs or test-runner temp utilities rather than a universal `/tmp` path. On Windows, resolve the installed command with the applicable package-manager shim or `Get-Command`/`where.exe`; on POSIX, `command -v` may be used only as a platform-specific branch. The proof is execution of the exact installed bin, not the lookup utility itself.
 
-Do not publish a CLI because unit tests passed while the built artifact was never executed.
+## Representative job and service boundary
 
-## Packaging Rules
+The strongest readiness claim must exercise a representative user job through the built or installed entrypoint.
+
+For local-only CLIs, observe the intended file, process, or output result. For service-backed CLIs, use one of:
+
+- the real intended service under authorized safe conditions
+- an official sandbox or staging service
+- an authoritative contract-conformant boundary that exercises request construction, auth/config selection, response handling, and observable job result
+
+A parser test, help smoke, mocked adapter, stub response, or `doctor` command does not verify a real service job. Report mock/stub-only evidence as `partial` and name the unverified boundary.
+
+## Packaging rules
 
 For npm-distributed CLIs:
 
-- define `bin`, preferably as an explicit command-name object for published CLIs
-- keep `files` tight
-- publish only built runtime files and required assets
-- set `engines.node` intentionally
-- ensure shebang handling survives the build tool
-- expose `--version` / `-V` from the same version source used by release tooling
-- make uninstall straightforward and documented where install instructions are published
-- for bundled TypeScript CLIs, prefer Vite as the default bundler baseline and configure it for a Node target rather than browser defaults
-- choose the build output directory with the operator for the target repo; `dist/` is common, but `bin/` or `scripts/` may be the correct runtime folder in repos with established conventions
-- verify the built executable entry through the real `bin` path after bundling, not only via direct source execution
+- define `bin`, preferably as an explicit command-name object
+- keep `files` tight and publish only built runtime files and required assets
+- set `engines.node` from the current Active LTS decision for new work, or from the authoritative supported-runtime contract for an existing project
+- preserve the environment-based Node shebang through Vite output or a verified wrapper/post-build step
+- expose `--version` from the package/release version source of truth
+- document install and cleanup behavior
+- verify the real bin path after packing and installation
 
-For standalone distribution:
+Use Node SEA or other standalone distribution only when a real consumer requirement justifies the additional OS/architecture contract. Verify each shipped artifact independently.
 
-- use Node SEA only when the distribution requirement is real
-- smoke test each target OS/arch artifact
-- validate assets, dynamic imports, and runtime path assumptions before promising standalone support
+## Release preparation versus publication
 
-For user-facing general-purpose tools, decide explicitly whether a standalone artifact materially improves installation and removal. For language-specific tooling, npm-only distribution is often enough.
+Release preparation may:
 
-## Supply-chain And Publish Safety
+- run the quality gate
+- build Vite artifacts
+- inspect packed contents
+- create and locally install a tarball
+- verify version, changelog, deprecations, provenance configuration, and release notes
+- report `release-ready` when all required local and boundary evidence passes
 
-- commit lockfiles
-- publish from CI, not from a laptop shell, when the product matters
-- prefer trusted publishing where the registry supports it
-- generate provenance/attestations when available
-- rotate or eliminate long-lived publish tokens
-- keep analytics and update checks out of the publish path unless they are deliberately tested and disclosed
+Release preparation does **not** authorize:
 
-## Release Workflow
+- `npm publish`
+- registry, access, dist-tag, or trusted-publisher configuration changes
+- Git commits, tags, pushes, or branch mutations
+- GitHub releases or workflow changes
 
-Typical release flow:
+Route Git mutations to `git-engineer` and GitHub operations to `gh-utility`.
 
-1. run required checks
-2. build CLI artifacts
-3. smoke test built package and optional standalone artifacts
-4. publish package
-5. verify install, `command -v`, and command startup from a clean environment or unrelated working directory
-6. verify update path if the CLI has plugin or self-update behavior
-7. verify uninstall or clean removal instructions still work
+## Authorized npm publication
 
-For public versioned releases, keep SemVer, npm tags, changelog/release notes, and documented deprecations aligned with the CLI's public interfaces: flags, env vars, config keys, command output schemas, and command names.
+Before any registry write, require and freshly confirm:
 
-## Review Checklist
+- exact package name and package identity
+- registry URL
+- version
+- dist-tag
+- access/visibility
+- release target and source revision
+- credentials or trusted-publishing path
+- explicit authorization for the exact publication
 
-- Was the real built command executed in tests?
-- Are stdout/stderr and exit codes asserted?
-- Are non-interactive and CI paths covered?
-- Are deprecation and migration surfaces tested when interfaces evolve?
-- For protected commands, are unknown flags, removed/prohibited legacy flags, deprecated supported aliases, and fail-before-side-effects behavior tested?
-- Are publish credentials and provenance handled safely?
-- Are optional standalone artifacts treated as a separately verified contract?
-- Does the published package include only intended runtime files and required assets?
-- Can users identify the running CLI version from `--version` and support/error paths?
+Prefer CI trusted publishing and provenance when the registry and repository support them. Stop if identity, target, version, access, authorization, or credentials are ambiguous.
+
+After an authorized write:
+
+1. read the exact package version and dist-tag from the target registry;
+2. install that exact published version from the target registry in a clean temporary project;
+3. execute the installed bin and representative smoke/job checks;
+4. report observed registry state and command behavior separately from the requested mutation.
+
+If the publish response is ambiguous, read the registry before retrying. Never retry a publication blindly.
+
+## Evidence states
+
+| State | Minimum evidence |
+| --- | --- |
+| `design/draft` | Decision-complete design or release proposal; no implementation claim |
+| `implemented` | Authorized files changed; required verification incomplete or failing |
+| `verified` | Representative job passes through the built or installed entrypoint and claimed boundary |
+| `release-ready` | `verified` plus packed-content, clean-install, version, and release-contract checks |
+| `published` | Authorized registry write plus fresh registry metadata and clean install of that exact version |
+| `partial` | Some bounded evidence passed, but a claimed platform, install, service, or release boundary remains unverified |
+| `blocked` | Required authority, target, source, compatibility, credential path, or safe verification is missing |
+
+## Review checklist
+
+- Does the test command use `node:test` and the current Active LTS-supported TypeScript path without `tsx`?
+- Was the exact built and installed command executed outside the source tree?
+- Did a representative success and failure job run, not only help/version?
+- Are stdout/stderr, exit codes, non-TTY behavior, and protected fail-before-side-effects asserted?
+- Is every claimed service or platform boundary actually exercised and named?
+- Are release preparation and publication authority separated?
+- Were packed contents inspected before publication and exact registry/install state read afterward?
+- Does the final reported state match the strongest observed evidence?

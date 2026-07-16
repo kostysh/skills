@@ -213,7 +213,7 @@ For package-based CLI work:
 - `package.json#version` is the single source of truth for `--version` unless the repository has a stronger release metadata source
 - `package.json#engines.node` states the supported Node baseline, and unsupported runtimes fail early with a clear message when practical
 - tiny shell wrappers are acceptable, but do not bury real product logic in `bin/`
-- Vite is the default bundler baseline when bundling is required
+- Vite is the standard build bundler for new CLIs and when build tooling is selected or replaced
 - for Vite-based CLI builds, set an explicit Node-oriented target and entry instead of relying on browser defaults
 - set the bundler output directory explicitly so the runtime path matches the agreed package layout
 - keep sourcemaps enabled for production debugging unless the distribution model has a strong reason not to
@@ -225,9 +225,11 @@ In a pnpm workspace:
 - shared libraries should be imported as libraries, not copy-pasted into each CLI
 - one-off repo scripts should not quietly grow into unversioned pseudo-products
 
-## Vite Bundling Baseline
+## Vite Build Standard
 
-In this repository, Vite is the default bundler convention for straightforward TypeScript CLIs. Treat the following recipe as a lightweight local standard, not as Vite's upstream-recommended path for every non-browser package or advanced build flow.
+In this skill, Vite is the build standard for new TypeScript CLIs and for requested build migrations. Verify the installed Vite major and its current official build configuration before writing config; the contract below wins over a memorized option name.
+
+When an existing project uses another build and migration is outside the request, preserve that build for the scoped change, verify its real artifact, and report the deviation. Do not introduce a second bundler or present the alternative as another standard.
 
 Use Vite only when the configuration is clearly shaped around a Node CLI contract:
 
@@ -276,7 +278,7 @@ Apply the rest of the CLI contract around that baseline:
 - externalize additional runtime-resolved packages when the CLI hosts plugins, uses native modules, or depends on filesystem-relative loading
 - set `outDir` to the agreed runtime folder and point `package.json#bin` at the built entry there
 - smoke test that exact runtime path after build
-- if the CLI grows into a more advanced non-browser build with custom chunking, unusual loaders, or long-lived packaging complexity, re-evaluate whether direct Rolldown or another Node-first bundling path is a better fit than carrying more Vite-specific caveats
+- if the CLI requires build behavior that the current Vite contract cannot safely express, stop and surface the incompatibility instead of silently replacing the standard; a separately scoped build-system skill may own that project
 
 ## Documentation Surface
 

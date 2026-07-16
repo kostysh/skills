@@ -44,6 +44,21 @@ For long-lived CLIs, also provide:
 - walkthroughs or tutorials when workflows are more important than individual flags
 - man pages or offline docs only when the user environment and surface area justify them
 
+## Shell Completion
+
+For CLIs with many subcommands, flags, or dynamic operands, provide opt-in shell completion when it materially improves discovery.
+
+- generate completion candidates from the same command, option, and value metadata used by parsing, validation, and help
+- expose an explicit command such as `completion <shell>` and document each supported shell; Bash, Zsh, Fish, and PowerShell outputs are different contracts
+- write only candidates or the requested completion script to `stdout`; write warnings and diagnostics to `stderr`
+- keep setup explicit and reversible
+- never modify `.bashrc`, `.zshrc`, PowerShell profiles, or other shell startup files from npm lifecycle scripts
+- add contract tests that compare completion-visible commands and flags with the parser/help model
+
+Do not add completion to a small command merely to satisfy a checklist.
+
+Optional provenance: [Node.js CLI Apps Best Practices — shell completion](https://github.com/lirantal/nodejs-cli-apps-best-practices#37-provide-shell-completion).
+
 ## Interactive Rules
 
 - prompts only when `stdin` is interactive
@@ -78,6 +93,7 @@ A protected CLI without strict option allowlists and pre-side-effect validation 
 ## Color And Formatting
 
 - use color only when the terminal supports it
+- on a compatible current Active LTS baseline, consider `node:util.styleText` before adding a color dependency; use a dependency only when the existing stack or richer requirement justifies it
 - honor `NO_COLOR` and explicit no-color flags
 - allow an explicit force-color path only when the renderer can handle it safely
 - do not rely on color as the only signal for status
@@ -96,10 +112,10 @@ A protected CLI without strict option allowlists and pre-side-effect validation 
 
 ### Secrets
 
-- do not require secrets via argv when stdin, env, config files, or keychain integration is safer
-- for new designs, prefer files, stdin, keychain, secret managers, or other IPC over environment variables for secrets
-- if env-based secrets are required for ecosystem compatibility, document the leak surface explicitly
-- for service-backed CLIs, prefer env vars or documented user config for normal auth and reserve token flags for explicit one-off tests
+- do not require secrets via argv when a provider-supported safer channel exists
+- follow the provider's established safe convention first; standard environment variables or documented user config are valid when the ecosystem expects them
+- prefer files with safe permissions, stdin, keychain, secret managers, or IPC when the provider and threat model support them better than environment variables
+- document the leak surface of every supported secret source and reserve token flags for authorized one-off tests when no safer supported route exists
 - when the CLI exposes `doctor --json` or equivalent health output, report whether auth is present and its source category without printing the secret value
 - never echo secrets back to the terminal
 - redact secrets from logs, error output, and debug traces

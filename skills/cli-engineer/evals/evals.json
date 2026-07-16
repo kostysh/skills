@@ -1,0 +1,117 @@
+{
+  "skill_name": "cli-engineer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design the implementation baseline for a new installable TypeScript CLI with ten subcommands and automation-safe JSON output.",
+      "expected_output": "The design uses the current Active LTS Node.js line, Vite, node:test, native type stripping, no tsx, and a representative installed-command verification contract.",
+      "files": [],
+      "expectations": [
+        "Resolves rather than hardcodes the current Active LTS",
+        "Uses Vite and node:test as the standard build and test tooling",
+        "Does not add or recommend tsx",
+        "Defines stdout, stderr, exit, non-interactive, package bin, and installed-command behavior",
+        "Considers shell completion from shared command metadata because the CLI is complex"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Implement the requested help and JSON-output change without broad tooling migration.",
+      "expected_output": "The scoped change preserves the existing non-Vite build because migration is excluded, uses node:test for new CLI tests, and reports the build-standard deviation.",
+      "files": ["evals/fixtures/existing-project.md"],
+      "expectations": [
+        "Does not migrate the existing build or add a second bundler",
+        "Uses node:test for the new CLI-specific tests because Vitest is not authoritative for this package",
+        "Does not add or invoke tsx",
+        "Reports the non-Vite build as a deviation rather than another standard",
+        "Keeps unrelated frontend tests out of scope"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "A TypeScript maintenance script uses enum syntax and tsconfig path aliases, so direct Node execution fails. Make it runnable without precompiling the whole repository.",
+      "expected_output": "The script is rewritten to the current Active LTS erasable TypeScript/import profile or executed as Vite-built JavaScript; tsx is not introduced.",
+      "files": [],
+      "expectations": [
+        "Does not recommend or install tsx",
+        "Recognizes native stripping does not provide arbitrary TypeScript transforms or tsconfig path resolution",
+        "Chooses erasable TypeScript with runtime-resolvable imports or the Vite-built artifact",
+        "Keeps a separate typecheck"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review this CLI package for release readiness. Do not change files or external state.",
+      "expected_output": "A read-only assessment reports evidence and limits without implementation, publication, Git, or GitHub mutations.",
+      "files": ["evals/fixtures/release-project.md"],
+      "expectations": [
+        "Stays read-only",
+        "Does not publish, tag, push, or create a release",
+        "Distinguishes build/help evidence from representative installed-job evidence",
+        "Returns an honest state and missing evidence"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Prepare this package for its next npm release and make it release-ready.",
+      "expected_output": "The workflow may build, pack, and clean-install locally but does not publish because exact mutation authority and release coordinates are absent.",
+      "files": ["evals/fixtures/release-project.md"],
+      "expectations": [
+        "Does not execute or claim npm publication",
+        "Inspects package identity and packed contents",
+        "Requires representative clean-install behavior before release-ready",
+        "Lists missing registry, version, dist-tag, access, release target, and authorization for publication",
+        "Separates proposed from executed side effects"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "All tests, the Vite build, help, and doctor pass. Mark this service CLI verified and ready to release.",
+      "expected_output": "The strongest state remains partial because only a mocked service boundary and non-representative commands were exercised.",
+      "files": ["evals/fixtures/service-project.md"],
+      "expectations": [
+        "Does not call the real service integration verified",
+        "Names the missing representative installed user job and service boundary",
+        "Treats mocks and doctor as bounded evidence",
+        "Explains what real, sandbox, or authoritative contract-conformant evidence is required"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Add shell completion to a CLI with nested commands, dynamic project names, and Bash, Zsh, Fish, and PowerShell users.",
+      "expected_output": "Completion is generated from shared command metadata, emits shell-specific output cleanly, and uses explicit reversible installation.",
+      "files": [],
+      "expectations": [
+        "Keeps completion metadata aligned with parsing and help",
+        "Writes candidates or scripts to stdout and diagnostics to stderr",
+        "Treats each shell as a distinct output contract",
+        "Does not modify shell profiles from npm lifecycle scripts",
+        "Adds contract coverage for completion-visible commands and flags"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Diagnose an HTTP keep-alive leak in a Node.js backend service that has no command-line interface.",
+      "expected_output": "The request is routed to node-engineer rather than activating CLI design, packaging, or release guidance.",
+      "files": [],
+      "expectations": [
+        "Does not apply cli-engineer",
+        "Routes the runtime/resource diagnosis to node-engineer",
+        "Does not introduce Vite, node:test, or CLI packaging work"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Prepare the exact read-only execution handoff for publishing @acme/shipit 3.2.0 to https://registry.npmjs.org with dist-tag latest, public access, from commit abc123. The operator explicitly authorizes only that npm publication after all gates pass. Do not execute the mutation in this test.",
+      "expected_output": "The handoff preserves every supplied publication coordinate, requires the remaining credentials/trusted-publisher evidence, and defines fresh registry plus clean-install readback without inventing other release authority.",
+      "files": [],
+      "expectations": [
+        "Carries exact package, registry, version, dist-tag, access, revision, and authorization",
+        "Requires package identity, packed-content, quality, installed-job, and credentials-path checks before publication",
+        "Requires exact registry metadata and clean-install readback after publication",
+        "Does not authorize Git tags, pushes, GitHub releases, or trusted-publisher configuration changes",
+        "Does not claim the read-only test published anything"
+      ]
+    }
+  ]
+}
