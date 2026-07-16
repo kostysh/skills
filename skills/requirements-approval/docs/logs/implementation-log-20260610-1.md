@@ -43,7 +43,7 @@ None.
 - `node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/requirements-approval` — PASS.
 - `git diff --check` — PASS.
 - Absolute-path portability search over `skills/requirements-approval` — PASS, machine-specific paths not found.
-- Instruction quality audit — PASS: skill is outcome-first, concise, self-contained, has explicit research-before-escalation rules, conservative customer-language policy, traceability chain, validation gates, fallback behavior for unavailable connectors/attachments, and stop rules before DONE.
+- Author instruction-quality self-check — PASS at the original snapshot: this was author-side structural evidence, not an independent capability verdict.
 
 ## Deviations From Plan
 
@@ -59,4 +59,4 @@ If a concrete GitHub approvals project id becomes stable, document it in the con
 
 ## Final Status
 
-PASS
+PASS for the original structural and author self-check scope. This historical result is not an independent whole-skill capability verdict.

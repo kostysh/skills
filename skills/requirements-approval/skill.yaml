@@ -2,13 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: requirements-approval
-  source-version: 0.1.1
-  recommended-skill-md-max-bytes: 12000
+  source-version: 0.2.0
+  recommended-skill-md-max-bytes: 14000
   description: >-
-    Organize requirements approvals: identify open questions, research which can be
-    resolved internally, route customer-owned decisions, create GitHub tasks,
-    process Gmail/GitHub replies, and propagate accepted decisions into PRDs,
-    architecture, specs, and plans. Also use for «согласование требований».
+    Coordinate customer-owned requirements decisions: triage open questions,
+    research resolvable facts, prepare approval requests, process supplied or
+    Gmail replies, and route accepted decisions into GitHub and authoritative
+    project documents. Use for approval workflows and «согласование требований».
 fragments:
   overview: fragments/overview.md
 copies:
@@ -16,124 +16,186 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
+  - id: copy-evals-evals
+    source: evals/evals.json
+    target: evals/evals.json
+    description: Portable behavioral scenarios for the approval workflow.
+  - id: copy-evals-fixture-prepare
+    source: evals/fixtures/prepare-input.md
+    target: evals/fixtures/prepare-input.md
+    description: Neutral fixture for approval-request preparation.
+  - id: copy-evals-fixture-reply
+    source: evals/fixtures/reply-input.md
+    target: evals/fixtures/reply-input.md
+    description: Neutral fixture for customer-reply processing.
+  - id: copy-evals-fixture-closure
+    source: evals/fixtures/closure-input.md
+    target: evals/fixtures/closure-input.md
+    description: Neutral fixture for closure evidence assessment.
+  - id: copy-evals-fixture-authorized-handoff
+    source: evals/fixtures/authorized-handoff-input.md
+    target: evals/fixtures/authorized-handoff-input.md
+    description: Neutral fixture for an exact authorized GitHub handoff.
 supporting:
+  - id: supporting-implementation-log-20260610-1
+    source: docs/logs/implementation-log-20260610-1.md
+    target: docs/logs/implementation-log-20260610-1.md
+    description: Non-normative initial implementation log with a bounded self-check verdict.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
-    description: Non-normative log for the skill description length update.
+    description: Non-normative log for the description authority-boundary update.
+  - id: supporting-implementation-log-20260716-1
+    source: docs/logs/implementation-log-20260716-1.md
+    target: docs/logs/implementation-log-20260716-1.md
+    description: Non-normative review and remediation log for source version 0.2.0.
+  - id: supporting-forward-test-evidence-20260716-1
+    source: docs/forward-tests/forward-test-evidence-20260716-1.md
+    target: docs/forward-tests/forward-test-evidence-20260716-1.md
+    description: Non-normative blind forward-test prompts, outputs, rubric, and evidence limits.
 surfaces:
   active:
     requiredReferences: []
     optionalReferences: []
-  supportingGlobs: []
+  supportingGlobs:
+    - docs/*
+    - docs/forward-tests/*
+    - docs/logs/*
 sections:
   startHere:
-    - Confirm whether the task is preparing customer approval requests or processing customer replies.
-    - Treat approval artifacts as coordination substrate; the real capability is resolved requirements reflected in project documents and tracked GitHub state.
-    - Before asking the customer, research whether each open question can be closed from existing inputs, project requirements, or public sources.
-    - Escalate only questions that cannot be fully resolved without customer input; do not use approval tasks as a substitute for analysis.
-    - Keep customer-facing requests conservative and scope-protecting; do not suggest expansions or improvements outside initial project requirements.
-    - Use the customer's language for customer-facing request examples.
+    - Confirm whether the request is assessment/drafting or authorizes external execution against exact targets.
+    - Define success as an authoritative decision propagated through every affected artifact and verified workflow state, not coordination artifacts alone.
+    - Identify each question's decision owner, authority, affected artifacts, and downstream owners before interpretation or closure.
+    - Use repository-defined source precedence; unresolved equal-authority conflicts block acceptance instead of being resolved by recency or convenience.
+    - Route document content and authority decisions to their owning skills; requirements-approval owns triage, traceability, and the closure gate.
+    - Execute GitHub or Git mutations only with exact action/target authorization; otherwise return a draft, partial, or blocked state.
   whenToUse:
-    - Identifying open questions in requirements, specs, PRDs, architecture notes, plans, or backlog items.
-    - Creating GitHub tasks in a dedicated approval project for questions that need customer input.
-    - Processing customer email replies, matching them to open-question codes and GitHub approval tasks.
-    - Propagating customer decisions into project documentation and committing those changes.
+    - Triaging unresolved requirements questions to determine which need customer input.
+    - Preparing or creating traceable approval requests for customer-owned decisions.
+    - Processing supplied or Gmail customer replies against stable question codes and decision authority.
+    - Coordinating accepted decisions through project artifacts, Git, and approval-task state.
+    - Auditing approval-item evidence for honest closure.
   whenNotToUse:
-    - The answer can be derived from existing project inputs without customer approval.
-    - The task is ordinary product specification work with no customer-facing approval workflow.
-    - The user wants a broad discovery workshop, sales proposal, or scope expansion.
-    - Gmail or GitHub access is required but unavailable and the needed data was not provided another way.
+    - Non-approval PRD authoring; explicitly hand it to prd-engineer, and route other artifacts to their named owners.
+    - Internal research or issue triage when no decision is customer-owned.
+    - Discovery, sales proposals, or optional scope expansion.
+    - Sending customer email; this skill only prepares request text.
+    - External execution without the required target, authorization, credentials, or source data; return a draft or blocked handoff.
   workflow:
-    - id: stage-prepare-approval-requests
-      title: Prepare approval requests
-      goal: Create approval tasks only for open questions that remain unresolved after reasonable research.
+    - id: stage-triage-and-prepare
+      title: Triage questions and prepare approval requests
+      goal: Escalate only unresolved customer-owned decisions and keep proposed actions distinct from executed mutations.
       steps:
-        - Extract open questions and assign or preserve stable question codes.
-        - For each question, check existing inputs, requirements, decisions, project docs, issue history, and related dependencies.
-        - If the question depends on current external facts, search public sources and cite what was checked.
-        - Mark questions as resolved, partially resolved, or customer-needed; do not escalate resolved questions.
-        - For customer-needed questions, create a GitHub task in the dedicated approvals project.
-        - Put the question code or codes in the task title.
-        - In the task body, include why the question exists, project context, links to project docs and dependencies, what research was done, and the specific missing customer input.
-        - Add a customer-facing request example in the customer's language, written simply and shaped for quick choice or reply.
-        - Keep the request conservative; present decisions needed to satisfy current scope, not optional enhancements.
+        - Extract open questions and preserve stable source codes; create a short project-local code only when the source lacks one.
+        - Identify the decision owner and affected product, architecture, specification, plan, data, or documentation artifacts for each question.
+        - Inspect authoritative project inputs, decisions, dependencies, and issue history before external research.
+        - Use current authoritative public sources only for factual parts that can narrow the question; do not use public facts to invent a customer preference or approval.
+        - Classify each question as resolved internally, customer input required, partial, or blocked by missing/conflicting authority.
+        - For customer input required, prepare a concise request in the customer's language with context, research, exact missing input, and current-scope choices.
+        - With exact GitHub target and mutation authority, hand creation to gh-utility and verify by fresh read; otherwise draft and list the missing repository, record target, applicable Project mapping, and authorization.
       validation:
-        - Every created task maps to at least one open-question code.
-        - Every escalated question shows why existing inputs and public research were insufficient.
-        - The customer request does not invite scope expansion beyond initial requirements.
-    - id: stage-process-customer-replies
-      title: Process customer replies
-      goal: Convert customer email replies into documented decisions, commits, and updated approval task state.
+        - Every question names its decision owner, authority basis, affected artifacts, and next owner.
+        - An internally resolved or authority-conflicted question is not escalated as a customer task.
+        - Proposed and executed external actions are reported separately.
+        - Every executed GitHub mutation has an exact target and fresh observed state.
+    - id: stage-assess-replies
+      title: Assess customer replies
+      goal: Determine what a reply authoritatively answers without converting mailbox presence into decision authority or workflow closure.
       steps:
-        - Read the operator's screenshot/text list and identify the mentioned emails or threads.
-        - Use the mailbox connector to find and read those emails or threads.
-        - If an attachment is needed but cannot be read, immediately ask the operator to provide all attachments and stop processing that item.
-        - Identify open-question codes discussed in the emails.
-        - Find related GitHub approval tasks and read their history before changing status.
-        - Comment on each related task with the email id or thread id and a short answer summary.
-        - Decide whether the customer answer closes each open question fully, partially, or not at all.
-        - For full closure, propagate the decision and any incoming data through all affected docs, such as PRD, architecture, specs, plans, and related materials.
-        - For partial closure, propagate the partial decision, document what remains open, and prepare a conservative follow-up request.
-        - For partial closure, add a task comment explaining why the answer is incomplete, with arguments and links to related materials when useful.
-        - Commit documentation/data changes and comment on the task with the commit hash.
-        - Move fully closed tasks to DONE; keep or move partially closed tasks to IN PROGRESS.
-        - Report to the operator what answers were received, how scope/functionality changed or stayed unchanged, what docs/data changed, task statuses, commits, and any follow-up customer request example.
+        - Read the exact supplied messages through gmail or equivalent exported data without changing mailbox state.
+        - Verify sender/thread identity, the question codes discussed, the named decision owner's authority, and whether the reply is current or superseded.
+        - Read the related approval-item history and authoritative project sources; stop acceptance on unresolved equal-authority conflicts.
+        - If a necessary attachment is unavailable, request that specific attachment and block only the dependent question while continuing independent items.
+        - Classify each reply per question as complete, partial, non-answer, or authority-conflict.
+        - Convert answers into traced obligations for document owners; do not invent product, architecture, specification, or plan decisions.
       validation:
-        - Each processed email is linked to question codes and GitHub task comments.
-        - Documentation changes are committed before a task is marked DONE.
-        - Partial answers remain IN PROGRESS with a clear reason and follow-up request.
+        - Mailbox identity and decision authority are separate evidence fields.
+        - A complete answer is not reported as closed before propagation and terminal-state verification.
+        - Partial and blocked items name the exact remaining input and do not block independent questions.
+    - id: stage-propagate-and-close
+      title: Propagate accepted decisions and verify closure
+      goal: Close only the questions whose accepted content, project artifacts, Git state, and approval-task state are all evidenced.
+      steps:
+        - Route each accepted obligation to the applicable artifact owner and preserve that artifact's authority, approval, and handoff rules.
+        - Verify every affected artifact was updated consistently and that no required owner or conflicting source remains unresolved.
+        - Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
+        - Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.
+        - Map semantic workflow state to the actual inspected Project field options; never assume status names.
+        - Freshly read the commit/ref and GitHub issue/project state after mutations.
+        - Mark a question verified only when the accepted answer is authoritative and complete, every affected artifact is updated and available as required, and the traceability chain plus terminal state are observed.
+        - Report per-question results, executed and proposed actions, evidence limits, remaining gaps, and next owners.
+      validation:
+        - No issue, comment, generated document, test, or commit hash is sufficient closure evidence by itself.
+        - Partial, blocked, or unpublished required changes cannot produce a verified closure.
+        - The final report does not claim stronger authority or terminal state than the observed evidence.
   interop:
     - id: interop-gmail
-      domain: mailbox lookup and customer email threads
+      domain: mailbox search, message/thread retrieval, and Gmail evidence
       winner: gmail
-      rationale: Use Gmail connector capabilities for finding and reading customer emails.
+      rationale: gmail owns mailbox reads; requirements-approval assesses decision authority.
     - id: interop-github
-      domain: approval task creation, comments, and status updates
-      winner: gh-utility or GitHub plugin skills
-      rationale: Use GitHub tools for issue/project state, comments, and task lifecycle.
-    - id: interop-docs
-      domain: documentation propagation
-      winner: documentation, prd-engineer, architecture-engineer, spec-engineer, or delivery-planner as applicable
-      rationale: Use the relevant document skill for the affected artifact type.
+      domain: GitHub issue, comment, Project field mutation, and fresh remote-state verification
+      winner: gh-utility
+      rationale: gh-utility owns exact targets, mutations, and readback; requirements-approval supplies the semantic transition.
+    - id: interop-product
+      domain: product scope, customer-owned product decisions, PRD authority, and product handoff
+      winner: prd-engineer
+      rationale: prd-engineer owns product content and PRD authority; requirements-approval supplies traced input.
+    - id: interop-architecture
+      domain: architecture constraints, ASRs, pattern decisions, ADRs, and architecture handoff
+      winner: architecture-engineer
+      rationale: architecture-engineer owns architecture decisions; customer input supplies intent or constraints.
+    - id: interop-specification
+      domain: implementation-ready behavior, edge cases, and specification authority
+      winner: spec-engineer
+      rationale: spec-engineer owns specification content; requirements-approval routes obligations and gaps.
+    - id: interop-planning
+      domain: delivery decomposition, sequencing, and plan readiness
+      winner: delivery-planner
+      rationale: delivery-planner owns plan changes and readiness.
+    - id: interop-documentation
+      domain: technical-document structure and documentation-only artifacts
+      winner: documentation
+      rationale: documentation owns form and structure when no specialized owner applies.
     - id: interop-git
-      domain: commits
+      domain: commits, pushes, branches, and ref verification
       winner: git-engineer
-      rationale: Use git-engineer for Conventional Commits and clean history.
+      rationale: git-engineer owns Git authorization, history changes, and ref evidence.
   commands: []
   gotchas:
-    - id: gotcha-no-research-bypass
+    - id: gotcha-preview-vs-execute
       priority: high
-      text: Do not ask the customer questions that can be closed from existing inputs, project docs, issue history, or public research.
-    - id: gotcha-no-scope-expansion
+      text: A broad request to organize or review approvals does not identify an external mutation target; return drafts until exact action, target, and authorization are available.
+    - id: gotcha-mailbox-is-not-authority
       priority: high
-      text: Customer requests must not propose enhancements outside initial project scope unless the operator explicitly asks for scope discovery.
-    - id: gotcha-attachments
+      text: Finding an email proves message presence, not sender authority, decision ownership, currentness, or acceptance of affected artifacts.
+    - id: gotcha-no-public-preference
       priority: high
-      text: If an email attachment is necessary but unreadable, ask the operator for all attachments before deciding or updating docs.
-    - id: gotcha-comment-before-status
+      text: Public research may resolve current facts but cannot choose a customer preference or approve product scope.
+    - id: gotcha-specific-attachment
       priority: medium
-      text: Record the email id/thread id and answer summary on the GitHub task before changing task status.
-    - id: gotcha-docs-before-done
+      text: Request only the unavailable attachment required by a named question and continue independent items.
+    - id: gotcha-project-status
       priority: high
-      text: Do not mark a task DONE until the accepted decision is propagated through affected documentation and committed.
+      text: GitHub Project status names and option IDs are target-specific; inspect them and verify each update instead of assuming workflow labels.
+    - id: gotcha-no-substrate-closure
+      priority: high
+      text: An issue, comment, commit, generated document, test, or traceability row is substrate until the accepted decision is propagated and the required terminal state is observed.
   policies:
-    - id: policy-conservative-customer-language
+    - id: policy-conservative-language
       title: Conservative customer language
-      text: Customer-facing examples should be short, plain, easy to answer, and framed around required decisions rather than optional improvements.
+      text: Ask only for decisions required by current scope, in plain customer language, without embedding optional enhancements or a preferred answer.
     - id: policy-traceability
-      title: Traceability policy
-      text: Maintain a chain from open-question code to research, GitHub task, customer email id, documented decision, commit hash, and final task state.
-    - id: policy-partial-closure
-      title: Partial closure policy
-      text: Partial replies must be documented, committed, and left IN PROGRESS with the remaining gap and a follow-up customer request.
+      title: Traceability
+      text: Preserve the chain from question code and authority evidence through research, reply, accepted obligation, affected artifact, verified Git/ref state, GitHub item, and remaining gap.
   portability:
     required: true
     rules:
-      - Do not reference machine-specific paths or repository-specific project ids.
-      - Keep the approval workflow understandable without external local files.
-      - Treat connector names as capability expectations; if unavailable, ask for equivalent exported data.
+      - Do not reference machine-specific paths, credentials, repository ids, Project ids, field ids, option ids, or fixed status names.
+      - Keep the authority, traceability, mutation, and closure contracts understandable without external local files.
+      - Treat connector and neighboring-skill names as capability expectations; accept equivalent exported data or report the unavailable boundary.
     checklist:
-      - Run the skill-source-compiler check command after generation.
-      - Search the skill folder for absolute local paths.
-      - Confirm the skill remains concise and self-contained.
+      - Run skill-source-compiler lint, regenerate, and check after source changes.
+      - Resolve local links and search the complete emitted package for absolute local dependencies.
+      - Compile to an isolated directory and confirm copied eval and supporting artifacts remain readable.
+      - Confirm structural checks are not reported as behavioral PASS.

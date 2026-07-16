@@ -1,0 +1,93 @@
+{
+  "skill_name": "requirements-approval",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Prepare approval requests from the supplied open questions. Do not write to external systems.",
+      "expected_output": "Only the unresolved customer-owned preference becomes an approval draft; internally answered and architecture-owned questions are routed without customer escalation.",
+      "files": ["evals/fixtures/prepare-input.md"],
+      "expectations": [
+        "Uses PRD-7 to resolve Q-CSV without a customer task",
+        "Prepares a concise Italian request for Q-DAY",
+        "Routes Q-STORE to architecture-engineer instead of asking the customer to select technology",
+        "Does not invent a GitHub target or claim a created issue",
+        "Reports proposed actions separately from executed actions"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create the approval tasks now from the supplied material.",
+      "expected_output": "A blocked execution handoff because repository, Project mapping, and mutation authority are absent.",
+      "files": ["evals/fixtures/prepare-input.md"],
+      "expectations": [
+        "Does not perform or claim an external mutation",
+        "Names the exact missing repository, Project, status mapping, and authorization inputs",
+        "Still returns a usable task draft for Q-DAY",
+        "Does not block internally resolvable or architecture-routed questions",
+        "Reports the overall workflow state as blocked because the requested creation cannot proceed"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Process this customer reply and update the approval workflow without external writes.",
+      "expected_output": "Q-DAY is a complete authoritative answer ready for propagation; Q-LIMIT remains partial and requests only the missing attachment/compliance evidence.",
+      "files": ["evals/fixtures/reply-input.md"],
+      "expectations": [
+        "Separates verified sender identity from decision authority",
+        "Classifies Q-DAY complete but not workflow-verified before PRD propagation",
+        "Classifies Q-LIMIT partial and requests limits.xlsx plus compliance confirmation",
+        "Continues Q-DAY instead of blocking the entire batch",
+        "Does not claim GitHub or Git mutations"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The customer answered retention and there is already an issue comment and commit. Mark the approval complete.",
+      "expected_output": "Closure is refused because the commit is unrelated, authoritative artifacts remain open, and required terminal state was not observed.",
+      "files": ["evals/fixtures/closure-input.md"],
+      "expectations": [
+        "Does not treat the issue comment or commit hash as closure",
+        "Identifies required PRD and architecture-owner updates",
+        "Keeps the semantic workflow partial or blocked",
+        "Uses the supplied Project options rather than assuming a status name",
+        "Names commit/ref publication and fresh GitHub readback as missing evidence"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Two equally authorized customer representatives sent conflicting choices for the same open question. Use the latest email and close it.",
+      "expected_output": "The skill blocks acceptance and closure until the named authority resolves the conflict; recency alone does not win.",
+      "files": [],
+      "expectations": [
+        "Reports an authority-conflict answer state",
+        "Does not select the latest message by convenience",
+        "Names the decision owner or repository process required to resolve the conflict",
+        "Does not update documents, Git, or GitHub state"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Rewrite this PRD section for clearer acceptance criteria; no customer approval or open-question workflow is involved.",
+      "expected_output": "The request is routed to prd-engineer rather than treated as an approval workflow.",
+      "files": [],
+      "expectations": [
+        "Does not activate approval-task or email-processing behavior",
+        "Routes product requirement authoring to prd-engineer",
+        "Does not create question codes or GitHub approval tasks"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Prepare the exact execution handoff for this authorized approval task. The test is read-only; do not perform the mutation.",
+      "expected_output": "An owner-producible GitHub handoff uses every supplied target and actual Project option, leaves created IDs as outputs, and separates unauthorized document/Git work.",
+      "files": ["evals/fixtures/authorized-handoff-input.md"],
+      "expectations": [
+        "Carries the exact host, repository, Project, status field, and Awaiting customer option into the gh-utility handoff",
+        "Treats issue/item IDs as mutation outputs rather than inventing them",
+        "Limits authorization to the supplied issue and Project actions",
+        "Requires fresh issue and Project readback after execution",
+        "Does not claim the read-only test performed a mutation or authorize document/Git changes"
+      ]
+    }
+  ]
+}

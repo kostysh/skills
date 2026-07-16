@@ -1,163 +1,199 @@
 ---
 name: requirements-approval
-description: "Organize requirements approvals: identify open questions, research
-  which can be resolved internally, route customer-owned decisions, create
-  GitHub tasks, process Gmail/GitHub replies, and propagate accepted decisions
-  into PRDs, architecture, specs, and plans. Also use for «согласование
+description: "Coordinate customer-owned requirements decisions: triage open
+  questions, research resolvable facts, prepare approval requests, process
+  supplied or Gmail replies, and route accepted decisions into GitHub and
+  authoritative project documents. Use for approval workflows and «согласование
   требований»."
 metadata:
-  source-version: 0.1.1
+  source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8472987dd02d141db3f50458f9e51992756db712908914a5693f3da23f398b19
+  skillforge-source-hash: 80b8d0da59e9bdd87c760a1042bdaf4261f4d17388a13962f639e1f76b455e65
 ---
 
 # requirements-approval
 
 ## Start here
 
-1. Confirm whether the task is preparing customer approval requests or processing customer replies.
-2. Treat approval artifacts as coordination substrate; the real capability is resolved requirements reflected in project documents and tracked GitHub state.
-3. Before asking the customer, research whether each open question can be closed from existing inputs, project requirements, or public sources.
-4. Escalate only questions that cannot be fully resolved without customer input; do not use approval tasks as a substitute for analysis.
-5. Keep customer-facing requests conservative and scope-protecting; do not suggest expansions or improvements outside initial project requirements.
-6. Use the customer's language for customer-facing request examples.
+1. Confirm whether the request is assessment/drafting or authorizes external execution against exact targets.
+2. Define success as an authoritative decision propagated through every affected artifact and verified workflow state, not coordination artifacts alone.
+3. Identify each question's decision owner, authority, affected artifacts, and downstream owners before interpretation or closure.
+4. Use repository-defined source precedence; unresolved equal-authority conflicts block acceptance instead of being resolved by recency or convenience.
+5. Route document content and authority decisions to their owning skills; requirements-approval owns triage, traceability, and the closure gate.
+6. Execute GitHub or Git mutations only with exact action/target authorization; otherwise return a draft, partial, or blocked state.
 
 ## When to use this skill
 
-- Identifying open questions in requirements, specs, PRDs, architecture notes, plans, or backlog items.
-- Creating GitHub tasks in a dedicated approval project for questions that need customer input.
-- Processing customer email replies, matching them to open-question codes and GitHub approval tasks.
-- Propagating customer decisions into project documentation and committing those changes.
+- Triaging unresolved requirements questions to determine which need customer input.
+- Preparing or creating traceable approval requests for customer-owned decisions.
+- Processing supplied or Gmail customer replies against stable question codes and decision authority.
+- Coordinating accepted decisions through project artifacts, Git, and approval-task state.
+- Auditing approval-item evidence for honest closure.
 
 ## When NOT to use this skill
 
-- The answer can be derived from existing project inputs without customer approval.
-- The task is ordinary product specification work with no customer-facing approval workflow.
-- The user wants a broad discovery workshop, sales proposal, or scope expansion.
-- Gmail or GitHub access is required but unavailable and the needed data was not provided another way.
+- Non-approval PRD authoring; explicitly hand it to prd-engineer, and route other artifacts to their named owners.
+- Internal research or issue triage when no decision is customer-owned.
+- Discovery, sales proposals, or optional scope expansion.
+- Sending customer email; this skill only prepares request text.
+- External execution without the required target, authorization, credentials, or source data; return a draft or blocked handoff.
 
-## Overview
+## Outcome and anti-claims
 
-This skill organizes two customer requirements approval workflows:
+Coordinate an unresolved customer-owned requirement into a traceable accepted decision, consistent project artifacts, and evidence-calibrated workflow state.
 
-1. preparing approval requests for unresolved open questions
-2. processing customer replies from email into documented project decisions
+This documentation-only skill does not grant product or architecture authority, send email, implement document-owner changes, enforce GitHub state, or prove closure from artifacts alone. It orchestrates owners and reports only what current evidence supports.
 
-The process is intentionally conservative. The agent should protect the agreed scope, not use customer approval as a way to introduce optional enhancements.
+## Inputs and readiness
 
-## Open Question Standard
+Minimum input for assessment or drafting is the question source, available project context, and requested scope. Stronger execution additionally requires:
 
-Each open question should have a stable code. If source materials do not provide one, create a short project-local code and keep it stable across GitHub tasks, email processing, docs, commits, and reports.
+- stable question codes and the named decision owner;
+- authoritative source documents and applicable precedence;
+- customer language plus supplied message/thread identifiers or exported content;
+- exact repository and approval-project targets, including inspected status-field mapping;
+- affected artifact owners and repository publication requirements;
+- explicit authority for each external GitHub or Git mutation.
 
-Before escalating, ask:
+Missing execution inputs do not prevent a useful draft. They do prevent external writes and verified closure.
 
-- Can existing requirements, project docs, decision history, or dependencies answer this?
-- Can public sources answer the current factual part?
-- Is only part of the question unresolved?
-- What exact customer input is still needed?
+Workflow authority controls which actions the agent may take. It does not transfer product, architecture, specification, planning, document-version, or customer-decision authority.
 
-## GitHub Approval Task Shape
+## Source precedence
 
-Each approval task should include:
+Follow repository-defined precedence. When none is defined, use operator workflow constraints first, then the explicitly authorized decision owner for the question's content, then current canonical project decisions and documents, then authoritative public facts for factual subquestions. Examples in this skill come last.
 
-- title with open-question code or codes
-- why the open question exists
-- context and links to project documents or dependencies
-- research already performed
-- exact missing input
-- customer-facing request example in the customer's language
-- conservative scope note when useful
+Do not silently choose the latest message when equal-authority sources conflict. Record the conflict, keep affected questions blocked, and name the owner who must resolve it.
 
-## Customer Reply Decision Shape
+## State and output contract
 
-Classify each customer reply as:
+Assess reply content separately from workflow closure:
 
-- **full closure** — enough to update all affected docs and close the task
-- **partial closure** — some decision or data is usable, but a named gap remains
-- **no closure** — reply does not answer the open question
+- answer: `complete`, `partial`, `non-answer`, or `authority-conflict`;
+- workflow: `draft`, `partial`, `blocked`, or `verified`;
+- GitHub state: the freshly observed target-specific field value, never an assumed label.
 
-Full and partial closures both require documentation propagation and a commit. Only full closure may move the task to DONE.
+Use workflow states deterministically:
+
+- `draft` — the requested assessment or draft is ready and execution or closure was not requested;
+- `partial` — an accepted decision or routed action advanced, closure remains incomplete, and the next owner can act on available input;
+- `blocked` — the requested transition cannot proceed until a named authority, input, target, or capability is supplied;
+- `verified` — every closure gate is freshly evidenced.
+
+Routing to another owner is not itself blocked. For the overall state, use `blocked` if a blocker prevents the requested outcome; otherwise use `verified` only when every in-scope question is verified, `partial` when non-blocking work remains after progress, and `draft` for preparation-only scope.
+
+For each question report:
+
+- code, source, decision owner, authority evidence, and research performed;
+- answer assessment and accepted obligation, if any;
+- affected artifacts and their owning skills;
+- proposed versus executed GitHub, document, and Git actions;
+- observed artifact, commit/ref, issue, and Project state;
+- remaining gap, next owner, and evidence needed for a stronger state.
+
+End with one overall state. A complete answer may still be partial or blocked until propagation and terminal-state evidence exist.
 
 ## Workflow stages
 
-### Workflow stage: Prepare approval requests
+### Workflow stage: Triage questions and prepare approval requests
 
-Create approval tasks only for open questions that remain unresolved after reasonable research.
+Escalate only unresolved customer-owned decisions and keep proposed actions distinct from executed mutations.
 
-1. Extract open questions and assign or preserve stable question codes.
-2. For each question, check existing inputs, requirements, decisions, project docs, issue history, and related dependencies.
-3. If the question depends on current external facts, search public sources and cite what was checked.
-4. Mark questions as resolved, partially resolved, or customer-needed; do not escalate resolved questions.
-5. For customer-needed questions, create a GitHub task in the dedicated approvals project.
-6. Put the question code or codes in the task title.
-7. In the task body, include why the question exists, project context, links to project docs and dependencies, what research was done, and the specific missing customer input.
-8. Add a customer-facing request example in the customer's language, written simply and shaped for quick choice or reply.
-9. Keep the request conservative; present decisions needed to satisfy current scope, not optional enhancements.
+1. Extract open questions and preserve stable source codes; create a short project-local code only when the source lacks one.
+2. Identify the decision owner and affected product, architecture, specification, plan, data, or documentation artifacts for each question.
+3. Inspect authoritative project inputs, decisions, dependencies, and issue history before external research.
+4. Use current authoritative public sources only for factual parts that can narrow the question; do not use public facts to invent a customer preference or approval.
+5. Classify each question as resolved internally, customer input required, partial, or blocked by missing/conflicting authority.
+6. For customer input required, prepare a concise request in the customer's language with context, research, exact missing input, and current-scope choices.
+7. With exact GitHub target and mutation authority, hand creation to gh-utility and verify by fresh read; otherwise draft and list the missing repository, record target, applicable Project mapping, and authorization.
 
 Validation:
 
-- Every created task maps to at least one open-question code.
-- Every escalated question shows why existing inputs and public research were insufficient.
-- The customer request does not invite scope expansion beyond initial requirements.
+- Every question names its decision owner, authority basis, affected artifacts, and next owner.
+- An internally resolved or authority-conflicted question is not escalated as a customer task.
+- Proposed and executed external actions are reported separately.
+- Every executed GitHub mutation has an exact target and fresh observed state.
 
-### Workflow stage: Process customer replies
+### Workflow stage: Assess customer replies
 
-Convert customer email replies into documented decisions, commits, and updated approval task state.
+Determine what a reply authoritatively answers without converting mailbox presence into decision authority or workflow closure.
 
-1. Read the operator's screenshot/text list and identify the mentioned emails or threads.
-2. Use the mailbox connector to find and read those emails or threads.
-3. If an attachment is needed but cannot be read, immediately ask the operator to provide all attachments and stop processing that item.
-4. Identify open-question codes discussed in the emails.
-5. Find related GitHub approval tasks and read their history before changing status.
-6. Comment on each related task with the email id or thread id and a short answer summary.
-7. Decide whether the customer answer closes each open question fully, partially, or not at all.
-8. For full closure, propagate the decision and any incoming data through all affected docs, such as PRD, architecture, specs, plans, and related materials.
-9. For partial closure, propagate the partial decision, document what remains open, and prepare a conservative follow-up request.
-10. For partial closure, add a task comment explaining why the answer is incomplete, with arguments and links to related materials when useful.
-11. Commit documentation/data changes and comment on the task with the commit hash.
-12. Move fully closed tasks to DONE; keep or move partially closed tasks to IN PROGRESS.
-13. Report to the operator what answers were received, how scope/functionality changed or stayed unchanged, what docs/data changed, task statuses, commits, and any follow-up customer request example.
+1. Read the exact supplied messages through gmail or equivalent exported data without changing mailbox state.
+2. Verify sender/thread identity, the question codes discussed, the named decision owner's authority, and whether the reply is current or superseded.
+3. Read the related approval-item history and authoritative project sources; stop acceptance on unresolved equal-authority conflicts.
+4. If a necessary attachment is unavailable, request that specific attachment and block only the dependent question while continuing independent items.
+5. Classify each reply per question as complete, partial, non-answer, or authority-conflict.
+6. Convert answers into traced obligations for document owners; do not invent product, architecture, specification, or plan decisions.
 
 Validation:
 
-- Each processed email is linked to question codes and GitHub task comments.
-- Documentation changes are committed before a task is marked DONE.
-- Partial answers remain IN PROGRESS with a clear reason and follow-up request.
+- Mailbox identity and decision authority are separate evidence fields.
+- A complete answer is not reported as closed before propagation and terminal-state verification.
+- Partial and blocked items name the exact remaining input and do not block independent questions.
+
+### Workflow stage: Propagate accepted decisions and verify closure
+
+Close only the questions whose accepted content, project artifacts, Git state, and approval-task state are all evidenced.
+
+1. Route each accepted obligation to the applicable artifact owner and preserve that artifact's authority, approval, and handoff rules.
+2. Verify every affected artifact was updated consistently and that no required owner or conflicting source remains unresolved.
+3. Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
+4. Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.
+5. Map semantic workflow state to the actual inspected Project field options; never assume status names.
+6. Freshly read the commit/ref and GitHub issue/project state after mutations.
+7. Mark a question verified only when the accepted answer is authoritative and complete, every affected artifact is updated and available as required, and the traceability chain plus terminal state are observed.
+8. Report per-question results, executed and proposed actions, evidence limits, remaining gaps, and next owners.
+
+Validation:
+
+- No issue, comment, generated document, test, or commit hash is sufficient closure evidence by itself.
+- Partial, blocked, or unpublished required changes cannot produce a verified closure.
+- The final report does not claim stronger authority or terminal state than the observed evidence.
 
 ## Interop priority
 
-- **mailbox lookup and customer email threads:** gmail. Use Gmail connector capabilities for finding and reading customer emails.
-- **approval task creation, comments, and status updates:** gh-utility or GitHub plugin skills. Use GitHub tools for issue/project state, comments, and task lifecycle.
-- **documentation propagation:** documentation, prd-engineer, architecture-engineer, spec-engineer, or delivery-planner as applicable. Use the relevant document skill for the affected artifact type.
-- **commits:** git-engineer. Use git-engineer for Conventional Commits and clean history.
+- **mailbox search, message/thread retrieval, and Gmail evidence:** gmail. gmail owns mailbox reads; requirements-approval assesses decision authority.
+- **GitHub issue, comment, Project field mutation, and fresh remote-state verification:** gh-utility. gh-utility owns exact targets, mutations, and readback; requirements-approval supplies the semantic transition.
+- **product scope, customer-owned product decisions, PRD authority, and product handoff:** prd-engineer. prd-engineer owns product content and PRD authority; requirements-approval supplies traced input.
+- **architecture constraints, ASRs, pattern decisions, ADRs, and architecture handoff:** architecture-engineer. architecture-engineer owns architecture decisions; customer input supplies intent or constraints.
+- **implementation-ready behavior, edge cases, and specification authority:** spec-engineer. spec-engineer owns specification content; requirements-approval routes obligations and gaps.
+- **delivery decomposition, sequencing, and plan readiness:** delivery-planner. delivery-planner owns plan changes and readiness.
+- **technical-document structure and documentation-only artifacts:** documentation. documentation owns form and structure when no specialized owner applies.
+- **commits, pushes, branches, and ref verification:** git-engineer. git-engineer owns Git authorization, history changes, and ref evidence.
 
 ## Gotchas
 
-- **high** — Do not ask the customer questions that can be closed from existing inputs, project docs, issue history, or public research.
-- **high** — Customer requests must not propose enhancements outside initial project scope unless the operator explicitly asks for scope discovery.
-- **high** — If an email attachment is necessary but unreadable, ask the operator for all attachments before deciding or updating docs.
-- **medium** — Record the email id/thread id and answer summary on the GitHub task before changing task status.
-- **high** — Do not mark a task DONE until the accepted decision is propagated through affected documentation and committed.
+- **high** — A broad request to organize or review approvals does not identify an external mutation target; return drafts until exact action, target, and authorization are available.
+- **high** — Finding an email proves message presence, not sender authority, decision ownership, currentness, or acceptance of affected artifacts.
+- **high** — Public research may resolve current facts but cannot choose a customer preference or approve product scope.
+- **medium** — Request only the unavailable attachment required by a named question and continue independent items.
+- **high** — GitHub Project status names and option IDs are target-specific; inspect them and verify each update instead of assuming workflow labels.
+- **high** — An issue, comment, commit, generated document, test, or traceability row is substrate until the accepted decision is propagated and the required terminal state is observed.
 
 ## Policies
 
 ### Conservative customer language
-Customer-facing examples should be short, plain, easy to answer, and framed around required decisions rather than optional improvements.
+Ask only for decisions required by current scope, in plain customer language, without embedding optional enhancements or a preferred answer.
 
-### Traceability policy
-Maintain a chain from open-question code to research, GitHub task, customer email id, documented decision, commit hash, and final task state.
-
-### Partial closure policy
-Partial replies must be documented, committed, and left IN PROGRESS with the remaining gap and a follow-up customer request.
+### Traceability
+Preserve the chain from question code and authority evidence through research, reply, accepted obligation, affected artifact, verified Git/ref state, GitHub item, and remaining gap.
 
 ## Portability rules
 
-- Do not reference machine-specific paths or repository-specific project ids.
-- Keep the approval workflow understandable without external local files.
-- Treat connector names as capability expectations; if unavailable, ask for equivalent exported data.
+- Do not reference machine-specific paths, credentials, repository ids, Project ids, field ids, option ids, or fixed status names.
+- Keep the authority, traceability, mutation, and closure contracts understandable without external local files.
+- Treat connector and neighboring-skill names as capability expectations; accept equivalent exported data or report the unavailable boundary.
 
 ## Portability checklist before finishing
 
-- Run the skill-source-compiler check command after generation.
-- Search the skill folder for absolute local paths.
-- Confirm the skill remains concise and self-contained.
+- Run skill-source-compiler lint, regenerate, and check after source changes.
+- Resolve local links and search the complete emitted package for absolute local dependencies.
+- Compile to an isolated directory and confirm copied eval and supporting artifacts remain readable.
+- Confirm structural checks are not reported as behavioral PASS.
+
+## Supporting and historical surface
+
+- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
+- Supporting glob: `docs/*`
+- Supporting glob: `docs/forward-tests/*`
+- Supporting glob: `docs/logs/*`

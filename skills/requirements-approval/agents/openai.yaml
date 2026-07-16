@@ -1,3 +1,4 @@
 interface:
   display_name: "Requirements Approval"
-  short_description: "Coordinates customer approval questions, email replies, GitHub tasks, documentation updates, and commits."
+  short_description: "Coordinates traceable customer requirements decisions."
+  default_prompt: "Use $requirements-approval to triage open questions and prepare or process customer approval evidence safely."
