@@ -24,7 +24,7 @@ Each fixed fixture should carry:
 id
 authority/source reference and version when policy-bearing
 operation
-typed and unit-bearing inputs
+API profile, currency code, minor-unit scale, and typed/unit-bearing inputs
 rounding mode and fixation point
 expected value or expected error as a fixed literal
 applicable contours
@@ -40,11 +40,14 @@ Select cases relevant to the operation, including:
 - positive and negative half ties for every required rounding mode;
 - zero amount and zero rate;
 - refunds and reversals;
-- integer-looking human input versus canonical cents DTOs;
-- invalid separators, units, rates, denominators, and currency;
+- integer-looking human input versus canonical integer-minor-unit DTOs;
+- EUR `{ currency: 'EUR', amountCents }` versus generic `{ currency, minorUnitDigits, amountMinorUnits }` DTOs;
+- invalid separators, units, rates, denominators, wrong DTO discriminants, and wrong minor-unit scale;
+- mixed-currency and mixed-scale arithmetic rejection;
+- forbidden EUR relabeling and unsupported FX requests;
 - int64 extrema, intermediate overflow, and output overflow;
-- equal and weighted allocation, zero weights, and deterministic tie ordering;
-- reverse VAT/scorporo and accepted residual-cent policy;
+- equal and weighted allocation, empty/all-zero weights including zero total, and deterministic tie ordering;
+- reverse VAT/scorporo and accepted residual-minor-unit policy;
 - global configuration reset and runtime isolation.
 
 ## Evidence matrix and closure
@@ -62,4 +65,4 @@ Closure rules:
 - `blocked`: required authority, environment, compatibility, or runtime boundary is unavailable;
 - `not-applicable`: justify why the contour is outside this claim; absence is not a pass.
 
-Package unit tests prove the package runtime. Browser-bundle tests prove the built browser bundle. Neither proves application wiring, server authority, persistence, PostgreSQL, or an external ledger unless those boundaries actually execute.
+Package unit tests prove the package runtime. Browser-bundle tests prove the built browser bundle. Neither proves application wiring, server authority, persistence, PostgreSQL/SQL execution, or an external ledger unless those boundaries actually execute. A green compatibility preset is configuration evidence only.

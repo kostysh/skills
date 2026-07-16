@@ -1,6 +1,6 @@
 # Canonical money engine
 
-Read this reference when discovering, using, or extending a project-owned money library.
+Read this reference when discovering, using, or extending a project-owned money library, especially for a non-EUR task.
 
 ## Discover before use
 
@@ -14,36 +14,78 @@ Inspect the target repository rather than assuming a package path:
 
 If no canonical engine exists, do not create a generic package for one local formula. Keep the formula with the authoritative domain owner unless current reuse or a cross-contour boundary justifies shared ownership.
 
-## Compatible `money` API profile
+## Currency authority and readiness
 
-When the discovered package publicly exports the following APIs with matching contracts, use them instead of ad-hoc arithmetic:
+EUR remains the default and first-class profile. Use another currency only when an accepted project, product, legal, accounting, or maintained currency-data source supplies both:
+
+- the exact currency code;
+- the authoritative integer `minorUnitDigits` for the relevant contract and effective period.
+
+A factory that accepts exactly three uppercase ASCII letters and scale `0..20` performs structural validation only. It does not prove ISO 4217 membership, current metadata, legal applicability, or that the caller chose the right scale. Missing or conflicting non-EUR scale is a blocked authority question, never a reason to default to two digits.
+
+## Compatible EUR facade profile
+
+When the discovered package publicly exposes this profile with matching contracts, retain it for EUR compatibility work:
 
 | Need | Public API and contract |
 | --- | --- |
-| Parse human EUR input | `parseEurToCents`: trimmed plain decimal string, dot or comma separator, zero to two fractional digits, no grouping separators |
-| Add or subtract cents | `add`, `sub` |
-| Sign operations | `neg`, `abs`, `sign`, `compare`, `isZero` |
-| Apply non-negative rate | `mulRatePpm`: integer ppm in `0..1_000_000`, explicit rounding mode |
-| Divide or round ratio | `div`, `roundDiv`: non-zero divisor; `roundDiv` requires a positive denominator |
-| Equal allocation | `allocateEqual` |
-| Weighted allocation | `allocateByWeights`: non-negative bigint weights and input-order tie-break |
-| Format presentation | `formatEurCents`; output is presentation only and must not be parsed as canonical input |
-| Runtime guards | `setCompatibilityMode`, `setResourceLimits`, `setMathMode`, and reset helpers when actually exported |
+| Canonical EUR amount | `MoneyCents = bigint`, representing EUR cents |
+| Built-in engine form | Immutable `EUR` definition with code `EUR` and `minorUnitDigits: 2` when an engine-shaped EUR amount is required |
+| Parse human EUR input | `parseEurToCents`: strict major-unit string to cents |
+| Format EUR | `formatEurCents(cents, { locale? })`; currency is always EUR |
+| EUR DTO | `EurCentsDto` with `{ currency: 'EUR', amountCents }`, plus public strict parse/serialize helpers when exported |
+| Arithmetic | Top-level `add`, `sub`, `neg`, `abs`, `compare`, `isZero`, `sign`, `div`, `mulRatePpm`, and `roundDiv` |
+| Allocation | Top-level `allocateEqual` and `allocateByWeights` |
 
-Verify these names and semantics against the target package at invocation time. This table is a compatible profile, not proof that the package exists or has not changed.
+Do not add a `currency` option to `formatEurCents`. `FormatOptions` contains only optional `locale`; passing USD, JPY, or another label for EUR cents is relabeling, not conversion.
 
-## Configuration boundary
+## Compatible generic currency-engine profile
 
-The compatible engine uses process-global mutable configuration. Configure it once at application bootstrap in this order:
+For an authorized non-EUR code/scale, verify and use a separately constructed immutable engine:
 
-1. compatibility mode;
-2. resource-limit overrides;
-3. safe math mode;
-4. locale, when the application owns a global default.
+```ts
+const engine = createCurrencyEngine({ code, minorUnitDigits });
+```
 
-Do not change global policy per request. Reset locale and safe-math configuration between tests to prevent order-dependent results.
+The compatible profile is:
 
-Safe mode validates configured ranges and resources; it does not supply business authority, SQL conformance, persistence wiring, or application parity.
+| Need | Public API and contract |
+| --- | --- |
+| Tagged amount | `CurrencyAmount<TCode>` with `currency`, `minorUnitDigits`, and bigint `minorUnits` |
+| Major-unit input | `engine.parseMajorUnits(input)` |
+| Presentation | `engine.format(amount, { locale? })`; code and scale come from the engine definition |
+| DTO boundary | `engine.parseDto(input)` and `engine.serializeDto(amount)` using `{ currency, minorUnitDigits, amountMinorUnits }` |
+| Explicit wrapping | `engine.fromMinorUnits(value)` and `engine.toMinorUnits(amount)` |
+| Arithmetic | `engine.add`, `sub`, `neg`, `abs`, `compare`, `isZero`, `sign`, `div`, and `mulRatePpm` |
+| Allocation | `engine.allocateEqual` and `engine.allocateByWeights` |
+
+Preserve the tagged amount while it is in domain code. The engine must check both currency and scale at runtime before unwrapping, so mixed currency or mixed scale fails closed even if callers bypass static types. Do not unwrap two amounts and combine their raw `bigint` values outside that guard.
+
+The factory is not a plugin registry, discovery mechanism, ISO catalog, or FX service. Creating two engines does not establish a conversion rate or authorize conversion between them.
+
+## DTO and parsing boundary
+
+Use public strict parsers and serializers instead of `BigInt(untrustedString)`. A compatible DTO parser checks exact keys, canonical base-10 integer syntax, currency, scale, and range. The DTO contracts remain distinct:
+
+```text
+EUR:     { currency: 'EUR', amountCents }
+generic: { currency, minorUnitDigits, amountMinorUnits }
+```
+
+DTO parse/serialize range validation applies independently of safe/unsafe calculation mode when the discovered package promises that contract.
+
+## Safety and configuration profile
+
+Verify these behaviors rather than inferring them from a preset name:
+
+- `postgresql` and `nodejs` compatibility ranges cover full signed int64 minor units: `-9_223_372_036_854_775_808n..9_223_372_036_854_775_807n`;
+- public `roundDiv` accepts a widened exact bigint numerator and range-checks its final result in safe mode;
+- weighted allocation rejects empty input and all-zero weights even when total is zero;
+- a valid zero-total weighted allocation returns zero parts;
+- process-global locale, math mode, compatibility mode, and resource limits are configured once at bootstrap and reset between tests;
+- each engine's immutable code/scale definition is separate from that process-global configuration.
+
+A compatibility mode describes a local range/resource policy. It is not PostgreSQL execution, browser application wiring, persistence, or cross-layer parity evidence.
 
 ## Extension decision
 
@@ -53,4 +95,4 @@ Add a primitive to the canonical engine only when at least one is true:
 - SQL, backend, and browser require one shared numeric contract;
 - a public compatibility or safety boundary must be centralized.
 
-Keep tariff-specific composition, product eligibility, tax applicability, and ledger policy outside the arithmetic engine. Any extension requires public export, behavioral documentation when non-trivial, unit tests, affected runtime tests, and application consumption before claiming delivered capability.
+Keep tariff-specific composition, product eligibility, tax applicability, FX policy, and ledger policy outside the arithmetic engine. Any extension requires public export, behavioral documentation when non-trivial, unit tests, affected runtime tests, and application consumption before claiming delivered capability.
