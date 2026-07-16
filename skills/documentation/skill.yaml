@@ -2,9 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: documentation
-  source-version: 0.1.2
+  source-version: 0.2.0
   recommended-skill-md-max-bytes: 20000
-  description: "Create, review, restructure, and rewrite technical documentation with Diataxis. Use to classify or split tutorials, how-to guides, references, and explanations; improve documentation architecture and information design; or review technical writing for user-need fit, structure, and quality."
+  description: >-
+    Create, review, restructure, and rewrite source-grounded technical
+    documentation with Diataxis. Use for tutorials, how-to guides, reference,
+    explanations, docs architecture, and audits of user-need fit, factual
+    support, task completion, and maintainability.
   metadata:
     tags: documentation, technical-writing, diataxis, tutorials, how-to, reference, explanation
 fragments:
@@ -14,70 +18,161 @@ references:
     title: Diataxis Guide
     source: references/diataxis-guide.md
     target: references/diataxis-guide.md
-    required: true
-    trigger: Read this when you need deeper guidance, rewrite patterns, or more detailed distinctions between the four forms.
+    required: false
+    trigger: Read this when form selection is ambiguous, mixed content needs a rewrite, a tutorial or how-to needs detailed design, or corpus and multi-audience information architecture is in scope.
 assets: []
 copies: []
 supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative maintenance navigation.
+  - id: supporting-implementation-log-20260708-1
+    source: docs/logs/implementation-log-20260708-1.md
+    target: docs/logs/implementation-log-20260708-1.md
+    description: Non-normative language and capability-boundary remediation evidence.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
-    description: Non-normative log for the skill description length update.
+    description: Non-normative description-length change evidence.
+  - id: supporting-implementation-log-20260716-1
+    source: docs/logs/implementation-log-20260716-1.md
+    target: docs/logs/implementation-log-20260716-1.md
+    description: Non-normative implementation and review evidence for the 0.2.0 source-grounded documentation contract.
 surfaces:
   active:
-    requiredReferences:
+    requiredReferences: []
+    optionalReferences:
       - ref-references-diataxis-guide
-    optionalReferences: []
   supportingGlobs:
     - docs/*
+    - docs/logs/*
 sections:
   startHere:
-    - Confirm the task matches documentation's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Name the task mode as author, rewrite, review, or restructure, and confirm whether file changes are authorized.
+    - Identify the audience and user job, target product version or state, language, format, location, and repository conventions.
+    - Inspect the authoritative product sources and current interfaces needed to support factual or executable claims.
+    - Select the primary Diataxis form or identify a coordinating overview or navigation role; load the optional guide only when its trigger matches.
+    - Define the evidence required for the strongest honest outcome status before drafting or editing.
   whenToUse:
-    - write new technical documentation
-    - choose the right documentation form for a request
-    - review documentation quality and structure
-    - untangle mixed-purpose pages
-    - reorganize an existing documentation set around user needs
+    - Create or rewrite source-grounded technical documentation.
+    - Choose between tutorial, how-to guide, reference, and explanation.
+    - Review documentation for user-need fit, factual support, task completion, structure, and maintainability.
+    - Split mixed-purpose pages or improve documentation information architecture.
+    - Plan or perform a bounded documentation-corpus restructure around user needs.
   whenNotToUse:
-    - marketing copy, landing pages, or brand messaging
-    - product specs, ADRs, RFCs, or internal design proposals
-    - changelogs, release notes, or status updates
-    - purely technical correctness work where another domain skill should lead
+    - Marketing copy, landing pages, or brand messaging.
+    - Product requirements, software specifications, ADRs, RFCs, or architecture decisions.
+    - Changelogs, release notes, incident reports, or status updates.
+    - Pure technical correctness work where no documentation deliverable or review is requested.
+    - File-format or visual-layout work whose primary problem is DOCX, PDF, or rendered-page fidelity.
   workflow:
-    - id: stage-apply-documentation
-      title: Apply documentation guidance
-      goal: Apply the preserved documentation guidance without changing its domain behavior.
+    - id: stage-establish-basis
+      title: Establish the documentation basis
+      goal: Prevent polished prose from inventing product truth or exceeding the evidence available for the target version.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Record the task mode, mutation authority, downstream reader or maintainer, requested artifact, and target version or product state.
+        - Treat operator and repository instructions as output constraints; use accepted product, specification, and architecture sources for intended behavior and current code, CLI, API, schema, or runtime contracts for shipped behavior.
+        - Treat existing documentation and examples as candidate material, not as authority when stronger sources are available.
+        - Resolve intended-versus-shipped differences by the named target state; do not silently choose through an unresolved source conflict.
+        - If sources are insufficient, limit the result to structure-reviewed or draft and avoid introducing new factual claims; stop as blocked when the requested artifact cannot be produced safely without an owner decision.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - Audience, user job, target state, source authority, and allowed side effects are explicit.
+        - Technical facts and product decisions are sourced or withheld; any editorial assumptions are labeled and cannot supply missing product truth.
+    - id: stage-shape-documentation
+      title: Shape the smallest useful documentation change
+      goal: Match the user's need without forcing a four-folder taxonomy or redesigning the corpus unnecessarily.
+      steps:
+        - Use the Diataxis compass to select one primary need and form for the requested document or section, unless its explicit role is to coordinate or navigate several forms.
+        - Split or link mixed material only when doing so improves the reader's task; allow overview and navigation pages to coordinate several forms without pretending to be one of them.
+        - For corpus work, begin with the smallest valuable page or cluster and account for audience, discoverability, existing URLs, navigation, and companion content before proposing moves.
+        - Preserve established terminology, voice, language, formatting, and site conventions unless the task explicitly changes them.
+      validation:
+        - Form or coordinating role, scope, and proposed structure trace to a reader need rather than to empty Diataxis buckets.
+        - The change has no speculative pages, categories, redirects, or platform work.
+    - id: stage-produce-deliverable
+      title: Produce the requested deliverable
+      goal: Deliver an actionable document, review, or restructure handoff without crossing product or platform ownership.
+      steps:
+        - In author or rewrite mode, create the requested artifact and keep factual, procedural, and version claims traceable to the established basis.
+        - In review mode, remain read-only unless remediation was also authorized; lead with inaccurate or unusable behavior, then user-need and structure mismatches, then style.
+        - In restructure mode, provide or apply a keep, rewrite, split, move, and retire map with link, navigation, URL, and redirect implications proportional to the requested scope.
+        - Route missing product decisions, technical facts, site mechanics, or file-format concerns to their owners while preserving the documentation intent and handoff.
+      validation:
+        - The downstream reader or maintainer can use the result without inventing facts, scope, destination, or follow-up ownership.
+        - Review-only work has not changed files, and authoring work has not silently changed product behavior.
+    - id: stage-verify-and-report
+      title: Verify proportionately and report an honest status
+      goal: Match the completion claim to current semantic, factual, executable, and publication evidence.
+      steps:
+        - Trace factual claims to authoritative sources and check terminology, language, prerequisites, examples, and expected results against the target version.
+        - For tutorials, safely walk the path end to end when possible; for how-to guides, check the main executable path and material branches; for reference, compare the scoped entries with the authoritative contract; for explanation, check factual claims and attributed rationale.
+        - For moved or published content, run available link, navigation, route, and docs-build checks; treat formatting, lint, file presence, and build success as structural evidence only.
+        - Do not execute destructive, production, privileged, or externally visible operations solely to validate documentation without authority; use a safe environment or static evidence and report the gap.
+        - Report structure-reviewed for a structure-only review, draft when material functional checks are missing, verified only when all applicable checks for the requested documentation boundary pass, or blocked when an unresolved authority gap prevents safe delivery.
+      validation:
+        - The final report names mode, form or coordinating role, audience, artifact or findings, sources and assumptions, checks run and not run, status, and unresolved gaps.
+        - Diataxis fit, prose quality, lint, generated files, or a green docs build alone cannot establish verified documentation.
+  interop:
+    - id: interop-product-artifacts
+      domain: product requirements, implementation-ready specifications, ADRs, RFCs, architecture decisions, and their factual authority
+      winner: prd-engineer, spec-engineer, or architecture-engineer according to artifact type
+      rationale: documentation may improve presentation and information design but must not create or revise the owning product or engineering decision.
+    - id: interop-domain-facts
+      domain: framework, API, security, data, operational, and other specialized technical facts
+      winner: The relevant domain or framework skill and accepted project sources
+      rationale: documentation owns reader fit and form while domain owners establish technical correctness.
+    - id: interop-docs-platform
+      domain: Docusaurus config, routes, sidebars, MDX mechanics, search, build, deployment, and redirects
+      winner: docusaurus-repo
+      rationale: documentation owns content information architecture; docusaurus-repo owns platform implementation and publication mechanics.
+    - id: interop-file-format
+      domain: DOCX or PDF generation, editing, rendering, pagination, and visual-layout fidelity
+      winner: doc or pdf according to file format
+      rationale: documentation owns content intent and form while the format skill owns the rendered artifact boundary.
+    - id: interop-capability-verdict
+      domain: whether documentation or other artifacts prove a broader delivered product or system capability
+      winner: concept-conformance-reviewer
+      rationale: documentation can describe or support a capability but does not independently prove that runtime behavior exists.
   commands: []
   gotchas:
+    - id: gotcha-functional-quality
+      priority: high
+      text: Diataxis can improve fit, flow, and information architecture, but it does not establish accuracy, completeness, consistency, or executable correctness.
+    - id: gotcha-factual-assumption
+      priority: high
+      text: Do not turn missing product behavior, version, defaults, commands, errors, or rationale into a writing assumption.
+    - id: gotcha-substrate-closure
+      priority: high
+      text: Formatting, lint, generated pages, link checks, and a green docs build are useful evidence but cannot by themselves verify the documented behavior.
+    - id: gotcha-taxonomy-project
+      priority: medium
+      text: Do not create empty tutorial, how-to, reference, and explanation trees or initiate a corpus-wide reorganization merely to mirror the Diataxis diagram.
     - id: gotcha-language-afterthought
       priority: high
-      text: Do not write persistent project prose in the wrong language with the intent to translate later. Select the language mode before the first draft.
-    - id: gotcha-docs-as-capability
-      priority: high
-      text: Do not present documentation, matrices, reports, or process notes as delivered runtime capability unless the task is explicitly a documentation or support capability.
+      text: Do not draft persistent project prose in the wrong language with the intent to translate it later; select the audience and language before the first draft.
   policies:
+    - id: policy-source-authority
+      title: Source-authority policy
+      text: Select the target version or product state before resolving sources; use the owner of intended behavior for planned-state claims, current interfaces for shipped-state claims, and stop rather than silently reconcile unresolved conflicts.
+    - id: policy-side-effects
+      title: Side-effect policy
+      text: Review mode is read-only by default, and documentation validation does not authorize destructive, privileged, production, or externally visible operations.
+    - id: policy-status-contract
+      title: Status contract
+      text: Report structure-reviewed, draft, verified, or blocked for the requested documentation boundary; never let one checked dimension imply that all dimensions passed.
     - id: policy-language-preflight
       title: Language preflight policy
-      text: Before creating persistent docs, identify the audience and repository language rule; final language review is a verification step, not the primary drafting workflow.
+      text: Before creating persistent documentation, identify the audience and repository language rule; final language review is verification, not the primary drafting workflow.
   portability:
     required: true
     rules:
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
       - Keep all mandatory documentation guidance inside this skill folder.
       - Use relative links for local references, assets, scripts, tests, and supporting docs.
+      - Treat external methodology links as optional provenance, never as a runtime dependency.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
-      - Search the skill folder for absolute local paths before finishing.
-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Run the owning skill-source-compiler lint, regenerate, and check workflow after source changes.
+      - Search the active skill and declared files for absolute filesystem dependencies before finishing.
+      - Confirm every active reference listed by SKILL.md exists inside this skill folder.
+      - Compile to an isolated directory and confirm the copied package retains the authority, evidence, status, and interop contracts.

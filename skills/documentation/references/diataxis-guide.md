@@ -1,217 +1,152 @@
-# Diataxis Guide
+# Detailed Diataxis Guidance
 
-Use this file when the task needs more than a quick type selection. It captures the parts of the Diataxis method that are easy to miss when people reduce it to "four documentation categories".
+Load this reference only for ambiguous form selection, substantial mixed-content
+rewrites, detailed tutorial or how-to design, or corpus and multi-audience
+information architecture. The root skill owns source authority, statuses,
+side-effect limits, and the canonical compass.
 
-## Core idea
+## Contents
 
-Diataxis is a framework for documentation based on user needs. It is not just a folder taxonomy.
+- [Resolve close form choices](#resolve-close-form-choices)
+- [Design and test each form](#design-and-test-each-form)
+- [Repair mixed documentation](#repair-mixed-documentation)
+- [Evolve a documentation corpus](#evolve-a-documentation-corpus)
+- [Understand the quality boundary](#understand-the-quality-boundary)
 
-Two distinctions matter:
+## Resolve close form choices
 
-- `action` vs `cognition`
-- `study` vs `work`
+### Tutorial or how-to guide
 
-That gives four documentation forms:
+Choose a tutorial when the reader is acquiring capability through a guided
+experience. The author owns the path and removes choices that require expert
+judgment.
 
-| Form | User need |
-|---|---|
-| Tutorial | Learn by doing |
-| How-to guide | Accomplish a task |
-| Reference | Look up facts |
-| Explanation | Build understanding |
+Choose a how-to guide when a competent reader is applying existing capability
+to a real problem. The path may fork, overlap, or require judgment when the
+problem does.
 
-Use this model to decide what a document is for before deciding what to write.
+Diagnostic question: is success primarily the learner's successful experience,
+or completion of their external task?
 
-## Important methodological points
+### Reference or explanation
 
-### 1. Use Diataxis as a guide, not a plan
+Choose reference when a working reader needs authoritative facts about the
+machinery. Its structure should mirror the interface it describes.
 
-Do not force a whole documentation set into a rigid top-down reorganization before solving real user problems.
+Choose explanation when a studying reader needs connections, rationale,
+context, or a mental model. It may present perspective, but must distinguish
+sourced decisions from interpretation.
 
-Prefer this sequence:
+Diagnostic question: will the reader consult the page to retrieve a fact, or
+read it to understand a topic?
 
-1. Identify one weak or mixed document.
-2. Decide what user need it should serve.
-3. Rewrite or split it accordingly.
-4. Repeat.
+### Documents that coordinate several forms
 
-The architecture of the documentation set should emerge from repeated local improvements.
+Landing pages, navigation pages, and bounded overviews may point to several
+forms. Their purpose is orientation. Do not misclassify them as reference merely
+because they contain lists, or force them into four separate versions.
 
-### 2. Keep documents pure
+## Design and test each form
 
-One document should primarily serve one form.
+### Tutorial
 
-What usually goes wrong:
-- tutorials contain explanations and options that break the lesson
-- how-to guides turn into mini-courses
-- reference pages contain recommendations and design rationale
-- explanations smuggle in procedures and specs
+- Show the achievable result before the first step.
+- Produce visible, comprehensible results early and often.
+- State what the learner should observe and what expected output looks like.
+- Prefer repeatable and reversible exercises where practical.
+- Mention likely failure signs only when they help the learner recover without
+  turning the lesson into troubleshooting reference.
 
-When a page mixes forms, split the content. If a single-file constraint is unavoidable, keep one dominant form and clearly separate the rest as supporting sections or links.
+Strong evidence is a safe end-to-end execution in the target environment;
+observation of representative learners is stronger when available. Static
+inspection can support a draft but cannot prove the learning experience.
 
-### 3. Organize around user needs, not product features
+### How-to guide
 
-A product-feature tree often produces inconsistent documentation because the same feature may need all four forms.
+- Name the real problem and meaningful starting and ending conditions.
+- Describe actions, including necessary judgment, in a logical sequence.
+- Address material conditions and variants without expanding into a complete
+  product tour.
+- Keep prerequisites explicit and link to reference for exhaustive options.
 
-Instead of asking:
-- "Where do docs for feature X go?"
+Strong evidence exercises the primary path and checks material commands,
+interfaces, preconditions, and results. If an operation is unsafe to execute,
+use authoritative static evidence and report the unexecuted path.
 
-Ask:
-- "What does the user need from this page right now?"
+### Reference
 
-The same feature might legitimately need:
-- a tutorial for first contact
-- one or more how-to guides for real tasks
-- reference for commands, API fields, or config keys
-- explanation for architecture, trade-offs, and design rationale
+- Derive the entry set from a named API, CLI, schema, configuration, or other
+  authoritative contract.
+- Keep entry shape and terminology consistent.
+- Include the fields a working reader needs: syntax, type, default, constraints,
+  behavior, errors, version, and a short example when applicable.
+- State the scope of completeness instead of implying universal coverage.
 
-## Detailed guidance by form
+Strong evidence compares the page with the current target contract and records
+which surface was checked. Generated reference is still a draft if the
+generator input is stale or the published output was not read back.
 
-## Tutorial
+### Explanation
 
-Think of a tutorial as a lesson, not as a piece of reference material with numbered steps.
+- Open with the question or concept the page will clarify.
+- Connect causes, constraints, alternatives, and consequences.
+- Attribute product rationale and mark interpretation where sources do not
+  establish intent.
+- End when the promised mental model is complete; move procedures and lookup
+  tables elsewhere.
 
-### What good tutorials do
+Strong evidence checks factual claims and attributed rationale against accepted
+sources. Reader research may improve confidence in comprehension but is not a
+universal completion requirement.
 
-- show the learner where they are going
-- deliver visible results early and often
-- maintain a narrative of the expected
-- point out what the learner should notice
-- target the experience of doing
-- encourage repetition
-- minimize explanation ruthlessly
-- ignore options and alternatives
-- aspire to reliability
+## Repair mixed documentation
 
-### Tutorial stance
+| Symptom | Default move |
+| --- | --- |
+| Steps are interrupted by long background sections | Keep the executable flow; link or move the background to explanation. |
+| A task page teaches all fundamentals from scratch | Keep the real task as how-to and create a tutorial only if the learning need is in scope. |
+| Reference entries contain recommendations or trade-offs | Keep contract facts in reference; move decisions to how-to or explanation. |
+| A tutorial presents many production variants | Choose one safe learning path; move working variants to how-to guides. |
+| An explanation contains setup commands or exhaustive tables | Keep the mental model; move procedures and lookup data to their owning forms. |
 
-- The learner is a beginner.
-- Success means the learner gains confidence and capability.
-- The output artifact matters less than the learning experience.
+Split only when the result has a destination and improves the user's flow. A
+move proposal without link, navigation, and ownership implications is not an
+implementation-ready restructure handoff.
 
-### Tutorial language
+## Evolve a documentation corpus
 
-Use direct, confidence-building language:
-- "In this tutorial, we will..."
-- "First, do x. Now do y."
-- "The output should look like..."
-- "Notice that..."
-- "Let's check..."
+Use Diataxis as a guide to local improvement rather than a top-down migration
+project:
 
-### Tutorial anti-patterns
+1. Select the smallest page or cluster that has a concrete user problem.
+2. Identify its audience, primary need, target state, and authoritative sources.
+3. Apply one bounded improvement and verify its links and user promise.
+4. Update navigation or companion content only when the change requires it.
+5. Let repeated improvements reveal the durable hierarchy.
 
-- long conceptual detours
-- many branches or alternative paths
-- unexplained failures or gaps
-- assuming expert judgment from the reader
-- stuffing in complete API or config coverage
+For multiple audiences, product variants, or deployment environments, decide
+whether audience/topic or form should be the outer hierarchy by the reader's
+likely navigation path. Shared content may remain shared when duplication would
+create drift. Complex structure is acceptable when it is logical and usable.
 
-## How-to guide
+## Understand the quality boundary
 
-Think of a how-to guide as directions for a competent practitioner.
+Diataxis primarily improves fit to user needs, flow, form, and information
+architecture. Functional qualities such as accuracy, completeness,
+consistency, precision, safety, and usefulness require domain knowledge and
+checks against the world being documented.
 
-### What good how-to guides do
+Therefore:
 
-- solve a real problem
-- begin from a meaningful starting point
-- end at a meaningful outcome
-- stay tightly focused on the task
-- support adaptation to real-world variation when needed
-- omit teaching material that belongs in tutorials
+- use Diataxis review to expose likely gaps, not to certify technical truth;
+- keep structural, factual, executable, publication, and reader evidence as
+  separate claims;
+- use `verified` only for the requested documentation boundary and the checks
+  actually performed.
 
-### How-to stance
+Optional methodology provenance:
 
-- The user already understands the basics.
-- They are working, not studying.
-- They need a path to an outcome, not a lesson about the system.
-
-### How-to language
-
-Use imperative, task-centered language:
-- "To rotate the signing key, do the following..."
-- "If you are using provider X, use method Y."
-- "After deployment, verify that..."
-
-### How-to anti-patterns
-
-- opening with a long theory section
-- explaining every concept from first principles
-- describing the product instead of the task
-- turning the guide into a reference dump
-
-## Reference
-
-Reference describes the machinery. It is information-oriented and should be authoritative and easy to consult.
-
-### What good reference does
-
-- mirrors the structure of the product or interface
-- uses consistent entry formats
-- presents facts without persuasion
-- exposes signatures, defaults, constraints, values, and behavior clearly
-- supports quick lookup
-
-### Reference stance
-
-- The reader needs accurate facts.
-- The document serves the system's structure, not a user journey.
-- Examples are illustrative, not pedagogical.
-
-### Reference anti-patterns
-
-- hidden recommendations or design arguments
-- long workflow narratives
-- "best practice" advice embedded in every entry
-- missing fields, inconsistent schemas, or uneven coverage
-
-## Explanation
-
-Explanation helps the reader understand why things are the way they are.
-
-### What good explanation does
-
-- provides context and background
-- makes connections
-- discusses history, rationale, constraints, and alternatives
-- admits perspective and judgment where useful
-- stays bounded to a coherent topic
-
-### Explanation stance
-
-- The reader is trying to understand.
-- The page is about a topic rather than about a task or interface surface.
-- Discussion is allowed; procedures and lookup data are not the main event.
-
-### Explanation anti-patterns
-
-- turning into setup instructions
-- absorbing reference tables or command lists
-- sprawling without a clear topic boundary
-- pretending neutrality where trade-offs actually matter
-
-## Rewrite heuristics
-
-Use these moves when repairing existing documentation:
-
-| If you see this | Do this |
-|---|---|
-| "How to..." page with three screens of background first | Cut the background; move it to explanation; keep only task-critical context |
-| Beginner walkthrough with many production variants | Choose one safe path for the tutorial; move variants to how-to guides |
-| API reference with recommendations like "you should usually..." | Move guidance to explanation or how-to; keep the reference entry factual |
-| "Concepts" page containing commands and setup steps | Keep the concept; move commands to tutorial/how-to/reference as appropriate |
-| Feature docs structured only by product area | Re-slice by user need, even if multiple forms exist for the same feature |
-
-## Review questions
-
-When reviewing docs through a Diataxis lens, ask:
-
-1. What user need does this page primarily serve?
-2. Does the title signal that form clearly?
-3. Does the introduction make the promise of that form clear?
-4. Does the body stay loyal to that promise?
-5. What content belongs in another form?
-6. If this is part of a docs set, where should linked companion pages exist?
-
-## Practical authoring rule
-
-Do not chase theoretical purity at the expense of shipping useful documentation. If a user needs a concrete rewrite now, solve that page well. Use Diataxis to make the next document clearer than the current one.
+- <https://diataxis.fr/compass/>
+- <https://diataxis.fr/how-to-use-diataxis/>
+- <https://diataxis.fr/quality/>
+- <https://diataxis.fr/complex-hierarchies/>

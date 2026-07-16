@@ -1,123 +1,100 @@
-Use this skill to apply Diataxis as a practical way to write and improve technical documentation.
+Use this skill to create documentation that fits a real user need and remains
+honest about what its sources and checks establish.
 
-Read [references/diataxis-guide.md](references/diataxis-guide.md) when you need deeper guidance, rewrite patterns, or more detailed distinctions between the four forms.
+Diataxis governs documentation form, flow, and information architecture. It
+does not replace technical authority or verification against the product.
 
-## Interop priority
+Read [references/diataxis-guide.md](references/diataxis-guide.md) only when form
+selection is ambiguous, mixed content needs a substantial rewrite, a tutorial
+or how-to needs detailed design, or corpus and multi-audience information
+architecture is in scope.
 
-- This skill owns documentation form, boundaries, structure, and review criteria.
-- Domain or framework skills own factual correctness, API behavior, and code examples.
-- If there is tension, keep the domain skill's facts and use this skill to decide where that material belongs.
+## Capability boundary
 
-## Core stance
+- Capability: produce an actionable document, review, or restructure handoff
+  for a named reader and target state, with claims and completion status matched
+  to current evidence.
+- Anti-claim: a correct Diataxis category, polished prose, Markdown lint, link
+  check, generated site, or docs build does not prove factual or executable
+  correctness by itself.
+- Use safe editorial assumptions for presentation details only. Never assume
+  product behavior, commands, defaults, permissions, errors, version support,
+  or rationale.
 
-- Treat Diataxis as a model of user needs, not as a requirement to create four empty buckets in a docs tree.
-- Choose one primary user need per document. If the material mixes needs, split it.
-- Prefer fixing one concrete documentation problem at a time over redesigning the whole corpus upfront.
-- Ask a clarifying question only if the ambiguity changes the documentation form or would materially change the result. Otherwise, make a reasonable assumption and state it.
+## Diataxis compass
 
-## Workflow
+Ask two questions: does the content inform action or cognition, and does it
+support acquisition/study or application/work?
 
-1. Identify the user need.
-- Are they trying to learn, complete a task, look up facts, or understand why something works?
+| Primary need | Mode | Form |
+| --- | --- | --- |
+| Learn through a guided practical experience | Action + acquisition/study | Tutorial |
+| Accomplish a real task or solve a problem | Action + application/work | How-to guide |
+| Look up facts about an interface or system | Cognition + application/work | Reference |
+| Build a mental model or understand why | Cognition + acquisition/study | Explanation |
 
-2. Use the Diataxis compass.
+Use the compass as a course-correction tool, not as a four-folder mandate.
 
-| Primary need | User mode | Form |
-|---|---|---|
-| Learn safely by doing | Study + action | Tutorial |
-| Complete a real task | Work + action | How-to guide |
-| Look up facts about the machinery | Work/study + cognition | Reference |
-| Build a mental model | Study + cognition | Explanation |
-
-3. Decide whether to split.
-- If one page tries to teach, solve, specify, and explain at once, break it into multiple documents.
-- If the user insists on one page, keep one primary form and clearly separate supporting material as linked follow-up content. Only keep mixed sections in one file when that constraint is explicit.
-
-4. Draft or rewrite in the selected form.
-- Keep the document pure to its form.
-- Link to the other forms instead of embedding them.
-
-5. Validate before delivering.
-- Use the checklist for the chosen form.
-- In reviews, lead with mismatches between user need and document form, then mixed-content problems, then style issues.
-
-## The four forms
+## Form contracts
 
 ### Tutorial
 
-Use for lessons aimed at learners.
+- Own the learner's successful experience from meaningful starting point to
+  visible result.
+- Use one reliable path, small steps, expected outcomes, and prompts to notice
+  important effects.
+- Minimize alternatives and explanation that interrupt the learning flow.
 
-- Optimize for a successful learning experience, not for completeness.
-- Show where the learner is going.
-- Deliver visible results early and often.
-- Maintain a clear narrative of what should happen next.
-- Point out what the learner should notice.
-- Minimize explanation and ignore alternatives unless they are required for success.
-- Aim for reliability: the learner should see the promised result at each step.
-
-Validation:
-- A beginner can complete it end-to-end.
-- Each step has an expected outcome.
-- The learner does not need to make expert judgments to proceed.
+A tutorial remains `draft` when its safe end-to-end path or material expected
+results have not been checked for the target environment.
 
 ### How-to guide
 
-Use for directions that help a capable user accomplish a real task.
+- Start from a real user goal, not from a tour of a tool or feature.
+- Assume relevant baseline competence and keep actions focused on the outcome.
+- Include branches and judgment only where the real problem requires them.
 
-- Center the guide on the goal, not on teaching the system from scratch.
-- Assume baseline competence.
-- Keep the path focused on doing.
-- Allow practical branching only when the task genuinely requires judgment.
-- Omit background theory except for a short note when strictly necessary.
-
-Validation:
-- A user with relevant baseline knowledge can complete the task without backtracking.
-- The guide solves a real problem rather than touring the product.
+A how-to remains `draft` when its main executable path, material conditions, or
+commands have not been checked against the target version.
 
 ### Reference
 
-Use for factual, structured description of the machinery.
+- Mirror the authoritative product, API, command, schema, or interface surface.
+- Use consistent entries for signatures, defaults, constraints, errors, and
+  short illustrative examples.
+- Keep recommendations and rationale in a how-to guide or explanation.
 
-- Organize by the product, API, command, schema, or interface itself.
-- Be explicit, neutral, consistent, and easy to scan.
-- Prefer repeatable entry formats, tables, signatures, defaults, constraints, and short examples.
-- Describe what is true; do not teach workflows or argue for design choices here.
-
-Validation:
-- A reader can find a fact quickly.
-- Entries are complete and consistent.
-- Advice, opinion, and conceptual digressions are kept elsewhere.
+Reference completeness is scoped to a named contract surface. Do not call it
+complete because its entries are internally consistent.
 
 ### Explanation
 
-Use for understanding-oriented discussion.
+- Bound the topic and connect concepts, constraints, history, rationale,
+  alternatives, and trade-offs.
+- Separate sourced facts and accepted decisions from author interpretation.
+- Do not turn the page into setup instructions or exhaustive interface lookup.
 
-- Provide context, rationale, history, constraints, alternatives, and trade-offs.
-- Make connections between concepts.
-- Bound the topic clearly.
-- Permit perspective and judgment where they help understanding.
-- Do not turn the page into step-by-step instructions or exhaustive API description.
+An explanation can be structurally strong while remaining `draft` if its facts
+or attributed rationale cannot be traced to an accepted source.
 
-Validation:
-- The reader leaves with a better mental model.
-- The page answers "why?" or "what does this mean?" rather than "what do I click?" or "what is the default value?"
+## Mixed content and information architecture
 
-## Mixed-content triage
+- Give each document or bounded section a primary user need.
+- Split content when mixed forms disrupt the reader's task; otherwise use a
+  clear supporting section or link rather than chasing theoretical purity.
+- Allow landing and navigation pages to coordinate several forms as overviews.
+- For corpus work, improve the smallest useful page or cluster first. Preserve
+  discoverability and identify URL, navigation, link, and redirect effects
+  before moving material.
+- Let audience and product use shape complex hierarchies; do not assume that
+  every documentation set needs four top-level directories.
 
-When reviewing or rewriting existing docs, use these default moves:
+## Review order
 
-| Symptom | Likely fix |
-|---|---|
-| Step-by-step instructions interrupted by long background paragraphs | Keep the steps in a tutorial or how-to guide; move the background into explanation |
-| A task page starts teaching basics from scratch | Split out a tutorial for beginners and keep the task page as a how-to guide |
-| Reference entries contain recommendations, opinions, or trade-off analysis | Move that material into explanation or a how-to guide |
-| A tutorial offers many branches, options, and alternative paths | Tighten it into one reliable learning path, or convert it into a how-to guide if the audience is already competent |
-| An explanation contains setup steps or API tables | Move procedures to how-to/tutorial and technical facts to reference |
+1. Unsupported, inaccurate, unsafe, or unusable claims.
+2. Mismatch between the reader's need and the document's promise or form.
+3. Missing prerequisites, outcomes, navigation, or companion material.
+4. Language, consistency, scanning, and style.
 
-## Review checklist
-
-- The title matches the document form.
-- The introduction makes the user promise clear.
-- Every section serves the same primary need.
-- Material of other forms is linked, not blended in.
-- The document is complete for its form, not for every possible need.
+Keep review findings separate from edits unless remediation is explicitly
+authorized.

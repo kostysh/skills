@@ -1,208 +1,255 @@
 ---
 name: documentation
-description: Create, review, restructure, and rewrite technical documentation
-  with Diataxis. Use to classify or split tutorials, how-to guides, references,
-  and explanations; improve documentation architecture and information design;
-  or review technical writing for user-need fit, structure, and quality.
+description: Create, review, restructure, and rewrite source-grounded technical
+  documentation with Diataxis. Use for tutorials, how-to guides, reference,
+  explanations, docs architecture, and audits of user-need fit, factual support,
+  task completion, and maintainability.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.2.0
   tags: documentation, technical-writing, diataxis, tutorials, how-to, reference,
     explanation
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 512a22a3418dc6b257cf0c82e3f214d108b4c8034a7139371bcb596c586415a3
+  skillforge-source-hash: 77f2c1370234e586d38145e401ebd2f8cdac7c75b1eb95f45abb2d5ab7ba40b6
 ---
 
 # documentation
 
 ## Start here
 
-1. Confirm the task matches documentation's applicability criteria.
-2. Use the preserved overview guidance as the normative workflow for this skill.
-3. Load only the active references that match the current task.
-4. Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+1. Name the task mode as author, rewrite, review, or restructure, and confirm whether file changes are authorized.
+2. Identify the audience and user job, target product version or state, language, format, location, and repository conventions.
+3. Inspect the authoritative product sources and current interfaces needed to support factual or executable claims.
+4. Select the primary Diataxis form or identify a coordinating overview or navigation role; load the optional guide only when its trigger matches.
+5. Define the evidence required for the strongest honest outcome status before drafting or editing.
 
 ## When to use this skill
 
-- write new technical documentation
-- choose the right documentation form for a request
-- review documentation quality and structure
-- untangle mixed-purpose pages
-- reorganize an existing documentation set around user needs
+- Create or rewrite source-grounded technical documentation.
+- Choose between tutorial, how-to guide, reference, and explanation.
+- Review documentation for user-need fit, factual support, task completion, structure, and maintainability.
+- Split mixed-purpose pages or improve documentation information architecture.
+- Plan or perform a bounded documentation-corpus restructure around user needs.
 
 ## When NOT to use this skill
 
-- marketing copy, landing pages, or brand messaging
-- product specs, ADRs, RFCs, or internal design proposals
-- changelogs, release notes, or status updates
-- purely technical correctness work where another domain skill should lead
+- Marketing copy, landing pages, or brand messaging.
+- Product requirements, software specifications, ADRs, RFCs, or architecture decisions.
+- Changelogs, release notes, incident reports, or status updates.
+- Pure technical correctness work where no documentation deliverable or review is requested.
+- File-format or visual-layout work whose primary problem is DOCX, PDF, or rendered-page fidelity.
 
 ## Overview
 
-Use this skill to apply Diataxis as a practical way to write and improve technical documentation.
+Use this skill to create documentation that fits a real user need and remains
+honest about what its sources and checks establish.
 
-Read [references/diataxis-guide.md](references/diataxis-guide.md) when you need deeper guidance, rewrite patterns, or more detailed distinctions between the four forms.
+Diataxis governs documentation form, flow, and information architecture. It
+does not replace technical authority or verification against the product.
 
-## Interop priority
+Read [references/diataxis-guide.md](references/diataxis-guide.md) only when form
+selection is ambiguous, mixed content needs a substantial rewrite, a tutorial
+or how-to needs detailed design, or corpus and multi-audience information
+architecture is in scope.
 
-- This skill owns documentation form, boundaries, structure, and review criteria.
-- Domain or framework skills own factual correctness, API behavior, and code examples.
-- If there is tension, keep the domain skill's facts and use this skill to decide where that material belongs.
+## Capability boundary
 
-## Core stance
+- Capability: produce an actionable document, review, or restructure handoff
+  for a named reader and target state, with claims and completion status matched
+  to current evidence.
+- Anti-claim: a correct Diataxis category, polished prose, Markdown lint, link
+  check, generated site, or docs build does not prove factual or executable
+  correctness by itself.
+- Use safe editorial assumptions for presentation details only. Never assume
+  product behavior, commands, defaults, permissions, errors, version support,
+  or rationale.
 
-- Treat Diataxis as a model of user needs, not as a requirement to create four empty buckets in a docs tree.
-- Choose one primary user need per document. If the material mixes needs, split it.
-- Prefer fixing one concrete documentation problem at a time over redesigning the whole corpus upfront.
-- Ask a clarifying question only if the ambiguity changes the documentation form or would materially change the result. Otherwise, make a reasonable assumption and state it.
+## Diataxis compass
 
-## Workflow
+Ask two questions: does the content inform action or cognition, and does it
+support acquisition/study or application/work?
 
-1. Identify the user need.
-- Are they trying to learn, complete a task, look up facts, or understand why something works?
+| Primary need | Mode | Form |
+| --- | --- | --- |
+| Learn through a guided practical experience | Action + acquisition/study | Tutorial |
+| Accomplish a real task or solve a problem | Action + application/work | How-to guide |
+| Look up facts about an interface or system | Cognition + application/work | Reference |
+| Build a mental model or understand why | Cognition + acquisition/study | Explanation |
 
-2. Use the Diataxis compass.
+Use the compass as a course-correction tool, not as a four-folder mandate.
 
-| Primary need | User mode | Form |
-|---|---|---|
-| Learn safely by doing | Study + action | Tutorial |
-| Complete a real task | Work + action | How-to guide |
-| Look up facts about the machinery | Work/study + cognition | Reference |
-| Build a mental model | Study + cognition | Explanation |
-
-3. Decide whether to split.
-- If one page tries to teach, solve, specify, and explain at once, break it into multiple documents.
-- If the user insists on one page, keep one primary form and clearly separate supporting material as linked follow-up content. Only keep mixed sections in one file when that constraint is explicit.
-
-4. Draft or rewrite in the selected form.
-- Keep the document pure to its form.
-- Link to the other forms instead of embedding them.
-
-5. Validate before delivering.
-- Use the checklist for the chosen form.
-- In reviews, lead with mismatches between user need and document form, then mixed-content problems, then style issues.
-
-## The four forms
+## Form contracts
 
 ### Tutorial
 
-Use for lessons aimed at learners.
+- Own the learner's successful experience from meaningful starting point to
+  visible result.
+- Use one reliable path, small steps, expected outcomes, and prompts to notice
+  important effects.
+- Minimize alternatives and explanation that interrupt the learning flow.
 
-- Optimize for a successful learning experience, not for completeness.
-- Show where the learner is going.
-- Deliver visible results early and often.
-- Maintain a clear narrative of what should happen next.
-- Point out what the learner should notice.
-- Minimize explanation and ignore alternatives unless they are required for success.
-- Aim for reliability: the learner should see the promised result at each step.
-
-Validation:
-- A beginner can complete it end-to-end.
-- Each step has an expected outcome.
-- The learner does not need to make expert judgments to proceed.
+A tutorial remains `draft` when its safe end-to-end path or material expected
+results have not been checked for the target environment.
 
 ### How-to guide
 
-Use for directions that help a capable user accomplish a real task.
+- Start from a real user goal, not from a tour of a tool or feature.
+- Assume relevant baseline competence and keep actions focused on the outcome.
+- Include branches and judgment only where the real problem requires them.
 
-- Center the guide on the goal, not on teaching the system from scratch.
-- Assume baseline competence.
-- Keep the path focused on doing.
-- Allow practical branching only when the task genuinely requires judgment.
-- Omit background theory except for a short note when strictly necessary.
-
-Validation:
-- A user with relevant baseline knowledge can complete the task without backtracking.
-- The guide solves a real problem rather than touring the product.
+A how-to remains `draft` when its main executable path, material conditions, or
+commands have not been checked against the target version.
 
 ### Reference
 
-Use for factual, structured description of the machinery.
+- Mirror the authoritative product, API, command, schema, or interface surface.
+- Use consistent entries for signatures, defaults, constraints, errors, and
+  short illustrative examples.
+- Keep recommendations and rationale in a how-to guide or explanation.
 
-- Organize by the product, API, command, schema, or interface itself.
-- Be explicit, neutral, consistent, and easy to scan.
-- Prefer repeatable entry formats, tables, signatures, defaults, constraints, and short examples.
-- Describe what is true; do not teach workflows or argue for design choices here.
-
-Validation:
-- A reader can find a fact quickly.
-- Entries are complete and consistent.
-- Advice, opinion, and conceptual digressions are kept elsewhere.
+Reference completeness is scoped to a named contract surface. Do not call it
+complete because its entries are internally consistent.
 
 ### Explanation
 
-Use for understanding-oriented discussion.
+- Bound the topic and connect concepts, constraints, history, rationale,
+  alternatives, and trade-offs.
+- Separate sourced facts and accepted decisions from author interpretation.
+- Do not turn the page into setup instructions or exhaustive interface lookup.
 
-- Provide context, rationale, history, constraints, alternatives, and trade-offs.
-- Make connections between concepts.
-- Bound the topic clearly.
-- Permit perspective and judgment where they help understanding.
-- Do not turn the page into step-by-step instructions or exhaustive API description.
+An explanation can be structurally strong while remaining `draft` if its facts
+or attributed rationale cannot be traced to an accepted source.
 
-Validation:
-- The reader leaves with a better mental model.
-- The page answers "why?" or "what does this mean?" rather than "what do I click?" or "what is the default value?"
+## Mixed content and information architecture
 
-## Mixed-content triage
+- Give each document or bounded section a primary user need.
+- Split content when mixed forms disrupt the reader's task; otherwise use a
+  clear supporting section or link rather than chasing theoretical purity.
+- Allow landing and navigation pages to coordinate several forms as overviews.
+- For corpus work, improve the smallest useful page or cluster first. Preserve
+  discoverability and identify URL, navigation, link, and redirect effects
+  before moving material.
+- Let audience and product use shape complex hierarchies; do not assume that
+  every documentation set needs four top-level directories.
 
-When reviewing or rewriting existing docs, use these default moves:
+## Review order
 
-| Symptom | Likely fix |
-|---|---|
-| Step-by-step instructions interrupted by long background paragraphs | Keep the steps in a tutorial or how-to guide; move the background into explanation |
-| A task page starts teaching basics from scratch | Split out a tutorial for beginners and keep the task page as a how-to guide |
-| Reference entries contain recommendations, opinions, or trade-off analysis | Move that material into explanation or a how-to guide |
-| A tutorial offers many branches, options, and alternative paths | Tighten it into one reliable learning path, or convert it into a how-to guide if the audience is already competent |
-| An explanation contains setup steps or API tables | Move procedures to how-to/tutorial and technical facts to reference |
+1. Unsupported, inaccurate, unsafe, or unusable claims.
+2. Mismatch between the reader's need and the document's promise or form.
+3. Missing prerequisites, outcomes, navigation, or companion material.
+4. Language, consistency, scanning, and style.
 
-## Review checklist
-
-- The title matches the document form.
-- The introduction makes the user promise clear.
-- Every section serves the same primary need.
-- Material of other forms is linked, not blended in.
-- The document is complete for its form, not for every possible need.
+Keep review findings separate from edits unless remediation is explicitly
+authorized.
 
 ## Workflow stages
 
-### Workflow stage: Apply documentation guidance
+### Workflow stage: Establish the documentation basis
 
-Apply the preserved documentation guidance without changing its domain behavior.
+Prevent polished prose from inventing product truth or exceeding the evidence available for the target version.
 
-1. Match the request to the applicability criteria.
-2. Follow the preserved overview sections for the concrete work.
-3. Read the smallest relevant active reference before using detailed guidance from it.
-4. Run the relevant verification from the overview or report why it could not be run.
+1. Record the task mode, mutation authority, downstream reader or maintainer, requested artifact, and target version or product state.
+2. Treat operator and repository instructions as output constraints; use accepted product, specification, and architecture sources for intended behavior and current code, CLI, API, schema, or runtime contracts for shipped behavior.
+3. Treat existing documentation and examples as candidate material, not as authority when stronger sources are available.
+4. Resolve intended-versus-shipped differences by the named target state; do not silently choose through an unresolved source conflict.
+5. If sources are insufficient, limit the result to structure-reviewed or draft and avoid introducing new factual claims; stop as blocked when the requested artifact cannot be produced safely without an owner decision.
 
 Validation:
 
-- The outcome follows the preserved skill guidance and any loaded reference constraints.
+- Audience, user job, target state, source authority, and allowed side effects are explicit.
+- Technical facts and product decisions are sourced or withheld; any editorial assumptions are labeled and cannot supply missing product truth.
+
+### Workflow stage: Shape the smallest useful documentation change
+
+Match the user's need without forcing a four-folder taxonomy or redesigning the corpus unnecessarily.
+
+1. Use the Diataxis compass to select one primary need and form for the requested document or section, unless its explicit role is to coordinate or navigate several forms.
+2. Split or link mixed material only when doing so improves the reader's task; allow overview and navigation pages to coordinate several forms without pretending to be one of them.
+3. For corpus work, begin with the smallest valuable page or cluster and account for audience, discoverability, existing URLs, navigation, and companion content before proposing moves.
+4. Preserve established terminology, voice, language, formatting, and site conventions unless the task explicitly changes them.
+
+Validation:
+
+- Form or coordinating role, scope, and proposed structure trace to a reader need rather than to empty Diataxis buckets.
+- The change has no speculative pages, categories, redirects, or platform work.
+
+### Workflow stage: Produce the requested deliverable
+
+Deliver an actionable document, review, or restructure handoff without crossing product or platform ownership.
+
+1. In author or rewrite mode, create the requested artifact and keep factual, procedural, and version claims traceable to the established basis.
+2. In review mode, remain read-only unless remediation was also authorized; lead with inaccurate or unusable behavior, then user-need and structure mismatches, then style.
+3. In restructure mode, provide or apply a keep, rewrite, split, move, and retire map with link, navigation, URL, and redirect implications proportional to the requested scope.
+4. Route missing product decisions, technical facts, site mechanics, or file-format concerns to their owners while preserving the documentation intent and handoff.
+
+Validation:
+
+- The downstream reader or maintainer can use the result without inventing facts, scope, destination, or follow-up ownership.
+- Review-only work has not changed files, and authoring work has not silently changed product behavior.
+
+### Workflow stage: Verify proportionately and report an honest status
+
+Match the completion claim to current semantic, factual, executable, and publication evidence.
+
+1. Trace factual claims to authoritative sources and check terminology, language, prerequisites, examples, and expected results against the target version.
+2. For tutorials, safely walk the path end to end when possible; for how-to guides, check the main executable path and material branches; for reference, compare the scoped entries with the authoritative contract; for explanation, check factual claims and attributed rationale.
+3. For moved or published content, run available link, navigation, route, and docs-build checks; treat formatting, lint, file presence, and build success as structural evidence only.
+4. Do not execute destructive, production, privileged, or externally visible operations solely to validate documentation without authority; use a safe environment or static evidence and report the gap.
+5. Report structure-reviewed for a structure-only review, draft when material functional checks are missing, verified only when all applicable checks for the requested documentation boundary pass, or blocked when an unresolved authority gap prevents safe delivery.
+
+Validation:
+
+- The final report names mode, form or coordinating role, audience, artifact or findings, sources and assumptions, checks run and not run, status, and unresolved gaps.
+- Diataxis fit, prose quality, lint, generated files, or a green docs build alone cannot establish verified documentation.
+
+## Interop priority
+
+- **product requirements, implementation-ready specifications, ADRs, RFCs, architecture decisions, and their factual authority:** prd-engineer, spec-engineer, or architecture-engineer according to artifact type. documentation may improve presentation and information design but must not create or revise the owning product or engineering decision.
+- **framework, API, security, data, operational, and other specialized technical facts:** The relevant domain or framework skill and accepted project sources. documentation owns reader fit and form while domain owners establish technical correctness.
+- **Docusaurus config, routes, sidebars, MDX mechanics, search, build, deployment, and redirects:** docusaurus-repo. documentation owns content information architecture; docusaurus-repo owns platform implementation and publication mechanics.
+- **DOCX or PDF generation, editing, rendering, pagination, and visual-layout fidelity:** doc or pdf according to file format. documentation owns content intent and form while the format skill owns the rendered artifact boundary.
+- **whether documentation or other artifacts prove a broader delivered product or system capability:** concept-conformance-reviewer. documentation can describe or support a capability but does not independently prove that runtime behavior exists.
 
 ## Gotchas
 
-- **high** — Do not write persistent project prose in the wrong language with the intent to translate later. Select the language mode before the first draft.
-- **high** — Do not present documentation, matrices, reports, or process notes as delivered runtime capability unless the task is explicitly a documentation or support capability.
+- **high** — Diataxis can improve fit, flow, and information architecture, but it does not establish accuracy, completeness, consistency, or executable correctness.
+- **high** — Do not turn missing product behavior, version, defaults, commands, errors, or rationale into a writing assumption.
+- **high** — Formatting, lint, generated pages, link checks, and a green docs build are useful evidence but cannot by themselves verify the documented behavior.
+- **medium** — Do not create empty tutorial, how-to, reference, and explanation trees or initiate a corpus-wide reorganization merely to mirror the Diataxis diagram.
+- **high** — Do not draft persistent project prose in the wrong language with the intent to translate it later; select the audience and language before the first draft.
 
 ## Policies
 
-### Language preflight policy
-Before creating persistent docs, identify the audience and repository language rule; final language review is a verification step, not the primary drafting workflow.
+### Source-authority policy
+Select the target version or product state before resolving sources; use the owner of intended behavior for planned-state claims, current interfaces for shipped-state claims, and stop rather than silently reconcile unresolved conflicts.
 
-## Required active references
-- [Diataxis Guide](references/diataxis-guide.md) — Read this when you need deeper guidance, rewrite patterns, or more detailed distinctions between the four forms.
+### Side-effect policy
+Review mode is read-only by default, and documentation validation does not authorize destructive, privileged, production, or externally visible operations.
+
+### Status contract
+Report structure-reviewed, draft, verified, or blocked for the requested documentation boundary; never let one checked dimension imply that all dimensions passed.
+
+### Language preflight policy
+Before creating persistent documentation, identify the audience and repository language rule; final language review is verification, not the primary drafting workflow.
+
+## Optional references
+- [Diataxis Guide](references/diataxis-guide.md) — Read this when form selection is ambiguous, mixed content needs a rewrite, a tutorial or how-to needs detailed design, or corpus and multi-audience information architecture is in scope.
 
 ## Portability rules
 
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
 - Keep all mandatory documentation guidance inside this skill folder.
 - Use relative links for local references, assets, scripts, tests, and supporting docs.
+- Treat external methodology links as optional provenance, never as a runtime dependency.
 
 ## Portability checklist before finishing
 
-- Run the skill-source-compiler check command after regeneration.
-- Search the skill folder for absolute local paths before finishing.
-- Confirm every required reference listed by SKILL.md exists inside this skill folder.
+- Run the owning skill-source-compiler lint, regenerate, and check workflow after source changes.
+- Search the active skill and declared files for absolute filesystem dependencies before finishing.
+- Confirm every active reference listed by SKILL.md exists inside this skill folder.
+- Compile to an isolated directory and confirm the copied package retains the authority, evidence, status, and interop contracts.
 
 ## Supporting and historical surface
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/logs/*`

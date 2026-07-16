@@ -2,16 +2,19 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.2`
+- Skill source version: `0.2.0`
 
 ## Source files
+- `docs/README.md`
+- `docs/logs/implementation-log-20260708-1.md`
 - `docs/logs/implementation-log-20260715-1.md`
+- `docs/logs/implementation-log-20260716-1.md`
 - `fragments/overview.md`
 - `references/diataxis-guide.md`
 - `skill.yaml`
 
 ## Required references
-- `references/diataxis-guide.md`
+- none
 
 ## Warnings
 - none
