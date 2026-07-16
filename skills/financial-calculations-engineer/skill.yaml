@@ -1,55 +1,65 @@
 apiVersion: skillforge/v1alpha1
 kind: SkillSource
+
 skill:
   name: financial-calculations-engineer
-  source-version: 0.1.1
+  source-version: 0.2.0
   recommended-skill-md-max-bytes: 20000
-  description: Design and implement deterministic EUR financial calculations across PostgreSQL, backend, and browser. Use for VAT/IVA, discounts, rates, allocations, parsing and formatting, scorporo, ledger postings, and cross-layer parity tests. Enforce the project money library instead of ad hoc arithmetic.
+  description: >-
+    Design, implement, and review deterministic EUR arithmetic and cross-layer
+    numeric parity. Use for VAT/IVA, discounts, rates, allocations, parsing,
+    formatting, and ledger amount balancing. Require authoritative financial
+    rules and real-boundary evidence; never invent tax or accounting policy.
+
 fragments:
   overview: fragments/overview.md
+
 references:
-  - id: ref-references-browser
-    title: Browser
+  - id: ref-browser
+    title: Browser boundaries
     source: references/browser.md
     target: references/browser.md
-    required: true
-    trigger: Read this when you need input/commit/formatting patterns for UI.
-  - id: ref-references-database-sql
-    title: Database Sql
+    required: false
+    trigger: Read this when browser input, preview, state, serialization, or formatting is in scope.
+  - id: ref-database-sql
+    title: Database and SQL conformance
     source: references/database-sql.md
     target: references/database-sql.md
-    required: true
-    trigger: Read this when you need PostgreSQL storage and deterministic SQL formulas.
-  - id: ref-references-money-library-usage
-    title: Money Library Usage
+    required: false
+    trigger: Read this when PostgreSQL storage, SQL formulas, allocation, or database parity is in scope.
+  - id: ref-money-library-usage
+    title: Canonical money engine
     source: references/money-library-usage.md
     target: references/money-library-usage.md
-    required: true
-    trigger: Read this when you need API mapping and anti-patterns.
-  - id: ref-references-parity-testing
-    title: Parity Testing
+    required: false
+    trigger: Read this when discovering, using, or extending a project-owned money library.
+  - id: ref-parity-testing
+    title: Cross-layer parity evidence
     source: references/parity-testing.md
     target: references/parity-testing.md
-    required: true
-    trigger: Read this when you need golden tests for SQL/backend/browser parity.
-  - id: ref-references-server-backend
-    title: Server Backend
+    required: false
+    trigger: Read this before claiming parity or designing fixtures across two or more runtime contours.
+  - id: ref-server-backend
+    title: Server and backend boundaries
     source: references/server-backend.md
     target: references/server-backend.md
-    required: true
-    trigger: Read this when you need backend/domain patterns and JSON boundaries.
-  - id: ref-references-vat-iva
-    title: Vat Iva
+    required: false
+    trigger: Read this when DTOs, JSON serialization, server calculation, persistence, or backend configuration is in scope.
+  - id: ref-vat-iva
+    title: VAT and IVA arithmetic
     source: references/vat-iva.md
     target: references/vat-iva.md
-    required: true
-    trigger: Read this when you need forward/reverse VAT formulas and 0.01 scorporo caveat.
+    required: false
+    trigger: Read this when an accepted source requires forward VAT/IVA, reverse VAT/scorporo, or residual-cent handling.
+
 assets: []
+
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
+
 supporting:
   - id: supporting-docs-readme
     source: docs/README.md
@@ -59,53 +69,169 @@ supporting:
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260716-1
+    source: docs/logs/implementation-log-20260716-1.md
+    target: docs/logs/implementation-log-20260716-1.md
+    description: Non-normative capability review and remediation log.
+
 surfaces:
   active:
-    requiredReferences:
-      - ref-references-browser
-      - ref-references-database-sql
-      - ref-references-money-library-usage
-      - ref-references-parity-testing
-      - ref-references-server-backend
-      - ref-references-vat-iva
-    optionalReferences: []
+    requiredReferences: []
+    optionalReferences:
+      - ref-browser
+      - ref-database-sql
+      - ref-money-library-usage
+      - ref-parity-testing
+      - ref-server-backend
+      - ref-vat-iva
   supportingGlobs:
     - docs/*
+    - docs/logs/*
+
 sections:
   startHere:
-    - Confirm the task matches financial-calculations-engineer's applicability criteria.
-    - Use the preserved overview guidance as the normative workflow for this skill.
-    - Load only the active references that match the current task.
-    - Preserve existing project conventions unless the overview explicitly requires a stricter invariant.
+    - Classify the request as design, implementation/remediation, or review-only and confirm whether mutations are authorized.
+    - Obtain the accepted business, legal, tax, tariff, or accounting source for every material financial rule before choosing arithmetic.
+    - Define the calculation contract, including units, currency, rates, formulas, rounding and fixation points, negative flows, ranges, errors, and residual allocation.
+    - Discover the target repository's canonical money engine and the actual runtime contours affected; do not assume a package name or path.
+    - Load only the optional references whose triggers match the task.
+    - Report evidence per real contour and reserve full verification for boundaries that were actually exercised.
   whenToUse:
-    - Building or reviewing deterministic EUR money calculations, VAT/IVA, discounts, rates, allocations, scorporo, ledger postings, parsing, or formatting.
-    - Implementing cross-layer SQL, backend, and browser parity for financial formulas.
-    - Enforcing correct use of the local money library instead of ad-hoc arithmetic.
+    - Designing, implementing, or reviewing deterministic EUR amount representation, arithmetic, rounding, VAT/IVA, discounts, rates, allocations, scorporo, parsing, or formatting.
+    - Preserving numeric invariants for ledger amounts when the accounting and posting policy is already authoritative.
+    - Establishing or checking parity across a project money library, PostgreSQL, backend, and browser/application contours.
   whenNotToUse:
-    - The work has no monetary, tax, rate, allocation, or accounting calculation surface.
-    - The task is purely UI, framework, database, or TypeScript work without financial invariants.
+    - Selecting tax applicability, tariff rules, ledger accounts, recognition policy, or posting lifecycle without an accepted authoritative source.
+    - Pure framework, transport, UI, database, or TypeScript work with no financial invariant.
+    - Treating a green utility package, fixture file, SQL snippet, or mock as proof of end-to-end financial capability.
   workflow:
-    - id: stage-apply-financial-calculations-engineer
-      title: Apply financial-calculations-engineer guidance
-      goal: Apply the preserved financial-calculations-engineer guidance without changing its domain behavior.
+    - id: stage-authority-contract
+      title: Establish authority and the calculation contract
+      goal: Prevent correct arithmetic from implementing an invented or ambiguous financial policy.
       steps:
-        - Match the request to the applicability criteria.
-        - Follow the preserved overview sections for the concrete work.
-        - Read the smallest relevant active reference before using detailed guidance from it.
-        - Run the relevant verification from the overview or report why it could not be run.
+        - Classify the task mode and mutation authority; keep review-only work read-only and route formal findings output to `code-reviewer`.
+        - Identify each authoritative source by stable id or title, version or effective date when applicable, and the rules it owns.
+        - "Apply precedence in this order: accepted legal/accounting/product specification; project financial contract; canonical money-engine public API and tests for arithmetic behavior; application code; examples in this skill."
+        - Define currency and amount unit, rate unit and bounds, inclusive or exclusive basis, formula, rounding mode, fixation points, negative/refund behavior, range and overflow behavior, error semantics, and allocation or residual-cent policy as applicable.
+        - If a material rule is missing, conflicting, expired, or lower-authority than another source, stop the risky path and return the exact authority question instead of choosing a policy.
       validation:
-        - The outcome follows the preserved skill guidance and any loaded reference constraints.
-  interop: []
+        - Every material financial decision traces to an accepted source instead of a skill example or utility behavior.
+        - Unit-bearing fields and formulas are unambiguous.
+        - Missing or conflicting authority produces a blocked handoff, not an invented default.
+    - id: stage-engine-contours
+      title: Discover the canonical engine and real contours
+      goal: Reuse verified project behavior without turning one repository layout or utility test suite into universal capability.
+      steps:
+        - Inspect the target repository for an established money engine, its manifest, public exports, version, configuration model, behavioral docs, and tests; verify APIs before using the mapping reference.
+        - If no canonical engine exists, do not create a shared package automatically; keep one domain-specific formula with its owning module or route a genuinely shared boundary to architecture ownership.
+        - Add a primitive to the canonical engine only when it is reusable financial behavior or a shared cross-contour boundary; keep one-off tariff or product formulas with the authoritative domain owner while composing engine primitives.
+        - Inventory applicable contours separately, such as library unit, PostgreSQL, backend/domain integration, browser bundle, application UI, persistence, and external ledger integration.
+        - Treat library availability, unit tests, generated fixtures, schemas, and wrappers as substrate for broader application or parity claims until the corresponding real contour is exercised.
+      validation:
+        - The chosen engine and API are present in the target repository or their absence has a deterministic fallback or stop.
+        - Every claimed contour has a named runtime boundary and consumer.
+        - Shared-library changes are justified by current reuse or a protected boundary.
+    - id: stage-implement
+      title: Implement the smallest contract-complete change
+      goal: Preserve the accepted financial contract with explicit units and identical numeric semantics at every affected boundary.
+      steps:
+        - Keep canonical EUR amounts as integer cents in domain logic unless the accepted contract explicitly defines another precision for an intermediate value; keep rates in a separate integer unit.
+        - Use explicit rounding modes only at accepted fixation points, and preserve sign symmetry, reversals, refunds, zero values, and deterministic remainder ordering.
+        - Use unit-bearing DTO and schema names such as `amountCents`; never let one unitless string mean either canonical cents or human-entered euros.
+        - Recompute or validate authoritative amounts on the server; browser previews and submitted totals are not persistence authority by themselves.
+        - Match PostgreSQL denominator, rate, range, overflow, rounding, error, and tie-break behavior to the canonical engine; use widened exact intermediates when bigint multiplication can overflow.
+        - Configure process-global money settings once at application bootstrap and reset them between tests; do not mutate global math policy per request.
+      validation:
+        - No canonical money arithmetic uses binary floating point or formatted strings.
+        - Boundary schemas preserve units without reinterpretation.
+        - Each changed contour implements the same accepted formula and error contract.
+    - id: stage-verify-report
+      title: Verify real contours and report honestly
+      goal: Make the evidence strength match the financial and parity claim.
+      steps:
+        - Build fixed expected fixtures from accepted examples or independently reviewed literals; do not calculate expected values with the implementation under test.
+        - Exercise every contour named in the completion claim at its real boundary, including real PostgreSQL for SQL claims and actual browser or application runtime for browser claims.
+        - Record an evidence matrix with `contour`, fixture or source identity, command or artifact, observed result, and status `verified`, `not-run`, `not-applicable`, or `blocked`.
+        - Classify the overall result as `verified` only when every applicable claimed contour is verified; otherwise report `partial` when useful work exists or `blocked` when authority or a required boundary is unavailable.
+        - Report the authoritative calculation contract, affected contours, implementation or review outcome, evidence matrix, anti-claims, and residual risk.
+      validation:
+        - Green package tests are not reported as SQL, application wiring, persistence, or end-to-end parity evidence.
+        - The final status follows the evidence matrix without substrate-only closure.
+  interop:
+    - id: interop-financial-authority
+      domain: tax applicability, tariff policy, accounting recognition, ledger accounts, and posting lifecycle
+      winner: Accepted legal, accounting, product, or financial specification
+      rationale: This skill implements and checks supplied financial rules; it does not invent them. Use `spec-engineer` to make accepted rules executable, not to create authority.
+    - id: interop-typescript
+      domain: TypeScript types, compiler behavior, and language-level APIs
+      winner: typescript-engineer
+      rationale: This skill owns financial units and invariants; typescript-engineer owns TypeScript mechanics.
+    - id: interop-testing
+      domain: test framework, fixtures, mocks, coverage, and test-process behavior
+      winner: typescript-test-engineer
+      rationale: This skill defines required financial cases and evidence boundaries; the test skill owns test mechanics.
+    - id: interop-database
+      domain: PostgreSQL or Supabase schema, functions, migrations, transactions, and deployment
+      winner: The relevant database or Supabase skill
+      rationale: This skill owns numeric semantics and SQL conformance; the database skill owns platform implementation and operations.
+    - id: interop-browser
+      domain: UI state, forms, accessibility, framework lifecycle, and browser integration
+      winner: The relevant frontend or framework skill
+      rationale: This skill owns parse, format, units, preview authority, and parity invariants; frontend skills own UI mechanics.
+    - id: interop-review
+      domain: formal code-review process, severity, findings, and merge guidance
+      winner: code-reviewer
+      rationale: This skill supplies financial-domain judgment while code-reviewer owns read-only review workflow and output.
   commands: []
-  gotchas: []
-  policies: []
+  gotchas:
+    - id: gotcha-authority
+      priority: high
+      text: Do not infer a tax rate, tariff, ledger account, posting rule, or residual-cent policy from a utility example.
+    - id: gotcha-unitless-string
+      priority: high
+      text: Do not accept a generic money string that could mean canonical cents or human-entered euros; encode the unit in the field and parser contract.
+    - id: gotcha-sql-example
+      priority: high
+      text: Do not copy illustrative integer SQL until denominator, rate, overflow, range, rounding, error, and tie-break semantics are proven against the canonical engine.
+    - id: gotcha-substrate-parity
+      priority: high
+      text: Do not call package unit tests, browser-bundle tests, fixtures, schemas, or mocks cross-layer parity unless the claimed real contours executed the same fixtures.
+    - id: gotcha-global-config
+      priority: high
+      text: Do not change process-global locale, compatibility, resource, or math settings per request; configure once at bootstrap and isolate tests.
+    - id: gotcha-browser-authority
+      priority: high
+      text: Do not persist a browser preview or client-submitted total as authoritative without server-side recomputation or contract validation.
+    - id: gotcha-ledger-boundary
+      priority: high
+      text: Balanced integer amounts do not establish correct ledger accounts, recognition, audit, or posting lifecycle.
+  policies:
+    - id: policy-authority-before-arithmetic
+      title: Authority-before-arithmetic policy
+      text: Require accepted, traceable financial rules before choosing formulas or defaults; utility APIs define arithmetic behavior, not business or legal authority.
+    - id: policy-explicit-units
+      title: Explicit-units policy
+      text: Every persisted or transported amount and rate must carry an unambiguous unit in its schema, name, or discriminant, and conversions occur only at named boundaries.
+    - id: policy-rounding-fixation
+      title: Rounding and fixation policy
+      text: Rounding mode, precision, fixation points, and residual allocation are part of the accepted contract and must match across every affected contour.
+    - id: policy-engine-discovery
+      title: Canonical-engine discovery policy
+      text: Verify the target repository's current public money API and tests at invocation time; a relative path or API table in this skill is guidance, not proof that the engine exists or is compatible.
+    - id: policy-parity-claim
+      title: Parity-claim policy
+      text: Claim parity only for the exact fixture identity and real contours that executed successfully; missing SQL, backend, browser, persistence, or application evidence remains explicit.
+    - id: policy-reporting
+      title: Reporting contract
+      text: Report the authoritative calculation contract, affected contours, outcome, per-contour evidence matrix, anti-claims, residual risk, and an overall status no stronger than the weakest required contour.
   portability:
     required: true
     rules:
-      - Do not reference machine-specific absolute paths or local files outside this skill folder.
-      - Keep all mandatory financial-calculations-engineer guidance inside this skill folder.
-      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+      - Do not require a machine-specific path, repository layout, external local file, or package name to understand or execute the core workflow.
+      - Discover project financial authorities and the canonical money engine from the target repository; stop or route deterministically when they are absent.
+      - Keep all mandatory calculation, evidence, fallback, and reporting rules inside this skill folder.
+      - Treat formulas, rates, paths, API names, and project profiles as examples until verified against the target source.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
-      - Search the skill folder for absolute local paths before finishing.
-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - Confirm the generated SKILL links every optional reference with its precise load trigger.
+      - Confirm copied-skill use has a deterministic discovery, fallback, or blocked path when no project money engine exists.
+      - Confirm no active instruction requires an absolute local path or external repository state.

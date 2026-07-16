@@ -1,46 +1,41 @@
-# Database and SQL Patterns
+# Database and SQL conformance
 
-## Storage model
-- Store canonical money in cents: `amount_cents BIGINT NOT NULL`.
-- Store rates separately, prefer ppm integers: `rate_ppm INT`.
-- Use SQL views for display (`amount_cents::numeric / 100`) instead of storing formatted values.
+Read this reference when PostgreSQL storage, SQL formulas, allocation, or database parity is in scope.
 
-## Deterministic SQL formulas
-Recommended half-away-from-zero integer division helper:
+## Storage contract
 
-```sql
-create or replace function round_div_half_away_from_zero(numerator bigint, denominator bigint)
-returns bigint
-language sql
-immutable
-as $$
-  select case
-    when denominator = 0 then null
-    when numerator >= 0 then (numerator + (denominator/2)) / denominator
-    else - ((-numerator + (denominator/2)) / denominator)
-  end;
-$$;
-```
+- Store canonical EUR cents in `BIGINT` only when the accepted range fits signed int64.
+- Store integer rates separately and add constraints matching the canonical engine, such as ppm `0..1_000_000` when that is the accepted API contract.
+- Store currency, source/version, rounding/fixation policy, or calculation provenance when the owning specification requires them.
+- Never store localized display strings as calculation inputs.
 
-Rate application with ppm:
+## SQL conformance contract
 
-```sql
-create or replace function mul_rate_ppm_cents(amount_cents bigint, rate_ppm int)
-returns bigint
-language sql
-immutable
-as $$
-  select round_div_half_away_from_zero(amount_cents * rate_ppm::bigint, 1000000);
-$$;
-```
+Do not copy an unchecked rounding helper. A project-owned SQL implementation must explicitly match the canonical engine for:
 
-## Allocation
-- Use deterministic largest-remainder allocation for weighted distribution.
-- Guarantee invariants:
-  - each row is integer cents,
-  - sum of allocated rows equals original total,
-  - tie-break rule is deterministic.
+| Concern | Required behavior |
+| --- | --- |
+| Denominator | Reject zero and any sign the engine rejects; do not silently return `NULL` |
+| Rate | Enforce the same integer unit and bounds |
+| Rounding | Implement only named modes with matching positive and negative tie behavior |
+| Intermediate arithmetic | Use exact widened arithmetic such as `numeric`, or prove inputs cannot overflow before division |
+| Output | Check the final result against the accepted bigint/int64 range before casting |
+| Errors | Preserve an explicit, tested error contract instead of converting invalid input to a value |
+| Allocation | Guarantee sum equality and use an explicit stable business key or ordering for remainder ties |
 
-## Parity requirement
-- SQL formulas must match `packages/money` semantics exactly.
-- Maintain shared golden cases tested in SQL + backend + browser.
+`amount_cents * rate_ppm` can overflow PostgreSQL `BIGINT` even when the rounded result fits `BIGINT`. Casting only the final result is too late; widen or preflight the intermediate expression.
+
+## Required real-PostgreSQL cases
+
+Execute the same fixed fixture identities against the canonical engine and PostgreSQL. Include:
+
+- positive, zero, and negative amounts;
+- exact divisions and positive/negative ties;
+- zero and rejected negative denominators;
+- minimum, maximum, and just-outside accepted rates;
+- accepted output extrema and intermediate-overflow cases;
+- output-range failures;
+- allocation ties with rows supplied in different physical orders;
+- rollback or persistence behavior when calculation fails.
+
+SQL text, a migration file, a generated fixture, or a JavaScript test named “matches SQL” is not SQL evidence. Record the database command, fixture version, observed rows or errors, and environment identity.

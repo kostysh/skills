@@ -1,29 +1,50 @@
-# Server and Backend Patterns
+# Server and backend boundaries
 
-## Domain model
-- Store and compute money as `MoneyCents = bigint`.
-- Keep rates separate as integer ppm (`RatePpm`).
-- Avoid decimal strings inside core domain logic.
+Read this reference when DTOs, JSON serialization, server calculation, persistence, or backend configuration is in scope.
 
-## API boundaries
-- Input DTO: accept money as string (for example `"1999"` cents or `"19.99"` user input string).
-- Parse immediately using `BigInt(...)` for cents strings or `parseEurToCents(...)` for human-entered amounts.
-- Output DTO: serialize cents as string (`BigInt` is not JSON-serializable by default).
+## Keep units unambiguous
 
-## Typical flow
-1. Validate request payload.
-2. Parse amounts/rates.
-3. Compute with `money` (`mulRatePpm`, `add`, `roundDiv`, allocation helpers).
-4. Persist cents and rates.
-5. Format only for response/UI-specific fields when needed.
+Use different fields and parsers for different units. For example:
 
-## Guardrails
-- Enable safe mode when runtime validation is required:
-  - `setMathMode('safe')`
-  - configure compatibility mode and resource limits per environment.
-- Reset global money config in tests to avoid cross-test leakage.
+```ts
+type CanonicalAmountDto = { amountCents: string; currency: 'EUR' };
+type HumanAmountDto = { amountInput: string; currency: 'EUR' };
+```
 
-## Negative values
-- Treat negative amounts as first-class for refunds/storno.
-- Keep same rounding policy for positive and negative paths.
-- Add explicit tests for negative equivalents of every critical formula.
+- Parse `amountCents` only as a signed base-10 integer string and then validate its accepted range.
+- Parse `amountInput` only with the accepted human-input parser.
+- Never use a generic `amount: string` when either cents or euros could reach the same boundary.
+- Serialize canonical bigint cents as strings because JSON does not encode bigint.
+
+Required round-trip invariant:
+
+```text
+canonical cents -> DTO string -> validated bigint == original canonical cents
+```
+
+An integer-looking token such as `"1999"` is ambiguous without the field/unit contract: it can mean 1,999 cents or 1,999 euros to different parsers.
+
+## Server authority
+
+- Validate currency, unit, rate bounds, source version, and all discriminants before calculation.
+- Recompute authoritative totals from accepted server inputs or validate a submitted canonical total against the same contract.
+- Treat browser previews as advisory; do not persist them merely because they match a client-side library.
+- Persist canonical cents and integer rates, not localized strings or floating-point values.
+- Return formatted values only as separate presentation fields when the API contract needs them.
+
+## Bootstrap and concurrency
+
+Configure a process-global money engine once during application startup. Do not switch math mode, compatibility range, resource limits, or locale inside request handlers. Tests that change global configuration must restore it after each case and must not run such mutations concurrently without isolation.
+
+## Boundary verification
+
+Cover at least:
+
+- canonical cents serialization and round trip;
+- human input versus canonical cents parser selection;
+- integer-looking tokens, negatives, zero, invalid separators, and over-range values;
+- authoritative server recomputation or validation of browser-submitted values;
+- persistence read/write without unit changes;
+- stable error behavior for invalid units, currency, rates, and ranges.
+
+Mocked DTO or query-builder tests prove only their local contract. Use backend integration and persistence evidence for the corresponding runtime claims.
