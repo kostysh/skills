@@ -2,7 +2,7 @@
 
 ## Start here
 
-Use this catalog to translate GDPR obligations into system controls and audit findings. It is not legal advice and does not replace legal/DPO approval. It is a language-agnostic engineering control map.
+Use this catalog to translate GDPR obligations into system controls and audit findings. It is not legal advice and does not replace controller accountability, legal interpretation, or independent DPO advice. It is a language-agnostic engineering control map.
 
 Each control lists architecture requirement, audit evidence, red flags, and severity guidance.
 
@@ -10,7 +10,7 @@ Each control lists architecture requirement, audit evidence, red flags, and seve
 
 | Severity | Use when |
 | --- | --- |
-| P0 | Processing would start or continue without purpose/lawful basis; prohibited or high-risk data lacks required legal/DPO decision; data subjects cannot exercise core rights; serious security/transfer/vendor gaps create high risk; breach obligations cannot be met. |
+| P0 | Processing would start or continue without a documented purpose/basis decision; prohibited or high-risk data lacks a required condition, authority, DPIA, or consultation; core rights cannot be exercised; serious security/transfer/vendor gaps create high risk; breach obligations cannot be met. |
 | P1 | Control is required before production or scale: consent gating, deletion propagation, retention enforcement, vendor terms, transfer mechanism, sensitive logging, access boundaries, DPIA mitigation, or rights workflow. |
 | P2 | Control design or evidence is incomplete but processing can be constrained safely while resolved. |
 | P3 | Auditability, documentation, naming, or low-risk operational polish. |
@@ -64,13 +64,13 @@ Severity:
 
 Architecture requirement:
 
-- Each processing activity has a specific purpose and lawful-basis candidate before data collection, storage, sharing, logging, analysis, or reuse.
+- Each processing activity has a specific purpose and candidate basis during design, then a documented accountable basis decision before processing starts or continues.
 - Reuse for a new purpose is blocked until compatibility, consent, legal obligation, or another lawful path is resolved.
-- Special category and criminal-offence data require explicit legal/DPO escalation and documented exception/condition.
+- Special-category processing requires both an Article 6 basis and an applicable Article 9 condition; criminal-offence data requires the applicable Article 10 authority and safeguards. Route interpretation to legal counsel and seek DPO advice where applicable.
 
 Audit evidence:
 
-- Purpose matrix, PRD requirements, consent records, legitimate-interest assessment reference, legal-obligation reference, contract necessity analysis, compatibility assessment, DPO decision.
+- Purpose matrix, PRD requirements, consent records, legitimate-interest assessment reference, legal-obligation reference, contract necessity analysis, compatibility assessment, accountable decision, legal analysis, and DPO advice.
 
 Red flags:
 
@@ -81,7 +81,7 @@ Red flags:
 
 Severity:
 
-- P0 when processing lacks purpose/lawful basis or involves special/criminal data without escalation.
+- P0 when processing lacks a documented applicable basis or involves special/criminal data without the required condition or authority.
 - P1 when reuse or expansion lacks basis before release.
 
 ## C4. Data minimisation and privacy by default
@@ -158,7 +158,8 @@ Severity:
 
 Architecture requirement:
 
-- The system and operations can handle access, rectification, erasure, restriction, portability, objection, direct-marketing objection, consent withdrawal, and safeguards for solely automated significant decisions.
+- The system and operations can handle access, rectification, erasure, restriction, portability where Article 20 applies, objection, direct-marketing objection, consent withdrawal, and safeguards for solely automated significant decisions.
+- Article 15 access and Article 20 portability have separate scope and output rules: access covers personal data undergoing processing, including relevant inferred data; portability applies only to applicable consent/contract automated processing and data provided by the data subject, including observed data but not controller-created inferred data.
 - Identity verification is proportionate and does not collect unnecessary extra data.
 - Corrections, erasure, or restrictions propagate to recipients unless impossible or disproportionate.
 
@@ -169,7 +170,7 @@ Audit evidence:
 Red flags:
 
 - Account deletion is the only rights mechanism.
-- Export covers only primary user table and omits derived, event, support, or vendor data.
+- Access response covers only the primary user table and omits other personal data; portability is incorrectly treated as identical to access.
 - Erasure does not cover indexes, caches, queues, derived profiles, analytics identifiers, or vendors.
 - No way to handle restriction, objection, or direct-marketing objection.
 - Manual process exists but has no system support to find data or prove completion.
@@ -258,6 +259,7 @@ Architecture requirement:
 
 - Transfers to third countries or international organisations have documented destination, recipient, role, transfer mechanism, onward-transfer rules, and supplementary safeguards where needed.
 - Adequacy decisions, SCCs, BCRs, approved codes/certifications, or exceptional derogations are treated as legal mechanisms requiring organisational evidence.
+- A judgment, decision, or request from a third-country authority is not by itself a legal basis or Chapter V transfer ground; responding requires separate Article 6 and transfer analysis with legal escalation.
 
 Audit evidence:
 
@@ -269,6 +271,7 @@ Red flags:
 - Transfer mechanism unknown.
 - Derogation used for regular repeated transfer.
 - Regional controls are only contractual but runtime config permits any region.
+- A third-country authority request is executed solely because it is locally binding outside the EU/EEA.
 
 Severity:
 
@@ -279,14 +282,14 @@ Severity:
 
 Architecture requirement:
 
-- Processing likely to result in high risk is assessed before launch through DPIA or equivalent organisational process, with mitigation and residual-risk handling.
-- If high risk remains after mitigation, supervisory-authority prior consultation may be required and must be escalated.
+- Processing likely to result in high risk requires an Article 35 DPIA before processing, subject only to an applicable legal exception.
+- If the DPIA indicates residual high risk in the absence of measures sufficient to mitigate it, Article 36 prior consultation is required before processing.
 
 Audit evidence:
 
-- DPIA decision, risk assessment, mitigation plan, profiling analysis, automated-decision analysis, data protection by design choices, DPO/legal review.
+- DPIA screening and decision, applicable supervisory-authority list, DPIA, mitigation plan, residual-risk result, profiling and automated-decision analysis, data protection by design choices, accountable controller decision, legal analysis, and DPO advice.
 
-High-risk triggers:
+High-risk indicators for documented screening:
 
 - systematic and extensive profiling with legal or similarly significant effects;
 - large-scale special category or criminal data;
@@ -297,6 +300,8 @@ High-risk triggers:
 - combining datasets in ways that increase risk;
 - innovative technology with unclear privacy impact;
 - AI/ML models that infer sensitive traits or drive significant decisions.
+
+The first three Article 35(3) cases and applicable supervisory-authority Article 35(4) lists can directly require a DPIA. Other indicators above require contextual assessment and must not be treated as automatic standalone legal triggers.
 
 Red flags:
 
@@ -315,7 +320,7 @@ Architecture requirement:
 
 - Solely automated decisions that produce legal or similarly significant effects are avoided unless a GDPR exception applies and safeguards exist.
 - Users can obtain human intervention, express a view, and contest the decision where required.
-- Special category data is not used for such decisions unless Article 9 conditions and safeguards apply.
+- Special-category data is not used for such decisions unless Article 22(4) is satisfied through Article 9(2)(a) or 9(2)(g) and suitable safeguards apply.
 
 Audit evidence:
 
@@ -329,7 +334,7 @@ Red flags:
 
 Severity:
 
-- P0/P1 depending on decision effect and missing legal/DPO decision.
+- P0/P1 depending on decision effect and missing accountable decision, legal analysis, or DPO advice.
 
 ## C14. Children and vulnerable data subjects
 
@@ -340,7 +345,7 @@ Architecture requirement:
 
 Audit evidence:
 
-- Age-gating design, target audience, parental consent process, child-friendly transparency, profiling/marketing controls, legal/DPO decision.
+- Age-gating design, target audience, parental consent process, child-friendly transparency, profiling/marketing controls, accountable decision, legal analysis, and DPO advice.
 
 Red flags:
 

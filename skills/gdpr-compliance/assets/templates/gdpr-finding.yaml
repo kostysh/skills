@@ -1,7 +1,7 @@
 id: GDPR-001
-severity: P0
+severity: # P0 | P1 | P2 | P3
 title:
-status: confirmed_gap
+status: # control_evidenced | confirmed_gap | missing_evidence | accountable_or_specialist_decision_needed | assumption | not_in_scope
 affected_processing_activity:
 gdpr_control:
 evidence:
@@ -11,5 +11,5 @@ required_observable_capability:
 insufficient_substrate:
 recommended_constraint:
 verification_path:
-legal_or_dpo_escalation:
+accountable_or_specialist_decision_needed:
 residual_risk:

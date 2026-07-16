@@ -65,18 +65,31 @@ Evidence:
 
 - Scheduled job tests, retention matrix, anonymisation analysis, audit logs, monitoring, alerting.
 
-### Access and portability export
+### Access
 
 Probe:
 
-- Request access/export for a data subject.
-- Verify coverage across user-provided data and relevant derived data.
+- Request Article 15 access for a data subject.
+- Verify coverage across personal data undergoing processing, including relevant inferred or derived personal data.
 - Verify excluded records have reasons and do not expose another person's data.
-- Verify format and identity verification are proportionate.
+- Verify the copy, required processing information, and identity verification are proportionate.
 
 Evidence:
 
 - Export tests, field coverage matrix, exception list, identity-verification workflow, response timing evidence.
+
+### Portability where applicable
+
+Probe:
+
+- Confirm Article 20 applicability: consent or contract basis and automated processing.
+- Verify coverage for data provided by the data subject, including observed data, without automatically adding controller-created inferred or derived data.
+- Verify structured, commonly used, machine-readable output and direct transmission where applicable and technically feasible.
+- Verify another person's rights are not adversely affected.
+
+Evidence:
+
+- Applicability decision, field provenance matrix, format/contract tests, transmission workflow, exception evidence.
 
 ### Logging and observability
 
@@ -102,19 +115,18 @@ Evidence:
 
 - Network traces, config, IaC, vendor settings, DPA/SCC references, data residency config, deletion/export support evidence.
 
-## Implementation finding statuses
+## Implementation control dispositions
 
-Use these statuses in findings:
+Use the canonical dispositions from the audit methodology:
 
 | Status | Meaning |
 | --- | --- |
-| Behavior present | Evidence demonstrates the required control path operates |
-| Behavior absent | Evidence demonstrates the control path is missing or wrong |
-| Behavior untested | Code or design suggests behavior, but no test/runtime proof exists |
-| Evidence unavailable | The audit could not inspect necessary artifacts |
-| External dependency | Vendor/legal/operations evidence is required |
+| `control_evidenced` | Evidence demonstrates the required control path operates for the assessed boundary |
+| `confirmed_gap` | Evidence demonstrates the control path is missing or wrong |
+| `missing_evidence` | Behavior is untested or necessary code/runtime/vendor evidence was unavailable |
+| `accountable_or_specialist_decision_needed` | The remaining dependency is an accountable organisational decision or specialist interpretation/advice |
 
-For high-risk controls, "behavior untested" can be a P1 finding even when code appears plausible.
+For high-risk controls, `missing_evidence` can be a P1 finding even when code appears plausible.
 
 ## Test quality rules
 

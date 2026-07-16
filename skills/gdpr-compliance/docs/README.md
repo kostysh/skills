@@ -6,12 +6,10 @@ This directory is non-normative. Active skill behavior is defined by `SKILL.md` 
 
 | Log | Status | Summary |
 | --- | --- | --- |
-| [implementation-log-20260518-1.md](logs/implementation-log-20260518-1.md) | PASS | Initial compiler-standard architecture-focused GDPR skill creation. |
+| [implementation-log-20260518-1.md](logs/implementation-log-20260518-1.md) | AUTHOR SELF-CHECK | Initial compiler-standard creation; the historical `PASS` was not an independent capability verdict. |
+| [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | INDEPENDENT SCOPED PASS | Description-only change review; no broad capability review. |
+| [implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) | INDEPENDENT PASS | Full capability review and remediation; no unresolved P1/P2 in closure review. |
 
 ## Issues
 
 No issues are currently open for this skill.
-
-## Журналы реализации
-
-- [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points; independent scoped PASS.

@@ -4,5 +4,6 @@ Before finishing a GDPR architecture audit or skill-maintenance change:
 - Confirm findings distinguish behavior, substrate, missing evidence, legal uncertainty, and residual risk.
 - Confirm P0/P1 findings identify required observable capability and a verification path.
 - Confirm acceptance criteria cannot pass through documentation, metadata, or stub-only work.
-- Confirm legal/DPO escalation is explicit where lawful basis, special category data, criminal data, children, employment, automated significant decisions, DPIA, transfers, or contracts require organisational judgement.
+- Confirm controller accountability, legal counsel, and independent DPO advice are not conflated.
+- Confirm assessment status and any requested processing/release gate follow the active eligibility rules.
 - Confirm the answer does not claim legal approval, certification, or complete GDPR compliance.

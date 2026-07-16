@@ -8,19 +8,21 @@ The audit goal is not to prove legal compliance. The goal is to find places wher
 
 ## Audit flow
 
-### 1. Establish source authority
+### 1. Establish source authority and currentness
 
-Classify each source before using it:
+Classify authority by the claim being made:
 
-| Source type | Authority |
+| Source type | What it can establish |
 | --- | --- |
-| Law, regulator guidance, legal/DPO decision supplied by the user | Highest for legal constraints, but do not reinterpret beyond the supplied decision |
-| Signed contracts, DPA/SCC material, vendor terms supplied by the user | Binding operational evidence, subject to legal review |
-| PRD, approved spec, ADR, architecture brief | Product and architecture authority |
-| Code, migrations, config, logs, tests, CI, infrastructure | Implementation evidence |
-| README, comments, diagrams, backlog items | Supporting evidence only unless treated as normative locally |
+| Current applicable law, court decisions, and final regulator guidance | Legal constraint; record jurisdiction, status, and as-of date when currentness matters |
+| Accountable controller decision and documented processor instructions | Organisational decision or instruction; neither overrides applicable law |
+| Legal counsel analysis and independent DPO advice | Specialist interpretation, advice, and monitoring; the DPO is not the controller's approval or risk-acceptance owner |
+| Signed contracts, DPA/SCC material, vendor terms | Contractual and operational evidence, not proof that a role, basis, or transfer is lawful |
+| Approved PRD, spec, ADR, architecture brief | Intended product or architecture behavior |
+| Code, config, logs, tests, CI, infrastructure | Implemented or observed behavior to the strength of the evidence |
+| README, comments, diagrams, backlog items | Supporting evidence only unless locally authoritative |
 
-If sources conflict, call out the conflict. Do not silently make a legal or product decision.
+If sources conflict, report the conflict and apply authority only to the claim it can support. For volatile matters such as adequacy, transfer tools, regulator guidance, or national DPIA lists, check official current status when tools permit. Label drafts and consultations as provisional. If currentness cannot be verified, continue the engineering audit but state the limit and do not make a current-law approval claim.
 
 ### 2. Define audit scope
 
@@ -29,7 +31,7 @@ State:
 - target system, feature, workflow, integration, or release;
 - data subjects involved;
 - personal data categories, including inferred and pseudonymised data;
-- purposes and lawful-basis candidates or missing basis;
+- purposes, lawful-basis candidates, accountable decision status, and missing basis;
 - controller/processor/joint-controller/sub-processor/recipient roles;
 - in-scope environments: production, staging, dev, CI, demos, support, analytics, observability, backups;
 - third parties, countries/regions, support access, subprocessors, and onward transfers;
@@ -41,7 +43,7 @@ For each processing activity, capture:
 
 | Field | Meaning |
 | --- | --- |
-| Purpose | Specific user, business, legal, security, operational, or analytics purpose |
+| Purpose and basis state | Specific purpose, candidate basis, accountable decision status, and any Article 9/10 condition or authority needed |
 | Data subjects | People whose data is processed |
 | Data categories | Direct identifiers, indirect identifiers, online identifiers, special categories, criminal data, children, employees, location, behavioural events, content |
 | Source | User input, device, browser, third party, internal inference, vendor, import, log, support interaction |
@@ -125,19 +127,30 @@ A useful finding has:
 
 Do not write findings as "missing document" unless the missing document blocks a control decision. Prefer "No enforceable retention expiry for support attachments" over "No retention policy".
 
-### 6. Handle uncertainty
+### 6. Handle uncertainty and status
 
-Use these statuses:
+Use these finding and control-disposition statuses:
 
 | Status | Meaning |
 | --- | --- |
-| Confirmed gap | Evidence shows required behavior is absent or wrong |
-| Missing evidence | Required behavior may exist, but no reliable evidence was found |
-| Legal/DPO decision needed | Engineering cannot choose the lawful basis, exception, transfer mechanism, DPIA acceptance, or contract position |
-| Assumption | Proceeding with stated assumption; risk if false |
-| Not in scope | Excluded with reason |
+| `control_evidenced` | Reliable evidence supports the required control behavior for the assessed boundary; this is not a broader compliance verdict |
+| `confirmed_gap` | Evidence shows required behavior is absent or wrong |
+| `missing_evidence` | Required behavior may exist, but no reliable evidence was found |
+| `accountable_or_specialist_decision_needed` | Engineering cannot choose the controller's basis, legal interpretation, DPIA result, transfer mechanism, contract position, or substitute for DPO advice |
+| `assumption` | Proceeding with stated assumption; risk if false |
+| `not_in_scope` | Excluded with reason |
 
 For high-risk processing, missing evidence is often a finding, not a neutral note.
+
+Report audit coverage separately:
+
+| Assessment status | Meaning |
+| --- | --- |
+| `COMPLETE_FOR_STATED_SCOPE` | Every material surface found in the stated scope has a control disposition; this does not mean gap-free or compliant |
+| `PARTIAL` | Some in-scope surfaces or evidence remain unassessed; list the coverage limit |
+| `ASSESSMENT_BLOCKED` | Missing authority, target, or evidence prevents a defensible assessment of a material boundary |
+
+When a processing or release gate is requested, use `BLOCK` for any unresolved P0/P1, material high-risk evidence gap, or required accountable decision. Before `NO_ENGINEERING_BLOCKER_IDENTIFIED_IN_ASSESSED_SCOPE`, enumerate every applicable accountable decision and cite evidence that it is resolved; a candidate, assumption, omitted status, advice request, or future follow-up remains `BLOCK`. Never shorten the bounded status to `PASS` or invent missing evidence.
 
 ### 7. Avoid false positives
 
@@ -169,7 +182,7 @@ For downstream architecture/spec work, hand off constraints such as:
 
 - "No analytics SDK or event dispatch may run until consent state permits that purpose."
 - "Retention expiry must remove or irreversibly anonymise identifiers in event store, search index, and derived profile table."
-- "Access export must include user-provided data and derived profile fields used for service decisions; excluded legal records must be listed with reason."
+- "Article 15 access must cover personal data in the assessed stores, including relevant inferred data; Article 20 portability must be specified separately and only for data and processing within its applicability conditions."
 - "Support tool may display only the minimum fields needed for the support workflow and must log human access without exposing full payloads."
 
 These are not implementation tickets. They are constraints and acceptance obligations.

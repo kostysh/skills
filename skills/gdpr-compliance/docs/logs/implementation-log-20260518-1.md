@@ -69,3 +69,7 @@
 ## Final Status
 
 PASS
+
+## Ретроспективное уточнение статуса — 2026-07-16
+
+Указанный выше `PASS` отражал compiler checks и авторский instruction-quality self-check. Он не был независимым `skill-reviewer PASS` и не включал blind forward-tests. Полный baseline review 2026-07-16 признал прежнюю маркировку недостаточной; актуальный статус и remediation evidence находятся в `implementation-log-20260716-1.md`.

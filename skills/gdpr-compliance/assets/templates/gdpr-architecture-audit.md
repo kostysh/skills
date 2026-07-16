@@ -4,10 +4,12 @@
 
 - Target:
 - Sources reviewed:
+- Official-source status/as-of date:
 - In scope:
 - Out of scope:
+- Coverage limits:
 - Assumptions:
-- Legal/DPO decisions not made by this audit:
+- Accountable decisions, legal interpretation, or DPO advice not supplied by this audit:
 
 ## Capability vs substrate
 
@@ -18,11 +20,13 @@
 
 ## Processing map summary
 
-| Activity | Purpose | Data subjects | Data categories | Systems/stores | Recipients/vendors | Regions/transfers | Retention/deletion | Evidence |
+| Activity | Purpose | Basis decision status | Data subjects/categories | Systems/stores | Access boundary | Recipients/transfers | Retention/deletion | Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |  |  |  |
 
 ## Control coverage
+
+Use `control_evidenced`, `confirmed_gap`, `missing_evidence`, `accountable_or_specialist_decision_needed`, `assumption`, or `not_in_scope` for status.
 
 | Control | Status | Evidence | Notes |
 | --- | --- | --- | --- |
@@ -46,13 +50,24 @@
 
 ## Findings
 
-| ID | Severity | Title | Evidence | Required capability | Verification |
-| --- | --- | --- | --- | --- | --- |
-| GDPR-001 |  |  |  |  |  |
+### GDPR-001 — Finding title
+
+- Status:
+- Severity:
+- Affected processing activity:
+- GDPR control:
+- Evidence or missing evidence:
+- Risk to people or accountability:
+- Required observable capability:
+- Insufficient substrate:
+- Recommended constraint:
+- Verification path:
+- Accountable decision, legal counsel, or DPO advice needed:
+- Residual risk:
 
 ## Architecture and spec handoff
 
-| Handoff item | Constraint | Acceptance obligation | Verification | Legal/DPO dependency |
+| Handoff item | Constraint | Acceptance obligation | Verification | Accountable or specialist dependency |
 | --- | --- | --- | --- | --- |
 |  |  |  |  |  |
 
@@ -60,15 +75,15 @@
 
 - Unverified behavior:
 - Missing evidence:
-- Legal/DPO escalation:
+- Accountable decisions or specialist advice:
 - Operational follow-up:
 
-## Verdict
+## Assessment outcome
 
-Engineering audit verdict:
+- Assessment status: `COMPLETE_FOR_STATED_SCOPE` | `PARTIAL` | `ASSESSMENT_BLOCKED`
+- Assessment-status basis:
+- Processing/release gate when requested: `BLOCK` | `NO_ENGINEERING_BLOCKER_IDENTIFIED_IN_ASSESSED_SCOPE`
+- Gate basis:
+- Evidence for every applicable accountable decision:
 
-- PASS:
-- PASS WITH GAPS:
-- BLOCKED:
-
-Do not use this verdict as legal approval or GDPR certification.
+These statuses describe the engineering assessment and reviewed evidence. They are not legal approval or GDPR certification.

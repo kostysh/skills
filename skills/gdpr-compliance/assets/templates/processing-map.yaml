@@ -3,7 +3,10 @@ processing_activities:
     name:
     purpose:
     lawful_basis_candidate:
-    legal_or_dpo_decision_required:
+    lawful_basis_decision_status: # resolved_with_evidence | candidate | missing | not_applicable
+    accountable_controller_owner:
+    article_9_condition_or_article_10_authority:
+    legal_counsel_or_dpo_advice_needed:
     data_subjects: []
     data_categories: []
     special_or_criminal_data: false
@@ -24,6 +27,6 @@ processing_activities:
     rights_coverage:
     access_boundary:
     security_controls:
-    dpia_trigger:
+    dpia_screening_status:
     evidence:
     gaps: []

@@ -8,9 +8,9 @@ compatibility: Portable documentation-only skill. It ships active audit
   references and artifact templates, but no runtime. All mandatory GDPR
   architecture audit guidance lives inside this folder.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.2.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 414a4d27594174e0fb2c36bfc1d01c17a608ec934fe4322581e48c739e0a3e4a
+  skillforge-source-hash: fa555193b2a5ff7f40d8f028b742a9926c0c5acb8a87bb22278a37ca26e44297
 ---
 
 # gdpr-compliance
@@ -21,21 +21,19 @@ metadata:
 2. Separate observable privacy/compliance capability from substrate such as policies, data maps, checklists, flags, empty endpoints, migrations, logs, or tests.
 3. Scope whether GDPR may apply, what personal data is processed, who the data subjects are, and which controller/processor roles are in play.
 4. Build or update a processing and data-flow map before approving architecture, specs, vendors, analytics, telemetry, retention, deletion, AI use, or implementation behavior.
-5. Audit the system against the GDPR architecture controls, then trace findings to required behavior and verification.
-6. Escalate legal interpretation to the organisation's legal owner or DPO, while still identifying engineering risks, missing evidence, and safer design constraints.
-7. Produce findings, architecture constraints, and handoff obligations; do not claim legal compliance certification.
+5. Route legal interpretation to legal counsel and DPO advice to the DPO; keep controller accountability and engineering risk identification explicit.
+6. Produce findings, architecture constraints, and handoff obligations; do not claim legal compliance certification.
 
 ## When to use this skill
 
 - Reviewing PRD, product brief, architecture, ADR, RFC, specification, user story, issue, implementation plan, migration, or code that may process personal data.
 - Designing or reviewing user accounts, identity, cookies, telemetry, analytics, profiling, marketing, support tooling, audit logs, HR/customer data, exports, deletion, retention, incident response, vendors, or international data flows.
 - Checking whether a feature, integration, data pipeline, AI workflow, or operational process has GDPR architecture gaps.
-- Turning GDPR obligations into system constraints, acceptance criteria, verification obligations, or architecture-to-spec handoff items.
 - Reviewing existing implementation evidence for consent gating, data minimisation, rights handling, retention, deletion propagation, logging limits, vendor controls, transfer controls, or breach readiness.
 
 ## When NOT to use this skill
 
-- Drafting privacy notices, cookie banners, processor agreements, legitimate-interest assessments, DPIAs, or legal memos as the main deliverable; involve legal/DPO owners.
+- Drafting privacy notices, cookie banners, processor agreements, legitimate-interest assessments, DPIAs, or legal memos as the main deliverable; route legal ownership appropriately and seek DPO advice where applicable.
 - Certifying that an organisation, product, or vendor is GDPR-compliant.
 - Performing a generic security review with no personal-data processing concern; use `security-reviewer`.
 - Choosing programming language, framework, database, or vendor APIs except where the choice creates a GDPR architecture constraint.
@@ -58,7 +56,7 @@ The skill works across PRD, architecture, specifications, implementation, operat
 
 ### Capability and substrate
 
-Real GDPR-relevant capability is observable system or operational behavior: optional analytics do not load before valid consent; a withdrawal disables downstream processing; access export covers the correct stores; erasure propagates to derived data and vendors where required; retention expiry prevents routine use of expired personal data; logs do not expose unnecessary personal data; transfer controls block disallowed destinations.
+Real GDPR-relevant capability is observable system or operational behavior: optional analytics do not load before valid consent; a withdrawal disables downstream processing; rights workflows cover the applicable stores and data; erasure propagates to derived data and vendors where required; retention expiry prevents routine use of expired personal data; logs do not expose unnecessary personal data; transfer controls block disallowed destinations.
 
 Substrate can be necessary but is not proof: a policy page, RoPA row, DPIA draft, data map, database column, consent checkbox, deletion route, feature flag, queue, event name, test stub, dashboard, or vendor spreadsheet. Treat substrate as incomplete until it is connected to behavior, verification, and operational responsibility.
 
@@ -72,12 +70,16 @@ Use these priorities for audit findings:
 
 | Severity | Meaning |
 | --- | --- |
-| P0 Critical | Block launch or continued processing until resolved or explicitly accepted by legal/DPO owner. Use for processing without purpose/lawful basis, uncontrolled special/criminal data, unresolved high-risk DPIA blockers, uncontrolled international transfers, serious rights/security gaps, or breach-readiness failures that create high risk. |
+| P0 Critical | Block launch or continued processing until the obligation is resolved or authoritatively shown not to apply. Use for processing without a documented basis, uncontrolled special/criminal data, unresolved required DPIA or prior consultation, uncontrolled transfers, serious rights/security gaps, or breach-readiness failures that create high risk. Risk acceptance alone never clears P0. |
 | P1 High | Must be fixed before production or before affected processing expands. Use for missing enforced consent/withdrawal, retention/deletion gaps, vendor/subprocessor gaps, hidden logs/analytics personal data, missing rights implementation, or weak access boundaries for sensitive data. |
-| P2 Medium | Must be designed, tracked, and reviewed before launch or material scale. Use for incomplete evidence, unclear operational ownership, weak acceptance criteria, partial minimisation, or unverified control behavior. |
+| P2 Medium | Track and resolve within an explicit safe constraint before material scale. Use for incomplete low-risk evidence, unclear ownership, weak acceptance, partial minimisation, or unverified behavior that does not require a production block; otherwise use P1. |
 | P3 Low | Improves auditability, maintainability, or review quality. Use for documentation alignment, naming clarity, reporting shape, or low-risk evidence improvements. |
 
 Severity should follow risk to people, processing scale, data sensitivity, reversibility, invisibility, legal/operational exposure, and whether personal-data processing would continue without a valid control.
+
+### Assessment and gate status
+
+Use `COMPLETE_FOR_STATED_SCOPE`, `PARTIAL`, or `ASSESSMENT_BLOCKED` for audit coverage. These statuses describe the assessment, not GDPR compliance. If the user requests a processing or release gate, use `BLOCK` for any unresolved P0/P1, material high-risk evidence gap, or required accountable decision; otherwise use `NO_ENGINEERING_BLOCKER_IDENTIFIED_IN_ASSESSED_SCOPE`. The latter is bounded to reviewed evidence and is not legal approval.
 
 ### Right-sized output
 
@@ -90,7 +92,7 @@ Return the smallest artifact that changes decisions:
 | High-risk processing or broad system audit | Full GDPR architecture audit report using `assets/templates/gdpr-architecture-audit.md` |
 | Missing architecture evidence | Blocking questions, assumptions, risk classification, and bounded evidence request |
 
-Do not expand into a formal compliance document unless the user explicitly asks for that artifact and legal ownership is clear.
+Do not expand into a legal compliance document. A requested formal artifact remains an engineering audit unless the accountable legal owner supplies and owns the legal conclusion.
 
 ### Typical architecture outputs
 
@@ -121,7 +123,9 @@ Establish the review boundary, roles, and legal uncertainty before making archit
 2. Identify personal data, including online identifiers, device IDs, cookie IDs, IP addresses, location data, behavioural events, support content, logs, and pseudonymised identifiers when re-identification is reasonably possible.
 3. Identify data subjects, controller, processor, joint-controller, sub-processor, recipient, and third-country transfer roles where evidence exists.
 4. Flag special category, criminal-offence, children's, employee, biometric, location, profiling, large-scale monitoring, or automated significant-decision processing.
-5. Mark legal interpretation questions for legal/DPO review instead of inventing conclusions.
+5. Distinguish current official law or final regulator guidance, accountable controller decisions, DPO advice, contracts, intended design, and implementation evidence; do not let a lower-authority source override a higher one for the claim being made.
+6. For time-sensitive legal claims, verify current official source status and date when available; label drafts as provisional. If currentness cannot be checked, state the limit and do not claim current legal approval.
+7. Mark legal interpretation for legal counsel and DPO advice for the DPO instead of assigning either the controller's accountable decision.
 
 Validation:
 
@@ -133,14 +137,14 @@ Validation:
 
 Make hidden personal-data processing visible before judging GDPR compliance risk.
 
-1. Map each processing activity by purpose, lawful-basis candidate or missing basis, data subject category, personal data category, source, recipient, storage location, retention rule, access boundary, and deletion path.
+1. Map each processing activity by purpose, lawful-basis candidate, accountable decision status, data subjects and categories, source, recipient, storage, retention, access boundary, and deletion path.
 2. Include non-obvious surfaces: logs, metrics, traces, crash reports, analytics events, support tools, admin tools, search indexes, caches, queues, ML/AI datasets, exports, imports, backups, non-production, screenshots, and vendor dashboards.
 3. Map regions and transfer mechanisms for vendors, hosting, support access, subprocessors, and onward transfers.
 4. Identify where the same data is reused for a new purpose or combined with other datasets.
 
 Validation:
 
-- No material store, flow, vendor, log, backup, or non-production copy is left outside the map without an explicit reason.
+- Every material surface found within the stated scope is mapped; discovery and coverage limits remain explicit instead of implying exhaustiveness.
 - Every mapped activity has purpose, retention, access, and transfer status, even if marked missing or unknown.
 - Reuse and inference are treated as processing, not ignored because no new form field was added.
 
@@ -149,7 +153,7 @@ Validation:
 Convert GDPR principles and obligations into concrete system constraints and findings.
 
 1. Evaluate the processing map against the control catalog for lawful basis, purpose limitation, minimisation, transparency, consent, privacy by default, rights handling, retention/deletion, security, vendors, transfers, DPIA triggers, automated decisions, breach readiness, and accountability evidence.
-2. For each gap, distinguish PRD gap, architecture gap, specification gap, implementation gap, operational process gap, legal/DPO decision gap, or missing evidence.
+2. For each gap, distinguish product, architecture, specification, implementation, operations, accountable decision, legal interpretation, DPO advice, or evidence gaps.
 3. Rate severity by user impact, legal/operational risk, reversibility, blast radius, data sensitivity, scale, and whether processing would continue unlawfully or invisibly.
 4. Prefer design changes that reduce collection, exposure, retention, access, transfer, and identifiability before adding compensating controls.
 
@@ -164,9 +168,9 @@ Validation:
 Ensure GDPR architecture decisions can be implemented and tested without reinterpreting the obligation.
 
 1. Translate required controls into falsifiable requirements, acceptance constraints, invariants, and verification obligations for specs or implementation.
-2. Define how to verify runtime behavior for high-risk controls, such as consent gating, withdrawal, deletion propagation, retention expiry, access export, restriction, objection, automated-decision safeguards, vendor blocking, logging exclusion, and breach escalation.
+2. Define how to verify runtime behavior for high-risk controls, such as consent gating, withdrawal, deletion propagation, retention expiry, access, portability where applicable, restriction, objection, automated-decision safeguards, vendor blocking, logging exclusion, and breach escalation.
 3. Identify substrate that must exist to support the behavior, but keep it separate from proof that the behavior works.
-4. Mark controls that need operational runbooks, legal/DPO approval, vendor evidence, or production observability before release.
+4. Mark controls that need operational runbooks, an accountable controller decision, legal counsel, DPO advice, vendor evidence, or production observability before release.
 
 Validation:
 
@@ -181,13 +185,16 @@ Produce a useful audit result that engineering, product, and legal/DPO stakehold
 1. Report the smallest complete output for the task: short findings for targeted review, a control matrix for medium review, or an architecture audit report for broad/high-risk review.
 2. For each finding include severity, evidence, affected processing activity, GDPR control, user/system impact, required capability, insufficient substrate, recommended constraint, verification, and escalation owner type when needed.
 3. State anti-claims and residual risk, including legal questions not resolved by the audit.
-4. For implementation work, hand off constraints and acceptance obligations rather than broad compliance commentary.
+4. Report assessment status as `COMPLETE_FOR_STATED_SCOPE`, `PARTIAL`, or `ASSESSMENT_BLOCKED`. When a processing or release gate is requested, use only `BLOCK` or `NO_ENGINEERING_BLOCKER_IDENTIFIED_IN_ASSESSED_SCOPE` and state the basis.
+5. For implementation work, hand off constraints and acceptance obligations rather than broad compliance commentary.
 
 Validation:
 
 - The report is traceable from source evidence to control to required behavior.
 - Legal review needs are explicit and not disguised as engineering certainty.
 - Residual risk and unverified behavior are visible.
+- Any unresolved P0/P1, material high-risk evidence gap, or required accountable decision produces `BLOCK`; risk acknowledgement alone cannot clear it.
+- Before a no-blocker gate, enumerate each applicable accountable decision and cite its evidence. A candidate, assumption, missing status, or follow-up requirement cannot be rewritten as a resolved decision.
 
 ## Interop priority
 
@@ -195,31 +202,25 @@ Validation:
 - **vulnerability analysis, cryptography details, exploitability, hardening, and secure coding:** security-reviewer. gdpr-compliance flags Article 32 and personal-data security obligations; security-reviewer owns detailed security analysis and vulnerability remediation.
 - **implementation-ready behavior specifications and normative requirement wording:** spec-engineer. gdpr-compliance produces constraints, acceptance obligations, and findings; spec-engineer turns them into implementation-ready specs.
 - **checking implementation against an existing normative specification:** spec-conformance-reviewer. Use gdpr-compliance to add GDPR obligations as review criteria; use spec-conformance-reviewer for traceability against the supplied spec.
-- **legal interpretation, lawful-basis approval, DPIA approval, transfer-impact assessment approval, DPA/SCC terms, and supervisory-authority consultation:** legal owner or DPO. This skill supports engineering analysis and escalation, but cannot replace legal accountability or organisational decisions.
+- **legal interpretation, controller accountability, DPO advice, DPIA and transfer decisions, contract terms, and supervisory-authority consultation:** accountable controller with legal counsel and independent DPO advice as applicable. gdpr-compliance supplies engineering analysis; the controller remains accountable, legal counsel interprets law, and the DPO advises and monitors without becoming the approval or risk-acceptance owner.
 - **programming language, framework, database, cloud API, test framework, or library mechanics:** relevant language, framework, platform, or database skill. GDPR controls are language-agnostic; implementation mechanics belong to the technical skill.
 
 ## Gotchas
 
 - **high** — A privacy policy, RoPA entry, DPIA draft, or data map is substrate; it does not prove consent gating, deletion, retention expiry, access control, or transfer restriction works.
-- **high** — Do not design data collection, logging, analytics, or vendor transfer first and assign purpose or lawful basis later.
 - **high** — Logs, traces, metrics, analytics, support tooling, admin exports, queues, caches, backups, screenshots, and non-production data often carry personal data even when the main schema looks clean.
 - **high** — Consent UI without demonstrable pre-processing blocking, versioned evidence, withdrawal, and downstream propagation is not consent architecture.
 - **high** — A delete endpoint alone is not erasure if derived data, vendors, logs, indexes, backups, queues, and support copies remain routinely usable.
 - **high** — Pseudonymised data remains personal data when re-identification is reasonably possible; do not treat hashes, tokens, or user IDs as anonymous by default.
-- **high** — Adding SaaS, analytics, support, AI, or hosting vendors before roles, terms, regions, retention, subprocessors, and transfer safeguards are known creates architecture risk.
 - **high** — High-risk processing needs risk analysis and mitigation before processing; a DPIA label or backlog item does not lower the risk.
-- **medium** — Legitimate interest is not a blanket basis for marketing, profiling, enrichment, or invisible reuse; the balancing and opt-out consequences must fit the processing.
-- **medium** — EU hosting alone does not prove no third-country transfer when support access, subprocessors, telemetry, backups, or admin tools cross regions.
-- **medium** — Tests that assert fields or endpoints exist do not prove GDPR behavior unless they exercise the actual control path.
-- **medium** — Calling a party a processor does not make it one; role follows purpose-setting power and actual processing instructions.
 
 ## Policies
 
 ### No legal advice or certification policy
-Do not state that a system, organisation, vendor, transfer, lawful basis, DPIA, consent flow, or contract is legally approved or GDPR-compliant. State engineering findings, evidence, assumptions, residual risks, and legal/DPO escalation needs.
+Do not state that a system, organisation, vendor, transfer, lawful basis, DPIA, consent flow, or contract is legally approved or GDPR-compliant. State engineering findings, evidence, assumptions, residual risks, accountable decisions, legal interpretation, and DPO advice needed.
 
 ### Purpose and lawful-basis before processing policy
-No personal-data collection, inference, storage, logging, enrichment, sharing, training, analysis, or transfer should proceed without a specific purpose and lawful-basis candidate or legal/DPO-approved basis. Special category and criminal-offence data require explicit escalation.
+A lawful-basis candidate is inventory input, not permission to process. Personal-data processing requires a specific purpose and documented accountable basis decision before activation; special-category or criminal-offence data also require the applicable condition or legal authority and specialist review.
 
 ### Minimise before compensating policy
 Prefer removing, aggregating, delaying, shortening, narrowing, or localising personal-data processing before adding encryption, access controls, notices, or documentation as compensating measures.
@@ -228,13 +229,13 @@ Prefer removing, aggregating, delaying, shortening, narrowing, or localising per
 Findings must distinguish confirmed behavior, missing behavior, missing evidence, legal uncertainty, and residual risk. Absence of evidence is a review finding when the system would rely on that control.
 
 ### High-risk fail-closed policy
-P0 issues, high-risk DPIA triggers without review, unresolved special/criminal/children data processing, uncontrolled international transfers, or processing without purpose/lawful basis should block launch or continued processing until a responsible owner resolves them.
+Block for P0/P1 issues, unresolved required DPIA or accountable decisions, high-risk evidence gaps, uncontrolled transfers, or no documented basis. A positive gate requires evidence for each accountable decision; candidate, assumed, missing, or advisory-only status remains blocked. Risk acceptance cannot waive a mandatory duty.
 
 ### Output language policy
 Use the user's working language for audit findings and reports unless repository conventions require another language. Keep GDPR terms, control IDs, and artifact identifiers stable in English when they are part of templates.
 
 ### Output contract
-For targeted work, return concise findings ordered by severity. For broad audits, include scope, evidence reviewed, processing map summary, capability/substrate anti-claims, control coverage, findings, required behavior, verification gaps, legal/DPO escalations, and residual risk.
+Return right-sized findings or a broad audit with scope, source currentness and coverage limits, processing map, anti-claims, control dispositions, findings, required behavior, verification, accountable decisions or advice needed, residual risk, assessment status, and any requested release gate.
 
 ## Required active references
 - [Audit methodology](references/audit-methodology.md) — Read this before auditing PRD, architecture, specification, implementation, data flows, vendors, retention, rights handling, or release readiness for GDPR risks.
@@ -255,6 +256,7 @@ For targeted work, return concise findings ordered by severity. For broad audits
 - Keep all mandatory gdpr-compliance guidance inside this skill folder.
 - Use relative links for local references, assets, and supporting docs.
 - Treat external GDPR guidance, regulator pages, and repository docs as optional context unless the current task supplies them.
+- When official currentness cannot be checked, keep the local engineering audit usable but label the legal-currentness limit and route the decision instead of guessing.
 - Keep the skill programming-language-agnostic; implementation examples must describe evidence surfaces and behavior, not specific frameworks or libraries.
 
 ## Portability checklist before finishing
@@ -278,5 +280,6 @@ Before finishing a GDPR architecture audit or skill-maintenance change:
 - Confirm findings distinguish behavior, substrate, missing evidence, legal uncertainty, and residual risk.
 - Confirm P0/P1 findings identify required observable capability and a verification path.
 - Confirm acceptance criteria cannot pass through documentation, metadata, or stub-only work.
-- Confirm legal/DPO escalation is explicit where lawful basis, special category data, criminal data, children, employment, automated significant decisions, DPIA, transfers, or contracts require organisational judgement.
+- Confirm controller accountability, legal counsel, and independent DPO advice are not conflated.
+- Confirm assessment status and any requested processing/release gate follow the active eligibility rules.
 - Confirm the answer does not claim legal approval, certification, or complete GDPR compliance.
