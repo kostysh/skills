@@ -1,36 +1,38 @@
 # Core principles
 
-Use this reference whenever the task involves writing, changing, or reviewing code.
+Read this reference when choosing between materially different designs or when the complexity exception gate applies.
 
-## Think before coding
+## Compare total conceptual surface
 
-- Classify the request as implementation/remediation or review-only before selecting workflow stages.
-- Treat review, assessment, and diagnosis as read-only unless the request explicitly authorizes code changes; use `code-reviewer` when formal code-review findings and output are requested.
-- For non-trivial local work, name the larger project goal or end-to-end capability the change is supposed to advance.
-- State the role this local change plays in that larger flow, and call out purpose assumptions when the role is inferred.
-- State assumptions explicitly.
-- If the request is ambiguous, name the ambiguity instead of silently picking one interpretation.
-- If there is a materially simpler implementation, prefer it and say why.
-- If the narrow task framing does not advance or conflicts with the intended project capability, say so before coding.
+Compare candidate designs by everything a maintainer must understand after the change:
 
-## Simplicity first
+- new concepts and vocabulary;
+- control flow and interactions;
+- ownership and lifecycle boundaries;
+- dependencies and their behavior;
+- configuration and state;
+- failure and recovery paths.
 
-- Add only what the task needs.
-- Stop at the first sufficient rung: skip speculative work; use language/runtime standard features; use native platform or existing project features; use an already-installed dependency; then write the smallest code that works.
-- Do not introduce single-use abstractions unless they genuinely reduce complexity or protect a real boundary such as security, compatibility, a test seam, or a plugin/API contract.
-- Do not add configurability, extensibility, or defensive branches for scenarios the task does not require.
-- Do not add dependencies, factories, providers, wrappers, or config knobs without a concrete reason the simpler rung fails.
-- If the solution feels larger than the problem, simplify it before proceeding.
+Prefer an existing primitive only when it makes that whole surface smaller. An installed dependency, shared helper, or existing abstraction may be more complex than direct local code when it adds unrelated behavior or indirection.
 
-## Surgical changes
+## Apply the complexity exception gate
 
-- Touch only the code needed for the request.
-- Match the local style and structure unless the task explicitly asks for a broader refactor.
-- Do not opportunistically clean up adjacent code.
-- Remove only the dead code or imports that your own change made obsolete.
+For each proposed abstraction, dependency, layer, provider, factory, interface, wrapper, configuration surface, persistent state, background process, or extension point, answer:
 
-## Visible reasoning
+1. Which current requirement or protected boundary requires it?
+2. Why is a direct local change or existing primitive insufficient?
 
-- Do not hide confusion or weak assumptions inside code.
-- If the implementation depends on a risky assumption, call it out before or alongside the change.
-- If the task asks for one thing but the safest solution is different, explain the tradeoff directly.
+If either answer is missing, remove the concept. Real protected boundaries include security and compatibility boundaries, transactions, public contracts, and established repeated use. Possible future reuse is not established repeated use.
+
+Do not require this defense for an ordinary direct change.
+
+## Avoid false simplicity
+
+Do not choose a shorter design when it:
+
+- weakens correctness, security, compatibility, or required verification;
+- hides behavior in clever code or surprising coupling;
+- ignores an established architectural boundary;
+- moves complexity to another owner without reducing it.
+
+Fit the existing system rather than redesigning it for blank-slate elegance. Use project purpose only to identify a misleading, insufficient, or unnecessary local task; it does not authorize adjacent implementation.

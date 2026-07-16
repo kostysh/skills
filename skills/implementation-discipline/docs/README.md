@@ -22,6 +22,7 @@
 - [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) - first sufficient rung, shortcut trigger, and minimum-check guidance.
 - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) - stable-evidence and operator-not-QA remediation traceability.
 - [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) - review-only mutation boundary and remediation status-to-claim contract.
+- [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) - simplicity-first core, complexity exception gate, conditional references, and behavioral evidence.
 
 ## Scope of This Folder
 
