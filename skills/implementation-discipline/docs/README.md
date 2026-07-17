@@ -23,6 +23,7 @@
 - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) - stable-evidence and operator-not-QA remediation traceability.
 - [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) - review-only mutation boundary and remediation status-to-claim contract.
 - [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) - simplicity-first core, complexity exception gate, conditional references, and behavioral evidence.
+- [logs/implementation-log-20260717-1.md](logs/implementation-log-20260717-1.md) - source-authorized scope and simplicity discipline for implementation and authoring skills.
 
 ## Scope of This Folder
 

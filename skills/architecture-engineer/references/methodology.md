@@ -135,13 +135,13 @@ Validation:
 
 ## Workflow stage: Generate candidate patterns
 
-Goal: compare credible options before selecting a pattern.
+Goal: prefer the simplest source-authorized architecture and compare patterns only when a material decision remains.
 
-1. Create at least two candidates for significant decisions.
-2. Include the simplest baseline as one candidate unless it clearly cannot satisfy ASR.
-3. Treat one-implementation interfaces, providers, wrappers, config layers, and adapters as suspect unless a current boundary, contract, validation obligation, migration path, plugin point, or second implementation justifies them.
-4. Include future evolution path when choosing a simpler current pattern.
-5. Reject fashionable patterns when the forces do not justify them.
+1. Test a direct local change or existing primitive first; select it without an alternatives exercise when it satisfies current ASR.
+2. Compare credible candidates only for a significant source-authorized decision; choose the narrowest supported option.
+3. Missing topology, ownership, lifecycle, or operations evidence never authorizes a broader defensive design; block that choice and route the missing decision.
+4. Treat interfaces, providers, wrappers, config layers, platforms, registries, queues, retry mechanisms, instrumentation, harnesses, and test seams as suspect unless a current source requirement or protected boundary needs them and the direct or existing path is insufficient.
+5. Reject fashionable or future-flexibility patterns when current forces do not justify them.
 
 Candidate pattern families:
 
@@ -162,9 +162,9 @@ Read [Pattern catalog](pattern-catalog.md) when the force requires component-spe
 
 Validation:
 
-- Candidate set includes alternatives with different trade-offs.
+- A candidate set exists only when the direct-path check leaves a significant decision, and its alternatives have different trade-offs.
 - Candidate patterns are selected because of forces, not naming preference.
-- Overly complex candidates are rejected with explicit rationale.
+- Overly complex candidates are rejected; an ordinary direct solution needs no alternatives essay.
 - Single-implementation abstractions are rejected, labeled `not_prescribed`, or justified by a current architecture force.
 
 ## Workflow stage: Score and select patterns

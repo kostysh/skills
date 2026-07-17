@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.8
+  source-version: 0.2.9
   recommended-skill-md-max-bytes: 26000
   description: >-
     Create concise, falsifiable software specs for AI coding agents. Use to turn
@@ -61,6 +61,10 @@ supporting:
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260717-1
+    source: docs/logs/implementation-log-20260717-1.md
+    target: docs/logs/implementation-log-20260717-1.md
+    description: Non-normative log for the source-authorized specification gate.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md
@@ -124,6 +128,7 @@ surfaces:
 sections:
   startHere:
     - Confirm the user needs a software specification, not a PRD, implementation plan, code review, or implementation patch.
+    - For every non-trivial creation, revision, or review, apply `implementation-discipline` before adding normative scope or verification depth; capture the outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted specification output, simplest existing implementation or verification contour, and narrowest falsifier.
     - "Distinguish draftable from handoff-ready input: readiness requires sufficient source authority, applicable accepted constraints, and a named downstream consumer."
     - Identify the parent product, system, workflow, or architecture intent the spec is meant to constrain, or label that intent as missing before drafting.
     - Inspect accepted product and architecture context, domain constraints, assumptions, criticality, and blocking ambiguity before drafting.
@@ -152,11 +157,12 @@ sections:
       goal: Turn vague intent into a bounded engineering target before writing requirements.
       steps:
         - Identify the parent product, system, workflow, or architecture intent and state how this spec's behavior advances or protects it; if the spec is substrate-only, name the capability it supports.
+        - Capture the source-authorized scope and non-goals, permitted specification output, simplest existing implementation or verification contour, and narrowest falsifier before adding normative requirements.
         - Identify the system, subsystem, function, interface, actor, trigger, and production entry point when known.
         - "State the capability claim with precondition and guard when relevant: Given <precondition>, when <actor> does <trigger/action>, if <guard>, the system MUST <observable response>, creating or preserving <state/effect>, so that <continuity> holds."
         - "Apply a criticality lens: ask what the worst observable consequence is if the requirement is wrong, then increase rigor for security, money, data loss, compliance, safety, privacy, compatibility, or irreversible state."
         - Classify risk as low, medium, or high when the source material provides or implies it, and use that classification with criticality to choose spec depth.
-        - List source material, authority, approval/readiness, and the named downstream consumer; resolve conflicts or mark them as open questions.
+        - List source material, authority, approval/readiness, and the named downstream consumer; same-session PRDs, architecture notes, specs, or plans are outputs rather than higher authority for their own expansion.
         - For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
         - Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
         - Reject future-only substrate such as layers, scaffolds, config knobs, wrappers, or extension points unless a current requirement, accepted architecture constraint, or dependent capability needs it.
@@ -170,13 +176,14 @@ sections:
         - Source authority, readiness, named consumer, and resulting handoff status are explicit; the spec is not more ready than its inputs.
         - Acceptance cannot be satisfied only by substrate when the claim is behavioral.
         - Future-only substrate is absent, deferred by trigger, or explicitly labeled as support work for a named dependent capability.
+        - Every material normative requirement and acceptance contour traces to a higher-authority source or is explicitly marked as an unapproved gap.
         - High-criticality scope has explicit invariants, stronger falsifiers, and a verification path beyond happy-path examples.
     - id: stage-map-behavior
       title: Map behavior and constraints
       goal: Cover the behavior space before committing to normative statements.
       steps:
         - Create a glossary before writing requirements for terms that repeat, carry roles, or are likely ambiguous.
-        - Inventory main flows, alternate flows, failure paths, invalid inputs, boundary cases, permission cases, timing, retries, concurrency, ordering, idempotency, consistency, compatibility, and observability concerns that matter for the task.
+        - Inventory only source-relevant main, alternate, failure, invalid-input, boundary, permission, timing, retry, concurrency, ordering, idempotency, consistency, compatibility, and observability concerns.
         - Use systematic discovery techniques when memory is not enough, especially equivalence partitions, boundary values, state transitions, fault analysis, role/abuse cases, and concurrency probes.
         - Identify domain terms, states, events, entities, inputs, outputs, side effects, invariants, assumptions, external dependencies, and temporal promises.
         - Decide which unknowns block implementation and which can be recorded as explicit assumptions or gaps.
@@ -196,6 +203,7 @@ sections:
         - Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
         - Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
         - Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
+        - Prefer the narrowest existing verification contour; do not require a runner, harness, orchestration layer, instrumentation, or production seam only to strengthen acceptance.
         - "Define requirement lifecycle status when revising an existing spec: new, changed, superseded, deprecated, or removed."
         - Record open questions and gaps without letting non-blocking gaps stop useful specification work.
       validation:
@@ -208,6 +216,7 @@ sections:
       goal: Improve precision without adding ceremony that distracts from building correct code.
       steps:
         - Run the Quality audit checklist from the methodology reference before reporting done.
+        - Repeat the scope-and-simplicity gate when a material draft delta adds a requirement, boundary, lifecycle, output, edge-case family, or verification contour.
         - Check whether the spec discovered architecture drift; stop for blocking drift or record an architecture delta needed when implementation can safely proceed.
         - Scan for ambiguous terms, vague adjectives, compound requirements, hidden implementation decisions, duplicate rules, missing failure behavior, missing invalid inputs, and examples that contradict rules.
         - Check self-deception patterns such as tautological acceptance, mock-driven success, single-actor blindness, hidden retroactive scope, and completion bias.
@@ -219,7 +228,12 @@ sections:
         - The spec has no known contradictions between prose, rules, examples, tables, schemas, or state transitions.
         - Architecture constraints are inherited or routed; they are not silently invented.
         - Remaining risks are visible as assumptions, gaps, anti-claims, or open questions.
+        - If verification infrastructure would exceed the authorized behavior change, the claim or design was narrowed and any remaining edge is marked unproven rather than stabilized with invented runtime scope.
   interop:
+    - id: interop-implementation-discipline
+      domain: source-authorized scope, simplest sufficient specification, self-expansion prevention, and proportional evidence
+      winner: implementation-discipline
+      rationale: implementation-discipline supplies the cross-cutting authoring gate; spec-engineer remains the owner of behavior, edge cases, falsifiers, and verification maps.
     - id: interop-prd
       domain: product scope, users, scenarios, success criteria, and product acceptance framing
       winner: prd-engineer

@@ -65,7 +65,7 @@ Do not plan the entire project when the requested target is a module. Do not cre
 | Project | Identify product capabilities, vertical slices, cross-cutting dependencies, risk-first sequence. |
 | Feature / epic | Break one feature into independently verifiable increments and required support tasks. |
 | Module / service | Break accepted module responsibilities and architecture obligations into module increments and implementation tasks. |
-| Integration | Expose contract, auth, idempotency, retries, rate limits, test harness, degraded path, and observability tasks. |
+| Integration | Expose source-required contract, auth, idempotency, retries, rate limits, degraded path, observability, and only necessary verification support. |
 | Handoff item | Plan only the tasks needed to satisfy and validate the specific architecture obligation. |
 | Backlog audit | Detect layer-only tasks, hidden risk, missing verification, wrong sequencing, and unowned gaps. |
 
@@ -133,12 +133,12 @@ Risks: unresolved assumptions, revisit triggers, trade-offs, known failure modes
 Then convert obligations into delivery work:
 
 ```text
-Accepted contract -> task to implement/adapt it + contract tests.
-Source-of-truth decision -> tasks for persistence, invariants, migration, rollback, validation.
-Security boundary -> tasks for enforcement, audit events, abuse/failure cases, review routing.
-Provider integration -> tasks for adapter, auth, retries, idempotency, sandbox/harness, observability.
+Accepted contract -> task to implement/adapt it + the narrowest sufficient existing verification; add contract tests only when the accepted contract requires them and the existing contour is insufficient.
+Source-of-truth decision -> only the persistence, invariant, migration, rollback, and validation tasks required by the accepted decision.
+Security boundary -> required enforcement and failure-case tasks; add audit events or review routing only when a current obligation requires them.
+Provider integration -> tasks for accepted adapter, auth, retries, idempotency, observability, and a sandbox or harness only when a current obligation needs it and existing verification is insufficient.
 Observability obligation -> tasks for metrics/logs/traces/dashboard/alerts linked to a capability.
-Known risk -> spike or early validation task.
+Known risk -> finding, blocker, routed follow-up, or early validation; create a spike only when a decision-relevant uncertainty blocks the authorized path.
 ```
 
 If an obligation only creates substrate, attach it to the capability or module increment it enables. If no dependent outcome exists, either delete it from the plan or label it as an unresolved scope problem.
@@ -218,7 +218,7 @@ Create helper folder.
 
 Unless it is tied to a concrete capability, validation obligation, or module increment.
 
-Do not keep future-only support tasks. A scaffold, wrapper, config surface, harness, folder, or extension point is valid support work only when it names the owner slice/module increment, the evidence it unlocks, and the trigger that makes it necessary. Otherwise merge it into the owner task, delete it, or route the missing owner outcome as a planning gap.
+Do not keep future-only support tasks. A scaffold, wrapper, config surface, harness, folder, or extension point is valid only for a current source obligation or protected boundary when it names the owner increment, evidence unlocked, trigger, and why the direct task or existing verification contour is insufficient. Otherwise merge it into the owner task, delete it, or route the gap.
 
 ### Spike
 
@@ -368,19 +368,19 @@ Sequence work to expose uncertainty and stabilize dependencies early.
 Common waves:
 
 ```text
-Wave 0: blocking clarifications, spikes, test harnesses, accepted contract confirmation.
+Wave 0: blocking clarifications, bounded spikes, accepted contract confirmation, and only source-required verification support that existing contours cannot provide.
 Wave 1: minimal backbone or first verifiable module increment.
 Wave 2: capability expansion and dependent tasks.
-Wave 3: hardening, observability, rollout, documentation, post-merge validation prep.
+Wave 3: only source-required hardening, observability, rollout, documentation, or post-merge validation; omit the wave when no accepted obligation requires it.
 ```
 
 For module planning, a useful sequence is often:
 
 ```text
-1. Public/internal contract and verification harness.
+1. Public/internal contract and the narrowest sufficient existing verification contour.
 2. Core state/invariant behavior.
-3. Integration adapters and failure modes.
-4. Observability, rollout, and operational hardening.
+3. Accepted integration adapters and source-required failure modes.
+4. Source-required observability, rollout, and operational hardening; omit when absent from the accepted scope.
 ```
 
 Parallelize only when:

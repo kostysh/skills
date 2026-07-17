@@ -2,8 +2,10 @@
 - Capability and substrate are not conflated.
 - ASR are explicit and linked to evidence.
 - Scope and risk classification are stated.
+- Source-authorized outcome, claim boundary, direct or existing primitive, and narrowest falsifier were checked before architecture expansion and after material deltas.
 - Candidate patterns were considered for significant decisions.
 - Selected pattern is the simplest reversible option that satisfies ASR.
+- Same-session artifacts, risk, quality scenarios, and adjacent defects did not create architecture authority.
 - Alternatives, consequences, confidence, and revisit triggers are visible.
 - High-risk decisions have quality scenarios, spikes, or validation plan.
 - Data, API, auth, tenant isolation, integration, deployment, and observability implications are covered when relevant.

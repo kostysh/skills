@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.6
+  source-version: 0.1.7
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise architecture for AI-agent-driven development. Use when
@@ -91,6 +91,10 @@ supporting:
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260717-1
+    source: docs/logs/implementation-log-20260717-1.md
+    target: docs/logs/implementation-log-20260717-1.md
+    description: Non-normative log for the source-authorized architecture gate.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md
@@ -129,6 +133,7 @@ surfaces:
 sections:
   startHere:
     - Determine whether the task actually needs architecture work; do not create architecture artifacts for trivial local implementation work.
+    - For non-trivial creation, revision, or review, apply `implementation-discipline` before risk or pattern decisions and repeat it after material deltas.
     - Separate capability from substrate; architecture must enable observable behavior or clearly label itself as constraints and handoff, not completed capability.
     - Load the smallest sufficient context from PRD, specs, repository instructions, code, tests, migrations, infra, CI, docs, and existing ADRs.
     - Classify scope and risk before choosing patterns.
@@ -162,11 +167,13 @@ sections:
       title: Classify architecture need
       goal: Avoid both under-design and ceremony by identifying architectural impact, scope, risk, and the smallest useful output.
       steps:
+        - Establish the source-authorized outcome, scope, non-goals, claim boundary, permitted architecture output, simplest direct or existing primitive, and narrowest falsifier; same-session artifacts and adjacent defects do not expand authority.
         - Identify whether the task changes component boundaries, public contracts, persistent data, auth/security, tenant isolation, integration topology, deployment, observability, cost, or operability.
         - Classify scope as code-level, component-level, container-level, system-level, or organization-level.
         - Classify risk as low, medium, or high; criticality overrides size.
         - Choose output depth from the right-sized rigor table in the methodology reference.
       validation:
+        - Risk and quality concerns strengthen evidence within the authorized boundary; they do not create components, contracts, platforms, or process scope.
         - Low-risk tasks are not forced through architecture ceremony.
         - Medium/high-risk tasks cannot proceed without architecture context.
         - Small but critical tasks are escalated when blast radius is high.
@@ -191,6 +198,7 @@ sections:
         - Mark missing NFR targets as TBD instead of inventing them.
       validation:
         - Each architecture-relevant requirement traces to PRD, spec, issue, code, policy, or explicit assumption.
+        - An architecture artifact created or revised in this session does not create and then cite its own requirement or ASR as expansion authority.
         - Requirements do not silently prescribe technology without rationale.
         - Open questions are separated into blocking, non-blocking, and validation gaps.
     - id: stage-extract-asr-forces
@@ -208,14 +216,16 @@ sections:
         - ASR records do not prescribe tasks; they describe architecture-shaping requirements.
     - id: stage-select-pattern
       title: Generate, score, and select patterns
-      goal: Compare credible options before selecting the simplest reversible pattern that satisfies the ASR.
+      goal: Prefer a direct or existing primitive, and compare patterns only when current ASR require an architecture choice.
       steps:
         - Determine decision scope before comparing options; do not lift a local choice to system-level unless ASR forces it.
-        - Create at least two candidates for significant decisions and include the simplest baseline unless it clearly cannot satisfy ASR.
+        - Select a direct local change or existing primitive without an alternatives exercise when it satisfies current ASR; missing evidence never justifies a broader defensive design.
+        - Only for a source-authorized significant decision, compare credible candidates; choose the narrowest supported option and block any broader choice that depends on unresolved topology, ownership, lifecycle, or operations facts.
+        - Require any wrapper, platform, registry, queue, retry mechanism, instrumentation, harness, or test seam to trace to a current source requirement or protected boundary and explain why the direct or existing path is insufficient.
         - Score significant decisions using ASR fit, simplicity, reversibility, codebase fit, team/ops fit, failure visibility, security/privacy fit, and cost fit.
         - "Use tie-breakers: simpler option, more reversible option under uncertainty, more observable option when failures matter, and existing conventions unless they conflict with ASR."
       validation:
-        - Candidate set includes alternatives with different trade-offs.
+        - Alternatives are required only for a source-authorized significant decision, and unresolved evidence has not become authority for the broader option.
         - Candidate patterns are selected because of forces, not naming preference.
         - Alternatives are not strawmen; selected pattern has rationale, consequences, confidence, and revisit triggers.
     - id: stage-validate-decisions
@@ -227,6 +237,7 @@ sections:
         - Do not write a final ADR before a necessary spike produces evidence.
       validation:
         - High-risk ASR has at least one scenario or explicit validation path.
+        - Validation depth has not created a production boundary or runtime seam only to make evidence easier to obtain.
         - Spike has a bounded question, success criteria, and expected output.
         - Validation focuses on the ASR that drove the pattern, not only generic CI success.
     - id: stage-record-and-handoff
@@ -249,11 +260,16 @@ sections:
         - Revisit architecture when spec changes boundaries, data, public contracts, auth, tenancy, deployment, or external dependencies.
         - Revisit when implementation reveals drift, a spike invalidates an assumption, an ASR quality gate fails, production incidents expose a wrong assumption, or an ADR revisit trigger fires.
         - "Update only the artifact whose decision changed: PRD for product scope, ASR register or brief for new forces, pattern decision or ADR for decision change, spec for behavior change, architecture delta for invariant-preservation failure."
+        - Repeat the scope-and-simplicity gate after a material delta adds a boundary, lifecycle, dependency, output, or verification contour; route broader needs to the owning source.
       validation:
         - Architecture documents change only when decisions change.
         - Stale ADRs are superseded or revisited when triggers fire.
         - Retro output produces a concrete improvement or an explicit no-op rationale.
   interop:
+    - id: interop-implementation-discipline
+      domain: source-authorized scope, simplest sufficient architecture, self-expansion prevention, complexity exceptions, and proportional evidence
+      winner: implementation-discipline
+      rationale: implementation-discipline supplies the scope and simplicity gate; architecture-engineer owns ASR, patterns, ADRs, and handoff.
     - id: interop-prd
       domain: product requirements, success metrics, scope, non-goals, rollout, and product-level acceptance
       winner: prd-engineer

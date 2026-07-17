@@ -76,6 +76,8 @@ Then list:
 
 Do not require future-only substrate. Layers, scaffolds, wrappers, config knobs, extension points, prompts, lifecycle records, or generated artifacts belong in the spec only when current behavior, accepted architecture, or a named dependent capability needs them. Otherwise omit them or defer them with a concrete trigger.
 
+Treat a PRD, architecture note, specification, plan, or audit created or materially revised in the same session as an output, not higher-authority input for its own expansion. Before adding a normative requirement or verification contour, trace it to a current source and prefer the narrowest existing check. If proving the claim would require a new runner, harness, orchestration layer, production instrumentation, or runtime seam larger than the authorized behavior change, revisit the claim boundary and mark any remaining edge unproven instead of inventing infrastructure.
+
 Example anti-claims:
 
 - This spec does not require a new persistence layer.

@@ -26,6 +26,8 @@ If either answer is missing, remove the concept. Real protected boundaries inclu
 
 Do not require this defense for an ordinary direct change.
 
+For authoring work, apply the same test to roles, lifecycles, platform surfaces, registries, queues, retry policies, harnesses, runners, instrumentation, checkpoints, and process artifacts. A PRD, architecture note, specification, plan, or audit created in the same session is an output, not new authority for its own expansion. Record adjacent defects as findings, blockers, or follow-ups unless a current source already includes them.
+
 ## Avoid false simplicity
 
 Do not choose a shorter design when it:

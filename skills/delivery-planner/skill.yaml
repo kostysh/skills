@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.7
+  source-version: 0.2.8
   recommended-skill-md-max-bytes: 22000
   description: >-
     Turn accepted product scope and architecture handoff into right-sized executable
@@ -59,6 +59,10 @@ supporting:
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260717-1
+    source: docs/logs/implementation-log-20260717-1.md
+    target: docs/logs/implementation-log-20260717-1.md
+    description: Non-normative log for the source-authorized delivery gate.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md
@@ -109,6 +113,7 @@ surfaces:
 sections:
   startHere:
     - Identify the requested planning scope before decomposing anything; support whole project, feature, module/service, integration, specific architecture handoff item, or backlog audit.
+    - For every non-trivial creation, revision, or review, apply `implementation-discipline` before decomposition or process-depth decisions; capture the outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted planning output, simplest sufficient delivery path, and narrowest falsifier.
     - Verify product authority and handoff readiness plus each relevant architecture handoff item's draft, blocked, or ready status; never make a dependent task more ready than its inputs.
     - Use product scope and architecture handoff according to their verified authority and readiness; do not invent requirements or architecture decisions.
     - For project/feature planning, create vertical slices around observable capabilities.
@@ -138,10 +143,13 @@ sections:
       title: Define planning scope
       goal: Respect the requested target and avoid planning more than needed.
       steps:
+        - Capture the source-authorized outcome, actor or consumer and claim boundary, scope and non-goals, permitted planning output, simplest sufficient delivery path, and narrowest falsifier.
         - Classify scope as project, feature, module/service, integration, handoff item, or backlog audit.
         - Identify included and excluded areas.
         - Select compact output mode unless a deeper mode is explicitly required.
         - Use explicit assumptions for non-blocking gaps instead of escalating every unknown.
+      validation:
+        - Risk, completeness, evidence, and planner-created artifacts have not expanded source-authorized scope or process depth.
     - id: stage-intake
       title: Intake and authority check
       goal: Identify authoritative product, architecture, spec, repository, and code inputs.
@@ -150,6 +158,7 @@ sections:
         - Load architecture handoff when boundaries, contracts, data, security, deployment, or operations matter.
         - Load existing specs and repo instructions when available.
         - Verify product Authority and Handoff for the named planning consumer plus architecture handoff item status, blockers, next owner, and expected output; use repository-equivalent fields when names differ.
+        - Treat same-session PRDs, architecture notes, specs, and plans as outputs, not higher-authority inputs that can authorize their own expansion.
         - Allow non-authoritative, draft, or blocked inputs to inform draft decomposition, but keep their dependent tasks draft or blocked.
         - Classify gaps as blocking or non-blocking and route blocking gaps to the responsible skill.
     - id: stage-architecture-to-tasks
@@ -168,7 +177,7 @@ sections:
         - Use module increments for module, service, adapter, or subsystem planning.
         - Tie substrate work to a named capability, module increment, validation obligation, or explicit developer-experience goal.
         - Merge or delete layer-only and future-only tasks when they cannot produce independent evidence of progress.
-        - For valid support tasks, name the owner outcome and the evidence the substrate unlocks.
+        - For valid support tasks, name the current source obligation or protected boundary, owner outcome, evidence unlocked, and why a direct task or existing verification contour is insufficient.
     - id: stage-task-briefs
       title: Create compact task briefs
       goal: Create executable planning-level tasks without writing full specs.
@@ -178,11 +187,12 @@ sections:
         - Use `draft`, `blocked`, or `ready for <owner>`; use `ready for coding` only when accepted product and architecture inputs, sufficient behavior detail, ready dependencies, and concrete verification and review evidence let the coding owner act without source-owned decisions.
         - Split only when risk, dependency order, review path, or verification evidence requires it.
         - Route detailed behavior to spec-engineer instead of inventing it.
+        - Record adjacent defects as findings, blockers, or follow-ups unless a current source includes their remediation; do not expand the original slice automatically.
     - id: stage-sequencing
       title: Sequence and parallelize safely
       goal: Expose risk early and avoid parallel work on unstable assumptions.
       steps:
-        - Put clarifications, spikes, harnesses, and contract stabilization before dependent implementation.
+        - Put source-required clarifications, bounded spikes, and accepted contract stabilization before dependent implementation; add a harness only when a current obligation needs it and existing verification is insufficient.
         - Parallelize only tasks with stable dependencies and independent review paths.
         - Make blockers explicit.
     - id: stage-audit
@@ -198,6 +208,12 @@ sections:
         - Check that every task has a handoff status, next owner, expected output or evidence, and unblock or return route.
         - Check that completing the plan is not reported as implementation or runtime capability progress.
         - Check that output does not create unnecessary registers or YAML structures.
+        - Repeat the scope-and-simplicity gate after a material delta adds a task family, boundary, lifecycle, support artifact, dependency, or verification contour.
+  interop:
+    - id: interop-implementation-discipline
+      domain: source-authorized scope, simplest sufficient delivery path, self-expansion prevention, support-task exceptions, and proportional evidence
+      winner: implementation-discipline
+      rationale: implementation-discipline supplies the cross-cutting authoring gate; delivery-planner remains the owner of slices, tasks, dependencies, sequencing, and delivery handoff.
   policies:
     - id: policy-minimal-output
       title: Minimal output policy
@@ -228,7 +244,7 @@ sections:
       text: Do not mark a task or plan ready when its acceptance could pass by adding scaffolds, wrappers, metadata, mocks, docs, or empty tests without changing observable or verifiable behavior. Reframe it around the capability, merge it into its owner task, or label it as a support task with a clear dependent increment.
     - id: policy-no-future-only-support
       title: No future-only support policy
-      text: Do not create tasks for scaffolds, wrappers, config surfaces, harnesses, folders, or extension points only because they may be useful later. Keep them out, merge them into the owner increment, or label them as support work with a concrete dependent increment, evidence unlocked, and revisit trigger.
+      text: Do not create scaffolds, wrappers, config surfaces, harnesses, folders, or extension points only because they may be useful later. Keep support work only for a current source obligation or protected boundary with a dependent increment, evidence unlocked, and proof that the direct task or existing contour is insufficient.
     - id: policy-support-task-contract
       title: Support task contract
       text: A remediation, tooling, documentation, or skills task must name the capability it protects, the defect class it prevents, the evidence it unlocks, and the effectiveness check for the next slice. Do not present support substrate as delivered product capability.

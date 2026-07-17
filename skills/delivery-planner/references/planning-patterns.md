@@ -37,7 +37,7 @@ Use when a needed task is mostly scaffold, migration setup, fixture work, config
 Keep it only if it names the outcome it enables:
 
 ```text
-Substrate -> owner slice/module increment -> evidence it unlocks
+Current source obligation -> direct-path insufficiency -> substrate -> owner increment -> evidence unlocked
 ```
 
 Examples:
@@ -50,7 +50,7 @@ Weak: Create audit event wrapper.
 Better: Add audit event helper used by VS-03 account-status transition and covered by event contract tests.
 ```
 
-If there is no owner outcome, merge it into another task, delete it, or route the missing outcome as a planning gap.
+If there is no current source obligation, owner outcome, or reason the direct task and existing verification are insufficient, merge it into another task, delete it, or route the gap.
 
 Future-only substrate is not a valid standalone task. If a wrapper, config surface, harness, or extension point is only for "later", require a concrete dependent increment and revisit trigger before keeping it.
 
@@ -62,11 +62,11 @@ Create a task for accepted contract alignment and tests before parallel implemen
 
 Do not invent the contract. If the contract is not accepted, route to `architecture-engineer`.
 
-## 5. Harness-before-integration
+## 5. Integration verification support
 
 Use when external provider, async flow, queue, event stream, webhook, SDK, or rate limit makes verification risky.
 
-Create a harness, sandbox, stub, fixture, or contract test support task before full implementation.
+Start with the narrowest existing sandbox, contract test, fixture, or boundary check. Create a harness or other support task only when a current integration obligation cannot be verified directly; name the obligation, dependent increment, evidence unlocked, and direct-path insufficiency.
 
 ## 6. Migration split
 

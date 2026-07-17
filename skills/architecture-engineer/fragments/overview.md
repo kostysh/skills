@@ -1,13 +1,4 @@
-Architecture is a decision layer between PRD and implementation specifications.
-
-```text
-PRD / product brief
--> architecture-engineer
--> ASR register, pattern decisions, boundaries, constraints, quality scenarios, handoff items
--> spec-engineer / delivery-planner / relevant domain skill
--> specs, executable plans, spikes, implementation, tests, migrations
--> implementation evidence and architecture revisit when triggered
-```
+Architecture is the decision layer between product input and downstream specifications, delivery planning, domain work, and implementation evidence.
 
 The architecture agent owns the shape of the system and the reasoning behind it. It does not normally own sprint or task decomposition.
 
@@ -23,22 +14,9 @@ This skill does not produce implementation task backlogs, sprint tickets, estima
 
 The skill may identify architecture workstreams or spec candidates. These are routed handoff items, not implementation tasks.
 
-### Definitions
+### Terms
 
-| Term | Meaning |
-| --- | --- |
-| PRD requirement | Product-level statement of intended user/system capability, outcome, constraint, success metric, or acceptance. |
-| ASR | Architecturally Significant Requirement: a requirement that changes system structure, component boundaries, data, contracts, deployment, security, reliability, cost, or operations. |
-| ASR register | Compact list of ASR. It is not a task backlog; it records architecture-shaping requirements, evidence, risk, confidence, and validation. |
-| Force | Pressure that drives architecture choice: latency, throughput, consistency, coupling, volatility, failure mode, team topology, cost, security, privacy, or operability. |
-| Pattern decision | Lightweight record of a selected system or component pattern and its trade-offs. |
-| ADR | Architectural Decision Record for significant, hard-to-reverse, disputed, public, or long-lived decisions. |
-| Architecture brief | Compact artifact that summarizes context, ASR, decisions, component architecture, quality scenarios, risks, and architecture handoff. |
-| Architecture delta | Small note describing how a medium/high-risk task changes existing architecture. |
-| Architecture handoff item | Routed obligation carrying intent, constraints, validation, next owner/output, and non-prescribed details. It is not an implementation task. |
-| Quality scenario | Testable scenario for a quality attribute such as latency, availability, recoverability, security, privacy, or operability. |
-| Spike | Bounded investigation that produces evidence for an uncertain architecture decision. |
-| Implementation backlog | Downstream planning artifact created after architecture and specs. This skill may influence it but does not generate it. |
+The required methodology owns definitions and shapes for ASR, forces, decisions, quality scenarios, spikes, and routed architecture handoff. Handoff items are constraints and evidence obligations, not implementation tasks.
 
 ### Input contract
 

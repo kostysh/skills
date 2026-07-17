@@ -7,9 +7,9 @@ description: Design or revise architecture for AI-agent-driven development. Use
 compatibility: Portable documentation-only skill. It ships artifact templates
   but no runtime; all mandatory architecture guidance lives in this folder.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c569e517ba2d9d39c2c49edc3b4be174993baad7c52ef30d2a99e6eb212312fe
+  skillforge-source-hash: 3dac514bb8aeb7ffbbde81655b9be667d02bf5b2d30d9ced7f72f344eeacfafb
 ---
 
 # architecture-engineer
@@ -17,15 +17,16 @@ metadata:
 ## Start here
 
 1. Determine whether the task actually needs architecture work; do not create architecture artifacts for trivial local implementation work.
-2. Separate capability from substrate; architecture must enable observable behavior or clearly label itself as constraints and handoff, not completed capability.
-3. Load the smallest sufficient context from PRD, specs, repository instructions, code, tests, migrations, infra, CI, docs, and existing ADRs.
-4. Classify scope and risk before choosing patterns.
-5. Separate product requirements from implementation choices.
-6. Extract architecturally significant requirements and forces.
-7. Select the simplest reversible pattern that satisfies current ASR and fits the existing system.
-8. Validate high-risk decisions with quality scenarios or bounded spikes.
-9. Record only decision rationale that will matter later.
-10. Route architecture handoff items to named downstream owners; do not emit implementation tickets.
+2. For non-trivial creation, revision, or review, apply `implementation-discipline` before risk or pattern decisions and repeat it after material deltas.
+3. Separate capability from substrate; architecture must enable observable behavior or clearly label itself as constraints and handoff, not completed capability.
+4. Load the smallest sufficient context from PRD, specs, repository instructions, code, tests, migrations, infra, CI, docs, and existing ADRs.
+5. Classify scope and risk before choosing patterns.
+6. Separate product requirements from implementation choices.
+7. Extract architecturally significant requirements and forces.
+8. Select the simplest reversible pattern that satisfies current ASR and fits the existing system.
+9. Validate high-risk decisions with quality scenarios or bounded spikes.
+10. Record only decision rationale that will matter later.
+11. Route architecture handoff items to named downstream owners; do not emit implementation tickets.
 
 ## When to use this skill
 
@@ -52,16 +53,7 @@ metadata:
 
 ## Overview
 
-Architecture is a decision layer between PRD and implementation specifications.
-
-```text
-PRD / product brief
--> architecture-engineer
--> ASR register, pattern decisions, boundaries, constraints, quality scenarios, handoff items
--> spec-engineer / delivery-planner / relevant domain skill
--> specs, executable plans, spikes, implementation, tests, migrations
--> implementation evidence and architecture revisit when triggered
-```
+Architecture is the decision layer between product input and downstream specifications, delivery planning, domain work, and implementation evidence.
 
 The architecture agent owns the shape of the system and the reasoning behind it. It does not normally own sprint or task decomposition.
 
@@ -77,22 +69,9 @@ This skill does not produce implementation task backlogs, sprint tickets, estima
 
 The skill may identify architecture workstreams or spec candidates. These are routed handoff items, not implementation tasks.
 
-### Definitions
+### Terms
 
-| Term | Meaning |
-| --- | --- |
-| PRD requirement | Product-level statement of intended user/system capability, outcome, constraint, success metric, or acceptance. |
-| ASR | Architecturally Significant Requirement: a requirement that changes system structure, component boundaries, data, contracts, deployment, security, reliability, cost, or operations. |
-| ASR register | Compact list of ASR. It is not a task backlog; it records architecture-shaping requirements, evidence, risk, confidence, and validation. |
-| Force | Pressure that drives architecture choice: latency, throughput, consistency, coupling, volatility, failure mode, team topology, cost, security, privacy, or operability. |
-| Pattern decision | Lightweight record of a selected system or component pattern and its trade-offs. |
-| ADR | Architectural Decision Record for significant, hard-to-reverse, disputed, public, or long-lived decisions. |
-| Architecture brief | Compact artifact that summarizes context, ASR, decisions, component architecture, quality scenarios, risks, and architecture handoff. |
-| Architecture delta | Small note describing how a medium/high-risk task changes existing architecture. |
-| Architecture handoff item | Routed obligation carrying intent, constraints, validation, next owner/output, and non-prescribed details. It is not an implementation task. |
-| Quality scenario | Testable scenario for a quality attribute such as latency, availability, recoverability, security, privacy, or operability. |
-| Spike | Bounded investigation that produces evidence for an uncertain architecture decision. |
-| Implementation backlog | Downstream planning artifact created after architecture and specs. This skill may influence it but does not generate it. |
+The required methodology owns definitions and shapes for ASR, forces, decisions, quality scenarios, spikes, and routed architecture handoff. Handoff items are constraints and evidence obligations, not implementation tasks.
 
 ### Input contract
 
@@ -120,13 +99,15 @@ Criticality overrides size. A small permission rule, idempotency rule, data dele
 
 Avoid both under-design and ceremony by identifying architectural impact, scope, risk, and the smallest useful output.
 
-1. Identify whether the task changes component boundaries, public contracts, persistent data, auth/security, tenant isolation, integration topology, deployment, observability, cost, or operability.
-2. Classify scope as code-level, component-level, container-level, system-level, or organization-level.
-3. Classify risk as low, medium, or high; criticality overrides size.
-4. Choose output depth from the right-sized rigor table in the methodology reference.
+1. Establish the source-authorized outcome, scope, non-goals, claim boundary, permitted architecture output, simplest direct or existing primitive, and narrowest falsifier; same-session artifacts and adjacent defects do not expand authority.
+2. Identify whether the task changes component boundaries, public contracts, persistent data, auth/security, tenant isolation, integration topology, deployment, observability, cost, or operability.
+3. Classify scope as code-level, component-level, container-level, system-level, or organization-level.
+4. Classify risk as low, medium, or high; criticality overrides size.
+5. Choose output depth from the right-sized rigor table in the methodology reference.
 
 Validation:
 
+- Risk and quality concerns strengthen evidence within the authorized boundary; they do not create components, contracts, platforms, or process scope.
 - Low-risk tasks are not forced through architecture ceremony.
 - Medium/high-risk tasks cannot proceed without architecture context.
 - Small but critical tasks are escalated when blast radius is high.
@@ -157,6 +138,7 @@ Translate product or task input into architecture-ready requirements without rew
 Validation:
 
 - Each architecture-relevant requirement traces to PRD, spec, issue, code, policy, or explicit assumption.
+- An architecture artifact created or revised in this session does not create and then cite its own requirement or ASR as expansion authority.
 - Requirements do not silently prescribe technology without rationale.
 - Open questions are separated into blocking, non-blocking, and validation gaps.
 
@@ -178,16 +160,18 @@ Validation:
 
 ### Workflow stage: Generate, score, and select patterns
 
-Compare credible options before selecting the simplest reversible pattern that satisfies the ASR.
+Prefer a direct or existing primitive, and compare patterns only when current ASR require an architecture choice.
 
 1. Determine decision scope before comparing options; do not lift a local choice to system-level unless ASR forces it.
-2. Create at least two candidates for significant decisions and include the simplest baseline unless it clearly cannot satisfy ASR.
-3. Score significant decisions using ASR fit, simplicity, reversibility, codebase fit, team/ops fit, failure visibility, security/privacy fit, and cost fit.
-4. Use tie-breakers: simpler option, more reversible option under uncertainty, more observable option when failures matter, and existing conventions unless they conflict with ASR.
+2. Select a direct local change or existing primitive without an alternatives exercise when it satisfies current ASR; missing evidence never justifies a broader defensive design.
+3. Only for a source-authorized significant decision, compare credible candidates; choose the narrowest supported option and block any broader choice that depends on unresolved topology, ownership, lifecycle, or operations facts.
+4. Require any wrapper, platform, registry, queue, retry mechanism, instrumentation, harness, or test seam to trace to a current source requirement or protected boundary and explain why the direct or existing path is insufficient.
+5. Score significant decisions using ASR fit, simplicity, reversibility, codebase fit, team/ops fit, failure visibility, security/privacy fit, and cost fit.
+6. Use tie-breakers: simpler option, more reversible option under uncertainty, more observable option when failures matter, and existing conventions unless they conflict with ASR.
 
 Validation:
 
-- Candidate set includes alternatives with different trade-offs.
+- Alternatives are required only for a source-authorized significant decision, and unresolved evidence has not become authority for the broader option.
 - Candidate patterns are selected because of forces, not naming preference.
 - Alternatives are not strawmen; selected pattern has rationale, consequences, confidence, and revisit triggers.
 
@@ -202,6 +186,7 @@ Avoid false confidence for high-risk or weak-evidence decisions.
 Validation:
 
 - High-risk ASR has at least one scenario or explicit validation path.
+- Validation depth has not created a production boundary or runtime seam only to make evidence easier to obtain.
 - Spike has a bounded question, success criteria, and expected output.
 - Validation focuses on the ASR that drove the pattern, not only generic CI success.
 
@@ -228,6 +213,7 @@ Keep architecture current without rewriting docs unnecessarily.
 1. Revisit architecture when spec changes boundaries, data, public contracts, auth, tenancy, deployment, or external dependencies.
 2. Revisit when implementation reveals drift, a spike invalidates an assumption, an ASR quality gate fails, production incidents expose a wrong assumption, or an ADR revisit trigger fires.
 3. Update only the artifact whose decision changed: PRD for product scope, ASR register or brief for new forces, pattern decision or ADR for decision change, spec for behavior change, architecture delta for invariant-preservation failure.
+4. Repeat the scope-and-simplicity gate after a material delta adds a boundary, lifecycle, dependency, output, or verification contour; route broader needs to the owning source.
 
 Validation:
 
@@ -237,6 +223,7 @@ Validation:
 
 ## Interop priority
 
+- **source-authorized scope, simplest sufficient architecture, self-expansion prevention, complexity exceptions, and proportional evidence:** implementation-discipline. implementation-discipline supplies the scope and simplicity gate; architecture-engineer owns ASR, patterns, ADRs, and handoff.
 - **product requirements, success metrics, scope, non-goals, rollout, and product-level acceptance:** prd-engineer. architecture-engineer consumes PRD material and extracts ASR; it does not own product discovery or product scope.
 - **ASR extraction, architecture forces, pattern selection, boundaries, trade-offs, ADRs, design notes, and routed architecture handoff:** architecture-engineer. this skill owns architecture frames and constraints before behavior-level specs are written.
 - **behavior-level implementation specifications, atomic normative requirements, edge cases, falsifiers, and verification maps:** spec-engineer. architecture-engineer hands off constraints and obligations; spec-engineer turns them into implementation-ready behavior specs.
@@ -355,8 +342,10 @@ Return the smallest complete, risk-fit subset defined by the rigor table. Every 
 - Capability and substrate are not conflated.
 - ASR are explicit and linked to evidence.
 - Scope and risk classification are stated.
+- Source-authorized outcome, claim boundary, direct or existing primitive, and narrowest falsifier were checked before architecture expansion and after material deltas.
 - Candidate patterns were considered for significant decisions.
 - Selected pattern is the simplest reversible option that satisfies ASR.
+- Same-session artifacts, risk, quality scenarios, and adjacent defects did not create architecture authority.
 - Alternatives, consequences, confidence, and revisit triggers are visible.
 - High-risk decisions have quality scenarios, spikes, or validation plan.
 - Data, API, auth, tenant isolation, integration, deployment, and observability implications are covered when relevant.

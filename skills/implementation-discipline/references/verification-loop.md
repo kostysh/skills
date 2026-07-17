@@ -12,7 +12,7 @@ Examples:
 - “Add validation” → name the rejected inputs and verify the observable rejection behavior.
 - “Refactor safely” → identify and run the checks that protect unchanged behavior.
 
-Do not add extra abstractions merely to create a test seam when the behavior can be checked directly with existing project conventions.
+Do not add extra abstractions merely to create a test seam when the behavior can be checked directly with existing project conventions. If the proposed verification contour is larger than the source-authorized change, revisit the claim and design before adding a runner, harness, instrumentation, background process, or production seam. Mark an edge unproven when necessary instead of manufacturing runtime scope for test convenience.
 
 ## Use proportional evidence
 

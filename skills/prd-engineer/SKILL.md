@@ -6,9 +6,9 @@ description: Create, refine, and review PRDs, product specs, feature and AI
   evaluation; or audit ambiguity, missing evidence, weak acceptance, and scope
   risk.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ad03f29e9fa4d5ee44b4562782f97e7be1e0d03d46b6d8ca12c310d19a8d4043
+  skillforge-source-hash: 761f99969a54f08cde71698ae9a07fa78d653b6f4b56cb0d167b2b22548a56fe
 ---
 
 # prd-engineer
@@ -16,12 +16,13 @@ metadata:
 ## Start here
 
 1. Confirm whether the task is a new PRD, refinement, or review; name the downstream consumer when handoff matters.
-2. Resolve source precedence; separately verify approval of the current PRD version.
-3. Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
-4. Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
-5. Before creating or recommending a persistent PRD, product brief, or PRD review artifact, check whether the current repository defines artifact conventions and follow them when present.
-6. If the PRD feeds architecture, delivery planning, or implementation specs, surface architecture-relevant constraints and questions without choosing architecture patterns.
-7. Ask only focused discovery questions that would change users, scope, metrics, acceptance, constraints, or handoff readiness; otherwise draft with explicit assumptions and TBDs.
+2. For every non-trivial creation, revision, or review, apply `implementation-discipline` before choosing PRD depth or expanding scope; capture the observable outcome, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted product output, simplest sufficient user capability, and narrowest falsifier.
+3. Resolve source precedence; separately verify approval of the current PRD version, and do not let risk, completeness, checklists, or same-session artifacts create product authority.
+4. Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
+5. Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
+6. Before creating or recommending a persistent PRD, product brief, or PRD review artifact, check whether the current repository defines artifact conventions and follow them when present.
+7. If the PRD feeds architecture, delivery planning, or implementation specs, surface architecture-relevant constraints and questions without choosing architecture patterns.
+8. Ask only focused discovery questions that would change users, scope, metrics, acceptance, constraints, or handoff readiness; otherwise draft with explicit assumptions and TBDs.
 
 ## When to use this skill
 
@@ -50,48 +51,38 @@ This skill favors concise documents with strong requirements over heavyweight te
 
 For a new PRD, include:
 
-- authority and handoff: product-source precedence, current-version approval evidence, `Authority`, intended consumer, `Handoff`, blockers, and owned non-blocking gaps
-- executive summary: problem, why now, solution, success metrics, guardrails
-- audience and scenarios: users, jobs, primary flow, key edge cases
-- scope: in scope, non-goals, anti-claims
-- requirements: functional and non-functional requirements, preferably with IDs for handoff
-- acceptance criteria: observable checks per story, requirement, or capability
-- risks and dependencies: owners, open questions, decisions needed
-- rollout and learning: phases, instrumentation, outcome review
+- authority/handoff: source precedence, current-version approval, consumer, status, blockers, and owned gaps;
+- problem/outcome: why now, users, scenarios, metrics, and guardrails;
+- scope: current behavior, non-goals, anti-claims, risks, and dependencies;
+- requirements/acceptance: traceable functional and non-functional requirements with observable checks;
+- rollout/learning: phases, instrumentation, owners, and outcome review.
 
 For a PRD review, lead with `Authority`; include target handoff and readiness when assessed. Then list blockers, evidence gaps, substrate-only acceptance defects, anti-claims, concrete rewrites, and the next owner.
 
-## Reference Map
+## Reference triggers
 
-Read [PRD template](references/prd-template.md) when creating a formal PRD artifact, expanding a draft, adding architecture handoff, AI/security/rollout modules, or running a detailed quality check.
+Open only the relevant part of [PRD template](references/prd-template.md):
 
-## Contextual Reference Triggers
-
-Open only the block that matches the task:
-
-- **Formal PRD skeleton, metadata, authority, handoff readiness, or minimal lifecycle:** use [PRD template](references/prd-template.md) sections `Core PRD Skeleton`, `Authority and Handoff`, and `Minimal Lifecycle`.
-- **Claims that depend on research, metrics, designs, or decisions:** use [PRD template](references/prd-template.md) section `Evidence and Related Work`.
-- **Product metrics, quality guardrails, release phases, or owner attributes:** use [PRD template](references/prd-template.md) sections `Metrics and Quality Guardrails` and `Requirement Quality Checklist`.
-- **Architecture handoff, external systems, or data classification:** use [PRD template](references/prd-template.md) section `Architecture Handoff Module`.
-- **Handoff to engineering, QA, or later conformance review:** use [PRD template](references/prd-template.md) section `Requirement Quality Checklist` for requirement attributes and traceability.
-- **Acceptance criteria review:** use [PRD template](references/prd-template.md) section `Acceptance Criteria Test`.
-- **AI, security, privacy, compliance, migration, or compatibility risk:** use [PRD template](references/prd-template.md) section `Optional Modules`.
-- **Cross-functional review planning:** use [PRD template](references/prd-template.md) section `Review Routing`.
-- **Choosing where the PRD should live:** use [PRD template](references/prd-template.md) section `Document Location`.
-- **Reviewing an existing PRD:** use [PRD template](references/prd-template.md) sections `PRD Review Checklist` and `Anti-Pattern Check`.
+- skeleton, metadata, authority, handoff, location, or lifecycle;
+- evidence, metrics, guardrails, requirement quality, or acceptance tests;
+- architecture handoff, AI/security/privacy/compliance/migration modules, or review routing;
+- existing-PRD quality and anti-pattern review.
 
 ## Workflow stages
 
-### Workflow stage: Select PRD mode
+### Workflow stage: Gate scope and select PRD mode
 
-Fit the document size to uncertainty, risk, and audience.
+Establish the source-authorized product boundary before fitting document size to uncertainty, risk, and audience.
 
-1. Use a one-pager for early discovery, pre-bet, or prototype framing.
-2. Use a standard feature PRD for ordinary product and engineering handoff.
-3. Use an extended PRD when the work is AI-driven, platform-level, regulated, multi-team, migration-heavy, security-sensitive, or hard to verify.
+1. Capture the observable outcome, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted product output, simplest sufficient user capability, and narrowest falsifier.
+2. Treat adjacent defects or future ideas as findings or follow-ups unless a current source places them in scope; a draft created in this session cannot authorize its own expansion.
+3. Use a one-pager for early discovery, pre-bet, or prototype framing.
+4. Use a standard feature PRD for ordinary product and engineering handoff.
+5. Use an extended PRD when the work is AI-driven, platform-level, regulated, multi-team, migration-heavy, security-sensitive, or hard to verify.
 
 Validation:
 
+- Risk and document completeness change rigor, not product scope, actors, lifecycle, platform, configuration, integrations, or flexibility.
 - The selected mode is stated or obvious from the output.
 - Document size matches the risk.
 
@@ -134,6 +125,7 @@ Make the intended observable product behavior explicit before listing requiremen
 3. Separate in-scope behavior from substrate and supporting artifacts.
 4. Define non-goals and anti-claims: what this PRD or release will not make possible.
 5. Capture important assumptions, dependencies, risks, owners, and decision points.
+6. Separate current required behavior from adjacent defects, possible extensions, and future releases; route rather than silently promote them.
 
 Validation:
 
@@ -150,7 +142,8 @@ Convert intent into buildable and reviewable requirements.
 3. Add owner and release phase attributes when requirement ownership, MVP/beta/GA scope, or deferred behavior could change downstream decisions.
 4. Pair user stories or capabilities with acceptance criteria that force observable behavior.
 5. For each material acceptance criterion, find the least-real passing implementation; rewrite it if an endpoint, file, config, log, mock, test, or other substrate could pass without the claimed behavior.
-6. Include non-functional requirements for performance, reliability, accessibility, security, privacy, cost, and operations when they affect success.
+6. Keep product acceptance at the product boundary; do not require a new technical harness, runtime seam, or platform when existing downstream verification can prove the behavior.
+7. Include non-functional requirements for performance, reliability, accessibility, security, privacy, cost, and operations when they affect success.
 
 Validation:
 
@@ -178,11 +171,12 @@ Validation:
 Make the final artifact usable for shared understanding, delivery, and later review.
 
 1. Check the PRD against problem-first framing, measurable success, scope/non-goals, testable requirements, risks, owners, rollout, instrumentation, and outcome review.
-2. Mark blockers separately from polish.
-3. Use `Handoff: not-assessed` without a readiness request or consumer; otherwise use `draft-only`, `blocked`, or `ready for <architecture | specification | delivery-planning>`.
-4. If readiness is requested without a consumer, ask once or leave readiness unassessed; continue the PRD review.
-5. Use `ready` only when authority is explicit and no unresolved product decision can change that consumer's input; assign an owner or trigger to every remaining non-blocking TBD.
-6. For reviews, return authority, assessed handoff, blockers, evidence gaps, substrate-only acceptance defects, anti-claims, remediation, and next owner.
+2. Repeat the scope-and-simplicity gate when a material draft delta adds an actor, capability, lifecycle, platform surface, integration, acceptance contour, or verification obligation.
+3. Mark blockers separately from polish.
+4. Use `Handoff: not-assessed` without a readiness request or consumer; otherwise use `draft-only`, `blocked`, or `ready for <architecture | specification | delivery-planning>`.
+5. If readiness is requested without a consumer, ask once or leave readiness unassessed; continue the PRD review.
+6. Use `ready` only when authority is explicit and no unresolved product decision can change that consumer's input; assign an owner or trigger to every remaining non-blocking TBD.
+7. For reviews, return authority, assessed handoff, blockers, evidence gaps, substrate-only acceptance defects, anti-claims, remediation, and next owner.
 
 Validation:
 
@@ -193,6 +187,7 @@ Validation:
 
 ## Interop priority
 
+- **source-authorized scope, simplest sufficient capability, self-expansion prevention, and proportional evidence:** implementation-discipline. implementation-discipline supplies the cross-cutting authoring gate; prd-engineer remains the owner of product intent, users, scope, metrics, and product acceptance.
 - **product intent, users, scope, non-goals, success metrics, and product-level acceptance:** prd-engineer. prd-engineer owns product-source revisions and product-input readiness; it does not own architecture, implementation-ready behavior, or delivery decomposition.
 - **independent concept drift and fake-risk review:** concept-conformance-reviewer. concept-conformance-reviewer owns the independent verdict when acceptance or plans may pass without the established capability; prd-engineer remains the owner of product-source revisions.
 - **implementation against PRD:** spec-conformance-reviewer. spec-conformance-reviewer owns checking code or implementation evidence against an approved PRD.
@@ -220,7 +215,7 @@ Start from user problem, outcome, and evidence before solution details.
 Include a section only when it changes a decision, reduces risk, clarifies scope, or supports acceptance.
 
 ### Acceptance integrity policy
-Acceptance criteria must require observable behavior or measurable evidence. Find the least-real passing implementation and rewrite any criterion that can pass through endpoints, files, config, mocks, tests, logs, tickets, or other substrate without the claimed behavior.
+Acceptance criteria must require observable product behavior or measurable evidence. Rewrite criteria that pass through substrate alone, but do not invent technical harnesses, runtime seams, or platform work when existing downstream verification can prove the claim.
 
 ### Product source authority policy
 Separate source precedence from artifact authority. Only the operator or repository process can approve the current PRD version; generated or materially changed content stays non-authoritative until then.

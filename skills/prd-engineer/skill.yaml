@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: prd-engineer
-  source-version: 0.1.5
+  source-version: 0.1.6
   recommended-skill-md-max-bytes: 20000
   description: >-
     Create, refine, and review PRDs, product specs, feature and AI requirements.
@@ -32,6 +32,10 @@ supporting:
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260717-1
+    source: docs/logs/implementation-log-20260717-1.md
+    target: docs/logs/implementation-log-20260717-1.md
+    description: Non-normative log for the source-authorized authoring gate.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md
@@ -62,7 +66,8 @@ surfaces:
 sections:
   startHere:
     - Confirm whether the task is a new PRD, refinement, or review; name the downstream consumer when handoff matters.
-    - Resolve source precedence; separately verify approval of the current PRD version.
+    - For every non-trivial creation, revision, or review, apply `implementation-discipline` before choosing PRD depth or expanding scope; capture the observable outcome, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted product output, simplest sufficient user capability, and narrowest falsifier.
+    - Resolve source precedence; separately verify approval of the current PRD version, and do not let risk, completeness, checklists, or same-session artifacts create product authority.
     - Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
     - Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
     - Before creating or recommending a persistent PRD, product brief, or PRD review artifact, check whether the current repository defines artifact conventions and follow them when present.
@@ -83,13 +88,16 @@ sections:
     - Creating formal safety-critical, procurement, legal, or regulated specifications without a domain-specific template or reviewer.
   workflow:
     - id: stage-select-mode
-      title: Select PRD mode
-      goal: Fit the document size to uncertainty, risk, and audience.
+      title: Gate scope and select PRD mode
+      goal: Establish the source-authorized product boundary before fitting document size to uncertainty, risk, and audience.
       steps:
+        - Capture the observable outcome, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted product output, simplest sufficient user capability, and narrowest falsifier.
+        - Treat adjacent defects or future ideas as findings or follow-ups unless a current source places them in scope; a draft created in this session cannot authorize its own expansion.
         - Use a one-pager for early discovery, pre-bet, or prototype framing.
         - Use a standard feature PRD for ordinary product and engineering handoff.
         - Use an extended PRD when the work is AI-driven, platform-level, regulated, multi-team, migration-heavy, security-sensitive, or hard to verify.
       validation:
+        - Risk and document completeness change rigor, not product scope, actors, lifecycle, platform, configuration, integrations, or flexibility.
         - The selected mode is stated or obvious from the output.
         - Document size matches the risk.
     - id: stage-establish-authority
@@ -125,6 +133,7 @@ sections:
         - Separate in-scope behavior from substrate and supporting artifacts.
         - "Define non-goals and anti-claims: what this PRD or release will not make possible."
         - Capture important assumptions, dependencies, risks, owners, and decision points.
+        - Separate current required behavior from adjacent defects, possible extensions, and future releases; route rather than silently promote them.
       validation:
         - The PRD cannot be mistaken for a promise to deliver behavior that is only researched, mocked, documented, or deferred.
         - Material capability claims can be traced across actor, trigger, response, effect, feedback, and applicable failure or continuity behavior.
@@ -138,6 +147,7 @@ sections:
         - Add owner and release phase attributes when requirement ownership, MVP/beta/GA scope, or deferred behavior could change downstream decisions.
         - Pair user stories or capabilities with acceptance criteria that force observable behavior.
         - For each material acceptance criterion, find the least-real passing implementation; rewrite it if an endpoint, file, config, log, mock, test, or other substrate could pass without the claimed behavior.
+        - Keep product acceptance at the product boundary; do not require a new technical harness, runtime seam, or platform when existing downstream verification can prove the behavior.
         - Include non-functional requirements for performance, reliability, accessibility, security, privacy, cost, and operations when they affect success.
       validation:
         - Vague words such as fast, easy, intuitive, robust, scalable, or modern are replaced by thresholds, examples, guardrails, or TBDs.
@@ -160,6 +170,7 @@ sections:
       goal: Make the final artifact usable for shared understanding, delivery, and later review.
       steps:
         - Check the PRD against problem-first framing, measurable success, scope/non-goals, testable requirements, risks, owners, rollout, instrumentation, and outcome review.
+        - Repeat the scope-and-simplicity gate when a material draft delta adds an actor, capability, lifecycle, platform surface, integration, acceptance contour, or verification obligation.
         - Mark blockers separately from polish.
         - "Use `Handoff: not-assessed` without a readiness request or consumer; otherwise use `draft-only`, `blocked`, or `ready for <architecture | specification | delivery-planning>`."
         - If readiness is requested without a consumer, ask once or leave readiness unassessed; continue the PRD review.
@@ -171,6 +182,10 @@ sections:
         - Ready certifies only product input for the named consumer, not architecture, specification, planning, implementation, or release readiness.
         - The named downstream consumer can use the product input without hidden product decisions.
   interop:
+    - id: interop-implementation-discipline
+      domain: source-authorized scope, simplest sufficient capability, self-expansion prevention, and proportional evidence
+      winner: implementation-discipline
+      rationale: implementation-discipline supplies the cross-cutting authoring gate; prd-engineer remains the owner of product intent, users, scope, metrics, and product acceptance.
     - id: interop-product-authority
       domain: product intent, users, scope, non-goals, success metrics, and product-level acceptance
       winner: prd-engineer
@@ -232,7 +247,7 @@ sections:
       text: Include a section only when it changes a decision, reduces risk, clarifies scope, or supports acceptance.
     - id: policy-acceptance-integrity
       title: Acceptance integrity policy
-      text: Acceptance criteria must require observable behavior or measurable evidence. Find the least-real passing implementation and rewrite any criterion that can pass through endpoints, files, config, mocks, tests, logs, tickets, or other substrate without the claimed behavior.
+      text: Acceptance criteria must require observable product behavior or measurable evidence. Rewrite criteria that pass through substrate alone, but do not invent technical harnesses, runtime seams, or platform work when existing downstream verification can prove the claim.
     - id: policy-source-authority
       title: Product source authority policy
       text: Separate source precedence from artifact authority. Only the operator or repository process can approve the current PRD version; generated or materially changed content stays non-authoritative until then.

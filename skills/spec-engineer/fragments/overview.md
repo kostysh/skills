@@ -10,32 +10,11 @@ Acceptable input can be loose, but it must be usable. A ticket, issue, free-form
 
 ### Capability vs substrate
 
-Use these definitions directly:
-
-- **Capability** is observable behavior by a user, operator, integration, or system: actor, trigger, system response, state/effect, and continuity.
-- **Substrate** is supporting material such as storage, APIs, queues, schemas, adapters, prompts, tests, logs, generated files, documentation, or lifecycle records.
-
-Capability is relative to the spec consumer. A public API contract is capability when API clients are the actors, but it is substrate when the claim is end-user checkout behavior. Substrate may be necessary, but a specification must not describe substrate as completed capability unless it enables demonstrable behavior. When a requested spec is actually substrate-only, label it that way and name the capability it supports.
-
-### Capability statement template
-
-Use this shape as the center of the spec when behavior is claimed:
-
-```text
-Given <precondition>, when <actor> does <trigger/action>, if <guard>,
-the system MUST <observable response>, creating or preserving <state/effect>,
-so that <continuity or later behavior> holds.
-```
+Capability is observable behavior for the named consumer across actor, trigger, response, state/effect, and continuity. Storage, APIs, queues, schemas, adapters, prompts, tests, logs, generated files, docs, and lifecycle records are substrate unless they are the direct consumer-facing contract. Label substrate-only scope and name the capability it supports.
 
 ### Right-sized rigor
 
-Default to the lightest spec that prevents costly implementation mistakes:
-
-- a function or validation rule may need only inputs, outputs, rules, edge cases, examples, and acceptance;
-- an endpoint usually needs request/response/error contracts and idempotency or retry semantics;
-- a workflow usually needs states, events, guards, effects, invariants, and failure behavior;
-- a system slice may need actors, entry points, interfaces, NFRs, compatibility, observability, and a verification map.
-- trivial scope should use the compact 6-section template from the methodology reference.
+Default to the lightest spec that prevents costly mistakes: compact inputs/rules/edges for local behavior, contracts for endpoints, state and failure semantics for workflows, and broader interfaces/NFRs/verification only for system slices. Use the methodology's compact six-section template for trivial scope.
 
 Do not make the agent maintain process ceremony that does not improve code. Increase structure only when prose would hide ambiguity, omitted cases, contradictions, or unverifiable claims.
 

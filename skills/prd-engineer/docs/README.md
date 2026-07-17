@@ -24,3 +24,4 @@
 | [logs/implementation-log-20260515-2.md](logs/implementation-log-20260515-2.md) | - | PASS |
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | - | PASS |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | - | Independent scoped PASS |
+| [logs/implementation-log-20260717-1.md](logs/implementation-log-20260717-1.md) | Aequitas-ADR/app#210 | Independent PASS |

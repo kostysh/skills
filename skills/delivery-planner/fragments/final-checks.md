@@ -1,4 +1,5 @@
 - Requested scope is explicit and respected: project, feature, module, integration, handoff item, or backlog audit.
+- The simplest sufficient delivery path was named before decomposition and rechecked after material deltas.
 - Product authority/handoff and architecture handoff item readiness are explicit; no dependent task is more ready than its inputs.
 - Architecture handoff is treated as accepted constraints and obligations, not redesigned.
 - Every in-scope product requirement and architecture obligation has a task, specialist route, spike, or explicit not-applicable rationale.
@@ -9,6 +10,8 @@
 - Every task has one primary goal, source trace, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or return route.
 - `ready for coding` is used only when the coding owner can act without inventing source-owned decisions and has concrete verification and review evidence.
 - Substrate work is tied to a capability or module increment.
+- Support work also traces to a current source obligation or protected boundary and states why the direct task or existing verification is insufficient.
+- Adjacent defects remain findings, blockers, or follow-ups unless their remediation is explicitly in scope.
 - No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests unless it is explicitly labeled as support work with a dependent increment.
 - High-risk work is visible and not hidden inside generic implementation tasks.
 - Sequencing exposes architectural, integration, migration, rollback, security, data, or tenancy risk early.
