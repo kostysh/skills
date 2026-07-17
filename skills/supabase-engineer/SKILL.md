@@ -5,9 +5,9 @@ description: Build, review, debug, and operate Supabase across schema, Data API,
   for Supabase design, implementation, boundary verification, CLI/MCP workflows,
   or incidents; pair with domain owners where they determine correctness.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 45fc994ddfb2abcc83ad35ee606f4a97f04661cd8c61ebb9bf41f63d15ed57e2
+  skillforge-source-hash: 720ddd708112f629cec72b5d82f44f00c869ab88962ccec186349d204e84b154
 ---
 
 # supabase-engineer

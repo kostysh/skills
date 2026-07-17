@@ -11,6 +11,12 @@ Retry only when all are true:
 
 `supabase-js` commonly returns `{ data, error }` instead of throwing. Normalize returned errors before a retry helper, and do not retry validation, authorization, RLS, constraint, or permanent configuration failures.
 
+For genuine PostgreSQL `40001` or `40P01`, automatic transaction retry means rerunning the whole transaction from an outer caller or framework boundary. Do not retry only one SQL statement or function after partial execution. Require a verified idempotency or replay-safety contract, a bounded attempt budget and deadline, and a fresh correct transaction boundary.
+
+Treat explicit same-key recovery or idempotency-conflict handling as application behavior, not as automatic transaction retry. A validation, authorization, RLS, constraint, or domain conflict does not become retryable because a function manually assigned it a class `40` SQLSTATE; apply the classification rules in `db-functions.md` first.
+
+Before recommending a database retry, inspect the effective function definitions and the public/private call chain, including any layer that translates or rethrows SQLSTATE. Do not add a generic retry helper, wrapper layer, registry, or instrumentation without a concrete current failure mode and a confirmed idempotency contract.
+
 ## Idempotent writes
 
 - Define the deduplication key, scope, persistence, conflict result, and retention.

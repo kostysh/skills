@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: supabase-engineer
-  source-version: 0.1.4
+  source-version: 0.1.5
   recommended-skill-md-max-bytes: 20000
   description: Build, review, debug, and operate Supabase across schema, Data API, Auth, RLS, Storage, Realtime, Edge Functions, migrations, and operations. Use for Supabase design, implementation, boundary verification, CLI/MCP workflows, or incidents; pair with domain owners where they determine correctness.
 fragments:
@@ -127,6 +127,10 @@ supporting:
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
     description: Non-normative log for the skill description length update.
+  - id: supporting-implementation-log-20260717-1
+    source: docs/logs/implementation-log-20260717-1.md
+    target: docs/logs/implementation-log-20260717-1.md
+    description: Non-normative implementation and review evidence for SQLSTATE and transaction-retry safety guidance.
 surfaces:
   active:
     requiredReferences:
