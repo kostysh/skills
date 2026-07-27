@@ -199,7 +199,9 @@ Apply these as findings only when an accepted product or style source adopts the
 
 ## Output Format
 
-Follow the status, review-basis, coverage-limit, and handoff contract in `SKILL.md`. Group supported findings by file or artifact and use terse `file:line - finding` entries.
+Begin with one plain-language outcome sentence before formal result terminology. Follow the status, review-basis, coverage-limit, and handoff contract in `SKILL.md`. Group supported findings by file or artifact and use terse `file:line - finding` entries.
+
+For remediation re-audit, report fixed findings, original UI failure states, adjacent regression states, and the stable remediation delta. Name unchanged previously verified states as excluded instead of repeating them; cosmetic edits alone do not close behavioral or accessibility findings.
 
 ```text
 ## src/Button.tsx

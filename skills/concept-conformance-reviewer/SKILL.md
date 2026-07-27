@@ -9,9 +9,9 @@ compatibility: Portable documentation-only review skill. Use before
   specification, planning, implementation, or closure when concept alignment and
   real capability are more important than local artifact compliance.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 184a54fb7802e82e4633bb620154be014462a8c0aa5a3da47724acd82b0c8d16
+  skillforge-source-hash: 6e808e4ac566de2f9cd32a2c5a134533c93b952158ffd113a30c9ae4191078df
 ---
 
 # concept-conformance-reviewer
@@ -114,7 +114,8 @@ Select the correct mode and establish enough authority to review without inventi
 1. Identify the review target, claimed completion boundary, and whether the request is design-time or closure-time.
 2. Identify the authoritative concept source using user-provided or repository-defined source precedence; treat lower-authority disagreement as drift in that source, not as an authority blocker.
 3. Record the acceptance criteria available in design-time mode and the current behavioral evidence available in closure-time mode.
-4. If the target or claim is missing, the concept source cannot define the claim boundary, or competing sources remain unresolved after precedence because authority is equal or unknown, return blocked / not assessable with decision request authority/evidence and stop before classification or fake-risk.
+4. Record a stable target identity and, for re-audit, prior findings plus the exact delta.
+5. If the target or claim is missing, the concept source cannot define the claim boundary, or competing sources remain unresolved after precedence because authority is equal or unknown, return blocked / not assessable with decision request authority/evidence and stop before classification or fake-risk.
 
 Validation:
 
@@ -224,7 +225,10 @@ Every non-trivial review must state the important behavior that remains unavaila
 Acceptance passing without claimed capability is defective; route behavior-level proof to spec-engineer.
 
 ### Output completeness policy
-For blocked reviews return only attempted mode, blocked status and outcome, missing, insufficient, or unresolved input, decision request authority/evidence, and next owner or artifact. Otherwise return mode, status, outcome, concept source, claim, classification, exploitable criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner or artifact.
+Start with a plain-language outcome. If blocked, return attempted mode, blocked status/outcome, missing or unresolved input, authority/evidence request, and next owner. Otherwise return mode, status/outcome, concept source, claim, classification, criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner.
+
+### Bounded remediation re-audit
+Re-audit fixed findings on a new stable snapshot against correction evidence, original failure paths, and adjacent regression surface. Skip unchanged verified scope and cosmetic-only proof; widen for changed claim, authority, acceptance, or scope, or unbounded blast radius.
 
 ## Portability rules
 

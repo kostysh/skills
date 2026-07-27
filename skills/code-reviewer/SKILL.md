@@ -5,9 +5,9 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
   or lightweight intent alignment, and provide evidence-backed merge guidance
   with stable scope, severity, and findings; pair with relevant domain skills.
 metadata:
-  source-version: 0.4.2
+  source-version: 0.4.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 71f013cc6f1cf8f26b40a5c9e6158804b7806d25a669e36ddd8cbc2f69c932c5
+  skillforge-source-hash: 6b58c75e2c8453424f243c71577b07f3d6a83368339a5b5727660d7f9d04e9ad
 ---
 
 # code-reviewer
@@ -102,7 +102,7 @@ When the user asks only for over-engineering, simplification, unnecessary depend
    - severity matches actual impact
    - confidence is high enough to emit as a finding instead of a question
 11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes.
-12. Report findings first, ordered by severity, followed by the mandatory evidence footer and exactly one recommendation status.
+12. Start with one plain-language outcome sentence, then report findings by severity, the mandatory evidence footer, and exactly one recommendation status.
 
 ## What to Check
 
@@ -210,7 +210,7 @@ Produce findings and merge guidance for one reproducible read-only snapshot.
 2. Freeze the snapshot, account for the changed scope, and use surrounding code only as research evidence.
 3. Run matching conditional and domain passes, then validate candidates against reachable behavior and existing guards.
 4. Recheck the snapshot identity and mark the result stale if the reviewed surface changed.
-5. Report findings first and include the mandatory evidence footer and one recommendation status.
+5. Start with one plain-language outcome sentence, then report findings and the mandatory evidence footer with one recommendation status.
 
 Validation:
 

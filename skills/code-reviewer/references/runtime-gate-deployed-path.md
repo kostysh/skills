@@ -97,7 +97,7 @@ If any point cannot be verified, downgrade the concern to an open question or om
 
 ## Interop Boundaries
 
-- `code-reviewer` owns these non-security deployed-path runtime-gate probes and findings-first output.
+- `code-reviewer` owns these non-security deployed-path runtime-gate probes and the plain-language outcome followed by findings.
 - `policy-admission-merge-risk` remains the detailed pass for admission, replay, freshness, persistence, and active-scope policy risks.
 - `security-reviewer` owns exploitability analysis, replay authority, credential handling, vulnerability classification, and security severity.
 - `spec-conformance-reviewer` owns full requirement extraction, traceability matrices, compliance statuses, and implementation-versus-spec verdicts.

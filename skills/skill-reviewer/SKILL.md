@@ -8,9 +8,9 @@ compatibility: Portable documentation-only review skill. It ships no runtime or
   test package and requires only access to the skill artifacts and available
   validation evidence.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 02412ea486fbc357700e7ccb9e07ae464106a219ebf35a861c5b50864e124387
+  skillforge-source-hash: cb8330de0888d5496875bafead7c3618239eb7b43b35740cc3f3edbb88519098
 ---
 
 # skill-reviewer
@@ -19,8 +19,9 @@ metadata:
 
 1. Confirm the requested outcome is a review verdict, then read the required methodology and select baseline, change, or re-audit mode for a stable scope.
 2. Frame the claimed capability, actor, consumer, anti-claims, and source precedence before judging artifacts or evidence.
-3. Read the forward-testing reference for material behavior changes or any formal PASS that depends on realistic behavioral confidence.
-4. Return an evidence-backed verdict and route remediation to the owning authoring or implementation skill.
+3. In re-audit mode, bind scope to accepted prior findings, the remediation delta, original failure paths, and adjacent regression surface; do not repeat unchanged verified package scope.
+4. Read the forward-testing reference for material behavior changes or any formal PASS that depends on realistic behavioral confidence.
+5. Return an evidence-backed verdict and route remediation to the owning authoring or implementation skill.
 
 ## When to use this skill
 
@@ -62,7 +63,8 @@ Determine whether the relevant instruction and evidence surfaces support the cla
 
 1. Use the methodology to inspect every behavior-relevant surface and trace activation, authority, inputs, decisions, outputs, interop, fallback, validation, and stop rules.
 2. Classify artifacts as capability, substrate, or evidence relative to the claim, and distinguish inspected facts from reviewer inference and unresolved source conflict.
-3. Run proportionate structural and behavioral checks; use blind forward-tests when the forward-testing trigger applies.
+3. In re-audit mode, verify each fixed finding against its original failure path and scan only the blast-radius surface; widen to change or baseline mode when capability, authority, trigger, output, runtime behavior, or material scope changed or blast radius is unbounded.
+4. Run proportionate structural and behavioral checks; use blind forward-tests when the forward-testing trigger applies.
 
 Validation:
 
@@ -75,7 +77,7 @@ Produce a traceable decision that downstream maintainers cannot mistake for broa
 
 1. Consolidate findings by root cause, assign severity, and map prior findings to current evidence when re-auditing; if the same or a related blocker survives remediation, require root-cause investigation before another point fix.
 2. Choose the verdict from the methodology contract; self-review cannot PASS, and missing optional evidence blocks only when the requested claim depends on it.
-3. Report the action boundary, findings and evidence bases, evidence limits, verdict, and next owner without performing remediation.
+3. Start with one plain-language outcome sentence, then report the action boundary, findings and evidence bases, evidence limits, verdict, and next owner without performing remediation.
 
 Validation:
 
@@ -109,7 +111,10 @@ Read and inspect in-scope local artifacts by default. Do not mutate the reviewed
 Attach each material claim to inspected evidence, label reviewer inference and source conflict, and report missing evidence without turning absence in the reviewed scope into a factual no.
 
 ### Review output contract
-Report mode, assurance, snapshot, scope, capability and anti-claims, surface inventory, reviewer actions, findings with evidence basis and impact, structural and rendered/package readback, runtime/test and forward-test results, remediation status when applicable, verdict, and next owner.
+Start with one plain-language outcome sentence, then report mode, assurance, snapshot, scope, capability and anti-claims, surface inventory, reviewer actions, findings with evidence basis and impact, structural and rendered/package readback, runtime/test and forward-test results, remediation status when applicable, verdict, and next owner.
+
+### Bounded remediation re-audit
+Re-audit accepted prior findings on a new stable snapshot using the remediation delta, original failure paths, closure evidence, and blast-radius surface. Skip unchanged verified package scope and reject cosmetic-only closure; widen when capability, authority, trigger, output, runtime behavior, or material scope changed or blast radius is unbounded.
 
 ## Required active references
 - [Skill review methodology](references/methodology.md) — Read this before conducting or reporting any skill review.

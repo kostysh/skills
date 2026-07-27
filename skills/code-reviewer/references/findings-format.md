@@ -1,6 +1,6 @@
 # Findings Format
 
-Use findings-first output. Keep it concise and behavior-based.
+Start with one plain-language outcome sentence that says what changed, what remains, and whether the reviewed boundary can proceed. Then use concise, behavior-based findings and formal recommendation terminology.
 
 ## Severity Labels
 
@@ -23,9 +23,10 @@ Next: bounded correction or investigation direction
 
 ## Review Response Shape
 
-1. Findings ordered by severity
-2. Open questions or assumptions
-3. Mandatory compact evidence footer
+1. Plain-language outcome sentence
+2. Findings ordered by severity
+3. Open questions or assumptions
+4. Mandatory compact evidence footer
 
 If no finding is confirmed, write `No findings.`; never use an empty findings section as evidence of clearance.
 

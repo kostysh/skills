@@ -14,6 +14,12 @@ Before judging conformance, record:
 
 Keep the review read-only. Do not edit the implementation or normative sources while producing the verdict. Stop when a reviewed surface moves; any material source or implementation change invalidates the prior verdict and requires a new review identity.
 
+## Remediation Re-audit Scope
+
+On a new stable snapshot, bind remediation re-audit to the fixed prior findings, their authoritative requirements, exact remediation delta, original failure paths, closure evidence, and adjacent contracts identified by a blast-radius check. Record unchanged previously verified requirements as excluded; do not re-read or re-evaluate their full implementation surface.
+
+Widen to a fresh conformance review when normative authority, requirement meaning, public behavior, or material scope changed, when unrelated changes overlap the requirement boundary, or when the blast radius cannot be bounded. A cosmetic or prose-only diff does not close a behavioral deviation without evidence against the original requirement failure path.
+
 ## Normative Inputs
 
 Collect the available sources before reading code:

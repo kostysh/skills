@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.6
+  source-version: 0.1.7
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review code against authoritative specs, contracts, ADRs, tickets, PRDs, RFCs,
@@ -60,6 +60,7 @@ sections:
     - Fix a read-only review scope and stable identities for the implementation snapshot and every candidate normative source before reaching conclusions.
     - Read the required methodology for every review and the reporting reference before assigning statuses or a verdict.
     - Establish source ownership, approval, version, applicability, supersession, and project-declared precedence; do not infer authority from artifact type alone.
+    - For remediation re-audit, fix the prior findings, remediation delta, original requirement failure paths, and adjacent regression surface; do not repeat unchanged previously verified requirements.
     - Load optional references only when their stated trigger applies.
   whenToUse:
     - '"implementation vs spec", "spec compliance review", or "does this match the spec"'
@@ -78,6 +79,7 @@ sections:
       steps:
         - Record the implementation commit, diff plus base, aggregate hash, or equivalent immutable identity and the layers included in scope.
         - Record each candidate normative source's owner, approval state, version, applicability, supersession, and any explicit project or user precedence.
+        - For remediation re-audit, record the prior snapshot and findings, current stable remediation delta, unchanged verified requirements excluded from repetition, and blast-radius boundary.
         - Classify missing, lower-authority, generated, stale, or conflicting inputs and stop if the reviewed snapshot moves.
       validation:
         - Another reviewer can reconstruct the implementation and normative source surface from the recorded identities.
@@ -89,6 +91,7 @@ sections:
       steps:
         - Extract atomic requirements with separate modality and origin fields, preserving derivation basis and confidence.
         - Trace each requirement to implementation, runtime or boundary evidence, and tests in both directions.
+        - In remediation re-audit, re-evaluate the fixed requirements and adjacent contracts only; widen to a fresh conformance review when normative authority, requirement meaning, public behavior, or material scope changed or blast radius cannot be bounded.
         - Assign fulfilled, partial, not-fulfilled, ambiguous, or cannot-determine status according to the observed evidence surface.
       validation:
         - Every material conclusion cites an authoritative requirement and either observed implementation evidence or the exact missing evidence surface.
@@ -99,7 +102,7 @@ sections:
       goal: Produce a deterministic verdict whose strength does not exceed source authority or mandatory implementation evidence.
       steps:
         - Apply the reporting aggregation rules to mandatory statuses, confirmed deviations, ambiguities, and verification gaps.
-        - Report snapshot identity, source authority, coverage limits, blocked inputs, findings, routed observations, and the final verdict.
+        - Start with one plain-language outcome sentence, then report snapshot identity, source authority, coverage limits, blocked inputs, findings, routed observations, and the final verdict.
         - Name the owner of clarification or remediation without resolving product intent or editing the reviewed surface.
       validation:
         - Compliant and compliant-with-minor-gaps are impossible while any mandatory requirement is ambiguous or cannot be determined.
@@ -163,6 +166,9 @@ sections:
     - id: policy-repeated-failure-escalation
       title: Repeated-failure escalation
       text: If a follow-up review after remediation repeats the same or a materially related blocking deviation, require root-cause investigation of assumptions, the full requirement-to-behavior path, adjacent contracts and surfaces, and remediation scope before another point fix.
+    - id: policy-bounded-remediation-reaudit
+      title: Bounded remediation re-audit
+      text: Re-audit fixed prior findings on a new stable snapshot against their original requirements, remediation delta, closure evidence, and adjacent contracts. Do not re-evaluate unchanged verified requirements or accept cosmetic edits as closure; widen when authority, requirement meaning, public behavior, or material scope changed or blast radius is unbounded.
   portability:
     required: true
     rules:

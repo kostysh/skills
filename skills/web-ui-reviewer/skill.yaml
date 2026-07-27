@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.2.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 20000
   description: Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification.
 fragments:
@@ -35,11 +35,13 @@ sections:
     - Identify the exact review claim, consumer, supplied UI evidence, and authoritative project or design-system rules.
     - Read the required Web Interface Guidelines reference before reviewing; treat it as a heuristic baseline, not a conformance standard.
     - Match code, browser, screenshot, accessibility, and performance evidence to the claim; report missing evidence instead of widening the conclusion.
+    - Freeze a stable target identity; for remediation re-audit, limit work to fixed findings, current evidence, and the adjacent UI regression surface.
     - Keep the review read-only and hand implementation, formal code-review, browser collection, and security decisions to their owning skills.
   whenToUse:
     - Review web UI code, diffs, screenshots, or rendered states for actionable interface findings.
     - Audit accessibility risks, interaction behavior, responsive presentation, forms, content, visual consistency, or frontend performance evidence.
     - Provide a scoped UI-domain assessment inside a broader code or product review.
+    - Re-audit prior UI findings after remediation without repeating unchanged verified screens or states.
   whenNotToUse:
     - The task is not a web UI, UX, accessibility, design, typography, form, content handling, or frontend performance review.
     - The task is implementation work rather than review; use the relevant frontend or framework skill.
@@ -51,6 +53,7 @@ sections:
       goal: Bound the requested claim to authoritative rules and available evidence.
       steps:
         - Record the requested claim, consumer, files or states in scope, and supplied code, diff, URL, screenshot, browser, design-system, or performance evidence.
+        - Record a stable target identity and, for remediation re-audit, the prior findings, prior snapshot, exact remediation delta, and unchanged verified states excluded from repetition.
         - Separate platform and accessibility behavior from product preferences; require accepted project authority before reporting a preference as a defect.
         - Select the strongest honest status the evidence could support before beginning the review.
       validation:
@@ -69,6 +72,7 @@ sections:
       title: Report and hand off
       goal: Return a concise result that the next owner can act on without mistaking partial coverage for approval.
       steps:
+        - Start with one plain-language outcome sentence before the formal result status.
         - Choose findings, no-material-findings, limited, or blocked according to the output contract.
         - Group findings by file or artifact, then state reviewed evidence, coverage limits, unassessed states, and required handoffs.
         - Keep remediation as a fix hint unless the user separately authorizes implementation.
@@ -113,6 +117,9 @@ sections:
     - id: policy-guidance-freshness
       title: Guidance freshness and precedence
       text: The portable reference is the reproducible baseline. A live upstream overlay may add non-conflicting guidance only when its URL and revision or retrieval date are reported; it never creates product authority or silently overrides project requirements.
+    - id: policy-bounded-remediation-reaudit
+      title: Bounded remediation re-audit
+      text: On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states; widen when the claim, UI authority, user-visible behavior, or material scope changed or blast radius is unbounded. Cosmetic edits do not close behavioral or accessibility findings.
   portability:
     required: true
     rules:

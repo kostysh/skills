@@ -5,9 +5,9 @@ description: Perform bounded security review of code, CI, permissions, webhooks,
   triage, or scoped audits. Own threat modeling, confidence gating, attack
   paths, and findings—not scan orchestration, compliance, pentesting, or fixes.
 metadata:
-  source-version: 0.1.10
+  source-version: 0.1.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 015d16c605864d8fa0210208ed64819689be157d692dc54210b0043c2de6bf85
+  skillforge-source-hash: 3941fa33e6248095c2bfa8a9b8282008d6888a26d266c0d285140405fd1f4643
 ---
 
 # security-reviewer
@@ -258,10 +258,11 @@ Validation:
 
 Return a security result whose status, coverage, and downstream ownership cannot be mistaken for broader proof.
 
-1. Report the review basis, confirmed findings, needs verification, inspected and uninspected surfaces, residual risk, and evidence limits.
-2. In targeted mode, report findings or no confirmed findings in reviewed scope without issuing PASS.
-3. In formal mode, use FAIL only for confirmed in-scope findings, PASS (scoped) only for a complete named security-review scope, INCOMPLETE for missing mandatory coverage/evidence, and BLOCKED for an unavailable or unstable basis.
-4. Do not issue an overall merge recommendation; hand confirmed security blockers and residual risk to code-reviewer when merge guidance is requested.
+1. Start with one plain-language outcome sentence before security status, severity, confidence, or verdict terminology.
+2. Report the review basis, confirmed findings, needs verification, inspected and uninspected surfaces, residual risk, and evidence limits.
+3. In targeted mode, report findings or no confirmed findings in reviewed scope without issuing PASS.
+4. In formal mode, use FAIL only for confirmed in-scope findings, PASS (scoped) only for a complete named security-review scope, INCOMPLETE for missing mandatory coverage/evidence, and BLOCKED for an unavailable or unstable basis.
+5. Do not issue an overall merge recommendation; hand confirmed security blockers and residual risk to code-reviewer when merge guidance is requested.
 
 Validation:
 
@@ -272,10 +273,11 @@ Validation:
 
 Verify accepted fixes without editing the target or reusing a stale verdict.
 
-1. Map each prior finding to the concrete change, current evidence, and status on a new stable snapshot.
-2. Re-test the original attack path and adjacent regression surface; preserve unresolved items as needs verification or confirmed findings.
-3. If the same or a materially related confirmed finding survives remediation, require root-cause investigation of assumptions, the full attack path, adjacent controls and surfaces, and remediation scope before another point fix.
-4. Invalidate the prior result after any material code, configuration, runtime, test, or evidence change.
+1. Fix the re-audit scope to the accepted prior findings, exact remediation delta, current closure evidence, and adjacent regression surface on a new stable snapshot.
+2. Re-test each original attack path and the blast-radius surface; preserve unresolved items as needs verification or confirmed findings and do not repeat unchanged previously cleared full scope.
+3. Widen to a fresh formal or targeted review when the threat model, security authority, public behavior, or material scope changed or the blast radius cannot be bounded; cosmetic edits alone do not close an attack path.
+4. If the same or a materially related confirmed finding survives remediation, require root-cause investigation of assumptions, the full attack path, adjacent controls and surfaces, and remediation scope before another point fix.
+5. Invalidate the prior result after any material code, configuration, runtime, test, or evidence change.
 
 Validation:
 
@@ -307,6 +309,9 @@ Security review is read-only by default. A separate domain or implementation own
 
 ### Security status contract
 Targeted review never emits PASS. Formal FAIL requires a confirmed in-scope finding; PASS (scoped) requires a complete named security-review scope and no confirmed findings; INCOMPLETE represents missing mandatory coverage or evidence; BLOCKED represents an unavailable or unstable review basis. Standards/control fulfillment and compliance status always belong to spec-conformance-reviewer.
+
+### Bounded remediation re-audit
+Re-audit fixed prior findings on a new stable snapshot using the remediation delta, original attack paths, closure evidence, and blast-radius surface. Skip unchanged cleared scope; widen when threat model, authority, public behavior, or material scope changed or blast radius is unbounded.
 
 ## Required active references
 - [Methodology](references/methodology.md) — Read this for every review before selecting mode, establishing the review basis, classifying findings, or issuing a scoped status.

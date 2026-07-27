@@ -60,7 +60,7 @@ When the user asks only for over-engineering, simplification, unnecessary depend
    - severity matches actual impact
    - confidence is high enough to emit as a finding instead of a question
 11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes.
-12. Report findings first, ordered by severity, followed by the mandatory evidence footer and exactly one recommendation status.
+12. Start with one plain-language outcome sentence, then report findings by severity, the mandatory evidence footer, and exactly one recommendation status.
 
 ## What to Check
 

@@ -23,6 +23,12 @@ The default external-attacker model is an exploration hypothesis, not authority 
 
 Use `BLOCKED` when the target or snapshot is unavailable, moving, or internally conflicting enough that conclusions are not reproducible. Use `INCOMPLETE` when the review can proceed but mandatory coverage or evidence for the requested formal assurance is absent. Missing evidence alone is not `FAIL`.
 
+### Bounded remediation re-audit
+
+On a new stable snapshot, fix the re-audit scope to the accepted prior findings, exact remediation delta, original attack paths, current closure evidence, and adjacent controls or surfaces identified by a blast-radius check. Record unchanged previously cleared scope as excluded; do not repeat the full audit merely because remediation occurred.
+
+Widen to a fresh formal or targeted review when the threat model, authoritative security contract, public behavior, or material scope changed, when unrelated changes overlap the attack path, or when the blast radius cannot be bounded. Cosmetic or prose-only edits do not close a finding without evidence against the original attack path.
+
 ## Review Standard
 
 Report only findings that survive all of these checks:
@@ -135,7 +141,11 @@ Rules:
 
 ## Default Output
 
+Begin with one plain-language outcome sentence before severity, confidence, result, or status terminology.
+
 ```markdown
+Plain-language outcome: what was fixed, what remains, and what the reviewed boundary can now claim
+
 [Review basis: target/snapshot and report scope]
 
 [high] `path/to/file.ts:42` Short title
@@ -156,6 +166,8 @@ Evidence limits: untested or unavailable boundary
 For an explicit audit or report, prefer:
 
 ```markdown
+Plain-language outcome: what was fixed, what remains, and what the reviewed boundary can now claim
+
 Executive summary
 - Mode, stable target/snapshot, report scope, research scope, actors, and top risks
 
@@ -184,6 +196,8 @@ Next owner: Domain fact, implementation, spec-conformance, scan orchestration, o
 ```
 
 For re-audit, add `prior finding -> current change -> evidence -> status`, re-run the original attack path and adjacent regression surface, and tie the result to the new snapshot. If the same or a materially related confirmed finding survives remediation, set `Next` to root-cause investigation before more fixes.
+
+Do not repeat unchanged previously cleared scope in the re-audit report. Name it as excluded, and widen only when the blast-radius rule requires a fresh review.
 
 ## Review Close-Out
 

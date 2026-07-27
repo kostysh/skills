@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.4.2
+  source-version: 0.4.3
   recommended-skill-md-max-bytes: 20000
   description: >-
     Perform read-only review of PRs, diffs, and local branch changes. Use to find
@@ -132,7 +132,7 @@ sections:
         - Freeze the snapshot, account for the changed scope, and use surrounding code only as research evidence.
         - Run matching conditional and domain passes, then validate candidates against reachable behavior and existing guards.
         - Recheck the snapshot identity and mark the result stale if the reviewed surface changed.
-        - Report findings first and include the mandatory evidence footer and one recommendation status.
+        - Start with one plain-language outcome sentence, then report findings and the mandatory evidence footer with one recommendation status.
       validation:
         - Another reviewer can reconstruct the reviewed target and scope from the report.
         - No recommendation exceeds the behavioral evidence or specialized authority actually assessed.

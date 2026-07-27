@@ -13,7 +13,7 @@ const countMatches = (text: string, pattern: RegExp) => [...text.matchAll(patter
 test('source contract exposes one required methodology and optional domain references', async () => {
   const manifest = await readSkillFile('skill.yaml');
 
-  assert.match(manifest, /source-version: "0\.1\.10"/);
+  assert.match(manifest, /source-version: "0\.1\.11"/);
   assert.match(manifest, /requiredReferences:\n\s+- "ref-methodology"\n\s+optionalReferences:/);
   assert.match(manifest, /id: "ref-api-auth-input"[\s\S]*?required: false/);
   assert.match(manifest, /id: "ref-github-actions"[\s\S]*?required: false/);
@@ -101,6 +101,20 @@ test('re-audit escalates a recurring related finding before another point fix', 
   assert.match(skill, /same or a materially related confirmed finding survives remediation/);
   assert.match(skill, /root-cause investigation[\s\S]*before another point fix/);
   assert.match(methodology, /set `Next` to root-cause investigation before more fixes/);
+});
+
+test('re-audit is finding-bounded and reports a plain-language outcome first', async () => {
+  const [skill, methodology] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/methodology.md'),
+  ]);
+
+  assert.match(skill, /exact remediation delta/);
+  assert.match(skill, /do not repeat unchanged previously cleared full scope/);
+  assert.match(skill, /cosmetic edits alone do not close an attack path/);
+  assert.match(skill, /plain-language outcome sentence before security status/);
+  assert.match(methodology, /Record unchanged previously cleared scope as excluded/);
+  assert.match(methodology, /blast radius cannot be bounded/);
 });
 
 test('standards control fulfillment always routes to spec-conformance-reviewer', async () => {

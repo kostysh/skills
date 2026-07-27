@@ -27,6 +27,12 @@ Do not silently choose between multiple plausible bases or targets. Return `bloc
 - If CLI diff output truncates, recover coverage by reading changed files directly.
 - Do not finalize findings or a recommendation while target authority is unresolved or the snapshot is moving.
 
+## Remediation Re-audit Scope
+
+For a remediation re-audit, record the prior reviewed snapshot, fixed findings, current stable snapshot, and exact remediation delta. Re-run each original failure path and inspect the adjacent regression surface identified by the change's blast radius. Do not re-read or re-audit unchanged full scope that the prior review already verified.
+
+Widen to a fresh review when the claim, source authority, public behavior, or material scope changed, when unrelated changes overlap the evidence boundary, or when the blast radius cannot be bounded. A cosmetic or text-only diff does not close a behavioral finding without evidence against its original failure path.
+
 ## Minimum Sequence
 
 1. Resolve target, base, and scope using the authority order above.

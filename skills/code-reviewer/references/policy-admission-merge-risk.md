@@ -60,7 +60,7 @@ Do not report a blocking test finding for style-only cleanup, dead code, or a th
 
 ## Interop Boundaries
 
-- `code-reviewer` owns these non-security merge-risk probes and the findings-first output.
+- `code-reviewer` owns these non-security merge-risk probes and the plain-language outcome followed by findings.
 - `security-reviewer` owns exploitability analysis, vulnerability classification, and security severity.
 - `spec-conformance-reviewer` owns full requirement extraction, traceability matrices, compliance statuses, and implementation-versus-spec verdicts.
 - Domain skills own framework, runtime, storage, and testing mechanics needed to confirm or clear the probe.

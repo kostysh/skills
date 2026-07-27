@@ -8,7 +8,7 @@ Read this reference before conducting or reporting any `skill-reviewer` assessme
 | --- | --- | --- |
 | `baseline` | Review a whole current skill or establish defects before remediation. | Entire active package plus relevant source, generated, runtime, test, asset, UI, and supporting evidence. |
 | `change` | Review a stable scoped change. | Exact diff and base, plus unchanged guidance needed to understand triggers, precedence, interop, runtime, and output. |
-| `re-audit` | Verify remediation and closure. | Prior findings, remediation matrix, current stable snapshot, and adjacent regression surface. |
+| `re-audit` | Verify remediation and closure. | Accepted prior findings, remediation matrix and exact delta, current stable snapshot, original failure paths, and adjacent regression surface; unchanged verified package scope is excluded. |
 
 Record assurance separately from mode:
 
@@ -171,6 +171,8 @@ P3-only observations may accompany `PASS`. A missing optional check is not autom
 ```markdown
 ## Skill review
 
+<Plain-language outcome sentence: what is fixed, what remains, and what the reviewed boundary can now claim>
+
 - Mode / assurance:
 - Snapshot / scope:
 - Claimed capability and actor:
@@ -203,7 +205,9 @@ P3-only observations may accompany `PASS`. A missing optional check is not autom
 
 ## Re-audit and snapshot invalidation
 
-During remediation, a separate implementing agent maintains `finding -> concrete change -> evidence -> status`. The reviewer checks the correction against the original failure path, scans adjacent rules for contradictions or regressions, and issues a verdict only for the new snapshot.
+During remediation, a separate implementing agent maintains `finding -> concrete change -> evidence -> status`. The reviewer fixes scope to those accepted findings and the exact remediation delta, checks each correction against the original failure path, scans the adjacent blast-radius surface for contradictions or regressions, and issues a verdict only for the new snapshot. Record unchanged previously verified package scope as excluded instead of repeating the full audit.
+
+Widen to `change` or `baseline` mode when capability, source authority, trigger, output contract, runtime behavior, or material scope changed, when unrelated changes overlap the failure path, or when the blast radius cannot be bounded. A cosmetic or prose-only diff does not close a behavioral finding without evidence against its original failure path.
 
 If a re-audit after remediation repeats the same or a materially related P1/P2, do not recommend another point fix. Treat recurrence as evidence that the problem model or remediation scope may be incomplete; re-examine assumptions, the full failure path, adjacent contracts and surfaces, and the root cause before proposing further remediation.
 

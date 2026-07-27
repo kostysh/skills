@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: concept-conformance-reviewer
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review features, specs, plans, acceptance criteria, implementations, and closure
@@ -74,6 +74,7 @@ sections:
         - Identify the review target, claimed completion boundary, and whether the request is design-time or closure-time.
         - Identify the authoritative concept source using user-provided or repository-defined source precedence; treat lower-authority disagreement as drift in that source, not as an authority blocker.
         - Record the acceptance criteria available in design-time mode and the current behavioral evidence available in closure-time mode.
+        - Record a stable target identity and, for re-audit, prior findings plus the exact delta.
         - If the target or claim is missing, the concept source cannot define the claim boundary, or competing sources remain unresolved after precedence because authority is equal or unknown, return blocked / not assessable with decision request authority/evidence and stop before classification or fake-risk.
       validation:
         - The mode, scope, claim, and concept authority are explicit.
@@ -199,7 +200,10 @@ sections:
       text: Acceptance passing without claimed capability is defective; route behavior-level proof to spec-engineer.
     - id: policy-output-completeness
       title: Output completeness policy
-      text: For blocked reviews return only attempted mode, blocked status and outcome, missing, insufficient, or unresolved input, decision request authority/evidence, and next owner or artifact. Otherwise return mode, status, outcome, concept source, claim, classification, exploitable criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner or artifact.
+      text: Start with a plain-language outcome. If blocked, return attempted mode, blocked status/outcome, missing or unresolved input, authority/evidence request, and next owner. Otherwise return mode, status/outcome, concept source, claim, classification, criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner.
+    - id: policy-bounded-remediation-reaudit
+      title: Bounded remediation re-audit
+      text: Re-audit fixed findings on a new stable snapshot against correction evidence, original failure paths, and adjacent regression surface. Skip unchanged verified scope and cosmetic-only proof; widen for changed claim, authority, acceptance, or scope, or unbounded blast radius.
   portability:
     required: true
     rules:

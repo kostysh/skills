@@ -2,6 +2,8 @@
 
 Use findings and verdicts that can be traced back to specific requirements.
 
+Begin every result with one plain-language outcome sentence that states which requirement failures are closed, which remain, and what the reviewed boundary can now claim. Place formal requirement statuses and verdict terminology after that sentence.
+
 ## Requirement Statuses
 
 | Status | Use for |
@@ -75,6 +77,8 @@ Use the full structure when the user asks for a formal report or when the review
 ```md
 # Spec Compliance Review
 
+Outcome: <plain-language statement of what is closed, what remains, and what the reviewed boundary can claim>
+
 ## 1. Executive Summary
 - Scope:
 - Implementation snapshot:
@@ -140,6 +144,8 @@ Use the full structure when the user asks for a formal report or when the review
 - Do not use `partially_fulfilled` when only substrate exists; require evidence for some observable portion of the broader requirement.
 - When mocks or in-memory stores are the only tests for a production persistence/RLS/RPC/provider boundary, report a verification gap unless the normative requirement is limited to the mocked layer.
 - Avoid vague language such as "looks wrong" or "should probably".
+- In remediation re-audit, report fixed findings and adjacent regression coverage; list unchanged previously verified requirements as excluded instead of repeating their full analysis.
+- Do not treat a cosmetic diff as closure evidence for an original behavioral failure path.
 - If a follow-up review repeats the same or a materially related blocking deviation after remediation, require root-cause investigation before more fixes.
 
 ## Minimal Self-Check

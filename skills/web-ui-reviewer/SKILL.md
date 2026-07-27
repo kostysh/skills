@@ -5,9 +5,9 @@ description: Review web UI code and rendered states against project requirements
   form, or frontend-performance audits that need scoped findings and evidence
   limits; not implementation or conformance certification.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f8df6779ce0bdc511e1a74889651e30303a0e91de081e297eda953fbeaf42bb4
+  skillforge-source-hash: e965a6cdf7d2ed540e33845d0163e6cab60baa24af30db8b43f2b3918f1d74dd
 ---
 
 # web-ui-reviewer
@@ -17,13 +17,15 @@ metadata:
 1. Identify the exact review claim, consumer, supplied UI evidence, and authoritative project or design-system rules.
 2. Read the required Web Interface Guidelines reference before reviewing; treat it as a heuristic baseline, not a conformance standard.
 3. Match code, browser, screenshot, accessibility, and performance evidence to the claim; report missing evidence instead of widening the conclusion.
-4. Keep the review read-only and hand implementation, formal code-review, browser collection, and security decisions to their owning skills.
+4. Freeze a stable target identity; for remediation re-audit, limit work to fixed findings, current evidence, and the adjacent UI regression surface.
+5. Keep the review read-only and hand implementation, formal code-review, browser collection, and security decisions to their owning skills.
 
 ## When to use this skill
 
 - Review web UI code, diffs, screenshots, or rendered states for actionable interface findings.
 - Audit accessibility risks, interaction behavior, responsive presentation, forms, content, visual consistency, or frontend performance evidence.
 - Provide a scoped UI-domain assessment inside a broader code or product review.
+- Re-audit prior UI findings after remediation without repeating unchanged verified screens or states.
 
 ## When NOT to use this skill
 
@@ -79,8 +81,9 @@ For a clean file inside a partial review, use `✓ no code-level findings in rev
 Bound the requested claim to authoritative rules and available evidence.
 
 1. Record the requested claim, consumer, files or states in scope, and supplied code, diff, URL, screenshot, browser, design-system, or performance evidence.
-2. Separate platform and accessibility behavior from product preferences; require accepted project authority before reporting a preference as a defect.
-3. Select the strongest honest status the evidence could support before beginning the review.
+2. Record a stable target identity and, for remediation re-audit, the prior findings, prior snapshot, exact remediation delta, and unchanged verified states excluded from repetition.
+3. Separate platform and accessibility behavior from product preferences; require accepted project authority before reporting a preference as a defect.
+4. Select the strongest honest status the evidence could support before beginning the review.
 
 Validation:
 
@@ -103,9 +106,10 @@ Validation:
 
 Return a concise result that the next owner can act on without mistaking partial coverage for approval.
 
-1. Choose findings, no-material-findings, limited, or blocked according to the output contract.
-2. Group findings by file or artifact, then state reviewed evidence, coverage limits, unassessed states, and required handoffs.
-3. Keep remediation as a fix hint unless the user separately authorizes implementation.
+1. Start with one plain-language outcome sentence before the formal result status.
+2. Choose findings, no-material-findings, limited, or blocked according to the output contract.
+3. Group findings by file or artifact, then state reviewed evidence, coverage limits, unassessed states, and required handoffs.
+4. Keep remediation as a fix hint unless the user separately authorizes implementation.
 
 Validation:
 
@@ -135,6 +139,9 @@ Require current browser or design-tool evidence for affected desktop and mobile 
 
 ### Guidance freshness and precedence
 The portable reference is the reproducible baseline. A live upstream overlay may add non-conflicting guidance only when its URL and revision or retrieval date are reported; it never creates product authority or silently overrides project requirements.
+
+### Bounded remediation re-audit
+On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states; widen when the claim, UI authority, user-visible behavior, or material scope changed or blast radius is unbounded. Cosmetic edits do not close behavioral or accessibility findings.
 
 ## Required active references
 - [Web Interface Guidelines](references/web-interface-guidelines.md) — Read this before every review; use its classification and the sections relevant to the requested UI scope.
