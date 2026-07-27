@@ -8,7 +8,7 @@ description: Design, implement, review, and diagnose TypeScript tests for Node,
 metadata:
   source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 049df20f66a8e6275649529782f6adaeca6c91862043e07667bbee0dd9c9eeef
+  skillforge-source-hash: 47e8c8045846ef3ad17b06a7d2b8e1f0e11e70bdc98280df413db09864459794
 ---
 
 # typescript-test-engineer
@@ -18,7 +18,7 @@ metadata:
 1. Classify the request as design, implementation, review, or diagnose before selecting a workflow; review and diagnose are read-only unless the user explicitly requests fixes.
 2. Resolve expected behavior from explicit user decisions, accepted specifications or acceptance criteria, and repository contracts; treat current implementation and existing tests as evidence, not authority when sources conflict.
 3. Follow the repository test runner and existing conventions before applying defaults.
-4. For React mutation UI that crosses child or portal remount, entity, route, or access context, read the React reference and require one combined lifetime falsifier instead of accepting isolated happy paths.
+4. For React mutation UI that crosses child or portal remount, entity, route, or access context, read the React reference and require its identity matrix plus one combined lifetime falsifier instead of isolated happy paths.
 5. Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean.
 6. Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check.
 7. If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions.
@@ -146,9 +146,10 @@ Produce the smallest sufficient test design or authorized test change that prove
 1. For low-risk helper logic such as a branch, loop, parser, formatter, or pure utility, choose the smallest runnable check that would fail if the behavior regresses.
 2. For specified or implied forbidden behavior, plan negative/fail-closed tests from the contract source: spec, security/privacy contract, CI/CD gate, auth/RBAC, validation, redaction, environment isolation, or acceptance falsifier.
 3. For side-effecting/state-changing behavior, list applicable negative matrix rows and mark irrelevant rows N/A with a reason.
-4. For React mutation UI with remount or access-context boundaries, combine pre-populated cache, child or portal remount, authoritative reread failure, context switch, controlled timers, late responses, and teardown in one applicable falsifier.
-5. Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components.
-6. In design mode, return the test plan without changing files; in implementation mode, change only the explicitly authorized scope and use clear Arrange-Act-Assert.
+4. Before a React mutation-lifetime test, populate a sourced matrix for route, access scope, entity, client attempt, outcome-verification sequence, owner, remount lifetime, context-loss disposition, and late-completion rule; return limited or blocked when a material row cannot be sourced.
+5. For React mutation UI with remount or access-context boundaries, combine pre-populated cache, child or portal remount, authoritative reread failure, context switch, controlled timers, late responses, and teardown in one applicable falsifier.
+6. Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components.
+7. In design mode, return the test plan without changing files; in implementation mode, change only the explicitly authorized scope and use clear Arrange-Act-Assert.
 
 Validation:
 
@@ -156,6 +157,7 @@ Validation:
 - Low-risk helper checks are intentionally small but still fail on the targeted behavior regression.
 - For security-sensitive code, missing negative/fail-closed tests are reported as a test gap.
 - Relevant side-effecting/state-changing risks are covered or explicitly marked N/A by relevance.
+- The test plan distinguishes stale completion from an earlier client attempt or verification sequence from the current one, without treating client labels as backend idempotency keys.
 - Mutation UI tests prove required pending and verification lifetime across disposable children and prevent old-context cache or status from leaking after a switch.
 
 ### Workflow stage: Review or diagnose without implicit remediation

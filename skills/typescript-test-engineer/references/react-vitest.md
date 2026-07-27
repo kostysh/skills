@@ -137,7 +137,24 @@ describe('Profile', () => {
 
 When a React mutation's required status or outcome verification can outlive a
 child, portal, route, entity, or access context, derive the test from the
-sourced lifetime matrix and exercise one combined sequence:
+sourced lifetime matrix. Before writing Arrange-Act-Assert, populate these rows:
+
+| Element | Required identity | Owner and lifetime question |
+| --- | --- | --- |
+| Route | route or workspace transition identity | Which mounted owner survives the disposable child, and what ends the route lifetime? |
+| Access scope | tenant, workspace, role, or other accepted access-context identity | Which owner fences data and presentation when access context changes? |
+| Entity | accepted domain entity identity | Which Query/cache and UI state belong only to this entity? |
+| Client attempt | a test-visible attempt ID or generation | Which owner distinguishes a newer submit from a late completion of an earlier submit? |
+| Outcome verification | a verification ID or generation under the client attempt | Which owner prevents an older reread/retry from confirming a newer attempt? |
+
+For every row, record the authoritative source, state owner, whether it survives
+the child/portal remount, its context-loss disposition, and its late-completion
+rule. Test-local attempt or verification labels may distinguish controlled
+client events when the source does not define backend identifiers; state that
+they are test notation, not an invented idempotency or server contract. Return
+`limited` or `blocked` instead of omitting a material identity or owner.
+
+Then exercise one combined sequence:
 
 1. pre-populate Query or approved durable cache for access context A;
 2. begin the mutation and assert the required pending presentation;
@@ -145,10 +162,14 @@ sourced lifetime matrix and exercise one combined sequence:
 4. resolve the mutation transport but reject the required authoritative reread;
 5. assert a visible recoverable non-success state rather than stale cache or a
    false terminal success;
-6. switch to context B while a retry timer or late A response is controlled;
-7. settle or advance every deferred response and timer, then assert that A data
-   and status cannot repopulate B;
-8. unmount and verify cleanup of timers, listeners, workers, storage, global
+6. switch to context B while a retry timer or late A response from the first
+   attempt or verification sequence is controlled;
+7. where the accepted flow allows a later submit, return to A, begin a distinct
+   client attempt and verification sequence, then settle the older completion;
+8. settle or advance every deferred response and timer, then assert that A data
+   and status cannot repopulate B and an older attempt cannot settle or overwrite
+   a newer attempt or verification sequence;
+9. unmount and verify cleanup of timers, listeners, workers, storage, global
    stubs, and every deferred promise so the worker can terminate.
 
 Use the repository's real Query, router, portal, and provider composition at the

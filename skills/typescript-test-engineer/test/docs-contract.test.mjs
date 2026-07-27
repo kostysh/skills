@@ -181,11 +181,17 @@ test('React mutation guidance requires the combined lifetime falsifier', async (
   const reference = await readSkillFile('references/react-vitest.md');
 
   assert.match(skill, /one combined lifetime falsifier/);
+  assert.match(skill, /route, access scope, entity, client attempt, outcome-verification sequence/);
+  assert.match(skill, /client labels as backend idempotency keys/);
   assert.match(skill, /pre-populated cache/);
   assert.match(skill, /authoritative reread failure/);
   assert.match(reference, /## Combined mutation-lifetime falsifier/);
+  assert.match(reference, /\| Client attempt \|/);
+  assert.match(reference, /\| Outcome verification \|/);
+  assert.match(reference, /test notation, not an invented idempotency or server contract/);
   assert.match(reference, /unmount and remount the disposable child/);
   assert.match(reference, /switch to context B/);
+  assert.match(reference, /older attempt cannot settle or overwrite/);
   assert.match(reference, /false terminal success/);
   assert.match(reference, /worker can terminate/);
   assert.match(reference, /Mark an element `N\/A` with a sourced\s+reason/);

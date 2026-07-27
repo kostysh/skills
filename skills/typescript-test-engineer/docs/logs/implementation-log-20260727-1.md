@@ -42,7 +42,13 @@
 
 ### Skill Review Evidence
 
-Independent review ожидается на stable snapshot.
+Independent change review commit `5f00e00d5c648a2899a50f5bee52b4cc18f135f6`: aggregate `FAIL`, один P1 в `typescript-test-engineer`.
+
+| Finding | Concrete change | Evidence | Status |
+| --- | --- | --- | --- |
+| P1: blind `PASS` без route/access/entity/attempt/verification-sequence matrix | Явные matrix fields и owner/lifetime/late-completion rules добавлены в active root/reference; fixture и combined scenario различают старый и новый attempt | Fresh no-fork blind run: все required matrix rows и cross-attempt stale-completion path присутствуют, `PASS`; independent re-review ожидается | Реализовано, ожидает re-review |
+
+Первый targeted test после remediation дал `18/19`: старый regex ожидал дословное `one combined lifetime falsifier`, а active sentence был переформулирован. Контрактную фразу восстановили без ослабления matrix requirement; повторный прогон — `19/19 PASS`.
 
 ## Deviations From Plan
 
@@ -58,4 +64,4 @@ Production tests/runtime Aequitas не изменены.
 
 ## Final Status
 
-`PROVISIONAL`.
+`PROVISIONAL`; fresh blind evidence прошло, independent re-review ещё ожидается.

@@ -134,10 +134,10 @@ Self-assessment: two tests are the smallest sufficient set—one positive confir
 | Expected decision | Observed | Result |
 | --- | --- | --- |
 | Define the logical lifetime above the disposable portal child. | Ownership assumptions require a workspace-level owner. | PASS |
-| Separate route/access/entity/attempt/verification and authoritative reread. | The assumptions and two scenarios keep them distinct. | PASS |
+| Separate route/access/entity/attempt/verification-sequence identities and owners. | The output scopes only context A and `case-17`, declines exact ownership, and provides no matrix or distinct attempt/verification identities. | FAIL |
 | Include one combined pre-populated-cache, remount, reread-failure, context-switch, timer, and late-response falsifier. | Scenario 2 contains the complete sequence. | PASS |
 | Prevent A state/data leakage into B and keep failure visible/recoverable. | Both are explicit assertions. | PASS |
 | Settle deferred work and restore timers/globals. | Cleanup contract is deterministic and warning-clean. | PASS |
 | Avoid invented backend or browser claims. | Backend, RLS/RPC, routing, and browser limits are explicit. | PASS |
 
-Aggregate blind verdict: `PASS`. This is bounded test-design evidence, not executed app-test evidence.
+Aggregate blind verdict: `FAIL`. The combined scenario and cleanup are useful, but they do not close the required identity/owner matrix or stale cross-attempt completion path. This remains test-design evidence, not executed app-test evidence.
