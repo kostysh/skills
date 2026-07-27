@@ -5,9 +5,9 @@ description: Review web UI code and rendered states against project requirements
   form, or frontend-performance audits that need scoped findings and evidence
   limits; not implementation or conformance certification.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e9ec3f77dc1fc5cb1a5d353ba4dfa4e16f3365abfbcae0d8ad2acf1e5f09cb24
+  skillforge-source-hash: 561f24e1ee5536e4d0209a03074b9ff7ee13a81c17042a84ff0cc9b41fcc99e7
 ---
 
 # web-ui-reviewer
@@ -18,7 +18,8 @@ metadata:
 2. Read the required Web Interface Guidelines reference before reviewing; treat it as a heuristic baseline, not a conformance standard.
 3. Match code, browser, screenshot, accessibility, and performance evidence to the claim; report missing evidence instead of widening the conclusion.
 4. Freeze a stable target identity; for remediation re-audit, limit work to fixed findings, current evidence, and the adjacent UI regression surface.
-5. Keep the review read-only and hand implementation, formal code-review, browser collection, and security decisions to their owning skills.
+5. When the claim covers module or journey completeness, inventory applicable peer views and source-established standard capabilities before accepting visual polish as readiness.
+6. Keep the review read-only and hand implementation, formal code-review, browser collection, and security decisions to their owning skills.
 
 ## When to use this skill
 
@@ -82,20 +83,23 @@ Bound the requested claim to authoritative rules and available evidence.
 
 1. Record the requested claim, consumer, files or states in scope, and supplied code, diff, URL, screenshot, browser, design-system, or performance evidence.
 2. Record a stable target identity and, for remediation re-audit, the prior findings, prior snapshot, exact remediation delta, and unchanged verified states excluded from repetition.
-3. Separate platform and accessibility behavior from product preferences; require accepted project authority before reporting a preference as a defect.
-4. Select the strongest honest status the evidence could support before beginning the review.
+3. For module or journey completeness claims, record applicable peer views and source-established capabilities such as search, detail, and history, with reuse, justified divergence, or `N/A` dispositions.
+4. Separate platform and accessibility behavior from product preferences; require accepted project authority before reporting a preference as a defect.
+5. Select the strongest honest status the evidence could support before beginning the review.
 
 Validation:
 
 - The review basis names its authority, evidence, and unassessed scope without implying broader readiness.
+- Applicable peer-view capabilities have explicit dispositions instead of being hidden by a polished overview surface.
 
 ### Workflow stage: Review observable UI behavior
 
 Produce supported findings without converting heuristics or missing evidence into defects.
 
 1. Inspect code for directly observable semantics and risk patterns; use current rendered evidence for visual, responsive, overlay, loading, empty, error, focus, and interaction claims.
-2. Classify each item as a supported defect, a risk needing named validation, or a non-binding preference; report only supported defects as findings.
-3. Use measurements for performance conclusions and browser or design-tool evidence for visual conclusions; otherwise mark the area not assessed.
+2. Report a missing search, detail, history, or other recurring view as a finding only when accepted requirements, design-system authority, or relevant peer evidence establishes it; honor an authoritative `N/A` instead of inventing parity.
+3. Classify each item as a supported defect, a risk needing named validation, or a non-binding preference; report only supported defects as findings.
+4. Use measurements for performance conclusions and browser or design-tool evidence for visual conclusions; otherwise mark the area not assessed.
 
 Validation:
 
@@ -128,6 +132,7 @@ Validation:
 - **high** — Do not return no-material-findings from code inspection alone when visual, responsive, focus, overlay, loading, empty, or error behavior is part of the claim.
 - **high** — Flag design-system drift only when an accepted design system or project convention establishes the expected component, token, or pattern; otherwise label the observation as a non-binding preference.
 - **high** — Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead.
+- **high** — Do not require search, detail, history, or another peer capability from a generic checklist; require accepted authority, and do not return no-material-findings when that authority exposes an unaddressed omission.
 
 ## Policies
 
@@ -142,6 +147,9 @@ The portable reference is the reproducible baseline. A live upstream overlay may
 
 ### Bounded remediation re-audit
 On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states; widen when the claim, UI authority, user-visible behavior, or material scope changed or blast radius is unbounded. Cosmetic edits do not close behavioral or accessibility findings.
+
+### Peer-view functional coverage
+For module or journey completeness claims, compare applicable peer views and source-established standard capabilities before accepting polish; classify omissions as findings only with authority and preserve justified divergence or `N/A`.
 
 ## Required active references
 - [Web Interface Guidelines](references/web-interface-guidelines.md) — Read this before every review; use its classification and the sections relevant to the requested UI scope.

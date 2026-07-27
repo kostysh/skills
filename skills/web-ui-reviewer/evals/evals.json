@@ -1,0 +1,18 @@
+{
+  "skill_name": "web-ui-reviewer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review the supplied module workspace evidence for implementation readiness. Keep the review read-only and bound conclusions to the supplied authority and evidence.",
+      "expected_output": "A findings result identifies the missing source-established search, detail, and history coverage before accepting the polished overview as implementation-ready.",
+      "files": ["evals/fixtures/module-workspace-input.md"],
+      "expectations": [
+        "Inventories the accepted peer-view and reusable-library evidence before judging readiness",
+        "Reports missing search or filtering, detail navigation, and chronological history as supported findings",
+        "Does not treat the polished overview, component catalog, or runtime screenshot as authority that cancels the accepted journey",
+        "Honors export as explicitly out of scope instead of inventing a parity requirement",
+        "States that browser interaction, keyboard behavior, and backend data remain unassessed"
+      ]
+    }
+  ]
+}

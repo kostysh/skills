@@ -39,6 +39,29 @@ If a required backend freshness, idempotency, authorization, or conflict policy
 is missing or disputed, return `blocked`; do not encode a guess in browser
 state.
 
+## Mutation lifetime matrix
+
+When a mutation status or its outcome verification can outlive a child,
+portal, route, entity, or access context, complete this matrix before choosing
+React, Zustand, Query, or another owner:
+
+| State or value | Route / access scope / entity / attempt identity | Owner | Must survive child or portal remount? | Navigation and context-loss disposition | Outcome verification and authoritative reread failure | Late-response and cleanup evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| Mutation input, in-flight attempt, pending presentation, server response, authoritative reread, terminal success or failure | Record each applicable identity separately | Name one writable owner | Yes, no, or `N/A` with accepted behavior | Preserve, hide, cancel, reset, or retain under the old scoped identity | Define when success is authoritative and how reread failure stays visible and recoverable | Define cancellation/fencing, timer/listener cleanup, and the falsifying test |
+
+Keep the mutation attempt distinct from the outcome-verification sequence. A
+successful mutation transport response does not automatically prove that the
+authoritative state is readable or that the UI may present terminal success.
+If the product contract requires verification after mutation, a failed reread
+must remain a visible recoverable state rather than silently reverting to stale
+cache or success.
+
+Do not place required pending or verification state only inside a disposable
+drawer, dialog, route child, or portal. Lift it to the narrowest owner that
+satisfies the accepted lifetime. On access-context change, hide or reset its UI
+for the new context and cancel or fence old-context work so late responses,
+timers, Query writes, and durable projections cannot repopulate the new scope.
+
 ## Query and durable cache identity
 
 Use the same canonical semantic identity for Query and Dexie:

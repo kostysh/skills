@@ -157,6 +157,30 @@ When URL/Dexie/context behavior changes, cover applicable cases:
 - logout and tenant/user switch without old-context repopulation;
 - Query/Dexie invalidation after mutation.
 
+## Combined mutation-lifetime falsifier
+
+When the affected mutation can cross a child or portal remount and an access
+context, include one combined scenario rather than relying only on isolated
+happy-path tests:
+
+1. pre-populate Query or approved durable cache for access context A;
+2. start a mutation for an entity in A and observe the required pending state;
+3. unmount and remount the disposable child or close and reopen its portal while
+   the attempt or outcome verification remains active;
+4. make the required authoritative reread fail and verify a visible,
+   recoverable non-success state;
+5. switch to access context B while a retry timer or late A response is still
+   controlled by the test;
+6. settle or advance every deferred response and timer, then assert that A data
+   and status do not leak into B and that timers, listeners, workers, storage,
+   and test globals are cleaned up.
+
+The test must distinguish transport success from outcome-verification success,
+prove that required status does not disappear merely because a child remounts,
+and settle every deferred promise before teardown. Mark portals, timers,
+durable storage, or navigation `N/A` only when the accepted flow genuinely does
+not contain that boundary.
+
 ## Accessibility scenarios
 
 Test accessible names, keyboard sequences, focus entry/return, error/status

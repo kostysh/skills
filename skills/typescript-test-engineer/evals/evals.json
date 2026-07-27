@@ -1,0 +1,18 @@
+{
+  "skill_name": "typescript-test-engineer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design the smallest sufficient React test strategy for the supplied mutation flow. Do not edit files or invent backend behavior.",
+      "expected_output": "A sourced mutation lifetime matrix and one combined deterministic test expose pending-state loss, stale context cache, false success after reread failure, and incomplete async cleanup.",
+      "files": ["evals/fixtures/mutation-lifetime-input.md"],
+      "expectations": [
+        "Separates route, access scope, entity, attempt, and outcome-verification sequence identities and owners",
+        "Keeps required pending or verification state observable across the drawer portal remount",
+        "Uses the pre-populated A cache, failed authoritative reread, switch to B, retry timer, and late A response in one scenario",
+        "Asserts that A data and status cannot leak or repopulate B and that reread failure remains visible and recoverable",
+        "Settles deferred work, restores timers and globals, and names the evidence boundary instead of claiming backend or browser coverage"
+      ]
+    }
+  ]
+}

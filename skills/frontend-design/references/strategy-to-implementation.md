@@ -41,6 +41,35 @@ For `system-constrained` work, inspect the actual reusable component surface
 before proposing new primitives or one-off styling. A mockup or old screenshot
 does not override current runtime behavior by itself.
 
+## Inventory peer views before visual direction
+
+For a non-trivial product or module surface, inspect the applicable peer views
+and accepted standard UX before choosing the visual thesis. Use a compact
+inventory when prose could hide an omission:
+
+| Capability or view | Authority and peer evidence | Library representation | Module/runtime state | Disposition |
+| --- | --- | --- | --- | --- |
+| Source-established search, detail, history, or another recurring capability | Accepted requirement, pattern, or peer view | Reusable component, token, or no library owner | Present, absent, or conflicting | Reuse, justified divergence, or `N/A` with authority |
+
+Search, detail, and history are named falsifiers, not universal features. Mark
+them `N/A` when accepted scope makes them irrelevant; do not invent them from a
+generic checklist. When accepted sources or relevant peer views establish one
+of them, an unrecorded omission blocks visual polish and implementation-ready
+status.
+
+Keep these roles separate:
+
+1. accepted product and UX sources own required behavior and journey coverage;
+2. an accepted reusable design or component library owns reusable primitives,
+   variants, and tokens within its scope;
+3. a module mockup is a directional representation that consumes those inputs;
+4. the runtime is current implementation evidence and behavior, not automatic
+   authority to erase an accepted requirement.
+
+Resolve conflicts by source authority. Do not copy a mockup into runtime, copy
+runtime gaps into a mockup, or expand a library merely because one
+representation is visually available.
+
 ## Write The Strategy Contract
 
 Keep the contract proportional for small changes, but cover every field needed

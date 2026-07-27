@@ -6,9 +6,9 @@ description: Design, implement, review, and diagnose TypeScript tests for Node,
   evidence quality; keep review and diagnosis read-only unless fixes are
   requested.
 metadata:
-  source-version: 0.1.7
+  source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e140d4c5cbd57a5b97bf9b44371ac089a4c95d87495019418093ccc6aa3c4e8d
+  skillforge-source-hash: 049df20f66a8e6275649529782f6adaeca6c91862043e07667bbee0dd9c9eeef
 ---
 
 # typescript-test-engineer
@@ -18,10 +18,11 @@ metadata:
 1. Classify the request as design, implementation, review, or diagnose before selecting a workflow; review and diagnose are read-only unless the user explicitly requests fixes.
 2. Resolve expected behavior from explicit user decisions, accepted specifications or acceptance criteria, and repository contracts; treat current implementation and existing tests as evidence, not authority when sources conflict.
 3. Follow the repository test runner and existing conventions before applying defaults.
-4. Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean.
-5. Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check.
-6. If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions.
-7. Report mode-specific outputs, exact validation evidence, and any unverified production boundary before claiming completion.
+4. For React mutation UI that crosses child or portal remount, entity, route, or access context, read the React reference and require one combined lifetime falsifier instead of accepting isolated happy paths.
+5. Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean.
+6. Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check.
+7. If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions.
+8. Report mode-specific outputs, exact validation evidence, and any unverified production boundary before claiming completion.
 
 ## When to use this skill
 
@@ -145,8 +146,9 @@ Produce the smallest sufficient test design or authorized test change that prove
 1. For low-risk helper logic such as a branch, loop, parser, formatter, or pure utility, choose the smallest runnable check that would fail if the behavior regresses.
 2. For specified or implied forbidden behavior, plan negative/fail-closed tests from the contract source: spec, security/privacy contract, CI/CD gate, auth/RBAC, validation, redaction, environment isolation, or acceptance falsifier.
 3. For side-effecting/state-changing behavior, list applicable negative matrix rows and mark irrelevant rows N/A with a reason.
-4. Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components.
-5. In design mode, return the test plan without changing files; in implementation mode, change only the explicitly authorized scope and use clear Arrange-Act-Assert.
+4. For React mutation UI with remount or access-context boundaries, combine pre-populated cache, child or portal remount, authoritative reread failure, context switch, controlled timers, late responses, and teardown in one applicable falsifier.
+5. Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components.
+6. In design mode, return the test plan without changing files; in implementation mode, change only the explicitly authorized scope and use clear Arrange-Act-Assert.
 
 Validation:
 
@@ -154,6 +156,7 @@ Validation:
 - Low-risk helper checks are intentionally small but still fail on the targeted behavior regression.
 - For security-sensitive code, missing negative/fail-closed tests are reported as a test gap.
 - Relevant side-effecting/state-changing risks are covered or explicitly marked N/A by relevance.
+- Mutation UI tests prove required pending and verification lifetime across disposable children and prevent old-context cache or status from leaking after a switch.
 
 ### Workflow stage: Review or diagnose without implicit remediation
 
@@ -198,6 +201,7 @@ Validation:
 - **high** — Do not change tests, production code, configuration, or deprecated APIs during review or diagnosis unless the user separately requests remediation.
 - **high** — Do not activate TDD or delete already-written code unless the user explicitly requested TDD and separately authorized any destructive rewrite.
 - **high** — A green suite, coverage percentage, mock, fixture, generated file, or test name is evidence only for what it actually exercises; none proves an unexercised production boundary.
+- **high** — Do not accept separate happy-path cache, remount, timer, or reread tests when the named defect is their combined mutation lifetime; exercise the applicable sequence in one scenario and settle all async work.
 
 ## Policies
 
@@ -222,6 +226,9 @@ Prefer the smallest runnable check that fails on the behavior regression for low
 ### Scenario template coverage
 For API validation, form validation, loading indicators, route naming migration, and history payload work, include tests for both the happy path and the falsifier that previously failed or could pass as substrate-only behavior.
 
+### Mutation UI lifetime falsifier
+For React mutations whose status or verification can outlive a child, portal, route, entity, or access context, require a sourced lifetime matrix and one applicable combined pre-populated-cache, remount, reread-failure, context-switch, timer, late-response, and teardown scenario.
+
 ## Optional references
 - [React Vitest](references/react-vitest.md) — Read this for React tests using Vitest, Testing Library, jsdom, happy-dom, or Browser Mode.
 - [Tdd](references/tdd.md) — Read this only when the user explicitly requests TDD.
@@ -244,3 +251,5 @@ For API validation, form validation, loading indicators, route naming migration,
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/forward-tests/*`
+- Supporting glob: `docs/logs/*`

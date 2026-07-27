@@ -4,6 +4,8 @@ Supporting documentation for `pencil-dev`. These files are not part of the activ
 
 ## Implementation Logs
 
+- [implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — peer-view inventory и library/module/runtime role boundary по #228.
+- [forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) — blind проверка подготовки Pencil module flow для candidate `0.1.10`.
 - [implementation-log-20260608-1.md](logs/implementation-log-20260608-1.md) — Initial `pencil-dev` skill creation.
 - [implementation-log-20260608-2.md](logs/implementation-log-20260608-2.md) — MCP vs CLI selection rules.
 - [implementation-log-20260608-3.md](logs/implementation-log-20260608-3.md) — Move practical save-boundary rules into the source bundle.

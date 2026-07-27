@@ -6,9 +6,9 @@ description: Design and implement visually strong web interfaces and
   Preserve authoritative behavior and existing systems, then verify rendered
   results.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d24a1675aa80d52e1089b38d81711957eec304330fd1bb3655a6fd4302d8dc74
+  skillforge-source-hash: a6443dc398b957f350e30e1e0fe2d45bdb31d386870ff31a0552e590e88d0df7
 ---
 
 # frontend-design
@@ -213,12 +213,14 @@ Prevent visual work from inventing product behavior or bypassing the current UI 
 1. Name the deliverable and its downstream consumer.
 2. Inspect the user brief, accepted product or UX sources, current runtime, design-system tokens, reusable components, Storybook or equivalent examples, and available assets that govern the task.
 3. Record source precedence when multiple inputs govern the same decision.
-4. Separate missing visual inspiration, which may be resolved with a labeled thesis, from missing product behavior, which must not be invented.
-5. Stop the affected path as blocked when equal-authority sources conflict or a required product decision is absent.
+4. Before visual direction or polish for non-trivial module UI, inventory applicable peer capabilities, record reuse, justified divergence, or `N/A`, and keep library, mockup, and runtime roles distinct.
+5. Separate missing visual inspiration, which may be resolved with a labeled thesis, from missing product behavior, which must not be invented.
+6. Stop the affected path as blocked when equal-authority sources conflict or a required product decision is absent.
 
 Validation:
 
 - Product behavior and design-system constraints have traceable owners.
+- Applicable peer-view capabilities have an explicit disposition before visual direction or polish can hide a functional gap.
 - The agent has not invented actions, states, permissions, backend truth, validation, or copy authority.
 
 ### Workflow stage: Write a proportional design strategy
@@ -320,3 +322,5 @@ Report strategy-ready, artifact-ready, implemented-not-verified, verified, or bl
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/forward-tests/*`
+- Supporting glob: `docs/logs/*`

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-spa-engineer
-  source-version: 0.1.9
+  source-version: 0.1.10
   recommended-skill-md-max-bytes: 20000
   description: >-
     Design, implement, review, and diagnose React SPAs using TypeScript, Vite,
@@ -57,7 +57,7 @@ references:
     source: references/persistence-architecture.md
     target: references/persistence-architecture.md
     required: false
-    trigger: Read this when one flow crosses URL state, Zustand, TanStack Query, and Dexie or needs an explicit source-of-truth and invalidation map.
+    trigger: Read this when one flow crosses URL state, Zustand, TanStack Query, and Dexie, needs an explicit source-of-truth and invalidation map, or a mutation UI needs a lifetime matrix.
   - id: ref-references-routing
     title: Routing
     source: references/routing.md
@@ -69,13 +69,13 @@ references:
     source: references/state-management.md
     target: references/state-management.md
     required: false
-    trigger: Read this when choosing between local React state, Context, Zustand, URL state, TanStack Query, and Dexie for a concrete value.
+    trigger: Read this when choosing between local React state, Context, Zustand, URL state, TanStack Query, and Dexie for a concrete value or mutation attempt status.
   - id: ref-references-testing
     title: Testing
     source: references/testing.md
     target: references/testing.md
     required: false
-    trigger: Read this when defining Vitest, Testing Library, Playwright, browser walkthrough, integration, or end-to-end evidence for an SPA claim.
+    trigger: Read this when defining Vitest, Testing Library, Playwright, browser walkthrough, integration, end-to-end evidence, or mutation-lifetime falsifiers for an SPA claim.
   - id: ref-references-typescript-patterns
     title: TypeScript Patterns
     source: references/typescript-patterns.md
@@ -121,6 +121,14 @@ supporting:
     source: docs/logs/forward-test-raw-20260713-1.md
     target: docs/logs/forward-test-raw-20260713-1.md
     description: Verbatim non-normative prompts and outputs from the blind candidate forward-test run.
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Non-normative implementation and review evidence for Aequitas-ADR/app#228.
+  - id: supporting-forward-test-evidence-20260727-1
+    source: docs/forward-tests/forward-test-evidence-20260727-1.md
+    target: docs/forward-tests/forward-test-evidence-20260727-1.md
+    description: Non-normative blind mutation-lifetime design evidence for Aequitas-ADR/app#228.
 surfaces:
   active:
     requiredReferences: []
@@ -138,6 +146,7 @@ surfaces:
       - ref-references-typescript-patterns
   supportingGlobs:
     - docs/*
+    - docs/forward-tests/*
     - docs/logs/*
 sections:
   startHere:
@@ -146,6 +155,7 @@ sections:
     - "Apply precedence in this order: operator and repository instructions; accepted product, API and security contracts; manifest, lockfile, configuration and existing code; official documentation matching the installed major version; then examples in this skill. For greenfield work use current stable versions."
     - Stop as blocked when equal-authority sources conflict or a required backend, security, product, or compatibility decision has no owner-supplied answer. Do not invent the missing contract.
     - Load only the optional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
+    - When mutation status or outcome verification can outlive a child, portal, route, entity, or access context, read the data-fetching, state-management, persistence-architecture, and testing references and complete a mutation lifetime matrix before choosing the owner.
     - Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
   whenToUse:
     - Designing or setting up an integrated client-side React SPA on the declared stack.
@@ -171,11 +181,13 @@ sections:
       goal: Preserve one coherent contract across every affected client layer.
       steps:
         - "Map each value and side effect to its owner: React Router for navigation and URL state; shared/api for project transport; TanStack Query for server reads and mutations; local React or Zustand for runtime UI state; React Hook Form and Zod for forms; Dexie for approved durable client data."
+        - For mutation UI, map route, access scope, entity, attempt, and outcome-verification sequence identities; define which state survives child or portal remount, how context loss fences it, and how authoritative reread failure remains visible.
         - Load the smallest matching references and route TypeScript, reusable component, design, testing, accessibility-review, formal-review, browser-execution, and security decisions to their owning skills while retaining SPA integration ownership.
         - Design, implement, review, or diagnose the smallest project-compatible change; keep React Router actions and fetchers outside project server IO in this skill's architecture even though React Router supports them.
         - Preserve backend authorization as a server responsibility; client route admission, cache keys, and hidden UI are not authorization controls.
       validation:
         - No affected state, network request, mutation, persistent record, or user-visible transition has competing owners.
+        - Mutation progress and outcome verification do not disappear with a disposable child or leak across access contexts.
         - Examples and changes conform to the installed major versions and accepted project contracts.
     - id: stage-verify-and-handoff
       title: Verify and hand off the SPA result
@@ -237,6 +249,9 @@ sections:
     - id: gotcha-conceptual-example
       priority: medium
       text: Treat an example as copyable only when it states its version and satisfies the root ownership, error, security, accessibility, and evidence invariants; otherwise label it conceptual and name omitted obligations.
+    - id: gotcha-disposable-mutation-owner
+      priority: high
+      text: Do not keep mutation progress or outcome verification only inside a child or portal that may unmount; choose an owner from the required lifetime and fence old-context work on access change.
   policies:
     - id: policy-fixed-stack
       title: Fixed stack contract
@@ -250,6 +265,9 @@ sections:
     - id: policy-output-contract
       title: Output contract
       text: Report mode, observable outcome, changed or inspected surface, verification evidence, completed, partial or blocked status, blockers or residual risks, anti-claims, and the next owner.
+    - id: policy-mutation-lifetime
+      title: Mutation lifetime contract
+      text: For mutation UI that crosses remount, navigation, entity, or access-context boundaries, define attempt and outcome-verification owners in a lifetime matrix and test the applicable combined cache, remount, context-switch, timer, late-response, and authoritative-reread failure path.
   portability:
     required: true
     rules:

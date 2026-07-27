@@ -25,12 +25,14 @@
 | [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS |
+| [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | `Aequitas-ADR/app#228` | На ревью |
 
 ## Forward Tests
 
 | Evidence | Snapshot | Status |
 | --- | --- | --- |
 | [logs/forward-tests-20260710.md](logs/forward-tests-20260710.md) | `f601c74a...0ec35df` | 13/13 sampled cases PASS |
+| [forward-tests/forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) | candidate `0.1.8` | Blind PASS |
 
 ## Обслуживание описания
 

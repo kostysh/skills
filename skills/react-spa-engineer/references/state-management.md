@@ -102,6 +102,21 @@ owns live server data, and Dexie owns only an approved non-authoritative durable
 projection. Zustand may coordinate runtime UI but must not become another copy
 of the entity list.
 
+## Mutation UI ownership
+
+Choose mutation UI ownership from the full attempt and verification lifetime,
+not from the component that renders the submit button. Keep form editing state
+local when it may safely disappear, but place required in-flight, pending,
+verification, and recoverable-failure presentation at the nearest owner that
+survives the accepted child, portal, or route remount.
+
+Key mutation state by every identity that changes its meaning: route, access
+scope, entity, attempt, and outcome-verification sequence. On tenant, user, or
+other access-context change, prevent old-context status and cache from becoming
+visible in the new context and fence late completion. Do not add a global store
+when Query mutation state or a narrow existing route or feature owner already
+satisfies the required lifetime.
+
 ## Evidence
 
 - Reducer/store tests prove only the tested state transitions.

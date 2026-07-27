@@ -5,9 +5,9 @@ description: Create, iterate, inspect, validate, and export Pencil `.pen`
   mockups, app screens, dashboards, web pages, marketing visuals, slide-like
   graphics, or edits to existing Pencil designs; keep `.pen` handling MCP-only.
 metadata:
-  source-version: 0.1.9
+  source-version: 0.1.10
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: bbded369974202e8db0c4bda384b045a90f0907e5c51f7eaa023172b5736e994
+  skillforge-source-hash: ddae545dff0f5fca8d0386dbb7aea1464d0e8730207afb3eea785d126236c7e0
 ---
 
 # pencil-dev
@@ -123,10 +123,11 @@ Inspect only the design state needed for the requested change.
 
 1. Translate the user's brief and authoritative local design/spec context into checkable criteria; ask before editing if material ambiguity or conflict cannot be resolved without invention.
 2. Use `batch_get` to read top-level nodes, selected nodes, known node IDs, or grouped search patterns.
-3. Combine related searches and node reads into a single `batch_get` call when possible.
-4. Use low read depth first and request deeper node data only for the specific subtree needed for the task.
-5. Use `get_variables` when the change depends on design tokens, themes, or CSS handoff values.
-6. Use `get_guidelines` only when a task-specific Pencil guide or style is needed; do not load unrelated guides.
+3. Before module polish, use `batch_get` for the peer/library inventory in `references/component-libraries.md`.
+4. Combine related searches and node reads into a single `batch_get` call when possible.
+5. Use low read depth first and request deeper node data only for the specific subtree needed for the task.
+6. Use `get_variables` when the change depends on design tokens, themes, or CSS handoff values.
+7. Use `get_guidelines` only when a task-specific Pencil guide or style is needed; do not load unrelated guides.
 
 Validation:
 
@@ -255,3 +256,5 @@ Do not treat Pencil artifacts as proof of implemented runtime capability when th
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/forward-tests/*`
+- Supporting glob: `docs/logs/*`

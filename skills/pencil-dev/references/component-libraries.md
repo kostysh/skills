@@ -71,6 +71,29 @@ fresh `get_editor_state(include_schema: true)` identifies the expected file and
    visually similar duplicated shapes.
 7. Apply the root save-status contract to each materially changed consumer file.
 
+## Preserve library, module, and runtime roles
+
+Before materially editing a product or module mockup, use `batch_get` to inspect
+the relevant peer frames, reusable component origins or instances, and
+source-established functional views. Record each applicable capability as
+reuse, justified divergence, or `N/A` with its authority. Search, detail, and
+history are named falsifiers when accepted sources establish them; they are not
+universal requirements to invent from a checklist.
+
+Keep the representation hierarchy explicit:
+
+1. accepted product and UX sources own required behavior and journey coverage;
+2. the reusable Pencil library owns reusable components, variants, and tokens
+   that MCP confirms;
+3. the module mockup consumes those sources and remains a directional design
+   artifact;
+4. a supplied runtime representation is separate implementation evidence and
+   does not become library or product authority merely because it exists.
+
+Resolve disagreement through the accepted source hierarchy. Do not detach or
+duplicate library components to hide a missing variant, copy a runtime omission
+into the mockup, or treat a polished module frame as proof of runtime coverage.
+
 ## Reporting
 
 Report:

@@ -133,6 +133,30 @@ describe('Profile', () => {
 - Use `vi.useFakeTimers()` + `vi.setSystemTime()` for time-based UI; always `vi.useRealTimers()` after.
 - Prefer mocking at the boundary (API clients, fetch) rather than internal component functions.
 
+## Combined mutation-lifetime falsifier
+
+When a React mutation's required status or outcome verification can outlive a
+child, portal, route, entity, or access context, derive the test from the
+sourced lifetime matrix and exercise one combined sequence:
+
+1. pre-populate Query or approved durable cache for access context A;
+2. begin the mutation and assert the required pending presentation;
+3. unmount and remount the disposable child or close and reopen its portal;
+4. resolve the mutation transport but reject the required authoritative reread;
+5. assert a visible recoverable non-success state rather than stale cache or a
+   false terminal success;
+6. switch to context B while a retry timer or late A response is controlled;
+7. settle or advance every deferred response and timer, then assert that A data
+   and status cannot repopulate B;
+8. unmount and verify cleanup of timers, listeners, workers, storage, global
+   stubs, and every deferred promise so the worker can terminate.
+
+Use the repository's real Query, router, portal, and provider composition at the
+smallest level that owns the behavior. Mark an element `N/A` with a sourced
+reason when the flow genuinely lacks that boundary; do not add a portal, timer,
+or durable store only to satisfy the checklist. Separate mutation transport
+success from outcome-verification success in both the assertions and test name.
+
 ## Simulated DOM, Browser Mode, and browser smoke
 
 - Use `jsdom` or `happy-dom` for fast component behavior that does not depend on a real browser engine.

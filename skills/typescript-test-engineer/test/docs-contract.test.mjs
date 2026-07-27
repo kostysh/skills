@@ -176,6 +176,21 @@ test('React global fetch example restores the stub between tests', async () => {
   assert.doesNotMatch(reference, /global(?:This)?\.fetch\s*=/);
 });
 
+test('React mutation guidance requires the combined lifetime falsifier', async () => {
+  const skill = await readSkillFile('SKILL.md');
+  const reference = await readSkillFile('references/react-vitest.md');
+
+  assert.match(skill, /one combined lifetime falsifier/);
+  assert.match(skill, /pre-populated cache/);
+  assert.match(skill, /authoritative reread failure/);
+  assert.match(reference, /## Combined mutation-lifetime falsifier/);
+  assert.match(reference, /unmount and remount the disposable child/);
+  assert.match(reference, /switch to context B/);
+  assert.match(reference, /false terminal success/);
+  assert.match(reference, /worker can terminate/);
+  assert.match(reference, /Mark an element `N\/A` with a sourced\s+reason/);
+});
+
 test('UI metadata matches the activation contract', async () => {
   const metadata = await readSkillFile('agents/openai.yaml');
 

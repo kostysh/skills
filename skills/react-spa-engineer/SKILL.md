@@ -9,9 +9,9 @@ compatibility: Portable documentation-only engineering skill. It ships no
   application runtime or test harness and requires repository evidence plus the
   installed stack versions to make project-specific decisions.
 metadata:
-  source-version: 0.1.9
+  source-version: 0.1.10
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b6d8746394c90a57ab120f882d26e3ac97a27c867a986bda7318f322ae06f555
+  skillforge-source-hash: c111e42a7d0628eceb8bb939c268b836f4773ada83b68fae298f80cce8a1ab25
 ---
 
 # react-spa-engineer
@@ -23,7 +23,8 @@ metadata:
 3. Apply precedence in this order: operator and repository instructions; accepted product, API and security contracts; manifest, lockfile, configuration and existing code; official documentation matching the installed major version; then examples in this skill. For greenfield work use current stable versions.
 4. Stop as blocked when equal-authority sources conflict or a required backend, security, product, or compatibility decision has no owner-supplied answer. Do not invent the missing contract.
 5. Load only the optional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
-6. Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
+6. When mutation status or outcome verification can outlive a child, portal, route, entity, or access context, read the data-fetching, state-management, persistence-architecture, and testing references and complete a mutation lifetime matrix before choosing the owner.
+7. Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
 
 ## When to use this skill
 
@@ -102,13 +103,15 @@ Validation:
 Preserve one coherent contract across every affected client layer.
 
 1. Map each value and side effect to its owner: React Router for navigation and URL state; shared/api for project transport; TanStack Query for server reads and mutations; local React or Zustand for runtime UI state; React Hook Form and Zod for forms; Dexie for approved durable client data.
-2. Load the smallest matching references and route TypeScript, reusable component, design, testing, accessibility-review, formal-review, browser-execution, and security decisions to their owning skills while retaining SPA integration ownership.
-3. Design, implement, review, or diagnose the smallest project-compatible change; keep React Router actions and fetchers outside project server IO in this skill's architecture even though React Router supports them.
-4. Preserve backend authorization as a server responsibility; client route admission, cache keys, and hidden UI are not authorization controls.
+2. For mutation UI, map route, access scope, entity, attempt, and outcome-verification sequence identities; define which state survives child or portal remount, how context loss fences it, and how authoritative reread failure remains visible.
+3. Load the smallest matching references and route TypeScript, reusable component, design, testing, accessibility-review, formal-review, browser-execution, and security decisions to their owning skills while retaining SPA integration ownership.
+4. Design, implement, review, or diagnose the smallest project-compatible change; keep React Router actions and fetchers outside project server IO in this skill's architecture even though React Router supports them.
+5. Preserve backend authorization as a server responsibility; client route admission, cache keys, and hidden UI are not authorization controls.
 
 Validation:
 
 - No affected state, network request, mutation, persistent record, or user-visible transition has competing owners.
+- Mutation progress and outcome verification do not disappear with a disposable child or leak across access contexts.
 - Examples and changes conform to the installed major versions and accepted project contracts.
 
 ### Workflow stage: Verify and hand off the SPA result
@@ -142,6 +145,7 @@ Validation:
 - **high** — Client route admission, hidden controls, tenant-scoped keys, and cleared caches improve UX or isolation but never replace server authorization.
 - **high** — Do not apply a latest-version snippet to an existing project until its installed major version and migration authority are known.
 - **medium** — Treat an example as copyable only when it states its version and satisfies the root ownership, error, security, accessibility, and evidence invariants; otherwise label it conceptual and name omitted obligations.
+- **high** — Do not keep mutation progress or outcome verification only inside a child or portal that may unmount; choose an owner from the required lifetime and fence old-context work on access change.
 
 ## Policies
 
@@ -157,6 +161,9 @@ Typecheck, lint, and build prove only their technical contours; local UI behavio
 ### Output contract
 Report mode, observable outcome, changed or inspected surface, verification evidence, completed, partial or blocked status, blockers or residual risks, anti-claims, and the next owner.
 
+### Mutation lifetime contract
+For mutation UI that crosses remount, navigation, entity, or access-context boundaries, define attempt and outcome-verification owners in a lifetime matrix and test the applicable combined cache, remount, context-switch, timer, late-response, and authoritative-reread failure path.
+
 ## Optional references
 - [Accessibility](references/accessibility.md) — Read this when implementing or assessing semantics, keyboard interaction, focus management, live announcements, dialogs, or custom composite widgets.
 - [Component Architecture](references/component-architecture.md) — Read this when SPA feature layout, import boundaries, component ownership, composition, or public module entrypoints are in scope.
@@ -164,10 +171,10 @@ Report mode, observable outcome, changed or inspected surface, verification evid
 - [Forms & Validation](references/forms-validation.md) — Read this when React Hook Form, Zod, editable payloads, field arrays, client validation, or server field-error mapping is in scope.
 - [IndexedDB Persistence](references/indexeddb-persistence.md) — Read this when Dexie schema versions, migrations, durable records, realtime persistence, cache TTL, or user and tenant cleanup is in scope.
 - [Performance](references/performance.md) — Read this only when production build output, profiling, request waterfalls, bundle splitting, interaction latency, rendering cost, or measured list performance is in scope.
-- [Persistence Architecture](references/persistence-architecture.md) — Read this when one flow crosses URL state, Zustand, TanStack Query, and Dexie or needs an explicit source-of-truth and invalidation map.
+- [Persistence Architecture](references/persistence-architecture.md) — Read this when one flow crosses URL state, Zustand, TanStack Query, and Dexie, needs an explicit source-of-truth and invalidation map, or a mutation UI needs a lifetime matrix.
 - [Routing](references/routing.md) — Read this when React Router route objects, navigation, URL state, loaders, route admission, or error boundaries are in scope.
-- [State Management](references/state-management.md) — Read this when choosing between local React state, Context, Zustand, URL state, TanStack Query, and Dexie for a concrete value.
-- [Testing](references/testing.md) — Read this when defining Vitest, Testing Library, Playwright, browser walkthrough, integration, or end-to-end evidence for an SPA claim.
+- [State Management](references/state-management.md) — Read this when choosing between local React state, Context, Zustand, URL state, TanStack Query, and Dexie for a concrete value or mutation attempt status.
+- [Testing](references/testing.md) — Read this when defining Vitest, Testing Library, Playwright, browser walkthrough, integration, end-to-end evidence, or mutation-lifetime falsifiers for an SPA claim.
 - [TypeScript Patterns](references/typescript-patterns.md) — Read this when React-specific TypeScript props, hooks, events, generics, refs, or runtime-schema typing is in scope; use typescript-engineer for language and toolchain ownership.
 
 ## Portability rules
@@ -188,4 +195,5 @@ Report mode, observable outcome, changed or inspected surface, verification evid
 
 - `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.
 - Supporting glob: `docs/*`
+- Supporting glob: `docs/forward-tests/*`
 - Supporting glob: `docs/logs/*`

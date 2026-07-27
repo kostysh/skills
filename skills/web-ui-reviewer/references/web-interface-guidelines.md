@@ -11,6 +11,7 @@ Portable heuristic baseline, synchronized with the upstream `command.md` at revi
 
 ## Navigation
 
+- [Peer-view and functional coverage](#peer-view-and-functional-coverage)
 - [Accessibility and native controls](#accessibility)
 - [Forms and one-time codes](#forms)
 - [Motion, typography, content, and images](#animation)
@@ -21,6 +22,24 @@ Portable heuristic baseline, synchronized with the upstream `command.md` at revi
 - [Anti-patterns and output](#anti-patterns-flag-these)
 
 ## Rules
+
+### Peer-view and Functional Coverage
+
+- For a module or journey completeness claim, inventory relevant peer views and
+  capabilities established by accepted product, UX, or design-system sources
+  before accepting a polished overview as ready.
+- Record each applicable capability as reuse, justified divergence, or `N/A`
+  with its authority. Search, detail, and history are named falsifiers, not
+  universal requirements.
+- Distinguish accepted behavior, reusable library patterns, the module mockup,
+  and the runtime representation. A mockup or runtime screenshot is evidence of
+  that representation, not automatic authority to erase a required capability.
+- Report an absent capability as a finding only when the accepted source or
+  relevant peer evidence makes it required. Treat unsupported parity as a
+  non-binding suggestion and honor an authoritative `N/A`.
+- Do not let visual polish, a component inventory, or one overview screenshot
+  support `no-material-findings` when the bounded completeness claim includes
+  an unreviewed or missing required view.
 
 ### Accessibility
 

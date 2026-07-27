@@ -121,6 +121,10 @@ const updateOrder = useMutation({
 - Invalidate/update Dexie and Query together when a mutation affects both.
 - Do not swallow mutation failure in console output; expose an actionable and
   accessible recovery state.
+- Keep mutation transport success separate from any required authoritative
+  reread. When the accepted behavior requires verification, do not present
+  terminal success until that verification resolves; expose reread failure and
+  recovery without falling back to stale cache as if it were authoritative.
 
 ## Retry and recovery
 

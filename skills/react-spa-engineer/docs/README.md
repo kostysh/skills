@@ -12,6 +12,7 @@
 
 ## Implementation logs
 
+- [implementation-log-20260727-1](logs/implementation-log-20260727-1.md) — mutation lifetime matrix и combined falsifier по #228.
 - [implementation-log-20260612-1](logs/implementation-log-20260612-1.md) — уточнение completion gate для интерактивных SPA-потоков. Статус: PASS.
 - [implementation-log-20260612-2](logs/implementation-log-20260612-2.md) — переносимые правила client SPA audit remediation: feature-based structure, API boundary, CSRF recovery, durable cache hygiene и scenario-level evidence. Статус: PASS.
 - [implementation-log-20260622-1](logs/implementation-log-20260622-1.md) — browser/platform-first gate для state, forms, persistence и client dependencies. Статус: PASS.
@@ -20,6 +21,7 @@
 
 ## Evidence artifacts
 
+- [forward-test-evidence-20260727-1](forward-tests/forward-test-evidence-20260727-1.md) — blind design/readback mutation lifetime candidate `0.1.10`.
 - [forward-test-raw-20260713-1](logs/forward-test-raw-20260713-1.md) — дословные prompts и outputs свежего blind candidate run; не является независимым verdict.
 
 ## Обслуживание описания

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: frontend-design
-  source-version: 0.2.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 20000
   description: >-
     Design and implement visually strong web interfaces and decision-complete
@@ -63,6 +63,14 @@ supporting:
     source: docs/logs/forward-test-evidence-20260716-1.md
     target: docs/logs/forward-test-evidence-20260716-1.md
     description: Non-normative blind forward-test evidence for the 0.2.0 candidate.
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Non-normative implementation and review evidence for Aequitas-ADR/app#228.
+  - id: supporting-forward-test-evidence-20260727-1
+    source: docs/forward-tests/forward-test-evidence-20260727-1.md
+    target: docs/forward-tests/forward-test-evidence-20260727-1.md
+    description: Non-normative blind peer-view inventory evidence for Aequitas-ADR/app#228.
 surfaces:
   active:
     requiredReferences: []
@@ -73,6 +81,8 @@ surfaces:
       - ref-strategy-to-implementation
   supportingGlobs:
     - docs/*
+    - docs/forward-tests/*
+    - docs/logs/*
 sections:
   startHere:
     - Confirm that visual direction, design strategy, or translating design into a rendered interface is material to the request.
@@ -99,10 +109,12 @@ sections:
         - Name the deliverable and its downstream consumer.
         - Inspect the user brief, accepted product or UX sources, current runtime, design-system tokens, reusable components, Storybook or equivalent examples, and available assets that govern the task.
         - Record source precedence when multiple inputs govern the same decision.
+        - Before visual direction or polish for non-trivial module UI, inventory applicable peer capabilities, record reuse, justified divergence, or `N/A`, and keep library, mockup, and runtime roles distinct.
         - Separate missing visual inspiration, which may be resolved with a labeled thesis, from missing product behavior, which must not be invented.
         - Stop the affected path as blocked when equal-authority sources conflict or a required product decision is absent.
       validation:
         - Product behavior and design-system constraints have traceable owners.
+        - Applicable peer-view capabilities have an explicit disposition before visual direction or polish can hide a functional gap.
         - The agent has not invented actions, states, permissions, backend truth, validation, or copy authority.
     - id: stage-write-strategy
       title: Write a proportional design strategy

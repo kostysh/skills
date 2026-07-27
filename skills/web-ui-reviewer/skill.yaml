@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 20000
   description: Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification.
 fragments:
@@ -20,11 +20,27 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
+  - id: copy-evals-evals
+    source: evals/evals.json
+    target: evals/evals.json
+    description: Portable behavioral scenario for peer-view functional coverage.
+  - id: copy-evals-peer-view-fixture
+    source: evals/fixtures/module-workspace-input.md
+    target: evals/fixtures/module-workspace-input.md
+    description: Neutral module, peer-view, library, and runtime evidence bundle.
 supporting:
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
     description: Ненормативные свидетельства реализации и ревью для Aequitas-ADR/app#226.
+  - id: supporting-implementation-log-20260727-2
+    source: docs/logs/implementation-log-20260727-2.md
+    target: docs/logs/implementation-log-20260727-2.md
+    description: Ненормативные свидетельства реализации и ревью для Aequitas-ADR/app#228.
+  - id: supporting-forward-test-evidence-20260727-1
+    source: docs/forward-tests/forward-test-evidence-20260727-1.md
+    target: docs/forward-tests/forward-test-evidence-20260727-1.md
+    description: Ненормативные blind evidence по completeness review для Aequitas-ADR/app#228.
 surfaces:
   active:
     requiredReferences:
@@ -40,6 +56,7 @@ sections:
     - Read the required Web Interface Guidelines reference before reviewing; treat it as a heuristic baseline, not a conformance standard.
     - Match code, browser, screenshot, accessibility, and performance evidence to the claim; report missing evidence instead of widening the conclusion.
     - Freeze a stable target identity; for remediation re-audit, limit work to fixed findings, current evidence, and the adjacent UI regression surface.
+    - When the claim covers module or journey completeness, inventory applicable peer views and source-established standard capabilities before accepting visual polish as readiness.
     - Keep the review read-only and hand implementation, formal code-review, browser collection, and security decisions to their owning skills.
   whenToUse:
     - Review web UI code, diffs, screenshots, or rendered states for actionable interface findings.
@@ -58,15 +75,18 @@ sections:
       steps:
         - Record the requested claim, consumer, files or states in scope, and supplied code, diff, URL, screenshot, browser, design-system, or performance evidence.
         - Record a stable target identity and, for remediation re-audit, the prior findings, prior snapshot, exact remediation delta, and unchanged verified states excluded from repetition.
+        - For module or journey completeness claims, record applicable peer views and source-established capabilities such as search, detail, and history, with reuse, justified divergence, or `N/A` dispositions.
         - Separate platform and accessibility behavior from product preferences; require accepted project authority before reporting a preference as a defect.
         - Select the strongest honest status the evidence could support before beginning the review.
       validation:
         - The review basis names its authority, evidence, and unassessed scope without implying broader readiness.
+        - Applicable peer-view capabilities have explicit dispositions instead of being hidden by a polished overview surface.
     - id: stage-review-observable-ui
       title: Review observable UI behavior
       goal: Produce supported findings without converting heuristics or missing evidence into defects.
       steps:
         - Inspect code for directly observable semantics and risk patterns; use current rendered evidence for visual, responsive, overlay, loading, empty, error, focus, and interaction claims.
+        - Report a missing search, detail, history, or other recurring view as a finding only when accepted requirements, design-system authority, or relevant peer evidence establishes it; honor an authoritative `N/A` instead of inventing parity.
         - Classify each item as a supported defect, a risk needing named validation, or a non-binding preference; report only supported defects as findings.
         - Use measurements for performance conclusions and browser or design-tool evidence for visual conclusions; otherwise mark the area not assessed.
       validation:
@@ -111,6 +131,9 @@ sections:
     - id: gotcha-unmeasured-performance
       priority: high
       text: Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead.
+    - id: gotcha-generic-parity-checklist
+      priority: high
+      text: Do not require search, detail, history, or another peer capability from a generic checklist; require accepted authority, and do not return no-material-findings when that authority exposes an unaddressed omission.
   policies:
     - id: policy-result-status
       title: Result status
@@ -124,6 +147,9 @@ sections:
     - id: policy-bounded-remediation-reaudit
       title: Bounded remediation re-audit
       text: On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states; widen when the claim, UI authority, user-visible behavior, or material scope changed or blast radius is unbounded. Cosmetic edits do not close behavioral or accessibility findings.
+    - id: policy-peer-view-functional-coverage
+      title: Peer-view functional coverage
+      text: For module or journey completeness claims, compare applicable peer views and source-established standard capabilities before accepting polish; classify omissions as findings only with authority and preserve justified divergence or `N/A`.
   portability:
     required: true
     rules:

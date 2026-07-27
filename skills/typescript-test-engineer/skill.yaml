@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.7"
+  source-version: "0.1.8"
   recommended-skill-md-max-bytes: 46000
   description: "Design, implement, review, and diagnose TypeScript tests for Node, React, and edge projects. Use for test strategy, node:test or Vitest, deterministic fixtures and mocks, coverage, CI failures, hanging tests, and evidence quality; keep review and diagnosis read-only unless fixes are requested."
 fragments:
@@ -46,11 +46,31 @@ copies:
     source: "test/docs-contract.test.mjs"
     target: "test/docs-contract.test.mjs"
     description: "Portable copy of test/docs-contract.test.mjs."
+  - id: "copy-evals-evals"
+    source: "evals/evals.json"
+    target: "evals/evals.json"
+    description: "Portable behavioral scenario for mutation UI lifetime testing."
+  - id: "copy-evals-mutation-lifetime-fixture"
+    source: "evals/fixtures/mutation-lifetime-input.md"
+    target: "evals/fixtures/mutation-lifetime-input.md"
+    description: "Neutral React mutation, cache, remount, context-switch, and reread-failure evidence bundle."
 supporting:
   - id: "supporting-implementation-log-20260715-1"
     source: "docs/logs/implementation-log-20260715-1.md"
     target: "docs/logs/implementation-log-20260715-1.md"
     description: "Non-normative log for the skill description length update."
+  - id: "supporting-docs-readme"
+    source: "docs/README.md"
+    target: "docs/README.md"
+    description: "Non-normative maintenance navigation."
+  - id: "supporting-implementation-log-20260727-1"
+    source: "docs/logs/implementation-log-20260727-1.md"
+    target: "docs/logs/implementation-log-20260727-1.md"
+    description: "Non-normative implementation and review evidence for Aequitas-ADR/app#228."
+  - id: "supporting-forward-test-evidence-20260727-1"
+    source: "docs/forward-tests/forward-test-evidence-20260727-1.md"
+    target: "docs/forward-tests/forward-test-evidence-20260727-1.md"
+    description: "Non-normative blind mutation-lifetime test-design evidence for Aequitas-ADR/app#228."
 surfaces:
   active:
     requiredReferences: []
@@ -61,11 +81,14 @@ surfaces:
       - "ref-testing"
   supportingGlobs:
     - "docs/*"
+    - "docs/forward-tests/*"
+    - "docs/logs/*"
 sections:
   startHere:
     - "Classify the request as design, implementation, review, or diagnose before selecting a workflow; review and diagnose are read-only unless the user explicitly requests fixes."
     - "Resolve expected behavior from explicit user decisions, accepted specifications or acceptance criteria, and repository contracts; treat current implementation and existing tests as evidence, not authority when sources conflict."
     - "Follow the repository test runner and existing conventions before applying defaults."
+    - "For React mutation UI that crosses child or portal remount, entity, route, or access context, read the React reference and require one combined lifetime falsifier instead of accepting isolated happy paths."
     - "Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean."
     - "Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check."
     - "If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions."
@@ -98,6 +121,7 @@ sections:
         - "For low-risk helper logic such as a branch, loop, parser, formatter, or pure utility, choose the smallest runnable check that would fail if the behavior regresses."
         - "For specified or implied forbidden behavior, plan negative/fail-closed tests from the contract source: spec, security/privacy contract, CI/CD gate, auth/RBAC, validation, redaction, environment isolation, or acceptance falsifier."
         - "For side-effecting/state-changing behavior, list applicable negative matrix rows and mark irrelevant rows N/A with a reason."
+        - "For React mutation UI with remount or access-context boundaries, combine pre-populated cache, child or portal remount, authoritative reread failure, context switch, controlled timers, late responses, and teardown in one applicable falsifier."
         - "Design isolated fixtures, mocks, and assertions that prove the named risk or behavior; use shared contract suites when test doubles replace production state-changing components."
         - "In design mode, return the test plan without changing files; in implementation mode, change only the explicitly authorized scope and use clear Arrange-Act-Assert."
       validation:
@@ -105,6 +129,7 @@ sections:
         - "Low-risk helper checks are intentionally small but still fail on the targeted behavior regression."
         - "For security-sensitive code, missing negative/fail-closed tests are reported as a test gap."
         - "Relevant side-effecting/state-changing risks are covered or explicitly marked N/A by relevance."
+        - "Mutation UI tests prove required pending and verification lifetime across disposable children and prevent old-context cache or status from leaking after a switch."
     - id: "stage-review-or-diagnose"
       title: "Review or diagnose without implicit remediation"
       goal: "Produce evidence-backed findings or a diagnosis while preserving the read-only boundary."
@@ -166,6 +191,9 @@ sections:
     - id: "gotcha-green-substrate"
       priority: "high"
       text: "A green suite, coverage percentage, mock, fixture, generated file, or test name is evidence only for what it actually exercises; none proves an unexercised production boundary."
+    - id: "gotcha-split-mutation-falsifiers"
+      priority: "high"
+      text: "Do not accept separate happy-path cache, remount, timer, or reread tests when the named defect is their combined mutation lifetime; exercise the applicable sequence in one scenario and settle all async work."
   policies:
     - id: "mode-and-mutation-boundary"
       title: "Mode and mutation boundary"
@@ -188,6 +216,9 @@ sections:
     - id: "scenario-template-coverage"
       title: "Scenario template coverage"
       text: "For API validation, form validation, loading indicators, route naming migration, and history payload work, include tests for both the happy path and the falsifier that previously failed or could pass as substrate-only behavior."
+    - id: "mutation-ui-lifetime-falsifier"
+      title: "Mutation UI lifetime falsifier"
+      text: "For React mutations whose status or verification can outlive a child, portal, route, entity, or access context, require a sourced lifetime matrix and one applicable combined pre-populated-cache, remount, reread-failure, context-switch, timer, late-response, and teardown scenario."
   portability:
     required: true
     rules:
