@@ -19,6 +19,7 @@ Generated from `skill.yaml`.
 - `docs/logs/implementation-log-20260710-1.md`
 - `docs/logs/implementation-log-20260715-1.md`
 - `docs/logs/implementation-log-20260717-1.md`
+- `docs/logs/implementation-log-20260727-1.md`
 - `fragments/final-checks.md`
 - `fragments/overview.md`
 - `references/methodology.md`

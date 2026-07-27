@@ -6,6 +6,7 @@ Generated from `skill.yaml`.
 
 ## Source files
 - `agents/openai.yaml`
+- `docs/logs/implementation-log-20260727-1.md`
 - `fragments/overview.md`
 - `references/web-interface-guidelines.md`
 - `skill.yaml`

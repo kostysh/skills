@@ -7,7 +7,7 @@ description: Perform bounded security review of code, CI, permissions, webhooks,
 metadata:
   source-version: 0.1.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 7000868f692518724db64e258b123f717a00c96e08a81ce5b31569d9576a561c
+  skillforge-source-hash: d4be3ce6e5451299a0376dfd19cb4040ed6e23a302be84cd839be47b746eed50
 ---
 
 # security-reviewer

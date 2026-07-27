@@ -10,7 +10,7 @@ compatibility: Portable documentation-only skill. All mandatory
 metadata:
   source-version: 0.2.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 41c1c33a8a69459f94f12ba4033f76af789fb6dfc47e37ed4eec7c1ab0c9936e
+  skillforge-source-hash: a79f1b60433f5acec707563e1d0f9e08f08339e715f90720b2841b3010ead4d5
 ---
 
 # delivery-planner

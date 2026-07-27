@@ -8,6 +8,7 @@
 - `docs/logs/implementation-log-20260713-1.md` — сокращение prompt surface, явная read-only автономия reviewer-а и grounded evidence contract.
 - `docs/logs/implementation-log-20260713-2.md` — escalation от повторного blocking finding к root-cause investigation.
 - `docs/logs/implementation-log-20260715-1.md` — правило проверки рекомендуемой длины описания скила и сокращение собственного trigger surface.
+- `docs/logs/implementation-log-20260727-1.md` — bounded remediation re-audit contract и evidence реализации #226; independent PASS.
 
 ## Generated Reports
 

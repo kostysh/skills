@@ -27,3 +27,4 @@
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | Independent `skill-reviewer` capability PASS on recorded snapshot |
 | [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) | Direct operator request | Independent PASS |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
+| [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | Aequitas-ADR/app#226 | Independent PASS; bounded remediation re-audit |

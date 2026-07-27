@@ -12,6 +12,7 @@ Generated from `skill.yaml`.
 - `assets/pr-review-template.md`
 - `assets/review-checklist.md`
 - `docs/logs/implementation-log-20260715-1.md`
+- `docs/logs/implementation-log-20260727-1.md`
 - `fragments/overview.md`
 - `package.json`
 - `references/complexity-only.md`

@@ -7,7 +7,7 @@ description: Review code against authoritative specs, contracts, ADRs, tickets,
 metadata:
   source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ff55e04eedfe9914cb57afbdcf70964045338e8037ededac854ca947f374a422
+  skillforge-source-hash: bbd3dbd28d2c6f37d8894a1024578afc59e594c23aad4235dad373b9868388e6
 ---
 
 # spec-conformance-reviewer

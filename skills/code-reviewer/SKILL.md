@@ -7,7 +7,7 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
 metadata:
   source-version: 0.4.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 151cf7277e70b26d98540cde226afd78577a88c8b37de9e95fee28e33e147241
+  skillforge-source-hash: 3e02234c149d491381f335610a9569a606e37817115a91cfe394b7635124bd83
 ---
 
 # code-reviewer

@@ -39,6 +39,10 @@ copies:
     target: agents/openai.yaml
     description: Portable UI metadata for skill-reviewer.
 supporting:
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Ненормативные свидетельства реализации и ревью для Aequitas-ADR/app#226.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md

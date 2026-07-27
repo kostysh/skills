@@ -20,7 +20,11 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Ненормативные свидетельства реализации и ревью для Aequitas-ADR/app#226.
 surfaces:
   active:
     requiredReferences:

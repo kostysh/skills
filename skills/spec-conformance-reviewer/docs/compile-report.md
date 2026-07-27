@@ -8,6 +8,7 @@ Generated from `skill.yaml`.
 - `agents/openai.yaml`
 - `assets/fixtures/consultant-admission-policy.md`
 - `docs/logs/implementation-log-20260715-1.md`
+- `docs/logs/implementation-log-20260727-1.md`
 - `fragments/overview.md`
 - `references/methodology.md`
 - `references/policy-admission-matrix.md`

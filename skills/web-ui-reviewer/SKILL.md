@@ -7,7 +7,7 @@ description: Review web UI code and rendered states against project requirements
 metadata:
   source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8f38022e829d590e7f1a28734f28a69ef5d728ea702aa56430ddbdd294cb2672
+  skillforge-source-hash: e9ec3f77dc1fc5cb1a5d353ba4dfa4e16f3365abfbcae0d8ad2acf1e5f09cb24
 ---
 
 # web-ui-reviewer

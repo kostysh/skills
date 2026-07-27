@@ -20,3 +20,4 @@
 - [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) — native platform fit gate для custom widgets, JS layout и UI dependencies. Исторический статус: structural/self-review evidence; независимый verdict не выполнялся.
 - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — current screenshot evidence и design-system drift guardrails для SL-01 remediation. Исторический статус: structural/self-review evidence; независимый verdict не выполнялся.
 - [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) — capability-first review, evidence-aware output contract, guidance authority/freshness и interop. Статус: independent PASS; final supporting-only delta подтверждён.
+- [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — bounded UI remediation re-audit и outcome-first status contract по #226. Статус: independent PASS.

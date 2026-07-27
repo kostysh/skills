@@ -11,7 +11,7 @@ compatibility: Portable documentation-only review skill. Use before
 metadata:
   source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6e808e4ac566de2f9cd32a2c5a134533c93b952158ffd113a30c9ae4191078df
+  skillforge-source-hash: 3d35edd12aa4ef75795a517b4e34cbb02a69877bd927318d046b3199d3146fd7
 ---
 
 # concept-conformance-reviewer

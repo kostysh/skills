@@ -32,3 +32,4 @@
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) | Direct operator request | Independent PASS after root-cause remediation |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
+| [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | Aequitas-ADR/app#226 | Independent PASS; bounded re-audit и outcome-first template |
