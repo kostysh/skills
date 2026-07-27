@@ -3,7 +3,7 @@
 ## Basis
 
 - Date: 2026-07-27.
-- Candidate: uncommitted remediation after reviewed commit `5f00e00d5c648a2899a50f5bee52b4cc18f135f6`.
+- Candidate: uncommitted remediation after reviewed commit `5f00e00d5c648a2899a50f5bee52b4cc18f135f6`; exact commit/content identity was not captured, so this run is not closure evidence for a stable snapshot.
 - Evaluator: fresh no-fork agent that did not perform the initial run or independent review.
 - Read boundary: generated `SKILL.md`, `references/react-vitest.md`, and raw mutation fixture only.
 - Prohibited inputs: `skill.yaml`, `evals/evals.json`, docs, Git diff/history, other skills, prior finding, prior output, and coordinator rubric.
@@ -173,4 +173,4 @@ The evaluator did not receive these expectations.
 | Preserve visible recoverable reread failure and deterministic cleanup. | Failure/remount behavior, deferred registry, timers, QueryClient, globals, warnings, and teardown are explicit. | PASS |
 | Avoid backend, browser, route, owner, and UI-copy invention. | Output is honestly `limited` and names every unverified boundary. | PASS |
 
-Aggregate fresh blind verdict: `PASS`. This closes the sampled P1 failure path; it remains bounded design evidence rather than executed application behavior.
+Content verdict: `PASS`; stable-snapshot closure verdict: `INCONCLUSIVE`. The output covers the sampled P1 failure path, but the candidate identity is incomplete. This remains bounded design evidence rather than executed application behavior.

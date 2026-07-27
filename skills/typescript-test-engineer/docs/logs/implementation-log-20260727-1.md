@@ -37,16 +37,18 @@
 ## Verification Performed
 
 - Package test: `19/19 PASS`.
-- Blind test-design case: `PASS`; детали в `../forward-tests/forward-test-evidence-20260727-1.md`.
+- Initial blind test-design case: `FAIL`; он не содержал required matrix и был ошибочно засчитан до initial independent review. Детали в `../forward-tests/forward-test-evidence-20260727-1.md`.
+- Fresh remediation output содержательно прошёл rubric, но не имел exact stable candidate identity и поэтому не используется как closure evidence; детали в `../forward-tests/forward-test-evidence-20260727-2.md`.
 - Compiler lint/check, isolated compile/check, eval JSON/ID validation, `git diff --check`, `pnpm format:check`, `pnpm lint` и `pnpm test:ci`: `PASS`.
 
 ### Skill Review Evidence
 
-Independent change review commit `5f00e00d5c648a2899a50f5bee52b4cc18f135f6`: aggregate `FAIL`, один P1 в `typescript-test-engineer`.
+Independent change review commit `5f00e00d5c648a2899a50f5bee52b4cc18f135f6`: aggregate `FAIL`, один P1 в `typescript-test-engineer`. Independent re-audit commit `aa92d03160447602ad6399fd9e279162ca4b0417`: active P1 закрыт, aggregate `FAIL` из-за одного P2 в consistency/snapshot identity evidence.
 
 | Finding | Concrete change | Evidence | Status |
 | --- | --- | --- | --- |
-| P1: blind `PASS` без route/access/entity/attempt/verification-sequence matrix | Явные matrix fields и owner/lifetime/late-completion rules добавлены в active root/reference; fixture и combined scenario различают старый и новый attempt | Fresh no-fork blind run: все required matrix rows и cross-attempt stale-completion path присутствуют, `PASS`; independent re-review ожидается | Реализовано, ожидает re-review |
+| P1: blind `PASS` без route/access/entity/attempt/verification-sequence matrix | Явные matrix fields и owner/lifetime/late-completion rules добавлены в active root/reference; fixture и combined scenario различают старый и новый attempt | Fresh output содержит required matrix и cross-attempt path; active remediation подтверждена re-audit | Закрыто по поведению |
+| P2: contradictory verdict summary и unbound fresh candidate | Старый run везде отмечен `FAIL`; uncommitted fresh run отмечен `INCONCLUSIVE` для closure; следующий run будет запущен на exact commit | Exact-snapshot fresh run и новый independent re-audit ожидаются | В работе |
 
 Первый targeted test после remediation дал `18/19`: старый regex ожидал дословное `one combined lifetime falsifier`, а active sentence был переформулирован. Контрактную фразу восстановили без ослабления matrix requirement; повторный прогон — `19/19 PASS`.
 
@@ -64,4 +66,4 @@ Production tests/runtime Aequitas не изменены.
 
 ## Final Status
 
-`PROVISIONAL`; fresh blind evidence прошло, independent re-review ещё ожидается.
+`PROVISIONAL`; active P1 закрыт, evidence P2 ожидает exact-snapshot blind run.
