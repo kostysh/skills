@@ -75,14 +75,33 @@ authorization.
   validation и output shape явны; конфликтов с действующими C1/C17, status/gate
   contract или Legal/DPO boundary не найдено. Это self-check, не independent
   `PASS`.
-- Blind privacy falsifier и независимый `skill-reviewer` остаются checkpoint 4.
+- Blind active-only forward-test — PASS:
+  - case с synthetic application data, но пропущенными Access/mailbox/GitHub
+    operational identities, общим `configured` вместо environment statuses и
+    basis claim из технической конфигурации получил `PARTIAL` + `BLOCK`;
+  - case с полным identity map, отдельными accountable decisions, evidenced
+    `active|inactive` по средам и runtime controls получил
+    `COMPLETE_FOR_STATED_SCOPE` +
+    `NO_ENGINEERING_BLOCKER_IDENTIFIED_IN_ASSESSED_SCOPE`;
+  - evaluator не видел worktree, history, remediation, expected verdict или
+    supporting docs.
+- Independent `skill-reviewer` change review — `PASS`:
+  - base: `837e46132f72f840b4f70f2ce74ddbb81da29400`;
+  - head: `c6ca63848b1cb5a1c1823a9c83f8cf0e7555efa1`;
+  - tree: `d74b48518757c96eaaf61ddb3c7894e8c3adcf66`;
+  - diff SHA-256:
+    `00525a902c2c6a6a1908763858d3a5488d2526ca5666f9ea6ffbdec9d9a7a681`;
+  - findings: P1 `0`, P2 `0`, P3 `0`.
+- Evidence limits: два blind cases подтверждают основной negative/positive
+  boundary, но не все GDPR audit modes; documentation-only skill не создаёт
+  runtime enforcement или Legal/DPO conclusion.
 
 ### Remediation Matrix
 
 | Finding | Concrete change | Evidence | Status |
 | --- | --- | --- | --- |
-| `R-SKILL-008`: operational identities не обязательны | Workflow, methodology, C1/C17, implementation probe и templates | Compiler/package checks и privacy falsifier | implemented |
-| `R-SKILL-008`: нет per-environment activation status | Workflow, methodology, C1/C17, implementation probe и templates | Compiler/package checks и privacy falsifier | implemented |
+| `R-SKILL-008`: operational identities не обязательны | Workflow, methodology, C1/C17, implementation probe и templates | Compiler/package checks, negative/positive blind cases и independent review | verified |
+| `R-SKILL-008`: нет per-environment activation status | Workflow, methodology, C1/C17, implementation probe и templates | Compiler/package checks, negative/positive blind cases и independent review | verified |
 
 ## Capability, Substrate And Anti-Claims
 
@@ -110,9 +129,11 @@ environment configuration и application runtime не меняются.
 
 ## Follow-up
 
-- Получить blind privacy fixture evidence и независимый `skill-reviewer` verdict
-  по stable snapshot в checkpoint 4.
+- Получить bounded independent delta audit этой supporting-only записи verdict
+  до следующего checkpoint.
+- Future effectiveness измеряется в `Aequitas-ADR/app#255`; это не блокирует
+  acceptance текущего шага.
 
 ## Final Status
 
-IMPLEMENTED, NOT INDEPENDENTLY VERIFIED.
+INDEPENDENT PASS ON IMPLEMENTATION SNAPSHOT; SUPPORTING DELTA AUDIT REQUIRED.

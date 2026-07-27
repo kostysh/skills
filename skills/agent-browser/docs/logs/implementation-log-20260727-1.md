@@ -99,13 +99,31 @@ Anti-claims:
 | Finding | Concrete change | Evidence | Status |
 | --- | --- | --- | --- |
 | `R-SKILL-007`: отсутствует project-ready Access recipe | Conditional active reference и root trigger | Compiler parity, blind forward-test и fresh-session STAGE rehearsal | verified |
-| Independent P2: bundled README содержит три ссылки на отсутствующие historical logs | Все три README-linked logs добавлены в declared supporting package | Out-of-place compile, emitted link-target readback и bounded independent re-audit | implemented |
+| Independent P2: bundled README содержит три ссылки на отсутствующие historical logs | Все три README-linked logs добавлены в declared supporting package | Out-of-place compile, emitted link-target readback и bounded independent re-audit | verified |
 
 Independent change review snapshot
 `c6ca63848b1cb5a1c1823a9c83f8cf0e7555efa1` подтвердил active capability и
 STAGE evidence, но завершился `FAIL` из-за P2 package portability: emitted
 `docs/README.md` содержал три broken historical links. Active behavior не
 менялся; remediation ограничена supporting manifest parity.
+
+Remediation commit
+`21ef54ba9c6dc26d503524b9635f058849220f2e` получил bounded independent
+re-audit `PASS`:
+
+- tree: `dae3bf1f9b270cfe0f02e369c6bd5ad65668b51d`;
+- `agent-browser` subtree:
+  `73049a9a970db56dc14a75b3c6fbbd504b5afc2d`;
+- remediation diff SHA-256:
+  `82312b62cf2d63e99c3b26da2d0b6f0dc7df3bcf8040929fc9d7142e582a284a`;
+- independent findings: P1 `0`, P2 `0`, P3 `0`;
+- fresh emitted-package link readback: `4/4`, missing `0`;
+- active reference, workflow, fragments и UI metadata не изменились.
+
+Evidence limits: проверен один live STAGE rehearsal и один blind fail-closed
+case, не PROD и не полный E2E suite. Historical claims во вновь packaged logs
+не переаудировались; reviewer проверил их presence, portability и отсутствие
+active-regression risk.
 
 ## Deviations From Plan
 
@@ -124,9 +142,9 @@ read-only Gmail; mailbox labels/state не менялись. Browser session з�
 
 ## Follow-up
 
-- Получить bounded independent re-audit emitted-package navigation после
-  supporting parity remediation.
+- Получить bounded independent delta audit этой supporting-only записи verdict
+  до следующего checkpoint.
 
 ## Final Status
 
-REMEDIATED, INDEPENDENT RE-AUDIT PENDING.
+INDEPENDENT PASS ON REMEDIATED SNAPSHOT; SUPPORTING DELTA AUDIT REQUIRED.
