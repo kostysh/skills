@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: gdpr-compliance
-  source-version: 0.2.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 24000
   description: >-
     Audit architecture, specs, plans, or systems for EU GDPR risks involving
@@ -60,6 +60,10 @@ copies:
     description: Portable copy of agents/openai.yaml.
 
 supporting:
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Non-normative log for operational identity and environment activation remediation.
   - id: supporting-implementation-log-20260716-1
     source: docs/logs/implementation-log-20260716-1.md
     target: docs/logs/implementation-log-20260716-1.md
@@ -138,13 +142,13 @@ sections:
       title: Map processing and data flows
       goal: Make hidden personal-data processing visible before judging GDPR compliance risk.
       steps:
-        - Map each processing activity by purpose, lawful-basis candidate, accountable decision status, data subjects and categories, source, recipient, storage, retention, access boundary, and deletion path.
+        - Map each activity by purpose/basis, subjects/data, operational identities, stores, retention, access/deletion, and evidenced technical activation per environment.
         - "Include non-obvious surfaces: logs, metrics, traces, crash reports, analytics events, support tools, admin tools, search indexes, caches, queues, ML/AI datasets, exports, imports, backups, non-production, screenshots, and vendor dashboards."
         - Map regions and transfer mechanisms for vendors, hosting, support access, subprocessors, and onward transfers.
         - Identify where the same data is reused for a new purpose or combined with other datasets.
       validation:
         - Every material surface found within the stated scope is mapped; discovery and coverage limits remain explicit instead of implying exhaustiveness.
-        - Every mapped activity has purpose, retention, access, and transfer status, even if marked missing or unknown.
+        - Every activity covers purpose, retention, access, transfer, operational identities, and each environment; unknowns remain explicit.
         - Reuse and inference are treated as processing, not ignored because no new form field was added.
     - id: stage-audit-controls
       title: Audit architecture controls

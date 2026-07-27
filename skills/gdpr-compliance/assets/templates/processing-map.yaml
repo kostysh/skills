@@ -9,6 +9,17 @@ processing_activities:
     legal_counsel_or_dpo_advice_needed:
     data_subjects: []
     data_categories: []
+    operational_identities:
+      - actor_or_role:
+        identity_type: # human | service
+        identifier_categories: []
+        personal_data_disposition: # personal_data | not_personal_data_with_reason | unknown
+        provider:
+        environments: []
+        purpose:
+        access_boundary:
+        retention_rule:
+        evidence:
     special_or_criminal_data: false
     children_or_vulnerable_subjects: false
     source:
@@ -18,6 +29,10 @@ processing_activities:
     caches_queues_indexes:
     backups_archives:
     non_production:
+    environment_activations:
+      - environment:
+        technical_status: # active | inactive | planned | unknown
+        technical_evidence:
     recipients_and_vendors: []
     controller_processor_roles:
     countries_regions: []

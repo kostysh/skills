@@ -16,8 +16,8 @@ Use this reference when auditing code, configuration, migrations, APIs, jobs, lo
 | Analytics/event pipeline | event taxonomy, purpose tags, consent dependency, identifiers, aggregation, retention, vendor payload, deletion support |
 | Search/cache/indexes | derived copies, invalidation, deletion, retention, re-identification risk |
 | Object/file storage | uploads, support attachments, screenshots, backups, access control, retention, deletion |
-| Auth/access control | roles, least privilege, admin/support access, tenant isolation, access review, human access logging |
-| Infrastructure/config | region settings, backup retention, vendor endpoints, secrets, data residency, observability exporters |
+| Auth/access control | application and operational identities, identity providers, roles, least privilege, admin/support access, tenant isolation, access review, human access logging |
+| Infrastructure/config | per-environment technical activation and evidence, region settings, backup retention, vendor endpoints, secret names without secret values, data residency, observability exporters |
 | Tests and CI | behavior tests for blocked processing, deletion propagation, retention expiry, export coverage, log redaction, tenant isolation |
 | Operational runbooks | rights requests, breach response, vendor requests, legal holds, backup restoration, incident classification |
 
@@ -114,6 +114,27 @@ Probe:
 Evidence:
 
 - Network traces, config, IaC, vendor settings, DPA/SCC references, data residency config, deletion/export support evidence.
+
+### Operational identities and environment activation
+
+Probe:
+
+- Enumerate application, access-provider, mailbox, admin/support, deployment,
+  CI, observability, and backup identities used by every in-scope environment.
+- Classify whether each identity or identifier is personal data, state its
+  purpose/provider/access/retention boundary, and omit authentication secrets.
+- For each processing activity and environment, establish `active`, `inactive`,
+  `planned`, or `unknown` technical status from current evidence.
+- Verify that technical configuration, deployed resources, or observed traffic
+  is not used as evidence of a lawful-basis decision, controller approval, legal
+  conclusion, DPO advice, vendor approval, or release authorization.
+
+Evidence:
+
+- Identity-provider and access configuration, redacted account inventory,
+  environment-scoped deployment/configuration evidence, current network
+  observations, access logs without secret values, and separately owned
+  accountable or specialist decisions.
 
 ## Implementation control dispositions
 

@@ -33,7 +33,11 @@ State:
 - personal data categories, including inferred and pseudonymised data;
 - purposes, lawful-basis candidates, accountable decision status, and missing basis;
 - controller/processor/joint-controller/sub-processor/recipient roles;
-- in-scope environments: production, staging, dev, CI, demos, support, analytics, observability, backups;
+- in-scope environments and each activity's evidenced technical activation status:
+  production, staging, dev, CI, demos, support, analytics, observability,
+  backups, or other discovered environments;
+- operational human and service identities used for environment access,
+  administration, support, review, deployment, CI, observability, or backups;
 - third parties, countries/regions, support access, subprocessors, and onward transfers;
 - explicit exclusions and why they are out of scope.
 
@@ -46,9 +50,11 @@ For each processing activity, capture:
 | Purpose and basis state | Specific purpose, candidate basis, accountable decision status, and any Article 9/10 condition or authority needed |
 | Data subjects | People whose data is processed |
 | Data categories | Direct identifiers, indirect identifiers, online identifiers, special categories, criminal data, children, employees, location, behavioural events, content |
+| Operational identities | Human or service identities used to access or operate an environment, including identity provider or mailbox account identifiers, their purpose, provider, environments, access boundary, retention, and personal-data classification |
 | Source | User input, device, browser, third party, internal inference, vendor, import, log, support interaction |
 | Operation | Collection, storage, access, display, sharing, inference, profiling, training, export, deletion, retention, anonymisation |
 | System surfaces | UI, API, service, database, object store, queue, cache, search index, log, trace, metric, analytics, support/admin tool, backup, non-production |
+| Environment activation | For every in-scope environment, `active`, `inactive`, `planned`, or `unknown` technical status and the evidence that supports it |
 | Recipients | Internal roles, services, vendors, processors, subprocessors, recipients, public disclosure |
 | Location and transfer | Hosting region, support region, backup region, transfer mechanism, onward transfer |
 | Retention and deletion | Retention period or criterion, deletion trigger, backup aging, vendor deletion, derived-data handling |
@@ -56,6 +62,18 @@ For each processing activity, capture:
 | Evidence | PRD/spec/code/config/vendor evidence or missing evidence |
 
 Include derived and secondary processing. Personal data can be created by inference, enrichment, aggregation with small cohorts, profile scores, embeddings, identifiers, logs, or support workflows.
+
+Do not treat application users as a complete identity inventory. Record
+operational identities even when they exist only in an access provider, mailbox,
+support tool, deployment system, CI, logs, or backups. Do not place passwords,
+OTP values, API tokens, cookies, or other authentication secrets in the
+processing map.
+
+Technical activation evidence establishes only whether processing appears
+active, inactive, planned, or unknown in an environment. It does not establish
+a lawful-basis decision, controller approval, legal conclusion, DPO advice,
+vendor approval, or release authorization. Keep those authority states and
+their evidence separate.
 
 ### 4. Audit by artifact type
 

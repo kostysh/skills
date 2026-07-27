@@ -8,9 +8,9 @@ compatibility: Portable documentation-only skill. It ships active audit
   references and artifact templates, but no runtime. All mandatory GDPR
   architecture audit guidance lives inside this folder.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: fa555193b2a5ff7f40d8f028b742a9926c0c5acb8a87bb22278a37ca26e44297
+  skillforge-source-hash: 0562d00032bc984b29155b7fcd5dc5035d78a5e8fcc529cac3ed22f84585f481
 ---
 
 # gdpr-compliance
@@ -137,7 +137,7 @@ Validation:
 
 Make hidden personal-data processing visible before judging GDPR compliance risk.
 
-1. Map each processing activity by purpose, lawful-basis candidate, accountable decision status, data subjects and categories, source, recipient, storage, retention, access boundary, and deletion path.
+1. Map each activity by purpose/basis, subjects/data, operational identities, stores, retention, access/deletion, and evidenced technical activation per environment.
 2. Include non-obvious surfaces: logs, metrics, traces, crash reports, analytics events, support tools, admin tools, search indexes, caches, queues, ML/AI datasets, exports, imports, backups, non-production, screenshots, and vendor dashboards.
 3. Map regions and transfer mechanisms for vendors, hosting, support access, subprocessors, and onward transfers.
 4. Identify where the same data is reused for a new purpose or combined with other datasets.
@@ -145,7 +145,7 @@ Make hidden personal-data processing visible before judging GDPR compliance risk
 Validation:
 
 - Every material surface found within the stated scope is mapped; discovery and coverage limits remain explicit instead of implying exhaustiveness.
-- Every mapped activity has purpose, retention, access, and transfer status, even if marked missing or unknown.
+- Every activity covers purpose, retention, access, transfer, operational identities, and each environment; unknowns remain explicit.
 - Reuse and inference are treated as processing, not ignored because no new form field was added.
 
 ### Workflow stage: Audit architecture controls

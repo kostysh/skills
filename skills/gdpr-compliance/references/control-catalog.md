@@ -19,19 +19,27 @@ Each control lists architecture requirement, audit evidence, red flags, and seve
 
 Architecture requirement:
 
-- The system identifies personal data, pseudonymised data, inferred data, data subjects, environments, and processing activities before design approval.
+- The system identifies personal data, pseudonymised data, inferred data, data
+  subjects, operational identities, environments, per-environment technical
+  activation, and processing activities before design approval.
 - Pseudonymised data remains personal data when re-identification is reasonably possible.
 - Anonymised data is treated as out of scope only when re-identification is not reasonably likely.
 
 Audit evidence:
 
-- Data inventory, event taxonomy, schema, API contracts, telemetry catalog, vendor data map, log samples, support workflows, AI/ML dataset description.
+- Data inventory, operational identity inventory, environment activation
+  evidence, event taxonomy, schema, API contracts, telemetry catalog, vendor
+  data map, log samples, support workflows, AI/ML dataset description.
 
 Red flags:
 
 - "No personal data" while IP addresses, device IDs, cookie IDs, user IDs, location, free text, logs, support transcripts, or pseudonymous identifiers are present.
 - Hashes or tokens treated as anonymous without re-identification analysis.
 - Derived profiles, scores, embeddings, or behavioural events not mapped.
+- Access, support, deployment, CI, or observability accounts are omitted because
+  they are not application users.
+- An environment is named without an evidenced `active`, `inactive`, `planned`,
+  or `unknown` status for the assessed activity.
 
 Severity:
 
@@ -409,10 +417,20 @@ Architecture requirement:
 - Development, test, CI, demos, analytics sandboxes, support tooling, and AI/model workflows use synthetic, anonymised, or strongly minimised data where possible.
 - Real personal data in non-production or AI workflows has purpose, lawful basis, access control, retention, transfer, deletion, and security controls equivalent to the risk.
 - Training, fine-tuning, evaluation, retrieval, prompt logging, and embedding workflows are treated as processing.
+- Operational human and service identities used for environment access,
+  administration, support, deployment, CI, observability, or backups are
+  classified and mapped even when application datasets are synthetic.
+- Each activity records an evidenced technical activation status for every
+  in-scope environment. Technical configuration or observed traffic must not be
+  treated as a lawful-basis decision, controller approval, legal conclusion,
+  DPO advice, or release authorization.
 
 Audit evidence:
 
-- Test data policy, masking/anonymisation process, dataset lineage, prompt/log retention, model provider terms, opt-out/consent logic, access controls, deletion support.
+- Test data policy, masking/anonymisation process, operational identity
+  inventory, per-environment activation evidence, dataset lineage, prompt/log
+  retention, model provider terms, opt-out/consent logic, access controls,
+  deletion support.
 
 Red flags:
 
@@ -420,6 +438,10 @@ Red flags:
 - Support transcripts or telemetry used for AI training without separate purpose and basis.
 - Prompts, embeddings, or model logs contain personal data with unclear retention or vendor access.
 - Demo accounts contain real customer data.
+- A synthetic application fixture is used to claim that operational access,
+  mailbox, support, or deployment identities process no personal data.
+- STAGE or local technical configuration is used to infer PROD activation or an
+  accountable or specialist approval.
 
 Severity:
 

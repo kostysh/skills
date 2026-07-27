@@ -20,9 +20,13 @@
 
 ## Processing map summary
 
-| Activity | Purpose | Basis decision status | Data subjects/categories | Systems/stores | Access boundary | Recipients/transfers | Retention/deletion | Evidence |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |  |  |  |
+| Activity | Purpose | Basis decision status | Data subjects/categories | Operational identities | Environments/technical activation | Systems/stores | Access boundary | Recipients/transfers | Retention/deletion | Evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |  |  |  |  |
+
+Technical activation does not establish a lawful-basis decision, controller
+approval, legal conclusion, DPO advice, vendor approval, or release
+authorization.
 
 ## Control coverage
 
