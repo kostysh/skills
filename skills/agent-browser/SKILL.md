@@ -5,9 +5,9 @@ description: Use agent-browser to navigate and interact with rendered web pages,
   diagnostic checks. Verify the requested terminal state and report completed,
   partial, or blocked; do not replace a formal project E2E suite.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 92e48b0a36eb381a85c63edd8edc860c31761babc533f5c83ada755793fb1c3f
+  skillforge-source-hash: f6f311a251737095f4be724ffccccec6176e23388fadcf3aabf1b1ffd567826a
 allowed-tools: Bash(agent-browser:*)
 ---
 
@@ -17,7 +17,8 @@ allowed-tools: Bash(agent-browser:*)
 
 1. Identify the target, requested user-visible result, expected terminal state, and any material limit on external side effects or extraction scope.
 2. Run `agent-browser --version` and load the installed CLI's version-matched guidance with `agent-browser skills get core --full`; if unavailable, use `agent-browser --help`.
-3. Follow the snapshot loop, verify the requested result, and report exactly one status: completed, partial, or blocked.
+3. Read `references/cloudflare-access-otp.md` before a human Cloudflare Access email-OTP flow; keep that browser identity gate separate from application authentication and infrastructure credentials.
+4. Follow the snapshot loop, verify the requested result, and report exactly one status: completed, partial, or blocked.
 
 ## When to use this skill
 
@@ -123,6 +124,7 @@ Validation:
 - **high** — Use the installed CLI's version-matched guidance and help for command syntax; do not maintain or trust a copied command encyclopedia when they disagree.
 - **high** — A successful command, snapshot, screenshot, trace, or intercepted response does not prove the requested user-visible result by itself.
 - **high** — Keep secrets out of shell history and reports, treat browser artifacts as potentially sensitive, and clean up sessions or processes started for the task.
+- **high** — Never substitute Wrangler login, a Cloudflare API token, or an Access service token for a human Cloudflare Access browser login; report blocked when the authorized browser identity or confidential OTP path is unavailable.
 
 ## Policies
 
@@ -131,6 +133,9 @@ Governing user, system, and project policies define authority; installed version
 
 ### Browser evidence
 Match evidence to the claim and report the target, expected and observed terminal state, relevant real or intercepted network mode, and exact limits of partial or blocked results.
+
+## Optional references
+- [Cloudflare Access OTP](references/cloudflare-access-otp.md) — Read this before a browser flow protected by a human Cloudflare Access email OTP, especially when the application has a separate OTP or infrastructure credentials are also available.
 
 ## Portability rules
 

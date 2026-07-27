@@ -2,25 +2,40 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: agent-browser
-  source-version: 0.2.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 20000
   description: Use agent-browser to navigate and interact with rendered web pages, fill forms, take screenshots, extract data, and run browser smoke or diagnostic checks. Verify the requested terminal state and report completed, partial, or blocked; do not replace a formal project E2E suite.
   allowedTools:
     - Bash(agent-browser:*)
 fragments:
   overview: fragments/overview.md
-references: []
+references:
+  - id: ref-cloudflare-access-otp
+    title: Cloudflare Access OTP
+    source: references/cloudflare-access-otp.md
+    target: references/cloudflare-access-otp.md
+    required: false
+    trigger: Read this before a browser flow protected by a human Cloudflare Access email OTP, especially when the application has a separate OTP or infrastructure credentials are also available.
 assets: []
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
-supporting: []
+supporting:
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Non-normative implementation log for the Cloudflare Access browser identity boundary.
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for agent-browser maintenance records.
 surfaces:
   active:
     requiredReferences: []
-    optionalReferences: []
+    optionalReferences:
+      - ref-cloudflare-access-otp
   supportingGlobs:
     - docs/*
     - docs/logs/*
@@ -28,6 +43,7 @@ sections:
   startHere:
     - Identify the target, requested user-visible result, expected terminal state, and any material limit on external side effects or extraction scope.
     - Run `agent-browser --version` and load the installed CLI's version-matched guidance with `agent-browser skills get core --full`; if unavailable, use `agent-browser --help`.
+    - Read `references/cloudflare-access-otp.md` before a human Cloudflare Access email-OTP flow; keep that browser identity gate separate from application authentication and infrastructure credentials.
     - "Follow the snapshot loop, verify the requested result, and report exactly one status: completed, partial, or blocked."
   whenToUse:
     - Navigating or interacting with rendered websites and web applications from the terminal.
@@ -85,6 +101,9 @@ sections:
     - id: gotcha-sensitive-or-owned-state
       priority: high
       text: Keep secrets out of shell history and reports, treat browser artifacts as potentially sensitive, and clean up sessions or processes started for the task.
+    - id: gotcha-browser-vs-infrastructure-auth
+      priority: high
+      text: Never substitute Wrangler login, a Cloudflare API token, or an Access service token for a human Cloudflare Access browser login; report blocked when the authorized browser identity or confidential OTP path is unavailable.
   policies:
     - id: policy-guidance-and-authority
       title: Guidance and authority
