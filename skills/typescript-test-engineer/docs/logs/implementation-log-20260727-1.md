@@ -46,10 +46,12 @@
 
 Independent change review commit `5f00e00d5c648a2899a50f5bee52b4cc18f135f6`: aggregate `FAIL`, один P1 в `typescript-test-engineer`. Independent re-audit commit `aa92d03160447602ad6399fd9e279162ca4b0417`: active P1 закрыт, aggregate `FAIL` из-за одного P2 в consistency/snapshot identity evidence.
 
+Final independent re-audit current snapshot `06d9f85ddc4a1730801dcf5db9aea9301e891ed4`: `typescript-test-engineer` и aggregate #228 — `PASS`; P1/P2 закрыты, P1/P2/P3 findings отсутствуют.
+
 | Finding | Concrete change | Evidence | Status |
 | --- | --- | --- | --- |
 | P1: blind `PASS` без route/access/entity/attempt/verification-sequence matrix | Явные matrix fields и owner/lifetime/late-completion rules добавлены в active root/reference; fixture и combined scenario различают старый и новый attempt | Fresh output содержит required matrix и cross-attempt path; active remediation подтверждена re-audit | Закрыто по поведению |
-| P2: contradictory verdict summary и unbound fresh candidate | Старый run везде отмечен `FAIL`; uncommitted fresh run отмечен `INCONCLUSIVE` для closure; новый no-fork run привязан к exact clean commit | Exact-snapshot run `7cc9a07a…`: content `PASS`; новый independent re-audit ожидается | Реализовано, ожидает re-audit |
+| P2: contradictory verdict summary и unbound fresh candidate | Старый run везде отмечен `FAIL`; uncommitted fresh run отмечен `INCONCLUSIVE` для closure; новый no-fork run привязан к exact clean commit | Exact-snapshot run `7cc9a07a…` и final independent re-audit `06d9f85…`: `PASS` | Закрыто |
 
 Первый targeted test после remediation дал `18/19`: старый regex ожидал дословное `one combined lifetime falsifier`, а active sentence был переформулирован. Контрактную фразу восстановили без ослабления matrix requirement; повторный прогон — `19/19 PASS`.
 
@@ -67,4 +69,4 @@ Production tests/runtime Aequitas не изменены.
 
 ## Final Status
 
-`PROVISIONAL`; active P1 закрыт, exact-snapshot blind evidence прошло, final independent re-audit ожидается.
+`PASS`; non-normative log, executed application/runtime test не выполнялся.

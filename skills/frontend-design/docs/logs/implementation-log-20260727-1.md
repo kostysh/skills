@@ -41,7 +41,7 @@
 
 ### Skill Review Evidence
 
-Independent review ожидается на stable snapshot. До этого статус не является independent `PASS`.
+Initial independent review commit `5f00e00d5c648a2899a50f5bee52b4cc18f135f6`: per-skill `PASS`. Final independent re-audit current snapshot `06d9f85ddc4a1730801dcf5db9aea9301e891ed4`: `PASS`, P1/P2/P3 отсутствуют.
 
 ## Deviations From Plan
 
@@ -57,4 +57,4 @@ Runtime Aequitas, API, типы и UI не изменялись.
 
 ## Final Status
 
-`PROVISIONAL`; ожидаются финальные gates и independent review.
+`PASS`; non-normative log, runtime Aequitas не проверялся.
