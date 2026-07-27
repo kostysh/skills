@@ -5,9 +5,9 @@ description: Use agent-browser to navigate and interact with rendered web pages,
   diagnostic checks. Verify the requested terminal state and report completed,
   partial, or blocked; do not replace a formal project E2E suite.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f6f311a251737095f4be724ffccccec6176e23388fadcf3aabf1b1ffd567826a
+  skillforge-source-hash: 45431af4c1588957b32bb42a5d6959d8b24ac09e51fc7e6344d8ca0cc786b2cc
 allowed-tools: Bash(agent-browser:*)
 ---
 

@@ -99,8 +99,13 @@ Anti-claims:
 | Finding | Concrete change | Evidence | Status |
 | --- | --- | --- | --- |
 | `R-SKILL-007`: отсутствует project-ready Access recipe | Conditional active reference и root trigger | Compiler parity, blind forward-test и fresh-session STAGE rehearsal | verified |
+| Independent P2: bundled README содержит три ссылки на отсутствующие historical logs | Все три README-linked logs добавлены в declared supporting package | Out-of-place compile, emitted link-target readback и bounded independent re-audit | implemented |
 
-Независимый `skill-reviewer` относится к checkpoint 4 и ещё не выполнялся.
+Independent change review snapshot
+`c6ca63848b1cb5a1c1823a9c83f8cf0e7555efa1` подтвердил active capability и
+STAGE evidence, но завершился `FAIL` из-за P2 package portability: emitted
+`docs/README.md` содержал три broken historical links. Active behavior не
+менялся; remediation ограничена supporting manifest parity.
 
 ## Deviations From Plan
 
@@ -119,9 +124,9 @@ read-only Gmail; mailbox labels/state не менялись. Browser session з�
 
 ## Follow-up
 
-- Перед финальным закрытием получить независимые reviews на stable snapshot.
+- Получить bounded independent re-audit emitted-package navigation после
+  supporting parity remediation.
 
 ## Final Status
 
-PASS_FOR_CHECKPOINT_2 — active behavior и fresh-session STAGE acceptance
-подтверждены; формальный independent review остаётся обязательным checkpoint 4.
+REMEDIATED, INDEPENDENT RE-AUDIT PENDING.
