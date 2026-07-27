@@ -1,4 +1,4 @@
-# Review Template
+<Plain-language outcome sentence: what changed, what remains, and whether the reviewed boundary can proceed.>
 
 ## Findings
 

@@ -2,7 +2,8 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.4.4`
+- Skill source version: `0.4.5`
+- CLI package version: `0.1.0`
 
 ## Source files
 - `agents/openai.yaml`
@@ -12,6 +13,7 @@ Generated from `skill.yaml`.
 - `assets/review-checklist.md`
 - `docs/logs/implementation-log-20260715-1.md`
 - `fragments/overview.md`
+- `package.json`
 - `references/complexity-only.md`
 - `references/diff-completeness.md`
 - `references/domain-routing.md`
