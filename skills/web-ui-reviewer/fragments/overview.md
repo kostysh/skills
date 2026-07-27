@@ -18,7 +18,7 @@ Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web stat
 
 ## Output contract
 
-Start with one status:
+Start with one plain-language outcome sentence. Then report one status:
 
 - `findings` — at least one defect is supported by the reviewed evidence and authority.
 - `no-material-findings` — no material defect was found and the evidence is sufficient for the explicitly bounded claim.

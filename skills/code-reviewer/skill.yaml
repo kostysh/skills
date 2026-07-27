@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.4.3
+  source-version: 0.4.4
   recommended-skill-md-max-bytes: 20000
   description: >-
     Perform read-only review of PRs, diffs, and local branch changes. Use to find

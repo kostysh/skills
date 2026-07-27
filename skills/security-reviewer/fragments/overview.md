@@ -142,7 +142,7 @@ Unless the user explicitly asks for a formal audit or report:
 
 ## Output Rules
 
-- Findings first, ordered by severity.
+- Start with one plain-language outcome sentence, then report findings ordered by severity.
 - Use the format from `references/methodology.md`.
 - Every reported finding must include:
   - location with line references when available

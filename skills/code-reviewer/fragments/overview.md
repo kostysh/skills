@@ -135,7 +135,7 @@ Unless the user explicitly asks for a formal audit or report:
 
 ## Output Rules
 
-- Findings first, ordered by severity.
+- Begin with one plain-language outcome sentence, then findings by severity.
 - Use the format from `references/findings-format.md`.
 - Keep each finding self-contained: location, problem, impact, evidence, and fix direction.
 - If no findings are confirmed, say `No findings.` instead of leaving the section empty.

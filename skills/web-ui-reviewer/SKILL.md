@@ -5,9 +5,9 @@ description: Review web UI code and rendered states against project requirements
   form, or frontend-performance audits that need scoped findings and evidence
   limits; not implementation or conformance certification.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e965a6cdf7d2ed540e33845d0163e6cab60baa24af30db8b43f2b3918f1d74dd
+  skillforge-source-hash: 8f38022e829d590e7f1a28734f28a69ef5d728ea702aa56430ddbdd294cb2672
 ---
 
 # web-ui-reviewer
@@ -54,7 +54,7 @@ Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web stat
 
 ## Output contract
 
-Start with one status:
+Start with one plain-language outcome sentence. Then report one status:
 
 - `findings` — at least one defect is supported by the reviewed evidence and authority.
 - `no-material-findings` — no material defect was found and the evidence is sufficient for the explicitly bounded claim.

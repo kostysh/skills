@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.11"
+  source-version: "0.1.12"
   recommended-skill-md-max-bytes: 36000
   description: "Perform bounded security review of code, CI, permissions, webhooks, secrets, data access, and config. Use for vulnerability review, exploitability triage, or scoped audits. Own threat modeling, confidence gating, attack paths, and findings—not scan orchestration, compliance, pentesting, or fixes."
 fragments:

@@ -5,9 +5,9 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
   or lightweight intent alignment, and provide evidence-backed merge guidance
   with stable scope, severity, and findings; pair with relevant domain skills.
 metadata:
-  source-version: 0.4.3
+  source-version: 0.4.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6b58c75e2c8453424f243c71577b07f3d6a83368339a5b5727660d7f9d04e9ad
+  skillforge-source-hash: 1f3a71ad159aa0449271e480f94b9ce699935e00d0a7c3621aa59b3e3a825b68
 ---
 
 # code-reviewer
@@ -177,7 +177,7 @@ Unless the user explicitly asks for a formal audit or report:
 
 ## Output Rules
 
-- Findings first, ordered by severity.
+- Begin with one plain-language outcome sentence, then findings by severity.
 - Use the format from `references/findings-format.md`.
 - Keep each finding self-contained: location, problem, impact, evidence, and fix direction.
 - If no findings are confirmed, say `No findings.` instead of leaving the section empty.

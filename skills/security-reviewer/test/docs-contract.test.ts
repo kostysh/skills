@@ -13,7 +13,7 @@ const countMatches = (text: string, pattern: RegExp) => [...text.matchAll(patter
 test('source contract exposes one required methodology and optional domain references', async () => {
   const manifest = await readSkillFile('skill.yaml');
 
-  assert.match(manifest, /source-version: "0\.1\.11"/);
+  assert.match(manifest, /source-version: "0\.1\.12"/);
   assert.match(manifest, /requiredReferences:\n\s+- "ref-methodology"\n\s+optionalReferences:/);
   assert.match(manifest, /id: "ref-api-auth-input"[\s\S]*?required: false/);
   assert.match(manifest, /id: "ref-github-actions"[\s\S]*?required: false/);
@@ -113,6 +113,7 @@ test('re-audit is finding-bounded and reports a plain-language outcome first', a
   assert.match(skill, /do not repeat unchanged previously cleared full scope/);
   assert.match(skill, /cosmetic edits alone do not close an attack path/);
   assert.match(skill, /plain-language outcome sentence before security status/);
+  assert.doesNotMatch(skill, /Findings first/);
   assert.match(methodology, /Record unchanged previously cleared scope as excluded/);
   assert.match(methodology, /blast radius cannot be bounded/);
 });

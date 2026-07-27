@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.2.1
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 20000
   description: Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification.
 fragments:

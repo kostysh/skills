@@ -5,9 +5,9 @@ description: Perform bounded security review of code, CI, permissions, webhooks,
   triage, or scoped audits. Own threat modeling, confidence gating, attack
   paths, and findings—not scan orchestration, compliance, pentesting, or fixes.
 metadata:
-  source-version: 0.1.11
+  source-version: 0.1.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3941fa33e6248095c2bfa8a9b8282008d6888a26d266c0d285140405fd1f4643
+  skillforge-source-hash: 7000868f692518724db64e258b123f717a00c96e08a81ce5b31569d9576a561c
 ---
 
 # security-reviewer
@@ -179,7 +179,7 @@ Unless the user explicitly asks for a formal audit or report:
 
 ## Output Rules
 
-- Findings first, ordered by severity.
+- Start with one plain-language outcome sentence, then report findings ordered by severity.
 - Use the format from `references/methodology.md`.
 - Every reported finding must include:
   - location with line references when available
