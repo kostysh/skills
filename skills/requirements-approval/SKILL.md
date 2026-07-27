@@ -6,9 +6,9 @@ description: "Coordinate customer-owned requirements decisions: triage open
   authoritative project documents. Use for approval workflows and «согласование
   требований»."
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 80b8d0da59e9bdd87c760a1042bdaf4261f4d17388a13962f639e1f76b455e65
+  skillforge-source-hash: 9eb5fffb10f40bdda800e0ae596399cef3b01dfea691c934e95ad98e6e605cb2
 ---
 
 # requirements-approval
@@ -102,14 +102,21 @@ Escalate only unresolved customer-owned decisions and keep proposed actions dist
 1. Extract open questions and preserve stable source codes; create a short project-local code only when the source lacks one.
 2. Identify the decision owner and affected product, architecture, specification, plan, data, or documentation artifacts for each question.
 3. Inspect authoritative project inputs, decisions, dependencies, and issue history before external research.
-4. Use current authoritative public sources only for factual parts that can narrow the question; do not use public facts to invent a customer preference or approval.
-5. Classify each question as resolved internally, customer input required, partial, or blocked by missing/conflicting authority.
-6. For customer input required, prepare a concise request in the customer's language with context, research, exact missing input, and current-scope choices.
-7. With exact GitHub target and mutation authority, hand creation to gh-utility and verify by fresh read; otherwise draft and list the missing repository, record target, applicable Project mapping, and authorization.
+4. Check current runtime evidence; record an authoritative answer as an internal resolution.
+5. Check the environment perimeter and contracts; do not escalate a choice they already fix.
+6. Check existing TODO, approval, and decision records; reuse the owning record or accepted answer.
+7. Test a narrower technical resolution or domain-owner route before asking for customer intent.
+8. Use current authoritative public sources only for factual parts that can narrow the question; do not use public facts to invent a customer preference or approval.
+9. Classify each question as resolved internally, customer input required, partial, or blocked by missing/conflicting authority.
+10. For customer input required, prepare a concise request in the customer's language with context, research, exact missing input, and current-scope choices.
+11. With exact GitHub target and mutation authority, hand creation to gh-utility and verify by fresh read; otherwise draft and list the missing repository, record target, applicable Project mapping, and authorization.
 
 Validation:
 
 - Every question names its decision owner, authority basis, affected artifacts, and next owner.
+- Runtime- or environment-resolved questions are not escalated.
+- Existing owning records are reused, not duplicated.
+- Technical or domain-owned questions stay internal unless customer-owned intent remains.
 - An internally resolved or authority-conflicted question is not escalated as a customer task.
 - Proposed and executed external actions are reported separately.
 - Every executed GitHub mutation has an exact target and fresh observed state.
@@ -163,6 +170,7 @@ Validation:
 
 ## Gotchas
 
+- **high** — Before customer escalation, separately test runtime, environment, existing owning records, and a narrower technical resolution.
 - **high** — A broad request to organize or review approvals does not identify an external mutation target; return drafts until exact action, target, and authorization are available.
 - **high** — Finding an email proves message presence, not sender authority, decision ownership, currentness, or acceptance of affected artifacts.
 - **high** — Public research may resolve current facts but cannot choose a customer preference or approve product scope.

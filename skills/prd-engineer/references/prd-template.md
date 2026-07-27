@@ -66,6 +66,11 @@ outcome_review_date:
 - Blocking product decisions:
 - Non-blocking gaps, owners, and decision triggers:
 
+## Source Universe Reconciliation
+| Source and locator | Kind | Atomic statement with conditions, exceptions, modality, and values | Requirement mapping or source-authorized disposition | Unresolved gap / owner |
+| --- | --- | --- | --- | --- |
+|  | prose clause / table row or note / email decision / mockup annotation |  |  |  |
+
 ## Executive Summary
 - Problem:
 - Why now:
@@ -161,6 +166,17 @@ Each important requirement should be:
 - verifiable: testable through observable behavior, measurement, or review evidence
 - prioritized: must, should, could, or explicitly deferred
 - traced: linked to a problem, user need, metric, source, or decision when the work is high risk
+
+Before claiming source completeness:
+
+- bound the source universe and applicable versions using repository authority rules;
+- atomize prose clauses, table rows and notes, email decisions, and mockup annotations;
+- preserve modality, conditions, exceptions, values, and locators rather than flattening them into a summary;
+- map every source atom to a requirement or explicit source-authorized disposition;
+- trace every material requirement back to its source atoms;
+- block readiness for unavailable, unmapped, ambiguously merged, or unauthorizedly dismissed atoms.
+
+A summary, derived register, or synthesized requirement list is navigation, not a disposition of the underlying source. It cannot make an omitted atom complete.
 
 Use the existing product corpus or repo artifact convention when one exists. If no convention exists, suggested prefixes are `PRD-R` for functional requirements, `PRD-NFR` for non-functional requirements, and `AC` for acceptance criteria. Reference `ASR`, `PD`, or `ADR` identifiers only when those architecture artifacts already exist; do not mint accepted architecture IDs from a PRD.
 

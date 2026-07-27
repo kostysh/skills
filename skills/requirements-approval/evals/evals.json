@@ -88,6 +88,54 @@
         "Requires fresh issue and Project readback after execution",
         "Does not claim the read-only test performed a mutation or authorize document/Git changes"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "Triage only Q-RUNTIME. Prepare a customer request only if current evidence leaves a customer-owned decision unresolved. Do not write to external systems.",
+      "expected_output": "The question is resolved internally from current runtime evidence and no customer request is drafted.",
+      "files": ["evals/fixtures/triage-falsifiers-input.md"],
+      "expectations": [
+        "Inspects the current integration and deployed route evidence named for Q-RUNTIME",
+        "Classifies Q-RUNTIME as resolved internally",
+        "Does not draft Italian customer copy or create a customer approval task",
+        "Traces the answer to current runtime evidence and names the affected behavior"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Triage only Q-ENV. Prepare a customer request only if the applicable environment perimeter leaves a customer-owned decision unresolved. Do not write to external systems.",
+      "expected_output": "The active environment contract resolves the current-scope question and no customer request is drafted.",
+      "files": ["evals/fixtures/triage-falsifiers-input.md"],
+      "expectations": [
+        "Inspects the mandatory seven-day environment limit",
+        "Classifies the 30-day link as unavailable in current scope rather than a customer preference",
+        "Does not draft Italian customer copy or create a customer approval task",
+        "Names a separately approved provider and environment change as the boundary for future reconsideration"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Triage only Q-TODO. Prepare a customer request only if no current owning approval record already covers the unresolved preference. Do not write to external systems.",
+      "expected_output": "The existing TODO-42 remains the single owning customer-approval record and no duplicate request or task is created.",
+      "files": ["evals/fixtures/triage-falsifiers-input.md"],
+      "expectations": [
+        "Finds and reuses TODO-42 as the owning unresolved record",
+        "Does not misclassify the weekday preference as internally resolved",
+        "Does not draft a duplicate customer request or propose a duplicate task",
+        "Routes follow-up through TODO-42 and preserves its affected-artifact links"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Triage only Q-TECH. Prepare a customer request only if a customer-owned decision remains after testing a narrower technical resolution and owner route. Do not write to external systems.",
+      "expected_output": "The implementation choice is routed to the architecture owner and no customer request is drafted.",
+      "files": ["evals/fixtures/triage-falsifiers-input.md"],
+      "expectations": [
+        "Recognizes storage placement as an architecture-owned technical choice",
+        "Routes the question to the architecture owner with the required volume and retention evidence",
+        "Does not draft Italian customer copy or create a customer approval task",
+        "Does not select object storage or the relational database itself"
+      ]
     }
   ]
 }

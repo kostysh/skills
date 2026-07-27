@@ -6,9 +6,9 @@ description: Create, refine, and review PRDs, product specs, feature and AI
   evaluation; or audit ambiguity, missing evidence, weak acceptance, and scope
   risk.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 761f99969a54f08cde71698ae9a07fa78d653b6f4b56cb0d167b2b22548a56fe
+  skillforge-source-hash: 86a19aa50d71a78ee5374c3a99ed4feba851cbfbebdea291e34a2ca10d1faa7a
 ---
 
 # prd-engineer
@@ -101,6 +101,21 @@ Validation:
 - `Authority` is explicitly `authoritative` or `non-authoritative` whenever readiness is assessed.
 - An unresolved equal- or unknown-authority conflict cannot produce a ready handoff.
 - Input authority, prior approval, or status metadata cannot authorize newly generated or materially changed PRD content.
+
+### Workflow stage: Reconcile the closed source universe
+
+Prevent summaries or polished synthesis from hiding omitted source obligations.
+
+1. Bound the applicable source universe through the established authority and currentness rules.
+2. Atomize prose clauses, table rows and notes, email decisions, and mockup annotations while preserving modality, conditions, exceptions, values, and locators.
+3. Map every atom to a PRD requirement or source-authorized disposition, and every material requirement back to its atoms.
+4. Treat summaries and derived registers as navigation, never disposition evidence.
+5. Block completeness and ready handoff for any unavailable, unmapped, ambiguously merged, or unauthorizedly dismissed in-scope atom.
+
+Validation:
+
+- Every bounded atom has a verifiable mapping or authorized disposition, with its qualifying details intact.
+- An omitted clause, table entry, email decision, or mockup annotation blocks completeness even when a summary exists.
 
 ### Workflow stage: Run discovery checkpoint
 
@@ -199,6 +214,7 @@ Validation:
 
 ## Gotchas
 
+- **high** — A summary or register cannot disposition the underlying source atoms.
 - **high** — A complete PRD template with vague content is still a bad PRD.
 - **high** — Do not fabricate users, research, metrics, constraints, or technical decisions; mark them as assumptions, TBDs, or open questions.
 - **medium** — Do not over-prescribe implementation details when acceptance criteria and boundaries are enough.

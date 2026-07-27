@@ -3,8 +3,8 @@ kind: SkillSource
 
 skill:
   name: prd-engineer
-  source-version: 0.1.6
-  recommended-skill-md-max-bytes: 20000
+  source-version: 0.1.7
+  recommended-skill-md-max-bytes: 21000
   description: >-
     Create, refine, and review PRDs, product specs, feature and AI requirements.
     Turn ideas into testable scope, non-goals, acceptance, rollout, and metrics;
@@ -27,7 +27,23 @@ copies:
     source: agents/openai.yaml
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
+  - id: copy-evals-evals
+    source: evals/evals.json
+    target: evals/evals.json
+    description: Portable behavioral scenario for closed-universe source reconciliation.
+  - id: copy-evals-fixture-source-bundle
+    source: evals/fixtures/source-bundle-input.md
+    target: evals/fixtures/source-bundle-input.md
+    description: Neutral mixed-format source bundle and incomplete PRD draft.
 supporting:
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Non-normative implementation log for closed-universe source reconciliation.
+  - id: supporting-forward-test-evidence-20260727-1
+    source: docs/forward-tests/forward-test-evidence-20260727-1.md
+    target: docs/forward-tests/forward-test-evidence-20260727-1.md
+    description: Non-normative blind forward-test evidence for source reconciliation.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
@@ -113,6 +129,18 @@ sections:
         - "`Authority` is explicitly `authoritative` or `non-authoritative` whenever readiness is assessed."
         - An unresolved equal- or unknown-authority conflict cannot produce a ready handoff.
         - Input authority, prior approval, or status metadata cannot authorize newly generated or materially changed PRD content.
+    - id: stage-reconcile-source-universe
+      title: Reconcile the closed source universe
+      goal: Prevent summaries or polished synthesis from hiding omitted source obligations.
+      steps:
+        - Bound the applicable source universe through the established authority and currentness rules.
+        - Atomize prose clauses, table rows and notes, email decisions, and mockup annotations while preserving modality, conditions, exceptions, values, and locators.
+        - Map every atom to a PRD requirement or source-authorized disposition, and every material requirement back to its atoms.
+        - Treat summaries and derived registers as navigation, never disposition evidence.
+        - Block completeness and ready handoff for any unavailable, unmapped, ambiguously merged, or unauthorizedly dismissed in-scope atom.
+      validation:
+        - Every bounded atom has a verifiable mapping or authorized disposition, with its qualifying details intact.
+        - An omitted clause, table entry, email decision, or mockup annotation blocks completeness even when a summary exists.
     - id: stage-discovery
       title: Run discovery checkpoint
       goal: Prevent a PRD from becoming a polished guess.
@@ -220,6 +248,9 @@ sections:
       rationale: documentation owns Diataxis and docs IA; this skill owns PRD content and requirements quality.
   commands: []
   gotchas:
+    - id: gotcha-summary-is-not-disposition
+      priority: high
+      text: A summary or register cannot disposition the underlying source atoms.
     - id: gotcha-template-is-not-quality
       priority: high
       text: A complete PRD template with vague content is still a bad PRD.

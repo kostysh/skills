@@ -25,3 +25,10 @@
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | - | PASS |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | - | Independent scoped PASS |
 | [logs/implementation-log-20260717-1.md](logs/implementation-log-20260717-1.md) | Aequitas-ADR/app#210 | Independent PASS |
+| [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | Aequitas-ADR/app#225 | Checkpoint 1 evidence |
+
+## Forward Tests
+
+| Evidence | Related issue | Scope |
+| --- | --- | --- |
+| [forward-tests/forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) | Aequitas-ADR/app#225 | Blind mixed-format source reconciliation |

@@ -2,8 +2,8 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: requirements-approval
-  source-version: 0.2.0
-  recommended-skill-md-max-bytes: 14000
+  source-version: 0.2.1
+  recommended-skill-md-max-bytes: 15000
   description: >-
     Coordinate customer-owned requirements decisions: triage open questions,
     research resolvable facts, prepare approval requests, process supplied or
@@ -36,7 +36,23 @@ copies:
     source: evals/fixtures/authorized-handoff-input.md
     target: evals/fixtures/authorized-handoff-input.md
     description: Neutral fixture for an exact authorized GitHub handoff.
+  - id: copy-evals-fixture-triage-falsifiers
+    source: evals/fixtures/triage-falsifiers-input.md
+    target: evals/fixtures/triage-falsifiers-input.md
+    description: Neutral fixture for four pre-customer falsification checks.
 supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Navigation for supporting implementation and forward-test evidence.
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Non-normative implementation log for pre-customer falsification checks.
+  - id: supporting-forward-test-evidence-20260727-1
+    source: docs/forward-tests/forward-test-evidence-20260727-1.md
+    target: docs/forward-tests/forward-test-evidence-20260727-1.md
+    description: Non-normative blind forward-test evidence for triage falsifiers.
   - id: supporting-implementation-log-20260610-1
     source: docs/logs/implementation-log-20260610-1.md
     target: docs/logs/implementation-log-20260610-1.md
@@ -89,12 +105,19 @@ sections:
         - Extract open questions and preserve stable source codes; create a short project-local code only when the source lacks one.
         - Identify the decision owner and affected product, architecture, specification, plan, data, or documentation artifacts for each question.
         - Inspect authoritative project inputs, decisions, dependencies, and issue history before external research.
+        - Check current runtime evidence; record an authoritative answer as an internal resolution.
+        - Check the environment perimeter and contracts; do not escalate a choice they already fix.
+        - Check existing TODO, approval, and decision records; reuse the owning record or accepted answer.
+        - Test a narrower technical resolution or domain-owner route before asking for customer intent.
         - Use current authoritative public sources only for factual parts that can narrow the question; do not use public facts to invent a customer preference or approval.
         - Classify each question as resolved internally, customer input required, partial, or blocked by missing/conflicting authority.
         - For customer input required, prepare a concise request in the customer's language with context, research, exact missing input, and current-scope choices.
         - With exact GitHub target and mutation authority, hand creation to gh-utility and verify by fresh read; otherwise draft and list the missing repository, record target, applicable Project mapping, and authorization.
       validation:
         - Every question names its decision owner, authority basis, affected artifacts, and next owner.
+        - Runtime- or environment-resolved questions are not escalated.
+        - Existing owning records are reused, not duplicated.
+        - Technical or domain-owned questions stay internal unless customer-owned intent remains.
         - An internally resolved or authority-conflicted question is not escalated as a customer task.
         - Proposed and executed external actions are reported separately.
         - Every executed GitHub mutation has an exact target and fresh observed state.
@@ -163,6 +186,9 @@ sections:
       rationale: git-engineer owns Git authorization, history changes, and ref evidence.
   commands: []
   gotchas:
+    - id: gotcha-falsify-customer-need
+      priority: high
+      text: Before customer escalation, separately test runtime, environment, existing owning records, and a narrower technical resolution.
     - id: gotcha-preview-vs-execute
       priority: high
       text: A broad request to organize or review approvals does not identify an external mutation target; return drafts until exact action, target, and authorization are available.

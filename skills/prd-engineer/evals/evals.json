@@ -1,0 +1,18 @@
+{
+  "skill_name": "prd-engineer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review the supplied draft PRD against the complete source bundle and assess whether it is ready for delivery planning.",
+      "expected_output": "The review inventories the mixed-format source atoms, identifies each omitted obligation, and blocks readiness until every atom is mapped or has a source-authorized disposition.",
+      "files": ["evals/fixtures/source-bundle-input.md"],
+      "expectations": [
+        "Treats the named prose clause, each table row, the email decision, and the mockup annotation as independently accountable source atoms",
+        "Finds that the draft lost the prose exception, one table-row obligation, the email decision, and the mockup annotation",
+        "Does not treat the executive summary or synthesized requirements list as disposition evidence",
+        "Preserves source locators, modality, conditions, exceptions, and values in the reconciliation",
+        "Reports the delivery-planning handoff as blocked until every omission is mapped or source-authorized as out of scope"
+      ]
+    }
+  ]
+}
