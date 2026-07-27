@@ -59,7 +59,30 @@ credentials.
 - `pnpm format:check`, `pnpm lint` и `pnpm test:ci` — PASS после offline
   установки только lockfile-defined dependencies; manifests и lockfile не
   менялись.
-- Blind forward-test и реальный STAGE rehearsal — ожидают выполнения.
+- Blind no-fork forward-test — PASS: evaluator без подсказки о требуемом
+  решении развёл Cloudflare Access, application OTP и infrastructure/CI
+  credentials; выбрал уникальную непостоянную session, UTC freshness,
+  confidential input и fail-closed status.
+- Реальный clean-session STAGE rehearsal — PASS:
+  - canonical target открыл ожидаемый Cloudflare Access gate;
+  - authoritative Access identity восстановлена из 20 согласованных прошлых
+    писем подключённого read-only Gmail, без публикации адреса;
+  - Access challenge запрошен в `2026-07-27T19:22:12.483Z`, самое новое
+    matching-письмо получено в `2026-07-27T19:22:18Z` (`+5.517s`);
+  - после Access та же session достигла `/auth/login`;
+  - отдельный application challenge для committed synthetic STAGE fixture
+    запрошен в `2026-07-27T19:24:26.907Z`, matching-письмо получено в
+    `2026-07-27T19:24:33Z` (`+6.093s`);
+  - после второго OTP та же session достигла authenticated
+    `/app/contexts`; terminal context state видим;
+  - наблюдались реальные запросы к `api.stage.aequitasadr.app`, network
+    intercepts не использовались;
+  - console и page errors отсутствовали, `localStorage` и `sessionStorage`
+    не содержали ключей;
+  - session закрыта, `agent-browser session list` подтвердил отсутствие
+    активных sessions.
+- OTP, email, cookies, tokens, raw fixture identity, response bodies,
+  screenshots, HAR, traces и saved browser state в evidence не сохранены.
 
 ### Skill Review Evidence
 
@@ -75,26 +98,30 @@ Anti-claims:
 
 | Finding | Concrete change | Evidence | Status |
 | --- | --- | --- | --- |
-| `R-SKILL-007`: отсутствует project-ready Access recipe | Conditional active reference и root trigger | Compiler parity, blind forward-test и fresh-session STAGE rehearsal | implemented |
+| `R-SKILL-007`: отсутствует project-ready Access recipe | Conditional active reference и root trigger | Compiler parity, blind forward-test и fresh-session STAGE rehearsal | verified |
 
 Независимый `skill-reviewer` относится к checkpoint 4 и ещё не выполнялся.
 
 ## Deviations From Plan
 
-Нет.
+Первоначально локальный `BOOTSTRAP_ADMIN_EMAIL` был ошибочно рассмотрен как
+возможная Access identity. Security gate остановил действие до outbound
+challenge: значение не отправлялось и не раскрывалось. После уточнения
+оператора authoritative identity была самостоятельно восстановлена из прошлых
+Cloudflare Access писем; local fake исключён из workflow.
 
 ## Side Effects
 
-Изменяется только documentation-only skill; external browser и mailbox state на
-этом этапе не менялись.
+Изменяется только documentation-only skill. Для acceptance созданы два
+одноразовых OTP challenge в STAGE и прочитаны два matching-письма через
+read-only Gmail; mailbox labels/state не менялись. Browser session закрыта без
+сохранения state.
 
 ## Follow-up
 
-- Выполнить compiler gates и out-of-place packaged readback.
-- Выполнить blind no-fork forward-test.
-- Выполнить fresh-session STAGE rehearsal без сохранения secret/state artifacts.
 - Перед финальным закрытием получить независимые reviews на stable snapshot.
 
 ## Final Status
 
-IMPLEMENTED, NOT VERIFIED.
+PASS_FOR_CHECKPOINT_2 — active behavior и fresh-session STAGE acceptance
+подтверждены; формальный independent review остаётся обязательным checkpoint 4.
