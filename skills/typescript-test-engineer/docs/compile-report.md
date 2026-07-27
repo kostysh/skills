@@ -10,6 +10,7 @@ Generated from `skill.yaml`.
 - `docs/README.md`
 - `docs/forward-tests/forward-test-evidence-20260727-1.md`
 - `docs/forward-tests/forward-test-evidence-20260727-2.md`
+- `docs/forward-tests/forward-test-evidence-20260727-3.md`
 - `docs/logs/implementation-log-20260715-1.md`
 - `docs/logs/implementation-log-20260727-1.md`
 - `evals/evals.json`

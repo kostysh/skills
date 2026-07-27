@@ -75,6 +75,10 @@ supporting:
     source: "docs/forward-tests/forward-test-evidence-20260727-2.md"
     target: "docs/forward-tests/forward-test-evidence-20260727-2.md"
     description: "Non-normative fresh blind evidence after #228 P1 remediation."
+  - id: "supporting-forward-test-evidence-20260727-3"
+    source: "docs/forward-tests/forward-test-evidence-20260727-3.md"
+    target: "docs/forward-tests/forward-test-evidence-20260727-3.md"
+    description: "Non-normative exact-snapshot blind evidence for #228 closure."
 surfaces:
   active:
     requiredReferences: []

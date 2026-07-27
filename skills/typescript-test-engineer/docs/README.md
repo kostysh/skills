@@ -34,6 +34,7 @@
 | [logs/forward-tests-20260710.md](logs/forward-tests-20260710.md) | `f601c74a...0ec35df` | 13/13 sampled cases PASS |
 | [forward-tests/forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) | initial candidate `0.1.8` | Blind FAIL after independent review |
 | [forward-tests/forward-test-evidence-20260727-2.md](forward-tests/forward-test-evidence-20260727-2.md) | uncommitted P1 remediation candidate | Output PASS; snapshot identity incomplete |
+| [forward-tests/forward-test-evidence-20260727-3.md](forward-tests/forward-test-evidence-20260727-3.md) | `7cc9a07a09bb6cb5712e4da66710cd057b8414a7` | Exact-snapshot fresh blind PASS |
 
 ## Обслуживание описания
 

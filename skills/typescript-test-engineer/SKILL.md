@@ -8,7 +8,7 @@ description: Design, implement, review, and diagnose TypeScript tests for Node,
 metadata:
   source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 47e8c8045846ef3ad17b06a7d2b8e1f0e11e70bdc98280df413db09864459794
+  skillforge-source-hash: f7e585889225530cc3aee5ade70c0b2834fe75485f538e92d4056976cc8b92c1
 ---
 
 # typescript-test-engineer
