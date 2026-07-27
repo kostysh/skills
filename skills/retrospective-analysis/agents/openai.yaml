@@ -1,0 +1,4 @@
+interface:
+  display_name: "Retrospective Analysis"
+  short_description: "Run evidence-backed targeted or full retrospectives"
+  default_prompt: "Use $retrospective-analysis to analyze completed work from primary evidence. Choose targeted or full evidentiary depth, verify causal chains and prior fixes, deduplicate by systemic prevention, and keep task creation behind a separate operator approval gate."
