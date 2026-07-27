@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.6"
+  source-version: "0.1.7"
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, change, and diagnose Hono API services. Use for Hono routing,
@@ -12,6 +12,12 @@ skill:
 fragments:
   overview: "fragments/overview.md"
 references:
+  - id: "ref-high-risk-backend-contract"
+    title: "High-risk Backend Contract"
+    source: "references/high-risk-backend-contract.md"
+    target: "references/high-risk-backend-contract.md"
+    required: false
+    trigger: "Read this for high-risk Hono routes involving a public API, Supabase-backed state, authorization, money, retries, external resources, or required audit evidence."
   - id: "ref-framework-currency"
     title: "Framework Currency"
     source: "references/framework-currency.md"
@@ -129,6 +135,10 @@ copies:
     target: "test/docs-contract.test.mjs"
     description: "Structural docs-contract tests; not behavioral Hono runtime evidence."
 supporting:
+  - id: "supporting-implementation-log-20260727-1"
+    source: "docs/logs/implementation-log-20260727-1.md"
+    target: "docs/logs/implementation-log-20260727-1.md"
+    description: "Non-normative implementation and review evidence for the high-risk backend contract matrix."
   - id: "supporting-implementation-log-20260715-1"
     source: "docs/logs/implementation-log-20260715-1.md"
     target: "docs/logs/implementation-log-20260715-1.md"
@@ -137,6 +147,7 @@ surfaces:
   active:
     requiredReferences: []
     optionalReferences:
+      - "ref-high-risk-backend-contract"
       - "ref-framework-currency"
       - "ref-architecture"
       - "ref-auth"
@@ -167,6 +178,7 @@ sections:
     - "When any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority."
     - "Make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract."
     - "Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion."
+    - "When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Hono boundary complete until every applicable Hono-owned row has an exact contract and executable evidence."
   whenToUse:
     - "Designing, implementing, diagnosing, or changing Hono endpoints, routers, middleware, Context usage, or app composition."
     - "Integrating Hono validation, contracts, errors, logging, auth admission, caching, streaming, or runtime adapters."
@@ -182,10 +194,12 @@ sections:
       steps:
         - "Inspect the project entrypoint or app factory, route composition, middleware and error hooks, installed versions, runtime config, contracts, and existing test harness."
         - "Classify the endpoint and identify which security, data, platform, or architecture decisions belong to another skill."
+        - "Classify whether the high-risk backend matrix applies; if it does, load it and identify the Hono-owned rows, cross-layer handoffs, and missing authority before changing the route."
         - "Select only the references triggered by the touched surface and resolve any installed-versus-latest compatibility gap."
       validation:
         - "The intended observable behavior and authoritative inputs are known, or the output is explicitly blocked or guidance-only."
         - "No specialized security, data, runtime, or architecture verdict is invented by Hono guidance."
+        - "Applicable Hono-owned `HRB-*` rows have an exact HTTP/runtime contract, negative oracle, evidence contour, and owner, or the result remains blocked or guidance-only."
     - id: "stage-implement-hono-boundary"
       title: "Implement the Hono boundary"
       goal: "Preserve compatible project composition while making the smallest Hono-specific change that delivers the requested behavior."
@@ -202,10 +216,12 @@ sections:
       steps:
         - "Run the narrowest project checks for pure logic, Hono app integration, and the real runtime boundary required by the claim."
         - "Exercise negative admission, validation, error, cancellation, and lifecycle transitions relevant to the change."
+        - "For a triggered high-risk backend matrix, produce a row-by-row test inventory and preserve unresolved database, product, architecture, or security-verdict decisions as explicit handoffs."
         - "Report delivered behavior, interface changes, compatibility constraints, checks, evidence limits, and remaining risks."
       validation:
         - "app.request, mocks, schemas, OpenAPI, and docs-contract tests are not described as production-runtime proof."
         - "A blocked or unverified boundary remains explicit instead of being reported production-ready."
+        - "Every applicable Hono-owned matrix row maps to a pure, `app.request()`, runtime, or direct-data-boundary check at the strength required by the claim."
   interop:
     - id: "interop-implementation"
       domain: "Implementation scope and evidence discipline"

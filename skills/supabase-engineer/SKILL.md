@@ -5,9 +5,9 @@ description: Build, review, debug, and operate Supabase across schema, Data API,
   for Supabase design, implementation, boundary verification, CLI/MCP workflows,
   or incidents; pair with domain owners where they determine correctness.
 metadata:
-  source-version: 0.1.5
+  source-version: 0.1.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 720ddd708112f629cec72b5d82f44f00c869ab88962ccec186349d204e84b154
+  skillforge-source-hash: fd0f58cef8be5b900a4ea787412f022158c895abae939dd1d0651acc78dd097b
 ---
 
 # supabase-engineer
@@ -18,7 +18,8 @@ metadata:
 2. Inspect repository authority, installed versions, target environment, data ownership, and trust or authorization boundaries before choosing a Supabase pattern.
 3. For version-sensitive Auth, keys, CLI, MCP, Edge Functions, or Realtime behavior, check installed versions and current official Supabase guidance when accessible; otherwise report the freshness gap and avoid an unverified contract claim.
 4. Load only the active references whose concrete trigger matches the task.
-5. Preserve existing project conventions unless an explicit requirement or verified platform invariant requires a change.
+5. When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Supabase boundary complete until every applicable Supabase-owned row has an exact contract and executable evidence.
+6. Preserve existing project conventions unless an explicit requirement or verified platform invariant requires a change.
 
 ## When to use this skill
 
@@ -116,12 +117,14 @@ Make the requested outcome, operating mode, authority, side-effect boundary, and
 
 1. Identify the requested mode, target environment, downstream consumer, and whether mutations are authorized.
 2. Discover repository conventions, installed Supabase and framework versions, migration model, data ownership, and trust or authorization boundaries.
-3. Apply source precedence in this order: explicit user requirements, repository authority, current official platform contracts, then this skill's defaults.
-4. Stop on unresolved conflicts that would change data ownership, tenant isolation, authorization, production safety, migration strategy, or external contracts; otherwise record a bounded assumption.
+3. Classify whether the high-risk backend matrix applies; if it does, load it and identify the Supabase-owned rows, cross-layer handoffs, and missing authority before designing or changing the boundary.
+4. Apply source precedence in this order: explicit user requirements, repository authority, current official platform contracts, then this skill's defaults.
+5. Stop on unresolved conflicts that would change data ownership, tenant isolation, authorization, production safety, migration strategy, or external contracts; otherwise record a bounded assumption.
 
 Validation:
 
 - The task can be completed or handed off without inventing product, architecture, security, privacy, or platform authority.
+- Applicable Supabase-owned `HRB-*` rows have an exact database contract, negative oracle, evidence contour, and owner, or the result remains partial or blocked.
 
 ### Workflow stage: Deliver and verify the requested outcome
 
@@ -130,12 +133,14 @@ Produce the smallest complete Supabase result and match evidence to the real bou
 1. Load the smallest relevant references and verify version-sensitive claims against installed types or help plus current official sources when accessible; if freshness remains uncertain, limit the claim and report the gap.
 2. Design, implement, review, debug, or operate only within the authorized mode and side-effect boundary.
 3. Verify the direct production-equivalent path where the claim depends on Auth, Data API, RLS, RPC, Storage, Realtime, or Edge Functions; label simulations and missing live checks explicitly.
-4. Report status as completed, partial, or blocked with decisions, artifacts, Supabase boundaries, evidence, and remaining risk.
+4. For a triggered high-risk backend matrix, produce a row-by-row test inventory and preserve unresolved HTTP, product, legal, architecture, or security-verdict decisions as explicit handoffs.
+5. Report status as completed, partial, or blocked with decisions, artifacts, Supabase boundaries, evidence, and remaining risk.
 
 Validation:
 
 - Structural artifacts, generated files, mocks, and happy-path tests are not treated as proof of a broader runtime or security capability.
 - The final status is no stronger than the available authority and boundary evidence.
+- Every applicable Supabase-owned matrix row maps to a direct SQL, RPC, RLS, Storage, Realtime, or production-equivalent check that would fail for the prohibited outcome.
 
 ## Interop priority
 
@@ -155,7 +160,7 @@ Validation:
 ## Policies
 
 ### SQL/API design output policy
-For Supabase-backed API work, design notes must name tables, RPCs, grants/RLS, service-role exceptions, direct table paths, validation/constraint mapping, audit/history payload profile, and tests before migration application.
+For Supabase-backed API work, design notes must name tables, RPCs, grants/RLS, service-role exceptions, direct table paths, validation/constraint mapping, audit/history payload profile, and tests before migration application. When the high-risk backend trigger applies, this output is organized by the applicable `HRB-*` rows and includes a row-by-row executable test inventory.
 
 ### Cloud side-effect policy
 Prefer local or isolated development environments. Do not connect MCP to production data; if exceptional read-only inspection is explicitly authorized, require project scoping, read-only mode, minimum tool features, manual review, and no mutating calls. Apply cloud changes through reviewed repository migrations and deployment workflows rather than ad hoc MCP writes.
@@ -193,6 +198,9 @@ Report:
 - [Troubleshooting](references/troubleshooting.md) — Read this when you need Common errors + fixes.
 - [Vector](references/vector.md) — Read this when you need Vector embeddings (pgvector).
 - [Webhooks](references/webhooks.md) — Read this before authenticating or testing Database Webhooks, Auth HTTP Hooks, or external-provider webhooks.
+
+## Optional references
+- [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Supabase-backed commands or reads involving a public API, persistent state, authorization, concurrency, money, external resources, or required audit evidence.
 
 ## Portability rules
 

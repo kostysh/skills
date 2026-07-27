@@ -2,12 +2,13 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.5`
+- Skill source version: `0.1.6`
 
 ## Source files
 - `agents/openai.yaml`
 - `docs/logs/implementation-log-20260715-1.md`
 - `docs/logs/implementation-log-20260717-1.md`
+- `docs/logs/implementation-log-20260727-1.md`
 - `fragments/overview.md`
 - `references/architecture.md`
 - `references/auth.md`
@@ -16,6 +17,7 @@ Generated from `skill.yaml`.
 - `references/database.md`
 - `references/db-functions.md`
 - `references/edge-functions.md`
+- `references/high-risk-backend-contract.md`
 - `references/migrations-cli.md`
 - `references/operations-observability.md`
 - `references/operations-release.md`

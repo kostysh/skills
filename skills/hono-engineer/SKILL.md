@@ -6,9 +6,9 @@ description: Build, change, and diagnose Hono API services. Use for Hono
   testing, security, data, or architecture skills when those domains determine
   correctness.
 metadata:
-  source-version: 0.1.6
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 89781d2f2361a14393d6f08158c3fb0f4ddfb3970c3b95d6b1bbb6732b10bb26
+  skillforge-source-hash: 6d32329b0270f4e47bc0cb1399550b45f5e6171be5a3ab1f6c90914b7a4831de
 ---
 
 # hono-engineer
@@ -23,6 +23,7 @@ metadata:
 6. When any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority.
 7. Make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract.
 8. Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion.
+9. When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Hono boundary complete until every applicable Hono-owned row has an exact contract and executable evidence.
 
 ## When to use this skill
 
@@ -114,12 +115,14 @@ Make the requested behavior, authority, version compatibility, and proof boundar
 
 1. Inspect the project entrypoint or app factory, route composition, middleware and error hooks, installed versions, runtime config, contracts, and existing test harness.
 2. Classify the endpoint and identify which security, data, platform, or architecture decisions belong to another skill.
-3. Select only the references triggered by the touched surface and resolve any installed-versus-latest compatibility gap.
+3. Classify whether the high-risk backend matrix applies; if it does, load it and identify the Hono-owned rows, cross-layer handoffs, and missing authority before changing the route.
+4. Select only the references triggered by the touched surface and resolve any installed-versus-latest compatibility gap.
 
 Validation:
 
 - The intended observable behavior and authoritative inputs are known, or the output is explicitly blocked or guidance-only.
 - No specialized security, data, runtime, or architecture verdict is invented by Hono guidance.
+- Applicable Hono-owned `HRB-*` rows have an exact HTTP/runtime contract, negative oracle, evidence contour, and owner, or the result remains blocked or guidance-only.
 
 ### Workflow stage: Implement the Hono boundary
 
@@ -140,12 +143,14 @@ Match evidence and completion claims to the boundary actually exercised.
 
 1. Run the narrowest project checks for pure logic, Hono app integration, and the real runtime boundary required by the claim.
 2. Exercise negative admission, validation, error, cancellation, and lifecycle transitions relevant to the change.
-3. Report delivered behavior, interface changes, compatibility constraints, checks, evidence limits, and remaining risks.
+3. For a triggered high-risk backend matrix, produce a row-by-row test inventory and preserve unresolved database, product, architecture, or security-verdict decisions as explicit handoffs.
+4. Report delivered behavior, interface changes, compatibility constraints, checks, evidence limits, and remaining risks.
 
 Validation:
 
 - app.request, mocks, schemas, OpenAPI, and docs-contract tests are not described as production-runtime proof.
 - A blocked or unverified boundary remains explicit instead of being reported production-ready.
+- Every applicable Hono-owned matrix row maps to a pure, `app.request()`, runtime, or direct-data-boundary check at the strength required by the claim.
 
 ## Interop priority
 
@@ -177,6 +182,7 @@ Match proof to the claim: unit tests cover pure logic, app.request covers Hono i
 Report the delivered or proposed HTTP/runtime behavior, changed interfaces, installed-versus-latest compatibility constraints, checks and their boundaries, blocked or unverified work, and residual risk.
 
 ## Optional references
+- [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Hono routes involving a public API, Supabase-backed state, authorization, money, retries, external resources, or required audit evidence.
 - [Framework Currency](references/framework-currency.md) — Read this before a version-sensitive Hono, adapter, or runtime decision, or when installed and latest versions may differ.
 - [Architecture](references/architecture.md) — Read this when Hono app composition, route type inference, layering, or dependency boundaries are in scope.
 - [Auth](references/auth.md) — Read this when Hono middleware integrates API keys, JWT/JWKS, mTLS metadata, cookie sessions, CSRF, pending sessions, authorization, or protected long-lived endpoints.

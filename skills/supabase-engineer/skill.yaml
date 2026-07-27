@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: supabase-engineer
-  source-version: 0.1.5
+  source-version: 0.1.6
   recommended-skill-md-max-bytes: 20000
   description: Build, review, debug, and operate Supabase across schema, Data API, Auth, RLS, Storage, Realtime, Edge Functions, migrations, and operations. Use for Supabase design, implementation, boundary verification, CLI/MCP workflows, or incidents; pair with domain owners where they determine correctness.
 fragments:
@@ -44,6 +44,12 @@ references:
     target: references/db-functions.md
     required: true
     trigger: Read this when you need database functions, triggers, security-definer RPCs, and helper-function authorization.
+  - id: ref-high-risk-backend-contract
+    title: High-risk Backend Contract
+    source: references/high-risk-backend-contract.md
+    target: references/high-risk-backend-contract.md
+    required: false
+    trigger: Read this for high-risk Supabase-backed commands or reads involving a public API, persistent state, authorization, concurrency, money, external resources, or required audit evidence.
   - id: ref-references-edge-functions
     title: Edge Functions
     source: references/edge-functions.md
@@ -123,6 +129,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20260727-1
+    source: docs/logs/implementation-log-20260727-1.md
+    target: docs/logs/implementation-log-20260727-1.md
+    description: Non-normative implementation and review evidence for the high-risk backend contract matrix.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
@@ -152,7 +162,8 @@ surfaces:
       - ref-references-troubleshooting
       - ref-references-vector
       - ref-references-webhooks
-    optionalReferences: []
+    optionalReferences:
+      - ref-high-risk-backend-contract
   supportingGlobs:
     - docs/*
 sections:
@@ -161,6 +172,7 @@ sections:
     - Inspect repository authority, installed versions, target environment, data ownership, and trust or authorization boundaries before choosing a Supabase pattern.
     - For version-sensitive Auth, keys, CLI, MCP, Edge Functions, or Realtime behavior, check installed versions and current official Supabase guidance when accessible; otherwise report the freshness gap and avoid an unverified contract claim.
     - Load only the active references whose concrete trigger matches the task.
+    - When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Supabase boundary complete until every applicable Supabase-owned row has an exact contract and executable evidence.
     - Preserve existing project conventions unless an explicit requirement or verified platform invariant requires a change.
   whenToUse:
     - Building, refactoring, reviewing, or debugging Supabase-backed applications.
@@ -177,10 +189,12 @@ sections:
       steps:
         - Identify the requested mode, target environment, downstream consumer, and whether mutations are authorized.
         - Discover repository conventions, installed Supabase and framework versions, migration model, data ownership, and trust or authorization boundaries.
+        - Classify whether the high-risk backend matrix applies; if it does, load it and identify the Supabase-owned rows, cross-layer handoffs, and missing authority before designing or changing the boundary.
         - "Apply source precedence in this order: explicit user requirements, repository authority, current official platform contracts, then this skill's defaults."
         - Stop on unresolved conflicts that would change data ownership, tenant isolation, authorization, production safety, migration strategy, or external contracts; otherwise record a bounded assumption.
       validation:
         - The task can be completed or handed off without inventing product, architecture, security, privacy, or platform authority.
+        - Applicable Supabase-owned `HRB-*` rows have an exact database contract, negative oracle, evidence contour, and owner, or the result remains partial or blocked.
     - id: stage-deliver-verified-outcome
       title: Deliver and verify the requested outcome
       goal: Produce the smallest complete Supabase result and match evidence to the real boundary being claimed.
@@ -188,10 +202,12 @@ sections:
         - Load the smallest relevant references and verify version-sensitive claims against installed types or help plus current official sources when accessible; if freshness remains uncertain, limit the claim and report the gap.
         - Design, implement, review, debug, or operate only within the authorized mode and side-effect boundary.
         - Verify the direct production-equivalent path where the claim depends on Auth, Data API, RLS, RPC, Storage, Realtime, or Edge Functions; label simulations and missing live checks explicitly.
+        - For a triggered high-risk backend matrix, produce a row-by-row test inventory and preserve unresolved HTTP, product, legal, architecture, or security-verdict decisions as explicit handoffs.
         - Report status as completed, partial, or blocked with decisions, artifacts, Supabase boundaries, evidence, and remaining risk.
       validation:
         - Structural artifacts, generated files, mocks, and happy-path tests are not treated as proof of a broader runtime or security capability.
         - The final status is no stronger than the available authority and boundary evidence.
+        - Every applicable Supabase-owned matrix row maps to a direct SQL, RPC, RLS, Storage, Realtime, or production-equivalent check that would fail for the prohibited outcome.
   interop:
     - id: interop-architecture
       domain: system topology, service decomposition, deployment model, ASRs, and architecture trade-offs
@@ -230,7 +246,7 @@ sections:
   policies:
     - id: policy-sql-api-design-output
       title: SQL/API design output policy
-      text: For Supabase-backed API work, design notes must name tables, RPCs, grants/RLS, service-role exceptions, direct table paths, validation/constraint mapping, audit/history payload profile, and tests before migration application.
+      text: For Supabase-backed API work, design notes must name tables, RPCs, grants/RLS, service-role exceptions, direct table paths, validation/constraint mapping, audit/history payload profile, and tests before migration application. When the high-risk backend trigger applies, this output is organized by the applicable `HRB-*` rows and includes a row-by-row executable test inventory.
     - id: policy-cloud-side-effects
       title: Cloud side-effect policy
       text: Prefer local or isolated development environments. Do not connect MCP to production data; if exceptional read-only inspection is explicitly authorized, require project scoping, read-only mode, minimum tool features, manual review, and no mutating calls. Apply cloud changes through reviewed repository migrations and deployment workflows rather than ad hoc MCP writes.

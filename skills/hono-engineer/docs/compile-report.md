@@ -2,12 +2,13 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.6`
+- Skill source version: `0.1.7`
 - CLI package version: `0.1.0`
 
 ## Source files
 - `agents/openai.yaml`
 - `docs/logs/implementation-log-20260715-1.md`
+- `docs/logs/implementation-log-20260727-1.md`
 - `fragments/overview.md`
 - `package.json`
 - `references/architecture.md`
@@ -16,6 +17,7 @@ Generated from `skill.yaml`.
 - `references/contracts-types.md`
 - `references/errors-logs.md`
 - `references/framework-currency.md`
+- `references/high-risk-backend-contract.md`
 - `references/observability.md`
 - `references/perf-security.md`
 - `references/pipelines.md`

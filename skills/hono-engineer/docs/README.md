@@ -2,7 +2,7 @@
 
 Эта папка содержит supporting и historical surface. Активные инструкции остаются в `SKILL.md` и явно подключенных `references/*`.
 
-> `PASS` в старых логах может означать только авторский structural/self-check конкретной реализации. Актуальный independent capability verdict и evidence limits зафиксированы в implementation log 2026-07-13.
+> `PASS` в старых логах может означать только авторский structural/self-check конкретной реализации. Актуальный independent verdict и evidence limits для каждого изменения зафиксированы в соответствующем implementation log; для #227 это log 2026-07-27.
 
 ## Issues
 
@@ -23,6 +23,7 @@
 | [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS — independent re-audit |
 | [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) | Direct operator request | PASS — independent re-audit |
+| [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | Aequitas-ADR/app#227 | High-risk backend contract matrix; independent change-review PASS |
 
 ## Review Evidence
 

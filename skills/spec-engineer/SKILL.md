@@ -9,9 +9,9 @@ compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.9
+  source-version: 0.2.10
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 33c2ef9f74331efbd1882aa290d34f8b86bcc190ece52af4247d74bbfb677455
+  skillforge-source-hash: 5b69dff7ad5755f61171b78f2d66ded97ab6c36e7f4351d64ef9dac5809c34ff
 ---
 
 # spec-engineer
@@ -26,8 +26,9 @@ metadata:
 6. Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
 7. Do not require layers, scaffolds, config, wrappers, or future extension points unless they are necessary for the current capability or explicitly labeled substrate with a dependent capability.
 8. For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
-9. Before creating or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map, check whether the current repository defines artifact conventions and follow them when present.
-10. Choose the smallest specification depth that can guide correct implementation and verification for this task.
+9. For high-risk backend work involving a public API, persistent state, authorization, money, retries, external resources, or required audit evidence, read High-risk backend contract matrix and require its complete row-by-row contract and test inventory before a `ready for coding` handoff.
+10. Before creating or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map, check whether the current repository defines artifact conventions and follow them when present.
+11. Choose the smallest specification depth that can guide correct implementation and verification for this task.
 
 ## When to use this skill
 
@@ -85,10 +86,11 @@ Turn vague intent into a bounded engineering target before writing requirements.
 6. Classify risk as low, medium, or high when the source material provides or implies it, and use that classification with criticality to choose spec depth.
 7. List source material, authority, approval/readiness, and the named downstream consumer; same-session PRDs, architecture notes, specs, or plans are outputs rather than higher authority for their own expansion.
 8. For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
-9. Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
-10. Reject future-only substrate such as layers, scaffolds, config knobs, wrappers, or extension points unless a current requirement, accepted architecture constraint, or dependent capability needs it.
-11. For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
-12. Add initial anti-claims that keep the spec from implying broader behavior than requested.
+9. When the high-risk backend trigger applies, load High-risk backend contract matrix, include every `HRB-*` row, and mark each row applicable or `not_applicable` with a source-backed reason.
+10. Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
+11. Reject future-only substrate such as layers, scaffolds, config knobs, wrappers, or extension points unless a current requirement, accepted architecture constraint, or dependent capability needs it.
+12. For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
+13. Add initial anti-claims that keep the spec from implying broader behavior than requested.
 
 Validation:
 
@@ -101,6 +103,7 @@ Validation:
 - Future-only substrate is absent, deferred by trigger, or explicitly labeled as support work for a named dependent capability.
 - Every material normative requirement and acceptance contour traces to a higher-authority source or is explicitly marked as an unapproved gap.
 - High-criticality scope has explicit invariants, stronger falsifiers, and a verification path beyond happy-path examples.
+- A high-risk backend spec cannot be handoff-ready while an applicable `HRB-*` row lacks authority, a normative contract, a falsifier, executable evidence, or a downstream owner.
 
 ### Workflow stage: Map behavior and constraints
 
@@ -130,15 +133,17 @@ Produce a concise spec at an honest handoff status without becoming process-heav
 5. Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
 6. Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
 7. Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
-8. Prefer the narrowest existing verification contour; do not require a runner, harness, orchestration layer, instrumentation, or production seam only to strengthen acceptance.
-9. Define requirement lifecycle status when revising an existing spec: new, changed, superseded, deprecated, or removed.
-10. Record open questions and gaps without letting non-blocking gaps stop useful specification work.
+8. For a triggered high-risk backend matrix, map every applicable `HRB-*` row to at least one executable test or real-boundary check that fails for the prohibited outcome.
+9. Prefer the narrowest existing verification contour; do not require a runner, harness, orchestration layer, instrumentation, or production seam only to strengthen acceptance.
+10. Define requirement lifecycle status when revising an existing spec: new, changed, superseded, deprecated, or removed.
+11. Record open questions and gaps without letting non-blocking gaps stop useful specification work.
 
 Validation:
 
 - Every important requirement is falsifiable by demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or another explicit method.
 - If a requirement can produce two independently verifiable acceptance criteria, it has been split.
 - Acceptance criteria prove real behavior and include at least one negative or falsifier for self-deception risk.
+- The high-risk backend test inventory covers every applicable matrix row without using happy-path, mock-only, schema-presence, generated-file, or self-authored evidence to close a stronger claim.
 - Anti-claims prevent scope inflation and make clear what the spec does not promise.
 
 ### Workflow stage: Audit and right-size
@@ -150,9 +155,10 @@ Improve precision without adding ceremony that distracts from building correct c
 3. Check whether the spec discovered architecture drift; stop for blocking drift or record an architecture delta needed when implementation can safely proceed.
 4. Scan for ambiguous terms, vague adjectives, compound requirements, hidden implementation decisions, duplicate rules, missing failure behavior, missing invalid inputs, and examples that contradict rules.
 5. Check self-deception patterns such as tautological acceptance, mock-driven success, single-actor blindness, hidden retroactive scope, and completion bias.
-6. Remove sections, tables, or process language that do not constrain implementation or verification.
-7. Strengthen under-specified NFRs with metric, threshold, measurement object, and measurement window.
-8. Apply the Stop rules before finalizing.
+6. When the high-risk backend trigger applies, reject readiness if any matrix row is omitted, marked `not_applicable` without source rationale, or lacks an exact negative oracle and evidence owner.
+7. Remove sections, tables, or process language that do not constrain implementation or verification.
+8. Strengthen under-specified NFRs with metric, threshold, measurement object, and measurement window.
+9. Apply the Stop rules before finalizing.
 
 Validation:
 
@@ -267,6 +273,7 @@ release readiness.
 - [Specification methodology](references/methodology.md) — Read this when drafting or materially revising a software specification.
 
 ## Optional references
+- [High-risk backend contract matrix](references/high-risk-backend-contract.md) — Read this before drafting, materially revising, or accepting a high-risk backend specification that touches a public API, persistent state, authorization, money, retries, external resources, or required audit evidence.
 - [Specification patterns](references/spec-patterns.md) — Read this when choosing the minimal structure for a feature, vertical slice, spike, API endpoint, validation rule, workflow, migration, or non-functional constraint.
 - [Discovery techniques](references/discovery-techniques.md) — Read this when behavior inventory feels checklist-driven, risk is high, or you need systematic edge-case discovery.
 - [Self-deception anti-patterns](references/anti-patterns.md) — Read this before finalizing a spec with vague acceptance, mocks, substrate evidence, happy-path bias, or ambiguous terms.
