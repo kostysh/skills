@@ -383,13 +383,34 @@ For module planning, a useful sequence is often:
 4. Source-required observability, rollout, and operational hardening; omit when absent from the accepted scope.
 ```
 
-Parallelize only when:
+Type material dependency edges by the transition they actually block:
 
+| Type | Meaning | Gate evidence |
+| --- | --- | --- |
+| `start` | The target task cannot begin until the condition clears. | Accepted input, decision, contract, environment, or predecessor output needed before work starts. |
+| `merge` | Implementation may begin, but the target cannot integrate until the condition clears. | Compatible landed contract, migration order, or required integration result. |
+| `acceptance` | Implementation and merge may proceed independently, but the linked tasks cannot be accepted or closed independently until shared evidence passes. | Joint scenario, same-record invariant, cross-task regression contour, or integrated matching-SHA evidence. |
+| `future-owner` | Upstream closure must preserve a durable owner for deferred work; this is not a start or merge block unless a separate edge says so. | Named owner, activation trigger, expected output, and reverse link from the deferred task. |
+
+For every edge record source task, target task, type, gate or evidence, owner, and unblock or evidence-return route. One task pair may need more than one edge type. Do not use an untyped `blocked by` relation when the blocked transition can be named.
+
+Implementation can proceed in parallel when:
+
+- every task's `start` edges are clear;
 - contracts are stable;
-- dependencies are explicit;
-- tasks can be reviewed independently;
+- worktrees and write sets do not conflict;
+- each branch has a bounded review surface;
 - failure of one branch does not invalidate large parallel work;
 - no unresolved architecture decision can change the work.
+
+Parallel implementation does not prove acceptance independence. Add a shared `acceptance` edge when tasks must jointly prove behavior against the same record or state transition, including concurrency races, idempotency ownership, lock ordering, authoritative reread, or a combined negative oracle. The shared gate names the joint fixture and evidence owner. If integration order is also constrained, add a separate `merge` edge.
+
+Example:
+
+```text
+T-PROTOCOLLA and T-RIFIUTA: no start edge; implementations may proceed in parallel.
+T-PROTOCOLLA -> T-RIFIUTA: acceptance; one same-record race fixture must prove exactly one terminal outcome before either task closes.
+```
 
 ---
 
@@ -443,6 +464,8 @@ Slices or module increments are observable/verifiable.
 Support tasks are tied to capabilities or module increments.
 Acceptance cannot pass through substrate-only work unless explicitly labeled as support or developer-experience work.
 High-risk work is visible.
+Dependency edges name the blocked transition; parallel implementation is not treated as independent acceptance.
+Same-record and shared-race invariants have a joint acceptance gate and evidence owner.
 Task sizes are reviewable.
 Dependencies and blockers are explicit.
 Sequencing exposes risk early.

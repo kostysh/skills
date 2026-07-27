@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.8
+  source-version: 0.2.9
   recommended-skill-md-max-bytes: 22000
   description: >-
     Turn accepted product scope and architecture handoff into right-sized executable
@@ -124,6 +124,7 @@ sections:
     - Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
     - Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
     - Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
+    - Distinguish parallel implementation from independent acceptance; type dependency edges and require shared acceptance for same-record or shared-race evidence.
     - Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
     - Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
   whenToUse:
@@ -193,8 +194,9 @@ sections:
       goal: Expose risk early and avoid parallel work on unstable assumptions.
       steps:
         - Put source-required clarifications, bounded spikes, and accepted contract stabilization before dependent implementation; add a harness only when a current obligation needs it and existing verification is insufficient.
-        - Parallelize only tasks with stable dependencies and independent review paths.
-        - Make blockers explicit.
+        - Type every material dependency as `start`, `merge`, `acceptance`, or `future-owner`; record source, target, gate or evidence, owner, and unblock or return route.
+        - Parallelize when `start` edges are clear, contracts are stable, and write sets do not conflict; this does not imply independent acceptance.
+        - Require shared `acceptance` evidence for same-record or shared-race invariants; add `merge` for integration order and `future-owner` for deferred ownership.
     - id: stage-audit
       title: Planning audit
       goal: Ensure the plan is useful, compact, scope-respecting, and safe for downstream agents.
@@ -206,6 +208,7 @@ sections:
         - Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
         - Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.
         - Check that every task has a handoff status, next owner, expected output or evidence, and unblock or return route.
+        - Check that implementation parallelism is not presented as acceptance independence and every same-record or shared-race invariant has a joint acceptance gate.
         - Check that completing the plan is not reported as implementation or runtime capability progress.
         - Check that output does not create unnecessary registers or YAML structures.
         - Repeat the scope-and-simplicity gate after a material delta adds a task family, boundary, lifecycle, support artifact, dependency, or verification contour.
@@ -263,6 +266,9 @@ sections:
     - id: policy-risk-first-sequencing
       title: Risk-first sequencing policy
       text: Sequence work to expose architecture, integration, migration, rollback, security, data, tenancy, operability, and contract risks early.
+    - id: policy-typed-dependency-edges
+      title: Typed dependency edge policy
+      text: Type dependencies as `start`, `merge`, `acceptance`, or `future-owner` and record source, target, gate or evidence, owner, and unblock route. Clear `start` edges permit parallel implementation, not independent acceptance. Same-record or shared-race behavior requires shared `acceptance` evidence.
     - id: policy-no-hidden-high-risk
       title: No hidden high-risk policy
       text: Do not hide high-risk changes inside generic low-risk implementation tasks. Promote, split, or route them.

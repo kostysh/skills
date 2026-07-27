@@ -134,3 +134,20 @@ route missing architecture/spec/product decisions;
 add verification hints;
 resequence to expose risk early.
 ```
+
+## 11. Parallel implementation with shared acceptance
+
+Use when tasks can be developed in separate worktrees but their correctness depends on one combined invariant.
+
+```text
+Clear start edges -> parallel implementation -> independent branch review -> shared acceptance fixture -> task closure
+```
+
+Do not serialize implementation merely because acceptance is shared. Record an `acceptance` edge with the joint evidence and owner. Add a separate `merge` edge only when integration order is constrained.
+
+Example:
+
+```text
+Protocolla and Rifiuta may be implemented independently.
+Neither is accepted until one same-record race proves exactly one terminal outcome and authoritative reread.
+```

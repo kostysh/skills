@@ -8,9 +8,9 @@ description: Turn accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.8
+  source-version: 0.2.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d8decdb65cc4ed42b13e2e1afe60365c9dbe2894a51ae2541ee2ea4685c932e8
+  skillforge-source-hash: 41c1c33a8a69459f94f12ba4033f76af789fb6dfc47e37ed4eec7c1ab0c9936e
 ---
 
 # delivery-planner
@@ -29,8 +29,9 @@ metadata:
 10. Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
 11. Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
 12. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
-13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
-14. Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
+13. Distinguish parallel implementation from independent acceptance; type dependency edges and require shared acceptance for same-record or shared-race evidence.
+14. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
+15. Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
 
 ## When to use this skill
 
@@ -132,8 +133,9 @@ Create executable planning-level tasks without writing full specs.
 Expose risk early and avoid parallel work on unstable assumptions.
 
 1. Put source-required clarifications, bounded spikes, and accepted contract stabilization before dependent implementation; add a harness only when a current obligation needs it and existing verification is insufficient.
-2. Parallelize only tasks with stable dependencies and independent review paths.
-3. Make blockers explicit.
+2. Type every material dependency as `start`, `merge`, `acceptance`, or `future-owner`; record source, target, gate or evidence, owner, and unblock or return route.
+3. Parallelize when `start` edges are clear, contracts are stable, and write sets do not conflict; this does not imply independent acceptance.
+4. Require shared `acceptance` evidence for same-record or shared-race invariants; add `merge` for integration order and `future-owner` for deferred ownership.
 
 ### Workflow stage: Planning audit
 
@@ -146,9 +148,10 @@ Ensure the plan is useful, compact, scope-respecting, and safe for downstream ag
 5. Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
 6. Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.
 7. Check that every task has a handoff status, next owner, expected output or evidence, and unblock or return route.
-8. Check that completing the plan is not reported as implementation or runtime capability progress.
-9. Check that output does not create unnecessary registers or YAML structures.
-10. Repeat the scope-and-simplicity gate after a material delta adds a task family, boundary, lifecycle, support artifact, dependency, or verification contour.
+8. Check that implementation parallelism is not presented as acceptance independence and every same-record or shared-race invariant has a joint acceptance gate.
+9. Check that completing the plan is not reported as implementation or runtime capability progress.
+10. Check that output does not create unnecessary registers or YAML structures.
+11. Repeat the scope-and-simplicity gate after a material delta adds a task family, boundary, lifecycle, support artifact, dependency, or verification contour.
 
 ## Interop priority
 
@@ -203,6 +206,9 @@ Route product gaps to prd-engineer, architecture gaps to architecture-engineer, 
 
 ### Risk-first sequencing policy
 Sequence work to expose architecture, integration, migration, rollback, security, data, tenancy, operability, and contract risks early.
+
+### Typed dependency edge policy
+Type dependencies as `start`, `merge`, `acceptance`, or `future-owner` and record source, target, gate or evidence, owner, and unblock route. Clear `start` edges permit parallel implementation, not independent acceptance. Same-record or shared-race behavior requires shared `acceptance` evidence.
 
 ### No hidden high-risk policy
 Do not hide high-risk changes inside generic low-risk implementation tasks. Promote, split, or route them.
@@ -262,6 +268,8 @@ Use the user's working language unless repository conventions require another la
 - No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests unless it is explicitly labeled as support work with a dependent increment.
 - High-risk work is visible and not hidden inside generic implementation tasks.
 - Sequencing exposes architectural, integration, migration, rollback, security, data, or tenancy risk early.
-- Parallel work depends only on stable contracts and independent review paths.
+- Dependency edges name the blocked transition as `start`, `merge`, `acceptance`, or `future-owner`, with gate evidence and an owner.
+- Parallel implementation has clear `start` edges and bounded write/review surfaces; it is not presented as acceptance independence.
+- Same-record or shared-race behavior has a joint `acceptance` gate even when implementation proceeds in parallel.
 - Plan completion is not reported as implementation progress, runtime behavior, or release readiness.
 - Output is the smallest useful plan; no YAML or multi-register bureaucracy unless requested.

@@ -44,12 +44,14 @@
 - Wave 0:
 - Wave 1:
 - Wave 2:
-- Parallelizable:
-- Must not parallelize yet:
+- Parallel implementation:
+- Independent acceptance:
+- Shared acceptance gates:
+- Must not start or merge yet:
 
-| Gate | Blocks | How to clear |
-|---|---|---|
-|  |  |  |
+| From | To | Type | Gate / evidence | Owner / unblock or return route |
+|---|---|---|---|---|
+|  |  | `start` / `merge` / `acceptance` / `future-owner` |  |  |
 
 ## 8. Routing and risk notes
 
@@ -68,5 +70,7 @@
 - Substrate tied to outcomes:
 - Hidden high-risk work exposed:
 - Every task has a truthful handoff and evidence contract:
+- Implementation parallelism is distinct from acceptance independence:
+- Same-record / shared-race work has a shared acceptance gate:
 - Plan completion not reported as runtime progress:
 - Output kept compact:

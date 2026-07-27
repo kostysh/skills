@@ -15,6 +15,8 @@
 - No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests unless it is explicitly labeled as support work with a dependent increment.
 - High-risk work is visible and not hidden inside generic implementation tasks.
 - Sequencing exposes architectural, integration, migration, rollback, security, data, or tenancy risk early.
-- Parallel work depends only on stable contracts and independent review paths.
+- Dependency edges name the blocked transition as `start`, `merge`, `acceptance`, or `future-owner`, with gate evidence and an owner.
+- Parallel implementation has clear `start` edges and bounded write/review surfaces; it is not presented as acceptance independence.
+- Same-record or shared-race behavior has a joint `acceptance` gate even when implementation proceeds in parallel.
 - Plan completion is not reported as implementation progress, runtime behavior, or release readiness.
 - Output is the smallest useful plan; no YAML or multi-register bureaucracy unless requested.
