@@ -8,7 +8,7 @@ description: "Coordinate customer-owned requirements decisions: triage open
 metadata:
   source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9067b019c7757cda5c2cbb0555c218ed99c10bfdce951cd9049f1f8c9391deb1
+  skillforge-source-hash: fbcbf68cc99d430f2d80a5a78d532fa4b8611138033c90dc6e8e0a12f6df86fa
 ---
 
 # requirements-approval
@@ -139,7 +139,7 @@ Validation:
 Close only questions whose accepted obligations have durable disposition and whose required workflow state is evidenced.
 
 1. Route each accepted obligation to the applicable artifact owner and preserve that artifact's authority, approval, and handoff rules.
-2. For each accepted obligation, freshly verify one durable route: the owning artifact or code contains the exact obligation and is available as required; or a current linked follow-up preserves the exact obligation, owner, owning slice or module increment, activation trigger, expected acceptance or evidence, evidence-return route, and reciprocal link to the decision record.
+2. For each accepted obligation, freshly verify one durable route: change evidence traces the exact obligation into required published owning artifact or code; or a current linked follow-up preserves the exact obligation, owner, owning slice or module increment, activation trigger, expected acceptance/evidence, evidence-return route, and reciprocal decision-record link.
 3. Treat a linked follow-up as closure only for the decision-workflow boundary; keep that follow-up open and do not claim its downstream product or runtime capability.
 4. Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
 5. Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.

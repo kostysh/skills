@@ -4,7 +4,7 @@
 - **Дата:** 2026-07-28
 - **Issue:** `Aequitas-ADR/app#239`
 - **Версия:** `requirements-approval` 0.2.2
-- **Статус:** implemented; structural и blind verification passed; independent review pending
+- **Статус:** P1 remediation verified; independent re-audit pending
 
 ## Capability
 
@@ -41,6 +41,7 @@ Verdict `partial`: skill уже разделял authoritative answer и workflo
 | `R-RULE-006`: comment может быть принят за disposition | Terminal state/comment явно исключены как самостоятельный closure route | Case 14 и independent review | implemented |
 | `R-RULE-006`: отсутствует durable alternate route | Добавлены owning-change и complete-linked-follow-up routes | Cases 12–13 и independent review | implemented |
 | `RETRO-STEP-12`: downstream capability может быть переоценена | Linked route ограничен decision-workflow boundary и сохраняет follow-up open | Case 13 и concept/document audit | implemented |
+| Independent P1: current matching text мог подменить owning change | Direct route требует change evidence, трассируемое к accepted obligation; добавлен unchanged-source falsifier | Cases 12 и 15, independent re-audit | implemented; blind verified; re-audit pending |
 
 ## Verification
 
@@ -55,9 +56,10 @@ Verdict `partial`: skill уже разделял authoritative answer и workflo
 
 ### Blind forward-tests
 
-Rendered snapshot `e8a648ee659c1968e2abd4b9501890d837f7d3dcf29f582c470c5017d6c5baab`, fixture `6b13505ba3e6e5370db85f97673cbe898eb53c31a9bce5d84b824385e05bafeb`: три независимых no-fork cases получили `PASS`.
+P1-remediation rendered snapshot `0dc86f68d602aecb56eb71daa3a0b9a6a685cc08355608aa79cb811cb459f189`, normalized active hash `07f5c58c508df0c45d53658805b804ec80f0b3b42435b78037801420fbf87a1a`, fixture `bb8cef39d2f451f6681e332503465564fc5a94a36010d51fd74eeea3527c648b`: четыре независимых no-fork cases получили `PASS`.
 
-- `Q-DIRECT`: direct owning-source route дал `workflow=verified` с runtime anti-claim.
+- `Q-DIRECT`: obligation-traced `chg-7day` дал `workflow=verified` с runtime anti-claim.
+- `Q-UNCHANGED`: pre-existing matching text без decision-traced change дал `workflow=partial`.
 - `Q-FOLLOWUP`: complete linked route дал `workflow=verified` только на decision boundary; `F-219` остался open.
 - `Q-COMMENT`: closed issue/comment/terminal Project state дали `workflow=partial`, без выдуманного disposition.
 
@@ -65,7 +67,7 @@ Rendered snapshot `e8a648ee659c1968e2abd4b9501890d837f7d3dcf29f582c470c5017d6c5b
 
 ### Independent review
 
-Ожидает stable commit. До independent `skill-reviewer PASS` общий skill verdict не заявляется.
+Change review snapshot `f9c1c853b3a4f8eb9ca6b60c4611367f7693ef0f`: independent `FAIL`, один P1. Наличие совпадающего current source text могло ложно удовлетворить direct route без owning change, трассируемого к accepted obligation. Узкая remediation потребовала obligation-traced change evidence и добавила adversarial `Q-UNCHANGED`; affected blind verification прошла, новый stable snapshot и independent re-audit ожидаются.
 
 ## Side Effects
 
@@ -73,4 +75,4 @@ External customer communication и email не выполнялись. GitHub mut
 
 ## Итог
 
-Текущий статус: `implemented; structural and blind verified; independent review pending`.
+Текущий статус: `implemented; P1 remediation blind-verified; independent re-audit pending`.

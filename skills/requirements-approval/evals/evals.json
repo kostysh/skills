@@ -140,10 +140,10 @@
     {
       "id": 12,
       "prompt": "Assess only Q-DIRECT for decision-workflow closure. Do not write to external systems.",
-      "expected_output": "The direct owning-source route supports verified decision-workflow closure because the exact obligation, publication, readback, authority, and terminal state are evidenced.",
+      "expected_output": "The traced chg-7day owning change supports verified decision-workflow closure because the exact obligation, publication, readback, authority, and terminal state are evidenced.",
       "files": ["evals/fixtures/durable-disposition-input.md"],
       "expectations": [
-        "Identifies the canonical specification as the durable disposition route",
+        "Identifies chg-7day as the owning change traced to the accepted obligation",
         "Uses the supplied publication and fresh readback evidence",
         "Reports Q-DIRECT verified at the decision-workflow boundary",
         "Does not claim a broader downstream runtime capability"
@@ -171,6 +171,18 @@
         "Reports Q-COMMENT as not verified",
         "Names an owning change or complete linked follow-up as the missing route",
         "Does not invent a follow-up, owner, trigger, acceptance, or external mutation"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Assess only Q-UNCHANGED for decision-workflow closure. Do not write to external systems.",
+      "expected_output": "Closure is refused because matching pre-existing text is not an owning change traced to the accepted obligation and no linked follow-up exists.",
+      "files": ["evals/fixtures/durable-disposition-input.md"],
+      "expectations": [
+        "Does not treat matching current source text as decision-specific change evidence",
+        "Reports Q-UNCHANGED as not verified",
+        "Names a traced owning change or complete linked follow-up as the missing route",
+        "Does not invent change provenance, a follow-up, or an external mutation"
       ]
     }
   ]
