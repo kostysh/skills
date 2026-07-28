@@ -6,16 +6,14 @@ This documentation-only skill does not grant product or architecture authority, 
 
 ## Inputs and readiness
 
-Minimum input for assessment or drafting is the question source, available project context, and requested scope. Stronger execution additionally requires:
+Assessment or drafting requires the question source, available project context, and requested scope. Execution additionally requires:
 
-- stable question codes and the named decision owner;
-- authoritative source documents and applicable precedence;
-- customer language plus supplied message/thread identifiers or exported content;
-- exact repository and approval-project targets, including inspected status-field mapping;
-- affected artifact owners and repository publication requirements;
-- explicit authority for each external GitHub or Git mutation.
+- stable question codes, decision owner, authoritative sources, and precedence;
+- customer language and supplied message/thread data;
+- affected owners, publication rules, exact GitHub targets, and inspected status mapping;
+- explicit authority for each external mutation.
 
-Missing execution inputs do not prevent a useful draft. They do prevent external writes and verified closure.
+Missing execution inputs permit a useful draft, not external writes or verified closure.
 
 Workflow authority controls which actions the agent may take. It does not transfer product, architecture, specification, planning, document-version, or customer-decision authority.
 
@@ -35,20 +33,18 @@ Assess reply content separately from workflow closure:
 
 Use workflow states deterministically:
 
-- `draft` — the requested assessment or draft is ready and execution or closure was not requested;
-- `partial` — an accepted decision or routed action advanced, closure remains incomplete, and the next owner can act on available input;
-- `blocked` — the requested transition cannot proceed until a named authority, input, target, or capability is supplied;
-- `verified` — every closure gate is freshly evidenced.
+- `draft` — preparation is ready; execution or closure was not requested;
+- `partial` — progress exists and the next owner can act, but closure remains incomplete;
+- `blocked` — a named authority, input, target, or capability prevents the requested transition;
+- `verified` — every closure gate, including durable disposition, is freshly evidenced.
 
-Routing to another owner is not itself blocked. For the overall state, use `blocked` if a blocker prevents the requested outcome; otherwise use `verified` only when every in-scope question is verified, `partial` when non-blocking work remains after progress, and `draft` for preparation-only scope.
+Routing to another owner is not itself blocked. Overall state is `blocked` when a blocker prevents the requested outcome, otherwise `verified` only when every in-scope question is verified, `partial` while non-blocking work remains, and `draft` for preparation-only scope.
 
 For each question report:
 
-- code, source, decision owner, authority evidence, and research performed;
-- answer assessment and accepted obligation, if any;
-- affected artifacts and their owning skills;
-- proposed versus executed GitHub, document, and Git actions;
-- observed artifact, commit/ref, issue, and Project state;
+- code, source, decision owner, authority evidence, and research;
+- answer, accepted obligation, durable disposition evidence, and affected owners;
+- proposed versus executed actions and observed artifact/ref/issue/Project state;
 - remaining gap, next owner, and evidence needed for a stronger state.
 
-End with one overall state. A complete answer may still be partial or blocked until propagation and terminal-state evidence exist.
+End with one overall state; a complete answer may still lack workflow closure.

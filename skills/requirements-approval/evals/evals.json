@@ -136,6 +136,42 @@
         "Does not draft Italian customer copy or create a customer approval task",
         "Does not select object storage or the relational database itself"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "Assess only Q-DIRECT for decision-workflow closure. Do not write to external systems.",
+      "expected_output": "The direct owning-source route supports verified decision-workflow closure because the exact obligation, publication, readback, authority, and terminal state are evidenced.",
+      "files": ["evals/fixtures/durable-disposition-input.md"],
+      "expectations": [
+        "Identifies the canonical specification as the durable disposition route",
+        "Uses the supplied publication and fresh readback evidence",
+        "Reports Q-DIRECT verified at the decision-workflow boundary",
+        "Does not claim a broader downstream runtime capability"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Assess only Q-FOLLOWUP for decision-workflow closure. Do not write to external systems.",
+      "expected_output": "The complete current linked follow-up supports verified decision-workflow closure while the downstream obligation remains open and unimplemented.",
+      "files": ["evals/fixtures/durable-disposition-input.md"],
+      "expectations": [
+        "Verifies the exact obligation, owner, owning increment, trigger, acceptance evidence, evidence-return route, and reciprocal link",
+        "Reports Q-FOLLOWUP verified only at the decision-workflow boundary",
+        "Keeps F-219 open",
+        "Does not claim that the annual review or downstream product/runtime capability is complete"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Assess only Q-COMMENT for decision-workflow closure. Do not write to external systems.",
+      "expected_output": "Closure is refused because terminal issue, comment, and Project state do not provide a durable disposition route.",
+      "files": ["evals/fixtures/durable-disposition-input.md"],
+      "expectations": [
+        "Does not treat the closed issue, final comment, or terminal Project state as durable disposition",
+        "Reports Q-COMMENT as not verified",
+        "Names an owning change or complete linked follow-up as the missing route",
+        "Does not invent a follow-up, owner, trigger, acceptance, or external mutation"
+      ]
     }
   ]
 }

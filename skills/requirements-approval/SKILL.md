@@ -6,9 +6,9 @@ description: "Coordinate customer-owned requirements decisions: triage open
   authoritative project documents. Use for approval workflows and «согласование
   требований»."
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9eb5fffb10f40bdda800e0ae596399cef3b01dfea691c934e95ad98e6e605cb2
+  skillforge-source-hash: 9067b019c7757cda5c2cbb0555c218ed99c10bfdce951cd9049f1f8c9391deb1
 ---
 
 # requirements-approval
@@ -16,7 +16,7 @@ metadata:
 ## Start here
 
 1. Confirm whether the request is assessment/drafting or authorizes external execution against exact targets.
-2. Define success as an authoritative decision propagated through every affected artifact and verified workflow state, not coordination artifacts alone.
+2. Define success as an authoritative decision preserved by a verified owning change or complete linked follow-up and a verified workflow state, not coordination artifacts alone.
 3. Identify each question's decision owner, authority, affected artifacts, and downstream owners before interpretation or closure.
 4. Use repository-defined source precedence; unresolved equal-authority conflicts block acceptance instead of being resolved by recency or convenience.
 5. Route document content and authority decisions to their owning skills; requirements-approval owns triage, traceability, and the closure gate.
@@ -46,16 +46,14 @@ This documentation-only skill does not grant product or architecture authority, 
 
 ## Inputs and readiness
 
-Minimum input for assessment or drafting is the question source, available project context, and requested scope. Stronger execution additionally requires:
+Assessment or drafting requires the question source, available project context, and requested scope. Execution additionally requires:
 
-- stable question codes and the named decision owner;
-- authoritative source documents and applicable precedence;
-- customer language plus supplied message/thread identifiers or exported content;
-- exact repository and approval-project targets, including inspected status-field mapping;
-- affected artifact owners and repository publication requirements;
-- explicit authority for each external GitHub or Git mutation.
+- stable question codes, decision owner, authoritative sources, and precedence;
+- customer language and supplied message/thread data;
+- affected owners, publication rules, exact GitHub targets, and inspected status mapping;
+- explicit authority for each external mutation.
 
-Missing execution inputs do not prevent a useful draft. They do prevent external writes and verified closure.
+Missing execution inputs permit a useful draft, not external writes or verified closure.
 
 Workflow authority controls which actions the agent may take. It does not transfer product, architecture, specification, planning, document-version, or customer-decision authority.
 
@@ -75,23 +73,21 @@ Assess reply content separately from workflow closure:
 
 Use workflow states deterministically:
 
-- `draft` — the requested assessment or draft is ready and execution or closure was not requested;
-- `partial` — an accepted decision or routed action advanced, closure remains incomplete, and the next owner can act on available input;
-- `blocked` — the requested transition cannot proceed until a named authority, input, target, or capability is supplied;
-- `verified` — every closure gate is freshly evidenced.
+- `draft` — preparation is ready; execution or closure was not requested;
+- `partial` — progress exists and the next owner can act, but closure remains incomplete;
+- `blocked` — a named authority, input, target, or capability prevents the requested transition;
+- `verified` — every closure gate, including durable disposition, is freshly evidenced.
 
-Routing to another owner is not itself blocked. For the overall state, use `blocked` if a blocker prevents the requested outcome; otherwise use `verified` only when every in-scope question is verified, `partial` when non-blocking work remains after progress, and `draft` for preparation-only scope.
+Routing to another owner is not itself blocked. Overall state is `blocked` when a blocker prevents the requested outcome, otherwise `verified` only when every in-scope question is verified, `partial` while non-blocking work remains, and `draft` for preparation-only scope.
 
 For each question report:
 
-- code, source, decision owner, authority evidence, and research performed;
-- answer assessment and accepted obligation, if any;
-- affected artifacts and their owning skills;
-- proposed versus executed GitHub, document, and Git actions;
-- observed artifact, commit/ref, issue, and Project state;
+- code, source, decision owner, authority evidence, and research;
+- answer, accepted obligation, durable disposition evidence, and affected owners;
+- proposed versus executed actions and observed artifact/ref/issue/Project state;
 - remaining gap, next owner, and evidence needed for a stronger state.
 
-End with one overall state. A complete answer may still be partial or blocked until propagation and terminal-state evidence exist.
+End with one overall state; a complete answer may still lack workflow closure.
 
 ## Workflow stages
 
@@ -140,21 +136,23 @@ Validation:
 
 ### Workflow stage: Propagate accepted decisions and verify closure
 
-Close only the questions whose accepted content, project artifacts, Git state, and approval-task state are all evidenced.
+Close only questions whose accepted obligations have durable disposition and whose required workflow state is evidenced.
 
 1. Route each accepted obligation to the applicable artifact owner and preserve that artifact's authority, approval, and handoff rules.
-2. Verify every affected artifact was updated consistently and that no required owner or conflicting source remains unresolved.
-3. Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
-4. Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.
-5. Map semantic workflow state to the actual inspected Project field options; never assume status names.
-6. Freshly read the commit/ref and GitHub issue/project state after mutations.
-7. Mark a question verified only when the accepted answer is authoritative and complete, every affected artifact is updated and available as required, and the traceability chain plus terminal state are observed.
-8. Report per-question results, executed and proposed actions, evidence limits, remaining gaps, and next owners.
+2. For each accepted obligation, freshly verify one durable route: the owning artifact or code contains the exact obligation and is available as required; or a current linked follow-up preserves the exact obligation, owner, owning slice or module increment, activation trigger, expected acceptance or evidence, evidence-return route, and reciprocal link to the decision record.
+3. Treat a linked follow-up as closure only for the decision-workflow boundary; keep that follow-up open and do not claim its downstream product or runtime capability.
+4. Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
+5. Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.
+6. Map semantic workflow state to the actual inspected Project field options; never assume status names.
+7. Freshly read the commit/ref and GitHub issue/project state after mutations.
+8. Mark a question verified only when its answer is authoritative and complete, every accepted obligation has a freshly verified durable route, and the required traceability, publication, and terminal state are observed.
+9. Report per-question results, executed and proposed actions, evidence limits, remaining gaps, and next owners.
 
 Validation:
 
-- No issue, comment, generated document, test, or commit hash is sufficient closure evidence by itself.
-- Partial, blocked, or unpublished required changes cannot produce a verified closure.
+- No terminal issue or Project state, comment, generated document, test, or commit hash is sufficient closure evidence by itself.
+- A missing or incomplete durable route, unresolved authority conflict, or unavailable required publication cannot produce verified closure.
+- A complete linked follow-up can verify the decision-workflow boundary without verifying or closing downstream capability.
 - The final report does not claim stronger authority or terminal state than the observed evidence.
 
 ## Interop priority
@@ -176,7 +174,7 @@ Validation:
 - **high** — Public research may resolve current facts but cannot choose a customer preference or approve product scope.
 - **medium** — Request only the unavailable attachment required by a named question and continue independent items.
 - **high** — GitHub Project status names and option IDs are target-specific; inspect them and verify each update instead of assuming workflow labels.
-- **high** — An issue, comment, commit, generated document, test, or traceability row is substrate until the accepted decision is propagated and the required terminal state is observed.
+- **high** — Terminal state, a comment, commit, generated document, test, or traceability row is substrate until every accepted obligation has a freshly verified owning change or complete linked follow-up.
 
 ## Policies
 
@@ -184,7 +182,7 @@ Validation:
 Ask only for decisions required by current scope, in plain customer language, without embedding optional enhancements or a preferred answer.
 
 ### Traceability
-Preserve the chain from question code and authority evidence through research, reply, accepted obligation, affected artifact, verified Git/ref state, GitHub item, and remaining gap.
+Preserve the chain from question code and authority evidence through research, reply, accepted obligation, durable disposition route, verified Git/ref state, GitHub item, and remaining gap.
 
 ## Portability rules
 

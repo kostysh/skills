@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: requirements-approval
-  source-version: 0.2.1
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 15000
   description: >-
     Coordinate customer-owned requirements decisions: triage open questions,
@@ -32,6 +32,10 @@ copies:
     source: evals/fixtures/closure-input.md
     target: evals/fixtures/closure-input.md
     description: Neutral fixture for closure evidence assessment.
+  - id: copy-evals-fixture-durable-disposition
+    source: evals/fixtures/durable-disposition-input.md
+    target: evals/fixtures/durable-disposition-input.md
+    description: Neutral fixture for direct, linked-follow-up, and substrate-only disposition routes.
   - id: copy-evals-fixture-authorized-handoff
     source: evals/fixtures/authorized-handoff-input.md
     target: evals/fixtures/authorized-handoff-input.md
@@ -45,6 +49,14 @@ supporting:
     source: docs/README.md
     target: docs/README.md
     description: Navigation for supporting implementation and forward-test evidence.
+  - id: supporting-implementation-log-20260728-1
+    source: docs/logs/implementation-log-20260728-1.md
+    target: docs/logs/implementation-log-20260728-1.md
+    description: Non-normative implementation log for durable customer-decision disposition.
+  - id: supporting-forward-test-evidence-20260728-1
+    source: docs/forward-tests/forward-test-evidence-20260728-1.md
+    target: docs/forward-tests/forward-test-evidence-20260728-1.md
+    description: Non-normative blind forward-test evidence for durable disposition routes.
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
@@ -80,7 +92,7 @@ surfaces:
 sections:
   startHere:
     - Confirm whether the request is assessment/drafting or authorizes external execution against exact targets.
-    - Define success as an authoritative decision propagated through every affected artifact and verified workflow state, not coordination artifacts alone.
+    - Define success as an authoritative decision preserved by a verified owning change or complete linked follow-up and a verified workflow state, not coordination artifacts alone.
     - Identify each question's decision owner, authority, affected artifacts, and downstream owners before interpretation or closure.
     - Use repository-defined source precedence; unresolved equal-authority conflicts block acceptance instead of being resolved by recency or convenience.
     - Route document content and authority decisions to their owning skills; requirements-approval owns triage, traceability, and the closure gate.
@@ -137,19 +149,21 @@ sections:
         - Partial and blocked items name the exact remaining input and do not block independent questions.
     - id: stage-propagate-and-close
       title: Propagate accepted decisions and verify closure
-      goal: Close only the questions whose accepted content, project artifacts, Git state, and approval-task state are all evidenced.
+      goal: Close only questions whose accepted obligations have durable disposition and whose required workflow state is evidenced.
       steps:
         - Route each accepted obligation to the applicable artifact owner and preserve that artifact's authority, approval, and handoff rules.
-        - Verify every affected artifact was updated consistently and that no required owner or conflicting source remains unresolved.
+        - "For each accepted obligation, freshly verify one durable route: the owning artifact or code contains the exact obligation and is available as required; or a current linked follow-up preserves the exact obligation, owner, owning slice or module increment, activation trigger, expected acceptance or evidence, evidence-return route, and reciprocal link to the decision record."
+        - Treat a linked follow-up as closure only for the decision-workflow boundary; keep that follow-up open and do not claim its downstream product or runtime capability.
         - Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
         - Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.
         - Map semantic workflow state to the actual inspected Project field options; never assume status names.
         - Freshly read the commit/ref and GitHub issue/project state after mutations.
-        - Mark a question verified only when the accepted answer is authoritative and complete, every affected artifact is updated and available as required, and the traceability chain plus terminal state are observed.
+        - Mark a question verified only when its answer is authoritative and complete, every accepted obligation has a freshly verified durable route, and the required traceability, publication, and terminal state are observed.
         - Report per-question results, executed and proposed actions, evidence limits, remaining gaps, and next owners.
       validation:
-        - No issue, comment, generated document, test, or commit hash is sufficient closure evidence by itself.
-        - Partial, blocked, or unpublished required changes cannot produce a verified closure.
+        - No terminal issue or Project state, comment, generated document, test, or commit hash is sufficient closure evidence by itself.
+        - A missing or incomplete durable route, unresolved authority conflict, or unavailable required publication cannot produce verified closure.
+        - A complete linked follow-up can verify the decision-workflow boundary without verifying or closing downstream capability.
         - The final report does not claim stronger authority or terminal state than the observed evidence.
   interop:
     - id: interop-gmail
@@ -206,14 +220,14 @@ sections:
       text: GitHub Project status names and option IDs are target-specific; inspect them and verify each update instead of assuming workflow labels.
     - id: gotcha-no-substrate-closure
       priority: high
-      text: An issue, comment, commit, generated document, test, or traceability row is substrate until the accepted decision is propagated and the required terminal state is observed.
+      text: Terminal state, a comment, commit, generated document, test, or traceability row is substrate until every accepted obligation has a freshly verified owning change or complete linked follow-up.
   policies:
     - id: policy-conservative-language
       title: Conservative customer language
       text: Ask only for decisions required by current scope, in plain customer language, without embedding optional enhancements or a preferred answer.
     - id: policy-traceability
       title: Traceability
-      text: Preserve the chain from question code and authority evidence through research, reply, accepted obligation, affected artifact, verified Git/ref state, GitHub item, and remaining gap.
+      text: Preserve the chain from question code and authority evidence through research, reply, accepted obligation, durable disposition route, verified Git/ref state, GitHub item, and remaining gap.
   portability:
     required: true
     rules:
