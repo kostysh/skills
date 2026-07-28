@@ -17,3 +17,7 @@ The authorized customer owner accepted a 30-day retention limit. The decision is
 ## Q-UNCHANGED
 
 The authorized customer owner accepted a seven-day export-link lifetime. The current canonical specification contains an identical seven-day sentence, but comparison with its prior authoritative revision shows that the sentence predates this decision and no owning artifact or code change is traced to the accepted obligation. The decision item is freshly observed in its accepted terminal state, and no linked follow-up exists.
+
+## Q-STALE-OWNER
+
+The authorized customer owner accepted a 14-day deletion window. Required affected owners are the product specification owner and the architecture handoff owner. Change `chg-delete-14` is traced to the obligation, published, freshly read, and updates the canonical specification. The architecture handoff remains `TBD`, still lists deletion as a blocker, and has no linked follow-up for its owner. The decision item is freshly observed in its accepted terminal state, and no authority conflict exists.

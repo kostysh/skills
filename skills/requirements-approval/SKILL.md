@@ -8,7 +8,7 @@ description: "Coordinate customer-owned requirements decisions: triage open
 metadata:
   source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: fbcbf68cc99d430f2d80a5a78d532fa4b8611138033c90dc6e8e0a12f6df86fa
+  skillforge-source-hash: d7dc5d2bcf71fba0134de1bb8fd67b121f3b77b31b7b804b929b725914207de9
 ---
 
 # requirements-approval
@@ -138,21 +138,21 @@ Validation:
 
 Close only questions whose accepted obligations have durable disposition and whose required workflow state is evidenced.
 
-1. Route each accepted obligation to the applicable artifact owner and preserve that artifact's authority, approval, and handoff rules.
-2. For each accepted obligation, freshly verify one durable route: change evidence traces the exact obligation into required published owning artifact or code; or a current linked follow-up preserves the exact obligation, owner, owning slice or module increment, activation trigger, expected acceptance/evidence, evidence-return route, and reciprocal decision-record link.
-3. Treat a linked follow-up as closure only for the decision-workflow boundary; keep that follow-up open and do not claim its downstream product or runtime capability.
-4. Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
-5. Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.
-6. Map semantic workflow state to the actual inspected Project field options; never assume status names.
-7. Freshly read the commit/ref and GitHub issue/project state after mutations.
-8. Mark a question verified only when its answer is authoritative and complete, every accepted obligation has a freshly verified durable route, and the required traceability, publication, and terminal state are observed.
-9. Report per-question results, executed and proposed actions, evidence limits, remaining gaps, and next owners.
+1. Inventory every required affected artifact and owner per obligation; preserve their authority and handoff rules.
+2. For each required owner, freshly verify one durable route: change evidence traces the exact obligation into required published owning artifact or code; or a current linked follow-up preserves the exact obligation, owner, owning slice or module increment, activation trigger, expected acceptance/evidence, evidence-return route, and reciprocal decision-record link.
+3. Stop closure while a required owner lacks a durable route, affected artifacts conflict, or authority remains unresolved.
+4. Treat a linked follow-up as closure only for the decision-workflow boundary; keep that follow-up open and do not claim its downstream product or runtime capability.
+5. Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
+6. Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.
+7. Map semantic workflow state to the actual inspected Project field options; never assume status names.
+8. Freshly read the commit/ref and GitHub issue/project state after mutations.
+9. Mark verified only when the answer is authoritative and complete, every required owner has a durable route, affected artifacts are consistent, and required traceability, publication, and terminal state are observed.
+10. Report per-question results, executed and proposed actions, evidence limits, remaining gaps, and next owners.
 
 Validation:
 
 - No terminal issue or Project state, comment, generated document, test, or commit hash is sufficient closure evidence by itself.
-- A missing or incomplete durable route, unresolved authority conflict, or unavailable required publication cannot produce verified closure.
-- A complete linked follow-up can verify the decision-workflow boundary without verifying or closing downstream capability.
+- A missing required-owner route, inconsistent affected artifact, unresolved authority conflict, or unavailable required publication cannot produce verified closure.
 - The final report does not claim stronger authority or terminal state than the observed evidence.
 
 ## Interop priority

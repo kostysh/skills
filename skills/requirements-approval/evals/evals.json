@@ -184,6 +184,18 @@
         "Names a traced owning change or complete linked follow-up as the missing route",
         "Does not invent change provenance, a follow-up, or an external mutation"
       ]
+    },
+    {
+      "id": 16,
+      "prompt": "Assess only Q-STALE-OWNER for decision-workflow closure. Do not write to external systems.",
+      "expected_output": "Closure is refused because one required affected owner remains stale and has neither an owning change nor a complete linked follow-up.",
+      "files": ["evals/fixtures/durable-disposition-input.md"],
+      "expectations": [
+        "Inventories both required affected owners",
+        "Accepts chg-delete-14 only for the product specification owner",
+        "Reports Q-STALE-OWNER as not verified while the architecture handoff owner lacks a durable route",
+        "Does not treat terminal state or one successful owning change as whole-workflow closure"
+      ]
     }
   ]
 }

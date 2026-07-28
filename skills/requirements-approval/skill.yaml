@@ -151,19 +151,19 @@ sections:
       title: Propagate accepted decisions and verify closure
       goal: Close only questions whose accepted obligations have durable disposition and whose required workflow state is evidenced.
       steps:
-        - Route each accepted obligation to the applicable artifact owner and preserve that artifact's authority, approval, and handoff rules.
-        - "For each accepted obligation, freshly verify one durable route: change evidence traces the exact obligation into required published owning artifact or code; or a current linked follow-up preserves the exact obligation, owner, owning slice or module increment, activation trigger, expected acceptance/evidence, evidence-return route, and reciprocal decision-record link."
+        - Inventory every required affected artifact and owner per obligation; preserve their authority and handoff rules.
+        - "For each required owner, freshly verify one durable route: change evidence traces the exact obligation into required published owning artifact or code; or a current linked follow-up preserves the exact obligation, owner, owning slice or module increment, activation trigger, expected acceptance/evidence, evidence-return route, and reciprocal decision-record link."
+        - Stop closure while a required owner lacks a durable route, affected artifacts conflict, or authority remains unresolved.
         - Treat a linked follow-up as closure only for the decision-workflow boundary; keep that follow-up open and do not claim its downstream product or runtime capability.
         - Use git-engineer for an authorized scoped commit; treat push or publication as a separate action that must be authorized and verified when the repository process requires it.
         - Use gh-utility for authorized comments and project updates with the exact applicable repository, issue, Project, item, field, and option identifiers.
         - Map semantic workflow state to the actual inspected Project field options; never assume status names.
         - Freshly read the commit/ref and GitHub issue/project state after mutations.
-        - Mark a question verified only when its answer is authoritative and complete, every accepted obligation has a freshly verified durable route, and the required traceability, publication, and terminal state are observed.
+        - Mark verified only when the answer is authoritative and complete, every required owner has a durable route, affected artifacts are consistent, and required traceability, publication, and terminal state are observed.
         - Report per-question results, executed and proposed actions, evidence limits, remaining gaps, and next owners.
       validation:
         - No terminal issue or Project state, comment, generated document, test, or commit hash is sufficient closure evidence by itself.
-        - A missing or incomplete durable route, unresolved authority conflict, or unavailable required publication cannot produce verified closure.
-        - A complete linked follow-up can verify the decision-workflow boundary without verifying or closing downstream capability.
+        - A missing required-owner route, inconsistent affected artifact, unresolved authority conflict, or unavailable required publication cannot produce verified closure.
         - The final report does not claim stronger authority or terminal state than the observed evidence.
   interop:
     - id: interop-gmail
