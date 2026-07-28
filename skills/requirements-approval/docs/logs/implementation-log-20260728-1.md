@@ -4,7 +4,7 @@
 - **Дата:** 2026-07-28
 - **Issue:** `Aequitas-ADR/app#239`
 - **Версия:** `requirements-approval` 0.2.2
-- **Статус:** second P1 remediation blind-verified; independent audits pending
+- **Статус:** `PASS`
 
 ## Capability
 
@@ -41,8 +41,8 @@ Verdict `partial`: skill уже разделял authoritative answer и workflo
 | `R-RULE-006`: comment может быть принят за disposition | Terminal state/comment явно исключены как самостоятельный closure route | Case 14 и independent review | implemented |
 | `R-RULE-006`: отсутствует durable alternate route | Добавлены owning-change и complete-linked-follow-up routes | Cases 12–13 и independent review | implemented |
 | `RETRO-STEP-12`: downstream capability может быть переоценена | Linked route ограничен decision-workflow boundary и сохраняет follow-up open | Case 13 и concept/document audit | implemented |
-| Independent P1: current matching text мог подменить owning change | Direct route требует change evidence, трассируемое к accepted obligation; добавлен unchanged-source falsifier | Cases 12 и 15, independent re-audit | implemented; blind verified; re-audit pending |
-| Document/concept P1: один owning change мог скрыть stale required owner | Для каждого obligation inventory перечисляет все required affected owners; каждый требует owning change либо полный follow-up | Cases 12, 13 и 16, повторный document/concept audit | implemented; blind verified; audits pending |
+| Independent P1: current matching text мог подменить owning change | Direct route требует change evidence, трассируемое к accepted obligation; добавлен unchanged-source falsifier | Cases 12 и 15, independent re-audit | verified |
+| Document/concept P1: один owning change мог скрыть stale required owner | Для каждого obligation inventory перечисляет все required affected owners; каждый требует owning change либо полный follow-up | Cases 12, 13 и 16, повторный document/concept audit | verified |
 
 ## Verification
 
@@ -74,10 +74,18 @@ Change review snapshot `f9c1c853b3a4f8eb9ca6b60c4611367f7693ef0f`: independent `
 
 Skill re-audit snapshot `bff8de2bceb6e132e83a5d091e3e6f0cfe39f9ce`: independent `PASS` с одним non-blocking P3 по устаревшему supporting inventory/byte count. Отдельный document/concept audit этого же snapshot получил общий `FAIL`: direct route мог обновить один owning artifact и оставить другой required affected owner stale без follow-up. Second remediation восстанавливает baseline all-affected-owner gate и добавляет `Q-STALE-OWNER`.
 
+Final active snapshot `7d4972733d205f51c75aea0cf6caa9bcd860302a`:
+
+- independent `skill-reviewer`: `PASS`, material findings отсутствуют; оба P1 и supporting P3 закрыты;
+- independent document/concept audit: `PASS`, documentation `verified`, closure-time outcome `invariant-demonstrated`, fake-risk `low`, primary decision `proceed`;
+- evidence boundary: verdict относится к decision-workflow capability; future effectiveness остаётся у `RETRO-STEP-21`, downstream runtime/product capability не заявляется.
+
+Последующая запись этих verdicts изменяет только non-normative supporting log и generated source hash; normalized active surface остаётся неизменной и проходит bounded delta audit на evidence-only commit.
+
 ## Side Effects
 
 External customer communication и email не выполнялись. GitHub mutations ограничены статусом/evidence issue `Aequitas-ADR/app#239`; push и integration не входят в CP1.
 
 ## Итог
 
-Текущий статус: `implemented; second P1 remediation blind-verified; independent audits pending`.
+Текущий статус: `PASS` для CP1 skill/document boundary.
