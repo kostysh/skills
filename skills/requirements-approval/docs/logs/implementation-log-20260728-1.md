@@ -4,7 +4,7 @@
 - **Дата:** 2026-07-28
 - **Issue:** `Aequitas-ADR/app#239`
 - **Версия:** `requirements-approval` 0.2.2
-- **Статус:** `PASS`
+- **Статус:** active snapshot `PASS`; evidence-only delta verdict остаётся внешним
 
 ## Capability
 
@@ -80,7 +80,7 @@ Final active snapshot `7d4972733d205f51c75aea0cf6caa9bcd860302a`:
 - independent document/concept audit: `PASS`, documentation `verified`, closure-time outcome `invariant-demonstrated`, fake-risk `low`, primary decision `proceed`;
 - evidence boundary: verdict относится к decision-workflow capability; future effectiveness остаётся у `RETRO-STEP-21`, downstream runtime/product capability не заявляется.
 
-Последующая запись этих verdicts изменяет только non-normative supporting log и generated source hash; normalized active surface остаётся неизменной и проходит bounded delta audit на evidence-only commit.
+Последующая запись этих verdicts изменяет только non-normative supporting log. `SKILL.md`, recorded `skillforge-source-hash` и normalized active surface остаются неизменными. Этот log не заявляет verdict собственного delta; bounded delta result фиксируется внешним issue/checkpoint evidence.
 
 ## Side Effects
 
@@ -88,4 +88,4 @@ External customer communication и email не выполнялись. GitHub mut
 
 ## Итог
 
-Текущий статус: `PASS` для CP1 skill/document boundary.
+Active snapshot `7d4972733d205f51c75aea0cf6caa9bcd860302a` имеет `PASS` для CP1 skill/document boundary; verdict последующего evidence-only delta намеренно остаётся внешним.
