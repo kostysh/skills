@@ -7,16 +7,20 @@
 | Issue | Status | Notes |
 | --- | --- | --- |
 | [issues/issue-20260429-1.md](issues/issue-20260429-1.md) | Audited PASS | Portable repeated-validation heuristic for adjacent observable cases. |
+| [issues/issue-20260810-1.md](issues/issue-20260810-1.md) | Audited PASS; execution authorized | Source-authorized visible-defect-first и containment scope для T02. |
 
 ## Implementation Plans
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
 | [issues/implementation-plan-20260429-1.md](issues/implementation-plan-20260429-1.md) | [issues/issue-20260429-1.md](issues/issue-20260429-1.md) | Audited PASS |
+| [issues/implementation-plan-20260810-1.md](issues/implementation-plan-20260810-1.md) | [issues/issue-20260810-1.md](issues/issue-20260810-1.md) | Audited PASS; `PR-before-integration`; execution authorized |
 
 ## Logs
 
 - [logs/implementation-log-20260429-1.md](logs/implementation-log-20260429-1.md) - portable repeated-validation heuristic for adjacent observable cases.
+- [logs/implementation-log-20260810-1.md](logs/implementation-log-20260810-1.md) - T02 source-premise review, minimal remediation, gates и independent change PASS.
+- [logs/forward-test-evidence-20260810-1.md](logs/forward-test-evidence-20260810-1.md) - T02 baseline history и raw candidate A1/A2/B/C/D/E evidence.
 - [logs/implementation-log-20260602-1.md](logs/implementation-log-20260602-1.md) - project-purpose alignment for non-trivial local implementation work.
 - [logs/implementation-log-20260612-1.md](logs/implementation-log-20260612-1.md) - remediation matrix statuses and substrate-versus-runtime-capability evidence.
 - [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) - first sufficient rung, shortcut trigger, and minimum-check guidance.

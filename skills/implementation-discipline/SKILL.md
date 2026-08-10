@@ -8,9 +8,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f05a55f077f7aa90cc26a557ba6ae9d911854351f53f4ae709945af85fe38897
+  skillforge-source-hash: b1ad209a02c31988455be80006d244f3c53f7004e4eff36aea314b4eb5af4c06
 ---
 
 # implementation-discipline
@@ -49,14 +49,19 @@ Make the requested outcome, source authority, mutation boundary, constraints, an
 3. For design/authoring work, change only requested artifacts; do not mutate code or runtime state, and keep product, architecture, specification, and delivery semantics with their owning skills.
 4. Define successful completion as observable behavior or a preserved invariant, not as files, scaffolding, configuration, tests, or documentation existing.
 5. Record the actor or consumer, claim boundary, source-authorized scope and non-goals, permitted outputs or mutations, simplest direct or existing primitive, and narrowest falsifying check before expanding scope or solution shape.
-6. State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
-7. For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
-8. For non-trivial local work, use project purpose to check whether the request advances the intended flow; use that context to narrow or reject the local task, never to add unrequested work.
-9. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
+6. For a reported bug or interactive correction, before material mutation record the actor, exact steps or path, actual visible or observable failure, relevant network or persisted-state observation when applicable, and a falsifier; if this witness is unavailable, report the evidence gap instead of acting on a plausible adjacent hypothesis.
+7. Before materially adding a capability, route, domain, workflow, or configuration boundary, name the exact operator decision or owning requirement locator that authorizes it; missing or conflicting authority stops that addition.
+8. When switching tasks, start from the new task source and carry only a compact `source / scope / state / next action` handoff; conclusions or scope from the previous task do not authorize the new one.
+9. State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
+10. For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
+11. For non-trivial local work, use project purpose to check whether the request advances the intended flow; use that context to narrow or reject the local task, never to add unrequested work.
+12. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
 
 Validation:
 
 - The requested behavior, protected constraints, task mode, and mutation authority are explicit.
+- A bug or interactive correction has its exact pre-mutation witness, or material mutation remains blocked by an explicit evidence gap.
+- Every material boundary addition has an exact authority locator, and every task switch has a bounded handoff from the new source.
 - Code-review-only work remains read-only, and design/authoring does not mutate code or runtime state.
 - Capability work cannot be declared complete through substrate-only acceptance.
 - Project-purpose reasoning has not expanded scope.
@@ -104,7 +109,7 @@ Prove the behavior proportionally and finish without adding post-success scope.
 2. Prefer existing local test, lint, typecheck, build, or smoke commands when they are the narrowest meaningful proof.
 3. If proving the claim requires verification infrastructure or a production seam larger than the authorized change, revisit the claim boundary and design before adding it; do not add runtime instrumentation only for test convenience.
 4. Use stronger project or domain verification for security, privacy, money, data loss, auth, accessibility, release, migration, or production-wiring boundaries.
-5. If a bug was fixed, cover or directly demonstrate the prior failure; when repeated independent signals indicate a defect class, also check adjacent observable cases.
+5. If a bug was fixed, repeat the same recorded actor and steps or path and re-check the relevant observable, network, or persisted-state boundary; when repeated independent signals indicate a defect class, also check adjacent observable cases.
 6. If the intended verification cannot run, use the next-best check and state the evidence gap.
 7. Report the completed outcome, checks run, checks not run, and remaining risk.
 8. Once the simplest sufficient solution is implemented and verified, stop; do not add speculative cleanup, extensibility, or future-proofing.
