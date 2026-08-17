@@ -8,9 +8,9 @@ description: Turn accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.10
+  source-version: 0.2.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e9fc811633cea891865fc32793a2d82ad09869fbeb0ad616b7cf3c929cb6286a
+  skillforge-source-hash: 59d1e9a9e19221666d4beb1b8e89e3b7009b3cb4c26f5df8959d87c0d1bbaa11
 ---
 
 # delivery-planner
@@ -75,7 +75,7 @@ The skill does not produce PRDs, architecture decisions, ADRs, ASR records, impl
 
 Respect the requested target and avoid planning more than needed.
 
-1. Capture the outcome, actor or consumer, claim boundary, source-authorized scope and non-goals, permitted output, direct delivery path, narrowest falsifier, and exact scope baseline; classify the delta as `unchanged`, `narrowed`, `expanded`, or `mixed`.
+1. Capture the outcome, actor or consumer, claim boundary, source-authorized scope and non-goals, permitted output, direct delivery path, narrowest falsifier, and exact scope baseline; classify the delta as `unchanged`, `narrowed`, `expanded`, or `mixed`, then inventory every material change or addition with exact authority/customer disposition, consequences, and status or blocker.
 2. Classify scope as project, feature, module/service, integration, handoff item, or backlog audit.
 3. Identify included and excluded areas.
 4. Select compact output mode unless a deeper mode is explicitly required.
@@ -83,7 +83,7 @@ Respect the requested target and avoid planning more than needed.
 
 Validation:
 
-- The scope verdict names authorized deltas and reports unauthorized additions; risk, evidence, and planner-created artifacts have not expanded scope or process depth.
+- Every scope delta has an inventory row with authority and consequences; every unauthorized addition is individually named and blocked, and risk, evidence, or planner-created artifacts have not expanded scope or process depth.
 
 ### Workflow stage: Intake and authority check
 
@@ -123,7 +123,7 @@ Decompose around observable or verifiable outcomes.
 Create executable planning-level tasks without writing full specs.
 
 1. Give each task one primary goal.
-2. Include source trace, scope, out-of-scope, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or evidence-return route.
+2. Include item-level origin authority/customer coordination, scope, out-of-scope, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or evidence-return route.
 3. Use `draft`, `blocked`, or `ready for <owner>`; use `ready for coding` only when accepted product and architecture inputs, sufficient behavior detail, ready dependencies, and concrete verification and review evidence let the coding owner act without source-owned decisions.
 4. Split only when risk, dependency order, review path, or verification evidence requires it.
 5. Route detailed behavior to spec-engineer instead of inventing it.
@@ -145,7 +145,7 @@ Ensure the plan is useful, compact, scope-respecting, and safe for downstream ag
 1. Check that architecture was not redesigned.
 2. Check that no task is more ready than its product, architecture, specification, or dependency inputs.
 3. Check that every in-scope requirement and architecture obligation has a task, route, spike, or explicit not-applicable rationale.
-4. Check the exact-baseline scope verdict and reverse authority trace; list unauthorized additions instead of accepting them.
+4. Check the exact-baseline scope inventory and item-level reverse authority trace; reject aggregate `findings`, missing consequences, or unnamed unauthorized additions.
 5. Check that high-risk work is visible.
 6. Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
 7. Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.

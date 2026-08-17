@@ -10,11 +10,20 @@ Brief result:
 - Out of scope:
 - Scope baseline / source:
 - Scope delta: `unchanged | narrowed | expanded | mixed`
-- Unauthorized additions: `none | findings`
+- Unauthorized additions: `none | listed individually below`
 - Source authority:
 - Customer/contract basis for material product requirements:
 - Plan handoff: `draft | blocked | ready for <consumer>`
 - Output mode: compact
+
+### Scope delta and addition inventory
+
+Use one row for every material narrowing, expansion, or addition. Write `none`
+only when the verdict is `unchanged` and there are no additions.
+
+| Change / addition | Delta type | Exact authority / customer disposition | Consequences | Status / blocker |
+|---|---|---|---|---|
+| none |  |  |  |  |
 
 ## 2. Capability, substrate, and anti-claims
 
@@ -35,9 +44,12 @@ Brief result:
 
 ## 5. Obligation disposition and decomposition
 
-| Source / obligation | Disposition | Slice / increment | Observable or verifiable outcome | Task / route | Risk |
-|---|---|---|---|---|---|
-|  | task / specialist route / spike / not applicable |  |  |  |  |
+Include every material task, behavior, and acceptance obligation. This table is
+both the forward disposition and the item-level reverse authority trace.
+
+| Material planned item | Source / obligation | Customer-coordinated product authority or bounded non-product authority | Disposition | Slice / increment | Observable or verifiable outcome | Task / route | Risk |
+|---|---|---|---|---|---|---|---|
+|  |  |  | task / specialist route / spike / not applicable |  |  |  |  |
 
 ## 6. Task handoffs
 
@@ -70,8 +82,9 @@ Brief result:
 ## 9. Audit summary
 
 - Scope respected:
-- Scope delta, authority, and consequences explicit:
-- Unauthorized additions: `none | findings`
+- Scope delta inventory complete; every authorized delta has exact authority and consequences:
+- Unauthorized additions individually listed and blocked:
+- Every material planned item has item-level reverse authority trace:
 - Material product additions have customer/contract coordination:
 - Non-product obligations remain inside their authority boundary:
 - Input readiness preserved:
