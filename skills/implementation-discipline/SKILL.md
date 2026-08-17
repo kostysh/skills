@@ -8,9 +8,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b1ad209a02c31988455be80006d244f3c53f7004e4eff36aea314b4eb5af4c06
+  skillforge-source-hash: 9dff4109f9d8cf444d3795bf0e9120319982a733f5a419e26e8dc7657569a97c
 ---
 
 # implementation-discipline
@@ -51,17 +51,19 @@ Make the requested outcome, source authority, mutation boundary, constraints, an
 5. Record the actor or consumer, claim boundary, source-authorized scope and non-goals, permitted outputs or mutations, simplest direct or existing primitive, and narrowest falsifying check before expanding scope or solution shape.
 6. For a reported bug or interactive correction, before material mutation record the actor, exact steps or path, actual visible or observable failure, relevant network or persisted-state observation when applicable, and a falsifier; if this witness is unavailable, report the evidence gap instead of acting on a plausible adjacent hypothesis.
 7. Before materially adding a capability, route, domain, workflow, or configuration boundary, name the exact operator decision or owning requirement locator that authorizes it; missing or conflicting authority stops that addition.
-8. When switching tasks, start from the new task source and carry only a compact `source / scope / state / next action` handoff; conclusions or scope from the previous task do not authorize the new one.
-9. State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
-10. For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
-11. For non-trivial local work, use project purpose to check whether the request advances the intended flow; use that context to narrow or reject the local task, never to add unrequested work.
-12. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
+8. Before authoring or changing a material `MUST`, complete an author-owned source-grounded first pass: classify the derivation as `explicit` or `derived`; name the exact accepted source statement or accepted non-product authority; state applicability, necessity, and the removal falsifier that identifies which accepted obligation would fail without the requirement. A locator, traceability row, downstream artifact, test, gate, or later review is not semantic proof and does not transfer the author's responsibility.
+9. When switching tasks, start from the new task source and carry only a compact `source / scope / state / next action` handoff; conclusions or scope from the previous task do not authorize the new one.
+10. State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
+11. For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
+12. For non-trivial local work, use project purpose to check whether the request advances the intended flow; use that context to narrow or reject the local task, never to add unrequested work.
+13. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
 
 Validation:
 
 - The requested behavior, protected constraints, task mode, and mutation authority are explicit.
 - A bug or interactive correction has its exact pre-mutation witness, or material mutation remains blocked by an explicit evidence gap.
 - Every material boundary addition has an exact authority locator, and every task switch has a bounded handoff from the new source.
+- Every new or changed material `MUST` has an author-checked semantic derivation and removal falsifier, or the affected handoff remains draft or blocked instead of relying on later review to repair it.
 - Code-review-only work remains read-only, and design/authoring does not mutate code or runtime state.
 - Capability work cannot be declared complete through substrate-only acceptance.
 - Project-purpose reasoning has not expanded scope.

@@ -9,9 +9,9 @@ compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.10
+  source-version: 0.2.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5b69dff7ad5755f61171b78f2d66ded97ab6c36e7f4351d64ef9dac5809c34ff
+  skillforge-source-hash: 8a78fb95b31969ac320abe39805d5d23308bafcbc0136550ad2228a003634cd9
 ---
 
 # spec-engineer
@@ -131,16 +131,18 @@ Produce a concise spec at an honest handoff status without becoming process-heav
 3. For spike specs, specify the question, hypothesis, validation harness, success/failure criteria, output evidence, and next decision instead of pretending the spike delivers product behavior.
 4. Write a scope statement, parent intent or supported capability, glossary, capability or behavior statement, assumptions, and anti-claims.
 5. Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
-6. Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
-7. Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
-8. For a triggered high-risk backend matrix, map every applicable `HRB-*` row to at least one executable test or real-boundary check that fails for the prohibited outcome.
-9. Prefer the narrowest existing verification contour; do not require a runner, harness, orchestration layer, instrumentation, or production seam only to strengthen acceptance.
-10. Define requirement lifecycle status when revising an existing spec: new, changed, superseded, deprecated, or removed.
-11. Record open questions and gaps without letting non-blocking gaps stop useful specification work.
+6. Apply the methodology's semantic authority and removal-falsifier gate before accepting each new or changed material `MUST`; locators, downstream artifacts, observed code, tests, and later review are not proof by themselves.
+7. Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
+8. Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
+9. For a triggered high-risk backend matrix, map every applicable `HRB-*` row to at least one executable test or real-boundary check that fails for the prohibited outcome.
+10. Prefer the narrowest existing verification contour; do not require a runner, harness, orchestration layer, instrumentation, or production seam only to strengthen acceptance.
+11. Define requirement lifecycle status when revising an existing spec: new, changed, superseded, deprecated, or removed.
+12. Record open questions and gaps without letting non-blocking gaps stop useful specification work.
 
 Validation:
 
 - Every important requirement is falsifiable by demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or another explicit method.
+- A failed semantic derivation or removal falsifier leaves the material `MUST` unresolved and blocks a ready handoff.
 - If a requirement can produce two independently verifiable acceptance criteria, it has been split.
 - Acceptance criteria prove real behavior and include at least one negative or falsifier for self-deception risk.
 - The high-risk backend test inventory covers every applicable matrix row without using happy-path, mock-only, schema-presence, generated-file, or self-authored evidence to close a stronger claim.

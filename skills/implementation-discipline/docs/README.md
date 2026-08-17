@@ -28,6 +28,7 @@
 - [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) - review-only mutation boundary and remediation status-to-claim contract.
 - [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) - simplicity-first core, complexity exception gate, conditional references, and behavioral evidence.
 - [logs/implementation-log-20260717-1.md](logs/implementation-log-20260717-1.md) - source-authorized scope and simplicity discipline for implementation and authoring skills.
+- [logs/implementation-log-20260817-1.md](logs/implementation-log-20260817-1.md) - author-owned semantic source derivation and bounded remediation inside an already-authorized CI contour.
 
 ## Scope of This Folder
 

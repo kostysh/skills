@@ -18,3 +18,4 @@ This directory contains supporting maintenance material only. The normative skil
 
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до лимита 300 code points; independent scoped PASS.
 - [implementation-log-20260717-1.md](logs/implementation-log-20260717-1.md) — source-authorized architecture and simplicity gate; independent PASS.
+- [implementation-log-20260817-1.md](logs/implementation-log-20260817-1.md) — semantic authority gate for material ASR and explicit unresolved-assumption boundary.

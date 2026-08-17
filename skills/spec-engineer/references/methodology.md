@@ -33,6 +33,8 @@ Before writing requirements, extract the smallest useful target:
 - **Source authority and readiness:** which source owns each decision, whether its current version is authoritative, draft, blocked, or accepted, and which downstream consumer it is ready for.
 - **Criticality:** worst observable consequence if the requirement is wrong.
 
+Observed code may establish current behavior, compatibility constraints, or drift. It does not create a new normative target by itself unless an accepted source or accepted non-product authority explicitly promotes that behavior.
+
 If the parent intent is missing, record it as an assumption, gap, or blocking question according to risk. Do not invent product, system, workflow, or architecture intent just to make the spec feel complete.
 
 If source material conflicts, do not silently average it. Choose the higher-authority source when that is clear; otherwise mark a blocking question or a non-blocking assumption.
@@ -52,6 +54,7 @@ A ready handoff requires:
 - accepted domain and external-contract facts needed by the behavior;
 - no blocking product, architecture, behavior, dependency, or verification gap;
 - source-traced atomic requirements, negative or falsifier coverage, and a verification path that proves the claim at its declared boundary.
+- every new or changed material `MUST` has a supported semantic derivation and a passing removal falsifier.
 
 Non-authoritative, draft, or blocked input may still produce a useful draft when doing so does not require invention. Never make the specification more ready than its inputs. Completing, reviewing, or persisting a specification demonstrates specification work only; it does not demonstrate implementation progress, runtime behavior, or release readiness.
 
@@ -206,6 +209,18 @@ Stop and route a feedback note when the spec would require a new or changed arch
 Do not invent `ASR`, `PD`, or `ADR` identifiers. Cite existing ones. If no repo-local artifact or spec ID convention exists for spec-owned statements, suggested prefixes are `SPEC-R` for requirements, `INV` for invariants, and `AC` for acceptance criteria.
 
 ## Write atomic normative requirements
+
+Before writing or changing each material `MUST`, perform the semantic authority gate:
+
+- classify `derivation` as `explicit` or `derived`;
+- name the exact accepted source statement or accepted non-product authority;
+- state `applicability`: actors, scenarios, conditions, and system boundary;
+- state `necessity`: why the requirement is needed for an accepted obligation;
+- state a removal falsifier: which accepted obligation would fail if the requirement were removed.
+
+A locator, populated traceability row, downstream artifact, observed implementation, test, gate, or later review does not prove the semantic derivation by itself. If the removal falsifier cannot name an accepted obligation, the requirement is unsupported: remove it or retain it only as an explicit unresolved gap. A spec containing that unresolved material requirement cannot be `ready for <consumer>`.
+
+Apply the same check to an exceptional operating mode, extra prerequisite, role or profile restriction, and workflow obligation. If its basis is missing or conflicting, route the exact requirement and source locators, provenance, affected behavior, decision owner, and unblock condition instead of normalizing it into the spec.
 
 Use uppercase `MUST`, `MUST NOT`, `SHOULD`, and `MAY` when they carry normative meaning. Treat `CAN` as ordinary descriptive capability language, not as normative modality. Lowercase words keep their ordinary-language meaning unless the repository defines another convention.
 
@@ -491,6 +506,7 @@ Check the specification itself:
 - Can each important requirement be falsified?
 - Does each requirement have one obligation?
 - Does each requirement trace to a source or explicit assumption?
+- Does every new or changed material `MUST` pass semantic derivation and identify the accepted obligation that would fail if it were removed?
 - Are all key terms defined once?
 - Are main, alternate, failure, and invalid cases covered enough for the scope?
 - Are time, retry, ordering, idempotency, permissions, consistency, concurrency, and compatibility addressed when relevant?
@@ -509,6 +525,7 @@ Check the specification itself:
 Stop and ask the user when:
 
 - a behavior-changing source conflict remains unresolved after applying authority and readiness precedence;
+- a new or changed material `MUST` has no supported semantic derivation or cannot pass its removal falsifier;
 - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
 - the spec would make a capability claim that can only be proven by substrate evidence;
 - the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;

@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.7
+  source-version: 0.1.8
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise architecture for AI-agent-driven development. Use when
@@ -87,6 +87,10 @@ copies:
     description: Portable copy of agents/openai.yaml.
 
 supporting:
+  - id: supporting-implementation-log-20260817-1
+    source: docs/logs/implementation-log-20260817-1.md
+    target: docs/logs/implementation-log-20260817-1.md
+    description: Non-normative log for semantic authority gating of material ASR.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
@@ -197,7 +201,7 @@ sections:
         - Capture actor, trigger, main flow, edge cases, out of scope, acceptance, metric, priority, and source where they affect architecture.
         - Mark missing NFR targets as TBD instead of inventing them.
       validation:
-        - Each architecture-relevant requirement traces to PRD, spec, issue, code, policy, or explicit assumption.
+        - Accepted sources own normative requirements; observed code describes current state but creates no new requirement by itself.
         - An architecture artifact created or revised in this session does not create and then cite its own requirement or ASR as expansion authority.
         - Requirements do not silently prescribe technology without rationale.
         - Open questions are separated into blocking, non-blocking, and validation gaps.
@@ -205,15 +209,13 @@ sections:
       title: Extract ASR and forces
       goal: Identify what actually shapes the system and what validation each force needs.
       steps:
-        - Extract ASR for performance, availability, recoverability, security, privacy, data consistency, integrations, evolvability, operations, cost, sustainability when relevant, and delivery.
-        - Map each ASR to concrete forces such as latency, throughput, consistency, coupling, volatility, failure mode, team topology, cost, security, privacy, or operability.
-        - Estimate architectural risk and confidence.
-        - Identify whether each ASR requires a spike, pattern decision, ADR, quality scenario, or only a handoff constraint.
+        - Extract only architecture-shaping requirements and apply the required methodology's semantic authority gate to every new or changed material ASR.
+        - Do not infer exceptional modes or actor prerequisites from observed mechanisms; unresolved assumptions remain draft or blocked.
+        - Map each accepted ASR to forces, risk, confidence, and the smallest needed validation or decision record.
       validation:
         - ASR register is shorter than the full requirement list.
-        - Each ASR explains why architecture shape is affected.
-        - Forces are specific enough to guide pattern choice.
-        - ASR records do not prescribe tasks; they describe architecture-shaping requirements.
+        - Every material ASR passes the authority gate before a dependent decision or ready handoff.
+        - Each accepted ASR states the architecture-shaping reason and forces; records describe requirements, not tasks.
     - id: stage-select-pattern
       title: Generate, score, and select patterns
       goal: Prefer a direct or existing primitive, and compare patterns only when current ASR require an architecture choice.

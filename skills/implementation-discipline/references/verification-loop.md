@@ -26,6 +26,12 @@ A focused unit test, smoke command, or local self-check is sufficient for low-ri
 
 If the intended check cannot run, use the next-best static or behavioral check and report exactly what remains unproven. Tests, mocks, schemas, wrappers, logs, and documentation prove only their own boundary; they do not prove a broader runtime capability.
 
+## Handle failure inside an already-authorized CI contour
+
+When exact operator and repository authority already covers the correction, the necessary Git mutations, and monitoring a mandatory CI check, a failure stays in the same task, branch, and pull request. Establish the root cause, make the smallest source-authorized fix, run the replacement check, and read its terminal result. Do not use a blind rerun as remediation.
+
+This rule does not create authority. Stop before the missing mutation, publication, or monitoring action when it was not authorized. Also stop when the fix would change accepted scope or cross a material product, public-contract, data, security, privacy, deployment, or operational boundary that needs a separate decision.
+
 ## Accepted-audit remediation matrix
 
 Use this section only when implementing accepted findings or recommendations from an audit or review. Track each item as:

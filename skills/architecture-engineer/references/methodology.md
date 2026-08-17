@@ -63,6 +63,8 @@ Validation:
 
 Apply explicit user or repository precedence first. When none is defined, use product sources for intended capability and scope, accepted architecture records for architecture decisions, repository code/configuration/schema/tests for observed current behavior, and external contracts or domain skills for specialized facts. Current implementation can reveal drift but does not silently override accepted product or architecture intent.
 
+Observed code, configuration, schema, tests, or an available mechanism can establish current state and constraints. Their existence does not create a new normative ASR, exceptional operating mode, or actor prerequisite without an accepted source statement or accepted non-product authority.
+
 If equal-authority sources conflict in a way that changes architecture, stop for resolution. Treat lower-authority disagreement as drift and record non-blocking uncertainty as an assumption with a validation path.
 
 ## Workflow stage: Normalize architecture-relevant requirements
@@ -76,7 +78,7 @@ Goal: translate product requirements into architecture-ready inputs without rewr
 
 Validation:
 
-- Each architecture-relevant requirement can be traced to PRD, spec, issue, code, policy, or explicit assumption.
+- Each architecture-relevant requirement can be traced to an accepted product, architecture, domain, policy, or operator source, or remains an explicit unresolved assumption; observed code may describe current state but does not create a new normative requirement by itself.
 - Requirements do not silently prescribe technology without rationale.
 - Open questions are separated into blocking, non-blocking, and validation gaps.
 
@@ -85,13 +87,17 @@ Validation:
 Goal: identify what actually shapes the system.
 
 1. Extract ASR for performance, availability, recoverability, security, privacy, data consistency, integrations, evolvability, operations, cost, sustainability when material, and delivery.
-2. Map each ASR to forces.
-3. Estimate architectural risk and confidence.
-4. Identify whether the ASR requires a spike, pattern decision, or ADR.
+2. For every new or changed material ASR, record the authority kind, exact locator and normative statement, decision owner, explicit or derived relationship, applicability, and necessity. Necessity states which accepted obligation would fail if the ASR were removed.
+3. Do not infer an exceptional operating mode or an actor prerequisite merely because the current system contains a mechanism, profile, role, flag, or workflow that could support it.
+4. Keep an unresolved assumption as draft or blocked input; it cannot authorize a dependent decision or ready handoff.
+5. Map each ASR to forces.
+6. Estimate architectural risk and confidence.
+7. Identify whether the ASR requires a spike, pattern decision, or ADR.
 
 Validation:
 
 - ASR register is shorter than the full requirement list.
+- Every material ASR passes the semantic authority gate; a locator, downstream artifact, observed implementation, or filled template is not proof of normative derivation by itself.
 - Each ASR explains why architecture shape is affected.
 - Forces are specific enough to guide pattern choice.
 - ASR records do not prescribe tasks; they describe architecture-shaping requirements.
@@ -102,15 +108,24 @@ ASR record shape:
 asr:
   id: ASR-INT-1
   requirement: "External provider failures must not block unrelated workspace workflows"
+  authority:
+    kind: source_statement
+    locator: PRD-NFR2
+    normative_statement: "Provider failure must not block unrelated workflows"
+    owner: product
+    derivation: explicit
+    applicability: "Ordinary workspace workflows while the provider is unavailable"
+    necessity: "Without failure isolation, the accepted continuity obligation is violated"
   forces:
     - integration failure isolation
     - retry and idempotency
     - degraded mode
   architectural_risk: high
-  evidence: "PRD-NFR2 and integration task"
   confidence: medium
   validation: "provider failure integration test and retry/idempotency spike"
 ```
+
+Allowed `authority.kind` values are `source_statement`, `accepted_non_product_authority`, and `unresolved_assumption`. An `unresolved_assumption` remains draft or blocked until its owner accepts or rejects it. Observed code may support current-state analysis, but it does not satisfy this authority block as a new normative requirement.
 
 Use the copy-ready file `assets/templates/asr-record.yaml` when the final output needs an ASR record.
 
