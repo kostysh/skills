@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.10
+  source-version: 0.2.11
   recommended-skill-md-max-bytes: 28000
   description: >-
     Create concise, falsifiable software specs for AI coding agents. Use to turn
@@ -63,6 +63,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20260817-1
+    source: docs/logs/implementation-log-20260817-1.md
+    target: docs/logs/implementation-log-20260817-1.md
+    description: Non-normative log for semantic authority gating of material normative requirements.
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
@@ -215,6 +219,7 @@ sections:
         - For spike specs, specify the question, hypothesis, validation harness, success/failure criteria, output evidence, and next decision instead of pretending the spike delivers product behavior.
         - Write a scope statement, parent intent or supported capability, glossary, capability or behavior statement, assumptions, and anti-claims.
         - Write atomic normative requirements with source trace, explicit subject, modality, action, object, condition, and measurable constraint where relevant.
+        - Apply the methodology's semantic authority and removal-falsifier gate before accepting each new or changed material `MUST`; locators, downstream artifacts, observed code, tests, and later review are not proof by themselves.
         - Use the representation-fit table from the methodology reference; prefer invariants for always-true properties, and use contracts, tables, state models, NFRs, and examples only where they materially reduce ambiguity.
         - Add positive acceptance criteria, negative criteria, falsifiers, and a verification map for each important requirement.
         - For a triggered high-risk backend matrix, map every applicable `HRB-*` row to at least one executable test or real-boundary check that fails for the prohibited outcome.
@@ -223,6 +228,7 @@ sections:
         - Record open questions and gaps without letting non-blocking gaps stop useful specification work.
       validation:
         - Every important requirement is falsifiable by demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or another explicit method.
+        - A failed semantic derivation or removal falsifier leaves the material `MUST` unresolved and blocks a ready handoff.
         - If a requirement can produce two independently verifiable acceptance criteria, it has been split.
         - Acceptance criteria prove real behavior and include at least one negative or falsifier for self-deception risk.
         - The high-risk backend test inventory covers every applicable matrix row without using happy-path, mock-only, schema-presence, generated-file, or self-authored evidence to close a stronger claim.

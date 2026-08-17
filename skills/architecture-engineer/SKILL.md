@@ -7,9 +7,9 @@ description: Design or revise architecture for AI-agent-driven development. Use
 compatibility: Portable documentation-only skill. It ships artifact templates
   but no runtime; all mandatory architecture guidance lives in this folder.
 metadata:
-  source-version: 0.1.7
+  source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3dac514bb8aeb7ffbbde81655b9be667d02bf5b2d30d9ced7f72f344eeacfafb
+  skillforge-source-hash: f211b97c389c60301da14fa21ab1def9581852e5d5a26b5328efd33f680e055c
 ---
 
 # architecture-engineer
@@ -137,7 +137,7 @@ Translate product or task input into architecture-ready requirements without rew
 
 Validation:
 
-- Each architecture-relevant requirement traces to PRD, spec, issue, code, policy, or explicit assumption.
+- Accepted sources own normative requirements; observed code describes current state but creates no new requirement by itself.
 - An architecture artifact created or revised in this session does not create and then cite its own requirement or ASR as expansion authority.
 - Requirements do not silently prescribe technology without rationale.
 - Open questions are separated into blocking, non-blocking, and validation gaps.
@@ -146,17 +146,15 @@ Validation:
 
 Identify what actually shapes the system and what validation each force needs.
 
-1. Extract ASR for performance, availability, recoverability, security, privacy, data consistency, integrations, evolvability, operations, cost, sustainability when relevant, and delivery.
-2. Map each ASR to concrete forces such as latency, throughput, consistency, coupling, volatility, failure mode, team topology, cost, security, privacy, or operability.
-3. Estimate architectural risk and confidence.
-4. Identify whether each ASR requires a spike, pattern decision, ADR, quality scenario, or only a handoff constraint.
+1. Extract only architecture-shaping requirements and apply the required methodology's semantic authority gate to every new or changed material ASR.
+2. Do not infer exceptional modes or actor prerequisites from observed mechanisms; unresolved assumptions remain draft or blocked.
+3. Map each accepted ASR to forces, risk, confidence, and the smallest needed validation or decision record.
 
 Validation:
 
 - ASR register is shorter than the full requirement list.
-- Each ASR explains why architecture shape is affected.
-- Forces are specific enough to guide pattern choice.
-- ASR records do not prescribe tasks; they describe architecture-shaping requirements.
+- Every material ASR passes the authority gate before a dependent decision or ready handoff.
+- Each accepted ASR states the architecture-shaping reason and forces; records describe requirements, not tasks.
 
 ### Workflow stage: Generate, score, and select patterns
 

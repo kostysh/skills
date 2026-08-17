@@ -181,13 +181,22 @@ Use for a new system, major redesign, or large vertical slice.
 asr:
   id: ASR-<AREA>-<number>
   requirement: "<architecture-shaping requirement>"
+  authority:
+    kind: source_statement | accepted_non_product_authority | unresolved_assumption
+    locator: "<stable source statement, accepted authority, or assumption locator>"
+    normative_statement: "<accepted obligation or unresolved assumption>"
+    owner: "<source or decision owner>"
+    derivation: explicit | derived
+    applicability: "<actors, scenarios, and system boundary to which the ASR applies>"
+    necessity: "<accepted obligation that would fail if this ASR were removed>"
   forces:
     - <force>
   architectural_risk: low | medium | high
-  evidence: "<source requirement, code, policy, or assumption>"
   confidence: low | medium | high
   validation: "<scenario, spike, inspection, contract check, or test>"
 ```
+
+`unresolved_assumption` remains draft or blocked until its owner supplies accepted authority. Observed code or the mere existence of a mechanism may document current state, but cannot create a new normative ASR, exceptional operating mode, or actor prerequisite.
 
 ### Quality scenario
 
