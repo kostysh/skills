@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.10
+  source-version: 0.2.11
   recommended-skill-md-max-bytes: 23500
   description: >-
     Turn accepted product scope and architecture handoff into right-sized executable
@@ -151,13 +151,13 @@ sections:
       title: Define planning scope
       goal: Respect the requested target and avoid planning more than needed.
       steps:
-        - Capture the outcome, actor or consumer, claim boundary, source-authorized scope and non-goals, permitted output, direct delivery path, narrowest falsifier, and exact scope baseline; classify the delta as `unchanged`, `narrowed`, `expanded`, or `mixed`.
+        - Capture the outcome, actor or consumer, claim boundary, source-authorized scope and non-goals, permitted output, direct delivery path, narrowest falsifier, and exact scope baseline; classify the delta as `unchanged`, `narrowed`, `expanded`, or `mixed`, then inventory every material change or addition with exact authority/customer disposition, consequences, and status or blocker.
         - Classify scope as project, feature, module/service, integration, handoff item, or backlog audit.
         - Identify included and excluded areas.
         - Select compact output mode unless a deeper mode is explicitly required.
         - Use explicit assumptions for non-blocking gaps instead of escalating every unknown.
       validation:
-        - The scope verdict names authorized deltas and reports unauthorized additions; risk, evidence, and planner-created artifacts have not expanded scope or process depth.
+        - Every scope delta has an inventory row with authority and consequences; every unauthorized addition is individually named and blocked, and risk, evidence, or planner-created artifacts have not expanded scope or process depth.
     - id: stage-intake
       title: Intake and authority check
       goal: Identify authoritative product, architecture, spec, repository, and code inputs.
@@ -193,7 +193,7 @@ sections:
       goal: Create executable planning-level tasks without writing full specs.
       steps:
         - Give each task one primary goal.
-        - Include source trace, scope, out-of-scope, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or evidence-return route.
+        - Include item-level origin authority/customer coordination, scope, out-of-scope, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or evidence-return route.
         - Use `draft`, `blocked`, or `ready for <owner>`; use `ready for coding` only when accepted product and architecture inputs, sufficient behavior detail, ready dependencies, and concrete verification and review evidence let the coding owner act without source-owned decisions.
         - Split only when risk, dependency order, review path, or verification evidence requires it.
         - Route detailed behavior to spec-engineer instead of inventing it.
@@ -213,7 +213,7 @@ sections:
         - Check that architecture was not redesigned.
         - Check that no task is more ready than its product, architecture, specification, or dependency inputs.
         - Check that every in-scope requirement and architecture obligation has a task, route, spike, or explicit not-applicable rationale.
-        - Check the exact-baseline scope verdict and reverse authority trace; list unauthorized additions instead of accepting them.
+        - Check the exact-baseline scope inventory and item-level reverse authority trace; reject aggregate `findings`, missing consequences, or unnamed unauthorized additions.
         - Check that high-risk work is visible.
         - Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
         - Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.

@@ -55,7 +55,8 @@ Included: what the plan covers
 Excluded: what the plan intentionally does not cover
 Scope baseline: exact request/source boundary
 Scope delta: unchanged | narrowed | expanded | mixed
-Unauthorized additions: none | findings
+Scope delta inventory: each material change/addition -> delta type | exact authority/customer disposition | consequences | status/blocker
+Unauthorized additions: none | individually listed and blocked in the inventory
 Source authority: PRD/product brief, architecture handoff, accepted specs, repo instructions, existing code
 Plan handoff: draft | blocked | ready for <consumer>
 Output mode: compact by default
@@ -176,6 +177,12 @@ material planned task, behavior, and acceptance obligation back to its
 customer-coordinated product source or bounded non-product authority. An
 obligation that disappears on the way into the plan, or a planned item with no
 reverse authority trace, makes the plan incomplete.
+
+Record every material narrowing, expansion, or addition as its own scope
+inventory item with exact authority or customer disposition, consequences, and
+status or blocker. The aggregate word `findings` is not an inventory and cannot
+support a ready handoff. An unauthorized addition remains individually named and
+blocked.
 
 Do not select a new architecture pattern. If decomposition requires choosing architecture, stop and route to `architecture-engineer`.
 
