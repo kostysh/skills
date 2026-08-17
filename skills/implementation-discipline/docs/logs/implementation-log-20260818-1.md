@@ -54,7 +54,12 @@
   customer-uncoordinated additions; скрытое исключение customer cancellation
   дало `FAIL/narrowed`; полностью согласованный plan дал `PASS/unchanged`;
   неполный jargon-heavy checkpoint report получил `REJECT`.
-- Independent `skill-reviewer`: `pending`.
+- Independent `skill-reviewer` проверил active snapshot
+  `08eca86f7b8d55ba30c888ffd2e3154ef769bccc` / tree
+  `9a795d59feda059df81b0b4e3eff6e1303b8e769`: `PASS`, P1/P2/P3 — `none`,
+  scope — `unchanged`, unauthorized additions — `none`.
+- Durable raw evidence:
+  `Aequitas-ADR/app#363` comments `5321056388` и `5321129179`.
 
 ## Capability И Anti-claims
 
@@ -75,5 +80,6 @@
 
 ## Текущий Статус
 
-`PROVISIONAL` — deterministic и blind checks прошли; independent review ещё
-не завершён.
+`PASS` — deterministic checks, no-fork blind cases и independent full-snapshot
+review прошли; документационный contract не является гарантией поведения
+будущих моделей.
