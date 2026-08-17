@@ -1,5 +1,8 @@
 - Requested scope is explicit and respected: project, feature, module, integration, handoff item, or backlog audit.
+- The exact scope baseline and `unchanged | narrowed | expanded | mixed` verdict are explicit; every authorized delta states authority and consequences, and unauthorized additions are listed.
 - The simplest sufficient delivery path was named before decomposition and rechecked after material deltas.
+- Every material product requirement traces past derived artifacts to an exact customer/contract statement or explicit customer decision.
+- Every material planned item traces back to customer-coordinated product authority or bounded non-product authority; non-product obligations do not silently change product scope or behavior.
 - Product authority/handoff and architecture handoff item readiness are explicit; no dependent task is more ready than its inputs.
 - Architecture handoff is treated as accepted constraints and obligations, not redesigned.
 - Every in-scope product requirement and architecture obligation has a task, specialist route, spike, or explicit not-applicable rationale.
@@ -19,4 +22,5 @@
 - Parallel implementation has clear `start` edges and bounded write/review surfaces; it is not presented as acceptance independence.
 - Same-record or shared-race behavior has a joint `acceptance` gate even when implementation proceeds in parallel.
 - Plan completion is not reported as implementation progress, runtime behavior, or release readiness.
+- Output starts with a concise result in plain, understandable language and avoids unexplained unnecessary jargon.
 - Output is the smallest useful plan; no YAML or multi-register bureaucracy unless requested.

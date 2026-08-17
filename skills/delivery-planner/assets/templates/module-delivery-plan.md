@@ -1,5 +1,7 @@
 # Module Delivery Plan
 
+Brief result:
+
 ## 1. Module scope
 
 - Module/service/bounded context:
@@ -7,6 +9,10 @@
 - Public/internal boundaries:
 - Collaborators:
 - Out of scope:
+- Scope baseline / source:
+- Scope delta: `unchanged | narrowed | expanded | mixed`
+- Unauthorized additions: `none | findings`
+- Customer/contract basis for material product requirements:
 - Architecture handoff references:
 - Plan handoff: `draft | blocked | ready for <consumer>`
 
@@ -56,6 +62,10 @@
 ## 8. Audit summary
 
 - Module boundary respected:
+- Scope delta, authority, and consequences explicit:
+- Unauthorized additions: `none | findings`
+- Material product additions have customer/contract coordination:
+- Non-product obligations remain inside their authority boundary:
 - Input readiness preserved:
 - Every obligation dispositioned:
 - Substrate tied to module increments:

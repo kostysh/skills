@@ -29,6 +29,7 @@
 - [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) - simplicity-first core, complexity exception gate, conditional references, and behavioral evidence.
 - [logs/implementation-log-20260717-1.md](logs/implementation-log-20260717-1.md) - source-authorized scope and simplicity discipline for implementation and authoring skills.
 - [logs/implementation-log-20260817-1.md](logs/implementation-log-20260817-1.md) - author-owned semantic source derivation and bounded remediation inside an already-authorized CI contour.
+- [logs/implementation-log-20260818-1.md](logs/implementation-log-20260818-1.md) - customer-coordinated product authority, scope comparison и plain-language reporting; verification pending.
 
 ## Scope of This Folder
 

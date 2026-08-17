@@ -31,3 +31,4 @@ Maintenance records:
 | `logs/implementation-log-20260715-1.md` | PASS | Description shortened to 300 code points; independent scoped review complete. |
 | `logs/implementation-log-20260717-1.md` | Independent PASS | Source-authorized delivery decomposition and support-task gate. |
 | `logs/implementation-log-20260727-1.md` | Independent PASS | Типизированные dependency edges и общий acceptance для shared invariants по #226. |
+| `logs/implementation-log-20260818-1.md` | PROVISIONAL | Customer-coordinated product authority, scope verdicts и plain-language output; verification pending. |

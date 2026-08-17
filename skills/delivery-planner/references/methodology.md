@@ -38,6 +38,8 @@ Keep the plan as small as the scope allows:
 - if authority is clear, proceed with explicit assumptions instead of asking for more documents;
 - if scope is narrow, keep the plan narrow;
 - if a section would only restate known context, shorten or omit it;
+- never omit repository-mandated content, audit, checkpoint, stop, or reporting
+  rules for compactness;
 - if exact behavior is missing, route to `spec-engineer` instead of writing a disguised spec;
 - if an architecture choice is missing, route to `architecture-engineer` instead of planning around a guess.
 
@@ -51,6 +53,9 @@ Always determine planning scope before decomposing.
 Scope type: project | feature | module | service | integration | handoff item | backlog audit
 Included: what the plan covers
 Excluded: what the plan intentionally does not cover
+Scope baseline: exact request/source boundary
+Scope delta: unchanged | narrowed | expanded | mixed
+Unauthorized additions: none | findings
 Source authority: PRD/product brief, architecture handoff, accepted specs, repo instructions, existing code
 Plan handoff: draft | blocked | ready for <consumer>
 Output mode: compact by default
@@ -80,6 +85,20 @@ Use inputs according to their authority:
 - existing specs define accepted behavior details;
 - repository instructions define local workflow rules;
 - code/tests show existing implementation boundaries and integration seams.
+
+An owning product artifact is not necessarily origin authority. For every
+material product requirement, continue through PRDs, specs, plans, and tasks to
+an exact customer/contract statement or explicit customer decision. A derived
+artifact, even when accepted, does not prove customer coordination by itself.
+If the chain is missing or conflicts with customer requirements, keep dependent
+planning blocked and route the disposition to the product/customer-requirement
+owner.
+
+Accepted architecture, security, privacy, legal/compliance, operations, and
+repository obligations may act as non-product authority only inside their own
+boundary. If such an obligation changes product scope, roles, workflow, visible
+behavior, or acceptance, require explicit disposition against customer
+requirements rather than relabeling it as product authority.
 
 ### Readiness propagation
 
@@ -152,7 +171,11 @@ bounded spike;
 not applicable with rationale.
 ```
 
-Keep the source or obligation identifier on the disposition. An obligation that disappears between source intake and the task plan makes the plan incomplete.
+Keep the source or obligation identifier on the disposition. Also trace every
+material planned task, behavior, and acceptance obligation back to its
+customer-coordinated product source or bounded non-product authority. An
+obligation that disappears on the way into the plan, or a planned item with no
+reverse authority trace, makes the plan incomplete.
 
 Do not select a new architecture pattern. If decomposition requires choosing architecture, stop and route to `architecture-engineer`.
 
@@ -252,6 +275,7 @@ Slice / module increment
 Goal
 Scope / out of scope
 Source / obligation trace
+Customer/contract basis or bounded non-product authority
 Handoff status: draft | blocked | ready for <owner>
 Blockers and dependencies
 Risk: low | medium | high
@@ -297,6 +321,7 @@ A task is ready for coding only when:
 
 ```text
 product authority and handoff are accepted;
+material product requirements have verified customer/contract coordination;
 architecture handoff is ready or irrelevant;
 dependencies are ready, not merely named;
 risk is explicit;
@@ -420,10 +445,15 @@ T-PROTOCOLLA -> T-RIFIUTA: acceptance; one same-record race fixture must prove e
 
 Default. Use one Markdown Delivery Plan.
 
+Begin with a concise result in plain, understandable language. Remove
+unnecessary jargon and briefly explain necessary specialist terms; preserve
+technical identifiers.
+
 Recommended structure:
 
 ```text
 Planning scope
+Scope comparison and unauthorized additions
 Input readiness, assumptions, and gaps
 Decomposition
 Source-obligation dispositions
@@ -443,7 +473,10 @@ Use only when explicitly requested or required by repository automation. May inc
 
 Rule: if the plan is understandable and executable in compact mode, do not expand it.
 
-The default templates are examples, not mandatory forms. Use fewer rows or shorter sections when that is enough to preserve scope, dependencies, risks, routing, and verification direction.
+The default templates are examples, not mandatory forms. Use fewer rows or
+shorter sections when that is enough to preserve scope, dependencies, risks,
+routing, and verification direction. Repository-mandated content, audit,
+checkpoint, stop, and reporting fields remain mandatory overlays.
 
 ---
 
@@ -453,10 +486,15 @@ Before finalizing, verify:
 
 ```text
 The plan matches the requested scope.
+The exact baseline and scope delta are explicit; every narrowing or expansion has authority and consequences.
+Unauthorized additions are explicitly `none` or are listed as blockers.
+Every material product item traces past derived artifacts to a customer/contract statement or explicit customer decision.
+Every non-product obligation remains inside its authority boundary or has explicit customer disposition for product impact.
 Product authority/handoff and architecture handoff item status are explicit.
 No task is more ready than its source or dependency inputs.
 The architecture handoff is consumed but not redesigned.
 Every in-scope product requirement and architecture obligation has a task, route, spike, or explicit not-applicable rationale.
+Every material planned item traces back to customer-coordinated product authority or bounded non-product authority.
 Missing architecture decisions are routed.
 Missing product intent is routed.
 Missing behavior detail is routed.
@@ -474,4 +512,5 @@ Every task has a handoff status, next owner, expected output or evidence, and un
 Ready-for-coding tasks have accepted inputs and concrete verification and review evidence.
 Plan completion is not reported as implementation or runtime capability progress.
 The output is compact enough to be useful.
+The output begins with a concise result in plain, understandable language and avoids unexplained unnecessary jargon.
 ```
