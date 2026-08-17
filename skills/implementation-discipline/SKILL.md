@@ -8,9 +8,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9dff4109f9d8cf444d3795bf0e9120319982a733f5a419e26e8dc7657569a97c
+  skillforge-source-hash: c42b69efc87c6ffda640be7e5506f6135abf16c1a81c3c6107f99ec965b020bb
 ---
 
 # implementation-discipline
@@ -51,7 +51,7 @@ Make the requested outcome, source authority, mutation boundary, constraints, an
 5. Record the actor or consumer, claim boundary, source-authorized scope and non-goals, permitted outputs or mutations, simplest direct or existing primitive, and narrowest falsifying check before expanding scope or solution shape.
 6. For a reported bug or interactive correction, before material mutation record the actor, exact steps or path, actual visible or observable failure, relevant network or persisted-state observation when applicable, and a falsifier; if this witness is unavailable, report the evidence gap instead of acting on a plausible adjacent hypothesis.
 7. Before materially adding a capability, route, domain, workflow, or configuration boundary, name the exact operator decision or owning requirement locator that authorizes it; missing or conflicting authority stops that addition.
-8. Before authoring or changing a material `MUST`, complete an author-owned source-grounded first pass: classify the derivation as `explicit` or `derived`; name the exact accepted source statement or accepted non-product authority; state applicability, necessity, and the removal falsifier that identifies which accepted obligation would fail without the requirement. A locator, traceability row, downstream artifact, test, gate, or later review is not semantic proof and does not transfer the author's responsibility.
+8. Before authoring or changing a material `MUST`, complete an author-owned source-grounded first pass: record `explicit` or `derived`, exact accepted source or non-product authority, applicability, necessity, and the removal falsifier. A material product `MUST` must trace through derived artifacts to an exact customer/contract statement or explicit customer decision; a missing or conflicting chain blocks the handoff. Non-product authority stays inside its boundary, and product impact requires customer disposition. A locator, traceability row, downstream artifact, test, gate, or review is not semantic proof and does not transfer the author's responsibility.
 9. When switching tasks, start from the new task source and carry only a compact `source / scope / state / next action` handoff; conclusions or scope from the previous task do not authorize the new one.
 10. State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
 11. For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
@@ -63,7 +63,7 @@ Validation:
 - The requested behavior, protected constraints, task mode, and mutation authority are explicit.
 - A bug or interactive correction has its exact pre-mutation witness, or material mutation remains blocked by an explicit evidence gap.
 - Every material boundary addition has an exact authority locator, and every task switch has a bounded handoff from the new source.
-- Every new or changed material `MUST` has an author-checked semantic derivation and removal falsifier, or the affected handoff remains draft or blocked instead of relying on later review to repair it.
+- Every material `MUST` has semantic derivation and a removal falsifier; every material product `MUST` also has a verified customer/contract chain or explicit customer decision, or its handoff remains draft or blocked.
 - Code-review-only work remains read-only, and design/authoring does not mutate code or runtime state.
 - Capability work cannot be declared complete through substrate-only acceptance.
 - Project-purpose reasoning has not expanded scope.
@@ -152,7 +152,7 @@ Deliver the requested observable behavior with the least new conceptual surface.
 Complexity bears the burden of proof. Add an abstraction, dependency, layer, configuration, state, process, harness, instrumentation, or extension point only for a named current source requirement or protected boundary and only when a direct or existing option is insufficient.
 
 ### Source-authority policy
-Risk, completeness, evidence, audit findings, adjacent defects, and artifacts created in the same session do not expand authorized scope; route missing authority instead of manufacturing it.
+Derived artifacts, risk, evidence, audits, and adjacent defects do not expand scope. Material product requirements trace to an exact customer/contract statement or explicit customer decision; non-product authority cannot silently change product scope or behavior. Missing or conflicting authority blocks the affected work.
 
 ### Project-purpose fit policy
 Project purpose may show that a local task is misleading, insufficient, or unnecessary and may therefore narrow or reject it. It never grants authority to expand the requested scope.
@@ -176,7 +176,7 @@ A feature is complete only when it creates or preserves the claimed observable b
 Review, assessment, and diagnosis do not authorize code changes. Use `code-reviewer` for formal review output and begin remediation only after explicit change authority.
 
 ### Reporting contract
-Report the completed outcome, verification evidence, and unverified risk. For accepted-audit remediation, preserve the stricter matrix and closure contract in `references/verification-loop.md`; when another active skill defines a stricter format, follow it without weakening these evidence boundaries.
+Start with a concise result in plain, understandable language. Report outcome, evidence, risk, exact scope delta, unauthorized additions, and material decisions with consequences; preserve technical identifiers. For accepted-audit remediation use `references/verification-loop.md`; any stricter active format wins.
 
 ## Optional references
 - [Core principles](references/core-principles.md) — Read this when choosing between materially different designs or when the complexity exception gate applies.

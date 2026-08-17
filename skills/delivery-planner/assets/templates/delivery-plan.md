@@ -1,12 +1,18 @@
 # Delivery Plan
 
+Brief result:
+
 ## 1. Planning scope
 
 - Scope type:
 - Target:
 - Included:
 - Out of scope:
+- Scope baseline / source:
+- Scope delta: `unchanged | narrowed | expanded | mixed`
+- Unauthorized additions: `none | findings`
 - Source authority:
+- Customer/contract basis for material product requirements:
 - Plan handoff: `draft | blocked | ready for <consumer>`
 - Output mode: compact
 
@@ -64,6 +70,10 @@
 ## 9. Audit summary
 
 - Scope respected:
+- Scope delta, authority, and consequences explicit:
+- Unauthorized additions: `none | findings`
+- Material product additions have customer/contract coordination:
+- Non-product obligations remain inside their authority boundary:
 - Input readiness preserved:
 - Every obligation dispositioned:
 - Architecture not redesigned:

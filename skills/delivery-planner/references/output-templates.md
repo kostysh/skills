@@ -4,11 +4,21 @@ Use these templates as flexible shapes, not mandatory forms. Prefer the smallest
 
 The capability/substrate/anti-claims, decomposition type, and gate fields are guardrails, not a request for a longer document. Keep them terse. Their job is to prevent plans from presenting scaffolds, wrappers, specs, mocks, metadata, or empty tests as delivered capability.
 
+Begin with a concise result in plain, understandable language. Remove
+unnecessary jargon and briefly explain necessary specialist terms; preserve
+technical identifiers.
+
 ## Repository artifact conventions
 
 Before creating a persistent Delivery Plan, Module Delivery Plan, expanded task brief, or backlog audit in a repository, check whether repo-local artifact conventions exist through AGENTS.md, README, CONTRIBUTING, or docs linked from them.
 
-If conventions exist, follow them for delivery plan path, delivery plan ID, module delivery plan ID, task brief persistence rules, metadata/front matter, source links, related artifact IDs, and module index updates. Do not hard-code a repository-specific path in these templates. If no convention exists, use the compact Markdown defaults below and state path assumptions only when writing files.
+If conventions exist, follow their mandatory content, audit, checkpoint, stop,
+and reporting rules as well as delivery plan path, IDs, task brief persistence,
+metadata/front matter, source links, related artifacts, and module index
+updates. Compactness never permits omitting those rules. Do not hard-code a
+repository-specific path in these templates. If no convention exists, use the
+compact Markdown defaults below and state path assumptions only when writing
+files.
 
 Do not persist task briefs as separate files when the delivery plan table is sufficient and repo conventions do not require standalone task artifacts. Recommend standalone task briefs only when they have reuse, execution, or review value outside the current plan.
 
@@ -17,13 +27,19 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 ```md
 # Delivery Plan
 
+Brief result:
+
 ## 1. Planning scope
 
 - Scope type:
 - Target:
 - Included:
 - Out of scope:
+- Scope baseline / source:
+- Scope delta: unchanged | narrowed | expanded | mixed
+- Unauthorized additions: none | findings
 - Source authority:
+- Customer/contract basis for material product requirements:
 - Plan handoff: draft | blocked | ready for <consumer>
 - Output mode: compact
 
@@ -81,6 +97,10 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 ## 9. Audit summary
 
 - Scope respected:
+- Scope delta, authority, and consequences explicit:
+- Unauthorized additions: none | findings
+- Material product additions have customer/contract coordination:
+- Non-product obligations remain inside their authority boundary:
 - Input readiness preserved:
 - Every obligation dispositioned:
 - Architecture not redesigned:
@@ -98,6 +118,8 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 ```md
 # Module Delivery Plan
 
+Brief result:
+
 ## 1. Module scope
 
 - Module/service/bounded context:
@@ -105,6 +127,10 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 - Public/internal boundaries:
 - Collaborators:
 - Out of scope:
+- Scope baseline / source:
+- Scope delta: unchanged | narrowed | expanded | mixed
+- Unauthorized additions: none | findings
+- Customer/contract basis for material product requirements:
 - Architecture handoff references:
 - Plan handoff: draft | blocked | ready for <consumer>
 
@@ -154,6 +180,10 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 ## 8. Audit summary
 
 - Module boundary respected:
+- Scope delta, authority, and consequences explicit:
+- Unauthorized additions: none | findings
+- Material product additions have customer/contract coordination:
+- Non-product obligations remain inside their authority boundary:
 - Input readiness preserved:
 - Every obligation dispositioned:
 - Substrate tied to module increments:
@@ -175,6 +205,7 @@ Use only when compact table is not enough.
 - Scope:
 - Out of scope:
 - Source / obligation trace:
+- Customer/contract basis or bounded non-product authority:
 - Handoff status: draft | blocked | ready for <owner>
 - Blockers and dependencies:
 - Risk:

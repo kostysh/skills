@@ -3,8 +3,8 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.9
-  recommended-skill-md-max-bytes: 22000
+  source-version: 0.2.10
+  recommended-skill-md-max-bytes: 23500
   description: >-
     Turn accepted product scope and architecture handoff into right-sized executable
     work for AI agents. Use for project, feature, module, service, or integration
@@ -103,6 +103,10 @@ supporting:
     source: docs/logs/implementation-log-20260710-1.md
     target: docs/logs/implementation-log-20260710-1.md
     description: Non-normative implementation log for readiness and handoff contract hardening.
+  - id: supporting-implementation-log-20260818-1
+    source: docs/logs/implementation-log-20260818-1.md
+    target: docs/logs/implementation-log-20260818-1.md
+    description: Non-normative log for customer-coordinated product authority, scope verdicts, and plain-language output.
 
 surfaces:
   active:
@@ -118,8 +122,7 @@ sections:
   startHere:
     - Identify the requested planning scope before decomposing anything; support whole project, feature, module/service, integration, specific architecture handoff item, or backlog audit.
     - For every non-trivial creation, revision, or review, apply `implementation-discipline` before decomposition or process-depth decisions; capture the outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted planning output, simplest sufficient delivery path, and narrowest falsifier.
-    - Verify product authority and handoff readiness plus each relevant architecture handoff item's draft, blocked, or ready status; never make a dependent task more ready than its inputs.
-    - Use product scope and architecture handoff according to their verified authority and readiness; do not invent requirements or architecture decisions.
+    - Verify product authority per the required methodology. Material product requirements trace past derived artifacts to an exact customer/contract statement or explicit customer decision. Preserve product and architecture handoff readiness; do not invent requirements or decisions.
     - For project/feature planning, create vertical slices around observable capabilities.
     - For module/service planning, create module increments around accepted responsibilities, boundaries, contracts, invariants, integrations, and verification hooks.
     - Treat the workflow as decision guidance, not a mandatory procedure; skip irrelevant detail when a compact plan is enough.
@@ -148,13 +151,13 @@ sections:
       title: Define planning scope
       goal: Respect the requested target and avoid planning more than needed.
       steps:
-        - Capture the source-authorized outcome, actor or consumer and claim boundary, scope and non-goals, permitted planning output, simplest sufficient delivery path, and narrowest falsifier.
+        - Capture the outcome, actor or consumer, claim boundary, source-authorized scope and non-goals, permitted output, direct delivery path, narrowest falsifier, and exact scope baseline; classify the delta as `unchanged`, `narrowed`, `expanded`, or `mixed`.
         - Classify scope as project, feature, module/service, integration, handoff item, or backlog audit.
         - Identify included and excluded areas.
         - Select compact output mode unless a deeper mode is explicitly required.
         - Use explicit assumptions for non-blocking gaps instead of escalating every unknown.
       validation:
-        - Risk, completeness, evidence, and planner-created artifacts have not expanded source-authorized scope or process depth.
+        - The scope verdict names authorized deltas and reports unauthorized additions; risk, evidence, and planner-created artifacts have not expanded scope or process depth.
     - id: stage-intake
       title: Intake and authority check
       goal: Identify authoritative product, architecture, spec, repository, and code inputs.
@@ -164,6 +167,7 @@ sections:
         - Load existing specs and repo instructions when available.
         - Verify product Authority and Handoff for the named planning consumer plus architecture handoff item status, blockers, next owner, and expected output; use repository-equivalent fields when names differ.
         - Treat same-session PRDs, architecture notes, specs, and plans as outputs, not higher-authority inputs that can authorize their own expansion.
+        - Apply the required methodology's customer-coordination and bounded non-product-authority gates; a missing or conflicting chain blocks only dependent work.
         - Allow non-authoritative, draft, or blocked inputs to inform draft decomposition, but keep their dependent tasks draft or blocked.
         - Classify gaps as blocking or non-blocking and route blocking gaps to the responsible skill.
     - id: stage-architecture-to-tasks
@@ -172,6 +176,7 @@ sections:
       steps:
         - Extract boundaries, contracts, data constraints, security constraints, operational obligations, integration points, validation obligations, risks, and revisit triggers.
         - Map every in-scope product requirement and architecture obligation, with source trace, to a vertical slice, module increment, support task, spike, specialist route, or explicit not-applicable rationale.
+        - Trace every material planned item back to customer-coordinated product authority or bounded non-product authority; a missing reverse trace invalidates it.
         - For a ready planner-owned spike, produce only a bounded brief naming the executor, success and failure signals, evidence contract, and return route; do not claim empirical evidence.
         - Route unresolved architecture choices to architecture-engineer.
     - id: stage-decomposition
@@ -208,6 +213,7 @@ sections:
         - Check that architecture was not redesigned.
         - Check that no task is more ready than its product, architecture, specification, or dependency inputs.
         - Check that every in-scope requirement and architecture obligation has a task, route, spike, or explicit not-applicable rationale.
+        - Check the exact-baseline scope verdict and reverse authority trace; list unauthorized additions instead of accepting them.
         - Check that high-risk work is visible.
         - Check that acceptance cannot be satisfied by substrate-only work unless the task is explicitly substrate or developer-experience work.
         - Check that future scaffolds, wrappers, config, or harnesses have a named dependent increment and revisit trigger; otherwise merge, delete, or route them as a planning gap.
@@ -227,7 +233,7 @@ sections:
       text: Produce the smallest useful Markdown Delivery Plan by default. The workflow is a decision checklist, not a required form; omit irrelevant sections and do not output YAML, multiple registers, or detailed task forms unless explicitly requested or required by repository automation.
     - id: policy-repository-artifact-conventions
       title: Repository artifact conventions policy
-      text: When producing or recommending a persistent delivery plan, module delivery plan, expanded task brief, or backlog audit in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for artifact location, delivery-plan and module-plan IDs, task-brief persistence rules, metadata/front matter, source links, related artifact links, and module index updates. Do not hard-code one repository's paths into this skill. If no conventions exist, use this skill's compact Markdown defaults and state any location assumption only when writing files.
+      text: Before a persistent planning artifact, check repo-local conventions. Follow mandatory content, audit, checkpoint, stop, reporting, location, ID, metadata, source-link, and indexing rules; compactness never permits omission. Do not hard-code repository paths. Without conventions, use the compact Markdown defaults and state location assumptions only when writing files.
     - id: policy-scope-flexibility
       title: Scope flexibility policy
       text: The skill must work for whole projects and for partial scopes such as one module, service, integration, feature, or architecture handoff item. Always respect the requested boundary.
@@ -236,10 +242,10 @@ sections:
       text: Consume accepted architecture handoff as constraints and obligations. Do not select or revise architecture decisions; route unresolved architecture questions to architecture-engineer.
     - id: policy-source-readiness
       title: Source and handoff readiness policy
-      text: Verify product authority and readiness for the named consumer plus each relevant architecture handoff item's status and blockers. A non-authoritative, draft, blocked, or unresolved input may inform draft decomposition but cannot produce a ready dependent task; block only the tasks that depend on it and name the owner and artifact needed to clear it.
+      text: Verify product and architecture readiness. Material product authority requires the customer/contract chain defined in the required methodology. Draft, blocked, unresolved, or uncoordinated inputs may inform draft decomposition but cannot make dependent work ready; name its owner and unblock evidence.
     - id: policy-obligation-disposition
       title: Obligation disposition policy
-      text: Every in-scope product requirement and architecture handoff obligation must trace to one or more tasks, a specialist route, a bounded spike, or an explicit not-applicable rationale. Planning is incomplete when an obligation disappears between source and task plan.
+      text: Trace both directions. Each in-scope requirement or architecture obligation leads to a task, route, spike, or explicit not-applicable rationale; each material planned item leads back to customer-coordinated product authority or bounded non-product authority. Either gap makes planning incomplete.
     - id: policy-module-increments
       title: Module increment policy
       text: For module/service planning, decompose into verifiable module increments tied to accepted responsibilities, contracts, invariants, data touchpoints, integrations, operations, and tests.
@@ -278,7 +284,7 @@ sections:
       text: Do not hide high-risk changes inside generic low-risk implementation tasks. Promote, split, or route them.
     - id: policy-output-language
       title: Output language policy
-      text: Use the user's working language unless repository conventions require another language. Keep stable IDs and file names in the repository language when needed.
+      text: Use the user's working language unless repository rules differ. Start with a concise result in plain, understandable language; remove unnecessary jargon, explain needed specialist terms, and preserve technical identifiers.
   portability:
     required: true
     rules:
