@@ -310,6 +310,21 @@ BEFORE accepting backend tests as production evidence:
     Replace them with production-valid fixtures or make rejection explicit
 ```
 
+## Fixture provenance and skipped upstream behavior
+
+Every fixture that starts inside a value or state pipeline must name its
+provenance: the authoritative producer or contract it represents and the
+upstream steps it bypasses. State the skipped-upstream anti-claim explicitly;
+the fixture cannot prove a producer, normalization, authorization, persistence,
+or reload transition that it did not execute.
+
+When the claim crosses boundaries, use a vertical contour from the earliest
+affected producer through the write, authoritative reread, and reload. First
+show the exact actor/input witness failing on that contour, then repeat the same
+contour after the fix. A mid-chain fixture may still isolate a consumer, but it
+cannot turn its green result into evidence for the skipped producer. Keep a
+genuinely single-layer test proportional instead of inventing upstream work.
+
 ## Anti-Pattern 6: Integration Tests as Afterthought
 
 **The violation:**
@@ -472,6 +487,7 @@ If TDD is not explicitly requested, use the gate functions and normal validation
 | Contract-drifting mocks | Derive typed fixtures from the authoritative producer/schema contract |
 | State-changing double without contract tests | Run shared contract suite against production and the double |
 | Fake-green production boundary tests | Add real boundary, contract, or allow/deny tests |
+| Mid-chain fixture claims upstream behavior | Record fixture provenance and skipped-upstream anti-claim; use a vertical contour for cross-boundary claims |
 | Tests as afterthought | Add behavior tests before claiming completion; use TDD only if requested |
 | Skipped required coverage checkpoint | Run and record the repository/user-defined coverage gate before closure |
 | Never-settled promises in test mocks | Use deferred and always resolve/reject |
@@ -490,6 +506,7 @@ If TDD is not explicitly requested, use the gate functions and normal validation
 - State-changing fixture/model has no shared contract suite with production
 - API tests with mock/in-memory stores are treated as proof for persistence/RLS/RPC/provider behavior
 - Fixtures seed impossible auth/RBAC/session/context/profile/status states
+- Fixture provenance or skipped-upstream behavior is unstated while a broader claim is made
 - Test doubles can be selected outside test runtime
 - A repository/user-required coverage checkpoint was skipped at milestone/final closure
 - Pending mock promises without explicit settle path

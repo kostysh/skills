@@ -9,9 +9,9 @@ compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.11
+  source-version: 0.2.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8a78fb95b31969ac320abe39805d5d23308bafcbc0136550ad2228a003634cd9
+  skillforge-source-hash: ee76c819f80df3a9571bee33ec14e1649ba9a26141d10d05e73c66baf9e3125a
 ---
 
 # spec-engineer
@@ -229,7 +229,7 @@ The canonical representation-fit table lives in the methodology reference. In SK
 Use BDD/Gherkin only when scenarios materially clarify behavior, guards, failures, continuity, or acceptance risk. They must not replace atomic requirements, negative acceptance, falsifiers, or verification. Prefer a more direct representation and avoid BDD for trivial or substrate-only scope.
 
 ### Verification map policy
-Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. If verification is not currently possible, the spec must say why.
+Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. For a material cross-layer claim, apply the lifecycle-map rule in the required methodology reference. If verification is not currently possible, the spec must say why.
 
 ### Stop rules
 Stop and ask the user when:

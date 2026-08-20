@@ -8,9 +8,9 @@ compatibility: Portable documentation-only skill. Use alongside language,
   framework, and review skills; it does not replace domain-specific engineering
   guidance.
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c42b69efc87c6ffda640be7e5506f6135abf16c1a81c3c6107f99ec965b020bb
+  skillforge-source-hash: 363ae772e384bea27a5dc6099124ee96a20ec8f1b4f7c033d2dfce5c1ba98ae6
 ---
 
 # implementation-discipline

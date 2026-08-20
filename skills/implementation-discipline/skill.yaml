@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.2.4
+  source-version: 0.2.5
   recommended-skill-md-max-bytes: 18500
   description: >-
     Use when implementing, refactoring, reviewing code, or authoring, revising,
@@ -43,6 +43,10 @@ supporting:
     source: docs/logs/implementation-log-20260818-1.md
     target: docs/logs/implementation-log-20260818-1.md
     description: Non-normative log for customer-coordinated product authority, scope comparison, and plain-language reporting.
+  - id: supporting-implementation-log-20260820-1
+    source: docs/logs/implementation-log-20260820-1.md
+    target: docs/logs/implementation-log-20260820-1.md
+    description: Non-normative log for producer-to-reload verification and exact defect witnesses.
 
 surfaces:
   active:

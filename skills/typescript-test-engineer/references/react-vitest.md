@@ -64,6 +64,11 @@ import '@testing-library/jest-dom/vitest';
 - Do not use never-settling mock promises (`new Promise(() => {})`) without explicit resolve/reject path.
 - For loading-state tests, use deferred promises and settle them before test end.
 - Before clicking async-dependent actions, wait for actionable state (`toBeEnabled`).
+- Prefer async locators such as `findBy*` when an element must appear; use `waitFor` only around a causal observable, not as a generic retry wrapper.
+- Wait for the observable caused by the action: the intended UI or router state, the specific request/response, or the relevant Query/cache state. Do not substitute an unrelated HTTP call, spinner, or visual change.
+- When a valid cache hit performs no HTTP request, assert the no-request branch together with the cached state and its consumer-visible result; do not wait for traffic that the contract forbids.
+- In deterministic teardown, unmount or clean the rendered DOM, clear or dispose the test-owned Query cache/client, remove listeners, restore real timers and stubbed globals, and resolve or reject every deferred promise.
+- Do not use `sleep`, arbitrary retry, or a longer timeout to compensate for missing ownership or cleanup.
 
 ```ts
 const deferred = createDeferred<TermsResponse>();

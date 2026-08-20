@@ -6,9 +6,9 @@ description: Design, implement, review, and diagnose TypeScript tests for Node,
   evidence quality; keep review and diagnosis read-only unless fixes are
   requested.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f7e585889225530cc3aee5ade70c0b2834fe75485f538e92d4056976cc8b92c1
+  skillforge-source-hash: 735798dbb21bd8fadc1f2188675afd655ab59b7ab2231066394c312a187a6c1d
 ---
 
 # typescript-test-engineer

@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.8"
+  source-version: "0.1.9"
   recommended-skill-md-max-bytes: 46000
   description: "Design, implement, review, and diagnose TypeScript tests for Node, React, and edge projects. Use for test strategy, node:test or Vitest, deterministic fixtures and mocks, coverage, CI failures, hanging tests, and evidence quality; keep review and diagnosis read-only unless fixes are requested."
 fragments:
@@ -55,6 +55,10 @@ copies:
     target: "evals/fixtures/mutation-lifetime-input.md"
     description: "Neutral React mutation, cache, remount, context-switch, and reread-failure evidence bundle."
 supporting:
+  - id: "supporting-implementation-log-20260820-1"
+    source: "docs/logs/implementation-log-20260820-1.md"
+    target: "docs/logs/implementation-log-20260820-1.md"
+    description: "Non-normative log for fixture provenance and deterministic React/Vitest async cleanup."
   - id: "supporting-implementation-log-20260715-1"
     source: "docs/logs/implementation-log-20260715-1.md"
     target: "docs/logs/implementation-log-20260715-1.md"

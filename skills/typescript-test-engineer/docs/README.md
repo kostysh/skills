@@ -26,6 +26,7 @@
 | [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | `Aequitas-ADR/app#228` | На ревью |
+| [logs/implementation-log-20260820-1.md](logs/implementation-log-20260820-1.md) | `Aequitas-ADR/app#377` | PASS |
 
 ## Forward Tests
 
