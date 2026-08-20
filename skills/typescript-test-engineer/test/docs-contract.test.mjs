@@ -287,3 +287,28 @@ test('anti-patterns require contract suites for production state-changing double
   assert.match(reference, /conflict behavior/);
   assert.match(reference, /replay behavior/);
 });
+
+test('fixtures declare provenance and cannot prove skipped upstream behavior', async () => {
+  const reference = await readSkillFile('references/testing-anti-patterns.md');
+
+  assert.match(reference, /## Fixture provenance and skipped upstream behavior/);
+  assert.match(reference, /authoritative producer or contract it represents/);
+  assert.match(reference, /skipped-upstream anti-claim/);
+  assert.match(reference, /earliest\s+affected producer through the write, authoritative reread, and reload/);
+  assert.match(reference, /exact actor\/input witness failing on that contour/);
+  assert.match(reference, /mid-chain fixture[\s\S]*cannot turn its green result into evidence for the skipped producer/i);
+});
+
+test('React async guidance cleans owned state and supports cache-hit without a request', async () => {
+  const reference = await readSkillFile('references/react-vitest.md');
+
+  assert.match(reference, /async locators such as `findBy\*`/);
+  assert.match(reference, /UI or router state, the specific request\/response, or the relevant Query\/cache state/);
+  assert.match(reference, /valid cache hit performs no HTTP request/);
+  assert.match(reference, /assert the no-request branch/);
+  assert.match(reference, /unmount or clean the rendered DOM/);
+  assert.match(reference, /clear or dispose the test-owned Query cache\/client/);
+  assert.match(reference, /remove listeners, restore real timers and stubbed globals/);
+  assert.match(reference, /resolve or reject every deferred promise/);
+  assert.match(reference, /Do not use `sleep`, arbitrary retry/);
+});

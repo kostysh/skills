@@ -450,6 +450,20 @@ Examples:
 
 Map each important requirement to the method that proves it most directly. Do not default to `test` when the claim is static, contractual, capacity-based, probabilistic, or interactional.
 
+For a material cross-layer requirement, add a compact lifecycle row that follows
+the value or state through every applicable transition:
+
+```text
+producer/input -> normalization -> canonical persistence -> public projection/readback -> DTO/consumer -> authoritative reload
+```
+
+Name the actor, type, or source dimensions that can change each transition, its
+owner, and its falsifier. Require at least one production-equivalent round trip
+across all applicable transitions. Mapper-only, mock-only, schema-only, or
+mid-chain fixture evidence cannot close the full claim. For a genuinely
+single-layer requirement, mark non-applicable transitions with a reason and keep
+the verification proportional instead of manufacturing a broader contour.
+
 | Method | Use for |
 | --- | --- |
 | Demonstration | User/operator/integration observable flows |

@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.11
+  source-version: 0.2.12
   recommended-skill-md-max-bytes: 28000
   description: >-
     Create concise, falsifiable software specs for AI coding agents. Use to turn
@@ -63,6 +63,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20260820-1
+    source: docs/logs/implementation-log-20260820-1.md
+    target: docs/logs/implementation-log-20260820-1.md
+    description: Non-normative log for cross-layer lifecycle verification mapping.
   - id: supporting-implementation-log-20260817-1
     source: docs/logs/implementation-log-20260817-1.md
     target: docs/logs/implementation-log-20260817-1.md
@@ -359,7 +363,7 @@ sections:
         scope.
     - id: policy-verification-map
       title: Verification map policy
-      text: Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. If verification is not currently possible, the spec must say why.
+      text: Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. For a material cross-layer claim, apply the lifecycle-map rule in the required methodology reference. If verification is not currently possible, the spec must say why.
     - id: policy-stop-rules
       title: Stop rules
       text: |-

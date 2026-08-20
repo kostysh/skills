@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.8`
+- Skill source version: `0.1.9`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -13,6 +13,7 @@ Generated from `skill.yaml`.
 - `docs/forward-tests/forward-test-evidence-20260727-3.md`
 - `docs/logs/implementation-log-20260715-1.md`
 - `docs/logs/implementation-log-20260727-1.md`
+- `docs/logs/implementation-log-20260820-1.md`
 - `evals/evals.json`
 - `evals/fixtures/mutation-lifetime-input.md`
 - `fragments/overview.md`
