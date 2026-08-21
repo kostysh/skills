@@ -13,25 +13,22 @@ another agent as fallback for `.pen` work.
 
 ## Required MCP sequence
 
-At the start of every task, call `get_editor_state(include_schema: true)`,
-confirm the intended file/canvas/selection, and use its `filePath` plus the live
-schema for downstream calls. Repeat after relevant editor-state changes; cached
-schema never substitutes for current target confirmation.
+Read [Unified Pencil MCP API](references/unified-mcp-api.md), call
+`get_app_state` with its live signature, confirm the intended document and
+selection, and pass its `filePath` downstream. Live signatures and schema own
+calls; accepted sources own artifact semantics. Refresh app state after relevant
+editor changes and stop on unresolved conflict.
 
-Use this non-exhaustive routing table; the live MCP surface and returned schema
-govern actual availability and arguments:
+Use this routing table for the consolidated surface:
 
-| Need | MCP tool |
+| Need | Current MCP operation |
 | --- | --- |
-| Confirm active file/editor/schema | `get_editor_state(include_schema: true)` |
-| Inspect hierarchy, nodes, or reusable components | `batch_get` |
-| Create, modify, move, replace, delete, or set variables | `batch_design` |
-| Check structural layout problems | `snapshot_layout(problemsOnly: true)` |
-| Review visual fidelity | `get_screenshot` |
-| Read variables/themes | `get_variables` |
-| Export images or PDF | `export_nodes` |
-| Export an explicit HTML handoff when available | `export_html` |
-| Inspect or use component libraries | `batch_get` plus `batch_design`; read the component-library reference first |
+| Confirm active file, selection, and canvas | `get_app_state` |
+| Read current schema and execute guidance | `read_skill` |
+| Read, edit, verify, screenshot, or export | `execute` |
+| Inspect or import a live web page | `browser` |
+| Load optional style direction | `get_style` |
+| Inspect or use component libraries | `execute`; read the component-library reference first |
 
 ## Component libraries
 
