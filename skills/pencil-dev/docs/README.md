@@ -4,6 +4,8 @@ Supporting documentation for `pencil-dev`. These files are not part of the activ
 
 ## Implementation Logs
 
+- [implementation-log-20260822-1.md](logs/implementation-log-20260822-1.md) — migration to the consolidated Pencil MCP API, live canary, blind tests, and independent audit evidence.
+- [forward-test-evidence-20260822-1.md](forward-tests/forward-test-evidence-20260822-1.md) — blind behavioral cases for `pencil-dev` candidate `0.2.0`.
 - [implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — peer-view inventory и library/module/runtime role boundary по #228.
 - [forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) — blind проверка подготовки Pencil module flow для candidate `0.1.10`.
 - [implementation-log-20260608-1.md](logs/implementation-log-20260608-1.md) — Initial `pencil-dev` skill creation.
