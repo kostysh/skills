@@ -32,3 +32,4 @@ Maintenance records:
 | `logs/implementation-log-20260717-1.md` | Independent PASS | Source-authorized delivery decomposition and support-task gate. |
 | `logs/implementation-log-20260727-1.md` | Independent PASS | Типизированные dependency edges и общий acceptance для shared invariants по #226. |
 | `logs/implementation-log-20260818-1.md` | Independent PASS | Customer-coordinated product authority, per-item scope inventory и plain-language output. |
+| `logs/implementation-log-20260822-1.md` | Independent PASS | Task-by-task specialist trigger, dependency и canonical-contract readiness readback; same-auditor targeted delta review. |

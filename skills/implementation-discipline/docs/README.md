@@ -31,6 +31,7 @@
 - [logs/implementation-log-20260817-1.md](logs/implementation-log-20260817-1.md) - author-owned semantic source derivation and bounded remediation inside an already-authorized CI contour.
 - [logs/implementation-log-20260818-1.md](logs/implementation-log-20260818-1.md) - customer-coordinated product authority, scope comparison и plain-language reporting; independent PASS.
 - [logs/implementation-log-20260820-1.md](logs/implementation-log-20260820-1.md) - producer-to-reload verification и exact red/green witness для material cross-layer defects.
+- [logs/implementation-log-20260822-1.md](logs/implementation-log-20260822-1.md) - complete author remediation, exact evidence и same-auditor targeted delta `PASS`.
 
 ## Scope of This Folder
 

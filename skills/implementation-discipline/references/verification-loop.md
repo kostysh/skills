@@ -62,8 +62,20 @@ This rule does not create authority. Stop before the missing mutation, publicati
 Use this section only when implementing accepted findings or recommendations from an audit or review. Track each item as:
 
 ```text
-finding/recommendation -> concrete change -> test/evidence -> status
+finding/recommendation -> root invariant/original failure path -> owning source/owner -> affected surfaces/direct blast radius -> exact change -> falsifier/closure evidence -> status
 ```
+
+Before handing remediation back to an auditor or reviewer, the author must resolve
+the full direct blast radius of every accepted finding, run its falsifier or
+closure evidence, and give each row an honest terminal disposition. A row that is
+only `implemented` is unfinished and prohibits the handoff. The handoff packet
+must preserve the prior report and identify the prior and current stable
+snapshots, exact remediation delta, original failure paths, direct blast radius,
+closure evidence, and justified exclusions.
+
+This matrix does not choose targeted versus full review, select the reviewer, or
+define widening triggers. Those decisions remain with the applicable independent
+review skill or repository audit lifecycle.
 
 Allowed statuses:
 

@@ -8,9 +8,9 @@ description: Turn accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.11
+  source-version: 0.2.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 59d1e9a9e19221666d4beb1b8e89e3b7009b3cb4c26f5df8959d87c0d1bbaa11
+  skillforge-source-hash: baa7f0d5237819054a01854069c9feabf61b7018425fb8b94e043cb116c3ceb8
 ---
 
 # delivery-planner
@@ -153,7 +153,8 @@ Ensure the plan is useful, compact, scope-respecting, and safe for downstream ag
 9. Check that implementation parallelism is not presented as acceptance independence and every same-record or shared-race invariant has a joint acceptance gate.
 10. Check that completing the plan is not reported as implementation or runtime capability progress.
 11. Check that output does not create unnecessary registers or YAML structures.
-12. Repeat the scope-and-simplicity gate after a material delta adds a task family, boundary, lifecycle, support artifact, dependency, or verification contour.
+12. Before readiness, apply the required methodology's task-by-task specialist-trigger, accepted-dependency, and canonical-contract readback; route ownership gaps to architecture-engineer and accepted-owner detail gaps to spec-engineer.
+13. Repeat the scope-and-simplicity gate after a material delta adds a task family, boundary, lifecycle, support artifact, dependency, or verification contour.
 
 ## Interop priority
 
