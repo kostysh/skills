@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.12
+  source-version: 0.2.13
   recommended-skill-md-max-bytes: 28000
   description: >-
     Create concise, falsifiable software specs for AI coding agents. Use to turn
@@ -30,7 +30,7 @@ references:
     source: references/high-risk-backend-contract.md
     target: references/high-risk-backend-contract.md
     required: false
-    trigger: Read this before drafting, materially revising, or accepting a high-risk backend specification that touches a public API, persistent state, authorization, money, retries, external resources, or required audit evidence.
+    trigger: Read this before drafting, revising, or accepting a high-risk backend specification involving a public API, persistent state, authorization, money, retries, external resources, audit evidence, multiple packages, or an external provider.
   - id: ref-patterns
     title: Specification patterns
     source: references/spec-patterns.md
@@ -63,6 +63,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20260822-1
+    source: docs/logs/implementation-log-20260822-1.md
+    target: docs/logs/implementation-log-20260822-1.md
+    description: Non-normative log for conditional multi-package and provider contract readback.
   - id: supporting-implementation-log-20260820-1
     source: docs/logs/implementation-log-20260820-1.md
     target: docs/logs/implementation-log-20260820-1.md
@@ -154,7 +158,7 @@ sections:
     - Separate observable capability from support substrate; do not let scaffolding, APIs, schemas, tests, logs, or documentation stand in for claimed behavior.
     - Do not require layers, scaffolds, config, wrappers, or future extension points unless they are necessary for the current capability or explicitly labeled substrate with a dependent capability.
     - For medium/high-risk or architecture-impacting work, inherit accepted architecture constraints and route missing or new architecture decisions instead of choosing them in the spec.
-    - For high-risk backend work involving a public API, persistent state, authorization, money, retries, external resources, or required audit evidence, read High-risk backend contract matrix and require its complete row-by-row contract and test inventory before a `ready for coding` handoff.
+    - For high-risk backend, multi-package/component, or external-provider scope, read High-risk backend contract matrix. Apply all `HRB-*` rows only to high-risk scope; otherwise use its conditional readback before handoff.
     - Before creating or recommending a persistent implementation-ready spec, API spec, workflow spec, migration spec, spike spec, or verification map, check whether the current repository defines artifact conventions and follow them when present.
     - Choose the smallest specification depth that can guide correct implementation and verification for this task.
   whenToUse:
@@ -184,7 +188,7 @@ sections:
         - Classify risk as low, medium, or high when the source material provides or implies it, and use that classification with criticality to choose spec depth.
         - List source material, authority, approval/readiness, and the named downstream consumer; same-session PRDs, architecture notes, specs, or plans are outputs rather than higher authority for their own expansion.
         - For medium/high-risk or architecture-impacting specs, capture linked PRD requirements, architecture constraints, ADRs, ASRs, delivery task brief, and existing conventions when available.
-        - When the high-risk backend trigger applies, load High-risk backend contract matrix, include every `HRB-*` row, and mark each row applicable or `not_applicable` with a source-backed reason.
+        - When the high-risk or package/provider trigger applies, load High-risk backend contract matrix. Use all `HRB-*` rows only for high-risk scope; otherwise use its conditional readback.
         - Name substrate that may be needed but is not itself the capability for this spec consumer; remember that a public API contract is capability when the API consumer is the actor.
         - Reject future-only substrate such as layers, scaffolds, config knobs, wrappers, or extension points unless a current requirement, accepted architecture constraint, or dependent capability needs it.
         - For changes to an existing system, capture the behavioral delta from current to target behavior, including compatibility, migration, and coexistence constraints.
@@ -199,7 +203,7 @@ sections:
         - Future-only substrate is absent, deferred by trigger, or explicitly labeled as support work for a named dependent capability.
         - Every material normative requirement and acceptance contour traces to a higher-authority source or is explicitly marked as an unapproved gap.
         - High-criticality scope has explicit invariants, stronger falsifiers, and a verification path beyond happy-path examples.
-        - A high-risk backend spec cannot be handoff-ready while an applicable `HRB-*` row lacks authority, a normative contract, a falsifier, executable evidence, or a downstream owner.
+        - A triggered spec cannot be handoff-ready while its applicable matrix/readback lacks authority, contract, falsifier/evidence, or downstream owner.
     - id: stage-map-behavior
       title: Map behavior and constraints
       goal: Cover the behavior space before committing to normative statements.
@@ -246,7 +250,7 @@ sections:
         - Check whether the spec discovered architecture drift; stop for blocking drift or record an architecture delta needed when implementation can safely proceed.
         - Scan for ambiguous terms, vague adjectives, compound requirements, hidden implementation decisions, duplicate rules, missing failure behavior, missing invalid inputs, and examples that contradict rules.
         - Check self-deception patterns such as tautological acceptance, mock-driven success, single-actor blindness, hidden retroactive scope, and completion bias.
-        - When the high-risk backend trigger applies, reject readiness if any matrix row is omitted, marked `not_applicable` without source rationale, or lacks an exact negative oracle and evidence owner.
+        - For either trigger, reject readiness when the applicable matrix/readback is omitted, uses unsupported `not_applicable`, or lacks a negative oracle/evidence owner.
         - Remove sections, tables, or process language that do not constrain implementation or verification.
         - Strengthen under-specified NFRs with metric, threshold, measurement object, and measurement window.
         - Apply the Stop rules before finalizing.

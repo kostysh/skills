@@ -23,3 +23,4 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/implementation-log-20260727-1.md` - high-risk backend contract matrix; independent change-review `PASS` for #227.
 - `docs/logs/implementation-log-20260817-1.md` - semantic authority and removal-falsifier gate for new or changed material `MUST` requirements.
 - `docs/logs/implementation-log-20260820-1.md` - producer-to-reload lifecycle mapping for material cross-layer specification claims.
+- `docs/logs/implementation-log-20260822-1.md` - conditional multi-package/provider readback, root activation и same-auditor targeted delta `PASS`.

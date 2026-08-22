@@ -303,6 +303,26 @@ Use expanded task details only when risk or ambiguity justifies it.
 
 Use `ready for coding` only when product authority and relevant architecture are accepted or irrelevant, behavior detail is sufficient or linked to an accepted spec, dependencies are ready, and verification plus review evidence are concrete. High-risk work without the required specification or specialist basis routes to that owner instead of coding.
 
+### Task-by-task readiness readback
+
+Before assigning readiness, inspect each task's actual scope rather than adding a
+new registry or mandatory task column:
+
+- Derive applicable specialist triggers from the task's scope, risk, boundaries,
+  and repository-required `Skills` entries. Each applicable trigger needs a
+  named route and evidence owner; a source-backed `not_applicable` reason is
+  enough when the trigger does not apply.
+- Compare each typed dependency and upstream precondition with the accepted
+  architecture and specification. A named predecessor is not ready evidence by
+  itself.
+- For a public request, result, error, or identifier shape, reference the stable
+  canonical schema/spec symbol and locator. Do not copy a shadow signature into
+  the task brief.
+- Route a missing contract/package/provider owner or boundary to
+  `architecture-engineer`. After ownership is accepted, route missing exact
+  behavior, schema, signature, or member detail to `spec-engineer`. Keep only
+  the dependent task blocked.
+
 ### Task size rules
 
 A task is too large when:
@@ -493,6 +513,7 @@ Before finalizing, verify:
 
 ```text
 The plan matches the requested scope.
+Every task passed its applicable specialist-trigger, accepted-dependency, and canonical-public-contract readback before readiness.
 The exact baseline and scope delta are explicit; every narrowing or expansion has authority and consequences.
 Unauthorized additions are explicitly `none` or are listed as blockers.
 Every material product item traces past derived artifacts to a customer/contract statement or explicit customer decision.

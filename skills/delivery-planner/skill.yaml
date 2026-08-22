@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.11
+  source-version: 0.2.12
   recommended-skill-md-max-bytes: 23500
   description: >-
     Turn accepted product scope and architecture handoff into right-sized executable
@@ -55,6 +55,10 @@ copies:
     description: Portable copy of agents/openai.yaml.
 
 supporting:
+  - id: supporting-implementation-log-20260822-1
+    source: docs/logs/implementation-log-20260822-1.md
+    target: docs/logs/implementation-log-20260822-1.md
+    description: Non-normative log for task trigger, dependency, and canonical-contract readiness readback.
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
@@ -221,6 +225,7 @@ sections:
         - Check that implementation parallelism is not presented as acceptance independence and every same-record or shared-race invariant has a joint acceptance gate.
         - Check that completing the plan is not reported as implementation or runtime capability progress.
         - Check that output does not create unnecessary registers or YAML structures.
+        - Before readiness, apply the required methodology's task-by-task specialist-trigger, accepted-dependency, and canonical-contract readback; route ownership gaps to architecture-engineer and accepted-owner detail gaps to spec-engineer.
         - Repeat the scope-and-simplicity gate after a material delta adds a task family, boundary, lifecycle, support artifact, dependency, or verification contour.
   interop:
     - id: interop-implementation-discipline
