@@ -1,0 +1,45 @@
+{
+  "scope": "G3 supporting closure only; active source unchanged since each independent PASS",
+  "headBeforeCheckpointCommit": "9d4812a8f670a6a740d9659288b9896ef7af3b19",
+  "skills": {
+    "architecture-engineer": {
+      "reviewedSourceManifest": "skills/architecture-engineer/docs/reviews/evidence/g3/final-review-snapshot.json",
+      "reviewedFiles": 29,
+      "unchangedReviewedNonDocs": 18,
+      "administrativeManifest": "skills/architecture-engineer/docs/reviews/evidence/g3/administrative-delta.json",
+      "administrativeManifestSHA256": "60722a8a338dc6ba123964334088f36584bced42416058322ae945ecca998056",
+      "sourceProtected": true,
+      "archiveSHA256": "e031929956cfce3a4f38c83362ae9e8b694512bc2b2a7d32bed6b47fb0ba5bdb",
+      "finalAuditSHA256": "90d8a4a287dd34ac258bd3192480f0535e2c791a0ac7d5cdb64bbdfc315599f0"
+    },
+    "spec-engineer": {
+      "reviewedSourceManifest": "skills/spec-engineer/docs/reviews/evidence/g3/final-review-snapshot.json",
+      "reviewedFiles": 30,
+      "unchangedReviewedNonDocs": 10,
+      "administrativeManifest": "skills/spec-engineer/docs/reviews/evidence/g3/administrative-delta.json",
+      "administrativeManifestSHA256": "4f32aa9648790b042744d8cdcde5447cf6cf8114a2e68ab5e91c0afeb65cb309",
+      "sourceProtected": true,
+      "archiveSHA256": "b63a68f461f7dcebd2e6f7fed7fdbba11cd0c521205f81ca0fdfc5123f87e438",
+      "finalAuditSHA256": "ac3a5fd2e7a607696cded07c8cc68bbf155741539d8a98de13a971db13e08579"
+    },
+    "delivery-planner": {
+      "reviewedSourceManifest": "skills/delivery-planner/docs/reviews/evidence/g3/final-review-snapshot.json",
+      "reviewedFiles": 25,
+      "unchangedReviewedNonDocs": 10,
+      "administrativeManifest": "skills/delivery-planner/docs/reviews/evidence/g3/administrative-delta.json",
+      "administrativeManifestSHA256": "caf3777e67f5e49cf743ac23acb5f4f91d28526852312abe3891d3f71819a7e0",
+      "sourceProtected": true,
+      "archiveSHA256": "1acfc95b6d19d036c7957da839cd1e215c8b7e0edf2cd1777c483a709efbe22b",
+      "finalAuditSHA256": "b7f648c739af73898354cd08a931befd9c21f66350304f1d33cb9211c4e8dca9"
+    }
+  },
+  "planSHA256": "7d20dd01e16ff6e47dab67c61c1131367cda990cc1f582d891ef7a2e5db8175b",
+  "nextAutonomousAction": "none until operator accepts G3",
+  "excludedClaims": [
+    "G4 compatibility",
+    "publication",
+    "runtime product evidence",
+    "universal reliability",
+    "comparative decision improvement"
+  ]
+}

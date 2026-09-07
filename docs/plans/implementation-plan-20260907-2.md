@@ -62,9 +62,9 @@
 
 ## Статус исполнения
 
-ID: `implementation-plan-20260907-2`. План принят оператором 2026-09-07; группа 1 выполнена и ожидает приёмки. Основание: сообщение `01a07cbd-2716-79f1-9c93-a8c6acda8d37`, задача `01a07be0-5ad2-7c31-920e-81e048807c1a`. Worktree `codex/skills-revision`; исходный SHA `4ddcb698457a741028664ed9af441009c4838d23`.
+ID: `implementation-plan-20260907-2`. План принят оператором 2026-09-07; группы1–2 приняты оператором, группа3 выполнена и ожидает приёмки. Основание: сообщение `01a07cbd-2716-79f1-9c93-a8c6acda8d37`, задача `01a07be0-5ad2-7c31-920e-81e048807c1a`. Worktree `codex/skills-revision`; исходный SHA `4ddcb698457a741028664ed9af441009c4838d23`.
 
-[Независимый аудит плана](../reviews/audit-implementation-plan-20260907-2.md). Следующая граница: приёмка группы 1; группы 2–4 и публикация ожидают предусмотренных приёмок.
+[Независимый аудит плана](../reviews/audit-implementation-plan-20260907-2.md). Текущая граница: приёмка группы3; группа4 и публикация ожидают предусмотренных приёмок. Ниже сохранена хронология предыдущих checkpoints.
 
 ## Уточнение оператора и текущий прогресс
 
@@ -139,6 +139,46 @@ Capability в этой группе — поддержанные решения,
 После независимых snapshot изменены только supporting статусы/ссылки и добавлены точные audit copies; административные delta скилов сохранены рядом с PASS, общий delta — в `docs/reviews/evidence/skills-revision/group2-administrative-delta.json`. Старые aggregates не заявляются хэшами последующих записей. Активные инструкции, исходные критерии, trials и их интерпретация не менялись после PASS.
 
 `accepted now`: независимые технические результаты трёх re-audits в указанных границах. `not accepted`: приёмка группы2 оператором, группы3–4, итоговая совместимость, публикация. `blocking decision`: приёмка группы2. `next autonomous action`: none до явного продолжения; затем только группа3 принятого плана. Отменённый planner не восстановлен.
+
+Stop: awaiting explicit approval to continue
+Next autonomous action: none
+
+## Продолжение: группа 3
+
+Оператор принял группу2 сообщением «Продолжай». Состояние возобновления: чистый worktree codex/skills-revision, HEAD be557e915b03267df650b9ca5906ac59078110e9. Предыдущая остановка снята; разрешена группа3: architecture-engineer → spec-engineer → delivery-planner. Предварительная инспекция потребителей возможна параллельно; их исправления начинаются только после стабильного PASS поставщика. Следующая остановка — приёмка группы3. Planner rule остаётся отменённым; push/PR/merge не разрешены на этой стадии.
+
+### Прогресс группы 3
+
+- architecture-engineer 0.1.9: independent PASS, отдельный commit `c275017a062c1abb944d74909b017d7001a2c022`. F1/P2 и F2/P3 закрыты; source/emitted/active parity. Все 8 контекстов дали поддержанные решения, baseline B1 отдельно имеет procedural FAIL чтения reference. Два реальных spec consumers подтверждены. Ограничения dispatch/exposure/усечений сохранены в [отчёте](../../skills/architecture-engineer/docs/reviews/evidence/g3/final-audit.md).
+- spec-engineer 0.2.14: independent PASS, отдельный commit `54c1bc94069e8206d23860e764178d654e3261f8`. Исправление выполнено после stable architecture PASS и freeze настоящего architecture packet.
+- delivery-planner 0.2.13: independent bounded PASS, отдельный commit `9d4812a8f670a6a740d9659288b9896ef7af3b19`. Edits начаты после stable spec PASS и freeze настоящего spec packet.
+
+Техническая работа группы3 завершена; приёмка оператором и переход в группу4 ещё не достигнуты.
+
+
+## Приёмка группы 3
+
+Группа выполнена в принятом порядке: стабильный provider PASS и настоящий packet зафиксированы до исправлений каждого потребителя. Три отдельных skill commits сохранены; у каждого независимый PASS в указанной границе, открытых P1/P2 нет.
+
+| Скил / commit | Изменение, проверки и наблюдаемый результат |
+| --- | --- |
+| architecture-engineer 0.1.9 / `c275017` | Canonical stop predicate сохраняет действующую authorization и ограничивает зависимую часть; conditional references согласованы. Owning checks exit0, 25/25 emitted parity. Четыре producer tasks, два настоящих spec consumers и два catalogue contexts: поддержанные решения; baseline B1 отдельно не прочёл pattern catalog. [PASS](../../skills/architecture-engineer/docs/reviews/evidence/g3/final-audit.md), [журнал](../../skills/architecture-engineer/docs/logs/implementation-log-20260907-1.md). |
+| spec-engineer 0.2.14 / `54c1bc9` | Conditional HRB retrieval, provider-only applicability и один подробный dependent-stop contract. Owning checks exit0, 27/27 emitted parity. Шесть spec tasks, два delivery consumers и 12 отдельных catalogue contexts проходят материальные критерии. Одинаковый actual architecture packet у обеих arms. [PASS](../../skills/spec-engineer/docs/reviews/evidence/g3/final-audit.md), [журнал](../../skills/spec-engineer/docs/logs/implementation-log-20260907-1.md). |
+| delivery-planner 0.2.13 / `9d4812a` | Established owner/applicable customer governance, самостоятельный current outcome без future prerequisite, сохранён actual support contract. Source/reference/assets согласованы. Owning checks exit0, 21/21 emitted parity. Шесть material plans и 12 catalogue decisions в двух contexts проходят; обе A arms прочли одинаковый actual spec packet. [Bounded PASS](../../skills/delivery-planner/docs/reviews/evidence/g3/final-audit.md), [журнал](../../skills/delivery-planner/docs/logs/implementation-log-20260907-1.md). |
+
+Исправления закрывают доказанные противоречия инструкций; baseline также выдаёт поддержанные конечные решения в этих примерах. Преимущество итоговых решений, универсальная надёжность или экономия ресурсов не доказаны. Реальная граница evidence — сохранённые решения и передача оригинальных agent-produced artifacts. Это не выполнение API, Notebook, импорта, customer workflow или deployed runtime. Native activation и совместимость всех десяти скилов остаются вне G3.
+
+Ограничения не скрыты общим verdict: architecture baseline B1 имеет procedural FAIL, а dispatch/exposure/усечения с восстанавливающими чтениями ограничивают сравнение; spec candidate 01-02 нарушил первоначальный chunk limit, затем полностью перечитал root; delivery baseline A complete loading INCONCLUSIVE, baseline C пропустил patterns и template tail (procedural FAIL). Обязательные candidate material boundaries подтверждены. В delivery оставлено DP-F3/P3 по широкой формулировке patterns: explicit canonical methodology определяет standalone applicability; новый P2-путь не установлен, решение принять без правки записано ревьюером. Не заявляется «все процедурные проверки PASS».
+
+Spec initial compiler anchor error исправлен до freeze; вспомогательный quick_validate одинаково отвергает существующий compatibility key, owning compiler schema его принимает. Architecture и delivery имеют advisory size warnings; это не mandatory gate failures. Три documentation-only пакета не имеют собственных runtime/test scripts; компиляция, source/emitted readback и фактические agent trials составляют применимый contour. Полный repository test:ci предусмотрен после приёмки группы4 и ещё не запускался на эту публикацию.
+
+Исходные evidence archives сохранены без переписывания; 317 architecture, 365 spec и 330 delivery member files проверены побайтово по archive manifests. После независимых snapshots изменены только supporting статусы/ссылки и добавлены exact report/evidence copies. Персональные administrative-delta рядом с PASS и общий `docs/reviews/evidence/skills-revision/group3-administrative-delta.json` отделяют эти записи от проверенных hashes. Активная поверхность всех трёх пакетов неизменна после PASS.
+
+### Состояние для продолжения группы 3
+
+Снимок 2026-09-07 20:31:42 UTC до служебного commit статуса: worktree `.worktrees/skills-revision`, branch `codex/skills-revision`, HEAD `9d4812a8f670a6a740d9659288b9896ef7af3b19`. Local upstream `origin/master` — сохранённый `4ddcb698457a741028664ed9af441009c4838d23`, ahead10/behind0 относительно этого локального ref; remote не перечитывался для publication. Индекс после skill commit пуст, единственный residual — общий план, затем добавлен общий administrative record. Служебный commit изменит HEAD; точный итоговый SHA сообщается оператору. Основной checkout и соседние worktrees сохранены.
+
+Внешние tracking/publication не создавались. Push/PR/merge и вызванного ими CI нет. Native planner rule остаётся отменённым. `accepted now`: независимые технические результаты G3 в описанных границах; `not accepted`: приёмка G3 оператором, G4, итоговая совместимость и публикация. `blocking decision`: приёмка группы3. `next autonomous action`: none до явного продолжения; затем только группа4 в порядке typescript-test-engineer ∥ concept-conformance-reviewer → spec-conformance-reviewer и итоговая совместимость всех десяти скилов.
 
 Stop: awaiting explicit approval to continue
 Next autonomous action: none
