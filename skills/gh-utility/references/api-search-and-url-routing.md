@@ -68,7 +68,7 @@ gh api -X PATCH repos/OWNER/REPO/issues/123 -f state=closed
 ```
 
 For GraphQL mutations, use `gh api graphql` with variables. Resolve PR review threads only when the
-current request explicitly authorizes the specific thread IDs. After any successful mutation, run
+root [Authorization policy](../SKILL.md#authorization) covers the specific thread IDs. After any successful mutation, run
 a separate native read for the intended field or thread state.
 
 ## Rate-limit handling

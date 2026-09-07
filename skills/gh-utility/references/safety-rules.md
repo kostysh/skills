@@ -8,7 +8,7 @@ Use this file whenever a task may mutate GitHub state, touch secrets/keys, publi
 2. Inspect current state with read-only commands.
 3. Summarize state and classify risk.
 4. Present exact commands and expected effect.
-5. Confirm that the current request explicitly authorizes the exact target and action; if not, ask for the missing detail.
+5. Apply the root [Authorization policy](../SKILL.md#authorization) to the exact target and action.
 6. Execute only the approved commands.
 7. Verify with read-only commands.
 8. Report what changed and any incomplete follow-up.
@@ -25,17 +25,17 @@ No approval needed beyond ordinary tool execution, unless the output may expose 
 
 Examples: draft issue creation in a dev repo, non-sensitive label creation, PR body draft update, adding a non-production project draft item.
 
-An exact unambiguous request is authorization for that action and target. Do not ask for duplicate confirmation. Still show a concise summary afterward.
+Apply the root Authorization policy. Still show a concise summary afterward.
 
 ### Medium-risk mutation
 
 Examples: issue/PR metadata changes, workflow rerun/cancel, project field update, PR review comment reply, release draft body edit, label deletion in an active repo.
 
-An exact unambiguous request is sufficient authorization. Otherwise show the exact target and action and ask for the missing detail.
+Apply the root Authorization policy to the exact target and action.
 
 ### High-risk mutation
 
-Require explicit authorization in the current conversation for:
+Apply the root Authorization policy, including exact destructive and secret-handling scope, for:
 
 - Repository delete/archive/transfer/rename/visibility/default branch changes.
 - Branch protection or ruleset changes.
@@ -68,8 +68,8 @@ Require explicit authorization in the current conversation for:
 ## Release safety
 
 - Treat the pushed Git tag as release source-of-truth. Obtain local tag/commit/push evidence from `git-engineer`, then inspect the remote ref and `gh release view TAG`.
-- Do not let `gh release create` create a lightweight tag implicitly unless the user explicitly approved that release strategy.
-- Prefer: release owner prepares version change → `git-engineer` creates/pushes the approved signed tag → CI publishes → `gh-utility` verifies GitHub release state.
+- Apply the [release playbook](release-playbook.md) for policy-specific handoff inputs and existing remote tag/target verification; do not let `gh release create` create a lightweight tag implicitly unless the user explicitly approved that release strategy.
+- Prefer CI publication where configured; source and tag preparation remain with their owners under the applicable release policy.
 - When directly creating a release is appropriate, prefer draft first, attach assets, then publish.
 - Use `--notes-file` for release notes. Avoid multiline `--notes` shell quoting.
 
@@ -78,4 +78,4 @@ Require explicit authorization in the current conversation for:
 - Bulk operations default to dry-run plans.
 - Partition by repo/org and show a table: repo, current state, proposed command, risk.
 - Execute in small batches, verify after each batch, and stop on first unexpected error unless the user approved continue-on-error.
-- Never bulk-delete secrets, variables, releases, tags, branches, rulesets, or repos without a repo-by-repo approval artifact.
+- Never bulk-delete secrets, variables, releases, tags, branches, rulesets, or repos without a repo-by-repo approval record under the root Authorization policy.

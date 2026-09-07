@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: gh-utility
-  source-version: 1.2.1
+  source-version: 1.2.2
   recommended-skill-md-max-bytes: 16000
   description: >-
     Use when GitHub CLI (`gh`) is required for repos, issues, PRs, Actions, releases,
@@ -24,79 +24,79 @@ references:
     title: Safety rules
     source: references/safety-rules.md
     target: references/safety-rules.md
-    required: false
-    trigger: Read before a destructive mutation, secret or key operation, release publication, admin change, or bulk operation.
+    required: true
+    trigger: Read whenever a task may mutate GitHub state, touch secrets/keys, publish releases, change branch protection/rulesets, or run bulk operations.
   - id: ref-auth-and-scopes
     title: Auth and scopes
     source: references/auth-and-scopes.md
     target: references/auth-and-scopes.md
-    required: false
+    required: true
     trigger: Read when gh is missing, unauthenticated, on the wrong host, or lacks permission.
   - id: ref-api-search-routing
     title: API, search, and URL routing
     source: references/api-search-and-url-routing.md
     target: references/api-search-and-url-routing.md
-    required: false
+    required: true
     trigger: Read for GitHub URLs, cross-repository search, gh api, GraphQL, pagination, or rate limits.
   - id: ref-repo-issue-pr
     title: Repository, issue, and pull request use cases
     source: references/repo-issue-pr-playbook.md
     target: references/repo-issue-pr-playbook.md
-    required: false
+    required: true
     trigger: Read for repository metadata, issues, labels, milestones, or pull requests.
   - id: ref-pr-ci-review
     title: PR, CI, and review inspection
     source: references/pr-ci-review-loop.md
     target: references/pr-ci-review-loop.md
-    required: false
+    required: true
     trigger: Read for GitHub-side PR checks, review state, threads, merge, or monitoring.
   - id: ref-admin-security
     title: Admin and security use cases
     source: references/admin-security-playbook.md
     target: references/admin-security-playbook.md
-    required: false
+    required: true
     trigger: Read for rulesets, branch protection, settings, secrets, variables, keys, or organization administration.
   - id: ref-bulk-operations
     title: Bulk operations
     source: references/bulk-operations.md
     target: references/bulk-operations.md
-    required: false
+    required: true
     trigger: Read when one request affects multiple repositories or independent GitHub resources.
   - id: ref-projects
     title: GitHub Projects
     source: references/projects-playbook.md
     target: references/projects-playbook.md
-    required: false
+    required: true
     trigger: Read for GitHub Projects schema, items, fields, exports, or updates.
   - id: ref-releases
     title: Releases
     source: references/release-playbook.md
     target: references/release-playbook.md
-    required: false
+    required: true
     trigger: Read for release inspection, drafts, publication, assets, attestations, or recovery.
   - id: ref-codespaces
     title: Codespaces
     source: references/codespaces-and-dev-envs.md
     target: references/codespaces-and-dev-envs.md
-    required: false
+    required: true
     trigger: Read for Codespaces lifecycle, ports, logs, SSH, file copy, cost, or data-loss decisions.
   - id: ref-command-map
     title: gh command map
     source: references/command-map.md
     target: references/command-map.md
-    required: false
+    required: true
     trigger: Read when the task spans several gh command families or command availability is unclear.
   - id: ref-gh-skill
     title: gh skill management
     source: references/gh-skill-management.md
     target: references/gh-skill-management.md
-    required: false
+    required: true
     trigger: Read for preview, install, list, update, search, or publish in the preview-stage gh skill family.
   - id: ref-troubleshooting
     title: Troubleshooting
     source: references/troubleshooting.md
     target: references/troubleshooting.md
-    required: false
+    required: true
     trigger: Read after a gh command fails, returns incomplete data, or targets the wrong host or repository.
 
 assets:
@@ -163,8 +163,8 @@ supporting:
 
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    optionalReferences: []
+    requiredReferences:
       - ref-safety-rules
       - ref-auth-and-scopes
       - ref-api-search-routing
@@ -186,7 +186,7 @@ sections:
   startHere:
     - Confirm the task concerns GitHub state and can be handled with the installed gh CLI.
     - Resolve the host, repository or organization, resource identifier, and requested outcome.
-    - Load only the reference matching the use case, then use native gh commands directly.
+    - Load all references whose stated triggers apply; required inclusion does not mean reading unrelated references. Then use native gh commands directly.
     - After a mutation, run a fresh native gh read and report the observed result or failure.
   whenToUse:
     - Inspecting or changing GitHub repositories, issues, pull requests, Actions, releases, Projects, Codespaces, rulesets, secrets, variables, keys, search, API resources, or gh skill state.
@@ -195,7 +195,7 @@ sections:
   whenNotToUse:
     - Local commits, rebases, worktrees, branch history, or push policy; use git-engineer.
     - Code-review judgment or review-feedback remediation; use code-reviewer or gh-address-comments.
-    - Diagnosing and fixing CI failures; use gh-fix-ci, with gh-utility limited to GitHub inspection.
+    - Diagnosing and fixing CI failures; follow the handoff in references/pr-ci-review-loop.md, with gh-utility limited to GitHub inspection.
     - Security findings or control judgments; use security-reviewer.
     - Skill authoring, compilation, or review; use skill-creator, skill-source-compiler, or skill-reviewer.
   workflow:
@@ -234,8 +234,8 @@ sections:
       rationale: gh-utility may fetch or post GitHub state but does not decide code findings or fixes.
     - id: interop-ci
       domain: Failing pull-request checks
-      winner: gh-fix-ci when available
-      rationale: gh-utility may inspect checks; the specialized skill owns diagnosis and remediation.
+      winner: gh-fix-ci when available, otherwise the implementation owner
+      rationale: Follow references/pr-ci-review-loop.md for the evidence handoff; gh-utility owns GitHub inspection, not diagnosis or remediation.
     - id: interop-security
       domain: Security findings and policy judgment
       winner: security-reviewer
@@ -256,7 +256,7 @@ sections:
       text: Use installed gh commands directly. This skill ships no helper today; a future helper may only aggregate native gh reads or run a simple explicit sequence of native gh calls, never proxy transport, authorization, redaction, mutation policy, or semantic verdicts.
     - id: policy-authorization
       title: Authorization
-      text: An exact unambiguous request authorizes that action and target; ask only when action, target, destructive scope, or secret handling remains ambiguous.
+      text: Carry forward valid authorization from the current conversation within its exact action, target, destructive scope, and secret-handling bounds. An exact unambiguous request authorizes that action and target; ask only for genuinely missing or changed scope, or a checkpoint required by governing policy. An approval record may be an existing message or explicit list; require a separate document only when governing policy does. This policy owns authorization for all references; inspection, risk classification, and fresh verification still apply.
     - id: policy-secrets
       title: Secret confidentiality
       text: Never print, log, echo, or persist secret and token values; use native gh secret and variable input mechanisms.

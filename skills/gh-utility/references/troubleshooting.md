@@ -54,7 +54,7 @@ change local Git configuration as part of GitHub transport troubleshooting.
 
 ```bash
 gh extension list
-gh extension upgrade --all   # run only when the current request authorizes all installed extensions
+gh extension upgrade --all   # run only when the root Authorization policy covers all installed extensions
 ```
 
 Extensions can change command behavior or add subcommands. Treat install/upgrade as high risk in locked-down environments.

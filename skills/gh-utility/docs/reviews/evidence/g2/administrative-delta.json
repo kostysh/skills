@@ -1,0 +1,20 @@
+{
+  "reviewedAggregate": "54831e89bfce7334d1fd7ef95d5c41df906a05363975566ecb735ec12950df1b",
+  "unchangedReviewedFiles": 144,
+  "changed": {
+    "skills/gh-utility/docs/logs/implementation-log-20260907-1.md": {
+      "before": "81d027c9f828df545375168f835df10d559acfadad3a6a435e0ba94b4b487872",
+      "after": "5baee2df2302f1565d83e59b2beb18b596e8efc1935d5dd98c1157aeedd5b0a1"
+    },
+    "skills/gh-utility/docs/reviews/evidence/g2/README.md": {
+      "before": "684ce14e5e51ac068f0ae310f24ad8a41abc968ef3e3767bc81c4ef973cc9739",
+      "after": "f703081655cdc89b1b1540e6275e0c1c8d4490534ddcd915e6699c8020747c99"
+    }
+  },
+  "added": {
+    "skills/gh-utility/docs/reviews/evidence/g2/final-audit.md": "880d7af460eafeabe3ef68f368b336aaab5e37f0a86e1f44a5f57e91e4a6d20a",
+    "skills/gh-utility/docs/reviews/evidence/g2/final-review-snapshot.json": "4b148e9763100494473f33dad5732cc73e318c62986d9adecaef4fd8ca685f9f",
+    "skills/gh-utility/docs/reviews/evidence/g2/audit-readback.json": "ae6277a860a711329edd5f11d67465d391861df37c6d2e1b64f9499c6b2813b1"
+  },
+  "scope": "supporting status and exact audit evidence copies only; manifest excludes itself"
+}

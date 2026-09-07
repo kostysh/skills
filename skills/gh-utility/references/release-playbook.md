@@ -26,16 +26,19 @@ Do not infer local Git state from the presence of a GitHub release.
 
 ## Required handoff from source and Git owners
 
-Before GitHub publication, obtain:
+For the requested publication, obtain the approved tag/version, expected target commit SHA,
+applicable release policy, source-validation evidence, and Git owner evidence for the existing
+remote tag. Establish whether CI or direct `gh release create` owns publication. Obtain the
+requested title/body and draft/public state; use a notes file for multiline bodies.
 
-- approved version and release policy;
-- merged commit SHA and source-validation evidence;
-- signed tag name, target SHA, and push evidence from `git-engineer`;
-- release-notes file and exact asset paths from their owning workflow;
-- whether CI or a direct `gh release create` owns publication.
+Require merged-only history, tag signatures, or asset paths only when the governing policy or
+requested workflow requires them. An explicitly asset-free release needs no asset paths; an
+unknown asset plan still needs resolution. Accept sufficient existing Git-owner evidence without
+requiring new tag creation or push work.
 
-If any input is absent or conflicts with remote state, stop as `blocked`. `gh-utility` does not
-infer versions, edit source files, create local branches, repair history, or push tags.
+Missing inputs or a remote tag/target mismatch block only the dependent publication/action or
+claim. Preserve verified owner results and continue supported inspection/preparation. `gh-utility`
+does not infer versions, edit source files, create local branches, repair history, or push tags.
 
 ## Recommended release flow
 
@@ -61,12 +64,13 @@ gh release edit vX.Y.Z --repo OWNER/REPO --notes-file release-notes.md
 
 ## Direct `gh release create`
 
-Use direct creation only when repository policy allows it and the current request authorizes the
-exact repository, existing tag, title, body, draft/public state, and asset plan.
+Use direct creation only when repository policy allows it and the root
+[Authorization policy](../SKILL.md#authorization) covers the exact repository, existing tag, title,
+body, draft/public state, and asset plan (including explicitly no assets).
 
 ```bash
 gh api -X GET repos/OWNER/REPO/git/ref/tags/vX.Y.Z --jq '{ref,sha:.object.sha,type:.object.type}'
-gh release create vX.Y.Z --repo OWNER/REPO --title "vX.Y.Z" --notes-file release-notes.md --draft
+gh release create vX.Y.Z --repo OWNER/REPO --title "vX.Y.Z" --notes-file release-notes.md --draft --verify-tag
 gh release upload vX.Y.Z dist/file1 dist/file2 --repo OWNER/REPO
 ```
 

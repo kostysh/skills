@@ -44,7 +44,7 @@ gh issue edit 123 --repo OWNER/REPO --add-label priority:P1 --add-assignee monal
 gh issue comment 123 --repo OWNER/REPO --body-file comment.md
 ```
 
-Closing/transferring/locking/pinning issues changes collaboration state; ask first unless the user explicitly requested the exact action.
+Closing/transferring/locking/pinning issues changes collaboration state; apply the root [Authorization policy](../SKILL.md#authorization) to the exact action and target.
 
 ## Pull requests
 

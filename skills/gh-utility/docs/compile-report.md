@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `1.2.1`
+- Skill source version: `1.2.2`
 
 ## Source files
 - `LICENSE`
@@ -37,7 +37,19 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/safety-rules.md`
+- `references/auth-and-scopes.md`
+- `references/api-search-and-url-routing.md`
+- `references/repo-issue-pr-playbook.md`
+- `references/pr-ci-review-loop.md`
+- `references/admin-security-playbook.md`
+- `references/bulk-operations.md`
+- `references/projects-playbook.md`
+- `references/release-playbook.md`
+- `references/codespaces-and-dev-envs.md`
+- `references/command-map.md`
+- `references/gh-skill-management.md`
+- `references/troubleshooting.md`
 
 ## Warnings
 - none

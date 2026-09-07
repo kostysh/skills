@@ -9,9 +9,9 @@ compatibility: Requires GitHub CLI gh and network access to the relevant GitHub
   host. Command families, flags, and JSON fields that may vary by version must
   be checked against installed help.
 metadata:
-  source-version: 1.2.1
+  source-version: 1.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 88a2829d04ce2a992fb2ffdf3867efa0d975ff8c920bd0ae5f1fac7f7c621c99
+  skillforge-source-hash: eae189b12f051d519ad050b48c0964c8a09e9751d7f76069e31aad901b53661a
 ---
 
 # gh-utility
@@ -20,7 +20,7 @@ metadata:
 
 1. Confirm the task concerns GitHub state and can be handled with the installed gh CLI.
 2. Resolve the host, repository or organization, resource identifier, and requested outcome.
-3. Load only the reference matching the use case, then use native gh commands directly.
+3. Load all references whose stated triggers apply; required inclusion does not mean reading unrelated references. Then use native gh commands directly.
 4. After a mutation, run a fresh native gh read and report the observed result or failure.
 
 ## When to use this skill
@@ -33,7 +33,7 @@ metadata:
 
 - Local commits, rebases, worktrees, branch history, or push policy; use git-engineer.
 - Code-review judgment or review-feedback remediation; use code-reviewer or gh-address-comments.
-- Diagnosing and fixing CI failures; use gh-fix-ci, with gh-utility limited to GitHub inspection.
+- Diagnosing and fixing CI failures; follow the handoff in references/pr-ci-review-loop.md, with gh-utility limited to GitHub inspection.
 - Security findings or control judgments; use security-reviewer.
 - Skill authoring, compilation, or review; use skill-creator, skill-source-compiler, or skill-reviewer.
 
@@ -47,8 +47,7 @@ command, run it directly, and inspect its output. Use explicit `--repo`, `--host
 selectors whenever current-directory context could be ambiguous. After a mutation, run a fresh
 native read command to verify the resulting GitHub state.
 
-An exact user request authorizes that exact target and action. Ask only when the target, action,
-destructive scope, or secret handling is ambiguous. Never infer code-review, CI-remediation,
+Apply the Authorization policy below to every operation and reference. Never infer code-review, CI-remediation,
 security, or local-Git decisions that belong to specialized skills.
 
 ## Workflow stages
@@ -90,7 +89,7 @@ Validation:
 
 - **Local Git history, worktrees, commits, rebases, and push policy:** git-engineer. gh-utility covers native GitHub CLI use; git-engineer owns local Git decisions.
 - **Review findings and feedback remediation:** code-reviewer or gh-address-comments when available. gh-utility may fetch or post GitHub state but does not decide code findings or fixes.
-- **Failing pull-request checks:** gh-fix-ci when available. gh-utility may inspect checks; the specialized skill owns diagnosis and remediation.
+- **Failing pull-request checks:** gh-fix-ci when available, otherwise the implementation owner. Follow references/pr-ci-review-loop.md for the evidence handoff; gh-utility owns GitHub inspection, not diagnosis or remediation.
 - **Security findings and policy judgment:** security-reviewer. gh-utility operates gh and does not issue security verdicts.
 
 ## Gotchas
@@ -105,7 +104,7 @@ Validation:
 Use installed gh commands directly. This skill ships no helper today; a future helper may only aggregate native gh reads or run a simple explicit sequence of native gh calls, never proxy transport, authorization, redaction, mutation policy, or semantic verdicts.
 
 ### Authorization
-An exact unambiguous request authorizes that action and target; ask only when action, target, destructive scope, or secret handling remains ambiguous.
+Carry forward valid authorization from the current conversation within its exact action, target, destructive scope, and secret-handling bounds. An exact unambiguous request authorizes that action and target; ask only for genuinely missing or changed scope, or a checkpoint required by governing policy. An approval record may be an existing message or explicit list; require a separate document only when governing policy does. This policy owns authorization for all references; inspection, risk classification, and fresh verification still apply.
 
 ### Secret confidentiality
 Never print, log, echo, or persist secret and token values; use native gh secret and variable input mechanisms.
@@ -113,8 +112,8 @@ Never print, log, echo, or persist secret and token values; use native gh secret
 ### Evidence
 Report command output and fresh post-action reads honestly; help, dry-run, or validation output does not prove a GitHub mutation occurred.
 
-## Optional references
-- [Safety rules](references/safety-rules.md) — Read before a destructive mutation, secret or key operation, release publication, admin change, or bulk operation.
+## Required active references
+- [Safety rules](references/safety-rules.md) — Read whenever a task may mutate GitHub state, touch secrets/keys, publish releases, change branch protection/rulesets, or run bulk operations.
 - [Auth and scopes](references/auth-and-scopes.md) — Read when gh is missing, unauthenticated, on the wrong host, or lacks permission.
 - [API, search, and URL routing](references/api-search-and-url-routing.md) — Read for GitHub URLs, cross-repository search, gh api, GraphQL, pagination, or rate limits.
 - [Repository, issue, and pull request use cases](references/repo-issue-pr-playbook.md) — Read for repository metadata, issues, labels, milestones, or pull requests.
