@@ -19,3 +19,9 @@ The repository standard is maintenance policy. Each shipped skill keeps its own 
 - [Implementation record](docs/reviews/implementation-log-20260907-1.md).
 
 Reports, plans, and logs are supporting records; they do not override active rules.
+
+## Ревизия десяти скилов
+
+- [Принятый план](docs/plans/implementation-plan-20260907-2.md) — четыре группы, отдельный коммит каждого скила.
+- [Аудит плана](docs/reviews/audit-implementation-plan-20260907-2.md) — PASS.
+- [Исходные версии](docs/reviews/evidence/skills-revision/README.md) — snapshot и внешнее основание.
