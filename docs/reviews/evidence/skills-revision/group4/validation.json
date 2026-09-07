@@ -1,0 +1,153 @@
+{
+  "mode": "independent bounded final contract compatibility; no new trials or live full-filesystem scan",
+  "frozen_manifest_sha256": "e59f7e1c137f950cd9c24ad698bae9c1048e054a529ac6f762c14039ea461a08",
+  "scope": "Final candidate relevant non-docs surface of ten skills plus two current methods. Supporting audit/evidence/status records excluded; not yet a verdict. All files relative to each skill folder.",
+  "algorithm": "SHA256 bytes, aggregate sorted relative path TAB SHA256 LF UTF8",
+  "targets": {
+    "implementation-discipline": {
+      "version": "0.2.7",
+      "count": 5,
+      "root_sha256": "756624dde807f5d84e5e4172abf094a39cd807dcd3103a01cc98e547d1cb5d90",
+      "aggregate_sha256": "8251e9a48e657d4caca5d12d9f956f1bb62459f28e0e38ab1b0b25c1609e2661",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "skills/implementation-discipline/docs/reviews/evidence/g1/final-review-snapshot.json",
+      "reuse_basis": "94/94 actual prior file verification already completed; current freeze compared to those maps"
+    },
+    "security-reviewer": {
+      "version": "0.1.13",
+      "count": 17,
+      "root_sha256": "0e0ee8025a1eae969512fcef4a4210d5712bca141620733cc624685744355fa1",
+      "aggregate_sha256": "25a74d0a0a60a14e0906991f19b6ed2e88f0b4df83ef99f58bcea9ac31667be0",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "skills/security-reviewer/docs/reviews/evidence/g2/final-review-snapshot.json",
+      "reuse_basis": "94/94 actual prior file verification already completed; current freeze compared to those maps"
+    },
+    "git-engineer": {
+      "version": "0.2.1",
+      "count": 6,
+      "root_sha256": "3d6503387ad0cb8ade3d50d6d4b317d7f37e6cc1a7cff14e8beefad02b06ecc7",
+      "aggregate_sha256": "d92b496f40b425333c195edd1b1f8b1528f9e4ba37753f59e26b2f0b4037c8db",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "skills/git-engineer/docs/reviews/evidence/g2/final-review-snapshot.json",
+      "reuse_basis": "94/94 actual prior file verification already completed; current freeze compared to those maps"
+    },
+    "gh-utility": {
+      "version": "1.2.2",
+      "count": 28,
+      "root_sha256": "a40ccfca34beabc5a1344fbea461b14d496e4651f2ff4d67833872c4f7cc3779",
+      "aggregate_sha256": "1d824e173833760b82ed54d0ff4890757ad1523de3e15321db0f1af4768059ab",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "skills/gh-utility/docs/reviews/evidence/g2/final-review-snapshot.json",
+      "reuse_basis": "94/94 actual prior file verification already completed; current freeze compared to those maps"
+    },
+    "architecture-engineer": {
+      "version": "0.1.9",
+      "count": 18,
+      "root_sha256": "521aa429418fa99057bfede65ef36a9b625b5e014fe0b34f5980c738a7eed61b",
+      "aggregate_sha256": "cb3ecd3c709b1dd633a9339e1b6ce023b1603b5384548279064143ffb1ae77d0",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "skills/architecture-engineer/docs/reviews/evidence/g3/final-review-snapshot.json",
+      "reuse_basis": "94/94 actual prior file verification already completed; current freeze compared to those maps"
+    },
+    "spec-engineer": {
+      "version": "0.2.14",
+      "count": 10,
+      "root_sha256": "f1b9d2b339dfb9fc88ef965fd55bc71b1b661a3ba58696931ff898724bd74e3f",
+      "aggregate_sha256": "eb75be656a9c9d72596080aef79b70e532566557d821f9cbebf3570158419973",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "skills/spec-engineer/docs/reviews/evidence/g3/final-review-snapshot.json",
+      "reuse_basis": "94/94 actual prior file verification already completed; current freeze compared to those maps"
+    },
+    "delivery-planner": {
+      "version": "0.2.13",
+      "count": 10,
+      "root_sha256": "b55d15feb764ec2250af3710df1826e64cbd7f7d096d10d4b064b7f1236696b2",
+      "aggregate_sha256": "04ddfeb9c199050d55360cb5a55a7ae0d2f762577aa2ee8dc71edb02dd14c15e",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "skills/delivery-planner/docs/reviews/evidence/g3/final-review-snapshot.json",
+      "reuse_basis": "94/94 actual prior file verification already completed; current freeze compared to those maps"
+    },
+    "typescript-test-engineer": {
+      "version": "0.1.10",
+      "count": 13,
+      "root_sha256": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8",
+      "aggregate_sha256": "7a6c5d05797efa2776cb82b6d888139ac4e002b0a5181bf375c3e81e46882d28",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "typescript-candidate-snapshot.json",
+      "reuse_basis": "Independent TTE final-audit verified source32; current relevant map compared to frozen source"
+    },
+    "concept-conformance-reviewer": {
+      "version": "0.2.4",
+      "count": 4,
+      "root_sha256": "dfb0381067312e2e10cff4e846f631387856db864887da814f9a1f2350b95b6f",
+      "aggregate_sha256": "2a60d98558919529688c258a2b8d1fd245ac73dbc7c2f471c1f7b1a4f23e62e4",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "concept-final-review-snapshot.json",
+      "reuse_basis": "Independent concept final-audit verified source11; current relevant map compared to frozen source"
+    },
+    "spec-conformance-reviewer": {
+      "version": "0.1.8",
+      "count": 9,
+      "root_sha256": "cf4145f20b390fd712a436039b1c9bc30f4105a565a7cb5d1722d2d2ae3b6cfa",
+      "aggregate_sha256": "c5ccc39ea22cc8aff477a471bc1de8b5994d0120d594d8577d7863d882f928f9",
+      "aggregate_recomputed_match": true,
+      "prior_map_mismatches": [],
+      "evidence_snapshot": "speccon-independent-validation.json",
+      "reuse_basis": "This reviewer verified source22 and post-report stability; current relevant map compared to that source"
+    }
+  },
+  "methods": {
+    "skill-reviewer": {
+      "version": "0.2.5",
+      "count": 6,
+      "aggregate_sha256": "345c28d6cbfbbb543fa23a6b72cbacccbdf3db3e3985819834cf37a2a589a7ea",
+      "root_matches_applied_method": true
+    },
+    "skill-source-compiler": {
+      "version": "0.2.10",
+      "count": 32,
+      "aggregate_sha256": "c1b36fddbb97372a172e9838173fec57352c0abced67b2669171724ab5475fa4",
+      "root_matches_applied_method": true
+    }
+  },
+  "existing_evidence": {
+    "concept-conformance-reviewer": {
+      "final_audit": "/home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/concept-conformance-reviewer/docs/reviews/evidence/g4/final-audit.md",
+      "sha256": "26a5b880948389062675cec298c54c5f1ef52ca885261f4fa15021e00419600f",
+      "temp_exact_copy": true
+    },
+    "typescript-test-engineer": {
+      "final_audit": "/home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/typescript-test-engineer/docs/reviews/evidence/g4/final-audit.md",
+      "sha256": "5282b6a4f3774e3d3b135f339c8560fe6051950d1b443ec994b6c7e3754ae4f2",
+      "temp_exact_copy": true
+    },
+    "spec-conformance-reviewer": {
+      "final_audit": "speccon-final-audit.md",
+      "sha256": "2297431a2d5f118719d31ade2dffe7671b2f3c9e569ea75070acb9753b588fa6",
+      "source22_verified_after_report": true
+    },
+    "case05": {
+      "validation": "speccon-independent-validation.json",
+      "both_consumers": "PASS material; procedural read-bound FAIL preserved",
+      "binding": "speccon-final-pre-edit-freeze.json",
+      "test_sha256": "f83b52e789c0a8d9f65759bbf1640ef363b1be77c0e43e3cfbd28ab5feab814e",
+      "concept_sha256": "5f2ac7d606108aacf74cff668295cebce76e092bb4ac125ffdf70d486423d596"
+    }
+  },
+  "limits": [
+    "Current freeze supplied by coordinator as unchanged; compared existing previously verified hash maps, not new whole-tree hashing.",
+    "No raw archive/trace reprocessing. No native or deployed/runtime certification."
+  ],
+  "target_file_count": 120,
+  "target_aggregate_sha256": "d33cb283e6a175b71009b80231a136cbd8be86e69ec74415caad9cdc40e9b19d",
+  "method_file_count": 38
+}

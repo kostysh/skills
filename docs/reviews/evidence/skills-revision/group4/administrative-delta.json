@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-09-07 21:21:29 UTC",
+  "reviewed_target_aggregate_sha256": "d33cb283e6a175b71009b80231a136cbd8be86e69ec74415caad9cdc40e9b19d",
+  "scope": "Only supporting copies and common plan status after final compatibility PASS; active120 unchanged. Old snapshot hashes do not cover new records.",
+  "skill_commits": {
+    "concept-conformance-reviewer": "06a7d9c69749cf9671aa63c0e7f73433c97218c6",
+    "typescript-test-engineer": "50ef7a8c5304cf63f076399c800fe5b818140b94",
+    "spec-conformance-reviewer": "fdef7b61235f3db904cc681d8a8b16455267acf5"
+  },
+  "copied_evidence_sha256": {
+    "README.md": "43324907b9f86f3297a3d613f64cb8e16853b8899f84395dd25fb56bce72e573",
+    "final-compatibility.md": "52aed9cedf1de430ddcc5fab2b4740c8d09f2a881db39c14fbf36914d2a92788",
+    "preparation/current-preparation-snapshot.json": "eef7689c4a22b5b76cce6db42a2083178edd9289392a1209077377b48e22d707",
+    "preparation/interop-readback.md": "f81474ee37fc7d969171d2e96ce19bd08d1127fe146ffaa71a4f14792f2c3a78",
+    "preparation/metadata-readback.md": "2e0769c6946f3e276094bdf493cb5b8b265c5c4c4746640f132c84f540f89c70",
+    "preparation/preparation.sha256": "fb805900ee9786b1c35ccee474ba17e7e22f3af7c4f01a220decf7b8b8c2b9da",
+    "preparation/prior-evidence-reuse.json": "2001448ed03f12f5bc4f91be12094d7ad9773c6cc349bf6032505007c4cb7956",
+    "preparation/private-criteria.md": "5029f75e04aabbf5bddbbbc0dcbabe3a6929835d9b8439355a9556cd9c3815c1",
+    "preparation/protocol.md": "94cd78adfcdf20c851b86b0f05bf71ec82f3b2d042ed58f1cf22e4a0cde8d2de",
+    "preparation/trace-matrix.md": "89558d58b6706802df6aaccfe788aee0cdf8bc365493ca1e0ab2ad6c95a392a5",
+    "stable-snapshot.json": "e59f7e1c137f950cd9c24ad698bae9c1048e054a529ac6f762c14039ea461a08",
+    "validation.json": "ff4b30939289ca8205ea9183a71f13a1d48f5f9f028d916fc28ead5a1be77a94"
+  },
+  "operator_resource_constraint": "No costly trace comparisons or broad repeated scans; reuse evidence and short sequential necessary checks. SequenceMatcher audit comparison interrupted and not reused."
+}

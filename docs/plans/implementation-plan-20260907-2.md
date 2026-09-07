@@ -62,9 +62,9 @@
 
 ## Статус исполнения
 
-ID: `implementation-plan-20260907-2`. План принят оператором 2026-09-07; группы1–2 приняты оператором, группа3 выполнена и ожидает приёмки. Основание: сообщение `01a07cbd-2716-79f1-9c93-a8c6acda8d37`, задача `01a07be0-5ad2-7c31-920e-81e048807c1a`. Worktree `codex/skills-revision`; исходный SHA `4ddcb698457a741028664ed9af441009c4838d23`.
+ID: `implementation-plan-20260907-2`. План принят оператором 2026-09-07; группы1–3 приняты оператором, группа4 технически завершена и ожидает приёмки. Основание: сообщение `01a07cbd-2716-79f1-9c93-a8c6acda8d37`, задача `01a07be0-5ad2-7c31-920e-81e048807c1a`. Worktree `codex/skills-revision`; исходный SHA `4ddcb698457a741028664ed9af441009c4838d23`.
 
-[Независимый аудит плана](../reviews/audit-implementation-plan-20260907-2.md). Текущая граница: приёмка группы3; группа4 и публикация ожидают предусмотренных приёмок. Ниже сохранена хронология предыдущих checkpoints.
+[Независимый аудит плана](../reviews/audit-implementation-plan-20260907-2.md). Текущая граница: приёмка группы4; полный test:ci и публикация ожидают её принятия. Ниже сохранена хронология предыдущих checkpoints.
 
 ## Уточнение оператора и текущий прогресс
 
@@ -179,6 +179,43 @@ Spec initial compiler anchor error исправлен до freeze; вспомо�
 Снимок 2026-09-07 20:31:42 UTC до служебного commit статуса: worktree `.worktrees/skills-revision`, branch `codex/skills-revision`, HEAD `9d4812a8f670a6a740d9659288b9896ef7af3b19`. Local upstream `origin/master` — сохранённый `4ddcb698457a741028664ed9af441009c4838d23`, ahead10/behind0 относительно этого локального ref; remote не перечитывался для publication. Индекс после skill commit пуст, единственный residual — общий план, затем добавлен общий administrative record. Служебный commit изменит HEAD; точный итоговый SHA сообщается оператору. Основной checkout и соседние worktrees сохранены.
 
 Внешние tracking/publication не создавались. Push/PR/merge и вызванного ими CI нет. Native planner rule остаётся отменённым. `accepted now`: независимые технические результаты G3 в описанных границах; `not accepted`: приёмка G3 оператором, G4, итоговая совместимость и публикация. `blocking decision`: приёмка группы3. `next autonomous action`: none до явного продолжения; затем только группа4 в порядке typescript-test-engineer ∥ concept-conformance-reviewer → spec-conformance-reviewer и итоговая совместимость всех десяти скилов.
+
+Stop: awaiting explicit approval to continue
+Next autonomous action: none
+
+
+## Продолжение: группа 4
+
+Оператор принял группу3 сообщением «Продолжай». Чистое состояние возобновления подтверждено: HEAD `c91d096908aa1419419a5d96031016ef934833d9`, worktree `codex/skills-revision`. Разрешена группа4: typescript-test-engineer ∥ concept-conformance-reviewer → spec-conformance-reviewer, затем итоговая совместимость всех десяти скилов. Независимая baseline-инспекция запущена; изменения потребителя начнутся после stable PASS поставщиков. Следующая остановка — приёмка группы4. Полный repository CI и публикация остаются после этой приёмки; отменённое правило native planner не восстанавливается.
+
+
+## Приёмка группы 4
+
+Группа выполнена в принятом порядке: оба поставщика получили stable independent PASS; их настоящие отчёты заморожены до исправлений spec-conformance-reviewer. Все три скила имеют отдельные commits и independent bounded PASS, открытых P1/P2 нет. Итоговая совместимость десяти скилов также получила отдельный **independent bounded PASS**.
+
+| Скил / commit | Исправление и применимые проверки |
+| --- | --- |
+| concept-conformance-reviewer 0.2.4 / `06a7d9c` | Proceed означает readiness без выдачи implementation/publication permission; сохраняются действующие полномочия. Owning checks, 7/7 emitted parity, три пары, catalogue и два actual consumers. [PASS](../../skills/concept-conformance-reviewer/docs/reviews/evidence/g4/final-audit.md), [журнал](../../skills/concept-conformance-reviewer/docs/logs/implementation-log-20260907-1.md). |
+| typescript-test-engineer 0.1.10 / `50ef7a8` | Module-mock API выбирается по pinned Node, без принудительной миграции runtime/runner. Owning checks, 21/21 package tests, 19/19 emitted parity; шесть material outputs и два actual consumers PASS. [PASS](../../skills/typescript-test-engineer/docs/reviews/evidence/g4/final-audit.md), [журнал](../../skills/typescript-test-engineer/docs/logs/implementation-log-20260907-1.md). |
+| spec-conformance-reviewer 0.1.8 / `fdef7b6` | Artifact type не создаёт authority; accepted public correction сохраняет bounded re-audit. Owning checks, 9/9 emitted parity; candidate5/5 material PASS, catalogue6/6 в каждой arm, два final-provider reports реально прочитаны обеими arms. [PASS](../../skills/spec-conformance-reviewer/docs/reviews/evidence/g4/final-audit.md), [журнал](../../skills/spec-conformance-reviewer/docs/logs/implementation-log-20260907-1.md). |
+
+[Итоговая совместимость](../reviews/evidence/skills-revision/group4/final-compatibility.md) привязана к [единому snapshot](../reviews/evidence/skills-revision/group4/stable-snapshot.json): 120 relevant файлов десяти владельцев, aggregate `d33cb283e6a175b71009b80231a136cbd8be86e69ec74415caad9cdc40e9b19d`. Ранее проверенные G1–G3 maps94/94 и G4 maps26/26 сопоставлены с final freeze. Итоговая проверка переиспользовала существующие hashes/отчёты и actual handoffs, без нового полного filesystem scan, массовой обработки archives или дополнительных trials. Старые consumers не объявлены запусками новых версий; final case05 отдельно подтвердил передачу final TTE/concept → final speccon.
+
+Наблюдаемая capability — корректные ограниченные решения и передача оригинальных agent artifacts. В case05 оба FS12 требования остаются cannot_determine: FAIL достаточности теста и concept claim-not-demonstrated не превращаются в неподтверждённое нарушение production. Инструкции, компиляция и архивы не доказывают реальный export/download, безопасность продукта, native activation, универсальную надёжность или экономию ресурсов.
+
+Ограничения: concept baseline01 выдал ложную authority, candidate её сохранил у оператора; остальные пары не доказывают общего преимущества. TTE baseline также прошёл material cases, а full loading C3/author INCONCLUSIVE. Speccon baseline01 ошибочно выдал unconditional negative при unresolved authority; исходный type-fallback witness не воспроизведён буквально. Все десять speccon executors превысили назначенный размер первого чтения root: relevant content доставлен полностью, но procedural FAIL сохранён. Concept case05 producer не получил 161 символ supporting tail; test producer full conditional loading не сертифицирован. Ранее принятые G1–G3 limitations остаются в итоговом отчёте.
+
+Npm запустил тот же declared TTE package script после известного сбоя pnpm launcher; это не установленная причина сбоя launcher. Node22/26 mock examples не исполнялись. Documentation-only concept/speccon не имеют собственного runtime/test package. Полный repository test:ci остаётся следующим этапом после приёмки G4.
+
+Оператор отметил нагрузку от наших скриптов и потребовал её не допускать. Аудитор сообщил о неэффективном вложенном SequenceMatcher с autojunk=False на длинных трассах; этот запуск прерван до результата и заменён коротким точным поиском. Его output не использован как проверка. [Запись ограничения](../../skills/spec-conformance-reviewer/docs/reviews/evidence/g4/review-load-note.md). В дальнейшем разрешённая работа выполняется короткими последовательными проверками с reuse evidence; ресурсоёмкие массовые сравнения и повторные сканы исключены. При будущем test:ci требуется соблюдать это ограничение нагрузки.
+
+### Состояние для продолжения группы 4
+
+Снимок 2026-09-07 21:21:29 UTC перед служебным commit: worktree `.worktrees/skills-revision`, branch `codex/skills-revision`, HEAD `fdef7b61235f3db904cc681d8a8b16455267acf5`; local upstream `origin/master` остаётся на `4ddcb698457a741028664ed9af441009c4838d23`, ahead14/behind0 относительно сохранённого ref. Все три skill commits проверены отдельно. Индекс после них пуст, единственный tracked residual — общий план; далее добавлены только общие supporting evidence. Служебный commit изменит HEAD, точный SHA будет сообщён оператору. Основной checkout и соседние worktrees сохранены.
+
+После individual PASS изменены только supporting статусы/навигация и добавлены точные evidence copies; administrative delta каждого skill сохранены рядом с PASS. [Общая административная запись](../reviews/evidence/skills-revision/group4/administrative-delta.json) отделяет final snapshot от последующих записей. Исходные evidence archives сохранены без переформатирования; speccon archive оставлен несжатым. Active contracts после PASS не менялись.
+
+Внешние tracking/publication, push/PR/merge и вызванный ими CI не выполнялись. Отменённое правило native planner не восстановлено. `accepted now`: независимые технические результаты G4 и bounded compatibility всех десяти; `not accepted`: приёмка G4 оператором, полный test:ci и публикация. `blocking decision`: приёмка G4. `next autonomous action`: none до явного принятия; затем полный test:ci с ограничением нагрузки, согласованные push/один PR/master merge без squash и проверка точных SHA по исходному плану.
 
 Stop: awaiting explicit approval to continue
 Next autonomous action: none
