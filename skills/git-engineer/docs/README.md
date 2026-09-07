@@ -9,3 +9,7 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/forward-test-evidence-20260713-1.md` - normalized neutral prompts, rubrics, raw outputs, and fixture evidence for the worktree regression scenarios.
 - `docs/logs/implementation-log-20260716-1.md` - general Git authority, commit, history, push, interop, and evidence-contract hardening.
 - `docs/logs/forward-test-evidence-20260716-1.md` - blind commit, policy, conflict, push, routing, and worktree evidence for skill 0.2.0.
+
+- [implementation-log-20260907-1](logs/implementation-log-20260907-1.md) — CI fallback и условно обязательная worktree-reference.
+
+Журнал ревизии 2026-09-07 и её evidence — source-only supporting records; они не являются обязательной зависимостью emitted-пакета.

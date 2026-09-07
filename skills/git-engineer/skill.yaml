@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: git-engineer
-  source-version: 0.2.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 20000
   description: Use for repository-aware Git staging, commits, branches, worktrees, merge, rebase, cherry-pick, and safe pushes. Preserve unrelated work, apply Conventional Commits with emoji by default, and verify exact refs. Route GitHub resources, code review, and CI remediation to their owning skills.
 fragments:
@@ -12,7 +12,7 @@ references:
     title: Worktree operations
     source: references/worktrees.md
     target: references/worktrees.md
-    required: false
+    required: true
     trigger: Read this before choosing a worktree root, creating a worktree, or moving an existing worktree.
 assets: []
 copies:
@@ -47,9 +47,9 @@ supporting:
     description: Non-normative blind forward-test evidence for commit, history, push, routing, and worktree behavior.
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    requiredReferences:
       - ref-worktrees
+    optionalReferences: []
   supportingGlobs:
     - docs/*
     - docs/logs/*
@@ -67,7 +67,7 @@ sections:
   whenNotToUse:
     - GitHub repository, issue, pull-request, check, label, Actions, release, or settings work without a local Git-history decision; use gh-utility.
     - Code-review findings, approval, severity, or merge-readiness judgment; use code-reviewer.
-    - Diagnosing or fixing failing GitHub pull-request checks; use gh-fix-ci.
+    - Diagnosing or fixing failing GitHub pull-request checks; follow the CI-owner routing in Interop handoff.
     - The task does not involve Git state, history, refs, commits, branches, worktrees, or push policy.
     - The operator forbids the Git operation required to satisfy the request; report the constraint instead of substituting another mutation.
   workflow:
@@ -109,8 +109,8 @@ sections:
       rationale: git-engineer may execute an authorized Git action but does not issue a review verdict.
     - id: interop-ci
       domain: Diagnosis and remediation of failing GitHub pull-request checks
-      winner: gh-fix-ci when available
-      rationale: git-engineer supplies relevant local commit and branch state; the specialized CI skill owns diagnosis and fixes.
+      winner: gh-fix-ci when available, otherwise an available implementation/domain owner
+      rationale: Follow Interop handoff for available-owner selection, gh-utility provider evidence, and the exact Git facts and missing inputs to pass; git-engineer does not decide the CI fix.
   commands: []
   gotchas:
     - id: gotcha-clean-is-not-scope

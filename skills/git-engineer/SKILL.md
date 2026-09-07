@@ -5,9 +5,9 @@ description: Use for repository-aware Git staging, commits, branches, worktrees,
   Conventional Commits with emoji by default, and verify exact refs. Route
   GitHub resources, code review, and CI remediation to their owning skills.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3b6ef3fbf878486ab553caac254c5f86d0a8299abdaaf275e261e98cb373acbb
+  skillforge-source-hash: 034b789db298b9dfd0b7b8331aa4ce54b54b8d64357f0a3b47f85e8c1995f65f
 ---
 
 # git-engineer
@@ -30,7 +30,7 @@ metadata:
 
 - GitHub repository, issue, pull-request, check, label, Actions, release, or settings work without a local Git-history decision; use gh-utility.
 - Code-review findings, approval, severity, or merge-readiness judgment; use code-reviewer.
-- Diagnosing or fixing failing GitHub pull-request checks; use gh-fix-ci.
+- Diagnosing or fixing failing GitHub pull-request checks; follow the CI-owner routing in Interop handoff.
 - The task does not involve Git state, history, refs, commits, branches, worktrees, or push policy.
 - The operator forbids the Git operation required to satisfy the request; report the constraint instead of substituting another mutation.
 
@@ -138,7 +138,8 @@ The portable default is `<repository-root>/.worktrees/<task-slug>`. An explicit 
 
 - Use `gh-utility` for GitHub repositories, issues, pull requests, checks, labels, Actions, merges, and other platform reads or mutations. `git-engineer` may supply the repository-approved history method and exact local branch/ref facts; `gh-utility` owns platform execution and fresh GitHub-state verification.
 - Use `code-reviewer` for findings, severity, approval, and merge-readiness judgment. A requested Git operation does not authorize a review verdict.
-- Use `gh-fix-ci` for diagnosis and remediation of failing GitHub pull-request checks. This skill may report the local branch or commit involved but does not decide the CI fix.
+- For failing GitHub pull-request checks, use `gh-fix-ci` when available; otherwise route diagnosis and remediation to an actually available implementation/domain owner for the affected code or workflow. Use `gh-utility` to gather GitHub check/run/log facts. Pass the repository and PR identity when known, exact branch/HEAD and relevant ref OIDs, repository-approved history method, current index/worktree or in-progress state, observed failing check/run identifiers and log evidence, and missing or unverified inputs. Do not invent unavailable provider facts or decide the CI fix here.
+- An unavailable CI specialist does not block independently supported, authorized Git work. Preserve its verified result and evidence limits in the handoff. If the implementation/domain owner cannot be identified, leave only the dependent CI-remediation handoff blocked and name the missing owner assignment; do not infer an expert conclusion or claim CI completion.
 
 ## Output contract
 
@@ -192,7 +193,7 @@ Validation:
 
 - **GitHub repositories, issues, pull requests, checks, labels, Actions, platform merges, and other GitHub resource state:** gh-utility. git-engineer owns local history semantics and branch/ref facts; gh-utility owns GitHub execution, targeting, and fresh platform-state verification.
 - **Code-review findings, severity, approval, and merge-readiness judgment:** code-reviewer. git-engineer may execute an authorized Git action but does not issue a review verdict.
-- **Diagnosis and remediation of failing GitHub pull-request checks:** gh-fix-ci when available. git-engineer supplies relevant local commit and branch state; the specialized CI skill owns diagnosis and fixes.
+- **Diagnosis and remediation of failing GitHub pull-request checks:** gh-fix-ci when available, otherwise an available implementation/domain owner. Follow Interop handoff for available-owner selection, gh-utility provider evidence, and the exact Git facts and missing inputs to pass; git-engineer does not decide the CI fix.
 
 ## Gotchas
 
@@ -221,7 +222,7 @@ Rewrite only an explicitly authorized owned non-protected task branch, bind the 
 ### Evidence-calibrated completion
 Report verified only after observing the claimed terminal state; use partial when an action occurred but required evidence is unavailable, and blocked when safe completion requires missing authority, facts, conflict resolution, credentials, or external-state change.
 
-## Optional references
+## Required active references
 - [Worktree operations](references/worktrees.md) — Read this before choosing a worktree root, creating a worktree, or moving an existing worktree.
 
 ## Portability rules

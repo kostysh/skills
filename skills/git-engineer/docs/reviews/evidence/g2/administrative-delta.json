@@ -1,0 +1,20 @@
+{
+  "basis": "explicit post-PASS admin permission in final-audit.md",
+  "unchangedReviewedCount": 119,
+  "changed": {
+    "skills/git-engineer/docs/logs/implementation-log-20260907-1.md": {
+      "reviewed": "5ae491ecc2473d5008f5ce2668d3eff371f2fcdbe346016192a0e38445fd07a8",
+      "current": "2b8e93ede4a10de9564e3f8439b7dc2d9f50617b745bdfb760622606343a2acd"
+    },
+    "skills/git-engineer/docs/reviews/evidence/g2/README.md": {
+      "reviewed": "d35c01174900abbee526a4028b2e7c7b109e62041e404daf6fb724c81903e298",
+      "current": "a63b79f7780a0fe425a8d965ed65fd1b052bd816b18c6670d73f57bedb9a4a12"
+    }
+  },
+  "addedExactCopies": [
+    "final-audit.md",
+    "final-review-snapshot.json",
+    "audit-readback.json"
+  ],
+  "activeChanged": false
+}
