@@ -29,6 +29,10 @@ Do not persist task briefs as separate files when the delivery plan table is suf
 
 Brief result:
 
+Apply the methodology's authority and support-versus-standalone rules. For a
+standalone accepted docs/tooling/skills task, record its current consumer, outcome,
+source, and proportional verification; omit inapplicable slice/dependency fields.
+
 ## 1. Planning scope
 
 - Scope type:
@@ -39,7 +43,7 @@ Brief result:
 - Scope delta: unchanged | narrowed | expanded | mixed
 - Unauthorized additions: none | listed individually below
 - Source authority:
-- Customer/contract basis for material product requirements:
+- Established product owner and accepted decision; customer/contract basis when required:
 - Plan handoff: draft | blocked | ready for <consumer>
 - Output mode: compact
 
@@ -48,7 +52,7 @@ Brief result:
 Use one row for every material narrowing, expansion, or addition. Write `none`
 only when the verdict is `unchanged` and there are no additions.
 
-| Change / addition | Delta type | Exact authority / customer disposition | Consequences | Status / blocker |
+| Change / addition | Delta type | Exact authority / owner disposition | Consequences | Status / blocker |
 |---|---|---|---|---|
 | none |  |  |  |  |
 
@@ -74,7 +78,7 @@ only when the verdict is `unchanged` and there are no additions.
 Include every material task, behavior, and acceptance obligation. This table is
 both the forward disposition and the item-level reverse authority trace.
 
-| Material planned item | Source / obligation | Customer-coordinated product authority or bounded non-product authority | Disposition | Slice / increment | Observable or verifiable outcome | Task / route | Risk |
+| Material planned item | Source / obligation | Accepted product authority under the applicable governance or bounded non-product authority | Disposition | Slice / increment | Observable or verifiable outcome | Task / route | Risk |
 |---|---|---|---|---|---|---|---|
 |  |  |  | task / specialist route / spike / not applicable | VS-01 / MI-01 |  |  | low/medium/high |
 
@@ -112,7 +116,7 @@ both the forward disposition and the item-level reverse authority trace.
 - Scope delta inventory complete; every authorized delta has exact authority and consequences:
 - Unauthorized additions individually listed and blocked:
 - Every material planned item has item-level reverse authority trace:
-- Material product additions have customer/contract coordination:
+- Material product additions have accepted owner decisions and applicable approvals:
 - Non-product obligations remain inside their authority boundary:
 - Input readiness preserved:
 - Every obligation dispositioned:
@@ -133,6 +137,10 @@ both the forward disposition and the item-level reverse authority trace.
 
 Brief result:
 
+Apply the methodology's authority and support-versus-standalone rules. For a
+standalone accepted docs/tooling/skills task, record its current consumer, outcome,
+source, and proportional verification; omit inapplicable slice/dependency fields.
+
 ## 1. Module scope
 
 - Module/service/bounded context:
@@ -143,7 +151,7 @@ Brief result:
 - Scope baseline / source:
 - Scope delta: unchanged | narrowed | expanded | mixed
 - Unauthorized additions: none | listed individually below
-- Customer/contract basis for material product requirements:
+- Established product owner and accepted decision; customer/contract basis when required:
 - Architecture handoff references:
 - Plan handoff: draft | blocked | ready for <consumer>
 
@@ -152,7 +160,7 @@ Brief result:
 Use one row for every material narrowing, expansion, or addition. Write `none`
 only when the verdict is `unchanged` and there are no additions.
 
-| Change / addition | Delta type | Exact authority / customer disposition | Consequences | Status / blocker |
+| Change / addition | Delta type | Exact authority / owner disposition | Consequences | Status / blocker |
 |---|---|---|---|---|
 | none |  |  |  |  |
 
@@ -173,7 +181,7 @@ Include every material task, behavior, acceptance obligation, and module
 increment. This table is both the forward disposition and the item-level reverse
 authority trace.
 
-| Material planned item | Source / obligation | Customer-coordinated product authority or bounded non-product authority | Authority status | Disposition | Meaning for this module | Task / route | Risk |
+| Material planned item | Source / obligation | Accepted product authority under the applicable governance or bounded non-product authority | Authority status | Disposition | Meaning for this module | Task / route | Risk |
 |---|---|---|---|---|---|---|---|
 |  | Contract / data / security / ops / integration |  | authoritative / non-authoritative / draft / blocked / ready | task / specialist route / spike / not applicable |  |  |  |
 
@@ -209,7 +217,7 @@ authority trace.
 - Scope delta inventory complete; every authorized delta has exact authority and consequences:
 - Unauthorized additions individually listed and blocked:
 - Every material planned item has item-level reverse authority trace:
-- Material product additions have customer/contract coordination:
+- Material product additions have accepted owner decisions and applicable approvals:
 - Non-product obligations remain inside their authority boundary:
 - Input readiness preserved:
 - Every obligation dispositioned:
@@ -232,7 +240,7 @@ Use only when compact table is not enough.
 - Scope:
 - Out of scope:
 - Source / obligation trace:
-- Customer/contract basis or bounded non-product authority:
+- Accepted owner decision (customer/contract basis when required) or bounded non-product authority:
 - Handoff status: draft | blocked | ready for <owner>
 - Blockers and dependencies:
 - Risk:

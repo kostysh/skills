@@ -1,8 +1,8 @@
 - Requested scope is explicit and respected: project, feature, module, integration, handoff item, or backlog audit.
 - The exact scope baseline and `unchanged | narrowed | expanded | mixed` verdict are explicit; every authorized delta states authority and consequences, and unauthorized additions are listed.
 - The simplest sufficient delivery path was named before decomposition and rechecked after material deltas.
-- Every material product requirement traces past derived artifacts to an exact customer/contract statement or explicit customer decision.
-- Every material planned item traces back to customer-coordinated product authority or bounded non-product authority; non-product obligations do not silently change product scope or behavior.
+- Every material product requirement follows the required methodology's established-owner and applicable-approval rules; the customer/contract chain is verified when required.
+- Every material planned item traces back to accepted product authority under the applicable governance or bounded non-product authority; non-product obligations do not silently change product scope or behavior.
 - Product authority/handoff and architecture handoff item readiness are explicit; no dependent task is more ready than its inputs.
 - Architecture handoff is treated as accepted constraints and obligations, not redesigned.
 - Every in-scope product requirement and architecture obligation has a task, specialist route, spike, or explicit not-applicable rationale.
@@ -12,10 +12,10 @@
 - Decomposition uses vertical slices for project/feature planning and module increments for module/service planning.
 - Every task has one primary goal, source trace, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or return route.
 - `ready for coding` is used only when the coding owner can act without inventing source-owned decisions and has concrete verification and review evidence.
-- Substrate work is tied to a capability or module increment.
+- Support substrate is tied to its owner capability or module increment; standalone accepted docs/tooling/skills outcomes follow the required methodology's current-consumer and verification contract.
 - Support work also traces to a current source obligation or protected boundary and states why the direct task or existing verification is insufficient.
 - Adjacent defects remain findings, blockers, or follow-ups unless their remediation is explicitly in scope.
-- No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests unless it is explicitly labeled as support work with a dependent increment.
+- No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests without the required methodology's explicit support or standalone outcome and matching verification.
 - High-risk work is visible and not hidden inside generic implementation tasks.
 - Sequencing exposes architectural, integration, migration, rollback, security, data, or tenancy risk early.
 - Dependency edges name the blocked transition as `start`, `merge`, `acceptance`, or `future-owner`, with gate evidence and an owner.

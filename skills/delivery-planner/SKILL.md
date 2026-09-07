@@ -8,9 +8,9 @@ description: Turn accepted product scope and architecture handoff into
 compatibility: Portable documentation-only skill. All mandatory
   delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.12
+  source-version: 0.2.13
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: baa7f0d5237819054a01854069c9feabf61b7018425fb8b94e043cb116c3ceb8
+  skillforge-source-hash: c657ef4c5c518d4273502114fd3adaf0c4732ccfe8e7fbdeabd0da6780710168
 ---
 
 # delivery-planner
@@ -19,7 +19,7 @@ metadata:
 
 1. Identify the requested planning scope before decomposing anything; support whole project, feature, module/service, integration, specific architecture handoff item, or backlog audit.
 2. For every non-trivial creation, revision, or review, apply `implementation-discipline` before decomposition or process-depth decisions; capture the outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted planning output, simplest sufficient delivery path, and narrowest falsifier.
-3. Verify product authority per the required methodology. Material product requirements trace past derived artifacts to an exact customer/contract statement or explicit customer decision. Preserve product and architecture handoff readiness; do not invent requirements or decisions.
+3. Verify product authority per the required methodology. Material product requirements trace to the established owner's accepted decision under applicable approval rules, including the customer/contract chain when required. Preserve product and architecture handoff readiness; do not invent requirements or decisions.
 4. For project/feature planning, create vertical slices around observable capabilities.
 5. For module/service planning, create module increments around accepted responsibilities, boundaries, contracts, invariants, integrations, and verification hooks.
 6. Treat the workflow as decision guidance, not a mandatory procedure; skip irrelevant detail when a compact plan is enough.
@@ -75,7 +75,7 @@ The skill does not produce PRDs, architecture decisions, ADRs, ASR records, impl
 
 Respect the requested target and avoid planning more than needed.
 
-1. Capture the outcome, actor or consumer, claim boundary, source-authorized scope and non-goals, permitted output, direct delivery path, narrowest falsifier, and exact scope baseline; classify the delta as `unchanged`, `narrowed`, `expanded`, or `mixed`, then inventory every material change or addition with exact authority/customer disposition, consequences, and status or blocker.
+1. Capture the outcome, actor or consumer, claim boundary, source-authorized scope and non-goals, permitted output, direct delivery path, narrowest falsifier, and exact scope baseline; classify the delta as `unchanged`, `narrowed`, `expanded`, or `mixed`, then inventory every material change or addition with exact authority/owner disposition, consequences, and status or blocker.
 2. Classify scope as project, feature, module/service, integration, handoff item, or backlog audit.
 3. Identify included and excluded areas.
 4. Select compact output mode unless a deeper mode is explicitly required.
@@ -94,7 +94,7 @@ Identify authoritative product, architecture, spec, repository, and code inputs.
 3. Load existing specs and repo instructions when available.
 4. Verify product Authority and Handoff for the named planning consumer plus architecture handoff item status, blockers, next owner, and expected output; use repository-equivalent fields when names differ.
 5. Treat same-session PRDs, architecture notes, specs, and plans as outputs, not higher-authority inputs that can authorize their own expansion.
-6. Apply the required methodology's customer-coordination and bounded non-product-authority gates; a missing or conflicting chain blocks only dependent work.
+6. Apply the required methodology's established-owner, applicable-approval, and bounded non-product-authority gates; a missing or conflicting chain blocks only dependent work.
 7. Allow non-authoritative, draft, or blocked inputs to inform draft decomposition, but keep their dependent tasks draft or blocked.
 8. Classify gaps as blocking or non-blocking and route blocking gaps to the responsible skill.
 
@@ -104,7 +104,7 @@ Turn accepted architecture obligations into tasks without redesigning architectu
 
 1. Extract boundaries, contracts, data constraints, security constraints, operational obligations, integration points, validation obligations, risks, and revisit triggers.
 2. Map every in-scope product requirement and architecture obligation, with source trace, to a vertical slice, module increment, support task, spike, specialist route, or explicit not-applicable rationale.
-3. Trace every material planned item back to customer-coordinated product authority or bounded non-product authority; a missing reverse trace invalidates it.
+3. Trace every material planned item back to accepted product authority under the applicable governance or bounded non-product authority; a missing reverse trace invalidates it.
 4. For a ready planner-owned spike, produce only a bounded brief naming the executor, success and failure signals, evidence contract, and return route; do not claim empirical evidence.
 5. Route unresolved architecture choices to architecture-engineer.
 
@@ -123,7 +123,7 @@ Decompose around observable or verifiable outcomes.
 Create executable planning-level tasks without writing full specs.
 
 1. Give each task one primary goal.
-2. Include item-level origin authority/customer coordination, scope, out-of-scope, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or evidence-return route.
+2. Include item-level origin authority/applicable approvals, scope, out-of-scope, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or evidence-return route.
 3. Use `draft`, `blocked`, or `ready for <owner>`; use `ready for coding` only when accepted product and architecture inputs, sufficient behavior detail, ready dependencies, and concrete verification and review evidence let the coding owner act without source-owned decisions.
 4. Split only when risk, dependency order, review path, or verification evidence requires it.
 5. Route detailed behavior to spec-engineer instead of inventing it.
@@ -175,10 +175,10 @@ The skill must work for whole projects and for partial scopes such as one module
 Consume accepted architecture handoff as constraints and obligations. Do not select or revise architecture decisions; route unresolved architecture questions to architecture-engineer.
 
 ### Source and handoff readiness policy
-Verify product and architecture readiness. Material product authority requires the customer/contract chain defined in the required methodology. Draft, blocked, unresolved, or uncoordinated inputs may inform draft decomposition but cannot make dependent work ready; name its owner and unblock evidence.
+Verify product and architecture readiness. Material product authority follows the established-owner and applicable-approval rules in the required methodology. Draft, blocked, unresolved, or uncoordinated inputs may inform draft decomposition but cannot make dependent work ready; name its owner and unblock evidence.
 
 ### Obligation disposition policy
-Trace both directions. Each in-scope requirement or architecture obligation leads to a task, route, spike, or explicit not-applicable rationale; each material planned item leads back to customer-coordinated product authority or bounded non-product authority. Either gap makes planning incomplete.
+Trace both directions. Each in-scope requirement or architecture obligation leads to a task, route, spike, or explicit not-applicable rationale; each material planned item leads back to accepted product authority under the applicable governance or bounded non-product authority. Either gap makes planning incomplete.
 
 ### Module increment policy
 For module/service planning, decompose into verifiable module increments tied to accepted responsibilities, contracts, invariants, data touchpoints, integrations, operations, and tests.
@@ -187,13 +187,13 @@ For module/service planning, decompose into verifiable module increments tied to
 A decomposition unit must be observable or verifiable. Substrate tasks are allowed only when linked to a slice, module increment, validation obligation, or explicit developer-experience goal.
 
 ### No substrate-only success policy
-Do not mark a task or plan ready when its acceptance could pass by adding scaffolds, wrappers, metadata, mocks, docs, or empty tests without changing observable or verifiable behavior. Reframe it around the capability, merge it into its owner task, or label it as a support task with a clear dependent increment.
+Do not mark a task or plan ready when its acceptance could pass by adding scaffolds, wrappers, metadata, mocks, docs, or empty tests without changing observable or verifiable behavior. Reframe it around the capability, merge it into its owner task, or apply the support-versus-standalone distinction in the required methodology.
 
 ### No future-only support policy
 Do not create scaffolds, wrappers, config surfaces, harnesses, folders, or extension points only because they may be useful later. Keep support work only for a current source obligation or protected boundary with a dependent increment, evidence unlocked, and proof that the direct task or existing contour is insufficient.
 
 ### Support task contract
-A remediation, tooling, documentation, or skills task must name the capability it protects, the defect class it prevents, the evidence it unlocks, and the effectiveness check for the next slice. Do not present support substrate as delivered product capability.
+Apply the required methodology's support-versus-standalone contract. Actual slice support retains its protected capability, defect class, evidence, and increment effectiveness check; standalone accepted docs/tooling/skills work uses its current consumer, outcome, source, and proportional verification without an invented future dependency. Neither proves product runtime capability.
 
 ### Right-sized task policy
 Each task should have one primary goal, source trace, clear dependencies, a risk label, a handoff status, blockers, a next owner, an expected output or evidence contract, and an unblock or evidence-return route.
@@ -221,8 +221,6 @@ Use the user's working language unless repository rules differ. Start with a con
 
 ## Required active references
 - [Delivery planning methodology](references/methodology.md) — Read this before decomposing architecture handoff, product scope, a module, a feature, an integration, or an existing backlog into executable tasks.
-
-## Optional references
 - [Delivery planning patterns](references/planning-patterns.md) — Read this when slice boundaries, module increments, task granularity, sequencing, support tasks, spikes, or backlog repair are unclear.
 - [Output templates](references/output-templates.md) — Read this when producing a compact Delivery Plan, Module Delivery Plan, or expanded task brief.
 
@@ -257,8 +255,8 @@ Use the user's working language unless repository rules differ. Start with a con
 - Requested scope is explicit and respected: project, feature, module, integration, handoff item, or backlog audit.
 - The exact scope baseline and `unchanged | narrowed | expanded | mixed` verdict are explicit; every authorized delta states authority and consequences, and unauthorized additions are listed.
 - The simplest sufficient delivery path was named before decomposition and rechecked after material deltas.
-- Every material product requirement traces past derived artifacts to an exact customer/contract statement or explicit customer decision.
-- Every material planned item traces back to customer-coordinated product authority or bounded non-product authority; non-product obligations do not silently change product scope or behavior.
+- Every material product requirement follows the required methodology's established-owner and applicable-approval rules; the customer/contract chain is verified when required.
+- Every material planned item traces back to accepted product authority under the applicable governance or bounded non-product authority; non-product obligations do not silently change product scope or behavior.
 - Product authority/handoff and architecture handoff item readiness are explicit; no dependent task is more ready than its inputs.
 - Architecture handoff is treated as accepted constraints and obligations, not redesigned.
 - Every in-scope product requirement and architecture obligation has a task, specialist route, spike, or explicit not-applicable rationale.
@@ -268,10 +266,10 @@ Use the user's working language unless repository rules differ. Start with a con
 - Decomposition uses vertical slices for project/feature planning and module increments for module/service planning.
 - Every task has one primary goal, source trace, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or return route.
 - `ready for coding` is used only when the coding owner can act without inventing source-owned decisions and has concrete verification and review evidence.
-- Substrate work is tied to a capability or module increment.
+- Support substrate is tied to its owner capability or module increment; standalone accepted docs/tooling/skills outcomes follow the required methodology's current-consumer and verification contract.
 - Support work also traces to a current source obligation or protected boundary and states why the direct task or existing verification is insufficient.
 - Adjacent defects remain findings, blockers, or follow-ups unless their remediation is explicitly in scope.
-- No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests unless it is explicitly labeled as support work with a dependent increment.
+- No task can be accepted through scaffold, metadata, docs, mocks, wrappers, or empty tests without the required methodology's explicit support or standalone outcome and matching verification.
 - High-risk work is visible and not hidden inside generic implementation tasks.
 - Sequencing exposes architectural, integration, migration, rollback, security, data, or tenancy risk early.
 - Dependency edges name the blocked transition as `start`, `merge`, `acceptance`, or `future-owner`, with gate evidence and an owner.

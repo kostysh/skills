@@ -1,0 +1,50 @@
+{
+  "basis": "delivery-candidate-freeze.json source; reviewer permits supporting-only administrative delta",
+  "files": {
+    "docs/README.md": {
+      "before": "e7bc1aa5c4f63b94ecd086d20c654361141e4991427890b69d73d3d5bdb14a95",
+      "after": "63a20fb0d2635c800f2dc7467006534d132b96a9d999d3066ef40d9b970e2951"
+    },
+    "docs/logs/implementation-log-20260907-1.md": {
+      "before": "b807986832698b81c2832d0dc08f4aa149fedc387bdbfda0a76efc389e5ca64b",
+      "after": "8a00f92ab529e791de7cdaa395bb555e94c3a6dce3af8f6a262cca599cb892de"
+    },
+    "docs/reviews/evidence/g3/raw-evidence.tar.gz": {
+      "before": null,
+      "after": "1acfc95b6d19d036c7957da839cd1e215c8b7e0edf2cd1777c483a709efbe22b"
+    },
+    "docs/reviews/evidence/g3/final-audit.md": {
+      "before": null,
+      "after": "b7f648c739af73898354cd08a931befd9c21f66350304f1d33cb9211c4e8dca9"
+    },
+    "docs/reviews/evidence/g3/review-event-index.json": {
+      "before": null,
+      "after": "4cf98981b7746425c0d1f39e3c2b5af98f2b6058891f297c98d2a29dd86acbfd"
+    },
+    "docs/reviews/evidence/g3/review-integrity.json": {
+      "before": null,
+      "after": "5ddb9fbb82d5c4be5db787062d0ce6cb9541d0faede8634e1e4481f6fb677a79"
+    },
+    "docs/reviews/evidence/g3/final-review-snapshot.json": {
+      "before": null,
+      "after": "f88d55360990b15c0b097bd2e667826a2f1527aabbf688d07b9fdeb99f195efc"
+    },
+    "docs/reviews/evidence/g3/audit-readback.json": {
+      "before": null,
+      "after": "ea762ef16a6c6087dc408bcaa920f40381cc6ce02a1bf7a4343dc312ac4b227f"
+    },
+    "docs/reviews/evidence/g3/README.md": {
+      "before": null,
+      "after": "a66f82dfd74b1e3291b6be46c64d3e02e2cb17babe78c1a5b8f369a01dbfc981"
+    },
+    "docs/reviews/evidence/g3/archive-file-manifest.json": {
+      "before": null,
+      "after": "fa387e05c601dc5e7aebe13e4bdd09c76a914e455d53a380b1f01012f1605b74"
+    },
+    "docs/reviews/evidence/g3/delivered-coverage.json": {
+      "before": null,
+      "after": "ba9543cd0f224887dbdb4d7376805186f1fa6b74890c5885eb2088efce7e3739"
+    }
+  },
+  "selfExcluded": "docs/reviews/evidence/g3/administrative-delta.json"
+}
