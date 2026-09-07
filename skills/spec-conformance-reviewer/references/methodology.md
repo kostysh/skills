@@ -18,7 +18,7 @@ Keep the review read-only. Do not edit the implementation or normative sources w
 
 On a new stable snapshot, bind remediation re-audit to the fixed prior findings, their authoritative requirements, exact remediation delta, original failure paths, closure evidence, and adjacent contracts identified by a blast-radius check. Record unchanged previously verified requirements as excluded; do not re-read or re-evaluate their full implementation surface.
 
-Widen to a fresh conformance review when normative authority, requirement meaning, public behavior, or material scope changed, when unrelated changes overlap the requirement boundary, or when the blast radius cannot be bounded. A cosmetic or prose-only diff does not close a behavioral deviation without evidence against the original requirement failure path.
+A public behavior change implementing the accepted correction remains within this bounded re-audit. Widen to a fresh conformance review when normative authority or requirement meaning changed, when public behavior or material scope changed outside the accepted remediation boundary, when unrelated changes overlap the requirement boundary, or when the blast radius cannot be bounded. A cosmetic or prose-only diff does not close a behavioral deviation without evidence against the original requirement failure path.
 
 ## Normative Inputs
 
@@ -99,7 +99,7 @@ Resolve source authority in this order:
 1. Apply explicit user or project declarations of ownership and precedence.
 2. Exclude or demote sources that are unapproved, stale, superseded, out of scope, or generated from another owning source.
 3. Respect dimension-specific ownership: a protocol or schema may own wire compatibility while a product requirement owns user-visible behavior.
-4. Only when no precedence is declared and the remaining sources are equally current and applicable, use this disclosed fallback: formal contract for its owned contract dimension, approved feature spec, explicitly normative acceptance criteria, mandatory ADR or RFC, then explicitly normative tests or reference behavior.
+4. If these authority checks leave a conflict unresolved, do not rank sources by artifact type. Record the conflicting requirements and route the missing precedence or intent decision to the named requirement owner.
 
 Tickets and delivery issue bodies are normative only when the project explicitly grants them that authority. Otherwise, use them to locate the owning source and classify unmatched ticket wording as lower-authority context.
 

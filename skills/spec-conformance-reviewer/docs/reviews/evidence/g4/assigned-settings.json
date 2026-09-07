@@ -1,0 +1,135 @@
+{
+  "provenance": "Coordinator supplied spawn settings; API lacks independent model/runtime configuration and initial prompt. Fresh none contexts, instructional isolation not hard sandbox. Only own tasks and active applicable files; no diagnosis/rubric/history/neighbor outputs. Raw case subjects synthetic; own report writes only, no execution/external mutation/delegation.",
+  "runs": [
+    {
+      "agent": "g4_speccon_trial01a",
+      "threadId": "01a07db0-15bb-7a32-9dbd-d2ade498ac9a",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/01.md",
+      "active_root": "initial-providers/spec-conformance-reviewer/SKILL.md",
+      "output": "speccon-runs/01-01/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial01b",
+      "threadId": "01a07db3-1f8a-7ab1-8e80-f572546e1063",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/01.md",
+      "active_root": "speccon-candidate-active/SKILL.md",
+      "output": "speccon-runs/01-02/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial02a",
+      "threadId": "01a07db0-2e6d-7ee0-9863-fd71788f6c27",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/02.md",
+      "active_root": "initial-providers/spec-conformance-reviewer/SKILL.md",
+      "output": "speccon-runs/02-01/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial02b",
+      "threadId": "01a07db3-3edd-76c3-8a29-3a1a422df390",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/02.md",
+      "active_root": "speccon-candidate-active/SKILL.md",
+      "output": "speccon-runs/02-02/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial03a",
+      "threadId": "01a07db1-000d-76c1-be24-e5a668aeb84d",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/03.md",
+      "active_root": "initial-providers/spec-conformance-reviewer/SKILL.md",
+      "output": "speccon-runs/03-01/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial03b",
+      "threadId": "01a07db3-5cbb-7001-9255-09fd97161e8b",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/03.md",
+      "active_root": "speccon-candidate-active/SKILL.md",
+      "output": "speccon-runs/03-02/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial04a",
+      "threadId": "01a07db1-578d-7081-84d8-10737bf970a5",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/04.md",
+      "active_root": "initial-providers/spec-conformance-reviewer/SKILL.md",
+      "output": "speccon-runs/04-01/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial04b",
+      "threadId": "01a07db3-eeeb-7922-bb33-8e4c118951dc",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/04.md",
+      "active_root": "speccon-candidate-active/SKILL.md",
+      "output": "speccon-runs/04-02/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial05a",
+      "threadId": "01a07db1-f643-7d82-823c-bcf07bc9cdbe",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "speccon-case05-frozen/task.md",
+      "active_root": "initial-providers/spec-conformance-reviewer/SKILL.md",
+      "output": "speccon-runs/05-01/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_trial05b",
+      "threadId": "01a07db4-21e0-7422-83d7-6ce90038eae5",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "speccon-case05-frozen/task.md",
+      "active_root": "speccon-candidate-active/SKILL.md",
+      "output": "speccon-runs/05-02/report.md",
+      "read_bound_chars": 6000
+    },
+    {
+      "agent": "g4_speccon_select01",
+      "threadId": "01a07db2-4ad4-7902-ba7e-f9e5e665b20f",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/selection-requests.md",
+      "catalogue": "spec-conformance-cases/executor/catalogue.md",
+      "output": "speccon-selection-01.md"
+    },
+    {
+      "agent": "g4_speccon_select02",
+      "threadId": "01a07db4-3af4-7f43-9523-827ebba08025",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "spec-conformance-cases/executor/selection-requests.md",
+      "catalogue": "spec-conformance-cases/executor/catalogue.md",
+      "output": "speccon-selection-02.md"
+    }
+  ]
+}

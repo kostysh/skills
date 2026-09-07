@@ -5,9 +5,9 @@ description: Review code against authoritative specs, contracts, ADRs, tickets,
   traceability, identify compliance gaps or ambiguities, and issue an
   implementation-versus-spec verdict limited by source authority and evidence.
 metadata:
-  source-version: 0.1.7
+  source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: bbd3dbd28d2c6f37d8894a1024578afc59e594c23aad4235dad373b9868388e6
+  skillforge-source-hash: 14d921a319f6cd28899590bfe9c61dfc160eb7efaee96ad95044b33cb85e2a54
 ---
 
 # spec-conformance-reviewer
@@ -46,7 +46,7 @@ Establish authority before extracting requirements:
 1. Apply explicit user or project declarations of source ownership and precedence.
 2. Confirm each source's owner, approval state, version, applicability, and supersession status.
 3. Treat a formal or generated contract as authoritative only for the contract dimension it owns. For example, an OpenAPI document may own the wire shape without owning product behavior.
-4. Use artifact-type ordering only as a disclosed fallback among sources that are otherwise current, applicable, and without declared precedence.
+4. Apply the Source Authority and Conflicts rules in `references/methodology.md`; artifact type supplies no fallback authority.
 5. Treat tickets, acceptance criteria, tests, and reference behavior as normative only when their authority is explicit.
 
 If sources conflict, cite each source and identify whether one is lower-authority, stale, superseded, generated drift, or an unresolved equal-authority conflict. Use `ambiguous_spec` or a limited verdict when authority cannot be established; do not invent a winner.
@@ -163,7 +163,7 @@ Map atomic requirements to the actual enforcement boundaries without accepting s
 
 1. Extract atomic requirements with separate modality and origin fields, preserving derivation basis and confidence.
 2. Trace each requirement to implementation, runtime or boundary evidence, and tests in both directions.
-3. In remediation re-audit, re-evaluate the fixed requirements and adjacent contracts only; widen to a fresh conformance review when normative authority, requirement meaning, public behavior, or material scope changed or blast radius cannot be bounded.
+3. In remediation re-audit, re-evaluate the fixed requirements and adjacent contracts; apply the widening criteria in references/methodology.md, Remediation Re-audit Scope.
 4. Assign fulfilled, partial, not-fulfilled, ambiguous, or cannot-determine status according to the observed evidence surface.
 
 Validation:
@@ -209,7 +209,7 @@ Validation:
 Conformance review must trace public contracts, statuses, routes, payloads, and UX claims to their owning artifacts and name any unmatched behavior as drift, not as an implementation choice.
 
 ### Authority before artifact type
-Explicit project or user source ownership, approval, version, applicability, and supersession win over generic artifact-type precedence; use type-based ordering only as a disclosed fallback among otherwise applicable sources.
+Establish authority using the Source Authority and Conflicts rules in references/methodology.md; artifact type cannot resolve an otherwise unresolved authority conflict.
 
 ### Read-only stable snapshot
 Review a reproducible implementation and normative-source snapshot without remediation; stop on movement and invalidate the verdict after any material change.
@@ -221,7 +221,7 @@ The final verdict cannot exceed the weakest unresolved mandatory requirement bas
 If a follow-up review after remediation repeats the same or a materially related blocking deviation, require root-cause investigation of assumptions, the full requirement-to-behavior path, adjacent contracts and surfaces, and remediation scope before another point fix.
 
 ### Bounded remediation re-audit
-Re-audit fixed prior findings on a new stable snapshot against their original requirements, remediation delta, closure evidence, and adjacent contracts. Do not re-evaluate unchanged verified requirements or accept cosmetic edits as closure; widen when authority, requirement meaning, public behavior, or material scope changed or blast radius is unbounded.
+Apply references/methodology.md, Remediation Re-audit Scope, for the bounded review surface and widening criteria; a public behavior change implementing the accepted correction does not by itself require widening.
 
 ## Required active references
 - [Methodology](references/methodology.md) — Read this for every review before selecting normative sources, extracting requirements, or judging implementation evidence.
