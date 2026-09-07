@@ -41,11 +41,16 @@ falsify it. At least one production-equivalent round trip must cross all
 applicable transitions. A mapper, mock, schema, or mid-chain fixture proves only
 the segment it exercises and cannot close the full claim.
 
-For a defect fix, use the exact witness from the earliest affected producer:
-repeat the same actor and input through the write, authoritative reread, and
-reload. Establish that contour as red before the fix and green after it. When a
-fixture intentionally starts later in the chain, record its provenance and the
-explicit anti-claim that skipped upstream behavior remains unproven.
+For a defect fix, replay the original witness from the earliest affected producer
+when available: the same actor and input through the write, authoritative reread,
+and reload, with red before the fix and green after it. If the original environment
+is unavailable but inspected code and accepted inputs establish the cause or
+violated contract, an authorized bounded correction may use a meaningful local
+regression check. Record its provenance and leave the original deployed path and
+skipped transitions explicitly unverified. Do not change code from an unsupported
+adjacent hypothesis or claim that a local fixture reproduced the unavailable path.
+A newly accepted behavior clarification supplies requirement authority; it does
+not assert that a prior runtime defect was observed.
 
 Do not force this contour onto a genuinely single-layer change. Mark
 non-applicable transitions with a reason and keep evidence proportional to the
