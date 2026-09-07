@@ -101,3 +101,44 @@ ID: `implementation-plan-20260907-2`. План принят оператором
 
 Stop: awaiting explicit approval to continue
 Next autonomous action: none
+
+## Продолжение: группа 2
+
+Оператор принял группу 1 сообщением «Продолжай» и разрешил только группу 2. Возобновление: тот же worktree `codex/skills-revision`, HEAD `5982f982ba8b4d30a6a1f6c1e10fe50402d100d8`, чистое состояние подтверждено. Предыдущий hard stop группы 1 снят этим решением; следующая обязательная остановка — приёмка группы 2. Правило planner остаётся отменённым.
+
+| Шаг группы 2 | Статус |
+| --- | --- |
+| Baseline security-reviewer и git-engineer | Независимые отчёты готовы; 3 P2 security, 1 P2 и 1 P3 Git |
+| Критерии и реальные исходные fixtures | Наборы frozen до edits; paired executions и независимая оценка завершены |
+| Исправления и проверки двух поставщиков | Security 0.1.13 и Git 0.2.1: owning checks и независимый re-audit PASS; отдельные commits |
+| Ревизия gh-utility после стабильного Git PASS | 1.2.2: независимый bounded PASS, P3/D loading limit сохранён |
+| Коммиты и приёмка группы 2 | Три отдельных commits готовы; ожидается приёмка оператора |
+
+Source/emitted baseline всех трёх пакетов согласованы, owning lint/check/compile/readback PASS. Существующие 23 docs-contract теста security-reviewer прошли через тот же объявленный package script с npm: установленный pnpm падает до запуска даже на --version. Глобальная установка не менялась. Это обход наблюдаемого сбоя launcher, не установленная первопричина и не замена проверяемых assertions.
+
+## Приёмка группы 2
+
+Группа 2 выполнена в принятом порядке: стабильный Git PASS получен до ревизии gh-utility. Все три скила имеют независимый bounded PASS; открытых P1/P2 нет. Формальные verdicts не означают полной исполнительской надёжности.
+
+| Скил / отдельный commit | Изменение и evidence |
+| --- | --- |
+| git-engineer 0.2.1 / `8bf1011` | Доступный CI implementation owner вместо обязательного отсутствующего specialist; точный handoff и conditional reference. [PASS](../../skills/git-engineer/docs/reviews/evidence/g2/final-audit.md), [assessment](../../skills/git-engineer/docs/reviews/assessment-20260907-1.md), [журнал](../../skills/git-engineer/docs/logs/implementation-log-20260907-1.md). 10/10 emitted parity; Git A/B/C, catalogue и четыре fresh consumers поддерживают bounded capability. |
+| security-reviewer 0.1.13 / `f72ec92` | Общий HIGH gate, re-audit принятой коррекции и зависимый cross-layer scope. [PASS](../../skills/security-reviewer/docs/reviews/evidence/g2/final-audit.md), [assessment](../../skills/security-reviewer/docs/reviews/assessment-20260907-1.md), [delivery repeat](../../skills/security-reviewer/docs/reviews/assessment-delivery-20260907-1.md), [журнал](../../skills/security-reviewer/docs/logs/implementation-log-20260907-1.md). 24/24 package tests,17/17 emitted parity; D delivery gap закрыт полными повторными чтениями. |
+| gh-utility 1.2.2 / `9fac71b` | Сохранённая authorization, policy-specific release и operation-specific Projects inputs, все применимые references. [PASS](../../skills/gh-utility/docs/reviews/evidence/g2/final-audit.md), [assessment](../../skills/gh-utility/docs/reviews/assessment-20260907-1.md), [журнал](../../skills/gh-utility/docs/logs/implementation-log-20260907-1.md). 29/29 emitted и24/24 active parity; реальные Git producer→два GH consumers,10 executor/catalogue contexts. |
+
+Ограничения приёмки: Git и Security baseline дают эквивалентные наблюдённые решения; GH candidate улучшил loading B/C, но преимущества итоговых решений не установлено. Обе GH arms пропустили command-map в D: procedural FAIL/P3 сохранён. Аудитор не выявил потерянного уникального safety/input условия для конкретных команд, поэтому bounded PASS допускается без заявления полного instruction adherence. Не требуется новая правка или повтор ради зелёного результата.
+
+Git C был повторён после исправления coordinator setup с обязательным SHA; Security F получил одинаковый frozen ledger во время исполнения. Исходные записи и ограничения сохранены. Security старый D INCONCLUSIVE/BLOCKED не переписан: отдельный повтор закрыл именно недоставленную часть инструкции. Полные GH trial traces не усечены; усечения иных readbacks и границы metadata отражены в отчётах.
+
+Capability в этой группе — поддержанные решения, ограниченные действия на локальных fixtures и действительные agent-to-agent artifacts. Инструкции, compiler и архивы не доказывают live GitHub publication/CI, безопасность приложения, native activation, универсальную надёжность, экономию ресурсов или совместимость всех десяти скилов. Внешних GitHub mutations, push/PR/merge и вызванного ими CI нет. Полный repository test:ci остаётся после приёмки группы 4 по плану.
+
+### Состояние для продолжения группы 2
+
+Состояние перед служебным commit: branch `codex/skills-revision`, HEAD `9fac71b`, local upstream `origin/master` остаётся на `4ddcb698457a741028664ed9af441009c4838d23`; ahead6/behind0 относительно сохранённого ref. Три skill commits сохранены отдельно. Основной checkout и соседние worktrees не менялись. Служебный commit обновит HEAD; точный итоговый SHA сообщается оператору. Индекс перед административной записью пуст; незавершённых skill edits нет.
+
+После независимых snapshot изменены только supporting статусы/ссылки и добавлены точные audit copies; административные delta скилов сохранены рядом с PASS, общий delta — в `docs/reviews/evidence/skills-revision/group2-administrative-delta.json`. Старые aggregates не заявляются хэшами последующих записей. Активные инструкции, исходные критерии, trials и их интерпретация не менялись после PASS.
+
+`accepted now`: независимые технические результаты трёх re-audits в указанных границах. `not accepted`: приёмка группы2 оператором, группы3–4, итоговая совместимость, публикация. `blocking decision`: приёмка группы2. `next autonomous action`: none до явного продолжения; затем только группа3 принятого плана. Отменённый planner не восстановлен.
+
+Stop: awaiting explicit approval to continue
+Next autonomous action: none
