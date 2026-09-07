@@ -1,0 +1,46 @@
+{
+  "basis": "architecture-candidate-freeze.json source; final reviewer permits supporting-only delta",
+  "files": {
+    "docs/README.md": {
+      "before": "8db39b9e4c46b014827055ee9d2e70e64548d83a0ab12c2f16909147f9225bc1",
+      "after": "94890e3eaa3be8d22d77f7397e83ec67b4553f304bd69808801892b68c4c1962"
+    },
+    "docs/logs/implementation-log-20260907-1.md": {
+      "before": "9d320ee19961dc40875b7bc617aea100e05c41581719a619b9082a8a9884ea07",
+      "after": "7586f1875ffa6225926103187c3535ef801f9e95a880d4a0c1980a609754b333"
+    },
+    "docs/reviews/evidence/g3/raw-evidence.tar.gz": {
+      "before": null,
+      "after": "e031929956cfce3a4f38c83362ae9e8b694512bc2b2a7d32bed6b47fb0ba5bdb"
+    },
+    "docs/reviews/evidence/g3/final-audit.md": {
+      "before": null,
+      "after": "90d8a4a287dd34ac258bd3192480f0535e2c791a0ac7d5cdb64bbdfc315599f0"
+    },
+    "docs/reviews/evidence/g3/review-event-index.json": {
+      "before": null,
+      "after": "7900d40581c33cdf70ce2d6820d4a603ecdc7216be52ab45afe9f071cacf8e48"
+    },
+    "docs/reviews/evidence/g3/review-integrity.json": {
+      "before": null,
+      "after": "aaf46fc6df20847b6fcc27cf76f4f596d46bb26ca14ef2fbd66a2aa1b8771348"
+    },
+    "docs/reviews/evidence/g3/final-review-snapshot.json": {
+      "before": null,
+      "after": "5af0404c644c5db2ac2c3ac025e773c70995cf7868eb6ba0064a02aa03847caf"
+    },
+    "docs/reviews/evidence/g3/audit-readback.json": {
+      "before": null,
+      "after": "31b924e8b63f7534f5f5af4eaae49623e5de2ce1d7c52a4b17a1706444630fcb"
+    },
+    "docs/reviews/evidence/g3/README.md": {
+      "before": null,
+      "after": "74cbee21cf49df6cb4ff2eab34c9997403d16d0392f704562f940806d38fafce"
+    },
+    "docs/reviews/evidence/g3/archive-file-manifest.json": {
+      "before": null,
+      "after": "aa694f462563598efad7f7cdec070fce04b32dbb898e556fbbd52b8e3fbcd328"
+    }
+  },
+  "selfExcluded": "docs/reviews/evidence/g3/administrative-delta.json"
+}
