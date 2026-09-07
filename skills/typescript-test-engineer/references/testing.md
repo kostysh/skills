@@ -487,14 +487,14 @@ Use the built-in `node:test` mocking APIs instead of ad-hoc stubs.
 - `mock.module()` replaces ESM/CJS/JSON/builtin modules.
   - Requires `--experimental-test-module-mocks`.
   - Set up the mock before importing the module under test; use dynamic `import()` so the mock is in place.
-  - Use the `exports` option. `defaultExport` and `namedExports` are deprecated compatibility fields.
+  - Choose module-mock options from the official versioned documentation for the project's pinned Node runtime. Use `exports` only when that runtime supports it; where its documentation deprecates `defaultExport`/`namedExports`, prefer `exports`. Older runtimes such as [Node 22.22.0](https://nodejs.org/download/release/v22.22.0/docs/api/test.html#mockmodulespecifier-options) use `defaultExport` and `namedExports`; preserve that supported form rather than inferring deprecation from the [current API](https://nodejs.org/api/test.html#mockmodulespecifier-options). Do not combine the two option forms or migrate the runtime/runner to fit an example. If matching API evidence is unavailable, report the compatibility limit instead of guessing.
   - Keep non-mocked exports by re-exporting them from the original module.
   - References created before mocking are not affected, so mock early.
   - Prefer `t.mock` for test-scoped mocks because the test context resets them automatically. When using the global `mock` tracker, call `mock.reset()` in deterministic teardown.
 
 Optional (for Node fetch): use `undici`'s `MockAgent` for HTTP stubbing; `undici` is shipped with Node but not exposed, so install it when needed.
 
-Example (module mock with dynamic import):
+Example (module mock with dynamic import, for a pinned runtime whose API supports `exports`):
 ```ts
 import { after, before, describe, it, mock } from "node:test";
 import assert from "node:assert/strict";
@@ -519,6 +519,12 @@ describe("uses mocked dependency", () => {
     assert.equal(dep.mock.callCount(), 1);
   });
 });
+```
+
+For Node 22.22.0, use the same setup and cleanup with this module-mock call instead:
+
+```ts
+mock.module("./dep.js", { defaultExport: dep, namedExports: named });
 ```
 
 ## Coverage

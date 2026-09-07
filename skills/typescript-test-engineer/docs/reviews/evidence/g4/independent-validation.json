@@ -1,0 +1,217 @@
+{
+  "HEAD": "06a7d9c69749cf9671aa63c0e7f73433c97218c6",
+  "source": {
+    "AGENTS.md": true,
+    "SKILL.md": true,
+    "agents/openai.yaml": true,
+    "docs/README.md": true,
+    "docs/compile-report.md": true,
+    "docs/forward-tests/forward-test-evidence-20260727-1.md": true,
+    "docs/forward-tests/forward-test-evidence-20260727-2.md": true,
+    "docs/forward-tests/forward-test-evidence-20260727-3.md": true,
+    "docs/issues/implementation-plan-20260425-1.md": true,
+    "docs/issues/issue-20260425-1.md": true,
+    "docs/logs/forward-tests-20260710.md": true,
+    "docs/logs/implementation-log-20260425-1.md": true,
+    "docs/logs/implementation-log-20260429-1.md": true,
+    "docs/logs/implementation-log-20260601-1.md": true,
+    "docs/logs/implementation-log-20260611-1.md": true,
+    "docs/logs/implementation-log-20260622-1.md": true,
+    "docs/logs/implementation-log-20260708-1.md": true,
+    "docs/logs/implementation-log-20260710-1.md": true,
+    "docs/logs/implementation-log-20260715-1.md": true,
+    "docs/logs/implementation-log-20260727-1.md": true,
+    "docs/logs/implementation-log-20260820-1.md": true,
+    "docs/logs/implementation-log-20260907-1.md": true,
+    "evals/evals.json": true,
+    "evals/fixtures/mutation-lifetime-input.md": true,
+    "fragments/overview.md": true,
+    "package.json": true,
+    "references/react-vitest.md": true,
+    "references/tdd.md": true,
+    "references/testing-anti-patterns.md": true,
+    "references/testing.md": true,
+    "skill.yaml": true,
+    "test/docs-contract.test.mjs": true
+  },
+  "active": {
+    "SKILL.md": true,
+    "references/testing.md": true,
+    "references/react-vitest.md": true,
+    "references/testing-anti-patterns.md": true,
+    "references/tdd.md": true,
+    "agents/openai.yaml": true
+  },
+  "pre_edit": {
+    "baseline/typescript-test-engineer/AGENTS.md": true,
+    "baseline/typescript-test-engineer/SKILL.md": true,
+    "baseline/typescript-test-engineer/agents/openai.yaml": true,
+    "baseline/typescript-test-engineer/docs/README.md": true,
+    "baseline/typescript-test-engineer/docs/compile-report.md": true,
+    "baseline/typescript-test-engineer/docs/forward-tests/forward-test-evidence-20260727-1.md": true,
+    "baseline/typescript-test-engineer/docs/forward-tests/forward-test-evidence-20260727-2.md": true,
+    "baseline/typescript-test-engineer/docs/forward-tests/forward-test-evidence-20260727-3.md": true,
+    "baseline/typescript-test-engineer/docs/issues/implementation-plan-20260425-1.md": true,
+    "baseline/typescript-test-engineer/docs/issues/issue-20260425-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/forward-tests-20260710.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260425-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260429-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260601-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260611-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260622-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260708-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260710-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260715-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260727-1.md": true,
+    "baseline/typescript-test-engineer/docs/logs/implementation-log-20260820-1.md": true,
+    "baseline/typescript-test-engineer/evals/evals.json": true,
+    "baseline/typescript-test-engineer/evals/fixtures/mutation-lifetime-input.md": true,
+    "baseline/typescript-test-engineer/fragments/overview.md": true,
+    "baseline/typescript-test-engineer/package.json": true,
+    "baseline/typescript-test-engineer/references/react-vitest.md": true,
+    "baseline/typescript-test-engineer/references/tdd.md": true,
+    "baseline/typescript-test-engineer/references/testing-anti-patterns.md": true,
+    "baseline/typescript-test-engineer/references/testing.md": true,
+    "baseline/typescript-test-engineer/skill.yaml": true,
+    "baseline/typescript-test-engineer/test/docs-contract.test.mjs": true,
+    "typescript-test-baseline-review.md": true,
+    "typescript-test-cases/README.md": true,
+    "typescript-test-cases/baseline-active/SKILL.md": true,
+    "typescript-test-cases/baseline-active/agents/openai.yaml": true,
+    "typescript-test-cases/baseline-active/references/react-vitest.md": true,
+    "typescript-test-cases/baseline-active/references/tdd.md": true,
+    "typescript-test-cases/baseline-active/references/testing-anti-patterns.md": true,
+    "typescript-test-cases/baseline-active/references/testing.md": true,
+    "typescript-test-cases/case-01/api-card.md": true,
+    "typescript-test-cases/case-01/client.js": true,
+    "typescript-test-cases/case-01/handler.js": true,
+    "typescript-test-cases/case-01/task.md": true,
+    "typescript-test-cases/case-02/api-card.md": true,
+    "typescript-test-cases/case-02/client.js": true,
+    "typescript-test-cases/case-02/handler.js": true,
+    "typescript-test-cases/case-02/task.md": true,
+    "typescript-test-cases/case-02/test.mjs": true,
+    "typescript-test-cases/case-03/implementation.ts": true,
+    "typescript-test-cases/case-03/normative.md": true,
+    "typescript-test-cases/case-03/task.md": true,
+    "typescript-test-cases/case-03/test.ts": true,
+    "typescript-test-cases/catalogue/adjacent-task.md": true,
+    "typescript-test-cases/catalogue/catalogue.json": true,
+    "typescript-test-cases/catalogue/own-task.md": true,
+    "typescript-test-cases/consumer/task.md": true,
+    "typescript-test-cases/private/rubric.md": true,
+    "typescript-test-cases/sha256.txt": true
+  },
+  "emitted": {
+    "package.json": true,
+    "SKILL.md": true,
+    "evals/evals.json": true,
+    "test/docs-contract.test.mjs": true,
+    "agents/openai.yaml": true,
+    "references/testing.md": true,
+    "references/testing-anti-patterns.md": true,
+    "references/tdd.md": true,
+    "references/react-vitest.md": true,
+    "docs/README.md": true,
+    "docs/compile-report.md": true,
+    "docs/forward-tests/forward-test-evidence-20260727-3.md": true,
+    "docs/forward-tests/forward-test-evidence-20260727-2.md": true,
+    "docs/forward-tests/forward-test-evidence-20260727-1.md": true,
+    "docs/logs/implementation-log-20260727-1.md": true,
+    "docs/logs/implementation-log-20260715-1.md": true,
+    "docs/logs/implementation-log-20260820-1.md": true,
+    "docs/logs/implementation-log-20260907-1.md": true,
+    "evals/fixtures/mutation-lifetime-input.md": true
+  },
+  "consumer_bindings": {
+    "01": true,
+    "02": true
+  },
+  "delivery": {
+    "01a": {
+      "hasMore": false,
+      "commands": 13,
+      "truncated_outputs": [],
+      "nonzero": [],
+      "root_nonempty_lines": 185,
+      "root_lines_missing_verbatim_in_delivered_outputs": [
+        "- For React, read `references/react-vitest.md`; distinguish simulated DOM tests from Vitest Browser Mode and external browser smoke.",
+        "- **TypeScript language and type-system rules:** typescript-engineer. This skill owns testing strategy and runner behavior, while TypeScript language semantics belong to typescript-engineer."
+      ],
+      "module_mock_rule_delivered": true,
+      "fixture_provenance_section_delivered": true
+    },
+    "01b": {
+      "hasMore": false,
+      "commands": 10,
+      "truncated_outputs": [
+        "exec-b31bedfa-1800-42d6-a5fb-8e63a76e37f1"
+      ],
+      "nonzero": [
+        {
+          "id": "exec-92e7c5b3-be9d-47ee-a34d-2710463938ab",
+          "exit": 1,
+          "output": "/bin/bash: line 1: /tmp/skills-revision-g4-20260907-ZMFe9Zkq/typescript-runs/01-02/report.md: No such file or directory\n"
+        }
+      ],
+      "root_nonempty_lines": 185,
+      "root_lines_missing_verbatim_in_delivered_outputs": [],
+      "module_mock_rule_delivered": true,
+      "fixture_provenance_section_delivered": false
+    },
+    "02a": {
+      "hasMore": false,
+      "commands": 8,
+      "truncated_outputs": [
+        "exec-f2819f6e-e4ce-4477-8a40-98cb46165adf"
+      ],
+      "nonzero": [],
+      "root_nonempty_lines": 185,
+      "root_lines_missing_verbatim_in_delivered_outputs": [],
+      "module_mock_rule_delivered": true,
+      "fixture_provenance_section_delivered": false
+    },
+    "02b": {
+      "hasMore": false,
+      "commands": 12,
+      "truncated_outputs": [],
+      "nonzero": [
+        {
+          "id": "exec-bb28061d-838f-4d2f-924f-f84180d8c0ee",
+          "exit": 1,
+          "output": "Traceback (most recent call last):\n  File \"<stdin>\", line 3, in <module>\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 810, in write_text\n    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 772, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/skills-revision-g4-20260907-ZMFe9Zkq/typescript-runs/02-02/report.md'\n"
+        }
+      ],
+      "root_nonempty_lines": 185,
+      "root_lines_missing_verbatim_in_delivered_outputs": [
+        "- For React, read `references/react-vitest.md`; distinguish simulated DOM tests from Vitest Browser Mode and external browser smoke."
+      ],
+      "module_mock_rule_delivered": true,
+      "fixture_provenance_section_delivered": false
+    },
+    "03a": {
+      "hasMore": false,
+      "commands": 10,
+      "truncated_outputs": [],
+      "nonzero": [],
+      "root_nonempty_lines": 185,
+      "root_lines_missing_verbatim_in_delivered_outputs": [
+        "- For React, read `references/react-vitest.md`; distinguish simulated DOM tests from Vitest Browser Mode and external browser smoke."
+      ],
+      "module_mock_rule_delivered": false,
+      "fixture_provenance_section_delivered": false
+    },
+    "03b": {
+      "hasMore": false,
+      "commands": 11,
+      "truncated_outputs": [
+        "exec-19f62af5-c787-427b-b3e2-2644d0f17adb"
+      ],
+      "nonzero": [],
+      "root_nonempty_lines": 185,
+      "root_lines_missing_verbatim_in_delivered_outputs": [],
+      "module_mock_rule_delivered": false,
+      "fixture_provenance_section_delivered": false
+    }
+  }
+}
