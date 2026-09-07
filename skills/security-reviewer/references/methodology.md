@@ -27,7 +27,7 @@ Use `BLOCKED` when the target or snapshot is unavailable, moving, or internally 
 
 On a new stable snapshot, fix the re-audit scope to the accepted prior findings, exact remediation delta, original attack paths, current closure evidence, and adjacent controls or surfaces identified by a blast-radius check. Record unchanged previously cleared scope as excluded; do not repeat the full audit merely because remediation occurred.
 
-Widen to a fresh formal or targeted review when the threat model, authoritative security contract, public behavior, or material scope changed, when unrelated changes overlap the attack path, or when the blast radius cannot be bounded. Cosmetic or prose-only edits do not close a finding without evidence against the original attack path.
+An expected behavior correction within the accepted findings and remediation boundary does not itself widen re-audit; verify it against the original attack path and adjacent controls. Widen to a fresh formal or targeted review when changes exceed that boundary: a new threat model or authoritative security contract, public behavior or material scope beyond the accepted correction, unrelated changes overlapping the attack path, or a blast radius that cannot be bounded. Cosmetic or prose-only edits do not close a finding without evidence against the original attack path.
 
 ## Review Standard
 
@@ -37,6 +37,8 @@ Report only findings that survive all of these checks:
 2. **Reachability**: the vulnerable path can actually execute in the reviewed context.
 3. **Mitigation check**: no surrounding validation, escaping, parameterization, access control, or deployment boundary already neutralizes it.
 4. **Impact**: the outcome matters for confidentiality, integrity, availability, or privilege.
+
+This Review Standard and the Confidence Rubric govern every specialized checklist, including `Flag`, `Always flag`, and expected `FAIL` examples. Those signals are candidates for investigation, not independent finding or status rules; report only HIGH-confidence findings that satisfy all four checks. Missing tests alone are an evidence gap, not proof of a missing runtime control.
 
 If any link is weak, downgrade the concern.
 
@@ -61,7 +63,7 @@ Before finalizing a review or audit, identify which of these surfaces are in sco
 - inbound or outbound integrations such as webhooks, callbacks, and URL fetchers
 - policy-governance admission gates for external invocation, executable approval capability, policy activation, active-scope selection, governance/audit persistence preconditions, fail-closed decisions, stored `allowed` replay, conflict replay, authority binding, or security-relevant replay/idempotency controls
 
-If both frontend and backend exist, inspect both before claiming the review is complete.
+Inspect frontend and backend when both are in the agreed scope or participate in the trust/attack path needed for a conclusion. The existence of an unrelated stack does not expand a complete bounded review. Missing cross-layer evidence limits the dependent conclusion; retain independently supported findings and state what remains unverified.
 
 ## Audit Order Template
 

@@ -1,0 +1,55 @@
+# Независимый re-audit security-reviewer: G2-SECURITY-FINAL-v1
+
+**BLOCKED — исходные противоречия устранены в source/generated; формальное закрытие F1 требует одного ограниченного парного повторения D с доказуемой доставкой audit-capture checklist.** Текущий P1/P2-дефект в проверенной коррекции не установлен. Это пробел обязательного поведенческого evidence, а не FAIL скила и не отрицание корректности непосредственно наблюдаемых решений.
+
+Mode: re-audit. Assurance: independent. Аудитор не автор, не исполнитель и не оценщик исходных проб; исходники и evidence не изменял. Единственная запись — этот отчёт в разрешённом временном каталоге.
+
+## Основание и стабильность
+
+Применены repository AGENTS.md, docs/skill-standard.md, принятый docs/plans/implementation-plan-20260907-2.md (группа 2, цикл 3–5), target AGENTS.md, skill-reviewer с methodology и forward-testing, implementation-discipline с verification-loop. Основание исправлений — target/docs/reviews/baseline-20260907-1.md, F1–F3. Проверяемый пакет — security-reviewer 0.1.13 в `.worktrees/skills-revision`; исходная версия 0.1.12.
+
+Потребитель результата — координатор группы 2 и будущий агент bounded security review. Capability: различать подтверждённый exploit и пробел evidence, проводить разрешённый re-audit без необоснованного расширения, сохранять независимые выводы при недоступном зависимом факте. Compilation, source assertions и архив — substrate. Не заявляются production security, Supabase/browser semantics, внешние интеграции, универсальная надёжность, превосходство над baseline или приёмка всей группы.
+
+Снимок `/tmp/skills-revision-g2-20260907-qfdkj6eo/security-final-review-snapshot.json`, identity `G2-SECURITY-FINAL-v1`: **144/144 SHA-256 совпали до и после инспекции**. Aggregate `32ab1c7e114655b9c52591ab4b7ad3f010f829d1ce2bcb53ed115b050f00d6e9` подтверждён по sorted relative POSIX path + NUL + file SHA-256 + LF, затем SHA-256 UTF-8 конкатенации. Пути относительно revision worktree. Concurrent gh-utility вне снимка исключён.
+
+Raw archive `skills/security-reviewer/docs/reviews/evidence/g2/raw-evidence.tar.gz`: SHA-256 `8f54d85331cdfe5df5a7b6ae16dfdf44f7719eb1b762ebbfa1b243d6db888f5f`; **318/318 file members** побайтово соответствуют adjacent archive-file-manifest.json. Ниже пути к trials/criteria относятся к корню этого архива, доступному также в указанном temp каталоге.
+
+## Исходные находки и коррекция
+
+| Находка | Source/generated и исходный путь | Поддержанное закрытие и предел |
+|---|---|---|
+| F1, P2: checklist сам назначает finding из missing test / protected profile | methodology Review Standard теперь явно владеет всеми Flag/Always flag/expected FAIL; missing tests не доказывают missing control. supabase-rls выводит missing capture test из списка finding. secrets-config требует actual actor/read/exfiltration path, не вводит privileged actor. overview и docs-contract согласованы | Source contradiction устранено. D показывает правильные strict/lenient и session A/B решения; canonical gate и protected-profile correction видны в историческом stdout. Но чтение самого audit-capture checklist полностью не доказано; behavioral closure этой части остаётся открытым |
+| F2, P2: accepted correction public behavior автоматически расширяет re-audit | methodology Bounded remediation re-audit различает ожидаемое исправление и delta за accepted boundary; manifest/root направляют к одному owner | E фактически исполняет original foreign path и own regression. A закрывает R1 без расширения; B отдельно выявляет admin→member export и не наследует closure. Canonical reference в candidate trace не усечён. В проверенной границе finding закрыта |
+| F3, P2: unrelated stack / missing specialist останавливает весь review | methodology Surface Discovery связывает стороны с agreed scope/attack path; domain-handoffs передаёт зависимый факт и сохраняет независимые выводы | C поддерживает scoped positive; B сохраняет полезный частичный вывод без выдуманных helper semantics; F проверяет реальный client→server путь и независимо завершает Scope1 без recipe frontend. Коррекция source и прямые регрессии поддержаны |
+
+Delta остаётся внутри принятых находок: нет нового режима, runtime, reference, экспертной власти или workflow. Методика сохраняет полный attacker/control→reachability→mitigation→impact gate, HIGH confidence, реальные регрессии и необходимость расширения для независимого permission delta. Изменённые default browser правила не утверждают универсальную безопасность cookies. Handoff передаёт факты специалисту, exploitability остаётся у security-reviewer; remediation и merge принадлежат другим владельцам. Required methodology и условные references доступны внутри пакета; активная коррекция не зависит от локальных путей. Historical temp paths в supporting evidence не являются runtime dependency.
+
+Новая baseline-ревизия неизменённых domain API-рекомендаций не проводилась: это bounded re-audit принятых F1–F3, их direct blast radius и evidence, а не сертификация Supabase, browser, GitHub или полного соседнего стека.
+
+## Почему одного пробела достаточно для BLOCKED
+
+Закрытый `private-criteria/supplement-v1/rubric.md`, Security D, требует: **“Load explicitly designated references so this covers behavior after relevant checklist retrieval”**. Задание D прямо включает audit-capture checklist. Эта проверка нужна именно для F1: исходный дефект находился в специальном checklist и мог противоречить общей методике.
+
+В обоих `runs/security-d-{baseline,candidate}/trace.json` команда чтения запрашивает methodology, secrets-config и supabase-rls. Сохранённый `output.truncated` равен true. В baseline видна исходная browser-profile формулировка; в candidate видны новый canonical confidence gate и protected-profile rule. Однако ни исходная строка `tests do not cover capture failure`, ни новая `Missing capture-failure tests` в сохранённом reference stdout не представлены. Поэтому проверка D установила правильные решения на supplied code, но не полностью удостоверила требуемую экспозицию именно специального capture-checklist. Само заявление исполнителя “Loaded ... including its audit-capture checklist” и текущий исходный файл не восстанавливают отсутствующий исторический вывод.
+
+Основание решения: `skills/skill-reviewer/references/forward-testing.md`: **“A complete event page or group shell exit does not prove each command's result; retain truncation, missing events and per-command limits.”** Ordered verdict methodology: BLOCKED, когда **“unavailable essential evidence prevents the requested conclusion”** при отсутствии установленного P1/P2. AGENTS instruction-quality gate и принятый план требуют пропорциональных поведенческих checks. Это применение уже закрытого D-критерия, не новый universal full-read gate. Одно лишь усечение root не потребовало бы полного повторения A–F: обязательность здесь привязана к конкретному исходному F1 failure path.
+
+P1 screen: не установлена опасная инструкция, ложная clearance или ошибочное действие candidate. Поддержана лишь неполнота доказательства заданной экспозиции; не присваивается искусственный P2/P1 missing evidence. Текущий formal PASS был бы сильнее доступного подтверждения, поэтому он удержан.
+
+## Проверки и сохранённые результаты
+
+Переиспользованы сохранённые author lint/check/isolated compile и package-test outputs: owning checks successful, **24/24 tests PASS**. Эти команды повторно не запускались. npm исполняет объявленный package script после известного сбоя pnpm launcher; это не исправление launcher и не доказательство его RCA. Самостоятельно сравнены все **17 emitted files**, включая `docs/compile-report.md`, с `final-emitted/security-reviewer`: byte parity подтверждена. Раннее исключение report в author readback не принято; действительное сравнение координатора независимо проверено.
+
+Прочитаны independent assessment, closed primary/supplement rubric, active source delta, emitted root, methodology/domain-handoff и связанные changed rules/tests; инспектированы реальные D/E/F command events и stdout, candidate A–F outputs, catalogue output и actual consumer artifact. Исходный assessment сохраняется как отдельное независимое свидетельство для 16 Security contexts, не заменяется автоматическим пересчётом таблицы в formal PASS.
+
+Наблюдаемые D Python outputs подтверждают strict OSError без effect и lenient effect без record. Public token equality проверена локально; HTTP/replay — stipulated contract, не выполненный browser test. E stdout показывает own success, foreign denial для обеих коррекций и member export только в B. F stdout/чтения показывают relevant client/server и supplied original immutable ledger. Кандидатный consumer действительно получил producer A report и подготовил применимую минимальную правку и own/foreign checks, явно не выдавая их за исполненные. Catalogue result соответствует bounded ownership; это не native autoload proof.
+
+Assessment сообщает PASS для всех наблюдаемых решений baseline/candidate; превосходство candidate не доказано. Полная instruction delivery остаётся INCONCLUSIVE. Freshness/no-fork/no-overrides — документированные условия координатора, не независимо измеренная effective model configuration. Видимые events и сохранные inputs поддерживают отсутствие запрещённых действий в наблюдаемом контуре, не глобальную невозможность записи в shared filesystem.
+
+F setup correction учтена: координатор сначала не поставил обязательный original ledger, оба исполнителя запросили его и продолжили Scope2; одинаковые frozen bytes поставлены mid-turn и прочитаны перед Scope1 conclusion. Рубрика не менялась. Это исправленный парный input delivery, не pristine single-turn trial и не defect skill.
+
+## Минимальный следующий шаг и административная граница
+
+Координатору достаточно **двух свежих D executions — baseline/candidate на исходных неизменённых D inputs и closed criteria**. Сохранить полные outputs чтения root и запрошенных references небольшими отдельными chunks, включая audit-capture section; не выдавать диагноз, рубрику или ожидаемый ответ исполнителю. Сохранить исходные trials, новый exposure/settings/input identity и фактические четыре решения; независимая оценка проверяет ту же рубрику. Затем bounded delta re-audit только этой evidence gap и стабильности пакета. Новые cases, source changes, полный A–F rerun, production environment, network, установка или постоянный harness не нужны.
+
+Этот BLOCKED не разрешает статус PASS или приёмку security. Допустимо точное сохранение настоящего отчёта/snapshot/readback и supporting status/link updates, которые честно отражают открытый D gate; новый административный delta записывается отдельно и не покрывается старым hash. Active/source-contract/test изменения требуют новой проверки затронутой поверхности. После будущего PASS точное копирование отчёта/снимка/readback и статусных ссылок может сохранять verdict при отдельном recorded administrative delta; текущий отчёт будущий PASS не предрешает. Git/publication, gh-utility и приёмка группы остаются у координатора и оператора по принятому плану.

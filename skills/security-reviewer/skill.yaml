@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.12"
+  source-version: "0.1.13"
   recommended-skill-md-max-bytes: 36000
   description: "Perform bounded security review of code, CI, permissions, webhooks, secrets, data access, and config. Use for vulnerability review, exploitability triage, or scoped audits. Own threat modeling, confidence gating, attack paths, and findings—not scan orchestration, compliance, pentesting, or fixes."
 fragments:
@@ -168,7 +168,7 @@ sections:
       steps:
         - "Fix the re-audit scope to the accepted prior findings, exact remediation delta, current closure evidence, and adjacent regression surface on a new stable snapshot."
         - "Re-test each original attack path and the blast-radius surface; preserve unresolved items as needs verification or confirmed findings and do not repeat unchanged previously cleared full scope."
-        - "Widen to a fresh formal or targeted review when the threat model, security authority, public behavior, or material scope changed or the blast radius cannot be bounded; cosmetic edits alone do not close an attack path."
+        - "Apply the widening criteria in references/methodology.md under Bounded remediation re-audit; expected corrections inside accepted findings do not themselves widen review."
         - "If the same or a materially related confirmed finding survives remediation, require root-cause investigation of assumptions, the full attack path, adjacent controls and surfaces, and remediation scope before another point fix."
         - "Invalidate the prior result after any material code, configuration, runtime, test, or evidence change."
       validation:
@@ -223,7 +223,7 @@ sections:
       text: "Targeted review never emits PASS. Formal FAIL requires a confirmed in-scope finding; PASS (scoped) requires a complete named security-review scope and no confirmed findings; INCOMPLETE represents missing mandatory coverage or evidence; BLOCKED represents an unavailable or unstable review basis. Standards/control fulfillment and compliance status always belong to spec-conformance-reviewer."
     - id: "policy-bounded-remediation-reaudit"
       title: "Bounded remediation re-audit"
-      text: "Re-audit fixed prior findings on a new stable snapshot using the remediation delta, original attack paths, closure evidence, and blast-radius surface. Skip unchanged cleared scope; widen when threat model, authority, public behavior, or material scope changed or blast radius is unbounded."
+      text: "Re-audit fixed prior findings on a new stable snapshot using the remediation delta, original attack paths, closure evidence, and blast-radius surface. Skip unchanged cleared scope and use the canonical widening criteria in references/methodology.md under Bounded remediation re-audit."
   portability:
     required: true
     rules:

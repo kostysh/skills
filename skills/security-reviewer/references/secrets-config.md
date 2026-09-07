@@ -35,7 +35,7 @@ Detection hints:
 
 ## Browser Durable Storage
 
-Always flag browser durable storage of plaintext passwords, OTP/recovery material, cookies, JWTs, session IDs, refresh tokens, or equivalent credentials/session material when JavaScript or the browser profile can recover it.
+Investigate browser durable storage of plaintext passwords, OTP/recovery material, cookies, JWTs, session IDs, refresh tokens, or equivalent credentials/session material. Identify the actual storage, allowed attacker capabilities, read/exfiltration path, protections, and credential impact before reporting under the methodology Review Standard. Recoverability from a protected browser profile alone does not establish attacker access; do not invent a local or privileged actor. A demonstrated public bearer-token leak or other reachable credential exposure remains reportable when it satisfies that standard.
 
 For CSRF values, identify the chosen pattern before reporting: a readable double-submit value can be part of a valid design, while a synchronizer secret or session credential must not be persisted as a substitute for protected server/session state.
 

@@ -1,6 +1,6 @@
 # Domain Handoffs
 
-This skill owns security review method. Stop and hand off framework detail when you hit implementation-specific questions.
+This skill owns security review method. Hand off the dependent framework/runtime fact when it cannot be established from available authoritative evidence; continue independently supported review work.
 
 The handoff resolves a fact; it does not transfer or duplicate the security verdict. Ask the domain skill for the exact framework/runtime behavior and evidence needed to confirm reachability, mitigation, or remediation. Keep the item in `needs verification` until that fact returns, then let `security-reviewer` decide exploitability and reportability.
 
@@ -16,7 +16,7 @@ Before loading a domain skill, identify all relevant stacks and surfaces:
 - database or storage privilege boundary
 - proxy, edge, or deployment assumptions that may change exploitability
 
-If both frontend and backend exist, inspect both sides before finalizing a security conclusion.
+Use the scope and cross-layer dependency rule in `methodology.md` under Surface Discovery; a second stack alone does not require inspecting it.
 
 ## Load `hono-engineer`
 
@@ -86,7 +86,7 @@ Security questions to resolve:
 
 ## Handoff Rule
 
-If exploitability depends on a stack-specific fact that this skill cannot confirm, keep the item in `needs verification` until the relevant domain skill resolves it.
+If exploitability depends on a stack-specific fact that this skill cannot confirm, keep the item in `needs verification` until authoritative domain evidence resolves it. If the domain skill or required fact is unavailable, name the missing fact and limit only the dependent conclusion; preserve independently confirmed findings without inventing expertise.
 
 Do not transfer non-route policy-governance security reportability to a domain skill. Domain skills can resolve transaction, runtime, middleware, queue, artifact provenance, deployment identity, provider timestamp, canonical evidence storage, or framework facts, but `security-reviewer` owns the final HIGH-confidence security finding decision.
 
