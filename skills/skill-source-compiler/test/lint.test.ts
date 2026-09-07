@@ -270,14 +270,14 @@ void test('lintSourceBundle requires one consistent active surface per reference
     await cp(fixtureRoot, tempRoot, { recursive: true });
     const manifestPath = join(tempRoot, 'skill.yaml');
     const manifest = await readFile(manifestPath, 'utf8');
-    await writeFile(
-      manifestPath,
-      manifest.replace(
-        '      - ref-maintenance\n    optionalReferences:',
-        '      - ref-maintenance\n      - ref-authoring-guidelines\n    optionalReferences:',
-      ),
-      'utf8',
+    const baseline = await lintSourceBundle(tempRoot);
+    assert.equal(baseline.ok, true);
+    const mutated = manifest.replace(
+      '    optionalReferences:',
+      '      - ref-output-structure\n    optionalReferences:',
     );
+    assert.notEqual(mutated, manifest, 'fixture mutation must introduce the duplicate surface');
+    await writeFile(manifestPath, mutated, 'utf8');
 
     const result = await lintSourceBundle(tempRoot);
     assert.equal(result.ok, false);

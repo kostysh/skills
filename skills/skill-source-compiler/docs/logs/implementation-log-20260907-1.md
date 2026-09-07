@@ -55,3 +55,14 @@ Baseline, сценарии и rubric зафиксированы до право�
 ## Приёмка CP2
 
 Оператор ответил «Продолжай» после предъявленного checkpoint. CP2 принят; разрешена задача 3. Content и runtime compiler не меняются.
+
+
+## Публикация: исправление CI после принятия CP1–CP3
+
+Оператор разрешил commit, push, PR и merge. Первый commit `1bff9d3` опубликован в PR #7. Push CI `34141732550` выявил 3 ошибки тестов compiler: два self-hosted tests закрепляли прежнюю content version `0.2.9`; negative fixture теста active references использовал строковую замену, которая после переноса authoring-guidelines в required стала no-op. Runtime работал по прежнему контракту. Предшествующие структурные проверки не обнаружили эту рассинхронизацию тестов; прежний audit PASS не означает успешный CI этого commit.
+
+Минимальный delta: test/cli.test.ts и test/compile.test.ts сравнивают output metadata/report с source-version manifest; test/lint.test.ts проверяет корректный baseline и факт мутации, затем проверяет прежние два diagnostic codes на duplicate required/optional reference. Ни одно отрицательное assertion не удалено. Active/source/generated инструкции и runtime не изменены.
+
+Локально package test 44/44, полный pnpm test:ci, package lint (Biome/ESLint/typecheck) и diff --check проходят. Это проверка тестового/структурного контракта, не новый поведенческий аудит методологии. Далее bounded independent delta review и CI нового commit перед merge; предыдущие frozen audit/evidence сохраняются точно.
+
+Независимый bounded delta review: PASS, findings нет; [точный отчёт](../../../../docs/reviews/audit-ci-delta-20260907-1.md). Финальный package format:check также проходит. После review сохранён точный отчёт и добавлена только эта административная запись; тесты не изменены.
