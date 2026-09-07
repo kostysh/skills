@@ -62,7 +62,42 @@
 
 ## Статус исполнения
 
-ID: `implementation-plan-20260907-2`. План принят оператором 2026-09-07; группа 1 выполняется. Основание: сообщение `01a07cbd-2716-79f1-9c93-a8c6acda8d37`, задача `01a07be0-5ad2-7c31-920e-81e048807c1a`. Worktree `codex/skills-revision`; исходный SHA `4ddcb698457a741028664ed9af441009c4838d23`.
+ID: `implementation-plan-20260907-2`. План принят оператором 2026-09-07; группа 1 выполнена и ожидает приёмки. Основание: сообщение `01a07cbd-2716-79f1-9c93-a8c6acda8d37`, задача `01a07be0-5ad2-7c31-920e-81e048807c1a`. Worktree `codex/skills-revision`; исходный SHA `4ddcb698457a741028664ed9af441009c4838d23`.
 
 [Независимый аудит плана](../reviews/audit-implementation-plan-20260907-2.md). Следующая граница: приёмка группы 1; группы 2–4 и публикация ожидают предусмотренных приёмок.
 
+## Уточнение оператора и текущий прогресс
+
+Оператор отменил дополнительное требование native planner после проверки документации. Правило удалено из candidate; испытания planner исключены из приёмки, уже полученные результаты сохраняются как withdrawn. Scope delta относительно принятого исходного плана: unchanged. Остальные границы и приёмки сохранены.
+
+| Шаг группы 1 | Статус |
+| --- | --- |
+| Worktree, общий план, исходные версии | Завершено; служебный commit f6cebb0 |
+| Независимая baseline-ревизия | Завершено: 2 P2, 1 P3; закрыты итоговым re-audit |
+| Независимые критерии и сценарии | Исходные наборы зафиксированы до edits; planner withdrawn по решению оператора |
+| Исправления и генерация | Завершены; итоговая версия без planner, lint/check/compile/readback PASS |
+| Парные прогоны и независимый re-audit | 22 исполнения оценены независимо: 9/10 пар PASS, case04 частично INCONCLUSIVE; 2 consumer PASS. Формальный re-audit PASS; ограничения сохранены |
+| Коммит скила и приёмка группы 1 | Скил commit 0e79520; independent PASS. Приёмка оператора ожидается |
+
+Группы 2–4 не начаты. Push/PR/merge — после предусмотренной финальной приёмки.
+
+## Приёмка группы 1
+
+`implementation-discipline` 0.2.7: уточнены достаточное основание локальной коррекции, действующий владелец требований и conditional references. Отменённый planner отсутствует. [Журнал](../../skills/implementation-discipline/docs/logs/implementation-log-20260907-1.md), [независимый PASS](../../skills/implementation-discipline/docs/reviews/evidence/g1/final-audit.md), [оценка испытаний](../../skills/implementation-discipline/docs/reviews/assessment-20260907-1.md). Скил зафиксирован отдельным commit `0e795207540a7bfeba04b41e20084caa0fd88464`; общий статус фиксируется отдельно.
+
+К приёмке предъявлены source-grounded исправления F1/F2/P3, structural parity и ограниченное наблюдаемое поведение. Capability — поддержанное локальное действие/ограниченный вывод и реальный handoff спецификатору. Substrate — инструкции, архив и проверки; anti-claims — нет доказанного преимущества над baseline, универсальной надёжности или настоящей editor/deployed capability. 9/10 пар PASS, case04 INCONCLUSIVE только для лишнего требования рубрики; 2 downstream consumer PASS. Аудитор признал этот неподдержанный claim несущественным для F1/F2, без заявления 10/10. Auxiliary compatibility reject сохранён; owning checks PASS.
+
+`accepted now`: технический результат независимого re-audit в указанной границе; приёмка оператором ещё не получена. `not accepted`: группы 2–4, итоговая совместимость десяти скилов, production/native UI, push/PR/merge. `blocking decision`: приёмка группы 1 оператором. `next autonomous action`: none до явного принятия; затем только группа 2 по установленному порядку.
+
+Ключевые решения: локальное доказательство отделено от deployed closure, чтобы не требовать недоступный replay для поддержанного исправления; owner берётся из действующего governance, чтобы не придумывать customer process и не обходить настоящий; условное чтение references сохранено, изменена классификация. Воздействие ограничено дисциплиной действий и handoff; соседние скилы не изменены. Неизменённые собственные формулировки customer chain в downstream delivery-planner проверяются в предусмотренной группе 3, текущий PASS не закрывает их автоматически.
+
+### Состояние для продолжения
+
+Снимок `2026-09-07 17:23:18 UTC`, после commit скила и до служебного commit этого статуса. Repo `skills/custom`, worktree `.worktrees/skills-revision`, branch `codex/skills-revision`; HEAD `0e795207540a7bfeba04b41e20084caa0fd88464`; base/upstream `origin/master` на локально сохранённом `4ddcb698457a741028664ed9af441009c4838d23`, ahead2/behind0. Индекс пуст, единственное unstaged — этот общий план, untracked нет. Служебный commit сменит HEAD, сохранив skill commit; его точный SHA сообщается в checkpoint report, текущее состояние нужно перечитать при возобновлении. Основной checkout и соседние worktrees сохранены.
+
+Последнее принятое основание — исходный общий план, commit `f6cebb0b611559974c1ea55069b3ac531e398ab2`. Audited snapshot `G1-FINAL-NO-PLANNER-v1`, aggregate `b773d8218c2bdc38057b51e2e082374ef68558355a640e5f430a6d5bd328f054`. После аудита изменены только статусы/ссылки журнала и плана, добавлены точные report/readback/snapshot; остальные 130 reviewed files неизменны. Разрешённый administrative delta сохранён рядом с отчётом. Git index/diff проверены, скил содержит только свои 15 paths.
+
+Внешние tracking/publication в этой группе не создавались. Push/PR/merge и вызванного ими CI нет; полный repository CI предусмотрен после принятия группы 4. Следующая автономная операция после фиксации этого статуса отсутствует до приёмки группы 1.
+
+Stop: awaiting explicit approval to continue
+Next autonomous action: none
