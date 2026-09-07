@@ -43,10 +43,11 @@ simple single-component specification merely because this reference was loaded.
   accepted contract owner, declared direct dependencies, and accepted upstream
   preconditions. Reliance on an undeclared transitive dependency blocks the
   affected handoff.
-- Reference the accepted architecture boundary between generic adapter
+- When an external-provider boundary is affected, reference its accepted
+  architecture and owners, including the split between generic adapter
   capability/configuration and application-owned provider profile, admission,
-  and model literals. Record owners and consumers without selecting or changing
-  that boundary in the specification.
+  or model literals where that split exists. Record owners and consumers
+  without selecting or changing that boundary in the specification.
 - For each applicable inherited limit, enum member, error, or format member, map
   the canonical owner, every consumer/path that must preserve it, and a negative
   oracle that fails when a member is omitted.

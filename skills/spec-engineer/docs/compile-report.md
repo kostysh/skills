@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.13`
+- Skill source version: `0.2.14`
 
 ## Source files
 - `agents/openai.yaml`
@@ -35,6 +35,7 @@ Generated from `skill.yaml`.
 
 ## Required references
 - `references/methodology.md`
+- `references/high-risk-backend-contract.md`
 
 ## Warnings
 - none

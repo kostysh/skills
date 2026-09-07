@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.13
+  source-version: 0.2.14
   recommended-skill-md-max-bytes: 28000
   description: >-
     Create concise, falsifiable software specs for AI coding agents. Use to turn
@@ -29,8 +29,8 @@ references:
     title: High-risk backend contract matrix
     source: references/high-risk-backend-contract.md
     target: references/high-risk-backend-contract.md
-    required: false
-    trigger: Read this before drafting, revising, or accepting a high-risk backend specification involving a public API, persistent state, authorization, money, retries, external resources, audit evidence, multiple packages, or an external provider.
+    required: true
+    trigger: Read this before drafting, revising, or accepting high-risk backend, multi-package/component, or external-provider scope. Apply all HRB rows only to high-risk scope; otherwise use its conditional readback.
   - id: ref-patterns
     title: Specification patterns
     source: references/spec-patterns.md
@@ -140,8 +140,8 @@ surfaces:
   active:
     requiredReferences:
       - ref-methodology
-    optionalReferences:
       - ref-high-risk-backend-contract
+    optionalReferences:
       - ref-patterns
       - ref-discovery-techniques
       - ref-anti-patterns
@@ -370,17 +370,10 @@ sections:
       text: Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. For a material cross-layer claim, apply the lifecycle-map rule in the required methodology reference. If verification is not currently possible, the spec must say why.
     - id: policy-stop-rules
       title: Stop rules
-      text: |-
-        Stop and ask the user when:
-
-        - a behavior-changing source conflict remains unresolved after applying authority and readiness precedence;
-        - the requested spec scope conflicts with known parent product, system, workflow, or architecture intent in a behavior-changing way;
-        - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
-        - the spec would make a capability claim that can only be proven by substrate evidence;
-        - the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;
-        - a required external contract is missing and cannot be inferred safely.
-
-        Do not stop for minor unknowns. Record them as assumptions, non-blocking gaps, validation gaps, or architecture delta needed.
+      text: >-
+        Apply the canonical Stop rules section in
+        [Specification methodology](references/methodology.md) before finalizing; they distinguish blocked dependent decisions and
+        handoff from supported draft or review work.
     - id: policy-output-language
       title: Output language policy
       text: Produce the specification in the user's working language unless the target repository, existing spec corpus, or user request clearly requires another language.

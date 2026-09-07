@@ -1,0 +1,62 @@
+{
+  "source": {
+    "count": 30,
+    "aggregate": "cd8db903895af2cea62b110173e3e4d257404a3a6725a0797cfcaf3f3a81963c",
+    "mismatch": []
+  },
+  "emitted": {
+    "count": 27,
+    "aggregate": "5b6e2f610257f87cc83ddb39b51d2b9555cbd3cd5bdfa98bb3c59e28ece24dfd",
+    "mismatch": []
+  },
+  "active": {
+    "count": 7,
+    "aggregate": "c31ad6feb117b66e21a4458d48c564d27a9537360394b8f497e4b5b32a72653c",
+    "mismatch": []
+  },
+  "live_delta": [],
+  "spec-prepared-freeze.json": {
+    "count": 35,
+    "mismatch": []
+  },
+  "spec-pre-edit-closed-manifest.json": {
+    "count": 82,
+    "mismatch": []
+  },
+  "pair_input_equal": {
+    "1": true,
+    "2": true,
+    "3": true
+  },
+  "catalogue_equal": {
+    "a": true,
+    "b": true,
+    "c": true,
+    "d": true,
+    "e": true,
+    "f": true
+  },
+  "output_hashes": {
+    "spec-runs/01-01/output/specification.md": "ecc8a45f0a5ef1c2d364f04f42a36283f31d18996507930da576d0be1fff3dde",
+    "spec-runs/01-02/output/specification.md": "06195a8ce8db4673450b8b4e9c9a71f5c807ad4f3a0c715f50cef6634cd9a443",
+    "spec-runs/02-01/output/specification.md": "a648bb5874c07a61f4480bf36afa25a10280ac5aeb2ed44eefd969b84b284a0a",
+    "spec-runs/02-02/output/specification.md": "b217d83f6815a549b4a72620787bfa9cfd02ce9115b031bb0f26d2284ff856aa",
+    "spec-runs/03-01/output/specification.md": "8f863f94547da6846174edf1f598c207607442ca2dd711536860a715dbc8160d",
+    "spec-runs/03-02/output/specification.md": "375855550b88df6b710d4064a5c0c95ce5016a926e712568cf72eaec3d486a40",
+    "spec-runs/catalogue-a-01/output/selection.md": "fecda873215ba4762e00171a5c1438b135c0e7efdc9b7b64fd553f86f164d104",
+    "spec-runs/catalogue-a-02/output/selection.md": "8ce829f44ba172515419c1fa0823fd86cb6327081e52be67afa1ec3329932d87",
+    "spec-runs/catalogue-b-01/output/selection.md": "21aefb90bccb75dd6fc213b95b225bb99fc8a18d9fd14de20f002b0dc67f4a9b",
+    "spec-runs/catalogue-b-02/output/selection.md": "d616120de0635185c9f7458e52636489edf3016d98b69aeeb050f3bfc19dac0c",
+    "spec-runs/catalogue-c-01/output/selection.md": "c8ea47a4a0c618f80bc75319767ec2a2cb5e34afda3e8c0536ab8529fa90f282",
+    "spec-runs/catalogue-c-02/output/selection.md": "99ef28c72d685d2964984832a3136a15a7b1cdc4facd10c9ba179fc1a0efbd1b",
+    "spec-runs/catalogue-d-01/output/selection.md": "8ecf917eef82f0cb40509b54e2dea03594ce622d693dff075b79b0ca397e445f",
+    "spec-runs/catalogue-d-02/output/selection.md": "fe9e263656d75985bb197bf57b7f43608c06ffb2bdda6db6443888dc5aa04e22",
+    "spec-runs/catalogue-e-01/output/selection.md": "3e6414a9d703cc7a5edc041ff9725e4cf1c3b63e5e6cec61751e30c4e1f5eb5a",
+    "spec-runs/catalogue-e-02/output/selection.md": "ef9de4b6bc87e9bd4c50a4c1d00896f813ab4a022bdf9ca3fb6797f3f6e6f4d0",
+    "spec-runs/catalogue-f-01/output/selection.md": "3e7ec7ad33205831f9006afd66eb700732d7fd77c5468ccf1ad0663c1a682c06",
+    "spec-runs/catalogue-f-02/output/selection.md": "01462e82f6608c5258a5773c8613ab42acdf8678cee7f7fe96a09fb3ca8b62a3",
+    "spec-runs/consumer-01/output/plan.md": "c342b95125e5a0a80beee9bef50b4bb2a26aadd5d43cbe8d2fe0217af85d23d8",
+    "spec-runs/consumer-02/output/plan.md": "899730f50c5716197f8c14d56e2fb9ccf0d50b8d665563e62769e1873c7f6ec7"
+  },
+  "method": "sha256 of file bytes; aggregate sorted relative POSIX path + NUL + file hex SHA256 + LF, UTF-8"
+}
