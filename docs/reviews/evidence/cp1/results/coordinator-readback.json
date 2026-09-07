@@ -1,0 +1,374 @@
+[
+  {
+    "run": "run-01",
+    "changed_input_files": [],
+    "added_files": [
+      "output/release-note.md"
+    ],
+    "file_readback": "PASS",
+    "final_files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+      },
+      {
+        "path": "brief.md",
+        "sha256": "c3d95b686f355d060e835c5ef812a18f209c7b1d16e9eea716dec22fbebb910f"
+      },
+      {
+        "path": "conversation.md",
+        "sha256": "7fe951eef97495d5ed0320d5aabf970ef7f62b7e2cb2b714c56c94c18d0be96e"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+        "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+        "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+      },
+      {
+        "path": "docs/templates/ISSUE_TEMPLATE.md",
+        "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+      },
+      {
+        "path": "inputs/release-note.md",
+        "sha256": "d54c7cbe41fc0cfa34ac7ba25b1a4e92c17ae102a4f1bddd12097d504de00141"
+      },
+      {
+        "path": "output/release-note.md",
+        "sha256": "613f45787170d46ada6bdecd808bb29b9b9a98c86522f8959eace1a30d80b1ec"
+      }
+    ]
+  },
+  {
+    "run": "run-02",
+    "changed_input_files": [],
+    "added_files": [],
+    "file_readback": "PASS",
+    "final_files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+      },
+      {
+        "path": "brief.md",
+        "sha256": "3b5834b5f80418a822408ef23690d7c3d1848755f3b4014a9635b47bbcd8844c"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+        "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+        "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+      },
+      {
+        "path": "docs/templates/ISSUE_TEMPLATE.md",
+        "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+      },
+      {
+        "path": "inputs/changes.md",
+        "sha256": "4e46b4fa47a0c7869130b54211f583ce1613e14cb6ec2082768cc6adebbb05e0"
+      },
+      {
+        "path": "inputs/release-note.md",
+        "sha256": "a0764dc62a4f073873bd930fd09bfaa010d19cdfe2e07b8eb9cbffff19ef47d8"
+      },
+      {
+        "path": "inputs/release-process.md",
+        "sha256": "e3961d494c0d184ac3cea91794764678b33cda9a5c727178d0292db4e80ee099"
+      }
+    ]
+  },
+  {
+    "run": "run-03",
+    "changed_input_files": [],
+    "added_files": [],
+    "file_readback": "PASS",
+    "final_files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+      },
+      {
+        "path": "brief.md",
+        "sha256": "22a2ca77d028a79ac4bd6553cb38ae0972c26b7d7f8596ad1e257d039dbe0077"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+        "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+        "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+      },
+      {
+        "path": "docs/templates/ISSUE_TEMPLATE.md",
+        "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+      },
+      {
+        "path": "package/SKILL.md",
+        "sha256": "aa4ede49dc43711f011832d26c22c3efa8c9622c132aa875bc49bd5e0d3e212d"
+      },
+      {
+        "path": "package/docs/run-note.md",
+        "sha256": "ca5c89749a4512f7731e21c3b37be06ae56e936131226392fa0278a1826de191"
+      },
+      {
+        "path": "package/references/api-check.md",
+        "sha256": "2495c2c160a0043436574dd4e4dbae5ee77f6ef677eade7f11285333a29a08f3"
+      },
+      {
+        "path": "package/references/local-format.md",
+        "sha256": "288e881217f68b15e5f9c55fa0ea9a04844efc6906ad94ad8263074ac49a7c2f"
+      },
+      {
+        "path": "package/samples/export.csv",
+        "sha256": "68e6b7d7275c4e49f6ac7b87c0c97d049dfc0ae75c63ad629db6416b2760e480"
+      }
+    ]
+  },
+  {
+    "run": "run-04",
+    "changed_input_files": [],
+    "added_files": [],
+    "file_readback": "PASS",
+    "final_files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+      },
+      {
+        "path": "brief.md",
+        "sha256": "95b5bd679bb6c18b1a9ef53243f2cde7a296ed2bf5a63b19a08c2fb2d7224adf"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+        "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+        "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+      },
+      {
+        "path": "docs/templates/ISSUE_TEMPLATE.md",
+        "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+      },
+      {
+        "path": "package/SKILL.md",
+        "sha256": "1ff77897237d93b6f4e68219ad03d7fe7bf50e743de1c063fde012084a20c655"
+      },
+      {
+        "path": "package/docs/maintenance-note.md",
+        "sha256": "1eabb11eabafebacb378d6fdf9d5c70cce1a6bd9119ea70053963b48e85b5ed6"
+      },
+      {
+        "path": "source/instructions.md",
+        "sha256": "5b9c243e195cf21b0e097462c004c84f3f61a6e947d9961167cc5c609360f8d8"
+      }
+    ]
+  },
+  {
+    "run": "run-05",
+    "changed_input_files": [],
+    "added_files": [
+      "output/release-note.md"
+    ],
+    "file_readback": "PASS",
+    "final_files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd"
+      },
+      {
+        "path": "README.md",
+        "sha256": "278084fa2ce103b4281ceabd0a4a49ab5e3d3d8d6c8d7f7879db572817335cc0"
+      },
+      {
+        "path": "brief.md",
+        "sha256": "c3d95b686f355d060e835c5ef812a18f209c7b1d16e9eea716dec22fbebb910f"
+      },
+      {
+        "path": "conversation.md",
+        "sha256": "7fe951eef97495d5ed0320d5aabf970ef7f62b7e2cb2b714c56c94c18d0be96e"
+      },
+      {
+        "path": "docs/skill-standard.md",
+        "sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+        "sha256": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+        "sha256": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1"
+      },
+      {
+        "path": "docs/templates/ISSUE_TEMPLATE.md",
+        "sha256": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c"
+      },
+      {
+        "path": "inputs/release-note.md",
+        "sha256": "d54c7cbe41fc0cfa34ac7ba25b1a4e92c17ae102a4f1bddd12097d504de00141"
+      },
+      {
+        "path": "output/release-note.md",
+        "sha256": "613f45787170d46ada6bdecd808bb29b9b9a98c86522f8959eace1a30d80b1ec"
+      }
+    ]
+  },
+  {
+    "run": "run-06",
+    "changed_input_files": [],
+    "added_files": [],
+    "file_readback": "PASS",
+    "final_files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd"
+      },
+      {
+        "path": "README.md",
+        "sha256": "278084fa2ce103b4281ceabd0a4a49ab5e3d3d8d6c8d7f7879db572817335cc0"
+      },
+      {
+        "path": "brief.md",
+        "sha256": "3b5834b5f80418a822408ef23690d7c3d1848755f3b4014a9635b47bbcd8844c"
+      },
+      {
+        "path": "docs/skill-standard.md",
+        "sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+        "sha256": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+        "sha256": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1"
+      },
+      {
+        "path": "docs/templates/ISSUE_TEMPLATE.md",
+        "sha256": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c"
+      },
+      {
+        "path": "inputs/changes.md",
+        "sha256": "4e46b4fa47a0c7869130b54211f583ce1613e14cb6ec2082768cc6adebbb05e0"
+      },
+      {
+        "path": "inputs/release-note.md",
+        "sha256": "a0764dc62a4f073873bd930fd09bfaa010d19cdfe2e07b8eb9cbffff19ef47d8"
+      },
+      {
+        "path": "inputs/release-process.md",
+        "sha256": "e3961d494c0d184ac3cea91794764678b33cda9a5c727178d0292db4e80ee099"
+      }
+    ]
+  },
+  {
+    "run": "run-07",
+    "changed_input_files": [],
+    "added_files": [],
+    "file_readback": "PASS",
+    "final_files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd"
+      },
+      {
+        "path": "README.md",
+        "sha256": "278084fa2ce103b4281ceabd0a4a49ab5e3d3d8d6c8d7f7879db572817335cc0"
+      },
+      {
+        "path": "brief.md",
+        "sha256": "22a2ca77d028a79ac4bd6553cb38ae0972c26b7d7f8596ad1e257d039dbe0077"
+      },
+      {
+        "path": "docs/skill-standard.md",
+        "sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+        "sha256": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+        "sha256": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1"
+      },
+      {
+        "path": "docs/templates/ISSUE_TEMPLATE.md",
+        "sha256": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c"
+      },
+      {
+        "path": "package/SKILL.md",
+        "sha256": "aa4ede49dc43711f011832d26c22c3efa8c9622c132aa875bc49bd5e0d3e212d"
+      },
+      {
+        "path": "package/docs/run-note.md",
+        "sha256": "ca5c89749a4512f7731e21c3b37be06ae56e936131226392fa0278a1826de191"
+      },
+      {
+        "path": "package/references/api-check.md",
+        "sha256": "2495c2c160a0043436574dd4e4dbae5ee77f6ef677eade7f11285333a29a08f3"
+      },
+      {
+        "path": "package/references/local-format.md",
+        "sha256": "288e881217f68b15e5f9c55fa0ea9a04844efc6906ad94ad8263074ac49a7c2f"
+      },
+      {
+        "path": "package/samples/export.csv",
+        "sha256": "68e6b7d7275c4e49f6ac7b87c0c97d049dfc0ae75c63ad629db6416b2760e480"
+      }
+    ]
+  },
+  {
+    "run": "run-08",
+    "changed_input_files": [],
+    "added_files": [],
+    "file_readback": "PASS",
+    "final_files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd"
+      },
+      {
+        "path": "README.md",
+        "sha256": "278084fa2ce103b4281ceabd0a4a49ab5e3d3d8d6c8d7f7879db572817335cc0"
+      },
+      {
+        "path": "brief.md",
+        "sha256": "95b5bd679bb6c18b1a9ef53243f2cde7a296ed2bf5a63b19a08c2fb2d7224adf"
+      },
+      {
+        "path": "docs/skill-standard.md",
+        "sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+        "sha256": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb"
+      },
+      {
+        "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+        "sha256": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1"
+      },
+      {
+        "path": "docs/templates/ISSUE_TEMPLATE.md",
+        "sha256": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c"
+      },
+      {
+        "path": "package/SKILL.md",
+        "sha256": "1ff77897237d93b6f4e68219ad03d7fe7bf50e743de1c063fde012084a20c655"
+      },
+      {
+        "path": "package/docs/maintenance-note.md",
+        "sha256": "1eabb11eabafebacb378d6fdf9d5c70cce1a6bd9119ea70053963b48e85b5ed6"
+      },
+      {
+        "path": "source/instructions.md",
+        "sha256": "5b9c243e195cf21b0e097462c004c84f3f61a6e947d9961167cc5c609360f8d8"
+      }
+    ]
+  }
+]

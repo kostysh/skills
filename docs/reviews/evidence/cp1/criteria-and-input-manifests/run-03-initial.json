@@ -1,0 +1,42 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+  },
+  {
+    "path": "brief.md",
+    "sha256": "22a2ca77d028a79ac4bd6553cb38ae0972c26b7d7f8596ad1e257d039dbe0077"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+    "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+    "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+  },
+  {
+    "path": "docs/templates/ISSUE_TEMPLATE.md",
+    "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+  },
+  {
+    "path": "package/SKILL.md",
+    "sha256": "aa4ede49dc43711f011832d26c22c3efa8c9622c132aa875bc49bd5e0d3e212d"
+  },
+  {
+    "path": "package/docs/run-note.md",
+    "sha256": "ca5c89749a4512f7731e21c3b37be06ae56e936131226392fa0278a1826de191"
+  },
+  {
+    "path": "package/references/api-check.md",
+    "sha256": "2495c2c160a0043436574dd4e4dbae5ee77f6ef677eade7f11285333a29a08f3"
+  },
+  {
+    "path": "package/references/local-format.md",
+    "sha256": "288e881217f68b15e5f9c55fa0ea9a04844efc6906ad94ad8263074ac49a7c2f"
+  },
+  {
+    "path": "package/samples/export.csv",
+    "sha256": "68e6b7d7275c4e49f6ac7b87c0c97d049dfc0ae75c63ad629db6416b2760e480"
+  }
+]

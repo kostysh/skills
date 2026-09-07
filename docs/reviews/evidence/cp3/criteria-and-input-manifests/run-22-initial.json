@@ -1,0 +1,22 @@
+[
+  {
+    "path": "input/manifest.json",
+    "sha256": "41902d5f29d4e07793ce683a983a06248ea570dcb2e2e84a67fd4c04e2d4b90f"
+  },
+  {
+    "path": "input/neighbor-cards.json",
+    "sha256": "986bb4c039ca2567e7b06acc7c03474814e249dbb8b44626e03fe6a3899b4d3f"
+  },
+  {
+    "path": "input/requests.json",
+    "sha256": "3bbfbf80085250c30ec26c252479d0e7149b2278c1e4fa8123fbc096ae3be99b"
+  },
+  {
+    "path": "input/reviewer-card.json",
+    "sha256": "978d36f6d553e54c4bd086706f303ef4bcde04f98cb74f573fb7ce80b3e45f23"
+  },
+  {
+    "path": "prompt.md",
+    "sha256": "a710b2938c89dad51381dce19ffa28446873e2410267ce77116d3176b61ed55a"
+  }
+]

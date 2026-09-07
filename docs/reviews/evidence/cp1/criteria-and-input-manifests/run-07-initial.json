@@ -1,0 +1,50 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd"
+  },
+  {
+    "path": "README.md",
+    "sha256": "278084fa2ce103b4281ceabd0a4a49ab5e3d3d8d6c8d7f7879db572817335cc0"
+  },
+  {
+    "path": "brief.md",
+    "sha256": "22a2ca77d028a79ac4bd6553cb38ae0972c26b7d7f8596ad1e257d039dbe0077"
+  },
+  {
+    "path": "docs/skill-standard.md",
+    "sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+    "sha256": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+    "sha256": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1"
+  },
+  {
+    "path": "docs/templates/ISSUE_TEMPLATE.md",
+    "sha256": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c"
+  },
+  {
+    "path": "package/SKILL.md",
+    "sha256": "aa4ede49dc43711f011832d26c22c3efa8c9622c132aa875bc49bd5e0d3e212d"
+  },
+  {
+    "path": "package/docs/run-note.md",
+    "sha256": "ca5c89749a4512f7731e21c3b37be06ae56e936131226392fa0278a1826de191"
+  },
+  {
+    "path": "package/references/api-check.md",
+    "sha256": "2495c2c160a0043436574dd4e4dbae5ee77f6ef677eade7f11285333a29a08f3"
+  },
+  {
+    "path": "package/references/local-format.md",
+    "sha256": "288e881217f68b15e5f9c55fa0ea9a04844efc6906ad94ad8263074ac49a7c2f"
+  },
+  {
+    "path": "package/samples/export.csv",
+    "sha256": "68e6b7d7275c4e49f6ac7b87c0c97d049dfc0ae75c63ad629db6416b2760e480"
+  }
+]

@@ -1,10 +1,8 @@
-Before finishing:
+Before handing off a changed package:
 
-- verify that every required reference is linked from `SKILL.md`
-- verify that supporting docs remain clearly non-normative
-- verify instruction quality: outcome-first instructions, no unresolved contradictions, precise reference/tool triggers, validation gates, and stop rules; report `blocked: unresolved-conflict` if this cannot be established
-- report this instruction-quality result as an author self-check; route formal independent skill-capability review to skill-reviewer
-- verify that copied assets and runtime files are reachable by relative path; include tests in the emitted package only when they are intentionally shipped and independently runnable there
-- verify that the generated bundle can be copied to another machine without losing required behavior
-- verify that compilation used a new resolved output skill directory and did not replace an existing target
-- report CLI results as structural and portability evidence only, never as proof of semantic or behavioral `PASS`
+- read back generated instructions and declared files against the accepted source; confirm required local references and their triggers remain reachable
+- run applicable structural checks and report warnings as warnings; an advisory size limit alone is not a semantic failure
+- confirm output ownership and the applicable compile/regenerate safety contract; never replace an existing target merely to make a check pass
+- distinguish author readiness, actual generated results, structural evidence, and independent review; use the agent output contract above
+
+When an independent gate is required, send the stable package and raw evidence to `skill-reviewer` if available and authorized. If it is unavailable, complete supported author work and leave that gate open; do not invent its verdict or bypass an accepted checkpoint.

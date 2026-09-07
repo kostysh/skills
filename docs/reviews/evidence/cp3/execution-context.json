@@ -1,0 +1,484 @@
+{
+  "caseAuthor": {
+    "agentPath": "/root/cp3_cases",
+    "threadId": "01a07c73-cfc3-7230-ab36-5f2855cad3ba"
+  },
+  "candidateAuthor": "/root",
+  "assessor": "/root/cp3_assessment",
+  "dispatchSource": "Recorded spawn arguments; child app turns omit initial dispatch",
+  "isolation": "fresh no-fork context, instructional per-run access, shared filesystem",
+  "trials": [
+    {
+      "run": "01",
+      "case": "01",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run01",
+      "threadId": "01a07c7f-b0c9-7bb2-9c50-b1ff92d1d2cf",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 128828,
+      "commandCount": 7,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-c2f4dd99-99cc-4583-84a1-c9ae8b55a906",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-01/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-01/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-01/reviewer/references/forward-testing.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-01/input/context.md'",
+          "originalChars": 30660
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-01/prompt.md. Все входы в run-01/input; предоставленный reviewer в run-01/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-01/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "02",
+      "case": "02",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run02",
+      "threadId": "01a07c80-0c71-7e60-b179-2e55096f5a54",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 113004,
+      "commandCount": 6,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-0be27ff4-f048-4209-bef6-241aaace7227",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-02/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-02/reviewer/references/forward-testing.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-02/input/target/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-02/input/target/references/escaping.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-02/input/target/agents/openai.yaml'",
+          "originalChars": 20728
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-02/prompt.md. Все входы в run-02/input; предоставленный reviewer в run-02/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-02/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "03",
+      "case": "03",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run03",
+      "threadId": "01a07c81-e1f7-7680-92ca-7cb9190d8c70",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 128864,
+      "commandCount": 7,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-2bcbb99b-2c93-4848-abf3-bfa5fe9f2c49",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-03/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-03/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-03/reviewer/references/forward-testing.md'",
+          "originalChars": 29945
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-03/prompt.md. Все входы в run-03/input; предоставленный reviewer в run-03/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-03/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "04",
+      "case": "04",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run04",
+      "threadId": "01a07c83-3dfd-7f20-86ab-96106bf2b5b2",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 94069,
+      "commandCount": 6,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-79f6473b-9162-4062-b291-a9af5f52ca61",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-04/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-04/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-04/reviewer/references/forward-testing.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-04/input/context.md'",
+          "originalChars": 30684
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-04/prompt.md. Все входы в run-04/input; предоставленный reviewer в run-04/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-04/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "05",
+      "case": "05",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run05",
+      "threadId": "01a07c84-1887-78e2-bc4f-71483ebde6ab",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 92594,
+      "commandCount": 5,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-9e540b4a-ea73-496b-ab22-83f5193fb192",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/reviewer/references/forward-testing.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/input/context.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/input/manifest.json /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/input/target/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/input/target/references/escaping.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/input/target/agents/openai.yaml'",
+          "originalChars": 32562
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-05/prompt.md. Все входы в run-05/input; предоставленный reviewer в run-05/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-05/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "06",
+      "case": "06",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run06",
+      "threadId": "01a07c86-0cf2-7cc3-953e-8ca577a39a63",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 113602,
+      "commandCount": 7,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-4e9211eb-d5f4-437e-8534-fb6684522b04",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-06/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-06/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-06/reviewer/references/forward-testing.md'",
+          "originalChars": 29945
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-06/prompt.md. Все входы в run-06/input; предоставленный reviewer в run-06/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-06/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "07",
+      "case": "07",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run07",
+      "threadId": "01a07c86-65f3-7b41-8864-f472487dac6b",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 104698,
+      "commandCount": 6,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-8db30667-9135-4b80-9fd2-2b0a6773342d",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-07/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-07/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-07/reviewer/references/forward-testing.md'",
+          "originalChars": 29945
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-07/prompt.md. Все входы в run-07/input; предоставленный reviewer в run-07/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-07/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "08",
+      "case": "08",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run08",
+      "threadId": "01a07c88-36a7-7e70-afbb-f5ff7b1b54ae",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 127043,
+      "commandCount": 7,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-ec940688-63ff-4de4-a573-46785fc84b82",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-08/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-08/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-08/reviewer/references/forward-testing.md'",
+          "originalChars": 29945
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-08/prompt.md. Все входы в run-08/input; предоставленный reviewer в run-08/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-08/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "09",
+      "case": "09",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run09",
+      "threadId": "01a07c89-8d64-7381-93e1-f0d38950fb6f",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 122936,
+      "commandCount": 6,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-82d5ae79-1cbb-415e-8bf6-e405cac5f6fe",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-09/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-09/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-09/reviewer/references/forward-testing.md'",
+          "originalChars": 29945
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-09/prompt.md. Все входы в run-09/input; предоставленный reviewer в run-09/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-09/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "10",
+      "case": "10",
+      "variant": "baseline",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run10",
+      "threadId": "01a07c8a-b30c-7380-96dd-7dd14e502ee9",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 93937,
+      "commandCount": 6,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-5fa2b249-97da-4af0-b4bc-99d19730f12f",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-10/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-10/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-10/reviewer/references/forward-testing.md'",
+          "originalChars": 29945
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-10/prompt.md. Все входы в run-10/input; предоставленный reviewer в run-10/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-10/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "11",
+      "case": "11",
+      "variant": "baseline",
+      "kind": "catalog",
+      "agentPath": "/root/cp3_run11",
+      "threadId": "01a07c8c-0604-77f2-a739-465ad5be0ed0",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 30050,
+      "commandCount": 3,
+      "hasMore": false,
+      "stdoutTruncation": [],
+      "dispatch": "Выполни задачу выбора по каталогу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-11/prompt.md. Все requests и карточки в run-11/input (requests.json, neighbor-cards.json, reviewer-card.json). Читай только prompt и input; не читай тело скилов, references, другие каталоги, не используй сеть/Git/агентов. Не выполняй сами задачи. Разрешена единственная запись ответов run-11/result.md и краткий финальный итог."
+    },
+    {
+      "run": "12",
+      "case": "01",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run12",
+      "threadId": "01a07c7f-dc10-7372-b74d-d20b68af4a5e",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 112054,
+      "commandCount": 8,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-877021db-c2ea-40e3-b296-0a41a52816c9",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-12/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-12/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-12/reviewer/references/forward-testing.md'",
+          "originalChars": 26977
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-12/prompt.md. Все входы в run-12/input; предоставленный reviewer в run-12/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-12/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "13",
+      "case": "02",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run13",
+      "threadId": "01a07c81-b3d9-7101-990e-80898fbe114d",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 87035,
+      "commandCount": 5,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-bb23d1e1-3c4f-4fae-b4d7-bef8a696c7ba",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/reviewer/references/forward-testing.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/input/context.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/input/manifest.json /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/input/target/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/input/target/references/escaping.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/input/target/agents/openai.yaml'",
+          "originalChars": 29625
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-13/prompt.md. Все входы в run-13/input; предоставленный reviewer в run-13/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-13/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "14",
+      "case": "03",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run14",
+      "threadId": "01a07c82-119c-7aa3-8415-dae444b16548",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 110925,
+      "commandCount": 7,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-76f734a6-f968-4782-ac78-067aa5447db5",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-14/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-14/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-14/reviewer/references/forward-testing.md'",
+          "originalChars": 26977
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-14/prompt.md. Все входы в run-14/input; предоставленный reviewer в run-14/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-14/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "15",
+      "case": "04",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run15",
+      "threadId": "01a07c83-f198-7581-b9b1-9d6ce557883d",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 105936,
+      "commandCount": 7,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-03119d6b-615c-48cb-b33d-5152146ec74b",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-15/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-15/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-15/reviewer/references/forward-testing.md'",
+          "originalChars": 26977
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-15/prompt.md. Все входы в run-15/input; предоставленный reviewer в run-15/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-15/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "16",
+      "case": "05",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run16",
+      "threadId": "01a07c84-e74d-7da1-89f4-952c75652840",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 79751,
+      "commandCount": 6,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-ebbedab3-0998-4d36-9457-e103026f36c2",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-16/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-16/reviewer/references/forward-testing.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-16/input/target/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-16/input/target/references/escaping.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-16/input/target/agents/openai.yaml'",
+          "originalChars": 21162
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-16/prompt.md. Все входы в run-16/input; предоставленный reviewer в run-16/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-16/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "17",
+      "case": "06",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run17",
+      "threadId": "01a07c86-3b6d-7fd2-b905-be3f914a48ca",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 137986,
+      "commandCount": 7,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-71e361c9-f2e8-4395-927c-684829c1cfc8",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-17/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-17/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-17/reviewer/references/forward-testing.md'",
+          "originalChars": 26977
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-17/prompt.md. Все входы в run-17/input; предоставленный reviewer в run-17/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-17/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "18",
+      "case": "07",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run18",
+      "threadId": "01a07c87-f132-74f3-b1ef-6c5dd84300b5",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 91595,
+      "commandCount": 6,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-90453615-3e24-465b-958b-b3346829a036",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-18/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-18/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-18/reviewer/references/forward-testing.md'",
+          "originalChars": 26977
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-18/prompt.md. Все входы в run-18/input; предоставленный reviewer в run-18/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-18/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "19",
+      "case": "08",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run19",
+      "threadId": "01a07c88-bc91-7093-9e06-36f5129814b4",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 117350,
+      "commandCount": 8,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-82314774-da9a-4a65-8183-82dbfda5fc56",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-19/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-19/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-19/reviewer/references/forward-testing.md'",
+          "originalChars": 26977
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-19/prompt.md. Все входы в run-19/input; предоставленный reviewer в run-19/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-19/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "20",
+      "case": "09",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run20",
+      "threadId": "01a07c8a-47d8-72c1-8d59-679e1d0cc795",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 88531,
+      "commandCount": 6,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-2243d54f-6931-4ff8-a698-e6e61902d541",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-20/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-20/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-20/reviewer/references/forward-testing.md'",
+          "originalChars": 26977
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-20/prompt.md. Все входы в run-20/input; предоставленный reviewer в run-20/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-20/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "21",
+      "case": "10",
+      "variant": "candidate",
+      "kind": "execution",
+      "agentPath": "/root/cp3_run21",
+      "threadId": "01a07c8b-aba7-7791-81aa-af35f635e673",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 94139,
+      "commandCount": 7,
+      "hasMore": false,
+      "stdoutTruncation": [
+        {
+          "id": "exec-ff4bc1c7-474a-4e57-8ee1-6795ff69327b",
+          "command": "/bin/bash -lc 'cat /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-21/reviewer/SKILL.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-21/reviewer/references/methodology.md /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-21/reviewer/references/forward-testing.md'",
+          "originalChars": 26977
+        }
+      ],
+      "dispatch": "Выполни задачу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-21/prompt.md. Все входы в run-21/input; предоставленный reviewer в run-21/reviewer. Читай только prompt и файлы этих двух папок. Не читай соседние каталоги/критерии/репозиторий/другие скилы, не используй сеть/Git/агентов. Следуй границам и контексту задачи, не меняй входы. Разрешена единственная запись итогового отчёта run-21/result.md (в указанном run-каталоге); кратко верни итог. Это read-only review, без remediation."
+    },
+    {
+      "run": "22",
+      "case": "11",
+      "variant": "candidate",
+      "kind": "catalog",
+      "agentPath": "/root/cp3_run22",
+      "threadId": "01a07c8c-a201-76c1-9d24-b5d4843c4730",
+      "assignedModel": "gpt-6-astra (inherited)",
+      "reasoningEffort": "medium",
+      "forkTurns": "none",
+      "durationMs": 35393,
+      "commandCount": 2,
+      "hasMore": false,
+      "stdoutTruncation": [],
+      "dispatch": "Выполни задачу выбора по каталогу из /tmp/cp3-reviewer-20260907-ca_o_s87/runs/run-22/prompt.md. Все requests и карточки в run-22/input (requests.json, neighbor-cards.json, reviewer-card.json). Читай только prompt и input; не читай тело скилов, references, другие каталоги, не используй сеть/Git/агентов. Не выполняй сами задачи. Разрешена единственная запись ответов run-22/result.md и краткий финальный итог."
+    }
+  ]
+}

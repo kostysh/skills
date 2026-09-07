@@ -1,0 +1,19 @@
+{
+  "01/fixture/meeting-note-helper/SKILL.md": "2850ead10e1bda2dde0f7923ea7e3ff971c25025b847abf1e903cef32077f77c",
+  "01/prompt.md": "3aa2947ac8cd8e62ed749f55ded2e153777488a2f9243fa56f86208019920224",
+  "02/fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+  "02/fixture/meeting-note-helper/skill.yaml": "e65c5f2850ca5c078c797065a444897a1a6ac9214fa277ed0ed73df344c90a5e",
+  "02/prompt.md": "7b1138225f04f3df5e70316db96063cd2fd6a1e3bb37e91a286da0dc3a431053",
+  "03/fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+  "03/fixture/meeting-note-helper/SKILL.md": "f95e21a9f0a5bfe0c262910b78dad2f7e4debab25ef4ce5ab4e242f104c2862c",
+  "03/fixture/meeting-note-helper/docs/compile-report.md": "b7188c9279d165097d314f4bfb29b2dbf1c1f1bb5e358d37e661b2b7c917dedd",
+  "03/fixture/meeting-note-helper/docs/migration-note.md": "29d0cd51bfa998ebe1df934405c83554fd66475d31e26ea6c27a964f7df23b03",
+  "03/fixture/meeting-note-helper/references/action-items.md": "a7eca2159fc9574bef3974be2ceaf5413bd3991e894b7a504ad90a0e88f044f9",
+  "03/fixture/meeting-note-helper/skill.yaml": "908dc4127dadbf2c30ec0197a5e9b25a024d8631bf23dc9f714404dae4b304ee",
+  "03/prompt.md": "4f56f8639df89a484a104cb1aa357c7349304957dc35ee3d2505744601a866e4",
+  "04/fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+  "04/fixture/meeting-note-helper/SKILL.md": "6d6a03afd639092816c06173839052267be5cc514f3080e3ba7b5485ed2d5e16",
+  "04/fixture/meeting-note-helper/docs/compile-report.md": "6a5fd65b4f8ea97fc3946aff0d4f600ed0692cefbe95b0c11c87a0c2164cf407",
+  "04/fixture/meeting-note-helper/skill.yaml": "f892b2a6905817bae794d8fa65c83d87f5bb49e89370d0c5aa5f47442b6200e5",
+  "04/prompt.md": "7a38396ae4d86ccd8c84e70384771279fae551d80599d8b92c3c94aa16f9d7e9"
+}

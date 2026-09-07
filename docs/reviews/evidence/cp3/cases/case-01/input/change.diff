@@ -1,0 +1,11 @@
+--- base/SKILL.md
++++ target/SKILL.md
+@@ -7,7 +7,7 @@
+ An operator provides notes and wants a compact Topic | Owner table for their own reading.
+ ## When NOT to use
+ Do not plan work, assign owners, send messages, or verify that work was completed.
+-## Methdo
++## Method
+ Preserve each supplied topic and explicitly named owner. Write `unknown` when an owner is absent; never infer one. Output one Markdown table, Topic then Owner, with one row per topic. If no topics are supplied, request the notes. Before returning, compare every row with the supplied notes; remove inferred facts. No file or external side effects.
+ ## References and environment
+ No tools, runtime, neighboring skills, or network are required. For notes containing literal pipe characters, read [Escaping](references/escaping.md) before formatting them. Otherwise that reference is not needed.

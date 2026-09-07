@@ -1,0 +1,362 @@
+{
+  "freeze": {
+    "count": 205,
+    "mismatches": [],
+    "aggregate": "915e441d352618a0e8cc2e5bba081f3351a31c15f5c546325550fb27f9d6d9cf"
+  },
+  "runs": [
+    {
+      "run": 1,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 7,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 2,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 6,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 3,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 7,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 4,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 6,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 5,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 5,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 6,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 7,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 7,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 6,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 8,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 7,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 9,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 6,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 10,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 6,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 11,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": true,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 0,
+      "commands": 3,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 12,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 8,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 13,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 5,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 14,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 7,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 15,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 7,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 16,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 6,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 17,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 7,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 18,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 6,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 19,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 8,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 20,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 6,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 21,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 1,
+      "commands": 7,
+      "write_payload_decoded_equal": true
+    },
+    {
+      "run": 22,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "retained_result_equal": true,
+      "write_payload_substring": false,
+      "hasMore": false,
+      "turns": [
+        "completed"
+      ],
+      "truncated": 0,
+      "commands": 2,
+      "write_payload_decoded_equal": true
+    }
+  ],
+  "package_mismatches": []
+}

@@ -1,0 +1,12 @@
+{
+  "emitted_mismatches": [],
+  "broken_active_links": [],
+  "candidate_drift": [],
+  "bytes": {
+    "baseline_root_methodology": 25377,
+    "candidate_root_methodology": 19990,
+    "baseline_all_active": 29955,
+    "candidate_all_active": 26991
+  },
+  "scope": "Text size only; no resource savings claim"
+}

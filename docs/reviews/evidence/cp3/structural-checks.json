@@ -1,0 +1,55 @@
+[
+  {
+    "command": [
+      "node",
+      "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "lint",
+      "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-reviewer"
+    ],
+    "exit_code": 0,
+    "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-reviewer\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-reviewer"
+    ],
+    "exit_code": 0,
+    "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-reviewer\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "/tmp/cp3-reviewer-20260907-ca_o_s87/candidate-emitted/skill-reviewer"
+    ],
+    "exit_code": 0,
+    "stdout": "OK /tmp/cp3-reviewer-20260907-ca_o_s87/candidate-emitted/skill-reviewer\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "/home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+      "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-reviewer"
+    ],
+    "exit_code": 1,
+    "stdout": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "/home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+      "/tmp/cp3-reviewer-20260907-ca_o_s87/baseline/skill-reviewer"
+    ],
+    "exit_code": 1,
+    "stdout": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n",
+    "stderr": ""
+  }
+]

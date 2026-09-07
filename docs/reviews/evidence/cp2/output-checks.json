@@ -1,0 +1,106 @@
+[
+  {
+    "run": 3,
+    "actor": "coordinator after trial; not retroactive executor evidence",
+    "command": [
+      "node",
+      "compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "fixture/meeting-note-helper"
+    ],
+    "exit_code": 0,
+    "stdout": "OK fixture/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "run": 3,
+    "actor": "coordinator after trial; not retroactive executor evidence",
+    "command": [
+      "node",
+      "compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "deliverable/meeting-note-helper"
+    ],
+    "exit_code": 0,
+    "stdout": "OK deliverable/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "run": 4,
+    "actor": "coordinator after trial; not retroactive executor evidence",
+    "command": [
+      "node",
+      "compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "fixture/meeting-note-helper"
+    ],
+    "exit_code": 0,
+    "stdout": "OK fixture/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "run": 4,
+    "actor": "coordinator after trial; not retroactive executor evidence",
+    "command": [
+      "node",
+      "compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "deliverable/meeting-note-helper"
+    ],
+    "exit_code": 0,
+    "stdout": "OK deliverable/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "run": 7,
+    "actor": "coordinator after trial; not retroactive executor evidence",
+    "command": [
+      "node",
+      "compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "fixture/meeting-note-helper"
+    ],
+    "exit_code": 0,
+    "stdout": "OK fixture/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "run": 7,
+    "actor": "coordinator after trial; not retroactive executor evidence",
+    "command": [
+      "node",
+      "compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "deliverable/meeting-note-helper"
+    ],
+    "exit_code": 0,
+    "stdout": "OK deliverable/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "run": 8,
+    "actor": "coordinator after trial; not retroactive executor evidence",
+    "command": [
+      "node",
+      "compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "fixture/meeting-note-helper"
+    ],
+    "exit_code": 0,
+    "stdout": "OK fixture/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "run": 8,
+    "actor": "coordinator after trial; not retroactive executor evidence",
+    "command": [
+      "node",
+      "compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "deliverable/meeting-note-helper"
+    ],
+    "exit_code": 0,
+    "stdout": "OK deliverable/meeting-note-helper\n",
+    "stderr": ""
+  }
+]

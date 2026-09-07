@@ -1,0 +1,30 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+  },
+  {
+    "path": "brief.md",
+    "sha256": "c3d95b686f355d060e835c5ef812a18f209c7b1d16e9eea716dec22fbebb910f"
+  },
+  {
+    "path": "conversation.md",
+    "sha256": "7fe951eef97495d5ed0320d5aabf970ef7f62b7e2cb2b714c56c94c18d0be96e"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+    "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+    "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+  },
+  {
+    "path": "docs/templates/ISSUE_TEMPLATE.md",
+    "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+  },
+  {
+    "path": "inputs/release-note.md",
+    "sha256": "d54c7cbe41fc0cfa34ac7ba25b1a4e92c17ae102a4f1bddd12097d504de00141"
+  }
+]

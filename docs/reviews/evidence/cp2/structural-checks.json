@@ -1,0 +1,71 @@
+[
+  {
+    "cwd": "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-source-compiler",
+    "command": [
+      "node",
+      "scripts/skill-source-compiler.mjs",
+      "lint",
+      "."
+    ],
+    "exit_code": 0,
+    "stdout": "OK .\n",
+    "stderr": ""
+  },
+  {
+    "cwd": "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-source-compiler",
+    "command": [
+      "node",
+      "scripts/skill-source-compiler.mjs",
+      "check",
+      "."
+    ],
+    "exit_code": 0,
+    "stdout": "OK .\n",
+    "stderr": ""
+  },
+  {
+    "cwd": "/tmp/cp2-compiler-20260907-_o2kb18r/candidate-emitted/skill-source-compiler",
+    "command": [
+      "node",
+      "scripts/skill-source-compiler.mjs",
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout": "skill-source-compiler CLI v0.2.5\n\nShipped commands:\n  help [command]                                  Show global help or command-local help.\n  lint <source-dir>                               Validate a source bundle without writing output files.\n  compile <source-dir> --out-dir <skills-dir>    Compile one source bundle into an independent output directory.\n  compile-all <sources-root> --out-dir <skills-dir> Compile direct child directories that contain skill.yaml into distinct paths under an independent output directory.\n  regenerate <source-dir>                         Regenerate compiler-owned files inside a source bundle.\n  check <skill-dir>                               Validate a compiled skill folder or generated source bundle.\n\nExit codes:\n  0 success\n  1 command completed but found validation/runtime problems\n  2 usage error\n  3 unexpected internal failure\n\nRun `skill-source-compiler help <command>` for command-local examples.\n",
+    "stderr": ""
+  },
+  {
+    "cwd": "/tmp/cp2-compiler-20260907-_o2kb18r/candidate-emitted/skill-source-compiler",
+    "command": [
+      "node",
+      "scripts/skill-source-compiler.mjs",
+      "check",
+      "."
+    ],
+    "exit_code": 0,
+    "stdout": "OK .\n",
+    "stderr": ""
+  },
+  {
+    "cwd": "/home/kostysh/.codex/skills/custom/.worktrees/skill-methodology/skills/skill-source-compiler",
+    "command": [
+      "python3",
+      "/home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+      "."
+    ],
+    "exit_code": 1,
+    "stdout": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "/home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+      "/tmp/cp2-compiler-20260907-_o2kb18r/baseline-package/skill-source-compiler"
+    ],
+    "exit_code": 1,
+    "stdout": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n",
+    "stderr": "",
+    "interpretation": "Same rejection of pre-existing compatibility field; utility schema limitation, not candidate regression. Built compiler schema/check accepts this unchanged field."
+  }
+]

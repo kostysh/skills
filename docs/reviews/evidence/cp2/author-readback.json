@@ -1,0 +1,12 @@
+{
+  "candidate_manifest_drift": [],
+  "emitted_mismatches": [],
+  "active_links_missing": [],
+  "active_absolute_dependency_matches": [],
+  "bytes": {
+    "baseline_root": 18801,
+    "candidate_root": 19211,
+    "baseline_root_plus_refs": 39055,
+    "candidate_root_plus_refs": 43348
+  }
+}

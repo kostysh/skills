@@ -1,0 +1,82 @@
+[
+  {
+    "path": "compiler/SKILL.md",
+    "sha256": "19d788081e9e9719b03ed454f48130cc337e91d47f07df50ed0ccea94fd0daee"
+  },
+  {
+    "path": "compiler/assets/source-template.yaml",
+    "sha256": "66959144aa628c60361075ccfabe4e2f068ecf77e2196dc9931ea4b45175379c"
+  },
+  {
+    "path": "compiler/docs/compile-report.md",
+    "sha256": "7a1bfbece662303014a13355ef65e9ba1cd1a038531f9f0465c6fd94d7bef91a"
+  },
+  {
+    "path": "compiler/docs/issues/design-notes.md",
+    "sha256": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f"
+  },
+  {
+    "path": "compiler/docs/logs/implementation-log-20260710-1.md",
+    "sha256": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468"
+  },
+  {
+    "path": "compiler/docs/logs/implementation-log-20260713-1.md",
+    "sha256": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af"
+  },
+  {
+    "path": "compiler/docs/logs/implementation-log-20260715-1.md",
+    "sha256": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f"
+  },
+  {
+    "path": "compiler/references/authoring-guidelines.md",
+    "sha256": "4170dfa92f7584e9d9b73782092edbc2b1fed45b7cf42c92f7bf376407defb8b"
+  },
+  {
+    "path": "compiler/references/conflict-resolution.md",
+    "sha256": "f185401a43335ce3003340cf5d6767558430485089df0067119009ab0ace73c7"
+  },
+  {
+    "path": "compiler/references/maintenance.md",
+    "sha256": "5f5dad01d6f64a2c2c25b452848fdf5ca7e228a6afa057a97a75970f1682ec7d"
+  },
+  {
+    "path": "compiler/references/output-structure.md",
+    "sha256": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005"
+  },
+  {
+    "path": "compiler/references/source-language.md",
+    "sha256": "0cad582c37076429eda23aaafe2eafeef1973b4b9ace825e55af6b746da53ce9"
+  },
+  {
+    "path": "compiler/scripts/skill-source-compiler.mjs",
+    "sha256": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163"
+  },
+  {
+    "path": "fixture/meeting-note-helper/AGENTS.md",
+    "sha256": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b"
+  },
+  {
+    "path": "fixture/meeting-note-helper/SKILL.md",
+    "sha256": "f95e21a9f0a5bfe0c262910b78dad2f7e4debab25ef4ce5ab4e242f104c2862c"
+  },
+  {
+    "path": "fixture/meeting-note-helper/docs/compile-report.md",
+    "sha256": "b7188c9279d165097d314f4bfb29b2dbf1c1f1bb5e358d37e661b2b7c917dedd"
+  },
+  {
+    "path": "fixture/meeting-note-helper/docs/migration-note.md",
+    "sha256": "29d0cd51bfa998ebe1df934405c83554fd66475d31e26ea6c27a964f7df23b03"
+  },
+  {
+    "path": "fixture/meeting-note-helper/references/action-items.md",
+    "sha256": "a7eca2159fc9574bef3974be2ceaf5413bd3991e894b7a504ad90a0e88f044f9"
+  },
+  {
+    "path": "fixture/meeting-note-helper/skill.yaml",
+    "sha256": "908dc4127dadbf2c30ec0197a5e9b25a024d8631bf23dc9f714404dae4b304ee"
+  },
+  {
+    "path": "prompt.md",
+    "sha256": "4f56f8639df89a484a104cb1aa357c7349304957dc35ee3d2505744601a866e4"
+  }
+]

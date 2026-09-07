@@ -1,0 +1,2 @@
+Frozen UTC: 2026-09-07T14:37:57.026407+00:00
+Candidate exposure: none. Behavioral runs: none. Fixtures prepared using baseline shipped CLI only.

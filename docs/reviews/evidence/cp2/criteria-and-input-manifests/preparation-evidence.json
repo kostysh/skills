@@ -1,0 +1,47 @@
+[
+  {
+    "args": [
+      "lint",
+      "/tmp/cp2-compiler-20260907-_o2kb18r/cases/02/fixture/meeting-note-helper"
+    ],
+    "code": 0,
+    "stdout": "OK /tmp/cp2-compiler-20260907-_o2kb18r/cases/02/fixture/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "regenerate",
+      "/tmp/cp2-compiler-20260907-_o2kb18r/cases/03/fixture/meeting-note-helper"
+    ],
+    "code": 0,
+    "stdout": "Regenerated /tmp/cp2-compiler-20260907-_o2kb18r/cases/03/fixture/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "check",
+      "/tmp/cp2-compiler-20260907-_o2kb18r/cases/03/fixture/meeting-note-helper"
+    ],
+    "code": 0,
+    "stdout": "OK /tmp/cp2-compiler-20260907-_o2kb18r/cases/03/fixture/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "regenerate",
+      "/tmp/cp2-compiler-20260907-_o2kb18r/cases/04/fixture/meeting-note-helper"
+    ],
+    "code": 0,
+    "stdout": "Regenerated /tmp/cp2-compiler-20260907-_o2kb18r/cases/04/fixture/meeting-note-helper\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "lint",
+      "/tmp/cp2-compiler-20260907-_o2kb18r/cases/04/fixture/meeting-note-helper"
+    ],
+    "code": 0,
+    "stdout": "OK /tmp/cp2-compiler-20260907-_o2kb18r/cases/04/fixture/meeting-note-helper\n",
+    "stderr": ""
+  }
+]

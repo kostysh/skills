@@ -1,0 +1,34 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+  },
+  {
+    "path": "brief.md",
+    "sha256": "95b5bd679bb6c18b1a9ef53243f2cde7a296ed2bf5a63b19a08c2fb2d7224adf"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+    "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+    "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+  },
+  {
+    "path": "docs/templates/ISSUE_TEMPLATE.md",
+    "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+  },
+  {
+    "path": "package/SKILL.md",
+    "sha256": "1ff77897237d93b6f4e68219ad03d7fe7bf50e743de1c063fde012084a20c655"
+  },
+  {
+    "path": "package/docs/maintenance-note.md",
+    "sha256": "1eabb11eabafebacb378d6fdf9d5c70cce1a6bd9119ea70053963b48e85b5ed6"
+  },
+  {
+    "path": "source/instructions.md",
+    "sha256": "5b9c243e195cf21b0e097462c004c84f3f61a6e947d9961167cc5c609360f8d8"
+  }
+]

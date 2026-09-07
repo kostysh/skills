@@ -1,0 +1,34 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+  },
+  {
+    "path": "brief.md",
+    "sha256": "3b5834b5f80418a822408ef23690d7c3d1848755f3b4014a9635b47bbcd8844c"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+    "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+    "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+  },
+  {
+    "path": "docs/templates/ISSUE_TEMPLATE.md",
+    "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+  },
+  {
+    "path": "inputs/changes.md",
+    "sha256": "4e46b4fa47a0c7869130b54211f583ce1613e14cb6ec2082768cc6adebbb05e0"
+  },
+  {
+    "path": "inputs/release-note.md",
+    "sha256": "a0764dc62a4f073873bd930fd09bfaa010d19cdfe2e07b8eb9cbffff19ef47d8"
+  },
+  {
+    "path": "inputs/release-process.md",
+    "sha256": "e3961d494c0d184ac3cea91794764678b33cda9a5c727178d0292db4e80ee099"
+  }
+]
