@@ -1,0 +1,44 @@
+{
+  "snapshot": "4c95da6f221e60f9463fe11eaa86952fc4d3397f3ff5deb1731bd9fb6e22c2ea",
+  "preedit_verified_files": 27,
+  "bindings_verified": true,
+  "active_parity": true,
+  "delivery": {
+    "01a": {
+      "source": "initial-providers/concept-conformance-reviewer/SKILL.md",
+      "chars": 19980,
+      "covered": 19980,
+      "uncovered": []
+    },
+    "01b": {
+      "source": "concept-candidate-active/SKILL.md",
+      "chars": 20161,
+      "covered": 20161,
+      "uncovered": []
+    },
+    "02a": {
+      "source": "initial-providers/concept-conformance-reviewer/SKILL.md",
+      "chars": 19980,
+      "covered": 19980,
+      "uncovered": []
+    },
+    "02b": {
+      "source": "concept-candidate-active/SKILL.md",
+      "chars": 20161,
+      "covered": 20161,
+      "uncovered": []
+    },
+    "03a": {
+      "source": "initial-providers/concept-conformance-reviewer/SKILL.md",
+      "chars": 19980,
+      "covered": 19980,
+      "uncovered": []
+    },
+    "03b": {
+      "source": "concept-candidate-active/SKILL.md",
+      "chars": 20161,
+      "covered": 20161,
+      "uncovered": []
+    }
+  }
+}

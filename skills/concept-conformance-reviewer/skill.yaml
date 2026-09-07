@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: concept-conformance-reviewer
-  source-version: 0.2.3
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review features, specs, plans, acceptance criteria, implementations, and closure

@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.3`
+- Skill source version: `0.2.4`
 
 ## Source files
 - `docs/README.md`
@@ -17,7 +17,7 @@ Generated from `skill.yaml`.
 - none
 
 ## Warnings
-- none
+- Generated SKILL.md is 20179 bytes, above the recommended maximum 20000 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.
 
 ## Notes
 - This document is supporting output only.
