@@ -1,0 +1,275 @@
+{
+  "algorithm": "SHA-256 of UTF-8 JSON array with sorted relative POSIX paths and per-file SHA-256; separators comma/colon, ensure_ascii=False",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+    },
+    {
+      "path": "README.md",
+      "sha256": "4b650c9c229ba402628c07a77378c216bfc2b9cbb4ec5838559223afe40fcd9c"
+    },
+    {
+      "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+      "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+    },
+    {
+      "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+      "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+    },
+    {
+      "path": "docs/templates/ISSUE_TEMPLATE.md",
+      "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+    },
+    {
+      "path": "skills/skill-reviewer/SKILL.md",
+      "sha256": "8ea0404bc848ad4d5db340397d33830465b3a04cfef7dc64b18a3301c1d6a1e6"
+    },
+    {
+      "path": "skills/skill-reviewer/agents/openai.yaml",
+      "sha256": "a994897436fa20b07a239ef887baadd5b8828fae0c238dc2643e435edf25e639"
+    },
+    {
+      "path": "skills/skill-reviewer/docs/README.md",
+      "sha256": "5bf694e91a4a7211f0446e3c2010e88f556f1c2b2c24c9f78b14a06076939602"
+    },
+    {
+      "path": "skills/skill-reviewer/docs/compile-report.md",
+      "sha256": "a5255a0fda306fb7f0a7e6e3ffba83ee18681743ecffc90384a4ab5eb9f7eecd"
+    },
+    {
+      "path": "skills/skill-reviewer/docs/logs/implementation-log-20260710-1.md",
+      "sha256": "7fb3fefb6b80227661fffbadf8dc5781cb58e18557f66e278eeb2527457198ac"
+    },
+    {
+      "path": "skills/skill-reviewer/docs/logs/implementation-log-20260713-1.md",
+      "sha256": "545cb0720c48ceb61d8905e8c179af295cc354f82a7b66b11c3c67267b954a2f"
+    },
+    {
+      "path": "skills/skill-reviewer/docs/logs/implementation-log-20260713-2.md",
+      "sha256": "60e02e9429f195889775d1ea8b6bde193177c822fa0b28904961b6bb087939ac"
+    },
+    {
+      "path": "skills/skill-reviewer/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "261dfc4f7354dd25c4b295482b07d268018b628093ed77b1152146bb7c21f62f"
+    },
+    {
+      "path": "skills/skill-reviewer/docs/logs/implementation-log-20260727-1.md",
+      "sha256": "439c599f7f4ab12f573d0269508caeb90bc26e13eda6c0aae1c5c1bfdbeec7c1"
+    },
+    {
+      "path": "skills/skill-reviewer/fragments/overview.md",
+      "sha256": "dd09bd4d6c9cba749cc6895300938322963412662ecb3c6240965da4f457ed56"
+    },
+    {
+      "path": "skills/skill-reviewer/references/forward-testing.md",
+      "sha256": "bbf11a7ca84b990097cb25696d552677e10013f9780cdb2f32ebc5e962865796"
+    },
+    {
+      "path": "skills/skill-reviewer/references/methodology.md",
+      "sha256": "be1139fac251a4478e904bd4d6f650ea1173e870f43bca1dfa2977ffc5bef47b"
+    },
+    {
+      "path": "skills/skill-reviewer/skill.yaml",
+      "sha256": "c2775b3a35ee832da03b423298c2054c77125c19024b62a1139b390f2b0b75b9"
+    },
+    {
+      "path": "skills/skill-source-compiler/AGENTS.md",
+      "sha256": "46a44f02df38befc32de281590b05e412683b03824f8e404141c94c7405b0d4c"
+    },
+    {
+      "path": "skills/skill-source-compiler/SKILL.md",
+      "sha256": "19d788081e9e9719b03ed454f48130cc337e91d47f07df50ed0ccea94fd0daee"
+    },
+    {
+      "path": "skills/skill-source-compiler/assets/source-template.yaml",
+      "sha256": "66959144aa628c60361075ccfabe4e2f068ecf77e2196dc9931ea4b45175379c"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/README.md",
+      "sha256": "3d2308dfc5b440862c4f6f258dcc7adb98e8b04633d36f033de5a5beaa55fbf5"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/compile-report.md",
+      "sha256": "7a1bfbece662303014a13355ef65e9ba1cd1a038531f9f0465c6fd94d7bef91a"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/issues/design-notes.md",
+      "sha256": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/issues/implementation-plan-20260424-1.md",
+      "sha256": "ef284233306ddfe1d6c6e3918fdf976a5573b105b67edd3bf2ca9189e7fd2b90"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/issues/implementation-plan-20260424-2.md",
+      "sha256": "73ec6a8278b73acde61e2cb6e2017fddc0c2bcc89282dd4fe0f884f7e8f07df6"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/issues/issue-20260424-1.md",
+      "sha256": "1901ff2ef242c4566982d2a92c213f465583c7992055d98d6c75d1ca7a2db1f6"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/issues/issue-20260424-2.md",
+      "sha256": "01d12ae520882007c5d96fc8c1b695ac8e4bd4d7ed6f4206577fda04fdff8aca"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260424-1.md",
+      "sha256": "97720c0acf4e9a539c73fe14f3fd65f9b7f77df16180ab48dc3c0d4317a1785f"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260424-2.md",
+      "sha256": "11d53a6252ff325fccda3da521f72e500776662e651e089b8efd61ad6f5ea407"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260428-1.md",
+      "sha256": "e555c28d6c671aec37651efceb59c2f0f11d21ead216c3f362ea1450464c2f27"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260429-1.md",
+      "sha256": "49b8d0b953912ee6bad14bfcbedfc7ab5125ee87dde9186d8ede5b7745ef276d"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260509-1.md",
+      "sha256": "2eec6ed75d32f6d52212b73a6f605d3fb27f32e1a615f92c09518e00a6cd69fa"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260509-2.md",
+      "sha256": "cd56a3b259ec1254592f0ffc12a1a147efd27524b9a95961d6137abe80adc990"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260622-1.md",
+      "sha256": "e5848f80c6bec01882f66b8496c5d92b326bd99975d53f86c391f52965c00d4d"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260710-1.md",
+      "sha256": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260713-1.md",
+      "sha256": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af"
+    },
+    {
+      "path": "skills/skill-source-compiler/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f"
+    },
+    {
+      "path": "skills/skill-source-compiler/fragments/final-checks.md",
+      "sha256": "de86ead8a7d21172a8f6fc708f187933256069d1335a65a07630c6049814759c"
+    },
+    {
+      "path": "skills/skill-source-compiler/fragments/overview.md",
+      "sha256": "8263a6c9d9c6578a999ebf44c8ff89caec1256fe3115d02ba173f9f6664e2ed9"
+    },
+    {
+      "path": "skills/skill-source-compiler/package.json",
+      "sha256": "9882d09214c456173666b2c560f34e78114f484b326d9579a28589a02425879c"
+    },
+    {
+      "path": "skills/skill-source-compiler/references/authoring-guidelines.md",
+      "sha256": "4170dfa92f7584e9d9b73782092edbc2b1fed45b7cf42c92f7bf376407defb8b"
+    },
+    {
+      "path": "skills/skill-source-compiler/references/conflict-resolution.md",
+      "sha256": "f185401a43335ce3003340cf5d6767558430485089df0067119009ab0ace73c7"
+    },
+    {
+      "path": "skills/skill-source-compiler/references/maintenance.md",
+      "sha256": "5f5dad01d6f64a2c2c25b452848fdf5ca7e228a6afa057a97a75970f1682ec7d"
+    },
+    {
+      "path": "skills/skill-source-compiler/references/output-structure.md",
+      "sha256": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005"
+    },
+    {
+      "path": "skills/skill-source-compiler/references/source-language.md",
+      "sha256": "0cad582c37076429eda23aaafe2eafeef1973b4b9ace825e55af6b746da53ce9"
+    },
+    {
+      "path": "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "sha256": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163"
+    },
+    {
+      "path": "skills/skill-source-compiler/scripts/skill-source-compiler.mjs.map",
+      "sha256": "0655b7c82a679e5371abcb7c3a876484cca1314307afe6001241febedece6ab4"
+    },
+    {
+      "path": "skills/skill-source-compiler/skill.yaml",
+      "sha256": "46c4c03751d80979f0cf782194eaf66cde48f3366bdcde4e286d983485919345"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/check.ts",
+      "sha256": "d1eacc9d04bacf239f2a0849d60dc8672b85c60aaa2db7c9369281de1835e609"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/cli.ts",
+      "sha256": "ab7a66c30064c72624374579c75797dffb709ac6688265a6eb844465c673dd26"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/compiler.ts",
+      "sha256": "1bba2b23c47b9a9fd2c5e195cb879bec4888f5adf060547ab1559e04ec58f6b3"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/errors.ts",
+      "sha256": "f73565a6490c425499ef67bb71c1ae3c80d4b80e3b07cb0bac916c9e2674f4ef"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/fs-utils.ts",
+      "sha256": "de29ce49be9a26f2c9470070ac025ab809aabfe1a68ffa9a8451e24c752291bc"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/index.ts",
+      "sha256": "2f5e15d71972b5b6ec6f1edec1b3d14282554c044bbf0980f7ca4177739a7c8a"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/lint.ts",
+      "sha256": "2fe9e26047703a786345adfe79be99f5dc06b1c419269b076acb06c46b7918e4"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/renderer.ts",
+      "sha256": "487c9863a3a010a6208a0abcb06079ccd81650359f712e825cd11f0683f04d43"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/run-cli.ts",
+      "sha256": "dcca56f3b89de86e86997164384fd23a4646c467c2845d8a13bfb36a19412164"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/schema.ts",
+      "sha256": "f1f213bfa3631b0f2e25c148271ab113486be95ae6c0d86c0c457e73a2d87dfb"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/source-loader.ts",
+      "sha256": "0a91b59f48a632df334ec16384ad32fd29cf689ae8f0abf4c85283a81b2490d0"
+    },
+    {
+      "path": "skills/skill-source-compiler/src/text.ts",
+      "sha256": "dbf48d18e66256b1afc2058d89a6a2b8ce97f442db6d127e575e2ab18f691a32"
+    },
+    {
+      "path": "skills/skill-source-compiler/test/check.test.ts",
+      "sha256": "54c4903f03885aafab6660f79cf7199af8492af94935b97ff024fe5f8ed71834"
+    },
+    {
+      "path": "skills/skill-source-compiler/test/cli.test.ts",
+      "sha256": "a584b6f7a5f2ce829bcd53ed4da6a3c1be34c44f651b1ff46cc6c57ee7b370e6"
+    },
+    {
+      "path": "skills/skill-source-compiler/test/compile.test.ts",
+      "sha256": "8460e4921799c46befc789fd86c8efbfb3d232e82f8fb00c77c3a11c864cd84d"
+    },
+    {
+      "path": "skills/skill-source-compiler/test/lint.test.ts",
+      "sha256": "d975463adc7923ccc04409c9c7a164560cd8030dd2d987bb178bee723ed049b8"
+    },
+    {
+      "path": "skills/skill-source-compiler/tsconfig.json",
+      "sha256": "32138b12895e6c4a36cb15574315b907689da05862b158f0696258b63a6fac73"
+    },
+    {
+      "path": "skills/skill-source-compiler/vite.config.ts",
+      "sha256": "a9835338cded355b8e82f898a4f7f418cd04a8e8e3180a4557f2a18d5ea7e4a5"
+    }
+  ],
+  "aggregate_sha256": "2b1df87e08f7430bfb269d8462b1747b3bd836660ec549e5aafa776df02e0775",
+  "file_count": 67
+}

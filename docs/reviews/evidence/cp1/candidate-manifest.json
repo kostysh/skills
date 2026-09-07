@@ -1,0 +1,30 @@
+{
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd"
+    },
+    {
+      "path": "README.md",
+      "sha256": "278084fa2ce103b4281ceabd0a4a49ab5e3d3d8d6c8d7f7879db572817335cc0"
+    },
+    {
+      "path": "docs/skill-standard.md",
+      "sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+    },
+    {
+      "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+      "sha256": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb"
+    },
+    {
+      "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+      "sha256": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1"
+    },
+    {
+      "path": "docs/templates/ISSUE_TEMPLATE.md",
+      "sha256": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c"
+    }
+  ],
+  "file_count": 6,
+  "aggregate_sha256": "6bc747089fa6e52468091c53811dac89d3e37a751f93558bbcb9e8508c1dca49"
+}

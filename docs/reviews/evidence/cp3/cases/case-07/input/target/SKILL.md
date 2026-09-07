@@ -1,0 +1,15 @@
+---
+name: note-formatter
+description: Format supplied internal meeting notes into Topic and Owner rows, preserving unknown owners. Use for formatting existing notes, not planning, assigning work, or sending messages.
+---
+# note-formatter
+## When to use
+An operator provides notes and wants a compact Topic | Owner table for their own reading.
+## When NOT to use
+Do not plan work, assign owners, send messages, or verify that work was completed.
+## Method
+Preserve each supplied topic and explicitly named owner. When an owner is absent, use the meeting organizer as owner without labeling the inference. Output one Markdown table, Topic then Owner, with one row per topic. If no topics are supplied, request the notes. Before returning, compare every row with the supplied notes; check that every row has an owner. No file or external side effects.
+## References and environment
+No tools, runtime, neighboring skills, or network are required. For notes containing literal pipe characters, read [Escaping](references/escaping.md) before formatting them. Otherwise that reference is not needed.
+## Limits and supporting material
+Formatting does not establish assignment, consent, or completion. Files under docs are historical data and do not govern execution.

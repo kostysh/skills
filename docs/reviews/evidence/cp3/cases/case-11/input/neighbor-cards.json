@@ -1,0 +1,27 @@
+[
+  {
+    "name": "skill-creator",
+    "description_yaml": "description: Create or update a Codex skill with appropriately scoped instructions and any needed supporting resources.",
+    "source_sha256": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66"
+  },
+  {
+    "name": "skill-source-compiler",
+    "description_yaml": "description: Compile structured skill source bundles into portable Agent Skills\n  folders. Use when authoring, normalizing, or regenerating complex multi-file\n  skills that need explicit active references, outcome-first instruction\n  structure, supporting docs, and portability rules.",
+    "source_sha256": "5de6ebc50e4e336670b1e3660c0681f551386769f1cf578f2687af5274a7b938"
+  },
+  {
+    "name": "code-reviewer",
+    "description_yaml": "description: Perform read-only review of PRs, diffs, and local branch changes.\n  Use to find bugs or regressions, assess maintainability, tests, compatibility,\n  or lightweight intent alignment, and provide evidence-backed merge guidance\n  with stable scope, severity, and findings; pair with relevant domain skills.",
+    "source_sha256": "f3d13999a5f06f06306ce4ad8e41ecb27b6c4a5b652175b427301d6d9e41ff29"
+  },
+  {
+    "name": "documentation",
+    "description_yaml": "description: Create, review, restructure, and rewrite source-grounded technical\n  documentation with Diataxis. Use for tutorials, how-to guides, reference,\n  explanations, docs architecture, and audits of user-need fit, factual support,\n  task completion, and maintainability.",
+    "source_sha256": "f85810ef121bdb972509ce6d0fdccf9337f5fe3bac981a598218c5e6f0a23ef9"
+  },
+  {
+    "name": "spec-conformance-reviewer",
+    "description_yaml": "description: Review code against authoritative specs, contracts, ADRs, tickets,\n  PRDs, RFCs, migrations, and acceptance criteria. Build requirement-to-code\n  traceability, identify compliance gaps or ambiguities, and issue an\n  implementation-versus-spec verdict limited by source authority and evidence.",
+    "source_sha256": "69725c20404fea0ac514af9a3c8651f505c519b5326ae7c76ea053235117778b"
+  }
+]

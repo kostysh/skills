@@ -1,0 +1,148 @@
+{
+  "model": "GPT-6 Astra (inherited from parent)",
+  "reasoning_effort": "medium",
+  "fork_turns": "none",
+  "isolation": "fresh context and instruction-scoped reads; shared filesystem, not technical isolation",
+  "runs": [
+    {
+      "run": "run-01",
+      "case": "case-01",
+      "policy": "baseline",
+      "agent": "/root/trial_01"
+    },
+    {
+      "run": "run-02",
+      "case": "case-02",
+      "policy": "baseline",
+      "agent": "/root/trial_02"
+    },
+    {
+      "run": "run-03",
+      "case": "case-03",
+      "policy": "baseline",
+      "agent": "/root/trial_03"
+    },
+    {
+      "run": "run-04",
+      "case": "case-04",
+      "policy": "baseline",
+      "agent": "/root/trial_04"
+    },
+    {
+      "run": "run-05",
+      "case": "case-01",
+      "policy": "candidate",
+      "agent": "/root/trial_05"
+    },
+    {
+      "run": "run-06",
+      "case": "case-02",
+      "policy": "candidate",
+      "agent": "/root/trial_06"
+    },
+    {
+      "run": "run-07",
+      "case": "case-03",
+      "policy": "candidate",
+      "agent": "/root/trial_07"
+    },
+    {
+      "run": "run-08",
+      "case": "case-04",
+      "policy": "candidate",
+      "agent": "/root/trial_08"
+    }
+  ],
+  "resource_measurements": {
+    "API_token_usage": null,
+    "controlled_latency": null,
+    "cost": null,
+    "observed_runs": [
+      {
+        "run": "run-01",
+        "commandCount": 3,
+        "manualFinalMatchesApp": true,
+        "durationMs": 48244,
+        "observedTypes": [
+          "agentMessage",
+          "commandExecution"
+        ]
+      },
+      {
+        "run": "run-02",
+        "commandCount": 3,
+        "manualFinalMatchesApp": true,
+        "durationMs": 32991,
+        "observedTypes": [
+          "agentMessage",
+          "commandExecution"
+        ]
+      },
+      {
+        "run": "run-03",
+        "commandCount": 4,
+        "manualFinalMatchesApp": true,
+        "durationMs": 59642,
+        "observedTypes": [
+          "agentMessage",
+          "commandExecution"
+        ]
+      },
+      {
+        "run": "run-04",
+        "commandCount": 3,
+        "manualFinalMatchesApp": true,
+        "durationMs": 35153,
+        "observedTypes": [
+          "agentMessage",
+          "commandExecution"
+        ]
+      },
+      {
+        "run": "run-05",
+        "commandCount": 4,
+        "manualFinalMatchesApp": true,
+        "durationMs": 50825,
+        "observedTypes": [
+          "agentMessage",
+          "commandExecution"
+        ]
+      },
+      {
+        "run": "run-06",
+        "commandCount": 3,
+        "manualFinalMatchesApp": true,
+        "durationMs": 33480,
+        "observedTypes": [
+          "agentMessage",
+          "commandExecution"
+        ]
+      },
+      {
+        "run": "run-07",
+        "commandCount": 4,
+        "manualFinalMatchesApp": true,
+        "durationMs": 48372,
+        "observedTypes": [
+          "agentMessage",
+          "commandExecution"
+        ]
+      },
+      {
+        "run": "run-08",
+        "commandCount": 4,
+        "manualFinalMatchesApp": true,
+        "durationMs": 46408,
+        "observedTypes": [
+          "agentMessage",
+          "commandExecution"
+        ]
+      }
+    ],
+    "comparison_limit": "Single trial per case/version; raw elapsed times are uncontrolled. Baseline 13 shell commands vs candidate 15; no efficiency improvement claimed."
+  },
+  "tool_trace": "Codex app read_thread for all eight child turns, page.hasMore=false; actual commandExecution events and agent messages exported, command output untruncated. No reasoning included. These are app-visible trial events, not OS-wide monitoring.",
+  "criteria_exposure": "designer did not read candidate or modified templates; no rubric provided to executors",
+  "chronology": "baseline saved before any edits; rubric and template edits ran concurrently; rubric completed before AGENTS/standard edits; no claim that rubric physically preceded every template edit",
+  "executor_prompt_template": "Рабочий каталог задачи <run-root>. Прочитай его AGENTS.md и brief.md, затем выполни пользовательскую задачу из brief.md в пределах указанного каталога и разрешений. Не читай соседние каталоги, материалы других агентов, планы или сессионную историю. Не запускай других агентов. Не меняй политику репозитория. Итоговый ответ должен содержать результат задачи, реально выполненную проверку и точные команды с существенным фактическим выводом, на котором основан ответ; непроведённое обозначь явно. Работай инструментами с workdir именно этого каталога. Внешние действия не разрешены."
+}

@@ -1,0 +1,10 @@
+{
+  "context.md": "c551927babddc8986063ba40b1834cd38f9dbb9bb7710a4017cdd2d64dde3c1b",
+  "publishing.md": "c8fb8d7f442e7f404389936d968663d0f41eefbbb44eb4397af44a432f88c35e",
+  "source/SKILL.md": "91bf26608b2c0d19cd63230a58fc77c7097e62db245b8b277f66838d45868716",
+  "source/agents/openai.yaml": "e98ee9f84fcb0574e119e92fe94655351628ca513aa093e600e8db135475723f",
+  "source/references/escaping.md": "3cde4b7275c9eea27bb839a9aad365e2714bd4c5965e9eeb824dcd0ee48833ef",
+  "target/SKILL.md": "efc9d318a4a533f9042904a1a33feae0cfb3e4a0481ee1fce9597629bc0aba61",
+  "target/agents/openai.yaml": "e98ee9f84fcb0574e119e92fe94655351628ca513aa093e600e8db135475723f",
+  "target/references/escaping.md": "3cde4b7275c9eea27bb839a9aad365e2714bd4c5965e9eeb824dcd0ee48833ef"
+}

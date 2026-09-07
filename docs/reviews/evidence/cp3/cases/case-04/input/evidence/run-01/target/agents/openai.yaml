@@ -1,0 +1,3 @@
+interface:
+  display_name: "Note Formatter"
+  short_description: "Format supplied notes without assigning work"

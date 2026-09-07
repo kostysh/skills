@@ -1,0 +1,62 @@
+[
+  {
+    "path": "compiler/SKILL.md",
+    "sha256": "5de6ebc50e4e336670b1e3660c0681f551386769f1cf578f2687af5274a7b938"
+  },
+  {
+    "path": "compiler/assets/source-template.yaml",
+    "sha256": "39cc78cc1b921e54ece551823160b4e88dae65d5cd92f0a4d8a1ac015c37c2aa"
+  },
+  {
+    "path": "compiler/docs/compile-report.md",
+    "sha256": "da14705d99f1b19ca7e427e048c2a72d1392bc305e98f6cb083aac11cf760553"
+  },
+  {
+    "path": "compiler/docs/issues/design-notes.md",
+    "sha256": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f"
+  },
+  {
+    "path": "compiler/docs/logs/implementation-log-20260710-1.md",
+    "sha256": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468"
+  },
+  {
+    "path": "compiler/docs/logs/implementation-log-20260713-1.md",
+    "sha256": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af"
+  },
+  {
+    "path": "compiler/docs/logs/implementation-log-20260715-1.md",
+    "sha256": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f"
+  },
+  {
+    "path": "compiler/references/authoring-guidelines.md",
+    "sha256": "ed832f7cf421e9620fd99f937bb0b44e331208ae4b3e7dabe5cf0351f5fa38c4"
+  },
+  {
+    "path": "compiler/references/conflict-resolution.md",
+    "sha256": "725d28087139dcd42643a56bb4cf00a2a21a5b04a052a27c2f0e9b49c900800e"
+  },
+  {
+    "path": "compiler/references/maintenance.md",
+    "sha256": "b12863faf30124bcfdd25139961bc06f78981202d20cb0390c484c1a0d3b4fe9"
+  },
+  {
+    "path": "compiler/references/output-structure.md",
+    "sha256": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005"
+  },
+  {
+    "path": "compiler/references/source-language.md",
+    "sha256": "8164f90ead2e42d389c93d23e45e28d664adef14421b1f14cb4008c37f730044"
+  },
+  {
+    "path": "compiler/scripts/skill-source-compiler.mjs",
+    "sha256": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163"
+  },
+  {
+    "path": "fixture/meeting-note-helper/SKILL.md",
+    "sha256": "2850ead10e1bda2dde0f7923ea7e3ff971c25025b847abf1e903cef32077f77c"
+  },
+  {
+    "path": "prompt.md",
+    "sha256": "3aa2947ac8cd8e62ed749f55ded2e153777488a2f9243fa56f86208019920224"
+  }
+]

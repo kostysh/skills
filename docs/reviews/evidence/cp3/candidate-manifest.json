@@ -1,0 +1,58 @@
+[
+  {
+    "path": "SKILL.md",
+    "sha256": "7f536fd4bd4c35676e991b3b6eb9f7542c352c98067eee6112dee6af981e2c62"
+  },
+  {
+    "path": "agents/openai.yaml",
+    "sha256": "03a2bd25ee1d5ee8a7b155cf9bc3502886c9cb75ae14924f1e6a60463ac7aac1"
+  },
+  {
+    "path": "docs/README.md",
+    "sha256": "0330aa1884ac78448af53ce8ed57013f2e8bebade0c89d4f85e8a30086207fb5"
+  },
+  {
+    "path": "docs/compile-report.md",
+    "sha256": "824a805450c733f69d853d6eff8c0a53d4d8817d36f1da6d38da7bf48ac30272"
+  },
+  {
+    "path": "docs/logs/implementation-log-20260710-1.md",
+    "sha256": "7fb3fefb6b80227661fffbadf8dc5781cb58e18557f66e278eeb2527457198ac"
+  },
+  {
+    "path": "docs/logs/implementation-log-20260713-1.md",
+    "sha256": "545cb0720c48ceb61d8905e8c179af295cc354f82a7b66b11c3c67267b954a2f"
+  },
+  {
+    "path": "docs/logs/implementation-log-20260713-2.md",
+    "sha256": "60e02e9429f195889775d1ea8b6bde193177c822fa0b28904961b6bb087939ac"
+  },
+  {
+    "path": "docs/logs/implementation-log-20260715-1.md",
+    "sha256": "261dfc4f7354dd25c4b295482b07d268018b628093ed77b1152146bb7c21f62f"
+  },
+  {
+    "path": "docs/logs/implementation-log-20260727-1.md",
+    "sha256": "439c599f7f4ab12f573d0269508caeb90bc26e13eda6c0aae1c5c1bfdbeec7c1"
+  },
+  {
+    "path": "docs/logs/implementation-log-20260907-1.md",
+    "sha256": "cf8bf215fa58ad507fad55c4b439b79c8fbe8ed1ea8eee4679d2deaea8937e92"
+  },
+  {
+    "path": "fragments/overview.md",
+    "sha256": "8c369ecfba88d4d55d311439117c4bdb942ef6df321e9ba8ae09fb75bd9690a7"
+  },
+  {
+    "path": "references/forward-testing.md",
+    "sha256": "bff2d55cd88c7551e65e8b28371cd136b7e815b2f8efed4199b91d3dd03d7c2a"
+  },
+  {
+    "path": "references/methodology.md",
+    "sha256": "24c2bb096d08fd245062484444bb4d0dd7ff879b276497b7a3d98ffd8391a43d"
+  },
+  {
+    "path": "skill.yaml",
+    "sha256": "90656d29a019ac5a508c9b758eeacca22611091dbff758375869bbdd0568883b"
+  }
+]

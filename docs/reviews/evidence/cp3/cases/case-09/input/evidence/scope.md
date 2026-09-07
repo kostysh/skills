@@ -1,0 +1,1 @@
+Compared actual-run target against this case active files. Different active files: SKILL.md. Records describe the earlier formatting-only snapshot; inspect the exact delta and bound any transfer of evidence. No execution of the added behavior is claimed. Supporting docs are outside these active-file hashes.

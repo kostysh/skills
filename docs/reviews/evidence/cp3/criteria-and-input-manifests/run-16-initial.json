@@ -1,0 +1,42 @@
+[
+  {
+    "path": "input/context.md",
+    "sha256": "9f7ebff4058b0b3d20f57cdf77a690b8ed952f30365f4359bd016aa15d12020d"
+  },
+  {
+    "path": "input/manifest.json",
+    "sha256": "f1e8de9ef75fdf4a9cc71c40646fc84d7cab767bf717a2b076d86b5fe8e063df"
+  },
+  {
+    "path": "input/target/SKILL.md",
+    "sha256": "91bf26608b2c0d19cd63230a58fc77c7097e62db245b8b277f66838d45868716"
+  },
+  {
+    "path": "input/target/agents/openai.yaml",
+    "sha256": "e98ee9f84fcb0574e119e92fe94655351628ca513aa093e600e8db135475723f"
+  },
+  {
+    "path": "input/target/references/escaping.md",
+    "sha256": "3cde4b7275c9eea27bb839a9aad365e2714bd4c5965e9eeb824dcd0ee48833ef"
+  },
+  {
+    "path": "prompt.md",
+    "sha256": "fd34a435c4758949a4b7b86008d8a9ce196d8cf26c1a286e94c55c95ce3a11aa"
+  },
+  {
+    "path": "reviewer/SKILL.md",
+    "sha256": "7f536fd4bd4c35676e991b3b6eb9f7542c352c98067eee6112dee6af981e2c62"
+  },
+  {
+    "path": "reviewer/agents/openai.yaml",
+    "sha256": "03a2bd25ee1d5ee8a7b155cf9bc3502886c9cb75ae14924f1e6a60463ac7aac1"
+  },
+  {
+    "path": "reviewer/references/forward-testing.md",
+    "sha256": "bff2d55cd88c7551e65e8b28371cd136b7e815b2f8efed4199b91d3dd03d7c2a"
+  },
+  {
+    "path": "reviewer/references/methodology.md",
+    "sha256": "24c2bb096d08fd245062484444bb4d0dd7ff879b276497b7a3d98ffd8391a43d"
+  }
+]

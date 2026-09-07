@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import YAML from 'yaml';
 import packageJson from '../package.json' with { type: 'json' };
 
 import { checkCompiledSkill } from '../src/check.ts';
@@ -24,7 +25,16 @@ void test('compileSourceBundle generates a valid skill bundle', async () => {
   const skillMarkdown = await readFile(join(result.outputDir, 'SKILL.md'), 'utf8');
   assert.match(skillMarkdown, /## Start here/u);
   assert.match(skillMarkdown, /## Runnable commands/u);
-  assert.match(skillMarkdown, /metadata:\n(?:.+\n)*\s+source-version: 0\.2\.9/u);
+  const sourceManifest = YAML.parse(await readFile(join(fixtureRoot, 'skill.yaml'), 'utf8')) as {
+    skill: { 'source-version': string };
+  };
+  const sourceVersion = sourceManifest.skill['source-version'];
+  assert.equal(typeof sourceVersion, 'string');
+  assert.ok(sourceVersion.length > 0);
+  assert.match(
+    skillMarkdown,
+    new RegExp(`metadata:\\n(?:.+\\n)*\\s+source-version: ${escapeRegExp(sourceVersion)}\\n`, 'u'),
+  );
   assert.match(skillMarkdown, /references\/source-language\.md/u);
   assert.match(skillMarkdown, /references\/maintenance\.md/u);
   assert.match(skillMarkdown, /references\/authoring-guidelines\.md/u);
@@ -44,7 +54,10 @@ void test('compileSourceBundle generates a valid skill bundle', async () => {
 
   const compileReport = await readFile(join(result.outputDir, 'docs/compile-report.md'), 'utf8');
   assert.match(compileReport, /## Versions/u);
-  assert.match(compileReport, /Skill source version: `0\.2\.9`/u);
+  assert.match(
+    compileReport,
+    new RegExp(`Skill source version: \`${escapeRegExp(sourceVersion)}\``, 'u'),
+  );
   assert.match(
     compileReport,
     new RegExp(`CLI package version: \`${escapeRegExp(packageJson.version)}\``, 'u'),

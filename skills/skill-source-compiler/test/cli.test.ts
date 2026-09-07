@@ -218,7 +218,21 @@ void test('built CLI lint, compile, and check succeed for the self-hosted bundle
     const compiledDir = path.join(tempRoot, 'skill-source-compiler');
     const compiledSkill = await readFile(path.join(compiledDir, 'SKILL.md'), 'utf8');
     assert.match(compiledSkill, /## Runnable commands/u);
-    assert.match(compiledSkill, /metadata:\n(?:.+\n)*\s+source-version: 0\.2\.9/u);
+    const sourceManifest = YAML.parse(
+      await readFile(path.join(SKILL_DIR, 'skill.yaml'), 'utf8'),
+    ) as {
+      skill: { 'source-version': string };
+    };
+    const sourceVersion = sourceManifest.skill['source-version'];
+    assert.equal(typeof sourceVersion, 'string');
+    assert.ok(sourceVersion.length > 0);
+    assert.match(
+      compiledSkill,
+      new RegExp(
+        `metadata:\\n(?:.+\\n)*\\s+source-version: ${escapeRegExp(sourceVersion)}\\n`,
+        'u',
+      ),
+    );
     assert.doesNotMatch(compiledSkill, /\*\*Tests:\*\*/u);
     assert.doesNotMatch(compiledSkill, /test\/cli\.test\.ts/u);
     assert.match(compiledSkill, /references\/maintenance\.md/u);

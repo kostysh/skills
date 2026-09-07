@@ -1,0 +1,28 @@
+{
+  "execution_trials": {
+    "included": [
+      "SKILL.md",
+      "references/**",
+      "agents/openai.yaml"
+    ],
+    "excluded": [
+      "docs/**"
+    ],
+    "reason": "Historical diagnostics may expose expected answers; excluded files carry no active instructions. Full emitted package retained separately for parity review."
+  },
+  "catalog_trials": {
+    "included": [
+      "parsed name and description",
+      "agents/openai.yaml interface fields",
+      "fixed neighboring cards",
+      "six independent requests"
+    ],
+    "excluded": [
+      "SKILL.md body",
+      "references",
+      "history"
+    ],
+    "claim": "Catalog selection sample; not universal host loading proof"
+  },
+  "access": "Fresh no-fork context; explicit per-run read permissions on shared filesystem, not a hard sandbox."
+}

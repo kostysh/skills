@@ -1,0 +1,294 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd"
+  },
+  {
+    "path": "README.md",
+    "sha256": "278084fa2ce103b4281ceabd0a4a49ab5e3d3d8d6c8d7f7879db572817335cc0"
+  },
+  {
+    "path": "docs/plans/implementation-plan-20260907-1.md",
+    "sha256": "1e46419cf50e4dd91b183f4acf1766f11d3c9a64faa3d826fa5d997d4503687e"
+  },
+  {
+    "path": "docs/reviews/audit-implementation-plan-20260907-1.md",
+    "sha256": "391a2e129497ab36169471502ae216b6f572f2b81f72131afacdb70460a58377"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/README.md",
+    "sha256": "cb69a540962e9a01736bcad97efda258b31d500641e797f015796b19d19ef410"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/author-self-check.md",
+    "sha256": "f4d37912ff99611de157fdd4d41295155f15d6c18ee7d13304ee6a7cb9532b87"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/baseline-manifest.json",
+    "sha256": "6cd0ada5d7c4cffdccaaf592438e78ce1f3ae69ddb0ec5d44eb055a54e0937a0"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/candidate-manifest.json",
+    "sha256": "25435145ae6f7ed8edf95a4f1e951141ac18ba22fba3bde0d8d11389b34059a4"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-01/brief.md",
+    "sha256": "c3d95b686f355d060e835c5ef812a18f209c7b1d16e9eea716dec22fbebb910f"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-01/conversation.md",
+    "sha256": "7fe951eef97495d5ed0320d5aabf970ef7f62b7e2cb2b714c56c94c18d0be96e"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-01/inputs/release-note.md",
+    "sha256": "d54c7cbe41fc0cfa34ac7ba25b1a4e92c17ae102a4f1bddd12097d504de00141"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-02/brief.md",
+    "sha256": "3b5834b5f80418a822408ef23690d7c3d1848755f3b4014a9635b47bbcd8844c"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-02/inputs/changes.md",
+    "sha256": "4e46b4fa47a0c7869130b54211f583ce1613e14cb6ec2082768cc6adebbb05e0"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-02/inputs/release-note.md",
+    "sha256": "a0764dc62a4f073873bd930fd09bfaa010d19cdfe2e07b8eb9cbffff19ef47d8"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-02/inputs/release-process.md",
+    "sha256": "e3961d494c0d184ac3cea91794764678b33cda9a5c727178d0292db4e80ee099"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-03/brief.md",
+    "sha256": "22a2ca77d028a79ac4bd6553cb38ae0972c26b7d7f8596ad1e257d039dbe0077"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-03/package/SKILL.md",
+    "sha256": "aa4ede49dc43711f011832d26c22c3efa8c9622c132aa875bc49bd5e0d3e212d"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-03/package/docs/run-note.md",
+    "sha256": "ca5c89749a4512f7731e21c3b37be06ae56e936131226392fa0278a1826de191"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-03/package/references/api-check.md",
+    "sha256": "2495c2c160a0043436574dd4e4dbae5ee77f6ef677eade7f11285333a29a08f3"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-03/package/references/local-format.md",
+    "sha256": "288e881217f68b15e5f9c55fa0ea9a04844efc6906ad94ad8263074ac49a7c2f"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-03/package/samples/export.csv",
+    "sha256": "68e6b7d7275c4e49f6ac7b87c0c97d049dfc0ae75c63ad629db6416b2760e480"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-04/brief.md",
+    "sha256": "95b5bd679bb6c18b1a9ef53243f2cde7a296ed2bf5a63b19a08c2fb2d7224adf"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-04/package/SKILL.md",
+    "sha256": "1ff77897237d93b6f4e68219ad03d7fe7bf50e743de1c063fde012084a20c655"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-04/package/docs/maintenance-note.md",
+    "sha256": "1eabb11eabafebacb378d6fdf9d5c70cce1a6bd9119ea70053963b48e85b5ed6"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/cases/case-04/source/instructions.md",
+    "sha256": "5b9c243e195cf21b0e097462c004c84f3f61a6e947d9961167cc5c609360f8d8"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/rubric.md",
+    "sha256": "7b4c7bb2dd9745105e014b22c769a81252d3e6f5c2fb8e55faf53fcaefe1fad3"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/run-01-initial.json",
+    "sha256": "e5b2be44acfc043446606442fcd09d565e0b42698e738501dc7b89bc7142824e"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/run-02-initial.json",
+    "sha256": "b1d540bde4241d01af81afa63b7cf183e929eb9fb400e249ca45b0b5f8956066"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/run-03-initial.json",
+    "sha256": "d5d84c5ee56bb7772fb891d05c0fe56a5a7d27dadc83573b5c3a3be2ad6d7920"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/run-04-initial.json",
+    "sha256": "4769e4268c1d8a9043f38fd8e7d7f6a1213d210f6ad5881afa349b42f310d6e0"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/run-05-initial.json",
+    "sha256": "a1d457302bbf476eda17084cc2914acdb819ee7211daa6c73e561c0ef4ed28c9"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/run-06-initial.json",
+    "sha256": "5e11f2ccbf7a8229bd1bd0da30cd5c01e83ec8096e503ab692f55a17982d28f9"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/run-07-initial.json",
+    "sha256": "3f25f48dc0cf954d875ec4ffc7f68b33eba4fe87d9d05e1e92ac9fc3ebade6de"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/criteria-and-input-manifests/run-08-initial.json",
+    "sha256": "d931c45fb028218cfbd89f0b44aecfc55c5881f5eceeb17bedeba499e50b2468"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/execution-context.json",
+    "sha256": "75b0f872b2e72087ef3ce1d5ca8131bbdbff96de62e76e9240a069eee2df4b08"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/baseline/AGENTS.md",
+    "sha256": "07de64e1713b756216acc17fc02e95b4328071c212c92c231d62f58a672eeaca"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/baseline/README.md",
+    "sha256": "4b650c9c229ba402628c07a77378c216bfc2b9cbb4ec5838559223afe40fcd9c"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/baseline/docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+    "sha256": "b908a9c3e56f4ca704a04c605aadbfb96edb78da3e1eec295d9f409fce7919f6"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/baseline/docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+    "sha256": "ccea156e110192419d2cf8d8cf941c80b3a1e42b0ea08a07594b3a22129ad786"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/baseline/docs/templates/ISSUE_TEMPLATE.md",
+    "sha256": "0d118cb687ad57b53bf72707562d7c02dbc57d945c40a2d5edddd84fd4e6b179"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/candidate/AGENTS.md",
+    "sha256": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/candidate/README.md",
+    "sha256": "278084fa2ce103b4281ceabd0a4a49ab5e3d3d8d6c8d7f7879db572817335cc0"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/candidate/docs/skill-standard.md",
+    "sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/candidate/docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+    "sha256": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/candidate/docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+    "sha256": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/policies/candidate/docs/templates/ISSUE_TEMPLATE.md",
+    "sha256": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/assessment.md",
+    "sha256": "ae75db07ee7e198c8aeb8e70651fe2f8b8ad3cab03fb2780ec953b5b456430f4"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/coordinator-readback.json",
+    "sha256": "0c64711eb48c46bb5d2ac1ab0901dc543e772126a427ee42b70b149ef324074b"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/evaluator-readback.json",
+    "sha256": "f776f7a47c6895e31c21246f2ea2a556d101c7259b2681f3ca4718b169c95c0f"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-01-events.json",
+    "sha256": "c7faa6396914b7ab5ace96a2dabbd573d1e99e9c8463f0d1fc320d5b3bba642f"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-01-output-release-note.md",
+    "sha256": "613f45787170d46ada6bdecd808bb29b9b9a98c86522f8959eace1a30d80b1ec"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-01.md",
+    "sha256": "515a6cc43df856a53dd167ecaf97f071e1c9cd96a6cc87f6ff5ca5342a7b683b"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-02-events.json",
+    "sha256": "c6f2f4d15b931618efecc61ce42d90ea531e04acaaf4c9fa02d3f27719ad4720"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-02.md",
+    "sha256": "94dbcf5b13b35c891585ee370711ec0d67ba949b8d3720c659639267ec9f6cbc"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-03-events.json",
+    "sha256": "e2ec042a5cee25e138f00bbfda30cc7a540673c687a4450334275a696aeb26a5"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-03.md",
+    "sha256": "1e20b1b34dfc7ef9552e123631d1b95f439394c695f21225f34adc34c769bb60"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-04-events.json",
+    "sha256": "348db6613a30ccc669142a5ae989ce2d2402ee1d1ec4f834f9c1eec06f2cead8"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-04.md",
+    "sha256": "94d660be45886dbb153f263fb7308f32554c98ad5fad07bbe16b72a87a86d635"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-05-events.json",
+    "sha256": "2c433708173d82f8d086e24931b57ba054716128659300cc6da79f7137971c0e"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-05-output-release-note.md",
+    "sha256": "613f45787170d46ada6bdecd808bb29b9b9a98c86522f8959eace1a30d80b1ec"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-05.md",
+    "sha256": "be3120f2c079438cc4def1a7175a2b4bf8f30a64ab8f70cdd3006bac0bab87c5"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-06-events.json",
+    "sha256": "928516df62de2a1babbac0f11d0ff7fcb00c663e4df89eaa76b5af462221c203"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-06.md",
+    "sha256": "80381acf9d08f14c14cf0c32a877e94e16dbfe8d5814558935b1d610f989880a"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-07-events.json",
+    "sha256": "556694c4284654da11910205517bca26572c2240896d41eb061b089dcc277d8d"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-07.md",
+    "sha256": "53f845b5a86165404ec5434804d60c1741316ce3e6ba3a88782696e80f06bcc4"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-08-events.json",
+    "sha256": "a2e263c89ae6a61280bd79749e01afff7aea6d67cff2f7d0a936ccae1b68e62b"
+  },
+  {
+    "path": "docs/reviews/evidence/cp1/results/run-08.md",
+    "sha256": "23f295ae29be5fdd17ae3d221199d9483cff251f62f622c12aeb08513aeb5e5e"
+  },
+  {
+    "path": "docs/reviews/implementation-log-20260907-1.md",
+    "sha256": "ec23cf76f89b277704a3bf53d695e4d9615002d24eef739dcd127508fc665151"
+  },
+  {
+    "path": "docs/reviews/review-20260907-skill-methodology.md",
+    "sha256": "b7032255fe0c0c2dd9b488e4ac00b88770c3c8c92bf85dfa522865c7b5354cfa"
+  },
+  {
+    "path": "docs/skill-standard.md",
+    "sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md",
+    "sha256": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb"
+  },
+  {
+    "path": "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md",
+    "sha256": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1"
+  },
+  {
+    "path": "docs/templates/ISSUE_TEMPLATE.md",
+    "sha256": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c"
+  }
+]

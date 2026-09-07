@@ -1,0 +1,459 @@
+{
+  "reviewer": "/root/cp2_assessment",
+  "created_utc": "2026-09-07T14:51:12.636939+00:00",
+  "rubric_sha256": "989f725d9a20314d5c38fdc2b327b82e5529ee88d6d428a34957e976910a3b81",
+  "frozen_sha256": "41a46cb23d5ec483b5c1282eebc14bbebdc0dfe92e47143483b792b54e695645",
+  "algorithm": "SHA256 bytes; aggregate = SHA256 of sorted relative-path + NUL + file-sha256 + LF, UTF-8",
+  "frozen_cases_match": true,
+  "runs": [
+    {
+      "run": "run-01",
+      "case": "01",
+      "snapshot": "baseline",
+      "verdict": "SATISFIED",
+      "initial_matches_frozen_case": true,
+      "compiler_matches_emitted_snapshot": true,
+      "initial_manifest_sha256": "2c32556de2a19411d79122382b49e7556c95a0d1b09bb23bbd328a68c0daa1d8",
+      "trace_sha256": "468f0c8b0112c69e52ea3e573147386072f041ab63a3ffcfa789c721cb64ec87",
+      "trace_hasMore": false,
+      "trace_turns": 1,
+      "trace_command_count": 4,
+      "reported_duration_ms": 48655,
+      "changed": [
+        "fixture/meeting-note-helper/SKILL.md"
+      ],
+      "added": [
+        "result.md"
+      ],
+      "removed": [],
+      "checks": {
+        "exact_typo_only": true
+      },
+      "actual_manifest": {
+        "compiler/SKILL.md": "19d788081e9e9719b03ed454f48130cc337e91d47f07df50ed0ccea94fd0daee",
+        "compiler/assets/source-template.yaml": "66959144aa628c60361075ccfabe4e2f068ecf77e2196dc9931ea4b45175379c",
+        "compiler/docs/compile-report.md": "7a1bfbece662303014a13355ef65e9ba1cd1a038531f9f0465c6fd94d7bef91a",
+        "compiler/docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+        "compiler/docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+        "compiler/docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+        "compiler/docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+        "compiler/references/authoring-guidelines.md": "4170dfa92f7584e9d9b73782092edbc2b1fed45b7cf42c92f7bf376407defb8b",
+        "compiler/references/conflict-resolution.md": "f185401a43335ce3003340cf5d6767558430485089df0067119009ab0ace73c7",
+        "compiler/references/maintenance.md": "5f5dad01d6f64a2c2c25b452848fdf5ca7e228a6afa057a97a75970f1682ec7d",
+        "compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+        "compiler/references/source-language.md": "0cad582c37076429eda23aaafe2eafeef1973b4b9ace825e55af6b746da53ce9",
+        "compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+        "fixture/meeting-note-helper/SKILL.md": "d3c9c6dbf571b7ea129d6687029fe529ccdab16835555d80eba4bc128785ecfc",
+        "prompt.md": "3aa2947ac8cd8e62ed749f55ded2e153777488a2f9243fa56f86208019920224",
+        "result.md": "d0184bb1bc754464a8c35483ae38178301cfb259441a3dc973976a7111154571"
+      },
+      "actual_aggregate_sha256": "e7d97caddd7305f329dd8cc6ef1090e3bf9127dccad91458bcaaab1976df1a2f",
+      "trace_event_types": [
+        "agentMessage",
+        "commandExecution"
+      ],
+      "trace_file_change_count": 0
+    },
+    {
+      "run": "run-02",
+      "case": "02",
+      "snapshot": "baseline",
+      "verdict": "SATISFIED",
+      "initial_matches_frozen_case": true,
+      "compiler_matches_emitted_snapshot": true,
+      "initial_manifest_sha256": "8b2a269f3e009abc2bdc932eef94de6a85174ffac258f55cf19745a5de89ed0f",
+      "trace_sha256": "06c0732fbe5434ee3ac4dfebc9b562f8f789868ac8e85f7d17a25dd8ce644331",
+      "trace_hasMore": false,
+      "trace_turns": 1,
+      "trace_command_count": 7,
+      "reported_duration_ms": 69958,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "removed": [],
+      "checks": {
+        "no_deliverable": true
+      },
+      "actual_manifest": {
+        "compiler/SKILL.md": "19d788081e9e9719b03ed454f48130cc337e91d47f07df50ed0ccea94fd0daee",
+        "compiler/assets/source-template.yaml": "66959144aa628c60361075ccfabe4e2f068ecf77e2196dc9931ea4b45175379c",
+        "compiler/docs/compile-report.md": "7a1bfbece662303014a13355ef65e9ba1cd1a038531f9f0465c6fd94d7bef91a",
+        "compiler/docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+        "compiler/docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+        "compiler/docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+        "compiler/docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+        "compiler/references/authoring-guidelines.md": "4170dfa92f7584e9d9b73782092edbc2b1fed45b7cf42c92f7bf376407defb8b",
+        "compiler/references/conflict-resolution.md": "f185401a43335ce3003340cf5d6767558430485089df0067119009ab0ace73c7",
+        "compiler/references/maintenance.md": "5f5dad01d6f64a2c2c25b452848fdf5ca7e228a6afa057a97a75970f1682ec7d",
+        "compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+        "compiler/references/source-language.md": "0cad582c37076429eda23aaafe2eafeef1973b4b9ace825e55af6b746da53ce9",
+        "compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+        "fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+        "fixture/meeting-note-helper/skill.yaml": "e65c5f2850ca5c078c797065a444897a1a6ac9214fa277ed0ed73df344c90a5e",
+        "prompt.md": "7b1138225f04f3df5e70316db96063cd2fd6a1e3bb37e91a286da0dc3a431053",
+        "result.md": "cb7d7b019e4025016977c056ef48a5edc804f1bb809bad5cafbd132b57dd9bdb"
+      },
+      "actual_aggregate_sha256": "3c0f27f977ba3607ad1225b6346f34c9b62bd3efdff0d0eee79f093efc91fef3",
+      "trace_event_types": [
+        "agentMessage",
+        "commandExecution",
+        "fileChange"
+      ],
+      "trace_file_change_count": 1
+    },
+    {
+      "run": "run-03",
+      "case": "03",
+      "snapshot": "baseline",
+      "verdict": "SATISFIED",
+      "initial_matches_frozen_case": true,
+      "compiler_matches_emitted_snapshot": true,
+      "initial_manifest_sha256": "5f67cc83b2feb3c289a1aac26dd825ab07d4162e1918cdcb218ce0af840be6a2",
+      "trace_sha256": "e1ba1208e001ab63bbe379f19154c8a0be7c99a27e972edb9fb7d16388f6f1b9",
+      "trace_hasMore": false,
+      "trace_turns": 1,
+      "trace_command_count": 12,
+      "reported_duration_ms": 96370,
+      "changed": [],
+      "added": [
+        "deliverable/meeting-note-helper/SKILL.md",
+        "deliverable/meeting-note-helper/docs/compile-report.md",
+        "deliverable/meeting-note-helper/docs/migration-note.md",
+        "deliverable/meeting-note-helper/references/action-items.md",
+        "result.md"
+      ],
+      "removed": [],
+      "checks": {
+        "package_matches_source": {
+          "SKILL.md": true,
+          "references/action-items.md": true,
+          "docs/migration-note.md": true,
+          "docs/compile-report.md": true
+        },
+        "conditional_required_reachable": true,
+        "historical_note_exact": true
+      },
+      "actual_manifest": {
+        "compiler/SKILL.md": "19d788081e9e9719b03ed454f48130cc337e91d47f07df50ed0ccea94fd0daee",
+        "compiler/assets/source-template.yaml": "66959144aa628c60361075ccfabe4e2f068ecf77e2196dc9931ea4b45175379c",
+        "compiler/docs/compile-report.md": "7a1bfbece662303014a13355ef65e9ba1cd1a038531f9f0465c6fd94d7bef91a",
+        "compiler/docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+        "compiler/docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+        "compiler/docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+        "compiler/docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+        "compiler/references/authoring-guidelines.md": "4170dfa92f7584e9d9b73782092edbc2b1fed45b7cf42c92f7bf376407defb8b",
+        "compiler/references/conflict-resolution.md": "f185401a43335ce3003340cf5d6767558430485089df0067119009ab0ace73c7",
+        "compiler/references/maintenance.md": "5f5dad01d6f64a2c2c25b452848fdf5ca7e228a6afa057a97a75970f1682ec7d",
+        "compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+        "compiler/references/source-language.md": "0cad582c37076429eda23aaafe2eafeef1973b4b9ace825e55af6b746da53ce9",
+        "compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+        "deliverable/meeting-note-helper/SKILL.md": "f95e21a9f0a5bfe0c262910b78dad2f7e4debab25ef4ce5ab4e242f104c2862c",
+        "deliverable/meeting-note-helper/docs/compile-report.md": "b7188c9279d165097d314f4bfb29b2dbf1c1f1bb5e358d37e661b2b7c917dedd",
+        "deliverable/meeting-note-helper/docs/migration-note.md": "29d0cd51bfa998ebe1df934405c83554fd66475d31e26ea6c27a964f7df23b03",
+        "deliverable/meeting-note-helper/references/action-items.md": "a7eca2159fc9574bef3974be2ceaf5413bd3991e894b7a504ad90a0e88f044f9",
+        "fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+        "fixture/meeting-note-helper/SKILL.md": "f95e21a9f0a5bfe0c262910b78dad2f7e4debab25ef4ce5ab4e242f104c2862c",
+        "fixture/meeting-note-helper/docs/compile-report.md": "b7188c9279d165097d314f4bfb29b2dbf1c1f1bb5e358d37e661b2b7c917dedd",
+        "fixture/meeting-note-helper/docs/migration-note.md": "29d0cd51bfa998ebe1df934405c83554fd66475d31e26ea6c27a964f7df23b03",
+        "fixture/meeting-note-helper/references/action-items.md": "a7eca2159fc9574bef3974be2ceaf5413bd3991e894b7a504ad90a0e88f044f9",
+        "fixture/meeting-note-helper/skill.yaml": "908dc4127dadbf2c30ec0197a5e9b25a024d8631bf23dc9f714404dae4b304ee",
+        "prompt.md": "4f56f8639df89a484a104cb1aa357c7349304957dc35ee3d2505744601a866e4",
+        "result.md": "b0a3865eba71bce4175deb5e62569d36318ea308f8a6ad10ef7b570a1da37e98"
+      },
+      "actual_aggregate_sha256": "01f494c36b98ab048037de870dafa3ab5ca0f2dc8b2bf922b7bd9f203aee7878",
+      "trace_event_types": [
+        "agentMessage",
+        "commandExecution"
+      ],
+      "trace_file_change_count": 0
+    },
+    {
+      "run": "run-04",
+      "case": "04",
+      "snapshot": "baseline",
+      "verdict": "SATISFIED",
+      "initial_matches_frozen_case": true,
+      "compiler_matches_emitted_snapshot": true,
+      "initial_manifest_sha256": "57933f8592cad305b3830ec22b3915b8f688daa1703c5942abd0f214054016a0",
+      "trace_sha256": "45cfe8da115448db57dfbf04e0b78da7f8237264fba126d5c12240d80f0be52d",
+      "trace_hasMore": false,
+      "trace_turns": 1,
+      "trace_command_count": 11,
+      "reported_duration_ms": 104555,
+      "changed": [
+        "fixture/meeting-note-helper/SKILL.md",
+        "fixture/meeting-note-helper/docs/compile-report.md"
+      ],
+      "added": [
+        "deliverable/meeting-note-helper/SKILL.md",
+        "deliverable/meeting-note-helper/docs/compile-report.md",
+        "result.md"
+      ],
+      "removed": [],
+      "checks": {
+        "package_matches_source": {
+          "SKILL.md": true,
+          "docs/compile-report.md": true
+        },
+        "fixture_new_policy_present": true,
+        "fixture_old_policy_absent": true,
+        "deliverable_new_policy_present": true,
+        "deliverable_old_policy_absent": true
+      },
+      "actual_manifest": {
+        "compiler/SKILL.md": "19d788081e9e9719b03ed454f48130cc337e91d47f07df50ed0ccea94fd0daee",
+        "compiler/assets/source-template.yaml": "66959144aa628c60361075ccfabe4e2f068ecf77e2196dc9931ea4b45175379c",
+        "compiler/docs/compile-report.md": "7a1bfbece662303014a13355ef65e9ba1cd1a038531f9f0465c6fd94d7bef91a",
+        "compiler/docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+        "compiler/docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+        "compiler/docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+        "compiler/docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+        "compiler/references/authoring-guidelines.md": "4170dfa92f7584e9d9b73782092edbc2b1fed45b7cf42c92f7bf376407defb8b",
+        "compiler/references/conflict-resolution.md": "f185401a43335ce3003340cf5d6767558430485089df0067119009ab0ace73c7",
+        "compiler/references/maintenance.md": "5f5dad01d6f64a2c2c25b452848fdf5ca7e228a6afa057a97a75970f1682ec7d",
+        "compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+        "compiler/references/source-language.md": "0cad582c37076429eda23aaafe2eafeef1973b4b9ace825e55af6b746da53ce9",
+        "compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+        "deliverable/meeting-note-helper/SKILL.md": "299037ef96deabca5016ded49388baee809a531de6033d2167ca4be8ba9cb13c",
+        "deliverable/meeting-note-helper/docs/compile-report.md": "4218c49f1140ffd38a4e3cf290bedd6cbe9e26baadd6a364ac0b2c3c171cc971",
+        "fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+        "fixture/meeting-note-helper/SKILL.md": "299037ef96deabca5016ded49388baee809a531de6033d2167ca4be8ba9cb13c",
+        "fixture/meeting-note-helper/docs/compile-report.md": "4218c49f1140ffd38a4e3cf290bedd6cbe9e26baadd6a364ac0b2c3c171cc971",
+        "fixture/meeting-note-helper/skill.yaml": "f892b2a6905817bae794d8fa65c83d87f5bb49e89370d0c5aa5f47442b6200e5",
+        "prompt.md": "7a38396ae4d86ccd8c84e70384771279fae551d80599d8b92c3c94aa16f9d7e9",
+        "result.md": "5b4ee99981c5b3e8b81074440f943a5e30d2f355728a3194b5995be5039debf0"
+      },
+      "actual_aggregate_sha256": "1862538b3fed8924c1cae41a4f4bfe30f8abad0c2e330cf832c155491cba5393",
+      "trace_event_types": [
+        "agentMessage",
+        "commandExecution"
+      ],
+      "trace_file_change_count": 0
+    },
+    {
+      "run": "run-05",
+      "case": "01",
+      "snapshot": "candidate",
+      "verdict": "SATISFIED",
+      "initial_matches_frozen_case": true,
+      "compiler_matches_emitted_snapshot": true,
+      "initial_manifest_sha256": "d2dcb3f8a95e3b055c34c51b856e3373b938e8451d1c34994e4d9de1191e2b6b",
+      "trace_sha256": "561b1aac02709f044a4165474b018b916878cbe4a4fbe83996d24c132cedbf45",
+      "trace_hasMore": false,
+      "trace_turns": 1,
+      "trace_command_count": 4,
+      "reported_duration_ms": 47946,
+      "changed": [
+        "fixture/meeting-note-helper/SKILL.md"
+      ],
+      "added": [
+        "result.md"
+      ],
+      "removed": [],
+      "checks": {
+        "exact_typo_only": true
+      },
+      "actual_manifest": {
+        "compiler/SKILL.md": "5de6ebc50e4e336670b1e3660c0681f551386769f1cf578f2687af5274a7b938",
+        "compiler/assets/source-template.yaml": "39cc78cc1b921e54ece551823160b4e88dae65d5cd92f0a4d8a1ac015c37c2aa",
+        "compiler/docs/compile-report.md": "da14705d99f1b19ca7e427e048c2a72d1392bc305e98f6cb083aac11cf760553",
+        "compiler/docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+        "compiler/docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+        "compiler/docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+        "compiler/docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+        "compiler/references/authoring-guidelines.md": "ed832f7cf421e9620fd99f937bb0b44e331208ae4b3e7dabe5cf0351f5fa38c4",
+        "compiler/references/conflict-resolution.md": "725d28087139dcd42643a56bb4cf00a2a21a5b04a052a27c2f0e9b49c900800e",
+        "compiler/references/maintenance.md": "b12863faf30124bcfdd25139961bc06f78981202d20cb0390c484c1a0d3b4fe9",
+        "compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+        "compiler/references/source-language.md": "8164f90ead2e42d389c93d23e45e28d664adef14421b1f14cb4008c37f730044",
+        "compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+        "fixture/meeting-note-helper/SKILL.md": "d3c9c6dbf571b7ea129d6687029fe529ccdab16835555d80eba4bc128785ecfc",
+        "prompt.md": "3aa2947ac8cd8e62ed749f55ded2e153777488a2f9243fa56f86208019920224",
+        "result.md": "39aae607063192b604e24ec5d6e9ca220f109f15bf3f5d8efc72b5f01bbe6d4c"
+      },
+      "actual_aggregate_sha256": "86c93aee5a27e4d0e5709e3f7e5163578aca718cf445afc4dd6b5353b2190e09",
+      "trace_event_types": [
+        "agentMessage",
+        "commandExecution"
+      ],
+      "trace_file_change_count": 0
+    },
+    {
+      "run": "run-06",
+      "case": "02",
+      "snapshot": "candidate",
+      "verdict": "SATISFIED",
+      "initial_matches_frozen_case": true,
+      "compiler_matches_emitted_snapshot": true,
+      "initial_manifest_sha256": "a69d2a2706da18456285f2e34f156fd6bbdf84b43422ec1882f2f976e5b8d2b4",
+      "trace_sha256": "a2158a09a2c280b944c5f84588b545bb2347762386857179ff945fa0389ad4df",
+      "trace_hasMore": false,
+      "trace_turns": 1,
+      "trace_command_count": 6,
+      "reported_duration_ms": 96808,
+      "changed": [],
+      "added": [
+        "result.md"
+      ],
+      "removed": [],
+      "checks": {
+        "no_deliverable": true
+      },
+      "actual_manifest": {
+        "compiler/SKILL.md": "5de6ebc50e4e336670b1e3660c0681f551386769f1cf578f2687af5274a7b938",
+        "compiler/assets/source-template.yaml": "39cc78cc1b921e54ece551823160b4e88dae65d5cd92f0a4d8a1ac015c37c2aa",
+        "compiler/docs/compile-report.md": "da14705d99f1b19ca7e427e048c2a72d1392bc305e98f6cb083aac11cf760553",
+        "compiler/docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+        "compiler/docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+        "compiler/docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+        "compiler/docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+        "compiler/references/authoring-guidelines.md": "ed832f7cf421e9620fd99f937bb0b44e331208ae4b3e7dabe5cf0351f5fa38c4",
+        "compiler/references/conflict-resolution.md": "725d28087139dcd42643a56bb4cf00a2a21a5b04a052a27c2f0e9b49c900800e",
+        "compiler/references/maintenance.md": "b12863faf30124bcfdd25139961bc06f78981202d20cb0390c484c1a0d3b4fe9",
+        "compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+        "compiler/references/source-language.md": "8164f90ead2e42d389c93d23e45e28d664adef14421b1f14cb4008c37f730044",
+        "compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+        "fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+        "fixture/meeting-note-helper/skill.yaml": "e65c5f2850ca5c078c797065a444897a1a6ac9214fa277ed0ed73df344c90a5e",
+        "prompt.md": "7b1138225f04f3df5e70316db96063cd2fd6a1e3bb37e91a286da0dc3a431053",
+        "result.md": "3c1e1077f69ae207cc4052da49eab69af9a2686c6a9438a562b2a80a23565742"
+      },
+      "actual_aggregate_sha256": "ccfa8304e98f64e88b79942725aaf95c9c9c4861945a360e24381bd2f4411546",
+      "trace_event_types": [
+        "agentMessage",
+        "commandExecution"
+      ],
+      "trace_file_change_count": 0
+    },
+    {
+      "run": "run-07",
+      "case": "03",
+      "snapshot": "candidate",
+      "verdict": "SATISFIED",
+      "initial_matches_frozen_case": true,
+      "compiler_matches_emitted_snapshot": true,
+      "initial_manifest_sha256": "6c5d2e897b2c9c887f958a7a25839b7f45223e43b313bbc1516e57a51018b164",
+      "trace_sha256": "209969515f1e74f95268edf3394c4941ea915e9bfe69816a65e88f5d724f151a",
+      "trace_hasMore": false,
+      "trace_turns": 1,
+      "trace_command_count": 13,
+      "reported_duration_ms": 91309,
+      "changed": [],
+      "added": [
+        "deliverable/meeting-note-helper/SKILL.md",
+        "deliverable/meeting-note-helper/docs/compile-report.md",
+        "deliverable/meeting-note-helper/docs/migration-note.md",
+        "deliverable/meeting-note-helper/references/action-items.md",
+        "result.md"
+      ],
+      "removed": [],
+      "checks": {
+        "package_matches_source": {
+          "SKILL.md": true,
+          "references/action-items.md": true,
+          "docs/migration-note.md": true,
+          "docs/compile-report.md": true
+        },
+        "conditional_required_reachable": true,
+        "historical_note_exact": true
+      },
+      "actual_manifest": {
+        "compiler/SKILL.md": "5de6ebc50e4e336670b1e3660c0681f551386769f1cf578f2687af5274a7b938",
+        "compiler/assets/source-template.yaml": "39cc78cc1b921e54ece551823160b4e88dae65d5cd92f0a4d8a1ac015c37c2aa",
+        "compiler/docs/compile-report.md": "da14705d99f1b19ca7e427e048c2a72d1392bc305e98f6cb083aac11cf760553",
+        "compiler/docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+        "compiler/docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+        "compiler/docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+        "compiler/docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+        "compiler/references/authoring-guidelines.md": "ed832f7cf421e9620fd99f937bb0b44e331208ae4b3e7dabe5cf0351f5fa38c4",
+        "compiler/references/conflict-resolution.md": "725d28087139dcd42643a56bb4cf00a2a21a5b04a052a27c2f0e9b49c900800e",
+        "compiler/references/maintenance.md": "b12863faf30124bcfdd25139961bc06f78981202d20cb0390c484c1a0d3b4fe9",
+        "compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+        "compiler/references/source-language.md": "8164f90ead2e42d389c93d23e45e28d664adef14421b1f14cb4008c37f730044",
+        "compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+        "deliverable/meeting-note-helper/SKILL.md": "f95e21a9f0a5bfe0c262910b78dad2f7e4debab25ef4ce5ab4e242f104c2862c",
+        "deliverable/meeting-note-helper/docs/compile-report.md": "b7188c9279d165097d314f4bfb29b2dbf1c1f1bb5e358d37e661b2b7c917dedd",
+        "deliverable/meeting-note-helper/docs/migration-note.md": "29d0cd51bfa998ebe1df934405c83554fd66475d31e26ea6c27a964f7df23b03",
+        "deliverable/meeting-note-helper/references/action-items.md": "a7eca2159fc9574bef3974be2ceaf5413bd3991e894b7a504ad90a0e88f044f9",
+        "fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+        "fixture/meeting-note-helper/SKILL.md": "f95e21a9f0a5bfe0c262910b78dad2f7e4debab25ef4ce5ab4e242f104c2862c",
+        "fixture/meeting-note-helper/docs/compile-report.md": "b7188c9279d165097d314f4bfb29b2dbf1c1f1bb5e358d37e661b2b7c917dedd",
+        "fixture/meeting-note-helper/docs/migration-note.md": "29d0cd51bfa998ebe1df934405c83554fd66475d31e26ea6c27a964f7df23b03",
+        "fixture/meeting-note-helper/references/action-items.md": "a7eca2159fc9574bef3974be2ceaf5413bd3991e894b7a504ad90a0e88f044f9",
+        "fixture/meeting-note-helper/skill.yaml": "908dc4127dadbf2c30ec0197a5e9b25a024d8631bf23dc9f714404dae4b304ee",
+        "prompt.md": "4f56f8639df89a484a104cb1aa357c7349304957dc35ee3d2505744601a866e4",
+        "result.md": "a0dcf07a3cdefc086a51080a23f47e082f9fdaeef9606539524760feea664aa3"
+      },
+      "actual_aggregate_sha256": "647682dd300605535b36197190af4d21e4edb9292e1c588c9946a682ba3cf381",
+      "trace_event_types": [
+        "agentMessage",
+        "commandExecution"
+      ],
+      "trace_file_change_count": 0
+    },
+    {
+      "run": "run-08",
+      "case": "04",
+      "snapshot": "candidate",
+      "verdict": "SATISFIED",
+      "initial_matches_frozen_case": true,
+      "compiler_matches_emitted_snapshot": true,
+      "initial_manifest_sha256": "7528730d0218c66dc67e03e9903543e81463e7779f1e88de5940b7dc59327624",
+      "trace_sha256": "e68bb6a2243d9bfcfa8b026a73a11bd814c280c06da63e713b26f6d080980adb",
+      "trace_hasMore": false,
+      "trace_turns": 1,
+      "trace_command_count": 9,
+      "reported_duration_ms": 90397,
+      "changed": [
+        "fixture/meeting-note-helper/SKILL.md",
+        "fixture/meeting-note-helper/docs/compile-report.md"
+      ],
+      "added": [
+        "deliverable/meeting-note-helper/SKILL.md",
+        "deliverable/meeting-note-helper/docs/compile-report.md",
+        "result.md"
+      ],
+      "removed": [],
+      "checks": {
+        "package_matches_source": {
+          "SKILL.md": true,
+          "docs/compile-report.md": true
+        },
+        "fixture_new_policy_present": true,
+        "fixture_old_policy_absent": true,
+        "deliverable_new_policy_present": true,
+        "deliverable_old_policy_absent": true
+      },
+      "actual_manifest": {
+        "compiler/SKILL.md": "5de6ebc50e4e336670b1e3660c0681f551386769f1cf578f2687af5274a7b938",
+        "compiler/assets/source-template.yaml": "39cc78cc1b921e54ece551823160b4e88dae65d5cd92f0a4d8a1ac015c37c2aa",
+        "compiler/docs/compile-report.md": "da14705d99f1b19ca7e427e048c2a72d1392bc305e98f6cb083aac11cf760553",
+        "compiler/docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+        "compiler/docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+        "compiler/docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+        "compiler/docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+        "compiler/references/authoring-guidelines.md": "ed832f7cf421e9620fd99f937bb0b44e331208ae4b3e7dabe5cf0351f5fa38c4",
+        "compiler/references/conflict-resolution.md": "725d28087139dcd42643a56bb4cf00a2a21a5b04a052a27c2f0e9b49c900800e",
+        "compiler/references/maintenance.md": "b12863faf30124bcfdd25139961bc06f78981202d20cb0390c484c1a0d3b4fe9",
+        "compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+        "compiler/references/source-language.md": "8164f90ead2e42d389c93d23e45e28d664adef14421b1f14cb4008c37f730044",
+        "compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+        "deliverable/meeting-note-helper/SKILL.md": "299037ef96deabca5016ded49388baee809a531de6033d2167ca4be8ba9cb13c",
+        "deliverable/meeting-note-helper/docs/compile-report.md": "4218c49f1140ffd38a4e3cf290bedd6cbe9e26baadd6a364ac0b2c3c171cc971",
+        "fixture/meeting-note-helper/AGENTS.md": "4226b439c21c99226e6f1461ab18862450875af1ad46471cc12d90ef7630962b",
+        "fixture/meeting-note-helper/SKILL.md": "299037ef96deabca5016ded49388baee809a531de6033d2167ca4be8ba9cb13c",
+        "fixture/meeting-note-helper/docs/compile-report.md": "4218c49f1140ffd38a4e3cf290bedd6cbe9e26baadd6a364ac0b2c3c171cc971",
+        "fixture/meeting-note-helper/skill.yaml": "f892b2a6905817bae794d8fa65c83d87f5bb49e89370d0c5aa5f47442b6200e5",
+        "prompt.md": "7a38396ae4d86ccd8c84e70384771279fae551d80599d8b92c3c94aa16f9d7e9",
+        "result.md": "2e56765995d91b580b76305d6d4e26cf3ce3ebe59cb24e0cfae97f05f3b76703"
+      },
+      "actual_aggregate_sha256": "d20db8257a49b6571b2674e3287de1ca324724fe462dec9c8fc6d4fe5c906c53",
+      "trace_event_types": [
+        "agentMessage",
+        "commandExecution"
+      ],
+      "trace_file_change_count": 0
+    }
+  ]
+}

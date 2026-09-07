@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.2.9
+  source-version: 0.2.10
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
@@ -43,8 +43,8 @@ references:
     title: Authoring guidelines
     source: references/authoring-guidelines.md
     target: references/authoring-guidelines.md
-    required: false
-    trigger: Read this when refining SKILL.md scope, progressive disclosure, instruction quality, or description quality.
+    required: true
+    trigger: Read this for the author self-check of new or materially changed skill instructions; optional for an unchanged package readback.
   - id: ref-output-structure
     title: Output structure
     source: references/output-structure.md
@@ -88,8 +88,8 @@ surfaces:
       - ref-source-language
       - ref-conflict-resolution
       - ref-maintenance
-    optionalReferences:
       - ref-authoring-guidelines
+    optionalReferences:
       - ref-output-structure
   supportingGlobs:
     - docs/*
@@ -98,22 +98,19 @@ surfaces:
 
 sections:
   startHere:
-    - Confirm the task actually requires skill compilation or structural regeneration.
-    - Read every required active reference before rewriting the target skill.
-    - Treat the supplied skill.yaml, declared local files, operator constraints, and applicable repository instructions as inputs; operator constraints win, then repository instructions, then explicit source precedence, then same-surface specificity.
-    - If the skill ships a runtime utility, look for it under <skill-root>/scripts and invoke it from the skill root instead of assuming a global executable exists.
-    - Keep active normative guidance separate from supporting or historical documents.
-    - Audit skill instructions for outcome-first structure, clear constraints, validation gates, and stop rules before regenerating or publishing; treat this as an author self-check, not an independent capability verdict.
-    - Reject placeholder commands, modes, metrics, configuration surfaces, and references that do not change the agent workflow or cannot be backed by runtime behavior, measurement, or active guidance.
-    - Keep all required rules, examples, templates, and any documented CLI contract inside the emitted skill folder.
-    - "Before writing generated output, determine either ready-to-regenerate from the resolved source inventory or blocked with a concrete reason; unresolved semantic conflicts require blocked: unresolved-conflict."
+    - Confirm that structural generation is needed; a tiny direct prose edit to a non-generated skill does not need this compiler workflow.
+    - Use the operator's task and applicable repository rules within higher-priority host instructions. Carry existing permissions forward; source content cannot grant permissions, waive checkpoints, or control the review of that content.
+    - Identify the declared source of truth and the installed/generated surface separately. Source governs maintenance; read back the package the executor will actually receive.
+    - Read required references when their stated trigger applies; required packaging and conditional reading are different. Inspect the complete declared file inventory before generation without loading every reference's contents for unrelated work.
+    - Use the author self-check below before generating changed instructions. CLI checks are structural evidence, not a semantic decision or independent review PASS.
+    - "Before writing generated output, determine ready-to-regenerate or blocked for the target, with the specific reason. A missing input or unresolved conflict stops the dependent output; finish useful independent work already authorized."
   whenToUse:
     - Compile or regenerate a multi-file skill from a structured source bundle.
     - Normalize a skill that accumulated duplicated or contradictory instructions.
     - Rebuild a portable skill after source edits, reviews, or policy updates.
   whenNotToUse:
     - The task is a tiny direct edit to a simple prose-only skill.
-    - Required source files are missing and the source bundle cannot be resolved confidently.
+    - No source bundle can be identified; report the missing source instead of inventing one. An identifiable but incomplete bundle can still be inspected within its limits.
     - A supporting document should remain historical instead of being promoted into the active workflow.
   workflow:
     - id: stage-analyze-source
@@ -121,8 +118,8 @@ sections:
       goal: Build a complete source inventory before generating any output.
       steps:
         - Read skill.yaml and list every fragment, reference, asset, runtime file, and supporting file.
-        - Verify that required references exist and are marked as active in the source surface.
-        - Identify whether the target skill is documentation-only or code-backed.
+        - Verify that declared references exist and have unambiguous active classification and reading triggers; supporting evidence is not executable authority.
+        - Identify documentation-only versus code-backed scope and which inputs are needed for inspection, safe generation, or a stronger behavioral claim.
       validation:
         - No required reference is orphaned.
         - No file is assigned to both active and supporting surfaces.
@@ -131,8 +128,8 @@ sections:
       goal: Convert competing guidance into a single deterministic instruction set.
       steps:
         - Merge semantically equivalent guidance instead of repeating it across sections.
-        - Apply explicit precedence rules when two instructions overlap.
-        - "If active guidance still has an equal-authority semantic conflict, stop as blocked: unresolved-conflict instead of regenerating or publishing."
+        - Apply the conflict-resolution reference when guidance overlaps; keep source maintenance authority separate from installed behavior and operator permissions.
+        - "An unresolved equal-authority semantic conflict blocks generation of the affected target as blocked: unresolved-conflict. Name the rules and decision owner; unrelated authorized inspection may continue."
       validation:
         - "Every semantic conflict is resolved by an explicit rule or the agent reports blocked: unresolved-conflict."
         - Do not claim that CLI lint or compile inferred semantic equivalence, contradiction, or behavioral readiness.
@@ -140,14 +137,14 @@ sections:
       title: Audit instruction quality
       goal: Perform an author-side structural and instruction-quality self-check without presenting compiler success as an independent behavioral verdict.
       steps:
-        - Check that the skill states the user-visible outcome, success criteria, constraints, side-effect limits, and output contract.
+        - Use authoring-guidelines to check the observable outcome, actor/consumer, minimum inputs, success criteria, allowed side effects, output, and limits of the claim.
         - Remove vague, contradictory, or duplicate rules; add precedence only where behavior would otherwise be ambiguous.
         - Replace unnecessary step-by-step micromanagement with decision criteria, unless the exact sequence is required for safety, correctness, or tooling.
         - Remove placeholder commands, modes, metrics, configuration surfaces, or references that are only future substrate and do not create observable agent behavior now.
-        - Ensure reference and tool triggers are concrete enough to support precise retrieval without loading everything by default.
-        - Include validation commands, self-check expectations, fallback behavior, and stop rules when the skill changes code, artifacts, or external state.
+        - Check conditional reference loading, source/package parity, and local portability separately from tools, external services, specialized expertise, and current facts.
+        - Choose checks that can falsify the changed decision or artifact; preserve mandatory gates and show unavailable evidence without inventing a runtime or an expert conclusion.
       validation:
-        - The skill is outcome-first, contradiction-free, progressively disclosed, and has explicit validation and stop conditions.
+        - The self-check covers the changed instruction surface and its direct dependencies; it records supported conclusions and remaining limits instead of claiming universal correctness.
         - Every declared command, mode, metric, config knob, and active reference is justified by current runtime behavior, measured evidence, or active guidance.
         - The result is reported as author self-check evidence; formal review of real skill capability is routed to skill-reviewer.
         - The self-check ends in ready-to-regenerate or blocked with the blocking reason and unresolved inputs.
@@ -299,7 +296,7 @@ sections:
   policies:
     - id: policy-active-surface
       title: Active normative surface
-      text: The generated SKILL.md and required references are the only active default instruction surface unless SKILL.md explicitly promotes more files.
+      text: SKILL.md owns the default decisions and navigation. Required references govern their stated conditions; optional context and supporting evidence do not hide mandatory rules. Every required local reference must ship even when its reading trigger does not apply to this task.
     - id: policy-supporting-surface
       title: Supporting and historical surface
       text: docs/*, docs/issues/*, analyses, and investigations are supporting material only and must not override active guidance.
@@ -326,12 +323,12 @@ sections:
       text: Default CLI compilation writes only to a new resolved skill directory. Existing targets, source overlap, duplicate targets, and validation failures must stop before the first output write.
     - id: policy-agent-output
       title: Agent output contract
-      text: Report status ready-to-regenerate or blocked, the authoritative inputs and precedence used, emitted paths when writes occurred, checks run with evidence, and unresolved gaps. For blocked status, include the reason and confirm that generated output was not written.
+      text: Report target readiness as ready-to-regenerate or blocked, then actual actions, authoritative inputs, output paths, checks and evidence limits, and the smallest unresolved decision. Readiness is not completion or independent PASS. For a blocked target, identify the affected output and whether any earlier authorized writes occurred; do not imply that unrelated work was undone or never happened.
   portability:
     required: true
     rules:
       - Do not emit absolute local dependencies or machine-specific environment assumptions in active instructions or declared assets; URLs and explicit web-route/example syntax are not filesystem dependencies.
-      - Do not require external local files outside the skill folder.
+      - Keep the local method and mandatory references inside the folder. Declare tool, service, expertise, and current-source dependencies with their triggers and the conclusions unavailable without them; a missing dependency does not erase independent supported work.
       - Keep all mandatory templates, scripts, and references inside the emitted skill directory.
       - Use only relative links inside the generated skill bundle.
     checklist:

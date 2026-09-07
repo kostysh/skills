@@ -1,0 +1,1 @@
+Accepted finding F-1: absent owners are silently assigned to the organizer. Organizer Mira + topic Venue produces an invented assignment. Required correction: preserve missing ownership as unknown. Recheck missing and explicit owners and literal-pipe formatting.

@@ -1,0 +1,54 @@
+[
+  {
+    "run": "run-01",
+    "changed_inputs": [],
+    "added_files": [
+      "output/release-note.md"
+    ],
+    "exact_replacement": true
+  },
+  {
+    "run": "run-02",
+    "changed_inputs": [],
+    "added_files": [],
+    "exact_replacement": null
+  },
+  {
+    "run": "run-03",
+    "changed_inputs": [],
+    "added_files": [],
+    "exact_replacement": null
+  },
+  {
+    "run": "run-04",
+    "changed_inputs": [],
+    "added_files": [],
+    "exact_replacement": null
+  },
+  {
+    "run": "run-05",
+    "changed_inputs": [],
+    "added_files": [
+      "output/release-note.md"
+    ],
+    "exact_replacement": true
+  },
+  {
+    "run": "run-06",
+    "changed_inputs": [],
+    "added_files": [],
+    "exact_replacement": null
+  },
+  {
+    "run": "run-07",
+    "changed_inputs": [],
+    "added_files": [],
+    "exact_replacement": null
+  },
+  {
+    "run": "run-08",
+    "changed_inputs": [],
+    "added_files": [],
+    "exact_replacement": null
+  }
+]

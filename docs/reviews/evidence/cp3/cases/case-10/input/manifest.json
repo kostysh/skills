@@ -1,0 +1,23 @@
+{
+  "context.md": "8af8080ae7d1b84f9cea4f8ace751137cbd384d7e4a1c50713f52377608e7ca7",
+  "evidence/provenance.md": "0e4c6f18459346dfdbb2c473421537f6a8aae70cf530e55c9a293e016f300c71",
+  "evidence/run-01/events.json": "34b89979ce42056fdb3ee55fa69b0ed4f4de25c73f8758f9f1837475501b4d3b",
+  "evidence/run-01/initial-manifest.json": "ae142a6a568bc0817dcb4f804d6ad99c6f7cf0cc8c18967fe999dda62bc8fb10",
+  "evidence/run-01/result.md": "2d354d2b2ef5b66633f6994134105807811057d5d02bc74c50308e62918241ac",
+  "evidence/run-01/target/SKILL.md": "91bf26608b2c0d19cd63230a58fc77c7097e62db245b8b277f66838d45868716",
+  "evidence/run-01/target/agents/openai.yaml": "e98ee9f84fcb0574e119e92fe94655351628ca513aa093e600e8db135475723f",
+  "evidence/run-01/target/references/escaping.md": "3cde4b7275c9eea27bb839a9aad365e2714bd4c5965e9eeb824dcd0ee48833ef",
+  "evidence/run-01/task.txt": "56aa3c1815f1e71afc2122c0d882773f2a262af582153d9ec646f33d5f1cd199",
+  "evidence/run-02/events.json": "c8f5fb1dbe790a3001df0e9452b784823bde28919d0ee80b12ae822adbfbc5c3",
+  "evidence/run-02/initial-manifest.json": "ae142a6a568bc0817dcb4f804d6ad99c6f7cf0cc8c18967fe999dda62bc8fb10",
+  "evidence/run-02/result.md": "a3d9fbf6078e57494cf4fcb9fe24d31c41d867eff64bf0e184baaedc1875ca1f",
+  "evidence/run-02/target/SKILL.md": "91bf26608b2c0d19cd63230a58fc77c7097e62db245b8b277f66838d45868716",
+  "evidence/run-02/target/agents/openai.yaml": "e98ee9f84fcb0574e119e92fe94655351628ca513aa093e600e8db135475723f",
+  "evidence/run-02/target/references/escaping.md": "3cde4b7275c9eea27bb839a9aad365e2714bd4c5965e9eeb824dcd0ee48833ef",
+  "evidence/run-02/task.txt": "c2ca1cef6dd9258ef82f5a6a2dea49b03ce22822a56c23f180ec0224718f1a2e",
+  "evidence/scope.md": "3512878cc4bd1a5cb88f330da67281d6973b95d8eb15dddcac43e4007794c125",
+  "target/SKILL.md": "91bf26608b2c0d19cd63230a58fc77c7097e62db245b8b277f66838d45868716",
+  "target/agents/openai.yaml": "e98ee9f84fcb0574e119e92fe94655351628ca513aa093e600e8db135475723f",
+  "target/docs/handover.md": "be04c4e62e7a4f611e8dc395ff914bab385e695348bc098e090010a01d813687",
+  "target/references/escaping.md": "3cde4b7275c9eea27bb839a9aad365e2714bd4c5965e9eeb824dcd0ee48833ef"
+}
